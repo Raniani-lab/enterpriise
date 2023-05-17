@@ -1,32 +1,35 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* delivery_dhl
-# 
+#
 # Translators:
-# Mustafa Rawi <mustafa@cubexco.com>, 2019
-# Fahad Alqahtani <fahad@cloudland.sa>, 2019
-# Osama Ahmaro <osamaahmaro@gmail.com>, 2019
-# Shaima Safar <shaima.safar@open-inside.com>, 2019
-# Mohamed Alansari <Mohammad.alansari@outlook.com>, 2019
-# 
+# Martin Trigaux, 2022
+# Niyas Raphy, 2022
+# Malaz Abuidris <msea@odoo.com>, 2023
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
-"PO-Revision-Date: 2019-08-26 09:35+0000\n"
-"Last-Translator: Mohamed Alansari <Mohammad.alansari@outlook.com>, 2019\n"
-"Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
+"POT-Creation-Date: 2023-05-16 16:01+0000\n"
+"PO-Revision-Date: 2022-09-22 05:46+0000\n"
+"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2023\n"
+"Language-Team: Arabic (https://app.transifex.com/odoo/teams/41243/ar/)\n"
+"Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: ar\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+
+#. module: delivery_dhl
+#: model_terms:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form_with_provider_dhl
+msgid "'rate': {}, 'ship': {}, 'return': {}"
+msgstr "'rate': {}, 'ship': {}, 'return': {}"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__0
 msgid "0 - Logistics Services"
-msgstr ". - الخدمات اللوجيستية"
+msgstr "0 - الخدمات اللوجيستية"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__1
@@ -46,17 +49,17 @@ msgstr "3 - من الشركة للمستهلك"
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__4
 msgid "4 - Jetline"
-msgstr "4 - خط طائرة نفائة"
+msgstr "4 - جيت لاين "
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__5
 msgid "5 - Sprintline"
-msgstr "5 - خط سريع"
+msgstr "5 - سبيريت لاين "
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__6
 msgid "6 - Secureline"
-msgstr "6 - خط آمن"
+msgstr "6 - سيكيور لاين"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_label_template__6x4_a4_pdf
@@ -121,12 +124,12 @@ msgstr "8X4_thermal"
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__9
 msgid "9 - Europack"
-msgstr "9 - الباقة الأوروبية"
+msgstr "9 - الباقة الأوروبية "
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__a
 msgid "A - Auto Reversals"
-msgstr "انعكاسات تلقائية"
+msgstr "A - انعكاسات تلقائية "
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_region_code__am
@@ -141,15 +144,15 @@ msgstr "آسيا والمحيط الهادئ"
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__b
 msgid "B - Break Bulk Express"
-msgstr "إكسبريس كسر البضائع السائبة"
+msgstr "B - إكسبريس توزيع الحمولة "
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__c
 msgid "C - Medical Express"
-msgstr "إكسبريس طبي"
+msgstr "C - إكسبريس طبي "
 
 #. module: delivery_dhl
-#: model:ir.model.fields,field_description:delivery_dhl.field_product_packaging__package_carrier_type
+#: model:ir.model.fields,field_description:delivery_dhl.field_stock_package_type__package_carrier_type
 msgid "Carrier"
 msgstr "شركة الشحن"
 
@@ -161,16 +164,26 @@ msgstr "سنتيمترات"
 #. module: delivery_dhl
 #: model:ir.model.fields,help:delivery_dhl.field_delivery_carrier__dhl_dutiable
 msgid "Check this if your package is dutiable."
-msgstr "حدد هذا الاختيار إذا كان طردك خاضع للرسوم الجمركية."
+msgstr "حدد هذا الخيار إذا كان طردك خاضعاً للرسوم الجمركية. "
+
+#. module: delivery_dhl
+#: model_terms:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form_with_provider_dhl
+msgid "Custom Data"
+msgstr "البيانات المخصصة"
+
+#. module: delivery_dhl
+#: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_custom_data_request
+msgid "Custom data for DHL requests,"
+msgstr "بيانات مخصصة لطلبات DHL، "
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__d
 msgid "D - Express Worldwide"
-msgstr "إكسبريس لجميع أنحاء العالم"
+msgstr "D - إكسبريس لكافة أنحاء العالم "
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__delivery_type__dhl
-#: model:ir.model.fields.selection,name:delivery_dhl.selection__product_packaging__package_carrier_type__dhl
+#: model:ir.model.fields.selection,name:delivery_dhl.selection__stock_package_type__package_carrier_type__dhl
 msgid "DHL"
 msgstr "DHL"
 
@@ -182,12 +195,31 @@ msgstr "رقم حساب DHL"
 #. module: delivery_dhl
 #: model_terms:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form_with_provider_dhl
 msgid "DHL Configuration"
-msgstr "إعدادات DHL"
+msgstr "تهيئة DHL "
 
 #. module: delivery_dhl
-#: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_default_packaging_id
-msgid "DHL Default Packaging Type"
-msgstr "نوع التعبئة الافتراضي لـDHL"
+#. odoo-python
+#: code:addons/delivery_dhl/models/delivery_dhl.py:0
+#, python-format
+msgid "DHL Documents"
+msgstr "مستندات DHL "
+
+#. module: delivery_dhl
+#: model:delivery.carrier,name:delivery_dhl.delivery_carrier_dhl_eu_dom
+#: model:product.template,name:delivery_dhl.product_product_delivery_dhl_eu_dom_product_template
+msgid "DHL EU"
+msgstr "DHL أوروبا "
+
+#. module: delivery_dhl
+#: model:delivery.carrier,name:delivery_dhl.delivery_carrier_dhl_eu_intl
+#: model:product.template,name:delivery_dhl.product_product_delivery_dhl_eu_intl_product_template
+msgid "DHL EU -> International"
+msgstr "DHL أوروبا -> دولي "
+
+#. module: delivery_dhl
+#: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_default_package_type_id
+msgid "DHL Package Type"
+msgstr "نوع حزمة DHL "
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_password
@@ -203,13 +235,14 @@ msgstr "منتج DHL"
 #: model_terms:ir.ui.view,arch_db:delivery_dhl.res_config_settings_view_form_sale
 #: model_terms:ir.ui.view,arch_db:delivery_dhl.res_config_settings_view_form_stock
 msgid "DHL Shipping Methods"
-msgstr ""
+msgstr "طرق شحن DHL "
 
 #. module: delivery_dhl
+#. odoo-python
 #: code:addons/delivery_dhl/models/dhl_request.py:0
 #, python-format
 msgid "DHL Site ID is missing, please modify your delivery method settings."
-msgstr "مُعرف موقع DHL مفقود، برجاء تعديل إعدادات طريقة التسليم."
+msgstr "مُعرف موقع DHL مفقود. الرجاء تعديل إعدادات طريقة التسليم الخاصة بك. "
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_SiteID
@@ -217,36 +250,42 @@ msgid "DHL SiteID"
 msgstr "مُعرف موقع DHL"
 
 #. module: delivery_dhl
-#: model:delivery.carrier,name:delivery_dhl.delivery_carrier_dhl_dom
-#: model:product.product,name:delivery_dhl.product_product_delivery_dhl_usa
-#: model:product.template,name:delivery_dhl.product_product_delivery_dhl_usa_product_template
-msgid "DHL USA"
-msgstr "DHL الولايات المتحدة"
+#: model:delivery.carrier,name:delivery_dhl.delivery_carrier_dhl_us_dom
+#: model:product.template,name:delivery_dhl.product_product_delivery_dhl_us_dom_product_template
+msgid "DHL US"
+msgstr "DHL الولايات المتحدة الأمريكية "
 
 #. module: delivery_dhl
-#: model:delivery.carrier,name:delivery_dhl.delivery_carrier_dhl_intl
-#: model:product.product,name:delivery_dhl.product_product_delivery_dhl_intl
-#: model:product.template,name:delivery_dhl.product_product_delivery_dhl_intl_product_template
-msgid "DHL USA -> International"
-msgstr "DHL الولايات المتحدة الأمريكية -> الدولي"
+#: model:delivery.carrier,name:delivery_dhl.delivery_carrier_dhl_us_intl
+#: model:product.template,name:delivery_dhl.product_product_delivery_dhl_us_intl_product_template
+msgid "DHL US -> International"
+msgstr "DHL الولايات المتحدة الأمريكية -> دولي "
 
 #. module: delivery_dhl
+#. odoo-python
 #: code:addons/delivery_dhl/models/dhl_request.py:0
 #, python-format
-msgid ""
-"DHL account number is missing, please modify your delivery method settings."
-msgstr "اسم مستخدم DHL مفقودة، برجاء تعديل إعدادات طريقة التسليم."
+msgid "DHL account number is missing, please modify your delivery method settings."
+msgstr "اسم مستخدم DHL مفقود، الرجاء تعديل إعدادات طريقة التسليم الخاصة بك. "
 
 #. module: delivery_dhl
+#. odoo-python
+#: code:addons/delivery_dhl/models/dhl_request.py:0
+#, python-format
+msgid "DHL doesn't support products with name greater than 75 characters."
+msgstr "لا يدعم DHL المنتجات ذات الأسماء الأطول من 75 خانة. "
+
+#. module: delivery_dhl
+#. odoo-python
 #: code:addons/delivery_dhl/models/dhl_request.py:0
 #, python-format
 msgid "DHL password is missing, please modify your delivery method settings."
-msgstr "كلمة مرور DHL مفقودة، برجاء تعديل إعدادات طريقة التسليم."
+msgstr "كلمة مرور DHL مفقودة. الرجاء تعديل إعدادات طريقة التسليم الخاصة بك. "
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_duty_payment
 msgid "Dhl Duty Payment"
-msgstr ""
+msgstr "دفع جمارك DHL "
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_dutiable
@@ -254,9 +293,14 @@ msgid "Dutiable Material"
 msgstr "مواد خاضعة للرسوم الجمركية"
 
 #. module: delivery_dhl
+#: model_terms:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form_with_provider_dhl
+msgid "Duties paid by"
+msgstr "تُدفع الجمارك من قِبَل "
+
+#. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__e
 msgid "E - Express 9:00"
-msgstr "إكسبريس 9:00"
+msgstr "E - إكسبريس 9:00 "
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_label_image_format__epl2
@@ -271,22 +315,29 @@ msgstr "أوروبا"
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__f
 msgid "F - Freight Worldwide"
-msgstr "الشحن لجميع أنحاء العالم"
+msgstr "F - الشحن لكافة أنحاء العالم "
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__g
 msgid "G - Domestic Economy Select"
-msgstr "الاختيار الاقتصادي المحلي"
+msgstr "G - الاختيار الاقتصادي المحلي "
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__h
 msgid "H - Economy Select"
-msgstr "الاختيار الاقتصادي"
+msgstr "H - الاختيار الاقتصادي "
+
+#. module: delivery_dhl
+#. odoo-python
+#: code:addons/delivery_dhl/models/delivery_dhl.py:0
+#, python-format
+msgid "Hint: The destination may not require the dutiable option."
+msgstr "تلميح: قد لا تتطلب الوجهة خياراً يفرض دفع الجمارك. "
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__i
 msgid "I - Break Bulk Economy"
-msgstr "كسر البضائع السائبة الدرجة الاقتصادية"
+msgstr "I - توزيع الحمولة الدرجة الاقتصادية "
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_package_dimension_unit__i
@@ -294,14 +345,21 @@ msgid "Inches"
 msgstr "إنشات"
 
 #. module: delivery_dhl
+#. odoo-python
+#: code:addons/delivery_dhl/models/delivery_dhl.py:0
+#, python-format
+msgid "Invalid syntax for DHL custom data."
+msgstr "السياق غير صحيح لبيانات DHL المخصصة. "
+
+#. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__j
 msgid "J - Jumbo Box"
-msgstr "صندوق كبير"
+msgstr "J - صندوق كبير "
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__k
 msgid "K - Express 9:00"
-msgstr "إكسبريس 9:00"
+msgstr "K - إكسبريس 9:00 "
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_package_weight_unit__k
@@ -311,7 +369,12 @@ msgstr "كيلوجرامات"
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__l
 msgid "L - Express 10:30"
-msgstr "إكسبريس 10:30"
+msgstr "L - إكسبريس 10:30 "
+
+#. module: delivery_dhl
+#: model_terms:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form_with_provider_dhl
+msgid "Label Format"
+msgstr "تنسيق بطاقة العنوان "
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_label_image_format
@@ -326,22 +389,27 @@ msgstr "قالب بطاقة العنوان"
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__m
 msgid "M - Express 10:30"
-msgstr "إكسبريس 10:30"
+msgstr "M - إكسبريس 10:30 "
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__n
 msgid "N - Domestic Express"
-msgstr "إكسبريس المحلي"
+msgstr "N - إكسبريس المحلي "
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__o
 msgid "O - DOM Express 10:30"
-msgstr "DOM إكسبريس 10:30"
+msgstr "O - DOM إكسبريس 10:30 "
+
+#. module: delivery_dhl
+#: model_terms:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form_with_provider_dhl
+msgid "Options"
+msgstr "خيارات"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__p
 msgid "P - Express Worldwide"
-msgstr "إكسبريس لجميع أنحاء العالم"
+msgstr "P - إكسبريس لكافة أنحاء العالم "
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_label_image_format__pdf
@@ -351,14 +419,22 @@ msgstr "PDF"
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_package_dimension_unit
 msgid "Package Dimension Unit"
-msgstr "وحدة أبعاد الطرد"
+msgstr "وحدة أبعاد الحزمة "
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_package_weight_unit
 msgid "Package Weight Unit"
-msgstr "وحدة وزن الطرد"
+msgstr "وحدة وزن الحزمة "
 
 #. module: delivery_dhl
+#. odoo-python
+#: code:addons/delivery_dhl/models/dhl_request.py:0
+#, python-format
+msgid "Please define an incoterm in the associated sale order or set a default incoterm for the company in the accounting's settings."
+msgstr "الرجاء تحديد شروط التجارة الدولية في أمر المبيعات ذي الصلة لتعيين شرط التجارة الدولي الافتراضي للشركة في إعدادات المحاسبة. "
+
+#. module: delivery_dhl
+#. odoo-python
 #: code:addons/delivery_dhl/models/dhl_request.py:0
 #, python-format
 msgid "Please provide at least one item to ship."
@@ -370,11 +446,6 @@ msgid "Pounds"
 msgstr "أرطال"
 
 #. module: delivery_dhl
-#: model:ir.model,name:delivery_dhl.model_product_packaging
-msgid "Product Packaging"
-msgstr "تعبئة المنتج"
-
-#. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__delivery_type
 msgid "Provider"
 msgstr "المزود"
@@ -382,12 +453,12 @@ msgstr "المزود"
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__q
 msgid "Q - Medical Express"
-msgstr "إكسبريس طبي"
+msgstr "Q - إكسبريس طبي "
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__r
 msgid "R - GlobalMail Business"
-msgstr "خدمة البريد الدولي للأعمال"
+msgstr "R - خدمة البريد الدولي للأعمال "
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_duty_payment__r
@@ -402,7 +473,7 @@ msgstr "منطقة"
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__s
 msgid "S - Same Day"
-msgstr "نفس اليوم"
+msgstr "S - نفس اليوم "
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_duty_payment__s
@@ -410,11 +481,11 @@ msgid "Sender"
 msgstr "المرسل"
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/delivery_dhl.py:0
+#. odoo-python
 #: code:addons/delivery_dhl/models/delivery_dhl.py:0
 #, python-format
-msgid "Shipment created into DHL <br/> <b>Tracking Number : </b>%s"
-msgstr "تم إنشاء الشحنة في DHL <br/> <b>رقم التتبع: </b>%s"
+msgid "Shipment created into DHL <br/> <b>Tracking Number: </b>%s"
+msgstr ""
 
 #. module: delivery_dhl
 #: model:ir.model,name:delivery_dhl.model_delivery_carrier
@@ -422,89 +493,109 @@ msgid "Shipping Methods"
 msgstr "طُرُق الشَّحن"
 
 #. module: delivery_dhl
-#: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__t
-msgid "T - Express 12:00"
-msgstr "إكسبريس 12:00"
+#: model:ir.model,name:delivery_dhl.model_stock_package_type
+msgid "Stock package type"
+msgstr "نوع طرود المخزون "
 
 #. module: delivery_dhl
+#: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__t
+msgid "T - Express 12:00"
+msgstr "T - إكسبريس 12:00 "
+
+#. module: delivery_dhl
+#. odoo-python
 #: code:addons/delivery_dhl/models/dhl_request.py:0
 #, python-format
 msgid ""
 "The address of the customer is missing or wrong (Missing field(s) :\n"
 " %s)"
 msgstr ""
-"عنوان العميل منقوص أو خاطئ (الحقل المفقود: \n"
+"عنوان العميل غير موجود أو غير صحيح (الحقل (الحقول) المفقودة: \n"
 " %s)"
 
 #. module: delivery_dhl
+#. odoo-python
 #: code:addons/delivery_dhl/models/dhl_request.py:0
 #, python-format
 msgid ""
 "The address of your company warehouse is missing or wrong (Missing field(s) :\n"
 " %s)"
 msgstr ""
-"عنوان مؤسستك/مستودعك منقوص أو خاطئ (الحقل المفقود: \n"
+"عنوان شركتك/مستودعك غير موجود أو غير صحيح (الحقل (الحقول) المفقودة: \n"
 " %s)"
 
 #. module: delivery_dhl
+#: model:ir.model.fields,help:delivery_dhl.field_delivery_carrier__dhl_custom_data_request
+msgid ""
+"The custom data in DHL is organized like the inside of a json file.\n"
+"        There are 3 possible keys: 'rate', 'ship', 'return', to which you can add your custom data.\n"
+"        More info on https://xmlportal.dhl.com/"
+msgstr ""
+"يتم تنظيم البيانات المخصصة في DHL كما في داخل ملف json.\n"
+"        توجد 3 مفاتيح محتملة: 'تقييم'، 'شحن'، 'إرجاع'، والتي يمكنك إضافة بياناتك المخصصة إليها.\n"
+"        للمزيد من المعلومات، يرجى زيارة الرابط التالي https://xmlportal.dhl.com/ "
+
+#. module: delivery_dhl
+#. odoo-python
 #: code:addons/delivery_dhl/models/dhl_request.py:0
 #, python-format
 msgid ""
-"The estimated price cannot be computed because the weight of your product is"
-" missing."
-msgstr "لا يمكن احتساب السعر التقديري لأن وزن منتجك مفقود."
+"The estimated shipping price cannot be computed because the weight is missing for the following product(s): \n"
+" %s"
+msgstr ""
+"تعذر احتساب سعر الشحن لعدم تحديد الوزن للمنتج (المنتجات) التالية: \n"
+" %s"
 
 #. module: delivery_dhl
+#. odoo-python
 #: code:addons/delivery_dhl/models/delivery_dhl.py:0
 #, python-format
-msgid ""
-"There is no price available for this shipping, you should rather try with "
-"the DHL product %s"
-msgstr ""
+msgid "There is no price available for this shipping, you should rather try with the DHL product %s"
+msgstr "لا يوجد سعر متوفر لهذا الشحن، عوضاً عن ذلك، جربه مع منتج DHL%s"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__u
 msgid "U - Express Worldwide"
-msgstr "إكسبريس لجميع أنحاء العالم"
-
-#. module: delivery_dhl
-#: model:product.product,uom_name:delivery_dhl.product_product_delivery_dhl_intl
-#: model:product.product,uom_name:delivery_dhl.product_product_delivery_dhl_usa
-#: model:product.template,uom_name:delivery_dhl.product_product_delivery_dhl_intl_product_template
-#: model:product.template,uom_name:delivery_dhl.product_product_delivery_dhl_usa_product_template
-msgid "Units"
-msgstr "الوحدات"
+msgstr "U - إكسبريس لكافة أنحاء العالم "
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__v
 msgid "V - Europack"
-msgstr "الباقة الأوروبية"
+msgstr "V - الباقة الأوروبية "
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__w
 msgid "W - Economy Select"
-msgstr "الاختيار الاقتصادي"
+msgstr "W - الاختيار الاقتصادي "
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__x
 msgid "X - Express Envelope"
-msgstr "مغلف إكسبريس"
+msgstr "X - مغلف إكسبريس "
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__y
 msgid "Y - Express 12:00"
-msgstr "إكسبريس 12:00"
+msgstr "Y - إكسبريس 12:00 "
 
 #. module: delivery_dhl
+#. odoo-python
 #: code:addons/delivery_dhl/models/delivery_dhl.py:0
 #, python-format
 msgid "You can't cancel DHL shipping without pickup date."
-msgstr "لا يمكنك إلغاء شحن DHL بدون تاريخ استلام."
+msgstr "لا يمكنك إلغاء شحن DHL دون تاريخ استلام. "
+
+#. module: delivery_dhl
+#. odoo-python
+#: code:addons/delivery_dhl/models/delivery_dhl.py:0
+#, python-format
+msgid "You cannot delete the commercial invoice sequence."
+msgstr "لا يمكنك حذف تسلسل الفاتورة التجارية. "
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__z
 msgid "Z - Destination Charges"
-msgstr "رسوم الوصول للوجهة"
+msgstr "Z - رسوم الوصول للوجهة "
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_label_image_format__zpl2

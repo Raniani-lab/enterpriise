@@ -1,28 +1,28 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* delivery_easypost
-# 
+#
 # Translators:
-# Martin Trigaux, 2019
-# Bole <bole@dajmi5.com>, 2019
-# Vladimir Olujić <olujic.vladimir@storm.hr>, 2019
-# Đurđica Žarković <durdica.zarkovic@storm.hr>, 2019
-# Karolina Tonković <karolina.tonkovic@storm.hr>, 2019
-# Marko Carević <marko.carevic@live.com>, 2019
-# Tina Milas, 2019
-# 
+# Vladimir Olujić <olujic.vladimir@storm.hr>, 2022
+# Martin Trigaux, 2022
+# Karolina Tonković <karolina.tonkovic@storm.hr>, 2022
+# Vladimir Vrgoč, 2022
+# Tina Milas, 2022
+# Marko Carević <marko.carevic@live.com>, 2022
+# Bole <bole@dajmi5.com>, 2022
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server saas~15.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
-"PO-Revision-Date: 2019-08-26 09:35+0000\n"
-"Last-Translator: Tina Milas, 2019\n"
-"Language-Team: Croatian (https://www.transifex.com/odoo/teams/41243/hr/)\n"
+"POT-Creation-Date: 2023-05-16 16:01+0000\n"
+"PO-Revision-Date: 2022-09-22 05:46+0000\n"
+"Last-Translator: Bole <bole@dajmi5.com>, 2022\n"
+"Language-Team: Croatian (https://app.transifex.com/odoo/teams/41243/hr/)\n"
+"Language: hr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: hr\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
 #. module: delivery_easypost
@@ -41,10 +41,22 @@ msgid ""
 msgstr ""
 
 #. module: delivery_easypost
-#: model_terms:ir.ui.view,arch_db:delivery_easypost.view_product_packaging_delivery_form_inherit_easypost
-msgid ""
-"<span attrs=\"{'invisible': [('package_carrier_type', '!=', "
-"'easypost')]}\">Inches</span>"
+#: model_terms:ir.ui.view,arch_db:delivery_easypost.view_stock_package_type_form_inherit_easypost
+msgid "<span attrs=\"{'invisible': [('package_carrier_type', '!=', 'easypost')]}\">Inches</span>"
+msgstr ""
+
+#. module: delivery_easypost
+#. odoo-python
+#: code:addons/delivery_easypost/models/delivery_carrier.py:0
+#, python-format
+msgid "A production key is required in order to load your easypost carriers."
+msgstr ""
+
+#. module: delivery_easypost
+#. odoo-python
+#: code:addons/delivery_easypost/models/delivery_carrier.py:0
+#, python-format
+msgid "A production key is required in order to load your insurance fees."
 msgstr ""
 
 #. module: delivery_easypost
@@ -58,13 +70,13 @@ msgid "Cancel"
 msgstr "Odustani"
 
 #. module: delivery_easypost
-#: model:ir.model.fields,field_description:delivery_easypost.field_product_packaging__package_carrier_type
+#: model:ir.model.fields,field_description:delivery_easypost.field_stock_package_type__package_carrier_type
 msgid "Carrier"
 msgstr "Prijevoznik"
 
 #. module: delivery_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_easypost_service__easypost_carrier
-#: model:ir.model.fields,field_description:delivery_easypost.field_product_packaging__easypost_carrier
+#: model:ir.model.fields,field_description:delivery_easypost.field_stock_package_type__easypost_carrier
 msgid "Carrier Prefix"
 msgstr ""
 
@@ -72,17 +84,13 @@ msgstr ""
 #: model:ir.model,name:delivery_easypost.model_delivery_carrier_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier_easypost__carrier_type
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
+#: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_easypost_carrier_type
 msgid "Carrier Type"
 msgstr ""
 
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
 msgid "Carrier accounts"
-msgstr ""
-
-#. module: delivery_easypost
-#: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_easypost_carrier_type
-msgid "Carrrier Type"
 msgstr ""
 
 #. module: delivery_easypost
@@ -103,7 +111,7 @@ msgid "Default Package Type"
 msgstr "Zadani tip paketa"
 
 #. module: delivery_easypost
-#: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier__easypost_default_packaging_id
+#: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier__easypost_default_package_type_id
 msgid "Default Package Type for Easypost"
 msgstr ""
 
@@ -125,9 +133,7 @@ msgstr "Naziv"
 
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
-msgid ""
-"Do not forget to load your Easypost carrier accounts for a valid "
-"configuration."
+msgid "Do not forget to load your Easypost carrier accounts for a valid configuration."
 msgstr ""
 
 #. module: delivery_easypost
@@ -137,7 +143,7 @@ msgstr "EPL2"
 
 #. module: delivery_easypost
 #: model:ir.model.fields.selection,name:delivery_easypost.selection__delivery_carrier__delivery_type__easypost
-#: model:ir.model.fields.selection,name:delivery_easypost.selection__product_packaging__package_carrier_type__easypost
+#: model:ir.model.fields.selection,name:delivery_easypost.selection__stock_package_type__package_carrier_type__easypost
 msgid "Easypost"
 msgstr ""
 
@@ -154,6 +160,13 @@ msgstr ""
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
 msgid "Easypost Configuration"
+msgstr ""
+
+#. module: delivery_easypost
+#. odoo-python
+#: code:addons/delivery_easypost/models/delivery_carrier.py:0
+#, python-format
+msgid "Easypost Documents:"
 msgstr ""
 
 #. module: delivery_easypost
@@ -188,9 +201,10 @@ msgid "Easypost Website"
 msgstr ""
 
 #. module: delivery_easypost
+#. odoo-python
 #: code:addons/delivery_easypost/models/easypost_request.py:0
 #, python-format
-msgid "Easypost returned an error: "
+msgid "Easypost returned an error: %s"
 msgstr ""
 
 #. module: delivery_easypost
@@ -220,23 +234,26 @@ msgid "If not set, the less expensive available service level will be chosen."
 msgstr ""
 
 #. module: delivery_easypost
+#: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier__easypost_insurance_fee_minimum
+msgid "Insurance fee minimum (USD)"
+msgstr ""
+
+#. module: delivery_easypost
+#: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier__easypost_insurance_fee_rate
+msgid "Insurance fee rate (USD)"
+msgstr ""
+
+#. module: delivery_easypost
+#. odoo-python
 #: code:addons/delivery_easypost/models/easypost_request.py:0
 #, python-format
-msgid ""
-"It seems Easypost do not provide shipments for this order.                We"
-" advise you to try with another package type or service level."
+msgid "It seems Easypost do not provide shipments for this order.                We advise you to try with another package type or service level."
 msgstr ""
 
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
-msgid "Label File Type"
+msgid "Label Format"
 msgstr ""
-
-#. module: delivery_easypost
-#: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier_easypost____last_update
-#: model:ir.model.fields,field_description:delivery_easypost.field_easypost_service____last_update
-msgid "Last Modified on"
-msgstr "Zadnja promjena"
 
 #. module: delivery_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier_easypost__write_uid
@@ -256,6 +273,11 @@ msgid "Load your Easypost carrier accounts"
 msgstr ""
 
 #. module: delivery_easypost
+#: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
+msgid "Options"
+msgstr "Opcije"
+
+#. module: delivery_easypost
 #: model:ir.model.fields.selection,name:delivery_easypost.selection__delivery_carrier__easypost_label_file_type__pdf
 msgid "PDF"
 msgstr "PDF"
@@ -263,25 +285,21 @@ msgstr "PDF"
 #. module: delivery_easypost
 #: model:ir.model.fields.selection,name:delivery_easypost.selection__delivery_carrier__easypost_label_file_type__png
 msgid "PNG"
+msgstr "PNG"
+
+#. module: delivery_easypost
+#. odoo-python
+#: code:addons/delivery_easypost/models/easypost_request.py:0
+#, python-format
+msgid "Package type used in pack %s is not configured for easypost."
 msgstr ""
 
 #. module: delivery_easypost
-#: code:addons/delivery_easypost/models/easypost_request.py:0
+#. odoo-python
 #: code:addons/delivery_easypost/models/easypost_request.py:0
 #, python-format
 msgid "Please provide at least one item to ship."
 msgstr "Navedite barem jednu stavku za isporuku."
-
-#. module: delivery_easypost
-#: model:ir.model,name:delivery_easypost.model_product_packaging
-msgid "Product Packaging"
-msgstr ""
-
-#. module: delivery_easypost
-#: code:addons/delivery_easypost/models/easypost_request.py:0
-#, python-format
-msgid "Product packaging used in pack %s is not configured for easypost."
-msgstr ""
 
 #. module: delivery_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier__easypost_production_api_key
@@ -294,6 +312,14 @@ msgid "Provider"
 msgstr "Davatelj "
 
 #. module: delivery_easypost
+#. odoo-python
+#: code:addons/delivery_easypost/models/delivery_carrier.py:0
+#, python-format
+msgid "Return Label<br/>"
+msgstr ""
+
+#. module: delivery_easypost
+#. odoo-python
 #: code:addons/delivery_easypost/models/easypost_request.py:0
 #, python-format
 msgid "Sale Order/Stock Picking is missing."
@@ -315,6 +341,7 @@ msgid "Service Level Name"
 msgstr ""
 
 #. module: delivery_easypost
+#. odoo-python
 #: code:addons/delivery_easypost/models/delivery_carrier.py:0
 #, python-format
 msgid "Shipment created into Easypost<br/><b>Tracking Numbers:</b> %s<br/>"
@@ -323,7 +350,7 @@ msgstr ""
 #. module: delivery_easypost
 #: model:ir.model,name:delivery_easypost.model_delivery_carrier
 msgid "Shipping Methods"
-msgstr ""
+msgstr "Načini dostave"
 
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
@@ -331,19 +358,26 @@ msgid "Sign up"
 msgstr "Registriraj se"
 
 #. module: delivery_easypost
+#: model:ir.model,name:delivery_easypost.model_stock_package_type
+msgid "Stock package type"
+msgstr ""
+
+#. module: delivery_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier__easypost_test_api_key
 msgid "Test API Key"
 msgstr ""
 
 #. module: delivery_easypost
+#. odoo-python
 #: code:addons/delivery_easypost/models/easypost_request.py:0
 #, python-format
 msgid ""
 "The %s carrier is missing (Missing field(s) :\n"
-" Default Product Packaging)"
+" Default Package Type)"
 msgstr ""
 
 #. module: delivery_easypost
+#. odoo-python
 #: code:addons/delivery_easypost/models/easypost_request.py:0
 #, python-format
 msgid ""
@@ -352,6 +386,7 @@ msgid ""
 msgstr ""
 
 #. module: delivery_easypost
+#. odoo-python
 #: code:addons/delivery_easypost/models/easypost_request.py:0
 #, python-format
 msgid ""
@@ -360,6 +395,7 @@ msgid ""
 msgstr ""
 
 #. module: delivery_easypost
+#. odoo-python
 #: code:addons/delivery_easypost/models/easypost_request.py:0
 #, python-format
 msgid ""
@@ -368,21 +404,26 @@ msgid ""
 msgstr ""
 
 #. module: delivery_easypost
-#: code:addons/delivery_easypost/models/easypost_request.py:0
+#. odoo-python
 #: code:addons/delivery_easypost/models/easypost_request.py:0
 #, python-format
-msgid ""
-"The estimated price cannot be computed because the weight of your product is"
-" missing."
-msgstr ""
-"Izražena cijena se ne može izračunati, jer nedostaje težina Vašeg proizvoda."
+msgid "The estimated price cannot be computed because the weight of your product is missing."
+msgstr "Izražena cijena se ne može izračunati, jer nedostaje težina Vašeg proizvoda."
 
 #. module: delivery_easypost
+#. odoo-python
 #: code:addons/delivery_easypost/models/easypost_request.py:0
 #, python-format
 msgid ""
-"There is no rate available for the selected service level for one of your "
-"package. Please choose another service level."
+"The estimated shipping price cannot be computed because the weight is missing for the following product(s): \n"
+" %s"
+msgstr ""
+
+#. module: delivery_easypost
+#. odoo-python
+#: code:addons/delivery_easypost/models/easypost_request.py:0
+#, python-format
+msgid "There is no rate available for the selected service level for one of your package. Please choose another service level."
 msgstr ""
 
 #. module: delivery_easypost
@@ -391,30 +432,44 @@ msgid "Transfer"
 msgstr "Prijenos"
 
 #. module: delivery_easypost
+#. odoo-python
+#: code:addons/delivery_easypost/models/delivery_carrier.py:0
+#, python-format
+msgid "Unable to retrieve your default insurance rates."
+msgstr ""
+
+#. module: delivery_easypost
+#. odoo-python
+#: code:addons/delivery_easypost/models/easypost_request.py:0
+#, python-format
+msgid "Unknown error"
+msgstr "Nepoznata greška"
+
+#. module: delivery_easypost
+#. odoo-python
+#: code:addons/delivery_easypost/models/easypost_request.py:0
+#, python-format
+msgid "Unspecified field"
+msgstr ""
+
+#. module: delivery_easypost
+#. odoo-python
 #: code:addons/delivery_easypost/models/delivery_carrier.py:0
 #, python-format
 msgid "You can't cancel Easypost shipping."
 msgstr ""
 
 #. module: delivery_easypost
+#. odoo-python
 #: code:addons/delivery_easypost/models/easypost_request.py:0
 #, python-format
-msgid ""
-"You have no carrier linked to your Easypost Account.                Please "
-"connect to Easypost, link your account to carriers and then retry."
+msgid "You have no carrier linked to your Easypost Account.                Please connect to Easypost, link your account to carriers and then retry."
 msgstr ""
 
 #. module: delivery_easypost
 #: model:ir.model.fields.selection,name:delivery_easypost.selection__delivery_carrier__easypost_label_file_type__zpl
 msgid "ZPL"
 msgstr "ZPL"
-
-#. module: delivery_easypost
-#: code:addons/delivery_easypost/models/delivery_carrier.py:0
-#: code:addons/delivery_easypost/models/delivery_carrier.py:0
-#, python-format
-msgid "error_message"
-msgstr ""
 
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost

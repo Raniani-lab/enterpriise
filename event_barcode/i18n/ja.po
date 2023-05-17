@@ -1,96 +1,98 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * event_barcode
-# 
+# 	* event_barcode
+#
 # Translators:
-# SHIMIZU Taku <shimizu.taku@gmail.com>, 2018
-# Martin Trigaux, 2018
-# Yoshi Tashiro <tashiro@roomsfor.hk>, 2018
-# Norimichi Sugimoto <norimichi.sugimoto@tls-ltd.co.jp>, 2018
-# 前園義博 <yoshihiro.maezono@pro-spire.co.jp>, 2018
+# Martin Trigaux, 2022
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-09-21 14:06+0000\n"
-"Last-Translator: 前園義博 <yoshihiro.maezono@pro-spire.co.jp>, 2018\n"
-"Language-Team: Japanese (https://www.transifex.com/odoo/teams/41243/ja/)\n"
+"POT-Creation-Date: 2023-05-16 16:02+0000\n"
+"PO-Revision-Date: 2022-09-22 05:46+0000\n"
+"Last-Translator: Martin Trigaux, 2022\n"
+"Language-Team: Japanese (https://app.transifex.com/odoo/teams/41243/ja/)\n"
+"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: event_barcode
-#: code:addons/event_barcode/controllers/main.py:26
-#, python-format
-msgid "%s is already registered"
-msgstr "%s 既に登録されています。"
-
-#. module: event_barcode
-#: code:addons/event_barcode/controllers/main.py:24
-#, python-format
-msgid "%s is successfully registered"
-msgstr "%s 正常に登録されました"
-
-#. module: event_barcode
-#: model_terms:ir.ui.view,arch_db:event_barcode.report_registration_badge
-msgid "&amp;nbsp;"
-msgstr "&amp;nbsp;"
-
-#. module: event_barcode
-#: code:addons/event_barcode/controllers/main.py:18
-#, python-format
-msgid "Attendee"
-msgstr "参加者"
-
-#. module: event_barcode
-#. openerp-web
-#: code:addons/event_barcode/static/src/xml/event_barcode.xml:33
 #: model:ir.model.fields,field_description:event_barcode.field_event_registration__barcode
-#: model_terms:ir.ui.view,arch_db:event_barcode.report_registration_badge
-#, python-format
+#: model_terms:ir.ui.view,arch_db:event_barcode.event_report_template_full_page_ticket_inherit_barcode
 msgid "Barcode"
 msgstr "バーコード"
 
 #. module: event_barcode
 #: model:ir.actions.client,name:event_barcode.event_barcode_action_main_view
-#: model_terms:ir.ui.view,arch_db:event_barcode.event_event_view_form_inherit_barcode
 msgid "Barcode Interface"
 msgstr "バーコードインターフェイス"
 
 #. module: event_barcode
-#. openerp-web
-#: code:addons/event_barcode/static/src/xml/event_barcode.xml:32
-#, python-format
-msgid "Barcode Scanning"
-msgstr "バーコードスキャン"
+#: model_terms:ir.ui.view,arch_db:event_barcode.res_config_settings_view_form
+msgid "Barcode Nomenclature"
+msgstr "バーコード表現規則"
 
 #. module: event_barcode
-#: sql_constraint:event.registration:0
-msgid "Barcode should be unique per event"
-msgstr "バーコードはイベントごとに一意でなければなりません"
+#: model:ir.model.constraint,message:event_barcode.constraint_event_registration_barcode_event_uniq
+msgid "Barcode should be unique"
+msgstr ""
 
 #. module: event_barcode
-#: code:addons/event_barcode/controllers/main.py:20
+#. odoo-javascript
+#: code:addons/event_barcode/static/src/client_action/event_registration_summary_dialog.xml:0
 #, python-format
 msgid "Canceled registration"
 msgstr "キャンセルされた登録"
 
 #. module: event_barcode
-#. openerp-web
-#: code:addons/event_barcode/static/src/js/event_barcode.js:95
+#. odoo-javascript
+#: code:addons/event_barcode/static/src/client_action/event_registration_summary_dialog.xml:0
 #, python-format
 msgid "Close"
 msgstr "閉じる"
 
 #. module: event_barcode
-#. openerp-web
-#: code:addons/event_barcode/static/src/js/event_barcode.js:66
+#. odoo-javascript
+#: code:addons/event_barcode/static/src/client_action/event_registration_summary_dialog.xml:0
 #, python-format
-msgid "Error"
-msgstr "エラー"
+msgid "Company"
+msgstr "会社"
+
+#. module: event_barcode
+#. odoo-javascript
+#: code:addons/event_barcode/static/src/client_action/event_barcode.xml:0
+#, python-format
+msgid "Company Logo"
+msgstr "会社ロゴ"
+
+#. module: event_barcode
+#: model:ir.model,name:event_barcode.model_res_config_settings
+msgid "Config Settings"
+msgstr "コンフィグ設定"
+
+#. module: event_barcode
+#. odoo-javascript
+#: code:addons/event_barcode/static/src/client_action/event_registration_summary_dialog.xml:0
+#, python-format
+msgid "Confirm"
+msgstr "確認"
+
+#. module: event_barcode
+#. odoo-javascript
+#: code:addons/event_barcode/static/src/client_action/event_registration_summary_dialog.xml:0
+#, python-format
+msgid "Confirm attendance for"
+msgstr ""
+
+#. module: event_barcode
+#. odoo-javascript
+#: code:addons/event_barcode/static/src/client_action/event_registration_summary_dialog.xml:0
+#, python-format
+msgid "Event"
+msgstr "イベント"
 
 #. module: event_barcode
 #: model:ir.model,name:event_barcode.model_event_registration
@@ -98,56 +100,148 @@ msgid "Event Registration"
 msgstr "イベント登録"
 
 #. module: event_barcode
-#. openerp-web
-#: code:addons/event_barcode/static/src/js/event_barcode.js:66
+#. odoo-javascript
+#: code:addons/event_barcode/static/src/client_action/event_barcode.js:0
 #, python-format
-msgid "Invalid user input"
-msgstr "ユーザー入力が無効です"
+msgid "Events"
+msgstr "イベント"
 
 #. module: event_barcode
-#. openerp-web
-#: code:addons/event_barcode/static/src/js/event_barcode.js:96
+#. odoo-javascript
+#: code:addons/event_barcode/static/src/client_action/event_barcode.js:0
+#, python-format
+msgid "Invalid ticket"
+msgstr ""
+
+#. module: event_barcode
+#. odoo-javascript
+#: code:addons/event_barcode/static/src/client_action/event_registration_summary_dialog.xml:0
+#, python-format
+msgid "Name"
+msgstr "名称"
+
+#. module: event_barcode
+#: model:ir.model.fields,field_description:event_barcode.field_res_config_settings__barcode_nomenclature_id
+msgid "Nomenclature"
+msgstr "体系"
+
+#. module: event_barcode
+#. odoo-javascript
+#: code:addons/event_barcode/static/src/client_action/event_registration_summary_dialog.xml:0
+#, python-format
+msgid "Payment"
+msgstr "支払"
+
+#. module: event_barcode
+#. odoo-javascript
+#: code:addons/event_barcode/static/src/client_action/event_registration_summary_dialog.xml:0
 #, python-format
 msgid "Print"
 msgstr "印刷"
 
 #. module: event_barcode
-#. openerp-web
-#: code:addons/event_barcode/static/src/xml/event_barcode.xml:42
+#. odoo-javascript
+#: code:addons/event_barcode/static/src/client_action/event_registration_summary_dialog.xml:0
 #, python-format
 msgid "Registration"
 msgstr "登録"
 
 #. module: event_barcode
-#. openerp-web
-#: code:addons/event_barcode/static/src/js/event_barcode.js:87
+#. odoo-python
+#: code:addons/event_barcode/controllers/main.py:0
+#: model:ir.ui.menu,name:event_barcode.menu_event_registration_desk
+#: model_terms:ir.ui.view,arch_db:event_barcode.event_event_view_form
 #, python-format
-msgid "Registration Summary"
-msgstr "登録サマリー"
+msgid "Registration Desk"
+msgstr "受付カウンター"
 
 #. module: event_barcode
-#: code:addons/event_barcode/controllers/main.py:13
+#. odoo-javascript
+#: code:addons/event_barcode/static/src/client_action/event_registration_summary_dialog.js:0
 #, python-format
-msgid "This ticket is not valid for this event"
-msgstr "このチケットはこのイベントには有効ではありません"
+msgid "Registration confirmed"
+msgstr ""
 
 #. module: event_barcode
-#. openerp-web
-#: code:addons/event_barcode/static/src/js/event_barcode.js:104
+#. odoo-javascript
+#: code:addons/event_barcode/static/src/client_action/event_barcode.xml:0
+#, python-format
+msgid "Scan a badge"
+msgstr "バッジのスキャン"
+
+#. module: event_barcode
+#. odoo-javascript
+#: code:addons/event_barcode/static/src/client_action/event_barcode.xml:0
+#, python-format
+msgid "Select Attendee"
+msgstr "出席者を選択"
+
+#. module: event_barcode
+#. odoo-javascript
+#: code:addons/event_barcode/static/src/client_action/event_registration_summary_dialog.xml:0
+#, python-format
+msgid "The registration must be paid"
+msgstr "登録は支払わなければならない"
+
+#. module: event_barcode
+#. odoo-javascript
+#: code:addons/event_barcode/static/src/client_action/event_registration_summary_dialog.xml:0
+#, python-format
+msgid "This ticket is for another event"
+msgstr ""
+
+#. module: event_barcode
+#. odoo-javascript
+#: code:addons/event_barcode/static/src/client_action/event_registration_summary_dialog.xml:0
+#, python-format
+msgid "This ticket is not for an ongoing event"
+msgstr ""
+
+#. module: event_barcode
+#. odoo-javascript
+#: code:addons/event_barcode/static/src/client_action/event_registration_summary_dialog.xml:0
+#, python-format
+msgid "Ticket"
+msgstr "チケット"
+
+#. module: event_barcode
+#. odoo-javascript
+#: code:addons/event_barcode/static/src/client_action/event_registration_summary_dialog.xml:0
 #, python-format
 msgid "View"
 msgstr "ビュー"
 
 #. module: event_barcode
-#. openerp-web
-#: code:addons/event_barcode/static/src/xml/event_barcode.xml:34
-#, python-format
-msgid "Waiting for barcode scan..."
-msgstr "バーコードスキャンを待っています..."
-
-#. module: event_barcode
-#. openerp-web
-#: code:addons/event_barcode/static/src/js/event_barcode.js:117
+#. odoo-javascript
+#: code:addons/event_barcode/static/src/client_action/event_barcode.js:0
 #, python-format
 msgid "Warning"
 msgstr "警告"
+
+#. module: event_barcode
+#. odoo-javascript
+#: code:addons/event_barcode/static/src/client_action/event_barcode.xml:0
+#, python-format
+msgid "Welcome to"
+msgstr "ようこそ"
+
+#. module: event_barcode
+#. odoo-javascript
+#: code:addons/event_barcode/static/src/client_action/event_registration_summary_dialog.xml:0
+#, python-format
+msgid "is already registered"
+msgstr ""
+
+#. module: event_barcode
+#. odoo-javascript
+#: code:addons/event_barcode/static/src/client_action/event_registration_summary_dialog.xml:0
+#, python-format
+msgid "is successfully registered"
+msgstr ""
+
+#. module: event_barcode
+#. odoo-javascript
+#: code:addons/event_barcode/static/src/client_action/event_barcode.xml:0
+#, python-format
+msgid "or"
+msgstr "または"

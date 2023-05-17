@@ -10,6 +10,7 @@ msgstr ""
 "PO-Revision-Date: 2021-01-22 13:28+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -161,10 +162,8 @@ msgstr ""
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"All invoices sharing the same CDR number (%s) must be processed at once"
-msgstr ""
-"Todas las facturas que compartan el mismo numero de CDR (%s) deben ser procesadas juntas"
+msgid "All invoices sharing the same CDR number (%s) must be processed at once"
+msgstr "Todas las facturas que compartan el mismo numero de CDR (%s) deben ser procesadas juntas"
 
 #. module: l10n_pe_edi
 #: model:ir.model.fields,field_description:l10n_pe_edi.field_account_move_line__l10n_pe_edi_allowance_charge_reason_code
@@ -210,9 +209,7 @@ msgstr ""
 
 #. module: l10n_pe_edi
 #: model:ir.model.fields.selection,name:l10n_pe_edi.selection__account_move__l10n_pe_edi_legend__2001
-msgid ""
-"BIENES TRANSFERIDOS EN LA AMAZONÍA REGIÓN SELVAPARA SER CONSUMIDOS EN LA "
-"MISMA"
+msgid "BIENES TRANSFERIDOS EN LA AMAZONÍA REGIÓN SELVAPARA SER CONSUMIDOS EN LA MISMA"
 msgstr ""
 
 #. module: l10n_pe_edi
@@ -304,16 +301,18 @@ msgstr "Catálogo 53 de posibles razones del descuento"
 #. module: l10n_pe_edi
 #: model:ir.model.fields,help:l10n_pe_edi.field_product_product__l10n_pe_withhold_code
 #: model:ir.model.fields,help:l10n_pe_edi.field_product_template__l10n_pe_withhold_code
-msgid ""
-"Catalog No. 54 SUNAT, used functionally to document in the printed document "
-"on invoices that need to have the proper SPOT text"
-msgstr ""
-"Catalogo No. 54 SUNAT, Catálogo No. 54 SUNAT, utilizado funcionalmente para documentar en el documento impreso "
-"en facturas que deben tener el texto SPOT adecuado"
+msgid "Catalog No. 54 SUNAT, used functionally to document in the printed document on invoices that need to have the proper SPOT text"
+msgstr "Catalogo No. 54 SUNAT, Catálogo No. 54 SUNAT, utilizado funcionalmente para documentar en el documento impreso en facturas que deben tener el texto SPOT adecuado"
 
 #. module: l10n_pe_edi
 #: model:ir.model.fields.selection,name:l10n_pe_edi.selection__product_template__l10n_pe_withhold_code__007
 msgid "Caña de azúcar"
+msgstr ""
+
+#. module: l10n_pe_edi
+#: code:addons/l10n_pe_edi/models/account_edi_format.py:0
+#, python-format
+msgid "CDR status:"
 msgstr ""
 
 #. module: l10n_pe_edi
@@ -340,36 +339,20 @@ msgstr "Certificados para EDI facturas en Perú"
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"Check that the VAT set in the company is correct, this error generally "
-"happen when you did not set a proper VAT in the company, go to company form "
-"and set it properly.."
-msgstr ""
-"Revisa que el VAT de la empresa ha sido correctamente escrito, este error generalmente "
-"ocurre cuando el VAT de la empresa no esta correctamente configurado, ve a la empresa "
-"y configúralo correctamente.."
+msgid "Check that the VAT set in the company is correct, this error generally happen when you did not set a proper VAT in the company, go to company form and set it properly.."
+msgstr "Revisa que el VAT de la empresa ha sido correctamente escrito, este error generalmente ocurre cuando el VAT de la empresa no esta correctamente configurado, ve a la empresa y configúralo correctamente.."
 
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"Check your firewall parameters, it is not being possible to connect with "
-"server to sign invoices."
-msgstr ""
-"Revisa la configuración de tu firewall, de momento no es posible conectarse con "
-"el servidor para firmar facturas."
+msgid "Check your firewall parameters, it is not being possible to connect with server to sign invoices."
+msgstr "Revisa la configuración de tu firewall, de momento no es posible conectarse con el servidor para firmar facturas."
 
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"Check your tax configuration, go to Configuration -> Taxes and set the field"
-" 'Affectation reason' to set it by default or set the proper value in the "
-"field Affect. Reason in the line"
-msgstr ""
-"Revisa la configuración de los impuestos, ve a Configuración -> Impuestos y coloca el campo "
-" 'Razón de afectación' para configurarlo de forma predeterminada o establecer el valor adecuado en el "
-"campo Afecto. Razón en la línea"
+msgid "Check your tax configuration, go to Configuration -> Taxes and set the field 'Affectation reason' to set it by default or set the proper value in the field Affect. Reason in the line"
+msgstr "Revisa la configuración de los impuestos, ve a Configuración -> Impuestos y coloca el campo  'Razón de afectación' para configurarlo de forma predeterminada o establecer el valor adecuado en el campo Afecto. Razón en la línea"
 
 #. module: l10n_pe_edi
 #: model:ir.model.fields,help:l10n_pe_edi.field_res_company__l10n_pe_edi_address_type_code
@@ -466,20 +449,8 @@ msgstr "Intereses por mora"
 #: model:ir.model.fields,help:l10n_pe_edi.field_account_bank_statement_line__l10n_pe_edi_operation_type
 #: model:ir.model.fields,help:l10n_pe_edi.field_account_move__l10n_pe_edi_operation_type
 #: model:ir.model.fields,help:l10n_pe_edi.field_account_payment__l10n_pe_edi_operation_type
-msgid ""
-"Defines the operation type, all the options can be used for all the document"
-" types, except '[0113] Internal Sale-NRUS' that is for document type "
-"'Boleta' and '[0112] Internal Sale - Sustains Natural Person Deductible "
-"Expenses' exclusive for document type 'Factura'It can't be changed after "
-"validation. This is an optional feature added to avoid a warning. Catalog "
-"No. 51"
-msgstr ""
-"Define el tipo de operación, todas las opciones pueden ser usadas por todos los tipos de documento "
-"excepto '[0113] Venta Interna-NRUS' que es para el tipo de documento "
-"'Boleta' and '[0112] Venta Interna - Sustenta Gastos Deducibles Persona Natural "
-"exclusivo para el tipo de docmento 'Factura'. No puede ser cambiado después de la "
-"validación. Este funcionalidad es opcional, es solo para evitar una advertencia. Cátalogo "
-"No. 51"
+msgid "Defines the operation type, all the options can be used for all the document types, except '[0113] Internal Sale-NRUS' that is for document type 'Boleta' and '[0112] Internal Sale - Sustains Natural Person Deductible Expenses' exclusive for document type 'Factura'It can't be changed after validation. This is an optional feature added to avoid a warning. Catalog No. 51"
+msgstr "Define el tipo de operación, todas las opciones pueden ser usadas por todos los tipos de documento excepto '[0113] Venta Interna-NRUS' que es para el tipo de documento 'Boleta' and '[0112] Venta Interna - Sustenta Gastos Deducibles Persona Natural exclusivo para el tipo de docmento 'Factura'. No puede ser cambiado después de la validación. Este funcionalidad es opcional, es solo para evitar una advertencia. Cátalogo No. 51"
 
 #. module: l10n_pe_edi
 #: model:ir.model.fields.selection,name:l10n_pe_edi.selection__product_template__l10n_pe_withhold_code__037
@@ -570,15 +541,13 @@ msgstr "Habilita el uso de credenciales de prueba"
 #: model:product.template,description:l10n_pe_edi.product_product_IVAP_1_product_template
 #: model:product.template,description:l10n_pe_edi.product_product_IVAP_2_product_template
 #: model:product.template,description:l10n_pe_edi.product_product_IVAP_3_product_template
-msgid ""
-"Es el Impuesto que deben pagar todas las personas que realizan la primera "
-"venta de arroz pilado en el país. También grava la importación definitiva de"
-" arroz pilado y de las siguientes variedades: arroz descascarillado (arroz "
-"cargo o arroz pardo), arroz semiblanqueado o blanqueado, incluso pulido o "
-"glaseado, arroz partido, salvados, moyuelos y demás residuos del cernido, de"
-" la molienda, incluido \"pellets\" de arroz. "
-"https://orientacion.sunat.gob.pe/index.php/empresas-menu/otros-"
-"tributos/ivap/3410-01-concepto-y-operaciones-gravadas-ivap"
+msgid "Es el Impuesto que deben pagar todas las personas que realizan la primera venta de arroz pilado en el país. También grava la importación definitiva de arroz pilado y de las siguientes variedades: arroz descascarillado (arroz cargo o arroz pardo), arroz semiblanqueado o blanqueado, incluso pulido o glaseado, arroz partido, salvados, moyuelos y demás residuos del cernido, de la molienda, incluido \"pellets\" de arroz. https://orientacion.sunat.gob.pe/index.php/empresas-menu/otros-tributos/ivap/3410-01-concepto-y-operaciones-gravadas-ivap"
+msgstr ""
+
+#. module: l10n_pe_edi
+#: code:addons/l10n_pe_edi/models/account_edi_format.py:0
+#, python-format
+msgid "Error requesting CDR status:"
 msgstr ""
 
 #. module: l10n_pe_edi
@@ -612,12 +581,8 @@ msgstr ""
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"For invoices, the customer's identity document must be RUC. Check that the "
-"client has a valid RUC and the type of document is RUC."
-msgstr ""
-"Para facturas, el tipo de identificación del cliente debe ser RUC. Revisa que "
-"cliente tenga un RUC valido y que el tipo de documento sea RUC."
+msgid "For invoices, the customer's identity document must be RUC. Check that the client has a valid RUC and the type of document is RUC."
+msgstr "Para facturas, el tipo de identificación del cliente debe ser RUC. Revisa que cliente tenga un RUC valido y que el tipo de documento sea RUC."
 
 #. module: l10n_pe_edi
 #: model:ir.model.fields.selection,name:l10n_pe_edi.selection__account_move__l10n_pe_edi_refund_reason__04
@@ -627,9 +592,7 @@ msgstr "Descuento global"
 
 #. module: l10n_pe_edi
 #: model:ir.model.fields.selection,name:l10n_pe_edi.selection__product_template__l10n_pe_withhold_code__017
-msgid ""
-"Harina, polvo y “pellets” de pescado, crustáceos, moluscos y demás "
-"invertebrados acuáticos"
+msgid "Harina, polvo y “pellets” de pescado, crustáceos, moluscos y demás invertebrados acuáticos"
 msgstr ""
 
 #. module: l10n_pe_edi
@@ -692,12 +655,8 @@ msgstr ""
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_move.py:0
 #, python-format
-msgid ""
-"Invoices with this document type always need to be cancelled through a "
-"credit note. There is no possibility to cancel."
-msgstr ""
-"Facturas con este tipo de documento necesitan ser canceladas mediante una "
-"nota de crédito. No es posible cancelarlas."
+msgid "Invoices with this document type always need to be cancelled through a credit note. There is no possibility to cancel."
+msgstr "Facturas con este tipo de documento necesitan ser canceladas mediante una nota de crédito. No es posible cancelarlas."
 
 #. module: l10n_pe_edi
 #: model:ir.model.fields,field_description:l10n_pe_edi.field_res_company__l10n_pe_edi_test_env
@@ -716,24 +675,16 @@ msgstr "¿Es necesaria la Facturación electronica?"
 #: model:ir.model.fields,help:l10n_pe_edi.field_account_move__l10n_pe_edi_refund_reason
 #: model:ir.model.fields,help:l10n_pe_edi.field_account_move_reversal__l10n_pe_edi_refund_reason
 #: model:ir.model.fields,help:l10n_pe_edi.field_account_payment__l10n_pe_edi_refund_reason
-msgid ""
-"It contains all possible values for the refund reason according to Catalog "
-"No. 09"
-msgstr ""
-"Contiene todos los valores posibles para el motivo de nota de crédito Catálogo "
-"No. 09"
+msgid "It contains all possible values for the refund reason according to Catalog No. 09"
+msgstr "Contiene todos los valores posibles para el motivo de nota de crédito Catálogo No. 09"
 
 #. module: l10n_pe_edi
 #: model:ir.model.fields,help:l10n_pe_edi.field_account_bank_statement_line__l10n_pe_edi_charge_reason
 #: model:ir.model.fields,help:l10n_pe_edi.field_account_debit_note__l10n_pe_edi_charge_reason
 #: model:ir.model.fields,help:l10n_pe_edi.field_account_move__l10n_pe_edi_charge_reason
 #: model:ir.model.fields,help:l10n_pe_edi.field_account_payment__l10n_pe_edi_charge_reason
-msgid ""
-"It contains all possible values for the charge reason according to Catalog "
-"No. 10"
-msgstr ""
-"Contiene todos los valores posibles para el motivo de nota de débito Catálogo "
-"No. 10"
+msgid "It contains all possible values for the charge reason according to Catalog No. 10"
+msgstr "Contiene todos los valores posibles para el motivo de nota de débito Catálogo No. 10"
 
 #. module: l10n_pe_edi
 #: model:ir.model,name:l10n_pe_edi.model_account_journal
@@ -862,26 +813,14 @@ msgstr "Ningún certificado valido ha sido encontrado para la empresa %s."
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"One or more lines of this document do not have taxes assigned, to solve this"
-" you must return the document to the Draft state and place taxes on the "
-"lines that do not have them."
-msgstr ""
-"Una o mas lineas del documento no tienen impuestos asignado, para resolver esto "
-" debes regresar a este documento a Draft y colocar los impuestos en "
-"las lineas que no los tengan"
+msgid "One or more lines of this document do not have taxes assigned, to solve this you must return the document to the Draft state and place taxes on the lines that do not have them."
+msgstr "Una o mas lineas del documento no tienen impuestos asignado, para resolver esto  debes regresar a este documento a Draft y colocar los impuestos en las lineas que no los tengan"
 
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"One or more products do not have the UNSPSC code configured, to avoid this "
-"warning you must configure a code for this product. This warning does not "
-"invalidate the document."
-msgstr ""
-"Uno o mas productos no tienen configurado el código UNSPSC, para evitar estas "
-"advertencias, debes configurar el código para este producto. Esta advertencia no "
-"indica rechazo del documento."
+msgid "One or more products do not have the UNSPSC code configured, to avoid this warning you must configure a code for this product. This warning does not invalidate the document."
+msgstr "Uno o mas productos no tienen configurado el código UNSPSC, para evitar estas advertencias, debes configurar el código para este producto. Esta advertencia no indica rechazo del documento."
 
 #. module: l10n_pe_edi
 #: model:ir.model.fields.selection,name:l10n_pe_edi.selection__account_move__l10n_pe_edi_legend__2006
@@ -965,8 +904,7 @@ msgstr "Certificado PFX"
 
 #. module: l10n_pe_edi
 #: model:ir.model.fields.selection,name:l10n_pe_edi.selection__account_move__l10n_pe_edi_legend__2009
-msgid ""
-"PRIMERA VENTA DE MERCANCÍA IDENTIFICABLE ENTRE USUARIOS DE LA ZONA COMERCIAL"
+msgid "PRIMERA VENTA DE MERCANCÍA IDENTIFICABLE ENTRE USUARIOS DE LA ZONA COMERCIAL"
 msgstr ""
 
 #. module: l10n_pe_edi
@@ -988,14 +926,8 @@ msgstr "Penalidades/ otros conceptos"
 #. module: l10n_pe_edi
 #: model:ir.model.fields,help:l10n_pe_edi.field_product_product__l10n_pe_withhold_percentage
 #: model:ir.model.fields,help:l10n_pe_edi.field_product_template__l10n_pe_withhold_percentage
-msgid ""
-"Percentages of detraction informed in the Annexed I Resolution "
-"183-2004/SUNAT, it depends on the Withhold code but you need to read the "
-"resolution"
-msgstr ""
-"Porcentajes de la detracción listados en el anexo I de la resolución "
-"183-2004/SUNAT, depende del código de detracción pero necesitas leer la "
-"resolución"
+msgid "Percentages of detraction informed in the Annexed I Resolution 183-2004/SUNAT, it depends on the Withhold code but you need to read the resolution"
+msgstr "Porcentajes de la detracción listados en el anexo I de la resolución 183-2004/SUNAT, depende del código de detracción pero necesitas leer la resolución"
 
 #. module: l10n_pe_edi
 #: model:ir.model.fields.selection,name:l10n_pe_edi.selection__account_move_line__l10n_pe_edi_allowance_charge_reason_code__53
@@ -1063,12 +995,8 @@ msgstr ""
 #: model:ir.model.fields,help:l10n_pe_edi.field_account_bank_statement_line__l10n_pe_edi_cancel_reason
 #: model:ir.model.fields,help:l10n_pe_edi.field_account_move__l10n_pe_edi_cancel_reason
 #: model:ir.model.fields,help:l10n_pe_edi.field_account_payment__l10n_pe_edi_cancel_reason
-msgid ""
-"Reason given by the user to cancel this move, structure of voided summary: "
-"sac:VoidReasonDescription"
-msgstr ""
-"Razón dada por el usuario para cancelar esta factura, estructura para el resumen de cancelación: "
-"sac:VoidReasonDescription"
+msgid "Reason given by the user to cancel this move, structure of voided summary: sac:VoidReasonDescription"
+msgstr "Razón dada por el usuario para cancelar esta factura, estructura para el resumen de cancelación: sac:VoidReasonDescription"
 
 #. module: l10n_pe_edi
 #: model:ir.model.fields,help:l10n_pe_edi.field_l10n_pe_edi_cancel__l10n_pe_edi_cancel_reason
@@ -1105,9 +1033,7 @@ msgstr ""
 
 #. module: l10n_pe_edi
 #: model:ir.model.fields.selection,name:l10n_pe_edi.selection__account_move__l10n_pe_edi_legend__2002
-msgid ""
-"SERVICIOS PRESTADOS EN LA AMAZONÍA REGIÓN SELVA PARA SER CONSUMIDOS EN LA "
-"MISMA"
+msgid "SERVICIOS PRESTADOS EN LA AMAZONÍA REGIÓN SELVA PARA SER CONSUMIDOS EN LA MISMA"
 msgstr ""
 
 #. module: l10n_pe_edi
@@ -1136,28 +1062,13 @@ msgstr ""
 #. module: l10n_pe_edi
 #: model:product.product,name:l10n_pe_edi.product_product_IVAP_3
 #: model:product.template,name:l10n_pe_edi.product_product_IVAP_3_product_template
-msgid ""
-"Salvados, moyuelos y demás residuos del cernido, de la molienda o de otros "
-"tratamientos de los cereales o de las leguminosas, incluso en \"pellets\" de"
-" arroz"
+msgid "Salvados, moyuelos y demás residuos del cernido, de la molienda o de otros tratamientos de los cereales o de las leguminosas, incluso en \"pellets\" de arroz"
 msgstr ""
 
 #. module: l10n_pe_edi
 #: model:ir.model.fields,help:l10n_pe_edi.field_res_company__l10n_pe_edi_provider
-msgid ""
-"Selector for the service we are going to use to report the "
-"invoices:DIGIFLOW: With the certified that digiflow provide you, user and "
-"password you will report the invoices to them.SUNAT: You will report the "
-"invoices directly to them using your own certified, user and password.IAP: "
-"This is an odoo service that will send the unsigned documents to a PSE and "
-"process their response."
-msgstr ""
-"Selector para el servicio que sera usado para reportar las "
-"facturas:DIGIFLOW: Con el certificado, usuario y contraseña que digiflow te ha proporcionado "
-"podrás enviar tus facturas con ese ellos.SUNAT: Reportaras los documentos "
-"directamente con ellos con tu propio certificado, usuario y contraseña.IAP: "
-"Este es el servicio de odoo que enviará los documentos sin firmar al PSE y "
-"procesara la respuesta de este."
+msgid "Selector for the service we are going to use to report the invoices:DIGIFLOW: With the certified that digiflow provide you, user and password you will report the invoices to them.SUNAT: You will report the invoices directly to them using your own certified, user and password.IAP: This is an odoo service that will send the unsigned documents to a PSE and process their response."
+msgstr "Selector para el servicio que sera usado para reportar las facturas:DIGIFLOW: Con el certificado, usuario y contraseña que digiflow te ha proporcionado podrás enviar tus facturas con ese ellos.SUNAT: Reportaras los documentos directamente con ellos con tu propio certificado, usuario y contraseña.IAP: Este es el servicio de odoo que enviará los documentos sin firmar al PSE y procesara la respuesta de este."
 
 #. module: l10n_pe_edi
 #: model:ir.model.fields,field_description:l10n_pe_edi.field_l10n_pe_edi_certificate__serial_number
@@ -1263,12 +1174,8 @@ msgstr "Texto para colocar la leyenda o la cantidad en letras."
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"The EDI document failed to be cancelled because the cancellation CDR number "
-"is missing."
-msgstr ""
-"Los documentos electrónicos fallaron al ser cancelados ya que no se encuentra un numero "
-"de CDR."
+msgid "The EDI document failed to be cancelled because the cancellation CDR number is missing."
+msgstr "Los documentos electrónicos fallaron al ser cancelados ya que no se encuentra un numero de CDR."
 
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
@@ -1279,50 +1186,32 @@ msgstr "El documento de facturación peruano fallo el proceso de cancelación de
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"The EDI document was successfully cancelled by the government (CDR number: "
-"%s)."
-msgstr ""
-"El documento de facturación peruano ha sido cancelado correctamente por el SUNAT (CDR: "
-"%s)."
+msgid "The EDI document was successfully cancelled by the government (CDR number: %s)."
+msgstr "El documento de facturación peruano ha sido cancelado correctamente por el SUNAT (CDR: %s)."
 
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"The EDI document was successfully created and signed by the government."
-msgstr ""
-"El documento de facturación peruano fue creado y firmado correctamente por el SUNAT."
+msgid "The EDI document was successfully created and signed by the government."
+msgstr "El documento de facturación peruano fue creado y firmado correctamente por el SUNAT."
 
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"The URL provided for the IAP server is wrong, please go to  Settings --> "
-"System Parameters and add the right URL to parameter l10n_pe_edi.endpoint."
-msgstr ""
-"La URL para el servidor IAP esta incorrecta, por favor ir a Ajustes --> "
-"Parámetros de Sistema y agregar la URL correcta al parámetro l10n_pe_edi.endpoint."
+msgid "The URL provided for the IAP server is wrong, please go to  Settings --> System Parameters and add the right URL to parameter l10n_pe_edi.endpoint."
+msgstr "La URL para el servidor IAP esta incorrecta, por favor ir a Ajustes --> Parámetros de Sistema y agregar la URL correcta al parámetro l10n_pe_edi.endpoint."
 
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"The URL provided to connect to the OSE is wrong, please check your "
-"implementation."
-msgstr ""
-"La URL configurada para conectar con el OSE eta incorrecta, por favor revisa tu "
-"implementación."
+msgid "The URL provided to connect to the OSE is wrong, please check your implementation."
+msgstr "La URL configurada para conectar con el OSE eta incorrecta, por favor revisa tu implementación."
 
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"The VAT you use for the customer is a DNI type, to be a valid DNI it must be"
-" the exact length of 8 digits."
-msgstr ""
-"El VAT usado para el cliente es DNI, el cual para ser valido debe contener "
-"exactamente 8 dígitos."
+msgid "The VAT you use for the customer is a DNI type, to be a valid DNI it must be the exact length of 8 digits."
+msgstr "El VAT usado para el cliente es DNI, el cual para ser valido debe contener exactamente 8 dígitos."
 
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
@@ -1333,24 +1222,14 @@ msgstr "El XML generado no es valido."
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"The XML inside of the zip file is corrupted or has been altered, please "
-"review the XML inside of the XML we are reading."
-msgstr ""
-"El XML dentro del archivo zip ha sido corrompido o alterado, favor de "
-"revisar la estructura XML dentro del archivo que estamos leyendo."
+msgid "The XML inside of the zip file is corrupted or has been altered, please review the XML inside of the XML we are reading."
+msgstr "El XML dentro del archivo zip ha sido corrompido o alterado, favor de revisar la estructura XML dentro del archivo que estamos leyendo."
 
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"The cancellation reason field should not be empty when canceling the "
-"invoice, you must return this invoice to Draft, edit the document and enter "
-"a cancellation reason."
-msgstr ""
-"El motivo de baja no debe estar vacío cuando cancelas una factura, debes "
-"retornar esta factura a estado Borrador, editar el documento y escribir"
-"un motivo de baja."
+msgid "The cancellation reason field should not be empty when canceling the invoice, you must return this invoice to Draft, edit the document and enter a cancellation reason."
+msgstr "El motivo de baja no debe estar vacío cuando cancelas una factura, debes retornar esta factura a estado Borrador, editar el documento y escribirun motivo de baja."
 
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/l10n_pe_edi_certificate.py:0
@@ -1370,60 +1249,39 @@ msgstr "Fecha en la que el certificado comienza a ser valido"
 
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
-#: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"The document type of the invoice related is not the same of this document. "
-"Check the document type of the invoice related and set this document with "
-"that document type. In case of this document being posted and having a number"
-" already, reset to draft and cancel it, this document will be cancelled "
-"locally and not reported."
-msgstr ""
-"El tipo de documento modificado no esta relacionado al tipo de documento de esta factura."
-"En caso de que este documento haya sido publicado o tenga un numero asignado "
-" regresa a Borrador esta factura y cancela, este documento sera cancelado "
-"localmente y no sera reportado."
-
+msgid "The document type of the invoice related is not the same of this document. Check the document type of the invoice related and set this document with that document type. In case of this document being posted and having a number already, reset to draft and cancel it, this document will be cancelled locally and not reported."
+msgstr "El tipo de documento modificado no esta relacionado al tipo de documento de esta factura.En caso de que este documento haya sido publicado o tenga un numero asignado  regresa a Borrador esta factura y cancela, este documento sera cancelado localmente y no sera reportado."
 
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"The invoice related to this Credit Note has been canceled, set this document"
-" to draft and cancel it."
+msgid "The invoice already exists on SUNAT. CDR successfully retrieved."
 msgstr ""
-"La factura relacionada a esta Nota de Crédito ha sido cancelada, regresa este documento "
-" a Borrador y cancela."
 
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"The invoice related to this Credit Note has not been reported, go to the "
-"invoice related and sign it in order to generate this Credit Note."
-msgstr ""
-"La factura relacionada a esta Nota de Crédito no ha sido reportada, ve a la "
-"factura relacionada y que sea firmada para que sea posible generar esta Nota de Crédito"
+msgid "The invoice related to this Credit Note has been canceled, set this document to draft and cancel it."
+msgstr "La factura relacionada a esta Nota de Crédito ha sido cancelada, regresa este documento  a Borrador y cancela."
 
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"The invoice related to this Debit Note has been canceled, set this document "
-"to draft and cancel it."
-msgstr ""
-"El documento relacionado a esta Nota de Débito ha sido cancelada, regresa este documento "
-"a Borrador y cancela."
+msgid "The invoice related to this Credit Note has not been reported, go to the invoice related and sign it in order to generate this Credit Note."
+msgstr "La factura relacionada a esta Nota de Crédito no ha sido reportada, ve a la factura relacionada y que sea firmada para que sea posible generar esta Nota de Crédito"
 
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"The invoice related to this Debit Note has not been reported, go to the "
-"invoice related and sign it in order to generate this Debit Note"
-msgstr ""
-"La factura relacionada a esta Nota de Débito no ha sido reportada, ve a la "
-"factura relacionada y que sea firmada para que sea posible generar esta Nota de Débito"
+msgid "The invoice related to this Debit Note has been canceled, set this document to draft and cancel it."
+msgstr "El documento relacionado a esta Nota de Débito ha sido cancelada, regresa este documento a Borrador y cancela."
+
+#. module: l10n_pe_edi
+#: code:addons/l10n_pe_edi/models/account_edi_format.py:0
+#, python-format
+msgid "The invoice related to this Debit Note has not been reported, go to the invoice related and sign it in order to generate this Debit Note"
+msgstr "La factura relacionada a esta Nota de Débito no ha sido reportada, ve a la factura relacionada y que sea firmada para que sea posible generar esta Nota de Débito"
 
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
@@ -1434,13 +1292,8 @@ msgstr "El nombre del contacto debe contener al menos dos caracteres y no puede 
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"The name of the file depends on the sequence in the journal, please go to "
-"the journal and configure the shortcode as LLL- (three (3) letters plus a dash "
-"and the 3 letters must be UPPERCASE.)"
-msgstr ""
-"El nombre del archivo depende de la secuencia del diario, por favor dirígete a "
-"el diario y configura el prefijo/código abreviado ( como LLL- (tres (3) letras en mayúsculas y un guión.)"
+msgid "The name of the file depends on the sequence in the journal, please go to the journal and configure the shortcode as LLL- (three (3) letters plus a dash and the 3 letters must be UPPERCASE.)"
+msgstr "El nombre del archivo depende de la secuencia del diario, por favor dirígete a el diario y configura el prefijo/código abreviado ( como LLL- (tres (3) letras en mayúsculas y un guión.)"
 
 #. module: l10n_pe_edi
 #: model:ir.model.fields,help:l10n_pe_edi.field_res_company__l10n_pe_edi_provider_password
@@ -1455,26 +1308,14 @@ msgstr "El número de serie para agregar a los documentos electrónicos"
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"The type of identity document used for the client is not valid. Review the "
-"type of document used in the client and change it according to the case of "
-"the document to be created. For invoices it's only valid to use RUC as "
-"identity document."
-msgstr ""
-"El tipo de identificación usado por el cliente no es valido. Revisa el "
-"tipo de documento usado en el cliente y cámbialo de acuerdo al documento que necesitas crear. "
-"Para facturas solo puede ser utilizado RUC."
+msgid "The type of identity document used for the client is not valid. Review the type of document used in the client and change it according to the case of the document to be created. For invoices it's only valid to use RUC as identity document."
+msgstr "El tipo de identificación usado por el cliente no es valido. Revisa el tipo de documento usado en el cliente y cámbialo de acuerdo al documento que necesitas crear. Para facturas solo puede ser utilizado RUC."
 
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"The type of operation is not valid for the type of document you are trying "
-"to create. The document must return to Draft state and change the type of "
-"operation."
-msgstr ""
-"El tipo de operación no es válido para el tipo de documento que está intentando crear."
-"El documento debe volver al estado Borrador y cambiar el tipo de operación."
+msgid "The type of operation is not valid for the type of document you are trying to create. The document must return to Draft state and change the type of operation."
+msgstr "El tipo de operación no es válido para el tipo de documento que está intentando crear.El documento debe volver al estado Borrador y cambiar el tipo de operación."
 
 #. module: l10n_pe_edi
 #: model:ir.model.fields,help:l10n_pe_edi.field_res_company__l10n_pe_edi_provider_username
@@ -1484,32 +1325,20 @@ msgstr "El usuario para ingresar con SUNAT SOL"
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"The zip file is corrupted, check again if the file trying to access is not "
-"damaged."
-msgstr ""
-"El archivo zip ha sido corrompido, revisa nuevamente si el archivo que intentas acceder no ha sido "
-"dañado."
+msgid "The zip file is corrupted, check again if the file trying to access is not damaged."
+msgstr "El archivo zip ha sido corrompido, revisa nuevamente si el archivo que intentas acceder no ha sido dañado."
 
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"The zip file is corrupted, please check that the zip we are reading is the "
-"one you need."
-msgstr ""
-"El archivo zip ha sido corrompido, favor de revisar si el archivo zip que intentas leer "
-"el el que necesitas."
+msgid "The zip file is corrupted, please check that the zip we are reading is the one you need."
+msgstr "El archivo zip ha sido corrompido, favor de revisar si el archivo zip que intentas leer el el que necesitas."
 
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"There are problems with the connection to the IAP server. Please try again "
-"in a few minutes."
-msgstr ""
-"Existen problemas con la conexión al servidor IAP. Por favor intenta nuevamente "
-"en unos minutos."
+msgid "There are problems with the connection to the IAP server. Please try again in a few minutes."
+msgstr "Existen problemas con la conexión al servidor IAP. Por favor intenta nuevamente en unos minutos."
 
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/l10n_pe_edi_certificate.py:0
@@ -1526,42 +1355,26 @@ msgstr ""
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"There was an error while establishing the connection to the server, try "
-"again and if it fails check the URL in the parameter l10n_pe_edi.endpoint."
-msgstr ""
-"Ocurrió un error cuando se intentaba establecer conexión con el servidor, intenta "
-"nuevamente y si falla revisa la URL en el parametro l10n_pe_edi.endpoint."
+msgid "There was an error while establishing the connection to the server, try again and if it fails check the URL in the parameter l10n_pe_edi.endpoint."
+msgstr "Ocurrió un error cuando se intentaba establecer conexión con el servidor, intenta nuevamente y si falla revisa la URL en el parametro l10n_pe_edi.endpoint."
 
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"This document already exists on the OSE side.  Check if you gave a proper "
-"unique name to your document. "
-msgstr ""
-"Este documento ya ha sido reportado previamente ante la OSE. Revisa si le has asignado "
-"un nombre único a tu documento."
+msgid "This document already exists on the OSE side.  Check if you gave a proper unique name to your document. "
+msgstr "Este documento ya ha sido reportado previamente ante la OSE. Revisa si le has asignado un nombre único a tu documento."
 
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"This document number is now registered by SUNAT as invalid."
-msgstr ""
-"Este número de documento ahora está registrado por SUNAT como inválido."
+msgid "This document number is now registered by SUNAT as invalid."
+msgstr "Este número de documento ahora está registrado por SUNAT como inválido."
 
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"This invoice has been validated by the OSE and we can not allow set it to "
-"draft, please try to revert it with a credit not or cancel it and create a "
-"new one instead."
-msgstr ""
-"Esta factura ha sido validada por la OSE y no puede ser regresada al estado "
-"borrador, por favor intenta revertirla con una nota de credito o cancelarla y "
-"crear una nuevamente"
+msgid "This invoice has been validated by the OSE and we can not allow set it to draft, please try to revert it with a credit not or cancel it and create a new one instead."
+msgstr "Esta factura ha sido validada por la OSE y no puede ser regresada al estado borrador, por favor intenta revertirla con una nota de credito o cancelarla y crear una nuevamente"
 
 #. module: l10n_pe_edi
 #: model_terms:ir.ui.view,arch_db:l10n_pe_edi.res_config_settings_form_inherit_l10n_pe_edi
@@ -1570,8 +1383,8 @@ msgid ""
 "                                <b>\"SUNAT Operaciones en Línea - SOL\"</b><br/>\n"
 "                                Official definition is:"
 msgstr ""
-"Este nombre de usuario y contraseña es proporcionado por la SUNAT es decir por sus siglas en español\n "
-"                                <b>\"SUNAT Operaciones en Línea - SOL\"</b><br/>\n"
+"Este nombre de usuario y contraseña es proporcionado por la SUNAT es decir por sus siglas en español\n"
+"                                 <b>\"SUNAT Operaciones en Línea - SOL\"</b><br/>\n"
 "                                La definición oficial es:"
 
 #. module: l10n_pe_edi
@@ -1583,12 +1396,8 @@ msgstr "Devolución total"
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"Trying to send the invoice to the OSE the webservice returned a controlled "
-"error, please try again later, the error is on their side not here."
-msgstr ""
-"Al intentar enviar la factura a la OSE, el servicio web devolvió un error controlado, "
-"inténtelo de nuevo más tarde, el error está de su lado, no aquí"
+msgid "Trying to send the invoice to the OSE the webservice returned a controlled error, please try again later, the error is on their side not here."
+msgstr "Al intentar enviar la factura a la OSE, el servicio web devolvió un error controlado, inténtelo de nuevo más tarde, el error está de su lado, no aquí"
 
 #. module: l10n_pe_edi
 #: model:ir.model.fields,help:l10n_pe_edi.field_account_move_line__l10n_pe_edi_affectation_reason
@@ -1646,11 +1455,8 @@ msgstr "Inafecto – Retiro por premio"
 
 #. module: l10n_pe_edi
 #: model:ir.model.fields,help:l10n_pe_edi.field_uom_uom__l10n_pe_edi_measure_unit_code
-msgid ""
-"Unit code that relates to a product in order to identify what measure unit "
-"it uses, the possible values that you can use here can be found in this URL"
-msgstr "Código relacionado al producto para identificar la unidad de medida que "
-"usa, los posibles valores que pueden ser utilizados en este campo pueden ser encontrados en esta URL"
+msgid "Unit code that relates to a product in order to identify what measure unit it uses, the possible values that you can use here can be found in this URL"
+msgstr "Código relacionado al producto para identificar la unidad de medida que usa, los posibles valores que pueden ser utilizados en este campo pueden ser encontrados en esta URL"
 
 #. module: l10n_pe_edi
 #: model:product.product,uom_name:l10n_pe_edi.product_product_IVAP_1
@@ -1670,9 +1476,7 @@ msgstr "El numero de VAT no ha sido encontrado para la empresa %s"
 
 #. module: l10n_pe_edi
 #: model:ir.model.fields.selection,name:l10n_pe_edi.selection__account_move__l10n_pe_edi_legend__2008
-msgid ""
-"VENTA EXONERADA DEL IGV-ISC-IPM. PROHIBIDA LA VENTA FUERA DE LA ZONA "
-"COMERCIAL DE TACNA"
+msgid "VENTA EXONERADA DEL IGV-ISC-IPM. PROHIBIDA LA VENTA FUERA DE LA ZONA COMERCIAL DE TACNA"
 msgstr ""
 
 #. module: l10n_pe_edi
@@ -1715,7 +1519,6 @@ msgstr "Wizard para cancelar Facturas"
 
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
-#: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
 msgid "XSD validation failed: "
 msgstr "La validación XSD ha fallado:"
@@ -1723,9 +1526,7 @@ msgstr "La validación XSD ha fallado:"
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"You can't have more than one IGV tax per line to generate a legal invoice in"
-" Peru"
+msgid "You can't have more than one IGV tax per line to generate a legal invoice in Peru"
 msgstr "No es posible colocar mas de un impuesto IGV por linea para generar una factura legal en Perú"
 
 #. module: l10n_pe_edi
@@ -1752,7 +1553,8 @@ msgid ""
 "2. Authorize Digiflow as PSE.\n"
 "Reference: \n"
 "https://www.odoo.com/documentation/user/14.0/accounting/fiscal_localizations/localizations/peru.html#what-do-you-need-to-do"
-msgstr "Tú RUC no esta relacionado a Digiflow como un OSE, por favor asegúrese que ha configurado lo siguiente en el portal de SUNAT:\n"
+msgstr ""
+"Tú RUC no esta relacionado a Digiflow como un OSE, por favor asegúrese que ha configurado lo siguiente en el portal de SUNAT:\n"
 "1. Relación de Digiflow como su OSE.\n"
 "2. Autorizar a Digiflow como su PSE. \n"
 "Referencia: \n"
@@ -1780,15 +1582,12 @@ msgstr "[0200] Exportación de Bienes"
 
 #. module: l10n_pe_edi
 #: model:ir.model.fields.selection,name:l10n_pe_edi.selection__account_move__l10n_pe_edi_operation_type__0201
-msgid ""
-"[0201] Exportation of Services - Provision of services performed entirely in"
-" the country"
+msgid "[0201] Exportation of Services - Provision of services performed entirely in the country"
 msgstr "[0201] Exportación de Servicios – Prestación servicios realizados íntegramente en el país"
 
 #. module: l10n_pe_edi
 #: model:ir.model.fields.selection,name:l10n_pe_edi.selection__account_move__l10n_pe_edi_operation_type__0202
-msgid ""
-"[0202] Exportation of Services - Provision of non-domiciled lodging services"
+msgid "[0202] Exportation of Services - Provision of non-domiciled lodging services"
 msgstr "[0202] Exportación de Servicios – Prestación de servicios de hospedaje No Domiciliado"
 
 #. module: l10n_pe_edi
@@ -1798,35 +1597,27 @@ msgstr "[0203] Exportación de Servicios – Transporte de navieras"
 
 #. module: l10n_pe_edi
 #: model:ir.model.fields.selection,name:l10n_pe_edi.selection__account_move__l10n_pe_edi_operation_type__0204
-msgid ""
-"[0204] Exportation of Services - Services to foreign-flagged ships and "
-"aircraft"
+msgid "[0204] Exportation of Services - Services to foreign-flagged ships and aircraft"
 msgstr "[0204] Exportación de Servicios – Servicios  a naves y aeronaves de bandera extranjera"
 
 #. module: l10n_pe_edi
 #: model:ir.model.fields.selection,name:l10n_pe_edi.selection__account_move__l10n_pe_edi_operation_type__0205
-msgid ""
-"[0205] Exportation of Services - Services that make up a Tourist Package"
+msgid "[0205] Exportation of Services - Services that make up a Tourist Package"
 msgstr "[0205] Exportación de Servicios  - Servicios que conformen un Paquete Turístico"
 
 #. module: l10n_pe_edi
 #: model:ir.model.fields.selection,name:l10n_pe_edi.selection__account_move__l10n_pe_edi_operation_type__0206
-msgid ""
-"[0206] Exports of Services - Complementary services to freight transport"
+msgid "[0206] Exports of Services - Complementary services to freight transport"
 msgstr "[0206] Exportación de Servicios – Servicios complementarios al transporte de carga"
 
 #. module: l10n_pe_edi
 #: model:ir.model.fields.selection,name:l10n_pe_edi.selection__account_move__l10n_pe_edi_operation_type__0207
-msgid ""
-"[0207] Exportation of Services - Supply of electric power in favor of "
-"subjects domiciled in ZED"
+msgid "[0207] Exportation of Services - Supply of electric power in favor of subjects domiciled in ZED"
 msgstr "[0207] Exportación de Servicios – Suministro de energía eléctrica a favor de sujetos domiciliados en ZED"
 
 #. module: l10n_pe_edi
 #: model:ir.model.fields.selection,name:l10n_pe_edi.selection__account_move__l10n_pe_edi_operation_type__0208
-msgid ""
-"[0208] Exportation of Services - Provision of services partially carried out"
-" abroad"
+msgid "[0208] Exportation of Services - Provision of services partially carried out abroad"
 msgstr "[0208] Exportación de Servicios – Prestación servicios realizados parcialmente en el extranjero"
 
 #. module: l10n_pe_edi

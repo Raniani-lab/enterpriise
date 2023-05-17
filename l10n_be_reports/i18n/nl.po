@@ -2,25 +2,31 @@
 # This file contains the translation of the following modules:
 # 	* l10n_be_reports
 #
+# Translators:
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2023
+# Martin Trigaux, 2023
+# Jolien De Paepe, 2023
+# Dylan Kiss, 2023
+# Guido Leenders, 2023
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.1alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-29 08:43+0000\n"
-"PO-Revision-Date: 2022-11-29 08:43+0000\n"
-"Last-Translator: \n"
-"Language-Team: \n"
+"POT-Creation-Date: 2023-03-09 11:44+0000\n"
+"PO-Revision-Date: 2023-02-03 07:08+0000\n"
+"Last-Translator: Guido Leenders, 2023\n"
+"Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
+"Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
 msgid "(including amounts that are related to other taxable periods):"
-msgstr ""
-"is uitbetaald (met inbegrip van de sommen die betrekking hebben op andere "
-"belastbare tijdperken):"
+msgstr "is uitbetaald (met inbegrip van de sommen die betrekking hebben op andere belastbare tijdperken):"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
@@ -29,12 +35,12 @@ msgid ""
 "                                                enter the amount actually paid in"
 msgstr ""
 ",\n"
-"                                                is uitbetaald, vermeld dan hier het bedrag dat werkelijk in"
+"                                                voer het bedrag dat werkelijk betaald is in"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
 msgid "0.00"
-msgstr ""
+msgstr "0.00"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
@@ -42,6 +48,8 @@ msgid ""
 "0.00\n"
 "                                                <br/><br/>"
 msgstr ""
+"0.00\n"
+"                                                <br/><br/>"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
@@ -51,7 +59,7 @@ msgstr "1. NN of ON:"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
 msgid "1. N°"
-msgstr "1. Nr."
+msgstr "1. N°"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_capital0
@@ -214,7 +222,7 @@ msgstr "19 - Voorschot aan de vennoten op de verdeling van het netto-actief"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
 msgid "2. Name (or denomination) and address of the debtor of the income:"
-msgstr "2. Naam (of benaming) en adres van de schuldenaar van de inkomsten:"
+msgstr "2. Naam (of benaming) en adres van de schuldeiser van de inkomsten:"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
@@ -279,37 +287,37 @@ msgstr "28 - Financiële vaste activa"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "281.10"
-msgstr ""
+msgstr "281.10"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "281.11"
-msgstr ""
+msgstr "281.11"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "281.12"
-msgstr ""
+msgstr "281.12"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "281.13"
-msgstr ""
+msgstr "281.13"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "281.14"
-msgstr ""
+msgstr "281.14"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "281.15"
-msgstr ""
+msgstr "281.15"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "281.16"
-msgstr ""
+msgstr "281.16"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
@@ -334,7 +342,7 @@ msgstr ""
 #. module: l10n_be_reports
 #: model:res.partner.category,name:l10n_be_reports.res_partner_tag_281_50
 msgid "281.50"
-msgstr ""
+msgstr "281.50"
 
 #. module: l10n_be_reports
 #: model:account.account.tag,name:l10n_be_reports.account_tag_281_50_atn
@@ -349,12 +357,12 @@ msgstr "281.50 - Commissies"
 #. module: l10n_be_reports
 #: model:account.account.tag,name:l10n_be_reports.account_tag_281_50_exposed_expenses
 msgid "281.50 - Exposed Expenses"
-msgstr "281.50 - Gemaakte kosten"
+msgstr "281.50 - Uitgegeven kosten"
 
 #. module: l10n_be_reports
 #: model:account.account.tag,name:l10n_be_reports.account_tag_281_50_fees
 msgid "281.50 - Fees"
-msgstr "281.50 - Erelonen"
+msgstr "281.50 - Kosten"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.form_281_50_view_form
@@ -369,12 +377,12 @@ msgstr "Fiches 281.50"
 #. module: l10n_be_reports
 #: model:ir.actions.report,name:l10n_be_reports.action_report_partner_281_50_pdf
 msgid "281.50 PDF"
-msgstr ""
+msgstr "281.50 PDF"
 
 #. module: l10n_be_reports
 #: model:ir.actions.report,name:l10n_be_reports.action_report_partner_281_50_xml
 msgid "281.50 XML"
-msgstr ""
+msgstr "281.50 XML"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_res_partner__forms_281_50
@@ -451,7 +459,7 @@ msgstr "37 - Bestellingen in uitvoering"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
 msgid "4. Comments:"
-msgstr "4. Commentaar:"
+msgstr "4. Opmerkingen:"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
@@ -479,9 +487,7 @@ msgstr "41 - Overige vorderingen"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_dettes_plus_dun_an_dans_lannee0
-msgid ""
-"42 - Current portion of amounts payable after more than one year falling due"
-" within one year"
+msgid "42 - Current portion of amounts payable after more than one year falling due within one year"
 msgstr "42 - Schulden op meer dan één jaar die binnen het jaar vervallen"
 
 #. module: l10n_be_reports
@@ -522,9 +528,7 @@ msgstr "441 - Te betalen wissels"
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_dettes_fiscales0
 msgid "45 - Taxes, remuneration and social security"
-msgstr ""
-"45 - Schulden met betrekking tot belastingen, bezoldigingen en sociale "
-"lasten"
+msgstr "45 - Schulden met betrekking tot belastingen, bezoldigingen en sociale lasten"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_dettes_fiscales_impots0
@@ -595,8 +599,7 @@ msgstr "54/58 - Liquide middelen"
 #: model:account.report.expression,report_line_name:l10n_be_reports.account_financial_report_be_approvisionnements0_balance
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_approvisionnements0
 msgid "60/61 - Raw materials, consumables, services and other goods"
-msgstr ""
-"60/61 - Handelgoederen, grond- en hulpstoffen, diensten en diverse goederen"
+msgstr "60/61 - Handelgoederen, grond- en hulpstoffen, diensten en diverse goederen"
 
 #. module: l10n_be_reports
 #: model:account.report.expression,report_line_name:l10n_be_reports.account_financial_report_be_remunerations0_balance
@@ -607,32 +610,20 @@ msgstr "62 - Bezoldigingen, sociale lasten en pensioenen"
 #. module: l10n_be_reports
 #: model:account.report.expression,report_line_name:l10n_be_reports.account_financial_report_be_amortissements0_balance
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_amortissements0
-msgid ""
-"630 - Amortisations of and other amounts written down on formation expenses,"
-" intangible and tangible fixed assets"
-msgstr ""
-"630 - Afschrijvingen en waardeverminderingen op oprichtingskosten, op "
-"immateriële en materiële vaste activa"
+msgid "630 - Amortisations of and other amounts written down on formation expenses, intangible and tangible fixed assets"
+msgstr "630 - Afschrijvingen en waardeverminderingen op oprichtingskosten, op immateriële en materiële vaste activa"
 
 #. module: l10n_be_reports
 #: model:account.report.expression,report_line_name:l10n_be_reports.account_financial_report_be_reduction_de_valeur0_balance
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_reduction_de_valeur0
-msgid ""
-"631/4 - Amounts written down on stocks, contracts in progress and trade "
-"debtors: additions (write-backs)"
-msgstr ""
-"631/4 - Waardeverminderingen op voorraden, op bestellingen in uitvoering en "
-"op handelsvorderingen: toevoegingen (terugnemingen)"
+msgid "631/4 - Amounts written down on stocks, contracts in progress and trade debtors: additions (write-backs)"
+msgstr "631/4 - Waardeverminderingen op voorraden, op bestellingen in uitvoering en op handelsvorderingen: toevoegingen (terugnemingen)"
 
 #. module: l10n_be_reports
 #: model:account.report.expression,report_line_name:l10n_be_reports.account_financial_report_be_provisions_pour_risques_et_charges0_balance
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_provisions_pour_risques_et_charges0
-msgid ""
-"635/8 - Provisions for liabilities and charges: appropriations (uses and "
-"write-backs)"
-msgstr ""
-"635/8 - Voorzieningen voor risico's en kosten: toevoegingen (bestedingen en "
-"terugnemingen)"
+msgid "635/8 - Provisions for liabilities and charges: appropriations (uses and write-backs)"
+msgstr "635/8 - Voorzieningen voor risico's en kosten: toevoegingen (bestedingen en terugnemingen)"
 
 #. module: l10n_be_reports
 #: model:account.report.expression,report_line_name:l10n_be_reports.account_financial_report_be_autres_charges0_balance
@@ -660,13 +651,8 @@ msgstr "650 - Kosten van schulden"
 #. module: l10n_be_reports
 #: model:account.report.expression,report_line_name:l10n_be_reports.account_financial_report_be_651_balance
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_651
-msgid ""
-"651 - Amounts written down on current assets other than stocks, contracts in"
-" progress and trade debtors: additions (write-backs)"
-msgstr ""
-"651 - Waardeverminderingen op vlottende activa andere dan voorraden, "
-"bestellingen in uitvoering en handelsvorderingen: toevoegingen "
-"(terugnemingen)"
+msgid "651 - Amounts written down on current assets other than stocks, contracts in progress and trade debtors: additions (write-backs)"
+msgstr "651 - Waardeverminderingen op vlottende activa andere dan voorraden, bestellingen in uitvoering en handelsvorderingen: toevoegingen (terugnemingen)"
 
 #. module: l10n_be_reports
 #: model:account.report.expression,report_line_name:l10n_be_reports.account_financial_report_be_652_9_balance
@@ -682,12 +668,8 @@ msgstr "66 - Uitzonderlijke kosten"
 #. module: l10n_be_reports
 #: model:account.report.expression,report_line_name:l10n_be_reports.account_financial_report_be_660_balance
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_660
-msgid ""
-"660 - Extraordinary depreciation of and extraordinary amounts written off "
-"formation expenses, intangible and tangible fixed assets"
-msgstr ""
-"660 - Uitzonderlijke afschrijvingen en waardeverminderingen op "
-"oprichtingskosten, op immateriële en materiële vaste activa"
+msgid "660 - Extraordinary depreciation of and extraordinary amounts written off formation expenses, intangible and tangible fixed assets"
+msgstr "660 - Uitzonderlijke afschrijvingen en waardeverminderingen op oprichtingskosten, op immateriële en materiële vaste activa"
 
 #. module: l10n_be_reports
 #: model:account.report.expression,report_line_name:l10n_be_reports.account_financial_report_be_661_balance
@@ -698,12 +680,8 @@ msgstr "661 - Waardeverminderingen op financiële vaste activa"
 #. module: l10n_be_reports
 #: model:account.report.expression,report_line_name:l10n_be_reports.account_financial_report_be_662_balance
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_662
-msgid ""
-"662 - Provisions for extraordinary liabilities and charges - Appropriations "
-"(uses)"
-msgstr ""
-"662 - Voorzieningen voor uitzonderlijke risico's en kosten: toevoegingen "
-"(bestedingen)"
+msgid "662 - Provisions for extraordinary liabilities and charges - Appropriations (uses)"
+msgstr "662 - Voorzieningen voor uitzonderlijke risico's en kosten: toevoegingen (bestedingen)"
 
 #. module: l10n_be_reports
 #: model:account.report.expression,report_line_name:l10n_be_reports.account_financial_report_be_663_balance
@@ -805,9 +783,7 @@ msgstr "70 - Omzet"
 #: model:account.report.expression,report_line_name:l10n_be_reports.account_financial_report_be_chiffre_daffaires71_balance
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_chiffre_daffaires71
 msgid "71 - Stocks of finished goods and work and contracts in progress"
-msgstr ""
-"71 - Voorraad goederen in bewerking en gereed product en bestellingen in "
-"uitvoering: toename (afname)"
+msgstr "71 - Voorraad goederen in bewerking en gereed product en bestellingen in uitvoering: toename (afname)"
 
 #. module: l10n_be_reports
 #: model:account.report.expression,report_line_name:l10n_be_reports.account_financial_report_be_chiffre_daffaires72_balance
@@ -858,12 +834,8 @@ msgstr "76 - Uitzonderlijke opbrengsten"
 #. module: l10n_be_reports
 #: model:account.report.expression,report_line_name:l10n_be_reports.account_financial_report_be_760_balance
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_760
-msgid ""
-"760 - Write-back of depreciation and of amounts written off intangible and "
-"tangible fixed assets"
-msgstr ""
-"760 - Terugneming van afschrijvingen en van waardeverminderingen op "
-"immateriële en materiële vaste activa"
+msgid "760 - Write-back of depreciation and of amounts written off intangible and tangible fixed assets"
+msgstr "760 - Terugneming van afschrijvingen en van waardeverminderingen op immateriële en materiële vaste activa"
 
 #. module: l10n_be_reports
 #: model:account.report.expression,report_line_name:l10n_be_reports.account_financial_report_be_761_balance
@@ -874,10 +846,8 @@ msgstr "761 - Terugneming van waardeverminderingen op financiële vaste activa"
 #. module: l10n_be_reports
 #: model:account.report.expression,report_line_name:l10n_be_reports.account_financial_report_be_762_balance
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_762
-msgid ""
-"762 - Write-back of provisions for extraordinary liabilities and charges"
-msgstr ""
-"762 - Terugneming van voorzieningen voor uitzonderlijke risico's en kosten"
+msgid "762 - Write-back of provisions for extraordinary liabilities and charges"
+msgstr "762 - Terugneming van voorzieningen voor uitzonderlijke risico's en kosten"
 
 #. module: l10n_be_reports
 #: model:account.report.expression,report_line_name:l10n_be_reports.account_financial_report_be_730_balance
@@ -895,9 +865,7 @@ msgstr "764/8 - Andere uitzonderlijke opbrengsten"
 #: model:account.report.expression,report_line_name:l10n_be_reports.account_financial_report_be_77_balance
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_77
 msgid "77 - Adjustment of income taxes and write-back of tax provisions"
-msgstr ""
-"77 - Regularisering van belastingen en terugneming van voorzieningen voor "
-"belastingen"
+msgstr "77 - Regularisering van belastingen en terugneming van voorzieningen voor belastingen"
 
 #. module: l10n_be_reports
 #: model:account.report.expression,report_line_name:l10n_be_reports.account_financial_report_be_prelevements_impots_differes0_balance
@@ -963,12 +931,8 @@ msgstr "9906 - Te bestemmen winst (verlies)"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.sales_report_main_template
-msgid ""
-"<span>EC Sales taxes report total does not match Tax Report lines 44 + 46L +"
-" 46T - 48s44 - 48s46L - 48s46T.</span>"
-msgstr ""
-"<span>Het totaal van de intracommunautaire listing komt niet overeen met "
-"lijnen 44 + 46L + 46T - 48s44 - 48s46L - 48s46T op de btw-aangifte.</span>"
+msgid "<span>EC Sales taxes report total does not match Tax Report lines 44 + 46L + 46T - 48s44 - 48s46L - 48s46T.</span>"
+msgstr "<span>Het totaal van de intracommunautaire listing komt niet overeen met lijnen 44 + 46L + 46T - 48s44 - 48s46L - 48s46T op de btw-aangifte.</span>"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
@@ -983,13 +947,13 @@ msgstr "ACTIVA"
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__atn
 msgid "ATN"
-msgstr "VAA"
+msgstr "Atn"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__message_needaction
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__message_needaction
 msgid "Action Needed"
-msgstr "Actie vereist"
+msgstr "Actie gevraagd"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields.selection,name:l10n_be_reports.selection__l10n_be_form_325__treatment_type__2
@@ -1021,22 +985,22 @@ msgstr "Resultaatverwerking"
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_reports_periodic_vat_xml_export__ask_payment
 msgid "Ask Payment"
-msgstr "Vraag betaling"
+msgstr "Betaling vragen"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_reports_periodic_vat_xml_export__ask_restitution
 msgid "Ask Restitution"
-msgstr "Vraag teruggave"
+msgstr "Teruggave vragen"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.filter_info_template
 msgid "Ask payment:"
-msgstr "Vraag betaling:"
+msgstr "Betaling vragen:"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.filter_info_template
 msgid "Ask restitution:"
-msgstr "Vraag teruggave:"
+msgstr "Teruggave vragen:"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__message_attachment_count
@@ -1050,7 +1014,7 @@ msgstr "Aantal bijlagen"
 #: code:addons/l10n_be_reports/models/partner_vat_listing.py:0
 #, python-format
 msgid "Audit"
-msgstr ""
+msgstr "Audit"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__partner_bce_number
@@ -1071,7 +1035,7 @@ msgstr ""
 #. module: l10n_be_reports
 #: model:ir.model,name:l10n_be_reports.model_l10n_be_reports_periodic_vat_xml_export
 msgid "Belgian Periodic VAT Report Export Wizard"
-msgstr ""
+msgstr "Wizard Belgische periodieke btw-rapporten exporteren"
 
 #. module: l10n_be_reports
 #: model:ir.model,name:l10n_be_reports.model_l10n_be_tax_report_handler
@@ -1091,7 +1055,7 @@ msgstr "ECHT VERKLAARD"
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_reports_periodic_vat_xml_export__calling_export_wizard_id
 msgid "Calling Export Wizard"
-msgstr ""
+msgstr "Wizard exporteren opvragen"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields.selection,name:l10n_be_reports.selection__l10n_be_form_325__treatment_type__3
@@ -1108,13 +1072,13 @@ msgstr "Overgebracht van het vorige tussenblad"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.view_account_financial_report_export
 msgid "Choose option(s) before exporting XML"
-msgstr "Maak je keuze voor het exporteren van de XML"
+msgstr "Kies optie(s) voordat je XML exporteert"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_res_partner__citizen_identification
 #: model:ir.model.fields,field_description:l10n_be_reports.field_res_users__citizen_identification
 msgid "Citizen Identification"
-msgstr "Nationaal nummer"
+msgstr "Nationaal registratienummer"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__partner_citizen_identification
@@ -1124,7 +1088,7 @@ msgstr "Nationaal nummer"
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__partner_city
 msgid "City"
-msgstr "Gemeente"
+msgstr "Plaats"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_281_50__partner_city
@@ -1134,12 +1098,12 @@ msgstr "Gemeente van de partner toen de fiche werd aangemaakt"
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_reports_periodic_vat_xml_export__client_nihil
 msgid "Client Nihil"
-msgstr "Nihil aangifte"
+msgstr "Klant Nihil"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.filter_info_template
 msgid "Client nihil:"
-msgstr "Nihil aangifte:"
+msgstr "Klant nihil:"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.form_325_wizard_view_form
@@ -1177,25 +1141,24 @@ msgstr "Bedrijf: %s"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "Company name or exact name (companies and other institutions)"
-msgstr ""
-"Handelsnaam of juiste benaming (vennootschappen en andere instellingen)"
+msgstr "Handelsnaam of juiste benaming (vennootschappen en andere instellingen)"
 
 #. module: l10n_be_reports
 #: model:ir.model,name:l10n_be_reports.model_res_partner
 msgid "Contact"
-msgstr ""
+msgstr "Contact"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_reports_periodic_vat_xml_export__control_value
 msgid "Control Value"
-msgstr ""
+msgstr "Controlewaarde"
 
 #. module: l10n_be_reports
 #. odoo-python
 #: code:addons/l10n_be_reports/models/account_report.py:0
 #, python-format
 msgid "Controls failed"
-msgstr "Controles zijn mislukt"
+msgstr "Controles mislukt"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__country_id
@@ -1254,12 +1217,12 @@ msgstr "BENAMING VAN DE FICHES"
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__debtor_id
 msgid "Debtor"
-msgstr "Schuldenaar"
+msgstr "Debiteur"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__debtor_address
 msgid "Debtor Address"
-msgstr "Adres van de schuldenaar"
+msgstr "Debiteuradres"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__debtor_bce_number
@@ -1274,12 +1237,12 @@ msgstr "Nationaal nummer van de schuldenaar"
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__debtor_city
 msgid "Debtor City"
-msgstr "Gemeente van de schuldenaar"
+msgstr "Debiteur Stad"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__debtor_country_id
 msgid "Debtor Country"
-msgstr "Land van de schuldenaar"
+msgstr "Debiteur Land"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__debtor_name
@@ -1348,9 +1311,11 @@ msgid "Dutch"
 msgstr "Nederlands"
 
 #. module: l10n_be_reports
-#: model:account.report.line,name:l10n_be_reports.account_financial_report_be_passif_title0
-msgid "EQUITY AND LIABILITIES"
-msgstr "PASSIVA"
+#. odoo-python
+#: code:addons/l10n_be_reports/models/account_sales_report.py:0
+#, python-format
+msgid "EC Sales List Audit"
+msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report,name:l10n_be_reports.belgian_ec_sales_report
@@ -1358,15 +1323,16 @@ msgid "EU Sales List"
 msgstr "Btw-opgave van de intracommunautaire handelingen"
 
 #. module: l10n_be_reports
+#: model:account.report.line,name:l10n_be_reports.account_financial_report_be_passif_title0
+msgid "EQUITY AND LIABILITIES"
+msgstr "PASSIVA"
+
+#. module: l10n_be_reports
 #. odoo-python
 #: code:addons/l10n_be_reports/models/account_325_form.py:0
 #, python-format
-msgid ""
-"Either there isn't any account nor partner with a 281.50 tag or there isn't "
-"any amount to report for this period."
-msgstr ""
-"Er is geen rekening of partner met een 281.50-tag of er is geen bedrag te "
-"rapporteren voor dit periode."
+msgid "Either there isn't any account nor partner with a 281.50 tag or there isn't any amount to report for this period."
+msgstr "Er is geen rekening of partner met een 281.50-tag of er is geen bedrag te rapporteren voor deze periode."
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
@@ -1376,22 +1342,22 @@ msgstr "Ondernemingsnummer:"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.view_account_financial_report_export
 msgid "Export Options"
-msgstr "Exportopties"
+msgstr "Exporteer opties"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.view_account_financial_report_export
 msgid "Export XML"
-msgstr "XML exporteren"
+msgstr "Exporteer in XML"
 
 #. module: l10n_be_reports
 #: model:ir.model,name:l10n_be_reports.model_account_reports_export_wizard_format
 msgid "Export format for accounting's reports"
-msgstr "Exportformaat voor boekhoudkundige rapporten"
+msgstr "Exporteer formaat voor boekhoudkundige rapportages"
 
 #. module: l10n_be_reports
 #: model:ir.model,name:l10n_be_reports.model_account_reports_export_wizard
 msgid "Export wizard for accounting's reports"
-msgstr "Exportwizard voor boekhoudkundige rapporten"
+msgstr "Exporteer wizard voor boekhoudkundige rapportages"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__exposed_expenses
@@ -1406,7 +1372,7 @@ msgstr "FINANCIËN"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
 msgid "FORM N° 281.50 (commissions, brokerage, etc) - YEAR"
-msgstr "FICHE Nr. 281.50 (commissies, erelonen, enz.) - JAAR"
+msgstr "FORMULIER N° 281.50 (commissies, makelaarslonen, enz) - JAAR"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
@@ -1421,7 +1387,7 @@ msgstr "Federale Overheidsdienst"
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__fees
 msgid "Fees"
-msgstr "Erelonen"
+msgstr "Vergoedingen"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__message_follower_ids
@@ -1433,7 +1399,7 @@ msgstr "Volgers"
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__message_partner_ids
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__message_partner_ids
 msgid "Followers (Partners)"
-msgstr "Volgers (Partners)"
+msgstr "Volgers (relaties)"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_50_divider_pdf
@@ -1509,12 +1475,12 @@ msgstr "Duits"
 #. module: l10n_be_reports
 #: model:ir.model,name:l10n_be_reports.model_report_l10n_be_reports_report_281_50_pdf
 msgid "Get 281.50 report as PDF."
-msgstr "Fiche 281.50 downloaden als PDF."
+msgstr "Haal formulier 281.50 op als PDF."
 
 #. module: l10n_be_reports
 #: model:ir.model,name:l10n_be_reports.model_report_l10n_be_reports_report_281_50_xml
 msgid "Get 281.50 report as XML."
-msgstr "Fiche 281.50 downloaden als XML."
+msgstr "Haal formulier 281.50 op als XML."
 
 #. module: l10n_be_reports
 #: model:ir.model,name:l10n_be_reports.model_report_l10n_be_reports_report_325_pdf
@@ -1526,14 +1492,13 @@ msgstr "Opgave 325 downloaden als PDF"
 #: code:addons/l10n_be_reports/models/partner_vat_listing.py:0
 #, python-format
 msgid "Grouping by ID key is not supported by partner VAT custom engine."
-msgstr ""
-"Groeperen op ID wordt niet ondersteund door de partner VAT custom engine."
+msgstr "Groeperen op ID wordt niet ondersteund door de partner VAT custom engine."
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__has_message
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "Heeft bericht"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__id
@@ -1541,7 +1506,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325_wizard__id
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_reports_periodic_vat_xml_export__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__official_id
@@ -1552,7 +1517,7 @@ msgstr "Identificatienummer"
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_281_50__message_needaction
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_325__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr "Indien aangevinkt, vragen nieuwe berichten uw aandacht."
+msgstr "Indien aangevinkt vragen nieuwe berichten je aandacht."
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_281_50__message_has_error
@@ -1560,7 +1525,7 @@ msgstr "Indien aangevinkt, vragen nieuwe berichten uw aandacht."
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_325__message_has_error
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_325__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
-msgstr "Indien aangevinkt, hebben sommige berichten een leveringsfout."
+msgstr "indien aangevinkt hebben sommige leveringen een fout."
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__income_debtor_bce_number
@@ -1589,9 +1554,7 @@ msgstr "Is een volger"
 #. module: l10n_be_reports
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_281_50__partner_is_natural_person
 msgid "Is the partner a natural person? (as opposed to a moral person)"
-msgstr ""
-"Is de partner een natuurlijk persoon? (in tegenstelling tot een "
-"rechtspersoon)"
+msgstr "Is de partner een natuurlijk persoon? (in tegenstelling tot een rechtspersoon)"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__partner_job_position
@@ -1629,11 +1592,8 @@ msgstr "Naam, voornamen (natuurlijke personen)"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
-msgid ""
-"Lastname, Firstname (or denomination) and address of the recipient of the "
-"income:"
-msgstr ""
-"Naam, voornaam (of benaming) en adres van de verkrijger van de inkomsten:"
+msgid "Lastname, Firstname (or denomination) and address of the recipient of the income:"
+msgstr "Achternaam, Voornaam (of benaming) en adres van de ontvanger van de inkomsten:"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_50_divider_pdf
@@ -1660,13 +1620,13 @@ msgstr "Lijst van fiches 281.50 voor deze partner"
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__message_main_attachment_id
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__message_main_attachment_id
 msgid "Main Attachment"
-msgstr ""
+msgstr "Hoofdbijlage"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__message_has_error
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__message_has_error
 msgid "Message Delivery error"
-msgstr ""
+msgstr "Bericht afleverfout"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__message_ids
@@ -1679,13 +1639,13 @@ msgstr "Berichten"
 #: code:addons/l10n_be_reports/models/res_partner.py:0
 #, python-format
 msgid "Missing partner data"
-msgstr "Ontbrekende partner gegevens"
+msgstr "Ontbrekende partnergegevens"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields.selection,name:l10n_be_reports.selection__l10n_be_form_325__treatment_type__1
 #: model:ir.model.fields.selection,name:l10n_be_reports.selection__l10n_be_form_325_wizard__treatment_type__1
 msgid "Modification"
-msgstr "Modificatie"
+msgstr "Wijziging"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
@@ -1730,7 +1690,7 @@ msgstr "Geen BTW-nummer geassocieerd met het bedrijf."
 #: code:addons/l10n_be_reports/models/account_report.py:0
 #, python-format
 msgid "No email address associated with company %s."
-msgstr "Geen e-mailadres geassocieerd met bedrijf %s."
+msgstr "Geen e-mailadres geassocieerd met het bedrijf %s."
 
 #. module: l10n_be_reports
 #. odoo-python
@@ -1738,14 +1698,14 @@ msgstr "Geen e-mailadres geassocieerd met bedrijf %s."
 #: code:addons/l10n_be_reports/models/partner_vat_listing.py:0
 #, python-format
 msgid "No email address associated with the company."
-msgstr "Geen e-mailadres geassocieerd met het bedrijf."
+msgstr "Geen emailadres geassocieerd met het bedrijf."
 
 #. module: l10n_be_reports
 #. odoo-python
 #: code:addons/l10n_be_reports/models/account_report.py:0
 #, python-format
 msgid "No phone associated with company %s."
-msgstr "Geen telefoonnummer geassocieerd met bedrijf %s."
+msgstr "Geen telefoonnummer geassocieerd met het bedrijf %s."
 
 #. module: l10n_be_reports
 #. odoo-python
@@ -1767,7 +1727,7 @@ msgstr "Geen BTW nummer gedefinieerd voor %s."
 #: code:addons/l10n_be_reports/models/account_report.py:0
 #, python-format
 msgid "Not allowed negative amounts"
-msgstr "Niet-toegestane negatieve bedragen"
+msgstr "Negatieve bedragen zijn niet toegestaan"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__message_needaction_counter
@@ -1791,7 +1751,7 @@ msgstr "Aantal berichten die actie vereisen"
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_281_50__message_has_error_counter
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_325__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr "Aantal berichten met verzendfout"
+msgstr "Aantal berichten met leveringsfout"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
@@ -1811,7 +1771,7 @@ msgstr "nr. 3"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.form_325_view_form
 msgid "Open"
-msgstr "Openen"
+msgstr "Open"
 
 #. module: l10n_be_reports
 #: model:ir.ui.menu,name:l10n_be_reports.menu_action_open_325_tree_view
@@ -1839,12 +1799,8 @@ msgstr "Bedrijfsopbrengsten"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_reports_periodic_vat_xml_export__calling_export_wizard_id
-msgid ""
-"Optional field containing the report export wizard calling this wizard, if "
-"there is one."
-msgstr ""
-"Optioneel veld met de rapport export wizard die deze wizard aanroept, indien"
-" er een is."
+msgid "Optional field containing the report export wizard calling this wizard, if there is one."
+msgstr "Optioneel veld met daarin de wizard voor het exporteren van rapporten die deze wizard aanroept, indien er een is."
 
 #. module: l10n_be_reports
 #: model:ir.model.fields.selection,name:l10n_be_reports.selection__l10n_be_form_325__treatment_type__0
@@ -1871,12 +1827,12 @@ msgstr "Betaald bedrag"
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__partner_id
 msgid "Partner"
-msgstr ""
+msgstr "Relatie"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__partner_name
 msgid "Partner Name"
-msgstr "Naam van de partner"
+msgstr "Relatienaam"
 
 #. module: l10n_be_reports
 #: model:account.report.expression,report_line_name:l10n_be_reports.l10n_be_partner_vat_listing_line_turnover
@@ -1887,7 +1843,7 @@ msgstr "Naam van de partner"
 #: model:ir.actions.client,name:l10n_be_reports.action_account_report_partner_vat_listing
 #: model:ir.ui.menu,name:l10n_be_reports.menu_action_account_report_l10n_be_partner_vat_listing
 msgid "Partner VAT Listing"
-msgstr "Jaarlijkse klantenlisting"
+msgstr "Jaarlijkse lijst van de btw-belastingplichtige afnemers"
 
 #. module: l10n_be_reports
 #: model:ir.model,name:l10n_be_reports.model_l10n_be_partner_vat_handler
@@ -1907,7 +1863,7 @@ msgstr "Partner met ontbrekende informatie"
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_account_reports_export_wizard__l10n_be_reports_periodic_vat_wizard_id
 msgid "Periodic VAT Export Wizard"
-msgstr ""
+msgstr "Wizard periodieke btw-rapporten exporteren"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
@@ -1917,13 +1873,13 @@ msgstr "Postnr. en gemeente"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
 msgid "Profession:"
-msgstr "Uitgeoefend beroep:"
+msgstr "Beroep:"
 
 #. module: l10n_be_reports
 #: model:account.report,name:l10n_be_reports.account_financial_report_be_profitandloss0
 #: model:ir.actions.client,name:l10n_be_reports.action_account_report_bepnl
 msgid "Profit and Loss"
-msgstr "Resultatenrekening"
+msgstr "Winst en Verlies"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
@@ -1961,7 +1917,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__message_has_sms_error
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__message_has_sms_error
 msgid "SMS Delivery error"
-msgstr ""
+msgstr "SMS fout bij versturen"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
@@ -1983,7 +1939,7 @@ msgstr "Gegroepeerde correcties verzenden"
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__sender_id
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325_wizard__sender_id
 msgid "Sender"
-msgstr "Verzender"
+msgstr "Afzender"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__sender_address
@@ -2023,7 +1979,7 @@ msgstr "Postcode van de verzender"
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325_wizard__sending_type
 msgid "Sending Type"
-msgstr "Verzendtype"
+msgstr "Type verzenden"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__sending_type
@@ -2040,29 +1996,21 @@ msgstr "Sommige controles zijn mislukt"
 #: code:addons/l10n_be_reports/models/account_report.py:0
 #, python-format
 msgid "Some fields required for the export are missing. Please specify them."
-msgstr ""
-"Sommige velden die nodig zijn voor de export ontbreken. Gelieve deze in te "
-"vullen."
+msgstr "Sommige velden die nodig zijn voor de export ontbreken. Gelieve ze in te vullen."
 
 #. module: l10n_be_reports
 #. odoo-python
 #: code:addons/l10n_be_reports/models/res_partner.py:0
 #, python-format
-msgid ""
-"Some partners are not correctly configured. Please be sure that the "
-"following pieces of information are set: street, zip code, country%s and vat"
-" or citizen identification."
-msgstr ""
-"Sommige partners zijn niet correct geconfigureerd. Zorg ervoor dat de "
-"volgende informatie is ingesteld: straat, postcode, land%s en btw-nummer of "
-"nationaal nummer."
+msgid "Some partners are not correctly configured. Please be sure that the following pieces of information are set: street, zip code, country%s and vat or citizen identification."
+msgstr "Sommige partners zijn niet correct geconfigureerd. Zorg ervoor dat de volgende informatie is ingesteld: straat, postcode, land%s en btw-nummer of nationaal nummer."
 
 #. module: l10n_be_reports
 #. odoo-python
 #: code:addons/l10n_be_reports/models/account_report.py:0
 #, python-format
 msgid "Specify"
-msgstr "Specifiëren"
+msgstr "Preciseren"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__state
@@ -2127,23 +2075,14 @@ msgstr "Het referentiejaar moet een getal zijn."
 #. module: l10n_be_reports
 #: model:ir.model.fields,help:l10n_be_reports.field_res_partner__citizen_identification
 #: model:ir.model.fields,help:l10n_be_reports.field_res_users__citizen_identification
-msgid ""
-"This code corresponds to the personal identification number for the tax "
-"authorities."
-msgstr ""
-"Dit nummer komt overeen met het persoonlijke identificatienummer voor de "
-"belastingautoriteiten."
+msgid "This code corresponds to the personal identification number for the tax authorities."
+msgstr "Dit nummer komt overeen met het persoonlijke identificatienummer voor de belastingautoriteiten."
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_325__sending_type
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_325_wizard__sending_type
-msgid ""
-"This field allows to make an original sending(correspond to first send) or a"
-" grouped corrections(if you have made some mistakes before)."
-msgstr ""
-"Met dit veld kunt u een originele verzending maken (komt overeen met de "
-"eerste verzending) of een gegroepeerde correctie (als u eerder fouten hebt "
-"gemaakt)."
+msgid "This field allows to make an original sending(correspond to first send) or a grouped corrections(if you have made some mistakes before)."
+msgstr "Dit veld maakt het mogelijk om een originele verzending (komt overeen met de eerste verzending) te maken of gegroepeerde correcties (als je eerder fouten hebt gemaakt). "
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_281_50__treatment_type
@@ -2177,7 +2116,7 @@ msgstr "Totaal"
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__treatment_type
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325_wizard__treatment_type
 msgid "Treatment Type"
-msgstr "Behandeltype"
+msgstr "Type behandeling"
 
 #. module: l10n_be_reports
 #: model:account.report.column,name:l10n_be_reports.l10n_be_partner_vat_listing_turnover
@@ -2187,7 +2126,7 @@ msgstr "Omzet"
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__user_id
 msgid "User"
-msgstr ""
+msgstr "Gebruiker"
 
 #. module: l10n_be_reports
 #: model:account.report.column,name:l10n_be_reports.l10n_be_partner_vat_listing_vat_amount
@@ -2200,7 +2139,7 @@ msgstr "BTW-bedrag"
 #: model:account.report,name:l10n_be_reports.l10n_be_partner_vat_listing
 #, python-format
 msgid "VAT Listing Audit"
-msgstr "Jaarlijkse klantenlisting"
+msgstr "Audit van de jaarlijkse lijst van de btw-belastingplichtige afnemers"
 
 #. module: l10n_be_reports
 #: model:account.report.column,name:l10n_be_reports.account_financial_report_ec_sales_vat
@@ -2214,38 +2153,35 @@ msgstr "BTW-nummer"
 #: code:addons/l10n_be_reports/models/partner_vat_listing.py:0
 #, python-format
 msgid "View Partner"
-msgstr "Partner weergeven"
+msgstr "Bekijk relatie"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__website_message_ids
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_325__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "Websiteberichten"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_281_50__website_message_ids
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_325__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "Website communicatie geschiedenis"
 
 #. module: l10n_be_reports
 #. odoo-python
 #: code:addons/l10n_be_reports/models/account_report.py:0
-#: code:addons/l10n_be_reports/models/account_report.py:0
 #: code:addons/l10n_be_reports/models/account_sales_report.py:0
-#: code:addons/l10n_be_reports/models/account_sales_report.py:0
-#: code:addons/l10n_be_reports/models/partner_vat_listing.py:0
 #: code:addons/l10n_be_reports/models/partner_vat_listing.py:0
 #, python-format
 msgid "XML"
-msgstr ""
+msgstr "XML"
 
 #. module: l10n_be_reports
 #. odoo-python
 #: code:addons/l10n_be_reports/models/account_report.py:0
 #, python-format
 msgid "XML Export Options"
-msgstr "XML Exportopties"
+msgstr "XML exporteer opties"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.filter_info_template
@@ -2264,28 +2200,22 @@ msgstr "Je hebt al fiches 281.50 gegenereerd voor deze opgave 325."
 #: code:addons/l10n_be_reports/models/account_281_50_form.py:0
 #: code:addons/l10n_be_reports/models/account_325_form.py:0
 #, python-format
-msgid ""
-"You can't delete a 281.50 for which its form 325 xml has been generated"
-msgstr ""
-"Je kan geen fiche 281.50 verwijderen waarvoor de XML van zijn opgave 325 "
-"gegenereerd is"
+msgid "You can't delete a 281.50 for which its form 325 xml has been generated"
+msgstr "Je kan geen fiche 281.50 verwijderen waarvoor de XML van zijn opgave 325 gegenereerd is"
 
 #. module: l10n_be_reports
 #. odoo-python
 #: code:addons/l10n_be_reports/wizard/l10n_be_325_form_wizard.py:0
 #, python-format
 msgid "You can't use a reference year in the future or for the current year."
-msgstr ""
-"Je kan geen referentiejaar in de toekomst of voor het huidige jaar "
-"gebruiken."
+msgstr "Je kan geen referentiejaar in de toekomst of voor het huidige jaar gebruiken."
 
 #. module: l10n_be_reports
 #. odoo-python
 #: code:addons/l10n_be_reports/wizard/l10n_be_325_form_wizard.py:0
 #, python-format
 msgid "You must be logged in a Belgian company to use this feature"
-msgstr ""
-"U moet ingelogd zijn bij een Belgische bedrijf om deze functie te gebruiken"
+msgstr "Je moet ingelogd zijn om deze functie te kunnen gebruiken"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__partner_zip
@@ -2301,12 +2231,8 @@ msgstr "Postcode van de partner toen de fiche werd opgemaakt"
 #. odoo-python
 #: code:addons/l10n_be_reports/models/account_report.py:0
 #, python-format
-msgid ""
-"[44] < ([00] + [01] + [02] + [03] + [45] + [46] + [47] + [48] + [49]) * 200 "
-"if [88] > 99.999"
-msgstr ""
-"[44] < ([00] + [01] + [02] + [03] + [45] + [46] + [47] + [48] + [49]) * 200 "
-"als [88] > 99.999"
+msgid "[44] < ([00] + [01] + [02] + [03] + [45] + [46] + [47] + [48] + [49]) * 200 if [88] > 99.999"
+msgstr "[44] < ([00] + [01] + [02] + [03] + [45] + [46] + [47] + [48] + [49]) * 200 als [88] > 99.999"
 
 #. module: l10n_be_reports
 #. odoo-python
@@ -2343,24 +2269,24 @@ msgid ""
 "                                                e) Total (see also in sections f and g below):"
 msgstr ""
 "a) Commissies, makelaarslonen, handelsrestorno's, enz.:\n"
-"                                                <br/>\n"
-"                                                b) Erelonen of vacatiegelden:\n"
-"                                                <br/>\n"
-"                                                c) Voordelen van alle aard (aard: ................)\n"
-"                                                <br/>\n"
-"                                                d) Kosten gemaakt voor rekening van de verkrijger:\n"
-"                                                <br/>\n"
-"                                                e) Totaal (zie ook rubrieken f en g hierna):"
+"<br/>\n"
+"b) Erelonen of vakantiegelden:\n"
+"<br/>\n"
+"c) Voordelen van alle aard (natura : ................)\n"
+"<br/>\n"
+"d) Kosten gemaakt voor de rekening van de verkrijger:\n"
+"<br/>\n"
+"e) Totaal (zie ook in secties f en g hieronder):"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.res_partner_view_form_inherit
 msgid "e.g. 123455 555 6"
-msgstr "bv. 123455 555 6"
+msgstr "bijv. 123455 555 6"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.form_325_wizard_view_form
 msgid "e.g. 2018"
-msgstr "bv. 2018"
+msgstr "bijv. 2018"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
@@ -2378,17 +2304,17 @@ msgid ""
 "                                            - trainers, coaches and accompaniers for their activity for the\n"
 "                                            benefit of the athletes:"
 msgstr ""
-"f) Als het in rubriek e ingevulde bedrag vergoedingen bevat voor sportieve activiteiten van sportbeoefenaars of vergoedingen voor activiteiten van opleiders, trainers of begeleiders ten behoeve van sportbeoefenaars, vermeld dan hier het daarin begrepen bedrag dat is uitgekeerd aan:\n"
+"f) Indien toepasbaar, vermeld hier het bedrag van de in de rubriek e vermelde bedrag\n"
+"met betrekking tot de vergoedingen betaald aan:\n"
 "<br/>\n"
 "- sportbeoefenaars voor hun sportieve activiteiten:\n"
 "<br/>\n"
-"- opleiders, trainers en begeleiders voor hun activiteiten ten behoeve van sportbeoefenaars:"
+"- trainers, opleiders en begeleiders voor hun activiteiten ten\n"
+"behoeve van sportbeoefenaars:"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
 msgid ""
 "g) If the amount indicated in item e above does not coincide with\n"
 "                                                the amount actually paid in"
-msgstr ""
-"g) Als het in rubriek e ingevulde bedrag niet overeenstemt met het bedrag "
-"dat werkelijk in"
+msgstr "g) Als het in rubriek e ingevulde bedrag niet overeenstemt met het bedrag dat werkelijk in"

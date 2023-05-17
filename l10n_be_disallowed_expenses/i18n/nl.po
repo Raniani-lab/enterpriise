@@ -3,16 +3,16 @@
 # 	* l10n_be_disallowed_expenses
 #
 # Translators:
-# Jolien De Paepe, 2022
+# Martin Trigaux, 2023
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-28 10:40+0000\n"
-"PO-Revision-Date: 2023-01-10 10:15+0100\n"
-"Last-Translator: \n"
-"Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
+"POT-Creation-Date: 2023-01-10 09:42+0000\n"
+"PO-Revision-Date: 2023-02-03 07:08+0000\n"
+"Last-Translator: Martin Trigaux, 2023\n"
+"Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -52,9 +52,7 @@ msgstr "Vergoedingen ontbrekende coupon"
 #. module: l10n_be_disallowed_expenses
 #: model:account.disallowed.expenses.category,name:l10n_be_disallowed_expenses.demo_disallowed_expenses_category_1229
 msgid "Correction based on the minimum taxable income from diamond trading "
-msgstr ""
-"Correctie in functie van het  minimumbedrag van het netto belastbaar inkomen"
-" uit de diamanthandel "
+msgstr "Correctie in functie van het  minimumbedrag van het netto belastbaar inkomen uit de diamanthandel "
 
 #. module: l10n_be_disallowed_expenses
 #: model:account.disallowed.expenses.category,name:l10n_be_disallowed_expenses.demo_disallowed_expenses_category_1233
@@ -68,11 +66,8 @@ msgstr "Overdreven interesten"
 
 #. module: l10n_be_disallowed_expenses
 #: model:account.disallowed.expenses.category,name:l10n_be_disallowed_expenses.demo_disallowed_expenses_category_1235
-msgid ""
-"Expenses of the mobility allowance up to a proportion of the benefit kind"
-msgstr ""
-"Kosten van de mobiliteitsvergoeding ten belope van een gedeelte van het "
-"voordeel van alle aard"
+msgid "Expenses of the mobility allowance up to a proportion of the benefit kind"
+msgstr "Kosten van de mobiliteitsvergoeding ten belope van een gedeelte van het voordeel van alle aard"
 
 #. module: l10n_be_disallowed_expenses
 #: model:account.disallowed.expenses.category,name:l10n_be_disallowed_expenses.demo_disallowed_expenses_category_1232
@@ -112,8 +107,7 @@ msgstr "Niet-aftrekbare betalingen naar bepaalde Staten"
 #. module: l10n_be_disallowed_expenses
 #: model:account.disallowed.expenses.category,name:l10n_be_disallowed_expenses.demo_disallowed_expenses_category_1204
 msgid "Non-deductible pensions, capital, employer contributions and premiums"
-msgstr ""
-"Niet-aftrekbare pensioenen, kapitalen, werkgeversbijdragen en -premies"
+msgstr "Niet-aftrekbare pensioenen, kapitalen, werkgeversbijdragen en -premies"
 
 #. module: l10n_be_disallowed_expenses
 #: model:account.disallowed.expenses.category,name:l10n_be_disallowed_expenses.demo_disallowed_expenses_category_1208
@@ -137,22 +131,13 @@ msgstr "Andere verworpen uitgaven"
 
 #. module: l10n_be_disallowed_expenses
 #: model:account.disallowed.expenses.category,name:l10n_be_disallowed_expenses.demo_disallowed_expenses_category_1226
-msgid ""
-"Positive corrections in application under Diamond Scheme. Positive "
-"difference between the gross profit determined on a flat-rate basis and the "
-"gross profit determined on an accounting basis"
-msgstr ""
-"Positief verschil tussen de forfaitair vastgestelde brutowinst en de "
-"boekhoudkundig vastgestelde brutowinst"
+msgid "Positive corrections in application under Diamond Scheme. Positive difference between the gross profit determined on a flat-rate basis and the gross profit determined on an accounting basis"
+msgstr "Positief verschil tussen de forfaitair vastgestelde brutowinst en de boekhoudkundig vastgestelde brutowinst"
 
 #. module: l10n_be_disallowed_expenses
 #: model:account.disallowed.expenses.category,name:l10n_be_disallowed_expenses.demo_disallowed_expenses_category_1228
-msgid ""
-"Positive difference between the reference income for a corporate executive "
-"and the income of the highest corporate executive"
-msgstr ""
-"Positief verschil tussen de referentiebezoldiging voor een bedrijfsleider en"
-" de hoogste bedrijfsleidersbezoldiging"
+msgid "Positive difference between the reference income for a corporate executive and the income of the highest corporate executive"
+msgstr "Positief verschil tussen de referentiebezoldiging voor een bedrijfsleider en de hoogste bedrijfsleidersbezoldiging"
 
 #. module: l10n_be_disallowed_expenses
 #: model:account.disallowed.expenses.category,name:l10n_be_disallowed_expenses.demo_disallowed_expenses_category_1217
@@ -166,12 +151,8 @@ msgstr "Gewestelijke belastingen, heffingen en retributies"
 
 #. module: l10n_be_disallowed_expenses
 #: model:account.disallowed.expenses.category,name:l10n_be_disallowed_expenses.demo_disallowed_expenses_category_1231
-msgid ""
-"Resumption of deduction for innovation income following non-reinvestment in "
-"qualifying expenses"
-msgstr ""
-"Terugneming van aftrek voor innovatie-inkomsten ingevolge niet-herbelegging "
-"in kwalificerende uitgaven"
+msgid "Resumption of deduction for innovation income following non-reinvestment in qualifying expenses"
+msgstr "Terugneming van aftrek voor innovatie-inkomsten ingevolge niet-herbelegging in kwalificerende uitgaven"
 
 #. module: l10n_be_disallowed_expenses
 #: model:account.disallowed.expenses.category,name:l10n_be_disallowed_expenses.demo_disallowed_expenses_category_1218
@@ -180,12 +161,8 @@ msgstr "Terugnemingen van vroegere vrijstellingen"
 
 #. module: l10n_be_disallowed_expenses
 #: model:account.disallowed.expenses.category,name:l10n_be_disallowed_expenses.demo_disallowed_expenses_category_1230
-msgid ""
-"Reversal of deduction for innovation income in the event of staggering of "
-"historical costs"
-msgstr ""
-"Terugneming van aftrek voor innovatie-inkomsten in geval van spreiding van "
-"de historische kosten"
+msgid "Reversal of deduction for innovation income in the event of staggering of historical costs"
+msgstr "Terugneming van aftrek voor innovatie-inkomsten in geval van spreiding van de historische kosten"
 
 #. module: l10n_be_disallowed_expenses
 #: model:account.disallowed.expenses.category,name:l10n_be_disallowed_expenses.demo_disallowed_expenses_category_1214
@@ -200,5 +177,4 @@ msgstr "Niet-verantwoorde kosten"
 #. module: l10n_be_disallowed_expenses
 #: model:account.disallowed.expenses.category,name:l10n_be_disallowed_expenses.demo_disallowed_expenses_category_1227
 msgid "Write-down on inventory and non-deductible costs"
-msgstr ""
-"Niet-aftrekbare waardeverminderingen op voorraden en niet-aftrekbare kosten"
+msgstr "Niet-aftrekbare waardeverminderingen op voorraden en niet-aftrekbare kosten"

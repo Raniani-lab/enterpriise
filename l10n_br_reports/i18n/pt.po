@@ -1,6 +1,8 @@
 #
 msgid ""
 msgstr ""
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-01-03 12:22+0000\n"
 
 #. module: l10n_br_reports
 #: model:account.report.line,name:l10n_br_reports.account_financial_report_total_assets0
@@ -10,12 +12,12 @@ msgstr "ATIVO"
 #. module: l10n_br_reports
 #: model:account.report.line,name:l10n_br_reports.account_financial_ajustes
 msgid "Equity valuation adjustments"
-msgstr "Ajustes de avaliação patrimonial"
+msgstr "Ajustes de avaliao patrimonial"
 
 #. module: l10n_br_reports
 #: model:account.report.line,name:l10n_br_reports.account_financial_report_bio_assets
 msgid "Current biological assets"
-msgstr "Ativo biológico - circulante"
+msgstr "Ativo biolgico - circulante"
 
 #. module: l10n_br_reports
 #: model:account.report.line,name:l10n_br_reports.account_financial_report_current_assets_view0
@@ -25,12 +27,12 @@ msgstr "Ativo circulante"
 #. module: l10n_br_reports
 #: model:account.report.line,name:l10n_br_reports.account_financial_report_non_current_assets_view0
 msgid "Non-current assets"
-msgstr "Ativo não circulante"
+msgstr "Ativo no circulante"
 
 #. module: l10n_br_reports
 #: model:account.report.line,name:l10n_br_reports.account_financial_report_noncurrent_assets_for_sale
 msgid "Non-current assets held for sale"
-msgstr "Ativo não circulante mantido para venda"
+msgstr "Ativo no circulante mantido para venda"
 
 #. module: l10n_br_reports
 #: model:account.report.column,name:l10n_br_reports.account_financial_report_br_balancesheet0_column
@@ -41,7 +43,7 @@ msgstr "Balance"
 #. module: l10n_br_reports
 #: model:account.report,name:l10n_br_reports.account_financial_report_br_balancesheet0
 msgid "Balance Sheet"
-msgstr "Balanço Patrimonial"
+msgstr "Balano Patrimonial"
 
 #. module: l10n_br_reports
 #: model:account.report.line,name:l10n_br_reports.account_financial_share_capital
@@ -51,22 +53,22 @@ msgstr "Capital social"
 #. module: l10n_br_reports
 #: model:account.report.line,name:l10n_br_reports.account_financial_report_off_sheet
 msgid "Off-balance sheet accounts"
-msgstr "Contas fora do balanço patrimonial"
+msgstr "Contas fora do balano patrimonial"
 
 #. module: l10n_br_reports
 #: model:account.report.line,name:l10n_br_reports.account_financial_report_creditos
 msgid "Credits"
-msgstr "Créditos"
+msgstr "Crditos"
 
 #. module: l10n_br_reports
 #: model:account.report,name:l10n_br_reports.account_financial_report_pnl_br
 msgid "Profit and Loss Statement"
-msgstr "Demonstração dos Resultados"
+msgstr "Demonstrao dos Resultados"
 
 #. module: l10n_br_reports
 #: model:account.report.line,name:l10n_br_reports.account_financial_report_despesas
 msgid "Expenditure in the following year"
-msgstr "Despesas do exercício seguinte"
+msgstr "Despesas do exerccio seguinte"
 
 #. module: l10n_br_reports
 #: model:account.report.line,name:l10n_br_reports.account_financial_report_diferido
@@ -91,7 +93,7 @@ msgstr "Imobilizado"
 #. module: l10n_br_reports
 #: model:account.report.line,name:l10n_br_reports.account_financial_report_intangible
 msgid "Intangible Assets"
-msgstr "Intangível"
+msgstr "Intangvel"
 
 #. module: l10n_br_reports
 #: model:account.report.line,name:l10n_br_reports.account_financial_report_investments
@@ -106,17 +108,17 @@ msgstr "Lucro do ano atual"
 #. module: l10n_br_reports
 #: model:account.report.line,name:l10n_br_reports.account_financial_report_non_current_liabilities1
 msgid "Long-term liabilities"
-msgstr "Obrigações a longo prazo"
+msgstr "Obrigaes a longo prazo"
 
 #. module: l10n_br_reports
 #: model:account.report.line,name:l10n_br_reports.account_financial_report_current_liabilities1
 msgid "Current Liabilities"
-msgstr "Obrigações do circulante"
+msgstr "Obrigaes do circulante"
 
 #. module: l10n_br_reports
 #: model:account.report.line,name:l10n_br_reports.account_financial_outras_contas
 msgid "Other equity accounts"
-msgstr "Outras contas do patrimônio líquido"
+msgstr "Outras contas do patrimnio lquido"
 
 #. module: l10n_br_reports
 #: model:account.report.line,name:l10n_br_reports.account_financial_report_liabilities_view0
@@ -127,7 +129,7 @@ msgstr "PASSIVO"
 #: model:account.report.line,name:l10n_br_reports.account_financial_report_participacoes_ag
 #: model:account.report.line,name:l10n_br_reports.account_financial_report_participacoes_ar
 msgid "Shares"
-msgstr "Participações"
+msgstr "Participaes"
 
 #. module: l10n_br_reports
 #: model:account.report.line,name:l10n_br_reports.account_financial_report_current_liabilities0
@@ -137,27 +139,27 @@ msgstr "Passivo circulante"
 #. module: l10n_br_reports
 #: model:account.report.line,name:l10n_br_reports.account_financial_report_non_current_liabilities0
 msgid "Non-current liabilities"
-msgstr "Passivo não-circulante"
+msgstr "Passivo no-circulante"
 
 #. module: l10n_br_reports
 #: model:account.report.line,name:l10n_br_reports.account_financial_report_equity0
 msgid "Equity"
-msgstr "Patrimônio líquido"
+msgstr "Patrimnio lquido"
 
 #. module: l10n_br_reports
 #: model:account.report.line,name:l10n_br_reports.account_financial_report_csll_ar
 msgid "Provision for CSLL - rural activity"
-msgstr "Provisão para CSLL (atividade rural)"
+msgstr "Proviso para CSLL (atividade rural)"
 
 #. module: l10n_br_reports
 #: model:account.report.line,name:l10n_br_reports.account_financial_report_csll_irpj
 msgid "Provision for CSLL and IRPJ"
-msgstr "Provisão para CSLL e IRPJ"
+msgstr "Proviso para CSLL e IRPJ"
 
 #. module: l10n_br_reports
 #: model:account.report.line,name:l10n_br_reports.account_financial_report_long_term
 msgid "Long-term assets"
-msgstr "Realizável a longo prazo"
+msgstr "Realizvel a longo prazo"
 
 #. module: l10n_br_reports
 #: model:account.report.line,name:l10n_br_reports.account_financial_retained_earnings0
@@ -167,19 +169,17 @@ msgstr "Reservas"
 #. module: l10n_br_reports
 #: model:account.report.line,name:l10n_br_reports.account_financial_report_profit
 msgid "Net profit for the period"
-msgstr "Resultado líquido do período"
+msgstr "Resultado lquido do perodo"
 
 #. module: l10n_br_reports
 #: model:account.report.line,name:l10n_br_reports.account_financial_report_pnl_resultado_geral
 msgid "Net profit for the period before IRPJ and CSLL - general activity"
-msgstr ""
-"Resultado líquido do período antes do IRPJ e da CSLL - atividade geral"
+msgstr "Resultado lquido do perodo antes do IRPJ e da CSLL - atividade geral"
 
 #. module: l10n_br_reports
 #: model:account.report.line,name:l10n_br_reports.account_financial_report_pnl_resultado_rural
 msgid "Net profit for the period before IRPJ and CSLL - rural activity"
-msgstr ""
-"Resultado líquido do período antes do IRPJ e da CSLL - atividade rural"
+msgstr "Resultado lquido do perodo antes do IRPJ e da CSLL - atividade rural"
 
 #. module: l10n_br_reports
 #: model:account.report.line,name:l10n_br_reports.account_financial_resultado_ag

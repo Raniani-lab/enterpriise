@@ -1,149 +1,164 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* account_consolidation
-# 
+#
 # Translators:
-# Fishfur A Banter <fishfurbanter@gmail.com>, 2019
-# ExcaliberX <excaliberx@gmail.com>, 2019
-# שהאב חוסיין <shhab89@gmail.com>, 2019
-# Martin Trigaux, 2019
-# Yihya Hugirat <hugirat@gmail.com>, 2019
-# hed shefetr <hed@laylinetech.com>, 2019
-# דודי מלכה <Dudimalka6@gmail.com>, 2019
-# ZVI BLONDER <ZVIBLONDER@gmail.com>, 2019
-# Amit Spilman <amit@laylinetech.com>, 2019
-# 
+# Fishfur A Banter <fishfurbanter@gmail.com>, 2022
+# Jonathan Spier, 2022
+# Ofir Blum <ofir.blum@gmail.com>, 2022
+# ExcaliberX <excaliberx@gmail.com>, 2022
+# שהאב חוסיין <shhab89@gmail.com>, 2022
+# Lilach Gilliam <lilach.gilliam@gmail.com>, 2022
+# דודי מלכה <Dudimalka6@gmail.com>, 2022
+# Amit Spilman <amit@laylinetech.com>, 2022
+# Netta Waizer, 2022
+# NoaFarkash, 2022
+# Martin Trigaux, 2022
+# hed shefer <hed@laylinetech.com>, 2022
+# Yihya Hugirat <hugirat@gmail.com>, 2022
+# ZVI BLONDER <ZVIBLONDER@gmail.com>, 2022
+# Ha Ketem <haketem@gmail.com>, 2022
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-27 09:18+0000\n"
-"PO-Revision-Date: 2019-09-27 12:00+0000\n"
-"Last-Translator: Amit Spilman <amit@laylinetech.com>, 2019\n"
-"Language-Team: Hebrew (https://www.transifex.com/odoo/teams/41243/he/)\n"
+"POT-Creation-Date: 2023-05-16 16:01+0000\n"
+"PO-Revision-Date: 2022-09-22 05:45+0000\n"
+"Last-Translator: Ha Ketem <haketem@gmail.com>, 2022\n"
+"Language-Team: Hebrew (https://app.transifex.com/odoo/teams/41243/he/)\n"
+"Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: he\n"
 "Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n == 2 && n % 1 == 0) ? 1: (n % 10 == 0 && n % 1 == 0 && n > 10) ? 2 : 3;\n"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_chart__account_ids_count
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__chart_account_ids_count
 msgid "# Accounts"
-msgstr ""
+msgstr "חשבונות"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_chart__group_ids_count
 msgid "# Groups"
-msgstr ""
+msgstr "מס' קבוצות"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__journal_ids_count
 msgid "# Journals"
-msgstr ""
+msgstr "מס' יומנים"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_chart__period_ids_count
 msgid "# Periods"
-msgstr ""
+msgstr "מס' תקופות"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_form
 msgid "% Control"
-msgstr ""
+msgstr "% שליטה"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_form
 msgid "% Ownership"
-msgstr ""
+msgstr "% בעלות"
 
 #. module: account_consolidation
+#. odoo-python
 #: code:addons/account_consolidation/report/builder/abstract.py:0
 #, python-format
 msgid "%s (%s Currency Conversion Method)"
-msgstr ""
+msgstr "%s(שיטת המרת מטבע %s)"
 
 #. module: account_consolidation
+#. odoo-python
 #: code:addons/account_consolidation/models/consolidation_period.py:0
 #, python-format
 msgid "%s Consolidated Accounting"
-msgstr ""
-
-#. module: account_consolidation
-#: code:addons/account_consolidation/report/trial_balance.py:0
-#, python-format
-msgid "%s<br /><span class=\"subtitle\">Conso Rate: %s%%</span><br/><br/>"
-msgstr ""
-
-#. module: account_consolidation
-#: code:addons/account_consolidation/report/trial_balance.py:0
-#, python-format
-msgid ""
-"%s<br /><span class=\"subtitle\">Conso Rate: %s%%<br />Avg Rate: 1%s = %s%s "
-"/ End Rate: 1%s = %s%s</span>"
-msgstr ""
+msgstr "חשבון מותאם %s"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_company_period_form
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_composition_form
 msgid "&amp;nbsp;"
-msgstr ""
+msgstr "&amp;nbsp;"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_form
 msgid "(Re)Compute"
-msgstr ""
+msgstr "חשב מחדש"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_kanban
 msgid "(Re)compute"
+msgstr "חשב מחדש"
+
+#. module: account_consolidation
+#. odoo-javascript
+#: code:addons/account_consolidation/static/src/components/move_line_list/move_line_list.xml:0
+#, python-format
+msgid ") and the consolidated company ("
 msgstr ""
 
 #. module: account_consolidation
-#: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_kanban
-msgid ""
-"<i class=\"fa fa-ellipsis-v\" aria-label=\"Selection\" role=\"img\" "
-"title=\"Selection\"/>"
+#. odoo-javascript
+#: code:addons/account_consolidation/static/src/components/move_line_list/move_line_list.xml:0
+#, python-format
+msgid ") have different currencies and the company is consolidated at"
 msgstr ""
 
 #. module: account_consolidation
-#: model_terms:ir.ui.view,arch_db:account_consolidation.search_template_consolidation_period_comparisons
-msgid ""
-"<span class=\"fa fa-bar-chart\"/>\n"
-"                    Comparison"
+#. odoo-javascript
+#: code:addons/account_consolidation/static/src/components/move_line_list/move_line_list.xml:0
+#, python-format
+msgid ") have different currencies."
 msgstr ""
 
 #. module: account_consolidation
-#: model_terms:ir.ui.view,arch_db:account_consolidation.search_template_consolidation_journals
-msgid ""
-"<span class=\"fa fa-book\"/>\n"
-"                    Journals:"
+#. odoo-javascript
+#: code:addons/account_consolidation/static/src/components/consolidation_report/line_cell/line_cell.xml:0
+#, python-format
+msgid "/ End Rate: 1"
+msgstr "/ שער אחרון: 1"
+
+#. module: account_consolidation
+#: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_company_period_form
+#: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_journal_form
+#: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_composition_form
+msgid "<span class=\"o_form_label oe_inline\">%</span>"
+msgstr "<span class=\"o_form_label oe_inline\">%</span>"
+
+#. module: account_consolidation
+#: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_form
+msgid "<span class=\"o_stat_text\">Consolidated Balance</span>"
+msgstr ""
+
+#. module: account_consolidation
+#: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_form
+msgid "<span class=\"o_stat_text\">Edit</span>"
 msgstr ""
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_kanban
 msgid "<span role=\"separator\">Actions</span>"
-msgstr ""
+msgstr "<span role=\"separator\">פעולות</span>"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_kanban
 msgid "<span role=\"separator\">View</span>"
-msgstr ""
+msgstr "<span role=\"separator\">תצוגה</span>"
 
 #. module: account_consolidation
 #: model:ir.model.constraint,message:account_consolidation.constraint_consolidation_account_code_uniq
-msgid ""
-"A consolidation account with the same code already exists in this "
-"consolidation."
-msgstr ""
+msgid "A consolidation account with the same code already exists in this consolidation."
+msgstr "חשבון התאמה עם אותו קוד כבר קיים בהתאמה זו."
 
 #. module: account_consolidation
+#. odoo-python
 #: code:addons/account_consolidation/models/consolidation_journal.py:0
 #, python-format
-msgid ""
-"A journal entry should only be linked to a company period OR to a analysis "
-"period of another consolidation !"
+msgid "A journal entry should only be linked to a company period OR to a analysis period of another consolidation!"
 msgstr ""
 
 #. module: account_consolidation
@@ -156,7 +171,7 @@ msgstr "חשבון"
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_res_company__account_consolidation_currency_is_different
 msgid "Account Consolidation Currency Is Different"
-msgstr ""
+msgstr "מטבע שונה להתאמת החשבון "
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_group_tree
@@ -170,7 +185,7 @@ msgstr "קבוצת חשבון"
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_group_form
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_group_tree
 msgid "Account Groups"
-msgstr "קבוצות חשבון"
+msgstr "קבוצות חשבונות"
 
 #. module: account_consolidation
 #: model:ir.actions.act_window,name:account_consolidation.account_mapping_action
@@ -179,27 +194,35 @@ msgid "Account Mapping"
 msgstr "מיפוי חשבונות"
 
 #. module: account_consolidation
+#. odoo-python
 #: code:addons/account_consolidation/models/consolidation_coa.py:0
-#: code:addons/account_consolidation/models/res_company.py:0
 #, python-format
-msgid "Account Mapping: "
-msgstr ""
+msgid "Account Mapping: %(chart)s"
+msgstr "מיפוי החשבון: %(chart)s"
 
 #. module: account_consolidation
+#. odoo-python
+#: code:addons/account_consolidation/models/res_company.py:0
+#, python-format
+msgid "Account Mapping: %(company)s"
+msgstr "מיפוי החשבון: %(company)s"
+
+#. module: account_consolidation
+#. odoo-python
 #: code:addons/account_consolidation/models/consolidation_period.py:0
 #, python-format
 msgid "Account Mapping: %s (for %s)"
-msgstr ""
+msgstr "מיפוי חשבונות: %s (עבור %s)"
 
 #. module: account_consolidation
-#: model:ir.model,name:account_consolidation.model_account_consolidation_trial_balance_report
-msgid "Account consolidation trial balance report"
-msgstr ""
+#: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_account_form
+msgid "Account Name"
+msgstr "שם חשבון"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.account_mapping_search
 msgid "Account with Entries"
-msgstr ""
+msgstr "חשבון עם פקודות יומן"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_account__account_ids
@@ -208,12 +231,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_chart_form
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_form
 msgid "Accounts"
-msgstr "חשבונות"
+msgstr "משתמשים"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_res_company__consolidation_color
 msgid "Accounts color"
-msgstr ""
+msgstr "צבע חשבונות"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__message_needaction
@@ -226,11 +249,12 @@ msgid "Active"
 msgstr "פעיל"
 
 #. module: account_consolidation
-#. openerp-web
-#: code:addons/account_consolidation/static/src/js/trial_balance_grid/controller.js:0
+#. odoo-javascript
+#: code:addons/account_consolidation/static/src/views/trial_balance_grid/trial_balance_grid_controller.js:0
+#: code:addons/account_consolidation/static/src/views/trial_balance_grid/trial_balance_grid_controller.xml:0
 #, python-format
 msgid "Add a column"
-msgstr ""
+msgstr "הוסף עמודה"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_company_period_form
@@ -240,58 +264,52 @@ msgstr "מידע נוסף"
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_chart_form
 msgid "Advanced Consolidation"
-msgstr ""
-
-#. module: account_consolidation
-#: model_terms:ir.ui.view,arch_db:account_consolidation.search_template_consolidation_journals
-msgid "All"
-msgstr "הכל"
+msgstr "קונסולידציה מתקדמת"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.account_mapping_search
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_account_search_mapping
 msgid "Already Mapped"
-msgstr ""
+msgstr "כבר עבר מיפוי"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_journal_line__amount
 msgid "Amount"
-msgstr "סכום"
+msgstr "סכום כולל"
 
 #. module: account_consolidation
+#. odoo-python
 #: code:addons/account_consolidation/models/consolidation_coa.py:0
 #, python-format
-msgid ""
-"An account group can only have accounts or other groups children but not "
-"both !"
+msgid "An account group can only have accounts or other groups children but not both!"
 msgstr ""
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_journal__period_id
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_form
 msgid "Analysis Period"
-msgstr ""
+msgstr "תקופת ניתוח"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period_composition__using_period_id
 msgid "Analysis Period Using This"
-msgstr ""
+msgstr "תקופת ניתוח נתונים באמצעות "
 
 #. module: account_consolidation
 #: model:ir.actions.act_window,name:account_consolidation.analysis_period_config_action
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_chart__period_ids
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_tree
 msgid "Analysis Periods"
-msgstr ""
+msgstr "תקופות ניתוח"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.create_period_step
 msgid "Analysis period"
-msgstr ""
+msgstr "תקופת ניתוח"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.create_period_step
-msgid "Analysis period created !"
+msgid "Analysis period created!"
 msgstr ""
 
 #. module: account_consolidation
@@ -303,40 +321,49 @@ msgstr "החל"
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__message_attachment_count
 msgid "Attachment Count"
-msgstr "ספירת קבצים מצורפים"
+msgstr "כמות קבצים מצורפים"
 
 #. module: account_consolidation
-#: model_terms:ir.ui.view,arch_db:account_consolidation.line_template
+#. odoo-javascript
+#: code:addons/account_consolidation/static/src/components/consolidation_report/line_cell/line_cell.xml:0
+#, python-format
 msgid "Audit"
-msgstr ""
+msgstr "בקרה"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_journal_search
 msgid "Auto-generated"
-msgstr ""
+msgstr "נוצר אוטומטית"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_journal__auto_generated
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_journal_line__auto_generated
 msgid "Automatically Generated"
-msgstr ""
+msgstr "נוצר אוטומטית"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_company_period__currency_rate_avg
 msgid "Average Currency Rate"
-msgstr ""
+msgstr "שער ממוצע של מטבע"
 
 #. module: account_consolidation
 #: model:ir.model.fields.selection,name:account_consolidation.selection__consolidation_account__currency_mode__avg
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_company_period_form
 msgid "Average Rate"
-msgstr ""
+msgstr "תעריף ממוצע"
+
+#. module: account_consolidation
+#. odoo-javascript
+#: code:addons/account_consolidation/static/src/components/consolidation_report/line_cell/line_cell.xml:0
+#, python-format
+msgid "Avg Rate: 1"
+msgstr "שער ממוצע: 1"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_journal__balance
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_journal_form
 msgid "Balance"
-msgstr "מאזן"
+msgstr "יתרה"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_chart_form_onboarding
@@ -348,32 +375,32 @@ msgstr "בטל"
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_company_period__chart_id
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_journal__chart_id
 msgid "Chart"
-msgstr ""
+msgstr "טבלה"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.chart_of_account_step
 msgid "Chart of Accounts"
-msgstr ""
+msgstr "לוח חשבונות"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.chart_of_account_step
-msgid "Chart of account set !"
+msgid "Chart of account set!"
 msgstr ""
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_kanban
 msgid "Chart of accounts"
-msgstr ""
+msgstr "לוח חשבונות"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_chart_tree
 msgid "Charts"
-msgstr ""
+msgstr "לוחות"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_group__child_ids
 msgid "Children"
-msgstr ""
+msgstr "ילדים"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_form
@@ -383,7 +410,7 @@ msgstr "סגור"
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_kanban
 msgid "Close period"
-msgstr ""
+msgstr "סגירת תקופה"
 
 #. module: account_consolidation
 #: model:ir.model.fields.selection,name:account_consolidation.selection__consolidation_period__state__closed
@@ -395,7 +422,7 @@ msgstr "סגור"
 #. module: account_consolidation
 #: model:ir.model.fields.selection,name:account_consolidation.selection__consolidation_account__currency_mode__end
 msgid "Closing Rate"
-msgstr ""
+msgstr "שער סגירה"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_account__code
@@ -411,7 +438,7 @@ msgstr "צבע"
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_chart__color
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__color
 msgid "Color Index"
-msgstr "מפתח צבעים"
+msgstr "אינדקס צבעים"
 
 #. module: account_consolidation
 #: model:ir.model,name:account_consolidation.model_res_company
@@ -443,7 +470,7 @@ msgstr "שם החברה"
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_journal__company_period_id
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_company_period_form
 msgid "Company Period"
-msgstr ""
+msgstr "תקופת ארגון"
 
 #. module: account_consolidation
 #: model:ir.actions.act_window,name:account_consolidation.consolidation_company_period_action
@@ -452,17 +479,24 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_company_period_tree
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_form
 msgid "Company Periods"
-msgstr ""
+msgstr "תקופות ארגון"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__company_unmapped_accounts_counts
 msgid "Company Unmapped Accounts Counts"
+msgstr "מספר חשבונות שלא עברו מיפוי בארגון"
+
+#. module: account_consolidation
+#. odoo-javascript
+#: code:addons/account_consolidation/static/src/components/consolidation_report/filters/filters.xml:0
+#, python-format
+msgid "Comparison:"
 msgstr ""
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period_composition__composed_period_id
 msgid "Composed Analysis Period"
-msgstr ""
+msgstr "תקופת ניתוח נתונים"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period_composition__composed_chart_currency_id
@@ -475,44 +509,49 @@ msgid "Configuration"
 msgstr "תצורה"
 
 #. module: account_consolidation
+#. odoo-javascript
+#: code:addons/account_consolidation/static/src/components/consolidation_report/line_cell/line_cell.xml:0
+#, python-format
+msgid "Conso Rate:"
+msgstr "שער התאמה:"
+
+#. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_journal_line__account_id
 msgid "Consolidated Account"
-msgstr ""
+msgstr "חשבון מותאם"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.account_mapping_tree
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_account_form
 msgid "Consolidated Accounts"
-msgstr ""
+msgstr "חשבונות מותאמים"
 
 #. module: account_consolidation
+#: model:account.report,name:account_consolidation.consolidated_balance_report
 #: model:ir.actions.client,name:account_consolidation.trial_balance_report_action
-#: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_form
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_kanban
 msgid "Consolidated Balance"
-msgstr ""
+msgstr "מאזן מאוחד"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_chart_form
 msgid "Consolidated Companies"
-msgstr ""
+msgstr "חברות מאוחדות"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_chart__parents_ids
 msgid "Consolidated In"
-msgstr ""
+msgstr "הותאם ב"
 
 #. module: account_consolidation
-#. openerp-web
-#: code:addons/account_consolidation/static/src/js/trial_balance_grid/controller.js:0
-#, python-format
+#: model_terms:ir.ui.view,arch_db:account_consolidation.view_trial_balance_report_grid
 msgid "Consolidated balance"
-msgstr ""
+msgstr "מאזן מאוחד"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_account__used_in_ids
 msgid "Consolidated in"
-msgstr ""
+msgstr "ותאם ב"
 
 #. module: account_consolidation
 #: model:ir.actions.act_window,name:account_consolidation.consolidation_chart_action
@@ -527,9 +566,10 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_account_search
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_account_tree
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_chart_form
+#: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_group_search
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_search
 msgid "Consolidation"
-msgstr ""
+msgstr "קונסולידציה"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_account_account__consolidation_account_ids
@@ -537,7 +577,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_account_form
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_group_form
 msgid "Consolidation Account"
-msgstr ""
+msgstr "חשבון קונסולידציה"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_account_account__consolidation_account_chart_filtered_ids
@@ -551,69 +591,69 @@ msgstr ""
 #: model:ir.ui.menu,name:account_consolidation.menu_consolidation_configuration_accounts
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_group_form
 msgid "Consolidation Accounts"
-msgstr ""
+msgstr "חשבונות קונסולידציה"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_search
 msgid "Consolidation Chart"
-msgstr ""
+msgstr "לוח התאמות"
 
 #. module: account_consolidation
 #: model:ir.model,name:account_consolidation.model_consolidation_company_period
 msgid "Consolidation Company Period"
-msgstr ""
+msgstr "תקופת התאמות ארגון"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_company_period__currency_chart_id
 msgid "Consolidation Currency"
-msgstr ""
+msgstr "מטבע התאמה"
 
 #. module: account_consolidation
 #: model:ir.actions.act_window,name:account_consolidation.Consolidation_journal_line_action
 msgid "Consolidation Entries"
-msgstr ""
+msgstr "רשומות התאמה"
 
 #. module: account_consolidation
 #: model:ir.ui.menu,name:account_consolidation.menu_consolidation_operations_consolidation_entries
 msgid "Consolidation Entry"
-msgstr ""
+msgstr "רשומת התאמה"
 
 #. module: account_consolidation
 #: model:ir.model,name:account_consolidation.model_consolidation_group
 msgid "Consolidation Group"
-msgstr ""
+msgstr "קבוצת התאמה"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_journal_line_tree
 msgid "Consolidation Items"
-msgstr ""
+msgstr "פריטי התאמה"
 
 #. module: account_consolidation
 #: model:ir.model,name:account_consolidation.model_consolidation_journal
 msgid "Consolidation Journal"
-msgstr ""
+msgstr "יומן קונסולידציה"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_account_move_line__consolidation_journal_line_ids
 msgid "Consolidation Journal Line"
-msgstr ""
+msgstr "שורת יומן קונסולידציה"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_company_period__consolidation_method
 msgid "Consolidation Method"
-msgstr ""
+msgstr "אופן התאמה"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_chart__name
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__chart_name
 msgid "Consolidation Name"
-msgstr ""
+msgstr "שם התאמה"
 
 #. module: account_consolidation
 #: model:ir.model,name:account_consolidation.model_consolidation_period
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_journal__composition_id
 msgid "Consolidation Period"
-msgstr ""
+msgstr "תקופת התאמה"
 
 #. module: account_consolidation
 #: model:ir.model,name:account_consolidation.model_consolidation_period_composition
@@ -626,37 +666,37 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_journal__rate_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period_composition__rate_consolidation
 msgid "Consolidation Rate"
-msgstr ""
+msgstr "שער התאמה"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_form
 msgid "Consolidation Rate (%)"
-msgstr ""
+msgstr "שער התאמה (%)"
 
 #. module: account_consolidation
 #: model:ir.model,name:account_consolidation.model_consolidation_account
 msgid "Consolidation account"
-msgstr ""
+msgstr "חשבון קונסולידציה"
 
 #. module: account_consolidation
 #: model:ir.model,name:account_consolidation.model_consolidation_chart
 msgid "Consolidation chart"
-msgstr ""
+msgstr "לוח התאמה"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_journal__line_ids
 msgid "Consolidation items"
-msgstr ""
+msgstr "פריטי התאמה"
 
 #. module: account_consolidation
 #: model:ir.model,name:account_consolidation.model_consolidation_journal_line
 msgid "Consolidation journal line"
-msgstr ""
+msgstr "שורת יומן קונסולידציה"
 
 #. module: account_consolidation
 #: model:res.groups,name:account_consolidation.group_consolidation_user
 msgid "Consolidation user"
-msgstr ""
+msgstr "התאמת משתמש"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.create_period_step
@@ -666,12 +706,12 @@ msgstr "צור"
 #. module: account_consolidation
 #: model:ir.actions.act_window,name:account_consolidation.consolidation_period_action_onboarding
 msgid "Create First Period"
-msgstr ""
+msgstr "יצירת תקופה ראשונה"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.create_period_step
 msgid "Create your first analysis period &amp; set the currency rates."
-msgstr ""
+msgstr "יצירת תקופת ניתוח ראשונה &amp;  הגדרת שערי המטבע."
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_account__create_uid
@@ -704,7 +744,7 @@ msgstr "נוצר ב-"
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_journal__currencies_are_different
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period_composition__currencies_are_different
 msgid "Currencies Are Different"
-msgstr ""
+msgstr "מטבעות שונים"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_composition_form
@@ -715,12 +755,12 @@ msgstr "מטבע"
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_journal_line__currency_amount
 msgid "Currency Amount"
-msgstr ""
+msgstr "סכום המטבע"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_account__currency_mode
 msgid "Currency Conversion Method"
-msgstr ""
+msgstr "שיטת המרת מטבע"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period_composition__currency_rate
@@ -742,7 +782,7 @@ msgstr "לוח בקרה"
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__dashboard_sections
 msgid "Dashboard Sections"
-msgstr ""
+msgstr "חלקי לוח הבקרה"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_journal_line_tree
@@ -752,13 +792,12 @@ msgstr "תאריך"
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_step
 msgid "Define"
-msgstr ""
+msgstr "הגדר"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_step
-msgid ""
-"Define the companies that should be consolidated &amp; the target currency"
-msgstr ""
+msgid "Define the companies that should be consolidated &amp; the target currency"
+msgstr "הגדרת הארגונים שצריכים התאמות &amp; מטבע היעד"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_journal_line__note
@@ -768,10 +807,9 @@ msgstr "תיאור"
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__display_dates
 msgid "Display Dates"
-msgstr ""
+msgstr "הצג תאריכים"
 
 #. module: account_consolidation
-#: model:ir.model.fields,field_description:account_consolidation.field_account_consolidation_trial_balance_report__display_name
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_account__display_name
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_chart__display_name
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_company_period__display_name
@@ -782,7 +820,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period_composition__display_name
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_rate__display_name
 msgid "Display Name"
-msgstr "הצג שם"
+msgstr "שם לתצוגה"
 
 #. module: account_consolidation
 #: model:ir.model.fields.selection,name:account_consolidation.selection__res_company__consolidation_create_period_state__done
@@ -799,17 +837,23 @@ msgid "Draft"
 msgstr "טיוטה"
 
 #. module: account_consolidation
+#. odoo-python
 #: code:addons/account_consolidation/report/trial_balance.py:0
-#: code:addons/account_consolidation/report/trial_balance.py:0
-#: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_form
 #, python-format
 msgid "Edit"
 msgstr "ערוך"
 
 #. module: account_consolidation
+#. odoo-python
+#: code:addons/account_consolidation/report/trial_balance.py:0
+#, python-format
+msgid "Edit %s"
+msgstr ""
+
+#. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_company_period__currency_rate_end
 msgid "End Currency Rate"
-msgstr ""
+msgstr "סיום שער מטבע"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_company_period__date_company_end
@@ -824,7 +868,7 @@ msgstr "תאריך סיום"
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_company_period_form
 msgid "End Rate"
-msgstr ""
+msgstr "סיום שער"
 
 #. module: account_consolidation
 #: model:ir.model.fields.selection,name:account_consolidation.selection__consolidation_company_period__consolidation_method__equity
@@ -834,22 +878,11 @@ msgstr "הון עצמי"
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_company_period__exclude_journal_ids
 msgid "Exclude Journals"
-msgstr ""
-
-#. module: account_consolidation
-#: code:addons/account_consolidation/report/trial_balance.py:0
-#, python-format
-msgid "Export (XLSX)"
-msgstr "ייצא (XLSX)"
+msgstr "לא כולל יומנים"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_account__filtered_used_in_ids
 msgid "Filtered Used In"
-msgstr ""
-
-#. module: account_consolidation
-#: model_terms:ir.ui.view,arch_db:account_consolidation.line_template
-msgid "Folded"
 msgstr ""
 
 #. module: account_consolidation
@@ -858,14 +891,9 @@ msgid "Followers"
 msgstr "עוקבים"
 
 #. module: account_consolidation
-#: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__message_channel_ids
-msgid "Followers (Channels)"
-msgstr "עוקבים (ערוצים)"
-
-#. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__message_partner_ids
 msgid "Followers (Partners)"
-msgstr "עוקבים (שותפים)"
+msgstr "עוקבים (לקוחות/ספקים)"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_account__full_name
@@ -875,7 +903,7 @@ msgstr "שם מלא"
 #. module: account_consolidation
 #: model:ir.model.fields.selection,name:account_consolidation.selection__consolidation_company_period__consolidation_method__full
 msgid "Full consolidation"
-msgstr ""
+msgstr "התאמה מלאה"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_account__group_id
@@ -887,35 +915,44 @@ msgid "Group"
 msgstr "קבוצה"
 
 #. module: account_consolidation
+#: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_group_form
+msgid "Group Name"
+msgstr "שם הקבוצה"
+
+#. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_chart_form
 msgid "Groups"
 msgstr "קבוצות"
 
 #. module: account_consolidation
+#: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__has_message
+msgid "Has Message"
+msgstr "יש הודעה"
+
+#. module: account_consolidation
 #: model:ir.model.fields.selection,name:account_consolidation.selection__consolidation_account__currency_mode__hist
 msgid "Historical Rate"
-msgstr ""
+msgstr "תעריף היסטורי"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_chart_form
 msgid "Historical Rates"
-msgstr ""
+msgstr "תעריפים היסטוריים"
 
 #. module: account_consolidation
+#. odoo-python
 #: code:addons/account_consolidation/models/res_company.py:0
 #, python-format
-msgid "Historical Rates: "
-msgstr ""
+msgid "Historical Rates: %(company)s"
+msgstr "תעריפים היסטוריים: %(company)s"
 
 #. module: account_consolidation
 #: model:ir.model.fields,help:account_consolidation.field_consolidation_company_period__currency_rate_avg
 #: model:ir.model.fields,help:account_consolidation.field_consolidation_company_period__currency_rate_end
-msgid ""
-"How many units of company currency is needed to get 1 unit of chart currency"
-msgstr ""
+msgid "How many units of company currency is needed to get 1 unit of chart currency"
+msgstr "כמה יחידות של מטבע הארגון דרושות כדי לקבל יחידה 1 של המטבע בלוח"
 
 #. module: account_consolidation
-#: model:ir.model.fields,field_description:account_consolidation.field_account_consolidation_trial_balance_report__id
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_account__id
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_chart__id
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_company_period__id
@@ -926,62 +963,63 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period_composition__id
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_rate__id
 msgid "ID"
-msgstr "תעודה מזהה"
+msgstr "מזהה"
 
 #. module: account_consolidation
 #: model:ir.model.fields,help:account_consolidation.field_consolidation_period__message_needaction
-#: model:ir.model.fields,help:account_consolidation.field_consolidation_period__message_unread
 msgid "If checked, new messages require your attention."
-msgstr "אם מסומן, אז הודעה חדשה דורשת התייחסותכם."
+msgstr "אם מסומן, הודעות חדשות דורשות את תשומת לבך."
 
 #. module: account_consolidation
 #: model:ir.model.fields,help:account_consolidation.field_consolidation_period__message_has_error
 #: model:ir.model.fields,help:account_consolidation.field_consolidation_period__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
-msgstr "אם סומן, בחלק מההודעות קיימת שגיאת משלוח."
+msgstr "אם מסומן, בחלק מההודעות קיימת שגיאת משלוח."
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_search
 msgid "In The Future"
-msgstr ""
+msgstr "בעתיד"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_search
 msgid "In The Past"
+msgstr "בעבר"
+
+#. module: account_consolidation
+#: model:ir.model.fields,field_description:account_consolidation.field_consolidation_account__invert_sign
+#: model:ir.model.fields,field_description:account_consolidation.field_consolidation_chart__invert_sign
+#: model:ir.model.fields,field_description:account_consolidation.field_consolidation_group__invert_sign
+msgid "Invert Balance Sign"
 msgstr ""
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__message_is_follower
 msgid "Is Follower"
-msgstr "האם עוקב"
+msgstr "עוקב"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_journal_line__journal_id
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_journal_form
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_journal_line_form
 msgid "Journal"
-msgstr "יומנים"
+msgstr "יומן"
 
 #. module: account_consolidation
 #: model:ir.model,name:account_consolidation.model_account_move_line
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_journal_line_form
 msgid "Journal Item"
-msgstr ""
+msgstr "תנועת יומן"
 
 #. module: account_consolidation
 #: model:ir.actions.act_window,name:account_consolidation.view_account_move_line_filter
 msgid "Journal Items"
-msgstr "פריטי יומן"
-
-#. module: account_consolidation
-#: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_journal_form
-msgid "Journal Label"
-msgstr ""
+msgstr "תנועות יומן"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_group__line_ids
 msgid "Journal lines"
-msgstr ""
+msgstr "תווית יומן"
 
 #. module: account_consolidation
 #: model:ir.actions.act_window,name:account_consolidation.consolidation_journal_action
@@ -993,26 +1031,19 @@ msgid "Journals"
 msgstr "יומנים"
 
 #. module: account_consolidation
+#. odoo-javascript
+#: code:addons/account_consolidation/static/src/components/consolidation_report/filters/filters.xml:0
+#, python-format
+msgid "Journals:"
+msgstr ""
+
+#. module: account_consolidation
 #: model:ir.model.fields.selection,name:account_consolidation.selection__res_company__consolidation_create_period_state__just_done
 #: model:ir.model.fields.selection,name:account_consolidation.selection__res_company__consolidation_dashboard_onboarding_state__just_done
 #: model:ir.model.fields.selection,name:account_consolidation.selection__res_company__consolidation_setup_ccoa_state__just_done
 #: model:ir.model.fields.selection,name:account_consolidation.selection__res_company__consolidation_setup_consolidation_state__just_done
 msgid "Just done"
-msgstr "הרגע נעשה"
-
-#. module: account_consolidation
-#: model:ir.model.fields,field_description:account_consolidation.field_account_consolidation_trial_balance_report____last_update
-#: model:ir.model.fields,field_description:account_consolidation.field_consolidation_account____last_update
-#: model:ir.model.fields,field_description:account_consolidation.field_consolidation_chart____last_update
-#: model:ir.model.fields,field_description:account_consolidation.field_consolidation_company_period____last_update
-#: model:ir.model.fields,field_description:account_consolidation.field_consolidation_group____last_update
-#: model:ir.model.fields,field_description:account_consolidation.field_consolidation_journal____last_update
-#: model:ir.model.fields,field_description:account_consolidation.field_consolidation_journal_line____last_update
-#: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period____last_update
-#: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period_composition____last_update
-#: model:ir.model.fields,field_description:account_consolidation.field_consolidation_rate____last_update
-msgid "Last Modified on"
-msgstr "שינוי אחרון ב"
+msgstr "הרגע בוצע"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_account__write_uid
@@ -1041,35 +1072,30 @@ msgid "Last Updated on"
 msgstr "עדכון אחרון ב"
 
 #. module: account_consolidation
-#: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__message_main_attachment_id
-msgid "Main Attachment"
-msgstr "קובץ ראשי מצורף "
-
-#. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_journal_search
 msgid "Manually Created"
-msgstr ""
+msgstr "נוצר ידנית"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_chart_form
 msgid "Map Accounts"
-msgstr ""
+msgstr "מפה חשבונות"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_account_tree
 msgid "Mapped Accounts"
-msgstr ""
+msgstr "חשבונות ממופים"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_account_search_mapping
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_account_tree_mapping
 msgid "Mapped In"
-msgstr ""
+msgstr "עבר מיפוי ב"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__message_has_error
 msgid "Message Delivery error"
-msgstr "הודעת שגיאת משלוח"
+msgstr "הודעת שגיאת שליחה"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__message_ids
@@ -1079,7 +1105,7 @@ msgstr "הודעות"
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_journal_line__move_line_ids
 msgid "Move Line"
-msgstr "להזיז קו"
+msgstr "שורת תנועה"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_account__name
@@ -1091,22 +1117,19 @@ msgstr "שם"
 
 #. module: account_consolidation
 #: model_terms:ir.actions.act_window,help:account_consolidation.account_mapping_action
-msgid ""
-"No accounts have been found. Make sure you have installed a chart of account"
-" for this company or that you have access right to see the accounts of this "
-"company."
-msgstr ""
+msgid "No accounts have been found. Make sure you have installed a chart of account for this company or that you have access right to see the accounts of this company."
+msgstr "לא נמצאו חשבונות. יש לוודא שהותקן לוח חשבונות לארגון זה או שיש לך הרשאת גישה לחשבונות של ארגון זה."
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.account_mapping_search
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_account_search_mapping
 msgid "Not Mapped"
-msgstr ""
+msgstr "לא ממופה"
 
 #. module: account_consolidation
 #: model:ir.model.fields.selection,name:account_consolidation.selection__consolidation_company_period__consolidation_method__none
 msgid "Not consolidated"
-msgstr ""
+msgstr "לא הותאם"
 
 #. module: account_consolidation
 #: model:ir.model.fields.selection,name:account_consolidation.selection__res_company__consolidation_create_period_state__not_done
@@ -1114,22 +1137,22 @@ msgstr ""
 #: model:ir.model.fields.selection,name:account_consolidation.selection__res_company__consolidation_setup_ccoa_state__not_done
 #: model:ir.model.fields.selection,name:account_consolidation.selection__res_company__consolidation_setup_consolidation_state__not_done
 msgid "Not done"
-msgstr "לא מוכן"
+msgstr "לא בוצע"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__message_needaction_counter
 msgid "Number of Actions"
-msgstr "מספר הפעולות"
+msgstr "מספר פעולות"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__message_has_error_counter
 msgid "Number of errors"
-msgstr ""
+msgstr "מספר השגיאות"
 
 #. module: account_consolidation
 #: model:ir.model.fields,help:account_consolidation.field_consolidation_period__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr "מספר ההודעות המחייבות פעולה"
+msgstr "מספר הודעות המחייבות פעולה"
 
 #. module: account_consolidation
 #: model:ir.model.fields,help:account_consolidation.field_consolidation_period__message_has_error_counter
@@ -1137,24 +1160,26 @@ msgid "Number of messages with delivery error"
 msgstr "מספר הודעות עם שגיאת משלוח"
 
 #. module: account_consolidation
-#: model:ir.model.fields,help:account_consolidation.field_consolidation_period__message_unread_counter
-msgid "Number of unread messages"
-msgstr "מספר ההודעות שלא נקראו"
+#. odoo-python
+#: code:addons/account_consolidation/models/consolidation_journal.py:0
+#, python-format
+msgid "Only one entry by account should be created for a generated journal entry!"
+msgstr ""
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_search
 msgid "Only the periods containing today"
-msgstr ""
+msgstr "רק התקופות שכוללות את היום"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_search
 msgid "Only the periods in the future"
-msgstr ""
+msgstr "רק התקופות בעתיד"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_search
 msgid "Only the periods in the past"
-msgstr ""
+msgstr "רק התקופות בעבר"
 
 #. module: account_consolidation
 #: model:ir.ui.menu,name:account_consolidation.menu_consolidation_operations
@@ -1165,9 +1190,10 @@ msgstr "פעולות"
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_journal__originating_currency_id
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_journal_line__journal_originating_currency_id
 msgid "Originating Currency"
-msgstr ""
+msgstr "מטבע מקורי"
 
 #. module: account_consolidation
+#. odoo-python
 #: code:addons/account_consolidation/report/trial_balance.py:0
 #, python-format
 msgid "PDF"
@@ -1182,7 +1208,7 @@ msgstr "אב"
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_group__parent_path
 msgid "Parent Path"
-msgstr ""
+msgstr "נתיב אב"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_company_period__period_id
@@ -1198,23 +1224,17 @@ msgstr "תקופה"
 #: model:ir.ui.menu,name:account_consolidation.menu_consolidation_configuration_analysis_periods
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_chart_form
 msgid "Periods"
-msgstr ""
-
-#. module: account_consolidation
-#: code:addons/account_consolidation/report/trial_balance.py:0
-#, python-format
-msgid "Print Preview"
-msgstr "תצוגה לפני הדפסה"
+msgstr "תקופות"
 
 #. module: account_consolidation
 #: model:ir.model.fields.selection,name:account_consolidation.selection__consolidation_company_period__consolidation_method__proportional
 msgid "Proportional consolidation"
-msgstr ""
+msgstr "איחוד מידתי"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_rate__rate
 msgid "Rate"
-msgstr "שער"
+msgstr "שיעור"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_company_period__rate_control
@@ -1232,28 +1252,33 @@ msgid "Rate Ranges"
 msgstr ""
 
 #. module: account_consolidation
+#: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__rating_ids
+msgid "Ratings"
+msgstr ""
+
+#. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_kanban
 msgid "Reopen period"
-msgstr ""
+msgstr "פתיחת תקופה מחדש"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_form
 msgid "Reset To Draft"
-msgstr ""
+msgstr "החזר לטיוטה"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_chart_form
 msgid "Review Chart Of Accounts"
-msgstr ""
+msgstr "סקירת לוח חשבונות"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__message_has_sms_error
 msgid "SMS Delivery error"
-msgstr ""
+msgstr "שגיאה בשליחת SMS"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_step
-msgid "Scope of Consolidation defined !"
+msgid "Scope of Consolidation defined!"
 msgstr ""
 
 #. module: account_consolidation
@@ -1270,7 +1295,7 @@ msgstr "הגדרות"
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.chart_of_account_step
 msgid "Setup"
-msgstr ""
+msgstr "הכנה"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.chart_of_account_step
@@ -1278,6 +1303,8 @@ msgid ""
 "Setup your consolidated accounts and their currency conversion method.\n"
 "                Then map them with the companies accounts."
 msgstr ""
+"הגדרת החשבונות להתאמה ואת אופן המרת המטבע.\n"
+"                ואז אפשר למפות אותם מול חשבונות הארגון."
 
 #. module: account_consolidation
 #: model:ir.model.fields,help:account_consolidation.field_consolidation_company_period__rate_consolidation
@@ -1285,17 +1312,26 @@ msgstr ""
 #: model:ir.model.fields,help:account_consolidation.field_consolidation_company_period__rate_ownership
 #: model:ir.model.fields,help:account_consolidation.field_consolidation_period_composition__rate_consolidation
 msgid "Should be between 0 and 100 %"
-msgstr ""
+msgstr "צריך להיות בין 0 ל 100%"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_group__show_on_dashboard
 msgid "Show On Dashboard"
-msgstr ""
+msgstr "הצג בלוח הבקרה"
 
 #. module: account_consolidation
-#: model_terms:ir.ui.view,arch_db:account_consolidation.search_template_conso_extra_options
+#. odoo-javascript
+#: code:addons/account_consolidation/static/src/components/consolidation_report/filters/filter_extra_options.xml:0
+#, python-format
 msgid "Show Zero Balance Accounts"
-msgstr ""
+msgstr "הצגת חשבונות עם מאזן אפס"
+
+#. module: account_consolidation
+#: model:ir.model.fields,field_description:account_consolidation.field_consolidation_account__sign
+#: model:ir.model.fields,field_description:account_consolidation.field_consolidation_chart__sign
+#: model:ir.model.fields,field_description:account_consolidation.field_consolidation_group__sign
+msgid "Sign"
+msgstr "חתימות"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_company_period__date_company_begin
@@ -1305,14 +1341,14 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_company_period_search
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_search
 msgid "Start Date"
-msgstr "תאריך התחלה"
+msgstr "תאריך תחילה"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_journal__state
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__state
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_search
 msgid "State"
-msgstr "מצב"
+msgstr "סטטוס"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_res_company__consolidation_dashboard_onboarding_state
@@ -1358,31 +1394,20 @@ msgstr ""
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_group_form
 msgid "Subgroups"
+msgstr "תת קבוצות"
+
+#. module: account_consolidation
+#. odoo-javascript
+#: code:addons/account_consolidation/static/src/components/move_line_list/move_line_list.xml:0
+#, python-format
+msgid "Take into account that the consolidation ("
 msgstr ""
 
 #. module: account_consolidation
-#. openerp-web
-#: code:addons/account_consolidation/static/src/js/move_line_list/renderer.js:0
+#. odoo-javascript
+#: code:addons/account_consolidation/static/src/components/move_line_list/move_line_list.xml:0
 #, python-format
-msgid ""
-"Take into account that the consolidation (%s) and the consolidated company "
-"(%s) have different currencies and the company is consolidated at %s%%."
-msgstr ""
-
-#. module: account_consolidation
-#. openerp-web
-#: code:addons/account_consolidation/static/src/js/move_line_list/renderer.js:0
-#, python-format
-msgid ""
-"Take into account that the consolidation (%s) and the consolidated company "
-"(%s) have different currencies."
-msgstr ""
-
-#. module: account_consolidation
-#. openerp-web
-#: code:addons/account_consolidation/static/src/js/move_line_list/renderer.js:0
-#, python-format
-msgid "Take into account that this company is consolidated at %s%%."
+msgid "Take into account that this company is consolidated at"
 msgstr ""
 
 #. module: account_consolidation
@@ -1392,27 +1417,33 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__chart_currency_id
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period_composition__using_chart_currency_id
 msgid "Target Currency"
+msgstr "מטבע יעד"
+
+#. module: account_consolidation
+#. odoo-python
+#: code:addons/account_consolidation/models/consolidation_period.py:0
+#, python-format
+msgid "The Composed Analysis Period must be different from the Analysis Period"
 msgstr ""
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_step
 msgid "The Scope of Consolidation"
-msgstr ""
+msgstr "גבולות ההתאמה"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_company_period_form
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_composition_form
-msgid ""
-"The rate used for the consolidation (basically this rate will multiply the "
-"sum of everything"
-msgstr ""
+msgid "The rate used for the consolidation (basically this rate will multiply the sum of everything"
+msgstr "השער עבורו תתבצע ההתאמה (בעיקרון השעה יכפיל את הסכום של הכל"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_journal_form
 msgid "This journal has been automatically generated on"
-msgstr ""
+msgstr "היומן הזה נוצר אוטומטית ב"
 
 #. module: account_consolidation
+#. odoo-python
 #: code:addons/account_consolidation/report/builder/abstract.py:0
 #: code:addons/account_consolidation/report/trial_balance.py:0
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_journal_form
@@ -1423,6 +1454,7 @@ msgid "Total"
 msgstr "סה\"כ"
 
 #. module: account_consolidation
+#. odoo-python
 #: code:addons/account_consolidation/report/trial_balance.py:0
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_journal_line_search
 #: model_terms:ir.ui.view,arch_db:account_consolidation.view_trial_balance_report_graph
@@ -1432,37 +1464,26 @@ msgid "Trial Balance"
 msgstr "מאזן בוחן"
 
 #. module: account_consolidation
+#: model:ir.model,name:account_consolidation.model_consolidation_trial_balance_report_handler
+msgid "Trial Balance Custom Handler"
+msgstr ""
+
+#. module: account_consolidation
+#. odoo-python
 #: code:addons/account_consolidation/models/consolidation_period.py:0
 #, python-format
 msgid "Trial Balance: %s"
-msgstr ""
+msgstr "מאזן בוחן: %s"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.trial_balance_grid_search
 msgid "Trial balance"
-msgstr ""
+msgstr "מאזן בוחן"
 
 #. module: account_consolidation
 #: model:ir.model.constraint,message:account_consolidation.constraint_consolidation_period_composition__unique_composition
-msgid ""
-"Two compositions of the same analysis period by the same analysis period "
-"cannot be created"
+msgid "Two compositions of the same analysis period by the same analysis period cannot be created"
 msgstr ""
-
-#. module: account_consolidation
-#: model_terms:ir.ui.view,arch_db:account_consolidation.line_template
-msgid "Unfolded"
-msgstr ""
-
-#. module: account_consolidation
-#: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__message_unread
-msgid "Unread Messages"
-msgstr "הודעות שלא נקראו"
-
-#. module: account_consolidation
-#: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__message_unread_counter
-msgid "Unread Messages Counter"
-msgstr "מספר הודעות שלא נקראו"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_journal_form
@@ -1478,7 +1499,7 @@ msgstr ""
 #: model:ir.model.fields,help:account_consolidation.field_consolidation_chart__color
 #: model:ir.model.fields,help:account_consolidation.field_consolidation_period__color
 msgid "Used in the kanban view"
-msgstr ""
+msgstr "משמש בתצוגת קנבן"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__using_composition_ids
@@ -1488,57 +1509,73 @@ msgstr ""
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__website_message_ids
 msgid "Website Messages"
-msgstr "הודעות מהאתר אינטרנט"
+msgstr "הודעות מאתר האינטרנט"
 
 #. module: account_consolidation
 #: model:ir.model.fields,help:account_consolidation.field_consolidation_period__website_message_ids
 msgid "Website communication history"
-msgstr "היסטורית התקשרויות מהאתר"
+msgstr "היסטורית התקשרויות מאתר האינטרנט"
 
 #. module: account_consolidation
+#. odoo-python
 #: code:addons/account_consolidation/models/consolidation_journal.py:0
 #, python-format
-msgid ""
-"When setting a period on a consolidation journal, the selected consolidation"
-" chart for the journal cannot be different from the one of the chosen "
-"period."
-msgstr ""
+msgid "When setting a period on a consolidation journal, the selected consolidation chart for the journal cannot be different from the one of the chosen period."
+msgstr "כשמגדירים תקופת התאמות יומן, לוח ההתאמות לא יכול להיות שונה מהתקופה שהוגדרה."
 
 #. module: account_consolidation
+#. odoo-python
 #: code:addons/account_consolidation/report/trial_balance.py:0
 #, python-format
 msgid "XLSX"
-msgstr ""
+msgstr "XLSX"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_chart_form
-msgid ""
-"You can here define complex consolidations based on other sub-"
-"consolidations, as part of a whole scheme"
-msgstr ""
+msgid "You can here define complex consolidations based on other sub-consolidations, as part of a whole scheme"
+msgstr "אפשר להגדיר כאן התאמות מורכבות המבוססות על תתי-התאמות, כחלק מסכימה שלמה"
 
 #. module: account_consolidation
+#. odoo-python
 #: code:addons/account_consolidation/models/consolidation_journal.py:0
+#, python-format
+msgid "You can't delete an auto-generated journal entry."
+msgstr "אי אפשר למחוק רשומת יומן שנוצרה אוטומטית."
+
+#. module: account_consolidation
+#. odoo-python
 #: code:addons/account_consolidation/models/consolidation_journal.py:0
 #, python-format
 msgid "You can't edit an auto-generated journal entry."
-msgstr ""
+msgstr "אי אפשר לערוך רשומת יומן שנוצרה אוטומטית."
 
 #. module: account_consolidation
+#. odoo-python
 #: code:addons/account_consolidation/models/consolidation_journal.py:0
 #, python-format
-msgid "You cannot add journals to a closed period !"
+msgid "You cannot add journals to a closed period!"
 msgstr ""
 
 #. module: account_consolidation
+#: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_group_form
+msgid "e.g. Profit and Loss"
+msgstr "לדוג' רווח והפסד"
+
+#. module: account_consolidation
+#: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_account_form
+msgid "e.g. Revenue"
+msgstr "לדוג' הכנסות"
+
+#. module: account_consolidation
+#. odoo-python
 #: code:addons/account_consolidation/report/builder/comparison.py:0
 #, python-format
 msgid "n/a"
 msgstr "לא זמין"
 
 #. module: account_consolidation
-#. openerp-web
-#: code:addons/account_consolidation/static/src/xml/fields_templates.xml:0
+#. odoo-javascript
+#: code:addons/account_consolidation/static/src/components/dashboard_widget/dashboard_widget.xml:0
 #, python-format
 msgid "unmapped accounts"
-msgstr ""
+msgstr "חשבונות לא ממופים"

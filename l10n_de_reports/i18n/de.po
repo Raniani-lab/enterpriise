@@ -6,10 +6,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.1alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-23 14:02+0000\n"
+"POT-Creation-Date: 2022-11-23 13:57+0000\n"
 "PO-Revision-Date: 2022-11-23 14:02+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -54,8 +55,7 @@ msgstr "1. Umsatzerlöse"
 #. module: l10n_de_reports
 #: model:account.report.expression,report_line_name:l10n_de_reports.skr_bs_asset_a_i_1_balance
 #: model:account.report.line,name:l10n_de_reports.skr_bs_asset_a_i_1
-msgid ""
-"1. Self-generated industrial property rights and similar rights and assets"
+msgid "1. Self-generated industrial property rights and similar rights and assets"
 msgstr "1. Selbst geschaffene gewerbliche Schutzrechte und ähnliche Rechte und Werte"
 
 #. module: l10n_de_reports
@@ -117,8 +117,7 @@ msgstr "2. Konzessionen, Lizenzen und ähnliche Rechte und Werte"
 #. module: l10n_de_reports
 #: model:account.report.expression,report_line_name:l10n_de_reports.skr_pl_line_income_2_balance
 #: model:account.report.line,name:l10n_de_reports.skr_pl_line_income_2
-msgid ""
-"2. Increase or decrease in finished goods inventories and work in progress"
+msgid "2. Increase or decrease in finished goods inventories and work in progress"
 msgstr "2. Erhöhung oder Verminderung des Bestands an fertigen und unfertigen Erzeugnissen"
 
 #. module: l10n_de_reports
@@ -322,9 +321,7 @@ msgstr "7. Verbindlichkeiten gegenüber Unternehmen, mit denen ein Beteiligungsv
 #. module: l10n_de_reports
 #: model:account.report.expression,report_line_name:l10n_de_reports.skr_bs_liabilities_d_8_balance
 #: model:account.report.line,name:l10n_de_reports.skr_bs_liabilities_d_8
-msgid ""
-"8. Other liabilities, of which taxes, of which relating to social security "
-"and similar obligations"
+msgid "8. Other liabilities, of which taxes, of which relating to social security and similar obligations"
 msgstr "8. Sonstige Verbindlichkeiten, davon aus Steuern, davon im Rahmen der sozialen Sicherheit"
 
 #. module: l10n_de_reports
@@ -421,6 +418,12 @@ msgstr "Eintrag schließen"
 #: model:ir.model,name:l10n_de_reports.model_res_company
 msgid "Companies"
 msgstr "Unternehmen"
+
+#. module: l10n_de_reports
+#: code:addons/l10n_de_reports/models/account_generic_tax_report.py:0
+#, python-format
+msgid "Configure your company"
+msgstr ""
 
 #. module: l10n_de_reports
 #: model:ir.model,name:l10n_de_reports.model_res_partner
@@ -706,11 +709,7 @@ msgstr "Abgabenordnung"
 #. module: l10n_de_reports
 #: model:ir.model.fields,help:l10n_de_reports.field_res_partner__l10n_de_datev_identifier
 #: model:ir.model.fields,help:l10n_de_reports.field_res_users__l10n_de_datev_identifier
-msgid ""
-"The Datev identifier is a unique identifier for exchange with the "
-"government. If you had previous exports with another identifier, you can put"
-" it here. If it is 0, then it will take the database id + the value in the "
-"system parameter l10n_de.datev_start_count. "
+msgid "The Datev identifier is a unique identifier for exchange with the government. If you had previous exports with another identifier, you can put it here. If it is 0, then it will take the database id + the value in the system parameter l10n_de.datev_start_count. "
 msgstr "Die Datev-Kennung ist eine eindeutige Kennung für den Austausch mit der Regierung. Wenn Sie frühere Exporte mit einer anderen Kennung hatten, können Sie diese hier eintragen. Wenn sie 0 ist, wird die Datenbank-ID + der Wert im Systemparameter l10n_de.datev_start_count verwendet. "
 
 #. module: l10n_de_reports
@@ -733,7 +732,6 @@ msgstr "Fahrzeugkosten"
 #. module: l10n_de_reports
 #. odoo-python
 #: code:addons/l10n_de_reports/models/account_generic_tax_report.py:0
-#: code:addons/l10n_de_reports/models/account_generic_tax_report.py:0
 #, python-format
 msgid "XML"
 msgstr "XML"
@@ -744,6 +742,24 @@ msgstr "XML"
 #, python-format
 msgid "You have already defined a partner with the same Datev identifier. "
 msgstr "Sie haben bereits einen Partner mit der gleichen Datev-Kennung definiert."
+
+#. module: l10n_de_reports
+#: code:addons/l10n_de_reports/models/account_generic_tax_report.py:0
+#, python-format
+msgid "Your company's SteuerNummer field should be filled"
+msgstr ""
+
+#. module: l10n_de_reports
+#: code:addons/l10n_de_reports/models/account_generic_tax_report.py:0
+#, python-format
+msgid "Your company's SteuerNummer is not compatible with your state"
+msgstr ""
+
+#. module: l10n_de_reports
+#: code:addons/l10n_de_reports/models/account_generic_tax_report.py:0
+#, python-format
+msgid "Your company's SteuerNummer is not valid"
+msgstr ""
 
 #. module: l10n_de_reports
 #. odoo-python

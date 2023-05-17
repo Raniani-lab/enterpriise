@@ -1,59 +1,58 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* account_intrastat
-# 
+#
 # Translators:
-# Mustafa Rawi <mustafa@cubexco.com>, 2019
-# Akram Alfusayal <akram_ma@hotmail.com>, 2019
-# Martin Trigaux, 2019
-# hoxhe Aits <hoxhe0@gmail.com>, 2019
-# Osoul <baruni@osoul.ly>, 2019
-# Mohammed Albasha <m.albasha.ma@gmail.com>, 2019
-# Ghaith Gammar <g.gammar@saharaifs.net>, 2019
-# Osama Ahmaro <osamaahmaro@gmail.com>, 2019
-# Ali Alrehawi <alrehawi@hotmail.com>, 2019
-# Shaima Safar <shaima.safar@open-inside.com>, 2019
-# Yihya Hugirat <hugirat@gmail.com>, 2019
-# 
+# Mehjabin Farsana, 2022
+# Malaz Abuidris <msea@odoo.com>, 2022
+# Martin Trigaux, 2023
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:04+0000\n"
-"PO-Revision-Date: 2019-08-26 09:34+0000\n"
-"Last-Translator: Yihya Hugirat <hugirat@gmail.com>, 2019\n"
-"Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
+"POT-Creation-Date: 2023-05-16 16:02+0000\n"
+"PO-Revision-Date: 2022-09-22 05:45+0000\n"
+"Last-Translator: Martin Trigaux, 2023\n"
+"Language-Team: Arabic (https://app.transifex.com/odoo/teams/41243/ar/)\n"
+"Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: ar\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
 #. module: account_intrastat
-#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_type
-msgid ""
-"<span class=\"fa fa-filter\"/>\n"
-"                Types:"
-msgstr ""
-"<span class=\"fa fa-filter\"/>\n"
-"                الأنواع:"
+#: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__1_000_kwh
+msgid "1 000 kWh"
+msgstr "1 000 kWh"
 
 #. module: account_intrastat
-#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
-msgid "<span class=\"fa fa-filter\"/> Options:"
-msgstr "<span class=\"fa fa-filter\"/> الخيارات:"
+#: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__1_000_m3
+msgid "1 000 m3"
+msgstr "1 000 m3"
 
 #. module: account_intrastat
-#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_vat
-msgid "<span class=\"fa fa-filter\"/> Partners:"
-msgstr "<span class=\"fa fa-filter\"/> الشركاء:"
+#: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__1_000_p/st
+msgid "1 000 p/st"
+msgstr "1 000 p/st"
 
 #. module: account_intrastat
-#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_vat
-msgid "All"
-msgstr "الكل"
+#: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__100_p/st
+msgid "100 p/st"
+msgstr "100 p/st"
 
 #. module: account_intrastat
+#: model_terms:ir.ui.view,arch_db:account_intrastat.account_move_line_tree_view_account_intrastat_transaction_codes
+msgid "Account move line"
+msgstr "بند حركة الحساب "
+
+#. module: account_intrastat
+#: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
+msgid "Active"
+msgstr "نشط"
+
+#. module: account_intrastat
+#. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Arrival"
@@ -75,24 +74,42 @@ msgid "By type"
 msgstr "حسب النوع"
 
 #. module: account_intrastat
+#. odoo-javascript
+#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#, python-format
+msgid "Check the expired"
+msgstr "التحقق من منتهية الصلاحية "
+
+#. module: account_intrastat
+#. odoo-javascript
+#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#, python-format
+msgid "Check the premature"
+msgstr "Check the premature"
+
+#. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__type__commodity
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "Commodity"
 msgstr "سلعة"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:0
-#: model:ir.model.fields,field_description:account_intrastat.field_product_category__intrastat_id
-#: model:ir.model.fields,field_description:account_intrastat.field_product_product__intrastat_id
-#: model:ir.model.fields,field_description:account_intrastat.field_product_template__intrastat_id
-#, python-format
+#: model:account.report.column,name:account_intrastat.intrastat_report_column_commodity_code
+#: model:ir.model.fields,field_description:account_intrastat.field_product_template__intrastat_code_id
+#: model_terms:ir.ui.view,arch_db:account_intrastat.product_product_tree_view_account_intrastat_supplementary_unit
+#: model_terms:ir.ui.view,arch_db:account_intrastat.product_product_tree_view_account_intrastat_weight
 msgid "Commodity Code"
 msgstr "كود السلعة"
 
 #. module: account_intrastat
+#: model:ir.model.fields,field_description:account_intrastat.field_product_product__intrastat_code_id
+msgid "Commodity code"
+msgstr "رمز السلعة "
+
+#. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_res_company
 msgid "Companies"
-msgstr "الشركات"
+msgstr "الشركات "
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_res_config_settings__company_country_id
@@ -102,105 +119,60 @@ msgstr "بلد الشركة"
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_res_config_settings
 msgid "Config Settings"
-msgstr "ضبط الإعدادات"
+msgstr "تهيئة الإعدادات "
 
 #. module: account_intrastat
+#: model:account.report.column,name:account_intrastat.intrastat_report_column_country_code
 #: model:ir.model,name:account_intrastat.model_res_country
 msgid "Country"
 msgstr "الدولة"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:0
-#: code:addons/account_intrastat/models/account_sales_report.py:0
-#, python-format
-msgid "Country Code"
-msgstr "رمز الدولة"
-
-#. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_product_product__intrastat_origin_country_id
 #: model:ir.model.fields,field_description:account_intrastat.field_product_template__intrastat_origin_country_id
 msgid "Country of Origin"
-msgstr ""
+msgstr "بلد المنشأ "
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:0
-#, python-format
-msgid "Date"
-msgstr "التاريخ"
+#: model:ir.model.fields,field_description:account_intrastat.field_res_company__intrastat_default_invoice_transaction_code_id
+#: model:ir.model.fields,field_description:account_intrastat.field_res_config_settings__intrastat_default_invoice_transaction_code_id
+msgid "Default invoice transaction code"
+msgstr "رمز معاملة الفاتورة الافتراضي "
+
+#. module: account_intrastat
+#: model:ir.model.fields,field_description:account_intrastat.field_res_company__intrastat_default_refund_transaction_code_id
+#: model:ir.model.fields,field_description:account_intrastat.field_res_config_settings__intrastat_default_refund_transaction_code_id
+msgid "Default refund transaction code"
+msgstr "رمز معاملة استرداد الأموال الافتراضي "
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_res_company__intrastat_transport_mode_id
-msgid "Default Transport Mode"
-msgstr "وسيلة النقل الافتراضية"
+msgid "Default transport mode"
+msgstr "وضع النقل الافتراضي "
 
 #. module: account_intrastat
-#: model:ir.model.fields,field_description:account_intrastat.field_res_company__incoterm_id
-#: model:ir.model.fields,field_description:account_intrastat.field_res_config_settings__incoterm_id
-msgid "Default incoterm for Intrastat"
-msgstr "الشروط التجارية الافتراضية بنظام Intrastat"
-
-#. module: account_intrastat
+#. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Dispatch"
 msgstr "إرسال"
 
 #. module: account_intrastat
-#: model:ir.model.fields,field_description:account_intrastat.field_account_intrastat_report__display_name
-#: model:ir.model.fields,field_description:account_intrastat.field_account_sales_report__display_name
-msgid "Display Name"
-msgstr "الاسم المعروض"
-
-#. module: account_intrastat
-#: code:addons/account_intrastat/models/account_sales_report.py:0
-#: model:ir.actions.client,name:account_intrastat.action_account_report_sales
-#: model:ir.model,name:account_intrastat.model_account_sales_report
-#: model:ir.ui.menu,name:account_intrastat.menu_action_account_report_sales
+#. odoo-javascript
+#: code:addons/account_intrastat/static/src/components/filters/filter_intrastat_options.xml:0
 #, python-format
-msgid "EC Sales List"
-msgstr "قائمة مبيعات EC"
-
-#. module: account_intrastat
-#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
-msgid "Extended"
-msgstr "مدد"
-
-#. module: account_intrastat
-#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
 msgid "Extended Mode"
-msgstr "الوضع الممتد"
+msgstr "الوضع التفصيلي "
 
 #. module: account_intrastat
-#: model:ir.model.fields,field_description:account_intrastat.field_account_intrastat_report__id
-#: model:ir.model.fields,field_description:account_intrastat.field_account_sales_report__id
-msgid "ID"
-msgstr "المُعرف"
-
-#. module: account_intrastat
-#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_vat
-msgid "Include VAT"
-msgstr ""
-
-#. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:0
-#, python-format
+#: model:account.report.column,name:account_intrastat.intrastat_report_column_incoterm_code
 msgid "Incoterm Code"
 msgstr "كود الشروط التجارية"
 
 #. module: account_intrastat
-#: model:ir.model.fields,help:account_intrastat.field_res_company__incoterm_id
-#: model:ir.model.fields,help:account_intrastat.field_res_config_settings__incoterm_id
-msgid ""
-"International Commercial Terms are a series of predefined commercial terms "
-"used in international transactions."
-msgstr ""
-"الشروط التجارية الدولية هي مجموعة من الشروط والأحكام مسبقة الإعداد، وتستخدم "
-"عادة في المعاملات الدولية."
-
-#. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_account_move_line__intrastat_transaction_id
 #: model_terms:ir.ui.view,arch_db:account_intrastat.invoice_form_inherit_account_intrastat
-#: model_terms:ir.ui.view,arch_db:account_intrastat.product_category_form_view_inherit_account_intrastat
+#: model_terms:ir.ui.view,arch_db:account_intrastat.product_product_form_view_inherit_account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.product_template_form_view_inherit_account_intrastat
 msgid "Intrastat"
 msgstr "نظام Intrastat"
@@ -214,50 +186,76 @@ msgid "Intrastat Code"
 msgstr "رمز نظام Intrastat"
 
 #. module: account_intrastat
+#: model:ir.model.fields,field_description:account_intrastat.field_account_bank_statement_line__intrastat_country_id
 #: model:ir.model.fields,field_description:account_intrastat.field_account_move__intrastat_country_id
+#: model:ir.model.fields,field_description:account_intrastat.field_account_payment__intrastat_country_id
 msgid "Intrastat Country"
-msgstr "دولة الشروط التجارية"
+msgstr "دولة نظام الإحصاءات البيئية الأوروبية "
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:0
+#: model:account.report,name:account_intrastat.intrastat_report
 #: model:ir.actions.client,name:account_intrastat.action_account_report_intrastat
-#: model:ir.model,name:account_intrastat.model_account_intrastat_report
 #: model:ir.ui.menu,name:account_intrastat.menu_action_account_report_intrastat
-#, python-format
 msgid "Intrastat Report"
-msgstr "تقرير الشروط التجارية"
+msgstr "تقرير نظام الإحصاءات البيئية الأوروبية "
 
 #. module: account_intrastat
+#: model:ir.model,name:account_intrastat.model_account_intrastat_report_handler
+msgid "Intrastat Report Custom Handler"
+msgstr "المعالج المخصص لتقارير نظام إحصاءات التجارة بين دول الاتحاد الأوروبي "
+
+#. module: account_intrastat
+#: model:ir.model.fields,field_description:account_intrastat.field_account_bank_statement_line__intrastat_transport_mode_id
 #: model:ir.model.fields,field_description:account_intrastat.field_account_move__intrastat_transport_mode_id
+#: model:ir.model.fields,field_description:account_intrastat.field_account_payment__intrastat_transport_mode_id
 msgid "Intrastat Transport Mode"
-msgstr "وسيلة نقل الشروط التجارية"
+msgstr "وسيلة نقل نظام الإحصاءات البيئية الأوروبية "
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_report_intrastat_code_tree
 msgid "Intrastat code"
-msgstr "كود نظام Intrastat"
+msgstr "كود نظام الإحصاءات البيئية الأوروبية "
 
 #. module: account_intrastat
+#: model:ir.model.fields,help:account_intrastat.field_account_bank_statement_line__intrastat_country_id
 #: model:ir.model.fields,help:account_intrastat.field_account_move__intrastat_country_id
+#: model:ir.model.fields,help:account_intrastat.field_account_payment__intrastat_country_id
 msgid "Intrastat country, arrival for sales, dispatch for purchases"
-msgstr ""
-"الدولة المُطبق بها الشروط التجارية، بلد الوصول في حالة المبيعات، أو المُرسل "
-"منها في حالة المشتريات"
+msgstr "الدولة المُطبق بها الشروط التجارية، بلد الوصول في حالة المبيعات، أو المُرسل منها في حالة المشتريات"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_res_country__intrastat
 msgid "Intrastat member"
-msgstr "عضو نظام Intrastat"
+msgstr "عضو نظام الإحصاءات البيئية الأوروبية "
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_res_company__intrastat_region_id
 msgid "Intrastat region"
-msgstr "منطقة الشروط التجارية"
+msgstr "منطقة نظام الإحصاءات البيئية الأوروبية "
+
+#. module: account_intrastat
+#: model_terms:ir.ui.view,arch_db:account_intrastat.account_move_line_tree_view_account_intrastat_transaction_codes
+msgid "Intrastat transaction code"
+msgstr "رمز معاملة Intrastat "
+
+#. module: account_intrastat
+#. odoo-python
+#: code:addons/account_intrastat/models/account_intrastat_report.py:0
+#, python-format
+msgid "Invalid commodity intrastat code products."
+msgstr "منتجات رمز سلع Intrastat غير صالحة. "
+
+#. module: account_intrastat
+#. odoo-python
+#: code:addons/account_intrastat/models/account_intrastat_report.py:0
+#, python-format
+msgid "Invalid transaction intrastat code entries."
+msgstr "قيود رمز معاملة Intrastat غير صالحة. "
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_account_move
-msgid "Journal Entries"
-msgstr "القيود اليومية"
+msgid "Journal Entry"
+msgstr "قيد اليومية"
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_account_move_line
@@ -265,58 +263,131 @@ msgid "Journal Item"
 msgstr "عنصر اليومية"
 
 #. module: account_intrastat
-#: model:ir.model.fields,field_description:account_intrastat.field_account_intrastat_report____last_update
-#: model:ir.model.fields,field_description:account_intrastat.field_account_sales_report____last_update
-msgid "Last Modified on"
-msgstr "آخر تعديل في"
+#. odoo-javascript
+#: code:addons/account_intrastat/static/src/components/filters/filter_intrastat_partner.xml:0
+#, python-format
+msgid "Only with VAT numbers"
+msgstr "فقط مع أرقام الضريبة "
 
 #. module: account_intrastat
-#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_vat
-msgid "Only with VAT numbers"
+#. odoo-javascript
+#: code:addons/account_intrastat/static/src/components/filters/filter_intrastat_options.xml:0
+#, python-format
+msgid "Options:"
 msgstr ""
 
 #. module: account_intrastat
-#: model:ir.model,name:account_intrastat.model_product_category
-msgid "Product Category"
-msgstr "فئة المنتج"
+#: model:account.report.column,name:account_intrastat.intrastat_report_column_product_origin_country
+#: model_terms:ir.ui.view,arch_db:account_intrastat.report_invoice_document_intrastat_2019
+msgid "Origin"
+msgstr "الأصل "
+
+#. module: account_intrastat
+#: model:account.report.column,name:account_intrastat.intrastat_report_column_partner_vat
+msgid "Partner VAT"
+msgstr "ضريبة الشريك "
+
+#. module: account_intrastat
+#. odoo-javascript
+#: code:addons/account_intrastat/static/src/components/filters/filter_intrastat_partner.xml:0
+#, python-format
+msgid "Partners:"
+msgstr ""
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_product_template
-msgid "Product Template"
-msgstr "قالب المنتج"
+#: model_terms:ir.ui.view,arch_db:account_intrastat.product_product_tree_view_account_intrastat
+#: model_terms:ir.ui.view,arch_db:account_intrastat.product_product_tree_view_account_intrastat_weight
+msgid "Product"
+msgstr "المنتج"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:0
-#, python-format
-msgid "Quantity"
-msgstr "الكمية"
+#: model:ir.model.fields,field_description:account_intrastat.field_account_move_line__intrastat_product_origin_country_id
+msgid "Product Country"
+msgstr "دولة المنتج "
+
+#. module: account_intrastat
+#: model:ir.model,name:account_intrastat.model_product_product
+msgid "Product Variant"
+msgstr "متغير المنتج "
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__type__region
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "Region"
-msgstr "منطقة"
+msgstr "المنطقة "
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:0
-#, python-format
+#: model:account.report.column,name:account_intrastat.intrastat_report_column_region_code
 msgid "Region Code"
 msgstr "كود المنطقة"
 
 #. module: account_intrastat
-#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
-msgid "Standard"
-msgstr "قياسي"
-
-#. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:0
+#. odoo-javascript
+#: code:addons/account_intrastat/static/src/components/account_report.xml:0
 #, python-format
-msgid "System"
-msgstr "نظام"
+msgid "Some lines have expired intrastat"
+msgstr "لدى بعض البنود Intrastat منتهية الصلاحية "
 
 #. module: account_intrastat
+#. odoo-javascript
+#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#, python-format
+msgid "Some lines have premature intrastat"
+msgstr "Some lines have premature intrastat"
+
+#. module: account_intrastat
+#. odoo-javascript
+#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#, python-format
+msgid "Some lines have undefined"
+msgstr "Some lines have undefined"
+
+#. module: account_intrastat
+#. odoo-javascript
+#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#, python-format
+msgid "Some products have undefined"
+msgstr "Some products have undefined"
+
+#. module: account_intrastat
+#: model:ir.model.fields,field_description:account_intrastat.field_product_product__intrastat_supplementary_unit
+#: model:ir.model.fields,field_description:account_intrastat.field_product_template__intrastat_supplementary_unit
+#: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
+msgid "Supplementary Unit"
+msgstr "Supplementary Unit"
+
+#. module: account_intrastat
+#: model:account.report.column,name:account_intrastat.intrastat_report_column_supplementary_units
+#: model:ir.model.fields,field_description:account_intrastat.field_product_product__intrastat_supplementary_unit_amount
+#: model:ir.model.fields,field_description:account_intrastat.field_product_template__intrastat_supplementary_unit_amount
+msgid "Supplementary Units"
+msgstr "Supplementary Units"
+
+#. module: account_intrastat
+#: model_terms:ir.ui.view,arch_db:account_intrastat.product_product_tree_view_account_intrastat_supplementary_unit
+msgid "Supplementary Units per Product"
+msgstr "Supplementary Units per Product"
+
+#. module: account_intrastat
+#: model:account.report.column,name:account_intrastat.intrastat_report_column_system
+msgid "System"
+msgstr "النظام"
+
+#. module: account_intrastat
+#: model:ir.model.fields,help:account_intrastat.field_res_config_settings__company_country_id
+msgid "The country to use the tax reports from for this company"
+msgstr "الدولة التي تُستخدَم التقارير الضريبية منها لهذه الشركة "
+
+#. module: account_intrastat
+#: model:ir.model.fields,help:account_intrastat.field_product_product__intrastat_supplementary_unit_amount
+#: model:ir.model.fields,help:account_intrastat.field_product_template__intrastat_supplementary_unit_amount
+msgid "The number of supplementary units per product quantity."
+msgstr "The number of supplementary units per product quantity."
+
+#. module: account_intrastat
+#. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
-#: code:addons/account_intrastat/models/account_sales_report.py:0
 #, python-format
 msgid "Total"
 msgstr "الإجمالي"
@@ -328,54 +399,206 @@ msgid "Transaction"
 msgstr "معاملة"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:0
-#, python-format
+#: model:account.report.column,name:account_intrastat.intrastat_report_column_transaction_code
 msgid "Transaction Code"
 msgstr "كود المعاملة"
 
 #. module: account_intrastat
-#: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__type__transport
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "Transport"
 msgstr "نقل"
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_intrastat_report.py:0
-#, python-format
+#: model:account.report.column,name:account_intrastat.intrastat_report_column_transport_code
 msgid "Transport Code"
 msgstr "كود النقل"
 
 #. module: account_intrastat
 #: model:ir.model.constraint,message:account_intrastat.constraint_account_intrastat_code_intrastat_region_code_unique
 msgid "Triplet code/type/country_id must be unique."
-msgstr "يجب أن تكون معرفات الكود والنوع والدولة قيم فريدة."
+msgstr "يجب أن يكون كل من الكود/ النوع/ ومعرف الدولة قيمة فريدة. "
 
 #. module: account_intrastat
+#. odoo-javascript
+#: code:addons/account_intrastat/static/src/components/filters/filter_intrastat_type.xml:0
+#, python-format
+msgid "Types:"
+msgstr ""
+
+#. module: account_intrastat
+#. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
-msgid "Type"
-msgstr "النوع"
+msgid "Undefined supplementary unit products."
+msgstr "Undefined supplementary unit products."
 
 #. module: account_intrastat
-#: code:addons/account_intrastat/models/account_sales_report.py:0
-#, python-format
-msgid "VAT"
-msgstr "ضريبة القيمة المضافة"
-
-#. module: account_intrastat
+#. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
-#: code:addons/account_intrastat/models/account_sales_report.py:0
 #, python-format
+msgid "Undefined weight products."
+msgstr "Undefined weight products."
+
+#. module: account_intrastat
+#: model:account.report.column,name:account_intrastat.intrastat_report_column_value
 msgid "Value"
 msgstr "القيمة"
 
 #. module: account_intrastat
+#. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
+msgid "View Journal Entry"
+msgstr "عرض قيد اليومية"
+
+#. module: account_intrastat
+#: model:account.report.column,name:account_intrastat.intrastat_report_column_weight
 msgid "Weight"
 msgstr "الوزن"
 
 #. module: account_intrastat
-#: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_vat
-msgid "With VAT numbers"
-msgstr ""
+#: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__c/k
+msgid "c/k"
+msgstr "c/k"
+
+#. module: account_intrastat
+#: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__ce/el
+msgid "ce/el"
+msgstr "ce/el"
+
+#. module: account_intrastat
+#. odoo-javascript
+#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#, python-format
+msgid "commodity codes"
+msgstr "commodity codes"
+
+#. module: account_intrastat
+#: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__ct/l
+msgid "ct/l"
+msgstr "ct/l"
+
+#. module: account_intrastat
+#: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__gi_f_/_s
+msgid "gi F / S"
+msgstr "gi F / S"
+
+#. module: account_intrastat
+#: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_90_%_sdt
+msgid "kg 90 % sdt"
+msgstr "kg 90 % sdt"
+
+#. module: account_intrastat
+#: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_h2o2
+msgid "kg H2O2"
+msgstr "kg H2O2"
+
+#. module: account_intrastat
+#: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_k2o
+msgid "kg K2O"
+msgstr "kg K2O"
+
+#. module: account_intrastat
+#: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_koh
+msgid "kg KOH"
+msgstr "kg KOH"
+
+#. module: account_intrastat
+#: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_n
+msgid "kg N"
+msgstr "kg N"
+
+#. module: account_intrastat
+#: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_naoh
+msgid "kg NaOH"
+msgstr "kg NaOH"
+
+#. module: account_intrastat
+#: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_p2o5
+msgid "kg P2O5"
+msgstr "kg P2O5"
+
+#. module: account_intrastat
+#: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_u
+msgid "kg U"
+msgstr "kg U"
+
+#. module: account_intrastat
+#: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_met_am_
+msgid "kg met.am."
+msgstr "kg met.am."
+
+#. module: account_intrastat
+#: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg/net_eda
+msgid "kg/net eda"
+msgstr "kg/net eda"
+
+#. module: account_intrastat
+#: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__l_alc__100_%
+msgid "l alc. 100 %"
+msgstr "l alc. 100 %"
+
+#. module: account_intrastat
+#: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__m2
+msgid "m2"
+msgstr "m2"
+
+#. module: account_intrastat
+#: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__m3
+msgid "m3"
+msgstr "m3"
+
+#. module: account_intrastat
+#: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__p/st
+msgid "p/st"
+msgstr "p/st"
+
+#. module: account_intrastat
+#: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__pa
+msgid "pa"
+msgstr "pa"
+
+#. module: account_intrastat
+#: model_terms:ir.ui.view,arch_db:account_intrastat.product_product_tree_view_account_intrastat_supplementary_unit
+msgid "product"
+msgstr "المنتج"
+
+#. module: account_intrastat
+#. odoo-javascript
+#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#, python-format
+msgid "product's commodity codes"
+msgstr "product's commodity codes"
+
+#. module: account_intrastat
+#. odoo-javascript
+#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#, python-format
+msgid "supplementary units"
+msgstr "supplementary units"
+
+#. module: account_intrastat
+#: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__t__co2
+msgid "t. CO2"
+msgstr "t. CO2"
+
+#. module: account_intrastat
+#. odoo-javascript
+#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#, python-format
+msgid "transaction codes"
+msgstr "transaction codes"
+
+#. module: account_intrastat
+#. odoo-javascript
+#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#, python-format
+msgid "weights"
+msgstr "الأوزان"
+
+#. module: account_intrastat
+#. odoo-javascript
+#: code:addons/account_intrastat/static/src/components/account_report.xml:0
+#, python-format
+msgid "when they are required."
+msgstr "when they are required."

@@ -1,122 +1,83 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* documents
-# 
+#
 # Translators:
-# zahi chemaly <zahi@sercotex.net>, 2019
-# Mustafa Rawi <mustafa@cubexco.com>, 2019
-# Sadig Adam <sadig41@gmail.com>, 2019
-# Akram Alfusayal <akram_ma@hotmail.com>, 2019
-# amrnegm <amrnegm.01@gmail.com>, 2019
-# Martin Trigaux, 2019
-# hoxhe Aits <hoxhe0@gmail.com>, 2019
-# Ali zuaby <ali@zuaby.net>, 2019
-# Osoul <baruni@osoul.ly>, 2019
-# Mohammed Ibrahim <m.ibrahim@mussder.com>, 2019
-# Ghaith Gammar <g.gammar@saharaifs.net>, 2019
-# Osama Ahmaro <osamaahmaro@gmail.com>, 2019
-# amal ahmed <amalalhashemy88@hotmail.com>, 2019
-# Zuhair Hammadi <zuhair12@gmail.com>, 2019
-# Shaima Safar <shaima.safar@open-inside.com>, 2019
-# Yihya Hugirat <hugirat@gmail.com>, 2019
-# Mostafa Hanafy <mostafa.s.hanafy@gmail.com>, 2019
-# Nisrine Tagri <nta@odoo.com>, 2019
-# 
+# Mustafa J. Kadhem <safi2266@gmail.com>, 2022
+# Martin Trigaux, 2022
+# Malaz Abuidris <msea@odoo.com>, 2023
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-23 11:38+0000\n"
-"PO-Revision-Date: 2019-08-26 09:35+0000\n"
-"Last-Translator: Nisrine Tagri <nta@odoo.com>, 2019\n"
-"Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
+"POT-Creation-Date: 2023-05-16 16:01+0000\n"
+"PO-Revision-Date: 2022-09-22 05:46+0000\n"
+"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2023\n"
+"Language-Team: Arabic (https://app.transifex.com/odoo/teams/41243/ar/)\n"
+"Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: ar\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/js/documents_kanban_controller.js:0
+#. odoo-javascript
+#: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
-msgid " (+%s locked)"
+msgid " + Add a tag"
+msgstr "+ إضافة علامة تصنيف "
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.share_page
+msgid "#{document_is_url and 'Link to ' or 'Download '}#{document.name}"
 msgstr ""
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/js/documents_kanban_controller.js:0
+#. odoo-javascript
+#: code:addons/documents/static/src/views/documents_model_mixin.js:0
 #, python-format
 msgid "%s Documents"
-msgstr ""
+msgstr "%sمستندات"
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/js/documents_search_panel.js:0
+#. odoo-javascript
+#: code:addons/documents/static/src/views/documents_model_mixin.js:0
+#, python-format
+msgid "%s Documents (%s locked)"
+msgstr "%s مستندات ( %sمقفلة) "
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/search/documents_search_panel.js:0
 #, python-format
 msgid "%s file(s) not moved because they are locked by another user"
-msgstr ""
-
-#. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.document_view_form
-msgid ""
-"&amp;nbsp;\n"
-"                            <i class=\"fa fa-lock oe_inline\" title=\"Locked\" attrs=\"{'invisible': [('lock_uid', '=', False)]}\"/>"
-msgstr ""
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/js/documents_progress_card.js:0
-#, python-format
-msgid "(%s/%sMb)"
-msgstr ""
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/js/documents_inspector.js:0
-#, python-format
-msgid "+ Add a tag "
-msgstr "+ إضافة وسم "
+msgstr "%sلم يتم نقل الملف (الملفات) لأنه تم قفلها من قبل مستخدم آخر"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid ", expired on"
-msgstr "، تنتهي صلاحيته في"
+msgstr "، انتهت صلاحيته في "
+
+#. module: documents
+#: model_terms:digest.tip,tip_description:documents.digest_tip_documents_0
+msgid ". Scanned files will appear automatically in your workspace. Then, process your documents in bulk with the split tool: launch user defined actions, request a signature, convert to vendor bills with AI, etc."
+msgstr ". سوف تظهر الملفات الممسوحة تلقائياً في مساحة عملك. بعد ذلك، قم بمعالجة مستنداتك دفعة واحدة باستخدام أداة التقسيم: أطلق الإجراءات التي يحددها المستخدم، واطلب توقيعاً، وقم بتحويل فواتير الموردين باستخدام الذكاء الاصطناعي، وما إلى ذلك. "
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_fiscal_year_2017
-msgid "2018"
-msgstr "2018"
+msgid "2022"
+msgstr "2022"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_fiscal_year_2018
-msgid "2019"
-msgstr "2019"
+msgid "2023"
+msgstr "2023"
 
 #. module: documents
-#: code:addons/documents/controllers/main.py:0
-#, python-format
-msgid ""
-"<b> File uploaded by: </b> %s <br/>\n"
-"                               <b> Link created by: </b> %s <br/>\n"
-"                               <a class=\"btn btn-primary\" href=\"/web#id=%s&model=documents.share&view_type=form\" target=\"_blank\">\n"
-"                                  <b>%s</b>\n"
-"                               </a>\n"
-"                             "
-msgstr ""
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/js/tours/documents.js:0
-#, python-format
-msgid ""
-"<b>Actions</b> allows you to assign tags, automate actions like creating a "
-"task or vendor bill,</br> create activities for users, etc.</br> Actions can"
-" be customized through the Configuration menu."
-msgstr ""
-"تسمح لك <b>الإجراءات</b> بتعيين وسوم، وضبط إجراءات لتتم تلقائيًا مثل إنشاء "
-"مهمة أو فاتورة مورد،</br> وإنشاء أنشطة خاصة لعملاء، إلخ.</br> يمكن تعديل "
-"الإجراءات من قائمة الضبط."
+#: model_terms:digest.tip,tip_description:documents.digest_tip_documents_0
+msgid "<b class=\"tip_title\">Tip: Become a paperless company</b>"
+msgstr "<b class=\"tip_title\">نصيحة: اجعل شركتك رقمية بالكامل وخالية من الأوراق</b> "
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
@@ -124,37 +85,26 @@ msgid "<b>Bytes</b>"
 msgstr "<b>بايت</b>"
 
 #. module: documents
-#. openerp-web
+#. odoo-javascript
 #: code:addons/documents/static/src/js/tours/documents.js:0
 #, python-format
-msgid "<b>Close the preview</b> to go back to your selection of documents"
-msgstr "<b>أغلق شاشة المعاينة</b> للعودة لمستنداتك المُختارة"
+msgid "<b>Deselect this page</b> as we plan to process all bills first."
+msgstr "<b>قم بإلغاء تحديد هذه الصفحة</b> حيث أننا نود معالجة كافة فواتير الموردين أولاً. "
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
 msgid "<b>Gb</b>"
-msgstr "<b>جيجا بايت</b>"
+msgstr "<b>جيجابايت</b>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
 msgid "<b>Kb</b>"
-msgstr "<b>كيلو بايت</b>"
+msgstr "<b>كيلوبايت</b> "
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
 msgid "<b>Mb</b>"
-msgstr "<b>ميجا بايت</b>"
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/js/tours/documents.js:0
-#, python-format
-msgid ""
-"<b>Use tags</b> to easily filter documents. Tags are defined according to "
-"the folder."
-msgstr ""
-"<b>استخدم الوسوم</b> لفلترة المستندات بسهولة. يتم تعيين الوسوم تبعًا "
-"للمستند."
+msgstr "<b>ميجابايت</b> "
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
@@ -162,37 +112,39 @@ msgid "<br/>Powered by"
 msgstr "<br/>يعمل بواسطة"
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.share_single
-msgid ""
-"<i class=\"fa fa-circle-o-notch fa-spin text-white fa-3x mb8\" role=\"img\" "
-"aria-label=\"Loading\" title=\"Loading\"/>"
-msgstr ""
-"<i class=\"fa fa-circle-o-notch fa-spin text-white fa-3x mb8\" role=\"img\" "
-"aria-label=\"Loading\" title=\"Loading\"/>"
+#: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
+msgid "<i class=\"fa fa fa-folder text-odoo me-2\" title=\"Workspace\"/>"
+msgstr "<i class=\"fa fa fa-folder text-odoo me-2\" title=\"مساحة العمل \"/>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "<i class=\"fa fa-download fa-fw\"/>  Download All"
-msgstr "<i class=\"fa fa-download fa-fw\"/>  تحميل الكل"
+msgstr "<i class=\"fa fa-download fa-fw\"/>  تنزيل الكل "
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
 msgid "<i class=\"fa fa-download fa-fw\"/> Download"
-msgstr "<i class=\"fa fa-download fa-fw\"/> تحميل"
+msgstr "<i class=\"fa fa-download fa-fw\"/> تنزيل "
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.share_view_form
-#: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
-msgid ""
-"<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/> Configure Email Servers"
-msgstr ""
-"<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/> ضبط سيرفرات البريد "
-"الإلكتروني"
+#: model_terms:ir.ui.view,arch_db:documents.document_view_kanban
+msgid "<i class=\"fa fa-globe\" title=\"Document url\"/>"
+msgstr "<i class=\"fa fa-globe\" title=\"رابط المستند \"/>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
 msgid "<i class=\"fa fa-link\"/> Go to URL"
-msgstr "<i class=\"fa fa-link\"/> زيارة رابط"
+msgstr "<i class=\"fa fa-link\"/> الذهاب إلى الرابط "
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.document_view_form
+msgid "<i class=\"fa fa-lock oe_inline\" title=\"Locked\" attrs=\"{'invisible': [('lock_uid', '=', False)]}\"/>"
+msgstr "<i class=\"fa fa-lock oe_inline\" title=\"مقفل \" attrs=\"{'invisible': [('lock_uid', '=', False)]}\"/>"
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
+msgid "<i class=\"fa fa-tag o_documents_tag_color ms-2\" attrs=\"{'invisible': [('tag_ids', '=', [])]}\" title=\"Tags\"/>"
+msgstr "<i class=\"fa fa-tag o_documents_tag_color ms-2\" attrs=\"{'invisible': [('tag_ids', '=', [])]}\" title=\"علامات التصنيف \"/>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
@@ -202,38 +154,145 @@ msgstr "<i class=\"fa fa-upload\"/>  رفع"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form
 msgid "<span class=\"o_stat_text\">Actions</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">الإجراءات</span> "
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_document_res_partner_view
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form
 msgid "<span class=\"o_stat_text\">Documents</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">المستندات</span> "
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
 msgid "<span class=\"o_stat_text\">Related <br/> Record</span>"
-msgstr ""
-
-#. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.public_page_layout
-msgid "<span style=\"color:white;\">&amp;nbsp;Documents.</span>"
-msgstr "<span style=\"color:white;\">&amp;nbsp;مستندات.</span>"
+msgstr "<span class=\"o_stat_text\">السجل <br/> ذي الصلة</span>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "<span title=\"Requested Document\">Requested Document</span>"
+msgstr "<span title=\"المستند المطلوب \">المستند المطلوب</span> "
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.public_page_layout
+msgid "<span>&amp;nbsp;Documents.</span>"
 msgstr ""
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_kanban
 msgid "<span><b> Request</b></span>"
-msgstr ""
+msgstr "<span><b> طلب</b></span>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_kanban
 msgid "<span><b>Requested Document</b></span>"
 msgstr "<span><b>المستند المطلوب</b></span>"
+
+#. module: documents
+#: model:mail.template,body_html:documents.mail_template_document_request_reminder
+msgid ""
+"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;\"><tr><td align=\"center\">\n"
+"                    <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"padding: 16px; background-color: white; color: #454748; border-collapse:separate;\">\n"
+"                    <tbody>\n"
+"                        <!-- HEADER -->\n"
+"                        <tr>\n"
+"                            <td align=\"center\" style=\"min-width: 590px;\">\n"
+"                                <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
+"                                    <tr><td valign=\"middle\">\n"
+"                                        <span style=\"font-size: 10px;\">\n"
+"                                            Document Request: <br>\n"
+"                                            <t t-if=\"object.create_share_id.name\">\n"
+"                                                <span style=\"font-size: 20px; font-weight: bold;\" t-out=\"object.create_share_id.name or ''\">Inbox Financial</span>\n"
+"                                            </t>\n"
+"                                        </span><br>\n"
+"                                    </td><td valign=\"middle\" align=\"right\">\n"
+"                                        <img t-attf-src=\"/logo.png?company={{ object.create_uid.company_id.id }}\" style=\"padding: 0px; margin: 0px; height: auto; width: 80px;\" t-att-alt=\"object.create_uid.company_id.name\">\n"
+"                                    </td></tr>\n"
+"                                    <tr><td colspan=\"2\" style=\"text-align:center;\">\n"
+"                                      <hr width=\"100%\" style=\"background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;\">\n"
+"                                    </td></tr>\n"
+"                                </table>\n"
+"                            </td>\n"
+"                        </tr>\n"
+"                        <!-- CONTENT -->\n"
+"                        <tr>\n"
+"                            <td align=\"center\" style=\"min-width: 590px;\">\n"
+"                                <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
+"                                    <tr><td valign=\"top\" style=\"font-size: 13px;\">\n"
+"                                        <div>\n"
+"                                            Hello <t t-out=\"object.create_share_id.owner_id.name or ''\">OdooBot</t>,\n"
+"                                            <br><br>\n"
+"                                            This is a friendly reminder to upload your requested document:\n"
+"                                            <br><br>\n"
+"                                            <center>\n"
+"                                                <div>\n"
+"                                                    <t t-if=\"object.create_share_id.name\">\n"
+"                                                        <b t-out=\"object.create_share_id.name or ''\">Inbox Financial</b>\n"
+"                                                    </t>\n"
+"                                                </div>\n"
+"                                                <div>\n"
+"                                                    <t t-if=\"object.create_share_id.activity_note\">\n"
+"                                                        <i t-out=\"object.create_share_id.activity_note or ''\">Example of a note.</i>\n"
+"                                                    </t>\n"
+"                                                </div>\n"
+"                                                <br>\n"
+"                                                <div style=\"margin: 16px 0px 16px 0px;\">\n"
+"                                                    <a t-att-href=\"object.create_share_id.full_url\" style=\"background-color: #875A7B; padding: 20px 30px 20px 30px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;\">\n"
+"                                                        Upload the requested document\n"
+"                                                    </a>\n"
+"                                                </div>\n"
+"                                            </center><br>\n"
+"                                            Please provide us with the missing document before the link expires (planned on <t t-out=\"object.create_share_id.date_deadline or ''\">2021-05-17</t>).\n"
+"                                            <br><br>\n"
+"                                            Thank you,\n"
+"                                            <t t-if=\"user and user.signature\">\n"
+"                                                <br>\n"
+"                                                <t t-out=\"user.signature\">--<br>Mitchell Admin</t>\n"
+"                                                <br>\n"
+"                                            </t>\n"
+"                                        </div>\n"
+"                                    </td></tr>\n"
+"                                    <tr><td style=\"text-align:center;\">\n"
+"                                      <hr width=\"100%\" style=\"background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;\">\n"
+"                                    </td></tr>\n"
+"                                </table>\n"
+"                            </td>\n"
+"                        </tr>\n"
+"                        <!-- FOOTER -->\n"
+"                        <tr>\n"
+"                            <td align=\"center\" style=\"min-width: 590px;\">\n"
+"                                <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; font-size: 11px; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
+"                                    <tr><td valign=\"middle\" align=\"left\">\n"
+"                                        <t t-out=\"object.create_uid.company_id.name or ''\">YourCompany</t>\n"
+"                                    </td></tr>\n"
+"                                    <tr><td valign=\"middle\" align=\"left\" style=\"opacity: 0.7;\">\n"
+"                                        <t t-out=\"object.create_uid.company_id.phone or ''\">+1 650-123-4567</t>\n"
+"                                        <t t-if=\"object.create_uid.company_id.email\">\n"
+"                                            | <a t-attf-href=\"'mailto:%s' % {{ object.create_uid.company_id.email }}\" style=\"text-decoration:none; color: #454748;\" t-out=\"object.create_uid.company_id.email\">info@yourcompany.com</a>\n"
+"                                        </t>\n"
+"                                        <t t-if=\"object.create_uid.company_id.website\">\n"
+"                                            | <a t-att-href=\"object.create_uid.company_id.website\" style=\"text-decoration:none; color: #454748;\" t-out=\"object.create_uid.company_id.website\">http://www.example.com</a>\n"
+"                                        </t>\n"
+"                                    </td></tr>\n"
+"                                </table>\n"
+"                            </td>\n"
+"                        </tr>\n"
+"                    </tbody>\n"
+"                    </table>\n"
+"                    </td></tr>\n"
+"                    <!-- POWERED BY -->\n"
+"                    <tr><td align=\"center\" style=\"min-width: 590px;\">\n"
+"                        <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;\">\n"
+"                          <tr><td style=\"text-align: center; font-size: 13px;\">\n"
+"                            <t t-if=\"object.create_share_id.date_deadline\">\n"
+"                                This link expires on <b t-out=\"object.create_share_id.date_deadline\">2021-05-17</b>.<br>\n"
+"                            </t>\n"
+"                            Powered by <a target=\"_blank\" href=\"https://www.odoo.com/app/documents\" style=\"color: #875A7B;\">Odoo Documents</a>\n"
+"                          </td></tr>\n"
+"                        </table>\n"
+"                    </td></tr>\n"
+"                </table>\n"
+"            "
+msgstr ""
 
 #. module: documents
 #: model:mail.template,body_html:documents.mail_template_document_request
@@ -247,18 +306,16 @@ msgid ""
 "                                <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
 "                                    <tr><td valign=\"middle\">\n"
 "                                        <span style=\"font-size: 10px;\">\n"
-"                                            Document Request: <br/>\n"
-"                                            % if object.name:\n"
-"                                                <span style=\"font-size: 20px; font-weight: bold;\">\n"
-"                                                    ${object.name | safe}\n"
-"                                                </span>\n"
-"                                            % endif\n"
-"                                        </span><br/>\n"
-"                                    </td><td valign=\"middle\" align=\"right\">\n"
-"                                        <img src=\"/logo.png?company=${object.create_uid.company_id.id}\" style=\"padding: 0px; margin: 0px; height: auto; width: 80px;\" alt=\"${object.create_uid.company_id.name}\"/>\n"
+"                                            Document Request: <br>\n"
+"                                            <t t-if=\"object.name\">\n"
+"                                                <span style=\"font-size: 20px; font-weight: bold;\" t-out=\"object.name or ''\">Inbox Financial</span>\n"
+"                                            </t>\n"
+"                                        </span><br>\n"
+"                                    </td><td valign=\"middle\" align=\"right\" t-if=\"not object.create_uid.company_id.uses_default_logo\">\n"
+"                                        <img t-attf-src=\"/logo.png?company={{ object.create_uid.company_id.id }}\" style=\"padding: 0px; margin: 0px; height: auto; width: 80px;\" t-att-alt=\"object.create_uid.company_id.name\">\n"
 "                                    </td></tr>\n"
 "                                    <tr><td colspan=\"2\" style=\"text-align:center;\">\n"
-"                                      <hr width=\"100%\" style=\"background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;\"/>\n"
+"                                      <hr width=\"100%\" style=\"background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;\">\n"
 "                                    </td></tr>\n"
 "                                </table>\n"
 "                            </td>\n"
@@ -269,38 +326,38 @@ msgid ""
 "                                <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
 "                                    <tr><td valign=\"top\" style=\"font-size: 13px;\">\n"
 "                                        <div>\n"
-"                                            Hello ${object.owner_id.name},\n"
-"                                            <br/><br/>\n"
-"                                            ${object.create_uid.name} (${object.create_uid.email}) asks you to provide the following document:\n"
-"                                            <br/><br/>\n"
+"                                            Hello <t t-out=\"object.owner_id.name or ''\">OdooBot</t>,\n"
+"                                            <br><br>\n"
+"                                            <t t-out=\"object.create_uid.name or ''\">OdooBot</t> (<t t-out=\"object.create_uid.email or ''\">odoobot@example.com</t>) asks you to provide the following document:\n"
+"                                            <br><br>\n"
 "                                            <center>\n"
 "                                                <div>\n"
-"                                                    % if object.name:\n"
-"                                                        <b>${object.name | safe}</b>\n"
-"                                                    % endif\n"
+"                                                    <t t-if=\"object.name\">\n"
+"                                                        <b t-out=\"object.name or ''\">Inbox Financial</b>\n"
+"                                                    </t>\n"
 "                                                </div>\n"
 "                                                <div>\n"
-"                                                    % if object.activity_note:\n"
-"                                                        <i>${object.activity_note | safe}</i>\n"
-"                                                    % endif\n"
+"                                                    <t t-if=\"object.activity_note\">\n"
+"                                                        <i t-out=\"object.activity_note or ''\">Example of a note.</i>\n"
+"                                                    </t>\n"
 "                                                </div>\n"
-"                                                <br/>\n"
+"                                                <br>\n"
 "                                                <div style=\"margin: 16px 0px 16px 0px;\">\n"
-"                                                    <a href=\"${object.full_url}\" style=\"background-color: #875A7B; padding: 20px 30px 20px 30px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;\">\n"
+"                                                    <a t-att-href=\"object.full_url\" style=\"background-color: #875A7B; padding: 20px 30px 20px 30px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;\">\n"
 "                                                        Upload the requested document\n"
 "                                                    </a>\n"
 "                                                </div>\n"
-"                                            </center><br/>\n"
-"                                            Please provide us with the missing document before the link expires (planned on ${object.date_deadline}).\n"
-"                                            <br/>\n"
-"                                            % if user and user.signature:\n"
-"                                                ${user.signature | safe}\n"
-"                                            % endif\n"
-"                                            <br/>\n"
+"                                            </center><br>\n"
+"                                            Please provide us with the missing document<t t-if=\"object.date_deadline\"> before the link expires (planned on <t t-out=\"object.date_deadline\">2021-05-17</t>)</t>.\n"
+"                                            <t t-if=\"user and user.signature\">\n"
+"                                                <br>\n"
+"                                                <t t-out=\"user.signature or ''\">--<br>Mitchell Admin</t>\n"
+"                                                <br>\n"
+"                                            </t>\n"
 "                                        </div>\n"
 "                                    </td></tr>\n"
 "                                    <tr><td style=\"text-align:center;\">\n"
-"                                      <hr width=\"100%\" style=\"background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;\"/>\n"
+"                                      <hr width=\"100%\" style=\"background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;\">\n"
 "                                    </td></tr>\n"
 "                                </table>\n"
 "                            </td>\n"
@@ -310,18 +367,16 @@ msgid ""
 "                            <td align=\"center\" style=\"min-width: 590px;\">\n"
 "                                <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; font-size: 11px; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
 "                                    <tr><td valign=\"middle\" align=\"left\">\n"
-"                                        ${object.create_uid.company_id.name}\n"
+"                                        <t t-out=\"object.create_uid.company_id.name or ''\">YourCompany</t>\n"
 "                                    </td></tr>\n"
 "                                    <tr><td valign=\"middle\" align=\"left\" style=\"opacity: 0.7;\">\n"
-"                                        ${object.create_uid.company_id.phone}\n"
-"                                        % if object.create_uid.company_id.email\n"
-"                                            | <a href=\"'mailto:%s' % ${object.create_uid.company_id.email}\" style=\"text-decoration:none; color: #454748;\">${object.create_uid.company_id.email}</a>\n"
-"                                        % endif\n"
-"                                        % if object.create_uid.company_id.website\n"
-"                                            | <a href=\"'%s' % ${object.create_uid.company_id.website}\" style=\"text-decoration:none; color: #454748;\">\n"
-"                                            ${object.create_uid.company_id.website}\n"
-"                                        </a>\n"
-"                                        % endif\n"
+"                                        <t t-out=\"object.create_uid.company_id.phone or ''\">+1 650-123-4567</t>\n"
+"                                        <t t-if=\"object.create_uid.company_id.email\">\n"
+"                                            | <a t-attf-href=\"'mailto:%s' % {{ object.create_uid.company_id.email }}\" style=\"text-decoration:none; color: #454748;\" t-out=\"object.create_uid.company_id.email or ''\">info@yourcompany.com</a>\n"
+"                                        </t>\n"
+"                                        <t t-if=\"object.create_uid.company_id.website\">\n"
+"                                            | <a t-attf-href=\"'%s' % {{ object.create_uid.company_id.website }}\" style=\"text-decoration:none; color: #454748;\" t-out=\"object.create_uid.company_id.website or ''\">http://www.example.com</a>\n"
+"                                        </t>\n"
 "                                    </td></tr>\n"
 "                                </table>\n"
 "                            </td>\n"
@@ -333,10 +388,10 @@ msgid ""
 "                    <tr><td align=\"center\" style=\"min-width: 590px;\">\n"
 "                        <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;\">\n"
 "                          <tr><td style=\"text-align: center; font-size: 13px;\">\n"
-"                            % if object.date_deadline:\n"
-"                                This link expires on <b>${object.date_deadline}.</b><br/>\n"
-"                            % endif\n"
-"                            Powered by <a target=\"_blank\" href=\"https://www.odoo.com/page/documents\" style=\"color: #875A7B;\">Odoo Documents</a>\n"
+"                            <t t-if=\"object.date_deadline\">\n"
+"                                This link expires on <b t-out=\"object.date_deadline or ''\">2021-05-17</b>.<br>\n"
+"                            </t>\n"
+"                            Powered by <a target=\"_blank\" href=\"https://www.odoo.com/app/documents\" style=\"color: #875A7B;\">Odoo Documents</a>\n"
 "                          </td></tr>\n"
 "                        </table>\n"
 "                    </td></tr>\n"
@@ -346,29 +401,38 @@ msgstr ""
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_defaults
-msgid ""
-"A Python dictionary that will be evaluated to provide default values when "
-"creating new records for this alias."
-msgstr ""
-"قاموس بايثون سيتم تقديره لتوفير قيم افتراضية عند إنشاء سجلات جديدة لهذا "
-"اللقب."
+msgid "A Python dictionary that will be evaluated to provide default values when creating new records for this alias."
+msgstr "قاموس بايثون الذي سيتم تقييمه لتوفير قيم افتراضية عند إنشاء سجلات جديدة لهذا اللقب. "
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_workflow_rule
-msgid ""
-"A set of condition and actions which will be available to all attachments "
-"matching the conditions"
-msgstr "مجموعة شروط وإجراءات ستكون متُاحة لكافة المرفقات التي تحقق الشروط"
+msgid "A set of condition and actions which will be available to all attachments matching the conditions"
+msgstr "مجموعة الشروط والإجراءات التي سوف تكون متُاحة لكافة المرفقات التي تستوفي الشروط "
+
+#. module: documents
+#. odoo-python
+#: code:addons/documents/models/documents_folder.py:0
+#, python-format
+msgid "A workspace cannot have one of his child defined as Parent Workspace in order to avoid a recursion issue."
+msgstr "لا يمكن أن يكون لمساحة العمل إحدى فروعها محددة كمساحة العمل الأصلية، لتجنب مشكلة التكرار. "
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__parent_folder_id
+#: model:ir.model.fields,help:documents.field_documents_folder_deletion_wizard__parent_folder_id
 msgid "A workspace will inherit the tags of its parent workspace"
-msgstr ""
+msgstr "سوف تكتسب مساحة العمل نفس علامات تصنيف مساحة العمل الرئيسية "
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
 msgid "Access"
 msgstr "الوصول"
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/search/documents_search_panel.js:0
+#, python-format
+msgid "Access Error"
+msgstr "خطأ في الوصول"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__group_ids
@@ -383,31 +447,42 @@ msgstr "صلاحيات الوصول"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__access_token
 msgid "Access Token"
-msgstr "كلمة السر"
+msgstr "رمز الوصول "
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/xml/documents_kanban.xml:0
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.xml:0
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_action__action
 #, python-format
 msgid "Action"
 msgstr "إجراء"
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__name
+msgid "Action Button Name"
+msgstr "اسم زر الإجراء "
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__action_count
 msgid "Action Count"
-msgstr ""
+msgstr "عدد الإجراءات "
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
+msgid "Action Name"
+msgstr "اسم الإجراء"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__message_needaction
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_needaction
 msgid "Action Needed"
-msgstr "إجراء مطلوب"
+msgstr "يتطلب اتخاذ إجراء "
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/models/folder.py:0
-#: code:addons/documents/static/src/xml/documents_inspector.xml:0
+#. odoo-python
+#. odoo-javascript
+#: code:addons/documents/models/documents_folder.py:0
+#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #: model:ir.ui.menu,name:documents.workflow_rules_menu
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 #, python-format
@@ -435,7 +510,7 @@ msgstr "النشاط"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_exception_decoration
 msgid "Activity Exception Decoration"
-msgstr ""
+msgstr "زخرفة استثناء النشاط"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_note
@@ -453,6 +528,11 @@ msgid "Activity Type"
 msgstr "نوع النشاط"
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__activity_type_icon
+msgid "Activity Type Icon"
+msgstr "أيقونة نوع النشاط"
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_type_id
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_type_id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_type_id
@@ -466,11 +546,11 @@ msgid "Add"
 msgstr "إضافة"
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/xml/documents_kanban.xml:0
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.xml:0
 #, python-format
-msgid "Add URL"
-msgstr "إضافة رابط"
+msgid "Add File"
+msgstr "إضافة ملف "
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.action_url_form
@@ -478,9 +558,23 @@ msgid "Add Url"
 msgstr "إضافة رابط"
 
 #. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/documents_controller_mixin.xml:0
+#, python-format
+msgid "Add a Link"
+msgstr "إضافة رابط "
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.xml:0
+#, python-format
+msgid "Add new file"
+msgstr "إضافة ملف جديد "
+
+#. module: documents
 #: model:res.groups,name:documents.group_documents_manager
 msgid "Administrator"
-msgstr ""
+msgstr "المدير "
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_marketing_assets_ads
@@ -495,7 +589,7 @@ msgstr "لقب"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_contact
 msgid "Alias Contact Security"
-msgstr "لقب الاتصال الآمن"
+msgstr "أمان ألقاب جهات الاتصال "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_name
@@ -503,56 +597,104 @@ msgid "Alias Name"
 msgstr "اسم اللقب"
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__alias_status
+msgid "Alias Status"
+msgstr "حالة اللقب "
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_domain
 msgid "Alias domain"
 msgstr "نطاق اللقب"
 
 #. module: documents
+#: model:ir.model.fields,help:documents.field_documents_share__alias_status
+msgid "Alias status assessed on the last message received."
+msgstr "حالة اللقب مقيّمة في آخر رسالة مستلمة. "
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_model_id
 msgid "Aliased Model"
-msgstr "الكائن الملقب"
+msgstr "النموذج الملقب "
 
 #. module: documents
-#: code:addons/documents/controllers/main.py:0
+#. odoo-python
+#: code:addons/documents/controllers/documents.py:0
 #, python-format
 msgid "All files uploaded"
-msgstr ""
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/xml/documents_thread.xml:0
-#, python-format
-msgid "All pages:&nbsp;"
-msgstr "كافة الصفحات:&nbsp;"
+msgstr "تم رفع كافة الملفات "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__action
 msgid "Allows to"
-msgstr "يسمح بـ"
+msgstr "يتيح "
 
 #. module: documents
 #: model:ir.module.category,description:documents.module_category_documents_management
 msgid "Allows you to manage your documents."
-msgstr "يسمح لك بإدارة مستنداتك."
+msgstr "يتيح لك إدارة مستنداتك. "
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/xml/documents_inspector.xml:0
+#. odoo-python
+#: code:addons/documents/models/documents_workflow_rule.py:0
+#, python-format
+msgid "Already linked Documents"
+msgstr "المستندات المربوطة بالفعل "
+
+#. module: documents
+#: model_terms:digest.tip,tip_description:documents.digest_tip_documents_0
+msgid "An easy way to process incoming mails is to configure your scanner to send PDFs to"
+msgstr "طريقة سهلة لمعالجة البريد الوارد هي تهيئة الماسح الضوئي لإرسال ملفات PDF إلى "
+
+#. module: documents
+#: model_terms:digest.tip,tip_description:documents.digest_tip_documents_0
+msgid "An easy way to process incoming mails is to configure your scanner to send PDFs to your workspace email. Scanned files will appear automatically in your workspace. Then, process your documents in bulk with the split tool: launch user defined actions, request a signature, convert to vendor bills with AI, etc."
+msgstr "من الطرق السهلة لمعالجة البريد الوارد هي تهيئة الماسح الضوئي الخاص بك لإرسال الملفات بصيغة PDF إلى البريد الإلكتروني الخاص بمساحة عملك. سوف تظهر الملفات الممسوحة تلقائياً في مساحة عملك. بعد ذلك، قم بمعالجة مستنداتك دفعة واحدة باستخدام أداة التقسيم: أطلق الإجراءات التي يحددها المستخدم، واطلب توقيعاً، وقم بتحويل فواتير الموردين باستخدام الذكاء الاصطناعي، وما إلى ذلك. "
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/hooks.js:0
+#, python-format
+msgid "An error occured while uploading."
+msgstr "حدث خطأ ما أثناء الرفع. "
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.xml:0
+#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
 #, python-format
 msgid "Archive"
-msgstr "أرشفة"
+msgstr "الأرشيف "
 
 #. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.xml:0
+#, python-format
+msgid "Archive original file(s)"
+msgstr "أرشفة الملف (الملفات) الأصلية "
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.document_view_form
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Archived"
 msgstr "مؤرشف"
 
 #. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/js/tours/documents.js:0
+#, python-format
+msgid "As this PDF contains multiple documents, let's split and process in bulk."
+msgstr "فلنقم بتقسيم ملف الـPDF ومعالجته دفعة واحدة، حيث أنه يحتوي على عدة مستندات. "
+
+#. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_finance_afv
-#: model:documents.workflow.rule,name:documents.documents_rule_internal_afv
-msgid "Ask For Validation"
-msgstr ""
+msgid "Ask for Validation"
+msgstr "طلب التصديق "
+
+#. module: documents
+#: model:documents.facet,name:documents.documents_marketing_assets
+msgid "Assets"
+msgstr "الأصول"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
@@ -574,7 +716,7 @@ msgstr "عدد المرفقات"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__description
 msgid "Attachment Description"
-msgstr ""
+msgstr "وصف المرفق "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__attachment_name
@@ -584,14 +726,12 @@ msgstr "اسم المرفق"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__attachment_type
 msgid "Attachment Type"
-msgstr ""
+msgstr "نوع المرفق "
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/js/documents_kanban_view.js:0
-#, python-format
-msgid "Attachments Kanban"
-msgstr "مرفقات كانبان"
+#: model_terms:documents.folder,description:documents.documents_finance_folder
+msgid "Automate your inbox using scanned documents or emails sent to <span class=\"o_folder_description_alias\"><strong>inbox-financial</strong> email alias</span>."
+msgstr "قم بأتمتة صندوق الوارد الخاص بك باستخدام المستندات الممسوحة أو رسائل البريد الإلكتروني المرسلة إلى <span class=\"o_folder_description_alias\"><strong>inbox-financial</strong> لقب البريد الإلكتروني</span>. "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__available_rule_ids
@@ -604,32 +744,43 @@ msgid "Bill"
 msgstr "فاتورة"
 
 #. module: documents
+#: model:documents.folder,name:documents.documents_marketing_brand1_folder
+msgid "Brand 1"
+msgstr "العلامة التجارية 1"
+
+#. module: documents
+#: model:documents.folder,name:documents.documents_marketing_brand2_folder
+msgid "Brand 2"
+msgstr "العلامة التجارية 2"
+
+#. module: documents
 #: model:documents.tag,name:documents.documents_marketing_assets_brochures
 msgid "Brochures"
-msgstr "كراسات"
+msgstr "منشورات "
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_mail_activity_type__folder_id
 msgid "By defining a folder, the upload activities will generate a document"
-msgstr ""
+msgstr "بتحديدك لمجلد، سوف تقوم الأنشطة المرفوعة بإنشاء مستند "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__can_upload
 msgid "Can Upload"
-msgstr "يمكن تحميل"
+msgstr "يمكنه الرفع "
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.documents_folder_deletion_wizard_view_form
+#: model_terms:ir.ui.view,arch_db:documents.documents_link_to_record_form_view
 #: model_terms:ir.ui.view,arch_db:documents.documents_request_form_view
 #: model_terms:ir.ui.view,arch_db:documents.documents_upload_url_view
+#: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "Cancel"
-msgstr "إلغاء"
+msgstr "إلغاء "
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/xml/documents_progress_bar.xml:0
-#, python-format
-msgid "Cancel Upload"
-msgstr ""
+#: model_terms:documents.folder,description:documents.documents_internal_folder
+msgid "Categorize, share and keep track of all your internal documents."
+msgstr "ضع مستنداتك الداخلية في فئات وقم بمشاركتها وتتبعها. "
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_facet
@@ -644,27 +795,48 @@ msgstr "فئة"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__checksum
 msgid "Checksum/SHA1"
-msgstr ""
+msgstr "Checksum/SHA1"
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/js/tours/documents.js:0
+#. odoo-python
+#: code:addons/documents/models/documents_workflow_rule.py:0
 #, python-format
-msgid "Click here to <b>close the discussion board</b>"
-msgstr "اضغط هنا لـ<b>إغلاق لوحة المناقشة</b>"
+msgid "Choose a record to link"
+msgstr "اختر سجلاً لربطه "
 
 #. module: documents
-#. openerp-web
+#. odoo-javascript
 #: code:addons/documents/static/src/js/tours/documents.js:0
 #, python-format
-msgid "Click on a card to <b>view the document</b>."
-msgstr "اضغط على بطاقة لـ<b>عرض المستند</b>."
+msgid "Click on a card to <b>select the document</b>."
+msgstr "اضغط على بطاقة <b>لاختيار المستند</b>. "
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/js/tours/documents.js:0
+#, python-format
+msgid "Click on a thumbnail to <b>preview the document</b>."
+msgstr "اضغط على الصورة المصغرة <b>لمعاينة المستند</b>. "
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/js/tours/documents.js:0
+#, python-format
+msgid "Click on the <b>page separator</b>: we don't want to split these two pages as they belong to the same document."
+msgstr "اضغط على <b>أداة تقسيم الصفحة</b>: لا نريد تقسيم هاتين الصفحتين حيث أنهما ينتميان لنفس المستند. "
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.xml:0
+#, python-format
+msgid "Close"
+msgstr "إغلاق "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__company_id
 #: model:ir.model.fields,field_description:documents.field_documents_folder__company_id
 msgid "Company"
-msgstr "الشركة"
+msgstr "الشركة "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__condition_type
@@ -679,7 +851,13 @@ msgstr "الشروط"
 #. module: documents
 #: model:ir.ui.menu,name:documents.Config
 msgid "Configuration"
-msgstr "إعداد"
+msgstr "التهيئة "
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.share_view_form
+#: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
+msgid "Configure Email Servers"
+msgstr "تهيئة خوادم البريد الإلكتروني "
 
 #. module: documents
 #: model:ir.model,name:documents.model_res_partner
@@ -694,13 +872,20 @@ msgstr "جهة الاتصال"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "Contains"
-msgstr "يحتوي"
+msgstr "يحتوي على "
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_documents_Contracts
 #: model:documents.tag,name:documents.documents_internal_template_contracts
 msgid "Contracts"
 msgstr "العقود"
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/documents_controller_mixin.xml:0
+#, python-format
+msgid "Control panel buttons"
+msgstr "أزرار لوحة التحكم "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__create_model
@@ -710,6 +895,11 @@ msgstr "إنشاء"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__create_share_id
 msgid "Create Share"
+msgstr "إنشاء مشاركة "
+
+#. module: documents
+#: model:documents.workflow.rule,name:documents.documents_rule_internal_mark
+msgid "Create Vendor Bill"
 msgstr ""
 
 #. module: documents
@@ -721,6 +911,8 @@ msgstr "إنشاء نشاط جديد"
 #: model:ir.model.fields,field_description:documents.field_documents_document__create_uid
 #: model:ir.model.fields,field_description:documents.field_documents_facet__create_uid
 #: model:ir.model.fields,field_description:documents.field_documents_folder__create_uid
+#: model:ir.model.fields,field_description:documents.field_documents_folder_deletion_wizard__create_uid
+#: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__create_uid
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__create_uid
 #: model:ir.model.fields,field_description:documents.field_documents_share__create_uid
 #: model:ir.model.fields,field_description:documents.field_documents_tag__create_uid
@@ -734,6 +926,8 @@ msgstr "أنشئ بواسطة"
 #: model:ir.model.fields,field_description:documents.field_documents_document__create_date
 #: model:ir.model.fields,field_description:documents.field_documents_facet__create_date
 #: model:ir.model.fields,field_description:documents.field_documents_folder__create_date
+#: model:ir.model.fields,field_description:documents.field_documents_folder_deletion_wizard__create_date
+#: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__create_date
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__create_date
 #: model:ir.model.fields,field_description:documents.field_documents_share__create_date
 #: model:ir.model.fields,field_description:documents.field_documents_tag__create_date
@@ -750,19 +944,19 @@ msgstr "تاريخ الإنشاء"
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_workflow_rule__condition_type__criteria
 msgid "Criteria"
-msgstr "معايير"
+msgstr "المعايير "
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__alias_bounced_content
+msgid "Custom Bounced Message"
+msgstr "الرسالة المرتدة المخصصة"
 
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_request_wizard__activity_date_deadline_range_type__days
 #: model:ir.model.fields.selection,name:documents.selection__documents_share__activity_date_deadline_range_type__days
 #: model:ir.model.fields.selection,name:documents.selection__documents_workflow_rule__activity_date_deadline_range_type__days
 msgid "Days"
-msgstr "الأيام"
-
-#. module: documents
-#: model:ir.model.fields,field_description:documents.field_mail_activity_type__default_user_id
-msgid "Default User"
-msgstr ""
+msgstr "أيام "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_defaults
@@ -776,21 +970,29 @@ msgid "Default values for uploaded documents"
 msgstr "القيم الافتراضية للمستندات المرفوعة"
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/xml/documents_inspector.xml:0
+#. odoo-javascript
+#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
+#: model_terms:ir.ui.view,arch_db:documents.documents_folder_deletion_wizard_view_form
+#: model_terms:ir.ui.view,arch_db:documents.folder_view_form
+#: model_terms:ir.ui.view,arch_db:documents.share_view_tree
 #, python-format
 msgid "Delete"
 msgstr "حذف"
 
 #. module: documents
+#: model:ir.actions.act_window,name:documents.documents_folder_deletion_wizard_action
+msgid "Delete Confirmation"
+msgstr "حذف التأكيد "
+
+#. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_internal_deprecate
 msgid "Deprecate"
-msgstr ""
+msgstr "إهمال "
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_internal_status_deprecated
 msgid "Deprecated"
-msgstr "مستنكر"
+msgstr "مهمَل "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__description
@@ -799,24 +1001,31 @@ msgid "Description"
 msgstr "الوصف"
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.folder_view_form
+#: model_terms:ir.ui.view,arch_db:documents.tag_view_form
+msgid "Discard"
+msgstr "تجاهل"
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_facet__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_folder__display_name
-#: model:ir.model.fields,field_description:documents.field_documents_mixin__display_name
+#: model:ir.model.fields,field_description:documents.field_documents_folder_deletion_wizard__display_name
+#: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_share__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_tag__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_action__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__display_name
 msgid "Display Name"
-msgstr "الاسم المعروض"
+msgstr "اسم العرض "
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/js/documents_progress_bar.js:0
+#. odoo-javascript
+#: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
-msgid "Do you really want to cancel the upload of %s?"
-msgstr ""
+msgid "Do you really want to unlink this record?"
+msgstr "هل ترغب حقاً في إلغاء ربط هذا السجل؟ "
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_document
@@ -833,6 +1042,12 @@ msgid "Document Count"
 msgstr "عدد المستندات"
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.document_view_form
+#: model_terms:ir.ui.view,arch_db:documents.documents_request_form_view
+msgid "Document Name"
+msgstr "اسم المستند"
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__owner_id
 msgid "Document Owner"
 msgstr "مالك المستند"
@@ -844,21 +1059,31 @@ msgstr "طلب مستند"
 
 #. module: documents
 #: model:mail.template,subject:documents.mail_template_document_request
-msgid "Document Request ${object.name != False and ': '+ object.name or ''}"
-msgstr ""
+msgid "Document Request {{ object.name != False and ': '+ object.name or '' }}"
+msgstr "طلب مستند {{ object.name != False and ': '+ object.name or '' }}"
 
 #. module: documents
-#: code:addons/documents/models/document.py:0
-#: code:addons/documents/models/document.py:0
+#. odoo-python
+#: code:addons/documents/models/documents_document.py:0
 #: code:addons/documents/models/mail_activity.py:0
 #, python-format
 msgid "Document Request: %s Uploaded by: %s"
+msgstr "طلب مستند: %s تم الرفع بواسطة: %s"
+
+#. module: documents
+#: model:mail.template,name:documents.mail_template_document_request_reminder
+msgid "Document Request: Reminder"
 msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_folder__has_write_access
+msgid "Document User Upload Rights"
+msgstr "حقوق الرفع لمستخدم المستند "
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_workflow_action
 msgid "Document Workflow Tag Action"
-msgstr "إجراء وسم سير عمل المستند"
+msgstr "إجراء علامة تصنيف سير عمل المستند "
 
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_share__type__ids
@@ -866,21 +1091,46 @@ msgid "Document list"
 msgstr "قائمة المستندات"
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/models/folder.py:0
+#: model_terms:ir.ui.view,arch_db:documents.document_view_kanban
+msgid "Document preview"
+msgstr ""
+
+#. module: documents
+#: model:mail.template,name:documents.mail_template_document_request
+msgid "Document: Document Request"
+msgstr "المستند: طلب المستند "
+
+#. module: documents
+#. odoo-python
+#. odoo-javascript
+#: code:addons/documents/models/documents_folder.py:0
 #: code:addons/documents/models/res_partner.py:0
-#: code:addons/documents/static/src/xml/documents_inspector.xml:0
+#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
+#: model:documents.facet,name:documents.documents_finance_documents
 #: model:ir.actions.act_window,name:documents.document_action
 #: model:ir.model.fields,field_description:documents.field_documents_folder__document_ids
+#: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__document_ids
 #: model:ir.model.fields,field_description:documents.field_res_users__document_count
 #: model:ir.module.category,name:documents.module_category_documents_management
 #: model:ir.ui.menu,name:documents.dashboard
 #: model:ir.ui.menu,name:documents.menu_root
+#: model_terms:ir.ui.view,arch_db:documents.action_view_search
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
+#: model_terms:ir.ui.view,arch_db:documents.documents_view_activity
 #: model_terms:ir.ui.view,arch_db:documents.res_config_settings_view_form
 #, python-format
 msgid "Documents"
 msgstr "المستندات"
+
+#. module: documents
+#: model:ir.model,name:documents.model_documents_folder_deletion_wizard
+msgid "Documents Folder Deletion Wizard"
+msgstr "معالج حذف مجلد المستندات "
+
+#. module: documents
+#: model:ir.model,name:documents.model_documents_link_to_record_wizard
+msgid "Documents Link to Record"
+msgstr "المستندات المرتبطة بسجل "
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_share
@@ -890,17 +1140,17 @@ msgstr "مشاركة المستندات"
 #. module: documents
 #: model:ir.model,name:documents.model_documents_folder
 msgid "Documents Workspace"
-msgstr ""
+msgstr "مساحة عمل المستندات "
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_mixin
 msgid "Documents creation mixin"
-msgstr ""
+msgstr "مجموعة مخصصات إنشاء المستندات "
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "Does not contain"
-msgstr "لا يحتوي"
+msgstr "لا يحتوي على "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__domain
@@ -912,37 +1162,27 @@ msgid "Domain"
 msgstr "النطاق"
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
-msgid "Done"
-msgstr "المنتهية"
-
-#. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.share_page
-msgid "Downlaod all files"
-msgstr "تحميل كافة الملفات"
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/xml/documents_inspector.xml:0
+#. odoo-javascript
+#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #: model:ir.model.fields.selection,name:documents.selection__documents_share__action__download
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
 #, python-format
 msgid "Download"
-msgstr "تحميل"
+msgstr "تنزيل "
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.share_page
+msgid "Download all files"
+msgstr "تحميل كافة الملفات "
 
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_share__action__downloadupload
 msgid "Download and Upload"
-msgstr "تحميل ورفع"
+msgstr "تنزيل ورفع "
 
 #. module: documents
-#: model:documents.tag,name:documents.documents_internal_status_draft
-msgid "Draft"
-msgstr "مسودة"
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/js/documents_kanban_controller.js:0
+#. odoo-javascript
+#: code:addons/documents/static/src/views/helper/documents_drop_zone.xml:0
 #, python-format
 msgid "Drop files here to upload"
 msgstr "أسقط الملفات هنا ليتم رفعها"
@@ -962,51 +1202,35 @@ msgid "Due type"
 msgstr "نوع الاستحقاق"
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.folder_view_form
-msgid "E.g. Finance"
-msgstr "مثلًا: المالية"
-
-#. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.documents_request_form_view
-msgid "E.g. Missing Expense"
-msgstr "مثلًا: المصروفات المفقودة"
-
-#. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.facet_view_form
-msgid "E.g. Status"
-msgstr "مثلًا: الحالة"
-
-#. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
-msgid "E.g. Validate document"
-msgstr "مثلًا: اعتماد المستند"
-
-#. module: documents
-#: code:addons/documents/models/ir_attachment.py:0
+#. odoo-javascript
+#: code:addons/documents/static/src/views/search/documents_search_panel.js:0
+#: code:addons/documents/static/src/views/search/documents_search_panel.xml:0
 #, python-format
-msgid "ERROR: Invalid PDF file!"
-msgstr "خطأ: ملف الـPDF غير صالح!"
+msgid "Edit"
+msgstr "تحرير"
 
 #. module: documents
-#: code:addons/documents/models/ir_attachment.py:0
+#. odoo-javascript
+#: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
-msgid "ERROR: Invalid list of pages to split. Example: 1,5-9,10"
-msgstr "خطأ: قائمة الصفحات غير صالحة"
+msgid "Edit the linked record"
+msgstr "تحرير المستند المرتبط "
 
 #. module: documents
-#: code:addons/documents/models/ir_attachment.py:0
-#, python-format
-msgid "ERROR: the file must be a PDF"
-msgstr "خطأ: يجب أن يكون الملف بصيغة PDF"
+#: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
+msgid "Email Alias"
+msgstr "لقب البريد الإلكتروني"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__email_cc
 msgid "Email cc"
-msgstr ""
+msgstr "نسخة البريد الإلكتروني "
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/js/documents_kanban_controller.js:0
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.js:0
+#: code:addons/documents/static/src/views/hooks.js:0
+#: model:ir.model.fields.selection,name:documents.selection__documents_document__thumbnail_status__error
 #, python-format
 msgid "Error"
 msgstr "خطأ"
@@ -1014,12 +1238,12 @@ msgstr "خطأ"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__excluded_tag_ids
 msgid "Excluded Tags"
-msgstr ""
+msgstr "علامات التصنيف المستثناة "
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_documents_expense
 msgid "Expense"
-msgstr "المصروف"
+msgstr "نفقة "
 
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_share__state__expired
@@ -1027,16 +1251,9 @@ msgid "Expired"
 msgstr "منتهي الصلاحية"
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/xml/documents_thread.xml:0
-#, python-format
-msgid "Extract pages:&nbsp;"
-msgstr "استخراج الصفحات:&nbsp;"
-
-#. module: documents
 #: model:ir.model.constraint,message:documents.constraint_documents_facet_name_unique
 msgid "Facet already exists in this folder"
-msgstr ""
+msgstr "يحتوي هذا المستند على وجه بالفعل "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__favorited_ids
@@ -1051,8 +1268,19 @@ msgstr "الملف"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__datas
-msgid "File Content"
-msgstr "محتوى الملف"
+msgid "File Content (base64)"
+msgstr "محتوى الملف (base64) "
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__raw
+msgid "File Content (raw)"
+msgstr "محتوى الملف (أولي)"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__file_extension
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
+msgid "File Extension"
+msgstr ""
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__file_size
@@ -1060,9 +1288,21 @@ msgid "File Size"
 msgstr "حجم الملف"
 
 #. module: documents
+#: model:ir.model,name:documents.model_ir_binary
+msgid "File streaming helper model for controllers"
+msgstr "نموذج مساعد لنشر الملفات للمتحكمين "
+
+#. module: documents
+#. odoo-python
+#: code:addons/documents/controllers/documents.py:0
+#, python-format
+msgid "File uploaded by:"
+msgstr ""
+
+#. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.res_config_settings_view_form
 msgid "Files Centralization"
-msgstr ""
+msgstr "مركزية الملفات "
 
 #. module: documents
 #: model:documents.folder,name:documents.documents_finance_folder
@@ -1072,14 +1312,20 @@ msgstr "المالية"
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_documents_financial
 msgid "Financial"
-msgstr ""
+msgstr "مالي "
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_documents_fiscal
 msgid "Fiscal"
-msgstr ""
+msgstr "المالي "
 
 #. module: documents
+#: model:documents.facet,name:documents.documents_finance_fiscal_year
+msgid "Fiscal years"
+msgstr "السنوات المالية "
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_folder_deletion_wizard__folder_id
 #: model:ir.model.fields,field_description:documents.field_mail_activity_type__folder_id
 msgid "Folder"
 msgstr "المجلد"
@@ -1088,47 +1334,39 @@ msgstr "المجلد"
 #: model:ir.model.fields,field_description:documents.field_documents_document__message_follower_ids
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_follower_ids
 msgid "Followers"
-msgstr "المتابعون"
-
-#. module: documents
-#: model:ir.model.fields,field_description:documents.field_documents_document__message_channel_ids
-#: model:ir.model.fields,field_description:documents.field_documents_share__message_channel_ids
-msgid "Followers (Channels)"
-msgstr "المتابعون (القنوات)"
+msgstr "المتابعين "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__message_partner_ids
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_partner_ids
 msgid "Followers (Partners)"
-msgstr "المتابعون (الشركاء)"
+msgstr "المتابعين (الشركاء) "
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/js/tours/documents.js:0
-#, python-format
-msgid ""
-"Go to the <b>images, videos & PDF viewer</b> by clicking on the preview "
-"area."
-msgstr ""
-"اذهب لـ<b>لصور، والفيديوهات، وعارض ملفات PDF</b> بالضغط على منطقة المعاينة."
+#: model:ir.model.fields,help:documents.field_documents_document__activity_type_icon
+msgid "Font awesome icon e.g. fa-tasks"
+msgstr "أيقونة Font awesome مثال fa-tasks "
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
+msgid "Future Activities"
+msgstr "الأنشطة المستقبلية"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 #: model_terms:ir.ui.view,arch_db:documents.facet_view_search
 msgid "Group By"
-msgstr "تجميع حسب"
+msgstr "التجميع حسب "
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__read_group_ids
-msgid ""
-"Groups able to see the workspace and read its documents without create/edit "
-"rights."
-msgstr ""
+msgid "Groups able to see the workspace and read its documents without create/edit rights."
+msgstr "المجموعات القادرة على رؤية مساحة العمل وقراءة المستندات دون صلاحيات الإنشاء/التحرير. "
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__group_ids
 msgid "Groups able to see the workspace and read/create/edit its documents."
-msgstr ""
+msgstr "المجموعات القادرة على رؤية مساحة العمل وقراءة/إنشاء/تحرير المستندات. "
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_internal_knowledge_hr
@@ -1136,15 +1374,25 @@ msgid "HR"
 msgstr "الموارد البشرية"
 
 #. module: documents
-#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__has_business_option
-msgid "Has Business Option"
-msgstr "به خيار الأعمال"
+#: model:ir.model.fields,field_description:documents.field_documents_document__has_message
+#: model:ir.model.fields,field_description:documents.field_documents_share__has_message
+msgid "Has Message"
+msgstr "يحتوي على رسالة "
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
+#: model:ir.model.fields,field_description:documents.field_documents_document__previous_attachment_ids
+#, python-format
+msgid "History"
+msgstr "السجل"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__id
 #: model:ir.model.fields,field_description:documents.field_documents_facet__id
 #: model:ir.model.fields,field_description:documents.field_documents_folder__id
-#: model:ir.model.fields,field_description:documents.field_documents_mixin__id
+#: model:ir.model.fields,field_description:documents.field_documents_folder_deletion_wizard__id
+#: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__id
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__id
 #: model:ir.model.fields,field_description:documents.field_documents_share__id
 #: model:ir.model.fields,field_description:documents.field_documents_tag__id
@@ -1155,11 +1403,8 @@ msgstr "المُعرف"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_parent_thread_id
-msgid ""
-"ID of the parent record holding the alias (example: project holding the task"
-" creation alias)"
-msgstr ""
-"مُعرف السجل الأصلي الذي يحتوي اللقب (مثال: 'المشروع' يحمل لقب إنشاء المهمة)"
+msgid "ID of the parent record holding the alias (example: project holding the task creation alias)"
+msgstr "معرف السجل الأصل الذي يحتوي على اللقب (مثال: المشروع الذي يحتوي على اللقب لإنشاء المهمة) "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_exception_icon
@@ -1169,13 +1414,11 @@ msgstr "الأيقونة"
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__activity_exception_icon
 msgid "Icon to indicate an exception activity."
-msgstr ""
+msgstr "الأيقونة للإشارة إلى النشاط المستثنى "
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__message_needaction
-#: model:ir.model.fields,help:documents.field_documents_document__message_unread
 #: model:ir.model.fields,help:documents.field_documents_share__message_needaction
-#: model:ir.model.fields,help:documents.field_documents_share__message_unread
 msgid "If checked, new messages require your attention."
 msgstr "إذا كان محددًا، فهناك رسائل جديدة تحتاج لرؤيتها."
 
@@ -1188,20 +1431,36 @@ msgid "If checked, some messages have a delivery error."
 msgstr "إذا كان محددًا، فقد حدث خطأ في تسليم بعض الرسائل."
 
 #. module: documents
+#: model:ir.model.fields,help:documents.field_documents_share__alias_bounced_content
+msgid "If set, this content will automatically be sent out to unauthorized users instead of the default message."
+msgstr "إذا كان محدداً، سوف يتم إرسال هذا المحتوى تلقائياً إلى المستخدمين غير المصرح لهم عوضاً عن الرسالة الافتراضية. "
+
+#. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Image/Video"
-msgstr ""
+msgstr "صورة/فيديو "
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_marketing_assets_images
 msgid "Images"
-msgstr "صور"
+msgstr "الصور "
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_status_inbox
+#: model:documents.tag,name:documents.documents_internal_status_inbox
 #: model:mail.activity.type,name:documents.mail_documents_activity_data_Inbox
 msgid "Inbox"
 msgstr "صندوق الوارد"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_share__include_sub_folders
+msgid "Include Sub Folders"
+msgstr "تضمين المجلدات الفرعية "
+
+#. module: documents
+#: model_terms:documents.folder,description:documents.documents_internal_folder
+msgid "Incoming letters sent to <span class=\"o_folder_description_alias\">inbox email alias</span> will be added to your inbox automatically."
+msgstr "سوف تتم إضافة الرسائل الواردة التي يتم إرسالها إلى <span class=\"o_folder_description_alias\">لقب البريد الإلكتروني</span> إلى صندوق الوارد الخاص بك تلقائياً. "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__index_content
@@ -1214,35 +1473,42 @@ msgid "Internal"
 msgstr "داخلي"
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__is_editable_attachment
+msgid "Is Editable Attachment"
+msgstr "مرفق قابل للتحرير "
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__is_favorited
+msgid "Is Favorited"
+msgstr "مفضل "
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__message_is_follower
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_is_follower
 msgid "Is Follower"
 msgstr "متابع"
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/js/tours/documents.js:0
-#, python-format
-msgid "It will be sent to the followers of this document"
-msgstr "سيتم إرساله لمتابعي هذا المستند"
+#: model:ir.model.fields,field_description:documents.field_documents_folder__is_shared
+msgid "Is Shared"
+msgstr "تمت مشاركته "
 
 #. module: documents
-#: model:ir.model.fields,field_description:documents.field_documents_document____last_update
-#: model:ir.model.fields,field_description:documents.field_documents_facet____last_update
-#: model:ir.model.fields,field_description:documents.field_documents_folder____last_update
-#: model:ir.model.fields,field_description:documents.field_documents_mixin____last_update
-#: model:ir.model.fields,field_description:documents.field_documents_request_wizard____last_update
-#: model:ir.model.fields,field_description:documents.field_documents_share____last_update
-#: model:ir.model.fields,field_description:documents.field_documents_tag____last_update
-#: model:ir.model.fields,field_description:documents.field_documents_workflow_action____last_update
-#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule____last_update
-msgid "Last Modified on"
-msgstr "آخر تعديل في"
+#: model:ir.model.fields,field_description:documents.field_documents_document__is_multipage
+msgid "Is considered multipage"
+msgstr ""
+
+#. module: documents
+#: model:documents.facet,name:documents.documents_internal_knowledge
+msgid "Knowledge"
+msgstr "المعرفة"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__write_uid
 #: model:ir.model.fields,field_description:documents.field_documents_facet__write_uid
 #: model:ir.model.fields,field_description:documents.field_documents_folder__write_uid
+#: model:ir.model.fields,field_description:documents.field_documents_folder_deletion_wizard__write_uid
+#: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__write_uid
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__write_uid
 #: model:ir.model.fields,field_description:documents.field_documents_share__write_uid
 #: model:ir.model.fields,field_description:documents.field_documents_tag__write_uid
@@ -1255,6 +1521,8 @@ msgstr "آخر تحديث بواسطة"
 #: model:ir.model.fields,field_description:documents.field_documents_document__write_date
 #: model:ir.model.fields,field_description:documents.field_documents_facet__write_date
 #: model:ir.model.fields,field_description:documents.field_documents_folder__write_date
+#: model:ir.model.fields,field_description:documents.field_documents_folder_deletion_wizard__write_date
+#: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__write_date
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__write_date
 #: model:ir.model.fields,field_description:documents.field_documents_share__write_date
 #: model:ir.model.fields,field_description:documents.field_documents_tag__write_date
@@ -1264,32 +1532,85 @@ msgid "Last Updated on"
 msgstr "آخر تحديث في"
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
+msgid "Late Activities"
+msgstr "الأنشطة المتأخرة"
+
+#. module: documents
+#: model:documents.tag,name:documents.documents_internal_knowledge_legal
+msgid "Legal"
+msgstr "قانوني "
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/js/tours/documents.js:0
+#, python-format
+msgid "Let's process documents in your Inbox.<br/><i>Tip: Use Tags to filter documents and structure your process.</i>"
+msgstr "فلنقم بمعالجة الستندات في صندوق الوارد الخاص بك.<br/><i>نصيحة: استخدم علامات التصنيف لإضفاء هيكل لعمليتك.</i> "
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/js/tours/documents.js:0
+#, python-format
+msgid "Let's process these bills: send to Finance workspace."
+msgstr "فلنقم بمعالجة تلك الفواتير: أرسلها لمساحة العمل المالية. "
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/js/tours/documents.js:0
+#, python-format
+msgid "Let's process this document, coming from our scanner."
+msgstr "فلنقم بمعالجة هذا المستند القادم من ماسحنا الضوئي. "
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/js/tours/documents.js:0
+#, python-format
+msgid "Let's tag this mail as legal<br/> <i>Tips: actions can be tailored to your process, according to the workspace.</i>"
+msgstr "فلنقم بإضافة علامة تصنيف لهذا البريد الإلكتروني لتعليمه كقانوني<br/> <i>نصيحة: يمكن تصميم الإجراءات لتلائم عملياتك تماماً وفقاً لمساحة العمل.</i> "
+
+#. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__user_specific
 msgid "Limit Read Groups to the documents of which they are owner."
+msgstr "قم بقصر مجموعات القراءة فقط على المستندات التي يمتلكونها. "
+
+#. module: documents
+#: model:ir.model.fields,help:documents.field_documents_folder__user_specific_write
+msgid "Limit Write Groups to the documents of which they are owner."
+msgstr "قم بقصر مجموعات الكتابة فقط على المستندات التي يمتلكونها. "
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
+#: model_terms:ir.ui.view,arch_db:documents.documents_link_to_record_form_view
+#, python-format
+msgid "Link"
+msgstr "الرابط"
+
+#. module: documents
+#. odoo-python
+#: code:addons/documents/controllers/documents.py:0
+#, python-format
+msgid "Link created by:"
 msgstr ""
 
 #. module: documents
-#: model:ir.model.fields,help:documents.field_documents_document__email_cc
-msgid "List of cc from incoming emails."
-msgstr ""
+#: model:ir.model.fields.selection,name:documents.selection__documents_workflow_rule__create_model__link_to_record
+msgid "Link to record"
+msgstr "الربط بالسجل "
 
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_share__state__live
 msgid "Live"
-msgstr "حي"
+msgstr "مباشر "
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.share_single
-msgid "Loading"
-msgstr "جاري التحميل"
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/xml/documents_inspector.xml:0
+#. odoo-javascript
+#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
 #, python-format
 msgid "Lock"
-msgstr "إغلاق"
+msgstr "قفل "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__is_locked
@@ -1304,7 +1625,6 @@ msgstr "مقفل بواسطة"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
-#: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "Log a note..."
 msgstr "تسجيل ملاحظة..."
@@ -1320,27 +1640,14 @@ msgid "Logout"
 msgstr "تسجيل الخروج"
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/xml/documents_inspector.xml:0
-#, python-format
-msgid "MB"
-msgstr "ميجا بايت"
-
-#. module: documents
-#: model:ir.model.fields,field_description:documents.field_documents_document__message_main_attachment_id
-#: model:ir.model.fields,field_description:documents.field_documents_share__message_main_attachment_id
-msgid "Main Attachment"
-msgstr "المرفق الرئيسي"
-
-#. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_internal_mad
 msgid "Mark As Draft"
-msgstr ""
+msgstr "التعيين كمسودة "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__remove_activities
 msgid "Mark all as Done"
-msgstr ""
+msgstr "تعيين الكل كمنتهي  "
 
 #. module: documents
 #: model:documents.folder,name:documents.documents_marketing_folder
@@ -1362,17 +1669,23 @@ msgstr "الرسائل"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__mimetype
 msgid "Mime Type"
-msgstr "نوع التنسيق الملف"
+msgstr "نوع تنسيق الملف"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "Miscellaneous"
-msgstr "متنوعة"
+msgstr "متفرقات "
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__model_id
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Model"
-msgstr "الكائن"
+msgstr "النموذج "
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__accessible_model_ids
+msgid "Models"
+msgstr "النماذج "
 
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_request_wizard__activity_date_deadline_range_type__months
@@ -1384,19 +1697,34 @@ msgstr "شهور"
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_finance_mti
 msgid "Move To Inbox"
-msgstr ""
+msgstr "النقل لصندوق الوارد "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__folder_id
 msgid "Move to Workspace"
-msgstr ""
+msgstr "النقل إلى مساحة العمل "
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/js/documents_inspector.js:0
+#: model_terms:ir.ui.view,arch_db:documents.documents_folder_deletion_wizard_view_form
+msgid "Move to parent workspace"
+msgstr "النقل إلى مساحة العمل الأصلية "
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/inspector/documents_inspector_field.js:0
 #, python-format
 msgid "Multiple values"
 msgstr "قيم متعددة"
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
+msgid "My Activities"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__my_activity_date_deadline
+msgid "My Activity Deadline"
+msgstr "نهاية الوقت المعين للنشاط"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
@@ -1426,11 +1754,44 @@ msgid "Name of the share link"
 msgstr "اسم رابط المشاركة"
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/js/documents_inspector.js:0
+#. odoo-javascript
+#: code:addons/documents/static/src/views/search/documents_search_panel.xml:0
 #, python-format
-msgid "Name or Category contains: %s"
-msgstr ""
+msgid "New"
+msgstr "جديد"
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.js:0
+#, python-format
+msgid "New File"
+msgstr "ملف جديد "
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.js:0
+#, python-format
+msgid "New Group"
+msgstr "مجموعة جديدة "
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/search/documents_search_panel.js:0
+#, python-format
+msgid "New Tag"
+msgstr "علامة تصنيف جديدة "
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/search/documents_search_panel.js:0
+#, python-format
+msgid "New Workspace"
+msgstr "مساحة عمل جديدة "
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__activity_calendar_event_id
+msgid "Next Activity Calendar Event"
+msgstr "الفعالية التالية في تقويم الأنشطة "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_date_deadline
@@ -1448,22 +1809,41 @@ msgid "Next Activity Type"
 msgstr "نوع النشاط التالي"
 
 #. module: documents
-#: code:addons/documents/models/document.py:0
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.js:0
 #, python-format
-msgid "Not a file"
-msgstr ""
+msgid "No document has been selected"
+msgstr "لم يتم تحديد أي مستند "
 
 #. module: documents
-#: code:addons/documents/models/document.py:0
+#: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
+msgid "No limit"
+msgstr "بلا حد "
+
+#. module: documents
+#: model_terms:ir.actions.act_window,help:documents.share_action
+msgid "No shared links"
+msgstr "لا توجد أي روابط تمت مشاركتها "
+
+#. module: documents
+#. odoo-python
+#: code:addons/documents/models/documents_document.py:0
+#, python-format
+msgid "Not a file"
+msgstr "ليس ملفاً "
+
+#. module: documents
+#. odoo-python
+#: code:addons/documents/models/documents_document.py:0
 #, python-format
 msgid "Not attached"
-msgstr ""
+msgstr "ليس مرفقاً "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_note
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_note
 msgid "Note"
-msgstr "الملاحظات"
+msgstr "ملاحظة "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__message_needaction_counter
@@ -1475,25 +1855,19 @@ msgstr "عدد الإجراءات"
 #: model:ir.model.fields,field_description:documents.field_documents_document__message_has_error_counter
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_has_error_counter
 msgid "Number of errors"
-msgstr "عدد الاخطاء"
+msgstr "عدد الأخطاء "
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__message_needaction_counter
 #: model:ir.model.fields,help:documents.field_documents_share__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr "عدد الرسائل التي تتطلب إجراء"
+msgstr "عدد الرسائل التي تتطلب اتخاذ إجراء "
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__message_has_error_counter
 #: model:ir.model.fields,help:documents.field_documents_share__message_has_error_counter
 msgid "Number of messages with delivery error"
 msgstr "عدد الرسائل الحادث بها خطأ في التسليم"
-
-#. module: documents
-#: model:ir.model.fields,help:documents.field_documents_document__message_unread_counter
-#: model:ir.model.fields,help:documents.field_documents_share__message_unread_counter
-msgid "Number of unread messages"
-msgstr "عدد الرسائل الجديدة"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
@@ -1503,29 +1877,31 @@ msgstr "شعار أودو"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid "Odoo Website"
-msgstr "موقع أودو"
+msgstr "موقع أودو الإلكتروني "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__limited_to_single_record
 msgid "One record limit"
-msgstr ""
+msgstr "سجل واحد كحد أقصى "
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/xml/documents_inspector.xml:0
+#. odoo-javascript
+#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "Open chatter"
-msgstr ""
+msgstr "فتح الدردشة "
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_force_thread_id
-msgid ""
-"Optional ID of a thread (record) to which all incoming messages will be "
-"attached, even if they did not reply to it. If set, this will disable the "
-"creation of new records completely."
-msgstr ""
-"معرف اختياري لمناقشة (سجل) سيتم إرفاق كافة الرسائل الواردة به، حتى لو لم "
-"يردوا عليه. إذا تم تعيين قيمة له، سيعطل هذا إنشاء السجلات الجديدة بالكامل."
+msgid "Optional ID of a thread (record) to which all incoming messages will be attached, even if they did not reply to it. If set, this will disable the creation of new records completely."
+msgstr "معرف اختياري لمناقشة (سجل) سيتم إرفاق كافة رسائل البريد الإلكتروني الواردة فيه، حتى لو لم يتم الرد عليها. إذا تم تعيين قيمة له، سيعطل هذا إنشاء السجلات الجديدة بالكامل. "
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/helper/documents_action_helper.xml:0
+#, python-format
+msgid "Or send emails to"
+msgstr "أو أرسل رسائل البريد الإلكتروني إلى "
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_internal_knowledge_other
@@ -1534,8 +1910,19 @@ msgstr "غير ذلك"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__user_specific
+#: model_terms:ir.ui.view,arch_db:documents.folder_view_form
 msgid "Own Documents Only"
-msgstr ""
+msgstr "المستندات الخاصة بك فقط "
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_folder__user_specific_write
+msgid "Own Documents Only (Write)"
+msgstr "المستندات الخاصة بك فقط (كتابة) "
+
+#. module: documents
+#: model:ir.model.constraint,message:documents.constraint_documents_folder_check_user_specific
+msgid "Own Documents Only may not be enabled for write groups if it is not enabled for read groups."
+msgstr "قد لا تكون \"المستندات الخاصة بك فقط\" مفعلة لمجموعات الكتابة إذا لم تكن مفعلة لمجموعات القراءة. "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__owner_id
@@ -1548,40 +1935,56 @@ msgstr "المالك"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
-msgid "Owner: #{document.create_uid.name}"
-msgstr ""
+msgid "Owner: #{document.owner_id.name}"
+msgstr "المالك: #{document.owner_id.name} "
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "PDF/Document"
-msgstr ""
+msgstr "PDF/مستند "
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_folder_deletion_wizard__parent_folder_id
+msgid "Parent Folder"
+msgstr "المجلد الأصلي "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_parent_model_id
 msgid "Parent Model"
-msgstr "الكائن الأصل"
+msgstr "النموذج الأصلي "
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_folder__parent_path
+msgid "Parent Path"
+msgstr "المسار الأصلي"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_parent_thread_id
 msgid "Parent Record Thread ID"
-msgstr "معرف مناقشة السجل الأصلي"
+msgstr "معرف مناقشة السجل الرئيسي "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__parent_folder_id
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_search
 msgid "Parent Workspace"
-msgstr ""
+msgstr "مساحة العمل الرئيسية "
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_parent_model_id
-msgid ""
-"Parent model holding the alias. The model holding the alias reference is not"
-" necessarily the model given by alias_model_id (example: project "
-"(parent_model) and task (model))"
+msgid "Parent model holding the alias. The model holding the alias reference is not necessarily the model given by alias_model_id (example: project (parent_model) and task (model))"
+msgstr "النموذج الرئيسي الذي يحتفظ بلقب البريد الإلكتروني. ليس بالضرورة أن يكون النموذج الذي يحتفظ بمرجع لقب البريد الإلكتروني هو النموذج المحدد في الحقل alias_model_id (مثال: المشروع (parent_model) والمهمة (model))"
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/search/documents_search_panel.js:0
+#, python-format
+msgid "Partial transfer"
+msgstr "التحويل الجزئي "
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.not_available
+msgid "Please contact the person that shared this link for more information."
 msgstr ""
-"الكائن الأب الذي يحتفظ بلقب البريد الإلكتروني. الكائن الذي يحتفظ بالإشارة "
-"إلى لقب البريد الإلكتروني لا يشترط بالضرورة أن يكون هو الكائن المحدد في "
-"الحقل alias_model_id (مثال: المشروع (الكائن الأب) والمهمة (الكائن))"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_contact
@@ -1591,23 +1994,20 @@ msgid ""
 "- partners: only authenticated partners\n"
 "- followers: only followers of the related document or members of following channels\n"
 msgstr ""
-"سياسة لنشر رسالة على المستند باستخدام بوابة البريد الإلكتروني.\n"
+"سياسة لنشر رسالة في المستند باستخدام بوابة البريد الإلكتروني.\n"
 "- الجميع: يمكن للجميع النشر\n"
 "- الشركاء: الشركاء المعتمدون فقط\n"
-"- المتابعون: فقط متابعو الوثيقة ذات الصلة أو أعضاء القنوات التالية.\n"
+"- المتابعون: فقط متابعو المستند ذي الصلة أو أعضاء القنوات التالية.\n"
+
+#. module: documents
+#: model:ir.model.fields.selection,name:documents.selection__documents_document__thumbnail_status__present
+msgid "Present"
+msgstr "حاضر "
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_internal_template_presentations
 msgid "Presentations"
-msgstr "عروض"
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/js/documents_progress_card.js:0
-#: code:addons/documents/static/src/xml/documents_progress_bar.xml:0
-#, python-format
-msgid "Processing..."
-msgstr ""
+msgstr "العروض التقديمية "
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_internal_template_project
@@ -1615,9 +2015,10 @@ msgid "Project"
 msgstr "المشروع"
 
 #. module: documents
-#: model:documents.tag,name:documents.documents_internal_knowledge_quality
-msgid "Quality"
-msgstr "جودة"
+#: model:ir.model.fields,field_description:documents.field_documents_document__rating_ids
+#: model:ir.model.fields,field_description:documents.field_documents_share__rating_ids
+msgid "Ratings"
+msgstr ""
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form
@@ -1627,7 +2028,12 @@ msgstr "صلاحيات القراءة"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__read_group_ids
 msgid "Read Groups"
-msgstr ""
+msgstr "مجموعات القراءة "
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__resource_ref
+msgid "Record"
+msgstr "السجل"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_force_thread_id
@@ -1635,13 +2041,37 @@ msgid "Record Thread ID"
 msgstr "معرف مناقشة السجل"
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__domain_folder_id
+msgid "Related Workspace"
+msgstr "مساحات العمل ذات الصلة "
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.js:0
+#, python-format
+msgid "Remaining Pages"
+msgstr "الصفحات المتبقية "
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/activity/documents_activity_controller.js:0
+#, python-format
+msgid "Reminder emails have been sent."
+msgstr ""
+
+#. module: documents
+#: model:mail.template,subject:documents.mail_template_document_request_reminder
+msgid "Reminder to upload your document{{ object.name and ' : ' + object.name or '' }}"
+msgstr ""
+
+#. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_workflow_action__action__remove
 msgid "Remove"
 msgstr "إزالة"
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/xml/documents_inspector.xml:0
+#. odoo-javascript
+#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "Replace"
 msgstr "استبدال"
@@ -1652,26 +2082,27 @@ msgid "Replace by"
 msgstr "استبدال بـ"
 
 #. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/documents_controller_mixin.xml:0
 #: model:ir.model.fields.selection,name:documents.selection__documents_document__type__empty
 #: model_terms:ir.ui.view,arch_db:documents.documents_request_form_view
+#, python-format
 msgid "Request"
 msgstr "طلب"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__request_activity_id
 msgid "Request Activity"
-msgstr ""
+msgstr "طلب نشاط "
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/xml/documents_kanban.xml:0
-#, python-format
-msgid "Request Document"
-msgstr "مستند الطلب"
+#: model_terms:ir.ui.view,arch_db:documents.documents_request_form_view
+msgid "Request To"
+msgstr "طلب إلى "
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/xml/systray.xml:0
+#. odoo-javascript
+#: code:addons/documents/static/src/web/activity/activity_menu_patch.xml:0
 #, python-format
 msgid "Request a Document"
 msgstr "طلب مستند"
@@ -1685,7 +2116,7 @@ msgstr "طلب ملف"
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 #: model_terms:ir.ui.view,arch_db:documents.share_single
 msgid "Requested"
-msgstr ""
+msgstr "مطلوب "
 
 #. module: documents
 #: model:mail.activity.type,name:documents.mail_documents_activity_data_md
@@ -1695,18 +2126,18 @@ msgstr "المستند المطلوب"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__required_tag_ids
 msgid "Required Tags"
-msgstr ""
+msgstr "علامات التصنيف المطلوبة "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__res_model_name
 msgid "Res Model Name"
-msgstr "اسم كائن Res"
+msgstr "اسم نموذج Res "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__res_id
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__res_id
 msgid "Resource ID"
-msgstr "معرف المصدر"
+msgstr "معرف المَورِد "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__res_model
@@ -1717,13 +2148,13 @@ msgstr "نموذج الموارد"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__res_name
 msgid "Resource Name"
-msgstr "اسم المصدر"
+msgstr "اسم المَورِد "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_user_id
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_user_id
 msgid "Responsible"
-msgstr "المسئول"
+msgstr "المسؤول "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_user_id
@@ -1731,17 +2162,9 @@ msgid "Responsible User"
 msgstr "المستخدم المسؤول"
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/xml/documents_inspector.xml:0
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
-#, python-format
 msgid "Restore"
 msgstr "استعادة"
-
-#. module: documents
-#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__name
-msgid "Rule name"
-msgstr "اسم القاعدة"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__message_has_sms_error
@@ -1755,23 +2178,39 @@ msgid "Sales"
 msgstr "المبيعات"
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.folder_view_form
+#: model_terms:ir.ui.view,arch_db:documents.tag_view_form
+msgid "Save"
+msgstr "حفظ"
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_option
 msgid "Schedule Activity"
-msgstr ""
+msgstr "جدولة نشاط "
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/js/documents_inspector.js:0
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.xml:0
 #, python-format
-msgid "Search more..."
-msgstr ""
+msgid "Select/Unselect All: Shift + A"
+msgstr "تحديد/إلغاء تحديد الكل: Shift + A "
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/js/documents_inspector.js:0
+#. odoo-javascript
+#: code:addons/documents/static/src/js/tours/documents.js:0
 #, python-format
-msgid "Select tags"
-msgstr ""
+msgid "Send this letter to the legal department, by assigning the right tags."
+msgstr "قم بإرسال هذه الرسالة إلى القسم القانوني عن طريق تعيين علامات التصنيف الصحيحة. "
+
+#. module: documents
+#: model:documents.workflow.rule,name:documents.documents_rule_internal_legal
+msgid "Send to Legal"
+msgstr "الإرسال إلى القسم القانوني "
+
+#. module: documents
+#: model:mail.template,description:documents.mail_template_document_request
+msgid "Sent to partner when requesting a document from them"
+msgstr "يتم إرساله إلى الشريك عند طلب مستند منه "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__sequence
@@ -1779,12 +2218,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_tag__sequence
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__sequence
 msgid "Sequence"
-msgstr "المسلسل"
+msgstr "التسلسل "
 
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_finance_2018contracts
-msgid "Set As 2019 Contracts"
-msgstr ""
+msgid "Set As 2023 Contracts"
+msgstr "التعيين كعقود 2023 "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__partner_id
@@ -1799,7 +2238,17 @@ msgstr "تعيين مالك"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__tag_action_ids
 msgid "Set Tags"
-msgstr "تعيين وسوم"
+msgstr "تعيين علامات التصنيف "
+
+#. module: documents
+#: model:mail.template,description:documents.mail_template_document_request_reminder
+msgid "Set reminders in activities to notify users who didn't upload their requested document"
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__has_owner_activity
+msgid "Set the activity on the document owner"
+msgstr "قم بتعيين النشاط لدى صاحب المستند "
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.configuration_action
@@ -1809,9 +2258,10 @@ msgid "Settings"
 msgstr "الإعدادات"
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/xml/documents_kanban.xml:0
+#. odoo-javascript
+#: code:addons/documents/static/src/views/documents_controller_mixin.xml:0
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
+#: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 #, python-format
 msgid "Share"
 msgstr "مشاركة"
@@ -1822,16 +2272,11 @@ msgid "Share Links"
 msgstr "مشاركة الروابط"
 
 #. module: documents
-#: code:addons/documents/models/share.py:0
-#, python-format
-msgid "Share domain"
-msgstr ""
-
-#. module: documents
-#: code:addons/documents/controllers/main.py:0
+#. odoo-python
+#: code:addons/documents/controllers/documents.py:0
 #, python-format
 msgid "Share link"
-msgstr ""
+msgstr "مشاركة الرابط "
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.share_action
@@ -1839,65 +2284,110 @@ msgid "Share links"
 msgstr "مشاركة الروابط"
 
 #. module: documents
-#: code:addons/documents/models/share.py:0
+#. odoo-python
+#: code:addons/documents/models/documents_share.py:0
 #, python-format
-msgid "Share selected records"
-msgstr ""
+msgid "Share selected files"
+msgstr "مشاركة الملفات المحددة "
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/xml/documents_kanban.xml:0
+#. odoo-python
+#: code:addons/documents/models/documents_share.py:0
+#, python-format
+msgid "Share selected workspace"
+msgstr "مشاركة مساحة العمل المحددة "
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/documents_controller_mixin.xml:0
 #, python-format
 msgid "Share this domain"
-msgstr ""
+msgstr "مشاركة هذا النطاق "
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/xml/documents_inspector.xml:0
+#. odoo-javascript
+#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "Share this selection"
-msgstr ""
+msgstr "مشاركة هذا الاختيار "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__type
 msgid "Share type"
-msgstr "مشاركة النوع"
+msgstr "نوع المشاركة "
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__create_share_id
 msgid "Share used to create this document"
-msgstr ""
+msgstr "تم إنشاء هذا المستند عن طريق المشاركة "
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
+msgid "Shared"
+msgstr "مشارك"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__document_ids
 msgid "Shared Documents"
-msgstr ""
-
-#. module: documents
-#: model:ir.ui.menu,name:documents.share_menu
-msgid "Shared Links"
-msgstr "الروابط المُتشارَكة"
+msgstr "المستندات التي تمت مشاركتها "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__tag_ids
 msgid "Shared Tags"
-msgstr "الوسوم المُتشارَكة"
+msgstr "علامات التصنيف التي تمت مشاركتها "
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/xml/documents_inspector.xml:0
+#: model:ir.ui.menu,name:documents.share_menu
+msgid "Shares & Emails"
+msgstr "المشاركات ورسائل البريد الإلكتروني "
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
+msgid "Show all records which has next action date is before today"
+msgstr "عرض كافة السجلات المُعين لها تاريخ إجراء تالي يسبق تاريخ اليوم الجاري"
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "Size"
 msgstr "الحجم"
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/xml/documents_thread.xml:0
+#. odoo-javascript
+#: code:addons/documents/static/src/views/hooks.js:0
+#, python-format
+msgid "Some files could not be uploaded (max size: %s)."
+msgstr ""
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.not_available
+msgid "Sorry, this link is no longer valid."
+msgstr ""
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__link_model
+msgid "Specific Model Linked"
+msgstr "تم ربط نموذج محدد "
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.xml:0
+#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "Split"
 msgstr "تقسيم"
 
 #. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/attachments/attachment_viewer_patch.xml:0
+#, python-format
+msgid "Split PDF"
+msgstr "تقسيم ملف PDF "
+
+#. module: documents
+#: model:documents.facet,name:documents.documents_finance_status
+#: model:documents.facet,name:documents.documents_internal_status
 #: model:ir.model.fields,field_description:documents.field_documents_share__state
 msgid "Status"
 msgstr "الحالة"
@@ -1918,7 +2408,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__children_folder_ids
 msgid "Sub workspaces"
-msgstr ""
+msgstr "مساحات العمل الفرعية "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_summary
@@ -1933,27 +2423,37 @@ msgstr "الملخص"
 #: model:ir.model.fields,field_description:documents.field_mail_activity_type__tag_ids
 #: model_terms:ir.ui.view,arch_db:documents.tag_view_search
 msgid "Tag"
-msgstr "الوسم"
+msgstr "علامة تصنيف "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__facet_ids
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_tree
 msgid "Tag Categories"
-msgstr "فئات الوسم"
+msgstr "فئات علامات التصنيف "
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.facet_view_form
+msgid "Tag Category"
+msgstr "فئة علامة التصنيف "
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.tag_view_form
+msgid "Tag Name"
+msgstr "اسم علامة التصنيف "
 
 #. module: documents
 #: model:ir.model.constraint,message:documents.constraint_documents_tag_facet_name_unique
 msgid "Tag already exists for this facet"
-msgstr ""
+msgstr "توجد علامة تصنيف بالفعل لهذا الوجه "
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__facet_ids
 msgid "Tag categories defined for this workspace"
-msgstr ""
+msgstr "فئات علامات التصنيف المحددة لمساحة العمل هذه "
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/xml/documents_inspector.xml:0
+#. odoo-javascript
+#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #: model:ir.actions.act_window,name:documents.facet_action
 #: model:ir.model.fields,field_description:documents.field_documents_document__tag_ids
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__tag_ids
@@ -1964,7 +2464,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 #, python-format
 msgid "Tags"
-msgstr "الوسوم"
+msgstr "علامات التصنيف "
+
+#. module: documents
+#: model:documents.facet,name:documents.documents_internal_template
+msgid "Templates"
+msgstr "القوالب "
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_internal_template_text
@@ -1974,82 +2479,58 @@ msgstr "النص"
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_facet__tooltip
 msgid "Text shown when hovering on this tag category or its tags"
-msgstr ""
+msgstr "يتم إظهار النص عند التمرير فوق فئة علامات التصنيف هذه أو علامات تصنيفها "
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_model_id
-msgid ""
-"The model (Odoo Document Kind) to which this alias corresponds. Any incoming"
-" email that does not reply to an existing record will cause the creation of "
-"a new record of this model (e.g. a Project Task)"
-msgstr ""
-"الكائن (مستندات أودو) الذي يقترن معه هذا اللقب. أي رسالة واردة لا ترد على "
-"سجل موجود ستقوم بإنشاء سجل جديد من نفس نوع هذا الكائن (مثلًا: مهمة مشروع)"
+msgid "The model (Odoo Document Kind) to which this alias corresponds. Any incoming email that does not reply to an existing record will cause the creation of a new record of this model (e.g. a Project Task)"
+msgstr "النموذج (مستندات أودو) الذي يقترن به هذا اللقب. أي رسالة واردة لا ترد على سجل موجود ستقوم بإنشاء سجل جديد من نفس نوع هذا النموذج (مثلًا: مهمة مشروع) "
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_name
-msgid ""
-"The name of the email alias, e.g. 'jobs' if you want to catch emails for "
-"<jobs@example.odoo.com>"
-msgstr ""
-"اسم لقب البريد الإلكتروني، مثلًا: 'وظائف' إذا كنت جمع الرسائل المرسلة "
-"لـ<jobs@example.odoo.com>"
+msgid "The name of the email alias, e.g. 'jobs' if you want to catch emails for <jobs@example.odoo.com>"
+msgstr "اسم لقب البريد الإلكتروني، مثلًا: 'وظائف' إذا كنت ترغب في جمع الرسائل المرسلة لـ<jobs@example.odoo.com> "
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_user_id
-msgid ""
-"The owner of records created upon receiving emails on this alias. If this "
-"field is not set the system will attempt to find the right owner based on "
-"the sender (From) address, or will use the Administrator account if no "
-"system user is found for that address."
-msgstr ""
-"مالك السجلات المنشأة عند استلام رسائل بريد إلكتروني على هذا اللقب. إذا لم "
-"يتم تعيين قيمة لهذا الحقل، سيحاول النظام معرفة المالك الصحيح حسب عنوان "
-"البريد الإلكتروني للمرسل، أو سيستخدم حساب المشرف إذا لم يجد حسابًا مرتبطًا "
-"بعنوان البريد الإلكتروني."
+msgid "The owner of records created upon receiving emails on this alias. If this field is not set the system will attempt to find the right owner based on the sender (From) address, or will use the Administrator account if no system user is found for that address."
+msgstr "مالك السجلات المنشأة عند استلام رسائل بريد إلكتروني على هذا اللقب. إذا لم يتم تعيين قيمة لهذا الحقل، سيحاول النظام معرفة المالك الصحيح حسب عنوان البريد الإلكتروني للمرسل، أو سيستخدم حساب المدير إذا لم يجد حساباً مرتبطاً بعنوان البريد الإلكتروني. "
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/hooks.js:0
+#: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
+#, python-format
+msgid "The share url has been copied to your clipboard."
+msgstr "لقد تم نسخ رابط URL للمشاركة إلى الحافظة. "
 
 #. module: documents
 #: model:ir.model.constraint,message:documents.constraint_documents_share_share_unique
 msgid "This access token already exists"
-msgstr "كلمة السر هذه موجودة بالفعل"
+msgstr "رمز الوصول هذا موجود بالفعل "
 
 #. module: documents
 #: model:ir.model.constraint,message:documents.constraint_documents_document_attachment_unique
 msgid "This attachment is already a document"
-msgstr ""
+msgstr "هذا المرفق مستند بالفعل "
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__group_ids
 msgid "This attachment will only be available for the selected user groups"
-msgstr ""
+msgstr "سوف يكون هذا المرفق متاحاً فقط لمجموعات المستخدمين المحددة "
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
 msgid ""
 "This document has been requested.\n"
-"                <b onclick=\"$('.o_request_upload').trigger('click')\" style=\"cursor:pointer;\">Upload it</b>."
+"                <b onclick=\"document.querySelector('.o_request_upload').click()\" style=\"cursor:pointer;\">Upload it</b>."
 msgstr ""
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/js/tours/documents.js:0
-#, python-format
-msgid ""
-"This icons gets you to the <b>discussion board</b>, to chat with followers "
-"of this document"
-msgstr ""
-"تنقلك هذه الأيقونات لـ<b>لوحة المناقشة</b>, للتحدث مع متابعي هذا المستند"
-
-#. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.not_available
-msgid "This link has expired"
-msgstr "انتهت صلاحية هذا الرابط"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__company_id
 #: model:ir.model.fields,help:documents.field_documents_folder__company_id
 msgid "This workspace will only be available to the selected company"
-msgstr ""
+msgstr "سوف تكون مساحة العمل هذه متاحة فقط للشركة المحددة "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__thumbnail
@@ -2057,50 +2538,67 @@ msgid "Thumbnail"
 msgstr "صورة مصغرة"
 
 #. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_document__thumbnail_status
+msgid "Thumbnail Status"
+msgstr "حالة الصورة المصغرة "
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/helper/documents_action_helper.xml:0
+#, python-format
+msgid "Tip: configure your scanner to send all documents to this address."
+msgstr "نصيحة: قم بتهيئة ماسحك الضوئي لإرسال كافة المستندات إلى هذا العنوان. "
+
+#. module: documents
+#: model:digest.tip,name:documents.digest_tip_documents_0
+msgid "Tip: Become a paperless company"
+msgstr "نصيحة: اجعل شركتك رقمية بالكامل دون استخدام أوراق "
+
+#. module: documents
 #: model:documents.tag,name:documents.documents_finance_status_tc
 #: model:documents.tag,name:documents.documents_internal_status_tc
 msgid "To Validate"
-msgstr "لاعتماد"
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/js/tours/documents.js:0
-#, python-format
-msgid ""
-"To delete files, archive them first. </br>Archived documents can still be "
-"accessed using the Archive option in the Filters top menu."
-msgstr ""
-"لحذف ملفات، قم بأرشفتهم أولًا. </br>يمكن الوصول للمستندات المؤرشفة من خلال "
-"خيار الأرشيف في قائمة الفلاتر العلوية."
+msgstr "بانتظار التصديق "
 
 #. module: documents
 #: model:mail.activity.type,name:documents.mail_documents_activity_data_tv
 msgid "To validate"
-msgstr "لاعتماد"
+msgstr "بانتظار التصديق "
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
+msgid "Today Activities"
+msgstr "أنشطة اليوم "
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/documents_controller_mixin.xml:0
+#, python-format
+msgid "Toggle Dropdown"
+msgstr ""
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__tooltip
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__note
 #: model_terms:ir.ui.view,arch_db:documents.facet_view_form
 msgid "Tooltip"
-msgstr "ملاحظة"
+msgstr "تلميح "
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/js/tours/documents.js:0
-#, python-format
-msgid "Try to <b>post a message</b>"
-msgstr "جرب <b>نشر رسالة</b>"
+#: model:ir.model.fields,help:documents.field_documents_document__is_editable_attachment
+msgid "True if we can edit the link attachment."
+msgstr "تكون القيمة صحيحة إذا كان بمقدورنا تحرير مرفق الرابط. "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__type
+#: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Type"
 msgstr "النوع"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__activity_exception_decoration
 msgid "Type of the exception activity on record."
-msgstr ""
+msgstr "نوع النشاط المستثنى في السجل. "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__url
@@ -2111,42 +2609,30 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 #: model_terms:ir.ui.view,arch_db:documents.share_single
 msgid "URL"
-msgstr "رابط ويب"
+msgstr "رابط URL "
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/xml/documents_inspector.xml:0
+#. odoo-javascript
+#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "Un-archive"
-msgstr "إلغاء أرشفة"
+msgstr "إلغاء الأرشفة "
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
 msgid "Unlock"
-msgstr "فتح"
+msgstr "إلغاء القفل "
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/js/documents_kanban_controller.js:0
+#. odoo-javascript
+#: code:addons/documents/static/src/views/documents_model_mixin.js:0
 #, python-format
 msgid "Unnamed"
 msgstr "غير مسمى"
 
 #. module: documents
-#: model:ir.model.fields,field_description:documents.field_documents_document__message_unread
-#: model:ir.model.fields,field_description:documents.field_documents_share__message_unread
-msgid "Unread Messages"
-msgstr "الرسائل الجديدة"
-
-#. module: documents
-#: model:ir.model.fields,field_description:documents.field_documents_document__message_unread_counter
-#: model:ir.model.fields,field_description:documents.field_documents_share__message_unread_counter
-msgid "Unread Messages Counter"
-msgstr "عدد الرسائل الجديدة"
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/xml/documents_kanban.xml:0
+#. odoo-javascript
+#: code:addons/documents/static/src/views/documents_controller_mixin.xml:0
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 #, python-format
 msgid "Upload"
@@ -2154,42 +2640,35 @@ msgstr "رفع"
 
 #. module: documents
 #: model_terms:ir.actions.act_window,help:documents.document_action
-msgid ""
-"Upload <span class=\"font-weight-normal\">a file or</span> drag <span class"
-"=\"font-weight-normal\">it here.</span>"
-msgstr ""
-"ارفع <span class=\"font-weight-normal\">ملف أو</span> اسحبه <span class"
-"=\"font-weight-normal\">إلى هنا.</span>"
+msgid "Upload <span class=\"fw-normal\">a file or</span> drag <span class=\"fw-normal\">it here.</span>"
+msgstr "قم برفع <span class=\"fw-normal\">الملف أو</span> سحبه <span class=\"fw-normal\">إلى هنا.</span> "
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
+#, python-format
+msgid "Upload Document"
+msgstr "تحميل مستند"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__email_drop
 msgid "Upload by Email"
-msgstr "الرفع بالبريد الإلكتروني"
+msgstr "الرفع عن طريق البريد الإلكتروني "
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/js/documents_progress_bar.js:0
+#: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
+msgid "Upload by email"
+msgstr "الرفع عن طريق البريد الإلكتروني "
+
+#. module: documents
+#. odoo-python
+#: code:addons/documents/models/mail_activity.py:0
 #, python-format
-msgid "Upload cancelled"
-msgstr ""
+msgid "Upload file request"
+msgstr "رفع طلب الملف "
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/js/documents_progress_card.js:0
-#, python-format
-msgid "Uploading... (%s%%)"
-msgstr ""
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/js/tours/documents.js:0
-#, python-format
-msgid ""
-"Use <b>folders</b> to organize documents by departments, or group of "
-"interests"
-msgstr "استخدم <b>المجلدات</b> لتنظيم المستندات حسب القسم أو مجموعات التخصص"
-
-#. module: documents
+#: model:ir.model,name:documents.model_res_users
 #: model:res.groups,name:documents.group_documents_user
 msgid "User"
 msgstr "المستخدم"
@@ -2202,19 +2681,18 @@ msgstr "ضريبة القيمة المضافة"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__date_deadline
 msgid "Valid Until"
-msgstr "صالحة حتى"
+msgstr "صالح حتى "
 
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_finance_validate
-#: model:documents.workflow.rule,name:documents.documents_rule_internal_validate
 msgid "Validate"
-msgstr "اعتماد"
+msgstr "تصديق "
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_status_validated
 #: model:documents.tag,name:documents.documents_internal_status_validated
 msgid "Validated"
-msgstr "تم الاعتماد"
+msgstr "تم التصديق "
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_marketing_assets_Videos
@@ -2222,24 +2700,23 @@ msgid "Videos"
 msgstr "مقاطع الفيديو"
 
 #. module: documents
-#. openerp-web
+#. odoo-javascript
 #: code:addons/documents/static/src/js/tours/documents.js:0
 #, python-format
-msgid "Want to become a <b>paperless company</b>? Let's discover Odoo DMS."
-msgstr ""
-"أتريد أن تتوقف مؤسستك عن <b>استخدام الأوراق</b>؟ فلنكتشف معًا خدمة أودو DMS."
+msgid "Want to become a <b>paperless company</b>? Let's discover Odoo Documents."
+msgstr "أتود أن تصبح شركتك رقمية بالكامل <b>دون الحاجة إلى استخدام الأوراق </b>؟ فلنستكشف مستندات أودو. "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__website_message_ids
 #: model:ir.model.fields,field_description:documents.field_documents_share__website_message_ids
 msgid "Website Messages"
-msgstr "رسائل الموقع"
+msgstr "رسائل الموقع الإلكتروني "
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__website_message_ids
 #: model:ir.model.fields,help:documents.field_documents_share__website_message_ids
 msgid "Website communication history"
-msgstr "سجل تواصل الموقع"
+msgstr "سجل تواصل الموقع الإلكتروني "
 
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_request_wizard__activity_date_deadline_range_type__weeks
@@ -2249,13 +2726,9 @@ msgid "Weeks"
 msgstr "أسابيع"
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/js/tours/documents.js:0
-#, python-format
-msgid ""
-"When you <b>upload documents</b>, they appear in the selected folder and "
-"tags."
-msgstr "عندما تقوم بـ<b>رفع مستندات</b>, تظهر في المجلد والوسوم المُختارة."
+#: model_terms:ir.ui.view,arch_db:documents.documents_folder_deletion_wizard_view_form
+msgid "What do you want to do with the files in the workspace?"
+msgstr "ما الذي تود القيام به بشأن الملفات الموجودة في مساحة العمل؟ "
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.workflow_rule_action
@@ -2273,17 +2746,24 @@ msgstr "قاعدة سير العمل"
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__folder_id
 #: model:ir.model.fields,field_description:documents.field_documents_share__folder_id
 #: model:ir.model.fields,field_description:documents.field_documents_tag__folder_id
-#: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__domain_folder_id
 #: model_terms:ir.ui.view,arch_db:documents.facet_view_search
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_tree
 msgid "Workspace"
-msgstr ""
+msgstr "مساحة العمل"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.folder_action
 #: model:ir.ui.menu,name:documents.folder_menu
+#: model_terms:ir.ui.view,arch_db:documents.folder_view_tree
 msgid "Workspaces"
-msgstr ""
+msgstr "مساحات العمل "
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/js/tours/documents.js:0
+#, python-format
+msgid "Wow... 6 documents processed in a few seconds, You're good.<br/>The tour is complete. Try uploading your own documents now."
+msgstr "هذا رائع... لقد قمت بمعالجة 6 مستندات في بضع ثوان، أنت رائع.<br/>لقد انتهت الجولة. والآن، حاول رفع مستنداتك الخاصة. "
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form
@@ -2293,83 +2773,210 @@ msgstr "صلاحيات الكتابة"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__group_ids
 msgid "Write Groups"
-msgstr ""
+msgstr "مجموعات الكتابة "
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "Write a tooltip for the action here"
-msgstr "اكتب هنا ملاحظة عن هذا الإجراء"
+msgstr "اكتب تلميحاً لهذا الإجراء هنا "
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__attachment_type
-msgid ""
-"You can either upload a file from your computer or copy/paste an internet "
-"link to your file."
+msgid "You can either upload a file from your computer or copy/paste an internet link to your file."
 msgstr "يمكنك أن ترفع ملفًا من جهازك أو تنسخ وتلصق رابط الملف."
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/xml/documents_inspector.xml:0
-#: model_terms:ir.ui.view,arch_db:documents.document_view_kanban
+#. odoo-python
+#: code:addons/documents/models/documents_document.py:0
 #, python-format
-msgid "Youtube Video"
+msgid "You don't have the right to move documents to that workspace."
+msgstr "لا تملك صلاحيات نقل الملفات إلى مساحة العمل تلك. "
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/search/documents_search_panel.js:0
+#, python-format
+msgid "You don't have the rights to move documents to that workspace"
+msgstr "لا تملك صلاحيات نقل الملفات إلى مساحة العمل تلك. "
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/helper/documents_drop_zone.xml:0
+#, python-format
+msgid "You must be in a specific workspace to upload files"
 msgstr ""
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/xml/documents_inspector.xml:0
+#. odoo-javascript
+#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
+#, python-format
+msgid "Youtube Video"
+msgstr "مقطع فيديو على اليوتيوب "
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
+#, python-format
+msgid "delete"
+msgstr "حذف"
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "document"
 msgstr "مستند"
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/xml/documents_inspector.xml:0
+#. odoo-javascript
+#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
+#: model_terms:ir.ui.view,arch_db:documents.share_page
 #, python-format
 msgid "documents"
-msgstr ""
+msgstr "المستندات "
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/xml/documents_inspector.xml:0
+#. odoo-javascript
+#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "documents selected"
-msgstr "المستندات المختارة"
+msgstr "المستندات المحددة "
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.share_page
-msgid "documents shared by"
-msgstr "المستندات المُتشارَكة بواسطة"
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/xml/documents_thread.xml:0
+#. odoo-javascript
+#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
-msgid "e.g. 1-5, 7, 8-9"
-msgstr "مثلًا: 1-5, 7, 8-9"
+msgid "download"
+msgstr "تنزيل "
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "e.g. Discuss proposal"
-msgstr "مثلًا: مناقشة العرض"
+msgstr "مثال: مناقشة المقترح "
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/js/documents_kanban_controller.js:0
-#, python-format
-msgid "message: %s"
-msgstr "الرسالة: %s"
+#: model_terms:ir.ui.view,arch_db:documents.folder_view_form
+msgid "e.g. Finance"
+msgstr "مثال: المالية "
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/xml/documents_inspector.xml:0
+#: model_terms:ir.ui.view,arch_db:documents.documents_request_form_view
+msgid "e.g. Missing Expense"
+msgstr "مثال: نفقة مفقودة "
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.facet_view_form
+msgid "e.g. Status"
+msgstr "مثال: الحالة "
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.tag_view_form
+msgid "e.g. To Validate"
+msgstr "مثال: للتصديق "
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
+msgid "e.g. Validate document"
+msgstr "مثال: تصديق المستند "
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.documents_upload_url_view
+msgid "e.g. https://www.youtube.com/watch?v=CP96yVnXNrY"
+msgstr "مثال: https://www.youtube.com/watch?v=CP96yVnXNrY "
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
-msgid "selected"
+msgid "fa fa-folder text-odoo"
+msgstr "fa fa-folder text-odoo"
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
+#, python-format
+msgid "file_extension"
 msgstr ""
 
 #. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
+#, python-format
+msgid "folder_id"
+msgstr "folder_id"
+
+#. module: documents
+#: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__is_readonly_model
+msgid "is_readonly_model"
+msgstr "is_readonly_model"
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
+#, python-format
+msgid "name"
+msgstr "الاسم"
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
+#, python-format
+msgid "owner_id"
+msgstr "owner_id"
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
+#, python-format
+msgid "partner_id"
+msgstr "partner_id"
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
+#, python-format
+msgid "restore"
+msgstr "استعادة "
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_page/pdf_page.xml:0
+#, python-format
+msgid "select"
+msgstr "تحديد "
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
+#, python-format
+msgid "selected"
+msgstr "محدد "
+
+#. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
+#: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "shared by"
 msgstr "تمت مشاركته بواسطة"
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/hooks.js:0
+#, python-format
+msgid "status code: %s, message: %s"
+msgstr "كود الحالة: %s، الرسالة: %s "
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.js:0
+#, python-format
+msgid "unnamed"
+msgstr "غير مسمى "
+
+#. module: documents
+#. odoo-javascript
+#: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
+#, python-format
+msgid "url"
+msgstr "رابط URL "

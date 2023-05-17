@@ -10,6 +10,7 @@ msgstr ""
 "PO-Revision-Date: 2022-12-29 14:40+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -2267,9 +2268,7 @@ msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports_annual_vat_2023.l10n_lu_annual_tax_report_template
-msgid ""
-"Adjustment of deductions in accordance with provisions of the grand-ducal "
-"Regulation of 7 March 1980 - option to tax land"
+msgid "Adjustment of deductions in accordance with provisions of the grand-ducal Regulation of 7 March 1980 - option to tax land"
 msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
@@ -2324,9 +2323,7 @@ msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports_annual_vat_2023.l10n_lu_annual_tax_report_template
-msgid ""
-"Application for the purpose of business of goods produced in the course of "
-"the business (009)"
+msgid "Application for the purpose of business of goods produced in the course of the business (009)"
 msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
@@ -2336,9 +2333,7 @@ msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports_annual_vat_2023.l10n_lu_annual_tax_report_template
-msgid ""
-"Assessment total of the taxable amount for non-business use of assets "
-"allocated to business"
+msgid "Assessment total of the taxable amount for non-business use of assets allocated to business"
 msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
@@ -2428,9 +2423,7 @@ msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports_annual_vat_2023.l10n_lu_annual_tax_report_template
-msgid ""
-"Disposal of tangible and intangible capital assets for ancillary "
-"transactions"
+msgid "Disposal of tangible and intangible capital assets for ancillary transactions"
 msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
@@ -2525,17 +2518,12 @@ msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports_annual_vat_2023.l10n_lu_annual_tax_report_template
-msgid ""
-"IC supply of goods to persons identified for VAT purposes in another Member "
-"State (MS)"
+msgid "IC supply of goods to persons identified for VAT purposes in another Member State (MS)"
 msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports_annual_vat_2023.l10n_lu_annual_tax_report_template
-msgid ""
-"IC supply of new means of transport (Art. 43(1)(e)) to persons not "
-"identified for VAT purposes who are established or reside in an other MS "
-"(202)"
+msgid "IC supply of new means of transport (Art. 43(1)(e)) to persons not identified for VAT purposes who are established or reside in an other MS (202)"
 msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
@@ -2615,9 +2603,7 @@ msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports_annual_vat_2023.l10n_lu_annual_tax_report_template
-msgid ""
-"Made for a subsequent supply to a customer identified for VAT purposes in "
-"the MS of destination of the goods"
+msgid "Made for a subsequent supply to a customer identified for VAT purposes in the MS of destination of the goods"
 msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
@@ -2632,9 +2618,7 @@ msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports_annual_vat_2023.l10n_lu_annual_tax_report_template
-msgid ""
-"Manufactured tobacco whose VAT was collected at the source or at the exit of"
-" the tax warehouse together with excise duties"
+msgid "Manufactured tobacco whose VAT was collected at the source or at the exit of the tax warehouse together with excise duties"
 msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
@@ -2654,23 +2638,17 @@ msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports_annual_vat_2023.l10n_lu_annual_tax_report_template
-msgid ""
-"Non recoverable input tax in accordance with Art. 56ter-1(7) and 56ter-2(7) "
-"(when applying the margin scheme)"
+msgid "Non recoverable input tax in accordance with Art. 56ter-1(7) and 56ter-2(7) (when applying the margin scheme)"
 msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports_annual_vat_2023.l10n_lu_annual_tax_report_template
-msgid ""
-"Non recoverable input tax relating to supplies exempt pursuant to Art. 44 "
-"and 56quater"
+msgid "Non recoverable input tax relating to supplies exempt pursuant to Art. 44 and 56quater"
 msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports_annual_vat_2023.l10n_lu_annual_tax_report_template
-msgid ""
-"Non recoverable proportion of input tax determined in accordance with Art. "
-"50"
+msgid "Non recoverable proportion of input tax determined in accordance with Art. 50"
 msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
@@ -2780,16 +2758,12 @@ msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports_annual_vat_2023.l10n_lu_annual_tax_report_template
-msgid ""
-"Provided to the declaring person by suppliers established within the "
-"territory"
+msgid "Provided to the declaring person by suppliers established within the territory"
 msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports_annual_vat_2023.l10n_lu_annual_tax_report_template
-msgid ""
-"Provided to the declaring person by suppliers not established or residing "
-"within the Community"
+msgid "Provided to the declaring person by suppliers not established or residing within the Community"
 msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
@@ -2804,16 +2778,12 @@ msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports_annual_vat_2023.l10n_lu_annual_tax_report_template
-msgid ""
-"Purchases of goods which don't give rise to a chargeable event neither for "
-"the supplier nor for the taxable person acquiring the goods"
+msgid "Purchases of goods which don't give rise to a chargeable event neither for the supplier nor for the taxable person acquiring the goods"
 msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports_annual_vat_2023.l10n_lu_annual_tax_report_template
-msgid ""
-"Purchases of goods which give rise to a chargeable event for the supplier or"
-" for the taxable person acquiring the goods"
+msgid "Purchases of goods which give rise to a chargeable event for the supplier or for the taxable person acquiring the goods"
 msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
@@ -2933,15 +2903,12 @@ msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports_annual_vat_2023.l10n_lu_annual_tax_report_template
-msgid ""
-"Services supplied by the declaring person as a registered taxpayer in "
-"Luxembourg"
+msgid "Services supplied by the declaring person as a registered taxpayer in Luxembourg"
 msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports_annual_vat_2023.l10n_lu_annual_tax_report_template
-msgid ""
-"Services to be declared and taxed by the registered taxpayer in Luxembourg"
+msgid "Services to be declared and taxed by the registered taxpayer in Luxembourg"
 msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
@@ -2986,23 +2953,17 @@ msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports_annual_vat_2023.l10n_lu_annual_tax_report_template
-msgid ""
-"Supplies carried out within the scope of the special arrangement of art. "
-"56sexies"
+msgid "Supplies carried out within the scope of the special arrangement of art. 56sexies"
 msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports_annual_vat_2023.l10n_lu_annual_tax_report_template
-msgid ""
-"Supply of goods carried out to customers not identified for VAT purposes and"
-" established in the MS where the dispatch ends, when these supplies are "
-"taxable in that MS"
+msgid "Supply of goods carried out to customers not identified for VAT purposes and established in the MS where the dispatch ends, when these supplies are taxable in that MS"
 msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports_annual_vat_2023.l10n_lu_annual_tax_report_template
-msgid ""
-"Supply of goods for which the purchaser is liable for the payment of VAT"
+msgid "Supply of goods for which the purchaser is liable for the payment of VAT"
 msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
@@ -3022,22 +2983,17 @@ msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports_annual_vat_2023.l10n_lu_annual_tax_report_template
-msgid ""
-"Supply of services carried out free of charge for purposes other than those "
-"of the business (011)"
+msgid "Supply of services carried out free of charge for purposes other than those of the business (011)"
 msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports_annual_vat_2023.l10n_lu_annual_tax_report_template
-msgid ""
-"Supply of services for which the customer is liable for the payment of VAT"
+msgid "Supply of services for which the customer is liable for the payment of VAT"
 msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports_annual_vat_2023.l10n_lu_annual_tax_report_template
-msgid ""
-"Supply, subsequent to intra-Community acquisitions of goods, in the context "
-"of triangular transactions"
+msgid "Supply, subsequent to intra-Community acquisitions of goods, in the context of triangular transactions"
 msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
@@ -3058,9 +3014,7 @@ msgstr ""
 #. module: l10n_lu_reports_annual_vat_2023
 #: code:addons/l10n_lu_reports_annual_vat_2023/models/l10n_lu_yearly_tax_report_manual.py:0
 #, python-format
-msgid ""
-"The fiscal country of your active company is not Luxembourg. This export is "
-"not available for other countries."
+msgid "The fiscal country of your active company is not Luxembourg. This export is not available for other countries."
 msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
@@ -3125,9 +3079,7 @@ msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports_annual_vat_2023.l10n_lu_annual_tax_report_template
-msgid ""
-"Use of goods considered business assets for purposes other than those of the"
-" business (010)"
+msgid "Use of goods considered business assets for purposes other than those of the business (010)"
 msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
@@ -3167,29 +3119,22 @@ msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports_annual_vat_2023.l10n_lu_annual_tax_report_template
-msgid ""
-"a) Tax due in respect of the application of goods for business purposes as "
-"referred to in Art. 13(b)"
+msgid "a) Tax due in respect of the application of goods for business purposes as referred to in Art. 13(b)"
 msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports_annual_vat_2023.l10n_lu_annual_tax_report_template
-msgid ""
-"a) VAT invoiced by other taxable persons for goods or services supplied"
+msgid "a) VAT invoiced by other taxable persons for goods or services supplied"
 msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports_annual_vat_2023.l10n_lu_annual_tax_report_template
-msgid ""
-"b) Tax paid as joint and several guarantee in accordance with the conditions"
-" laid down in Art. 48"
+msgid "b) Tax paid as joint and several guarantee in accordance with the conditions laid down in Art. 48"
 msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports_annual_vat_2023.l10n_lu_annual_tax_report_template
-msgid ""
-"b) VAT due in respect of intra-Community acquisitions of goods other than "
-"manufactured tobacco"
+msgid "b) VAT due in respect of intra-Community acquisitions of goods other than manufactured tobacco"
 msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
@@ -3199,9 +3144,7 @@ msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023
 #: model_terms:ir.ui.view,arch_db:l10n_lu_reports_annual_vat_2023.l10n_lu_annual_tax_report_template
-msgid ""
-"c) VAT due or paid in respect of importations of goods other than "
-"manufactured tobacco and goods for non-business purposes"
+msgid "c) VAT due or paid in respect of importations of goods other than manufactured tobacco and goods for non-business purposes"
 msgstr ""
 
 #. module: l10n_lu_reports_annual_vat_2023

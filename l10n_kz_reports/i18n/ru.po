@@ -10,6 +10,7 @@ msgstr ""
 "PO-Revision-Date: 2022-11-23 12:04+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -42,12 +43,8 @@ msgstr "012. Валовая прибыль (убыток)"
 
 #. module: l10n_kz_reports
 #: model:account.report.line,name:l10n_kz_reports.l10n_kz_report_line_bs_current_assets_012
-msgid ""
-"012. Short-term financial assets measured at fair value through other "
-"comprehensive income"
-msgstr ""
-"012. Краткосрочные финансовые активы, оцениваемые по справедливой стоимости "
-"через прочий совокупный доход"
+msgid "012. Short-term financial assets measured at fair value through other comprehensive income"
+msgstr "012. Краткосрочные финансовые активы, оцениваемые по справедливой стоимости через прочий совокупный доход"
 
 #. module: l10n_kz_reports
 #: model:account.report.line,name:l10n_kz_reports.l10n_kz_pl_revenue_013
@@ -126,12 +123,8 @@ msgstr "022. Прочие краткосрочные активы"
 
 #. module: l10n_kz_reports
 #: model:account.report.line,name:l10n_kz_reports.l10n_kz_pl_income_023
-msgid ""
-"023. Share of the organization in profit (loss) of associates and joint "
-"ventures accounted for using the equity method"
-msgstr ""
-"023. Доля организации в прибыли (убытке) ассоциированных организаций и "
-"совместной деятельности, учитываемых по методу долевого участия"
+msgid "023. Share of the organization in profit (loss) of associates and joint ventures accounted for using the equity method"
+msgstr "023. Доля организации в прибыли (убытке) ассоциированных организаций и совместной деятельности, учитываемых по методу долевого участия"
 
 #. module: l10n_kz_reports
 #: model:account.report.line,name:l10n_kz_reports.l10n_kz_pl_income_024
@@ -165,12 +158,8 @@ msgstr "110. Долгосрочные финансовые активы, оце�
 
 #. module: l10n_kz_reports
 #: model:account.report.line,name:l10n_kz_reports.l10n_kz_report_line_bs_non_current_assets_111
-msgid ""
-"111. Long-term financial assets measured at fair value through other "
-"comprehensive income"
-msgstr ""
-"111. Долгосрочные финансовые активы, оцениваемые по справедливой стоимости "
-"через прочий совокупный доход"
+msgid "111. Long-term financial assets measured at fair value through other comprehensive income"
+msgstr "111. Долгосрочные финансовые активы, оцениваемые по справедливой стоимости через прочий совокупный доход"
 
 #. module: l10n_kz_reports
 #: model:account.report.line,name:l10n_kz_reports.l10n_kz_report_line_bs_non_current_assets_112
@@ -269,10 +258,8 @@ msgstr "210. Краткосрочные финансовые обязатель�
 
 #. module: l10n_kz_reports
 #: model:account.report.line,name:l10n_kz_reports.l10n_kz_report_line_bs_current_liabilities_211
-msgid ""
-"211. Short-term financial liabilities at fair value through profit or loss"
-msgstr ""
-"211. Краткосрочные финансовые обязательства, оцениваемые по справедливой стоимости через прибыль или убыток"
+msgid "211. Short-term financial liabilities at fair value through profit or loss"
+msgstr "211. Краткосрочные финансовые обязательства, оцениваемые по справедливой стоимости через прибыль или убыток"
 
 #. module: l10n_kz_reports
 #: model:account.report.line,name:l10n_kz_reports.l10n_kz_report_line_bs_current_liabilities_212
@@ -346,10 +333,8 @@ msgstr "310. Долгосрочные финансовые обязательс�
 
 #. module: l10n_kz_reports
 #: model:account.report.line,name:l10n_kz_reports.l10n_kz_report_line_bs_non_current_liabilities_311
-msgid ""
-"311. Long-term financial liabilities at fair value through profit or loss"
-msgstr ""
-"311. Долгосрочные финансовые обязательства, оцениваемые по справедливой стоимости через прибыль или убыток"
+msgid "311. Long-term financial liabilities at fair value through profit or loss"
+msgstr "311. Долгосрочные финансовые обязательства, оцениваемые по справедливой стоимости через прибыль или убыток"
 
 #. module: l10n_kz_reports
 #: model:account.report.line,name:l10n_kz_reports.l10n_kz_report_line_bs_non_current_liabilities_312
@@ -414,12 +399,8 @@ msgstr "410. Уставный (акционерный) капитал"
 #. module: l10n_kz_reports
 #: model:account.report.expression,report_line_name:l10n_kz_reports.l10n_kz_pl_other_income_410_balance
 #: model:account.report.line,name:l10n_kz_reports.l10n_kz_pl_other_income_410
-msgid ""
-"410. Revaluation of debt financial instruments measured at fair value "
-"through other comprehensive income"
-msgstr ""
-"410. Переоценка долговых финансовых инструментов, оцениваемых по "
-"справедливой стоимости через прочий совокупный доход"
+msgid "410. Revaluation of debt financial instruments measured at fair value through other comprehensive income"
+msgstr "410. Переоценка долговых финансовых инструментов, оцениваемых по справедливой стоимости через прочий совокупный доход"
 
 #. module: l10n_kz_reports
 #: model:account.report.line,name:l10n_kz_reports.l10n_kz_report_line_bs_equity_411
@@ -429,12 +410,8 @@ msgstr "411. Эмиссионный доход"
 #. module: l10n_kz_reports
 #: model:account.report.expression,report_line_name:l10n_kz_reports.l10n_kz_pl_other_income_411_balance
 #: model:account.report.line,name:l10n_kz_reports.l10n_kz_pl_other_income_411
-msgid ""
-"411. Shares in other comprehensive income (loss) of associates and joint "
-"ventures accounted for using the equity method"
-msgstr ""
-"411. Доля в прочем совокупном доходе (убытке) ассоциированных организаций "
-"и совместной деятельности, учитываемых по методу долевого участия"
+msgid "411. Shares in other comprehensive income (loss) of associates and joint ventures accounted for using the equity method"
+msgstr "411. Доля в прочем совокупном доходе (убытке) ассоциированных организаций и совместной деятельности, учитываемых по методу долевого участия"
 
 #. module: l10n_kz_reports
 #: model:account.report.expression,report_line_name:l10n_kz_reports.l10n_kz_pl_other_income_412_balance
@@ -505,12 +482,8 @@ msgstr "420. Итого капитал, относимый на собствен
 
 #. module: l10n_kz_reports
 #: model:account.report.line,name:l10n_kz_reports.l10n_kz_pl_other_income_420
-msgid ""
-"420. Total other comprehensive income to be reclassified to income or "
-"expense in subsequent periods (net of income tax)"
-msgstr ""
-"420. Итого прочий совокупный доход, подлежащий реклассификации в доходы "
-"или расходы в последующие периоды (за вычетом налога на прибыль)"
+msgid "420. Total other comprehensive income to be reclassified to income or expense in subsequent periods (net of income tax)"
+msgstr "420. Итого прочий совокупный доход, подлежащий реклассификации в доходы или расходы в последующие периоды (за вычетом налога на прибыль)"
 
 #. module: l10n_kz_reports
 #: model:account.report.expression,report_line_name:l10n_kz_reports.l10n_kz_report_line_bs_equity_421_balance
@@ -527,12 +500,8 @@ msgstr "431. Переоценка основных средств и немат�
 #. module: l10n_kz_reports
 #: model:account.report.expression,report_line_name:l10n_kz_reports.l10n_kz_pl_other_income_432_balance
 #: model:account.report.line,name:l10n_kz_reports.l10n_kz_pl_other_income_432
-msgid ""
-"432. Share in other comprehensive income (loss) of associates and joint "
-"ventures accounted for using the equity method"
-msgstr ""
-"432. Доля в прочем совокупном доходе (убытке) ассоциированных организаций "
-"и совместной деятельности, учитываемых по методу долевого участия"
+msgid "432. Share in other comprehensive income (loss) of associates and joint ventures accounted for using the equity method"
+msgstr "432. Доля в прочем совокупном доходе (убытке) ассоциированных организаций и совместной деятельности, учитываемых по методу долевого участия"
 
 #. module: l10n_kz_reports
 #: model:account.report.expression,report_line_name:l10n_kz_reports.l10n_kz_pl_other_income_433_balance
@@ -549,21 +518,13 @@ msgstr "434. Налоговый эффект компонентов прочег
 #. module: l10n_kz_reports
 #: model:account.report.expression,report_line_name:l10n_kz_reports.l10n_kz_pl_other_income_435_balance
 #: model:account.report.line,name:l10n_kz_reports.l10n_kz_pl_other_income_435
-msgid ""
-"435. Revaluation of equity financial instruments measured at fair value "
-"through other comprehensive income"
-msgstr ""
-"435. Переоценка долевых финансовых инструментов, оцениваемых по справедливой "
-"стоимости через прочий совокупный доход"
+msgid "435. Revaluation of equity financial instruments measured at fair value through other comprehensive income"
+msgstr "435. Переоценка долевых финансовых инструментов, оцениваемых по справедливой стоимости через прочий совокупный доход"
 
 #. module: l10n_kz_reports
 #: model:account.report.line,name:l10n_kz_reports.l10n_kz_pl_other_income_440
-msgid ""
-"440. Total other comprehensive income not to be reclassified as income or "
-"expense in subsequent periods (net of income tax)"
-msgstr ""
-"440. Итого прочий совокупный доход, не подлежащий реклассификации в доходы "
-"или расходы в последующие периоды (за вычетом налога на прибыль)"
+msgid "440. Total other comprehensive income not to be reclassified as income or expense in subsequent periods (net of income tax)"
+msgstr "440. Итого прочий совокупный доход, не подлежащий реклассификации в доходы или расходы в последующие периоды (за вычетом налога на прибыль)"
 
 #. module: l10n_kz_reports
 #: model:account.report.line,name:l10n_kz_reports.l10n_kz_pl_total_comprehensive_income
@@ -668,10 +629,8 @@ msgstr "Отчет о прибылях и убытках"
 
 #. module: l10n_kz_reports
 #: model:account.report.line,name:l10n_kz_reports.l10n_kz_report_line_bs_equity_414_2
-msgid ""
-"Retained earnings (uncovered loss) for the reporting year and previous years"
-msgstr ""
-"Нераспределенная прибыль (непокрытый убыток) за отчетный год и предыдущие годы"
+msgid "Retained earnings (uncovered loss) for the reporting year and previous years"
+msgstr "Нераспределенная прибыль (непокрытый убыток) за отчетный год и предыдущие годы"
 
 #. module: l10n_kz_reports
 #: model:account.report.expression,report_line_name:l10n_kz_reports.l10n_kz_pl_after_tax_300_2_balance

@@ -6,10 +6,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-08 15:36+0000\n"
+"POT-Creation-Date: 2022-09-08 15:34+0000\n"
 "PO-Revision-Date: 2022-09-08 15:36+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -22,9 +23,7 @@ msgid ""
 "\n"
 "                                    2. Concessions, patents, licenses, trademarks, rights other similar intangible assets | 02\n"
 "                                "
-msgstr ""
-"2. Concesiuni, brevete, licențe, mărci comerciale, drepturi și active "
-"similare și alte imobilizări necorporale | 02"
+msgstr "2. Concesiuni, brevete, licențe, mărci comerciale, drepturi și active similare și alte imobilizări necorporale | 02"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_bs_large_B_02_036_balance
@@ -33,9 +32,7 @@ msgid ""
 "\n"
 "                                    4. Amounts receivable from associated entities and jointly controlled entities | 36\n"
 "                                "
-msgstr ""
-"4. Sume de încasat de la entitățile asociate și entitățile controlate în "
-"comun | 36"
+msgstr "4. Sume de încasat de la entitățile asociate și entitățile controlate în comun | 36"
 
 #. module: l10n_ro_reports
 #: model:account.report.line,name:l10n_ro_reports.account_financial_report_ro_bs_large_J_04_098-99
@@ -44,9 +41,7 @@ msgid ""
 "                                    Exchange rate differences from the conversion of the individual annual financial statements into\n"
 "                                    a presentation currency other than the functional currency\n"
 "                                "
-msgstr ""
-"Diferențe de curs valutar din conversia situațiilor financiare anuale "
-"individuale într-o monedă de prezentare diferită de monedă funcțională"
+msgstr "Diferențe de curs valutar din conversia situațiilor financiare anuale individuale într-o monedă de prezentare diferită de monedă funcțională"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_bs_large_D_01_048_balance
@@ -55,9 +50,7 @@ msgid ""
 "\n"
 "                            1. Loans from bonds issue, separately indicating the loans from convertible bonds | 48\n"
 "                        "
-msgstr ""
-"1. Împrumuturi din emisiunea de obligațiuni, prezentându-se separat "
-"împrumuturile din emisiunea de obligațiuni convertibile | 48"
+msgstr "1. Împrumuturi din emisiunea de obligațiuni, prezentându-se separat împrumuturile din emisiunea de obligațiuni convertibile | 48"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_bs_large_G_01_060_balance
@@ -66,9 +59,7 @@ msgid ""
 "\n"
 "                            1. Loans from bonds issue, separately indicating the loans from convertible bonds | 60\n"
 "                        "
-msgstr ""
-"1. Împrumuturi din emisiunea de obligațiuni, prezentându-se separat "
-"împrumuturile din emisiunea de obligațiuni convertibile | 60"
+msgstr "1. Împrumuturi din emisiunea de obligațiuni, prezentându-se separat împrumuturile din emisiunea de obligațiuni convertibile | 60"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_pnl_smle_11_32_balance
@@ -78,10 +69,7 @@ msgid ""
 "                            11.2 Expenses with other taxes and assimilated payments representing transfers and contributions due\n"
 "                            based on special normative acts | 32\n"
 "                        "
-msgstr ""
-"11.2 Cheltuieli cu alte impozite, taxe și vărsăminte asimilate; cheltuieli "
-"reprezentând transferuri și contribuții datorate în baza unor acte normative"
-" speciale | 32"
+msgstr "11.2 Cheltuieli cu alte impozite, taxe și vărsăminte asimilate; cheltuieli reprezentând transferuri și contribuții datorate în baza unor acte normative speciale | 32"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_pnl_internat_13_37_balance
@@ -91,10 +79,7 @@ msgid ""
 "                            13.2 Expenses with other taxes and assimilated payments representing transfers and contributions due\n"
 "                            based on special normative acts | 37\n"
 "                        "
-msgstr ""
-"13.2. Cheltuieli cu alte impozite, taxe și vărsăminte asimilate; cheltuieli "
-"reprezentând transferuri și contribuții datorate în baza unor acte normative"
-" speciale | 37"
+msgstr "13.2. Cheltuieli cu alte impozite, taxe și vărsăminte asimilate; cheltuieli reprezentând transferuri și contribuții datorate în baza unor acte normative speciale | 37"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_pnl_internat_13_39_balance
@@ -103,9 +88,7 @@ msgid ""
 "\n"
 "                            13.4 Expenses related to non-current assets (or disposal groups) held for sale | 39\n"
 "                        "
-msgstr ""
-"13.4 Cheltuieli legate de activele imobilizate (sau grupurile destinate "
-"cedării) deținute în vederea vânzării | 39"
+msgstr "13.4 Cheltuieli legate de activele imobilizate (sau grupurile destinate cedării) deținute în vederea vânzării | 39"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_bs_smle_B_07_balance
@@ -114,9 +97,7 @@ msgid ""
 "\n"
 "                            2. Receivables representing dividends distributed during the financial year | 07\n"
 "                        "
-msgstr ""
-"2. Creanțe reprezentând dividende repartizate în cursul exercițiului "
-"financiar | 07"
+msgstr "2. Creanțe reprezentând dividende repartizate în cursul exercițiului financiar | 07"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_bs_large_I_00_079_balance
@@ -125,9 +106,7 @@ msgid ""
 "\n"
 "                            3. Advance income related to assets received by transfer from customers - total, of which: | 79\n"
 "                        "
-msgstr ""
-"3. Venituri în avans aferente activelor primite prin transfer de la clienț i"
-" - total, din care:"
+msgstr "3. Venituri în avans aferente activelor primite prin transfer de la clienț i - total, din care:"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_pnl_smle_16_51_balance
@@ -137,9 +116,7 @@ msgid ""
 "                    16. Value adjustments in respect of financial non-current assets and investments held as current assets\n"
 "                    | 51\n"
 "                "
-msgstr ""
-"16. Ajustări de valoare privind imobilizările financiare și investițiile "
-"financiare deținute ca active circulante | 51"
+msgstr "16. Ajustări de valoare privind imobilizările financiare și investițiile financiare deținute ca active circulante | 51"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_pnl_internat_26_67_balance
@@ -148,9 +125,7 @@ msgid ""
 "\n"
 "                    26. Expenditure on operations with securities and other financial instruments | 67\n"
 "                "
-msgstr ""
-"26. Cheltuieli privind operațiunile cu titluri și alte instrumente "
-"financiare | 67"
+msgstr "26. Cheltuieli privind operațiunile cu titluri și alte instrumente financiare | 67"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_pnl_internat_03_08_balance
@@ -159,8 +134,7 @@ msgid ""
 "\n"
 "                    3. Income from the production of non-current assets and real estate investments | 08\n"
 "                "
-msgstr ""
-"3. Venituri din producția de imobilizări și investiții imobiliare | 08"
+msgstr "3. Venituri din producția de imobilizări și investiții imobiliare | 08"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_pnl_internat_04_11_balance
@@ -169,9 +143,7 @@ msgid ""
 "\n"
 "                    4. Income from non-current assets (or groups intended for disposal held for sale) | 11\n"
 "                "
-msgstr ""
-"4. Venituri din activele imobilizate (sau grupurile destinate cedării) "
-"deținute în vederea vânzării | 11"
+msgstr "4. Venituri din activele imobilizate (sau grupurile destinate cedării) deținute în vederea vânzării | 11"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_pnl_smle_11_38_balance
@@ -384,12 +356,8 @@ msgstr "- din care, veniturile obținute de la entitățile din grup | 58"
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_pnl_internat_12_30_balance
 #: model:account.report.line,name:l10n_ro_reports.account_financial_report_ro_pnl_internat_12_30
-msgid ""
-". 2) Depreciation expenses related to the rights to use the leased assets | "
-"30"
-msgstr ""
-"a.2) Cheltuieli cu amortizarea activelor aferente drepturilor de utilizare a"
-" activelor luate în leasing | 30"
+msgid ". 2) Depreciation expenses related to the rights to use the leased assets | 30"
+msgstr "a.2) Cheltuieli cu amortizarea activelor aferente drepturilor de utilizare a activelor luate în leasing | 30"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_bs_large_A_01_001_balance
@@ -477,9 +445,7 @@ msgstr "10. a) Cheltuieli cu materiile prime și materialele consumabile | 20"
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_pnl_smle_10_24_balance
 #: model:account.report.line,name:l10n_ro_reports.account_financial_report_ro_pnl_smle_10_24
 msgid "10. a) Value adjustments for tangible and intangible assets | 24"
-msgstr ""
-"10. a) Ajustări de valoare privind imobilizările corporale și necorporale | "
-"24"
+msgstr "10. a) Ajustări de valoare privind imobilizările corporale și necorporale | 24"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_pnl_smle_11_30_balance
@@ -581,8 +547,7 @@ msgstr "13.7. Cheltuieli privind activele biologice| 42"
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_pnl_internat_13_43_balance
 #: model:account.report.line,name:l10n_ro_reports.account_financial_report_ro_pnl_internat_13_43
 msgid "13.8 Disaster and other similar expenses | 43"
-msgstr ""
-"13.8. Cheltuieli privind calamitățile și alte evenimente similare | 43"
+msgstr "13.8. Cheltuieli privind calamitățile și alte evenimente similare | 43"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_pnl_internat_13_44_balance
@@ -617,20 +582,14 @@ msgstr "15. Alte venituri financiare | 48"
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_pnl_internat_16_53_balance
 #: model:account.report.line,name:l10n_ro_reports.account_financial_report_ro_pnl_internat_16_53
-msgid ""
-"16. Income from shares held by associates and jointly controlled entities | "
-"53"
-msgstr ""
-"16. Venituri din acțiuni deținute la entități asociate și entități "
-"controlate în comun | 53"
+msgid "16. Income from shares held by associates and jointly controlled entities | 53"
+msgstr "16. Venituri din acțiuni deținute la entități asociate și entități controlate în comun | 53"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_pnl_internat_17_54_balance
 #: model:account.report.line,name:l10n_ro_reports.account_financial_report_ro_pnl_internat_17_54
-msgid ""
-"17. Income from securities operations and other financial instruments | 54"
-msgstr ""
-"17. Venituri din operațiuni cu titluri și alte instrumente financiare | 54"
+msgid "17. Income from securities operations and other financial instruments | 54"
+msgstr "17. Venituri din operațiuni cu titluri și alte instrumente financiare | 54"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_pnl_smle_17_54_balance
@@ -787,9 +746,7 @@ msgstr "22. Alte impozite neprezentate la elementele de mai sus | 66"
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_pnl_internat_23_61_balance
 #: model:account.report.line,name:l10n_ro_reports.account_financial_report_ro_pnl_internat_23_61
 msgid "23. Income from deferred collection over normal credit terms | 61"
-msgstr ""
-"23. Venituri din amânarea încasării peste termenele normale de creditare | "
-"61"
+msgstr "23. Venituri din amânarea încasării peste termenele normale de creditare | 61"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_pnl_internat_24_62_balance
@@ -804,9 +761,7 @@ msgid ""
 "25. Value adjustments in respect of financial non-current assets and investments held\n"
 "                    as current assets | 64\n"
 "                "
-msgstr ""
-"25 . Ajustări de valoare privind imobilizările financiare și investițiile "
-"financiare deținute ca active circulante | 64"
+msgstr "25 . Ajustări de valoare privind imobilizările financiare și investițiile financiare deținute ca active circulante | 64"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_pnl_internat_27_68_balance
@@ -824,17 +779,13 @@ msgstr "28. Cheltuieli privind dobânzile | 69"
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_pnl_internat_29_71_balance
 #: model:account.report.line,name:l10n_ro_reports.account_financial_report_ro_pnl_internat_29_71
 msgid "29. Payments with deferred payment over normal credit terms | 71"
-msgstr ""
-"29. Cheltuieli cu amânarea plății peste termenele normale de creditare | 71"
+msgstr "29. Cheltuieli cu amânarea plății peste termenele normale de creditare | 71"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_bs_smle_I_27_balance
 #: model:account.report.line,name:l10n_ro_reports.account_financial_report_ro_bs_smle_I_27
-msgid ""
-"3. Advance income related to assets received by transfer from customers | 27"
-msgstr ""
-"3. Venituri în avans aferente activelor primite prin transfer de la clienți "
-": | 27"
+msgid "3. Advance income related to assets received by transfer from customers | 27"
+msgstr "3. Venituri în avans aferente activelor primite prin transfer de la clienți : | 27"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_bs_large_D_01_050_balance
@@ -869,11 +820,8 @@ msgstr "3. Fond comercial | 03"
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_pnl_smle_03_08_balance
 #: model:account.report.line,name:l10n_ro_reports.account_financial_report_ro_pnl_smle_03_08
-msgid ""
-"3. Income from the production of intangible and tangible non-current asset |"
-" 08"
-msgstr ""
-"3. Venituri din producția de imobilizări necorporale și corporale | 08"
+msgid "3. Income from the production of intangible and tangible non-current asset | 08"
+msgstr "3. Venituri din producția de imobilizări necorporale și corporale | 08"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_bs_large_A_02_009_balance
@@ -908,18 +856,14 @@ msgstr "3. Capital subscris reprezentând datorii financiar e | 85"
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_bs_large_A_05_021_balance
 #: model:account.report.line,name:l10n_ro_reports.account_financial_report_ro_bs_large_A_05_021
-msgid ""
-"3.Shares held by associated entities and jointly controlled entities | 21"
-msgstr ""
-"3.Acțiunile deținute la entitățile asociate și la entitățile controlate în "
-"comun | 21"
+msgid "3.Shares held by associated entities and jointly controlled entities | 21"
+msgstr "3.Acțiunile deținute la entitățile asociate și la entitățile controlate în comun | 21"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_pnl_internat_30_72_balance
 #: model:account.report.line,name:l10n_ro_reports.account_financial_report_ro_pnl_internat_30_72
 msgid "30. Interest costs on leasing contracts | 72"
-msgstr ""
-"30. Cheltuieli privind dobânzile aferente contractelor de leasing | 72"
+msgstr "30. Cheltuieli privind dobânzile aferente contractelor de leasing | 72"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_pnl_internat_31_73_balance
@@ -948,12 +892,8 @@ msgstr "34. Venituri din impozitul pe profit amânat | 83"
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_pnl_internat_35_84_balance
 #: model:account.report.line,name:l10n_ro_reports.account_financial_report_ro_pnl_internat_35_84
-msgid ""
-"35. Income tax expenses, caused by uncertainties related to tax treatment | "
-"84"
-msgstr ""
-"35. Cheltuieli cu impozitul pe profit, determinate de incertitudinile legate"
-" de tratamente fiscale | 84"
+msgid "35. Income tax expenses, caused by uncertainties related to tax treatment | 84"
+msgstr "35. Cheltuieli cu impozitul pe profit, determinate de incertitudinile legate de tratamente fiscale | 84"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_pnl_internat_36_85_balance
@@ -982,11 +922,8 @@ msgstr "4. Produse finite și mărfuri | 30"
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_bs_large_A_05_022_balance
 #: model:account.report.line,name:l10n_ro_reports.account_financial_report_ro_bs_large_A_05_022
-msgid ""
-"4. Loans granted to associated entities and jointly controlled entities | 22"
-msgstr ""
-"4. Împrumuturi acordate entităților asociate și entităților controlate în "
-"comun | 22"
+msgid "4. Loans granted to associated entities and jointly controlled entities | 22"
+msgstr "4. Împrumuturi acordate entităților asociate și entităților controlate în comun | 22"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_bs_large_J_01_086_balance
@@ -1062,11 +999,8 @@ msgstr "5. Venituri din producția de investiții imobiliare | 10"
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_bs_large_A_01_005_balance
 #: model:account.report.line,name:l10n_ro_reports.account_financial_report_ro_bs_large_A_01_005
-msgid ""
-"5. Intangible assets for exploration and evaluation of mineral resources | "
-"05"
-msgstr ""
-"5. Active necorporale de explorare și evaluare a resurselor minerale | 05"
+msgid "5. Intangible assets for exploration and evaluation of mineral resources | 05"
+msgstr "5. Active necorporale de explorare și evaluare a resurselor minerale | 05"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_bs_smle_J_36_balance
@@ -1167,17 +1101,13 @@ msgstr "7. Venituri din active biologice și produse agricole | 14"
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_bs_large_D_01_054_balance
 #: model:account.report.line,name:l10n_ro_reports.account_financial_report_ro_bs_large_D_01_054
 msgid "7. Liabilities to associated and jointly controlled entities | 54"
-msgstr ""
-"7. Sume datorate entităților asociate și entităților controlate în comun  | "
-"54"
+msgstr "7. Sume datorate entităților asociate și entităților controlate în comun  | 54"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_bs_large_G_01_066_balance
 #: model:account.report.line,name:l10n_ro_reports.account_financial_report_ro_bs_large_G_01_066
 msgid "7. Liabilities to associated and jointly controlled entities | 66"
-msgstr ""
-"7. Sume datorate entităților asociate și entităților controlate în comun | "
-"66"
+msgstr "7. Sume datorate entităților asociate și entităților controlate în comun | 66"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_pnl_smle_07_12_balance
@@ -1200,10 +1130,8 @@ msgstr "7. IMPOZITE | 07"
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_bs_large_A_02_013_balance
 #: model:account.report.line,name:l10n_ro_reports.account_financial_report_ro_bs_large_A_02_013
-msgid ""
-"7. Tangible assets for exploration and evaluation of mineral resources | 13"
-msgstr ""
-"7. Active corporale de explorare și evaluare a resurselor minerale | 13"
+msgid "7. Tangible assets for exploration and evaluation of mineral resources | 13"
+msgstr "7. Active corporale de explorare și evaluare a resurselor minerale | 13"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_pnl_internat_08_15_balance
@@ -1237,12 +1165,8 @@ msgstr "8. Plante productive | 14"
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_bs_large_B_02_040_balance
 #: model:account.report.line,name:l10n_ro_reports.account_financial_report_ro_bs_large_B_02_040
-msgid ""
-"8. Receivables representing dividends distributed during the financial year "
-"| 40"
-msgstr ""
-"8. Creanțe reprezentând dividende repartizate în cursul exercițiului "
-"financiar | 40"
+msgid "8. Receivables representing dividends distributed during the financial year | 40"
+msgstr "8. Creanțe reprezentând dividende repartizate în cursul exercițiului financiar | 40"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_pnl_smle_08_16_balance
@@ -1260,17 +1184,13 @@ msgstr "9. Avansuri | 15"
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_bs_large_D_01_056_balance
 #: model:account.report.line,name:l10n_ro_reports.account_financial_report_ro_bs_large_D_01_056
 msgid "9. Other liabilities, including tax and insurance liabilities | 56"
-msgstr ""
-"9. Alte datorii, inclusiv datoriile fiscale și datoriile privind asigurările"
-" sociale | 56"
+msgstr "9. Alte datorii, inclusiv datoriile fiscale și datoriile privind asigurările sociale | 56"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_bs_large_G_01_068_balance
 #: model:account.report.line,name:l10n_ro_reports.account_financial_report_ro_bs_large_G_01_068
 msgid "9. Other liabilities, including tax and insurance liabilities | 68"
-msgstr ""
-"9. Alte datorii, inclusiv datoriile fiscale și datoriile privind asigurările"
-" sociale | 68"
+msgstr "9. Alte datorii, inclusiv datoriile fiscale și datoriile privind asigurările sociale | 68"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_pnl_internat_09_16_balance
@@ -1478,16 +1398,13 @@ msgstr "Reduceri comerciale acordate | 04"
 #. module: l10n_ro_reports
 #: model:account.report.line,name:l10n_ro_reports.account_financial_report_ro_bs_large_D
 msgid "D. LIABILITIES: AMOUNTS TO BE PAID WITHIN A PERIOD OF UP TO ONE YEAR"
-msgstr ""
-"D. DATORII: SUMELE CARE TREBUIE PLĂTITE ÎNTR-O PERIOADĂ DE PÂNĂ LA UN AN"
+msgstr "D. DATORII: SUMELE CARE TREBUIE PLĂTITE ÎNTR-O PERIOADĂ DE PÂNĂ LA UN AN"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_bs_smle_D_15_balance
 #: model:account.report.line,name:l10n_ro_reports.account_financial_report_ro_bs_smle_D_15
-msgid ""
-"D. LIABILITIES: AMOUNTS TO BE PAID WITHIN A PERIOD OF UP TO ONE YEAR | 15"
-msgstr ""
-"DATORII: SUMELE CARE TREBUIE PLĂTITE ÎNTR-O PERIOADĂ DE PÂNĂ LA UN AN | 15"
+msgid "D. LIABILITIES: AMOUNTS TO BE PAID WITHIN A PERIOD OF UP TO ONE YEAR | 15"
+msgstr "DATORII: SUMELE CARE TREBUIE PLĂTITE ÎNTR-O PERIOADĂ DE PÂNĂ LA UN AN | 15"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_bs_smle_E_16_balance
@@ -1565,17 +1482,13 @@ msgstr "PROFITUL SAU PIERDEREA FINANCIAR(Ă):"
 #. module: l10n_ro_reports
 #: model:account.report.line,name:l10n_ro_reports.account_financial_report_ro_bs_large_G
 msgid "G. LIABILITIES: AMOUNTS TO BE PAID OVER A PERIOD OF MORE THAN ONE YEAR"
-msgstr ""
-"G. DATORII: SUMELE CARE TREBUIE PLĂTITE ÎNTR-O PERIOADĂ MAI MARE DE UN AN"
+msgstr "G. DATORII: SUMELE CARE TREBUIE PLĂTITE ÎNTR-O PERIOADĂ MAI MARE DE UN AN"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_bs_smle_G_18_balance
 #: model:account.report.line,name:l10n_ro_reports.account_financial_report_ro_bs_smle_G_18
-msgid ""
-"G. LIABILITIES: AMOUNTS TO BE PAID OVER A PERIOD OF MORE THAN ONE YEAR | 18"
-msgstr ""
-"G. DATORII: SUMELE CARE TREBUIE PLĂTITE ÎNTR-O PERIOADĂ MAI MARE DE UN AN | "
-"18"
+msgid "G. LIABILITIES: AMOUNTS TO BE PAID OVER A PERIOD OF MORE THAN ONE YEAR | 18"
+msgstr "G. DATORII: SUMELE CARE TREBUIE PLĂTITE ÎNTR-O PERIOADĂ MAI MARE DE UN AN | 18"
 
 #. module: l10n_ro_reports
 #: model:account.report.line,name:l10n_ro_reports.account_financial_report_ro_pnl_internat_00_79
@@ -1748,8 +1661,7 @@ msgstr "IV. DREPTURI DE UTILIZARE A ACTIVELOR LUATE ÎN LEASING | 18"
 #: model:account.report.line,name:l10n_ro_reports.account_financial_report_ro_pnl_internat_01_05
 #: model:account.report.line,name:l10n_ro_reports.account_financial_report_ro_pnl_smle_01_05
 msgid "Income from operating subsidies related to net turnover | 05"
-msgstr ""
-"Venituri din subvenții de exploatare aferente cifrei de afaceri nete | 05"
+msgstr "Venituri din subvenții de exploatare aferente cifrei de afaceri nete | 05"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_pnl_internat_01_03_balance
@@ -1762,9 +1674,7 @@ msgstr "Venituri din vânzarea mărfurilor | 03"
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_pnl_internat_03_09_balance
 #: model:account.report.line,name:l10n_ro_reports.account_financial_report_ro_pnl_internat_03_09
-msgid ""
-"Income from the production of intangible and tangible non-current assets | "
-"09"
+msgid "Income from the production of intangible and tangible non-current assets | 09"
 msgstr "Venituri din producția de imobilizări necorporale și corporale | 09"
 
 #. module: l10n_ro_reports
@@ -2158,12 +2068,8 @@ msgstr "V. PROFITUL SAU PIERDEREA REPORTAT(Ă)"
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_bs_large_J_05_103-104_balance
 #: model:account.report.line,name:l10n_ro_reports.account_financial_report_ro_bs_large_J_05_103-104
-msgid ""
-"V. REPORTED RESULT, EXCEPT REPORTED RESULT FROM FIRST DATE OF IAS 29 "
-"ADOPTION"
-msgstr ""
-"V. REZULTAT REPORTAT, CU EXCEPȚIA REZULTATULUI REPORTAT PROVENIT DIN "
-"ADOPTAREA PENTRU PRIMA DATA A IAS 29"
+msgid "V. REPORTED RESULT, EXCEPT REPORTED RESULT FROM FIRST DATE OF IAS 29 ADOPTION"
+msgstr "V. REZULTAT REPORTAT, CU EXCEPȚIA REZULTATULUI REPORTAT PROVENIT DIN ADOPTAREA PENTRU PRIMA DATA A IAS 29"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_bs_smle_J_45-46_balance
@@ -2175,8 +2081,7 @@ msgstr ""
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_bs_large_J_06_105-106_balance
 #: model:account.report.line,name:l10n_ro_reports.account_financial_report_ro_bs_large_J_06_105-106
 msgid "VI. REPORTED RESULT FROM FIRST DATE ADOPTION OF IAS 29"
-msgstr ""
-"VI. REZULTAT REPORTAT PROVENIT DIN ADOPTAREA PENTRU PRIMA DATA A IAS 29"
+msgstr "VI. REZULTAT REPORTAT PROVENIT DIN ADOPTAREA PENTRU PRIMA DATA A IAS 29"
 
 #. module: l10n_ro_reports
 #: model:account.report.expression,report_line_name:l10n_ro_reports.account_financial_report_ro_bs_large_J_07_107-108_balance

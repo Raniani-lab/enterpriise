@@ -32,7 +32,6 @@ msgstr "<strong>Puerto embarque</strong><br/>"
 msgid "<strong>Destination Port</strong><br/>"
 msgstr "<strong>Puerto desembarque</strong><br/>"
 
-
 #. module: l10n_cl_edi_exports
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi_exports.informations
 msgid "<strong>Sale Clause</strong><br/>"
@@ -151,8 +150,7 @@ msgstr ""
 #: model:ir.model.fields,help:l10n_cl_edi_exports.field_account_move__l10n_cl_port_origin_id
 #: model:ir.model.fields,help:l10n_cl_edi_exports.field_account_payment__l10n_cl_port_destination_id
 #: model:ir.model.fields,help:l10n_cl_edi_exports.field_account_payment__l10n_cl_port_origin_id
-msgid ""
-"More info on aduana.cl"
+msgid "More info on aduana.cl"
 msgstr "Más información en aduana.cl"
 
 #. module: l10n_cl_edi_exports
@@ -292,59 +290,47 @@ msgstr "Sin pago"
 #. odoo-python
 #: code:addons/l10n_cl_edi_exports/models/account_move.py:0
 #, python-format
-msgid "You You must set %s on invoice %s"
-msgstr ""
-"Debe establecer %s en la factura %s"
-
-#. module: l10n_cl_edi_exports
-#. odoo-python
-#: code:addons/l10n_cl_edi_exports/models/account_move.py:0
-#, python-format
-msgid ""
-"a payment term and a customs sale mode"
+msgid "You must set %s on invoice %s"
 msgstr ""
 
 #. module: l10n_cl_edi_exports
 #. odoo-python
 #: code:addons/l10n_cl_edi_exports/models/account_move.py:0
 #, python-format
-msgid ""
-"a transport type"
+msgid "a payment term and a customs sale mode"
 msgstr ""
-"un método de transporte"
 
 #. module: l10n_cl_edi_exports
 #. odoo-python
 #: code:addons/l10n_cl_edi_exports/models/account_move.py:0
 #, python-format
-msgid ""
-"a different currency than %s"
-msgstr ""
-"una moneda diferente a %s"
+msgid "a transport type"
+msgstr "un método de transporte"
 
 #. module: l10n_cl_edi_exports
 #. odoo-python
 #: code:addons/l10n_cl_edi_exports/models/account_move.py:0
 #, python-format
-msgid ""
-"an Incoterm"
-msgstr ""
-"un Incoterm"
+msgid "a different currency than %s"
+msgstr "una moneda diferente a %s"
 
 #. module: l10n_cl_edi_exports
 #. odoo-python
 #: code:addons/l10n_cl_edi_exports/models/account_move.py:0
 #, python-format
-msgid ""
-"ports of Origin and Destination"
-msgstr ""
-"puertos de Embarque y Desembarque"
+msgid "an Incoterm"
+msgstr "un Incoterm"
 
 #. module: l10n_cl_edi_exports
 #. odoo-python
 #: code:addons/l10n_cl_edi_exports/models/account_move.py:0
 #, python-format
-msgid ""
-"the number of packages when exporting goods"
-msgstr ""
-"el número de paquetes cuando se exportan bienes tangibles"
+msgid "ports of Origin and Destination"
+msgstr "puertos de Embarque y Desembarque"
+
+#. module: l10n_cl_edi_exports
+#. odoo-python
+#: code:addons/l10n_cl_edi_exports/models/account_move.py:0
+#, python-format
+msgid "the number of packages when exporting goods"
+msgstr "el número de paquetes cuando se exportan bienes tangibles"

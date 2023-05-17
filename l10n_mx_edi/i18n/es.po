@@ -6,16 +6,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-16 22:11+0000\n"
+"POT-Creation-Date: 2021-06-17 14:02+0000\n"
 "PO-Revision-Date: 2021-06-16 18:21-0500\n"
 "Last-Translator: Jesús Alan Ramos Rodríguez <alan.ramos@jarsa.com.mx>\n"
 "Language-Team: \n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: \n"
 "X-Source-Language: en\n"
-"Language: es\n"
 "X-Generator: Poedit 3.0\n"
 
 #. module: l10n_mx_edi
@@ -232,8 +232,10 @@ msgid "Abalá"
 msgstr "Abalá"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_coa_001 model:res.city,name:l10n_mx_edi.res_city_mx_gua_001
-#: model:res.city,name:l10n_mx_edi.res_city_mx_nle_001 model:res.city,name:l10n_mx_edi.res_city_mx_tam_001
+#: model:res.city,name:l10n_mx_edi.res_city_mx_coa_001
+#: model:res.city,name:l10n_mx_edi.res_city_mx_gua_001
+#: model:res.city,name:l10n_mx_edi.res_city_mx_nle_001
+#: model:res.city,name:l10n_mx_edi.res_city_mx_tam_001
 msgid "Abasolo"
 msgstr "Abasolo"
 
@@ -248,7 +250,8 @@ msgid "Acacoyagua"
 msgstr "Acacoyagua"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_pue_001 model:res.city,name:l10n_mx_edi.res_city_mx_ver_001
+#: model:res.city,name:l10n_mx_edi.res_city_mx_pue_001
+#: model:res.city,name:l10n_mx_edi.res_city_mx_ver_001
 msgid "Acajete"
 msgstr "Acajete"
 
@@ -298,7 +301,8 @@ msgid "Acatic"
 msgstr "Acatic"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_hid_001 model:res.city,name:l10n_mx_edi.res_city_mx_pue_003
+#: model:res.city,name:l10n_mx_edi.res_city_mx_hid_001
+#: model:res.city,name:l10n_mx_edi.res_city_mx_pue_003
 #: model:res.city,name:l10n_mx_edi.res_city_mx_ver_002
 msgid "Acatlán"
 msgstr "Acatlán"
@@ -371,7 +375,8 @@ msgid "Actividades Agrícolas, Ganaderas, Silvícolas y Pesqueras"
 msgstr "Actividades Agrícolas, Ganaderas, Silvícolas y Pesqueras"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_hid_003 model:res.city,name:l10n_mx_edi.res_city_mx_ver_004
+#: model:res.city,name:l10n_mx_edi.res_city_mx_hid_003
+#: model:res.city,name:l10n_mx_edi.res_city_mx_ver_004
 msgid "Actopan"
 msgstr "Actopan"
 
@@ -459,7 +464,8 @@ msgid "Ahome"
 msgstr "Ahome"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_nay_002 model:res.city,name:l10n_mx_edi.res_city_mx_pue_006
+#: model:res.city,name:l10n_mx_edi.res_city_mx_nay_002
+#: model:res.city,name:l10n_mx_edi.res_city_mx_pue_006
 msgid "Ahuacatlán"
 msgstr "Ahuacatlán"
 
@@ -539,7 +545,8 @@ msgid "Alcozauca de Guerrero"
 msgstr "Alcozauca de Guerrero"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_chh_002 model:res.city,name:l10n_mx_edi.res_city_mx_chp_113
+#: model:res.city,name:l10n_mx_edi.res_city_mx_chh_002
+#: model:res.city,name:l10n_mx_edi.res_city_mx_chp_113
 #: model:res.city,name:l10n_mx_edi.res_city_mx_tam_002
 msgid "Aldama"
 msgstr "León de los Aldama"
@@ -555,7 +562,8 @@ msgid "Aljojuca"
 msgstr "Aljojuca"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_chh_003 model:res.city,name:l10n_mx_edi.res_city_mx_coa_003
+#: model:res.city,name:l10n_mx_edi.res_city_mx_chh_003
+#: model:res.city,name:l10n_mx_edi.res_city_mx_coa_003
 #: model:res.city,name:l10n_mx_edi.res_city_mx_nle_004
 msgid "Allende"
 msgstr "Allende"
@@ -817,7 +825,8 @@ msgid "Apulco"
 msgstr "Apulco"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_mic_008 model:res.city,name:l10n_mx_edi.res_city_mx_ver_018
+#: model:res.city,name:l10n_mx_edi.res_city_mx_mic_008
+#: model:res.city,name:l10n_mx_edi.res_city_mx_ver_018
 msgid "Aquila"
 msgstr "Aquila"
 
@@ -892,7 +901,8 @@ msgid "Arroyo Seco"
 msgstr "Arroyo Seco"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_coa_004 model:res.city,name:l10n_mx_edi.res_city_mx_mic_010
+#: model:res.city,name:l10n_mx_edi.res_city_mx_coa_004
+#: model:res.city,name:l10n_mx_edi.res_city_mx_mic_010
 msgid "Arteaga"
 msgstr "Arteaga"
 
@@ -1077,7 +1087,8 @@ msgid "Atotonilco el Grande"
 msgstr "Atotonilco el Grande"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_jal_014 model:res.city,name:l10n_mx_edi.res_city_mx_ver_021
+#: model:res.city,name:l10n_mx_edi.res_city_mx_jal_014
+#: model:res.city,name:l10n_mx_edi.res_city_mx_ver_021
 msgid "Atoyac"
 msgstr "Atoyac"
 
@@ -1328,9 +1339,12 @@ msgid "Benemérito de las Américas"
 msgstr "Benemérito de las Américas"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_dif_014 model:res.city,name:l10n_mx_edi.res_city_mx_gro_014
-#: model:res.city,name:l10n_mx_edi.res_city_mx_son_071 model:res.city,name:l10n_mx_edi.res_city_mx_tla_045
-#: model:res.city,name:l10n_mx_edi.res_city_mx_ver_027 model:res.city,name:l10n_mx_edi.res_city_mx_zac_004
+#: model:res.city,name:l10n_mx_edi.res_city_mx_dif_014
+#: model:res.city,name:l10n_mx_edi.res_city_mx_gro_014
+#: model:res.city,name:l10n_mx_edi.res_city_mx_son_071
+#: model:res.city,name:l10n_mx_edi.res_city_mx_tla_045
+#: model:res.city,name:l10n_mx_edi.res_city_mx_ver_027
+#: model:res.city,name:l10n_mx_edi.res_city_mx_zac_004
 msgid "Benito Juárez"
 msgstr "Benito Juárez"
 
@@ -1400,7 +1414,8 @@ msgid "Burgos"
 msgstr "Burgos"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_nle_008 model:res.city,name:l10n_mx_edi.res_city_mx_tam_006
+#: model:res.city,name:l10n_mx_edi.res_city_mx_nle_008
+#: model:res.city,name:l10n_mx_edi.res_city_mx_tam_006
 msgid "Bustamante"
 msgstr "Bustamante"
 
@@ -1527,7 +1542,8 @@ msgid "Calvillo"
 msgstr "Calvillo"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_chh_011 model:res.city,name:l10n_mx_edi.res_city_mx_tam_007
+#: model:res.city,name:l10n_mx_edi.res_city_mx_chh_011
+#: model:res.city,name:l10n_mx_edi.res_city_mx_tam_007
 msgid "Camargo"
 msgstr "Camargo"
 
@@ -1955,7 +1971,8 @@ msgid "Chiautempan"
 msgstr "Chiautempan"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_mex_028 model:res.city,name:l10n_mx_edi.res_city_mx_pue_047
+#: model:res.city,name:l10n_mx_edi.res_city_mx_mex_028
+#: model:res.city,name:l10n_mx_edi.res_city_mx_pue_047
 msgid "Chiautla"
 msgstr "Chiautla"
 
@@ -2200,7 +2217,8 @@ msgid "Citlaltépetl"
 msgstr "Citlaltépetl"
 
 #. module: l10n_mx_edi
-#: model:ir.model,name:l10n_mx_edi.model_res_city model_terms:ir.ui.view,arch_db:l10n_mx_edi.mx_partner_address_form
+#: model:ir.model,name:l10n_mx_edi.model_res_city
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.mx_partner_address_form
 msgid "City"
 msgstr "Ciudad"
 
@@ -2280,7 +2298,8 @@ msgid "Coatecas Altas"
 msgstr "Coatecas Altas"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_pue_030 model:res.city,name:l10n_mx_edi.res_city_mx_ver_038
+#: model:res.city,name:l10n_mx_edi.res_city_mx_pue_030
+#: model:res.city,name:l10n_mx_edi.res_city_mx_ver_038
 msgid "Coatepec"
 msgstr "Coatepec"
 
@@ -2320,7 +2339,8 @@ msgid "Cocotitlán"
 msgstr "Cocotitlán"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_gro_017 model:res.city,name:l10n_mx_edi.res_city_mx_jal_024
+#: model:res.city,name:l10n_mx_edi.res_city_mx_gro_017
+#: model:res.city,name:l10n_mx_edi.res_city_mx_jal_024
 msgid "Cocula"
 msgstr "Cocula"
 
@@ -2406,12 +2426,8 @@ msgstr "Código de Colonia"
 
 #. module: l10n_mx_edi
 #: model:ir.model.fields,help:l10n_mx_edi.field_res_company__l10n_mx_edi_colony_code
-msgid ""
-"Colony Code configured for this company. It is used in the external trade complement to define the colony where the domicile is "
-"located."
-msgstr ""
-"Código de colonia para esta compañía. Es utilizado en el complemento de comercio exterior para definir la colonia donde se "
-"encuentra este domicilio."
+msgid "Colony Code configured for this company. It is used in the external trade complement to define the colony where the domicile is located."
+msgstr "Código de colonia para esta compañía. Es utilizado en el complemento de comercio exterior para definir la colonia donde se encuentra este domicilio."
 
 #. module: l10n_mx_edi
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.mx_partner_address_form
@@ -2681,21 +2697,19 @@ msgid "Cotija"
 msgstr "Cotija"
 
 #. module: l10n_mx_edi
-#: model:ir.model,name:l10n_mx_edi.model_res_country model_terms:ir.ui.view,arch_db:l10n_mx_edi.mx_partner_address_form
+#: model:ir.model,name:l10n_mx_edi.model_res_country
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.mx_partner_address_form
 msgid "Country"
 msgstr "País"
 
 #. module: l10n_mx_edi
 #: model:ir.model.fields,help:l10n_mx_edi.field_res_country__l10n_mx_edi_code
-msgid ""
-"Country code defined by the SAT in the catalog to CFDI version 3.3 and new complements. Will be used in the CFDI to indicate the "
-"country reference."
-msgstr ""
-"Código de país definido por el catálogo del SAT para CFDI versión 3.3 y nuevos complementos. Será utilizado en el CFDI para "
-"indicar la referencia al país."
+msgid "Country code defined by the SAT in the catalog to CFDI version 3.3 and new complements. Will be used in the CFDI to indicate the country reference."
+msgstr "Código de país definido por el catálogo del SAT para CFDI versión 3.3 y nuevos complementos. Será utilizado en el CFDI para indicar la referencia al país."
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_pue_035 model:res.city,name:l10n_mx_edi.res_city_mx_slp_014
+#: model:res.city,name:l10n_mx_edi.res_city_mx_pue_035
+#: model:res.city,name:l10n_mx_edi.res_city_mx_slp_014
 msgid "Coxcatlán"
 msgstr "Coxcatlán"
 
@@ -2720,7 +2734,8 @@ msgid "Coyomeapan"
 msgstr "Coyomeapan"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_mex_023 model:res.city,name:l10n_mx_edi.res_city_mx_pue_037
+#: model:res.city,name:l10n_mx_edi.res_city_mx_mex_023
+#: model:res.city,name:l10n_mx_edi.res_city_mx_pue_037
 msgid "Coyotepec"
 msgstr "Coyotepec"
 
@@ -2792,8 +2807,10 @@ msgid "Cuatro Ciénegas"
 msgstr "Cuatro Ciénegas"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_chh_017 model:res.city,name:l10n_mx_edi.res_city_mx_col_005
-#: model:res.city,name:l10n_mx_edi.res_city_mx_dif_015 model:res.city,name:l10n_mx_edi.res_city_mx_zac_008
+#: model:res.city,name:l10n_mx_edi.res_city_mx_chh_017
+#: model:res.city,name:l10n_mx_edi.res_city_mx_col_005
+#: model:res.city,name:l10n_mx_edi.res_city_mx_dif_015
+#: model:res.city,name:l10n_mx_edi.res_city_mx_zac_008
 msgid "Cuauhtémoc"
 msgstr "Cuauhtémoc"
 
@@ -2833,7 +2850,8 @@ msgid "Cuautitlán de García Barragán"
 msgstr "Cuautitlán de García Barragán"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_jal_028 model:res.city,name:l10n_mx_edi.res_city_mx_mor_006
+#: model:res.city,name:l10n_mx_edi.res_city_mx_jal_028
+#: model:res.city,name:l10n_mx_edi.res_city_mx_mor_006
 msgid "Cuautla"
 msgstr "Cuautla"
 
@@ -2928,7 +2946,8 @@ msgid "Cuquío"
 msgstr "Cuquío"
 
 #. module: l10n_mx_edi
-#: model:ir.model,name:l10n_mx_edi.model_res_currency model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
+#: model:ir.model,name:l10n_mx_edi.model_res_currency
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_document_mx
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi.report_payment_receipt_document
 msgid "Currency"
 msgstr "Moneda"
@@ -2966,7 +2985,8 @@ msgid "Cuzamá"
 msgstr "Cuzamá"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_slp_005 model:res.city,name:l10n_mx_edi.res_city_mx_tab_002
+#: model:res.city,name:l10n_mx_edi.res_city_mx_slp_005
+#: model:res.city,name:l10n_mx_edi.res_city_mx_tab_002
 msgid "Cárdenas"
 msgstr "Cárdenas"
 
@@ -3077,7 +3097,8 @@ msgstr "Donato Guerra"
 
 #. module: l10n_mx_edi
 #: model:ir.actions.server,name:l10n_mx_edi.ir_cron_download_xsd_files_ir_actions_server
-#: model:ir.cron,cron_name:l10n_mx_edi.ir_cron_download_xsd_files model:ir.cron,name:l10n_mx_edi.ir_cron_download_xsd_files
+#: model:ir.cron,cron_name:l10n_mx_edi.ir_cron_download_xsd_files
+#: model:ir.cron,name:l10n_mx_edi.ir_cron_download_xsd_files
 msgid "Download XSD files to CFDI"
 msgstr "Descargar archivos XSD para el CFDI"
 
@@ -3162,7 +3183,8 @@ msgid "Ejutla"
 msgstr "Ejutla"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_hid_009 model:res.city,name:l10n_mx_edi.res_city_mx_jal_009
+#: model:res.city,name:l10n_mx_edi.res_city_mx_hid_009
+#: model:res.city,name:l10n_mx_edi.res_city_mx_jal_009
 msgid "El Arenal"
 msgstr "El Arenal"
 
@@ -3232,7 +3254,8 @@ msgid "El Naranjo"
 msgstr "El Naranjo"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_dur_018 model:res.city,name:l10n_mx_edi.res_city_mx_mex_064
+#: model:res.city,name:l10n_mx_edi.res_city_mx_dur_018
+#: model:res.city,name:l10n_mx_edi.res_city_mx_mex_064
 msgid "El Oro"
 msgstr "El Oro"
 
@@ -3272,7 +3295,8 @@ msgid "Elota"
 msgstr "Elota"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_hid_020 model:res.city,name:l10n_mx_edi.res_city_mx_pue_061
+#: model:res.city,name:l10n_mx_edi.res_city_mx_hid_020
+#: model:res.city,name:l10n_mx_edi.res_city_mx_pue_061
 msgid "Eloxochitlán"
 msgstr "Eloxochitlán"
 
@@ -3282,8 +3306,10 @@ msgid "Eloxochitlán de Flores Magón"
 msgstr "Eloxochitlán de Flores Magón"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_hid_021 model:res.city,name:l10n_mx_edi.res_city_mx_mor_008
-#: model:res.city,name:l10n_mx_edi.res_city_mx_tab_007 model:res.city,name:l10n_mx_edi.res_city_mx_tla_046
+#: model:res.city,name:l10n_mx_edi.res_city_mx_hid_021
+#: model:res.city,name:l10n_mx_edi.res_city_mx_mor_008
+#: model:res.city,name:l10n_mx_edi.res_city_mx_tab_007
+#: model:res.city,name:l10n_mx_edi.res_city_mx_tla_046
 #: model:res.city,name:l10n_mx_edi.res_city_mx_ver_065
 msgid "Emiliano Zapata"
 msgstr "Emiliano Zapata"
@@ -3460,7 +3486,8 @@ msgid "Fortín"
 msgstr "Fortín"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_coa_009 model:res.city,name:l10n_mx_edi.res_city_mx_hid_023
+#: model:res.city,name:l10n_mx_edi.res_city_mx_coa_009
+#: model:res.city,name:l10n_mx_edi.res_city_mx_hid_023
 msgid "Francisco I. Madero"
 msgstr "Francisco I. Madero"
 
@@ -3515,7 +3542,8 @@ msgid "Gabriel Zamora"
 msgstr "Gabriel Zamora"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_chh_023 model:res.city,name:l10n_mx_edi.res_city_mx_nle_017
+#: model:res.city,name:l10n_mx_edi.res_city_mx_chh_023
+#: model:res.city,name:l10n_mx_edi.res_city_mx_nle_017
 msgid "Galeana"
 msgstr "Galeana"
 
@@ -3656,8 +3684,10 @@ msgid "Guadalcázar"
 msgstr "Guadalcázar"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_chh_028 model:res.city,name:l10n_mx_edi.res_city_mx_nle_026
-#: model:res.city,name:l10n_mx_edi.res_city_mx_pue_066 model:res.city,name:l10n_mx_edi.res_city_mx_zac_017
+#: model:res.city,name:l10n_mx_edi.res_city_mx_chh_028
+#: model:res.city,name:l10n_mx_edi.res_city_mx_nle_026
+#: model:res.city,name:l10n_mx_edi.res_city_mx_pue_066
+#: model:res.city,name:l10n_mx_edi.res_city_mx_zac_017
 msgid "Guadalupe"
 msgstr "Guadalupe"
 
@@ -3667,7 +3697,8 @@ msgid "Guadalupe Etla"
 msgstr "Guadalupe Etla"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_dur_008 model:res.city,name:l10n_mx_edi.res_city_mx_pue_067
+#: model:res.city,name:l10n_mx_edi.res_city_mx_dur_008
+#: model:res.city,name:l10n_mx_edi.res_city_mx_pue_067
 msgid "Guadalupe Victoria"
 msgstr "Guadalupe Victoria"
 
@@ -3712,7 +3743,8 @@ msgid "Guelatao de Juárez"
 msgstr "Guelatao de Juárez"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_chh_031 model:res.city,name:l10n_mx_edi.res_city_mx_coa_012
+#: model:res.city,name:l10n_mx_edi.res_city_mx_chh_031
+#: model:res.city,name:l10n_mx_edi.res_city_mx_coa_012
 #: model:res.city,name:l10n_mx_edi.res_city_mx_tam_014
 msgid "Guerrero"
 msgstr "Guerrero"
@@ -3738,7 +3770,8 @@ msgid "Gutiérrez Zamora"
 msgstr "Gutiérrez Zamora"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_chh_025 model:res.city,name:l10n_mx_edi.res_city_mx_jal_079
+#: model:res.city,name:l10n_mx_edi.res_city_mx_chh_025
+#: model:res.city,name:l10n_mx_edi.res_city_mx_jal_079
 #: model:res.city,name:l10n_mx_edi.res_city_mx_tam_011
 msgid "Gómez Farías"
 msgstr "Gómez Farías"
@@ -3794,8 +3827,10 @@ msgid "Heroica Ciudad de Tlaxiaco"
 msgstr "Heroica Ciudad de Tlaxiaco"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_coa_013 model:res.city,name:l10n_mx_edi.res_city_mx_dur_010
-#: model:res.city,name:l10n_mx_edi.res_city_mx_mic_034 model:res.city,name:l10n_mx_edi.res_city_mx_nle_047
+#: model:res.city,name:l10n_mx_edi.res_city_mx_coa_013
+#: model:res.city,name:l10n_mx_edi.res_city_mx_dur_010
+#: model:res.city,name:l10n_mx_edi.res_city_mx_mic_034
+#: model:res.city,name:l10n_mx_edi.res_city_mx_nle_047
 #: model:res.city,name:l10n_mx_edi.res_city_mx_tam_016
 msgid "Hidalgo"
 msgstr "Hidalgo"
@@ -3853,12 +3888,8 @@ msgstr "Hostotipaquillo"
 #. module: l10n_mx_edi
 #: model:ir.model.fields,help:l10n_mx_edi.field_res_partner__l10n_mx_edi_addenda_doc
 #: model:ir.model.fields,help:l10n_mx_edi.field_res_users__l10n_mx_edi_addenda_doc
-msgid ""
-"How should be done the addenda for this customer (try to put human readable information here to help the invoice people to fill "
-"properly the fields in the invoice)"
-msgstr ""
-"Cómo debería construirse la  addenda para este cliente (intente poner aquí información legible por personas para facilitar el "
-"llenado apropiado de los campos de la factura)"
+msgid "How should be done the addenda for this customer (try to put human readable information here to help the invoice people to fill properly the fields in the invoice)"
+msgstr "Cómo debería construirse la  addenda para este cliente (intente poner aquí información legible por personas para facilitar el llenado apropiado de los campos de la factura)"
 
 #. module: l10n_mx_edi
 #: model:res.city,name:l10n_mx_edi.res_city_mx_son_031
@@ -3961,7 +3992,8 @@ msgid "Huazalingo"
 msgstr "Huazalingo"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_hid_027 model:res.city,name:l10n_mx_edi.res_city_mx_pue_072
+#: model:res.city,name:l10n_mx_edi.res_city_mx_hid_027
+#: model:res.city,name:l10n_mx_edi.res_city_mx_pue_072
 msgid "Huehuetla"
 msgstr "Huehuetla"
 
@@ -4205,8 +4237,7 @@ msgstr "Imuris"
 #: model:ir.model.fields,help:l10n_mx_edi.field_account_move__l10n_mx_edi_origin
 #: model:ir.model.fields,help:l10n_mx_edi.field_account_payment__l10n_mx_edi_origin
 msgid ""
-"In some cases like payments, credit notes, debit notes, invoices re-signed or invoices that are redone due to payment in advance "
-"will need this field filled, the format is:\n"
+"In some cases like payments, credit notes, debit notes, invoices re-signed or invoices that are redone due to payment in advance will need this field filled, the format is:\n"
 "Origin Type|UUID1, UUID2, ...., UUIDn.\n"
 "Where the origin type could be:\n"
 "- 01: Nota de crédito\n"
@@ -4217,8 +4248,7 @@ msgid ""
 "- 06: Factura generada por los traslados previos\n"
 "- 07: CFDI por aplicación de anticipo"
 msgstr ""
-"En algunos casos, como pagos, notas de crédito, notas de débito, facturas renovadas o facturas que se rehacen debido al pago por "
-"adelantado, se debe completar este campo, el formato es:\n"
+"En algunos casos, como pagos, notas de crédito, notas de débito, facturas renovadas o facturas que se rehacen debido al pago por adelantado, se debe completar este campo, el formato es:\n"
 "Tipo de origen | UUID1, UUID2, ...., UUIDn.\n"
 "Donde el tipo de origen podría ser:\n"
 "- 01: Nota de crédito\n"
@@ -4248,20 +4278,14 @@ msgstr "Indica el RFC de esta institución, el valor puede ser utilizado en comp
 #: model:ir.model.fields,help:l10n_mx_edi.field_account_bank_statement_line__l10n_mx_edi_payment_method_id
 #: model:ir.model.fields,help:l10n_mx_edi.field_account_move__l10n_mx_edi_payment_method_id
 #: model:ir.model.fields,help:l10n_mx_edi.field_account_payment__l10n_mx_edi_payment_method_id
-msgid ""
-"Indicates the way the invoice was/will be paid, where the options could be: Cash, Nominal Check, Credit Card, etc. Leave empty if "
-"unkown and the XML will show 'Unidentified'."
-msgstr ""
-"Indica la forma en que se pagó / se pagará la factura, donde las opciones podrían ser: Efectivo, Cheque nominal, Tarjeta de "
-"crédito, etc. Deje en blanco si no lo conoce y el XML mostrará 'No identificado'."
+msgid "Indicates the way the invoice was/will be paid, where the options could be: Cash, Nominal Check, Credit Card, etc. Leave empty if unkown and the XML will show 'Unidentified'."
+msgstr "Indica la forma en que se pagó / se pagará la factura, donde las opciones podrían ser: Efectivo, Cheque nominal, Tarjeta de crédito, etc. Deje en blanco si no lo conoce y el XML mostrará 'No identificado'."
 
 #. module: l10n_mx_edi
-#: model:ir.model.fields,help:l10n_mx_edi.field_account_bank_statement_import_journal_creation__l10n_mx_edi_payment_method_id
 #: model:ir.model.fields,help:l10n_mx_edi.field_account_journal__l10n_mx_edi_payment_method_id
 #: model:ir.model.fields,help:l10n_mx_edi.field_account_payment_register__l10n_mx_edi_payment_method_id
 msgid "Indicates the way the payment was/will be received, where the options could be: Cash, Nominal Check, Credit Card, etc."
-msgstr ""
-"Indica la forma en que el pago fue/será recibido, donde las opciones pueden ser: Efectivo, Cheque Nominal, Tarjeta de Crédito, etc."
+msgstr "Indica la forma en que el pago fue/será recibido, donde las opciones pueden ser: Efectivo, Cheque Nominal, Tarjeta de Crédito, etc."
 
 #. module: l10n_mx_edi
 #: model:res.city,name:l10n_mx_edi.res_city_mx_dur_011
@@ -4306,9 +4330,13 @@ msgstr "Número de Factura"
 #: code:addons/l10n_mx_edi/models/account_move.py:0
 #, python-format
 msgid "Invoice lines having a negative amount are not allowed to generate the CFDI. Please create a credit note instead."
+msgstr "La factura tiene líneas con monto negativo y esto no esta permitido en la generación del CFDI. Por favor genere una nota de crédito en su lugar."
+
+#. module: l10n_mx_edi
+#: code:addons/l10n_mx_edi/models/account_move.py:0
+#, python-format
+msgid "Invoice lines having a negative amount without a tax set is not allowed to generate the CFDI."
 msgstr ""
-"La factura tiene líneas con monto negativo y esto no esta permitido en la generación del CFDI. Por favor genere una nota de "
-"crédito en su lugar."
 
 #. module: l10n_mx_edi
 #: model:res.city,name:l10n_mx_edi.res_city_mx_gua_017
@@ -4637,12 +4665,14 @@ msgid "Jesús Carranza"
 msgstr "Jesús Carranza"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_agu_005 model:res.city,name:l10n_mx_edi.res_city_mx_jal_048
+#: model:res.city,name:l10n_mx_edi.res_city_mx_agu_005
+#: model:res.city,name:l10n_mx_edi.res_city_mx_jal_048
 msgid "Jesús María"
 msgstr "Jesús María"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_mex_045 model:res.city,name:l10n_mx_edi.res_city_mx_ver_093
+#: model:res.city,name:l10n_mx_edi.res_city_mx_mex_045
+#: model:res.city,name:l10n_mx_edi.res_city_mx_ver_093
 msgid "Jilotepec"
 msgstr "Jilotepec"
 
@@ -4657,8 +4687,10 @@ msgid "Jilotzingo"
 msgstr "Jilotzingo"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_chh_036 model:res.city,name:l10n_mx_edi.res_city_mx_coa_014
-#: model:res.city,name:l10n_mx_edi.res_city_mx_mic_044 model:res.city,name:l10n_mx_edi.res_city_mx_tam_018
+#: model:res.city,name:l10n_mx_edi.res_city_mx_chh_036
+#: model:res.city,name:l10n_mx_edi.res_city_mx_coa_014
+#: model:res.city,name:l10n_mx_edi.res_city_mx_mic_044
+#: model:res.city,name:l10n_mx_edi.res_city_mx_tam_018
 msgid "Jiménez"
 msgstr "José Mariano Jiménez"
 
@@ -4833,8 +4865,10 @@ msgid "Jungapeo"
 msgstr "Jungapeo"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_chh_037 model:res.city,name:l10n_mx_edi.res_city_mx_chp_048
-#: model:res.city,name:l10n_mx_edi.res_city_mx_coa_015 model:res.city,name:l10n_mx_edi.res_city_mx_mic_046
+#: model:res.city,name:l10n_mx_edi.res_city_mx_chh_037
+#: model:res.city,name:l10n_mx_edi.res_city_mx_chp_048
+#: model:res.city,name:l10n_mx_edi.res_city_mx_coa_015
+#: model:res.city,name:l10n_mx_edi.res_city_mx_mic_046
 #: model:res.city,name:l10n_mx_edi.res_city_mx_nle_031
 msgid "Juárez"
 msgstr "Juárez"
@@ -4967,7 +5001,8 @@ msgid "La Misión"
 msgstr "La Misión"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_bcs_003 model:res.city,name:l10n_mx_edi.res_city_mx_mex_070
+#: model:res.city,name:l10n_mx_edi.res_city_mx_bcs_003
+#: model:res.city,name:l10n_mx_edi.res_city_mx_mex_070
 msgid "La Paz"
 msgstr "La Paz"
 
@@ -5022,7 +5057,8 @@ msgid "Lagos de Moreno"
 msgstr "Lagos de Moreno"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_mic_048 model:res.city,name:l10n_mx_edi.res_city_mx_slp_019
+#: model:res.city,name:l10n_mx_edi.res_city_mx_mic_048
+#: model:res.city,name:l10n_mx_edi.res_city_mx_slp_019
 msgid "Lagunillas"
 msgstr "Lagunillas"
 
@@ -5159,7 +5195,8 @@ msgid "Loma Bonita"
 msgstr "Loma Bonita"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_bcs_009 model:res.city,name:l10n_mx_edi.res_city_mx_zac_024
+#: model:res.city,name:l10n_mx_edi.res_city_mx_bcs_009
+#: model:res.city,name:l10n_mx_edi.res_city_mx_zac_024
 msgid "Loreto"
 msgstr "Loreto"
 
@@ -5184,7 +5221,8 @@ msgid "Los Ramones"
 msgstr "Los Ramones"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_mic_075 model:res.city,name:l10n_mx_edi.res_city_mx_ver_137
+#: model:res.city,name:l10n_mx_edi.res_city_mx_mic_075
+#: model:res.city,name:l10n_mx_edi.res_city_mx_ver_137
 msgid "Los Reyes"
 msgstr "Los Reyes"
 
@@ -5204,7 +5242,8 @@ msgid "Luvianos"
 msgstr "Luvianos"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_mic_052 model:res.city,name:l10n_mx_edi.res_city_mx_tla_047
+#: model:res.city,name:l10n_mx_edi.res_city_mx_mic_052
+#: model:res.city,name:l10n_mx_edi.res_city_mx_tla_047
 msgid "Lázaro Cárdenas"
 msgstr "Lázaro Cárdenas"
 
@@ -5259,7 +5298,8 @@ msgid "Madero"
 msgstr "Madero"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_jal_055 model:res.city,name:l10n_mx_edi.res_city_mx_son_036
+#: model:res.city,name:l10n_mx_edi.res_city_mx_jal_055
+#: model:res.city,name:l10n_mx_edi.res_city_mx_son_036
 #: model:res.city,name:l10n_mx_edi.res_city_mx_ver_098
 msgid "Magdalena"
 msgstr "Magdalena"
@@ -5440,7 +5480,8 @@ msgid "Matachí"
 msgstr "Matachí"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_chh_044 model:res.city,name:l10n_mx_edi.res_city_mx_coa_017
+#: model:res.city,name:l10n_mx_edi.res_city_mx_chh_044
+#: model:res.city,name:l10n_mx_edi.res_city_mx_coa_017
 #: model:res.city,name:l10n_mx_edi.res_city_mx_tam_022
 msgid "Matamoros"
 msgstr "Matamoros"
@@ -5511,7 +5552,8 @@ msgid "Mazatlán Villa de Flores"
 msgstr "Mazatlán Villa de Flores"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_chp_054 model:res.city,name:l10n_mx_edi.res_city_mx_son_037
+#: model:res.city,name:l10n_mx_edi.res_city_mx_chp_054
+#: model:res.city,name:l10n_mx_edi.res_city_mx_son_037
 msgid "Mazatán"
 msgstr "Mazatán"
 
@@ -5546,7 +5588,8 @@ msgid "Medical, dental and hospital expenses."
 msgstr "Honorarios médicos, dentales y gastos hospitalarios."
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_mex_053 model:res.city,name:l10n_mx_edi.res_city_mx_nle_035
+#: model:res.city,name:l10n_mx_edi.res_city_mx_mex_053
+#: model:res.city,name:l10n_mx_edi.res_city_mx_nle_035
 #: model:res.city,name:l10n_mx_edi.res_city_mx_zac_027
 msgid "Melchor Ocampo"
 msgstr "Melchor Ocampo"
@@ -5573,7 +5616,8 @@ msgid "Metapa"
 msgstr "Metapa"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_hid_035 model:res.city,name:l10n_mx_edi.res_city_mx_mex_054
+#: model:res.city,name:l10n_mx_edi.res_city_mx_hid_035
+#: model:res.city,name:l10n_mx_edi.res_city_mx_mex_054
 msgid "Metepec"
 msgstr "Metepec"
 
@@ -5685,7 +5729,8 @@ msgid "Mina"
 msgstr "Mina"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_col_008 model:res.city,name:l10n_mx_edi.res_city_mx_ver_108
+#: model:res.city,name:l10n_mx_edi.res_city_mx_col_008
+#: model:res.city,name:l10n_mx_edi.res_city_mx_ver_108
 msgid "Minatitlán"
 msgstr "Minatitlán"
 
@@ -5760,7 +5805,8 @@ msgid "Mocorito"
 msgstr "Mocorito"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_slp_022 model:res.city,name:l10n_mx_edi.res_city_mx_son_038
+#: model:res.city,name:l10n_mx_edi.res_city_mx_slp_022
+#: model:res.city,name:l10n_mx_edi.res_city_mx_son_038
 msgid "Moctezuma"
 msgstr "Moctezuma"
 
@@ -5820,8 +5866,10 @@ msgid "Morelia"
 msgstr "Morelia"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_chh_046 model:res.city,name:l10n_mx_edi.res_city_mx_coa_019
-#: model:res.city,name:l10n_mx_edi.res_city_mx_mex_056 model:res.city,name:l10n_mx_edi.res_city_mx_mic_054
+#: model:res.city,name:l10n_mx_edi.res_city_mx_chh_046
+#: model:res.city,name:l10n_mx_edi.res_city_mx_coa_019
+#: model:res.city,name:l10n_mx_edi.res_city_mx_mex_056
+#: model:res.city,name:l10n_mx_edi.res_city_mx_mic_054
 #: model:res.city,name:l10n_mx_edi.res_city_mx_zac_032
 msgid "Morelos"
 msgstr "Morelos"
@@ -6095,7 +6143,8 @@ msgid "Nocupétaro"
 msgstr "Nocupétaro"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_son_043 model:res.city,name:l10n_mx_edi.res_city_mx_ver_115
+#: model:res.city,name:l10n_mx_edi.res_city_mx_son_043
+#: model:res.city,name:l10n_mx_edi.res_city_mx_ver_115
 msgid "Nogales"
 msgstr "Nogales"
 
@@ -6215,9 +6264,12 @@ msgid "Oaxaca de Juárez"
 msgstr "Oaxaca de Juárez"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_chh_051 model:res.city,name:l10n_mx_edi.res_city_mx_coa_023
-#: model:res.city,name:l10n_mx_edi.res_city_mx_dur_017 model:res.city,name:l10n_mx_edi.res_city_mx_gua_022
-#: model:res.city,name:l10n_mx_edi.res_city_mx_mic_061 model:res.city,name:l10n_mx_edi.res_city_mx_tam_029
+#: model:res.city,name:l10n_mx_edi.res_city_mx_chh_051
+#: model:res.city,name:l10n_mx_edi.res_city_mx_coa_023
+#: model:res.city,name:l10n_mx_edi.res_city_mx_dur_017
+#: model:res.city,name:l10n_mx_edi.res_city_mx_gua_022
+#: model:res.city,name:l10n_mx_edi.res_city_mx_mic_061
+#: model:res.city,name:l10n_mx_edi.res_city_mx_tam_029
 msgid "Ocampo"
 msgstr "Ocampo"
 
@@ -6227,7 +6279,8 @@ msgid "Ocosingo"
 msgstr "Ocosingo"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_chp_060 model:res.city,name:l10n_mx_edi.res_city_mx_pue_105
+#: model:res.city,name:l10n_mx_edi.res_city_mx_chp_060
+#: model:res.city,name:l10n_mx_edi.res_city_mx_pue_105
 msgid "Ocotepec"
 msgstr "Ocotepec"
 
@@ -6569,7 +6622,8 @@ msgid "Pantelhó"
 msgstr "Pantelhó"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_chp_067 model:res.city,name:l10n_mx_edi.res_city_mx_pue_111
+#: model:res.city,name:l10n_mx_edi.res_city_mx_chp_067
+#: model:res.city,name:l10n_mx_edi.res_city_mx_pue_111
 msgid "Pantepec"
 msgstr "Pantepec"
 
@@ -6658,7 +6712,6 @@ msgstr "Recibo de pago:"
 
 #. module: l10n_mx_edi
 #: model:ir.actions.act_window,name:l10n_mx_edi.action_l10n_mx_payment_method
-#: model:ir.model.fields,field_description:l10n_mx_edi.field_account_bank_statement_import_journal_creation__l10n_mx_edi_payment_method_id
 #: model:ir.model.fields,field_description:l10n_mx_edi.field_account_bank_statement_line__l10n_mx_edi_payment_method_id
 #: model:ir.model.fields,field_description:l10n_mx_edi.field_account_journal__l10n_mx_edi_payment_method_id
 #: model:ir.model.fields,field_description:l10n_mx_edi.field_account_move__l10n_mx_edi_payment_method_id
@@ -6873,7 +6926,8 @@ msgid "Print Payment Receipt"
 msgstr "Imprimir recibo de pago"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_coa_026 model:res.city,name:l10n_mx_edi.res_city_mx_yuc_059
+#: model:res.city,name:l10n_mx_edi.res_city_mx_coa_026
+#: model:res.city,name:l10n_mx_edi.res_city_mx_yuc_059
 msgid "Progreso"
 msgstr "Progreso"
 
@@ -6888,7 +6942,8 @@ msgid "Puebla"
 msgstr "Puebla"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_dur_023 model:res.city,name:l10n_mx_edi.res_city_mx_gua_024
+#: model:res.city,name:l10n_mx_edi.res_city_mx_dur_023
+#: model:res.city,name:l10n_mx_edi.res_city_mx_gua_024
 msgid "Pueblo Nuevo"
 msgstr "Pueblo Nuevo"
 
@@ -6948,7 +7003,8 @@ msgid "Putla Villa de Guerrero"
 msgstr "Putla Villa de Guerrero"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_ver_123 model:res.city,name:l10n_mx_edi.res_city_mx_zac_037
+#: model:res.city,name:l10n_mx_edi.res_city_mx_ver_123
+#: model:res.city,name:l10n_mx_edi.res_city_mx_zac_037
 msgid "Pánuco"
 msgstr "Pánuco"
 
@@ -7043,8 +7099,10 @@ msgid "Rayones"
 msgstr "Rayones"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_chp_073 model:res.city,name:l10n_mx_edi.res_city_mx_mex_072
-#: model:res.city,name:l10n_mx_edi.res_city_mx_slp_023 model:res.city,name:l10n_mx_edi.res_city_mx_son_050
+#: model:res.city,name:l10n_mx_edi.res_city_mx_chp_073
+#: model:res.city,name:l10n_mx_edi.res_city_mx_mex_072
+#: model:res.city,name:l10n_mx_edi.res_city_mx_slp_023
+#: model:res.city,name:l10n_mx_edi.res_city_mx_son_050
 msgid "Rayón"
 msgstr "Rayón"
 
@@ -7149,7 +7207,8 @@ msgid "Rosamorada"
 msgstr "Rosamorada"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_chh_056 model:res.city,name:l10n_mx_edi.res_city_mx_sin_014
+#: model:res.city,name:l10n_mx_edi.res_city_mx_chh_056
+#: model:res.city,name:l10n_mx_edi.res_city_mx_sin_014
 #: model:res.city,name:l10n_mx_edi.res_city_mx_son_051
 msgid "Rosario"
 msgstr "Rosario"
@@ -7687,7 +7746,8 @@ msgid "San Esteban Atatlahuca"
 msgstr "San Esteban Atatlahuca"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_gua_030 model:res.city,name:l10n_mx_edi.res_city_mx_yuc_065
+#: model:res.city,name:l10n_mx_edi.res_city_mx_gua_030
+#: model:res.city,name:l10n_mx_edi.res_city_mx_yuc_065
 msgid "San Felipe"
 msgstr "San Felipe"
 
@@ -7732,7 +7792,8 @@ msgid "San Felipe del Progreso"
 msgstr "San Felipe del Progreso"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_chp_079 model:res.city,name:l10n_mx_edi.res_city_mx_tam_035
+#: model:res.city,name:l10n_mx_edi.res_city_mx_chp_079
+#: model:res.city,name:l10n_mx_edi.res_city_mx_tam_035
 msgid "San Fernando"
 msgstr "San Fernando"
 
@@ -8332,7 +8393,8 @@ msgid "San Juan del Estado"
 msgstr "San Juan del Estado"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_dur_028 model:res.city,name:l10n_mx_edi.res_city_mx_oax_194
+#: model:res.city,name:l10n_mx_edi.res_city_mx_dur_028
+#: model:res.city,name:l10n_mx_edi.res_city_mx_oax_194
 #: model:res.city,name:l10n_mx_edi.res_city_mx_que_016
 msgid "San Juan del Río"
 msgstr "San Juan del Río"
@@ -8388,7 +8450,8 @@ msgid "San Lorenzo Victoria"
 msgstr "San Lorenzo Victoria"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_chp_110 model:res.city,name:l10n_mx_edi.res_city_mx_mic_077
+#: model:res.city,name:l10n_mx_edi.res_city_mx_chp_110
+#: model:res.city,name:l10n_mx_edi.res_city_mx_mic_077
 msgid "San Lucas"
 msgstr "San Lucas"
 
@@ -8453,7 +8516,8 @@ msgid "San Marcial Ozolotepec"
 msgstr "San Marcial Ozolotepec"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_gro_053 model:res.city,name:l10n_mx_edi.res_city_mx_jal_075
+#: model:res.city,name:l10n_mx_edi.res_city_mx_gro_053
+#: model:res.city,name:l10n_mx_edi.res_city_mx_jal_075
 msgid "San Marcos"
 msgstr "San Marcos"
 
@@ -8778,7 +8842,8 @@ msgid "San Miguel el Grande"
 msgstr "San Miguel el Grande"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_oax_289 model:res.city,name:l10n_mx_edi.res_city_mx_tam_036
+#: model:res.city,name:l10n_mx_edi.res_city_mx_oax_289
+#: model:res.city,name:l10n_mx_edi.res_city_mx_tam_036
 msgid "San Nicolás"
 msgstr "San Nicolás"
 
@@ -9228,7 +9293,8 @@ msgid "Sanctórum de Lázaro Cárdenas"
 msgstr "Sanctórum de Lázaro Cárdenas"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_oax_353 model:res.city,name:l10n_mx_edi.res_city_mx_son_058
+#: model:res.city,name:l10n_mx_edi.res_city_mx_oax_353
+#: model:res.city,name:l10n_mx_edi.res_city_mx_son_058
 msgid "Santa Ana"
 msgstr "Santa Ana"
 
@@ -9293,7 +9359,8 @@ msgid "Santa Catalina Quierí"
 msgstr "Santa Catalina Quierí"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_gua_034 model:res.city,name:l10n_mx_edi.res_city_mx_nle_048
+#: model:res.city,name:l10n_mx_edi.res_city_mx_gua_034
+#: model:res.city,name:l10n_mx_edi.res_city_mx_nle_048
 #: model:res.city,name:l10n_mx_edi.res_city_mx_slp_031
 msgid "Santa Catarina"
 msgstr "Santa Catalina"
@@ -9794,7 +9861,8 @@ msgid "Santa María de los Ángeles"
 msgstr "Santa María de los Ángeles"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_jal_056 model:res.city,name:l10n_mx_edi.res_city_mx_nay_014
+#: model:res.city,name:l10n_mx_edi.res_city_mx_jal_056
+#: model:res.city,name:l10n_mx_edi.res_city_mx_nay_014
 msgid "Santa María del Oro"
 msgstr "Santa María del Oro"
 
@@ -11023,7 +11091,8 @@ msgid "Tenampulco"
 msgstr "Tenampulco"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_mex_088 model:res.city,name:l10n_mx_edi.res_city_mx_tla_027
+#: model:res.city,name:l10n_mx_edi.res_city_mx_mex_088
+#: model:res.city,name:l10n_mx_edi.res_city_mx_tla_027
 msgid "Tenancingo"
 msgstr "Tenancingo"
 
@@ -11248,7 +11317,8 @@ msgid "Tepetongo"
 msgstr "Tepetongo"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_pue_167 model:res.city,name:l10n_mx_edi.res_city_mx_ver_167
+#: model:res.city,name:l10n_mx_edi.res_city_mx_pue_167
+#: model:res.city,name:l10n_mx_edi.res_city_mx_ver_167
 msgid "Tepetzintla"
 msgstr "Tepetzintla"
 
@@ -11298,7 +11368,8 @@ msgid "Tepoztlán"
 msgstr "Tepoztlán"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_jal_094 model:res.city,name:l10n_mx_edi.res_city_mx_ver_168
+#: model:res.city,name:l10n_mx_edi.res_city_mx_jal_094
+#: model:res.city,name:l10n_mx_edi.res_city_mx_ver_168
 msgid "Tequila"
 msgstr "Tequila"
 
@@ -11625,7 +11696,8 @@ msgid "Ticul"
 msgstr "Ticul"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_gua_040 model:res.city,name:l10n_mx_edi.res_city_mx_ver_174
+#: model:res.city,name:l10n_mx_edi.res_city_mx_gua_040
+#: model:res.city,name:l10n_mx_edi.res_city_mx_ver_174
 msgid "Tierra Blanca"
 msgstr "Tierra Blanca"
 
@@ -11950,7 +12022,8 @@ msgid "Tlaxcala"
 msgstr "Tlaxcala"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_pue_187 model:res.city,name:l10n_mx_edi.res_city_mx_tla_034
+#: model:res.city,name:l10n_mx_edi.res_city_mx_pue_187
+#: model:res.city,name:l10n_mx_edi.res_city_mx_tla_034
 msgid "Tlaxco"
 msgstr "Tlaxco"
 
@@ -11981,8 +12054,8 @@ msgstr "Tláhuac"
 
 #. module: l10n_mx_edi
 #: model:ir.model.fields.selection,name:l10n_mx_edi.selection__account_move__l10n_mx_edi_usage__p01
-msgid "To define  (CFDI 3.3 only)"
-msgstr "Por definir (solo CFDI 3.3)"
+msgid "To define (CFDI 3.3 only)"
+msgstr ""
 
 #. module: l10n_mx_edi
 #: model:res.city,name:l10n_mx_edi.res_city_mx_tla_035
@@ -12010,7 +12083,8 @@ msgid "Tolcayuca"
 msgstr "Tolcayuca"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_jal_099 model:res.city,name:l10n_mx_edi.res_city_mx_que_018
+#: model:res.city,name:l10n_mx_edi.res_city_mx_jal_099
+#: model:res.city,name:l10n_mx_edi.res_city_mx_que_018
 msgid "Tolimán"
 msgstr "Tolimán"
 
@@ -12020,12 +12094,14 @@ msgid "Toluca"
 msgstr "Toluca"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_jal_100 model:res.city,name:l10n_mx_edi.res_city_mx_ver_186
+#: model:res.city,name:l10n_mx_edi.res_city_mx_jal_100
+#: model:res.city,name:l10n_mx_edi.res_city_mx_ver_186
 msgid "Tomatlán"
 msgstr "Tomatlán"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_chp_097 model:res.city,name:l10n_mx_edi.res_city_mx_jal_101
+#: model:res.city,name:l10n_mx_edi.res_city_mx_chp_097
+#: model:res.city,name:l10n_mx_edi.res_city_mx_jal_101
 msgid "Tonalá"
 msgstr "Tonalá"
 
@@ -12207,8 +12283,10 @@ msgid "Tuxcueca"
 msgstr "Tuxcueca"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_jal_108 model:res.city,name:l10n_mx_edi.res_city_mx_mic_098
-#: model:res.city,name:l10n_mx_edi.res_city_mx_nay_018 model:res.city,name:l10n_mx_edi.res_city_mx_ver_189
+#: model:res.city,name:l10n_mx_edi.res_city_mx_jal_108
+#: model:res.city,name:l10n_mx_edi.res_city_mx_mic_098
+#: model:res.city,name:l10n_mx_edi.res_city_mx_nay_018
+#: model:res.city,name:l10n_mx_edi.res_city_mx_ver_189
 msgid "Tuxpan"
 msgstr "Tuxpan"
 
@@ -12360,8 +12438,7 @@ msgstr "Uso"
 #: model:ir.model.fields,help:l10n_mx_edi.field_account_move__l10n_mx_edi_usage
 #: model:ir.model.fields,help:l10n_mx_edi.field_account_payment__l10n_mx_edi_usage
 msgid ""
-"Used in CFDI 3.3 to express the key to the usage that will gives the receiver to this invoice. This value is defined by the "
-"customer.\n"
+"Used in CFDI 3.3 to express the key to the usage that will gives the receiver to this invoice. This value is defined by the customer.\n"
 "Note: It is not cause for cancellation if the key set is not the usage that will give the receiver of the document."
 msgstr ""
 "Usado en CFDI 3.3 para expresar la clave del uso que le dará el receptor a esta factura. Este valor lo define el cliente.\n"
@@ -12371,14 +12448,8 @@ msgstr ""
 #: model:ir.model.fields,help:l10n_mx_edi.field_account_bank_statement_line__l10n_mx_edi_cer_source
 #: model:ir.model.fields,help:l10n_mx_edi.field_account_move__l10n_mx_edi_cer_source
 #: model:ir.model.fields,help:l10n_mx_edi.field_account_payment__l10n_mx_edi_cer_source
-msgid ""
-"Used in CFDI like attribute derived from the exception of certificates of Origin of the Free Trade Agreements that Mexico has "
-"celebrated with several countries. If it has a value, it will indicate that it serves as certificate of origin and this value will "
-"be set in the CFDI node 'NumCertificadoOrigen'."
-msgstr ""
-"Utilizado en CFDI como atributo derivado de la excepción de certificados de Origen de los Tratados de Libre Comercio que México ha "
-"celebrado con varios países. Si tiene un valor, indicará que sirve como certificado de origen y este valor se configurará en el "
-"nodo CFDI 'NumCertificadoOrigen'."
+msgid "Used in CFDI like attribute derived from the exception of certificates of Origin of the Free Trade Agreements that Mexico has celebrated with several countries. If it has a value, it will indicate that it serves as certificate of origin and this value will be set in the CFDI node 'NumCertificadoOrigen'."
+msgstr "Utilizado en CFDI como atributo derivado de la excepción de certificados de Origen de los Tratados de Libre Comercio que México ha celebrado con varios países. Si tiene un valor, indicará que sirve como certificado de origen y este valor se configurará en el nodo CFDI 'NumCertificadoOrigen'."
 
 #. module: l10n_mx_edi
 #: model:res.city,name:l10n_mx_edi.res_city_mx_ver_210
@@ -12472,8 +12543,10 @@ msgid "Venado"
 msgstr "Venado"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_chp_106 model:res.city,name:l10n_mx_edi.res_city_mx_dif_017
-#: model:res.city,name:l10n_mx_edi.res_city_mx_mic_103 model:res.city,name:l10n_mx_edi.res_city_mx_pue_194
+#: model:res.city,name:l10n_mx_edi.res_city_mx_chp_106
+#: model:res.city,name:l10n_mx_edi.res_city_mx_dif_017
+#: model:res.city,name:l10n_mx_edi.res_city_mx_mic_103
+#: model:res.city,name:l10n_mx_edi.res_city_mx_pue_194
 msgid "Venustiano Carranza"
 msgstr "Venustiano Carranza"
 
@@ -12488,12 +12561,14 @@ msgid "Vetagrande"
 msgstr "Vetagrande"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_dur_038 model:res.city,name:l10n_mx_edi.res_city_mx_pue_195
+#: model:res.city,name:l10n_mx_edi.res_city_mx_dur_038
+#: model:res.city,name:l10n_mx_edi.res_city_mx_pue_195
 msgid "Vicente Guerrero"
 msgstr "Vicente Guerrero"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_gua_043 model:res.city,name:l10n_mx_edi.res_city_mx_tam_041
+#: model:res.city,name:l10n_mx_edi.res_city_mx_gua_043
+#: model:res.city,name:l10n_mx_edi.res_city_mx_tam_041
 msgid "Victoria"
 msgstr "Victoria"
 
@@ -12543,13 +12618,16 @@ msgid "Villa González Ortega"
 msgstr "Villa González Ortega"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_jal_115 model:res.city,name:l10n_mx_edi.res_city_mx_mex_113
+#: model:res.city,name:l10n_mx_edi.res_city_mx_jal_115
+#: model:res.city,name:l10n_mx_edi.res_city_mx_mex_113
 msgid "Villa Guerrero"
 msgstr "Villa Guerrero"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_jal_116 model:res.city,name:l10n_mx_edi.res_city_mx_oax_038
-#: model:res.city,name:l10n_mx_edi.res_city_mx_slp_051 model:res.city,name:l10n_mx_edi.res_city_mx_son_067
+#: model:res.city,name:l10n_mx_edi.res_city_mx_jal_116
+#: model:res.city,name:l10n_mx_edi.res_city_mx_oax_038
+#: model:res.city,name:l10n_mx_edi.res_city_mx_slp_051
+#: model:res.city,name:l10n_mx_edi.res_city_mx_son_067
 #: model:res.city,name:l10n_mx_edi.res_city_mx_zac_054
 msgid "Villa Hidalgo"
 msgstr "Villa Hidalgo"
@@ -12680,7 +12758,8 @@ msgid "Villaflores"
 msgstr "Villaflores"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_gua_044 model:res.city,name:l10n_mx_edi.res_city_mx_tam_042
+#: model:res.city,name:l10n_mx_edi.res_city_mx_gua_044
+#: model:res.city,name:l10n_mx_edi.res_city_mx_tam_042
 msgid "Villagrán"
 msgstr "Villagrán"
 
@@ -12927,13 +13006,8 @@ msgstr "Yogana"
 #. module: l10n_mx_edi
 #: code:addons/l10n_mx_edi/models/l10n_mx_edi_certificate.py:0
 #, python-format
-msgid ""
-"You cannot remove a certificate if at least an invoice has been signed. Expired Certificates will not be used as Odoo uses the "
-"latest valid certificate. To not use it, you can unlink it from the current company certificates."
-msgstr ""
-"No es posible eliminar un certificado que fue utilizado al menos una vez para firmar. Los certificados expirados no serán "
-"utilizados por Odoo, ya que solo se utilizan certificados validos. Para no utilizar este, se puede eliminar de los certificados "
-"actuales de la compañía."
+msgid "You cannot remove a certificate if at least an invoice has been signed. Expired Certificates will not be used as Odoo uses the latest valid certificate. To not use it, you can unlink it from the current company certificates."
+msgstr "No es posible eliminar un certificado que fue utilizado al menos una vez para firmar. Los certificados expirados no serán utilizados por Odoo, ya que solo se utilizan certificados validos. Para no utilizar este, se puede eliminar de los certificados actuales de la compañía."
 
 #. module: l10n_mx_edi
 #: code:addons/l10n_mx_edi/models/account_move.py:0
@@ -13012,7 +13086,8 @@ msgid "Zacoalco de Torres"
 msgstr "Zacoalco de Torres"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_mex_117 model:res.city,name:l10n_mx_edi.res_city_mx_mor_032
+#: model:res.city,name:l10n_mx_edi.res_city_mx_mex_117
+#: model:res.city,name:l10n_mx_edi.res_city_mx_mor_032
 #: model:res.city,name:l10n_mx_edi.res_city_mx_ver_198
 msgid "Zacualpan"
 msgstr "Zacualpan"
@@ -13088,8 +13163,10 @@ msgid "Zapotlán el Grande"
 msgstr "Zapotlán el Grande"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_coa_038 model:res.city,name:l10n_mx_edi.res_city_mx_pue_211
-#: model:res.city,name:l10n_mx_edi.res_city_mx_slp_055 model:res.city,name:l10n_mx_edi.res_city_mx_ver_199
+#: model:res.city,name:l10n_mx_edi.res_city_mx_coa_038
+#: model:res.city,name:l10n_mx_edi.res_city_mx_pue_211
+#: model:res.city,name:l10n_mx_edi.res_city_mx_slp_055
+#: model:res.city,name:l10n_mx_edi.res_city_mx_ver_199
 msgid "Zaragoza"
 msgstr "Zaragoza"
 
@@ -13239,7 +13316,8 @@ msgid "Álamo Temapache"
 msgstr "Álamo Temapache"
 
 #. module: l10n_mx_edi
-#: model:res.city,name:l10n_mx_edi.res_city_mx_dif_010 model:res.city,name:l10n_mx_edi.res_city_mx_mic_003
+#: model:res.city,name:l10n_mx_edi.res_city_mx_dif_010
+#: model:res.city,name:l10n_mx_edi.res_city_mx_mic_003
 msgid "Álvaro Obregón"
 msgstr "Álvaro Obregón"
 

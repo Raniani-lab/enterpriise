@@ -1,27 +1,38 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* hr_payroll_account
-# 
+#
 # Translators:
-# Martin Trigaux, 2019
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
-# 
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2023
+# Martin Trigaux, 2023
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
-"PO-Revision-Date: 2019-08-26 09:36+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2019\n"
-"Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
+"POT-Creation-Date: 2023-05-16 16:02+0000\n"
+"PO-Revision-Date: 2022-09-22 05:47+0000\n"
+"Last-Translator: Martin Trigaux, 2023\n"
+"Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
+"Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: hr_payroll_account
-#: model_terms:ir.ui.view,arch_db:hr_payroll_account.hr_contract_view_form
+#: model:ir.model,name:hr_payroll_account.model_account_chart_template
+msgid "Account Chart Template"
+msgstr "Grootboekschema sjabloon"
+
+#. module: hr_payroll_account
+#. odoo-python
+#: code:addons/hr_payroll_account/models/account_chart_template.py:0
+#, python-format
+msgid "Account Payslip Houserental"
+msgstr ""
+
+#. module: hr_payroll_account
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account.hr_salary_rule_view_form
 msgid "Accounting"
 msgstr "Boekhouding"
@@ -29,12 +40,10 @@ msgstr "Boekhouding"
 #. module: hr_payroll_account
 #: model:ir.model.fields,field_description:hr_payroll_account.field_hr_payslip__move_id
 msgid "Accounting Entry"
-msgstr "Financiële boeking"
+msgstr "Boeking"
 
 #. module: hr_payroll_account
-#: code:addons/hr_payroll_account/models/hr_payroll_account.py:0
-#: code:addons/hr_payroll_account/models/hr_payroll_account.py:0
-#: code:addons/hr_payroll_account/models/hr_payroll_account.py:0
+#. odoo-python
 #: code:addons/hr_payroll_account/models/hr_payroll_account.py:0
 #, python-format
 msgid "Adjustment Entry"
@@ -42,6 +51,7 @@ msgstr "Aanpassingsboeking"
 
 #. module: hr_payroll_account
 #: model:ir.model.fields,field_description:hr_payroll_account.field_hr_contract__analytic_account_id
+#: model:ir.model.fields,field_description:hr_payroll_account.field_hr_contract_history__analytic_account_id
 #: model:ir.model.fields,field_description:hr_payroll_account.field_hr_salary_rule__analytic_account_id
 msgid "Analytic Account"
 msgstr "Kostenplaats"
@@ -49,13 +59,24 @@ msgstr "Kostenplaats"
 #. module: hr_payroll_account
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account.hr_payslip_run_view_form
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account.hr_payslip_view_form
-msgid "Create Draft Entry"
+msgid "Are you sure you want to proceed?"
 msgstr ""
+
+#. module: hr_payroll_account
+#: model:ir.model,name:hr_payroll_account.model_hr_contract_history
+msgid "Contract history"
+msgstr "Contractgeschiedenis"
+
+#. module: hr_payroll_account
+#: model_terms:ir.ui.view,arch_db:hr_payroll_account.hr_payslip_run_view_form
+#: model_terms:ir.ui.view,arch_db:hr_payroll_account.hr_payslip_view_form
+msgid "Create Draft Entry"
+msgstr "Maak conceptboeking"
 
 #. module: hr_payroll_account
 #: model:ir.model.fields,field_description:hr_payroll_account.field_hr_salary_rule__account_credit
 msgid "Credit Account"
-msgstr "Krediet rekening"
+msgstr "Creditrekening"
 
 #. module: hr_payroll_account
 #: model:ir.model.fields,field_description:hr_payroll_account.field_hr_payslip__date
@@ -65,7 +86,7 @@ msgstr "Datum rekening"
 #. module: hr_payroll_account
 #: model:ir.model.fields,field_description:hr_payroll_account.field_hr_salary_rule__account_debit
 msgid "Debit Account"
-msgstr "Debet rekening"
+msgstr "Debetrekening"
 
 #. module: hr_payroll_account
 #: model:ir.model,name:hr_payroll_account.model_hr_contract
@@ -73,38 +94,72 @@ msgid "Employee Contract"
 msgstr "Arbeidsovereenkomst"
 
 #. module: hr_payroll_account
+#. odoo-python
+#: code:addons/hr_payroll_account/models/hr_payroll_account.py:0
+#, python-format
+msgid "Incorrect journal: The journal must be in the same currency as the company"
+msgstr "Onjuiste dagboek: Het dagboek moet in dezelfde valuta zijn als het bedrijf."
+
+#. module: hr_payroll_account
+#: model:ir.model,name:hr_payroll_account.model_account_journal
+msgid "Journal"
+msgstr "Dagboek"
+
+#. module: hr_payroll_account
 #: model:ir.model.fields,help:hr_payroll_account.field_hr_payslip__date
 msgid "Keep empty to use the period of the validation(Payslip) date."
+msgstr "Laat leeg om de periode van de controledatum (loonstrook) te gebruiken."
+
+#. module: hr_payroll_account
+#. odoo-python
+#: code:addons/hr_payroll_account/models/account_chart_template.py:0
+#, python-format
+msgid "No existing account for code %s"
 msgstr ""
-"Laat leeg om de periode van de controledatum (loonafschrift) te gebruiken."
 
 #. module: hr_payroll_account
 #: model:ir.model.fields,field_description:hr_payroll_account.field_hr_salary_rule__not_computed_in_net
 msgid "Not computed in net accountably"
-msgstr ""
+msgstr "Niet netto berekend"
 
 #. module: hr_payroll_account
+#. odoo-python
 #: code:addons/hr_payroll_account/models/hr_payroll_account.py:0
 #, python-format
 msgid "One of the contract for these payslips has no structure type."
-msgstr ""
+msgstr "Een van de contracten voor deze salarisstroken heeft geen type structuur."
 
 #. module: hr_payroll_account
+#. odoo-python
 #: code:addons/hr_payroll_account/models/hr_payroll_account.py:0
 #, python-format
 msgid "One of the payroll structures has no account journal defined on it."
-msgstr ""
+msgstr "In een van de salarisadministratiestructuren is geen rekening gedefinieerd."
 
 #. module: hr_payroll_account
 #: model:ir.model,name:hr_payroll_account.model_hr_payslip
 msgid "Pay Slip"
-msgstr "Loonafschrift"
+msgstr "Loonstrook"
+
+#. module: hr_payroll_account
+#. odoo-python
+#: code:addons/hr_payroll_account/models/account_chart_template.py:0
+#, python-format
+msgid "SLR"
+msgstr ""
+
+#. module: hr_payroll_account
+#. odoo-python
+#: code:addons/hr_payroll_account/models/account_chart_template.py:0
+#, python-format
+msgid "Salaries"
+msgstr ""
 
 #. module: hr_payroll_account
 #: model:ir.model.fields,field_description:hr_payroll_account.field_hr_payroll_structure__journal_id
 #: model:ir.model.fields,field_description:hr_payroll_account.field_hr_payslip__journal_id
 msgid "Salary Journal"
-msgstr "Dagboek lonen"
+msgstr "Loon dagboek"
 
 #. module: hr_payroll_account
 #: model:ir.model,name:hr_payroll_account.model_hr_salary_rule
@@ -117,30 +172,20 @@ msgid "Salary Structure"
 msgstr "Salarisstructuur"
 
 #. module: hr_payroll_account
-#: model_terms:ir.ui.view,arch_db:hr_payroll_account.hr_payslip_run_view_form
-msgid "Set to Draft"
-msgstr "Zet op concept"
-
-#. module: hr_payroll_account
+#. odoo-python
 #: code:addons/hr_payroll_account/models/hr_payroll_account.py:0
 #, python-format
-msgid "The Expense Journal \"%s\" has not properly configured the Credit Account!"
-msgstr ""
-"Bij de kostenrekening \"%s\" is geen correcte credit rekening "
-"geconfigureerd!"
-
-#. module: hr_payroll_account
-#: code:addons/hr_payroll_account/models/hr_payroll_account.py:0
-#, python-format
-msgid "The Expense Journal \"%s\" has not properly configured the Debit Account!"
-msgstr ""
-"Bij de kostenrekening \"%s\" is geen correcte debet rekening geconfigureerd!"
+msgid "The Expense Journal \"%s\" has not properly configured the default Account!"
+msgstr "Bij de kostenrekening \"%s\" is geen correcte rekening ingesteld!"
 
 #. module: hr_payroll_account
 #: model:ir.model.fields,help:hr_payroll_account.field_hr_salary_rule__not_computed_in_net
-msgid ""
-"This field allows you to delete the value of this rule in the \"Net Salary\""
-" rule at the accounting level to explicitly display the value of this rule "
-"in the accounting. For example, if you want to display the value of your "
-"representation fees, you can check this field."
+msgid "This field allows you to delete the value of this rule in the \"Net Salary\" rule at the accounting level to explicitly display the value of this rule in the accounting. For example, if you want to display the value of your representation fees, you can check this field."
+msgstr "In dit veld kun je de waarde van deze regel in de regel \"Nettosalaris\" op het niveau van de boekhouding verwijderen om de waarde van deze regel expliciet weer te geven in de boekhouding. Als je bijvoorbeeld de waarde van je representatiekosten wilt weergeven, kun je dit veld controleren."
+
+#. module: hr_payroll_account
+#. odoo-python
+#: code:addons/hr_payroll_account/models/account_journal.py:0
+#, python-format
+msgid "You cannot delete the journal linked to a Salary Structure"
 msgstr ""

@@ -1,25 +1,23 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* delivery_fedex
-# 
+#
 # Translators:
-# Martin Trigaux, 2019
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
-# Gunther Clauwaert <gclauwae@hotmail.com>, 2019
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
-# 
+# Martin Trigaux, 2022
+# Jolien De Paepe, 2022
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
-"PO-Revision-Date: 2019-08-26 09:35+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2019\n"
-"Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
+"POT-Creation-Date: 2023-05-16 16:01+0000\n"
+"PO-Revision-Date: 2022-09-22 05:46+0000\n"
+"Last-Translator: Jolien De Paepe, 2022\n"
+"Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
+"Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: delivery_fedex
@@ -29,12 +27,22 @@ msgstr ", klik op \"Haal productiesleutel op\" en volg alle stappen."
 
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
-msgid ""
-"<br/>According to your needs, you will need to contact different "
-"certifications :"
+msgid "<br/>According to your needs, you will need to contact different certifications:"
 msgstr ""
-"<br/>Afhankelijk van uw noden moet u verschillende certificeringen "
-"contacteren:"
+
+#. module: delivery_fedex
+#: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
+msgid ""
+"<span attrs=\"{'invisible': [('fedex_weight_unit', '!=', 'KG')]}\">CM</span>\n"
+"                                <span attrs=\"{'invisible': [('fedex_weight_unit', '!=', 'LB')]}\">IN</span>"
+msgstr ""
+"<span attrs=\"{'invisible': [('fedex_weight_unit', '!=', 'KG')]}\">CM</span>\n"
+"                                <span attrs=\"{'invisible': [('fedex_weight_unit', '!=', 'LB')]}\">IN</span>"
+
+#. module: delivery_fedex
+#: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
+msgid "<span class=\"o_form_label\">Package Length Unit</span>"
+msgstr "<span class=\"o_form_label\">Lengte-eenheid verpakking</span>"
 
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
@@ -57,7 +65,7 @@ msgid "BUSINESS_SERVICE_CENTER"
 msgstr "BUSINESS_SERVICE_CENTER"
 
 #. module: delivery_fedex
-#: model:ir.model.fields,field_description:delivery_fedex.field_product_packaging__package_carrier_type
+#: model:ir.model.fields,field_description:delivery_fedex.field_stock_package_type__package_carrier_type
 msgid "Carrier"
 msgstr "Vervoerder"
 
@@ -69,7 +77,7 @@ msgstr "Certificering proces"
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_document_stock_type
 msgid "Commercial Invoice Type"
-msgstr "Commercieel soort factuur"
+msgstr "Commerciële factuursoort"
 
 #. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_droppoff_type__drop_box
@@ -77,14 +85,14 @@ msgid "DROP_BOX"
 msgstr "DROP_BOX"
 
 #. module: delivery_fedex
-#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_default_packaging_id
-msgid "Default Package Type"
-msgstr "Standaard verpakkingstype"
-
-#. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_developer_key
 msgid "Developer Key"
 msgstr "Ontwikkelaarssleutel"
+
+#. module: delivery_fedex
+#: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
+msgid "Duties paid by"
+msgstr "Invoerrechten betaald door"
 
 #. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_label_file_type__epl2
@@ -92,6 +100,7 @@ msgid "EPL2"
 msgstr "EPL2"
 
 #. module: delivery_fedex
+#. odoo-python
 #: code:addons/delivery_fedex/models/delivery_fedex.py:0
 #, python-format
 msgid ""
@@ -100,6 +109,26 @@ msgid ""
 msgstr ""
 "Fout:\n"
 "%s"
+
+#. module: delivery_fedex
+#: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
+msgid "Extra Data"
+msgstr "Extra gegevens"
+
+#. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_extra_data_rate_request
+msgid "Extra data for rate"
+msgstr "Extra gegevens voor tarief"
+
+#. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_extra_data_return_request
+msgid "Extra data for return"
+msgstr "Extra gegevens voor retour"
+
+#. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_extra_data_ship_request
+msgid "Extra data for ship"
+msgstr "Extra gegevens voor verzending"
 
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_label_file_type
@@ -122,9 +151,24 @@ msgid "FEDEX_3_DAY_FREIGHT"
 msgstr "FEDEX_3_DAY_FREIGHT"
 
 #. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_service_type__fedex_express_saver
+msgid "FEDEX_EXPRESS_SAVER"
+msgstr "FEDEX_EXPRESS_SAVER"
+
+#. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_service_type__fedex_ground
 msgid "FEDEX_GROUND"
 msgstr "FEDEX_GROUND"
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_service_type__fedex_international_priority
+msgid "FEDEX_INTERNATIONAL_PRIORITY"
+msgstr "FEDEX_INTERNATIONAL_PRIORITY"
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_service_type__fedex_international_priority_express
+msgid "FEDEX_INTERNATIONAL_PRIORITY_EXPRESS"
+msgstr "FEDEX_INTERNATIONAL_PRIORITY_EXPRESS"
 
 #. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_service_type__fedex_next_day_afternoon
@@ -144,7 +188,7 @@ msgstr "FEDEX_VOLGENDE_DAG_EINDE_DAG"
 #. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_service_type__fedex_next_day_mid_morning
 msgid "FEDEX_NEXT_DAY_MID_MORNING"
-msgstr "FEDEX_VOLGENDE_DAD_MIDDEN_OCHTEND"
+msgstr "FEDEX_VOLGENDE_DAG_MIDDEN_OCHTEND"
 
 #. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_service_type__first_overnight
@@ -153,7 +197,7 @@ msgstr "FIRST_OVERNIGHT"
 
 #. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__delivery_type__fedex
-#: model:ir.model.fields.selection,name:delivery_fedex.selection__product_packaging__package_carrier_type__fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__stock_package_type__package_carrier_type__fedex
 msgid "FedEx"
 msgstr "FedEx"
 
@@ -171,7 +215,7 @@ msgstr "FedEx zaterdag levering"
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.res_config_settings_view_form_sale
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.res_config_settings_view_form_stock
 msgid "FedEx Shipping Methods"
-msgstr "FedEx leveringsmethodes"
+msgstr "FedEx verzendwijzes"
 
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
@@ -184,16 +228,32 @@ msgid "Fedex Configuration"
 msgstr "Fedex configuratie"
 
 #. module: delivery_fedex
+#. odoo-python
+#: code:addons/delivery_fedex/models/delivery_fedex.py:0
+#, python-format
+msgid "Fedex Documents"
+msgstr ""
+
+#. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_droppoff_type
+msgid "Fedex Drop-Off Type"
+msgstr "Fedex afleveringstype"
+
+#. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_duty_payment
 msgid "Fedex Duty Payment"
 msgstr "Fedex Duty Payment"
 
 #. module: delivery_fedex
 #: model:delivery.carrier,name:delivery_fedex.delivery_carrier_fedex_inter
-#: model:product.product,name:delivery_fedex.product_product_delivery_fedex_inter
 #: model:product.template,name:delivery_fedex.product_product_delivery_fedex_inter_product_template
 msgid "Fedex International"
 msgstr "Fedex internationaal"
+
+#. module: delivery_fedex
+#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_default_package_type_id
+msgid "Fedex Package Type"
+msgstr "Fedex soort verpakking"
 
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_service_type
@@ -207,7 +267,6 @@ msgstr "Fedex tutorial"
 
 #. module: delivery_fedex
 #: model:delivery.carrier,name:delivery_fedex.delivery_carrier_fedex_us
-#: model:product.product,name:delivery_fedex.product_product_delivery_fedex_us
 #: model:product.template,name:delivery_fedex.product_product_delivery_fedex_us_product_template
 msgid "Fedex US"
 msgstr "Fedex US"
@@ -221,11 +280,6 @@ msgstr "Fedex website"
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_weight_unit
 msgid "Fedex Weight Unit"
 msgstr "Fedex gewichtseenheid"
-
-#. module: delivery_fedex
-#: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_droppoff_type
-msgid "Fedex drop-off type"
-msgstr "Fedex aflevertype"
 
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
@@ -243,6 +297,13 @@ msgid "INTERNATIONAL_PRIORITY"
 msgstr "INTERNATIONAL_PRIORITY"
 
 #. module: delivery_fedex
+#. odoo-python
+#: code:addons/delivery_fedex/models/delivery_fedex.py:0
+#, python-format
+msgid "Invalid syntax for FedEx extra data."
+msgstr "Ongeldige syntaxis voor extra FedEx-gegevens."
+
+#. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_weight_unit__kg
 msgid "KG"
 msgstr "KG"
@@ -251,6 +312,11 @@ msgstr "KG"
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_weight_unit__lb
 msgid "LB"
 msgstr "LB"
+
+#. module: delivery_fedex
+#: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
+msgid "Label Format"
+msgstr "Labelformaat"
 
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_label_stock_type
@@ -263,21 +329,26 @@ msgid "Meter Number"
 msgstr "Meternummer"
 
 #. module: delivery_fedex
-#: code:addons/delivery_fedex/models/delivery_fedex.py:0
-#, python-format
-msgid "No packages for this picking"
-msgstr "Geen verpakkingen voor deze levering."
+#: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
+msgid "Once your account is created, go to"
+msgstr "Eenmaal je account is aangemaakt ga je naar"
 
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
-msgid "Once your account is created, go to"
-msgstr "Eenmaal uw account is aangemaakt gaat u naar"
+msgid "Options"
+msgstr "Opties"
 
 #. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_document_stock_type__paper_4x6
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_label_stock_type__paper_4x6
 msgid "PAPER_4X6"
 msgstr "PAPER_4X6"
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_document_stock_type__paper_4x6_75
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_label_stock_type__paper_4x6_75
+msgid "PAPER_4X6.75"
+msgstr "PAPER_4X6.75"
 
 #. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_document_stock_type__paper_4x8
@@ -331,14 +402,14 @@ msgid "PRIORITY_OVERNIGHT"
 msgstr "PRIORITY_OVERNIGHT"
 
 #. module: delivery_fedex
+#: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
+msgid "Package Weight Unit"
+msgstr "Gewichtseenheid verpakking"
+
+#. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_developer_password
 msgid "Password"
 msgstr "Wachtwoord"
-
-#. module: delivery_fedex
-#: model:ir.model,name:delivery_fedex.model_product_packaging
-msgid "Product Packaging"
-msgstr "Productverpakkingen"
 
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__delivery_type
@@ -361,6 +432,13 @@ msgid "Recipient"
 msgstr "Ontvanger"
 
 #. module: delivery_fedex
+#. odoo-python
+#: code:addons/delivery_fedex/models/delivery_fedex.py:0
+#, python-format
+msgid "Return Label"
+msgstr ""
+
+#. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_service_type__standard_overnight
 msgid "STANDARD_OVERNIGHT"
 msgstr "STANDARD_OVERNIGHT"
@@ -375,6 +453,12 @@ msgstr "STATION"
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_label_stock_type__stock_4x6
 msgid "STOCK_4X6"
 msgstr "STOCK_4X6"
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_document_stock_type__stock_4x6_75
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_label_stock_type__stock_4x6_75
+msgid "STOCK_4X6.75"
+msgstr "STOCK_4X6.75"
 
 #. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_document_stock_type__stock_4x6_75_leading_doc_tab
@@ -393,6 +477,12 @@ msgstr "STOCK_4X6.75_TRAILING_DOC_TAB"
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_label_stock_type__stock_4x8
 msgid "STOCK_4X8"
 msgstr "STOCK_4X8"
+
+#. module: delivery_fedex
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_document_stock_type__stock_4x9
+#: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_label_stock_type__stock_4x9
+msgid "STOCK_4X9"
+msgstr "STOCK_4X9"
 
 #. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_document_stock_type__stock_4x9_leading_doc_tab
@@ -422,31 +512,23 @@ msgid "Sender"
 msgstr "Afzender"
 
 #. module: delivery_fedex
+#. odoo-python
 #: code:addons/delivery_fedex/models/delivery_fedex.py:0
 #, python-format
-msgid "Shipment N° %s has been cancelled"
-msgstr "Levering N° %s werd geannuleerd"
+msgid "Shipment #%s has been cancelled"
+msgstr "Levering #%s is geannuleerd."
 
 #. module: delivery_fedex
+#. odoo-python
 #: code:addons/delivery_fedex/models/delivery_fedex.py:0
 #, python-format
-msgid "Shipment created into Fedex <br/> <b>Tracking Number : </b>%s"
-msgstr "Levering aangemaakt in Fedex <br/> <b>Traceernummer : </b>%s"
-
-#. module: delivery_fedex
-#: code:addons/delivery_fedex/models/delivery_fedex.py:0
-#, python-format
-msgid ""
-"Shipment created into Fedex<br/><b>Tracking Numbers:</b> "
-"%s<br/><b>Packages:</b> %s"
-msgstr ""
-"Levering aangemaakt in Fedex <br/> <b>Traceernummer : "
-"</b>%s<br/><b>Verpakkingen:</b>%s"
+msgid "Shipment created into Fedex<br/><b>Tracking Numbers:</b> %s<br/><b>Packages:</b> %s"
+msgstr "Levering aangemaakt in Fedex <br/> <b>Traceernummer : </b>%s<br/><b>Verpakkingen:</b>%s"
 
 #. module: delivery_fedex
 #: model:ir.model,name:delivery_fedex.model_delivery_carrier
 msgid "Shipping Methods"
-msgstr "Verzendmethodes"
+msgstr "Verzendwijzes"
 
 #. module: delivery_fedex
 #: model:ir.model.fields,help:delivery_fedex.field_delivery_carrier__fedex_saturday_delivery
@@ -475,28 +557,47 @@ msgid "Standard Services"
 msgstr "Standaard diensten"
 
 #. module: delivery_fedex
+#: model:ir.model,name:delivery_fedex.model_stock_package_type
+msgid "Stock package type"
+msgstr "Verpakkingstype:"
+
+#. module: delivery_fedex
+#: model:ir.model.fields,help:delivery_fedex.field_delivery_carrier__fedex_extra_data_rate_request
+#: model:ir.model.fields,help:delivery_fedex.field_delivery_carrier__fedex_extra_data_return_request
+#: model:ir.model.fields,help:delivery_fedex.field_delivery_carrier__fedex_extra_data_ship_request
+msgid ""
+"The extra data in FedEx is organized like the inside of a json file.\n"
+"This functionality is advanced/technical and should only be used if you know what you are doing.\n"
+"\n"
+"Example of valid value: ```\n"
+"\"ShipmentDetails\": {\"Pieces\": {\"Piece\": {\"AdditionalInformation\": \"extra info\"}}}\n"
+"```\n"
+"\n"
+"With the above example, the AdditionalInformation of each piece will be updated.\n"
+"More info on https://www.fedex.com/en-us/developer/web-services/process.html#documentation"
+msgstr ""
+"De extra gegevens in FedEx zijn georganiseerd als de binnenkant van een json-bestand.\n"
+"Deze functie is geavanceerd/technisch en mag alleen gebruikt worden als je weet wat je doet.\n"
+"\n"
+"Voorbeeld van een geldige waarde: ```\n"
+"\"ShipmentDetails\": {\"Pieces\": {\"Piece\": {\"AdditionalInformation\": \"extra info\"}}}\n"
+"```\n"
+"\n"
+"Met bovenstaand voorbeeld zal de bijkimende informatie van elk stuk worden bijgewerkt.\n"
+"Meer informatie op https://www.fedex.com/en-us/developer/web-services/process.html#documentation"
+
+#. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "The last step is the"
 msgstr "De laatste stap is de"
 
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
-msgid ""
-"These certifications usually require that you contact the FedEx support team"
-" by email."
-msgstr ""
-"Deze certificaties vragen meestal contact met het FedEx ondersteuningsteam "
-"via e-mail. "
+msgid "These certifications usually require that you contact the FedEx support team by email."
+msgstr "Deze certificaties vragen meestal contact met het FedEx ondersteuningsteam via e-mail. "
 
 #. module: delivery_fedex
-#: model:product.product,uom_name:delivery_fedex.product_product_delivery_fedex_inter
-#: model:product.product,uom_name:delivery_fedex.product_product_delivery_fedex_us
-#: model:product.template,uom_name:delivery_fedex.product_product_delivery_fedex_inter_product_template
-#: model:product.template,uom_name:delivery_fedex.product_product_delivery_fedex_us_product_template
-msgid "Units"
-msgstr "Stuks"
-
-#. module: delivery_fedex
+#. odoo-python
 #: code:addons/delivery_fedex/models/delivery_fedex.py:0
 #, python-format
 msgid ""

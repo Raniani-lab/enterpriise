@@ -10,6 +10,7 @@ msgstr ""
 "PO-Revision-Date: 2023-02-23 08:10+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -72,8 +73,7 @@ msgstr "1.5.3. Хувьцаа, үнэт цаас борлуулсны орлог
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line10
-msgid ""
-"1.5.4. Goods, work and services received from others without payment (10)"
+msgid "1.5.4. Goods, work and services received from others without payment (10)"
 msgstr "1.5.4. Үнэ төлбөргүйгээр бусдаас авсан бараа, ажил, үйлчилгээ (10)"
 
 #. module: l10n_mn_reports
@@ -83,19 +83,13 @@ msgstr "1.5.5. Биет бус хөрөнгө борлуулсны орлого 
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line12
-msgid ""
-"1.5.6. Income from technical, management consulting and other services (12)"
-msgstr ""
-"1.5.6. Техникийн, удирдлагын зөвлөх болон бусад үйлчилгээний орлого (12)"
+msgid "1.5.6. Income from technical, management consulting and other services (12)"
+msgstr "1.5.6. Техникийн, удирдлагын зөвлөх болон бусад үйлчилгээний орлого (12)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line13
-msgid ""
-"1.5.7. Interest and damages received from the person who failed to fulfill "
-"his obligations under the contract compensation income (13)"
-msgstr ""
-"1.5.7. Гэрээгээр хүлээсэн үүргээ биелүүлээгүй этгээдээс авсан хүү, хохирлын "
-"нөхөн төлбөрийн орлого (13)"
+msgid "1.5.7. Interest and damages received from the person who failed to fulfill his obligations under the contract compensation income (13)"
+msgstr "1.5.7. Гэрээгээр хүлээсэн үүргээ биелүүлээгүй этгээдээс авсан хүү, хохирлын нөхөн төлбөрийн орлого (13)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line14
@@ -114,11 +108,8 @@ msgstr "10. Зохицуулагдсан татвар ногдуулах орл�
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line27
-msgid ""
-"11. The amount transferred from the tax loss of the previous year to the "
-"reporting period (27)"
-msgstr ""
-"11. Өмнөх жилийн татварын алдагдлаас тайлант хугацаанд шилжүүлсэн дүн (27)"
+msgid "11. The amount transferred from the tax loss of the previous year to the reporting period (27)"
+msgstr "11. Өмнөх жилийн татварын алдагдлаас тайлант хугацаанд шилжүүлсэн дүн (27)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line28
@@ -142,19 +133,13 @@ msgstr "15. НИЙТЛЭГ ХУВЬ ХЭМЖЭЭГЭЭР ТӨЛБӨЛ ЗОХИХ
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line32
-msgid ""
-"16. Erotic publications, literature, recordings sold, used, "
-"performancesRevenue from services rendered (32)"
-msgstr ""
-"16. Эротик хэвлэл, ном зохиол, бичлэг худалдсан, ашиглуулсан, тоглолт "
-"явуулсан үйлчилгээний орлого (32)"
+msgid "16. Erotic publications, literature, recordings sold, used, performancesRevenue from services rendered (32)"
+msgstr "16. Эротик хэвлэл, ном зохиол, бичлэг худалдсан, ашиглуулсан, тоглолт явуулсан үйлчилгээний орлого (32)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line34
 msgid "17. Income from paid puzzles, gambling games, cash lotteries(34)"
-msgstr ""
-"17.Төлбөрт таавар, бооцоот тоглоом, эд мөнгөний хонжворт сугалааны орлого "
-"(34)"
+msgstr "17.Төлбөрт таавар, бооцоот тоглоом, эд мөнгөний хонжворт сугалааны орлого (34)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line39
@@ -163,12 +148,8 @@ msgstr "18.Хүүгийн орлого (39)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line41
-msgid ""
-"19. Dividends and interest income earned in a foreign country with a double "
-"tax treaty(41)"
-msgstr ""
-"19. Давхар татварын гэрээтэй гадаад улсад олсон ногдол ашиг, хүүгийн орлого "
-"(41)"
+msgid "19. Dividends and interest income earned in a foreign country with a double tax treaty(41)"
+msgstr "19. Давхар татварын гэрээтэй гадаад улсад олсон ногдол ашиг, хүүгийн орлого (41)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line18
@@ -182,12 +163,8 @@ msgstr "20. Гадаад улсад олсон орлого (43)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line45
-msgid ""
-"21. AMOUNT OF OFFICIAL TAX TO BE PAYABLE AT A SPECIAL "
-"RATE(45=33+38+40+42+44)"
-msgstr ""
-"21. ТУСГАЙ ХУВЬ ХЭМЖЭЭГЭЭР ТӨЛБӨЛ ЗОХИХ АЛБАН ТАТВАРЫН ДҮН "
-"(45=33+38+40+42+44) "
+msgid "21. AMOUNT OF OFFICIAL TAX TO BE PAYABLE AT A SPECIAL RATE(45=33+38+40+42+44)"
+msgstr "21. ТУСГАЙ ХУВЬ ХЭМЖЭЭГЭЭР ТӨЛБӨЛ ЗОХИХ АЛБАН ТАТВАРЫН ДҮН (45=33+38+40+42+44) "
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line46
@@ -216,11 +193,8 @@ msgstr "25. Үл хөдлөх эд хөрөнгө борлуулсны орло�
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line54
-msgid ""
-"26. AMOUNT OF OFFICIAL TAX DEDUCTIBLE TO OTHERS ACCORDING TO THE LAW "
-"(54=47+49+51+53)"
-msgstr ""
-"26. ХУУЛИЙН ДАГУУ БУСДАД СУУТГУУЛСАН АЛБАН ТАТВАРЫН ДҮН (54=47+49+51+53)"
+msgid "26. AMOUNT OF OFFICIAL TAX DEDUCTIBLE TO OTHERS ACCORDING TO THE LAW (54=47+49+51+53)"
+msgstr "26. ХУУЛИЙН ДАГУУ БУСДАД СУУТГУУЛСАН АЛБАН ТАТВАРЫН ДҮН (54=47+49+51+53)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line19
@@ -317,19 +291,13 @@ msgstr "Мөнгөн зарлагын дүн (-)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line36
-msgid ""
-"Amounts paid for goods, works and services purchased from the domestic "
-"market ( Amount without VAT) (36)"
-msgstr ""
-"Дотоодын зах зээлээс худалдан авсан бараа, ажил, үйлчилгээнд төлсөн дүн ( "
-"НӨАТ-гүй дүн) (36)"
+msgid "Amounts paid for goods, works and services purchased from the domestic market ( Amount without VAT) (36)"
+msgstr "Дотоодын зах зээлээс худалдан авсан бараа, ажил, үйлчилгээнд төлсөн дүн ( НӨАТ-гүй дүн) (36)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_lineB
-msgid ""
-"B. CALCULATION OF VAT ON GOODS, WORKS AND SERVICES PURCHASED IN THAT MONTH"
-msgstr ""
-"Б. ТУХАЙН САРД ХУДАЛДАН АВСАН БАРАА, АЖИЛ, ҮЙЛЧИЛГЭЭНИЙ НӨАТ-ЫН ТООЦОО"
+msgid "B. CALCULATION OF VAT ON GOODS, WORKS AND SERVICES PURCHASED IN THAT MONTH"
+msgstr "Б. ТУХАЙН САРД ХУДАЛДАН АВСАН БАРАА, АЖИЛ, ҮЙЛЧИЛГЭЭНИЙ НӨАТ-ЫН ТООЦОО"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_lineB
@@ -357,18 +325,13 @@ msgstr "Биологийн хөрөнгө"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line22
-msgid ""
-"Budget funding, subsidies, and incentives provided by the government (22)"
+msgid "Budget funding, subsidies, and incentives provided by the government (22)"
 msgstr "Төрөөс олгож буй төсвийн санхүүжилт, татаас, урамшууллын орлого (22)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line51
-msgid ""
-"Buy financial leases on the domestic market with financial leases.rent paid "
-"on acquisition (51)"
-msgstr ""
-"Санхүүгийн түрээсийг санхүүгийн түрээсээр дотоодын зах зээлээс худалдан "
-"авахад төлсөн түрээсийн төлбөр (51)"
+msgid "Buy financial leases on the domestic market with financial leases.rent paid on acquisition (51)"
+msgstr "Санхүүгийн түрээсийг санхүүгийн түрээсээр дотоодын зах зээлээс худалдан авахад төлсөн түрээсийн төлбөр (51)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.report_line_balanceequity6
@@ -468,12 +431,8 @@ msgstr "Ногдол ашгийн орлого"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line42
-msgid ""
-"Dividends and interest income earned in a foreign country with a double tax "
-"treaty percentage tax (42=41 x contractual percentage)"
-msgstr ""
-"Давхар татварын гэрээтэй гадаад улсад олсон ногдол ашиг, хүүгийн орлогод "
-"ногдох татвар (42=41 x  гэрээнд заасан хувь)"
+msgid "Dividends and interest income earned in a foreign country with a double tax treaty percentage tax (42=41 x contractual percentage)"
+msgstr "Давхар татварын гэрээтэй гадаад улсад олсон ногдол ашиг, хүүгийн орлогод ногдох татвар (42=41 x  гэрээнд заасан хувь)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.report_cashflow_fin_out4
@@ -506,12 +465,8 @@ msgstr ""
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line33
-msgid ""
-"Erotic publications, literature, videos were sold, used, performances were "
-"heldservice income tax (33=32*40%)"
-msgstr ""
-"Эротик хэвлэл, ном зохиол, бичлэг худалдсан, ашиглуулсан, тоглолт явуулсан "
-"үйлчилгээний орлогод ногдуулсан татвар (33=32*40%)"
+msgid "Erotic publications, literature, videos were sold, used, performances were heldservice income tax (33=32*40%)"
+msgstr "Эротик хэвлэл, ном зохиол, бичлэг худалдсан, ашиглуулсан, тоглолт явуулсан үйлчилгээний орлогод ногдуулсан татвар (33=32*40%)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.report_cashflow_ex
@@ -530,12 +485,8 @@ msgstr "Санхүүгийн зардал"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line48
-msgid ""
-"Financial lease items on the domestic market under financial leasesales "
-"revenue (48)"
-msgstr ""
-"Санхүүгийн түрээсийн зүйлийг санхүүгийн түрээсээр дотоодын зах зээлд "
-"борлуулсны орлого (48)"
+msgid "Financial lease items on the domestic market under financial leasesales revenue (48)"
+msgstr "Санхүүгийн түрээсийн зүйлийг санхүүгийн түрээсээр дотоодын зах зээлд борлуулсны орлого (48)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.report_line_balancenca1
@@ -544,12 +495,8 @@ msgstr "Үндсэн хөрөнгө"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line44
-msgid ""
-"For exempted production and services specified in Article 13 of the LawVAT "
-"paid on imported goods and services (44)"
-msgstr ""
-"Хуулийн 13-р зүйлд заасан чөлөөлөгдөх үйлдвэрлэл, үйлчилгээнд зориулж "
-"импортолсон бараа, үйлчилгээнд төлсөн НӨАТ (44)"
+msgid "For exempted production and services specified in Article 13 of the LawVAT paid on imported goods and services (44)"
+msgstr "Хуулийн 13-р зүйлд заасан чөлөөлөгдөх үйлдвэрлэл, үйлчилгээнд зориулж импортолсон бараа, үйлчилгээнд төлсөн НӨАТ (44)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.report_line_balanceequity7
@@ -593,21 +540,13 @@ msgstr "Бараа"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line38
-msgid ""
-"Goods and services purchased from livestock and agricultural producersAmount"
-" without VAT (38)"
-msgstr ""
-"Мал аж ахуй, газар тариалан эрхлэгчээс худалдан авсан бараа, үйлчилгээний "
-"НӨАТ-гүй дүн (38)"
+msgid "Goods and services purchased from livestock and agricultural producersAmount without VAT (38)"
+msgstr "Мал аж ахуй, газар тариалан эрхлэгчээс худалдан авсан бараа, үйлчилгээний НӨАТ-гүй дүн (38)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line34
-msgid ""
-"Goods and works purchased with VAT from BAU purchased in that month, service"
-" amount (34=35+...+38)"
-msgstr ""
-"Тухайн сард худалдан авсан БАҮ-нээс НӨАТ-тай худалдан авсан бараа, ажил, "
-"үйлчилгээний дүн (34=35+...+38)"
+msgid "Goods and works purchased with VAT from BAU purchased in that month, service amount (34=35+...+38)"
+msgstr "Тухайн сард худалдан авсан БАҮ-нээс НӨАТ-тай худалдан авсан бараа, ажил, үйлчилгээний дүн (34=35+...+38)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.report_line_balanceca65
@@ -616,12 +555,8 @@ msgstr "Агентад байгаа бараа"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line45
-msgid ""
-"Goods imported for exploration and pre-exploitation operations, VAT paid on "
-"services (45)"
-msgstr ""
-"Хайгуулын ажил, ашиглалтын өмнөх ажиллагаанд зориулж импортоор авсан бараа, "
-"үйлчилгээнд төлсөн НӨАТ (45)"
+msgid "Goods imported for exploration and pre-exploitation operations, VAT paid on services (45)"
+msgstr "Хайгуулын ажил, ашиглалтын өмнөх ажиллагаанд зориулж импортоор авсан бараа, үйлчилгээнд төлсөн НӨАТ (45)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.report_line_balanceca66
@@ -630,20 +565,13 @@ msgstr "Замд яваа бараа"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line24
-msgid ""
-"Hairdressing, beauty, maintenance, laundry, dry cleaningservice income (24)"
-msgstr ""
-"Үсчин, гоо сайхан, засвар үйлчилгээ, угаалга, хими цэвэрлэгээний "
-"үйлчилгээний орлого (24)"
+msgid "Hairdressing, beauty, maintenance, laundry, dry cleaningservice income (24)"
+msgstr "Үсчин, гоо сайхан, засвар үйлчилгээ, угаалга, хими цэвэрлэгээний үйлчилгээний орлого (24)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line37
-msgid ""
-"Imported goods purchased at the time of registration as a tax payer, amount "
-"without VAT for services (37)"
-msgstr ""
-"Суутган төлөгчөөр бүртгүүлэх үед импортоор худалдан авсан бараа, "
-"үйлчилгээний НӨАТ-гүй дүн (37)"
+msgid "Imported goods purchased at the time of registration as a tax payer, amount without VAT for services (37)"
+msgstr "Суутган төлөгчөөр бүртгүүлэх үед импортоор худалдан авсан бараа, үйлчилгээний НӨАТ-гүй дүн (37)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line11
@@ -657,12 +585,8 @@ msgstr "Өмгөөлөл, хууль зүйн зөвлөлгөө өгөх үйл
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line25
-msgid ""
-"Income from all types of services other than those specified in Article 13 "
-"of the Law(25)"
-msgstr ""
-"Хуулийн 13 дугаар зүйлд зааснаас  бусад бүх төрлийн үйлчилгээний  орлого "
-"(25)"
+msgid "Income from all types of services other than those specified in Article 13 of the Law(25)"
+msgstr "Хуулийн 13 дугаар зүйлд зааснаас  бусад бүх төрлийн үйлчилгээний  орлого (25)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line19
@@ -685,18 +609,12 @@ msgstr "Өрийн төлбөрт шилжүүлсэн  барааны орло�
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line20
-msgid ""
-"Income from interest, fines and penalties received due to the wrongful "
-"actions of others(20)"
-msgstr ""
-"Бусдын буруутай үйл ажиллагааны улмаас авсан хүү, торгууль, алдангийн орлого"
-" (20)"
+msgid "Income from interest, fines and penalties received due to the wrongful actions of others(20)"
+msgstr "Бусдын буруутай үйл ажиллагааны улмаас авсан хүү, торгууль, алдангийн орлого (20)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line12
-msgid ""
-"Income from performing work and providing services calculated for debt "
-"payment (12)"
+msgid "Income from performing work and providing services calculated for debt payment (12)"
 msgstr "Өрийн төлбөрт тооцсон ажил гүйцэтгэх, үйлчилгээ үзүүлсний орлого (12)"
 
 #. module: l10n_mn_reports
@@ -741,10 +659,8 @@ msgstr "НӨАТ ногдох ажил, үйлчилгээний  орлого (
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line26
-msgid ""
-"Income of domestic goods, works and services per VAT for the month (26=4+10)"
-msgstr ""
-"Тухайн сарын НӨАТ ногдох дотоодын бараа, ажил, үйлчилгээний орлого (26=4+10)"
+msgid "Income of domestic goods, works and services per VAT for the month (26=4+10)"
+msgstr "Тухайн сарын НӨАТ ногдох дотоодын бараа, ажил, үйлчилгээний орлого (26=4+10)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.report_profit_root
@@ -783,12 +699,8 @@ msgstr "Зээлийн хүүгийн өглөг"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line17
-msgid ""
-"Inventions, product designs, works subject to copyright, Income from the "
-"transfer, lease or sale of trademarks and know-how (17)"
-msgstr ""
-"Шинэ бүтээл, бүтээгдэхүүний загвар, зохиогчийн эрхэд хамаарах бүтээл, "
-"барааны тэмдэг, ноу-хау шилжүүлсэн, түрээсэлсэн, худалдсаны орлого (17)"
+msgid "Inventions, product designs, works subject to copyright, Income from the transfer, lease or sale of trademarks and know-how (17)"
+msgstr "Шинэ бүтээл, бүтээгдэхүүний загвар, зохиогчийн эрхэд хамаарах бүтээл, барааны тэмдэг, ноу-хау шилжүүлсэн, түрээсэлсэн, худалдсаны орлого (17)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.report_line_balanceca6
@@ -797,12 +709,8 @@ msgstr "Бараа материал"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line46
-msgid ""
-"Irrespective of the taxable goods and services of the reporting periodVAT "
-"paid on imported goods and services (46)"
-msgstr ""
-"Тайлант хугацааны албан татвар ногдох бараа, үйлчилгээтэй хамааралгүйгээр "
-"импортоор авсан бараа, үйлчилгээнд төлсөн НӨАТ (46)"
+msgid "Irrespective of the taxable goods and services of the reporting periodVAT paid on imported goods and services (46)"
+msgstr "Тайлант хугацааны албан татвар ногдох бараа, үйлчилгээтэй хамааралгүйгээр импортоор авсан бараа, үйлчилгээнд төлсөн НӨАТ (46)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.report_line_balancele
@@ -816,11 +724,8 @@ msgstr "Өр төлбөр"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.report_line_balancecliab11
-msgid ""
-"Liabilities related to non-current assets held for sale (assets for sale)"
-msgstr ""
-"Борлуулах зорилгоор эзэмшиж буй эргэлтийн бус хөрөнгө (борлуулах бүлэг "
-"хөрөнгө) - нд хамаарах өр төлбөр"
+msgid "Liabilities related to non-current assets held for sale (assets for sale)"
+msgstr "Борлуулах зорилгоор эзэмшиж буй эргэлтийн бус хөрөнгө (борлуулах бүлэг хөрөнгө) - нд хамаарах өр төлбөр"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.report_cashflow_inv_out5
@@ -845,9 +750,7 @@ msgstr "Урт хугацаат өр төлбөр"
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line18
 msgid "Money lotteries, paid guessing gamesearnings from work (18)"
-msgstr ""
-"Эд мөнгөний хонжворт сугалаа,төлбөрт таавар бооцоот тоглоомын үйл "
-"ажиллагааны орлого (18)"
+msgstr "Эд мөнгөний хонжворт сугалаа,төлбөрт таавар бооцоот тоглоомын үйл ажиллагааны орлого (18)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.report_cashflow_fin_out1
@@ -872,9 +775,7 @@ msgstr "Эргэлтийн бус хөрөнгө"
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.report_line_balanceca9
 msgid "Non-current assets held for sale (sale group property)"
-msgstr ""
-"Борлуулах зорилгоор эзэмшиж буй эргэлтийн бус хөрөнгө (борлуулах бүлэг "
-"хөрөнгө)"
+msgstr "Борлуулах зорилгоор эзэмшиж буй эргэлтийн бус хөрөнгө (борлуулах бүлэг хөрөнгө)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.account_financial_report_mn_off_sheet
@@ -978,20 +879,13 @@ msgstr "Түлш шатахуун, тээврийн хөлс, сэлбэг хэ�
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line42
-msgid ""
-"Paid for goods and services received for personal or employee useVAT (42)"
-msgstr ""
-"Хувьдаа болон ажиллагсдын хэрэгцээнд зориулж авсан бараа, үйлчилгээнд төлсөн"
-" НӨАТ (42)"
+msgid "Paid for goods and services received for personal or employee useVAT (42)"
+msgstr "Хувьдаа болон ажиллагсдын хэрэгцээнд зориулж авсан бараа, үйлчилгээнд төлсөн НӨАТ (42)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line43
-msgid ""
-"Paid for imported goods and services for the preparation of fixed assetsVAT "
-"(43)"
-msgstr ""
-"Үндсэн хөрөнгө бэлтгэхэд зориулж импортоор авсан бараа, үйлчилгээнд төлсөн  "
-"НӨАТ (43)"
+msgid "Paid for imported goods and services for the preparation of fixed assetsVAT (43)"
+msgstr "Үндсэн хөрөнгө бэлтгэхэд зориулж импортоор авсан бараа, үйлчилгээнд төлсөн  НӨАТ (43)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.report_cashflow_oper_out8
@@ -1145,21 +1039,13 @@ msgstr "Хувьцаа болон өмчийн бусад үнэт цаас га
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line52
-msgid ""
-"Regardless of the taxable goods and services of the reporting periodVAT paid"
-" on imported goods and services (52)"
-msgstr ""
-"Тайлант хугацааны албан татвар ногдох бараа, үйлчилгээнд хамааралгүйгээр "
-"импортоор авсан бараа, үйлчилгээнд төлсөн НӨАТ (52)"
+msgid "Regardless of the taxable goods and services of the reporting periodVAT paid on imported goods and services (52)"
+msgstr "Тайлант хугацааны албан татвар ногдох бараа, үйлчилгээнд хамааралгүйгээр импортоор авсан бараа, үйлчилгээнд төлсөн НӨАТ (52)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line16
-msgid ""
-"Rental and possession and use of immovable and movable propertyservice "
-"income (16)"
-msgstr ""
-"Үл хөдлөх, хөдлөх эд хөрөнгө түрээслүүлэх ба эзэмшүүлэх ашиглуулах "
-"үйлчилгээий орлого (16)"
+msgid "Rental and possession and use of immovable and movable propertyservice income (16)"
+msgstr "Үл хөдлөх, хөдлөх эд хөрөнгө түрээслүүлэх ба эзэмшүүлэх ашиглуулах үйлчилгээий орлого (16)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.report_line_income_loan
@@ -1168,11 +1054,8 @@ msgstr "Түрээсийн орлого"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line15
-msgid ""
-"Renting, owning and using hotels and similar premisesservice income (15)"
-msgstr ""
-"Зочид буудал ба түүнтэй адилтгах байр түрээслүүлэх, эзэмшүүлэх, ашиглуулах "
-"үйлчилгээний орлого (15)"
+msgid "Renting, owning and using hotels and similar premisesservice income (15)"
+msgstr "Зочид буудал ба түүнтэй адилтгах байр түрээслүүлэх, эзэмшүүлэх, ашиглуулах үйлчилгээний орлого (15)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.report_cashflow_inv_in5
@@ -1211,11 +1094,8 @@ msgstr "Эрх борлуулсны орлого (7)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line30
-msgid ""
-"Revenue of export goods, works and services per VAT for the month(30=28+29)"
-msgstr ""
-"Тухайн сарын НӨАТ ногдох экспортын бараа, ажил, үйлчилгээний орлого "
-"(30=28+29)"
+msgid "Revenue of export goods, works and services per VAT for the month(30=28+29)"
+msgstr "Тухайн сарын НӨАТ ногдох экспортын бараа, ажил, үйлчилгээний орлого (30=28+29)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.report_line_income_loyalty
@@ -1240,9 +1120,7 @@ msgstr "Борлуулалтын орлогын буцаалт, хөнгөлөл
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line14
 msgid "Services for leasing, owning and using goods in other formsincome (14)"
-msgstr ""
-"Бараа түрээслүүлэх, бусад хэлбэрээр эзэмшүүлэх, ашиглуулах үйлчилгээний "
-"орлого (14)"
+msgstr "Бараа түрээслүүлэх, бусад хэлбэрээр эзэмшүүлэх, ашиглуулах үйлчилгээний орлого (14)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.report_line_balancecliab5
@@ -1351,12 +1229,8 @@ msgstr "Тухайн сард худалдан авсан бараа, ажил �
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line3
-msgid ""
-"Total goods, works and services subject to value added taxsales revenue "
-"(3=4+10+30)"
-msgstr ""
-"Нэмэгдсэн өртгийн албан татвар ногдох бараа, ажил, үйлчилгээний нийт "
-"борлуулалтын орлого (3=4+10+30)"
+msgid "Total goods, works and services subject to value added taxsales revenue (3=4+10+30)"
+msgstr "Нэмэгдсэн өртгийн албан татвар ногдох бараа, ажил, үйлчилгээний нийт борлуулалтын орлого (3=4+10+30)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.report_line_gross_profit
@@ -1376,8 +1250,7 @@ msgstr "В. Хуулийн дагуу бусдад суутгуулсан тат
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_lineC
 msgid "V. VAT CALCULATION FOR FINANCIAL LEASE AND FINANCING DEALINGS"
-msgstr ""
-"В. САНХҮҮГИЙН ТҮРЭЭС БОЛОН САНХҮҮЖИЛТИЙН ХЭЛЭЛЦЭЭРИЙН ЗҮЙЛИЙН НӨАТ-ЫН ТООЦОО"
+msgstr "В. САНХҮҮГИЙН ТҮРЭЭС БОЛОН САНХҮҮЖИЛТИЙН ХЭЛЭЛЦЭЭРИЙН ЗҮЙЛИЙН НӨАТ-ЫН ТООЦОО"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line63
@@ -1412,8 +1285,7 @@ msgstr "Тухайн сард буцаан авах НӨАТ (50=47+53)"
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line2
 msgid "VAT-exempt sales for the month specified in Article 13 of the Law (2)"
-msgstr ""
-"Хуулийн 13-р зүйлд заасан тухайн сарын НӨАТ-аас чөлөөлөгдөх борлуулалт (2)"
+msgstr "Хуулийн 13-р зүйлд заасан тухайн сарын НӨАТ-аас чөлөөлөгдөх борлуулалт (2)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line36
@@ -1432,11 +1304,8 @@ msgstr "Ногдол ашгийн орлогод суутгуулсан татв
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line44
-msgid ""
-"Withholding tax on income earned in foreign countries (44=43 * percentage "
-"prescribed by law)"
-msgstr ""
-"Гадаад улсад олсон орлогод суутгасан татвар (44=43 * хуульд заасан хувь)"
+msgid "Withholding tax on income earned in foreign countries (44=43 * percentage prescribed by law)"
+msgstr "Гадаад улсад олсон орлогод суутгасан татвар (44=43 * хуульд заасан хувь)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.tax_report_line49
@@ -1450,18 +1319,10 @@ msgstr "Дуусаагүй үйлдвэрлэл"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line40
-msgid ""
-"· Amount of non-deductible VAT paid on purchased goods, works and "
-"services(40=41+...+46)"
-msgstr ""
-"· Худалдан авсан бараа, ажил, үйлчилгээнд төлсөн хасагдахгүй  НӨАТ-ын  дүн "
-"(40=41+...+46)"
+msgid "· Amount of non-deductible VAT paid on purchased goods, works and services(40=41+...+46)"
+msgstr "· Худалдан авсан бараа, ажил, үйлчилгээнд төлсөн хасагдахгүй  НӨАТ-ын  дүн (40=41+...+46)"
 
 #. module: l10n_mn_reports
 #: model:account.report.line,name:l10n_mn_reports.vat_report_line39
-msgid ""
-"· Total amount of VAT paid on purchased goods, works and services "
-"(39=34*10%)"
-msgstr ""
-"· Худалдан авсан бараа, ажил, үйлчилгээнд төлсөн  НӨАТ-ын  нийт дүн "
-"(39=34*10%)"
+msgid "· Total amount of VAT paid on purchased goods, works and services (39=34*10%)"
+msgstr "· Худалдан авсан бараа, ажил, үйлчилгээнд төлсөн  НӨАТ-ын  нийт дүн (39=34*10%)"

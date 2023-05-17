@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-03 11:56+0000\n"
+"POT-Creation-Date: 2023-01-03 09:25+0000\n"
 "PO-Revision-Date: 2023-01-03 11:56+0000\n"
 "Last-Translator: \n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
@@ -88,9 +88,7 @@ msgstr ""
 
 #. module: l10n_be_hr_contract_salary
 #: model:ir.model.fields,help:l10n_be_hr_contract_salary.field_generate_simulation_link__car_id
-msgid ""
-"Default employee's company car. If left empty, the default value will be the"
-" employee's current car."
+msgid "Default employee's company car. If left empty, the default value will be the employee's current car."
 msgstr ""
 
 #. module: l10n_be_hr_contract_salary
@@ -215,9 +213,7 @@ msgstr ""
 
 #. module: l10n_be_hr_contract_salary
 #: model:ir.model.fields,help:l10n_be_hr_contract_salary.field_hr_job__l10n_be_contract_withholding_taxes_exemption
-msgid ""
-"If checked, the job position will grant a withholding taxes exemption to "
-"eligible employees"
+msgid "If checked, the job position will grant a withholding taxes exemption to eligible employees"
 msgstr ""
 
 #. module: l10n_be_hr_contract_salary
@@ -408,9 +404,7 @@ msgstr "单身"
 #. odoo-python
 #: code:addons/l10n_be_hr_contract_salary/controllers/main.py:0
 #, python-format
-msgid ""
-"Sorry, the selected car has been selected by someone else. Please refresh "
-"and try again."
+msgid "Sorry, the selected car has been selected by someone else. Please refresh and try again."
 msgstr ""
 
 #. module: l10n_be_hr_contract_salary
@@ -430,18 +424,14 @@ msgstr "配偶就业情况"
 
 #. module: l10n_be_hr_contract_salary
 #: model:ir.model.fields,help:l10n_be_hr_contract_salary.field_generate_simulation_link__new_car
-msgid ""
-"The employee will be able to choose a new car even if the maximum number of "
-"used cars available is reached."
+msgid "The employee will be able to choose a new car even if the maximum number of used cars available is reached."
 msgstr ""
 
 #. module: l10n_be_hr_contract_salary
 #. odoo-python
 #: code:addons/l10n_be_hr_contract_salary/controllers/main.py:0
 #, python-format
-msgid ""
-"This contract is a full time credit time... No simulation can be done for "
-"this type of contract as its wage is equal to 0."
+msgid "This contract is a full time credit time... No simulation can be done for this type of contract as its wage is equal to 0."
 msgstr ""
 
 #. module: l10n_be_hr_contract_salary
@@ -498,7 +488,6 @@ msgstr "是"
 
 #. module: l10n_be_hr_contract_salary
 #. odoo-python
-#: code:addons/l10n_be_hr_contract_salary/controllers/main.py:0
 #: code:addons/l10n_be_hr_contract_salary/controllers/main.py:0
 #, python-format
 msgid "• Available in %s"

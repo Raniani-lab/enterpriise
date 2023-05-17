@@ -1,7 +1,7 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # * website_sale_account_taxcloud
-# 
+#
 # Translators:
 # Ryanto The <ry.the77@gmail.com>, 2017
 msgid ""
@@ -20,28 +20,8 @@ msgstr ""
 
 #. module: website_sale_account_taxcloud
 #: model:ir.ui.view,arch_db:website_sale_account_taxcloud.res_config_settings_view_form_inherit_website_taxcloud
-msgid "<i class=\"fa fa-fw fa-arrow-right\"/>Create Account &amp; Get Credentials"
-msgstr ""
-
-#. module: website_sale_account_taxcloud
-#: model:ir.ui.view,arch_db:website_sale_account_taxcloud.res_config_settings_view_form_inherit_website_taxcloud
-msgid "API ID"
-msgstr ""
-
-#. module: website_sale_account_taxcloud
-#: model:ir.ui.view,arch_db:website_sale_account_taxcloud.res_config_settings_view_form_inherit_website_taxcloud
-msgid "API KEY"
-msgstr ""
-
-#. module: website_sale_account_taxcloud
-#: model:ir.ui.view,arch_db:website_sale_account_taxcloud.res_config_settings_view_form_inherit_website_taxcloud
 msgid "Compute tax rates based on U.S. ZIP codes"
 msgstr "Hitung pajak berdasarkan kode ZIP AS"
-
-#. module: website_sale_account_taxcloud
-#: model:ir.ui.view,arch_db:website_sale_account_taxcloud.res_config_settings_view_form_inherit_website_taxcloud
-msgid "Default Category"
-msgstr ""
 
 #. module: website_sale_account_taxcloud
 #: model:ir.ui.view,arch_db:website_sale_account_taxcloud.res_config_settings_view_form_inherit_website_taxcloud

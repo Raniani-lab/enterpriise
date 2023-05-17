@@ -22,14 +22,12 @@ msgstr ""
 msgid ""
 "\n"
 "            Status of sending the DTE to the partner:\n"
-"            - Not sent: the DTE has not been sent to the partner but it has "
-"sent to SII.\n"
+"            - Not sent: the DTE has not been sent to the partner but it has sent to SII.\n"
 "            - Sent: The DTE has been sent to the partner."
 msgstr ""
 "\n"
 "            Estado de envío del DTE al cliente:\n"
-"            - No enviado: El DTE no ha sido enviado al cliente poro ha sido "
-"enviado al SII.\n"
+"            - No enviado: El DTE no ha sido enviado al cliente poro ha sido enviado al SII.\n"
 "            - Enviado: El DTE ha sido enviado al cliente."
 
 #. module: l10n_cl_edi_stock
@@ -101,8 +99,7 @@ msgstr "9. Ventas de exportación"
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi_stock.custom_header
 msgid ""
 "<br/>\n"
-"                                                    <span style=\"line-"
-"height: 180%;\">RUT:</span>"
+"                                                    <span style=\"line-height: 180%;\">RUT:</span>"
 msgstr ""
 
 #. module: l10n_cl_edi_stock
@@ -150,49 +147,35 @@ msgstr ""
 #: model:mail.template,body_html:l10n_cl_edi_stock.l10n_cl_edi_email_template_picking
 msgid ""
 "<div style=\"margin: 0px; padding: 0px;\">\n"
-"                    <p style=\"margin: 0px; padding: 0px; font-size: 13px;"
-"\">\n"
+"                    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
 "                        Dear\n"
-"                        <t t-if=\"object.partner_id.commercial_partner_id"
-"\">\n"
-"                            <t t-out=\"object.partner_id.name or "
-"''\">Brandon Freeman</t> (<t t-out=\"object.partner_id.commercial_partner_id."
-"name or ''\">Brandon Freeman</t>),\n"
+"                        <t t-if=\"object.partner_id.commercial_partner_id\">\n"
+"                            <t t-out=\"object.partner_id.name or ''\">Brandon Freeman</t> (<t t-out=\"object.partner_id.commercial_partner_id.name or ''\">Brandon Freeman</t>),\n"
 "                        </t>\n"
 "                        <t t-else=\"\">\n"
-"                            <t t-out=\"object.partner_id.name or "
-"''\">Brandon Freeman</t>,\n"
+"                            <t t-out=\"object.partner_id.name or ''\">Brandon Freeman</t>,\n"
 "                        </t>\n"
 "                        <br/><br/>\n"
-"                        Here is your delivery guide <strong t-out=\"object."
-"l10n_latam_document_number or ''\">GDE 000008</strong>\n"
+"                        Here is your delivery guide <strong t-out=\"object.l10n_latam_document_number or ''\">GDE 000008</strong>\n"
 "                        <br/><br/>\n"
-"                        Do not hesitate to contact us if you have any "
-"questions.\n"
+"                        Do not hesitate to contact us if you have any questions.\n"
 "                    </p>\n"
 "                </div>\n"
 "            "
 msgstr ""
 "<div style=\"margin: 0px; padding: 0px;\">\n"
-"                    <p style=\"margin: 0px; padding: 0px; font-size: 13px;"
-"\">\n"
+"                    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
 "                        Estimado\n"
-"                        <t t-if=\"object.partner_id.commercial_partner_id"
-"\">\n"
-"                            <t t-out=\"object.partner_id.name or "
-"''\"></t> (<t t-out=\"object.partner_id.commercial_partner_id."
-"name or ''\"></t>),\n"
+"                        <t t-if=\"object.partner_id.commercial_partner_id\">\n"
+"                            <t t-out=\"object.partner_id.name or ''\"></t> (<t t-out=\"object.partner_id.commercial_partner_id.name or ''\"></t>),\n"
 "                        </t>\n"
 "                        <t t-else=\"\">\n"
-"                            <t t-out=\"object.partner_id.name or "
-"''\"></t>,\n"
+"                            <t t-out=\"object.partner_id.name or ''\"></t>,\n"
 "                        </t>\n"
 "                        <br/><br/>\n"
-"                        Aquí está su Guía de despacho <strong t-out=\"object."
-"l10n_latam_document_number or ''\"></strong>\n"
+"                        Aquí está su Guía de despacho <strong t-out=\"object.l10n_latam_document_number or ''\"></strong>\n"
 "                        <br/><br/>\n"
-"                        No dude en contactarnos si tiene cualquier "
-"consulta.\n"
+"                        No dude en contactarnos si tiene cualquier consulta.\n"
 "                    </p>\n"
 "                </div>\n"
 "            "
@@ -314,15 +297,8 @@ msgstr "Aceptado con Reparos"
 
 #. module: l10n_cl_edi_stock
 #: model:ir.model.fields,help:l10n_cl_edi_stock.field_l10n_latam_document_type__internal_type
-msgid ""
-"Analog to odoo account.move.move_type but with more options allowing to "
-"identify the kind of document we are working with. (not only related to "
-"account.move, could be for documents of other models like stock.picking)"
-msgstr ""
-"Análogo a odoo account.move.move_type pero con más opciones permitiendo "
-"identificar el tipo de documento con el que realizamos la búsqueda. (No solo "
-"relacionado a account.move, podría ser para documentos de otros modelos como "
-"por ejemplo stock.picking)"
+msgid "Analog to odoo account.move.move_type but with more options allowing to identify the kind of document we are working with. (not only related to account.move, could be for documents of other models like stock.picking)"
+msgstr "Análogo a odoo account.move.move_type pero con más opciones permitiendo identificar el tipo de documento con el que realizamos la búsqueda. (No solo relacionado a account.move, podría ser para documentos de otros modelos como por ejemplo stock.picking)"
 
 #. module: l10n_cl_edi_stock
 #: model:ir.model.fields.selection,name:l10n_cl_edi_stock.selection__stock_picking__l10n_cl_dte_status__ask_for_status
@@ -338,12 +314,8 @@ msgstr "Consultado el estado del DTE con la siguiente respuesta:"
 #. module: l10n_cl_edi_stock
 #: code:addons/l10n_cl_edi_stock/models/stock_picking.py:0
 #, python-format
-msgid ""
-"CAF file for the document type %s not found. Please, upload a caf file "
-"before to create the delivery guide"
-msgstr ""
-"El archivo CAF para el tipo de documento %s no se encuentra. Por favor, suba "
-"un archivo CAF antes de crear una guía de despacho"
+msgid "CAF file for the document type %s not found. Please, upload a caf file before to create the delivery guide"
+msgstr "El archivo CAF para el tipo de documento %s no se encuentra. Por favor, suba un archivo CAF antes de crear una guía de despacho"
 
 #. module: l10n_cl_edi_stock
 #: model:ir.actions.act_window,name:l10n_cl_edi_stock.action_stock_l10n_cl_dte_caf
@@ -563,17 +535,13 @@ msgstr "Pendiente de ser enviado"
 #: code:addons/l10n_cl_edi_stock/models/stock_picking.py:0
 #, python-format
 msgid "Please set a Delivery Address as the delivery guide needs one."
-msgstr ""
-"Por favor, fije una dirección de envío, porque la guía de despacho requiere "
-"una."
+msgstr "Por favor, fije una dirección de envío, porque la guía de despacho requiere una."
 
 #. module: l10n_cl_edi_stock
 #: code:addons/l10n_cl_edi_stock/models/stock_picking.py:0
 #, python-format
 msgid "Please, configure the Delivery Guide Price in the partner."
-msgstr ""
-"Por favor, configure el tipo de precio que va a usar en la guía de despacho "
-"en la ficha del cliente."
+msgstr "Por favor, configure el tipo de precio que va a usar en la guía de despacho en la ficha del cliente."
 
 #. module: l10n_cl_edi_stock
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi_stock.view_picking_edi_form
@@ -623,35 +591,26 @@ msgstr "Enviado"
 
 #. module: l10n_cl_edi_stock
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi_stock.view_picking_edi_form
-msgid ""
-"Sequence not found for delivery guide. Please, set the first number into "
-"Delivery Guide Number field"
-msgstr ""
-"No se encontró una secuencia para la guía de despacho. Por favor, establezca "
-"el primer número dentro del campo número para la guía de despacho"
+msgid "Sequence not found for delivery guide. Please, set the first number into Delivery Guide Number field"
+msgstr "No se encontró una secuencia para la guía de despacho. Por favor, establezca el primer número dentro del campo número para la guía de despacho"
 
 #. module: l10n_cl_edi_stock
 #: model:ir.model.fields,help:l10n_cl_edi_stock.field_stock_picking__l10n_cl_dte_status
 msgid ""
 "Status of sending the DTE to the SII:\n"
-"            - Not sent: the DTE has not been sent to SII but it has "
-"created.\n"
+"            - Not sent: the DTE has not been sent to SII but it has created.\n"
 "            - Ask For Status: The DTE is asking for its status to the SII.\n"
 "            - Accepted: The DTE has been accepted by SII.\n"
-"            - Accepted With Objections: The DTE has been accepted with "
-"objections by SII.\n"
+"            - Accepted With Objections: The DTE has been accepted with objections by SII.\n"
 "            - Rejected: The DTE has been rejected by SII.\n"
 "            - Cancelled: The DTE has been deleted by the user.\n"
-"            - Manual: The DTE is sent manually, i.e.: the DTE will not be "
-"sending manually."
+"            - Manual: The DTE is sent manually, i.e.: the DTE will not be sending manually."
 msgstr ""
 "Estados de envío del DTE en el SII:\n"
-"            - Not enviado: el DTE no ha sido enviado al SII pero fue "
-"creado.\n"
+"            - Not enviado: el DTE no ha sido enviado al SII pero fue creado.\n"
 "            - Consultar Estado: Odoo está consultando su estado en el SII.\n"
 "            - Aceptado: El DTE ha sido aceptado por el SII.\n"
-"            - Aceptado con reparos: The DTE has sido aceptado con reparos "
-"por el SII.\n"
+"            - Aceptado con reparos: The DTE has sido aceptado con reparos por el SII.\n"
 "            - Rechazado: El DTE ha sido rechazado por el SII.\n"
 "            - Anulado: El DTE ha sido eliminado por el usuario.\n"
 "            - Manual: El DTE no se enviará al SII."
@@ -669,84 +628,43 @@ msgstr "Sistema Bloqueado"
 
 #. module: l10n_cl_edi_stock
 #: model:ir.model.fields,help:l10n_cl_edi_stock.field_stock_picking__l10n_cl_draft_status
-msgid ""
-"Technical field making it possible to have a draft status for entering the "
-"starting number for the guia in this company.  "
-msgstr ""
-"Campo técnico que hace posible tener un estado en borrador para ingresar el "
-"número inicial para la guía de despacho en la actual compañía. "
+msgid "Technical field making it possible to have a draft status for entering the starting number for the guia in this company.  "
+msgstr "Campo técnico que hace posible tener un estado en borrador para ingresar el número inicial para la guía de despacho en la actual compañía. "
 
 #. module: l10n_cl_edi_stock
 #: code:addons/l10n_cl_edi_stock/models/stock_picking.py:0
 #, python-format
-msgid ""
-"There are no activity codes configured in your company. This is mandatory "
-"for electronic delivery guide. Please go to your company and set the correct "
-"activity codes (www.sii.cl - Mi SII)"
-msgstr ""
-"No hay códigos de actividad configurados en su compañía. Esto es requerido "
-"para las guías de despacho electrónicas. Por favor, vaya a la ficha de su "
-"compañía y establezca los códigos de actividad (www.sii.cl - Mi SII)"
+msgid "There are no activity codes configured in your company. This is mandatory for electronic delivery guide. Please go to your company and set the correct activity codes (www.sii.cl - Mi SII)"
+msgstr "No hay códigos de actividad configurados en su compañía. Esto es requerido para las guías de despacho electrónicas. Por favor, vaya a la ficha de su compañía y establezca los códigos de actividad (www.sii.cl - Mi SII)"
 
 #. module: l10n_cl_edi_stock
 #: code:addons/l10n_cl_edi_stock/models/stock_picking.py:0
 #, python-format
-msgid ""
-"There is no SII Regional Office configured in your company. This is "
-"mandatory for electronic delivery guide. Please go to your company and set "
-"the regional office, according to your company address (www.sii.cl - Mi SII)"
-msgstr ""
-"No hay Oficina Regional del SII configurada en su compañía. Esto es "
-"requerido para las guías de despacho electrónicas. Por favor vaya a la ficha "
-"de su compañía y establezca una oficina regional, de acuerdo al domicilio de "
-"su compañía (www.sii.cl - Mi SII)"
+msgid "There is no SII Regional Office configured in your company. This is mandatory for electronic delivery guide. Please go to your company and set the regional office, according to your company address (www.sii.cl - Mi SII)"
+msgstr "No hay Oficina Regional del SII configurada en su compañía. Esto es requerido para las guías de despacho electrónicas. Por favor vaya a la ficha de su compañía y establezca una oficina regional, de acuerdo al domicilio de su compañía (www.sii.cl - Mi SII)"
 
 #. module: l10n_cl_edi_stock
 #: code:addons/l10n_cl_edi_stock/models/stock_picking.py:0
 #, python-format
-msgid ""
-"There is no address configured in your customer record. This is mandatory "
-"for electronic delivery guide for this type of document. Please go to the "
-"partner record and set the address"
-msgstr ""
-"No hay domicilio configurado en el registro de su cliente. Esto es requerido "
-"para las guías de despacho. Por favor vaya al registro del cliente y "
-"establezca la dirección"
+msgid "There is no address configured in your customer record. This is mandatory for electronic delivery guide for this type of document. Please go to the partner record and set the address"
+msgstr "No hay domicilio configurado en el registro de su cliente. Esto es requerido para las guías de despacho. Por favor vaya al registro del cliente y establezca la dirección"
 
 #. module: l10n_cl_edi_stock
 #: code:addons/l10n_cl_edi_stock/models/stock_picking.py:0
 #, python-format
-msgid ""
-"There is no city configured in your partner company. This is mandatory for "
-"electronicdelivery guide. Please go to your partner company and set the city."
-msgstr ""
-"No hay ciudad configurada en el registro de su cliente. Esto es requerido "
-"para las guías de despacho. Por favor vaya al registro del cliente y "
-"establezca la ciudad."
+msgid "There is no city configured in your partner company. This is mandatory for electronicdelivery guide. Please go to your partner company and set the city."
+msgstr "No hay ciudad configurada en el registro de su cliente. Esto es requerido para las guías de despacho. Por favor vaya al registro del cliente y establezca la ciudad."
 
 #. module: l10n_cl_edi_stock
 #: code:addons/l10n_cl_edi_stock/models/stock_picking.py:0
 #, python-format
-msgid ""
-"There is not an activity description configured in the customer record. This "
-"is mandatory for electronic delivery guide for this type of document. Please "
-"go to the partner record and set the activity description"
-msgstr ""
-"No hay descripción de la actividad económica (giro) del su cliente "
-"configurada en su registro. Esto es requerido para las guías de despacho. "
-"Por favor vaya al registro del cliente y establezca la descripción de la "
-"actividad económica (giro)"
+msgid "There is not an activity description configured in the customer record. This is mandatory for electronic delivery guide for this type of document. Please go to the partner record and set the activity description"
+msgstr "No hay descripción de la actividad económica (giro) del su cliente configurada en su registro. Esto es requerido para las guías de despacho. Por favor vaya al registro del cliente y establezca la descripción de la actividad económica (giro)"
 
 #. module: l10n_cl_edi_stock
 #: model:ir.model.fields,help:l10n_cl_edi_stock.field_stock_picking__l10n_cl_sii_barcode
-msgid ""
-"This XML contains the portion of the DTE XML that should be coded in PDF417 "
-"and printed in the invoice barcode should be present in the printed invoice "
-"report to be valid"
-msgstr ""
-"Este XML contiene la porción del DTE que debería ser codificada en PDF417 e "
-"impresa. Este código de barras debe estar presente en el reporte de guía  de "
-"despacho para que la misma sea válida"
+msgid "This XML contains the portion of the DTE XML that should be coded in PDF417 and printed in the invoice barcode should be present in the printed invoice report to be valid"
+msgstr "Este XML contiene la porción del DTE que debería ser codificada en PDF417 e impresa. Este código de barras debe estar presente en el reporte de guía  de despacho para que la misma sea válida"
 
 #. module: l10n_cl_edi_stock
 #: code:addons/l10n_cl_edi_stock/models/stock_picking.py:0
@@ -785,14 +703,8 @@ msgstr "Ud. debería tener un número de documento único dentro de la compañí
 #. module: l10n_cl_edi_stock
 #: code:addons/l10n_cl_edi_stock/models/stock_picking.py:0
 #, python-format
-msgid ""
-"Your company has not an activity description configured. This is mandatory "
-"for electronic delivery guide. Please go to your company and set the correct "
-"one (www.sii.cl - Mi SII)"
-msgstr ""
-"Su compañía no tiene una descripción de actividad económica configurada "
-"(giro). Esto es requerido para emitir guías de despacho. Por favor vaya a la "
-"compañía y establezca el valor correcto (www.sii.cl - Mi SII)"
+msgid "Your company has not an activity description configured. This is mandatory for electronic delivery guide. Please go to your company and set the correct one (www.sii.cl - Mi SII)"
+msgstr "Su compañía no tiene una descripción de actividad económica configurada (giro). Esto es requerido para emitir guías de despacho. Por favor vaya a la compañía y establezca el valor correcto (www.sii.cl - Mi SII)"
 
 #. module: l10n_cl_edi_stock
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi_stock.barcode_stamp_footer
@@ -823,22 +735,3 @@ msgstr "⇒ Establecer a Borrador"
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi_stock.view_picking_edi_form
 msgid "⇒ Verify on SII"
 msgstr "⇒ Verificar en SII"
-
-#~ msgid "Country Code"
-#~ msgstr "Código de país"
-
-#~ msgid "Display Name"
-#~ msgstr "Nombre mostrado"
-
-#~ msgid "ID"
-#~ msgstr "ID"
-
-#~ msgid "Last Modified on"
-#~ msgstr "Ultima modificación"
-
-#~ msgid ""
-#~ "The ISO country code in two chars. \n"
-#~ "You can use this field for quick search."
-#~ msgstr ""
-#~ "El código ISO de país en dos caracteres. \n"
-#~ "Este valor puede ser usado para búsqueda rápida."

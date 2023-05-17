@@ -34,18 +34,6 @@ msgid "(03) Preferential Tax Regime"
 msgstr "(03) Régimen Tributario Preferencial"
 
 #. module: l10n_ec_edi
-#. odoo-python
-#: code:addons/l10n_ec_edi/models/account_move.py:0
-#, python-format
-msgid "(base: %s) "
-msgstr ""
-
-#. module: l10n_ec_edi
-#: model:ir.actions.report,print_report_name:l10n_ec_edi.l10n_ec_edi_withhold
-msgid "(object._get_report_base_filename())"
-msgstr ""
-
-#. module: l10n_ec_edi
 #: model:ir.actions.server,name:l10n_ec_edi.l10n_ec_edi_sri_ir_cron_load_xsd_files_ir_actions_server
 msgid "0. Cron Job - Load XSD Files (SRI)"
 msgstr "0. Cron Job - Cargar archivos XSD (SRI)"
@@ -59,22 +47,14 @@ msgstr "00 Casos especiales cuyo soporte no aplica a las opciones anteriores"
 #. module: l10n_ec_edi
 #: model:ir.model.fields.selection,name:l10n_ec_edi.selection__account_move_line__l10n_ec_code_taxsupport__01
 #: model:ir.model.fields.selection,name:l10n_ec_edi.selection__l10n_ec_wizard_account_withhold_line__taxsupport_code__01
-msgid ""
-"01 Tax credit for VAT declaration (services and goods other than inventories"
-" and fixed assets)"
-msgstr ""
-"01 Crédito fiscal por declaración de IVA (servicios y bienes distintos de "
-"existencias y activos fijos)"
+msgid "01 Tax credit for VAT declaration (services and goods other than inventories and fixed assets)"
+msgstr "01 Crédito fiscal por declaración de IVA (servicios y bienes distintos de existencias y activos fijos)"
 
 #. module: l10n_ec_edi
 #: model:ir.model.fields.selection,name:l10n_ec_edi.selection__account_move_line__l10n_ec_code_taxsupport__02
 #: model:ir.model.fields.selection,name:l10n_ec_edi.selection__l10n_ec_wizard_account_withhold_line__taxsupport_code__02
-msgid ""
-"02 Cost or Expense for IR declaration (services and goods other than "
-"inventories and fixed assets)"
-msgstr ""
-"02 Costo o Gasto por declaración IR (servicios y bienes distintos de "
-"inventarios y activos fijos)"
+msgid "02 Cost or Expense for IR declaration (services and goods other than inventories and fixed assets)"
+msgstr "02 Costo o Gasto por declaración IR (servicios y bienes distintos de inventarios y activos fijos)"
 
 #. module: l10n_ec_edi
 #: model:ir.model.fields.selection,name:l10n_ec_edi.selection__account_move_line__l10n_ec_code_taxsupport__03
@@ -91,12 +71,8 @@ msgstr "04 Activo Fijo - Costo o Gasto por declaración IR"
 #. module: l10n_ec_edi
 #: model:ir.model.fields.selection,name:l10n_ec_edi.selection__account_move_line__l10n_ec_code_taxsupport__05
 #: model:ir.model.fields.selection,name:l10n_ec_edi.selection__l10n_ec_wizard_account_withhold_line__taxsupport_code__05
-msgid ""
-"05 Settlement of travel, lodging and food expenses IR expenses (on behalf of"
-" employees and not of the company)"
-msgstr ""
-"05 Liquidación de gastos de viaje, alojamiento y alimentación Gastos IR (por"
-" cuenta de los empleados y no de la empresa)"
+msgid "05 Settlement of travel, lodging and food expenses IR expenses (on behalf of employees and not of the company)"
+msgstr "05 Liquidación de gastos de viaje, alojamiento y alimentación Gastos IR (por cuenta de los empleados y no de la empresa)"
 
 #. module: l10n_ec_edi
 #: model:ir.model.fields.selection,name:l10n_ec_edi.selection__account_move_line__l10n_ec_code_taxsupport__06
@@ -131,10 +107,8 @@ msgstr "10 Distribución de Dividendos, Beneficios o Utilidades"
 #. module: l10n_ec_edi
 #: model:ir.model.fields.selection,name:l10n_ec_edi.selection__account_move_line__l10n_ec_code_taxsupport__15
 #: model:ir.model.fields.selection,name:l10n_ec_edi.selection__l10n_ec_wizard_account_withhold_line__taxsupport_code__15
-msgid ""
-"15 Payments made for own and third-party consumption of digital services"
-msgstr ""
-"15 Pagos realizados por consumo propio y de terceros de servicios digitales"
+msgid "15 Payments made for own and third-party consumption of digital services"
+msgstr "15 Pagos realizados por consumo propio y de terceros de servicios digitales"
 
 #. module: l10n_ec_edi
 #: model_terms:ir.ui.view,arch_db:l10n_ec_edi.report_invoice_header
@@ -223,12 +197,8 @@ msgstr "<span class=\"o_form_label\">Documento de Certificado Electrónico</span
 
 #. module: l10n_ec_edi
 #: model_terms:ir.ui.view,arch_db:l10n_ec_edi.res_config_settings_l10n_ec_edi
-msgid ""
-"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
-"specific.\"/>"
-msgstr ""
-"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
-"specific.\"/>"
+msgid "<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\"/>"
+msgstr "<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\"/>"
 
 #. module: l10n_ec_edi
 #: model_terms:ir.ui.view,arch_db:l10n_ec_edi.res_config_settings_l10n_ec_edi
@@ -353,35 +323,15 @@ msgstr "<strong>Número Contribuyente Especial: </strong>"
 #. odoo-python
 #: code:addons/l10n_ec_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"<strong>This is a DEMO environment, for which SRI has no "
-"portal.</strong><br/>For the purpose of testing all flows, we act as if the "
-"document had been cancelled for the govt.<br/>In a production environment, "
-"you will first have to use the SRI portal to cancel the invoice."
-msgstr ""
-"<strong>Este es un ambiente DEMO, para el cual el SRI no tiene "
-"portal.</strong><br/>Con el proposito de probar todos los flujos, hacemos "
-"como si el document ha sido cancelado por el gobierno.<br/>En un ambiente de"
-" producciòn, usted debe primero utilizar el portal del SRI para cancelar la "
-"factura."
+msgid "<strong>This is a DEMO environment, for which SRI has no portal.</strong><br/>For the purpose of testing all flows, we act as if the document had been cancelled for the govt.<br/>In a production environment, you will first have to use the SRI portal to cancel the invoice."
+msgstr "<strong>Este es un ambiente DEMO, para el cual el SRI no tiene portal.</strong><br/>Con el proposito de probar todos los flujos, hacemos como si el document ha sido cancelado por el gobierno.<br/>En un ambiente de producciòn, usted debe primero utilizar el portal del SRI para cancelar la factura."
 
 #. module: l10n_ec_edi
 #. odoo-python
 #: code:addons/l10n_ec_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"<strong>This is a DEMO response, which means this document was not sent to "
-"the SRI.</strong><br/>If you want your document to be processed by the SRI, "
-"please set an <strong>Electronic Certificate File</strong> in the "
-"settings.<br/><br/>Demo electronic document.<br/><strong>Authorization "
-"num:</strong><br/>%s<br/><strong>Authorization date:</strong><br/>%s"
-msgstr ""
-"<strong>Esta es una respuesta DEMO, lo cual significa que este documento no "
-"fue enviado al SRI.</strong><br/>Si desea que su documento sea procesado por"
-" el SRI, por favor configure un <strong>Archivo de Certificado "
-"Electrónico</strong> en la configuraciòn.<br/><br/>Dcoumento Electrónico "
-"Demo.<br/><strong>Número Autorización:</strong><br/>%s<br/><strong>Fecha "
-"Autorización:</strong><br/>%s"
+msgid "<strong>This is a DEMO response, which means this document was not sent to the SRI.</strong><br/>If you want your document to be processed by the SRI, please set an <strong>Electronic Certificate File</strong> in the settings.<br/><br/>Demo electronic document.<br/><strong>Authorization num:</strong><br/>%s<br/><strong>Authorization date:</strong><br/>%s"
+msgstr "<strong>Esta es una respuesta DEMO, lo cual significa que este documento no fue enviado al SRI.</strong><br/>Si desea que su documento sea procesado por el SRI, por favor configure un <strong>Archivo de Certificado Electrónico</strong> en la configuraciòn.<br/><br/>Dcoumento Electrónico Demo.<br/><strong>Número Autorización:</strong><br/>%s<br/><strong>Fecha Autorización:</strong><br/>%s"
 
 #. module: l10n_ec_edi
 #: model_terms:ir.ui.view,arch_db:l10n_ec_edi.report_invoice_header
@@ -402,11 +352,6 @@ msgstr "Código ATS"
 #: model:ir.model.fields,field_description:l10n_ec_edi.field_res_country__l10n_ec_code_tax_haven
 msgid "ATS Tax Haven Code"
 msgstr "Código ATS Paraíso Fiscal"
-
-#. module: l10n_ec_edi
-#: model_terms:ir.ui.view,arch_db:l10n_ec_edi.authorization_template
-msgid "AUTORIZADO"
-msgstr ""
 
 #. module: l10n_ec_edi
 #: model_terms:ir.ui.view,arch_db:l10n_ec_edi.report_invoice_header
@@ -457,16 +402,6 @@ msgstr "Permitir retención"
 #: model:ir.model.fields,field_description:l10n_ec_edi.field_l10n_ec_wizard_account_withhold_line__amount
 msgid "Amount"
 msgstr "Monto"
-
-#. module: l10n_ec_edi
-#: model:ir.model.fields,help:l10n_ec_edi.field_account_bank_statement_line__l10n_latam_internal_type
-#: model:ir.model.fields,help:l10n_ec_edi.field_account_move__l10n_latam_internal_type
-#: model:ir.model.fields,help:l10n_ec_edi.field_account_payment__l10n_latam_internal_type
-msgid ""
-"Analog to odoo account.move.move_type but with more options allowing to "
-"identify the kind of document we are working with. (not only related to "
-"account.move, could be for documents of other models like stock.picking)"
-msgstr ""
 
 #. module: l10n_ec_edi
 #: model:ir.model,name:l10n_ec_edi.model_ir_attachment
@@ -528,12 +463,8 @@ msgstr "Archivo de certificado para SRI"
 #. module: l10n_ec_edi
 #: model:ir.model.fields,help:l10n_ec_edi.field_res_company__l10n_ec_forced_accounting
 #: model:ir.model.fields,help:l10n_ec_edi.field_res_config_settings__l10n_ec_forced_accounting
-msgid ""
-"Check if you are obligated to keep accounting books, will be used for "
-"printing electronic invoices and reports"
-msgstr ""
-"Marque si está obligado a llevar libros de contabilidad, se utilizará para la "
-"impresión de facturas electrónicas y reportes"
+msgid "Check if you are obligated to keep accounting books, will be used for printing electronic invoices and reports"
+msgstr "Marque si está obligado a llevar libros de contabilidad, se utilizará para la impresión de facturas electrónicas y reportes"
 
 #. module: l10n_ec_edi
 #. odoo-python
@@ -576,13 +507,6 @@ msgid "Company legal name"
 msgstr "Razón social de la Compañía"
 
 #. module: l10n_ec_edi
-#. odoo-python
-#: code:addons/l10n_ec_edi/models/account_move.py:0
-#, python-format
-msgid "Compose Email"
-msgstr ""
-
-#. module: l10n_ec_edi
 #: model:ir.model,name:l10n_ec_edi.model_res_config_settings
 msgid "Config Settings"
 msgstr "Opciones de Configuración"
@@ -609,13 +533,6 @@ msgid "Contact"
 msgstr "Contacto"
 
 #. module: l10n_ec_edi
-#. odoo-python
-#: code:addons/l10n_ec_edi/models/ir_attachment.py:0
-#, python-format
-msgid "Could not get XSD file %s from URL: %s"
-msgstr ""
-
-#. module: l10n_ec_edi
 #: model:ir.model,name:l10n_ec_edi.model_res_country
 msgid "Country"
 msgstr "País"
@@ -634,13 +551,6 @@ msgstr "Crear retenciones"
 #: model_terms:ir.ui.view,arch_db:l10n_ec_edi.wizard_account_withhold_form
 msgid "Create and Post"
 msgstr "Crear y publicar"
-
-#. module: l10n_ec_edi
-#. odoo-python
-#: code:addons/l10n_ec_edi/models/ir_attachment.py:0
-#, python-format
-msgid "Created XSD attachment: %s"
-msgstr ""
 
 #. module: l10n_ec_edi
 #: model:ir.model.fields,field_description:l10n_ec_edi.field_l10n_ec_edi_certificate__create_uid
@@ -667,12 +577,8 @@ msgstr "Tarjeta de Crédito"
 #. odoo-python
 #: code:addons/l10n_ec_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"Credit Note %s must have original invoice related, try to 'Add Credit Note' "
-"from invoice"
-msgstr ""
-"La Nota de Crédito %s debe tener la factura de origen relacionada, intente 'Añadir Nota Crédito' "
-"desde la factura"
+msgid "Credit Note %s must have original invoice related, try to 'Add Credit Note' from invoice"
+msgstr "La Nota de Crédito %s debe tener la factura de origen relacionada, intente 'Añadir Nota Crédito' desde la factura"
 
 #. module: l10n_ec_edi
 #: model:ir.model.fields,field_description:l10n_ec_edi.field_l10n_ec_wizard_account_withhold__currency_id
@@ -689,21 +595,14 @@ msgstr "Fecha"
 #. odoo-python
 #: code:addons/l10n_ec_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"Debit Note %s must have original invoice related, try to 'Add Debit Note' "
-"from invoice"
-msgstr ""
-"La Nota de Débito %s debe tener la factura de origen relacionada, intente 'Añadir Nota Débito' "
-"desde la factura"
-
+msgid "Debit Note %s must have original invoice related, try to 'Add Debit Note' from invoice"
+msgstr "La Nota de Débito %s debe tener la factura de origen relacionada, intente 'Añadir Nota Débito' desde la factura"
 
 #. module: l10n_ec_edi
 #: model:ir.model.fields,help:l10n_ec_edi.field_product_product__l10n_ec_withhold_tax_id
 #: model:ir.model.fields,help:l10n_ec_edi.field_product_template__l10n_ec_withhold_tax_id
 msgid "Default profit withholding tax when the product is purchased"
-msgstr ""
-"Retención de impuestos por defecto sobre las ganancias cuando se compra el "
-"producto"
+msgstr "Retención de impuestos por defecto sobre las ganancias cuando se compra el producto"
 
 #. module: l10n_ec_edi
 #: model_terms:ir.ui.view,arch_db:l10n_ec_edi.res_config_settings_l10n_ec_edi
@@ -729,14 +628,6 @@ msgstr "Certificados digitales"
 #: model:ir.ui.menu,name:l10n_ec_edi.sri_key_type_menu
 msgid "Digital Certificates SRI"
 msgstr "Certificados digitales SRI"
-
-#. module: l10n_ec_edi
-#: model:ir.model.fields,field_description:l10n_ec_edi.field_l10n_ec_edi_certificate__display_name
-#: model:ir.model.fields,field_description:l10n_ec_edi.field_l10n_ec_taxpayer_type__display_name
-#: model:ir.model.fields,field_description:l10n_ec_edi.field_l10n_ec_wizard_account_withhold__display_name
-#: model:ir.model.fields,field_description:l10n_ec_edi.field_l10n_ec_wizard_account_withhold_line__display_name
-msgid "Display Name"
-msgstr ""
 
 #. module: l10n_ec_edi
 #: model:ir.model.fields,field_description:l10n_ec_edi.field_l10n_ec_wizard_account_withhold__document_number
@@ -808,12 +699,8 @@ msgstr "Facturación Electrónica"
 #. odoo-python
 #: code:addons/l10n_ec_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"Electronic document authorized.<br/><strong>Authorization "
-"num:</strong><br/>%s<br/><strong>Authorization date:</strong><br/>%s"
-msgstr ""
-"Documento electrónico autorizado.<br/><strong>Número "
-"autorización:</strong><br/>%s<br/><strong>Fecha autorización:</strong><br/>%s"
+msgid "Electronic document authorized.<br/><strong>Authorization num:</strong><br/>%s<br/><strong>Authorization date:</strong><br/>%s"
+msgstr "Documento electrónico autorizado.<br/><strong>Número autorización:</strong><br/>%s<br/><strong>Fecha autorización:</strong><br/>%s"
 
 #. module: l10n_ec_edi
 #: model:ir.model.fields,field_description:l10n_ec_edi.field_l10n_ec_edi_certificate__date_start
@@ -824,12 +711,8 @@ msgstr "Fecha de emisión"
 #. odoo-python
 #: code:addons/l10n_ec_edi/models/l10n_ec_edi_certificate.py:0
 #, python-format
-msgid ""
-"Error loading certificate %s, check that password is correct and file type "
-"is p12"
-msgstr ""
-"Error al cargar el certificado %s, revise que la clave es correcta y el tipo de archivo "
-"es p12"
+msgid "Error loading certificate %s, check that password is correct and file type is p12"
+msgstr "Error al cargar el certificado %s, revise que la clave es correcta y el tipo de archivo es p12"
 
 #. module: l10n_ec_edi
 #. odoo-python
@@ -849,15 +732,6 @@ msgstr "Cada línea debe tener un sustento tributario"
 #: model:ir.model.fields,field_description:l10n_ec_edi.field_l10n_ec_edi_certificate__date_end
 msgid "Expiration Date"
 msgstr "Fecha de caducidad"
-
-#. module: l10n_ec_edi
-#. odoo-python
-#: code:addons/l10n_ec_edi/models/ir_attachment.py:0
-#, python-format
-msgid ""
-"Failed to parse XSD file:\n"
-"%s"
-msgstr ""
 
 #. module: l10n_ec_edi
 #: model:ir.model.fields,field_description:l10n_ec_edi.field_l10n_ec_edi_certificate__file_name
@@ -908,22 +782,14 @@ msgstr "ID"
 #. module: l10n_ec_edi
 #: model:ir.model.fields,help:l10n_ec_edi.field_res_company__l10n_ec_special_taxpayer_number
 #: model:ir.model.fields,help:l10n_ec_edi.field_res_config_settings__l10n_ec_special_taxpayer_number
-msgid ""
-"If set, your company is considered a Special Taxpayer, this number will be "
-"printed in electronic invoices and reports"
-msgstr ""
-"Si se establece, su empresa es considerada Contribuyente Especial, este "
-"número se imprimirá en las facturas y reportes electrónicos"
+msgid "If set, your company is considered a Special Taxpayer, this number will be printed in electronic invoices and reports"
+msgstr "Si se establece, su empresa es considerada Contribuyente Especial, este número se imprimirá en las facturas y reportes electrónicos"
 
 #. module: l10n_ec_edi
 #: model:ir.model.fields,help:l10n_ec_edi.field_account_move_line__l10n_ec_code_taxsupport
 #: model:ir.model.fields,help:l10n_ec_edi.field_l10n_ec_wizard_account_withhold_line__taxsupport_code
-msgid ""
-"Indicates if the purchase invoice supports tax credit or cost or expenses, "
-"conforming table 5 of ATS"
-msgstr ""
-"Indica si la factura de compra admite crédito fiscal o costo o gastos, "
-"conforme tabla 5 de ATS"
+msgid "Indicates if the purchase invoice supports tax credit or cost or expenses, conforming table 5 of ATS"
+msgstr "Indica si la factura de compra admite crédito fiscal o costo o gastos, conforme tabla 5 de ATS"
 
 #. module: l10n_ec_edi
 #: model:ir.model.fields,field_description:l10n_ec_edi.field_account_bank_statement_line__l10n_latam_internal_type
@@ -940,7 +806,6 @@ msgstr "Factura"
 
 #. module: l10n_ec_edi
 #. odoo-python
-#: code:addons/l10n_ec_edi/models/account_move.py:0
 #: code:addons/l10n_ec_edi/models/account_move.py:0
 #: model:ir.model.fields,field_description:l10n_ec_edi.field_l10n_ec_wizard_account_withhold__related_invoice_ids
 #, python-format
@@ -996,10 +861,7 @@ msgstr "Última actualización en"
 #. module: l10n_ec_edi
 #: model:ir.model.fields,help:l10n_ec_edi.field_res_company__l10n_ec_withhold_agent_number
 #: model:ir.model.fields,help:l10n_ec_edi.field_res_config_settings__l10n_ec_withhold_agent_number
-msgid ""
-"Last digits from the SRI resolution number in which your company became a "
-"designated withholder agent. If the resolution number where NAC-"
-"DNCRASC20-00000001 then the number should be 1"
+msgid "Last digits from the SRI resolution number in which your company became a designated withholder agent. If the resolution number where NAC-DNCRASC20-00000001 then the number should be 1"
 msgstr ""
 "Últimos dígitos del número de resolución del SRI en el que su empresa se convirtió en agente de retención designado. \n"
 "Si el número de resolución es NAC-DNCRASC20-00000001, entonces el número debe ser 1"
@@ -1057,11 +919,6 @@ msgstr "Valores negativos o cero no se permiten para la base de las líneas de r
 #, python-format
 msgid "Negative values are not allowed in amount for withhold lines"
 msgstr "Valores negativos no se permiten en el monto de líneas de retención"
-
-#. module: l10n_ec_edi
-#: model_terms:ir.ui.view,arch_db:l10n_ec_edi.report_invoice_header
-msgid "No"
-msgstr ""
 
 #. module: l10n_ec_edi
 #. odoo-python
@@ -1230,7 +1087,6 @@ msgstr "Estado de respuesta SRI: %s"
 #. module: l10n_ec_edi
 #. odoo-python
 #: code:addons/l10n_ec_edi/models/account_edi_format.py:0
-#: code:addons/l10n_ec_edi/models/account_edi_format.py:0
 #, python-format
 msgid "SRI response unexpected: %s"
 msgstr "Respuesta SRI inesperada: %s"
@@ -1242,38 +1098,16 @@ msgid "Sales Withhold"
 msgstr "Retención de ventas"
 
 #. module: l10n_ec_edi
-#: model:ir.model.fields,help:l10n_ec_edi.field_l10n_ec_wizard_account_withhold__withhold_subtotals
-msgid "Sales/Purchases subtotals, and total"
-msgstr ""
-
-#. module: l10n_ec_edi
 #: model:ir.model.fields,help:l10n_ec_edi.field_res_partner__l10n_ec_related_party
 #: model:ir.model.fields,help:l10n_ec_edi.field_res_users__l10n_ec_related_party
-msgid ""
-"Select the option if the partner is a related party. Related parties are "
-"other companies or persons that participate directly or indirectly in the "
-"management, administration, control or capital of your company. Example of "
-"related party may be a shareholder of our company."
-msgstr ""
-"Seleccione la opción si el asociado es una parte relacionada. Las partes "
-"relacionadas son otras empresas o personas que participan directa o "
-"indirectamente en la dirección, administración, control o capital de su "
-"empresa. Ejemplo de parte relacionada puede ser un accionista de la empresa."
+msgid "Select the option if the partner is a related party. Related parties are other companies or persons that participate directly or indirectly in the management, administration, control or capital of your company. Example of related party may be a shareholder of our company."
+msgstr "Seleccione la opción si el asociado es una parte relacionada. Las partes relacionadas son otras empresas o personas que participan directa o indirectamente en la dirección, administración, control o capital de su empresa. Ejemplo de parte relacionada puede ser un accionista de la empresa."
 
 #. module: l10n_ec_edi
 #: model:ir.model.fields,help:l10n_ec_edi.field_res_partner__l10n_ec_taxpayer_type_id
 #: model:ir.model.fields,help:l10n_ec_edi.field_res_users__l10n_ec_taxpayer_type_id
-msgid ""
-"Select the partner position in the tax pyramid, to automate the computation "
-"of VAT withholds"
-msgstr ""
-"Seleccione la posición del asociado en la pirámide fiscal, para automatizar "
-"el cómputo de las retenciones de IVA"
-
-#. module: l10n_ec_edi
-#: model_terms:ir.ui.view,arch_db:l10n_ec_edi.account_move_form_invoice_and_withhold_view
-msgid "Send By Email"
-msgstr ""
+msgid "Select the partner position in the tax pyramid, to automate the computation of VAT withholds"
+msgstr "Seleccione la posición del asociado en la pirámide fiscal, para automatizar el cómputo de las retenciones de IVA"
 
 #. module: l10n_ec_edi
 #: model:ir.model.fields,field_description:l10n_ec_edi.field_l10n_ec_taxpayer_type__sequence
@@ -1381,13 +1215,6 @@ msgid "Testing"
 msgstr "Pruebas"
 
 #. module: l10n_ec_edi
-#: model:ir.model.fields,help:l10n_ec_edi.field_l10n_ec_wizard_account_withhold__partner_country_code
-msgid ""
-"The ISO country code in two chars. \n"
-"You can use this field for quick search."
-msgstr ""
-
-#. module: l10n_ec_edi
 #. odoo-python
 #: code:addons/l10n_ec_edi/models/account_edi_format.py:0
 #, python-format
@@ -1452,42 +1279,18 @@ msgstr "Este documento no es una retención"
 
 #. module: l10n_ec_edi
 #: model:ir.model.fields,help:l10n_ec_edi.field_l10n_ec_taxpayer_type__profit_withhold_tax_id
-msgid ""
-"This tax is suggested on vendors withhold wizard based on prevalence. The "
-"profit withhold prevalence order is payment method (credit cards retains "
-"0%), this taxpayer type, then product, finally fallback on account settings"
-msgstr ""
-"Este impuesto se sugiere en el asistente de retención de proveedores en "
-"función de la prevalencia. La orden de prevalencia de retención de ganancias"
-" es el método de pago (las tarjetas de crédito retienen el 0%), este tipo de"
-" contribuyente, luego el producto, y finalmente recurre a la configuración "
-"de la cuenta."
+msgid "This tax is suggested on vendors withhold wizard based on prevalence. The profit withhold prevalence order is payment method (credit cards retains 0%), this taxpayer type, then product, finally fallback on account settings"
+msgstr "Este impuesto se sugiere en el asistente de retención de proveedores en función de la prevalencia. La orden de prevalencia de retención de ganancias es el método de pago (las tarjetas de crédito retienen el 0%), este tipo de contribuyente, luego el producto, y finalmente recurre a la configuración de la cuenta."
 
 #. module: l10n_ec_edi
 #: model:ir.model.fields,help:l10n_ec_edi.field_l10n_ec_taxpayer_type__vat_goods_withhold_tax_id
-msgid ""
-"This tax is suggested on vendors withhold wizard for consumable and "
-"stockable products, if not set no vat withhold is suggested"
-msgstr ""
-"Este impuesto se sugiere en el asistente de retención de proveedores para "
-"productos consumibles y almacenables, si no se establece, no se sugiere "
-"retención de IVA"
+msgid "This tax is suggested on vendors withhold wizard for consumable and stockable products, if not set no vat withhold is suggested"
+msgstr "Este impuesto se sugiere en el asistente de retención de proveedores para productos consumibles y almacenables, si no se establece, no se sugiere retención de IVA"
 
 #. module: l10n_ec_edi
 #: model:ir.model.fields,help:l10n_ec_edi.field_l10n_ec_taxpayer_type__vat_services_withhold_tax_id
-msgid ""
-"This tax is suggested on vendors withhold wizard for services, if not set no"
-" vat withhold is suggested"
-msgstr ""
-"Este impuesto se sugiere en el asistente de retención de proveedores para "
-"servicios, si no se establece, no se sugiere retención de IVA"
-
-#. module: l10n_ec_edi
-#. odoo-python
-#: code:addons/l10n_ec_edi/models/ir_attachment.py:0
-#, python-format
-msgid "Unzip failed for XSD file %s from URL: %s"
-msgstr ""
+msgid "This tax is suggested on vendors withhold wizard for services, if not set no vat withhold is suggested"
+msgstr "Este impuesto se sugiere en el asistente de retención de proveedores para servicios, si no se establece, no se sugiere retención de IVA"
 
 #. module: l10n_ec_edi
 #: model:ir.model.fields,field_description:l10n_ec_edi.field_res_company__l10n_ec_production_env
@@ -1497,17 +1300,13 @@ msgstr "Usar servidores de producción"
 
 #. module: l10n_ec_edi
 #: model:ir.model.fields,help:l10n_ec_edi.field_res_country__l10n_ec_code_tax_haven
-msgid ""
-"Used in ecuador to describe a tax heaven code for the ATS. Up to 3 digits."
-msgstr ""
-"Utilizado en ecuador para describir un código de paraiso fiscal para el ATS. De hasta 3 dígitos."
+msgid "Used in ecuador to describe a tax heaven code for the ATS. Up to 3 digits."
+msgstr "Utilizado en ecuador para describir un código de paraiso fiscal para el ATS. De hasta 3 dígitos."
 
 #. module: l10n_ec_edi
 #: model:ir.model.fields,help:l10n_ec_edi.field_res_country__l10n_ec_code_ats
-msgid ""
-"Used in ecuador to describe the country code for the ATS. Up to 3 digits."
-msgstr ""
-"Utilizado en ecuador para describir el código de país para el ATS. De hasta 3 digitos."
+msgid "Used in ecuador to describe the country code for the ATS. Up to 3 digits."
+msgstr "Utilizado en ecuador para describir el código de país para el ATS. De hasta 3 digitos."
 
 #. module: l10n_ec_edi
 #. odoo-python
@@ -1519,31 +1318,20 @@ msgstr "Retención IVA"
 #. module: l10n_ec_edi
 #: model:ir.model.fields,help:l10n_ec_edi.field_res_company__l10n_ec_withhold_services_tax_id
 #: model:ir.model.fields,help:l10n_ec_edi.field_res_config_settings__l10n_ec_withhold_services_tax_id
-msgid ""
-"When no profit withhold is found in partner or product, if product is a "
-"service or not set'the withhold fallbacks to this tax code"
-msgstr ""
-"Cuando no se encuentra retención de utilidades en asociado o producto, si el"
-" producto es un servicio o no se establece, la retención recurre a este "
-"código de impuesto "
+msgid "When no profit withhold is found in partner or product, if product is a service or not set'the withhold fallbacks to this tax code"
+msgstr "Cuando no se encuentra retención de utilidades en asociado o producto, si el producto es un servicio o no se establece, la retención recurre a este código de impuesto "
 
 #. module: l10n_ec_edi
 #: model:ir.model.fields,help:l10n_ec_edi.field_res_company__l10n_ec_withhold_goods_tax_id
 #: model:ir.model.fields,help:l10n_ec_edi.field_res_config_settings__l10n_ec_withhold_goods_tax_id
-msgid ""
-"When no profit withhold is found in partner or product, if product is a "
-"stockable or consumablethe withhold fallbacks to this tax code"
-msgstr ""
-"Cuando no se encuentra retención de ganancias en un asociado o producto, si "
-"el producto es almacenable o consumible, la retención se basa en este código"
-" de impuesto"
+msgid "When no profit withhold is found in partner or product, if product is a stockable or consumablethe withhold fallbacks to this tax code"
+msgstr "Cuando no se encuentra retención de ganancias en un asociado o producto, si el producto es almacenable o consumible, la retención se basa en este código de impuesto"
 
 #. module: l10n_ec_edi
 #: model:ir.model.fields,help:l10n_ec_edi.field_res_company__l10n_ec_withhold_credit_card_tax_id
 #: model:ir.model.fields,help:l10n_ec_edi.field_res_config_settings__l10n_ec_withhold_credit_card_tax_id
 msgid "When payment method will be credit card apply this withhold"
-msgstr ""
-"Cuando el método de pago sea tarjeta de crédito aplicar esta retención"
+msgstr "Cuando el método de pago sea tarjeta de crédito aplicar esta retención"
 
 #. module: l10n_ec_edi
 #: model:ir.model.fields,help:l10n_ec_edi.field_account_journal__l10n_ec_is_purchase_liquidation
@@ -1553,10 +1341,7 @@ msgstr "Si este diario es para liquidaciones de compras"
 #. module: l10n_ec_edi
 #: model:ir.model.fields,help:l10n_ec_edi.field_res_company__l10n_ec_regime
 #: model:ir.model.fields,help:l10n_ec_edi.field_res_config_settings__l10n_ec_regime
-msgid ""
-"Will show an additional label on the RIDE and XML called 'CONTRIBUYENTE "
-"REGIMEN RIMPE', select it if your company is in the SRI Excel registry, It "
-"doesn't affect the computation of withholds. "
+msgid "Will show an additional label on the RIDE and XML called 'CONTRIBUYENTE REGIMEN RIMPE', select it if your company is in the SRI Excel registry, It doesn't affect the computation of withholds. "
 msgstr ""
 "Mostrará una etiqueta adicional en el RIDE y el XML llamada 'REGIMEN CONTRIBUYENTE RIMPE', \n"
 "selecciónelo si su empresa está en el registro de Excel SRI, \n"
@@ -1651,12 +1436,8 @@ msgstr "Retención: Enviar por correo electrónico"
 
 #. module: l10n_ec_edi
 #: model:mail.template,report_name:l10n_ec_edi.email_template_edi_withhold
-msgid ""
-"Withhold_{{ (object.name or '').replace('/','_') }}{{ object.state == "
-"'draft' and '_draft' or '' }}"
-msgstr ""
-"Retención_{{ (object.name or '').replace('/','_') }}{{ object.state == "
-"'draft' and '_draft' or '' }}"
+msgid "Withhold_{{ (object.name or '').replace('/','_') }}{{ object.state == 'draft' and '_draft' or '' }}"
+msgstr "Retención_{{ (object.name or '').replace('/','_') }}{{ object.state == 'draft' and '_draft' or '' }}"
 
 #. module: l10n_ec_edi
 #. odoo-python
@@ -1698,27 +1479,6 @@ msgid "Wizard"
 msgstr "Asistente"
 
 #. module: l10n_ec_edi
-#. odoo-python
-#: code:addons/l10n_ec_edi/models/account_edi_format.py:0
-#, python-format
-msgid "Wrong tax (%s) for document %s"
-msgstr ""
-
-#. module: l10n_ec_edi
-#. odoo-python
-#: code:addons/l10n_ec_edi/models/account_edi_format.py:0
-#, python-format
-msgid "XSD attachment missing: %s_xsd"
-msgstr ""
-
-#. module: l10n_ec_edi
-#. odoo-python
-#: code:addons/l10n_ec_edi/models/ir_attachment.py:0
-#, python-format
-msgid "XSD validation file for documents of type: %s"
-msgstr ""
-
-#. module: l10n_ec_edi
 #: model_terms:ir.ui.view,arch_db:l10n_ec_edi.report_invoice_header
 msgid "Yes"
 msgstr "Sí"
@@ -1727,34 +1487,22 @@ msgstr "Sí"
 #. odoo-python
 #: code:addons/l10n_ec_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"You cannot cancel a document that is still authorized (%s, %s), check the "
-"SRI portal"
-msgstr ""
-"No puede anular un documento que todavía consta autorizado (%s, %s), revise el "
-"portal del SRI"
+msgid "You cannot cancel a document that is still authorized (%s, %s), check the SRI portal"
+msgstr "No puede anular un documento que todavía consta autorizado (%s, %s), revise el portal del SRI"
 
 #. module: l10n_ec_edi
 #. odoo-python
 #: code:addons/l10n_ec_edi/wizard/l10n_ec_wizard_account_withhold.py:0
 #, python-format
-msgid ""
-"You have selected a 'Fiscal paradise' or 'Preferential tax' regime but used "
-"taxes from 'Regular' regime, please select a tax from: %s\n"
-msgstr ""
-"Usted ha seleccionado un 'Paraiso Fiscal' o 'Régimen preferencial' pero seleccionó "
-"impuestos de régimen 'Regular', por favor seleccione un impuesto de: %s\n"
+msgid "You have selected a 'Fiscal paradise' or 'Preferential tax' regime but used taxes from 'Regular' regime, please select a tax from: %s\n"
+msgstr "Usted ha seleccionado un 'Paraiso Fiscal' o 'Régimen preferencial' pero seleccionó impuestos de régimen 'Regular', por favor seleccione un impuesto de: %s\n"
 
 #. module: l10n_ec_edi
 #. odoo-python
 #: code:addons/l10n_ec_edi/wizard/l10n_ec_wizard_account_withhold.py:0
 #, python-format
-msgid ""
-"You have selected a 'Regular' regime but used taxes from 'Fiscal paradise' "
-"or 'Preferential tax' regime, please select a tax from: %s\n"
-msgstr ""
-"Usted ha seleccionado un régimen 'Regular'  pero seleccionó impuestos de 'Paraíso Fiscal' "
-"o 'Régimen Preferencial', por favor seleccione un impuesto de: %s\n"
+msgid "You have selected a 'Regular' regime but used taxes from 'Fiscal paradise' or 'Preferential tax' regime, please select a tax from: %s\n"
+msgstr "Usted ha seleccionado un régimen 'Regular'  pero seleccionó impuestos de 'Paraíso Fiscal' o 'Régimen Preferencial', por favor seleccione un impuesto de: %s\n"
 
 #. module: l10n_ec_edi
 #. odoo-python
@@ -1795,13 +1543,6 @@ msgstr "Debe ingresar al menos una línea de retención"
 #. module: l10n_ec_edi
 #. odoo-python
 #: code:addons/l10n_ec_edi/models/account_edi_format.py:0
-#, python-format
-msgid "You must select a valid certificate in the settings for company %s"
-msgstr ""
-
-#. module: l10n_ec_edi
-#. odoo-python
-#: code:addons/l10n_ec_edi/models/account_edi_format.py:0
 #: code:addons/l10n_ec_edi/wizard/l10n_ec_wizard_account_withhold.py:0
 #, python-format
 msgid "You must set a Country for Partner: %s"
@@ -1825,12 +1566,8 @@ msgstr "Debe setear un número de RUC/Céd/Pasaporte para el asociado"
 #. odoo-python
 #: code:addons/l10n_ec_edi/models/account_edi_format.py:0
 #, python-format
-msgid ""
-"You must set a headquarter address on contact %s, field Street must be "
-"filled"
-msgstr ""
-"Debe setear una dirección matriz en el contacto %s, el campo Calle debe ser "
-"llenado"
+msgid "You must set a headquarter address on contact %s, field Street must be filled"
+msgstr "Debe setear una dirección matriz en el contacto %s, el campo Calle debe ser llenado"
 
 #. module: l10n_ec_edi
 #. odoo-python
@@ -1856,31 +1593,12 @@ msgstr "Debe setear el Número de Documento en el documento %s"
 #. module: l10n_ec_edi
 #. odoo-python
 #: code:addons/l10n_ec_edi/models/account_edi_format.py:0
-#: code:addons/l10n_ec_edi/models/account_edi_format.py:0
 #: code:addons/l10n_ec_edi/wizard/l10n_ec_wizard_account_withhold.py:0
 #, python-format
 msgid "You must set the Payment Method SRI on document %s"
 msgstr "Debe setear el SRI Metodo de Pago en el documento %s"
 
 #. module: l10n_ec_edi
-#. odoo-python
-#: code:addons/l10n_ec_edi/models/account_edi_format.py:0
-#, python-format
-msgid "_authorized"
-msgstr ""
-
-#. module: l10n_ec_edi
-#: model_terms:ir.ui.view,arch_db:l10n_ec_edi.ec_edi_signature
-msgid "contenido comprobante"
-msgstr ""
-
-#. module: l10n_ec_edi
-#: model_terms:ir.ui.view,arch_db:l10n_ec_edi.ec_edi_signature
-msgid "text/xml"
-msgstr ""
-
-#. module: l10n_ec_edi
 #: model:mail.template,subject:l10n_ec_edi.email_template_edi_withhold
 msgid "{{ object.company_id.name }} Document (Ref {{ object.name or 'n/a' }})"
 msgstr "{{ object.company_id.name }} Documento (Ref {{ object.name or 'n/a' }})"
-

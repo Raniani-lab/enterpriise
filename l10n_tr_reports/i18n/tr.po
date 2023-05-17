@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 15.3alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-26 17:33+0000\n"
+"POT-Creation-Date: 2022-12-26 17:52+0000\n"
 "PO-Revision-Date: 2022-03-21 19:00+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -18,9 +18,8 @@ msgstr ""
 
 #. module: l10n_tr_reports
 #: model:account.report.line,name:l10n_tr_reports.account_report_line_trbs_58
-#, fuzzy
 msgid "Accumulated Deficit (-)"
-msgstr "BIRIKMIŞ AMORTISMANLAR (-)"
+msgstr ""
 
 #. module: l10n_tr_reports
 #: model:account.report.line,name:l10n_tr_reports.account_report_line_trbs_278
@@ -655,8 +654,7 @@ msgstr "DIĞER KDV"
 #. module: l10n_tr_reports
 #: model:account.report.line,name:l10n_tr_reports.account_report_line_trbs_368
 msgid "Overdue, Deferred Payables Or Payables on Instalments to The State"
-msgstr ""
-"VADESİ GEÇMİŞ ERTELENMİŞ VEYA TAKSİTLENDİRİLMİŞ VERGİ VE DİĞER YÜKÜMLÜLÜKLER"
+msgstr "VADESİ GEÇMİŞ ERTELENMİŞ VEYA TAKSİTLENDİRİLMİŞ VERGİ VE DİĞER YÜKÜMLÜLÜKLER"
 
 #. module: l10n_tr_reports
 #: model:account.report.line,name:l10n_tr_reports.account_report_line_trbs_50
@@ -886,8 +884,7 @@ msgstr "KIDEM TAZMİNATI KARŞILIĞI"
 
 #. module: l10n_tr_reports
 #: model:account.report.line,name:l10n_tr_reports.account_report_line_trbs_370
-msgid ""
-"Provisions for Tax and Other Liabilities Relating to The Profit of The Period"
+msgid "Provisions for Tax and Other Liabilities Relating to The Profit of The Period"
 msgstr "DÖNEM KÂRI VERGİ VE DİĞER YASAL YÜKÜMLÜLÜK KARŞILIKLARI"
 
 #. module: l10n_tr_reports
@@ -1079,9 +1076,3 @@ msgstr "İŞ AVANSLAR"
 #: model:account.report.line,name:l10n_tr_reports.account_report_line_trbs_151
 msgid "Work-in-Process – Production"
 msgstr "YARI MAMULLER - ÜRETİM"
-
-#~ msgid "Non-operating Expenses and Losses (-)"
-#~ msgstr "DİĞER FAAL. KARI VEYA ZARARI"
-
-#~ msgid "Turkey"
-#~ msgstr "Türkiye"

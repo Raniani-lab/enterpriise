@@ -3,21 +3,20 @@
 # 	* documents_l10n_be_hr_payroll
 #
 # Translators:
-# Martin Trigaux, 2022
-# Friederike Fasterling-Nesselbosch, 2022
+# Martin Trigaux, 2023
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-27 10:42+0000\n"
-"PO-Revision-Date: 2022-12-27 10:42+0000\n"
-"Last-Translator: \n"
-"Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
+"POT-Creation-Date: 2022-12-27 09:17+0000\n"
+"PO-Revision-Date: 2023-02-03 07:08+0000\n"
+"Last-Translator: Martin Trigaux, 2023\n"
+"Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: documents_l10n_be_hr_payroll
@@ -29,37 +28,25 @@ msgstr "Konfiguration der \"Dokumenten\"-App"
 
 #. module: documents_l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:documents_l10n_be_hr_payroll.l10n_be_281_10_form_wizard
-msgid ""
-"<strong>Warning: </strong>In order to post the 281.10 sheets in the employee "
-"portal, you have to Enable \"Human Resources\" in the"
-msgstr ""
-"<strong>Warnung: </strong> Um die 281.10 Bögen in das Mitarbeiterportal "
-"einstellen zu können, müssen Sie die Option \"Personalwesen\" aktivieren in der"
+msgid "<strong>Warning: </strong>In order to post the 281.10 sheets in the employee portal, you have to Enable \"Human Resources\" in the"
+msgstr "<strong>Warnung: </strong> Um die 281.10 Bögen in das Mitarbeiterportal einstellen zu können, müssen Sie die Option \"Personalwesen\" aktivieren in der"
 
 #. module: documents_l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:documents_l10n_be_hr_payroll.l10n_be_281_45_form_wizard
-msgid ""
-"<strong>Warning: </strong>In order to post the 281.45 sheets in the employee "
-"portal, you have to Enable \"Human Resources\" in the"
-msgstr ""
-"<strong>Warnung: </strong> Um die 281.45 Bögen in das Mitarbeiterportal "
-"einstellen zu können, müssen Sie die Option \"Personalwesen\" aktivieren in der"
+msgid "<strong>Warning: </strong>In order to post the 281.45 sheets in the employee portal, you have to Enable \"Human Resources\" in the"
+msgstr "<strong>Warnung: </strong> Um die 281.45 Bögen in das Mitarbeiterportal einstellen zu können, müssen Sie die Option \"Personalwesen\" aktivieren in der"
 
 #. module: documents_l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:documents_l10n_be_hr_payroll.l10n_be_individual_account_view_form
-msgid ""
-"<strong>Warning: </strong>In order to post the individual account sheets in the "
-"employee portal, you have to Enable \"Human Resources\" in the"
+msgid "<strong>Warning: </strong>In order to post the individual account sheets in the employee portal, you have to Enable \"Human Resources\" in the"
 msgstr ""
 
 #. module: documents_l10n_be_hr_payroll
 #: model:mail.template,body_html:documents_l10n_be_hr_payroll.mail_template_281_10
 msgid ""
-"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%; "
-"margin:0px auto;\"><tbody>\n"
+"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%; margin:0px auto;\"><tbody>\n"
 "        <tr><td valign=\"top\" style=\"text-align: left; font-size: 14px;\">\n"
-"            Dear <t t-esc=\"object.name\"/>, your 281.10 declaration is "
-"available for you.<br/><br/>\n"
+"            Dear <t t-esc=\"object.name\"/>, your 281.10 declaration is available for you.<br/><br/>\n"
 "            Please find the PDF in your employee portal.<br/><br/>\n"
 "            Have a nice day,<br/>\n"
 "            The HR Team\n"
@@ -67,11 +54,9 @@ msgid ""
 "    </tbody></table>\n"
 "                "
 msgstr ""
-"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%; "
-"margin:0px auto;\"><tbody>\n"
+"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%; margin:0px auto;\"><tbody>\n"
 "        <tr><td valign=\"top\" style=\"text-align: left; font-size: 14px;\">\n"
-"            Hallo <t t-esc=\"object.name\"/>, Ihre 281.10 Erklärung ist für Sie "
-"verfügbar.<br/><br/>\n"
+"            Hallo <t t-esc=\"object.name\"/>, Ihre 281.10 Erklärung ist für Sie verfügbar.<br/><br/>\n"
 "            Das PDF finden Sie in Ihrem Mitarbeiterportal.<br/><br/>\n"
 "            Wir wünschen Ihnen einen schönen Tag,<br/>\n"
 "            Das HR Team\n"
@@ -82,11 +67,9 @@ msgstr ""
 #. module: documents_l10n_be_hr_payroll
 #: model:mail.template,body_html:documents_l10n_be_hr_payroll.mail_template_281_45
 msgid ""
-"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%; "
-"margin:0px auto;\"><tbody>\n"
+"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%; margin:0px auto;\"><tbody>\n"
 "        <tr><td valign=\"top\" style=\"text-align: left; font-size: 14px;\">\n"
-"            Dear <t t-esc=\"object.name\"/>, your 281.45 declaration is "
-"available for you.<br/><br/>\n"
+"            Dear <t t-esc=\"object.name\"/>, your 281.45 declaration is available for you.<br/><br/>\n"
 "            Please find the PDF in your employee portal.<br/><br/>\n"
 "            Have a nice day,<br/>\n"
 "            The HR Team\n"
@@ -94,11 +77,9 @@ msgid ""
 "    </tbody></table>\n"
 "                "
 msgstr ""
-"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%; "
-"margin:0px auto;\"><tbody>\n"
+"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%; margin:0px auto;\"><tbody>\n"
 "        <tr><td valign=\"top\" style=\"text-align: left; font-size: 14px;\">\n"
-"            Hallo <t t-esc=\"object.name\"/>, unsere 281.45 Erklärung ist für "
-"Sie verfügbar you.<br/><br/>\n"
+"            Hallo <t t-esc=\"object.name\"/>, unsere 281.45 Erklärung ist für Sie verfügbar you.<br/><br/>\n"
 "            Das PDF finden Sie in Ihrem Mitarbeiterportal.<br/><br/>\n"
 "            Wir wünschen Ihnen einen schönen Tag,<br/>\n"
 "            Das HR Team\n"
@@ -109,11 +90,9 @@ msgstr ""
 #. module: documents_l10n_be_hr_payroll
 #: model:mail.template,body_html:documents_l10n_be_hr_payroll.mail_template_individual_account
 msgid ""
-"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%; "
-"margin:0px auto;\"><tbody>\n"
+"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%; margin:0px auto;\"><tbody>\n"
 "        <tr><td valign=\"top\" style=\"text-align: left; font-size: 14px;\">\n"
-"            Dear <t t-esc=\"object.name\"/>, your individual account is "
-"available for you.<br/><br/>\n"
+"            Dear <t t-esc=\"object.name\"/>, your individual account is available for you.<br/><br/>\n"
 "            Please find the PDF in your employee portal.<br/><br/>\n"
 "            Have a nice day,<br/>\n"
 "            The HR Team\n"
@@ -121,11 +100,9 @@ msgid ""
 "    </tbody></table>\n"
 "                "
 msgstr ""
-"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%; "
-"margin:0px auto;\"><tbody>\n"
+"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%; margin:0px auto;\"><tbody>\n"
 "        <tr><td valign=\"top\" style=\"text-align: left; font-size: 14px;\">\n"
-"            Hallo <t t-esc=\"object.name\"/>, Ihr individuelles Konto ist für "
-"Sie verfügbar.<br/><br/>\n"
+"            Hallo <t t-esc=\"object.name\"/>, Ihr individuelles Konto ist für Sie verfügbar.<br/><br/>\n"
 "            Das PDF finden Sie in Ihrem Mitarbeiterportal.<br/><br/>\n"
 "            Wir wünschen Ihnen einen schönen Tag,<br/>\n"
 "            Das HR Team\n"
@@ -148,7 +125,7 @@ msgstr "Belgien: Sozialversicherungsausweis"
 #: model:ir.model.fields,field_description:documents_l10n_be_hr_payroll.field_l10n_be_281_45__documents_enabled
 #: model:ir.model.fields,field_description:documents_l10n_be_hr_payroll.field_l10n_be_individual_account__documents_enabled
 msgid "Documents Enabled"
-msgstr ""
+msgstr "Dokumente aktiviert"
 
 #. module: documents_l10n_be_hr_payroll
 #: model:ir.model,name:documents_l10n_be_hr_payroll.model_l10n_be_individual_account
@@ -218,12 +195,8 @@ msgstr "In Dokumente buchen"
 #: model_terms:ir.ui.view,arch_db:documents_l10n_be_hr_payroll.l10n_be_281_10_form_wizard
 #: model_terms:ir.ui.view,arch_db:documents_l10n_be_hr_payroll.l10n_be_281_45_form_wizard
 #: model_terms:ir.ui.view,arch_db:documents_l10n_be_hr_payroll.l10n_be_individual_account_view_form
-msgid ""
-"This will add all the sheets in the employee portal. Are you sure you want to "
-"proceed ?"
-msgstr ""
-"Dadurch werden alle Blätter im Mitarbeiterportal hinzugefügt. Sind Sie sicher, "
-"dass Sie fortfahren möchten?"
+msgid "This will add all the sheets in the employee portal. Are you sure you want to proceed ?"
+msgstr "Dadurch werden alle Blätter im Mitarbeiterportal hinzugefügt. Sind Sie sicher, dass Sie fortfahren möchten?"
 
 #. module: documents_l10n_be_hr_payroll
 #: model:mail.template,subject:documents_l10n_be_hr_payroll.mail_template_281_10

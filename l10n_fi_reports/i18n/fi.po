@@ -10,6 +10,7 @@ msgstr ""
 "PO-Revision-Date: 2023-01-26 14:49+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -662,12 +663,8 @@ msgstr "B) VAIHTUVAT VASTAAVAT"
 
 #. module: l10n_fi_reports
 #: model:account.report.line,name:l10n_fi_reports.account_financial_report_l10n_fi_pl_line_2
-msgid ""
-"B) Increase (+) or decrease (-) of inventories of finished and work-in-"
-"progress products"
-msgstr ""
-"B) Valmiiden ja keskeneräisten tuotteiden varastojen lisäys (+) tai vähennys"
-" (-)"
+msgid "B) Increase (+) or decrease (-) of inventories of finished and work-in-progress products"
+msgstr "B) Valmiiden ja keskeneräisten tuotteiden varastojen lisäys (+) tai vähennys (-)"
 
 #. module: l10n_fi_reports
 #: model:account.report.line,name:l10n_fi_reports.account_financial_report_l10n_fi_bs_line_2_2
@@ -832,9 +829,7 @@ msgstr "I. Poistoero"
 
 #. module: l10n_fi_reports
 #: model:account.report.line,name:l10n_fi_reports.account_financial_report_l10n_fi_pl_line_8_2
-msgid ""
-"II. Amortisation of consolidated goodwill and reduction of consolidated "
-"reserves"
+msgid "II. Amortisation of consolidated goodwill and reduction of consolidated reserves"
 msgstr "II. Konserniliikearvon poisto ja konsernireservin vähennys"
 
 #. module: l10n_fi_reports
@@ -1169,9 +1164,7 @@ msgstr "XI. Vararahasto (osk)"
 
 #. module: l10n_fi_reports
 #: model:account.report.line,name:l10n_fi_reports.account_financial_report_l10n_fi_pl_line_1_11
-msgid ""
-"XI. Sales, second-hand goods and works of art, collectors' items and "
-"antiques"
+msgid "XI. Sales, second-hand goods and works of art, collectors' items and antiques"
 msgstr "XI. Myynti, käytetyt tavarat ja taide-, keräily- ja antiikkiesineet"
 
 #. module: l10n_fi_reports
@@ -1402,8 +1395,7 @@ msgstr "c) Saadut korvaukset johdon palkoista"
 
 #. module: l10n_fi_reports
 #: model:account.report.line,name:l10n_fi_reports.account_financial_report_l10n_fi_pl_line_7_1_3_3
-msgid ""
-"c) Compensation received for the salaries of shareholders and relatives"
+msgid "c) Compensation received for the salaries of shareholders and relatives"
 msgstr "c) Saadut korvaukset osakkaiden ja omaisten palkoista"
 
 #. module: l10n_fi_reports
@@ -1481,8 +1473,7 @@ msgstr "e) Laskennalliset verosaamiset"
 
 #. module: l10n_fi_reports
 #: model:account.report.line,name:l10n_fi_reports.account_financial_report_l10n_fi_pl_line_5_1_1_5
-msgid ""
-"e) Purchases, second-hand goods and collectors' items of art and antiques"
+msgid "e) Purchases, second-hand goods and collectors' items of art and antiques"
 msgstr "e) Ostot, käytetyt tavarat ja taide- keräily- ja antiikkiesineet"
 
 #. module: l10n_fi_reports

@@ -10,6 +10,7 @@ msgstr ""
 "PO-Revision-Date: 2022-11-28 12:49+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -96,14 +97,12 @@ msgstr "10. Ammortamenti e svalutazioni"
 
 #. module: l10n_it_reports
 #: model:account.report.line,name:l10n_it_reports.account_financial_report_line_it_sp_PASS_D_11_bis
-msgid ""
-"11-bis. Accounts payable to companies under the control of parent companies"
+msgid "11-bis. Accounts payable to companies under the control of parent companies"
 msgstr "11-bis. Debiti verso imprese sottoposte al controllo delle controllanti"
 
 #. module: l10n_it_reports
 #: model:account.report.line,name:l10n_it_reports.account_financial_report_line_it_ce_B_11
-msgid ""
-"11. Variazione delle scorte di materie prime, forniture, materiali di consumo e merci"
+msgid "11. Change in inventories of raw materials, supplies, consumables and goods"
 msgstr ""
 
 #. module: l10n_it_reports
@@ -171,9 +170,7 @@ msgstr "19. Svalutazioni"
 #: model:account.report.expression,report_line_name:l10n_it_reports.account_financial_report_line_it_ce_A_2_it_cea_2_c_balance
 #: model:account.report.expression,report_line_name:l10n_it_reports.account_financial_report_line_it_ce_A_2_it_cea_2_v_balance
 #: model:account.report.line,name:l10n_it_reports.account_financial_report_line_it_ce_A_2
-msgid ""
-"2. Changes in inventories of work in progress, semi-finished and finished "
-"goods"
+msgid "2. Changes in inventories of work in progress, semi-finished and finished goods"
 msgstr "2. Variazione delle rimanenze di prodotti in corso di lavorazione, semilavorati e finiti"
 
 #. module: l10n_it_reports
@@ -724,8 +721,8 @@ msgstr "Conto economico"
 
 #. module: l10n_it_reports
 #: model:account.report.line,name:l10n_it_reports.account_financial_report_line_it_ce_RISULTATO_PRIMA_IMPOSTE
-msgid "RESULT BEFORE INTEREST AND TAXES  (A - B ± C ± D)"
-msgstr "RISULTATO PRIMA DI IT_CERis_20 (A - B ± C ± D)"
+msgid "RESULT BEFORE INTEREST AND TAXES (A - B ± C ± D)"
+msgstr ""
 
 #. module: l10n_it_reports
 #: model:account.report.line,name:l10n_it_reports.account_financial_report_line_it_sp_CONTI_ORDINE_RISCHI
@@ -898,8 +895,7 @@ msgstr "b. Ammortamento delle attività materiali"
 
 #. module: l10n_it_reports
 #: model:account.report.line,name:l10n_it_reports.account_financial_report_line_it_ce_C_16_b
-msgid ""
-"b. From securities included in fixed assets that are not equity investments"
+msgid "b. From securities included in fixed assets that are not equity investments"
 msgstr "b. Da titoli iscritti nelle immobilizzazioni che non sono partecipazioni"
 
 #. module: l10n_it_reports
@@ -925,9 +921,7 @@ msgstr "b. a società collegate"
 
 #. module: l10n_it_reports
 #: model:account.report.line,name:l10n_it_reports.account_financial_report_line_it_ce_C_16_c
-msgid ""
-"c. From securities included in current assets that are not equity "
-"investments"
+msgid "c. From securities included in current assets that are not equity investments"
 msgstr "c. Da titoli inclusi nell'attivo circolante che non sono partecipazioni"
 
 #. module: l10n_it_reports
@@ -943,8 +937,7 @@ msgstr "c. Indennità di licenziamento"
 #. module: l10n_it_reports
 #: model:account.report.line,name:l10n_it_reports.account_financial_report_line_it_ce_D_18_c
 #: model:account.report.line,name:l10n_it_reports.account_financial_report_line_it_ce_D_19_c
-msgid ""
-"c. of securities included in current assets that are not equity investments"
+msgid "c. of securities included in current assets that are not equity investments"
 msgstr "c. di titoli inclusi nell'attivo circolante che non sono partecipazioni"
 
 #. module: l10n_it_reports
@@ -969,9 +962,7 @@ msgstr "d-bis. ad altri"
 
 #. module: l10n_it_reports
 #: model:account.report.line,name:l10n_it_reports.account_financial_report_line_it_ce_B_10_d
-msgid ""
-"d. Impairment of receivables included in current assets and cash and cash "
-"equivalents"
+msgid "d. Impairment of receivables included in current assets and cash and cash equivalents"
 msgstr "d. Svalutazione dei crediti inclusi nell'attivo corrente e nelle disponibilità liquide e mezzi equivalenti"
 
 #. module: l10n_it_reports

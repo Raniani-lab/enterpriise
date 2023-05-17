@@ -6,16 +6,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-16 21:45+0000\n"
+"POT-Creation-Date: 2021-06-17 14:04+0000\n"
 "PO-Revision-Date: 2021-06-16 17:07-0500\n"
 "Last-Translator: Jesús Alan Ramos Rodríguez <alan.ramos@jarsa.com.mx>\n"
 "Language-Team: \n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: \n"
 "X-Source-Language: en\n"
-"Language: es\n"
 "X-Generator: Poedit 3.0\n"
 
 #. module: l10n_mx_edi_extended
@@ -84,7 +84,6 @@ msgid "Acámbaro"
 msgstr "Acámbaro"
 
 #. module: l10n_mx_edi_extended
-#: model:ir.model.fields,field_description:l10n_mx_edi_extended.field_account_bank_statement_import_journal_creation__l10n_mx_address_issued_id
 #: model:ir.model.fields,field_description:l10n_mx_edi_extended.field_account_journal__l10n_mx_address_issued_id
 msgid "Address Issued"
 msgstr "Dirección de emisión"
@@ -496,7 +495,6 @@ msgid "Cintalapa de Figueroa"
 msgstr "Cintalapa de Figueroa"
 
 #. module: l10n_mx_edi_extended
-#: model:ir.model,name:l10n_mx_edi_extended.model_res_city
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi_extended.mx_partner_address_form
 msgid "City"
 msgstr "Ciudad"
@@ -744,13 +742,13 @@ msgstr "Colonia Anáhuac"
 
 #. module: l10n_mx_edi_extended
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi_extended.mx_partner_address_form
-msgid "Colony..."
-msgstr "Colonia..."
+msgid "Colony Code..."
+msgstr "Código de Colonia..."
 
 #. module: l10n_mx_edi_extended
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi_extended.mx_partner_address_form
-msgid "Colony Code..."
-msgstr "Código de Colonia..."
+msgid "Colony..."
+msgstr "Colonia..."
 
 #. module: l10n_mx_edi_extended
 #: model:l10n_mx_edi.res.locality,name:l10n_mx_edi_extended.res_locality_mx_jal_35
@@ -959,12 +957,10 @@ msgstr "Cunduacán"
 #: code:addons/l10n_mx_edi_extended/models/account_move.py:0
 #, python-format
 msgid ""
-"Custom numbers set on invoice lines are invalid and should have a pattern "
-"like: 15  48  3009  0001234:\n"
+"Custom numbers set on invoice lines are invalid and should have a pattern like: 15  48  3009  0001234:\n"
 "%(invalid_message)s"
 msgstr ""
-"Los números personalizados establecidos en las líneas de la factura no son "
-"válidos y deben tener un patrón como: 15  48  3009  0001234:\n"
+"Los números personalizados establecidos en las líneas de la factura no son válidos y deben tener un patrón como: 15  48  3009  0001234:\n"
 "%(invalid_message)s"
 
 #. module: l10n_mx_edi_extended
@@ -1432,23 +1428,15 @@ msgstr "Identificación"
 
 #. module: l10n_mx_edi_extended
 #: model:ir.model.fields,help:l10n_mx_edi_extended.field_l10n_mx_edi_tariff_fraction__active
-msgid ""
-"If the tariff fraction has expired it could be disabled to do not allow "
-"select the record."
-msgstr ""
-"Si la fracción arancelaria ha expirado, se podría deshabilitar para no "
-"permitir seleccionar el registro."
+msgid "If the tariff fraction has expired it could be disabled to do not allow select the record."
+msgstr "Si la fracción arancelaria ha expirado, se podría deshabilitar para no permitir seleccionar el registro."
 
 #. module: l10n_mx_edi_extended
 #: model:ir.model.fields,help:l10n_mx_edi_extended.field_account_bank_statement_line__l10n_mx_edi_external_trade
 #: model:ir.model.fields,help:l10n_mx_edi_extended.field_account_move__l10n_mx_edi_external_trade
 #: model:ir.model.fields,help:l10n_mx_edi_extended.field_account_payment__l10n_mx_edi_external_trade
-msgid ""
-"If this field is active, the CFDI that generates this invoice will include "
-"the complement 'External Trade'."
-msgstr ""
-"Si este campo está activo, el CFDI que genera esta factura incluirá el "
-"complemento 'Comercio Exterior'."
+msgid "If this field is active, the CFDI that generates this invoice will include the complement 'External Trade'."
+msgstr "Si este campo está activo, el CFDI que genera esta factura incluirá el complemento 'Comercio Exterior'."
 
 #. module: l10n_mx_edi_extended
 #: model:l10n_mx_edi.res.locality,name:l10n_mx_edi_extended.res_locality_mx_gro_03
@@ -1458,15 +1446,8 @@ msgstr "Iguala de la Independencia"
 #. module: l10n_mx_edi_extended
 #: model:ir.model.fields,help:l10n_mx_edi_extended.field_res_partner__l10n_mx_edi_curp
 #: model:ir.model.fields,help:l10n_mx_edi_extended.field_res_users__l10n_mx_edi_curp
-msgid ""
-"In Mexico, the Single Code of Population Registration (CURP) is a unique "
-"alphanumeric code of 18 characters used to officially identify both "
-"residents and Mexican citizens throughout the country."
-msgstr ""
-"En México, el Código Único de Registro de Población (CURP) es un código "
-"alfanumérico único de 18 caracteres que se utiliza para identificar "
-"oficialmente tanto a los residentes como a los ciudadanos mexicanos en todo "
-"el país."
+msgid "In Mexico, the Single Code of Population Registration (CURP) is a unique alphanumeric code of 18 characters used to officially identify both residents and Mexican citizens throughout the country."
+msgstr "En México, el Código Único de Registro de Población (CURP) es un código alfanumérico único de 18 caracteres que se utiliza para identificar oficialmente tanto a los residentes como a los ciudadanos mexicanos en todo el país."
 
 #. module: l10n_mx_edi_extended
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi_extended.report_invoice_document_mx
@@ -1476,16 +1457,8 @@ msgstr "Incoterm"
 #. module: l10n_mx_edi_extended
 #: model:ir.model.fields,help:l10n_mx_edi_extended.field_res_company__l10n_mx_edi_num_exporter
 #: model:ir.model.fields,help:l10n_mx_edi_extended.field_res_config_settings__l10n_mx_edi_num_exporter
-msgid ""
-"Indicates the number of reliable exporter in accordance with Article 22 of "
-"Annex 1 of the Free Trade Agreement with the European Association and the "
-"Decision of the European Community. Used in External Trade in the attribute "
-"\"NumeroExportadorConfiable\"."
-msgstr ""
-"Indica el número de exportador confiable de acuerdo con el artículo 22 del "
-"Anexo 1 del Acuerdo de Libre Comercio con la Asociación Europea y la "
-"Decisión de la Comunidad Europea. Utilizado en Comercio Exterior en el "
-"atributo \"NumeroExportadorConfiable\"."
+msgid "Indicates the number of reliable exporter in accordance with Article 22 of Annex 1 of the Free Trade Agreement with the European Association and the Decision of the European Community. Used in External Trade in the attribute \"NumeroExportadorConfiable\"."
+msgstr "Indica el número de exportador confiable de acuerdo con el artículo 22 del Anexo 1 del Acuerdo de Libre Comercio con la Asociación Europea y la Decisión de la Comunidad Europea. Utilizado en Comercio Exterior en el atributo \"NumeroExportadorConfiable\"."
 
 #. module: l10n_mx_edi_extended
 #: model:l10n_mx_edi.res.locality,name:l10n_mx_edi_extended.res_locality_mx_gua_06
@@ -1505,12 +1478,8 @@ msgstr "Isla Mujeres"
 #. module: l10n_mx_edi_extended
 #: model:ir.model.fields,help:l10n_mx_edi_extended.field_product_product__l10n_mx_edi_tariff_fraction_id
 #: model:ir.model.fields,help:l10n_mx_edi_extended.field_product_template__l10n_mx_edi_tariff_fraction_id
-msgid ""
-"It is used to express the key of the tariff fraction corresponding to the "
-"description of the product to export."
-msgstr ""
-"Se utiliza para expresar la clave de la fracción arancelaria "
-"correspondiente a la descripción del producto a exportar."
+msgid "It is used to express the key of the tariff fraction corresponding to the description of the product to export."
+msgstr "Se utiliza para expresar la clave de la fracción arancelaria correspondiente a la descripción del producto a exportar."
 
 #. module: l10n_mx_edi_extended
 #: model:l10n_mx_edi.res.locality,name:l10n_mx_edi_extended.res_locality_mx_hid_12
@@ -1815,6 +1784,7 @@ msgstr "Linares"
 #: model:ir.model.fields,field_description:l10n_mx_edi_extended.field_res_company__l10n_mx_edi_locality_id
 #: model:ir.model.fields,field_description:l10n_mx_edi_extended.field_res_partner__l10n_mx_edi_locality_id
 #: model:ir.model.fields,field_description:l10n_mx_edi_extended.field_res_users__l10n_mx_edi_locality_id
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi_extended.mx_partner_address_form
 msgid "Locality"
 msgstr "Localidad"
 
@@ -1825,7 +1795,7 @@ msgid "Locality Name"
 msgstr "Nombre de la localidad"
 
 #. module: l10n_mx_edi_extended
-#: model_terms:ir.ui.view,arch_db:l10n_mx_edi_extended.mx_partner_address_form
+#: model_terms:ir.ui.view,arch_db:l10n_mx_edi_extended.mx_partner_address_form_inherit_l10n_mx_edi_extended
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi_extended.res_company_form_inherit_l10n_mx_edi_extended
 msgid "Locality..."
 msgstr "Localidad..."
@@ -2186,38 +2156,26 @@ msgstr "Tipo de operación"
 #. module: l10n_mx_edi_extended
 #: model:ir.model.fields,help:l10n_mx_edi_extended.field_res_partner__l10n_mx_edi_locality_id
 #: model:ir.model.fields,help:l10n_mx_edi_extended.field_res_users__l10n_mx_edi_locality_id
-msgid ""
-"Optional attribute used in the XML that serves to define the locality where "
-"the domicile is located."
-msgstr ""
-"Atributo opcional utilizado en el XML que sirve para definir la localidad "
-"donde se ubica el domicilio."
+msgid "Optional attribute used in the XML that serves to define the locality where the domicile is located."
+msgstr "Atributo opcional utilizado en el XML que sirve para definir la localidad donde se ubica el domicilio."
 
 #. module: l10n_mx_edi_extended
 #: model:ir.model.fields,help:l10n_mx_edi_extended.field_account_move_line__l10n_mx_edi_customs_number
 msgid ""
-"Optional field for entering the customs information in the case of first-"
-"hand sales of imported goods or in the case of foreign trade operations "
-"with goods or services.\n"
+"Optional field for entering the customs information in the case of first-hand sales of imported goods or in the case of foreign trade operations with goods or services.\n"
 "The format must be:\n"
 " - 2 digits of the year of validation followed by two spaces.\n"
 " - 2 digits of customs clearance followed by two spaces.\n"
 " - 4 digits of the serial number followed by two spaces.\n"
-" - 1 digit corresponding to the last digit of the current year, except in "
-"case of a consolidated customs initiated in the previous year of the "
-"original request for a rectification.\n"
+" - 1 digit corresponding to the last digit of the current year, except in case of a consolidated customs initiated in the previous year of the original request for a rectification.\n"
 " - 6 digits of the progressive numbering of the custom."
 msgstr ""
-"Campo opcional para ingresar la información aduanera en el caso de ventas "
-"de primera mano de bienes importados o en el caso de operaciones de "
-"comercio exterior con bienes o servicios.\n"
+"Campo opcional para ingresar la información aduanera en el caso de ventas de primera mano de bienes importados o en el caso de operaciones de comercio exterior con bienes o servicios.\n"
 "El formato debe ser:\n"
 " - 2 dígitos del año de validación seguidos de dos espacios.\n"
 " - 2 dígitos del despacho de aduana seguidos de dos espacios.\n"
 " - 4 dígitos del número de serie seguidos de dos espacios.\n"
-" - 1 dígito correspondiente al último dígito del año en curso, excepto en "
-"el caso de una aduana consolidada iniciada en el año anterior a la "
-"solicitud original de rectificación.\n"
+" - 1 dígito correspondiente al último dígito del año en curso, excepto en el caso de una aduana consolidada iniciada en el año anterior a la solicitud original de rectificación.\n"
 " - 6 dígitos de la numeración progresiva del pedimento."
 
 #. module: l10n_mx_edi_extended
@@ -2417,12 +2375,8 @@ msgstr "Cantidad UMT"
 
 #. module: l10n_mx_edi_extended
 #: model:ir.model.fields,help:l10n_mx_edi_extended.field_account_move_line__l10n_mx_edi_qty_umt
-msgid ""
-"Quantity expressed in the UMT from product. It is used in the attribute "
-"'CantidadAduana' in the CFDI"
-msgstr ""
-"Cantidad expresada en UMT del producto. Se utiliza en el atributo "
-"'CantidadAduana' en el CFDI"
+msgid "Quantity expressed in the UMT from product. It is used in the attribute 'CantidadAduana' in the CFDI"
+msgstr "Cantidad expresada en UMT del producto. Se utiliza en el atributo 'CantidadAduana' en el CFDI"
 
 #. module: l10n_mx_edi_extended
 #: model:l10n_mx_edi.res.locality,name:l10n_mx_edi_extended.res_locality_mx_que_01
@@ -3427,12 +3381,8 @@ msgstr "Valor unitario UMT"
 
 #. module: l10n_mx_edi_extended
 #: model:ir.model.fields,help:l10n_mx_edi_extended.field_account_move_line__l10n_mx_edi_price_unit_umt
-msgid ""
-"Unit value expressed in the UMT from product. It is used in the attribute "
-"'ValorUnitarioAduana' in the CFDI"
-msgstr ""
-"Valor unitario expresado en UMT del producto. Se utiliza en el atributo "
-"'ValorUnitarioAduana' en el CFDI"
+msgid "Unit value expressed in the UMT from product. It is used in the attribute 'ValorUnitarioAduana' in the CFDI"
+msgstr "Valor unitario expresado en UMT del producto. Se utiliza en el atributo 'ValorUnitarioAduana' en el CFDI"
 
 #. module: l10n_mx_edi_extended
 #: model:l10n_mx_edi.res.locality,name:l10n_mx_edi_extended.res_locality_mx_oax_26
@@ -3446,14 +3396,8 @@ msgstr "Unión de San Antonio"
 
 #. module: l10n_mx_edi_extended
 #: model:ir.model.fields,help:l10n_mx_edi_extended.field_l10n_mx_edi_tariff_fraction__uom_code
-msgid ""
-"UoM code related with this tariff fraction. This value is defined in the "
-"SAT catalog and will be assigned in the attribute 'UnidadAduana' in the "
-"merchandise."
-msgstr ""
-"Código UM relacionado con esta fracción arancelaria. Este valor está "
-"definido en el catálogo del SAT y será asignado en el atributo "
-"'UnidadAduana' en la mercadería."
+msgid "UoM code related with this tariff fraction. This value is defined in the SAT catalog and will be assigned in the attribute 'UnidadAduana' in the merchandise."
+msgstr "Código UM relacionado con esta fracción arancelaria. Este valor está definido en el catálogo del SAT y será asignado en el atributo 'UnidadAduana' en la mercadería."
 
 #. module: l10n_mx_edi_extended
 #: model:ir.model.fields,field_description:l10n_mx_edi_extended.field_l10n_mx_edi_tariff_fraction__uom_code
@@ -3474,33 +3418,18 @@ msgstr "Uruapan"
 #: model:ir.model.fields,help:l10n_mx_edi_extended.field_account_move_line__l10n_mx_edi_umt_aduana_id
 #: model:ir.model.fields,help:l10n_mx_edi_extended.field_product_product__l10n_mx_edi_umt_aduana_id
 #: model:ir.model.fields,help:l10n_mx_edi_extended.field_product_template__l10n_mx_edi_umt_aduana_id
-msgid ""
-"Used in complement 'Comercio Exterior' to indicate in the products the "
-"TIGIE Units of Measurement. It is based in the SAT catalog."
-msgstr ""
-"Utilizado en complemento 'Comercio Exterior' para indicar en los productos "
-"las Unidades de Medida TIGIE. Está basado en el catálogo SAT."
+msgid "Used in complement 'Comercio Exterior' to indicate in the products the TIGIE Units of Measurement. It is based in the SAT catalog."
+msgstr "Utilizado en complemento 'Comercio Exterior' para indicar en los productos las Unidades de Medida TIGIE. Está basado en el catálogo SAT."
 
 #. module: l10n_mx_edi_extended
-#: model:ir.model.fields,help:l10n_mx_edi_extended.field_account_bank_statement_import_journal_creation__l10n_mx_address_issued_id
 #: model:ir.model.fields,help:l10n_mx_edi_extended.field_account_journal__l10n_mx_address_issued_id
-msgid ""
-"Used in multiple-offices environments to fill, with the given address, the "
-"node 'ExpedidoEn' in the XML for invoices of this journal. If empty, the "
-"node won't be added."
-msgstr ""
-"Se utiliza en entornos de oficinas múltiples para rellenar, con la "
-"dirección indicada, el nodo 'ExpedidoEn' en el XML de las facturas de esta "
-"revista. Si está vacío, el nodo no se agregará."
+msgid "Used in multiple-offices environments to fill, with the given address, the node 'ExpedidoEn' in the XML for invoices of this journal. If empty, the node won't be added."
+msgstr "Se utiliza en entornos de oficinas múltiples para rellenar, con la dirección indicada, el nodo 'ExpedidoEn' en el XML de las facturas de esta revista. Si está vacío, el nodo no se agregará."
 
 #. module: l10n_mx_edi_extended
 #: model:ir.model.fields,help:l10n_mx_edi_extended.field_uom_uom__l10n_mx_edi_code_aduana
-msgid ""
-"Used in the complement of 'Comercio Exterior' to indicate in the products "
-"the UoM. It is based in the SAT catalog."
-msgstr ""
-"Utilizado en el complemento de 'Comercio Exterior' para indicar en los "
-"productos la UM. Está basado en el catálogo SAT."
+msgid "Used in the complement of 'Comercio Exterior' to indicate in the products the UoM. It is based in the SAT catalog."
+msgstr "Utilizado en el complemento de 'Comercio Exterior' para indicar en los productos la UM. Está basado en el catálogo SAT."
 
 #. module: l10n_mx_edi_extended
 #: model:l10n_mx_edi.res.locality,name:l10n_mx_edi_extended.res_locality_mx_yuc_05
@@ -3771,12 +3700,8 @@ msgstr "Zumpango del Río"
 #. module: l10n_mx_edi_extended
 #: model:ir.model.fields,help:l10n_mx_edi_extended.field_res_partner__l10n_mx_edi_external_trade
 #: model:ir.model.fields,help:l10n_mx_edi_extended.field_res_users__l10n_mx_edi_external_trade
-msgid ""
-"check this box to add by default the external trade complement in invoices "
-"for this customer."
-msgstr ""
-"marque esta casilla para agregar por defecto el complemento de comercio "
-"exterior en las facturas de este cliente."
+msgid "check this box to add by default the external trade complement in invoices for this customer."
+msgstr "marque esta casilla para agregar por defecto el complemento de comercio exterior en las facturas de este cliente."
 
 #. module: l10n_mx_edi_extended
 #: model:l10n_mx_edi.res.locality,name:l10n_mx_edi_extended.res_locality_mx_ver_50

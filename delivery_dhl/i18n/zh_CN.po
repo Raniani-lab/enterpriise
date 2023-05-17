@@ -1,27 +1,31 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* delivery_dhl
-# 
+#
 # Translators:
-# Martin Trigaux, 2019
-# Jeffery CHEN <jeffery9@gmail.com>, 2019
-# liAnGjiA <liangjia@qq.com>, 2019
-# inspur qiuguodong <qiuguodong@inspur.com>, 2019
-# Felix Yuen <fyu@odoo.com>, 2019
-# 
+# Martin Trigaux, 2022
+# 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2022
+# Jeffery CHEN <jeffery9@gmail.com>, 2022
+# Raymond Yu <cl_yu@hotmail.com>, 2022
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
-"PO-Revision-Date: 2019-08-26 09:35+0000\n"
-"Last-Translator: Felix Yuen <fyu@odoo.com>, 2019\n"
-"Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
+"POT-Creation-Date: 2023-05-16 16:01+0000\n"
+"PO-Revision-Date: 2022-09-22 05:46+0000\n"
+"Last-Translator: Raymond Yu <cl_yu@hotmail.com>, 2022\n"
+"Language-Team: Chinese (China) (https://app.transifex.com/odoo/teams/41243/zh_CN/)\n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: delivery_dhl
+#: model_terms:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form_with_provider_dhl
+msgid "'rate': {}, 'ship': {}, 'return': {}"
+msgstr "'rate': {}, 'ship': {}, 'return': {}"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__0
@@ -149,9 +153,9 @@ msgid "C - Medical Express"
 msgstr "C - 医疗快递"
 
 #. module: delivery_dhl
-#: model:ir.model.fields,field_description:delivery_dhl.field_product_packaging__package_carrier_type
+#: model:ir.model.fields,field_description:delivery_dhl.field_stock_package_type__package_carrier_type
 msgid "Carrier"
-msgstr "承运方"
+msgstr "承运商"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_package_dimension_unit__c
@@ -164,13 +168,23 @@ msgid "Check this if your package is dutiable."
 msgstr "包裹需缴税选项"
 
 #. module: delivery_dhl
+#: model_terms:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form_with_provider_dhl
+msgid "Custom Data"
+msgstr "自定义数据"
+
+#. module: delivery_dhl
+#: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_custom_data_request
+msgid "Custom data for DHL requests,"
+msgstr "DHL请求的自定义数据,"
+
+#. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__d
 msgid "D - Express Worldwide"
 msgstr "D－全球快递"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__delivery_type__dhl
-#: model:ir.model.fields.selection,name:delivery_dhl.selection__product_packaging__package_carrier_type__dhl
+#: model:ir.model.fields.selection,name:delivery_dhl.selection__stock_package_type__package_carrier_type__dhl
 msgid "DHL"
 msgstr "DHL"
 
@@ -185,9 +199,28 @@ msgid "DHL Configuration"
 msgstr "DHL配置"
 
 #. module: delivery_dhl
-#: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_default_packaging_id
-msgid "DHL Default Packaging Type"
-msgstr "DHL 默认包装类型"
+#. odoo-python
+#: code:addons/delivery_dhl/models/delivery_dhl.py:0
+#, python-format
+msgid "DHL Documents"
+msgstr "DHL文档"
+
+#. module: delivery_dhl
+#: model:delivery.carrier,name:delivery_dhl.delivery_carrier_dhl_eu_dom
+#: model:product.template,name:delivery_dhl.product_product_delivery_dhl_eu_dom_product_template
+msgid "DHL EU"
+msgstr "DHL EU"
+
+#. module: delivery_dhl
+#: model:delivery.carrier,name:delivery_dhl.delivery_carrier_dhl_eu_intl
+#: model:product.template,name:delivery_dhl.product_product_delivery_dhl_eu_intl_product_template
+msgid "DHL EU -> International"
+msgstr "DHL EU -> International"
+
+#. module: delivery_dhl
+#: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_default_package_type_id
+msgid "DHL Package Type"
+msgstr "DHL 包裹类型"
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_password
@@ -206,6 +239,7 @@ msgid "DHL Shipping Methods"
 msgstr "DHL运输方式"
 
 #. module: delivery_dhl
+#. odoo-python
 #: code:addons/delivery_dhl/models/dhl_request.py:0
 #, python-format
 msgid "DHL Site ID is missing, please modify your delivery method settings."
@@ -217,27 +251,33 @@ msgid "DHL SiteID"
 msgstr "DHL站点ID"
 
 #. module: delivery_dhl
-#: model:delivery.carrier,name:delivery_dhl.delivery_carrier_dhl_dom
-#: model:product.product,name:delivery_dhl.product_product_delivery_dhl_usa
-#: model:product.template,name:delivery_dhl.product_product_delivery_dhl_usa_product_template
-msgid "DHL USA"
-msgstr "DHL USA"
+#: model:delivery.carrier,name:delivery_dhl.delivery_carrier_dhl_us_dom
+#: model:product.template,name:delivery_dhl.product_product_delivery_dhl_us_dom_product_template
+msgid "DHL US"
+msgstr "DHL US"
 
 #. module: delivery_dhl
-#: model:delivery.carrier,name:delivery_dhl.delivery_carrier_dhl_intl
-#: model:product.product,name:delivery_dhl.product_product_delivery_dhl_intl
-#: model:product.template,name:delivery_dhl.product_product_delivery_dhl_intl_product_template
-msgid "DHL USA -> International"
-msgstr "DHL USA -> 国际"
+#: model:delivery.carrier,name:delivery_dhl.delivery_carrier_dhl_us_intl
+#: model:product.template,name:delivery_dhl.product_product_delivery_dhl_us_intl_product_template
+msgid "DHL US -> International"
+msgstr "DHL US -> International"
 
 #. module: delivery_dhl
+#. odoo-python
 #: code:addons/delivery_dhl/models/dhl_request.py:0
 #, python-format
-msgid ""
-"DHL account number is missing, please modify your delivery method settings."
+msgid "DHL account number is missing, please modify your delivery method settings."
 msgstr "DHL账号丢失，请更正你的运输方式设置"
 
 #. module: delivery_dhl
+#. odoo-python
+#: code:addons/delivery_dhl/models/dhl_request.py:0
+#, python-format
+msgid "DHL doesn't support products with name greater than 75 characters."
+msgstr "DHL不支持名称超过75字符的产品。"
+
+#. module: delivery_dhl
+#. odoo-python
 #: code:addons/delivery_dhl/models/dhl_request.py:0
 #, python-format
 msgid "DHL password is missing, please modify your delivery method settings."
@@ -252,6 +292,11 @@ msgstr "DHL关税款项"
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_dutiable
 msgid "Dutiable Material"
 msgstr "应税材料"
+
+#. module: delivery_dhl
+#: model_terms:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form_with_provider_dhl
+msgid "Duties paid by"
+msgstr "缴纳的税款"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__e
@@ -284,6 +329,13 @@ msgid "H - Economy Select"
 msgstr "H - 经济选择"
 
 #. module: delivery_dhl
+#. odoo-python
+#: code:addons/delivery_dhl/models/delivery_dhl.py:0
+#, python-format
+msgid "Hint: The destination may not require the dutiable option."
+msgstr "提示：目的地可能不需要征税选项。"
+
+#. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__i
 msgid "I - Break Bulk Economy"
 msgstr "I - 散装经济"
@@ -292,6 +344,13 @@ msgstr "I - 散装经济"
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_package_dimension_unit__i
 msgid "Inches"
 msgstr "英寸"
+
+#. module: delivery_dhl
+#. odoo-python
+#: code:addons/delivery_dhl/models/delivery_dhl.py:0
+#, python-format
+msgid "Invalid syntax for DHL custom data."
+msgstr "DHL自定义数据的语法无效"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__j
@@ -312,6 +371,11 @@ msgstr "千克"
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__l
 msgid "L - Express 10:30"
 msgstr "L - Express 10:30"
+
+#. module: delivery_dhl
+#: model_terms:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form_with_provider_dhl
+msgid "Label Format"
+msgstr "标签格式"
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_label_image_format
@@ -339,6 +403,11 @@ msgid "O - DOM Express 10:30"
 msgstr "O - DOM 快递 10:30"
 
 #. module: delivery_dhl
+#: model_terms:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form_with_provider_dhl
+msgid "Options"
+msgstr "选项"
+
+#. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__p
 msgid "P - Express Worldwide"
 msgstr "P - 全球快递"
@@ -356,9 +425,17 @@ msgstr "包裹尺寸单位"
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_package_weight_unit
 msgid "Package Weight Unit"
-msgstr "包装重量单位"
+msgstr "包裹重量单位"
 
 #. module: delivery_dhl
+#. odoo-python
+#: code:addons/delivery_dhl/models/dhl_request.py:0
+#, python-format
+msgid "Please define an incoterm in the associated sale order or set a default incoterm for the company in the accounting's settings."
+msgstr "请在关联的销售订单中定义一个国际贸易术语，或在会计设置中为公司设置一个默认的贸易术语。"
+
+#. module: delivery_dhl
+#. odoo-python
 #: code:addons/delivery_dhl/models/dhl_request.py:0
 #, python-format
 msgid "Please provide at least one item to ship."
@@ -370,14 +447,9 @@ msgid "Pounds"
 msgstr "英镑"
 
 #. module: delivery_dhl
-#: model:ir.model,name:delivery_dhl.model_product_packaging
-msgid "Product Packaging"
-msgstr "产品包装"
-
-#. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__delivery_type
 msgid "Provider"
-msgstr "供应商"
+msgstr "物流商"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__q
@@ -410,11 +482,11 @@ msgid "Sender"
 msgstr "发送者"
 
 #. module: delivery_dhl
-#: code:addons/delivery_dhl/models/delivery_dhl.py:0
+#. odoo-python
 #: code:addons/delivery_dhl/models/delivery_dhl.py:0
 #, python-format
-msgid "Shipment created into DHL <br/> <b>Tracking Number : </b>%s"
-msgstr "DHL发货 <br/> <b>运单号: </b>%s"
+msgid "Shipment created into DHL <br/> <b>Tracking Number: </b>%s"
+msgstr ""
 
 #. module: delivery_dhl
 #: model:ir.model,name:delivery_dhl.model_delivery_carrier
@@ -422,11 +494,17 @@ msgid "Shipping Methods"
 msgstr "送货方式"
 
 #. module: delivery_dhl
+#: model:ir.model,name:delivery_dhl.model_stock_package_type
+msgid "Stock package type"
+msgstr "库存包裹类型"
+
+#. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__t
 msgid "T - Express 12:00"
 msgstr "T - 快递 12:00"
 
 #. module: delivery_dhl
+#. odoo-python
 #: code:addons/delivery_dhl/models/dhl_request.py:0
 #, python-format
 msgid ""
@@ -437,6 +515,7 @@ msgstr ""
 " %s）"
 
 #. module: delivery_dhl
+#. odoo-python
 #: code:addons/delivery_dhl/models/dhl_request.py:0
 #, python-format
 msgid ""
@@ -447,33 +526,38 @@ msgstr ""
 " %s)"
 
 #. module: delivery_dhl
+#: model:ir.model.fields,help:delivery_dhl.field_delivery_carrier__dhl_custom_data_request
+msgid ""
+"The custom data in DHL is organized like the inside of a json file.\n"
+"        There are 3 possible keys: 'rate', 'ship', 'return', to which you can add your custom data.\n"
+"        More info on https://xmlportal.dhl.com/"
+msgstr ""
+"DHL中的自定义数据像json文件的内部一样组织。\n"
+"        有3个可能的键：'rate'，'ship'，'return'，您可以将自定义数据添加到其中。\n"
+"        更多资料https://xmlportal.dhl.com/"
+
+#. module: delivery_dhl
+#. odoo-python
 #: code:addons/delivery_dhl/models/dhl_request.py:0
 #, python-format
 msgid ""
-"The estimated price cannot be computed because the weight of your product is"
-" missing."
-msgstr "因为产品重量缺失所以无法估算价格"
+"The estimated shipping price cannot be computed because the weight is missing for the following product(s): \n"
+" %s"
+msgstr ""
+"因为缺少以下产品的重量，所以无法计算出估计的运输价格。\n"
+" %s"
 
 #. module: delivery_dhl
+#. odoo-python
 #: code:addons/delivery_dhl/models/delivery_dhl.py:0
 #, python-format
-msgid ""
-"There is no price available for this shipping, you should rather try with "
-"the DHL product %s"
+msgid "There is no price available for this shipping, you should rather try with the DHL product %s"
 msgstr "此运费没有价格，你应该尝试使用DHL产品%s"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__u
 msgid "U - Express Worldwide"
 msgstr "U - 全球快递"
-
-#. module: delivery_dhl
-#: model:product.product,uom_name:delivery_dhl.product_product_delivery_dhl_intl
-#: model:product.product,uom_name:delivery_dhl.product_product_delivery_dhl_usa
-#: model:product.template,uom_name:delivery_dhl.product_product_delivery_dhl_intl_product_template
-#: model:product.template,uom_name:delivery_dhl.product_product_delivery_dhl_usa_product_template
-msgid "Units"
-msgstr "单位"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__v
@@ -496,10 +580,18 @@ msgid "Y - Express 12:00"
 msgstr "Y - 快递 12:00"
 
 #. module: delivery_dhl
+#. odoo-python
 #: code:addons/delivery_dhl/models/delivery_dhl.py:0
 #, python-format
 msgid "You can't cancel DHL shipping without pickup date."
 msgstr "不能取消没有拣货日期的DHL装运"
+
+#. module: delivery_dhl
+#. odoo-python
+#: code:addons/delivery_dhl/models/delivery_dhl.py:0
+#, python-format
+msgid "You cannot delete the commercial invoice sequence."
+msgstr "您不能删除商业结算单序号。"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__z

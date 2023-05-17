@@ -1,35 +1,34 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* social_sale
-# 
+#
 # Translators:
-# Martin Trigaux, 2019
-# gdp Odoo <gdp@odoo.com>, 2019
-# Eloïse Stilmant <est@odoo.com>, 2019
-# 
+# Martin Trigaux, 2022
+# Jolien De Paepe, 2023
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-23 11:39+0000\n"
-"PO-Revision-Date: 2019-09-23 14:03+0000\n"
-"Last-Translator: Eloïse Stilmant <est@odoo.com>, 2019\n"
-"Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
+"POT-Creation-Date: 2023-05-16 16:03+0000\n"
+"PO-Revision-Date: 2022-09-22 05:49+0000\n"
+"Last-Translator: Jolien De Paepe, 2023\n"
+"Language-Team: French (https://app.transifex.com/odoo/teams/41243/fr/)\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: fr\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #. module: social_sale
 #: model_terms:ir.ui.view,arch_db:social_sale.social_post_view_kanban
-msgid "<small>Quotations:</small>"
-msgstr "<small>Devis:</small>"
+msgid "<small class=\"pe-1\">Quotations:</small>"
+msgstr "<small class=\"pe-1\">Devis :</small>"
 
 #. module: social_sale
 #: model_terms:ir.ui.view,arch_db:social_sale.social_post_view_kanban
-msgid "<small>Revenues:</small>"
-msgstr "<small>Revenus:</small>"
+msgid "<small class=\"pe-1\">Revenues:</small>"
+msgstr "<small class=\"pe-1\">Revenus :</small>"
 
 #. module: social_sale
 #: model:ir.model.fields,field_description:social_sale.field_social_post__sale_invoiced_amount
@@ -39,7 +38,7 @@ msgstr "Montant facturé"
 #. module: social_sale
 #: model:ir.model.fields,field_description:social_sale.field_social_post__sale_quotation_count
 msgid "Quotation Count"
-msgstr "Nombre de Devis"
+msgstr "Nombre de devis"
 
 #. module: social_sale
 #: model_terms:ir.ui.view,arch_db:social_sale.social_post_view_form

@@ -1,39 +1,29 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* documents_sign
-# 
+#
 # Translators:
-# Martin Trigaux, 2019
-# Johannes Croe <jcr@odoo.com>, 2019
-# Leon Grill <leg@odoo.com>, 2019
-# 
+# Martin Trigaux, 2022
+# Larissa Manderfeld, 2023
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server saas~14.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
-"PO-Revision-Date: 2019-08-26 09:35+0000\n"
-"Last-Translator: Leon Grill <leg@odoo.com>, 2019\n"
-"Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
+"POT-Creation-Date: 2023-01-17 10:16+0000\n"
+"PO-Revision-Date: 2022-09-22 05:46+0000\n"
+"Last-Translator: Larissa Manderfeld, 2023\n"
+"Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: documents_sign
 #: model:ir.model,name:documents_sign.model_documents_workflow_rule
-msgid ""
-"A set of condition and actions which will be available to all attachments "
-"matching the conditions"
-msgstr ""
-"Eine Reihe an Bedingungen und Aktionen die für alle Anhänge verfügbar sind "
-"die den Bedingungen entprechen"
-
-#. module: documents_sign
-#: model:ir.model,name:documents_sign.model_ir_attachment
-msgid "Attachment"
-msgstr "Dateianhang"
+msgid "A set of condition and actions which will be available to all attachments matching the conditions"
+msgstr "Eine Reihe an Bedingungen und Aktionen die für alle Anhänge verfügbar sind die den Bedingungen entprechen"
 
 #. module: documents_sign
 #: model:ir.model.fields,field_description:documents_sign.field_documents_workflow_rule__create_model
@@ -41,46 +31,26 @@ msgid "Create"
 msgstr "Anlegen"
 
 #. module: documents_sign
-#: model:ir.model.fields.selection,name:documents_sign.selection__documents_workflow_rule__create_model__sign_template_new
-msgid "Create signature request"
-msgstr "Signaturanforderung erstellen"
-
-#. module: documents_sign
-#: model:documents.workflow.rule,name:documents_sign.documents_sign_rule_sign_request
-#: model:documents.workflow.rule,name:documents_sign.documents_sign_rule_sign_request_finance
-msgid "Create signature template(s)"
-msgstr ""
-
-#. module: documents_sign
-#: model:ir.model.fields,field_description:documents_sign.field_sign_request__documents_tag_ids
-msgid "Document Tags"
-msgstr ""
-
-#. module: documents_sign
-#: model:ir.model.fields,field_description:documents_sign.field_sign_request__folder_id
-msgid "Document Workspace"
-msgstr ""
-
-#. module: documents_sign
-#: model:ir.model.fields,field_description:documents_sign.field_documents_workflow_rule__has_business_option
-msgid "Has Business Option"
-msgstr "Hat Geschäftsoptionen"
-
-#. module: documents_sign
+#. odoo-python
 #: code:addons/documents_sign/models/workflow.py:0
 #, python-format
 msgid "New templates"
-msgstr ""
-
-#. module: documents_sign
-#: model:documents.workflow.rule,name:documents_sign.documents_sign_rule_sign_directly
-msgid "Request a signature and sign directly"
-msgstr ""
+msgstr "Neue Vorlage"
 
 #. module: documents_sign
 #: model:ir.model.fields.selection,name:documents_sign.selection__documents_workflow_rule__create_model__sign_template_direct
-msgid "Sign directly"
-msgstr "Direkt unterschreiben"
+msgid "PDF to Sign"
+msgstr "Zu signierendes PDF"
+
+#. module: documents_sign
+#: model:documents.workflow.rule,name:documents_sign.documents_sign_rule_sign_directly
+msgid "Sign"
+msgstr "eSignatur"
+
+#. module: documents_sign
+#: model:ir.model.fields.selection,name:documents_sign.selection__documents_workflow_rule__create_model__sign_template_new
+msgid "Signature PDF Template"
+msgstr "Unterschrift PDF Vorlage"
 
 #. module: documents_sign
 #: model:ir.model,name:documents_sign.model_sign_request
@@ -95,9 +65,9 @@ msgstr "Vorlage für Signaturanfrage"
 #. module: documents_sign
 #: model:ir.model.fields,field_description:documents_sign.field_sign_template__documents_tag_ids
 msgid "Signed Document Tags"
-msgstr ""
+msgstr "Stichwörter für unterschriebene Dokumente"
 
 #. module: documents_sign
 #: model:ir.model.fields,field_description:documents_sign.field_sign_template__folder_id
 msgid "Signed Document Workspace"
-msgstr ""
+msgstr "Arbeitsbereich für unterschriebene Dokumente"

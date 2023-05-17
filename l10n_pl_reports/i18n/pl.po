@@ -10,6 +10,7 @@ msgstr ""
 "PO-Revision-Date: 2023-01-10 14:18+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -80,12 +81,8 @@ msgstr "A. Kapitał (fundusz) własny, w tym kapitał (fundusz) podstawowy"
 
 #. module: l10n_pl_reports
 #: model:account.report.line,name:l10n_pl_reports.l10n_pl_micro_pl_a
-msgid ""
-"A. Income from basic operating activities and associated, including "
-"variation in products"
-msgstr ""
-"A. Przychody podstawowej działalności operacyjnej i zrównane z nimi, w tym "
-"zmiana stanu produktów"
+msgid "A. Income from basic operating activities and associated, including variation in products"
+msgstr "A. Przychody podstawowej działalności operacyjnej i zrównane z nimi, w tym zmiana stanu produktów"
 
 #. module: l10n_pl_reports
 #: model:account.report.line,name:l10n_pl_reports.l10n_pl_small_pl_a
@@ -201,26 +198,18 @@ msgstr "F. Przychody finansowe"
 
 #. module: l10n_pl_reports
 #: model:account.report.line,name:l10n_pl_reports.l10n_pl_micro_pl_f
-msgid ""
-"F. Net profit/loss (A-B+C-D-E) (for micro-entities referred to in Article "
-"3(1a)(1), (3) and (4) and (1b) of the Act)"
-msgstr ""
-"F. Zysk/strata netto (A−B+C−D−E) (dla jednostek mikro, o których mowa w art."
-" 3 ust. 1a pkt 1, 3 i 4 oraz ust. 1b ustawy)"
+msgid "F. Net profit/loss (A-B+C-D-E) (for micro-entities referred to in Article 3(1a)(1), (3) and (4) and (1b) of the Act)"
+msgstr "F. Zysk/strata netto (A−B+C−D−E) (dla jednostek mikro, o których mowa w art. 3 ust. 1a pkt 1, 3 i 4 oraz ust. 1b ustawy)"
 
 #. module: l10n_pl_reports
 #: model:account.report.line,name:l10n_pl_reports.l10n_pl_small_pl_g
-msgid "G. Koszty finansowe"
+msgid "G. Finance costs"
 msgstr ""
 
 #. module: l10n_pl_reports
 #: model:account.report.line,name:l10n_pl_reports.l10n_pl_micro_pl_g
-msgid ""
-"G. Total net financial result (A-B+C-D-E), including: (for micro entities "
-"referred to in Article 3, paragraph 1a, item 2 of the Act)."
-msgstr ""
-"G. Wynik finansowy netto ogółem (A−B+C−D−E) (dla jednostek mikro, o których "
-"mowa w art. 3 ust. 1a pkt 2 ustawy)."
+msgid "G. Total net financial result (A-B+C-D-E), including: (for micro entities referred to in Article 3, paragraph 1a, item 2 of the Act)."
+msgstr "G. Wynik finansowy netto ogółem (A−B+C−D−E) (dla jednostek mikro, o których mowa w art. 3 ust. 1a pkt 2 ustawy)."
 
 #. module: l10n_pl_reports
 #: model:account.report.line,name:l10n_pl_reports.l10n_pl_small_pl_h
@@ -235,12 +224,8 @@ msgstr "I. Amortyzacja"
 
 #. module: l10n_pl_reports
 #: model:account.report.line,name:l10n_pl_reports.l10n_pl_small_pl_f_1
-msgid ""
-"I. Dividends and shares in profits from entities in which the entity has an "
-"equity interest"
-msgstr ""
-"I. Dywidendy i udziały w zyskach od jednostek, w których jednostka posiada "
-"zaangażowanie w kapitale"
+msgid "I. Dividends and shares in profits from entities in which the entity has an equity interest"
+msgstr "I. Dywidendy i udziały w zyskach od jednostek, w których jednostka posiada zaangażowanie w kapitale"
 
 #. module: l10n_pl_reports
 #: model:account.report.line,name:l10n_pl_reports.l10n_pl_micro_pl_g_1

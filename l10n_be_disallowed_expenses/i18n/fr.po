@@ -3,22 +3,21 @@
 # 	* l10n_be_disallowed_expenses
 #
 # Translators:
-# Cécile Collart <cco@odoo.com>, 2022
+# Martin Trigaux, 2023
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-28 10:39+0000\n"
-"PO-Revision-Date: 2023-01-10 10:13+0100\n"
-"Last-Translator: \n"
-"Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
+"POT-Creation-Date: 2023-01-10 09:42+0000\n"
+"PO-Revision-Date: 2023-02-03 07:08+0000\n"
+"Last-Translator: Martin Trigaux, 2023\n"
+"Language-Team: French (https://app.transifex.com/odoo/teams/41243/fr/)\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % "
-"1000000 == 0 ? 1 : 2;\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #. module: l10n_be_disallowed_expenses
 #: model:account.disallowed.expenses.category,name:l10n_be_disallowed_expenses.demo_disallowed_expenses_category_1212
@@ -38,14 +37,12 @@ msgstr "Primes, subsides en capital et en intérêt régionaux"
 #. module: l10n_be_disallowed_expenses
 #: model:account.disallowed.expenses.category,name:l10n_be_disallowed_expenses.demo_disallowed_expenses_category_1205
 msgid "Car expenses and capital losses on non-deductible motor vehicles"
-msgstr ""
-"Frais de voiture et moins-values sur véhicules automobiles non déductibles"
+msgstr "Frais de voiture et moins-values sur véhicules automobiles non déductibles"
 
 #. module: l10n_be_disallowed_expenses
 #: model:account.disallowed.expenses.category,name:l10n_be_disallowed_expenses.demo_disallowed_expenses_category_1206
 msgid "Car expenses up to a portion of the benefit in kind"
-msgstr ""
-"Frais de voiture à concurrence d'une quotité de l'avantage de toute nature"
+msgstr "Frais de voiture à concurrence d'une quotité de l'avantage de toute nature"
 
 #. module: l10n_be_disallowed_expenses
 #: model:account.disallowed.expenses.category,name:l10n_be_disallowed_expenses.demo_disallowed_expenses_category_1220
@@ -55,9 +52,7 @@ msgstr "Indemnités pour coupon manquant"
 #. module: l10n_be_disallowed_expenses
 #: model:account.disallowed.expenses.category,name:l10n_be_disallowed_expenses.demo_disallowed_expenses_category_1229
 msgid "Correction based on the minimum taxable income from diamond trading "
-msgstr ""
-"Correction en fonction du montant minimum du revenu net imposable issu du "
-"commerce de diamants "
+msgstr "Correction en fonction du montant minimum du revenu net imposable issu du commerce de diamants "
 
 #. module: l10n_be_disallowed_expenses
 #: model:account.disallowed.expenses.category,name:l10n_be_disallowed_expenses.demo_disallowed_expenses_category_1233
@@ -71,11 +66,8 @@ msgstr "Intérêts exagérés"
 
 #. module: l10n_be_disallowed_expenses
 #: model:account.disallowed.expenses.category,name:l10n_be_disallowed_expenses.demo_disallowed_expenses_category_1235
-msgid ""
-"Expenses of the mobility allowance up to a proportion of the benefit kind"
-msgstr ""
-"Frais de l’allocation de mobilité à concurrence d’une quotité de l’avantage "
-"de toute nature"
+msgid "Expenses of the mobility allowance up to a proportion of the benefit kind"
+msgstr "Frais de l’allocation de mobilité à concurrence d’une quotité de l’avantage de toute nature"
 
 #. module: l10n_be_disallowed_expenses
 #: model:account.disallowed.expenses.category,name:l10n_be_disallowed_expenses.demo_disallowed_expenses_category_1232
@@ -139,23 +131,13 @@ msgstr "Autres dépenses non admises"
 
 #. module: l10n_be_disallowed_expenses
 #: model:account.disallowed.expenses.category,name:l10n_be_disallowed_expenses.demo_disallowed_expenses_category_1226
-msgid ""
-"Positive corrections in application under Diamond Scheme. Positive "
-"difference between the gross profit determined on a flat-rate basis and the "
-"gross profit determined on an accounting basis"
-msgstr ""
-"Corrections positives en application du Régime DiamantDifférence positive "
-"entre le bénéfice brut déterminé forfaitairement et le bénéfice brut "
-"déterminé comptablement"
+msgid "Positive corrections in application under Diamond Scheme. Positive difference between the gross profit determined on a flat-rate basis and the gross profit determined on an accounting basis"
+msgstr "Corrections positives en application du Régime DiamantDifférence positive entre le bénéfice brut déterminé forfaitairement et le bénéfice brut déterminé comptablement"
 
 #. module: l10n_be_disallowed_expenses
 #: model:account.disallowed.expenses.category,name:l10n_be_disallowed_expenses.demo_disallowed_expenses_category_1228
-msgid ""
-"Positive difference between the reference income for a corporate executive "
-"and the income of the highest corporate executive"
-msgstr ""
-"Différence positive entre la rémunération de référence pour un dirigeant "
-"d’entreprise et la rémunération de dirigeant d’entreprise la plus élevée"
+msgid "Positive difference between the reference income for a corporate executive and the income of the highest corporate executive"
+msgstr "Différence positive entre la rémunération de référence pour un dirigeant d’entreprise et la rémunération de dirigeant d’entreprise la plus élevée"
 
 #. module: l10n_be_disallowed_expenses
 #: model:account.disallowed.expenses.category,name:l10n_be_disallowed_expenses.demo_disallowed_expenses_category_1217
@@ -169,12 +151,8 @@ msgstr "Impôts, taxes et rétributions régionaux"
 
 #. module: l10n_be_disallowed_expenses
 #: model:account.disallowed.expenses.category,name:l10n_be_disallowed_expenses.demo_disallowed_expenses_category_1231
-msgid ""
-"Resumption of deduction for innovation income following non-reinvestment in "
-"qualifying expenses"
-msgstr ""
-"Reprise de déduction pour revenus d’innovation suite au non remploi en "
-"dépenses qualifiantes"
+msgid "Resumption of deduction for innovation income following non-reinvestment in qualifying expenses"
+msgstr "Reprise de déduction pour revenus d’innovation suite au non remploi en dépenses qualifiantes"
 
 #. module: l10n_be_disallowed_expenses
 #: model:account.disallowed.expenses.category,name:l10n_be_disallowed_expenses.demo_disallowed_expenses_category_1218
@@ -183,12 +161,8 @@ msgstr "Reprises d'exonérations antérieures"
 
 #. module: l10n_be_disallowed_expenses
 #: model:account.disallowed.expenses.category,name:l10n_be_disallowed_expenses.demo_disallowed_expenses_category_1230
-msgid ""
-"Reversal of deduction for innovation income in the event of staggering of "
-"historical costs"
-msgstr ""
-"Reprise de déduction pour revenus d’innovation en cas d’étalement des frais "
-"historiques"
+msgid "Reversal of deduction for innovation income in the event of staggering of historical costs"
+msgstr "Reprise de déduction pour revenus d’innovation en cas d’étalement des frais historiques"
 
 #. module: l10n_be_disallowed_expenses
 #: model:account.disallowed.expenses.category,name:l10n_be_disallowed_expenses.demo_disallowed_expenses_category_1214

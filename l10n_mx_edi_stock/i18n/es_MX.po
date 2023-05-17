@@ -6,15 +6,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 14.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-01-10 18:18+0000\n"
+"POT-Creation-Date: 2022-01-13 09:07+0000\n"
 "PO-Revision-Date: 2022-01-13 10:36+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
+"Language: es_MX\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: \n"
-"Language: es_MX\n"
 "X-Generator: Poedit 2.3\n"
 
 #. module: l10n_mx_edi_stock
@@ -182,16 +182,12 @@ msgstr "Arrendador"
 
 #. module: l10n_mx_edi_stock
 #: model:ir.model.fields.selection,name:l10n_mx_edi_stock.selection__l10n_mx_edi_vehicle__transport_perm_sct__tpaf19
-msgid ""
-"Autorización expresa para circular en los caminos y puentes de jurisdicción federal con "
-"configuraciones de tractocamión doblemente articulado."
+msgid "Autorización expresa para circular en los caminos y puentes de jurisdicción federal con configuraciones de tractocamión doblemente articulado."
 msgstr ""
 
 #. module: l10n_mx_edi_stock
 #: model:ir.model.fields.selection,name:l10n_mx_edi_stock.selection__l10n_mx_edi_vehicle__transport_perm_sct__tpaf11
-msgid ""
-"Autotransporte Federal de Carga Especializada cuyo ámbito de aplicación comprende la "
-"franja fronteriza con Estados Unidos."
+msgid "Autotransporte Federal de Carga Especializada cuyo ámbito de aplicación comprende la franja fronteriza con Estados Unidos."
 msgstr ""
 
 #. module: l10n_mx_edi_stock
@@ -206,9 +202,7 @@ msgstr ""
 
 #. module: l10n_mx_edi_stock
 #: model:ir.model.fields.selection,name:l10n_mx_edi_stock.selection__l10n_mx_edi_vehicle__transport_perm_sct__tpaf10
-msgid ""
-"Autotransporte Federal de Carga General cuyo ámbito de aplicación comprende la franja "
-"fronteriza con Estados Unidos."
+msgid "Autotransporte Federal de Carga General cuyo ámbito de aplicación comprende la franja fronteriza con Estados Unidos."
 msgstr ""
 
 #. module: l10n_mx_edi_stock
@@ -223,9 +217,7 @@ msgstr ""
 
 #. module: l10n_mx_edi_stock
 #: model:ir.model.fields.selection,name:l10n_mx_edi_stock.selection__l10n_mx_edi_vehicle__transport_perm_sct__tpaf09
-msgid ""
-"Autotransporte internacional de carga especializada de materiales y residuos peligrosos "
-"de largo recorrido."
+msgid "Autotransporte internacional de carga especializada de materiales y residuos peligrosos de largo recorrido."
 msgstr ""
 
 #. module: l10n_mx_edi_stock
@@ -295,8 +287,7 @@ msgstr ""
 
 #. module: l10n_mx_edi_stock
 #: model:ir.model.fields.selection,name:l10n_mx_edi_stock.selection__l10n_mx_edi_vehicle__vehicle_config__c3
-msgid ""
-"Camión Unitario (2 llantas en el eje delantero y 6 o 8 llantas en los dos ejes traseros)"
+msgid "Camión Unitario (2 llantas en el eje delantero y 6 o 8 llantas en los dos ejes traseros)"
 msgstr ""
 
 #. module: l10n_mx_edi_stock
@@ -352,9 +343,7 @@ msgstr "Computar Distancia"
 
 #. module: l10n_mx_edi_stock
 #: model:ir.model.fields.selection,name:l10n_mx_edi_stock.selection__l10n_mx_edi_vehicle__transport_perm_sct__tpta01
-msgid ""
-"Concesión y/o autorización para el servicio regular nacional y/o internacional para "
-"empresas mexicanas"
+msgid "Concesión y/o autorización para el servicio regular nacional y/o internacional para empresas mexicanas"
 msgstr ""
 
 #. module: l10n_mx_edi_stock
@@ -486,17 +475,13 @@ msgstr "Folio Fiscal"
 #: model_terms:ir.actions.act_window,help:l10n_mx_edi_stock.l10n_mx_edi_vehicle_actions
 msgid ""
 "For delivery guides that use federal highways (federal transportation),\n"
-"            you need to supply lots of information about the vehicle setup you are "
-"using.\n"
-"            It defines not only the vehicle itself, but also which trailers or drivers "
-"you\n"
+"            you need to supply lots of information about the vehicle setup you are using.\n"
+"            It defines not only the vehicle itself, but also which trailers or drivers you\n"
 "            are using, so you could have multiple setups for the same vehicle."
 msgstr ""
 "Para las Carta Porte que usen Carreteras Federales (Autotransporte Federal),\n"
-"            se necesita suministrar información sobre la configuración vehicular "
-"utilizada.\n"
-"            No solo se define el vehículo, sino también los remolques y el conductor "
-"utilizado,\n"
+"            se necesita suministrar información sobre la configuración vehicular utilizada.\n"
+"            No solo se define el vehículo, sino también los remolques y el conductor utilizado,\n"
 "            por tal motivo podrías tener múltiples configuraciones para el mismo vehículo."
 
 #. module: l10n_mx_edi_stock
@@ -582,12 +567,8 @@ msgstr "Ignorar"
 
 #. module: l10n_mx_edi_stock
 #: model:ir.model.fields,help:l10n_mx_edi_stock.field_l10n_mx_edi_vehicle__figure_ids
-msgid ""
-"Information corresponding to the transport intermediaries, as well as those taxpayers "
-"related to the transportation method used to transport the goods"
-msgstr ""
-"La información respecto a los intermediarios, como a los contribuyentes relacionados al "
-"método de transporte utilizado para transportar los bienes"
+msgid "Information corresponding to the transport intermediaries, as well as those taxpayers related to the transportation method used to transport the goods"
+msgstr "La información respecto a los intermediarios, como a los contribuyentes relacionados al método de transporte utilizado para transportar los bienes"
 
 #. module: l10n_mx_edi_stock
 #: model:ir.model.fields,field_description:l10n_mx_edi_stock.field_l10n_mx_edi_vehicle__transport_insurer
@@ -663,12 +644,8 @@ msgstr "Licencia"
 
 #. module: l10n_mx_edi_stock
 #: model:ir.model.fields,help:l10n_mx_edi_stock.field_l10n_mx_edi_vehicle__vehicle_licence
-msgid ""
-"License plate number of the vehicle in which the goods are transferred. Alphanumeric "
-"characters only, no dashes and/or spaces"
-msgstr ""
-"El número de la Placa del vehículo en el cual los bienes son transportados.Sólo "
-"caracteres alfanuméricos, sin guiones y/o espacios"
+msgid "License plate number of the vehicle in which the goods are transferred. Alphanumeric characters only, no dashes and/or spaces"
+msgstr "El número de la Placa del vehículo en el cual los bienes son transportados.Sólo caracteres alfanuméricos, sin guiones y/o espacios"
 
 #. module: l10n_mx_edi_stock
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi_stock.view_picking_edi_form
@@ -846,12 +823,8 @@ msgstr ""
 
 #. module: l10n_mx_edi_stock
 #: model:ir.model.fields,help:l10n_mx_edi_stock.field_l10n_mx_edi_figure__operator_id
-msgid ""
-"Register the contact that is involved depending on its responsibility in the transport "
-"(Operador, Propietario, Arrendador, Notificado)"
-msgstr ""
-"Registrar el contacto involucrado dependiendo de su responsabilidad en el transporte "
-"(Operador, Propietario, Arrendador, Notificado)"
+msgid "Register the contact that is involved depending on its responsibility in the transport (Operador, Propietario, Arrendador, Notificado)"
+msgstr "Registrar el contacto involucrado dependiendo de su responsabilidad en el transporte (Operador, Propietario, Arrendador, Notificado)"
 
 #. module: l10n_mx_edi_stock
 #: model_terms:ir.ui.view,arch_db:l10n_mx_edi_stock.view_picking_edi_form
@@ -895,9 +868,7 @@ msgstr ""
 
 #. module: l10n_mx_edi_stock
 #: model:ir.model.fields.selection,name:l10n_mx_edi_stock.selection__l10n_mx_edi_vehicle__transport_perm_sct__tpaf13
-msgid ""
-"Servicio auxiliar de servicios de arrastre, arrastre y salvamento, y depósito de "
-"vehículos en las vías generales de comunicación."
+msgid "Servicio auxiliar de servicios de arrastre, arrastre y salvamento, y depósito de vehículos en las vías generales de comunicación."
 msgstr ""
 
 #. module: l10n_mx_edi_stock
@@ -932,12 +903,8 @@ msgstr "Especificar el Folio Fiscal existente a ser reemplazado. Preponer con '0
 
 #. module: l10n_mx_edi_stock
 #: model:ir.model.fields,help:l10n_mx_edi_stock.field_stock_picking__l10n_mx_edi_transport_type
-msgid ""
-"Specify the transportation method. The Delivery Guide will contain the Complemento Carta "
-"Porte only when federal transport is used"
-msgstr ""
-"Especificar el método de transporte.La Carta porte contendrá el Complemento Carta Porte "
-"sólo cuando se utilice Autotransporte Federal"
+msgid "Specify the transportation method. The Delivery Guide will contain the Complemento Carta Porte only when federal transport is used"
+msgstr "Especificar el método de transporte.La Carta porte contendrá el Complemento Carta Porte sólo cuando se utilice Autotransporte Federal"
 
 #. module: l10n_mx_edi_stock
 #: model:ir.model.fields.selection,name:l10n_mx_edi_stock.selection__stock_picking__l10n_mx_edi_sat_status__none
@@ -969,12 +936,8 @@ msgstr "El CFDI Carta Porte a sido timbrado con éxito."
 #. module: l10n_mx_edi_stock
 #: code:addons/l10n_mx_edi_stock/models/stock_picking.py:0
 #, python-format
-msgid ""
-"The Delivery Guide is only available for shipping in MX. You might want to install comex "
-"features"
-msgstr ""
-"La Carta Porte está sólo disponible para transportes en México. Tal vez quiera instalar "
-"las funcionalidades COMEX desde las aplicaciones"
+msgid "The Delivery Guide is only available for shipping in MX. You might want to install comex features"
+msgstr "La Carta Porte está sólo disponible para transportes en México. Tal vez quiera instalar las funcionalidades COMEX desde las aplicaciones"
 
 #. module: l10n_mx_edi_stock
 #: model:ir.model.fields,help:l10n_mx_edi_stock.field_stock_picking__country_code
@@ -1009,9 +972,7 @@ msgstr "Tipo de vehículo usado"
 #: code:addons/l10n_mx_edi_stock/models/l10n_mx_edi_vehicle.py:0
 #, python-format
 msgid "The vehicle intermediaries must contain at least one intermediary of type: Operator"
-msgstr ""
-"Los intermediarios del vehículo deben contener al menos uno con el siguiente tipo: "
-"Operador"
+msgstr "Los intermediarios del vehículo deben contener al menos uno con el siguiente tipo: Operador"
 
 #. module: l10n_mx_edi_stock
 #: model:ir.model.fields,help:l10n_mx_edi_stock.field_stock_picking__l10n_mx_edi_vehicle_id
@@ -1041,115 +1002,87 @@ msgstr ""
 
 #. module: l10n_mx_edi_stock
 #: model:ir.model.fields.selection,name:l10n_mx_edi_stock.selection__l10n_mx_edi_vehicle__vehicle_config__t3s3
-msgid ""
-"Tractocamión Articulado (10 llantas en el tractocamión, 12 llantas en el semirremolque)"
+msgid "Tractocamión Articulado (10 llantas en el tractocamión, 12 llantas en el semirremolque)"
 msgstr ""
 
 #. module: l10n_mx_edi_stock
 #: model:ir.model.fields.selection,name:l10n_mx_edi_stock.selection__l10n_mx_edi_vehicle__vehicle_config__t3s1
-msgid ""
-"Tractocamión Articulado (10 llantas en el tractocamión, 4 llantas en el semirremolque)"
+msgid "Tractocamión Articulado (10 llantas en el tractocamión, 4 llantas en el semirremolque)"
 msgstr ""
 
 #. module: l10n_mx_edi_stock
 #: model:ir.model.fields.selection,name:l10n_mx_edi_stock.selection__l10n_mx_edi_vehicle__vehicle_config__t3s2
-msgid ""
-"Tractocamión Articulado (10 llantas en el tractocamión, 8 llantas en el semirremolque)"
+msgid "Tractocamión Articulado (10 llantas en el tractocamión, 8 llantas en el semirremolque)"
 msgstr ""
 
 #. module: l10n_mx_edi_stock
 #: model:ir.model.fields.selection,name:l10n_mx_edi_stock.selection__l10n_mx_edi_vehicle__vehicle_config__t2s3
-msgid ""
-"Tractocamión Articulado (6 llantas en el tractocamión, 12 llantas en el semirremolque)"
+msgid "Tractocamión Articulado (6 llantas en el tractocamión, 12 llantas en el semirremolque)"
 msgstr ""
 
 #. module: l10n_mx_edi_stock
 #: model:ir.model.fields.selection,name:l10n_mx_edi_stock.selection__l10n_mx_edi_vehicle__vehicle_config__t2s1
-msgid ""
-"Tractocamión Articulado (6 llantas en el tractocamión, 4 llantas en el semirremolque)"
+msgid "Tractocamión Articulado (6 llantas en el tractocamión, 4 llantas en el semirremolque)"
 msgstr ""
 
 #. module: l10n_mx_edi_stock
 #: model:ir.model.fields.selection,name:l10n_mx_edi_stock.selection__l10n_mx_edi_vehicle__vehicle_config__t2s2
-msgid ""
-"Tractocamión Articulado (6 llantas en el tractocamión, 8 llantas en el semirremolque)"
+msgid "Tractocamión Articulado (6 llantas en el tractocamión, 8 llantas en el semirremolque)"
 msgstr ""
 
 #. module: l10n_mx_edi_stock
 #: model:ir.model.fields.selection,name:l10n_mx_edi_stock.selection__l10n_mx_edi_vehicle__vehicle_config__t3s1r3
-msgid ""
-"Tractocamión Semirremolque-Remolque (10 llantas en el tractocamión, 4 llantas en el "
-"semirremolque y 12 llantas en el remolque)"
+msgid "Tractocamión Semirremolque-Remolque (10 llantas en el tractocamión, 4 llantas en el semirremolque y 12 llantas en el remolque)"
 msgstr ""
 
 #. module: l10n_mx_edi_stock
 #: model:ir.model.fields.selection,name:l10n_mx_edi_stock.selection__l10n_mx_edi_vehicle__vehicle_config__t3s1r2
-msgid ""
-"Tractocamión Semirremolque-Remolque (10 llantas en el tractocamión, 4 llantas en el "
-"semirremolque y 8 llantas en el remolque)"
+msgid "Tractocamión Semirremolque-Remolque (10 llantas en el tractocamión, 4 llantas en el semirremolque y 8 llantas en el remolque)"
 msgstr ""
 
 #. module: l10n_mx_edi_stock
 #: model:ir.model.fields.selection,name:l10n_mx_edi_stock.selection__l10n_mx_edi_vehicle__vehicle_config__t3s2r3
-msgid ""
-"Tractocamión Semirremolque-Remolque (10 llantas en el tractocamión, 8 llantas en el "
-"semirremolque y 12 llantas en el remolque)"
+msgid "Tractocamión Semirremolque-Remolque (10 llantas en el tractocamión, 8 llantas en el semirremolque y 12 llantas en el remolque)"
 msgstr ""
 
 #. module: l10n_mx_edi_stock
 #: model:ir.model.fields.selection,name:l10n_mx_edi_stock.selection__l10n_mx_edi_vehicle__vehicle_config__t3s2r4
-msgid ""
-"Tractocamión Semirremolque-Remolque (10 llantas en el tractocamión, 8 llantas en el "
-"semirremolque y 16 llantas en el remolque)"
+msgid "Tractocamión Semirremolque-Remolque (10 llantas en el tractocamión, 8 llantas en el semirremolque y 16 llantas en el remolque)"
 msgstr ""
 
 #. module: l10n_mx_edi_stock
 #: model:ir.model.fields.selection,name:l10n_mx_edi_stock.selection__l10n_mx_edi_vehicle__vehicle_config__t3s2r2
-msgid ""
-"Tractocamión Semirremolque-Remolque (10 llantas en el tractocamión, 8 llantas en el "
-"semirremolque y 8 llantas en el remolque)"
+msgid "Tractocamión Semirremolque-Remolque (10 llantas en el tractocamión, 8 llantas en el semirremolque y 8 llantas en el remolque)"
 msgstr ""
 
 #. module: l10n_mx_edi_stock
 #: model:ir.model.fields.selection,name:l10n_mx_edi_stock.selection__l10n_mx_edi_vehicle__vehicle_config__t2s1r3
-msgid ""
-"Tractocamión Semirremolque-Remolque (6 llantas en el tractocamión, 4 llantas en el "
-"semirremolque y 12 llantas en el remolque)"
+msgid "Tractocamión Semirremolque-Remolque (6 llantas en el tractocamión, 4 llantas en el semirremolque y 12 llantas en el remolque)"
 msgstr ""
 
 #. module: l10n_mx_edi_stock
 #: model:ir.model.fields.selection,name:l10n_mx_edi_stock.selection__l10n_mx_edi_vehicle__vehicle_config__t2s1r2
-msgid ""
-"Tractocamión Semirremolque-Remolque (6 llantas en el tractocamión, 4 llantas en el "
-"semirremolque y 8 llantas en el remolque)"
+msgid "Tractocamión Semirremolque-Remolque (6 llantas en el tractocamión, 4 llantas en el semirremolque y 8 llantas en el remolque)"
 msgstr ""
 
 #. module: l10n_mx_edi_stock
 #: model:ir.model.fields.selection,name:l10n_mx_edi_stock.selection__l10n_mx_edi_vehicle__vehicle_config__t2s2r2
-msgid ""
-"Tractocamión Semirremolque-Remolque (6 llantas en el tractocamión, 8 llantas en el "
-"semirremolque y 8 llantas en el remolque)"
+msgid "Tractocamión Semirremolque-Remolque (6 llantas en el tractocamión, 8 llantas en el semirremolque y 8 llantas en el remolque)"
 msgstr ""
 
 #. module: l10n_mx_edi_stock
 #: model:ir.model.fields.selection,name:l10n_mx_edi_stock.selection__l10n_mx_edi_vehicle__vehicle_config__t3s3s2
-msgid ""
-"Tractocamión Semirremolque-Semirremolque (10 llantas en el tractocamión, 12 llantas en el "
-"semirremolque delantero y 8 llantas en el semirremolque trasero)"
+msgid "Tractocamión Semirremolque-Semirremolque (10 llantas en el tractocamión, 12 llantas en el semirremolque delantero y 8 llantas en el semirremolque trasero)"
 msgstr ""
 
 #. module: l10n_mx_edi_stock
 #: model:ir.model.fields.selection,name:l10n_mx_edi_stock.selection__l10n_mx_edi_vehicle__vehicle_config__t3s2s2
-msgid ""
-"Tractocamión Semirremolque-Semirremolque (10 llantas en el tractocamión, 8 llantas en el "
-"semirremolque delantero y 8 llantas en el semirremolque trasero)"
+msgid "Tractocamión Semirremolque-Semirremolque (10 llantas en el tractocamión, 8 llantas en el semirremolque delantero y 8 llantas en el semirremolque trasero)"
 msgstr ""
 
 #. module: l10n_mx_edi_stock
 #: model:ir.model.fields.selection,name:l10n_mx_edi_stock.selection__l10n_mx_edi_vehicle__vehicle_config__t2s2s2
-msgid ""
-"Tractocamión Semirremolque-Semirremolque (6 llantas en el tractocamión, 8 llantas en el "
-"semirremolque delantero y 8 llantas en el semirremolque trasero)"
+msgid "Tractocamión Semirremolque-Semirremolque (6 llantas en el tractocamión, 8 llantas en el semirremolque delantero y 8 llantas en el semirremolque trasero)"
 msgstr ""
 
 #. module: l10n_mx_edi_stock
@@ -1194,9 +1127,7 @@ msgstr ""
 
 #. module: l10n_mx_edi_stock
 #: model:ir.model.fields.selection,name:l10n_mx_edi_stock.selection__l10n_mx_edi_vehicle__transport_perm_sct__tpaf15
-msgid ""
-"Transporte especial para el tránsito de grúas industriales con peso máximo de 90 "
-"toneladas."
+msgid "Transporte especial para el tránsito de grúas industriales con peso máximo de 90 toneladas."
 msgstr ""
 
 #. module: l10n_mx_edi_stock
@@ -1264,8 +1195,7 @@ msgstr "Configuraciones del Vehículo (MX)"
 
 #. module: l10n_mx_edi_stock
 #: model:ir.model.fields.selection,name:l10n_mx_edi_stock.selection__l10n_mx_edi_vehicle__vehicle_config__vl
-msgid ""
-"Vehículo ligero de carga (2 llantas en el eje delantero y 2 llantas en el eje trasero)"
+msgid "Vehículo ligero de carga (2 llantas en el eje delantero y 2 llantas en el eje trasero)"
 msgstr ""
 
 #. module: l10n_mx_edi_stock

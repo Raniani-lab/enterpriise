@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-03 09:29+0000\n"
+"POT-Creation-Date: 2023-01-03 09:25+0000\n"
 "PO-Revision-Date: 2023-01-10 15:29+0100\n"
 "Last-Translator: \n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
@@ -20,8 +20,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
-"&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
+"Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.advantage,name:l10n_be_hr_contract_salary.l10n_be_thirteen_month
@@ -91,9 +90,7 @@ msgstr ""
 
 #. module: l10n_be_hr_contract_salary
 #: model:ir.model.fields,help:l10n_be_hr_contract_salary.field_generate_simulation_link__car_id
-msgid ""
-"Default employee's company car. If left empty, the default value will be "
-"the employee's current car."
+msgid "Default employee's company car. If left empty, the default value will be the employee's current car."
 msgstr ""
 
 #. module: l10n_be_hr_contract_salary
@@ -218,9 +215,7 @@ msgstr ""
 
 #. module: l10n_be_hr_contract_salary
 #: model:ir.model.fields,help:l10n_be_hr_contract_salary.field_hr_job__l10n_be_contract_withholding_taxes_exemption
-msgid ""
-"If checked, the job position will grant a withholding taxes exemption to "
-"eligible employees"
+msgid "If checked, the job position will grant a withholding taxes exemption to eligible employees"
 msgstr ""
 
 #. module: l10n_be_hr_contract_salary
@@ -411,9 +406,7 @@ msgstr "أعزب"
 #. odoo-python
 #: code:addons/l10n_be_hr_contract_salary/controllers/main.py:0
 #, python-format
-msgid ""
-"Sorry, the selected car has been selected by someone else. Please refresh "
-"and try again."
+msgid "Sorry, the selected car has been selected by someone else. Please refresh and try again."
 msgstr ""
 
 #. module: l10n_be_hr_contract_salary
@@ -433,18 +426,14 @@ msgstr "الحالة المهنية للشريك"
 
 #. module: l10n_be_hr_contract_salary
 #: model:ir.model.fields,help:l10n_be_hr_contract_salary.field_generate_simulation_link__new_car
-msgid ""
-"The employee will be able to choose a new car even if the maximum number of "
-"used cars available is reached."
+msgid "The employee will be able to choose a new car even if the maximum number of used cars available is reached."
 msgstr ""
 
 #. module: l10n_be_hr_contract_salary
 #. odoo-python
 #: code:addons/l10n_be_hr_contract_salary/controllers/main.py:0
 #, python-format
-msgid ""
-"This contract is a full time credit time... No simulation can be done for "
-"this type of contract as its wage is equal to 0."
+msgid "This contract is a full time credit time... No simulation can be done for this type of contract as its wage is equal to 0."
 msgstr ""
 
 #. module: l10n_be_hr_contract_salary

@@ -1,27 +1,23 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
 # 	* mrp_workorder_iot
-# 
+#
 # Translators:
-# Leon Grill <leg@odoo.com>, 2019
-# darenkster <inactive+darenkster@transifex.com>, 2019
-# Christian Oechsner <carinachristian@gmail.com>, 2019
-# Johannes Croe <jcr@odoo.com>, 2019
-# Martin Trigaux, 2019
-# Chris Egal <sodaswed@web.de>, 2019
-# 
+# Martin Trigaux, 2022
+# Larissa Manderfeld, 2023
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-09 11:58+0000\n"
-"PO-Revision-Date: 2019-08-26 09:37+0000\n"
-"Last-Translator: Chris Egal <sodaswed@web.de>, 2019\n"
-"Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
+"POT-Creation-Date: 2023-05-16 16:01+0000\n"
+"PO-Revision-Date: 2022-09-22 05:47+0000\n"
+"Last-Translator: Larissa Manderfeld, 2023\n"
+"Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
-"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: mrp_workorder_iot
@@ -30,9 +26,9 @@ msgid "Action"
 msgstr "Aktion"
 
 #. module: mrp_workorder_iot
-#: model:ir.model.fields,field_description:mrp_workorder_iot.field_mrp_workorder__boxes
+#: model:ir.model.fields,field_description:mrp_workorder_iot.field_quality_check__boxes
 msgid "Boxes"
-msgstr "Karton"
+msgstr "Kartons"
 
 #. module: mrp_workorder_iot
 #: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__cancel
@@ -42,12 +38,12 @@ msgstr "Abbrechen"
 #. module: mrp_workorder_iot
 #: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__clomo
 msgid "Close MO"
-msgstr ""
+msgstr "MO schließen"
 
 #. module: mrp_workorder_iot
 #: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__clowo
 msgid "Close WO"
-msgstr ""
+msgstr "Schließen WO"
 
 #. module: mrp_workorder_iot
 #: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__create_uid
@@ -65,19 +61,9 @@ msgid "Device"
 msgstr "Gerät"
 
 #. module: mrp_workorder_iot
-#: model:ir.model.fields,field_description:mrp_workorder_iot.field_mrp_workorder__device_name
-msgid "Device Name: "
-msgstr "Gerätename:"
-
-#. module: mrp_workorder_iot
 #: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__display_name
 msgid "Display Name"
 msgstr "Anzeigename"
-
-#. module: mrp_workorder_iot
-#: model:ir.model.fields,field_description:mrp_workorder_iot.field_mrp_workorder__ip
-msgid "Domain Address"
-msgstr ""
 
 #. module: mrp_workorder_iot
 #: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__finish
@@ -100,15 +86,10 @@ msgid "IOT Trigger"
 msgstr "IOT Auslöser"
 
 #. module: mrp_workorder_iot
-#: model:ir.model.fields,field_description:mrp_workorder_iot.field_mrp_workorder__identifier
-msgid "Identifier"
-msgstr "ID"
-
-#. module: mrp_workorder_iot
 #: model_terms:ir.ui.view,arch_db:mrp_workorder_iot.iot_device_view_form
 #: model_terms:ir.ui.view,arch_db:mrp_workorder_iot.mrp_workcenter_view_form_iot
 msgid "IoT Triggers"
-msgstr ""
+msgstr "IoT Auslöser"
 
 #. module: mrp_workorder_iot
 #: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__key
@@ -116,14 +97,9 @@ msgid "Key"
 msgstr "Schlüssel"
 
 #. module: mrp_workorder_iot
-#: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger____last_update
-msgid "Last Modified on"
-msgstr "Letzte Änderung am"
-
-#. module: mrp_workorder_iot
 #: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__write_uid
 msgid "Last Updated by"
-msgstr "Zuletzt aktualisiert von"
+msgstr "Zuletzt aktualisiert durch"
 
 #. module: mrp_workorder_iot
 #: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__write_date
@@ -146,14 +122,21 @@ msgid "Pause"
 msgstr "Pause"
 
 #. module: mrp_workorder_iot
+#. odoo-javascript
+#: code:addons/mrp_workorder_iot/static/src/pedal_status_button/pedal_status_button.xml:0
+#, python-format
+msgid "Pedal Status"
+msgstr "Pedal-Status"
+
+#. module: mrp_workorder_iot
 #: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__prev
 msgid "Previous"
-msgstr "Vorherige"
+msgstr "Zurück"
 
 #. module: mrp_workorder_iot
 #: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__print-slip
 msgid "Print Delivery Slip"
-msgstr ""
+msgstr "Lieferschein drucken"
 
 #. module: mrp_workorder_iot
 #: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__print
@@ -163,7 +146,12 @@ msgstr "Labels drucken"
 #. module: mrp_workorder_iot
 #: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__print-op
 msgid "Print Operation"
-msgstr ""
+msgstr "Druckvorgang"
+
+#. module: mrp_workorder_iot
+#: model:ir.model,name:mrp_workorder_iot.model_quality_check
+msgid "Quality Check"
+msgstr "Qualitätskontrolle"
 
 #. module: mrp_workorder_iot
 #: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__record
@@ -178,7 +166,7 @@ msgstr "Ausschuss melden"
 #. module: mrp_workorder_iot
 #: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__sequence
 msgid "Sequence"
-msgstr "Sequenz"
+msgstr "Reihenfolge"
 
 #. module: mrp_workorder_iot
 #: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__skip
@@ -198,7 +186,7 @@ msgstr "Auslöser"
 #. module: mrp_workorder_iot
 #: model:ir.model.fields,field_description:mrp_workorder_iot.field_mrp_workcenter__trigger_ids
 msgid "Triggers"
-msgstr ""
+msgstr "Trigger"
 
 #. module: mrp_workorder_iot
 #: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__validate
@@ -209,11 +197,6 @@ msgstr "Bestätigen"
 #: model:ir.model,name:mrp_workorder_iot.model_mrp_workcenter
 msgid "Work Center"
 msgstr "Arbeitsplatz"
-
-#. module: mrp_workorder_iot
-#: model:ir.model,name:mrp_workorder_iot.model_mrp_workorder
-msgid "Work Order"
-msgstr "Arbeitsauftrag"
 
 #. module: mrp_workorder_iot
 #: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__workcenter_id

@@ -6,10 +6,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.1alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-07 13:43+0000\n"
+"POT-Creation-Date: 2022-11-07 13:42+0000\n"
 "PO-Revision-Date: 2022-11-07 13:43+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
@@ -100,9 +101,7 @@ msgstr "AP | Avances et acomptes versés sur immobilisations"
 
 #. module: l10n_syscohada_reports
 #: model:account.report.expression,report_line_name:l10n_syscohada_reports.account_financial_report_line_02_5_syscohada_bilan_actif_balance
-#: model:account.report.expression,report_line_name:l10n_syscohada_reports.account_financial_report_line_03_2_1_syscohada_bilan_actif_balance
 #: model:account.report.line,name:l10n_syscohada_reports.account_financial_report_line_02_5_syscohada_bilan_actif
-#: model:account.report.line,name:l10n_syscohada_reports.account_financial_report_line_03_2_1_syscohada_bilan_actif
 msgid "AQ | EQUITY SECURITIES"
 msgstr "AQ | IMMOBILISATIONS FINANCIERES"
 
@@ -316,12 +315,6 @@ msgstr "DF | TOTAL RESSOURCES STABLES (III)"
 #: model:account.report.line,name:l10n_syscohada_reports.account_financial_report_line_03_3_1_syscohada_bilan_passif
 msgid "DH | Dettes circulantes O.A.S."
 msgstr "DH | Dettes circulantes HAO"
-
-#. module: l10n_syscohada_reports
-#: model:account.report.expression,report_line_name:l10n_syscohada_reports.account_financial_report_line_03_3_2_syscohada_bilan_passif_balance
-#: model:account.report.line,name:l10n_syscohada_reports.account_financial_report_line_03_3_2_syscohada_bilan_passif
-msgid "DI | Customers, advances received"
-msgstr "DI | Clients, avances reçues"
 
 #. module: l10n_syscohada_reports
 #: model:account.report.expression,report_line_name:l10n_syscohada_reports.account_financial_report_line_03_3_3_syscohada_bilan_passif_balance

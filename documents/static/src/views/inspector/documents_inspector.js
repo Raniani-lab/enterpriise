@@ -366,6 +366,7 @@ export class DocumentsInspector extends Component {
         await toggleArchive(record.model, record.resModel, this.resIds, state);
         await record.model.load();
         await record.model.notify();
+        await this.env.documentsView.bus.trigger("documents-close-preview");
     }
 
     async onArchive() {
@@ -378,6 +379,7 @@ export class DocumentsInspector extends Component {
 
     async onDelete() {
         await this.props.selection[0].model.root.deleteRecords(this.props.selection);
+        await this.env.documentsView.bus.trigger("documents-close-preview");
     }
 
     getFieldProps(fieldName, additionalProps) {

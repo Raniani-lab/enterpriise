@@ -342,6 +342,11 @@ function useDocumentsViewFilePreviewer({
     useBus(bus, "documents-open-preview", async (ev) => {
         component.onOpenDocumentsPreview(ev.detail);
     });
+    useBus(bus, "documents-close-preview", () => {
+        if (component.env.documentsView.previewStore.close) {
+            component.env.documentsView.previewStore.close();
+        }
+    });
 
     return {
         onOpenDocumentsPreview,

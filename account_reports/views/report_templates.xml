@@ -791,8 +791,8 @@
                 <span>Please note that the report may include some rounding differences towards the bookings.</span>
             </div>
 
-            <div class="alert alert-info text-center mb-0 no_print" t-if="not report._is_generic_report(options) and options.get('available_tax_unit') and options['tax_unit'] == 'company_only'">
-                <span>This company is part of a tax unit. You're currently not viewing the whole unit; to change that, tick the "aggregate" option of "tax unit" menu.</span>
+            <div class="alert alert-info text-center mb-0 no_print" t-if="report.root_report_id and options.get('available_tax_units') and options['tax_unit'] == 'company_only'">
+                <span>This company is part of a tax unit. You're currently not viewing the whole unit. To change that, use the Tax Unit filter.</span>
             </div>
         </xpath>
     </template>

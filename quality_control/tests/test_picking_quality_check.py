@@ -204,8 +204,7 @@ class TestQualityCheck(TestQualityCommon):
         self.assertTrue(self.picking_in, "Incoming shipment not created.")
 
         # Creating move lines with the serial number widget
-        move.next_serial = "1"
-        move._generate_serial_numbers(next_serial_count=10)
+        move._generate_serial_numbers("1", next_serial_count=10)
         self.assertTrue(len(move.move_line_ids) == 10, "Not all move lines are created with _generate_serial_number")
 
         # Check that quality checks were created

@@ -7,15 +7,10 @@
         <field name="arch" type="xml">
             <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
                 <field name="asset_id" invisible="1"/>
-                <field name="asset_asset_type" invisible="1"/>
                 <field name="count_asset" invisible="1"/>
-                <field name="count_deferred_revenue" invisible="1"/>
-                <field name="count_deferred_expense" invisible="1"/>
                 <field name="draft_asset_exists" invisible="1"/>
-                <field name="draft_deferred_revenue_exists" invisible="1"/>
-                <field name="draft_deferred_expense_exists" invisible="1"/>
                 <button name="open_asset_view"
-                    attrs="{'invisible': ['|', ('asset_id', '=', False), ('asset_asset_type', '=', 'sale')]}"
+                    attrs="{'invisible': [('asset_id', '=', False)]}"
                     class="oe_stat_button"
                     icon="fa-cube"
                     type="object">
@@ -34,34 +29,6 @@
                     icon="fa-id-card-o"
                     attrs="{'invisible': ['|', ('count_asset', '=', 0), ('draft_asset_exists', '=', False)]}">
                     <field string="Asset(s)" name="count_asset" widget="statinfo"/>
-                </button>
-                <button name="action_open_deferred_revenue_ids"
-                    type="object"
-                    class="oe_stat_button"
-                    icon="fa-id-card-o"
-                    attrs="{'invisible': ['|', ('count_deferred_revenue', '=', 0), ('draft_deferred_revenue_exists', '=', True)]}">
-                    <field string="Deferred Revenue(s)" name="count_deferred_revenue" widget="statinfo"/>
-                </button>
-                <button name="action_open_deferred_revenue_ids"
-                    type="object"
-                    class="oe_stat_button text-danger"
-                    icon="fa-id-card-o"
-                    attrs="{'invisible': ['|', ('count_deferred_revenue', '=', 0), ('draft_deferred_revenue_exists', '=', False)]}">
-                    <field string="Deferred Revenue(s)" name="count_deferred_revenue" widget="statinfo"/>
-                </button>
-                <button name="action_open_deferred_expense_ids"
-                    type="object"
-                    class="oe_stat_button"
-                    icon="fa-id-card-o"
-                    attrs="{'invisible': ['|', ('count_deferred_expense', '=', 0), ('draft_deferred_expense_exists', '=', True)]}">
-                    <field string="Deferred Expense(s)" name="count_deferred_expense" widget="statinfo"/>
-                </button>
-                <button name="action_open_deferred_expense_ids"
-                    type="object"
-                    class="oe_stat_button text-danger"
-                    icon="fa-id-card-o"
-                    attrs="{'invisible': ['|', ('count_deferred_expense', '=', 0), ('draft_deferred_expense_exists', '=', False)]}">
-                    <field string="Deferred Expense(s)" name="count_deferred_expense" widget="statinfo"/>
                 </button>
             </xpath>
         </field>

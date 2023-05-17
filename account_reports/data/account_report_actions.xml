@@ -86,6 +86,17 @@
             <field name="context" eval="{'report_id': ref('account_reports.generic_ec_sales_report')}"/>
         </record>
 
+        <record id="action_account_report_deferred_expense" model="ir.actions.client">
+            <field name="name">Deferred Expense</field>
+            <field name="tag">account_report</field>
+            <field name="context" eval="{'report_id': ref('account_reports.deferred_expense_report')}"/>
+        </record>
+        <record id="action_account_report_deferred_revenue" model="ir.actions.client">
+            <field name="name">Deferred Revenue</field>
+            <field name="tag">account_report</field>
+            <field name="context" eval="{'report_id': ref('account_reports.deferred_revenue_report')}"/>
+        </record>
+
         <record id="account_financial_current_year_earnings_line_1" model="account.report.line">
             <field name="action_id" ref="action_account_report_pl"/>
         </record>

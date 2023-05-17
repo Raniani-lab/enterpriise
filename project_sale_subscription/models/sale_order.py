@@ -22,7 +22,7 @@ class SaleOrder(models.Model):
         self.ensure_one()
         return not self.origin_order_id and self.subscription_state not in ['6_churn', '5_renewed']
 
-    def _set_subscription_end_date_from_template(self):
+    def _set_deferred_end_date_from_template(self):
         self.ensure_one()
         end_date = self.end_date
         if not end_date and self.sale_order_template_id.recurring_rule_boundary == 'limited':

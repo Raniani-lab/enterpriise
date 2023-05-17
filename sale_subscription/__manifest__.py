@@ -19,6 +19,7 @@ Features:
     'author': 'Camptocamp / Odoo',
     'website': 'https://www.odoo.com/app/subscriptions',
     'depends': [
+        'account_accountant',
         'sale_management',
         'portal',
         'web_cohort',

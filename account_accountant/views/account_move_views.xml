@@ -37,6 +37,10 @@
             <xpath expr="//page[@id='other_tab_entry']//field[@name='company_id']" position="after">
                 <field name="inalterable_hash" groups="base.group_no_one"/>
             </xpath>
+            <xpath expr="//tree/field[@name='analytic_distribution']" position="after">
+                <field name="deferred_start_date" optional="hide"/>
+                <field name="deferred_end_date" optional="hide"/>
+            </xpath>
             <xpath expr="//div[@name='button_box']" position="inside">
                 <button name="action_open_bank_reconciliation_widget_statement"
                         class="oe_stat_button"
@@ -55,6 +59,30 @@
                         <div class="o_stat_info">
                             <span class="o_stat_text">1 Bank Transaction</span>
                         </div>
+                </button>
+                <field name="deferred_move_ids" invisible="1"/>
+                <field name="deferred_original_move_ids" invisible="1"/>
+                <field name="deferred_entry_type" invisible="1"/>
+                <button name="open_deferred_entries"
+                        class="oe_stat_button"
+                        icon="fa-bars"
+                        type="object"
+                        attrs="{'invisible': [('deferred_move_ids', '=', [])]}"
+                        string="Deferred Entries">
+                </button>
+                <button name="open_deferred_original_entry"
+                        class="oe_stat_button"
+                        icon="fa-bars"
+                        type="object"
+                        attrs="{'invisible': ['|', ('deferred_entry_type', '=', 'revenue'), ('deferred_original_move_ids', '=', [])]}"
+                        string="Related Purchase">
+                </button>
+                <button name="open_deferred_original_entry"
+                        class="oe_stat_button"
+                        icon="fa-bars"
+                        type="object"
+                        attrs="{'invisible': ['|', ('deferred_entry_type', '=', 'expense'), ('deferred_original_move_ids', '=', [])]}"
+                        string="Related Sale">
                 </button>
             </xpath>
         </field>

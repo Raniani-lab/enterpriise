@@ -689,7 +689,7 @@ class TestSubscription(TestSubscriptionCommon):
         with freeze_time("2022-02-01"):
             # Nothing should be invoiced
             self.subscription._cron_recurring_create_invoice()
-            # next_invoice_date : 2022-02-5 but the previous invoice subscription_end_date was set on the 2022-02-01
+            # next_invoice_date : 2022-02-5 but the previous invoice deferred_end_date was set on the 2022-02-01
             # We can't prevent it to be re-invoiced.
             inv = self.subscription.invoice_ids.sorted('date')
             # Nothing was invoiced
@@ -974,15 +974,15 @@ class TestSubscription(TestSubscriptionCommon):
             sub.order_line.invoice_lines.move_id._post()
             self.assertEqual("2021-02-01", sub.next_invoice_date.strftime("%Y-%m-%d"))
             inv = sub.invoice_ids.sorted('date')[-1]
-            invoice_start_periods = inv.invoice_line_ids.mapped('subscription_start_date')
-            invoice_end_periods = inv.invoice_line_ids.mapped('subscription_end_date')
+            invoice_start_periods = inv.invoice_line_ids.mapped('deferred_start_date')
+            invoice_end_periods = inv.invoice_line_ids.mapped('deferred_end_date')
             self.assertEqual(invoice_start_periods, [datetime.date(2021, 1, 1), datetime.date(2021, 1, 1)])
             self.assertEqual(invoice_end_periods, [datetime.date(2021, 1, 31), datetime.date(2021, 1, 31)])
         with freeze_time("2021-02-01"):
             sub._create_invoices()
             inv = sub.invoice_ids.sorted('date')[-1]
-            invoice_start_periods = inv.invoice_line_ids.mapped('subscription_start_date')
-            invoice_end_periods = inv.invoice_line_ids.mapped('subscription_end_date')
+            invoice_start_periods = inv.invoice_line_ids.mapped('deferred_start_date')
+            invoice_end_periods = inv.invoice_line_ids.mapped('deferred_end_date')
             self.assertEqual(invoice_start_periods, [datetime.date(2021, 2, 1), datetime.date(2021, 2, 1)], "monthly is updated everytime in manual action")
             self.assertEqual(invoice_end_periods, [datetime.date(2021, 2, 28), datetime.date(2021, 2, 28)], "both lines are invoiced")
             with self.assertRaisesRegex(UserError, 'The following recurring orders have draft invoices. Please Confirm them or cancel them'):
@@ -993,16 +993,16 @@ class TestSubscription(TestSubscriptionCommon):
             inv = sub.invoice_ids.sorted('id')[-1]
             inv._post()
             self.assertEqual("2021-04-01", sub.next_invoice_date.strftime("%Y-%m-%d"))
-            invoice_start_periods = inv.invoice_line_ids.mapped('subscription_start_date')
-            invoice_end_periods = inv.invoice_line_ids.mapped('subscription_end_date')
+            invoice_start_periods = inv.invoice_line_ids.mapped('deferred_start_date')
+            invoice_end_periods = inv.invoice_line_ids.mapped('deferred_end_date')
             self.assertEqual(invoice_start_periods, [datetime.date(2021, 3, 1), datetime.date(2021, 3, 1)], "monthly is updated everytime in manual action")
             self.assertEqual(invoice_end_periods, [datetime.date(2021, 3, 31), datetime.date(2021, 3, 31)], "monthly is updated everytime in manual action")
 
         with freeze_time("2021-04-01"):
             # Automatic invoicing, only one line generated
             inv = sub._create_recurring_invoice()
-            invoice_start_periods = inv.invoice_line_ids.mapped('subscription_start_date')
-            invoice_end_periods = inv.invoice_line_ids.mapped('subscription_end_date')
+            invoice_start_periods = inv.invoice_line_ids.mapped('deferred_start_date')
+            invoice_end_periods = inv.invoice_line_ids.mapped('deferred_end_date')
             self.assertEqual(invoice_start_periods, [datetime.date(2021, 4, 1), datetime.date(2021, 4, 1)], "Monthly is updated because it is due")
             self.assertEqual(invoice_end_periods, [datetime.date(2021, 4, 30), datetime.date(2021, 4, 30)], "Monthly is updated because it is due")
             self.assertEqual(inv.date, datetime.date(2021, 4, 1))
@@ -1011,8 +1011,8 @@ class TestSubscription(TestSubscriptionCommon):
             # Automatic invoicing, only one line generated
             sub._create_recurring_invoice()
             inv = sub.invoice_ids.sorted('date')[-1]
-            invoice_start_periods = inv.invoice_line_ids.mapped('subscription_start_date')
-            invoice_end_periods = inv.invoice_line_ids.mapped('subscription_end_date')
+            invoice_start_periods = inv.invoice_line_ids.mapped('deferred_start_date')
+            invoice_end_periods = inv.invoice_line_ids.mapped('deferred_end_date')
             self.assertEqual(invoice_start_periods, [datetime.date(2021, 5, 1), datetime.date(2021, 5, 1)], "Monthly is updated because it is due")
             self.assertEqual(invoice_end_periods, [datetime.date(2021, 5, 31), datetime.date(2021, 5, 31)], "Monthly is updated because it is due")
             self.assertEqual(inv.date, datetime.date(2021, 5, 1))
@@ -1025,8 +1025,8 @@ class TestSubscription(TestSubscriptionCommon):
             inv._post()
             self.assertEqual("2021-07-01", sub.next_invoice_date.strftime("%Y-%m-%d"), "on the 1st of may, nid is updated to 1fst of june and here we force the line to be apdated again")
             inv = sub.invoice_ids.sorted('date')[-1]
-            invoice_start_periods = inv.invoice_line_ids.mapped('subscription_start_date')
-            invoice_end_periods = inv.invoice_line_ids.mapped('subscription_end_date')
+            invoice_start_periods = inv.invoice_line_ids.mapped('deferred_start_date')
+            invoice_end_periods = inv.invoice_line_ids.mapped('deferred_end_date')
             self.assertEqual(invoice_start_periods, [datetime.date(2021, 6, 1), datetime.date(2021, 6, 1)], "monthly is updated when prior to today")
             self.assertEqual(invoice_end_periods, [datetime.date(2021, 6, 30), datetime.date(2021, 6, 30)], "monthly is updated when prior to today")
 
@@ -1547,8 +1547,8 @@ class TestSubscription(TestSubscriptionCommon):
             upsell_invoice = upsell_so._create_invoices()
             inv_line_ids = upsell_invoice.invoice_line_ids.filtered('product_id')
             self.assertEqual(inv_line_ids.mapped('subscription_id'), upsell_so.subscription_id)
-            self.assertEqual(inv_line_ids.mapped('subscription_start_date'), [datetime.date(2022, 6, 20), datetime.date(2022, 6, 20), datetime.date(2022, 6, 20)])
-            self.assertEqual(inv_line_ids.mapped('subscription_end_date'), [datetime.date(2022, 12, 31), datetime.date(2022, 12, 31), datetime.date(2022, 12, 31)])
+            self.assertEqual(inv_line_ids.mapped('deferred_start_date'), [datetime.date(2022, 6, 20), datetime.date(2022, 6, 20), datetime.date(2022, 6, 20)])
+            self.assertEqual(inv_line_ids.mapped('deferred_end_date'), [datetime.date(2022, 12, 31), datetime.date(2022, 12, 31), datetime.date(2022, 12, 31)])
             (upsell_so | sub)._cron_recurring_create_invoice()
             inv = sub.invoice_ids.sorted('date')[-1]
             self.assertEqual(inv.date, datetime.date(2022, 1, 1), "No invoice should be created")

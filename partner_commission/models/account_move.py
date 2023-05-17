@@ -89,8 +89,8 @@ class AccountMove(models.Model):
                         product = rule.plan_id.product_id
                     if not order:
                         order = line.subscription_id
-                        desc_lines += _("\n%s: from %s to %s", line.product_id.name, format_date(self.env, line.subscription_start_date),
-                                        format_date(self.env, line.subscription_end_date))
+                        desc_lines += _("\n%s: from %s to %s", line.product_id.name, format_date(self.env, line.deferred_start_date),
+                                        format_date(self.env, line.deferred_end_date))
                     commission = move.currency_id.round(line.price_subtotal * rule.rate / 100.0)
                     comm_by_rule[rule] += commission
 
@@ -109,8 +109,8 @@ class AccountMove(models.Model):
             if order:
                 desc += f"\n{order.name}, {desc_lines}"
                 # extend the description to show the number of months to defer the expense over
-                end_date_list = move.invoice_line_ids.mapped('subscription_end_date')
-                start_date_list = move.invoice_line_ids.mapped('subscription_start_date')
+                end_date_list = move.invoice_line_ids.mapped('deferred_end_date')
+                start_date_list = move.invoice_line_ids.mapped('deferred_start_date')
                 date_to = max([ed for ed in end_date_list if ed])
                 date_from = min([sd for sd in start_date_list if sd])
                 # we calculate the delta according to the whole range to avoid 11 month and 29 days= 11 months

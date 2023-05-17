@@ -36,7 +36,7 @@ class Project(models.Model):
         action = self.env["ir.actions.actions"]._for_xml_id("account_asset.action_account_asset_form")
         action.update({
             'views': [[False, 'tree'], [False, 'form'], [False, 'kanban']],
-            'context': {'default_analytic_distribution': {self.analytic_account_id.id: 100}, 'default_asset_type': 'purchase'},
+            'context': {'default_analytic_distribution': {self.analytic_account_id.id: 100}},
             'domain': [('id', 'in', assets)]
         })
         if(len(assets) == 1):

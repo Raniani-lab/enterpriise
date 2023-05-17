@@ -407,7 +407,6 @@ class AssetsReportCustomHandler(models.AbstractModel):
                AND (asset.acquisition_date <= %(date_to)s OR move.date <= %(date_to)s)
                AND (asset.disposal_date >= %(date_from)s OR asset.disposal_date IS NULL)
                AND (asset.state not in ('model', 'draft', 'cancelled') OR (asset.state = 'draft' AND %(include_draft)s))
-               AND asset.asset_type = 'purchase'
                AND asset.active = 't'
                AND reversal.id IS NULL
                {prefix_query}

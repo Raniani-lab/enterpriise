@@ -31,6 +31,7 @@
         'report/l10n_be_325_pdf_templates.xml',
     ],
     'installable': True,
+    'post_init_hook': '_l10n_be_reports_post_init',
     'auto_install': ['l10n_be', 'account_reports'],
     'website': 'https://www.odoo.com/app/accounting',
     'license': 'OEEL-1',

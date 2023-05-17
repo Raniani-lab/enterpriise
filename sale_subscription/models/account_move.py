@@ -32,7 +32,7 @@ class AccountMove(models.Model):
                     # we are invoicing an upsell
                     continue
                 # Normally, only one period_end should exist
-                end_dates = [ed for ed in aml.mapped('subscription_end_date') if ed]
+                end_dates = [ed for ed in aml.mapped('deferred_end_date') if ed]
                 if end_dates and max(end_dates) > subscription.next_invoice_date:
                     subscription.next_invoice_date = max(end_dates) + relativedelta(days=1)
                 if not automatic_invoice:

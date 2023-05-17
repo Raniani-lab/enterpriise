@@ -22,6 +22,39 @@ class ResConfigSettings(models.TransientModel):
     group_fiscal_year = fields.Boolean(string='Fiscal Years', implied_group='account_accountant.group_fiscal_year')
     predict_bill_product = fields.Boolean(string="Predict Bill Product", related='company_id.predict_bill_product', readonly=False)
 
+    # Deferred management
+    deferred_journal_id = fields.Many2one(
+        comodel_name='account.journal',
+        string='Deferred Entries Journal',
+        help='Journal used for deferred entries',
+        readonly=False,
+        related='company_id.deferred_journal_id',
+    )
+    deferred_expense_account_id = fields.Many2one(
+        comodel_name='account.account',
+        string='Deferred Expense',
+        help='Account used for deferred expenses',
+        readonly=False,
+        related='company_id.deferred_expense_account_id',
+    )
+    deferred_revenue_account_id = fields.Many2one(
+        comodel_name='account.account',
+        string='Deferred Revenue',
+        help='Account used for deferred revenues',
+        readonly=False,
+        related='company_id.deferred_revenue_account_id',
+    )
+    generate_deferred_entries_method = fields.Selection(
+        related='company_id.generate_deferred_entries_method',
+        readonly=False, required=True,
+        help='Method used to generate deferred entries',
+    )
+    deferred_amount_computation_method = fields.Selection(
+        related='company_id.deferred_amount_computation_method',
+        readonly=False, required=True,
+        help='Method used to compute the amount of deferred entries',
+    )
+
     @api.constrains('fiscalyear_last_day', 'fiscalyear_last_month')
     def _check_fiscalyear(self):
         # We try if the date exists in 2020, which is a leap year.

@@ -23,6 +23,7 @@ Accounting Reports
         'data/sales_report.xml',
         'data/partner_ledger.xml',
         'data/multicurrency_revaluation_report.xml',
+        'data/deferred_reports.xml',
         'data/journal_report.xml',
         'data/generic_tax_report.xml',
         'views/account_report_view.xml',

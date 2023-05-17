@@ -781,11 +781,11 @@ class SaleOrder(models.Model):
             # We set the start date and invoice date at the date of confirmation
             if not sub.start_date:
                 sub.start_date = today
-            sub._set_subscription_end_date_from_template()
+            sub._set_deferred_end_date_from_template()
             sub.order_line._reset_subscription_qty_to_invoice()
             sub._save_token_from_payment()
 
-    def _set_subscription_end_date_from_template(self):
+    def _set_deferred_end_date_from_template(self):
         self.ensure_one()
         end_date = self.end_date
         if self.sale_order_template_id.recurring_rule_boundary == 'limited' and not end_date:

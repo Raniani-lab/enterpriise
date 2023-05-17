@@ -44,7 +44,6 @@ class AccountAsset(models.Model):
             "You can manually close an asset when the depreciation is over.\n"
             "By cancelling an asset, all depreciation entries will be reversed")
     active = fields.Boolean(default=True)
-    asset_type = fields.Selection([('sale', 'Sale: Revenue Recognition'), ('purchase', 'Purchase: Asset'), ('expense', 'Deferred Expense')], compute='_compute_asset_type', store=True, index=True, copy=True)
 
     # Depreciation params
     method = fields.Selection(
@@ -171,7 +170,7 @@ class AccountAsset(models.Model):
             else:
                 asset.disposal_date = False
 
-    @api.depends('original_move_line_ids', 'original_move_line_ids.account_id', 'asset_type', 'non_deductible_tax_value')
+    @api.depends('original_move_line_ids', 'original_move_line_ids.account_id', 'non_deductible_tax_value')
     def _compute_value(self):
         for record in self:
             if not record.original_move_line_ids:
@@ -201,7 +200,6 @@ class AccountAsset(models.Model):
             if not record.account_asset_id:
                 # Only set a default value, do not erase user inputs
                 record._onchange_account_depreciation_id()
-                record._onchange_account_depreciation_expense_id()
 
     @api.depends('original_move_line_ids')
     def _compute_analytic_distribution(self):
@@ -251,8 +249,6 @@ class AccountAsset(models.Model):
             related_purchase_value = sum(asset.original_move_line_ids.mapped('balance'))
             if asset.account_asset_id.multiple_assets_per_line and len(asset.original_move_line_ids) == 1:
                 related_purchase_value /= max(1, int(asset.original_move_line_ids.quantity))
-            if asset.asset_type == 'sale':
-                related_purchase_value *= -1
             asset.related_purchase_value = related_purchase_value
 
     @api.depends('original_move_line_ids')
@@ -264,16 +260,6 @@ class AccountAsset(models.Model):
     def _compute_name(self):
         for record in self:
             record.name = record.name or (record.original_move_line_ids and record.original_move_line_ids[0].name or '')
-
-    @api.depends('original_move_line_ids')
-    @api.depends_context('asset_type')
-    def _compute_asset_type(self):
-        for record in self:
-            if not record.asset_type and 'asset_type' in self.env.context:
-                record.asset_type = self.env.context['asset_type']
-            if not record.asset_type and record.original_move_line_ids:
-                account = record.original_move_line_ids.account_id
-                record.asset_type = account.asset_type
 
     @api.depends(
         'original_value', 'salvage_value', 'already_depreciated_amount_import',
@@ -342,17 +328,9 @@ class AccountAsset(models.Model):
     @api.onchange('account_depreciation_id')
     def _onchange_account_depreciation_id(self):
         if not self.original_move_line_ids:
-            if self.asset_type == 'expense':
-                # Always change the account since it is not visible in the form
-                self.account_asset_id = self.account_depreciation_id
-            if self.asset_type == 'purchase' and not self.account_asset_id and self.state != 'model':
+            if not self.account_asset_id and self.state != 'model':
                 # Only set a default value since it is visible in the form
                 self.account_asset_id = self.account_depreciation_id
-
-    @api.onchange('account_depreciation_expense_id')
-    def _onchange_account_depreciation_expense_id(self):
-        if not self.original_move_line_ids and self.asset_type not in ('purchase', 'expense'):
-            self.account_asset_id = self.account_depreciation_expense_id
 
     @api.onchange('original_value', 'original_move_line_ids')
     def _display_original_value_warning(self):
@@ -376,10 +354,7 @@ class AccountAsset(models.Model):
 
     @api.onchange('account_asset_id')
     def _onchange_account_asset_id(self):
-        if self.asset_type in ('purchase', 'expense'):
-            self.account_depreciation_id = self.account_depreciation_id or self.account_asset_id
-        else:
-            self.account_depreciation_expense_id = self.account_depreciation_expense_id or self.account_asset_id
+        self.account_depreciation_id = self.account_depreciation_id or self.account_asset_id
 
     @api.onchange('model_id')
     def _onchange_model_id(self):
@@ -394,14 +369,6 @@ class AccountAsset(models.Model):
             self.account_depreciation_id = model.account_depreciation_id
             self.account_depreciation_expense_id = model.account_depreciation_expense_id
             self.journal_id = model.journal_id
-
-    @api.onchange('asset_type')
-    def _onchange_type(self):
-        if self.state != 'model':
-            if self.asset_type == 'sale':
-                self.method_period = '1'
-            else:
-                self.method_period = '12'
 
     @api.onchange('original_value', 'salvage_value', 'acquisition_date', 'method', 'method_progress_factor', 'method_period',
                  'method_number', 'prorata_computation_type', 'already_depreciated_amount_import', 'prorata_date',)
@@ -508,12 +475,6 @@ class AccountAsset(models.Model):
             self.depreciation_move_ids.journal_id = vals['journal_id']
         return result
 
-    def get_formview_id(self, access_uid=None):
-        """ Overriding this method to redirect user to correct form view based on asset type """
-        for vid, view_type in self._get_views(self.asset_type):
-            if view_type == 'form':
-                return vid
-
     # -------------------------------------------------------------------------
     # BOARD COMPUTATION
     # -------------------------------------------------------------------------
@@ -618,8 +579,6 @@ class AccountAsset(models.Model):
 
                 if not float_is_zero(amount, precision_rounding=self.currency_id.rounding):
                     # For deferred revenues, we should invert the amounts.
-                    if self.asset_type == 'sale':
-                        amount *= -1
                     depreciation_move_values.append(self.env['account.move']._prepare_move_for_asset_depreciation({
                         'amount': amount,
                         'asset_id': self,
@@ -699,19 +658,12 @@ class AccountAsset(models.Model):
         }
 
     def action_save_model(self):
-        form_ref = {
-            'purchase': 'account_asset.view_account_asset_form',
-            'sale': 'account_asset.view_account_asset_revenue_form',
-            'expense': 'account_asset.view_account_asset_expense_form',
-        }.get(self.asset_type)
-
         return {
             'name': _('Save model'),
-            'views': [[self.env.ref(form_ref).id, "form"]],
+            'views': [[self.env.ref('account_asset.view_account_asset_form').id, "form"]],
             'res_model': 'account.asset',
             'type': 'ir.actions.act_window',
             'context': {
-                'default_asset_type': self.asset_type,
                 'default_state': 'model',
                 'default_account_asset_id': self.account_asset_id.id,
                 'default_account_depreciation_id': self.account_depreciation_id.id,
@@ -758,7 +710,7 @@ class AccountAsset(models.Model):
             'view_id': False,
             'type': 'ir.actions.act_window',
             'domain': [('id', 'in', self.children_ids.ids)],
-            'views': self.env['account.asset']._get_views(self.asset_type),
+            'views': [(False, 'tree'), (False, 'form')],
         }
 
     def validate(self):
@@ -777,11 +729,7 @@ class AccountAsset(models.Model):
             if asset.method == 'linear':
                 del tracked_fields['method_progress_factor']
             dummy, tracking_value_ids = asset._mail_track(tracked_fields, dict.fromkeys(fields))
-            asset_name = {
-                'purchase': (_('Asset created'), _('An asset has been created for this move:')),
-                'sale': (_('Deferred revenue created'), _('A deferred revenue has been created for this move:')),
-                'expense': (_('Deferred expense created'), _('A deferred expense has been created for this move:')),
-            }[asset.asset_type]
+            asset_name = (_('Asset created'), _('An asset has been created for this move:'))
             msg = asset_name[1] + ' ' + asset._get_html_link()
             asset.message_post(body=asset_name[0], tracking_value_ids=tracking_value_ids)
             for move_id in asset.original_move_line_ids.mapped('move_id'):
@@ -897,13 +845,8 @@ class AccountAsset(models.Model):
     def open_asset(self, view_mode):
         if len(self) == 1:
             view_mode = ['form']
-            asset_type = self.asset_type
-        else:
-            asset_type = self[0].asset_type
-        views = [v for v in self._get_views(asset_type) if v[1] in view_mode]
-        ctx = dict(self._context,
-                asset_type=asset_type,
-                default_asset_type=asset_type)
+        views = [v for v in [(False, 'tree'), (False, 'form')] if v[1] in view_mode]
+        ctx = dict(self._context)
         ctx.pop('default_move_type', None)
         action = {
             'name': _('Asset'),
@@ -915,28 +858,11 @@ class AccountAsset(models.Model):
             'domain': [('id', 'in', self.ids)],
             'context': ctx
         }
-        if asset_type == 'sale':
-            action['name'] = _('Deferred Revenue')
-        elif asset_type == 'expense':
-            action['name'] = _('Deferred Expense')
-
         return action
 
     # -------------------------------------------------------------------------
     # HELPER METHODS
     # -------------------------------------------------------------------------
-    @api.model
-    def _get_views(self, asset_type):
-        form_view = self.env.ref('account_asset.view_account_asset_form')
-        tree_view = self.env.ref('account_asset.view_account_asset_purchase_tree')
-        if asset_type == 'sale':
-            form_view = self.env.ref('account_asset.view_account_asset_revenue_form')
-            tree_view = self.env.ref('account_asset.view_account_asset_sale_tree')
-        elif asset_type == 'expense':
-            form_view = self.env.ref('account_asset.view_account_asset_expense_form')
-            tree_view = self.env.ref('account_asset.view_account_asset_expense_tree')
-        return [[tree_view.id, "tree"], [form_view.id, "form"]]
-
     def _insert_depreciation_line(self, amount, beginning_depreciation_date, depreciation_date, days_depreciated):
         """ Inserts a new line in the depreciation board, shifting the sequence of
         all the following lines from one unit.
@@ -1001,24 +927,14 @@ class AccountAsset(models.Model):
 
         :param date: date after which the moves are deleted/reversed
         """
-        to_reverse = self.env['account.move']
-        to_cancel = self.env['account.move']
         for asset in self:
-            posted_moves = asset.depreciation_move_ids.filtered(lambda m: (
+            obsolete_moves = asset.depreciation_move_ids.filtered(lambda m: m.state == 'draft' or (
                 not m.reversal_move_id
                 and not m.reversed_entry_id
                 and m.state == 'posted'
                 and m.date > date
             ))
-            lock_date = asset.company_id._get_user_fiscal_lock_date()
-            for move in posted_moves:
-                if move.inalterable_hash or move.date <= lock_date:
-                    to_reverse += move
-                else:
-                    to_cancel += move
-        to_reverse._reverse_moves(cancel=True)
-        to_cancel.button_draft()
-        self.depreciation_move_ids.filtered(lambda m: m.state == 'draft').unlink()
+            obsolete_moves._unlink_or_reverse()
 
     def _get_disposal_moves(self, invoice_lines_list, disposal_date):
         """Create the move for the disposal of an asset.

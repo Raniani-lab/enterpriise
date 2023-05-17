@@ -13,7 +13,6 @@
                 <field name="account_asset_id" invisible="1"/>
                 <field name="display_account_asset_id" invisible="1"/>
                 <field name="state" invisible="1"/>
-                <field name="asset_type" invisible="1"/>
                 <field name="total_depreciation_entries_count" invisible="1"/>
                 <header>
                     <button name="validate" states="draft" string="Confirm" type="object" class="oe_highlight"/>
@@ -23,7 +22,7 @@
                     <button name="resume_after_pause" string="Resume Depreciation" type="object" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'paused')]}"/>
                     <button name="action_asset_modify" states="open" string="Modify Depreciation" type="object" data-hotkey="e" class="oe_highlight"/>
                     <button name="action_save_model" states="open,paused,close" string="Save as Model" type="object"/>
-                    <button name="set_to_cancelled" string="Cancel Asset" type="object" attrs="{'invisible': ['|', ('state', '!=', 'open'), ('asset_type', '!=', 'purchase')]}"/>
+                    <button name="set_to_cancelled" string="Cancel Asset" type="object" attrs="{'invisible': [('state', '!=', 'open')]}"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,open" attrs="{'invisible': [('state', '=', 'model')]}"/>
                 </header>
                 <sheet>
@@ -45,7 +44,7 @@
                     </div>
                     <group attrs="{'invisible': [('state', '!=', 'model')]}">
                         <group string="Depreciation Method">
-                            <field name="method" attrs="{'invisible': [('asset_type', '!=', 'purchase')]}" required="1" />
+                            <field name="method" required="1" />
                             <field name="method_progress_factor" widget="percentage" attrs="{'invisible':[('method','=','linear')], 'required':[('method','in',('degressive', 'degressive_then_linear'))]}"/>
                             <label for="method_number" string="Duration"/>
                             <div class="o_row">
@@ -69,7 +68,7 @@
                                         'asset_fixed',
                                         'asset_non_current'))]}"
                                 groups="base.group_no_one"
-                                attrs="{'invisible': ['|', ('display_account_asset_id', '=', False), ('asset_type', '!=', 'purchase')]}"/>
+                                attrs="{'invisible': [('display_account_asset_id', '=', False)]}"/>
                             <field
                                 name="account_depreciation_id"
                                 domain="[('account_type', 'in', (
@@ -109,11 +108,10 @@
                                     <field name="acquisition_date" attrs="{'invisible': [('state', '=', 'model')], 'readonly': ['|', ('state','!=','draft'), ('original_move_line_ids', '!=', [])], 'readonly': [('state', '!=', 'draft')]}"/>
                                     <field  name="model_id"
                                             string="Asset Model"
-                                            domain="[('state', '=', 'model'), ('asset_type', '=', asset_type)]"
+                                            domain="[('state', '=', 'model')]"
                                             options="{'no_quick_create': True}"
                                             context="{
                                                 'default_state': 'model',
-                                                'default_asset_type': asset_type,
                                                 'default_account_asset_id': account_asset_id,
                                                 'default_account_depreciation_id': account_depreciation_id,
                                                 'default_account_depreciation_expense_id': account_depreciation_expense_id
@@ -132,7 +130,7 @@
                                     </span>
                                 </group>
                                 <group string="Depreciation Method">
-                                    <field name="method" attrs="{'invisible': [('asset_type', '!=', 'purchase')]}" required="1" />
+                                    <field name="method" required="1" />
                                     <field name="method_progress_factor" widget="percentage" attrs="{'invisible':[('method','=','linear')], 'required':[('method','in',('degressive', 'degressive_then_linear'))]}"/>
                                     <label for="method_number" string="Duration"/>
                                     <div class="o_row">
@@ -157,7 +155,7 @@
                                                 'asset_fixed',
                                                 'asset_non_current'))]}"
                                         groups="base.group_no_one"
-                                        attrs="{'invisible': ['|', ('display_account_asset_id', '=', False), ('asset_type', '!=', 'purchase')]}"/>
+                                        attrs="{'invisible': [('display_account_asset_id', '=', False)]}"/>
                                     <field
                                         name="account_depreciation_id"
                                         domain="[('account_type', 'in', (
@@ -300,8 +298,8 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="view_account_asset_purchase_tree">
-        <field name="name">account.asset.purchase.tree</field>
+    <record model="ir.ui.view" id="view_account_asset_tree">
+        <field name="name">account.asset.tree</field>
         <field name="model">account.asset</field>
         <field name="arch" type="xml">
             <tree string="Assets" decoration-info="(state == 'draft')" decoration-muted="(state in ['close', 'cancelled'])" decoration-warning="(state == 'close' and value_residual != 0)" sample="1">
@@ -325,8 +323,8 @@
         </field>
     </record>
 
-    <record model="ir.ui.view" id="view_account_asset_model_purchase_tree">
-        <field name="name">account.asset.model.purchase.tree</field>
+    <record model="ir.ui.view" id="view_account_asset_model_tree">
+        <field name="name">account.asset.model.tree</field>
         <field name="model">account.asset</field>
         <field name="arch" type="xml">
             <tree string="Asset Models">
@@ -392,12 +390,11 @@
         <field name="name">Assets</field>
         <field name="res_model">account.asset</field>
         <field name="view_ids" eval="[(5, 0, 0),
-            (0, 0, {'view_mode': 'tree', 'view_id': ref('view_account_asset_purchase_tree')}),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('view_account_asset_tree')}),
             (0, 0, {'view_mode': 'kanban'}),
             (0, 0, {'view_mode': 'activity'}),
             (0, 0, {'view_mode': 'form', 'view_id': ref('view_account_asset_form')})]"/>
-        <field name="domain">[('asset_type', '=', 'purchase'), ('state', '!=', 'model'), ('parent_id', '=', False)]</field>
-        <field name="context">{'asset_type': 'purchase', 'default_asset_type': 'purchase'}</field>
+        <field name="domain">[('state', '!=', 'model'), ('parent_id', '=', False)]</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create new asset
@@ -410,12 +407,12 @@
         <field name="res_model">account.asset</field>
         <field name="view_mode">tree,kanban,form</field>
         <field name="view_ids" eval="[(5, 0, 0),
-            (0, 0, {'view_mode': 'tree', 'view_id': ref('view_account_asset_model_purchase_tree')}),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('view_account_asset_model_tree')}),
             (0, 0, {'view_mode': 'kanban'}),
             (0, 0, {'view_mode': 'form', 'view_id': ref('view_account_asset_form')})]"/>
         <field name="search_view_id" ref="view_account_asset_model_search"/>
-        <field name="domain">[('asset_type', '=', 'purchase'), ('state', '=', 'model')]</field>
-        <field name="context">{'asset_type': 'purchase', 'default_asset_type': 'purchase', 'default_state': 'model'}</field>
+        <field name="domain">[('state', '=', 'model')]</field>
+        <field name="context">{'default_state': 'model'}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create new asset model

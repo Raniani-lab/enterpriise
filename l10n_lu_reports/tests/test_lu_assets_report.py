@@ -38,7 +38,6 @@ class LuxembourgAssetsReportTaxesTest(TestAccountReportsCommon):
         # then no tax is set, and no tax should be reported for the asset
         self.env['account.asset'].create({
             'name': 'test',
-            'asset_type': 'purchase',
             'acquisition_date': datetime.today() - relativedelta(days=400),
             'account_depreciation_id': self.company_data['default_account_expense'].id,
             'account_depreciation_expense_id': self.company_data['default_account_assets'].id,
@@ -75,7 +74,6 @@ class LuxembourgAssetsReportTaxesTest(TestAccountReportsCommon):
             'name': 'multiple_assets_per_line_test_account',
             'code': '000001',
             'account_type': 'asset_non_current',
-            'asset_type': 'purchase',
             'multiple_assets_per_line': True,
             'create_asset': "validate",
         })
@@ -113,7 +111,7 @@ class LuxembourgAssetsReportTaxesTest(TestAccountReportsCommon):
 
     @classmethod
     def _get_report_data_linked_assets(cls, invoice_lines):
-        asset_form = Form(cls.env['account.asset'].with_context(asset_type='purchase'))
+        asset_form = Form(cls.env['account.asset'])
         # `original_move_line_ids` is not visible when it's empty by default
         # {'invisible' : [('original_move_line_ids', '=', [])]}
         asset_form._view['modifiers']['original_move_line_ids']['invisible'] = False

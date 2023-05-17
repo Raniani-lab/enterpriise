@@ -127,7 +127,7 @@ class SaleOrderLine(models.Model):
                     ) and (line.order_id.pricelist_id == pricing.pricelist_id or not pricing.pricelist_id)
             )[:1]
 
-    @api.depends('temporal_type', 'invoice_lines.subscription_start_date', 'invoice_lines.subscription_end_date',
+    @api.depends('temporal_type', 'invoice_lines.deferred_start_date', 'invoice_lines.deferred_end_date',
                  'order_id.next_invoice_date', 'order_id.last_invoice_date')
     def _compute_qty_to_invoice(self):
         return super()._compute_qty_to_invoice()
@@ -173,17 +173,17 @@ class SaleOrderLine(models.Model):
             # period than the subscription.
             related_invoice_lines = line.invoice_lines.filtered(
                 lambda l: l.move_id.state != 'cancel' and
-                        l.subscription_start_date and l.subscription_end_date and
-                        start_date <= l.subscription_start_date <= day_before_end_date and
-                        l.subscription_end_date == day_before_end_date)
+                        l.deferred_start_date and l.deferred_end_date and
+                        start_date <= l.deferred_start_date <= day_before_end_date and
+                        l.deferred_end_date == day_before_end_date)
             for invoice_line in related_invoice_lines:
                 line_sign = amount_sign.get(invoice_line.move_id.move_type, 1)
                 qty_invoiced += line_sign * invoice_line.product_uom_id._compute_quantity(invoice_line.quantity, line.product_uom)
             result[line.id] = qty_invoiced
         return result
 
-    @api.depends('temporal_type', 'invoice_lines', 'invoice_lines.subscription_start_date',
-                 'invoice_lines.subscription_end_date', 'order_id.next_invoice_date', 'order_id.last_invoice_date')
+    @api.depends('temporal_type', 'invoice_lines', 'invoice_lines.deferred_start_date',
+                 'invoice_lines.deferred_end_date', 'order_id.next_invoice_date', 'order_id.last_invoice_date')
     def _compute_qty_invoiced(self):
         other_lines = self.env['sale.order.line']
         subscription_qty_invoiced = self._get_subscription_qty_invoiced()
@@ -260,13 +260,13 @@ class SaleOrderLine(models.Model):
 
             qty_to_invoice = self._get_subscription_qty_to_invoice(last_invoice_date=new_period_start,
                                                                    next_invoice_date=next_invoice_date)
-            subscription_end_date = next_invoice_date
+            deferred_end_date = next_invoice_date
             res['quantity'] = qty_to_invoice.get(self.id, 0.0)
 
             res.update({
                 'name': description,
-                'subscription_start_date': new_period_start,
-                'subscription_end_date': subscription_end_date,
+                'deferred_start_date': new_period_start,
+                'deferred_end_date': deferred_end_date,
                 'subscription_id': parent_order_id,
             })
         elif self.order_id.is_subscription:

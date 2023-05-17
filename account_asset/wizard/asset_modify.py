@@ -261,7 +261,6 @@ class AssetModify(models.TransientModel):
                 'name': self.asset_id.name + ': ' + self.name if self.name else "",
                 'currency_id': self.asset_id.currency_id.id,
                 'company_id': self.asset_id.company_id.id,
-                'asset_type': self.asset_id.asset_type,
                 'method': self.asset_id.method,
                 'method_number': self.method_number,
                 'method_period': self.method_period,

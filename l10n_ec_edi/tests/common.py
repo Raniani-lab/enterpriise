@@ -433,16 +433,16 @@ L10N_EC_EDI_XML_IN_WTH = """
     <infoCompRetencion>
         <fechaEmision>25/01/2022</fechaEmision>
         <obligadoContabilidad>SI</obligadoContabilidad>
-        <tipoIdentificacionSujetoRetenido>05</tipoIdentificacionSujetoRetenido>
+        <tipoIdentificacionSujetoRetenido>04</tipoIdentificacionSujetoRetenido>
         <parteRel>NO</parteRel>
         <razonSocialSujetoRetenido>EC Test Partner AàÁ³$£€èêÈÊöÔÇç¡⅛&amp;@™</razonSocialSujetoRetenido>
-        <identificacionSujetoRetenido>0453661050</identificacionSujetoRetenido>
+        <identificacionSujetoRetenido>0453661050152</identificacionSujetoRetenido>
         <periodoFiscal>01/2022</periodoFiscal>
     </infoCompRetencion>
     <docsSustento>
         <docSustento>
             <codSustento>01</codSustento>
-            <codDocSustento>09</codDocSustento>
+            <codDocSustento>01</codDocSustento>
             <numDocSustento>001001000000001</numDocSustento>
             <fechaEmisionDocSustento>25/01/2022</fechaEmisionDocSustento>
             <pagoLocExt>01</pagoLocExt>

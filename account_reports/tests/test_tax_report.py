@@ -2064,6 +2064,12 @@ class TestTaxReport(TestAccountReportsCommon):
             })
             refund_wizard.modify_moves()
 
+            self.assertEqual(
+                move.line_ids.tax_repartition_line_id,
+                move.reversal_move_id.line_ids.tax_repartition_line_id,
+                "The same repartition line should be used when reverting a misc operation, to ensure they sum up to 0 in all cases."
+            )
+
         options = self._generate_options(tax_report, today, today)
 
         # We check the taxes on entries have impacted the report properly
@@ -2074,10 +2080,10 @@ class TestTaxReport(TestAccountReportsCommon):
             #   Name                         Balance
             [   0,                           1],
             [
-                ('Sale base',             2000),
-                ('Sale tax',               400),
-                ('Purchase base',         2000),
-                ('Purchase tax',           400),
+                ('Sale base',               ''),
+                ('Sale tax',                ''),
+                ('Purchase base',           ''),
+                ('Purchase tax',            ''),
             ],
             options,
         )

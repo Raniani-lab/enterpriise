@@ -58,6 +58,18 @@ registry.category("web_tour.tours").add('knowledge_list_command_tour', {
             throw new Error('data-behavior-props should be semantically the same as before');
         }
     }
+}, { // click on rename button
+    trigger: '.o_knowledge_toolbar button[title="Rename"]',
+    run: 'click',
+}, { // rename the view
+    trigger: '.modal-body input',
+    run: 'text New Title',
+}, { // click to validate the modal
+    trigger: '.modal-footer button.btn-primary',
+    run: 'click',
+}, { // check that name has been updated
+    trigger: '.o_knowledge_embedded_view .o_control_panel .o_breadcrumb .active:contains("New Title")',
+    run: () => {},
 }, {
     // reload the article to make sure that the article is saved for readonly tour
     trigger: 'a[data-menu-xmlid="knowledge.knowledge_menu_home"]',

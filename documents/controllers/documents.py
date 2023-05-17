@@ -430,7 +430,8 @@ class ShareRoute(http.Controller):
             except Exception:
                 logger.exception("Failed to upload document")
             else:
-                documents.message_post(body=chatter_message)
+                for document in documents:
+                    document.message_post(body=chatter_message)
                 if share.activity_option:
                     documents.documents_set_activity(settings_record=share)
         else:

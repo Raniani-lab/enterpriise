@@ -26,8 +26,9 @@ class MulticurrencyRevaluationReportCustomHandler(models.AbstractModel):
         super()._custom_options_initializer(report, options, previous_options=previous_options)
         rates = self.env['res.currency'].search([('active', '=', True)])._get_rates(self.env.company, options.get('date').get('date_to'))
         # Normalize the rates to the company's currency
+        company_rate = rates[self.env.company.currency_id.id]
         for key in rates.keys():
-            rates[key] /= rates[self.env.company.currency_id.id]
+            rates[key] /= company_rate
 
         options['currency_rates'] = {
             str(currency_id.id): {

@@ -10,7 +10,7 @@
 
             <t t-if="controller.report.root_report_id &amp;&amp; controller.options.available_tax_unit &amp;&amp; controller.options.tax_unit === 'company_only'">
                 <div class="alert alert-info text-center mb-0">
-                    <span>This company is part of a tax unit. You're currently not viewing the whole unit; to change that, tick the "aggregate" option of "tax unit" menu.</span>
+                    <span>This company is part of a tax unit. You're currently not viewing the whole unit. To change that, use the Tax Unit filter.</span>
                 </div>
              </t>
         </xpath>

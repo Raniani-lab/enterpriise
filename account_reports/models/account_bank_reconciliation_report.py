@@ -376,7 +376,7 @@ class BankReconciliationReportCustomHandler(models.AbstractModel):
 
             is_parent_unfolded = unfold_all or st_report_line['parent_id'] in options['unfolded_lines']
             if not is_parent_unfolded:
-                st_report_line['style'] = 'display: none;'
+                st_report_line['class'] = 'o_account_reports_filtered_lines'
 
         return (
             self._build_section_report_lines(report, options, journal, plus_report_lines, plus_totals,
@@ -562,7 +562,7 @@ class BankReconciliationReportCustomHandler(models.AbstractModel):
 
             is_parent_unfolded = unfold_all or pay_report_line['parent_id'] in options['unfolded_lines']
             if not is_parent_unfolded:
-                pay_report_line['style'] = 'display: none;'
+                pay_report_line['class'] = 'o_account_reports_filtered_lines'
 
         return (
             self._build_section_report_lines(report, options, journal, plus_report_lines, plus_totals,
@@ -694,4 +694,3 @@ class BankReconciliationReportCustomHandler(models.AbstractModel):
             default_context={'create': False},
             name=last_statement.display_name,
         )
-

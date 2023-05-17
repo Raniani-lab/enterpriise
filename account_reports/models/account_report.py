@@ -3326,7 +3326,6 @@ class AccountReport(models.Model):
 
         return None
 
-    @api.model
     def open_journal_items(self, options, params):
         ''' Open the journal items view with the proper filters and groups '''
         record_model, record_id = self._get_model_info_from_id(params.get('line_id'))

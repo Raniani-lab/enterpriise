@@ -118,6 +118,93 @@ class TestQualityCheckWorkorder(TestMrpCommon):
             {'qty_done': 1, 'lot_id': finished_sn.id},
         ])
 
+    def test_backorder_cancelled_workorder_quality_check(self):
+        """ Create an MO based on a bom with 2 operations, when processing workorders,
+            process one workorder fully and the other partially, then confirm and create backorder
+            the fully finished workorder copy should be cancelled without any checks to do, and the other
+            should ready, we should be able to pass the checks and produce the backorder
+        """
+        bom = self.env['mrp.bom'].create({
+            'product_id': self.product_6.id,
+            'product_tmpl_id': self.product_6.product_tmpl_id.id,
+            'product_qty': 1,
+            'type': 'normal',
+            'operation_ids': [
+                (0, 0, {'name': 'Cut', 'workcenter_id': self.workcenter_1.id, 'time_cycle': 12, 'sequence': 1}),
+                (0, 0, {'name': 'Weld', 'workcenter_id': self.workcenter_1.id, 'time_cycle': 18, 'sequence': 2}),
+            ],
+            'bom_line_ids': [
+                (0, 0, {'product_id': self.product_3.id, 'product_qty': 2}),
+                (0, 0, {'product_id': self.product_2.id, 'product_qty': 3}),
+            ]
+        })
+        operation_ids = bom.operation_ids
+        self.env['stock.quant'].create([
+            {
+                'product_id': self.product_3.id,
+                'product_uom_id': self.uom_unit.id,
+                'location_id': self.location_1.id,
+                'quantity': 4,
+            },
+            {
+                'product_id': self.product_2.id,
+                'product_uom_id': self.uom_unit.id,
+                'location_id': self.location_1.id,
+                'quantity': 6,
+            },
+        ])
+        self.env['quality.point'].create([
+            {
+                'title': 'test QP1',
+                'product_ids': [(4, self.product_6.id, 0)],
+                'operation_id': operation_ids[0].id,
+                'note': 'Cut',
+            },
+            {
+                'title': 'test QP2',
+                'product_ids': [(4, self.product_6.id, 0)],
+                'operation_id': operation_ids[1].id,
+                'note': 'Weld',
+            }
+        ])
+        mo = self.env['mrp.production'].create({
+            'product_id': self.product_6.id,
+            'product_qty': 2,
+            'bom_id': bom.id,
+        })
+        mo.action_confirm()
+        self.assertEqual(len(mo.move_raw_ids), 2)
+        self.assertEqual(len(mo.workorder_ids), 2)
+        self.assertEqual(len(mo.workorder_ids.check_ids), 2)
+        # 1 work order will produce the full 2 qty, the other will only produce 1
+        full_workorder = mo.workorder_ids[0]
+        full_workorder.qty_producing = 2
+        full_workorder.check_ids.action_pass_and_next()
+        full_workorder.button_finish()
+        self.assertEqual(full_workorder.state, 'done')
+        partial_workorder = mo.workorder_ids[1]
+        partial_workorder.qty_producing = 1
+        partial_workorder.check_ids.action_pass_and_next()
+        partial_workorder.button_finish()
+        self.assertEqual(partial_workorder.state, 'done')
+        # MO qty_producing should become 1 since only 1 qty was fully produced
+        self.assertEqual(mo.qty_producing, 1)
+        action = mo.button_mark_done()
+        backorder_form = Form(self.env[action['res_model']].with_context(**action['context']))
+        backorder_form.save().action_backorder()
+        backorder = mo.procurement_group_id.mrp_production_ids[1]
+        # the backorder has 1 qty to produce and the full workorder done from before should be cancelled (its a copy)
+        # and should not have any quality check to perform
+        self.assertEqual(backorder.product_qty, 1)
+        self.assertEqual(len(backorder.workorder_ids), 2)
+        self.assertEqual(backorder.workorder_ids[0].state, 'cancel')
+        self.assertEqual(len(backorder.workorder_ids[0].check_ids), 0)
+        backorder.workorder_ids[1].qty_producing = 1
+        backorder.workorder_ids[1].check_ids.action_pass_and_next()
+        backorder.workorder_ids[1].button_finish()
+        backorder.button_mark_done()
+        self.assertEqual(backorder.state, 'done')
+
 
 @tagged('post_install', '-at_install')
 class TestPickingWorkorderClientActionQuality(test_tablet_client_action.TestWorkorderClientActionCommon, HttpCase):

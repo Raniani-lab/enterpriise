@@ -566,7 +566,7 @@ class MrpProductionWorkcenterLine(models.Model):
 
     def _action_confirm(self):
         res = super()._action_confirm()
-        self.filtered(lambda wo: not wo.check_ids)._create_checks()
+        self.filtered(lambda wo: wo.state != 'cancel' and not wo.check_ids)._create_checks()
         return res
 
     def _update_qty_producing(self, quantity):

@@ -65,7 +65,7 @@ export class PlanningControllerActions {
                                 'action_rollback_copy_previous_week',
                                 result,
                             );
-                            await this.reload();
+                            this.toggleHighlightPlannedFilter(false);
                             this.notifications.add(
                                 markup(
                                     `<i class="fa fa-fw fa-check"></i><span class="ms-1">${escape(this.env._t(
@@ -79,7 +79,7 @@ export class PlanningControllerActions {
                     }],
                 }
             );
-            return this.reload();
+            this.toggleHighlightPlannedFilter(result[0]);
         } else {
             this.notifications.add(
                 this.env._t(

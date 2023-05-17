@@ -23,8 +23,12 @@ export class PlanningSearchModel extends SearchModel {
     }
 
     toggleHighlightPlannedFilter(highlightPlannedIds) {
-        this.highlightPlannedIds = highlightPlannedIds;
-        this.toggleSearchItem(this._getHighlightPlannedSearchItems().id);
+        if (highlightPlannedIds) {
+            this.highlightPlannedIds = highlightPlannedIds;
+            this.toggleSearchItem(this._getHighlightPlannedSearchItems().id);
+        } else {
+            this.deactivateGroup(this._getHighlightPlannedSearchItems().groupId);
+        }
     }
 
     _getHighlightPlannedSearchItems() {

@@ -104,7 +104,7 @@ QUnit.module("Planning.planning_calendar_tests", ({ beforeEach }) => {
             mockRPC: function (route, args) {
                 if (args.method === "action_copy_previous_week") {
                     assert.step("copy_previous_week()");
-                    return Promise.resolve({});
+                    return Promise.resolve(false);
                 }
             },
         });

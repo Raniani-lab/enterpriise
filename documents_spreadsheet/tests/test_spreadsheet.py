@@ -13,8 +13,6 @@ from odoo.tools import mute_logger
 from odoo.tests import Form
 from odoo.tests.common import new_test_user
 
-from odoo.addons.spreadsheet.utils import empty_spreadsheet_data_base64
-
 
 class SpreadsheetDocuments(SpreadsheetTestCommon):
     @classmethod
@@ -30,10 +28,46 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
         self.assertEqual(document.handler, "spreadsheet")
         self.assertEqual(document.mimetype, "application/o-spreadsheet")
         self.assertEqual(document.name, "Untitled spreadsheet")
-        self.assertEqual(document.datas, empty_spreadsheet_data_base64())
+        self.assertEqual(document.datas, document._empty_spreadsheet_data_base64())
         self.assertEqual(action["type"], "ir.actions.client")
         self.assertEqual(action["tag"], "action_open_spreadsheet")
         self.assertTrue(action["params"]["is_new_spreadsheet"])
+
+
+    def test_action_open_new_spreadsheet_with_locale(self):
+        self.env["res.lang"].create(
+            {
+                "code": "en_FR",
+                "name": "Custom Locale",
+                "thousands_sep": " ",
+                "decimal_point": ",",
+                "date_format": "%d-%m-%Y",
+                "time_format": "%H %M %S",
+                "active": True,
+            }
+        )
+        user = self.env['res.users'].create({
+            "name": "Custom user",
+            "login": "custom_user",
+            "lang": "en_FR"
+        })
+
+        action = self.env["documents.document"].with_user(user).action_open_new_spreadsheet()
+        spreadsheet_id = action["params"]["spreadsheet_id"]
+        document = self.env["documents.document"].browse(spreadsheet_id)
+        self.assertTrue(document.exists())
+
+        data = document.join_spreadsheet_session()["data"]
+        expected_locale = {
+            "code": "en_FR",
+            "name": "Custom Locale",
+            "thousandsSeparator": " ",
+            "decimalSeparator": ",",
+            "dateFormat": "dd-mm-yyyy",
+            "timeFormat": "hh mm ss",
+            "formulaArgSeparator": ";",
+        }
+        self.assertEqual(data["settings"]["locale"], expected_locale)
 
     def test_action_open_new_spreadsheet_in_folder(self):
         action = self.env["documents.document"].action_open_new_spreadsheet({

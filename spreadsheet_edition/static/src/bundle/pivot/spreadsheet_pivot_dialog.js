@@ -359,10 +359,11 @@ export class PivotDialog extends Component {
                     domain.push(col.values[i]);
                 }
                 const value = this.dataSource.getPivotCellValue(measure, domain);
+                const locale = this.props.getters.getLocale();
                 current.push({
                     args: {
                         formula: makePivotFormula("ODOO.PIVOT", [id, measure, ...domain]),
-                        value: !value ? "" : formatValue(value),
+                        value: !value ? "" : formatValue(value, { locale }),
                     },
                     isMissing: !this.dataSource.isUsedValue(domain, measure),
                 });

@@ -10,7 +10,6 @@ import datetime
 from lxml import etree
 
 from odoo import _, fields, models, api
-from odoo.addons.spreadsheet.utils import empty_spreadsheet_data_base64
 from odoo.exceptions import UserError, AccessError
 from odoo.osv import expression
 from odoo.tools import image_process
@@ -149,7 +148,7 @@ class Document(models.Model):
         spreadsheet = self.create({
             "name": _("Untitled spreadsheet"),
             "mimetype": "application/o-spreadsheet",
-            "datas": empty_spreadsheet_data_base64(),
+            "datas": self._empty_spreadsheet_data_base64(),
             "handler": "spreadsheet",
             **vals,
         })

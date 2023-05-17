@@ -17,6 +17,36 @@ const { Model } = spreadsheet;
 /** @typedef {import("@spreadsheet/o_spreadsheet/o_spreadsheet").Model} Model */
 let target;
 
+export const TEST_LOCALES = [
+    {
+        name: "United States",
+        code: "en_US",
+        thousandsSeparator: ",",
+        decimalSeparator: ".",
+        dateFormat: "m/d/yyyy",
+        timeFormat: "hh:mm:ss a",
+        formulaArgSeparator: ",",
+    },
+    {
+        name: "France",
+        code: "fr_FR",
+        thousandsSeparator: " ",
+        decimalSeparator: ",",
+        dateFormat: "dd/mm/yyyy",
+        timeFormat: "hh:mm:ss",
+        formulaArgSeparator: ";",
+    },
+    {
+        name: "Odooland",
+        code: "od_OO",
+        thousandsSeparator: "*",
+        decimalSeparator: ".",
+        dateFormat: "yyyy/mm/dd",
+        timeFormat: "hh:mm:ss",
+        formulaArgSeparator: ",",
+    },
+];
+
 QUnit.module(
     "documents_spreadsheet > Spreadsheet Client Action",
     {
@@ -290,6 +320,39 @@ QUnit.module(
 
             const modelFromLoadedJSON = new Model(JSON.parse(downloadedData));
             assert.strictEqual(getCellValue(modelFromLoadedJSON, "A3"), "Hello World");
+        });
+
+        QUnit.test("Spreadsheet is created with locale in data", async function (assert) {
+            const serverData = getBasicServerData();
+            serverData.models["documents.document"].records.push({
+                id: 3000,
+                name: "My template spreadsheet",
+                spreadsheet_data: JSON.stringify({ settings: { locale: TEST_LOCALES[1] } }),
+            });
+
+            const { model } = await createSpreadsheet({ serverData, spreadsheetId: 3000 });
+            assert.deepEqual(model.getters.getLocale().code, "fr_FR");
+        });
+
+        QUnit.test("Odoo locales are displayed in setting side panel", async function (assert) {
+            const { env } = await createSpreadsheet({
+                mockRPC: function (route, { method, model }) {
+                    if (method === "get_locales_for_spreadsheet") {
+                        return TEST_LOCALES;
+                    }
+                },
+            });
+
+            env.openSidePanel("Settings", {});
+            await nextTick();
+
+            const loadedLocales = [];
+            const options = document.querySelectorAll(".o-settings-panel select option");
+            for (const option of options) {
+                loadedLocales.push(option.value);
+            }
+
+            assert.deepEqual(loadedLocales, ["en_US", "fr_FR", "od_OO"]);
         });
     }
 );

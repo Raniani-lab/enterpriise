@@ -116,6 +116,7 @@ export class AbstractSpreadsheetAction extends Component {
                 external: {
                     fileStore: this.fileStore,
                     loadCurrencies: this.loadCurrencies.bind(this),
+                    loadLocales: this.loadLocales.bind(this),
                 },
                 transportService: this.transportService,
                 client: {
@@ -263,6 +264,10 @@ export class AbstractSpreadsheetAction extends Component {
                 decimalPlaces: currency.decimal_places || 2,
             };
         });
+    }
+
+    async loadLocales() {
+        return this.orm.call("res.lang", "get_locales_for_spreadsheet", []);
     }
 
     /**

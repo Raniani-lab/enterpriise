@@ -10,7 +10,6 @@ const { topbarMenuRegistry } = spreadsheet.registries;
 // Spreadsheet context menu items
 //--------------------------------------------------------------------------
 
-topbarMenuRegistry.add("file", { name: _t("File"), sequence: 10 });
 topbarMenuRegistry.addChild("new_sheet", ["file"], {
     name: _lt("New"),
     sequence: 10,

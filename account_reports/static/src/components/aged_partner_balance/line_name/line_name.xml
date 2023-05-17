@@ -27,12 +27,6 @@
               >
                   ⇒ Journal Items
               </a>
-              <a
-                  class="oe_link_reports ms-2"
-                  t-on-click="(ev) => controller.reportAction(ev, 'action_partner_reconcile', { line_id: props.line.id })"
-              >
-                  Reconcile
-              </a>
           </t>
        </xpath>
 

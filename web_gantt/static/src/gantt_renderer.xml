@@ -105,10 +105,10 @@
                 </div>
             </div>
             <b t-if="model.metaData.groupedBy.length"
-                class="o_gantt_header o_gantt_row_sidebar d-flex align-items-center justify-content-center p-2 bg-100"
+                class="o_gantt_title o_gantt_row_sidebar d-flex align-items-center justify-content-center p-2 bg-100"
                 t-esc="model.metaData.string"
            />
-            <div class="o_gantt_header o_gantt_header_slots o_gantt_grid_columns flex-grow-1 bg-view fw-bold">
+            <div class="o_gantt_header_slots o_gantt_grid_columns flex-grow-1 bg-view fw-bold">
                 <t t-set="formats" t-value="{'week': 'cccc, d', 'month': 'dd', 'year': env.isSmall ? 'MMM' : 'MMMM'}"/>
                 <t t-foreach="columns" t-as="column" t-key="column.id">
                     <div class="o_gantt_header_cell d-flex align-items-center justify-content-center py-2"

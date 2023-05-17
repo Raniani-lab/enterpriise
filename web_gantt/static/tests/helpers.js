@@ -243,7 +243,7 @@ export function getGridContent() {
 
     const columnHeaders = getTexts(".o_gantt_header_cell");
     const range = getTexts(".o_gantt_header_scale > div > *:not(.o_gantt_header_cell)")[2];
-    const viewTitle = getText(".o_gantt_header.o_gantt_row_sidebar");
+    const viewTitle = getText(".o_gantt_title");
 
     const renderer = fixture.querySelector(SELECTORS.renderer);
     const templateColumns = Number(renderer.style.getPropertyValue("--Gantt__Template-columns"));

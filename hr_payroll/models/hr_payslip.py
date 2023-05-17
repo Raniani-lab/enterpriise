@@ -930,9 +930,11 @@ class HrPayslip(models.Model):
         valid_slips = self.filtered(lambda p: p.employee_id and p.date_from and p.date_to and p.contract_id and p.struct_id)
         # Make sure to reset invalid payslip's worked days line
         self.update({'worked_days_line_ids': [(5, 0, 0)]})
+        if not valid_slips:
+            return
         # Ensure work entries are generated for all contracts
-        generate_from = min(p.date_from for p in self)
-        generate_to = max(p.date_to for p in self)
+        generate_from = min(p.date_from for p in valid_slips)
+        generate_to = max(p.date_to for p in valid_slips)
         self.mapped('contract_id')._generate_work_entries(generate_from, generate_to)
 
         work_entries = self.env['hr.work.entry'].search([

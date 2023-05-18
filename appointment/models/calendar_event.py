@@ -36,7 +36,7 @@ class CalendarEvent(models.Model):
     alarm_ids = fields.Many2many(compute='_compute_alarm_ids', store=True, readonly=False)
     appointment_answer_input_ids = fields.One2many('appointment.answer.input', 'calendar_event_id', string="Appointment Answers")
     appointment_attended = fields.Boolean('Attendees Arrived')
-    appointment_type_id = fields.Many2one('appointment.type', 'Online Appointment', tracking=True)
+    appointment_type_id = fields.Many2one('appointment.type', 'Appointment', tracking=True)
     appointment_type_schedule_based_on = fields.Selection(related="appointment_type_id.schedule_based_on")
     appointment_type_manage_capacity = fields.Boolean(related="appointment_type_id.resource_manage_capacity")
     appointment_invite_id = fields.Many2one('appointment.invite', 'Appointment Invitation', readonly=True, ondelete='set null')

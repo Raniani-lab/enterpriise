@@ -4,7 +4,7 @@
 {
     'name': "Recruitment tracking on appointments",
     'version': "1.0",
-    'category': 'Marketing/Online Appointment',
+    'category': 'Services/Appointment',
     'summary': "Keep track of recruitment appointments",
     'description': """
 Keeps track of all appointments related to applicants.

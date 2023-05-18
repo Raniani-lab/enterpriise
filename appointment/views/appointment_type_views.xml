@@ -385,7 +385,7 @@
     </record>
 
     <record id="appointment_type_action" model="ir.actions.act_window">
-        <field name="name">Online Appointments</field>
+        <field name="name">Appointments</field>
         <field name="res_model">appointment.type</field>
         <field name="view_mode">kanban,tree,form</field>
         <field name="domain">[('category', '=', 'website')]</field>

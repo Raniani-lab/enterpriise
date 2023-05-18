@@ -13,7 +13,7 @@ registry.category("web_tour.tours").add('website_appointment_tour', {
         content: 'click on calendar app',
     }, {
         trigger: 'a[data-menu-xmlid="appointment.appointment_type_menu"]',
-        content: 'click on Online Appointment',
+        content: 'click on Appointment',
     }, {
         trigger: '.o-kanban-button-new',
         content: 'click on Create button',

@@ -122,7 +122,7 @@
     </record>
 
     <record id="appointment_invite_action" model="ir.actions.act_window">
-        <field name="name">Shared Links</field>
+        <field name="name">Share Links</field>
         <field name="res_model">appointment.invite</field>
         <field name="view_mode">tree</field>
         <field name="help" type="html">

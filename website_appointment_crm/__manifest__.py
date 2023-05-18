@@ -4,7 +4,7 @@
 {
     'name': 'Website Appointment Lead Enrichment',
     'version': '1.0',
-    'category': 'Marketing/Online Appointment',
+    'category': 'Services/Appointment',
     'sequence': 2160,
     'summary': 'Enrich lead created automatically through an appointment with gathered website visitor information',
     'website': 'https://www.odoo.com/app/appointments',

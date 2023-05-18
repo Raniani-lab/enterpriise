@@ -1,9 +1,19 @@
 <?xml version="1.0"?>
 <odoo>
 
+    <!-- Appointment's main menu-->
+    <menuitem
+        id="main_menu_appointments"
+        name="Appointments"
+        sequence="10"
+        action="appointment.appointment_type_action"
+        web_icon="appointment,static/description/icon.png"
+        groups="base.group_user"/>
+
+    <!-- Schedule menu -->
     <menuitem
         id="menu_appointment_schedule_resources"
-        parent="calendar.mail_menu_calendar"
+        parent="appointment.main_menu_appointments"
         name="Schedule"/>
 
     <menuitem
@@ -19,43 +29,51 @@
         groups="group_appointment_manager"
         name="Staff Schedule"/>
 
+    <!-- Appointment's type, report menu-->
     <menuitem
         id="appointment_type_menu"
-        parent="calendar.mail_menu_calendar"
+        parent="appointment.main_menu_appointments"
         action="appointment_type_action"
         sequence="10"/>
 
     <menuitem
         id="menu_schedule_report"
-        parent="calendar.mail_menu_calendar"
+        parent="appointment.main_menu_appointments"
         name="Reporting"
         sequence="15"/>
     <menuitem
         id="menu_schedule_report_all"
         parent="appointment.menu_schedule_report"
-        action="calendar_event_action_reporting"/>
-    <menuitem
-        id="menu_schedule_report_online"
-        parent="appointment.menu_schedule_report"
-        action="calendar_event_action_report"/>
+        action="calendar_event_action_appointment_reporting"/>
 
+    <!-- Appointment's config menu-->
+    <menuitem
+        id="appointment_menu_config"
+        parent="appointment.main_menu_appointments"
+        name="Configuration"
+        sequence="20"
+        groups="group_appointment_user"/>
+    <menuitem
+        id="menu_appointment_reminders"
+        parent="appointment.appointment_menu_config"
+        name="Reminders"
+        action="calendar.action_calendar_alarm"
+        groups="group_appointment_manager"/>
     <menuitem
         id="menu_appointment_resource"
-        parent="calendar.calendar_menu_config"
+        parent="appointment.appointment_menu_config"
         action="appointment_resource_action"
-        groups="base.group_no_one"/>
-
+        groups="group_appointment_manager"/>
     <menuitem
         id="menu_appointment_type_custom_and_anytime"
-        parent="calendar.calendar_menu_config"
+        parent="appointment.appointment_menu_config"
         action="appointment_type_action_custom_and_anytime"
-        groups="base.group_no_one"/>
-
+        groups="group_appointment_user"/>
     <menuitem
         id="menu_appointment_invite"
-        parent="calendar.calendar_menu_config"
-        action="resource.action_resource_calendar_leave_tree"
-        groups="base.group_no_one"
+        parent="appointment.appointment_menu_config"
+        action="appointment_invite_action"
+        groups="group_appointment_user"
         name="Manage Resource Leaves"/>
 
 </odoo>

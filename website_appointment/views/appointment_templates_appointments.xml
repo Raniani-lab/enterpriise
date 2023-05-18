@@ -2,7 +2,7 @@
 <odoo>
     <!-- Templates inherited -->
 
-    <template id="appointments_list_layout" name="Online Appointment: Appointments List Layout"
+    <template id="appointments_list_layout" name="Appointment: Appointments List Layout"
               inherit_id="appointment.appointments_list_layout" track="1">
         <xpath expr="//t[@t-call='portal.portal_layout']" position="attributes">
             <attribute name="t-call">website.layout</attribute>
@@ -26,7 +26,7 @@
         <field name="track">1</field>
     </record>
 
-    <template id="appointment_info" name="Online Appointment: Appointment Info" inherit_id="appointment.appointment_info" track="1">
+    <template id="appointment_info" name="Appointment: Appointment Info" inherit_id="appointment.appointment_info" track="1">
         <xpath expr="//t[@t-call='portal.portal_layout']" position="attributes">
             <attribute name="t-call">website.layout</attribute>
         </xpath>
@@ -67,7 +67,7 @@
 
     <!-- Pages -->
 
-    <template id="appointment_select_operator" name="Online Appointment: Appointment Operators">
+    <template id="appointment_select_operator" name="Appointment: Appointment Operators">
         <t t-set="no_breadcrumbs" t-value="True"/>
         <t t-call="website.layout">
             <div id="wrap" class="o_wappointment_wrap">
@@ -202,7 +202,7 @@
     </template>
 
     <!-- Enable the customize option for the 2 layouts (cards and list)-->
-    <template id="website_calendar_index" name="Online Appointment"/>
+    <template id="website_calendar_index" name="Appointment"/>
     <template id="opt_appointments_list_cards" inherit_id="website_appointment.website_calendar_index" active="True" name="Card Design"/>
 
     <!-- Top bar -->

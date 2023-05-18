@@ -4,7 +4,7 @@
 {
     'name': 'Appointments',
     'version': '1.3',
-    'category': 'Marketing/Online Appointment',
+    'category': 'Services/Appointment',
     'sequence': 215,
     'summary': 'Allow people to book meetings in your agenda',
     'website': 'https://www.odoo.com/app/appointments',
@@ -18,6 +18,7 @@
         'data/mail_message_subtype_data.xml',
         'data/mail_template_data.xml',
         'security/res_groups_data.xml',
+        'security/ir_rule_data.xml',
         'security/ir.model.access.csv',
         'views/calendar_views.xml',
         'views/calendar_alarm_views.xml',

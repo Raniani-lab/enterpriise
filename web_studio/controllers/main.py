@@ -679,7 +679,7 @@ Are you sure you want to remove the selection values of those records?""") % len
 
         # remove default value if the value is not acceptable anymore
         if field.ttype == 'selection':
-            current_default = request.env['ir.default'].get(model_name, field_name, company_id=True)
+            current_default = request.env['ir.default']._get(model_name, field_name, company_id=True)
             if current_default:
                 selection_values = literal_eval(field.selection)
                 if current_default not in [x[0] for x in selection_values]:
@@ -1517,7 +1517,7 @@ Are you sure you want to remove the selection values of those records?""") % len
     def get_default_value(self, model_name, field_name):
         """ Return the default value associated to the given field. """
         return {
-            'default_value': request.env['ir.default'].get(model_name, field_name, company_id=True)
+            'default_value': request.env['ir.default']._get(model_name, field_name, company_id=True)
         }
 
     @http.route('/web_studio/set_default_value', type='json', auth='user')

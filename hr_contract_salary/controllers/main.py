@@ -262,7 +262,7 @@ class HrContractSalary(http.Controller):
         values.update({
             'need_personal_information': not values['redirect_to_job'],
             'submit': not values['redirect_to_job'],
-            'default_mobile': request.env['ir.default'].sudo().get('hr.contract', 'mobile'),
+            'default_mobile': request.env['ir.default'].sudo()._get('hr.contract', 'mobile'),
             'original_link': get_current_url(request.httprequest.environ),
             'token': kw.get('token'),
             'master_department_id': request.env['hr.department'].sudo().browse(int(values['department_id'])).master_department_id.id if values['department_id'] else False

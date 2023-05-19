@@ -4,7 +4,7 @@
         <xpath expr="//div[hasclass('acc_rep_filter_extra_options')]" position="before">
             <!-- Comparison filter -->
             <t t-if="controller.options.periods.length > 0">
-                <Dropdown togglerClass="'btn btn-secondary'">
+                <Dropdown togglerClass="'btn btn-secondary me-1'">
                     <t t-set-slot="toggler">
                         <span class="fa fa-bar-chart"/>Comparison: <t t-esc="selectedComparisonName"/>
                     </t>
@@ -22,7 +22,7 @@
 
             <!-- Journal filter -->
             <t t-if="controller.options.consolidation_journals &amp;&amp; !hasSelectedPeriod">
-                <Dropdown togglerClass="'btn btn-secondary'">
+                <Dropdown togglerClass="'btn btn-secondary me-1'">
                     <t t-set-slot="toggler">
                         <span class="fa fa-bar-book"/>Journals: <t t-esc="selectedJournalName"/>
                     </t>

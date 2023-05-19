@@ -71,3 +71,24 @@ class FrenchReportCustomHandler(models.AbstractModel):
             })
 
         return results
+
+    def _custom_options_initializer(self, report, options, previous_options=None):
+        super()._custom_options_initializer(report, options, previous_options=previous_options)
+
+        options['buttons'].append({
+            'name': _('EDI VAT'),
+            'sequence': 30,
+            'action': 'send_vat_report',
+        })
+
+    def send_vat_report(self, options):
+        view_id = self.env.ref('l10n_fr_reports.view_l10n_fr_reports_report_form').id
+        return {
+            'name': _('EDI VAT'),
+            'view_mode': 'form',
+            'views': [[view_id, 'form']],
+            'res_model': 'l10n_fr_reports.send.vat.report',
+            'type': 'ir.actions.act_window',
+            'target': 'new',
+            'context': {**self.env.context, 'l10n_fr_generation_options': options},
+        }

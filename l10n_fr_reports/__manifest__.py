@@ -9,6 +9,10 @@
 Accounting reports for France
 ================================
 
+This module also allows exporting the French vat report and send it to the DGFiP, an OGA or an expert accountant.
+
+It adds a new button "EDI VAT" on the French vat report and a new menu item "EDI exports" (below "Reporting",
+in the "Statement Reports" section).
     """,
     'category': 'Accounting/Localizations/Reporting',
     'depends': ['l10n_fr', 'account_reports'],
@@ -17,7 +21,13 @@ Accounting reports for France
         'data/profit_loss.xml',
         'data/intermediate_management_balances.xml',
         'data/tax_report.xml',
-        'views/res_config_settings_views.xml'
+        'data/cron.xml',
+        'data/template.xml',
+        'security/ir.model.access.csv',
+        'views/res_config_settings_views.xml',
+        'views/account_journal_dashboard_view.xml',
+        'views/account_report_async_export_view.xml',
+        'wizard/l10n_fr_send_vat_report_wizard.xml',
     ],
     'auto_install': ['l10n_fr', 'account_reports'],
     'installable': True,

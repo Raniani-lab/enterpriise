@@ -28,7 +28,7 @@ publicWidget.registry.appointmentTypeSelect = publicWidget.Widget.extend({
         return this._super(...arguments).then(() => {
             // Load an image when no appointment types are found
             this.$el.find('.o_appointment_svg i').replaceWith(renderToElement('Appointment.appointment_svg', {}));
-            this.$el.find('.o_appointment_not_found h2, .o_appointment_not_found .alert').removeClass('d-none');
+            this.$el.find('.o_appointment_not_found div').removeClass('d-none');
         });
     },
 

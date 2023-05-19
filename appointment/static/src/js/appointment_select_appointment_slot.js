@@ -90,8 +90,7 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
         if (!this.$first.length) { // No slot available
             if (!this.$("select[name='resourceCapacity']").length) {
                 this.$('#slots_availabilities').empty();
-                this.$('.o_appointment_details_column, .o_appointment_timezone_selection').addClass('d-none');
-                this.$('.o_appointment_info_main').removeClass('col-lg-8').addClass('col-12');
+                this.$('.o_appointment_timezone_selection').addClass('d-none');
                 const staffUserName = this.$("#slots_form select[name='staff_user_id'] :selected").text();
                 const hideSelectDropdown = !!this.$("input[name='hide_select_dropdown']").val();
                 const active = this.$("input[name='active']").val();
@@ -104,8 +103,7 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
                 this.$(".o_appointment_no_capacity").empty().append(renderToElement('Appointment.appointment_info_no_capacity'));
             }
         } else {
-            this.$('.o_appointment_details_column, .o_appointment_timezone_selection').removeClass('d-none');
-            this.$('.o_appointment_info_main').removeClass('col-12').addClass('col-lg-8');
+            this.$('.o_appointment_timezone_selection').removeClass('d-none');
             this.$(".o_appointment_no_capacity").empty();
         }
         if (this.$('.o_appointment_missing_configuration').hasClass('d-none')) {
@@ -124,7 +122,7 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
         parent.find('.o_appointment_no_slot_month_helper').remove();
         parent.addClass('d-none');
         const $month = $(`div#month-${monthID}`).removeClass('d-none');
-        this.$('.o_slot_selected').removeClass('o_slot_selected');
+        this.$('.active').removeClass('active');
         this.$slotsList.empty();
         this.$resourceSelection.empty();
 
@@ -140,8 +138,8 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
      * Display the list of slots available for the date selected
      */
     _onClickDaySlot: function (ev) {
-        this.$('.o_slot_selected').removeClass('o_slot_selected');
-        this.$(ev.currentTarget).addClass('o_slot_selected');
+        this.$('.o_slot_selected').removeClass('o_slot_selected active');
+        this.$(ev.currentTarget).addClass('o_slot_selected active');
 
         const slotDate = this.$(ev.currentTarget).data('slotDate');
         const slots = this.$(ev.currentTarget).data('availableSlots');
@@ -181,8 +179,8 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
     },
 
     _onClickHoursSlot: function (ev) {
-        this.$('.o_slot_hours.o_slot_hours_selected').removeClass('o_slot_hours_selected');
-        this.$(ev.currentTarget).addClass('o_slot_hours_selected');
+        this.$('.o_slot_hours.o_slot_hours_selected').removeClass('o_slot_hours_selected active');
+        this.$(ev.currentTarget).addClass('o_slot_hours_selected active');
 
         // If not in 'time_resource' we directly go to the url for the slot
         // In the case we are in 'time_resource', we don't want to open the link as we want to select a resource

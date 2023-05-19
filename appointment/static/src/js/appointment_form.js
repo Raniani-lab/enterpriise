@@ -7,8 +7,8 @@ import { _t } from "@web/core/l10n/translation";
 publicWidget.registry.appointmentForm = publicWidget.Widget.extend({
     selector: '.o_appointment_attendee_form',
     events: {
-        'click div.o_appointment_add_guests button.btn-link': '_onAddGuest',
-        'click div.o_appointment_add_guests button.btn-close': '_onHideGuest',
+        'click div.o_appointment_add_guests button.o_appointment_input_guest_add': '_onAddGuest',
+        'click div.o_appointment_add_guests button.o_appointment_input_guest_cancel': '_onHideGuest',
         'click .o_appointment_form_confirm_btn': '_onConfirmAppointment',
     },
 
@@ -21,9 +21,8 @@ publicWidget.registry.appointmentForm = publicWidget.Widget.extend({
         textArea.classList.remove('d-none');
         textArea.focus();
         const addGuestDiv = this.el.querySelector('div.o_appointment_add_guests')
-        addGuestDiv.querySelector('button.btn-link').classList.add('d-none')
-        addGuestDiv.querySelector('label.fw-bold').classList.remove('d-none')
-        addGuestDiv.querySelector('button.btn-close').classList.remove('d-none')
+        addGuestDiv.querySelector('button.o_appointment_input_guest_add').classList.add('d-none')
+        addGuestDiv.querySelector('button.o_appointment_input_guest_cancel').classList.remove('d-none')
     },
 
     _onConfirmAppointment: async function(event) {
@@ -53,9 +52,8 @@ publicWidget.registry.appointmentForm = publicWidget.Widget.extend({
         textArea.classList.add('d-none')
         textArea.value = "";
         const addGuestDiv = this.el.querySelector('div.o_appointment_add_guests')
-        addGuestDiv.querySelector('button.btn-link').classList.remove('d-none');
-        addGuestDiv.querySelector('label.fw-bold').classList.add('d-none');
-        addGuestDiv.querySelector('button.btn-close').classList.add('d-none');
+        addGuestDiv.querySelector('button.o_appointment_input_guest_add').classList.remove('d-none');
+        addGuestDiv.querySelector('button.o_appointment_input_guest_cancel').classList.add('d-none');
     },
 
     _hideErrorMsg: function() {

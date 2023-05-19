@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-<template id="appointment_info" inherit_id="appointment.appointment_info">
-    <xpath expr="//div[contains(@t-attf-class, 'o_appointment_details_column')]/*[1]/*[1]" position="before">
-        <div t-if="appointment_type.product_id" class="d-flex text-muted fs-6 lh-lg w-100 ps-0 py-1 mb-1">
-            <i class="fa fa-credit-card o_appointment_fa_width text-center fs-5 me-2 mt-1"/>
+<template id="appointment_info" inherit_id="appointment.appointment_meeting_details">
+    <xpath expr="//div[hasclass('o_appointment_details_location')]" position="before">
+        <div t-if="appointment_type.product_id" class="d-flex py-1 px-0 bg-transparent o-cc1-text border-0">
+            <i class="fa fa-credit-card fa-fw me-2 mt-1 text-muted"/>
             <span t-esc="appointment_type.product_id.lst_price"
                 t-options="{'widget': 'monetary', 'display_currency': appointment_type.product_id.currency_id}"/>
         </div>

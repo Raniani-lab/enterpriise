@@ -134,7 +134,7 @@ registry.category("web_tour.tours").add('website_appointment_tour', {
         isCheck: true
     }, {
         content: 'Clicking on the back to edit mode link',
-        trigger: 'span:contains("Back to edit mode")',
+        trigger: 'a:contains("Back to edit mode")',
     }, {
         content: 'Check that the appointment is booked or not',
         trigger: 'div[name="appointment_count"] > span.o_stat_value:contains("1")',

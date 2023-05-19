@@ -39,30 +39,28 @@
     </t>
 
     <t t-name="Appointment.appointment_info_no_slot_month">
-        <div class="o_appointment_no_slot_month_helper border-top pt-4 pb-2 px-2 px-md-3 mt-2 text-center">
-            <div class="mx-auto">
-                <t t-if="staffUserName">
-                    <p>
-                        Sorry, <span t-out="staffUserName"/> has no more slots available for this month.
-                    </p>
-                    <p>
-                        Their first availability is <br/>
-                        <a href="#" id="next_available_slot" t-out="firstAvailabilityDate"/>
-                    </p>
-                </t>
-                <t t-else="">
-                    <p>
-                        Sorry, we have no more slots available for this month.
-                    </p>
-                    <p>
-                        Our first availability is <br/>
-                        <a href="#" id="next_available_slot" t-out="firstAvailabilityDate"/>
-                    </p>
-                </t>
-            </div>
-            <div class="o_appointment_no_slot_month_helper_svg pt-2 mx-auto">
+        <div class="o_appointment_no_slot_month_helper mt-4 p-3 text-center">
+            <div class="o_appointment_no_slot_month_helper_svg w-25 mx-auto">
                 <t t-call="Appointment.appointment_svg"/>
             </div>
+            <t t-if="staffUserName">
+                <p>
+                    Sorry, <span t-out="staffUserName"/> has no more slots available for this month.
+                </p>
+                <p>
+                    Their first availability is <br/>
+                    <a href="#" id="next_available_slot" t-out="firstAvailabilityDate"/>
+                </p>
+            </t>
+            <t t-else="">
+                <p>
+                    Sorry, we have no more slots available for this month.
+                </p>
+                <p>
+                    Our first availability is <br/>
+                    <a href="#" id="next_available_slot" t-out="firstAvailabilityDate"/>
+                </p>
+            </t>
         </div>
     </t>
 </templates>

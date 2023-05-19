@@ -16,10 +16,5 @@
         'views/appointment_templates_appointments.xml',
         'views/appointment_templates_payment.xml',
         'views/calendar_booking_templates.xml',
-    ],
-    'assets': {
-        'web.assets_frontend': [
-            'website_appointment_account_payment/static/src/scss/website_appointment.scss',
-        ],
-    }
+    ]
 }

@@ -7,12 +7,5 @@
         </button>
         <button t-else="" type="button" class="btn btn-primary o_appointment_form_confirm_btn">Confirm Appointment</button>
     </xpath>
-    <xpath expr="//div[hasclass('o_appointment_attendee_form_details')]//div[1]" position="before">
-        <div t-if="appointment_type.product_id" class="d-flex fs-6 lh-lg pt-1">
-            <i class="fa fa-credit-card o_appointment_fa_width text-center fs-5 me-2 mt-1"/>
-            <span t-esc="appointment_type.product_id.lst_price"
-                t-options="{'widget': 'monetary', 'display_currency': appointment_type.product_id.currency_id}"/>
-        </div>
-    </xpath>
 </template>
 </odoo>

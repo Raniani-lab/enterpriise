@@ -5,7 +5,7 @@
         <attribute name="t-call">website.layout</attribute>
     </xpath>
     <xpath expr="//div[@id='wrap']" position="attributes">
-        <attribute name="class">o_appointment o_wappointment_wrap</attribute>
+        <attribute name="class">o_appointment o_wappointment_wrap mt-4</attribute>
     </xpath>
 </template>
 </odoo>

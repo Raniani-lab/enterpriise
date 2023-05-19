@@ -798,7 +798,7 @@ class AppointmentType(models.Model):
                     mute_cls = weekend_cls = today_cls = None
                     today_slots = []
                     if day.weekday() in (locale.weekend_start, locale.weekend_end):
-                        weekend_cls = 'o_weekend'
+                        weekend_cls = 'o_weekend bg-light'
                     if day == today.date() and day.month == today.month:
                         today_cls = 'o_today'
                     if day.month != start.month:

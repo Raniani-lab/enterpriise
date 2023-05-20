@@ -1721,7 +1721,7 @@ msgstr "പ്രധാന അറ്റാച്ച്മെന്റ്"
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Media"
-msgstr ""
+msgstr "മീഡിയ"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_member_view_form

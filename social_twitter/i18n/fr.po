@@ -193,7 +193,7 @@ msgstr "Image"
 #: model:ir.model.fields,field_description:social_twitter.field_social_post__is_twitter_post_limit_exceed
 #: model:ir.model.fields,field_description:social_twitter.field_social_post_template__is_twitter_post_limit_exceed
 msgid "Is Twitter Post Limit Exceed"
-msgstr "La limite de publication sur Twitter est-elle dépassée ?"
+msgstr "La limite de post sur Twitter est-elle dépassée ?"
 
 #. module: social_twitter
 #: model:social.stream.type,name:social_twitter.stream_type_twitter_keyword
@@ -276,7 +276,7 @@ msgstr "Publier"
 #. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.twitter_preview
 msgid "Post Image"
-msgstr "Image de la publication"
+msgstr "Image du post"
 
 #. module: social_twitter
 #. odoo-javascript
@@ -365,7 +365,7 @@ msgstr "Réseaux sociaux"
 #. module: social_twitter
 #: model:ir.model,name:social_twitter.model_social_post
 msgid "Social Post"
-msgstr "Publication"
+msgstr "Post social"
 
 #. module: social_twitter
 #: model:ir.model,name:social_twitter.model_social_post_template
@@ -380,7 +380,7 @@ msgstr "Flux social"
 #. module: social_twitter
 #: model:ir.model,name:social_twitter.model_social_stream_post
 msgid "Social Stream Post"
-msgstr "Publication du flux social"
+msgstr "Post du flux social"
 
 #. module: social_twitter
 #: model:ir.model,name:social_twitter.model_social_twitter_account
@@ -489,7 +489,7 @@ msgstr "Twitter OAuth Jeton secret"
 #: model:ir.model.fields,field_description:social_twitter.field_social_post__twitter_post_limit_message
 #: model:ir.model.fields,field_description:social_twitter.field_social_post_template__twitter_post_limit_message
 msgid "Twitter Post Limit Message"
-msgstr "Message de limite de publications Twitter"
+msgstr "Message de limite de posts Twitter"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_post__twitter_preview

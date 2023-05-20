@@ -31,17 +31,19 @@ msgid ""
 "<i class=\"fa fa-check-circle fa-1x text-success me-2\" role=\"img\" aria-"
 "label=\"Success\" title=\"Success\"/>"
 msgstr ""
+"<i class=\"fa fa-check-circle fa-1x text-success me-2\" role=\"img\" aria-"
+"label=\"Success\" title=\"Success\"/>"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.navbar
 msgid "<span class=\"navbar-brand h4 my-0 me-auto\">Help Center</span>"
-msgstr ""
+msgstr "<span class=\"navbar-brand h4 my-0 me-auto\">Centro assistenza</span>"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.team_form_1
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.ticket_submit_form
 msgid "<span class=\"s_website_form_label_content\">Attachment</span>"
-msgstr ""
+msgstr "<span class=\"s_website_form_label_content\">Allegato</span>"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.team_form_1
@@ -82,7 +84,7 @@ msgstr ""
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.search_results
 msgid "<span class=\"text-600\">Search results for</span>"
-msgstr ""
+msgstr "<span class=\"text-600\">Cerca risultati per</span>"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.footer
@@ -90,6 +92,8 @@ msgid ""
 "<span style=\"font-size: 24px;\">Can't find your answer? Our support team is"
 " here to help.</span>"
 msgstr ""
+"<span style=\"font-size: 24px;\">Non riesci a trovare una risposta? Il "
+"nostro team di supporto è qui per aiutarti.</span>"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.knowledge_base
@@ -113,7 +117,7 @@ msgstr "Tutte le etichette"
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.navbar_search_type
 msgid "All Types"
-msgstr ""
+msgstr "Tutti i tipi"
 
 #. module: website_helpdesk
 #. odoo-javascript
@@ -132,17 +136,17 @@ msgstr "Allegato"
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.navbar_search_date
 msgid "By Date"
-msgstr ""
+msgstr "Per data"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.navbar_search_tag
 msgid "By Tags"
-msgstr ""
+msgstr "Per tag"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.navbar_search_type
 msgid "By Type"
-msgstr ""
+msgstr "Per tipo"
 
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__can_publish
@@ -164,7 +168,7 @@ msgstr "Servizio clienti"
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.snippet_options
 msgid "Date Filter"
-msgstr ""
+msgstr "Filtro data"
 
 #. module: website_helpdesk
 #. odoo-javascript
@@ -189,7 +193,7 @@ msgstr "Supporto"
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.snippet_options
 msgid "Help Center Page"
-msgstr ""
+msgstr "Pagina centro assistenza"
 
 #. module: website_helpdesk
 #. odoo-python
@@ -268,7 +272,7 @@ msgstr "Crea un ticket"
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.snippet_options
 msgid "Tags Filter"
-msgstr ""
+msgstr "Filtro tag"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.ticket_submited
@@ -287,12 +291,12 @@ msgstr "URL completo per accedere al documento dal sito web."
 #: code:addons/website_helpdesk/models/helpdesk.py:0
 #, python-format
 msgid "The team company and the website company should match"
-msgstr ""
+msgstr "Il team e il sito web dell'azienda devono corrispondere"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.snippet_options
 msgid "Type Filter"
-msgstr ""
+msgstr "Filtro tipo"
 
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__feature_form_url

@@ -9,6 +9,7 @@
 # Marcel Savegnago <marcel.savegnago@gmail.com>, 2022
 # Martin Trigaux, 2022
 # douglas custodio <douglascstd@yahoo.com>, 2023
+# Layna Nascimento, 2023
 # Kevilyn Rosa, 2023
 # 
 msgid ""
@@ -657,13 +658,6 @@ msgstr ""
 
 #. module: helpdesk
 #. odoo-python
-#: code:addons/helpdesk/models/helpdesk_ticket.py:0
-#, python-format
-msgid "Assign to me"
-msgstr "Atribua para Mim"
-
-#. module: helpdesk
-#. odoo-python
 #: code:addons/helpdesk/controllers/portal.py:0
 #, python-format
 msgid "Assigned"
@@ -730,7 +724,7 @@ msgstr ""
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__auto_assignment
 msgid "Automatic Assignment"
-msgstr ""
+msgstr "Atribuição automática"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__auto_close_ticket
@@ -1649,7 +1643,7 @@ msgstr "Ticket da Central de Ajuda"
 #. module: helpdesk
 #: model:ir.model,name:helpdesk.model_helpdesk_ticket_type
 msgid "Helpdesk Ticket Type"
-msgstr "Tipo de Ticket"
+msgstr "Tipo de chamado"
 
 #. module: helpdesk
 #: model:ir.actions.server,name:helpdesk.ir_cron_auto_close_ticket_ir_actions_server
@@ -3561,7 +3555,7 @@ msgstr "Estágio do Ticket Alterado"
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket_report_analysis__ticket_type_id
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_search_analysis
 msgid "Ticket Type"
-msgstr "Tipo de Ticket"
+msgstr "Tipo de chamado"
 
 #. module: helpdesk
 #. odoo-python

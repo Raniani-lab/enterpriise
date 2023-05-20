@@ -707,7 +707,7 @@ msgstr ""
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
 msgid "Frequency"
-msgstr ""
+msgstr "Frekuensi"
 
 #. module: timesheet_grid
 #. odoo-javascript

@@ -577,6 +577,7 @@ msgstr "Permetti la disassegnazione"
 #, python-format
 msgid "An shift must be in the same company as its recurrency."
 msgstr ""
+"Un turno deve appartenere alla stessa azienda della propria ricorrenza."
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_report_action_analysis
@@ -702,7 +703,7 @@ msgstr "Configurazione"
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__confirm_delete
 msgid "Confirm Slots Deletion"
-msgstr ""
+msgstr "Conferma eliminazione fasce orarie"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__conflicting_slot_ids
@@ -1138,6 +1139,7 @@ msgid ""
 "If checked, it means that the shift contains has changed since its last "
 "publish."
 msgstr ""
+"Se selezionata significa che il turno è cambiato dall'ultima pubblicazione."
 
 #. module: planning
 #. odoo-javascript
@@ -1637,7 +1639,7 @@ msgstr "Ricorrente"
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_recurrency__slot_ids
 msgid "Related Planning Entries"
-msgstr ""
+msgstr "Voci di pianificazione correlate"
 
 #. module: planning
 #: model:ir.model.fields,help:planning.field_planning_slot__user_id
@@ -1808,7 +1810,7 @@ msgstr "Token di sicurezza"
 #. module: planning
 #: model:ir.model,name:planning.model_slot_planning_select_send
 msgid "Select Employees and Send One Slot"
-msgstr ""
+msgstr "Selezione dipendenti e invio di una fascia oraria"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form

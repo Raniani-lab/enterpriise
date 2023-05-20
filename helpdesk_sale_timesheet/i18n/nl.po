@@ -213,8 +213,8 @@ msgid ""
 msgstr ""
 "Verkooporderregel waaraan de bestede tijd op dit ticket zal worden toegevoegd om aan je klant te worden gefactureerd.\n"
 "Het laatste vooruitbetaalde verkooporderregel met resterende tijd zal standaard worden gekozen.\n"
-"Verwijder dit verkooporderregel om dit ticket niet factureerbaar te maken.\n"
-"Je kan ook het verkooporderregel van elke urenstaat individueel wijzigen of verwijderen."
+"Verwijder deze verkooporderregel om deze ticket niet factureerbaar te maken.\n"
+"Je kunt ook de verkooporderregel van elke urenstaat individueel wijzigen of verwijderen."
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_sla__sale_line_ids

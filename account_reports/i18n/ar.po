@@ -68,6 +68,13 @@ msgstr ""
 "الحساب المناسب) "
 
 #. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "%s is not a numeric value"
+msgstr ""
+
+#. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.aged_report_line_template
 #: model_terms:ir.ui.view,arch_db:account_reports.bank_reconciliation_report_cell_template_unexplained_difference
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_general_ledger_report
@@ -1430,14 +1437,14 @@ msgstr "المعالج المخصص لتقارير مبيعات العمولة �
 #: code:addons/account_reports/models/account_sales_report.py:0
 #, python-format
 msgid "EC tax on non EC countries"
-msgstr ""
+msgstr "ضريبة الاتحاد الأوروبي للدول خارج الاتحاد الأوروبي "
 
 #. module: account_reports
 #. odoo-python
 #: code:addons/account_reports/models/account_sales_report.py:0
 #, python-format
 msgid "EC tax on same country"
-msgstr ""
+msgstr "ضريبة الاتحاد الأوروبي في نفس الدولة "
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_equity0
@@ -1504,7 +1511,7 @@ msgstr "الرصيد الختامي: "
 #: code:addons/account_reports/models/account_sales_report.py:0
 #, python-format
 msgid "Entries with partners with no VAT"
-msgstr ""
+msgstr "القيود التي بها شركاء بلا ضريبة القيمة المضافة "
 
 #. module: account_reports
 #. odoo-python
@@ -3653,7 +3660,7 @@ msgstr "والذي لا ينتج عن أي من كشف الحساب البنكي
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.sales_report_main_template
 msgid "who are not established in any of the EC countries."
-msgstr ""
+msgstr "غير المنشئين في أي من دول الاتحاد الأوروبي. "
 
 #. module: account_reports
 #. odoo-javascript

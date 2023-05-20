@@ -31,7 +31,7 @@ msgstr "%(response)s"
 #: code:addons/account_avatax/models/account_avatax.py:0
 #, python-format
 msgid "- %s (ID: %s) on %s"
-msgstr ""
+msgstr "- %s (ID: %s) su %s"
 
 #. module: account_avatax
 #: model_terms:ir.ui.view,arch_db:account_avatax.res_config_settings_view_form

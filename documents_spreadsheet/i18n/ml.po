@@ -125,7 +125,7 @@ msgstr "ക്രീയേറ്റ്‌"
 #: code:addons/documents_spreadsheet/static/src/documents_view/documents_spreadsheet_controller_mixin.xml:0
 #, python-format
 msgid "Create Spreadsheet"
-msgstr ""
+msgstr "സ്പ്രെഡ്ഷീറ്റ് സൃഷ്ടിക്കുക"
 
 #. module: documents_spreadsheet
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_save_spreadsheet_template__create_uid
@@ -145,7 +145,7 @@ msgstr "സൃഷ്ടിച്ചത്"
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_save_spreadsheet_template__data
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_spreadsheet_template__data
 msgid "Data"
-msgstr ""
+msgstr "ഡാറ്റ"
 
 #. module: documents_spreadsheet
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_save_spreadsheet_template__display_name
@@ -244,7 +244,7 @@ msgstr ""
 #. module: documents_spreadsheet
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.spreadsheet_template_view_search
 msgid "My Templates"
-msgstr ""
+msgstr "എന്റെ ടെംപ്ലേറ്റുകൾ"
 
 #. module: documents_spreadsheet
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_spreadsheet_template__name
@@ -256,7 +256,7 @@ msgstr "പേര്"
 #: code:addons/documents_spreadsheet/static/src/spreadsheet_template/spreadsheet_template_dialog.js:0
 #, python-format
 msgid "New Spreadsheet"
-msgstr ""
+msgstr "പുതിയ സ്പ്രെഡ്ഷീറ്റ്"
 
 #. module: documents_spreadsheet
 #. odoo-javascript
@@ -268,7 +268,7 @@ msgstr ""
 #. module: documents_spreadsheet
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.spreadsheet_template_view_tree
 msgid "New spreadsheet"
-msgstr ""
+msgstr "പുതിയ സ്പ്രെഡ്ഷീറ്റ്"
 
 #. module: documents_spreadsheet
 #. odoo-javascript
@@ -295,7 +295,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:documents_spreadsheet.spreadsheet_revision_action
 #: model:ir.ui.menu,name:documents_spreadsheet.menu_technical_spreadsheet_revision
 msgid "Revisions"
-msgstr ""
+msgstr "റിവിഷൻസ്"
 
 #. module: documents_spreadsheet
 #: model:ir.actions.act_window,name:documents_spreadsheet.save_spreadsheet_template_action
@@ -339,7 +339,7 @@ msgstr "സ്പ്രെഡ്ഷീറ്റ് സ്നാപ്പ്ഷ�
 #. module: documents_spreadsheet
 #: model:ir.model,name:documents_spreadsheet.model_spreadsheet_template
 msgid "Spreadsheet Template"
-msgstr ""
+msgstr "സ്പ്രെഡ്ഷീറ്റ് ടെംപ്ലേറ്റ്"
 
 #. module: documents_spreadsheet
 #: model:ir.model,name:documents_spreadsheet.model_save_spreadsheet_template
@@ -350,7 +350,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:documents_spreadsheet.spreadsheet_template_action
 #: model:ir.ui.menu,name:documents_spreadsheet.menu_technical_spreadsheet_template
 msgid "Spreadsheet Templates"
-msgstr ""
+msgstr "സ്പ്രെഡ്ഷീറ്റ് ടെംപ്ലേറ്റുകൾ"
 
 #. module: documents_spreadsheet
 #. odoo-javascript
@@ -364,7 +364,7 @@ msgstr ""
 #. module: documents_spreadsheet
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_save_spreadsheet_template__template_name
 msgid "Template Name"
-msgstr ""
+msgstr "ടെംപ്ലേറ്റ് പേര്"
 
 #. module: documents_spreadsheet
 #. odoo-python
@@ -392,7 +392,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_save_spreadsheet_template__thumbnail
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_spreadsheet_template__thumbnail
 msgid "Thumbnail"
-msgstr ""
+msgstr "ലഘുചിത്രം"
 
 #. module: documents_spreadsheet
 #. odoo-javascript

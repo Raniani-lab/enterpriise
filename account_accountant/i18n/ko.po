@@ -4,8 +4,8 @@
 # 
 # Translators:
 # JH CHOI <hwangtog@gmail.com>, 2022
-# Martin Trigaux, 2023
 # Sarah Park, 2023
+# Martin Trigaux, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-02 11:00+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Sarah Park, 2023\n"
+"Last-Translator: Martin Trigaux, 2023\n"
 "Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -43,6 +43,21 @@ msgstr ""
 "                    새로운 거래 내역을 생성하거나 검색창에 활성화되어 있는 필터가 없는지 확인하십시오.\n"
 "                </p>\n"
 "            "
+
+#. module: account_accountant
+#. odoo-python
+#: code:addons/account_accountant/models/account_bank_statement.py:0
+#, python-format
+msgid ""
+"\n"
+"                <p class=\"o_view_nocontent_smiling_face\">\n"
+"                    Nothing to do here!\n"
+"                </p>\n"
+"                <p>\n"
+"                    No transactions matching your filters were found.\n"
+"                </p>\n"
+"            "
+msgstr ""
 
 #. module: account_accountant
 #. odoo-javascript
@@ -127,6 +142,13 @@ msgstr "<br><b>청구서/공급업체 청구서</b>메뉴에서 청구서 관리
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_kanban_bank_rec_widget
 msgid "<i class=\"fa fa-check\"/> Matched"
 msgstr "<i class=\"fa fa-check\"/> 일치"
+
+#. module: account_accountant
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_account_reconcile_model_form_inherit
+msgid ""
+"<i title=\"Run manually\" role=\"img\" aria-label=\"Run manually\" class=\"fa fa-refresh\"/>\n"
+"                                Run manually"
+msgstr ""
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
@@ -275,6 +297,13 @@ msgid "Add a new tag"
 msgstr "새 태그 추가"
 
 #. module: account_accountant
+#. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
+#, python-format
+msgid "All Transactions"
+msgstr ""
+
+#. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__fiscalyear_lock_date
 msgid "All Users Lock Date"
 msgstr "전체 사용자 잠금 날짜"
@@ -353,6 +382,13 @@ msgstr "분석의 정확성"
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__use_anglo_saxon
 msgid "Anglo-Saxon Accounting"
 msgstr "앵글로 색슨 회계"
+
+#. module: account_accountant
+#. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
+#, python-format
+msgid "Back to"
+msgstr ""
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__balance
@@ -504,6 +540,7 @@ msgstr "설정 구성"
 
 #. module: account_accountant
 #. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Congrats, you're all done!"
@@ -613,6 +650,13 @@ msgstr "마지막 확인한 예약 작업"
 #, python-format
 msgid "Currency"
 msgstr "통화"
+
+#. module: account_accountant
+#. odoo-python
+#: code:addons/account_accountant/models/bank_rec_widget.py:0
+#, python-format
+msgid "Customer/Vendor"
+msgstr "고객/공급업체"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -955,6 +999,11 @@ msgid ""
 msgstr ""
 "이 체크박스를 선택할 경우, 항목 이동 시 사용자에게 해당 내용과 관련한 전체 정보가 충분히 제공되지 않은 관계로 항목 이동 내용이 다시"
 " 확인되도록 표시합니다. "
+
+#. module: account_accountant
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_search_bank_rec_widget
+msgid "Incoming"
+msgstr "수신"
 
 #. module: account_accountant
 #. odoo-python
@@ -1408,6 +1457,11 @@ msgstr "작업"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_search_bank_rec_widget
+msgid "Outgoing"
+msgstr "출고"
+
+#. module: account_accountant
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_search_bank_rec_widget
 msgid "Paid"
 msgstr "지불됨"
 
@@ -1800,6 +1854,7 @@ msgstr "세금"
 
 #. module: account_accountant
 #. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "That's on average"
@@ -2122,6 +2177,7 @@ msgstr "청구서를 %(btn_start)s지불 완료%(btn_end)s로 설정할 수 있�
 
 #. module: account_accountant
 #. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "You reconciled"
@@ -2204,6 +2260,7 @@ msgstr "남음)"
 
 #. module: account_accountant
 #. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "seconds per transaction."
@@ -2221,6 +2278,14 @@ msgstr "확인하기"
 
 #. module: account_accountant
 #. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
+#, python-format
+msgid "transaction in"
+msgstr ""
+
+#. module: account_accountant
+#. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "transactions in"

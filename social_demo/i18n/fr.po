@@ -84,12 +84,12 @@ msgstr "Campagne sociale"
 #. module: social_demo
 #: model:ir.model,name:social_demo.model_social_live_post
 msgid "Social Live Post"
-msgstr "Publication en direct"
+msgstr "Post en direct"
 
 #. module: social_demo
 #: model:ir.model,name:social_demo.model_social_post
 msgid "Social Post"
-msgstr "Publication"
+msgstr "Post"
 
 #. module: social_demo
 #: model:ir.model,name:social_demo.model_social_stream

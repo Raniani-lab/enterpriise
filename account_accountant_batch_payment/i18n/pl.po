@@ -129,7 +129,7 @@ msgstr "Data ostatniej aktualizacji"
 #. module: account_accountant_batch_payment
 #: model:ir.model,name:account_accountant_batch_payment.model_bank_rec_widget_line
 msgid "Line of the lines_widget"
-msgstr ""
+msgstr "Linia widgetu lines_widget"
 
 #. module: account_accountant_batch_payment
 #: model:ir.model,name:account_accountant_batch_payment.model_account_batch_payment_rejection
@@ -149,12 +149,12 @@ msgstr ""
 #. module: account_accountant_batch_payment
 #: model:ir.model.fields,field_description:account_accountant_batch_payment.field_account_batch_payment_rejection__next_action_todo
 msgid "Next Action Todo"
-msgstr ""
+msgstr "Następne działanie Todo"
 
 #. module: account_accountant_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_accountant_batch_payment.view_account_batch_payment_list_bank_rec_widget
 msgid "Open Amount"
-msgstr ""
+msgstr "Kwota otwarta"
 
 #. module: account_accountant_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_accountant_batch_payment.view_account_batch_payment_list_bank_rec_widget

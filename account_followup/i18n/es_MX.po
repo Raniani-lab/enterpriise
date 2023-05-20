@@ -1127,11 +1127,29 @@ msgstr ""
 #: code:addons/account_followup/models/account_followup_report.py:0
 #, python-format
 msgid ""
+"You are trying to send an Email, but no follow-up contact has any email "
+"address set for customer '%s'"
+msgstr ""
+
+#. module: account_followup
+#. odoo-python
+#: code:addons/account_followup/models/account_followup_report.py:0
+#, python-format
+msgid ""
 "You are trying to send an SMS, but no follow-up contact has any mobile/phone"
 " number set"
 msgstr ""
 "Está intentando enviar un SMS, pero ningún contacto de seguimiento tiene un "
 "número celular configurado."
+
+#. module: account_followup
+#. odoo-python
+#: code:addons/account_followup/models/account_followup_report.py:0
+#, python-format
+msgid ""
+"You are trying to send an SMS, but no follow-up contact has any mobile/phone"
+" number set for customer '%s'"
+msgstr ""
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_followup_line_form

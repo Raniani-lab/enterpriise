@@ -16,6 +16,7 @@
 # Cristian Cruz, 2022
 # Ivan Espinola, 2022
 # jabiri7, 2022
+# martioodo hola, 2023
 # Óscar Fonseca <tecnico@extreme-micro.com>, 2023
 # 
 msgid ""
@@ -132,6 +133,9 @@ msgid ""
 "<span class=\"o_stat_text\">Worksheet</span>\n"
 "                            <span class=\"o_stat_text\">Complete</span>"
 msgstr ""
+"<span class=\"o_stat_text\">Full de treball</span>\n"
+"<span class=\"o_stat_text\">Completat</span>\n"
+"  "
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.worksheet_custom_page
@@ -783,7 +787,7 @@ msgstr "Data límit de la Fita"
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_project__allow_milestones
 msgid "Milestones"
-msgstr "Fita"
+msgstr "Fites"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
@@ -1419,6 +1423,8 @@ msgid ""
 "Worksheet {{ object.name }}{{ (' - ' + object.partner_id.name) if "
 "object.partner_id.name else '' }}.pdf"
 msgstr ""
+"Full de Treball {{ object.name }}{{ (' - ' + object.partner_id.name) if "
+"object.partner_id.name else '' }}.pdf"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_project__allow_worksheets

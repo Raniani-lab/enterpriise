@@ -701,6 +701,13 @@ msgid "Appointment Duration formatted in words"
 msgstr "Termin Dauer formatiert in Worten"
 
 #. module: appointment
+#. odoo-python
+#: code:addons/appointment/models/appointment_type.py:0
+#, python-format
+msgid "Appointment Duration should be higher than 0.00."
+msgstr "Termindauer sollte höher als 0:00 sein."
+
+#. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_calendar_event__appointment_invite_id
 msgid "Appointment Invitation"
 msgstr "Termineinladung"

@@ -32,7 +32,7 @@ msgstr "%s und %s sind die Unterzeichner."
 #: code:addons/hr_contract_sign/wizard/hr_contract_sign_document_wizard.py:0
 #, python-format
 msgid "%s does not have a work or private email set."
-msgstr ""
+msgstr "%s hat weder eine Arbeits- noch eine private E-Mail-Adresse."
 
 #. module: hr_contract_sign
 #. odoo-python

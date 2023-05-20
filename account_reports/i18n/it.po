@@ -67,6 +67,13 @@ msgstr ""
 "riconciliazione finale che permette di trovare il conto giusto)"
 
 #. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "%s is not a numeric value"
+msgstr ""
+
+#. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.aged_report_line_template
 #: model_terms:ir.ui.view,arch_db:account_reports.bank_reconciliation_report_cell_template_unexplained_difference
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_general_ledger_report
@@ -1506,7 +1513,7 @@ msgstr "Excludere"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_account__exclude_provision_currency_ids
 msgid "Exclude Provision Currency"
-msgstr ""
+msgstr "Esclusione accantonamento valuta"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_line_template
@@ -1570,7 +1577,7 @@ msgstr "Conto di costo"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_company__account_revaluation_expense_provision_account_id
 msgid "Expense Provision Account"
-msgstr ""
+msgstr "Conto accantonamento spese"
 
 #. module: account_reports
 #. odoo-python
@@ -1887,7 +1894,7 @@ msgstr "includi registrazioni non confermate"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_line_template
 msgid "Include in adjustment/provisions entries"
-msgstr ""
+msgstr "Include nelle registrazioni di rettifica/accantonamenti"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
@@ -1905,7 +1912,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
 #, python-format
 msgid "Including Unreconciled Bank Statement Payments"
-msgstr ""
+msgstr "Compresi i pagamenti di estratto conto non riconciliati"
 
 #. module: account_reports
 #. odoo-python
@@ -1928,7 +1935,7 @@ msgstr "Conto di ricavo"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_company__account_revaluation_income_provision_account_id
 msgid "Income Provision Account"
-msgstr ""
+msgstr "Conto accantonamento ricavi"
 
 #. module: account_reports
 #. odoo-python
@@ -3375,7 +3382,7 @@ msgstr "Unità IVA"
 #: code:addons/account_reports/models/account_move.py:0
 #, python-format
 msgid "Vat closing from %s to %s"
-msgstr ""
+msgstr "Chiusura IVA dal %s al %s"
 
 #. module: account_reports
 #. odoo-python

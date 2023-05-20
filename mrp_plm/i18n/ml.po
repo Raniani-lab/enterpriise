@@ -297,7 +297,7 @@ msgstr "അറ്റാച്ച്മെന്റ് എണ്ണം"
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__mrp_document_ids
 #, python-format
 msgid "Attachments"
-msgstr ""
+msgstr "അറ്റാച്ചുമെന്റുകൾ"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval__awaiting_my_validation

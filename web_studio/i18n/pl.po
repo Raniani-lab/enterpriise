@@ -4552,7 +4552,7 @@ msgstr "np. Nieruchomość"
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "left"
-msgstr ""
+msgstr "lewo"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4590,7 +4590,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "right"
-msgstr ""
+msgstr "prawo"
 
 #. module: web_studio
 #. odoo-python

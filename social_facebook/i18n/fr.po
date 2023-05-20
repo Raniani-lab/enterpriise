@@ -39,7 +39,7 @@ msgstr "<i class=\"fa fa-thumbs-up me-1\" title=\"J'aime\"/>"
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_social_live_post__facebook_post_id
 msgid "Actual Facebook ID of the post"
-msgstr "Facebook ID de la publication"
+msgstr "Facebook ID du post"
 
 #. module: social_facebook
 #. odoo-python
@@ -182,7 +182,7 @@ msgstr "Facebook n'a pas fourni un jeton d'accès valide."
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_social_stream_post__facebook_is_event_post
 msgid "Is event post"
-msgstr "Événement publié ?"
+msgstr "Est un post d'événement"
 
 #. module: social_facebook
 #. odoo-javascript
@@ -275,7 +275,7 @@ msgstr "Flux social"
 #. module: social_facebook
 #: model:ir.model,name:social_facebook.model_social_stream_post
 msgid "Social Stream Post"
-msgstr "Publication du flux social"
+msgstr "Post du flux social"
 
 #. module: social_facebook
 #. odoo-python

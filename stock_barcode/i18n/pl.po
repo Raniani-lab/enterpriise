@@ -1543,7 +1543,7 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/main_menu.xml:0
 #, python-format
 msgid "package"
-msgstr ""
+msgstr "pakiet"
 
 #. module: stock_barcode
 #. odoo-javascript

@@ -4,8 +4,8 @@
 # 
 # Translators:
 # Cécile Collart <cco@odoo.com>, 2022
-# Martin Trigaux, 2022
 # snipe2004 <snipe2004@hotmail.com>, 2023
+# Martin Trigaux, 2023
 # Jolien De Paepe, 2023
 # 
 msgid ""
@@ -289,6 +289,14 @@ msgid "Months"
 msgstr "Mois"
 
 #. module: website_sale_renting
+#. odoo-python
+#: code:addons/website_sale_renting/models/product_template.py:0
+#, python-format
+msgid "Please choose a return date that is after the pickup date."
+msgstr ""
+"Veuillez sélectionner une date de retour ultérieure à la date d'enlèvement."
+
+#. module: website_sale_renting
 #. odoo-javascript
 #: code:addons/website_sale_renting/static/src/js/renting_mixin.js:0
 #, python-format
@@ -314,6 +322,11 @@ msgstr "Variante de produit"
 #: model_terms:ir.ui.view,arch_db:website_sale_renting.res_config_settings_view_form
 msgid "Rent Online"
 msgstr "Louer en ligne"
+
+#. module: website_sale_renting
+#: model_terms:ir.ui.view,arch_db:website_sale_renting.snippets
+msgid "Rental Search"
+msgstr "Recherche de location"
 
 #. module: website_sale_renting
 #: model:ir.model,name:website_sale_renting.model_sale_order

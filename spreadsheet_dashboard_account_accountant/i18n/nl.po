@@ -40,7 +40,7 @@ msgstr "< 0,7: bedrijf zit mogelijk vast met niet-liquide activa"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "< 0.8: income might be too low"
-msgstr "< 0,8: inkomen is mogelijk te laag"
+msgstr "< 0,8: omzet is mogelijk te laag"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -145,7 +145,7 @@ msgstr "> 1: bedrijf in sterk solvabele positie"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "> 1: income allow to meet financial obligations"
-msgstr "> 1: inkomen om aan financiële verplichtingen te kunnen voldoen"
+msgstr "> 1: omzet om aan financiële verplichtingen te kunnen voldoen"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -401,7 +401,7 @@ msgstr "Huidige kosten"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Current income"
-msgstr "Huidig inkomen"
+msgstr "Huidige omzet"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -469,7 +469,7 @@ msgstr "Eigen vermogen"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Expenses"
-msgstr "Declaraties"
+msgstr "Kosten"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -777,7 +777,7 @@ msgstr "Vorige uitgave"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Previous income"
-msgstr "Vorig inkomen"
+msgstr "Vorig omzet"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -907,7 +907,7 @@ msgstr "Totale uitgaven"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Total income"
-msgstr "Totaal inkomen"
+msgstr "Totaal omzet"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -1013,7 +1013,7 @@ msgstr "uitgaven - omzet"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "income"
-msgstr "inkomen"
+msgstr "omzet"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -1155,7 +1155,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "to pay"
-msgstr "betalen"
+msgstr "te betalen"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript

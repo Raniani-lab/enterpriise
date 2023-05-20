@@ -45,7 +45,7 @@ msgstr ""
 #. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
 msgid "<i class=\"fa fa-comments me-1\" title=\"Comments\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-comments me-1\" title=\"Kommentit\"/>"
 
 #. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
@@ -94,7 +94,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
 #, python-format
 msgid "Author Image"
-msgstr ""
+msgstr "Tekijän kuva"
 
 #. module: social_twitter
 #. odoo-javascript
@@ -407,6 +407,8 @@ msgid ""
 "The url that this service requested returned an error. Please contact the "
 "author of the app."
 msgstr ""
+"Tämän palvelun pyytämä url-osoite palautti virheen. Ota yhteyttä sovelluksen"
+" tekijään."
 
 #. module: social_twitter
 #: model:social.stream.type,name:social_twitter.stream_type_twitter_follow
@@ -555,7 +557,7 @@ msgstr ""
 #: code:addons/social_twitter/controllers/main.py:0
 #, python-format
 msgid "Unauthorized. Please contact your administrator."
-msgstr ""
+msgstr "Luvaton. Ota yhteyttä ylläpitäjään."
 
 #. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
@@ -631,7 +633,7 @@ msgstr ""
 #: code:addons/social_twitter/models/social_media.py:0
 #, python-format
 msgid "You don't have an active subscription. Please buy one here: %s"
-msgstr ""
+msgstr "Sinulla ei ole aktiivista tilausta. Osta sellainen täältä: %s"
 
 #. module: social_twitter
 #. odoo-python

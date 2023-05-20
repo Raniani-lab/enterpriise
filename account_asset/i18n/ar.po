@@ -135,6 +135,8 @@ msgid ""
 "A depreciation entry will be posted on and including the date %s.<br/> A "
 "disposal entry will be posted on the %s account <b>%s</b>."
 msgstr ""
+"سيتم ترحيل قيد الإهلاك بتاريخ %s.<br/> سيتم ترحيل قيد التصرف في %s الحساب "
+"<b>%s</b>. "
 
 #. module: account_asset
 #. odoo-python
@@ -1738,7 +1740,7 @@ msgstr "إعادة التقييم"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Recognition Values"
-msgstr ""
+msgstr "قيم الإثبات "
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_move_line__asset_ids
@@ -2010,6 +2012,8 @@ msgid ""
 "There are unposted depreciations prior to the selected operation date, "
 "please deal with them first."
 msgstr ""
+"توجد عمليات إهلاك غير مُرحّلة قبل تاريخ التشغيل المحدد. يرجى التعامل معها "
+"أولاً. "
 
 #. module: account_asset
 #. odoo-javascript

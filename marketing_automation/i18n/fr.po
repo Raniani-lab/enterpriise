@@ -243,7 +243,7 @@ msgstr "Toutes les activités qui peuvent être le parent de celui-ci"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__social_post_ids
 msgid "All related social media posts"
-msgstr "Toutes les publications liées aux réseaux sociaux"
+msgstr "Tous les posts liés aux réseaux sociaux"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__allowed_parent_ids
@@ -1020,8 +1020,7 @@ msgstr "Nombre de clics générés par la campagne"
 msgid ""
 "Number of interactions (likes, shares, comments ...) with the social posts"
 msgstr ""
-"Nombre d'interactions (j'aime, partages, commentaires,...) avec les "
-"publications"
+"Nombre d'interactions (j'aime, partages, commentaires,...) avec les posts"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -1322,7 +1321,7 @@ msgstr "Action de serveur"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__social_posts_count
 msgid "Social Media Posts"
-msgstr "Publications sur les réseaux sociaux"
+msgstr "Posts des réseaux sociaux"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form

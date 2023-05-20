@@ -3990,6 +3990,9 @@ msgid ""
 "You cannot share this document by link, because it has fields to be filled "
 "by different roles. Use Send button instead."
 msgstr ""
+"Sie können dieses Dokument nicht per Link weitergeben, da es Felder enthält,"
+" die von verschiedenen Rollen ausgefüllt werden müssen. Verwenden Sie "
+"stattdessen die „Senden“-Schaltfläche."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_iap_credits_banner

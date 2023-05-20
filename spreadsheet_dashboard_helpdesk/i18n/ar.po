@@ -178,14 +178,14 @@ msgstr "الوقت لتعيينه "
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Time to Close"
-msgstr ""
+msgstr "الوقت حتى الإغلاق "
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Time to Respond"
-msgstr ""
+msgstr "الوقت حتى الرد "
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript

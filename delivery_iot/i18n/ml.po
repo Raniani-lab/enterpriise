@@ -75,7 +75,7 @@ msgstr ""
 #. module: delivery_iot
 #: model:ir.model.fields,field_description:delivery_iot.field_iot_device__picking_type_ids
 msgid "Operation Types"
-msgstr ""
+msgstr "പ്രവർത്തന തരങ്ങൾ"
 
 #. module: delivery_iot
 #: model:ir.model,name:delivery_iot.model_stock_picking_type

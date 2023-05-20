@@ -28,8 +28,8 @@ msgid ""
 "As social posts have no recipients, they cannot be triggered by "
 "registrations."
 msgstr ""
-"Comme les publications sur les réseaux sociaux n'ont pas de destinataires, "
-"elles ne peuvent pas être déclenchées par des inscriptions."
+"Comme les posts sur les réseaux sociaux n'ont pas de destinataires, ils ne "
+"peuvent pas être déclenchés par des inscriptions."
 
 #. module: event_social
 #: model:ir.model,name:event_social.model_event_mail
@@ -51,4 +51,4 @@ msgstr "Envoyer"
 #: model:ir.model.fields.selection,name:event_social.selection__event_mail__notification_type__social_post
 #: model:ir.model.fields.selection,name:event_social.selection__event_type_mail__notification_type__social_post
 msgid "Social Post"
-msgstr "Publication"
+msgstr "Post social"

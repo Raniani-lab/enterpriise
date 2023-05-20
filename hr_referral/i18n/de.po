@@ -1297,6 +1297,7 @@ msgstr "Überspringen und beginnen"
 #, python-format
 msgid "Sorry, your referral %s has been refused in the recruitment process."
 msgstr ""
+"Es tut uns leid, Ihre Empfehlung %s wurde im Bewerbungsverfahren abgelehnt."
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_res_users__utm_source_id

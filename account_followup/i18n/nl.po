@@ -122,11 +122,11 @@ msgstr ""
 "                        <br/>\n"
 "                    </p>\n"
 "                    <p>\n"
-"                        Behalve als er een fout van ons is gemaakt, maar lijkt erop dat een bedrag van <t t-out=\"format_amount(object.total_overdue, object.currency_id) or ''\"/>\n"
-"                        onbetaald blijft. Graag passende maatregelen nemen om deze betaling in de komende 8 dagen uit te voeren.\n"
+"                        Behalve als er een fout is gemaakt door ons, maar het lijkt erop dat het bedrag van <t t-out=\"format_amount(object.total_overdue, object.currency_id) or ''\"/>\n"
+"                        nog niet is betaald. Wij vragen je passende maatregelen te nemen om deze betaling in de komende 8 dagen uit te voeren.\n"
 "                    </p>\n"
 "                    <p>\n"
-"                        Zou de betaling zijn uitgevoerd nadat deze e-mail is verzonden, negeer dan dit bericht.\n"
+"                        Als de betaling al is uitgevoerd nadat deze e-mail is verzonden, negeer dan dit bericht.\n"
 "                        Aarzel niet om contact op te nemen met onze boekhoudafdeling.\n"
 "                    </p>\n"
 "                    <p>\n"
@@ -252,8 +252,8 @@ msgstr ""
 "                        We zijn teleurgesteld om te zien dat, ondanks het verzenden van een herinnering, er nog een bedrag open staat.\n"
 "                    </p>\n"
 "                    <p>\n"
-"                        Het is essentieel dat je onmiddellijk overgaat tot betaling, anders zullen we moeten overwegen om je account stop te zetten waardoor we je bedrijf niet langer (goederen/diensten) kunnen leveren.\n"
-"                        Gelieve passende maatregelen te nemen om deze betaling in de komende 8 dagen uit te voeren.\n"
+"                        Het is belangrijk dat je onmiddellijk overgaat tot betaling, anders zullen we moeten overwegen om je account stop te zetten waardoor we je bedrijf niet langer goederen en/of diensten kunnen leveren.\n"
+"                        Graag passende maatregelen te nemen om deze betaling in de komende 8 dagen uit te voeren.\n"
 "                    </p>\n"
 "                    <p>\n"
 "                        Als er een probleem is met het betalen van een factuur waarvan wij niet op de hoogte zijn, aarzel dan niet om contact op te nemen met onze boekhoudafdeling, zodat we de kwestie snel kunnen oplossen.\n"
@@ -495,9 +495,9 @@ msgstr ""
 "Beste %s,\n"
 "\n"
 "\n"
-"Behoudens vergissing van onzentwege, lijkt het erop dat het volgende bedrag onbetaald blijft. Gelieve passende maatregelen te nemen om deze betaling in de komende 8 dagen uit te voeren.\n"
+"Behalve als er een fout is gemaakt door ons, lijkt het erop dat het volgende bedrag nog niet is betaald. Wij vragen je passende maatregelen te nemen om deze betaling in de komende 8 dagen uit te voeren.\n"
 "\n"
-"Zou je betaling zijn uitgevoerd nadat deze e-mail is verzonden, gelieve dit bericht te negeren. Aarzel niet om contact op te nemen met onze boekhoudafdeling.\n"
+"Zou je betaling zijn uitgevoerd nadat deze e-mail is verzonden, dan graag dit bericht te negeren. Aarzel niet om contact op te nemen met onze boekhoudafdeling.\n"
 "\n"
 "Vriendelijke groeten,\n"
 "\n"
@@ -511,8 +511,8 @@ msgid ""
 "Please check them and take appropriate action. %s"
 msgstr ""
 "Geachte klant, wij herinneren je er vriendelijk aan dat je nog openstaande "
-"facturen heeft. Gelieve deze te controleren en passende maatregelen te "
-"nemen. %s"
+"facturen heeft. Graag deze te controleren en passende maatregelen te nemen. "
+"%s"
 
 #. module: account_followup
 #: model_terms:ir.actions.act_window,help:account_followup.action_account_followup_line_definition_form
@@ -595,7 +595,7 @@ msgstr "Eerste herinnering"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_form_view
 msgid "Follow up"
-msgstr "Opvolgen"
+msgstr "Verstuur herinnering"
 
 #. module: account_followup
 #. odoo-python
@@ -1124,6 +1124,18 @@ msgstr ""
 #: code:addons/account_followup/models/account_followup_report.py:0
 #, python-format
 msgid ""
+"You are trying to send an Email, but no follow-up contact has any email "
+"address set for customer '%s'"
+msgstr ""
+"Je probeert een e-mail te verzenden, maar geen van de "
+"betaalherinneringscontacten heeft een e-mailadres ingesteld voor de klant "
+"'%s'"
+
+#. module: account_followup
+#. odoo-python
+#: code:addons/account_followup/models/account_followup_report.py:0
+#, python-format
+msgid ""
 "You are trying to send an SMS, but no follow-up contact has any mobile/phone"
 " number set"
 msgstr ""
@@ -1131,9 +1143,21 @@ msgstr ""
 "een mobiel/telefoonnummer ingesteld"
 
 #. module: account_followup
+#. odoo-python
+#: code:addons/account_followup/models/account_followup_report.py:0
+#, python-format
+msgid ""
+"You are trying to send an SMS, but no follow-up contact has any mobile/phone"
+" number set for customer '%s'"
+msgstr ""
+"Je probeert een sms te verzenden, maar geen van de "
+"betaalherinneringscontacten heeft een mobiel/telefoonnummer ingesteld voor "
+"de klant '%s'"
+
+#. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_followup_line_form
 msgid "days after due date"
-msgstr "dagen na de uitgerekende datum"
+msgstr "dagen na de vervaldatum"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_followup_line_form

@@ -111,7 +111,7 @@ msgstr "Commissieplan"
 #. module: partner_commission
 #: model:ir.model,name:partner_commission.model_commission_rule
 msgid "Commission rules management."
-msgstr "De regels van de Commissie voor het beheer."
+msgstr "Beheer van commissieregels."
 
 #. module: partner_commission
 #: model:ir.model,name:partner_commission.model_res_company

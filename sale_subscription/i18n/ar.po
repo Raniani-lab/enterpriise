@@ -1235,6 +1235,8 @@ msgid ""
 "Automatic renewal succeeded. Free subscription. Next Invoice: %(inv)s. No "
 "email sent."
 msgstr ""
+"نجحت عملية التجديد التلقائي. الاشتراك المجاني. الفاتورة التالية: %(inv)s. لم"
+" يتم إرسال بريد إلكتروني. "
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__website_published
@@ -1843,7 +1845,7 @@ msgstr "هيا، أنشئ منتجًا جديدًا"
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Go ahead and create a new subscription"
-msgstr ""
+msgstr "هيا، أنشئ اشتراكاً جديداً "
 
 #. module: sale_subscription
 #. odoo-javascript
@@ -2196,14 +2198,14 @@ msgstr "رسالة أقل تأخير "
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Let's add a pricing with a recurrence"
-msgstr ""
+msgstr "فلنقم بإضافة سعر مع تكرار "
 
 #. module: sale_subscription
 #. odoo-javascript
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Let's configure the product price"
-msgstr ""
+msgstr "فلنقم بتهيئة سعر المنتج "
 
 #. module: sale_subscription
 #. odoo-javascript
@@ -2314,6 +2316,8 @@ msgid ""
 "Manual payment succeeded. Payment reference: %(tx_model)s; Amount: "
 "%(amount)s. Invoice %(invoice)s"
 msgstr ""
+"تمت عملية الدفع اليدوي بنجاح. مرجع الدفع: %(tx_model)s؛ المبلغ: %(amount)s. "
+"الفاتورة %(invoice)s "
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__action__set_to_renew
@@ -2601,7 +2605,7 @@ msgstr "الخطط "
 #: code:addons/sale_subscription/static/src/js/manage_form.js:0
 #, python-format
 msgid "Please provide another payment method for these subscriptions."
-msgstr ""
+msgstr "يرجى تقديم طريقة دفع أخرى لهذه الاشتراكات. "
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__pricelist_id

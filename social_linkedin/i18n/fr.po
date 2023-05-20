@@ -4,8 +4,8 @@
 # 
 # Translators:
 # Cécile Collart <cco@odoo.com>, 2022
-# Jolien De Paepe, 2023
 # Martin Trigaux, 2023
+# Jolien De Paepe, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Martin Trigaux, 2023\n"
+"Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: French (https://app.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -39,7 +39,7 @@ msgstr "<i class=\"fa fa-thumbs-up me-1\" title=\"J'aime\"/>"
 #. module: social_linkedin
 #: model:ir.model.fields,field_description:social_linkedin.field_social_live_post__linkedin_post_id
 msgid "Actual LinkedIn ID of the post"
-msgstr "ID LinkedIn réel de la publication"
+msgstr "ID LinkedIn réel du post"
 
 #. module: social_linkedin
 #: model:ir.model.fields,field_description:social_linkedin.field_res_config_settings__linkedin_app_id
@@ -172,12 +172,12 @@ msgstr "Type de réseau"
 #. module: social_linkedin
 #: model_terms:ir.ui.view,arch_db:social_linkedin.linkedin_preview
 msgid "Post Image"
-msgstr "Image de la publication"
+msgstr "Image du post"
 
 #. module: social_linkedin
 #: model:social.stream.type,name:social_linkedin.stream_type_linkedin_company_post
 msgid "Posts"
-msgstr "Publications"
+msgstr "Posts"
 
 #. module: social_linkedin
 #: model:ir.model,name:social_linkedin.model_social_account
@@ -187,7 +187,7 @@ msgstr "Compte social"
 #. module: social_linkedin
 #: model:ir.model,name:social_linkedin.model_social_live_post
 msgid "Social Live Post"
-msgstr "Publication en direct"
+msgstr "Post en direct"
 
 #. module: social_linkedin
 #: model:ir.model,name:social_linkedin.model_social_media
@@ -197,7 +197,7 @@ msgstr "Réseaux sociaux"
 #. module: social_linkedin
 #: model:ir.model,name:social_linkedin.model_social_post
 msgid "Social Post"
-msgstr "Publication"
+msgstr "Post social"
 
 #. module: social_linkedin
 #: model:ir.model,name:social_linkedin.model_social_post_template
@@ -212,7 +212,7 @@ msgstr "Flux social"
 #. module: social_linkedin
 #: model:ir.model,name:social_linkedin.model_social_stream_post
 msgid "Social Stream Post"
-msgstr "Publication du flux social"
+msgstr "Post du flux social"
 
 #. module: social_linkedin
 #: model:ir.model.fields,help:social_linkedin.field_social_account__linkedin_access_token

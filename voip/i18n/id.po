@@ -890,7 +890,7 @@ msgstr ""
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Schedule Activity"
-msgstr ""
+msgstr "Jadwalkan Aktivitas"
 
 #. module: voip
 #. odoo-javascript

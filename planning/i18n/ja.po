@@ -1775,7 +1775,7 @@ msgstr "役割別スケジュール"
 msgid ""
 "Schedule your human and material resources across roles, projects and sales "
 "orders."
-msgstr ""
+msgstr "役割、プロジェクト、販売オーダにまたがる人的・物的リソースのスケジュールを立てることができます。"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_hr_employee__employee_token

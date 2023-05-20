@@ -915,7 +915,7 @@ msgstr "കളർ"
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Colors"
-msgstr ""
+msgstr "നിറങ്ങൾ"
 
 #. module: web_studio
 #. odoo-javascript

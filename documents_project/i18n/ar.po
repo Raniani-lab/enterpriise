@@ -304,4 +304,4 @@ msgstr "المستندات التي تمت مشاركتها "
 #: code:addons/documents_project/models/workflow.py:0
 #, python-format
 msgid "new %s from %s"
-msgstr ""
+msgstr "%s جديد من %s "

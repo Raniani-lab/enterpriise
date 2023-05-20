@@ -39,7 +39,7 @@ msgstr "Wilayah intrastat"
 #. module: stock_intrastat
 #: model:ir.model.fields,help:stock_intrastat.field_stock_warehouse__company_country_id
 msgid "The country to use the tax reports from for this company"
-msgstr ""
+msgstr "Negara di mana laporan pajak digunakan untuk perusahaan ini"
 
 #. module: stock_intrastat
 #: model:ir.model,name:stock_intrastat.model_stock_warehouse

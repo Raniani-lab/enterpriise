@@ -350,7 +350,7 @@ msgstr "تم تحديد تمييز الرموز ضوئياً "
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
 msgid "Reload AI Data"
-msgstr ""
+msgstr "إعادة تحميل بيانات الذكاء الاصطناعي "
 
 #. module: account_invoice_extract
 #: model:ir.actions.server,name:account_invoice_extract.model_account_send_for_digitalization

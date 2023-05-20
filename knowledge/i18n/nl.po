@@ -1169,7 +1169,7 @@ msgstr "Artikel Lid"
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Article Structure"
-msgstr "Structuur van het artikel"
+msgstr "Artikelstructuur"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__article_url
@@ -1734,7 +1734,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Index"
-msgstr "Inhoudsopgave"
+msgstr "Index subartikelen"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__inherited_permission

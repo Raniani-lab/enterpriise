@@ -776,13 +776,6 @@ msgstr "قم بإسناد التذكرة <b>لعضو في فريقك</b>. "
 
 #. module: helpdesk
 #. odoo-python
-#: code:addons/helpdesk/models/helpdesk_ticket.py:0
-#, python-format
-msgid "Assign to me"
-msgstr "إسنادها لي"
-
-#. module: helpdesk
-#. odoo-python
 #: code:addons/helpdesk/controllers/portal.py:0
 #, python-format
 msgid "Assigned"
@@ -3168,7 +3161,7 @@ msgstr "احفظ هذه الصفحة وقم بتحديثها لتفعيل الخ
 #: code:addons/helpdesk/static/src/js/tours/helpdesk.js:0
 #, python-format
 msgid "Schedule your <b>activity</b>."
-msgstr ""
+msgstr "قم بجدولة <b>نشاطك</b>. "
 
 #. module: helpdesk
 #. odoo-python
@@ -4200,7 +4193,7 @@ msgstr "تم إنشاؤه من التذكرة: "
 #. module: helpdesk
 #: model:ir.actions.server,name:helpdesk.helpdesk_ratings_server_action
 msgid "helpdesk view rating"
-msgstr ""
+msgstr "عرض تقييم مكتب المساعدة "
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form

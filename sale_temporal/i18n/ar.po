@@ -112,7 +112,7 @@ msgstr "المدة"
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__duration_display
 msgid "Duration Display"
-msgstr ""
+msgstr "عرض المدة "
 
 #. module: sale_temporal
 #: model:ir.model.fields,help:sale_temporal.field_product_product__display_price
@@ -391,6 +391,7 @@ msgid ""
 "You can not have a time-based rule for products that are not recurring or "
 "rentable."
 msgstr ""
+"لا يمكن أن تكون لديك قاعدة مبنية على الوقت غير متكررة أو قابلة للتأجير. "
 
 #. module: sale_temporal
 #. odoo-python

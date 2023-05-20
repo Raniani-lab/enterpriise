@@ -38,7 +38,7 @@ msgstr "<span>à</span>"
 #. module: social_crm
 #: model_terms:ir.ui.view,arch_db:social_crm.social_post_to_lead_description
 msgid "<span>posted on</span>"
-msgstr "<span>posté le</span>"
+msgstr "<span>publié le</span>"
 
 #. module: social_crm
 #: model_terms:ir.ui.view,arch_db:social_crm.social_post_to_lead_view_form
@@ -59,12 +59,12 @@ msgstr "Convertir"
 #: model:ir.actions.act_window,name:social_crm.social_post_to_lead_action
 #: model_terms:ir.ui.view,arch_db:social_crm.social_post_to_lead_view_form
 msgid "Convert Post to Lead"
-msgstr "Convertir la publication en piste"
+msgstr "Convertir le post en piste"
 
 #. module: social_crm
 #: model:ir.model,name:social_crm.model_social_post_to_lead
 msgid "Convert Social Post to Lead"
-msgstr "Convertir la publication sociale en piste"
+msgstr "Convertir le post social en piste"
 
 #. module: social_crm
 #. odoo-javascript
@@ -158,22 +158,22 @@ msgstr "Opportunités :"
 #. module: social_crm
 #: model:ir.model.fields,field_description:social_crm.field_social_post_to_lead__author_name
 msgid "Post Author Name"
-msgstr "Nom d'auteur de la publication"
+msgstr "Nom d'auteur du post"
 
 #. module: social_crm
 #: model:ir.model.fields,field_description:social_crm.field_social_post_to_lead__post_content
 msgid "Post Content"
-msgstr "Contenu de la publication"
+msgstr "Contenu du post"
 
 #. module: social_crm
 #: model:ir.model.fields,field_description:social_crm.field_social_post_to_lead__post_datetime
 msgid "Post Datetime"
-msgstr "Valeur datetime de la publication"
+msgstr "Valeur datetime du post"
 
 #. module: social_crm
 #: model:ir.model.fields,field_description:social_crm.field_social_post_to_lead__post_link
 msgid "Post Link"
-msgstr "Lien de publication"
+msgstr "Lien de post"
 
 #. module: social_crm
 #: model:ir.model.fields,field_description:social_crm.field_social_post_to_lead__action
@@ -195,12 +195,12 @@ msgstr "Compte des réseaux sociaux"
 #. module: social_crm
 #: model:ir.model,name:social_crm.model_social_post
 msgid "Social Post"
-msgstr "Publication"
+msgstr "Post social"
 
 #. module: social_crm
 #: model:ir.model.fields,field_description:social_crm.field_social_post_to_lead__social_stream_post_id
 msgid "Social Stream Post"
-msgstr "Publication du flux social"
+msgstr "Post du flux social"
 
 #. module: social_crm
 #. odoo-python

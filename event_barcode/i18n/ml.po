@@ -70,7 +70,7 @@ msgstr "കമ്പനി"
 #: code:addons/event_barcode/static/src/xml/event_barcode.xml:0
 #, python-format
 msgid "Company Logo"
-msgstr ""
+msgstr "കമ്പനി ലോഗോ"
 
 #. module: event_barcode
 #: model:ir.model,name:event_barcode.model_res_config_settings

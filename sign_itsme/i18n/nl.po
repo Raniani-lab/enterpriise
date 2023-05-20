@@ -85,7 +85,7 @@ msgstr "Naam"
 #: code:addons/sign_itsme/static/src/xml/templates.xml:0
 #, python-format
 msgid "Please confirm your identity to finalize your signature."
-msgstr "Gelieve je identiteit te bevestigen om je handtekening te voltooien."
+msgstr "Je moet je identiteit te bevestigen om je handtekening te voltooien."
 
 #. module: sign_itsme
 #. odoo-python

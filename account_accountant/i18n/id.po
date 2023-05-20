@@ -4,8 +4,8 @@
 # 
 # Translators:
 # arfa simoncelli, 2022
-# Martin Trigaux, 2023
 # Abe Manyo, 2023
+# Martin Trigaux, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-02-02 11:00+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Abe Manyo, 2023\n"
+"Last-Translator: Martin Trigaux, 2023\n"
 "Language-Team: Indonesian (https://app.transifex.com/odoo/teams/41243/id/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -43,6 +43,21 @@ msgstr ""
 "                    Buat transaksi baru, atau pastikan tidak ada filter yang aktif dalam kolom pencarian.\n"
 "                </p>\n"
 "            "
+
+#. module: account_accountant
+#. odoo-python
+#: code:addons/account_accountant/models/account_bank_statement.py:0
+#, python-format
+msgid ""
+"\n"
+"                <p class=\"o_view_nocontent_smiling_face\">\n"
+"                    Nothing to do here!\n"
+"                </p>\n"
+"                <p>\n"
+"                    No transactions matching your filters were found.\n"
+"                </p>\n"
+"            "
+msgstr ""
 
 #. module: account_accountant
 #. odoo-javascript
@@ -132,6 +147,13 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_kanban_bank_rec_widget
 msgid "<i class=\"fa fa-check\"/> Matched"
 msgstr "<i class=\"fa fa-check\"/>Cocok"
+
+#. module: account_accountant
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_account_reconcile_model_form_inherit
+msgid ""
+"<i title=\"Run manually\" role=\"img\" aria-label=\"Run manually\" class=\"fa fa-refresh\"/>\n"
+"                                Run manually"
+msgstr ""
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
@@ -281,6 +303,13 @@ msgid "Add a new tag"
 msgstr "Tambahkan tanda baru"
 
 #. module: account_accountant
+#. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
+#, python-format
+msgid "All Transactions"
+msgstr ""
+
+#. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__fiscalyear_lock_date
 msgid "All Users Lock Date"
 msgstr "Tanggal Kunci Semua User"
@@ -360,6 +389,13 @@ msgstr "Ketelitian Analitik"
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__use_anglo_saxon
 msgid "Anglo-Saxon Accounting"
 msgstr "Akuntansi berdasar Anglo-Saxon"
+
+#. module: account_accountant
+#. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
+#, python-format
+msgid "Back to"
+msgstr ""
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__balance
@@ -474,7 +510,7 @@ msgstr "Pilih sebuah garis untuk melihat data lampirannya."
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Choose counterpart or Create Write-off"
-msgstr "Pilih rekanan atau Buat Penghapusan"
+msgstr "Pilih counterpart atau Buat Penghapusan"
 
 #. module: account_accountant
 #: model_terms:ir.actions.act_window,help:account_accountant.actions_account_fiscal_year
@@ -515,6 +551,7 @@ msgstr "Pengaturan Konfigurasi"
 
 #. module: account_accountant
 #. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Congrats, you're all done!"
@@ -627,6 +664,13 @@ msgstr "Pemeriksaan Cron Terakhir"
 #, python-format
 msgid "Currency"
 msgstr "Mata Uang"
+
+#. module: account_accountant
+#. odoo-python
+#: code:addons/account_accountant/models/bank_rec_widget.py:0
+#, python-format
+msgid "Customer/Vendor"
+msgstr "Customer/Vendor"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -813,77 +857,77 @@ msgstr "Tanggal Buat"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_extra_text
 msgid "Form Extra Text"
-msgstr ""
+msgstr "Form Extra Text"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_flag
 msgid "Form Flag"
-msgstr ""
+msgstr "Form Flag"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_force_negative_sign
 msgid "Form Force Negative Sign"
-msgstr ""
+msgstr "Form Force Negative Sign"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_index
 msgid "Form Index"
-msgstr ""
+msgstr "Form Index"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_name
 msgid "Form Name"
-msgstr ""
+msgstr "Form Name"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_partner_id
 msgid "Form Partner"
-msgstr ""
+msgstr "Form Partner"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_partner_currency_id
 msgid "Form Partner Currency"
-msgstr ""
+msgstr "Form Partner Currency"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_partner_payable_account_id
 msgid "Form Partner Payable Account"
-msgstr ""
+msgstr "Form Partner Payable Account"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_partner_payable_amount
 msgid "Form Partner Payable Amount"
-msgstr ""
+msgstr "Form Partner Payable Amount"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_partner_receivable_account_id
 msgid "Form Partner Receivable Account"
-msgstr ""
+msgstr "Form Partner Receivable Account"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_partner_receivable_amount
 msgid "Form Partner Receivable Amount"
-msgstr ""
+msgstr "Form Partner Receivable Amount"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_single_currency_mode
 msgid "Form Single Currency Mode"
-msgstr ""
+msgstr "Form Single Currency Mode"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_suggest_amount_currency
 msgid "Form Suggest Amount Currency"
-msgstr ""
+msgstr "Form Suggest Amount Currency"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_suggest_balance
 msgid "Form Suggest Balance"
-msgstr ""
+msgstr "Form Suggest Balance"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_tax_ids
 msgid "Form Tax"
-msgstr ""
+msgstr "Form Tax"
 
 #. module: account_accountant
 #: model_terms:digest.tip,tip_description:account_accountant.digest_tip_account_accountant_0
@@ -974,6 +1018,11 @@ msgstr ""
 "Apabila kotak centang ini ditandai, itu berarti user tidak yakin dengan "
 "semua informasi terkait saat membuat pergerakan dan pergerakan tersebut "
 "perlu diperiksa lagi."
+
+#. module: account_accountant
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_search_bank_rec_widget
+msgid "Incoming"
+msgstr "Barang Masuk"
 
 #. module: account_accountant
 #. odoo-python
@@ -1438,6 +1487,11 @@ msgstr "Operasi"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_search_bank_rec_widget
+msgid "Outgoing"
+msgstr "Keluar"
+
+#. module: account_accountant
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_search_bank_rec_widget
 msgid "Paid"
 msgstr "Lunas"
 
@@ -1485,7 +1539,7 @@ msgstr "Pencocokan Pembayaran"
 #: model:ir.model.fields,field_description:account_accountant.field_account_move__payment_state_before_switch
 #: model:ir.model.fields,field_description:account_accountant.field_account_payment__payment_state_before_switch
 msgid "Payment State Before Switch"
-msgstr ""
+msgstr "Status Pembayaran Sebelum Switch"
 
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_account_payment
@@ -1721,42 +1775,42 @@ msgstr "Some fields are undefined"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_aml_id
 msgid "Source Aml"
-msgstr ""
+msgstr "Source Aml"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_aml_move_id
 msgid "Source Aml Move"
-msgstr ""
+msgstr "Source Aml Move"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_aml_move_name
 msgid "Source Aml Move Name"
-msgstr ""
+msgstr "Source Aml Nama Move"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_amount_currency
 msgid "Source Amount Currency"
-msgstr ""
+msgstr "Source Amount Currency"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_balance
 msgid "Source Balance"
-msgstr ""
+msgstr "Source Balance"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_credit
 msgid "Source Credit"
-msgstr ""
+msgstr "Source Credit"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_debit
 msgid "Source Debit"
-msgstr ""
+msgstr "Source Debit"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__st_line_id
 msgid "St Line"
-msgstr ""
+msgstr "St Line"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_fiscal_year__date_from
@@ -1798,7 +1852,7 @@ msgstr "Pajak"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__tax_base_amount_currency
 msgid "Tax Base Amount Currency"
-msgstr ""
+msgstr "Tax Base Amount Currency"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1825,7 +1879,7 @@ msgstr "Tanggal Kunci SPT"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__tax_tag_ids
 msgid "Tax Tag"
-msgstr ""
+msgstr "Tax Tag"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1838,6 +1892,7 @@ msgstr "Pajak"
 
 #. module: account_accountant
 #. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "That's on average"
@@ -1865,6 +1920,8 @@ msgid ""
 "The invoice %(display_name_html)s with an open amount of %(open_amount)s "
 "will be entirely paid by the transaction."
 msgstr ""
+"Faktur %(display_name_html)s dengan open amount %(open_amount)s akan "
+"sepenuhnya dibayar oleh transaksi."
 
 #. module: account_accountant
 #. odoo-python
@@ -1874,6 +1931,8 @@ msgid ""
 "The invoice %(display_name_html)s with an open amount of %(open_amount)s "
 "will be reduced by %(amount)s."
 msgstr ""
+"Faktur %(display_name_html)s dengan open amount %(open_amount)s akan "
+"dikurangi sebesar %(amount)s."
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -1881,6 +1940,7 @@ msgid ""
 "The invoices up to this date will not be taken into account as accounting "
 "entries"
 msgstr ""
+"Faktur sampai tanggal ini tidak akan diperhitungkan sebagai entri akuntansi"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -1906,6 +1966,8 @@ msgid ""
 "This bank transaction has been automatically validated using the "
 "reconciliation model '%s'."
 msgstr ""
+"Transaksi bank ini akan secara otomatis divalidasi menggunakan model "
+"rekonsiliasi '%s'."
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1919,17 +1981,17 @@ msgstr "Pembayaran ini terekam tetapi belum terekonsiliasi."
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "This was the model that generated the lines suggested"
-msgstr ""
+msgstr "Ini adalah model yang membuat baris yang disarankan"
 
 #. module: account_accountant
 #: model:digest.tip,name:account_accountant.digest_tip_account_accountant_0
 msgid "Tip: Bulk update journal items"
-msgstr ""
+msgstr "Tip: Bulk update item jurnal"
 
 #. module: account_accountant
 #: model:digest.tip,name:account_accountant.digest_tip_account_accountant_1
 msgid "Tip: Find an Accountant or register your Accounting Firm"
-msgstr ""
+msgstr "Tip: Cari Akuntan atau daftarkan Firma Akuntansi Anda"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1951,14 +2013,14 @@ msgstr "Untuk diperiksa"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "To reconcile invoices & payments, and post new journal entries"
-msgstr ""
+msgstr "Untuk merekonsiliasi faktur & pembayaran, dan post entri jurnal baru"
 
 #. module: account_accountant
 #. odoo-javascript
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #, python-format
 msgid "To reconcile with open entries"
-msgstr ""
+msgstr "Untuk merekonsiliasi dengan entri terbuka"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1970,7 +2032,7 @@ msgstr "To speed up reconciliation, define"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__todo_command
 msgid "Todo Command"
-msgstr ""
+msgstr "Command Todo"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
@@ -1980,27 +2042,27 @@ msgstr "Transaksi"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__transaction_currency_id
 msgid "Transaction Currency"
-msgstr ""
+msgstr "Mata Uang Transaksi"
 
 #. module: account_accountant
 #. odoo-python
 #: code:addons/account_accountant/models/account_move.py:0
 #, python-format
 msgid "Transfer Accounts"
-msgstr ""
+msgstr "Transfer Akun"
 
 #. module: account_accountant
 #: model:ir.actions.server,name:account_accountant.auto_reconcile_bank_statement_line_ir_actions_server
 #: model:ir.cron,cron_name:account_accountant.auto_reconcile_bank_statement_line
 msgid "Try to reconcile automatically your statement lines"
-msgstr ""
+msgstr "Coba untuk merekonsiliasi secara otomatis statement line Anda"
 
 #. module: account_accountant
 #. odoo-python
 #: code:addons/account_accountant/models/res_company.py:0
 #, python-format
 msgid "Unreconciled statements lines"
-msgstr ""
+msgstr "Statement line yang belom direkonsiliasi"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -2010,11 +2072,13 @@ msgid ""
 "Use the <strong>Manual Operations</strong> tab to register the difference, "
 "or create expenses on the fly"
 msgstr ""
+"Gunakan tab <strong>Operasi Manual</strong> untuk mendaftarkan perbedaannya,"
+" atau membuat pengeluaran dengan cepat"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget__state__valid
 msgid "Valid"
-msgstr ""
+msgstr "Valid"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -2046,7 +2110,7 @@ msgstr "Tampilan"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
 #, python-format
 msgid "View models"
-msgstr ""
+msgstr "Lihat model"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__wizard_id
@@ -2057,7 +2121,7 @@ msgstr "Wisaya"
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__company_currency_id
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__company_currency_id
 msgid "Wizard Company Currency"
-msgstr ""
+msgstr "Wizard Mata Uang Perusahaan"
 
 #. module: account_accountant
 #. odoo-python
@@ -2092,6 +2156,8 @@ msgid ""
 "You can't have maximum one auto balance line at the same time in the bank "
 "reconciliation widget"
 msgstr ""
+"Anda tidak bisa memiliki lebih dari satu baris saldo maksimum di widget "
+"rekonsiliasi bank"
 
 #. module: account_accountant
 #. odoo-python
@@ -2101,6 +2167,8 @@ msgid ""
 "You can't have multiple liquidity journal item at the same time in the bank "
 "reconciliation widget"
 msgstr ""
+"Anda tidak bisa memiliki lebih dari satu item jurnal likuiditas di saat yang"
+" sama di widget rekonsiliasi bank"
 
 #. module: account_accountant
 #. odoo-python
@@ -2110,6 +2178,8 @@ msgid ""
 "You can't have multiple times the same journal item in the bank "
 "reconciliation widget"
 msgstr ""
+"Anda tidak bisa memiliki lebih dari satu kali item jurnal yang sama di "
+"widget rekonsiliasi bank"
 
 #. module: account_accountant
 #. odoo-python
@@ -2119,13 +2189,15 @@ msgid ""
 "You cannot reconcile the payable and receivable accounts of multiple "
 "partners together at the same time."
 msgstr ""
+"Anda tidak dapat merekonsiliasi akun hutang dan piutang dengan lebih dari "
+"satu mitra bersama-samaan di saat yang sama. "
 
 #. module: account_accountant
 #. odoo-python
 #: code:addons/account_accountant/wizard/account_change_lock_date.py:0
 #, python-format
 msgid "You cannot set a lock date in the future."
-msgstr ""
+msgstr "Anda tidak dapat menetapkan tanggal kunci di masa depan."
 
 #. module: account_accountant
 #. odoo-python
@@ -2134,6 +2206,8 @@ msgstr ""
 msgid ""
 "You might want to %(btn_start)sfully reconcile%(btn_end)s the document."
 msgstr ""
+"Anda mungkin ingin %(btn_start)s sepenuhnya merekonsiliasi %(btn_end)s "
+"dokumen."
 
 #. module: account_accountant
 #. odoo-python
@@ -2143,6 +2217,8 @@ msgid ""
 "You might want to make a %(btn_start)spartial reconciliation%(btn_end)s "
 "instead."
 msgstr ""
+"Sebagai gantinya Anda mungkin ingin %(btn_start)s merekonsiliasi setengah "
+"%(btn_end)s saja."
 
 #. module: account_accountant
 #. odoo-python
@@ -2150,6 +2226,7 @@ msgstr ""
 #, python-format
 msgid "You might want to record a %(btn_start)spartial payment%(btn_end)s."
 msgstr ""
+"Anda mungkin ingin record %(btn_start)s pembayaran parsial %(btn_end)s."
 
 #. module: account_accountant
 #. odoo-python
@@ -2158,9 +2235,12 @@ msgstr ""
 msgid ""
 "You might want to set the invoice as %(btn_start)sfully paid%(btn_end)s."
 msgstr ""
+"Anda mungkin ingin menetapkan faktur sebagai %(btn_start)s sepenuhnya "
+"terbayar %(btn_end)s."
 
 #. module: account_accountant
 #. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "You reconciled"
@@ -2169,7 +2249,7 @@ msgstr "Anda merekonsiliasi"
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__aml
 msgid "aml"
-msgstr ""
+msgstr "aml"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -2181,7 +2261,7 @@ msgstr "dan follow-up ke pelanggan"
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__auto_balance
 msgid "auto_balance"
-msgstr ""
+msgstr "auto_balance"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_reconcile_model_widget_wizard
@@ -2191,27 +2271,27 @@ msgstr "misalnya Biaya Bank"
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__early_payment
 msgid "early_payment"
-msgstr ""
+msgstr "early_payment"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__exchange_diff
 msgid "exchange_diff"
-msgstr ""
+msgstr "exchange_diff"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__liquidity
 msgid "liquidity"
-msgstr ""
+msgstr "likuiditas"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__manual
 msgid "manual"
-msgstr ""
+msgstr "manual"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__new_aml
 msgid "new_aml"
-msgstr ""
+msgstr "new_aml"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -2243,6 +2323,7 @@ msgstr "tersisa)"
 
 #. module: account_accountant
 #. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "seconds per transaction."
@@ -2251,7 +2332,7 @@ msgstr "detik per transaksi."
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__tax_line
 msgid "tax_line"
-msgstr ""
+msgstr "tax_line"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.account_journal_dashboard_kanban_view
@@ -2260,6 +2341,14 @@ msgstr "untuk diperiksa"
 
 #. module: account_accountant
 #. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
+#, python-format
+msgid "transaction in"
+msgstr ""
+
+#. module: account_accountant
+#. odoo-javascript
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "transactions in"

@@ -72,7 +72,7 @@ msgstr "ഡിസ്പ്ലേ നെയിം"
 #. module: sale_renting_sign
 #: model:ir.model.fields,field_description:sale_renting_sign.field_rental_sign_wizard__template_id
 msgid "Document Template"
-msgstr ""
+msgstr "ഡോക്യുമെന്റ് ടെംപ്ലേറ്റ്"
 
 #. module: sale_renting_sign
 #: model_terms:ir.ui.view,arch_db:sale_renting_sign.rental_order_inherit_rental_sign

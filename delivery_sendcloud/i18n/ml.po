@@ -69,7 +69,7 @@ msgstr "റദ്ദാക്കുക"
 #: model:ir.model.fields,field_description:delivery_sendcloud.field_sendcloud_shipping_wizard__ship_carrier
 #: model:ir.model.fields,field_description:delivery_sendcloud.field_stock_package_type__package_carrier_type
 msgid "Carrier"
-msgstr ""
+msgstr "കാരിയർ"
 
 #. module: delivery_sendcloud
 #. odoo-python

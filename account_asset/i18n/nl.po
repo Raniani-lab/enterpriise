@@ -1472,7 +1472,7 @@ msgstr "Hoofdbijlage"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 msgid "Manage Items"
-msgstr "Beheer regels"
+msgstr "Meerdere regels"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_has_error
@@ -1543,8 +1543,8 @@ msgid ""
 "Multiple asset items will be generated depending on the bill line quantity "
 "instead of 1 global asset."
 msgstr ""
-"Er worden meerdere activaregels gegenereerd, afhankelijk van het aantal "
-"factuurregels in plaats van 1 globaal activum."
+"Er worden meerdere activaregels gegenereerd, afhankelijk van het aantal in "
+"de factuurregels in plaats van 1 globaal activum."
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__my_activity_date_deadline
@@ -1989,7 +1989,7 @@ msgid ""
 " (%s). Please make sure this is what you want."
 msgstr ""
 "Het bedrag dat je hebt ingevoerd (%s) komt niet overeen met de waarde van de"
-" gerelateerde aankoop (%s). Gelieve na te kijken of dit is wat je wilt."
+" gerelateerde aankoop (%s). Graag nakijken of dit is wat je wilt."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_asset_modify__asset_id
@@ -2034,8 +2034,8 @@ msgid ""
 "There are unposted depreciations prior to the selected operation date, "
 "please deal with them first."
 msgstr ""
-"Er zijn ongeboekte afschrijvingen vóór de geselecteerde operatiedatum, "
-"gelieve deze eerst af te handelen."
+"Er zijn ongeboekte afschrijvingen vóór de geselecteerde operatiedatum, je "
+"moet deze eerst af te handelen."
 
 #. module: account_asset
 #. odoo-javascript
@@ -2159,7 +2159,7 @@ msgid ""
 "before."
 msgstr ""
 "Je kunt geen boeking bevestigen die gerelateerd is aan een concept activum. "
-"Gelieve het activum eerst te boeken."
+"Graag het activum eerst te boeken."
 
 #. module: account_asset
 #. odoo-python

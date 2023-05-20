@@ -407,7 +407,7 @@ msgstr "Réseaux sociaux"
 #. module: social_youtube
 #: model:ir.model,name:social_youtube.model_social_post
 msgid "Social Post"
-msgstr "Publication"
+msgstr "Post social"
 
 #. module: social_youtube
 #: model:ir.model,name:social_youtube.model_social_post_template
@@ -422,15 +422,14 @@ msgstr "Flux social"
 #. module: social_youtube
 #: model:ir.model,name:social_youtube.model_social_stream_post
 msgid "Social Stream Post"
-msgstr "Publication du flux social"
+msgstr "Post du flux social"
 
 #. module: social_youtube
 #. odoo-python
 #: code:addons/social_youtube/models/social_post.py:0
 #, python-format
 msgid "The 'message' field is required for post ID %s"
-msgstr ""
-"Le champ 'message' est obligatoire pour l'identifiant de publication %s"
+msgstr "Le champ 'message' est obligatoire pour l'identifiant du post %s"
 
 #. module: social_youtube
 #. odoo-javascript

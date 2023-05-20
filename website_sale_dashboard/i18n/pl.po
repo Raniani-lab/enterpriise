@@ -3,12 +3,11 @@
 # 	* website_sale_dashboard
 # 
 # Translators:
-# Grzegorz Krukar <grzegorzgk1@gmail.com>, 2022
 # Monika Grzelak <m.e.grzelak@gmail.com>, 2022
+# Grzegorz Krukar <grzegorzgk1@gmail.com>, 2022
 # Paweł Wodyński <pw@myodoo.pl>, 2022
 # Martin Trigaux, 2022
 # Tomasz Leppich <t.leppich@gmail.com>, 2022
-# Andrzej Wiśniewski <a.wisniewski@hadron.eu.com>, 2022
 # Piotr Szlązak <szlazakpiotr@gmail.com>, 2022
 # Piotr Strębski <strebski@gmail.com>, 2022
 # Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2023
@@ -17,9 +16,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-23 08:22+0000\n"
+"POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:50+0000\n"
 "Last-Translator: Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023\n"
 "Language-Team: Polish (https://app.transifex.com/odoo/teams/41243/pl/)\n"
@@ -28,16 +27,6 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Language: pl\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
-
-#. module: website_sale_dashboard
-#: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
-msgid "# Customers"
-msgstr "# Klienci"
-
-#. module: website_sale_dashboard
-#: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
-msgid "# Lines"
-msgstr "# Linie"
 
 #. module: website_sale_dashboard
 #: model:ir.model.fields,field_description:website_sale_dashboard.field_sale_report__is_abandoned_cart
@@ -55,11 +44,6 @@ msgid "Activate Stripe"
 msgstr "Aktywuj Stripe"
 
 #. module: website_sale_dashboard
-#: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
-msgid "Average Order"
-msgstr "Przeciętne zamówienie"
-
-#. module: website_sale_dashboard
 #: model:ir.model.fields.selection,name:website_sale_dashboard.selection__res_company__website_sale_dashboard_onboarding_state__closed
 msgid "Closed"
 msgstr "Zamknięte"
@@ -68,11 +52,6 @@ msgstr "Zamknięte"
 #: model:ir.model,name:website_sale_dashboard.model_res_company
 msgid "Companies"
 msgstr "Firmy"
-
-#. module: website_sale_dashboard
-#: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
-msgid "Conversion Rate"
-msgstr "Współczynnik konwersji"
 
 #. module: website_sale_dashboard
 #: model:ir.model,name:website_sale_dashboard.model_digest_digest
@@ -89,14 +68,6 @@ msgstr "Wykonano"
 msgid "Enable credit &amp; debit card payments supported by Stripe"
 msgstr ""
 "Włącz płatności kartami kredytowymi i debetowymi, wspieranymi przez Stripe"
-
-#. module: website_sale_dashboard
-#. openerp-web
-#: code:addons/website_sale_dashboard/static/src/xml/website_sale_dashboard.xml:0
-#: code:addons/website_sale_dashboard/static/src/xml/website_sale_dashboard.xml:0
-#, python-format
-msgid "Go to Website"
-msgstr "Przejdź na stronę"
 
 #. module: website_sale_dashboard
 #: model:ir.model.fields.selection,name:website_sale_dashboard.selection__res_company__website_sale_dashboard_onboarding_state__just_done
@@ -124,11 +95,6 @@ msgid "Online payments enabled"
 msgstr "Płatności online włączone"
 
 #. module: website_sale_dashboard
-#: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
-msgid "Orders"
-msgstr "Zamówienia"
-
-#. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.view_online_sales_graph
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.view_online_sales_pivot
 msgid "Sales Analysis"
@@ -150,24 +116,9 @@ msgid "The configuration is done. Happy selling!"
 msgstr "Konfiguracja jest zakończona. Pomyślnej sprzedaży!"
 
 #. module: website_sale_dashboard
-#: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
-msgid "Total Sales"
-msgstr "Sprzedaż całkowita"
-
-#. module: website_sale_dashboard
-#: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
-msgid "Total, Tax Included"
-msgstr "Zawiera sumę podatków"
-
-#. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_report_view_search_website_inherit
 msgid "Unpaid Orders"
 msgstr "Niezapłacone zamówienia"
-
-#. module: website_sale_dashboard
-#: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
-msgid "Untaxed Total"
-msgstr "Untaxed Total"
 
 #. module: website_sale_dashboard
 #: model:ir.model,name:website_sale_dashboard.model_website

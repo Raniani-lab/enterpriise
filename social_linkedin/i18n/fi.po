@@ -31,12 +31,12 @@ msgstr ""
 #. module: social_linkedin
 #: model_terms:ir.ui.view,arch_db:social_linkedin.social_stream_post_view_kanban
 msgid "<i class=\"fa fa-comments me-1\" title=\"Comments\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-comments me-1\" title=\"Kommentit\"/>"
 
 #. module: social_linkedin
 #: model_terms:ir.ui.view,arch_db:social_linkedin.social_stream_post_view_kanban
 msgid "<i class=\"fa fa-thumbs-up me-1\" title=\"Likes\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-thumbs-up me-1\" title=\"Tykkäykset\"/>"
 
 #. module: social_linkedin
 #: model:ir.model.fields,field_description:social_linkedin.field_social_live_post__linkedin_post_id
@@ -59,7 +59,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:social_linkedin.social_stream_post_view_kanban
 #, python-format
 msgid "Author Image"
-msgstr ""
+msgstr "Tekijän kuva"
 
 #. module: social_linkedin
 #: model:ir.model.fields,help:social_linkedin.field_res_config_settings__linkedin_use_own_account
@@ -227,6 +227,8 @@ msgid ""
 "The url that this service requested returned an error. Please contact the "
 "author of the app."
 msgstr ""
+"Tämän palvelun pyytämä url-osoite palautti virheen. Ota yhteyttä sovelluksen"
+" tekijään."
 
 #. module: social_linkedin
 #. odoo-python
@@ -247,7 +249,7 @@ msgstr ""
 #: code:addons/social_linkedin/controllers/main.py:0
 #, python-format
 msgid "Unauthorized. Please contact your administrator."
-msgstr ""
+msgstr "Luvaton. Ota yhteyttä ylläpitäjään."
 
 #. module: social_linkedin
 #: model:ir.model.fields,field_description:social_linkedin.field_res_config_settings__linkedin_use_own_account
@@ -297,7 +299,7 @@ msgstr ""
 #: code:addons/social_linkedin/models/social_media.py:0
 #, python-format
 msgid "You don't have an active subscription. Please buy one here: %s"
-msgstr ""
+msgstr "Sinulla ei ole aktiivista tilausta. Osta sellainen täältä: %s"
 
 #. module: social_linkedin
 #. odoo-python

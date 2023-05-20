@@ -126,7 +126,7 @@ msgstr "അവസാനം അപ്ഡേറ്റ് ചെയ്തത്"
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_project_task__helpdesk_ticket_id
 msgid "Original Ticket"
-msgstr ""
+msgstr "ഒറിജിനൽ ടിക്കറ്റ്"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__project_id

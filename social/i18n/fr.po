@@ -48,7 +48,7 @@ msgstr "<b>Une erreur est survenue lors de la liaison à votre compte</b>"
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_form
 msgid "<i class=\"fa fa-globe\" title=\"See the post\"/>"
-msgstr "<i class=\"fa fa-globe\" title=\"Voir le poste\"/>"
+msgstr "<i class=\"fa fa-globe\" title=\"Voir le post\"/>"
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_kanban
@@ -140,7 +140,7 @@ msgstr "Toutes les sociétés"
 #. module: social
 #: model:ir.model.fields,field_description:social.field_utm_campaign__social_post_ids
 msgid "All related social media posts"
-msgstr "Toutes les publications liées aux réseaux sociaux"
+msgstr "Tous les posts liés aux réseaux sociaux"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__account_allowed_ids
@@ -327,8 +327,7 @@ msgid ""
 "Content of the social post message that is post-processed (links are "
 "shortened, UTMs, ...)"
 msgstr ""
-"Contenu de la publication social qui est post-traité (liens raccourcis, UTM,"
-" ...)"
+"Contenu du poste social qui est post-traité (liens raccourcis, UTM, ...)"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_media__has_streams
@@ -348,7 +347,7 @@ msgstr "Créer une campagne"
 #. module: social
 #: model_terms:ir.actions.act_window,help:social.action_social_post
 msgid "Create a Post"
-msgstr "Créer une publication"
+msgstr "Créer un post"
 
 #. module: social
 #. odoo-python
@@ -457,7 +456,7 @@ msgid ""
 "Due to length restrictions, the following posts cannot be posted:\n"
 " %s"
 msgstr ""
-"En raison de restrictions de longueur, les messages suivants ne peuvent pas être publiés :\n"
+"En raison de restrictions de longueur, les posts suivants ne peuvent pas être publiés :\n"
 "%s"
 
 #. module: social
@@ -531,12 +530,12 @@ msgstr "Feed"
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_form
 #, python-format
 msgid "Feed Posts"
-msgstr "Publications du feed"
+msgstr "Posts du feed"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__stream_posts_count
 msgid "Feed Posts Count"
-msgstr "Nombre de publications sur le feed"
+msgstr "Nombre de posts du feed"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__message_follower_ids
@@ -594,7 +593,7 @@ msgstr "Pseudonyme / Nom court"
 #: code:addons/social/static/src/js/tours/social.js:0
 #, python-format
 msgid "Happy with the result? Let's post it!"
-msgstr "Heureux du résultat ? Postez-le !"
+msgstr "Heureux du résultat ? Publiez-le !"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_account__has_account_stats
@@ -676,7 +675,7 @@ msgstr "URLs des images"
 #. module: social
 #: model:ir.model.fields,help:social.field_social_stream_post__stream_post_image_ids
 msgid "Images that were shared with this post."
-msgstr "Images qui ont été partagées sur cette publication."
+msgstr "Images qui ont été partagées sur ce post."
 
 #. module: social
 #. odoo-javascript
@@ -707,8 +706,7 @@ msgstr ""
 #: code:addons/social/static/src/js/stream_post_kanban_controller.js:0
 #, python-format
 msgid "It will appear in the Feed once it has posts to display."
-msgstr ""
-"Il apparaîtra dans le feed une fois qu'il aura des messages à afficher."
+msgstr "Il apparaîtra dans le feed une fois qu'il aura des posts à afficher."
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_account____last_update
@@ -768,7 +766,7 @@ msgstr "Créons votre propre tableau de bord des <b>réseaux sociaux</b>."
 #: code:addons/social/static/src/js/tours/social.js:0
 #, python-format
 msgid "Let's start posting."
-msgstr "Commençons à poster."
+msgstr "Commençons à publier."
 
 #. module: social
 #. odoo-javascript
@@ -845,7 +843,7 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,help:social.field_social_live_post__live_post_link
 msgid "Link of the live post on the target media."
-msgstr "Lien de la publication en direct sur le réseau cible."
+msgstr "Lien du post en direct sur le réseau cible."
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_template_view_form
@@ -865,7 +863,7 @@ msgstr "Le lien avec les réseaux sociaux externes est rompu"
 #. module: social
 #: model:ir.model.fields,help:social.field_social_post__account_allowed_ids
 msgid "List of the accounts which can be selected for this post."
-msgstr "Liste des comptes pouvant être sélectionnés pour cette publication."
+msgstr "Liste des comptes pouvant être sélectionnés pour ce post."
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__live_posts_by_media
@@ -895,7 +893,7 @@ msgstr "Actions principales"
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__max_post_length
 msgid "Max Post Length"
-msgstr "Longueur maximale de la publication"
+msgstr "Longueur maximale du post"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__media_ids
@@ -934,7 +932,7 @@ msgstr "Longueur du message"
 #: code:addons/social/models/social_post.py:0
 #, python-format
 msgid "Message posted"
-msgstr "Message posté"
+msgstr "Message publié"
 
 #. module: social
 #. odoo-python
@@ -943,7 +941,7 @@ msgstr "Message posté"
 msgid ""
 "Message posted partially. These are the ones that couldn't be posted: <br>%s"
 msgstr ""
-"Message posté partiellement. Voici ceux qui n'ont pas pu être publiés : "
+"Message publié partiellement. Voici ceux qui n'ont pas pu être publiés : "
 "<br>%s"
 
 #. module: social
@@ -958,7 +956,7 @@ msgid ""
 "Most social.live.posts directly go from Ready to Posted/Failed since they result of a single call to the third party API.\n"
 "        A 'Posting' state is also available for those that are sent through batching (like push notifications)."
 msgstr ""
-"La plupart des social.live.posts passent directement de l'état Prêt à Posté/Echoué puisqu'ils sont le résultat d'un appel unique à l'API.\n"
+"La plupart des social.live.posts passent directement de l'état Prêt à Publié/Echoué puisqu'ils sont le résultat d'un appel unique à l'API.\n"
 "        L'état \"En cours\" est aussi disponible pour les publications envoyées par lot (comme les notifications push)."
 
 #. module: social
@@ -1087,8 +1085,7 @@ msgstr "Nombre d'erreurs"
 msgid ""
 "Number of interactions (likes, shares, comments ...) with the social posts"
 msgstr ""
-"Nombre d'interactions (j'aime, partages, commentaires,...) avec les "
-"publications"
+"Nombre d'interactions (j'aime, partages, commentaires,...) avec les posts"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_media__message_needaction_counter
@@ -1111,14 +1108,13 @@ msgstr "Nombre de contacts avec le post (j'aime, commentaires ...)"
 #. module: social
 #: model:ir.model.fields,help:social.field_social_account__engagement
 msgid "Number of people engagements with your posts (Likes, Comments, ...)."
-msgstr "Nombre de contacts avec vos messages (j'aime, commentaires, ...)."
+msgstr "Nombre de contacts avec vos posts (j'aime, commentaires, ...)."
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_account__stories
 msgid "Number of stories created from your posts (Shares, Re-tweets, ...)."
 msgstr ""
-"Nombre de stories créées à partir de vos publications (partages, retweets, "
-"...)."
+"Nombre de stories créées à partir de vos posts (partages, retweets, ...)."
 
 #. module: social
 #. odoo-javascript
@@ -1128,7 +1124,7 @@ msgid ""
 "Number of times people have engaged with your posts (likes, comments, "
 "shares,...)"
 msgstr ""
-"Nombre de fois que des personnes ont participé à vos publications (j'aime, "
+"Nombre de fois que des personnes ont participé à vos posts (j'aime, "
 "commentaires, partages,...)"
 
 #. module: social
@@ -1177,7 +1173,7 @@ msgstr ""
 msgid "Please specify at least one account to post into (for post ID(s) %s)."
 msgstr ""
 "Veuillez préciser au moins un compte sur lequel publier (pour les "
-"identifiants de publication %s)."
+"identifiants du post %s)."
 
 #. module: social
 #. odoo-python
@@ -1279,7 +1275,7 @@ msgstr ""
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_template_view_form
 msgid "Preview your post"
-msgstr "Prévisualiser votre publication "
+msgstr "Prévisualiser votre post "
 
 #. module: social
 #. odoo-javascript
@@ -1503,7 +1499,7 @@ msgstr "Flux social"
 #: model:ir.model,name:social.model_social_stream_post
 #: model:ir.model,name:social.model_social_stream_type
 msgid "Social Stream Post"
-msgstr "Publication du flux social"
+msgstr "Post du flux social"
 
 #. module: social
 #: model:ir.model,name:social.model_social_stream_post_image
@@ -1525,7 +1521,7 @@ msgstr "Utilisateur social"
 #: model:ir.actions.server,name:social.ir_cron_post_scheduled_ir_actions_server
 #: model:ir.cron,cron_name:social.ir_cron_post_scheduled
 msgid "Social: Publish Scheduled Posts"
-msgstr "Social : publier des publications programmées"
+msgstr "Social : publier des posts programmés"
 
 #. module: social
 #. odoo-javascript
@@ -1549,8 +1545,8 @@ msgid ""
 "Special technical field that holds a dict containing the live posts names by"
 " media ids (used for kanban view)."
 msgstr ""
-"Champ technique spécial qui contient un dict contenant les noms des messages"
-" en direct par identifiant de média (utilisé pour la vue Kanban)."
+"Champ technique spécial qui contient un dict contenant les noms des posts en"
+" direct par identifiant de média (utilisé pour la vue Kanban)."
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_account__stats_link
@@ -1599,12 +1595,12 @@ msgstr "Flux ajouté (%s)"
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_stream_post_image__stream_post_id
 msgid "Stream Post"
-msgstr "Publication du flux"
+msgstr "Post du flux"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_stream_post__stream_post_image_ids
 msgid "Stream Post Images"
-msgstr "Diffuser des images de message"
+msgstr "Diffuser des images de post"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_stream_post__stream_post_image_urls
@@ -1630,8 +1626,7 @@ msgstr "Flux activés"
 #. module: social
 #: model:ir.model.fields,help:social.field_social_post__live_post_ids
 msgid "Sub-posts that will be published on each selected social accounts."
-msgstr ""
-"Sous-publications qui seront publiées sur chaque compte social sélectionné."
+msgstr "Sous-posts qui seront publiés sur chaque compte social sélectionné."
 
 #. module: social
 #. odoo-javascript
@@ -1645,14 +1640,13 @@ msgstr "Synchroniser"
 #: code:addons/social/models/social_post_template.py:0
 #, python-format
 msgid "The 'message' field is required for post ID %s"
-msgstr ""
-"Le champ 'message' est obligatoire pour l'identifiant de publication %s"
+msgstr "Le champ 'message' est obligatoire pour l'identifiant du post %s"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_post__account_ids
 #: model:ir.model.fields,help:social.field_social_post_template__account_ids
 msgid "The accounts on which this post will be published."
-msgstr "Les comptes sur lesquels seront publiés cette publication."
+msgstr "Les comptes sur lesquels ce post sera publié."
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_stream_post__author_name
@@ -1668,8 +1662,8 @@ msgid ""
 "The post is considered as 'Posted' when all its sub-posts (one per social "
 "account) are either 'Failed' or 'Posted'"
 msgstr ""
-"La publication est considérée comme 'Posté' quand toutes les sous-"
-"publications (une par compte) sont soit 'Echoué' ou 'Posté'"
+"Le post est considérée comme 'Publié' quand tous les sous-posts (une par "
+"compte) sont soit 'Echoué' ou 'Publié'"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_stream_post__published_date
@@ -1682,8 +1676,8 @@ msgid ""
 "The reason why a post is not successfully posted on the Social Media (eg: "
 "connection error, duplicated post, ...)."
 msgstr ""
-"La raison pour laquelle une publication n'a pas pu être postée sur le réseau"
-" social (par ex. erreur de connexion, publications doubles,...)."
+"La raison pour laquelle un post n'a pas pu être publié sur le réseau social "
+"(par ex. erreur de connexion, publications doubles,...)."
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_stream__media_image
@@ -1698,7 +1692,7 @@ msgstr "Les réseaux sociaux liés aux comptes sociaux sélectionnés."
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__has_post_errors
 msgid "There are post errors on sub-posts"
-msgstr "Il y a des erreurs de publication sur les sous-publications."
+msgstr "Il y a des erreurs de publication sur les sous-posts."
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_media__csrf_token
@@ -1813,8 +1807,8 @@ msgid ""
 "When the global post was published. The actual sub-posts published dates may"
 " be different depending on the media."
 msgstr ""
-"Quand le post global est publié. Les dates de sous-publications peuvent être"
-" différente selon le média."
+"Quand le post global est publié. Les dates de sous-posts peuvent être "
+"différentes selon le média."
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_post__image_ids
@@ -1835,7 +1829,7 @@ msgstr "Écrire un commentaire..."
 #: code:addons/social/static/src/js/tours/social.js:0
 #, python-format
 msgid "Write a message to get a preview of your post."
-msgstr "Écrivez un message pour avoir un aperçu de votre publication."
+msgstr "Écrivez un message pour avoir un aperçu de votre post."
 
 #. module: social
 #. odoo-javascript
@@ -1850,8 +1844,8 @@ msgid ""
 "Write an enticing post, add images and schedule it to be posted later on "
 "multiple platforms at once."
 msgstr ""
-"Rédigez une publication attrayante, ajoutez des images et programmez-la pour"
-" qu'elle soit publiée plus tard sur plusieurs plateformes en même temps."
+"Rédigez un post attrayant, ajoutez des images et programmez-le pour qu'il "
+"soit publié plus tard sur plusieurs plateformes en même temps."
 
 #. module: social
 #. odoo-python
@@ -1879,7 +1873,7 @@ msgid ""
 "You cannot delete these UTM Sources as they are linked to social posts in Social:\n"
 "%(utm_sources)s"
 msgstr ""
-"Vous ne pouvez pas supprimer ces sources UTM car elles sont liées à des publications sociales dans Social :\n"
+"Vous ne pouvez pas supprimer ces sources UTM car elles sont liées à des posts sociaux dans Social :\n"
 "%(utm_sources)s"
 
 #. module: social

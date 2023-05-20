@@ -563,7 +563,7 @@ msgstr "അറ്റാച്ച്മെന്റ് എണ്ണം"
 #: model:ir.model.fields,field_description:sign.field_sign_request__attachment_ids
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__attachment_ids
 msgid "Attachments"
-msgstr ""
+msgstr "അറ്റാച്ചുമെന്റുകൾ"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.res_config_settings_view_form
@@ -975,7 +975,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
 msgid "Details"
-msgstr ""
+msgstr "വിശദാംശങ്ങൾ"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_res_users__sign_signature
@@ -1061,7 +1061,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__template_id
 msgid "Document Template"
-msgstr ""
+msgstr "ഡോക്യുമെന്റ് ടെംപ്ലേറ്റ്"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
@@ -1872,7 +1872,7 @@ msgstr "എന്റെ അഭ്യർത്ഥനകൾ"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_search
 msgid "My Templates"
-msgstr ""
+msgstr "എന്റെ ടെംപ്ലേറ്റുകൾ"
 
 #. module: sign
 #: model:ir.actions.act_window,name:sign.sign_request_my_requests_action

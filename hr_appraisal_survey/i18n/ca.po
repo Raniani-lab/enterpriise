@@ -18,6 +18,7 @@
 # Óscar Fonseca <tecnico@extreme-micro.com>, 2022
 # Ivan Espinola, 2022
 # jabiri7, 2022
+# martioodo hola, 2023
 # 
 msgid ""
 msgstr ""
@@ -25,7 +26,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: jabiri7, 2022\n"
+"Last-Translator: martioodo hola, 2023\n"
 "Language-Team: Catalan (https://app.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -286,12 +287,12 @@ msgstr "Comentaris preguntats"
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1
 msgid "At the conclusion of the appraisal time period"
-msgstr ""
+msgstr "A la conclusió del període de temps d'avaluació"
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1
 msgid "At the outset of the appraisal time period"
-msgstr ""
+msgstr "A l'inici del període de temps d'avaluació"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__attachment_ids
@@ -397,6 +398,9 @@ msgid ""
 "Critical or key elements of performance and professional development needs "
 "(if any), should also be noted at this time"
 msgstr ""
+"També s'han de tenir en compte els elements crítics o clau de les "
+"necessitats de rendiment i desenvolupament professional (si n'hi ha), en "
+"aquest moment"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.arow_3_1_8
@@ -432,7 +436,7 @@ msgstr "Departament"
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_3
 msgid "Did not meet standards and expectations"
-msgstr ""
+msgstr "No s'han complert els estàndards i les expectatives"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__display_name
@@ -477,7 +481,7 @@ msgstr "Entusiasme i implicació als projectes/assignacions"
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_3
 msgid "Exceeds standards and expectations"
-msgstr ""
+msgstr "Excedeix els estàndards i les expectatives"
 
 #. module: hr_appraisal_survey
 #. odoo-python
@@ -648,7 +652,7 @@ msgstr ""
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1
 msgid "Overall Purpose Of Employee Appraisal"
-msgstr ""
+msgstr "Compromís general de l'avaluació del treballador"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_4_2
@@ -747,13 +751,15 @@ msgstr "Mostra un bon criteri en la presa de decisions"
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_3
 msgid "Significantly below standards and expectations"
-msgstr ""
+msgstr "Significativament per sota dels estàndards i les expectatives"
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_3
 msgid ""
 "Significantly exceeds standards and expectations required of the position"
 msgstr ""
+"Excedeix significativament els estàndards i expectatives requerides de la "
+"posició"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.x_360_5_3
@@ -845,6 +851,8 @@ msgid ""
 "The employee may choose to offer comments or explanation regarding the "
 "completed review."
 msgstr ""
+"L'empleat pot optar per oferir comentaris o explicacions sobre la revisió "
+"completada."
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1
@@ -915,6 +923,7 @@ msgstr ""
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1
 msgid "To initiate a clear and open communication of performance expectations"
 msgstr ""
+"Iniciar una comunicació clara i oberta de les expectatives de rendiment"
 
 #. module: hr_appraisal_survey
 #. odoo-python

@@ -3,9 +3,9 @@
 # 	* quality
 # 
 # Translators:
-# Niyas Raphy, 2023
 # Nikhil Krishnan, 2023
 # Hasna, 2023
+# Niyas Raphy, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Hasna, 2023\n"
+"Last-Translator: Niyas Raphy, 2023\n"
 "Language-Team: Malayalam (https://app.transifex.com/odoo/teams/41243/ml/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -84,7 +84,7 @@ msgstr "ആക്ടിവിറ്റി ടൈപ്പ് ഐക്കൺ"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__additional_note
 msgid "Additional Note"
-msgstr ""
+msgstr "അധിക കുറിപ്പ്"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_check__additional_note
@@ -198,7 +198,7 @@ msgstr ""
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__point_id
 msgid "Control Point"
-msgstr ""
+msgstr "നിയന്ത്രണ പോയിന്റ്"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__action_corrective
@@ -627,7 +627,7 @@ msgstr "ഡെലിവറി പിശകുള്ള സന്ദേശങ്�
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_point__picking_type_ids
 msgid "Operation Types"
-msgstr ""
+msgstr "പ്രവർത്തന തരങ്ങൾ"
 
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form

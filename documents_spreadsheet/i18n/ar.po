@@ -300,7 +300,7 @@ msgstr "تم إنشاء قالب جدول بيانات جديد "
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.share_page
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.share_single
 msgid "Odoo Spreadsheets not available for download"
-msgstr ""
+msgstr "تطبيق جداول بيانات أودو غير متاح للتنزيل "
 
 #. module: documents_spreadsheet
 #: model:ir.actions.act_window,name:documents_spreadsheet.spreadsheet_revision_action

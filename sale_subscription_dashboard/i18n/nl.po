@@ -205,7 +205,7 @@ msgstr "Datums"
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Delta"
-msgstr "Deleta"
+msgstr "Delta"
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript

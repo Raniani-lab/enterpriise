@@ -487,7 +487,7 @@ msgstr "متوسط حجم الصفقة - السابق "
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "close rate - current"
-msgstr ""
+msgstr "معدل الإغلاق - الحالي "
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -538,7 +538,7 @@ msgstr "الفترة الاخيرة"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "list opps"
-msgstr ""
+msgstr "قائمة الفرص "
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript

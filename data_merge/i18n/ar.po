@@ -247,7 +247,7 @@ msgstr "قواعد إلغاء التكرار "
 #: code:addons/data_merge/models/data_merge_model.py:0
 #, python-format
 msgid "Deduplication is forbidden on the model: %s"
-msgstr ""
+msgstr "إلغاء النسخ ممنوع في النموذج: %s "
 
 #. module: data_merge
 #: model:ir.model.fields.selection,name:data_merge.selection__data_merge_model__removal_mode__delete
@@ -505,7 +505,7 @@ msgstr "إجراء الدمج مرفق "
 #: code:addons/data_merge/models/data_merge_model.py:0
 #, python-format
 msgid "Missing required PostgreSQL extension: unaccent"
-msgstr ""
+msgstr "Missing required PostgreSQL extension: unaccent"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_group__res_model_id

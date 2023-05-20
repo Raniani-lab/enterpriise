@@ -80,7 +80,7 @@ msgstr "ساعات العمل الفعلية"
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_account_analytic_line__has_so_access
 msgid "Has So Access"
-msgstr ""
+msgstr "لديه صلاحية وصول أمر البيع "
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_sharing_inherit_project_task_view_form

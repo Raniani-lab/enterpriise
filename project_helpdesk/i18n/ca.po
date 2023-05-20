@@ -10,6 +10,7 @@
 # Quim - eccit <quim@eccit.com>, 2022
 # Arnau Ros, 2022
 # Ivan Espinola, 2023
+# martioodo hola, 2023
 # 
 msgid ""
 msgstr ""
@@ -17,7 +18,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Ivan Espinola, 2023\n"
+"Last-Translator: martioodo hola, 2023\n"
 "Language-Team: Catalan (https://app.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -154,14 +155,14 @@ msgstr "Tasca"
 #: code:addons/project_helpdesk/wizard/project_task_convert_wizard.py:0
 #, python-format
 msgid "Task converted into ticket %s"
-msgstr ""
+msgstr "Tasca convertida en tiquet %s"
 
 #. module: project_helpdesk
 #. odoo-python
 #: code:addons/project_helpdesk/wizard/helpdesk_ticket_convert_wizard.py:0
 #, python-format
 msgid "Task created from ticket %s"
-msgstr ""
+msgstr "Tasca creada a partir del tiquet %s"
 
 #. module: project_helpdesk
 #: model:ir.model.fields,field_description:project_helpdesk.field_project_task_convert_wizard__team_id
@@ -173,11 +174,11 @@ msgstr "Equip"
 #: code:addons/project_helpdesk/wizard/helpdesk_ticket_convert_wizard.py:0
 #, python-format
 msgid "Ticket converted into task %s"
-msgstr ""
+msgstr "Tiquets convertits en tasca %s"
 
 #. module: project_helpdesk
 #. odoo-python
 #: code:addons/project_helpdesk/wizard/project_task_convert_wizard.py:0
 #, python-format
 msgid "Ticket created from task %s"
-msgstr ""
+msgstr "Tiquet creat a partir de la tasca %s"

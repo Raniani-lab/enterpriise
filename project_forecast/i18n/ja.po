@@ -107,7 +107,7 @@ msgstr "リソースごとのスケジュール"
 msgid ""
 "Schedule your human and material resources across roles, projects and sales "
 "orders."
-msgstr ""
+msgstr "役割、プロジェクト、販売オーダにまたがる人的・物的リソースのスケジュールを立てることができます。"
 
 #. module: project_forecast
 #. odoo-python

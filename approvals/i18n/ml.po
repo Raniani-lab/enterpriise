@@ -822,7 +822,7 @@ msgstr ""
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__attachment_number
 msgid "Number of Attachments"
-msgstr ""
+msgstr "അറ്റാച്ചുമെന്റുകളുടെ എണ്ണം"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__message_has_error_counter
@@ -1139,6 +1139,15 @@ msgid ""
 msgstr ""
 "ഒരേ അഭ്യർത്ഥനയിൽ നിങ്ങൾക്ക് ഒരേ അംഗീകാരം നൽകുന്നയാളെ ഒന്നിലധികം തവണ "
 "നിയോഗിക്കാനാവില്ല."
+
+#. module: approvals
+#. odoo-python
+#: code:addons/approvals/models/ir_attachment.py:0
+#, python-format
+msgid ""
+"You cannot unlink an attachment which is linked to a validated, refused or "
+"cancelled approval request."
+msgstr ""
 
 #. module: approvals
 #. odoo-python

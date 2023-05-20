@@ -30,7 +30,7 @@ msgstr ""
 #. module: social_instagram
 #: model_terms:ir.ui.view,arch_db:social_instagram.social_stream_post_view_kanban
 msgid "<i class=\"fa fa-comments me-1\" title=\"Comments\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-comments me-1\" title=\"Kommentit\"/>"
 
 #. module: social_instagram
 #: model_terms:ir.ui.view,arch_db:social_instagram.social_stream_post_view_kanban
@@ -85,7 +85,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:social_instagram.social_stream_post_view_kanban
 #, python-format
 msgid "Author Image"
-msgstr ""
+msgstr "Tekijän kuva"
 
 #. module: social_instagram
 #: model:ir.model.fields,help:social_instagram.field_res_config_settings__instagram_use_own_account
@@ -313,7 +313,7 @@ msgstr ""
 #: code:addons/social_instagram/controllers/main.py:0
 #, python-format
 msgid "Unauthorized. Please contact your administrator."
-msgstr ""
+msgstr "Luvaton. Ota yhteyttä ylläpitäjään."
 
 #. module: social_instagram
 #: model:ir.model.fields,field_description:social_instagram.field_res_config_settings__instagram_use_own_account
@@ -340,7 +340,7 @@ msgstr ""
 #: code:addons/social_instagram/models/social_media.py:0
 #, python-format
 msgid "You don't have an active subscription. Please buy one here: %s"
-msgstr ""
+msgstr "Sinulla ei ole aktiivista tilausta. Osta sellainen täältä: %s"
 
 #. module: social_instagram
 #. odoo-python

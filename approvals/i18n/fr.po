@@ -1171,6 +1171,17 @@ msgstr ""
 
 #. module: approvals
 #. odoo-python
+#: code:addons/approvals/models/ir_attachment.py:0
+#, python-format
+msgid ""
+"You cannot unlink an attachment which is linked to a validated, refused or "
+"cancelled approval request."
+msgstr ""
+"Vous ne pouvez pas dissocier une pièce jointe qui est liée à une demande "
+"d'approbation validée, refusée ou annulée."
+
+#. module: approvals
+#. odoo-python
 #: code:addons/approvals/models/approval_request.py:0
 #, python-format
 msgid "You have to add at least %s approvers to confirm your request."

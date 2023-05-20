@@ -207,17 +207,17 @@ msgstr "J'aime Instagram"
 #: model:ir.model.fields,field_description:social_instagram.field_social_live_post__instagram_post_id
 #: model:ir.model.fields,field_description:social_instagram.field_social_stream_post__instagram_post_id
 msgid "Instagram Post ID"
-msgstr "ID de la publication Instagram"
+msgstr "ID du post Instagram"
 
 #. module: social_instagram
 #: model:ir.model.fields,field_description:social_instagram.field_social_stream_post__instagram_post_link
 msgid "Instagram Post URL"
-msgstr "URL de la publication Instagram"
+msgstr "URL du post Instagram"
 
 #. module: social_instagram
 #: model:social.stream.type,name:social_instagram.stream_type_instagram_posts
 msgid "Instagram Posts"
-msgstr "Publications Instagram"
+msgstr "Posts Instagram"
 
 #. module: social_instagram
 #: model:ir.model.fields,field_description:social_instagram.field_social_post__instagram_preview
@@ -267,7 +267,7 @@ msgstr "Seule la première image jointe sera publiée sur Instagram."
 #. module: social_instagram
 #: model_terms:ir.ui.view,arch_db:social_instagram.instagram_preview
 msgid "Post Image"
-msgstr "Image de la publication"
+msgstr "Image du post"
 
 #. module: social_instagram
 #: model:ir.model,name:social_instagram.model_social_account
@@ -287,7 +287,7 @@ msgstr "Réseaux sociaux"
 #. module: social_instagram
 #: model:ir.model,name:social_instagram.model_social_post
 msgid "Social Post"
-msgstr "Publication"
+msgstr "Post social"
 
 #. module: social_instagram
 #: model:ir.model,name:social_instagram.model_social_post_template
@@ -302,7 +302,7 @@ msgstr "Flux social"
 #. module: social_instagram
 #: model:ir.model,name:social_instagram.model_social_stream_post
 msgid "Social Stream Post"
-msgstr "Publication du flux social"
+msgstr "Post du flux social"
 
 #. module: social_instagram
 #: model:ir.model.fields,help:social_instagram.field_social_stream_post__instagram_facebook_author_id
@@ -310,8 +310,8 @@ msgid ""
 "The Facebook ID of this Instagram post author, used to fetch the profile "
 "picture."
 msgstr ""
-"L'ID Facebook de cet auteur de publication Instagram, utilisé pour récupérer"
-" la photo de profil."
+"L'ID Facebook de cet auteur du post Instagram, utilisé pour récupérer la "
+"photo de profil."
 
 #. module: social_instagram
 #. odoo-python
@@ -337,8 +337,7 @@ msgstr "Utiliser votre propre compte Instagram"
 #: model:ir.model.fields,help:social_instagram.field_social_post_template__instagram_access_token
 msgid "Used to allow access to Instagram to retrieve the post image"
 msgstr ""
-"Utilisé pour autoriser l'accès à Instagram pour récupérer l'image de la "
-"publication"
+"Utilisé pour autoriser l'accès à Instagram pour récupérer l'image du post"
 
 #. module: social_instagram
 #: model:ir.model.fields,help:social_instagram.field_social_media__media_type

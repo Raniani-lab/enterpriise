@@ -32,11 +32,13 @@ msgid ""
 "<i class=\"fa fa-3x rounded bg-secondary m-3 fa-comments fa-3x rounded bg-"
 "secondary m-3\">​</i>"
 msgstr ""
+"<i class=\"fa fa-3x rounded bg-secondary m-3 fa-comments fa-3x rounded bg-"
+"secondary m-3\">​</i>"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.search_result
 msgid "<i class=\"fa fa-fw fa-2x fa-comments\" title=\"Forum Post\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-2x fa-comments\" title=\"Forum Post\"/>"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.question_dropdown
@@ -44,6 +46,8 @@ msgid ""
 "<i class=\"fa fa-life-ring fa-fw text-muted\"/>\n"
 "                View Ticket"
 msgstr ""
+"<i class=\"fa fa-life-ring fa-fw text-muted\"/>\n"
+"                Mostra ticket"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.knowledge_base_forum_card
@@ -57,7 +61,7 @@ msgstr ""
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.knowledge_base_forum_card
 msgid "<span style=\"font-weight: bolder; font-size: 18px;\">Community</span>"
-msgstr ""
+msgstr "<span style=\"font-weight: bolder; font-size: 18px;\">Community</span>"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.search_result
@@ -83,12 +87,12 @@ msgstr "Annulla"
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.helpdesk_ticket_select_forum_wizard_view_form
 msgid "Create Post"
-msgstr ""
+msgstr "Crea post"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.helpdesk_ticket_select_forum_wizard_view_form
 msgid "Create and View Post"
-msgstr ""
+msgstr "Crea e mostra post"
 
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket_select_forum_wizard__create_uid
@@ -123,7 +127,7 @@ msgstr "Messaggio del forum"
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket__forum_post_count
 msgid "Forum Post Count"
-msgstr ""
+msgstr "Numero post forum"
 
 #. module: website_helpdesk_forum
 #: code:addons/website_helpdesk_forum/models/helpdesk.py:0
@@ -170,6 +174,8 @@ msgid ""
 "In the help center, customers will only be able to see posts from the "
 "selected forums."
 msgstr ""
+"Nel centro di supporto, i clienti potranno vedere solamente i post dei forum"
+" selezionati."
 
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket_select_forum_wizard____last_update
@@ -190,29 +196,29 @@ msgstr "Ultimo aggiornamento il"
 #: code:addons/website_helpdesk_forum/models/helpdesk.py:0
 #, python-format
 msgid "No posts associated to this ticket."
-msgstr ""
+msgstr "Nessun post associato a questo ticket."
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.helpdesk_ticket_select_forum_wizard_view_form
 msgid "Select Forum"
-msgstr ""
+msgstr "Seleziona forum"
 
 #. module: website_helpdesk_forum
 #: model:ir.actions.act_window,name:website_helpdesk_forum.helpdesk_ticket_select_forum_wizard_action
 #: model:ir.model,name:website_helpdesk_forum.model_helpdesk_ticket_select_forum_wizard
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.helpdesk_ticket_view_form_inherit_website_helpdesk_forum
 msgid "Share on Forum"
-msgstr ""
+msgstr "Condividi sul forum"
 
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_team__show_knowledge_base_forum
 msgid "Show Knowledge Base Forum"
-msgstr ""
+msgstr "Mostra forum conoscenze di base"
 
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_forum_post__show_ticket
 msgid "Show Ticket"
-msgstr ""
+msgstr "Mostra ticket"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.search_result
@@ -244,9 +250,9 @@ msgstr "Visualizzazioni"
 #: code:addons/website_helpdesk_forum/wizards/helpdesk_ticket_select_forum.py:0
 #, python-format
 msgid "You must select a forum to share the ticket"
-msgstr ""
+msgstr "Devi selezionare un forum per condividere il ticket"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.search_result
 msgid "| 0 Answer"
-msgstr ""
+msgstr "| 0 Risposte"

@@ -1315,7 +1315,7 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields.selection,name:social.selection__social_post__state__scheduled
 msgid "Scheduled"
-msgstr "安排"
+msgstr "已排程"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__scheduled_date

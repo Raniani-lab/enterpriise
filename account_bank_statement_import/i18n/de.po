@@ -163,6 +163,18 @@ msgid "This file doesn't contain any transaction for account %s."
 msgstr "Diese Datei enthält keine Buchungen für das Konto %s."
 
 #. module: account_bank_statement_import
+#: code:addons/account_bank_statement_import/account_bank_statement_import.py:0
+#, python-format
+msgid "The following files could not be imported:\n"
+msgstr "Die folgenden Dateien konnten nicht importiert werden:\n"
+
+#. module: account_bank_statement_import
+#: code:addons/account_bank_statement_import/account_bank_statement_import.py:0
+#, python-format
+msgid "View successfully imported statements"
+msgstr "Erfolgreich importierte Auszüge ansehen"
+
+#. module: account_bank_statement_import
 #. odoo-python
 #: code:addons/account_bank_statement_import/models/account_journal.py:0
 #, python-format
@@ -175,3 +187,10 @@ msgstr "Diese Datei wurde importiert."
 #, python-format
 msgid "You have to set a Default Account for the journal: %s"
 msgstr "Sie müssen ein Standardkonto für das Journal festlegen: %s"
+
+#. module: account_bank_statement_import
+#. odoo-python
+#: code:addons/account_bank_statement_import/models/account_journal.py:0
+#, python-format
+msgid "You uploaded an invalid or empty file."
+msgstr "Sie haben eine ungültige oder leere Datei hochgeladen."

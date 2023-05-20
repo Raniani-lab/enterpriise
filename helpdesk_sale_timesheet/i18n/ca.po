@@ -133,8 +133,8 @@ msgid ""
 "Project to which the timesheets of this helpdesk team's tickets will be "
 "linked."
 msgstr ""
-"Projecte al qual s'enllaçaran els fulls de temps dels bitllets de l'equip "
-"del centre d'ajuda."
+"Projecte al qual s'enllaçaran els fulls d'hores dels bitllets de l'equip del"
+" centre d'ajuda."
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_ticket__project_sale_order_id

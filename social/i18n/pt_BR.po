@@ -879,7 +879,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:social.field_social_post__media_ids
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_kanban
 msgid "Media"
-msgstr ""
+msgstr "Mídia"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_account__media_type
@@ -1170,7 +1170,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:social.field_social_live_post__live_post_link
 #: model:ir.model.fields,field_description:social.field_social_stream_post__post_link
 msgid "Post Link"
-msgstr ""
+msgstr "Link do Post"
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_search
@@ -1368,7 +1368,7 @@ msgstr "Definições"
 #: model:ir.model.fields,field_description:social.field_social_stream__account_id
 #: model_terms:ir.ui.view,arch_db:social.social_account_view_form
 msgid "Social Account"
-msgstr ""
+msgstr "Conta de Rede Social"
 
 #. module: social
 #: model:ir.actions.act_window,name:social.action_social_account
@@ -1452,7 +1452,7 @@ msgstr "Stream Social"
 #: model:ir.model,name:social.model_social_stream_post
 #: model:ir.model,name:social.model_social_stream_type
 msgid "Social Stream Post"
-msgstr ""
+msgstr "Postagem de Streaming em Redes Sociais"
 
 #. module: social
 #: model:ir.model,name:social.model_social_stream_post_image

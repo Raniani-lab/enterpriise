@@ -5,7 +5,7 @@
 # Translators:
 # Braulio D. López Vázquez <bdl@odoo.com>, 2022
 # Martin Trigaux, 2022
-# Lucia Pacheco <lpo@odoo.com>, 2022
+# Lucia Pacheco, 2022
 # Fernanda Alvarez, 2023
 # 
 msgid ""
@@ -1168,6 +1168,15 @@ msgid ""
 "You cannot assign the same approver multiple times on the same request."
 msgstr ""
 "No puede asignar al mismo aprobador varias veces en la misma solicitud."
+
+#. module: approvals
+#. odoo-python
+#: code:addons/approvals/models/ir_attachment.py:0
+#, python-format
+msgid ""
+"You cannot unlink an attachment which is linked to a validated, refused or "
+"cancelled approval request."
+msgstr ""
 
 #. module: approvals
 #. odoo-python

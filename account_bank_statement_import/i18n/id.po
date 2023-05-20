@@ -25,7 +25,7 @@ msgstr ""
 #: code:addons/account_bank_statement_import/static/src/js/account_bank_statement_import.js:0
 #, python-format
 msgid " Import Template for Bank Statements"
-msgstr ""
+msgstr "Impor Template untuk Laporan Bank"
 
 #. module: account_bank_statement_import
 #. odoo-python
@@ -83,7 +83,7 @@ msgstr ""
 #: code:addons/account_bank_statement_import/models/account_journal.py:0
 #, python-format
 msgid "Go to Apps"
-msgstr ""
+msgstr "Pergi ke Aplikasi"
 
 #. module: account_bank_statement_import
 #. odoo-python
@@ -93,6 +93,8 @@ msgid ""
 "If it contains transactions for more than one account, it must be imported "
 "on each of them."
 msgstr ""
+"Bila memiliki transaksi untuk lebih dari satu akun, harus diimpor untuk "
+"setiap akun."
 
 #. module: account_bank_statement_import
 #. odoo-python
@@ -141,32 +143,51 @@ msgstr ""
 msgid ""
 "The currency of the bank statement (%s) is not the same as the currency of "
 "the journal (%s)."
-msgstr ""
+msgstr "Mata uang laporan bank (%s) tidak sama dengan mata uang jurnal (%s)."
 
 #. module: account_bank_statement_import
 #. odoo-python
 #: code:addons/account_bank_statement_import/models/account_journal.py:0
 #, python-format
 msgid "This file doesn't contain any statement for account %s."
-msgstr ""
+msgstr "File ini tidak memiliki statement untuk akun %s."
 
 #. module: account_bank_statement_import
 #. odoo-python
 #: code:addons/account_bank_statement_import/models/account_journal.py:0
 #, python-format
 msgid "This file doesn't contain any transaction for account %s."
-msgstr ""
+msgstr "File ini tidak memiliki transaksi apapun untuk akun %s."
+
+#. module: account_bank_statement_import
+#: code:addons/account_bank_statement_import/account_bank_statement_import.py:0
+#, python-format
+msgid "The following files could not be imported:\n"
+msgstr "File-file berikut tidak dapat diimpor:\n"
+
+#. module: account_bank_statement_import
+#: code:addons/account_bank_statement_import/account_bank_statement_import.py:0
+#, python-format
+msgid "View successfully imported statements"
+msgstr "Lihat statement yang sukses diimpor"
 
 #. module: account_bank_statement_import
 #. odoo-python
 #: code:addons/account_bank_statement_import/models/account_journal.py:0
 #, python-format
 msgid "You already have imported that file."
-msgstr ""
+msgstr "Anda sudah mengimpor file tersebut."
 
 #. module: account_bank_statement_import
 #. odoo-python
 #: code:addons/account_bank_statement_import/models/account_journal.py:0
 #, python-format
 msgid "You have to set a Default Account for the journal: %s"
-msgstr ""
+msgstr "Anda harus menetapkan Default Account untuk jurnal: %s"
+
+#. module: account_bank_statement_import
+#. odoo-python
+#: code:addons/account_bank_statement_import/models/account_journal.py:0
+#, python-format
+msgid "You uploaded an invalid or empty file."
+msgstr "Anda mengunggah file yang tidak valid atau kosong."

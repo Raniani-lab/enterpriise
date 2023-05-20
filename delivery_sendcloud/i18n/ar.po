@@ -442,7 +442,7 @@ msgstr ""
 #: code:addons/delivery_sendcloud/models/sendcloud_service.py:0
 #, python-format
 msgid "Something went wrong, parcel not returned from Sendcloud"
-msgstr ""
+msgstr "حدث خطأ ما، لم يعد الطرد من Sendcloud "
 
 #. module: delivery_sendcloud
 #. odoo-python
@@ -498,7 +498,7 @@ msgstr "%sوزن بعض المنتجات مفقود"
 msgid ""
 "There are no shipping products available, please activate carriers in your "
 "account"
-msgstr ""
+msgstr "لا توجد منتجات شحن متاحة، يرجى تفعيل شركات الشحن في حسابك "
 
 #. module: delivery_sendcloud
 #. odoo-python

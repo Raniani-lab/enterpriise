@@ -639,56 +639,56 @@ msgstr "خارج الميزانية العمومية "
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Offset -1 - Month"
-msgstr ""
+msgstr "إزاحة -1 - شهر "
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Offset -1 - Month-Year"
-msgstr ""
+msgstr "إزاحة -1 - شهر-سنة "
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Offset -1 - Start date"
-msgstr ""
+msgstr "إزاحة -1 - تاريخ البدء "
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Offset -1 - Year"
-msgstr ""
+msgstr "إزاحة -1 - سنة "
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Offset -4 - Month"
-msgstr ""
+msgstr "إزاحة -4 - شهر "
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Offset -4 - Month-Year"
-msgstr ""
+msgstr "إزاحة -4 - شهر-سنة "
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Offset -4 - Start date"
-msgstr ""
+msgstr "إزاحة -4 - تاريخ البدء "
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Offset -4 - Year"
-msgstr ""
+msgstr "إزاحة -4 - سنة "
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -812,7 +812,7 @@ msgstr "الأصول السريعة / الالتزامات المتداولة "
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Quick ratio"
-msgstr ""
+msgstr "النسبة السريعة "
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript

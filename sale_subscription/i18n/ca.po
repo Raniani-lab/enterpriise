@@ -24,6 +24,7 @@
 # jabelchi, 2022
 # Ivan Espinola, 2023
 # jabiri7, 2023
+# martioodo hola, 2023
 # Óscar Fonseca <tecnico@extreme-micro.com>, 2023
 # 
 msgid ""
@@ -2858,6 +2859,8 @@ msgid ""
 "Recurring product are entirely discounted as the next period has not been "
 "invoiced yet."
 msgstr ""
+"El producte periòdic es descarta totalment perquè el següent període encara "
+"no s'ha facturat."
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -3626,6 +3629,8 @@ msgstr "URL completa per accedir a l'acció de servidor a través del lloc web."
 msgid ""
 "The last invoice (%s) of this subscription is unpaid after the due date."
 msgstr ""
+"L'última factura (%s) d'aquesta subscripció no es paga després de la data de"
+" venciment."
 
 #. module: sale_subscription
 #: model:ir.model.constraint,message:sale_subscription.constraint_sale_order_check_start_date_lower_next_invoice_date
@@ -3953,7 +3958,7 @@ msgid ""
 "                work done, expenses and/or sales orders. Odoo will automatically manage\n"
 "                the alerts for the renewal of the subscriptions to the right salesperson."
 msgstr ""
-"Utilitza les subscripcions per a seguir tasques, problemes, fulls de temps o facturació basada en\n"
+"Utilitza les subscripcions per a seguir tasques, problemes, fulls d'hores o facturació basada en\n"
 "                feina feta, despeses i/o comandes de vendes. Odoo gestionarà automàticament\n"
 "                les alertes per a la renovació de les subscripcions al comercial adequat."
 

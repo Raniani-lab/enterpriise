@@ -177,7 +177,7 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
             "model": "res.users",
             "type": "form",
             "arch": '''
-                <form>
+                <form class="test-user-form">
                     <t groups="{doesnothavegroup}" >
                         <div class="condition_group" />
                     </t>
@@ -205,7 +205,7 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
         assertViewArchEqual(self, studioView.arch, """
             <data>
                <xpath expr="//field[@name='user_ids']" position="inside">
-                 <form>
+                 <form class="test-user-form">
                    <t groups="{doesnothavegroup}" >
                      <div class="condition_group" />
                    </t>
@@ -224,7 +224,7 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
             "model": "res.users",
             "type": "tree",
             "arch": '''
-                <tree>
+                <tree class="test-user-list">
                     <field name="display_name" />
                 </tree>
             '''
@@ -247,7 +247,7 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
         assertViewArchEqual(self, studioView.arch, """
             <data>
                <xpath expr="//field[@name='user_ids']" position="inside">
-                 <tree>
+                 <tree class="test-user-list">
                    <field name="display_name" />
                    <field name="log_ids" optional="show" />
                  </tree>
@@ -261,7 +261,7 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
             "model": "res.users",
             "type": "tree",
             "arch": '''
-                <tree>
+                <tree class="test-user-list">
                     <field name="display_name" />
                 </tree>
             '''
@@ -294,7 +294,7 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
         assertViewArchEqual(self, studio_view.arch, """
             <data>
                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[1]/field[@name='user_ids']" position="inside">
-                 <tree>
+                 <tree class="test-user-list">
                    <field name="display_name" />
                    <field name="log_ids" optional="show" />
                  </tree>
@@ -577,10 +577,10 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
               <form>
                   <field name="name"/>
                   <field name="child_ids">
-                      <tree groups="{doesnothavegroup}">
+                      <tree groups="{doesnothavegroup}" class="test-subview-list">
                           <field name="name"/>
                       </tree>
-                      <tree groups="{hasgroup}">
+                      <tree groups="{hasgroup}" class="test-subview-list">
                           <field name="name"/>
                       </tree>
                   </field>
@@ -746,7 +746,7 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
         self.testView.arch = '''
             <form>
                 <field name="child_ids">
-                    <form>
+                    <form class="test-subview-form">
                         <field name="display_name" />
                     </form>
                 </field>
@@ -768,12 +768,12 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
         <form>
             <field name="display_name"/>
             <field name="user_ids">
-                <form>
+                <form class="test-subview-form-1">
                     <group>
                         <field name="display_name"/>
                         <field name="log_ids">
-                            <form invisible="1" />
-                            <form>
+                            <form invisible="1" class="test-subview-form-2"/>
+                            <form class="test-subview-form-2">
                                 <group><field name="display_name"/></group>
                             </form>
                         </field>

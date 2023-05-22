@@ -103,7 +103,7 @@ registry.category("web_tour.tours").add("web_studio_enter_x2many_edition_and_add
             trigger: ".o_web_studio_editX2Many[data-type='form']",
         },
         {
-            extra_trigger: ".o_web_studio_breadcrumb .breadcrumb-item:contains('Subview Form')",
+            extra_trigger: ".o_form_view.test-user-form",
             trigger: ".o_web_studio_sidebar .o_web_studio_existing_fields_header",
         },
         {
@@ -157,7 +157,7 @@ registry.category("web_tour.tours").add("web_studio_enter_x2many_auto_inlined_su
             trigger: ".o_web_studio_editX2Many[data-type='list']",
         },
         {
-            extra_trigger: ".o_web_studio_breadcrumb .breadcrumb-item:contains('Subview List')",
+            extra_trigger: ".o_list_view.test-user-list",
             trigger: ".o_web_studio_sidebar .o_web_studio_existing_fields_header",
         },
         {
@@ -213,7 +213,7 @@ registry
                 trigger: ".o_web_studio_editX2Many[data-type='list']",
             },
             {
-                extra_trigger: ".o_web_studio_breadcrumb .breadcrumb-item:contains('Subview List')",
+                extra_trigger: ".o_list_view.test-user-list",
                 trigger: ".o_web_studio_sidebar .o_web_studio_existing_fields_header",
             },
             {
@@ -641,7 +641,7 @@ registry
                 trigger: ".o_web_studio_editX2Many[data-type='list']",
             },
             {
-                extra_trigger: ".o_web_studio_breadcrumb .breadcrumb-item:contains('Subview List')",
+                extra_trigger: ".o_list_view.test-subview-list",
                 trigger: ".o_web_studio_sidebar .o_web_studio_existing_fields_header",
             },
             {
@@ -713,7 +713,7 @@ registry.category("web_tour.tours").add("web_studio_test_edit_form_subview_attri
             trigger: ".o_web_studio_editX2Many[data-type='form']",
         },
         {
-            extra_trigger: ".o_web_studio_breadcrumb .breadcrumb-item:contains(Subview Form)",
+            extra_trigger: ".o_form_view.test-subview-form",
             trigger: ".o_web_studio_sidebar.o_notebook .nav-link:contains(View)",
         },
         {
@@ -747,7 +747,7 @@ registry.category("web_tour.tours").add("web_studio_x2many_two_levels_edition", 
         },
         {
             extra_trigger:
-                ".o_web_studio_breadcrumb .breadcrumb-item:nth-child(3):contains('Subview Form')",
+                ".o_form_view.test-subview-form-1",
             trigger: ".o_web_studio_form_view_editor .o_field_widget[name='log_ids']",
         },
         {
@@ -755,7 +755,7 @@ registry.category("web_tour.tours").add("web_studio_x2many_two_levels_edition", 
         },
         {
             trigger:
-                ".o_web_studio_breadcrumb .breadcrumb-item:nth-child(4):contains('Subview Form')",
+                ".o_form_view.test-subview-form-2",
             run() {},
         },
         {

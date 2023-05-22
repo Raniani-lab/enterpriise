@@ -32,12 +32,14 @@
         </div>
     </template>
 
-    <template id="website_helpdesk_forum.question_dropdown" inherit_id="website_forum.question_dropdown">
+    <template id="website_helpdesk_forum.question_dropdown" inherit_id="website_forum.post_dropdown">
         <xpath expr="//div[hasclass('dropdown-menu')]" position="inside">
-            <a groups="helpdesk.group_helpdesk_user" t-if="question and question.show_ticket" class="dropdown-item ps-3" t-attf-href="/web#id=#{question.ticket_id.id}&amp;view_type=form&amp;model=helpdesk.ticket&amp;menu_id=#{question.env.ref('helpdesk.menu_helpdesk_root').id}">
-                <i class="fa fa-life-ring fa-fw text-muted" />
-                View Ticket
-            </a>
+            <t t-if="question">
+                <a groups="helpdesk.group_helpdesk_user" t-if="question and question.show_ticket" class="dropdown-item ps-3" t-attf-href="/web#id=#{question.ticket_id.id}&amp;view_type=form&amp;model=helpdesk.ticket&amp;menu_id=#{question.env.ref('helpdesk.menu_helpdesk_root').id}">
+                    <i class="fa fa-life-ring fa-fw" />
+                    View Ticket
+                </a>
+            </t>
         </xpath>
     </template>
 

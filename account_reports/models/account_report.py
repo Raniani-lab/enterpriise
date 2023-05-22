@@ -3724,7 +3724,6 @@ class AccountReport(models.Model):
                 'account_readonly': self.user_has_groups('account.group_account_readonly'),
                 'account_user': self.user_has_groups('account.group_account_user'),
             },
-            # todo (rugo) _format_blabla_ellipsis and not in print mode since OCO ='(
             'lines': self._format_lines_for_ellipsis(lines, options),
             'options': options,
             'report': {

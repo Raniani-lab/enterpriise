@@ -107,9 +107,10 @@ class AssetModify(models.TransientModel):
     def _compute_gain_or_loss(self):
         for record in self:
             balances = abs(sum([invoice.balance for invoice in record.invoice_line_ids]))
-            if record.modify_action in ('sell', 'dispose') and record.asset_id.value_residual < balances:
+            comparison = record.company_id.currency_id.compare_amounts(record.asset_id.value_residual + record.asset_id.salvage_value, balances)
+            if record.modify_action in ('sell', 'dispose') and comparison < 0:
                 record.gain_or_loss = 'gain'
-            elif record.modify_action in ('sell', 'dispose') and record.asset_id.value_residual > balances:
+            elif record.modify_action in ('sell', 'dispose') and comparison > 0:
                 record.gain_or_loss = 'loss'
             else:
                 record.gain_or_loss = 'no'

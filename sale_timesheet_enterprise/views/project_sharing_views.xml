@@ -55,19 +55,19 @@
             </xpath>
             <xpath expr="//label[@for='remaining_hours']" position="attributes">
                 <attribute name="for">portal_remaining_hours</attribute>
-                <attribute name="attrs">{'invisible': ['|', '|', ('planned_hours', '=', 0.0), ('encode_uom_in_days', '=', True), ('portal_remaining_hours', '&lt;', 0)]}</attribute>
+                <attribute name="invisible">not planned_hours or encode_uom_in_days or portal_remaining_hours &lt; 0</attribute>
             </xpath>
             <xpath expr="//label[@for='remaining_hours']" position="attributes">
                 <attribute name="for">portal_remaining_hours</attribute>
-                <attribute name="attrs">{'invisible': ['|', '|', ('planned_hours', '=', 0.0), ('encode_uom_in_days', '=', False), ('portal_remaining_hours', '&lt;', 0)]}</attribute>
+                <attribute name="invisible">not planned_hours or not encode_uom_in_days or portal_remaining_hours &lt; 0</attribute>
             </xpath>
             <xpath expr="//label[@for='remaining_hours']" position="attributes">
                 <attribute name="for">portal_remaining_hours</attribute>
-                <attribute name="attrs">{'invisible': ['|', '|', ('planned_hours', '=', 0.0), ('encode_uom_in_days', '=', True), ('portal_remaining_hours', '&gt;=', 0)]}</attribute>
+                <attribute name="invisible">not planned_hours or encode_uom_in_days or portal_remaining_hours &gt;= 0</attribute>
             </xpath>
             <xpath expr="//label[@for='remaining_hours']" position="attributes">
                 <attribute name="for">portal_remaining_hours</attribute>
-                <attribute name="attrs">{'invisible': ['|', '|', ('planned_hours', '=', 0.0), ('encode_uom_in_days', '=', False), ('portal_remaining_hours', '&gt;=', 0)]}</attribute>
+                <attribute name="invisible">not planned_hours or not encode_uom_in_days or portal_remaining_hours &gt;= 0</attribute>
             </xpath>
             <xpath expr="//page[@id='timesheets_tab']//field[@name='remaining_hours']" position="attributes">
                 <attribute name="name">portal_remaining_hours</attribute>

@@ -22,6 +22,8 @@
         <field name="priority" eval="80"/>
         <field name="arch" type="xml">
             <xpath expr="//button[@name='%(hr.plan_wizard_action)d']" position="before">
+                <field name="parent_user_id" invisible="1"/>
+                <field name="ongoing_appraisal_count" invisible="1"/>
                 <button name="action_send_appraisal_request"
                     string="Request Appraisal"
                     type="object"

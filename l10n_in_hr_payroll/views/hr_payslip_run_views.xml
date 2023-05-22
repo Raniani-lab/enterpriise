@@ -23,11 +23,10 @@
             <data>
                 <xpath expr="//field[@name='date_end']" position="after">
                     <newline/>
-                    <field name="available_advice" attrs="{'invisible': [('country_code', '!=', 'IN')]}"/>
+                    <field name="available_advice" invisible="country_code != 'IN'"/>
                 </xpath>
                 <xpath expr="//button[@name='action_draft']" position="after">
-                    <button name="create_advice" string="Create Advice" type="object" states="close"
-                        attrs="{'invisible': [('country_code', '!=', 'IN')]}"/>
+                    <button name="create_advice" string="Create Advice" type="object" invisible="country_code != 'IN' or state != 'close'"/>
                 </xpath>
             </data>
         </field>

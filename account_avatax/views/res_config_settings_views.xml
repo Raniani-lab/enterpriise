@@ -58,13 +58,13 @@
                             <label string="Address Validation" for="avalara_address_validation" class="col-lg-3 o_light_label" />
                             <field name="avalara_address_validation" class="w-50"/>
                         </div>
-                        <div class="mt16" attrs="{'invisible': [('avalara_api_id', 'not in', (False, '')), ('avalara_api_key', 'not in', (False, ''))]}">
+                        <div class="mt16" invisible="avalara_api_id and avalara_api_key">
                             <a href="https://www.avalara.com/us/en/get-started.html" target="_new">
                                 <i class="oi oi-fw oi-arrow-right"/>
                                 How to Get Credentials
                             </a>
                         </div>
-                        <div class="mt16" attrs="{'invisible': ['!', '&amp;', ('avalara_api_id', 'not in', (False, '')), ('avalara_api_key', 'not in', (False, ''))]}">
+                        <div class="mt16" invisible="not (avalara_api_id and avalara_api_key)">
                             <a href="https://admin.avalara.com/" target="_new">
                                 <i title="Go to Avatax portal" role="img" aria-label="Go to Avatax portal" class="fa fa-external-link-square fa-fw"/>
                                 Avatax portal

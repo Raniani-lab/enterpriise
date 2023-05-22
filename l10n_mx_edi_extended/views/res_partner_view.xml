@@ -11,7 +11,7 @@
                     <field name="l10n_mx_edi_external_trade_type"/>
                 </field>
                 <xpath expr="//field[@name='vat']" position="after">
-                    <field name="l10n_mx_edi_curp" attrs="{'invisible': [('fiscal_country_codes', 'not ilike', 'MX')]}"/>
+                    <field name="l10n_mx_edi_curp" invisible="{'invisible': 'MX' not in fiscal_country_codes"/>
                 </xpath>
             </field>
         </record>

@@ -182,7 +182,6 @@
         <field name="mode">primary</field>
         <field name="arch" type="xml">
             <field name="date_close" position="attributes">
-                <attribute name="attrs"/>
                 <attribute name="widget"/>
             </field>
             <tree position="attributes">

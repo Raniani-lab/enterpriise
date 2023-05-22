@@ -249,7 +249,7 @@ class View(models.Model):
             header_content.append(E.field(name='x_studio_stage_id', widget='statusbar', options="{'clickable': '1'}"))
             sheet_content.append(E.field(name='x_studio_kanban_state', widget='state_selection'))
         if 'x_active' in model._fields:
-            sheet_content.append(E.widget(name='web_ribbon', text=_('Archived'), bg_color='text-bg-danger', attrs="{'invisible': [('x_active', '=', True)]}"))
+            sheet_content.append(E.widget(name='web_ribbon', text=_('Archived'), bg_color='text-bg-danger', invisible="x_active"))
             sheet_content.append(E.field(name='x_active', invisible='1'))
         if 'x_studio_image' in model._fields:
             sheet_content.append(E.field({'class': 'oe_avatar', 'widget': 'image', 'name': 'x_studio_image'}))

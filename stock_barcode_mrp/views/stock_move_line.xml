@@ -26,7 +26,7 @@
                 <attribute name="invisible">context.get('newByProduct')</attribute>
             </xpath>
             <xpath expr="//widget[@name='stock_barcode_unlink_button']" position="attributes">
-                <attribute name="invisible">context.get('newByProduct')</attribute>
+                <attribute name="invisible" add="context.get('newByProduct')" separator=" or "/>
             </xpath>
         </field>
     </record>

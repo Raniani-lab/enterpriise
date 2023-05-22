@@ -150,7 +150,7 @@ class MrpEcoStage(models.Model):
 
     @api.model
     def _get_sequence(self):
-        others = self.search([('sequence','<>',False)], order='sequence desc', limit=1)
+        others = self.search([('sequence', '!=', False)], order='sequence desc', limit=1)
         if others:
             return (others[0].sequence or 0) + 1
         return 1

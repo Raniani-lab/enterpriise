@@ -185,6 +185,7 @@
         <field name="arch" type="xml">
             <kanban default_group_by="subscription_state" class="o_kanban_mobile o_kanban_order" sample="1" quick_create="false">
                 <field name="user_id"/>
+                <field name="state"/>
                 <field name="subscription_state" options="{'group_by_tooltip': {'description': 'Description'}}"/>
                 <field name="starred"/>
                 <field name="sale_order_template_id"/>
@@ -474,17 +475,7 @@
                         <field name="retention_button_text" placeholder="The text to display on the call to action"/>
                         <field name="retention_button_link" placeholder="The redirect link of the call to action"/>
                     </group>
-                    <div role="alert" class="alert alert-warning" attrs="{'invisible': [
-                        '|',
-                            ('visible_in_portal', '=', False),
-                            '|',
-                                '&amp;',
-                                    '&amp;', ('empty_retention_message', '=', False), ('retention_button_text', '!=', False),
-                                    ('retention_button_link', '!=', False),
-                                '&amp;',
-                                    '&amp;', ('empty_retention_message', '!=', False), ('retention_button_text', '==', False),
-                                    ('retention_button_link', '==', False)
-                    ]}">
+                    <div role="alert" class="alert alert-warning" invisible="not visible_in_portal or not empty_retention_message and retention_button_text and retention_button_link or empty_retention_message and not retention_button_text and not retention_button_link">
                         <strong>Warning:</strong> the survey can only be shown if all information is set. Please complete:
                         <ul>
                             <li attrs="{'invisible': [('empty_retention_message', '=', False)]}">message</li>

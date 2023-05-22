@@ -7,6 +7,7 @@ from odoo import fields, models
 class HrEmployeePublic(models.Model):
     _inherit = 'hr.employee.public'
 
+    ongoing_appraisal_count = fields.Integer()
     last_appraisal_id = fields.Many2one(readonly=True)
     next_appraisal_date = fields.Date(compute='_compute_manager_only_fields', search='_search_next_appraisal_date')
 

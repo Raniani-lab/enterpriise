@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="account.res_config_settings_view_form"/>
         <field name="arch" type="xml">
             <setting id="dynamic_report" position="attributes">
-                <attribute name="attrs">{'invisible': [('module_account_reports', '!=', False)]}</attribute>
+                <attribute name="invisible">not module_account_reports</attribute>
             </setting>
 
             <setting id="default_taxes" position="after">

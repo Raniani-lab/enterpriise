@@ -29,7 +29,7 @@
                         </p>
                         <p attrs="{'invisible': [('xml_file', '=', False)]}" class="oe_inline">
                             Download the XML Export file: <field name="xml_file" readonly="1" filename="xml_filename"/>
-                            <!-- Payment Structured Communication: <field name="payment_reference" attrs="{'invisible': [('payment_reference', '=', False)]}" readonly="1"/> -->
+                            <!-- Payment Structured Communication: <field name="payment_reference" invisible="not payment_reference" readonly="1"/> -->
                             <field name="xml_validation_state" class="ms-2 mb-0" widget="state_selection" nolabel="1"/>
                             <field name="error_message" attrs="{'invisible': [('xml_validation_state', '!=', 'invalid')]}" nolabel="1"/>
                         </p>

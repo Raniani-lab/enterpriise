@@ -221,22 +221,22 @@
             <field name="inherit_id" ref="point_of_sale.view_pos_session_form"/>
             <field name="arch" type="xml">
                 <div class="oe_button_box" position="inside">
-                    <button class="oe_stat_button" name="%(action_report_pos_financial_x)d" states="opening_control,opened" type="action" icon="fa-file-text-o">
+                    <button class="oe_stat_button" name="%(action_report_pos_financial_x)d" invisible="state not in ['opening_control', 'opened']" type="action" icon="fa-file-text-o">
                         <div class="o_field_widget o_stat_info">
                             <span class="o_stat_text">Financial X</span>
                         </div>
                     </button>
-                    <button class="oe_stat_button" name="%(action_report_pos_financial_z)d" states="closing_control,closed" type="action" icon="fa-file-text-o">
+                    <button class="oe_stat_button" name="%(action_report_pos_financial_z)d" invisible="state not in ['closing_control', 'closed']" type="action" icon="fa-file-text-o">
                         <div class="o_field_widget o_stat_info">
                             <div class="o_stat_text">Financial Z</div>
                         </div>
                     </button>
-                    <button class="oe_stat_button" name="%(action_report_pos_user_x)d" states="opening_control,opened" type="action" icon="fa-file-text-o">
+                    <button class="oe_stat_button" name="%(action_report_pos_user_x)d" invisible="state not in ['opening_control', 'opened']" type="action" icon="fa-file-text-o">
                         <div class="o_field_widget o_stat_info">
                             <span class="o_stat_text">User X</span>
                         </div>
                     </button>
-                    <button class="oe_stat_button" name="%(action_report_pos_user_z)d" states="closing_control,closed" type="action" icon="fa-file-text-o">
+                    <button class="oe_stat_button" name="%(action_report_pos_user_z)d" invisible="state not in ['closing_control', 'closed']" type="action" icon="fa-file-text-o">
                         <div class="o_field_widget o_stat_info">
                             <span class="o_stat_text">User Z</span>
                         </div>

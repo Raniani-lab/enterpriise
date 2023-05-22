@@ -124,13 +124,6 @@ $map-marker-color: #2c8397;
             color: #666666;
         }
     }
-
-    .leaflet-container a {
-        color: $link-color;
-        &:hover {
-            color: $link-hover-color;
-        }
-    }
 }
 .o-sm-pin-list-container {
     @include media-breakpoint-down(md) {

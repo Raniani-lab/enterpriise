@@ -177,7 +177,7 @@
                     </button>
                 </t>
                 <div class="o-map-renderer--popup-buttons-divider d-inline-block h-auto"/>
-                <a class="btn btn-primary" t-att-href="url" target="_blank">
+                <a class="btn btn-primary" role="button" t-att-href="url" target="_blank">
                     Navigate to
                 </a>
             </div>

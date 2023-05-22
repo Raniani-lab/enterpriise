@@ -1,8 +1,8 @@
-from collections import defaultdict
 from datetime import timedelta
 from odoo import api, Command, fields, models, _
 from odoo.exceptions import UserError
 from odoo.tools import groupby
+from odoo.tools.misc import formatLang
 
 
 class AccountReconcileWizard(models.TransientModel):
@@ -51,15 +51,15 @@ class AccountReconcileWizard(models.TransientModel):
     company_currency_id = fields.Many2one(comodel_name='res.currency', string='Company currency', related='company_id.currency_id')
     amount_currency = fields.Monetary(
         string='Amount',
-        help='The amount in reconciliation currency of the write-off is the balance of selected lines.',
         currency_field='reco_currency_id',
         compute='_compute_write_off_amounts')
     reco_currency_id = fields.Many2one(
         comodel_name='res.currency',
         string='Currency to use for reconciliation',
         compute='_compute_reco_currency_id')
+    single_currency_mode = fields.Boolean(compute='_compute_single_currency_mode')
     allow_partials = fields.Boolean(string="Allow partials", default=False)
-    date = fields.Date(string='Date', default=fields.Date.context_today)
+    date = fields.Date(string='Date', compute='_compute_date', store=True, readonly=False)
     journal_id = fields.Many2one(
         comodel_name='account.journal',
         string='Journal',
@@ -74,7 +74,7 @@ class AccountReconcileWizard(models.TransientModel):
         comodel_name='account.account',
         string='Account',
         check_company=True,
-        domain="[('deprecated', '=', False), ('company_id', '=', company_id)]")
+        domain="[('deprecated', '=', False), ('company_id', '=', company_id)], ('internal_group', '!=', 'off_balance')")
     label = fields.Char(string='Label', default='Write-Off')
     tax_id = fields.Many2one(
         comodel_name='account.tax',
@@ -137,11 +137,11 @@ class AccountReconcileWizard(models.TransientModel):
     def _compute_write_off_amounts(self):
         for wizard in self:
             AccountMoveLine = self.env['account.move.line']
-            shadowed_aml_values = defaultdict(dict)
-            for aml in wizard.move_line_ids._origin:
-                shadowed_aml_values.update({aml: {'date': wizard.date}})
-                if wizard.is_transfer_required and aml.account_id == wizard.transfer_from_account_id:
-                    shadowed_aml_values[aml].update({'account_id': wizard.reco_account_id})
+            shadowed_aml_values = {
+                aml: {'account_id': wizard.reco_account_id}
+                for aml in wizard.move_line_ids._origin
+                if wizard.is_transfer_required and aml.account_id == wizard.transfer_from_account_id
+            }
             # Batch the amls all together to know what should be reconciled and when.
             plan_list, all_amls = AccountMoveLine._optimize_reconciliation_plan([wizard.move_line_ids._origin], shadowed_aml_values=shadowed_aml_values)
 
@@ -166,7 +166,7 @@ class AccountReconcileWizard(models.TransientModel):
             plan = plan_list[0]
             # residuals are substracted from aml_values_map
             AccountMoveLine.with_context(no_exchange_difference=self._context.get('no_exchange_difference') or disable_partial_exchange_diff) \
-                ._prepare_reconciliation_plan(plan, aml_values_map)
+                ._prepare_reconciliation_plan(plan, aml_values_map, shadowed_aml_values=shadowed_aml_values)
 
             amls_with_residual = self.env['account.move.line']
             for aml, values in aml_values_map.items():
@@ -179,10 +179,17 @@ class AccountReconcileWizard(models.TransientModel):
             residual_amount_currency = 0.0
             for aml in amls_with_residual:
                 aml_values = aml_values_map[aml]
-                available_residual_amounts = AccountMoveLine._prepare_move_line_residual_amounts(aml_values, wizard.reco_currency_id, shadowed_aml_values={aml: {'date': wizard.date}})
+                available_residual_amounts = AccountMoveLine._prepare_move_line_residual_amounts(aml_values, wizard.reco_currency_id, shadowed_aml_values=shadowed_aml_values)
                 residual_amount += available_residual_amounts[wizard.company_currency_id]['residual']
                 residual_amount_currency += available_residual_amounts[wizard.reco_currency_id]['residual']
-            wizard.amount = residual_amount
+
+            most_recent_line = max(wizard.move_line_ids, key=lambda aml: aml.date)
+            if most_recent_line.currency_id == wizard.reco_currency_id:
+                rate = abs(most_recent_line.amount_currency / most_recent_line.balance) if most_recent_line.balance else 1.0
+            else:
+                rate = wizard.reco_currency_id._get_conversion_rate(wizard.company_currency_id, wizard.reco_currency_id, wizard.company_id, most_recent_line.date)
+
+            wizard.amount = wizard.company_currency_id.round(residual_amount_currency / rate)
             wizard.amount_currency = residual_amount_currency
 
     @api.depends('move_line_ids.currency_id', 'company_currency_id')
@@ -194,6 +201,18 @@ class AccountReconcileWizard(models.TransientModel):
         for wizard in self:
             currencies = wizard.move_line_ids.currency_id - wizard.company_currency_id
             wizard.reco_currency_id = currencies if len(currencies) == 1 else wizard.company_currency_id
+
+    @api.depends('reco_currency_id', 'company_currency_id')
+    def _compute_single_currency_mode(self):
+        for wizard in self:
+            wizard.single_currency_mode = wizard.reco_currency_id == wizard.company_currency_id
+
+    @api.depends('move_line_ids', 'journal_id', 'tax_id')
+    def _compute_date(self):
+        for wizard in self:
+            highest_date = max(aml.date for aml in wizard.move_line_ids)
+            temp_move = self.env['account.move'].new({'journal_id': wizard.journal_id.id})
+            wizard.date = temp_move._get_accounting_date(highest_date, bool(wizard.tax_id))
 
     @api.depends('company_id')
     def _compute_journal_id(self):
@@ -220,6 +239,7 @@ class AccountReconcileWizard(models.TransientModel):
             transfer_amount_currency = 0.0
             if wizard.is_transfer_required:
                 amounts_per_account = {
+                    # [reco_currency, company_currency]
                     accounts[0]: [0.0, 0.0],
                     accounts[1]: [0.0, 0.0],
                 }
@@ -229,7 +249,7 @@ class AccountReconcileWizard(models.TransientModel):
                     else:
                         amounts_per_account[line.account_id][0] += line.amount_residual
                     amounts_per_account[line.account_id][1] += line.amount_residual
-                if amounts_per_account[accounts[0]][0] < amounts_per_account[accounts[1]][0]:
+                if abs(amounts_per_account[accounts[0]][1]) < abs(amounts_per_account[accounts[1]][1]):
                     transfer_from_account = accounts[0]
                     transfer_to_account = accounts[1]
                     transfer_amount_currency = amounts_per_account[accounts[0]][0]
@@ -238,11 +258,12 @@ class AccountReconcileWizard(models.TransientModel):
                     transfer_to_account = accounts[0]
                     transfer_amount_currency = amounts_per_account[accounts[1]][0]
                 transfer_amount = amounts_per_account[transfer_from_account][1]
+                amount_formatted = formatLang(self.env, abs(transfer_amount_currency), currency_obj=wizard.reco_currency_id)
                 transfer_warning_message = _(
-                    'A transfer of %(transfer_amount_currency)s will be transferred from %(from_account)s to %(to_account)s.',
-                    transfer_amount_currency=transfer_amount_currency,
-                    from_account=transfer_from_account.display_name,
-                    to_account=transfer_to_account.display_name,
+                    'An entry will transfer %(amount)s from %(from_account)s to %(to_account)s.',
+                    amount=amount_formatted,
+                    from_account=transfer_from_account.display_name if transfer_amount_currency < 0 else transfer_to_account.display_name,
+                    to_account=transfer_to_account.display_name if transfer_amount_currency < 0 else transfer_from_account.display_name,
                 )
             wizard.transfer_warning_message = transfer_warning_message
             wizard.transfer_from_account_id = transfer_from_account

@@ -119,13 +119,13 @@ class TestAccountReconcileWizard(AccountTestInvoicingCommon):
             'date': self.test_date,
         }
         write_off_expected_values = [
-            {'journal_id': self.misc_journal.id, 'account_id': self.receivable_account.id, 'name': 'Write-Off', 'date': self.test_date, 'balance': -500.0},
-            {'journal_id': self.misc_journal.id, 'account_id': self.write_off_account.id, 'name': 'Write-Off Test Label', 'date': self.test_date, 'balance': 500.0},
+            {'account_id': self.receivable_account.id, 'name': 'Write-Off', 'balance': -500.0},
+            {'account_id': self.write_off_account.id, 'name': 'Write-Off Test Label', 'balance': 500.0},
         ]
         self.assertWizardReconcileValues(line_1 + line_2, wizard_input_values, write_off_expected_values)
 
     def test_write_off_one_foreign_currency(self):
-        """ Reconciliation of two lines with one of the two using foreign currency."""
+        """ Reconciliation of two lines with one of the two using foreign currency should reconcile in foreign currency."""
         line_1 = self.create_line_for_reconciliation(1000.0, 1000.0, self.company_currency, '2016-01-01')
         line_2 = self.create_line_for_reconciliation(-500.0, -1500.0, self.foreign_currency, '2016-01-01')
         wizard_input_values = {
@@ -136,10 +136,10 @@ class TestAccountReconcileWizard(AccountTestInvoicingCommon):
             'date': self.test_date,
         }
         expected_values = [
-            {'journal_id': self.misc_journal.id, 'account_id': self.receivable_account.id, 'name': 'Write-Off',
-             'date': self.test_date, 'balance': -500.0, 'amount_currency': -1500.0, 'currency_id': self.foreign_currency.id},
-            {'journal_id': self.misc_journal.id, 'account_id': self.write_off_account.id, 'name': 'Write-Off Test Label',
-             'date': self.test_date, 'balance': 500.0, 'amount_currency': 1500.0, 'currency_id': self.foreign_currency.id},
+            {'account_id': self.receivable_account.id, 'name': 'Write-Off',
+             'balance': -500.0, 'amount_currency': -1500.0, 'currency_id': self.foreign_currency.id},
+            {'account_id': self.write_off_account.id, 'name': 'Write-Off Test Label',
+             'balance': 500.0, 'amount_currency': 1500.0, 'currency_id': self.foreign_currency.id},
         ]
         self.assertWizardReconcileValues(line_1 + line_2, wizard_input_values, expected_values)
 
@@ -162,12 +162,38 @@ class TestAccountReconcileWizard(AccountTestInvoicingCommon):
             'date': self.test_date,
         }
         expected_values = [
-            {'journal_id': self.misc_journal.id, 'account_id': self.receivable_account.id, 'name': 'Write-Off',
-             'date': self.test_date, 'balance': -100.0, 'amount_currency': -100.0, 'currency_id': self.company_currency.id},
-            {'journal_id': self.misc_journal.id, 'account_id': self.write_off_account.id, 'name': 'Write-Off Test Label',
-             'date': self.test_date, 'balance': 100.0, 'amount_currency': 100.0, 'currency_id': self.company_currency.id},
+            {'account_id': self.receivable_account.id, 'name': 'Write-Off',
+             'balance': -100.0, 'amount_currency': -100.0, 'currency_id': self.company_currency.id},
+            {'account_id': self.write_off_account.id, 'name': 'Write-Off Test Label',
+             'balance': 100.0, 'amount_currency': 100.0, 'currency_id': self.company_currency.id},
         ]
         self.assertWizardReconcileValues(line_1 + line_2 + line_3, wizard_input_values, expected_values)
+
+    def test_write_off_one_foreign_currency_change_rate(self):
+        """ Tests that write-off use the correct rate from/at wizard's date. """
+        choco_currency = self.setup_multi_currency_data(default_values={
+            'name': 'Dark Chocolate Coin',
+            'symbol': '🍫',
+            'currency_unit_label': 'Dark Choco',
+            'currency_subunit_label': 'Dark Cacao Powder',
+        }, rate2016=1/2, rate2017=1/3)['currency']
+        new_date = fields.Date.from_string('2017-02-01')
+        line_1 = self.create_line_for_reconciliation(-2000.0, -2000.0, self.company_currency, '2017-01-01')  # conversion in 2017 => -666.67🍫
+        line_2 = self.create_line_for_reconciliation(2000.0, 1000.0, choco_currency, '2016-01-01')
+        wizard_input_values = {
+            'journal_id': self.misc_journal.id,
+            'account_id': self.write_off_account.id,
+            'label': 'Write-Off Test Label',
+            'allow_partials': False,
+            'date': new_date,
+        }
+        expected_values = [
+            {'account_id': self.receivable_account.id, 'name': 'Write-Off',
+             'balance': -1000.0, 'amount_currency': -333.333, 'currency_id': choco_currency.id},
+            {'account_id': self.write_off_account.id, 'name': 'Write-Off Test Label',
+             'balance': 1000.0, 'amount_currency': 333.333, 'currency_id': choco_currency.id},
+        ]
+        self.assertWizardReconcileValues(line_1 + line_2, wizard_input_values, expected_values)
 
     def test_write_off_mixed_foreign_currencies_change_rate(self):
         """ Tests that write-off use the correct rate from/at wizard's date. """
@@ -189,14 +215,14 @@ class TestAccountReconcileWizard(AccountTestInvoicingCommon):
             'date': new_date,
         }
         expected_values = [
-            {'journal_id': self.misc_journal.id, 'account_id': self.receivable_account.id, 'name': 'Write-Off',
-             'date': new_date, 'balance': -100.0, 'amount_currency': -100.0, 'currency_id': self.company_currency.id},
-            {'journal_id': self.misc_journal.id, 'account_id': self.write_off_account.id, 'name': 'Write-Off Test Label',
-             'date': new_date, 'balance': 100.0, 'amount_currency': 100.0, 'currency_id': self.company_currency.id},
+            {'account_id': self.receivable_account.id, 'name': 'Write-Off',
+             'balance': -100.0, 'amount_currency': -100.0, 'currency_id': self.company_currency.id},
+            {'account_id': self.write_off_account.id, 'name': 'Write-Off Test Label',
+             'balance': 100.0, 'amount_currency': 100.0, 'currency_id': self.company_currency.id},
         ]
         self.assertWizardReconcileValues(line_1 + line_2 + line_3, wizard_input_values, expected_values)
 
-    def test_write_off_with_transfer_account_one_foreign_currency(self):
+    def test_write_off_with_transfer_account_same_currency(self):
         line_1 = self.create_line_for_reconciliation(1000.0, 1000.0, self.company_currency, '2016-01-01')
         line_2 = self.create_line_for_reconciliation(100.0, 100.0, self.company_currency, '2016-01-01', account_1=self.payable_account)
         wizard_input_values = {
@@ -207,20 +233,20 @@ class TestAccountReconcileWizard(AccountTestInvoicingCommon):
             'date': self.test_date,
         }
         expected_transfer_values = [
-            {'journal_id': self.misc_journal.id, 'account_id': self.payable_account.id, 'name': f'Transfer to {self.receivable_account.display_name}',
-             'date': self.test_date, 'balance': -100.0, 'amount_currency': -100.0, 'currency_id': self.company_currency.id},
-            {'journal_id': self.misc_journal.id, 'account_id': self.receivable_account.id, 'name': f'Transfer from {self.payable_account.display_name}',
-             'date': self.test_date, 'balance': 100.0, 'amount_currency': 100.0, 'currency_id': self.company_currency.id},
+            {'account_id': self.payable_account.id, 'name': f'Transfer to {self.receivable_account.display_name}',
+             'balance': -100.0, 'amount_currency': -100.0, 'currency_id': self.company_currency.id},
+            {'account_id': self.receivable_account.id, 'name': f'Transfer from {self.payable_account.display_name}',
+             'balance': 100.0, 'amount_currency': 100.0, 'currency_id': self.company_currency.id},
         ]
         expected_values = [
-            {'journal_id': self.misc_journal.id, 'account_id': self.receivable_account.id, 'name': 'Write-Off',
-             'date': self.test_date, 'balance': -1100.0, 'amount_currency': -1100.0, 'currency_id': self.company_currency.id},
-            {'journal_id': self.misc_journal.id, 'account_id': self.write_off_account.id, 'name': 'Write-Off Test Label',
-             'date': self.test_date, 'balance': 1100.0, 'amount_currency': 1100.0, 'currency_id': self.company_currency.id},
+            {'account_id': self.receivable_account.id, 'name': 'Write-Off',
+             'balance': -1100.0, 'amount_currency': -1100.0, 'currency_id': self.company_currency.id},
+            {'account_id': self.write_off_account.id, 'name': 'Write-Off Test Label',
+             'balance': 1100.0, 'amount_currency': 1100.0, 'currency_id': self.company_currency.id},
         ]
         self.assertWizardReconcileValues(line_1 + line_2, wizard_input_values, expected_values, expected_transfer_values=expected_transfer_values)
 
-    def test_write_off_with_transfer_account_mixed_foreign_currencies(self):
+    def test_write_off_with_transfer_account_one_foreign_currency(self):
         line_1 = self.create_line_for_reconciliation(1100.0, 1100.0, self.company_currency, '2016-01-01')
         line_2 = self.create_line_for_reconciliation(100.0, 300.0, self.foreign_currency, '2016-01-01', account_1=self.payable_account)
         wizard_input_values = {
@@ -231,27 +257,27 @@ class TestAccountReconcileWizard(AccountTestInvoicingCommon):
             'date': self.test_date,
         }
         expected_transfer_values = [
-            {'journal_id': self.misc_journal.id, 'account_id': self.payable_account.id, 'name': f'Transfer to {self.receivable_account.display_name}',
-             'date': self.test_date, 'balance': -100.0, 'amount_currency': -300.0, 'currency_id': self.foreign_currency.id},
-            {'journal_id': self.misc_journal.id, 'account_id': self.receivable_account.id, 'name': f'Transfer from {self.payable_account.display_name}',
-             'date': self.test_date, 'balance': 100.0, 'amount_currency': 300.0, 'currency_id': self.foreign_currency.id},
+            {'account_id': self.payable_account.id, 'name': f'Transfer to {self.receivable_account.display_name}',
+             'balance': -100.0, 'amount_currency': -300.0, 'currency_id': self.foreign_currency.id},
+            {'account_id': self.receivable_account.id, 'name': f'Transfer from {self.payable_account.display_name}',
+             'balance': 100.0, 'amount_currency': 300.0, 'currency_id': self.foreign_currency.id},
         ]
         expected_values = [
-            {'journal_id': self.misc_journal.id, 'account_id': self.receivable_account.id, 'name': 'Write-Off',
-             'date': self.test_date, 'balance': -1200.0, 'amount_currency': -3600.0, 'currency_id': self.foreign_currency.id},
-            {'journal_id': self.misc_journal.id, 'account_id': self.write_off_account.id, 'name': 'Write-Off Test Label',
-             'date': self.test_date, 'balance': 1200.0, 'amount_currency': 3600.0, 'currency_id': self.foreign_currency.id},
+            {'account_id': self.receivable_account.id, 'name': 'Write-Off',
+             'balance': -1200.0, 'amount_currency': -3600.0, 'currency_id': self.foreign_currency.id},
+            {'account_id': self.write_off_account.id, 'name': 'Write-Off Test Label',
+             'balance': 1200.0, 'amount_currency': 3600.0, 'currency_id': self.foreign_currency.id},
         ]
         self.assertWizardReconcileValues(line_1 + line_2, wizard_input_values, expected_values, expected_transfer_values=expected_transfer_values)
 
     def test_write_off_with_complex_transfer(self):
-        """ Tests that transfer are done """
         partner_1 = self.env['res.partner'].create({'name': 'Test Partner 1'})
         partner_2 = self.env['res.partner'].create({'name': 'Test Partner 2'})
-        line_1 = self.create_line_for_reconciliation(600.0, 600.0, self.company_currency, '2016-01-01', partner=partner_2)
+        line_1 = self.create_line_for_reconciliation(1000.0, 1000.0, self.company_currency, '2016-01-01', partner=partner_2)
         line_2 = self.create_line_for_reconciliation(-100.0, -300.0, self.foreign_currency, '2016-01-01', account_1=self.payable_account, partner=partner_1)
         line_3 = self.create_line_for_reconciliation(-200.0, -200.0, self.company_currency, '2016-01-01', account_1=self.payable_account, partner=partner_2)
         line_4 = self.create_line_for_reconciliation(-200.0, -600.0, self.foreign_currency, '2016-01-01', account_1=self.payable_account, partner=partner_2)
+        line_5 = self.create_line_for_reconciliation(-200.0, -600.0, self.foreign_currency, '2016-01-01', account_1=self.payable_account, partner=partner_2)
         wizard_input_values = {
             'journal_id': self.misc_journal.id,
             'account_id': self.write_off_account.id,
@@ -260,26 +286,26 @@ class TestAccountReconcileWizard(AccountTestInvoicingCommon):
             'date': self.test_date,
         }
         expected_transfer_values = [
-            {'journal_id': self.misc_journal.id, 'account_id': self.receivable_account.id, 'name': f'Transfer from {self.payable_account.display_name}',
-             'date': self.test_date, 'balance': -200.0, 'amount_currency': -200.0, 'currency_id': self.company_currency.id, 'partner_id': partner_2.id},
-            {'journal_id': self.misc_journal.id, 'account_id': self.receivable_account.id, 'name': f'Transfer from {self.payable_account.display_name}',
-             'date': self.test_date, 'balance': -200.0, 'amount_currency': -600.0, 'currency_id': self.foreign_currency.id, 'partner_id': partner_2.id},
-            {'journal_id': self.misc_journal.id, 'account_id': self.receivable_account.id, 'name': f'Transfer from {self.payable_account.display_name}',
-             'date': self.test_date, 'balance': -100.0, 'amount_currency': -300.0, 'currency_id': self.foreign_currency.id, 'partner_id': partner_1.id},
-            {'journal_id': self.misc_journal.id, 'account_id': self.payable_account.id, 'name': f'Transfer to {self.receivable_account.display_name}',
-             'date': self.test_date, 'balance': 100.0, 'amount_currency': 300.0, 'currency_id': self.foreign_currency.id, 'partner_id': partner_1.id},
-            {'journal_id': self.misc_journal.id, 'account_id': self.payable_account.id, 'name': f'Transfer to {self.receivable_account.display_name}',
-             'date': self.test_date, 'balance': 200.0, 'amount_currency': 200.0, 'currency_id': self.company_currency.id, 'partner_id': partner_2.id},
-            {'journal_id': self.misc_journal.id, 'account_id': self.payable_account.id, 'name': f'Transfer to {self.receivable_account.display_name}',
-             'date': self.test_date, 'balance': 200.0, 'amount_currency': 600.0, 'currency_id': self.foreign_currency.id, 'partner_id': partner_2.id},
+            {'account_id': self.receivable_account.id, 'name': f'Transfer from {self.payable_account.display_name}',
+             'balance': -400.0, 'amount_currency': -1200.0, 'currency_id': self.foreign_currency.id, 'partner_id': partner_2.id},
+            {'account_id': self.receivable_account.id, 'name': f'Transfer from {self.payable_account.display_name}',
+             'balance': -200.0, 'amount_currency': -200.0, 'currency_id': self.company_currency.id, 'partner_id': partner_2.id},
+            {'account_id': self.receivable_account.id, 'name': f'Transfer from {self.payable_account.display_name}',
+             'balance': -100.0, 'amount_currency': -300.0, 'currency_id': self.foreign_currency.id, 'partner_id': partner_1.id},
+            {'account_id': self.payable_account.id, 'name': f'Transfer to {self.receivable_account.display_name}',
+             'balance': 100.0, 'amount_currency': 300.0, 'currency_id': self.foreign_currency.id, 'partner_id': partner_1.id},
+            {'account_id': self.payable_account.id, 'name': f'Transfer to {self.receivable_account.display_name}',
+             'balance': 200.0, 'amount_currency': 200.0, 'currency_id': self.company_currency.id, 'partner_id': partner_2.id},
+            {'account_id': self.payable_account.id, 'name': f'Transfer to {self.receivable_account.display_name}',
+             'balance': 400.0, 'amount_currency': 1200.0, 'currency_id': self.foreign_currency.id, 'partner_id': partner_2.id},
         ]
         expected_values = [
-            {'journal_id': self.misc_journal.id, 'account_id': self.receivable_account.id, 'name': 'Write-Off',
-             'date': self.test_date, 'balance': -100.0, 'amount_currency': -300.0, 'currency_id': self.foreign_currency.id},
-            {'journal_id': self.misc_journal.id, 'account_id': self.write_off_account.id, 'name': 'Write-Off Test Label',
-             'date': self.test_date, 'balance': 100.0, 'amount_currency': 300.0, 'currency_id': self.foreign_currency.id},
+            {'account_id': self.receivable_account.id, 'name': 'Write-Off',
+             'balance': -300.0, 'amount_currency': -900.0, 'currency_id': self.foreign_currency.id},
+            {'account_id': self.write_off_account.id, 'name': 'Write-Off Test Label',
+             'balance': 300.0, 'amount_currency': 900.0, 'currency_id': self.foreign_currency.id},
         ]
-        self.assertWizardReconcileValues(line_1 + line_2 + line_3 + line_4, wizard_input_values, expected_values, expected_transfer_values=expected_transfer_values)
+        self.assertWizardReconcileValues(line_1 + line_2 + line_3 + line_4 + line_5, wizard_input_values, expected_values, expected_transfer_values=expected_transfer_values)
 
     def test_write_off_with_tax(self):
         """ Tests write-off with a tax set on the wizard. """
@@ -325,12 +351,9 @@ class TestAccountReconcileWizard(AccountTestInvoicingCommon):
             'date': self.test_date,
         }
         write_off_expected_values = [
-            {'journal_id': self.misc_journal.id, 'account_id': self.receivable_account.id, 'name': 'Write-Off',
-             'date': self.test_date, 'balance': -500.0},
-            {'journal_id': self.misc_journal.id, 'account_id': tax_recover_account_id.id,
-             'name': f'{tax_id.name}', 'date': self.test_date, 'balance': 100.0, 'tax_tag_ids': 'tax_tax_tag'},
-            {'journal_id': self.misc_journal.id, 'account_id': self.write_off_account.id,
-             'name': 'Write-Off Test Label', 'date': self.test_date, 'balance': 400.0, 'tax_tag_ids': 'base_tax_tag'},
+            {'account_id': self.receivable_account.id, 'name': 'Write-Off', 'balance': -500.0},
+            {'account_id': tax_recover_account_id.id, 'name': f'{tax_id.name}', 'balance': 100.0, 'tax_tag_ids': 'tax_tax_tag'},
+            {'account_id': self.write_off_account.id, 'name': 'Write-Off Test Label', 'balance': 400.0, 'tax_tag_ids': 'base_tax_tag'},
         ]
         self.assertWizardReconcileValues(line_1 + line_2, wizard_input_values, write_off_expected_values)
 

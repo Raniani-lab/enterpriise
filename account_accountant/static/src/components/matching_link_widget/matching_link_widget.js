@@ -12,7 +12,6 @@ class MatchingLink extends Component {
     }
 
     async reconcile() {
-        console.log(this.props)
         this.action.doAction("account_accountant.action_move_line_posted_unreconciled", {
             additionalContext: {
                 search_default_partner_id: this.props.record.data.partner_id[0],

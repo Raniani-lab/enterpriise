@@ -154,8 +154,7 @@ msgstr ""
 #: code:addons/account_accountant/wizard/account_reconcile_wizard.py:0
 #, python-format
 msgid ""
-"A transfer of %(transfer_amount_currency)s will be transferred from "
-"%(from_account)s to %(to_account)s."
+"An entry will transfer %(amount)s from %(from_account)s to %(to_account)s."
 msgstr ""
 
 #. module: account_accountant

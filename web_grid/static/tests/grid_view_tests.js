@@ -1,21 +1,22 @@
 /** @odoo-module **/
 
-import { browser } from "@web/core/browser/browser";
-import { Domain } from "@web/core/domain";
-import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 import {
     click,
-    selectDropdownItem,
     editInput,
     getFixture,
     getNodesTextContent,
     nextTick,
     patchDate,
     patchWithCleanup,
+    selectDropdownItem,
     triggerEvent,
+    triggerScroll,
 } from "@web/../tests/helpers/utils";
 import { toggleMenuItem, toggleSearchBarMenu } from "@web/../tests/search/helpers";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
+import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
+import { browser } from "@web/core/browser/browser";
+import { Domain } from "@web/core/domain";
 import { hoverGridCell } from "./helpers";
 
 let serverData, target;
@@ -830,7 +831,10 @@ QUnit.module("Views", (hooks) => {
         assert.containsNone(target, ".o_grid_row_title");
         assert.containsNone(target, ".modal");
         assert.containsNone(target, ".o_view_nocontent");
-        await click($(target).find('.o_control_panel_main_buttons > :visible').get(0), ".o_grid_button_add");
+        await click(
+            $(target).find(".o_control_panel_main_buttons > :visible").get(0),
+            ".o_grid_button_add"
+        );
         assert.containsOnce(target, ".modal");
         await selectDropdownItem(target, "project_id", "P1");
         await selectDropdownItem(target, "task_id", "BS task");
@@ -882,7 +886,10 @@ QUnit.module("Views", (hooks) => {
         assert.containsNone(target, ".o_grid_row_title");
         assert.containsNone(target, ".modal");
         assert.containsNone(target, ".o_view_nocontent");
-        await click($(target).find('.o_control_panel_main_buttons > :visible').get(0), ".o_grid_button_add");
+        await click(
+            $(target).find(".o_control_panel_main_buttons > :visible").get(0),
+            ".o_grid_button_add"
+        );
         assert.containsOnce(target, ".modal");
         await selectDropdownItem(target, "project_id", "P1");
         await selectDropdownItem(target, "task_id", "BS task");
@@ -1343,7 +1350,10 @@ QUnit.module("Views", (hooks) => {
                 views: [[false, "grid"]],
             });
 
-            await click($(target).find('.o_control_panel_main_buttons > :visible').get(0), ".o_grid_button_add");
+            await click(
+                $(target).find(".o_control_panel_main_buttons > :visible").get(0),
+                ".o_grid_button_add"
+            );
             await nextTick();
             assert.containsOnce(target, ".modal[role='dialog']");
 
@@ -1795,4 +1805,104 @@ QUnit.module("Views", (hooks) => {
             );
         }
     );
+
+    QUnit.test("Only relevant grid rows are rendered with larger recordsets", async (assert) => {
+        // Setup: generates 100 new tasks and related analytic lines distributed
+        // in all available projects, deterministically based on their ID.
+        const { fields: alFields, records: analyticLines } = serverData.models["analytic.line"];
+        const { records: tasks } = serverData.models["task"];
+        const { records: projects } = serverData.models["project"];
+        const selectionValues = alFields.selection_field.selection;
+        const today = luxon.DateTime.local().toFormat("yyyy-MM-dd");
+        for (let id = 100; id < 200; id++) {
+            const projectId = projects[id % projects.length].id;
+            tasks.push({
+                id,
+                display_name: `BS task #${id}`,
+                project_id: projectId,
+            });
+            analyticLines.push({
+                id,
+                project_id: projectId,
+                task_id: id,
+                selection_field: selectionValues[id % selectionValues.length][0],
+                date: today,
+                unit_amount: (id % 10) + 1, // 1 to 10
+            });
+        }
+
+        await makeView({
+            type: "grid",
+            resModel: "analytic.line",
+            serverData,
+            arch: /* xml */ `
+                <grid>
+                    <field name="project_id" type="row"/>
+                    <field name="task_id" type="row"/>
+                    <field name="date" type="col">
+                        <range name="day" string="Day" span="day" step="day"/>
+                        <range name="week" string="Week" span="week" step="day"/>
+                        <range name="month" string="Month" span="month" step="day"/>
+                        <range name="year" string="Year" span="year" step="month"/>
+                    </field>
+                    <field name="unit_amount" type="measure"/>
+                </grid>`,
+            async mockRPC(_route, { method }) {
+                if (method === "grid_unavailability") {
+                    return {};
+                }
+            },
+        });
+
+        /**
+         * Returns unique "data-grid-row" attributes to check for rows equality
+         * @returns {string[]}
+         */
+        const getCurrentRows = () => [
+            ...new Set([...grid.children].map((el) => el.dataset.gridRow)),
+        ];
+
+        const content = target.querySelector(".o_content");
+        const grid = target.querySelector(".o_grid_grid");
+        const firstRow = grid.querySelector(".o_grid_column_title");
+        content.style = "height: 600px; overflow: scroll;";
+
+        // This is to ensure that the virtual rows will not be impacted by
+        // sub-pixel calculations.
+        await triggerScroll(content, { top: 0 });
+
+        const initialRows = getCurrentRows();
+        let currentRows = initialRows;
+
+        assert.strictEqual(content.scrollTop, 0, "content should be scrolled to the top");
+        assert.strictEqual(content.offsetHeight, 600, "content should have its height fixed");
+        // ! This next assertion is important: it ensures that the grid rows are
+        // ! hard-coded so that the virtual hook can work with it. Adapt this test
+        // ! accordingly should the row height change.
+        assert.strictEqual(
+            grid.clientHeight -
+                firstRow.offsetHeight /* first row is "auto" so we don't count it */,
+            (tasks.length - 1) /* ignore total row */ * 48 /* base grid row height */,
+            "grid content should be the height of its row height times the amount of records"
+        );
+        assert.ok(currentRows.length < tasks.length, "not all rows should be displayed");
+
+        // Scroll to the middle of the grid
+        await triggerScroll(content, { top: content.scrollHeight / 2 });
+
+        assert.notDeepEqual(currentRows, getCurrentRows(), "rows should be different");
+        assert.ok(getCurrentRows().length < tasks.length, "not all rows should be displayed");
+        currentRows = getCurrentRows();
+
+        // Scroll to the end of the grid
+        await triggerScroll(content, { top: content.scrollHeight });
+
+        assert.notDeepEqual(currentRows, getCurrentRows(), "rows should be different");
+        assert.ok(getCurrentRows().length < tasks.length, "not all rows should be displayed");
+
+        // Scroll back to top
+        await triggerScroll(content, { top: 0 });
+
+        assert.deepEqual(getCurrentRows(), initialRows, "rows should be the same as initially");
+    });
 });

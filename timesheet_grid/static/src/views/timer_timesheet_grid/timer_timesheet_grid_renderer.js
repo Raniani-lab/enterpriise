@@ -65,10 +65,6 @@ export class TimerTimesheetGridRenderer extends TimesheetGridRenderer {
         };
     }
 
-    get rowHeight() {
-        return 40;
-    }
-
     get columnsGap() {
         return super.columnsGap + (this.showTimerButton ? 1 : 0);
     }

@@ -127,7 +127,7 @@ export class GridRenderer extends Component {
     }
 
     get rowHeight() {
-        return 36;
+        return 48;
     }
 
     getRowPosition(row, isCreateInlineRow = false) {
@@ -180,7 +180,8 @@ export class GridRenderer extends Component {
                 totalRows += 1;
             }
         }
-        return `auto repeat(${this.rowsCount + totalRows}, auto)`;
+        // Row height must be hard-coded for the virtual hook to work properly.
+        return `auto repeat(${this.rowsCount + totalRows}, ${this.rowHeight}px)`;
     }
 
     get gridTemplateColumns() {

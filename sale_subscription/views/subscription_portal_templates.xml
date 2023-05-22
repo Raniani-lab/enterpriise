@@ -108,6 +108,16 @@
                                 <p t-esc="message"/>
                             </div>
 
+                            <div t-if="subscription.get_portal_last_transaction().state == 'pending'">
+                                <div class="alert alert-primary m-1">
+                                    <span>
+                                        Your payment made on the <span t-field="subscription.get_portal_last_transaction().last_state_change"/> is pending.
+                                        Your subscription will be renewed as soon as it is confirmed.<br/>
+                                        Don't hesitate to <a href="#discussion">contact us</a> if there is a problem or an emergency.
+                                    </span>
+                                </div>
+                            </div>
+
                             <div id="information" class="row mt-4">
                                 <!-- ======  Plan Overview ====== -->
                                 <div id="sub_info" class="col-12 col-lg-5  mb-3 mb-lg-0">
@@ -290,10 +300,19 @@
                                     </div>
                                     <div class="clearfix" t-elif="(providers or tokens) and subscription.amount_total> 0">
                                         <h5 class="mb-1">Pay now to renew</h5>
-                                        <hr class="my-0"/>
-                                        <t t-call="payment.checkout">
-                                            <t t-set="landing_route" t-value="subscription.get_portal_url()"/>
-                                        </t>
+                                        <div t-if="subscription.get_portal_last_transaction().state == 'pending'">
+                                            <div class="alert alert-warning m-1 mt-3">
+                                                <span>
+                                                    There is already a pending payment for this subscription.
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <hr class="my-0"/>
+                                            <t t-call="payment.checkout">
+                                                <t t-set="landing_route" t-value="subscription.get_portal_url()"/>
+                                            </t>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

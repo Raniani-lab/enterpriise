@@ -4,7 +4,7 @@
     <t t-name="planning.PlanningGanttRenderer.RowHeader" t-inherit="web_gantt.GanttRenderer.RowHeader">
         <xpath expr="//t[@t-esc='row.name']" position="replace">
             <t t-if="row.progressBar and row.progressBar.is_material_resource">
-                <div class="o_material_resource d-inline-flex flex-shrink-0 align-items-center justify-content-center me-1 rounded bg-200">
+                <div t-attf-class="o_colorlist_item_color_{{ row.progressBar.resource_color }} o_material_resource d-inline-flex flex-shrink-0 align-items-center justify-content-center me-1 rounded bg-200">
                     <i class="fa fa-wrench"/>
                 </div>
             </t>

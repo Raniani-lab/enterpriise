@@ -4,7 +4,9 @@ import { onWillStart } from "@odoo/owl";
 import { serializeDateTime } from "@web/core/l10n/dates";
 import { useService } from "@web/core/utils/hooks";
 import { CalendarController } from "@web/views/calendar/calendar_controller";
+import { PlanningCalendarFilterPanel } from "./planning_filter_panel/planning_calendar_filter_panel";
 import { usePlanningControllerActions } from "../planning_hooks";
+import { _t } from "@web/core/l10n/translation";
 
 export class PlanningCalendarController extends CalendarController {
     setup() {
@@ -31,8 +33,17 @@ export class PlanningCalendarController extends CalendarController {
         });
     }
 
+    get editRecordDefaultDisplayText() {
+        return _t("New Shift");
+    }
+
     async onWillStart() {
         this.isManager = await this.user.hasGroup("planning.group_planning_manager");
     }
 };
+
 PlanningCalendarController.template = "planning.PlanningCalendarController";
+PlanningCalendarController.components = {
+    ...CalendarController.components,
+    FilterPanel: PlanningCalendarFilterPanel,
+};

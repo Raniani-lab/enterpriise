@@ -10,6 +10,7 @@
                     <button name="action_planning_publish_and_send" class="btn btn-secondary mx-1"
                         string="Publish &amp; Send" type="object" groups="planning.group_planning_manager" invisible="context.get('search_default_my_shifts')"/>
                 </header>
+                <field name="resource_color" invisible="1"/>
                 <field name="start_datetime" widget="daterange" options="{'end_date_field': 'end_datetime'}"/>
                 <field name="end_datetime" column_invisible="True" />
                 <field name="allocated_hours" widget="float_time" sum="Allocated Hours" readonly="1" decoration-danger="allocated_percentage &gt; 100"/>
@@ -67,6 +68,7 @@
                 <field name="is_users_role" invisible="1"/>
                 <field name="request_to_switch" invisible="1"/>
                 <field name="repeat" invisible="1"/>
+                <field name="color" invisible="1" />
                 <div class="alert alert-info oe_edit_only mb-0" role="status" invisible="not id or not repeat">
                     <span class="ms-2 me-4">Edit</span>
                     <field name="recurrence_update" widget="radio" class="mb-0" options="{'horizontal': true}"/>
@@ -151,6 +153,7 @@
                 <field name="employee_id"/>
                 <field name="resource_id"/>
                 <field name="resource_type"/>
+                <field name="resource_color"/>
                 <field name="role_id"/>
                 <field name="company_id" groups="base.group_multi_company"/>
                 <field name="start_datetime"/>
@@ -369,6 +372,7 @@
                 <field name="resource_type" invisible="1"/>
                 <field name="is_hatched" invisible="1" />
                 <field name="resource_type" invisible="1"/>
+                <field name="resource_color" invisible="1"/>
                 <field name="role_id" filters="1" color="color" invisible="resource_type == 'material'"/>
                 <field name="allocated_hours" invisible="1"/>
                 <field name="allocated_percentage" invisible="1"/>

@@ -66,6 +66,7 @@
                             <div class="row p-0 m-0" style="min-height: 100%">
                                 <div class="d-flex col-12 col-lg position-relative p-0">
                                     <div class="o_scroll_view_lg">
+                                        <widget name="knowledge_comments_handler" invisible="not user_permission"/>
                                         <!-- Article body -->
                                         <div class="o_knowledge_body d-flex flex-column"
                                              invisible="not id">
@@ -84,7 +85,7 @@
                                                     options="{'collaborative': true, 'collaborative_trigger': 'start', 'resizable': False, 'knowledge_commands': true}"
                                                     readonly="is_locked or not user_can_write or not active"/>
                                                 <!-- Portal users get some commands disabled, notably /image and /file, as they don't have access to ir.attachment -->
-                                                <field name="body" widget="html" no_label="1" groups="base.group_portal"
+                                                <field name="body" widget="knowledge_article_html_field" class="o_field_html" no_label="1" groups="base.group_portal"
                                                     options="{'collaborative': true, 'collaborative_trigger': 'start', 'resizable': False, 'knowledge_commands': true, 'allowCommandImage': false, 'allowCommandVideo': false, 'allowCommandFile': false}"
                                                     readonly="is_locked or not user_can_write or not active"/>
                                             </div>
@@ -109,6 +110,8 @@
                                 <widget name="knowledge_properties_panel"/>
                                 <!-- Chatter -->
                                 <widget name="knowledge_chatter_panel" groups="base.group_user"/>
+                                <!-- Comments Panel -->
+                                <widget name="knowledge_comments_panel"/>
                             </div>
                         </div>
                     </div>
@@ -421,6 +424,14 @@
         <field name="res_model">knowledge.article</field>
         <field name="view_mode">form</field>
         <field name="view_id" ref="knowledge.knowledge_article_view_form"/>
+    </record>
+
+    <record id="knowledge_article_action_form_show_resolved" model="ir.actions.act_window">
+        <field name="name">Articles</field>
+        <field name="res_model">knowledge.article</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="knowledge.knowledge_article_view_form"/>
+        <field name="context">{'show_resolved_threads': True}</field>
     </record>
 
     <!-- Action window for article items -->

@@ -24,7 +24,7 @@ class KnowledgeController(http.Controller):
         return self._redirect_to_portal_view(article)
 
     @http.route('/knowledge/article/<int:article_id>', type='http', auth='user')
-    def redirect_to_article(self, article_id):
+    def redirect_to_article(self, article_id, show_resolved_threads=False):
         """ This route will redirect internal users to the backend view of the
         article and the share users to the frontend view instead."""
         article = request.env['knowledge.article'].search([('id', '=', article_id)])
@@ -32,7 +32,7 @@ class KnowledgeController(http.Controller):
             return werkzeug.exceptions.Forbidden()
 
         if request.env.user._is_internal():
-            return self._redirect_to_backend_view(article)
+            return self._redirect_to_backend_view(article, show_resolved_threads)
         return self._redirect_to_portal_view(article)
 
     @http.route('/knowledge/article/invite/<int:member_id>/<string:invitation_hash>', type='http', auth='public')
@@ -62,10 +62,11 @@ class KnowledgeController(http.Controller):
 
         return request.redirect('/web/login?redirect=/knowledge/article/%s' % article.id)
 
-    def _redirect_to_backend_view(self, article):
+    def _redirect_to_backend_view(self, article, show_resolved_threads=False):
         return request.redirect("/web#id=%s&model=knowledge.article&action=%s&menu_id=%s" % (
             article.id if article else '',
-            request.env.ref("knowledge.knowledge_article_action_form").id,
+            request.env.ref("knowledge.knowledge_article_action_form_show_resolved").id \
+                if show_resolved_threads else request.env.ref("knowledge.knowledge_article_action_form").id,
             request.env.ref('knowledge.knowledge_menu_root').id
         ))
 

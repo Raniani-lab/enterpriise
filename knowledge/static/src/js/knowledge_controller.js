@@ -4,8 +4,9 @@ import { _t } from "@web/core/l10n/translation";
 import { FormController } from '@web/views/form/form_controller';
 import { KnowledgeSidebar } from '@knowledge/components/sidebar/sidebar';
 import { useService } from "@web/core/utils/hooks";
+import { Deferred } from "@web/core/utils/concurrency";
 
-import { onWillStart, useChildSubEnv, useRef } from "@odoo/owl";
+import { onMounted, onWillStart, useChildSubEnv, useRef } from "@odoo/owl";
 
 export class KnowledgeArticleFormController extends FormController {
     setup() {
@@ -14,12 +15,21 @@ export class KnowledgeArticleFormController extends FormController {
         this.orm = useService('orm');
         this.actionService = useService('action');
 
+        /*
+            Because of the way OWL is designed we are never sure when OWL finishes mounting this component.
+            Thus, we added this deferred promise in order for us to know when it is done.
+            It is necessary to have this because the comments handler needs to notify the topbar when
+            it has detected comments so that it can show the comments panel's button.
+        */
+        this.topbarMountedPromise = new Deferred();
+
         useChildSubEnv({
             createArticle: this.createArticle.bind(this),
             ensureArticleName: this.ensureArticleName.bind(this),
             openArticle: this.openArticle.bind(this),
             renameArticle: this.renameArticle.bind(this),
             toggleAsideMobile: this.toggleAsideMobile.bind(this),
+            topbarMountedPromise: this.topbarMountedPromise,
         });
         // Unregister the current candidate recordInfo for Knowledge macros in
         // case of breadcrumbs mismatch.
@@ -33,6 +43,9 @@ export class KnowledgeArticleFormController extends FormController {
                 // breadcrumbs mismatch.
                 this.knowledgeCommandsService.unregisterCommandsRecordInfo(this.env.config.breadcrumbs);
             }
+        });
+        onMounted(() => {
+            this.topbarMountedPromise.resolve();
         });
     }
 

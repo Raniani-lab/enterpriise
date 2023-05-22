@@ -3,6 +3,10 @@ access_knowledge_article_all,access.knowledge.article.all,knowledge.model_knowle
 access_knowledge_article_portal,access.knowledge.article.portal,knowledge.model_knowledge_article,base.group_portal,1,1,1,0
 access_knowledge_article_user,access.knowledge.article.user,knowledge.model_knowledge_article,base.group_user,1,1,1,0
 access_knowledge_article_system,access.knowledge.article.system,knowledge.model_knowledge_article,base.group_system,1,1,1,1
+access_knowledge_article_thread_all,access.knowledge.article.thread.all,knowledge.model_knowledge_article_thread,,0,0,0,0
+access_knowledge_article_thread_portal,access.knowledge.article.thread.portal,knowledge.model_knowledge_article_thread,base.group_portal,1,1,1,0
+access_knowledge_article_thread_user,access.knowledge.article.thread.user,knowledge.model_knowledge_article_thread,base.group_user,1,1,1,0
+access_knowledge_article_thread_system,access.knowledge.article.thread.system,knowledge.model_knowledge_article_thread,base.group_system,1,1,1,1
 access_knowledge_article_member_all,access.knowledge.article.member.all,knowledge.model_knowledge_article_member,,0,0,0,0
 access_knowledge_article_member_portal,access.knowledge.article.member.portal,knowledge.model_knowledge_article_member,base.group_portal,1,0,0,0
 access_knowledge_article_member_user,access.knowledge.article.member.user,knowledge.model_knowledge_article_member,base.group_user,1,0,0,0

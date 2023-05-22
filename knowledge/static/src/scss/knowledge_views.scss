@@ -53,7 +53,7 @@
     .o_knowledge_editor .o_field_html .o_knowledge_helper {
         margin-bottom: -0.5rem;
         padding-left: var(--editor-gutter-size) !important;
-        padding-right: var(--editor-gutter-size) !important;
+        padding-right: calc(var(--editor-gutter-size) + 2rem) !important;
     }
     .o_knowledge_article_view_form_dynamic_width ~ .o_knowledge_icon,
     .o_knowledge_article_view_form_dynamic_width ~ .o_knowledge_editor .o_field_html .note-editable,
@@ -286,6 +286,18 @@
         .o_properties_external_button {
             background: transparent;
             border: 0;
+        }
+    }
+    .o_knowledge_comments_panel {
+        .o_comments_helper {
+            height: 60%;
+            min-height: 300px;
+            .o_view_nocontent_smiling_face:before {
+                @extend %o-nocontent-init-image;
+                width: 120px;
+                height: 140px;
+                background: transparent url(/web/static/img/smiling_face.svg) no-repeat center;
+            }
         }
     }
 }

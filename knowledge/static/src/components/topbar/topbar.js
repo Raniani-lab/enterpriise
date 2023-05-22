@@ -4,7 +4,7 @@ import { loadBundle } from "@web/core/assets";
 import { formatDateTime } from '@web/core/l10n/dates';
 import { registry } from '@web/core/registry';
 import { standardWidgetProps } from '@web/views/widgets/standard_widget_props';
-import { useService } from '@web/core/utils/hooks';
+import { useBus, useService } from '@web/core/utils/hooks';
 import { useOpenChat } from "@mail/core/web/open_chat_hook";
 import { utils as uiUtils } from "@web/core/ui/ui_service";
 import { _t } from "@web/core/l10n/translation";
@@ -37,12 +37,19 @@ class KnowledgeTopbar extends Component {
             displayChatter: false,
             displayHistory: false,
             displayPropertyPanel: !this.articlePropertiesIsEmpty,
+            displayCommentsPanel:false,
             addingProperty: false,
             displaySharePanel: false,
+            commentsActive: false
         });
         this.breadcrumbs = useState(this.env.config.breadcrumbs);
 
         this.openChat = useOpenChat('res.users');
+
+        useBus(this.env.bus, 'KNOWLEDGE_COMMENTS_PANEL:DISPLAY_BUTTON', ({detail}) => {
+            this.state.commentsActive = detail.commentsActive;
+            this.state.displayCommentsPanel = detail.displayCommentsPanel;
+        });
 
         onWillStart(async () => {
             this.isInternalUser = await this.userService.hasGroup('base.group_user');
@@ -156,6 +163,11 @@ class KnowledgeTopbar extends Component {
         this.state.displayPropertyPanel = true;
         this.state.addingProperty = true;
         this.env.bus.trigger('KNOWLEDGE:TOGGLE_PROPERTIES', {displayPropertyPanel: true});
+    }
+
+    toggleComments() {
+        this.state.displayCommentsPanel = !this.state.displayCommentsPanel;
+        this.env.bus.trigger('KNOWLEDGE:TOGGLE_COMMENTS', {displayCommentsPanel: this.state.displayCommentsPanel});
     }
 
     /**

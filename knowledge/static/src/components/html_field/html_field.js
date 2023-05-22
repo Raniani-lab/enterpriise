@@ -8,6 +8,7 @@ import {
     decodeDataBehaviorProps,
     getPropNameNodes,
 } from "@knowledge/js/knowledge_utils";
+import { debounce } from "@web/core/utils/timing";
 import { Deferred, Mutex } from "@web/core/utils/concurrency";
 import { useService } from "@web/core/utils/hooks";
 import {
@@ -80,6 +81,12 @@ const HtmlFieldPatch = {
                 this.destroyBehaviorApps(new Set([...anchors, ...hiddenMountedAnchors]));
                 // Schedule a scan for new Behavior anchors to render.
                 this.mountBehaviors();
+                // Handle the changes for the comments
+                if (!this.debouncedTriggerCommentsPositioning) {
+                    this.debouncedTriggerCommentsPositioning = debounce(this.triggerCommentsPositioning, 500);
+                }
+                this.debouncedTriggerCommentsPositioning.cancel();
+                this.debouncedTriggerCommentsPositioning();
             }),
             // Owl does not support destroying an App when its container node is
             // not in the DOM. This reference is a `d-none` element used to
@@ -123,6 +130,7 @@ const HtmlFieldPatch = {
             if (this.behaviorState.observedElement !== this.valueContainerElement) {
                 // The observed Element has to be replaced.
                 this.behaviorState.appAnchorsObserver.disconnect();
+
                 this.behaviorState.observedElement = null;
                 this.destroyBehaviorApps();
             }
@@ -143,6 +151,15 @@ const HtmlFieldPatch = {
                 this.valueContainerElement,
             ];
         });
+    },
+
+    triggerCommentsPositioning() {
+        const allCommentsAnchors = this.valueContainerElement?.querySelectorAll('.knowledge-thread-comment');
+        if(allCommentsAnchors) {
+            this.env.bus.trigger('KNOWLEDGE_COMMENTS:CHANGES_DETECTED', {
+                impactedComments: Array.from(allCommentsAnchors).map((node) => parseInt(node.dataset.id))
+            });
+        }
     },
 
     //--------------------------------------------------------------------------
@@ -237,6 +254,7 @@ const HtmlFieldPatch = {
     async _toInline() {
         // Prevent any new Behavior rendering during `toInline` processing.
         this.behaviorState.appAnchorsObserver.disconnect();
+
         this._removeMountBehaviorsListeners();
         // Wait for the `udpateBehaviors` mutex to ensure that it is idle during
         // `toInline` processing (we don't want it to mess with DOM nodes).

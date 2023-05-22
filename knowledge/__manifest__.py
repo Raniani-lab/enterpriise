@@ -23,6 +23,7 @@
         'data/knowledge_article_template_data.xml',
         'data/ir_actions_data.xml',
         'data/mail_templates.xml',
+        'data/mail_templates_email_layouts.xml',
         'wizard/knowledge_invite_views.xml',
         'views/knowledge_article_views.xml',
         'views/knowledge_article_favorite_views.xml',
@@ -48,7 +49,9 @@
             'knowledge/static/src/scss/knowledge_editor.scss',
             'knowledge/static/src/scss/knowledge_blocks.scss',
             'knowledge/static/src/xml/**/*',
+            ('remove', 'knowledge/static/src/xml/knowledge_wysiwyg.xml'),
             'knowledge/static/src/components/**/*',
+            'knowledge/static/src/discuss/**/*',
             'knowledge/static/src/emoji_picker/**/*',
             'knowledge/static/src/search_model/**/*',
             'knowledge/static/src/web/**/*',
@@ -86,6 +89,9 @@
         ],
         'web.tests_assets': [
             'knowledge/static/tests/mock_services.js',
+        ],
+        'web_editor.backend_assets_wysiwyg': [
+            'knowledge/static/src/xml/knowledge_wysiwyg.xml',
         ],
         'knowledge.assets_wysiwyg': [
             'knowledge/static/src/js/wysiwyg.js',

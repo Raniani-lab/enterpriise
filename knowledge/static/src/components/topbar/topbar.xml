@@ -108,6 +108,10 @@
                     <a t-ref="btn_properties" t-if="state.addingProperty or props.record.resId and props.record.data.article_properties.length and isInternalUser" role="button" t-attf-class="btn btn-light btn-properties #{state.displayPropertyPanel ? 'active' : ''}" data-hotkey="d" title="Show Properties" t-on-click="toggleProperties">
                         <i class="fa fa-fw fs-6 fa-cogs"/>
                     </a>
+                    <a t-ref="btn_comments" t-if="props.record.resId and state.commentsActive" role="button"
+                        t-attf-class="btn btn-light btn-comments #{state.displayCommentsPanel ? 'active' : ''}" t-on-click="toggleComments">
+                        <i class="fa fa-fw fs-6 fa-commenting" title="Open comments panel"/>
+                    </a>
                     <div class="o-dropdown dropdown o-dropdown--no-caret" t-if="props.record.resId">
                         <a role="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" id="dropdown_tools_panel" aria-haspopup="true" aria-expanded="false" data-hotkey="p" title="More actions" t-ref="optionsBtn">
                             <i class="fa fa-fw fs-6 fa-ellipsis-v"/>

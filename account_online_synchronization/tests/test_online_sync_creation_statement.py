@@ -244,3 +244,34 @@ class TestSynchStatementCreation(AccountTestInvoicingCommon):
         self.assertEqual(online_account_3.id, bank_journal_with_account_usd.account_online_account_id.id)
         self.assertEqual(bank_journal_with_account_usd.bank_account_id, bank_account_2, "Bank Account should not have changed")
         self.assertEqual(bank_journal_with_account_usd.currency_id, eur_currency, "Currency should have changed")
+
+    @patch('odoo.addons.account_online_synchronization.models.account_online.AccountOnlineLink._fetch_odoo_fin')
+    def test_fetch_transaction_date_start(self, patched_fetch):
+        """ This test verifies that the start_date params used when fetching transaction is correct """
+        patched_fetch.return_value = {'transactions': []}
+        # Since no transactions exists in db, we should fetch transactions without a starting_date
+        self.online_account._retrieve_transactions()
+        data = {
+            'start_date': False,
+            'account_id': False,
+            'last_transaction_identifier': False,
+            'currency_code': 'EUR',
+            'provider_data': False,
+            'account_data': False,
+        }
+        patched_fetch.assert_called_with('/proxy/v1/transactions', data=data)
+
+        # No transaction exists in db but we have a value for last_sync on the online_account, we should use that date
+        self.online_account.last_sync = '2020-03-04'
+        data['start_date'] = '2020-03-04'
+        self.online_account._retrieve_transactions()
+        patched_fetch.assert_called_with('/proxy/v1/transactions', data=data)
+
+        # We have transactions, we should use the date of the latest one instead of the last_sync date
+        transactions = self.create_transactions(['2016-01-01', '2016-01-03'])
+        self.bnk_stmt_line._online_sync_bank_statement(transactions, self.online_account)
+        self.online_account.last_sync = '2020-03-04'
+        data['start_date'] = '2016-01-03'
+        data['last_transaction_identifier'] = '2'
+        self.online_account._retrieve_transactions()
+        patched_fetch.assert_called_with('/proxy/v1/transactions', data=data)

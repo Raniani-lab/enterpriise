@@ -142,9 +142,10 @@ class AccountOnlineAccount(models.Model):
                 ('online_account_id', '=', self.id)
             ], order="date desc", limit=1)
         transactions = []
+        fetch_date = last_stmt_line.date or self.last_sync
         data = {
-            # If we are in a new sync, we do not give a start date; We will fetch as much as possible. Otherwise, the last sync is the start date.
-            'start_date': self.last_sync and format_date(self.env, self.last_sync, date_format='yyyy-MM-dd'),
+            # If we are in a new sync, we do not give a start date; We will fetch as much as possible. Otherwise, fetch from latest statement or last_sync date.
+            'start_date': fetch_date and format_date(self.env, fetch_date, date_format='yyyy-MM-dd'),
             'account_id': self.online_identifier,
             'last_transaction_identifier': last_stmt_line.online_transaction_identifier,
             'currency_code': self.journal_ids[0].currency_id.name,

@@ -353,8 +353,11 @@ export class DocumentsInspector extends Component {
     }
 
     async createShareVals() {
+        const resIds = this.props.documents
+            .filter((rec) => rec._values.type !== "empty")
+            .map((rec) => rec.resId);
         return {
-            document_ids: [x2ManyCommands.replaceWith(this.resIds)],
+            document_ids: [x2ManyCommands.replaceWith(resIds)],
             folder_id: this.env.searchModel.getSelectedFolderId(),
             type: "ids",
         };

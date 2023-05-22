@@ -3,7 +3,7 @@
     <template id="documents_project.public_page_layout" inherit_id="documents.public_page_layout" primary="True">
         <xpath expr="//t[@t-set='share_redirect_URL']" position="replace"/>
     </template>
-    <template id="documents_project.share_page" inherit_id="documents.share_page" primary="True">
+    <template id="documents_project.share_page" inherit_id="documents.share_workspace_page" primary="True">
         <xpath expr="//t[@t-call='documents.public_page_layout']" position="attributes">
             <attribute name="t-call">documents_project.public_page_layout</attribute>
         </xpath>
@@ -11,7 +11,7 @@
             <attribute name="t-value">base_url + 'download?' + (('access_token=' + access_token) if access_token else '')</attribute>
         </xpath>
         <xpath expr="//t[@t-set='download_URL']" position="attributes">
-            <attribute name="t-value">base_url + str(document.id) + '/download?' + (('access_token=' + access_token) if access_token else '')</attribute>
+            <attribute name="t-value">base_url + str(document.id) + '/download' + (('?access_token=' + access_token) if access_token else '')</attribute>
         </xpath>
         <xpath expr="//section[hasclass('o_docs_share_multible_bar')]/div[hasclass('mb16')]" position="replace">
             <div class="col-sm-6 mb16">

@@ -9,10 +9,15 @@ body.o_docs_share_page {
     #wrap {
         > header {
             height: $o-navbar-height;
-
             .o_company_logo img {
                 display: inline;
                 max-height: $o-navbar-height;
+            }
+            a > span {
+                display: inline-block;
+                max-width: 150px;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
         }
 
@@ -106,8 +111,8 @@ body.o_docs_share_page {
     }
 
 
-    // All single file sharing
-    #wrap.o_share_single {
+    // single/multiple file sharing
+    #wrap.o_share_files {
         main {
             justify-content: center;
             align-items: center;
@@ -140,10 +145,14 @@ body.o_docs_share_page {
                 }
             }
         }
+        .shadow-lg div {
+            padding: 4px;
+            width: 240px;
+        }
     }
 
     // Single file sharing with Preview
-    #wrap.o_share_single.o_has_preview {
+    #wrap.o_share_files.o_has_preview {
         > main {
             padding: $grid-gutter-width*2 0;
         }
@@ -170,8 +179,8 @@ body.o_docs_share_page {
         }
     }
 
-    // Multiple files sharing
-    #wrap.o_share_multiple {
+    // Workspace sharing
+    #wrap.o_share_workspace {
         .o_docs_upload_wrapper {
             overflow: hidden;
 

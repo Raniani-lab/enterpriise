@@ -22,7 +22,7 @@ class ShareRoute(http.Controller):
 
     # util methods #################################################################################
 
-    def _get_file_response(self, res_id, share_id=None, share_token=None, field='raw'):
+    def _get_file_response(self, res_id, share_id=None, share_token=None, field='raw', as_attachment=None):
         """ returns the http response to download one file. """
         record = request.env['documents.document'].browse(int(res_id))
 
@@ -41,7 +41,7 @@ class ShareRoute(http.Controller):
 
         filename = (record.name if not record.file_extension or record.name.endswith(f'.{record.file_extension}')
                     else f'{record.name}.{record.file_extension}')
-        return request.env['ir.binary']._get_stream_from(record, field, filename=filename).get_response()
+        return request.env['ir.binary']._get_stream_from(record, field, filename=filename).get_response(as_attachment)
 
     @classmethod
     def _get_downloadable_documents(cls, documents):
@@ -320,9 +320,9 @@ class ShareRoute(http.Controller):
         return request.not_found()
 
     # single file download route.
-    @http.route(["/document/download/<int:share_id>/<access_token>/<int:id>"],
+    @http.route(["/document/download/<int:share_id>/<access_token>/<int:document_id>"],
                 type='http', auth='public')
-    def download_one(self, id=None, access_token=None, share_id=None, **kwargs):
+    def download_one(self, document_id=None, access_token=None, share_id=None, preview=None, **kwargs):
         """
         used to download a single file from the portal multi-file page.
 
@@ -332,7 +332,7 @@ class ShareRoute(http.Controller):
         :return: a portal page to preview and download a single file.
         """
         try:
-            document = self._get_file_response(id, share_id=share_id, share_token=access_token, field='raw')
+            document = self._get_file_response(document_id, share_id=share_id, share_token=access_token, field='raw', as_attachment=not bool(preview))
             return document or request.not_found()
         except Exception:
             logger.exception("Failed to download document %s" % id)
@@ -461,25 +461,26 @@ class ShareRoute(http.Controller):
                     return request.render('documents.not_available', options)
                 else:
                     return request.not_found()
-
             options = {
+                'name': share.name,
                 'base_url': share.get_base_url(),
                 'token': str(token),
                 'upload': share.action == 'downloadupload',
                 'share_id': str(share.id),
                 'author': share.create_uid.name,
+                'date_deadline': share.date_deadline,
+                'document_ids': available_documents,
             }
-            if share.type == 'ids' and len(available_documents) == 1:
-                if self._get_downloadable_documents(available_documents) == available_documents:
-                    document = self._get_file_response(available_documents[0].id, share_id=share.id, share_token=str(token), field='raw')
-                    return document or request.not_found()
-                options.update(document=available_documents[0], request_upload=True)
-                return request.render('documents.share_single', options)
-            else:
+            if len(available_documents) == 1 and available_documents.type == 'empty':
+                return request.render("documents.document_request_page", options)
+            elif share.type == 'domain':
                 options.update(all_button='binary' in [document.type for document in available_documents],
-                               document_ids=available_documents,
-                               request_upload=share.action == 'downloadupload' or share.type == 'ids')
-                return request.render('documents.share_page', options)
+                               request_upload=share.action == 'downloadupload')
+                return request.render('documents.share_workspace_page', options)
+
+            total_size = sum(document.file_size for document in available_documents)
+            options.update(file_size=total_size, is_files_shared=True)
+            return request.render("documents.share_files_page", options)
         except Exception:
             logger.exception("Failed to generate the multi file share portal")
         return request.not_found()

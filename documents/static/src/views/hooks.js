@@ -149,13 +149,31 @@ export function useDocumentView(helpers) {
         },
         onClickShareDomain: async () => {
             const resIds = await env.model.root.getResIds(true);
+            const selectedRecords = env.model.root.records.filter((rec) =>
+                resIds.includes(rec.resId)
+            );
+            if (
+                selectedRecords.length &&
+                selectedRecords.every((rec) => rec._values.type === "empty")
+            ) {
+                notification.add(env._t("The requested documents are not shareable."), {
+                    type: "danger",
+                });
+                return;
+            }
             const defaultVals = {
                 domain: env.searchModel.domain,
                 folder_id: env.searchModel.getSelectedFolderId(),
                 tag_ids: [x2ManyCommands.replaceWith(env.searchModel.getSelectedTagIds())],
-                type: env.model.root.selection.length ? "ids" : "domain",
-                document_ids: env.model.root.selection.length
-                    ? [x2ManyCommands.replaceWith(resIds)]
+                type: selectedRecords.length ? "ids" : "domain",
+                document_ids: selectedRecords.length
+                    ? [
+                          x2ManyCommands.replaceWith(
+                              selectedRecords
+                                  .filter((rec) => rec._values.type !== "empty")
+                                  .map((rec) => rec.resId)
+                          ),
+                      ]
                     : false,
             };
             const linkProportion = await dUtils.get_link_proportion(orm, resIds ? resIds : false, defaultVals.domain);

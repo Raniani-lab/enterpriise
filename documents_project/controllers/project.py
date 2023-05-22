@@ -90,12 +90,12 @@ class DocumentsProjectShareRoute(http.Controller):
         return self._get_document_owner_avatar(document)
 
     @http.route('/my/projects/<int:project_id>/documents/<int:document_id>/download', type='http', auth='public')
-    def portal_my_project_documents_download(self, project_id, document_id, access_token=None, **kwargs):
+    def portal_my_project_documents_download(self, project_id, document_id, access_token=None, preview=None, **kwargs):
         try:
             document = self._check_access_and_get_shared_documents(project_id, document_ids=[document_id], access_token=access_token)
         except (AccessError, MissingError):
             return request.redirect('/my')
-        return request.env['ir.binary']._get_stream_from(document).get_response()
+        return request.env['ir.binary']._get_stream_from(document).get_response(as_attachment=not bool(preview))
 
     @http.route('/my/projects/<int:project_id>/documents/download', type='http', auth='public')
     def portal_my_project_documents_download_all(self, project_id, access_token=None, **kwargs):
@@ -203,12 +203,12 @@ class DocumentsProjectShareRoute(http.Controller):
         '/my/tasks/<int:task_id>/documents/<int:document_id>/download',
         '/my/projects/<int:project_id>/task/<int:task_id>/documents/<int:document_id>/download',
     ], type='http', auth='public')
-    def portal_my_task_documents_download(self, task_id, document_id, project_id=None, access_token=None, **kwargs):
+    def portal_my_task_documents_download(self, task_id, document_id, project_id=None, access_token=None, preview=None, **kwargs):
         try:
             document = self._check_access_and_get_shared_documents(project_id, task_id, [document_id], access_token)
         except (AccessError, MissingError):
             return request.redirect('/my')
-        return request.env['ir.binary']._get_stream_from(document).get_response()
+        return request.env['ir.binary']._get_stream_from(document).get_response(as_attachment=not bool(preview))
 
     @http.route([
         '/my/tasks/<int:task_id>/documents/download',

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-<template id="documents_spreadsheet.share_page" name="Multiple Documents Share with Spreadsheets" inherit_id="documents.share_page">
+<template id="documents_spreadsheet.share_page" name="Multiple Documents Share with Spreadsheets" inherit_id="documents.share_workspace_page">
     <xpath expr="//article" position="before">
         <t t-set="isSpreadsheet" t-value="document.mimetype == 'application/o-spreadsheet'"/>
     </xpath>

@@ -32,8 +32,8 @@ class SpreadsheetShareRoute(ShareRoute):
 
     @http.route()
     # pylint: disable=redefined-builtin
-    def download_one(self, id=None, access_token=None, share_id=None, **kwargs):
-        document = request.env["documents.document"].sudo().browse(id).exists()
+    def download_one(self, document_id=None, access_token=None, share_id=None, **kwargs):
+        document = request.env["documents.document"].sudo().browse(document_id).exists()
         if document.handler == "spreadsheet":
             share = request.env["documents.share"].sudo().browse(share_id)
             available_document = share._get_documents_and_check_access(
@@ -53,7 +53,7 @@ class SpreadsheetShareRoute(ShareRoute):
                 spreadsheet, "excel_export", filename=document.name
             )
             return stream.get_response()
-        return super().download_one(id, access_token, share_id, **kwargs)
+        return super().download_one(document_id, access_token, share_id, **kwargs)
 
     @http.route(
         ["/document/spreadsheet/data/<int:spreadsheet_id>/<token>"],

@@ -141,7 +141,7 @@ class TestDocumentsRoutes(HttpCase):
         self.result_share_documents_act = self.env['documents.share'].create(vals)
         response = self.url_open(self.result_share_documents_act.full_url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.content, b'TEST', "Failed route test on available link")
+        self.assertIn(b'is sharing content with you', response.content, "Failed route test on available link")
 
         # Test on expired link
         vals = {

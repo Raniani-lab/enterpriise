@@ -154,7 +154,8 @@ export class ViewEditorModel extends Reactive {
 
         this.GROUPABLE_TYPES = ["many2one", "char", "boolean", "selection", "date", "datetime"];
 
-        this.activeNodeXpath = undefined;
+        this._activeNodeXpath = undefined;
+        this.lastActiveNodeXpath = undefined;
 
         this._getEditor = memoizeOnce(() => {
             const viewType = this.viewType;
@@ -395,6 +396,17 @@ export class ViewEditorModel extends Reactive {
         return !this.isEditingSubview && this._isChatterAllowed;
     }
 
+    get activeNodeXpath() {
+        return this._activeNodeXpath;
+    }
+
+    set activeNodeXpath(value) {
+        this._activeNodeXpath = value;
+        if (value) {
+            this.lastActiveNodeXpath = value;
+        }
+    }
+
     get sidebarTab() {
         if (this.activeNodeXpath) {
             return "properties";
@@ -570,6 +582,7 @@ export class ViewEditorModel extends Reactive {
     /** Mode and Sidebar */
     resetSidebar(tab = null) {
         this.sidebarTab = tab;
+        // store the last active xpath in this variable
         this.activeNodeXpath = undefined;
 
         const resetEl = this.viewRef.el;

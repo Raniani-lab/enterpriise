@@ -42,6 +42,12 @@ function currentSidebarTab() {
     return target.querySelector(".o_web_studio_sidebar .nav-link.active").innerText;
 }
 
+async function notebookRestoreElement() {
+    // wait for the tab to be restored, then a potential element inside
+    await nextTick();
+    await nextTick();
+}
+
 const fakeMultiTab = {
     start() {
         const bus = new EventBus();
@@ -1353,6 +1359,210 @@ QUnit.module("View Editors", (hooks) => {
         );
     });
 
+    QUnit.test(
+        "restore active notebook tab after adding/removing an element",
+        async function (assert) {
+            const arch = `
+        <form>
+            <sheet>
+                <notebook>
+                    <page class="kikou" string='Kikou'>
+                        <field name='id'/>
+                    </page>
+                    <page class="kikou2" string='Kikou2'>
+                        <field name='char_field'/>
+                    </page>
+                </notebook>
+            </sheet>
+        </form>`;
+
+            await createViewEditor({
+                serverData,
+                type: "form",
+                resModel: "coucou",
+                arch,
+                mockRPC: function (route, args) {
+                    if (route === "/web_studio/edit_view") {
+                        assert.step("edit_view");
+                        return createMockViewResult(serverData, "form", arch, "coucou");
+                    }
+                },
+            });
+
+            await click(target.querySelector(".o_notebook .kikou2"));
+            await click(target.querySelector(".nav-link.o_web_studio_new"));
+
+            disableHookAnimation(target);
+            await dragAndDrop(
+                target.querySelector(".o_web_studio_new_fields .o_web_studio_field_integer"),
+                target.querySelector(".o_notebook_content .o_web_studio_hook")
+            );
+            await notebookRestoreElement();
+            assert.verifySteps(["edit_view"]);
+            assert.hasClass(
+                target.querySelector(".kikou2"),
+                "active",
+                "second notebook page is still active"
+            );
+            assert.strictEqual(
+                currentSidebarTab(),
+                "Add",
+                "the Add tab should still be active after adding an element"
+            );
+
+            await click(target.querySelector("div[name=char_field]"));
+            assert.hasClass(
+                target.querySelector("div[name=char_field]"),
+                "o-web-studio-editor--element-clicked",
+                "field element is selected"
+            );
+
+            await click(target.querySelector(".o_web_studio_remove"));
+            await click(target.querySelector(".modal .btn-primary"));
+            assert.hasClass(
+                target.querySelector(".kikou2"),
+                "active",
+                "second notebook page is still active"
+            );
+            assert.strictEqual(
+                currentSidebarTab(),
+                "Add",
+                "the Add tab should still be active after adding an element"
+            );
+            assert.verifySteps(["edit_view"]);
+        }
+    );
+
+    QUnit.test("restore active notebook tab and element", async function (assert) {
+        const arch = `
+        <form>
+            <sheet>
+                <notebook>
+                    <page class="kikou" string='Kikou'>
+                        <field name='id'/>
+                    </page>
+                    <page class="kikou2" string='Kikou2'>
+                        <field name='char_field'/>
+                    </page>
+                </notebook>
+            </sheet>
+        </form>`;
+
+        await createViewEditor({
+            serverData,
+            type: "form",
+            resModel: "coucou",
+            arch,
+            mockRPC: function (route, args) {
+                if (route === "/web_studio/edit_view") {
+                    assert.step("value has been edited");
+                    return createMockViewResult(serverData, "form", arch, "coucou");
+                }
+            },
+        });
+
+        // first, let's change the properties of a tab element
+        await click(target.querySelector(".o_notebook .kikou2"));
+        await editInput(target.querySelector("input[name=string]"), null, "Kikou deux");
+        await notebookRestoreElement();
+        assert.verifySteps(["value has been edited"]);
+        assert.hasClass(
+            target.querySelector(".o_form_sheet .nav-item:nth-child(2)"),
+            "o-web-studio-editor--element-clicked",
+            "second tab is selected"
+        );
+
+        // verify that the second tab does not keep the highlight when selecting another tab
+        await click(target.querySelector(".o_notebook .kikou"));
+        await notebookRestoreElement();
+        assert.hasClass(
+            target.querySelector(".o_form_sheet .nav-item:nth-child(1)"),
+            "o-web-studio-editor--element-clicked",
+            "first tab is now selected"
+        );
+
+        // now let's change the properties of an inside element
+        await click(target.querySelector(".o_notebook .kikou2"));
+        await click(target.querySelector("div[name=char_field]"));
+        assert.hasClass(
+            target.querySelector("div[name=char_field]"),
+            "o-web-studio-editor--element-clicked",
+            "field element is selected"
+        );
+        assert.strictEqual(
+            currentSidebarTab(),
+            "Properties",
+            "the Properties tab for the selected element should now be active"
+        );
+
+        await editInput(target.querySelector("input[name=placeholder]"), null, "ae");
+        await notebookRestoreElement();
+        assert.hasClass(
+            target.querySelector("div[name=char_field]"),
+            "o-web-studio-editor--element-clicked",
+            "field element is selected"
+        );
+        assert.strictEqual(
+            currentSidebarTab(),
+            "Properties",
+            "the Properties tab for the selected element is still active"
+        );
+        assert.verifySteps(["value has been edited"]);
+    });
+
+    QUnit.test("restore active notebook tab after view property change", async function (assert) {
+        const arch = `
+        <form>
+            <sheet>
+                <notebook>
+                    <page class="kikou" string='Kikou'>
+                        <field name='id'/>
+                    </page>
+                    <page class="kikou2" string='Kikou2'>
+                        <field name='char_field'/>
+                    </page>
+                </notebook>
+            </sheet>
+        </form>`;
+
+        await createViewEditor({
+            serverData,
+            type: "form",
+            resModel: "coucou",
+            arch,
+            mockRPC: function (route, args) {
+                if (route === "/web_studio/edit_view") {
+                    assert.step("value has been edited");
+                    return createMockViewResult(serverData, "form", arch, "coucou");
+                }
+            },
+        });
+
+        await click(target.querySelector(".o_notebook .kikou2"));
+        assert.hasClass(
+            target.querySelector(".kikou2"),
+            "active",
+            "second notebook page is still active"
+        );
+
+        await click(target.querySelector(".nav-link.o_web_studio_view"));
+        assert.strictEqual(currentSidebarTab(), "View", "the View tab is now active");
+
+        await click(target.querySelector("input[name=edit]"));
+        await notebookRestoreElement();
+        assert.verifySteps(["value has been edited"]);
+        assert.strictEqual(
+            currentSidebarTab(),
+            "View",
+            "the View tab for the selected element is still active"
+        );
+        assert.hasClass(
+            target.querySelector(".kikou2"),
+            "active",
+            "second notebook page is still active"
+        );
+    });
+
     QUnit.test("label edition", async function (assert) {
         assert.expect(10);
 
@@ -2620,23 +2830,47 @@ QUnit.module("View Editors", (hooks) => {
         await createViewEditor({
             serverData,
             type: "form",
-            resModel: 'coucou',
+            resModel: "coucou",
             arch: `<form><group>
                 <field name="display_name" widget="phone" options="{'enable_sms': false}" />
                 <field name="display_name" invisible="1" />
-            </group></form>`
+            </group></form>`,
         });
 
-        assert.containsN(target, ".o_web_studio_form_view_editor .o_inner_group .o-web-studio-editor--element-clickable", 1);
-        await click(selectorContains(target, ".o_web_studio_sidebar .o_notebook_headers .nav-link", "View"));
+        assert.containsN(
+            target,
+            ".o_web_studio_form_view_editor .o_inner_group .o-web-studio-editor--element-clickable",
+            1
+        );
+        await click(
+            selectorContains(target, ".o_web_studio_sidebar .o_notebook_headers .nav-link", "View")
+        );
         await click(target, ".o_web_studio_sidebar #show_invisible");
-        assert.containsN(target, ".o_web_studio_form_view_editor .o_inner_group .o-web-studio-editor--element-clickable", 2);
+        assert.containsN(
+            target,
+            ".o_web_studio_form_view_editor .o_inner_group .o-web-studio-editor--element-clickable",
+            2
+        );
 
-        await click(target.querySelectorAll(".o_web_studio_form_view_editor .o_inner_group .o-web-studio-editor--element-clickable")[0]);
-        assert.strictEqual(target.querySelector(".o_web_studio_sidebar input[name='enable_sms']").checked, false); // Would be true if not present in node's options
+        await click(
+            target.querySelectorAll(
+                ".o_web_studio_form_view_editor .o_inner_group .o-web-studio-editor--element-clickable"
+            )[0]
+        );
+        assert.strictEqual(
+            target.querySelector(".o_web_studio_sidebar input[name='enable_sms']").checked,
+            false
+        ); // Would be true if not present in node's options
 
-        await click(target.querySelectorAll(".o_web_studio_form_view_editor .o_inner_group .o-web-studio-editor--element-clickable")[1]);
-        assert.strictEqual(target.querySelector(".o_web_studio_sidebar input[name='invisible']").checked, true);
+        await click(
+            target.querySelectorAll(
+                ".o_web_studio_form_view_editor .o_inner_group .o-web-studio-editor--element-clickable"
+            )[1]
+        );
+        assert.strictEqual(
+            target.querySelector(".o_web_studio_sidebar input[name='invisible']").checked,
+            true
+        );
     });
 
     QUnit.test(

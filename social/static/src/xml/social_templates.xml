@@ -95,7 +95,7 @@
 
     <div t-name="social.StreamPostCommentsReply" class="o_social_write_reply" owl="1">
         <form t-attf-class="d-flex flex-nowrap align-items-start {{ props.classes }}">
-            <div class="o_social_author_image position-relative rounded-circle flex-shrink-0 overflow-hidden me-2">
+            <div class="o_social_author_image position-relative rounded flex-shrink-0 overflow-hidden me-2">
                 <img t-if="authorPictureSrc" t-att-src="authorPictureSrc"
                      t-att-title="isCommentReply ? ('Write a reply as ' + props.mediaSpecificProps.accountName) : ('Write comment as ' + props.mediaSpecificProps.accountName)" />
             </div>
@@ -197,7 +197,7 @@
            preventAddComment="props.preventAddComment"/>
 
         <div t-else="" class="o_social_comment_wrapper d-flex align-items-start">
-            <div class="o_social_author_image position-relative rounded-circle flex-shrink-0 me-2 overflow-hidden">
+            <div class="o_social_author_image position-relative rounded flex-shrink-0 me-2 overflow-hidden">
                 <img t-if="authorPictureSrc" t-att-src="authorPictureSrc" t-att-title="comment.from.name" />
             </div>
 

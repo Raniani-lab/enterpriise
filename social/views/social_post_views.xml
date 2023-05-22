@@ -57,7 +57,7 @@
                             </div>
 
                             <t t-set="has_attachments" t-value="record.image_ids.raw_value.length !== 0"/>
-                            <div t-attf-class="o_social_stream_post_message_body flex-grow-1 py-2 px-3 #{has_attachments ? 'o_social_stream_post_with_attachments' : 'border-bottom'}">
+                            <div t-attf-class="o_social_stream_post_message_body flex-grow-1 py-2 px-3 border-bottom #{has_attachments ? 'o_social_stream_post_with_attachments' : ''}">
                                 <div name="o_social_stream_post_message_text"
                                      t-attf-class="o_social_stream_post_message_text overflow-hidden #{has_attachments ? 'mb-2' : ''}">
                                     <field name="message" widget="social_post_formatter"/>
@@ -83,9 +83,9 @@
                                     </t>
                                 </div>
                             </div>
-                            <div id="post-stats" class="d-flex bg-100 px-3 py-1 border-bottom">
-                                <div class="px-2 text-center">
-                                    <small class="pe-1">Clicks:</small> <small class="fw-bold" t-esc="record.click_count.raw_value"/>
+                            <div id="post-stats" class="d-flex flex-column bg-100 px-3 py-1 border-bottom">
+                                <div class="d-flex justify-content-between py-1">
+                                    <small class="pe-1">Clicks:</small> <small class="fw-bold d-inline-block ms-auto" t-esc="record.click_count.raw_value"/>
                                 </div>
                             </div>
                             <div class="d-flex flex-grow-0 align-items-center px-3 py-2">

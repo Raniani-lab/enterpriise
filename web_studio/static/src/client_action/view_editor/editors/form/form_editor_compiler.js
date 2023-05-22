@@ -79,7 +79,6 @@ export class FormEditorCompiler extends formView.Compiler {
         // the button box is included in the control panel, which is not visible in Studio
         // re-add it to the form view
         const buttonBoxXml = xml.querySelector("div[name='button_box']");
-        console.log(buttonBoxXml);
         let buttonBox;
         const buttonBoxContainer = createElement("div", {
             class: "d-flex justify-content-end my-2",

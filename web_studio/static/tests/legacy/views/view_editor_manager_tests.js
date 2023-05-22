@@ -6214,6 +6214,28 @@ QUnit.module('ViewEditorManager', {
         assert.containsOnce(target, ".rendered");
     });
 
+    QUnit.test("calendar editor: constrain available periods to the scale attribute", async function(assert) {
+        this.data.coucou.fields.date_start = { type: "date", string: "Date start" };
+        const vem = await studioTestUtils.createViewEditorManager({
+            model: 'coucou',
+            arch: `
+            <calendar scales="month,year" date_start="date_start">
+                <field name="display_name" />
+            </calendar>`,
+            mockRPC(route, args) {
+                if (args.method === "check_access_rights") {
+                    return true;
+                }
+            }
+        });
+
+        const availableModesOptions = vem.el.querySelectorAll(".o_web_studio_sidebar select[name='mode'] option");
+        assert.deepEqual(
+            Array.from(availableModesOptions).map(el => el.textContent.trim()),
+            ["", "month", "year"]
+        );
+    });
+
     QUnit.module('X2Many');
 
     QUnit.test('edit one2many form view (2 level) and check that the correct model is passed', async function (assert) {

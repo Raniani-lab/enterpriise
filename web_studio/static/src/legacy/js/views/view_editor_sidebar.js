@@ -17,7 +17,7 @@ import Widget from "web.Widget";
 import { registry } from "@web/core/registry";
 import { sortBy } from "@web/core/utils/arrays";
 import { SIDEBAR_SAFE_FIELDS } from "@web_studio/legacy/js/views/sidebar_safe_fields";
-import { omit } from '@web/core/utils/objects';
+import { omit, pick } from "@web/core/utils/objects";
 
 const form_component_widget_registry = view_components.registry;
 const _lt = core._lt;
@@ -536,6 +536,19 @@ export const ViewEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
         this.state.attrs.domain = this.state.attrs.domain || this.state.field.domain;
         this.state.attrs.context = this.state.attrs.context || this.state.field.context;
         this.state.attrs.related = this.state.field.related ? this.state.field.related : false;
+    },
+
+    _getCalendarModesFromScales() {
+        const allModes = {
+            day: _t("day"),
+            week: _t("week"),
+            month: _t("month"),
+            year: _t("year"),
+        }
+        if (this.state.attrs.scales) {
+            return pick(allModes, ...this.state.attrs.scales.split(","))
+        }
+        return allModes;
     },
     /**
      * @private

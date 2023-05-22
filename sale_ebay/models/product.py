@@ -302,7 +302,7 @@ class ProductTemplate(models.Model):
                     'ItemID': item_id,
                     'VariationSpecifics': variant._get_ebay_variation_specifics(),
                 }
-                item = self.ebay_execute('GetItem', call_data)
+                item = self._ebay_execute('GetItem', call_data)
                 variant.ebay_variant_url = item.dict()['Item']['ListingDetails']['ViewItemURL']
 
     @api.model
@@ -341,7 +341,7 @@ class ProductTemplate(models.Model):
         )
 
     @api.model
-    def get_ebay_api(self):
+    def _get_ebay_api(self):
         params = self._get_ebay_params()
 
         if not params:
@@ -352,8 +352,8 @@ class ProductTemplate(models.Model):
         return Trading(**params)
 
     @api.model
-    def ebay_execute(self, verb, data=None, list_nodes=[], verb_attrs=None, files=None):
-        ebay_api = self.get_ebay_api()
+    def _ebay_execute(self, verb, data=None, list_nodes=[], verb_attrs=None, files=None):
+        ebay_api = self._get_ebay_api()
         try:
             return ebay_api.execute(verb, data, list_nodes, verb_attrs, files)
         except ConnectionError as e:
@@ -379,7 +379,7 @@ class ProductTemplate(models.Model):
                                   " Setting the quantity to 0 is the safest method to make a variation unavailable.")
             raise UserError(_("Error Encountered.\n'%s'") % (error_message,))
 
-    def get_ebay_images_attachments(self):
+    def _get_ebay_images_attachments(self):
         """Images need to follow some guidelines to be accepted on ebay, otherwise they may generate errors
            https://developer.ebay.com/DevZone/guides/features-guide/default.html#development/Pictures-Intro.html
            https://developer.ebay.com/devzone/xml/docs/Reference/eBay/types/PictureDetailsType.html
@@ -408,7 +408,7 @@ class ProductTemplate(models.Model):
         return attachments.filtered(lambda a: is_good_image(a))[:12]
 
     def _create_picture_url(self):
-        attachments = self.get_ebay_images_attachments()
+        attachments = self._get_ebay_images_attachments()
 
         urls = []
         for att in attachments:
@@ -418,12 +418,12 @@ class ProductTemplate(models.Model):
                 "WarningLevel": "High",
                 "PictureName": self.name
             }
-            response = self.ebay_execute('UploadSiteHostedPictures', pictureData, files=files)
+            response = self._ebay_execute('UploadSiteHostedPictures', pictureData, files=files)
             urls.append(response.dict()['SiteHostedPictureDetails']['FullURL'])
         return urls
 
     def _update_ebay_data(self, response):
-        item = self.ebay_execute('GetItem', {'ItemID': response['ItemID']}).dict()
+        item = self._ebay_execute('GetItem', {'ItemID': response['ItemID']}).dict()
         qty = int(item['Item']['Quantity']) - int(item['Item']['SellingStatus']['QuantitySold'])
         for product in self:
             product.write({
@@ -438,7 +438,7 @@ class ProductTemplate(models.Model):
             if product.ebay_listing_status != 'Active':
                 item_dict = product._get_item_dict()
 
-                response = self.ebay_execute('AddItem' if product.ebay_listing_type == 'Chinese'
+                response = self._ebay_execute('AddItem' if product.ebay_listing_type == 'Chinese'
                                              else 'AddFixedPriceItem', item_dict)
                 product._set_variant_url(response.dict()['ItemID'])
                 product._update_ebay_data(response.dict())
@@ -447,7 +447,7 @@ class ProductTemplate(models.Model):
         for product in self:
             call_data = {"ItemID": product.ebay_id,
                          "EndingReason": "NotAvailable"}
-            self.ebay_execute('EndItem' if product.ebay_listing_type == 'Chinese'
+            self._ebay_execute('EndItem' if product.ebay_listing_type == 'Chinese'
                               else 'EndFixedPriceItem', call_data)
             product.ebay_listing_status = 'Ended'
 
@@ -456,7 +456,7 @@ class ProductTemplate(models.Model):
             item_dict = product._get_item_dict()
             # set the item id to relist the correct ebay listing
             item_dict['Item']['ItemID'] = product.ebay_id
-            response = self.ebay_execute('RelistItem' if product.ebay_listing_type == 'Chinese'
+            response = self._ebay_execute('RelistItem' if product.ebay_listing_type == 'Chinese'
                                          else 'RelistFixedPriceItem', item_dict)
             product._set_variant_url(response.dict()['ItemID'])
             product._update_ebay_data(response.dict())
@@ -469,7 +469,7 @@ class ProductTemplate(models.Model):
             if not product.ebay_subtitle:
                 item_dict['DeletedField'] = 'Item.SubTitle'
 
-            response = self.ebay_execute('ReviseItem' if product.ebay_listing_type == 'Chinese'
+            response = self._ebay_execute('ReviseItem' if product.ebay_listing_type == 'Chinese'
                                          else 'ReviseFixedPriceItem', item_dict)
             product._set_variant_url(response.dict()['ItemID'])
             product._update_ebay_data(response.dict())
@@ -584,7 +584,7 @@ class ProductTemplate(models.Model):
                            }
         }
         try:
-            response = self.ebay_execute('GetOrders', call_data)
+            response = self._ebay_execute('GetOrders', call_data)
             order_dict = response.dict()
             if int(order_dict['ReturnedOrderCountActual']) > 0:  # order_dict.get('OrderArray'):
                 for order in order_dict['OrderArray']['Order']:

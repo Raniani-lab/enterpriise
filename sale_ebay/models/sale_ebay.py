@@ -45,7 +45,7 @@ class EbayCategory(models.Model):
     @api.model
     def _cron_sync(self, auto_commit=False):
         try:
-            self.sync_categories()
+            self._sync_categories()
         except UserError as e:
             if auto_commit:
                 self.env.cr.rollback()
@@ -61,13 +61,13 @@ class EbayCategory(models.Model):
             return
 
     @api.model
-    def sync_categories(self):
-        self.sync_store_categories()
+    def _sync_categories(self):
+        self._sync_store_categories()
 
         domain = self.env['ir.config_parameter'].sudo().get_param('ebay_domain')
         prod = self.env['product.template']
         # First call to 'GetCategories' to only get the categories' version
-        categories = prod.ebay_execute('GetCategories')
+        categories = prod._ebay_execute('GetCategories')
         ebay_version = categories.dict()['Version']
         version = self.env['ir.config_parameter'].sudo().get_param(
             'ebay_sandbox_category_version'
@@ -88,7 +88,7 @@ class EbayCategory(models.Model):
                 'DetailLevel': 'ReturnAll',
                 'LevelLimit': levellimit,
             }
-            response = prod.ebay_execute('GetCategories', call_data)
+            response = prod._ebay_execute('GetCategories', call_data)
             categories = response.dict()['CategoryArray']['Category']
             # Delete the eBay categories not existing anymore on eBay
             category_ids = [c['CategoryID'] for c in categories]
@@ -96,10 +96,10 @@ class EbayCategory(models.Model):
                 ('category_id', 'not in', category_ids),
                 ('category_type', '=', 'ebay'),
             ]).unlink()
-            self.create_categories(categories)
+            self._create_categories(categories)
 
     @api.model
-    def create_categories(self, categories):
+    def _create_categories(self, categories):
         for category in categories:
             cat = self.search([
                 ('category_id', '=', category['CategoryID']),
@@ -122,7 +122,7 @@ class EbayCategory(models.Model):
                     'DetailLevel': 'ReturnAll',
                     'AllFeaturesForCategory': True,
                 }
-                response = self.env['product.template'].ebay_execute('GetCategoryFeatures', call_data)
+                response = self.env['product.template']._ebay_execute('GetCategoryFeatures', call_data)
                 if 'ConditionValues' in response.dict()['Category']:
                     conditions = response.dict()['Category']['ConditionValues']['Condition']
                     if not isinstance(conditions, list):
@@ -135,9 +135,9 @@ class EbayCategory(models.Model):
                             })
 
     @api.model
-    def sync_store_categories(self):
+    def _sync_store_categories(self):
         try:
-            response = self.env['product.template'].ebay_execute('GetStore')
+            response = self.env['product.template']._ebay_execute('GetStore')
         except UserError as e:
             # If the user is not using a store we don't fetch the store categories
             if '13003' in e.args[0]:
@@ -190,8 +190,8 @@ class EbayPolicy(models.Model):
     short_summary = fields.Text('Summary')
 
     @api.model
-    def sync_policies(self):
-        response = self.env['product.template'].ebay_execute('GetUserPreferences',
+    def _sync_policies(self):
+        response = self.env['product.template']._ebay_execute('GetUserPreferences',
             {'ShowSellerProfilePreferences': True})
         if 'SellerProfilePreferences' not in response.dict() or \
            not response.dict()['SellerProfilePreferences']['SupportedSellerProfiles']:

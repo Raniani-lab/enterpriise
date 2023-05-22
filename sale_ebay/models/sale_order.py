@@ -222,7 +222,7 @@ class SaleOrder(models.Model):
             # If multiple variants but only one listed on eBay as Item Specific
             else:
                 call_data = {'ItemID': product.ebay_id, 'IncludeItemSpecifics': True}
-                resp = product.ebay_execute('GetItem', call_data)
+                resp = product._ebay_execute('GetItem', call_data)
                 name_value_list = resp.dict()['Item']['ItemSpecifics']['NameValueList']
                 if not isinstance(name_value_list, list):
                     name_value_list = [name_value_list]

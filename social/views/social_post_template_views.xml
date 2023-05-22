@@ -39,7 +39,7 @@
                             <field name="image_ids" widget="many2many_binary" class="o_social_post_form_attachments"/>
                         </group>
                         <group name="previews_placeholder" class="o_social_post_preview_group m-0">
-                            <div class="o_social_post_empty_preview overflow-hidden o_view_nocontent bg-100"
+                            <div class="o_social_post_empty_preview overflow-hidden o_view_nocontent bg-100 rounded-end"
                                 attrs="{'invisible': [('account_ids', '!=', []), ('message', '!=', False), ('message', '!=', '')]}">
                                 <div class="o_nocontent_help">
                                     <p class="o_view_nocontent_smiling_face">

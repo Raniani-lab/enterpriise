@@ -111,11 +111,6 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
 
         options['forced_domain'] = options.get('forced_domain', []) + domain
 
-        prefix_group_parameter_name = 'account_reports.partner_ledger.groupby_prefix_groups_threshold'
-        prefix_groups_threshold = int(self.env['ir.config_parameter'].sudo().get_param(prefix_group_parameter_name, 0))
-        if prefix_groups_threshold:
-            options['groupby_prefix_groups_threshold'] = prefix_groups_threshold
-
     def _custom_unfold_all_batch_data_generator(self, report, options, lines_to_expand_by_function):
         partner_ids_to_expand = []
 

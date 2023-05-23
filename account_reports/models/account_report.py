@@ -964,6 +964,14 @@ class AccountReport(models.Model):
         return new_lines + total_lines
 
     ####################################################
+    # OPTIONS: prefix groups threshold
+    ####################################################
+
+    def _init_options_prefix_groups_threshold(self, options, previous_options=None):
+        previous_threshold = (previous_options or {}).get('prefix_groups_threshold')
+        options['prefix_groups_threshold'] = previous_threshold or self.prefix_groups_threshold
+
+    ####################################################
     # OPTIONS: fiscal position (multi vat)
     ####################################################
 
@@ -1424,6 +1432,7 @@ class AccountReport(models.Model):
             self._init_options_growth_comparison: 1010,
             self._init_options_order_column: 1020,
             self._init_options_hierarchy: 1030,
+            self._init_options_prefix_groups_threshold: 1040,
             self._init_options_custom: 1050,
         }
 
@@ -4029,7 +4038,7 @@ class AccountReport(models.Model):
 
     def _regroup_lines_by_name_prefix(self, options, lines_to_group, expand_function_name, parent_level, matched_prefix='', groupby=None, parent_line_dict_id=None):
         """ Postprocesses a list of report line dictionaries in order to regroup them by name prefix and reduce the overall number of lines
-        if their number is above a provided threshold (set using 'groupby_prefix_groups_threshold' options key).
+        if their number is above a provided threshold (set in the report configuration).
 
         The lines regrouped under a common prefix will be removed from the returned list of lines; only the prefix line will stay, folded.
         Its expand function must ensure the right sublines are reloaded when unfolding it.
@@ -4044,7 +4053,7 @@ class AccountReport(models.Model):
 
         :return: lines_to_group, grouped by prefix if it was necessary.
         """
-        threshold = options.get('groupby_prefix_groups_threshold', 0)
+        threshold = options['prefix_groups_threshold']
 
         # When grouping by prefix, we ignore the totals
         lines_to_group_without_totals = list(filter(lambda x: self._get_markup(x['id']) != 'total', lines_to_group))

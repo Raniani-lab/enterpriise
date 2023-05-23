@@ -109,6 +109,7 @@
                                 <group>
                                     <group >
                                         <field name="load_more_limit"/>
+                                        <field name="prefix_groups_threshold"/>
                                         <field name="filter_hierarchy" required="1"/>
                                         <field name="filter_multi_company" groups="base.group_multi_company" required="1"/>
                                     </group>

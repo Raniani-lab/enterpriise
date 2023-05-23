@@ -160,13 +160,8 @@ class AssetsReportCustomHandler(models.AbstractModel):
         hierarchy_activated = (previous_options or {}).get('hierarchy', True)
         options['hierarchy'] = has_account_group and hierarchy_activated or False
 
-        prefix_group_parameter_name = 'account_reports.assets_report.groupby_prefix_groups_threshold'
-        prefix_groups_threshold = int(self.env['ir.config_parameter'].sudo().get_param(prefix_group_parameter_name, 0))
-        if prefix_groups_threshold:
-            options['groupby_prefix_groups_threshold'] = prefix_groups_threshold
-
         # Automatically unfold the report when printing it or not using prefix groups, unless some specific lines have been unfolded
-        options['unfold_all'] = (self._context.get('print_mode') and not options.get('unfolded_lines')) or (report.filter_unfold_all and (previous_options or {}).get('unfold_all', not prefix_groups_threshold))
+        options['unfold_all'] = (self._context.get('print_mode') and not options.get('unfolded_lines')) or (report.filter_unfold_all and (previous_options or {}).get('unfold_all', not report.prefix_groups_threshold))
 
     def _with_context_company2code2account(self, report):
         if self.env.context.get('company2code2account') is not None:

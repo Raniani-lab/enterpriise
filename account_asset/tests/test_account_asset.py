@@ -2148,7 +2148,7 @@ class TestAccountAsset(TestAccountReportsCommon):
             options,
         )
 
-        self.env['ir.config_parameter'].set_param('account_reports.assets_report.groupby_prefix_groups_threshold', 3)
+        report.prefix_groups_threshold = 3
         # Prefix group, no group by account
         options = self._generate_options(report, '2021-01-01', '2021-12-31', default_options={'assets_groupby_account': False, 'unfold_all': True})
         self.assertLinesValues(

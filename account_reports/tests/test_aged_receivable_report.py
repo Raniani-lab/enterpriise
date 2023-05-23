@@ -671,7 +671,7 @@ class TestAgedReceivableReport(TestAccountReportsCommon):
         )
 
         # With prefix groups
-        self.env['ir.config_parameter'].set_param('account_reports.aged_partner_balance.groupby_prefix_groups_threshold', '3')
+        self.report.prefix_groups_threshold = 3
         options = self._generate_options(self.report, test_date, test_date, default_options={'unfold_all': True})
 
         self.assertLinesValues(

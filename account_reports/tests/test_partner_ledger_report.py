@@ -419,7 +419,7 @@ class TestPartnerLedgerReport(TestAccountReportsCommon):
         )
 
         # With prefix groups
-        self.env['ir.config_parameter'].set_param('account_reports.partner_ledger.groupby_prefix_groups_threshold', '3')
+        self.report.prefix_groups_threshold = 3
         options = self._generate_options(self.report, test_date, test_date, default_options={'unfold_all': True})
 
         self.assertLinesValues(

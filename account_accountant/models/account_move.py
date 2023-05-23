@@ -362,6 +362,14 @@ class AccountMoveLine(models.Model):
         help="Date at which the deferred expense/revenue ends"
     )
 
+    def copy_data(self, default=None):
+        data_list = super().copy_data(default=default)
+        for line, values in zip(self, data_list):
+            if 'move_reverse_cancel' in self._context:
+                values['deferred_start_date'] = line.deferred_start_date
+                values['deferred_end_date'] = line.deferred_end_date
+        return data_list
+
     def _is_compatible_account(self):
         self.ensure_one()
         return (
@@ -383,7 +391,7 @@ class AccountMoveLine(models.Model):
             if not line.deferred_start_date and line.move_id.invoice_date and line.deferred_end_date:
                 line.deferred_start_date = line.move_id.invoice_date
 
-    @api.depends('account_id.account_type', 'move_id.state')
+    @api.depends('account_id.account_type')
     def _compute_deferred_end_date(self):
         for line in self:
             if not line._is_compatible_account():

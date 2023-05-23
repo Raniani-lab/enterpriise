@@ -3,6 +3,7 @@
 
 from . import account_account
 from . import account_bank_statement
+from . import account_chart_template
 from . import account_fiscal_year
 from . import account_journal_dashboard
 from . import account_move

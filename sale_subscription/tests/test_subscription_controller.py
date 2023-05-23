@@ -194,7 +194,7 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
         subscription.transaction_ids._reconcile_after_done()  # Create the payment
         self.assertEqual(subscription.invoice_count, 1, "One invoice should be created")
         # subscription has a payment_token_id, the invoice is created by the flow.
-        subscription.invoice_ids.invoice_line_ids.account_id.account_type = 'asset_cash'
+        subscription.invoice_ids.invoice_line_ids.account_id.account_type = 'income'
         subscription.invoice_ids.auto_post = 'at_date'
         self.env.ref('account.ir_cron_auto_post_draft_entry').method_direct_trigger()
         self.assertTrue(subscription.next_invoice_date > datetime.date.today(), "the next invoice date should be updated")

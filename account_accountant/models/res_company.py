@@ -18,17 +18,14 @@ class ResCompany(models.Model):
     deferred_journal_id = fields.Many2one(
         comodel_name='account.journal',
         string="Deferred Journal",
-        compute='_compute_deferred_journal_id', store=True, readonly=False,
     )
     deferred_expense_account_id = fields.Many2one(
         comodel_name='account.account',
         string="Deferred Expense",
-        compute='_compute_deferred_expense_account_id', store=True, readonly=False,
     )
     deferred_revenue_account_id = fields.Many2one(
         comodel_name='account.account',
         string="Deferred Revenue",
-        compute='_compute_deferred_revenue_account_id', store=True, readonly=False,
     )
     generate_deferred_entries_method = fields.Selection(
         string="Generate Deferred Entries Method",
@@ -184,24 +181,3 @@ class ResCompany(models.Model):
             extra_domain=[('id', 'in', unreconciled_statement_lines.ids)],
             name=_('Unreconciled statements lines'),
         )
-
-    def _compute_deferred_journal_id(self):
-        for company in self.filtered(lambda c: not c.deferred_journal_id):
-            company.deferred_journal_id = self.env['account.journal'].search([
-                ('company_id', '=', self.env.company.id),
-                ('type', '=', 'general')
-            ], limit=1)
-
-    def _compute_deferred_expense_account_id(self):
-        for company in self.filtered(lambda c: not c.deferred_expense_account_id):
-            company.deferred_expense_account_id = self.env['account.account'].search([
-                ('company_id', '=', self.env.company.id),
-                ('account_type', '=', 'asset_current')
-            ], limit=1)
-
-    def _compute_deferred_revenue_account_id(self):
-        for company in self.filtered(lambda c: not c.deferred_revenue_account_id):
-            company.deferred_revenue_account_id = self.env['account.account'].search([
-                ('company_id', '=', self.env.company.id),
-                ('account_type', '=', 'liability_current')
-            ], limit=1)

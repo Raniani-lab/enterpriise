@@ -293,8 +293,8 @@ QUnit.module("Views", (hooks) => {
                     return Promise.reject({ status: 401 });
                 }
                 const coordinates = [];
-                coordinates[0] = 10.0;
-                coordinates[1] = 10.5;
+                coordinates[0] = "10.0";
+                coordinates[1] = "10.5";
                 const geometry = { coordinates };
                 const features = [];
                 features[0] = { geometry };
@@ -310,7 +310,7 @@ QUnit.module("Views", (hooks) => {
             },
             _fetchCoordinatesFromAddressOSM(metaData, data, record) {
                 const coordinates = [];
-                coordinates[0] = { lat: 10.0, lon: 10.5 };
+                coordinates[0] = { lat: "10.0", lon: "10.5" };
                 switch (record.contact_address_complete) {
                     case "Cfezfezfefes":
                         return Promise.resolve([]);

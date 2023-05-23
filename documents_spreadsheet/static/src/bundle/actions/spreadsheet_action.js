@@ -86,6 +86,7 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
     async makeCopy({ data, thumbnail }) {
         const defaultValues = {
             mimetype: "application/o-spreadsheet",
+            handler: "spreadsheet",
             spreadsheet_data: JSON.stringify(data),
             spreadsheet_snapshot: false,
             thumbnail,

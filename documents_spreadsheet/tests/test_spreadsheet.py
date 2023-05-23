@@ -421,7 +421,20 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
         document.write(vals)
         self.assertEqual(document.handler, "spreadsheet", "The handler must contain the value of the handler mentioned in vals")
 
-    def test_document_replacement_with_mimetype(self):
+    def test_document_replacement_data_only(self):
+        document = self.env["documents.document"].create({
+            "name": "file",
+            "spreadsheet_data": r"{}",
+            "folder_id": self.folder.id,
+            "handler": "spreadsheet",
+        })
+        vals = {
+            "spreadsheet_data": r"{}",
+        }
+        document.write(vals)
+        self.assertEqual(document.handler, "spreadsheet", "The handler should not have changed")
+
+    def test_document_replacement_with_other_mimetype(self):
 
         document = self.env["documents.document"].create({
             "spreadsheet_data": r"{}",
@@ -438,7 +451,20 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
         document.write(vals)
         self.assertEqual(document.handler, False, "The handler should have been reset")
 
-    def test_document_replacement_with_mimetype_and_handler(self):
+    def test_document_replacement_with_spreadsheet_mimetype(self):
+        document = self.env["documents.document"].create({
+            "raw": b'some text',
+            "folder_id": self.folder.id,
+            "mimetype": "text/plain",
+        })
+        vals = {
+            "spreadsheet_data": r"{}",
+            "mimetype": "application/o-spreadsheet",
+        }
+        document.write(vals)
+        self.assertEqual(document.handler, False, "the file should not be recognized as a spreadsheet")
+
+    def test_document_replacement_with_handler_and_other_mimetype(self):
         document = self.env["documents.document"].create({
             "spreadsheet_data": r"{}",
             "folder_id": self.folder.id,
@@ -449,11 +475,19 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
             "name": "spreadsheet_file",
             "folder_id": self.folder.id,
             "spreadsheet_data": r"{}",
-            "mimetype": "application/octet-stream",
+            "mimetype": "application/json",
             "handler": "spreadsheet"
         }
         document.write(vals)
         self.assertEqual(document.handler, "spreadsheet", "the handler must contain the value of the handler mentioned in vals")
+
+    def test_create_document_with_spreadsheet_mimetype(self):
+        document = self.env["documents.document"].create({
+            "spreadsheet_data": r"{}",
+            "folder_id": self.folder.id,
+            "mimetype": "application/o-spreadsheet",
+        })
+        self.assertEqual(document.handler, False, "the file should not be recognized as a spreadsheet")
 
     def test_read_spreadsheet_data(self):
         document = self.env["documents.document"].create({

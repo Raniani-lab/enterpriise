@@ -51,6 +51,11 @@ QUnit.module("documents_spreadsheet > Topbar Menu Items", {}, function () {
                 if (args.method === "copy" && args.model === "documents.document") {
                     assert.step("copy");
                     assert.equal(
+                        args.kwargs.default.handler,
+                        "spreadsheet",
+                        "It should be a spreadsheet document"
+                    );
+                    assert.equal(
                         args.kwargs.default.spreadsheet_data,
                         JSON.stringify(model.exportData()),
                         "It should copy the data"

@@ -12,6 +12,9 @@ class EventMailScheduler(models.Model):
     def _selection_template_model(self):
         return super(EventMailScheduler, self)._selection_template_model() + [('social.post.template', 'Social')]
 
+    def _selection_template_model_get_mapping(self):
+        return {**super(EventMailScheduler, self)._selection_template_model_get_mapping(), 'social_post': 'social.post.template'}
+
     notification_type = fields.Selection(selection_add=[('social_post', 'Social Post')], ondelete={'social_post': 'set default'})
 
     @api.depends('notification_type')

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.3alpha1+e\n"
+"Project-Id-Version: Odoo Server saas~16.3+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:01+0000\n"
-"PO-Revision-Date: 2023-05-16 16:01+0000\n"
+"POT-Creation-Date: 2023-05-30 05:23+0000\n"
+"PO-Revision-Date: 2023-05-30 05:23+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -2151,8 +2151,8 @@ msgid "Nest articles under this one to generate a structure"
 msgstr ""
 
 #. module: knowledge
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #: code:addons/knowledge/static/src/components/topbar/topbar.xml:0
 #, python-format
@@ -3066,8 +3066,8 @@ msgid "Unsupported search operation"
 msgstr ""
 
 #. module: knowledge
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/knowledge/models/knowledge_article.py:0
 #: code:addons/knowledge/models/knowledge_article.py:0
 #: code:addons/knowledge/static/src/components/topbar/topbar.xml:0

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.4+e\n"
+"Project-Id-Version: Odoo Server saas~16.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-09 14:11+0000\n"
-"PO-Revision-Date: 2022-06-09 14:11+0000\n"
+"POT-Creation-Date: 2023-05-25 12:13+0000\n"
+"PO-Revision-Date: 2023-05-25 12:13+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,6 +16,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: website_sale_account_avatax
+#. odoo-python
 #: code:addons/website_sale_account_avatax/controllers/main.py:0
 #, python-format
 msgid ""
@@ -24,6 +25,7 @@ msgid ""
 msgstr ""
 
 #. module: website_sale_account_avatax
+#. odoo-python
 #: code:addons/website_sale_account_avatax/controllers/main.py:0
 #, python-format
 msgid "Validation Error"

@@ -34,7 +34,9 @@
     <template id="rental_product" inherit_id="website_sale.product" name="Select pickup Date and Return Date">
         <xpath expr="//div[hasclass('js_main_product')]//t[@t-placeholder='select']" position="after">
             <div t-if="combination_info['is_rental']" class="o_not_editable">
-                <div class="mb-3 align-middle input-group-lg o_website_sale_daterange_picker variant_attribute">
+                <div t-nocache="The default start and end dates must be up-to-date."
+                     class="mb-3 align-middle input-group-lg o_website_sale_daterange_picker variant_attribute">
+                    <t t-set="combination_info" t-value="product._get_combination_info(combination, add_qty=add_qty or 1, pricelist=pricelist)"/>
                     <input type="hidden" name="default_start_date"
                            t-att-value="combination_info['default_start_date']"/>
                     <input type="hidden" name="default_end_date" t-att-value="combination_info['default_end_date']"/>

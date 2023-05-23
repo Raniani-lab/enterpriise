@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import base64
+from datetime import datetime
 
 from freezegun import freeze_time
 from psycopg2 import IntegrityError
@@ -529,3 +530,43 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
         data = b"{ sheets: [] }"
         document.spreadsheet_data = data
         self.assertEqual(document.datas, base64.b64encode(data))
+
+    def test_autovacuum_remove_old_empty_spreadsheet(self):
+        self.env["documents.document"].search([('handler', '=', 'spreadsheet')]).unlink()
+
+        self.create_spreadsheet(name="Spreadsheet", values={
+            "create_date": datetime(2023, 5, 15, 18)
+        })
+        self.assertEqual(len(self.env["documents.document"].search([('handler', '=', 'spreadsheet')])), 1)
+
+        with freeze_time("2023-05-16 19:00"):
+            self.env["documents.document"]._gc_spreadsheet()
+        self.assertEqual(len(self.env["documents.document"].search([('handler', '=', 'spreadsheet')])), 0)
+
+    def test_autovacuum_keep_new_empty_spreadsheet(self):
+        self.env["documents.document"].search([('handler', '=', 'spreadsheet')]).unlink()
+
+        self.create_spreadsheet(name="Spreadsheet", values={
+            "create_date": datetime(2023, 5, 16, 18)
+        })
+        self.assertEqual(len(self.env["documents.document"].search([('handler', '=', 'spreadsheet')])), 1)
+
+        with freeze_time("2023-05-16 19:00"):
+            self.env["documents.document"]._gc_spreadsheet()
+        self.assertEqual(len(self.env["documents.document"].search([('handler', '=', 'spreadsheet')])), 1)
+
+    def test_autovacuum_keep_old_spreadsheet_with_revision(self):
+        self.env["documents.document"].search([('handler', '=', 'spreadsheet')]).unlink()
+
+        spreadsheet = self.create_spreadsheet(name="Spreadsheet", values={
+            "create_date": datetime(2023, 5, 15, 18)
+        })
+        commands = self.new_revision_data(spreadsheet)
+        spreadsheet.join_spreadsheet_session()
+        spreadsheet.dispatch_spreadsheet_message(commands)
+
+        self.assertEqual(len(self.env["documents.document"].search([('handler', '=', 'spreadsheet')])), 1)
+
+        with freeze_time("2023-05-16 19:00"):
+            self.env["documents.document"]._gc_spreadsheet()
+        self.assertEqual(len(self.env["documents.document"].search([('handler', '=', 'spreadsheet')])), 1)

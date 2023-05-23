@@ -5,6 +5,7 @@ import base64
 import io
 import json
 import zipfile
+import datetime
 
 from lxml import etree
 
@@ -271,6 +272,17 @@ class Document(models.Model):
 
                 unzipped[info.filename] = input_zip.read(info.filename).decode()
         return unzipped
+
+    @api.autovacuum
+    def _gc_spreadsheet(self):
+        yesterday = datetime.datetime.utcnow()-datetime.timedelta(days=1)
+        domain = [
+            ('handler', '=', 'spreadsheet'),
+            ('create_date', '<', yesterday),
+            ('spreadsheet_revision_ids', '=', False),
+            ('spreadsheet_snapshot', '=', False)
+        ]
+        self.search(domain).action_archive()
 
 
 class XSLXReadUserError(UserError):

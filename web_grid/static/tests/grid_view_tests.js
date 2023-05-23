@@ -649,7 +649,7 @@ QUnit.module("Views", (hooks) => {
         });
 
         await toggleSearchBarMenu(target);
-        await click(target, "span.o_menu_item");
+        await click(target, "span.o_menu_item:not(.o_add_custom_filter)");
         assert.containsNone(target, ".o_grid_section");
         assert.containsN(target, ".o_grid_row_title", 2);
         assert.deepEqual(getNodesTextContent(target.querySelectorAll(".o_grid_row_title")), [
@@ -703,7 +703,7 @@ QUnit.module("Views", (hooks) => {
         });
 
         await toggleSearchBarMenu(target);
-        const groupByDropdown = target.querySelector(".o_menu_item").parentNode;
+        const groupByDropdown = target.querySelector(".o_menu_item:not(.o_add_custom_filter)").parentNode;
         await toggleMenuItem(target, "Date");
         const dateOptionNodes = groupByDropdown.querySelectorAll(".o_item_option");
         await click(dateOptionNodes[0], "");

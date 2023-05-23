@@ -67,10 +67,7 @@ registry.category("web_tour.tours").add("knowledge_search_favorites_tour", {
             trigger: '.o_control_panel .o_searchview_dropdown_toggler',
         },
         {
-            trigger: ".o_favorite_menu .o_add_favorite button",
-            run: function () {
-                this.$anchor[0].dispatchEvent(new Event("mouseenter"));
-            },
+            trigger: ".o_favorite_menu .o_add_favorite",
         },
         {
             // use by default

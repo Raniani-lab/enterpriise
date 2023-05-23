@@ -694,7 +694,6 @@ QUnit.module("Views", (hooks) => {
         assert.containsNone(target, "div.o_view_nocontent");
 
         // with comparison active, data, no comparisonData (filter on 'this_year' + 'previous_period')
-        await toggleMenuItem(target, "Date");
         await toggleMenuItemOption(target, "Date", "August");
 
         verifyContents(

@@ -24,7 +24,7 @@
             </div>
         </div>
         <div t-if="state.showChatter and props.selection.length === 1" class="o_document_chatter_container">
-            <div class="o_documents_chatter_placeholder" t-ref="chatterContainer">
+            <div class="o_documents_chatter_placeholder mt-2" t-ref="chatterContainer">
                 <Chatter close="isMobile ? undefined : () => state.showChatter = false" hasActivities="records[0].resModel === 'documents.document'" threadId="records[0].resId" threadModel="records[0].resModel" compactHeight="true" />
             </div>
         </div>
@@ -76,8 +76,10 @@
                     Upload Document
                 </span>
             </div>
-            <i t-if="nbPreviews === 1 and !isMobile and !state.showChatter" class="o_inspector_open_chatter o_inspector_open_chatter_preview rounded-circle text-center fa fa-comments" title="Open chatter"
-                t-on-click.stop.prevent="() => state.showChatter = true"/>
+            <button t-if="nbPreviews === 1 and !isMobile and !state.showChatter" class="o_inspector_open_chatter btn position-absolute top-0 end-0 me-2 mt-2 px-2 rounded-circle" title="Open chatter"
+                t-on-click.stop.prevent="() => state.showChatter = true">
+                <i class="fa fa-comments"/>
+            </button>
             <div t-if="record_index == 1 and record_size == 4" class="w-100"/>
         </t>
         <div t-if="nbPreviews &gt; 1" class="o_selection_info w-100 text-center mt-2">
@@ -122,37 +124,53 @@
                 <t t-if="records[0].data.type == 'url'">
                     <t t-set="url" t-value="records[0].data.url"/>
                     <a t-if="url and (url.startsWith('https://') || url.startsWith('http://') || url.startsWith('ftp://'))"
-                        t-att-href="url" target="new" t-att-class="nbPreviews > 1 ? 'pe-none' : ''">
-                        <button class="btn fa fa-link o_inspector_button" t-att-disabled="nbPreviews > 1" title="Link"/>
+                        t-att-href="url" target="new" class="o_inspector_button btn " t-att-disabled="nbPreviews > 1" t-att-class="nbPreviews > 1 ? 'pe-none' : ''">
+                        <i class="fa fa-fw fa-link"/>
                     </a>
                 </t>
                 <t t-else="">
-                    <button class="btn fa fa-download o_inspector_button o_inspector_download" title="Download" t-on-click.stop.prevent="onDownload"/>
+                    <button class="o_inspector_button o_inspector_download btn" title="Download" t-on-click.stop.prevent="onDownload">
+                        <i class="fa fa-fw fa-download"/>
+                    </button>
                 </t>
                 <t t-if="records[0].data.active">
                     <!-- groups does not work here -->
-                    <button t-if="currentFolder.id" class="btn fa fa-share-alt o_inspector_button o_inspector_share" title="Share this selection" groups="documents.group_documents_user"
-                        t-on-click.stop.prevent="onShare"/>
+                    <button t-if="currentFolder.id" class="o_inspector_button o_inspector_share btn" title="Share this selection" groups="documents.group_documents_user" t-on-click.stop.prevent="onShare">
+                        <i class="fa fa-fw fa-share-alt"/>
+                    </button>
                     <t t-if="nbPreviews === 1">
-                        <button t-if="records[0].data.type !== 'url'" class="btn fa fa-retweet o_inspector_button o_inspector_replace" title="Replace" t-on-click.stop.prevent="() => this.documentsReplaceInput.el.click()" t-att-disabled="editDisabled || locked"/>
+                        <button t-if="records[0].data.type !== 'url'" class="o_inspector_button o_inspector_replace btn" title="Replace" t-on-click.stop.prevent="() => this.documentsReplaceInput.el.click()" t-att-disabled="editDisabled || locked">
+                            <i class="fa fa-fw fa-retweet"/>
+                        </button>
                         <input type="file" t-ref="replaceFileInput" class="o_inspector_replace_input o_input_file o_hidden" t-on-change.stop="onReplace"/>
-                        <button t-att-class="'btn fa o_inspector_button o_inspector_lock' + (records[0].data.lock_uid ? ' o_locked fa-lock' : ' fa-unlock-alt')" title="Lock"
-                            t-on-click.stop.prevent="onLock" t-att-disabled="editDisabled || locked"/>
+                        <button t-att-class="'o_inspector_button o_inspector_lock btn' + (records[0].data.lock_uid ? ' o_locked' : '')" title="Lock" t-on-click.stop.prevent="onLock" t-att-disabled="editDisabled || locked">
+                            <i t-att-class="'fa fa-fw ' + (records[0].data.lock_uid ? 'fa-lock o_locked' : 'fa-unlock-alt')"/>
+                        </button>
                     </t>
                     <t t-if="isPdfOnly()">
-                        <button class="btn fa fa-scissors o_inspector_button o_inspector_split" aria-label="Split" title="Split" t-on-click.stop.prevent="() => this.openPreview(false, true)" t-att-disabled="editDisabled || locked"/>
+                        <button class="btn o_inspector_button o_inspector_split" aria-label="Split" title="Split" t-on-click.stop.prevent="() => this.openPreview(false, true)" t-att-disabled="editDisabled || locked">
+                            <i class="fa fa-fw fa-scissors"/>
+                        </button>
                     </t>
                 </t>
             </div>
-            <button t-if="records[0].data.active" class="o_active btn fa fa-archive o_inspector_button o_inspector_archive float-end" title="Archive"
-            t-on-click.stop.prevent="onArchive" t-att-disabled="editDisabled || locked"/>
+            <button t-if="records[0].data.active" class="o_inspector_button o_inspector_archive o_active btn float-end" title="Archive"
+            t-on-click.stop.prevent="onArchive" t-att-disabled="editDisabled || locked">
+                <i class="fa fa-fw fa-archive"/>
+            </button>
             <t t-else="">
-                <button class="btn float-end o_inspector_button o_inspector_delete" title="Delete" t-on-click.stop.prevent="onDelete" t-att-disabled="editDisabled || locked"><i class="fa fa-trash"/></button>
-                <button class="btn float-end o_inspector_button o_archived o_inspector_archive" style="margin-right:4px" title="Un-archive"
-                t-on-click.stop.prevent="onUnarchive" t-att-disabled="editDisabled || locked"><i class="fa fa-upload"/></button>
+                <button class="o_inspector_button o_inspector_delete btn float-end" title="Delete" t-on-click.stop.prevent="onDelete" t-att-disabled="editDisabled || locked">
+                    <i class="fa fa-fw fa-trash"/>
+                </button>
+                <button class="o_inspector_button o_archived o_inspector_archive btn float-end" style="margin-right:4px" title="Un-archive"
+                t-on-click.stop.prevent="onUnarchive" t-att-disabled="editDisabled || locked">
+                    <i class="fa fa-fw fa-upload"/>
+                </button>
             </t>
-            <i t-if="!props.withFilePreview and nbPreviews === 1 and !isMobile and !state.showChatter" class="o_inspector_open_chatter rounded-circle text-center fa fa-comments float-end" title="Open chatter"
-                t-on-click.stop.prevent="() => state.showChatter = true"/>
+            <button t-if="!props.withFilePreview and nbPreviews === 1 and !isMobile and !state.showChatter" class="o_inspector_button o_inspector_open_chatter btn float-end rounded-circle me-1 px-2" title="Open chatter"
+                t-on-click.stop.prevent="() => state.showChatter = true">
+                <i class="fa fa-comments"/>
+            </button>
         </div>
     </t>
 
@@ -243,7 +261,7 @@
             <div class="o_inspector_rules">
                 <t t-foreach="getCommonRules()" t-as="rule" t-key="rule.resId">
                     <div class="o_inspector_rule o_inspector_trigger_hover_target mb-2" t-att-data-id="rule.resId">
-                        <button t-att-tile="rule.data.note || ''" class="btn fa fa-play text-white bg-primary o_inspector_trigger_rule"
+                        <button t-att-tile="rule.data.note || ''" class="btn fa fa-play o_inspector_trigger_rule"
                             t-on-click.stop.prevent="(ev) => this.triggerRule(rule)"/>
                         <span class="ms-2" t-att-title="rule.data.note || ''"><t t-esc="rule.data.display_name"/></span>
                     </div>

@@ -33,6 +33,12 @@ class MrpReport(models.Model):
     qty_produced = fields.Float(
         "Quantity Produced", readonly=True,
         help="Total quantity produced in product's UoM")
+    qty_demanded = fields.Float(
+        "Quantity Demanded", readonly=True,
+        help="Total quantity demanded in product's UoM")
+    yield_rate = fields.Float(
+        "Yield Percentage(%)", readonly=True,
+        help="Ratio of quantity produced over quantity demanded")
 
     # note that unit costs take include subtraction of byproduct cost share
     unit_cost = fields.Monetary(
@@ -72,6 +78,8 @@ class MrpReport(models.Model):
                 mo.date_finished       AS date_finished,
                 mo.product_id          AS product_id,
                 prod_qty.product_qty   AS qty_produced,
+                prod_qty.qty_demanded  AS qty_demanded,
+                prod_qty.product_qty / prod_qty.qty_demanded * 100                                                                      AS yield_rate,
                 comp_cost.total * currency_table.rate                                                                                   AS component_cost,
                 op_cost.total * currency_table.rate                                                                                     AS operation_cost,
                 ({self._select_total_cost()}) * currency_table.rate                                                                     AS total_cost,
@@ -183,10 +191,16 @@ class MrpReport(models.Model):
             LEFT JOIN (
                 SELECT
                     mo.id AS mo_id,
-                    SUM(sm.product_qty) AS product_qty
+                    mo.name,
+                    SUM(sm.product_qty) AS product_qty,
+                    SUM(sm.product_uom_qty / uom.factor * uom_prod.factor) AS qty_demanded
                 FROM stock_move AS sm
-                RIGHT JOIN mrp_production AS mo ON sm.production_id = mo.id
-                 WHERE
+                JOIN mrp_production AS mo ON sm.production_id = mo.id
+                JOIN uom_uom AS uom ON uom.id = sm.product_uom
+                JOIN product_product AS product ON product.id = sm.product_id
+                JOIN product_template AS template ON template.id = product.product_tmpl_id
+                JOIN uom_uom AS uom_prod ON uom_prod.id = template.uom_id
+                WHERE
                     mo.state = 'done'
                     AND sm.state = 'done'
                     AND sm.product_qty != 0
@@ -214,6 +228,7 @@ class MrpReport(models.Model):
                 op_cost.total,
                 op_cost.total_duration,
                 prod_qty.product_qty,
+                prod_qty.qty_demanded,
                 currency_table.rate
         """
 
@@ -227,4 +242,9 @@ class MrpReport(models.Model):
             qty_produced_expression = self._inherits_join_calc(self._table, 'qty_produced', query)
             sql_expression = f'SUM({field_expression} * {qty_produced_expression}) / SUM({qty_produced_expression})'
             return sql_expression, [fname, 'qty_produced']
+        if aggregate_spec == 'yield_rate:sum':
+            qty_produced_expression = self._inherits_join_calc(self._table, 'qty_produced', query)
+            qty_demanded_expression = self._inherits_join_calc(self._table, 'qty_demanded', query)
+            sql_expression = f'SUM({qty_produced_expression}) / SUM({qty_demanded_expression}) * 100'
+            return sql_expression, ['yield_rate', 'qty_produced', 'qty_demanded']
         return super()._read_group_select(aggregate_spec, query)

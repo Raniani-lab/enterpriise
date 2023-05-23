@@ -3,6 +3,7 @@ from .common import TestAccountReportsCommon
 
 from odoo import fields, Command
 from odoo.tests import tagged
+from odoo.exceptions import UserError
 
 
 @tagged('post_install', '-at_install')
@@ -289,3 +290,59 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
                 {'account_id': wizard.income_provision_account_id.id, 'debit': 0, 'credit': 50},
             ]
         )
+
+    def test_same_rate(self):
+        """
+        Make sure no adjustment lines are generated if the rate is unchanged
+        (i.e. do not create 0 balance adjustment lines)
+        """
+        self.receivable_move.button_cancel()
+
+        receivable_move = self.env['account.move'].create({
+            'move_type': 'entry',
+            'date': '2016-01-01',
+            'journal_id': self.company_data['default_journal_sale'].id,
+            'line_ids': [
+                Command.create({
+                    'name': 'receivable_line',
+                    'currency_id': self.currency_data['currency'].id,
+                    'amount_currency': 3000.0,
+                    'account_id': self.receivable_account_1.id,
+                }),
+                Command.create({
+                    'name': 'revenue_line',
+                    'debit': 0.0,
+                    'credit': 1000.0,
+                    'account_id': self.company_data['default_account_revenue'].id,
+                }),
+            ],
+        })
+        receivable_move.action_post()
+
+        options = self._generate_options(self.report, fields.Date.from_string('2016-01-01'), fields.Date.from_string('2016-01-01'))
+        options['unfold_all'] = True
+
+        # Check the gold currency.
+        self.assertLinesValues(
+            # pylint: disable = C0326
+            self.report._get_lines(options),
+            [   0,                                                  1,           2,           3,        4],
+            [
+                ('Accounts To Adjust',                             '',          '',          '',       ''),
+                ('Gol (1 USD = 3.0 Gol)',                      3000.0,      1000.0,      1000.0,       ''),
+                ('121000 Account Receivable',                  3000.0,      1000.0,      1000.0,       ''),
+                ('INV/2016/00002 receivable_line',             3000.0,      1000.0,      1000.0,       ''),
+                ('Total 121000 Account Receivable',            3000.0,      1000.0,      1000.0,       ''),
+                ('Total Gol',                                  3000.0,      1000.0,      1000.0,       ''),
+            ],
+            currency_map={
+                1: {'currency': self.currency_data['currency']},
+            },
+        )
+        with self.assertRaises(UserError, msg="No adjustment should be needed"):
+            self.env.context = {**self.env.context, **options}
+            self.env['account.multicurrency.revaluation.wizard'].create({
+                'journal_id': self.company_data['default_journal_misc'].id,
+                'expense_provision_account_id': self.company_data['default_account_expense'].id,
+                'income_provision_account_id': self.company_data['default_account_revenue'].id,
+            })

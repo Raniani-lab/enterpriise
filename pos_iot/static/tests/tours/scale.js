@@ -54,13 +54,13 @@ registry.category("web_tour.tours").add("pos_iot_scale_tour", {
             trigger: ".menu-button",
         },
         {
-            trigger: ".header-button",
+            trigger: ".close-button",
         },
         {
             trigger: ".menu-button",
         },
         {
-            trigger: ".header-button",
+            trigger: ".close-button",
             run: function () {}, //it's a check,
         },
     ],

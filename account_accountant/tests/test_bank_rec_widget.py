@@ -352,6 +352,18 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         # The amount is the same, no message under the 'amount' field.
         self.assert_form_extra_text_value(wizard.form_extra_text, False)
 
+        # Remove the line to see if the exchange difference is well removed.
+        wizard._action_remove_new_amls(inv_line)
+        self.assertRecordValues(wizard.line_ids, [
+            # pylint: disable=C0326
+            {'flag': 'liquidity',       'amount_currency': 1200.0,      'currency_id': self.company_data['currency'].id,    'balance': 1200.0},
+            {'flag': 'auto_balance',    'amount_currency': -1200.0,     'currency_id': self.company_data['currency'].id,    'balance': -1200.0},
+        ])
+        self.assertRecordValues(wizard, [{'state': 'invalid'}])
+
+        # Mount the line again.
+        wizard._action_add_new_amls(inv_line)
+
         wizard.button_validate()
         self.assertRecordValues(st_line.line_ids, [
             # pylint: disable=C0326

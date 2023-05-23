@@ -1553,6 +1553,7 @@ class BankRecWidget(models.Model):
         if line.flag == 'new_aml':
             if not self._lines_widget_check_apply_early_payment_discount():
                 self._lines_widget_check_apply_partial_matching()
+            self._lines_widget_recompute_exchange_diff()
         self._lines_widget_add_auto_balance_line()
         self._action_clear_manual_operations_form()
 

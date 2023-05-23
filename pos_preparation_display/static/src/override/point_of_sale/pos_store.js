@@ -10,7 +10,10 @@ patch(PosStore.prototype, "pos_preparation_display.PosStore", {
         const _super = this._super;
         const result = await this.globalState.sendPreparationDisplayOrder(order);
 
-        if (!result) {
+        // We display this error popup only if the PoS is connected,
+        // otherwise the user has already received a popup telling him
+        // that this functionality will be limited.
+        if (!result && this.pos.globalState.synch.status === "connected") {
             await this.popup.add(AlertPopup, {
                 title: _t("Send failed"),
                 body: _t("Failed in sending the changes to preparation display"),

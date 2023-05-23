@@ -153,7 +153,7 @@ export function useMultiHover({ ref, selector, related, className }) {
      */
     const findSiblings = (el) =>
         ref.el.querySelectorAll(
-            related.map((attr) => `[${attr}='${el.getAttribute(attr)}']`).join("")
+            related.map((attr) => `[${attr}='${el.getAttribute(attr).replace(/'/g, "\\'")}']`).join("")
         );
 
     /**

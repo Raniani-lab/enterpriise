@@ -1352,6 +1352,25 @@ QUnit.test("show cell buttons when hovering a cell: 2-level grouped", async (ass
     assert.containsOnce(target, SELECTORS.cellPlanButton);
 });
 
+QUnit.test("hovering a cell with special character", async (assert) => {
+    assert.expect(1)
+    // add special character to data
+    serverData.models.users.records[0].name = "User' 1";
+
+    await makeView({
+        type: "gantt",
+        resModel: "tasks",
+        serverData,
+        arch: '<gantt date_start="start" date_stop="stop"/>',
+        groupBy: ["user_id", "project_id"],
+    });
+
+    // hover on first header "User' 1" with data-row-id equal to [{"user_id":[1,"User' 1"]}]
+    // the "'" must be escaped with "\\'" in findSiblings to prevent the selector to crash
+    await triggerEvent(target.querySelector(".o_gantt_row_header"), null, "mouseenter");
+    assert.hasClass(target.querySelector(".o_gantt_row_header"), "o_gantt_group_hovered", "hover style is applied to the element");
+});
+
 QUnit.test("if a cell_create is specified to false then do not show + icon", async (assert) => {
     await makeView({
         type: "gantt",

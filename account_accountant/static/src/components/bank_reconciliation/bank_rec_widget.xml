@@ -262,13 +262,16 @@
                                 <td t-att-colspan="data.columns.length - (data.display_multi_currency_column ? 5 : 3)"
                                     class="o_data_cell o_field_cell o_list_char text-wrap fw-normal"
                                     field="name">
-                                    <span class="text-muted fst-italic me-1"
-                                          t-out="data.extra_notes"/>
                                     <t t-if="['new_aml', 'aml', 'liquidity'].includes(line.flag.value) and line.source_aml_move_id.id">
                                         <span class="o_form_uri fst-italic"
                                               t-out="line.source_aml_move_name.value"
                                               t-on-click="() => this.showMove(line.source_aml_move_id.id)"/>
-                                        <span class="mr4 fst-italic" t-if="line.name.value">:</t>
+                                        <span class="me-1 fst-italic" t-if="line.name.value">:</t>
+                                    </t>
+                                    <t t-if="line.flag.value == 'liquidity' and data.extra_notes">
+                                        <span class="text-muted fst-italic"
+                                              t-out="data.extra_notes"/>
+                                        <span class="text-muted mx-1">-</span>
                                     </t>
                                     <span class="text-muted fst-italic"
                                           t-out="line.name.value"/>

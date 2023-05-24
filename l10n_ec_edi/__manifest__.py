@@ -13,7 +13,7 @@ The supported documents are Invoices, Credit Notes, Debit Notes, Purchase Liquid
 
 Includes automations to easily predict the withholding tax to be applied to each purchase invoice
 """,
-    "author": "Andres Calle (TRESCLOUD)",
+    "author": "TRESCLOUD",
     "category": "Accounting/Localizations/EDI",
     "license": "OPL-1",
     "depends": [

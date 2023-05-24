@@ -253,7 +253,7 @@ if first_mpf_date == payslip.date_from or (first_mpf_date.day != 1 and first_mpf
 if employee.l10n_hk_mpf_vc_option == 'custom':
     result = -employee.l10n_hk_mpf_vc_percentage * result_rules['MPF_GROSS']['total']
 else:
-    result = -max(payslip.rule_parameter('l10n_hk_mpf_maximum') - 0.05 * result_rules['MPF_GROSS']['total'], 0)
+    result = -max(0.05 * result_rules['MPF_GROSS']['total'] - payslip.rule_parameter('l10n_hk_mpf_maximum'), 0)
         </field>
         <field name="struct_id" ref="l10n_hk_hr_payroll.hr_payroll_structure_cap57_employee_salary" />
         <field name="appears_on_payslip">True</field>

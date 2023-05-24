@@ -5,9 +5,11 @@ import { GanttRenderer } from "@web_gantt/gantt_renderer";
 import { getUnionOfIntersections } from "@web_gantt/gantt_helpers";
 import { PlanningEmployeeAvatar } from "./planning_employee_avatar";
 import { PlanningGanttRowProgressBar } from "./planning_gantt_row_progress_bar";
-import { useEffect } from "@odoo/owl";
+import { useService } from "@web/core/utils/hooks"
+import { useEffect, onWillStart } from "@odoo/owl";
+import { serializeDateTime } from "@web/core/l10n/dates";
 
-const { Duration } = luxon;
+const { Duration, DateTime } = luxon;
 
 export class PlanningGanttRenderer extends GanttRenderer {
     setup() {
@@ -15,6 +17,14 @@ export class PlanningGanttRenderer extends GanttRenderer {
         useEffect(() => {
             this.rootRef.el.classList.add("o_planning_gantt");
         });
+
+        this.userService = useService('user');
+        this.isPlanningManager = false;
+        onWillStart(this.onWillStart);
+    }
+
+    async onWillStart() {
+        this.isPlanningManager = await this.userService.hasGroup('planning.group_planning_manager');
     }
 
     /**
@@ -232,8 +242,77 @@ export class PlanningGanttRenderer extends GanttRenderer {
     shouldMergeGroups() {
         return false;
     }
+
+    /**
+     * @param {MouseEvent} ev
+     * @param {Pill} pill
+     * @param {number} splitIndex - Index of the split tool used on the pill
+     */
+    async onPillSplitToolClicked(ev, pill, splitIndex) {
+        if (!this.isPlanningManager) {
+            return;
+        }
+        const pillStart = pill.grid.column[0];
+
+        // 1. Create a copy of the current pill after the split tool
+        const startColumnId = pillStart + splitIndex;
+        const { start } = this.getColumnAvailabilitiesLimit(pill, startColumnId, {
+            fixed_stop: pill.record.end_datetime,
+        });
+        const values = { start_datetime: serializeDateTime(start) };
+        await this.model.orm.call(
+            this.model.metaData.resModel,
+            'copy',
+            [pill.record.id, values],
+        );
+
+        // 2. Reduce the size of the current pill down to the split tool
+        const { stop } = this.getColumnAvailabilitiesLimit(pill, startColumnId - 1, {
+            fixed_start: pill.record.start_datetime,
+        });
+        const schedule = { end_datetime: serializeDateTime(stop) };
+        this.model.reschedule(pill.record.id, schedule, this.openPlanDialogCallback);
+    }
+
+    /**
+     * Determines the earliest (in start) and latest (in stop) availability in a column for the row of a given pill.
+     * If a fixed start/stop is set, the latest/earliest availability as to be after/before it. If the row shows no
+     * availability respecting the given constraint, the returned start/stop allows to create a shift of 1 second.
+     *
+     * @param {Pill} pill
+     * @param {number} column - Column index
+     * @param {{ Datetime, Datetime }} { fixed_start, fixed_stop } - If set, indicates a fixed value for the start/stop result
+     * @returns {{ Datetime, Datetime }} { start, stop }
+     */
+    getColumnAvailabilitiesLimit(pill, column, { fixed_start, fixed_stop } = {}) {
+        const defaultColumnTiming = super.getColumnStartStop(column);
+        let start = fixed_start || defaultColumnTiming.start;
+        let stop = fixed_stop || defaultColumnTiming.stop;
+        const currentRow = this.model.data.rows.find(row => row.resId === pill.record.resource_id[0]) || this.model.data.rows.find(row => row.resId === false);
+
+        const unavailability_at_start = currentRow?.unavailabilities.find(unavailability => start >= unavailability.start && start < unavailability.stop);
+        const unavailability_at_stop = currentRow?.unavailabilities.find(unavailability => stop > unavailability.start && stop <= unavailability.stop);
+
+        if (!fixed_stop && unavailability_at_stop) {
+            stop = unavailability_at_stop.start;
+        }
+        if (!fixed_start && unavailability_at_start && stop > start) {
+            start = unavailability_at_start.stop;
+        }
+        if (stop <= start) {
+            if (!fixed_start) {
+                start = DateTime.fromMillis(stop - 1000);
+            } else {
+                stop = DateTime.fromMillis(start + 1000);
+            }
+        }
+        return { start, stop };
+    }
+
+    
 }
 PlanningGanttRenderer.rowHeaderTemplate = "planning.PlanningGanttRenderer.RowHeader";
+PlanningGanttRenderer.pillTemplate = "planning.PlanningGanttRenderer.Pill";
 PlanningGanttRenderer.components = {
     ...GanttRenderer.components,
     Avatar: PlanningEmployeeAvatar,

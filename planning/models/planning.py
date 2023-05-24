@@ -103,7 +103,7 @@ class Planning(models.Model):
     state = fields.Selection([
             ('draft', 'Draft'),
             ('published', 'Published'),
-    ], string='Status', default='draft')
+    ], string='Status', default='draft', copy=True) # "state" field is not copied by default in the orm, which is not a desired behavior in planning
     # template dummy fields (only for UI purpose)
     template_creation = fields.Boolean("Save as Template", store=False, inverse='_inverse_template_creation')
     template_autocomplete_ids = fields.Many2many('planning.slot.template', store=False, compute='_compute_template_autocomplete_ids')
@@ -114,9 +114,9 @@ class Planning(models.Model):
 
     # Recurring (`repeat_` fields are none stored, only used for UI purpose)
     recurrency_id = fields.Many2one('planning.recurrency', readonly=True, index=True, ondelete="set null", copy=False)
-    repeat = fields.Boolean("Repeat", compute='_compute_repeat', inverse='_inverse_repeat', copy=True,
+    repeat = fields.Boolean("Repeat", compute='_compute_repeat', inverse='_inverse_repeat',
         help="To avoid polluting your database and performance issues, shifts are only created for the next 6 months. They are then gradually created as time passes by in order to always get shifts 6 months ahead. This value can be modified from the settings of Planning, in debug mode.")
-    repeat_interval = fields.Integer("Repeat every", default=1, compute='_compute_repeat_interval', inverse='_inverse_repeat', copy=True)
+    repeat_interval = fields.Integer("Repeat every", default=1, compute='_compute_repeat_interval', inverse='_inverse_repeat')
     repeat_unit = fields.Selection([
         ('day', 'Days'),
         ('week', 'Weeks'),
@@ -124,9 +124,9 @@ class Planning(models.Model):
         ('year', 'Years'),
     ], default='week', compute='_compute_repeat_unit', inverse='_inverse_repeat', required=True)
     repeat_type = fields.Selection([('forever', 'Forever'), ('until', 'Until'), ('x_times', 'Number of Occurrences')],
-        string='Repeat Type', default='forever', compute='_compute_repeat_type', inverse='_inverse_repeat', copy=True)
-    repeat_until = fields.Date("Repeat Until", compute='_compute_repeat_until', inverse='_inverse_repeat', copy=True)
-    repeat_number = fields.Integer("Repetitions", default=1, compute='_compute_repeat_number', inverse='_inverse_repeat', copy=True)
+        string='Repeat Type', default='forever', compute='_compute_repeat_type', inverse='_inverse_repeat')
+    repeat_until = fields.Date("Repeat Until", compute='_compute_repeat_until', inverse='_inverse_repeat')
+    repeat_number = fields.Integer("Repetitions", default=1, compute='_compute_repeat_number', inverse='_inverse_repeat')
     recurrence_update = fields.Selection([
         ('this', 'This shift'),
         ('subsequent', 'This and following shifts'),
@@ -851,6 +851,15 @@ class Planning(models.Model):
                     end_datetime = slot.end_datetime if values.get('repeat_unit') else recurrency_values.get('repeat_until')
                     recurrence._delete_slot(end_datetime)
                     recurrence._repeat_slot()
+        return result
+
+    @api.returns('self', lambda value: value.id)
+    def copy(self, default=None):
+        result = super().copy(default=default)
+        # force recompute of stored computed fields depending on start_datetime
+        if default and "start_datetime" in default:
+            result._compute_allocated_hours()
+            result._compute_working_days_count()
         return result
 
     # ----------------------------------------------------

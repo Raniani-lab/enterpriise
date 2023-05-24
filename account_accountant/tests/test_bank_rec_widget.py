@@ -2065,3 +2065,40 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
             st_line1._cron_try_auto_reconcile_statement_lines()
         self.assertRecordValues(st_line1, [{'is_reconciled': True, 'cron_last_check': fields.Datetime.from_string('2017-01-01 00:00:00')}])
         self.assertRecordValues(st_line2, [{'is_reconciled': False, 'cron_last_check': False}])
+
+    @freeze_time('2019-01-01')
+    def test_button_apply_reco_model(self):
+        st_line = self._create_st_line(-1000.0, partner_id=self.partner_a.id)
+        inv_line = self._create_invoice_line(
+            'in_invoice',
+            invoice_date=st_line.date,
+            invoice_line_ids=[{'price_unit': 980.0}],
+        )
+
+        reco_model = self.env['account.reconcile.model'].create({
+            'name': "test_apply_taxes_with_reco_model",
+            'rule_type': 'writeoff_button',
+            'line_ids': [Command.create({
+                'account_id': self.account_revenue1.copy().id,
+                'label': 'Bank Fees'
+            })],
+        })
+
+        wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
+        wizard._action_trigger_matching_rules()
+
+        self.assertRecordValues(wizard.line_ids, [
+            # pylint: disable=C0326
+            {'flag': 'liquidity',    'account_id': st_line.journal_id.default_account_id.id,        'balance': -1000.0},
+            {'flag': 'new_aml',      'account_id': inv_line.account_id.id,                          'balance':   980.0},
+            {'flag': 'auto_balance', 'account_id': self.company_data['default_account_payable'].id, 'balance':    20.0},
+        ])
+
+        wizard._action_select_reconcile_model(reco_model)
+
+        self.assertRecordValues(wizard.line_ids, [
+            # pylint: disable=C0326
+            {'flag': 'liquidity',    'account_id': st_line.journal_id.default_account_id.id,        'balance': -1000.0},
+            {'flag': 'new_aml',      'account_id': inv_line.account_id.id,                          'balance':   980.0},
+            {'flag': 'manual',       'account_id': reco_model.line_ids[0].account_id.id,            'balance':    20.0},
+        ])

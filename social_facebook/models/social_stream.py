@@ -44,7 +44,7 @@ class SocialStreamFacebook(models.Model):
         if endpoint_name == 'published_posts':
             facebook_fields.append('insights.metric(post_impressions)')
 
-        posts_endpoint_url = url_join(self.env['social.media']._FACEBOOK_ENDPOINT, "/v10.0/%s/%s" % (self.account_id.facebook_account_id, endpoint_name))
+        posts_endpoint_url = url_join(self.env['social.media']._FACEBOOK_ENDPOINT_VERSIONED, "%s/%s" % (self.account_id.facebook_account_id, endpoint_name))
         result = requests.get(posts_endpoint_url,
             params={
                 'access_token': self.account_id.facebook_access_token,

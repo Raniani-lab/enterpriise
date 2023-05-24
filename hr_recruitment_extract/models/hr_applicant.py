@@ -103,7 +103,7 @@ class HrApplicant(models.Model):
         return iap_tools.iap_jsonrpc(endpoint + '/api/extract/applicant/1/' + pathinfo, params=params)
 
     def _get_iap_bus_notification_content(self):
-        return _("CV is being Digitized")
+        return _("Resume is being Digitized")
 
     def _get_ocr_module_name(self):
         return 'hr_recruitment_extract'

@@ -13,6 +13,9 @@
         'views/hr_applicant_views.xml',
         'views/res_config_settings_views.xml',
     ],
+    'demo': [
+        'data/hr_recruitment_demo.xml'
+    ],
     'auto_install': True,
     'license': 'OEEL-1',
     'assets': {

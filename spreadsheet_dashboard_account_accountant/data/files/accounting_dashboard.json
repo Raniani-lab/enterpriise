@@ -1320,7 +1320,7 @@
                     "content": "=ODOO.DEBIT($F11,C$9)-ODOO.DEBIT($F11,C$9-1)"
                 },
                 "C12": {
-                    "content": "=-ODOO.CREDIT($F12,C$9)-ODOO.CREDIT($F12,C$9-1)"
+                    "content": "=-ODOO.CREDIT($F12,C$9)+ODOO.CREDIT($F12,C$9-1)"
                 },
                 "C13": {
                     "content": "=C11+C12"
@@ -1501,7 +1501,7 @@
                     "content": "=ODOO.DEBIT($F11,D$9)-ODOO.DEBIT($F11,D$9-1)"
                 },
                 "D12": {
-                    "content": "=-ODOO.CREDIT($F12,D$9)-ODOO.CREDIT($F12,D$9-1)"
+                    "content": "=-ODOO.CREDIT($F12,D$9)+ODOO.CREDIT($F12,D$9-1)"
                 },
                 "D13": {
                     "content": "=D11+D12"
@@ -1684,7 +1684,7 @@
                     "content": "=ODOO.DEBIT($F11,E$9)-ODOO.DEBIT($F11,E$9-1)"
                 },
                 "E12": {
-                    "content": "=-ODOO.CREDIT($F12,E$9)-ODOO.CREDIT($F12,E$9-1)"
+                    "content": "=-ODOO.CREDIT($F12,E$9)+ODOO.CREDIT($F12,E$9-1)"
                 },
                 "E13": {
                     "content": "=E11+E12"

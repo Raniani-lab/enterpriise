@@ -1819,7 +1819,7 @@ msgstr "Debe setear un número de RUC para la compañía %s"
 #: code:addons/l10n_ec_edi/models/account_edi_format.py:0
 #, python-format
 msgid "You must set a VAT number for partner %s"
-msgstr "Debe setear un número de RUC/Céd/Pasaporte para el asociado"
+msgstr "Debe setear un número de RUC/Céd/Pasaporte para el asociado %s"
 
 #. module: l10n_ec_edi
 #. odoo-python

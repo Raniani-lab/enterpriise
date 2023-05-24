@@ -134,8 +134,6 @@
             z-index: 0;
         }
 
-        .o_section_header:not(:hover) .o_section_create,
-        .o_section_header:not(:hover) .o_knowledge_join_article_members,
         .o_article_handle > div:not(:hover) .o_article_create {
             visibility: hidden;
         }
@@ -144,9 +142,6 @@
             background-color: rgba($knowledge-bg--active, 0.4);
         }
 
-        .o_article_create, .o_article_caret {
-            border: none;
-        }
         .o_article_name a {
             color: inherit;
         }
@@ -401,7 +396,7 @@
             opacity: 0;
         }
         .o_section_header:not(:hover) .o_section_create,
-        .o_article_handle:not(:hover) .o_article_create {
+        .o_section_header:not(:hover) .o_knowledge_join_article_members {
             visibility: hidden;
         }
     }

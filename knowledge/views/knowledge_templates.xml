@@ -9,7 +9,7 @@
             <div class="o_section_header d-flex align-items-center h4 mb-0">
                 <div class="flex-grow-1 text-truncate">Workspace</div>
                 <button groups="base.group_user"
-                    class="o_knowledge_join_article_members btn border-0 p-1 opacity-75 opacity-100-hover">
+                    class="o_knowledge_join_article_members btn border-0 p-1 opacity-75 opacity-100-hover" type="button">
                     <i class="fa fa-fw fa-eye" title="Join a hidden article" />
                 </button>
                 <button groups="base.group_user"

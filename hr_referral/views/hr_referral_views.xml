@@ -24,11 +24,14 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="ref_user_id" widget="many2one_avatar_user"/>
-                <field name="points"/>
+                <field name="applicant_id" invisible="1"/>
+                <field name="applicant_name" optional="show"/>
+                <field name="applicant_subject" optional="hide"/>
                 <field name="stage_id"/>
-                <field name="applicant_id"/>
-                <field name="hr_referral_reward_id"/>
-                <field name="company_id" groups="base.group_multi_company"/>
+                <field name="points" decoration-success="points > 0" decoration-danger="0 > points"/>
+                <field name="write_date" optional="show"/>
+                <field name="hr_referral_reward_id" optional="hide"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide"/>
             </tree>
         </field>
     </record>
@@ -62,7 +65,7 @@
                             <field name="hr_referral_reward_id" attrs="{'invisible': [('hr_referral_reward_id', '=', False)]}"/>
                             <field name="applicant_id" attrs="{'invisible': [('applicant_id', '=', False)]}"/>
                             <field name="stage_id" attrs="{'invisible': [('applicant_id', '=', False)]}"/>
-                            <field name="sequence_stage" attrs="{'invisible': [('applicant_id', '=', False)]}"/>
+                            <field name="sequence_stage" invisible="1"/>
                         </group>
                     </group>
                 </sheet>

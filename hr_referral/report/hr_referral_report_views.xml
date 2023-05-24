@@ -94,7 +94,14 @@
             <field name="context">{
                 'search_default_year': True
             }</field>
-            <field name="help">This report performs analysis on your employee referral.</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_empty_folder">
+                    No data to display
+                </p>
+                <p>
+                    This reports allow you to follow the referrals and their evolution.
+                </p>
+            </field>
         </record>
 
         <menuitem id="menu_report_employee_referral_all"

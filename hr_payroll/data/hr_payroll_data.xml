@@ -6,14 +6,6 @@
             <field name="full_time_required_hours">40</field>
         </record>
 
-        <record id="resource.resource_calendar_std_35h" model="resource.calendar">
-            <field name="full_time_required_hours">35</field>
-        </record>
-
-        <record id="resource.resource_calendar_std_38h" model="resource.calendar">
-            <field name="full_time_required_hours">38</field>
-        </record>
-
         <record id="BASIC" model="hr.salary.rule.category">
             <field name="name">Basic</field>
             <field name="code">BASIC</field>

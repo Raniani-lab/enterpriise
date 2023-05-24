@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+        <record id="resource.resource_calendar_std_35h" model="resource.calendar">
+            <field name="full_time_required_hours">35</field>
+        </record>
+
+        <record id="resource.resource_calendar_std_38h" model="resource.calendar">
+            <field name="full_time_required_hours">38</field>
+        </record>
+
         <record id="base.user_demo" model="res.users">
             <field name="groups_id" eval="[(4, ref('hr_payroll.group_hr_payroll_user'))]"/>
         </record>

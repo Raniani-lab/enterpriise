@@ -3,10 +3,10 @@
 
 def _update_stage(env):
     for (stage_ref, points) in [
-        ("hr_recruitment.stage_job1", 1),
-        ("hr_recruitment.stage_job2", 20),
-        ("hr_recruitment.stage_job3", 9),
-        ("hr_recruitment.stage_job4", 5),
+        ("hr_recruitment.stage_job1", 5),
+        ("hr_recruitment.stage_job2", 10),
+        ("hr_recruitment.stage_job3", 15),
+        ("hr_recruitment.stage_job4", 20),
         ("hr_recruitment.stage_job5", 50),
     ]:
         stage = env.ref(stage_ref, raise_if_not_found=False)

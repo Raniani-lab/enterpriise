@@ -67,6 +67,9 @@
             <p class="o_view_nocontent_smiling_face">
                 Create new alerts
             </p>
+            <p>
+                Alerts will be displayed on the first screen to give information or redirects the employees
+            </p>
         </field>
     </record>
 

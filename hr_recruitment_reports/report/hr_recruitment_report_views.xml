@@ -127,7 +127,14 @@
             <field name="context">{
                 'search_default_year': True,
             }</field>
-            <field name="help">This report performs analysis on your recruitment.</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_empty_folder">
+                    No data to display
+                </p>
+                <p>
+                    This reports allow you to follow the evolution of the number of applicants and hired employees over time.
+                </p>
+            </field>
         </record>
 
         <record id="recruitment_report_job_action" model="ir.actions.act_window">
@@ -156,7 +163,14 @@
             <field name="context">{
                 'search_default_year': True,
             }</field>
-            <field name="help">This report performs analysis on your recruitment source.</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_empty_folder">
+                    No data to display
+                </p>
+                <p>
+                    This reports allow you to compare various measures grouped by your sources of applicants.
+                </p>
+            </field>
         </record>
 
         <record id="recruitment_report_source_job_action" model="ir.actions.act_window">
@@ -171,7 +185,14 @@
                 'search_default_year': True,
                 'search_default_job_id': active_id,
             }</field>
-            <field name="help">This report performs analysis on your recruitment source.</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_empty_folder">
+                    No data to display
+                </p>
+                <p>
+                    This reports allow you to compare various measures grouped by your sources of applicants.
+                </p>
+            </field>
         </record>
 
         <menuitem id="hr_recruitment.hr_applicant_report_menu"
@@ -205,7 +226,14 @@
             <field name="context">{
                 'search_default_year': True,
             }</field>
-            <field name="help">This report performs analysis on your teams' performance.</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_empty_folder">
+                    No data to display
+                </p>
+                <p>
+                    This reports allow you to compare the recruiters and their performance.
+                </p>
+            </field>
         </record>
 
         <menuitem id="hr_recruitment.hr_applicant_report_team_menu"

@@ -15,6 +15,6 @@ SignListController.components = {
     ...ListController.components,
     Dropdown,
     DropdownItem,
-}
+};
 
 SignListController.template = "sign.SignListController";

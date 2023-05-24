@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { useService } from "@web/core/utils/hooks";
-import { SignTemplateIframe } from './sign_template_iframe';
+import { SignTemplateIframe } from "./sign_template_iframe";
 import { SignTemplateTopBar } from "./sign_template_top_bar";
 import { Component, useRef, useEffect, onWillUnmount } from "@odoo/owl";
 import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
@@ -14,11 +14,14 @@ export class SignTemplateBody extends Component {
         this.popover = useService("popover");
         this.dialog = useService("dialog");
         this.user = useService("user");
-        this.PDFIframe = useRef('PDFIframe');
+        this.PDFIframe = useRef("PDFIframe");
         this.PDFViewerURL = this.buildPDFViewerURL();
-        useEffect(() => {
-            return this.waitForPDF();
-        }, () => []);
+        useEffect(
+            () => {
+                return this.waitForPDF();
+            },
+            () => []
+        );
         onWillUnmount(() => {
             if (this.iframe) {
                 this.saveTemplate();
@@ -62,26 +65,32 @@ export class SignTemplateBody extends Component {
      * Ref: https://stackoverflow.com/a/68939139
      */
     preventDroppingImagesOnViewerContainer() {
-        const viewerContainer = this.PDFIframe.el.contentDocument.querySelector('#viewerContainer');
-        viewerContainer.addEventListener('drop', (e) => {
-            if (e.dataTransfer.files && e.dataTransfer.files.length) {
-                e.stopImmediatePropagation();
-                e.stopPropagation();
-            }
-        }, true);
+        const viewerContainer = this.PDFIframe.el.contentDocument.querySelector("#viewerContainer");
+        viewerContainer.addEventListener(
+            "drop",
+            (e) => {
+                if (e.dataTransfer.files && e.dataTransfer.files.length) {
+                    e.stopImmediatePropagation();
+                    e.stopPropagation();
+                }
+            },
+            true
+        );
     }
 
     buildPDFViewerURL() {
         const date = new Date().toISOString();
         const baseURL = "/web/static/lib/pdfjs/web/viewer.html";
-        const attachmentLocation = encodeURIComponent(this.props.attachmentLocation).replace(/'/g, "%27").replace(/"/g, "%22");
+        const attachmentLocation = encodeURIComponent(this.props.attachmentLocation)
+            .replace(/'/g, "%27")
+            .replace(/"/g, "%22");
         const zoom = this.env.isSmall ? "page-fit" : "page-width";
         return `${baseURL}?unique=${date}&file=${attachmentLocation}#page=1&zoom=${zoom}`;
     }
 
     onTemplateNameChange(e) {
         const value = e.target.value;
-        if(value != "") {
+        if (value != "") {
             this.props.signTemplate.display_name = value;
             this.saveTemplate(value);
         }
@@ -101,10 +110,10 @@ export class SignTemplateBody extends Component {
             return false;
         }
 
-        for (let [newId, itemId] of Object.entries(newId2ItemIdMap)) {
+        for (const [newId, itemId] of Object.entries(newId2ItemIdMap)) {
             Id2UpdatedItem[newId].id = itemId;
         }
-        this.notification.add(this.env._t("Saved"), {type: "success"});
+        this.notification.add(this.env._t("Saved"), { type: "success" });
         return Id2UpdatedItem;
     }
 
@@ -112,8 +121,8 @@ export class SignTemplateBody extends Component {
         const updatedSignItems = {};
         const Id2UpdatedItem = {};
         const items = this.iframe?.signItems ?? {};
-        for (let page in items) {
-            for (let id in items[page]) {
+        for (const page in items) {
+            for (const id in items[page]) {
                 const signItem = items[page][id].data;
                 if (signItem.updated) {
                     Id2UpdatedItem[id] = signItem;
@@ -130,7 +139,7 @@ export class SignTemplateBody extends Component {
                         posY: signItem.posY,
                         width: signItem.width,
                         height: signItem.height,
-                    }
+                    };
 
                     if (id < 0) {
                         updatedSignItems[id]["transaction_id"] = id;
@@ -142,11 +151,9 @@ export class SignTemplateBody extends Component {
     }
 
     async rotatePDF() {
-        const result = await this.orm.call(
-            "sign.template",
-            "rotate_pdf",
-            [this.props.signTemplate.id]
-        );
+        const result = await this.orm.call("sign.template", "rotate_pdf", [
+            this.props.signTemplate.id,
+        ]);
         if (!result) {
             this.showBlockedTemplateDialog();
         }
@@ -157,14 +164,14 @@ export class SignTemplateBody extends Component {
     showBlockedTemplateDialog() {
         this.dialog.add(AlertDialog, {
             confirm: () => {
-                this.props.goBackToKanban()
+                this.props.goBackToKanban();
             },
             body: this.env._t("Somebody is already filling a document which uses this template"),
         });
     }
 }
 
-SignTemplateBody.template = 'sign.SignTemplateBody';
+SignTemplateBody.template = "sign.SignTemplateBody";
 SignTemplateBody.components = {
     SignTemplateTopBar,
 };

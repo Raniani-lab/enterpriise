@@ -39,18 +39,16 @@ export function useSignViewButtons() {
         }
         const file = templates.shift();
         multiFileUpload.addNewFiles(templates);
-        action.doAction(
-            {
-                type: "ir.actions.client",
-                tag: "sign.Template",
-                name: sprintf(env._t("Template %s"), file.name),
-                params: {
-                    sign_edit_call: latestRequestContext,
-                    id: file.template,
-                    sign_directly_without_mail: false,
-                }
+        action.doAction({
+            type: "ir.actions.client",
+            tag: "sign.Template",
+            name: sprintf(env._t("Template %s"), file.name),
+            params: {
+                sign_edit_call: latestRequestContext,
+                id: file.template,
+                sign_directly_without_mail: false,
             },
-        );
+        });
     };
 
     return {
@@ -67,14 +65,17 @@ export function useSignViewButtons() {
                 template,
                 name: files[index].name,
             }));
-            const { true: succesfulTemplates, false: failedTemplates } = templates.reduce((result, item) => {
-                const key = Boolean(item.template);
-                if (!result[key]) {
-                    result[key] = [];
-                }
-                result[key].push(item);
-                return result;
-            }, {});
+            const { true: succesfulTemplates, false: failedTemplates } = templates.reduce(
+                (result, item) => {
+                    const key = Boolean(item.template);
+                    if (!result[key]) {
+                        result[key] = [];
+                    }
+                    result[key].push(item);
+                    return result;
+                },
+                {}
+            );
             if (failedTemplates && failedTemplates.length) {
                 dialog.add(TemplateAlertDialog, {
                     title: env._t("File Error"),

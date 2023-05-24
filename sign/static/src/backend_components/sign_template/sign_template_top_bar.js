@@ -2,13 +2,17 @@
 
 import { useService } from "@web/core/utils/hooks";
 import { Record } from "@web/views/record";
-import { many2ManyTagsField, Many2ManyTagsField, Many2ManyTagsFieldColorEditable } from "@web/views/fields/many2many_tags/many2many_tags_field";
+import {
+    many2ManyTagsField,
+    Many2ManyTagsField,
+    Many2ManyTagsFieldColorEditable,
+} from "@web/views/fields/many2many_tags/many2many_tags_field";
 import { Component, useRef } from "@odoo/owl";
 
 const actionFieldsGet = {
-    tag_ids: { type: "many2many", relation: "sign.template.tag", string: "Tags"},
-    authorized_ids: { type: "many2many", relation: "res.users", string: "Authorized Users"},
-    group_ids: { type: "many2many", relation: "res.groups", string: "Authorized Groups"},
+    tag_ids: { type: "many2many", relation: "sign.template.tag", string: "Tags" },
+    authorized_ids: { type: "many2many", relation: "res.users", string: "Authorized Users" },
+    group_ids: { type: "many2many", relation: "res.groups", string: "Authorized Groups" },
 };
 
 function getActionActiveFields() {
@@ -17,10 +21,10 @@ function getActionActiveFields() {
         activeFields[fName] = {
             relatedFields: Object.fromEntries(
                 many2ManyTagsField.relatedFields({ options: {} }).map((f) => [f.name, f])
-            )
+            ),
         };
     }
-    activeFields.tag_ids.relatedFields.color = { type: "integer", string: "Color"};
+    activeFields.tag_ids.relatedFields.color = { type: "integer", string: "Color" };
     return activeFields;
 }
 
@@ -61,7 +65,7 @@ export class SignTemplateTopBar extends Component {
             type: "ir.actions.act_window",
             res_model: "sign.template",
             res_id: this.props.signTemplate.id,
-            views: [[false, "form"]]
+            views: [[false, "form"]],
         });
     }
 
@@ -71,16 +75,16 @@ export class SignTemplateTopBar extends Component {
             id: fieldName,
             record,
             readonly: this.props.hasSignRequests,
-        }
+        };
     }
 
     get recordProps() {
         return {
-            mode: this.props.hasSignRequests ? 'readonly' : 'edit',
+            mode: this.props.hasSignRequests ? "readonly" : "edit",
             onRecordChanged: (record, changes) => {
                 this.saveChanges(record, changes);
             },
-            resModel: 'sign.template',
+            resModel: "sign.template",
             resId: this.props.signTemplate.id,
             fieldNames: this.signTemplateFieldsGet,
             activeFields: this.signTemplateFieldsGet,
@@ -90,14 +94,14 @@ export class SignTemplateTopBar extends Component {
     async saveChanges(record, changes) {
         const res = await this.orm.call("sign.template", "write", [[record.resId], changes]);
         if (res) {
-            this.notification.add(this.env._t("Saved"), {type: "success"});
+            this.notification.add(this.env._t("Saved"), { type: "success" });
         }
     }
 }
 
-SignTemplateTopBar.template = 'sign.SignTemplateTopBar';
+SignTemplateTopBar.template = "sign.SignTemplateTopBar";
 SignTemplateTopBar.components = {
-        Many2ManyTagsFieldColorEditable,
-        Many2ManyTagsField,
-        Record,
-}
+    Many2ManyTagsFieldColorEditable,
+    Many2ManyTagsField,
+    Record,
+};

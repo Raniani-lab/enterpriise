@@ -3,18 +3,27 @@
 import { renderToString } from "@web/core/utils/render";
 import { shallowEqual } from "@web/core/utils/arrays";
 import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { startHelperLines, offset, normalizePosition, generateRandomId, startSmoothScroll, startResize, pinchService, isVisible } from "./drag_and_drop_utils";
+import {
+    startHelperLines,
+    offset,
+    normalizePosition,
+    generateRandomId,
+    startSmoothScroll,
+    startResize,
+    pinchService,
+    isVisible,
+} from "./drag_and_drop_utils";
 import { SignItemCustomPopover } from "@sign/backend_components/sign_template/sign_item_custom_popover";
 import { InitialsAllPagesDialog } from "@sign/dialogs/initials_all_pages_dialog";
 
 export class SignTemplateIframe {
     /**
      * Renders custom elements inside the PDF.js iframe
-     * @param {HTMLIFrameElement} iframe 
-     * @param {Document} root 
-     * @param {Object} env 
-     * @param {Object} owlServices 
-     * @param {Object} props 
+     * @param {HTMLIFrameElement} iframe
+     * @param {Document} root
+     * @param {Object} env
+     * @param {Object} owlServices
+     * @param {Object} props
      */
     constructor(iframe, root, env, owlServices, props) {
         this.iframe = iframe;
@@ -71,47 +80,53 @@ export class SignTemplateIframe {
     }
 
     unmount() {
-        this.cleanupFns.forEach(fn => typeof fn === "function" && fn());
+        this.cleanupFns.forEach((fn) => typeof fn === "function" && fn());
     }
 
     async loadCustomCSS() {
-        const assets = await this.rpc(
-            "/sign/render_assets_pdf_iframe",
-            { args: [{ debug: this.env.debug }] }
-        );
-        this.root.querySelector('head').insertAdjacentHTML("beforeend", assets);
+        const assets = await this.rpc("/sign/render_assets_pdf_iframe", {
+            args: [{ debug: this.env.debug }],
+        });
+        this.root.querySelector("head").insertAdjacentHTML("beforeend", assets);
     }
 
     clearNativePDFViewerButtons() {
         const selectors = [
-            '#pageRotateCw', '#pageRotateCcw',
-            '#openFile', '#presentationMode',
-            '#viewBookmark', '#print',
-            '#download', '#secondaryOpenFile',
-            '#secondaryPresentationMode', '#secondaryViewBookmark',
-            '#secondaryPrint', '#secondaryDownload'
+            "#pageRotateCw",
+            "#pageRotateCcw",
+            "#openFile",
+            "#presentationMode",
+            "#viewBookmark",
+            "#print",
+            "#download",
+            "#secondaryOpenFile",
+            "#secondaryPresentationMode",
+            "#secondaryViewBookmark",
+            "#secondaryPrint",
+            "#secondaryDownload",
         ];
         const elements = this.root.querySelectorAll(selectors.join(", "));
-        elements.forEach(element => {
-            element.style.display = 'none';
+        elements.forEach((element) => {
+            element.style.display = "none";
         });
-        this.root.querySelector('#lastPage').nextElementSibling.style.display = 'none';
+        this.root.querySelector("#lastPage").nextElementSibling.style.display = "none";
         // prevent password from being autocompleted in search input
-        this.root.querySelector('#findInput').setAttribute('autocomplete', "new-password")
-
+        this.root.querySelector("#findInput").setAttribute("autocomplete", "new-password");
     }
 
     renderSidebar() {
         if (!this.props.hasSignRequests) {
-            const sideBar = renderToString("sign.signItemTypesSidebar", { signItemTypes: this.props.signItemTypes});
+            const sideBar = renderToString("sign.signItemTypesSidebar", {
+                signItemTypes: this.props.signItemTypes,
+            });
             this.root.body.insertAdjacentHTML("afterbegin", sideBar);
         }
     }
 
     renderSignItems() {
-        for (let page in this.signItems) {
+        for (const page in this.signItems) {
             const pageContainer = this.getPageContainer(page);
-            for (let id in this.signItems[page]) {
+            for (const id in this.signItems[page]) {
                 const signItem = this.signItems[page][id];
                 signItem.el = this.renderSignItem(signItem.data, pageContainer);
             }
@@ -124,19 +139,19 @@ export class SignTemplateIframe {
     }
 
     startDragAndDrop() {
-        this.root.querySelectorAll('.page').forEach(page => {
+        this.root.querySelectorAll(".page").forEach((page) => {
             page.addEventListener("dragover", (e) => this.onDragOver(e));
             page.addEventListener("drop", (e) => this.onDrop(e));
         });
 
-        this.root.querySelectorAll('.o_sign_sign_item').forEach(signItemEl => {
+        this.root.querySelectorAll(".o_sign_sign_item").forEach((signItemEl) => {
             const page = signItemEl.parentElement.dataset.pageNumber;
             const id = signItemEl.dataset.id;
             const signItem = this.signItems[page][id];
             this.enableCustom(signItem);
         });
 
-        this.root.querySelectorAll('.o_sign_field_type_button').forEach(sidebarItem => {
+        this.root.querySelectorAll(".o_sign_field_type_button").forEach((sidebarItem) => {
             sidebarItem.setAttribute("draggable", true);
             sidebarItem.addEventListener("dragstart", (e) => this.onSidebarDragStart(e));
             sidebarItem.addEventListener("dragend", (e) => this.onSidebarDragEnd(e));
@@ -154,11 +169,11 @@ export class SignTemplateIframe {
 
     /**
      * Callback executed when a sign item is resized
-     * @param {SignItem} signItem 
+     * @param {SignItem} signItem
      * @param {Object} change object with new width and height of sign item
      * @param {Boolean} end boolean indicating if the resize is done or still in progress
      */
-    onResizeItem(signItem, change, end=false) {
+    onResizeItem(signItem, change, end = false) {
         this.helperLines.show(signItem.el);
         Object.assign(signItem.el.style, {
             height: `${change.height * 100}%`,
@@ -177,8 +192,8 @@ export class SignTemplateIframe {
     }
 
     registerDragEventsForSignItem(signItem) {
-        const display = signItem.el.querySelector('.o_sign_item_display');
-        const handle = signItem.el.querySelector('.o_sign_config_handle');
+        const display = signItem.el.querySelector(".o_sign_item_display");
+        const handle = signItem.el.querySelector(".o_sign_config_handle");
         handle.setAttribute("draggable", true);
         handle.addEventListener("dragstart", (e) => this.onDragStart(e));
         handle.addEventListener("dragend", (e) => this.onDragEnd(e));
@@ -187,41 +202,46 @@ export class SignTemplateIframe {
 
     /**
      * Handles opening and closing of popovers in template edition
-     * @param {SignItem} signItem 
+     * @param {SignItem} signItem
      */
     openSignItemPopup(signItem) {
         const shouldOpenNewPopover = !(signItem.data.id in this.closePopoverFns);
         this.closePopover();
         if (shouldOpenNewPopover) {
-            const closeFn = this.popover.add(signItem.el, SignItemCustomPopover, {
-                debug: this.env.debug,
-                responsible: signItem.data.responsible,
-                roles: this.signRolesById,
-                alignment: signItem.data.alignment,
-                required: signItem.data.required,
-                placeholder: signItem.data.placeholder,
-                id: signItem.data.id,
-                type: signItem.data.type,
-                option_ids: signItem.data.option_ids,
-                onValidate: (data) => {
-                    this.updateSignItem(signItem, data);
-                    this.closePopover();
+            const closeFn = this.popover.add(
+                signItem.el,
+                SignItemCustomPopover,
+                {
+                    debug: this.env.debug,
+                    responsible: signItem.data.responsible,
+                    roles: this.signRolesById,
+                    alignment: signItem.data.alignment,
+                    required: signItem.data.required,
+                    placeholder: signItem.data.placeholder,
+                    id: signItem.data.id,
+                    type: signItem.data.type,
+                    option_ids: signItem.data.option_ids,
+                    onValidate: (data) => {
+                        this.updateSignItem(signItem, data);
+                        this.closePopover();
+                    },
+                    onDelete: () => {
+                        this.closePopover();
+                        this.deleteSignItem(signItem);
+                    },
+                    onClose: () => {
+                        this.closePopover();
+                    },
+                    updateSelectionOptions: (ids) => this.updateSelectionOptions(ids),
+                    updateRoles: (id) => this.updateRoles(id),
                 },
-                onDelete: () => {
-                    this.closePopover();
-                    this.deleteSignItem(signItem);
-                },
-                onClose: () => {
-                    this.closePopover();
-                },
-                updateSelectionOptions: (ids) => this.updateSelectionOptions(ids),
-                updateRoles: (id) => this.updateRoles(id),
-            }, {
-                position: "right",
-                onClose: () => {
-                    this.closePopoverFns = {};
+                {
+                    position: "right",
+                    onClose: () => {
+                        this.closePopoverFns = {};
+                    },
                 }
-            });
+            );
             this.closePopoverFns[signItem.data.id] = {
                 close: closeFn,
                 signItem,
@@ -234,7 +254,7 @@ export class SignTemplateIframe {
      */
     closePopover() {
         if (Object.keys(this.closePopoverFns)) {
-            for(let id in this.closePopoverFns) {
+            for (const id in this.closePopoverFns) {
                 this.closePopoverFns[id].close();
             }
             this.closePopoverFns = {};
@@ -243,8 +263,8 @@ export class SignTemplateIframe {
 
     /**
      * Updates the sign item, re-renders it and saves the template in case there were changes
-     * @param {SignItem} signItem 
-     * @param {Object} data 
+     * @param {SignItem} signItem
+     * @param {Object} data
      */
     updateSignItem(signItem, data) {
         const changes = Object.keys(data).reduce((changes, key) => {
@@ -270,7 +290,7 @@ export class SignTemplateIframe {
             };
             this.signItems[pageNumber][newData.id] = {
                 data: newData,
-                el: this.renderSignItem(newData, page)
+                el: this.renderSignItem(newData, page),
             };
             this.enableCustom(this.signItems[pageNumber][newData.id]);
             this.refreshSignItems();
@@ -281,10 +301,10 @@ export class SignTemplateIframe {
 
     /**
      * Deletes a sign item from the template
-     * @param {SignItem} signItem 
+     * @param {SignItem} signItem
      */
     deleteSignItem(signItem) {
-        const {id, page} = signItem.data;
+        const { id, page } = signItem.data;
         this.deletedSignItemIds.push(id);
         signItem.el.parentElement.removeChild(signItem.el);
         delete this.signItems[page][id];
@@ -295,8 +315,8 @@ export class SignTemplateIframe {
         const signItem = e.target.parentElement.parentElement;
         const page = signItem.parentElement;
         e.dataTransfer.effectAllowed = "move";
-        e.dataTransfer.setData('page', page.dataset.pageNumber);
-        e.dataTransfer.setData('id', signItem.dataset.id);
+        e.dataTransfer.setData("page", page.dataset.pageNumber);
+        e.dataTransfer.setData("id", signItem.dataset.id);
         e.dataTransfer.setDragImage(signItem, 0, 0);
         // workaround to hide element while keeping the drag image visible
         requestAnimationFrame(() => {
@@ -304,7 +324,12 @@ export class SignTemplateIframe {
                 signItem.style.visibility = "hidden";
             }
         }, 0);
-        this.scrollCleanup = startSmoothScroll(this.root.querySelector("#viewerContainer"), signItem, null, this.helperLines);
+        this.scrollCleanup = startSmoothScroll(
+            this.root.querySelector("#viewerContainer"),
+            signItem,
+            null,
+            this.helperLines
+        );
     }
 
     onDragEnd(e) {
@@ -314,11 +339,22 @@ export class SignTemplateIframe {
     onSidebarDragStart(e) {
         const signTypeElement = e.target;
         const firstPage = this.root.querySelector('.page[data-page-number="1"]');
-        firstPage.insertAdjacentHTML("beforeend", renderToString("sign.signItem", this.createSignItemDataFromType(signTypeElement.dataset.itemTypeId)));
+        firstPage.insertAdjacentHTML(
+            "beforeend",
+            renderToString(
+                "sign.signItem",
+                this.createSignItemDataFromType(signTypeElement.dataset.itemTypeId)
+            )
+        );
         this.ghostSignItem = firstPage.lastChild;
-        e.dataTransfer.setData('typeId', signTypeElement.dataset.itemTypeId);
+        e.dataTransfer.setData("typeId", signTypeElement.dataset.itemTypeId);
         e.dataTransfer.setDragImage(this.ghostSignItem, 0, 0);
-        this.scrollCleanup = startSmoothScroll(this.root.querySelector("#viewerContainer"), e.target, this.ghostSignItem, this.helperLines);
+        this.scrollCleanup = startSmoothScroll(
+            this.root.querySelector("#viewerContainer"),
+            e.target,
+            this.ghostSignItem,
+            this.helperLines
+        );
         // workaround to set original element to hidden while keeping the cloned element visible
         requestAnimationFrame(() => {
             if (this.ghostSignItem) {
@@ -342,18 +378,24 @@ export class SignTemplateIframe {
     onDrop(e) {
         e.preventDefault();
         const page = e.currentTarget;
-        const textLayer = page.querySelector('.textLayer');
+        const textLayer = page.querySelector(".textLayer");
         const targetPage = Number(page.dataset.pageNumber);
 
         const { top, left } = offset(textLayer);
-        const typeId = e.dataTransfer.getData('typeId');
-        if(typeId) {
+        const typeId = e.dataTransfer.getData("typeId");
+        if (typeId) {
             const id = generateRandomId();
             const data = this.createSignItemDataFromType(typeId);
-            const posX = Math.round(normalizePosition((e.pageX - left) / textLayer.clientWidth, data.width) * 1000) / 1000;
-            const posY = Math.round(normalizePosition((e.pageY - top) / textLayer.clientHeight, data.height) * 1000) / 1000;
+            const posX =
+                Math.round(
+                    normalizePosition((e.pageX - left) / textLayer.clientWidth, data.width) * 1000
+                ) / 1000;
+            const posY =
+                Math.round(
+                    normalizePosition((e.pageY - top) / textLayer.clientHeight, data.height) * 1000
+                ) / 1000;
             Object.assign(data, { id, posX, posY, page: targetPage });
-            if (data.type === 'initial') {
+            if (data.type === "initial") {
                 this.helperLines.hide();
                 return this.openDialogAfterInitialDrop(data);
             }
@@ -363,13 +405,25 @@ export class SignTemplateIframe {
             };
             this.enableCustom(this.signItems[targetPage][id]);
             this.refreshSignItems();
-        } else if (e.dataTransfer.getData('page') && e.dataTransfer.getData('id')){
-            const initialPage = Number(e.dataTransfer.getData('page'));
-            const id = Number(e.dataTransfer.getData('id'));
+        } else if (e.dataTransfer.getData("page") && e.dataTransfer.getData("id")) {
+            const initialPage = Number(e.dataTransfer.getData("page"));
+            const id = Number(e.dataTransfer.getData("id"));
             const signItem = this.signItems[initialPage][id];
             const signItemEl = signItem.el;
-            const posX = Math.round(normalizePosition((e.pageX - left) / textLayer.clientWidth, signItem.data.width) * 1000) / 1000;
-            const posY = Math.round(normalizePosition((e.pageY - top) / textLayer.clientHeight, signItem.data.height) * 1000) / 1000;
+            const posX =
+                Math.round(
+                    normalizePosition(
+                        (e.pageX - left) / textLayer.clientWidth,
+                        signItem.data.width
+                    ) * 1000
+                ) / 1000;
+            const posY =
+                Math.round(
+                    normalizePosition(
+                        (e.pageY - top) / textLayer.clientHeight,
+                        signItem.data.height
+                    ) * 1000
+                ) / 1000;
 
             if (initialPage !== targetPage) {
                 signItem.data.page = targetPage;
@@ -386,7 +440,7 @@ export class SignTemplateIframe {
             Object.assign(signItemEl.style, {
                 top: `${posY * 100}%`,
                 left: `${posX * 100}%`,
-                visibility: 'visible'
+                visibility: "visible",
             });
         } else {
             return;
@@ -397,7 +451,7 @@ export class SignTemplateIframe {
 
     /**
      * Enables resizing and drag/drop for sign items
-     * @param {SignItem} signItem 
+     * @param {SignItem} signItem
      */
     enableCustom(signItem) {
         startResize(signItem, this.onResizeItem.bind(this));
@@ -407,7 +461,7 @@ export class SignTemplateIframe {
     /**
      * Renders a sign item using its data and attaches it to a target html element
      * @param { Object } signItemData
-     * @property 
+     * @property
      */
     renderSignItem(signItemData, target) {
         const signItemElement = renderToString("sign.signItem", this.getContext(signItemData));
@@ -417,16 +471,18 @@ export class SignTemplateIframe {
 
     /**
      * Extends the rendering context of the sign item based on its data
-     * @param {SignItem.data} signItem 
+     * @param {SignItem.data} signItem
      * @returns {Object}
      */
     getContext(signItem) {
-        const normalizedPosX = Math.round(normalizePosition(signItem.posX, signItem.width) * 1000) / 1000;
-        const normalizedPosY = Math.round(normalizePosition(signItem.posY, signItem.height) * 1000) / 1000;
+        const normalizedPosX =
+            Math.round(normalizePosition(signItem.posX, signItem.width) * 1000) / 1000;
+        const normalizedPosY =
+            Math.round(normalizePosition(signItem.posY, signItem.height) * 1000) / 1000;
         const responsible = signItem.responsible ?? (signItem.responsible_id?.[0] || 0);
         const type = this.signItemTypesById[signItem.type_id[0]].item_type;
-        if (type === 'selection') {
-            const options = signItem.option_ids.map(id => this.selectionOptionsById[id]);
+        if (type === "selection") {
+            const options = signItem.option_ids.map((id) => this.selectionOptionsById[id]);
             signItem.options = options;
         }
         return Object.assign(signItem, {
@@ -450,9 +506,9 @@ export class SignTemplateIframe {
      * We keep the elements stored in memory, so we don't need to call the qweb engine everytime a element is detached
      */
     refreshSignItems() {
-        for (let page in this.signItems) {
+        for (const page in this.signItems) {
             const pageContainer = this.getPageContainer(page);
-            for (let id in this.signItems[page]) {
+            for (const id in this.signItems[page]) {
                 const signItem = this.signItems[page][id].el;
                 if (!signItem.parentElement || !signItem.parentElement.classList.contains("page")) {
                     pageContainer.append(signItem);
@@ -485,7 +541,7 @@ export class SignTemplateIframe {
                 width: "100%",
                 height: "100%",
                 zIndex: 110,
-                opacity: 0.75
+                opacity: 0.75,
             });
             this.root.querySelector("#viewer").prepend(div);
         }
@@ -494,15 +550,15 @@ export class SignTemplateIframe {
     }
 
     get normalSize() {
-        return this.root.querySelector('.page').clientHeight * 0.015;
+        return this.root.querySelector(".page").clientHeight * 0.015;
     }
 
     /**
      * Updates the font size of all sign items in case there was a zoom/resize of element
      */
     updateFontSize() {
-        for (let page in this.signItems) {
-            for (let id in this.signItems[page]) {
+        for (const page in this.signItems) {
+            for (const id in this.signItems[page]) {
                 const signItem = this.signItems[page][id];
                 this.updateSignItemFontSize(signItem);
             }
@@ -513,9 +569,11 @@ export class SignTemplateIframe {
      * Updates the font size of a determined sign item
      * @param {SignItem}
      */
-    updateSignItemFontSize({el, data}) {
+    updateSignItemFontSize({ el, data }) {
         const largerTypes = ["signature", "initial", "textarea", "selection"];
-        const size = largerTypes.includes(data.type) ? this.normalSize : parseFloat(el.clientHeight);
+        const size = largerTypes.includes(data.type)
+            ? this.normalSize
+            : parseFloat(el.clientHeight);
         el.style.fontSize = `${size * 0.8}px`;
     }
 
@@ -530,11 +588,11 @@ export class SignTemplateIframe {
 
     async rotatePDF(e) {
         const button = e.target;
-        button.setAttribute('disabled', '');
+        button.setAttribute("disabled", "");
         const result = await this.props.rotatePDF();
         if (result) {
             this.root.querySelector("#pageRotateCw").click();
-            button.removeAttribute('disabled');
+            button.removeAttribute("disabled");
             this.refreshSignItems();
         }
     }
@@ -554,11 +612,15 @@ export class SignTemplateIframe {
         if (!this.props.hasSignRequests) {
             const viewerContainer = this.root.querySelector("#viewerContainer");
             // close popover when clicking outside of a sign item
-            viewerContainer.addEventListener("click", (e) => {
-                if(!e.target.closest('.o_sign_item_display')) {
-                    this.closePopover();
-                }
-            }, { capture: true });
+            viewerContainer.addEventListener(
+                "click",
+                (e) => {
+                    if (!e.target.closest(".o_sign_item_display")) {
+                        this.closePopover();
+                    }
+                },
+                { capture: true }
+            );
             this.root.addEventListener("keyup", (e) => this.handleKeyUp(e));
         }
     }
@@ -566,8 +628,8 @@ export class SignTemplateIframe {
     handleKeyUp(e) {
         if (e.keyCode === 46 && Object.keys(this.closePopoverFns)) {
             //delete any element that has its popover open
-            for(let id in this.closePopoverFns) {
-                const {close, signItem} = this.closePopoverFns[id];
+            for (const id in this.closePopoverFns) {
+                const { close, signItem } = this.closePopoverFns[id];
                 typeof close === "function" && close();
                 this.deleteSignItem(signItem);
             }
@@ -577,19 +639,19 @@ export class SignTemplateIframe {
 
     async saveChanges() {
         const Id2UpdatedItem = await this.props.saveTemplate();
-        Object.entries(Id2UpdatedItem).forEach(([previousId, {page, id}]) => {
+        Object.entries(Id2UpdatedItem).forEach(([previousId, { page, id }]) => {
             if (Number(previousId) !== id && this.signItems[page][previousId]) {
                 const prevEl = this.signItems[page][previousId].el;
                 const prevData = this.signItems[page][previousId].data;
                 this.signItems[page][id] = {
                     data: prevData,
-                    el: prevEl
-                }
+                    el: prevEl,
+                };
                 delete this.signItems[page][previousId];
                 this.signItems[page][id].el.dataset.id = id;
             }
             this.signItems[page][id].data.updated = false;
-        })
+        });
         this.deletedSignItemIds = [];
     }
 
@@ -638,13 +700,15 @@ export class SignTemplateIframe {
      * @param {Object} data data of the sign item to be added
      * @param {Boolean} targetAllPages if the item should be added in all pages or only at the current one
      */
-    addInitialSignItem(data, targetAllPages=false) {
+    addInitialSignItem(data, targetAllPages = false) {
         if (targetAllPages) {
             for (let page = 1; page <= this.pageCount; page++) {
-                const hasSignatureItemsAtPage = Object.values(this.signItems[page]).some(({data}) => data.type === 'signature');
+                const hasSignatureItemsAtPage = Object.values(this.signItems[page]).some(
+                    ({ data }) => data.type === "signature"
+                );
                 if (!hasSignatureItemsAtPage) {
                     const id = generateRandomId();
-                    const signItemData = {...data, ...{ page, id }};
+                    const signItemData = { ...data, ...{ page, id } };
                     this.signItems[page][id] = {
                         data: signItemData,
                         el: this.renderSignItem(signItemData, this.getPageContainer(page)),
@@ -655,7 +719,7 @@ export class SignTemplateIframe {
         } else {
             this.signItems[data.page][data.id] = {
                 data,
-                el: this.renderSignItem(data, this.getPageContainer(data.page))
+                el: this.renderSignItem(data, this.getPageContainer(data.page)),
             };
             this.enableCustom(this.signItems[data.page][data.id]);
         }
@@ -677,7 +741,7 @@ export class SignTemplateIframe {
         for (let currentPage = 1; currentPage <= this.pageCount; currentPage++) {
             signItems[currentPage] = {};
         }
-        for (let signItem of this.props.signItems) {
+        for (const signItem of this.props.signItems) {
             signItems[signItem.page][signItem.id] = {
                 data: signItem,
                 el: null,
@@ -700,14 +764,14 @@ export class SignTemplateIframe {
      * @param {Array<Number>} optionIds
      */
     async updateSelectionOptions(optionIds) {
-        const newIds = optionIds.filter(id => !(id in this.selectionOptionsById));
+        const newIds = optionIds.filter((id) => !(id in this.selectionOptionsById));
         const newOptions = await this.orm.searchRead(
             "sign.item.option",
-            [['id', 'in', newIds]],
+            [["id", "in", newIds]],
             ["id", "value"],
-            { context: this.user.context },
+            { context: this.user.context }
         );
-        for (let option of newOptions) {
+        for (const option of newOptions) {
             this.selectionOptionsById[option.id] = option;
         }
     }
@@ -718,10 +782,9 @@ export class SignTemplateIframe {
      */
     async updateRoles(id) {
         if (!(id in this.signRolesById)) {
-            const newRole = await this.orm.searchRead(
-                "sign.item.role", [["id", "=", id]], [],
-                { context: this.user.context }
-            );
+            const newRole = await this.orm.searchRead("sign.item.role", [["id", "=", id]], [], {
+                context: this.user.context,
+            });
             this.signRolesById[newRole[0].id] = newRole[0];
         }
     }

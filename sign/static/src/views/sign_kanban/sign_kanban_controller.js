@@ -15,6 +15,6 @@ SignKanbanController.components = {
     ...KanbanController.components,
     Dropdown,
     DropdownItem,
-}
+};
 
 SignKanbanController.template = "sign.SignKanbanController";

@@ -5,10 +5,10 @@ import { Dialog } from "@web/core/dialog/dialog";
 
 export class InitialsAllPagesDialog extends Component {
     setup() {
-        this.selectRef = useRef('role_select');
+        this.selectRef = useRef("role_select");
     }
 
-    get currentRole () {
+    get currentRole() {
         return parseInt(this.selectRef.el?.value);
     }
 
@@ -23,7 +23,7 @@ export class InitialsAllPagesDialog extends Component {
     }
 }
 
-InitialsAllPagesDialog.template = 'sign.InitialsAllPagesDialog';
+InitialsAllPagesDialog.template = "sign.InitialsAllPagesDialog";
 InitialsAllPagesDialog.components = {
     Dialog,
 };

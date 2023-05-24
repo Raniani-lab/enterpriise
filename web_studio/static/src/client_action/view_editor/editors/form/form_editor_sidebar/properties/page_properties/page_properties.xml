@@ -7,8 +7,7 @@
         name="'string'"
         type="'string'"
         value="props.node.attrs.string"
-        onChange.bind="onChangeAttribute"
-        isConditional="true">
+        onChange.bind="onChangeAttribute">
             Label
     </Property>
 

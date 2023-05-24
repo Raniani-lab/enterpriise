@@ -29,7 +29,7 @@
         background-image: url("/web_studio/static/src/img/ui/checkbox_active.svg");
       }
     }
-    &.o_web_studio_checkbox_inactive > input {
+    &.o_web_studio_checkbox_indeterminate > input {
       background-image: url("/web_studio/static/src/img/ui/checkbox_indeterminate.svg");
     }
   }

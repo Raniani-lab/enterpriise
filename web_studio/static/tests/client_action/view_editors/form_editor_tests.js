@@ -3669,7 +3669,15 @@ QUnit.module("View Editors", (hooks) => {
 
             registry.category("services").add("field", fieldService);
 
-            const webClient = await createEnterpriseWebClient({ serverData });
+            const mockRPC = function (route, args) {
+                if (route === "/web_studio/edit_view") {
+                    // Make sure attrs are overridden by empty object to remove the domain
+                    assert.deepEqual(args.operations[0].new_attrs, { attrs: {}, invisible: "" });
+                    assert.step("edit view");
+                }
+            };
+
+            const webClient = await createEnterpriseWebClient({ serverData, mockRPC });
             await doAction(webClient, "studio.coucou_action");
             await openStudio(target);
 
@@ -3703,6 +3711,11 @@ QUnit.module("View Editors", (hooks) => {
                 target.querySelector(".modal .modal-body").textContent,
                 "Match records with all of the following rules:Display Name=!=containsdoes not containis inis not inis setis not setparent.display_nameNew Rule"
             );
+
+            // Close the modal and remove the domain on invisible attr
+            await click(target.querySelector(".btn-close"));
+            await click(target.querySelector("#invisible"));
+            assert.verifySteps(["edit view"]);
         }
     );
 

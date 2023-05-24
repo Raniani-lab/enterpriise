@@ -39,8 +39,8 @@ export class Property extends Component {
     }
 
     getCheckboxClassname(value) {
-        if (this.props.isConditional && value instanceof Array) {
-            return "o_web_studio_checkbox_inactive";
+        if (this.props.isConditional && !!value && !(typeof value === "boolean")) {
+            return "o_web_studio_checkbox_indeterminate";
         }
     }
 

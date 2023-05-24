@@ -585,6 +585,7 @@ QUnit.module(
                     position: "attributes",
                     new_attrs: {
                         invisible: "",
+                        attrs: {},
                     },
                 },
             ];

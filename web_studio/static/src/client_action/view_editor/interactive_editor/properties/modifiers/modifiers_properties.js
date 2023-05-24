@@ -28,6 +28,8 @@ export class ModifiersProperties extends Component {
             ...(this.props.node.attrs.attrs || {}),
             ...this.props.node.attrs.modifiers,
         };
+
+        const hadModifiers = Object.keys(modifiers).length;
         const changingInvisible = name === "invisible";
         const isInList = this.env.viewEditorModel.viewType === "list";
 
@@ -47,7 +49,10 @@ export class ModifiersProperties extends Component {
             newAttrs[name] = value ? "1" : "";
         }
 
-        if (!Object.keys(newAttrs.attrs).length) {
+        // We are potentially overwriting some attrs on the node with the modifier itself
+        // With this we make sure we don't send unnecessary empty attributes. We only send them
+        // if we do have something to overwrite.
+        if (!hadModifiers && !Object.keys(newAttrs.attrs).length) {
             delete newAttrs.attrs;
         }
 

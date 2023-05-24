@@ -313,21 +313,6 @@ tour.register('account_accountant_bank_rec_widget_ui',
             run: () => {},
         },
         {
-            content: "Click Pager again",
-            trigger: ".o_pager_value:first()",
-        },
-        {
-            content: "Change pager to display lines 1-3",
-            trigger: "input.o_pager_value",
-            run: "text 1-3",
-        },
-        {
-            content: "Last St Line is line3 but line2 is still selected",
-            trigger: ".o_bank_rec_selected_st_line:contains('line2')",
-            extra_trigger: ".o_bank_rec_st_line:last():contains('line3')",
-            run: () => {},
-        },
-        {
             content: "Mount invoice 2 for line 2",
             trigger: "div.bank_rec_widget_form_amls_list_anchor table.o_list_table td[name='move_id']:contains('INV/2019/00002')",
         },
@@ -336,6 +321,16 @@ tour.register('account_accountant_bank_rec_widget_ui',
             extra_trigger: "div.bank_rec_widget_form_amls_list_anchor table.o_list_table tr.o_rec_widget_list_selected_item td[name='move_id']:contains('INV/2019/00002')",
             trigger: "button[name='button_validate']",
             run: "dblclick",
+        },
+        {
+            content: "Click Pager again after line2 is matched",
+            extra_trigger: ".o_bank_rec_st_line:contains('line2') .badge.text-bg-success",
+            trigger: ".o_pager_value:first()",
+        },
+        {
+            content: "Change pager to display lines 1-3",
+            trigger: "input.o_pager_value",
+            run: "text 1-3",
         },
         {
             content: "manually select line2 again by clicking it's matched icon",

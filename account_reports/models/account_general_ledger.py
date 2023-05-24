@@ -158,6 +158,9 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
         # Execute the queries and dispatch the results.
         query, params = self._get_query_sums(report, options)
 
+        if not query:
+            return []
+
         groupby_accounts = {}
         groupby_companies = {}
 

@@ -208,7 +208,7 @@ msgstr ""
 #. odoo-python
 #: code:addons/documents_project/models/documents_workflow_rule.py:0
 #, python-format
-msgid "Task created from documents %s"
+msgid "Task created from documents"
 msgstr ""
 
 #. module: documents_project

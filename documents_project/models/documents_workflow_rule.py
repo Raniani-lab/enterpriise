@@ -31,7 +31,7 @@ class WorkflowActionRuleTask(models.Model):
             if len(documents) == 1:
                 document_msg = escape(_('Task created from document %s')) % documents._get_html_link()
             else:
-                document_msg = escape(_('Task created from documents %s')) % documents._get_html_link()
+                document_msg = escape(_('Task created from documents'))
                 document_msg += Markup("<ul>%s</ul>") % Markup().join(
                     Markup("<li>%s</li>") % document._get_html_link()
                     for document in documents)

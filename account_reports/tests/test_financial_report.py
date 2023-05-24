@@ -531,6 +531,85 @@ class TestFinancialReport(TestAccountReportsCommon):
             ]
         )
 
+    def test_financial_report_comparison_multi_company_currency_multi_rates(self):
+        # Set up a new company with a new foreign currency and a new partner.
+        other_currency = self.env['res.currency'].create({
+            'name': 'TEST',
+            'symbol': 'T',
+        })
+        other_company_data = self.setup_company_data('other_company_data', currency_id=other_currency.id)
+        self.env['res.currency.rate'].create([
+            {
+                'currency_id': other_currency.id,
+                'name': '2021-01-01',
+                'rate': 3.0,
+            }, {
+                'currency_id': other_currency.id,
+                'name': '2022-01-01',
+                'rate': 2.0,
+            }
+        ])
+        partner = self.env['res.partner'].create({'name': 'I am a partner', 'company_id': False})
+
+        # Create and post a journal entry linked to the new partner, for the new company.
+        other_company_move_2021 = self.env['account.move'].with_company(other_company_data['company']).create({
+            'move_type': 'entry',
+            'date': fields.Date.from_string('2021-01-01'),
+            'line_ids': [
+                (0, 0, {'debit': 1500.0, 'credit': 0.0,    'account_id': other_company_data['default_account_receivable'].id, 'partner_id': partner.id}),
+                (0, 0, {'debit': 0.0,    'credit': 1500.0, 'account_id': other_company_data['default_account_assets'].id,     'partner_id': partner.id}),
+            ],
+        })
+        other_company_move_2021.action_post()
+
+        # Create a simple report having one line, filtering on the new partner and considering only the positive balance line (so the total is not 0).
+        simple_report = self.env['account.report'].create({
+            'name': 'Simple Report',
+            'filter_date_range': False,
+            'filter_multi_company': 'selector',
+
+            'column_ids': [
+                Command.create({
+                    'name': 'Balance',
+                    'expression_label': 'balance',
+                    'sequence': 1
+                })
+            ],
+
+            'line_ids': [
+                Command.create({
+                    'name': 'The Report Line',
+                    'sequence': 1,
+                    'hierarchy_level': 0,
+                    'groupby': 'account_id',
+                    'foldable': True,
+                    'expression_ids': [Command.clear(), Command.create({
+                        'label': 'balance',
+                        'engine': 'domain',
+                        'formula': ['&', ('partner_id', '=', partner.id), ('balance', '>=', 0)],
+                        'subformula': 'sum',
+                        'date_scope': 'from_beginning'
+                    })]
+                })
+            ]
+        })
+        basic_line_dict_id = self._get_basic_line_dict_id_from_report_line(simple_report.line_ids[0])
+        options = self._generate_options(simple_report, fields.Date.from_string('2022-01-01'), fields.Date.from_string('2022-12-31'))
+        options = self._update_comparison_filter(options, simple_report, 'custom', 1, date_to=fields.Date.from_string('2021-12-31'))
+        options['unfolded_lines'] = [basic_line_dict_id]
+
+        lines = simple_report._get_lines(options)
+
+        self.assertLinesValues(
+            lines,
+            [   0,                            1,   2],
+            [
+                ('The Report Line',           750, 500),
+                ('121000 Account Receivable', 750, 500),
+                ('Total The Report Line',     750, 500),
+            ]
+        )
+
     def test_financial_report_horizontal_group(self):
         line_id = self._get_basic_line_dict_id_from_report_line_ref('account_reports.account_financial_report_receivable0')
         self.report.horizontal_group_ids |= self.horizontal_group

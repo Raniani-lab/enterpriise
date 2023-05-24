@@ -130,6 +130,15 @@ export async function setupTimesheetGrid() {
             },
             date: { string: "Date", type: "date" },
             unit_amount: { string: "Unit Amount", type: "float", group_operator: "sum" },
+            selection_field: {
+                string: "Selection Field",
+                type: "selection",
+                selection: [
+                    ["abc", "ABC"],
+                    ["def", "DEF"],
+                    ["ghi", "GHI"],
+                ],
+            },
         },
         records: [
             {

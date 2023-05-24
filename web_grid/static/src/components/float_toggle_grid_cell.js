@@ -69,8 +69,8 @@ export class FloatToggleGridCell extends Component {
         this.state.cell.update(value);
     }
 
-    onCellClick() {
-        if (this.isEditable() && !this.state.edit) {
+    onCellClick(ev) {
+        if (this.isEditable() && !this.state.edit && !ev.target.closest('.o_grid_search_btn')) {
             this.onChange();
             this.props.onEdit(true);
         }

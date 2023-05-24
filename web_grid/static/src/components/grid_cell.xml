@@ -3,7 +3,7 @@
     <t t-name="web_grid.Cell" owl="1">
         <div t-if="props.reactive.cell"
             class="o_grid_cell o_grid_highlightable position-relative d-flex justify-content-center align-items-center w-100 h-100"
-            t-on-click.synthetic="() => this.onCellClick()"
+            t-on-click.synthetic="onCellClick"
             t-ref="root"
         >
             <button class="o_grid_search_btn btn btn-sm position-absolute start-0 px-1"

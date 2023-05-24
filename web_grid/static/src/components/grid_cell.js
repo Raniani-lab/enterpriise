@@ -132,7 +132,7 @@ export class GridCell extends Component {
         return changesCommitted;
     }
 
-    onCellClick() {
+    onCellClick(ev) {
         if (this.isEditable() && !this.state.edit) {
             this.props.onEdit(true);
         }

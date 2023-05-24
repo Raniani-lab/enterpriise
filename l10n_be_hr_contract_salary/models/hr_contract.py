@@ -20,13 +20,14 @@ class HrContract(models.Model):
     contract_type_id = fields.Many2one('hr.contract.type', "Contract Type",
                                        default=lambda self: self.env.ref('l10n_be_hr_payroll.l10n_be_contract_type_cdi',
                                                                          raise_if_not_found=False))
-    has_bicycle = fields.Boolean(related="employee_id.has_bicycle", readonly=False)
+    has_bicycle = fields.Boolean(string="Bicycle to work", default=False, groups="hr_contract.group_hr_contract_manager",
+        help="Use a bicycle as a transport mode to go to work")
     l10n_be_bicyle_cost = fields.Float(compute='_compute_l10n_be_bicyle_cost')
 
-    @api.depends('employee_id.has_bicycle')
+    @api.depends('has_bicycle')
     def _compute_l10n_be_bicyle_cost(self):
         for contract in self:
-            if not contract.employee_id.has_bicycle:
+            if not contract.has_bicycle:
                 contract.l10n_be_bicyle_cost = 0
             else:
                 contract.l10n_be_bicyle_cost = self._get_private_bicycle_cost(contract.employee_id.km_home_work)

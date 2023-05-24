@@ -42,9 +42,6 @@
                 <field name="end_notice_period" groups="base.group_no_one" attrs="{'invisible': [('company_country_code', '!=', 'BE')]}"/>
             </xpath>
             <xpath expr="//div[@name='div_km_home_work']" position="after">
-                <field name="has_bicycle" required="True" attrs="{'invisible': [('company_country_code', '!=', 'BE')]}"/>
-            </xpath>
-            <xpath expr="//div[@name='div_km_home_work']" position="after">
                 <field name="private_car_plate" position="move" />
             </xpath>
             <field name="identification_id" position="after">

@@ -137,7 +137,6 @@ class TestPayrollCommon(TransactionCase):
             'other_disabled_senior_dependent': 0,
             'other_juniors_dependent': 0,
             'other_disabled_juniors_dependent': 0,
-            'has_bicycle': False
         })
 
         first_contract_georges = cls.env['hr.contract'].create({
@@ -162,7 +161,8 @@ class TestPayrollCommon(TransactionCase):
             'ip_wage_rate': 25.0,
             'time_credit': False,
             'fiscal_voluntarism': False,
-            'fiscal_voluntary_rate': 0.0
+            'fiscal_voluntary_rate': 0.0,
+            'has_bicycle': False,
         })
 
         cls.georges_contracts = first_contract_georges

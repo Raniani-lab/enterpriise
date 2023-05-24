@@ -21,6 +21,9 @@
             <label name="label_wage_with_holidays" position="attributes">
                 <attribute name="attrs">{'invisible': [('holidays', '=', 0.0), ('l10n_be_group_insurance_rate', '=', 0.0)]}</attribute>
             </label>
+            <group name="transportation_right" position="inside">
+                <field name="has_bicycle"/>
+            </group>
         </field>
     </record>
 </odoo>

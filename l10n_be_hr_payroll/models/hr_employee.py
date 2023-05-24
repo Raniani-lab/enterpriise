@@ -46,8 +46,6 @@ Source: Opinion on the indexation of the amounts set in Article 1, paragraph 4, 
     end_notice_period = fields.Date("End notice period", groups="hr.group_hr_user", copy=False, tracking=True)
     first_contract_in_company = fields.Date("First contract in company", groups="hr.group_hr_user", copy=False)
 
-    has_bicycle = fields.Boolean(string="Bicycle to work", default=False, groups="hr.group_hr_user",
-        help="Use a bicycle as a transport mode to go to work")
     certificate = fields.Selection(selection_add=[('civil_engineer', 'Master: Civil Engineering')])
     l10n_be_scale_seniority = fields.Integer(string="Seniority at Hiring", groups="hr.group_hr_user", tracking=True)
 

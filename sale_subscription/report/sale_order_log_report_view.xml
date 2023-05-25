@@ -79,7 +79,7 @@
         <field name="name">sale.order.log.report.graph</field>
         <field name="model">sale.order.log.report</field>
         <field name="arch" type="xml">
-            <graph string="Sale Order Log Analysis" type="line" sample="1">
+            <graph string="Sale Order Log Analysis" type="line" sample="1" cumulated="1" cumulated_start="1">
                 <field name="event_date" interval="month" type="col"/>
                 <field name="amount_signed_graph" string="MRR Change" type="measure"/>
                 <field name="recurring_yearly_graph" string="Annual Recurring Revenue" type="measure"/>

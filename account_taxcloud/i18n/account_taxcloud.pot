@@ -231,6 +231,12 @@ msgstr ""
 
 #. module: account_taxcloud
 #. odoo-python
+#: code:addons/account_taxcloud/models/product.py:0
+#, python-format
+msgid "The Taxcloud Category must be integer."
+msgstr ""
+
+#. module: account_taxcloud
 #: code:addons/account_taxcloud/models/account_invoice.py:0
 #, python-format
 msgid ""

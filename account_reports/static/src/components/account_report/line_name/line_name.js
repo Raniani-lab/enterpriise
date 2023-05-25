@@ -31,10 +31,11 @@ export class AccountReportLineName extends Component {
     async caretAction(caretOption) {
         const res = await this.orm.call(
             "account.report",
-            caretOption.action,
+            "dispatch_report_action",
             [
                 this.controller.options.report_id,
                 this.controller.options,
+                caretOption.action,
                 {
                     line_id: this.props.line.id,
                     action_param: caretOption.action_param,

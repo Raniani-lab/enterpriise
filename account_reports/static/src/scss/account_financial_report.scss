@@ -411,13 +411,15 @@ $indent-size-md: 3px;
         padding-left: 8px;
         padding-right: 8px;
     }
-    table > tbody > tr >  td{
-        vertical-align: top;
+    &.o_account_reports_no_print {
+        table > tbody > tr >  td{
+            vertical-align: top;
 
-        &.number {
-            font-family: 'Courier New', monospace;
-            font-feature-settings: 'tnum';
-            font-weight: bold;
+            &.number {
+                font-family: 'Courier New', monospace;
+                font-feature-settings: 'tnum';
+                font-weight: bold;
+            }
         }
     }
     .o_account_reports_summary {

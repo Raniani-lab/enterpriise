@@ -5,6 +5,7 @@ from dateutil.relativedelta import relativedelta
 
 from odoo import models
 from odoo.tools.date_utils import get_timedelta
+from odoo.addons.sale_subscription.models.sale_order import SUBSCRIPTION_PROGRESS_STATE
 
 
 class SaleOrder(models.Model):
@@ -20,7 +21,8 @@ class SaleOrder(models.Model):
 
     def _can_generate_service(self):
         self.ensure_one()
-        return not self.origin_order_id and self.subscription_state not in ['6_churn', '5_renewed']
+        # Only normal SO, new subscription or renewal can generate services
+        return not self.subscription_state or self.subscription_state in SUBSCRIPTION_PROGRESS_STATE
 
     def _set_deferred_end_date_from_template(self):
         self.ensure_one()

@@ -148,3 +148,38 @@ class TestSubscriptionTask(TestSubscriptionCommon):
         recurrences = order.order_line.task_id.recurrence_id
         self.assertTrue(all(recurrences.mapped(lambda r: r.repeat_type == 'until')))
         self.assertTrue(all(recurrences.mapped(lambda r: r.repeat_until.month == order.end_date.month)))
+
+    def test_task_generation(self):
+        product_task = self.env['product.template'].create({
+            'name': 'Product task',
+            'type': 'service',
+            'recurring_invoice': True,
+            'project_id': self.project.id,
+            'service_tracking': 'task_global_project',
+        })
+        order = self.env['sale.order'].create({
+            'is_subscription': True,
+            'recurrence_id': self.recurrence_month.id,
+            'note': "original subscription description",
+            'partner_id': self.partner.id,
+        })
+        self.env['sale.order.line'].create({
+            'order_id': order.id,
+            'product_id': product_task.product_variant_id.id,
+        })
+
+        order.action_confirm()
+        self.assertEqual(len(order.tasks_ids), 1, "One task should be created")
+        order._create_recurring_invoice()
+        action = order.prepare_upsell_order()
+        upsell = self.env['sale.order'].browse(action['res_id'])
+
+        upsell.order_line[:1].product_uom_qty = 1
+        upsell.action_confirm()
+        self.assertEqual(len(order.tasks_ids), 1, "No additional task should be created")
+        action = order.prepare_renewal_order()
+        renew = self.env['sale.order'].browse(action['res_id'])
+
+        renew.order_line[:1].product_uom_qty = 2
+        renew.action_confirm()
+        self.assertEqual(len(renew.tasks_ids), 1, "One task for renew should be created")

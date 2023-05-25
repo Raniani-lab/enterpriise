@@ -75,7 +75,7 @@ class StockPicking(models.Model):
         new_picking = self.env['stock.picking'].browse(picking_id)
         return new_picking._get_client_action()['action']
 
-    def action_print_barcode_pdf(self):
+    def action_print_barcode(self):
         return self.action_open_label_type()
 
     def action_print_delivery_slip(self):

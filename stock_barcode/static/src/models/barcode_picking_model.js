@@ -695,9 +695,9 @@ export default class BarcodePickingModel extends BarcodeModel {
                 class: 'o_print_delivery_slip',
                 method: 'action_print_delivery_slip',
             }, {
-                name: _t("Print Barcodes PDF"),
-                class: 'o_print_barcodes_pdf',
-                method: 'action_print_barcode_pdf',
+                name: _t("Print Barcodes"),
+                class: 'o_print_barcodes',
+                method: 'action_print_barcode',
             },
         ];
         if (this.groups.group_tracking_lot) {

@@ -1212,12 +1212,13 @@ class Planning(models.Model):
                 **values,
                 'start_datetime': start_inter.astimezone(pytz.utc).replace(tzinfo=None),
                 'end_datetime': end_inter.astimezone(pytz.utc).replace(tzinfo=None),
-                'allocated_hours': float_utils.float_round(
-                    (((end_inter - start_inter).total_seconds() / 3600.0) * (self.allocated_percentage / 100.0)),
-                    precision_digits=2
-                ),
             }
-            if not self._update_remaining_hours_to_plan_and_values(remaining_hours_to_plan, new_slot_vals):
+            was_updated = self._update_remaining_hours_to_plan_and_values(remaining_hours_to_plan, new_slot_vals)
+            new_slot_vals['allocated_hours'] = float_utils.float_round(
+                ((end_inter - start_inter).total_seconds() / 3600.0) * (self.allocated_percentage / 100.0),
+                precision_digits=2
+            )
+            if not was_updated:
                 return splitted_slot_values
             if unassign:
                 new_slot_vals['resource_id'] = False

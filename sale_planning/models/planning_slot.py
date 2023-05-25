@@ -576,8 +576,9 @@ class PlanningSlot(models.Model):
             # if the slot is linked to a slot, we only need to allocate the remaining hours to plan
             # we keep track of those hours in a dict and decrease it each time we create a slot.
             if self.sale_line_id not in remaining_hours_to_plan:
+                self.sale_line_id._compute_planning_hours_planned()
                 remaining_hours_to_plan[self.sale_line_id] = self.sale_line_id.planning_hours_to_plan - self.sale_line_id.planning_hours_planned
-            if float_utils.float_compare(remaining_hours_to_plan[self.sale_line_id], 0.0, precision_digits=2) < 1:
+            if float_utils.float_compare(remaining_hours_to_plan[self.sale_line_id], 0.0, precision_digits=2) != 1:
                 return False  # nothing left to allocate.
         return res
 
@@ -593,7 +594,7 @@ class PlanningSlot(models.Model):
             :return a bool representing wether or not there are still hours remaining
         """
         if self.sale_line_id.product_id.planning_enabled:
-            if float_utils.float_compare(remaining_hours_to_plan[self.sale_line_id], 0.0, precision_digits=2) < 1:
+            if float_utils.float_compare(remaining_hours_to_plan[self.sale_line_id], 0.0, precision_digits=2) != 1:
                 return False
             # The allocated hours of the slot can be computed as for a slot with allocation_type == 'planning'
             # since it is build from an employee work interval, thus will last less than 24hours.
@@ -601,12 +602,11 @@ class PlanningSlot(models.Model):
             # Allocated_hours is discounted from remaining hours with a maximum of : remaining_hours
             # So, the difference between the two values must be checked, if remaining_hours is less than the
             # allocated hours, than update the end_datetime.
-            if float_utils.float_compare(remaining_hours_to_plan[self.sale_line_id], allocated_hours, precision_digits=2) < 0:
-                remaining_hours = remaining_hours_to_plan[self.sale_line_id] * self.allocated_percentage / 100.0
-                values['end_datetime'] = values['start_datetime'] + timedelta(hours=remaining_hours)
-                remaining_hours_to_plan[self.sale_line_id] -= remaining_hours
-            else:
-                remaining_hours_to_plan[self.sale_line_id] -= allocated_hours
+            ratio = self.allocated_percentage / 100.00
+            remaining_hours = min(remaining_hours_to_plan[self.sale_line_id] / ratio, allocated_hours)
+            values['end_datetime'] = values['start_datetime'] + timedelta(hours=remaining_hours)
+            values.pop('allocated_hours', None) # we want that to be computed again.
+            remaining_hours_to_plan[self.sale_line_id] -= remaining_hours * ratio
         return True
 
     def action_unschedule(self):

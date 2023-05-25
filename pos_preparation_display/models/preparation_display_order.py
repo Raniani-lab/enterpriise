@@ -68,6 +68,13 @@ class PosPreparationDisplayOrder(models.Model):
                         'preparation_display_id': p_dis.id,
                     })
 
+    @api.model
+    def _send_orders_to_preparation_display(self, preparation_display_id):
+        preparation_display = self.env['pos_preparation_display.display'].browse(preparation_display_id)
+        self.env['bus.bus']._sendone(f'preparation_display-{preparation_display.access_token}', 'load_orders', {
+            'preparation_display_id': preparation_display.id,
+        })
+
     def _get_preparation_order_values(self, order):
         return {
             'displayed': True,

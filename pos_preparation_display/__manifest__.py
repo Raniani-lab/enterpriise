@@ -16,7 +16,6 @@
     ],
     'installable': True,
     'auto_install': True,
-    'post_init_hook': '_pos_preparation_display_post_init',
     'assets': {
         'pos_preparation_display.assets': [
 

@@ -9,9 +9,6 @@
     'depends': ['pos_restaurant', 'pos_preparation_display'],
     'installable': True,
     'auto_install': True,
-    'demo': [
-        'demo/preparation_display_demo.xml',
-    ],
     'assets': {
         'pos_preparation_display.assets': [
             'pos_restaurant_preparation_display/static/src/app/**/*',

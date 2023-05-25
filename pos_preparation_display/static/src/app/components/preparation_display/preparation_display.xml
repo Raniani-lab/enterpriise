@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
     <t t-name="pos_preparation_display.PreparationDisplay">
+        <div t-if="!preparationDisplay.posHasProducts and this.preparationDisplay.loadingProducts" class="block-top-header position-absolute top-0 start-0 bg-black opacity-50 w-100 h-100 z-1000">
+            <div class="d-flex h-100 w-100 text-white flex-row align-items-center justify-content-center">
+                <div class="o_spinner d-flex flex-column mb-4">
+                    <img src="/web/static/img/spin.svg" alt="Loading..."/>
+                    Loading...
+                </div>
+            </div>
+        </div>
         <div class="o_pdis_main_screen d-flex flex-column vh-100 w-100 bg-view overflow-hidden user-select-none">
             <div class="o_pdis_navbar d-flex justify-content-between">
                 <div class="d-flex align-items-center justify-content-start">
@@ -76,7 +84,12 @@
                             </div>
                         </div>
                     </div>
-                    <div t-attf-class="o_pdis_orders position-relative d-grid flex-grow-1 gap-3 text-reset p-3 overflow-auto {{ this.filterSelected and this.showSidebar or isLastStage and hasOrders  ? 'o_pdis_action_bar' : 'h-100'}}">
+                    <div t-if="!preparationDisplay.posHasProducts" t-attf-class="o_pdis_no_products position-relative text-center d-flex justify-content-center align-items-start flex-grow-1 gap-3 text-reset p-3 overflow-auto {{ this.filterSelected and this.showSidebar or isLastStage and hasOrders  ? 'o_pdis_action_bar' : 'h-100'}}">
+                        <div t-if="!this.preparationDisplay.loadingProducts" class="mt-5">
+                            <p class="text-larger">No products available. Explore <a role="button" class="button-no-demo fw-bold" t-on-click="() => this.preparationDisplay.loadDemoDataProducts()">demo data</a> or <a role="button" class="button-no-demo fw-bold" t-on-click="createNewProducts">create your own</a>.</p>
+                        </div>
+                    </div>
+                    <div t-else="" t-attf-class="o_pdis_orders position-relative d-grid flex-grow-1 gap-3 text-reset p-3 overflow-auto {{ this.filterSelected and this.showSidebar or isLastStage and hasOrders  ? 'o_pdis_action_bar' : 'h-100'}}">
                         <t t-foreach="this.preparationDisplay.filteredOrders" t-as="order" t-key="order.id">
                             <Order order="order" />
                         </t>

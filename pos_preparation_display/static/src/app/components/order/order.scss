@@ -34,6 +34,16 @@ $colors: (
     border: $border-size $border-style map-get($colors, 0);
 }
 
+.o_pdis_no_products {
+    background-color: #f9f9f9;
+
+    color: black;
+    
+    &.o_pdis_action_bar {
+        height: calc(100% - #{$o-pdis-action-bar-height});
+    }
+}
+
 .o_pdis_orders {
     background-color: $o-gray-500;
     grid-template-columns: repeat(auto-fill, minmax(#{$o-pdis-card-min-width}, 1fr));
@@ -68,4 +78,8 @@ $colors: (
             opacity: 0;
         }
     }
+}
+
+.text-larger {
+    font-size: larger;
 }

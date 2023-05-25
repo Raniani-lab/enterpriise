@@ -56,6 +56,9 @@ export class PreparationDisplay extends Component {
 
         return { categoryFilters, productFilters };
     }
+    createNewProducts() {
+        window.open("/web#action=point_of_sale.action_client_product_menu", "_self");
+    }
 }
 
 PreparationDisplay.components = { Category, Stages, Order };

@@ -6,7 +6,7 @@ import { Stage } from "@pos_preparation_display/app/models/stage";
 import { Category } from "@pos_preparation_display/app/models/category";
 import { deserializeDateTime } from "@web/core/l10n/dates";
 import { Product } from "@pos_preparation_display/app/models/product";
-
+import { ConnectionLostError } from "@web/core/network/rpc_service";
 
 // in the furur, maybe just set "filterOrders" as a getter and directly call the function.
 export class PreparationDisplay extends Reactive {
@@ -14,7 +14,7 @@ export class PreparationDisplay extends Reactive {
         super();
         this.setup(...arguments);
     }
-    setup(data, env, preparationDisplayId) {
+    async setup(data, env, preparationDisplayId) {
         this.id = preparationDisplayId;
         this.env = env;
         this.showCategoryFilter = true;
@@ -38,6 +38,8 @@ export class PreparationDisplay extends Reactive {
         this.processStages();
         this.processCategories();
         this.processOrders();
+        this.posHasProducts = await this.loadPosHasProducts();
+        this.loadingProducts = false;
     }
 
     filterOrders() {
@@ -58,7 +60,7 @@ export class PreparationDisplay extends Reactive {
                         countedOrders.add(order.id);
                     }
                     // second filter, if a stage is selected the order must be in.
-                    return !this.selectedStageId || order.stageId === this.selectedStageId
+                    return !this.selectedStageId || order.stageId === this.selectedStageId;
                 });
             })
             .sort((a, b) => {
@@ -215,10 +217,7 @@ export class PreparationDisplay extends Reactive {
 
             orderObj.orderlines = order.orderlines.map((line) => {
                 const orderline = new Orderline(line, orderObj);
-                const product = new Product([
-                    orderline.productId,
-                    orderline.productName,
-                ]);
+                const product = new Product([orderline.productId, orderline.productName]);
 
                 this.products[product.id] = product;
                 this.orderlines[orderline.id] = orderline;
@@ -390,6 +389,32 @@ export class PreparationDisplay extends Reactive {
         }
 
         return orderlines;
+    }
+
+    async loadPosHasProducts() {
+        return await this.orm.call(
+            "pos_preparation_display.display",
+            "pos_has_valid_product",
+            [],
+            {}
+        );
+    }
+
+    async loadDemoDataProducts() {
+        this.loadingProducts = true;
+        try {
+            await this.orm.call("pos_preparation_display.display", "load_product_frontend", [], {});
+            this.posHasProducts = await this.loadPosHasProducts();
+        } catch (e) {
+            if (e instanceof ConnectionLostError) {
+                Promise.reject(e);
+                return e;
+            } else {
+                throw e;
+            }
+        } finally {
+            this.loadingProducts = false;
+        }
     }
 
     exit() {

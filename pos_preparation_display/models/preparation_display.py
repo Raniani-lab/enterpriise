@@ -146,3 +146,13 @@ class PosPreparationDisplay(models.Model):
     def _compute_contains_bar_restaurant(self):
         for preparation_display in self:
             preparation_display.contains_bar_restaurant = any(pos_config_id.module_pos_restaurant for pos_config_id in preparation_display.get_pos_config_ids())
+
+    @api.model
+    def pos_has_valid_product(self):
+        return self.env['product.product'].sudo().search_count(['&', ('available_in_pos', '=', True), ('list_price', '>', 0)], limit=1) > 0
+
+    @api.model
+    def load_product_frontend(self):
+        allowed = not self.pos_has_valid_product()
+        if allowed:
+            self.env['pos.session'].load_onboarding_data()

@@ -22,7 +22,7 @@
     </record>
 
     <!-- Pos Config override -->
-    <record id="pos_restaurant.pos_config_restaurant" model="pos.config">
+    <record id="pos_restaurant.pos_config_main_restaurant" model="pos.config">
         <field name="module_pos_restaurant_appointment">True</field>
         <field name="appointment_type_ids" eval="[(6, 0, [ref('appointment_type_restaurant_table')])]" />
     </record>

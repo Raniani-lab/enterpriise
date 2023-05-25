@@ -40,8 +40,8 @@ class SaleOrderLine(models.Model):
             ('sale_line_id', 'in', sol_planning.ids),
             ('start_datetime', '!=', False),
             '|',
-            ('resource_id', '=', False),
-            ('resource_type', '!=', 'material'),
+                ('resource_id', '=', False),
+                ('resource_type', '!=', 'material'),
         ], ['sale_line_id'], ['allocated_hours:sum'])
         mapped_data = {sale_line.id: allocated_hours_sum for sale_line, allocated_hours_sum in group_data}
         for line in self:

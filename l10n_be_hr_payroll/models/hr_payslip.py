@@ -1304,7 +1304,7 @@ def compute_holiday_pay_recovery_n(payslip, categories, worked_days, inputs):
         return 0
     leave120_amount = payslip.dict._get_worked_days_line_amount('LEAVE120')
     holiday_amount = min(leave120_amount, employee_hourly_cost * worked_days.LEAVE120.number_of_hours)
-    remaining_amount = max_amount_to_recover - employee.l10n_be_holiday_pay_recovered_n
+    remaining_amount = max(0, max_amount_to_recover - employee.l10n_be_holiday_pay_recovered_n)
     return - min(remaining_amount, holiday_amount)
 
 def compute_holiday_pay_recovery_n1(payslip, categories, worked_days, inputs):
@@ -1316,7 +1316,7 @@ def compute_holiday_pay_recovery_n1(payslip, categories, worked_days, inputs):
         return 0
     leave120_amount = payslip.dict._get_worked_days_line_amount('LEAVE120')
     holiday_amount = min(leave120_amount, employee_hourly_cost * worked_days.LEAVE120.number_of_hours)
-    remaining_amount = max_amount_to_recover - employee.l10n_be_holiday_pay_recovered_n1
+    remaining_amount = max(max_amount_to_recover - employee.l10n_be_holiday_pay_recovered_n1, 0)
     return - min(remaining_amount, holiday_amount)
 
 def compute_termination_n_basic_double(payslip, categories, worked_days, inputs):

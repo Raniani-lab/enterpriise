@@ -1230,11 +1230,13 @@ class TestSubscription(TestSubscriptionCommon):
         free_log_ids = free_sub.order_log_ids.sorted('event_date')
         sub_data = [(log.event_type, log.event_date, log.subscription_state, log.amount_signed, log.recurring_monthly) for log in
                     free_log_ids]
-        self.assertEqual(sub_data, [('0_creation', datetime.date(2021, 1, 1), '3_progress', 0, 0)])
+        self.assertEqual(sub_data, [('0_creation', datetime.date(2021, 1, 1), '3_progress', 0, 0),
+                                    ('3_transfer', datetime.date(2021, 4, 1), '5_renewed', 0, 0)])
         renew_logs = free_renewal_so.order_log_ids.sorted('event_date')
         renew_data = [(log.event_type, log.event_date, log.subscription_state, log.amount_signed, log.recurring_monthly) for log
                       in renew_logs]
-        self.assertEqual(renew_data, [('0_creation', datetime.date(2021, 9, 1), '3_progress', 20.0, 20.0)])
+        self.assertEqual(renew_data, [('3_transfer', datetime.date(2021, 4, 1), '3_progress', 0, 0),
+                                      ('1_expansion', datetime.date(2021, 9, 1), '3_progress', 20.0, 20.0)])
 
         future_data = future_sub.order_log_ids.sorted('event_date') # several events aggregated on the same date
         simple_data = [(log.event_type, log.event_date, log.subscription_state, log.amount_signed, log.recurring_monthly) for log
@@ -2554,7 +2556,7 @@ class TestSubscription(TestSubscriptionCommon):
                              [('3_transfer', datetime.date(2023, 4, 29), 200, 200, other_currency),
                               ('1_expansion', datetime.date(2023, 4, 29), 400, 600, other_currency)
                               ])
-            
+
     def test_protected_close_reason(self):
         close_reason = self.env['sale.order.close.reason'].create({
             'name': 'Super close reason',

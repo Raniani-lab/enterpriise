@@ -599,11 +599,6 @@ class SaleOrder(models.Model):
                     event_date = fields.Date.today()
                     # All logs are stacked today. In the future, there should not be any log in the future
                     self.order_log_ids.filtered(lambda l: l.event_date > event_date).event_date = event_date
-            if event_type == '3_transfer' and \
-                    float_is_zero(recurring_monthly, precision_rounding=cur_round) and \
-                    float_is_zero(amount_signed, precision_rounding=cur_round):
-                # Avoid creating transfer log for free subscription that remains free
-                return
             values.update({
                 'event_type': event_type,
                 'amount_signed': amount_signed,
@@ -1107,7 +1102,7 @@ class SaleOrder(models.Model):
         return True
 
     def set_open(self):
-        self.filtered('is_subscription').write({'subscription_state': '3_progress'})
+        self.filtered('is_subscription').update({'subscription_state': '3_progress'})
 
     @api.model
     def _cron_update_kpi(self):

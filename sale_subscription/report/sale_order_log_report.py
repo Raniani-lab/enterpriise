@@ -15,7 +15,7 @@ from odoo.addons.sale_subscription.models.sale_order import SUBSCRIPTION_PROGRES
 class SaleOrderLogReport(models.Model):
     _name = "sale.order.log.report"
     _description = "Sales Log Analysis Report"
-    _order = 'event_date desc, id desc'
+    _order = 'order_id desc, event_date desc, id desc'
     _auto = False
 
     partner_id = fields.Many2one('res.partner', 'Customer', readonly=True)

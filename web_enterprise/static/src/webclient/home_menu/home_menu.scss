@@ -8,10 +8,6 @@
         background: transparent;
         border-bottom-color: transparent;
 
-        .dropdown-menu {
-            border-color: $dropdown-bg;
-        }
-
         .o_dropdown_active,
         > ul > li.show > a {
             outline: none;

@@ -210,9 +210,9 @@ class ResCompany(models.Model):
         if periodicity == 'year':
             return _("Tax return for %s%s", period_start.year, region_string)
         elif periodicity == 'trimester':
-            return _("Tax return for %s%s", format_date(self.env, period_start, date_format='qqq'), region_string)
+            return _("Tax return for %s%s", format_date(self.env, period_start, date_format='qqq yyyy'), region_string)
         elif periodicity == 'monthly':
-            return _("Tax return for %s%s", format_date(self.env, period_start, date_format='LLLL'), region_string)
+            return _("Tax return for %s%s", format_date(self.env, period_start, date_format='LLLL yyyy'), region_string)
         else:
             return _("Tax return from %s to %s%s", format_date(self.env, period_start), format_date(self.env, period_end), region_string)
 

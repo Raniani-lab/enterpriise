@@ -220,18 +220,7 @@ QUnit.test("Add a pivot in another sheet", async (assert) => {
         (user) => getCellFormula(user, "B1"),
         `=ODOO.PIVOT.HEADER(1,"foo",1)`
     );
-    // values should not be loaded yet (lazy load)
-    assert.spreadsheetIsSynchronized(
-        [bob, charlie],
-        (user) => getCellValue(user, "B4"),
-        "Loading..."
-    );
-    assert.spreadsheetIsSynchronized(
-        [bob, charlie],
-        (user) => getCellValue(user, "B1"),
-        "Loading..."
-    );
-    await nextTick();
+
     assert.spreadsheetIsSynchronized([alice, bob, charlie], (user) => getCellValue(user, "B4"), 11);
     assert.spreadsheetIsSynchronized([alice, bob, charlie], (user) => getCellValue(user, "B1"), 1);
 });

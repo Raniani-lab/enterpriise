@@ -17,6 +17,8 @@ class StockMoveLine(models.Model):
     is_completed = fields.Boolean(compute='_compute_is_completed', help="Check if the quantity done matches the demand")
     hide_lot_name = fields.Boolean(compute='_compute_hide_lot_name')
     hide_lot = fields.Boolean(compute='_compute_hide_lot_name')
+    image_1920 = fields.Image(related="product_id.image_1920")
+    product_reference_code = fields.Char(related="product_id.code", string="Product Reference Code")
 
     @api.depends('tracking', 'picking_type_use_existing_lots', 'picking_type_use_create_lots', 'lot_name')
     def _compute_hide_lot_name(self):

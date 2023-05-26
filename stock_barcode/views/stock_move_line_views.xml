@@ -7,7 +7,7 @@
     <field name="priority">1000</field>
     <field name="arch" type="xml">
         <form string="Select a Product" class="o_barcode_line_form flex-column">
-            <div class="row mt-4 mb-4">
+            <div class="row mt-2 mb-2">
                 <field name="company_id" force_save="1" invisible="1"/>
                 <field name="reserved_uom_qty" invisible="1" />
                 <field name="move_id" invisible="1" />
@@ -18,13 +18,23 @@
                 <field name="picking_id" invisible="1"/>
                 <field name="location_id" invisible="1"/>
                 <field name="location_dest_id" invisible="1"/>
-                <div class="col-12 d-flex align-items-baseline">
+                <div class="col-9 d-flex align-items-baseline">
                     <i class="fa fa-fw fa-lg fa-tags me-3" title="Product"/>
-                    <field name="product_id" placeholder="Product"
-                        context="{'default_detailed_type': 'product'}"
-                        domain="[('type', 'in', ['product', 'consu']), '|', ('company_id', '=', False), ('company_id', '=', company_id)]"
-                        required="1"
-                        readonly="state == 'done' or move_id" nolabel="1"/>
+                    <div class="flex-column lh-1">
+                        <div>
+                            <field name="product_reference_code" invisible="not id or not product_reference_code"/>
+                        </div>
+                        <div>
+                            <field name="product_id" placeholder="Product"
+                                context="{'default_detailed_type': 'product'}"
+                                domain="[('type', 'in', ['product', 'consu']), '|', ('company_id', '=', False), ('company_id', '=', company_id)]"
+                                required="1"
+                                readonly="state == 'done' or move_id" nolabel="1"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <field name="image_1920" class="oe_avatar" widget="image_preview" invisible="not image_1920"/>
                 </div>
             </div>
             <div class="row">

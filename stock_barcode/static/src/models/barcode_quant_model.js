@@ -249,6 +249,7 @@ export default class BarcodeQuantModel extends BarcodeModel {
             default_inventory_quantity: 1,
             default_user_id: this.userId,
             inventory_mode: true,
+            display_default_code: false,
         };
     }
 

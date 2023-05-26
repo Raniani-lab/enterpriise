@@ -2693,3 +2693,40 @@ class TestTaxReport(TestAccountReportsCommon):
             ],
             options
         )
+
+    def test_tax_report_closing_entry_reset_to_draft(self):
+        """
+        Test the reset to draft functionality to ensure no duplicate closing entry is created.
+
+        This test checks that when a tax report closing entry is posted and then reset to draft,
+        creating a subsequent closing entry will not result in a duplicate. Instead, the same
+        initial closing entry will be reused.
+        """
+        options = self._generate_options(self.basic_tax_report, '2021-03-01', '2021-03-31')
+        vat_closing_action = self.env['account.generic.tax.report.handler'].action_periodic_vat_entries(options)
+        initial_closing_entry = self.env['account.move'].browse(vat_closing_action['res_id'])
+        initial_closing_entry.action_post()
+        initial_closing_entry.button_draft()
+        vat_closing_action = self.env['account.generic.tax.report.handler'].action_periodic_vat_entries(options)
+        subsequent_closing_entry  = self.env['account.move'].browse(vat_closing_action['res_id'])
+        self.assertEqual(initial_closing_entry, subsequent_closing_entry)
+
+    def test_tax_report_closing_entry_draft_with_new_entries(self):
+        """
+        Test whether the tax closing entry gets properly computed when reset to draft and the VAT closing button is clicked again.
+        """
+        options = self._generate_options(self.basic_tax_report, '2023-01-01', '2023-03-31')
+        self.init_invoice('out_invoice', partner=self.partner_a, invoice_date='2023-03-22', post=True, amounts=[200], taxes=self.tax_sale_a)
+        initial_vat_closing_action = self.env['account.generic.tax.report.handler'].action_periodic_vat_entries(options)
+        initial_closing_entry = self.env['account.move'].browse(initial_vat_closing_action['res_id'])
+        initial_values = []
+        for aml in initial_closing_entry.line_ids:
+            self.assertEqual(aml.balance, 30 if aml.balance > 0 else -30)
+            initial_values.append({'account_id': aml.account_id.id, 'balance': aml.balance})
+        self.init_invoice('out_invoice', partner=self.partner_a, invoice_date='2023-03-22', post=True, amounts=[1000], taxes=self.tax_sale_a)
+        subsequent_vat_closing_action = self.env['account.generic.tax.report.handler'].action_periodic_vat_entries(options)
+        subsequent_closing_entry  = self.env['account.move'].browse(subsequent_vat_closing_action['res_id'])
+        self.assertRecordValues(subsequent_closing_entry.line_ids, [
+            {'account_id': initial_values[0]['account_id'], 'balance': initial_values[0]['balance'] + 150},
+            {'account_id': initial_values[1]['account_id'], 'balance': initial_values[1]['balance'] - 150},
+        ])

@@ -16,6 +16,10 @@
                     Some controls failed.
                     <button class="btn btn-link p-0 align-baseline" string="-> Check your tax report" name="action_open_tax_report" type="object"/>
                 </div>
+                <field name="tax_closing_alert" invisible="1"/>
+                <div class="alert alert-info text-center" invisible="not tax_closing_alert" role="alert">
+                    This tax closing entry is posted, but the tax lock date is earlier than the covered period's last day. You might need to reset it to draft and refresh its content, in case other entries using taxes have been posted in the meantime.
+                </div>
             </xpath>
 
             <xpath expr="//div[hasclass('oe_button_box')]/button" position="before">

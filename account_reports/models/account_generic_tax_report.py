@@ -52,10 +52,16 @@ class AccountTaxReportHandler(models.AbstractModel):
 
         # Get the moves separately for companies with a lock date on the concerned period, and those without.
         tax_locked_companies = companies.filtered(lambda c: c.tax_lock_date and c.tax_lock_date >= end_date)
-        moves += self._get_tax_closing_entries_for_closed_period(report, options, tax_locked_companies)
+        locked_companies_moves = self._get_tax_closing_entries_for_closed_period(report, options, tax_locked_companies, posted_only=False)
+        posted_locked_moves = locked_companies_moves.filtered(lambda x: x.state == 'posted')
+        moves += posted_locked_moves
 
         non_tax_locked_companies = companies - tax_locked_companies
-        moves += self._generate_tax_closing_entries(report, options, companies=non_tax_locked_companies)
+        draft_locked_moves = locked_companies_moves.filtered(lambda x: x.state == 'draft')
+        draft_closing_moves = self._get_tax_closing_entries_for_closed_period(report, options, non_tax_locked_companies, posted_only=False) \
+                              + draft_locked_moves
+        companies_to_regenerate = non_tax_locked_companies + draft_locked_moves.company_id
+        moves += self._generate_tax_closing_entries(report, options, companies=companies_to_regenerate, closing_moves=draft_closing_moves)
 
         # Make the action for the retrieved move and return it.
         action = self.env["ir.actions.actions"]._for_xml_id("account.action_move_journal_line")
@@ -120,9 +126,6 @@ class AccountTaxReportHandler(models.AbstractModel):
             # Check the tax groups from the company for any misconfiguration in these countries
             if self.env['account.tax.group']._check_misconfigured_tax_groups(company, countries):
                 self._redirect_to_misconfigured_tax_groups(company, countries)
-
-            if company.tax_lock_date and company.tax_lock_date >= end_date:
-                raise UserError(_("This period is already closed for company %s", company.name))
 
             for move in company_closing_moves:
                 # get tax entries by tax_group for the period defined in options

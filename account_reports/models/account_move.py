@@ -15,6 +15,8 @@ class AccountMove(models.Model):
     tax_closing_end_date = fields.Date()
     # technical field used to know if there was a failed control check
     tax_report_control_error = fields.Boolean()
+    # technical field used to know whether to show the tax closing alert or not
+    tax_closing_alert = fields.Boolean(compute='_compute_tax_closing_alert')
 
     def _post(self, soft=True):
         # Overridden to create carryover external values and join the pdf of the report when posting the tax closing
@@ -199,3 +201,12 @@ class AccountMove(models.Model):
         # Fetch pdf
         pdf_data = report.export_to_pdf(options)
         return [(pdf_data['file_name'], pdf_data['file_content'])]
+
+    def _compute_tax_closing_alert(self):
+        for move in self:
+            move.tax_closing_alert = (
+                move.state == 'posted'
+                and move.tax_closing_end_date
+                and move.company_id.tax_lock_date
+                and move.company_id.tax_lock_date < move.tax_closing_end_date
+            )

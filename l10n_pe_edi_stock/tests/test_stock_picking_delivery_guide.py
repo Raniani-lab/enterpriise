@@ -78,6 +78,8 @@ class TestPEDeliveryGuideCommon(TestPeEdiCommon):
             'l10n_pe_edi_operator_id': cls.operator_luigys.id,
             'l10n_pe_edi_reason_for_transfer': '01',
             'l10n_pe_edi_departure_start_date': datetime.today(),
+            'state': 'draft',
+            'immediate_transfer': False,
         })
 
         cls.env['stock.move'].create({

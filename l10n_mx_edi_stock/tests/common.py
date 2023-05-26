@@ -93,6 +93,8 @@ class TestMXDeliveryGuideCommon(TestMxEdiCommon):
             'l10n_mx_edi_transport_type': '01',
             'l10n_mx_edi_vehicle_id': cls.vehicle_pedro.id,
             'l10n_mx_edi_distance': 120,
+            'state': 'draft',
+            'immediate_transfer': False,
         })
 
         cls.env['stock.move'].create({

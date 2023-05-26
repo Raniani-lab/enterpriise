@@ -203,6 +203,8 @@ class TestDeliveryDHL(TransactionCase):
                    'location_id': self.stock_location.id,
                    'location_dest_id': self.customer_location.id,
                    'picking_type_id': self.env.ref('stock.picking_type_out').id,
+                   'state': 'draft',
+                   'immediate_transfer': False,
                    'move_ids_without_package': [(0, None, order1_vals)]}
 
         delivery_order = StockPicking.create(do_vals)

@@ -56,6 +56,10 @@ $o-wo-tablet-text: color-contrast($o-wo-tablet-bg, $body-color, #FFF);
         .o_form_nosheet {
             padding: 0;
         }
+        &.form_top {
+            border-bottom: 1px solid $o-wo-tablet-border-bg;
+            background-color: $o-wo-tablet-bg-dark;
+        }
         .o_form_renderer {
             display: flex;
             flex-flow: column;
@@ -64,12 +68,6 @@ $o-wo-tablet-text: color-contrast($o-wo-tablet-bg, $body-color, #FFF);
             padding: 0 $o-wo-tablet-padding*0.5;
             margin-top: 0;
             font-size: 1.3em;
-            &.form_top {
-                min-height: 100px;
-                border-bottom: 1px solid $o-wo-tablet-border-bg;
-                background-color: $o-wo-tablet-bg-dark;
-                padding-bottom: 0;
-            }
             span.o_tag {
                 background-color: $o-wo-tablet-bg-dark;
                 box-shadow: none;

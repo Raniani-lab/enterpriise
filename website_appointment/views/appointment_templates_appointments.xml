@@ -266,7 +266,7 @@
                         <h2 t-attf-class="fw-bold my-3">
                             <span t-field="appointment.name" itemprop="name"/>
                         </h2>
-                        <div class="text-muted flex-fill">
+                        <div class="text-muted flex-fill o_wappointment_card_message_intro">
                             <span t-field="appointment.message_intro" itemprop="message_intro"
                                     placeholder="Add an intro message here..."/>
                         </div>

@@ -216,6 +216,11 @@ class AppointmentShare(models.Model):
                 url_encode(invite._get_redirect_url_parameters()),
             )
 
+    @api.model
+    def _get_invitation_url_parameters(self):
+        """ Returns invitation-related url parameters we want to keep between the different steps of booking """
+        return {'filter_appointment_type_ids', 'filter_resource_ids', 'filter_staff_user_ids', 'invite_token'}
+
     def _get_meeting_categories_for_appointment(self):
         """ Get the categories that will be linked to the meetings created from the invite
             :return <calendar.event.type> recordset:

@@ -919,6 +919,48 @@ class AppointmentType(models.Model):
         """
         return []
 
+    def _prepare_calendar_event_values(
+        self, asked_capacity, booking_line_values, description, duration,
+        appointment_invite, guests, name, customer, staff_user, start, stop
+    ):
+        """ Returns all values needed to create the calendar event from the values outputed
+            by the form submission and its processing. This should be used with values of format
+            matching appointment_form_submit controller's ones.
+            ...
+            :param list<dict> booking_line_values: create values of booking lines
+            :param str name: name filled in form
+            :param <res.partner> guests: list of guest partners
+            :param res.partner customer: partner who made the booking
+            :param dt start: start of picked slot UTC
+            :param dt stop: end of picked slot UTC
+            :return: dict of values used in create method of calendar event
+        """
+        self.ensure_one()
+        partners = (staff_user.partner_id | customer) if staff_user else customer
+        guests = guests or self.env['res.partner']
+        attendee_status = self._get_default_appointment_attendee_status(start, stop, asked_capacity)
+        attendee_values = [Command.create({'partner_id': pid, 'state': attendee_status}) for pid in partners.ids] + \
+            [Command.create({'partner_id': guest.id}) for guest in guests if guest]
+        return {
+            'alarm_ids': [Command.set(self.reminder_ids.ids)],
+            'allday': False,
+            'appointment_booker_id': customer.id,
+            'appointment_invite_id': appointment_invite.id,
+            'appointment_type_id': self.id,
+            'attendee_ids': attendee_values,
+            'booking_line_ids': [Command.create(vals) for vals in booking_line_values],
+            'categ_ids': [Command.set(appointment_invite._get_meeting_categories_for_appointment().ids)],
+            'description': description,
+            'duration': duration,
+            'location': self.location,
+            'name': _('%s with %s', self.name, name),
+            'partner_ids': [Command.link(pid) for pid in (partners | guests).ids],
+            'start': fields.Datetime.to_string(start),
+            'start_date': fields.Datetime.to_string(start),
+            'stop': fields.Datetime.to_string(stop),
+            'user_id': staff_user.id if self.schedule_based_on == 'users' else self.create_uid.id,
+        }
+
     # --------------------------------------
     # Staff Users - Slots Availability
     # --------------------------------------

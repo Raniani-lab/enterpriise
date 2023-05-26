@@ -12,7 +12,7 @@
                     <t t-set="based_on_users" t-value="appointment_type.schedule_based_on == 'users'"/>
                     <h1 class="o_page_header mt32">
                         Schedule <span class="text-primary" t-out="appointment_type.name"/>
-                        <span t-if="based_on_users and ((len(users_possible) == 1 or is_chosen_assign_method) and not (staff_user.name in appointment_type.name))">
+                        <span t-if="based_on_users and ((len(users_possible) == 1 or is_chosen_user_assign_method) and not (staff_user.name in appointment_type.name))">
                             with <span class="text-primary" t-out="staff_user.name"/>
                         </span>
                         <span t-if="not based_on_users and resource">
@@ -50,7 +50,7 @@
                                     <label class="pb-2" for="phone">Your Phone Number*</label>
                                     <div>
                                         <input type="tel" class="form-control" name="phone" id="phone_field" required="1"
-                                            t-att-value="'mobile' in partner_data and partner_data['mobile']"
+                                            t-att-value="'phone' in partner_data and partner_data['phone']"
                                             placeholder="+3212345678"/>
                                     </div>
                                 </div>
@@ -156,8 +156,8 @@
                                         </div>
                                     </main>
                                 </article>
-                                <div class="o_appointment_attendee_form_details">
-                                    <div class="d-flex pt-3 fs-6 lh-lg">
+                                <div class="o_appointment_attendee_form_details pt-2">
+                                    <div class="d-flex pt-1 fs-6 lh-lg">
                                         <i class="fa fa-calendar o_appointment_fa_width text-center fs-5 me-2"/>
                                         <span class="lh-base">
                                             <t t-out="date_locale"/> at <t t-out="time_locale"/><br/>

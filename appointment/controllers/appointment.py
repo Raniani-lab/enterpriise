@@ -3,7 +3,6 @@
 import json
 import pytz
 import re
-import uuid
 
 from pytz.exceptions import UnknownTimeZoneError
 
@@ -14,7 +13,7 @@ from urllib.parse import unquote_plus
 from werkzeug.exceptions import Forbidden, NotFound
 from werkzeug.urls import url_encode
 
-from odoo import exceptions, http, fields, _
+from odoo import Command, exceptions, http, fields, _
 from odoo.http import request, route
 from odoo.osv import expression
 from odoo.tools import plaintext2html, DEFAULT_SERVER_DATETIME_FORMAT as dtf
@@ -448,7 +447,7 @@ class AppointmentController(http.Controller):
             raise NotFound()
 
         partner = self._get_customer_partner()
-        partner_data = partner.read(fields=['name', 'mobile', 'email'])[0] if partner else {}
+        partner_data = partner.read(fields=['name', 'phone', 'email'])[0] if partner else {}
         date_time = unquote_plus(date_time)
         date_time_object = datetime.strptime(date_time, dtf)
         day_name = format_datetime(date_time_object, 'EEE', locale=get_lang(request.env).code)
@@ -608,24 +607,26 @@ class AppointmentController(http.Controller):
                 raise NotFound()
             if staff_user and not staff_user.partner_id.calendar_verify_availability(date_start, date_end):
                 return request.redirect('/appointment/%s?%s' % (appointment_type.id, keep_query('*', state='failed-staff-user')))
+
         guests = None
         if appointment_type.allow_guests:
             if guest_emails_str:
                 guests, unavailable = request.env['calendar.event'].sudo()._find_or_create_partners_with_availability(guest_emails_str, (date_start, date_end))
                 if unavailable:
                     return request.redirect('/appointment/%s?%s' % (appointment_type.id, keep_query('*', state='failed-partner')))
-        Partner = self._get_customer_partner() or request.env['res.partner'].sudo().search([('email', '=like', email)], limit=1)
-        if Partner:
-            if not Partner.calendar_verify_availability(date_start, date_end):
+
+        customer = self._get_customer_partner() or request.env['res.partner'].sudo().search([('email', '=like', email)], limit=1)
+        if customer:
+            if not customer.calendar_verify_availability(date_start, date_end):
                 return request.redirect('/appointment/%s?%s' % (appointment_type.id, keep_query('*', state='failed-partner')))
-            if not Partner.mobile:
-                Partner.write({'mobile': phone})
-            if not Partner.email:
-                Partner.write({'email': email})
+            if not customer.mobile:
+                customer.write({'mobile': phone})
+            if not customer.email:
+                customer.write({'email': email})
         else:
-            Partner = Partner.create({
+            customer = customer.create({
                 'name': name,
-                'mobile': Partner._phone_format(number=phone, country=self._get_customer_country()),
+                'phone': customer._phone_format(number=phone, country=self._get_customer_country()) or phone,
                 'email': email,
                 'lang': request.lang.code,
             })
@@ -645,40 +646,40 @@ class AppointmentController(http.Controller):
                 if question_id in appointment_question_ids:
                     partner_inputs[question_id] = partner_inputs.get(question_id, []) + [answer_id]
 
-        # The answer inputs will be created in _prepare_calendar_values from the values in question_answer_inputs
-        question_answer_inputs = []
+        # The answer inputs will be created in _prepare_calendar_event_values from the values in answer_input_values
+        answer_input_values = []
         base_answer_input_vals = {
             'appointment_type_id': appointment_type.id,
-            'partner_id': Partner.id,
+            'partner_id': customer.id,
         }
         description_bits = []
         description = ''
 
         if phone:
-            description_bits.append(_('Mobile: %s', phone))
+            description_bits.append(_('Phone: %s', phone))
         if email:
             description_bits.append(_('Email: %s', email))
 
         for question in appointment_type.question_ids.filtered(lambda question: question.id in partner_inputs.keys()):
             if question.question_type == 'checkbox':
                 answers = question.answer_ids.filtered(lambda answer: answer.id in partner_inputs[question.id])
-                question_answer_inputs.extend([
+                answer_input_values.extend([
                     dict(base_answer_input_vals, question_id=question.id, value_answer_id=answer.id) for answer in answers
                 ])
                 description_bits.append(f'{question.name}: {", ".join(answers.mapped("name"))}')
             elif question.question_type in ['select', 'radio']:
-                question_answer_inputs.append(
+                answer_input_values.append(
                     dict(base_answer_input_vals, question_id=question.id, value_answer_id=int(partner_inputs[question.id]))
                 )
                 selected_answer = question.answer_ids.filtered(lambda answer: answer.id == int(partner_inputs[question.id]))
                 description_bits.append(f'{question.name}: {selected_answer.name}')
             elif question.question_type == 'char':
-                question_answer_inputs.append(
+                answer_input_values.append(
                     dict(base_answer_input_vals, question_id=question.id, value_text_box=partner_inputs[question.id].strip())
                 )
                 description_bits.append(f'{question.name}: {partner_inputs[question.id].strip()}')
             elif question.question_type == 'text':
-                question_answer_inputs.append(
+                answer_input_values.append(
                     dict(base_answer_input_vals, question_id=question.id, value_text_box=partner_inputs[question.id].strip())
                 )
                 description_bits.append(f'{question.name}:<br/>{plaintext2html(partner_inputs[question.id].strip())}')
@@ -686,6 +687,40 @@ class AppointmentController(http.Controller):
         if description_bits:
             description = f"<ul>{''.join(f'<li>{bit}</li>' for bit in description_bits)}</ul>"
 
+        booking_line_values = []
+        if appointment_type.schedule_based_on == 'resources':
+            for resource in resources:
+                resource_remaining_capacity = resources_remaining_capacity.get(resource)
+                new_capacity_reserved = min(resource_remaining_capacity, asked_capacity, resource.capacity)
+                asked_capacity -= new_capacity_reserved
+                booking_line_values.append({
+                    'appointment_resource_id': resource.id,
+                    'capacity_reserved': new_capacity_reserved,
+                    'capacity_used': new_capacity_reserved if resource.shareable and appointment_type.resource_manage_capacity else resource.capacity,
+                })
+
+        if invite_token:
+            appointment_invite = request.env['appointment.invite'].sudo().search([('access_token', '=', invite_token)])
+        else:
+            appointment_invite = request.env['appointment.invite']
+
+        return self._handle_appointment_form_submission(
+            appointment_type, date_start, date_end, duration, description, answer_input_values, name,
+            customer, appointment_invite, guests, staff_user, asked_capacity, booking_line_values
+        )
+
+    def _handle_appointment_form_submission(
+        self, appointment_type,
+        date_start, date_end, duration,  # appointment boundaries
+        description, answer_input_values, name, customer, appointment_invite, guests=None,  # customer info
+        staff_user=None, asked_capacity=1, booking_line_values=None  # appointment staff / resources
+    ):
+        """ This method takes the output of the processing of appointment's form submission and
+            creates the event corresponding to those values. Meant for overrides to set values
+            needed to set a specific redirection.
+
+            :returns: a dict of useful values used in the redirection to next step
+        """
         # FIXME AWA/TDE double check this and/or write some tests to ensure behavior
         # The 'mail_notify_author' is only placed here and not in 'calendar.attendee#_send_mail_to_attendees'
         # Because we only want to notify the author in the context of Online Appointments
@@ -695,10 +730,14 @@ class AppointmentController(http.Controller):
             mail_create_nolog=True,
             mail_create_nosubscribe=True,
             allowed_company_ids=staff_user.company_ids.ids,
-        ).sudo().create(
-            self._prepare_calendar_values(appointment_type, date_start, date_end, duration, description, question_answer_inputs, name, Partner, invite_token, staff_user, resources, asked_capacity, resources_remaining_capacity, guests)
-        )
-        return request.redirect('/calendar/view/%s?partner_id=%s&%s' % (event.access_token, Partner.id, keep_query('*', state='new')))
+        ).sudo().create({
+            'appointment_answer_input_ids': [Command.create(vals) for vals in answer_input_values],
+            **appointment_type._prepare_calendar_event_values(
+                asked_capacity, booking_line_values, description, duration,
+                appointment_invite, guests, name, customer, staff_user, date_start, date_end
+            )
+        })
+        return request.redirect(f"/calendar/view/{event.access_token}?partner_id={customer.id}&{keep_query('*', state='new')}")
 
     # Tools / Data preparation
     # ------------------------------------------------------------
@@ -728,63 +767,6 @@ class AppointmentController(http.Controller):
         if appointment_type.location_id:
             return appointment_type.appointment_tz
         return request.httprequest.cookies.get('tz', appointment_type.appointment_tz)
-
-    def _prepare_calendar_values(self, appointment_type, date_start, date_end, duration, description, question_answer_inputs, name, partner, invite_token, staff_user=None, resources=None, asked_capacity=1, resources_remaining_capacity=None, guest_ids=None):
-        """
-        prepares all values needed to create a new calendar.event
-        """
-        alarm_ids = appointment_type.reminder_ids and [(6, 0, appointment_type.reminder_ids.ids)] or []
-        attendee_partners = (staff_user.partner_id if staff_user else request.env['res.partner']) | partner
-        if invite_token:
-            appointment_invite = request.env['appointment.invite'].sudo().search([('access_token', '=', invite_token)])
-        else:
-            appointment_invite = request.env['appointment.invite']
-        categ_ids = appointment_invite._get_meeting_categories_for_appointment()
-        attendee_status = appointment_type._get_default_appointment_attendee_status(date_start, date_end, asked_capacity)
-        booking_lines = []
-        if appointment_type.schedule_based_on == 'resources':
-            for resource in resources:
-                resource_remaining_capacity = resources_remaining_capacity.get(resource)
-                new_capacity_reserved = min(resource_remaining_capacity, asked_capacity, resource.capacity)
-                asked_capacity -= new_capacity_reserved
-                booking_lines.append((0, 0, {
-                    'appointment_resource_id': resource.id,
-                    'capacity_reserved': new_capacity_reserved,
-                    'capacity_used': new_capacity_reserved if resource.shareable and appointment_type.resource_manage_capacity else resource.capacity,
-                }))
-        calendar_event_values = {
-            'name': _('%s with %s', appointment_type.name, name),
-            'start': date_start.strftime(dtf),
-            # FIXME master
-            # we override here start_date(time) value because they are not properly
-            # recomputed due to ugly overrides in event.calendar (reccurrencies suck!)
-            #     (fixing them in stable is a pita as it requires a good rewrite of the
-            #      calendar engine)
-            'start_date': date_start.strftime(dtf),
-            'stop': date_end.strftime(dtf),
-            'allday': False,
-            'duration': duration,
-            'description': description,
-            'alarm_ids': alarm_ids,
-            'location': appointment_type.location,
-            'partner_ids': [
-                (4, partner.id, False) for partner in attendee_partners
-            ] + [(4, pid.id) for pid in (guest_ids or []) if pid],
-            'attendee_ids': [
-                (0, 0, {'partner_id': pid.id, 'state': attendee_status}) for pid in attendee_partners
-            ] + [
-                (0, 0, {'partner_id': pid.id}) for pid in (guest_ids or []) if pid
-            ],
-            'categ_ids': [(6, 0, categ_ids.ids)],
-            'appointment_type_id': appointment_type.id,
-            'appointment_answer_input_ids': [(0, 0, answer_input_values) for answer_input_values in question_answer_inputs],
-            'user_id': staff_user.id if appointment_type.schedule_based_on == 'users' else appointment_type.create_uid.id,
-            'appointment_booker_id': partner.id,
-            'appointment_invite_id': appointment_invite.id,
-            'booking_line_ids': booking_lines,
-        }
-
-        return calendar_event_values
 
     # ------------------------------------------------------------
     # APPOINTMENT TYPE JSON DATA

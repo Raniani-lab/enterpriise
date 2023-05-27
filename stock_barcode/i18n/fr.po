@@ -1297,7 +1297,7 @@ msgstr "Numéro de série / lot"
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_res_config_settings__show_barcode_nomenclature
 msgid "Show Barcode Nomenclature"
-msgstr "Montrer la nomenclature des codes-barres"
+msgstr "Afficher la nomenclature des codes-barres"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_picking_type__show_barcode_validation

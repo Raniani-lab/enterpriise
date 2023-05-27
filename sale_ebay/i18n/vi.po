@@ -796,9 +796,9 @@ msgid ""
 " the date of the oldest order you wish to synchronize in the format \"YYYY-"
 "MM-DD\"."
 msgstr ""
-"Không có ngày đồng bộ hóa cuối cùng trong Tham số hệ thống. Tạo bản ghi Tham"
-" số hệ thống với khóa \"ebay_last_sync\" và giá trị đặt cho ngày của đơn "
-"hàng cũ nhất bạn muốn đồng bộ hóa ở định dạng \"YYYY-MM-DD\"."
+"Không có ngày đồng bộ hóa cuối cùng trong Tham số hệ thống. Tạo tập dữ liệu "
+"Tham số hệ thống với khóa \"ebay_last_sync\" và giá trị đặt cho ngày của đơn"
+" hàng cũ nhất bạn muốn đồng bộ hóa ở định dạng \"YYYY-MM-DD\"."
 
 #. module: sale_ebay
 #. odoo-python

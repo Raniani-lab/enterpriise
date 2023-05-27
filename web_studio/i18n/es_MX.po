@@ -5,7 +5,7 @@
 # Translators:
 # Braulio D. López Vázquez <bdl@odoo.com>, 2022
 # Martin Trigaux, 2022
-# Lucia Pacheco <lpo@odoo.com>, 2022
+# Lucia Pacheco, 2022
 # Fernanda Alvarez, 2023
 # 
 msgid ""
@@ -3845,7 +3845,7 @@ msgstr "Subtotal y total"
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
 #, python-format
 msgid "Subtotal & Total can only be used in these models: "
-msgstr ""
+msgstr "Subtotal y Total solo se puede utilizar en los siguientes módulos:"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4340,7 +4340,7 @@ msgstr "Marcador de posición de avatar de usuario"
 #: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
 msgid "User is not a member of the selected group."
-msgstr ""
+msgstr "El usuario no es miembro del grupo seleccionado."
 
 #. module: web_studio
 #. odoo-javascript

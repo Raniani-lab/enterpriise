@@ -85,7 +85,7 @@ msgstr "Activités"
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__activity_exception_decoration
 msgid "Activity Exception Decoration"
-msgstr "Activité d'exception de décoration"
+msgstr "Activité exception décoration"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__activity_state
@@ -477,7 +477,7 @@ msgid ""
 "Enable this option and load demo data to test the social module.<br/>\n"
 "                                        This must never be used on a production database!"
 msgstr ""
-"Activez cette option et chargez les données de démonstration pour tester le module social.<br/>\n"
+"Activer cette option et charger les données de démonstration pour tester le module social.<br/>\n"
 "Cela ne doit jamais être utilisé sur une base de données de production !"
 
 #. module: social
@@ -1762,7 +1762,7 @@ msgid ""
 "Use your own Developer Accounts on our Social app.\n"
 "                            Those credentials are provided in the developer section of your professional social media account."
 msgstr ""
-"Utilisez vos propres comptes de développeur sur notre application sociale.\n"
+"Utiliser vos propres comptes de développeur sur notre application sociale.\n"
 "Ces identifiants sont fournis dans la section développeur de votre compte de réseau social professionnel."
 
 #. module: social

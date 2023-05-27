@@ -41,7 +41,7 @@ msgstr "Tidak dapat membaca file QIF."
 #. module: account_bank_statement_import_qif
 #: model:ir.model.fields,help:account_bank_statement_import_qif.field_account_journal__qif_decimal_point
 msgid "Field used to avoid conversion issues."
-msgstr ""
+msgstr "Field digunakan untuk menghindari masalah conversion."
 
 #. module: account_bank_statement_import_qif
 #: model:ir.model,name:account_bank_statement_import_qif.model_account_journal
@@ -51,12 +51,12 @@ msgstr "Jurnal"
 #. module: account_bank_statement_import_qif
 #: model:ir.model.fields,field_description:account_bank_statement_import_qif.field_account_journal__qif_date_format
 msgid "QIF Dates format"
-msgstr ""
+msgstr "Format Tanggal QIF"
 
 #. module: account_bank_statement_import_qif
 #: model:ir.model.fields,field_description:account_bank_statement_import_qif.field_account_journal__qif_decimal_point
 msgid "QIF Decimal Separator"
-msgstr ""
+msgstr "Pemisah Desimal QIF"
 
 #. module: account_bank_statement_import_qif
 #: code:addons/account_bank_statement_import_qif/models/account_journal.py:0

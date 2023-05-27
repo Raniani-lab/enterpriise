@@ -23,12 +23,12 @@ msgstr ""
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields,field_description:sale_purchase_inter_company_rules.field_purchase_order__auto_generated
 msgid "Auto Generated Purchase Order"
-msgstr "Tự động tạo Đơn mua hàng"
+msgstr "Đơn mua hàng được tạo tự động"
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields,field_description:sale_purchase_inter_company_rules.field_sale_order__auto_generated
 msgid "Auto Generated Sales Order"
-msgstr "Tự động tạo Đơn bán hàng"
+msgstr "Đơn bán hàng được tạo tự động"
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields,field_description:sale_purchase_inter_company_rules.field_res_company__auto_validation
@@ -61,7 +61,8 @@ msgid ""
 "Configure correct warehouse for company(%s) from Menu: "
 "Settings/Users/Companies"
 msgstr ""
-"Cấu hình kho chính xác cho công ty (%s) từ Menu: Cài đặt/Người dùng/Công ty"
+"Cấu hình kho hàng chính xác cho công ty (%s) từ Menu: Cài đặt/Người "
+"dùng/Công ty"
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields,help:sale_purchase_inter_company_rules.field_res_company__warehouse_id

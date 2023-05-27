@@ -1486,7 +1486,7 @@ msgstr "Post flusso social"
 #. module: social
 #: model:ir.model,name:social.model_social_stream_post_image
 msgid "Social Stream Post Image Attachment"
-msgstr ""
+msgstr "Allegato immagine post del flusso"
 
 #. module: social
 #: model:ir.actions.act_window,name:social.action_social_stream
@@ -1527,6 +1527,8 @@ msgid ""
 "Special technical field that holds a dict containing the live posts names by"
 " media ids (used for kanban view)."
 msgstr ""
+"Campo tecnico speciale che contiene un dizionario che include i nomi dei "
+"post dal vivo per ID del social (utilizzato per la vista kanban)."
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_account__stats_link
@@ -1575,17 +1577,17 @@ msgstr "Stream aggiunto (%s)"
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_stream_post_image__stream_post_id
 msgid "Stream Post"
-msgstr ""
+msgstr "Post del flusso"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_stream_post__stream_post_image_ids
 msgid "Stream Post Images"
-msgstr ""
+msgstr "Immagini post del flusso"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_stream_post__stream_post_image_urls
 msgid "Stream Post Images URLs"
-msgstr ""
+msgstr "URL immagini post del flusso"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__stream_type_ids
@@ -1891,7 +1893,7 @@ msgstr "per"
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "replies..."
-msgstr ""
+msgstr "risposte..."
 
 #. module: social
 #: model_terms:ir.actions.act_window,help:social.action_social_stream_post

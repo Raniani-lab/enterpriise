@@ -306,7 +306,7 @@ msgstr "Afletter aanvraag"
 #: model:ir.model.fields,field_description:documents_account.field_account_move__suspense_statement_line_id
 #: model:ir.model.fields,field_description:documents_account.field_account_payment__suspense_statement_line_id
 msgid "Request document from a bank statement line"
-msgstr "Een document aanvragen van een bankafschriftregel"
+msgstr "Een document aanvragen van een rekeningafschriftregel"
 
 #. module: documents_account
 #. odoo-javascript

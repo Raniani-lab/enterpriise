@@ -69,7 +69,7 @@ msgstr "Työsopimus"
 #. module: hr_contract_salary_holidays
 #: model:hr.leave.type,name:hr_contract_salary_holidays.holiday_status_eto
 msgid "Extra Time Off"
-msgstr ""
+msgstr "Ylimääräinen vapaa-aika"
 
 #. module: hr_contract_salary_holidays
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary_holidays.res_config_settings_view_form

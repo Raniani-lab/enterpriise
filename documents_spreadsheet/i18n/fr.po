@@ -101,7 +101,7 @@ msgstr "Annuler"
 #. module: documents_spreadsheet
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.res_config_settings_view_form_inherit_documents_spreadsheet
 msgid "Centralize your spreadsheets"
-msgstr "Centralisez vos feuilles de calcul"
+msgstr "Centraliser vos feuilles de calcul"
 
 #. module: documents_spreadsheet
 #: model:ir.model,name:documents_spreadsheet.model_res_company

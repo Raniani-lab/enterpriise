@@ -161,7 +161,7 @@ msgstr ""
 #. module: web_map
 #: model_terms:ir.ui.view,arch_db:web_map.res_config_settings_view_form
 msgid "Set a MapBox account to activate routes and style"
-msgstr "Définissez un compte MapBox pour activer les itinéraires et le style"
+msgstr "Définir un compte MapBox pour activer les itinéraires et le style"
 
 #. module: web_map
 #. odoo-javascript

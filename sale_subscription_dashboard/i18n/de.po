@@ -404,7 +404,7 @@ msgid ""
 "                    revenues in these invoices for this particular salesperson."
 msgstr ""
 "Listen Sie alle Rechnungen auf, die einmalige Umsätze enthalten, und den Betrag der einmaligen\n"
-"Erlöse in diesen Rechnungen für diesen bestimmten Verkäufer."
+"Erlöse in diesen Rechnungen für diesen bestimmten Vertriebsmitarbeiter."
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -681,7 +681,7 @@ msgstr "Verkaufsteam"
 #: model:ir.actions.client,name:sale_subscription_dashboard.action_subscription_dashboard_report_salesman
 #: model:ir.ui.menu,name:sale_subscription_dashboard.menu_action_subscription_dashboard_report_salesman
 msgid "Salesperson Dashboard"
-msgstr "Verkäufer-Dashboard"
+msgstr "Vertriebsmitarbeiter-Dashboard"
 
 #. module: sale_subscription_dashboard
 #. odoo-python

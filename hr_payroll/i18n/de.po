@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-02 10:50+0000\n"
+"POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: Larissa Manderfeld, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
@@ -277,9 +277,9 @@ msgstr "<strong>Arbeitszeit</strong>"
 msgid ""
 "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%; margin:0px auto;\"><tbody>\n"
 "    <tr><td valign=\"top\" style=\"text-align: left; font-size: 14px;\">\n"
-"        Dear <t t-esc=\"object.employee_id.name\"/>, a new payslip is available for you.<br/><br/>\n"
-"        Please find the PDF in your employee portal.<br/><br/>\n"
-"        Have a nice day,<br/>\n"
+"        Dear <t t-esc=\"object.employee_id.name\"></t>, a new payslip is available for you.<br><br>\n"
+"        Please find the PDF in your employee portal.<br><br>\n"
+"        Have a nice day,<br>\n"
 "        The HR Team\n"
 "    </td></tr>\n"
 "</tbody></table>\n"
@@ -287,10 +287,10 @@ msgid ""
 msgstr ""
 "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%; margin:0px auto;\"><tbody>\n"
 "    <tr><td valign=\"top\" style=\"text-align: left; font-size: 14px;\">\n"
-"        Hallo <t t-esc=\"object.employee_id.name\"/>, eine neue Gehaltsabrechnung liegt für Sie bereit.<br/><br/>\n"
-"        Das PDF finden Sie in Ihrem Mitarbeiterportal.<br/><br/>\n"
-"        Einen schönen Tag,<br/>\n"
-"        Das HR Team\n"
+"        Hallo <t t-esc=\"object.employee_id.name\"></t>, eine neue Gehaltsabrechnung liegt für Sie bereit.<br><br>\n"
+"        Das PDF finden Sie in Ihrem Mitarbeiterportal.<br><br>\n"
+"        Einen schönen Tag<br>\n"
+"        Die Personalabteilung\n"
 "    </td></tr>\n"
 "</tbody></table>\n"
 "            "
@@ -4179,6 +4179,7 @@ msgid "You can't validate a cancelled payslip."
 msgstr "Sie können eine stornierte Gehaltsabrechnung nicht validieren."
 
 #. module: hr_payroll
+#. odoo-python
 #: code:addons/hr_payroll/models/hr_payslip_input_type.py:0
 #, python-format
 msgid ""
@@ -4189,6 +4190,7 @@ msgstr ""
 "aber Sie können es stattdessen archivieren."
 
 #. module: hr_payroll
+#. odoo-python
 #: code:addons/hr_payroll/models/hr_payslip_run.py:0
 #, python-format
 msgid "You cannot delete a payslip batch which is not draft!"

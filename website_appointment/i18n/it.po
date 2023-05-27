@@ -132,7 +132,7 @@ msgstr "Pubblicabile"
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.snippet_options
 msgid "Card Design"
-msgstr ""
+msgstr "Design carta"
 
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_select_operator
@@ -203,7 +203,7 @@ msgstr "Operatore"
 #: code:addons/website_appointment/static/src/xml/website_appointment_templates.xml:0
 #, python-format
 msgid "Please fill this field"
-msgstr ""
+msgstr "Completa il campo"
 
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_type_view_form

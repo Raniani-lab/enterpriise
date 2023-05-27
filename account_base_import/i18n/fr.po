@@ -85,7 +85,7 @@ msgstr "Plan comptable"
 #. module: account_base_import
 #: model_terms:ir.ui.view,arch_db:account_base_import.res_config_settings_import_view_form
 msgid "Choose how you want to setup your CoA"
-msgstr "Choisissez comment vous souhaitez configurer votre plan comptable"
+msgstr "Choisir comment vous souhaitez configurer votre plan comptable"
 
 #. module: account_base_import
 #. odoo-javascript

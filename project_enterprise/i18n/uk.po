@@ -349,6 +349,8 @@ msgid ""
 "Some tasks weren't planned because the closest available starting date was "
 "too far ahead in the future"
 msgstr ""
+"Деякі завдання не були заплановані, оскільки найближча доступна дата початку"
+" була надто далекою в майбутньому"
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_line_wizard__date_begin
@@ -380,7 +382,7 @@ msgstr "Майстер рядка розкладу підтвердження з
 #. module: project_enterprise
 #: model:ir.model,name:project_enterprise.model_project_task_confirm_schedule_wizard
 msgid "Task confirm schedule wizard"
-msgstr ""
+msgstr "Помічник планування підтвердження завдання"
 
 #. module: project_enterprise
 #: model:ir.model,name:project_enterprise.model_report_project_task_user
@@ -399,25 +401,27 @@ msgid ""
 "The following tasks have not been scheduled because the corresponding\n"
 "                        employees are unavailable. The next possible dates for these tasks are:"
 msgstr ""
+"Наступні завдання не були заплановані, оскільки відповідні \n"
+"співробітники недоступні. Наступні можливі дати для цих завдань:"
 
 #. module: project_enterprise
 #: model:ir.model.constraint,message:project_enterprise.constraint_project_task_planned_dates_check
 msgid "The planned start date must be before the planned end date."
-msgstr ""
+msgstr "Запланована дата початку має передувати запланованій даті завершення."
 
 #. module: project_enterprise
 #. odoo-python
 #: code:addons/project_enterprise/wizard/task_confirm_schedule_wizard.py:0
 #, python-format
 msgid "The task has been successfully scheduled."
-msgstr ""
+msgstr "Завдання успішно заплановане"
 
 #. module: project_enterprise
 #. odoo-python
 #: code:addons/project_enterprise/wizard/task_confirm_schedule_wizard.py:0
 #, python-format
 msgid "The tasks have been successfully scheduled."
-msgstr ""
+msgstr "Завдання успішно заплановані."
 
 #. module: project_enterprise
 #. odoo-python
@@ -434,6 +438,8 @@ msgid ""
 "This employee does not have a running contract during the selected period.\n"
 "The working hours of the company were used as a reference instead."
 msgstr ""
+"Цей працівник не має поточного контракту протягом вибраного періоду.\n"
+"Натомість як орієнтир використовувався робочий час компанії."
 
 #. module: project_enterprise
 #. odoo-python
@@ -442,6 +448,8 @@ msgstr ""
 msgid ""
 "This user isn't expected to have task during this period. Planned hours :"
 msgstr ""
+"Очікується, що цей користувач не матиме завдання протягом цього періоду. "
+"Заплановані години:"
 
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.res_config_settings_view_form

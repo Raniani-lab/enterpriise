@@ -26,7 +26,7 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__accounts_count
 msgid "# Accounts"
-msgstr ""
+msgstr "# Akun"
 
 #. module: social
 #. odoo-python

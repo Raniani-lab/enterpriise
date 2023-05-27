@@ -4,16 +4,16 @@
 # 
 # Translators:
 # Martin Trigaux, 2023
-# Jolien De Paepe, 2023
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2023
+# Jolien De Paepe, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-14 06:16+0000\n"
+"POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2023\n"
+"Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1034,32 +1034,32 @@ msgstr ""
 #: code:addons/knowledge/static/src/js/knowledge_renderers.js:0
 #, python-format
 msgid ""
-"Are you sure you want to move \"%s%s\" to private? Only you will be able to "
+"Are you sure you want to move \"%s\" to private? Only you will be able to "
 "access it."
 msgstr ""
-"Weet je zeker dat je \"%s%s\" naar privé wilt verplaatsen? Alleen jij hebt "
-"er toegang toe."
+"Weet je zeker dat je \"%s\" naar privé wilt verplaatsen? Alleen jij hebt er "
+"toegang toe."
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/js/knowledge_renderers.js:0
 #, python-format
 msgid ""
-"Are you sure you want to move \"%s%s\" to the Workspace? It will be shared "
+"Are you sure you want to move \"%s\" to the Workspace? It will be shared "
 "with all internal users."
 msgstr ""
-"Weet je zeker dat je \"%s%s\" naar de werkruimte wilt verplaatsen? Het wordt"
-" gedeeld met alle interne gebruikers."
+"Weet je zeker dat je \"%s\" naar privé wilt verplaatsen? Alleen jij hebt er "
+"toegang toe."
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/js/knowledge_renderers.js:0
 #, python-format
 msgid ""
-"Are you sure you want to move \"%s%s\" under \"%s%s\"? It will be shared "
-"with the same persons."
+"Are you sure you want to move \"%s\" under \"%s%s\"? It will be shared with "
+"the same persons."
 msgstr ""
-"Weet je zeker dat je \"%s%s\" onder \"%s%s\" wilt verplaatsen? Het wordt "
+"Weet je zeker dat je \"%s\" onder \"%s%s\" wilt verplaatsen? Het wordt "
 "gedeeld met dezelfde personen."
 
 #. module: knowledge

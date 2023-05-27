@@ -757,14 +757,14 @@ msgstr "Arkusze kalkulacyjne"
 #: code:addons/spreadsheet_edition/static/src/bundle/chart/side_panels/odoo_bar/odoo_bar_config_panel.xml:0
 #, python-format
 msgid "Stacked barchart"
-msgstr ""
+msgstr "Wykres słupkowy skumulowany"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/bundle/chart/side_panels/odoo_line/odoo_line_config_panel.xml:0
 #, python-format
 msgid "Stacked linechart"
-msgstr ""
+msgstr "Wykres liniowy skumulowany"
 
 #. module: spreadsheet_edition
 #. odoo-javascript

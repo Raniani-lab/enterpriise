@@ -34,8 +34,8 @@ msgid ""
 "group_operator=avg"
 msgstr ""
 "Số ngày trung bình để xác nhận một đơn bán hàng sau khi được tạo. Do cần "
-"hack để tính toán thời gian này, mọi bản ghi sẽ hiển thị cùng một giá trị "
-"trung bình, do đó, chỉ sử dụng giá trị này làm giá trị tổng hợp với "
+"hack để tính toán thời gian này, mọi tập dữ liệu sẽ hiển thị cùng một giá "
+"trị trung bình, do đó, chỉ sử dụng giá trị này làm giá trị tổng hợp với "
 "group_operator=avg"
 
 #. module: sale_enterprise

@@ -1665,7 +1665,7 @@ msgstr "Edytowalny"
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Else"
-msgstr ""
+msgstr "w przeciwnym razie"
 
 #. module: web_studio
 #. odoo-python

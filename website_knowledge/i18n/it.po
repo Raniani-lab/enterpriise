@@ -23,7 +23,7 @@ msgstr ""
 #. module: website_knowledge
 #: model_terms:ir.ui.view,arch_db:website_knowledge.knowledge_article_view_form
 msgid "<i class=\"fa fa-globe fa-2x\" title=\"Share to web\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-globe fa-2x\" title=\"Share to web\"/>"
 
 #. module: website_knowledge
 #: model_terms:ir.ui.view,arch_db:website_knowledge.knowledge_article_view_form

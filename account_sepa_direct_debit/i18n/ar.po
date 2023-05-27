@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-14 06:17+0000\n"
+"POT-Creation-Date: 2023-05-23 08:36+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
 "Last-Translator: Malaz Abuidris <msea@odoo.com>, 2023\n"
 "Language-Team: Arabic (https://app.transifex.com/odoo/teams/41243/ar/)\n"
@@ -29,19 +29,6 @@ msgstr "(إذا كان منطبقاً) "
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
 msgid "(optional)"
 msgstr "(اختياري)"
-
-#. module: account_sepa_direct_debit
-#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
-msgid ""
-". As part of your rights, you are entitled to a refund from your bank under "
-"the terms and conditions of your agreement with your bank. Your rights are "
-"explained in a statement that you can obtain from your bank. A refund must "
-"be claimed within 8 weeks starting from the date on which your account was "
-"debited."
-msgstr ""
-". كجزء من حقوقك، يحق لك استرداد أموالك من بنكك بموجب الشروط والأحكام "
-"لاتفاقيتك مع بنكك. كافة حقوقك موضحة في كشف يمكنك الحصول عليه من البنك. عليك "
-"استعادة أموالك خلال 8 أسابيع بدءاً من التاريخ الذي تم الخصم من حسابك فيه. "
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
@@ -178,6 +165,16 @@ msgstr "أيقونة نوع النشاط"
 #, python-format
 msgid "All the payments in the batch must have the same SDD scheme."
 msgstr "يجب أن يكون لكافة المدفوعات في هذه الدفعة نفس نظام SDD. "
+
+#. module: account_sepa_direct_debit
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
+msgid ""
+"As part of your rights, you are entitled to a refund from your bank under "
+"the terms and conditions of your agreement with your bank. Your rights are "
+"explained in a statement that you can obtain from your bank. A refund must "
+"be claimed within 8 weeks starting from the date on which your account was "
+"debited."
+msgstr ""
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__message_attachment_count
@@ -856,6 +853,11 @@ msgid "SDD scheme is set on the customer mandate."
 msgstr "نظام SDD معين في توكيل العميل. "
 
 #. module: account_sepa_direct_debit
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
+msgid "SEPA Business-to-Business Direct Debit Mandate"
+msgstr ""
+
+#. module: account_sepa_direct_debit
 #: model:account.payment.method,name:account_sepa_direct_debit.payment_method_sdd
 msgid "SEPA Direct Debit"
 msgstr "خصم SEPA المباشر"
@@ -1046,6 +1048,15 @@ msgid ""
 msgstr ""
 "سوف يتم دفع هذه الفاتورة باستخدام الخصم المباشر\n"
 "                        وقد تم إرسالها فقط لإعلامكم. "
+
+#. module: account_sepa_direct_debit
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
+msgid ""
+"This mandate is only intended for business-to-business transactions. You are"
+" not entitled to a refund from your bank after your account has been "
+"debited, but you are entitled to request your bank not to debit your account"
+" up until the day on which the payment is due."
+msgstr ""
 
 #. module: account_sepa_direct_debit
 #. odoo-python

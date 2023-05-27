@@ -288,7 +288,7 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Register your subscription"
-msgstr ""
+msgstr "註冊享用服務計劃"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -388,14 +388,14 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
 #, python-format
 msgid "This database will expire in %s. "
-msgstr ""
+msgstr "此資料庫將於 %s 後到期。"
 
 #. module: web_enterprise
 #. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
 #, python-format
 msgid "This demo database will expire in %s. "
-msgstr ""
+msgstr "此示範資料庫將於 %s 後到期。"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -476,7 +476,7 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "buy a subscription"
-msgstr ""
+msgstr "訂購收費服務計劃"
 
 #. module: web_enterprise
 #. odoo-javascript

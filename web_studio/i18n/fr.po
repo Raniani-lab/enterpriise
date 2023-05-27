@@ -4467,7 +4467,7 @@ msgstr "Si la règle peut être approuvée par l'utilisateur actuel"
 #. module: web_studio
 #: model:ir.model.fields,help:web_studio.field_ir_model__abstract
 msgid "Whether this model is abstract"
-msgstr "Si ce modèle est abstrait"
+msgstr "Si cette méthode est abstraite"
 
 #. module: web_studio
 #. odoo-javascript

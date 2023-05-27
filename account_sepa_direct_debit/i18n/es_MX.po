@@ -3,17 +3,18 @@
 # 	* account_sepa_direct_debit
 # 
 # Translators:
-# Lucia Pacheco <lpo@odoo.com>, 2022
+# Lucia Pacheco, 2022
 # Martin Trigaux, 2022
 # Braulio D. López Vázquez <bdl@odoo.com>, 2023
+# Iran Villalobos López, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-14 06:17+0000\n"
+"POT-Creation-Date: 2023-05-23 08:36+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Braulio D. López Vázquez <bdl@odoo.com>, 2023\n"
+"Last-Translator: Iran Villalobos López, 2023\n"
 "Language-Team: Spanish (Mexico) (https://app.transifex.com/odoo/teams/41243/es_MX/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,21 +31,6 @@ msgstr "(si aplica)"
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
 msgid "(optional)"
 msgstr "(opcional)"
-
-#. module: account_sepa_direct_debit
-#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
-msgid ""
-". As part of your rights, you are entitled to a refund from your bank under "
-"the terms and conditions of your agreement with your bank. Your rights are "
-"explained in a statement that you can obtain from your bank. A refund must "
-"be claimed within 8 weeks starting from the date on which your account was "
-"debited."
-msgstr ""
-". Como parte de sus derechos, tiene derecho a un reembolso de parte de su "
-"banco bajo los términos y condiciones del acuerdo con su banco. Sus derechos"
-" se detallan en una declaración que puede obtener en su banco. Un reembolso "
-"debe reclamarse dentro de las 8 semanas a partir de la fecha de inicio en la"
-" que se le hizo el cargo a su cuenta."
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
@@ -185,6 +171,21 @@ msgstr "Icono de tipo de actividad"
 #, python-format
 msgid "All the payments in the batch must have the same SDD scheme."
 msgstr "Todos los pagos en el lote deben tener el mismo esquema SDD"
+
+#. module: account_sepa_direct_debit
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
+msgid ""
+"As part of your rights, you are entitled to a refund from your bank under "
+"the terms and conditions of your agreement with your bank. Your rights are "
+"explained in a statement that you can obtain from your bank. A refund must "
+"be claimed within 8 weeks starting from the date on which your account was "
+"debited."
+msgstr ""
+"Como parte de sus derechos, tiene derecho a un reembolso de parte de su "
+"banco bajo los términos y condiciones del acuerdo con su banco. Sus derechos"
+" se detallan en una declaración que puede obtener de su banco. Un reembolso "
+"debe reclamarse dentro de las 8 semanas a partir de la fecha de inicio en la"
+" que se le hizo el cargo a su cuenta."
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__message_attachment_count
@@ -869,6 +870,11 @@ msgid "SDD scheme is set on the customer mandate."
 msgstr "El esquema SDD está establecido en el mandato del cliente."
 
 #. module: account_sepa_direct_debit
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
+msgid "SEPA Business-to-Business Direct Debit Mandate"
+msgstr "Orden de domiciliación bancaria SEPA B2B"
+
+#. module: account_sepa_direct_debit
 #: model:account.payment.method,name:account_sepa_direct_debit.payment_method_sdd
 msgid "SEPA Direct Debit"
 msgstr "Domiciliación bancaria SEPA"
@@ -1066,6 +1072,19 @@ msgid ""
 msgstr ""
 "Esta factura se pagará utilizando domiciliación bancaria y solamente\n"
 "                        se envía con fines informativos."
+
+#. module: account_sepa_direct_debit
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
+msgid ""
+"This mandate is only intended for business-to-business transactions. You are"
+" not entitled to a refund from your bank after your account has been "
+"debited, but you are entitled to request your bank not to debit your account"
+" up until the day on which the payment is due."
+msgstr ""
+"Esta orden está destinada solo para transacciones B2B. El banco no está "
+"obligado a darle un reembolso después de que se le hizo el cargo a su "
+"cuenta, pero tiene derecho a solicitarle al banco que no haga el cargo hasta"
+" el día que se deba liquidar. "
 
 #. module: account_sepa_direct_debit
 #. odoo-python

@@ -7,16 +7,16 @@
 # Gunther Clauwaert <gclauwae@hotmail.com>, 2022
 # Dylan Kiss, 2023
 # Martin Trigaux, 2023
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2023
 # Jolien De Paepe, 2023
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-14 06:17+0000\n"
+"POT-Creation-Date: 2023-05-23 08:36+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Jolien De Paepe, 2023\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -105,8 +105,8 @@ msgid ""
 "'View Bank Statement' caret option is only available for report lines "
 "targeting bank statements."
 msgstr ""
-"De 'Bekijk bankafschrift' dakje-optie is alleen beschikbaar voor "
-"rapportregels die gericht zijn op bankafschriften."
+"De 'Bekijk rekeningafschrift' dakje-optie is alleen beschikbaar voor "
+"rapportregels die gericht zijn op rekeningafschriften."
 
 #. module: account_reports
 #. odoo-python
@@ -430,12 +430,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_reports.template_tax_report
 msgid ""
 "<span>This company is part of a tax unit. You're currently not viewing the "
-"whole unit; to change that, tick the \"aggregate\" option of \"tax unit\" "
-"menu.</span>"
+"whole unit. To change that, use the Tax Unit filter.</span>"
 msgstr ""
 "<span>Dit bedrijf maakt deel uit van een fiscale eenheid. Je bekijkt "
-"momenteel niet het hele eenheid; om dat te veranderen, vink de “samenvoegen”"
-" optie van het “fiscale eenheid” menu aan.</span>"
+"momenteel niet de hele eenheid. Gebruik de filter Fiscale eenheid om dat te "
+"wijzigen.</span>"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_main_template
@@ -854,17 +853,12 @@ msgstr "Saldo tegen huidige koers"
 #. module: account_reports
 #: model:account.report.column,name:account_reports.multicurrency_revaluation_report_balance_operation
 msgid "Balance at Operation Rate"
-msgstr "Saldo bij verrichtingstarief"
+msgstr "Saldo bij operationele koers"
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.multicurrency_revaluation_report_balance_currency
 msgid "Balance in Foreign Currency"
 msgstr "Saldo in vreemde valuta"
-
-#. module: account_reports
-#: model_terms:ir.ui.view,arch_db:account_reports.account_reports_journal_dashboard_kanban_view
-msgid "Balance in GL"
-msgstr "Saldo in grootboek"
 
 #. module: account_reports
 #. odoo-python
@@ -1947,14 +1941,14 @@ msgstr "Inclusief kostenplaatssimulaties"
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
 #, python-format
 msgid "Including Unreconciled Bank Statement Payments"
-msgstr "Inclusief niet afgeletterde bankafschrift-betalingen"
+msgstr "Inclusief niet afgeletterde rekeningafschrift-betalingen"
 
 #. module: account_reports
 #. odoo-python
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
 #, python-format
 msgid "Including Unreconciled Bank Statement Receipts"
-msgstr "Inclusief niet afgeletterde bankafschrift-ontvangsten"
+msgstr "Inclusief niet afgeletterde rekeningafschrift-ontvangsten"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_executivesummary_income0
@@ -2154,6 +2148,11 @@ msgstr "Vorige maand"
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
 msgid "Last Quarter"
 msgstr "Vorig kwartaal"
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.account_reports_journal_dashboard_kanban_view
+msgid "Last Statement balance + Transactions since statement"
+msgstr "Saldo laatste afschrift + Transacties sinds afschrift"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.bank_reconciliation_report_cell_template_link_last_statement
@@ -2451,7 +2450,7 @@ msgstr "Een van de gekozen formaten kan niet worden geëxporteerd in het DMS"
 #: code:addons/account_reports/models/account_move.py:0
 #, python-format
 msgid "Only Billing Administrators are allowed to change lock dates!"
-msgstr "Alleen factureringsbeheerders mogen vergrendelingsdatums wijzigen!"
+msgstr "Alleen facturatiebeheerders mogen de blokeerdatums wijzigen!"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
@@ -2815,6 +2814,11 @@ msgid "Rules"
 msgstr "Regels"
 
 #. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.account_reports_journal_dashboard_kanban_view
+msgid "Running Balance"
+msgstr "Lopend saldo"
+
+#. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_comparison
 msgid "Same Period Last Year"
 msgstr "Zelfde periode vorig jaar"
@@ -3130,7 +3134,8 @@ msgid ""
 "your last bank statement %s leading to an unexplained difference of %s."
 msgstr ""
 "Het huidige saldo in het grootboek %s komt niet overeen met het saldo van je"
-" laatste bankafschrift %s, wat leidt tot een onverklaard verschil van %s."
+" laatste rekeningafschrift %s, wat leidt tot een onverklaard verschil van "
+"%s."
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_tax_unit__vat
@@ -3451,7 +3456,7 @@ msgstr "BTW afsluiting van %s t/m %s"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "View Bank Statement"
-msgstr "Bankafschrift bekijken"
+msgstr "Rekeningafschrift bekijken"
 
 #. module: account_reports
 #. odoo-javascript
@@ -3697,7 +3702,7 @@ msgstr "werden uit de vorige periode op deze lijn overgedragen."
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.bank_reconciliation_report_main_template
 msgid "which doesn't result from a bank statement nor payments."
-msgstr "die niet het resultaat zijn van een bankafschrift of betalingen."
+msgstr "die niet het resultaat zijn van een rekeningafschrift of betalingen."
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.sales_report_main_template

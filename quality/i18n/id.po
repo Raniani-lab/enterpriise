@@ -701,7 +701,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_alert__picking_id
 #: model:ir.model.fields,field_description:quality.field_quality_check__picking_id
 msgid "Picking"
-msgstr "Pengambilan"
+msgstr "Picking"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__picture
@@ -1009,7 +1009,7 @@ msgstr "Jenis dari aktivitas pengecualian pada rekaman data."
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_tag__color
 msgid "Used in the kanban view"
-msgstr ""
+msgstr "Digunakan di tampilan kanban"
 
 #. module: quality
 #: model:res.groups,name:quality.group_quality_user

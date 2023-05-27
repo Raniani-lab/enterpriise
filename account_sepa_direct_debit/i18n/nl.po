@@ -4,14 +4,14 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Jolien De Paepe, 2022
+# Jolien De Paepe, 2023
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-14 06:17+0000\n"
+"POT-Creation-Date: 2023-05-23 08:36+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
 "Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
@@ -30,21 +30,6 @@ msgstr "(indien van toepassing)"
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
 msgid "(optional)"
 msgstr "(optioneel)"
-
-#. module: account_sepa_direct_debit
-#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
-msgid ""
-". As part of your rights, you are entitled to a refund from your bank under "
-"the terms and conditions of your agreement with your bank. Your rights are "
-"explained in a statement that you can obtain from your bank. A refund must "
-"be claimed within 8 weeks starting from the date on which your account was "
-"debited."
-msgstr ""
-". Als onderdeel van je rechten heb je recht op terugbetaling door je bank "
-"volgens de voorwaarden van je overeenkomst met je bank. Jouw rechten worden "
-"uitgelegd in een verklaring die je bij je bank kunt opvragen. Een "
-"terugbetaling moet worden aangevraagd binnen 8 weken vanaf de datum waarop "
-"je rekening is gedebiteerd."
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
@@ -185,6 +170,21 @@ msgstr "Activiteitensoort icoon"
 #, python-format
 msgid "All the payments in the batch must have the same SDD scheme."
 msgstr "Alle betalingen in de batch moeten hetzelfde SDD-schema hebben."
+
+#. module: account_sepa_direct_debit
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
+msgid ""
+"As part of your rights, you are entitled to a refund from your bank under "
+"the terms and conditions of your agreement with your bank. Your rights are "
+"explained in a statement that you can obtain from your bank. A refund must "
+"be claimed within 8 weeks starting from the date on which your account was "
+"debited."
+msgstr ""
+"Als onderdeel van je rechten heb je recht op terugbetaling door je bank "
+"onder de voorwaarden van de overeenkomst met je bank. Je rechten staan "
+"beschreven in een verklaring die je kunt opvragen bij je bank. Een "
+"terugbetaling moet worden aangevraagd binnen 8 weken vanaf de datum waarop "
+"je rekening is afgeschreven."
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__message_attachment_count
@@ -794,7 +794,7 @@ msgstr "Afdrukken"
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_account_batch_payment__sdd_batch_booking
 msgid "Request batch booking from the bank for the related bank statements."
 msgstr ""
-"Vraag batchboekingen van de bank voor de gerelateerde bankafschriften."
+"Vraag batchboekingen van de bank voor de gerelateerde rekeningafschriften."
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_account_batch_payment__sdd_required_collection_date
@@ -868,6 +868,11 @@ msgstr "SSD crediteur Identificator"
 #, python-format
 msgid "SDD scheme is set on the customer mandate."
 msgstr "SDD-regeling is ingesteld op het mandaat van de klant."
+
+#. module: account_sepa_direct_debit
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
+msgid "SEPA Business-to-Business Direct Debit Mandate"
+msgstr "SEPA Business-to-Business Incasso Machtiging"
 
 #. module: account_sepa_direct_debit
 #: model:account.payment.method,name:account_sepa_direct_debit.payment_method_sdd
@@ -1066,6 +1071,19 @@ msgid ""
 msgstr ""
 "Deze factuur wordt betaald door gebruik te maken van automatische incasso\n"
 "en is alleen verstuurd ter informatie."
+
+#. module: account_sepa_direct_debit
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
+msgid ""
+"This mandate is only intended for business-to-business transactions. You are"
+" not entitled to a refund from your bank after your account has been "
+"debited, but you are entitled to request your bank not to debit your account"
+" up until the day on which the payment is due."
+msgstr ""
+"Deze machtiging is alleen bedoeld voor business-to-business transacties. Je "
+"hebt geen recht op terugbetaling door de bank nadat je rekening is "
+"afgeschreven, maar je kunt je bank wel verzoeken om geen afschrijving van je"
+" rekening te doen tot de dag waarop de betaling verschuldigd is."
 
 #. module: account_sepa_direct_debit
 #. odoo-python

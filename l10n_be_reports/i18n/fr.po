@@ -6,6 +6,7 @@
 # Martin Trigaux, 2023
 # Cécile Collart <cco@odoo.com>, 2023
 # Jolien De Paepe, 2023
+# stegjgza des, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-03-09 11:44+0000\n"
 "PO-Revision-Date: 2023-02-03 07:08+0000\n"
-"Last-Translator: Jolien De Paepe, 2023\n"
+"Last-Translator: stegjgza des, 2023\n"
 "Language-Team: French (https://app.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,7 +25,7 @@ msgstr ""
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
 msgid "(including amounts that are related to other taxable periods):"
-msgstr ""
+msgstr "(incluant les montants relatifs à d'autres périodes imposables):"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
@@ -38,7 +39,7 @@ msgstr ""
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
 msgid "0.00"
-msgstr ""
+msgstr "0,00"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
@@ -46,6 +47,8 @@ msgid ""
 "0.00\n"
 "                                                <br/><br/>"
 msgstr ""
+"0,00\n"
+"                                                <br/><br/>"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
@@ -224,7 +227,7 @@ msgstr "2. Nom (ou dénomination) et adresse du débiteur des revenus :"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "2. Phone number:"
-msgstr ""
+msgstr "2. Numéro de téléphone:"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_etablissement0
@@ -284,57 +287,57 @@ msgstr "28 - Immobilisations financières"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "281.10"
-msgstr ""
+msgstr "281.10"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "281.11"
-msgstr ""
+msgstr "281.11"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "281.12"
-msgstr ""
+msgstr "281.12"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "281.13"
-msgstr ""
+msgstr "281.13"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "281.14"
-msgstr ""
+msgstr "281.14"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "281.15"
-msgstr ""
+msgstr "281.15"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "281.16"
-msgstr ""
+msgstr "281.16"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "281.17"
-msgstr ""
+msgstr "281.17"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "281.18"
-msgstr ""
+msgstr "281.18"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "281.20"
-msgstr ""
+msgstr "281.20"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "281.30"
-msgstr ""
+msgstr "281.30"
 
 #. module: l10n_be_reports
 #: model:res.partner.category,name:l10n_be_reports.res_partner_tag_281_50
@@ -415,7 +418,7 @@ msgstr "3 - Stocks et commandes en cours d'exécution"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "3. Identity of the debtor of the income"
-msgstr ""
+msgstr "3. Identité du bénéficiaire des revenus"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf
@@ -441,7 +444,7 @@ msgstr ""
 #. module: l10n_be_reports
 #: model:ir.actions.report,name:l10n_be_reports.action_report_325_form_pdf
 msgid "325 PDF"
-msgstr ""
+msgstr "325 PDF"
 
 #. module: l10n_be_reports
 #: model:ir.actions.act_window,name:l10n_be_reports.action_open_325_tree_view
@@ -553,7 +556,7 @@ msgstr "49 - Comptes de régularisation et d'attente"
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_regularisation0
 msgid "490/1/6 - Comptes de régularisation"
-msgstr ""
+msgstr "490/1/6 - Comptes de régularisation"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_regularisation1

@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-02 10:50+0000\n"
+"POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: French (https://app.transifex.com/odoo/teams/41243/fr/)\n"
@@ -271,9 +271,9 @@ msgstr "<strong>Horaire de travail</strong>"
 msgid ""
 "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%; margin:0px auto;\"><tbody>\n"
 "    <tr><td valign=\"top\" style=\"text-align: left; font-size: 14px;\">\n"
-"        Dear <t t-esc=\"object.employee_id.name\"/>, a new payslip is available for you.<br/><br/>\n"
-"        Please find the PDF in your employee portal.<br/><br/>\n"
-"        Have a nice day,<br/>\n"
+"        Dear <t t-esc=\"object.employee_id.name\"></t>, a new payslip is available for you.<br><br>\n"
+"        Please find the PDF in your employee portal.<br><br>\n"
+"        Have a nice day,<br>\n"
 "        The HR Team\n"
 "    </td></tr>\n"
 "</tbody></table>\n"
@@ -281,9 +281,9 @@ msgid ""
 msgstr ""
 "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%; margin:0px auto;\"><tbody>\n"
 "    <tr><td valign=\"top\" style=\"text-align: left; font-size: 14px;\">\n"
-"        Bonjour <t t-esc=\"object.employee_id.name\"/>, une nouvelle fiche de paie est disponible pour vous.<br/><br/>\n"
-"        Vous trouverez le PDF dans votre portail employés.<br/><br/>\n"
-"        Belle journée,<br/>\n"
+"        Bonjour <t t-esc=\"object.employee_id.name\"></t>, une nouvelle fiche de paie est disponible pour vous.<br><br>\n"
+"        Vous trouverez le PDF dans votre portail employé.<br><br>\n"
+"        Belle journée,<br>\n"
 "        L'équipe RH\n"
 "    </td></tr>\n"
 "</tbody></table>\n"
@@ -328,7 +328,7 @@ msgstr "Activités"
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__activity_exception_decoration
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_run__activity_exception_decoration
 msgid "Activity Exception Decoration"
-msgstr "Activité d'exception de décoration"
+msgstr "Activité exception décoration"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__activity_state
@@ -707,7 +707,7 @@ msgstr "Enfants"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.res_config_settings_view_form
 msgid "Choose a Payroll Localization"
-msgstr "Choisissez une localisation pour la paie"
+msgstr "Choisir une localisation pour la paie"
 
 #. module: hr_payroll
 #. odoo-javascript
@@ -4149,6 +4149,7 @@ msgid "You can't validate a cancelled payslip."
 msgstr "Vous ne pouvez pas valider une fiche de paie annulée."
 
 #. module: hr_payroll
+#. odoo-python
 #: code:addons/hr_payroll/models/hr_payslip_input_type.py:0
 #, python-format
 msgid ""
@@ -4159,6 +4160,7 @@ msgstr ""
 "Veuillez plutôt l'archiver."
 
 #. module: hr_payroll
+#. odoo-python
 #: code:addons/hr_payroll/models/hr_payslip_run.py:0
 #, python-format
 msgid "You cannot delete a payslip batch which is not draft!"

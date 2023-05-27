@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-02 10:50+0000\n"
+"POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
@@ -138,7 +138,7 @@ msgstr "<span class=\"ms-2\"> uur/week</span>"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Payroll Rules</span>"
-msgstr "<span class=\"o_form_label\">Loonstrook regels</span>"
+msgstr "<span class=\"o_form_label\">Loonregels</span>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payslip_run_form
@@ -274,9 +274,9 @@ msgstr "<strong>Geplande datum</strong>"
 msgid ""
 "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%; margin:0px auto;\"><tbody>\n"
 "    <tr><td valign=\"top\" style=\"text-align: left; font-size: 14px;\">\n"
-"        Dear <t t-esc=\"object.employee_id.name\"/>, a new payslip is available for you.<br/><br/>\n"
-"        Please find the PDF in your employee portal.<br/><br/>\n"
-"        Have a nice day,<br/>\n"
+"        Dear <t t-esc=\"object.employee_id.name\"></t>, a new payslip is available for you.<br><br>\n"
+"        Please find the PDF in your employee portal.<br><br>\n"
+"        Have a nice day,<br>\n"
 "        The HR Team\n"
 "    </td></tr>\n"
 "</tbody></table>\n"
@@ -284,10 +284,10 @@ msgid ""
 msgstr ""
 "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%; margin:0px auto;\"><tbody>\n"
 "    <tr><td valign=\"top\" style=\"text-align: left; font-size: 14px;\">\n"
-"        Beste <t t-esc=\"object.employee_id.name\"/>, er is een nieuwe loonstrook voor je beschikbaar.<br/><br/>\n"
-"        Je kan de PDF vinden in de werknemersportaal.<br/><br/>\n"
-"        Prettige dag,<br/>\n"
-"        Het HR Team\n"
+"        Beste <t t-esc=\"object.employee_id.name\"></t>, een nieuwe loonstrook is beschikbaar voor jou.<br><br>\n"
+"        Je kan de PDF vinden in je werknemersportaal.<br><br>\n"
+"        Prettige dag,<br>\n"
+"        Het HR-Team\n"
 "    </td></tr>\n"
 "</tbody></table>\n"
 "            "
@@ -761,7 +761,7 @@ msgid ""
 "Click on Payroll to manage your employee's <strong>Work Entries</strong>, "
 "<strong>Contracts</strong> and <strong>Payslips</strong>."
 msgstr ""
-"Klik op Salaris om de <strong>Werkboekingen</strong>, "
+"Klik op Loonadministratie om de <strong>Werkboekingen</strong>, "
 "<strong>Contracten</strong> en <strong>Loonstroken</strong> van je werknemer"
 " te beheren."
 
@@ -2398,7 +2398,7 @@ msgstr ""
 #. module: hr_payroll
 #: model:ir.actions.server,name:hr_payroll.ir_actions_server_action_open_reporting
 msgid "Open Payroll Reporting"
-msgstr "Salarisrapportage openen"
+msgstr "Loonrapportage openen"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_form
@@ -2504,12 +2504,12 @@ msgstr "Loonstrook naam"
 #: model:ir.ui.menu,name:hr_payroll.menu_report_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.res_config_settings_view_form
 msgid "Payroll"
-msgstr "Loonstrook"
+msgstr "Loonadministratie"
 
 #. module: hr_payroll
 #: model:ir.actions.server,name:hr_payroll.action_reset_work_entries
 msgid "Payroll - Technical: Reset Work Entries"
-msgstr "Salaris - technisch: werkinvoer resetten"
+msgstr "Loonadministratie - technisch: werkinvoer resetten"
 
 #. module: hr_payroll
 #: model:ir.actions.act_window,name:hr_payroll.payroll_report_action
@@ -2518,43 +2518,43 @@ msgstr "Salaris - technisch: werkinvoer resetten"
 #: model_terms:ir.ui.view,arch_db:hr_payroll.payroll_report_view_pivot
 #: model_terms:ir.ui.view,arch_db:hr_payroll.payroll_report_view_search
 msgid "Payroll Analysis"
-msgstr "Loonstrokenanalyse"
+msgstr "Analyse loonadministratie"
 
 #. module: hr_payroll
 #: model:ir.model,name:hr_payroll.model_hr_payroll_report
 msgid "Payroll Analysis Report"
-msgstr "Loonstrookanalyse rapport"
+msgstr "Analyserapport loonadministratie"
 
 #. module: hr_payroll
 #: model:ir.actions.client,name:hr_payroll.hr_payroll_dashboard_open
 #: model:note.tag,name:hr_payroll.payroll_note_tag
 msgid "Payroll Dashboard"
-msgstr "Salaris Dashboard"
+msgstr "Loonadministratie Dashboard"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.res_config_settings_view_form
 msgid "Payroll Entries"
-msgstr "Loonstrook boekingen"
+msgstr "Loonadministratie boekingen"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.res_config_settings_view_form
 msgid "Payroll SEPA"
-msgstr "Loonstrook SEPA"
+msgstr "Loonadministratie SEPA"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payroll_structure_filter
 msgid "Payroll Structures"
-msgstr "Salarisstructuren"
+msgstr "Loonadministratiestructuren"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.res_config_settings_view_form
 msgid "Payroll rules that apply to your country"
-msgstr "Loonstrook regels die van toepassing zijn op je land"
+msgstr "Loonadministratieregels die van toepassing zijn op je land"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_note_demo_content
 msgid "Payroll tips &amp; tricks :"
-msgstr "Salaristips &amp; trucs :"
+msgstr "Loonadministratie tips &amp; trucs :"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_res_config_settings__module_hr_payroll_account
@@ -2564,24 +2564,24 @@ msgstr "Loonadministratie met boekhouding"
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_res_config_settings__module_hr_payroll_account_sepa
 msgid "Payroll with SEPA payment"
-msgstr "Loonstrook met SEPA betaling"
+msgstr "Loonadministratie met SEPA betaling"
 
 #. module: hr_payroll
 #: model:ir.actions.server,name:hr_payroll.ir_cron_generate_payslip_pdfs_ir_actions_server
 #: model:ir.cron,cron_name:hr_payroll.ir_cron_generate_payslip_pdfs
 msgid "Payroll: Generate pdfs"
-msgstr "Salaris: Genereer pdf's"
+msgstr "Loonadministratie: Genereer pdf's"
 
 #. module: hr_payroll
 #: model:mail.template,name:hr_payroll.mail_template_new_payslip
 msgid "Payroll: New Payslip"
-msgstr "Salaris: nieuwe loonstrook"
+msgstr "Loonadministratie: nieuwe loonstrook"
 
 #. module: hr_payroll
 #: model:ir.actions.server,name:hr_payroll.ir_cron_update_payroll_data_ir_actions_server
 #: model:ir.cron,cron_name:hr_payroll.ir_cron_update_payroll_data
 msgid "Payroll: Update data"
-msgstr "Salaris: gegevens bijwerken"
+msgstr "Loonadministratie: gegevens bijwerken"
 
 #. module: hr_payroll
 #. odoo-python
@@ -3559,7 +3559,7 @@ msgstr "Deze actie is verboden op gevalideerde loonstroken."
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "This action is restricted to payroll managers only."
-msgstr "Deze actie is beperkt tot alleen salarismanagers."
+msgstr "Deze actie is beperkt tot alleen loonadministrators."
 
 #. module: hr_payroll
 #: model:ir.model.fields,help:hr_payroll.field_hr_rule_parameter__code
@@ -3856,7 +3856,7 @@ msgstr "Bekijken op werkgeverskostendashboard"
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_rule__appears_on_payroll_report
 msgid "View on Payroll Reporting"
-msgstr "Bekijk op Payroll Reporting"
+msgstr "Bekijk op Analyse Loonadministratie"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_contract__wage_type
@@ -3905,7 +3905,9 @@ msgstr "Manier van afronding van het type werkboeking."
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_note_demo_content
 msgid "We have to improve our Payroll flow with the new Odoo process"
-msgstr "We moeten onze Payroll-stroom verbeteren met het nieuwe Odoo-proces"
+msgstr ""
+"We moeten onze Loonadministratie-stroom verbeteren met het nieuwe Odoo-"
+"proces"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__website_message_ids
@@ -4139,6 +4141,7 @@ msgid "You can't validate a cancelled payslip."
 msgstr "Je kunt een geannuleerde loonstrook niet bevestigen."
 
 #. module: hr_payroll
+#. odoo-python
 #: code:addons/hr_payroll/models/hr_payslip_input_type.py:0
 #, python-format
 msgid ""
@@ -4149,6 +4152,7 @@ msgstr ""
 "module. Archiveer het liever."
 
 #. module: hr_payroll
+#. odoo-python
 #: code:addons/hr_payroll/models/hr_payslip_run.py:0
 #, python-format
 msgid "You cannot delete a payslip batch which is not draft!"

@@ -30,8 +30,8 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
-msgid "Available time (min)t"
-msgstr "Saadaval aeg (minut)"
+msgid "Available time (min)"
+msgstr ""
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
@@ -44,8 +44,8 @@ msgstr "Keskmine ühikukulu"
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
-msgid "Average cost / unitt"
-msgstr "Keskmine ühikukulu"
+msgid "Average cost / unit"
+msgstr ""
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
@@ -156,8 +156,8 @@ msgstr "Toode"
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
-msgid "Productive time (min)t"
-msgstr "Produktiivne aeg (minutit)"
+msgid "Productive time (min)"
+msgstr ""
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
@@ -215,8 +215,8 @@ msgstr "Kogus kokku"
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
-msgid "Total time (min)t"
-msgstr "Aeg kokku (minutit)"
+msgid "Total time (min)"
+msgstr ""
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript

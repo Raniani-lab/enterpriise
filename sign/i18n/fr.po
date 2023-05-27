@@ -440,7 +440,7 @@ msgstr "Activités"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_exception_decoration
 msgid "Activity Exception Decoration"
-msgstr "Activité d'exception de décoration"
+msgstr "Activité exception décoration"
 
 #. module: sign
 #. odoo-python
@@ -846,7 +846,7 @@ msgid ""
 "Configure the field types that can be used to sign documents (placeholder, "
 "auto-completion, ...)"
 msgstr ""
-"Configurez les types de champ qui peuvent être utilisés pour signer les "
+"Configurer les types de champ qui peuvent être utilisés pour signer les "
 "documents (zones de texte, auto-complétion,...)"
 
 #. module: sign
@@ -1675,7 +1675,7 @@ msgstr "Initiales"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.res_config_settings_view_form
 msgid "Insert your terms & conditions here..."
-msgstr "Insérez vos conditions générales ici..."
+msgstr "Insérer vos conditions générales ici..."
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__integrity
@@ -2684,7 +2684,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.res_config_settings_view_form
 msgid "Show standard terms &amp; conditions on signature requests"
 msgstr ""
-"Montrer les conditions générales standards sur les demandes de signature"
+"Afficher les conditions générales standards sur les demandes de signature"
 
 #. module: sign
 #. odoo-javascript

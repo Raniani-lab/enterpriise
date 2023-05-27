@@ -23,7 +23,7 @@ msgstr ""
 #. module: account_bank_statement_import_csv
 #: model:ir.model,name:account_bank_statement_import_csv.model_base_import_import
 msgid "Base Import"
-msgstr ""
+msgstr "Base Import"
 
 #. module: account_bank_statement_import_csv
 #. odoo-javascript
@@ -42,11 +42,11 @@ msgstr "Jurnal"
 #: code:addons/account_bank_statement_import_csv/models/account_journal.py:0
 #, python-format
 msgid "Mixing CSV files with other file types is not allowed."
-msgstr ""
+msgstr "Menggabungkan file CSV dengan tipe file lain tidak diizinkan."
 
 #. module: account_bank_statement_import_csv
 #. odoo-python
 #: code:addons/account_bank_statement_import_csv/models/account_journal.py:0
 #, python-format
 msgid "Only one CSV file can be selected."
-msgstr ""
+msgstr "Hanya satu file CSV yang dapat dipilih."

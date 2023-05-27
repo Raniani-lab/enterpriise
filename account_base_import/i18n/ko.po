@@ -237,6 +237,13 @@ msgstr "직접 확인하기"
 
 #. module: account_base_import
 #. odoo-python
+#: code:addons/account_base_import/models/account_move_line.py:0
+#, python-format
+msgid "The import file is missing the following required columns: %s"
+msgstr "가져오기 파일에 다음과 같은 필수 열이 없습니다: %s"
+
+#. module: account_base_import
+#. odoo-python
 #: code:addons/account_base_import/models/account_account.py:0
 #, python-format
 msgid "The import file must contain the 'code' column"

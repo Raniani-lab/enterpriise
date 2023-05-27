@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-14 06:16+0000\n"
+"POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
 "Last-Translator: martioodo hola, 2023\n"
 "Language-Team: Catalan (https://app.transifex.com/odoo/teams/41243/ca/)\n"
@@ -45,6 +45,8 @@ msgid ""
 "360 Degree Feedback is a system or process in which managers will ask feedback from the people who work around the employee.\n"
 "            This typically includes the employee's manager, peers, and direct reports."
 msgstr ""
+"La Retroalimentació de 360 Graus és un sistema o procés en el qual els gerents demanaran comentaris a les persones que treballen al voltant de l'empleat.\n"
+"             Això normalment inclou el gestor de l'empleat, companys i informes directes."
 
 #. module: hr_appraisal_survey
 #: model:survey.survey,title:hr_appraisal_survey.appraisal_360_feedback_template
@@ -57,13 +59,13 @@ msgid ""
 "<div style=\"margin: 0px; padding: 0px;\">\n"
 "                    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
 "                        Dear <t t-out=\"object.partner_id.name or ''\">Brandon Freeman</t>,\n"
-"                        <br/><br/>\n"
+"                        <br><br>\n"
 "                        An appraisal feedback was requested about <t t-out=\"object.appraisal_id.employee_id.name or 'this'\">this</t>.\n"
-"                        <br/>\n"
+"                        <br>\n"
 "                        Please take time to fill the survey.\n"
-"                        <br/><br/>\n"
+"                        <br><br>\n"
 "                        Thank you!\n"
-"                        <br/><br/>\n"
+"                        <br><br>\n"
 "                        <t t-if=\"ctx.get('recipient_users')\">\n"
 "                            <p style=\"margin: 16px 0px 16px 0px;\">\n"
 "                                <a t-att-href=\"ctx.get('url')\" style=\"background-color:#875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px;\">\n"
@@ -90,40 +92,6 @@ msgid ""
 "                </div>\n"
 "            "
 msgstr ""
-"<div style=\"margin: 0px; padding: 0px;\">\n"
-"                    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
-"                        Benvolguts <t t-out=\"object.partnerid.name or ''\">Brandon Freeman</t>,\n"
-"                        <br/><br/>\n"
-"                        Es va demanar una opinió d'avaluació sobre <t t-out=\"object.appraisalid.employeeid.name or 'this'\">aquest</t>.\n"
-"                        <br/>\n"
-"                        Preneu-vos temps per omplir l'enquesta.\n"
-"                        <br/><br/>\n"
-"                        Gràcies!\n"
-"                        <br/><br/>\n"
-"                        <t t-if=\"ctx.get('recipientusers')\">\n"
-"                            <p style=\"margin: 16px 0px 16px 0px;\">\n"
-"                                <a t-att-href=\"ctx.get('url')\" style=\"background-color:#875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px;\">\n"
-"                                    Visualitza l'avaluació\n"
-"                                </a>\n"
-"                            </p>\n"
-"                        </t>\n"
-"                        <t t-if=\"ctx.get('userbody')\">\n"
-"                            <div style=\"background-color:#F8F8F8;\">\n"
-"                                <t t-out=\"ctx.get('userbody')\">Avaluació anual.</t>\n"
-"                            </div>\n"
-"                        </t>\n"
-"                        <div style=\"margin: 16px 0px 16px 0px; text-align: center;\">\n"
-"                            <a t-att-href=\"object.getstarturl()\" style=\"background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;\">\n"
-"                                <t t-if=\"object.surveyid.certification\">\n"
-"                                    Inicia la certificació\n"
-"                                </t>\n"
-"                                <t t-else=\"\">\n"
-"                                    Inicia l'enquesta\n"
-"                                </t>\n"
-"                            </a>\n"
-"                        </div>\n"
-"                    </p>\n"
-"                </div>"
 
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_survey_button_form_view
@@ -526,6 +494,9 @@ msgid ""
 "Identify professional, performance, or project objectives you recommend for "
 "employee’s continued career development over the coming year."
 msgstr ""
+"Identifiqueu els objectius professionals, de rendiment o de projecte que "
+"recomaneu per al desenvolupament continuat de la carrera dels empleats "
+"durant l'any següent."
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.arow_3_1_5
@@ -545,6 +516,10 @@ msgid ""
 " major employee responsibilities and corresponding benchmarks against which "
 "results will be evaluated."
 msgstr ""
+"És responsabilitat conjunta de l'empleat i del supervisor (avaluador) "
+"establir un pla de treball viable per a l'any vinent, incloses les "
+"principals responsabilitats dels empleats i els corresponents criteris de "
+"referència amb els quals s'avaluaran els resultats."
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1
@@ -553,6 +528,9 @@ msgid ""
 "input from the appropriate sources of feedback (internal and/or external "
 "customers, peers)."
 msgstr ""
+"És la responsabilitat principal del supervisor reunir l'entrada necessària "
+"de les fonts apropiades de retroalimentació (clients interns i/o externs, "
+"parells)."
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__lang
@@ -602,7 +580,7 @@ msgstr "Plantilla de correu"
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_3
 msgid "Meet standards and expectations"
-msgstr ""
+msgstr "Connexions i expectatives"
 
 #. module: hr_appraisal_survey
 #. odoo-python
@@ -844,6 +822,8 @@ msgid ""
 "The appraiser should rate the employee’s major work accomplishments and "
 "performance according to the metric provided below:"
 msgstr ""
+"L'avaluador hauria de valorar els èxits i el rendiment de la feina més "
+"important de l'empleat segons la mètrica proporcionada a continuació:"
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1
@@ -863,6 +843,11 @@ msgid ""
 "criterion. Once the form had been filled, the employee send it to their "
 "supervisor."
 msgstr ""
+"L'empleat serà responsable de completar un esborrany del formulari "
+"d'avaluació com a eina d'autoavaluació i un punt de partida per a "
+"l'avaluació del supervisor. L'empleat pot afegir exemples d'assoliments per "
+"a cada criteri. Un cop emplenat el formulari, l'empleat l'envia al seu "
+"supervisor."
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1
@@ -871,6 +856,8 @@ msgid ""
 "appraisal. The motivation of the evaluation is explained in the ad hoc "
 "fields."
 msgstr ""
+"El supervisor sintetitza i integra totes les entrades en l'avaluació "
+"completa. La motivació de l'avaluació s'explica en els àmbits ad hoc."
 
 #. module: hr_appraisal_survey
 #. odoo-python
@@ -906,6 +893,8 @@ msgid ""
 "This survey allows you to give a feedback about your collaboration with an "
 "employee. Filling it helps us improving the appraisal process."
 msgstr ""
+"Aquesta enquesta us permet donar comentaris sobre la vostra col·laboració "
+"amb un empleat. Omplir-ho ens ajuda a millorar el procés d'avaluació."
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.arow_3_1_15
@@ -918,6 +907,8 @@ msgid ""
 "To assist employees in their professional growth, through the identification"
 " of strengths and opportunities for development"
 msgstr ""
+"Ajudar els empleats en el seu creixement professional, mitjançant la "
+"identificació de fortaleses i oportunitats de desenvolupament"
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1

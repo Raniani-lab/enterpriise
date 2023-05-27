@@ -2876,7 +2876,7 @@ msgstr ""
 #: code:addons/sign/wizard/sign_send_request.py:0
 #, python-format
 msgid "Signature Request - %s"
-msgstr ""
+msgstr "Allekirjoituspyyntö - %s"
 
 #. module: sign
 #: model:ir.model,name:sign.model_sign_request_item

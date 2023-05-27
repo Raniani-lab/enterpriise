@@ -4,11 +4,11 @@
 # 
 # Translators:
 # Algo Kärp <algokarp@gmail.com>, 2022
+# Arma Gedonsky <armagedonsky@hot.ee>, 2022
 # Marek Pontus, 2022
 # Egon Raamat <egon@avalah.ee>, 2022
 # Aveli Kannel <aveli@avalah.ee>, 2022
 # Martin Aavastik <martin@avalah.ee>, 2022
-# Arma Gedonsky <armagedonsky@hot.ee>, 2022
 # Piia Paurson <piia@avalah.ee>, 2022
 # Anna, 2023
 # JanaAvalah, 2023
@@ -16,38 +16,24 @@
 # Triine Aavik <triine@avalah.ee>, 2023
 # Eneli Õigus <enelioigus@gmail.com>, 2023
 # Birgit Vijar, 2023
-# Leaanika Randmets, 2023
 # Andre Roomet <andreroomet@gmail.com>, 2023
 # Martin Trigaux, 2023
+# Leaanika Randmets, 2023
+# Helen Sulaoja <helen@avalah.ee>, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-02 11:00+0000\n"
+"POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Martin Trigaux, 2023\n"
+"Last-Translator: Helen Sulaoja <helen@avalah.ee>, 2023\n"
 "Language-Team: Estonian (https://app.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: et\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#. module: account_accountant
-#. odoo-python
-#: code:addons/account_accountant/models/account_bank_statement.py:0
-#, python-format
-msgid ""
-"\n"
-"                <p class=\"o_view_nocontent_smiling_face\">\n"
-"                    All done!\n"
-"                </p>\n"
-"                <p>\n"
-"                    Create new transactions, or make sure that there is no active filter in the search bar.\n"
-"                </p>\n"
-"            "
-msgstr ""
 
 #. module: account_accountant
 #. odoo-python
@@ -110,11 +96,6 @@ msgid "-> Reconcile"
 msgstr "-> Sobita"
 
 #. module: account_accountant
-#: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
-msgid "/&gt;"
-msgstr "/&gt;"
-
-#. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_move_form_inherit
 msgid "1 Bank Transaction"
 msgstr "1 Pangatehing"
@@ -146,10 +127,10 @@ msgid "<i class=\"fa fa-check\"/> Matched"
 msgstr "<i class=\"fa fa-check\"/> Sobitatud"
 
 #. module: account_accountant
-#: model_terms:ir.ui.view,arch_db:account_accountant.view_account_reconcile_model_form_inherit
+#: model_terms:ir.ui.view,arch_db:account_accountant.account_reconcile_model_form_inherit_account_accountant
 msgid ""
 "<i title=\"Run manually\" role=\"img\" aria-label=\"Run manually\" class=\"fa fa-refresh\"/>\n"
-"                                Run manually"
+"                            Run manually"
 msgstr ""
 
 #. module: account_accountant
@@ -334,13 +315,6 @@ msgstr "AmIs vidin"
 
 #. module: account_accountant
 #. odoo-javascript
-#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
-#, python-format
-msgid "Amongst unmatched bank transactions"
-msgstr ""
-
-#. module: account_accountant
-#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
@@ -376,6 +350,12 @@ msgstr "Analüütiline"
 #, python-format
 msgid "Analytic Account"
 msgstr "Analüütiline konto"
+
+#. module: account_accountant
+#: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__analytic_distribution_search
+#: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__analytic_distribution_search
+msgid "Analytic Distribution Search"
+msgstr ""
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__analytic_precision
@@ -597,13 +577,6 @@ msgstr "Loo duplikaat"
 #: model_terms:ir.actions.act_window,help:account_accountant.action_account_group_tree
 msgid "Create a new account group"
 msgstr "Looge uus kontogrupp"
-
-#. module: account_accountant
-#. odoo-javascript
-#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
-#, python-format
-msgid "Create additional entries"
-msgstr "Loo lisanduvad kanded"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1182,13 +1155,6 @@ msgstr "Viimati uuendatud"
 
 #. module: account_accountant
 #. odoo-javascript
-#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
-#, python-format
-msgid "Learn how blazing fast bank matching works"
-msgstr ""
-
-#. module: account_accountant
-#. odoo-javascript
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid "Let’s automate your bills, bank transactions and accounting processes."
@@ -1296,13 +1262,6 @@ msgstr "Sobita olemasolevad kirjed"
 
 #. module: account_accountant
 #. odoo-javascript
-#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
-#, python-format
-msgid "Match payments and invoices"
-msgstr "Sobita makseid ja arveid"
-
-#. module: account_accountant
-#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Match with entries that are not from receivable/payable accounts"
@@ -1324,6 +1283,13 @@ msgstr "Sobitatud tehingud"
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__matching_rules_allow_auto_reconcile
 msgid "Matching Rules Allow Auto Reconcile"
 msgstr "Sobitamise reeglid võimaldavad automaatset vastavusse viimist"
+
+#. module: account_accountant
+#. odoo-python
+#: code:addons/account_accountant/models/bank_rec_widget.py:0
+#, python-format
+msgid "Miscellaneous"
+msgstr "Muu"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1412,13 +1378,6 @@ msgid "Notes"
 msgstr "Märkused"
 
 #. module: account_accountant
-#. odoo-javascript
-#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
-#, python-format
-msgid "Odoo Bank Reconciliation"
-msgstr "Odoo panga sobitamine"
-
-#. module: account_accountant
 #. odoo-python
 #: code:addons/account_accountant/wizard/account_change_lock_date.py:0
 #, python-format
@@ -1474,11 +1433,6 @@ msgid "Outgoing"
 msgstr "Väljuv"
 
 #. module: account_accountant
-#: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_search_bank_rec_widget
-msgid "Paid"
-msgstr "Makstud"
-
-#. module: account_accountant
 #. odoo-javascript
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_form_lines_widget.js:0
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
@@ -1500,8 +1454,6 @@ msgstr "Maksta enda"
 
 #. module: account_accountant
 #. odoo-javascript
-#. odoo-python
-#: code:addons/account_accountant/models/bank_rec_widget.py:0
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "Payable"
@@ -1560,6 +1512,13 @@ msgid "Predict vendor bill accounts"
 msgstr "Ennusta ostuarvetel kontosid"
 
 #. module: account_accountant
+#: model:ir.model,name:account_accountant.model_account_reconcile_model
+msgid ""
+"Preset to create journal entries during a invoices and payments matching"
+msgstr ""
+"Eelseadistus, et luua andmikekandeid arvete ja maksete sobitamise ajal"
+
+#. module: account_accountant
 #. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
@@ -1596,21 +1555,9 @@ msgid "Process this transaction."
 msgstr "Töötleme seda tehingut."
 
 #. module: account_accountant
-#. odoo-python
-#: code:addons/account_accountant/models/bank_rec_widget.py:0
-#, python-format
-msgid "Receivable"
-msgstr "Nõuded"
-
-#. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "Receivable:"
 msgstr "Nõuded:"
-
-#. module: account_accountant
-#: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_search_bank_rec_widget
-msgid "Received"
-msgstr "Vastu võetud"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__reco_models_widget
@@ -1708,13 +1655,6 @@ msgstr "Otsi klienti"
 #, python-format
 msgid "Select Partner"
 msgstr "Märgi partner"
-
-#. module: account_accountant
-#. odoo-javascript
-#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
-#, python-format
-msgid "Select a transaction"
-msgstr "Vali tehing"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__selected_aml_ids
@@ -1978,21 +1918,6 @@ msgstr "Kontrolli üle"
 
 #. module: account_accountant
 #. odoo-javascript
-#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
-#, python-format
-msgid "To reconcile invoices & payments, and post new journal entries"
-msgstr ""
-"Arvete ja maksete sobitamiseks ning uute andmike kannete postitamiseks"
-
-#. module: account_accountant
-#. odoo-javascript
-#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
-#, python-format
-msgid "To reconcile with open entries"
-msgstr "Sobita avatud kannetega"
-
-#. module: account_accountant
-#. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "To speed up reconciliation, define"
@@ -2034,22 +1959,12 @@ msgid "Unreconciled statements lines"
 msgstr "Sobitamata väljavõtte read"
 
 #. module: account_accountant
-#. odoo-javascript
-#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
-#, python-format
-msgid ""
-"Use the <strong>Manual Operations</strong> tab to register the difference, "
-"or create expenses on the fly"
-msgstr ""
-
-#. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget__state__valid
 msgid "Valid"
 msgstr "Kehtiv"
 
 #. module: account_accountant
 #. odoo-javascript
-#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_kanban.js:0
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_reconcile_model_widget_wizard
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form

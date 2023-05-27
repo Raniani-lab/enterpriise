@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-14 06:17+0000\n"
+"POT-Creation-Date: 2023-05-23 08:36+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
 "Last-Translator: Malaz Abuidris <msea@odoo.com>, 2023\n"
 "Language-Team: Arabic (https://app.transifex.com/odoo/teams/41243/ar/)\n"
@@ -148,6 +148,13 @@ msgstr ""
 #. odoo-python
 #: code:addons/account_bank_statement_import/models/account_journal.py:0
 #, python-format
+msgid "The following files could not be imported:\n"
+msgstr "تعذر استيراد الملفات التالية: \n"
+
+#. module: account_bank_statement_import
+#. odoo-python
+#: code:addons/account_bank_statement_import/models/account_journal.py:0
+#, python-format
 msgid "This file doesn't contain any statement for account %s."
 msgstr "لا يحتوي هذا الملف على أي كشف للحساب %s. "
 
@@ -162,6 +169,13 @@ msgstr "لا يحتوي هذا الملف على أي معاملة للحساب 
 #. odoo-python
 #: code:addons/account_bank_statement_import/models/account_journal.py:0
 #, python-format
+msgid "View successfully imported statements"
+msgstr "عرض كشوفات الحساب البنكية التي تم استيرادها بنجاح "
+
+#. module: account_bank_statement_import
+#. odoo-python
+#: code:addons/account_bank_statement_import/models/account_journal.py:0
+#, python-format
 msgid "You already have imported that file."
 msgstr "لقد قمت باستيراد هذا الملف بالفعل."
 
@@ -171,3 +185,10 @@ msgstr "لقد قمت باستيراد هذا الملف بالفعل."
 #, python-format
 msgid "You have to set a Default Account for the journal: %s"
 msgstr "عليك تعيين حساب افتراضي لليومية: %s"
+
+#. module: account_bank_statement_import
+#. odoo-python
+#: code:addons/account_bank_statement_import/models/account_journal.py:0
+#, python-format
+msgid "You uploaded an invalid or empty file."
+msgstr "لقد قمت برفع ملف فارغ أو غير صالح. "

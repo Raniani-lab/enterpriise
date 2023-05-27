@@ -443,7 +443,7 @@ msgstr "Campagne UTM"
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
 msgid "Use your own Firebase Account for this website's push notifications"
 msgstr ""
-"Utilisez votre propre compte Firebase pour les notifications push de ce site"
+"Utiliser votre propre compte Firebase pour les notifications push de ce site"
 " web"
 
 #. module: social_push_notifications
@@ -451,7 +451,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:social_push_notifications.field_social_account__firebase_use_own_account
 #: model:ir.model.fields,field_description:social_push_notifications.field_website__firebase_use_own_account
 msgid "Use your own Firebase account"
-msgstr "Utilisez mon propre compte Firebase"
+msgstr "Utiliser mon propre compte Firebase"
 
 #. module: social_push_notifications
 #: model:ir.model.fields,help:social_push_notifications.field_social_media__media_type

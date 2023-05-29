@@ -3410,6 +3410,13 @@ msgstr ""
 #. odoo-python
 #: code:addons/account_reports/models/account_move.py:0
 #, python-format
+msgid "You can't open a tax report from a move without a VAT closing date."
+msgstr ""
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_move.py:0
+#, python-format
 msgid ""
 "You cannot reset this closing entry to draft, as it would delete carryover "
 "values impacting the tax report of a locked period. To do this, you first "

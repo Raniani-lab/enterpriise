@@ -5,17 +5,17 @@
         <field name="name">planning.slot.tree</field>
         <field name="model">planning.slot</field>
         <field name="arch" type="xml">
-            <tree string="Shift List" multi_edit="1" sample="1" editable="top" js_class="planning_tree">
+            <tree string="Shift List" multi_edit="1" sample="1" editable="bottom" js_class="planning_tree">
                 <header>
                     <button name="action_planning_publish_and_send" class="btn btn-secondary mx-1"
                         string="Publish &amp; Send" type="object" groups="planning.group_planning_manager" invisible="context.get('search_default_my_shifts')"/>
                 </header>
                 <field name="start_datetime" widget="daterange" options="{'end_date_field': 'end_datetime'}"/>
                 <field name="end_datetime" invisible="1" />
-                <field name="allocated_hours" widget="float_time" readonly="1" decoration-danger="allocated_percentage &gt; 100"/>
-                <field name="allocated_percentage" readonly="1" optional="hide" decoration-danger="allocated_percentage &gt; 100" attrs="{'invisible': [('resource_type', '=', 'material')]}"/>
+                <field name="allocated_hours" widget="float_time" sum="Allocated Hours" readonly="1" decoration-danger="allocated_percentage &gt; 100"/>
+                <field name="allocated_percentage" readonly="1" avg="Allocated Percentage" optional="hide" decoration-danger="allocated_percentage &gt; 100" attrs="{'invisible': [('resource_type', '=', 'material')]}"/>
                 <field name="resource_id" widget="many2one_avatar_resource" optional="show"
-                    attrs="{'readonly': ['|', ('start_datetime', '=', False), ('end_datetime', '=', False)]}" context="{'from_planning': True, 'search_view_ref': 'planning.resource_resource_search_view_roles', 'search_default_role_ids': role_id, 'show_job_title': True}"/>
+                    attrs="{'readonly': ['|', ('start_datetime', '=', False), ('end_datetime', '=', False)]}" context="{'from_planning': True, 'search_view_ref': 'planning.resource_resource_search_view_roles', 'search_default_role_ids': role_id, 'show_job_title': True}" placeholder="Open Shift"/>
                 <field name="resource_type" invisible="1"/>
                 <field name="role_id" optional="show" context="{'search_default_resource_ids': resource_id}" placeholder="e.g. Bartender"/>
                 <field name="company_id" groups="base.group_multi_company" optional="hide" readonly="1"/>
@@ -101,7 +101,7 @@
                     <group>
                         <group>
                             <field name="resource_id" context="{'search_view_ref': 'planning.resource_resource_search_view_roles', 'search_default_role_ids': role_id, 'from_planning': True, 'show_job_title': True, 'tree_view_ref': 'planning.resource_resource_tree_view_inherit'}" options="{'no_create_edit': True}"
-                                attrs="{'readonly': ['|', ('start_datetime', '=', False), ('end_datetime', '=', False)]}" widget="many2one_avatar_resource"/>
+                                attrs="{'readonly': ['|', ('start_datetime', '=', False), ('end_datetime', '=', False)]}" widget="many2one_avatar_resource" placeholder="Open Shift"/>
                             <field name="role_id" context="{'search_default_resource_ids': resource_id}" placeholder="e.g. Bartender"/>
                             <field name="company_id" groups="base.group_multi_company"/>
                             <field name="company_id" invisible="1"/>

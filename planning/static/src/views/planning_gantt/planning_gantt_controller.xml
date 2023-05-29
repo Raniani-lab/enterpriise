@@ -5,14 +5,6 @@
     <t t-name="planning.PlanningGanttView.Buttons" t-inherit="web_gantt.GanttView.Buttons" owl="1">
         <xpath expr="//div" position="inside">
             <div class="btn-group gap-1">
-                <button t-if="model.metaData.canCreate and model.metaData.scale.id === 'week'"
-                    class="o_gantt_button_copy_previous_week btn btn-primary"
-                    title="Copy previous week"
-                    data-hotkey="c"
-                    t-on-click="() => this.planningControllerActions.copyPrevious()"
-                >
-                    Copy previous week
-                </button>
                 <button t-if="model.metaData.canEdit"
                     class="o_gantt_button_send_all btn btn-primary"
                     title="Send schedule"
@@ -20,6 +12,14 @@
                     t-on-click="() => this.planningControllerActions.publish()"
                 >
                     Publish
+                </button>
+                <button t-if="model.metaData.canCreate and model.metaData.scale.id === 'week'"
+                    class="o_gantt_button_copy_previous_week btn btn-secondary"
+                    title="Copy previous week"
+                    data-hotkey="c"
+                    t-on-click="() => this.planningControllerActions.copyPrevious()"
+                >
+                    Copy previous week
                 </button>
                 <button t-if="model.metaData.canCreate"
                     class="o_gantt_button_auto_plan btn btn-secondary"

@@ -803,7 +803,7 @@ class MrpProductionSchedule(models.Model):
                 return Node(product_tree.product, ratio, product_tree.children)
 
             product_tree = Node(product, ratio, [])
-            product_bom = bom_by_product[product]
+            product_bom = bom_by_product.get(product)
             if product not in bom_by_product and not product_bom:
                 product_bom = self.env['mrp.bom']._bom_find(product)[product]
             for line in product_bom.bom_line_ids:

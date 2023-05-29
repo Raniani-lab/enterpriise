@@ -3,6 +3,7 @@
 
 from datetime import date
 from odoo.tests import common, Form
+from odoo import Command
 
 
 class TestMpsMps(common.TransactionCase):
@@ -453,6 +454,65 @@ class TestMpsMps(common.TransactionCase):
         screw_forecast_1 = mps_screw['forecast_ids'][0]
         self.assertEqual(drawer_forecast_1['indirect_demand_qty'], 11)
         self.assertEqual(screw_forecast_1['indirect_demand_qty'], 148)
+
+    def test_indirect_demand_kit(self):
+        """ On changing demand of a product whose BOM contains kit with a
+        component, ensure that the replenish quantity on a production schedule
+        impacts the indirect demand of kit's component.
+        """
+        cabinet = self.env['product.product'].create({
+            'name': 'Cabinet',
+            'type': 'product',
+        })
+        wood_kit = self.env['product.product'].create({
+            'name': 'Wood Kit',
+            'type': 'product',
+        })
+        wood = self.env['product.product'].create({
+            'name': 'Wood',
+            'type': 'product',
+        })
+
+        self.env['mrp.bom'].create({
+            'product_tmpl_id': cabinet.product_tmpl_id.id,
+            'product_qty': 1,
+            'bom_line_ids': [
+                Command.create({'product_id': wood_kit.id, 'product_qty': 1}),
+            ],
+        })
+
+        self.env['mrp.bom'].create({
+            'product_tmpl_id': wood_kit.product_tmpl_id.id,
+            'product_qty': 1,
+            'bom_line_ids': [
+                Command.create({'product_id': wood.id, 'product_qty': 2}),
+            ],
+        })
+
+        mps_cabinet = self.env['mrp.production.schedule'].create({
+            'product_id': cabinet.id,
+            'warehouse_id': self.warehouse.id,
+        })
+
+        mps_wood = self.env['mrp.production.schedule'].create({
+            'product_id': wood.id,
+            'warehouse_id': self.warehouse.id,
+        })
+
+        self.mps |= mps_cabinet | mps_wood
+
+        mps_dates = self.env.company._get_date_range()
+
+        self.env['mrp.product.forecast'].create({
+            'production_schedule_id': mps_cabinet.id,
+            'date': mps_dates[0][0],
+            'forecast_qty': 2
+        })
+
+        # 4 wood from cabinet
+        mps_wood = mps_wood.get_production_schedule_view_state()[0]
+        wood_forecast_1 = mps_wood['forecast_ids'][0]
+        self.assertEqual(wood_forecast_1['indirect_demand_qty'], 4)
 
     def test_impacted_schedule(self):
         impacted_schedules = self.mps_screw.get_impacted_schedule()

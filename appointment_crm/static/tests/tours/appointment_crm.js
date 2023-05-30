@@ -3,6 +3,8 @@
 import { registry } from "@web/core/registry";
 import { stepUtils } from "@web_tour/tour_service/tour_utils";
 
+const oldWriteText = navigator.clipboard.writeText;
+
 registry.category("web_tour.tours").add('appointment_crm_meeting_tour', {
     url: '/web',
     test: true,
@@ -21,6 +23,17 @@ registry.category("web_tour.tours").add('appointment_crm_meeting_tour', {
         run: 'click',
     }, {
         trigger: '.o_appointment_button_link:contains("Test AppointmentCRM")',
-        run: 'click',
+        run: () => {
+            // Patch and ignore write on clipboard in tour as we don't have permissions
+            navigator.clipboard.writeText = () => { console.info('Copy in clipboard ignored!') };
+            $('.o_appointment_button_link:contains("Test AppointmentCRM")').click();
+        },
+    }, {
+        trigger: '.o_appointment_discard_slots',
+        run: () => {
+            $('.o_appointment_discard_slots').click();
+            // Re-patch the function with the previous writeText
+            navigator.clipboard.writeText = oldWriteText;
+        },
     }],
 });

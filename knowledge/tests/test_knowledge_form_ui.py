@@ -203,10 +203,15 @@ class TestKnowledgeUI(TestKnowledgeUICommon):
         })
         self.start_tour('/web', 'knowledge_properties_tour', login='admin', step_delay=100)
 
-    def test_knowledge_search_favorites_tour(self):
-        """Test search favorites """
+    def test_knowledge_items_search_favorites_tour(self):
+        """Test search favorites for items view"""
         self.env['knowledge.article'].create([{'name': 'Article 1'}])
-        self.start_tour('/web', 'knowledge_search_favorites_tour', login='admin', step_delay=100)
+        self.start_tour('/web', 'knowledge_items_search_favorites_tour', login='admin')
+
+    def test_knowledge_search_favorites_tour(self):
+        """Test search favorites with searchModel state"""
+        self.env['knowledge.article'].create([{'name': 'Article 1'}])
+        self.start_tour('/web', 'knowledge_search_favorites_tour', login='admin')
 
     @users('admin')
     def test_knowledge_sidebar(self):

@@ -166,9 +166,9 @@ class FedexRequest():
         package.PhysicalPackaging = 'BOX'
         if delivery_package.packaging_type == 'YOUR_PACKAGING':
             package.Dimensions = self.factory.Dimensions()
-            package.Dimensions.Height = delivery_package.dimension['height']
-            package.Dimensions.Width = delivery_package.dimension['width']
-            package.Dimensions.Length = delivery_package.dimension['length']
+            package.Dimensions.Height = int(delivery_package.dimension['height'])
+            package.Dimensions.Width = int(delivery_package.dimension['width'])
+            package.Dimensions.Length = int(delivery_package.dimension['length'])
             # TODO in master, add unit in product packaging and perform unit conversion
             package.Dimensions.Units = "IN" if self.RequestedShipment.TotalWeight.Units == 'LB' else 'CM'
         if po_number:

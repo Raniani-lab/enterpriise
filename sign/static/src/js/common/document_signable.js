@@ -23,7 +23,7 @@ const _t = core._t;
 // already set by the user for this request.
 const SignNameAndSignature = NameAndSignature.extend({
     template: 'sign.sign_name_and_signature',
-    events: _.extend({}, NameAndSignature.prototype.events, {
+    events: Object.assign({}, NameAndSignature.prototype.events, {
         'click .o_web_frame_button': '_onClickFrameButton'
     }),
   //----------------------------------------------------------------------

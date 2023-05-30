@@ -2,6 +2,8 @@
 
 import core from "web.core";
 import publicWidget from "web.public.widget";
+import { debounce } from "@web/core/utils/timing";
+
 var qweb = core.qweb;
 
 publicWidget.registry.appointmentTypeSelect = publicWidget.Widget.extend({
@@ -17,7 +19,7 @@ publicWidget.registry.appointmentTypeSelect = publicWidget.Widget.extend({
         this._super.apply(this, arguments);
         // Check if we cannot replace this by a async handler once the related
         // task is merged in master
-        this._onAppointmentTypeChange = _.debounce(this._onAppointmentTypeChange, 250);
+        this._onAppointmentTypeChange = debounce(this._onAppointmentTypeChange, 250);
     },
 
     /**

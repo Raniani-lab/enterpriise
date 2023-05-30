@@ -33,7 +33,7 @@ QUnit.test("Should not have attachment preview for still uploading attachment", 
     patchUiSize({ size: SIZES.XXL });
     const { openFormView } = await start({
         async mockRPC(route, args) {
-            if (_.str.contains(route, "/web/static/lib/pdfjs/web/viewer.html")) {
+            if (String(route).includes("/web/static/lib/pdfjs/web/viewer.html")) {
                 assert.step("pdf viewer");
             }
             if (route === "/mail/attachment/upload") {
@@ -81,7 +81,7 @@ QUnit.test("Attachment on side", async (assert) => {
     patchUiSize({ size: SIZES.XXL });
     const { openFormView } = await start({
         mockRPC(route, args) {
-            if (_.str.contains(route, "/web/static/lib/pdfjs/web/viewer.html")) {
+            if (String(route).includes("/web/static/lib/pdfjs/web/viewer.html")) {
                 var canvas = document.createElement("canvas");
                 return canvas.toDataURL();
             }

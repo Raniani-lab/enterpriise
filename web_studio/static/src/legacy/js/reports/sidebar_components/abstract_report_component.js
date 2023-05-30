@@ -32,29 +32,31 @@ var AbstractReportComponent = Widget.extend({
         var self = this;
         var contextOrder = node.contextOrder || [];
 
-        var keys = _.compact(_.map(node.context, function (relation, key) {
-            if (!self.models[relation]) {
+        var keys = Object.entries(node.context || {})
+            .map(([key, relation]) => {
+                if (!self.models[relation]) {
+                    return {
+                        name: key,
+                        string: key + ' (' + relation + ')',
+                        type: relation,
+                        store: true,
+                        related: true,
+                        searchable: true,
+                        order: -contextOrder.indexOf(key),
+                    };
+                }
                 return {
                     name: key,
-                    string: key + ' (' + relation + ')',
-                    type: relation,
+                    string: key + ' (' + self.models[relation] + ')',
+                    relation: relation,
+                    type: key[key.length-1] === 's' ? 'one2many' : 'many2one',
                     store: true,
                     related: true,
                     searchable: true,
                     order: -contextOrder.indexOf(key),
                 };
-            }
-            return {
-                name: key,
-                string: key + ' (' + self.models[relation] + ')',
-                relation: relation,
-                type: key[key.length-1] === 's' ? 'one2many' : 'many2one',
-                store: true,
-                related: true,
-                searchable: true,
-                order: -contextOrder.indexOf(key),
-            };
-        }));
+            })
+            .filter((x) => !!x);
         keys.sort(function (a, b) {
             return a.order - b.order;
         });

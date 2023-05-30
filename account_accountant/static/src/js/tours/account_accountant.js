@@ -10,7 +10,9 @@
 
     // Update the invoicing tour as the menu items have changed, but we want the test to still work
     registry.category("web_tour.tours").get("account_tour").steps.splice(0, 3,
-        ..._.map(stepUtils.goToAppSteps('account_accountant.menu_accounting', _t('Go to invoicing')), step => _.extend(step, {auto: true})),
+        ...stepUtils
+            .goToAppSteps("account_accountant.menu_accounting", _t("Go to invoicing"))
+            .map((step) => Object.assign(step, { auto: true })),
         {
             trigger: 'button[data-menu-xmlid="account.menu_finance_receivables"]',
             content: _t('Go to invoicing'),

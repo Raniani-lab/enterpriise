@@ -7,6 +7,7 @@ import Dialog from "web.Dialog";
 import Abstract from "web_studio.AbstractReportComponent";
 import NewFieldDialog from "web_studio.NewFieldDialog";
 
+import { throttleForAnimation } from "@web/core/utils/timing";
 import { MediaDialogWrapper } from "@web_editor/components/media_dialog/media_dialog";
 import { ComponentWrapper } from "web.OwlCompatibility";
 
@@ -21,7 +22,7 @@ var AbstractNewBuildingBlock = Abstract.extend({
     description: false,
     addEmptyRowsTargets: true,
     modelWhitelist: [],
-    events: _.extend({}, Abstract.prototype.events, {
+    events: Object.assign({}, Abstract.prototype.events, {
         mouseenter: '_onHover',
         focusin: '_onHover',
         mouseleave: '_onStopHover',
@@ -44,12 +45,12 @@ var AbstractNewBuildingBlock = Abstract.extend({
                 .text(this.description)
             );
         }
-        var dragFunction = _.cancellableThrottleRemoveMeSoon(function (e) {
-                self.trigger_up('drag_component', {
-                    position: { pageX: e.pageX, pageY: e.pageY },
-                    widget: self,
-                });
-            }, 100);
+        const dragFunction = throttleForAnimation(function (e) {
+            self.trigger_up('drag_component', {
+                position: { pageX: e.pageX, pageY: e.pageY },
+                widget: self,
+            });
+        });
         this.$el.draggable({
             helper: 'clone',
             opacity: 0.4,
@@ -147,7 +148,7 @@ var AbstractNewBuildingBlock = Abstract.extend({
 
         // add cells in rows
 
-        _.each(this.targets, function (target) {
+        this.targets.forEach((target) => {
             var node = target.node;
             var inheritanceItem;
             if (node.tag === 'th' || node.tag === 'td') {
@@ -184,7 +185,7 @@ var AbstractNewBuildingBlock = Abstract.extend({
 
         // colspan
         var cellsToGrow = [];
-        _.each(this.targets, function (target) {
+        this.targets.forEach((target) => {
             var node = target.node;
             if (target.position !== 'after') {
                 return;
@@ -206,7 +207,7 @@ var AbstractNewBuildingBlock = Abstract.extend({
 
             var table = self._getParentNode(node, function (node) { return node.tag === 'table'; });
             var rows = self._getChildrenNode(table, function (node) { return node.tag === 'tr'; });
-            _.each(rows, function (row) {
+            rows.forEach((row) => {
                 if (row === nodeRow) {
                     return;
                 }
@@ -226,7 +227,7 @@ var AbstractNewBuildingBlock = Abstract.extend({
                 }
             });
         });
-        _.each(cellsToGrow, function (node) {
+        cellsToGrow.forEach((node) => {
             inheritance.push({
                 content: '<attribute name="colspan">' + ((+node.attrs.colspan) + 1) + '</attribute>',
                 position: 'attributes',
@@ -274,7 +275,7 @@ var AbstractNewBuildingBlock = Abstract.extend({
                 fillStructure: options.fillStructure || false,
             });
         } else {
-            return _.map(this.targets, function (target) {
+            return this.targets.map((target) => {
                 var isCol = (target.node.attrs.class || '').match(/(^|\s)(col(-[0-9]+)?)(\s|$)/);
                 return {
                     content: isCol ? options.contentInStructure || options.content : options.content,
@@ -459,11 +460,11 @@ var AbstractFieldBlock = AbstractNewBuildingBlock.extend({
                     order: 'order',
                     type: 'related',
                     filters: { searchable: false },
-                filter: function (field) {
-                    // For single fields (i.e. NOT a table), forbid putting x2many's
-                    // Because it just doesn't make sense otherwise
-                    return ! _.contains(['one2many', 'many2many'], field.type);
-                }
+                    filter: function (field) {
+                        // For single fields (i.e. NOT a table), forbid putting x2many's
+                        // Because it just doesn't make sense otherwise
+                        return !["one2many", "many2many"].includes(field.type);
+                    },
                 };
 
                 var target = self.targets[0];
@@ -471,14 +472,14 @@ var AbstractFieldBlock = AbstractNewBuildingBlock.extend({
                     target = self._filterTargets() || target;
                 }
 
-                var availableKeys = _.filter(self._getContextKeys(target.node), function (field) {
+                var availableKeys = self._getContextKeys(target.node).filter((field) => {
                     // "docs" is a technical object referring to all records selected to issue the report for
                     // it shouldn't be manipulated by the user
                     return !!field.relation && field.name !== 'docs';
                 });
                 var fieldChain = [];
                 if (availableKeys.length) {
-                    fieldChain.push(_.first(availableKeys).name);
+                    fieldChain.push(availableKeys[0].name);
                 }
                 var dialog = new NewFieldDialog(self, 'record_fake_model', field, availableKeys, fieldChain).open();
                 dialog.on('field_default_values_saved', self, function (values) {
@@ -546,7 +547,7 @@ var InlineField = AbstractFieldBlock.extend({
         var self = this;
         var target = this.targets[0];
         if (this.targets.length > 1 && (target.node.tag === 'td' || target.node.tag === 'th')) {
-            target = _.find(this.targets, function (target) {
+            target = this.targets.find((target) => {
                 return self._findParentWithTForeach(target.node) ? true : false;
             });
         }
@@ -569,9 +570,11 @@ var TableColumnField = AbstractFieldBlock.extend({
         var fieldHTML = $field.prop('outerHTML');
         if (this.node.tag === 'td' || this.node.tag === 'th') {
             // add content either in looped cells, or if no loop in normal cells
-            var targetInLoop = _.find(this.targets, function (target) {
-                return this._findParentWithTForeach(target.node);
-            }.bind(this)) ? true : false;
+            var targetInLoop = this.targets.find(
+                ((target) => {
+                    return this._findParentWithTForeach(target.node);
+                }).bind(this)
+            ) ? true : false;
             return this._createReportTableColumn({
                 head: $('<span/>').text(values.string).prop('outerHTML'),
                 body: targetInLoop ? undefined : fieldHTML,
@@ -588,7 +591,7 @@ var TableColumnField = AbstractFieldBlock.extend({
         var self = this;
         var target = this.targets[this.targets.length - 1];
         if (this.targets.length > 1) {
-            target = _.find(this.targets, function (target) {
+            target = this.targets.find((target) => {
                 return self._findParentWithTForeach(target.node) ? true : false;
             });
         }
@@ -625,7 +628,7 @@ var TableCellField = AbstractFieldBlock.extend({
         var self = this;
         var target = this.targets[0];
         if (this.targets.length > 1) {
-            target = _.find(this.targets, function (target) {
+            target = this.targets.find((target) => {
                 return self._findParentWithTForeach(target.node) ? true : false;
             }) ;
         }
@@ -746,11 +749,11 @@ var BlockAddress = AbstractNewBuildingBlock.extend({
                 // in 'ModelFieldSelector' whenever available
                 var fieldChain = [];
                 if (availableKeys.length) {
-                    fieldChain.push(_.first(availableKeys).name);
+                    fieldChain.push(availableKeys[0].name);
                 }
                 var dialog = new NewFieldDialog(self, 'record_fake_model', field, availableKeys, fieldChain).open();
                 dialog.on('field_default_values_saved', self, function (values) {
-                    if (!_.contains(values.related, '.')) {
+                    if (!values.related.includes(".")) {
                         Dialog.alert(self, _t('Please specify a field name for the selected model.'));
                         return;
                     }
@@ -801,7 +804,7 @@ var BlockTable = AbstractNewBuildingBlock.extend({
                 // in 'ModelFieldSelector' whenever available
                 var fieldChain = [];
                 if (availableKeys.length) {
-                    fieldChain.push(_.first(availableKeys).name);
+                    fieldChain.push(availableKeys[0].name);
                 }
                 var dialog = new NewFieldDialog(self, 'record_fake_model', field, availableKeys, fieldChain).open();
                 dialog.on('field_default_values_saved', self, function (values) {
@@ -873,7 +876,7 @@ var TableBlockTotal = AbstractNewBuildingBlock.extend({
                 // in 'ModelFieldSelector' whenever available
                 var fieldChain = [];
                 if (availableKeys.length) {
-                    fieldChain.push(_.first(availableKeys).name);
+                    fieldChain.push(availableKeys[0].name);
                 }
                 var dialog = new NewFieldDialog(self, 'record_fake_model', field, availableKeys, fieldChain).open();
                 dialog.on('field_default_values_saved', self, function (values) {

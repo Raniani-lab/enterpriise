@@ -2063,13 +2063,19 @@ QUnit.module("View Editors", (hooks) => {
                     editViewCount++;
                     if (editViewCount === 1) {
                         assert.strictEqual(
-                            _.has(args.operations[0].target, "xpath_info"),
+                            Object.prototype.hasOwnProperty.call(
+                                args.operations[0].target,
+                                "xpath_info"
+                            ),
                             true,
                             "should give xpath_info even if we have the tag identifier attributes"
                         );
                     } else if (editViewCount === 2) {
                         assert.strictEqual(
-                            _.has(args.operations[1].target, "xpath_info"),
+                            Object.prototype.hasOwnProperty.call(
+                                args.operations[1].target,
+                                "xpath_info"
+                            ),
                             true,
                             "should give xpath_info even if we have the tag identifier attributes"
                         );
@@ -2086,7 +2092,7 @@ QUnit.module("View Editors", (hooks) => {
                             "should delete the notebook because the last page is deleted"
                         );
                         assert.strictEqual(
-                            _.last(args.operations[3].target.xpath_info).tag,
+                            args.operations[3].target.xpath_info.at(-1).tag,
                             "notebook",
                             "should have the notebook as xpath last element"
                         );

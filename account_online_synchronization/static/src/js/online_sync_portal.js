@@ -6,7 +6,7 @@
 
     publicWidget.registry.OnlineSyncPortal = publicWidget.Widget.extend({
         selector: '.oe_online_sync',
-        events: _.extend({}, {
+        events: Object.assign({}, {
             'click #renew_consent_button': '_onRenewConsent',
         }),
 

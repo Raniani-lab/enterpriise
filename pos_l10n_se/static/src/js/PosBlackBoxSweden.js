@@ -154,7 +154,7 @@ patch(Order.prototype, "pos_l10n_se.Order", {
     export_as_JSON() {
         var json = this._super(...arguments);
 
-        var to_return = _.extend(json, {
+        var to_return = Object.assign(json, {
             receipt_type: this.receipt_type,
             blackbox_unit_id: this.blackbox_unit_id,
             blackbox_signature: this.blackbox_signature,
@@ -185,7 +185,7 @@ patch(Orderline.prototype, "pos_l10n_se.Orderline", {
     export_for_printing() {
         var json = this._super(...arguments);
 
-        var to_return = _.extend(json, {
+        var to_return = Object.assign(json, {
             product_type: this.get_product().type,
         });
         return to_return;

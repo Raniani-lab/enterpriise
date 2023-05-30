@@ -195,7 +195,7 @@ export class PayrollDashboardStats extends Component {
         }
 
 
-        _.each(this.graphData, function(graphData, code) {
+        Object.entries(this.graphData).forEach(([code, graphData]) => {
             datasets_labels.push(code);
             const dataset_data = [];
             const formatted_data = []

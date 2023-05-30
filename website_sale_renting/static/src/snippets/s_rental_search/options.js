@@ -4,7 +4,7 @@ import options from 'web_editor.snippets.options';
 import { _t } from 'web.core';
 
 options.registry.RentalSearchOptions = options.Class.extend({
-    events: _.extend({}, options.Class.prototype.events || {}, {
+    events: Object.assign({}, options.Class.prototype.events || {}, {
         'click .reset-product-attribute-picker': '_onClickResetProductAttributePicker',
     }),
     /**

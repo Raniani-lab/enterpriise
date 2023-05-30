@@ -10,8 +10,8 @@ export const DocumentsModelMixin = (component) => class extends component {
      * @override
      */
     setup(params) {
-        _.defaults(params.activeFields, _.pick(params.fields, inspectorFields));
         inspectorFields.forEach((field) => {
+            params.activeFields[field] = params.activeFields[field] || params.fields[field];
             const fieldInfo = params.activeFields[field];
             fieldInfo.options = fieldInfo.options || {};
             fieldInfo.attrs = fieldInfo.attrs || {};

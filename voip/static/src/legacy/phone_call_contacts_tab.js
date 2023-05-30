@@ -1,6 +1,7 @@
 /* @odoo-module */
 
 import { PhoneCallTab } from "@voip/legacy/phone_call_tab";
+import { uniqueId } from "@web/core/utils/functions";
 
 function cleanNumber(number) {
     if (!number) {
@@ -159,7 +160,7 @@ export const PhoneCallContactsTab = PhoneCallTab.extend({
     _makePhoneCallsDataFromContactsData(contactsData) {
         return contactsData.map((contactData) => {
             return {
-                id: _.uniqueId(`virtual_phone_call_id_${contactData.id}_`),
+                id: uniqueId(`virtual_phone_call_id_${contactData.id}_`),
                 isContact: true,
                 mobile: contactData.mobile,
                 partner_email: contactData.email,

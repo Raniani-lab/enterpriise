@@ -111,7 +111,7 @@ export class IoTLongpolling {
             }
         } else {
             var self = this;
-            _.each(this._listeners, function (listener, ip) {
+            Object.keys(this._listeners).forEach((ip) => {
                 self.startPolling(ip);
             });
         }
@@ -166,7 +166,7 @@ export class IoTLongpolling {
         this.protocol = window.location.protocol;
         var port = this.protocol === 'http:' ? ':8069' : '';
         var url = this.protocol + '//' + iot_ip + port;
-        var queryOptions = _.extend({
+        var queryOptions = Object.assign({
             url: url + route,
             dataType: 'json',
             contentType: "application/json;charset=utf-8",
@@ -208,7 +208,7 @@ export class IoTLongpolling {
                     if (self._session_id === result.result.session_id) {
                         self._onSuccess(iot_ip, result.result);
                     }
-                } else if (!_.isEmpty(self._listeners[iot_ip].devices)) {
+                } else if (Object.keys(self._listeners[iot_ip].devices || {}).length > 0) {
                     self._poll(iot_ip);
                 }
             }).fail(function (jqXHR, textStatus) {
@@ -227,7 +227,7 @@ export class IoTLongpolling {
         if (devices[result.device_identifier]) {
             devices[result.device_identifier].callback(result);
         }
-        if (!_.isEmpty(devices)) {
+        if (Object.keys(devices || {}).length > 0) {
             this._poll(iot_ip);
         }
         this._retries = 0;

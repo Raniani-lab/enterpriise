@@ -487,7 +487,7 @@ QUnit.module('Studio', {}, function () {
                     if (args.model === 'x_mymodel' && args.method === 'fields_get') {
                         // Block the 'read' call
                         var result = this._super.apply(this, arguments);
-                        return Promise.resolve(def).then(_.constant(result));
+                        return Promise.resolve(def).then(() => result);
                     }
                     return this._super.apply(this, arguments);
                 },

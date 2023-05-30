@@ -5,8 +5,10 @@ import { SelectInputDeviceDialog } from "@voip/legacy/audio_input_device";
 import config from "web.config";
 import core from "web.core";
 import { isMobileOS } from "@web/core/browser/feature_detection";
+import { debounce } from "@web/core/utils/timing";
 import session from "web.session";
 import Widget from "web.Widget";
+
 
 const QWeb = core.qweb;
 
@@ -95,7 +97,7 @@ export const PhoneCallDetails = Widget.extend({
         this.$(".o_dial_transfer_button").attr("disabled", "disabled");
         this.$(".o_dial_keypad_button").attr("disabled", "disabled");
 
-        this._onInputNumberDebounced = _.debounce(this._onInputNumber.bind(this), 350);
+        this._onInputNumberDebounced = debounce(this._onInputNumber.bind(this), 350);
 
         const self = this;
         const number = this.voip.cleanedExternalDeviceNumber;
@@ -213,7 +215,7 @@ export const PhoneCallDetails = Widget.extend({
             this.durationSeconds++;
             const seconds = formatTimer(this.durationSeconds % 60);
             const minutes = formatTimer(parseInt(this.durationSeconds / 60));
-            const duration = _.str.sprintf("%s:%s", minutes, seconds);
+            const duration = `${minutes}:${seconds}`;
             this.$(".o_phonecall_status").html(
                 QWeb.render("voip.PhoneCallStatus", {
                     duration,

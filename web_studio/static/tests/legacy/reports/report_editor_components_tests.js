@@ -671,7 +671,7 @@ QUnit.module('ReportComponents', {
 
         var tOptions = new (editComponentsRegistry.get('tOptions'))(parent, params);
         await tOptions.appendTo(parent.$el);
-        var separators = _.map(tOptions.$('.o_web_studio_toption_option_contact_separator .o_field_widget option'), function (option) {
+        var separators = Array.from(tOptions.$('.o_web_studio_toption_option_contact_separator .o_field_widget option')).map((option) => {
             return JSON.parse($(option).val());
         });
         assert.deepEqual(separators, [false, " ", ",", "-", "|", "/"], 'There should be a selection field with proper values');

@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import { localization } from "@web/core/l10n/localization";
-
+import { throttleForAnimation } from "@web/core/utils/timing";
 export default {
     //--------------------------------------------------------------------------
     // Handlers
@@ -12,7 +12,7 @@ export default {
      * @param {boolean} saveSize - Save new width in localStorage if True
      */
     resizeSidebar: function (el, saveSize) {
-        const onPointerMove = _.throttle(event => {
+        const onPointerMove = throttleForAnimation((event) => {
             event.preventDefault();
             let width;
             if (localization.direction === "rtl") {
@@ -25,7 +25,7 @@ export default {
             if (saveSize) {
                 localStorage.setItem('knowledgeArticleSidebarSize', width);
             }
-        }, 100);
+        });
         const onPointerUp = () => {
             el.removeEventListener('pointermove', onPointerMove);
             document.body.style.cursor = "auto";

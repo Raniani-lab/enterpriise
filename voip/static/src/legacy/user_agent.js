@@ -627,9 +627,9 @@ export const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin
         }
         let content;
         if (name) {
-            content = _.str.sprintf(_t("Incoming call from %s (%s)"), name, number);
+            content = sprintf(_t("Incoming call from %s (%s)"), name, number);
         } else {
-            content = _.str.sprintf(_t("Incoming call from %s"), number);
+            content = sprintf(_t("Incoming call from %s"), number);
         }
         this._isOutgoing = false;
         this._callState = CALL_STATE.RINGING_CALL;

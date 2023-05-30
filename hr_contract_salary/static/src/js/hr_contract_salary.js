@@ -5,6 +5,7 @@ import publicWidget from "web.public.widget";
 import utils from "web.utils";
 import {qweb, _t} from "web.core";
 import { sprintf } from "@web/core/utils/strings";
+import { debounce } from "@web/core/utils/timing";
 
 publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
     selector: '#hr_cs_form',
@@ -31,7 +32,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
 
         $('b[role="presentation"]').hide();
         $('.select2-arrow').append('<i class="oi oi-chevron-down"></i>');
-        this.updateGross = _.debounce(this.updateGross, 1000);
+        this.updateGross = debounce(this.updateGross, 1000);
         this.initializeUnsetSliders();
         var whitelist = $("input[name='whitelist']").val();
         if (whitelist) {
@@ -424,7 +425,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
             }
             $("span[name='description_" + advantageField + "']").html(result.description);
             if (result.extra_values) {
-                _.each(result.extra_values, function(extra_value) {
+                result.extra_values.forEach((extra_value) => {
                     $("input[name='" + extra_value[0] + "']").val(extra_value[1]);
                 });
             }
@@ -492,7 +493,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
                 'value': newValue,
             },
         });
-        if (!_.isEmpty(data)) {
+        if (Object.keys(data || {}).length > 0) {
             const childDiv = $("div[name='personal_info_child_group_" + data.field + "']")
             const childInputs = childDiv.find('input').toArray();
             if (data.hide_children) {

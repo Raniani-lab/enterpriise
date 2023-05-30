@@ -1,6 +1,8 @@
 /** @odoo-module alias=web_mobile.core **/
 /* global OdooDeviceUtility */
 
+import { uniqueId } from "@web/core/utils/functions";
+
 var available = typeof OdooDeviceUtility !== 'undefined';
 var DeviceUtility;
 var deferreds = {};
@@ -20,10 +22,10 @@ if (available){
  * @returns Promise Object
  */
 function native_invoke(name, args) {
-    if(_.isUndefined(args)){
+    if (args === undefined) {
         args = {};
     }
-    var id = _.uniqueId();
+    var id = uniqueId();
     args = JSON.stringify(args);
     DeviceUtility.execute(name, args, id);
     return new Promise(function (resolve, reject) {
@@ -51,7 +53,7 @@ window.odoo.native_notify = function (id, result) {
 };
 
 var plugins = available ? JSON.parse(DeviceUtility.list_plugins()) : [];
-_.each(plugins, function (plugin) {
+plugins.forEach((plugin) => {
     methods[plugin.name] = function (args) {
         return native_invoke(plugin.action, args);
     };
@@ -64,7 +66,7 @@ if (methods.hashChange) {
     var currentHash;
     $(window).bind('hashchange', function (event) {
         var hash = event.getState();
-        if (!_.isEqual(currentHash, hash)) {
+        if (JSON.stringify(currentHash) !== JSON.stringify(hash)) {
             methods.hashChange(hash);
         }
         currentHash = hash;

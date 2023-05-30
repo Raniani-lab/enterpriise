@@ -10,13 +10,14 @@ import ReportEditorSidebar from "web_studio.ReportEditorSidebar";
 import ReportEditor from "web_studio.ReportEditor";
 import AbstractEditorManager from "web_studio.AbstractEditorManager";
 import { ComponentWrapper, WidgetAdapterMixin } from "web.OwlCompatibility";
+import { sprintf } from "@web/core/utils/strings";
 
 var qweb = core.qweb;
 var _t = core._t;
 
 var ReportEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
     className: AbstractEditorManager.prototype.className + ' o_web_studio_report_editor_manager',
-    custom_events: _.extend({}, AbstractEditorManager.prototype.custom_events, {
+    custom_events: Object.assign({}, AbstractEditorManager.prototype.custom_events, {
         editor_clicked: '_onEditorClick',
         hover_editor: '_onHighlightPreview',
         node_expanded: '_onNodeExpanded',
@@ -27,7 +28,7 @@ var ReportEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
         begin_preview_drag_component: '_onBeginPreviewDragComponent',
         end_preview_drag_component: '_onEndPreviewDragComponent',
     }),
-    events: _.extend({}, AbstractEditorManager.prototype.events, {
+    events: Object.assign({}, AbstractEditorManager.prototype.events, {
         'click .o_web_studio_report_print': '_onPrintReport',
     }),
     /**
@@ -158,7 +159,7 @@ var ReportEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
         if (!from_xml) {
             // reset studio_arch as it was before the changes for applying
             // the next operations
-            _.each(result.views, function (view) {
+            Object.values(result.views).forEach((view) => {
                 if (view.studio_view_id) {
                     view.studio_arch = self.reportViews[view.view_id].studio_arch;
                 }
@@ -176,7 +177,7 @@ var ReportEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
      */
     _computeView: function (views) {
         // TODO: find a better name
-        var nodesArchs = _.mapObject(views, function (view, id) {
+        var nodesArchs = Object.entries(views || {}).map(([id, view]) => {
             var doc = $.parseXML(view.arch).documentElement;
             // first element child because we don't want <template> node
             if (!doc.hasAttribute('t-name')) {
@@ -271,9 +272,7 @@ var ReportEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
      * @override
      */
     _instantiateSidebar: function (state, previousState) {
-        state = _.defaults(state || {}, {
-            mode: this.initialState.sidebarMode || 'new',
-        });
+        state = Object.assign({ mode: this.initialState.sidebarMode || "new" }, state || {});
         return new ReportEditorSidebar(this, {
             report: this.report,
             widgetsOptions: this.widgetsOptions,
@@ -309,14 +308,14 @@ var ReportEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
      */
     _setParentKey: function (nodesArchs) {
         function setParent(node, parent) {
-            if (_.isObject(node)) {
+            if (typeof node === "object") {
                 node.parent = parent;
-                _.each(node.children, function (child) {
+                node.children.forEach((child) => {
                     setParent(child, node);
                 });
             }
         }
-        _.each(nodesArchs, function (node) {
+        Object.values(nodesArchs).forEach((node) => {
             setParent(node, null);
         });
     },
@@ -389,7 +388,7 @@ var ReportEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
     _onElementRemoved: function (ev) {
         var self = this;
         var node = this._getNodeToDelete(ev.data.node);
-        var message = _.str.sprintf(_t('Are you sure you want to remove this %s from the view?'), node.tag);
+        var message = sprintf(_t('Are you sure you want to remove this %s from the view?'), node.tag);
 
         Dialog.confirm(this, message, {
             confirm_callback: function () {
@@ -503,7 +502,7 @@ var ReportEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
         var def;
 
         var node = ev.data.node || ev.data.targets[0].node;
-        var operation = _.extend(ev.data.operation, {
+        var operation = Object.assign(ev.data.operation, {
             view_id: +node.attrs['data-oe-id'],
             xpath: node.attrs['data-oe-xpath'],
             context: node.context,
@@ -514,7 +513,7 @@ var ReportEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
                 targets: ev.data.targets,
             }).then(function (result) {
                 // TODO: maybe modify the operation directly?
-                _.extend(operation, result);
+                Object.assign(operation, result);
             });
         } else {
             if (node) {

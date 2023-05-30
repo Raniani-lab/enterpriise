@@ -4,7 +4,7 @@
     import mobileMixins from "web_mobile.mixins";
 
     Dialog.include(
-        _.extend({}, mobileMixins.BackButtonEventMixin, {
+        Object.assign({}, mobileMixins.BackButtonEventMixin, {
             //--------------------------------------------------------------------------
             // Handlers
             //--------------------------------------------------------------------------

@@ -6,7 +6,7 @@
         <t t-call="web_studio.SelectionValues"/>
     </t>
     <t t-else="">
-        <t t-if="_.contains(['one2many', 'related'], widget.type)">
+        <t t-if="['one2many', 'related'].includes(widget.type)">
             <label>Select a related field:</label>
             <span class="o_many2one_field"/>
         </t>

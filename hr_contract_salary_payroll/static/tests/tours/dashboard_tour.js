@@ -4,9 +4,9 @@ import { registry } from "@web/core/registry";
 import '@hr_payroll/../tests/tours/dashboard_tour';
 
 const DashboardTour = registry.category("web_tour.tours").get("payroll_dashboard_ui_tour");
-const setHrReponsibleStepIndex = _.findIndex(DashboardTour.steps, function (step) {
-    return (step.id === 'set_hr_responsible');
-});
+const setHrReponsibleStepIndex = DashboardTour.steps.findIndex(
+    (step) => step.id === "set_hr_responsible"
+);
 
 DashboardTour.steps.splice(setHrReponsibleStepIndex + 1, 0, {
     /**

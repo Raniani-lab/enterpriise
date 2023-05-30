@@ -5,6 +5,7 @@
     import core    from "web.core";
     import Class from "web.Class";
     import devices from "point_of_sale.devices";
+    import { range } from "@web/core/utils/numbers";
     var _t      = core._t;
     import utils from "web.utils";
     const round_pr = utils.round_precision;
@@ -29,15 +30,15 @@
                 ["ýÝÿ", "Y"]
             ];
 
-            var lowercase_to_uppercase = _.range("a".charCodeAt(0), "z".charCodeAt(0) + 1).map(function (lowercase_ascii_code) {
+            var lowercase_to_uppercase = range("a".charCodeAt(0), "z".charCodeAt(0) + 1).map(function (lowercase_ascii_code) {
                 return [String.fromCharCode(lowercase_ascii_code), String.fromCharCode(lowercase_ascii_code).toUpperCase()];
             });
             replacements = replacements.concat(lowercase_to_uppercase);
 
             var lookup_table = {};
 
-            _.forEach(replacements, function (letter_group) {
-                _.forEach(letter_group[0], function (special_char) {
+            replacements.forEach((letter_group) => {
+                letter_group[0].forEach((special_char) => {
                     lookup_table[special_char] = letter_group[1];
                 });
             });
@@ -52,7 +53,7 @@
 
             var translation_table = this._generate_translation_table();
 
-            var replaced_char_array = _.map(str, function (char, index, str) {
+            var replaced_char_array = str.map((char) => {
                 var translation = translation_table[char];
                 if (translation) {
                     return translation;
@@ -75,7 +76,7 @@
                 throw "Can only handle strings";
             }
 
-            var filtered_char_array = _.filter(str, function (char) {
+            var filtered_char_array = str.filter((char) => {
                 var ascii_code = char.charCodeAt(0);
 
                 if ((ascii_code >= "A".charCodeAt(0) && ascii_code <= "Z".charCodeAt(0)) ||
@@ -140,12 +141,12 @@
                 return amount;
             } else {
                 if (uom.category_id[1] === "Weight") {
-                    var uom_gram = _.find(this.pos.units_by_id, function (unit) {
+                    var uom_gram = Object.values(this.pos.units_by_id).find((unit) => {
                         return unit.category_id[1] === "Weight" && unit.name === "g";
                     });
                     amount = (amount / uom.factor) * uom_gram.factor;
                 } else if (uom.category_id[1] === "Volume") {
-                    var uom_milliliter = _.find(this.pos.units_by_id, function (unit) {
+                    var uom_milliliter = Object.values(this.pos.units_by_id).find((unit) => {
                         return unit.category_id[1] === "Volume" && unit.name === "Milliliter(s)";
                     });
                     amount = (amount / uom.factor) * uom_milliliter.factor;
@@ -252,7 +253,7 @@
         export_as_JSON: function () {
             var json = orderline_super.export_as_JSON.apply(this, arguments);
 
-            return _.extend(json, {
+            return Object.assign(json, {
                 'vat_letter': this.get_vat_letter(),
                 'blackbox_pro_forma_finalized': this.blackbox_pro_forma_finalized
             });
@@ -261,7 +262,7 @@
         export_for_printing: function () {
             var json = orderline_super.export_for_printing.apply(this, arguments);
 
-            return _.extend(json, {
+            return Object.assign(json, {
                 'vat_letter': this.get_vat_letter()
             });
         }
@@ -454,17 +455,17 @@
                     // 2. re-add lines with the same product id but with modified taxes
                     //    essentially just adding a discount_percentage_on_order% per tax
 
-                    _.forEach(_.pairs(price_per_tax_letter), function (tax) {
+                    Object.entries(price_per_tax_letter).forEach((tax) => {
                         tax[1] = tax[1] / 100; // was in eurocents
                         if (tax[1] > 0.00001) {
                             var percentage_of_this_tax_in_total = round_pr(tax[1] / order_total, 0.01);
 
                             // add correct tax on product
-                            var new_line_tax = _.find(self.taxes, function (pos_tax) {
+                            var new_line_tax = self.taxes.find((pos_tax) => {
                                 return tax[0] === pos_tax.identification_letter;
                             });
 
-                            var cloned_product = _.clone(discount_line.product);
+                            var cloned_product = Object.assign({}, discount_line.product);
 
                             cloned_product.taxes_id = [new_line_tax.id];
 
@@ -478,8 +479,8 @@
                 }
             });
 
-            _.map(lines_to_delete, function (line) { self.get_order().remove_orderline(line); });
-            _.map(lines_to_add, function (line) { self.get_order().add_product.apply(self.get_order(), line); });
+            lines_to_delete.forEach((line) => self.get_order().remove_orderline(line));
+            lines_to_add.forEach((line) => self.get_order().add_product.apply(self.get_order(), line));
         },
 
         add_new_order: function () {
@@ -629,7 +630,7 @@
         export_as_JSON: function () {
             var json = order_model_super.export_as_JSON.bind(this)();
 
-            var to_return = _.extend(json, {
+            var to_return = Object.assign(json, {
                 'blackbox_date': this.blackbox_date,
                 'blackbox_time': this.blackbox_time,
                 'blackbox_amount_total': this.blackbox_amount_total,
@@ -646,7 +647,7 @@
             });
 
             if (this.blackbox_base_price_in_euro_per_tax_letter) {
-                to_return = _.extend(to_return, {
+                to_return = Object.assign(to_return, {
                     'blackbox_tax_category_a': this.blackbox_base_price_in_euro_per_tax_letter[0].amount,
                     'blackbox_tax_category_b': this.blackbox_base_price_in_euro_per_tax_letter[1].amount,
                     'blackbox_tax_category_c': this.blackbox_base_price_in_euro_per_tax_letter[2].amount,
@@ -669,8 +670,8 @@
         export_for_printing: function () {
             var receipt = order_model_super.export_for_printing.bind(this)();
 
-            receipt = _.extend(receipt, {
-                'company': _.extend(receipt.company, {
+            receipt = Object.assign(receipt, {
+                'company': Object.assign(receipt.company, {
                     'street': this.pos.company.street
                 })
             });
@@ -719,7 +720,7 @@
         },
 
         get_total_with_tax_without_discounts: function () {
-            var positive_orderlines = _.filter(this.get_orderlines(), function (line) {
+            var positive_orderlines = this.get_orderlines().filter((line) => {
                 return line.get_price_without_tax() > 0;
             });
 
@@ -772,7 +773,7 @@
         // [{'letter', 'amount'}, {'letter', 'amount'}, ...]
         get_base_price_in_euro_per_tax_letter_list: function () {
             var base_price_per_tax_letter = this.get_price_in_eurocent_per_tax_letter("base price");
-            var base_price_per_tax_letter_list = _.map(_.keys(base_price_per_tax_letter), function (key) {
+            var base_price_per_tax_letter_list = Object.keys(base_price_per_tax_letter).map((key) => {
                 return {
                     'letter': key,
                     'amount': base_price_per_tax_letter[key] / 100
@@ -839,13 +840,11 @@
         },
 
         to_string: function () {
-            return _.map(this.fields, function (field) {
-                return field.to_string();
-            }).join("");
+            return this.fields.map((field) => field.to_string()).join("");
         },
 
         to_human_readable_string: function () {
-            return _.map(this.fields, function (field) {
+            return this.fields.map((field) => {
                 return field.name + ": " + field.to_string();
             }).join("\n");
         }
@@ -1002,7 +1001,7 @@
         },
 
         parse_fdm_identification_response: function (response) {
-            return _.extend(this._parse_fdm_common_response(response),
+            return Object.assign(this._parse_fdm_common_response(response),
                             {
                                 fdm_firmware_version_number: response.substr(21, 20),
                                 fdm_communication_protocol_version: response[41],
@@ -1012,14 +1011,14 @@
         },
 
         parse_fdm_pin_response: function (response) {
-            return _.extend(this._parse_fdm_common_response(response),
+            return Object.assign(this._parse_fdm_common_response(response),
                             {
                                 vsc_identification_number: response.substr(21, 14),
                             });
         },
 
         parse_fdm_hash_and_sign_response: function (response) {
-            return _.extend(this._parse_fdm_common_response(response),
+            return Object.assign(this._parse_fdm_common_response(response),
                             {
                                 vsc_identification_number: response.substr(21, 14),
                                 date: response.substr(35, 8),

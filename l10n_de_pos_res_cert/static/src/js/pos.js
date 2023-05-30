@@ -186,12 +186,7 @@ patch(Order.prototype, "l10n_de_pos_res_cert.Order", {
             });
     },
     exportOrderLinesAsJson() {
-        const orderLines = [];
-        this.orderlines.forEach(
-            _.bind(function (item) {
-                return orderLines.push([0, 0, item.export_as_JSON()]);
-            }, this)
-        );
+        const orderLines = this.orderLines.map((item) => [0, 0, item.export_as_JSON()]);
 
         return {
             server_id: this.server_id ? this.server_id : false,

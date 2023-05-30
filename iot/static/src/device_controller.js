@@ -1,4 +1,5 @@
 /** @odoo-module **/
+import { uniqueId } from "@web/core/utils/functions";
 
 /**
  * Used to communicate to the iot devices.
@@ -9,7 +10,7 @@ export class DeviceController {
      * @param {{ iot_ip: string?, identifier: string?, manual_measurement: boolean? }} deviceInfo - Representation of an iot device
      */
     constructor(iotLongpolling, deviceInfo = { iot_ip: null, identifier: null, manual_measurement: null }) {
-        this.id = _.uniqueId('listener-');
+        this.id = uniqueId('listener-');
         this.iotIp = deviceInfo.iot_ip;
         this.identifier = deviceInfo.identifier;
         this.manualMeasurement = deviceInfo.manual_measurement;

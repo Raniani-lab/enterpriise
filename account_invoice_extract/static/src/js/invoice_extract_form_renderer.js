@@ -177,9 +177,12 @@ export class InvoiceExtractFormRenderer extends AccountMoveFormRenderer {
                             this.state.visibleBoxes[page] = [];
                         }
 
-                        const visibleBoxesForPage = _.filter(boxesForPage, (box) => {
-                            return box.feature === this.activeField || (box.feature === 'VAT_Number' && this.activeField === 'supplier');
-                        })
+                        const visibleBoxesForPage = boxesForPage.filter((box) => {
+                            return (
+                                box.feature === this.activeField ||
+                                (box.feature === "VAT_Number" && this.activeField === "supplier")
+                            );
+                        });
                         this.state.visibleBoxes[page].push(...visibleBoxesForPage);
                     }
                     this.renderBoxLayers(attachment)
@@ -249,7 +252,7 @@ export class InvoiceExtractFormRenderer extends AccountMoveFormRenderer {
                 changes = { invoice_date: registry.category("parsers").get("date")(newFieldValue.split(' ')[0]) };
                 break;
             case 'supplier':
-                if (_.isNumber(newFieldValue) && newFieldValue !== 0) {
+                if (Number.isFinite(newFieldValue) && newFieldValue !== 0) {
                     changes = { partner_id: [newFieldValue] };
                 }
                 else {
@@ -262,7 +265,7 @@ export class InvoiceExtractFormRenderer extends AccountMoveFormRenderer {
                 }
                 break;
             case 'VAT_Number':
-                if (_.isNumber(newFieldValue) && newFieldValue !== 0) {
+                if (Number.isFinite(newFieldValue) && newFieldValue !== 0) {
                     changes = { partner_id: [newFieldValue] };
                 }
                 else {

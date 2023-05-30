@@ -7,6 +7,7 @@ import { isEventHandled, markEventHandled } from '@mail/utils/misc';
 import { useService } from '@web/core/utils/hooks';
 import { Dialog } from "@web/core/dialog/dialog";
 import { getBundle, loadBundle } from "@web/core/assets";
+import { uniqueId } from "@web/core/utils/functions";
 
 import { csrf_token, _t } from 'web.core';
 
@@ -154,7 +155,7 @@ export class PdfManager extends Component {
             url = URL.createObjectURL(file);
         }
         this.state.uploadingLock = true;
-        const fileId = _.uniqueId('file');
+        const fileId = uniqueId('file');
         const pdf = await this._getPdf(url);
 
         if (file) {
@@ -265,7 +266,7 @@ export class PdfManager extends Component {
      * @return {String} groupId (unique)
      */
     _createGroup({ name, pageIds, index, isSelected } = {}) {
-        const groupId = _.uniqueId('group');
+        const groupId = uniqueId('group');
         pageIds = pageIds || [];
         this.state.groupData[groupId] = {
             groupId,
@@ -310,7 +311,7 @@ export class PdfManager extends Component {
                 groupLock = this.props.documents.length > 1;
                 groupName = `${name}-p${pageNumber + 1}`;
             }
-            const pageId = _.uniqueId('page');
+            const pageId = uniqueId('page');
             this.state.pages[pageId] = {
                 pageId,
                 groupId,

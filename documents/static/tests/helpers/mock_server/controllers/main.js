@@ -13,7 +13,10 @@ patch(MockServer.prototype, 'documents/controllers/main', {
      * @private
      */
     async _performRPC(route, args) {
-        if (route.indexOf('/documents/image') >= 0 || _.contains(['.png', '.jpg'], route.substr(route.length - 4))) {
+        if (
+            route.indexOf("/documents/image") >= 0 ||
+            [".png", ".jpg"].includes(route.substr(route.length - 4))
+        ) {
             return Promise.resolve();
         }
         return this._super(...arguments);

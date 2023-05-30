@@ -4,6 +4,7 @@ import concurrency from 'web.concurrency';
 import publicWidget from 'web.public.widget';
 
 import { qweb } from 'web.core';
+import { debounce } from "@web/core/utils/timing";
 
 publicWidget.registry.knowledgeBaseAutocomplete = publicWidget.Widget.extend({
     selector: '.o_helpdesk_knowledge_search',
@@ -18,8 +19,8 @@ publicWidget.registry.knowledgeBaseAutocomplete = publicWidget.Widget.extend({
 
         this._dp = new concurrency.DropPrevious();
 
-        this._onInput = _.debounce(this._onInput, 400);
-        this._onFocusOut = _.debounce(this._onFocusOut, 100);
+        this._onInput = debounce(this._onInput, 400);
+        this._onFocusOut = debounce(this._onFocusOut, 100);
     },
 
 

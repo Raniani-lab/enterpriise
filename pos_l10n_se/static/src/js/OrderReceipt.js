@@ -26,12 +26,12 @@ patch(OrderReceipt.prototype, "pos_l10n_se.OrderReceipt", {
         return this._super(...arguments);
     },
     getProductlines() {
-        return _.filter(this.receiptEnv.receipt.orderlines, function (orderline) {
+        return this.receiptEnv.receipt.orderlines.filter((orderline) => {
             return orderline.product_type !== "service";
         });
     },
     getServicelines() {
-        return _.filter(this.receiptEnv.receipt.orderlines, function (orderline) {
+        return this.receiptEnv.receipt.orderlines.filter((orderline) => {
             return orderline.product_type === "service";
         });
     },

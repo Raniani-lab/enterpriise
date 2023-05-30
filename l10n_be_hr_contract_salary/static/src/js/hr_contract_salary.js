@@ -3,7 +3,7 @@
 import hrContractSalary from "hr_contract_salary";
 
 hrContractSalary.include({
-    events: _.extend({}, hrContractSalary.prototype.events, {
+    events: Object.assign({}, hrContractSalary.prototype.events, {
         "change input[name='has_hospital_insurance_radio']": "onchangeHospital",
         "change input[name='fold_company_car_total_depreciated_cost']": "onchangeCompanyCar",
         "change input[name='fold_private_car_reimbursed_amount']": "onchangePrivateCar",

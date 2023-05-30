@@ -16,8 +16,12 @@ var FieldMany2ManySelection = relationalFields.FieldMany2ManyTags.extend({
         options.quick_create = false;
         options.can_create = false;
 
-        this.selection = _.map(options.attrs.selection, function (s) {
-            return {id: s.field_name, res_id: s.field_name, data: {id: s.field_name, display_name: s.label}};
+        this.selection = options.attrs.selection.map((s) => {
+            return {
+                id: s.field_name,
+                res_id: s.field_name,
+                data: { id: s.field_name, display_name: s.label },
+            };
         });
     },
     //--------------------------------------------------------------------------
@@ -34,8 +38,7 @@ var FieldMany2ManySelection = relationalFields.FieldMany2ManyTags.extend({
         if (value === false) {
             return this.value === false;
         }
-        return value.length === this.value.res_ids.length &&
-            _.difference(value, this.value.res_ids).length === 0;
+        return JSON.stringify(value) === JSON.stringify(this.value.res_ids);
     },
     /**
      * Defines an _search method for the internal m2o.
@@ -46,11 +49,15 @@ var FieldMany2ManySelection = relationalFields.FieldMany2ManyTags.extend({
      */
     _many2oneSearch: function (search_val) {
         var self = this;
-        var records = _.filter(_.pluck(this.selection, 'data'), function (r) {
-            return r.display_name.indexOf(search_val) !== -1 &&
-               !_.findWhere(self.value.data, {id: r.id});
-        });
-        return _.map(records, function (r) {
+        var records = this.selection
+            .map((x) => x.data)
+            .filter((r) => {
+                return (
+                    r.display_name.indexOf(search_val) !== -1 &&
+                    !self.value.data.find((v) => v.id === r.id)
+                );
+            });
+        return records.map((r) => {
             return {
                 id: r.id,
                 label: r.display_name,
@@ -66,9 +73,7 @@ var FieldMany2ManySelection = relationalFields.FieldMany2ManyTags.extend({
     _render: function () {
         var self = this;
         var res_ids = this.value.res_ids;
-        this.value.data = _.filter(this.selection, function (s) {
-            return res_ids.indexOf(s.id) !== -1;
-        });
+        this.value.data = this.selection.filter((s) => res_ids.indexOf(s.id) !== -1);
         return this._super.apply(this, arguments).then(function () {
             if (self.many2one) {
                 self.many2one._autocompleteSources = [];
@@ -91,7 +96,7 @@ var FieldMany2ManySelection = relationalFields.FieldMany2ManyTags.extend({
                     selection = selection.concat([value.ids.id]);
                     break;
                 case "FORGET":
-                    selection = _.difference(selection, value.ids);
+                    selection = selection.filter((val) => value.ids.indexOf(val) < 0);
                     break;
                 default: throw Error('Not implemented');
             }
@@ -105,10 +110,12 @@ var FieldMany2ManySelection = relationalFields.FieldMany2ManyTags.extend({
 
             self.trigger_up('field_changed', {
                 dataPointID: self.dataPointID,
-                changes: _.object([self.name], [{
-                    operation: 'REPLACE_WITH',
-                    ids: selection,
-                }]),
+                changes: {
+                    [self.name]: {
+                        operation: "REPLACE_WITH",
+                        ids: selection,
+                    },
+                },
                 viewType: self.viewType,
                 doNotSetDirty: options && options.doNotSetDirty,
                 notifyChange: !options || options.notifyChange !== false,

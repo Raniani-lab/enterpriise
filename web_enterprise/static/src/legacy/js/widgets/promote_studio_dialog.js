@@ -7,7 +7,7 @@
     const qweb = core.qweb;
 
     const PromoteStudioDialog = Dialog.extend({
-        events: _.extend({}, Dialog.prototype.events, {
+        events: Object.assign({}, Dialog.prototype.events, {
             'click button.o_install_studio': '_onInstallStudio',
         }),
         /**
@@ -16,12 +16,12 @@
          * @override
          */
         init: function (parent, options) {
-            options = _.defaults(options || {}, {
+            options = Object.assign({
                 $content: $(qweb.render('web_enterprise.install_web_studio')),
                 renderHeader: false,
                 renderFooter: false,
                 size: 'large',
-            });
+            }, options || {});
             this._super(parent, options);
         },
         /**

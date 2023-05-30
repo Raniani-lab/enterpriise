@@ -60,7 +60,7 @@ var TweetWall = Widget.extend({
         if (this.repeat) {
             this.repeat = false;
             this.limit = 25;
-            _.each(this.pool_cache, function (t) {
+            Object.values(this.pool_cache).forEach((t) => {
                 t.round = t.round ? 1 : 0;
             });
         } else {
@@ -89,14 +89,12 @@ var TweetWall = Widget.extend({
                 self.fetchPromise = undefined;
                 if (res.length) {
                     self.last_tweet_id = res[0].id;
-                    _.each(res, function (r) {
+                    res.forEach((r) => {
                         r.round = 0;
                         self.pool_cache[r.id] = r;
                     });
                 }
-                var atLeastOneNotSeen = _.some(self.pool_cache, function (t) {
-                    return t.round === 0;
-                });
+                var atLeastOneNotSeen = self.pool_cache.some((t) => t.round === 0);
                 if (atLeastOneNotSeen || self.repeat) {
                     self._processTweet();
                 }
@@ -110,20 +108,18 @@ var TweetWall = Widget.extend({
      */
     _processTweet: function () {
         var self = this;
-        var leastRound = _.min(self.pool_cache, function (o) {
-            return o.round;
-        }).round;
+        var leastRound = Math.min(self.pool_cache.map((o) => o.round)).round;
         // Filter tweets that have not been seen for the most time,
         // excluding the ones that are visible on the screen
         // (the last case is when there is not much tweets to loop on, when looping)
-        var tweets = _.filter(self.pool_cache, function (f) {
+        var tweets = self.pool_cache.filter((f) => {
             var el = $('*[data-tweet-id="' + f.id + '"]');
             if (f.round <= leastRound && (!el.length || el.offset().top > $(window).height())) {
                 return f;
             }
         });
         if (this.shuffle) {
-            tweets = _.shuffle(tweets);
+            tweets.sort(() => 0.5 - Math.random());
         }
         if (tweets.length) {
             var tweet = tweets[0];

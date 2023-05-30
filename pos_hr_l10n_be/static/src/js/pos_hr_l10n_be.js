@@ -59,7 +59,9 @@
         model: "pos.order",
         domain: function (self) { return [['config_id', '=', self.config.id]]; },
         fields: ['name', 'hash_chain'],
-        order:  _.map(['date_order'], function (name) { return {name: name, asc: false}; }),
+        order: ["date_order"].map((name) => {
+            return { name: name, asc: false };
+        }),
         limit: 1,  // TODO this works?
         loaded: function (self, params) {
             self.config.backend_sequence_number = self._extract_order_number(params);
@@ -74,7 +76,9 @@
         model: "pos.order_pro_forma",
         domain: function (self) { return [['config_id', '=', self.config.id]]; },
         fields: ['name', 'hash_chain'],
-        order:  _.map(['date_order'], function (name) { return {name: name, asc: false}; }),
+        order: ["date_order"].map((name) => {
+            return { name: name, asc: false };
+        }),
         limit: 1,
         loaded: function (self, params) {
             var pro_forma_number = self._extract_order_number(params);

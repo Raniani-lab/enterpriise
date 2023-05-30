@@ -7,6 +7,8 @@ import Widget from "web.Widget";
 import bus from "web_studio.bus";
 import XMLEditor from "web_studio.XMLEditor";
 import { ComponentWrapper } from "web.OwlCompatibility";
+import { omit } from "@web/core/utils/objects";
+import { uniqueId } from "@web/core/utils/functions";
 
 var _lt = core._lt;
 var _t = core._t;
@@ -140,9 +142,9 @@ var AbstractEditorManager = Widget.extend({
         } else {
             def = this.mdp.exec(function () {
                 var serverOperations = [];
-                _.each(self.operations, function (op) {
+                self.operations.forEach((op) => {
                     if (op.type !== 'replace_arch') {
-                        serverOperations.push(_.omit(op, 'id'));
+                        serverOperations.push(omit(op, 'id'));
                     }
                 });
                 var prom = self._editView(
@@ -203,7 +205,7 @@ var AbstractEditorManager = Widget.extend({
      * @returns {Promise}
      */
     _do: function (op) {
-        op.id = _.uniqueId('op_');
+        op.id = uniqueId("op_");
         this.operations.push(op);
         this.operations_undone = [];
 
@@ -363,8 +365,8 @@ var AbstractEditorManager = Widget.extend({
         // find the operation to undo and update the operations stack
         var op;
         if (opID) {
-            op = _.findWhere(this.operations, {id: opID});
-            this.operations = _.without(this.operations, op);
+            op = this.operations.find((op) => op.id === opID);
+            this.operations = this.operations.filter((_op) => _op !== op);
         } else {
             op = this.operations.pop();
         }

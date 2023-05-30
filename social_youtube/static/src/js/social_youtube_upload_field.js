@@ -13,6 +13,7 @@ const {
 } = owl;
 import core from 'web.core';
 import utils from 'web.utils';
+import { sprintf } from "@web/core/utils/strings";
 
 const _t = core._t;
 
@@ -45,7 +46,7 @@ export class YoutubeUploadField extends CharField {
         this.state = useState({
             uploading: false,
             showSocialYoutubeBar: true,
-            socialYoutubeText: _.str.sprintf(this.env._t(`Uploading %s`), `... 0%`),
+            socialYoutubeText: sprintf(this.env._t(`Uploading %s`), `... 0%`),
             uploadProgress: 0,
         });
         this.notification = useService("notification");
@@ -89,7 +90,7 @@ export class YoutubeUploadField extends CharField {
             if (e.lengthComputable) {
                 const roundedProgress = Math.round((e.loaded / e.total) * 100);
                 this.state.uploadProgress = roundedProgress;
-                this.state.socialYoutubeText = _.str.sprintf(_t('Uploading... %s%%'), this.state.uploadProgress);
+                this.state.socialYoutubeText = sprintf(_t('Uploading... %s%%'), this.state.uploadProgress);
             }
        }, false);
 
@@ -295,7 +296,7 @@ export class YoutubeUploadField extends CharField {
 
         const file = fileNodes.files[0];
         if (file.size > this.maxUploadSize) {
-            const message = _.str.sprintf(
+            const message = sprintf(
                 _t("The selected video exceeds the maximum allowed size of %s."),
                 utils.human_size(this.maxUploadSize)
             );

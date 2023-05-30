@@ -129,7 +129,9 @@ export const PhoneCallActivitiesTab = PhoneCallTab.extend({
         this.isAutoCallMode = true;
         const todoPhoneCalls = this._phoneCalls.filter((phoneCall) => phoneCall.state !== "done");
         if (todoPhoneCalls.length > 0) {
-            const nextCall = _.min(todoPhoneCalls, (phoneCall) => phoneCall.callTries);
+            const nextCall = todoPhoneCalls.reduce((prev, curr) => {
+                return +prev.callTries <= +curr.callTries ? prev : curr;
+            });
             return this._selectPhoneCall(nextCall.id);
         } else {
             this.isAutoCallMode = false;

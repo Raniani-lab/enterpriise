@@ -242,7 +242,7 @@ publicWidget.registry.NotificationWidget =  publicWidget.Widget.extend({
             return; // this means that the web push notifications are not enabled in the settings
         }
         if (forcedPopupConfig) {
-            popupConfig = _.extend({}, popupConfig, forcedPopupConfig);
+            popupConfig = Object.assign({}, popupConfig, forcedPopupConfig);
         }
         self._showNotificationRequestPopup(popupConfig, pushConfig, nextAskPermissionKeySuffix);
     },

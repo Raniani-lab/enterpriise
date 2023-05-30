@@ -8,6 +8,8 @@ import fieldRegistry from "web.field_registry";
 import ModelFieldSelector from "web.ModelFieldSelector";
 import StandaloneFieldManagerMixin from "web.StandaloneFieldManagerMixin";
 import { WidgetAdapterMixin } from "web.OwlCompatibility";
+import { pick } from "@web/core/utils/objects";
+import { intersection } from "@web/core/utils/arrays";
 
 import Wysiwyg from "web_editor.wysiwyg";
 
@@ -24,7 +26,7 @@ var AbstractEditComponent = Abstract.extend(WidgetAdapterMixin, StandaloneFieldM
             e.stopPropagation();
         },
     },
-    custom_events: _.extend({}, Abstract.prototype.custom_events, {
+    custom_events: Object.assign({}, Abstract.prototype.custom_events, {
         field_changed: '_onDirectiveChange',
         field_chain_changed: '_onDirectiveChange',
     }),
@@ -62,7 +64,7 @@ var AbstractEditComponent = Abstract.extend(WidgetAdapterMixin, StandaloneFieldM
         var self = this;
 
         var directiveModel = [];
-        _.each(this.directiveFields, function (options, directiveKey) {
+        Object.entries(this.directiveFields || {}).forEach(([directiveKey, options]) => {
             var value = options.value;
             if (!value) {
                 value = self.node.attrs[options.attributeName || directiveKey];
@@ -75,7 +77,7 @@ var AbstractEditComponent = Abstract.extend(WidgetAdapterMixin, StandaloneFieldM
                     value: options.freecode ? value : self._splitRelatedValue(value).chain.join('.'),
                 });
             } else {
-                directiveModel.push(_.extend({}, {
+                directiveModel.push(Object.assign({}, {
                     name: directiveKey,
                     value: value,
                 }, options));
@@ -86,7 +88,7 @@ var AbstractEditComponent = Abstract.extend(WidgetAdapterMixin, StandaloneFieldM
             .then(function (recordId) {
                 self.directiveRecordId = recordId;
 
-                _.each(self.directiveFields, function (options, directiveKey) {
+                Object.entries(self.directiveFields || {}).forEach(([directiveKey, options]) => {
                     if (options.type === 'related') {
                         self.createFieldSelector(directiveKey, options);
                     } else {
@@ -130,7 +132,7 @@ var AbstractEditComponent = Abstract.extend(WidgetAdapterMixin, StandaloneFieldM
     createField: function (directiveKey, options) {
         var directiveRecord = this.model.get(this.directiveRecordId);
 
-        options = _.extend({mode: 'edit', attrs: _.extend({
+        options = Object.assign({mode: 'edit', attrs: Object.assign({
             quick_create: false, can_create: false}, options)}, options);
 
         var field = directiveRecord.fields[directiveKey];
@@ -160,19 +162,19 @@ var AbstractEditComponent = Abstract.extend(WidgetAdapterMixin, StandaloneFieldM
             this.fieldSelector[directiveKey] = new InputField(
                 this, directiveKey,
                 directiveRecord,
-                _.extend({mode: 'edit', attrs: options}, options));
+                Object.assign({mode: 'edit', attrs: options}, options));
             return;
         }
 
         var availableKeys = this._getContextKeys(this.node);
         if (options.loop) {
-            availableKeys = _.filter(availableKeys, function (relation) {
+            availableKeys = availableKeys.filter((relation) => {
                 return relation.type === 'one2many' || relation.type === 'many2one';
             });
         }
 
         this.fieldSelector[directiveKey] = new ModelFieldSelector(this, 'record_fake_model', split.chain,
-            _.extend({
+            Object.assign({
                 readonly: options.mode === 'readonly',
                 searchable: false,
                 fields: availableKeys,
@@ -244,7 +246,7 @@ var AbstractEditComponent = Abstract.extend(WidgetAdapterMixin, StandaloneFieldM
         var self = this;
         var node = this.node;
         var op = [];
-        _.each(newAttrs, function (tvalue, tset) {
+        Object.entries(newAttrs || {}).forEach(([tset, tvalue]) => {
             if (tvalue === self.directiveFields[tset].value) {
                 return;
             }
@@ -326,7 +328,7 @@ var AbstractEditComponent = Abstract.extend(WidgetAdapterMixin, StandaloneFieldM
 
         var always = function () {
             var newAttrs = {};
-            _.each(self.fieldSelector, function (fieldType, directiveKey) {
+            Object.keys(self.fieldSelector || {}).forEach((directiveKey) => {
                 var directiveTarget = self.fieldSelector[directiveKey];
                 var target = e.target;
                 if (!e.data.forceChange && target !== directiveTarget) {
@@ -360,7 +362,7 @@ var AbstractEditComponent = Abstract.extend(WidgetAdapterMixin, StandaloneFieldM
 var LayoutEditable = AbstractEditComponent.extend({
     name: 'layout',
     template : 'web_studio.ReportLayoutEditable',
-    events : _.extend({}, AbstractEditComponent.prototype.events, {
+    events : Object.assign({}, AbstractEditComponent.prototype.events, {
         "change .o_web_studio_margin>input": "_onMarginInputChange",
         "change .o_web_studio_width>input": "_onWidthInputChange",
         "click .o_web_studio_font_size .dropdown-item-text": "_onFontSizeChange",
@@ -379,7 +381,7 @@ var LayoutEditable = AbstractEditComponent.extend({
 
         this.debug = config.isDebug();
         this.isTable = params.node.tag === 'table';
-        this.isNodeText = _.contains(this.componentsList, 'text');
+        this.isNodeText = (this.componentsList || []).includes("text");
         this.allClasses = params.node.attrs.class || "";
         this.classesArray =(params.node.attrs.class || "").split(' ');
         this.stylesArray =(params.node.attrs.style || "").split(';');
@@ -395,42 +397,37 @@ var LayoutEditable = AbstractEditComponent.extend({
         this["margin-left"] = this._findMarginValue('margin-left');
         this["margin-right"] = this._findMarginValue('margin-right');
 
-        this["background-color-class"] = _.find(this.classesArray, function(item) {
-            return !item.indexOf('bg-');
-        });
-        this["font-color-class"] = _.find(this.classesArray, function(item) {
-            return !item.indexOf('text-');
-        });
-        this.tableStyle = _.find(this.classesArray, function(item) {
-            return !item.indexOf('table-');
-        });
-        this["background-color"] = _.find(this.stylesArray, function(item) {
+        this["background-color-class"] = this.classesArray.find((item) => !item.indexOf("bg-"));
+        this["font-color-class"] = this.classesArray.find((item) => !item.indexOf("text-"));
+        this.tableStyle = this.classesArray.find((item) => !item.indexOf("table-"));
+        this["background-color"] = this.stylesArray.find((item) => {
             return backgroundColorRegExp.test(item);
         });
-        this.color = _.find(this.stylesArray, function(item) {
-            return colorRegExp.test(item);
-        });
+        this.color = this.stylesArray.find((item) => colorRegExp.test(item));
         // the width on div.col is set with col-. instead of width style
-        this.displayWidth = !(params.node.tag === 'div' && _.find(this.classesArray, function(item) {
-            return colClassRegex.test(item);
-        }));
-        this.originalWidth =  _.find(this.stylesArray, function(item) {
+        this.displayWidth = !(
+            params.node.tag === "div" &&
+            this.classesArray.find((item) => {
+                return colClassRegex.test(item);
+            })
+        );
+        this.originalWidth = this.stylesArray.find((item) => {
             return widthRegExp.test(item);
         });
         if (this.originalWidth) {
             this.width = this.originalWidth.replace(/\D+/g,''); //replaces all non-digits with nothing
         }
 
-        this.fontSize = _.find(this.classesArray, function(item) {
+        this.fontSize = this.classesArray.find((item) => {
             return fontSizeRegExp.test(item);
         });
 
-        this.italic = _.contains(this.classesArray, 'o_italic');
-        this.bold =_.contains(this.classesArray, 'o_bold');
-        this.underline = _.contains(this.classesArray, 'o_underline');
+        this.italic = this.classesArray.includes("o_italic");
+        this.bold = this.classesArray.includes("o_bold");
+        this.underline = this.classesArray.includes("o_underline");
 
-        this.alignment = _.intersection(this.classesArray, ['text-start', 'text-center', 'text-end'])[0];
-        this.displayAlignment = !_.contains(['inline', 'float'], this.node.$nodes.css('display'));
+        this.alignment = intersection(this.classesArray, ['text-start', 'text-center', 'text-end'])[0];
+        this.displayAlignment = !["inline", "float"].includes(this.node.$nodes.css("display"));
 
         this.allClasses = params.node.attrs.class || "";
     },
@@ -684,8 +681,8 @@ var LayoutEditable = AbstractEditComponent.extend({
     _onWidthInputChange: function(e) {
         e.preventDefault();
         var addDisplayInlineBlock = "";
-        var hasDisplay = _.any((this.node.attrs.style || '').split(';'), function (item) {
-            return _.str.startsWith(item, 'display');
+        var hasDisplay = (this.node.attrs.style || "").split(";").some((item) => {
+            return String(item).startsWith("display");
         });
         if (this.node.tag.toLowerCase() === 'span' && !hasDisplay) {
             addDisplayInlineBlock = ";display:inline-block";
@@ -723,7 +720,7 @@ var TIf = AbstractEditComponent.extend({
     name: 'tif',
     template : 'web_studio.ReportDirectiveTIf',
     selector: '',
-    events: _.extend({}, AbstractEditComponent.prototype.events, {
+    events: Object.assign({}, AbstractEditComponent.prototype.events, {
         "click .o_field_domain_dialog_button": "_onDialogEditButtonClick",
     }),
     /**
@@ -766,8 +763,10 @@ var TIf = AbstractEditComponent.extend({
         var self = this;
         var availableKeys = this._getContextKeys(this.node);
         // set a default document on the domain selector
-        var defaultDoc = _.findWhere(availableKeys, {relation: this.context.docs, type: 'many2one'});
-        defaultDoc = defaultDoc && defaultDoc.name || _.first(availableKeys).name;
+        var defaultDoc = availableKeys.find(
+            (key) => key.relation === this.context.docs && key.type === "many2one"
+        );
+        defaultDoc = defaultDoc && defaultDoc.name || availableKeys[0].name;
         var value = Domain.prototype.conditionToDomain(this.node.attrs['t-if'] || '');
         var dialog = new DomainSelectorDialog(this, 'record_fake_model', value, {
             readonly: this.mode === "readonly",
@@ -968,7 +967,7 @@ var BlockTotal = AbstractEditComponent.extend({
             type: 'related',
             value: this.node.children[2].attrs['t-value'],
             filter: function (field) {
-                return _.contains(['many2one', 'float', 'monetary'], field.type);
+                return ["many2one", "float", "monetary"].includes(field.type);
             },
             followRelations: function (field) {
                 return field.type === 'many2one';
@@ -988,7 +987,7 @@ var BlockTotal = AbstractEditComponent.extend({
             type: 'related',
             value: this.node.children[1].attrs['t-value'],
             filter: function (field) {
-                return _.contains(['many2one', 'float', 'monetary'], field.type);
+                return ["many2one", "float", "monetary"].includes(field.type);
             },
             followRelations: function (field) {
                 return field.type === 'many2one';
@@ -1033,10 +1032,10 @@ var Column = AbstractEditComponent.extend({
 
         this.classes = (this.node.attrs.class || "").split(' ');
         // TODO: deal with multiple classes (ex: col-6 col-md-3)
-        this.sizeClass = _.find(this.classes, function (item) {
+        this.sizeClass = this.classes.find((item) => {
             return item.indexOf('col-') !== -1;
         }) || '';
-        this.offsetClass = _.find(this.classes, function (item) {
+        this.offsetClass = this.classes.find((item) => {
             return item.indexOf('offset-') !== -1;
         }) || '';
         this.size = +this.sizeClass.split('col-')[1];
@@ -1097,7 +1096,7 @@ var Text = AbstractEditComponent.extend({
         this.$node = $(utils.json_node_to_xml(this.node));
         this.$node.find('*').add(this.$node).each(function () {
                 var node = this;
-                _.each(Array.prototype.slice.call(node.attributes), function (attr) {
+                Array.prototype.slice.call(node.attributes).forEach((attr) => {
                     if (!attr.name.indexOf('data-oe-')) {
                         node.removeAttribute(attr.name);
                     }
@@ -1240,7 +1239,7 @@ var TOptions = AbstractEditComponent.extend( {
     template : 'web_studio.ReportDirectiveTOptions',
     selector: '[t-field], [t-esc]',
     insertAsLastChildOfPrevious: true,
-    events: _.extend({}, AbstractEditComponent.prototype.events, {
+    events: Object.assign({}, AbstractEditComponent.prototype.events, {
         'change select:first': '_onChangeWidget',
     }),
     /**
@@ -1255,11 +1254,12 @@ var TOptions = AbstractEditComponent.extend( {
 
         // for contact widget, we don't want to display all options
         if (this.widgetsOptions && this.widgetsOptions.contact) {
-            this.widgetsOptions.contact = _.pick(this.widgetsOptions.contact, [
-                'fields',
-                'separator',
-                'no_marker',
-            ]);
+            this.widgetsOptions.contact = pick(
+                this.widgetsOptions.contact,
+                "fields",
+                "separator",
+                "no_marker"
+            );
         }
 
         this.widget = null;  // the selected widget
@@ -1275,10 +1275,10 @@ var TOptions = AbstractEditComponent.extend( {
 
         // create fields for each widget options
         var directiveFields = this.directiveFields;
-        this.widgets = _.map(this.widgetsOptions, function (widgetConf, widgetKey) {
+        this.widgets = Object.entries(this.widgetsOptions || {}).map(([widgetKey, widgetConf]) => {
             var values = self.values.widget === widgetKey ? self.values : {};
 
-            var options = _.map(widgetConf, function (option, optionKey) {
+            var options = Object.entries(widgetConf || {}).map(([optionKey, option]) => {
                 option.key = optionKey;
                 if (option.default_value) {
                     option.default_value = option.default_value;
@@ -1369,7 +1369,7 @@ var TOptions = AbstractEditComponent.extend( {
         });
 
         // selected widget
-        this.widget = _.findWhere(this.widgets, {key: this.values.widget && this.values.widget});
+        this.widget = this.widgets.find((widget) => widget.key === this.values.widget);
 
         return this._super.apply(this, arguments);
     },
@@ -1415,7 +1415,7 @@ var TOptions = AbstractEditComponent.extend( {
         }
         var $options = $(qweb.render('web_studio.ReportDirectiveTOptions.options', this));
         var mountedComponents = [];
-        var defs = _.map(this.widget.options, function (option) {
+        var defs = this.widget.options.map((option) => {
             var $option = $options.find('.o_web_studio_toption_option_' + self.widget.key + '_' + option.key);
             var field = self.fieldSelector[self.widget.key + ':' + option.key];
             if (option.type === "boolean") {
@@ -1441,15 +1441,15 @@ var TOptions = AbstractEditComponent.extend( {
 
         // this.widget is the recently set `widget` key
         if (this.widget) {
-            var options = _.findWhere(this.widgets, {key: this.widget.key}).options;
+            var options = this.widgets.find((widget) => widget.key === this.widget.key).options;
 
             if (this.values.widget !== this.widget.key) {
                 changes['t-options-widget'] = '"' + this.widget.key + '"';
             }
-            _.each(newAttrs, function (val, key) {
+            Object.entries(newAttrs).forEach(([key, val]) => {
                 var field = key.split(':');
                 if (self.widget.key === field[0]) {
-                    var option = _.findWhere(options, {key: field[1]});
+                    var option = options.find((option) => option.key === field[1]);
                     var value = val;
                     if (value) {
                         if (option.type === 'char' || option.type === 'selection') {
@@ -1487,7 +1487,7 @@ var TOptions = AbstractEditComponent.extend( {
      * @param {OdooEvent} ev
      */
     _onChangeWidget: function (ev) {
-        var widget = _.findWhere(this.widgets, {key: $(ev.target).val()});
+        var widget = this.widgets.find((widget) => widget.key === $(ev.target).val());
         if (widget !== this.widget) {
             this.widget = widget;
             this._triggerViewChange({});
@@ -1503,8 +1503,8 @@ var TOptions = AbstractEditComponent.extend( {
             // not a real FieldWidget so the changes are not formatted as
             // expected
             e.stopPropagation();
-            var changes = _.clone(e.data.changes);
-            var key = _.keys(changes)[0];
+            var changes = Object.assign({}, e.data.changes);
+            var key = Object.keys(changes)[0];
             changes[key] = changes[key].ids;
             this._triggerViewChange(changes);
         } else {

@@ -11,7 +11,7 @@ publicWidget.registry.appointmentForm = publicWidget.Widget.extend({
     _validateCheckboxes: function() {
         this.$el.find('.checkbox-group.required').each(function() {
             var checkboxes = $(this).find('.checkbox input');
-            checkboxes.prop('required', !_.any(checkboxes, checkbox => checkbox.checked));
+            checkboxes.prop("required", !checkboxes.some((checkbox) => checkbox.checked));
         });
         if ($(this.$el.find('form'))[0].checkValidity()) {
             return new Promise((resolve, reject) => {});

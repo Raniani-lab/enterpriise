@@ -4,13 +4,16 @@ import core from "web.core";
 import Widget from "web.Widget";
 
 import EditorMixin from "web_studio.EditorMixin";
+import { sprintf } from "@web/core/utils/strings";
+import { unique } from "@web/core/utils/arrays";
+import { uniqueId } from "@web/core/utils/functions";
 
 var _t = core._t;
 
 var ReportEditor = Widget.extend(EditorMixin, {
     template: 'web_studio.ReportEditor',
     nearest_hook_tolerance: 500,
-    events: _.extend({}, Widget.prototype.events, {
+    events: Object.assign({}, Widget.prototype.events, {
         'click': '_onClick',
     }),
 
@@ -38,7 +41,7 @@ var ReportEditor = Widget.extend(EditorMixin, {
         this.$targetHighlight = $();
 
         this.$dropZone = $();
-        this._onUpdateContentId = _.uniqueId('_processReportPreviewContent');
+        this._onUpdateContentId = uniqueId("_processReportPreviewContent");
         this.isDragging = false;
     },
     /**
@@ -101,9 +104,9 @@ var ReportEditor = Widget.extend(EditorMixin, {
         }
         if (dropIn) {
             var inSelectors = dropIn.split(component.selectorSeparator || ',');
-            _.each(inSelectors, function (selector) {
+            inSelectors.forEach((selector) => {
                 var $target = self.$content.find(selector + "[data-oe-xpath]");
-                _.each($target, function (node) {
+                Array.from($target).forEach((node) => {
                     if (!$(node).data('node')) {
                         // this is probably a template not present in
                         // reportViews so no hook should be attached to it
@@ -121,7 +124,7 @@ var ReportEditor = Widget.extend(EditorMixin, {
             // we will create this structure or complete it if it already exist
             var $hook = self._createHook($('<div/>'), component);
             var $gridHooks = $('<div class="row o_web_studio_structure_hook"/>');
-            _.each(component.dropColumns, function (column, index) {
+            component.dropColumns.forEach((column, index) => {
                 var $col = $('<div class="offset-' + column[0] + ' col-' + column[1] + '"/>');
                 $col.append($hook.clone().attr('data-oe-index', index));
                 $gridHooks.append($col);
@@ -134,7 +137,7 @@ var ReportEditor = Widget.extend(EditorMixin, {
                 $gridHooks.find('.o_web_studio_hook').data('oe-node', $children.first()).data('oe-position', 'before');
                 $children.first().before($gridHooks);
 
-                _.each($children, function (child) {
+                Array.from($children).forEach((child) => {
                     var $child = $(child);
                     var $newHook = $gridHooks.clone();
                     $newHook.find('.o_web_studio_hook').data('oe-node', $child).data('oe-position', 'after');
@@ -195,7 +198,7 @@ var ReportEditor = Widget.extend(EditorMixin, {
         }
 
         // target with position of the box center
-        _.each(this.dropPosition, function (box) {
+        this.dropPosition.forEach((box) => {
             box.dist = Math.sqrt(Math.pow(box.centerY - (y - bound.top), 2) + Math.pow(box.centerX - (x - bound.left), 2));
         });
         this.dropPosition.sort(function (a, b) {
@@ -505,7 +508,7 @@ var ReportEditor = Widget.extend(EditorMixin, {
         this.dropPosition = [];
         var dropZone = this.$dropZone.get();
         dropZone.reverse();
-        _.each(dropZone, function (node) {
+        dropZone.forEach((node) => {
             var box = node.getBoundingClientRect();
             box.el = node;
             box.centerY = (box.top + box.bottom) / 2;
@@ -538,14 +541,14 @@ var ReportEditor = Widget.extend(EditorMixin, {
                 nodesNotInView.push(node);
             }
 
-            _.each(node.attrs, function (value, key) {
+            Object.entries(node.attrs).forEach(([key, value]) => {
                 if ($nodes.attr(key) === undefined) {
                     $nodes.attr(key, value);
                 }
             });
-            _.each(node.children, connectNodes);
+            node.children.forEach(connectNodes);
         }
-        _.each(this.nodesArchs, connectNodes);
+        Object.values(this.nodesArchs).forEach(connectNodes);
 
 
         function connectContextOrder(dom, contextOrder) {
@@ -557,7 +560,9 @@ var ReportEditor = Widget.extend(EditorMixin, {
                 if (node.contextOrder) {
                     return node.contextOrder;
                 }
-                newOrder = node.contextOrder = _.uniq(contextOrder.concat(_.keys(node.context)));
+                newOrder = node.contextOrder = unique(
+                    contextOrder.concat(Object.keys(node.context))
+                );
             }
 
             var children = $node.children().get();
@@ -573,7 +578,7 @@ var ReportEditor = Widget.extend(EditorMixin, {
         }
 
         var bodyContext = this.$content.find('html').data('oe-context');
-        _.each(nodesNotInView, function (node) {
+        nodesNotInView.forEach((node) => {
             node.context = node.parent && node.parent.context || bodyContext;
         });
     },
@@ -728,7 +733,7 @@ var ReportEditor = Widget.extend(EditorMixin, {
             };
             if (reportHTML.error) {
                 self.displayNotification({
-                    message: _.str.sprintf(
+                    message: sprintf(
                         _t('This report could not be previewed or edited because it could not be rendered with this message: %s. This could be happening because this is a custom report type that needs custom data to be rendered and so is not editable by studio.'),
                         reportHTML.message
                     ), type: 'danger' });

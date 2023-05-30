@@ -29,7 +29,7 @@ export default AceEditor.extend({
      */
     _isCustomResource(resID) {
         if (this.currentType === "xml") {
-            return _.str.startsWith(this.views[resID].xml_id, 'studio_customization');
+            return String(this.views[resID].xml_id).startsWith("studio_customization");
         } else {
             return this._super(...arguments);
         }

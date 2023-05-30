@@ -46,7 +46,7 @@ var loadIframeCss = function (callback) {
         session.rpc('/web_studio/edit_report/test_load_assets').then(function (assets) {
             loadIframeCss.assets = assets;
             loadIframeCss.head = '<head>';
-            loadIframeCss.head += _.map(loadIframeCss.assets.css, function (cssCode, cssFileName) {
+            loadIframeCss.head += Object.entries(loadIframeCss.assets.css).map(([cssFileName, cssCode]) => {
                 cssCode = cssCode
                     .replace(/\\/g, "\\\\")
                     .replace(/&/g, "&amp;")
@@ -1055,7 +1055,7 @@ QUnit.module('ReportEditorManager', {
             reportMainViewID: 42,
             mockRPC: function (route, args) {
                 if (route === '/web_studio/edit_report_view') {
-                    var operation = _.last(args.operations);
+                    var operation = args.operations.at(-1);
                     if (!operation) {
                         // this is to deal with undo operation (which is
                         // triggered after the first promise reject)
@@ -1195,7 +1195,7 @@ QUnit.module('ReportEditorManager', {
             },
             dataOeContext: '{"o": "model.test"}'
         };
-        templateData.docs.mapped = function (fieldName) {return _.pluck(this, fieldName);};
+        templateData.docs.mapped = function (fieldName) {return this.map((x) => x[fieldName])};
 
         var rem = await studioTestUtils.createReportEditorManager({
             data: this.data,
@@ -1213,7 +1213,7 @@ QUnit.module('ReportEditorManager', {
             reportMainViewID: 42,
             mockRPC: function (route, args) {
                 if (route === '/web_studio/edit_report_view') {
-                    var operation = _.last(args.operations);
+                    var operation = args.operations.at(-1);
                     if (!operation) {
                         // this is to deal with undo operation (which is
                         // triggered after the first promise reject)
@@ -1331,7 +1331,9 @@ QUnit.module('ReportEditorManager', {
             },
             dataOeContext: '{"o": "model.test"}'
         };
-        templateData.docs.mapped = function (fieldName) {return _.pluck(this, fieldName);};
+        templateData.docs.mapped = function (fieldName) {
+            return this.map((x) => x[fieldName])
+        };
 
         var rem = await studioTestUtils.createReportEditorManager({
             data: this.data,
@@ -1349,7 +1351,7 @@ QUnit.module('ReportEditorManager', {
             reportMainViewID: 42,
             mockRPC: function (route, args) {
                 if (route === '/web_studio/edit_report_view') {
-                    var operation = _.last(args.operations);
+                    var operation = args.operations.at(-1);
                     if (!operation) {
                         return Promise.reject();
                     }
@@ -1632,7 +1634,9 @@ QUnit.module('ReportEditorManager', {
             },
             dataOeContext: '{"o": "model.test"}'
         };
-        templateData.docs.mapped = function (fieldName) {return _.pluck(this, fieldName);};
+        templateData.docs.mapped = function (fieldName) {
+            return this.map((x) => x[fieldName])
+        };
 
         var rem = await studioTestUtils.createReportEditorManager({
             data: this.data,
@@ -1650,7 +1654,7 @@ QUnit.module('ReportEditorManager', {
             reportMainViewID: 42,
             mockRPC: function (route, args) {
                 if (route === '/web_studio/edit_report_view') {
-                    var operation = _.last(args.operations);
+                    var operation = args.operations.at(-1);
                     if (!operation) {
                         return Promise.reject();
                     }
@@ -1760,7 +1764,7 @@ QUnit.module('ReportEditorManager', {
             reportMainViewID: 42,
             mockRPC: function (route, args) {
                 if (route === '/web_studio/edit_report_view') {
-                    var operation = _.last(args.operations);
+                    var operation = args.operations.at(-1);
                     if (!operation) {
                         return Promise.reject();
                     }
@@ -1856,7 +1860,7 @@ QUnit.module('ReportEditorManager', {
             reportMainViewID: 42,
             mockRPC: function (route, args) {
                 if (route === '/web_studio/edit_report_view') {
-                    var operation = _.last(args.operations);
+                    var operation = args.operations.at(-1);
                     if (!operation) {
                         return Promise.reject();
                     }
@@ -1930,7 +1934,7 @@ QUnit.module('ReportEditorManager', {
             reportMainViewID: 42,
             mockRPC: function (route, args) {
                 if (route === '/web_studio/edit_report_view') {
-                    var operation = _.last(args.operations);
+                    var operation = args.operations.at(-1);
                     if (!operation) {
                         return Promise.reject();
                     }
@@ -2012,7 +2016,7 @@ QUnit.module('ReportEditorManager', {
             reportMainViewID: 42,
             mockRPC: function (route, args) {
                 if (route === '/web_studio/edit_report_view') {
-                    var operation = _.last(args.operations);
+                    var operation = args.operations.at(-1);
                     if (!operation) {
                         return Promise.reject();
                     }
@@ -2150,7 +2154,7 @@ QUnit.module('ReportEditorManager', {
             reportMainViewID: 42,
             mockRPC: function (route, args) {
                 if (route === '/web_studio/edit_report_view') {
-                    var operation = _.last(args.operations);
+                    var operation = args.operations.at(-1);
                     if (!operation) {
                         return Promise.reject();
                     }

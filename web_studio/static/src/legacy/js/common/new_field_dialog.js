@@ -45,7 +45,7 @@ var NewFieldDialog = Dialog.extend(StandaloneFieldManagerMixin, {
         }
 
         this.fields = fields;
-        var options = _.extend({
+        var options = Object.assign({
             title: _t('Field Properties'),
             size: 'small',
             buttons: [{
@@ -113,7 +113,7 @@ var NewFieldDialog = Dialog.extend(StandaloneFieldManagerMixin, {
                 self.many2one_field.nodeOptions.no_create_edit = !config.isDebug();
                 self.many2one_field.appendTo(self.$('.o_many2one_field'));
             }));
-        } else if (_.contains(['many2many', 'many2one'], this.type)) {
+        } else if (["many2many", "many2one"].includes(this.type)) {
             defs.push(this.model.makeRecord('ir.model', [{
                 name: 'model',
                 relation: 'ir.model',
@@ -133,9 +133,9 @@ var NewFieldDialog = Dialog.extend(StandaloneFieldManagerMixin, {
                 order: this.order,
                 filter: this.filter,
                 followRelations: this.followRelations,
-                fields: this.fields, //_.filter(this.fields, this.filter),
+                fields: this.fields,
                 readonly: false,
-                filters: _.extend({}, this.filters, {searchable: false}),
+                filters: Object.assign({}, this.filters, {searchable: false}),
             };
             this.fieldSelector = new ModelFieldSelector(this, this.model_name, this.fieldChain, field_options);
             defs.push(this.fieldSelector.appendTo(this.$('.o_many2one_field')));
@@ -154,9 +154,7 @@ var NewFieldDialog = Dialog.extend(StandaloneFieldManagerMixin, {
         var newSelection = [];
         this.$('.o_web_studio_selection_editor li').each(function (index, u) {
             var value = u.dataset.value;
-            var string = _.find(self.selection, function(el) {
-                return el[0] === value;
-            })[1];
+            var string = self.selection.find((el) => el[0] === value)[1];
             newSelection.push([value, string]);
         });
         this.selection = newSelection;
@@ -176,7 +174,7 @@ var NewFieldDialog = Dialog.extend(StandaloneFieldManagerMixin, {
         var $input = this.$(".o_web_studio_selection_new_value input");
         var string = $input.val().trim();
 
-        if (string && !_.find(this.selection, function(el) {return el[1] === string; })) {
+        if (string && !this.selection.find((el) => el[1] === string)) {
             // add a new element
             this.selection.push([string, string]);
         }
@@ -193,7 +191,7 @@ var NewFieldDialog = Dialog.extend(StandaloneFieldManagerMixin, {
 
         if (config.isDebug()) {
             var val = $btn.closest('li')[0].dataset.value;  // use dataset to always get a string
-            var index = _.findIndex(this.selection, function (el) {return el[0] === val;});
+            var index = this.selection.findIndex((el) => el[0] === val);
             new Dialog(this, {
                 title: _t('Edit Value'),
                 size: 'small',
@@ -228,7 +226,7 @@ var NewFieldDialog = Dialog.extend(StandaloneFieldManagerMixin, {
      */
     _onRemoveSelectionValue: function (e) {
         var val = $(e.target).closest('li')[0].dataset.value;
-        var element = _.find(this.selection, function(el) {return el[0] === val; });
+        var element = this.selection.find((el) => el[0] === val);
         var index = this.selection.indexOf(element);
         if (index >= 0) {
             this.selection.splice(index, 1);
@@ -252,7 +250,7 @@ var NewFieldDialog = Dialog.extend(StandaloneFieldManagerMixin, {
                 return;
             }
             values.relation_field_id = this.many2one_field.value.res_id;
-        } else if (_.contains(['many2many', 'many2one'], this.type)) {
+        } else if (["many2many", "many2one"].includes(this.type)) {
             if (!this.many2one_model.value) {
                 this.trigger_up('warning', {title: _t('You must select a relation')});
                 return;
@@ -282,7 +280,7 @@ var NewFieldDialog = Dialog.extend(StandaloneFieldManagerMixin, {
             values.readonly = true;
             values.copy = false;
             values.store = selectedField.store;
-            if (_.contains(['many2one', 'many2many'], selectedField.type)) {
+            if (["many2one", "many2many"].includes(selectedField.type)) {
                 values.relation = selectedField.relation;
             } else if (selectedField.type === 'one2many') {
                 values.relational_model = selectedField.model;
@@ -291,7 +289,7 @@ var NewFieldDialog = Dialog.extend(StandaloneFieldManagerMixin, {
             } else if (selectedField.type === 'monetary') {
                 // find the associated currency field on the related model in
                 // case there is no currency field on the current model
-                var currencyField = _.find(_.last(this.fieldSelector.pages), function (el) {
+                var currencyField = this.fieldSelector.pages.at(-1).find((el) => {
                     return el.name === 'currency_id' || el.name === 'x_currency_id';
                 });
                 if (currencyField) {
@@ -301,7 +299,7 @@ var NewFieldDialog = Dialog.extend(StandaloneFieldManagerMixin, {
                 }
             }
 
-            if (_.contains(['one2many', 'many2many'], selectedField.type)) {
+            if (["one2many", "many2many"].includes(selectedField.type)) {
                 values.store = false;
             }
         }
@@ -314,7 +312,7 @@ var NewFieldDialog = Dialog.extend(StandaloneFieldManagerMixin, {
     _onSelectionInputBlur: function (ev) {
         var $input = $(ev.currentTarget);
         var val = $input.closest('li')[0].dataset.value;  // use dataset to always get the string
-        var index = _.findIndex(this.selection, function (el) { return el[0] === val; });
+        var index = this.selection.findIndex((el) => el[0] === val);
         this.selection[index][1] = $input.val();
         this.renderElement();
     },

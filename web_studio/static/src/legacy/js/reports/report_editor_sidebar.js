@@ -120,10 +120,10 @@ var ReportEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
         var self = this;
         var state = {};
 
-        _.each(this.nodes, function (node) {
+        Object.values(this.nodes || {}).forEach((node) => {
             var nodeName = self._computeUniqueNodeName(node.node);
             state[nodeName] = {};
-            _.each(node.widgets, function (comp) {
+            node.widgets.forEach((comp) => {
                 state[nodeName][comp.name] = comp.getLocalState();
             });
         });
@@ -170,8 +170,8 @@ var ReportEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
      * @returns {Object}
      */
     _getComponentsObject: function (components) {
-        return _.map(components, function (componentName) {
-            var Component = _.find(editComponentsRegistry.map, function (Component) {
+        return components.map((componentName) => {
+            var Component = Object.values(editComponentsRegistry.map || {}).find((Component) => {
                 return Component.prototype.name === componentName;
             });
             return Component;
@@ -184,7 +184,7 @@ var ReportEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
      */
     _getComponentsBlacklist: function (components) {
         var blacklist = '';
-        _.each(this._getComponentsObject(components), function (Component) {
+        this._getComponentsObject(components).forEach((Component) => {
             if (Component.prototype.blacklist) {
                 if (blacklist.length) {
                     blacklist += ',';
@@ -315,7 +315,7 @@ var ReportEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
         var components = [];
 
         var $node = this._getAssociatedDOMNode(node);
-        _.each(editComponentsRegistry.map, function (Component) {
+        Object.values(editComponentsRegistry.map).forEach((Component) => {
             var selector = Component.prototype.selector;
             if (self.debug) {
                 selector = Component.prototype.debugSelector || selector;
@@ -325,8 +325,8 @@ var ReportEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
             }
         });
 
-        _.each(['layout', 'tif', 'groups'], function (componentName) {
-            if (!_.contains(components, componentName)) {
+        ["layout", "tif", "groups"].forEach((componentName) => {
+            if (!components.includes(componentName)) {
                 components.push(componentName);
             }
         });
@@ -341,14 +341,14 @@ var ReportEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
         var defs = [];
         var $sidebarContent = this.$('.o_web_studio_sidebar_content');
 
-        _.each(newComponentsRegistry.map, function (components, title) {
+        Object.entries(newComponentsRegistry.map || {}).forEach(([title, components]) => {
             $sidebarContent.append($('<h3>', {
                 html: title,
             }));
             var $componentsContainer = $('<div>', {
                 class: 'o_web_studio_field_type_container',
             });
-            _.each(components, function (Component) {
+            components.forEach((Component) => {
                 const component = new Component(self, { models: self.models });
                 const reportModel = self.report && self.report.model;
                 // Don't add component if the report model is not compatible with this one
@@ -379,8 +379,8 @@ var ReportEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
 
         if (!this.debug) {
             // hide all nodes after .page, they are too technical
-            var pageNodeIndex = _.findIndex(this.state.nodes, function (node) {
-                return node.node.tag === 'div' && _.str.include(node.node.attrs.class, 'page');
+            var pageNodeIndex = this.state.nodes.findIndex((node) => {
+                return node.node.tag === "div" && String(node.node.attrs.class).includes("page");
             });
             if (pageNodeIndex !== -1) {
                 this.state.nodes.splice(pageNodeIndex + 1, this.state.nodes.length - (pageNodeIndex + 1));
@@ -389,7 +389,7 @@ var ReportEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
 
         for (var index = this.state.nodes.length - 1; index >= 0; index--) {
             // copy to not modifying in place the node
-            var node = _.extend({}, this.state.nodes[index]);
+            var node = Object.assign({}, this.state.nodes[index]);
             if (!this.debug && blacklists.length) {
                 if (this._getAssociatedDOMNode(node.node).is(blacklists.join(','))) {
                     continue;

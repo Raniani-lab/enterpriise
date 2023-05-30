@@ -13,6 +13,7 @@ import Dialog from "web.Dialog";
 import dom from "web.dom";
 import mobile from "web_mobile.core";
 import Widget from "web.Widget";
+import { debounce } from "@web/core/utils/timing";
 
 const YOUR_ARE_ALREADY_IN_A_CALL = _lt("You are already in a call");
 
@@ -49,7 +50,7 @@ export const DialingPanel = Widget.extend({
         this._isShow = false;
         this._isWebRTCSupport =
             window.RTCPeerConnection && window.MediaStream && navigator.mediaDevices;
-        this._onInputSearch = _.debounce(this._onInputSearch.bind(this), 500);
+        this._onInputSearch = debounce(this._onInputSearch.bind(this), 500);
         this._onBackButton = this._onBackButton.bind(this);
         this._tabs = {
             contacts: new PhoneCallContactsTab(this),
@@ -525,7 +526,7 @@ export const DialingPanel = Widget.extend({
             if (this._isFolded) {
                 await this._refreshPhoneCallsStatus();
             }
-            this._isFolded = _.isBoolean(isFolded) ? isFolded : !this._isFolded;
+            this._isFolded = typeof isFolded === "boolean" ? isFolded : !this._isFolded;
             this._fold();
         }
         mobile.backButtonManager[this._isFolded ? "removeListener" : "addListener"](

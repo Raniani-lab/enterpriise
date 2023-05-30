@@ -150,7 +150,7 @@ function getReportHTML(templates, data) {
     _brandTemplates(templates, data && data.dataOeContext);
 
     var qweb = new QWeb();
-    _.each(templates, function (template) {
+    templates.forEach((template) => {
         qweb.add_template(template.arch);
     });
     var render = qweb.render('template0', data);
@@ -169,7 +169,7 @@ function getReportViews(templates, data) {
     _brandTemplates(templates, data && data.dataOeContext);
 
     var reportViews = {};
-    _.each(templates, function (template) {
+    templates.forEach((template) => {
         reportViews[template.view_id] = {
             arch: template.arch,
             key: template.key,
@@ -190,7 +190,7 @@ function getReportViews(templates, data) {
  */
 function _brandTemplates(templates, dataOeContext) {
 
-    _.each(templates, function (template) {
+    templates.forEach((template) => {
         brandTemplate(template);
     });
 
@@ -201,10 +201,12 @@ function _brandTemplates(templates, dataOeContext) {
 
         function brandNode(siblings, node, xpath) {
             // do not brand already branded nodes
-            if (_.isObject(node) && !node.attrs['data-oe-id']) {
+            if (typeof node === "object" && !node.attrs["data-oe-id"]) {
                 if (node.tag !== 'kikou') {
                     xpath += ('/' + node.tag);
-                    var index = _.filter(siblings, {tag: node.tag}).indexOf(node);
+                    var index = siblings
+                        .filter((sibling) => sibling.tag === node.tag)
+                        .indexOf(node);
                     if (index > 0) {
                         xpath += '[' + index + ']';
                     }
@@ -213,7 +215,7 @@ function _brandTemplates(templates, dataOeContext) {
                     node.attrs['data-oe-context'] = dataOeContext || '{}';
                 }
 
-                _.each(node.children, function (child) {
+                node.children.forEach((child) => {
                     brandNode(node.children, child, xpath);
                 });
             }

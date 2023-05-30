@@ -43,7 +43,7 @@ if (config.device.isMobile) {
         _getSearchCreatePopupOptions: function () {
             var self = this;
             var searchCreatePopupOptions = this._super.apply(this, arguments);
-            _.extend(searchCreatePopupOptions, {
+            Object.assign(searchCreatePopupOptions, {
                 selectionMode: true,
                 on_clear: function () {
                     self.reinitialize(false);

@@ -362,11 +362,12 @@ class ECSalesReportCustomHandler(models.AbstractModel):
         else:
             aml_domains = [('partner_id.country_id.code', '=', options.get('same_country_warning'))]
             act_window['name'] = _("EC tax on same country")
-
+        use_taxes_instead_of_tags = options.get('sales_report_taxes', {}).get('use_taxes_instead_of_tags')
+        tax_or_tag_field = 'tax_ids.id' if use_taxes_instead_of_tags else 'tax_tag_ids.id'
         amls = self.env['account.move.line'].search([
             *aml_domains,
             *self.env['account.report']._get_options_date_domain(options, 'strict_range'),
-            ('tax_tag_ids.id', 'in', tuple(self._get_tag_ids_filtered(options)))
+            (tax_or_tag_field, 'in', tuple(self._get_tag_ids_filtered(options)))
         ])
 
         if params['model'] == 'move':

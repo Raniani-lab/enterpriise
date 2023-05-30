@@ -7,6 +7,8 @@ class HolidaysRequest(models.Model):
 
     def action_validate(self):
         res = super(HolidaysRequest, self).action_validate()
+        activity_type_id = self.env.ref('mail.mail_activity_data_todo').id
+        res_model_id = self.env.ref('hr_holidays.model_hr_leave').id
         for leave in self:
             if leave.employee_id.company_id.country_id.code == "BE" and \
                     leave.holiday_status_id.work_entry_type_id.code in self._get_drs_work_entry_type_codes():
@@ -20,12 +22,12 @@ class HolidaysRequest(models.Model):
                 activity_vals = []
                 for user_id in user_ids:
                     activity_vals.append({
-                        'activity_type_id': self.env.ref('mail.mail_activity_data_todo').id,
+                        'activity_type_id': activity_type_id,
                         'automated': True,
                         'note': note,
                         'user_id': user_id,
                         'res_id': leave.id,
-                        'res_model_id': self.env.ref('hr_holidays.model_hr_leave').id,
+                        'res_model_id': res_model_id,
                     })
                 self.env['mail.activity'].create(activity_vals)
         return res

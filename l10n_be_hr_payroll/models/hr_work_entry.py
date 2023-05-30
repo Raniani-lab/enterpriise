@@ -25,18 +25,20 @@ class HrWorkEntry(models.Model):
         for work_entry in res:
             if work_entry.work_entry_type_id == partial_sick_work_entry_type and work_entry.leave_id:
                 leaves |= work_entry.leave_id
+        activity_type_id = self.env.ref('mail.mail_activity_data_todo').id
+        res_model_id = self.env.ref('hr_holidays.model_hr_leave').id
         for leave in leaves.sudo():
             user_ids = leave.holiday_status_id.responsible_ids.ids or self.env.user.ids
             note = _("Sick time off to report to DRS for %s.", leave.date_from.strftime('%B %Y'))
             activity_vals = []
             for user_id in user_ids:
                 activity_vals.append({
-                    'activity_type_id': self.env.ref('mail.mail_activity_data_todo').id,
+                    'activity_type_id': activity_type_id,
                     'automated': True,
                     'note': note,
                     'user_id': user_id,
                     'res_id': leave.id,
-                    'res_model_id': self.env.ref('hr_holidays.model_hr_leave').id,
+                    'res_model_id': res_model_id,
                 })
             self.env['mail.activity'].create(activity_vals)
         return res

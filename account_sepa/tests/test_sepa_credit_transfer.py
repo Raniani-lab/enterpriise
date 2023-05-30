@@ -67,7 +67,7 @@ class TestSEPACreditTransfer(AccountTestInvoicingCommon):
         cls.xmlschema = etree.XMLSchema(etree.parse(open(schema_file_path)))
 
     @classmethod
-    def createPayment(cls, partner, amount):
+    def createPayment(cls, partner, amount, ref=None):
         """ Create a SEPA credit transfer payment """
         return cls.env['account.payment'].create({
             'journal_id': cls.company_data['default_journal_bank'].id,
@@ -77,6 +77,7 @@ class TestSEPACreditTransfer(AccountTestInvoicingCommon):
             'amount': amount,
             'partner_id': partner.id,
             'partner_type': 'supplier',
+            'ref': ref,
         })
 
     def testStandardSEPA(self):
@@ -185,3 +186,58 @@ class TestSEPACreditTransfer(AccountTestInvoicingCommon):
         street = ct_doc.findtext('.//ns:Cdtr/ns:PstlAdr/ns:AdrLine', namespaces=namespaces)
         self.assertEqual(name, "AIN.N")
         self.assertEqual(street, "icekthN")
+
+    def _check_structured_reference(self, country_code, payment):
+        if country_code == 'ch':
+            payment.partner_bank_id.sanitized_acc_number = 'CH4731000133285251000'
+        payment.action_post()
+        batch = self.env['account.batch.payment'].create({
+            'journal_id': self.bank_journal.id,
+            'payment_ids': [(4, payment.id, None)],
+            'payment_method_id': self.sepa_ct_method.id,
+            'batch_type': 'outbound',
+        })
+        batch.validate_batch()
+
+        ct_doc = etree.fromstring(base64.b64decode(batch.export_file))
+        namespaces = {'ns': 'urn:iso:std:iso:20022:tech:xsd:pain.001.001.03'}
+        strd_cd = ct_doc.findtext('.//ns:Strd/ns:CdtrRefInf/ns:Tp/ns:CdOrPrtry/ns:Cd', namespaces=namespaces)
+        strd_prtry = ct_doc.findtext('.//ns:Strd/ns:CdtrRefInf/ns:Tp/ns:CdOrPrtry/ns:Prtry', namespaces=namespaces)
+        strd_issr = ct_doc.findtext('.//ns:Strd/ns:CdtrRefInf/ns:Tp/ns:Issr', namespaces=namespaces)
+        strd_ref = ct_doc.findtext('.//ns:Strd/ns:CdtrRefInf/ns:Ref', namespaces=namespaces)
+
+        if country_code == 'ch':
+            self.assertEqual(strd_prtry, 'QRR')
+        else:
+            self.assertEqual(strd_cd, 'SCOR')
+
+        if country_code == 'be':
+            self.assertEqual(strd_issr, 'BBA')
+        elif country_code == 'eu':
+            self.assertEqual(strd_issr, 'ISO')
+
+        self.assertEqual(strd_ref, payment.ref)
+
+    def test_structured_reference_eu(self):
+        payment = self.createPayment(self.partner_a, 500, 'RF18539007547034')
+        self._check_structured_reference('eu', payment)
+
+    def test_structured_reference_be(self):
+        self.partner_a.country_id = self.env.ref('base.be')
+        payment = self.createPayment(self.partner_a, 500, '020343057642')
+        self._check_structured_reference('be', payment)
+
+    def test_structured_reference_ch(self):
+        self.partner_a.country_id = self.env.ref('base.ch')
+        payment = self.createPayment(self.partner_a, 500, '000000000000000000000012371')
+        self._check_structured_reference('ch', payment)
+
+    def test_structured_reference_fi(self):
+        self.partner_a.country_id = self.env.ref('base.fi')
+        payment = self.createPayment(self.partner_a, 500, '2023000098')
+        self._check_structured_reference('fi', payment)
+
+    def test_structured_reference_no(self):
+        self.partner_a.country_id = self.env.ref('base.no')
+        payment = self.createPayment(self.partner_a, 500, '1234567897')
+        self._check_structured_reference('no', payment)

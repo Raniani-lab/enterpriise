@@ -1,19 +1,17 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, models, fields, _
-from odoo.exceptions import UserError, ValidationError
-from odoo.tools import float_round, float_repr, DEFAULT_SERVER_DATE_FORMAT
-from odoo.tools.misc import mod10r, remove_accents
-from odoo.tools.xml_utils import create_xml_node, create_xml_node_chain
-from odoo.addons.account_batch_payment.models.sepa_mapping import _replace_characters_SEPA
-
-from collections import defaultdict
-
-import random
 import re
 import time
+from collections import defaultdict
 from lxml import etree
+
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools import float_repr, float_round
+
+import odoo.addons.account.tools.structured_reference as sr
+from odoo.addons.account_batch_payment.models.sepa_mapping import _replace_characters_SEPA
+
 
 def sanitize_communication(communication):
     """ Returns a sanitized version of the communication given in parameter,
@@ -434,20 +432,67 @@ class AccountJournal(models.Model):
         return CdtrAcct
 
     def _get_RmtInf(self, payment):
+        def detect_reference_type(reference, partner_country_code):
+            if partner_country_code == 'BE' and sr.is_valid_structured_reference_be(reference):
+                return 'be'
+            elif self._is_qr_iban(payment):
+                return 'ch'
+            elif partner_country_code == 'FI' and sr.is_valid_structured_reference_fi(reference):
+                return 'fi'
+            elif partner_country_code == 'NO' and sr.is_valid_structured_reference_no_se(reference):
+                return 'no'
+            elif partner_country_code == 'SE' and sr.is_valid_structured_reference_no_se(reference):
+                return 'se'
+            elif sr.is_valid_structured_reference_iso(reference):
+                return 'iso'
+            else:
+                return None
+
+        def get_strd_tree(ref, cd=None, prtry=None, issr=None):
+            strd_string = f"""
+                <Strd>
+                    <CdtrRefInf>
+                        <Tp>
+                            <CdOrPrtry>
+                                <Cd>{cd}</Cd>
+                                <Prtry>{prtry}</Prtry>
+                            </CdOrPrtry>
+                            <Issr>{issr}</Issr>
+                        </Tp>
+                        <Ref>{ref}</Ref>
+                    </CdtrRefInf>
+                </Strd>
+            """
+            strd_tree = etree.fromstring(strd_string)
+            if not cd:
+                cd_tree = strd_tree.find('.//Cd')
+                cd_tree.getparent().remove(cd_tree)
+            if not prtry:
+                prtry_tree = strd_tree.find('.//Prtry')
+                prtry_tree.getparent().remove(prtry_tree)
+            if not issr:
+                issr_tree = strd_tree.find('.//Issr')
+                issr_tree.getparent().remove(issr_tree)
+            return strd_tree
+
+
         if not payment['ref']:
             return False
-        RmtInf = etree.Element("RmtInf")
+        RmtInf = etree.Element('RmtInf')
+        ref = sr.sanitize_structured_reference(payment['ref'])
+        partner_country_code = payment.get('partner_country_code')
+        reference_type = detect_reference_type(ref, partner_country_code)
 
-        # In Switzerland, postal accounts and QR-IBAN accounts always require a structured communication with the ISR reference
-        qr_iban = self._is_qr_iban(payment)
-        if qr_iban:
-            ref = payment['ref'].replace(' ', '')
+        # Check whether we have a structured communication
+        if reference_type == 'iso':
+            RmtInf.append(get_strd_tree(ref, cd='SCOR', issr='ISO'))
+        elif reference_type == 'be':
+            RmtInf.append(get_strd_tree(ref, cd='SCOR', issr='BBA'))
+        elif reference_type == 'ch':
             ref = ref.rjust(27, '0')
-            CdtrRefInf = create_xml_node_chain(RmtInf, ['Strd', 'CdtrRefInf'])[1]
-            if qr_iban:
-                create_xml_node_chain(CdtrRefInf, ['Tp', 'CdOrPrtry', 'Prtry'], "QRR")
-            Ref = etree.SubElement(CdtrRefInf, "Ref")
-            Ref.text = ref
+            RmtInf.append(get_strd_tree(ref, prtry='QRR'))
+        elif reference_type in ('fi', 'no', 'se'):
+            RmtInf.append(get_strd_tree(ref, cd='SCOR'))
         else:
             Ustrd = etree.SubElement(RmtInf, "Ustrd")
             Ustrd.text = sanitize_communication(payment['ref'])

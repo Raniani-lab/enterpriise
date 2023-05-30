@@ -132,6 +132,7 @@ class AccountBatchPayment(models.Model):
             'ref' : payment.ref,
             'partner_id' : payment.partner_id.id,
             'partner_bank_id': payment.partner_bank_id.id,
+            'partner_country_code': payment.partner_id.country_id.code,
         }
 
     def _generate_payment_template(self, payments):

@@ -1986,6 +1986,7 @@ class TestAccountAsset(TestAccountReportsCommon):
             'name': "CEO's Car",
             'original_value': 12000.0,
             'model_id': self.account_asset_model_fixedassets.id,
+            'acquisition_date': '2020-01-01',
         })
         CEO_car._onchange_model_id()
         CEO_car.method_number = 5
@@ -2003,6 +2004,30 @@ class TestAccountAsset(TestAccountReportsCommon):
                     'analytic_distribution': {str(self.analytic_account.id): 100},
                 },
             ])
+
+        CEO_car.analytic_distribution = {str(self.analytic_account.id): 200}
+
+        # Only draft moves should have a changed analytic distribution
+        for move in CEO_car.depreciation_move_ids.filtered(lambda m: m.state == 'posted'):
+            self.assertRecordValues(move.line_ids, [
+                {
+                    'analytic_distribution': {str(self.analytic_account.id): 100},
+                },
+                {
+                    'analytic_distribution': {str(self.analytic_account.id): 100},
+                },
+            ])
+
+        for move in CEO_car.depreciation_move_ids.filtered(lambda m: m.state == 'draft'):
+            self.assertRecordValues(move.line_ids, [
+                {
+                    'analytic_distribution': {str(self.analytic_account.id): 200},
+                },
+                {
+                    'analytic_distribution': {str(self.analytic_account.id): 200},
+                },
+            ])
+
 
     def test_asset_analytic_filter(self):
         """

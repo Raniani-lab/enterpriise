@@ -489,6 +489,8 @@ class AccountAsset(models.Model):
             self.depreciation_move_ids.line_ids[1::2].account_id = vals['account_depreciation_expense_id']
         if 'journal_id' in vals:
             self.depreciation_move_ids.journal_id = vals['journal_id']
+        if 'analytic_distribution' in vals:
+            self.depreciation_move_ids.filtered(lambda m: m.state == 'draft').line_ids.analytic_distribution = vals['analytic_distribution']
         return result
 
     # -------------------------------------------------------------------------

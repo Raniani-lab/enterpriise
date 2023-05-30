@@ -183,7 +183,8 @@
                                         required="1"/>
                                     <field name="journal_id" required="1"/>
                                     <field name="analytic_distribution" groups="analytic.group_analytic_accounting" widget="analytic_distribution"
-                                           options="{'account_field': 'account_depreciation_expense_id', 'business_domain': 'general'}"/>
+                                           options="{'account_field': 'account_depreciation_expense_id', 'business_domain': 'general'}"
+                                           readonly="0"/>
                                 </group>
                                 <group string="Value at Import" groups="base.group_no_one" attrs="{'invisible': [('state', '=', 'model')]}">
                                     <field name="already_depreciated_amount_import" string="Depreciated Amount"/>

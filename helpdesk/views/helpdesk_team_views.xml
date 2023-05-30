@@ -112,7 +112,7 @@
                                 <field name="auto_assignment"/>
                                 <div invisible="not auto_assignment" class="mt16">
                                     <field name="assign_method" class="o_light_label w-100" widget="radio"/>
-                                    <div class="o_row mt16">
+                                    <div class="mt16">
                                         <label for="member_ids"/>
                                         <field name="member_ids" widget="many2many_avatar_user" required="auto_assignment"
                                         class="ms-2" options="{'no_quick_create': True}"/>

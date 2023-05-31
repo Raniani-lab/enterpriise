@@ -34,7 +34,7 @@ export const DocumentsSpreadsheetControllerMixin = {
     async sharePopupAction(documentShareVals) {
         const selection = this.env.model.root.selection;
         const documents = selection.length ? selection : this.env.model.root.records;
-        if (documents.every((doc) => doc.data.handler !== "spreadsheet")) {
+        if (this.env.model.useSampleModel || documents.every((doc) => doc.data.handler !== "spreadsheet")) {
             return documentShareVals;
         }
         const spreadsheetShares = [];

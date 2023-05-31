@@ -725,7 +725,7 @@ class MrpProductionWorkcenterLine(models.Model):
         if employee_id in self.employee_ids.ids and any(not t.date_end for t in self.time_ids if t.employee_id.id == employee_id):
             return
         self.employee_ids = [Command.link(employee_id)]
-        time_data = self._prepare_timeline_vals(self.duration, datetime.now())
+        time_data = self._prepare_timeline_vals(self.duration, fields.Datetime.now())
         time_data['employee_id'] = employee_id
         self.env['mrp.workcenter.productivity'].create(time_data)
         self.state = "progress"
@@ -762,7 +762,7 @@ class MrpProductionWorkcenterLine(models.Model):
 
     def get_duration(self):
         self.ensure_one()
-        now = datetime.now()
+        now = fields.Datetime.now()
         loss_type_times = defaultdict(lambda: self.env['mrp.workcenter.productivity'])
         for time in self.time_ids:
             loss_type_times[time.loss_id.loss_type] |= time
@@ -773,12 +773,12 @@ class MrpProductionWorkcenterLine(models.Model):
 
     def get_working_duration(self):
         self.ensure_one()
-        now = datetime.now()
+        now = fields.Datetime.now()
         return self._intervals_duration([(t.date_start, now, t) for t in self.time_ids if not t.date_end])
 
     def get_productive_duration(self):
         self.ensure_one()
-        now = datetime.now()
+        now = fields.Datetime.now()
         productive_times = []
         for time in self.time_ids:
             if time.loss_id.loss_type == "productive":
@@ -814,7 +814,7 @@ class MrpProductionWorkcenterLine(models.Model):
         productivity = []
         for wo in self:
             if not wo.time_ids:
-                now = datetime.now()
+                now = fields.Datetime.now()
                 date_start = datetime.fromtimestamp(now.timestamp() - ((wo.duration_expected * 60) // 1))
                 date_end = now
                 productivity.append({

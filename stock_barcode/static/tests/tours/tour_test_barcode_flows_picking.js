@@ -1004,6 +1004,37 @@ registry.category("web_tour.tours").add('test_delivery_using_buttons', {test: tr
     },
 ]});
 
+registry.category("web_tour.tours").add('test_remaining_decimal_accuracy', {test: true, steps: () => [
+    {
+        trigger: '.o_barcode_client_action',
+        run: function() {
+            helper.assertScanMessage('scan_product');
+            helper.assertValidateVisible(true);
+            helper.assertValidateIsHighlighted(false);
+            helper.assertValidateEnabled(true);
+            helper.assertLineQty(0, "0 / 4 Units");
+            helper.assertButtonShouldBeVisible(0, "add_quantity");
+        }
+    },
+
+    // Goes on the form view and add 2.2 .
+    { trigger: '.o_barcode_line:first-child .o_edit' },
+    {
+        trigger: 'input.o_input[id=qty_done_1]',
+        run: 'text 2.2',
+    },
+    { trigger: '.o_save' },
+    {
+        trigger: '.o_barcode_lines',
+        run: function() {
+            helper.assertButtonShouldBeVisible(0, "add_quantity");
+            helper.assertLineQty(0, '2.2 / 4 Units');
+            const buttonAddQty = document.querySelector(".o_add_quantity");
+            helper.assert(buttonAddQty.innerText, "+1.8", "Something wrong with the quantities");
+        }
+    },
+]});
+
 registry.category("web_tour.tours").add('test_receipt_from_scratch_with_lots_1', {test: true, steps: () => [
     {
         trigger: '.o_barcode_client_action',

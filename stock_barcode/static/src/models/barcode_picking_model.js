@@ -6,6 +6,7 @@ import { _t } from "@web/core/l10n/translation";
 import { escape } from '@web/core/utils/strings';
 import { session } from '@web/session';
 import { markup } from '@odoo/owl';
+import { formatFloat } from "@web/views/fields/formatters";
 
 export default class BarcodePickingModel extends BarcodeModel {
     constructor(resModel, resId, services) {
@@ -34,6 +35,7 @@ export default class BarcodePickingModel extends BarcodeModel {
         this.lineFormViewId = data.data.line_view_id;
         this.formViewId = data.data.form_view_id;
         this.packageKanbanViewId = data.data.package_view_id;
+        this.precision = data.data.precision;
     }
 
     askBeforeNewLinesCreation(product) {
@@ -55,7 +57,8 @@ export default class BarcodePickingModel extends BarcodeModel {
     }
 
     getIncrementQuantity(line) {
-        return Math.max(this.getQtyDemand(line) - this.getQtyDone(line), 1);
+        const quantityToFormat = Math.max(this.getQtyDemand(line) - this.getQtyDone(line), 1);
+        return parseFloat(formatFloat(quantityToFormat, { digits: [false, this.precision], thousandsSep: "", decimalPoint: "." }));
     }
 
     getQtyDone(line) {

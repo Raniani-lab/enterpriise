@@ -952,6 +952,26 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         self.assertEqual(len(delivery_picking.move_line_ids), 4)
         self.assertEqual(delivery_picking.move_line_ids.mapped('qty_done'), [2, 3, 4, 2])
 
+    def test_remaining_decimal_accuracy(self):
+        """ Checks if the remaining value of a move is correct
+        """
+
+        self.env['stock.quant']._update_available_quantity(self.product1, self.stock_location, 4)
+
+        # Create the delivery transfer.
+        delivery_form = Form(self.env['stock.picking'])
+        delivery_form.picking_type_id = self.picking_type_out
+        with delivery_form.move_ids_without_package.new() as move:
+            move.product_id = self.product1
+            move.product_uom_qty = 4
+
+        delivery_picking = delivery_form.save()
+        delivery_picking.action_confirm()
+        delivery_picking.action_assign()
+
+        url = self._get_client_action_url(delivery_picking.id)
+        self.start_tour(url, 'test_remaining_decimal_accuracy', login='admin', timeout=90)
+
     def test_receipt_reserved_lots_multiloc_1(self):
         self.clean_access_rights()
         grp_multi_loc = self.env.ref('stock.group_stock_multi_locations')

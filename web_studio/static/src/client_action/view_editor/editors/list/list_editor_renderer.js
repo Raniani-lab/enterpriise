@@ -50,6 +50,22 @@ export class ListEditorRenderer extends listView.Renderer {
         return false;
     }
 
+    getColumnClass(col) {
+        let cls = super.getColumnClass(col);
+        if (col.studioColumnInvisible) {
+            cls += " o_web_studio_show_invisible";
+        }
+        return cls;
+    }
+
+    getCellClass(col, record) {
+        let cls = super.getCellClass(col, record);
+        if (col.studioColumnInvisible || super.evalInvisible(col.invisible, record)) {
+            cls += " o_web_studio_show_invisible";
+        }
+        return cls;
+    }
+
     getColumnHookData(col, position) {
         let xpath;
         if (!col) {
@@ -110,19 +126,31 @@ export class ListEditorRenderer extends listView.Renderer {
                 return {
                     ...c,
                     optional: false,
-                    studioIsInvisible:
-                        c.optional === "hide" ||
-                        (c.modifiers && c.modifiers.column_invisible === true),
+                    studioColumnInvisible:
+                        c.optional === "hide" || this.props.evalViewModifier(c.column_invisible),
                 };
             });
         } else {
-            cols = cols.filter((c) => !c.modifiers || c.modifiers.column_invisible !== true);
+            cols = cols.filter((c) => !this.evalColumnInvisible(c.column_invisible));
         }
         return this.addColsHooks(cols);
     }
 
     set allColumns(cols) {
         this._allColumns = cols;
+    }
+
+    evalInvisible(modifier, record) {
+        if (this.viewEditorModel.showInvisible) {
+            return false;
+        }
+        return super.evalInvisible(modifier, record);
+    }
+    evalColumnInvisible(columnInvisible) {
+        if (this.viewEditorModel.showInvisible) {
+            return false;
+        }
+        return super.evalColumnInvisible(columnInvisible);
     }
 
     onTableHover(ev) {

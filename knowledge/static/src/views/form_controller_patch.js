@@ -3,6 +3,7 @@
 import { FormController } from "@web/views/form/form_controller";
 import { patch } from "@web/core/utils/patch";
 import { useService } from "@web/core/utils/hooks";
+import { evaluateBooleanExpr } from "@web/core/py_js/py";
 import { useEffect } from "@odoo/owl";
 
 
@@ -127,7 +128,7 @@ const FormControllerPatch = {
 
                 const readonlyModifier = record.activeFields[fieldName].readonly;
                 const invisibleModifier = record.activeFields[fieldName].invisible;
-                if (this.evalDomainFromRecord(record, readonlyModifier) || this.evalDomainFromRecord(record, invisibleModifier)) {
+                if (evaluateBooleanExpr(readonlyModifier, record.evalContext) || evaluateBooleanExpr(invisibleModifier, record.evalContext)) {
                     continue loopFieldNames;
                 }
                 // Parse the xmlDoc to find all instances of the field that are
@@ -139,14 +140,14 @@ const FormControllerPatch = {
                 });
                 loopDirectXmlFields: for (const xmlField of directXmlFields) {
                     const xmlFieldParent = xmlField.parentElement;
-                    let xmlInvisibleParent = xmlFieldParent.closest('[modifiers*="invisible"]');
+                    let xmlInvisibleParent = xmlFieldParent.closest('[invisible]');
                     while (xmlInvisibleParent) {
-                        const invisibleParentModifier = JSON.parse(xmlInvisibleParent.getAttribute('modifiers')).invisible;
-                        if (this.evalDomainFromRecord(record, invisibleParentModifier)) {
+                        const invisibleParentModifier = xmlInvisibleParent.getAttribute('invisible');
+                        if (evaluateBooleanExpr(invisibleParentModifier, record.evalContext)) {
                             continue loopDirectXmlFields;
                         }
                         xmlInvisibleParent = xmlInvisibleParent.parentElement &&
-                            xmlInvisibleParent.parentElement.closest('[modifiers*="invisible"]');
+                            xmlInvisibleParent.parentElement.closest('[invisible]');
                     }
                     const page = xmlField.closest('page');
                     commandsRecordInfo.fieldInfo = {

@@ -26,7 +26,6 @@ export class KanbanEditorCompiler extends KanbanCompiler {
     }
 
     compile(key, params = {}) {
-        params.enableInvisible = true;
         const xml = this.templates[key];
 
         // One pass to compute and add the xpath for the arch's node location
@@ -117,7 +116,7 @@ export class KanbanEditorCompiler extends KanbanCompiler {
             return;
         }
 
-        let compiled = super.compileNode(...arguments);
+        let compiled = super.compileNode(node, { ...params, compileInvisibleNodes: true });
 
         if (nodeType === 1 && compiled) {
             // Put a xpath on anything of interest.

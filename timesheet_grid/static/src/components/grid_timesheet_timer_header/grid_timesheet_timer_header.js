@@ -56,7 +56,7 @@ export class GridTimesheetTimerHeader extends Component {
             options: {},
             domain: field.domain || "[]",
             placeholder: field.string || "",
-            modifiers: {},
+            required: "False",
         };
         if (fieldName === "project_id") {
             if (field.domain) {
@@ -71,7 +71,7 @@ export class GridTimesheetTimerHeader extends Component {
                 ];
             }
             fieldInfo.context = `{'search_default_my_projects': True}`;
-            fieldInfo.required = true;
+            fieldInfo.required = "True";
         } else if (fieldName === "task_id") {
             fieldInfo.context = `{'default_project_id': project_id, 'search_default_my_tasks': True, 'search_default_open_tasks': True}`;
         } else if (fieldName === "name") {

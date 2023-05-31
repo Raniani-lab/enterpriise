@@ -555,6 +555,29 @@ QUnit.module(
 
             await showViewTab();
             await click(target, "#show_invisible");
+            assert.containsN(target, "td[name='display_name'].o_web_studio_show_invisible", 2);
+
+            await click(target, "tr:first-child td[name='display_name'].o_web_studio_show_invisible");
+            assert.containsOnce(target, "#invisible");
+
+            assert.ok(target.querySelector("#invisible").checked);
+        });
+
+        QUnit.test("column invisible field in list editor", async function (assert) {
+            assert.expect(3);
+
+            const arch = '<tree><field column_invisible="1" name="display_name"/></tree>';
+
+            await createViewEditor({
+                serverData,
+                resModel: "coucou",
+                type: "list",
+                arch: arch,
+                mockRPC: defaultMockRpc,
+            });
+
+            await showViewTab();
+            await click(target, "#show_invisible");
             assert.containsOnce(target, "th[data-name='display_name'].o_web_studio_show_invisible");
 
             await click(target, "th[data-name='display_name'].o_web_studio_show_invisible");
@@ -587,18 +610,16 @@ QUnit.module(
                     },
                     position: "attributes",
                     new_attrs: {
-                        invisible: "",
-                        attrs: {},
+                        column_invisible: "",
                     },
                 },
             ];
 
-            const archReturn =
-                '<tree><field name="display_name" modifiers="{}" attrs="{}"/></tree>';
+            const archReturn = '<tree><field name="display_name" /></tree>';
 
             await createViewEditor({
                 serverData,
-                arch: '<tree><field invisible="1" name="display_name"/></tree>',
+                arch: '<tree><field column_invisible="1" name="display_name"/></tree>',
                 resModel: "coucou",
                 type: "list",
                 mockRPC: {
@@ -1499,7 +1520,7 @@ QUnit.module(
                 serverData,
                 type: "list",
                 resModel: "coucou",
-                arch: "<tree><field name='display_name' invisible='1'/></tree>",
+                arch: "<tree><field name='display_name' column_invisible='1'/></tree>",
             });
 
             assert.containsNone(
@@ -1638,14 +1659,14 @@ QUnit.module(
             });
 
             const changeArch = makeArchChanger();
-            const archReturn = `<tree><field name='display_name'/><field name="char_field" modifiers="{}" attrs="{}"/></tree>`;
+            const archReturn = `<tree><field name='display_name'/><field name="char_field" /></tree>`;
 
             await createViewEditor({
                 type: "list",
                 serverData,
                 resModel: "coucou",
                 arch: `<tree><field name='display_name'/>
-                    <field name='char_field' invisible='1'/>
+                    <field name='char_field' column_invisible='1'/>
                 </tree>`,
                 mockRPC: function (route, args) {
                     if (route === "/web_studio/edit_view") {
@@ -1661,8 +1682,13 @@ QUnit.module(
                             "The lang in context should be false explicitly"
                         );
                         assert.ok(
-                            !("column_invisible" in args.operations[0].new_attrs),
-                            'we shouldn\'t send "column_invisible"'
+                            !("invisible" in args.operations[0].new_attrs),
+                            'we shouldn\'t send "invisible"'
+                        );
+                        assert.strictEqual(
+                            args.operations[0].new_attrs.column_invisible,
+                            "",
+                            "Should remove column_invisible attribute"
                         );
                         changeArch(args.view_id, archReturn);
                     }
@@ -1671,7 +1697,6 @@ QUnit.module(
 
             await click(selectorContains(target, ".o_web_studio_sidebar .nav-link", "View"));
             await click(target.querySelector(".o_web_studio_sidebar input#show_invisible"));
-
             // select the second column
             await click(target.querySelector('thead th[data-studio-xpath="/tree[1]/field[2]"]'));
             assert.verifySteps([]);
@@ -1683,7 +1708,7 @@ QUnit.module(
         QUnit.test("list editor invisible to visible on field readonly", async function (assert) {
             const archReturn = `<tree>
                 <field name='display_name'/>
-                <field name="char_field" readonly="1" attrs="{}" invisible="1" modifiers="{&quot;column_invisible&quot;: true, &quot;readonly&quot;: true}"/>
+                <field name="char_field" column_invisible="True" readonly="True" />
             </tree>`;
 
             const changeArch = makeArchChanger();
@@ -1693,7 +1718,7 @@ QUnit.module(
                 resModel: "coucou",
                 arch: `<tree>
                     <field name='display_name'/>
-                    <field name='char_field' readonly='1'/>
+                    <field name='char_field' readonly="True"/>
                 </tree>`,
                 mockRPC: function (route, args) {
                     if (route === "/web_studio/edit_view") {
@@ -1703,9 +1728,9 @@ QUnit.module(
                             'we shouldn\'t send "readonly"'
                         );
                         assert.equal(
-                            args.operations[0].new_attrs.invisible,
+                            args.operations[0].new_attrs.column_invisible,
                             1,
-                            'we should send "invisible"'
+                            'we should send "column_invisible"'
                         );
 
                         changeArch(args.view_id, archReturn);

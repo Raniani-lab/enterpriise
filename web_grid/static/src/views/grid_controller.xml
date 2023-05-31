@@ -16,7 +16,7 @@
         <div class="o_grid_custom_buttons me-2">
             <t t-foreach="props.archInfo.buttons" t-as="button" t-key="button.id">
                 <ViewButton
-                    t-if="!button.modifiers.invisible"
+                    t-if="!button.invisible"
                     className="button.className"
                     clickParams="button.clickParams"
                     defaultRank="button.defaultRank"

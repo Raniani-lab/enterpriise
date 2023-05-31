@@ -5,7 +5,7 @@
             isConditional="true"
             name="'invisible'"
             type="'boolean'"
-            value="props.node.attrs.modifiers?.invisible || props.node.attrs.modifiers?.column_invisible"
+            value="props.node.attrs.invisible || props.node.attrs.column_invisible"
             onChange.bind="onChangeModifier"
         >
             Invisible
@@ -16,7 +16,7 @@
             isConditional="true"
             name="'required'"
             type="'boolean'"
-            value="props.node.attrs.modifiers?.required"
+            value="props.node.attrs.required"
             onChange.bind="onChangeModifier"
         >
             Required
@@ -27,7 +27,7 @@
             isConditional="true"
             name="'readonly'"
             type="'boolean'"
-            value="props.node.attrs.modifiers?.readonly"
+            value="props.node.attrs.readonly"
             onChange.bind="onChangeModifier"
         >
             Readonly

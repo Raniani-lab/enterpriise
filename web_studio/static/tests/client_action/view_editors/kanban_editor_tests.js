@@ -594,8 +594,8 @@ QUnit.module(
                         <t t-name='kanban-box'>
                             <div class='o_kanban_record'>
                                 <field name="display_name" invisible="1"/>
-                                <field name="char_field" modifiers='{"invisible": true}'/>
-                                <field name="priority" modifiers='{"invisible": [["id", "!=", 1]]}'/>
+                                <field name="char_field" invisible="True"/>
+                                <field name="priority" invisible="id != 1"/>
                             </div>
                         </t>
                     </templates>

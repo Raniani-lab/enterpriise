@@ -24,7 +24,6 @@ const interestingSelector = [
 
 export class FormEditorCompiler extends formView.Compiler {
     compile(key, params = {}) {
-        params.enableInvisible = true;
         const xml = this.templates[key];
 
         // One pass to compute and add the xpath for the arch's node location
@@ -185,7 +184,7 @@ export class FormEditorCompiler extends formView.Compiler {
             return;
         }
 
-        const compiled = super.compileNode(node, params, true); // always evalInvisible
+        const compiled = super.compileNode(node, { ...params, compileInvisibleNodes: true }, true); // always evalInvisible
 
         if (nodeType === 1) {
             // Put a xpath on anything of interest.
@@ -238,9 +237,5 @@ export class FormEditorCompiler extends formView.Compiler {
             }
         }
         return compiled;
-    }
-
-    isAlwaysInvisible() {
-        return false;
     }
 }

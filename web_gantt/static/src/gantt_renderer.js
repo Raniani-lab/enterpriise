@@ -15,7 +15,7 @@ import { Domain } from "@web/core/domain";
 import { formatDateTime, serializeDate, serializeDateTime } from "@web/core/l10n/dates";
 import { localization } from "@web/core/l10n/localization";
 import { usePopover } from "@web/core/popover/popover_hook";
-import { evaluateExpr } from "@web/core/py_js/py";
+import { evaluateBooleanExpr } from "@web/core/py_js/py";
 import { sortBy } from "@web/core/utils/arrays";
 import { useService } from "@web/core/utils/hooks";
 import { omit } from "@web/core/utils/objects";
@@ -810,7 +810,7 @@ export class GanttRenderer extends Component {
 
             for (const decoration in pillDecorations) {
                 const expr = pillDecorations[decoration];
-                if (evaluateExpr(expr, pillContext)) {
+                if (evaluateBooleanExpr(expr, pillContext)) {
                     classes.push(decoration);
                 }
             }

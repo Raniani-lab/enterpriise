@@ -61,7 +61,7 @@ function getSubarchPosition(mainArch, xpathToField, archTag) {
     for (const node of nodes) {
         // When a subarch has groups="somegroup" and the user doesn't have those groups
         // The server makes it invisible via the modifiers.
-        if (!getModifier(node, "invisible")) {
+        if (getModifier(node, "invisible") !== "True" && getModifier(node, "invisible") !== "1") {
             hasArch = true;
             break;
         }

@@ -1145,17 +1145,17 @@ export class GridModel extends Model {
                 if (groupBy in rowFieldPerFieldName) {
                     rowFields.push({
                         ...rowFieldPerFieldName[groupBy],
-                        invisible: false,
+                        invisible: "False",
                     });
                 } else {
                     rowFields.push({ name: groupBy });
                 }
             }
         } else {
-            if (this.defaultSectionField && !this.defaultSectionField.invisible) {
+            if (this.defaultSectionField && (this.defaultSectionField.invisible !== "True" && this.defaultSectionField.invisible !== "1")) {
                 sectionField = this.defaultSectionField;
             }
-            rowFields = this.defaultRowFields.filter((r) => !r.invisible);
+            rowFields = this.defaultRowFields.filter((r) => (r.invisible !== "True" && r.invisible !== "1"));
         }
 
         const dataPoint = new this.constructor.DataPoint(this, {

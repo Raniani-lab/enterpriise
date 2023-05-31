@@ -83,7 +83,7 @@ class TestEditView(TestStudioController):
               <form>
                 <field name="display_name"/>
                 <field filename="x_studio_binary_field_WocAO_filename" name="x_studio_binary_field_WocAO"/>
-                <field invisible="1" name="x_studio_binary_field_WocAO_filename"/>
+                <field invisible="True" name="x_studio_binary_field_WocAO_filename"/>
               </form>
             """
         )
@@ -115,7 +115,7 @@ class TestEditView(TestStudioController):
               <form>
                 <field name="display_name"/>
                 <field filename="x_studio_binary_field_WocAO_filename" name="x_studio_binary_field_WocAO" widget="pdf_viewer"/>
-                <field invisible="1" name="x_studio_binary_field_WocAO_filename"/>
+                <field invisible="True" name="x_studio_binary_field_WocAO_filename"/>
               </form>
             """
         )
@@ -185,7 +185,7 @@ class TestEditView(TestStudioController):
             """
               <form>
                 <field name="display_name"/>
-                <field invisible="1" name="x_studio_binary_field_WocAO_filename"/>
+                <field invisible="True" name="x_studio_binary_field_WocAO_filename"/>
               </form>
             """
         )
@@ -315,7 +315,7 @@ class TestEditView(TestStudioController):
                         <group>
                             <group name="group_left">
                                 <field filename="x_studio_field_fDthx_filename" name="x_studio_field_fDthx"/>
-                                <field invisible="1" name="x_studio_field_fDthx_filename"/>
+                                <field invisible="True" name="x_studio_field_fDthx_filename"/>
                             </group>
                             <group name="group_right"/>
                         </group>

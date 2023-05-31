@@ -82,8 +82,7 @@ export class CohortArchParser extends XMLParser {
                     if (node.hasAttribute("string")) {
                         archInfo.fieldAttrs[fieldName].string = node.getAttribute("string");
                     }
-                    const modifiers = JSON.parse(node.getAttribute("modifiers") || "{}");
-                    if (modifiers.invisible === true) {
+                    if (node.getAttribute("invisible") === "True" || node.getAttribute("invisible") === "1") {
                         archInfo.fieldAttrs[fieldName].isInvisible = true;
                         break;
                     }

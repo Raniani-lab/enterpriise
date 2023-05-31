@@ -28,7 +28,7 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
                 views: {
                     "partner,false,list": `
                         <tree string="Partners">
-                            <field name="foo" invisible="1"/>
+                            <field name="foo" column_invisible="1"/>
                             <field name="bar"/>
                         </tree>`,
                     "partner,false,search": "<search/>",

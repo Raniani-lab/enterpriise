@@ -31,7 +31,7 @@ export function computeXpath(node, upperBoundSelector = "form") {
 export function getNodeAttributes(node) {
     const attrs = {};
     for (const att of node.getAttributeNames()) {
-        if (["modifiers", "options"].includes(att)) {
+        if (att === "options") {
             attrs[att] = evaluateExpr(node.getAttribute(att));
             continue;
         }
@@ -69,15 +69,15 @@ export const serializeXmlToString = (xml) => {
 // the compiled templates's nodes
 export function applyInvisible(invisible, compiled, params) {
     // Just return the node if it is always Visible
-    if (!invisible) {
+    if (!invisible || invisible === "False" || invisible === "0") {
         return compiled;
     }
 
     let isVisileExpr;
-    // If invisible is dynamic (via Domain), pass a props or apply the studio class.
-    if (typeof invisible !== "boolean") {
+    // If invisible is dynamic, pass a props or apply the studio class.
+    if (invisible !== "True" && invisible !== "1") {
         const recordExpr = params.recordExpr || "__comp__.props.record";
-        isVisileExpr = `!__comp__.evalDomainFromRecord(${recordExpr},${JSON.stringify(invisible)})`;
+        isVisileExpr = `!__comp__.evaluateBooleanExpr(${JSON.stringify(invisible)},${recordExpr}.evalContext)`;
         if (isComponentNode(compiled)) {
             compiled.setAttribute("studioIsVisible", isVisileExpr);
         } else {

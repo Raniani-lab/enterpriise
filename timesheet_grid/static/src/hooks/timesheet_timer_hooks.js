@@ -54,7 +54,7 @@ export class TimesheetTimerRendererHook {
                         ["timesheet_encode_uom_id", "=", this.timesheetUOMService.timesheetUOMId],
                     ];
                 }
-                fieldInfo.required = true;
+                fieldInfo.required = "True";
                 if (!fieldInfo.placeholder && fieldInfo.string) {
                     fieldInfo.placeholder = fieldInfo.string;
                 }
@@ -66,7 +66,7 @@ export class TimesheetTimerRendererHook {
                 fieldInfo.context = `{'default_project_id': project_id, 'search_default_my_tasks': True, 'search_default_open_tasks': True}`;
             } else if (fieldName === "name") {
                 if (fieldInfo.required) {
-                    fieldInfo.required = false;
+                    fieldInfo.required = "False";
                 }
                 fieldInfo.placeholder = this.env._t("Describe your activity...");
             }

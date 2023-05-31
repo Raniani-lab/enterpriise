@@ -160,7 +160,7 @@ export class TimerTimesheetGridModel extends TimesheetGridModel {
     setup(params, services) {
         super.setup(params, services);
         this.timesheetUOMService = services.timesheet_uom;
-        this.fieldsInfo.project_id.required = true;
+        this.fieldsInfo.project_id.required = "True";
     }
 
     get showTimer() {

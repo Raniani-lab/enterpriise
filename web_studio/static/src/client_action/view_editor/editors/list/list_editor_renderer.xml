@@ -48,13 +48,11 @@
 
     <xpath expr="//thead//t[@t-foreach]/th[1]" position="attributes">
       <attribute name="t-att-data-studio-xpath">column.studioXpath</attribute>
-      <attribute name="class">o-draggable</attribute>
-      <attribute name="t-attf-class" add="{{ column.studioIsInvisible ? 'o_web_studio_show_invisible' : '' }}" separator=" " />
+      <attribute name="class" add="o-draggable" separator=" " />
     </xpath>
 
     <xpath expr="//thead//t[@t-foreach]/th[2]" position="attributes">
       <attribute name="t-att-data-studio-xpath">column.studioXpath</attribute>
-      <attribute name="t-attf-class" add="{{ column.studioIsInvisible ? 'o_web_studio_show_invisible' : '' }}" separator=" " />
     </xpath>
   </t>
 
@@ -69,13 +67,11 @@
 
     <xpath expr="(//t[@t-foreach]//td)[1]" position="attributes">
       <attribute name="t-att-data-studio-xpath">column.studioXpath</attribute>
-      <attribute name="t-attf-class" add="{{ column.studioIsInvisible ? 'o_web_studio_show_invisible' : '' }}" separator=" " />
     </xpath>
 
     <xpath expr="(//t[@t-foreach]//td)[2]" position="attributes">
       <attribute name="data-button-group">1</attribute>
       <attribute name="t-att-data-studio-xpath">column.studioXpath</attribute>
-      <attribute name="t-attf-class" add="{{ column.studioIsInvisible ? 'o_web_studio_show_invisible' : '' }}" separator=" " />
     </xpath>
   </t>
 

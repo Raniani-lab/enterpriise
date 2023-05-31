@@ -175,7 +175,7 @@ class SearchEditorController extends Component {
 
     getItems(items) {
         if (!this.viewEditorModel.showInvisible) {
-            return items.filter((i) => !i.invisible);
+            return items.filter((i) => i.invisible !== "True" && i.invisible !== "1");
         }
         return items;
     }

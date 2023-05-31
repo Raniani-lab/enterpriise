@@ -71,13 +71,7 @@ export class GridArchParser extends XMLParser {
                 const fieldInfo = models[modelName][fieldName];
                 const type = node.getAttribute("type") || "row";
                 const string = node.getAttribute("string") || fieldInfo.string;
-                let invisible = false;
-                if (node.hasAttribute("modifiers")) {
-                    const modifiers = JSON.parse(node.getAttribute("modifiers"));
-                    if (modifiers.invisible === true) {
-                        invisible = true;
-                    }
-                }
+                let invisible = node.getAttribute("invisible") || 'False';
                 switch (type) {
                     case "row":
                         if (node.hasAttribute("widget")) {

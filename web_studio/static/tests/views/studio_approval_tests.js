@@ -121,7 +121,7 @@ QUnit.module("Studio Approval", (hooks) => {
                             <field name="int_field"/>
                         </button>
                         <button class="oe_stat_button" studio_approval="True"
-                                attrs='{"invisible": [["bar", "=", true]]}' id="invisibleStat">
+                                invisible="bar" id="invisibleStat">
                             <field name="bar"/>
                         </button>
                     </div>
@@ -557,8 +557,8 @@ QUnit.module("Studio Approval", (hooks) => {
             type: "form",
             resModel: "partner",
             arch: `<form>
-                <button type="object" name="someMethod" string="Apply Method" attrs="{'invisible': [('int_field', '=', 1)]}" studio_approval="True"/>
-                <button type="object" name="otherMethod" string="Other Method" attrs="{'invisible': [('int_field', '!=', 1)]}" studio_approval="True"/>
+                <button type="object" name="someMethod" string="Apply Method" invisible="int_field == 1" studio_approval="True"/>
+                <button type="object" name="otherMethod" string="Other Method" invisible="int_field != 1" studio_approval="True"/>
                 <field name="int_field"/>
             </form>`,
             resId: 1,

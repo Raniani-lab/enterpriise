@@ -45,7 +45,7 @@ QUnit.module("timesheet_grid", (hooks) => {
         const treeView = serverData.views["account.analytic.line,false,list"];
         serverData.views["account.analytic.line,false,list"] = treeView.replace(
             `name="unit_amount"`,
-            `name="unit_amount" attrs="{ 'readonly': [['timer_start', '!=', False], ['timer_pause', '=', False]] }"`
+            `name="unit_amount" readonly="timer_start and not timer_pause"`
         );
         for (let index = 0; index < serverData.models["account.analytic.line"].records.length; index++) {
             const record = serverData.models["account.analytic.line"].records[index];

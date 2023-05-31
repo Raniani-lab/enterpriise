@@ -72,7 +72,10 @@ class TestUi(odoo.tests.HttpCase):
 
         # The tour in its final steps is putting invisible on the field in the subview
         self.assertEqual(fields_of_interest[0].get("invisible"), None)
-        self.assertEqual(fields_of_interest[1].get("invisible"), "1")
+        self.assertEqual(fields_of_interest[1].get("invisible"), None)
+
+        self.assertEqual(fields_of_interest[0].get("column_invisible"), None)
+        self.assertEqual(fields_of_interest[1].get("column_invisible"), "1")
 
 
 def _get_studio_view(view):

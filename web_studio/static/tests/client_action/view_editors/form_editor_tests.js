@@ -631,7 +631,7 @@ QUnit.module("View Editors", (hooks) => {
                     <sheet>
                         <field name='display_name' invisible='1'/>
                         <group>
-                            <field name='m2o' attrs="{'invisible': [('id', '!=', '42')]}"/>
+                            <field name='m2o' invisible="id != 42"/>
                         </group>
                     </sheet>
                 </form>
@@ -816,7 +816,7 @@ QUnit.module("View Editors", (hooks) => {
         const arch = `<form>
                 <sheet>
                     <group>
-                        <group class="kikou" string="Kikou" modifiers="{&quot;invisible&quot;: true}"/>
+                        <group class="kikou" string="Kikou" invisible="True"/>
                         <group class="kikou2" string='Kikou2'/>
                     </group>
                 </sheet>
@@ -1367,7 +1367,7 @@ QUnit.module("View Editors", (hooks) => {
             <form>
                 <sheet>
                     <notebook>
-                        <page class="kikou" string='Kikou' modifiers="{&quot;invisible&quot;: true}">
+                        <page class="kikou" string='Kikou' invisible="True">
                             <field name='id'/>
                         </page>
                         <page class="kikou2" string='Kikou2'>
@@ -2187,7 +2187,7 @@ QUnit.module("View Editors", (hooks) => {
 
     QUnit.test("modification of field appearing multiple times in view", async function (assert) {
         // the typical case of the same field in a single view is conditional sub-views
-        // that use attrs={'invisible': [domain]}
+        // that use invisible="py expression"
         // if the targeted node is after a hidden view, the hidden one should be ignored / skipped
         const arch = `<form>
             <group invisible="1">
@@ -2252,7 +2252,7 @@ QUnit.module("View Editors", (hooks) => {
         assert.expect(1);
 
         const arch = `<form>
-            <div name="button_box" class="oe_button_box" modifiers='{"invisible": [["display_name", "=", false]]}'>
+            <div name="button_box" class="oe_button_box" invisible="not display_name">
                 <button type="object" class="oe_stat_button" icon="fa-check-square">
                     <field name="display_name"/>
                 </button>
@@ -2345,7 +2345,7 @@ QUnit.module("View Editors", (hooks) => {
                     <sheet>
                         <div class="oe_button_box" name="button_box">
                             <button name="someName" class="someClass" type="object"
-                                modifiers="{&quot;invisible&quot;: [[&quot;display_name&quot;, &quot;=&quot;, &quot;someName&quot;]]}" />
+                                invisible="display_name == &quot;someName&quot;" />
                         </div>
                         <field name='display_name'/>
                     </sheet>
@@ -2986,16 +2986,21 @@ QUnit.module("View Editors", (hooks) => {
         async function (assert) {
             assert.expect(4);
 
+            const changeArch = makeArchChanger();
+            const readonlyArch = `
+                <form>
+                    <field name='display_name' readonly="True"/>
+                </form>`;
+            const arch = `
+                <form>
+                    <field name='display_name'/>
+                </form>`;
             let clickCount = 0;
             await createViewEditor({
                 serverData,
                 type: "form",
                 resModel: "coucou",
-                arch: `
-                    <form>
-                        <field name='display_name'/>
-                    </form>
-                `,
+                arch,
                 mockRPC: (route, args) => {
                     if (route === "/web_studio/edit_view") {
                         const operation = args.operations[clickCount];
@@ -3003,9 +3008,11 @@ QUnit.module("View Editors", (hooks) => {
                             clickCount++;
                             assert.strictEqual(operation.new_attrs.readonly, "1");
                             assert.strictEqual(operation.new_attrs.force_save, "True");
+                            changeArch(args.view_id, readonlyArch);
                         } else if (clickCount === 1) {
                             assert.strictEqual(operation.new_attrs.readonly, "");
                             assert.strictEqual(operation.new_attrs.force_save, "False");
+                            changeArch(args.view_id, arch);
                         }
                     }
                 },
@@ -3728,7 +3735,7 @@ QUnit.module("View Editors", (hooks) => {
                         <form>
                             <sheet>
                                 <field name="m2o"
-                                       attrs="{'invisible': [('parent.display_name', '=', 'coucou')]}"
+                                       invisible="parent.display_name == 'coucou'"
                                        domain="[('display_name', '=', parent.display_name)]" />
                             </sheet>
                         </form>
@@ -3747,7 +3754,7 @@ QUnit.module("View Editors", (hooks) => {
             const mockRPC = function (route, args) {
                 if (route === "/web_studio/edit_view") {
                     // Make sure attrs are overridden by empty object to remove the domain
-                    assert.deepEqual(args.operations[0].new_attrs, { attrs: {}, invisible: "" });
+                    assert.deepEqual(args.operations[0].new_attrs, { invisible: "" });
                     assert.step("edit view");
                 }
             };
@@ -3907,7 +3914,7 @@ QUnit.module("View Editors", (hooks) => {
         <form>
             <field name='product_ids'>
                 <tree>
-                    <field name="display_name" attrs="{'column_invisible': [('parent.id', '=',False)]}" />
+                    <field name="display_name" column_invisible="not parent.id" />
                 </tree>
             </field>
         </form>`;
@@ -3918,15 +3925,9 @@ QUnit.module("View Editors", (hooks) => {
             if (route === "/web_studio/edit_view") {
                 assert.step("edit_view");
                 assert.deepEqual(
-                    args.operations[0].new_attrs.attrs,
-                    { column_invisible: [["parent.id", "=", false]] },
-                    'we should send "column_invisible" in attrs.attrs'
-                );
-
-                assert.equal(
-                    args.operations[0].new_attrs.readonly,
-                    "1",
-                    'We should send "readonly" in the node attr'
+                    args.operations[0].new_attrs,
+                    { readonly: "1" },
+                    'we should send "column_invisible" in attrs'
                 );
             }
         };

@@ -25,7 +25,7 @@ class EditorArchParser extends formView.ArchParser {
 
         Array.from(copy.querySelectorAll("field > tree, field > form, field > kanban")).forEach(
             (el) => {
-                if (getModifier(el, "invisible")) {
+                if (getModifier(el, "invisible") === "True" || getModifier(el, "invisible") === "1") {
                     el.remove();
                 }
             }

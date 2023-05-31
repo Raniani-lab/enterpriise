@@ -17,10 +17,6 @@ function parseStudioGroups(node) {
 }
 
 class EditorArchParser extends listView.ArchParser {
-    isColumnVisible() {
-        return true;
-    }
-
     parse(arch, models, modelName) {
         const parsed = super.parse(...arguments);
         const noFetch = getStudioNoFetchFields(parsed.fieldNodes);
@@ -57,7 +53,7 @@ class EditorArchParser extends listView.ArchParser {
 /**
  * X2Many fields can have their subview edited. There are some challenges currently with the RelationalModel
  * - We need to inject the context of the parent record from the outside. That way, within the subview's arch
- *   a snippet like `<field name="..." invisible="[['parent.id','=',False]]" />` works.
+ *   a snippet like `<field name="..." invisible="not parent.id" />` works.
  * - We already know the resIds we have, since we are coming from a x2m. There is no need to search_read them, just to read them
  * - The RelationalModel doesn't really supports creatic staticLists as the root record
  *

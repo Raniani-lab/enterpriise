@@ -116,7 +116,7 @@
         </field>
     </record>
 
-    <record id="hr_contract_view_tree_contract_templates" model="ir.ui.view">
+    <record id="hr_contract_view_tree_contract" model="ir.ui.view">
         <field name="name">hr.contract.tree</field>
         <field name="model">hr.contract</field>
         <field name="mode">extension</field>
@@ -130,7 +130,21 @@
             <field name="contract_type_id" position="after">
                 <field name="wage_on_signature" widget="monetary" optional="show"/>
             </field>
+        </field>
+    </record>
 
+    <record id="hr_contract_view_tree_contract_templates" model="ir.ui.view">
+        <field name="name">hr.contract.tree</field>
+        <field name="model">hr.contract</field>
+        <field name="mode">primary</field>
+        <field name="inherit_id" ref="hr_contract.hr_contract_view_tree"/>
+        <field name="arch" type="xml">
+            <field name="employee_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="wage_on_signature" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
         </field>
     </record>
 

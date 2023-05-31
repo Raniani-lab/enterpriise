@@ -842,21 +842,26 @@ export const ThankYouDialog = Dialog.extend({
       - "Close"
       - "Sign Next Document" or hidden
     */
-    options.buttons.push({
-      text: _t("Download Document"),
-      classes: "d-none btn-primary",
-      click: this.downloadDocument,
-    });
     if (this.suggestSignUp) {
       options.message += _t(" You can safely close this window.");
       options.buttons.push({
         text: _t("Sign Up for free"),
-        classes: "btn-primary",
+        classes: "btn-link float-end",
         click: function () {
           window.open("https://www.odoo.com/trial?selected_app=sign&utm_source=db&utm_medium=sign", "_blank");
         },
       });
+      options.buttons.push({
+        text: _t("Download Document"),
+        classes: "d-none btn-primary",
+        click: this.downloadDocument,
+      });
     } else {
+      options.buttons.push({
+        text: _t("Download Document"),
+        classes: "d-none btn-primary",
+        click: this.downloadDocument,
+      });
       options.buttons.push({
         text: _t("Close"),
         classes: "btn-primary",

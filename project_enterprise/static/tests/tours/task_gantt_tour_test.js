@@ -89,6 +89,18 @@ registry.category("web_tour.tours").add('project_enterprise_tour', {
         trigger: 'ul.ui-autocomplete a .o_avatar_many2x_autocomplete',
         content: 'Assign the task to you',
     }, {
+        trigger: 'a[name="sub_tasks_page"]',
+        content: 'Open sub-tasks notebook section',
+        run: 'click',
+    }, {
+        trigger: '.o_field_subtasks_one2many .o_list_renderer a[role="button"]',
+        content: 'Add a subtask',
+        run: 'click',
+    }, {
+        trigger: '.o_field_subtasks_one2many div[name="name"] input',
+        content: 'Set subtask name',
+        run: 'text new subtask'
+    }, {
         trigger: 'button[special="save"]',
         extra_trigger: '.o_field_many2many_tags_avatar .o_m2m_avatar',
         content: 'Save task',

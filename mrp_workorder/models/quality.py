@@ -210,7 +210,7 @@ class QualityCheck(models.Model):
 
     # Workorder specific fields
     component_remaining_qty = fields.Float('Remaining Quantity for Component', compute='_compute_component_data', digits='Product Unit of Measure')
-    component_qty_to_do = fields.Float(compute='_compute_component_qty_to_do')
+    component_qty_to_do = fields.Float(compute='_compute_component_qty_to_do', digits='Product Unit of Measure')
     is_user_working = fields.Boolean(related="workorder_id.is_user_working")
     consumption = fields.Selection(related="workorder_id.consumption")
     working_state = fields.Selection(related="workorder_id.working_state")

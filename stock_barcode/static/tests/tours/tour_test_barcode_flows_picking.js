@@ -936,6 +936,45 @@ tour.register('test_delivery_using_buttons', {test: true}, [
     },
 ]);
 
+tour.register('test_remaining_decimal_accuracy', {test: true}, [
+    {
+        trigger: '.o_barcode_client_action',
+        run: function() {
+            helper.assertPageSummary('');
+            helper.assertPreviousVisible(true);
+            helper.assertPreviousEnabled(false);
+            helper.assertNextVisible(false);
+            helper.assertNextEnabled(false);
+            helper.assertNextIsHighlighted(false);
+            helper.assertLinesCount(1);
+            helper.assertScanMessage('scan_product');
+            helper.assertLocationHighlight(false);
+            helper.assertValidateVisible(true);
+            helper.assertValidateIsHighlighted(false);
+            helper.assertValidateEnabled(true);
+            helper.assertLineQuantityOnReservedQty(0, '0 / 4');
+            helper.assertButtonIsVisible($('.o_barcode_line').eq(0), 'add_quantity');
+        }
+    },
+
+    // Goes on the form view and press digipad +1 button.
+    { trigger: '.o_barcode_line:first-child .o_edit' },
+    {
+        trigger: 'input.o_field_widget[name=qty_done]',
+        run: 'text 2.2',
+    },
+    { trigger: '.o_save' },
+    {
+        trigger: '.o_barcode_lines',
+        run: function() {
+            helper.assertButtonIsVisible($('.o_barcode_line').eq(0), 'add_quantity');
+            helper.assertLineQuantityOnReservedQty(0, '2.2 / 4');
+            const buttonAddQty = document.querySelector(".o_add_quantity");
+            helper.assert(buttonAddQty.innerText, "+1.8", "Something wrong with the quantities");
+        }
+    },
+]);
+
 tour.register('test_receipt_from_scratch_with_lots_1', {test: true}, [
     {
         trigger: '.o_barcode_client_action',

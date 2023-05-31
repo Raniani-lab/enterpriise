@@ -4,6 +4,7 @@ import BarcodeModel from '@stock_barcode/models/barcode_model';
 import {_t, _lt} from "web.core";
 import { sprintf } from '@web/core/utils/strings';
 import { session } from '@web/session';
+import { formatFloat } from "@web/views/fields/formatters";
 
 export default class BarcodePickingModel extends BarcodeModel {
     constructor(params) {
@@ -13,6 +14,7 @@ export default class BarcodePickingModel extends BarcodeModel {
         this.validateMethod = 'button_validate';
         this.lastScanned.destLocation = false;
         this.shouldShortenLocationName = true;
+        this.precison = params.action.context.precision;
     }
 
     setData(data) {
@@ -46,7 +48,8 @@ export default class BarcodePickingModel extends BarcodeModel {
     }
 
     getIncrementQuantity(line) {
-        return Math.max(this.getQtyDemand(line) - this.getQtyDone(line), 1);
+        const quantityToFormat = Math.max(this.getQtyDemand(line) - this.getQtyDone(line), 1);
+        return parseFloat(formatFloat(quantityToFormat, { digits: [false, this.precison] }));
     }
 
     getQtyDone(line) {

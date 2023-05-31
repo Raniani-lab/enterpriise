@@ -16,6 +16,7 @@ This module makes it possible to manage employee skills during an appraisal proc
         'security/ir.model.access.csv',
         'security/hr_appraisal_skills_security.xml',
         'views/hr_skills_views.xml',
+        'views/hr_appraisal_skill_views.xml',
         'views/hr_appraisal_skills_templates.xml',
         'report/hr_appraisal_skill_report_views.xml'
     ],

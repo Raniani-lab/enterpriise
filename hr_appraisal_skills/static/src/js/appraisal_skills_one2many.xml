@@ -9,13 +9,13 @@
             <attribute name="style"/>
         </xpath>
 
-        <xpath expr="//t[@t-if='!showTable']" position="replace">
-            <div class="ms-4 mt-4">
-                <button t-on-click="props.onAdd" class="btn btn-secondary btn-sm" role="button" t-if="isEditable">
-                    Add new skills
-                </button>
-            </div>
+        <xpath expr="//div[@name='skills_available']//button" position="replace">
+            <button t-on-click="props.onAdd" class="btn btn-secondary btn-sm" role="button" t-if="isEditable">
+                Add new skills
+            </button>
         </xpath>
+
+        <xpath expr="//div[@name='skills_header']" position="replace"/>
     </t>
 
     <t t-name="hr_appraisal_skills.AppraisalSkillsListRenderer.Rows" t-inherit-mode="primary" t-inherit="hr_skills.SkillsListRenderer.Rows">

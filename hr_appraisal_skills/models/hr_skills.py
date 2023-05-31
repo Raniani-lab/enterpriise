@@ -75,10 +75,10 @@ class HrAppraisalSkill(models.Model):
     appraisal_id = fields.Many2one('hr.appraisal', required=True, ondelete='cascade')
     employee_id = fields.Many2one('hr.employee', related='appraisal_id.employee_id', store=True)
     manager_ids = fields.Many2many('hr.employee', compute='_compute_manager_ids', store=True)
-    skill_id = fields.Many2one('hr.skill', required=True)
+    skill_id = fields.Many2one('hr.skill', compute='_compute_skill_id', store=True, domain="[('skill_type_id', '=', skill_type_id)]", readonly=False, required=True)
     previous_skill_level_id = fields.Many2one('hr.skill.level')
     skill_level_id = fields.Many2one('hr.skill.level', compute='_compute_skill_level_id', domain="[('skill_type_id', '=', skill_type_id)]", store=True, readonly=False, required=True)
-    skill_type_id = fields.Many2one(related='skill_id.skill_type_id', store=True)
+    skill_type_id = fields.Many2one('hr.skill.type')
     level_progress = fields.Integer(related='skill_level_id.level_progress')
     justification = fields.Char()
     employee_skill_id = fields.Many2one('hr.employee.skill')
@@ -100,3 +100,11 @@ class HrAppraisalSkill(models.Model):
             else:
                 skill_levels = record.skill_type_id.skill_level_ids
                 record.skill_level_id = skill_levels.filtered('default_level') or skill_levels[0] if skill_levels else False
+
+    @api.depends('skill_type_id')
+    def _compute_skill_id(self):
+        for record in self:
+            if record.skill_type_id:
+                record.skill_id = record.skill_type_id.skill_ids[0] if record.skill_type_id.skill_ids else False
+            else:
+                record.skill_id = False

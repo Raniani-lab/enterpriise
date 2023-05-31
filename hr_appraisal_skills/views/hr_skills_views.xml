@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="hr_appraisal_skill_view_form" model="ir.ui.view">
-        <field name="name">hr.appraisal.skill.form</field>
+    <record id="view_hr_appraisal_form" model="ir.ui.view">
+        <field name="name">hr.appraisal.form.inherit.hr_appraisal_skills</field>
         <field name="model">hr.appraisal</field>
         <field name="inherit_id" ref="hr_appraisal.view_hr_appraisal_form"/>
         <field name="arch" type="xml">
@@ -15,9 +15,9 @@
                                 widget="appraisal_skills_one2many"
                                 context="{'appraisal_state': state}"
                                 readonly="state != 'pending' or ('uid' not in manager_user_ids and not is_manager)"
-                                class="o_appraisal_skill">
-                            <tree editable="bottom">
-                                <field name="skill_type_id" column_invisible="True"/>
+                                class="o_appraisal_skill o_field_appraisal_skills_one2many">
+                            <tree>
+                                <field name="skill_type_id" optional="hidden"/>
                                 <field name="skill_id" width="200px"
                                         options="{'no_create_edit': True}"
                                         context="{'from_skill_dropdown': True}"/>
@@ -27,7 +27,7 @@
                                         options="{'no_create': True}"
                                         context="{'from_skill_level_dropdown': True}"/>
                                 <field name="level_progress" widget="progressbar" width="200px"/>
-                                <field name="justification" width="500px"/>
+                                <field name="justification"/>
                             </tree>
                         </field>
                     </div>

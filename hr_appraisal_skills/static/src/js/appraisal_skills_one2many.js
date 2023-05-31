@@ -4,7 +4,7 @@ import {
     SkillsListRenderer,
     SkillsX2ManyField,
     skillsX2ManyField,
-} from "@hr_skills/fields/skills_one2many";
+} from "@hr_skills/fields/skills_one2many/skills_one2many";
 
 import { registry } from "@web/core/registry";
 

@@ -14,6 +14,9 @@ import { Markup } from 'web.utils';
 import {
     encodeDataBehaviorProps,
 } from "@knowledge/js/knowledge_utils";
+import {
+    isSelectionInSelectors
+} from '@web_editor/js/editor/odoo-editor/src/utils/utils';
 
 Wysiwyg.include({
     defaultOptions: {
@@ -26,42 +29,6 @@ Wysiwyg.include({
     resetEditor: async function () {
         await this._super(...arguments);
         this.$editable[0].dispatchEvent(new Event('refresh_behaviors'));
-    },
-    /**
-     * Check if the selection starts inside a table. This function can be used
-     * as the `isDisabled` property of a command of the PowerBox to disable
-     * a command in a table.
-     * @returns {boolean} true if the command should be filtered
-     */
-    _filterCommandInTable: function () {
-        let anchor = document.getSelection().anchorNode;
-        if (anchor.nodeType !== Node.ELEMENT_NODE) {
-            anchor = anchor.parentElement;
-        }
-        if (anchor && anchor.closest('table')) {
-            return true;
-        }
-        return false;
-    },
-    /**
-     * Check if the selection starts inside a Behavior element.
-     * This function can be used as the `isDisabled` property of a command of
-     * the PowerBox to disable a command in a template.
-     * Example: The content of a /template block is destined to be used in
-     * @see OdooEditor in modules other than Knowledge, where knowledge-specific
-     * commands may not be available, so commands inserting a non-supported
-     * Behavior in the /template content should be disabled.
-     * @returns {boolean} true if the command should be filtered
-     */
-    _filterCommandInBehavior: function () {
-        let anchor = document.getSelection().anchorNode;
-        if (anchor.nodeType !== Node.ELEMENT_NODE) {
-            anchor = anchor.parentElement;
-        }
-        if (anchor && anchor.closest('.o_knowledge_behavior_anchor')) {
-            return true;
-        }
-        return false;
     },
     /**
      * @override
@@ -109,7 +76,7 @@ Wysiwyg.include({
                 priority: 20,
                 description: _t('Upload a file'),
                 fontawesome: 'fa-file',
-                isDisabled: () => this._filterCommandInBehavior() || !this.options.allowCommandFile,
+                isDisabled: () => isSelectionInSelectors('.o_knowledge_behavior_anchor') || !this.options.allowCommandFile,
                 callback: () => {
                     this.openMediaDialog({
                         noVideos: true,
@@ -125,7 +92,7 @@ Wysiwyg.include({
                 priority: 10,
                 description: _t('Add a clipboard section'),
                 fontawesome: 'fa-pencil-square',
-                isDisabled: () => this._filterCommandInBehavior(),
+                isDisabled: () => isSelectionInSelectors('.o_knowledge_behavior_anchor'),
                 callback: () => {
                     this._insertTemplate();
                 },
@@ -135,7 +102,7 @@ Wysiwyg.include({
                 priority: 30,
                 description: _t('Add a table of content'),
                 fontawesome: 'fa-bookmark',
-                isDisabled: () => this._filterCommandInBehavior() || this._filterCommandInTable(),
+                isDisabled: () => isSelectionInSelectors('.o_knowledge_behavior_anchor, table'),
                 callback: () => {
                     this._insertTableOfContent();
                 },
@@ -145,7 +112,7 @@ Wysiwyg.include({
                 priority: 40,
                 description: _t('Insert a Kanban view of article items'),
                 fontawesome: 'fa-th-large',
-                isDisabled: () => this._filterCommandInBehavior() || this._filterCommandInTable(),
+                isDisabled: () => isSelectionInSelectors('.o_knowledge_behavior_anchor, .o_editor_banner, table'),
                 callback: () => {
                     const restoreSelection = preserveCursor(this.odooEditor.document);
                     const viewType = 'kanban';
@@ -168,7 +135,7 @@ Wysiwyg.include({
                 priority: 39,
                 description: _t('Insert a Card view of article items'),
                 fontawesome: 'fa-address-card',
-                isDisabled: () => this._filterCommandInBehavior() || this._filterCommandInTable(),
+                isDisabled: () => isSelectionInSelectors('.o_editor_banner, .o_knowledge_behavior_anchor, table'),
                 callback: () => {
                     const restoreSelection = preserveCursor(this.odooEditor.document);
                     const viewType = 'kanban';
@@ -186,7 +153,7 @@ Wysiwyg.include({
                 priority: 50,
                 description: _t('Insert a List view of article items'),
                 fontawesome: 'fa-th-list',
-                isDisabled: () => this._filterCommandInBehavior() || this._filterCommandInTable(),
+                isDisabled: () => isSelectionInSelectors('.o_editor_banner, .o_knowledge_behavior_anchor, table'),
                 callback: () => {
                     const restoreSelection = preserveCursor(this.odooEditor.document);
                     const viewType = 'list';
@@ -204,7 +171,7 @@ Wysiwyg.include({
                 priority: 29,
                 description: _t('Insert a Calendar view of article items'),
                 fontawesome: 'fa-calendar-plus-o',
-                isDisabled: () => this._filterCommandInBehavior() || this._filterCommandInTable(),
+                isDisabled: () => isSelectionInSelectors('.o_knowledge_behavior_anchor, table'),
                 callback: this._insertItemCalendar.bind(this),
             }, {
                 category: _t('Knowledge'),
@@ -212,7 +179,7 @@ Wysiwyg.include({
                 priority: 60,
                 description: _t('Show nested articles'),
                 fontawesome: 'fa-list',
-                isDisabled: () => this._filterCommandInBehavior() || this._filterCommandInTable(),
+                isDisabled: () => isSelectionInSelectors('.o_knowledge_behavior_anchor, table'),
                 callback: () => {
                     this._insertArticlesStructure(false);
                 }

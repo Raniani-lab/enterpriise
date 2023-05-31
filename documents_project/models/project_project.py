@@ -145,6 +145,8 @@ class ProjectProject(models.Model):
                             'Please update the company of all projects so that they remain in the same company as their workspace, or leave the company of the "%s" workspace blank.',
                             other_projects.company_id.name, '\n'.join(lines), project.documents_folder_id.name))
 
+        if 'name' in vals and len(self.documents_folder_id.project_ids) == 1 and self.name == self.documents_folder_id.name:
+            self.documents_folder_id.name = vals['name']
         res = super().write(vals)
         if 'company_id' in vals:
             for project in self:

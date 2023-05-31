@@ -98,3 +98,10 @@
         }
     }
 }
+
+// Ensuring SuperUser Design menu is not compressed in Enterprise
+// ============================================================================
+body.o_is_superuser .o_menu_systray {
+    border-image-outset: map-get($border-widths, 5);
+}
+

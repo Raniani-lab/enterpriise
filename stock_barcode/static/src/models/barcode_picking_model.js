@@ -14,7 +14,7 @@ export default class BarcodePickingModel extends BarcodeModel {
         this.validateMethod = 'button_validate';
         this.lastScanned.destLocation = false;
         this.shouldShortenLocationName = true;
-        this.precison = params.action.context.precision;
+        this.precision = params.action.context.precision;
     }
 
     setData(data) {
@@ -49,7 +49,7 @@ export default class BarcodePickingModel extends BarcodeModel {
 
     getIncrementQuantity(line) {
         const quantityToFormat = Math.max(this.getQtyDemand(line) - this.getQtyDone(line), 1);
-        return parseFloat(formatFloat(quantityToFormat, { digits: [false, this.precison] }));
+        return parseFloat(formatFloat(quantityToFormat, { digits: [false, this.precision], thousandsSep: "", decimalPoint: "." }));
     }
 
     getQtyDone(line) {

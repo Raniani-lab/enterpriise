@@ -407,6 +407,13 @@ export default class BarcodePickingModel extends BarcodeModel {
         return true;
     }
 
+    get canScrap() {
+        const { picking_type_code, state } = this.record;
+        return (picking_type_code === "incoming" && state === "done") ||
+               (picking_type_code === "outgoing" && state !== "done") ||
+               (picking_type_code === "internal");
+    }
+
     get canSelectLocation() {
         return !(this.config.restrict_scan_source_location || this.config.restrict_scan_dest_location != 'optional');
     }
@@ -645,12 +652,7 @@ export default class BarcodePickingModel extends BarcodeModel {
                 method: 'action_print_packges',
             });
         }
-        const picking_type_code = this.record.picking_type_code;
-        const picking_state = this.record.state;
-        if ( (picking_type_code === 'incoming') && (picking_state === 'done') ||
-             (picking_type_code === 'outgoing') && (picking_state !== 'done') ||
-             (picking_type_code === 'internal')
-           ) {
+        if (this.canScrap) {
             buttons.push({
                 name: _t("Scrap"),
                 class: 'o_scrap',
@@ -953,6 +955,7 @@ export default class BarcodePickingModel extends BarcodeModel {
             'O-CMD.cancel': this._cancel.bind(this),
             'O-BTN.print-slip': this.print.bind(this, false, 'action_print_delivery_slip'),
             'O-BTN.print-op': this.print.bind(this, false, 'do_print_picking'),
+            "O-BTN.scrap": this._scrap.bind(this),
         });
     }
 
@@ -1307,6 +1310,15 @@ export default class BarcodePickingModel extends BarcodeModel {
         } else {
             this.trigger('refresh');
         }
+    }
+
+    async _scrap() {
+        if (!this.canScrap) {
+            const message = _t("You can't register scrap at this state of the operation");
+            return this.notification(message, { type: "warning" });
+        }
+        const action = await this.orm.call(this.resModel, "button_scrap", [[this.resId]]);
+        this.trigger("do-action", { action });
     }
 
     /**

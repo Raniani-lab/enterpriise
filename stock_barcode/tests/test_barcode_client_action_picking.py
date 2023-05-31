@@ -1773,6 +1773,34 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         self.start_tour(url, 'test_receipt_delete_button', login='admin', timeout=180)
         self.assertEqual(len(receipt_picking.move_line_ids), 2, "2 lines expected: product1 + product2")
 
+    def test_scrap(self):
+        """ Checks the scrap button is displayed for when it's possible to scrap
+        and the corresponding barcode command follows the same rules."""
+        # Creates a receipt and a delivery.
+        receipt_form = Form(self.env['stock.picking'])
+        receipt_form.picking_type_id = self.picking_type_in
+        with receipt_form.move_ids_without_package.new() as move:
+            move.product_id = self.product1
+            move.product_uom_qty = 1
+        receipt_picking = receipt_form.save()
+        receipt_picking.action_confirm()
+        receipt_picking.action_assign()
+        receipt_picking.name = "receipt_scrap_test"
+
+        delivery_form = Form(self.env['stock.picking'])
+        delivery_form.picking_type_id = self.picking_type_out
+        with delivery_form.move_ids_without_package.new() as move:
+            move.product_id = self.product1
+            move.product_uom_qty = 1
+        delivery_picking = delivery_form.save()
+        delivery_picking.action_confirm()
+        delivery_picking.action_assign()
+        delivery_picking.name = "delivery_scrap_test"
+        # Opens the barcode main menu to be able to open the pickings by scanning their name.
+        action_id = self.env.ref('stock_barcode.stock_barcode_action_main_menu')
+        url = "/web#action=" + str(action_id.id)
+        self.start_tour(url, "test_scrap", login="admin", timeout=180)
+
     def test_show_entire_package(self):
         """ Enables 'Move Entire Packages' for delivery and then creates two deliveries:
           - One where we use package level;

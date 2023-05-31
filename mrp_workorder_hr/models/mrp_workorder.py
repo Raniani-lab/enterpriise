@@ -54,7 +54,7 @@ class MrpWorkorder(models.Model):
         if employee_id in self.employee_ids.ids and any(not t.date_end for t in self.time_ids if t.employee_id.id == employee_id):
             return
         self.employee_ids = [Command.link(employee_id)]
-        time_data = self._prepare_timeline_vals(self.duration, datetime.now())
+        time_data = self._prepare_timeline_vals(self.duration, fields.Datetime.now())
         time_data['employee_id'] = employee_id
         self.env['mrp.workcenter.productivity'].create(time_data)
 
@@ -129,7 +129,7 @@ class MrpWorkorder(models.Model):
     def get_working_duration(self):
         self.ensure_one()
         if self.workcenter_id.allow_employee:
-            now = datetime.now()
+            now = fields.Datetime.now()
             return self._intervals_duration([(t.date_start, now, t) for t in self.time_ids if not t.date_end])
         return super().get_working_duration()
 

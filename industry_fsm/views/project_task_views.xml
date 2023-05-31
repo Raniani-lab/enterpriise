@@ -108,7 +108,7 @@
                 <field name="is_fsm" invisible="1"/>
             </xpath>
             <xpath expr="//field[@name='child_ids']/tree/field[@name='partner_id']" position="attributes">
-                <attribute name="attrs">{'required': [('is_fsm', '=', True)]}</attribute>
+                <attribute name="attrs">{'column_invisible': [('parent.partner_id', '=', False)], 'required': [('is_fsm', '=', True), ('parent.partner_id', '!=', False)]}</attribute>
             </xpath>
             <field name="partner_id" position="after">
                 <label for="action_fsm_navigate" attrs="{'invisible': [('is_fsm', '=', False)]}"/>

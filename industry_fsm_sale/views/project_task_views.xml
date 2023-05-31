@@ -221,7 +221,7 @@
                 <attribute name="attrs">{'required': [('is_fsm', '=', True)], 'invisible': [('allow_billable', '=', False), ('is_fsm', '=', False)]}</attribute>
             </field>
             <xpath expr="//field[@name='child_ids']/tree/field[@name='partner_id']" position="attributes">
-                <attribute name="attrs">{'required': [('is_fsm', '=', True)], 'column_invisible': [('parent.allow_billable', '=', False), ('parent.is_fsm', '=', False)], 'invisible': [('allow_billable', '=', False), ('is_fsm', '=', False)]}</attribute>
+                <attribute name="attrs">{'required': [('is_fsm', '=', True), ('parent.partner_id', '!=', False)], 'column_invisible': ['|', ('parent.partner_id', '=', False), '&amp;', ('parent.allow_billable', '=', False), ('parent.is_fsm', '=', False)], 'invisible': [('allow_billable', '=', False), ('is_fsm', '=', False)]}</attribute>
             </xpath>
             <xpath expr="//field[@name='depend_on_ids']/tree/field[@name='partner_id']" position="attributes">
                 <attribute name="attrs">{'required': [('is_fsm', '=', True)], 'column_invisible': [('parent.allow_billable', '=', False), ('parent.is_fsm', '=', False)], 'invisible': [('allow_billable', '=', False), ('is_fsm', '=', False)]}</attribute>

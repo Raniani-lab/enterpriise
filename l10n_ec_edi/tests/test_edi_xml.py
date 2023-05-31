@@ -56,11 +56,11 @@ class TestEcEdiXmls(TestEcEdiCommon):
                     <precioTotalSinImpuesto>357.14</precioTotalSinImpuesto>
                     <impuestos>
                         <impuesto>
-                        <codigo>2</codigo>
-                        <codigoPorcentaje>2</codigoPorcentaje>
-                        <tarifa>12.000000</tarifa>
-                        <baseImponible>357.140000</baseImponible>
-                        <valor>42.86</valor>
+                            <codigo>2</codigo>
+                            <codigoPorcentaje>2</codigoPorcentaje>
+                            <tarifa>12.000000</tarifa>
+                            <baseImponible>357.140000</baseImponible>
+                            <valor>42.86</valor>
                         </impuesto>
                     </impuestos>
                 </detalle>
@@ -111,38 +111,38 @@ class TestEcEdiXmls(TestEcEdiCommon):
             </xpath>
             <xpath expr="//detalles/detalle" position="after">
                 <detalle>
-                <codigoPrincipal>N/A</codigoPrincipal>
-                <descripcion>product_b</descripcion>
-                <cantidad>12.120000</cantidad>
-                <precioUnitario>1.230198</precioUnitario>
-                <descuento>0.000000</descuento>
-                <precioTotalSinImpuesto>14.91</precioTotalSinImpuesto>
-                <impuestos>
-                    <impuesto>
-                    <codigo>2</codigo>
-                    <codigoPorcentaje>2</codigoPorcentaje>
-                    <tarifa>12.000000</tarifa>
-                    <baseImponible>14.910000</baseImponible>
-                    <valor>1.79</valor>
-                    </impuesto>
-                </impuestos>
+                    <codigoPrincipal>N/A</codigoPrincipal>
+                    <descripcion>product_b</descripcion>
+                    <cantidad>12.120000</cantidad>
+                    <precioUnitario>1.230198</precioUnitario>
+                    <descuento>0.000000</descuento>
+                    <precioTotalSinImpuesto>14.91</precioTotalSinImpuesto>
+                    <impuestos>
+                        <impuesto>
+                            <codigo>2</codigo>
+                            <codigoPorcentaje>2</codigoPorcentaje>
+                            <tarifa>12.000000</tarifa>
+                            <baseImponible>14.910000</baseImponible>
+                            <valor>1.79</valor>
+                        </impuesto>
+                    </impuestos>
                 </detalle>
                 <detalle>
-                <codigoPrincipal>N/A</codigoPrincipal>
-                <descripcion>product_b</descripcion>
-                <cantidad>120.000000</cantidad>
-                <precioUnitario>0.120042</precioUnitario>
-                <descuento>3.030000</descuento>
-                <precioTotalSinImpuesto>11.38</precioTotalSinImpuesto>
-                <impuestos>
-                    <impuesto>
-                    <codigo>2</codigo>
-                    <codigoPorcentaje>2</codigoPorcentaje>
-                    <tarifa>12.000000</tarifa>
-                    <baseImponible>11.380000</baseImponible>
-                    <valor>1.55</valor>
-                    </impuesto>
-                </impuestos>
+                    <codigoPrincipal>N/A</codigoPrincipal>
+                    <descripcion>product_b</descripcion>
+                    <cantidad>120.000000</cantidad>
+                    <precioUnitario>0.120042</precioUnitario>
+                    <descuento>3.030000</descuento>
+                    <precioTotalSinImpuesto>11.38</precioTotalSinImpuesto>
+                    <impuestos>
+                        <impuesto>
+                            <codigo>2</codigo>
+                            <codigoPorcentaje>2</codigoPorcentaje>
+                            <tarifa>12.000000</tarifa>
+                            <baseImponible>11.380000</baseImponible>
+                            <valor>1.55</valor>
+                        </impuesto>
+                    </impuestos>
                 </detalle>
             </xpath>
         """ if not xpath else xpath)
@@ -194,47 +194,47 @@ class TestEcEdiXmls(TestEcEdiCommon):
                     <precioTotalSinImpuesto>800.00</precioTotalSinImpuesto>
                     <impuestos>
                         <impuesto>
-                        <codigo>2</codigo>
-                        <codigoPorcentaje>2</codigoPorcentaje>
-                        <tarifa>12.000000</tarifa>
-                        <baseImponible>800.000000</baseImponible>
-                        <valor>96.00</valor>
+                            <codigo>2</codigo>
+                            <codigoPorcentaje>2</codigoPorcentaje>
+                            <tarifa>12.000000</tarifa>
+                            <baseImponible>800.000000</baseImponible>
+                            <valor>96.00</valor>
                         </impuesto>
                     </impuestos>
                     </detalle>
                 <detalle>
-                <codigoPrincipal>N/A</codigoPrincipal>
-                <descripcion>product_b</descripcion>
-                <cantidad>12.120000</cantidad>
-                <precioUnitario>2.460396</precioUnitario>
-                <descuento>0.000000</descuento>
-                <precioTotalSinImpuesto>29.82</precioTotalSinImpuesto>
-                <impuestos>
-                    <impuesto>
-                    <codigo>2</codigo>
-                    <codigoPorcentaje>2</codigoPorcentaje>
-                    <tarifa>12.000000</tarifa>
-                    <baseImponible>29.820000</baseImponible>
-                    <valor>3.58</valor>
-                    </impuesto>
-                </impuestos>
+                    <codigoPrincipal>N/A</codigoPrincipal>
+                    <descripcion>product_b</descripcion>
+                    <cantidad>12.120000</cantidad>
+                    <precioUnitario>2.460396</precioUnitario>
+                    <descuento>0.000000</descuento>
+                    <precioTotalSinImpuesto>29.82</precioTotalSinImpuesto>
+                    <impuestos>
+                        <impuesto>
+                            <codigo>2</codigo>
+                            <codigoPorcentaje>2</codigoPorcentaje>
+                            <tarifa>12.000000</tarifa>
+                            <baseImponible>29.820000</baseImponible>
+                            <valor>3.58</valor>
+                        </impuesto>
+                    </impuestos>
                 </detalle>
                 <detalle>
-                <codigoPrincipal>N/A</codigoPrincipal>
-                <descripcion>product_b</descripcion>
-                <cantidad>120.000000</cantidad>
-                <precioUnitario>0.240084</precioUnitario>
-                <descuento>6.060000</descuento>
-                <precioTotalSinImpuesto>22.76</precioTotalSinImpuesto>
-                <impuestos>
-                    <impuesto>
-                    <codigo>2</codigo>
-                    <codigoPorcentaje>2</codigoPorcentaje>
-                    <tarifa>12.000000</tarifa>
-                    <baseImponible>22.760000</baseImponible>
-                    <valor>3.10</valor>
-                    </impuesto>
-                </impuestos>
+                    <codigoPrincipal>N/A</codigoPrincipal>
+                    <descripcion>product_b</descripcion>
+                    <cantidad>120.000000</cantidad>
+                    <precioUnitario>0.240084</precioUnitario>
+                    <descuento>6.060000</descuento>
+                    <precioTotalSinImpuesto>22.76</precioTotalSinImpuesto>
+                    <impuestos>
+                        <impuesto>
+                            <codigo>2</codigo>
+                            <codigoPorcentaje>2</codigoPorcentaje>
+                            <tarifa>12.000000</tarifa>
+                            <baseImponible>22.760000</baseImponible>
+                            <valor>3.10</valor>
+                        </impuesto>
+                    </impuestos>
                 </detalle>
             </xpath>
         """)
@@ -330,8 +330,8 @@ class TestEcEdiXmls(TestEcEdiCommon):
                 'wizard_id': wizard.id,
                 'tax_id': self._get_tax_by_xml_id('tax_withhold_profit_502_422').ids[0],
                 'taxsupport_code': '02',
-                'base': 400.00,
-                'amount':88, # VAT, 22.00% of 400
+                'base': 400,
+                'amount': 88,  # VAT, 22.00% of 400
             })
             wizard.foreign_regime = '01'
         xpath = self.get_withhold_xpath_for_taxes(tax_percent='22.00', withhold_amount='88.00', tax_code=502)
@@ -378,13 +378,14 @@ class TestEcEdiXmls(TestEcEdiCommon):
         """
         invoice_args = {'partner_id': self.partner_b.id}
         invoice_line_args = [Command.create({
-                'product_id': self.product_a.id,
-                'price_unit': 100.0,
-                'quantity': 5,
-                'discount': 20,
-                'tax_ids': [Command.set(self._get_tax_by_xml_id('tax_vat_518_sup_02').ids)],
-            })]
-        self.get_and_test_xml_tree_in_withhold(line_creation_method=create_wth_lines, xpath=xpath, invoice_args=invoice_args, invoice_line_args=invoice_line_args)
+            'product_id': self.product_a.id,
+            'price_unit': 100.0,
+            'quantity': 5,
+            'discount': 20,
+            'tax_ids': [Command.set(self._get_tax_by_xml_id('tax_vat_518_sup_02').ids)],
+        })]
+        self.get_and_test_xml_tree_in_withhold(line_creation_method=create_wth_lines, xpath=xpath,
+                                               invoice_args=invoice_args, invoice_line_args=invoice_line_args)
 
     def test_xml_tree_in_withhold_suggested_tax_credit_card(self):
         """Checks the XML of a purchase withhold whose invoice's payment method is a credit card.
@@ -462,64 +463,65 @@ class TestEcEdiXmls(TestEcEdiCommon):
                     <importeTotal>896.00</importeTotal>
                     <impuestosDocSustento>
                         <impuestoDocSustento>
-                        <codImpuestoDocSustento>2</codImpuestoDocSustento>
-                        <codigoPorcentaje>2</codigoPorcentaje>
-                        <baseImponible>800.00</baseImponible>
-                        <tarifa>12.00</tarifa>
-                        <valorImpuesto>96.00</valorImpuesto>
+                            <codImpuestoDocSustento>2</codImpuestoDocSustento>
+                            <codigoPorcentaje>2</codigoPorcentaje>
+                            <baseImponible>800.00</baseImponible>
+                            <tarifa>12.00</tarifa>
+                            <valorImpuesto>96.00</valorImpuesto>
                         </impuestoDocSustento>
                     </impuestosDocSustento>
                     <retenciones>
                         <retencion>
-                        <codigo>2</codigo>
-                        <codigoRetencion>9</codigoRetencion>
-                        <baseImponible>42.00</baseImponible>
-                        <porcentajeRetener>10.00</porcentajeRetener>
-                        <valorRetenido>4.20</valorRetenido>
+                            <codigo>2</codigo>
+                            <codigoRetencion>9</codigoRetencion>
+                            <baseImponible>42.00</baseImponible>
+                            <porcentajeRetener>10.00</porcentajeRetener>
+                            <valorRetenido>4.20</valorRetenido>
                         </retencion>
                     </retenciones>
                     <pagos>
                         <pago>
-                        <formaPago>01</formaPago>
-                        <total>896.00</total>
+                            <formaPago>01</formaPago>
+                            <total>896.00</total>
                         </pago>
                     </pagos>
-                    </docSustento>
+                </docSustento>
                     <docSustento>
-                    <codSustento>07</codSustento>
-                    <codDocSustento>01</codDocSustento>
-                    <numDocSustento>001001000000001</numDocSustento>
-                    <fechaEmisionDocSustento>25/01/2022</fechaEmisionDocSustento>
-                    <pagoLocExt>01</pagoLocExt>
-                    <totalSinImpuestos>400.00</totalSinImpuestos>
-                    <importeTotal>448.00</importeTotal>
-                    <impuestosDocSustento>
-                        <impuestoDocSustento>
-                        <codImpuestoDocSustento>2</codImpuestoDocSustento>
-                        <codigoPorcentaje>2</codigoPorcentaje>
-                        <baseImponible>400.00</baseImponible>
-                        <tarifa>12.00</tarifa>
-                        <valorImpuesto>48.00</valorImpuesto>
-                        </impuestoDocSustento>
-                    </impuestosDocSustento>
-                    <retenciones>
-                        <retencion>
-                        <codigo>1</codigo>
-                        <codigoRetencion>304D</codigoRetencion>
-                        <baseImponible>42.00</baseImponible>
-                        <porcentajeRetener>8.00</porcentajeRetener>
-                        <valorRetenido>3.36</valorRetenido>
-                        </retencion>
-                    </retenciones>
-                    <pagos>
-                        <pago>
-                        <formaPago>01</formaPago>
-                        <total>448.00</total>
-                        </pago>
-                    </pagos>
+                        <codSustento>07</codSustento>
+                        <codDocSustento>01</codDocSustento>
+                        <numDocSustento>001001000000001</numDocSustento>
+                        <fechaEmisionDocSustento>25/01/2022</fechaEmisionDocSustento>
+                        <pagoLocExt>01</pagoLocExt>
+                        <totalSinImpuestos>400.00</totalSinImpuestos>
+                        <importeTotal>448.00</importeTotal>
+                        <impuestosDocSustento>
+                            <impuestoDocSustento>
+                                <codImpuestoDocSustento>2</codImpuestoDocSustento>
+                                <codigoPorcentaje>2</codigoPorcentaje>
+                                <baseImponible>400.00</baseImponible>
+                                <tarifa>12.00</tarifa>
+                                <valorImpuesto>48.00</valorImpuesto>
+                            </impuestoDocSustento>
+                        </impuestosDocSustento>
+                        <retenciones>
+                            <retencion>
+                                <codigo>1</codigo>
+                                <codigoRetencion>304D</codigoRetencion>
+                                <baseImponible>42.00</baseImponible>
+                                <porcentajeRetener>8.00</porcentajeRetener>
+                                <valorRetenido>3.36</valorRetenido>
+                            </retencion>
+                        </retenciones>
+                        <pagos>
+                            <pago>
+                                <formaPago>01</formaPago>
+                                <total>448.00</total>
+                            </pago>
+                        </pagos>
                     </docSustento>
                 </docsSustento>
-            </xpath>""")
+            </xpath>
+            """)
 
     def test_xml_withholding_purchase_invoice(self, custom_xpath=False):
         # test the prebuild xml withhold for purchase invoice

@@ -1292,7 +1292,7 @@ QUnit.module("documents", {}, function () {
                 assert.containsOnce(target, ".o-FileViewer div[title='Split PDF']");
                 assert.containsOnce(
                     target,
-                    `iframe[data-src="/web/static/lib/pdfjs/web/viewer.html?file=${getOrigin()}/web/content/2#pagemode=none"]`,
+                    `iframe[data-src="/web/static/lib/pdfjs/web/viewer.html?file=${encodeURIComponent(getOrigin()+'/web/content/2?model=documents.document')}#pagemode=none"]`,
                     "should have an iframe with the correct pdfviewer src"
                 );
 

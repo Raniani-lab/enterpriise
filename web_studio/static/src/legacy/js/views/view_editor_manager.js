@@ -470,7 +470,7 @@ var ViewEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
                         prom = self._rpc({
                             model:"ir.model.fields",
                             method: "search_count",
-                            args: [[['relation', '=', modelName], ['ttype', '=', 'many2one']]],
+                            args: [[['relation', '=', modelName], ['ttype', '=', 'many2one'], ["store", "=", true]]],
                         });
                     } else {
                         prom = Promise.resolve(true);

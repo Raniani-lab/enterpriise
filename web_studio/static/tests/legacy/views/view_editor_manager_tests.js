@@ -5093,7 +5093,10 @@ QUnit.module('ViewEditorManager', {
     });
 
     QUnit.test('add a one2many field', async function (assert) {
-        assert.expect(8);
+        assert.expect(9);
+
+        this.data["ir.model.fields"].fields.store = { type: "boolean", string: "Store"};
+        this.data["ir.model.fields"].records.find(r => r.name === "abc").store = true;
 
         var arch = '<form><group>' +
                         '<field name="display_name"/>' +
@@ -5103,13 +5106,18 @@ QUnit.module('ViewEditorManager', {
             arch: arch,
             mockRPC: function (route, args) {
                 if (args.method === 'name_search') {
+                    assert.deepEqual(args.kwargs.args, [
+                        ['relation', '=', "coucou"],
+                        ['ttype', '=', 'many2one'],
+                        ['model_id.abstract', '=', false],
+                        ['store', '=', true]
+                    ])
                     return Promise.resolve([
                         [1, 'Field 1'],
-                        [2, 'Field 2'],
                     ]);
                 }
                 if (args.method === 'search_count' && args.model === 'ir.model.fields') {
-                    assert.deepEqual(args.args, [[['relation', '=', 'coucou'], ['ttype', '=', 'many2one']]],
+                    assert.deepEqual(args.args, [[['relation', '=', 'coucou'], ['ttype', '=', 'many2one'], ['store', '=', true]]],
                         "the domain should be correctly set when checking if the m2o for o2m exists or not");
                 }
                 if (route === '/web_studio/edit_view') {
@@ -5150,7 +5158,7 @@ QUnit.module('ViewEditorManager', {
             arch: arch,
             mockRPC: function (route, args) {
                 if (args.method === 'search_count' && args.model === 'ir.model.fields') {
-                    assert.deepEqual(args.args, [[['relation', '=', 'partner'], ['ttype', '=', 'many2one']]],
+                    assert.deepEqual(args.args, [[['relation', '=', 'partner'], ['ttype', '=', 'many2one'], ['store', '=', true]]],
                         "the domain should be correctly set when checking if the m2o for o2m exists or not");
                 }
             },

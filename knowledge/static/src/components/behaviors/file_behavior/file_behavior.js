@@ -13,6 +13,7 @@ import {
     BehaviorToolbar,
     BehaviorToolbarButton,
 } from "@knowledge/components/behaviors/behavior_toolbar/behavior_toolbar";
+import { download } from "@web/core/network/download";
 
 
 export class FileBehavior extends AbstractBehavior {
@@ -58,15 +59,10 @@ export class FileBehavior extends AbstractBehavior {
         const title = fileLink.getAttribute('title');
         const href = fileLink.getAttribute('href');
         try {
-            const response = await window.fetch(href);
-            const blob = await response.blob();
-            const file = new Blob([blob], {
-                type: 'application/octet-stream'
+            await download({
+                data: {},
+                url: href,
             });
-            const downloadLink = document.createElement('a');
-            downloadLink.href = URL.createObjectURL(file);
-            downloadLink.download = title;
-            downloadLink.click();
         } catch {
             this.dialogService.add(AlertDialog, {
                 body: sprintf(this.env._t('Oops, the file %s could not be found. Please replace this file box by a new one to re-upload the file.'), title),

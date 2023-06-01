@@ -1166,6 +1166,30 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual(vem.$('tfoot tr td.o_list_number').text(), "", "Total should be ''");
     });
 
+    QUnit.test('List readonly attribute should not set force_save', async function (assert) {
+        assert.expect(2);
+
+        var arch = '<tree><field name="display_name"/><field name="croissant"/></tree>';
+        var vem = await studioTestUtils.createViewEditorManager({
+            model: "coucou",
+            arch: arch,
+            mockRPC: function(route, args) {
+                if (route === '/web_studio/edit_view') {
+                    assert.strictEqual(args.operations[0].new_attrs.readonly, "1",
+                        "Readonly attribute equals to 1");
+                    assert.notOk("force_save" in args.operations[0].new_attrs,
+                        'No "force_save" attributes');
+                    return getCurrentMockServer()._mockReturnView(arch, "coucou");
+                }
+            }
+        });
+
+        // select data cell
+        await testUtils.dom.click(vem.$('.o_web_studio_view_renderer').find('[data-name="display_name"]'));
+        // check readonly
+        await testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('input#readonly'));
+    });
+
     QUnit.module('Form');
 
     QUnit.test('empty form editor', async function (assert) {
@@ -1951,7 +1975,7 @@ QUnit.module('ViewEditorManager', {
 
     QUnit.test("notebook with empty page", async (assert) => {
         assert.expect(1);
-        
+
         var vem = await studioTestUtils.createViewEditorManager({
             model: 'coucou',
             arch: `<form>
@@ -2544,6 +2568,30 @@ QUnit.module('ViewEditorManager', {
 
         await click(vem.el.querySelector("button.oe_stat_button[data-studio-xpath]"));
         assert.strictEqual(vem.el.querySelector(".o_web_studio_sidebar #rainbow").checked, false);
+    });
+
+    QUnit.test('Form readonly attribute should set force_save to True', async function (assert) {
+        assert.expect(2);
+
+        var arch = '<form><field name="display_name"/><field name="croissant"/></form>';
+        var vem = await studioTestUtils.createViewEditorManager({
+            model: "coucou",
+            arch: arch,
+            mockRPC: function(route, args) {
+                if (route === '/web_studio/edit_view') {
+                    assert.strictEqual(args.operations[0].new_attrs.readonly, "1",
+                        "Readonly attribute equals to 1");
+                    assert.strictEqual(args.operations[0].new_attrs.force_save, "True",
+                        '"force_save" sould be equal "True"');
+                    return getCurrentMockServer()._mockReturnView(arch, "coucou");
+                }
+            }
+        });
+
+        // select data cell
+        await testUtils.dom.click(vem.$('.o_web_studio_view_renderer').find('[name="display_name"]'));
+        // check readonly
+        await testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('input#readonly'));
     });
 
     QUnit.module('Kanban');

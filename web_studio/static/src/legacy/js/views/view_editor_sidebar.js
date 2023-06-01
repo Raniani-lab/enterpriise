@@ -1175,7 +1175,7 @@ export const ViewEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
                     var newModifiers = _.extend({}, this.state.modifiers);
                     newModifiers[attribute] = $input.is(':checked');
                     new_attrs = this._getNewAttrsFromModifiers(newModifiers);
-                    if (attribute === 'readonly' && $input.is(':checked')) {
+                    if (this.view_type == "form" && attribute === 'readonly' && $input.is(':checked')) {
                         new_attrs.force_save = 'True';
                     }
                 }

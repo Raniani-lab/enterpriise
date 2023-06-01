@@ -2,11 +2,10 @@
 import { Reactive } from "@web/core/utils/reactive";
 
 export class Product extends Reactive {
-    constructor([id, productCategoryId, productName]) {
+    constructor([id, productName]) {
         super();
 
         this.id = id;
-        this.categoryId = productCategoryId;
         this.name = productName;
     }
 }

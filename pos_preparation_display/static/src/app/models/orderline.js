@@ -7,7 +7,7 @@ export class Orderline extends Reactive {
             id,
             internal_note = "",
             product_cancelled,
-            product_category_id,
+            product_category_ids,
             product_id,
             product_name,
             product_quantity,
@@ -20,7 +20,7 @@ export class Orderline extends Reactive {
         this.id = id;
         this.internalNote = internal_note;
         this.productCancelled = product_cancelled;
-        this.productCategoryId = product_category_id;
+        this.productCategoryIds = product_category_ids;
         this.productId = product_id;
         this.productName = product_name;
         this.productQuantity = product_quantity;

@@ -16,7 +16,7 @@ class PosPreparationDisplayOrderline(models.Model):
     def change_line_status(self, status):
         orderlines_status = []
 
-        categories = self.mapped('product_id.pos_categ_id')
+        categories = self.mapped('product_id.pos_categ_ids')
         preparation_displays = self.env['pos_preparation_display.display'].search(['|', ('category_ids', 'in', categories.ids), ('category_ids', '=', False)])
 
         for orderline in self:

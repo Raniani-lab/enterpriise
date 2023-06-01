@@ -42,8 +42,6 @@ export class PreparationDisplay extends Reactive {
 
     filterOrders() {
         const stages = this.stages;
-        const selectedCategories = this.selectedCategories;
-        const selectedProducts = this.selectedProducts;
         const countedOrders = new Set();
         let ordersToDisplay = [];
 
@@ -52,24 +50,15 @@ export class PreparationDisplay extends Reactive {
             .filter((order) => {
                 return order.orderlines.find((orderline) => {
                     // the order must be in selected categories or products (if set) and must be flag as displayed.
-                    if (
-                        (selectedProducts.has(orderline.productId) ||
-                            selectedCategories.has(orderline.productCategoryId) ||
-                            (selectedProducts.size === 0 && selectedCategories.size === 0)) &&
-                        order.displayed
-                    ) {
-                        if (!countedOrders.has(order.id)) {
-                            this.stages.get(order.stageId).orderCount++;
-                            countedOrders.add(order.id);
-                        }
-
-                        // second filter, if a stage is selected the order must be in.
-                        if (order.stageId !== this.selectedStageId && this.selectedStageId) {
-                            return false;
-                        }
-
-                        return true;
+                    if (!this.checkOrderlineVisibility(orderline) || !order.displayed) {
+                        return;
                     }
+                    if (!countedOrders.has(order.id)) {
+                        this.stages.get(order.stageId).orderCount++;
+                        countedOrders.add(order.id);
+                    }
+                    // second filter, if a stage is selected the order must be in.
+                    return !this.selectedStageId || order.stageId === this.selectedStageId
                 });
             })
             .sort((a, b) => {
@@ -224,22 +213,22 @@ export class PreparationDisplay extends Reactive {
 
             const orderObj = new Order(order);
 
-            orderObj.orderlines = order.orderlines.reduce((orderlines, value) => {
-                const orderline = new Orderline(value, orderObj);
+            orderObj.orderlines = order.orderlines.map((line) => {
+                const orderline = new Orderline(line, orderObj);
                 const product = new Product([
                     orderline.productId,
-                    orderline.productCategoryId,
                     orderline.productName,
                 ]);
 
                 this.products[product.id] = product;
                 this.orderlines[orderline.id] = orderline;
-                this.categories[orderline.productCategoryId]?.orderlines?.push(orderline);
-                this.categories[orderline.productCategoryId]?.productIds?.add(orderline.productId);
-                orderlines.push(orderline);
+                orderline.productCategoryIds.forEach((categoryId) => {
+                    this.categories[categoryId]?.orderlines?.push(orderline);
+                    this.categories[categoryId]?.productIds?.add(orderline.productId);
+                });
 
-                return orderlines;
-            }, []);
+                return orderline;
+            });
 
             if (orderObj.orderlines.length > 0) {
                 orders[order.id] = orderObj;
@@ -378,10 +367,12 @@ export class PreparationDisplay extends Reactive {
     }
 
     checkOrderlineVisibility(orderline) {
+        const selectedCategories = this.selectedCategories;
+        const selectedProducts = this.selectedProducts;
         return (
-            this.selectedCategories.has(orderline.productCategoryId) ||
-            this.selectedProducts.has(orderline.productId) ||
-            (this.selectedCategories.size === 0 && this.selectedProducts.size === 0)
+            orderline.productCategoryIds.some((categoryId) => selectedCategories.has(categoryId)) ||
+            selectedProducts.has(orderline.productId) ||
+            (selectedCategories.size === 0 && selectedProducts.size === 0)
         );
     }
 

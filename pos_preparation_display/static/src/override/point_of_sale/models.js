@@ -20,7 +20,7 @@ patch(Order.prototype, "pos_preparation_display.Order", {
                 changes
                     .filter((change) => {
                         const product = this.pos.db.get_product_by_id(change.product_id);
-                        return product.pos_categ_id[0];
+                        return product.pos_categ_ids.length;
                     })
                     .map((change) => {
                         const product = this.pos.db.get_product_by_id(change.product_id);
@@ -28,13 +28,12 @@ patch(Order.prototype, "pos_preparation_display.Order", {
                         if (type === "cancelled" && change.quantity > 0) {
                             quantity = -change.quantity;
                         }
-
                         return {
                             todo: true,
                             internal_note: change.note,
                             product_id: change.product_id,
                             product_quantity: quantity,
-                            product_category_id: product.pos_categ_id[0],
+                            product_category_ids: product.pos_categ_ids,
                         };
                     })
         );

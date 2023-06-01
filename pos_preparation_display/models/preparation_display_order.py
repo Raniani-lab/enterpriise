@@ -22,8 +22,8 @@ class PosPreparationDisplayOrder(models.Model):
         product_categories = []
 
         for orderline in order['preparation_display_order_line_ids']:
-            product_categories.append(orderline['product_category_id'])
-            del orderline['product_category_id']
+            product_categories.extend(orderline['product_category_ids'])
+            del orderline['product_category_ids']
 
             if orderline['product_quantity'] > 0:
                 positive_orderlines.append(Command.create(orderline))
@@ -77,7 +77,7 @@ class PosPreparationDisplayOrder(models.Model):
     def change_order_stage(self, stage_id, preparation_display_id):
         self.ensure_one()
 
-        categories = self.preparation_display_order_line_ids.mapped('product_id.pos_categ_id.id')
+        categories = self.preparation_display_order_line_ids.mapped('product_id.pos_categ_ids.id')
         p_dis = self.env['pos_preparation_display.display'].search([('id', '=', preparation_display_id)])
 
         for orderline in self.preparation_display_order_line_ids:
@@ -157,7 +157,7 @@ class PosPreparationDisplayOrder(models.Model):
         preparation_display_orderlines = []
 
         for orderline in self.preparation_display_order_line_ids:
-            if orderline.product_id.pos_categ_id.id in preparation_display._get_pos_category_ids().ids:
+            if preparation_display._should_include(orderline):
                 preparation_display_orderlines.append({
                     'id': orderline.id,
                     'todo': orderline.todo,
@@ -166,7 +166,7 @@ class PosPreparationDisplayOrder(models.Model):
                     'product_name': orderline.product_id.display_name,
                     'product_quantity': orderline.product_quantity,
                     'product_cancelled': orderline.product_cancelled,
-                    'product_category_id': orderline.product_id.pos_categ_id.id,
+                    'product_category_ids': orderline.product_id.pos_categ_ids.ids,
                 })
 
         if preparation_display_orderlines:

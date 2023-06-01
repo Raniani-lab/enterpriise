@@ -22,7 +22,7 @@ class TestUi(TestPointOfSaleHttpCommon):
         self.env['pos_preparation_display.display'].create({
             'name': 'Preparation Display',
             'pos_config_ids': [(4, self.main_pos_config.id)],
-            'category_ids': [(4, self.letter_tray.pos_categ_id.id)],
+            'category_ids': [(4, self.letter_tray.pos_categ_ids[0].id)],
         })
 
         # open a session, the /pos/ui controller will redirect to it

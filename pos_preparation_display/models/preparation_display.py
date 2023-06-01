@@ -1,6 +1,7 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 
+from odoo.addons.pos_preparation_display.models.preparation_display_orderline import PosPreparationDisplayOrderline
 
 class PosPreparationDisplay(models.Model):
     _name = 'pos_preparation_display.display'
@@ -25,6 +26,13 @@ class PosPreparationDisplay(models.Model):
             return self.env['pos.category'].search([])
         else:
             return self.category_ids
+
+    def _should_include(self, orderline: PosPreparationDisplayOrderline) -> bool:
+        """
+        Returns whether the orderline should be included in the preparation
+        display, based on the categories that are selected for the preparation
+        """
+        return any(categ_id in self._get_pos_category_ids().ids for categ_id in orderline.product_id.pos_categ_ids.ids)
 
     def get_pos_config_ids(self):
         self.ensure_one()
@@ -103,7 +111,7 @@ class PosPreparationDisplay(models.Model):
                         continue
 
                 for orderline in order.preparation_display_order_line_ids:
-                    if orderline.product_id.pos_categ_id.id in preparation_display.category_ids.ids and orderline.product_quantity > 0:
+                    if preparation_display._should_include(orderline) and orderline.product_quantity > 0:
                         progress_order_count += 1
                         break
 

@@ -788,7 +788,7 @@ const DialingPanel = Widget.extend({
      * @return {Promise}
      */
     _onInputSearch(ev) {
-        return this._activeTab.searchPhoneCall($(ev.currentTarget).val());
+        return this._activeTab.searchPhoneCall(ev.currentTarget.value.trim());
     },
     /**
      * @private

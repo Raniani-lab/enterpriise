@@ -246,7 +246,7 @@
         <field name="model">documents.document</field>
         <field name="arch" type="xml">
             <tree js_class="documents_list"
-                  create="false" edit="false"
+                  create="false"
                   decoration-info="type == 'empty'"
                   sample="1">
                 <field name="id" optional="hide"/>

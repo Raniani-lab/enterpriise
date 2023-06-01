@@ -291,8 +291,8 @@ class Task(models.Model):
 
     def write(self, vals):
         compute_default_planned_dates = None
-        date_start_update = 'planned_date_begin' in vals
-        date_end_update = 'planned_date_end' in vals
+        date_start_update = 'planned_date_begin' in vals and vals['planned_date_begin'] is not False
+        date_end_update = 'planned_date_end' in vals and vals['planned_date_end'] is not False
         if not self._context.get('fsm_mode', False) \
            and not self._context.get('smart_task_scheduling', False) \
            and date_start_update and date_end_update:  # if fsm_mode=True then the processing in industry_fsm module is done for these dates.

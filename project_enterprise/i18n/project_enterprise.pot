@@ -216,6 +216,7 @@ msgstr ""
 #: code:addons/project_enterprise/controllers/portal.py:0
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_sharing_project_task_view_form_inherited
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_form
+#: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_tree
 #, python-format
 msgid "Planned Date"
 msgstr ""

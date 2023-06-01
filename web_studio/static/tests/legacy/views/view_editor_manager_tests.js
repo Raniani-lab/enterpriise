@@ -2510,6 +2510,42 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual(vem.$("[name=display_name]").text().trim(), "Display Name");
     });
 
+    QUnit.test("button rainbowman Truish value in sidebar", async function (assert) {
+        const vem = await studioTestUtils.createViewEditorManager({
+            debug: true,
+            model: 'coucou',
+            arch: `
+                <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_confirm" type="object" effect="{}"/>
+                    </div>
+                </sheet>
+                </form>`
+        });
+
+        await click(vem.el.querySelector("button.oe_stat_button[data-studio-xpath]"));
+        assert.strictEqual(vem.el.querySelector(".o_web_studio_sidebar #rainbow").checked, true);
+    });
+
+    QUnit.test("button rainbowman False value in sidebar", async function (assert) {
+        const vem = await studioTestUtils.createViewEditorManager({
+            debug: true,
+            model: 'coucou',
+            arch: `
+                <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_confirm" type="object" effect="False"/>
+                    </div>
+                </sheet>
+                </form>`
+        });
+
+        await click(vem.el.querySelector("button.oe_stat_button[data-studio-xpath]"));
+        assert.strictEqual(vem.el.querySelector(".o_web_studio_sidebar #rainbow").checked, false);
+    });
+
     QUnit.module('Kanban');
 
     QUnit.test('empty kanban editor', async function (assert) {

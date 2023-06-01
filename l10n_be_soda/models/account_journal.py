@@ -34,7 +34,7 @@ class AccountJournal(models.Model):
         for attachment in attachments:
             parsed_attachment = etree.parse(io.BytesIO(attachment.raw))
             # The document VAT number must match the journal's company's VAT number
-            journal_company_vat = self.company_id.vat or self.browse(self.env.context.get('default_journal_id')).company_id.vat
+            journal_company_vat = self.company_id.vat
             if parsed_attachment.find('.//EntNum').text != journal_company_vat:
                 if len(attachments) == 1:
                     message = _('The SODA Entry could not be created: \n'
@@ -58,19 +58,19 @@ class AccountJournal(models.Model):
                     lines_content[index][info] = float(elem.text)
             # Retrieve the account, create it if need be
             for index, account_code in enumerate(parsed_attachment.findall('.//Account')):
-                journal_company_id = self.browse(self.env.context.get('default_journal_id')).company_id.id
+                journal_company_id = self.company_id.id
                 account = self.env['account.account'].search([('code', '=', account_code.text), ('company_id', '=', journal_company_id)], limit=1)
                 if not account:
                     account = self.env['account.account'].create({
                         'code': account_code.text,
                         'name': '',
-                        'company_id': self.company_id.id or self.browse(self.env.context.get('default_journal_id')).company_id.id,
+                        'company_id': self.company_id.id,
                     })
                 lines_content[index]['Account'] = account
             # create the move
             move_vals = {
                 'move_type': 'entry',
-                'journal_id': self.id or self.browse(self.env.context.get('default_journal_id')).id,
+                'journal_id': self.id,
                 'ref': ref,
                 'line_ids': [(0, 0, {
                     'name': line['Label'],

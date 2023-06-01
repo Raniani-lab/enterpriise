@@ -1,7 +1,15 @@
 /** @odoo-module  */
 
-import { selectCell, setCellContent } from "@spreadsheet/../tests/utils/commands";
-import { getCellFormula } from "@spreadsheet/../tests/utils/getters";
+import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+const { toCartesian } = spreadsheet.helpers;
+import {
+    autofill,
+    selectCell,
+    setCellContent,
+    setCellFormat,
+    setCellStyle,
+} from "@spreadsheet/../tests/utils/commands";
+import { getCellFormula, getCell } from "@spreadsheet/../tests/utils/getters";
 import { createSpreadsheetWithPivot } from "@spreadsheet/../tests/utils/pivot";
 
 /**
@@ -588,5 +596,43 @@ QUnit.module("spreadsheet > pivot_autofill", {}, () => {
         model.dispatch("AUTOFILL_SELECT", { col: 0, row: 9 });
         tooltipContent = model.getters.getAutofillTooltip().props.content;
         assert.equal(tooltipContent[tooltipContent.length - 1].value, "Probability");
+    });
+
+    QUnit.test("Autofill pivot keeps format but neither style nor border", async function (assert) {
+        const { model } = await createSpreadsheetWithPivot({
+            arch: /*xml*/ `
+                <pivot>
+                    <field name="date" type="col"/>
+                    <field name="product_id"  type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+        });
+
+        // Change the format, style and borders of E3
+        const sheetId = model.getters.getActiveSheetId();
+        const { col, row } = toCartesian("E3");
+        const border = {
+            left: { style: "thin", color: "#000" },
+        };
+        const style = { textColor: "orange" };
+        setCellStyle(model, "E3", style);
+        setCellFormat(model, "E3", "#,##0.0");
+        model.dispatch("SET_BORDER", { sheetId, col, row, border });
+
+        // Change the format of E4
+        setCellFormat(model, "E4", "#,##0.000");
+
+        // Check that the format, style and border of E3 have been correctly applied
+        autofill(model, "E3", "E4");
+        const startingCell = getCell(model, "E3");
+        assert.deepEqual(startingCell.style, style);
+        assert.deepEqual(model.getters.getCellBorder(sheetId, col, row).left, border.left);
+        assert.equal(startingCell.format, "#,##0.0");
+
+        // Check that the format of E3 has been correctly applied to E4 but not the style nor the border
+        const filledCell = getCell(model, "E4");
+        assert.equal(filledCell.style, undefined);
+        assert.equal(model.getters.getCellBorder(sheetId, col, row + 1), null);
+        assert.equal(filledCell.format, "#,##0.0");
     });
 });

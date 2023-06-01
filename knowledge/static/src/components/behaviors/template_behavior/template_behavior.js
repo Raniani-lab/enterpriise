@@ -6,6 +6,7 @@ import { SendAsMessageMacro, UseAsDescriptionMacro } from "@knowledge/macros/tem
 import { Tooltip } from "@web/core/tooltip/tooltip";
 import { usePopover } from "@web/core/popover/popover_hook";
 import { useService } from "@web/core/utils/hooks";
+import { setCursorStart } from "@web_editor/js/editor/odoo-editor/src/utils/utils";
 import {
     useRef,
     markup,
@@ -67,6 +68,13 @@ export class TemplateBehavior extends AbstractBehavior {
         });
         this.targetRecordInfo = this.knowledgeCommandsService.getCommandsRecordInfo();
         this.htmlFieldTargetMessage = sprintf(this.env._t('Use as %s'), this.targetRecordInfo?.fieldInfo?.string || 'Description');
+    }
+    /**
+     * Set the cursor of the user inside the template block when the user types
+     * the `/clipboard` command.
+     */
+    setCursor() {
+        setCursorStart(this.props.anchor.querySelector('[data-prop-name="content"] > p'));
     }
     showTooltip() {
         this.popover.open(this.copyToClipboardButton, {

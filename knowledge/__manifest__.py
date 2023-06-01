@@ -77,7 +77,6 @@
             'knowledge/static/src/js/tools/**/*',
         ],
         'web_editor.assets_wysiwyg': [
-            'knowledge/static/src/js/wysiwyg/*.js',
             'knowledge/static/src/js/wysiwyg.js',
             'knowledge/static/src/js/knowledge_wysiwyg.js',
             'knowledge/static/src/xml/knowledge_editor.xml',

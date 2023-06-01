@@ -66,7 +66,7 @@ autofillModifiersRegistry.add("LIST_UPDATER", {
         return {
             cellData: {
                 style: undefined,
-                format: undefined,
+                format: data.cell && data.cell.format,
                 border: undefined,
                 content,
             },

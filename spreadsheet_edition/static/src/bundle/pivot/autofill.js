@@ -85,7 +85,7 @@ autofillModifiersRegistry
             return {
                 cellData: {
                     style: undefined,
-                    format: undefined,
+                    format: data.cell && data.cell.format,
                     border: undefined,
                     content,
                 },

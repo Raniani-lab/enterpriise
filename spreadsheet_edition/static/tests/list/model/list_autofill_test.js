@@ -2,8 +2,10 @@
 
 import { nextTick } from "@web/../tests/helpers/utils";
 
-import { getCellFormula, getCellValue } from "@spreadsheet/../tests/utils/getters";
-import { autofill } from "@spreadsheet/../tests/utils/commands";
+import * as spreadsheet from "@odoo/o-spreadsheet";
+const { toCartesian } = spreadsheet.helpers;
+import { getCell, getCellFormula, getCellValue } from "@spreadsheet/../tests/utils/getters";
+import { autofill, setCellFormat, setCellStyle } from "@spreadsheet/../tests/utils/commands";
 import { createSpreadsheetWithList } from "@spreadsheet/../tests/utils/list";
 import { waitForDataSourcesLoaded } from "@spreadsheet/../tests/utils/model";
 
@@ -138,5 +140,35 @@ QUnit.module("spreadsheet > list autofill", {}, () => {
         assert.strictEqual(getTooltip("A3", true), "Foo");
         assert.strictEqual(getTooltip("A1", false), "Foo");
         assert.strictEqual(getTooltip("A1", true), "Foo");
+    });
+
+    QUnit.test("Autofill list keeps format but neither style nor border", async function (assert) {
+        const { model } = await createSpreadsheetWithList();
+        // Change the format, style and borders of C2
+        const sheetId = model.getters.getActiveSheetId();
+        const { col, row } = toCartesian("C2");
+        const border = {
+            left: { style: "thin", color: "#000" },
+        };
+        const style = { textColor: "orange" };
+        setCellFormat(model, "C2", "m/d/yyyy");
+        setCellStyle(model, "C2", style);
+        model.dispatch("SET_BORDER", { sheetId, col, row, border });
+
+        // Change the format of C3
+        setCellFormat(model, "C3", "d/m/yyyy");
+
+        // Check that the format, style and border of C2 have been correctly applied
+        autofill(model, "C2", "C3");
+        const startingCell = getCell(model, "C2");
+        assert.deepEqual(startingCell.style, style);
+        assert.deepEqual(model.getters.getCellBorder({sheetId, col, row}).left, border.left);
+        assert.equal(startingCell.format, "m/d/yyyy");
+
+        // Check that the format of C2 has been correctly applied to C3 but not the style nor the border
+        const filledCell = getCell(model, "C3");
+        assert.equal(filledCell.style, undefined);
+        assert.equal(model.getters.getCellBorder({sheetId, col, row: row + 1}), null);
+        assert.equal(filledCell.format, "m/d/yyyy");
     });
 });

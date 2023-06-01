@@ -171,12 +171,12 @@
                     <div class="row mt16 o_settings_container">
                         <setting id="timesheet"
                                  help="Track the time spent on tickets"
-                                 documentation="/applications/services/helpdesk/timesheet_and_invoice/invoice_time.html">
+                                 documentation="/applications/services/helpdesk/advanced/track_and_bill.html">
                             <field name="use_helpdesk_timesheet"/>
                         </setting>
                         <setting id="sale_timesheet"
                                  help="Bill the time spent on your tickets to your customers"
-                                 documentation="/applications/services/helpdesk/timesheet_and_invoice/reinvoice_from_project.html">
+                                 documentation="/applications/services/helpdesk/advanced/track_and_bill.html">
                             <field name="use_helpdesk_sale_timesheet"/>
                         </setting>
                     </div>

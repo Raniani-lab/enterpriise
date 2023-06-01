@@ -6,6 +6,7 @@ import { browser } from "@web/core/browser/browser";
 import { SendAsMessageMacro, UseAsDescriptionMacro } from "@knowledge/macros/template_macros";
 import { Tooltip } from "@web/core/tooltip/tooltip";
 import { useService } from "@web/core/utils/hooks";
+import { setCursorStart } from "@web_editor/js/editor/odoo-editor/src/utils/utils";
 
 const {
     useRef,
@@ -40,6 +41,13 @@ export class TemplateBehavior extends AbstractBehavior {
             }
         });
         this.targetRecordInfo = this.knowledgeCommandsService.getCommandsRecordInfo();
+    }
+    /**
+     * Set the cursor of the user inside the template block when the user types
+     * the `/template` command.
+     */
+    setCursor() {
+        setCursorStart(this.props.anchor.querySelector('[data-prop-name="content"] > p'));
     }
     showTooltip() {
         const closeTooltip = this.popoverService.add(this.copyToClipboardButton.el, Tooltip, {

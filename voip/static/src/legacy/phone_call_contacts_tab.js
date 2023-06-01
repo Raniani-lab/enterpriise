@@ -76,7 +76,7 @@ export const PhoneCallContactsTab = PhoneCallTab.extend({
      */
     async searchPhoneCall(search) {
         if (search) {
-            var number = cleanNumber(search);
+            const number = cleanNumber(search);
             if (number.length > 2) {
                 this._searchDomain = [
                     "|",
@@ -96,7 +96,13 @@ export const PhoneCallContactsTab = PhoneCallTab.extend({
             }
             this._offset = 0;
             this._isLazyLoadFinished = false;
-            const contactsData = await this.env.services.orm.call(
+            if (this._pendingRpc) {
+                this._pendingRpc.abort();
+            }
+            const [voipIcon] = this.getParent().$(".o_dial_header_icon");
+            voipIcon.classList.remove("oi", "oi-voip");
+            voipIcon.classList.add("fa", "fa-spin", "fa-circle-o-notch");
+            this._pendingRpc = this.env.services.orm.call(
                 "res.partner",
                 "search_read",
                 [],
@@ -110,12 +116,27 @@ export const PhoneCallContactsTab = PhoneCallTab.extend({
                     fields: ["avatar_128", "display_name", "email", "id", "mobile", "phone"],
                     limit: this._limit,
                     offset: this._offset,
-                }
+                },
+                { shadow: true }
             );
-            return this._parseContactsData(contactsData);
+            try {
+                const contactsData = await this._pendingRpc;
+                this._parseContactsData(contactsData);
+                this._pendingRpc = null;
+                voipIcon.classList.remove("fa", "fa-spin", "fa-circle-o-notch");
+                voipIcon.classList.add("oi", "oi-voip");
+            } catch (error) {
+                if (error.event?.type === "abort") {
+                    error.event.preventDefault();
+                } else {
+                    this._pendingRpc = null;
+                    voipIcon.classList.remove("fa", "fa-spin", "fa-circle-o-notch");
+                    voipIcon.classList.add("oi", "oi-voip");
+                }
+            }
         } else {
             this._searchDomain = false;
-            await this.refreshPhonecallsStatus();
+            this.refreshPhonecallsStatus();
         }
     },
 

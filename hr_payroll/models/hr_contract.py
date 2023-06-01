@@ -268,11 +268,8 @@ class HrContract(models.Model):
         :returns: a dictionary {work_entry_id: hours_1, work_entry_2: hours_2}
         """
 
-        tz = pytz.timezone(self.resource_calendar_id.tz)
         date_from = datetime.combine(date_from, datetime.min.time())
         date_to = datetime.combine(date_to, datetime.max.time())
-        date_from = tz.localize(date_from).astimezone(pytz.utc).replace(tzinfo=None)
-        date_to = tz.localize(date_to).astimezone(pytz.utc).replace(tzinfo=None)
         work_data = defaultdict(int)
 
         # First, found work entry that didn't exceed interval.

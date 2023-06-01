@@ -140,11 +140,9 @@ class MrpProductionWorkcenterLine(models.Model):
 
     def action_generate_serial(self):
         self.ensure_one()
-        self.finished_lot_id = self.env['stock.lot'].create({
-            'product_id': self.product_id.id,
-            'company_id': self.company_id.id,
-            'name': self.env['stock.lot']._get_next_serial(self.company_id, self.product_id) or self.env['ir.sequence'].next_by_code('stock.lot.serial'),
-        })
+        self.finished_lot_id = self.env['stock.lot'].create(
+            self.production_id._prepare_stock_lot_values()
+        )
 
     def _create_subsequent_checks(self):
         """ When processing a step with regiter a consumed material

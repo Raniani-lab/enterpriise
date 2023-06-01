@@ -77,7 +77,7 @@ patch(PaymentScreen.prototype, "pos_settle_due.PaymentScreen", {
             return _super(...arguments);
         }
     },
-    async _finalizeValidation() {
+    async afterOrderValidation(suggestToSync = false) {
         await this._super(...arguments);
         const hasCustomerAccountAsPaymentMethod = this.currentOrder
             .get_paymentlines()

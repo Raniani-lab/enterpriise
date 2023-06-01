@@ -6,14 +6,15 @@
         <field name="inherit_id" ref="hr_contract.hr_hr_employee_view_form2"/>
         <field name="arch" type="xml">
             <notebook position="inside">
-                <page name="Kenyan Information" invisible="company_country_code != 'KE'">
-                    <group>
-                        <group>
+                <page name="Kenyan Information" attrs="{'invisible':[('company_country_code', '!=', 'KE')]}">
+                    <group name="kenya_info_block">
+                        <group name="kenya_info_block_left">
                             <label for="l10n_ke_mortgage"/>
                             <div class="o_row">
                                 <field name="l10n_ke_mortgage" class="o_hr_narrow_field" nolabel="1"/>
                                 <span>/ year</span>
                             </div>
+                            <field name="l10n_ke_pin"/>
                         </group>
                     </group>
                 </page>

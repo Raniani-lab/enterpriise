@@ -21,8 +21,7 @@ Kenyan Payroll Rules.
     'data': [
         'security/ir.model.access.csv',
         'security/l10n_ke_hr_payroll_security.xml',
-        'security/ir.model.access.csv',
-        'security/l10n_ke_hr_payroll_security.xml',
+        'data/report_paperformat_data.xml',
         'data/resource_calendar_data.xml',
         'data/hr_salary_rule_category_data.xml',
         'data/hr_payroll_structure_type_data.xml',
@@ -35,9 +34,16 @@ Kenyan Payroll Rules.
         'data/hr_salary_rule_data.xml',
         'views/hr_contract_views.xml',
         'views/hr_employee_views.xml',
+        'views/l10n_ke_tax_deduction_card_views.xml',
         'views/report_payslip_templates.xml',
         'views/res_company_views.xml',
         'views/l10n_ke_hr_payroll_menus.xml'
+        'report/l10n_ke_tax_reduction_card_templates.xml',
     ],
+    'assets': {
+        'web.report_assets_common': [
+            'l10n_ke_hr_payroll/static/src/**/*',
+        ],
+    },
     'license': 'OEEL-1',
 }

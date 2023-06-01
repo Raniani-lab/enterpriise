@@ -116,7 +116,9 @@
         <field name="hr_responsible_id" ref="base.user_demo"/>
         <field name="company_id" ref="l10n_ke.demo_company_ke"/>
         <field name="date_start" eval="(DateTime.today() + relativedelta(years=-2, month=1, day=1))"/>
-        <field name="date_end" eval="(DateTime.today() + relativedelta(years=-1, month=1, day=1, days=-2))"/>
+        <field name="date_end" eval="(DateTime.today() + relativedelta(years=-1, month=1, day=1, days=-1))"/>
+        <field name="date_generated_from" eval="(DateTime.today() + relativedelta(years=-2, month=1, day=1))"/>
+        <field name="date_generated_to" eval="(DateTime.today() + relativedelta(years=-2, month=1, day=1))"/>
         <field name="resource_calendar_id" ref="l10n_ke_hr_payroll.resource_calendar_std_45h"/>
         <field name="l10n_ke_pension_contribution">17000</field>
         <field name="l10n_ke_food_allowance">4000</field>
@@ -136,7 +138,9 @@
         <field name="state">open</field>
         <field name="hr_responsible_id" ref="base.user_demo"/>
         <field name="company_id" ref="l10n_ke.demo_company_ke"/>
-        <field name="date_start" eval="(DateTime.today() + relativedelta(years=-1, month=1, day=1, days=-1))"/>
+        <field name="date_start" eval="(DateTime.today() + relativedelta(years=-1, month=1, day=1))"/>
+        <field name="date_generated_from" eval="(DateTime.today() + relativedelta(years=-1, month=1, day=1))"/>
+        <field name="date_generated_to" eval="(DateTime.today() + relativedelta(years=-1, month=1, day=1))"/>
         <field name="resource_calendar_id" ref="l10n_ke_hr_payroll.resource_calendar_std_45h"/>
         <field name="l10n_ke_pension_contribution">17000</field>
         <field name="l10n_ke_food_allowance">4000</field>
@@ -150,4 +154,12 @@
     <record id="hr_employee_barack" model="hr.employee">
         <field name="contract_id" ref="l10n_ke_hr_payroll_account.hr_contract_cdi_barack"/>
     </record>
+
+    <!-- Work Entries for Barack -->
+
+    <function model="hr.contract" name="_generate_work_entries">
+        <value eval="[ref('l10n_ke_hr_payroll_account.hr_contract_cdi_barack')]"/>
+        <value eval="(DateTime.today() + relativedelta(years=-1, month=1, day=1))"/>
+        <value eval="DateTime.today()"/>
+    </function>
 </odoo>

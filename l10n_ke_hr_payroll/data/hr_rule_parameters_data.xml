@@ -214,4 +214,15 @@
         <field name="rule_parameter_id" ref="rule_parameter_helb_min"/>
         <field name="date_from" eval="datetime(2020, 1, 1).date()"/>
     </record>
+
+    <record id="rule_parameter_nita" model="hr.rule.parameter">
+        <field name="name">Kenya: NITA</field>
+        <field name="code">l10n_ke_nita</field>
+        <field name="country_id" ref="base.ke"/>
+    </record>
+    <record id="rule_parameter_nita_amount_2022" model="hr.rule.parameter.value">
+        <field name="parameter_value">50</field>
+        <field name="rule_parameter_id" ref="rule_parameter_nita"/>
+        <field name="date_from" eval="datetime(2022, 1, 1).date()"/>
+    </record>
 </odoo>

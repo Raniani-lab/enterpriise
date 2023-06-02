@@ -125,12 +125,9 @@ class AccountBankStatementLine(models.Model):
             # The ones that are never be processed by the CRON before are processed first.
             remaining_line_id = None
             limit = batch_size + 1 if batch_size else None
-            companies = self.env['res.company'].browse(configured_company_ids)
-            lock_dates = companies.filtered('fiscalyear_lock_date').mapped('fiscalyear_lock_date')
-            st_date_from_limit = max([start_time.date() - relativedelta(months=3)] + lock_dates)
             domain = [
                 ('is_reconciled', '=', False),
-                ('date', '>', st_date_from_limit),
+                ('create_date', '>', start_time.date() - relativedelta(months=3)),
                 ('company_id', 'in', configured_company_ids),
             ]
             query_obj = self._search(domain, limit=limit)

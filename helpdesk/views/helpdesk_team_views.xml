@@ -102,7 +102,7 @@
                                 </div>
                                 <div class="mt16">
                                     <span><b>Followers </b></span>
-                                    <field name="message_partner_ids" string="Follow All Team's Tickets" widget="many2many_tags_email" domain="[('type', '!=', 'private')]"/>
+                                    <field name="message_partner_ids" string="Follow All Team's Tickets" widget="many2many_tags_email"/>
                                 </div>
                             </setting>
                             <setting help="Automate the assignment of new tickets to the right people, and make sure all tickets are being handled">

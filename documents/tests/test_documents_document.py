@@ -199,7 +199,7 @@ class TestCaseDocuments(TransactionCase):
         record = {
             'res_model': res_model,
             'res_model_id': self.env['ir.model'].name_search(res_model, operator='=', limit=1)[0],
-            'res_id': self.env[res_model].search([('type', '!=', 'private')], limit=1).id,
+            'res_id': self.env[res_model].search([], limit=1).id,
         }
         link_to_record_ctx = workflow_rule_link.apply_actions([doc.id for doc in documents_to_link])['context']
         link_to_record_wizard = self.env['documents.link_to_record_wizard'].with_user(user_admin_doc)\

@@ -244,3 +244,46 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
         self.assertFalse(set(subscription.invoice_ids.mapped('payment_state')) & {'not_paid', 'partial'},
                          "All invoices should be in paid or in_payment status")
         return subscription
+
+    def test_controller_transaction_refund(self):
+        self.original_prepare_invoice = self.subscription._prepare_invoice
+        self.mock_send_success_count = 0
+        self.pricing_month.price = 10
+        subscription = self.subscription.create({
+            'partner_id': self.partner.id,
+            'company_id': self.company.id,
+            'payment_token_id': self.payment_method.id,
+            'sale_order_template_id': self.subscription_tmpl.id,
+
+        })
+        subscription._onchange_sale_order_template_id()
+        subscription.order_line.product_uom_qty = 2
+        subscription.action_confirm()
+        invoice = subscription._create_invoices()
+        invoice._post()
+        self.assertEqual(invoice.amount_total, 46)
+        # partial refund
+        refund_wizard = self.env['account.move.reversal'].with_context(
+            active_model="account.move",
+            active_ids=invoice.ids).create({
+            'reason': 'Test refund',
+            'journal_id': invoice.journal_id.id,
+        })
+        res = refund_wizard.reverse_moves()
+        refund_move = self.env['account.move'].browse(res['res_id'])
+        refund_move.invoice_line_ids.quantity = 1
+        refund_move._post()
+        self.assertEqual(refund_move.amount_total, 23, "The refund is half the invoice")
+
+        url = self._build_url("/my/subscription/transaction/%s" % subscription.id)
+        data = {'access_token': subscription.access_token,
+                'reference_prefix': 'test_automatic_invoice_token',
+                'landing_route': subscription.get_portal_url(),
+                'payment_option_id': self.dummy_provider.id,
+                'flow': 'direct',
+                }
+        self._make_json_rpc_request(url, data)
+        invoice_transactions = subscription.invoice_ids.transaction_ids
+        # the amount should be equal to the last
+        self.assertEqual(invoice_transactions.amount, subscription.amount_total,
+                         "The last transaction should be equal to the total")

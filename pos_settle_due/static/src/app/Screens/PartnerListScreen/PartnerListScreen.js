@@ -1,8 +1,8 @@
 /** @odoo-module */
 
-import { PartnerListScreen } from "@point_of_sale/js/Screens/PartnerListScreen/PartnerListScreen";
+import { PartnerListScreen } from "@point_of_sale/app/screens/partner_list/partner_list";
 import { patch } from "@web/core/utils/patch";
-import { SelectionPopup } from "@point_of_sale/js/Popups/SelectionPopup";
+import { SelectionPopup } from "@point_of_sale/app/utils/input_popups/selection_popup";
 import { useService } from "@web/core/utils/hooks";
 
 patch(PartnerListScreen.prototype, "pos_settle_due.PartnerListScreen", {

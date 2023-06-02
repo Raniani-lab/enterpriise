@@ -1,8 +1,8 @@
 /** @odoo-module */
-import { PosGlobalState, Order, Orderline } from "@point_of_sale/js/models";
+import { PosGlobalState, Order, Orderline } from "@point_of_sale/app/store/models";
 import { _t } from "@web/core/l10n/translation";
 import { patch } from "@web/core/utils/patch";
-import { ErrorPopup } from "@point_of_sale/js/Popups/ErrorPopup";
+import { ErrorPopup } from "@point_of_sale/app/errors/popups/error_popup";
 
 patch(PosGlobalState.prototype, "pos_l10n_se.PosGlobalState", {
     useBlackBoxSweden() {

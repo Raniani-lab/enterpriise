@@ -1,5 +1,5 @@
 /** @odoo-module **/
-import { PosGlobalState, Order } from "@point_of_sale/js/models";
+import { PosGlobalState, Order } from "@point_of_sale/app/store/models";
 import { patch } from "@web/core/utils/patch";
 
 patch(PosGlobalState.prototype, "pos_preparation_display.PosGlobalState", {

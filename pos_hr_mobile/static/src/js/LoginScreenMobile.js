@@ -3,7 +3,7 @@
 import { LoginScreen } from "@pos_hr/js/LoginScreen";
 import { patch } from "@web/core/utils/patch";
 import { isBarcodeScannerSupported, scanBarcode } from "@web/webclient/barcode/barcode_scanner";
-import { ErrorPopup } from "@point_of_sale/js/Popups/ErrorPopup";
+import { ErrorPopup } from "@point_of_sale/app/errors/popups/error_popup";
 import { useService } from "@web/core/utils/hooks";
 
 patch(LoginScreen.prototype, "pos_hr_mobile.LoginScreen", {

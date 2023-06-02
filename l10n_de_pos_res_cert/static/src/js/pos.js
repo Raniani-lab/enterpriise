@@ -1,7 +1,7 @@
 /** @odoo-module */
 
-import { PosGlobalState, Order } from "@point_of_sale/js/models";
-import { uuidv4 } from "@point_of_sale/js/utils";
+import { PosGlobalState, Order } from "@point_of_sale/app/store/models";
+import { uuidv4 } from "@point_of_sale/utils";
 import { patch } from "@web/core/utils/patch";
 
 patch(PosGlobalState.prototype, "l10n_de_pos_res_cert.PosGlobalState", {

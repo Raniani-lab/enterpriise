@@ -4,7 +4,7 @@
 import { _t } from "@web/core/l10n/translation";
 import { IoTLongpolling, iotLongpollingService } from "@iot/iot_longpolling";
 import { patch } from "@web/core/utils/patch";
-import { IoTErrorPopup } from "./IoTErrorPopup";
+import { IoTErrorPopup } from "@pos_iot/js/IoTErrorPopup";
 
 patch(iotLongpollingService, "pos_iot.IoTLongpolling", {
     dependencies: ["popup", "hardware_proxy", ...iotLongpollingService.dependencies],

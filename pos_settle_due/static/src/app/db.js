@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { PosDB } from "@point_of_sale/js/db";
+import { PosDB } from "@point_of_sale/app/store/db";
 import { patch } from "@web/core/utils/patch";
 
 patch(PosDB.prototype, "pos_settle_due.PosDB", {

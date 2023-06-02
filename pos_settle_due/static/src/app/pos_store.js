@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import { patch } from "@web/core/utils/patch";
-import { PosStore } from "@point_of_sale/app/pos_store";
+import { PosStore } from "@point_of_sale/app/store/pos_store";
 
 patch(PosStore.prototype, "pos_settle_due.PosStore", {
     getPartnerCredit(partner) {
@@ -31,7 +31,11 @@ patch(PosStore.prototype, "pos_settle_due.PosStore", {
         partnerInfos.creditLimit = partner.credit_limit;
         partnerInfos.overDue = partnerInfos.totalWithCart > partnerInfos.creditLimit ? true : false;
         partnerInfos.useLimit =
-            this.globalState.company.account_use_credit_limit && partner.credit_limit > 0 && partnerInfos.overDue ? true : false;
+            this.globalState.company.account_use_credit_limit &&
+            partner.credit_limit > 0 &&
+            partnerInfos.overDue
+                ? true
+                : false;
 
         return partnerInfos;
     },

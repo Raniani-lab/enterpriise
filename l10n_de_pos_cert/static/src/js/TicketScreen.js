@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { TicketScreen } from "@point_of_sale/js/Screens/TicketScreen/TicketScreen";
+import { TicketScreen } from "@point_of_sale/app/screens/ticket_screen/ticket_screen";
 import { patch } from "@web/core/utils/patch";
 
 patch(TicketScreen.prototype, "l10n_de_pos_cert.TicketScreen", {

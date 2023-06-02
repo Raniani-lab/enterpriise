@@ -1,10 +1,10 @@
 /** @odoo-module */
 
 import { patch } from "@web/core/utils/patch";
-import { PosStore } from "@point_of_sale/app/pos_store";
-import { ErrorPopup } from "@point_of_sale/js/Popups/ErrorPopup";
+import { PosStore } from "@point_of_sale/app/store/pos_store";
+import { ErrorPopup } from "@point_of_sale/app/errors/popups/error_popup";
 import { _t } from "@web/core/l10n/translation";
-import { PaymentScreen } from "@point_of_sale/js/Screens/PaymentScreen/PaymentScreen";
+import { PaymentScreen } from "@point_of_sale/app/screens/payment_screen/payment_screen";
 
 patch(PosStore.prototype, "pos_iot.PosStore", {
     showScreen() {

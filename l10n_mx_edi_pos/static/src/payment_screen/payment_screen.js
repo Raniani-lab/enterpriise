@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { PaymentScreen } from "@point_of_sale/js/Screens/PaymentScreen/PaymentScreen";
+import { PaymentScreen } from "@point_of_sale/app/screens/payment_screen/payment_screen";
 import { AddInfoPopup } from "@l10n_mx_edi_pos/add_info_popup/add_info_popup";
 import { patch } from "@web/core/utils/patch";
 

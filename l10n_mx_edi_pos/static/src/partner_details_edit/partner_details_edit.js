@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { PartnerDetailsEdit } from "@point_of_sale/js/Screens/PartnerListScreen/PartnerDetailsEdit";
+import { PartnerDetailsEdit } from "@point_of_sale/app/screens/partner_list/partner_editor/partner_editor";
 import { patch } from "@web/core/utils/patch";
 const { useState } = owl;
 

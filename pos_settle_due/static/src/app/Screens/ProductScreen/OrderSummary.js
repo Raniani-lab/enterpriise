@@ -1,7 +1,7 @@
 /** @odoo-module */
 
-import { usePos } from "@point_of_sale/app/pos_hook";
-import { OrderSummary } from "@point_of_sale/js/Screens/ProductScreen/OrderSummary";
+import { usePos } from "@point_of_sale/app/store/pos_hook";
+import { OrderSummary } from "@point_of_sale/app/screens/product_screen/order_summary/order_summary";
 import { patch } from "@web/core/utils/patch";
 
 patch(OrderSummary.prototype, "pos_settle_due.OrderSummary", {

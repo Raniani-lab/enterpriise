@@ -1,9 +1,9 @@
 /** @odoo-module */
 
-import { ScaleScreen } from "@point_of_sale/js/Screens/ScaleScreen/ScaleScreen";
+import { ScaleScreen } from "@point_of_sale/app/screens/scale_screen/scale_screen";
 import { patch } from "@web/core/utils/patch";
-import { ErrorPopup } from "@point_of_sale/js/Popups/ErrorPopup";
-import { ErrorTracebackPopup } from "@point_of_sale/js/Popups/ErrorTracebackPopup";
+import { ErrorPopup } from "@point_of_sale/app/errors/popups/error_popup";
+import { ErrorTracebackPopup } from "@point_of_sale/app/errors/popups/error_traceback_popup";
 import { useService, useBus } from "@web/core/utils/hooks";
 
 patch(ScaleScreen.prototype, "pos_iot.ScaleScreen", {

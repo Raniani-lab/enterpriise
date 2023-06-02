@@ -1,7 +1,7 @@
 /** @odoo-module */
 
-import { usePos } from "@point_of_sale/app/pos_hook";
-import { PartnerDetailsEdit } from "@point_of_sale/js/Screens/PartnerListScreen/PartnerDetailsEdit";
+import { usePos } from "@point_of_sale/app/store/pos_hook";
+import { PartnerDetailsEdit } from "@point_of_sale/app/screens/partner_list/partner_editor/partner_editor";
 import { patch } from "@web/core/utils/patch";
 
 patch(PartnerDetailsEdit.prototype, "pos_settle_due.PartnerDetailsEdit", {

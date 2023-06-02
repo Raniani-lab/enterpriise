@@ -1,9 +1,9 @@
 /** @odoo-module */
 
-import { PaymentScreen } from "@point_of_sale/js/Screens/PaymentScreen/PaymentScreen";
+import { PaymentScreen } from "@point_of_sale/app/screens/payment_screen/payment_screen";
 import { patch } from "@web/core/utils/patch";
 import { floatIsZero } from "@web/core/utils/numbers";
-import { ConfirmPopup } from "@point_of_sale/js/Popups/ConfirmPopup";
+import { ConfirmPopup } from "@point_of_sale/app/utils/confirm_popup/confirm_popup";
 import { sprintf } from "@web/core/utils/strings";
 
 patch(PaymentScreen.prototype, "pos_settle_due.PaymentScreen", {

@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { InvoiceButton } from "@point_of_sale/js/Screens/TicketScreen/ControlButtons/InvoiceButton";
+import { InvoiceButton } from "@point_of_sale/app/screens/ticket_screen/invoice_button/invoice_button";
 import { AddInfoPopup } from "@l10n_mx_edi_pos/add_info_popup/add_info_popup";
 import { patch } from "@web/core/utils/patch";
 

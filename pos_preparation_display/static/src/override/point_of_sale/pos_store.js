@@ -1,8 +1,8 @@
 /** @odoo-module */
 
 import { patch } from "@web/core/utils/patch";
-import { PosStore } from "@point_of_sale/app/pos_store";
-import { AlertPopup } from "@point_of_sale/js/Popups/AlertPopup";
+import { PosStore } from "@point_of_sale/app/store/pos_store";
+import { AlertPopup } from "@point_of_sale/app/utils/alert_popup/alert_popup";
 import { _t } from "@web/core/l10n/translation";
 
 patch(PosStore.prototype, "pos_preparation_display.PosStore", {
@@ -24,6 +24,6 @@ patch(PosStore.prototype, "pos_preparation_display.PosStore", {
             });
         }
 
-        return _super(...arguments);
+        return _super(order, cancelled);
     },
 });

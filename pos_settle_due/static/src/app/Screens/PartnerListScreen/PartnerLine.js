@@ -1,9 +1,9 @@
 /** @odoo-module */
 
-import { PartnerLine } from "@point_of_sale/js/Screens/PartnerListScreen/PartnerLine";
+import { PartnerLine } from "@point_of_sale/app/screens/partner_list/partner_line/partner_line";
 import { patch } from "@web/core/utils/patch";
-import { SelectionPopup } from "@point_of_sale/js/Popups/SelectionPopup";
-import { usePos } from "@point_of_sale/app/pos_hook";
+import { SelectionPopup } from "@point_of_sale/app/utils/input_popups/selection_popup";
+import { usePos } from "@point_of_sale/app/store/pos_hook";
 import { useService } from "@web/core/utils/hooks";
 
 patch(PartnerLine.prototype, "pos_settle_due.PartnerLine", {

@@ -1,7 +1,7 @@
 /** @odoo-module */
 import { _t } from "@web/core/l10n/translation";
-import { PaymentInterface } from "@point_of_sale/js/payment";
-import { ErrorPopup } from "@point_of_sale/js/Popups/ErrorPopup";
+import { PaymentInterface } from "@point_of_sale/app/payment/payment_interface";
+import { ErrorPopup } from "@point_of_sale/app/errors/popups/error_popup";
 
 export class PaymentIngenico extends PaymentInterface {
     get_terminal() {

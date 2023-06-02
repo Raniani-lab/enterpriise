@@ -1,7 +1,7 @@
 /** @odoo-module */
 
-import { PosGlobalState, Order } from "@point_of_sale/js/models";
-import { uuidv4 } from "@point_of_sale/js/utils";
+import { PosGlobalState, Order } from "@point_of_sale/app/store/models";
+import { uuidv4 } from "@point_of_sale/utils";
 import { convertFromEpoch } from "@l10n_de_pos_cert/js/utils";
 import { TaxError } from "@l10n_de_pos_cert/js/errors";
 import { patch } from "@web/core/utils/patch";

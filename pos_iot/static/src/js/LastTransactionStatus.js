@@ -1,10 +1,10 @@
 /** @odoo-module */
-import { AbstractAwaitablePopup } from "@point_of_sale/js/Popups/AbstractAwaitablePopup";
-import { ErrorPopup } from "@point_of_sale/js/Popups/ErrorPopup";
+import { AbstractAwaitablePopup } from "@point_of_sale/app/popup/abstract_awaitable_popup";
+import { ErrorPopup } from "@point_of_sale/app/errors/popups/error_popup";
 import { useService } from "@web/core/utils/hooks";
 import { useState, Component } from "@odoo/owl";
 import { _t } from "@web/core/l10n/translation";
-import { usePos } from "@point_of_sale/app/pos_hook";
+import { usePos } from "@point_of_sale/app/store/pos_hook";
 
 /**
  * Last Transaction Status Button

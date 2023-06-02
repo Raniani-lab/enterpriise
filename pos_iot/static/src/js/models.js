@@ -1,11 +1,11 @@
 /** @odoo-module */
 
-import { PosGlobalState, Product, register_payment_method } from "@point_of_sale/js/models";
+import { PosGlobalState, Product, register_payment_method } from "@point_of_sale/app/store/models";
 import { PaymentIngenico, PaymentWorldline } from "@pos_iot/js/payment";
 import { DeviceController } from "@iot/device_controller";
 import { IoTPrinter } from "@pos_iot/js/iot_printer";
 import { patch } from "@web/core/utils/patch";
-import { ErrorPopup } from "@point_of_sale/js/Popups/ErrorPopup";
+import { ErrorPopup } from "@point_of_sale/app/errors/popups/error_popup";
 import { _t } from "@web/core/l10n/translation";
 
 register_payment_method("ingenico", PaymentIngenico);

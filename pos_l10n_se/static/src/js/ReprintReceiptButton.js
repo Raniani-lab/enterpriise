@@ -1,8 +1,8 @@
 /** @odoo-module */
 
-import { ReprintReceiptButton } from "@point_of_sale/js/Screens/TicketScreen/ControlButtons/ReprintReceiptButton";
+import { ReprintReceiptButton } from "@point_of_sale/app/screens/ticket_screen/reprint_receipt_button/reprint_receipt_button";
 import { patch } from "@web/core/utils/patch";
-import { ErrorPopup } from "@point_of_sale/js/Popups/ErrorPopup";
+import { ErrorPopup } from "@point_of_sale/app/errors/popups/error_popup";
 import { _t } from "@web/core/l10n/translation";
 import { useService } from "@web/core/utils/hooks";
 

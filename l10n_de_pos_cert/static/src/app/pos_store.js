@@ -1,10 +1,10 @@
 /** @odoo-module */
 
-import { PosStore } from "@point_of_sale/app/pos_store";
+import { PosStore } from "@point_of_sale/app/store/pos_store";
 import { patch } from "@web/core/utils/patch";
-import { ErrorPopup } from "@point_of_sale/js/Popups/ErrorPopup";
-import { OfflineErrorPopup } from "@point_of_sale/js/Popups/OfflineErrorPopup";
-import { ConfirmPopup } from "@point_of_sale/js/Popups/ConfirmPopup";
+import { ErrorPopup } from "@point_of_sale/app/errors/popups/error_popup";
+import { OfflineErrorPopup } from "@point_of_sale/app/errors/popups/offline_error_popup";
+import { ConfirmPopup } from "@point_of_sale/app/utils/confirm_popup/confirm_popup";
 import { _t } from "@web/core/l10n/translation";
 import { sprintf } from "@web/core/utils/strings";
 

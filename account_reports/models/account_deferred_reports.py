@@ -47,17 +47,37 @@ class DeferredReportCustomHandler(models.AbstractModel):
             options['buttons'].append({'name': _('Generate entry'), 'action': 'action_generate_entry', 'sequence': 80})
 
     def action_generate_entry(self, options):
-        lines = self._get_lines(options)
+        journal = self.env.company.deferred_journal_id
+        if not journal:
+            raise UserError(_("Please set the deferred journal in the accounting settings."))
+        lines = self._get_lines(options, filter_already_generated=True)
         if not lines:
             raise UserError(_("No entry to generate."))
+
         period = (fields.Date.from_string('1900-01-01'), fields.Date.from_string(options['date']['date_to']))
+        ref = _("Grouped Deferral Entry of %s", options['date']['string'])
+        ref_rev = _("Reversal of Grouped Deferral Entry of %s", options['date']['string'])
         deferred_account = self.env.company.deferred_expense_account_id if self._get_deferred_report_type() == 'expense' else self.env.company.deferred_revenue_account_id
-        move_lines, original_move_ids = self.env['account.move']._get_deferred_lines(lines, deferred_account, period, self._get_deferred_report_type() == 'expense')
+        move_lines, original_move_ids = self._get_deferred_lines(lines, deferred_account, period, self._get_deferred_report_type() == 'expense', ref)
 
         original_moves = self.env['account.move'].browse(original_move_ids)
-        original_moves.deferred_move_ids += self.env['account.move']._get_deferred_move_and_reverse(
-            move_lines, original_move_ids, self.env.company.deferred_journal_id, period[1]
-        )
+        deferred_move = self.env['account.move'].create({
+            'move_type': 'entry',
+            'deferred_original_move_ids': [Command.set(original_move_ids)],
+            'journal_id': journal.id,
+            'date': period[1],
+            'auto_post': 'at_date',
+            'line_ids': move_lines,
+            'ref': ref,
+        })
+        reverse_move = deferred_move._reverse_moves()
+        reverse_move.write({
+            'date': deferred_move.date + relativedelta(days=1),
+            'ref': ref_rev,
+        })
+        reverse_move.line_ids.name = ref_rev
+        original_moves.deferred_move_ids = deferred_move + reverse_move
+        (deferred_move + reverse_move)._post(soft=True)
         return {
             'name': _('Deferred Entry'),
             'type': 'ir.actions.act_window',
@@ -113,6 +133,69 @@ class DeferredReportCustomHandler(models.AbstractModel):
         results = self._cr.dictfetchall()
         return results
 
+    @api.model
+    def _group_deferred_amounts_by_account(self, deferred_amounts_by_line, periods, is_reverse):
+        """
+        Groups the deferred amounts by account and computes the totals for each account for each period.
+        And the total for all accounts for each period.
+        E.g. (where period1 = (date1, date2), period2 = (date2, date3), ...)
+        [
+            {'account': account1, 'amount_account': 600, 'period_1': 200, 'period_2': 400},
+            {'account': account2, 'amount_account': 700, 'period_1': 300, 'period_2': 400},
+        ], {'amount_total': 1300, 'period_1': 500, 'period_2': 800}
+        """
+        deferred_amounts_by_line = groupby(deferred_amounts_by_line, key=lambda x: x['account_id'])
+        totals_per_account = []  # List of dict with keys: account, total, before, current, later
+        totals_all_accounts = {period: 0 for period in periods + ['amount_total']}
+        sign = 1 if is_reverse else -1
+        for account_id, lines_per_account in deferred_amounts_by_line:
+            lines_per_account = list(lines_per_account)
+            totals_account = {
+                'account': self.env['account.account'].browse(account_id) if isinstance(account_id, int) else account_id,
+                'amount_account': sign * sum(line['balance'] for line in lines_per_account),
+            }
+            totals_all_accounts['amount_total'] += totals_account['amount_account']
+            for period in periods:
+                totals_account[period] = sign * sum(line[period] for line in lines_per_account)
+                totals_all_accounts[period] += self.env.company.currency_id.round(totals_account[period])
+            totals_per_account.append(totals_account)
+        return totals_per_account, totals_all_accounts
+
+    @api.model
+    def _get_deferred_lines(self, lines, deferred_account, period, is_reverse, ref):
+        """
+        Returns a list of Command objects to create the deferred lines of a single given period.
+        And the move_ids of the original lines that created these deferred
+        (to keep track of the original invoice in the deferred entries).
+        """
+        if not deferred_account:
+            raise UserError(_("Please set the deferred accounts in the accounting settings."))
+        deferred_amounts_by_line, original_move_ids = self.env['account.move']._get_deferred_amounts_by_line(lines, [period])
+        deferred_amounts_by_account, deferred_amounts_totals = self._group_deferred_amounts_by_account(deferred_amounts_by_line, [period], is_reverse)
+        if deferred_amounts_totals['amount_total'] == deferred_amounts_totals[period]:
+            return [], set()
+        lines = [
+            Command.create({
+                'account_id': account.id,
+                'debit': amount1 if is_reverse else amount2,
+                'credit': amount1 if not is_reverse else amount2,
+                'name': ref,
+            })
+            for line in deferred_amounts_by_account
+            for account, amount1, amount2 in (
+                (line['account'], 0, line['amount_account']),
+                (line['account'], line[period], 0),
+            )
+        ]
+        deferred_line = [
+            Command.create({
+                'account_id': deferred_account.id,
+                'debit': deferred_amounts_totals['amount_total'] - deferred_amounts_totals[period] if is_reverse else 0,
+                'credit': deferred_amounts_totals['amount_total'] - deferred_amounts_totals[period] if not is_reverse else 0,
+            })
+        ]
+        return lines + deferred_line, original_move_ids
+
     def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
         def get_columns(totals):
             return [
@@ -130,7 +213,7 @@ class DeferredReportCustomHandler(models.AbstractModel):
             for column in options['columns']
         ]
         deferred_amounts_by_line, dummy = self.env['account.move']._get_deferred_amounts_by_line(lines, periods)
-        totals_per_account, totals_all_accounts = self.env['account.move']._group_deferred_amounts_by_account(deferred_amounts_by_line, periods, self._get_deferred_report_type() == 'expense')
+        totals_per_account, totals_all_accounts = self._group_deferred_amounts_by_account(deferred_amounts_by_line, periods, self._get_deferred_report_type() == 'expense')
 
         report_lines = []
 

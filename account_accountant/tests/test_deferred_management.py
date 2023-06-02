@@ -98,7 +98,7 @@ class TestDeferredManagement(AccountTestInvoicingCommon):
     def test_get_ends_of_month(self):
         def assertEndsOfMonths(start_date, end_date, expected):
             self.assertEqual(
-                self.env['account.move']._get_deferred_ends_of_month(
+                self.env['account.move.line']._get_deferred_ends_of_month(
                     fields.Date.to_date(start_date),
                     fields.Date.to_date(end_date)
                 ),
@@ -132,7 +132,7 @@ class TestDeferredManagement(AccountTestInvoicingCommon):
         # Test that the deferred entries are generated when the invoice is validated.
         self.company.generate_deferred_entries_method = 'on_validation'
         move = self.create_invoice('in_invoice', self.company_data['default_journal_purchase'], self.partner_a, [self.expense_lines[0]], post=True)
-        self.assertEqual(len(move.deferred_move_ids), 6)  # 6 = (4 months - 1 because we don't keep the last totally deferred entry) months * 2 entries (move + reverse) per month
+        self.assertEqual(len(move.deferred_move_ids), 5)  # 1 for the invoice deferred + 4 for the deferred entries
         # See test_deferred_expense_credit_note for the values
 
     def test_deferred_expense_reset_to_draft(self):
@@ -142,31 +142,30 @@ class TestDeferredManagement(AccountTestInvoicingCommon):
         self.company.generate_deferred_entries_method = 'on_validation'
         self.company.deferred_amount_computation_method = 'month'
         move = self.create_invoice('in_invoice', self.company_data['default_journal_purchase'], self.partner_a, [(self.expense_accounts[0], 1680, '2023-01-21', '2023-04-14')], date='2023-03-15')
-        self.assertEqual(len(move.deferred_move_ids), 6)
+        self.assertEqual(len(move.deferred_move_ids), 5)
         move.button_draft()
         self.assertFalse(move.deferred_move_ids)
 
         # With a lock date, we should reverse the moves that cannot be deleted
         move.action_post()  # Post the move to create the deferred entries with 'on_validation' method
-        self.assertEqual(len(move.deferred_move_ids), 6)
+        self.assertEqual(len(move.deferred_move_ids), 5)
         move.company_id.fiscalyear_lock_date = fields.Date.to_date('2023-02-15')
         move.button_draft()
-        # January deferred entry is in lock period, so it is reversed, not deleted, thus we have the deferred entry and its reversal linked to our move
-        self.assertEqual(len(move.deferred_move_ids), 2)
+        # January deferred entry is in lock period, so it is reversed, not deleted, thus we have only one
+        self.assertEqual(len(move.deferred_move_ids), 1)
 
     def assert_invoice_lines(self, move, expected_values, source_account, deferred_account):
         deferred_moves = move.deferred_move_ids.sorted('date')
         for deferred_move, expected_value in zip(deferred_moves, expected_values):
-            expected_date, expense_line1_debit, expense_line1_credit, expense_line2_debit, expense_line2_credit, deferred_line_debit, deferred_line_credit = expected_value
+            expected_date, expense_line_debit, expense_line_credit, deferred_line_debit, deferred_line_credit = expected_value
             self.assertRecordValues(deferred_move, [{
                 'state': 'posted',
                 'move_type': 'entry',
                 'date': fields.Date.to_date(expected_date),
             }])
-            expense_lines = deferred_move.line_ids.filtered(lambda line: line.account_id == source_account)
-            self.assertRecordValues(expense_lines, [
-                {'debit': expense_line1_debit, 'credit': expense_line1_credit},
-                {'debit': expense_line2_debit, 'credit': expense_line2_credit},
+            expense_line = deferred_move.line_ids.filtered(lambda line: line.account_id == source_account)
+            self.assertRecordValues(expense_line, [
+                {'debit': expense_line_debit, 'credit': expense_line_credit},
             ])
             deferred_line = deferred_move.line_ids.filtered(lambda line: line.account_id == deferred_account)
             self.assertEqual(deferred_line.debit, deferred_line_debit)
@@ -180,32 +179,40 @@ class TestDeferredManagement(AccountTestInvoicingCommon):
         self.company.deferred_amount_computation_method = 'month'
 
         expected_line_values1 = [
-            # Date         [Line expense 1][Line expense 2] [Line deferred]
-            ('2023-01-31',    0,   1000,    250,      0,     750,     0),
-            ('2023-02-01', 1000,      0,      0,    250,       0,   750),
-            ('2023-02-28',    0,   1000,    500,      0,     500,     0),
-            ('2023-03-01', 1000,      0,      0,    500,       0,   500),
-            ('2023-03-31',    0,   1000,    750,      0,     250,     0),
-            ('2023-04-01', 1000,      0,      0,    750,       0,   250),
+            # Date         [Line expense] [Line deferred]
+            ('2022-12-31',     0,   1000,    1000,     0),
+            ('2023-01-31',   250,      0,       0,   250),
+            ('2023-02-28',   250,      0,       0,   250),
+            ('2023-03-31',   250,      0,       0,   250),
         ]
         expected_line_values2 = [
-            # Date         [Line expense 1][Line expense 2] [Line deferred]
-            ('2023-01-31', 1000,       0,      0,    250,      0,    750),
-            ('2023-02-01',    0,    1000,    250,      0,    750,      0),
-            ('2023-02-28', 1000,       0,      0,    500,      0,    500),
-            ('2023-03-01',    0,    1000,    500,      0,    500,      0),
-            ('2023-03-31', 1000,       0,      0,    750,      0,    250),
-            ('2023-04-01',    0,    1000,    750,      0,    250,      0),
+            # Date         [Line expense] [Line deferred]
+            ('2022-12-31',  1000,      0,      0,   1000),
+            ('2023-01-31',     0,    250,    250,      0),
+            ('2023-02-28',     0,    250,    250,      0),
+            ('2023-03-31',     0,    250,    250,      0),
         ]
 
         # Vendor bill and credit note
-        move = self.create_invoice('in_invoice', self.company_data['default_journal_purchase'], self.partner_a, [self.expense_lines[0]], post=True)
+        move = self.create_invoice('in_invoice', self.company_data['default_journal_purchase'], self.partner_a, [self.expense_lines[0]], post=True, date='2022-12-10')
         self.assert_invoice_lines(move, expected_line_values1, self.expense_accounts[0], self.company_data['default_account_deferred_expense'])
         reverse_move = move._reverse_moves()
         self.assert_invoice_lines(reverse_move, expected_line_values2, self.expense_accounts[0], self.company_data['default_account_deferred_expense'])
 
         # Customer invoice and credit note
-        move2 = self.create_invoice('out_invoice', self.company_data['default_journal_sale'], self.partner_a, [self.revenue_lines[0]], post=True)
+        move2 = self.create_invoice('out_invoice', self.company_data['default_journal_sale'], self.partner_a, [self.revenue_lines[0]], post=True, date='2022-12-10')
         self.assert_invoice_lines(move2, expected_line_values2, self.revenue_accounts[0], self.company_data['default_account_deferred_revenue'])
         reverse_move2 = move2._reverse_moves()
         self.assert_invoice_lines(reverse_move2, expected_line_values1, self.revenue_accounts[0], self.company_data['default_account_deferred_revenue'])
+
+    def test_deferred_expense_avoid_useless_deferred_entries(self):
+        """
+        If we have an invoice with a start date in the beginning of the month, and an end date in the end of the month,
+        we should not create the deferred entries because the original invoice will be totally deferred
+        on the last day of the month, but the full amount will be accounted for on the same day too, thus
+        cancelling each other. Therefore we should not create the deferred entries.
+        """
+        self.company.generate_deferred_entries_method = 'on_validation'
+        self.company.deferred_amount_computation_method = 'month'
+        move = self.create_invoice('in_invoice', self.company_data['default_journal_purchase'], self.partner_a, [(self.expense_accounts[0], 1680, '2023-01-01', '2023-01-31')], date='2023-01-01')
+        self.assertEqual(len(move.deferred_move_ids), 0)

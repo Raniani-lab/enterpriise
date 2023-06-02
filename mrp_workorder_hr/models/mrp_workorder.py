@@ -258,3 +258,13 @@ class MrpWorkorder(models.Model):
             else:
                 return True
         return False
+
+    def _compute_expected_operation_cost(self):
+        expected_machine_cost = super()._compute_expected_operation_cost()
+        expected_labour_cost = (self.duration_expected / 60) * self.workcenter_id.employee_costs_hour * (self.operation_id.employee_ratio or 1)
+        return expected_machine_cost + expected_labour_cost
+
+    def _compute_current_operation_cost(self):
+        current_machine_cost = super()._compute_current_operation_cost()
+        current_labour_cost = sum(self.time_ids.mapped('total_cost'))
+        return current_machine_cost + current_labour_cost

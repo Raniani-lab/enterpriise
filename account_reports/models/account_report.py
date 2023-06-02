@@ -37,6 +37,9 @@ ACCOUNT_CODES_ENGINE_TERM_REGEX = re.compile(
     r"(?P<balance_character>[DC]?)$"
 )
 
+# Performance optimisation: those engines always will receive None as their next_groupby, allowing more efficient batching.
+NO_NEXT_GROUPBY_ENGINES = {'tax_tags', 'account_codes'}
+
 
 class AccountReportFootnote(models.Model):
     _name = 'account.report.footnote'
@@ -2092,10 +2095,11 @@ class AccountReport(models.Model):
                 if engine not in grouped_formulas:
                     grouped_formulas[engine] = {}
 
-                date_scope = force_date_scope or expression.date_scope
+                date_scope = force_date_scope or self._standardize_date_scope_for_date_range(expression.date_scope)
                 groupby_data = expression.report_line_id._parse_groupby(groupby_to_expand=groupby_to_expand)
 
-                grouping_key = (date_scope, groupby_data['current_groupby'], groupby_data['next_groupby'])
+                next_groupby = groupby_data['next_groupby'] if engine not in NO_NEXT_GROUPBY_ENGINES else None
+                grouping_key = (date_scope, groupby_data['current_groupby'], next_groupby)
 
                 if grouping_key not in grouped_formulas[engine]:
                     grouped_formulas[engine][grouping_key] = {}
@@ -2119,7 +2123,8 @@ class AccountReport(models.Model):
                 # Always expand aggregation expressions, in case their subexpressions are not in expressions parameter
                 # (this can happen in cross report, or when auditing an individual aggregation expression)
                 expanded_cross = expression._expand_aggregations()
-                add_expressions_to_groups(expanded_cross, grouped_formulas, force_date_scope=expression.date_scope)
+                forced_date_scope = self._standardize_date_scope_for_date_range(expression.date_scope)
+                add_expressions_to_groups(expanded_cross, grouped_formulas, force_date_scope=forced_date_scope)
 
         # Treat each formula batch for each column group
         all_column_groups_expression_totals = {}
@@ -2139,6 +2144,16 @@ class AccountReport(models.Model):
             all_column_groups_expression_totals[group_key] = current_group_expression_totals
 
         return all_column_groups_expression_totals
+
+    def _standardize_date_scope_for_date_range(self, date_scope):
+        """ Depending on the fact the report accepts date ranges or not, different date scopes might mean the same thing.
+        This function is used so that, in those cases, only one of these date_scopes' values is used, to avoid useless creation
+        of multiple computation batches and improve the overall performance as much as possible.
+        """
+        if not self.filter_date_range and date_scope in {'normal', 'strict_range'}:
+            return 'from_beginning'
+        else:
+            return date_scope
 
     def _split_options_per_column_group(self, options):
         """ Get a specific option dict per column group, each enforcing the comparison and horizontal grouping associated
@@ -2403,7 +2418,8 @@ class AccountReport(models.Model):
                         expression_result = self._aggregation_apply_bounds(column_group_options, expression.subformula, formula_result)
 
                     # Store result
-                    if (forced_date_scope == expression.date_scope or not forced_date_scope) and expression.report_line_id.report_id == self:
+                    standardized_expression_scope = self._standardize_date_scope_for_date_range(expression.date_scope)
+                    if (forced_date_scope == standardized_expression_scope or not forced_date_scope) and expression.report_line_id.report_id == self:
                         # This condition ensures we don't return necessary subcomputations in the final result
                         rslt[(unexpanded_formula, expression)] = {'result': expression_result}
 

@@ -423,7 +423,7 @@ class L10nInGSTReturnPeriod(models.Model):
                 WHERE EXISTS(SELECT 1
                     FROM account_tax_repartition_line at_rl
                     JOIN account_account_tag_account_tax_repartition_line_rel tax_tag ON tax_tag.account_tax_repartition_line_id = at_rl.id
-                   where (at_rl.tax_id = any(tax_child.child_ids) OR at_rl.tax_id = aml_taxs.account_tax_id)
+                   where (at_rl.tax_id = at.id OR at_rl.tax_id = aml_taxs.account_tax_id)
                      and tax_tag.account_account_tag_id in {all_gst_tag}
                 )
                 GROUP BY aml.id

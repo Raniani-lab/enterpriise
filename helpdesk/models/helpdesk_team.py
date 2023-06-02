@@ -188,28 +188,33 @@ class HelpdeskTeam(models.Model):
 
     def _compute_success_rate(self):
         dt = datetime.datetime.combine(datetime.date.today() - relativedelta.relativedelta(days=6), datetime.time.min)
-        tickets_read = self.env['helpdesk.ticket'].search_read([
-            ('team_id.use_sla', '=', True),
-            '|',
-            ('stage_id.fold', '=', True),
-            ('close_date', '>=', dt)],
-            ['team_id', 'sla_deadline', 'sla_reached_late', 'sla_reached']
-        )
-        # key: helpdesk_team_id and value: [total sla ticket count, failed sla ticket count]
+        sla_teams = self.filtered('use_sla')
+        domain = [
+            ('team_id', 'in', sla_teams.ids),
+            '|', ('stage_id.fold', '=', True), ('close_date', '>=', dt)
+        ]
         sla_tickets_and_failed_tickets_per_team = defaultdict(lambda: [0, 0])
         today = fields.Datetime.now()
-        for res in tickets_read:
-            if res['sla_reached'] or res['sla_reached_late']:
-                sla_tickets_and_failed_tickets_per_team[res['team_id'][0]][0] += 1
-                if (res['sla_deadline'] and today > res['sla_deadline']) or res['sla_reached_late']:
-                    sla_tickets_and_failed_tickets_per_team[res['team_id'][0]][1] += 1
-        for team in self:
+        tickets_sla_count = self.env['helpdesk.ticket']._read_group(domain + [
+            '|', ('sla_reached', '=', True), ('sla_reached_late', '=', True)],
+            ['team_id'], ['__count']
+        )
+        tickets_success_count = self.env['helpdesk.ticket']._read_group(domain + [
+            '|', ('sla_deadline', '<', today), ('sla_reached_late', '=', True)],
+            ['team_id'], ['__count']
+        )
+        for team, team_count in tickets_sla_count:
+            sla_tickets_and_failed_tickets_per_team[team.id][0] = team_count
+        for team, team_count in tickets_success_count:
+            sla_tickets_and_failed_tickets_per_team[team.id][1] = team_count
+        for team in sla_teams:
             if not sla_tickets_and_failed_tickets_per_team.get(team.id):
                 team.success_rate = -1
                 continue
             total_count = sla_tickets_and_failed_tickets_per_team[team.id][0]
             success_count = total_count - sla_tickets_and_failed_tickets_per_team[team.id][1]
             team.success_rate = float_round(success_count * 100 / total_count, 2) if total_count else 0.0
+        (self - sla_teams).success_rate = -1
 
     def _compute_urgent_ticket(self):
         ticket_data = self.env['helpdesk.ticket']._read_group([

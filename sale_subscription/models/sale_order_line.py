@@ -80,7 +80,7 @@ class SaleOrderLine(models.Model):
             if not parent_so.next_invoice_date or line.order_id.subscription_management != 'upsell':
                 # We don't compute discount
                 continue
-            start_date = max(line.order_id.start_date or today, line.order_id.origin_order_id.start_date)
+            start_date = max(line.order_id.start_date or today, line.order_id.origin_order_id.start_date or today)
             end_date = line.order_id.subscription_id.next_invoice_date
             if start_date >= end_date:
                 ratio = 0
@@ -238,6 +238,7 @@ class SaleOrderLine(models.Model):
     def _prepare_invoice_line(self, **optional_values):
         self.ensure_one()
         res = super()._prepare_invoice_line(**optional_values)
+        today = fields.Date.today()
         if self.display_type:
             return res
         elif self.temporal_type == 'subscription' or self.order_id.subscription_management == 'upsell':
@@ -245,7 +246,7 @@ class SaleOrderLine(models.Model):
             lang_code = self.order_id.partner_id.lang
             if self.order_id.subscription_management == 'upsell':
                 # We start at the beginning of the upsell as it's a part of recurrence
-                new_period_start = max(self.order_id.start_date or fields.Datetime.today(), self.order_id.origin_order_id.start_date)
+                new_period_start = max(self.order_id.start_date or today, self.order_id.origin_order_id.start_date or today)
             else:
                 # We need to invoice the next period: last_invoice_date will be today once this invoice is created. We use get_timedelta to avoid gaps
                 # We always use next_invoice_date as the recurrence are synchronized with the invoicing periods.
@@ -307,6 +308,7 @@ class SaleOrderLine(models.Model):
     def _get_renew_upsell_values(self, subscription_management, period_end=None):
         order_lines = []
         description_needed = False
+        today = fields.Date.today()
         for line in self:
             if line.temporal_type != 'subscription':
                 continue
@@ -323,7 +325,7 @@ class SaleOrderLine(models.Model):
             }))
             description_needed = True
         if subscription_management == 'upsell' and description_needed and period_end:
-            start_date = max(fields.Date.today(), line.order_id.origin_order_id.start_date)
+            start_date = max(today, line.order_id.origin_order_id.start_date or today)
             end_date = period_end - relativedelta(days=1)  # the period ends the day before the next invoice
             if start_date >= end_date:
                 line_name = _('Recurring product are entirely discounted as the next period has not been invoiced yet.')

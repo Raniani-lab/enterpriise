@@ -80,7 +80,7 @@ class SaleOrderLine(models.Model):
             elif not parent_id.next_invoice_date or line.order_id.subscription_state != '7_upsell' or not line.product_id.recurring_invoice:
                 # We don't apply discount
                 continue
-            start_date = max(line.order_id.start_date or today, line.order_id.first_contract_date)
+            start_date = max(line.order_id.start_date or today, line.order_id.first_contract_date or today)
             end_date = parent_id.next_invoice_date
             if start_date >= end_date:
                 ratio = 0
@@ -313,6 +313,7 @@ class SaleOrderLine(models.Model):
     def _get_renew_upsell_values(self, subscription_state, period_end=None):
         order_lines = []
         description_needed = self._need_renew_discount_info()
+        today = fields.Date.today()
         for line in self:
             if line.temporal_type != 'subscription':
                 continue
@@ -331,7 +332,7 @@ class SaleOrderLine(models.Model):
             description_needed = True
 
         if subscription_state == '7_upsell' and description_needed and period_end:
-            start_date = max(fields.Date.today(), line.order_id.first_contract_date)
+            start_date = max(today, line.order_id.first_contract_date or today)
             end_date = period_end - relativedelta(days=1)  # the period ends the day before the next invoice
             if start_date >= end_date:
                 line_name = _('Recurring products are entirely discounted as the next period has not been invoiced yet.')

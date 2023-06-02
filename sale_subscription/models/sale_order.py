@@ -1119,7 +1119,8 @@ class SaleOrder(models.Model):
         :return: dict of new sale order values
         """
         self.ensure_one()
-        if subscription_state == '7_upsell' and self.next_invoice_date <= max(self.first_contract_date, fields.Date.today()):
+        today = fields.Date.today()
+        if subscription_state == '7_upsell' and self.next_invoice_date <= max(self.first_contract_date or today, today):
             raise UserError(_('You cannot create an upsell for this subscription because it :\n'
                               ' - Has not started yet.\n'
                               ' - Has no invoiced period in the future.'))

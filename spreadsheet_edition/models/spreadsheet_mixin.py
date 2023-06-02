@@ -261,9 +261,9 @@ class SpreadsheetMixin(models.AbstractModel):
             for f in files:
                 # to reduce networking load, only the image path is sent.
                 # It's replaced by the image content here.
-                if 'imagePath' in f:
+                if 'imageSrc' in f:
                     try:
-                        content = self._get_file_content(f['imagePath'])
+                        content = self._get_file_content(f['imageSrc'])
                         doc_zip.writestr(f['path'], content)
                     except MissingError:
                         pass

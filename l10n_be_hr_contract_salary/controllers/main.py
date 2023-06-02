@@ -367,6 +367,8 @@ class HrContractSalary(main.HrContractSalary):
         res['has_hospital_insurance'] = float(advantages['has_hospital_insurance_radio']) == 1.0 if 'has_hospital_insurance_radio' in advantages else False
         res['l10n_be_has_ambulatory_insurance'] = float(advantages['l10n_be_has_ambulatory_insurance_radio']) == 1.0 if 'l10n_be_has_ambulatory_insurance_radio' in advantages else False
         res['l10n_be_canteen_cost'] = advantages['l10n_be_canteen_cost'] if 'l10n_be_canteen_cost' in advantages else False
+        res['ip'] = bool(advantages['ip_value_radio']) if 'ip_value_radio' in advantages else False
+        res['ip_wage_rate'] = advantages['ip_value'] if 'ip_value' in advantages else 0
         return res
 
     def create_new_contract(self, contract, offer_id, advantages, no_write=False, **kw):

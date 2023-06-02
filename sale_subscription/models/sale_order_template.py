@@ -26,7 +26,6 @@ class SaleOrderTemplate(models.Model):
         domain="[('type', '=', 'sale')]", company_dependent=True, check_company=True,
         help="If set, subscriptions with this template will invoice in this journal; "
              "otherwise the sales journal with the lowest sequence is used.")
-    color = fields.Integer()
     auto_close_limit = fields.Integer(
         string="Automatic Closing", default=15,
         help="Unpaid subscription after the due date majored by this number of days will be automatically closed by "

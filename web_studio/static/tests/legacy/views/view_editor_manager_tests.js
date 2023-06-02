@@ -7153,6 +7153,57 @@ QUnit.module('ViewEditorManager', {
         await legacyExtraNextTick();
     });
 
+    QUnit.test("navigate in nested x2many which has a context", async function (assert) {
+        serverData.models.product.fields.po2m = { type: "one2many", relation: "partner", string: "Po2M"};
+
+        const coucouId1 = pyEnv['coucou'].create({
+            display_name: 'Coucou 11',
+            product_ids: [],
+        });
+
+        const action = serverData.actions["studio.coucou_action"];
+        action.views = [[1, "form"]];
+        action.res_model = "coucou";
+        action.res_id = coucouId1;
+        serverData.views["coucou,1,form"] = /*xml */ `
+           <form>
+                <field name='product_ids'>
+                    <form>
+                        <div class="product-subview-form" />
+                        <field name="po2m" context="{'context_key': 'value'}">
+                            <form>
+                                <div class="po2m-subview-form" />
+                                <field name="display_name" />
+                            </form>
+                        </field>
+                    </form>
+               </field>
+           </form>`;
+
+        serverData.views["coucou,false,search"] = `<search></search>`;
+        serverData.views["product,2,list"] = `<tree><field name="display_name" /></tree>`;
+
+        const webClient = await createEnterpriseWebClient({ serverData, legacyParams: {withLegacyMockServer: true}});
+        await doAction(webClient, "studio.coucou_action");
+        await openStudio(target);
+
+        await click(target.querySelector('.o_web_studio_form_view_editor .o_field_one2many'));
+        await click(
+            target.querySelector('.o_web_studio_form_view_editor .o_field_one2many .o_web_studio_editX2Many[data-type="form"]')
+        );
+        await legacyExtraNextTick();
+
+        assert.containsOnce(target, ".o_view_controller .product-subview-form");
+
+        await click(target.querySelector('.o_web_studio_form_view_editor .o_field_one2many'));
+        await click(
+            target.querySelector('.o_web_studio_form_view_editor .o_field_one2many .o_web_studio_editX2Many[data-type="form"]')
+        );
+        await legacyExtraNextTick();
+
+        assert.containsOnce(target, ".o_view_controller .po2m-subview-form");
+    });
+
     QUnit.test('folds/unfolds the existing fields into sidebar', async function (assert) {
         assert.expect(10);
 

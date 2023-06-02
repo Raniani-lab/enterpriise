@@ -354,6 +354,12 @@ $indent-size-md: 3px;
         }
     }
 
+    .o_deferred_reports {
+        .o_account_deferred_column_contrast{
+            font-weight: normal !important;
+        }
+    }
+
     .o_aged_report {
         .acc_rep_searchable {
             > td > .acc_rep_line_name,

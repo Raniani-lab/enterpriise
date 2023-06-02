@@ -562,17 +562,28 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
             options,
         )
 
+    def assert_invoice_lines(self, deferred_move, expected_values):
+        for line, expected_value in zip(deferred_move.line_ids, expected_values):
+            expected_account, expected_debit, expected_credit = expected_value
+            self.assertRecordValues(line, [{
+                'account_id': expected_account.id,
+                'debit': expected_debit,
+                'credit': expected_credit,
+            }])
+
     def test_deferred_expense_generate_grouped_entries_method(self):
         """
         Test the Generate entries button on the deferred expense report.
         """
         self.company.deferred_amount_computation_method = 'month'
         self.company.generate_deferred_entries_method = 'manual'
+        deferral_account = self.company_data['default_account_deferred_expense']
 
         options = {
             "date": {
                 "date_from": "2023-01-01",
                 "date_to": "2023-01-31",
+                "string": "January 2023",
             },
         }
 
@@ -585,36 +596,56 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         self.create_invoice('in_invoice', self.company_data['default_journal_purchase'], self.partner_b, [self.expense_lines[2]], post=True)
 
         # Check that no deferred move has been created
-        self.assertEqual(self.env['account.move.line'].search_count([('account_id', '=', self.company.deferred_expense_account_id.id)]), 0)
+        self.assertEqual(self.env['account.move.line'].search_count([('account_id', '=', deferral_account.id)]), 0)
 
         # Generate the grouped deferred entries
         res = handler.action_generate_entry(options)
-        generated_entries = self.env['account.move'].search(res['domain'], order='date')
+        generated_entries_january = self.env['account.move'].search(res['domain'], order='date')
 
-        deferred_move = generated_entries[0]
-        self.assertRecordValues(deferred_move, [{
+        deferred_move_january = generated_entries_january[0]
+        self.assertRecordValues(deferred_move_january, [{
             'state': 'posted',
             'move_type': 'entry',
             'date': fields.Date.to_date('2023-01-31'),
         }])
-        expense0_lines = deferred_move.line_ids.filtered(lambda line: line.account_id == self.expense_accounts[0])
-        self.assertEqual(expense0_lines[0].debit, 0)
-        self.assertEqual(expense0_lines[0].credit, 1000 + 1050)
-        self.assertEqual(expense0_lines[1].debit, 250 + 150)
-        self.assertEqual(expense0_lines[1].credit, 0)
-        expense1_lines = deferred_move.line_ids.filtered(lambda line: line.account_id == self.expense_accounts[1])
-        self.assertEqual(expense1_lines[0].debit, 0)
-        self.assertEqual(expense1_lines[0].credit, 1225)
-        self.assertEqual(expense1_lines[1].debit, 350)
-        self.assertEqual(expense1_lines[1].credit, 0)
-        deferred_line = deferred_move.line_ids.filtered(lambda line: line.account_id == self.company_data['default_account_deferred_expense'])
-        self.assertEqual(deferred_line.debit, 1000 + 1050 + 1225 - 250 - 150 - 350)
-        self.assertEqual(deferred_line.credit, 0)
+        expected_values_january = [
+            #          Date                         Debit                       Credit
+            [self.expense_accounts[0],                                     0, 1000 + 1050],
+            [self.expense_accounts[0],                             250 + 150,           0],
+            [self.expense_accounts[1],                                     0,        1225],
+            [self.expense_accounts[1],                                   350,           0],
+            [deferral_account,          1000 + 1050 + 1225 - 250 - 150 - 350,           0]
+        ]
+        self.assert_invoice_lines(deferred_move_january, expected_values_january)
 
-        deferred_inverse = generated_entries[1]
-        self.assertEqual(deferred_inverse.move_type, 'entry')
-        self.assertEqual(deferred_inverse.state, 'posted')  # Posted because the date is before today
-        self.assertEqual(deferred_inverse.date, fields.Date.from_string('2023-02-01'))
+        deferred_inverse_january = generated_entries_january[1]
+        self.assertEqual(deferred_inverse_january.move_type, 'entry')
+        self.assertEqual(deferred_inverse_january.state, 'posted')  # Posted because the date is before today
+        self.assertEqual(deferred_inverse_january.date, fields.Date.from_string('2023-02-01'))
+
+        # Don't re-generate entries for the same period if they already exist for all move lines
+        with self.assertRaises(UserError, msg='No entry to generate.'):
+            handler.action_generate_entry(options)
+
+        # Generate the grouped deferred entries for the next period
+        res = handler.action_generate_entry({
+            "date": {
+                "date_from": "2023-02-01",
+                "date_to": "2023-02-28",
+                "string": "February 2023",
+            },
+        })
+        generated_entries_february = self.env['account.move'].search(res['domain'], order='date')
+        deferred_move_february = generated_entries_february[0]
+        expected_values_february = [
+            #          Date                         Debit                       Credit
+            [self.expense_accounts[0],                                     0, 1000 + 1050],
+            [self.expense_accounts[0],                             500 + 450,           0],
+            [self.expense_accounts[1],                                     0,        1225],
+            [self.expense_accounts[1],                                   700,           0],
+            [deferral_account,          1000 + 1050 + 1225 - 500 - 450 - 700,           0]
+        ]
+        self.assert_invoice_lines(deferred_move_february, expected_values_february)
 
     def test_deferred_values_rounding(self):
         """
@@ -633,5 +664,29 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
             "date": {
                 "date_from": "2023-04-01",
                 "date_to": "2023-04-30",
+                "string": "April 2023",
             },
         })  # This shouldn't raise an error like this 'The total of debits equals $1,800.01 and the total of credits equals $1,800.00.'
+
+    def test_deferred_expense_change_grouped_entries_method(self):
+        """
+        Test the change of the deferred expense method from on_validation to manual
+        """
+        self.company.deferred_amount_computation_method = 'month'
+        self.company.generate_deferred_entries_method = 'on_validation'
+        deferral_account = self.company_data['default_account_deferred_expense']
+
+        self.create_invoice('in_invoice', self.company_data['default_journal_purchase'], self.partner_a, [self.expense_lines[0]], post=True)
+        self.assertEqual(self.env['account.move.line'].search_count([('account_id', '=', deferral_account.id)]), 5)  # 4 months + 1 for the initial deferred invoice
+
+        # When changing the method to manual, the deferred entries should not be re-generated
+        self.company.generate_deferred_entries_method = 'manual'
+        handler = self.env['account.deferred.expense.report.handler']
+        with self.assertRaises(UserError, msg='No entry to generate.'):
+            handler.action_generate_entry({
+                "date": {
+                    "date_from": "2023-02-01",
+                    "date_to": "2023-02-28",
+                    "string": "February 2023",
+                },
+            })

@@ -1,13 +1,22 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo import models, fields, _
+from dateutil.relativedelta import relativedelta
+from odoo import models, fields, _, api, Command
 from odoo.exceptions import UserError
+from odoo.tools import groupby
 
 
 class DeferredReportCustomHandler(models.AbstractModel):
     _name = 'account.deferred.report.handler'
     _inherit = 'account.report.custom.handler'
     _description = 'Deferred Expense Report Custom Handler'
+
+    def _get_custom_display_config(self):
+        return {
+            'templates': {
+                'AccountReport': 'account_reports.DeferredReports',
+            }
+        }
 
     def _get_deferred_report_type(self):
         raise NotImplementedError("This method is not implemented in the deferred report handler.")
@@ -87,7 +96,7 @@ class DeferredReportCustomHandler(models.AbstractModel):
             'target': 'current',
         }
 
-    def _get_lines(self, options):
+    def _get_lines(self, options, filter_already_generated=False):
         self.env['account.move.line'].check_access_rights('read')
         query_params = {
             'company_id': self.env.company.id,
@@ -96,25 +105,40 @@ class DeferredReportCustomHandler(models.AbstractModel):
             'date_to': options['date']['date_to'],
         }
         move_filter = f"""AND move.state {"!= 'cancel'" if options.get('all_entries', False) else "= 'posted'"}"""
+        show_already_generated = "TRUE OR" if not filter_already_generated else ""
+        max_deferred_date = """
+            (
+                SELECT MAX(def_move.date)
+                  FROM account_move_deferred_rel rel
+                  JOIN account_move def_move ON def_move.id = rel.deferred_move_id
+                 WHERE rel.original_move_id = move.id
+            )
+        """
 
         sql = f"""
             SELECT line.id AS line_id,
-                   move.id as move_id, 
                    line.account_id AS account_id,
                    line.partner_id AS partner_id,
                    line.name AS line_name,
-                   move.name AS move_name,
-                   account.name AS account_name,
                    line.deferred_start_date AS deferred_start_date,
                    line.deferred_end_date AS deferred_end_date,
                    line.deferred_end_date - line.deferred_start_date AS diff_days,
-                   line.balance AS balance
+                   line.balance AS balance,
+                   move.id as move_id, 
+                   move.name AS move_name,
+                   account.name AS account_name
               FROM account_move_line line
          LEFT JOIN account_move move ON line.move_id = move.id
          LEFT JOIN account_account account ON line.account_id = account.id
              WHERE line.company_id = %(company_id)s
                AND line.deferred_start_date IS NOT NULL
                AND line.deferred_end_date IS NOT NULL
+               AND
+               (
+                    {show_already_generated}
+                    {max_deferred_date} IS NULL
+                    OR {max_deferred_date} < %(date_to)s
+               )
                AND 
                (
                    (
@@ -207,6 +231,18 @@ class DeferredReportCustomHandler(models.AbstractModel):
                 for period in periods
             ]
 
+        options['show_banner_already_generated_entries'] = (
+            self.env.company.generate_deferred_entries_method == 'manual'
+            and self.env['account.move.line'].search_count([
+                ('company_id', '=', self.env.company.id),
+                ('deferred_start_date', '!=', False),
+                ('deferred_end_date', '!=', False),
+                ('move_id.state', '=', 'posted') if not options.get('all_entries', False) else ('move_id.state', '!=', 'cancel'),
+                ('move_id.deferred_move_ids', '!=', False),
+                ('move_id.deferred_move_ids.date', '>=', options['date']['date_to']),
+            ])
+        )
+
         lines = self._get_lines(options)
         periods = [
             (fields.Date.from_string(column['date_from']), fields.Date.from_string(column['date_to']))
@@ -223,6 +259,7 @@ class DeferredReportCustomHandler(models.AbstractModel):
                 'name': f"{totals_account['account'].code} {totals_account['account'].name}",
                 'level': 1,
                 'columns': get_columns(totals_account),
+                'class': 'o_account_deferred_column_contrast',
             }))
         if totals_per_account:
             report_lines.append((0, {

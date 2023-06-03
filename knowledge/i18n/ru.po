@@ -18,14 +18,15 @@
 # Сергей Шебанин <sergey@shebanin.ru>, 2022
 # Alena Vlasova, 2023
 # Martin Trigaux, 2023
+# alenafairy, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-14 06:16+0000\n"
+"POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Martin Trigaux, 2023\n"
+"Last-Translator: alenafairy, 2023\n"
 "Language-Team: Russian (https://app.transifex.com/odoo/teams/41243/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -43,18 +44,22 @@ msgid ""
 "            <b>%(threshold)s</b> days\n"
 "            before being permanently removed for your database"
 msgstr ""
+"\n"
+"            Удаленные статьи хранятся в Корзине дополнительно\n"
+"<b>%(threshold)s</b> дней\n"
+"до того, как они будут окончательно удалены из вашей базы данных"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/move_article_dialog/move_article_dialog.xml:0
 #, python-format
 msgid "\" under:"
-msgstr ""
+msgstr "\" под:"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__favorite_count
 msgid "#Is Favorite"
-msgstr ""
+msgstr "#Избранное"
 
 #. module: knowledge
 #. odoo-python
@@ -70,88 +75,96 @@ msgstr "%s (копия)"
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "%s has been sent to Trash"
-msgstr ""
+msgstr "%s отправлено в корзину"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_mail_invite
 msgid ".<br/><br/>"
-msgstr ""
+msgstr ".<br/><br/>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_frontend
 msgid "<i class=\"fa fa-circle-o-notch fa-2x fa-spin\" title=\"loader\" role=\"img\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-circle-o-notch fa-2x fa-spin\" title=\"loader\" role=\"img\"/>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"fa fa-fw fa-ellipsis-v\" title=\"Open kebab menu\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-ellipsis-v\" title=\"Open kebab menu\"/>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"fa fa-fw fa-lg fa-angle-double-right\"/> Move To"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-lg fa-angle-double-right\"/> Переместить в"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"fa fa-fw fa-lg fa-archive\"/> Unarchive"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-lg fa-archive\"/> Разархивировать"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"fa fa-fw fa-lg fa-arrows-h\"/> Full Width"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-lg fa-arrows-h\"/> Полная ширина"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"fa fa-fw fa-lg fa-cog\" title=\"Add properties\"/> Add Properties"
 msgstr ""
+"<i class=\"fa fa-fw fa-lg fa-cog\" title=\"Add properties\"/> Добавить "
+"свойства"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"fa fa-fw fa-lg fa-copy\"/> Create a Copy"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-lg fa-copy\"/> Создать копию"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"fa fa-fw fa-lg fa-lock\"/> Lock"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-lg fa-lock\"/> Заблокировать"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"fa fa-fw fa-lg fa-picture-o\" title=\"Add cover\"/> Add cover"
 msgstr ""
+"<i class=\"fa fa-fw fa-lg fa-picture-o\" title=\"Add cover\"/> Добавить "
+"обложку"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"fa fa-fw fa-lg fa-picture-o\" title=\"Change cover\"/> Change cover"
 msgstr ""
+"<i class=\"fa fa-fw fa-lg fa-picture-o\" title=\"Change cover\"/> Поменять "
+"обложку"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"fa fa-fw fa-lg fa-smile-o\" title=\"Add icon\"/> Add icon"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-lg fa-smile-o\" title=\"Add icon\"/> Добавить иконку"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"fa fa-fw fa-lg fa-trash\"/> Delete"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-lg fa-trash\"/> Удалить"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"fa fa-fw fa-lg fa-trash-o\" title=\"Remove cover\"/> Remove cover"
 msgstr ""
+"<i class=\"fa fa-fw fa-lg fa-trash-o\" title=\"Remove cover\"/> Удалить "
+"обложку"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"fa fa-fw fa-lg fa-trash-o\"/> Restore from Trash"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-lg fa-trash-o\"/> Восстановить из Корзины"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"fa fa-fw fa-lg fa-unlock\"/> Unlock"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-lg fa-unlock\"/> Разблокировать"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -160,21 +173,24 @@ msgid ""
 "attrs=\"{'invisible': ['|', '|', ('is_locked', '=', False), "
 "('user_can_write', '=', False), ('active', '=', False)]}\"/>"
 msgstr ""
+"<i class=\"fa fa-fw fa-lock\" title=\"This article is locked\" "
+"attrs=\"{'invisible': ['|', '|', ('is_locked', '=', False), "
+"('user_can_write', '=', False), ('active', '=', False)]}\"/>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.articles_template_name
 msgid "<i class=\"fa fa-fw fa-plus\" title=\"Create a nested article\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-plus\" title=\"Create a nested article\"/>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_tree
 msgid "<i class=\"fa fa-fw fa-plus\" title=\"Create a new article in workspace\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-plus\" title=\"Create a new article in workspace\"/>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_tree
 msgid "<i class=\"fa fa-fw fa-plus\" title=\"Create a new private article\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-plus\" title=\"Create a new private article\"/>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -182,26 +198,28 @@ msgid ""
 "<i class=\"fa fa-lg fa-star\" title=\"Remove from favorites\" attrs=\"{'invisible': [('is_user_favorite', '=', False)]}\"/>\n"
 "                                        <i class=\"fa fa-lg fa-star-o\" title=\"Add to favorites\" attrs=\"{'invisible': [('is_user_favorite', '=', True)]}\"/>"
 msgstr ""
+"<i class=\"fa fa-lg fa-star\" title=\"Remove from favorites\" attrs=\"{'invisible': [('is_user_favorite', '=', False)]}\"/>\n"
+"                                        <i class=\"fa fa-lg fa-star-o\" title=\"Add to favorites\" attrs=\"{'invisible': [('is_user_favorite', '=', True)]}\"/>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"fa fa-plus-circle me-1\"/>New"
-msgstr ""
+msgstr "<i class=\"fa fa-plus-circle me-1\"/>Новый"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"fa fa-share-alt me-1\"/>Share"
-msgstr ""
+msgstr "<i class=\"fa fa-share-alt me-1\"/>Поделиться"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_kanban
 msgid "<i class=\"fa fa-star\" title=\"Remove from favorites\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-star\" title=\"Remove from favorites\"/>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_kanban
 msgid "<i class=\"fa fa-star-o\" title=\"Add to favorites\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-star-o\" title=\"Add to favorites\"/>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -211,11 +229,15 @@ msgid ""
 "                                                Open the Trash\n"
 "                                            </span>"
 msgstr ""
+"<i class=\"fa fa-trash\"/>\n"
+"                                            <span class=\"ps-2 flex-grow-1 text-truncate\">\n"
+"                                                Открыть Корзину\n"
+"                                            </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"fa fa-user-plus fs-3\" title=\"Invite People\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-user-plus fs-3\" title=\"Invite People\"/>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_invite_view_form
@@ -223,6 +245,8 @@ msgid ""
 "<i class=\"fa fa-w fa-info-circle\"/> All external users you selected won't "
 "be added to the members."
 msgstr ""
+"<i class=\"fa fa-w fa-info-circle\"/> Все выбранные внешние пользователи не "
+"будут добавлены в состав участников."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_invite_view_form
@@ -230,16 +254,18 @@ msgid ""
 "<i class=\"fa fa-w fa-info-circle\"/> External users cannot write on "
 "Articles and will be granted read access instead."
 msgstr ""
+"Внешние пользователи не могут редактировать статьи, вместо этого им "
+"предоставляется доступ на чтение."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"oi oi-search pe-2\" title=\"search\"/>"
-msgstr ""
+msgstr "<i class=\"oi oi-search pe-2\" title=\"search\"/>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"rounded-circle text-center fa fa-cog\" title=\"Show Properties\"/>"
-msgstr ""
+msgstr "<i class=\"rounded-circle text-center fa fa-cog\" title=\"Show Properties\"/>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -247,21 +273,23 @@ msgid ""
 "<i class=\"rounded-circle text-center fa fa-fw fa-comments\" title=\"Open "
 "chatter\"/>"
 msgstr ""
+"<i class=\"rounded-circle text-center fa fa-fw fa-comments\" title=\"Open "
+"chatter\"/>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_tree
 msgid "<i>There are no Articles in your Workspace.</i>"
-msgstr ""
+msgstr "<i>В вашем каталоге нет статей.</i>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_tree
 msgid "<i>You do not have any private Articles.</i>"
-msgstr ""
+msgstr "<i>У вас нет личных публикаций.</i>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<span class=\"mx-1\">-</span>"
-msgstr ""
+msgstr "<span class=\"mx-1\">-</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -271,6 +299,10 @@ msgid ""
 "                    (/<span style=\"font-style: italic;\">checklist</span>)\n"
 "                </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"                    Добавить чек-лист\n"
+"                    (/<span style=\"font-style: italic;\">чек-лист</span>)\n"
+"                </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -280,6 +312,10 @@ msgid ""
 "                    (/<span style=\"font-style: italic;\">separator</span>)\n"
 "                </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"                    Добавить разделитель\n"
+"                    (/<span style=\"font-style: italic;\">разделитель</span>)\n"
+"                </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -290,6 +326,11 @@ msgid ""
 "                    to convert a text into a title\n"
 "                </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"                    Использовать\n"
+"                    /<span style=\"font-style: italic;\">заголовок</span>\n"
+"                    для преобразования текста в название\n"
+"                </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -306,6 +347,17 @@ msgid ""
 "            Unstar this page at the top to remove it from your favorites.\n"
 "        </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"            <span style=\"font-weight: bolder;\">\n"
+"                <font class=\"text-o-color-2\">Избранное</font>\n"
+"            </span>\n"
+"            — Это\n"
+"            <span style=\"font-weight: bolder;\">\n"
+"                <font class=\"text-o-color-2\">ярлыки</font>,\n"
+"            </span>\n"
+"            которые вы сами создаете.\n"
+"            Снимите звездочку вверху, чтобы удалить из избранного.\n"
+"        </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -322,6 +374,17 @@ msgid ""
 "            (<span style=\"font-style: italic;\">Drafts, Todo lists, ...</span>)\n"
 "        </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"            <span style=\"font-weight: bolder;\">\n"
+"                <font class=\"text-o-color-2\">Частное</font>\n"
+"            </span>\n"
+"        </span>\n"
+"        <span style=\"font-size: 14px;\">\n"
+"            — Это\n"
+"            <span style=\"font-weight: bolder;\"><font class=\"text-o-color-2\">ваши личные материалы</font></span>,\n"
+"            то, что вы храните для себя\n"
+"            (<span style=\"font-style: italic;\">Черновики, Списки дел, ...</span>)\n"
+"        </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -338,6 +401,17 @@ msgid ""
 "            </span>\n"
 "        </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"            <span style=\"font-weight: bolder;\">\n"
+"                <font class=\"text-o-color-2\">Общее</font>\n"
+"            </span>\n"
+"        </span>\n"
+"        <span style=\"font-size: 14px;\">\n"
+"            — Это те документы, которыми вы\n"
+"            <span style=\"font-weight: bolder;\">\n"
+"                <font class=\"text-o-color-2\">поделились с кем-либо или были приглашены для совместной работы</font>\n"
+"            </span>\n"
+"        </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -354,6 +428,17 @@ msgid ""
 "        </span>\n"
 "    </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"            <span style=\"font-weight: bolder;\">\n"
+"                <font class=\"text-o-color-2\">Каталог</font>\n"
+"            </span>\n"
+"        </span>\n"
+"        <span style=\"font-size: 14px;\">\n"
+"            — Материалы, к которым имеет доступ\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">ваша команда</font>\n"
+"        </span>\n"
+"    </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -368,6 +453,15 @@ msgid ""
 "            \"<span style=\"font-weight: bolder;\">/</span>\"\n"
 "        </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"            Ниже приведен список, попробуйте\n"
+"            <span style=\"font-weight: bolder;\">выполнить команды</span>,\n"
+"            \n"
+"            <span style=\"font-weight: bolder;\">\n"
+"                <font class=\"text-o-color-2\">нажав</font>\n"
+"            </span>\n"
+"            \"<span style=\"font-weight: bolder;\">/</span>\"\n"
+"        </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -380,6 +474,13 @@ msgid ""
 "            (<span style=\"font-style: italic;\">documentation, tips, reports, ...</span>)\n"
 "        </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"            Текст - Просто нажмите и\n"
+"            <span style=\"font-weight: bolder;\">\n"
+"                <font class=\"text-o-color-2\">начните печатать</font>\n"
+"            </span>\n"
+"            (<span style=\"font-style: italic;\">документация, подсказки, отчеты, ...</span>)\n"
+"        </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -395,6 +496,16 @@ msgid ""
 "            (<span style=\"font-style: italic;\">per team, topic, project, ...</span>)\n"
 "        </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"            Папки —\n"
+"        </span>\n"
+"        <span style=\"font-size: 14px;\">\n"
+"            <span style=\"font-weight: bolder;\">\n"
+"                <font class=\"text-o-color-2\">Размещайте публикации</font>,\n"
+"            </span>\n"
+"            группируя их должным образом\n"
+"            (<span style=\"font-style: italic;\">по команде, по теме, по проекту, ...</span>)\n"
+"        </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -408,6 +519,14 @@ msgid ""
 "            <span style=\"font-style: italic; text-decoration-line: underline;\">it</span>\n"
 "        </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"            Выбрать текст, чтобы\n"
+"            <font class=\"bg-o-color-2\">выделить</font>,\n"
+"            <span style=\"text-decoration-line: line-through;\">зачеркнуть</span>\n"
+"            или\n"
+"            <span style=\"font-weight: bolder;\">стилизовать</span>\n"
+"            <span style=\"font-style: italic; text-decoration-line: underline;\">его</span>\n"
+"        </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -418,6 +537,11 @@ msgid ""
 "            to share documents that are frequently needed\n"
 "        </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"            Использовать\n"
+"            /<span style=\"font-weight: bolder;\"><font class=\"text-o-color-2\">файл</font></span>\n"
+"            для обмена документами, которые часто используются\n"
+"        </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -432,6 +556,15 @@ msgid ""
 "            box. Need to re-use its content?\n"
 "        </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"            Использовать\n"
+"            /<span style=\"font-weight: bolder;\"><font class=\"text-o-color-2\">шаблон</font></span>\n"
+"            для вставки\n"
+"            <span style=\"font-weight: bolder;\">\n"
+"                <font class=\"text-o-color-2\">блока</font>\n"
+"            </span>\n"
+"            . Нужно повторно использовать его содержимое?\n"
+"        </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -444,6 +577,13 @@ msgid ""
 "        <span style=\"font-weight: bolder;\"><font class=\"text-o-color-2\">Sections</font></span>:\n"
 "    </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">Публикации</font>\n"
+"        </span>\n"
+"        хранятся в разных\n"
+"        <span style=\"font-weight: bolder;\"><font class=\"text-o-color-2\">Разделах</font></span>:\n"
+"    </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -464,6 +604,21 @@ msgid ""
 "        to share it with everyone.\n"
 "    </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"        Хорошая схема работы - писать черновики, помещая их в папку\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">Личное</font>\n"
+"        </span>\n"
+"        , а после завершения работы перенести их из\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">Личного</font>\n"
+"        </span>\n"
+"        в\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">Каталог</font>\n"
+"        </span>\n"
+"        , чтобы поделиться со всеми.\n"
+"    </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -484,6 +639,21 @@ msgid ""
 "        it.\n"
 "    </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"        Еще раз, чтобы переместить\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">публикацию</font>\n"
+"        </span>\n"
+"        из одного\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">раздела</font>\n"
+"        </span>\n"
+"        в другой, просто\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">перетащите</font>\n"
+"        </span>\n"
+"        ее.\n"
+"    </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -496,6 +666,13 @@ msgid ""
 "        there, on the left?\n"
 "    </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"        Видите\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">Меню</font>\n"
+"        </span>\n"
+"        там, слева экрана?\n"
+"    </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -520,6 +697,10 @@ msgid ""
 "        <span style=\"font-weight: bolder;\"><font class=\"text-o-color-2\">Articles</font></span>.\n"
 "    </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"        Это ваши\n"
+"        <span style=\"font-weight: bolder;\"><font class=\"text-o-color-2\">публикации</font></span>.\n"
+"    </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -536,6 +717,17 @@ msgid ""
 "        them\n"
 "    </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"        Чтобы менять порядок\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">публикаций</font>,\n"
+"        </span>\n"
+"        вы можете просто\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">перетаскивать</font>\n"
+"        </span>\n"
+"        их\n"
+"    </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -559,17 +751,37 @@ msgid ""
 "        \"<span style=\"font-weight: bolder;\">?</span>\".\n"
 "    </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"        Хотите работать\n"
+"        <span style=\"font-style: italic;\">еще</span>\n"
+"        быстрее?\n"
+"    </span>\n"
+"    <br/>\n"
+"    <span style=\"font-size: 14px;\">\n"
+"        Зайдите в \n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">Публикации</font>,\n"
+"        </span>\n"
+"        открыв\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">Палитру команд</font>\n"
+"        </span>\n"
+"        (Ctrl + k/⌘ + k), затем выполните поиск по статьям, начав свой запрос с\n"
+"        \"<span style=\"font-weight: bolder;\">?</span>\".\n"
+"    </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "<span style=\"font-size: 14px;\">And voilà, it is that simple.</span>"
-msgstr ""
+msgstr "<span style=\"font-size: 14px;\">И вуаля, все просто.</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid ""
 "<span style=\"font-size: 14px;\">Check this box to indicate it's done</span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">Поставьте галочку, чтобы отметить как "
+"выполнено</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -577,11 +789,15 @@ msgid ""
 "<span style=\"font-size: 14px;\">Click anywhere, and just start "
 "typing</span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">Кликните в любом месте и просто начните "
+"печатать</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "<span style=\"font-size: 14px;\">Each of them can be used both as:</span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">Каждый из них может быть использован "
+"как:</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -589,6 +805,8 @@ msgid ""
 "<span style=\"font-size: 14px;\">From this box, files can be previewed, "
 "forwarded and downloaded.</span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">Из этого поля можно просматривать, "
+"пересылать и загружать файлы.</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -596,6 +814,8 @@ msgid ""
 "<span style=\"font-size: 14px;\">From your document, find this article by "
 "clicking on the book icon in the chatter.</span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">В документе найдите эту статью, нажав на "
+"значок книги в чаттере.</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -603,6 +823,8 @@ msgid ""
 "<span style=\"font-size: 14px;\">Got it? Now let's try advanced "
 "features</span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">Получилось? Теперь давайте попробуем "
+"расширенные функции</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -610,11 +832,15 @@ msgid ""
 "<span style=\"font-size: 14px;\">Need this document somewhere? Come back "
 "here by clicking on the book icon in the chatter.</span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">Где-то нужен этот документ? Вернитесь сюда,"
+" нажав на значок книги в чаттере.</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "<span style=\"font-size: 14px;\">Press Ctrl-Z to undo any change</span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">Нажмите Ctrl-Z, чтобы отменить "
+"изменения</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -623,11 +849,14 @@ msgid ""
 "    <br/>\n"
 "    <span style=\"font-size: 14px;\">Ready to give it a spin?</span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">Эта личная страница предназначена для того, чтобы вы могли поэкспериментировать</span>\n"
+"    <br/>\n"
+"    <span style=\"font-size: 14px;\">Готовы начать?</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "<span style=\"font-size: 14px;\">Try the following</span>"
-msgstr ""
+msgstr "<span style=\"font-size: 14px;\">Попробуйте следующее</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -796,7 +1025,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/js/knowledge_renderers.js:0
 #, python-format
 msgid ""
-"Are you sure you want to move \"%s%s\" to private? Only you will be able to "
+"Are you sure you want to move \"%s\" to private? Only you will be able to "
 "access it."
 msgstr ""
 
@@ -805,7 +1034,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/js/knowledge_renderers.js:0
 #, python-format
 msgid ""
-"Are you sure you want to move \"%s%s\" to the Workspace? It will be shared "
+"Are you sure you want to move \"%s\" to the Workspace? It will be shared "
 "with all internal users."
 msgstr ""
 
@@ -814,8 +1043,8 @@ msgstr ""
 #: code:addons/knowledge/static/src/js/knowledge_renderers.js:0
 #, python-format
 msgid ""
-"Are you sure you want to move \"%s%s\" under \"%s%s\"? It will be shared "
-"with the same persons."
+"Are you sure you want to move \"%s\" under \"%s%s\"? It will be shared with "
+"the same persons."
 msgstr ""
 
 #. module: knowledge

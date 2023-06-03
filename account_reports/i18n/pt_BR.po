@@ -854,7 +854,7 @@ msgstr "Contas de Banco e Caixa"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_bank_rec_widget
 msgid "Bank reconciliation widget for a single statement line"
-msgstr ""
+msgstr "Widget de reconciliação bancária para linhas individuais de extrato"
 
 #. module: account_reports
 #. odoo-python

@@ -49,7 +49,7 @@ msgstr "Créer une tâche"
 #: model:ir.model,name:helpdesk_fsm.model_helpdesk_create_fsm_task
 #, python-format
 msgid "Create a Field Service task"
-msgstr "Créer une tâche de services sur site"
+msgstr "Créer une tâche de service sur site"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__create_uid

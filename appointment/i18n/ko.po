@@ -7,6 +7,7 @@
 # Link Up링크업 <linkup.way@gmail.com>, 2022
 # Linkup <link-up@naver.com>, 2022
 # JH CHOI <hwangtog@gmail.com>, 2022
+# Daye Jeong, 2023
 # Sarah Park, 2023
 # 
 msgid ""
@@ -574,7 +575,7 @@ msgstr "약속 초대"
 #. module: appointment
 #: model:ir.model,name:appointment.model_appointment_invite
 msgid "Appointment Invite"
-msgstr ""
+msgstr "약속 초대"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__meeting_ids
@@ -1689,7 +1690,7 @@ msgstr "전체에서 검색"
 #: code:addons/appointment/controllers/portal.py:0
 #, python-format
 msgid "Search in Description"
-msgstr ""
+msgstr "설명 검색"
 
 #. module: appointment
 #. odoo-python

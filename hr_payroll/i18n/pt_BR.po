@@ -1626,7 +1626,7 @@ msgstr "Meio Dia"
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_run__has_message
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_attachment__has_message
 msgid "Has Message"
-msgstr "Análise de Previsão:"
+msgstr "Tem uma mensagem"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__has_negative_net_to_report
@@ -3763,7 +3763,7 @@ msgstr "Aguardando"
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__warning_message
 msgid "Warning Message"
-msgstr ""
+msgstr "Mensagem de alerta"
 
 #. module: hr_payroll
 #. odoo-python

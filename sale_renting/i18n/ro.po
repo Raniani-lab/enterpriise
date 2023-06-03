@@ -8,6 +8,7 @@
 # Hongu Cosmin <cosmin513@gmail.com>, 2022
 # Foldi Robert <foldirobert@nexterp.ro>, 2022
 # Cozmin Candea <office@terrabit.ro>, 2023
+# Vacaru Adrian <adrian.vacaru@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -15,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Cozmin Candea <office@terrabit.ro>, 2023\n"
+"Last-Translator: Vacaru Adrian <adrian.vacaru@gmail.com>, 2023\n"
 "Language-Team: Romanian (https://app.transifex.com/odoo/teams/41243/ro/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -37,8 +38,8 @@ msgid ""
 "(object.rental_status not in ('draft', 'sent') and 'Delivery or Return "
 "Receipt - %s' %(object.name)) or 'Order - %s' % (object.name)"
 msgstr ""
-"(object.rental_status not in ('draft', 'sent') și „Livrare sau Primire Retur"
-" - %s' %(object.name)) sau „Comandă - %s' % (object.name)"
+"(object.rental_status not in ('draft', 'sent') și 'Livrare sau Primire Retur"
+" - %s' %(object.name)) or 'Comandă - %s' % (object.name)"
 
 #. module: sale_renting
 #. odoo-python
@@ -60,7 +61,7 @@ msgid ""
 "<span class=\"o_form_label\">\n"
 "                                    Default Delay Costs\n"
 "                                </span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\"> Costuri standard de intarziere </span>"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.product_product_form_view_rental_gantt
@@ -76,17 +77,17 @@ msgstr "<span>la</span>"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_gantt
 msgid "<strong>Order # — </strong>"
-msgstr ""
+msgstr "<strong>Comanda # — </strong>"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_gantt
 msgid "<strong>Pickup  — </strong>"
-msgstr ""
+msgstr "<strong>Ridicare — </strong>"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_gantt
 msgid "<strong>Return — </strong>"
-msgstr ""
+msgstr "<strong>Retur — </strong>"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
@@ -101,7 +102,7 @@ msgstr "<strong>Adresă livrare:</strong>"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_gantt
 msgid "<strong>Status — </strong>"
-msgstr ""
+msgstr "<strong>Status — </strong>"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_configurator_view_form

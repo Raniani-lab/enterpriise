@@ -171,6 +171,8 @@ msgid ""
 "Enable barcode scanning with a remotely connected barcode scanner and card "
 "swiping with a Vantiv card reader."
 msgstr ""
+"Włącz skanowanie kodów kreskowych za pomocą zdalnie podłączonego skanera "
+"kodów kreskowych i przeciąganie kart za pomocą czytnika kart Vantiv."
 
 #. module: pos_iot
 #: model:ir.model.fields,help:pos_iot.field_pos_config__iface_electronic_scale

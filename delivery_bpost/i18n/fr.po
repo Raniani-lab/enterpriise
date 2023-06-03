@@ -151,7 +151,7 @@ msgstr "Format de libellé"
 #. module: delivery_bpost
 #: model_terms:ir.ui.view,arch_db:delivery_bpost.view_delivery_carrier_form_with_provider_bpost
 msgid "Label Type"
-msgstr "Type de libellé"
+msgstr "Type d'étiquette"
 
 #. module: delivery_bpost
 #: model:ir.model.fields.selection,name:delivery_bpost.selection__delivery_carrier__bpost_shipment_type__other

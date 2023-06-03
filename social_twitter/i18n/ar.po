@@ -261,7 +261,7 @@ msgstr "الاسم"
 #: code:addons/social_twitter/models/social_stream.py:0
 #, python-format
 msgid "Please select a Twitter account for this stream type."
-msgstr "يرجى تحديد حساب Twitter لنوع التدفق هذا. "
+msgstr "يرجى تحديد حساب Twitter لنوع الوسائط هذا. "
 
 #. module: social_twitter
 #. odoo-javascript
@@ -621,7 +621,7 @@ msgstr ""
 #. module: social_twitter
 #: model:ir.model.constraint,message:social_twitter.constraint_social_stream_post_tweet_uniq
 msgid "You can not store two times the same tweet on the same stream!"
-msgstr "لا يمكنك تخزين نفس التغريدة مرتين في نفس التغريدة ونفس التيار! "
+msgstr "لا يمكنك تخزين نفس التغريدة مرتين في نفس التغريدة ونفس الوسط! "
 
 #. module: social_twitter
 #. odoo-python
@@ -631,7 +631,7 @@ msgid ""
 "You cannot create a Stream from this Twitter account.\n"
 "It may be because it's protected. To solve this, please make sure you follow it before trying again."
 msgstr ""
-"لا يمكنك إنشاء تدفق من حساب Twitter هذا. \n"
+"لا يمكنك إنشاء وسط من حساب Twitter هذا. \n"
 "قد يكون السبب هو أنه محمي. لحل هذه المشكلة، يرجى التأكد من أنك تتابعه قبل المحاولة مجدداً. "
 
 #. module: social_twitter

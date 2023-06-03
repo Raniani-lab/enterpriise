@@ -131,7 +131,7 @@ msgstr "중지"
 #: model:ir.model.fields,field_description:timer.field_timer_mixin__timer_pause
 #: model:ir.model.fields,field_description:timer.field_timer_timer__timer_pause
 msgid "Timer Last Pause"
-msgstr ""
+msgstr "타이머 최근 일시 정지"
 
 #. module: timer
 #: model:ir.model,name:timer.model_timer_mixin

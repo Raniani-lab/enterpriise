@@ -27,7 +27,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Available time (min)"
-msgstr ""
+msgstr "الوقت المتاح (بالدقائق) "
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
@@ -41,7 +41,7 @@ msgstr "متوسط التكلفة / الوحدة "
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Average cost / unit"
-msgstr ""
+msgstr "متوسط التكلفة / الوحدة "
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
@@ -153,7 +153,7 @@ msgstr "المنتج"
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Productive time (min)"
-msgstr ""
+msgstr "الوقت الإنتاجي (بالدقائق) "
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
@@ -212,7 +212,7 @@ msgstr "إجمالي الكمية "
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Total time (min)"
-msgstr ""
+msgstr "إجمالي الوقت (بالدقائق) "
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript

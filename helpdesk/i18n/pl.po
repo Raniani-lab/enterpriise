@@ -2409,7 +2409,7 @@ msgstr "On Hold (na żądanie)"
 #. module: helpdesk
 #: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_sla_status__status__ongoing
 msgid "Ongoing"
-msgstr ""
+msgstr "Na bieżąco"
 
 #. module: helpdesk
 #. odoo-python
@@ -2989,7 +2989,7 @@ msgstr "Smutna twarz"
 #: code:addons/helpdesk/static/src/components/helpdesk_team_dashboard/helpdesk_team_dashboard.xml:0
 #, python-format
 msgid "Sample"
-msgstr ""
+msgstr "Próbka"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search

@@ -3710,7 +3710,7 @@ msgstr "Pole daty zatrzymania"
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Striped"
-msgstr ""
+msgstr "W paski"
 
 #. module: web_studio
 #. odoo-javascript

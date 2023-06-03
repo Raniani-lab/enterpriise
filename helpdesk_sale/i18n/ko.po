@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Daye Jeong, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Daye Jeong, 2023\n"
 "Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,7 +35,7 @@ msgstr "고객센터 티켓"
 #: model:ir.model.fields,field_description:helpdesk_sale.field_helpdesk_ticket__sale_order_id
 #: model:ir.model.fields,field_description:helpdesk_sale.field_helpdesk_ticket_report_analysis__sale_order_id
 msgid "Ref. Sales Order"
-msgstr ""
+msgstr "판매 주문서 참조"
 
 #. module: helpdesk_sale
 #: model:ir.model,name:helpdesk_sale.model_helpdesk_sla_report_analysis

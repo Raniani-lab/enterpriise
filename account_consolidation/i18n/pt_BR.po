@@ -5,7 +5,6 @@
 # Translators:
 # douglas custodio <douglascstd@yahoo.com>, 2022
 # Martin Trigaux, 2022
-# Kevilyn Rosa, 2023
 # Layna Nascimento, 2023
 # 
 msgid ""
@@ -953,7 +952,7 @@ msgstr "Grupos"
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__has_message
 msgid "Has Message"
-msgstr "Análise de Previsão:"
+msgstr "Tem uma mensagem"
 
 #. module: account_consolidation
 #: model:ir.model.fields.selection,name:account_consolidation.selection__consolidation_account__currency_mode__hist

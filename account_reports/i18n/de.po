@@ -428,6 +428,9 @@ msgid ""
 "<span>This company is part of a tax unit. You're currently not viewing the "
 "whole unit. To change that, use the Tax Unit filter.</span>"
 msgstr ""
+"<span>Dieses Unternehmen ist Teil einer Steuereinheit. Sie sehen derzeit "
+"nicht die gesamte Einheit. Um dies zu ändern, verwenden Sie den "
+"Steuereinheitsfilter."
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_main_template
@@ -1436,14 +1439,14 @@ msgstr "EG-Verkaufslistenbericht Benutzerdefinierter Handler"
 #: code:addons/account_reports/models/account_sales_report.py:0
 #, python-format
 msgid "EC tax on non EC countries"
-msgstr ""
+msgstr "EG-Steuern für Nicht-EG-Länder"
 
 #. module: account_reports
 #. odoo-python
 #: code:addons/account_reports/models/account_sales_report.py:0
 #, python-format
 msgid "EC tax on same country"
-msgstr ""
+msgstr "EG-Steuern für dasselbe Land"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_equity0
@@ -1513,7 +1516,7 @@ msgstr "Endsaldo: "
 #: code:addons/account_reports/models/account_sales_report.py:0
 #, python-format
 msgid "Entries with partners with no VAT"
-msgstr ""
+msgstr "Einträge mit Partner ohne MwSt."
 
 #. module: account_reports
 #. odoo-python
@@ -2018,7 +2021,7 @@ msgstr "Füge Fußnote hier ein"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.sales_report_main_template
 msgid "Intra-community taxes are applied on"
-msgstr ""
+msgstr "Die innergemeinschaftlichen Steuern werden erhoben auf"
 
 #. module: account_reports
 #. odoo-python
@@ -2151,7 +2154,7 @@ msgstr "Letztes Quartal"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_reports_journal_dashboard_kanban_view
 msgid "Last Statement balance + Transactions since statement"
-msgstr ""
+msgstr "Letzter Kontoauszugssaldo + Transaktionen seit Kontoauszug"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.bank_reconciliation_report_cell_template_link_last_statement
@@ -3578,12 +3581,12 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template
 msgid "[Draft]"
-msgstr ""
+msgstr "[Entwurf]"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.sales_report_main_template
 msgid "addressed to"
-msgstr ""
+msgstr "adressiert an"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template
@@ -3661,7 +3664,7 @@ msgstr "Name des Berichts-Modells"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.sales_report_main_template
 msgid "partners"
-msgstr ""
+msgstr "Partner"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template
@@ -3713,7 +3716,7 @@ msgstr "die sich weder aus einem Kontoauszug noch aus Zahlungen ergeben."
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.sales_report_main_template
 msgid "who are not established in any of the EC countries."
-msgstr ""
+msgstr ", die in keinem der EG-Länder ansässig sind."
 
 #. module: account_reports
 #. odoo-javascript
@@ -3732,7 +3735,7 @@ msgstr "wurden in die nächste Periode auf diese Zeile übertragen."
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.sales_report_main_template
 msgid "without a valid intra-community VAT number."
-msgstr ""
+msgstr "ohne eine gültige innergemeinschaftliche MwSt.-Nummer"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_line_template

@@ -1420,7 +1420,7 @@ msgstr ""
 #: model_terms:ir.actions.act_window,help:planning.planning_action_schedule_by_resource
 #: model_terms:ir.actions.act_window,help:planning.planning_action_schedule_by_role
 msgid "No shifts found. Let's create one!"
-msgstr ""
+msgstr "교대 근무가 없습니다. 새로 생성해야합니다!"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_analysis_report__name
@@ -1529,7 +1529,7 @@ msgstr "계획 분석"
 #. module: planning
 #: model:ir.model,name:planning.model_planning_analysis_report
 msgid "Planning Analysis Report"
-msgstr ""
+msgstr "계획 분석 보고서"
 
 #. module: planning
 #: model:ir.model,name:planning.model_planning_recurrency
@@ -1794,7 +1794,7 @@ msgstr ""
 #. module: planning
 #: model:ir.actions.act_window,name:planning.planning_action_schedule_by_role
 msgid "Schedule by Role"
-msgstr ""
+msgstr "역할별 일정"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_schedule_by_resource
@@ -1802,7 +1802,7 @@ msgstr ""
 msgid ""
 "Schedule your human and material resources across roles, projects and sales "
 "orders."
-msgstr ""
+msgstr "역할, 프로젝트 및 판매 주문 전반에 걸쳐 인적 자원과 물적 자원을 계획하십시오."
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_hr_employee__employee_token

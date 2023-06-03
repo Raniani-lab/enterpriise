@@ -47,9 +47,9 @@ msgstr "Rapport d'inventaire"
 #. module: stock_account_enterprise
 #: model:ir.model.fields,field_description:stock_account_enterprise.field_stock_report__stock_value
 msgid "Total Valuation of Inventory"
-msgstr "Évalutation totale de l'inventaire"
+msgstr "Valorisation totale des stocks"
 
 #. module: stock_account_enterprise
 #: model:ir.model.fields,field_description:stock_account_enterprise.field_stock_report__valuation
 msgid "Valuation of Inventory using a Domain"
-msgstr "Évaluation de l'Inventaire utilisant un domaine"
+msgstr "Valorisation des stocks utilisant un domaine"

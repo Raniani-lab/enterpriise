@@ -6,6 +6,7 @@
 # Felipe Leal Coutinho <felipe@felipelc.com>, 2022
 # Martin Trigaux, 2022
 # Bruno Pergher, 2023
+# Kevilyn Rosa, 2023
 # Layna Nascimento, 2023
 # 
 msgid ""
@@ -252,7 +253,7 @@ msgstr "Confirmado"
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_report_search_view
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
 msgid "Confirmed Orders"
-msgstr "Pedidos Confirmados"
+msgstr "Pedidos confirmados"
 
 #. module: sale_renting
 #: model:ir.actions.act_window,name:sale_renting.action_create_rental_order
@@ -319,7 +320,7 @@ msgstr "Cliente"
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__country_id
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
 msgid "Customer Country"
-msgstr "País do Consumidor"
+msgstr "País do cliente"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__commercial_partner_id
@@ -795,7 +796,7 @@ msgstr "Retirada:"
 #: model:ir.model.constraint,message:sale_renting.constraint_rental_wizard_rental_period_coherence
 #: model:ir.model.constraint,message:sale_renting.constraint_sale_order_line_rental_period_coherence
 msgid "Please choose a return date that is after the pickup date."
-msgstr ""
+msgstr "Escolha uma data de devolução posterior à data de retirada."
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_wizard__pricing_explanation
@@ -1192,7 +1193,7 @@ msgstr ""
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order_line__temporal_type
 msgid "Temporal Type"
-msgstr ""
+msgstr "Tipo temporal"
 
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_rental_wizard__duration

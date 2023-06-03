@@ -20,6 +20,7 @@
 # Martin Trigaux, 2022
 # Anders Wallenquist <anders.wallenquist@vertel.se>, 2022
 # Mikael Åkerberg <mikael.akerberg@mariaakerberg.com>, 2023
+# Lasse Larsson, 2023
 # 
 msgid ""
 msgstr ""
@@ -27,7 +28,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Mikael Åkerberg <mikael.akerberg@mariaakerberg.com>, 2023\n"
+"Last-Translator: Lasse Larsson, 2023\n"
 "Language-Team: Swedish (https://app.transifex.com/odoo/teams/41243/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -53,6 +54,18 @@ msgid ""
 "                </p>\n"
 "            "
 msgstr ""
+"\n"
+"                <p class=\"o_view_nocontent_smiling_face\">\n"
+"                    Detta är din nya åtgärd.\n"
+"                </p>\n"
+"                <p>Som standard innehåller den en list- och en formulärvy och eventuellt\n"
+"                    andra vytyper beroende på vilka alternativ du har valt för din modell.\n"
+"                </p>\n"
+"                <p>\n"
+"                    Du kan börja anpassa dessa skärmar genom att klicka på Studio-ikonen i det\n"
+"                    övre högra hörnet (du kan också anpassa det här hjälpmeddelandet där).\n"
+"                </p>\n"
+"            "
 
 #. module: web_studio
 #. odoo-python
@@ -64,6 +77,10 @@ msgid ""
 "            </p>\n"
 "            "
 msgstr ""
+" <p class=\"o_view_nocontent_empty_report\">\n"
+"                Lägg till en ny rapport\n"
+"            </p>\n"
+"            "
 
 #. module: web_studio
 #. odoo-python
@@ -75,6 +92,10 @@ msgid ""
 "            </p>\n"
 "            "
 msgstr ""
+" <p class=\"o_view_nocontent_smiling_face\">\n"
+"                Lägg till en ny automatiserad åtgärd\n"
+"            </p>\n"
+"            "
 
 #. module: web_studio
 #. odoo-python
@@ -86,34 +107,38 @@ msgid ""
 "            </p>\n"
 "            "
 msgstr ""
+" <p class=\"o_view_nocontent_smiling_face\">\n"
+"                Lägg till ett nytt filter\n"
+"            </p>\n"
+"            "
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #, python-format
 msgid " to "
-msgstr ""
+msgstr " till "
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/controllers/report.py:0
 #, python-format
 msgid "%s Report"
-msgstr ""
+msgstr "%s Report"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "(id)"
-msgstr ""
+msgstr "(id)"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "(t-if=\""
-msgstr ""
+msgstr "(t-if=”"
 
 #. module: web_studio
 #. odoo-javascript
@@ -123,6 +148,8 @@ msgid ""
 "<div><p>The <strong>%s</strong> property is only applied to records matching"
 " this filter.</p></div>"
 msgstr ""
+"<div><p>Egenskapen <strong>%s</strong> tillämpas endast på poster som "
+"matchar detta filter.</p></div>"
 
 #. module: web_studio
 #. odoo-python
@@ -134,47 +161,52 @@ msgid ""
 "            </p>\n"
 "            "
 msgstr ""
+"<p class=\"o_view_nocontent_smiling_face\">\n"
+"                Lägg till en ny åtkomstkontrollista\n"
+"            </p>\n"
+"            "
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/views/view_editor_sidebar.js:0
 #, python-format
 msgid "A field with the same name already exists."
-msgstr ""
+msgstr "Ett fält med samma namn finns redan."
 
 #. module: web_studio
 #: model:ir.model.constraint,message:web_studio.constraint_studio_approval_entry_uniq_combination
 msgid "A rule can only be approved/rejected once per record."
-msgstr ""
+msgstr "En regel kan endast godkännas/avvisas en gång per post."
 
 #. module: web_studio
 #: model:ir.model.constraint,message:web_studio.constraint_studio_approval_rule_method_or_action_together
 msgid "A rule must apply to an action or a method (but not both)."
 msgstr ""
+"En regel måste gälla för en åtgärd eller en metod (men inte för båda)."
 
 #. module: web_studio
 #: model:ir.model.constraint,message:web_studio.constraint_studio_approval_rule_method_or_action_not_null
 msgid "A rule must apply to an action or a method."
-msgstr ""
+msgstr "En regel måste gälla för en åtgärd eller en metod."
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_ir_model__abstract
 msgid "Abstract"
-msgstr ""
+msgstr "Abstrakt"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
 msgid "Access Control"
-msgstr ""
+msgstr "Åtkomstkontroll"
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/controllers/main.py:0
 #, python-format
 msgid "Access Control Lists"
-msgstr ""
+msgstr "Åtkomstkontrollistor"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_res_groups
@@ -186,14 +218,14 @@ msgstr "Rättighetsgrupper"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Access records from cell"
-msgstr ""
+msgstr "Åtkomst till register från cell"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Access records from graph"
-msgstr ""
+msgstr "Åtkomst till poster från graf"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_mail_activity_type__category
@@ -220,14 +252,14 @@ msgstr "Vy för åtgärdsfönster"
 #: code:addons/web_studio/static/src/legacy/xml/approval_component.xml:0
 #, python-format
 msgid "Action to approve:"
-msgstr ""
+msgstr "Beslut om godkännande:"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/action_editor_sidebar.xml:0
 #, python-format
 msgid "Action's title"
-msgstr ""
+msgstr "Besluts titel"
 
 #. module: web_studio
 #: model:ir.model.fields,help:web_studio.field_mail_activity_type__category
@@ -245,7 +277,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/action_editor.xml:0
 #, python-format
 msgid "Activate View"
-msgstr ""
+msgstr "Aktivera vy"
 
 #. module: web_studio
 #. odoo-python
@@ -274,7 +306,7 @@ msgstr "Aktivitetstyp"
 #: code:addons/web_studio/static/src/client_action/editor/editor_adapter.js:0
 #, python-format
 msgid "Activity view unavailable on this model"
-msgstr ""
+msgstr "Aktivitetsvy ej tillgänglig på denna modell"
 
 #. module: web_studio
 #. odoo-javascript
@@ -303,7 +335,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/js/views/view_editors/new_buttonbox_dialog.js:0
 #, python-format
 msgid "Add a Button"
-msgstr ""
+msgstr "Lägg till en knapp"
 
 #. module: web_studio
 #. odoo-javascript
@@ -317,7 +349,7 @@ msgstr "Lägg till beskrivning..."
 #: code:addons/web_studio/static/src/client_action/view_editors/form/form_editor_renderer/form_editor_renderer_components.xml:0
 #, python-format
 msgid "Add a pipeline status bar"
-msgstr ""
+msgstr "Lägg till en statusrad för rörledningen"
 
 #. module: web_studio
 #. odoo-javascript
@@ -381,7 +413,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Additional Fields"
-msgstr ""
+msgstr "Ytterligare fält"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2913,7 +2945,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Optional"
-msgstr ""
+msgstr "Valfritt"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3308,7 +3340,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Reset Image"
-msgstr ""
+msgstr "Återställ bild"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3797,7 +3829,7 @@ msgstr "Summa"
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks_registry.js:0
 #, python-format
 msgid "Table"
-msgstr ""
+msgstr "Tabell"
 
 #. module: web_studio
 #. odoo-javascript

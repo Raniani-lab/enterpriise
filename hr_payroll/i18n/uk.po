@@ -281,6 +281,15 @@ msgid ""
 "</tbody></table>\n"
 "            "
 msgstr ""
+"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%; margin:0px auto;\"><tbody>\n"
+"    <tr><td valign=\"top\" style=\"text-align: left; font-size: 14px;\">\n"
+"        Шановний(а) <t t-esc=\"object.employee_id.name\"/>, новий зарплатний лист доступний для вас.<br/><br/>\n"
+"        Знайдіть PDF у вашому порталі співробітника.<br/><br/>\n"
+"        Гарного дня,<br/>\n"
+"        Команда HR\n"
+"    </td></tr>\n"
+"</tbody></table>\n"
+"            "
 
 #. module: hr_payroll
 #: model:ir.model.constraint,message:hr_payroll.constraint_hr_work_entry_type_is_unforeseen_is_leave
@@ -4147,6 +4156,8 @@ msgid ""
 "You cannot delete %s as it is used in another module but you can archive it "
 "instead."
 msgstr ""
+"Ви не можете видалити %s оскільки це використовується в іншому модулі, "
+"натомість ви можете архівувати."
 
 #. module: hr_payroll
 #. odoo-python

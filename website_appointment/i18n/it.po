@@ -166,7 +166,7 @@ msgstr "Dettagli<span class=\"chevron position-absolute d-block\"/>"
 #: code:addons/website_appointment/static/src/xml/appointment_no_slot.xml:0
 #, python-format
 msgid "Go back to Appointment"
-msgstr ""
+msgstr "Torna agli appuntamenti"
 
 #. module: website_appointment
 #: model:ir.model.fields,field_description:website_appointment.field_appointment_type__is_published
@@ -327,7 +327,7 @@ msgstr "Immagine OpenGraph"
 #: code:addons/website_appointment/static/src/xml/appointment_no_slot.xml:0
 #, python-format
 msgid "contact us"
-msgstr ""
+msgstr "contattaci"
 
 #. module: website_appointment
 #. odoo-javascript
@@ -346,9 +346,9 @@ msgstr "oppure"
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_staff_users_description
 msgid "others)"
-msgstr ""
+msgstr "altri)"
 
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_staff_users_description
 msgid "people available"
-msgstr ""
+msgstr "persone disponibili"

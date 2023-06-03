@@ -12,7 +12,6 @@
 # Marcin Młynarczyk <mlynarczyk@gmail.com>, 2022
 # Natalia Gros <nag@odoo.com>, 2022
 # Karol Rybak <karolrybak85@gmail.com>, 2022
-# Maksym <ms@myodoo.pl>, 2022
 # Dawid Prus, 2022
 # Wojciech Warczakowski <w.warczakowski@gmail.com>, 2022
 # Martin Trigaux, 2022
@@ -21,6 +20,7 @@
 # Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2022
 # Łukasz Grzenkowicz <lukasz.grzenkowicz@gmail.com>, 2022
 # Paweł Wodyński <pw@myodoo.pl>, 2023
+# Maksym <ms@myodoo.pl>, 2023
 # Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023
 # 
 msgid ""
@@ -477,7 +477,7 @@ msgstr "Odpowiedź"
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_answer_input_view_tree
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "Answer Breakdown"
-msgstr ""
+msgstr "Podział odpowiedzi"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_answer_input_view_form
@@ -795,7 +795,7 @@ msgstr "Konfiguruj"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 msgid "Confirm Appointment"
-msgstr ""
+msgstr "Potwierdź Konsultacje"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__message_confirmation
@@ -2141,17 +2141,17 @@ msgstr ""
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 msgid "Your Email*"
-msgstr ""
+msgstr "Adres Email*"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 msgid "Your Name*"
-msgstr ""
+msgstr "Imię i Nazwisko*"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 msgid "Your Phone Number*"
-msgstr ""
+msgstr "Numer Telefonu*"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated

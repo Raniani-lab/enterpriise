@@ -70,7 +70,7 @@ msgstr "Sopimushistoria"
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account.hr_payslip_run_view_form
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account.hr_payslip_view_form
 msgid "Create Draft Entry"
-msgstr ""
+msgstr "Luo luonnosmerkintä"
 
 #. module: hr_payroll_account
 #: model:ir.model.fields,field_description:hr_payroll_account.field_hr_salary_rule__account_credit
@@ -144,7 +144,7 @@ msgstr "Palkkapäiväkirja"
 #. module: hr_payroll_account
 #: model:ir.model,name:hr_payroll_account.model_hr_salary_rule
 msgid "Salary Rule"
-msgstr ""
+msgstr "Palkkasääntö"
 
 #. module: hr_payroll_account
 #: model:ir.model,name:hr_payroll_account.model_hr_payroll_structure

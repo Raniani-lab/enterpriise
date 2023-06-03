@@ -291,7 +291,7 @@ msgstr "예상 수요 세부사항"
 #: code:addons/mrp_mps/static/src/components/line.xml:0
 #, python-format
 msgid "Forecast Report"
-msgstr ""
+msgstr "예측 보고서"
 
 #. module: mrp_mps
 #. odoo-javascript

@@ -423,7 +423,7 @@ msgstr "Extrato Bancário.pdf"
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_bank_rec_widget
 msgid "Bank reconciliation widget for a single statement line"
-msgstr ""
+msgstr "Widget de reconciliação bancária para linhas individuais de extrato"
 
 #. module: account_accountant
 #. odoo-javascript

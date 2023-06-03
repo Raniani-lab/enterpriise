@@ -26,14 +26,14 @@ msgstr ""
 #: code:addons/industry_fsm_sale/models/project_task.py:0
 #, python-format
 msgid "%s - %s"
-msgstr ""
+msgstr "%s - %s"
 
 #. module: industry_fsm_sale
 #. odoo-javascript
 #: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
 #, python-format
 msgid "<b>Invoice your time and material</b> to your customer."
-msgstr ""
+msgstr "<b>Lập hóa đơn thời gian và nguyên liệu</b> cho khách hàng."
 
 #. module: industry_fsm_sale
 #. odoo-python
@@ -50,6 +50,15 @@ msgid ""
 "                            in your profile from where to draw stock.\n"
 "                        </p>"
 msgstr ""
+"<p class=\"o_view_nocontent_smiling_face\">\n"
+"                            Không tìm thấy sản phẩm nào. Hãy tạo một sản phẩm!\n"
+"                        </p><p>\n"
+"                            Theo dõi sản phẩm bạn đang sử dụng để hoàn thành nhiệm vụ, và lập hoá đơn hàng hoá cho khách hàng.\n"
+"                            Mẹo: Hãy sử dụng bộ kit để có thể thêm nhiều sản phẩm một lúc.\n"
+"                        </p><p>\n"
+"                            Khi nhiệm vụ được đánh dấu là hoàn tất, tồn kho sẽ được cập nhật tự động. Đơn giản chỉ cần chọn một kho hàng\n"
+"                            trong hồ sơ của bạn để rút tồn kho.\n"
+"                        </p>"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_task_form2_inherit_sale_timesheet
@@ -59,6 +68,10 @@ msgid ""
 "updated.\" attrs=\"{'invisible': ['|', ('partner_id', '=', False), "
 "('is_task_phone_update', '=', False)]}\"/>"
 msgstr ""
+"<span class=\"fa fa-exclamation-triangle text-warning oe_edit_only\" "
+"title=\"Bằng việc lưu thay đổi này, số điện thoại của khách hàng cũng sẽ "
+"được cập nhật.\" attrs=\"{'invisible': ['|', ('partner_id', '=', False), "
+"('is_task_phone_update', '=', False)]}\"/>"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
@@ -69,7 +82,7 @@ msgstr "<span>G.Giá.%</span>"
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_sharing_project_task_inherit_view_form
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_task_form2_inherit
 msgid "<span>Products</span>"
-msgstr ""
+msgstr "<span>Sản phẩm</span>"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
@@ -89,7 +102,7 @@ msgstr "<strong>Tổng tiền</strong>"
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
 msgid "<strong>Untaxed amount</strong>"
-msgstr ""
+msgstr "<strong>Số tiền trước thuế</strong>"
 
 #. module: industry_fsm_sale
 #. odoo-python
@@ -97,12 +110,12 @@ msgstr ""
 #: code:addons/industry_fsm_sale/models/project_task.py:0
 #, python-format
 msgid "A customer should be set on the task to generate a worksheet."
-msgstr ""
+msgstr "Cần chọn một khách hàng trong nhiệm vụ để tạo bảng công tác."
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.product_search_form_view_inherit_fsm_sale
 msgid "Added Products"
-msgstr ""
+msgstr "Sản phẩm đã thêm"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
@@ -113,13 +126,15 @@ msgstr "Tổng tiền"
 #: model:ir.model.constraint,message:industry_fsm_sale.constraint_project_project_fsm_imply_task_rate
 msgid "An FSM project must be billed at task rate or employee rate."
 msgstr ""
+"Một dự án FSM phải được lập hóa đơn theo tỷ lệ nhiệm vụ hoặc tỷ lệ nhân "
+"viên."
 
 #. module: industry_fsm_sale
 #. odoo-python
 #: code:addons/industry_fsm_sale/wizard/sale_make_invoice_advance.py:0
 #, python-format
 msgid "An invoice has been created: %s"
-msgstr ""
+msgstr "Một hoá đơn đã được tạo: %s"
 
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_account_analytic_line
@@ -144,13 +159,15 @@ msgid ""
 "By saving this change, all timesheet entries will be linked to the selected "
 "Sales Order Item without distinction."
 msgstr ""
+"Bằng việc lưu thay đổi này, tất cả mục nhập bảng chấm công sẽ được liên kết "
+"với Hạng mục đơn bán hàng đã chọn mà không có sự phân biệt."
 
 #. module: industry_fsm_sale
 #. odoo-python
 #: code:addons/industry_fsm_sale/models/project_task.py:0
 #, python-format
 msgid "Choose Products"
-msgstr ""
+msgstr "Chọn sản phẩm"
 
 #. module: industry_fsm_sale
 #. odoo-javascript
@@ -160,6 +177,8 @@ msgid ""
 "Choose a <b>name</b> for your product <i>(e.g. Bolts, Screws, Boiler, "
 "etc.).</i>"
 msgstr ""
+"Chọn <b>tên</b> cho sản phẩm của bạn <i>(VD: bu lông, ốc vít, nồi "
+"hơi,...).</i>"
 
 #. module: industry_fsm_sale
 #. odoo-javascript
@@ -169,6 +188,8 @@ msgid ""
 "Click on your product to add it to your <b>list of materials</b>. <i>Tip: "
 "for large quantities, click on the number to edit it directly.</i>"
 msgstr ""
+"Nhấp vào sản phẩm để thêm sản phẩm này vào <b>danh sách nguyên liệu</b>. "
+"<i>Mẹo: với số lượng lớn, hãy nhấp vào số để sửa trực tiếp.</i>"
 
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_res_config_settings
@@ -180,7 +201,7 @@ msgstr "Cấu hình"
 #: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
 #, python-format
 msgid "Confirm the creation of your <b>invoice</b>."
-msgstr ""
+msgstr "Xác nhận việc tạo <b>hoá đơn</b>."
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_task_view_list_fsm_sale_inherit
@@ -196,7 +217,7 @@ msgstr "Tạo báo giá mới"
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_view_form_inherit
 msgid "Create new quotations directly from tasks"
-msgstr ""
+msgstr "Tạo báo giá mới trực tiếp từ nhiệm vụ"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__currency_id
@@ -206,17 +227,17 @@ msgstr "Tiền tệ"
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_sale_order_line__delivered_price_subtotal
 msgid "Delivered Subtotal"
-msgstr ""
+msgstr "Thành tiền đã giao"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_sale_order_line__delivered_price_total
 msgid "Delivered Total"
-msgstr ""
+msgstr "Tổng tiền đã giao"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_sale_order_line__delivered_price_tax
 msgid "Delivered Total Tax"
-msgstr ""
+msgstr "Tổng thuế đã giao"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
@@ -226,12 +247,12 @@ msgstr "Mô tả"
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__display_create_invoice_primary
 msgid "Display Create Invoice Primary"
-msgstr ""
+msgstr "Hiển thị Tạo hóa đơn Chính"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__display_create_invoice_secondary
 msgid "Display Create Invoice Secondary"
-msgstr ""
+msgstr "Hiển thị Tạo hóa đơn Thứ cấp"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_product_product_kanban_material
@@ -247,7 +268,7 @@ msgstr "Sửa"
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_project__allow_quotations
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__allow_quotations
 msgid "Extra Quotations"
-msgstr ""
+msgstr "Báo giá thêm"
 
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_report_project_task_user_fsm
@@ -267,7 +288,7 @@ msgstr "Dịch vụ Hiện trường"
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_product_product__fsm_partner_price_currency_id
 msgid "Fsm Partner Price Currency"
-msgstr ""
+msgstr "Tiền tệ giá của đối tác FSM"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields.selection,name:industry_fsm_sale.selection__report_project_task_user_fsm__invoice_status__invoiced
@@ -289,14 +310,14 @@ msgstr "Đang thực hiện"
 #: code:addons/industry_fsm_sale/models/product_product.py:0
 #, python-format
 msgid "Invalid operator: %s"
-msgstr ""
+msgstr "Toán tử không hợp lệ: %s"
 
 #. module: industry_fsm_sale
 #. odoo-python
 #: code:addons/industry_fsm_sale/models/product_product.py:0
 #, python-format
 msgid "Invalid value: %s"
-msgstr ""
+msgstr "Giá trị không hợp lệ: %s"
 
 #. module: industry_fsm_sale
 #. odoo-python
@@ -321,6 +342,7 @@ msgstr "Tình trạng hóa đơn"
 msgid ""
 "Invoice your time and material to your customers once your tasks are done."
 msgstr ""
+"Lập hoá đơn thời gian và nguyên liệu cho khách hàng khi nhiệm vụ hoàn tất."
 
 #. module: industry_fsm_sale
 #. odoo-python
@@ -334,36 +356,36 @@ msgstr "Hóa đơn"
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__is_task_phone_update
 msgid "Is Task Phone Update"
-msgstr ""
+msgstr "Cập nhật điện thoại nhiệm vụ"
 
 #. module: industry_fsm_sale
 #. odoo-javascript
 #: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
 #, python-format
 msgid "Let's <b>track the material</b> you use for your task."
-msgstr ""
+msgstr "Hãy <b>theo dõi nguyên liệu</b> bạn sử dụng cho nhiệm vụ."
 
 #. module: industry_fsm_sale
 #. odoo-javascript
 #: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
 #, python-format
 msgid "Let's create a new <b>product</b>."
-msgstr ""
+msgstr "Hãy tạo một <b>sản phẩm</b> mới."
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__material_line_product_count
 msgid "Material Line Product Count"
-msgstr ""
+msgstr "Mục nguyên liệu Số sản phẩm"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__material_line_total_price
 msgid "Material Line Total Price"
-msgstr ""
+msgstr "Mục nguyên liệu Tổng giá"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_product_product__fsm_quantity
 msgid "Material Quantity"
-msgstr ""
+msgstr "Số lượng nguyên liệu"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_task_form2_inherit
@@ -373,7 +395,7 @@ msgstr "Báo giá Mới"
 #. module: industry_fsm_sale
 #: model_terms:ir.actions.act_window,help:industry_fsm_sale.product_action_fsm
 msgid "No products found. Let's create one!"
-msgstr ""
+msgstr "Không tìm thấy sản phẩm nào. Hãy tạo một sản phẩm!"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.actions.act_window,help:industry_fsm_sale.project_task_action_to_invoice_fsm
@@ -393,12 +415,12 @@ msgstr "Number of invoices"
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_product_product__fsm_partner_price
 msgid "Partner Price"
-msgstr ""
+msgstr "Giá của đối tác"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__portal_quotation_count
 msgid "Portal Quotation Count"
-msgstr ""
+msgstr "Số báo giá cổng thông tin"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_product_product_kanban_material
@@ -449,7 +471,7 @@ msgstr "Sản phẩm"
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_project__allow_material
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__allow_material
 msgid "Products on Tasks"
-msgstr ""
+msgstr "Sản phẩm trong nhiệm vụ"
 
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_project_project
@@ -485,7 +507,7 @@ msgstr "Tổng số báo giá"
 #: code:addons/industry_fsm_sale/models/sale_order.py:0
 #, python-format
 msgid "Quotation created: %s"
-msgstr ""
+msgstr "Báo giá đã tạo: %s"
 
 #. module: industry_fsm_sale
 #. odoo-python
@@ -504,7 +526,7 @@ msgstr "Sẵn sàng"
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_order_form_inherit_sale_project
 msgid "Related Task"
-msgstr ""
+msgstr "Nhiệm vụ liên quan"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_report_project_task_user_fsm__remaining_hours_so
@@ -576,7 +598,7 @@ msgstr "Lặp lại công việc"
 #. module: industry_fsm_sale
 #: model:ir.model.fields,help:industry_fsm_sale.field_sale_order__task_id
 msgid "Task from which this quotation have been created"
-msgstr ""
+msgstr "Nhiệm vụ mà báo giá này đã được tạo ra"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_task_view_search_fsm_inherit_sale
@@ -592,7 +614,7 @@ msgstr "Thuế"
 #. module: industry_fsm_sale
 #: model:ir.model.constraint,message:industry_fsm_sale.constraint_project_project_material_imply_billable
 msgid "The material can be allowed only when the task can be billed."
-msgstr ""
+msgstr "Nguyên liệu chỉ được cho phép khi nhiệm vụ có thể được lập hoá đơn."
 
 #. module: industry_fsm_sale
 #: model:ir.model.constraint,message:industry_fsm_sale.constraint_project_project_timesheet_product_required_if_billable_and_timesheets_and_fsm_projects
@@ -600,11 +622,13 @@ msgid ""
 "The timesheet product is required when the fsm project can be billed and "
 "timesheets are allowed."
 msgstr ""
+"Sản phẩm bảng chấm công được yêu cầu khi dự án FSM có thể được lập hóa đơn "
+"và bảng chấm công được cho phép."
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.portal_my_task
 msgid "Time &amp; Material"
-msgstr ""
+msgstr "Thời gian &amp; nguyên liệu"
 
 #. module: industry_fsm_sale
 #: model:ir.actions.act_window,name:industry_fsm_sale.project_task_action_to_invoice_fsm
@@ -625,11 +649,12 @@ msgstr "Giá tổng"
 #: model_terms:ir.actions.act_window,help:industry_fsm_sale.product_action_fsm
 msgid "Track and bill the material used to complete your tasks."
 msgstr ""
+"Theo dõi và lập hoá đơn nguyên liệu được sử dụng để hoàn thành nhiệm vụ."
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_view_form_inherit
 msgid "Track the material used to complete tasks"
-msgstr ""
+msgstr "Theo dõi nguyên liệu được sử dụng để hoàn thành nhiệm vụ"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_sale_line_employee_map__price_unit
@@ -648,20 +673,21 @@ msgstr "Cơ hội bán thêm"
 #, python-format
 msgid "Use the breadcrumbs to navigate to your <b>list of products</b>."
 msgstr ""
+"Sử dụng breadcrumb để điều hướng đến <b>danh sách sản phẩm của bạn</b>."
 
 #. module: industry_fsm_sale
 #. odoo-javascript
 #: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
 #, python-format
 msgid "Use the breadcrumbs to return to your <b>task</b>."
-msgstr ""
+msgstr "Sử dụng breadcrumb để trở lại <b>nhiệm vụ của bạn</b>."
 
 #. module: industry_fsm_sale
 #. odoo-javascript
 #: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
 #, python-format
 msgid "Wait for the invoice to show up"
-msgstr ""
+msgstr "Chờ hoá đơn xuất hiện"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__warning_message

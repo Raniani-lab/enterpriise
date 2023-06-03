@@ -509,7 +509,7 @@ msgstr "Bruto winst"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Gross profit margin"
-msgstr "Brutowinstmarge"
+msgstr "Bruto winstmarge"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript

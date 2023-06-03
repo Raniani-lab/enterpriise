@@ -24,12 +24,12 @@ msgstr ""
 #. module: sale_account_accountant
 #: model:ir.model,name:sale_account_accountant.model_bank_rec_widget
 msgid "Bank reconciliation widget for a single statement line"
-msgstr ""
+msgstr "Widget de reconciliação bancária para linhas individuais de extrato"
 
 #. module: sale_account_accountant
 #: model:ir.model.fields,field_description:sale_account_accountant.field_bank_rec_widget__matched_sale_order_ids
 msgid "Matched Sale Order"
-msgstr ""
+msgstr "Pedido de venda identificado"
 
 #. module: sale_account_accountant
 #: model:ir.model,name:sale_account_accountant.model_account_reconcile_model
@@ -49,12 +49,12 @@ msgstr "Pedidos de venda"
 #. module: sale_account_accountant
 #: model_terms:ir.ui.view,arch_db:sale_account_accountant.view_bank_rec_widget_form_inherit_sale_order
 msgid "There are"
-msgstr "Tem"
+msgstr "Há"
 
 #. module: sale_account_accountant
 #: model_terms:ir.ui.view,arch_db:sale_account_accountant.view_bank_rec_widget_form_inherit_sale_order
 msgid "matching the communication of the bank statement line."
-msgstr ""
+msgstr "que correspondem à comunicação da linha do extrato bancário."
 
 #. module: sale_account_accountant
 #: model_terms:ir.ui.view,arch_db:sale_account_accountant.view_bank_rec_widget_form_inherit_sale_order

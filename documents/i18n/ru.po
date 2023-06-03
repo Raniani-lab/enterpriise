@@ -78,11 +78,11 @@ msgid ""
 "your documents in bulk with the split tool: launch user defined actions, "
 "request a signature, convert to vendor bills with AI, etc."
 msgstr ""
-". Отсканированные файлы автоматически появятся в вашей рабочей области. "
-"Далее, используя инструмент выделения, вы можете работать с документами "
-"массово: выполнять определенные пользователем действия, запрашивать подпись,"
-" преобразовывать их в счета поставщиков с помощью искусственного интеллекта "
-"и т.д."
+". Отсканированные файлы автоматически появятся в вашем каталоге. Далее, "
+"используя инструмент выделения, вы можете работать с документами массово: "
+"выполнять определенные пользователем действия, запрашивать подпись, "
+"преобразовывать их в счета поставщиков с помощью искусственного интеллекта и"
+" т.д."
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_fiscal_year_2017
@@ -474,7 +474,7 @@ msgstr ""
 #: model:ir.model.fields,help:documents.field_documents_folder__parent_folder_id
 #: model:ir.model.fields,help:documents.field_documents_folder_deletion_wizard__parent_folder_id
 msgid "A workspace will inherit the tags of its parent workspace"
-msgstr "Рабочая область унаследует теги своей родительской рабочей области"
+msgstr "Каталог унаследует теги своего родительского каталога"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
@@ -708,8 +708,8 @@ msgid ""
 "with AI, etc."
 msgstr ""
 "Простой способ обработки входящей почты - настроить сканер для отправки PDF-"
-"файлов на электронную почту рабочей области. Отсканированные файлы будут "
-"автоматически появляться в рабочем области. Затем обрабатывайте документы в "
+"файлов на электронную почту каталога. Отсканированные файлы будут "
+"автоматически появляться в каталоге. Затем обрабатывайте документы в "
 "массовом порядке с помощью инструмента разделения: запускайте определенные "
 "пользователем действия, запрашивайте подпись, конвертируйте в счета "
 "поставщиков с AI и т.д."
@@ -1219,7 +1219,7 @@ msgstr "Общий доступ к документам"
 #. module: documents
 #: model:ir.model,name:documents.model_documents_folder
 msgid "Documents Workspace"
-msgstr "Рабочая область документов"
+msgstr "Каталог документов"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_mixin
@@ -1437,15 +1437,14 @@ msgid ""
 "Groups able to see the workspace and read its documents without create/edit "
 "rights."
 msgstr ""
-"Группы, способные видеть рабочую область и читать документы без прав "
+"Группы, способные видеть каталог и читать документы без прав "
 "создания/редактирования."
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__group_ids
 msgid "Groups able to see the workspace and read/create/edit its documents."
 msgstr ""
-"Группы, способные видеть рабочую область и читать/создавать/редактировать "
-"документы."
+"Группы, способные видеть каталог и читать/создавать/редактировать документы."
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_internal_knowledge_hr
@@ -1658,7 +1657,7 @@ msgstr ""
 #: code:addons/documents/static/src/js/tours/documents.js:0
 #, python-format
 msgid "Let's process these bills: send to Finance workspace."
-msgstr "Обработаем эти счета: отправим их в рабочую область \"Финансы\"."
+msgstr "Обработаем эти счета: отправим их в каталог \"Финансы\"."
 
 #. module: documents
 #. odoo-javascript
@@ -1676,7 +1675,7 @@ msgid ""
 "process, according to the workspace.</i>"
 msgstr ""
 "Давайте поставим тег для юридических писем <br/> <i>Советы: действия могут "
-"быть адаптированы к вашему процессу, в соответствии с рабочей областью.</i>"
+"быть адаптированы к вашему процессу, в соответствии с каталогом.</i>"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__user_specific
@@ -1817,12 +1816,12 @@ msgstr "Переместить в папку \"Входящие\""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__folder_id
 msgid "Move to Workspace"
-msgstr "Переместить в Рабочую область"
+msgstr "Переместить в Каталог"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_folder_deletion_wizard_view_form
 msgid "Move to parent workspace"
-msgstr "Переместить в родительскую рабочую область"
+msgstr "Переместить в родительский каталог"
 
 #. module: documents
 #. odoo-javascript
@@ -1896,7 +1895,7 @@ msgstr "Новый тег"
 #: code:addons/documents/static/src/views/search/documents_search_panel.js:0
 #, python-format
 msgid "New Workspace"
-msgstr "Новая рабочая область"
+msgstr "Новый каталог"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_calendar_event_id
@@ -2088,7 +2087,7 @@ msgstr "ID потока родительской записи"
 #: model:ir.model.fields,field_description:documents.field_documents_folder__parent_folder_id
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_search
 msgid "Parent Workspace"
-msgstr "Родительская рабочая область"
+msgstr "Родительский каталог"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_parent_model_id
@@ -2159,7 +2158,7 @@ msgstr "ID цепочки записей"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__domain_folder_id
 msgid "Related Workspace"
-msgstr "Смежная рабочая область "
+msgstr "Смежный каталог"
 
 #. module: documents
 #. odoo-javascript
@@ -2394,7 +2393,7 @@ msgstr "Поделиться выбранными файлами"
 #: code:addons/documents/models/share.py:0
 #, python-format
 msgid "Share selected workspace"
-msgstr "Поделиться выбранной рабочей областью"
+msgstr "Поделиться выбранным каталогом"
 
 #. module: documents
 #. odoo-javascript
@@ -2540,7 +2539,7 @@ msgstr "Тег уже существует для этого фасета"
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__facet_ids
 msgid "Tag categories defined for this workspace"
-msgstr "Категории тегов, заданные для данной рабочей области"
+msgstr "Категории тегов, заданные для данного каталога"
 
 #. module: documents
 #. odoo-javascript
@@ -2646,7 +2645,7 @@ msgstr "Срок действия этой ссылки закончился"
 #: model:ir.model.fields,help:documents.field_documents_document__company_id
 #: model:ir.model.fields,help:documents.field_documents_folder__company_id
 msgid "This workspace will only be available to the selected company"
-msgstr "Это рабочее пространство будет доступно только для выбранной компании"
+msgstr "Этот каталог будет доступен только для выбранной компании"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__thumbnail
@@ -2844,7 +2843,7 @@ msgstr "Неделя"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_folder_deletion_wizard_view_form
 msgid "What do you want to do with the files in the workspace?"
-msgstr "Что вы хотите сделать с файлами в рабочей области?"
+msgstr "Что вы хотите сделать с файлами в каталоге?"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.workflow_rule_action
@@ -2865,13 +2864,13 @@ msgstr "Правило рабочего процесса"
 #: model_terms:ir.ui.view,arch_db:documents.facet_view_search
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_tree
 msgid "Workspace"
-msgstr "Рабочее место"
+msgstr "Каталог"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.folder_action
 #: model:ir.ui.menu,name:documents.folder_menu
 msgid "Workspaces"
-msgstr "Рабочие места"
+msgstr "Каталоги"
 
 #. module: documents
 #. odoo-javascript
@@ -2927,7 +2926,7 @@ msgstr "У вас нет доступа к перемещению докумен
 #: code:addons/documents/static/src/views/search/documents_search_panel.js:0
 #, python-format
 msgid "You don't have the rights to move documents to that workspace"
-msgstr "У вас нет доступа к перемещению документов в эту рабочую область."
+msgstr "У вас нет доступа к перемещению документов в этот каталог."
 
 #. module: documents
 #. odoo-javascript

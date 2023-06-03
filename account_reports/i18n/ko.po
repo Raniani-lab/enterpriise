@@ -417,6 +417,8 @@ msgid ""
 "<span>This company is part of a tax unit. You're currently not viewing the "
 "whole unit. To change that, use the Tax Unit filter.</span>"
 msgstr ""
+"<span>해당 회사는 세무 관련 일부 단위 항목입니다. 현재 화면에서는 전체 단위는 나타나지 않습니다. 변경하시려면 단위사업장 필터를 "
+"사용하십시오.</span>"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_main_template
@@ -2108,7 +2110,7 @@ msgstr "전 분기"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_reports_journal_dashboard_kanban_view
 msgid "Last Statement balance + Transactions since statement"
-msgstr ""
+msgstr "최근 명세서 잔액 + 명세서 발행 이후 거래"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.bank_reconciliation_report_cell_template_link_last_statement

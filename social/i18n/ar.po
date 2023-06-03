@@ -1863,7 +1863,7 @@ msgstr "منشورك "
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "a Stream from an existing account"
-msgstr "تدفق من حساب موجود بالفعل "
+msgstr "وسط من حساب موجود بالفعل "
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_template_view_form

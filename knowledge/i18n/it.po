@@ -2098,7 +2098,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/xml/chatter_topbar.xml:0
 #, python-format
 msgid "Search Knowledge Articles"
-msgstr ""
+msgstr "Cerca articoli in Knowledge"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_member_view_search

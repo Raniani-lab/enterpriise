@@ -174,6 +174,8 @@ msgid ""
 "be claimed within 8 weeks starting from the date on which your account was "
 "debited."
 msgstr ""
+"귀하가 보유한 권리 중 하나로서, 귀하는 은행 계약 조건에 따라서 은행에서 환불을 받을 권리가 있습니다. 귀하의 권리에 대한 내용은 "
+"은행에서 전송해드리는  명세서에서 확인하실 수 있습니다. 계좌에 입금된 날로부터 8주 이내에 환불을 요청하셔야 합니다."
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__message_attachment_count
@@ -843,7 +845,7 @@ msgstr "SDD 기능은 고객의 위임 내용에 따라 설정됩니다."
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
 msgid "SEPA Business-to-Business Direct Debit Mandate"
-msgstr ""
+msgstr "SEPA B2B 자동이체 위임장"
 
 #. module: account_sepa_direct_debit
 #: model:account.payment.method,name:account_sepa_direct_debit.payment_method_sdd
@@ -1036,6 +1038,8 @@ msgid ""
 "debited, but you are entitled to request your bank not to debit your account"
 " up until the day on which the payment is due."
 msgstr ""
+"이 위임장은 기업간 거래에서만 적용될 수 있습니다. 계좌 인출 후에는 은행 환불이 불가능하나, 지불 기한까지 계좌에서 인출되지 않도록 "
+"은행 측에 요청하는 것은 가능합니다."
 
 #. module: account_sepa_direct_debit
 #. odoo-python

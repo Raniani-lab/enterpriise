@@ -925,7 +925,7 @@ msgstr "配色"
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks_registry.js:0
 #, python-format
 msgid "Column"
-msgstr ""
+msgstr "欄"
 
 #. module: web_studio
 #. odoo-javascript

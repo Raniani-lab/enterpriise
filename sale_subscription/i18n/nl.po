@@ -2326,8 +2326,8 @@ msgstr "Betaalmethodes beheren"
 msgid ""
 "Managing payment methods requires to be logged in under the customer order."
 msgstr ""
-"Voor het beheren van betaalmethoden moet je ingelogd zijn onder de "
-"bestelling van de klant."
+"Voor het beheren van betaalmethoden moet je ingelogd zijn onder de order van"
+" de klant."
 
 #. module: sale_subscription
 #. odoo-python

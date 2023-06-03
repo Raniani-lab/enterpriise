@@ -63,12 +63,12 @@ msgstr "단계별 영업기회"
 #. module: documents_spreadsheet_crm
 #: model:spreadsheet.template,name:documents_spreadsheet_crm.spreadsheet_template_pipeline_revenue
 msgid "Pipeline Revenue Report (Monthly)"
-msgstr ""
+msgstr "파이프라인 수익 보고서 (월간)"
 
 #. module: documents_spreadsheet_crm
 #: model:spreadsheet.template,name:documents_spreadsheet_crm.spreadsheet_template_pipeline_dashboard
 msgid "Pipeline dashboard"
-msgstr ""
+msgstr "파이프라인 현황판"
 
 #. module: documents_spreadsheet_crm
 #. odoo-javascript

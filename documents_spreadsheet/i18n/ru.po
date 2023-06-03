@@ -54,6 +54,8 @@ msgid ""
 "<strong class=\"o_form_label\">Spreadsheets</strong>\n"
 "                            <span class=\"fa fa-lg fa-building-o ms-1\" title=\"Values set here are company-specific.\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\" role=\"img\"/>"
 msgstr ""
+"<strong class=\"o_form_label\">Таблицы</strong>\n"
+"                            <span class=\"fa fa-lg fa-building-o ms-1\" title=\"Values set here are company-specific.\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\" role=\"img\"/>"
 
 #. module: documents_spreadsheet
 #: model:ir.model.constraint,message:documents_spreadsheet.constraint_spreadsheet_contributor_spreadsheet_user_unique
@@ -74,6 +76,8 @@ msgid ""
 "Ask an admin to configure the workspace to be accessible to the users you "
 "want."
 msgstr ""
+"Попросите администратора настроить каталог так, чтобы он был доступен нужным"
+" пользователям"
 
 #. module: documents_spreadsheet
 #. odoo-javascript
@@ -88,6 +92,8 @@ msgid ""
 "By default, the spreadsheets in this workspace will only be seen and updated"
 " by their <strong>creator</strong>."
 msgstr ""
+"По умолчанию электронные таблицы в этом каталоге будут видны и обновляться "
+"только их создателем."
 
 #. module: documents_spreadsheet
 #. odoo-javascript
@@ -100,7 +106,7 @@ msgstr "Отмена"
 #. module: documents_spreadsheet
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.res_config_settings_view_form_inherit_documents_spreadsheet
 msgid "Centralize your spreadsheets"
-msgstr ""
+msgstr "Централизовать таблицу"
 
 #. module: documents_spreadsheet
 #: model:ir.model,name:documents_spreadsheet.model_res_company
@@ -174,7 +180,7 @@ msgstr "Документ"
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_res_company__documents_spreadsheet_folder_id
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_res_config_settings__documents_spreadsheet_folder_id
 msgid "Documents Spreadsheet Folder"
-msgstr ""
+msgstr "Папка с таблицами "
 
 #. module: documents_spreadsheet
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.spreadsheet_template_view_tree
@@ -184,7 +190,7 @@ msgstr "Редактировать"
 #. module: documents_spreadsheet
 #: model_terms:documents.folder,description:documents_spreadsheet.documents_spreadsheet_folder
 msgid "Enjoy collaborative work on your spreadsheets."
-msgstr ""
+msgstr "Наслаждайтесь совместной работой над электронными таблицами."
 
 #. module: documents_spreadsheet
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_documents_document__raw
@@ -194,7 +200,7 @@ msgstr "Содержимое файла (raw)"
 #. module: documents_spreadsheet
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_documents_document__handler
 msgid "Handler"
-msgstr ""
+msgstr "Обработчик"
 
 #. module: documents_spreadsheet
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_save_spreadsheet_template__id
@@ -206,7 +212,7 @@ msgstr "Идентификатор"
 #. module: documents_spreadsheet
 #: model_terms:documents.folder,description:documents_spreadsheet.documents_spreadsheet_folder
 msgid "If you want to work together on those spreadsheets :"
-msgstr ""
+msgstr "Если вы хотите работать вместе над этими электронными таблицами:"
 
 #. module: documents_spreadsheet
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_save_spreadsheet_template____last_update
@@ -245,11 +251,13 @@ msgid ""
 "Manage and work with all the <strong>spreadsheets</strong> created in other "
 "applications."
 msgstr ""
+"Управляйте и работайте со всеми электронными таблицами, созданными в других "
+"приложениях."
 
 #. module: documents_spreadsheet
 #: model_terms:documents.folder,description:documents_spreadsheet.documents_spreadsheet_folder
 msgid "Move them to another workspace"
-msgstr ""
+msgstr "Переместить в другой каталог"
 
 #. module: documents_spreadsheet
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.spreadsheet_template_view_search
@@ -299,13 +307,13 @@ msgstr "Создан новый шаблон электронной таблиц
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.share_page
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.share_single
 msgid "Odoo Spreadsheets not available for download"
-msgstr ""
+msgstr "Таблицы не доступны для скачивания"
 
 #. module: documents_spreadsheet
 #: model:ir.actions.act_window,name:documents_spreadsheet.spreadsheet_revision_action
 #: model:ir.ui.menu,name:documents_spreadsheet.menu_technical_spreadsheet_revision
 msgid "Revisions"
-msgstr ""
+msgstr "Доработки"
 
 #. module: documents_spreadsheet
 #: model:ir.actions.act_window,name:documents_spreadsheet.save_spreadsheet_template_action
@@ -329,7 +337,7 @@ msgstr "Электронная таблица"
 #. module: documents_spreadsheet
 #: model:ir.model,name:documents_spreadsheet.model_spreadsheet_contributor
 msgid "Spreadsheet Contributor"
-msgstr ""
+msgstr "Соавтор электронной таблицы"
 
 #. module: documents_spreadsheet
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.spreadsheet_document_view_kanban
@@ -354,7 +362,7 @@ msgstr "Шаблон электронной таблицы"
 #. module: documents_spreadsheet
 #: model:ir.model,name:documents_spreadsheet.model_save_spreadsheet_template
 msgid "Spreadsheet Template Save Wizard"
-msgstr ""
+msgstr "Мастер сохранения шаблонов таблиц"
 
 #. module: documents_spreadsheet
 #: model:ir.actions.act_window,name:documents_spreadsheet.spreadsheet_template_action
@@ -370,6 +378,8 @@ msgid ""
 "Spreadsheets mass download not yet supported.\n"
 " Download spreadsheets individually instead."
 msgstr ""
+"Массовое скачивание электронных таблиц пока не поддерживается. Вместо этого "
+"загружайте электронные таблицы по отдельности."
 
 #. module: documents_spreadsheet
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_save_spreadsheet_template__template_name
@@ -381,14 +391,14 @@ msgstr "Название шаблона"
 #: code:addons/documents_spreadsheet/models/document.py:0
 #, python-format
 msgid "The file is not a xlsx file"
-msgstr ""
+msgstr "Этот файл не является форматом xlsx"
 
 #. module: documents_spreadsheet
 #. odoo-python
 #: code:addons/documents_spreadsheet/models/document.py:0
 #, python-format
 msgid "The xlsx file is corrupted"
-msgstr ""
+msgstr "Файл xlsx поврежден"
 
 #. module: documents_spreadsheet
 #. odoo-python
@@ -396,7 +406,7 @@ msgstr ""
 #: code:addons/documents_spreadsheet/models/document.py:0
 #, python-format
 msgid "The xlsx file is too big"
-msgstr ""
+msgstr "Файл xlsx слишком большой"
 
 #. module: documents_spreadsheet
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_save_spreadsheet_template__thumbnail
@@ -409,7 +419,7 @@ msgstr "Миниатюра"
 #: code:addons/documents_spreadsheet/static/src/bundle/components/control_panel/spreadsheet_breadcrumbs.xml:0
 #, python-format
 msgid "Toggle favorite"
-msgstr ""
+msgstr "Включить избранное"
 
 #. module: documents_spreadsheet
 #. odoo-javascript
@@ -435,10 +445,12 @@ msgstr "Рабочее место"
 msgid ""
 "Your file is about to be saved as an Odoo Spreadsheet to allow for edition."
 msgstr ""
+"Ваш файл будет сохранен как электронная таблица в системе для возможности "
+"редактирования."
 
 #. module: documents_spreadsheet
 #. odoo-javascript
 #: code:addons/documents_spreadsheet/static/src/spreadsheet_selector_dialog/document_selector_panel.xml:0
 #, python-format
 msgid "getPageTitle('SPREADSHEET')"
-msgstr ""
+msgstr "getPageTitle('SPREADSHEET')"

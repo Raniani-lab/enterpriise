@@ -34,7 +34,7 @@ msgid ""
 " valuation. You may have to manually rectify it once done."
 msgstr ""
 "La fusion de certains produits est un changement important qui aura un "
-"impact sur la valorisation de l'inventaire. Il se peut que vous deviez la "
+"impact sur la valorisation des stocks. Il se peut que vous deviez la "
 "rectifier manuellement une fois qu'elle aura été effectuée."
 
 #. module: data_merge_stock_account

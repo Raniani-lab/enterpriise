@@ -340,7 +340,7 @@ msgstr "Zwrot"
 #. module: delivery_usps
 #: model:ir.model.fields.selection,name:delivery_usps.selection__delivery_carrier__usps_content_type__sample
 msgid "Sample"
-msgstr ""
+msgstr "Próbka"
 
 #. module: delivery_usps
 #. odoo-python

@@ -575,7 +575,7 @@ msgstr "Metody wysyłania płatności"
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
 msgid "Payment method"
-msgstr ""
+msgstr "Metoda płatności"
 
 #. module: account_batch_payment
 #: model:ir.model,name:account_batch_payment.model_account_payment

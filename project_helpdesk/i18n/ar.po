@@ -175,4 +175,4 @@ msgstr ""
 #: code:addons/project_helpdesk/wizard/project_task_convert_wizard.py:0
 #, python-format
 msgid "Ticket created from task %s"
-msgstr ""
+msgstr "تم إنشاء التذكرة من المهمة %s"

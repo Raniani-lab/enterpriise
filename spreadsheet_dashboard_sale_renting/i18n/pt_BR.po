@@ -50,7 +50,7 @@ msgstr "Cliente"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Daily Rentals"
-msgstr ""
+msgstr "Locações diárias"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -95,7 +95,7 @@ msgstr "Período"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Picked-up Qty"
-msgstr ""
+msgstr "Qtd. retirada"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -133,28 +133,28 @@ msgstr "Cotações"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Rental Analysis by Customer"
-msgstr ""
+msgstr "Análise de locação por cliente"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Rental Analysis by Product"
-msgstr ""
+msgstr "Análise de locação por produto"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Rental Analysis by Product Category"
-msgstr ""
+msgstr "Análise de locação por categoria de produto"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Rental Analysis by Salesman"
-msgstr ""
+msgstr "Análise de locação por vendedor"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -168,7 +168,7 @@ msgstr "Aluguéis"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Returned Qty"
-msgstr ""
+msgstr "Qtd. devolvida"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -195,21 +195,21 @@ msgstr "Vendedor"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Top Customers"
-msgstr ""
+msgstr "Principais clientes"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Top Product Categories"
-msgstr ""
+msgstr "Principais categorias de produtos"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Top Products"
-msgstr ""
+msgstr "Principais produtos"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -223,14 +223,14 @@ msgstr "Principais vendedores"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "rental stats - current"
-msgstr ""
+msgstr "estatísticas de locação - atual"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "rental stats - previous"
-msgstr ""
+msgstr "estatísticas de locações - anteriores"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript

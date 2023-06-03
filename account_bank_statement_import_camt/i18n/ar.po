@@ -7,6 +7,7 @@
 # Niyas Raphy, 2022
 # Mehjabin Farsana, 2022
 # Malaz Abuidris <msea@odoo.com>, 2023
+# Mohammed Alreshi <alreshim@hotmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-06-09 14:09+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2023\n"
+"Last-Translator: Mohammed Alreshi <alreshim@hotmail.com>, 2023\n"
 "Language-Team: Arabic (https://app.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -692,7 +693,7 @@ msgstr "مسودة الخصم "
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Dishonoured/Unpaid Draft"
-msgstr ""
+msgstr "كمبيالة مرفوضة / غير مدفوعة"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -716,7 +717,7 @@ msgstr "المجموعة المستندية "
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Documentary Credit"
-msgstr ""
+msgstr "الاعتمادات المستندية"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -731,7 +732,7 @@ msgstr "تحويل الرصيد المحلي "
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Draft Maturity Change"
-msgstr ""
+msgstr "مسودة تغيير النضج"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -761,7 +762,7 @@ msgstr "Dutch Auction"
 #: code:addons/account_bank_statement_import_camt/models/account_journal.py:0
 #, python-format
 msgid "End to end ID: %s"
-msgstr ""
+msgstr "معرف النهاية إلى النهاية: %s"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/models/account_journal.py:0
@@ -773,7 +774,7 @@ msgstr "معلومات القيد: %s "
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Equity Premium Reserve"
-msgstr ""
+msgstr "احتياطي أقساط حقوق الملكية"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0

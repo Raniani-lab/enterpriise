@@ -871,7 +871,7 @@ msgstr "SEPA-Verfahren wird im Kundenauftrag festgelegt."
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
 msgid "SEPA Business-to-Business Direct Debit Mandate"
-msgstr ""
+msgstr "SEPA-Firmenlastschriftmandat (Business-to-Business)"
 
 #. module: account_sepa_direct_debit
 #: model:account.payment.method,name:account_sepa_direct_debit.payment_method_sdd
@@ -1079,6 +1079,11 @@ msgid ""
 "debited, but you are entitled to request your bank not to debit your account"
 " up until the day on which the payment is due."
 msgstr ""
+"Dieses Mandat ist nur für den Geschäftsverkehr zwischen Unternehmen "
+"bestimmt. Sie haben keinen Anspruch auf eine Erstattung durch Ihre Bank, "
+"nachdem Ihr Konto belastet wurde. Sie haben jedoch das Recht, Ihre Bank "
+"aufzufordern, Ihr Konto bis zu dem Tag, an dem die Zahlung fällig ist, nicht"
+" zu belasten."
 
 #. module: account_sepa_direct_debit
 #. odoo-python

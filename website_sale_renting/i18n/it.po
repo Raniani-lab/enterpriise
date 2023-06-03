@@ -152,7 +152,7 @@ msgstr "<span>per</span>"
 #. module: website_sale_renting
 #: model_terms:ir.ui.view,arch_db:website_sale_renting.rental_product
 msgid "<strong class=\"attribute_name\">Rental Period</strong>"
-msgstr ""
+msgstr "<strong class=\"attribute_name\">Periodo noleggio</strong>"
 
 #. module: website_sale_renting
 #: model_terms:ir.ui.view,arch_db:website_sale_renting.rental_product

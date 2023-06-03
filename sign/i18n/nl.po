@@ -1839,7 +1839,7 @@ msgstr "Lengtegraad"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__mail_sent_order
 msgid "Mail Sent Order"
-msgstr "Mail verzonden bestelling"
+msgstr "Volgorder van versturen e-mail"
 
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_log__action__update_mail

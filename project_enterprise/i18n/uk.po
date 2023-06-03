@@ -199,7 +199,7 @@ msgstr "ID"
 #: code:addons/project_enterprise/static/src/js/task_gantt_utils.js:0
 #, python-format
 msgid "Invalid scale interval"
-msgstr ""
+msgstr "Недыйсний інтервал масштабування"
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_line_wizard____last_update
@@ -250,6 +250,8 @@ msgid ""
 "One parameter is missing to use this method. You should give a start and end"
 " dates."
 msgstr ""
+"Для використання цього методу не вистачає одного параметра. Ви повинні "
+"вказати дати початку та завершення."
 
 #. module: project_enterprise
 #. odoo-python

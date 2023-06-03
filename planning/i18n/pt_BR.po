@@ -7,8 +7,8 @@
 # AlexSandro Cruz <alex@sapienzae.com.br>, 2022
 # Marcos Rodrigues, 2022
 # Martin Trigaux, 2022
-# Kevilyn Rosa, 2023
 # Layna Nascimento, 2023
+# Kevilyn Rosa, 2023
 # 
 msgid ""
 msgstr ""
@@ -16,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Layna Nascimento, 2023\n"
+"Last-Translator: Kevilyn Rosa, 2023\n"
 "Language-Team: Portuguese (Brazil) (https://app.transifex.com/odoo/teams/41243/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -296,7 +296,7 @@ msgstr ""
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_gantt
 msgid "<i class=\"fa fa-long-arrow-right\" title=\"Arrow\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-long-arrow-right\" title=\"Arrow\"/>"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -1309,7 +1309,7 @@ msgstr "Meses"
 #: model_terms:ir.ui.view,arch_db:planning.planning_role_view_search
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "My Department"
-msgstr ""
+msgstr "Meu departamento"
 
 #. module: planning
 #: model:ir.actions.act_window,name:planning.planning_action_my_calendar
@@ -1386,7 +1386,7 @@ msgstr ""
 #: model_terms:ir.actions.act_window,help:planning.planning_action_schedule_by_resource
 #: model_terms:ir.actions.act_window,help:planning.planning_action_schedule_by_role
 msgid "No shifts found. Let's create one!"
-msgstr ""
+msgstr "Nenhum turno encontrado. Vamos criar um!"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_analysis_report__name
@@ -1495,7 +1495,7 @@ msgstr ""
 #. module: planning
 #: model:ir.model,name:planning.model_planning_analysis_report
 msgid "Planning Analysis Report"
-msgstr ""
+msgstr "Relatório de análise de planejamento"
 
 #. module: planning
 #: model:ir.model,name:planning.model_planning_recurrency
@@ -1755,12 +1755,12 @@ msgstr "Agendar"
 #. module: planning
 #: model:ir.actions.act_window,name:planning.planning_action_schedule_by_resource
 msgid "Schedule by Resource"
-msgstr ""
+msgstr "Planejar por Recurso"
 
 #. module: planning
 #: model:ir.actions.act_window,name:planning.planning_action_schedule_by_role
 msgid "Schedule by Role"
-msgstr ""
+msgstr "Planejar por função"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_schedule_by_resource
@@ -1769,6 +1769,8 @@ msgid ""
 "Schedule your human and material resources across roles, projects and sales "
 "orders."
 msgstr ""
+"Programe seus recursos humanos e materiais entre funções, projetos e pedidos"
+" de vendas."
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_hr_employee__employee_token
@@ -1825,7 +1827,7 @@ msgstr "Definições"
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form
 #, python-format
 msgid "Shift"
-msgstr ""
+msgstr "Turno"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_tree
@@ -1835,7 +1837,7 @@ msgstr ""
 #. module: planning
 #: model:ir.model,name:planning.model_planning_slot_template
 msgid "Shift Template"
-msgstr ""
+msgstr "Modelo de Turno"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_slot_template_view_form
@@ -2114,7 +2116,7 @@ msgstr ""
 #: code:addons/planning/models/planning.py:0
 #, python-format
 msgid "This Progress Bar is not implemented."
-msgstr ""
+msgstr "Essa barra de progresso não foi implementada."
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__was_copied

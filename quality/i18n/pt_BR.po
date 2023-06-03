@@ -347,7 +347,7 @@ msgstr "Agrupar por"
 #: model:ir.model.fields,field_description:quality.field_quality_check__has_message
 #: model:ir.model.fields,field_description:quality.field_quality_point__has_message
 msgid "Has Message"
-msgstr "Análise de Previsão:"
+msgstr "Tem uma mensagem"
 
 #. module: quality
 #: model:ir.model.fields.selection,name:quality.selection__quality_alert__priority__2

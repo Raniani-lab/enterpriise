@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # Layna Nascimento, 2023
+# Kevilyn Rosa, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Layna Nascimento, 2023\n"
+"Last-Translator: Kevilyn Rosa, 2023\n"
 "Language-Team: Portuguese (Brazil) (https://app.transifex.com/odoo/teams/41243/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -108,7 +109,7 @@ msgstr ""
 #. module: sale_planning
 #: model_terms:ir.actions.act_window,help:sale_planning.sale_planning_action_schedule_by_sale_order
 msgid "No shifts found. Let's create one!"
-msgstr ""
+msgstr "Nenhum turno encontrado. Vamos criar um!"
 
 #. module: sale_planning
 #: model_terms:ir.ui.view,arch_db:sale_planning.planning_analysis_report_view_search
@@ -169,7 +170,7 @@ msgstr ""
 #. module: sale_planning
 #: model:ir.model,name:sale_planning.model_planning_analysis_report
 msgid "Planning Analysis Report"
-msgstr ""
+msgstr "Relatório de análise de planejamento"
 
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_sale_order__planning_first_sale_line_id
@@ -264,6 +265,8 @@ msgid ""
 "Schedule your human and material resources across roles, projects and sales "
 "orders."
 msgstr ""
+"Programe seus recursos humanos e materiais entre funções, projetos e pedidos"
+" de vendas."
 
 #. module: sale_planning
 #: model_terms:ir.ui.view,arch_db:sale_planning.planning_analysis_report_view_search
@@ -282,7 +285,7 @@ msgstr "Serviços"
 #: code:addons/sale_planning/controllers/main.py:0
 #, python-format
 msgid "Shift"
-msgstr ""
+msgstr "Turno"
 
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_planning_slot__start_datetime
@@ -330,7 +333,7 @@ msgstr ""
 #. module: sale_planning
 #: model_terms:ir.ui.view,arch_db:sale_planning.planning_view_form_in_gantt_inherit_sale_planning
 msgid "Unschedule"
-msgstr ""
+msgstr "Não programado"
 
 #. module: sale_planning
 #. odoo-python

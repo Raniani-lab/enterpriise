@@ -45,7 +45,7 @@ msgstr ""
 #. module: hr_contract_salary_payroll
 #: model:ir.model,name:hr_contract_salary_payroll.model_hr_payslip_worked_days
 msgid "Payslip Worked Days"
-msgstr ""
+msgstr "Palkkalaskelman työpäivät"
 
 #. module: hr_contract_salary_payroll
 #. odoo-javascript

@@ -97,7 +97,7 @@ msgstr ""
 #, python-format
 msgid ""
 "Inter company user of company %(name)s doesn't have enough access rights"
-msgstr ""
+msgstr "%(name)s 회사의 회사 간 사용자는 접근 권한이 없습니다."
 
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/sale_order.py:0
@@ -109,7 +109,7 @@ msgstr "회사 간 사용자 %s에는 사용 권한이 충분하지 않습니다
 #: code:addons/sale_purchase_inter_company_rules/models/purchase_order.py:0
 #, python-format
 msgid "Provide at least one user for inter company relation for %(name)s"
-msgstr ""
+msgstr "%(name)s 의 회사 간 항목에는 사용자가 한 명 이상 있어야 합니다."
 
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/sale_order.py:0
@@ -155,17 +155,17 @@ msgstr "원본 판매 주문서"
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields.selection,name:sale_purchase_inter_company_rules.selection__res_company__rule_type__purchase
 msgid "Synchronize Purchase Order"
-msgstr ""
+msgstr "구매발주서 동기화"
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields.selection,name:sale_purchase_inter_company_rules.selection__res_company__rule_type__sale
 msgid "Synchronize Sales Order"
-msgstr ""
+msgstr "판매주문서 동기화"
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields.selection,name:sale_purchase_inter_company_rules.selection__res_company__rule_type__sale_purchase
 msgid "Synchronize Sales and Purchase Order"
-msgstr ""
+msgstr "판매주문서 및 구매발주서 동기화"
 
 #. module: sale_purchase_inter_company_rules
 #: model_terms:ir.ui.view,arch_db:sale_purchase_inter_company_rules.res_config_settings_view_form
@@ -191,6 +191,10 @@ msgid ""
 "\n"
 "(SO currency: %(so_currency)s, Pricelist: %(pricelist)s, Partner: %(partner)s (ID: %(id)s))"
 msgstr ""
+"판매 가격표 상의 통화와 구매 가격표 상의 통화가 다르기 때문에 구매발주서에서 판매주문서를 생성할 수 없습니다.\n"
+"판매주문서 상의 통화는 회사 협력사의 가격표에서 불러옵니다.\n"
+"\n"
+"(판매주문서 통화: %(so_currency)s, 가격표: %(pricelist)s, 협력사: %(partner)s (ID: %(id)s))"
 
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/res_company.py:0

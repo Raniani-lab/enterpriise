@@ -293,7 +293,7 @@ msgstr "لم نتمكن من رفع صورتك. حاول تقليل حجمها �
 #: code:addons/social_linkedin/models/social_stream.py:0
 #, python-format
 msgid "Wrong stream type for \"%s\""
-msgstr "نوع التدفق غير صحيح لـ \"%s\" "
+msgstr "نوع الوسط غير صحيح لـ \"%s\" "
 
 #. module: social_linkedin
 #. odoo-python

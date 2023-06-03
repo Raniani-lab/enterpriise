@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Daye Jeong, 2023
 # Sarah Park, 2023
 # 
 msgid ""
@@ -60,7 +61,7 @@ msgstr "평균 거래 규모"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Average deal size"
-msgstr ""
+msgstr "평균 거래 규모"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -104,14 +105,14 @@ msgstr "마감됨"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Closed count"
-msgstr ""
+msgstr "마감 숫자"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Closed revenue"
-msgstr ""
+msgstr "마감 수익"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -138,7 +139,7 @@ msgstr "현재"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Current period"
-msgstr ""
+msgstr "현재 기간"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -152,21 +153,21 @@ msgstr "배정일"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Days to Win"
-msgstr ""
+msgstr "성공일수"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Days to assign"
-msgstr ""
+msgstr "배정일"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Days to win"
-msgstr ""
+msgstr "성공일수"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -187,14 +188,14 @@ msgstr "마감 예상일"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Expected count"
-msgstr ""
+msgstr "예상 숫자"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Expected revenue"
-msgstr ""
+msgstr "예상 수익"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -209,7 +210,7 @@ msgstr "KPI"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Leads by Month"
-msgstr ""
+msgstr "월별 영업제안"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -234,7 +235,7 @@ msgstr "중간"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Open opportunities"
-msgstr ""
+msgstr "진행 중인 영업기회"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -248,7 +249,7 @@ msgstr "영업 기회"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Percentage closed"
-msgstr ""
+msgstr "마감한 비율"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -263,7 +264,7 @@ msgstr "기간"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Pipeline Stages"
-msgstr ""
+msgstr "파이프라인 단계"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -279,7 +280,7 @@ msgstr "이전"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Previous period"
-msgstr ""
+msgstr "이전 기간"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -362,7 +363,7 @@ msgstr "태그"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "To close"
-msgstr ""
+msgstr "마감 대기"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -376,7 +377,7 @@ msgstr "캠페인별 순위"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Cities"
-msgstr ""
+msgstr "국가 순위"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -406,7 +407,7 @@ msgstr "매체별 순위"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Opportunities"
-msgstr ""
+msgstr "영업기회 순위"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -444,42 +445,42 @@ msgstr "태그별 순위"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Total days to assign"
-msgstr ""
+msgstr "총 배정 일자"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Total days to win"
-msgstr ""
+msgstr "총 성공일수"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Total leads"
-msgstr ""
+msgstr "영업제안 순위"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Won leads"
-msgstr ""
+msgstr "영업제안 성공"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "average deal size - current"
-msgstr ""
+msgstr "평균 거래 규모 - 현재"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "average deal size - previous"
-msgstr ""
+msgstr "평균 거래 규모 - 이전"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -500,28 +501,28 @@ msgstr "마감 비율 - 전기"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "days to - current"
-msgstr ""
+msgstr "일 - 현재"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "days to - previous"
-msgstr ""
+msgstr "일 - 이전"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "expected - current"
-msgstr ""
+msgstr "예상 - 현재"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "expected - previous"
-msgstr ""
+msgstr "예상 - 이전"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -537,7 +538,7 @@ msgstr "이전 기간"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "list opps"
-msgstr ""
+msgstr "영업기회 목록"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -554,21 +555,21 @@ msgstr "전기 대비"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "to campaign"
-msgstr ""
+msgstr "캠페인"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "to close"
-msgstr ""
+msgstr "마감"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top cities"
-msgstr ""
+msgstr "도시 순위"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -590,7 +591,7 @@ msgstr "실패원인별 순위"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top medium"
-msgstr ""
+msgstr "매체 순위"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -605,7 +606,7 @@ msgstr "매체별 순위"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top sales team"
-msgstr ""
+msgstr "영업팀 순위"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -619,14 +620,14 @@ msgstr "영업사원별 순위"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top salesperson"
-msgstr ""
+msgstr "영업직원 순위"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top source"
-msgstr ""
+msgstr "출처별 순위"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript

@@ -1428,7 +1428,7 @@ msgstr "Vervaldatum"
 #: model:ir.actions.client,name:account_reports.action_account_report_sales
 #: model:ir.ui.menu,name:account_reports.menu_action_account_report_sales
 msgid "EC Sales List"
-msgstr "EC verkooplijst"
+msgstr "EC verkooprapport"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_ec_sales_report_handler
@@ -1762,7 +1762,7 @@ msgstr "Gegenereerde documenten"
 #. module: account_reports
 #: model:account.report,name:account_reports.generic_ec_sales_report
 msgid "Generic EC Sales List"
-msgstr "Algemene EC-verkooplijst"
+msgstr "Algemeen EC verkooprapport"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_generic_tax_report_handler

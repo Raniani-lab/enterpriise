@@ -151,14 +151,14 @@ msgstr "Aufgabe"
 #: code:addons/project_helpdesk/wizard/project_task_convert_wizard.py:0
 #, python-format
 msgid "Task converted into ticket %s"
-msgstr ""
+msgstr "Aufgabe in Ticket %s verwandelt"
 
 #. module: project_helpdesk
 #. odoo-python
 #: code:addons/project_helpdesk/wizard/helpdesk_ticket_convert_wizard.py:0
 #, python-format
 msgid "Task created from ticket %s"
-msgstr ""
+msgstr "Aufgabe aus Ticket %s erstellt"
 
 #. module: project_helpdesk
 #: model:ir.model.fields,field_description:project_helpdesk.field_project_task_convert_wizard__team_id
@@ -170,11 +170,11 @@ msgstr "Team"
 #: code:addons/project_helpdesk/wizard/helpdesk_ticket_convert_wizard.py:0
 #, python-format
 msgid "Ticket converted into task %s"
-msgstr ""
+msgstr "Ticket in Aufgabe %s verwandelt"
 
 #. module: project_helpdesk
 #. odoo-python
 #: code:addons/project_helpdesk/wizard/project_task_convert_wizard.py:0
 #, python-format
 msgid "Ticket created from task %s"
-msgstr ""
+msgstr "Ticket aus Aufgabe %s erstellt"

@@ -23,7 +23,7 @@ msgstr ""
 #. module: helpdesk_fsm_report
 #: model:ir.model,name:helpdesk_fsm_report.model_helpdesk_create_fsm_task
 msgid "Create a Field Service task"
-msgstr "Créer une tâche dans Services sur site"
+msgstr "Créer une tâche de service sur site"
 
 #. module: helpdesk_fsm_report
 #: model:ir.model.fields,field_description:helpdesk_fsm_report.field_helpdesk_create_fsm_task__worksheet_template_id

@@ -200,7 +200,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Top Customers"
-msgstr ""
+msgstr "Principais clientes"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
@@ -238,11 +238,11 @@ msgstr "desde o período anterior"
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "stats - current"
-msgstr ""
+msgstr "estatísticas - atuais"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "stats - previous"
-msgstr ""
+msgstr "estatísticas - anteriores"

@@ -144,7 +144,7 @@ msgstr "Awatar"
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Backspace"
-msgstr ""
+msgstr "Backspace"
 
 #. module: voip
 #. odoo-javascript
@@ -804,7 +804,7 @@ msgstr "Produkcja"
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Recent"
-msgstr ""
+msgstr "Najnowsze"
 
 #. module: voip
 #. odoo-javascript

@@ -274,7 +274,7 @@ msgstr "Geen adres gevonden met contactnaam %s op je sendcloud-account."
 #: code:addons/delivery_sendcloud/models/sendcloud_service.py:0
 #, python-format
 msgid "No picking or order provided"
-msgstr "Geen pick-up of bestelling voorzien"
+msgstr "Geen levering of order opgegeven"
 
 #. module: delivery_sendcloud
 #. odoo-python

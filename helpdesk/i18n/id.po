@@ -194,6 +194,16 @@ msgid ""
 "</div>\n"
 "        "
 msgstr ""
+"<div>\n"
+"    Yth <t t-out=\"object.sudo().partner_id.name or 'Madam/Sir'\">Ibu/Bapak</t>,<br><br>\n"
+"    Pesan otomatis ini untuk memberitahu Anda bahwa kami telah menutup tiket Anda (referensi <t t-out=\"object.id or ''\">15</t>).\n"
+"    Kami harap layanan yang kami sediakan sesuai ekspektasi Anda.\n"
+"    Bila Anda memiliki pertanyaan atau komentar apapun, jangan sungkan untuk membalas e-mail ini untuk membuka ulang tiket Anda.<br><br>\n"
+"    Terima kasih atas kerja sama Anda.<br>\n"
+"    Salam hormat,<br><br>\n"
+"    Tim <t t-out=\"object.team_id.name or 'Helpdesk'\">Meja bantuan</t>.\n"
+"</div>\n"
+"        "
 
 #. module: helpdesk
 #: model:mail.template,body_html:helpdesk.new_ticket_request_email_template

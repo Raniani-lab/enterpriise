@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # JH CHOI <hwangtog@gmail.com>, 2022
+# Daye Jeong, 2023
 # Sarah Park, 2023
 # 
 msgid ""
@@ -139,7 +140,7 @@ msgstr "분석 계정"
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_project__allow_billable
 msgid "Billable"
-msgstr ""
+msgstr "청구 가능"
 
 #. module: industry_fsm_sale
 #: model:project.task.type,legend_blocked:industry_fsm_sale.field_service_project_stage_0
@@ -201,7 +202,7 @@ msgstr "청구서 발행"
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_task_form2_inherit
 msgid "Create new quotation"
-msgstr ""
+msgstr "새로운 견적서 생성"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_view_form_inherit
@@ -299,14 +300,14 @@ msgstr "진행 중"
 #: code:addons/industry_fsm_sale/models/product_product.py:0
 #, python-format
 msgid "Invalid operator: %s"
-msgstr ""
+msgstr "잘못된 운영자: %s"
 
 #. module: industry_fsm_sale
 #. odoo-python
 #: code:addons/industry_fsm_sale/models/product_product.py:0
 #, python-format
 msgid "Invalid value: %s"
-msgstr ""
+msgstr "잘못된 값: %s"
 
 #. module: industry_fsm_sale
 #. odoo-python
@@ -519,7 +520,7 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_report_project_task_user_fsm__remaining_hours_so
 msgid "Remaining Hours on SO"
-msgstr ""
+msgstr "판매 주문서의 잔여 시간:"
 
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_sale_advance_payment_inv

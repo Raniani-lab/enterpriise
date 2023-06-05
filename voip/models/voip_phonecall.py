@@ -141,10 +141,10 @@ class VoipPhonecall(models.Model):
         call_by_record_by_model_name = defaultdict(lambda: defaultdict(lambda: self.env["voip.phonecall"]))
         allowed_calls = self.env["voip.phonecall"]
         for call in self:
-            if call.activity_id:
-                record = self.env[call.activity_id.res_model].browse(call.activity_id.res_id)
-            elif call.mail_message_id:
-                record = self.env[call.mail_message_id.model].browse(call.mail_message_id.res_id)
+            if call.sudo().activity_id:
+                record = self.env[call.sudo().activity_id.res_model].browse(call.sudo().activity_id.res_id)
+            elif call.sudo().mail_message_id:
+                record = self.env[call.sudo().mail_message_id.model].browse(call.sudo().mail_message_id.res_id)
             else:
                 allowed_calls += call
                 continue

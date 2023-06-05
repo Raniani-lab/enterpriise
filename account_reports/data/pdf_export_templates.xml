@@ -142,15 +142,8 @@
                     </t>
                 </div>
                 <div class="col-12">
-                    <t t-if="options.get('ir_filters') != None">
-                        Filter:
-                        <t t-set="selected_filter_name">None</t>
-                        <t t-foreach="options['ir_filters']" t-as="current_filter">
-                            <t t-if="current_filter['selected']">
-                                <t t-set="selected_filter_name" t-value="current_filter['name']"/>
-                            </t>
-                        </t>
-                        <t t-out="selected_filter_name"/>
+                    <t t-if="options.get('available_horizontal_groups') != None">
+                        <t t-call="account_reports.template_horizontal_group_display"/>
                     </t>
                 </div>
                 <div class="col-12">
@@ -278,6 +271,17 @@
               t-out="line['growth_comparison_data'].get('name')"
               t-att-class="line['growth_comparison_data'].get('class') + ' acc_rep_column_value'"
               style="white-space:nowrap;"/>
+    </template>
+
+    <template id="template_horizontal_group_display">
+        Horizontal Group:
+        <t t-set="filter_name">None</t>
+        <t t-foreach="options['available_horizontal_groups']" t-as="horizontal_group">
+            <t t-if="horizontal_group['id'] == options['selected_horizontal_group_id']">
+                <t t-set="filter_name" t-value="horizontal_group['name']"/>
+            </t>
+        </t>
+        <t t-out="filter_name"/>
     </template>
 
 </odoo>

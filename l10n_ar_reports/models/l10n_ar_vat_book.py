@@ -103,6 +103,11 @@ class ArgentinianReportCustomHandler(models.AbstractModel):
         else:
             options['ar_vat_book_tax_type_selected'] = previous_options.get('ar_vat_book_tax_type_selected', 'all')
 
+        options['forced_domain'] = [
+             *options.get('forced_domain', []),
+             ('journal_id.l10n_latam_use_documents', '!=', False),
+         ]
+
         tax_types = self._vat_book_get_selected_tax_types(options)
 
         # 2 columns are conditional, depending on some taxes being active or inactive

@@ -1870,7 +1870,7 @@ export class GanttRenderer extends Component {
 
         // To find hovered elements, also from pointed elements
         const find = (selector) =>
-            ev.target.closest(selector) || pointedEls().find((el) => el.matches(selector)) || null;
+            (ev.target.closest && ev.target.closest(selector)) || pointedEls().find((el) => el.matches(selector)) || null;
 
         this.hovered.connector = find(".o_gantt_connector");
         this.hovered.hoverable = find(".o_gantt_hoverable");

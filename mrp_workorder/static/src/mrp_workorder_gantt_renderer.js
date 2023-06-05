@@ -9,7 +9,7 @@ const { Duration } = luxon;
 
 export class MRPWorkorderGanttRenderer extends GanttRenderer {
     computeDerivedParams() {
-        this.unavailabilities = {};
+        this.unavailabilities = this.model.workcentersUnavailabilities || {};
         super.computeDerivedParams();
     }
 

@@ -6,7 +6,7 @@
         <field name="model">appointment.onboarding.link</field>
         <field name="arch" type="xml">
             <form string='Get Your Link' create="false" class="py-3">
-                <p class="mb-1">Share this link to let people book meetings with you or your team.</p>
+                <p class="mb-1">Share this link to let people book meetings with you, your team or a resource.</p>
                 <field name="appointment_type_id" invisible="1"/>
                 <div>
                     <field name="base_book_url" class="me-1 oe_inline text-black" readonly="1" nolabel="1"/>

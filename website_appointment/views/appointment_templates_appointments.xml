@@ -49,7 +49,14 @@
             </nav>
         </xpath>
         <xpath expr="//t[@t-call='appointment.staff_user_select']" position="attributes">
-            <attribute name="t-if">appointment_type.assign_method != 'time_auto_assign' and not skip_resource_selection</attribute>
+            <attribute name="t-if">
+                appointment_type.assign_method != 'time_auto_assign' and based_on_users and not skip_resource_selection
+            </attribute>
+        </xpath>
+        <xpath expr="//div[@name='resource_select']" position="attributes">
+            <attribute name="t-if">
+                appointment_type.assign_method == 'resource_time' and not based_on_users and not skip_resource_selection
+            </attribute>
         </xpath>
     </template>
 
@@ -166,7 +173,8 @@
         <t t-set="STEP_TIME" t-value="20"/>
         <t t-set="STEP_FORM" t-value="30"/>
         <t t-set="STEP_VALIDATION" t-value="40"/>
-        <t t-set="show_operator_select" t-value="step==STEP_OPERATOR_SELECT or appointment_type.avatars_display == 'show' and appointment_type.assign_method != 'time_auto_assign' and len(users_possible) > 1"/>
+        <t t-set="users_or_resources_possible" t-value="users_possible if appointment_type.schedule_based_on == 'users' else resources_possible"/>
+        <t t-set="show_operator_select" t-value="step==STEP_OPERATOR_SELECT or appointment_type.avatars_display == 'show' and appointment_type.assign_method == 'resource_time' and len(users_or_resources_possible) > 1"/>
         <ul class="o_wappointment_progress_bar list-unstyled my-0 ms-auto float-end d-none d-lg-block">
             <t t-if="show_operator_select">
                 <li t-att-class="'position-relative float-start m-0 ' + (step==STEP_OPERATOR_SELECT and 'o_current_stage' or step&gt;STEP_OPERATOR_SELECT and 'o_passed_stage bg-transparent' or 'o_future_stage bg-transparent text-muted')">

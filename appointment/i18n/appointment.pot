@@ -1803,6 +1803,11 @@ msgid "Opening Hours"
 msgstr ""
 
 #. module: appointment
+#: model_terms:ir.ui.view,arch_db:appointment.appointment_resource_view_form
+msgid "Default Opening Hours"
+msgstr ""
+
+#. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "Options"
 msgstr ""
@@ -2161,8 +2166,19 @@ msgid ""
 msgstr ""
 
 #. module: appointment
+#: model_terms:ir.actions.act_window,help:appointment.appointment_type_action
+msgid ""
+"Share calendar link allowing people to book meetings with you, your team or a resource."
+msgstr ""
+
+#. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_onboarding_link_view_form
 msgid "Share this link to let people book meetings with you or your team."
+msgstr ""
+
+#. module: appointment
+#: model_terms:ir.ui.view,arch_db:appointment.appointment_onboarding_link_view_form
+msgid "Share this link to let people book meetings with you, your team or a resource."
 msgstr ""
 
 #. module: appointment
@@ -2454,6 +2470,11 @@ msgstr ""
 msgid ""
 "This appointment type has no availabilities because it has no staff assigned"
 " and does not have any opening hours configured"
+msgstr ""
+
+#. module: appointment
+#: model_terms:ir.ui.view,arch_db:appointment.appointment_info
+msgid "For"
 msgstr ""
 
 #. module: appointment
@@ -2799,4 +2820,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 #: model_terms:ir.ui.view,arch_db:appointment.portal_my_appointments
 msgid "with"
+msgstr ""
+
+#. module: appointment
+#. odoo-python
+#: code:addons/appointment/models/appointment_resource.py:0
+#, python-format
+msgid "%(original_name)s (copy)"
 msgstr ""

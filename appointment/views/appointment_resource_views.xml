@@ -43,7 +43,7 @@
                             <field name="shareable" attrs="{'invisible': [('capacity', '&lt;=', 1)]}"/>
                             <field name="linked_resource_ids" widget="many2many_tags" options="{'no_create': True}"
                                 domain="[('id', '!=', id)]"/>
-                            <field name="resource_calendar_id" string="Opening Hours"/>
+                            <field name="resource_calendar_id" string="Default Opening Hours"/>
                         </group>
                     </group>
                     <notebook>

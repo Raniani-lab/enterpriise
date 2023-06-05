@@ -147,6 +147,16 @@
                                     <input type="hidden" name="hide_select_dropdown" t-att-value="hide_select_dropdown"/>
                                     <t t-if="appointment_type.assign_method != 'time_auto_assign' and based_on_users"
                                         t-call="appointment.staff_user_select"/>
+                                    <div t-if="appointment_type.assign_method == 'resource_time' and not based_on_users"
+                                        name="resource_select" t-attf-class="col-12 d-flex float-start mb-3 #{'o_hidden' if hide_select_dropdown else ''}">
+                                        <label for="selectAppointmentResource" class="col-form-label pe-1">For</label>
+                                        <select class="form-select border-0 ps-1 w-auto cursor-pointer" name="resource_id" id="selectAppointmentResource">
+                                            <t t-foreach="resources_possible" t-as="resource">
+                                                <option t-att-value="resource.id" t-out="resource.name"
+                                                    t-att-selected="resource.id == (resource_selected.id or resources_possible[0].id) and 'selected'"/>
+                                            </t>
+                                        </select>
+                                    </div>
                                 </form>
                             </div>
                             <div t-field="appointment_type.message_intro" placeholder="Add an intro message here..."

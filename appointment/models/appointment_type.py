@@ -964,12 +964,13 @@ class AppointmentType(models.Model):
 
         slot_start_dt_utc, slot_end_dt_utc = slot['UTC'][0], slot['UTC'][1]
         resource_to_bookings = availability_values.get('resource_to_bookings')
-        # Check if there is already a booking line for the time slot and the resource is not shareable
-        # We don't want to make it "available" because of the potential linked resources
-        if (not resource.shareable or not self.resource_manage_capacity) and resource_to_bookings.get(resource):
-            resource_booking_lines = resource_to_bookings.get(resource)
-            if resource_booking_lines.filtered(lambda bl: bl.event_start < slot_end_dt_utc and bl.event_stop > slot_start_dt_utc):
-                return False
+        # Check if there is already a booking line for the time slot and make it available
+        # only if the resource is shareable and the resource_manage_capacity is enable.
+        # This avoid to mark the resource as "available" and compute unnecessary remaining capacity computation
+        # because of potential linked resources.
+        if resource_to_bookings.get(resource):
+            if resource_to_bookings[resource].filtered(lambda bl: bl.event_start < slot_end_dt_utc and bl.event_stop > slot_start_dt_utc):
+                return resource.shareable if self.resource_manage_capacity else False
 
         return True
 
@@ -993,7 +994,7 @@ class AppointmentType(models.Model):
         if filter_resources:
             all_resources &= filter_resources
         if not resources:
-            return False
+            return {'total_remaining_capacity': 0}
 
         booking_lines = self.env['appointment.booking.line'].sudo()
         if resource_to_bookings is not None:
@@ -1033,7 +1034,8 @@ class AppointmentType(models.Model):
         if not self.resource_manage_capacity:
             return available_resources[0] if self.assign_method != 'time_resource' else available_resources
 
-        perfect_matches = available_resources.filtered(lambda resource: resource.capacity == asked_capacity)
+        perfect_matches = available_resources.filtered(
+            lambda resource: resource.capacity == asked_capacity and capacity_info[resource]['remaining_capacity'] == asked_capacity)
         if perfect_matches:
             return available_resources if self.assign_method == 'time_resource' else perfect_matches[0]
 

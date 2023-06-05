@@ -103,7 +103,7 @@ class WebsiteAppointment(AppointmentController):
     def _prepare_appointment_type_page_values(self, appointment_type, staff_user_id=False, resource_selected_id=False, skip_resource_selection=False, **kwargs):
         """
         Override: Take into account the operator selection flow. When skipping the selection,
-        no user_selected or user_default should be set. The display is also properly managed according to this new flow.
+        no {user,resource}_selected or user_default should be set. The display is also properly managed according to this new flow.
 
         :param skip_resource_selection: If true, skip the selection, and instead see all availabilities. No user should be selected.
         """
@@ -111,9 +111,11 @@ class WebsiteAppointment(AppointmentController):
         values['skip_resource_selection'] = skip_resource_selection
         if skip_resource_selection:
             values['user_selected'] = values['user_default'] = request.env['res.users']
+            values['resource_selected'] = request.env['appointment.resource']
         else:
-            values['hide_select_dropdown'] = len(values['users_possible']) <= 1 or (
-                appointment_type.avatars_display == 'show' and values['user_selected'] and appointment_type.assign_method != 'time_resource')
+            resource_or_user_selected = values['user_selected'] if appointment_type.schedule_based_on == 'users' else values['resource_selected']
+            values['hide_select_dropdown'] = values['hide_select_dropdown'] or (
+                appointment_type.avatars_display == 'show' and resource_or_user_selected and appointment_type.assign_method != 'time_resource')
         return values
 
     # Tools / Data preparation

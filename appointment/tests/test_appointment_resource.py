@@ -156,13 +156,13 @@ class AppointmentResource(AppointmentCommon):
         booking_1, booking_2 = self.env['calendar.event'].with_context(self._test_context).create([{
             'appointment_type_id': appointment.id,
             'booking_line_ids': [(0, 0, {'appointment_resource_id': resource_1.id, 'capacity_reserved': 1, 'capacity_used': resource_1.capacity})],
-            'name': 'Meeting 1',
+            'name': 'Booking 1',
             'start': start,
             'stop': end,
         }, {
             'appointment_type_id': appointment.id,
             'booking_line_ids': [(0, 0, {'appointment_resource_id': resource_2.id, 'capacity_reserved': 1})],
-            'name': 'Meeting 2',
+            'name': 'Booking 2',
             'start': start,
             'stop': end,
         }])
@@ -190,7 +190,7 @@ class AppointmentResource(AppointmentCommon):
                 (0, 0, {'appointment_resource_id': resource_1.id, 'capacity_reserved': 3, 'capacity_used': 3}),
                 (0, 0, {'appointment_resource_id': resource_2.id, 'capacity_reserved': 1}),
             ],
-            'name': 'Meeting',
+            'name': 'Booking',
             'start': start,
             'stop': end,
         }])
@@ -598,13 +598,13 @@ class AppointmentResourceBookingTest(AppointmentCommon):
         self.env['calendar.event'].with_context(self._test_context).create([{
             'appointment_type_id': self.apt_type_resource.id,
             'booking_line_ids': [(0, 0, {'appointment_resource_id': resource_shareable.id, 'capacity_reserved': 4, 'capacity_used': 4})],
-            'name': 'Meeting 1',
+            'name': 'Booking 1',
             'start': start,
             'stop': end,
         }, {
             'appointment_type_id': self.apt_type_resource.id,
             'booking_line_ids': [(0, 0, {'appointment_resource_id': resource_shareable.id, 'capacity_reserved': 2, 'capacity_used': 2})],
-            'name': 'Meeting 2',
+            'name': 'Booking 2',
             'start': start,
             'stop': end,
         }])
@@ -633,6 +633,61 @@ class AppointmentResourceBookingTest(AppointmentCommon):
         available_resources_c5 = [resource['id'] for resource in resource_slots_c5[0]['available_resources']]
         self.assertListEqual(available_resources_c4, resource_shareable.ids)
         self.assertListEqual(available_resources_c5, resource.ids)
+
+    @users('apt_manager')
+    def test_appointment_resources_shareable_linked_with_capacity(self):
+        """ Check that resources shareable linked together with the capacity management
+         correctly compute the remaining capacity """
+
+        resource_1, resource_2 = self.env['appointment.resource'].create([{
+            'appointment_type_ids': self.apt_type_resource.ids,
+            'capacity': 5,
+            'name': 'Resource 1',
+            'sequence': 5,
+            'shareable': True,
+        }, {
+            'appointment_type_ids': self.apt_type_resource.ids,
+            'capacity': 6,
+            'name': 'Resource 2',
+            'sequence': 10,
+            'shareable': True,
+        }])
+
+        resource_1.linked_resource_ids = resource_2
+
+        with freeze_time(self.reference_now):
+            slots = self.apt_type_resource._get_appointment_slots('UTC', asked_capacity=5)
+            resource_slots_c5 = self._filter_appointment_slots(slots)
+            slots = self.apt_type_resource._get_appointment_slots('UTC', asked_capacity=7)
+            resource_slots_c7 = self._filter_appointment_slots(slots)
+        available_resources_c5 = [resource['id'] for resource in resource_slots_c5[0]['available_resources']]
+        available_resources_c7 = [resource['id'] for resource in resource_slots_c7[0]['available_resources']]
+        self.assertListEqual(available_resources_c5, resource_1.ids,
+                             "Should pick the first resource as it's a best match")
+        self.assertListEqual(available_resources_c7, (resource_1 + resource_2).ids,
+                             "Should pick both resources as asked capacity exceeds each resource capacity")
+
+        # Create a booking for the first resource for all its capacity
+        start = datetime(2022, 2, 14, 15, 0, 0)
+        end = start + timedelta(hours=1)
+        self.env['calendar.event'].with_context(self._test_context).create({
+            'appointment_type_id': self.apt_type_resource.id,
+            'booking_line_ids': [(0, 0, {'appointment_resource_id': resource_1.id, 'capacity_reserved': 5, 'capacity_used': 5})],
+            'name': 'Booking 1',
+            'start': start,
+            'stop': end,
+        })
+
+        with freeze_time(self.reference_now):
+            slots = self.apt_type_resource._get_appointment_slots('UTC', asked_capacity=5)
+            resource_slots_c5 = self._filter_appointment_slots(slots)
+            slots = self.apt_type_resource._get_appointment_slots('UTC', asked_capacity=7)
+            resource_slots_c7 = self._filter_appointment_slots(slots)
+        available_resources_c5 = [resource['id'] for resource in resource_slots_c5[0]['available_resources']]
+        self.assertListEqual(available_resources_c5, resource_2.ids,
+                             "Should pick the second resource as the first one is already taken")
+        self.assertEqual(len(resource_slots_c7), 0,
+                         "There should not be enough capacity remaining for the asked capacity")
 
     @users('apt_manager')
     def test_appointment_resources_shareable_performance(self):
@@ -788,7 +843,7 @@ class AppointmentResourceBookingTest(AppointmentCommon):
         booking = self.env['calendar.event'].with_context(self._test_context).create({
             'appointment_type_id': self.apt_type_resource.id,
             'booking_line_ids': [(0, 0, {'appointment_resource_id': resource_1.id, 'capacity_reserved': 1, 'capacity_used': resource_1.capacity})],
-            'name': 'Meeting 1',
+            'name': 'Booking 1',
             'start': start,
             'stop': end,
         })

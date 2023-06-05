@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.tools.translate import html_translate
 
 
@@ -16,6 +16,7 @@ class AppointmentResource(models.Model):
     sequence = fields.Integer("Sequence", default=1, required=True,
         help="""The sequence dictates if the resource is going to be picked in higher priority against another resource
         (e.g. for 2 tables of 4, the lowest sequence will be picked first)""")
+    resource_id = fields.Many2one(copy=False)
     capacity = fields.Integer("Capacity", default=1, required=True,
         help="""Maximum amount of people for this resource (e.g. Table for 6 persons, ...)""")
     shareable = fields.Boolean("Shareable",
@@ -76,6 +77,12 @@ class AppointmentResource(models.Model):
             resource_name_capacity = f"{resource.name} ({resource.capacity})"
             display_name = resource_name_capacity if resource.capacity > 1 else resource.name
             resource.display_name = display_name
+
+    def copy(self, default=None):
+        default = dict(default or {})
+        if not default.get('name'):
+            default['name'] = _("%(original_name)s (copy)", original_name=self.name)
+        return super().copy(default)
 
     def _get_filtered_possible_capacity_combinations(self, asked_capacity, capacity_info):
         """ Get combinations of resources with total capacity based on the capacity needed and the resources we want.

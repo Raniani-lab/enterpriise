@@ -8,6 +8,7 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
     selector: '.o_appointment',
     events: {
         'change select[name="timezone"]': '_onRefresh',
+        'change select[id="selectAppointmentResource"]': '_onRefresh',
         'change select[id="selectStaffUser"]': '_onRefresh',
         'change select[id="resourceCapacity"]': '_onRefresh',
         'click .o_js_calendar_navigate': '_onCalendarNavigate',
@@ -182,7 +183,7 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
         const scheduleBasedOn = this.$("input[name='schedule_based_on']").val();
         if (assignMethod !== "time_resource" || scheduleBasedOn === 'users') {
             const appointmentTypeID = this.$("input[name='appointment_type_id']").val();
-            const urlParameters = this.$(".o_slot_hours_selected").data('urlParameters');
+            const urlParameters = decodeURIComponent(this.$(".o_slot_hours_selected").data('urlParameters'));
             const url = new URL(
                 `/appointment/${encodeURIComponent(appointmentTypeID)}/info?${urlParameters}`,
                 location.origin);
@@ -205,7 +206,7 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
         const appointmentTypeID = this.$("input[name='appointment_type_id']").val();
         const resourceId = parseInt(this.$("select[name='resource_id']").val());
         const resourceCapacity = parseInt(this.$("select[name='resourceCapacity']").val()) || 1;
-        const urlParameters = this.$(".o_slot_hours_selected").data('urlParameters');
+        const urlParameters = decodeURIComponent(this.$(".o_slot_hours_selected").data('urlParameters'));
         const url = new URL(
             `/appointment/${encodeURIComponent(appointmentTypeID)}/info?${urlParameters}`,
             location.origin);
@@ -233,7 +234,7 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
             const inviteToken = this.$("input[name='invite_token']").val();
             const previousMonthName = this.$('.o_appointment_month:not(.d-none) .o_appointment_month_name').text();
             const staffUserID = this.$("#slots_form select[name='staff_user_id']").val();
-            const resourceID = this.$("input[name='resource_selected_id']").val();
+            const resourceID = this.$("select[id='selectAppointmentResource']").val() || this.$("input[name='resource_selected_id']").val();
             const filterResourceIds = this.$("input[name='filter_resource_ids']").val();
             const timezone = this.$("select[name='timezone']").val();
             const resourceCapacity = this.$("select[name='resourceCapacity']").length && parseInt(this.$("select[name='resourceCapacity']").val()) || 1;

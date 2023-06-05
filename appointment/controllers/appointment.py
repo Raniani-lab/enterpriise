@@ -288,7 +288,7 @@ class AppointmentController(http.Controller):
             'filter_appointment_type_ids': kwargs.get('filter_appointment_type_ids'),
             'filter_staff_user_ids': kwargs.get('filter_staff_user_ids'),
             'filter_resource_ids': kwargs.get('filter_resource_ids'),
-            'hide_select_dropdown': len(users_possible) <= 1,
+            'hide_select_dropdown': len(users_possible if appointment_type.schedule_based_on == 'users' else resources_possible) <= 1,
             'invite_token': kwargs.get('invite_token'),
             'max_capacity': min(12, max_capacity_possible),
             'resource_selected': resource_selected,

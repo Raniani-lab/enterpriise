@@ -126,6 +126,48 @@ class TestAccountReportsCommon(AccountTestInvoicingCommon):
                 # Check name.
                 self.assertEqual(column['name'], self._convert_str_to_date(column['name'], expected_header[i]))
 
+    def assertIdenticalLines(self, reports):
+        """Helper to compare report lines with the same `code` across multiple reports.
+        The helper checks the lines for similarity on:
+        - number of expressions
+        - expression label
+        - expression engine
+        - expression formula
+        - expression subformula
+        - expression date_scope
+
+        :param reports: (recordset of account.report) The reports to check
+        """
+        def expression_to_comparable_values(expr):
+            return (
+                expr.label,
+                expr.engine,
+                expr.formula,
+                expr.subformula,
+                expr.date_scope
+            )
+
+        if not reports:
+            raise UserError('There are no reports to compare.')
+        visited_line_codes = set()
+        for line in reports.line_ids:
+            if not line.code or line.code in visited_line_codes:
+                continue
+            identical_lines = reports.line_ids.filtered(lambda l: l != line and l.code == line.code)
+            if not identical_lines:
+                continue
+            with self.subTest(line_code=line.code):
+                for tested_line in identical_lines:
+                    self.assertCountEqual(
+                        line.expression_ids.mapped(expression_to_comparable_values),
+                        tested_line.expression_ids.mapped(expression_to_comparable_values),
+                        (
+                            f'The line with code {line.code} from reports "{line.report_id.name}" and '
+                            f'"{tested_line.report_id.name}" has different expression values in both reports.'
+                        )
+                    )
+            visited_line_codes.add(line.code)
+
     def assertLinesValues(self, lines, columns, expected_values, options, currency_map=None, ignore_folded=True):
         ''' Helper to compare the lines returned by the _get_lines method
         with some expected results.

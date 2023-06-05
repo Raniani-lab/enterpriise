@@ -35,7 +35,8 @@
                 <t t-set-slot="layout-actions">
                    <div class="d-flex gap-1 flex-wrap">
                        <t t-if="controller.options.search_bar">
-                           <AccountReportSearchBar/><br/>
+
+                           <AccountReportSearchBar initialQuery="initialQuery"/><br/>
                        </t>
                        <t t-component="env.component('AccountReportFilters')"/>
                    </div>

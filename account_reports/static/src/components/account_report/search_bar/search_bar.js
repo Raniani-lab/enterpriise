@@ -1,14 +1,23 @@
 /** @odoo-module */
 
-import { Component, useRef, useState } from "@odoo/owl";
+import { Component, useRef, useState, onMounted } from "@odoo/owl";
 
 export class AccountReportSearchBar extends Component {
     static template = "account_reports.AccountReportSearchBar";
-    static props = {};
+    static props = {
+        initialQuery: { type: String, optional: true },
+    };
 
     setup() {
         this.searchText = useRef("search_bar_input");
         this.controller = useState(this.env.controller);
+
+        onMounted(() => {
+            if (this.props.initialQuery) {
+                this.searchText.el.value = this.props.initialQuery;
+                this.search();
+            }
+        });
     }
 
     //------------------------------------------------------------------------------------------------------------------

@@ -46,6 +46,7 @@ export class AccountReport extends Component {
         this.orm = useService("orm");
         this.actionService = useService("action");
         this.controller = useState(new AccountReportController(this.props.action));
+        this.initialQuery = this.props.action.context?.default_filter_accounts;
 
         for (const customizableComponent of AccountReport.customizableComponents)
             AccountReport.defaultComponentsMap[customizableComponent.name] = customizableComponent;

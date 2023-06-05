@@ -47,10 +47,10 @@
                             </t>
                             <table name="employee-infos" id="employee_info_table_1" class="table table-sm table-bordered">
                                 <tr id="employee_info_line_1">
-                                    <td class="w-25"><strong>Emp_code</strong></td>
+                                    <td class="w-25"><strong>Employee Code</strong></td>
                                     <td class="w-25"><strong>Employee</strong></td>
                                     <td class="w-25"><strong>Designation</strong></td>
-                                    <td class="w-25"><strong>Joining date</strong></td>
+                                    <td class="w-25"><strong>Joining Date</strong></td>
                                 </tr>
                                 <tr>
                                     <td class="w-25"><span t-field="o.employee_id.registration_number"/></td>
@@ -128,8 +128,8 @@
                                         <t t-set="line_style"/>
                                         <t t-set="line_class"/>
                                         <t t-if="line.code == 'NET'">
-                                            <t t-set="line_style" t-value="'color:#875A7B;'"/>
-                                            <t t-set="line_class" t-value="'o_total o_border_bottom fw-bold'"/>
+                                            <t t-set="line_style" t-value="'color:#00A09D; border-bottom: 1px solid black;'"/>
+                                            <t t-set="line_class" t-value="'o_total fw-bold'"/>
                                         </t>
                                         <t t-if="(line.code == 'BASIC') or (line.code == 'GROSS')">
                                             <t t-set="line_style" t-value="'color:#00A09D;'"/>

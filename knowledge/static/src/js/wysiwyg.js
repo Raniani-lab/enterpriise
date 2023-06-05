@@ -100,7 +100,7 @@ patch(Wysiwyg.prototype, {
                 category: _t('Knowledge'),
                 name: _t('Table Of Content'),
                 priority: 30,
-                description: _t('Add a table of content'),
+                description: _t('Highlight the structure of this article'),
                 fontawesome: 'fa-bookmark',
                 isDisabled: () => isSelectionInSelectors('.o_knowledge_behavior_anchor, table'),
                 callback: () => {

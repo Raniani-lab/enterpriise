@@ -13,15 +13,11 @@
         <field name="model">event.event</field>
         <field name="priority" eval="40"/>
         <field name="arch" type="xml">
-            <xpath expr="//button[@name='%(event.act_event_registration_from_event)d']" position="after">
+            <xpath expr="//field[@name='stage_id']" position="before">
                 <button name="%(event_barcode_action_main_view)d"
                     type="action"
-                    class="oe_stat_button"
-                    icon="fa-mobile"
                     context="{'default_event_id': active_id}">
-                    <div class="o_stat_info">
-                        <span class="o_stat_text">Registration Desk</span>
-                    </div>
+                    Registration Desk
                 </button>
             </xpath>
         </field>

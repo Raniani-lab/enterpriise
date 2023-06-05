@@ -21,6 +21,9 @@
                             groups="event.group_event_manager" data-hotkey="d"/>
                 </footer>
             </xpath>
+            <xpath expr="//field[@name='stage_id']" position="replace"/>
+            <xpath expr="//field[@name='wishlist_visitor_count']" position="replace"/>
+            <xpath expr="//field[@name='is_published']" position="replace"/>
         </field>
     </record>
 

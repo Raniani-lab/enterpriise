@@ -111,7 +111,7 @@
                                 </button>
                                 <button class="dropdown-item btn-lock" t-on-click="() => this.setLockStatus(true)"
                                         t-if="props.record.data.user_can_write and !props.record.data.is_locked and props.record.data.active">
-                                    <i class="me-2 fa fa-fw fa-lg fa-lock"/> Lock
+                                    <i class="me-2 fa fa-fw fa-lg fa-lock"/> Lock Content
                                 </button>
                                 <button class="dropdown-item btn-lock" t-on-click="() => this.setLockStatus(false)"
                                     t-if="props.record.data.user_can_write and props.record.data.is_locked and props.record.data.active">

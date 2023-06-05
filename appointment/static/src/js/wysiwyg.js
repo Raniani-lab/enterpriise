@@ -33,6 +33,7 @@ patch(Wysiwyg.prototype, {
                             default_appointment_type_ids: [],
                             default_staff_user_ids: [],
                         },
+                        size: 'md',
                         title: _t("Insert Appointment Link"),
                         mode: "edit",
                         insertLink: (url) => {

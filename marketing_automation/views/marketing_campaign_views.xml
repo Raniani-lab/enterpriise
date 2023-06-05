@@ -46,8 +46,12 @@
                     <button name="action_start_campaign" type="object" class="btn-primary" string="Start" invisible="state == 'running' or not active" />
                     <button name="action_stop_campaign" type="object" invisible="state != 'running'" class="btn-primary" string="Stop" />
                     <button name="%(marketing_campaign_test_action)d" type="action" invisible="not marketing_activity_ids or state == 'stopped'" class="btn-secondary" string="Launch a Test" />
-                    <button name="sync_participants" type="object" invisible="state != 'running'" class="btn-secondary" string="Generate participants" groups="base.group_no_one" confirm="Are you sure you want to proceed?"/>
-                    <button name="execute_activities" type="object" invisible="state != 'running'" class="btn-secondary" string="Execute activities" groups="base.group_no_one" confirm="Are you sure you want to proceed?"/>
+                    <button name="sync_participants" type="object" invisible="state != 'running'" class="btn-secondary" string="Generate participants" groups="base.group_no_one"
+                        confirm="Are you sure you want to create a new participant for each matching record that has not been used yet?"
+                        confirm-title="Generate Participants" confirm-label="Generate Participants"/>
+                    <button name="execute_activities" type="object" invisible="state != 'running'" class="btn-secondary" string="Run" groups="base.group_no_one"
+                        confirm="Run the next scheduled activity for each participant of this campaign?"
+                        confirm-title="Run Activities" confirm-label="Run"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,running,stopped" />
                 </header>
                 <field name="require_sync" invisible="1"/>

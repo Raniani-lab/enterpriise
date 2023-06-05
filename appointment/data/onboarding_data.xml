@@ -5,7 +5,7 @@
         <record id="appointment_onboarding_create_appointment_type_step" model="onboarding.onboarding.step">
             <field name="title">Set your availabilities</field>
             <field name="description">to automate appointments</field>
-            <field name="done_icon">fa-check</field>
+            <field name="done_icon">fa-star</field>
             <field name="button_text">Configure</field>
             <field name="done_text">Looks great!</field>
             <field name="panel_step_open_action_name">action_open_appointment_onboarding_create_appointment_type</field>

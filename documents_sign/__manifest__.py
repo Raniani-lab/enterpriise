@@ -16,6 +16,7 @@ The first element of the selection (in DRM) will be used as the signature attach
     'data': [
         'data/documents_workflow_rule_data.xml',
         'views/sign_templates.xml',
+        'views/res_config_settings.xml',
     ],
 
     'demo': [

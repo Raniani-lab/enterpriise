@@ -23,6 +23,10 @@ class HrContract(models.Model):
         help='HRA is an allowance given by the employer to the employee for taking care of his rental or accommodation expenses for metro city it is 50% and for non metro 40%. \nHRA computed as percentage(%)')
     l10n_in_supplementary_allowance = fields.Float(string='Supplementary Allowance', digits='Payroll')
     l10n_in_gratuity = fields.Float(string='Gratuity')
+    l10n_in_esic_amount = fields.Float(string='ESIC Amount', digits='Payroll',
+        help='Deduction towards company provided ESIC Amount')
+    l10n_in_leave_allowance = fields.Float(string='Leave Allowance', digits='Payroll',
+        help='Deduction towards company provided Leave Allowance')
 
     @api.model
     def update_state(self):

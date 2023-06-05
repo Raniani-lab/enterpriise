@@ -16,6 +16,8 @@
                     <field name="l10n_in_tds"/>
                     <field name="l10n_in_voluntary_provident_fund"/>
                     <field name="l10n_in_medical_insurance"/>
+                    <field name="l10n_in_leave_allowance"/>
+                    <field name="l10n_in_esic_amount"/>
                 </group>
             </xpath>
         </field>

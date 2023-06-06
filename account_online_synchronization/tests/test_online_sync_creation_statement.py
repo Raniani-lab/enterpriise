@@ -3,9 +3,10 @@
 
 from odoo.addons.base.models.res_bank import sanitize_account_number
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
+from odoo.exceptions import RedirectWarning
 from odoo.tests import tagged
 from odoo import fields, Command
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 
 @tagged('post_install', '-at_install')
@@ -273,3 +274,56 @@ class TestSynchStatementCreation(AccountTestInvoicingCommon):
         data['last_transaction_identifier'] = '2'
         self.online_account._retrieve_transactions()
         patched_fetch.assert_called_with('/proxy/v1/transactions', data=data)
+
+    @patch('odoo.addons.account_online_synchronization.models.account_online.requests')
+    def test_fetch_receive_error_message(self, patched_request):
+        # We want to test that when we receive an error, a redirectWarning with the correct parameter is thrown
+        # However the method _log_information that we need to test for that is performing a rollback as it needs
+        # to save the message error on the record as well (so it rollback, save message, commit, raise error).
+        # So in order to test the method, we need to use a "test cursor".
+        mock_response = MagicMock()
+        mock_response.status_code = 200
+        mock_response.json.return_value = {
+            'error': {
+                'code': 400,
+                'message': 'Shit Happened',
+                'data': {
+                    'exception_type': 'random',
+                    'message': 'This kind of things can happen',
+                    'error_reference': 'abc123',
+                    'provider_type': 'theonlyone',
+                }
+            },
+        }
+        patched_request.post.return_value = mock_response
+
+        generated_url = 'https://www.odoo.com/help?stage=bank_sync&summary=Bank+sync+error+ref%3A+abc123+-+Provider%3A+theonlyone&description=ClientID%3A+False%0AInstitution%3A+Test+Bank%0AError+Reference%3A+abc123%0AError+Message%3A+This+kind+of+things+can+happen%0A'
+        return_act_url = {
+            'type': 'ir.actions.act_url',
+            'url': generated_url
+        }
+        body_generated_url = generated_url.replace('&', '&amp;') #in post_message, & has been escaped to &amp;
+        message_body = f'<p>This kind of things can happen<br>You can contact Odoo support <a href="{body_generated_url}">Here</a></p>'
+
+        # flush and clear everything for the new "transaction"
+        self.env.invalidate_all()
+        try:
+            self.env.registry.enter_test_mode(self.cr)
+            with self.env.registry.cursor() as test_cr:
+                test_env = self.env(cr=test_cr)
+                test_link_account = self.link_account.with_env(test_env)
+                test_link_account.state = 'connected'
+
+                # this hand-written self.assertRaises() does not roll back self.cr,
+                # which is necessary below to inspect the message being posted
+                try:
+                    test_link_account._fetch_odoo_fin('/testthisurl')
+                except RedirectWarning as exception:
+                    self.assertEqual(exception.args[0], 'This kind of things can happen')
+                    self.assertEqual(exception.args[1], return_act_url)
+                    self.assertEqual(exception.args[2], 'Report issue')
+                else:
+                    self.fail("Expected RedirectWarning not raised")
+                self.assertEqual(test_link_account.message_ids[0].body, message_body)
+        finally:
+            self.env.registry.leave_test_mode()

@@ -81,14 +81,13 @@ export class GridCell {
 
     async _update(value) {
         const oldValue = this.value;
-        this.value = value;
         await this.model.orm.call(
             this.model.resModel,
             "grid_update_cell",
             [this.domain.toList({}), this.model.measureFieldName, value - oldValue],
             { context: this.context }
         );
-        await this.model.fetchData();
+        this.row.updateCell(this.column, value);
     }
 }
 
@@ -187,7 +186,8 @@ export class GridRow {
 
     /**
      * Update the cell value of a cell.
-     * @param {GridCell} cell the cell to add.
+     * @param {GridColumn} column containing the cell to update.
+     * @param {number} value the value to update
      */
     updateCell(column, value) {
         this._ensureColumnExist(column);
@@ -195,9 +195,12 @@ export class GridRow {
         const oldValue = cell.value;
         cell.value = value;
         const delta = value - oldValue;
-        cell.row.section.updateGrandTotal(column, delta);
+        this.section.updateGrandTotal(column, delta);
         this.grandTotal += delta;
         column.grandTotal += delta;
+        if (this.isAdditionalRow && delta > 0) {
+            this.isAdditionalRow = false;
+        }
     }
 
     setReadonlyCell(column, readonly) {

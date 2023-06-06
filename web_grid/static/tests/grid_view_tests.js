@@ -1069,6 +1069,19 @@ QUnit.module("Views", (hooks) => {
 
         const cells = target.querySelectorAll(".o_grid_row .o_grid_cell_readonly");
         const cell = cells[0];
+        const cellContainer = cell.closest(".o_grid_highlightable");
+        const columnTotal = target.querySelector(
+            `.o_grid_row.o_grid_column_total[data-grid-column="${cellContainer.dataset.gridColumn}"]`
+        );
+        const [columnTotalHours, columnTotalMinutes] = (
+            (columnTotal.textContent?.length && columnTotal.textContent.split(":")) || [0, 0]
+        ).map((value) => Number(value));
+        const rowTotal = target.querySelector(
+            `.o_grid_row_total[data-grid-row="${cellContainer.dataset.gridRow}"]`
+        );
+        const [rowTotalHours, rowTotalMinutes] = (
+            (rowTotal.textContent?.length && rowTotal.textContent.split(":")) || [0, 0]
+        ).map((value) => Number(value));
         assert.strictEqual(cell.textContent, "0:00");
         await hoverGridCell(cell);
         assert.containsOnce(
@@ -1099,6 +1112,14 @@ QUnit.module("Views", (hooks) => {
         await editInput(target, ".o_grid_cell input", "2");
         await nextTick();
         assert.strictEqual(cell.textContent, "2:00");
+        assert.strictEqual(
+            columnTotal.textContent,
+            `${columnTotalHours + 2}:${String(columnTotalMinutes).padStart(2, "0")}`
+        );
+        assert.strictEqual(
+            rowTotal.textContent,
+            `${rowTotalHours + 2}:${String(rowTotalMinutes).padStart(2, "0")}`
+        );
     });
 
     QUnit.test("hide row total", async function (assert) {

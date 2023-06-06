@@ -2558,6 +2558,62 @@ QUnit.module("View Editors", (hooks) => {
             "there should be one img in the button"
         );
     });
+
+    QUnit.test("button rainbowman Truish value in sidebar", async function (assert) {
+        const fakeHTTPService = {
+            start() {
+                return {};
+            },
+        };
+        registry.category("services").add("http", fakeHTTPService);
+        await createViewEditor({
+            serverData,
+            type: "form",
+            resModel: "coucou",
+            arch: `
+                <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_confirm" type="object" effect="{}"/>
+                    </div>
+                </sheet>
+                </form>`,
+        });
+
+        await click(target.querySelector("button.oe_stat_button[data-studio-xpath]"));
+        assert.strictEqual(
+            target.querySelector(".o_web_studio_sidebar [name='effect']").checked,
+            true
+        );
+    });
+
+    QUnit.test("button rainbowman False value in sidebar", async function (assert) {
+        const fakeHTTPService = {
+            start() {
+                return {};
+            },
+        };
+        registry.category("services").add("http", fakeHTTPService);
+        await createViewEditor({
+            serverData,
+            type: "form",
+            resModel: "coucou",
+            arch: `
+                <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_confirm" type="object" effect="False"/>
+                    </div>
+                </sheet>
+                </form>`,
+        });
+
+        await click(target.querySelector("button.oe_stat_button[data-studio-xpath]"));
+        assert.strictEqual(
+            target.querySelector(".o_web_studio_sidebar [name='effect']").checked,
+            false
+        );
+    });
 });
 
 QUnit.module("View Editors", (hooks) => {

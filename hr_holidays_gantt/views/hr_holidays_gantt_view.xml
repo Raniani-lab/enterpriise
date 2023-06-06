@@ -15,7 +15,7 @@
                        default_group_by='employee_id'
                        decoration-warning="state == 'refuse'"
                        decoration-info="state in ['confirm', 'validate1']"
-                       precision="{'week': 'day:half', 'month': 'day:full'}"
+                       precision="{'week': 'day:half', 'month': 'day:half'}"
                        plan="0"
                        total_row="True"
                        display_unavailability="1"

@@ -164,15 +164,16 @@ export class TimerTimesheetGridRenderer extends TimesheetGridRenderer {
             const key = ev.key.toUpperCase();
             if (
                 !ev.repeat &&
-                (this.timerState.addTimeMode || !this.timerState.timerRunning) &&
                 this.props.model.data.rowPerKeyBinding &&
                 key in this.props.model.data.rowPerKeyBinding
             ) {
                 const row = this.props.model.data.rowPerKeyBinding[key];
                 if (this.timerState.addTimeMode) {
                     row.addTime();
+                } else if (row.timerRunning) {
+                    this.onTimerStopped(row);
                 } else {
-                    this.onTimerStarted({ row });
+                    this.onTimerClick(row);
                 }
             }
         }
@@ -248,7 +249,6 @@ export class TimerTimesheetGridRenderer extends TimesheetGridRenderer {
         const { row, vals } = data;
         if (row) {
             await row.startTimer();
-            this.timerState.timerRunningRowId = row.id; // to remove
         } else {
             await this.props.model.startTimer(vals);
         }

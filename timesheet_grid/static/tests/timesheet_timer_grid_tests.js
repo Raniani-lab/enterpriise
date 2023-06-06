@@ -1127,4 +1127,174 @@ QUnit.module("Views", (hooks) => {
         );
         assert.containsOnce(target, ".btn_start_timer", "The timer should no longer be running.");
     });
+
+    QUnit.test(
+        "Start and stop timer with GridTimerButton (keyboard shortcut)",
+        async function (assert) {
+            const pyEnv = getPyEnv();
+            let timesheetId = 6;
+            const { openView } = await start({
+                serverData,
+                async mockRPC(route, args) {
+                    if (args.method === "get_running_timer") {
+                        return {
+                            step_timer: 30,
+                        };
+                    } else if (args.method === "get_daily_working_hours") {
+                        assert.strictEqual(args.model, "hr.employee");
+                        return {};
+                    } else if (args.method === "action_start_new_timesheet_timer") {
+                        const { project_id, task_id } = args.args[0];
+                        if (!project_id) {
+                            return false;
+                        }
+                        const newTimesheet = {
+                            id: timesheetId++,
+                            project_id,
+                            task_id,
+                            date: serializeDateTime(DateTime.now()),
+                            unit_amount: 0.0,
+                        };
+                        pyEnv.mockServer.models["analytic.line"].records.push(newTimesheet);
+                        return newTimesheet;
+                    } else if (args.method === "get_server_time") {
+                        assert.strictEqual(args.model, "timer.timer");
+                        return serializeDateTime(DateTime.now());
+                    } else if (args.method === "action_timer_stop") {
+                        return 0.25;
+                    }
+                    return mockTimesheetGridRPC(route, args);
+                },
+            });
+
+            await openView({
+                res_model: "analytic.line",
+                views: [[false, "grid"]],
+            });
+            await nextTick();
+            assert.containsOnce(target, ".btn_start_timer", "No timer should be running.");
+            const gridTimerButton = target.querySelector(".btn_timer_line[data-hotkey='A']");
+            const gridTimerButtonContainer = gridTimerButton.closest(".o_grid_highlightable");
+            assert.strictEqual(
+                target.querySelector(
+                    `.o_grid_row.o_grid_highlightable.o_grid_cell_today[data-grid-row="${gridTimerButtonContainer.dataset.gridRow}"]`
+                ).textContent,
+                "0:00"
+            );
+            await triggerEvent(document.activeElement, "", "keydown", { key: "a" });
+            assert.containsNone(target, ".btn_start_timer", "A timer should be running");
+            assert.containsOnce(
+                target,
+                ".btn_timer_line.btn-danger",
+                "The row with the GridTimerButton with 'a' letter in the grid view should have the timer running"
+            );
+            assert.containsOnce(
+                target,
+                ".btn_timer_line.btn-danger[data-hotkey='A']",
+                "The row with the running timer should be the one with the 'A' letter in the GridTimerButton"
+            );
+
+            await triggerEvent(document.activeElement, "", "keydown", { key: "a" });
+            assert.containsOnce(target, ".btn_start_timer", "The timer should be stopped");
+            assert.containsNone(
+                target,
+                ".btn_timer_line.fa-stop-danger",
+                "The running timer in the row with the GridTimerButton with 'a' letter in the grid should be stopped"
+            );
+            assert.strictEqual(
+                target.querySelector(
+                    `.o_grid_cell_today[data-grid-row="${gridTimerButtonContainer.dataset.gridRow}"]`
+                ).textContent,
+                "0:15",
+                "The today cell in the row with `A` button should be increased by 15 minutes."
+            );
+        }
+    );
+
+    QUnit.test(
+        "Start timer and start another with GridTimerButton (keyboard shortcut)",
+        async function (assert) {
+            const pyEnv = getPyEnv();
+            let timesheetId = 6;
+            const { openView } = await start({
+                serverData,
+                async mockRPC(route, args) {
+                    if (args.method === "get_running_timer") {
+                        return {
+                            step_timer: 30,
+                        };
+                    } else if (args.method === "get_daily_working_hours") {
+                        assert.strictEqual(args.model, "hr.employee");
+                        return {};
+                    } else if (args.method === "action_start_new_timesheet_timer") {
+                        const { project_id, task_id } = args.args[0];
+                        if (!project_id) {
+                            return false;
+                        }
+                        const newTimesheet = {
+                            id: timesheetId++,
+                            project_id,
+                            task_id,
+                            date: serializeDateTime(DateTime.now()),
+                            unit_amount: 0.0,
+                        };
+                        pyEnv.mockServer.models["analytic.line"].records.push(newTimesheet);
+                        return newTimesheet;
+                    } else if (args.method === "get_server_time") {
+                        assert.strictEqual(args.model, "timer.timer");
+                        return serializeDateTime(DateTime.now());
+                    } else if (args.method === "action_timer_stop") {
+                        return 0.25;
+                    }
+                    return mockTimesheetGridRPC(route, args);
+                },
+            });
+
+            await openView({
+                res_model: "analytic.line",
+                views: [[false, "grid"]],
+            });
+
+            assert.containsOnce(target, ".btn_start_timer", "No timer should be running.");
+            const gridTimerButton = target.querySelector(".btn_timer_line[data-hotkey='A']");
+            const gridTimerButtonContainer = gridTimerButton.closest(".o_grid_highlightable");
+            assert.strictEqual(
+                target.querySelector(
+                    `.o_grid_cell_today[data-grid-row="${gridTimerButtonContainer.dataset.gridRow}"]`
+                ).textContent,
+                "0:00"
+            );
+            await triggerEvent(document.activeElement, "", "keydown", { key: "a" });
+            assert.containsNone(target, ".btn_start_timer", "A timer should be running");
+            assert.containsOnce(
+                target,
+                ".btn_timer_line.btn-danger",
+                "The row with the GridTimerButton with 'a' letter in the grid view should have the timer running"
+            );
+            assert.containsOnce(
+                target,
+                ".btn_timer_line.btn-danger[data-hotkey='A']",
+                "The row with the running timer should be the one with the 'A' letter in the GridTimerButton"
+            );
+            await triggerEvent(document.activeElement, "", "keydown", { key: "b" });
+            assert.containsNone(target, ".btn_start_timer", "A timer should be running");
+            assert.containsOnce(
+                target,
+                ".btn_timer_line.btn-danger",
+                "The row with the GridTimerButton with 'b' letter in the grid view should have the timer running"
+            );
+            assert.containsOnce(
+                target,
+                ".btn_timer_line.btn-danger[data-hotkey='B']",
+                "The row with the running timer should be the one with the 'B' letter in the GridTimerButton"
+            );
+            assert.strictEqual(
+                target.querySelector(
+                    `.o_grid_cell_today[data-grid-row="${gridTimerButtonContainer.dataset.gridRow}"]`
+                ).textContent,
+                "0:15",
+                "The today cell in the row with `A` button should be increased by 15 minutes."
+            );
+        }
+    );
 });

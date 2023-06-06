@@ -13,7 +13,7 @@
             <field name="name">res.config.settings.view.form.inherit.hr.payroll</field>
             <field name="model">res.config.settings</field>
             <field name="priority" eval="45"/>
-            <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+            <field name="inherit_id" ref="hr_contract.res_config_settings_view_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//form" position="inside">
                     <app data-string="Payroll" string="Payroll" name="hr_payroll" groups="hr_payroll.group_hr_payroll_manager">
@@ -36,11 +36,22 @@
                             </setting>
                         </block>
                         <block title="Payroll" id="hr_payroll_settings">
+                            <setting string="Contract Expiration Notice Period" id="contract_notice_period"
+                                title="Number of days prior to the contract end date that a contract expiration warning is triggered.">
+                                <field name="contract_expiration_notice_period" class="w-25"/><span>Days</span>
+                            </setting>
                             <setting string="Payslip PDF Display" help="Display Payslip PDF File on a payslip form" id="display_payslip">
                                 <field name="group_payslip_display"/>
                             </setting>
+                            <setting string="Work Permit Expiration Notice Period" id="work_permit_notice_period"
+                                title="Number of days prior to the work permit expiration date that a warning is triggered.">
+                                <field name="work_permit_expiration_notice_period" class="w-25"/><span>Days</span>
+                            </setting>
                         </block>
                     </app>
+                </xpath>
+                <xpath expr="//block[@id='hr_contract']" position="attributes">
+                    <attribute name="invisible">1</attribute>
                 </xpath>
             </field>
         </record>

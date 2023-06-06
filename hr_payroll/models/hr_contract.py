@@ -349,10 +349,10 @@ class HrContract(models.Model):
         # Returns the fields that should recompute the payslip
         return [self._get_contract_wage]
 
-    def _get_nearly_expired_contracts(self, outdated_days):
+    def _get_nearly_expired_contracts(self, outdated_days, company_id=False):
         today = fields.Date.today()
         nearly_expired_contracts = self.search([
-            ('company_id', '=', self.env.company.id),
+            ('company_id', '=', company_id or self.env.company.id),
             ('state', '=', 'open'),
             ('date_end', '>=', today),
             ('date_end', '<', outdated_days)])
@@ -362,7 +362,7 @@ class HrContract(models.Model):
         new_contracts_grouped_by_employee = {
             employee.id
             for [employee] in self._read_group([
-                ('company_id', '=', self.env.company.id),
+                ('company_id', '=', company_id or self.env.company.id),
                 ('state', '=', 'draft'),
                 ('date_start', '>=', outdated_days),
                 ('employee_id', 'in', nearly_expired_contracts.employee_id.ids)

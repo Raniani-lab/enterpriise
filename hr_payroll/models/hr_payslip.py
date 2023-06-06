@@ -1356,9 +1356,12 @@ class HrPayslip(models.Model):
             })
 
         # Nearly expired contracts
-        date_today = fields.Date.from_string(fields.Date.today())
-        outdated_days = fields.Date.to_string(date_today + relativedelta(days=+14))
-        nearly_expired_contracts = self.env['hr.contract']._get_nearly_expired_contracts(outdated_days)
+        date_today = fields.Date.today()
+        HRContract = self.env['hr.contract']
+        nearly_expired_contracts = self.env['hr.contract']
+        for company in self.env.companies:
+            outdated_days = date_today + relativedelta(days=company.contract_expiration_notice_period)
+            nearly_expired_contracts += HRContract._get_nearly_expired_contracts(outdated_days, company.id)
         if nearly_expired_contracts:
             result.append({
                 'string': _('Running contracts coming to an end'),

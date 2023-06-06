@@ -14,7 +14,13 @@ class TestPayrollAccountCommon(odoo.tests.HttpCase):
         super().setUpClass()
 
         # no user available for belgian company so to set hr responsible change company of demo
-        demo = mail_new_test_user(cls.env, name="Laurie Poiret", login='be_demo', groups='hr.group_hr_user,sign.group_sign_user')
+        demo = mail_new_test_user(
+            cls.env,
+            email='be_demo@test.example.com',
+            groups='hr.group_hr_user,sign.group_sign_user',
+            login='be_demo',
+            name="Laurie Poiret",
+        )
         with file_open('hr_contract_salary/static/src/demo/employee_contract.pdf', "rb") as f:
             cls.pdf_content = f.read()
 

@@ -732,6 +732,71 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         ])
         self.assertRecordValues(wizard, [{'state': 'invalid'}])
 
+    def test_partner_receivable_payable_account(self):
+        self.partner_a.write({'customer_rank': 1, 'supplier_rank': 0})  # always receivable
+        self.partner_b.write({'customer_rank': 0, 'supplier_rank': 1})  # always payable
+        partner_c = self.partner_b.copy({'customer_rank': 3, 'supplier_rank': 2})  # no preference
+
+        positive_st_line = self._create_st_line(1000)
+        journal_account = positive_st_line.journal_id.default_account_id
+
+        wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=positive_st_line.id).new({})
+        form = WizardForm(wizard)
+        form.todo_command = f'mount_line_in_edit,{wizard.line_ids.filtered(lambda l: l.flag != "liquidity").index}'
+
+        form.form_partner_id = self.partner_a
+        wizard = form.save()
+        self.assertRecordValues(wizard.line_ids, [
+            # pylint: disable=C0326
+            {'partner_id': False,             'account_id': journal_account.id},
+            {'partner_id': self.partner_a.id, 'account_id': self.partner_a.property_account_receivable_id.id},
+        ])
+
+        form.form_partner_id = self.partner_b
+        wizard = form.save()
+        self.assertRecordValues(wizard.line_ids, [
+            # pylint: disable=C0326
+            {'partner_id': False,             'account_id': journal_account.id},
+            {'partner_id': self.partner_b.id, 'account_id': self.partner_b.property_account_payable_id.id},
+        ])
+
+        form.form_partner_id = partner_c
+        wizard = form.save()
+        self.assertRecordValues(wizard.line_ids, [
+            # pylint: disable=C0326
+            {'partner_id': False,             'account_id': journal_account.id},
+            {'partner_id': partner_c.id,      'account_id': partner_c.property_account_receivable_id.id},
+        ])
+
+        negative_st_line = self._create_st_line(-1000)
+        wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=negative_st_line.id).new({})
+        form = WizardForm(wizard)
+        form.todo_command = f'mount_line_in_edit,{wizard.line_ids.filtered(lambda l: l.flag != "liquidity").index}'
+
+        form.form_partner_id = self.partner_a
+        wizard = form.save()
+        self.assertRecordValues(wizard.line_ids, [
+            # pylint: disable=C0326
+            {'partner_id': False,             'account_id': journal_account.id},
+            {'partner_id': self.partner_a.id, 'account_id': self.partner_a.property_account_receivable_id.id},
+        ])
+
+        form.form_partner_id = self.partner_b
+        wizard = form.save()
+        self.assertRecordValues(wizard.line_ids, [
+            # pylint: disable=C0326
+            {'partner_id': False,             'account_id': journal_account.id},
+            {'partner_id': self.partner_b.id, 'account_id': self.partner_b.property_account_payable_id.id},
+        ])
+
+        form.form_partner_id = partner_c
+        wizard = form.save()
+        self.assertRecordValues(wizard.line_ids, [
+            # pylint: disable=C0326
+            {'partner_id': False,             'account_id': journal_account.id},
+            {'partner_id': partner_c.id,      'account_id': partner_c.property_account_payable_id.id},
+        ])
+
     def test_validation_using_custom_account(self):
         st_line = self._create_st_line(1000.0)
 

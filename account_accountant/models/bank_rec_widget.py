@@ -722,11 +722,13 @@ class BankRecWidget(models.Model):
 
         new_account = None
         if partner:
+            partner_is_customer = partner.customer_rank and not partner.supplier_rank
+            partner_is_supplier = partner.supplier_rank and not partner.customer_rank
             is_partner_receivable_amount_zero = self.form_partner_currency_id.is_zero(self.form_partner_receivable_amount)
             is_partner_payable_amount_zero = self.form_partner_currency_id.is_zero(self.form_partner_payable_amount)
-            if not is_partner_receivable_amount_zero and is_partner_payable_amount_zero:
+            if partner_is_customer or not is_partner_receivable_amount_zero and is_partner_payable_amount_zero:
                 new_account = self.form_partner_receivable_account_id
-            elif is_partner_receivable_amount_zero and not is_partner_payable_amount_zero:
+            elif partner_is_supplier or is_partner_receivable_amount_zero and not is_partner_payable_amount_zero:
                 new_account = self.form_partner_payable_account_id
             elif self.st_line_id.amount < 0.0:
                 new_account = self.form_partner_payable_account_id or self.form_partner_receivable_account_id
@@ -975,7 +977,13 @@ class BankRecWidget(models.Model):
         account = None
         if self.partner_id:
             name = _("Open balance: %s", st_line.payment_ref)
-            if st_line.amount > 0:
+            partner_is_customer = st_line.partner_id.customer_rank and not st_line.partner_id.supplier_rank
+            partner_is_supplier = st_line.partner_id.supplier_rank and not st_line.partner_id.customer_rank
+            if partner_is_customer:
+                account = st_line.partner_id.with_company(st_line.company_id).property_account_receivable_id
+            elif partner_is_supplier:
+                account = st_line.partner_id.with_company(st_line.company_id).property_account_payable_id
+            elif st_line.amount > 0:
                 account = st_line.partner_id.with_company(st_line.company_id).property_account_receivable_id
             else:
                 account = st_line.partner_id.with_company(st_line.company_id).property_account_payable_id

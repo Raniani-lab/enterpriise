@@ -141,7 +141,7 @@ class HrPayslip(models.Model):
     def _compute_date_to(self):
         next_month = relativedelta(months=+1, day=1, days=-1)
         for payslip in self:
-            payslip.date_to = payslip.date_from + next_month
+            payslip.date_to = payslip.date_from and payslip.date_from + next_month
 
     @api.depends('company_id', 'employee_id', 'date_from', 'date_to')
     def _compute_contract_domain_ids(self):
@@ -786,6 +786,8 @@ class HrPayslip(models.Model):
         if not self or self.env.context.get('salary_simulation'):
             return
         valid_slips = self.filtered(lambda p: p.employee_id and p.date_from and p.date_to and p.contract_id and p.struct_id)
+        if not valid_slips:
+            return
         # Make sure to reset invalid payslip's worked days line
         self.update({'worked_days_line_ids': [(5, 0, 0)]})
         if not valid_slips:

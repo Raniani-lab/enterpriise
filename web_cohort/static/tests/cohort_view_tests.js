@@ -36,7 +36,12 @@ QUnit.module("Views", (hooks) => {
                         id: { string: "ID", type: "integer" },
                         start: { string: "Start", type: "date", sortable: true },
                         stop: { string: "Stop", type: "date", sortable: true },
-                        recurring: { string: "Recurring Price", type: "integer", store: true },
+                        recurring: {
+                            string: "Recurring Price",
+                            type: "integer",
+                            store: true,
+                            group_operator: "sum",
+                        },
                     },
                     records: [
                         { id: 1, start: "2017-07-12", stop: "2017-08-11", recurring: 10 },
@@ -230,9 +235,20 @@ QUnit.module("Views", (hooks) => {
             string: "Abc",
             type: "integer",
             store: true,
+            group_operator: "sum",
         };
-        serverData.models.subscription.fields.add = { string: "add", type: "integer", store: true };
-        serverData.models.subscription.fields.zoo = { string: "Zoo", type: "integer", store: true };
+        serverData.models.subscription.fields.add = {
+            string: "add",
+            type: "integer",
+            store: true,
+            group_operator: "sum",
+        };
+        serverData.models.subscription.fields.zoo = {
+            string: "Zoo",
+            type: "integer",
+            store: true,
+            group_operator: "sum",
+        };
 
         await makeView({
             type: "cohort",

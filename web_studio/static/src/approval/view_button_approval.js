@@ -49,6 +49,8 @@ patch(ViewButton.prototype, "web_studio.ViewButtonApproval", {
             const rec = "resId" in model.root ? model.root : this.props.record;
             await rec.save({ stayInEdition: true, useSaveErrorDialog: !this.env.inDialog });
             this.approval.resId = rec.resId;
+        } else if (this.props.record && this.props.record.isDirty) {
+            await this.props.record.save({ stayInEdition: true, useSaveErrorDialog: !this.env.inDialog });
         }
         return this.approval.checkApproval();
     },

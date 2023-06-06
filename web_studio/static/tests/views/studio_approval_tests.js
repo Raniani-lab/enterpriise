@@ -3,6 +3,7 @@
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
 import {
     getFixture,
+    editInput,
     patchWithCleanup,
     click,
     nextTick,
@@ -436,6 +437,78 @@ QUnit.module("Studio Approval", (hooks) => {
             "create",
             'check_approval: ["partner",4,"someMethod",false]',
             'get_approval_spec: resId: 4 ; ["partner","someMethod",false]',
+        ]);
+    });
+
+    QUnit.test("approval on existing record: save before check", async function (assert) {
+        serverData.actions = {
+            1: {
+                id: 1,
+                name: "Partner",
+                res_model: "partner",
+                type: "ir.actions.act_window",
+                views: [[false, "form"]],
+            },
+        };
+
+        const mockRPC = (route, args) => {
+            const rule = {
+                id: 1,
+                group_id: [1, "Internal User"],
+                domain: false,
+                can_validate: true,
+                message: false,
+                exclusive_user: false,
+            };
+            if (args.method === "write") {
+                assert.step("write");
+            }
+            if (args.method === "check_approval") {
+                assert.step(`check_approval: ${JSON.stringify(args.args)}`);
+
+                return Promise.resolve({
+                    approved: false,
+                    rules: [rule],
+                    entries: [],
+                });
+            }
+            if (args.method === "get_approval_spec") {
+                assert.step(
+                    `get_approval_spec: resId: ${args.kwargs.res_id} ; ${JSON.stringify(args.args)}`
+                );
+                const spec = {
+                    rules: [rule],
+                    entries: [],
+                    groups: [[1, "Internal User"]],
+                };
+                return Promise.resolve(spec);
+            }
+
+            if (args.method === "someMethod") {
+                assert.step("button method executed");
+            }
+        };
+
+        await makeView({
+            serverData,
+            mockRPC,
+            type: "form",
+            resModel: "partner",
+            arch: `<form>
+                <button type="object=" name="someMethod" string="Apply Method" studio_approval="True"/>
+                <field name="int_field"/>
+            </form>`,
+            resId: 1,
+        });
+
+        await editInput(target, ".o_field_widget[name=int_field] input", "10");
+
+        assert.verifySteps(['get_approval_spec: resId: 1 ; ["partner","someMethod",false]']);
+        await click(target, 'button[name="someMethod"]');
+        assert.verifySteps([
+            "write",
+            'check_approval: ["partner",1,"someMethod",false]',
+            'get_approval_spec: resId: 1 ; ["partner","someMethod",false]',
         ]);
     });
 });

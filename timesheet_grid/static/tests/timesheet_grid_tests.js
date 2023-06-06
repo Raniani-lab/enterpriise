@@ -103,8 +103,8 @@ export async function setupTimesheetGrid() {
     ]);
 
     const [projectId31, projectId142] = pyEnv["project.project"].create([
-        { display_name: "P1" },
-        { display_name: "Webocalypse Now" },
+        { display_name: "P1", allow_timesheets: true },
+        { display_name: "Webocalypse Now", allow_timesheets: true },
     ]);
 
     const [taskId1, taskId12, taskId54] = pyEnv["project.task"].create([
@@ -117,6 +117,7 @@ export async function setupTimesheetGrid() {
         fields: {
             id: { string: "ID", type: "integer" },
             name: { string: "Description", type: "char" },
+            display_name: { string: "Description", type: "char" },
             project_id: {
                 string: "Project",
                 type: "many2one",

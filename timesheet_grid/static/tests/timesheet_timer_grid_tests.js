@@ -11,6 +11,7 @@ import {
     getNodesTextContent,
     nextTick,
     triggerEvent,
+    clickOpenM2ODropdown,
 } from "@web/../tests/helpers/utils";
 import { toggleSearchBarMenu } from "@web/../tests/search/helpers";
 
@@ -331,7 +332,7 @@ QUnit.module("Views", (hooks) => {
                     return null;
                 } else if (args.method === "action_timer_stop") {
                     timerRunning = false;
-                    return null;
+                    return 0.15;
                 }
                 return mockTimesheetGridRPC(route, args);
             },
@@ -342,7 +343,6 @@ QUnit.module("Views", (hooks) => {
             views: [[false, "grid"]],
             context: { group_by: ["project_id", "task_id"] },
         });
-        await nextTick();
         assert.containsOnce(
             target,
             ".timesheet-timer .btn_stop_timer",
@@ -1019,4 +1019,112 @@ QUnit.module("Views", (hooks) => {
             );
         }
     );
+
+    QUnit.test("Start timer and cancel it", async (assert) => {
+        const { openView } = await start({
+            serverData,
+            async mockRPC(route, args) {
+                if (args.method === "get_running_timer") {
+                    return {
+                        step_timer: 30,
+                    };
+                } else if (args.method === "action_start_new_timesheet_timer") {
+                    return {
+                        start: 0,
+                        project_id: false,
+                        task_id: false,
+                        description: "",
+                    };
+                } else if (args.method === "get_daily_working_hours") {
+                    assert.strictEqual(args.model, "hr.employee");
+                    return {};
+                } else if (args.method === "get_server_time") {
+                    assert.strictEqual(args.model, "timer.timer");
+                    return serializeDateTime(DateTime.now());
+                } else if (args.method === "action_timer_unlink") {
+                    return null;
+                } else if (
+                    args.method === "name_search" &&
+                    ["project.project", "project.task"].includes(args.model)
+                ) {
+                    args.kwargs.args =
+                        args.model === "project.project" ? [["allow_timesheets", "=", true]] : [];
+                }
+                return mockTimesheetGridRPC(route, args);
+            },
+        });
+
+        await openView({
+            res_model: "analytic.line",
+            views: [[false, "grid"]],
+            context: { group_by: ["project_id", "task_id"] },
+        });
+
+        assert.containsOnce(target, ".btn_start_timer", "The timer should be running.");
+        await click(target, ".btn_start_timer");
+        assert.containsNone(target, ".btn_start_timer", "The timer should be running.");
+        assert.containsOnce(target, ".btn_stop_timer", "The stop button should be displayed.");
+        assert.containsOnce(
+            target,
+            ".o_timer_discard button",
+            "The cancel button should be displayed"
+        );
+        await clickOpenM2ODropdown(target, "project_id");
+        await click(target.querySelector("div[name='project_id'] li > a"), "");
+
+        assert.containsOnce(
+            target,
+            ".btn_timer_line.btn-danger",
+            "The timer is running on the row with the project selected"
+        );
+        let rowTimerButton = target.querySelector(".btn_timer_line.btn-danger");
+        let containerRowTimerButton = rowTimerButton.closest(".o_grid_highlightable");
+        let rowTitle = target.querySelector(
+            `.o_grid_row_title[data-grid-row='${containerRowTimerButton.dataset.gridRow}']`
+        );
+        assert.ok(
+            rowTitle.textContent.indexOf("P1") !== -1,
+            "The row title with the timer running should contain the project selected in the timer header."
+        );
+        assert.ok(
+            rowTitle.textContent.indexOf("BS task") === -1,
+            "The row title with the timer running should not contain a task name."
+        );
+
+        await clickOpenM2ODropdown(target, "task_id");
+        await click(target.querySelector("div[name='task_id'] li > a"), "");
+
+        assert.containsOnce(
+            target,
+            ".btn_timer_line.btn-danger",
+            "The timer is running on the row with the project and task selected in the timer header."
+        );
+        rowTimerButton = target.querySelector(".btn_timer_line.btn-danger");
+        containerRowTimerButton = rowTimerButton.closest(".o_grid_highlightable");
+        rowTitle = target.querySelector(
+            `.o_grid_row_title[data-grid-row='${containerRowTimerButton.dataset.gridRow}']`
+        );
+        assert.ok(
+            rowTitle.textContent.indexOf("P1") !== -1,
+            "The row title with the timer running should contain the project selected in the timer header."
+        );
+        assert.ok(
+            rowTitle.textContent.indexOf("BS task") !== -1,
+            "The row title with the timer running should not contain a task name."
+        );
+
+        await click(target, ".o_timer_discard button");
+        assert.containsNone(target, ".btn_timer_line.btn-danger", "The timer should be cancelled");
+        assert.containsNone(
+            target,
+            ".btn_stop_timer",
+            "The stop button should no longer be displayed."
+        );
+        assert.containsNone(
+            target,
+            ".o_timer_discard button",
+            "The cancel button should no longer be displayed."
+        );
+        assert.containsOnce(target, ".btn_start_timer", "The timer should no longer be running.");
+    });
 });

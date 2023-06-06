@@ -117,6 +117,9 @@ export class TimerTimesheetGridDataPoint extends TimesheetGridDataPoint {
             }
             this.data.timer.row = row;
             row.timerRunning = true;
+        } else if (this.data.timer.row) {
+            this.data.timer.row.timerRunning = false;
+            delete this.data.timer.row;
         }
     }
 
@@ -197,8 +200,19 @@ export class TimerTimesheetGridModel extends TimesheetGridModel {
     }
 
     async stopTimer() {
-        await this.orm.call(this.resModel, "action_timer_stop", [this.data.timer.id, true]);
-        await this.fetchData();
+        const value = await this.orm.call(this.resModel, "action_timer_stop", [
+            this.data.timer.id,
+            true,
+        ]);
+        if (value) {
+            const column = this.columnsArray.find((col) => col.isToday);
+            if (this.data.timer.row && column) {
+                const newValue = this.data.timer.row.cells[column.id].value + value;
+                this.data.timer.row.updateCell(column, newValue);
+                this.data.timer.row.timerRunning = false;
+            }
+        }
+        delete this.data.timer;
     }
 
     async deleteTimer() {

@@ -507,14 +507,14 @@ class AnalyticLine(models.Model):
             # Check if unit_amount equals 0,
             # if yes, then remove the timesheet
             self.unlink()
-            return
+            return 0
         minimum_duration = int(self.env['ir.config_parameter'].sudo().get_param('timesheet_grid.timesheet_min_duration', 0))
         rounding = int(self.env['ir.config_parameter'].sudo().get_param('timesheet_grid.timesheet_rounding', 0))
         minutes_spent = self._timer_rounding(minutes_spent, minimum_duration, rounding)
         amount = self.unit_amount + minutes_spent * 60 / 3600
         if not try_to_match or self.name != '/':
             self.write({'unit_amount': amount})
-            return
+            return amount
 
         domain = self._get_last_timesheet_domain()
         last_timesheet_id = self.search(domain, limit=1)
@@ -525,6 +525,7 @@ class AnalyticLine(models.Model):
             self.unlink()
         else:
             self.write({'unit_amount': amount})
+        return amount
 
     def action_timer_stop(self, try_to_match=False):
         """ Action stop the timer of the current timesheet
@@ -533,16 +534,18 @@ class AnalyticLine(models.Model):
             2. The last one is not validated
             3. Match user, project task, and must be the same day.
 
-            * Override method of hr_timesheet module.
+            * Override method of timer module.
         """
         if self.env.user == self.sudo().user_id:
             # sudo as we can have a timesheet related to a company other than the current one.
             self = self.sudo()
         if self.validated:
             raise UserError(_('You cannot use the timer on validated timesheets.'))
+        amount = 0
         if self.user_timer_id.timer_start:
             minutes_spent = super(AnalyticLine, self).action_timer_stop()
-            self._add_timesheet_time(minutes_spent, try_to_match)
+            amount = self._add_timesheet_time(minutes_spent, try_to_match)
+        return amount
 
     def _stop_all_users_timer(self, try_to_match=False):
         """ Stop ALL the timers of the timesheets (WHOEVER the timer associated user is)

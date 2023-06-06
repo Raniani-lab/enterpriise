@@ -257,6 +257,13 @@ export class TimerTimesheetGridRenderer extends TimesheetGridRenderer {
         this.timerState.timerRunningRowId = this.props.model.data.timer.row?.id || false;
     }
 
+    _stopTimer() {
+        this.timerState.timerRunning = false;
+        if (this.timerState.timerRunningRowId) {
+            this.timerState.timerRunningRowId = false;
+        }
+    }
+
     /**
      * Handler to stop the timer
      *
@@ -268,16 +275,14 @@ export class TimerTimesheetGridRenderer extends TimesheetGridRenderer {
         } else {
             await this.props.model.stopTimer();
         }
+        this._stopTimer();
     }
 
     async onTimerUnlinked() {
         if (this.timerState.timesheet.id) {
             await this.props.model.deleteTimer();
         }
-        this.timerState.timerRunning = false;
-        if (this.timerState.timerRunningRowId) {
-            this.timerState.timerRunningRowId = false;
-        }
+        this._stopTimer();
     }
 
     /**
@@ -287,7 +292,6 @@ export class TimerTimesheetGridRenderer extends TimesheetGridRenderer {
     async onTimerClick(row) {
         if (this.timerState.timerRunning && this.timerState.timerRunningRowId === row.id) {
             await this.onTimerStopped(row);
-            this.timerState.timerRunning = false;
             return;
         }
         if (this.timerState.timerRunning) {
@@ -298,9 +302,7 @@ export class TimerTimesheetGridRenderer extends TimesheetGridRenderer {
             } else if (this.timerState.timesheet.project_id) {
                 await this.onTimerStopped();
             }
-            this.timerState.timerRunning = false;
         }
         await this.onTimerStarted({ row });
-        this.timerState.timerRunning = true;
     }
 }

@@ -464,6 +464,7 @@ class Form325(models.Model):
                AND line.parent_state = 'posted'
                AND account_tag_rel.account_account_tag_id = ANY(%(tag_ids)s)
                AND line.date BETWEEN %(payment_date_from)s AND %(payment_date_to)s
+               AND line.partner_id = ANY(%(partner_ids)s)
         ),
         amount_paid AS (
             SELECT * FROM amount_paid_per_partner_based_on_bill_reconciled

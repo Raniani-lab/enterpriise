@@ -2271,3 +2271,8 @@ class TestAccountAsset(TestAccountReportsCommon):
         depreciation_line = recognition.depreciation_move_ids[0].line_ids.filtered(lambda l: l.account_id == liability_account)
         self.assertEqual(revenue_line.balance, -250)
         self.assertEqual(depreciation_line.balance, 250)
+
+    def test_archive_asset_model(self):
+        """ Test that we can archive an asset model. """
+        self.account_asset_model_fixedassets.active = False
+        self.assertFalse(self.account_asset_model_fixedassets.active)

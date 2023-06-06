@@ -28,7 +28,7 @@ class ProductTemplate(models.Model):
         if not so or not so.recurrence_id:
             return True
         if not pricing:
-            pricelist = pricelist or website.get_current_pricelist()
+            pricelist = pricelist or website.pricelist_id
             pricing = pricing or self.env['product.pricing']._get_first_suitable_pricing(product or self, pricelist)
         return so.recurrence_id == pricing.recurrence_id
 

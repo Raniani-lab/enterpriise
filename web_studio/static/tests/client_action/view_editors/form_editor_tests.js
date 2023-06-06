@@ -29,7 +29,7 @@ import { makeArchChanger } from "./view_editor_tests_utils";
 import { start, startServer } from "@mail/../tests/helpers/test_utils";
 import { registerCleanup } from "@web/../tests/helpers/cleanup";
 import { RPCError } from "@web/core/network/rpc_service";
-import { setupMessagingServiceRegistries } from "@mail/../tests/helpers/webclient_setup";
+import { setupManager } from "@mail/../tests/helpers/webclient_setup";
 import { EventBus } from "@odoo/owl";
 import { fieldService } from "@web/core/field_service";
 import { Setting } from "@web/views/form/setting/setting";
@@ -596,7 +596,7 @@ QUnit.module("View Editors", (hooks) => {
     QUnit.test("form editor - chatter edition", async function (assert) {
         assert.expect(5);
         const pyEnv = await startServer();
-        setupMessagingServiceRegistries({ serverData: pyEnv.getData() });
+        setupManager.setupMessagingServiceRegistries({ serverData: pyEnv.getData() });
 
         await createViewEditor({
             serverData,
@@ -2271,7 +2271,7 @@ QUnit.module("View Editors", (hooks) => {
             };
 
             Object.assign(serverData.models, mailModels);
-            setupMessagingServiceRegistries({ serverData });
+            setupManager.setupMessagingServiceRegistries({ serverData });
 
             const arch = /*xml*/ `
             <form>
@@ -2486,7 +2486,8 @@ QUnit.module("View Editors", (hooks) => {
                                 <field name="m2o"/>
                             </sheet>
                         </form>
-                    `);
+                    `
+                    );
                 }
                 if (route === "/web/dataset/call_kw/studio.approval.rule/create_rule") {
                     return {};
@@ -3602,7 +3603,11 @@ QUnit.module("View Editors", (hooks) => {
     );
 
     QUnit.test("navigate in nested x2many which has a context", async function (assert) {
-        serverData.models.product.fields.po2m = { type: "one2many", relation: "partner", string: "Po2M"};
+        serverData.models.product.fields.po2m = {
+            type: "one2many",
+            relation: "partner",
+            string: "Po2M",
+        };
         const action = serverData.actions["studio.coucou_action"];
         action.views = [[1, "form"]];
         action.res_model = "coucou";
@@ -3630,19 +3635,22 @@ QUnit.module("View Editors", (hooks) => {
         await doAction(webClient, "studio.coucou_action");
         await openStudio(target);
 
-        await click(target.querySelector('.o_web_studio_form_view_editor .o_field_one2many'));
+        await click(target.querySelector(".o_web_studio_form_view_editor .o_field_one2many"));
         await click(
-            target.querySelector('.o_web_studio_form_view_editor .o_field_one2many .o_web_studio_editX2Many[data-type="form"]')
+            target.querySelector(
+                '.o_web_studio_form_view_editor .o_field_one2many .o_web_studio_editX2Many[data-type="form"]'
+            )
         );
 
         assert.containsOnce(target, ".o_view_controller .product-subview-form");
 
-        await click(target.querySelector('.o_web_studio_form_view_editor .o_field_one2many'));
+        await click(target.querySelector(".o_web_studio_form_view_editor .o_field_one2many"));
         await click(
-            target.querySelector('.o_web_studio_form_view_editor .o_field_one2many .o_web_studio_editX2Many[data-type="form"]')
+            target.querySelector(
+                '.o_web_studio_form_view_editor .o_field_one2many .o_web_studio_editX2Many[data-type="form"]'
+            )
         );
 
         assert.containsOnce(target, ".o_view_controller .po2m-subview-form");
     });
-
 });

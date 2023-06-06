@@ -385,7 +385,7 @@ class AccountAsset(models.Model):
     @api.constrains('active', 'state')
     def _check_active(self):
         for record in self:
-            if not record.active and record.state != 'close':
+            if not record.active and record.state not in ('close', 'model'):
                 raise UserError(_('You cannot archive a record that is not closed'))
 
     @api.constrains('depreciation_move_ids')

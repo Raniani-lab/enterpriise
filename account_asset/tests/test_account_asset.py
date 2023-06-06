@@ -2185,3 +2185,8 @@ class TestAccountAsset(TestAccountReportsCommon):
             ],
             options,
         )
+
+    def test_archive_asset_model(self):
+        """ Test that we can archive an asset model. """
+        self.account_asset_model_fixedassets.active = False
+        self.assertFalse(self.account_asset_model_fixedassets.active)

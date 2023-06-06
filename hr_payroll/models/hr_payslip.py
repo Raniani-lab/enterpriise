@@ -233,7 +233,7 @@ class HrPayslip(models.Model):
             if not slip.employee_id or not slip.employee_id.salary_attachment_ids or not slip.struct_id:
                 lines_to_remove = slip.input_line_ids.filtered(lambda x: x.input_type_id.id in attachment_type_ids)
                 slip.update({'input_line_ids': [Command.unlink(line.id) for line in lines_to_remove]})
-            if slip.employee_id.salary_attachment_ids:
+            if slip.employee_id.salary_attachment_ids and slip.date_to:
                 lines_to_remove = slip.input_line_ids.filtered(lambda x: x.input_type_id.id in attachment_type_ids)
                 input_line_vals = [Command.unlink(line.id) for line in lines_to_remove]
 
@@ -266,7 +266,7 @@ class HrPayslip(models.Model):
             if not slip.input_line_ids and not slip.salary_attachment_ids:
                 continue
             attachments = self.env['hr.salary.attachment']
-            if slip.employee_id and slip.input_line_ids:
+            if slip.employee_id and slip.input_line_ids and slip.date_to:
                 input_line_type_ids = slip.input_line_ids.mapped('input_type_id.id')
                 deduction_types = [f for f in attachment_types if attachment_types[f].id in input_line_type_ids]
                 attachments = slip.employee_id.salary_attachment_ids.filtered(

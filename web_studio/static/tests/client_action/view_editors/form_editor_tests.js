@@ -2639,6 +2639,41 @@ QUnit.module("View Editors", (hooks) => {
         assert.strictEqual(target.querySelector(".o_web_studio_sidebar input[name='invisible']").checked, true);
     });
 
+    QUnit.test(
+        "Sets 'force_save' attribute when changing readonly attribute in form view",
+        async function (assert) {
+            assert.expect(4);
+
+            let clickCount = 0;
+            await createViewEditor({
+                serverData,
+                type: "form",
+                resModel: "coucou",
+                arch: `
+                    <form>
+                        <field name='display_name'/>
+                    </form>
+                `,
+                mockRPC: (route, args) => {
+                    if (route === "/web_studio/edit_view") {
+                        const operation = args.operations[clickCount];
+                        if (clickCount === 0) {
+                            clickCount++;
+                            assert.strictEqual(operation.new_attrs.readonly, "1");
+                            assert.strictEqual(operation.new_attrs.force_save, "True");
+                        } else if (clickCount === 1) {
+                            assert.strictEqual(operation.new_attrs.readonly, "");
+                            assert.strictEqual(operation.new_attrs.force_save, "False");
+                        }
+                    }
+                },
+            });
+
+            await click(target, ".o_web_studio_view_renderer .o_field_char");
+            await click(target, '.o_web_studio_sidebar input[name="readonly"]');
+            await click(target, '.o_web_studio_sidebar input[name="readonly"]');
+        }
+    );
 });
 
 QUnit.module("View Editors", (hooks) => {

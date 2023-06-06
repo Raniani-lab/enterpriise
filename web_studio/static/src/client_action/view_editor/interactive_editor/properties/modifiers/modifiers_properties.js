@@ -51,6 +51,10 @@ export class ModifiersProperties extends Component {
             delete newAttrs.attrs;
         }
 
+        if (this.env.viewEditorModel.viewType === "form" && name === "readonly") {
+            newAttrs.force_save = value ? "True" : "False";
+        }
+
         const operation = {
             new_attrs: newAttrs,
             type: "attributes",

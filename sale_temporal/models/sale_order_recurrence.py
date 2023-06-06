@@ -57,11 +57,11 @@ class SaleOrderRecurrence(models.Model):
     @api.depends('duration', 'unit')
     def _compute_temporal_unit_display(self):
         for order in self:
-            if order.unit == 'day':
-                order.temporal_unit_display = _('per %s days', order.duration) if order.duration > 1 else _('per day')
-            elif order.unit == 'week':
+            if order.unit == 'week':
                 order.temporal_unit_display = _('per %s weeks', order.duration) if order.duration > 1 else _('per week')
             elif order.unit == 'month':
                 order.temporal_unit_display = _('per %s months', order.duration) if order.duration > 1 else _('per month')
             elif order.unit == 'year':
                 order.temporal_unit_display = _('per %s years', order.duration) if order.duration > 1 else _('per year')
+            else:
+                order.temporal_unit_display = _('This recurrence unit is not supported.')

@@ -363,7 +363,7 @@
                         attrs="{'invisible': ['|', ('display_timer_pause', '=', False), ('encode_uom_in_days', '=', True)]}" groups="hr_timesheet.group_hr_timesheet_user"/>
                     <button class="btn-secondary" name="action_timer_resume" type="object" string="Resume" data-hotkey="w"
                         attrs="{'invisible': ['|', ('display_timer_resume', '=', False), ('encode_uom_in_days', '=', True)]}" groups="hr_timesheet.group_hr_timesheet_user"/>
-                    <field name="timer_start" widget="timer_start_field" class="text-secondary me-auto h2 ms-2 ms-sm-0 fw-bold" groups="hr_timesheet.group_hr_timesheet_user"/>
+                    <field name="timer_start" widget="timer_start_field" class="align-self-center me-auto ms-2 h2 fw-bold text-secondary" groups="hr_timesheet.group_hr_timesheet_user"/>
                 </xpath>
             </field>
         </record>

@@ -274,6 +274,13 @@ export default class BarcodeMRPModel extends BarcodePickingModel {
             this.produceQty();
             return;
         }
+        let move = args.move_id;
+        if (move) {
+            if (typeof move === 'number') {
+                move = this.cache.getRecord('stock.move', move);
+            }
+            line.move_id = move;
+        }
         args.manual_consumption = 'manual_consumption' in args ? args.manual_consumption : true;
         super.updateLine(...arguments);
     }
@@ -351,7 +358,7 @@ export default class BarcodeMRPModel extends BarcodePickingModel {
         for (const moveId of [...this.record.move_raw_ids, ...this.record.move_byproduct_ids]) {
             const move = this.cache.getRecord('stock.move', moveId);
             let manualMove = false;
-            const moveLines = this.currentState.lines.filter(line => line.move_id.id === moveId);
+            const moveLines = this.currentState.lines.filter(line => line.move_id?.id === moveId);
             let qtyRemaining = ratio * move.product_uom_qty;
             for (const line of moveLines) {
                 if (this.isManualConsumptionLine(line) || qtyRemaining === 0) {
@@ -370,6 +377,7 @@ export default class BarcodeMRPModel extends BarcodePickingModel {
                     product_id: this.cache.getRecord('product.product', move.product_id),
                     location_id: move.location_id,
                     qty_done: qtyRemaining,
+                    move_id: moveId,
                 }
                 this._createNewLine({ fieldsParams });
             }

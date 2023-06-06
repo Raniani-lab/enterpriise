@@ -222,3 +222,18 @@ class TestMRPBarcodeClientAction(TestBarcodeClientAction):
         action = self.env.ref('stock_barcode_mrp.stock_barcode_mo_client_action')
         url = '/web?debug=assets#action=%s&active_id=%s' % (action.id, mo.id)
         self.start_tour(url, 'test_barcode_production_reserved_from_multiple_locations', login='admin', timeout=180)
+
+    def test_barcode_production_component_no_stock(self):
+        """Create MO from barcode for final product with bom but component has not stock
+        """
+        self.clean_access_rights()
+        self.env['mrp.bom'].create({
+            'product_tmpl_id': self.final_product.product_tmpl_id.id,
+            'product_qty': 1.0,
+            'bom_line_ids': [
+                (0, 0, {'product_id': self.component01.id, 'product_qty': 2.0}),
+            ],
+        })
+        action_id = self.env.ref('stock_barcode.stock_picking_type_action_kanban')
+        url = "/web#action=" + str(action_id.id)
+        self.start_tour(url, 'test_barcode_production_component_no_stock', login='admin', timeout=180)

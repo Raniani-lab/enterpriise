@@ -478,3 +478,52 @@ registry.category("web_tour.tours").add("test_barcode_production_reserved_from_m
 
     ...stepUtils.validateBarcodeOperation(),
 ]});
+
+registry.category("web_tour.tours").add("test_barcode_production_component_no_stock", {test: true, steps: [
+    // Creates a new production from the Barcode App.
+    { trigger: ".o_kanban_card_header:contains('Manufacturing')" },
+    { trigger: ".o-kanban-button-new" },
+    // Scans a product with BoM, it should add it as the final product and add a line for the component.
+    {
+        trigger: ".o_title.navbar-text:contains('New')",
+        extra_trigger: ".o_scan_message.o_scan_product",
+        run: "scan final",
+    },
+    /**
+     * Scans the final product again, it should increment the final product qty done, but leaves component line
+     * as it is, since its manual consumption (nothing reserved)
+     */
+    {
+        trigger: ".o_scan_message.o_scan_component",
+        run: "scan final",
+    },
+    {
+        trigger: ".o_header_completed .qty-done:contains('1')",
+        run: function() {
+            helper.assert(helper.getLines().length, 2);
+            const componentLine = helper.getLine({ barcode: "compo01" });
+            helper.assertLineQty(componentLine, "2");
+        }
+    },
+    {
+        trigger: ".o_scan_message.o_scan_validate",
+        run: "scan final",
+    },
+    {
+        trigger: ".o_header_completed .qty-done:contains('2')",
+        run: "scan final",
+    },
+    {
+        trigger: ".o_header_completed .qty-done:contains('3')",
+    },
+    {
+        trigger: ".o_validate_page",
+    },
+    // Confirm consumption warning
+    {
+        trigger: "button[name='action_confirm']",
+    },
+    {
+        trigger: ".o_notification.border-success",
+    },
+]});

@@ -43,17 +43,6 @@
         </field>
     </record>
 
-    <record id="project_forecast_view_search_inherit_project_timesheet_forecast" model="ir.ui.view">
-        <field name="name">planning.slot.search.inherit.timesheet</field>
-        <field name="model">planning.slot</field>
-        <field name="inherit_id" ref="project_forecast.planning_slot_view_search"/>
-        <field name="arch" type="xml">
-            <xpath expr="//filter[@name='conflict_shifts']" position="after">
-                <filter name="no_timesheets" string="No Timesheets" domain="[('effective_hours', '=', 0), ('end_datetime', '&lt;=', datetime.datetime.now())]" groups="hr_timesheet.group_hr_timesheet_user"/>
-            </xpath>
-        </field>
-    </record>
-
     <record id="project_forecast_view_tree_inherit_project_timesheet_forecast" model="ir.ui.view">
         <field name="name">planning.slot.tree.inherit.timesheet</field>
         <field name="model">planning.slot</field>

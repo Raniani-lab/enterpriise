@@ -7,9 +7,6 @@
         <field name="inherit_id" ref="planning.planning_analysis_report_view_search"/>
         <field name="arch" type="xml">
             <filter name="is_absent" position="replace"/>
-            <filter name="publication_warning" position="attributes">
-                <attribute name="domain">[('publication_warning', '=', True), ('overlap_slot_count', '=', 0)]</attribute>
-            </filter>
         </field>
     </record>
 

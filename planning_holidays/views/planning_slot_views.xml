@@ -51,9 +51,6 @@
             <xpath expr="//filter[@name='conflict_shifts']" position="after">
                 <filter name="is_absent" string="Employees on Time Off" domain="[('is_absent', '=', True)]" groups="planning.group_planning_manager"/>
             </xpath>
-            <xpath expr="//filter[@name='publication_warning']" position="attributes">
-                <attribute name="domain">[('publication_warning', '=', True), ('overlap_slot_count', '=', 0), ('is_absent', '=', False)]</attribute>
-            </xpath>
         </field>
     </record>
 

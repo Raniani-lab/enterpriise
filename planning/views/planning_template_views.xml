@@ -94,7 +94,6 @@
                     <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
                     <group expand="1" string="Group By">
                         <filter string="Role" name="group_by_role" context="{'group_by':'role_id'}"/>
-                        <filter string="Start Hour" name="group_by_start_time" context="{'group_by': 'start_time'}"/>
                     </group>
                 </search>
             </field>

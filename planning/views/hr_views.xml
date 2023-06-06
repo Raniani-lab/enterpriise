@@ -29,6 +29,9 @@
                 <filter name="flexible_hours" string="Flexible Hours" domain="[('resource_calendar_id', '=', False)]" />
                 <separator/>
             </xpath>
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="planning_role_ids" string="Roles"/>
+            </xpath>
         </field>
     </record>
 

@@ -307,38 +307,9 @@
                 <separator/>
                 <filter name="unpublished_shifts" string="Draft" domain="[('state', '=', 'draft')]" groups="planning.group_planning_manager"/>
                 <filter name="published_shifts" string="Published" domain="[('state', '=', 'published')]" groups="planning.group_planning_manager"/>
-                <filter name="publication_warning" string="To Resend" domain="[('publication_warning', '=', True), ('overlap_slot_count', '=', 0)]" groups="planning.group_planning_manager"/>
                 <separator groups="planning.group_planning_manager"/>
-                <filter name="future" string="Future" domain="[
-                    ('start_datetime', '&gt;=', (context_today() + relativedelta(days=1)).strftime('%Y-%m-%d 00:00:00'))
-                ]"/>
-                <filter name="next_week" string="Next Week" domain="[
-                    ('start_datetime', '&lt;', (context_today() + relativedelta(weeks=1, weekday=6)).strftime('%Y-%m-%d 00:00:00')),
-                    ('end_datetime', '&gt;', (context_today() + relativedelta(weeks=0, weekday=6)).strftime('%Y-%m-%d 00:00:00')),
-                ]"/>
-                <filter name="this_week" string="This Week" domain="[
-                    ('start_datetime', '&lt;', (context_today() + relativedelta(weeks=0, weekday=6)).strftime('%Y-%m-%d 00:00:00')),
-                    ('end_datetime', '&gt;', (context_today() + relativedelta(weeks=-1, weekday=6)).strftime('%Y-%m-%d 00:00:00')),
-                ]"/>
-                <filter name="tomorrow" string="Tomorrow" domain="[
-                    ('start_datetime', '&lt;', (context_today() + relativedelta(days=2)).strftime('%Y-%m-%d 00:00:00')),
-                    ('end_datetime', '&gt;', (context_today() + relativedelta(days=1)).strftime('%Y-%m-%d 00:00:00')),
-                ]"/>
-                <filter name="today" string="Today"  domain="[
-                    ('start_datetime', '&lt;', (context_today() + relativedelta(days=1)).strftime('%Y-%m-%d 00:00:00')),
-                    ('end_datetime', '&gt;', context_today().strftime('%Y-%m-%d 00:00:00')),
-                ]"/>
-                <filter name="yesterday" string="Yesterday" domain="[
-                    ('start_datetime', '&lt;', context_today().strftime('%Y-%m-%d 00:00:00')),
-                    ('end_datetime', '&gt;', (context_today() + relativedelta(days=-1)).strftime('%Y-%m-%d 00:00:00')),
-                ]"/>
-                <filter name="last_week" string="Last Week" domain="[
-                    ('start_datetime', '&lt;', (context_today() + relativedelta(weeks=-1, weekday=6)).strftime('%Y-%m-%d 00:00:00')),
-                    ('end_datetime', '&gt;', (context_today() + relativedelta(weeks=-2, weekday=6)).strftime('%Y-%m-%d 00:00:00')),
-                ]"/>
-                <filter name="past" string="Past" domain="[
-                    ('end_datetime', '&lt;', context_today().strftime('%Y-%m-%d 00:00:00'))
-                ]"/>
+                <filter string="Start Date" name="start_datetime" date="start_datetime"/>
+                <filter string="End Date" name="end_datetime" date="end_datetime"/>
                 <group string="Group By">
                     <filter name="group_by_department" string="Department" context="{'group_by': 'department_id'}" groups="planning.group_planning_user"/>
                     <filter name="group_by_manager" string="Manager" context="{'group_by': 'manager_id'}" groups="planning.group_planning_user"/>

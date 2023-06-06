@@ -209,7 +209,7 @@ class HrPayslip(models.Model):
             if self.env.context.get('default_date_to'):
                 payslip.date_to = self.env.context.get('default_date_to')
             else:
-                payslip.date_to = payslip.date_from + payslip._get_schedule_timedelta()
+                payslip.date_to = payslip.date_from and payslip.date_from + payslip._get_schedule_timedelta()
             if payslip.contract_id and payslip.contract_id.date_end\
                     and payslip.date_from >= payslip.contract_id.date_start\
                     and payslip.date_from < payslip.contract_id.date_end\
@@ -928,10 +928,10 @@ class HrPayslip(models.Model):
         if not self or self.env.context.get('salary_simulation'):
             return
         valid_slips = self.filtered(lambda p: p.employee_id and p.date_from and p.date_to and p.contract_id and p.struct_id)
-        # Make sure to reset invalid payslip's worked days line
-        self.update({'worked_days_line_ids': [(5, 0, 0)]})
         if not valid_slips:
             return
+        # Make sure to reset invalid payslip's worked days line
+        self.update({'worked_days_line_ids': [(5, 0, 0)]})
         # Ensure work entries are generated for all contracts
         generate_from = min(p.date_from for p in valid_slips)
         generate_to = max(p.date_to for p in valid_slips)

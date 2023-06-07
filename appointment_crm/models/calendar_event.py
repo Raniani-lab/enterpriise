@@ -33,7 +33,6 @@ class CalendarEventCrm(models.Model):
                     'field': opportunity_field.id,
                     'field_desc': opportunity_field.field_description,
                     'field_type': opportunity_field.ttype,
-                    'tracking_sequence': opportunity_field.tracking,
                     'old_value_char': False,
                     'new_value_char': meeting.opportunity_id.name,
                 })])

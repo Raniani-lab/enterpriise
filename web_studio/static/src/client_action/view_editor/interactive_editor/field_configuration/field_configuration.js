@@ -84,6 +84,7 @@ export class RelationalFieldConfigurator extends Component {
                 ["relation", "=", this.props.resModel],
                 ["ttype", "=", "many2one"],
                 ["model_id.abstract", "=", false],
+                ['store', '=', true],
             ];
         } else {
             relationId.relation = "ir.model";

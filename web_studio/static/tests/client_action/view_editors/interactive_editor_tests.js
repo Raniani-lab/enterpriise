@@ -443,6 +443,12 @@ QUnit.module("View Editors", () => {
                 arch,
                 mockRPC: function (route, args) {
                     if (args.method === "name_search") {
+                        assert.deepEqual(args.kwargs.args, [
+                            ['relation', '=', "coucou"],
+                            ['ttype', '=', 'many2one'],
+                            ['model_id.abstract', '=', false],
+                            ['store', '=', true]
+                        ])
                         return Promise.resolve([
                             [1, "Field 1"],
                             [2, "Field 2"],
@@ -456,6 +462,7 @@ QUnit.module("View Editors", () => {
                                 [
                                     ["relation", "=", "coucou"],
                                     ["ttype", "=", "many2one"],
+                                    ['store', '=', true],
                                 ],
                             ],
                             "the domain should be correctly set when checking if the m2o for o2m exists or not"
@@ -505,6 +512,7 @@ QUnit.module("View Editors", () => {
                                 [
                                     ["relation", "=", "partner"],
                                     ["ttype", "=", "many2one"],
+                                    ["store", "=", true]
                                 ],
                             ],
                             "the domain should be correctly set when checking if the m2o for o2m exists or not"

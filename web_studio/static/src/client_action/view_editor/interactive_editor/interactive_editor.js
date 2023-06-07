@@ -459,7 +459,7 @@ export class InteractiveEditor extends Component {
             if (fieldType === "one2many") {
                 const count = await this.orm.searchCount("ir.model.fields", [
                     ["relation", "=", this.viewEditorModel.resModel],
-                    ["ttype", "=", "many2one"],
+                    ["ttype", "=", "many2one"], ['store', '=', true]
                 ]);
                 if (!count) {
                     this.addDialog(ConfirmationDialog, {

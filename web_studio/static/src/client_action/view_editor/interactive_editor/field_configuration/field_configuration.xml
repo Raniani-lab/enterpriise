@@ -13,7 +13,7 @@
     <span t-else="">Select the model in relation to this one</span>
     <div name="relation_id">
         <Record t-props="recordProps" t-slot-scope="scope">
-            <Many2OneField record="scope.record" name="'relationId'" canCreate="false" />
+            <Many2OneField record="scope.record" name="'relationId'" canCreate="false" domain="activeFields.relationId.domain"/>
         </Record>
     </div>
 </t>

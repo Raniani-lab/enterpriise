@@ -9,7 +9,8 @@
                 <xpath expr="//group[@name='bank_account_number']" position="inside">
                     <field name="account_online_account_id" invisible="1"/>
                     <field name="renewal_contact_email" groups="account.group_account_readonly" attrs="{'invisible': [('account_online_account_id', '=', False)]}"/>
-                    <div class="o_cell flex-grow-1 flex-sm-grow-0"/> <!-- Take one cell in order to have the button aligned with the field and not its label -->
+                    <!-- Take one cell in order to have the button aligned with the field and not its label -->
+                    <div class="o_cell flex-grow-1 flex-sm-grow-0" attrs="{'invisible': [('account_online_account_id', '=', False)]}"/>
                     <button name="action_send_reminder" class="oe_link oe_inline ps-0 py-0" type="object"
                             attrs="{'invisible': [('account_online_account_id', '=', False)]}"
                     >

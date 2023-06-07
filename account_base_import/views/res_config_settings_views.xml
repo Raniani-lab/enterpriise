@@ -11,11 +11,11 @@
                         <setting string="Initial Setup" help="Choose how you want to setup your CoA">
                             <div class="content-group">
                                 <div class="d-flex mt4 align-items-center">
-                                    <button name="%(account_base_import.action_open_coa_setup)d" icon="oi-arrow-right" type="action" string="Review Manually" class="btn-link p-1"/>
+                                    <button name="%(account_base_import.action_open_coa_setup)d" icon="oi-arrow-right" type="action" string="Review Manually" class="btn-link"/>
                                     <span class="text-muted">(end of year balances)</span>
                                 </div>
                                 <div class="d-flex align-items-center">
-                                    <button name="%(account_base_import.action_open_import_guide)d" icon="oi-arrow-right" type="action" string="Import" class="btn-link p-1"/>
+                                    <button name="%(account_base_import.action_open_import_guide)d" icon="oi-arrow-right" type="action" string="Import" class="btn-link"/>
                                     <span class="text-muted">(for full history)</span>
                                 </div>
                             </div>

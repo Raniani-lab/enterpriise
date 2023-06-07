@@ -13,7 +13,7 @@ import { usePos } from "@point_of_sale/app/store/pos_hook";
  * Worldline payment terminal and opens a popup to display the result.
  */
 export class LastTransactionStatusButton extends Component {
-    static template = "LastTransactionStatusButton";
+    static template = "pos_iot.LastTransactionStatusButton";
 
     setup() {
         this.popup = useService("popup");
@@ -62,6 +62,6 @@ export class LastTransactionStatusButton extends Component {
  * Worldline payment terminal
  */
 export class LastTransactionPopup extends AbstractAwaitablePopup {
-    static template = "LastTransactionPopup";
+    static template = "pos_iot.LastTransactionPopup";
     static defaultProps = { cancelKey: false };
 }

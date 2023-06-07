@@ -4,7 +4,7 @@ import { AbstractAwaitablePopup } from "@point_of_sale/app/popup/abstract_awaita
 import { useService } from "@web/core/utils/hooks";
 
 export class IoTErrorPopup extends AbstractAwaitablePopup {
-    static template = "IoTErrorPopup";
+    static template = "pos_iot.IoTErrorPopup";
     static defaultProps = {
         confirmText: "Ok",
         title: "Error",

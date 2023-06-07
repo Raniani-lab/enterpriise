@@ -193,6 +193,49 @@ class TestDatevCSV(AccountTestInvoicingCommon):
         self.assertIn(['119,00', 'h', 'EUR', str(move.partner_id.id + 100000000), debit_account_code, '', '312',
                        pay.name, pay.name], data)
 
+    def test_datev_out_invoice_payment_same_account_counteraccount(self):
+        report = self.env.ref('account_reports.general_ledger_report')
+        options = report._get_options()
+        options['date'].update({
+            'date_from': '2020-01-01',
+            'date_to': '2020-12-31',
+        })
+
+        move = self.env['account.move'].create([{
+            'move_type': 'out_invoice',
+            'partner_id': self.env['res.partner'].create({'name': 'Res Partner 12'}).id,
+            'invoice_date': fields.Date.to_date('2020-12-01'),
+            'invoice_line_ids': [
+                (0, None, {
+                    'price_unit': 100,
+                    'account_id': self.account_4980.id,
+                    'tax_ids': [(6, 0, self.tax_19.ids)],
+                }),
+            ]
+        }])
+        move.action_post()
+
+        # set counter account = account
+        bank_journal = self.company_data['default_journal_bank']
+        bank_journal.inbound_payment_method_line_ids.payment_account_id = bank_journal.default_account_id
+
+        pay = self.env['account.payment.register'].with_context(active_model='account.move', active_ids=move.ids).create({
+            'payment_date': fields.Date.to_date('2020-12-03'),
+        })._create_payments()
+
+        debit_account_code = str(bank_journal.default_account_id.code).ljust(8, '0')
+
+        zf = zipfile.ZipFile(BytesIO(self.env[report.custom_handler_model_name].l10n_de_datev_export_to_zip(options)['file_content']), 'r')
+        self.addCleanup(zf.close)
+        csv = zf.open('EXTF_accounting_entries.csv')
+        reader = pycompat.csv_reader(csv, delimiter=';', quotechar='"', quoting=2)
+        data = [[x[0], x[1], x[2], x[6], x[7], x[8], x[9], x[10], x[13]] for x in reader][2:]
+        self.assertEqual(2, len(data), "csv should have 2 lines")
+        self.assertIn(['119,00', 'h', 'EUR', '49800000', str(move.partner_id.id + 100000000),
+                       self.tax_19.l10n_de_datev_code, '112', move.name, move.name], data)
+        self.assertIn(['119,00', 'h', 'EUR', str(move.partner_id.id + 100000000), debit_account_code, '', '312',
+                       pay.name, pay.name], data)
+
     def test_datev_in_invoice_payment(self):
         report = self.env.ref('account_reports.general_ledger_report')
         options = report._get_options()

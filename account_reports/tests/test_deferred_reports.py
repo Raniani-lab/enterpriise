@@ -67,6 +67,10 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
             move.action_post()
         return move
 
+    def get_options(self, from_date, to_date, report=None):
+        report = report or self.deferred_expense_report
+        return self._generate_options(report, from_date, to_date)
+
     def test_deferred_expense_report_months(self):
         """
         Test the deferred expense report with the 'month' method.
@@ -76,7 +80,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         self.create_invoice('in_invoice', self.company_data['default_journal_purchase'], self.partner_a, self.expense_lines)
 
         # December 2022
-        options = self._generate_options(self.deferred_expense_report, fields.Date.from_string('2022-12-01'), fields.Date.from_string('2022-12-31'))
+        options = self.get_options('2022-12-01', '2022-12-31')
         lines = self.deferred_expense_report._get_lines(options)
         self.assertLinesValues(
             lines,
@@ -87,7 +91,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         )
 
         # January 2023
-        options = self._generate_options(self.deferred_expense_report, fields.Date.from_string('2023-01-01'), fields.Date.from_string('2023-01-31'))
+        options = self.get_options('2023-01-01', '2023-01-31')
         lines = self.deferred_expense_report._get_lines(options)
         self.assertLinesValues(
             lines,
@@ -103,7 +107,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         )
 
         # February 2023
-        options = self._generate_options(self.deferred_expense_report, fields.Date.from_string('2023-02-01'), fields.Date.from_string('2023-02-28'))
+        options = self.get_options('2023-02-01', '2023-02-28')
         lines = self.deferred_expense_report._get_lines(options)
         self.assertLinesValues(
             lines,
@@ -119,7 +123,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         )
 
         # April 2023
-        options = self._generate_options(self.deferred_expense_report, fields.Date.from_string('2023-04-01'), fields.Date.from_string('2023-04-30'))
+        options = self.get_options('2023-04-01', '2023-04-30')
         lines = self.deferred_expense_report._get_lines(options)
         self.assertLinesValues(
             lines,
@@ -135,7 +139,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         )
 
         # May 2023
-        options = self._generate_options(self.deferred_expense_report, fields.Date.from_string('2023-05-01'), fields.Date.from_string('2023-05-31'))
+        options = self.get_options('2023-05-01', '2023-05-31')
         lines = self.deferred_expense_report._get_lines(options)
         self.assertLinesValues(
             lines,
@@ -146,7 +150,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         )
 
         # Q1 2023
-        options = self._generate_options(self.deferred_expense_report, fields.Date.from_string('2023-01-01'), fields.Date.from_string('2023-03-31'))
+        options = self.get_options('2023-01-01', '2023-03-31')
         lines = self.deferred_expense_report._get_lines(options)
         self.assertLinesValues(
             lines,
@@ -162,7 +166,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         )
 
         # Q2 2023
-        options = self._generate_options(self.deferred_expense_report, fields.Date.from_string('2023-04-01'), fields.Date.from_string('2023-06-30'))
+        options = self.get_options('2023-04-01', '2023-06-30')
         lines = self.deferred_expense_report._get_lines(options)
         self.assertLinesValues(
             lines,
@@ -178,7 +182,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         )
 
         # 2022
-        options = self._generate_options(self.deferred_expense_report, fields.Date.from_string('2022-01-01'), fields.Date.from_string('2022-12-31'))
+        options = self.get_options('2022-01-01', '2022-12-31')
         lines = self.deferred_expense_report._get_lines(options)
         self.assertLinesValues(
             lines,
@@ -189,7 +193,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         )
 
         # 2023
-        options = self._generate_options(self.deferred_expense_report, fields.Date.from_string('2023-01-01'), fields.Date.from_string('2023-12-31'))
+        options = self.get_options('2023-01-01', '2023-12-31')
         lines = self.deferred_expense_report._get_lines(options)
         self.assertLinesValues(
             lines,
@@ -213,7 +217,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         self.create_invoice('out_invoice', self.company_data['default_journal_sale'], self.partner_a, self.revenue_lines)
 
         # December 2022
-        options = self._generate_options(self.deferred_revenue_report, fields.Date.from_string('2022-12-01'), fields.Date.from_string('2022-12-31'))
+        options = self.get_options('2022-12-01', '2022-12-31', self.deferred_revenue_report)
         lines = self.deferred_revenue_report._get_lines(options)
         self.assertLinesValues(
             lines,
@@ -224,7 +228,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         )
 
         # January 2023
-        options = self._generate_options(self.deferred_revenue_report, fields.Date.from_string('2023-01-01'), fields.Date.from_string('2023-01-31'))
+        options = self.get_options('2023-01-01', '2023-01-31', self.deferred_revenue_report)
         lines = self.deferred_revenue_report._get_lines(options)
         self.assertLinesValues(
             lines,
@@ -240,7 +244,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         )
 
         # February 2023
-        options = self._generate_options(self.deferred_revenue_report, fields.Date.from_string('2023-02-01'), fields.Date.from_string('2023-02-28'))
+        options = self.get_options('2023-02-01', '2023-02-28', self.deferred_revenue_report)
         lines = self.deferred_revenue_report._get_lines(options)
         self.assertLinesValues(
             lines,
@@ -256,7 +260,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         )
 
         # April 2023
-        options = self._generate_options(self.deferred_revenue_report, fields.Date.from_string('2023-04-01'), fields.Date.from_string('2023-04-30'))
+        options = self.get_options('2023-04-01', '2023-04-30', self.deferred_revenue_report)
         lines = self.deferred_revenue_report._get_lines(options)
         self.assertLinesValues(
             lines,
@@ -272,7 +276,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         )
 
         # May 2023
-        options = self._generate_options(self.deferred_revenue_report, fields.Date.from_string('2023-05-01'), fields.Date.from_string('2023-05-31'))
+        options = self.get_options('2023-05-01', '2023-05-31', self.deferred_revenue_report)
         lines = self.deferred_revenue_report._get_lines(options)
         self.assertLinesValues(
             lines,
@@ -283,7 +287,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         )
 
         # Q1 2023
-        options = self._generate_options(self.deferred_revenue_report, fields.Date.from_string('2023-01-01'), fields.Date.from_string('2023-03-31'))
+        options = self.get_options('2023-01-01', '2023-03-31', self.deferred_revenue_report)
         lines = self.deferred_revenue_report._get_lines(options)
         self.assertLinesValues(
             lines,
@@ -299,7 +303,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         )
 
         # Q2 2023
-        options = self._generate_options(self.deferred_revenue_report, fields.Date.from_string('2023-04-01'), fields.Date.from_string('2023-06-30'))
+        options = self.get_options('2023-04-01', '2023-06-30', self.deferred_revenue_report)
         lines = self.deferred_revenue_report._get_lines(options)
         self.assertLinesValues(
             lines,
@@ -315,7 +319,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         )
 
         # 2022
-        options = self._generate_options(self.deferred_revenue_report, fields.Date.from_string('2022-01-01'), fields.Date.from_string('2022-12-31'))
+        options = self.get_options('2022-01-01', '2022-12-31', self.deferred_revenue_report)
         lines = self.deferred_revenue_report._get_lines(options)
         self.assertLinesValues(
             lines,
@@ -326,7 +330,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         )
 
         # 2023
-        options = self._generate_options(self.deferred_revenue_report, fields.Date.from_string('2023-01-01'), fields.Date.from_string('2023-12-31'))
+        options = self.get_options('2023-01-01', '2023-12-31', self.deferred_revenue_report)
         lines = self.deferred_revenue_report._get_lines(options)
         self.assertLinesValues(
             lines,
@@ -350,7 +354,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         self.create_invoice('in_invoice', self.company_data['default_journal_purchase'], self.partner_a, self.expense_lines)
 
         # December 2022
-        options = self._generate_options(self.deferred_expense_report, fields.Date.from_string('2022-12-01'), fields.Date.from_string('2022-12-31'))
+        options = self.get_options('2022-12-01', '2022-12-31')
         lines = self.deferred_expense_report._get_lines(options)
         self.assertLinesValues(
             lines,
@@ -361,7 +365,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         )
 
         # January 2023
-        options = self._generate_options(self.deferred_expense_report, fields.Date.from_string('2023-01-01'), fields.Date.from_string('2023-01-31'))
+        options = self.get_options('2023-01-01', '2023-01-31')
         lines = self.deferred_expense_report._get_lines(options)
         self.assertLinesValues(
             lines,
@@ -377,7 +381,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         )
 
         # February 2023
-        options = self._generate_options(self.deferred_expense_report, fields.Date.from_string('2023-02-01'), fields.Date.from_string('2023-02-28'))
+        options = self.get_options('2023-02-01', '2023-02-28')
         lines = self.deferred_expense_report._get_lines(options)
         self.assertLinesValues(
             lines,
@@ -393,7 +397,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         )
 
         # Q1 2023
-        options = self._generate_options(self.deferred_expense_report, fields.Date.from_string('2023-01-01'), fields.Date.from_string('2023-03-31'))
+        options = self.get_options('2023-01-01', '2023-03-31')
         lines = self.deferred_expense_report._get_lines(options)
         self.assertLinesValues(
             lines,
@@ -416,7 +420,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         self.create_invoice('in_invoice', self.company_data['default_journal_purchase'], self.partner_a, self.expense_lines, post=False)
 
         # Only posted entries
-        options = self._generate_options(self.deferred_expense_report, fields.Date.from_string('2023-02-01'), fields.Date.from_string('2023-02-28'))
+        options = self.get_options('2023-02-01', '2023-02-28')
         lines = self.deferred_expense_report._get_lines(options)
         self.assertLinesValues(
                 lines,
@@ -458,7 +462,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         self.create_invoice('in_invoice', self.company_data['default_journal_purchase'], self.partner_a, self.expense_lines)
 
         # April 2023 + period comparison of last 4 months
-        options = self._generate_options(self.deferred_expense_report, fields.Date.from_string('2023-04-01'), fields.Date.from_string('2023-04-30'))
+        options = self.get_options('2023-04-01', '2023-04-30')
         options = self._update_comparison_filter(options, self.deferred_expense_report, 'previous_period', 4)
         lines = self.deferred_expense_report._get_lines(options)
         self.assertLinesValues(
@@ -530,7 +534,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         })
         move.action_post()
 
-        options = self._generate_options(self.deferred_expense_report, fields.Date.from_string('2023-02-01'), fields.Date.from_string('2023-02-28'))
+        options = self.get_options('2023-02-01', '2023-02-28')
         lines = self.deferred_expense_report._get_lines(options)
         self.assertLinesValues(
             lines,
@@ -549,7 +553,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         """
         self.create_invoice('in_refund', self.company_data['default_journal_purchase'], self.partner_a, self.expense_lines)
 
-        options = self._generate_options(self.deferred_expense_report, fields.Date.from_string('2023-02-01'), fields.Date.from_string('2023-02-28'))
+        options = self.get_options('2023-02-01', '2023-02-28')
         lines = self.deferred_expense_report._get_lines(options)
         self.assertLinesValues(
             lines,
@@ -581,16 +585,10 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         self.company.generate_deferred_entries_method = 'manual'
         deferral_account = self.company_data['default_account_deferred_expense']
 
-        options = {
-            "date": {
-                "date_from": "2023-01-01",
-                "date_to": "2023-01-31",
-                "string": "January 2023",
-            },
-        }
+        options = self.get_options('2023-01-01', '2023-01-31')
 
         handler = self.env['account.deferred.expense.report.handler']
-        with self.assertRaises(UserError, msg='No entry to generate.'):
+        with self.assertRaisesRegex(UserError, 'No entry to generate.'):
             handler.action_generate_entry(options)
 
         self.create_invoice('in_invoice', self.company_data['default_journal_purchase'], self.partner_a, [self.expense_lines[0]], post=True)
@@ -626,17 +624,11 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         self.assertEqual(deferred_inverse_january.date, fields.Date.from_string('2023-02-01'))
 
         # Don't re-generate entries for the same period if they already exist for all move lines
-        with self.assertRaises(UserError, msg='No entry to generate.'):
+        with self.assertRaisesRegex(UserError, 'No entry to generate.'):
             handler.action_generate_entry(options)
 
         # Generate the grouped deferred entries for the next period
-        res = handler.action_generate_entry({
-            "date": {
-                "date_from": "2023-02-01",
-                "date_to": "2023-02-28",
-                "string": "February 2023",
-            },
-        })
+        res = handler.action_generate_entry(self.get_options('2023-02-01', '2023-02-28'))
         generated_entries_february = self.env['account.move'].search(res['domain'], order='date')
         deferred_move_february = generated_entries_february[0]
         expected_values_february = [
@@ -662,13 +654,8 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         self.create_invoice('in_invoice', self.company_data['default_journal_purchase'], self.partner_a, [[self.expense_accounts[0], 600, '2023-04-04', '2023-05-08']], post=True)
 
         handler = self.env['account.deferred.expense.report.handler']
-        handler.action_generate_entry({
-            "date": {
-                "date_from": "2023-04-01",
-                "date_to": "2023-04-30",
-                "string": "April 2023",
-            },
-        })  # This shouldn't raise an error like this 'The total of debits equals $1,800.01 and the total of credits equals $1,800.00.'
+        # This shouldn't raise an error like this 'The total of debits equals $1,800.01 and the total of credits equals $1,800.00.'
+        handler.action_generate_entry(self.get_options('2023-04-01', '2023-04-30'))
 
     def test_deferred_expense_change_grouped_entries_method(self):
         """
@@ -684,11 +671,22 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         # When changing the method to manual, the deferred entries should not be re-generated
         self.company.generate_deferred_entries_method = 'manual'
         handler = self.env['account.deferred.expense.report.handler']
-        with self.assertRaises(UserError, msg='No entry to generate.'):
-            handler.action_generate_entry({
-                "date": {
-                    "date_from": "2023-02-01",
-                    "date_to": "2023-02-28",
-                    "string": "February 2023",
-                },
-            })
+        with self.assertRaisesRegex(UserError, 'No entry to generate.'):
+            handler.action_generate_entry(self.get_options('2023-02-01', '2023-02-28'))
+
+    def test_deferred_expense_manual_generation_totally_defered(self):
+        """
+        In manual mode generation, if the lines are totally deferred,
+        then no entry should be generated.
+        """
+        self.company.deferred_amount_computation_method = 'month'
+        self.company.generate_deferred_entries_method = 'manual'
+        deferral_account = self.company_data['default_account_deferred_expense']
+        handler = self.env['account.deferred.expense.report.handler']
+
+        self.create_invoice('in_invoice', self.company_data['default_journal_purchase'], self.partner_a, [self.expense_lines[0]])
+        handler.action_generate_entry(self.get_options('2023-03-01', '2023-03-31'))
+        self.assertEqual(self.env['account.move.line'].search_count([('account_id', '=', deferral_account.id)]), 2)
+
+        with self.assertRaisesRegex(UserError, 'No entry to generate.'):
+            handler.action_generate_entry(self.get_options('2023-04-01', '2023-04-30'))

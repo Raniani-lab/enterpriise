@@ -5,8 +5,10 @@ import {
     afterNextRender,
     click,
     isScrolledToBottom,
+    nextAnimationFrame,
     start,
     startServer,
+    waitUntil,
 } from "@mail/../tests/helpers/test_utils";
 
 import { getFixture } from "@web/../tests/helpers/utils";
@@ -62,25 +64,26 @@ QUnit.test("Message list loads new messages on scroll", async (assert) => {
     const $messages = $(".o-mail-Message");
     const lastMessage = $messages[$messages.length - 1];
     await afterNextRender(() => {
-        const scrollable = $(".o-mail-Chatter-scrollable")[0];
+        const scrollable = $(".o-mail-Chatter")[0];
         scrollable.scrollTop = scrollable.scrollHeight - scrollable.clientHeight;
     });
     assert.verifySteps(["/mail/thread/messages"]);
     const lastMessageRect = lastMessage.getBoundingClientRect();
-    const listRect = $(".o-mail-Chatter-scrollable")[0].getBoundingClientRect();
+    const listRect = $(".o-mail-Chatter")[0].getBoundingClientRect();
     assert.ok(
         lastMessageRect.top > listRect.top && lastMessageRect.bottom < listRect.bottom,
         "The last message should be visible"
     );
 
     await afterNextRender(() => {
-        const scrollable = $(".o-mail-Chatter-scrollable")[0];
+        const scrollable = $(".o-mail-Chatter")[0];
         scrollable.scrollTop = scrollable.scrollHeight - scrollable.clientHeight;
     });
     assert.verifySteps(["/mail/thread/messages"]);
 });
 
 QUnit.skip("Message list is scrolled to new message after posting a message", async (assert) => {
+    // Test skipped because although it works locally, last assertion fails and we don't get why...
     const pyEnv = await startServer();
     const partnerId = pyEnv["res.partner"].create({
         activity_ids: [],
@@ -126,27 +129,29 @@ QUnit.skip("Message list is scrolled to new message after posting a message", as
     const content = $(".o_content")[0];
     assert.hasClass($(".o-mail-Form-chatter"), "o-aside");
     assert.strictEqual(content.scrollTop, 0);
-    assert.strictEqual($(".o-mail-Chatter-scrollable")[0].scrollTop, 0);
+    assert.strictEqual($(".o-mail-Chatter")[0].scrollTop, 0);
 
     await click("button:contains(Log note)");
     assert.strictEqual(content.scrollTop, 0);
 
     await afterNextRender(() => {
-        const scollable = $(".o-mail-Chatter-scrollable")[0];
+        const scollable = $(".o-mail-Chatter")[0];
         scollable.scrollTop = scollable.scrollHeight - scollable.clientHeight;
     });
     await afterNextRender(() => {
-        const scollable = $(".o-mail-Chatter-scrollable")[0];
+        const scollable = $(".o-mail-Chatter")[0];
         scollable.scrollTop = scollable.scrollHeight - scollable.clientHeight;
     });
-    const scollable = $(".o-mail-Chatter-scrollable")[0];
+    const scollable = $(".o-mail-Chatter")[0];
     assert.ok(isScrolledToBottom(scollable));
 
     await afterNextRender(() => editInput($(".o-mail-Composer-input")[0], "New Message"));
     assert.verifySteps([], "Message post should not yet be done");
 
     await click(".o-mail-Composer-send");
+    await waitUntil(".o-mail-Message:contains(New Message)");
+    await nextAnimationFrame();
     assert.verifySteps(["/mail/message/post"]);
     assert.strictEqual(content.scrollTop, 0);
-    assert.strictEqual($(".o-mail-Chatter-scrollable")[0].scrollTop, 0);
+    assert.strictEqual($(".o-mail-Chatter")[0].scrollTop, 0);
 });

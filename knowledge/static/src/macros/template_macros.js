@@ -15,7 +15,7 @@ export class SendAsMessageMacro extends AbstractMacro {
                 this.validatePage();
                 const el = this.getFirstVisibleElement('.o-mail-Chatter-sendMessage');
                 if (el) {
-                    if (el.classList.contains('o-active')) {
+                    if (el.classList.contains('active')) {
                         return el;
                     } else {
                         el.click();

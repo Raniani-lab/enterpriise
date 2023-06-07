@@ -32,12 +32,12 @@ QUnit.test("message list desc order", async (assert) => {
 
     // scroll to bottom
     await afterNextRender(() => {
-        const scrollable = $(".o-mail-Chatter-scrollable")[0];
+        const scrollable = $(".o-mail-Chatter")[0];
         scrollable.scrollTop = scrollable.scrollHeight - scrollable.clientHeight;
     });
     assert.containsN($, ".o-mail-Message", 60);
 
-    $(".o-mail-Thread")[0].scrollTop = 0;
+    $(".o-mail-Chatter")[0].scrollTop = 0;
     await nextTick();
     assert.containsN(
         $,

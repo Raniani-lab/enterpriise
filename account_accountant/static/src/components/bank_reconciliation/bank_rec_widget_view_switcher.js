@@ -2,6 +2,7 @@
 
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
+import { standardFieldProps } from "@web/views/fields/standard_field_props";
 
 const { Component } = owl;
 
@@ -33,6 +34,9 @@ export class BankRecWidgetViewSwitcher extends Component {
     }
 }
 BankRecWidgetViewSwitcher.template = "account_accountant.BankRecWidgetViewSwitcher";
+BankRecWidgetViewSwitcher.props = {
+    ...standardFieldProps,
+};
 
 export const bankRecWidgetViewSwitcher = {
     component: BankRecWidgetViewSwitcher,

@@ -2,10 +2,13 @@
 
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
+import { standardFieldProps } from "@web/views/fields/standard_field_props";
 
 const { Component } = owl;
 
 class MatchingLink extends Component {
+    static props = { ...standardFieldProps };
+
     setup() {
         this.orm = useService("orm");
         this.action = useService("action");

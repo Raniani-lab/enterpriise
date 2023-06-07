@@ -4,6 +4,7 @@ import { registry } from "@web/core/registry";
 import { Dropdown } from "@web/core/dropdown/dropdown";
 import { DropdownItem } from "@web/core/dropdown/dropdown_item";
 import { useService } from "@web/core/utils/hooks";
+import { standardFieldProps } from "@web/views/fields/standard_field_props";
 
 const { Component } = owl;
 
@@ -78,6 +79,9 @@ export class BankRecWidgetFormRecoModelsWidget extends Component {
 
 BankRecWidgetFormRecoModelsWidget.template = "account_accountant.bank_rec_widget_form_reco_models_widget";
 BankRecWidgetFormRecoModelsWidget.components = { Dropdown, DropdownItem };
+BankRecWidgetFormRecoModelsWidget.props = {
+    ...standardFieldProps,
+};
 
 export const bankRecWidgetFormRecoModelsWidget = {
     component: BankRecWidgetFormRecoModelsWidget,

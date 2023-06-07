@@ -41,6 +41,7 @@ export class BankRecWidgetGlobalInfo extends Component {
 
 }
 BankRecWidgetGlobalInfo.template = "account_accountant.BankRecWidgetGlobalInfo";
+BankRecWidgetGlobalInfo.props = {};
 
 export const bankRecWidgetGlobalInfo = {
     component: BankRecWidgetGlobalInfo,

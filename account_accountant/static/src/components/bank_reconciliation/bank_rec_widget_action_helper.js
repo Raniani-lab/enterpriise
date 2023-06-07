@@ -45,6 +45,7 @@ export class BankRecFinishButtons extends Component {
     }
 }
 BankRecFinishButtons.template = "account_accountant.bankRecFinishButtons";
+BankRecFinishButtons.props = {};
 
 export class BankRecWidgetRainbowMessage extends Component {
     setup() {
@@ -72,6 +73,7 @@ export class BankRecWidgetRainbowMessage extends Component {
     }
 }
 BankRecWidgetRainbowMessage.template = "account_accountant.rainbowMessage";
+BankRecWidgetRainbowMessage.props = {};
 BankRecWidgetRainbowMessage.components = {
     BankRecFinishButtons,
 }
@@ -87,6 +89,8 @@ export class BankRecActionHelper extends Component {
 
     get rainbowProps() {
         return {
+            fadeout: "no",
+            message: "",
             imgUrl: "/web/static/img/smile.svg",
             Component: BankRecWidgetRainbowMessage,
             close: ()=>{},
@@ -94,6 +98,9 @@ export class BankRecActionHelper extends Component {
     }
 }
 BankRecActionHelper.template = "account_accountant.BankRecActionHelper";
+BankRecActionHelper.props = {
+    noContentHelp: { type: String, optional: true }
+}
 BankRecActionHelper.components = {
     RainbowMan,
     BankRecFinishButtons,

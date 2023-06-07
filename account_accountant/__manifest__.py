@@ -36,6 +36,7 @@ It assigns manager and user access rights to the Administrator for the accountin
         'views/bank_rec_widget_views.xml',
 
         'wizard/account_change_lock_date.xml',
+        'wizard/account_auto_reconcile_wizard.xml',
         'wizard/account_reconcile_wizard.xml',
         'wizard/reconcile_model_wizard.xml',
     ],

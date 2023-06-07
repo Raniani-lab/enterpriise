@@ -410,7 +410,7 @@ class AccountMoveLine(models.Model):
             record.move_attachment_ids = self.env['ir.attachment'].search(expression.OR(record._get_attachment_domains()))
 
     def action_reconcile(self):
-        """ This function is called by the 'Reconcile' action of account.move.line's
+        """ This function is called by the 'Reconcile' button of account.move.line's
         tree view. It performs reconciliation between the selected lines.
         - If the reconciliation can be done directly we do it silently
         - Else, if a write-off is required we open the wizard to let the client enter required information
@@ -572,3 +572,29 @@ class AccountMoveLine(models.Model):
                         predicted_tax_ids = []
                     if predicted_tax_ids is not False and set(predicted_tax_ids) != set(self.tax_ids.ids):
                         self.tax_ids = self.env['account.tax'].browse(predicted_tax_ids)
+
+    def _read_group_groupby(self, groupby_spec, query):
+        """ EXTENDS 'base'
+        Allows to set :abs method on fields, useful when trying to match positive and negative amounts.
+        """
+        if ':' in groupby_spec:
+            field, method = groupby_spec.split(':')
+            if field in self and method == 'abs_rounded':  # field in self avoids possible injections
+                # rounds with the used currency settings
+                return f'ROUND(ABS("account_move_line"."{field}"), "account_move_line__currency_id"."decimal_places")', [field]
+        return super()._read_group_groupby(groupby_spec, query)
+
+    def _read_group_having(self, having_domain, query):
+        """ EXTENDS 'base'
+        Allows to use HAVING clause that sum rounded values depending on the currency precision settings.
+        We only handle a having clause of one element with that specific method :sum_rounded.
+        """
+        if having_domain and 'sum_rounded' in str(having_domain):
+            left, operator, right = having_domain[0]
+            if ':' in left:
+                fname, func = left.split(':')
+                if fname in self and func == 'sum_rounded':  # fname in self avoids possible injections
+                    field_expression = self._inherits_join_calc(self._table, fname, query)
+                    query.left_join('account_move_line', 'currency_id', 'res_currency', 'id', 'currency_id')
+                    return f'SUM(ROUND({field_expression}, "account_move_line__currency_id"."decimal_places")) {operator} %s', [right], [fname]
+        return super()._read_group_having(having_domain, query)

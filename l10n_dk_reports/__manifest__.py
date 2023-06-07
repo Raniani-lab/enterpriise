@@ -12,12 +12,20 @@
 Accounting reports for Denmark
 =================================
     """,
-    'depends': ['l10n_dk', 'account_reports'],
+    'depends': [
+        'l10n_dk',
+        'account_reports',
+        'account_saft',
+    ],
     'data': [
         'data/balance_sheet.xml',
         'data/profit_loss.xml',
         'data/account_report_ec_sales_list_report.xml',
+        'data/saft_report.xml',
     ],
-    'auto_install': ['l10n_dk', 'account_reports'],
+    'auto_install': [
+        'l10n_dk',
+        'account_reports',
+    ],
     'license': 'OEEL-1',
 }

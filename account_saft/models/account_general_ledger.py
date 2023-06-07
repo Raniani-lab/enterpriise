@@ -176,6 +176,7 @@ class AccountGeneralLedger(models.AbstractModel):
                 tax.amount_type AS tax_amount_type,
                 {tax_name} AS tax_name,
                 tax.amount AS tax_amount,
+                tax.create_date AS tax_create_date,
                 SUM(tax_detail.tax_amount) AS amount,
                 SUM(tax_detail.tax_amount) AS amount_currency
             FROM ({tax_details_query}) AS tax_detail
@@ -196,6 +197,7 @@ class AccountGeneralLedger(models.AbstractModel):
                 'amount': tax_vals['tax_amount'],
                 'amount_type': tax_vals['tax_amount_type'],
                 'type': tax_vals['tax_type'],
+                'create_date': tax_vals['tax_create_date']
             })
 
         # Fill 'tax_vals_list'.

@@ -84,6 +84,7 @@ class TestHrReferral(TestHrReferralBase):
         self.assertEqual(self.red_mug_shop.points_missing, self.red_mug_shop.cost, "10 points are missing")
 
     def test_referral_no_hired_stage(self):
+        self.env.ref('hr_recruitment.stage_job0').use_in_referral = False
         self.env.ref('hr_recruitment.stage_job3').use_in_referral = False
         stage_parking_1 = self.env['hr.recruitment.stage'].create({
             'name': 'parking1',
@@ -104,8 +105,10 @@ class TestHrReferral(TestHrReferralBase):
             'description': 'A nice applicant!',
             'job_id': self.job_dev.id,
             'ref_user_id': self.richard_user.id,
-            'company_id': self.company_1.id
+            'company_id': self.company_1.id,
+            'stage_id': self.env.ref('hr_recruitment.stage_job1').id,
         })
+
         self.assertEqual(self.job_dev.max_points, 85, "Max points for this job is 85 (points for the 3 'not hired stage' are ignored).")
         self.assertEqual(job_applicant.earned_points, self.env.ref('hr_recruitment.stage_job1').points, "Richard received points corresponding to the first stage.")
         self.assertEqual(len(job_applicant.referral_points_ids), 1, "Richard received points corresponding to the first stage.")
@@ -170,13 +173,15 @@ class TestHrReferral(TestHrReferralBase):
             'description': 'A nice applicant!',
             'job_id': self.job_dev.id,
             'ref_user_id': self.richard_user.id,
-            'company_id': self.company_1.id
+            'company_id': self.company_1.id,
+            'stage_id': self.env.ref('hr_recruitment.stage_job1').id,
         })
+
         info_dashboard = json.loads(job_applicant.shared_item_infos)
-        self.assertEqual([x['done'] for x in info_dashboard], [True, False, False, False, False, False, False])
+        self.assertEqual([x['done'] for x in info_dashboard], [True, True, False, False, False, False, False, False])
         job_applicant.stage_id = stage_parking_2
         info_dashboard = json.loads(job_applicant.shared_item_infos)
-        self.assertEqual([x['done'] for x in info_dashboard], [True, True, True, True, True, True, False], "parking1 and parking2 should be marked as done")
+        self.assertEqual([x['done'] for x in info_dashboard], [True, True, True, True, True, True, True, False], "parking1 and parking2 should be marked as done")
         job_applicant.stage_id = stage_parking_1
         info_dashboard = json.loads(job_applicant.shared_item_infos)
-        self.assertEqual([x['done'] for x in info_dashboard], [True, True, True, True, True, False, False], 'parking2 should not be marked as done anymore')
+        self.assertEqual([x['done'] for x in info_dashboard], [True, True, True, True, True, True, False, False], 'parking2 should not be marked as done anymore')

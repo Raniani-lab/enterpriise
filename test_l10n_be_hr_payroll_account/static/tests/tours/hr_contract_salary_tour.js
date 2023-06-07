@@ -372,7 +372,7 @@ registry.category("web_tour.tours").add('hr_contract_salary_tour', {
         {
             content: "Email",
             trigger: 'input[name="email"]',
-            run: 'text mitchell.stephen@example.com',
+            run: 'text nathalie.stephen@example.com',
         },
         {
             content: "Phone Number",
@@ -834,7 +834,7 @@ registry.category("web_tour.tours").add('hr_contract_salary_tour_2', {
         {
             content: "Add Email Address",
             trigger: '.o_group [name="email_from"] input',
-            run: 'text mitchell.stephen@example.com',
+            run: 'text mitchell2.stephen@example.com',
         },
         {
             content: "Confirm Applicant Creation",
@@ -1082,7 +1082,7 @@ registry.category("web_tour.tours").add('hr_contract_salary_tour_2', {
         {
             content: "Email",
             trigger: 'input[name="email"]',
-            run: 'text mitchell.stephen@example.com',
+            run: 'text mitchell2.stephen@example.com',
         },
         {
             content: "Phone Number",

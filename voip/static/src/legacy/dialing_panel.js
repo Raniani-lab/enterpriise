@@ -113,7 +113,10 @@ export const DialingPanel = Widget.extend({
          * so that errors triggered during the initialization of the user agent
          * using sip_error are caught.
          */
-        this.env.services["voip.user_agent"].init(new UserAgent(this));
+        this.env.services["mail.messaging"].isReady.then(() => {
+            // wait for VOIP configuration being fetched
+            this.env.services["voip.user_agent"].init(new UserAgent(this));
+        });
         core.bus.on("transfer_call", this, this._onTransferCall);
         this.voip.bus.addEventListener("toggle-softphone-display", this._onToggleSoftphoneDisplay);
 

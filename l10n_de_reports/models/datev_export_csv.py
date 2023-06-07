@@ -81,9 +81,10 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
                     # cannot set date_from on move as domain depends on the move line account if "strict_range" is False
                 domain += report._get_options_journals_domain(options)
                 moves = self.env['account.move'].search(domain)
+                set_move_line_ids = set(move_line_ids)
                 zf.writestr('EXTF_accounting_entries.csv', self._l10n_de_datev_get_csv(options, moves))
-                zf.writestr('EXTF_customer_accounts.csv', self._l10n_de_datev_get_partner_list(options, customer=True))
-                zf.writestr('EXTF_vendor_accounts.csv', self._l10n_de_datev_get_partner_list(options, customer=False))
+                zf.writestr('EXTF_customer_accounts.csv', self._l10n_de_datev_get_partner_list(options, set_move_line_ids, customer=True))
+                zf.writestr('EXTF_vendor_accounts.csv', self._l10n_de_datev_get_partner_list(options, set_move_line_ids, customer=False))
                 if options.get('add_attachments'):
                     # add all moves attachments in zip file, this is not part of DATEV specs
                     slash_re = re.compile('[\\/]')
@@ -118,7 +119,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             client_number = 999
         return [consultant_number, client_number]
 
-    def _l10n_de_datev_get_partner_list(self, options, customer=True):
+    def _l10n_de_datev_get_partner_list(self, options, move_line_ids, customer=True):
         date_to = fields.Date.from_string(options.get('date').get('date_to'))
         fy = self.env.company.compute_fiscalyear_dates(date_to)
 
@@ -132,13 +133,6 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']
         header = ['Konto', 'Name (AdressatentypUnternehmen)', 'Name (Adressatentypnatürl. Person)', '', '', '', 'Adressatentyp']
         lines = [preheader, header]
-
-        move_line_ids = set()
-        report = self.env['account.report'].browse(options['report_id'])
-        for line in report.with_context(print_mode=True)._get_lines({**options, 'unfold_all': True}):
-            model, model_id = report._parse_line_id(line['id'])[-1][-2:]
-            if model == 'account.move.line':
-                move_line_ids.add(str(model_id))
 
         if len(move_line_ids):
             if customer:
@@ -227,14 +221,6 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
         preheader = ['EXTF', 510, 21, 'Buchungsstapel', 7, '', '', '', '', '', datev_info[0], datev_info[1], fy, account_length,
             date_from, date_to, '', '', '', '', 0, 'EUR', '', '', '', '', '', '', '', '', '']
         header = ['Umsatz (ohne Soll/Haben-Kz)', 'Soll/Haben-Kennzeichen', 'WKZ Umsatz', 'Kurs', 'Basis-Umsatz', 'WKZ Basis-Umsatz', 'Konto', 'Gegenkonto (ohne BU-Schlüssel)', 'BU-Schlüssel', 'Belegdatum', 'Belegfeld 1', 'Belegfeld 2', 'Skonto', 'Buchungstext']
-
-        # if we do _get_lines with some unfolded lines, only those will be returned, but we want all of them
-        move_line_ids = []
-        report = self.env['account.report'].browse(options['report_id'])
-        for line in report._get_lines({**options, 'unfold_all': True}):
-            model, model_id = report._parse_line_id(line['id'])[-1][-2:]
-            if model == 'account.move.line':
-                move_line_ids.append(int(model_id))
 
         lines = [preheader, header]
 

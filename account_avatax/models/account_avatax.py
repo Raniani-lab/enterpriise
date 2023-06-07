@@ -141,6 +141,24 @@ class AccountAvatax(models.AbstractModel):
         """Get a transaction reference."""
         return self.name or ''
 
+    def _get_avatax_address_from_partner(self, partner):
+        """Returns a dict containing the values required for an avatax address
+        """
+        if partner.partner_latitude and partner.partner_longitude:
+            res = {
+                'latitude': partner.partner_latitude,
+                'longitude': partner.partner_longitude,
+            }
+        else:
+            res = {
+                'city': partner.city,
+                'country': partner.country_id.code,
+                'region': partner.state_id.code,
+                'postalCode': partner.zip,
+                'line1': partner.street,
+            }
+        return res
+
     def _get_avatax_addresses(self, partner):
         """Get the addresses related to a partner.
 
@@ -148,31 +166,9 @@ class AccountAvatax(models.AbstractModel):
         :return (dict): the AddressesModel to return to Avatax
         """
         res = {
-            'shipFrom': {
-                'city': self.company_id.partner_id.city,
-                'country': self.company_id.partner_id.country_id.code,
-                'region': self.company_id.partner_id.state_id.code,
-                'postalCode': self.company_id.partner_id.zip,
-                'line1': self.company_id.partner_id.street,
-            },
+            'shipFrom': self._get_avatax_address_from_partner(self.company_id.partner_id),
+            'shipTo': self._get_avatax_address_from_partner(partner),
         }
-        if partner.partner_latitude and partner.partner_longitude:
-            res.update({
-                'shipTo': {
-                    'latitude': partner.partner_latitude,
-                    'longitude': partner.partner_longitude,
-                },
-            })
-        else:
-            res.update({
-                'shipTo': {
-                    'city': partner.city,
-                    'country': partner.country_id.code,
-                    'region': partner.state_id.code,
-                    'postalCode': partner.zip,
-                    'line1': partner.street,
-                },
-            })
         return res
 
     def _get_avatax_taxes(self, commit):

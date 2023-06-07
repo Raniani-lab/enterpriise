@@ -61,14 +61,14 @@ export async function setupCollaborativeEnv(serverData) {
     const alice = new Model(model.exportData(), {
         custom: {
             env,
-            dataSources: new DataSources(env.services.orm),
+            dataSources: new DataSources(env),
         },
         transportService: network,
         client: { id: "alice", name: "Alice" },
     });
     const bob = new Model(model.exportData(), {
         custom: {
-            dataSources: new DataSources(env.services.orm),
+            dataSources: new DataSources(env),
             env,
         },
         transportService: network,
@@ -76,7 +76,7 @@ export async function setupCollaborativeEnv(serverData) {
     });
     const charlie = new Model(model.exportData(), {
         custom: {
-            dataSources: new DataSources(env.services.orm),
+            dataSources: new DataSources(env),
             env,
         },
         transportService: network,

@@ -10,6 +10,7 @@ import { loadJS } from "@web/core/assets";
 import { dialogService } from "@web/core/dialog/dialog_service";
 import { hotkeyService } from "@web/core/hotkeys/hotkey_service";
 import { ormService } from "@web/core/orm_service";
+import { nameService } from "@web/core/name_service";
 import { registry } from "@web/core/registry";
 import { uiService } from "@web/core/ui/ui_service";
 import { makeFakeSpreadsheetService } from "@spreadsheet_edition/../tests/utils/collaborative_helpers";
@@ -30,6 +31,7 @@ export async function prepareWebClientForSpreadsheet() {
     serviceRegistry.add("hotkey", hotkeyService);
     serviceRegistry.add("dialog", dialogService);
     serviceRegistry.add("ui", uiService);
+    serviceRegistry.add("name", nameService);
     serviceRegistry.add("orm", ormService);
     serviceRegistry.add("bus_service", busService);
     serviceRegistry.add("bus.parameters", busParametersService);

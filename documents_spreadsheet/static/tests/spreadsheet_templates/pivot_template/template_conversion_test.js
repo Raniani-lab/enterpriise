@@ -43,9 +43,9 @@ QUnit.module("documents_spreadsheet > pivot_templates", {}, function () {
     QUnit.test(
         "Dispatch template command is not allowed if cache is not loaded",
         async function (assert) {
-            const { model: m1 } = await createSpreadsheetWithPivot();
+            const { model: m1, env } = await createSpreadsheetWithPivot();
             const model = new Model(m1.exportData(), {
-                custom: { dataSources: new DataSources(m1.config.custom.dataSources._orm) },
+                custom: { dataSources: new DataSources(env) },
             });
             assert.deepEqual(model.dispatch("CONVERT_PIVOT_TO_TEMPLATE").reasons, [
                 CommandResult.PivotCacheNotLoaded,
@@ -452,7 +452,7 @@ QUnit.module("documents_spreadsheet > pivot_templates", {}, function () {
             await model.getters.getPivotDataSource("1").prepareForTemplateGeneration();
             model.dispatch("CONVERT_PIVOT_TO_TEMPLATE");
             serverData.models.partner.records = [];
-            const data = await convertFromSpreadsheetTemplate(env.services.orm, model.exportData());
+            const data = await convertFromSpreadsheetTemplate(env, model.exportData());
             const cells = data.sheets[0].cells;
             assert.equal(cells.A4.content, "=ODOO.PIVOT.HEADER(1)");
             assert.equal(cells.B1.content, '=ODOO.PIVOT.HEADER(1,"foo",1)');

@@ -104,7 +104,7 @@ export class AbstractSpreadsheetAction extends Component {
     }
 
     createModel() {
-        const dataSources = new DataSources(this.orm);
+        const dataSources = new DataSources(this.env);
         dataSources.addEventListener("data-source-updated", () => {
             const sheetId = this.model.getters.getActiveSheetId();
             this.model.dispatch("EVALUATE_CELLS", { sheetId });

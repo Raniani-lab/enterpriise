@@ -7,13 +7,13 @@ import { migrate } from "@spreadsheet/o_spreadsheet/migration";
 /**
  * Convert PIVOT functions from relative to absolute.
  *
- * @param {object} orm
+ * @param {import("@web/env").OdooEnv} env
  * @param {object} data
  * @returns {Promise<object>} spreadsheetData
  */
-export async function convertFromSpreadsheetTemplate(orm, data) {
+export async function convertFromSpreadsheetTemplate(env, data) {
     const model = new Model(migrate(data), {
-        custom: { dataSources: new DataSources(orm) },
+        custom: { dataSources: new DataSources(env) },
     });
     await model.config.custom.dataSources.waitForAllLoaded();
     const proms = [];

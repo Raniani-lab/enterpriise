@@ -14,7 +14,7 @@
       <TransactionLine>
         <SocialPeriod>202110</SocialPeriod>
         <Accounting>
-          <Account>4530</Account>
+          <Account>12345</Account>
           <Label>Withholding Taxes</Label>
           <Amount>
             <Debit>0.00</Debit>
@@ -36,7 +36,7 @@
       <TransactionLine>
         <SocialPeriod>202110</SocialPeriod>
         <Accounting>
-          <Account>618000</Account>
+          <Account>440000</Account>
           <Label>Remuneration</Label>
           <Amount>
             <Debit>15655.10</Debit>

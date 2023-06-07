@@ -1,10 +1,11 @@
-# -*- encoding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, _
-from odoo.exceptions import UserError
-from lxml import etree
 import io
+
+from lxml import etree
+
+from odoo import _, models
+from odoo.exceptions import UserError
 
 
 class AccountJournal(models.Model):
@@ -30,7 +31,24 @@ class AccountJournal(models.Model):
 
     def _l10n_be_parse_soda_file(self, attachments):
         self.ensure_one()
-        moves = self.env['account.move']
+        # We keep a dict mapping the SODA reference to a dict with a list of `entries` and an `attachment_id`
+        # {
+        #     'soda_reference_1': {
+        #         'entries': [
+        #             {
+        #                 'code': '1200',
+        #                 'name': 'Line Description',
+        #                 'debit': '150.0',
+        #                 'credit': '0.0',
+        #             },
+        #             ...
+        #         ],
+        #         'attachment_id': 'attachment_id_1',
+        #     },
+        #     ...
+        # }
+        soda_files = {}
+        soda_code_to_name_mapping = {}
         for attachment in attachments:
             parsed_attachment = etree.parse(io.BytesIO(attachment.raw))
             # The document VAT number must match the journal's company's VAT number
@@ -48,58 +66,35 @@ class AccountJournal(models.Model):
             existing_move = self.env['account.move'].search([('ref', '=', ref)])
             if existing_move.id:
                 raise UserError(_('The entry %s has already been uploaded (%s).', ref, existing_move.name))
-            # Retrieve aml's infos
-            lines_content = []
-            for index, elem in enumerate(parsed_attachment.findall('.//%s' % 'Label')):
-                lines_content.append({})
-                lines_content[index]['Label'] = elem.text
-            for info in ['Debit', 'Credit']:
-                for index, elem in enumerate(parsed_attachment.findall('.//%s' % info)):
-                    lines_content[index][info] = float(elem.text)
-            # Retrieve the account, create it if need be
-            for index, account_code in enumerate(parsed_attachment.findall('.//Account')):
-                journal_company_id = self.company_id.id
-                account = self.env['account.account'].search([('code', '=', account_code.text), ('company_id', '=', journal_company_id)], limit=1)
-                if not account:
-                    account = self.env['account.account'].create({
-                        'code': account_code.text,
-                        'name': '',
-                        'company_id': self.company_id.id,
-                    })
-                lines_content[index]['Account'] = account
-            # create the move
-            move_vals = {
-                'move_type': 'entry',
-                'journal_id': self.id,
-                'ref': ref,
-                'line_ids': [(0, 0, {
-                    'name': line['Label'],
-                    'account_id': line['Account'].id,
-                    'debit': line['Debit'],
-                    'credit': line['Credit'],
-                }) for line in lines_content]
+            soda_files[ref] = {
+                'entries': [],
+                'attachment_id': attachment.id,
             }
-            move = self.env['account.move'].create(move_vals)
-            move.message_post(attachment_ids=[attachment.id])
-            attachment.write({'res_model': 'account.move', 'res_id': move.id})
-            moves += move
+            # Retrieve aml's infos
+            for _idx, elem in enumerate(parsed_attachment.findall('.//Accounting')):
+                code = elem.find('./Account').text
+                name = elem.find('./Label').text
+                soda_files[ref]['entries'].append({
+                    'code': code,
+                    'name': name,
+                    'debit': float(elem.find('./Amount/Debit').text),
+                    'credit': float(elem.find('./Amount/Credit').text),
+                })
+                soda_code_to_name_mapping[code] = name
 
-        action_vals = {
-            'res_model': 'account.move',
+        wizard = self.env['soda.import.wizard'].create({
+            'soda_files': soda_files,
+            'soda_code_to_name_mapping': soda_code_to_name_mapping,
+            'company_id': self.company_id.id,
+            'journal_id': self.id,
+        })
+        return {
+            'name': _('SODA Import'),
             'type': 'ir.actions.act_window',
-            'context': self._context,
+            'views': [(False, 'form')],
+            'view_mode': 'form',
+            'view_id': self.env.ref('l10n_be_soda.soda_import_wizard_view_form').id,
+            'res_model': 'soda.import.wizard',
+            'res_id': wizard.id,
+            'target': 'new',
         }
-        if len(moves) == 1:
-            action_vals.update({
-                'domain': [('id', '=', moves[0].ids)],
-                'views': [[False, "form"]],
-                'view_mode': 'form',
-                'res_id': moves[0].id,
-            })
-        else:
-            action_vals.update({
-                'domain': [('id', 'in', moves.ids)],
-                'views': [[False, "list"], [False, "kanban"], [False, "form"]],
-                'view_mode': 'list, kanban, form',
-            })
-        return action_vals

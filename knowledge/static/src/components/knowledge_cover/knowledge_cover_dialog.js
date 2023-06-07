@@ -130,7 +130,7 @@ export class KnowledgeCoverDialog extends Component {
     setup() {
         this.size = 'xl';
         this.contentClass = 'o_select_media_dialog';
-        this.title = _t("Select a cover");
+        this.title = _t("Choose a nice cover");
     }
 
     /**

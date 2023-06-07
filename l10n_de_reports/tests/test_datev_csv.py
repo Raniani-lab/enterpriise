@@ -433,3 +433,35 @@ class TestDatevCSV(AccountTestInvoicingCommon):
         self.assertEqual(2, len(data), "csv should have 2 lines")
         self.assertIn(['100,00', 'h', 'EUR', '16000000', '49800000', '112', move.name, move.name], data)
         self.assertIn(['100,00', 'h', 'EUR', '15000000', '49800000', '112', move.name, move.name], data)
+
+    def test_datev_all_aml_present(self):
+        report = self.env.ref('account_reports.general_ledger_report')
+        report.load_more_limit = 3
+        options = report._get_options()
+        options['date'].update({
+            'date_from': '2020-01-01',
+            'date_to': '2020-12-31',
+        })
+
+        for _dummy in range(5):
+            move = self.env['account.move'].create([{
+                'move_type': 'out_invoice',
+                'partner_id': self.env['res.partner'].create({'name': 'Res Partner 12'}).id,
+                'invoice_date': fields.Date.to_date('2020-12-01'),
+                'invoice_line_ids': [
+                    (0, None, {
+                        'price_unit': 100,
+                        'account_id': self.account_4980.id,
+                        'tax_ids': [(6, 0, self.tax_19.ids)],
+                    }),
+                ]
+            }])
+            move.action_post()
+
+        self.env.flush_all()
+        zf = zipfile.ZipFile(BytesIO(self.env[report.custom_handler_model_name].l10n_de_datev_export_to_zip(options)['file_content']), 'r')
+        self.addCleanup(zf.close)
+        csv = zf.open('EXTF_accounting_entries.csv')
+        reader = pycompat.csv_reader(csv, delimiter=';', quotechar='"', quoting=2)
+        data = [line for line in reader]
+        self.assertEqual(7, len(data), "csv should have 5 (+2 header) lines")

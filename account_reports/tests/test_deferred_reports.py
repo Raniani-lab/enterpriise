@@ -577,6 +577,84 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
                 'credit': expected_credit,
             }])
 
+    def test_deferred_expense_report_accounting_date(self):
+        """
+        Test that the accounting date is taken into account for the deferred expense report.
+        """
+        self.company.deferred_amount_computation_method = 'month'
+        self.company.generate_deferred_entries_method = 'manual'
+        handler = self.env['account.deferred.expense.report.handler']
+        move = self.create_invoice('in_invoice', self.company_data['default_journal_purchase'], self.partner_a, [self.expense_lines[0]], post=False)
+        move.date = '2023-02-15'
+        move.action_post()
+
+        # In january, the move is not accounted yet (accounting date is in 15 Feb), so nothing should be displayed.
+        options = self.get_options('2023-01-01', '2023-01-31')
+        lines = self.deferred_expense_report._get_lines(options)
+        self.assertLinesValues(
+            lines,
+            #   Name       Total        Before      Current     Later
+            [   0,         1,           2,          3,          4       ],
+            [],
+            options,
+        )
+        # Nothing should be generated either.
+        with self.assertRaisesRegex(UserError, 'No entry to generate.'):
+            handler.action_generate_entry(options)
+
+        # In Feb, the move is accounted, so it should be displayed.
+        options = self.get_options('2023-02-01', '2023-02-28')
+        lines = self.deferred_expense_report._get_lines(options)
+        self.assertLinesValues(
+            lines,
+            #   Name                Total        Before      Current     Later
+            [   0,                  1,           2,          3,          4       ],
+            [
+                ('EXP0 Expense 0',  1000,        250,        250,        500     ),
+                ('TOTALS',          1000,        250,        250,        500     ),
+            ],
+            options,
+        )
+
+        # Same in March.
+        options = self.get_options('2023-03-01', '2023-03-31')
+        lines = self.deferred_expense_report._get_lines(options)
+        self.assertLinesValues(
+            lines,
+            #   Name                Total        Before      Current     Later
+            [   0,                  1,           2,          3,          4       ],
+            [
+                ('EXP0 Expense 0',  1000,        500,        250,        250     ),
+                ('TOTALS',          1000,        500,        250,        250     ),
+            ],
+            options,
+        )
+
+        # Same in April.
+        options = self.get_options('2023-04-01', '2023-04-30')
+        lines = self.deferred_expense_report._get_lines(options)
+        self.assertLinesValues(
+            lines,
+            #   Name                Total        Before      Current     Later
+            [   0,                  1,           2,          3,          4     ],
+            [
+                ('EXP0 Expense 0',  1000,        750,        250,        ''    ),
+                ('TOTALS',          1000,        750,        250,        ''    ),
+            ],
+            options,
+        )
+
+        # In May, the move is accounted and fully deferred, so it should not be displayed.
+        options = self.get_options('2023-05-01', '2023-05-31')
+        lines = self.deferred_expense_report._get_lines(options)
+        self.assertLinesValues(
+            lines,
+            #   Name                Total        Before      Current     Later
+            [   0,                  1,           2,          3,          4     ],
+            [],
+            options,
+        )
+
     def test_deferred_expense_generate_grouped_entries_method(self):
         """
         Test the Generate entries button on the deferred expense report.

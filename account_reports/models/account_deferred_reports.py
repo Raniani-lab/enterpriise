@@ -61,8 +61,9 @@ class DeferredReportCustomHandler(models.AbstractModel):
             raise UserError(_("Please set the deferred journal in the accounting settings."))
         lines = self._get_lines(options, filter_already_generated=True)
         period = (fields.Date.from_string('1900-01-01'), fields.Date.from_string(options['date']['date_to']))
-        ref = _("Grouped Deferral Entry of %s", options['date']['string'])
-        ref_rev = _("Reversal of Grouped Deferral Entry of %s", options['date']['string'])
+        deferral_entry_period = self.env['account.report']._get_dates_period(*period, 'range', period_type='month')
+        ref = _("Grouped Deferral Entry of %s", deferral_entry_period['string'])
+        ref_rev = _("Reversal of Grouped Deferral Entry of %s", deferral_entry_period['string'])
         deferred_account = self.env.company.deferred_expense_account_id if self._get_deferred_report_type() == 'expense' else self.env.company.deferred_revenue_account_id
         move_lines, original_move_ids = self._get_deferred_lines(lines, deferred_account, period, self._get_deferred_report_type() == 'expense', ref)
         if not move_lines:
@@ -138,6 +139,7 @@ class DeferredReportCustomHandler(models.AbstractModel):
                     {max_deferred_date} IS NULL
                     OR {max_deferred_date} < %(date_to)s
                )
+               AND move.date <= %(date_to)s
                AND
                (
                    (
@@ -215,6 +217,7 @@ class DeferredReportCustomHandler(models.AbstractModel):
                 'account_id': deferred_account.id,
                 'debit': deferred_amounts_totals['amount_total'] - deferred_amounts_totals[period] if is_reverse else 0,
                 'credit': deferred_amounts_totals['amount_total'] - deferred_amounts_totals[period] if not is_reverse else 0,
+                'name': ref,
             })
         ]
         return lines + deferred_line, original_move_ids

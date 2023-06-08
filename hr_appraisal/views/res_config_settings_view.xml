@@ -16,6 +16,9 @@
                         </setting>
                     </block>
                     <block title="Appraisals">
+                        <div class="alert alert-warning" role="alert" attrs="{'invisible':[('appraisal_plan','=',False)]}">
+                            When the Appraisals plan is saved, it will overwrite all empty Next Appraisal Dates for every employee.
+                        </div>
                         <setting string="Appraisals Plans" company_dependent="1" help="Automatically generate appraisals">
                             <field name="appraisal_plan"/>
                             <div attrs="{'invisible': [('appraisal_plan','=',False)]}" class="mt8">

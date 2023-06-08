@@ -93,8 +93,9 @@
                                         <h3>Employee's Feedback</h3>
                                         <div class="h-100" attrs="{'invisible': [('state', '=', 'done')]}">
                                             <span class="text-end" attrs="{'invisible': [('employee_feedback_published', '=', True)]}">Not Visible to Manager</span>
-                                            <span class="text-end" attrs="{'invisible': [('employee_feedback_published', '=', False)]}">Visible to Manager</span>
-                                            <field name="employee_feedback_published" nolabel="1" widget="boolean_toggle_confirm" class="ms-2 me-0"/>
+                                            <span class="text-end" attrs="{'invisible': [('employee_feedback_published', '=', False)]}">Visible &amp; Editable by Manager</span>
+                                            <field name="employee_feedback_published" nolabel="1" widget="boolean_toggle_confirm"
+                                                attrs="{'invisible': &quot;[('state', '=', 'new'), ('employee_user_id', '=', uid)]&quot;}" class="ms-2 me-0"/>
                                         </div>
                                     </div>
                                     <div class="col-12 o_appraisal_input position-relative">

@@ -75,8 +75,8 @@ class HrAppraisal(models.Model):
     show_employee_feedback_full = fields.Boolean(compute='_compute_show_employee_feedback_full')
     manager_feedback = fields.Html(compute='_compute_manager_feedback', store=True, readonly=False)
     show_manager_feedback_full = fields.Boolean(compute='_compute_show_manager_feedback_full')
-    employee_feedback_published = fields.Boolean(string="Employee Feedback Published", tracking=True)
-    manager_feedback_published = fields.Boolean(string="Manager Feedback Published", tracking=True)
+    employee_feedback_published = fields.Boolean(string="Employee Feedback Published", default=True, tracking=True)
+    manager_feedback_published = fields.Boolean(string="Manager Feedback Published", default=True, tracking=True)
     can_see_employee_publish = fields.Boolean(compute='_compute_buttons_display')
     can_see_manager_publish = fields.Boolean(compute='_compute_buttons_display')
     assessment_note = fields.Many2one('hr.appraisal.note', string="Final Rating", help="This field is not visible to the Employee.", domain="[('company_id', '=', company_id)]")
@@ -102,7 +102,9 @@ class HrAppraisal(models.Model):
         user_employee = self.env.user.employee_id
         is_manager = self.env.user.user_has_groups('hr_appraisal.group_hr_appraisal_user')
         for appraisal in self:
-            appraisal.can_see_employee_publish = user_employee == appraisal.employee_id
+            # Appraisal manager can edit feedback in draft state
+            appraisal.can_see_employee_publish = (user_employee == appraisal.employee_id) or \
+                (user_employee.id in appraisal.manager_ids.ids and appraisal.state == 'new')
             appraisal.can_see_manager_publish = user_employee.id in appraisal.manager_ids.ids
         for appraisal in self - new_appraisals:
             if is_manager and not appraisal.can_see_employee_publish and not appraisal.can_see_manager_publish:
@@ -246,7 +248,10 @@ class HrAppraisal(models.Model):
 
                 self.env['mail.mail'].sudo().create(mail_values)
 
-                if employee.user_id:
+                from_cron = 'from_cron' in self.env.context
+                # When cron creates appraisal, it creates specific activities
+                # In this case, no need to create activities, not to be repetitive
+                if employee.user_id and not from_cron:
                     appraisal.activity_schedule(
                         'mail.mail_activity_data_todo', appraisal.date_close,
                         summary=_('Appraisal Form to Fill'),
@@ -261,9 +266,15 @@ class HrAppraisal(models.Model):
     def create(self, vals_list):
         appraisals = super().create(vals_list)
         appraisals_to_send = self.env['hr.appraisal']
+        current_date = datetime.date.today()
         for appraisal, vals in zip(appraisals, vals_list):
             if vals.get('state') and vals['state'] == 'pending':
                 appraisals_to_send |= appraisal
+            if vals.get('state') and vals['state'] == 'new':
+                appraisal.employee_id.sudo().write({
+                    'last_appraisal_id': appraisal.id,
+                    'last_appraisal_date': current_date,
+                })
         appraisals_to_send.send_appraisal()
         appraisals.subscribe_employees()
         return appraisals
@@ -288,15 +299,19 @@ class HrAppraisal(models.Model):
             for appraisal in self:
                 appraisal.employee_id.sudo().write({
                     'last_appraisal_id': appraisal.id,
-                    'last_appraisal_date': current_date})
+                    'last_appraisal_date': current_date,
+                })
         if 'state' in vals and vals['state'] == 'pending':
             for appraisal in self:
                 if appraisal.state != 'done':
+                    vals['employee_feedback_published'] = False
+                    vals['manager_feedback_published'] = False
                     appraisal.activity_feedback(['mail.mail_activity_data_meeting', 'mail.mail_activity_data_todo'])
                     appraisal.send_appraisal()
         if 'state' in vals and vals['state'] == 'done':
             vals['employee_feedback_published'] = True
             vals['manager_feedback_published'] = True
+            vals['date_close'] = current_date
             self.activity_feedback(['mail.mail_activity_data_meeting', 'mail.mail_activity_data_todo'])
             self._appraisal_plan_post()
             body = _("The appraisal's status has been set to Done by %s", self.env.user.name)
@@ -332,6 +347,39 @@ class HrAppraisal(models.Model):
                 body = _('Thanks to your Appraisal Plan, without any new manual Appraisal, the new Appraisal will be automatically created on %s.', formated_date)
                 appraisal._message_log(body=body, author_id=odoobot.id)
                 appraisal.appraisal_plan_posted = True
+
+    def _generate_activities(self):
+        today = fields.Date.today()
+        for appraisal in self:
+            employee = appraisal.employee_id
+            managers = appraisal.manager_ids
+            last_appraisal_months = employee.last_appraisal_date and (
+                today.year - employee.last_appraisal_date.year)*12 + (today.month - employee.last_appraisal_date.month)
+            if employee.user_id:
+                # an appraisal has been just created
+                if employee.appraisal_count == 1:
+                    months = (appraisal.date_close.year - employee.create_date.year) * \
+                        12 + (appraisal.date_close.month - employee.create_date.month)
+                    note = _("You arrived %s months ago. Your appraisal is created and you can fill it here.") % (months)
+                else:
+                    note = _("Your last appraisal was %s months ago. Your appraisal is created and you can fill it here.") % (
+                        last_appraisal_months)
+                appraisal.with_context(mail_activity_quick_update=True).activity_schedule(
+                    'mail.mail_activity_data_todo', today,
+                    summary=_('Appraisal to fill'),
+                    note=note, user_id=employee.user_id.id)
+                for manager in managers.filtered('user_id'):
+                    if employee.appraisal_count == 1:
+                        note = escape(_("The employee %s arrived %s months ago. The appraisal is created and you can fill it here.")) % (
+                            employee._get_html_link(), months)
+                    else:
+                        note = escape(_(" The last appraisal of %s was %s months ago. The appraisal is created and you can fill it here.")) % (
+                            appraisal.employee_id._get_html_link(), last_appraisal_months)
+                    appraisal.with_context(mail_activity_quick_update=True).activity_schedule(
+                        'mail.mail_activity_data_todo', today,
+                        summary=_('Appraisal for %s to fill') % (
+                            employee.name),
+                        note=note, user_id=manager.user_id.id)
 
     def _sync_meeting_attendees(self, manager_ids):
         for appraisal in self.filtered('meeting_ids'):

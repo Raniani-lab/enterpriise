@@ -12,12 +12,14 @@
                 type="object"
                 data-hotkey="g"
                 groups="!hr_appraisal.group_hr_appraisal_user"
-                class="btn btn-primary" attrs="{'invisible': &quot;[('parent_user_id', '!=', uid)]&quot;}"/>
+                class="btn btn-primary"
+                attrs="{'invisible': &quot;[('parent_user_id', '!=', uid), ('ongoing_appraisal_count','!=', 0)]&quot;}"/>
             <button name="action_send_appraisal_request"
                 string="Request Appraisal"
                 type="object"
                 data-hotkey="g"
                 groups="hr_appraisal.group_hr_appraisal_user"
+                attrs="{'invisible': &quot;[('ongoing_appraisal_count','!=', 0)]&quot;}"
                 class="btn btn-primary"/>
         </xpath>
             <xpath expr="//field[@name='work_email']" position="after">

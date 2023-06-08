@@ -5,24 +5,29 @@ import datetime
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError
 
 class HrEmployee(models.Model):
     _inherit = "hr.employee"
 
     next_appraisal_date = fields.Date(
-        string='Next Appraisal Date', compute='_compute_next_appraisal_date', groups="hr.group_hr_user",
+        string='Next Appraisal Date', compute='_compute_next_appraisal_date', groups="hr.group_hr_user", readonly=False, store=True,
         help="The date of the next appraisal is computed by the appraisal plan's dates (first appraisal + periodicity).")
     last_appraisal_date = fields.Date(
         string='Last Appraisal Date', groups="hr.group_hr_user",
-        help="The date of the last appraisal",
-        default=fields.Date.today)
+        help="The date of the last appraisal")
     related_partner_id = fields.Many2one('res.partner', compute='_compute_related_partner', groups="hr.group_hr_user")
     ongoing_appraisal_count = fields.Integer(compute='_compute_ongoing_appraisal_count', store=True, groups="hr.group_hr_user")
     appraisal_count = fields.Integer(compute='_compute_appraisal_count', store=True, groups="hr.group_hr_user")
     uncomplete_goals_count = fields.Integer(compute='_compute_uncomplete_goals_count')
     appraisal_ids = fields.One2many('hr.appraisal', 'employee_id')
     employee_autocomplete_ids = fields.Many2many('hr.employee', compute='_compute_employee_autocomplete_ids')
+
+    @api.constrains('next_appraisal_date')
+    def _check_next_appraisal_date(self):
+        today = fields.Date.today()
+        if not self.env.context.get('install_mode') and any(employee.next_appraisal_date and employee.next_appraisal_date < today for employee in self):
+            raise ValidationError(_("You cannot set 'Next Appraisal Date' in the past."))
 
     @api.depends_context('uid')
     def _compute_employee_autocomplete_ids(self):
@@ -55,7 +60,7 @@ class HrEmployee(models.Model):
         for employee in self:
             employee.uncomplete_goals_count = result.get(employee.id, 0)
 
-    @api.depends('ongoing_appraisal_count')
+    @api.depends('ongoing_appraisal_count', 'company_id.appraisal_plan')
     def _compute_next_appraisal_date(self):
         self.filtered('ongoing_appraisal_count').next_appraisal_date = False
         employees_without_appraisal = self.filtered(lambda e: e.ongoing_appraisal_count == 0)
@@ -64,17 +69,23 @@ class HrEmployee(models.Model):
             employee.next_appraisal_date = dates[employee.id]
 
     def _upcoming_appraisal_creation_date(self):
-        days = int(self.env['ir.config_parameter'].sudo().get_param('hr_appraisal.appraisal_create_in_advance_days', 8))
-        today = datetime.date.today()
+        today = fields.Date.today()
         dates = {}
         for employee in self:
             if employee.appraisal_count == 0:
-                month = employee.company_id.duration_after_recruitment
+                months = employee.company_id.duration_after_recruitment
                 starting_date = employee._get_appraisal_plan_starting_date() or today
             else:
-                month = employee.company_id.duration_first_appraisal if employee.appraisal_count == 1 else employee.company_id.duration_next_appraisal
+                months = employee.company_id.duration_first_appraisal if employee.appraisal_count == 1 else employee.company_id.duration_next_appraisal
                 starting_date = employee.last_appraisal_date
-            dates[employee.id] = (starting_date or today) + relativedelta(months=month, days=-days)
+
+            if starting_date:
+                # In case proposed next_appraisal_date is in the past, start counting from now
+                starting_date = starting_date.date() if isinstance(starting_date, datetime.datetime) else starting_date
+                original_next_appraisal_date = starting_date + relativedelta(months=months)
+                dates[employee.id] = original_next_appraisal_date if original_next_appraisal_date >= today else today + relativedelta(months=months)
+            else:
+                dates[employee.id] = today + relativedelta(months=months)
         return dates
 
     def _get_appraisal_plan_starting_date(self):

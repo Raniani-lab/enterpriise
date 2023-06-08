@@ -239,7 +239,7 @@ QUnit.module('invoice_extract_form_view_tests.js', {
         // ---------- Date ----------
 
         // Focus the field
-        await triggerEvent(document, '.o_field_widget[name=invoice_date] input', 'focusin');
+        await triggerEvent(document, '.o_field_widget[name=invoice_date] .o_datepicker_input', 'focusin');
 
         // Check boxes presence for date
         assert.strictEqual(attachmentPreview.querySelectorAll('.o_invoice_extract_box').length, 3,
@@ -255,7 +255,7 @@ QUnit.module('invoice_extract_form_view_tests.js', {
         // ---------- Due date ----------
 
         // Focus the field
-        await triggerEvent(document, '.o_field_widget[name=invoice_date_due] input', 'focusin');
+        await triggerEvent(document, '.o_field_widget[name=invoice_date_due] .o_datepicker_input', 'focusin');
 
         // Check boxes presence for due date
         assert.strictEqual(attachmentPreview.querySelectorAll('.o_invoice_extract_box').length, 2,

@@ -313,13 +313,15 @@ class Applicant(models.Model):
             '|', ('date_from', '<=', today), ('date_from', '=', False),
             '|', ('date_to', '>', today), ('date_to', '=', False)])
 
-        action_name = 'hr_referral.action_hr_job_employee_referral'
-        result['message'] = [{
-            'id': message.id,
-            'text': message.name,
-            'action': action_name if message.onclick == 'all_jobs' else False,
-            'url': message.url if message.onclick == 'url' else False
-        } for message in messages]
+        result['message'] = []
+        for message in messages:
+            msg = {'id': message.id,
+                   'text': message.name}
+            if message.onclick == 'url':
+                msg['url'] = message.url
+            elif message.onclick == 'all_jobs':
+                msg['url'] = '/web#%s' % url_encode({'action': 'hr_referral.action_hr_job_employee_referral'})
+            result['message'].append(msg)
 
         return result
 

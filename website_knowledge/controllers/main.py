@@ -54,22 +54,22 @@ class KnowledgeWebsiteController(KnowledgeController):
 
     def _prepare_articles_tree_html_values(self, active_article_id=False, unfolded_articles_ids=False, unfolded_favorite_articles_ids=False):
         """ This override filters out the articles that should not be displayed
-        in the tree panel once publish management is activated. """
+        in the tree panel once publish management is activated.
+        "Shared articles" are articles which have the current user as member
+        "Public articles" are workspace articles that are published
+        """
         values = super()._prepare_articles_tree_html_values(
             active_article_id=active_article_id,
             unfolded_articles_ids=unfolded_articles_ids,
             unfolded_favorite_articles_ids=unfolded_favorite_articles_ids
         )
-        # With website_published, published shared article are accessible for
-        # everyone. We need to check if the user is member of the article.
-        values.update({
-            'shared_articles': values['shared_articles'].filtered(lambda a: a.user_has_access)
-        })
-        if not request.env.user._is_public():
-            return values
+
+        shared_articles = values['root_articles'].filtered(lambda a: a.user_has_access)
+        public_articles = (values['root_articles'] - shared_articles).filtered(lambda a: a.website_published and a.category == 'workspace')
 
         values.update({
-            'public_articles': values['workspace_articles'].filtered(lambda a: a.website_published)
+            'shared_articles': shared_articles,
+            'public_articles': public_articles,
         })
         return values
 

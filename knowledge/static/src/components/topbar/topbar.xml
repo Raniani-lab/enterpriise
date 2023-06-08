@@ -19,17 +19,8 @@
                         </li>
                     </t>
                     <li t-if="this.props.record.data.id" class="breadcrumb-item d-flex align-items-center active min-w-0 text-nowrap overflow-hidden">
-                        <div class="o_knowledge_icon pe-1" t-if="props.record.data.icon">
-                            <div class="o_article_emoji_dropdown">
-                                <a class="o_article_emoji o-no-caret" t-on-click="env.showEmojiPicker" href="#"
-                                t-if="!this.props.record.data.is_locked and this.props.record.data.user_can_write and this.props.record.data.active">
-                                    <t t-out="props.record.data.icon"/>
-                                </a>
-                            </div>
-                            <span class="o_article_emoji o-no-caret" t-if="props.record.data.is_locked || !props.record.data.user_can_write || !props.record.data.active">
-                                <t t-out="props.record.data.icon"/>
-                            </span>
-                        </div>
+                        <KnowledgeIcon t-if="props.record.data.active" record="props.record" iconClasses="'me-1'"
+                            readonly="props.record.data.is_locked || !props.record.data.user_can_write"/>
                         <div t-if="!this.props.record.data.user_can_write || this.props.record.data.is_locked" class="text-truncate mx-1">
                             <t t-if="this.props.record.data.name" t-out="this.props.record.data.name" />
                             <t t-else="">Untitled</t>
@@ -58,7 +49,7 @@
                 <!-- Icon and Cover buttons -->
                 <div class="d-flex gap-1 o_knowledge_add_buttons" t-if="props.record.data.id and props.record.data.active and !props.record.data.is_locked and props.record.data.user_can_write">
                     <button class="btn btn-light text-nowrap o_knowledge_add_icon" t-if="!props.record.data.icon"
-                        t-on-mousedown.prevent="env.addIcon">
+                        t-on-mousedown.prevent="addIcon">
                         <i class="fa fa-fw fs-6 fa-smile-o me-1" title="Add icon"/>
                         <span class="d-none d-lg-inline">Add icon</span>
                         <span class="d-lg-none">Icon</span>
@@ -94,8 +85,7 @@
                             <t t-else="">Members</t>
                         </a>
                         <div role="menu" t-on-click.stop="" aria-labelledby="dropdown_share_panel" t-attf-class="o_knowledge_share_panel dropdown-menu user-select-none">
-                            <PermissionPanel t-if="state.displaySharePanel and props.record.data.id and props.record.data.active"
-                                record="props.record" article_id="props.record.data.id" user_permission="props.record.data.user_permission" renderTree="this.env._renderTree" />
+                            <PermissionPanel t-if="state.displaySharePanel and props.record.data.id and props.record.data.active" record="props.record"/>
                         </div>
                     </div>
                     <a role="button" class="btn btn-light o_knowledge_toggle_favorite" t-on-click="env.toggleFavorite" t-if="props.record.data.id" data-hotkey="t">

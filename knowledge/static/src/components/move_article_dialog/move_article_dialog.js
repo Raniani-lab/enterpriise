@@ -17,29 +17,28 @@ class MoveArticleDialog extends Component {
         onMounted(() => this.initSelect2());
     }
 
-    _onMoveArticleClick() {
+    async _onMoveArticleClick() {
         const $input = $(this.input.el);
-        if (!$input.select2('data')){
+        if (!$input.select2('data')) {
             // return if no data selected in select2
             return;
         }
         const selected = $input.select2('data').id;
-        const params = { article_id: this.props.articleId };
+        const params = {};
         if (typeof selected === 'number') {
-            params.target_parent_id = selected;
+            params.parent_id = selected;
         } else {
-            params.newCategory = selected;
-            params.oldCategory = this.props.category;
+            params.category = selected;
         }
-
-        this.props.moveArticle({...params,
-            onSuccess: () => {
-                this.props.close();
-                // ADSC: maybe remove when tree component
-                this.props.reloadTree(this.props.articleId, '/knowledge/tree_panel');
-            },
-            onReject: () => {}
-        });
+        await this.orm.call(
+            'knowledge.article',
+            'move_to',
+            [this.props.record.resId],
+            params
+        );
+        // Reload the current article to apply changes
+        await this.props.record.model.load();
+        this.props.close();
     }
 
     get loggedUserPicture() {
@@ -83,7 +82,7 @@ class MoveArticleDialog extends Component {
                     const results = await this.orm.call(
                         'knowledge.article',
                         'get_valid_parent_options',
-                        [this.props.articleId],
+                        [this.props.record.resId],
                         { search_term: term }
                     );
                     params.success({ term, results });
@@ -164,11 +163,7 @@ MoveArticleDialog.template = "knowledge.MoveArticleDialog";
 MoveArticleDialog.components = { Dialog };
 MoveArticleDialog.props = {
     close: Function,
-    articleName: String,
-    articleId: Number,
-    category: String,
-    moveArticle: Function,
-    reloadTree: Function,
+    record: Object
 };
 
 export default MoveArticleDialog;

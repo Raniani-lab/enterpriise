@@ -9,7 +9,7 @@ from markupsafe import Markup
 from PIL import Image
 from unittest import skipIf
 from odoo import fields
-from odoo.tests.common import tagged, HttpCase
+from odoo.tests.common import tagged, HttpCase, users
 from odoo.addons.mail.tests.common import MailCommon
 
 
@@ -25,32 +25,6 @@ class TestKnowledgeUICommon(HttpCase, MailCommon):
 
 @tagged('post_install', '-at_install', 'knowledge', 'knowledge_tour')
 class TestKnowledgeUI(TestKnowledgeUICommon):
-
-    def test_knowledge_load_more(self):
-        """ The goal of this tour is to test the behavior of the 'load more' feature.
-        Sub-trees of the articles are loaded max 50 by 50.
-
-        The parent articles are hand-picked with specific index because it allows testing
-        that we force the display of the parents of the active article. """
-
-        root_articles = self.env['knowledge.article'].create([{
-            'name': 'Root Article %i' % index,
-            'is_article_visible_by_everyone': True,
-        } for index in range(153)])
-
-        children_articles = self.env['knowledge.article'].create([{
-            'name': 'Child Article %i' % index,
-            'parent_id': root_articles[103].id,
-            'is_article_visible_by_everyone': True,
-        } for index in range(254)])
-
-        self.env['knowledge.article'].create([{
-            'name': 'Grand-Child Article %i' % index,
-            'parent_id': children_articles[203].id,
-            'is_article_visible_by_everyone': True,
-        } for index in range(344)])
-
-        self.start_tour('/web', 'knowledge_load_more_tour', login='admin', step_delay=100)
 
     def test_knowledge_load_template(self):
         """This tour will check that the user can create a new article by using
@@ -234,6 +208,69 @@ class TestKnowledgeUI(TestKnowledgeUICommon):
         self.env['knowledge.article'].create([{'name': 'Article 1'}])
         self.start_tour('/web', 'knowledge_search_favorites_tour', login='admin', step_delay=100)
 
+    @users('admin')
+    def test_knowledge_sidebar(self):
+        # This tour checks that the features of the sidebar work as expected
+        self.start_tour('/web', 'knowledge_sidebar_tour', login='admin', timeout=100)
+
+        # Check section create button and artice icon button
+        workspace_article = self.env['knowledge.article'].search([('name', '=', 'Workspace Article')])
+        self.assertTrue(bool(workspace_article))
+        self.assertEqual(workspace_article.category, 'workspace')
+        self.assertFalse(workspace_article.parent_id)
+        self.assertEqual(workspace_article.icon, '🥵')
+
+        # Check article create and icon buttons
+        workspace_child = self.env['knowledge.article'].search([('name', '=', 'Workspace Child')])
+        self.assertEqual(workspace_child.parent_id, workspace_article)
+        self.assertEqual(workspace_child.icon, '😬')
+        self.assertTrue(workspace_child.is_user_favorite)
+
+        # Check drag and drop to trash
+        shared_article = self.env['knowledge.article'].with_context(active_test=False).search([('name', '=', 'Shared Article')])
+        self.assertTrue(bool(shared_article))
+        self.assertEqual(shared_article.category, 'shared')
+        self.assertFalse(shared_article.active)
+
+        # Check favorites resequencing
+        private_article = self.env['knowledge.article'].search([('name', '=', 'Private Article')])
+        self.assertTrue(bool(private_article))
+        self.assertEqual(private_article.category, 'private')
+        self.assertFalse(private_article.parent_id)
+        self.assertGreater(private_article.user_favorite_sequence, workspace_child.user_favorite_sequence)
+
+        # Check articles resequencing and article icon button
+        private_children = private_article.child_ids.sorted('sequence')
+        self.assertEqual(private_children[0].name, 'Private Child 3')
+        self.assertEqual(private_children[0].icon, '🥶')
+        self.assertEqual(private_children[1].name, 'Private Child 4')
+        self.assertEqual(private_children[2].name, 'Private Child 1')
+
+        # Check drag and drop to other section
+        moved_to_share = self.env['knowledge.article'].with_context(active_test=False).search([('name', '=', 'Moved to Share')])
+        self.assertTrue(bool(moved_to_share))
+        self.assertEqual(moved_to_share.parent_id, shared_article)
+        self.assertEqual(moved_to_share.category, 'shared')
+        self.assertFalse(moved_to_share.active)
+
+        # Check drag and drop to root and to trash
+        private_child_2 = self.env['knowledge.article'].with_context(active_test=False).search([('name', '=', 'Private Child 2')])
+        self.assertTrue(bool(private_child_2))
+        self.assertFalse(private_child_2.parent_id)
+        self.assertGreater(private_child_2.sequence, private_article.sequence)
+        self.assertFalse(private_child_2.active)
+
+        # Check that some features are restricted with read only articles
+        private_article.write({
+            'internal_permission': 'read',
+            'is_article_visible_by_everyone': True,
+            'sequence': workspace_article.sequence+1,
+        })
+        self.start_tour('/web', 'knowledge_sidebar_readonly_tour', login='demo')
+
+        # Check that articles did not move
+        self.assertFalse(workspace_article.parent_id)
+        self.assertGreater(private_article.sequence, workspace_article.sequence)
 
 @tagged('external', 'post_install', '-at_install')
 @skipIf(not os.getenv("UNSPLASH_APP_ID") or not os.getenv("UNSPLASH_ACCESS_KEY"), "no unsplash credentials")

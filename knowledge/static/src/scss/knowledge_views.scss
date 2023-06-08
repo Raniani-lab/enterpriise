@@ -1,4 +1,4 @@
-.o_knowledge_form_view {
+.o_knowledge_article_view_form_view {
 
     --editor-gutter-size: 2rem;
 
@@ -60,23 +60,21 @@
 
     // = Sidebar
     // --------------------------------------------------------------------------
-    .o_section .o_tree {
-        min-height: 2rem;
-    }
+    .o_knowledge_sidebar {
+        transition: width 0.15s linear;
 
-    .ui-sortable-placeholder {
-        height: 5px;
-        background-color: rgba($knowledge-bg--active, 0.7);
-    }
+        .o_scroll_view {
+            max-height: 100%;
+        }
 
-    .ui-sortable-handle {
-        display: block;
-    }
-    .o_no_root_placeholder .o_tree > .ui-sortable-placeholder {
-        display: none;
-    }
+        .o_section .o_tree {
+            min-height: 2rem;
+        }
 
-    .o_knowledge_aside {
+        .o_knowledge_tree {
+            user-select: none;
+        }
+
         .o_article_emoji_dropdown {
             > a {
                 width: 1.5em;
@@ -88,7 +86,7 @@
             display: inline-block;
         }
 
-        .o_article:not(.ui-sortable-helper) > div {
+        .o_article:not(.o_dragged) > div {
             &.o_article_active > div {
                 background-color: rgba($knowledge-bg--active, 0.2);
                 &:hover {
@@ -123,7 +121,7 @@
             }
         }
 
-        .o_article.ui-sortable-helper {
+        .o_article.o_dragged {
             .o_article_handle {
                 background-color: transparent !important;
             }
@@ -134,6 +132,8 @@
             z-index: 0;
         }
 
+        .o_section_header:not(:hover) .o_section_create,
+        .o_section_header:not(:hover) .o_knowledge_join_article_members,
         .o_article_handle > div:not(:hover) .o_article_create {
             visibility: hidden;
         }
@@ -145,8 +145,24 @@
         .o_article_name a {
             color: inherit;
         }
-        .o_knowledge_management_tools {
+
+        .o_knowledge_sidebar_trash {
+            ul {
+                display: none;
+            }
             bottom: 0px;
+        }
+
+        .o_knowledge_tree.o_dragging {
+            .o_knowledge_sidebar_trash {
+                &:hover > div {
+                    outline: solid 3px deepskyblue;
+                    pointer-events: none;
+                }
+            }
+            li >:not(ul) {
+                pointer-events: none;
+            }
         }
     }
 
@@ -332,19 +348,17 @@
 
 @include media-breakpoint-up(sm) {
     .o_knowledge_form_view {
-        .o_overlap_cover {
-            margin-bottom: -90px !important;
-            .o_article_emoji {
-                position:relative;
-                top:-70px;
+        .o_scroll_view {
+            // Make icon overwrap the cover
+            .o_widget_knowledge_cover + .o_field_knowledge_icon {
+                margin-bottom: -80px !important;
+                .o_article_emoji {
+                    position:relative;
+                    top: -50px;
+                }
             }
-        }
-        .o_knowledge_icon {
-            &.o_large {
-                font-size: 80px;
-            }
-            &.o_field_empty {
-                min-height: 0px !important;
+            .o_field_knowledge_icon.o_large {
+                    font-size: 80px;
             }
         }
     }
@@ -362,15 +376,15 @@
             .o_knowledge_backdrop {
                 display: none;
             }
-            .o_knowledge_aside {
+            .o_knowledge_sidebar {
                 transform: translateX(-100%);
             }
         }
-        .o_knowledge_aside,
+        .o_knowledge_sidebar,
         .o_knowledge_main {
             transition: transform .2s ease;
         }
-        .o_knowledge_aside {
+        .o_knowledge_sidebar {
             @include o-position-absolute(0, 50px, 0, 0);
             width: auto;
             z-index: 1;
@@ -386,7 +400,7 @@
 }
 
 @media (hover: hover) { // Devices supporting hover
-    .o_knowledge_form_view {
+    .o_knowledge_article_view_form_view {
         .o_knowledge_edit_cover_buttons,
         .o_knowledge_add_buttons {
             transition: opacity 0.3s ease-in-out;
@@ -398,6 +412,9 @@
         .o_section_header:not(:hover) .o_section_create,
         .o_section_header:not(:hover) .o_knowledge_join_article_members {
             visibility: hidden;
+        }
+        .o_article_handle > div:not(:hover) .o_article_create {
+            display: none;
         }
     }
 }

@@ -1,6 +1,7 @@
 /** @odoo-module **/
 import config from "web.config";
 import { formatDateTime } from '@web/core/l10n/dates';
+import { loadEmoji } from '@mail/emoji_picker/emoji_picker';
 import { registry } from '@web/core/registry';
 import { standardWidgetProps } from '@web/views/widgets/standard_widget_props';
 import { useService } from '@web/core/utils/hooks';
@@ -9,7 +10,8 @@ import { useOpenChat } from "@mail/web/open_chat_hook";
 
 import { Component, onWillStart, useEffect, useRef, useState } from '@odoo/owl';
 
-import MoveArticleDialog from "@knowledge/components/move_article_dialog/move_article_dialog";
+import KnowledgeIcon from '@knowledge/components/knowledge_icon/knowledge_icon';
+import MoveArticleDialog from '@knowledge/components/move_article_dialog/move_article_dialog';
 import PermissionPanel from '@knowledge/components/permission_panel/permission_panel';
 
 
@@ -113,6 +115,17 @@ class KnowledgeTopbar extends Component {
         event.target.classList.remove('disabled');
     }
 
+    /**
+     * Add a random icon to the article.
+     * @param {Event} event
+     */
+    async addIcon(event) {
+        const { emojis } = await loadEmoji();
+        const randomEmojis = emojis.filter(emoji => !['💩', '💀', '☠️', '🤮', '🖕', '🤢', '😒'].includes(emoji.codepoints));
+        const icon = randomEmojis[Math.floor(Math.random() * randomEmojis.length)].codepoints;
+        this.props.record.update({icon});
+    }
+
     _setDates() {
         if (this.props.record.data.create_date && this.props.record.data.last_edition_date) {
             this.state.createDate = this.props.record.data.create_date.toRelative();
@@ -162,17 +175,9 @@ class KnowledgeTopbar extends Component {
     /**
      * Show the Dialog allowing to move the current article.
      */
-    onMoveArticleClick() {
-        this.dialog.add(
-            MoveArticleDialog,
-            {
-                articleName: this.props.record.data.name,
-                articleId: this.props.record.data.id,
-                category: this.props.record.data.category,
-                moveArticle: this.env._moveArticle.bind(this),
-                reloadTree: this.env._renderTree.bind(this),
-            }
-        );
+    async onMoveArticleClick() {
+        await this.env._saveIfDirty();
+        this.dialog.add(MoveArticleDialog, {record: this.props.record});
     }
 
     /**
@@ -203,8 +208,6 @@ class KnowledgeTopbar extends Component {
      */
     async setIsArticleItem(newArticleItemStatus) {
         await this.props.record.update({is_article_item: newArticleItemStatus});
-        await this.props.record.save({stayInEdition: true});
-        this.env._renderTree(this.props.record.data.id, '/knowledge/tree_panel');
     }
 
     async deleteArticle() {
@@ -249,6 +252,7 @@ KnowledgeTopbar.props = {
     ...standardWidgetProps,
 };
 KnowledgeTopbar.components = {
+    KnowledgeIcon,
     PermissionPanel,
 };
 export const knowledgeTopbar = {

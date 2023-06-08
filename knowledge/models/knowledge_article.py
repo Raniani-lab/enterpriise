@@ -1130,11 +1130,9 @@ class Article(models.Model):
 
     def action_unarchive_article(self):
         """ Called by the archive action from the form view action menu.
-        When restoring an article, we need to reload the form view (to refresh
-        the hierarchy tree) on the target article."""
+        """
         self.ensure_one()
         self.action_unarchive()
-        return self.action_home_page()
 
     def action_unarchive(self):
         """ When unarchiving
@@ -2464,3 +2462,75 @@ class Article(models.Model):
         return super().get_empty_list_help(
             f'<p class="o_view_nocontent_smiling_face">{title}</p><p>{description}</p>'
         )
+
+    def get_visible_articles(self, root_articles_ids, unfolded_ids):
+        """ Get the articles that are visible in the sidebar with the given
+        root articles and unfolded ids.
+
+        An article is visible if it is a root article, or if it is a child
+        article (not item) of an unfolded visible article.
+        """
+        if root_articles_ids:
+            visible_articles_domain = [
+            '|',
+                ('id', 'in', root_articles_ids),
+                '&',
+                    '&',
+                        ('parent_id', 'in', unfolded_ids),
+                        ('id', 'child_of', root_articles_ids),  # Don't fetch hidden unfolded
+                    ('is_article_item', '=', False)
+            ]
+
+            return self.env['knowledge.article'].search(
+                visible_articles_domain,
+                order='sequence, id',
+            )
+        return self.env['knowledge.article']
+
+    def get_sidebar_articles(self, unfolded_ids=False):
+        """ Get the data used by the sidebar on load in the form view.
+        It returns some information from every article that is accessible by
+        the user and that is either:
+            - a visible root article
+            - a favorite article or a favorite item (for the current user)
+            - the current article (except if it is a descendant of a hidden
+              root article or of an non accessible article - but even if it is
+              a hidden root article)
+            - an ancestor of the current article, if the current article is
+              shown
+            - a child article of any unfolded article that is shown
+        """
+
+        # Fetch root article_ids as sudo, ACLs will be checked on next global call fetching 'all_visible_articles'
+        # this helps avoiding 2 queries done for ACLs (and redundant with the global fetch)
+        root_articles_ids = self.env['knowledge.article'].sudo().search(
+            [("parent_id", "=", False), ("is_article_visible", "=", True)]
+        ).ids
+        favorite_articles_ids = self.env['knowledge.article.favorite'].sudo().search(
+            [("user_id", "=", self.env.user.id), ('is_article_active', '=', True)]
+        ).article_id.ids
+
+        # Add favorite articles and items (they are root articles in the
+        # favorite tree)
+        root_articles_ids += favorite_articles_ids
+
+        if unfolded_ids is False:
+            unfolded_ids = []
+
+        # Add active article and its parents in list of unfolded articles
+        if self.is_article_visible:
+            if self.parent_id:
+                unfolded_ids += self._get_ancestor_ids()
+        # If the current article is a hidden root article, show the article
+        elif not self.parent_id and self.id:
+            root_articles_ids += [self.id]
+
+        all_visible_articles = self.get_visible_articles(root_articles_ids, unfolded_ids)
+
+        return {
+            "articles": all_visible_articles.read(
+                ['name', 'icon', 'parent_id', 'category', 'is_locked', 'user_can_write', 'is_user_favorite', 'is_article_item', 'has_article_children'],
+                None,  # To not fetch the name of parent_id
+            ),
+            "favorite_ids": favorite_articles_ids,
+        }

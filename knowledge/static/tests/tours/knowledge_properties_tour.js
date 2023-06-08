@@ -2,7 +2,7 @@
 
 import { registry } from "@web/core/registry";
 import { stepUtils } from "@web_tour/tour_service/tour_utils";
-import { moveArticle } from './knowledge_main_flow_tour';
+import { dragAndDropArticle } from './knowledge_tour_utils';
 
 registry.category("web_tour.tours").add('knowledge_properties_tour', {
     test: true,
@@ -32,20 +32,18 @@ registry.category("web_tour.tours").add('knowledge_properties_tour', {
     run: 'click'
 }, { // modify property name
     trigger: '.o_field_property_definition_header input',
-    run: 'text myproperty',
-}, { // finish property edition
+    run: 'text_blur myproperty',
+}, { // verify property and finish property edition
     trigger: '.o_knowledge_editor .odoo-editor-editable',
+    extra_trigger: '.o_field_property_label:contains("myproperty")',
     run: 'click',
-}, { // verify property
-    trigger: '.o_field_property_label:contains("myproperty")',
-    run: () => {},
 }, { // go to InheritPropertiesArticle
     trigger: '.o_article .o_article_name:contains("InheritPropertiesArticle")',
     run: 'click',
 }, { // wait InheritPropertiesArticle loading and move InheritPropertiesArticle under ParentArticle
     trigger: '.breadcrumb .active:contains("InheritPropertiesArticle")',
     run: () => {
-        moveArticle(
+        dragAndDropArticle(
             $('.o_article_handle:contains("InheritPropertiesArticle")'),
             $('.o_article_handle:contains("ChildArticle")'),
         );

@@ -101,7 +101,7 @@ registry.category("web_tour.tours").add('knowledge_cover_selector_tour', {
     run: 'text odoo',
 }, {
     // Go back to previous article
-    trigger: '.o_knowledge_aside .o_article_name:contains("Birds")',
+    trigger: '.o_knowledge_sidebar .o_article_name:contains("Birds")',
     extra_trigger: '.o_article_active:contains("odoo")',
 }, {
     // Check that the cover is still positioned at the top and make the replace
@@ -129,8 +129,8 @@ registry.category("web_tour.tours").add('knowledge_cover_selector_tour', {
     allowInvisible: true,
 }, {
     // Check cover has been removed from the article and open other article
-    trigger: '.o_knowledge_aside .o_article_name:contains("odoo")',
-    extra_trigger: '.o_widget_knowledge_cover:not(:has(.o_knowledge_cover))',
+    trigger: '.o_knowledge_sidebar .o_article_name:contains("odoo")',
+    extra_trigger: '.o_knowledge_body:not(:has(.o_widget_knowledge_cover))',
 }, {
     // Make the add cover button visible
     trigger: '.o_article_active:contains("odoo")',
@@ -147,7 +147,7 @@ registry.category("web_tour.tours").add('knowledge_cover_selector_tour', {
     trigger: '.modal-body .o_existing_attachment_cell img[title="odoo_logo.png"]',
 }, {
     // Check cover has been set, and open previous article again
-    trigger: '.o_knowledge_aside .o_article_name:contains("Birds")',
+    trigger: '.o_knowledge_sidebar .o_article_name:contains("Birds")',
     extra_trigger: '.o_knowledge_cover',
 }, {
     // Make the add cover button visible
@@ -183,9 +183,9 @@ registry.category("web_tour.tours").add('knowledge_cover_selector_tour', {
 }, {
     // Open other article to check that its cover has been removed since it has
     // been deleted
-    trigger: '.o_knowledge_aside .o_article_name:contains("odoo")',
+    trigger: '.o_knowledge_sidebar .o_article_name:contains("odoo")',
 }, {
-    trigger: '.o_widget_knowledge_cover:not(:has(.o_knowledge_cover))',
+    trigger: '.o_knowledge_body:not(:has(.o_widget_knowledge_cover))',
     extra_trigger: '.o_article_active:contains("odoo")',
     allowInvisible: true,
 }]});

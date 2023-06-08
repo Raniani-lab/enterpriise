@@ -1,6 +1,7 @@
 // Note: although this class is called "_form_view", it's used on the public frontend page
 // and not in the backend. See 'knowledge_templates_frontend.xml'.
 .o_knowledge_form_view {
+    --knowledge-article-sidebar-size: 300px;
     // Header
     // --------------------------------------------------------------------------
     .o_knowledge_header {
@@ -35,9 +36,30 @@
         font-size: 80px;
     }
 
+    // = Resizer
+    // --------------------------------------------------------------------------
+    .o_knowledge_article_form_resizer {
+        // Use '$spacers' measures to match surrounding elements padding
+        $-resizer-spacing: map-get($spacers, 1);
+        $-resizer-line-width: map-get($spacers, 1);
+
+        @include o-position-absolute(0, auto, 0, $-resizer-spacing * -1);
+
+        span {
+            @include o-position-absolute(0, auto, 0, $-resizer-spacing + ($-resizer-line-width * -0.5));
+        }
+    }
+
     // Sidebar
     // --------------------------------------------------------------------------
-    .o_knowledge_aside {
+    .o_knowledge_sidebar {
+        width: clamp(200px, var(--knowledge-article-sidebar-size), 576px);
+        transition: width 0.15s linear;
+
+        .ui-sortable-placeholder {
+            height: 5px;
+            background-color: rgba($knowledge-bg--active, 0.7);
+        }
 
         // Force same style in portal and website
         font-size: 1rem;
@@ -74,7 +96,7 @@
 
 @include media-breakpoint-down(sm) {
     .o_knowledge_form_view {
-        .o_knowledge_aside {
+        .o_knowledge_sidebar {
             width: 100%;
         }
     }

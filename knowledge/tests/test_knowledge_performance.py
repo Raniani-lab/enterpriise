@@ -159,3 +159,33 @@ class KnowledgePerformancePermissionCase(KnowledgeArticlePermissionsCase):
         with self.assertQueryCount(employee=4):
             for article in self.article_read_contents[1:3]:
                 article.with_user(self.env.user).user_has_access_parent_path
+
+
+@tagged('knowledge_performance', 'post_install', '-at_install')
+class KnowledgePerformanceSidebarCase(KnowledgeCommonWData):
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+
+        cls.wkspace_grand_children = cls.env['knowledge.article'].create([{
+            'name': 'Workspace Grand-Child',
+            'parent_id': cls.workspace_children[0].id,
+        }] * 2)
+
+    @users('employee')
+    @warmup
+    def test_article_tree_panel(self):
+        with self.assertQueryCount(employee=23):
+            self.wkspace_grand_children[0].with_user(self.env.user.id).get_sidebar_articles([self.article_shared.id])
+
+    @users('employee')
+    @warmup
+    def test_article_tree_panel_w_favorites(self):
+        self.env['knowledge.article.favorite'].create([{
+            'user_id': self.env.user.id,
+            'article_id': article_id
+        } for article_id in (self.workspace_children | self.wkspace_grand_children).ids])
+
+        with self.assertQueryCount(employee=20):
+            self.wkspace_grand_children[0].with_user(self.env.user.id).get_sidebar_articles([self.article_shared.id])

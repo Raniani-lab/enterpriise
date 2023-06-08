@@ -14,7 +14,7 @@ class AccountPayment(models.Model):
         action_values = self.env['ir.actions.act_window']._for_xml_id('account_accountant.action_move_line_posted_unreconciled')
         if self.partner_id:
             context = ast.literal_eval(action_values['context'])
-            context.append({'search_default_partner_id': self.partner_id.id})
+            context.update({'search_default_partner_id': self.partner_id.id})
             if self.partner_type == 'customer':
                 context.update({'search_default_trade_receivable': 1})
             elif self.partner_type == 'supplier':

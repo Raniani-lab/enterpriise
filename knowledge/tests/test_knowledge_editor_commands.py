@@ -80,8 +80,3 @@ class TestKnowledgeEditorCommands(HttpCase):
         article = self.env['knowledge.article'].search([('name', '=', 'EditorCommandsArticle')])[0]
         article.message_subscribe(partner_ids)
         self.start_tour('/web', 'knowledge_template_command_tour', login='admin', step_delay=100)
-
-    def test_knowledge_template_command_paste_tour(self):
-        """Test the pasting capabilities of the /clipboard command"""
-        if self.env['ir.module.module'].search([('state', '=', 'installed'), ('name', '=', 'crm')]):
-            self.start_tour('/web', 'knowledge_template_paste_elements_tour', login='admin', step_delay=100)

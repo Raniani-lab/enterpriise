@@ -47,5 +47,5 @@ registry.category("web_tour.tours").add('helpdesk_pick_template_as_description_f
     trigger: '.o_knowledge_behavior_type_template .o_knowledge_toolbar_button_text:contains("Use as Description")',
     run: 'click',
 }, { // check that the description contains content of the template block
-    trigger: '.o_form_sheet .o_field_html p:contains("Hello world")',
+    trigger: '.o_form_sheet .o_field_html .note-editable > p:contains("Hello world")',
 }]});

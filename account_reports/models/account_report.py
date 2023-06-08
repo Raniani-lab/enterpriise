@@ -18,7 +18,7 @@ from babel.dates import get_quarter_names
 from dateutil.relativedelta import relativedelta
 
 from odoo.addons.web.controllers.utils import clean_action
-from odoo import models, fields, api, _, osv
+from odoo import models, fields, api, _, osv, _lt
 from odoo.exceptions import RedirectWarning, UserError, ValidationError
 from odoo.tools import config, date_utils, get_lang, float_compare, float_is_zero
 from odoo.tools.float_utils import float_round
@@ -1890,6 +1890,8 @@ class AccountReport(models.Model):
             if hasattr(handler, function_name):
                 return getattr(handler, function_name)
 
+        if not hasattr(self, function_name):
+            raise UserError(_("Invalid method %r", function_name))
         # Call the check method without the private prefix to check for others security risks.
         return getattr(self, function_name)
 
@@ -2105,8 +2107,10 @@ class AccountReport(models.Model):
             for details in expressions_detail.values():
                 details.sort(key=lambda x: x[0])
             sorted_expressions_detail = sorted(expressions_detail.items(), key=lambda x: x[0])
-
-            rslt['debug_popup_data'] = json.dumps({'expressions_detail': sorted_expressions_detail})
+            try:
+                rslt['debug_popup_data'] = json.dumps({'expressions_detail': sorted_expressions_detail})
+            except TypeError:
+                raise UserError(_("Invalid subformula in expression %r of line %r: %s", expression.label, expression.report_line_id.name, expression.subformula))
 
         return rslt
 
@@ -2398,6 +2402,7 @@ class AccountReport(models.Model):
         def inject_formula_results(formula_results, column_group_expression_totals, cross_report_expression_totals=None):
             for (_key, expressions), result in formula_results.items():
                 for expression in expressions:
+                    subformula_error_format = _lt("Invalid subformula in expression %r of line %r: %s", expression.label, expression.report_line_id.name, expression.subformula)
                     if expression.engine not in ('aggregation', 'external') and expression.subformula:
                         # aggregation subformulas behave differently (cross_report is markup ; if_below, if_above and force_between need evaluation)
                         # They are directly handled in aggregation engine
@@ -2413,11 +2418,17 @@ class AccountReport(models.Model):
                         expression_value = []
                         expression_has_sublines = False
                         for key, result_dict in result:
-                            expression_value.append((key, safe_eval(result_value_key, result_dict)))
+                            try:
+                                expression_value.append((key, safe_eval(result_value_key, result_dict)))
+                            except (ValueError, SyntaxError):
+                                raise UserError(subformula_error_format)
                             expression_has_sublines = expression_has_sublines or result_dict.get('has_sublines')
                     else:
                         # For non-groupby lines, we directly set the total value for the line.
-                        expression_value = safe_eval(result_value_key, result)
+                        try:
+                            expression_value = safe_eval(result_value_key, result)
+                        except (ValueError, SyntaxError):
+                            raise UserError(subformula_error_format)
                         expression_has_sublines = result.get('has_sublines')
 
                     expression_result = {
@@ -2837,7 +2848,10 @@ class AccountReport(models.Model):
         rslt = {}
 
         for formula, expressions in formulas_dict.items():
-            line_domain = literal_eval(formula)
+            try:
+                line_domain = literal_eval(formula)
+            except (ValueError, SyntaxError):
+                raise UserError(_("Invalid domain formula in expression %r of line %r: %s", expressions.label, expressions.report_line_id.name, formula))
             tables, where_clause, where_params = self._query_get(options, date_scope, domain=line_domain)
 
             tail_query, tail_params = self._get_engine_query_tail(offset, limit)

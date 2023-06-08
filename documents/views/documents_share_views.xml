@@ -115,6 +115,10 @@
                 <sheet class="o_share_sheet">
                     <field name="type" invisible="1"/>
                     <field name="can_upload" invisible="1"/>
+                    <field name="links_count" invisible="1"/>
+                    <div class="alert alert-warning" role="alert" attrs="{'invisible': [('links_count', '=', 0)]}">
+                        Links cannot be shared and therefore will be excluded.
+                    </div>
                     <group class="o_url_group">
                         <field name="full_url" widget="CopyClipboardChar" readonly="1"/>
                     </group>

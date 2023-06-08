@@ -16,6 +16,7 @@ import { DocumentsInspectorField } from "./documents_inspector_field";
 import { download } from "@web/core/network/download";
 import { onNewPdfThumbnail } from "../helper/documents_pdf_thumbnail_service";
 import { useTriggerRule } from "@documents/views/hooks";
+import { get_link_proportion } from 'documents.utils';
 
 const { Component, markup, useEffect, useState, useRef, onPatched, onWillUpdateProps, onWillStart } = owl;
 
@@ -315,6 +316,14 @@ export class DocumentsInspector extends Component {
 
     async onShare() {
         const resIds = this.resIds;
+        const linkProportion = await get_link_proportion(this.orm, resIds ? resIds : false);
+        if (linkProportion == 'all') {
+            this.notificationService.add(
+                this.env._t("Links cannot be shared."),
+                { type: "danger", },
+            );
+            return;
+        }
         if (!this.generatedUrls[resIds]) {
             const vals = await this.createShareVals();
             this.generatedUrls[resIds] = await this.orm.call(
@@ -324,12 +333,17 @@ export class DocumentsInspector extends Component {
             );
         }
         browser.navigator.clipboard.writeText(this.generatedUrls[resIds]);
-        this.notificationService.add(
-            this.env._t("The share url has been copied to your clipboard."),
-            {
-                type: "success",
-            },
-        );
+        if (linkProportion == 'some') {
+            this.notificationService.add(
+                this.env._t("The share url has been copied to your clipboard. Links were excluded."),
+                { type: "warning", },
+            );
+        } else {
+            this.notificationService.add(
+                this.env._t("The share url has been copied to your clipboard."),
+                { type: "success", },
+            );
+        }
     }
 
     async createShareVals() {

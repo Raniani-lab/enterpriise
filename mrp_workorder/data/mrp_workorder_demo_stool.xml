@@ -54,6 +54,7 @@
             <field name="uom_po_id" ref="uom.product_uom_unit"/>
             <field name="description_sale">Small wooden stool</field>
             <field name="sale_delay">1</field>
+            <field name="route_ids" eval="[Command.link(ref('mrp.route_warehouse0_manufacture'))]"/>
         </record>
 
         <!-- the product template attribute lines have to be defined before creating the variants -->

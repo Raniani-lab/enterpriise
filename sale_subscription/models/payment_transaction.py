@@ -1,5 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from datetime import datetime, time
 
 from odoo import api, fields, models
 
@@ -33,6 +34,32 @@ class PaymentTransaction(models.Model):
     ####################
     # Business Methods #
     ####################
+
+    def _get_mandate_values(self):
+        """ Override of `payment` to inject subscription-specific data into the mandate values.
+
+        Note: `self.ensure_one()`
+
+        :return: The dict of module-specific mandate values.
+        :rtype: dict
+        """
+        mandate_values = super()._get_mandate_values()
+        if len(self.sale_order_ids) != 1 or not self.sale_order_ids.is_subscription:
+            return mandate_values
+
+        # Convert start and end dates into datetime by setting the time to midnight.
+        start_datetime = datetime.combine(self.sale_order_ids.start_date, time())
+        end_datetime = self.sale_order_ids.end_date \
+            and datetime.combine(self.sale_order_ids.end_date, time())
+        mandate_values.update({
+            # The maximum amount that can be charged with the mandated.
+            'amount': self.sale_order_ids.amount_total,
+            'start_datetime': start_datetime,
+            'end_datetime': end_datetime,
+            'recurrence_unit': self.sale_order_ids.recurrence_id.unit,
+            'recurrence_duration': self.sale_order_ids.recurrence_id.duration,
+        })
+        return mandate_values
 
     def _create_or_link_to_invoice(self):
         tx_to_invoice = self.env['payment.transaction']

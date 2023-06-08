@@ -154,7 +154,9 @@ class CustomerPortal(payment_portal.PaymentPortal):
                 self, order_sudo, is_subscription=True
             ),
             'default_token_id': order_sudo.payment_token_id.id,
-            'amount': None,  # Determined by the generated invoice
+            # Used only for fetching the PMs with Stripe Elements; the final amount is determined by
+            # the generated invoice.
+            'amount': order_sudo.amount_total,
             'partner_id': order_sudo.partner_id.id,
             'transaction_route': f'/my/subscription/{order_sudo.id}/transaction/',
             'display_payment_message': display_payment_message,

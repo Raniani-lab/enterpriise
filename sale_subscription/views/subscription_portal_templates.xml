@@ -311,6 +311,8 @@
                                             <hr class="my-0"/>
                                             <t t-call="payment.checkout">
                                                 <t t-set="landing_route" t-value="subscription.get_portal_url()"/>
+                                                <!-- Inject the order ID to allow Stripe to check if tokenization is required. -->
+                                                <t t-set="sale_order_id" t-value="subscription.id"/>
                                             </t>
                                         </div>
                                     </div>
@@ -333,6 +335,8 @@
                                                        t-value="'/my/subscription/assign_token/' + str(subscription.id)"/>
                                                     <t t-set="landing_route"
                                                        t-value="subscription.get_portal_url() + '&amp;message=Your payment method has been changed for this subscription.&amp;message_class=alert-success'"/>
+                                                    <!-- Inject the order ID to allow Stripe to check if tokenization is required. -->
+                                                    <t t-set="sale_order_id" t-value="subscription.id"/>
                                                 </t>
                                             </div>
                                             <div t-else="">

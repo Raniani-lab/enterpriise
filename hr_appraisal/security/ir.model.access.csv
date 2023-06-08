@@ -5,5 +5,5 @@ access_hr_appraisal_note_manager,hr.appraisal.note.manager,model_hr_appraisal_no
 access_hr_appraisal_goal_user,hr.appraisal.goal.user,model_hr_appraisal_goal,base.group_user,1,1,1,1
 access_hr_appraisal_goal_manager,hr.appraisal.goal.manager,model_hr_appraisal_goal,hr_appraisal.group_hr_appraisal_manager,1,1,1,1
 access_hr_appraisal_employee,hr.appraisal.employee,model_hr_appraisal,base.group_user,1,1,1,0
-access_hr_appraisal_report,hr.appraisal.report,model_hr_appraisal_report,hr_appraisal.group_hr_appraisal_manager,1,1,1,1
+access_hr_appraisal_report,hr.appraisal.report,model_hr_appraisal_report,hr_appraisal.group_hr_appraisal_manager,1,0,0,0
 access_request_appraisal,access.request.appraisal,model_request_appraisal,base.group_user,1,1,1,0

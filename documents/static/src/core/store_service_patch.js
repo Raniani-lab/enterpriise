@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { Store } from "@mail/core/store_service";
+import { Store } from "@mail/core/common/store_service";
 
 import { patch } from "@web/core/utils/patch";
 

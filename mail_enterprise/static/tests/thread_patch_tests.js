@@ -1,7 +1,8 @@
-/** @odoo-module **/
+/* @odoo-module */
 
 import { patchUiSize, SIZES } from "@mail/../tests/helpers/patch_ui_size";
 import { afterNextRender, start, startServer } from "@mail/../tests/helpers/test_utils";
+
 import { nextTick } from "@web/../tests/helpers/utils";
 
 QUnit.module("thread (patch)");

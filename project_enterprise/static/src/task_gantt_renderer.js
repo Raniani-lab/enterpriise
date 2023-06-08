@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { Avatar } from "@mail/web/fields/avatar/avatar";
+import { Avatar } from "@mail/views/web/fields/avatar/avatar";
 import { markup, useEffect } from "@odoo/owl";
 import { localization } from "@web/core/l10n/localization";
 import { usePopover } from "@web/core/popover/popover_hook";

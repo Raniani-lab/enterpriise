@@ -1,6 +1,6 @@
 /* @odoo-module */
 
-import { AttachmentList } from "@mail/attachments/attachment_list";
+import { AttachmentList } from "@mail/core/common/attachment_list";
 import { patch } from "@web/core/utils/patch";
 
 AttachmentList.props.push("reloadChatterParentView?");

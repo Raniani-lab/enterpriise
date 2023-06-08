@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { Chatter } from "@mail/web/chatter";
+import { Chatter } from "@mail/core/web/chatter";
 
 import { Component } from "@odoo/owl";
 

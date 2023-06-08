@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { ActivityModel } from "@mail/views/activity/activity_model";
+import { ActivityModel } from "@mail/views/web/activity/activity_model";
 import { DocumentsDataPointMixin, DocumentsModelMixin, DocumentsRecordMixin } from "../documents_model_mixin";
 
 export class DocumentsActivityModel extends DocumentsModelMixin(ActivityModel) {}

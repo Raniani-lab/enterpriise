@@ -2,7 +2,7 @@
 
 import { registry } from "@web/core/registry";
 
-import { activityView } from "@mail/views/activity/activity_view";
+import { activityView } from "@mail/views/web/activity/activity_view";
 import { DocumentsActivityController } from "./documents_activity_controller";
 import { DocumentsActivityModel } from "./documents_activity_model";
 import { DocumentsActivityRenderer } from "./documents_activity_renderer";

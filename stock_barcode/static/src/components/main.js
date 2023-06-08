@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { Chatter } from "@mail/web/chatter";
+import { Chatter } from "@mail/core/web/chatter";
 
 import BarcodePickingModel from '@stock_barcode/models/barcode_picking_model';
 import BarcodeQuantModel from '@stock_barcode/models/barcode_quant_model';

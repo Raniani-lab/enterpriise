@@ -11,7 +11,7 @@ import { browser } from "@web/core/browser/browser";
 import { useBus, useService } from "@web/core/utils/hooks";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { FileUploader } from "@web/views/fields/file_handler";
-import { Chatter } from "@mail/web/chatter";
+import { Chatter } from "@mail/core/web/chatter";
 import { DocumentsInspectorField } from "./documents_inspector_field";
 import { download } from "@web/core/network/download";
 import { onNewPdfThumbnail } from "../helper/documents_pdf_thumbnail_service";

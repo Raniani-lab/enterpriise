@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { ActivityController } from "@mail/views/activity/activity_controller";
+import { ActivityController } from "@mail/views/web/activity/activity_controller";
 
 import { preSuperSetup, useDocumentView } from "@documents/views/hooks";
 

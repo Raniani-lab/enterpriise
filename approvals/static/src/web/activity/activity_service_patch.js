@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { ActivityService } from "@mail/web/activity/activity_service";
+import { ActivityService } from "@mail/core/web/activity_service";
 
 import { patch } from "@web/core/utils/patch";
 

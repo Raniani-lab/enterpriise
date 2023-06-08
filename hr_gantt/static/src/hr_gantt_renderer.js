@@ -1,6 +1,6 @@
 /* @odoo-module */
 
-import { Avatar } from "@mail/web/fields/avatar/avatar";
+import { Avatar } from "@mail/views/web/fields/avatar/avatar";
 import { GanttRenderer } from "@web_gantt/gantt_renderer";
 
 export class HrGanttRenderer extends GanttRenderer {

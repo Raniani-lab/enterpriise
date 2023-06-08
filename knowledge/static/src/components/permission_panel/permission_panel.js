@@ -21,7 +21,7 @@ export class PermissionPanel extends Component {
         this.dialog = useService('dialog');
         this.orm = useService('orm');
         this.rpc = useService('rpc');
-        /** @type {import("@mail/core/thread_service").ThreadService} */
+        /** @type {import("@mail/core/common/thread_service").ThreadService} */
         this.threadService = useService("mail.thread");
         this.userService = useService('user');
 

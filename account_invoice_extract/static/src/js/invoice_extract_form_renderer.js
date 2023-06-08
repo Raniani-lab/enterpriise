@@ -22,7 +22,7 @@ export class InvoiceExtractFormRenderer extends AccountMoveFormRenderer {
     setup() {
         super.setup();
 
-        /** @type {import("@mail/core/thread_service").ThreadService} */
+        /** @type {import("@mail/core/common/thread_service").ThreadService} */
         this.threadService = useService("mail.thread");
         this.dialog = useService("dialog");
         this.orm = useService("orm");

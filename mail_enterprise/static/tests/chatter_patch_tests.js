@@ -1,4 +1,4 @@
-/** @odoo-module **/
+/* @odoo-module */
 
 import { patchUiSize, SIZES } from "@mail/../tests/helpers/patch_ui_size";
 import {
@@ -8,9 +8,10 @@ import {
     start,
     startServer,
 } from "@mail/../tests/helpers/test_utils";
-import { getFixture } from "@web/../tests/helpers/utils";
 
+import { getFixture } from "@web/../tests/helpers/utils";
 import { fields } from "web.test_utils";
+
 const { editInput } = fields;
 
 QUnit.module("chatter (patch)", {

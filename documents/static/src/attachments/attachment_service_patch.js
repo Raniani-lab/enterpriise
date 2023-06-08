@@ -1,8 +1,8 @@
 /* @odoo-module */
 
-import { AttachmentService } from "@mail/attachments/attachment_service";
+import { AttachmentService } from "@mail/core/common/attachment_service";
 import { patch } from "@web/core/utils/patch";
-import { assignDefined } from "@mail/utils/misc";
+import { assignDefined } from "@mail/utils/common/misc";
 
 patch(AttachmentService.prototype, "documents", {
 

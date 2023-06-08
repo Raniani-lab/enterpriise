@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { Activity } from "@mail/web/activity/activity";
+import { Activity } from "@mail/core/web/activity";
 
 import { Approval } from "@approvals/web/activity/approval";
 

@@ -1,12 +1,11 @@
 /** @odoo-module **/
 import config from "web.config";
 import { formatDateTime } from '@web/core/l10n/dates';
-import { loadEmoji } from '@mail/emoji_picker/emoji_picker';
+import { loadEmoji } from '@mail/core/common/emoji_picker';
 import { registry } from '@web/core/registry';
 import { standardWidgetProps } from '@web/views/widgets/standard_widget_props';
 import { useService } from '@web/core/utils/hooks';
-import { useOpenChat } from "@mail/web/open_chat_hook";
-
+import { useOpenChat } from "@mail/core/web/open_chat_hook";
 
 import { Component, onWillStart, useEffect, useRef, useState } from '@odoo/owl';
 

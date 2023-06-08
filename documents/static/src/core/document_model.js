@@ -2,7 +2,7 @@
 
 export class Document {
     id;
-    /** @type import("@mail/attachments/attachment_model").Attachment */
+    /** @type import("@mail/core/common/attachment_model").Attachment */
     attachment;
     /** @type {string} */
     name;
@@ -14,6 +14,6 @@ export class Document {
     displayName;
     /** @type {Object} */
     record;
-    /** @type {import("@mail/core/store_service").Store} */
+    /** @type {import("@mail/core/common/store_service").Store} */
     _store;
 }

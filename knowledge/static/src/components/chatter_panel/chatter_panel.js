@@ -3,7 +3,7 @@
 import { registry } from '@web/core/registry';
 import { standardWidgetProps } from '@web/views/widgets/standard_widget_props';
 
-import { Chatter } from '@mail/web/chatter';
+import { Chatter } from '@mail/core/web/chatter';
 
 import { Component, useRef, useState } from '@odoo/owl';
 

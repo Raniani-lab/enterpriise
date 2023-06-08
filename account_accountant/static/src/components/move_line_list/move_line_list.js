@@ -2,7 +2,7 @@
 
 const { useState } = owl;
 
-import { AttachmentView } from "@mail/attachments/attachment_view";
+import { AttachmentView } from "@mail/core/common/attachment_view";
 
 import { registry } from "@web/core/registry";
 import { useService, useBus } from "@web/core/utils/hooks";
@@ -14,9 +14,9 @@ import { SIZES } from '@web/core/ui/ui_service';
 export class AccountMoveLineListController extends ListController {
     setup() {
         super.setup();
-        /** @type {import("@mail/attachments/attachment_service").AttachmentService} */
+        /** @type {import("@mail/core/common/attachment_service").AttachmentService} */
         this.attachmentService = useService("mail.attachment");
-        /** @type {import("@mail/core/thread_service").ThreadService} */
+        /** @type {import("@mail/core/common/thread_service").ThreadService} */
         this.threadService = useService("mail.thread");
         this.ui = useService("ui");
         this.attachmentPreviewState = useState({

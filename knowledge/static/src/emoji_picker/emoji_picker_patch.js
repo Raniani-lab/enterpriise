@@ -1,6 +1,7 @@
 /* @odoo-module */
 
-import { EmojiPicker } from "@mail/emoji_picker/emoji_picker";
+import { EmojiPicker } from "@mail/core/common/emoji_picker";
+
 import { patch } from "@web/core/utils/patch";
 
 EmojiPicker.props.push("hasRemoveFeature?");

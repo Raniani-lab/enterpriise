@@ -9,9 +9,9 @@ export class DocumentService {
     constructor(env, services) {
         this.env = env;
         this.rpc = services.rpc;
-        /** @type {import("@mail/core/store_service").Store} */
+        /** @type {import("@mail/core/common/store_service").Store} */
         this.store = services["mail.store"];
-        /** @type {import("@mail/attachments/attachment_service").AttachmentService} */
+        /** @type {import("@mail/core/common/attachment_service").AttachmentService} */
         this.attachmentService = services["mail.attachment"];
     }
 

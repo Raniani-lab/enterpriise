@@ -1,6 +1,6 @@
 /* @odoo-module */
 
-import { UserSettings } from "@mail/core/user_settings_service";
+import { UserSettings } from "@mail/core/common/user_settings_service";
 
 import { patch } from "@web/core/utils/patch";
 

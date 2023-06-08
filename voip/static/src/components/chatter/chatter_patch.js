@@ -2,7 +2,7 @@
 
 import { useExternalListener } from "@odoo/owl";
 
-import { Chatter } from "@mail/web/chatter";
+import { Chatter } from "@mail/core/web/chatter";
 
 import { patch } from "@web/core/utils/patch";
 

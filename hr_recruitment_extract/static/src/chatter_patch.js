@@ -1,8 +1,8 @@
 /* @odoo-module */
 
-import { Chatter } from "@mail/web/chatter";
+import { Chatter } from "@mail/core/web/chatter";
 import { patch } from "@web/core/utils/patch";
-import { useAttachmentUploader } from "@mail/attachments/attachment_uploader_hook";
+import { useAttachmentUploader } from "@mail/core/common/attachment_uploader_hook";
 
 patch(Chatter.prototype, "hr_recruitment_extract", {
     setup() {

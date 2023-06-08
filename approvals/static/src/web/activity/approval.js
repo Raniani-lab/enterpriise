@@ -1,6 +1,6 @@
 /* @odoo-module */
 
-import { useStore } from "@mail/core/messaging_hook";
+import { useStore } from "@mail/core/common/messaging_hook";
 
 import { Component } from "@odoo/owl";
 
@@ -8,7 +8,7 @@ import { useService } from "@web/core/utils/hooks";
 
 /**
  * @typedef {Object} Props
- * @property {import("@mail/web/activity/activity_model").Activity} activity
+ * @property {import("@mail/core/web/activity_model").Activity} activity
  * @extends {Component<Props, Env>}
  */
 export class Approval extends Component {
@@ -19,7 +19,7 @@ export class Approval extends Component {
     };
 
     setup() {
-        /** @type {import("@mail/web/activity/activity_service").ActivityService} */
+        /** @type {import("@mail/core/web/activity_service").ActivityService} */
         this.activityService = useService("mail.activity");
         this.store = useStore();
     }

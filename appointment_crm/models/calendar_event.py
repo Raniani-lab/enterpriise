@@ -31,8 +31,6 @@ class CalendarEventCrm(models.Model):
                     meeting.opportunity_id._get_html_link(),
                 tracking_value_ids=[Command.create({
                     'field': opportunity_field.id,
-                    'field_desc': opportunity_field.field_description,
-                    'field_type': opportunity_field.ttype,
                     'old_value_char': False,
                     'new_value_char': meeting.opportunity_id.name,
                 })])

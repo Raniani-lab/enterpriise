@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-import base64
-import io
 import re
 
-from odoo import api, fields, models, tools, _
+from odoo import api, fields, models, _
 
 
 class GeneralLedgerCustomHandler(models.AbstractModel):

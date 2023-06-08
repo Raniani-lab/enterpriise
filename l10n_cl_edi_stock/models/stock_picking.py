@@ -547,7 +547,7 @@ class Picking(models.Model):
         sii_response_status = response_parsed.findtext('STATUS')
         if sii_response_status == '5':
             digital_signature.last_token = False
-            _logger.error('The response status is %s. Clearing the token.',
+            _logger.warning('The response status is %s. Clearing the token.',
                           self._l10n_cl_get_sii_reception_status_message(sii_response_status))
             if retry_send:
                 _logger.info('Retrying send DTE to SII')

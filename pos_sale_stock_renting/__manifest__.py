@@ -8,7 +8,7 @@
     'category': 'Point of Sale',
     'sequence': 15,
     'summary': "Link between PoS and Stock Rental.",
-    'depends': ['point_of_sale', 'sale_stock_renting'],
+    'depends': ['pos_sale', 'sale_stock_renting'],
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',

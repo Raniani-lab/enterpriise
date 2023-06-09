@@ -48,7 +48,7 @@ patch(Order.prototype, "pos_preparation_display.Order", {
                 preparationDisplayOrderLineIds
             );
 
-            await this.pos.env.services.orm.call("pos_preparation_display.order", "process_order", [
+            await this.env.services.orm.call("pos_preparation_display.order", "process_order", [
                 posPreparationDisplayOrder,
             ]);
         } catch (e) {

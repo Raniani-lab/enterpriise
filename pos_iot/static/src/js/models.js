@@ -8,7 +8,7 @@ import { _t } from "@web/core/l10n/translation";
 
 patch(Product.prototype, "pos_iot.Product", {
     async _onScaleNotAvailable() {
-        await this.pos.env.services.popup.add(ErrorPopup, {
+        await this.env.services.popup.add(ErrorPopup, {
             title: _t("No Scale Detected"),
             body: _t(
                 "It seems that no scale was detected.\nMake sure that the scale is connected and visible in the IoT app."

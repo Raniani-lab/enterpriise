@@ -133,7 +133,10 @@ patch(PosStore.prototype, "l10n_de_pos_cert.PosStore", {
 
         const orderObjectMap = {};
         for (const orderJson of orders) {
-            orderObjectMap[orderJson["id"]] = new Order({}, { pos: this, json: orderJson["data"] });
+            orderObjectMap[orderJson["id"]] = new Order(
+                { env: this.env },
+                { pos: this, json: orderJson["data"] }
+            );
         }
 
         let fiskalyError;

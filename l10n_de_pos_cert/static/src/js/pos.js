@@ -108,7 +108,7 @@ patch(Order.prototype, "l10n_de_pos_cert.Order", {
             this._super(...arguments);
         } catch (error) {
             if (this.pos.isCountryGermanyAndFiskaly() && error instanceof TaxError) {
-                await this.pos.env.services.pos._showTaxError();
+                await this.env.services.pos._showTaxError();
             } else {
                 throw error;
             }
@@ -200,7 +200,7 @@ patch(Order.prototype, "l10n_de_pos_cert.Order", {
             .filter((rate) => !!amountPerVatRate[rate])
             .map((rate) => ({
                 vat_rate: rate,
-                amount: this.pos.env.utils.formatCurrency(amountPerVatRate[rate], false),
+                amount: this.env.utils.formatCurrency(amountPerVatRate[rate], false),
             }));
     },
     /*
@@ -212,14 +212,14 @@ patch(Order.prototype, "l10n_de_pos_cert.Order", {
             amountPerPaymentTypeArray.push({
                 payment_type:
                     line.payment_method.name.toLowerCase() === "cash" ? "CASH" : "NON_CASH",
-                amount: this.pos.env.utils.formatCurrency(line.amount, false),
+                amount: this.env.utils.formatCurrency(line.amount, false),
             });
         });
         const change = this.get_change();
         if (change) {
             amountPerPaymentTypeArray.push({
                 payment_type: "CASH",
-                amount: this.pos.env.utils.formatCurrency(-change, false),
+                amount: this.env.utils.formatCurrency(-change, false),
             });
         }
         return amountPerPaymentTypeArray;

@@ -28,7 +28,7 @@ patch(PosStore.prototype, "l10n_de_pos_res_cert.PosStore", {
             // at this point of the flow, it's impossible to retrieve the local order, only the ids were stored
             // therefore we create an "empty" order object in order to call the needed methods
             data.forEach(async (elem) => {
-                const order = new Order({}, { pos: this });
+                const order = new Order({ env: this.env }, { pos: this });
                 await order.cancelOrderTransaction(elem.differences);
             });
         }
@@ -67,7 +67,7 @@ patch(PosStore.prototype, "l10n_de_pos_res_cert.PosStore", {
             const ordersToUpdate = {};
             for (const orderJsonData of ordersCheckDifference) {
                 if (!fiskalyError && differences[orderJsonData.uid].length > 0) {
-                    const order = new Order({}, { pos: this, json: orderJsonData });
+                    const order = new Order({ env: this.env }, { pos: this, json: orderJsonData });
                     try {
                         await order.sendLineDifference(differences[orderJsonData.uid]);
                         ordersToUpdate[orderJsonData.uid] = order.export_as_JSON();
@@ -196,7 +196,7 @@ patch(Order.prototype, "l10n_de_pos_res_cert.Order", {
         };
     },
     async retrieveAndSendLineDifference() {
-        await this.pos.env.services.orm
+        await this.env.services.orm
             .call("pos.order", "retrieve_line_difference", [[this.exportOrderLinesAsJson()]])
             .then(async (data) => {
                 if (data[this.uid].length > 0) {

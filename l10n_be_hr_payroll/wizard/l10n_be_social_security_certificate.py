@@ -49,11 +49,13 @@ class L10nBeSocialSecurityCertificate(models.TransientModel):
         double_pay = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_double_holiday')
         thirteen_pay = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_thirteen_month')
         student_pay = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_student_regular_pay')
+        warrant_pay = self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_structure_warrant')
+
         structures = monthly_pay + termination_pay + holiday_pay_n + holiday_pay_n1 + double_pay + thirteen_pay + student_pay
 
         all_payslips = self.env['hr.payslip'].search([
             ('state', 'in', ['done', 'paid']),
-            ('struct_id', 'in', structures.ids),
+            ('struct_id', '!=', warrant_pay.id),
             ('company_id', '=', self.company_id.id),
             ('date_from', '>=', date_from),
             ('date_to', '<=', date_to)])
@@ -78,6 +80,8 @@ class L10nBeSocialSecurityCertificate(models.TransientModel):
             double_slips = aggregate_payslips.filtered(lambda p: p.struct_id == double_pay)
             thirteen_slips = aggregate_payslips.filtered(lambda p: p.struct_id == thirteen_pay)
             student_slips = aggregate_payslips.filtered(lambda p: p.struct_id == student_pay)
+            unclassified_slips = aggregate_payslips - monthly_slips - termination_slips - holiday_slips - double_slips - thirteen_slips - student_slips
+            monthly_slips += unclassified_slips
 
             code_list = [
                 'BASIC', 'HolPayRecN', 'HolPayRecN1', 'COMMISSION', 'AFTERPUB', 'HIRINGBONUS',

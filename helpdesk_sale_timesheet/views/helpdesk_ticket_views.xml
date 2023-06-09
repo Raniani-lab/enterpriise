@@ -46,7 +46,16 @@
             </xpath>
             <xpath expr="//field[@name='project_id']" position="after">
                 <field name="sale_line_id" groups="!sales_team.group_sale_salesman" attrs="{'invisible': ['|', ('use_helpdesk_sale_timesheet', '=', False), ('partner_id', '=', False)]}" options="{'no_create': True, 'no_open': True}" context="{'create': False}"/>
-                <field name="sale_line_id" groups="sales_team.group_sale_salesman" attrs="{'invisible': ['|', ('use_helpdesk_sale_timesheet', '=', False), ('partner_id', '=', False)]}" options="{'no_create': True}" context="{'with_remaining_hours': True, 'with_price_unit': True, 'create': False, 'edit': False}" placeholder="Non-billable"/>
+                <field name="sale_line_id" groups="sales_team.group_sale_salesman" attrs="{'invisible': ['|', ('use_helpdesk_sale_timesheet', '=', False), ('partner_id', '=', False)]}" options="{'no_quick_create': True}" placeholder="Non-billable"
+                    context="{
+                        'create': False, 'edit': False,
+                        'with_remaining_hours': True,
+                        'with_price_unit': True,
+                        'form_view_ref': 'sale_project.sale_order_line_view_form_editable',
+                        'default_partner_id': partner_id,
+                        'default_company_id': company_id,
+                    }"
+                />
             </xpath>
             <xpath expr="//field[@name='total_hours_spent']" position="after">
                 <t groups="sales_team.group_sale_salesman">

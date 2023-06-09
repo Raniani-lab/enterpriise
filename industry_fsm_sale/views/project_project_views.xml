@@ -17,8 +17,23 @@
                 <attribute name="attrs">{'invisible': ['|', '|', ('is_fsm', '=', True), ('allow_billable', '=', False), ('partner_id', '=', False)]}</attribute>
             </xpath>
 
-            <xpath expr="//field[@name='sale_line_employee_ids']/tree/field[@name='sale_line_id']" position="attributes">
-                <attribute name="attrs">{'column_invisible': [('parent.is_fsm', '=', True)], 'required': [('parent.is_fsm', '=', False)]}</attribute>
+            <xpath expr="//field[@name='sale_line_employee_ids']/tree/field[@name='sale_line_id'][1]" position="attributes">
+                <attribute name="attrs">{
+                    'column_invisible': ['|', ('parent.id', '!=', False), ('parent.is_fsm', '=', True)],
+                    'required': [('parent.is_fsm', '=', False)],
+                }</attribute>
+            </xpath>
+            <xpath expr="//field[@name='sale_line_employee_ids']/tree/field[@name='sale_line_id'][2]" position="attributes">
+                <attribute name="attrs">{
+                    'column_invisible': ['|', ('parent.id', '=', False), ('parent.is_fsm', '=', True)],
+                    'required': [('parent.is_fsm', '=', False)],
+                }</attribute>
+            </xpath>
+            <xpath expr="//field[@name='sale_line_employee_ids']/tree/field[@name='sale_line_id'][3]" position="attributes">
+                <attribute name="attrs">{
+                    'column_invisible': ['|', ('parent.id', '=', False), ('parent.is_fsm', '=', True)],
+                    'required': [('parent.is_fsm', '=', False)],
+                }</attribute>
             </xpath>
             <xpath expr="//field[@name='sale_line_employee_ids']/tree/field[@name='sale_line_id']" position="after">
                 <field name="timesheet_product_id" attrs="{'column_invisible': [('parent.is_fsm', '=', False)], 'required': [('parent.is_fsm', '=', True)]}" context="{'default_detailed_type': 'service', 'default_service_policy': 'delivered_timesheet', 'default_service_type': 'timesheet'}"/>

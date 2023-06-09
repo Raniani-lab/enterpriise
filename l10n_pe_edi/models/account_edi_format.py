@@ -600,11 +600,11 @@ class AccountEdiFormat(models.Model):
                 # Check that the partner and issue date match between the retrieved CDR and the invoice.
                 cdr = res_retrieve_cdr['cdr']
                 cdr_tree = etree.fromstring(cdr)
-                retrieved_cdr_document_id = cdr_tree.find('.//{*}DocumentReference//{*}ID').text
-                retrieved_cdr_ruc = cdr_tree.find('.//{*}RecipientParty//{*}CompanyID').text
-                retrieved_cdr_date = cdr_tree.find('.//{*}DocumentReference//{*}IssueDate').text
-                if retrieved_cdr_document_id == invoice.name.replace(' ', '') and retrieved_cdr_ruc == invoice.partner_id.vat \
-                    and retrieved_cdr_date == invoice.invoice_date.strftime('%Y-%m-%d'):
+                retrieved_cdr_document_id = cdr_tree.find('.//{*}DocumentReference//{*}ID')
+                is_same_document_id = retrieved_cdr_document_id.text == invoice.name.replace(' ', '') if retrieved_cdr_document_id else True
+                retrieved_cdr_ruc = cdr_tree.find('.//{*}RecipientParty//{*}CompanyID')
+                is_same_ruc = retrieved_cdr_ruc.text == invoice.partner_id.vat if retrieved_cdr_ruc else True
+                if is_same_document_id and is_same_ruc:
                     # If the CDR already exists and is valid on SUNAT's side, then likely the invoice was already sent once, but
                     # Odoo hit an exception and rolled back the transaction after sending.
                     # In this case, we want to retrieve the CDR and continue as if sending succeeded.

@@ -4,7 +4,7 @@
         <div class="d-flex flex-column" style="max-width: 25rem;">
             <div class="d-flex bg-opacity-25 bg-secondary justify-content-between align-items-center">
                 <span class="fs-3 fw-bold ps-2" t-esc="props.placeholder"/>
-                <button type="button" title="Close" class="btn btn-default fa fa-close fa-sm" t-on-click="props.onClose"/>
+                <button type="button" title="Close" class="btn btn-default oi oi-close" t-on-click="props.onClose"/>
             </div>
             <div class="d-flex p-2 flex-column">
                 <div class="mb-1 clearfix o_popover_placeholder" t-if="props.debug">
@@ -32,7 +32,7 @@
                     <label class="w-100 fw-bold">Alignment</label>
                     <div class="btn-group mb-2" role="group">
                         <button t-foreach="alignmentOptions" t-as="alignment" t-key="alignment.key" type="button" t-att-title="alignment.title" t-on-click="(e) => this.onChange('alignment', alignment.key)"
-                            t-attf-class="fa-align-{{alignment.key}} {{alignment.key === state.alignment ? 'btn-primary': ''}} btn btn-default fa fa-sm p-2"
+                            t-attf-class="fa-align-{{alignment.key}} {{alignment.key === state.alignment ? 'active': ''}} btn btn-secondary fa"
                         />
                     </div>
                 </div>
@@ -45,7 +45,7 @@
                     </div>
                     <div class="mb-1 d-flex align-items-center justify-content-between">
                         <button class="btn o_sign_validate_field_button btn-primary" t-on-click="onValidate">Validate</button>
-                        <button class="btn btn-default fa fa-trash fa-lg" t-on-click="props.onDelete"/>
+                        <button class="btn btn-secondary fa fa-trash" t-on-click="props.onDelete"/>
                     </div>
                 </div>
         </div>

@@ -1132,6 +1132,108 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
             {'flag': 'tax_line',    'balance': -173.55},
         ])
 
+    def test_manual_edits_not_replaced(self):
+        """ 2 partial payments should keep the edited balance """
+        st_line = self._create_st_line(
+            1200.0,
+            date='2017-02-01',
+        )
+        inv_line_1 = self._create_invoice_line(
+            'out_invoice',
+            invoice_date='2016-01-01',
+            invoice_line_ids=[{'price_unit': 3000.0}],
+        )
+        inv_line_2 = self._create_invoice_line(
+            'out_invoice',
+            invoice_date='2017-01-01',
+            invoice_line_ids=[{'price_unit': 4000.0}],
+        )
+
+        wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
+        wizard._action_add_new_amls(inv_line_1)
+        self.assertRecordValues(wizard.line_ids, [
+            # pylint: disable=C0326
+            {'flag': 'liquidity',    'balance': 1200.0},
+            {'flag': 'new_aml',      'balance':-1200.0},
+        ])
+
+        line = wizard.line_ids.filtered(lambda x: x.flag == 'new_aml')
+        wizard._action_mount_line_in_edit(line.index)
+        form = WizardForm(wizard)
+        form.form_balance = 600.0
+        wizard = form.save()
+
+        self.assertRecordValues(wizard.line_ids, [
+            # pylint: disable=C0326
+            {'flag': 'liquidity',    'balance': 1200.0},
+            {'flag': 'new_aml',      'balance': -600.0},
+            {'flag': 'auto_balance', 'balance': -600.0},
+        ])
+
+        wizard._action_add_new_amls(inv_line_2)
+
+        self.assertRecordValues(wizard.line_ids, [
+            # pylint: disable=C0326
+            {'flag': 'liquidity',    'balance': 1200.0},
+            {'flag': 'new_aml',      'balance': -600.0},
+            {'flag': 'new_aml',      'balance': -600.0},
+        ])
+
+    def test_manual_edits_not_replaced_multicurrency(self):
+        """ 2 partial payments should keep the edited amount_currency """
+        st_line = self._create_st_line(
+            1200.0,
+            date='2018-01-01',
+            foreign_currency_id=self.currency_data_2['currency'].id,
+            amount_currency=6000.0,  # rate 5:1
+        )
+        inv_line_1 = self._create_invoice_line(
+            'out_invoice',
+            invoice_date='2016-01-01',
+            currency_id=self.currency_data_2['currency'],
+            invoice_line_ids=[{'price_unit': 6000.0}],  # 1000 company curr (rate 6:1)
+        )
+        inv_line_2 = self._create_invoice_line(
+            'out_invoice',
+            invoice_date='2017-01-01',
+            currency_id=self.currency_data_2['currency'],
+            invoice_line_ids=[{'price_unit': 4000.0}], # 1000 company curr (rate 4:1)
+        )
+
+        wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
+        wizard._action_add_new_amls(inv_line_1)
+        self.assertRecordValues(wizard.line_ids, [
+            # pylint: disable=C0326
+            {'flag': 'liquidity',     'amount_currency': 1200.0, 'balance': 1200.0},
+            {'flag': 'new_aml',       'amount_currency':-6000.0, 'balance':-1000.0},
+            {'flag': 'exchange_diff', 'amount_currency':    0.0, 'balance': -200.0},
+        ])
+
+        line = wizard.line_ids.filtered(lambda x: x.flag == 'new_aml')
+        wizard._action_mount_line_in_edit(line.index)
+        form = WizardForm(wizard)
+        form.form_amount_currency = 3000.0
+        wizard = form.save()
+
+        self.assertRecordValues(wizard.line_ids, [
+            # pylint: disable=C0326
+            {'flag': 'liquidity',     'amount_currency': 1200.0, 'balance': 1200.0},
+            {'flag': 'new_aml',       'amount_currency':-3000.0, 'balance': -500.0},
+            {'flag': 'exchange_diff', 'amount_currency':    0.0, 'balance': -100.0},
+            {'flag': 'auto_balance',  'amount_currency':-3000.0, 'balance': -600.0},
+        ])
+
+        wizard._action_add_new_amls(inv_line_2)
+
+        self.assertRecordValues(wizard.line_ids, [
+            # pylint: disable=C0326
+            {'flag': 'liquidity',     'amount_currency': 1200.0, 'balance': 1200.0},
+            {'flag': 'new_aml',       'amount_currency':-3000.0, 'balance': -500.0},
+            {'flag': 'exchange_diff', 'amount_currency':    0.0, 'balance': -100.0},
+            {'flag': 'new_aml',       'amount_currency':-3000.0, 'balance': -750.0},
+            {'flag': 'exchange_diff', 'amount_currency':    0.0, 'balance':  150.0},
+        ])
+
     def test_creating_manual_line_multi_currencies(self):
         # 6300.0 curr2 == 1800.0 comp_curr (bank rate 3.5:1 instead of the odoo rate 4:1)
         st_line = self._create_st_line(

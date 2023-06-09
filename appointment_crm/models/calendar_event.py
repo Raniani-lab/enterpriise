@@ -30,7 +30,7 @@ class CalendarEventCrm(models.Model):
                 body=Markup("<p>%s</p>") % escape(_("Meeting linked to Lead/Opportunity %s")) % \
                     meeting.opportunity_id._get_html_link(),
                 tracking_value_ids=[Command.create({
-                    'field': opportunity_field.id,
+                    'field_id': opportunity_field.id,
                     'old_value_char': False,
                     'new_value_char': meeting.opportunity_id.name,
                 })])

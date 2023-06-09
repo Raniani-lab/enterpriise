@@ -82,17 +82,7 @@ class AccountEdiFormat(models.Model):
     @api.model
     def _l10n_pe_edi_get_general_error_messages(self):
         return {
-            'L10NPE02': _lt("The zip file is corrupted, please check that the zip we are reading is the one you need."),
-            'L10NPE03': _lt("The XML inside of the zip file is corrupted or has been altered, please review the XML "
-                            "inside of the XML we are reading."),
-            'L10NPE07': _lt("Trying to send the invoice to the OSE the webservice returned a controlled error, please "
-                            "try again later, the error is on their side not here."),
-            'L10NPE08': _lt("Check your firewall parameters, it is not being possible to connect with server to sign "
-                            "invoices."),
-            'L10NPE10': _lt("The URL provided to connect to the OSE is wrong, please check your implementation."),
-            'L10NPE11': _lt("The XML generated is not valid."),
-            'L10NPE16': _lt("There was an error while establishing the connection to the server, try again and "
-                            "if it fails check the URL in the parameter l10n_pe_edi.endpoint."),
+            'L10NPE08': _lt("There was an error in the connection or the response from the OSE server. Please try again later."),
             'L10NPE17': _lt("There are problems with the connection to the IAP server. "
                             "Please try again in a few minutes."),
             'L10NPE18': _lt("The URL provided for the IAP server is wrong, please go to  Settings --> System "
@@ -418,11 +408,9 @@ class AccountEdiFormat(models.Model):
 
         try:
             result = iap_jsonrpc(iap_server_url + '/iap/l10n_pe_edi/1/send_bill', params=rpc_params, timeout=1500)
-        except InvalidSchema:
-            return {'error': self._l10n_pe_edi_get_general_error_messages()['L10NPE16'], 'blocking_level': 'error'}
         except AccessError:
             return {'error': self._l10n_pe_edi_get_general_error_messages()['L10NPE17'], 'blocking_level': 'warning'}
-        except InvalidURL:
+        except (InvalidSchema, InvalidURL):
             return {'error': self._l10n_pe_edi_get_general_error_messages()['L10NPE18'], 'blocking_level': 'error'}
 
         if result.get('message'):
@@ -468,11 +456,9 @@ class AccountEdiFormat(models.Model):
 
         try:
             result = iap_jsonrpc(iap_server_url + '/iap/l10n_pe_edi/1/get_status_cdr', params=rpc_params, timeout=1500)
-        except InvalidSchema:
-            return {'error': self._l10n_pe_edi_get_general_error_messages()['L10NPE16'], 'blocking_level': 'error'}
         except AccessError:
             return {'error': self._l10n_pe_edi_get_general_error_messages()['L10NPE17'], 'blocking_level': 'warning'}
-        except InvalidURL:
+        except (InvalidSchema, InvalidURL):
             return {'error': self._l10n_pe_edi_get_general_error_messages()['L10NPE18'], 'blocking_level': 'error'}
 
         if result.get('message'):
@@ -510,7 +496,7 @@ class AccountEdiFormat(models.Model):
             result = iap_jsonrpc(iap_server_url + '/iap/l10n_pe_edi/1/send_summary', params=rpc_params, timeout=15)
         except AccessError:
             return {'error': self._l10n_pe_edi_get_general_error_messages()['L10NPE17'], 'blocking_level': 'warning'}
-        except KeyError:
+        except (InvalidSchema, InvalidURL):
             return {'error': self._l10n_pe_edi_get_general_error_messages()['L10NPE18'], 'blocking_level': 'error'}
 
         if result.get('message'):
@@ -543,10 +529,10 @@ class AccountEdiFormat(models.Model):
 
         try:
             result = iap_jsonrpc(iap_server_url + '/iap/l10n_pe_edi/1/get_status', params=rpc_params, timeout=15)
-        except KeyError:
-            return {'error': self._l10n_pe_edi_get_general_error_messages()['L10NPE18'], 'blocking_level': 'error'}
         except AccessError:
             return {'error': self._l10n_pe_edi_get_general_error_messages()['L10NPE17'], 'blocking_level': 'warning'}
+        except (InvalidSchema, InvalidURL):
+            return {'error': self._l10n_pe_edi_get_general_error_messages()['L10NPE18'], 'blocking_level': 'error'}
 
         if result.get('message'):
             if result['message'] == 'no-credit':
@@ -711,14 +697,8 @@ class AccountEdiFormat(models.Model):
             )
             result = client.service.sendBill('%s.zip' % edi_filename, zip_edi_str)
             result.raise_for_status()
-        except ReqConnectionError:
+        except (ReqConnectionError, HTTPError, TypeError, ReadTimeout):
             return {'error': self._l10n_pe_edi_get_general_error_messages()['L10NPE08'], 'blocking_level': 'warning'}
-        except HTTPError:
-            return {'error': self._l10n_pe_edi_get_general_error_messages()['L10NPE10'], 'blocking_level': 'warning'}
-        except TypeError:
-            return {'error': self._l10n_pe_edi_get_general_error_messages()['L10NPE11'], 'blocking_level': 'error'}
-        except ReadTimeout:
-            return {'error': self._l10n_pe_edi_get_general_error_messages()['L10NPE12'], 'blocking_level': 'warning'}
         soap_response = result.content
         soap_response_decoded = self._l10n_pe_edi_decode_soap_response(soap_response) if soap_response else {}
 
@@ -779,14 +759,8 @@ class AccountEdiFormat(models.Model):
             )
             result = client.service.getStatusCdr(vat_number, latam_document_type, serie_folio['serie'], serie_folio['folio'])
             result.raise_for_status()
-        except ConnectionError:
+        except (ReqConnectionError, HTTPError, TypeError, ReadTimeout):
             return {'error': self._l10n_pe_edi_get_general_error_messages()['L10NPE08'], 'blocking_level': 'warning'}
-        except HTTPError:
-            return {'error': self._l10n_pe_edi_get_general_error_messages()['L10NPE10'], 'blocking_level': 'warning'}
-        except TypeError:
-            return {'error': self._l10n_pe_edi_get_general_error_messages()['L10NPE11'], 'blocking_level': 'error'}
-        except ReadTimeout:
-            return {'error': self._l10n_pe_edi_get_general_error_messages()['L10NPE12'], 'blocking_level': 'warning'}
         soap_response = result.content
         soap_response_decoded = self._l10n_pe_edi_decode_soap_response(soap_response) if soap_response else {}
 
@@ -818,9 +792,8 @@ class AccountEdiFormat(models.Model):
             )
             result = client.service.sendSummary('%s.zip' % void_filename,  zip_void_str)
             result.raise_for_status()
-        except (InvalidSchema, KeyError):
-            return {'error': self._l10n_pe_edi_get_general_error_messages()['L10NPE08'], 'blocking_level': 'error'}
-
+        except (ReqConnectionError, HTTPError, TypeError, ReadTimeout):
+            return {'error': self._l10n_pe_edi_get_general_error_messages()['L10NPE08'], 'blocking_level': 'warning'}
         soap_response = result.content
         soap_response_decoded = self._l10n_pe_edi_decode_soap_response(soap_response)
 
@@ -853,9 +826,8 @@ class AccountEdiFormat(models.Model):
             )
             result = client.service.getStatus(cdr_number)
             result.raise_for_status()
-        except (InvalidSchema, KeyError):
-            return {'error': self._l10n_pe_edi_get_general_error_messages()['L10NPE08'], 'blocking_level': 'error'}
-
+        except (ReqConnectionError, HTTPError, TypeError, ReadTimeout):
+            return {'error': self._l10n_pe_edi_get_general_error_messages()['L10NPE08'], 'blocking_level': 'warning'}
         soap_response = result.content
         soap_response_decoded = self._l10n_pe_edi_decode_soap_response(soap_response)
 

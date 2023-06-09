@@ -345,14 +345,8 @@ msgstr "Revisa que el VAT de la empresa ha sido correctamente escrito, este erro
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
-msgid "Check your firewall parameters, it is not being possible to connect with server to sign invoices."
-msgstr "Revisa la configuración de tu firewall, de momento no es posible conectarse con el servidor para firmar facturas."
-
-#. module: l10n_pe_edi
-#: code:addons/l10n_pe_edi/models/account_edi_format.py:0
-#, python-format
 msgid "Check your tax configuration, go to Configuration -> Taxes and set the field 'Affectation reason' to set it by default or set the proper value in the field Affect. Reason in the line"
-msgstr "Revisa la configuración de los impuestos, ve a Configuración -> Impuestos y coloca el campo  'Razón de afectación' para configurarlo de forma predeterminada o establecer el valor adecuado en el campo Afecto. Razón en la línea"
+msgstr "Revisa la configuración de los impuestos, ve a Configuración -> Impuestos y coloca el campo 'Razón de afectación' para configurarlo de forma predeterminada o establecer el valor adecuado en el campo Afecto. Razón en la línea"
 
 #. module: l10n_pe_edi
 #: model:ir.model.fields,help:l10n_pe_edi.field_res_company__l10n_pe_edi_address_type_code
@@ -1204,26 +1198,14 @@ msgstr "La URL para el servidor IAP esta incorrecta, por favor ir a Ajustes --> 
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
-msgid "The URL provided to connect to the OSE is wrong, please check your implementation."
-msgstr "La URL configurada para conectar con el OSE eta incorrecta, por favor revisa tu implementación."
+msgid "There was an error in the connection or the response from the OSE server. Please try again later."
+msgstr "Hubo un error en la conexión o en la respuesta del servidor OSE. Por favor, inténtelo de nuevo más tarde."
 
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
 msgid "The VAT you use for the customer is a DNI type, to be a valid DNI it must be the exact length of 8 digits."
 msgstr "El VAT usado para el cliente es DNI, el cual para ser valido debe contener exactamente 8 dígitos."
-
-#. module: l10n_pe_edi
-#: code:addons/l10n_pe_edi/models/account_edi_format.py:0
-#, python-format
-msgid "The XML generated is not valid."
-msgstr "El XML generado no es valido."
-
-#. module: l10n_pe_edi
-#: code:addons/l10n_pe_edi/models/account_edi_format.py:0
-#, python-format
-msgid "The XML inside of the zip file is corrupted or has been altered, please review the XML inside of the XML we are reading."
-msgstr "El XML dentro del archivo zip ha sido corrompido o alterado, favor de revisar la estructura XML dentro del archivo que estamos leyendo."
 
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
@@ -1328,13 +1310,6 @@ msgstr "El usuario para ingresar con SUNAT SOL"
 msgid "The zip file is corrupted, check again if the file trying to access is not damaged."
 msgstr "El archivo zip ha sido corrompido, revisa nuevamente si el archivo que intentas acceder no ha sido dañado."
 
-#. module: l10n_pe_edi
-#: code:addons/l10n_pe_edi/models/account_edi_format.py:0
-#, python-format
-msgid "The zip file is corrupted, please check that the zip we are reading is the one you need."
-msgstr "El archivo zip ha sido corrompido, favor de revisar si el archivo zip que intentas leer el el que necesitas."
-
-#. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
 #, python-format
 msgid "There are problems with the connection to the IAP server. Please try again in a few minutes."
@@ -1351,12 +1326,6 @@ msgstr ""
 "Ha ocurrido un problema con el certificado, algunos de los problemas comunes pueden ser:\n"
 "- La contraseña ingresada para el certificado no es valida.\n"
 "- El contenido del certificado no es valido."
-
-#. module: l10n_pe_edi
-#: code:addons/l10n_pe_edi/models/account_edi_format.py:0
-#, python-format
-msgid "There was an error while establishing the connection to the server, try again and if it fails check the URL in the parameter l10n_pe_edi.endpoint."
-msgstr "Ocurrió un error cuando se intentaba establecer conexión con el servidor, intenta nuevamente y si falla revisa la URL en el parametro l10n_pe_edi.endpoint."
 
 #. module: l10n_pe_edi
 #: code:addons/l10n_pe_edi/models/account_edi_format.py:0
@@ -1392,12 +1361,6 @@ msgstr ""
 #: model:ir.model.fields.selection,name:l10n_pe_edi.selection__account_move_reversal__l10n_pe_edi_refund_reason__06
 msgid "Total refund"
 msgstr "Devolución total"
-
-#. module: l10n_pe_edi
-#: code:addons/l10n_pe_edi/models/account_edi_format.py:0
-#, python-format
-msgid "Trying to send the invoice to the OSE the webservice returned a controlled error, please try again later, the error is on their side not here."
-msgstr "Al intentar enviar la factura a la OSE, el servicio web devolvió un error controlado, inténtelo de nuevo más tarde, el error está de su lado, no aquí"
 
 #. module: l10n_pe_edi
 #: model:ir.model.fields,help:l10n_pe_edi.field_account_move_line__l10n_pe_edi_affectation_reason

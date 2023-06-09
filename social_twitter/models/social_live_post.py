@@ -93,7 +93,7 @@ class SocialLivePostTwitter(models.Model):
             except UserError as e:
                 live_post.write({
                     'state': 'failed',
-                    'failure_reason': e.name
+                    'failure_reason': str(e)
                 })
                 continue
             if images_attachments_ids:

@@ -216,9 +216,9 @@ class SocialAccountTwitter(models.Model):
         )
         if not result.ok:
             # unfortunately Twitter does not return a proper error code so we have to rely on the error message
-            # last known max file size for the API is 5MB
+            # last known max file size for the API is 20MB
             generic_api_error = result.json().get('error', '')
-            raise UserError(_("We could not upload your image, try reducing its size and posting it again (error: %s).", generic_api_error))
+            raise UserError(_("We could not upload your image, it may be corrupted, it may exceed size limit or API may have send improper response (error: %s).", generic_api_error))
 
         return result.json().get('media_id_string')
 

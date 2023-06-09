@@ -205,7 +205,7 @@ class BankReconciliationReportCustomHandler(models.AbstractModel):
         return self.env['account.bank.statement'].search([
             ('journal_id', '=', journal.id),
             ('date', '<=', options['date']['date_to']),
-            ('is_complete', '=', False),
+            ('is_valid', '=', False),
         ])
 
     def _get_bank_miscellaneous_move_lines_domain(self, options, journal):

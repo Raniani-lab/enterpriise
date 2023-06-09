@@ -482,3 +482,41 @@ class TestReconciliationReport(TestAccountReportsCommon):
                 currency_map={3: {'currency': bank_journal.currency_id}},
                 ignore_folded=False,
             )
+
+    def test_reconciliation_report_warning_hole(self):
+        bank_journal = self.company_data['default_journal_bank']
+
+        report = self.env.ref('account_reports.bank_reconciliation_report').with_context(
+            active_id=bank_journal.id,
+            active_model='account.journal'
+        )
+        previous_options = self._generate_options(report, None, fields.Date.from_string('2023-12-31'))
+
+        report_info = report.get_report_informations(previous_options)
+        self.assertFalse(report_info['options'].get('inconsistent_statement_ids'), "No warning should be displayed.")
+
+        self.env['account.bank.statement'].create({
+            'name': 'statement_1',
+            'date': '2023-06-08',
+            'balance_start': 0.0,
+            'balance_end_real': 42.0,
+            'line_ids': [
+                (0, 0, {'payment_ref': 'line_1', 'amount': 42.0,  'date': '2023-06-01', 'journal_id': bank_journal.id}),
+            ],
+        })
+
+        self.env['account.bank.statement'].create({
+            'name': 'statement_2',
+            'date': '2023-06-09',
+            'balance_start': 52.0, # Hole: 10 are missing between the last balance_end and this balance_start
+            'balance_end_real': 63.0,
+            'line_ids': [
+                (0, 0, {'payment_ref': 'line_2', 'amount': 11.0,  'date': '2023-06-08', 'journal_id': bank_journal.id}),
+            ],
+        })
+
+        report_info = report.get_report_informations(previous_options)
+        self.assertTrue(
+            report_info['options'].get('inconsistent_statement_ids'),
+            "A warning should be displayed, telling the user there is a hole in the statements chain."
+        )

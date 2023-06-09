@@ -15,9 +15,9 @@
                 <field name="has_rented_products" invisible="1"/>
             </header>
             <button name="action_quotation_send" position="before">
-                <button name="open_pickup" type="object" class="btn-primary" string="PICKUP" data-hotkey="y"
+                <button name="open_pickup" type="object" class="btn-primary" string="Pickup" data-hotkey="y"
                     attrs="{'invisible':['|', ('has_pickable_lines','=',False), ('state', 'not in', ['sale', 'done'])]}"/>
-                <button name="open_return" type="object" class="btn-primary" string="RETURN" data-hotkey="k"
+                <button name="open_return" type="object" class="btn-primary" string="Return" data-hotkey="k"
                     attrs="{'invisible':['|',
                     ('state', 'not in', ['sale', 'done']),
                     '|',
@@ -26,7 +26,7 @@
                         ('has_returnable_lines','=',True),
                         ('has_pickable_lines','=',True)]
                     }"/>
-                <button name="open_return" type="object" class="btn-secondary" string="RETURN" data-hotkey="k"
+                <button name="open_return" type="object" class="btn-secondary" string="Return" data-hotkey="k"
                     attrs="{'invisible':['|',
                     ('state', 'not in', ['sale', 'done']),
                     '|',

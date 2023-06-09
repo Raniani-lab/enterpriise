@@ -218,7 +218,7 @@ class VoipPhonecall(models.Model):
             'name': partner.name,
             'phone': partner.sanitized_phone,
             'mobile': partner.sanitized_mobile,
-            'partner_id': partner_id,
+            'partner_id': partner.id,
         }
         return self._create_and_init(vals)
 

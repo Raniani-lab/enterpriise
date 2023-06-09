@@ -492,7 +492,7 @@ class TestReconciliationReport(TestAccountReportsCommon):
         )
         previous_options = self._generate_options(report, None, fields.Date.from_string('2023-12-31'))
 
-        report_info = report.get_report_informations(previous_options)
+        report_info = report.get_report_information(previous_options)
         self.assertFalse(report_info['options'].get('inconsistent_statement_ids'), "No warning should be displayed.")
 
         self.env['account.bank.statement'].create({
@@ -515,8 +515,46 @@ class TestReconciliationReport(TestAccountReportsCommon):
             ],
         })
 
-        report_info = report.get_report_informations(previous_options)
+        report_info = report.get_report_information(previous_options)
         self.assertTrue(
             report_info['options'].get('inconsistent_statement_ids'),
             "A warning should be displayed, telling the user there is a hole in the statements chain."
+        )
+
+    def test_reconciliation_report_warning_misc(self):
+        bank_journal = self.company_data['default_journal_bank']
+
+        report = self.env.ref('account_reports.bank_reconciliation_report').with_context(
+            active_id=bank_journal.id,
+            active_model='account.journal'
+        )
+        previous_options = self._generate_options(report, None, fields.Date.from_string('2023-12-31'))
+
+        report_info = report.get_report_information(previous_options)
+        self.assertFalse(report_info['options'].get('has_bank_miscellaneous_move_lines'), "No warning should be displayed.")
+
+        self.env['account.move'].create({
+            'journal_id': bank_journal.id,
+            'date': '2023-06-01',
+            'line_ids': [
+                (0, 0, {
+                    'name': 'line_1',
+                    'debit': 100,
+                    'credit': 0,
+                    'account_id': self.company_data['default_account_expense'].id,
+                }),
+                (0, 0, {
+                    'name': 'line_2',
+                    'debit': 0,
+                    'credit': 100,
+                    'account_id': bank_journal.default_account_id.id,
+                }),
+            ]
+        }).action_post()
+
+        report_info = report.get_report_information(previous_options)
+
+        self.assertTrue(
+            report_info['options'].get('has_bank_miscellaneous_move_lines'),
+            "A warning should be displayed, telling the user a miscellaneous entry is affecting the bank account's balance."
         )

@@ -128,14 +128,15 @@ function commonKanbanSteps () {
                 this.$anchor[0].scrollIntoView();
             },
         }, { // wait for the kanban view to be mounted
-            trigger: '.o_knowledge_behavior_type_embedded_view .o_kanban_renderer',
-            run: () => {
+            trigger: '.odoo-editor-editable',
+            extra_trigger: '.o_knowledge_behavior_type_embedded_view .o_kanban_renderer',
+            run: function () {
                 const helpField = document.querySelector('.o_knowledge_content[data-prop-name="action_help"]');
                 if (!helpField) {
                     throw new Error('Help field was not rendered in the DOM');
                 }
                 // focus the body otherwise change will not be saved
-                document.querySelector("#body_0").focus();
+                this.$anchor[0].focus();
                 // remove the help field from the dom for testing
                 helpField.remove();
             },

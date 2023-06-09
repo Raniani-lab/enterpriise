@@ -844,8 +844,11 @@ class BankRecWidget(models.Model):
                     ._convert(self.form_amount_currency, self.company_currency_id, self.company_id, self.st_line_id.date)
 
         sign = -1 if self.form_force_negative_sign else 1
-        line.amount_currency = sign * self.form_amount_currency
-        line.balance = sign * self.form_balance
+        line.write({
+            'amount_currency': sign * self.form_amount_currency,
+            'balance': sign * self.form_balance,
+            'manually_modified': True,
+        })
 
         if line.flag not in ('tax_line', 'early_payment'):
 
@@ -888,7 +891,10 @@ class BankRecWidget(models.Model):
             self.form_balance = 0.0
 
         sign = -1 if self.form_force_negative_sign else 1
-        line.balance = sign * self.form_balance
+        line.write({
+            'balance': sign * self.form_balance,
+            'manually_modified': True,
+        })
 
         # Single currency: amount_currency must be equal to balance.
         if self.form_currency_id == line.company_currency_id:
@@ -1188,7 +1194,7 @@ class BankRecWidget(models.Model):
             line_ids_commands = []
             for aml_line in all_aml_lines:
                 is_partial = aml_line.display_stroked_amount_currency or aml_line.display_stroked_balance
-                if is_partial:
+                if is_partial and not aml_line.manually_modified:
                     line_ids_commands.append(Command.update(aml_line.id, {
                         'amount_currency': aml_line.source_amount_currency,
                         'balance': aml_line.source_balance,

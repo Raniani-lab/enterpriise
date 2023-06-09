@@ -142,6 +142,8 @@ class BankRecWidgetLine(models.Model):
     display_stroked_amount_currency = fields.Boolean(compute='_compute_display_stroked_amount_currency')
     display_stroked_balance = fields.Boolean(compute='_compute_display_stroked_balance')
 
+    manually_modified = fields.Boolean()
+
     def _compute_index(self):
         for line in self:
             line.index = uuid.uuid4()

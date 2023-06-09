@@ -20,6 +20,10 @@
                 groups="hr_appraisal.group_hr_appraisal_user"
                 class="btn btn-primary"/>
         </xpath>
+            <xpath expr="//field[@name='work_email']" position="after">
+                <field name="is_manager" invisible="1"/>
+                <field name="next_appraisal_date" attrs="{'invisible': [('is_manager', '=', False)]}"/>
+            </xpath>
         </field>
     </record>
 </odoo>

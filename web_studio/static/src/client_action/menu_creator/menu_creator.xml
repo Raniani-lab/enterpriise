@@ -43,6 +43,7 @@
                     value="record.data.modelId"
                     canQuickCreate="true"
                     canOpen="false"
+                    domain="activeFields.modelId.domain"
                 />
             </Record>
         </div>

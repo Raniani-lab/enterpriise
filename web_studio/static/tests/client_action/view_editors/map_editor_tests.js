@@ -207,5 +207,34 @@ QUnit.module(
                 "first description"
             );
         });
+
+        QUnit.test("map additional fields domain", async (assert) => {
+            serverData.models["ir.model.fields"] = {
+                fields: {},
+                records: [],
+            };
+            await createViewEditor({
+                serverData,
+                type: "map",
+                resModel: "project.task",
+                arch: `<map/>`,
+                mockRPC(route, args) {
+                    if (args.method === "name_search") {
+                        assert.step("name_search");
+                        assert.strictEqual(args.model, "ir.model.fields");
+                        assert.deepEqual(args.kwargs.args, [
+                            "&",
+                            "&",
+                            ["model", "=", "project.task"],
+                            ["ttype", "not in", ["many2many", "one2many", "binary"]],
+                            "!",
+                            ["id", "in", []],
+                        ]);
+                    }
+                },
+            });
+            await click(target, ".o_field_many2many_selection input#additional_fields");
+            assert.verifySteps(["name_search"]);
+        });
     }
 );

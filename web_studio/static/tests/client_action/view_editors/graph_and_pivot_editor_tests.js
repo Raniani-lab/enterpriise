@@ -531,5 +531,34 @@ QUnit.module(
                 );
             }
         );
+
+        QUnit.test("pivot measure fields domain", async function (assert) {
+            serverData.models["ir.model.fields"] = {
+                fields: {},
+                records: [],
+            };
+            await createViewEditor({
+                serverData,
+                type: "pivot",
+                resModel: "coucou",
+                arch: `<pivot/>`,
+                mockRPC(route, args) {
+                    if (args.method === "name_search") {
+                        assert.step("name_search");
+                        assert.strictEqual(args.model, "ir.model.fields");
+                        assert.deepEqual(args.kwargs.args, [
+                            "&",
+                            "&",
+                            ["model", "=", "coucou"],
+                            ["name", "in", ["__count"]],
+                            "!",
+                            ["id", "in", []],
+                        ]);
+                    }
+                },
+            });
+            await click(target, ".o_field_many2many_selection input#pivot_measure_fields");
+            assert.verifySteps(["name_search"]);
+        });
     }
 );

@@ -405,7 +405,7 @@ QUnit.module("AppCreator", (hooks) => {
     });
 
     QUnit.test("app creator: debug flow with existing model", async (assert) => {
-        assert.expect(16);
+        assert.expect(17);
 
         patchWithCleanup(odoo, { debug: "1" });
 
@@ -415,6 +415,10 @@ QUnit.module("AppCreator", (hooks) => {
             async mockRPC(route, params) {
                 switch (route) {
                     case "/web/dataset/call_kw/ir.model/name_search": {
+                        assert.deepEqual(params.kwargs.args, [
+                            ["transient", "=", false],
+                            ["abstract", "=", false],
+                        ]);
                         assert.step(route);
                         assert.strictEqual(
                             params.model,

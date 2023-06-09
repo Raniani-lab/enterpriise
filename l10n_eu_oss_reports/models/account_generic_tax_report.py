@@ -118,7 +118,7 @@ class OSSTaxReportCustomHandlerOss(models.AbstractModel):
             month = date_to.month
         elif options['date']['period_type'] == 'quarter':
             month_end = int(date_to.month)
-            quarter = month_end // 3
+            quarter = (month_end - 1) // 3 + 1
         else:
             raise UserError(_('Choose a month or quarter to export the OSS report'))
 

@@ -1571,10 +1571,14 @@ export const SignableDocument = Document.extend({
        */
       adjustSignatureSize: function (data, signatureItem) {
         if (!data) { return Promise.resolve(false); }
-        return new Promise(function (resolve, reject) {
+        return new Promise((resolve, reject) => {
           const img = new Image();
-          img.onload = function () {
+          img.onload = () => {
             const c = document.createElement("canvas");
+            if (!signatureItem.parent().hasClass('page')) {
+                // checks if element is detached from pdf js
+                this.refreshSignItems();
+            }
             const boxWidth = signatureItem.width();
             const boxHeight = signatureItem.height();
             const imgHeight = img.height;

@@ -74,7 +74,7 @@ class AccountReconcileWizard(models.TransientModel):
         comodel_name='account.account',
         string='Account',
         check_company=True,
-        domain="[('deprecated', '=', False), ('company_id', '=', company_id)], ('internal_group', '!=', 'off_balance')")
+        domain="[('deprecated', '=', False), ('company_id', '=', company_id), ('internal_group', '!=', 'off_balance')]")
     label = fields.Char(string='Label', default='Write-Off')
     tax_id = fields.Many2one(
         comodel_name='account.tax',

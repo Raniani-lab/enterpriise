@@ -1040,6 +1040,21 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         ])
         self.assertRecordValues(wizard, [{'state': 'reconciled'}])
 
+    def test_validation_changed_default_account(self):
+        st_line = self._create_st_line(100.0, partner_id=self.partner_a.id)
+        original_journal_account_id = st_line.journal_id.default_account_id
+        # Change the default account of the journal (exceptional case)
+        st_line.journal_id.default_account_id = self.company_data['default_journal_cash'].default_account_id
+        wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
+        self.assertRecordValues(wizard, [{'state': 'valid'}])
+        # Validate and check the statement line.
+        wizard.button_validate()
+        liquidity_line, _suspense_line, _other_line = st_line._seek_for_lines()
+        self.assertRecordValues(liquidity_line, [
+            {'account_id': original_journal_account_id.id, 'balance': 100.0},
+        ])
+        self.assertRecordValues(wizard, [{'state': 'reconciled'}])
+
     def test_apply_taxes_with_reco_model(self):
         st_line = self._create_st_line(1000.0)
 

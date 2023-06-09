@@ -9,6 +9,10 @@ import unicodedata
 import uuid
 
 from PyPDF2 import PdfFileReader, PdfFileWriter
+try:
+    from PyPDF2.errors import PdfReadError
+except ImportError:
+    from PyPDF2.utils import PdfReadError
 from reportlab.lib.utils import ImageReader
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
@@ -21,6 +25,7 @@ from werkzeug.urls import url_join, url_quote
 from random import randint
 from markupsafe import Markup
 from hashlib import sha256
+from PIL import UnidentifiedImageError
 
 from odoo import api, fields, models, http, _, Command
 from odoo.tools import config, get_lang, is_html_empty, formataddr, groupby, format_date
@@ -605,7 +610,10 @@ class SignRequest(models.Model):
                         can.drawString(width*item.posX, height*(1-item.posY-item.height*0.9), value)
 
                     elif item.type_id.item_type == "signature" or item.type_id.item_type == "initial":
-                        image_reader = ImageReader(io.BytesIO(base64.b64decode(value[value.find(',')+1:])))
+                        try:
+                            image_reader = ImageReader(io.BytesIO(base64.b64decode(value[value.find(',')+1:])))
+                        except UnidentifiedImageError:
+                            raise ValidationError(_("There was an issue downloading your document. Please contact an administrator."))
                         _fix_image_transparency(image_reader._image)
                         can.drawImage(image_reader, width*item.posX, height*(1-item.posY-item.height), width*item.width, height*item.height, 'auto', True)
 
@@ -624,8 +632,12 @@ class SignRequest(models.Model):
             if isEncrypted:
                 new_pdf.encrypt(password)
 
-            output = io.BytesIO()
-            new_pdf.write(output)
+            try:
+                output = io.BytesIO()
+                new_pdf.write(output)
+            except PdfReadError:
+                raise ValidationError(_("There was an issue downloading your document. Please contact an administrator."))
+
             self.completed_document = base64.b64encode(output.getvalue())
             output.close()
 

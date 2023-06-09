@@ -42,7 +42,7 @@ class Picking(models.Model):
 
     # Technical field making it possible to have a draft status for entering
     # the starting number for the guia in this company
-    l10n_cl_draft_status = fields.Boolean()
+    l10n_cl_draft_status = fields.Boolean(copy=False)
     # delivery guide is not mandatory for return case
     l10n_cl_is_return = fields.Boolean(compute="_compute_l10n_cl_is_return")
     # Common fields that will go into l10n_cl.edi.util in master (check copy=False as this flag was not in edi util):

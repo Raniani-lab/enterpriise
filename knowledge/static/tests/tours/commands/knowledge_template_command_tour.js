@@ -53,7 +53,7 @@ registry.category("web_tour.tours").add('knowledge_template_command_tour', {
     trigger: '.o_breadcrumb_article_name_container:contains("EditorCommandsArticle")',
     run: () => {},
 }, { // use the template as description for the contact record
-    trigger: '.o_knowledge_behavior_type_template button[title="Use as Description"]',
+    trigger: '.o_knowledge_behavior_type_template button:contains(Use as)',
     run: 'click',
 }, { // check that the content of the template was inserted as description
     trigger: '.o_form_sheet .o_field_html .odoo-editor-editable p:first-child:contains("Hello world")',

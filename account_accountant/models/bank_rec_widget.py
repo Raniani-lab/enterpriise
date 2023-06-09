@@ -447,7 +447,7 @@ class BankRecWidget(models.Model):
                 } for x in reconcile_models]
 
             # Compute 'selected_model_id'.
-            selected_reconcile_models = wizard.line_ids.reconcile_model_id
+            selected_reconcile_models = wizard.line_ids.reconcile_model_id.filtered(lambda x: x.rule_type == 'writeoff_button')
             if len(selected_reconcile_models) == 1:
                 selected_reconcile_model_id = selected_reconcile_models.id
             else:

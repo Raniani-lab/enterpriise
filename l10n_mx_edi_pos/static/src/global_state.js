@@ -1,9 +1,9 @@
 /** @odoo-module */
 
-import { PosGlobalState } from "@point_of_sale/app/store/models";
+import { PosStore } from "@point_of_sale/app/store/pos_store";
 import { patch } from "@web/core/utils/patch";
 
-patch(PosGlobalState.prototype, "l10n_mx_edi_pos.PosGlobalState", {
+patch(PosStore.prototype, "l10n_mx_edi_pos.PosStore", {
     //@override
     async _processData(loadedData) {
         await this._super(...arguments);

@@ -13,7 +13,7 @@ patch(PartnerDetailsEdit.prototype, "l10n_mx_edi_pos.PartnerDetailsEdit", {
     },
     //@override
     captureChange(event) {
-        const { company, l10n_mx_country_id } = this.pos.globalState;
+        const { company, l10n_mx_country_id } = this.pos;
         if (company.country.code === 'MX' && event.target.name === 'country_id') {
             this.state.display_mx_fields = l10n_mx_country_id.toString() === event.target.value;
         }

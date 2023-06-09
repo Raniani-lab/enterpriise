@@ -8,7 +8,7 @@ patch(TicketScreen.prototype, "l10n_de_pos_cert.TicketScreen", {
     async _onBeforeDeleteOrder(order) {
         const _super = this._super;
         try {
-            if (this.pos.globalState.isCountryGermanyAndFiskaly() && order.isTransactionStarted()) {
+            if (this.pos.isCountryGermanyAndFiskaly() && order.isTransactionStarted()) {
                 await order.cancelTransaction();
             }
             return _super(...arguments);

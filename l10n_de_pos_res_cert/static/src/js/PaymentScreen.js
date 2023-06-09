@@ -7,7 +7,7 @@ patch(PaymentScreen.prototype, "l10n_de_pos_res_cert.PaymentScreen", {
     //@Override
     async _finalizeValidation() {
         const _super = this._super;
-        if (this.pos.globalState.isRestaurantCountryGermanyAndFiskaly()) {
+        if (this.pos.isRestaurantCountryGermanyAndFiskaly()) {
             try {
                 await this.currentOrder.retrieveAndSendLineDifference();
             } catch {

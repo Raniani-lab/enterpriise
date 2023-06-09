@@ -1,10 +1,11 @@
 /** @odoo-module */
 
-import { PosGlobalState, Order } from "@point_of_sale/app/store/models";
+import { PosStore } from "@point_of_sale/app/store/pos_store";
+import { Order } from "@point_of_sale/app/store/models";
 import { uuidv4 } from "@point_of_sale/utils";
 import { patch } from "@web/core/utils/patch";
 
-patch(PosGlobalState.prototype, "l10n_de_pos_res_cert.PosGlobalState", {
+patch(PosStore.prototype, "l10n_de_pos_res_cert.PosStore", {
     isRestaurantCountryGermanyAndFiskaly() {
         return this.isCountryGermanyAndFiskaly() && this.config.module_pos_restaurant;
     },

@@ -14,13 +14,12 @@ patch(ReprintReceiptButton.prototype, "pos_l10n_se.ReprintReceiptButton", {
     },
     async _onClick() {
         const _super = this._super;
-        const { globalState } = this.pos;
-        if (globalState.useBlackBoxSweden()) {
+        if (this.pos.useBlackBoxSweden()) {
             const order = this.props.order;
 
             if (order) {
                 const isReprint = await this.orm.call("pos.order", "is_already_reprint", [
-                    [globalState.validated_orders_name_server_id_map[order.name]],
+                    [this.pos.validated_orders_name_server_id_map[order.name]],
                 ]);
                 if (isReprint) {
                     await this.popup.add(ErrorPopup, {
@@ -29,11 +28,11 @@ patch(ReprintReceiptButton.prototype, "pos_l10n_se.ReprintReceiptButton", {
                     });
                 } else {
                     order.receipt_type = "kopia";
-                    await globalState.push_single_order(order);
+                    await this.pos.push_single_order(order);
                     order.receipt_type = false;
                     order.isReprint = true;
                     await this.orm.call("pos.order", "set_is_reprint", [
-                        [globalState.validated_orders_name_server_id_map[order.name]],
+                        [this.pos.validated_orders_name_server_id_map[order.name]],
                     ]);
                     return _super(...arguments);
                 }

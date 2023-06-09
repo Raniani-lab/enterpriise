@@ -1,59 +1,10 @@
 /** @odoo-module */
 
-import { PosGlobalState, Product, register_payment_method } from "@point_of_sale/app/store/models";
-import { PaymentIngenico, PaymentWorldline } from "@pos_iot/js/payment";
-import { DeviceController } from "@iot/device_controller";
-import { IoTPrinter } from "@pos_iot/js/iot_printer";
+import { Product } from "@point_of_sale/app/store/models";
 import { patch } from "@web/core/utils/patch";
 import { ErrorPopup } from "@point_of_sale/app/errors/popups/error_popup";
 import { _t } from "@web/core/l10n/translation";
 
-register_payment_method("ingenico", PaymentIngenico);
-register_payment_method("worldline", PaymentWorldline);
-
-patch(PosGlobalState.prototype, "pos_iot.PosGlobalState", {
-    async _processData(loadedData) {
-        await this._super(...arguments);
-        this._loadIotDevice(loadedData["iot.device"]);
-        this.hardwareProxy.iotBoxes = loadedData["iot.box"];
-    },
-    _loadIotDevice(devices) {
-        const iotLongpolling = this.env.services.iot_longpolling;
-        for (const device of devices) {
-            // FIXME POSREF this seems like it can't work, we're pushing an id to an array of
-            // objects expected to be of the form { ip, ip_url }, so this seems useless?
-            if (!this.hardwareProxy.iotBoxes.includes(device.iot_id[0])) {
-                this.hardwareProxy.iotBoxes.push(device.iot_id[0]);
-            }
-            const { deviceControllers } = this.hardwareProxy;
-            const { type, identifier } = device;
-            const deviceProxy = new DeviceController(iotLongpolling, device);
-            if (type === "payment") {
-                for (const pm of this.payment_methods) {
-                    if (pm.iot_device_id[0] === device.id) {
-                        pm.terminal_proxy = deviceProxy;
-                    }
-                }
-            } else if (type === "scanner") {
-                deviceControllers.scanners ||= {};
-                deviceControllers.scanners[identifier] = deviceProxy;
-            } else {
-                deviceControllers[type] = deviceProxy;
-            }
-        }
-    },
-    create_printer(config) {
-        if (config.device_identifier && config.printer_type === "iot") {
-            const device = new DeviceController(this.env.services.iot_longpolling, {
-                iot_ip: config.proxy_ip,
-                identifier: config.device_identifier,
-            });
-            return new IoTPrinter({ device });
-        } else {
-            return this._super(...arguments);
-        }
-    },
-});
 
 patch(Product.prototype, "pos_iot.Product", {
     async _onScaleNotAvailable() {

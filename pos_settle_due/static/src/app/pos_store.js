@@ -5,7 +5,7 @@ import { PosStore } from "@point_of_sale/app/store/pos_store";
 
 patch(PosStore.prototype, "pos_settle_due.PosStore", {
     getPartnerCredit(partner) {
-        const order = this.globalState.get_order();
+        const order = this.get_order();
         const partnerInfos = {
             totalDue: 0,
             totalWithCart: order ? order.get_total_with_tax() : 0,
@@ -19,7 +19,7 @@ patch(PosStore.prototype, "pos_settle_due.PosStore", {
         }
 
         if (partner.parent_name) {
-            const parent = this.globalState.partners.find((p) => p.name === partner.parent_name);
+            const parent = this.partners.find((p) => p.name === partner.parent_name);
 
             if (parent) {
                 partner = parent;
@@ -31,7 +31,7 @@ patch(PosStore.prototype, "pos_settle_due.PosStore", {
         partnerInfos.creditLimit = partner.credit_limit;
         partnerInfos.overDue = partnerInfos.totalWithCart > partnerInfos.creditLimit ? true : false;
         partnerInfos.useLimit =
-            this.globalState.company.account_use_credit_limit &&
+            this.company.account_use_credit_limit &&
             partner.credit_limit > 0 &&
             partnerInfos.overDue
                 ? true

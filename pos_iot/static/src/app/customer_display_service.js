@@ -7,7 +7,7 @@ patch(RemoteDisplay, "pos_iot.RemoteDisplay static", {
     serviceDependencies: [...RemoteDisplay.serviceDependencies, "iot_longpolling"],
 });
 patch(RemoteDisplay.prototype, "pos_iot.RemoteDisplay", {
-    setup(globalState, { iot_longpolling }) {
+    setup(pos, { iot_longpolling }) {
         this._super(...arguments);
         this.iotLongpolling = iot_longpolling;
     },
@@ -17,7 +17,7 @@ patch(RemoteDisplay.prototype, "pos_iot.RemoteDisplay", {
     async connect() {
         this.hardwareProxy.deviceControllers.display.action({
             action: "take_control",
-            html: await this.globalState.customerDisplayHTML(),
+            html: await this.customerDisplayHTML(),
         });
     },
     /**
@@ -26,7 +26,7 @@ patch(RemoteDisplay.prototype, "pos_iot.RemoteDisplay", {
     async update() {
         return this.hardwareProxy.deviceControllers?.display?.action({
             action: "customer_facing_display",
-            html: await this.globalState.customerDisplayHTML(),
+            html: await this.customerDisplayHTML(),
         });
     },
     /**

@@ -1,17 +1,61 @@
 /** @odoo-module */
 
 import { patch } from "@web/core/utils/patch";
-import { PosStore } from "@point_of_sale/app/store/pos_store";
+import { PosStore, register_payment_method } from "@point_of_sale/app/store/pos_store";
 import { ErrorPopup } from "@point_of_sale/app/errors/popups/error_popup";
 import { _t } from "@web/core/l10n/translation";
 import { PaymentScreen } from "@point_of_sale/app/screens/payment_screen/payment_screen";
+import { DeviceController } from "@iot/device_controller";
+import { IoTPrinter } from "@pos_iot/js/iot_printer";
+import { PaymentIngenico, PaymentWorldline } from "@pos_iot/js/payment";
 
 patch(PosStore.prototype, "pos_iot.PosStore", {
+    async _processData(loadedData) {
+        await this._super(...arguments);
+        this._loadIotDevice(loadedData["iot.device"]);
+        this.hardwareProxy.iotBoxes = loadedData["iot.box"];
+    },
+    _loadIotDevice(devices) {
+        const iotLongpolling = this.env.services.iot_longpolling;
+        for (const device of devices) {
+            // FIXME POSREF this seems like it can't work, we're pushing an id to an array of
+            // objects expected to be of the form { ip, ip_url }, so this seems useless?
+            if (!this.hardwareProxy.iotBoxes.includes(device.iot_id[0])) {
+                this.hardwareProxy.iotBoxes.push(device.iot_id[0]);
+            }
+            const { deviceControllers } = this.hardwareProxy;
+            const { type, identifier } = device;
+            const deviceProxy = new DeviceController(iotLongpolling, device);
+            if (type === "payment") {
+                for (const pm of this.payment_methods) {
+                    if (pm.iot_device_id[0] === device.id) {
+                        pm.terminal_proxy = deviceProxy;
+                    }
+                }
+            } else if (type === "scanner") {
+                deviceControllers.scanners ||= {};
+                deviceControllers.scanners[identifier] = deviceProxy;
+            } else {
+                deviceControllers[type] = deviceProxy;
+            }
+        }
+    },
+    create_printer(config) {
+        if (config.device_identifier && config.printer_type === "iot") {
+            const device = new DeviceController(this.env.services.iot_longpolling, {
+                iot_ip: config.proxy_ip,
+                identifier: config.device_identifier,
+            });
+            return new IoTPrinter({ device });
+        } else {
+            return this._super(...arguments);
+        }
+    },
+
     showScreen() {
         if (
             this.mainScreen.component === PaymentScreen &&
-            this.globalState
-                .get_order()
+            this.get_order()
                 .paymentlines.some(
                     (pl) =>
                         pl.payment_method.use_payment_terminal === "worldline" &&
@@ -28,10 +72,10 @@ patch(PosStore.prototype, "pos_iot.PosStore", {
     },
     connectToProxy() {
         this.hardwareProxy.pingBoxes();
-        if (this.globalState.config.iface_scan_via_proxy) {
+        if (this.config.iface_scan_via_proxy) {
             this.barcodeReader?.connectToProxy();
         }
-        if (this.globalState.config.iface_print_via_proxy) {
+        if (this.config.iface_print_via_proxy) {
             this.hardwareProxy.connectToPrinter();
         }
         if (!this.hardwareProxy.statusLoopRunning) {
@@ -40,3 +84,6 @@ patch(PosStore.prototype, "pos_iot.PosStore", {
         return Promise.resolve();
     },
 });
+
+register_payment_method("ingenico", PaymentIngenico);
+register_payment_method("worldline", PaymentWorldline);

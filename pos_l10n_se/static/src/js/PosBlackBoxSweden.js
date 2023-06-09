@@ -1,10 +1,11 @@
 /** @odoo-module */
-import { PosGlobalState, Order, Orderline } from "@point_of_sale/app/store/models";
+import { PosStore } from "@point_of_sale/app/store/pos_store";
+import { Order, Orderline } from "@point_of_sale/app/store/models";
 import { _t } from "@web/core/l10n/translation";
 import { patch } from "@web/core/utils/patch";
 import { ErrorPopup } from "@point_of_sale/app/errors/popups/error_popup";
 
-patch(PosGlobalState.prototype, "pos_l10n_se.PosGlobalState", {
+patch(PosStore.prototype, "pos_l10n_se.PosStore", {
     useBlackBoxSweden() {
         return !!this.config.iface_sweden_fiscal_data_module;
     },

@@ -1,42 +1,6 @@
 /** @odoo-module **/
-import { PosGlobalState, Order } from "@point_of_sale/app/store/models";
+import { Order } from "@point_of_sale/app/store/models";
 import { patch } from "@web/core/utils/patch";
-
-patch(PosGlobalState.prototype, "pos_preparation_display.PosGlobalState", {
-    setup() {
-        this._super(...arguments);
-
-        this.preparationDisplays = [];
-    },
-
-    _initializePreparationDisplay() {
-        const preparationDisplayCategories = this.preparationDisplays.flatMap(
-            (preparationDisplay) => preparationDisplay.pdis_category_ids
-        );
-        this.preparationDisplayCategoryIds = new Set(preparationDisplayCategories);
-    },
-
-    // @override - add preparation display categories to global order preparation categories
-    get orderPreparationCategories() {
-        let categoryIds = this._super();
-        if (this.preparationDisplayCategoryIds) {
-            categoryIds = new Set([...categoryIds, ...this.preparationDisplayCategoryIds]);
-        }
-        return categoryIds;
-    },
-
-    // @override
-    async _processData(loadedData) {
-        await this._super(loadedData);
-        this.preparationDisplays = loadedData["pos_preparation_display.display"];
-    },
-
-    // @override
-    async after_load_server_data() {
-        await this._super(...arguments);
-        this._initializePreparationDisplay();
-    },
-});
 
 patch(Order.prototype, "pos_preparation_display.Order", {
     // This function send order change to preparation display.

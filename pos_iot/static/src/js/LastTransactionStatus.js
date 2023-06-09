@@ -26,7 +26,7 @@ export class LastTransactionStatusButton extends Component {
             return;
         }
 
-        const status = this.pos.globalState.get_order()?.selected_paymentline?.payment_status;
+        const status = this.pos.get_order()?.selected_paymentline?.payment_status;
         if (status && ["waiting", "waitingCard", "waitingCancel"].includes(status)) {
             this.popup.add(ErrorPopup, {
                 title: _t("Electronic payment in progress"),
@@ -38,7 +38,7 @@ export class LastTransactionStatusButton extends Component {
         }
 
         this.state.pending = true;
-        this.pos.globalState.payment_methods.map((pm) => {
+        this.pos.payment_methods.map((pm) => {
             if (pm.use_payment_terminal == "worldline") {
                 var terminal = pm.payment_terminal.get_terminal();
                 terminal.addListener(this._onLastTransactionStatus.bind(this));

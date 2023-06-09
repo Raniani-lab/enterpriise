@@ -54,6 +54,7 @@ export class TaskGanttModel extends GanttModel {
                         context: {
                             ...this.searchParams.context,
                             last_date_view: serializeDateTime(endDateTime),
+                            cell_part: this.metaData.scale.cellPart,
                         },
                     }
                 );

@@ -286,16 +286,7 @@ QUnit.test("open a dialog to schedule task", async (assert) => {
                 return [];
             } else if (args.method === "schedule_tasks") {
                 assert.step("schedule_tasks");
-                const response = {
-                    action: {
-                        name: "Caution: some tasks have not been scheduled",
-                        type: "ir.actions.act_window",
-                        res_model: "task",
-                        views: [[false, "list"]],
-                        target: "new",
-                    },
-                };
-                return response;
+                return {};
             }
         },
     });

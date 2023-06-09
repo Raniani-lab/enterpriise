@@ -7,8 +7,10 @@ import { localization } from "@web/core/l10n/localization";
 import { usePopover } from "@web/core/popover/popover_hook";
 import { useService } from "@web/core/utils/hooks";
 import { GanttRenderer } from "@web_gantt/gantt_renderer";
+import { escape } from "@web/core/utils/strings";
 import { MilestonesPopover } from "./milestones_popover";
 import { TaskGanttPopover } from "./task_gantt_popover";
+import { FormViewDialog } from "@web/views/view_dialogs/form_view_dialog";
 
 export class TaskGanttRenderer extends GanttRenderer {
     setup() {
@@ -88,6 +90,17 @@ export class TaskGanttRenderer extends GanttRenderer {
 
     getSelectCreateDialogProps() {
         const props = super.getSelectCreateDialogProps(...arguments);
+        const onCreateEdit = () => {
+            this.dialogService.add(FormViewDialog, {
+                context: props.context,
+                resModel: props.resModel,
+                onRecordSaved: async (record) => {
+                    await record.save({ reload: false });
+                    await this.model.fetchData();
+                },
+            });
+        };
+        props.onCreateEdit = onCreateEdit;
         props.context.smart_task_scheduling = true;
         return props;
     }
@@ -97,17 +110,27 @@ export class TaskGanttRenderer extends GanttRenderer {
     }
 
     openPlanDialogCallback(res) {
-        if (res) {
-            if (res.action) {
-                this.actionService.doAction(res.action);
-            } else if (res.warnings) {
-                for (const warning of res.warnings) {
-                    this.notificationService.add(warning, {
-                        title: _t("Warning"),
-                        type: "warning",
-                        sticky: true,
-                    });
-                }
+        if (!res) {
+            return;
+        }
+        for (const [warningType, warningString] of Object.entries(res)) {
+            if (warningType === "out_of_scale_notification") {
+                this.notificationService.add(
+                    markup(
+                        `<i class="fa btn-link fa-check"></i><span class="ms-1">${escape(
+                            warningString
+                        )}</span>`
+                    ),
+                    {
+                        type: "success",
+                    }
+                );
+            } else {
+                this.notificationService.add(warningString, {
+                    title: _t("Warning"),
+                    type: "warning",
+                    sticky: true,
+                });
             }
         }
     }

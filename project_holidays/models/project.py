@@ -3,6 +3,7 @@
 
 from odoo import api, fields, models, _
 from odoo.addons.project.models.project_task import CLOSED_STATES
+from collections import defaultdict
 
 class Task(models.Model):
     _inherit = 'project.task'
@@ -15,6 +16,19 @@ class Task(models.Model):
     @api.depends_context('lang')
     @api.depends('planned_date_begin', 'date_deadline', 'user_ids')
     def _compute_leave_warning(self):
+        def group_by_leave(data):
+            mapping_leaves = defaultdict(list)
+            for item in data:
+                name = item['name']
+                for leave in item['leaves']:
+                    leave_tuple = tuple(leave.items())
+                    mapping_leaves[leave_tuple].append(name)
+            res = []
+            for leave_tuple, names in mapping_leaves.items():
+                leave_dict = dict(leave_tuple)
+                res.append({'names': names, 'leaves': leave_dict})
+            return res
+
         assigned_tasks = self.filtered(
             lambda t: t.user_ids.employee_id
             and t.project_id
@@ -37,20 +51,41 @@ class Task(models.Model):
         )
 
         for task in assigned_tasks:
-            warning = False
-            employees = task.user_ids.mapped('employee_id')
-            warning = ''
-            for employee in employees:
+            leaves_parameters = {"validated": [], "requested": []}
+            # Gather leaves parameters for each employee
+            for employee in task.user_ids.employee_id:
                 task_leaves = leaves.get(employee.id)
                 if task_leaves:
-                    warning += self.env['hr.leave']._get_leave_warning(
-                        leaves=task_leaves,
-                        employee=employee,
-                        date_from=task.planned_date_begin,
-                        date_to=task.date_deadline
+                    employee_leaves = self.env['hr.leave']._get_leave_warning_parameters(
+                        task_leaves, employee, task.planned_date_begin, task.date_deadline
                     )
+                    for leave_type, leaves_for_employee in employee_leaves.items():
+                        if not leaves_for_employee:
+                            continue
+                        leaves_parameters[leave_type].append(leaves_for_employee)
+            # Group leaves
+            for leave_type, leaves_for_employee in leaves_parameters.items():
+                leaves_parameters[leave_type] = group_by_leave(leaves_for_employee)
+            warning = ''
+            for leave_type, leaves_for_employee in leaves_parameters.items():
+                for leave in leaves_for_employee:
+                    if leave["leaves"]:
+                        if leave_type == 'validated':
+                            if len(leave["names"]) == 1:
+                                warning += _('%(names)s is on time off %(leaves)s. \n',
+                                             names=', '.join(leave["names"]),
+                                             leaves=self.env['hr.leave'].format_date_range_to_string(leave["leaves"]))
+                            else:
+                                warning += _('%(names)s are on time off %(leaves)s. \n',
+                                             names=', '.join(leave["names"]),
+                                             leaves=self.env['hr.leave'].format_date_range_to_string(leave["leaves"]))
+                        else:
+                            warning += _('%(names)s requested time off %(leaves)s. \n',
+                                         names=', '.join(leave["names"]),
+                                         leaves=self.env['hr.leave'].format_date_range_to_string(leave["leaves"]))
             task.leave_warning = warning or False
             task.is_absent = bool(warning)
+        return warning
 
     @api.model
     def _search_is_absent(self, operator, value):

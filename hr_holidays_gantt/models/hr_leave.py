@@ -55,51 +55,66 @@ class HrLeave(models.Model):
             leaves[leave.employee_id.id].append(leave)
         return leaves
 
-    def _get_leave_warning(self, leaves, employee, date_from, date_to):
+    def _get_leave_warning_parameters(self, leaves, employee, date_from, date_to):
         loc_cache = {}
 
         def localize(date):
             if date not in loc_cache:
                 loc_cache[date] = utc.localize(date).astimezone(timezone(self.env.user.tz or 'UTC')).replace(tzinfo=None)
-            return loc_cache.get(date)
+            return loc_cache[date]
 
-        warning = ''
         periods = self._group_leaves(leaves, employee, date_from, date_to)
         periods_by_states = [list(b) for a, b in groupby(periods, key=lambda x: x['is_validated'])]
-
+        res = {}
         for periods in periods_by_states:
-            period_leaves = ''
+            leaves_for_employee = {'name': employee.name, "leaves": []}
             for period in periods:
                 dfrom = period['from']
                 dto = period['to']
-                prefix = ''
-                if period != periods[0]:
-                    if period == periods[-1]:
-                        prefix = _(' and')
-                    else:
-                        prefix = ','
-
                 if period.get('show_hours', False):
-                    period_leaves += _('%(prefix)s from the %(dfrom_date)s at %(dfrom)s to the %(dto_date)s at %(dto)s',
-                                        prefix=prefix,
-                                        dfrom_date=format_date(self.env, localize(dfrom)),
-                                        dfrom=format_time(self.env, localize(dfrom)),
-                                        dto_date=format_date(self.env, localize(dto)),
-                                        dto=format_time(self.env, localize(dto)))
+                    leaves_for_employee['leaves'].append({
+                        "start_date": format_date(self.env, localize(dfrom)),
+                        "start_time": format_time(self.env, localize(dfrom)),
+                        "end_date": format_date(self.env, localize(dto)),
+                        "end_time": format_time(self.env, localize(dto))
+                    })
                 else:
-                    period_leaves += _('%(prefix)s from the %(dfrom)s to the %(dto)s',
-                                        prefix=prefix,
-                                        dfrom=format_date(self.env, localize(dfrom)),
-                                        dto=format_date(self.env, localize(dto)))
+                    leaves_for_employee['leaves'].append({
+                        "start_date": format_date(self.env, localize(dfrom)),
+                        "end_date": format_date(self.env, localize(dto)),
+                    })
+            res["validated" if periods[0].get('is_validated') else "requested"] = leaves_for_employee
+        return res
 
-            time_off_type = _('is on time off') if periods[0].get('is_validated') else _('has requested time off')
-            warning += _('%(employee)s %(time_off_type)s%(period_leaves)s. \n',
-                         employee=employee.name, period_leaves=period_leaves, time_off_type=time_off_type)
+    def format_date_range_to_string(self, date_dict):
+        if len(date_dict) == 4:
+            return _('from %(start_date)s at %(start_time)s to %(end_date)s at %(end_time)s', **date_dict)
+        else:
+            return _('from %(start_date)s to %(end_date)s', **date_dict)
+
+    def _get_leave_warning(self, leaves, employee, date_from, date_to):
+        leaves_parameters = self._get_leave_warning_parameters(leaves, employee, date_from, date_to)
+        warning = ''
+        for leave_type, leaves_for_employee in leaves_parameters.items():
+            if not leaves_for_employee:
+                continue
+            if leave_type == "validated":
+                warning += _(
+                    '%(name)s is on time off %(leaves)s. \n',
+                    name=leaves_for_employee["name"],
+                    leaves=', '.join(map(self.format_date_range_to_string, leaves_for_employee["leaves"]))
+                )
+            else:
+                warning += _(
+                    '%(name)s requested time off %(leaves)s. \n',
+                    name=leaves_for_employee["name"],
+                    leaves=', '.join(map(self.format_date_range_to_string, leaves_for_employee["leaves"]))
+                )
         return warning
 
     def _group_leaves(self, leaves, employee_id, date_from, date_to):
         """
-            Returns all the leaves happening between `planned_date_begin` and `planned_date_end`
+            Returns all the leaves happening between `planned_date_begin` and `date_deadline`
         """
         work_times = {wk[0]: wk[1] for wk in employee_id.list_work_time_per_day(date_from, date_to)}
 

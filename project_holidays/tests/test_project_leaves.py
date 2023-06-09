@@ -92,7 +92,7 @@ class TestProjectLeaves(common.TransactionCase):
         self.assertNotEqual(task_1.leave_warning, False,
                             "employee is on leave, should have a warning")
         self.assertTrue(task_1.leave_warning.startswith(
-            "Test HrUser is on time off from the 01/06/2020 to the 01/07/2020. \n"), "single day task, should show date")
+            "Test HrUser is on time off from 01/06/2020 to 01/07/2020. \n"), "single day task, should show date")
 
         task_2 = self.env['project.task'].create({
             'name': "Task 2",
@@ -102,7 +102,7 @@ class TestProjectLeaves(common.TransactionCase):
             'date_deadline': datetime.datetime(2020, 1, 7, 17, 0),
         })
         self.assertEqual(task_2.leave_warning,
-                         "Test HrUser is on time off from the 01/06/2020 to the 01/07/2020. \n")
+                         "Test HrUser is on time off from 01/06/2020 to 01/07/2020. \n")
 
         task_3 = self.env['project.task'].create({
             'name': "Task 3",
@@ -111,5 +111,5 @@ class TestProjectLeaves(common.TransactionCase):
             'planned_date_begin': datetime.datetime(2020, 1, 6, 8, 0),
             'date_deadline': datetime.datetime(2020, 1, 10, 17, 0),
         })
-        self.assertEqual(task_3.leave_warning, "Test HrUser is on time off from the 01/06/2020 to the 01/10/2020. \n",
+        self.assertEqual(task_3.leave_warning, "Test HrUser is on time off from 01/06/2020 to 01/10/2020. \n",
                          "should show the start of the 1st leave and end of the 2nd")

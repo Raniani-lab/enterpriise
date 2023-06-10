@@ -25,7 +25,7 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
 #, python-format
 msgid "%s days"
-msgstr ""
+msgstr "%s giorni"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -120,6 +120,8 @@ msgid ""
 "Contact your sales representative to help you to unlink your previous "
 "database"
 msgstr ""
+"Contatta l'addetto alle vendite per ricevere aiuto nello scollegare il tuo "
+"database precedente"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -133,7 +135,7 @@ msgstr "Barra degli strumenti del pannello di controllo"
 #: code:addons/web_enterprise/static/src/webclient/color_scheme/color_scheme_menu_items.js:0
 #, python-format
 msgid "Dark Mode"
-msgstr ""
+msgstr "Modalità scura"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -179,7 +181,7 @@ msgstr "Instradamento HTTP"
 #: code:addons/web_enterprise/static/src/webclient/navbar/navbar.js:0
 #, python-format
 msgid "Home menu"
-msgstr ""
+msgstr "Menu principale"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -202,6 +204,7 @@ msgstr "Collegati come amministratore per correggere il problema."
 #, python-format
 msgid "Login to your Odoo.com dashboard then unlink your previous database:"
 msgstr ""
+"Accedi alla tua dashboard su Odoo.com e scollega il database precedente:"
 
 #. module: web_enterprise
 #: model:ir.model,name:web_enterprise.model_ir_ui_menu
@@ -264,7 +267,7 @@ msgstr "Incolla il codice qui"
 #: code:addons/web_enterprise/static/src/webclient/navbar/navbar.js:0
 #, python-format
 msgid "Previous view"
-msgstr ""
+msgstr "Vista precedente"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -350,7 +353,7 @@ msgstr "Codice abbonamento:"
 #: code:addons/web_enterprise/static/src/webclient/home_menu/home_menu.xml:0
 #, python-format
 msgid "TIP"
-msgstr ""
+msgstr "SUGGERIMENTO"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -370,6 +373,8 @@ msgid ""
 "Thank you, your registration was successful! Your database is valid until "
 "%s."
 msgstr ""
+"Grazie, la tua registrazione è andata a buon fine! Il tuo database è valido "
+"fino al %s."
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -387,7 +392,7 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
 #, python-format
 msgid "This database has expired. "
-msgstr ""
+msgstr "Il database è scaduto."
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -507,4 +512,4 @@ msgstr "al proprietario dell'abbonamento (email:"
 #: code:addons/web_enterprise/static/src/webclient/home_menu/home_menu.xml:0
 #, python-format
 msgid "— open me anywhere with"
-msgstr ""
+msgstr "— aprimi ovunque con"

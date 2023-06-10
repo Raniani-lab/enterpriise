@@ -462,7 +462,7 @@ msgstr "Approvazione"
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_entry_search_view
 msgid "Approval Entries"
-msgstr ""
+msgstr "Voci approvazione"
 
 #. module: web_studio
 #. odoo-javascript
@@ -843,7 +843,7 @@ msgstr "Cambia lo <b>sfondo</b>, rendilo tuo."
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Chatter"
-msgstr ""
+msgstr "Chatter"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2787,7 +2787,7 @@ msgstr "Nuovo filtro"
 #: code:addons/web_studio/models/ir_model.py:0
 #, python-format
 msgid "New Lines"
-msgstr ""
+msgstr "Nuove righe"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3097,7 +3097,7 @@ msgstr "Specificare un campo."
 #: code:addons/web_studio/static/src/client_action/view_editors/kanban/kanban_editor_record.xml:0
 #, python-format
 msgid "Preview is not available"
-msgstr ""
+msgstr "Anteprima non disponibile"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3701,7 +3701,7 @@ msgstr "Specificare tutti i possibili valori"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Stacked graph"
-msgstr ""
+msgstr "Grafico impilato"
 
 #. module: web_studio
 #. odoo-python
@@ -3842,6 +3842,7 @@ msgstr "Parziale e totale"
 #, python-format
 msgid "Subtotal & Total can only be used in these models: "
 msgstr ""
+"Il subtotale e il totale possono essere utilizzati solo in questi modelli:"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3959,6 +3960,8 @@ msgid ""
 "The description will be shown to users to understand why they must ask for "
 "approval."
 msgstr ""
+"La descrizione verrà mostrata agli utenti per capire perché devono "
+"richiedere l'approvazione."
 
 #. module: web_studio
 #. odoo-javascript
@@ -4329,7 +4332,7 @@ msgstr "Segnaposto avatar utente"
 #: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
 msgid "User is not a member of the selected group."
-msgstr ""
+msgstr "L'utente non è un membro del gruppo selezionato."
 
 #. module: web_studio
 #. odoo-javascript

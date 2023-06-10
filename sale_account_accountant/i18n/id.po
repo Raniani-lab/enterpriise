@@ -48,7 +48,7 @@ msgstr ""
 #. module: sale_account_accountant
 #: model_terms:ir.ui.view,arch_db:sale_account_accountant.view_bank_rec_widget_form_inherit_sale_order
 msgid "There are"
-msgstr ""
+msgstr "Terdapat"
 
 #. module: sale_account_accountant
 #: model_terms:ir.ui.view,arch_db:sale_account_accountant.view_bank_rec_widget_form_inherit_sale_order

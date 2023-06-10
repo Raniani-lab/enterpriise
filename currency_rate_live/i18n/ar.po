@@ -125,7 +125,7 @@ msgstr "التشغيل التالي"
 #. module: currency_rate_live
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__bcrp
 msgid "SUNAT (replaces Bank of Peru)"
-msgstr ""
+msgstr "SUNAT (يستبدل بنك بيرو) "
 
 #. module: currency_rate_live
 #: model_terms:ir.ui.view,arch_db:currency_rate_live.res_config_settings_view_form

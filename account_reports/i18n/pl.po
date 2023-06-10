@@ -3,7 +3,6 @@
 # 	* account_reports
 # 
 # Translators:
-# Andrzej Wiśniewski <a.wisniewski@hadron.eu.com>, 2022
 # Arek Smagacz <arek.smagacz@gmail.com>, 2022
 # Tomasz Leppich <t.leppich@gmail.com>, 2022
 # Natalia Gros <nag@odoo.com>, 2022
@@ -26,6 +25,7 @@
 # Paweł Wodyński <pw@myodoo.pl>, 2022
 # Maksym <ms@myodoo.pl>, 2023
 # Dariusz Żbikowski <darek@krokus.com.pl>, 2023
+# Andrzej Wiśniewski <a.wisniewski@hadron.eu.com>, 2023
 # Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023
 # 
 msgid ""
@@ -2151,7 +2151,7 @@ msgstr "Pozycje"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Load more..."
-msgstr ""
+msgstr "Załaduj więcej..."
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_tax_unit__main_company_id
@@ -2864,7 +2864,7 @@ msgstr "Data początkowa:"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_company__account_tax_periodicity_reminder_day
 msgid "Start from"
-msgstr ""
+msgstr "Rozpoczęcie od"
 
 #. module: account_reports
 #. odoo-python

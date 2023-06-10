@@ -281,6 +281,15 @@ msgid ""
 "</tbody></table>\n"
 "            "
 msgstr ""
+"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%; margin:0px auto;\"><tbody>\n"
+"    <tr><td valign=\"top\" style=\"text-align: left; font-size: 14px;\">\n"
+"        عزيزنا <t t-esc=\"object.employee_id.name\"></t>، يوجد إيصال دفع جديد متاح لك.<br><br>\n"
+"        سوف تجد الملف بصيغة PDF في بوابة الموظف الخاصة بك.<br><br>\n"
+"        نتمنى لك يوماً سعيداً،<br>\n"
+"        فريق الموارد البشرية\n"
+"    </td></tr>\n"
+"</tbody></table>\n"
+"            "
 
 #. module: hr_payroll
 #: model:ir.model.constraint,message:hr_payroll.constraint_hr_work_entry_type_is_unforeseen_is_leave

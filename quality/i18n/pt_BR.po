@@ -3,9 +3,9 @@
 # 	* quality
 # 
 # Translators:
-# Marcel Savegnago <marcel.savegnago@gmail.com>, 2022
 # Martin Trigaux, 2022
 # Kevilyn Rosa, 2023
+# Marcel Savegnago <marcel.savegnago@gmail.com>, 2023
 # Layna Nascimento, 2023
 # 
 msgid ""
@@ -697,7 +697,7 @@ msgstr ""
 #. module: quality
 #: model:ir.model.fields.selection,name:quality.selection__quality_check__quality_state__pass
 msgid "Passed"
-msgstr ""
+msgstr "Aprovado"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__picking_id
@@ -990,7 +990,7 @@ msgstr "Título"
 #. module: quality
 #: model:ir.model.fields.selection,name:quality.selection__quality_check__quality_state__none
 msgid "To do"
-msgstr "Para fazer"
+msgstr "Lista de Tarefas"
 
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search

@@ -25,7 +25,7 @@ msgstr ""
 #. module: social_demo
 #: model:social.stream,name:social_demo.social_stream_youtube_account
 msgid "Channel: My Company"
-msgstr ""
+msgstr "Kanava: Oma Yritykseni"
 
 #. module: social_demo
 #: model:product.template,name:social_demo.product_product_4_product_template
@@ -35,42 +35,42 @@ msgstr "Pöytä"
 #. module: social_demo
 #: model:product.template,name:social_demo.product_product_4b_product_template
 msgid "Desk Variant B"
-msgstr ""
+msgstr "Pöytäversio B"
 
 #. module: social_demo
 #: model:product.template,name:social_demo.product_product_4c_product_template
 msgid "Desk Variant C"
-msgstr ""
+msgstr "Pöytäversio C"
 
 #. module: social_demo
 #: model:product.template,name:social_demo.product_product_4d_product_template
 msgid "Desk Variant D"
-msgstr ""
+msgstr "Pöytäversio D"
 
 #. module: social_demo
 #: model:social.stream,name:social_demo.social_stream_instagram_account
 msgid "Instagram Posts: My Company"
-msgstr ""
+msgstr "Instagram-postaukset: Instagramissa: Oma Yritykseni"
 
 #. module: social_demo
 #: model:social.stream,name:social_demo.social_stream_twitter_search
 msgid "Keyword: #mycompany"
-msgstr ""
+msgstr "Avainsana: #mycompany"
 
 #. module: social_demo
 #: model:social.stream,name:social_demo.social_stream_twitter_search_competitor
 msgid "Keyword: #mycompetitor"
-msgstr ""
+msgstr "Avainsana: #mycompetitor"
 
 #. module: social_demo
 #: model:social.stream,name:social_demo.social_stream_facebook_page
 msgid "Page Posts: My Company"
-msgstr ""
+msgstr "Sivun julkaisu: Oma Yritykseni"
 
 #. module: social_demo
 #: model:social.stream,name:social_demo.social_stream_linkedin_page
 msgid "Posts: My Company"
-msgstr ""
+msgstr "Julkaisut: Oma Yritykseni"
 
 #. module: social_demo
 #: model:ir.model,name:social_demo.model_social_account
@@ -80,7 +80,7 @@ msgstr "Sosiaalisen median tili"
 #. module: social_demo
 #: model:utm.campaign,title:social_demo.social_utm_campaign
 msgid "Social Campaign"
-msgstr ""
+msgstr "Sosiaalisen median kampanja"
 
 #. module: social_demo
 #: model:ir.model,name:social_demo.model_social_live_post
@@ -105,7 +105,7 @@ msgstr "Sosiaalisen median suoratoiston julkaisu"
 #. module: social_demo
 #: model:social.stream,name:social_demo.social_stream_twitter_account
 msgid "Tweets of: My Company"
-msgstr ""
+msgstr "Oman Yritykseni tweetit"
 
 #. module: social_demo
 #: model:ir.model,name:social_demo.model_utm_campaign
@@ -117,4 +117,4 @@ msgstr "UTM-kampanja"
 #: code:addons/social_demo/static/src/js/social_youtube_upload_field.js:0
 #, python-format
 msgid "You cannot upload videos in demo mode."
-msgstr ""
+msgstr "Et voi ladata videoita demotilassa."

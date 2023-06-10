@@ -540,7 +540,7 @@ msgstr ""
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.mrp_mps_forecast_details_form_view
 msgid "Requests for quotation"
-msgstr ""
+msgstr "Förfrågningar om offert"
 
 #. module: mrp_mps
 #. odoo-javascript

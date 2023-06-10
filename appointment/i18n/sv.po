@@ -666,7 +666,7 @@ msgstr ""
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__assign_method
 msgid "Assignment Method"
-msgstr ""
+msgstr "Metod för tilldelning"
 
 #. module: appointment
 #. odoo-python

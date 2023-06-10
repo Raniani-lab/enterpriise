@@ -1025,6 +1025,8 @@ msgid ""
 "Are you sure you want to move \"%s\" to private? Only you will be able to "
 "access it."
 msgstr ""
+"هل أنت متأكد من أنك ترغب في نقل \"%s\" إلى الخاص؟ ستتمكن أنت فقط من الوصول "
+"إليه. "
 
 #. module: knowledge
 #. odoo-javascript
@@ -1034,6 +1036,8 @@ msgid ""
 "Are you sure you want to move \"%s\" to the Workspace? It will be shared "
 "with all internal users."
 msgstr ""
+"هل أنت متأكد من أنك ترغب في نقل \"%s\" إلى مساحة العمل؟ ستتم مشاركته مع كافة"
+" المستخدمين الداخليين."
 
 #. module: knowledge
 #. odoo-javascript
@@ -1043,6 +1047,8 @@ msgid ""
 "Are you sure you want to move \"%s\" under \"%s%s\"? It will be shared with "
 "the same persons."
 msgstr ""
+"هل أنت متأكد من أنك ترغب في نقل \"%s\" تحت \"%s%s\"؟ ستتم مشاركته مع نفس "
+"الأفراد."
 
 #. module: knowledge
 #. odoo-javascript

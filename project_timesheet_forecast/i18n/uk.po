@@ -179,6 +179,8 @@ msgid ""
 "Number of hours the employee recorded on their Timesheetes for this task "
 "(and its sub-tasks) for the period of this shift."
 msgstr ""
+"Кількість годин, яку працівник зафіксував у своєму табелі для виконання "
+"цього завдання (та його підзавдань) за період цієї зміни."
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__planned_hours

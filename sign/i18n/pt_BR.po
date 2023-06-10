@@ -2716,7 +2716,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request_signer__sign_send_request_id
 msgid "Sign Send Request"
-msgstr ""
+msgstr "Enviar solicitação de assinatura"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.res_config_settings_view_form
@@ -2771,7 +2771,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model,name:sign.model_sign_send_request
 msgid "Sign send request"
-msgstr "Assinar e solicitar"
+msgstr "Enviar solicitação de assinatura"
 
 #. module: sign
 #: model:ir.model,name:sign.model_sign_send_request_signer

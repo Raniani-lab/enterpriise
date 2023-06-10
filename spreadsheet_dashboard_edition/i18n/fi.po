@@ -28,7 +28,7 @@ msgstr "Muokkaa"
 #. module: spreadsheet_dashboard_edition
 #: model:ir.model.fields,field_description:spreadsheet_dashboard_edition.field_spreadsheet_dashboard__raw
 msgid "Raw"
-msgstr ""
+msgstr "Raaka"
 
 #. module: spreadsheet_dashboard_edition
 #: model:ir.model,name:spreadsheet_dashboard_edition.model_spreadsheet_dashboard
@@ -50,4 +50,4 @@ msgstr "Taulukkolaskennan tilannekuva"
 #: code:addons/spreadsheet_dashboard_edition/static/src/assets/dashboard_selector_dialog/dashboard_selector_panel.xml:0
 #, python-format
 msgid "getPageTitle('DASHBOARD')"
-msgstr ""
+msgstr "getPageTitle('DASHBOARD')"

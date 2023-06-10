@@ -100,7 +100,7 @@ msgstr ""
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.stock_picking_view_form_inherit_quality
 msgid "<span class=\"o_stat_text\">Quality Alert</span>"
-msgstr "<span class=\"o_stat_text\">Якість попередження</span>"
+msgstr "<span class=\"o_stat_text\">Сповіщення Якості</span>"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_form
@@ -130,7 +130,7 @@ msgstr "<strong>Партійний/серійний номер: </strong>"
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
 msgid "<strong>Measure : </strong>"
-msgstr "<strong>Міра: </strong>"
+msgstr "<strong>Вимірювання:</strong>"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
@@ -303,7 +303,7 @@ msgstr "Контроль на"
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_wizard_form_failure
 msgid "Correct Measure"
-msgstr "Редагувати міру"
+msgstr "Коректне вимірювання"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_form
@@ -360,7 +360,7 @@ msgid ""
 "Define Quality Control Points in order to automatically generate\n"
 "              quality checks at the right logistic operation: transfers, manufacturing orders."
 msgstr ""
-"Визначіть пукти контролю якості для автоматичної генерації\n"
+"Визначте пукти контролю якості для автоматичної генерації\n"
 "             перевірок якості на конкретній логістичній операції: переміщення, замовлення на виробництво."
 
 #. module: quality_control
@@ -423,7 +423,7 @@ msgstr "Невдалий"
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search
 msgid "Failed"
-msgstr "Невдалося"
+msgstr "Не вдалося"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__failure_message
@@ -469,7 +469,7 @@ msgid ""
 "In case of Quality Check by Quantity, Move Line on which the Quality Check "
 "applies"
 msgstr ""
-"У разі перевірки якості за кількістю перемістіть рядок, до якого "
+"У разі перевірки якості за кількістю, рядок переміщення, до якого "
 "застосовується перевірка якості"
 
 #. module: quality_control
@@ -552,7 +552,7 @@ msgstr "Вимірювати частотний блок"
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__measure_success
 msgid "Measure Success"
-msgstr "Виміряйте успіх"
+msgstr "Успішне вимірювання"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_form_inherit_quality_control
@@ -605,7 +605,7 @@ msgstr "Ще немає даних!"
 #. module: quality_control
 #: model:ir.model.fields.selection,name:quality_control.selection__quality_check__measure_success__none
 msgid "No measure"
-msgstr "Ніяких заходів"
+msgstr "Ніяких вимірювань"
 
 #. module: quality_control
 #: model_terms:ir.actions.act_window,help:quality_control.quality_alert_action_report
@@ -670,6 +670,9 @@ msgid ""
 "                  Product = A quality check is requested per product.\n"
 "                 Quantity = A quality check is requested for each new product quantity registered, with partial quantity checks also possible."
 msgstr ""
+"Операція = потрібна одна перевірка якості на рівні операції.\n"
+"Товар = перевірка якості вимагається для кожного товару.\n"
+"Кількість = Перевірка якості вимагається для кожної нової зареєстрованої кількості товару, також можлива часткова перевірка кількості."
 
 #. module: quality_control
 #: model:ir.ui.menu,name:quality_control.menu_quality_dashboard
@@ -933,7 +936,7 @@ msgstr "Загальний огляд якості"
 #: model:ir.model.fields,field_description:quality_control.field_product_product__quality_pass_qty
 #: model:ir.model.fields,field_description:quality_control.field_product_template__quality_pass_qty
 msgid "Quality Pass Qty"
-msgstr "Кількість пропущених якостей"
+msgstr "Кількість пройдених перевірок якості"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.product_product_form_view_quality_control
@@ -979,7 +982,7 @@ msgid ""
 "              performed at each operation, for your different products."
 msgstr ""
 "Пункти контролю якості визначають перевірки якості, які потрібно\n"
-"              визначчати на кожній операції, для різних товарів."
+"              визначати на кожній операції, для різних товарів."
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__qty_line
@@ -1196,7 +1199,7 @@ msgstr "Ви виміряли %.2f %s і це має бути між %.2f та %
 #: code:addons/quality_control/wizard/quality_check_wizard.py:0
 #, python-format
 msgid "You must provide a picture before validating"
-msgstr ""
+msgstr "Ви повинні зробити фото перед підтвердженням"
 
 #. module: quality_control
 #. odoo-python

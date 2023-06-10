@@ -1003,7 +1003,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_log__event_type__2_churn
 msgid "Churn"
-msgstr ""
+msgstr "Churn"
 
 #. module: sale_subscription
 #. odoo-javascript

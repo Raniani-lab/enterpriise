@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # Patricia Gutiérrez Capetillo <pagc@odoo.com>, 2022
+# Fernanda Alvarez, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-06-09 14:09+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Patricia Gutiérrez Capetillo <pagc@odoo.com>, 2022\n"
+"Last-Translator: Fernanda Alvarez, 2023\n"
 "Language-Team: Spanish (Mexico) (https://app.transifex.com/odoo/teams/41243/es_MX/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -415,7 +416,7 @@ msgstr "Comisión sin impuestos incluidos"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Commission including taxes"
-msgstr "Comisión con impuestos"
+msgstr "Comisión con impuestos incluidos"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -816,7 +817,7 @@ msgstr "Cambios negociados CCP"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Exchange Traded Non-CCP"
-msgstr "Cambios negociados No-CCP"
+msgstr "Cambios negociados que no son CCP"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -907,7 +908,7 @@ msgstr "Préstamos a plazo fijo"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Float adjustment"
-msgstr "Ajuste de fondo"
+msgstr "Ajuste por flotación"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1080,7 +1081,7 @@ msgstr "Cheques emitidos"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Issued Credit Transfers"
-msgstr "Transferencias de credito emitidas"
+msgstr "Transferencias de crédito emitidas"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1482,7 +1483,7 @@ msgid ""
 "\n"
 "This CAMT file is targeting several IBAN accounts but none match the current journal."
 msgstr ""
-"Establezca una cuenta IBAN en su registro bancario\n"
+"Establezca una cuenta IBAN en su registro bancario.\n"
 "\n"
 "Este archivo CAMT está asociado con varias cuentas IBAN pero ninguna coincide con el diario actual."
 
@@ -1699,14 +1700,14 @@ msgstr "Cuestión de derechos/derechos de suscripción/oferta de derechos"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "SEPA B2B Direct Debit"
-msgstr "Débito directo SEPA B2B"
+msgstr "Domiciliación bancaria SEPA B2B"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "SEPA Core Direct Debit"
-msgstr "Débito directo principal SEPA"
+msgstr "Domiciliación bancaria principal SEPA"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1750,7 +1751,7 @@ msgstr "Préstamo de valores"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Sell Buy Back"
-msgstr "Compra con pacto"
+msgstr "Compra con pacto de reventa"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -2055,7 +2056,7 @@ msgstr "Fecha del valor"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Warrant Exercise/Warrant Conversion"
-msgstr "Ejercicio de autorización/ conversión de autorización"
+msgstr "Ejercicio de autorización/conversión de autorización"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -2073,7 +2074,7 @@ msgstr "Retención final"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "YTD Adjustment"
-msgstr "Ajuste YTD"
+msgstr "Ajuste del año hasta la fecha"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0

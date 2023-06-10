@@ -40,7 +40,7 @@ msgstr "Työsuhdetyypit"
 #. module: hr_contract_salary_payroll
 #: model:ir.model.fields.selection,name:hr_contract_salary_payroll.selection__hr_contract_salary_resume__value_type__payslip
 msgid "Payslip Value"
-msgstr ""
+msgstr "Palkkalaskelman arvo"
 
 #. module: hr_contract_salary_payroll
 #: model:ir.model,name:hr_contract_salary_payroll.model_hr_payslip_worked_days
@@ -55,6 +55,8 @@ msgid ""
 "Please note that this information may be inaccurate and should be used for "
 "reference only."
 msgstr ""
+"Huomaa, että nämä tiedot voivat olla epätarkkoja, ja niitä tulisi käyttää "
+"vain viitteenä."
 
 #. module: hr_contract_salary_payroll
 #: model:ir.model,name:hr_contract_salary_payroll.model_hr_contract_salary_resume
@@ -83,6 +85,8 @@ msgid ""
 "There is no defined payroll structure for your contract. Please contact a "
 "responsible for more information."
 msgstr ""
+"Sopimuksessa ei ole määriteltyä palkkarakennetta. Ota yhteyttä esimieheen "
+"saadaksesi lisätietoja."
 
 #. module: hr_contract_salary_payroll
 #. odoo-python
@@ -91,6 +95,8 @@ msgstr ""
 msgid ""
 "This is the gross calculated for the current month with a total of %s hours."
 msgstr ""
+"Tämä on kuluvalle kuukaudelle laskettu brutto, jonka kokonaismäärä on %s "
+"tuntia."
 
 #. module: hr_contract_salary_payroll
 #: model:ir.model.fields,field_description:hr_contract_salary_payroll.field_hr_contract_salary_resume__value_type

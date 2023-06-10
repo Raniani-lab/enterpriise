@@ -34,7 +34,7 @@ msgstr ""
 #: code:addons/website_helpdesk_livechat/models/chatbot_script_step.py:0
 #, python-format
 msgid "%(name)s's Ticket"
-msgstr ""
+msgstr "Chamado de %(name)s"
 
 #. module: website_helpdesk_livechat
 #. odoo-python
@@ -46,16 +46,20 @@ msgid ""
 "                    You can search tickets by typing <b>/helpdesk_search <i>keyword</i></b> or <b><i>ticket number</i></b><br>\n"
 "                    "
 msgstr ""
+"<br><br>\n"
+"                   Você pode criar um novo chamado digitando <b>/helpdesk <i>título do chamado</i></b>.<br>\n"
+"                    Você pode pesquisar chamados digitando <b>/helpdesk_search <i>palavras-chave</i></b> o u<b><i>número do chamado</i></b><br>\n"
+"                    "
 
 #. module: website_helpdesk_livechat
 #: model:chatbot.script.step,message:website_helpdesk_livechat.chatbot_script_helpdesk_step_done
 msgid "Alright, we should have everything we need"
-msgstr ""
+msgstr "Certo, devemos ter tudo o que precisamos"
 
 #. module: website_helpdesk_livechat
 #: model:chatbot.script.step,message:website_helpdesk_livechat.chatbot_script_helpdesk_step_technical_serial_misc
 msgid "Anything else to add?"
-msgstr ""
+msgstr "Tem algo mais a acrescentar?"
 
 #. module: website_helpdesk_livechat
 #: model:ir.actions.act_window,name:website_helpdesk_livechat.helpdesk_im_livechat_canned_response_action
@@ -66,7 +70,7 @@ msgstr "Respostas Empacotadas"
 #. module: website_helpdesk_livechat
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.im_livechat_canned_response_view_search
 msgid "Canned Responses Search"
-msgstr ""
+msgstr "Pesquisa de respostas predefinidas"
 
 #. module: website_helpdesk_livechat
 #: model:ir.model,name:website_helpdesk_livechat.model_chatbot_script
@@ -88,14 +92,14 @@ msgstr "Criar des tickets"
 #: code:addons/website_helpdesk_livechat/static/src/models/messaging_initializer.js:0
 #, python-format
 msgid "Create a new helpdesk ticket"
-msgstr ""
+msgstr "Criar um novo chamado de central de ajuda"
 
 #. module: website_helpdesk_livechat
 #. odoo-python
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
 #, python-format
 msgid "Created a new ticket: %s"
-msgstr ""
+msgstr "Criou um novo chamado: %s"
 
 #. module: website_helpdesk_livechat
 #: model:ir.model,name:website_helpdesk_livechat.model_mail_channel
@@ -105,22 +109,22 @@ msgstr "Canal de Discussão"
 #. module: website_helpdesk_livechat
 #: model:chatbot.script.step,message:website_helpdesk_livechat.chatbot_script_helpdesk_step_dispatch
 msgid "First, what is the nature of your issue?"
-msgstr ""
+msgstr "Primeiro, qual é a natureza do seu problema?"
 
 #. module: website_helpdesk_livechat
 #: model:ir.model.fields,field_description:website_helpdesk_livechat.field_chatbot_script__ticket_count
 msgid "Generated Ticket Count"
-msgstr ""
+msgstr "Contagem de chamados gerados"
 
 #. module: website_helpdesk_livechat
 #: model:chatbot.script.step,message:website_helpdesk_livechat.chatbot_script_helpdesk_step_administrative_customer_ref_yes
 msgid "Great, that will make our lives easier."
-msgstr ""
+msgstr "Ótimo, isso facilitará nossa vida."
 
 #. module: website_helpdesk_livechat
 #: model:chatbot.script,title:website_helpdesk_livechat.chatbot_script_helpdesk_bot
 msgid "Helpdesk Bot"
-msgstr ""
+msgstr "Bot de Central de ajuda"
 
 #. module: website_helpdesk_livechat
 #: model:ir.model,name:website_helpdesk_livechat.model_helpdesk_team
@@ -131,27 +135,27 @@ msgstr "Equipe de Central de Auda"
 #. module: website_helpdesk_livechat
 #: model:chatbot.script.step,message:website_helpdesk_livechat.chatbot_script_helpdesk_step_welcome
 msgid "Here we go, help is on the way!"
-msgstr ""
+msgstr "Aqui vamos nós, a ajuda está a caminho!"
 
 #. module: website_helpdesk_livechat
 #: model:chatbot.script.answer,name:website_helpdesk_livechat.chatbot_script_helpdesk_step_dispatch_answer_technical
 msgid "I have a technical issue"
-msgstr ""
+msgstr "Tenho um problema técnico"
 
 #. module: website_helpdesk_livechat
 #: model:chatbot.script.answer,name:website_helpdesk_livechat.chatbot_script_helpdesk_step_dispatch_answer_administrative
 msgid "I have an administrative question"
-msgstr ""
+msgstr "Tenho uma dúvida administrativa"
 
 #. module: website_helpdesk_livechat
 #: model:chatbot.script.step,message:website_helpdesk_livechat.chatbot_script_helpdesk_step_administrative_customer_ref_no
 msgid "It's OK, we can also find your contract by other means."
-msgstr ""
+msgstr "Tudo bem, também podemos encontrar seu contrato por outros meios."
 
 #. module: website_helpdesk_livechat
 #: model:chatbot.script.step,message:website_helpdesk_livechat.chatbot_script_helpdesk_step_email
 msgid "Just a last thing, can we please have your email address?"
-msgstr ""
+msgstr "Só para finalizar, você pode nos dar seu endereço de e-mail?"
 
 #. module: website_helpdesk_livechat
 #: model:ir.model.fields,field_description:website_helpdesk_livechat.field_helpdesk_team__feature_livechat_channel_id
@@ -166,7 +170,7 @@ msgstr "Não"
 #. module: website_helpdesk_livechat
 #: model_terms:ir.actions.act_window,help:website_helpdesk_livechat.helpdesk_im_livechat_canned_response_action
 msgid "No canned reponses found. Let's create one!"
-msgstr ""
+msgstr "Não foram encontradas respostas predefinidas. Vamos criar uma!"
 
 #. module: website_helpdesk_livechat
 #. odoo-python
@@ -177,6 +181,9 @@ msgid ""
 "format:<br> <b>/helpdesk_search <i>keyword</i></b> or <b>/helpdesk_search "
 "<i>ticket number</i></b>"
 msgstr ""
+"Nenhum chamado encontrado para <b>%s</b>. <br>Certifique-se de que está "
+"usando o formato correto:<br> <b>/helpdesk_search <i>palavras-chave</i></b> "
+"ou <b>/helpdesk_search <i>número de chamado</i></b>"
 
 #. module: website_helpdesk_livechat
 #: model:chatbot.script.step,message:website_helpdesk_livechat.chatbot_script_helpdesk_step_ticket
@@ -184,23 +191,25 @@ msgid ""
 "OK, I just created a ticket for you. You should receive an email "
 "confirmation very soon."
 msgstr ""
+"Acabei de criar um chamado para você. Você deverá receber um e-mail de "
+"confirmação em breve."
 
 #. module: website_helpdesk_livechat
 #: model:chatbot.script.step,message:website_helpdesk_livechat.chatbot_script_helpdesk_step_technical_serial
 msgid "Please write below the serial number of your equipment."
-msgstr ""
+msgstr "Escreva abaixo o número de série de seu equipamento."
 
 #. module: website_helpdesk_livechat
 #: model:chatbot.script.step,message:website_helpdesk_livechat.chatbot_script_helpdesk_step_administrative_customer_ref_input
 msgid "Please write below your customer reference."
-msgstr ""
+msgstr "Escreva abaixo sua referência de cliente."
 
 #. module: website_helpdesk_livechat
 #. odoo-javascript
 #: code:addons/website_helpdesk_livechat/static/src/models/messaging_initializer.js:0
 #, python-format
 msgid "Search for a helpdesk ticket"
-msgstr ""
+msgstr "Pesquisar um chamado de central de ajuda"
 
 #. module: website_helpdesk_livechat
 #. odoo-python
@@ -208,7 +217,7 @@ msgstr ""
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
 #, python-format
 msgid "Something is missing or wrong in command"
-msgstr ""
+msgstr "Algo está faltando ou errado no comando"
 
 #. module: website_helpdesk_livechat
 #: model:ir.model.fields,field_description:website_helpdesk_livechat.field_chatbot_script_step__step_type
@@ -218,7 +227,7 @@ msgstr "Tipo de etapa"
 #. module: website_helpdesk_livechat
 #: model:chatbot.script.step,message:website_helpdesk_livechat.chatbot_script_helpdesk_step_technical_serial_thanks
 msgid "Thank you, that will help our engineers see what went wrong."
-msgstr ""
+msgstr "Obrigado, isso ajudará nossos engenheiros a ver o que deu errado."
 
 #. module: website_helpdesk_livechat
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.chatbot_script_view_form
@@ -231,6 +240,8 @@ msgid ""
 "To start with, do you have a customer reference?\n"
 "They are written on each invoice you received, next to your name."
 msgstr ""
+"Para começar, você tem uma referência de cliente?\n"
+"Elas estão escritas em cada fatura que você recebeu, ao lado do seu nome."
 
 #. module: website_helpdesk_livechat
 #: model:ir.model,name:website_helpdesk_livechat.model_res_users
@@ -240,7 +251,7 @@ msgstr "Usuário"
 #. module: website_helpdesk_livechat
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
 msgid "View Channels"
-msgstr ""
+msgstr "Ver canais"
 
 #. module: website_helpdesk_livechat
 #. odoo-python
@@ -248,11 +259,13 @@ msgstr ""
 #, python-format
 msgid "We found some matched ticket(s) related to the search query: %s"
 msgstr ""
+"Encontramos alguns tíquetes correspondentes relacionados à consulta de "
+"pesquisa: %s"
 
 #. module: website_helpdesk_livechat
 #: model:chatbot.script.step,message:website_helpdesk_livechat.chatbot_script_helpdesk_step_administrative_issue
 msgid "We're all set. Now, what is your issue?"
-msgstr ""
+msgstr "Está tudo pronto. Agora, qual é o seu problema?"
 
 #. module: website_helpdesk_livechat
 #: model_terms:ir.actions.act_window,help:website_helpdesk_livechat.helpdesk_im_livechat_canned_response_action
@@ -261,6 +274,10 @@ msgid ""
 "responses into your messages. These shortcuts are replaced directly in your "
 "messages so that you can still make changes before sending them."
 msgstr ""
+"Com as respostas predefinidas, você pode digitar <i>:shortcuts</i> para "
+"inserir respostas pré definidas em suas mensagens. Esses atalhos são "
+"substituídos diretamente nas mensagens para que você ainda possa fazer "
+"alterações antes de enviá-las."
 
 #. module: website_helpdesk_livechat
 #: model:chatbot.script.answer,name:website_helpdesk_livechat.chatbot_script_helpdesk_step_administrative_customer_ref_answer_yes
@@ -272,7 +289,7 @@ msgstr "Sim"
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
 #, python-format
 msgid "You are in a private conversation with <b>%(mentions)s</b>."
-msgstr ""
+msgstr "Você está numa conversa privada com<b>%(mentions)s</b>."
 
 #. module: website_helpdesk_livechat
 #. odoo-python
@@ -289,3 +306,5 @@ msgid ""
 "You can search tickets by typing <b>/helpdesk_search <i>keyword</i></b> or "
 "<i><b>ticket number</b></i><br>"
 msgstr ""
+"Você pode pesquisar chamados digitando <b>/helpdesk_search <i>palavras-"
+"chave</i></b> ou <i><b>número de chamado </b></i><br>"

@@ -1211,7 +1211,7 @@ msgstr "Planilhas de Horas"
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_timesheets_analysis_report
 msgid "Timesheets Analysis Report"
-msgstr ""
+msgstr "Relatório de análise de planilhas de horas"
 
 #. module: timesheet_grid
 #. odoo-python

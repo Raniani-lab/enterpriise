@@ -360,7 +360,7 @@ msgstr "Faturas"
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__is_task_phone_update
 msgid "Is Task Phone Update"
-msgstr ""
+msgstr "A tarefa é atualização de telefone?"
 
 #. module: industry_fsm_sale
 #. odoo-javascript
@@ -535,7 +535,7 @@ msgstr "Tarefa relacionada"
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_report_project_task_user_fsm__remaining_hours_so
 msgid "Remaining Hours on SO"
-msgstr ""
+msgstr "Horas restantes no pedido de vendas"
 
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_sale_advance_payment_inv

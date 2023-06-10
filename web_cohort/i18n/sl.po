@@ -40,7 +40,7 @@ msgstr ""
 #. module: web_cohort
 #: model:ir.model,name:web_cohort.model_ir_actions_act_window_view
 msgid "Action Window View"
-msgstr ""
+msgstr "Pogled okna za ukrep"
 
 #. module: web_cohort
 #. odoo-javascript

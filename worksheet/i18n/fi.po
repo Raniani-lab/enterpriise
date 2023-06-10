@@ -37,7 +37,7 @@ msgstr "%s (kopio)"
 #. module: worksheet
 #: model_terms:ir.ui.view,arch_db:worksheet.worksheet_template_view_form
 msgid "<span class=\"o_stat_text\">Worksheets</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">Työkirjat</span>"
 
 #. module: worksheet
 #: model:ir.model.fields,field_description:worksheet.field_worksheet_template__action_id
@@ -98,7 +98,7 @@ msgstr "Näyttönimi"
 #. module: worksheet
 #: model:ir.model.fields,field_description:worksheet.field_worksheet_template__res_model
 msgid "Host Model"
-msgstr ""
+msgstr "Isäntämalli"
 
 #. module: worksheet
 #: model:ir.model.fields,field_description:worksheet.field_worksheet_template__id
@@ -133,7 +133,7 @@ msgstr "Nimi"
 #. module: worksheet
 #: model:ir.model.fields,field_description:worksheet.field_worksheet_template__report_view_id
 msgid "Report View"
-msgstr ""
+msgstr "Raportin näkymä"
 
 #. module: worksheet
 #: model:ir.model.fields,field_description:worksheet.field_worksheet_template__sequence
@@ -145,12 +145,12 @@ msgstr "Järjestys"
 #: code:addons/worksheet/models/worksheet_template.py:0
 #, python-format
 msgid "The host model name should be an existing model."
-msgstr ""
+msgstr "Isäntämallin nimen on oltava olemassa oleva malli."
 
 #. module: worksheet
 #: model:ir.model.fields,help:worksheet.field_worksheet_template__res_model
 msgid "The model that is using this template"
-msgstr ""
+msgstr "Malli, joka käyttää tätä mallia"
 
 #. module: worksheet
 #. odoo-python
@@ -159,13 +159,15 @@ msgstr ""
 msgid ""
 "The template to print this worksheet template should be a QWeb template."
 msgstr ""
+"Tämän työarkkimallin tulostamiseen käytettävän mallin pitäisi olla QWeb-"
+"malli."
 
 #. module: worksheet
 #. odoo-python
 #: code:addons/worksheet/models/worksheet_template.py:0
 #, python-format
 msgid "There is still %s linked to this template. Please unlink them first."
-msgstr ""
+msgstr "Tähän malliin on edelleen liitetty %s. Ole hyvä ja poista ne ensin."
 
 #. module: worksheet
 #: model:ir.model.fields,field_description:worksheet.field_worksheet_template__worksheet_count
@@ -180,7 +182,7 @@ msgstr "Työarkin malli"
 #. module: worksheet
 #: model_terms:ir.ui.view,arch_db:worksheet.worksheet_template_view_search
 msgid "Worksheet Template Search"
-msgstr ""
+msgstr "Työarkki mallin haku"
 
 #. module: worksheet
 #: model_terms:ir.ui.view,arch_db:worksheet.worksheet_template_view_list
@@ -190,4 +192,4 @@ msgstr "Työarkit"
 #. module: worksheet
 #: model_terms:ir.ui.view,arch_db:worksheet.worksheet_template_view_form
 msgid "e.g Device Installation"
-msgstr ""
+msgstr "esim. laitteen asennus"

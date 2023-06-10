@@ -25,7 +25,7 @@ msgstr ""
 #. module: hr_contract_salary_holidays
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary_holidays.hr_contract_view_form
 msgid "<span>Allocations</span>"
-msgstr ""
+msgstr "<span>Osoitukset</span>"
 
 #. module: hr_contract_salary_holidays
 #: model:ir.model.constraint,message:hr_contract_salary_holidays.constraint_res_company_auto_allocation
@@ -33,6 +33,8 @@ msgid ""
 "A Time Off Type is required once the Extra Time Off automatic allocation is "
 "set."
 msgstr ""
+"Aikapoistotyyppi tarvitaan, kun automaattinen lisäaikapoistojen jako on "
+"asetettu."
 
 #. module: hr_contract_salary_holidays
 #: model:ir.model.fields,field_description:hr_contract_salary_holidays.field_hr_contract__leave_allocation_id
@@ -43,7 +45,7 @@ msgstr "Varaus"
 #: code:addons/hr_contract_salary_holidays/controllers/main.py:0
 #, python-format
 msgid "Allocation automatically created from Contract Signature."
-msgstr ""
+msgstr "Osoitus luodaan automaattisesti sopimuksen allekirjoittamisesta."
 
 #. module: hr_contract_salary_holidays
 #: model:ir.model,name:hr_contract_salary_holidays.model_res_company
@@ -59,7 +61,7 @@ msgstr "Asetukset"
 #: code:addons/hr_contract_salary_holidays/models/hr_contract.py:0
 #, python-format
 msgid "Contract has been cancelled."
-msgstr ""
+msgstr "Sopimus on peruutettu."
 
 #. module: hr_contract_salary_holidays
 #: model:ir.model,name:hr_contract_salary_holidays.model_hr_contract
@@ -74,13 +76,14 @@ msgstr "Ylimääräinen vapaa-aika"
 #. module: hr_contract_salary_holidays
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary_holidays.res_config_settings_view_form
 msgid "Extra Time Off Allocation"
-msgstr ""
+msgstr "Ylimääräisen vapaa-ajan myöntäminen"
 
 #. module: hr_contract_salary_holidays
 #: model:ir.model.fields,field_description:hr_contract_salary_holidays.field_res_company__hr_contract_timeoff_auto_allocation
 #: model:ir.model.fields,field_description:hr_contract_salary_holidays.field_res_config_settings__hr_contract_timeoff_auto_allocation
 msgid "Extra Time Off Allocation on contract signature"
 msgstr ""
+"Ylimääräisen vapaa-ajan myöntäminen sopimuksen allekirjoittamisen yhteydessä"
 
 #. module: hr_contract_salary_holidays
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary_holidays.res_config_settings_view_form
@@ -88,6 +91,8 @@ msgid ""
 "If the employee requested extra time off in his salary configurator, create "
 "automatically the allocation request"
 msgstr ""
+"Jos työntekijä on pyytänyt ylimääräistä vapaata palkkalaskennassaan, luo "
+"automaattisesti osoituspyyntö"
 
 #. module: hr_contract_salary_holidays
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary_holidays.res_config_settings_view_form
@@ -95,9 +100,11 @@ msgid ""
 "If the employee requested extra time off in his salary configurator, create "
 "automatically the allocation request."
 msgstr ""
+"Jos työntekijä on pyytänyt ylimääräistä vapaata palkkalaskennassaan, luo "
+"automaattisesti osoituspyyntö."
 
 #. module: hr_contract_salary_holidays
 #: model:ir.model.fields,field_description:hr_contract_salary_holidays.field_res_company__hr_contract_timeoff_auto_allocation_type_id
 #: model:ir.model.fields,field_description:hr_contract_salary_holidays.field_res_config_settings__hr_contract_timeoff_auto_allocation_type_id
 msgid "Time Off Type"
-msgstr "Vapaa-aika Tyyppi"
+msgstr "Vapaa-ajan tyyppi"

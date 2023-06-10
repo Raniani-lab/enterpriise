@@ -2,12 +2,16 @@
 # This file contains the translation of the following modules:
 # 	* account_accountant_batch_payment
 # 
+# Translators:
+# Klevi Toptani, 2023
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-23 08:23+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
+"Last-Translator: Klevi Toptani, 2023\n"
 "Language-Team: Albanian (https://app.transifex.com/odoo/teams/41243/sq/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -40,7 +44,7 @@ msgstr ""
 #. module: account_accountant_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_accountant_batch_payment.view_bank_rec_widget_form_inherit_batch_payment
 msgid "Batch Payments"
-msgstr ""
+msgstr "Pagesat në grup"
 
 #. module: account_accountant_batch_payment
 #: model:ir.model.fields,field_description:account_accountant_batch_payment.field_bank_rec_widget__batch_payments_widget

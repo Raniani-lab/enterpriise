@@ -706,7 +706,7 @@ msgstr "Fatture"
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__is_mail_template_editor
 msgid "Is Editor"
-msgstr ""
+msgstr "È editor"
 
 #. module: account_followup
 #: model:ir.model,name:account_followup.model_account_move_line

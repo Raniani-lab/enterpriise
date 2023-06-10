@@ -5,6 +5,7 @@
 # Translators:
 # Chrille Hedberg <hedberg.chrille@gmail.com>, 2022
 # Mikael Åkerberg <mikael.akerberg@mariaakerberg.com>, 2022
+# Lasse Larsson, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Mikael Åkerberg <mikael.akerberg@mariaakerberg.com>, 2022\n"
+"Last-Translator: Lasse Larsson, 2023\n"
 "Language-Team: Swedish (https://app.transifex.com/odoo/teams/41243/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -32,7 +33,7 @@ msgstr "Avslutad"
 #: code:addons/helpdesk_mail_plugin/static/src/to_translate/translations_gmail.xml:0
 #, python-format
 msgid "Could not create the ticket"
-msgstr ""
+msgstr "Det gick inte att skapa ärendet"
 
 #. module: helpdesk_mail_plugin
 #. odoo-javascript
@@ -82,12 +83,12 @@ msgstr "Spara kontakten för att skapa nya ärenden."
 #: code:addons/helpdesk_mail_plugin/static/src/to_translate/translations_outlook.xml:0
 #, python-format
 msgid "The Contact needs to exist to create Ticket."
-msgstr ""
+msgstr "Kontakten måste existera för att skapa Ärende."
 
 #. module: helpdesk_mail_plugin
 #: model:ir.actions.act_window,name:helpdesk_mail_plugin.helpdesk_ticket_action_form_edit
 msgid "Ticket: redirect to form in edit mode"
-msgstr ""
+msgstr "Ärende: omdirigera till formulär i redigeringsläge"
 
 #. module: helpdesk_mail_plugin
 #. odoo-javascript

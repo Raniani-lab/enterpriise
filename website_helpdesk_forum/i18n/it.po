@@ -77,7 +77,7 @@ msgstr "Chiedi alla community"
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket__can_share_forum
 msgid "Can Share Forum"
-msgstr ""
+msgstr "Può condividere forum"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.helpdesk_ticket_select_forum_wizard_view_form

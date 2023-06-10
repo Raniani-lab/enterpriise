@@ -28,7 +28,7 @@ msgstr ""
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.facebook_preview
 msgid "<b class=\"d-block mb-2\">Facebook Page</b>"
-msgstr ""
+msgstr "<b class=\"d-block mb-2\">Facebook-sivu</b>"
 
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.social_stream_post_view_kanban
@@ -43,7 +43,7 @@ msgstr "<i class=\"fa fa-thumbs-up me-1\" title=\"Tykkäykset\"/>"
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_social_live_post__facebook_post_id
 msgid "Actual Facebook ID of the post"
-msgstr ""
+msgstr "Julkaisun todellinen Facebook-tunnus"
 
 #. module: social_facebook
 #. odoo-python
@@ -55,12 +55,12 @@ msgstr "Käsittelyssä tapahtui virhe."
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.res_config_settings_view_form
 msgid "App ID"
-msgstr ""
+msgstr "App ID"
 
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.res_config_settings_view_form
 msgid "App Secret"
-msgstr ""
+msgstr "App-salaisuus"
 
 #. module: social_facebook
 #. odoo-javascript
@@ -76,6 +76,8 @@ msgid ""
 "Check this if you want to use your personal Facebook Developer Account "
 "instead of the provided one."
 msgstr ""
+"Merkitse tämä, jos haluat käyttää henkilökohtaista Facebook-kehittäjätiliäsi"
+" annetun sijaan."
 
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_social_stream_post__facebook_comments_count
@@ -91,7 +93,7 @@ msgstr "Asetukset"
 #: model:ir.model.fields,field_description:social_facebook.field_social_post__display_facebook_preview
 #: model:ir.model.fields,field_description:social_facebook.field_social_post_template__display_facebook_preview
 msgid "Display Facebook Preview"
-msgstr ""
+msgstr "Näytä Facebook-esikatselu"
 
 #. module: social_facebook
 #: model:ir.model.fields.selection,name:social_facebook.selection__social_media__media_type__facebook
@@ -102,39 +104,39 @@ msgstr "Facebook"
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_social_account__facebook_access_token
 msgid "Facebook Access Token"
-msgstr ""
+msgstr "Facebookin pääsytunniste"
 
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_social_account__facebook_account_id
 msgid "Facebook Account ID"
-msgstr ""
+msgstr "Facebook-tilin tunnus"
 
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_res_config_settings__facebook_app_id
 msgid "Facebook App ID"
-msgstr ""
+msgstr "Facebook-sovelluksen tunnus"
 
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_res_config_settings__facebook_client_secret
 msgid "Facebook App Secret"
-msgstr ""
+msgstr "Facebook-sovelluksen salainen avain"
 
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_social_stream_post__facebook_author_id
 msgid "Facebook Author ID"
-msgstr ""
+msgstr "Facebook Tekijän tunnus"
 
 #. module: social_facebook
 #. odoo-javascript
 #: code:addons/social_facebook/static/src/js/stream_post_kanban_record.js:0
 #, python-format
 msgid "Facebook Comments"
-msgstr ""
+msgstr "Facebook-kommentit"
 
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.res_config_settings_view_form
 msgid "Facebook Developer Account"
-msgstr ""
+msgstr "Facebook-kehittäjätili"
 
 #. module: social_facebook
 #: model:ir.model.fields,help:social_facebook.field_social_account__facebook_access_token
@@ -142,6 +144,8 @@ msgid ""
 "Facebook Page Access Token provided by the Facebook API, this should never be set manually.\n"
 "            It's used to authenticate requests when posting to or reading information from this account."
 msgstr ""
+"Facebookin API:n tarjoama Facebook-sivun käyttöoikeustunniste, jota ei saa koskaan asettaa manuaalisesti.\n"
+"            Käytetään pyyntöjen todentamiseen, kun tälle tilille lähetetään viestejä tai luetaan tietoja tältä tililtä."
 
 #. module: social_facebook
 #: model:ir.model.fields,help:social_facebook.field_social_account__facebook_account_id
@@ -149,17 +153,19 @@ msgid ""
 "Facebook Page ID provided by the Facebook API, this should never be set "
 "manually."
 msgstr ""
+"Facebookin API:n antama Facebook-sivun tunnus, jota ei koskaan pidä asettaa "
+"manuaalisesti."
 
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_social_stream_post__facebook_post_id
 msgid "Facebook Post ID"
-msgstr ""
+msgstr "Facebook Post ID"
 
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_social_post__facebook_preview
 #: model:ir.model.fields,field_description:social_facebook.field_social_post_template__facebook_preview
 msgid "Facebook Preview"
-msgstr ""
+msgstr "Facebook-esikatselu"
 
 #. module: social_facebook
 #. odoo-python
@@ -167,18 +173,20 @@ msgstr ""
 #, python-format
 msgid "Facebook did not provide a valid access token or it may have expired."
 msgstr ""
+"Facebook ei ole antanut voimassa olevaa käyttöoikeuskoodia tai sen "
+"voimassaolo on saattanut päättyä."
 
 #. module: social_facebook
 #. odoo-python
 #: code:addons/social_facebook/controllers/main.py:0
 #, python-format
 msgid "Facebook did not provide a valid access token."
-msgstr ""
+msgstr "Facebook ei toimittanut voimassa olevaa käyttöoikeuskoodia."
 
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_social_stream_post__facebook_is_event_post
 msgid "Is event post"
-msgstr ""
+msgstr "Onko tapahtumajulkaisu"
 
 #. module: social_facebook
 #. odoo-javascript
@@ -196,12 +204,12 @@ msgstr "Median tyyppi"
 #. module: social_facebook
 #: model:social.stream.type,name:social_facebook.stream_type_page_mentions
 msgid "Page Mentions"
-msgstr ""
+msgstr "Sivun maininnat"
 
 #. module: social_facebook
 #: model:social.stream.type,name:social_facebook.stream_type_page_posts
 msgid "Page Posts"
-msgstr ""
+msgstr "Sivun viestit"
 
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.facebook_preview
@@ -216,16 +224,18 @@ msgid ""
 "Post not found. It could be because the post has been deleted on the Social "
 "Platform."
 msgstr ""
+"Julkaisua ei löydy. Se voi johtua siitä, että viesti on poistettu "
+"sosiaaliselta alustalta."
 
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.facebook_preview
 msgid "Published by Facebook Page •"
-msgstr ""
+msgstr "Julkaissut Facebook-sivu -"
 
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_social_stream_post__facebook_reach
 msgid "Reach"
-msgstr ""
+msgstr "Kattavuus"
 
 #. module: social_facebook
 #. odoo-javascript
@@ -234,7 +244,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:social_facebook.social_stream_post_view_kanban
 #, python-format
 msgid "Shares"
-msgstr ""
+msgstr "Jakoa"
 
 #. module: social_facebook
 #: model:ir.model,name:social_facebook.model_social_account
@@ -276,14 +286,14 @@ msgstr "Sosiaalisen median suoratoiston julkaisu"
 #: code:addons/social_facebook/controllers/main.py:0
 #, python-format
 msgid "There is no page linked to this account"
-msgstr ""
+msgstr "Tähän tiliin ei ole linkitetty sivua"
 
 #. module: social_facebook
 #. odoo-python
 #: code:addons/social_facebook/controllers/main.py:0
 #, python-format
 msgid "Unauthorized. Please contact your administrator. "
-msgstr ""
+msgstr "Luvaton. Ota yhteyttä ylläpitäjään."
 
 #. module: social_facebook
 #. odoo-python
@@ -296,7 +306,7 @@ msgstr "Tuntematon"
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_res_config_settings__facebook_use_own_account
 msgid "Use your own Facebook Account"
-msgstr ""
+msgstr "Käytä omaa Facebook-tiliäsi"
 
 #. module: social_facebook
 #: model:ir.model.fields,help:social_facebook.field_social_media__media_type
@@ -310,7 +320,7 @@ msgstr ""
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_social_stream_post__facebook_user_likes
 msgid "User Likes"
-msgstr ""
+msgstr "Käyttäjän tykkäykset"
 
 #. module: social_facebook
 #. odoo-javascript
@@ -329,6 +339,8 @@ msgid ""
 "We could not upload your image, try reducing its size and posting it again "
 "(error: %s)."
 msgstr ""
+"Emme voineet ladata kuvaa, yritä pienentää sen kokoa ja lähetä se uudelleen "
+"(virhe: %s)."
 
 #. module: social_facebook
 #. odoo-python
@@ -340,9 +352,9 @@ msgstr "Sinulla ei ole aktiivista tilausta. Osta sellainen täältä: %s"
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.social_stream_post_view_kanban
 msgid "added an event"
-msgstr ""
+msgstr "lisäsi tapahtuman"
 
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.facebook_preview
 msgid "• <i class=\"fa fa-globe\"/>"
-msgstr ""
+msgstr "• <i class=\"fa fa-globe\"/>"

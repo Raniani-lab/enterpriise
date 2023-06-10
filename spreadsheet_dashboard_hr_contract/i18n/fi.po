@@ -28,7 +28,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Contract history by Job Position"
-msgstr ""
+msgstr "Sopimushistoria työtehtävittäin"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. odoo-javascript
@@ -66,14 +66,14 @@ msgstr "Työntekijät"
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Employees Analysis by Department"
-msgstr ""
+msgstr "Henkilöstöanalyysi osastoittain"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Hires"
-msgstr ""
+msgstr "Palkatut"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. odoo-javascript
@@ -87,7 +87,7 @@ msgstr "Tehtävänimike"
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "New Employees by Month"
-msgstr ""
+msgstr "Uudet työntekijät kuukausittain"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. odoo-javascript
@@ -101,11 +101,11 @@ msgstr "Jakso"
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Top Departments"
-msgstr "Top osastot"
+msgstr "Parhaat osastot"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Top Paid Job Positions"
-msgstr ""
+msgstr "Parhaiten palkatut työtehtävät"

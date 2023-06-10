@@ -207,12 +207,12 @@ msgstr "Dejanje"
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_actions_act_window
 msgid "Action Window"
-msgstr ""
+msgstr "Okno za ukrep"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_actions_act_window_view
 msgid "Action Window View"
-msgstr ""
+msgstr "Pogled okna za ukrep"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2562,7 +2562,7 @@ msgstr "Model"
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_model_access
 msgid "Model Access"
-msgstr ""
+msgstr "Dostop do modela"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_model_data
@@ -3269,7 +3269,7 @@ msgstr "Poročilo"
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_actions_report
 msgid "Report Action"
-msgstr ""
+msgstr "Ukrep poročila"
 
 #. module: web_studio
 #. odoo-javascript

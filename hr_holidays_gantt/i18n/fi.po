@@ -25,19 +25,19 @@ msgstr ""
 #: code:addons/hr_holidays_gantt/models/hr_leave.py:0
 #, python-format
 msgid " and"
-msgstr ""
+msgstr " ja"
 
 #. module: hr_holidays_gantt
 #: code:addons/hr_holidays_gantt/models/hr_leave.py:0
 #, python-format
 msgid "%(employee)s %(time_off_type)s%(period_leaves)s. \n"
-msgstr ""
+msgstr "%(employee)s %(time_off_type)s%(period_leaves)s.\n"
 
 #. module: hr_holidays_gantt
 #: code:addons/hr_holidays_gantt/models/hr_leave.py:0
 #, python-format
 msgid "%(prefix)s from the %(dfrom)s to the %(dto)s"
-msgstr ""
+msgstr "%(prefix)s %(dfrom)s-%(dto)s välillä"
 
 #. module: hr_holidays_gantt
 #: code:addons/hr_holidays_gantt/models/hr_leave.py:0
@@ -46,6 +46,8 @@ msgid ""
 "%(prefix)s from the %(dfrom_date)s at %(dfrom)s to the %(dto_date)s at "
 "%(dto)s"
 msgstr ""
+"%(prefix)s alkaen %(dfrom_date)s lähettäjänä %(dfrom)s päättyen %(dto_date)s"
+" kohteessa %(dto)s"
 
 #. module: hr_holidays_gantt
 #: model_terms:ir.ui.view,arch_db:hr_holidays_gantt.hr_leave_report_calendar_view_gantt
@@ -67,16 +69,16 @@ msgstr "Vapaa"
 #. module: hr_holidays_gantt
 #: model:ir.model,name:hr_holidays_gantt.model_hr_leave_report_calendar
 msgid "Time Off Calendar"
-msgstr ""
+msgstr "Vapaa-aikakalenteri"
 
 #. module: hr_holidays_gantt
 #: code:addons/hr_holidays_gantt/models/hr_leave.py:0
 #, python-format
 msgid "has requested time off"
-msgstr ""
+msgstr "on pyytänyt vapaata"
 
 #. module: hr_holidays_gantt
 #: code:addons/hr_holidays_gantt/models/hr_leave.py:0
 #, python-format
 msgid "is on time off"
-msgstr ""
+msgstr "on vapaalla"

@@ -368,7 +368,7 @@ msgid ""
 "unassign yourself from this shift."
 msgstr ""
 "<i class=\"fa fa-exclamation-circle text-warning\"/> Ya no puede "
-"desasignarse usted mismo de este turno."
+"desasignarse este turno."
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_send_view_form

@@ -28,7 +28,7 @@ msgstr ""
 #. module: hr_payroll_attendance
 #: model_terms:ir.ui.view,arch_db:hr_payroll_attendance.view_hr_payslip_form_inherit_payroll_attendance
 msgid "Attendances"
-msgstr "Frequência"
+msgstr "Controle de Presença"
 
 #. module: hr_payroll_attendance
 #: model:ir.model,name:hr_payroll_attendance.model_hr_contract

@@ -41,7 +41,7 @@ msgstr "Frequência"
 #. module: hr_work_entry_contract_attendance
 #: model:ir.model.fields.selection,name:hr_work_entry_contract_attendance.selection__hr_contract__work_entry_source__attendance
 msgid "Attendances"
-msgstr "Frequência"
+msgstr "Controle de Presença"
 
 #. module: hr_work_entry_contract_attendance
 #: model:ir.model,name:hr_work_entry_contract_attendance.model_hr_contract

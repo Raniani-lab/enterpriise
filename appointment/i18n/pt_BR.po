@@ -5,7 +5,6 @@
 # Translators:
 # Carlos Eduardo Nissola Migliavacca <carlos.migliavacca@gmail.com>, 2022
 # Luiz Carareto Alonso <Luiz.cararetoalonso@gmail.com>, 2022
-# Éder Brito <britoederr@gmail.com>, 2022
 # Claudecir Garcia Martins, 2022
 # Kevin Harrings <kha@odoo.com>, 2022
 # Marcel Savegnago <marcel.savegnago@gmail.com>, 2022
@@ -37,7 +36,7 @@ msgstr " (cópia)"
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__appointment_count
 msgid "# Appointments"
-msgstr "# Agendamentos"
+msgstr "Nº de reuniões"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__appointment_count_report

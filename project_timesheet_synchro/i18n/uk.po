@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2023\n"
 "Language-Team: Ukrainian (https://app.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,7 +25,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "&emsp;Start"
-msgstr "&emsp;Початок"
+msgstr "Початок"
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -32,7 +33,7 @@ msgstr "&emsp;Початок"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "&emsp;Stop"
-msgstr "&emsp;Кінець"
+msgstr "Кінець"
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -100,7 +101,7 @@ msgid ""
 "Connect Timesheets to Odoo to synchronize your activities across all "
 "devices."
 msgstr ""
-"Підключіть nf,tks до Odoo, щоб синхронізувати свої дії на всіх пристроях."
+"Підключіть табелі до Odoo, щоб синхронізувати свої дії на всіх пристроях."
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -109,6 +110,7 @@ msgstr ""
 msgid ""
 "Could not find server. Please check that the url you entered is correct."
 msgstr ""
+"Неможливо знайти сервер. Перевірте, чи коректна url-адреса, яку ви ввели."
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -118,7 +120,7 @@ msgstr ""
 #, python-format
 msgid ""
 "Could not login. Please check that the information you entered is correct."
-msgstr ""
+msgstr "Неможливо увійти. Перевірте, чи інформація, яку ви ввели, коректна."
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -129,6 +131,9 @@ msgid ""
 "connection, that the server address and database name you entered is valid, "
 "and that the server is online."
 msgstr ""
+"Не вдалося підключитися до сервера. Будь ласка, переконайтеся, що у вас є "
+"підключення до Інтернету, що адреса сервера та ім’я бази даних, які ви "
+"ввели, дійсні, і що сервер підключено."
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -141,6 +146,9 @@ msgid ""
 "connection, that the server address you entered is valid, and that the "
 "server is online."
 msgstr ""
+"Не вдалося підключитися до сервера. Будь ласка, переконайтеся, що у вас є "
+"підключення до Інтернету, чи введена вами адреса сервера дійсна, і що сервер"
+" підключено."
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -317,7 +325,7 @@ msgstr "Наступний тиждень недоступний"
 #: code:addons/project_timesheet_synchro/static/src/js/project_timesheet.js:0
 #, python-format
 msgid "No default project"
-msgstr ""
+msgstr "Немає проектів за замовчуванням"
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -331,7 +339,7 @@ msgstr "Немає завдань"
 #: code:addons/project_timesheet_synchro/static/src/js/project_timesheet.js:0
 #, python-format
 msgid "No task selected"
-msgstr ""
+msgstr "Завдання не вибрано"
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -347,7 +355,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/js/project_timesheet.js:0
 #, python-format
 msgid "Odoo login failed"
-msgstr ""
+msgstr "Вхід в Odoo не вдався"
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -431,7 +439,7 @@ msgstr "Проект"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "RESET"
-msgstr "RESET"
+msgstr "СКИНУТИ"
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -551,6 +559,9 @@ msgid ""
 "been released. You or your system administrator should consider retrieving "
 "it as soon as possible."
 msgstr ""
+"Код на вашому сервері Odoo не оновлений, і випущено важливе оновлення. Ви "
+"або ваш системний адміністратор повинні розглянути можливість його "
+"відновлення якнайшвидше."
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -560,6 +571,8 @@ msgid ""
 "The server does not support timesheet synchronization. It requires Odoo "
 "Enterprise Edition version 9 or newer."
 msgstr ""
+"Сервер не підтримує синхронізацію табелів. Для цього потрібна версія Odoo "
+"Enterprise Edition 9 або новіша."
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -570,6 +583,9 @@ msgid ""
 "your administrator in order to install the module \"Synchronization with the"
 " external timesheet application\""
 msgstr ""
+"Сервер не підтримує синхронізацію табелів. Для встановлення модуля "
+"«Синхронізація із зовнішнім додатком табелів» необхідно звернутися до "
+"адміністратора."
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -622,6 +638,8 @@ msgid ""
 "Timesheet Synchronization is available in Odoo Enterprise Edition. You "
 "should consider upgrading your Odoo version if you would like to use it."
 msgstr ""
+"Синхронізація табелю доступна у версії Odoo Enterprise. Вам слід розглянути "
+"питання про оновлення версії Odoo, якщо ви хочете її використовувати."
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -690,7 +708,7 @@ msgstr "Робочий підсумок"
 #: code:addons/project_timesheet_synchro/static/src/js/project_timesheet.js:0
 #, python-format
 msgid "Working time per week"
-msgstr ""
+msgstr "Робочий час на тиждень"
 
 #. module: project_timesheet_synchro
 #. odoo-javascript

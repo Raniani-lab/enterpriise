@@ -163,7 +163,7 @@ msgstr ""
 #. module: worksheet
 #: model:ir.model.fields,field_description:worksheet.field_worksheet_template__worksheet_count
 msgid "Worksheet Count"
-msgstr ""
+msgstr "Contagem da planilha"
 
 #. module: worksheet
 #: model:ir.model,name:worksheet.model_worksheet_template

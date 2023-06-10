@@ -147,15 +147,15 @@ msgid ""
 "The currency of the bank statement (%s) is not the same as the currency of "
 "the journal (%s)."
 msgstr ""
-"La moneda del estado de cuenta  (%s) no es la misma moneda que la de los "
-"diarios (%s)."
+"La divisa del estado de cuenta bancario (%s) no es la misma que la del "
+"diario (%s)."
 
 #. module: account_bank_statement_import
 #. odoo-python
 #: code:addons/account_bank_statement_import/models/account_journal.py:0
 #, python-format
 msgid "The following files could not be imported:\n"
-msgstr "Los siguientes archivos no se pueden importar:\n"
+msgstr "No se pueden importar los siguientes archivos:\n"
 
 #. module: account_bank_statement_import
 #. odoo-python
@@ -176,7 +176,7 @@ msgstr "Este archivo no contiene ninguna transacción para la cuenta %s."
 #: code:addons/account_bank_statement_import/models/account_journal.py:0
 #, python-format
 msgid "View successfully imported statements"
-msgstr "Ver estados bancarios importados de manera exitosa"
+msgstr "Ver estados de cuenta importados de manera exitosa"
 
 #. module: account_bank_statement_import
 #. odoo-python

@@ -28,7 +28,7 @@ msgstr "<i class=\"fa fa-globe fa-2x\" title=\"Share to web\"/>"
 #. module: website_knowledge
 #: model_terms:ir.ui.view,arch_db:website_knowledge.knowledge_article_view_form
 msgid "Anyone can view"
-msgstr ""
+msgstr "Chiunque può visualizzare"
 
 #. module: website_knowledge
 #: model_terms:ir.ui.view,arch_db:website_knowledge.knowledge_article_view_form
@@ -49,27 +49,27 @@ msgstr "È pubblicato"
 #. module: website_knowledge
 #: model:ir.model,name:website_knowledge.model_knowledge_article
 msgid "Knowledge Article"
-msgstr ""
+msgstr "Articolo Knowledge"
 
 #. module: website_knowledge
 #: model_terms:ir.ui.view,arch_db:website_knowledge.website_knowledge_article_tree_frontend
 msgid "Public articles"
-msgstr ""
+msgstr "Articoli pubblici"
 
 #. module: website_knowledge
 #: model_terms:ir.ui.view,arch_db:website_knowledge.knowledge_article_view_form
 msgid "Publish and share with anyone"
-msgstr ""
+msgstr "Pubblica e condividi con chiunque"
 
 #. module: website_knowledge
 #: model_terms:ir.ui.view,arch_db:website_knowledge.knowledge_article_view_form
 msgid "Share to web"
-msgstr ""
+msgstr "Condividi sul web"
 
 #. module: website_knowledge
 #: model_terms:ir.ui.view,arch_db:website_knowledge.website_knowledge_article_tree_frontend
 msgid "Shared with you"
-msgstr ""
+msgstr "Condiviso con te"
 
 #. module: website_knowledge
 #: model:ir.model.fields,help:website_knowledge.field_knowledge_article__website_url

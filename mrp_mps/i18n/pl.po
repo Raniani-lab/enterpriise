@@ -304,7 +304,7 @@ msgstr ""
 #: code:addons/mrp_mps/static/src/components/line.xml:0
 #, python-format
 msgid "Forecast Report"
-msgstr ""
+msgstr "Raport prognozy"
 
 #. module: mrp_mps
 #. odoo-javascript

@@ -51,11 +51,13 @@ msgid ""
 "<span style=\"font-size: 18px;\">Level up your skills with training videos "
 "and tutorials</span>"
 msgstr ""
+"<span style=\"font-size: 18px;\">Aumenta le tue competenze con video di "
+"formazione e tutorial</span>"
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.knowledge_base_slides_card
 msgid "<span style=\"font-weight: bolder; font-size: 18px;\">Courses</span>"
-msgstr ""
+msgstr "<span style=\"font-weight: bolder; font-size: 18px;\">Corsi</span>"
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.search_result
@@ -63,6 +65,8 @@ msgid ""
 "Comments\n"
 "                    | <i class=\"fa fa-folder-open-o\"/>"
 msgstr ""
+"Commenti\n"
+"                    | <i class=\"fa fa-folder-open-o\"/>"
 
 #. module: website_helpdesk_slides
 #: model:ir.model,name:website_helpdesk_slides.model_slide_channel
@@ -86,6 +90,8 @@ msgstr "Gruppo Helpdesk"
 msgid ""
 "In the help center, customers will only be able to see the selected courses."
 msgstr ""
+"Nel centro di supporto, i clienti potranno vedere solamente i corsi "
+"selezionati."
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.search_result
@@ -93,6 +99,8 @@ msgid ""
 "Likes\n"
 "                    |"
 msgstr ""
+"Mi piace\n"
+"                    |"
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.channel_search_result
@@ -100,6 +108,8 @@ msgid ""
 "Members\n"
 "                    |"
 msgstr ""
+"Membri\n"
+"                    |"
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.channel_search_result
@@ -109,7 +119,7 @@ msgstr "Recensioni"
 #. module: website_helpdesk_slides
 #: model:ir.model.fields,field_description:website_helpdesk_slides.field_helpdesk_team__show_knowledge_base_slide_channel
 msgid "Show Knowledge Base Slide Channel"
-msgstr ""
+msgstr "Mostra canale diapositive knowledge base"
 
 #. module: website_helpdesk_slides
 #: model:ir.model,name:website_helpdesk_slides.model_slide_slide
@@ -119,7 +129,7 @@ msgstr "Presentazioni"
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.knowledge_base_slides_card
 msgid "Take Courses"
-msgstr ""
+msgstr "Frequenta i corsi"
 
 #. module: website_helpdesk_slides
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_slides.search_result
@@ -127,3 +137,5 @@ msgid ""
 "Views\n"
 "                    |"
 msgstr ""
+"Visualizzazioni\n"
+"                    |"

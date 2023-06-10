@@ -358,7 +358,7 @@ msgstr ""
 #. module: iot
 #: model:ir.ui.menu,name:iot.iot_menu_root
 msgid "IoT"
-msgstr ""
+msgstr "Internet das Coisas"
 
 #. module: iot
 #: model:ir.model,name:iot.model_iot_box

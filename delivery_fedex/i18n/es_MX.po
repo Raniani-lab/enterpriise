@@ -32,8 +32,8 @@ msgid ""
 "<br/>According to your needs, you will need to contact different "
 "certifications :"
 msgstr ""
-"<br/>Dependiendo sus necesidades deberá contactar distintas certificaciones "
-":"
+"<br/>Dependiendo de sus necesidades, deberá contactar distintas "
+"certificaciones:"
 
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex

@@ -58,7 +58,7 @@ msgstr ""
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_planning_slot__allocated_hours
 msgid "Allocated Time"
-msgstr ""
+msgstr "Przydzielony czas"
 
 #. module: sale_planning
 #: model_terms:ir.ui.view,arch_db:sale_planning.planning_analysis_report_view_search
@@ -205,7 +205,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_planning.field_product_product__planning_role_id
 #: model:ir.model.fields,field_description:sale_planning.field_product_template__planning_role_id
 msgid "Planning Role"
-msgstr ""
+msgstr "Rola w planowaniu"
 
 #. module: sale_planning
 #: model:ir.model,name:sale_planning.model_planning_slot

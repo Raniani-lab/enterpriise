@@ -305,7 +305,7 @@ msgstr "이베이 : 주문 복구"
 #: model:ir.actions.server,name:sale_ebay.ir_cron_sale_ebay_stock_sync_ir_actions_server
 #: model:ir.cron,cron_name:sale_ebay.ir_cron_sale_ebay_stock_sync
 msgid "Ebay: synchronise stock"
-msgstr ""
+msgstr "이베이: 재고 동기화"
 
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.ir_cron_sale_ebay_categories_ir_actions_server
@@ -363,7 +363,7 @@ msgstr "갤러리 플러스"
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Generate Token"
-msgstr ""
+msgstr "토큰 생성"
 
 #. module: sale_ebay
 #: model:ir.model.fields.selection,name:sale_ebay.selection__product_template__ebay_listing_duration__gtc
@@ -484,7 +484,7 @@ msgstr "위치"
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_account_deletion_endpoint
 msgid "Marketplace account deletion notification endpoint"
-msgstr ""
+msgstr "마켓플레이스 계정 삭제 알림 엔드포인트"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -548,7 +548,7 @@ msgstr "지불 정책"
 msgid ""
 "Please provide your ebay production keys before enabling the account "
 "deletion notifications."
-msgstr ""
+msgstr "계정 삭제 알림을 활성화하려면 이베이 프로덕션 키를 입력하십시오."
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -754,6 +754,8 @@ msgid ""
 "The python 'cryptography' module is not installed on your server.\n"
 "It is necessary to support eBay account deletion notifications, please contact your system administrator to install it."
 msgstr ""
+"파이썬 '암호화' 모듈이 서버에 설치되어 있지 않습니다.\n"
+"이베이 계정 삭제 알림을 지원하려면, 시스템 관리자에게 문의하여 설치하시기 바랍니다."
 
 #. module: sale_ebay
 #: model:ir.model.fields,help:sale_ebay.field_product_product__ebay_subtitle
@@ -812,6 +814,9 @@ msgid ""
 "\n"
 "However, personal information might remain in linked documents, please review them according to laws that apply."
 msgstr ""
+"이베이로부터 계정 \"%s (%s)\" 삭제 요청을 받았음을 자동 안내드립니다. 계정은 이미 익명으로 처리되었으며 포털 액세스가 취소 (해당하는 경우)되었습니다.\n"
+"\n"
+"단, 연결된 문서에 개인 정보가 남아 있을 수 있으니 적용되는 법률에 따라 확인하시기 바랍니다. "
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_title
@@ -854,7 +859,7 @@ msgstr "세부선택"
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_verification_token
 msgid "Verification Token"
-msgstr ""
+msgstr "인증 토큰"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_zip_code
@@ -915,7 +920,7 @@ msgstr "이베이 목록 ID"
 #. module: sale_ebay
 #: model:mail.activity.type,summary:sale_ebay.ebay_GDPR_notification
 msgid "eBay Odoo connector notification - account deletion"
-msgstr ""
+msgstr "이베이 Odoo 연결기 안내 - 계정 삭제"
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_ebay_policy
@@ -952,7 +957,7 @@ msgstr "이베이 웹 사이트"
 #. module: sale_ebay
 #: model:mail.activity.type,name:sale_ebay.ebay_GDPR_notification
 msgid "eBay connector: account deletion notification"
-msgstr ""
+msgstr "이베이 연결기: 계정 삭제 알림"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form

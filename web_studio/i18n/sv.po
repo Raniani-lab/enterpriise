@@ -1441,7 +1441,7 @@ msgstr "Ta bort"
 #: code:addons/web_studio/static/src/legacy/xml/edit_menu.xml:0
 #, python-format
 msgid "Delete Menu Item"
-msgstr ""
+msgstr "Radera menyalternativ"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2161,7 +2161,7 @@ msgstr ""
 #: code:addons/web_studio/models/ir_model.py:0
 #, python-format
 msgid "High Priority"
-msgstr ""
+msgstr "Hög prioritet"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2301,7 +2301,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Inline"
-msgstr ""
+msgstr "Inline"
 
 #. module: web_studio
 #. odoo-javascript

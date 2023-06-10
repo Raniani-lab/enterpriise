@@ -450,7 +450,7 @@ msgstr "por %s años"
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "per day"
-msgstr "por dia"
+msgstr "por día"
 
 #. module: sale_temporal
 #. odoo-python

@@ -26,11 +26,13 @@ msgid ""
 "<span class=\"fa fa-pencil me-1\" aria-label=\"Worksheet Template\" "
 "title=\"Worksheet Template\"/>"
 msgstr ""
+"<span class=\"fa fa-pencil me-1\" aria-label=\"Worksheet Template\" "
+"title=\"Worksheet Template\"/>"
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.view_worksheet_template_kanban
 msgid "<span class=\"o_label ms-2\">Worksheets</span>"
-msgstr ""
+msgstr "<span class=\"o_label ms-2\">Planilhas</span>"
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.project_task_view_gantt_fsm_worksheet
@@ -40,7 +42,7 @@ msgstr ""
 #. module: industry_fsm_report
 #: model:ir.ui.menu,name:industry_fsm_report.project_task_menu_planning_by_project_fsm
 msgid "By Worksheet Template"
-msgstr ""
+msgstr "Modelo da planilha"
 
 #. module: industry_fsm_report
 #: model:ir.model.fields,field_description:industry_fsm_report.field_project_task__worksheet_color
@@ -73,7 +75,7 @@ msgstr "Criado em"
 #. module: industry_fsm_report
 #: model_terms:ir.actions.act_window,help:industry_fsm_report.fsm_worksheets_action_settings
 msgid "Customize worksheet templates for each type of intervention.<br>"
-msgstr ""
+msgstr "Personalize modelos de planilhas para cada tipo de intervenção.<br>"
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.report_custom_x_project_task_worksheet_template_3
@@ -84,7 +86,7 @@ msgstr "Data"
 #: model:ir.model,name:industry_fsm_report.x_project_task_worksheet_template_2_ir_model_1
 #: model:ir.model.fields,field_description:industry_fsm_report.field_project_project__worksheet_template_id
 msgid "Default Worksheet"
-msgstr ""
+msgstr "Planilha padrão"
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.report_custom_x_project_task_worksheet_template_3
@@ -136,12 +138,12 @@ msgstr "Nenhuma tarefa encontrada. Vamos criar a primeira!"
 #. module: industry_fsm_report
 #: model_terms:ir.actions.act_window,help:industry_fsm_report.fsm_worksheets_action_settings
 msgid "No worksheet templates found. Let's create one!"
-msgstr ""
+msgstr "Nenhum modelo de planilha foi encontrado. Vamos criar um!"
 
 #. module: industry_fsm_report
 #: model:ir.actions.act_window,name:industry_fsm_report.project_task_action_fsm_planning_groupby_worksheet
 msgid "Planning by Worksheet Template"
-msgstr ""
+msgstr "Planejamento por modelo de planilha"
 
 #. module: industry_fsm_report
 #: model:ir.model,name:industry_fsm_report.model_project_project
@@ -151,7 +153,7 @@ msgstr "Projeto"
 #. module: industry_fsm_report
 #: model_terms:ir.actions.act_window,help:industry_fsm_report.project_task_action_fsm_planning_groupby_worksheet
 msgid "Schedule your tasks and assign them to your workers."
-msgstr ""
+msgstr "Programe suas tarefas e atribua-as aos seus funcionários."
 
 #. module: industry_fsm_report
 #: model:ir.actions.server,name:industry_fsm_report.action_fsm_task_send_report
@@ -176,12 +178,12 @@ msgstr "Recorrência de Tarefa"
 #. module: industry_fsm_report
 #: model:ir.model,name:industry_fsm_report.model_report_industry_fsm_worksheet_custom
 msgid "Task Worksheet Custom Report"
-msgstr ""
+msgstr "Relatório personalizado da planilha de tarefas"
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.report_custom_x_project_task_worksheet_template_3
 msgid "Worker Signature"
-msgstr ""
+msgstr "Assinatura do funcionário"
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.portal_my_task
@@ -192,7 +194,7 @@ msgstr "Folha de Desenho"
 #. module: industry_fsm_report
 #: model:ir.model.fields,field_description:industry_fsm_report.field_project_task__worksheet_count
 msgid "Worksheet Count"
-msgstr ""
+msgstr "Contagem da planilha"
 
 #. module: industry_fsm_report
 #: model:ir.model,name:industry_fsm_report.model_worksheet_template
@@ -212,7 +214,7 @@ msgstr "Modelo de planilha de trabalho"
 #: model:ir.actions.act_window,name:industry_fsm_report.fsm_worksheets_action_settings
 #: model:ir.ui.menu,name:industry_fsm_report.fsm_settings_worksheets
 msgid "Worksheet Templates"
-msgstr ""
+msgstr "Modelos de planilha"
 
 #. module: industry_fsm_report
 #: model:ir.actions.act_window,name:industry_fsm_report.x_project_task_worksheet_template_2_ir_actions_act_window_1

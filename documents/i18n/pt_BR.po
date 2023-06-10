@@ -2792,7 +2792,7 @@ msgstr "documento"
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "documents"
-msgstr ""
+msgstr "documentos"
 
 #. module: documents
 #. odoo-javascript

@@ -499,7 +499,7 @@ msgstr "Restringido para países en la zona SEPA. Países prohibidos: %s"
 #. module: payment_sepa_direct_debit
 #: model:ir.model,name:payment_sepa_direct_debit.model_sdd_mandate
 msgid "SDD Mandate"
-msgstr "Mandato SDD"
+msgstr "Mandato de domiciliación bancaria SEPA"
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields.selection,name:payment_sepa_direct_debit.selection__payment_provider__code__sepa_direct_debit
@@ -520,7 +520,7 @@ msgstr "Mandato de domiciliación bancaria SEPA"
 #: model:mail.template,name:payment_sepa_direct_debit.mail_template_sepa_notify_debit
 #: model:mail.template,subject:payment_sepa_direct_debit.mail_template_sepa_notify_debit
 msgid "SEPA Direct Debit: Charge Notification"
-msgstr "Domiciliación bancaria SEPA: cargar notificación"
+msgstr "Domiciliación bancaria SEPA: notificación de cobro"
 
 #. module: payment_sepa_direct_debit
 #: model:mail.template,name:payment_sepa_direct_debit.mail_template_sepa_notify_validation
@@ -544,7 +544,7 @@ msgstr "SMS enviado"
 #: code:addons/payment_sepa_direct_debit/controllers/main.py:0
 #, python-format
 msgid "SMS could not be sent due to insufficient credit."
-msgstr "No se puede enviar el SMS por saldo insuficiente."
+msgstr "No se puede enviar el SMS, no cuenta con crédito suficiente."
 
 #. module: payment_sepa_direct_debit
 #. odoo-python
@@ -593,7 +593,7 @@ msgstr "Firmada por"
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,field_description:payment_sepa_direct_debit.field_sdd_mandate__signed_on
 msgid "Signed On"
-msgstr "Firmado"
+msgstr "Firmado el"
 
 #. module: payment_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.sdd_payment_mandate_form

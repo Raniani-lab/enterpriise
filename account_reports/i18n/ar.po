@@ -430,6 +430,8 @@ msgid ""
 "<span>This company is part of a tax unit. You're currently not viewing the "
 "whole unit. To change that, use the Tax Unit filter.</span>"
 msgstr ""
+"<span>هذه الشركة جزء من وحدة ضريبية. لا تعرض الوحدة بأكملها حالياً؛ لتغيير "
+"ذلك، استخدم عامل تصفية \"الوحدة الضريبية\".</span> "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_main_template
@@ -2137,7 +2139,7 @@ msgstr "آخر ربع سنة"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_reports_journal_dashboard_kanban_view
 msgid "Last Statement balance + Transactions since statement"
-msgstr ""
+msgstr "رصيد آخر كشف حساب + المعاملات منذ إصدار كشف الحساب "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.bank_reconciliation_report_cell_template_link_last_statement

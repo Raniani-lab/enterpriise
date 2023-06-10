@@ -29,7 +29,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Available time (min)"
-msgstr ""
+msgstr "Käytettävissä oleva aika (min)"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
@@ -43,7 +43,7 @@ msgstr "Keskimääräiset kustannukset / yksikkö"
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Average cost / unit"
-msgstr ""
+msgstr "Keskimääräiset kustannukset / yksikkö"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
@@ -155,7 +155,7 @@ msgstr "Tuote"
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Productive time (min)"
-msgstr ""
+msgstr "Tuottava aika (min)"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
@@ -214,7 +214,7 @@ msgstr "Kokonaismäärä"
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Total time (min)"
-msgstr ""
+msgstr "Kokonaisaika (min)"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript

@@ -305,14 +305,14 @@ msgstr "W toku"
 #: code:addons/industry_fsm_sale/models/product_product.py:0
 #, python-format
 msgid "Invalid operator: %s"
-msgstr ""
+msgstr "Nieprawidłowy operator: %s"
 
 #. module: industry_fsm_sale
 #. odoo-python
 #: code:addons/industry_fsm_sale/models/product_product.py:0
 #, python-format
 msgid "Invalid value: %s"
-msgstr ""
+msgstr "Nieprawidłowa wartość: %s"
 
 #. module: industry_fsm_sale
 #. odoo-python

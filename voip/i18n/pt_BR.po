@@ -3,8 +3,8 @@
 # 	* voip
 # 
 # Translators:
-# Marcel Savegnago <marcel.savegnago@gmail.com>, 2022
 # Martin Trigaux, 2022
+# Marcel Savegnago <marcel.savegnago@gmail.com>, 2023
 # Layna Nascimento, 2023
 # 
 msgid ""
@@ -624,7 +624,7 @@ msgstr "Marcar como Completo"
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__missed
 msgid "Missed"
-msgstr ""
+msgstr "Falhou"
 
 #. module: voip
 #. odoo-python
@@ -1061,7 +1061,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall_report__state__open
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "To Do"
-msgstr "A Fazer"
+msgstr "Lista de Tarefas"
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall_log_wizard__reschedule_option__1d

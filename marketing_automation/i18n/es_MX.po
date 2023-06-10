@@ -350,8 +350,8 @@ msgid ""
 "amount of time after the scheduled date. (e.g. : Time-limited offer, "
 "Upcoming event, …)"
 msgstr ""
-"Verifique esto para asegurarse de que sus acciones no se ejecuten después de"
-" un período de tiempo específico después de la fecha programada. (por "
+"Marque esta casilla para asegurar que sus acciones no se ejecuten después de"
+" un período de tiempo específico después de la fecha programada. (Por "
 "ejemplo: oferta por tiempo limitado, próximo evento, ...)"
 
 #. module: marketing_automation

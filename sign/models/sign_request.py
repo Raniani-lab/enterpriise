@@ -596,7 +596,10 @@ class SignRequest(models.Model):
                     frame = value_dict['frame']
 
                     if frame:
-                        image_reader = ImageReader(io.BytesIO(base64.b64decode(frame[frame.find(',')+1:])))
+                        try:
+                            image_reader = ImageReader(io.BytesIO(base64.b64decode(frame[frame.find(',')+1:])))
+                        except UnidentifiedImageError:
+                            raise ValidationError(_("There was an issue downloading your document. Please contact an administrator."))
                         _fix_image_transparency(image_reader._image)
                         can.drawImage(
                             image_reader,

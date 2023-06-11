@@ -258,7 +258,7 @@ class Applicant(models.Model):
             result['onboarding'] = self._get_onboarding_steps()
             return result
 
-        applicant = self.sudo().search([('ref_user_id', '=', user_id.id)])
+        applicant = self.sudo().search([('ref_user_id', '=', user_id.id), ('company_id', 'in', self.env.companies.ids)])
         applicants_hired = applicant.filtered(lambda r: r.referral_state == 'hired')
         applicant_name = {applicant_hired.friend_id.id: applicant_hired.partner_name or applicant_hired.name for applicant_hired in applicants_hired}
         applicant_without_friend = applicants_hired.filtered(lambda r: not r.friend_id)

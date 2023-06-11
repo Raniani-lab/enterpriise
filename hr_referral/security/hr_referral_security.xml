@@ -51,6 +51,12 @@
         <field name="groups" eval="[(4, ref('hr_recruitment.group_hr_recruitment_manager'))]"/>
     </record>
 
+    <record id="hr_referral_points_comp_rule" model="ir.rule">
+        <field name="name">Referral Points multi-company</field>
+        <field name="model_id" ref="model_hr_referral_points"/>
+        <field name="domain_force">['|',('company_id','=',False),('company_id', 'in', company_ids)]</field>
+    </record>
+
     <record id="hr_applicant_referral_user_rule" model="ir.rule">
         <field name="name">User Referral Applicants</field>
         <field name="model_id" ref="model_hr_applicant"/>
@@ -80,6 +86,12 @@
     <record model="ir.rule" id="hr_hr_referral_onboarding_comp_rule">
         <field name="name">Referral Onboarding multi-company</field>
         <field name="model_id" ref="model_hr_referral_onboarding"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+    </record>
+
+    <record model="ir.rule" id="report_hr_referral_report_comp_rule">
+        <field name="name">Employee Referral Report multi-company</field>
+        <field name="model_id" ref="model_hr_referral_report"/>
         <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
     </record>
     </data>

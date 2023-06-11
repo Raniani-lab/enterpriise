@@ -39,6 +39,7 @@
                                 <field name="applicant_id"/>
                                 <field name="job_id"/>
                                 <field name="department_id"/>
+                                <field name="company_id" groups="base.group_multi_company"/>
                             </group>
                             <group>
                                 <field name="ref_user_id" widget="many2one_avatar_user" string="Referer"/>
@@ -62,6 +63,7 @@
                     <field name="ref_user_id" widget="many2one_avatar_user" optional="show" string="Referer"/>
                     <field name="medium_id" optional="show"/>
                     <field name="referral_state" optional="show"/>
+                    <field name="company_id" groups="base.group_multi_company"/>
                 </tree>
             </field>
         </record>
@@ -81,6 +83,7 @@
                         <filter string="Employee" name="ref_user_id" context="{'group_by':'ref_user_id'}"/>
                         <filter string="Job" name="job_id" context="{'group_by':'job_id'}"/>
                         <filter string="Department" name="department_id" context="{'group_by':'department_id'}"/>
+                        <filter string="Company" name="company_id" context="{'group_by':'company_id'}" groups="base.group_multi_company"/>
                     </group>
                 </search>
             </field>

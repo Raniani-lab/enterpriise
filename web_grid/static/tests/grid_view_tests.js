@@ -703,7 +703,9 @@ QUnit.module("Views", (hooks) => {
         });
 
         await toggleSearchBarMenu(target);
-        const groupByDropdown = target.querySelector(".o_menu_item:not(.o_add_custom_filter)").parentNode;
+        const groupByDropdown = target.querySelector(
+            ".o_menu_item:not(.o_add_custom_filter)"
+        ).parentNode;
         await toggleMenuItem(target, "Date");
         const dateOptionNodes = groupByDropdown.querySelectorAll(".o_item_option");
         await click(dateOptionNodes[0], "");
@@ -1925,5 +1927,81 @@ QUnit.module("Views", (hooks) => {
         await triggerScroll(content, { top: 0 });
 
         assert.deepEqual(getCurrentRows(), initialRows, "rows should be the same as initially");
+    });
+
+    QUnit.test("Edition navigate with tab/shift+tab and enter key", async (assert) => {
+        await makeView({
+            type: "grid",
+            resModel: "analytic.line",
+            serverData,
+            arch: `<grid editable="1">
+                <field name="project_id" type="row"/>
+                <field name="task_id" type="row"/>
+                <field name="date" type="col">
+                    <range name="week" string="Week" span="week" step="day"/>
+                    <range name="month" string="Month" span="month" step="day"/>
+                </field>
+                <field name="unit_amount" type="measure" widget="float_time"/>
+            </grid>`,
+            async mockRPC(route, args) {
+                if (args.method === "grid_unavailability") {
+                    return {};
+                }
+            },
+        });
+
+        function checkGridCellInRightPlace(expectedGridRow, expectedGridColumn) {
+            const gridCell = target.querySelector(".o_grid_cell");
+            assert.strictEqual(gridCell.dataset.gridRow, expectedGridRow);
+            assert.strictEqual(gridCell.dataset.gridColumn, expectedGridColumn);
+        }
+
+        const firstCell = target.querySelector(".o_grid_row[data-row='1'][data-column='0']");
+        assert.strictEqual(firstCell.dataset.gridRow, "2");
+        assert.strictEqual(firstCell.dataset.gridColumn, "2");
+        await hoverGridCell(firstCell, ".o_grid_cell_readonly");
+        assert.containsOnce(
+            target,
+            ".o_grid_cell",
+            "The GridCell component should be mounted on the grid cell hovered."
+        );
+        checkGridCellInRightPlace(firstCell.dataset.gridRow, firstCell.dataset.gridColumn);
+        await click(target, ".o_grid_cell");
+        await nextTick();
+
+        // Go to the next cell
+        await triggerEvent(target, ".o_grid_cell input", "keydown", { key: "tab" });
+        checkGridCellInRightPlace("2", "3");
+
+        // Go to the previous cell
+        await triggerEvent(target, ".o_grid_cell input", "keydown", { key: "shift+tab" });
+        checkGridCellInRightPlace("2", "2");
+
+        // Go the cell below
+        await triggerEvent(target, ".o_grid_cell input", "keydown", { key: "enter" });
+        checkGridCellInRightPlace("3", "2");
+
+        // Go up since it is the cell in the row
+        await triggerEvent(target, ".o_grid_cell input", "keydown", { key: "enter" });
+        checkGridCellInRightPlace("2", "3");
+
+        await triggerEvent(target, ".o_grid_cell input", "keydown", { key: "shift+tab" });
+        checkGridCellInRightPlace("2", "2");
+
+        // Go to the last editable cell in the grid view since it is the first cell.
+        await triggerEvent(target, ".o_grid_cell input", "keydown", { key: "shift+tab" });
+        checkGridCellInRightPlace("3", "8");
+
+        // Go back to the first cell since it is the last cell in grid view.
+        await triggerEvent(target, ".o_grid_cell input", "keydown", { key: "tab" });
+        checkGridCellInRightPlace("2", "2");
+
+        // Go to the last editable cell in the grid view since it is the first cell.
+        await triggerEvent(target, ".o_grid_cell input", "keydown", { key: "shift+tab" });
+        checkGridCellInRightPlace("3", "8");
+
+        // Go back to the first cell since it is the last cell in grid view.
+        await triggerEvent(target, ".o_grid_cell input", "keydown", { key: "enter" });
+        checkGridCellInRightPlace("2", "2");
     });
 });

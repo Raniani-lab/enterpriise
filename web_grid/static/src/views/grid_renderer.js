@@ -393,7 +393,7 @@ export class GridRenderer extends Component {
      */
     onCellKeydown(ev, cell) {
         const hotkey = getActiveHotkey(ev);
-        if (!this.rendererRef.el || !cell || !["tab", "shift+tab"].includes(hotkey)) {
+        if (!this.rendererRef.el || !cell || !["tab", "shift+tab", "enter"].includes(hotkey)) {
             this._onKeyDown(ev);
             return;
         }
@@ -438,6 +438,14 @@ export class GridRenderer extends Component {
                     rowId = rowIds[rowIds.length - 1];
                 }
             }
+        } else if (hotkey === "enter") {
+            rowIndex += 1;
+            if (rowIndex >= rowIds.length) {
+                columnIndex = (columnIndex + 1) % columnIds.length;
+                columnId = columnIds[columnIndex];
+            }
+            rowIndex = rowIndex % rowIds.length;
+            rowId = rowIds[rowIndex];
         }
         this.onEditCell(false);
         this.hoveredCellProps.reactive.cell = this.rendererRef.el.querySelector(

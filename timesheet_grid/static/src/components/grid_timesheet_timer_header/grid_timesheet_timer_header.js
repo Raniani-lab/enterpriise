@@ -106,6 +106,15 @@ export class GridTimesheetTimerHeader extends Component {
             // Nothing to do since because a timesheet cannot be created without a project set or it is not a manual change.
             return;
         }
+        if (
+            changes.name === "" &&
+            Object.keys(changes).length === 1 &&
+            ((!("name" in this.props.model.data.timer) &&
+                this.props.model.data.timer.description === "/") ||
+                this.props.model.data.timer.name === "/")
+        ) {
+            return; // nothing to do
+        }
         timesheet.save({ stayInEdition: true, noReload: true }); // create the timesheet when the project is set
         this.props.updateTimesheet(
             Object.fromEntries(this.fieldNames.map((f) => [f, getRawValue(timesheet, f)]))

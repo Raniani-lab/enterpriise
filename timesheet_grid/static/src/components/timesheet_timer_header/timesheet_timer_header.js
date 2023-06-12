@@ -70,7 +70,7 @@ export class TimesheetTimerHeader extends Component {
     //--------------------------------------------------------------------------
 
     _clearTimesheetName(timesheet = null) {
-        (timesheet || this.props.timesheet).update({ name: "" });
+        (timesheet || this.props.timesheet).update({ name: "" }, { silent: true });
     }
 
     //--------------------------------------------------------------------------

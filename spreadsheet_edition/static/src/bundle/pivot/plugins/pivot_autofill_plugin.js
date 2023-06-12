@@ -47,7 +47,9 @@ export default class PivotAutofillPlugin extends UIPlugin {
         const { functionName, args } = getFirstPivotFunction(formula);
         const evaluatedArgs = args
             .map(astToFormula)
-            .map((arg) => this.getters.evaluateFormula(arg).toString());
+            .map((arg) =>
+                this.getters.evaluateFormula(this.getters.getActiveSheetId(), arg).toString()
+            );
         const pivotId = evaluatedArgs[0];
         const dataSource = this.getters.getPivotDataSource(pivotId);
         for (let i = evaluatedArgs.length - 1; i > 0; i--) {
@@ -112,7 +114,7 @@ export default class PivotAutofillPlugin extends UIPlugin {
         const { functionName, args } = getFirstPivotFunction(formula);
         const evaluatedArgs = args
             .map(astToFormula)
-            .map((arg) => this.getters.evaluateFormula(arg));
+            .map((arg) => this.getters.evaluateFormula(this.getters.getActiveSheetId(), arg));
         const pivotId = evaluatedArgs[0];
         if (functionName === "ODOO.PIVOT") {
             return this._tooltipFormatPivot(pivotId, evaluatedArgs, isColumn);

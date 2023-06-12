@@ -34,4 +34,5 @@ CommonOdooChartConfigPanel.props = {
     figureId: String,
     definition: Object,
     updateChart: Function,
+    canUpdateChart: Function,
 };

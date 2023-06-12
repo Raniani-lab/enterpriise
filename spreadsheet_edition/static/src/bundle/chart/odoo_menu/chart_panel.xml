@@ -13,7 +13,7 @@
         t-inherit="spreadsheet.o-spreadsheet-LineBarPieConfigPanel"
         t-inherit-mode="extension"
         owl="1">
-        <xpath expr="//div[hasclass('o-sidepanel-error')]" position="before">
+        <xpath expr="(//div[hasclass('o-section')])[last()]" position="before">
             <t t-call="spreadsheet_edition.OdooMenuChartPanelSection"/>
         </xpath>
     </t>
@@ -22,7 +22,7 @@
         t-inherit="spreadsheet.o-spreadsheet-BarConfigPanel"
         t-inherit-mode="extension"
         owl="1">
-        <xpath expr="//div[hasclass('o-sidepanel-error')]" position="before">
+        <xpath expr="(//div[hasclass('o-section')])[last()]" position="before">
             <t t-call="spreadsheet_edition.OdooMenuChartPanelSection"/>
         </xpath>
     </t>
@@ -31,7 +31,7 @@
         t-inherit="spreadsheet.o-spreadsheet-LineConfigPanel"
         t-inherit-mode="extension"
         owl="1">
-        <xpath expr="//div[hasclass('o-sidepanel-error')]" position="before">
+        <xpath expr="(//div[hasclass('o-section')])[last()]" position="before">
             <t t-call="spreadsheet_edition.OdooMenuChartPanelSection"/>
         </xpath>
     </t>
@@ -40,7 +40,7 @@
         t-inherit="spreadsheet.o-spreadsheet-ScorecardChartConfigPanel"
         t-inherit-mode="extension"
         owl="1">
-        <xpath expr="//div[hasclass('o-sidepanel-error')]" position="before">
+        <xpath expr="(//div[hasclass('o-section')])[last()]" position="before">
             <t t-call="spreadsheet_edition.OdooMenuChartPanelSection"/>
         </xpath>
     </t>
@@ -49,7 +49,7 @@
         t-inherit="spreadsheet.o-spreadsheet-GaugeChartConfigPanel"
         t-inherit-mode="extension"
         owl="1">
-        <xpath expr="//div[hasclass('o-sidepanel-error')]" position="before">
+        <xpath expr="(//div[hasclass('o-section')])[last()]" position="before">
             <t t-call="spreadsheet_edition.OdooMenuChartPanelSection"/>
         </xpath>
     </t>

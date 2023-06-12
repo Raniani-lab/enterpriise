@@ -25,7 +25,7 @@ export default class ListAutofillPlugin extends UIPlugin {
         const { functionName, args } = getFirstListFunction(formula);
         const evaluatedArgs = args
             .map(astToFormula)
-            .map((arg) => this.getters.evaluateFormula(arg));
+            .map((arg) => this.getters.evaluateFormula(this.getters.getActiveSheetId(), arg));
         const listId = evaluatedArgs[0];
         const columns = this.getters.getListDefinition(listId).columns;
         if (functionName === "ODOO.LIST") {
@@ -84,7 +84,7 @@ export default class ListAutofillPlugin extends UIPlugin {
         const { functionName, args } = getFirstListFunction(formula);
         const evaluatedArgs = args
             .map(astToFormula)
-            .map((arg) => this.getters.evaluateFormula(arg));
+            .map((arg) => this.getters.evaluateFormula(this.getters.getActiveSheetId(), arg));
         if (isColumn || functionName === "ODOO.LIST.HEADER") {
             const fieldName = functionName === "ODOO.LIST" ? evaluatedArgs[2] : evaluatedArgs[1];
             return this.getters.getListDataSource(evaluatedArgs[0]).getListHeaderValue(fieldName);

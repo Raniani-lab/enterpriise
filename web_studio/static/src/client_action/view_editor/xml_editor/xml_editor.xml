@@ -13,7 +13,7 @@
                 <button t-on-click="onSaveClick" class="btn btn-primary">Save</button>
                 <button t-on-click="onCloseClick" class="btn btn-secondary">Close</button>
             </div>
-            <ResizablePanel class="'h-100'">
+            <ResizablePanel class="'d-flex flex-column h-100'">
                 <div class="o_web_studio_code_editor_info p-3">
                     <div class="d-flex justify-content-between">
                         <p t-if="props.title" class="mb-0 text-light" t-out="props.title" />

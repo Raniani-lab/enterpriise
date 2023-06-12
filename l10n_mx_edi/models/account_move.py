@@ -256,6 +256,14 @@ class AccountMove(models.Model):
             'stamp_date': tfd_node is not None and tfd_node.get('FechaTimbrado', '').replace('T', ' '),
         }
 
+    @api.depends('country_code')
+    def _compute_amount_total_words(self):
+        # EXTENDS 'account'
+        super()._compute_amount_total_words()
+        for move in self:
+            if move.country_code == 'MX':
+                move.amount_total_words = move._l10n_mx_edi_cfdi_amount_to_text()
+
     @api.model
     def _l10n_mx_edi_cfdi_amount_to_text(self):
         """Method to transform a float amount to text words

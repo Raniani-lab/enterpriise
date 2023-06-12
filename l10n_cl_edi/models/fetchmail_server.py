@@ -106,8 +106,11 @@ class FetchmailServer(models.Model):
                              server.name, exc_info=True)
             finally:
                 if imap_server:
-                    imap_server.close()
-                    imap_server.logout()
+                    try:
+                        imap_server.close()
+                        imap_server.logout()
+                    except Exception:  # pylint: disable=broad-except
+                        _logger.warning('Failed to properly finish connection: %s.', server.name, exc_info=True)
                 server.write({'date': fields.Datetime.now()})
         return super(FetchmailServer, self.filtered(lambda s: not s.l10n_cl_is_dte)).fetch_mail()
 

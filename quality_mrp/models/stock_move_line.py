@@ -29,10 +29,6 @@ class StockMoveLine(models.Model):
         return super()._create_quality_check_at_write(vals)
 
     def _filter_move_lines_applicable_for_quality_check(self):
-        ok_line_ids = set()
-        if self.move_id.raw_material_production_id:
-            for line in self:
-                if not line.move_id.production_id:
-                    ok_line_ids.add(line.id)
-        ok_lines = self.env['stock.move.line'].browse(ok_line_ids)
-        return ok_lines | super(StockMoveLine, self - ok_lines)._filter_move_lines_applicable_for_quality_check()
+        ok_lines = self.filtered(lambda sml: sml.move_id.raw_material_production_id)
+        done_lines = self.filtered(lambda sml: sml.product_id == sml.move_id.production_id.product_id)
+        return ok_lines | super(StockMoveLine, self - ok_lines - done_lines)._filter_move_lines_applicable_for_quality_check()

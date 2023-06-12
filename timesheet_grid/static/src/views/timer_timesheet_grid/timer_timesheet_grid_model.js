@@ -107,7 +107,11 @@ export class TimerTimesheetGridDataPoint extends TimesheetGridDataPoint {
     _searchRowWithTimer() {
         let rowKey = `${this.sectionField ? this.data.timer[this.sectionField.name] : "false"}@|@`;
         for (const row of this.rowFields) {
-            rowKey += `${this.data.timer[row.name]}\\|/`;
+            let value = this.data.timer[row.name];
+            if (!value && this.fieldsInfo[row.name].type) {
+                value = false;
+            }
+            rowKey += `${value}\\|/`;
         }
         if (rowKey in this.data.rowsKeyToIdMapping) {
             const row = this.data.rows[this.data.rowsKeyToIdMapping[rowKey]];

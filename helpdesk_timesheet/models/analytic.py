@@ -65,6 +65,14 @@ class AccountAnalyticLine(models.Model):
             return 'helpdesk_ticket_id', 'helpdesk.ticket'
         return super()._get_timesheet_field_and_model_name()
 
+    def _get_timesheet_timer_data(self, timer=None):
+        timesheet_timer_data = super()._get_timesheet_timer_data(timer)
+        if timesheet_timer_data.get('readonly'):
+            timesheet_timer_data['helpdesk_ticket_id'] = self.helpdesk_ticket_id.sudo().name
+        else:
+            timesheet_timer_data['helpdesk_ticket_id'] = self.helpdesk_ticket_id.id
+        return timesheet_timer_data
+
     def _timesheet_get_portal_domain(self):
         domain = super(AccountAnalyticLine, self)._timesheet_get_portal_domain()
         if not self.env.user.has_group('hr_timesheet.group_hr_timesheet_user'):

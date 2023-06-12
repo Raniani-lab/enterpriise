@@ -18,7 +18,7 @@ class AccountJournal(models.Model):
         string="Purchase Liquidations",
         help="Check if this journal is dedicated to purchase liquidations")
 
-    @api.depends('l10n_ec_withhold_type', 'l10n_ec_is_purchase_liquidation')
+    @api.depends('l10n_ec_withhold_type', 'l10n_ec_is_purchase_liquidation', 'l10n_latam_use_documents')
     def _compute_edi_format_ids(self):
         # EXTENDS account, add onchange dependencies to fields used by '_is_compatible_with_journal()'
         super()._compute_edi_format_ids()

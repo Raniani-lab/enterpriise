@@ -67,7 +67,6 @@ $dropdown-border-width: 0 !default;;
 // Forms
 //
 
-$input-bg: $o-gray-200 !default;
 $input-border-color: $o-gray-200 !default;
 $input-box-shadow: 0 !default;
 
@@ -78,9 +77,6 @@ $input-focus-border-color: mix($o-enterprise-action-color, $o-gray-200) !default
 $form-check-input-checked-color: $o-white !default;
 $form-check-input-checked-border-color: $o-enterprise-action-color !default;
 $form-check-input-checked-bg-color: $o-enterprise-action-color !default;
-$form-switch-focus-color: mix($o-success, $input-bg) !default;
-
-$form-switch-checked-color: $o-white !default;
 
 $form-select-focus-box-shadow: 0 !default;
 

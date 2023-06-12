@@ -494,7 +494,7 @@ class MrpProductionWorkcenterLine(models.Model):
             # log next activity on MO with error message
             self.production_id.activity_schedule(
                 'mail.mail_activity_data_warning',
-                note=e.name,
+                note=str(e),
                 summary=('The %s could not be closed') % (self.production_id.name),
                 user_id=self.env.user.id)
             return {

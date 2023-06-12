@@ -112,7 +112,7 @@ class SocialLivePostFacebook(models.Model):
                 except UserError as e:
                     self.write({
                         'state': 'failed',
-                        'failure_reason': e.name
+                        'failure_reason': str(e)
                     })
                     return
                 images_attachments = post._format_images_facebook(facebook_target_id, account.facebook_access_token)

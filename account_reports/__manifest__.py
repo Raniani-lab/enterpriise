@@ -38,6 +38,7 @@ Accounting Reports
         'views/report_template.xml',
         'wizard/multicurrency_revaluation.xml',
         'wizard/report_export_wizard.xml',
+        'wizard/account_report_file_download_error_wizard.xml',
         'wizard/fiscal_year.xml',
         'views/account_activity.xml',
         'views/account_account_views.xml',

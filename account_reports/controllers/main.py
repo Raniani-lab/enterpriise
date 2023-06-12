@@ -3,6 +3,7 @@
 import werkzeug
 from werkzeug.exceptions import InternalServerError
 
+from odoo.addons.account_reports.models.account_report import AccountReportFileDownloadException
 from odoo import http
 from odoo.models import check_method_name
 from odoo.http import content_disposition, request
@@ -45,15 +46,25 @@ class AccountReportController(http.Controller):
                 response.direct_passthrough = True
 
             return response
-        except Exception as e:
-            se = http.serialize_exception(e)
-            error = {
-                'code': 200,
-                'message': 'Odoo Server Error',
-                'data': se
+        except AccountReportFileDownloadException as e:
+            if e.content:
+                e.content['file_content'] = e.content['file_content'].decode()
+            data = {
+                'name': type(e).__name__,
+                'arguments': [e.errors, e.content],
             }
-            res = request.make_response(html_escape(json.dumps(error)))
-            raise InternalServerError(response=res) from e
+            raise InternalServerError(response=self._generate_response(data)) from e
+        except Exception as e:  # noqa: BLE001
+            data = http.serialize_exception(e)
+            raise InternalServerError(response=self._generate_response(data)) from e
+
+    def _generate_response(self, data):
+        error = {
+            'code': 200,
+            'message': 'Odoo Server Error',
+            'data': data,
+        }
+        return request.make_response(html_escape(json.dumps(error)))
 
     def _get_response_headers(self, file_type, file_name, file_content):
         headers = [

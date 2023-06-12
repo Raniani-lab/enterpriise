@@ -12,6 +12,18 @@ async function executeAccountReportDownload({ env, action }) {
     try {
         await download({ url, data });
         env.services.action.doAction({type: 'ir.actions.act_window_close'});
+    } catch (e) {
+        if (e.exceptionName === 'AccountReportFileDownloadException') {
+            const reportOptions = JSON.parse(data.options);
+            const reportAction = await env.services.orm.call(
+                'account.report',
+                'open_account_report_file_download_error_wizard',
+                [reportOptions.report_id, e.data.arguments[0], e.data.arguments[1]],
+            );
+            env.services.action.doAction(reportAction);
+        } else {
+            throw e;
+        }
     } finally {
         env.services.ui.unblock();
     }

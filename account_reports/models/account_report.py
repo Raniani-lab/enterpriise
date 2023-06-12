@@ -1367,6 +1367,24 @@ class AccountReport(models.Model):
             'context': new_context,
         }
 
+    def open_account_report_file_download_error_wizard(self, errors, content):
+        self.ensure_one()
+
+        model = 'account.report.file.download.error.wizard'
+        vals = {'file_generation_errors': json.dumps(errors)}
+
+        if content:
+            vals['file_name'] = content['file_name']
+            vals['file_content'] = base64.b64encode(re.sub(r'\n\s*\n', '\n', content['file_content']).encode())
+
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': model,
+            'res_id': self.env[model].create(vals).id,
+            'target': 'new',
+            'views': [(False, 'form')],
+        }
+
     def get_export_mime_type(self, file_type):
         """ Returns the MIME type associated with a report export file type,
         for attachment generation.
@@ -5491,3 +5509,10 @@ class AccountReportCustomHandler(models.AbstractModel):
         },
         """
         return {}
+
+
+class AccountReportFileDownloadException(Exception):
+    def __init__(self, errors, content=None):
+        super().__init__()
+        self.errors = errors
+        self.content = content

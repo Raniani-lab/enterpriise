@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+import re
 from collections import defaultdict
 
-from odoo.tools import float_repr, get_lang
-from odoo import api, fields, models, release, _
+from odoo.addons.account_reports.models.account_report import AccountReportFileDownloadException
 from odoo.exceptions import UserError
+from odoo.tools import float_repr, get_lang
+
+from odoo import api, fields, models, release, _
 
 
 class GeneralLedgerCustomHandler(models.AbstractModel):
@@ -333,7 +336,13 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
                 children = partner.child_ids.filtered(lambda p: p.type == 'contact' and p.active and not p.is_company).sorted('id')
                 if partner == values['company'].partner_id:
                     if not children:
-                        raise UserError(_("Please define one or more Contacts belonging to your company."))
+                        values['errors'].append({
+                            'message': _('Please define one or more Contacts belonging to your company.'),
+                            'action_text': _('Define Contact(s)'),
+                            'action_name': 'action_open_partner_company',
+                            'action_params': partner.id,
+                            'critical': True,
+                        })
                     for child in children:
                         _track_contact(partner, child)
                 elif children:
@@ -352,10 +361,12 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
                 no_partner_address |= partner
 
         if no_partner_address:
-            raise UserError(_(
-                    "Please define at least one address (Zip/City) for the following partners: %s.",
-                    ', '.join(no_partner_address.mapped('display_name')),
-            ))
+            values['errors'].append({
+                'message': _('Some partners are missing at least one address (Zip/City).'),
+                'action_text': _('View Partners'),
+                'action_name': 'action_open_partners',
+                'action_params': no_partner_address.ids,
+            })
 
         # Add newly computed values to the final template values.
         values.update(res)
@@ -370,7 +381,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             return date_obj.strftime(formatter)
 
         if len(options["column_groups"]) > 1:
-            raise UserError(_("SAFT is only compatible with one column group."))
+            raise UserError(_("SAF-T is only compatible with one column group."))
 
         company = self.env.company
         options["single_column_group"] = tuple(options["column_groups"].keys())[0]
@@ -386,8 +397,52 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             'date_to': options['date']['date_to'],
             'format_float': format_float,
             'format_date': format_date,
+            'errors': [],
         }
         self._saft_fill_report_general_ledger_values(report, options, template_values)
         self._saft_fill_report_tax_details_values(report, options, template_values)
         self._saft_fill_report_partner_ledger_values(options, template_values)
         return template_values
+
+    def _saft_generate_file_data_with_error_check(self, report, options, values, template_ref):
+        """ Checks for critical errors (i.e. errors that would cause the rendering to fail) in template values .
+            If at least one error is critical, the 'account.report.file.download.error.wizard' wizard is opened
+            before rendering the file, so they can be fixed.
+            If there are only non-critical errors, the wizard is opened after the file has been generated,
+            allowing the user to download it anyway.
+
+            :param dict options: The report options.
+            :param dict values: The template values, returned as a dict by '_saft_prepare_report_values()',
+                                where the 'errors' key contains a list of errors in the following format:
+                'errors': [
+                    {
+                        'message': The error message to be displayed in the wizard,
+                        'action_text': The text of the action button,
+                        'action_name': The name of the method called to handle the issue,
+                        'action_params': The parameter(s) passed to the 'action_name' method,
+                        'critical': Whether the error will cause the file generation to crash (Boolean).
+                    },
+                    {...},
+                ]
+            :param str template_ref: The xmlid of the template to be used in the rendering.
+            :returns: The data that will be used by the file generator.
+            :rtype: dict
+        """
+
+        if any(error.get('critical') for error in values['errors']):
+            # Errors are sorted in order to show the critical ones first.
+            sorted_errors = sorted(values['errors'], key=lambda error: not error.get('critical'))
+            raise AccountReportFileDownloadException(sorted_errors)
+
+        content = self.env['ir.qweb']._render(template_ref, values)
+
+        file_data = {
+            'file_name': report.get_default_report_filename(options, 'xml'),
+            'file_content': re.sub(r'\n\s*\n', '\n', content).encode(),
+            'file_type': 'xml',
+        }
+
+        if values['errors']:
+            raise AccountReportFileDownloadException(values['errors'], file_data)
+
+        return file_data

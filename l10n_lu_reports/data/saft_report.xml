@@ -23,7 +23,7 @@
                         <CustomerInfo t-if="partner_vals['type'] == 'customer'">
                             <CustomerID t-out="partner_id"/>
                             <BillingAddress>
-                                <t t-call="account_saft.address">
+                                <t t-if="partner_vals['addresses']" t-call="account_saft.address">
                                     <t t-set="partner_address" t-value="partner_vals['addresses'][0]"/>
                                 </t>
                             </BillingAddress>
@@ -31,7 +31,7 @@
                         <SupplierInfo t-if="partner_vals['type'] == 'supplier'">
                             <SupplierID t-out="partner_id"/>
                             <BillingAddress>
-                                <t t-call="account_saft.address">
+                                <t t-if="partner_vals['addresses']"  t-call="account_saft.address">
                                     <t t-set="partner_address" t-value="partner_vals['addresses'][0]"/>
                                 </t>
                             </BillingAddress>

@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-import re
+
+from odoo.tools import street_split
 
 from odoo import api, models, _
-from odoo.tools import street_split
 
 
 class GeneralLedgerCustomHandler(models.AbstractModel):
@@ -24,13 +24,11 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
     def l10n_dk_export_saft_to_xml(self, options):
         report = self.env['account.report'].browse(options['report_id'])
         template_vals = self._l10n_dk_saft_prepare_report_values(report, options)
-        content = self.env['ir.qweb']._render('l10n_dk_reports.saft_template', template_vals)
-        self.env['ir.attachment'].l10n_dk_saft_validate_xml_from_attachment(content)
-        return {
-            'file_name': report.get_default_report_filename(options, 'xml'),
-            'file_content': "\n".join(re.split(r'\n\s*\n', content)).encode(),
-            'file_type': 'xml',
-        }
+        file_data = self._saft_generate_file_data_with_error_check(
+            report, options, template_vals, 'l10n_dk_reports.saft_template'
+        )
+        self.env['ir.attachment'].l10n_dk_saft_validate_xml_from_attachment(file_data['file_content'])
+        return file_data
 
     @api.model
     def _l10n_dk_saft_prepare_report_values(self, report, options):

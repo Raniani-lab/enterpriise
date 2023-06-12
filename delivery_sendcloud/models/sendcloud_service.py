@@ -210,6 +210,15 @@ class SendCloud:
             raise UserError(_("The weight of some products is missing: \n %s") % ", ".join(error_lines.product_id.mapped('name')))
         parcels = []
         delivery_packages = picking.carrier_id._get_packages_from_picking(picking, picking.carrier_id.sendcloud_default_package_type_id)
+        sale_order = picking.sale_id
+        if sale_order:
+            total_value = sum(line.price_reduce_taxinc * line.product_uom_qty for line in
+                              sale_order.order_line.filtered(
+                                  lambda l: l.product_id.type in ('consu', 'product') and not l.display_type))
+            currency_name = picking.sale_id.currency_id.name
+        else:
+            total_value = sum([line.product_id.lst_price * line.product_qty for line in picking.move_ids])
+            currency_name = picking.company_id.currency_id.name
         parcel_common = {
             'name': to_partner_id.name,
             'address': to_partner_id.street,
@@ -231,8 +240,8 @@ class SendCloud:
             'order_number': picking.sale_id.name or picking.name,
             'customs_shipment_type': 4 if is_return else 2,
             'customs_invoice_nr': picking.origin or '',
-            'total_order_value': picking.sale_id.amount_total,
-            'total_order_value_currency': picking.sale_id.currency_id.name
+            'total_order_value': total_value,
+            'total_order_value_currency': currency_name
         }
         if sender_id:
             parcel_common.update({

@@ -11,6 +11,7 @@
         <xpath expr="//t[@t-set='head']" position="after">
             <t t-set="head_web_enterprise">
                 <link rel="manifest" href="/web/manifest.webmanifest" crossorigin="use-credentials"/>
+                <link rel="apple-touch-icon" href="/web_enterprise/static/img/odoo-icon-ios.png"/>
             </t>
             <t t-set="head" t-value="head_web_enterprise + (head or '')"/>
         </xpath>

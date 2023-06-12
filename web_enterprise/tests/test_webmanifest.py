@@ -73,3 +73,18 @@ class WebManifestRoutesTest(HttpCase):
         response = self.url_open("/web/offline")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.headers["Content-Type"], "text/html; charset=utf-8")
+
+    def test_apple_touch_icon(self):
+        """
+        This request tests the presence of an apple-touch-icon image route for the PWA icon and
+        its presence from the head of the document.
+        """
+        self.authenticate("demo", "demo")
+        response = self.url_open("/web_enterprise/static/img/odoo-icon-ios.png")
+        self.assertEqual(response.status_code, 200)
+
+        document = self.url_open("/web")
+        self.assertIn(
+            '<link rel="apple-touch-icon" href="/web_enterprise/static/img/odoo-icon-ios.png"/>', document.text,
+            "Icon for iOS is present in the head of the document.",
+        )

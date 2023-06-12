@@ -580,7 +580,7 @@ class SaleOrder(models.Model):
                         self.env['sale.order.log'].sudo().create(reopen_values)
                     # Return True will prevent to create another MRR LOG
                     return True
-                elif new_state == '3_progress':
+                elif new_state == '3_progress' and old_state != '4_paused':
                     event_type = '0_creation'
                     amount_signed = self.recurring_monthly
                     recurring_monthly = self.recurring_monthly

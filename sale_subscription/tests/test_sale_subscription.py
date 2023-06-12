@@ -2720,3 +2720,30 @@ class TestSubscription(TestSubscriptionCommon):
         renew_data = [(log.event_type, log.event_date, log.subscription_state, log.amount_signed, log.recurring_monthly) for log
                       in renew_logs]
         self.assertEqual(renew_data, [('0_creation', today, '3_progress', 63, 63)])
+
+    def test_paused_resume_logs(self):
+        self.flush_tracking()
+        today = datetime.date.today()
+        context_mail = {'tracking_disable': False}
+        sub = self.env['sale.order'].with_context(context_mail).create({
+            'name': 'TestSubscription',
+            'is_subscription': True,
+            'note': "original subscription description",
+            'partner_id': self.user_portal.partner_id.id,
+            'pricelist_id': self.company_data['default_pricelist'].id,
+            'sale_order_template_id': self.subscription_tmpl.id,
+        })
+        sub._onchange_sale_order_template_id()
+        self.flush_tracking()
+        sub.action_confirm()
+        self.flush_tracking()
+        sub.pause_subscription()
+        self.flush_tracking()
+        sub.pause_subscription()
+        self.flush_tracking()
+        sub.resume_subscription()
+        self.flush_tracking()
+        order_log_ids = sub.order_log_ids.sorted('id')
+        sub_data = [(log.event_type, log.event_date, log.subscription_state, log.amount_signed, log.recurring_monthly)
+                    for log in order_log_ids]
+        self.assertEqual(sub_data, [('0_creation', today, '3_progress', 21, 21)])

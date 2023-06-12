@@ -12,7 +12,7 @@ from odoo.exceptions import UserError
 
 class PeruvianTaxPleReportCustomHandler(models.AbstractModel):
     _name = "l10n_pe.tax.ple.report.handler"
-    _inherit = "account.generic.tax.report.handler"
+    _inherit = "account.tax.report.handler"
     _description = "PLE Generic Report"
 
     def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):

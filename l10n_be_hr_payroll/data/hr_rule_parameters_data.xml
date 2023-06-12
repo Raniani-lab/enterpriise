@@ -595,6 +595,11 @@
             <field name="rule_parameter_id" ref="rule_parameter_work_bonus_reference_wage_low"/>
             <field name="date_from" eval="datetime(2022, 12, 1).date()"/>
         </record>
+        <record id="rule_parameter_value_work_bonus_reference_wage_low_july_2023" model="hr.rule.parameter.value">
+            <field name="parameter_value">2013.64</field>
+            <field name="rule_parameter_id" ref="rule_parameter_work_bonus_reference_wage_low"/>
+            <field name="date_from" eval="datetime(2023, 6, 1).date()"/>
+        </record>
 
         <record id="rule_parameter_work_bonus_reference_wage_high" model="hr.rule.parameter">
             <field name="name">Work Bonus: High Reference Wage</field>
@@ -642,9 +647,20 @@
             <field name="date_from" eval="datetime(2022, 11, 1).date()"/>
         </record>
         <record id="rule_parameter_value_work_bonus_reference_wage_high_dec_2022" model="hr.rule.parameter.value">
-            <field name="parameter_value">3082.66</field>
+            <field name="parameter_value">3082.66</field>  <!-- Same in july 2023 -->
             <field name="rule_parameter_id" ref="rule_parameter_work_bonus_reference_wage_high"/>
             <field name="date_from" eval="datetime(2022, 12, 1).date()"/>
+        </record>
+
+        <record id="rule_parameter_work_bonus_reference_wage_middle" model="hr.rule.parameter">
+            <field name="name">BE: Work Bonus: Middle Reference Wage</field>
+            <field name="code">l10n_be_work_bonus_reference_wage_middle</field>
+            <field name="country_id" ref="base.be"/>
+        </record>
+        <record id="rule_parameter_work_bonus_reference_wage_middle_july_2023" model="hr.rule.parameter.value">
+            <field name="parameter_value">2571.45</field>
+            <field name="rule_parameter_id" ref="rule_parameter_work_bonus_reference_wage_middle"/>
+            <field name="date_from" eval="datetime(2023, 6, 1).date()"/>
         </record>
 
         <record id="rule_parameter_work_bonus_basic_amount" model="hr.rule.parameter">
@@ -697,6 +713,11 @@
             <field name="rule_parameter_id" ref="rule_parameter_work_bonus_basic_amount"/>
             <field name="date_from" eval="datetime(2022, 12, 1).date()"/>
         </record>
+        <record id="rule_parameter_value_work_bonus_basic_amount_july_2023" model="hr.rule.parameter.value">
+            <field name="parameter_value">262.16</field>
+            <field name="rule_parameter_id" ref="rule_parameter_work_bonus_basic_amount"/>
+            <field name="date_from" eval="datetime(2023, 6, 1).date()"/>
+        </record>
 
         <record id="rule_parameter_work_bonus_coeff" model="hr.rule.parameter">
             <field name="name">Work Bonus: Coefficient</field>
@@ -709,9 +730,20 @@
             <field name="date_from" eval="datetime(2017, 1, 1).date()"/>
         </record>
         <record id="rule_parameter_value_work_bonus_coeff_2022" model="hr.rule.parameter.value">
-            <field name="parameter_value">0.2313</field>
+            <field name="parameter_value">0.2313</field>  <!-- Same in july 2023 (becoming high coeff) -->
             <field name="rule_parameter_id" ref="rule_parameter_work_bonus_coeff"/>
             <field name="date_from" eval="datetime(2022, 4, 1).date()"/>
+        </record>
+
+        <record id="rule_parameter_work_bonus_coeff_low" model="hr.rule.parameter">
+            <field name="name">BE: Work Bonus: Low Coefficient</field>
+            <field name="code">l10n_be_work_bonus_coeff_low</field>
+            <field name="country_id" ref="base.be"/>
+        </record>
+        <record id="rule_parameter_work_bonus_coeff_low_july_2023" model="hr.rule.parameter.value">
+            <field name="parameter_value">0.2579</field>
+            <field name="rule_parameter_id" ref="rule_parameter_work_bonus_coeff_low"/>
+            <field name="date_from" eval="datetime(2023, 6, 1).date()"/>
         </record>
 
         <record id="rule_parameter_ip_first_bracket" model="hr.rule.parameter">

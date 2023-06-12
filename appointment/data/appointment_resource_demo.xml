@@ -16,49 +16,4 @@
         <field name="name">Court 4</field>
         <field name="appointment_type_ids" eval="[(4, ref('appointment.appointment_type_tennis_court'))]"/>
     </record>
-
-    <record id="appointment_type_restaurant_table_resource_1" model="appointment.resource">
-        <field name="name">Table A</field>
-        <field name="capacity">4</field>
-        <field name="appointment_type_ids" eval="[(4, ref('appointment.appointment_type_restaurant_table'))]"/>
-    </record>
-    <record id="appointment_type_restaurant_table_resource_2" model="appointment.resource">
-        <field name="name">Table B</field>
-        <field name="capacity">4</field>
-        <field name="appointment_type_ids" eval="[(4, ref('appointment.appointment_type_restaurant_table'))]"/>
-    </record>
-    <record id="appointment_type_restaurant_table_resource_3" model="appointment.resource">
-        <field name="name">Table C</field>
-        <field name="capacity">6</field>
-        <field name="appointment_type_ids" eval="[(4, ref('appointment.appointment_type_restaurant_table'))]"/>
-    </record>
-    <record id="appointment_type_restaurant_table_resource_4" model="appointment.resource">
-        <field name="name">Table D</field>
-        <field name="capacity">2</field>
-        <field name="appointment_type_ids" eval="[(4, ref('appointment.appointment_type_restaurant_table'))]"/>
-    </record>
-    <record id="appointment_type_restaurant_table_resource_5" model="appointment.resource">
-        <field name="name">Table E</field>
-        <field name="capacity">2</field>
-        <field name="shareable" eval="True"/>
-        <field name="appointment_type_ids" eval="[(4, ref('appointment.appointment_type_restaurant_table'))]"/>
-    </record>
-
-    <!-- Linked Resources -->
-    <record id="appointment_type_restaurant_table_resource_1" model="appointment.resource">
-        <field name="linked_resource_ids"
-            eval="[(6, 0, [ref('appointment.appointment_type_restaurant_table_resource_3'), ref('appointment.appointment_type_restaurant_table_resource_4')])]"/>
-    </record>
-    <record id="appointment_type_restaurant_table_resource_2" model="appointment.resource">
-        <field name="linked_resource_ids"
-            eval="[(6, 0, [ref('appointment.appointment_type_restaurant_table_resource_3'), ref('appointment.appointment_type_restaurant_table_resource_4')])]"/>
-    </record>
-    <record id="appointment_type_restaurant_table_resource_3" model="appointment.resource">
-        <field name="linked_resource_ids"
-            eval="[(6, 0, [ref('appointment.appointment_type_restaurant_table_resource_1'), ref('appointment.appointment_type_restaurant_table_resource_2'), ref('appointment.appointment_type_restaurant_table_resource_4')])]"/>
-    </record>
-    <record id="appointment_type_restaurant_table_resource_4" model="appointment.resource">
-        <field name="linked_resource_ids"
-            eval="[(6, 0, [ref('appointment.appointment_type_restaurant_table_resource_1'), ref('appointment.appointment_type_restaurant_table_resource_2'), ref('appointment.appointment_type_restaurant_table_resource_3')])]"/>
-    </record>
 </odoo>

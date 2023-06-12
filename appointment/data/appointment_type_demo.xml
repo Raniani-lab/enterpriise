@@ -26,17 +26,4 @@
         <field name="max_schedule_days">45</field>
         <field name="message_partner_ids" eval="[(6, 0, [ref('base.partner_admin')])]"/>
     </record>
-
-    <record id="appointment_type_restaurant_table" model="appointment.type">
-        <field name="name">Book a Table</field>
-        <field name="location_id" ref="res_partner_appointment_type_restaurant_table"/>
-        <field name="appointment_duration">2</field>
-        <field name="max_schedule_days">60</field>
-        <field name="schedule_based_on">resources</field>
-        <field name="assign_method">time_auto_assign</field>
-        <field name="resource_manage_capacity" eval="True"/>
-        <field name="resource_manual_confirmation" eval="True"/>
-        <field name="resource_manual_confirmation_percentage">0.8</field>
-        <field name="message_partner_ids" eval="[(6, 0, [ref('base.partner_admin')])]"/>
-    </record>
 </odoo>

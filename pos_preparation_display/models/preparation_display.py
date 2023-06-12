@@ -1,3 +1,4 @@
+import secrets
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 
@@ -19,6 +20,15 @@ class PosPreparationDisplay(models.Model):
         {'name': 'Completed', 'color': '#4ea82a', 'alert_timer': 0}
     ])
     contains_bar_restaurant = fields.Boolean("Is a Bar/Restaurant", compute='_compute_contains_bar_restaurant', store=True)
+    access_token = fields.Char("Access Token",
+        copy=False,
+        required=True,
+        readonly=True,
+        default=lambda self: self._get_access_token())
+
+    @staticmethod
+    def _get_access_token():
+        return secrets.token_hex(16)
 
     # getter for pos_category_ids and pos_config_ids, in case of no one selected, return all of each.
     def _get_pos_category_ids(self):
@@ -90,7 +100,7 @@ class PosPreparationDisplay(models.Model):
                 else:
                     current_order_stage.done = True
 
-            preparation_display.env['bus.bus']._sendone(f'preparation_display-{preparation_display.id}', 'load_orders', {
+            preparation_display.env['bus.bus']._sendone(f'preparation_display-{preparation_display.access_token}', 'load_orders', {
                 'preparation_display_id': preparation_display.id,
             })
 

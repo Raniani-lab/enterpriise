@@ -20,7 +20,7 @@ const preparationDisplayService = {
             odoo.preparation_display.id
         );
 
-        bus_service.addChannel(`preparation_display-${odoo.preparation_display.id}`);
+        bus_service.addChannel(`preparation_display-${odoo.preparation_display.access_token}`);
         bus_service.addEventListener("notification", async (message) => {
             const proms = message.detail.map((detail) => {
                 const datas = detail.payload;

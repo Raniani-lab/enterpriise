@@ -8,9 +8,4 @@
     <record id="appointment.appointment_type_tennis_court" model="appointment.type">
         <field name="is_published" eval="True"/>
     </record>
-
-    <record id="appointment.appointment_type_restaurant_table" model="appointment.type">
-        <field name="is_published" eval="True"/>
-    </record>
-
 </odoo>

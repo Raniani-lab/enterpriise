@@ -28,7 +28,7 @@ class PosPreparationDisplayOrderline(models.Model):
 
         self.env['bus.bus']._sendmany([
             [
-                f'preparation_display-{preparation_display.id}',
+                f'preparation_display-{preparation_display.access_token}',
                 'change_orderline_status',
                 {
                     'preparation_display_id': preparation_display.id,

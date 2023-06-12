@@ -300,7 +300,6 @@ class Applicant(models.Model):
             step_level = next_level['points'] - current_level['points']
             result['level_percentage'] = round((min(result['point_received'], next_level['points']) - current_level['points']) * 100 / step_level)
 
-        applicant = self.sudo().search([('ref_user_id', '=', user_id.id)])
         result['referral'] = {
             'all': len(applicant),
             'hired': len(applicant.filtered(lambda r: r.referral_state == 'hired')),

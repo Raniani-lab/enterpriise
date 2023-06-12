@@ -1,6 +1,7 @@
 .o_knowledge_article_view_form_view {
 
     --editor-gutter-size: 2rem;
+    --o-view-nocontent-zindex: 1; // ensure that the no-content helper will have a z-index of 1
 
     .o_scroll_view {
         @include o-position-absolute(0, 0, 0, 0);
@@ -387,14 +388,12 @@
         .o_knowledge_sidebar {
             @include o-position-absolute(0, 50px, 0, 0);
             width: auto;
-            z-index: 1;
-        }
-        .o_knowledge_main {
-            z-index: 0;
+            z-index: 3; // should be greater than the backdrop z-index
         }
         .o_knowledge_backdrop {
             @include o-position-absolute(0, 0, 0, 0);
             background: rgba(0, 0, 0, .3);
+            z-index: 2; // should be greater than the action helper z-index
         }
     }
 }

@@ -1,7 +1,7 @@
 /** @odoo-module **/
 import config from "web.config";
 import { formatDateTime } from '@web/core/l10n/dates';
-import { loadEmoji } from '@mail/core/common/emoji_picker';
+import { loadEmoji } from '@web/core/emoji_picker/emoji_picker';
 import { registry } from '@web/core/registry';
 import { standardWidgetProps } from '@web/views/widgets/standard_widget_props';
 import { useService } from '@web/core/utils/hooks';

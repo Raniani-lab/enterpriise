@@ -2,7 +2,7 @@
 
 import { registry } from "@web/core/registry";
 import { standardFieldProps } from "@web/views/fields/standard_field_props";
-import { useEmojiPicker } from "@mail/core/common/emoji_picker";
+import { useEmojiPicker } from "@web/core/emoji_picker/emoji_picker";
 
 import { Component, useRef } from "@odoo/owl";
 

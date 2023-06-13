@@ -237,3 +237,18 @@ class TestCaseDocumentsBridgeProject(TestProjectCommon):
             })
         except AccessError:
             self.fail("We got an access error, when we shouldn't have it, because we have edit access to the project (via shared link)")
+
+    def test_project_task_access_document(self):
+        """
+        Tests that 'MissingRecord' error should not be rasied when trying to switch
+        workspace for a non-existing document.
+
+        - The 'active_id' here is the 'id' of a non-existing document.
+        - We then try to access 'All' workspace by calling the 'search_panel_select_range'
+            method. We should be able to access the workspace.
+        """
+        missing_id = self.env['documents.document'].search([], order='id DESC', limit=1).id + 1
+        result = self.env['documents.document'].with_context(
+            active_id=missing_id, active_model='project.task',
+            limit_folders_to_project=True).search_panel_select_range('folder_id')
+        self.assertTrue(result)

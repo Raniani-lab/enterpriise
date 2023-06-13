@@ -16,6 +16,7 @@ screen devices.
     'license': 'OEEL-1',
     'assets': {
         'web.assets_backend': [
+            'mail_enterprise/static/src/core/common/**/*',
             'mail_enterprise/static/src/**/*',
         ],
         'web.assets_tests': [

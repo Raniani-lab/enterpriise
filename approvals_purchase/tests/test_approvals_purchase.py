@@ -117,6 +117,9 @@ class TestApprovalsPurchase(TestApprovalsCommon):
         self.assertEqual(len(po_for_seller_1), 1)
         self.assertEqual(len(po_for_seller_2), 0)
 
+        # check that the payment term is set
+        self.assertEqual(po_for_seller_1.payment_term_id, self.payment_terms)
+
         # Now, do the same but for 12 computers. The selected seller for the
         # purchase order must be partner_seller_2 because he has better price
         # than partner_seller_1 for 10 units or more.

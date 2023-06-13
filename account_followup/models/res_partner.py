@@ -519,6 +519,9 @@ class ResPartner(models.Model):
 
             self._update_next_followup_action_date(followup_line)
 
+            if not options.get('join_invoices', followup_line.join_invoices):
+                options['attachment_ids'] = []
+
             self._send_followup(options={'followup_line': followup_line, **options})
 
             return True

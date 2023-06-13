@@ -472,7 +472,6 @@ const HtmlFieldPatch = {
                         behaviorData.anchor.oKnowledgeBehavior.root.component.setCursor) {
                         behaviorData.anchor.oKnowledgeBehavior.root.component.setCursor();
                     }
-                    this.props.record.askChanges();
                 };
                 if (behaviorData.behaviorStatus !== 'new') {
                     // Copy the current state of the Behavior blueprint
@@ -486,7 +485,14 @@ const HtmlFieldPatch = {
             // Behavior.
             anchor.replaceChildren();
             const config = (({env, dev, translatableAttributes, translateFn}) => {
-                return {env, dev, translatableAttributes, translateFn};
+                env = Object.create(env);
+                Object.assign(env, {
+                    // Register "beforeLeave" callbacks in the environment
+                    // of the Behavior. If the Behavior does a doAction,
+                    // those callbacks will be called for this field.
+                    __beforeLeave__: this.env.__beforeLeave__,
+                });
+                return { env, dev, translatableAttributes, translateFn };
             })(this.__owl__.app);
             anchor.oKnowledgeBehavior = new App(Behavior, {
                 ...config,

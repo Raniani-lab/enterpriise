@@ -49,6 +49,9 @@ export class ViewLinkBehavior extends AbstractBehavior {
                 props.orderBy = JSON.parse(action.context.orderBy);
             } catch {};
         }
+        if (!this.props.readonly) {
+            await this.props.record.askChanges();
+        }
         this.actionService.doAction(action, {
             viewType: this.props.view_type,
             props

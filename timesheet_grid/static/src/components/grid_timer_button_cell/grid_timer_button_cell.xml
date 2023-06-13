@@ -8,6 +8,7 @@
                     'btn-outline-secondary': !state.timerRunning and props.hovered or !state.timerRunning and env.isSmall or !state.timerRunning and props.hotKey,
                     'btn-success': props.hovered,
                     'btn-danger': state.timerRunning,
+                    'border border-primary': !props.hotKey
                  }"
                 t-on-click.synthetic="() => this.props.onTimerClick(this.props.row)"
                 t-att-data-hotkey="props.hotKey"
@@ -19,6 +20,7 @@
                 <span t-if="!state.timerRunning &amp;&amp; !props.hovered" class="d-none d-md-inline text-primary"
                       t-att-class="{
                         'text-lowercase': !props.addTimeMode,
+                        'text-white fa fa-play border border-primary': !props.hotKey,
                       }"
                       t-out="props.hotKey"/>
                 <i t-if="state.timerRunning or props.hovered or env.isSmall and props.hotKey"

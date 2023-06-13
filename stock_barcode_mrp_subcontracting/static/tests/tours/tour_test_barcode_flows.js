@@ -4,6 +4,7 @@ import core from "web.core";
 import { registry } from "@web/core/registry";
 import helper from "stock_barcode.tourHelper";
 import { stepUtils } from "@stock_barcode/../tests/tours/tour_step_utils";
+import "web.legacy_tranlations_loaded";
 
 
 var _t = core._t;

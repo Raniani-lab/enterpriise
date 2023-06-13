@@ -3,6 +3,7 @@
 import { _t } from "web.core";
 import {Markup} from "web.utils";
 import { registry } from "@web/core/registry";
+import "web.legacy_tranlations_loaded";
 
 const { markup } = owl;
 

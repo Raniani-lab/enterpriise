@@ -5,6 +5,7 @@
 import { registry } from "@web/core/registry";
 import 'industry_fsm.tour';
 import { _t } from 'web.core';
+import "web.legacy_tranlations_loaded";
 import { Markup } from 'web.utils';
 
 const fsmStartStepIndex = registry.category("web_tour.tours").get("industry_fsm_tour").steps.findIndex(step => step.id === 'fsm_start');

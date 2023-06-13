@@ -2,6 +2,7 @@
 
 import { _t } from 'web.core';
 import { registry } from "@web/core/registry";
+import "web.legacy_tranlations_loaded";
 
 registry.category("web_tour.tours").add('payroll_tours', {
     url: "/web",

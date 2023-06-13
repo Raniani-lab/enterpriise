@@ -61,7 +61,7 @@
                         </h1>
                         <h1 class="text-center">Thank you for contacting us, our team will get right on it!</h1>
                         <div class="text-center">
-                            <a class="btn btn-primary" t-if="request.session.uid" t-attf-href="/helpdesk/ticket/#{ticket.id}">View Ticket</a>
+                            <a class="btn btn-primary" t-if="ticket and request.session.uid" t-attf-href="/helpdesk/ticket/#{ticket.id}">View Ticket</a>
                             <a class="btn btn-primary" href='/'>Go to the Homepage</a>
                         </div>
                     </div>

@@ -1623,6 +1623,7 @@ class TestSubscription(TestSubscriptionCommon):
         ProductTemplate = self.env['product.template']
         ProductAttributeVal = self.env['product.attribute.value']
         Pricing = self.env['product.pricing']
+        SaleOrderTemplate = self.env['sale.order.template']
         product_attribute = self.env['product.attribute'].create({'name': 'Weight'})
         product_attribute_val1 = ProductAttributeVal.create({
             'name': '1kg',
@@ -1636,25 +1637,48 @@ class TestSubscription(TestSubscriptionCommon):
             'recurring_invoice': True,
             'detailed_type': 'service',
             'name': 'Variant Products',
+            'list_price': 5,
         })
         product.attribute_line_ids = [(Command.create({
             'attribute_id': product_attribute.id,
             'value_ids': [Command.set([product_attribute_val1.id, product_attribute_val2.id])],
         }))]
 
+        product_product_1 = product.product_variant_ids[0]
+        product_product_2 = product.product_variant_ids[-1]
+
+        # Define extra price for variant without temporal pricing
+        self.assertEqual(product_product_2.list_price, 5.0)
+        self.assertEqual(product_product_2.lst_price, 5.0)
+        product_product_2.product_template_attribute_value_ids.price_extra = 15.0
+        self.assertEqual(product_product_2.lst_price, 20.0)
+        template = SaleOrderTemplate.create({
+            'name': 'Variant Products Plan',
+            'recurrence_id': self.recurrence_week.id,
+            'sale_order_template_line_ids': [Command.create({
+                'product_id': product_product_2.id
+            })]
+        })
+
+        sale_order_form = Form(self.env['sale.order'])
+        sale_order_form.partner_id = self.user_portal.partner_id
+        sale_order_form.sale_order_template_id = template
+        sale_order = sale_order_form.save()
+        self.assertEqual(sale_order.order_line.price_unit, 20.0)
+
         # set pricing for variants. make sure the cheaper one is not for the variant we're testing
         cheaper_pricing = Pricing.create({
             'recurrence_id': self.recurrence_week.id,
             'price': 10,
             'product_template_id': product.id,
-            'product_variant_ids': [Command.link(product.product_variant_ids[0].id)],
+            'product_variant_ids': [Command.link(product_product_1.id)],
         })
 
         pricing2 = Pricing.create({
             'recurrence_id': self.recurrence_week.id,
             'price': 25,
             'product_template_id': product.id,
-            'product_variant_ids': [Command.link(product.product_variant_ids[-1].id)],
+            'product_variant_ids': [Command.link(product_product_2.id)],
         })
 
         product.write({
@@ -1670,11 +1694,11 @@ class TestSubscription(TestSubscriptionCommon):
             'recurrence_id': self.recurrence_week.id,
             'order_line': [
                 Command.create({
-                'product_id': product.product_variant_ids[-1].id,
-                'product_uom_qty': 1
+                    'product_id': product_product_2.id,
+                    'product_uom_qty': 1
                 }),
                 Command.create({
-                    'product_id': product.product_variant_ids[0].id,
+                    'product_id': product_product_1[0].id,
                     'product_uom_qty': 1
                 })
             ]

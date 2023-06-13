@@ -53,7 +53,7 @@ class Pricelist(models.Model):
                 if pricing:
                     price = pricing._compute_price(duration, unit or pricing.recurrence_id.unit)
                 else:
-                    price = product.list_price
+                    price = product.lst_price
                 results[product.id] = pricing.currency_id._convert(
                     price, self.currency_id, self.env.company, date
                 ), False

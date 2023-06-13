@@ -38,9 +38,15 @@
                         <span class="o_stat_text">Reviews</span>
                     </div>
                 </button>
+                <button name="action_show_offers" attrs="{'invisible': [('salary_offers_count', '=', 0)]}" class="oe_stat_button" icon="fa-handshake-o" type="object" help="Sent Offers">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value"><field name="salary_offers_count"/></span>
+                        <span class="o_stat_text">Offers</span>
+                    </div>
+                </button>
             </div>
             <xpath expr="//field[@name='state']" position="before">
-                <button name="%(hr_contract_salary.generate_simulation_link_action)d" type="action" string="Generate Simulation Link" attrs="{'invisible': [('employee_id', '=', False)]}" groups="hr_contract.group_hr_contract_manager"/>
+                <button name="%(hr_contract_salary.generate_simulation_link_action)d" type="action" string="Generate Offer" attrs="{'invisible': [('employee_id', '=', False)]}" groups="hr_contract.group_hr_contract_manager"/>
             </xpath>
             <field name="job_id" position="after">
                 <label for="wage_on_signature"/>

@@ -43,6 +43,8 @@ class HrContract(models.Model):
     wage_with_holidays = fields.Monetary(compute='_compute_wage_with_holidays', inverse='_inverse_wage_with_holidays',
         tracking=True, string="Wage with Holidays")
     wage_on_signature = fields.Monetary(string="Wage on Payroll", help="Wage on contract signature", tracking=True, group_operator="avg")
+    salary_offer_ids = fields.One2many('hr.contract.salary.offer', 'employee_contract_id')
+    salary_offers_count = fields.Integer(compute='_compute_salary_offers_count', compute_sudo=True)
 
     # Employer costs fields
     final_yearly_costs = fields.Monetary(
@@ -83,6 +85,15 @@ class HrContract(models.Model):
             if not contract.job_id or not contract.job_id.default_contract_id:
                 continue
             contract.default_contract_id = contract.job_id.default_contract_id
+
+    def _compute_salary_offers_count(self):
+        offers_data = self.env['hr.contract.salary.offer']._read_group(
+            domain=[('employee_contract_id', 'in', self.ids)],
+            groupby=['employee_contract_id'],
+            aggregates=['__count'])
+        mapped_data = {contract.id: count for contract, count in offers_data}
+        for contract in self:
+            contract.salary_offers_count = mapped_data.get(contract.id, 0)
 
     def _get_yearly_cost_sacrifice_ratio(self):
         return 1.0 - self.holidays / 231.0
@@ -268,6 +279,18 @@ class HrContract(models.Model):
         action = self.env["ir.actions.actions"]._for_xml_id("hr_contract.action_hr_contract")
         action['views'] = [(self.env.ref('hr_contract.hr_contract_view_form').id, 'form')]
         action['res_id'] = self.origin_contract_id.id
+        return action
+
+    def action_show_offers(self):
+        self.ensure_one()
+        action = self.env['ir.actions.act_window']._for_xml_id('hr_contract_salary.hr_contract_salary_offer_action')
+        action['domain'] = [('id', 'in', self.salary_offer_ids.ids)]
+        action['context'] = {'default_employee_contract_id': self.id}
+        if self.salary_offers_count == 1:
+            action.update({
+                "views": [[False, "form"]],
+                "res_id": self.salary_offer_ids.id,
+            })
         return action
 
     def send_offer(self):

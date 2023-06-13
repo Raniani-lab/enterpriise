@@ -103,14 +103,19 @@ registry.category("web_tour.tours").add('hr_contract_salary_tour', {
         },
         {
             content: "Send Offer",
-            trigger: "button[name='send_offer']",
-            extra_trigger: ".modal-dialog .btn-primary:contains('Generate')",
+            trigger: "button[name='action_send_offer']",
+            extra_trigger: ".modal-dialog .btn-primary:contains('Save')",
             run: 'click',
         },
         {
             content: "Send Offer",
             trigger: "button[name='action_send_mail']",
             extra_trigger: ".modal-dialog .btn-primary:contains('Send')",
+            run: 'click',
+        },
+        {
+            content: "Click on Offers Stat Button",
+            trigger: "button[name='action_show_offers']",
             run: 'click',
         },
         {
@@ -127,6 +132,7 @@ registry.category("web_tour.tours").add('hr_contract_salary_tour', {
                     window.location.href = window.location.origin + url;
                 });
             },
+            extra_trigger: "button[name='action_jump_to_offer']",
         },
         {
             content: "Choose a car",
@@ -748,10 +754,6 @@ registry.category("web_tour.tours").add('hr_contract_salary_tour_hr_sign', {
         run: 'click',
     },
     {
-        content: 'Select Our Contract',
-        trigger: 'table.o_list_table tbody td:contains("New contract")'
-    },
-    {
         content: "Open Signature Request",
         trigger: "button.oe_stat_button:contains(Sign)",
         extra_trigger: '.o_form_saved',
@@ -997,7 +999,7 @@ registry.category("web_tour.tours").add('hr_contract_salary_tour_2', {
         },
         {
             content: "Generate Simulation Link",
-            trigger: ".o_statusbar_buttons > button:contains('Simulation')",
+            trigger: ".o_statusbar_buttons > button:contains('Generate Offer')",
             extra_trigger: ".o_statusbar_buttons",
             run: 'click',
         },
@@ -1014,7 +1016,7 @@ registry.category("web_tour.tours").add('hr_contract_salary_tour_2', {
         },
         {
             content: "Send Offer",
-            trigger: "button[name='send_offer']",
+            trigger: "button[name='action_send_offer']",
             extra_trigger: "div.modal-content",
             run: 'click',
         },
@@ -1022,6 +1024,11 @@ registry.category("web_tour.tours").add('hr_contract_salary_tour_2', {
             content: "Send Offer",
             trigger: "button[name='action_send_mail']",
             extra_trigger: ".modal-dialog .btn-primary:contains('Send')",
+            run: 'click',
+        },
+        {
+            content: "Click on Offers Stat Button",
+            trigger: "button[name='action_show_offers']",
             run: 'click',
         },
         {
@@ -1036,6 +1043,7 @@ registry.category("web_tour.tours").add('hr_contract_salary_tour_2', {
                 var url = simulation_link.match(regex)[0];
                 window.location.href = window.location.origin + url;
             },
+            extra_trigger: "button[name='action_jump_to_offer']",
         },
         {
             content: "Unchoose default car",

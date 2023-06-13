@@ -44,8 +44,9 @@ class TestLinkExpirationDate(HttpCase):
         })
 
         with freeze_time(self.offer_date):
-            applicant_wizard.send_offer()
-            url = applicant_wizard.url
+            applicant_wizard.action_send_offer()
+            offer = applicant.salary_offer_ids
+            url = f'/salary_package/simulation/offer/{offer.id}?token={offer.access_token}'
             res = self.url_open(url)
         self.assertTrue(self.fail_text not in str(res.content), "The applicant should not be redirected to the invalid link page")
 
@@ -75,11 +76,12 @@ class TestLinkExpirationDate(HttpCase):
         })
 
         with freeze_time(self.offer_date):
-            employee_wizard.send_offer()
-            url = employee_wizard.url
+            employee_wizard.action_send_offer()
+            offer = employee_contract.salary_offer_ids
+            url = f'/salary_package/simulation/offer/{offer.id}'
             self.authenticate(simple_user.login, simple_user.login)
             res = self.url_open(url)
-        self.assertTrue(self.fail_text not in str(res.content), "The Emplouee should not be redirected to the invalid link page")
+        self.assertTrue(self.fail_text not in str(res.content), "The Employee should not be redirected to the invalid link page")
 
         with freeze_time(self.offer_date + relativedelta(days=(self.validity_period + 1))):
             self.authenticate(simple_user.login, simple_user.login)

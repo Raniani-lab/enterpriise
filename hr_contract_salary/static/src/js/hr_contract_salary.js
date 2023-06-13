@@ -463,6 +463,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
                 route: '/salary_package/update_salary',
                 params: {
                     'contract_id': parseInt($("input[name='contract']").val()),
+                    'offer_id': parseInt($("input[name='offer_id']").val()),
                     'advantages': self.getAdvantages({includeFiles: false}),
                     'simulation_working_schedule': $("select[name='simulation_working_schedule']").val(),
                 },
@@ -608,11 +609,10 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         }
 
         return {
-            'contract_id': parseInt($("input[name='contract']").val()),
+            'contract_id': parseInt($("input[name='contract']").val()),  /* YTI TO REMOVE*/
             'token': $("input[name='token']").val(),
             'advantages': advantages,
-            'applicant_id': parseInt($("input[name='applicant_id']").val()) || false,
-            'employee_contract_id': parseInt($("input[name='employee_contract_id']").val()) || false,
+            'offer_id': parseInt($("input[name='offer_id']").val()) || false,
             'original_link': $("input[name='original_link']").val()
         };
     },

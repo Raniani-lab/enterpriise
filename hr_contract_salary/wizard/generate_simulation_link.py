@@ -3,6 +3,7 @@
 
 import uuid
 from dateutil.relativedelta import relativedelta
+from markupsafe import Markup
 
 from odoo import api, fields, models, _
 from odoo.fields import Date
@@ -13,7 +14,7 @@ from werkzeug.urls import url_encode
 
 class GenerateSimulationLink(models.TransientModel):
     _name = 'generate.simulation.link'
-    _description = 'Generate Simulation Link'
+    _description = 'Create an Offer'
 
     def _default_validity(self):
         validity = 30
@@ -43,7 +44,6 @@ class GenerateSimulationLink(models.TransientModel):
     contract_start_date = fields.Date("Contract Start Date", default=fields.Date.context_today)
 
     email_to = fields.Char('Email To', compute='_compute_email_to', store=True, readonly=False)
-    url = fields.Char('Offer link', compute='_compute_url')
     display_warning_message = fields.Boolean(compute='_compute_warning_message', compute_sudo=True)
     validity = fields.Integer("Link Expiration Date", default=_default_validity)
 
@@ -118,7 +118,47 @@ class GenerateSimulationLink(models.TransientModel):
         for w in self:
             w.display_name = w.employee_id.name or w.applicant_id.partner_name
 
-    def send_offer(self):
+    def _get_offer_values(self):
+        self.ensure_one()
+        return {
+            'company_id': self.env.company.id,
+            'contract_template_id': self.contract_id.id,
+            'employee_contract_id': self.employee_contract_id.id,
+            'applicant_id': self.applicant_id.id,
+            'final_yearly_costs': self.final_yearly_costs,
+            'job_title': self.job_title,
+            'employee_job_id': self.employee_job_id.id,
+            'department_id': self.department_id.id,
+            'contract_start_date': self.contract_start_date,
+            'access_token': uuid.uuid4().hex if self.applicant_id else False,
+        }
+
+    def action_save(self):
+        if self.env.context.get('active_model') == "hr.applicant" and not self.applicant_id.partner_name:
+            raise UserError(_('Offer link can not be send. The applicant needs to have a name.'))
+
+        validity_end = (fields.Date.context_today(self) + relativedelta(days=self.validity))
+        offer_values = self._get_offer_values()
+        offer_values['offer_end_date'] = validity_end if (self.applicant_id or self.employee_contract_id) else False
+        offer = self.env['hr.contract.salary.offer'].create(offer_values)
+
+        if self.applicant_id:
+            self.applicant_id.message_post(
+                body=Markup(_("An <a href='#' data-oe-model='hr.contract.salary.offer' data-oe-id='%s'>Offer</a> as been sent by %s to the applicant (mail: %s)")) % (offer.id, self.env.user.name, self.applicant_id.partner_id.email or self.applicant_id.email_from))
+        else:
+            self.employee_contract_id.message_post(
+                body=Markup(_("An <a href='#' data-oe-model='hr.contract.salary.offer' data-oe-id='%s'>Offer</a> as been sent by %s to the employee (mail: %s)")) % (offer.id, self.env.user.name, self.employee_id.work_email))
+
+        return {
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'hr.contract.salary.offer',
+            'res_id': offer.id,
+            'views': [(False, 'form')],
+        }
+
+    def action_send_offer(self):
         if self.env.context.get('active_model') == "hr.applicant" and not self.applicant_id.partner_name:
             raise UserError(_('Offer link can not be send. The applicant needs to have a name.'))
 
@@ -148,29 +188,29 @@ class GenerateSimulationLink(models.TransientModel):
 
         validity_end = (fields.Date.context_today(self) + relativedelta(days=self.validity))
         if self.applicant_id:
-            default_model = 'hr.applicant'
-            default_res_ids = self.applicant_id.ids
             default_template_id = template_applicant_id
-            if not self.applicant_id.access_token or self.applicant_id.access_token_end_date < Date.today():
-                self.applicant_id.access_token = uuid.uuid4().hex
-                self.applicant_id.access_token_end_date = validity_end
-        elif self.employee_contract_id:
-            default_model = 'hr.contract'
-            default_res_ids = self.employee_contract_id.ids
-            default_template_id = template_id
-            self.employee_id.salary_simulator_link_end_validity = validity_end
         else:
-            default_model = 'hr.contract'
-            default_res_ids = self.contract_id.ids
             default_template_id = template_id
+
+        offer_values = self._get_offer_values()
+        offer_values['offer_end_date'] = validity_end if (self.applicant_id or self.employee_contract_id) else False
+        offer = self.env['hr.contract.salary.offer'].create(offer_values)
+
+        if self.applicant_id:
+            self.applicant_id.message_post(
+                body=Markup(_("An <a href='#' data-oe-model='hr.contract.salary.offer' data-oe-id='%s'>Offer</a> as been sent by %s to the applicant (mail: %s)")) % (offer.id, self.env.user.name, self.applicant_id.partner_id.email or self.applicant_id.email_from))
+        else:
+            self.employee_contract_id.message_post(
+                body=Markup(_("An <a href='#' data-oe-model='hr.contract.salary.offer' data-oe-id='%s'>Offer</a> as been sent by %s to the employee (mail: %s)")) % (offer.id, self.env.user.name, self.employee_id.work_email))
 
         ctx = {
             'default_composition_mode': 'comment',
             'default_email_layout_xmlid': "mail.mail_notification_light",
-            'default_model': default_model,
-            'default_res_ids': default_res_ids,
+            'default_model': 'hr.contract.salary.offer',
+            'default_res_ids': offer.ids,
             'default_template_id': default_template_id,
-            'salary_package_url': self.url,
+            'offer_id': offer.id,
+            'access_token': offer.access_token,
             'partner_to': partner_to and partner_to.id or False,
             'validity_end': validity_end,
             'email_to': email_to or False,

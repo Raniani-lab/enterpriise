@@ -108,7 +108,6 @@ export class EmbeddedViewBehavior extends AbstractBehavior {
                 setTitle: this.setTitle.bind(this),
                 getTitle: this.getTitle.bind(this),
                 readonly: this.props.readonly,
-                record: this.props.record,
             };
         } catch {
             this.state.error = true;

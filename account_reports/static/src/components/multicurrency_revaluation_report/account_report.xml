@@ -7,7 +7,7 @@
                     <span>You are using custom exchange rates.
                         <button
                            class="btn btn-link p-0 align-baseline"
-                           t-on-click="() => this.controller.deleteOption('currency_rates')"
+                           t-on-click="() => this.controller.updateOption('currency_rates', {}, true)"
                         >
                             ⇒ Reset to Odoo’s Rate
                         </button>

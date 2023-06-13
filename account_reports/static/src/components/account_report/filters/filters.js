@@ -171,13 +171,11 @@ export class AccountReportFilters extends Component {
     // Generic filters
     //------------------------------------------------------------------------------------------------------------------
     async updateFilter(optionKey, optionValue) {
-        this.controller.updateOption(optionKey, optionValue);
-        await this.controller.load(this.controller.options);
+        await this.controller.updateOption(optionKey, optionValue, true);
     }
 
     async toggleFilter(optionKey) {
-        this.controller.toggleOption(optionKey);
-        await this.controller.load(this.controller.options);
+        await this.controller.toggleOption(optionKey, true);
     }
 
     //------------------------------------------------------------------------------------------------------------------

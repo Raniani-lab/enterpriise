@@ -149,7 +149,7 @@ export class AccountReportController {
     //------------------------------------------------------------------------------------------------------------------
     // Options
     //------------------------------------------------------------------------------------------------------------------
-    _updateOption(operationType, optionPath, optionValue = null) {
+    async _updateOption(operationType, optionPath, optionValue=null, reloadUI=false) {
         const optionKeys = optionPath.split(".");
 
         let currentOptionKey = null;
@@ -176,18 +176,21 @@ export class AccountReportController {
             default:
                 throw new Error(`Invalid operation type in _updateOption(): ${ operationType }`);
         }
+
+        if (reloadUI)
+            await this.load(this.options);
     }
 
-    updateOption(optionPath, optionValue) {
-        this._updateOption('update', optionPath, optionValue);
+    async updateOption(optionPath, optionValue, reloadUI=false) {
+        await this._updateOption('update', optionPath, optionValue, reloadUI);
     }
 
-    deleteOption(optionPath) {
-        this._updateOption('delete', optionPath);
+    async deleteOption(optionPath, reloadUI=false) {
+        await this._updateOption('delete', optionPath, null, reloadUI);
     }
 
-    toggleOption(optionPath) {
-        this._updateOption('toggle', optionPath);
+    async toggleOption(optionPath, reloadUI=false) {
+        await this._updateOption('toggle', optionPath, null, reloadUI);
     }
 
     //------------------------------------------------------------------------------------------------------------------

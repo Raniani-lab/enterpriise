@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import { registry } from "@web/core/registry";
-import { appendArticleLink } from '../knowledge_tour_utils.js';
+import { appendArticleLink, endKnowledgeTour } from '../knowledge_tour_utils.js';
 import { stepUtils } from "@web_tour/tour_service/tour_utils";
 
 
@@ -17,7 +17,8 @@ registry.category("web_tour.tours").add('knowledge_article_command_tour', {
     run: 'click',
 }, { // check that the view switched to the corresponding article while keeping the breadcrumbs history
     trigger: '.o_knowledge_header:has(.o_breadcrumb_article_name_container:contains("EditorCommandsArticle")):has(.breadcrumb-item > a:contains("EditorCommandsArticle"))'
-}]});
+}, ...endKnowledgeTour()
+]});
 
 const composeBody = '.modal-dialog:contains(Compose Email) [name="body"]';
 registry.category("web_tour.tours").add('knowledge_article_command_dialog_tour', {
@@ -49,4 +50,5 @@ registry.category("web_tour.tours").add('knowledge_article_command_dialog_tour',
 }, {
     trigger: '.o_widget_knowledge_chatter_panel .o-mail-Thread .o-mail-Message-body > p > a:nth-child(2).o_knowledge_behavior_type_article:contains("LinkedArticle")',
     run: () => {},
-}]});
+}, ...endKnowledgeTour()
+]});

@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import { registry } from "@web/core/registry";
-import { openCommandBar } from "../knowledge_tour_utils.js";
+import { endKnowledgeTour, openCommandBar } from "../knowledge_tour_utils.js";
 import { stepUtils } from "@web_tour/tour_service/tour_utils";
 
 /**
@@ -157,6 +157,7 @@ registry.category("web_tour.tours").add("knowledge_items_search_favorites_tour",
             run: () => {},
         },
         ...validateFavoriteFiltersSteps("Items 1", "Items 2"),
+        ...endKnowledgeTour(),
     ],
 });
 
@@ -186,5 +187,6 @@ registry.category("web_tour.tours").add("knowledge_search_favorites_tour", {
             run: () => {},
         },
         ...validateFavoriteFiltersSteps("Kanban 1", "Articles"),
+        ...endKnowledgeTour(),
     ],
 });

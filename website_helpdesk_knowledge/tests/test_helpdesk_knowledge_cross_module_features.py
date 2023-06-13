@@ -12,7 +12,6 @@ class TestHelpdeskKnowledgeCrossModuleFeatures(HttpCase):
     """
     This test suit will test the "cross-module" features of Knowledge.
     """
-    allow_end_on_form = True
     @classmethod
     def setUpClass(cls):
         super(TestHelpdeskKnowledgeCrossModuleFeatures, cls).setUpClass()

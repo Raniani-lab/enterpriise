@@ -1,5 +1,6 @@
 /** @odoo-module */
 
+import { endKnowledgeTour } from '@knowledge/../tests/tours/knowledge_tour_utils';
 import { registry } from "@web/core/registry";
 import { stepUtils } from "@web_tour/tour_service/tour_utils";
 
@@ -46,4 +47,5 @@ registry.category("web_tour.tours").add('knowledge_pick_emoji_tour', {
     // check that the emoji has been properly changed in the aside block
     trigger: '.o_knowledge_sidebar .o_article_emoji:contains(😃)',
     run: () => {}
-}]});
+}, ...endKnowledgeTour()
+]});

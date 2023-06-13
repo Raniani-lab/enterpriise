@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import { registry } from "@web/core/registry";
-import { openCommandBar } from '../knowledge_tour_utils.js';
+import { endKnowledgeTour, openCommandBar } from '../knowledge_tour_utils.js';
 import { decodeDataBehaviorProps } from "@knowledge/js/knowledge_utils";
 import { stepUtils } from "@web_tour/tour_service/tour_utils";
 
@@ -75,4 +75,5 @@ registry.category("web_tour.tours").add('knowledge_list_command_tour', {
     trigger: 'a[data-menu-xmlid="knowledge.knowledge_menu_home"]',
 }, { // wait for embed to be visible
     trigger: '.o_knowledge_behavior_type_embedded_view',
-}]});
+}, ...endKnowledgeTour()
+]});

@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import { registry } from "@web/core/registry";
-import { openCommandBar } from '../knowledge_tour_utils.js';
+import { endKnowledgeTour, openCommandBar } from '../knowledge_tour_utils.js';
 import { stepUtils } from "@web_tour/tour_service/tour_utils";
 
 
@@ -26,4 +26,5 @@ registry.category("web_tour.tours").add('knowledge_file_command_tour', {
     run: 'click'
 }, { // wait for the block to appear in the editor
     trigger: '.o_knowledge_behavior_type_file',
-}]});
+}, ...endKnowledgeTour()
+]});

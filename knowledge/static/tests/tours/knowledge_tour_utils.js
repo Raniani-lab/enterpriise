@@ -1,6 +1,7 @@
 /** @odoo-module */
 
 import { SORTABLE_TOLERANCE } from "@knowledge/components/sidebar/sidebar";
+import { stepUtils } from "@web_tour/tour_service/tour_utils";
 
 export const changeInternalPermission = (permission) => {
     const target = document.querySelector('.o_permission[aria-label="Internal Permission"]');
@@ -102,6 +103,19 @@ export function appendArticleLink(htmlFieldContainerSelector, articleName, offse
         trigger: '.modal-dialog:contains(Link an Article) .modal-footer button.btn-primary',
         run: 'click'
     }];
+}
+
+/**
+ * Ensure that the tour does not end on the Knowledge form view by returning to
+ * the home menu.
+ */
+export function endKnowledgeTour() {
+    return [
+        stepUtils.toggleHomeMenu(), {
+            trigger: '.o_app[data-menu-xmlid="knowledge.knowledge_menu_root"]',
+            run: () => {},
+        }
+    ];
 }
 
 export function makeVisible(selector) {

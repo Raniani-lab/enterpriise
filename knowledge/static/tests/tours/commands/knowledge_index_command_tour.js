@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import { registry } from "@web/core/registry";
-import { openCommandBar } from '../knowledge_tour_utils.js';
+import { endKnowledgeTour, openCommandBar } from '../knowledge_tour_utils.js';
 import { stepUtils } from "@web_tour/tour_service/tour_utils";
 
 
@@ -27,4 +27,5 @@ registry.category("web_tour.tours").add('knowledge_index_command_tour', {
 }, { // click on the switch mode button
     trigger: '.o_knowledge_behavior_type_articles_structure button[title="Switch Mode"]',
     run: 'click',
-}]});
+}, ...endKnowledgeTour()
+]});

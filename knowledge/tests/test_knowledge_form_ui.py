@@ -14,7 +14,6 @@ from odoo.addons.mail.tests.common import MailCommon
 
 
 class TestKnowledgeUICommon(HttpCase, MailCommon):
-    allow_end_on_form = True
     @classmethod
     def setUpClass(cls):
         super(TestKnowledgeUICommon, cls).setUpClass()

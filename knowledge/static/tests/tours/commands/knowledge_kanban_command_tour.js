@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import { registry } from "@web/core/registry";
-import { openCommandBar } from '../knowledge_tour_utils.js';
+import { endKnowledgeTour, openCommandBar } from '../knowledge_tour_utils.js';
 import { stepUtils } from "@web_tour/tour_service/tour_utils";
 
 registry.category("web_tour.tours").add('knowledge_kanban_cards_command_tour', {
@@ -69,7 +69,8 @@ registry.category("web_tour.tours").add('knowledge_kanban_command_tour', {
 }, { // verify that the view switched to the article item
     trigger: '.o_knowledge_header .o_breadcrumb_article_name_container:contains("Quick Create Ongoing Item")',
     run: () => {},
-}]});
+}, ...endKnowledgeTour()
+]});
 
 function commonKanbanSteps () {
     return [

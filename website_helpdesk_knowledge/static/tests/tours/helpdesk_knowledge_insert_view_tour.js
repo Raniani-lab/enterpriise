@@ -1,5 +1,6 @@
 /** @odoo-module */
 
+import { endKnowledgeTour } from '@knowledge/../tests/tours/knowledge_tour_utils';
 import { registry } from "@web/core/registry";
 
 
@@ -40,4 +41,5 @@ registry.category("web_tour.tours").add('helpdesk_insert_graph_view_in_knowledge
     trigger: '.o_knowledge_behavior_type_embedded_view .o_searchview .o_facet_value:contains("Urgent")',
 }, {
     trigger: '.o_knowledge_behavior_type_embedded_view .o_searchview .o_facet_value:contains("Team")',
-}]});
+}, ...endKnowledgeTour()
+]});

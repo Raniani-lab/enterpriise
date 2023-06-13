@@ -1,5 +1,6 @@
 /** @odoo-module */
 
+import { endKnowledgeTour } from './knowledge_tour_utils.js';
 import { registry } from "@web/core/registry";
 import { stepUtils } from "@web_tour/tour_service/tour_utils";
 
@@ -188,4 +189,5 @@ registry.category("web_tour.tours").add('knowledge_cover_selector_tour', {
     trigger: '.o_knowledge_body:not(:has(.o_widget_knowledge_cover))',
     extra_trigger: '.o_article_active:contains("odoo")',
     allowInvisible: true,
-}]});
+}, ...endKnowledgeTour()
+]});

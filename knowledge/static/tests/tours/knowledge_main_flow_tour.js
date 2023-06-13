@@ -10,7 +10,7 @@
  * - Favorite 2 different articles and invert their order in the favorite section
  */
 
-import { dragAndDropArticle, makeVisible } from '@knowledge/../tests/tours/knowledge_tour_utils';
+import { dragAndDropArticle, endKnowledgeTour, makeVisible } from '@knowledge/../tests/tours/knowledge_tour_utils';
 import { registry } from "@web/core/registry";
 import { stepUtils } from "@web_tour/tour_service/tour_utils";
 
@@ -199,4 +199,5 @@ registry.category("web_tour.tours").add('knowledge_main_flow_tour', {
     trigger: '.o_data_row:first .o_data_cell[name="display_name"]:contains("Article 2")',
     extra_trigger: '.o_breadcrumb .active:contains("Trash")',
     run: () => {},
-}]});
+}, ...endKnowledgeTour()
+]});

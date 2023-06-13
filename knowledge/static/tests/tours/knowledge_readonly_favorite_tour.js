@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { dragAndDropArticle } from '@knowledge/../tests/tours/knowledge_tour_utils';
+import { dragAndDropArticle, endKnowledgeTour } from '@knowledge/../tests/tours/knowledge_tour_utils';
 import { registry } from "@web/core/registry";
 
 // Checks that one can add an readonly article to its favorites
@@ -38,4 +38,5 @@ registry.category("web_tour.tours").add('knowledge_readonly_favorite_tour', {
     trigger: 'section[data-section="favorites"] li:last:contains("Readonly Article 1")',
     extra_trigger: 'section[data-section="favorites"] li:first:contains("Readonly Article 2")',
     run: () => {},
-}]});
+}, ...endKnowledgeTour()
+]});

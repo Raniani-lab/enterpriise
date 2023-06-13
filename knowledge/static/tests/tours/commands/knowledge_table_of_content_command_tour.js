@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import { registry } from "@web/core/registry";
-import { openCommandBar } from '../knowledge_tour_utils.js';
+import { endKnowledgeTour, openCommandBar } from '../knowledge_tour_utils.js';
 import { stepUtils } from "@web_tour/tour_service/tour_utils";
 
 
@@ -56,4 +56,5 @@ registry.category("web_tour.tours").add('knowledge_table_of_content_command_tour
 }, { // check that we are in edit mode
     trigger: '.o_field_html .odoo-editor-editable',
     run: () => {},
-}]});
+}, ...endKnowledgeTour()
+]});

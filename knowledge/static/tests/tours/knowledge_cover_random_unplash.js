@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { makeVisible } from './knowledge_tour_utils.js';
+import { endKnowledgeTour, makeVisible } from './knowledge_tour_utils.js';
 import { registry } from "@web/core/registry";
 import { stepUtils } from "@web_tour/tour_service/tour_utils";
 
@@ -68,4 +68,5 @@ registry.category("web_tour.tours").add('knowledge_random_cover_tour', {
     // images can be loaded and close the cover selector
     trigger: '.modal-footer .btn-secondary',
     extra_trigger: '.modal-body .o_load_more',
-}]});
+}, ...endKnowledgeTour()
+]});

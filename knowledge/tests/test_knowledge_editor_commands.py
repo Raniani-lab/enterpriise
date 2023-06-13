@@ -11,7 +11,6 @@ class TestKnowledgeEditorCommands(HttpCase):
     """
     This test suit run tours to test the new editor commands of Knowledge.
     """
-    allow_end_on_form = True
     @classmethod
     def setUpClass(cls):
         super(TestKnowledgeEditorCommands, cls).setUpClass()
@@ -83,7 +82,6 @@ class TestKnowledgeEditorCommands(HttpCase):
         """Test the /toc command in the editor"""
         self.start_tour('/web', 'knowledge_table_of_content_command_tour', login='admin', step_delay=100)
 
-    @users('admin')
     def test_knowledge_template_command_tour(self):
         """Test the /clipboard command in the editor"""
         partner_ids = self.env['res.partner'].create({'name': 'HelloWorldPartner', 'email': 'helloworld@part.ner'}).ids

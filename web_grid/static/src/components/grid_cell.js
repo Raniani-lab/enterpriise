@@ -41,15 +41,16 @@ export class GridCell extends Component {
             invalid: false,
             cell: null,
         });
+        this.discardChanges = false;
         this.magnifierGlassHook = useMagnifierGlass();
         this.inputRef = useInputHook({
             getValue: () => this.formattedValue,
             refName: "numpadDecimal",
             parse: this.parse.bind(this),
-            notifyChange: this.update.bind(this),
+            notifyChange: this.onChange.bind(this),
             commitChanges: this.saveEdition.bind(this),
             onKeyDown: (ev) => this.props.onKeyDown(ev, this.state.cell),
-            discard: () => this.props.onEdit(false),
+            discard: this.discard.bind(this),
             setInvalid: () => {
                 this.state.invalid = true;
             },
@@ -78,6 +79,7 @@ export class GridCell extends Component {
                         }
                     }
                 }
+                this.discardChanges = false;
             },
             () => [this.state.edit, this.inputRef.el, this.props.reactive.cell]
         );
@@ -105,9 +107,7 @@ export class GridCell extends Component {
 
     isEditable(props = this.props) {
         return (
-            !props.readonly &&
-            this.state.cell?.readonly === false &&
-            !this.state.cell.row.isSection
+            !props.readonly && this.state.cell?.readonly === false && !this.state.cell.row.isSection
         );
     }
 
@@ -118,9 +118,14 @@ export class GridCell extends Component {
         return parseFloat(value);
     }
 
+    onChange(value) {
+        if (!this.discardChanges) {
+            this.update(value);
+        }
+    }
+
     update(value) {
         this.state.cell.update(value);
-        this.props.onEdit(false);
     }
 
     saveEdition(value) {
@@ -132,8 +137,14 @@ export class GridCell extends Component {
         return changesCommitted;
     }
 
+    discard() {
+        this.discardChanges = true;
+        this.props.onEdit(false);
+    }
+
     onCellClick(ev) {
         if (this.isEditable() && !this.state.edit) {
+            this.discardChanges = false;
             this.props.onEdit(true);
         }
     }

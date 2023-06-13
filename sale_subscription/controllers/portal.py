@@ -217,7 +217,9 @@ class PaymentPortal(payment_portal.PaymentPortal):
         order_sudo, redirection = self._get_subscription(access_token, order_id)
         if redirection:
             return redirection
-        kwargs.update(partner_id=order_sudo.partner_id.id)
+        logged_in = not request.env.user._is_public()
+        partner_sudo = request.env.user.partner_id if logged_in else order_sudo.partner_id
+        kwargs.update(partner_id=partner_sudo.id)
         kwargs.pop('custom_create_values', None)  # Don't allow passing arbitrary create values
         if not is_validation:  # Renewal transaction
             unpaid_invoice_sudo = order_sudo.invoice_ids.filtered(
@@ -228,7 +230,7 @@ class PaymentPortal(payment_portal.PaymentPortal):
                                                                             am.move_type == 'out_invoice')
             invoice_sudo = unpaid_invoice_sudo or draft_invoice_sudo
             if not invoice_sudo:
-                invoice_sudo = order_sudo.with_context(lang=order_sudo.partner_id.lang,) \
+                invoice_sudo = order_sudo.with_context(lang=partner_sudo.lang,) \
                     ._create_invoices(final=True)
             kwargs.update({
                 'amount': invoice_sudo[:1].amount_total,

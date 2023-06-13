@@ -117,7 +117,7 @@ class QualityPoint(models.Model):
     @api.onchange('bom_product_ids', 'is_workorder_step')
     def _onchange_bom_product_ids(self):
         if self.is_workorder_step and self.bom_product_ids:
-            self.product_ids = self.product_ids._origin & self.bom_product_ids
+            self.product_ids = self.product_ids & self.bom_product_ids
             self.product_category_ids = False
 
     @api.depends('bom_id.product_id', 'bom_id.product_tmpl_id.product_variant_ids', 'is_workorder_step', 'bom_id')

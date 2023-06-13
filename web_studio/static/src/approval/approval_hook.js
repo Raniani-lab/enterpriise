@@ -3,7 +3,7 @@ import { useService } from "@web/core/utils/hooks";
 import { _lt } from "@web/core/l10n/translation";
 import { renderToMarkup } from "@web/core/utils/render";
 
-import { xml, reactive, useComponent } from "@odoo/owl";
+import { xml, reactive, useComponent, useEnv } from "@odoo/owl";
 
 const missingApprovalsTemplate = xml`
     <ul>
@@ -141,7 +141,14 @@ class StudioApproval {
 const approvalMap = new WeakMap();
 
 export function useApproval({ getRecord, method, action }) {
-    const orm = useService("orm");
+    /* The component using this hook can be destroyed before ever being mounted.
+    In practice, we do an rpc call in the component setup without knowing if it will be mounted.
+    When a new instance of the component is created, it will share the same data, and the
+    promise from `useService("orm")` will never resolve due to the old instance being destroyed.
+    What we can do to prevent that, is initially use an unprotected orm and once
+    the component has been mounted, we can switch the orm to the one from useService. */
+    const protectedOrm = useService("orm");
+    const unprotectedOrm = useEnv().services.orm;
     const studio = useService("studio");
     const notification = useService("notification");
     let record = getRecord(useComponent().props);
@@ -156,7 +163,7 @@ export function useApproval({ getRecord, method, action }) {
         resId: record.resId,
         method,
         action,
-        orm,
+        orm: unprotectedOrm,
         studio,
         notification,
     };
@@ -166,6 +173,9 @@ export function useApproval({ getRecord, method, action }) {
         approval.resId = nextRecord.resId;
         approval.resModel = nextRecord.resModel;
         record = nextRecord;
+    });
+    owl.onMounted(() => {
+        approval.orm = protectedOrm;
     });
 
     return approval;

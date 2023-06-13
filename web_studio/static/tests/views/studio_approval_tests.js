@@ -511,4 +511,61 @@ QUnit.module("Studio Approval", (hooks) => {
             'get_approval_spec: resId: 1 ; ["partner","someMethod",false]',
         ]);
     });
+
+    QUnit.test("approval continues to sync after a component has been destroyed", async function (assert) {
+        /* This uses two exclusive buttons. When one is displayed, the other is not.
+        When clicking on the first button, this changes the int_field value which
+        then hides the first button and display the second one */
+        const mockRPC = (route, args) => {
+            const rule = {
+                id: 1,
+                group_id: [1, "Internal User"],
+                domain: false,
+                can_validate: true,
+                message: false,
+                exclusive_user: false,
+            };
+            if (args.method === "check_approval") {
+                return Promise.resolve({
+                    approved: true,
+                    rules: [rule],
+                    entries: [],
+                });
+            }
+            if (args.method === "get_approval_spec") {
+                const spec = {
+                    rules: [rule],
+                    entries: [],
+                    groups: [[1, "Internal User"]],
+                };
+                return Promise.resolve(spec);
+            }
+
+            if (args.method === "someMethod") {
+                serverData.models.partner.records[0].int_field = 1;
+                return true;
+            }
+
+            if (args.method === "otherMethod") {
+                return true;
+            }
+        };
+
+        await makeView({
+            serverData,
+            mockRPC,
+            type: "form",
+            resModel: "partner",
+            arch: `<form>
+                <button type="object" name="someMethod" string="Apply Method" attrs="{'invisible': [('int_field', '=', 1)]}" studio_approval="True"/>
+                <button type="object" name="otherMethod" string="Other Method" attrs="{'invisible': [('int_field', '!=', 1)]}" studio_approval="True"/>
+                <field name="int_field"/>
+            </form>`,
+            resId: 1,
+        });
+
+        await click(target, 'button[name="someMethod"]');
+        assert.containsNone(target, 'button[name="otherMethod"] .o_web_studio_approval .fa-circle-o-notch.fa-spin');
+        assert.containsOnce(target, 'button[name="otherMethod"] .o_web_studio_approval .o_web_studio_approval_avatar');
+    });
 });

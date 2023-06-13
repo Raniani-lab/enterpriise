@@ -12,7 +12,6 @@ from odoo.tests.common import tagged, HttpCase
 
 
 class TestKnowledgeUICommon(HttpCase):
-    allow_end_on_form = True
     @classmethod
     def setUpClass(cls):
         super(TestKnowledgeUICommon, cls).setUpClass()

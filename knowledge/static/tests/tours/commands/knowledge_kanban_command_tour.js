@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import tour from 'web_tour.tour';
-import { openCommandBar } from '../knowledge_tour_utils.js';
+import { endKnowledgeTour, openCommandBar } from '../knowledge_tour_utils.js';
 
 
 tour.register('knowledge_kanban_command_tour', {
@@ -113,4 +113,5 @@ tour.register('knowledge_kanban_command_tour', {
 }, { // verify that the view switched to the article item
     trigger: '.o_knowledge_header:has(.o_breadcrumb_article_name_container:contains("Untitled")):has(.breadcrumb-item > a:contains("EditorCommandsArticle"))',
     run: () => {},
-}]);
+}, ...endKnowledgeTour()
+]);

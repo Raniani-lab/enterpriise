@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { makeVisible } from './knowledge_tour_utils.js';
+import { endKnowledgeTour, makeVisible } from './knowledge_tour_utils.js';
 import tour from 'web_tour.tour';
 
 /**
@@ -127,4 +127,6 @@ tour.register('knowledge_cover_selector_tour', {
 }, {
     trigger: '.o_knowledge_cover:not(:has(.o_knowledge_cover_image))',
     extra_trigger: '.o_article_active:contains("odoo")',
-}]);
+    allowInvisible: true,
+}, ...endKnowledgeTour()
+]);

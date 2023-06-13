@@ -1,5 +1,6 @@
 /** @odoo-module */
 
+import tour from 'web_tour.tour';
 
 /**
  * Steps to insert an articleLink for the given article, in the first editable
@@ -33,6 +34,19 @@ export function appendArticleLink(htmlFieldContainerSelector, articleName, offse
         trigger: '.modal-dialog:contains(Link an Article) .modal-footer button.btn-primary',
         run: 'click'
     }];
+}
+
+/**
+ * Ensure that the tour does not end on the Knowledge form view by returning to
+ * the home menu.
+ */
+export function endKnowledgeTour() {
+    return [
+        tour.stepUtils.toggleHomeMenu(), {
+            trigger: '.o_app[data-menu-xmlid="knowledge.knowledge_menu_root"]',
+            run: () => {},
+        }
+    ];
 }
 
 export function makeVisible(selector) {

@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import tour from 'web_tour.tour';
-import { openCommandBar } from '../knowledge_tour_utils.js';
+import { endKnowledgeTour, openCommandBar } from '../knowledge_tour_utils.js';
 import { decodeDataBehaviorProps } from "@knowledge/js/knowledge_utils";
 
 const testName = "*()!'<>~";
@@ -62,4 +62,5 @@ tour.register('knowledge_list_command_tour', {
     trigger: 'a[data-menu-xmlid="knowledge.knowledge_menu_home"]',
 }, { // wait for embed to be visible
     trigger: '.o_knowledge_behavior_type_embedded_view',
-}]);
+}, ...endKnowledgeTour()
+]);

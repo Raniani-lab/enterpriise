@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import tour from 'web_tour.tour';
-import { openCommandBar } from '../knowledge_tour_utils.js';
+import { endKnowledgeTour, openCommandBar } from '../knowledge_tour_utils.js';
 
 
 tour.register('knowledge_template_command_tour', {
@@ -57,4 +57,5 @@ tour.register('knowledge_template_command_tour', {
 }, { // check that the content of the template was inserted as description
     trigger: '.o_form_sheet .o_field_html .odoo-editor-editable p:first-child:contains("Hello world")',
     run: () => {},
-}]);
+}, ...endKnowledgeTour()
+]);

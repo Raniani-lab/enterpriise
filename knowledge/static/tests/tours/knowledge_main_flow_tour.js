@@ -10,6 +10,7 @@
  * - Favorite 2 different articles and invert their order in the favorite section
  */
 
+import { endKnowledgeTour } from '@knowledge/../tests/tours/knowledge_tour_utils';
 import tour from 'web_tour.tour';
 
 export const moveArticle = ($element, $target) => {
@@ -214,4 +215,5 @@ tour.register('knowledge_main_flow_tour', {
     trigger: '.o_data_row:first .o_data_cell[name="display_name"]:contains("Article 2")',
     extra_trigger: '.breadcrumb-item.active:contains("Trash")',
     run: () => {},
-}]);
+}, ...endKnowledgeTour()
+]);

@@ -1,5 +1,6 @@
 /** @odoo-module */
 
+import { endKnowledgeTour } from './knowledge_tour_utils.js';
 import tour from 'web_tour.tour';
 
 /**
@@ -22,4 +23,5 @@ tour.register('knowledge_readonly_item_kanban_tour', {
 }, { // check that the "new" button is not shown
     trigger: '.o_cp_buttons:not(:has(.o-kanban-button-new))',
     run: () => {},
-}]);
+}, ...endKnowledgeTour()
+]);

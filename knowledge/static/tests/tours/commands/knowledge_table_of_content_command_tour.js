@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import tour from 'web_tour.tour';
-import { openCommandBar } from '../knowledge_tour_utils.js';
+import { endKnowledgeTour, openCommandBar } from '../knowledge_tour_utils.js';
 
 
 tour.register('knowledge_table_of_content_command_tour', {
@@ -55,4 +55,5 @@ tour.register('knowledge_table_of_content_command_tour', {
 }, { // check that we are in edit mode
     trigger: '[name="body"].o_field_html .odoo-editor-editable',
     run: () => {},
-}]);
+}, ...endKnowledgeTour()
+]);

@@ -1,6 +1,7 @@
 /** @odoo-module */
 
 import tour from 'web_tour.tour';
+import { endKnowledgeTour } from './knowledge_tour_utils.js';
 import { moveArticle } from './knowledge_main_flow_tour';
 
 tour.register('knowledge_properties_tour', {
@@ -49,4 +50,5 @@ tour.register('knowledge_properties_tour', {
 }, { // verify property
     trigger: '.o_knowledge_properties .o_field_property_label:contains("myproperty")',
     run: () => {},
-}]);
+}, ...endKnowledgeTour()
+]);

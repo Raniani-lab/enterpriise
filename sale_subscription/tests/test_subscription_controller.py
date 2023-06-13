@@ -9,6 +9,7 @@ from odoo.addons.sale_subscription.tests.common_sale_subscription import TestSub
 from odoo.addons.payment.tests.common import PaymentCommon
 from odoo.addons.payment.tests.http_common import PaymentHttpCommon
 from odoo.tests.common import new_test_user, tagged
+from odoo.tools import mute_logger
 from odoo import Command
 from odoo import http
 
@@ -287,3 +288,51 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
         # the amount should be equal to the last
         self.assertEqual(invoice_transactions.amount, subscription.amount_total,
                          "The last transaction should be equal to the total")
+
+    def test_portal_partial_payment(self):
+        with patch('odoo.addons.sale_subscription.models.sale_order.SaleOrder._do_payment',
+                   wraps=self._mock_subscription_do_payment), \
+                patch('odoo.addons.sale_subscription.models.sale_order.SaleOrder.send_success_mail',
+                      wraps=self._mock_subscription_send_success_mail):
+            self.env['ir.config_parameter'].sudo().set_param('sale.automatic_invoice', 'False')
+            subscription = self.subscription.create({
+                'partner_id': self.partner.id,
+                'company_id': self.company.id,
+                'sale_order_template_id': self.subscription_tmpl.id,
+            })
+            self.pricing_month.price = 100
+            subscription._onchange_sale_order_template_id()
+            subscription.state = 'sent'
+            subscription._portal_ensure_token()
+            # test customized /payment/pay route with sale_order_id param
+            # partial amount specified
+            self.amount = subscription.amount_total / 2.0 # self.amount is used to create the right transaction
+            route_values = self._prepare_pay_values()
+            route_values['sale_order_id'] = subscription.id
+
+            route_values.update({
+                'flow': 'direct',
+                'payment_option_id': self.provider.id,
+                'tokenization_requested': False,
+                'validation_route': False,
+                'reference_prefix': 'PLOP',
+                'landing_route': '/my/subscriptions',
+            })
+            with mute_logger('odoo.addons.payment.models.payment_transaction'):
+                processing_values = self._get_processing_values(**route_values)
+            tx_sudo = self._get_tx(processing_values['reference'])
+            # make sure to have a token on the transaction. it is needed to test the confirmation flow
+            tx_sudo.token_id = self.payment_method.id
+            self.assertEqual(tx_sudo.sale_order_ids, subscription)
+            # self.assertEqual(tx_sudo.amount, amount)
+            self.assertEqual(tx_sudo.sale_order_ids.transaction_ids, tx_sudo)
+
+            tx_sudo._set_done()
+            with mute_logger('odoo.addons.sale.models.payment_transaction'):
+                tx_sudo._finalize_post_processing()
+            self.assertEqual(subscription.state, 'sent')  # Only a partial amount was paid
+            subscription.action_confirm()
+            self.assertEqual(subscription.next_invoice_date, datetime.date.today())
+            self.assertEqual(subscription.state, 'sale')
+            self.assertEqual(subscription.invoice_count, 0, "No invoice should be created")
+            self.assertFalse(subscription.payment_token_id, "No token should be saved")

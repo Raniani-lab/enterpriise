@@ -461,12 +461,20 @@ class WinbooksImportWizard(models.TransientModel):
                         tax_line = self.env['account.tax'].browse(vatcode_data.get(counterpart['VATCODE']))
                     except StopIteration:
                         pass  # We didn't find a tax line that is counterpart with same amount
+                is_vat_account = (
+                    self.env.company.country_id.code == 'BE' and rec.get('ACCOUNTGL')[:3] in ('411', '451')
+                    or self.env.company.country_id.code == 'LU' and rec.get('ACCOUNTGL')[:4] in ('4614', '4216')
+                )
+                is_vat = (
+                    rec.get('DOCORDER') == 'VAT'
+                    or move_data_dict['move_type'] == 'entry' and is_vat_account
+                )
                 repartition_line = is_refund and tax_line.refund_repartition_line_ids or tax_line.invoice_repartition_line_ids
-                repartition_type = 'tax' if rec.get('DOCORDER') == 'VAT' else 'base'
+                repartition_type = 'tax' if is_vat else 'base'
                 line_data[2].update({
-                    'tax_ids': tax_line and rec.get('DOCORDER') != 'VAT' and [(4, tax_line.id)] or [],
+                    'tax_ids': tax_line and not is_vat and [(4, tax_line.id)] or [],
                     'tax_tag_ids': [(6, 0, tax_line.get_tax_tags(is_refund, repartition_type).ids)],
-                    'tax_repartition_line_id': rec.get('DOCORDER') == 'VAT' and repartition_line.filtered(lambda x: x.repartition_type == repartition_type and x.account_id.id == line_data[2]['account_id']).id or False,
+                    'tax_repartition_line_id': is_vat and repartition_line.filtered(lambda x: x.repartition_type == repartition_type and x.account_id.id == line_data[2]['account_id']).id or False,
                 })
             move_line_data_list = [line for line in move_line_data_list if line[2]['account_id'] or line[2]['balance']]  # Remove empty lines
 

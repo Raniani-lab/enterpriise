@@ -4,7 +4,7 @@ import config from "web.config";
 import { FormRenderer } from '@web/views/form/form_renderer';
 import { KnowledgeCoverDialog } from '@knowledge/components/knowledge_cover/knowledge_cover_dialog';
 import { useService } from "@web/core/utils/hooks";
-import { useChildSubEnv, useRef } from "@odoo/owl";
+import { useChildSubEnv, useExternalListener, useRef } from "@odoo/owl";
 
 export class KnowledgeArticleFormRenderer extends FormRenderer {
 
@@ -30,6 +30,12 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             _resizeNameInput: this._resizeNameInput.bind(this),
             toggleFavorite: this.toggleFavorite.bind(this),
             _saveIfDirty: this._saveIfDirty.bind(this),
+        });
+
+        useExternalListener(document, "click", event => {
+            if (event.target.classList.contains("o_nocontent_create_btn")) {
+                this.env.createArticle("private");
+            }
         });
     }
 

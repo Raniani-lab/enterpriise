@@ -119,10 +119,10 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
 class AccountGeneralLedger(models.AbstractModel):
     _inherit = "account.report"
 
-    def _saft_get_account_type(self, account):
+    def _saft_get_account_type(self, account_type):
         # OVERRIDE account_saft/models/account_general_ledger
         if self.env.company.account_fiscal_country_id.code != 'LT':
-            return super()._saft_get_account_type(account)
+            return super()._saft_get_account_type(account_type)
 
         # LT saf-t account types have to be identified as follows:
         # "IT" (Non-current assets), "TT" (Current assets), "NK" (Equity), "I" (Liabilities), "P" (Income), "S" (Costs), "KT" (Other)
@@ -146,4 +146,4 @@ class AccountGeneralLedger(models.AbstractModel):
             'expense_direct_cost': 'S',
             'off_balance': 'KT',
         }
-        return account_type_dict[account.account_type] or 'KT'
+        return account_type_dict[account_type]

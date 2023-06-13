@@ -107,3 +107,9 @@ class TestDKSaftReport(TestAccountReportsCommon):
                 self.get_xml_tree_from_string(stringified_xml),
                 self.get_xml_tree_from_string(expected_xml.read()),
             )
+
+    def test_l10n_dk_saft_ensure_all_account_type_are_handled(self):
+        report = self.env.ref('account_reports.general_ledger_report')
+        account_selection = [selection[0] for selection in self.env["account.account"]._fields["account_type"].selection]
+        for account_type in account_selection:
+            report._saft_get_account_type(account_type)

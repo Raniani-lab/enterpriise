@@ -51,10 +51,10 @@ class AccountGeneralLedger(models.AbstractModel):
             tax['effective_date'] = tax['create_date'].strftime('%Y-%m-%d')
         return template_vals
 
-    def _saft_get_account_type(self, account):
+    def _saft_get_account_type(self, account_type):
         # OVERRIDE account_saft/models/account_general_ledger
         if self.env.company.account_fiscal_country_id.code != 'DK':
-            return super()._saft_get_account_type(account)
+            return super()._saft_get_account_type(account_type)
 
         # possible type: Asset/Liability/Sale/Expense/Other
         account_type_dict = {
@@ -77,4 +77,4 @@ class AccountGeneralLedger(models.AbstractModel):
             "expense_direct_cost": 'Expense',
             "off_balance": 'Other',
         }
-        return account_type_dict.get(account.account_type, 'Other')
+        return account_type_dict[account_type]

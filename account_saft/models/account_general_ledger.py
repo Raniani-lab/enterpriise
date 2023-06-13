@@ -10,7 +10,7 @@ from odoo.exceptions import UserError
 class AccountGeneralLedger(models.AbstractModel):
     _inherit = "account.report"
 
-    def _saft_get_account_type(self, account):
+    def _saft_get_account_type(self, account_type):
         """To be overridden if specific account types are needed.
         Some countries need to specify an account type, unique to the saf-t report.
 
@@ -46,7 +46,7 @@ class AccountGeneralLedger(models.AbstractModel):
             res['account_vals_list'].append({
                 'account': account,
                 'account_type': dict(self.env['account.account']._fields['account_type']._description_selection(self.env))[account.account_type],
-                'saft_account_type': self._saft_get_account_type(account),
+                'saft_account_type': self._saft_get_account_type(account.account_type),
                 'opening_balance': opening_balance,
                 'closing_balance': closing_balance,
             })

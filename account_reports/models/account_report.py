@@ -254,6 +254,7 @@ class AccountReport(models.Model):
                     'id': group.id,
                     'model': group._name,
                     'name': group.display_name,
+                    'title': group.display_name,
                     'selected': selected,
                     'journal_types': set(remaining_journals.mapped('type')),
                 })

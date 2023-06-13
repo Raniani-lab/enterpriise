@@ -14,7 +14,7 @@ from odoo import api, Command, fields, models, _
 from odoo.addons.hr_payroll.models.browsable_object import BrowsableObject, InputLine, WorkedDays, Payslips, ResultRules
 from odoo.exceptions import UserError, ValidationError
 from odoo.osv.expression import AND
-from odoo.tools import float_round, date_utils, convert_file, html2plaintext, is_html_empty, format_amount, ormcache
+from odoo.tools import float_round, date_utils, convert_file, format_amount
 from odoo.tools.float_utils import float_compare
 from odoo.tools.misc import format_date
 from odoo.tools.safe_eval import safe_eval
@@ -838,11 +838,11 @@ class HrPayslip(models.Model):
             slip.struct_id = slip.contract_id.structure_type_id.default_struct_id\
                 or slip.employee_id.contract_id.structure_type_id.default_struct_id
 
-    def _get_period_name(self):
+    def _get_period_name(self, cache):
         self.ensure_one()
         period_name = '%s - %s' % (
-            self._format_date(self.date_from),
-            self._format_date(self.date_to))
+            self._format_date_cached(cache, self.date_from),
+            self._format_date_cached(cache, self.date_to))
         if self.is_wrong_duration:
             return period_name
 
@@ -851,7 +851,7 @@ class HrPayslip(models.Model):
         week_start = self.env["res.lang"]._lang_get(self.env.user.lang).week_start
         schedule = self.struct_id.schedule_pay or self.contract_id.schedule_pay
         if schedule == 'monthly':
-            period_name = self._format_date(start_date, "MMMM Y")
+            period_name = self._format_date_cached(cache, start_date, "MMMM Y")
         elif schedule == 'quarterly':
             current_year_quarter = math.ceil(start_date.month / 3)
             period_name = _("Quarter %s of %s", current_year_quarter, start_date.year)
@@ -872,19 +872,20 @@ class HrPayslip(models.Model):
             period_name = _("Weeks %(week)s and %(week1)s of %(year)s",
                 week=first_week, week1=first_week + 1, year=start_date.year)
         elif schedule == 'bi-monthly':
-            start_date_string = self._format_date(start_date, "MMMM Y")
-            end_date_string = self._format_date(end_date, "MMMM Y")
+            start_date_string = self._format_date_cached(cache, start_date, "MMMM Y")
+            end_date_string = self._format_date_cached(cache, end_date, "MMMM Y")
             period_name = _("%s and %s", start_date_string, end_date_string)
         return period_name
 
-    @ormcache('date', 'format')
-    def _format_date(self, date, date_format=False):
-        if not date_format:
-            return format_date(env=self.env, value=date, lang_code=self.env.user.lang)
-        return format_date(env=self.env, value=date, lang_code=self.env.user.lang, date_format=date_format)
+    def _format_date_cached(self, cache, date, date_format=False):
+        key = (date, date_format)
+        if key not in cache:
+            cache[key] = format_date(env=self.env, value=date, lang_code=self.env.user.lang, date_format=date_format)
+        return cache[key]
 
     @api.depends('employee_id', 'struct_id', 'date_from', 'date_to')
     def _compute_name(self):
+        formated_date_cache = {}
         for slip in self.filtered(lambda p: p.employee_id and p.date_from):
             lang = slip.employee_id.sudo().address_home_id.lang or self.env.user.lang
             context = {'lang': lang}
@@ -894,7 +895,7 @@ class HrPayslip(models.Model):
             slip.name = '%(payslip_name)s - %(employee_name)s - %(dates)s' % {
                 'payslip_name': payslip_name,
                 'employee_name': slip.employee_id.name,
-                'dates': slip._get_period_name()
+                'dates': slip._get_period_name(formated_date_cache),
             }
 
     @api.depends('date_from', 'date_to', 'struct_id')

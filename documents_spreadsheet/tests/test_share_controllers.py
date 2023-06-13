@@ -122,3 +122,17 @@ class TestShareController(SpreadsheetTestCommon, HttpCase):
         self.assertEqual(response.status_code, 200)
         with ZipFile(BytesIO(response.content)) as zip_file:
             self.assertEqual(len(zip_file.filelist), 0)
+
+    def test_share_portal_document_folder_deletion(self):
+        spreadsheet = self.create_spreadsheet()
+        share = self.share_spreadsheet(spreadsheet)
+        url = share.full_url
+        response = self.url_open(url)
+        self.assertEqual(response.status_code, 200)
+
+        folder = spreadsheet.folder_id
+        spreadsheet.unlink()
+        folder.unlink()
+        with mute_logger('odoo.http'):
+            response = self.url_open(url)
+        self.assertEqual(response.status_code, 404)

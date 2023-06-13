@@ -10,9 +10,10 @@ class SpreadsheetShareRoute(ShareRoute):
     @http.route()
     def share_portal(self, share_id=None, token=None):
         share = request.env["documents.share"].sudo().browse(share_id).exists()
-        documents = share._get_documents_and_check_access(token, operation="read")
-        if documents and len(documents) == 1 and documents.handler == "spreadsheet":
-            return self.open_spreadsheet(share.freezed_spreadsheet_ids, token)
+        if share:
+            documents = share._get_documents_and_check_access(token, operation="read")
+            if documents and len(documents) == 1 and documents.handler == "spreadsheet":
+                return self.open_spreadsheet(share.freezed_spreadsheet_ids, token)
         return super().share_portal(share_id, token)
 
     @http.route(

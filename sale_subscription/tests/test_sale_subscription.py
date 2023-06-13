@@ -2739,3 +2739,30 @@ class TestSubscription(TestSubscriptionCommon):
         sub_data = [(log.event_type, log.event_date, log.subscription_state, log.amount_signed, log.recurring_monthly)
                     for log in order_log_ids]
         self.assertEqual(sub_data, [('0_creation', today, '3_progress', 21, 21)])
+
+    def test_renewal_different_period(self):
+        """ When a renewal quote is negotiated for more than a month, we need to update the start date of the
+        renewal quote if the parent is prolonged.
+        """
+        with freeze_time("2023-01-1"):
+            # We reset the renew alert to make sure it will run with freezetime
+            self.subscription.write({'start_date': False, 'next_invoice_date': False})
+            self.subscription._onchange_sale_order_template_id()
+            self.assertEqual(self.subscription.recurrence_id, self.recurrence_month)
+            self.subscription.action_confirm()
+            self.subscription._create_recurring_invoice()
+            action = self.subscription.with_context(tracking_disable=False).prepare_renewal_order()
+            renewal_so = self.env['sale.order'].browse(action['res_id'])
+            renewal_so = renewal_so.with_context(tracking_disable=False)
+            renewal_so.order_line.product_uom_qty = 3
+            renewal_so.name = "Renewal"
+            renewal_so.recurrence_id = self.recurrence_year
+            self.assertEqual(self.subscription.next_invoice_date, datetime.date(2023, 2, 1))
+            self.assertEqual(renewal_so.start_date, datetime.date(2023, 2, 1))
+            self.assertEqual(renewal_so.next_invoice_date, datetime.date(2023, 2, 1))
+        with freeze_time("2023-02-01"):
+            # the new invoice is created and validated by the customer
+            self.subscription._create_recurring_invoice()
+            self.assertEqual(self.subscription.next_invoice_date, datetime.date(2023, 3, 1))
+            self.assertEqual(renewal_so.start_date, datetime.date(2023, 3, 1))
+            self.assertEqual(renewal_so.next_invoice_date, datetime.date(2023, 3, 1))

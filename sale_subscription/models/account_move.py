@@ -13,6 +13,7 @@ class AccountMove(models.Model):
     def _post(self, soft=True):
         posted_moves = super()._post(soft=soft)
         automatic_invoice = self.env.context.get('recurring_automatic')
+        all_subscription_ids = []
         for move in posted_moves:
             if not move.invoice_line_ids.subscription_id:
                 continue
@@ -35,7 +36,22 @@ class AccountMove(models.Model):
                 end_dates = [ed for ed in aml.mapped('deferred_end_date') if ed]
                 if end_dates and max(end_dates) > subscription.next_invoice_date:
                     subscription.next_invoice_date = max(end_dates) + relativedelta(days=1)
+                    all_subscription_ids.append(subscription.id)
                 if not automatic_invoice:
                     subscription._post_invoice_hook()
+
+            if all_subscription_ids:
+                # update the renewal quotes to start at the next invoice date values
+                renewal_quotes = self.env['sale.order'].search([
+                    ('subscription_id', 'in', all_subscription_ids),
+                    ('subscription_state', '=', '2_renewal'),
+                ])
+                for quote in renewal_quotes:
+                    next_invoice_date = quote.subscription_id.next_invoice_date
+                    if quote.start_date < next_invoice_date:
+                        quote.update({
+                            'next_invoice_date': next_invoice_date,
+                            'start_date': next_invoice_date,
+                        })
 
         return posted_moves

@@ -314,3 +314,18 @@ class TestCaseDocumentsBridgeProject(TestProjectCommon):
         self.assertTrue(project.documents_folder_id, "The project should keep its workspace when disabling the feature")
         project.use_documents = True
         self.assertEqual(documents_folder, project.documents_folder_id, "No workspace should be created when enablind the documents feature if the project already has a workspace")
+
+    def test_project_task_access_document(self):
+        """
+        Tests that 'MissingRecord' error should not be rasied when trying to switch
+        workspace for a non-existing document.
+
+        - The 'active_id' here is the 'id' of a non-existing document.
+        - We then try to access 'All' workspace by calling the 'search_panel_select_range'
+            method. We should be able to access the workspace.
+        """
+        missing_id = self.env['documents.document'].search([], order='id DESC', limit=1).id + 1
+        result = self.env['documents.document'].with_context(
+            active_id=missing_id, active_model='project.task',
+            limit_folders_to_project=True).search_panel_select_range('folder_id')
+        self.assertTrue(result)

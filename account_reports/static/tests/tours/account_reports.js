@@ -223,18 +223,18 @@ registry.category("web_tour.tours").add('account_reports', {
         },
         {
             content: "Check order on lines and footnotes after footnote is deleted",
-            trigger: "#footnote_1:contains('Footnote 101401')",
+            trigger: "#footnote_1:contains('Footnote 101404')",
             run: () => {
                 // Check line number
-                Asserts.isEqual(document.querySelector("tr:nth-child(4) sup a").textContent, "1");
+                Asserts.isEqual(document.querySelector("tr:nth-child(11) sup a").textContent, "1");
 
                 // Check line number href
-                Asserts.isTrue(document.querySelector("tr:nth-child(4) sup a").href.endsWith("#footnote_1"));
+                Asserts.isTrue(document.querySelector("tr:nth-child(11) sup a").href.endsWith("#footnote_1"));
 
                 // Check footnotes
                 const footnotes = document.querySelectorAll(".footnotes .footnote");
 
-                Asserts.isTrue(footnotes[0].textContent.includes("Footnote 101401"));
+                Asserts.isTrue(footnotes[0].textContent.includes("Footnote 101404"));
             }
         },
         //--------------------------------------------------------------------------------------------------------------

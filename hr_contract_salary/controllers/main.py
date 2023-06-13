@@ -213,6 +213,7 @@ class HrContractSalary(http.Controller):
                     {'status_code': _('Oops'),
                     'status_message': _('This link is invalid. Please contact the HR Responsible to get a new one...')})
 
+        employee_contract = False
         if kw.get('employee_contract_id'):
             employee_contract = request.env['hr.contract'].sudo().browse(int(kw.get('employee_contract_id')))
             # do not recreate a new employee if the salary configurator is launched with a new

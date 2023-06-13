@@ -43,6 +43,6 @@ registry.category("web_tour.tours").add('knowledge_sidebar_readonly_tour', {
     extra_trigger: '.o_knowledge_tree .o_article:contains("Workspace Article") + .o_article:contains("Private Article")',
 }, {
     // Check that emoji picker did not show up
-    trigger: 'body:not(:has(.o-mail-EmojiPicker))',
+    trigger: 'body:not(:has(.o-EmojiPicker))',
     run: () => {},
 }]});

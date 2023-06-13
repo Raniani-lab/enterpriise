@@ -3,7 +3,7 @@
 import { PdfGroupName } from '@documents/owl/components/pdf_group_name/pdf_group_name';
 import { PdfPage } from '@documents/owl/components/pdf_page/pdf_page';
 import { computeMultiSelection } from 'documents.utils';
-import { isEventHandled, markEventHandled } from '@mail/utils/common/misc';
+import { isEventHandled, markEventHandled } from '@web/core/utils/misc';
 import { useService } from '@web/core/utils/hooks';
 import { Dialog } from "@web/core/dialog/dialog";
 import { getBundle, loadBundle } from "@web/core/assets";

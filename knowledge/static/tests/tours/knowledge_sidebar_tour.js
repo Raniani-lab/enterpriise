@@ -364,7 +364,7 @@ registry.category("web_tour.tours").add('knowledge_sidebar_tour', {
     trigger: '.o_article_active .o_article_emoji',
 }, {
     // Choose an icon
-    trigger: '.o-mail-Emoji[data-codepoints="🥶"]',
+    trigger: '.o-Emoji[data-codepoints="🥶"]',
 }, {
     // Check that the icon has been updated in both trees in the sidebar
     trigger: 'section[data-section="favorites"] .o_article_active .o_article_emoji:contains("🥶")',
@@ -381,7 +381,7 @@ registry.category("web_tour.tours").add('knowledge_sidebar_tour', {
     trigger: '.o_article:contains("Workspace Article") .o_article_emoji',
 }, {
     // Choose an icon
-    trigger: '.o-mail-Emoji[data-codepoints="🥵"]',
+    trigger: '.o-Emoji[data-codepoints="🥵"]',
 }, {
     // Check that the icon has been updated in the sidebar
     trigger: '.o_article:contains("Workspace Article") .o_article_emoji:contains("🥵")',
@@ -407,7 +407,7 @@ registry.category("web_tour.tours").add('knowledge_sidebar_tour', {
     extra_trigger: '.breadcrumb-item.active .fa-lock',
 }, {
     // Check that emoji picker did not show up
-    trigger: 'body:not(:has(.o-mail-EmojiPicker))',
+    trigger: 'body:not(:has(.o-EmojiPicker))',
     run: () => {},
 },
 // Update icon of unlocked article
@@ -422,7 +422,7 @@ registry.category("web_tour.tours").add('knowledge_sidebar_tour', {
     extra_trigger: '.breadcrumb-item.active:not(:has(.fa-lock))',
 }, {
     // Choose an icon
-    trigger: '.o-mail-Emoji[data-codepoints="😬"]',
+    trigger: '.o-Emoji[data-codepoints="😬"]',
 }, {
     // Check that the icon has been updated in the sidebar
     trigger: '.o_article:contains("Workspace Child") .o_article_emoji:contains("😬")',

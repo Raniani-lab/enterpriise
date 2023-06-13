@@ -56,6 +56,7 @@
             'bus/static/src/workers/*',
 
             'pos_preparation_display/static/src/app/**/*',
+            ('remove', 'web/static/src/core/emoji_picker/emoji_data.js'),
         ],
         'point_of_sale._assets_pos': [
             'pos_preparation_display/static/src/override/**/*.js',

@@ -114,7 +114,7 @@ class L10nBe273S(models.Model):
             ('company_id', '=', self.company_id.id),
             ('date_from', '>=', date_from),
             ('date_to', '<=', date_to)])
-        employees = payslips.mapped('employee_id').filtered(lambda e: not e._is_niss_valid())
+        employees = payslips.filtered(lambda p: p.contract_id.ip).employee_id.filtered(lambda e: not e._is_niss_valid())
         if employees:
             raise UserError(_('Invalid NISS number for those employees:\n %s', '\n'.join(employees.mapped('name'))))
 

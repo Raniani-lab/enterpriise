@@ -113,8 +113,7 @@ class AccountMove(models.Model):
     def _compute_l10n_pe_edi_is_required(self):
         for move in self:
             move.l10n_pe_edi_is_required = move.country_code == 'PE' \
-                and move.is_sale_document() and move.journal_id.l10n_latam_use_documents \
-                and not move.l10n_pe_edi_cancel_cdr_number
+                and move.is_sale_document() and move.journal_id.l10n_latam_use_documents
 
     @api.depends('move_type', 'company_id')
     def _compute_l10n_pe_edi_operation_type(self):

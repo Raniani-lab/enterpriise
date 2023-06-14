@@ -2047,6 +2047,55 @@ class TestAccountAsset(TestAccountReportsCommon):
             options
         )
 
+    def test_asset_analytic_groupby(self):
+        """
+        Test that the analytic groupby works correctly.
+        """
+        truck_b = self.truck.copy()
+        truck_b.validate()
+        self.truck.analytic_distribution = {self.analytic_account.id: 100}
+        self.env['account.move']._autopost_draft_entries()
+
+        self.env.company.totals_below_sections = False
+        report = self.env.ref('account_asset.assets_report')
+        report.filter_analytic_groupby = True
+
+        # No prefix group, no group by account
+        options = self._generate_options(report, '2021-01-01', '2021-12-31', default_options={'assets_groupby_account': False, 'unfold_all': False})
+
+        # without Analytic Groupby
+        self.assertLinesValues(
+            # pylint: disable=C0326
+            report._get_lines(options),
+            #    Name                       Assets/start  Assets/+  Assets/- Assets/end  Depreciation/start  Depreciation/+  Depreciation/- Depreciation/end  Book Value
+            [    0,                             5,        6,        7,           8,          9,              10,             11,               12,               13],
+            [
+                ('truck',                   10000,        0,        0,       10000,       4500,               0,              0,             4500,             5500,),
+                ('truck (copy)',                0,        0,        0,           0,      -1500,               0,              0,            -1500,             1500,),
+                ('Total',                   10000,        0,        0,       10000,       3000,               0,              0,             3000,             7000,),
+            ],
+            options
+        )
+        # with Analytic Groupby
+        options = self._generate_options(report, '2021-01-01', '2021-12-31', default_options={
+            'assets_groupby_account': False,
+            'unfold_all': False,
+            'analytic_accounts_groupby': [self.analytic_account.id],
+        })
+        self.assertLinesValues(
+            # pylint: disable=C0326
+            report._get_lines(options),
+            #    Group                      |                                            ANALYTIC                                                                       |  |                                                    ALL                                                                               |
+            #    Name                       Assets/start  Assets/+  Assets/- Assets/end  Depreciation/start  Depreciation/+  Depreciation/- Depreciation/end  Book Value    Assets/start    Assets/+    Assets/-    Assets/end  Depreciation/start  Depreciation/+  Depreciation/-  Depreciation/end    Book Value
+            [    0,                             5,        6,        7,           8,          9,              10,             11,               12,               13,            18,         19,         20,             21,         22,             23,             24,             25,                 26],
+            [
+                ('truck',                   10000,        0,        0,       10000,       4500,               0,              0,             4500,             5500,         10000,         0,          0,          10000,        4500,              0,             0,            4500,               5500),
+                ('truck (copy)',               '',       '',       '',          '',         '',              '',             '',               '',               '',             0,         0,          0,              0,       -1500,              0,             0,           -1500,               1500),
+                ('Total',                   10000,        0,        0,       10000,       4500,               0,              0,             4500,             5500,         10000,         0,          0,          10000,        3000,              0,             0,            3000,               7000),
+            ],
+            options
+        )
+
     def test_depreciation_schedule_report_first_depreciation(self):
         """Test that the depreciation schedule report displays the correct first depreciation date."""
         # check that the truck's first depreciation date is correct:

@@ -12,8 +12,8 @@ class ResBank(models.Model):
     country_code = fields.Char(related='country.code', string='Country Code')
     l10n_hk_bank_code = fields.Char(string='Bank Code', size=3)
 
-    @api.constrains('l10n_hk_bank_code')
+    @api.constrains('country', 'l10n_hk_bank_code')
     def _check_l10n_hk_bank_code(self):
         for bank in self:
-            if len(bank.l10n_hk_bank_code) != 3:
+            if bank.country_code == 'HK' and len(bank.l10n_hk_bank_code or '') != 3:
                 raise ValidationError(_("Bank code length must be 3 letters."))

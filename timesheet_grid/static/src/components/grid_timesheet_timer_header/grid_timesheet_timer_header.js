@@ -95,7 +95,7 @@ export class GridTimesheetTimerHeader extends Component {
     async onTimesheetChanged(timesheet, changes) {
         const secondsElapsed = this.timerService.toSeconds;
         if (timesheet.isNew) {
-            if (changes.project_id) {
+            if (changes.project_id || changes.task_id) {
                 // create the timesheet when the project is set
                 timesheet.save({ reload: false }).then(() => {
                     this.props.updateTimesheet({...Object.fromEntries(

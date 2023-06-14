@@ -11,14 +11,6 @@ from odoo.addons.sale_subscription.models.sale_order import SUBSCRIPTION_PROGRES
 class SaleOrder(models.Model):
     _inherit = "sale.order"
 
-    def _compute_project_ids(self):
-        generatable_orders = self.filtered(lambda so: so._can_generate_service())
-        super(SaleOrder, generatable_orders)._compute_project_ids()
-        (self - generatable_orders).update({
-            'project_ids': False,
-            'project_count': 0,
-        })
-
     def _can_generate_service(self):
         self.ensure_one()
         # Only normal SO, new subscription or renewal can generate services

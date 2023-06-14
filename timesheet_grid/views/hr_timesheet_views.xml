@@ -68,7 +68,7 @@
                     <attribute name="js_class">timesheet_timer_kanban</attribute>
                 </kanban>
                 <xpath expr="/kanban" position="inside">
-                    <field name="validated" invisible="1"/>
+                    <field name="validated" invisible="1" force_save="0"/>
                 </xpath>
                 <xpath expr="//div[hasclass('o_kanban_record_headings')]" position="after">
                     <div>

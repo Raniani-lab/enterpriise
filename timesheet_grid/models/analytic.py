@@ -25,7 +25,7 @@ class AnalyticLine(models.Model):
 
     # reset amount on copy
     amount = fields.Monetary(copy=False)
-    validated = fields.Boolean("Validated line", group_operator="bool_and", store=True, copy=False)
+    validated = fields.Boolean("Validated line", group_operator="bool_and", store=True, copy=False, readonly=True)
     validated_status = fields.Selection([('draft', 'Draft'), ('validated', 'Validated')], required=True,
         compute='_compute_validated_status')
     user_can_validate = fields.Boolean(compute='_compute_can_validate',

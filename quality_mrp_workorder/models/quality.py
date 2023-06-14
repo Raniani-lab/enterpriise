@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, models, _
+from odoo import api, fields, models, _
 from odoo.osv.expression import AND
 
 
@@ -16,6 +16,8 @@ class QualityPoint(models.Model):
 
 class QualityCheck(models.Model):
     _inherit = "quality.check"
+
+    operation_id = fields.Many2one(related="point_id.operation_id")
 
     def do_pass(self):
         self.ensure_one()

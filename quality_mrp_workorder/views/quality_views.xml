@@ -70,6 +70,9 @@
             <xpath expr="//field[@name='lot_id']" position="after">
                 <field name="lot_id" attrs="{'invisible': [('workorder_id', '=', False)]}" groups="stock.group_production_lot" string="Component Lot/Serial"/>
             </xpath>
+            <xpath expr="//field[@name='measure_on']" position="after">
+                <field name="operation_id" string="Work Order Operation" attrs="{'invisible': [('operation_id', '=', False)]}" groups="mrp.group_mrp_routings"/>
+            </xpath>
         </field>
     </record>
 
@@ -81,6 +84,9 @@
             <field name="lot_name" position="after">
                 <field name="finished_lot_id" optional="show" groups="stock.group_production_lot"/>
             </field>
+            <xpath expr="//field[@name='measure_on']" position="after">
+                <field name="operation_id" optional="hide" string="Work Order Operation" groups="mrp.group_mrp_routings"/>
+            </xpath>
         </field>
     </record>
 

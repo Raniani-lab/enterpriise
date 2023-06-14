@@ -849,6 +849,9 @@
         <field name="view_mode">tree,kanban,form</field>
         <field name="domain">[('project_ids.is_fsm', '=', True)]</field>
         <field name="view_id" ref="project.task_type_tree"/>
+        <field name="context">{
+            'fsm_mode': True,
+        }</field>
         <field name="help" type="html">
           <p class="o_view_nocontent_smiling_face">
             No stages found. Let's create one!

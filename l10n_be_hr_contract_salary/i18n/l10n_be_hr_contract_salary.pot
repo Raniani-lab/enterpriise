@@ -21,6 +21,14 @@ msgid "13th Month"
 msgstr ""
 
 #. module: l10n_be_hr_contract_salary
+#. odoo-python
+#: code:addons/l10n_be_hr_contract_salary/models/hr_contract.py:0
+#: code:addons/l10n_be_hr_contract_salary/models/hr_contract.py:0
+#, python-format
+msgid "%s € (CO2 Fee) + %s € (Rent)"
+msgstr ""
+
+#. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.advantage.value,name:l10n_be_hr_contract_salary.l10n_be_representation_fees_value_2
 msgid "150 €"
 msgstr ""

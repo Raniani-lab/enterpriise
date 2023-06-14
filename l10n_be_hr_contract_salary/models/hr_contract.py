@@ -5,7 +5,7 @@ import ast
 
 from markupsafe import Markup
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 
 
 class HrContract(models.Model):
@@ -135,7 +135,7 @@ class HrContract(models.Model):
 
     def _get_description_company_car_total_depreciated_cost(self, new_value=None):
         advantage = self.env.ref('l10n_be_hr_contract_salary.l10n_be_transport_company_car')
-        description = advantage.description if advantage.description else ""
+        description = advantage.description or ""
         if new_value is None or not new_value:
             if self.car_id:
                 new_value = 'old-%s' % self.car_id.id
@@ -149,13 +149,16 @@ class HrContract(models.Model):
         except:
             return description
         if car_option == "new":
-            vehicle = self.env['fleet.vehicle.model'].sudo().browse(vehicle_id)
+            vehicle = self.env['fleet.vehicle.model'].with_company(self.company_id).sudo().browse(vehicle_id)
             co2 = vehicle.default_co2
             fuel_type = vehicle.default_fuel_type
             transmission = vehicle.transmission
             door_number = odometer = immatriculation = trailer_hook = False
+            bik_display = "%s €" % round(vehicle.default_atn, 2)
+            monthly_cost_display = _("%s € (CO2 Fee) + %s € (Rent)") % (round(vehicle.co2_fee, 2), round(vehicle.default_total_depreciated_cost - vehicle.co2_fee, 2))
+
         else:
-            vehicle = self.env['fleet.vehicle'].sudo().browse(vehicle_id)
+            vehicle = self.env['fleet.vehicle'].with_company(self.company_id).sudo().browse(vehicle_id)
             co2 = vehicle.co2
             fuel_type = vehicle.fuel_type
             door_number = vehicle.doors
@@ -163,9 +166,14 @@ class HrContract(models.Model):
             immatriculation = vehicle.acquisition_date
             transmission = vehicle.transmission
             trailer_hook = "Yes" if vehicle.trailer_hook else "No"
+            bik_display = "%s €" % round(vehicle.atn, 2)
+            monthly_cost_display = _("%s € (CO2 Fee) + %s € (Rent)") % (round(vehicle.co2_fee, 2), round(vehicle.total_depreciated_cost - vehicle.co2_fee, 2))
+
         car_elements = {
             'CO2 Emission': co2,
+            'Monthly Cost': monthly_cost_display,
             'Fuel Type': fuel_type,
+            'BIK': bik_display,
             'Transmission': transmission,
             'Doors Number': door_number,
             'Trailer Hook': trailer_hook,

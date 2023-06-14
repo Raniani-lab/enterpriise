@@ -365,8 +365,12 @@ class AssetReportCustomHandler(models.AbstractModel):
             query_params['forced_account_id'] = forced_account_id
 
         analytical_query = ''
+        analytic_account_ids = []
         if options.get('analytic_accounts') and not any(x in options.get('analytic_accounts_list', []) for x in options['analytic_accounts']):
-            analytic_account_ids = [[str(account_id) for account_id in options['analytic_accounts']]]
+            analytic_account_ids += [[str(account_id) for account_id in options['analytic_accounts']]]
+        if options.get('analytic_accounts_list'):
+            analytic_account_ids += [[str(account_id) for account_id in options.get('analytic_accounts_list')]]
+        if analytic_account_ids:
             analytical_query = 'AND asset.analytic_distribution ?| array[%(analytic_account_ids)s]'
             query_params['analytic_account_ids'] = analytic_account_ids
 

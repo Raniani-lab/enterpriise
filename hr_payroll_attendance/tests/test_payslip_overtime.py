@@ -76,13 +76,13 @@ class TestPayslipOvertime(HrWorkEntryAttendanceCommon):
         self.assertEqual(overtime_worked_days.number_of_hours * self.contract.hourly_wage * 0.5, overtime_worked_days.amount)
 
         rule_value.parameter_value = '100'
-        self.env['hr.rule.parameter'].pool._clear_cache()
+        self.env.registry.clear_cache()
         self.payslip._compute_worked_days_line_ids()
         overtime_worked_days = self.payslip.worked_days_line_ids.filtered(lambda w: w.code == 'OVERTIME')
         self.assertEqual(overtime_worked_days.number_of_hours * self.contract.hourly_wage * 1, overtime_worked_days.amount)
 
         rule_value.parameter_value = '15'
-        self.env['hr.rule.parameter'].pool._clear_cache()
+        self.env.registry.clear_cache()
         self.payslip._compute_worked_days_line_ids()
         overtime_worked_days = self.payslip.worked_days_line_ids.filtered(lambda w: w.code == 'OVERTIME')
         self.assertEqual(overtime_worked_days.number_of_hours * self.contract.hourly_wage * .15, overtime_worked_days.amount)

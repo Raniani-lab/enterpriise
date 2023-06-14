@@ -92,7 +92,8 @@ def assertViewArchEqual(test, original, expected):
     test.assertEqual(original, expected)
 
 def watch_edit_view(test, on_edit_view):
-    clear_routing = test.env["ir.http"]._clear_routing_map
+    def clear_routing():
+        test.env.registry.clear_cache('routing')
 
     clear_routing()
     edit_view = WebStudioController.edit_view

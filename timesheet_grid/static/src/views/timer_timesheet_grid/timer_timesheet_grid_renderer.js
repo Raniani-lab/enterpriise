@@ -143,7 +143,7 @@ export class TimerTimesheetGridRenderer extends TimesheetGridRenderer {
      * @param {KeyboardEvent} ev
      */
     onKeyDown(ev) {
-        if (ev.target.closest(".modal") || ev.target.tagName.toLowerCase() === "input") {
+        if (ev.target.closest(".modal") || ['input', 'textarea'].includes(ev.target.tagName.toLowerCase())) {
             return;
         }
         if (

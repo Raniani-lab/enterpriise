@@ -32,6 +32,7 @@
         <field name="arch" type="xml">
             <field name="resource_ids" position="after">
                 <field name="product_ids" widget="many2many_tags" placeholder="e.g. Cleaning Services"
+                    domain="[('planning_role_id', '=', False), ('type', '=', 'service'), ('sale_ok', '=', True)]"
                     context="{'default_detailed_type': 'service', 'default_detailed_type': 'service', 'default_planning_enabled': True, 'default_planning_role_id': id, 'default_uom_id': %(uom.product_uom_hour)d}"/>
             </field>
         </field>

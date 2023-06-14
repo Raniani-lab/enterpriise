@@ -76,7 +76,7 @@
                 <field name="color" widget="color_picker" optional="hide"/>
             </xpath>
             <xpath expr="//field[@name='name']" position="after">
-                <field name="role_ids" widget="many2many_tags" optional="show"/>
+                <field name="role_ids" widget="many2many_tags" optional="show" options="{'color_field': 'color'}"/>
                 <field name="default_role_id" optional="show"/>
             </xpath>
             <xpath expr="//field[@name='name']" position="attributes">

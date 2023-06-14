@@ -18,6 +18,11 @@
                                 <field class="oe_inline col-4 col-lg-2 me-1 text-center" name="planning_self_unassign_days_before"/> days before the beginning of the shift
                             </div>
                         </setting>
+                        <setting name="planning_project_time_management" help="Plan resource allocation across projects and estimate deadlines more accurately">
+                            <field name="module_project_forecast" widget="upgrade_boolean"/>
+                        </setting>
+                    </block>
+                    <block>
                         <setting groups="base.group_no_one" string="Recurring Shifts">
                             <div class="content-group">
                                 <div class="mt16">

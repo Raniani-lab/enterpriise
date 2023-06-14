@@ -128,7 +128,7 @@ class HrContract(models.Model):
 
     def _get_description_company_car_total_depreciated_cost(self, new_value=None):
         advantage = self.env.ref('l10n_be_hr_contract_salary.l10n_be_transport_company_car')
-        description = advantage.description
+        description = advantage.description if advantage.description else ""
         if new_value is None or not new_value:
             if self.car_id:
                 new_value = 'old-%s' % self.car_id.id

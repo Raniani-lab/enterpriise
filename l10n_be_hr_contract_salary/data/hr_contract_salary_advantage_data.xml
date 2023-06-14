@@ -13,7 +13,7 @@
         <field name="fold_label">Company Car</field>
         <field name="fold_res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'transport_mode_car')])"/>
         <field name="display_type">dropdown-group</field>
-        <field name="description">The cost of a car is depreciated by 8% per year, for 7 years. So, your gross salary increases automatically to keep the same employee budget. Once a car has 7 years, the car is fully depreciated and the only remaining costs are the maintenance, insurances and taxes.</field>
+        <field name="description"/>
         <field name="requested_documents_field_ids" model="ir.model.fields" eval="[(4, obj().search([('model', '=', 'hr.contract'), ('name', '=', 'driving_license')]).id)]"/>
     </record>
 

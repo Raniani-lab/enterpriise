@@ -141,7 +141,8 @@ class CustomerPortal(payment_portal.PaymentPortal):
             'message': message,
             'message_class': message_class,
             'pricelist': order_sudo.pricelist_id.sudo(),
-            'enable_manage_payment_form': enable_manage_payment_form
+            'enable_manage_payment_form': enable_manage_payment_form,
+            'payment_action_id': request.env.ref('payment.action_payment_provider').id,
         }
         progress_child = order_sudo.subscription_child_ids.filtered(lambda s: s.subscription_state in SUBSCRIPTION_PROGRESS_STATE)
         # prevent churned SO with a confirmed renewal to be reactivated. The child should be updated.

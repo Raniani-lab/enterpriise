@@ -327,13 +327,24 @@
                                         </header>
                                         <main class="modal-body">
                                             <!-- ======  Manage Payment methods ====== -->
-                                            <div id="payment_method" class="text-start">
+                                            <div t-if="providers" id="payment_method" class="text-start">
                                                 <t t-call="payment.manage">
                                                     <t t-set="assign_token_route"
                                                        t-value="'/my/subscription/assign_token/' + str(subscription.id)"/>
                                                     <t t-set="landing_route"
                                                        t-value="subscription.get_portal_url() + '&amp;message=Your payment method has been changed for this subscription.&amp;message_class=alert-success'"/>
                                                 </t>
+                                            </div>
+                                            <div t-else="">
+                                                <div class="alert alert-warning">
+                                                    <b>No suitable payment method could be found.</b><br/>
+                                                    If you believe that is an error, please contact the website administrator.
+                                                </div>
+                                                <a role="button" class="btn-link"
+                                                    groups="base.group_system"
+                                                    t-attf-href="/web#action=#{payment_action_id}">
+                                                        <i class="oi oi-arrow-right"></i> Add payment providers
+                                                </a>
                                             </div>
                                         </main>
                                     </div>

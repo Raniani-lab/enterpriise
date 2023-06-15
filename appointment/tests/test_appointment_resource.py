@@ -59,6 +59,22 @@ class AppointmentResource(AppointmentCommon):
         }])
 
     @users('apt_manager')
+    def test_appointment_resource_default_appointment_type(self):
+        """Check that the default appointment type is properly deduced from the default appointment resource."""
+        resource_3_type_ids = self.resource_3.appointment_type_ids
+        Event = self.env['calendar.event']
+
+        states = [(self.resource_3, None, resource_3_type_ids[0]),
+                  (self.resource_3, resource_3_type_ids[1], resource_3_type_ids[1])]
+        for resource, default_type, expected_type_id in states:
+            context = {'default_appointment_resource_id': resource.id}
+            if default_type:
+                context.update(default_appointment_type_id=default_type.id)
+
+            event = Event.with_context(context).create({'name': 'Hello'})
+            self.assertEqual(event.appointment_type_id, expected_type_id)
+
+    @users('apt_manager')
     def test_appointment_resource_link(self):
         """ Test link between resources when they are combinable. """
         resource_1, resource_2 = self.env['appointment.resource'].create([

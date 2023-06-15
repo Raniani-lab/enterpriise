@@ -1,0 +1,102 @@
+/** @odoo-module **/
+
+import { useService } from "@web/core/utils/hooks";
+import { GanttRenderer } from "@web_gantt/gantt_renderer";
+import { AppointmentBookingGanttPopover } from "@appointment/views/gantt/gantt_popover";
+const { DateTime } = luxon;
+
+export class AppointmentBookingGanttRenderer extends GanttRenderer {
+    static components = {
+        ...GanttRenderer.components,
+        Popover: AppointmentBookingGanttPopover,
+    }
+    static headerTemplate = "web_gantt.GanttRenderer.Header";
+
+    /**
+     * @override
+     */
+    setup() {
+        super.setup();
+        this.orm = useService("orm");
+    }
+
+    /**
+     * @override
+     */
+    enrichPill(pill) {
+        const enrichedPill = super.enrichPill(pill);
+        const { record } = pill;
+        const now = DateTime.now()
+        // see o-colors-complete for array of colors to index into
+        let color = false;
+        if (!record.appointment_attended && now.diff(record.start, ['minutes']).minutes > 15){
+            color = 1  // red
+        } else if (record.appointment_attended) {
+            color = 10  // green
+        } else {
+            color = 8  // blue
+        }
+        if (color) {
+            enrichedPill.className += ` o_gantt_color_${color}`;
+        }
+        return enrichedPill;
+    }
+
+    /**
+     * @override
+     * Async copy of the overriden method
+     */
+    async onPillClicked(ev, pill) {
+        if (this.popover.isOpen) {
+            return;
+        }
+        const popoverTarget = ev.target.closest(".o_gantt_pill_wrapper");
+        this.popover.open(popoverTarget, await this.getPopoverProps(pill));
+    }
+    /**
+     * @override
+     */
+    async getPopoverProps(pill) {
+        const popoverProps = super.getPopoverProps(pill);
+        const { record } = pill;
+        const attendedState = record.appointment_attended;
+        const partner_ids = record.partner_ids || [];
+        let contact_partner_id = false;
+        if (record.partner_ids) {
+            contact_partner_id = record.partner_id
+            ? partner_ids.find(partner_id => partner_id != record.partner_id[0])
+            : partner_ids.length ? partner_ids[0] : false;
+        }
+        const popoverValues = contact_partner_id
+            ? await this.orm.read(
+                'res.partner',
+                [contact_partner_id], ['name', 'email', 'phone']
+            )
+            : [{
+                id: false,
+                name: '',
+                email: '',
+                phone: '',
+            }];
+        Object.assign(popoverProps, {
+            markAsAttendedCallback: () => {
+                this.orm.call(
+                    'calendar.event',
+                    'write',
+                    [record.id, {
+                        appointment_attended: !attendedState,
+                    }],
+                ).then(() => this.model.fetchData());
+            },
+            attendedState,
+            title: popoverValues[0].name || this.getDisplayName(pill),
+            context: {
+                ...popoverProps.context,
+                gantt_pill_contact_name: popoverValues[0].name,
+                gantt_pill_contact_email: popoverValues[0].email,
+                gantt_pill_contact_phone: popoverValues[0].phone,
+            }
+        });
+        return popoverProps;
+    }
+}

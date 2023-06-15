@@ -1,6 +1,14 @@
 <?xml version="1.0"?>
 <odoo>
 
+
+    <menuitem
+        id="menu_appointment_resource_booking"
+        parent="calendar.mail_menu_calendar"
+        action="calendar_event_action_view_bookings"
+        groups="group_appointment_manager"
+        name="Schedule"/>
+
     <menuitem
         id="menu_schedule_report"
         parent="calendar.mail_menu_calendar"
@@ -14,11 +22,6 @@
         id="menu_schedule_report_online"
         parent="appointment.menu_schedule_report"
         action="calendar_event_action_report"/>
-    <menuitem
-        id="menu_appointment_booking"
-        parent="appointment.menu_schedule_report"
-        action="calendar_event_action_view_bookings"
-        groups="group_appointment_manager"/>
 
     <menuitem
         id="calendar_appointment_type_menu_action"

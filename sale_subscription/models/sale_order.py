@@ -969,7 +969,7 @@ class SaleOrder(models.Model):
     def _get_invoiceable_lines(self, final=False):
         date_from = fields.Date.today()
         res = super()._get_invoiceable_lines(final=final)
-        res = res.filtered(lambda l: l.temporal_type != 'subscription')
+        res = res.filtered(lambda l: l.temporal_type != 'subscription' or l.order_id.subscription_management == 'upsell')
         automatic_invoice = self.env.context.get('recurring_automatic')
 
         invoiceable_line_ids = []
@@ -986,8 +986,11 @@ class SaleOrder(models.Model):
             line_condition = time_condition or not automatic_invoice # automatic mode force the invoice when line are not null
             line_to_invoice = False
             if line in res:
-                # Line was already marked as to be invoice
+                # Line was already marked as to be invoiced
                 line_to_invoice = True
+            elif line.order_id.subscription_management == 'upsell':
+                # Super() already select everything that is needed for upsells
+                line_to_invoice = False
             elif line.display_type or line.temporal_type != 'subscription':
                 # Avoid invoicing section/notes or lines starting in the future or not starting at all
                 line_to_invoice = False

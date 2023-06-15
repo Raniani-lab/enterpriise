@@ -1,5 +1,5 @@
 /** @odoo-module **/
-import { click, getFixture } from "@web/../tests/helpers/utils";
+import { click, getFixture, nextTick } from "@web/../tests/helpers/utils";
 import { getActionManagerServerData } from "@web/../tests/webclient/helpers";
 import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
 import { openStudio, registerStudioDependencies } from "@web_studio/../tests/helpers";
@@ -45,6 +45,7 @@ QUnit.module("Form Manager", (hooks) => {
             });
             // open app Ponies (act window action)
             await click(target, ".o_app[data-menu-xmlid=app_1]");
+            await nextTick();
             await openStudio(target);
 
             const websiteItem = [...target.querySelectorAll(".o_web_studio_menu_item")].filter(

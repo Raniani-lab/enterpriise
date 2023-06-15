@@ -82,6 +82,9 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             ]);
             assert.notOk(document.body.classList.contains("o_home_menu_background"));
             assert.containsNone(fixture, ".o_home_menu");
+            // web client display empty action before kanban view is loaded
+            assert.containsNone(fixture, ".o_kanban_view");
+            await nextTick();
             assert.containsOnce(fixture, ".o_kanban_view");
             const menuToggle = fixture.querySelector(".o_menu_toggle");
             assert.isVisible(menuToggle);
@@ -97,6 +100,9 @@ QUnit.module("WebClient Enterprise", (hooks) => {
                 "/web/dataset/call_kw/partner/get_views",
                 "/web/dataset/call_kw/partner/web_search_read",
             ]);
+            assert.containsNone(fixture, ".o_kanban_view");
+            await nextTick();
+            assert.containsOnce(fixture, ".o_kanban_view");
             await click(fixture.querySelector(".o_kanban_record"));
             await nextTick(); // there is another tick to update navbar and destroy HomeMenu
             assert.verifySteps(["/web/dataset/call_kw/partner/read"]);
@@ -117,6 +123,9 @@ QUnit.module("WebClient Enterprise", (hooks) => {
                 "/web/dataset/call_kw/partner/get_views",
                 "/web/dataset/call_kw/partner/web_search_read",
             ]);
+            assert.containsNone(fixture, ".o_kanban_view");
+            await nextTick();
+            assert.containsOnce(fixture, ".o_kanban_view");
             await click(fixture.querySelector(".o_kanban_record"));
             assert.verifySteps(["/web/dataset/call_kw/partner/read"]);
             await click(fixture, '.o_field_widget[name="m2o"] .o_external_button', true);
@@ -145,6 +154,9 @@ QUnit.module("WebClient Enterprise", (hooks) => {
                     "/web/dataset/call_kw/partner/get_views",
                     "/web/dataset/call_kw/partner/web_search_read",
                 ]);
+                assert.containsNone(fixture, ".o_kanban_view");
+                await nextTick();
+                assert.containsOnce(fixture, ".o_kanban_view");
                 await click(fixture.querySelector(".o_kanban_record"));
                 assert.verifySteps(["/web/dataset/call_kw/partner/read"]);
                 await click(fixture, '.o_field_widget[name="m2o"] .o_external_button', true);
@@ -171,6 +183,9 @@ QUnit.module("WebClient Enterprise", (hooks) => {
                 "/web/dataset/call_kw/partner/get_views",
                 "/web/dataset/call_kw/partner/web_search_read",
             ]);
+            assert.containsNone(fixture, ".o_kanban_view");
+            await nextTick();
+            assert.containsOnce(fixture, ".o_kanban_view");
             await click(fixture.querySelector(".o_kanban_record"));
             assert.verifySteps(["/web/dataset/call_kw/partner/read"]);
             await click(fixture, '.o_field_widget[name="m2o"] .o_external_button', true);
@@ -485,6 +500,8 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             assert.isNotVisible(fixture.querySelector(".o_main_navbar .o_menu_toggle"));
 
             await click(fixture.querySelector(".o_apps > .o_draggable:nth-child(2) > .o_app"));
+            assert.containsNone(fixture, ".test_client_action");
+            await nextTick();
             assert.containsOnce(fixture, ".test_client_action");
             assert.containsNone(fixture, ".o_home_menu");
 

@@ -4,22 +4,32 @@ import { ActionContainer } from "@web/webclient/actions/action_container";
 import { useService } from "@web/core/utils/hooks";
 import { registry } from "@web/core/registry";
 import { KeepLast } from "@web/core/utils/concurrency";
-import { onWillStart, onWillUpdateProps } from "@odoo/owl";
+import { Component, onWillStart, onWillUpdateProps, xml } from "@odoo/owl";
 import { useStudioServiceAsReactive } from "@web_studio/studio_service";
 import { resetViewCompilerCache } from "@web/views/view_compiler";
 
 const editorTabRegistry = registry.category("web_studio.editor_tabs");
 
-export class StudioActionContainer extends ActionContainer {
+export class StudioActionContainer extends Component {
+    static template = xml`
+        <t t-name="web.ActionContainer">
+        <div class="o_action_manager">
+            <t t-if="info.Component" t-component="info.Component" className="'o_action'" t-props="info.componentProps" t-key="info.id"/>
+        </div>
+        </t>`;
+    static props = {};
+
     setup() {
-        super.setup();
         this.actionService = useService("action");
         this.studio = useStudioServiceAsReactive();
         this.rpc = useService("rpc");
+        this.info = {};
 
         let actionKey = 1;
-        const onUiUpdate = () => {
+        const onUiUpdate = ({ detail: info }) => {
+            this.info = info;
             actionKey++;
+            this.render();
         };
         this.env.bus.addEventListener("ACTION_MANAGER:UPDATE", onUiUpdate);
         owl.onWillUnmount(() =>
@@ -58,9 +68,11 @@ export class StudioActionContainer extends ActionContainer {
                         _resolve();
                     };
                     this.studioKey = this.studio.requestId;
-                    doAction(action, { clearBreadcrumbs: true }).finally(() => {
-                        this.env.bus.removeEventListener("ACTION_MANAGER:UPDATE", resolve);
-                    });
+                    doAction(action, { clearBreadcrumbs: true, noEmptyTransition: true }).finally(
+                        () => {
+                            this.env.bus.removeEventListener("ACTION_MANAGER:UPDATE", resolve);
+                        }
+                    );
                     this.env.bus.addEventListener("ACTION_MANAGER:UPDATE", resolve);
                 });
             }

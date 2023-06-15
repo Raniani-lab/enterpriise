@@ -206,6 +206,7 @@ QUnit.module("Studio", (hooks) => {
         // the menu is rendered once the action is ready, so potentially in the next animation frame
         await nextTick();
         await click(target, ".o_menu_sections .o_nav_entry:nth-child(2)");
+        await nextTick();
         assert.containsOnce(target, ".o_list_view");
 
         await click(target.querySelector(".o_data_row .o_data_cell")); // open a record
@@ -482,6 +483,7 @@ QUnit.module("Studio", (hooks) => {
         assert.containsOnce(target, ".o_kanban_view");
 
         await click(target.querySelector(".o_menu_sections a[data-menu-xmlid=menu_12]"));
+        await nextTick();
         assert.containsOnce(target, ".o_list_view");
         assert.verifySteps([`get_views, context studio: "undefined"`]);
     });
@@ -519,6 +521,7 @@ QUnit.module("Studio", (hooks) => {
         await click(target.querySelector(".o_app[data-menu-xmlid=app_1]"));
         await nextTick();
         await click(target.querySelector(".o_menu_sections [data-menu-xmlid=menu_12]"));
+        await nextTick();
         assert.containsOnce(target, ".o_list_view");
 
         await openStudio(target);
@@ -587,6 +590,7 @@ QUnit.module("Studio", (hooks) => {
         await createEnterpriseWebClient({ serverData });
         // open app Ponies (act window action)
         await click(target.querySelector(".o_app[data-menu-xmlid=app_2]"));
+        await nextTick();
         assert.containsOnce(target, ".o_list_view");
         // Dont'pick the first record for testing
         await click(target.querySelectorAll(".o_data_row .o_data_cell")[1]);
@@ -793,6 +797,7 @@ QUnit.module("Studio", (hooks) => {
         });
         assert.verifySteps([]);
         await click(target.querySelector(".o_app[data-menu-xmlid=app_43]"));
+        await nextTick();
         assert.containsOnce(target, ".o_kanban_view");
         assert.verifySteps([
             `web_search_read: {"limit":40,"offset":0,"order":"","context":{"lang":"en","uid":7,"tz":"taht","allowed_company_ids":[1],"bin_size":true},"count_limit":10001,"domain":[],"fields":["display_name"]}`,

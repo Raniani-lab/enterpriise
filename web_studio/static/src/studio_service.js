@@ -158,6 +158,7 @@ export const studioService = {
                 }
                 if (action !== state.editedAction) {
                     options.clearBreadcrumbs = true;
+                    options.noEmptyTransition = true;
                 }
                 state.editedAction = action;
                 const vtype = viewType || action.views[0][1]; // fallback on first view of action

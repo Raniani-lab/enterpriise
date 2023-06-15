@@ -1537,11 +1537,12 @@ class TestSubscription(TestSubscriptionCommon):
         with freeze_time("2022-07-01"):
             discount = upsell_so.order_line.mapped('discount')[0]
             self.assertEqual(discount, 46.58, "The discount is almost equal to 50% and should not be updated for confirmed SO")
+            self.assertEqual(upsell_so.order_line.mapped('qty_to_invoice'), [2, 0, 0, 1])
             upsell_invoice = upsell_so._create_invoices()
             inv_line_ids = upsell_invoice.invoice_line_ids.filtered('product_id')
             self.assertEqual(inv_line_ids.mapped('subscription_id'), upsell_so.subscription_id)
-            self.assertEqual(inv_line_ids.mapped('deferred_start_date'), [datetime.date(2022, 6, 20), datetime.date(2022, 6, 20), datetime.date(2022, 6, 20)])
-            self.assertEqual(inv_line_ids.mapped('deferred_end_date'), [datetime.date(2022, 12, 31), datetime.date(2022, 12, 31), datetime.date(2022, 12, 31)])
+            self.assertEqual(inv_line_ids.mapped('deferred_start_date'), [datetime.date(2022, 6, 20), datetime.date(2022, 6, 20)])
+            self.assertEqual(inv_line_ids.mapped('deferred_end_date'), [datetime.date(2022, 12, 31), datetime.date(2022, 12, 31)])
             (upsell_so | sub)._cron_recurring_create_invoice()
             inv = sub.invoice_ids.sorted('date')[-1]
             self.assertEqual(inv.date, datetime.date(2022, 1, 1), "No invoice should be created")

@@ -101,7 +101,7 @@ class L10nBeEcoVouchersWizard(models.TransientModel):
                 all_payslips = all_payslips.filtered(lambda p: p.employee_id not in already_paid_employees)
 
             employee_contracts = defaultdict(lambda: self.env['hr.contract'])
-            for contract in all_contracts.filtered(lambda c: c.active and c.company_id == wizard.company_id):
+            for contract in all_contracts.filtered(lambda c: c.active and c.company_id == wizard.company_id and c.eco_checks):
                 employee_contracts[contract.employee_id] |= contract
 
             result = [(5, 0, 0)]

@@ -36,6 +36,7 @@ import { EditionFlow } from "@web_studio/client_action/editor/edition_flow";
 import { useService } from "@web/core/utils/hooks";
 import { makeFakeLocalizationService } from "@web/../tests/helpers/mock_services";
 import { useOwnDebugContext } from "@web/core/debug/debug_context";
+import { commandService } from "@web/core/commands/command_service";
 
 export function selectorContains(target, selector, contains) {
     const elems = Array.from(target.querySelectorAll(selector)).filter((el) =>
@@ -108,6 +109,7 @@ export function registerViewEditorDependencies() {
     serviceRegistry.add("notification", notificationService);
     serviceRegistry.add("popover", popoverService);
     serviceRegistry.add("hotkey", hotkeyService);
+    serviceRegistry.add("command", commandService);
     serviceRegistry.add("localization", makeFakeLocalizationService(), { force: true });
 
     serviceRegistry.add("company", companyService);

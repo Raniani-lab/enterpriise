@@ -23,7 +23,6 @@ import { ImageField } from "@web/views/fields/image/image_field";
 import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
 import { doAction } from "@web/../tests/webclient/helpers";
 import { openStudio, registerStudioDependencies } from "../../helpers";
-import { fakeCommandService } from "@web/../tests/helpers/mock_services";
 import { registry } from "@web/core/registry";
 import { makeArchChanger } from "./view_editor_tests_utils";
 import { start, startServer } from "@mail/../tests/helpers/test_utils";
@@ -2538,7 +2537,6 @@ QUnit.module("View Editors", (hooks) => {
                 }
             };
 
-            registry.category("services").add("command", fakeCommandService);
             await createViewEditor({
                 serverData,
                 resModel: "product",

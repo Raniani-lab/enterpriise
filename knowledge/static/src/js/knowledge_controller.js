@@ -17,7 +17,7 @@ export class KnowledgeArticleFormController extends FormController {
             ensureArticleName: this.ensureArticleName.bind(this),
             openArticle: this.openArticle.bind(this),
             renameArticle: this.renameArticle.bind(this),
-            toggleAside: this.toggleAside.bind(this),
+            toggleAsideMobile: this.toggleAsideMobile.bind(this),
         });
     }
 
@@ -124,6 +124,7 @@ export class KnowledgeArticleFormController extends FormController {
             // Show loaded document
             scrollView.style.visibility = 'visible';
         }
+        this.toggleAsideMobile(false);
     }
 
     /*
@@ -146,9 +147,10 @@ export class KnowledgeArticleFormController extends FormController {
     }
 
     /**
+     * Toggle the aside menu on mobile devices (< 576px).
      * @param {boolean} force
      */
-    toggleAside(force) {
+    toggleAsideMobile(force) {
         const container = this.root.el.querySelector('.o_knowledge_form_view');
         container.classList.toggle('o_toggle_aside', force);
     }

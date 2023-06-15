@@ -3,7 +3,7 @@
     <t t-name="knowledge.KnowledgeTopbar" owl="1">
         <div class="o_knowledge_header d-flex gap-2 flex-column justify-content-end flex-sm-row align-items-sm-center border-bottom d-print-none bg-view px-0 py-2 ps-sm-3 pe-sm-2">
             <div class="d-flex flex-grow-1 min-w-0 gap-1 px-2 px-sm-0 pt-2 pt-sm-0">
-                <a role="button" class="d-sm-none btn btn-light align-self-start px-2 py-1" t-on-click="() => this.env.toggleAside()">
+                <a role="button" class="d-sm-none btn btn-light align-self-start px-2 py-1" t-on-click="() => this.env.toggleAsideMobile()">
                     <i class="fa fa-lg fa-bars" title="Toggle aside menu"/>
                 </a>
                 <!-- Breadcrumbs -->

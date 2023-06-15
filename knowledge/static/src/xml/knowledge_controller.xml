@@ -11,7 +11,7 @@
         </xpath>
 
         <xpath expr="//t[@archInfo='archInfo']" position="after">
-            <div class="o_knowledge_backdrop cursor-pointer" t-on-click="() => this.toggleAside()"/>
+            <div class="o_knowledge_backdrop cursor-pointer" t-on-click="() => this.toggleAsideMobile()"/>
         </xpath>
 
         <xpath expr="//t[@archInfo='archInfo']" position="attributes">

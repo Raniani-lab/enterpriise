@@ -356,7 +356,8 @@ class MarketingActivity(models.Model):
         else:
             rec_domain = literal_eval(self.campaign_id.filter)
         if rec_domain:
-            rec_valid = self.env[self.model_name].search(rec_domain)
+            user_id = self.campaign_id.user_id or self.env.user
+            rec_valid = self.env[self.model_name].with_context(lang=user_id.lang).search(rec_domain)
             rec_ids_domain = set(rec_valid.ids)
 
             traces_allowed = traces.filtered(lambda trace: trace.res_id in rec_ids_domain or trace.is_test)

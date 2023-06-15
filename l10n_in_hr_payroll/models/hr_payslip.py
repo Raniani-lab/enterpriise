@@ -100,21 +100,22 @@ class HrPayslip(models.Model):
                 })
 
             # Employees who are on the probation & their contracts expire within a week
-            probation_contract_type = self.env.ref('l10n_in_hr_payroll.l10n_in_contract_type_probation')
-            nearly_expired_contracts = self.env['hr.contract'].search([
-                ('contract_type_id', '=', probation_contract_type.id),
-                ('state', '=', 'open'), ('kanban_state', '!=', 'blocked'),
-                ('date_end', '<=', fields.Date.to_string(date.today() + relativedelta(days=7))),
-                ('date_end', '>=', fields.Date.to_string(date.today() + relativedelta(days=1))),
-            ])
-            if nearly_expired_contracts:
-                prob_end_str = _("Employees Probation ends within a week")
-                employee_ids = nearly_expired_contracts.employee_id.ids
-                res.append({
-                    'string': prob_end_str,
-                    'count': len(employee_ids),
-                    'action': self._dashboard_default_action(prob_end_str, 'hr.employee', employee_ids)
-                })
+            probation_contract_type = self.env.ref('l10n_in_hr_payroll.l10n_in_contract_type_probation', raise_if_not_found=False)
+            if probation_contract_type:
+                nearly_expired_contracts = self.env['hr.contract'].search([
+                    ('contract_type_id', '=', probation_contract_type.id),
+                    ('state', '=', 'open'), ('kanban_state', '!=', 'blocked'),
+                    ('date_end', '<=', fields.Date.to_string(date.today() + relativedelta(days=7))),
+                    ('date_end', '>=', fields.Date.to_string(date.today() + relativedelta(days=1))),
+                ])
+                if nearly_expired_contracts:
+                    prob_end_str = _("Employees Probation ends within a week")
+                    employee_ids = nearly_expired_contracts.employee_id.ids
+                    res.append({
+                        'string': prob_end_str,
+                        'count': len(employee_ids),
+                        'action': self._dashboard_default_action(prob_end_str, 'hr.employee', employee_ids)
+                    })
         return res
 
     def _get_base_local_dict(self):

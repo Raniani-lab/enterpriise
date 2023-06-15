@@ -30,15 +30,16 @@ class HrContract(models.Model):
 
     @api.model
     def update_state(self):
-        one_week_ago = fields.Date.today() - timedelta(weeks=1)
-        contract_type_id = self.env.ref('l10n_in_hr_payroll.l10n_in_contract_type_probation')
-        contracts = self.env['hr.contract'].search([
-            ('date_end', '=', one_week_ago), ('state', '=', 'open'), ('contract_type_id', '=', contract_type_id.id)
-        ])
-        for contract in contracts:
-            contract.activity_schedule(
-                'note.mail_activity_data_reminder',
-                user_id=contract.hr_responsible_id.id,
-                note=_("End date of %(name)s's contract is today.", name=contract.employee_id.name),
-            )
+        contract_type_id = self.env.ref('l10n_in_hr_payroll.l10n_in_contract_type_probation', raise_if_not_found=False)
+        if contract_type_id:
+            one_week_ago = fields.Date.today() - timedelta(weeks=1)
+            contracts = self.env['hr.contract'].search([
+                ('date_end', '=', one_week_ago), ('state', '=', 'open'), ('contract_type_id', '=', contract_type_id.id)
+            ])
+            for contract in contracts:
+                contract.activity_schedule(
+                    'note.mail_activity_data_reminder',
+                    user_id=contract.hr_responsible_id.id,
+                    note=_("End date of %(name)s's contract is today.", name=contract.employee_id.name),
+                )
         return super().update_state()

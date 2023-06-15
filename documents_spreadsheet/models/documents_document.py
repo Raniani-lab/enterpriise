@@ -10,7 +10,7 @@ import datetime
 from lxml import etree
 
 from odoo import _, fields, models, api
-from odoo.exceptions import UserError, AccessError
+from odoo.exceptions import UserError, AccessError, ValidationError
 from odoo.osv import expression
 from odoo.tools import image_process
 
@@ -60,6 +60,8 @@ class Document(models.Model):
         return super().write(vals)
 
     def join_spreadsheet_session(self, share_id=None, access_token=None):
+        if self.sudo().handler != "spreadsheet":
+            raise ValidationError(_("The spreadsheet you are trying to access does not exist."))
         data = super().join_spreadsheet_session(share_id, access_token)
         return dict(data, is_favorited=self.sudo().is_favorited, folder_id=self.sudo().folder_id.id)
 

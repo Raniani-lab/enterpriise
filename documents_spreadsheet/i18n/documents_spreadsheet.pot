@@ -462,6 +462,13 @@ msgstr ""
 #. odoo-python
 #: code:addons/documents_spreadsheet/models/documents_document.py:0
 #, python-format
+msgid "The spreadsheet you are trying to access does not exist."
+msgstr ""
+
+#. module: documents_spreadsheet
+#. odoo-python
+#: code:addons/documents_spreadsheet/models/document.py:0
+#, python-format
 msgid "The xlsx file is corrupted"
 msgstr ""
 

@@ -582,7 +582,6 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
                     **format_params,
                 ))
 
-        unfold_all = options['print_mode'] or options.get('unfold_all')
         line_id = report._get_generic_line_id('account.account', account.id)
         return {
             'id': line_id,
@@ -590,7 +589,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             'columns': line_columns,
             'level': 1,
             'unfoldable': has_lines,
-            'unfolded': has_lines and (line_id in options.get('unfolded_lines') or unfold_all),
+            'unfolded': has_lines and (line_id in options.get('unfolded_lines') or options.get('unfold_all')),
             'expand_function': '_report_expand_unfoldable_line_general_ledger',
         }
 

@@ -466,6 +466,7 @@ class TestGeneralLedgerReport(TestAccountReportsCommon, odoo.tests.HttpCase):
         """ Test the lines generated when a user filters on the search bar and prints the report """
         options = self._generate_options(self.report, '2017-01-01', '2017-12-31', default_options={'print_mode': True})
         options['filter_search_bar'] = '400'
+        options['unfold_all'] = True
 
         self.assertLinesValues(
             self.report._get_lines(options),

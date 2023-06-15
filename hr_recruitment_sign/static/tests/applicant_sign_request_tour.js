@@ -27,6 +27,16 @@
                 run: 'click',
             },
             {
+                trigger: ".o_statusbar_status button.dropdown-toggle",
+                content: "Move applicant to hired stage",
+                run: 'click'
+            },
+            {
+                content: "Recruitment",
+                trigger: '.dropdown-item:contains("Contract Signed")',
+                run: 'click',
+            },
+            {
                 content: "Create an employee",
                 trigger: '.btn[name="create_employee_from_applicant"]',
                 run: 'click',

@@ -842,6 +842,16 @@ registry.category("web_tour.tours").add('hr_contract_salary_tour_2', {
             run: 'click'
         },
         {
+            trigger: ".o_statusbar_status button.dropdown-toggle",
+            content: "Move applicant to hired stage",
+            run: 'click'
+        },
+        {
+            content: "Recruitment",
+            trigger: '.dropdown-item:contains("Contract Signed")',
+            run: 'click',
+        },
+        {
             content: "Create Employee",
             trigger: ".o_statusbar_buttons > button[name='create_employee_from_applicant']",
             extra_trigger: ".o_statusbar_buttons",

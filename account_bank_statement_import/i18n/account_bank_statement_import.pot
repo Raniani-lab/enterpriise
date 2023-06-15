@@ -79,6 +79,11 @@ msgid ""
 msgstr ""
 
 #. module: account_bank_statement_import
+#: model_terms:ir.ui.view,arch_db:account_bank_statement_import.journal_dashboard_view_inherit
+msgid "Import"
+msgstr ""
+
+#. module: account_bank_statement_import
 #: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bank_statement_line__unique_import_id
 msgid "Import ID"
 msgstr ""
@@ -88,6 +93,11 @@ msgstr ""
 #: code:addons/account_bank_statement_import/static/src/account_bank_statement_import_model.js:0
 #, python-format
 msgid "Import Template for Bank Statements"
+msgstr ""
+
+#. module: account_bank_statement_import
+#: model_terms:ir.ui.view,arch_db:account_bank_statement_import.journal_dashboard_view_inherit
+msgid "Import Transactions"
 msgstr ""
 
 #. module: account_bank_statement_import

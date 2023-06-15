@@ -1,5 +1,5 @@
 /** @odoo-module **/
-import { Reactive } from "@pos_preparation_display/app/models/reactive";
+import { Reactive } from "@web/core/utils/reactive";
 
 export class Stage extends Reactive {
     constructor({ id, name, color, alert_timer, sequence }, preparationDisplay) {

@@ -1,5 +1,5 @@
 /** @odoo-module **/
-import { Reactive } from "@pos_preparation_display/app/models/reactive";
+import { Reactive } from "@web/core/utils/reactive";
 
 export class Category extends Reactive {
     constructor({ id, display_name, color }) {

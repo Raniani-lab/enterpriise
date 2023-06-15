@@ -825,6 +825,16 @@ Tour.register('hr_contract_salary_tour_2', {
             run: 'click'
         },
         {
+            trigger: ".o_statusbar_status button.dropdown-toggle",
+            content: "Move applicant to hired stage",
+            run: 'click'
+        },
+        {
+            content: "Recruitment",
+            trigger: '.dropdown-item.btn.btn-secondary.o_arrow_button',
+            run: 'click',
+        },
+        {
             content: "Create Employee",
             trigger: ".o_statusbar_buttons > button[name='create_employee_from_applicant']",
             extra_trigger: ".o_statusbar_buttons",

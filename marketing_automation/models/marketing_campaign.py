@@ -323,7 +323,8 @@ class MarketingCampaign(models.Model):
             if not campaign.last_sync_date:
                 campaign.last_sync_date = now
 
-            RecordModel = self.env[campaign.model_name]
+            user_id = campaign.user_id or self.env.user
+            RecordModel = self.env[campaign.model_name].with_context(lang=user_id.lang)
 
             # Fetch existing participants
             participants_data = participants.search_read([('campaign_id', '=', campaign.id)], ['res_id'])

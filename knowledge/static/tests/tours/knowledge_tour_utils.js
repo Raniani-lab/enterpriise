@@ -25,39 +25,47 @@ export const dragAndDropArticle = ($element, $target) => {
     // position (below (or above)) to consistently trigger the correct move.
     const offsetY = sign * ($target.outerHeight() / 2 - 5);
 
-    const element = $element[0].closest('li');
+    const element = $element[0].closest("li");
     const target = $target[0];
-    element.dispatchEvent(new MouseEvent("mousedown", {
-        bubbles: true,
-        which: 1,
-        clientX: elementCenter.left,
-        clientY: elementCenter.top,
-    }));
+    element.dispatchEvent(
+        new PointerEvent("pointerdown", {
+            bubbles: true,
+            which: 1,
+            clientX: elementCenter.left,
+            clientY: elementCenter.top,
+        })
+    );
 
     // Initial movement starting the drag sequence
-    element.dispatchEvent(new MouseEvent("mousemove", {
-        bubbles: true,
-        which: 1,
-        clientX: elementCenter.left,
-        clientY: elementCenter.top + SORTABLE_TOLERANCE + 1,
-    }));
+    element.dispatchEvent(
+        new PointerEvent("pointermove", {
+            bubbles: true,
+            which: 1,
+            clientX: elementCenter.left,
+            clientY: elementCenter.top + SORTABLE_TOLERANCE + 1,
+        })
+    );
 
     // Timeouts because sidebar onMove is debounced
     setTimeout(() => {
-        target.dispatchEvent(new MouseEvent("mousemove", {
-            bubbles: true,
-            which: 1,
-            clientX: targetCenter.left,
-            clientY: targetCenter.top + offsetY,
-        }));
-    
-        setTimeout(() => {
-            element.dispatchEvent(new MouseEvent("mouseup", {
+        target.dispatchEvent(
+            new PointerEvent("pointermove", {
                 bubbles: true,
                 which: 1,
                 clientX: targetCenter.left,
                 clientY: targetCenter.top + offsetY,
-            }));
+            })
+        );
+
+        setTimeout(() => {
+            element.dispatchEvent(
+                new PointerEvent("pointerup", {
+                    bubbles: true,
+                    which: 1,
+                    clientX: targetCenter.left,
+                    clientY: targetCenter.top + offsetY,
+                })
+            );
         }, 200);
     }, 200);
 };
@@ -99,9 +107,9 @@ export function appendArticleLink(htmlFieldContainerSelector, articleName, offse
 export function makeVisible(selector) {
     const el = document.querySelector(selector);
     if (el) {
-        el.style.setProperty('visibility', 'visible', 'important');
-        el.style.setProperty('opacity', '1', 'important');
-        el.style.setProperty('display', 'block', 'important');
+        el.style.setProperty("visibility", "visible", "important");
+        el.style.setProperty("opacity", "1", "important");
+        el.style.setProperty("display", "block", "important");
     }
 }
 
@@ -117,21 +125,27 @@ export function openCommandBar(paragraph, offset=0) {
     range.setStart(paragraph, offset);
     range.setEnd(paragraph, offset);
     sel.addRange(range);
-    paragraph.dispatchEvent(new KeyboardEvent('keydown', {
-        key: '/',
-    }));
-    const slash = document.createTextNode('/');
+    paragraph.dispatchEvent(
+        new KeyboardEvent("keydown", {
+            key: "/",
+        })
+    );
+    const slash = document.createTextNode("/");
     paragraph.prepend(slash);
     sel.removeAllRanges();
     range.setStart(slash, 1);
     range.setEnd(slash, 1);
     sel.addRange(range);
-    paragraph.dispatchEvent(new InputEvent('input', {
-        inputType: 'insertText',
-        data: '/',
-        bubbles: true,
-    }));
-    paragraph.dispatchEvent(new KeyboardEvent('keyup', {
-        key: '/',
-    }));
+    paragraph.dispatchEvent(
+        new InputEvent("input", {
+            inputType: "insertText",
+            data: "/",
+            bubbles: true,
+        })
+    );
+    paragraph.dispatchEvent(
+        new KeyboardEvent("keyup", {
+            key: "/",
+        })
+    );
 }

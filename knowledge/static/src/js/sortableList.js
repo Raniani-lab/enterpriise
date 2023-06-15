@@ -123,28 +123,29 @@ export const useSortableList = makeDraggableHook({
     // Make the placeholder take the place of the moving row, and add style on
     // different elements to provide feedback that there is an ongoing dragging
     // sequence.
-    onDragStart({ ctx, addListener, addStyle, callHandler}) {
-
+    onDragStart({ ctx, addStyle }) {
         // Horizontal position which will be used to detect row changes when moving vertically, so that
         // we do not need to be on the row to trigger row changes (only the vertical position matters).
         // Nested rows are shorter than "root" rows, and do not start at the same horizontal position.
         // However, every row spans until the end of the container. Therefore, we use the end of the
         // container - 1 as horizontal position.
-        ctx.selectorX = ctx.isRTL ? ctx.current.containerRect.left + 1 : ctx.current.containerRect.right - 1; 
-        
+        ctx.selectorX = ctx.isRTL
+            ? ctx.current.containerRect.left + 1
+            : ctx.current.containerRect.right - 1;
+
         // Placeholder is initially added right after the current element.
         ctx.current.element.after(ctx.current.placeHolder);
-        addStyle(ctx.current.element, {"opacity": 0.5});
+        addStyle(ctx.current.element, { opacity: 0.5 });
 
         // Remove pointer-events style added by draggable_hook_builder and set
         // it on the view elements instead as in our case we want to show the
         // ctx.cursor style on the whole screen, not only in the ref el.
-        addStyle(document.body, {"pointer-events": "auto"});
-        addStyle(document.querySelector('.o_navbar'), {"pointer-events": "none"});
-        addStyle(document.querySelector('.o_action_manager'), {"pointer-events": "none"});
-        addStyle(ctx.current.container, {"pointer-events": "auto"});
+        addStyle(document.body, { "pointer-events": "auto" });
+        addStyle(document.querySelector(".o_navbar"), { "pointer-events": "none" });
+        addStyle(document.querySelector(".o_action_manager"), { "pointer-events": "none" });
+        addStyle(ctx.current.container, { "pointer-events": "auto" });
 
-        ctx.prevNestX = ctx.mouse.x;
+        ctx.prevNestX = ctx.pointer.x;
 
         // Calls "onDragStart" handler
         return {
@@ -155,15 +156,18 @@ export const useSortableList = makeDraggableHook({
     // Check if the cursor moved enough to trigger a move. If it did, move the
     // placeholder accordingly.
     onDrag({ ctx, callHandler }) {
-
         const onMove = (prevPos) => {
             callHandler("onMove", {
                 element: ctx.current.element,
                 previous: ctx.current.placeHolder.previousElementSibling,
                 next: ctx.current.placeHolder.nextElementSibling,
-                parent: ctx.nest ? ctx.current.placeHolder.parentElement.closest(ctx.elementSelector) : false,
+                parent: ctx.nest
+                    ? ctx.current.placeHolder.parentElement.closest(ctx.elementSelector)
+                    : false,
                 group: ctx.currentGroup,
-                newGroup: ctx.connectGroups ? ctx.current.placeHolder.closest(ctx.groupSelector) : ctx.currentGroup,
+                newGroup: ctx.connectGroups
+                    ? ctx.current.placeHolder.closest(ctx.groupSelector)
+                    : ctx.currentGroup,
                 prevPos,
                 placeholder: ctx.current.placeHolder,
             });
@@ -186,47 +190,49 @@ export const useSortableList = makeDraggableHook({
         const position = {
             previous: ctx.current.placeHolder.previousElementSibling,
             next: ctx.current.placeHolder.nextElementSibling,
-            parent: ctx.nest ? ctx.current.placeHolder.parentElement.closest(ctx.elementSelector) : false,
+            parent: ctx.nest
+                ? ctx.current.placeHolder.parentElement.closest(ctx.elementSelector)
+                : false,
             group: ctx.groupSelector ? ctx.current.placeHolder.closest(ctx.groupSelector) : false,
         };
         /** If nesting elements is allowed, horizontal moves may change the
          * parent of the placeholder element (the placeholder does not move
          * above or under an element, but it changes parent):
-         * 
+         *
          * - Moving to the left makes the placeholder a child of the previous
          *   element up in the nested hierarchy, only if the placeholder is the
          *   last child of its current parent:
-         *   
+         *
          *                    Allowed:
          *    el                           el
-         *     ┣ parent                     ┣ parent 
+         *     ┣ parent                     ┣ parent
          *     ┃  ┣ child           -->     ┃  ┗ child
          *     ┃  ┗ placeholder             ┣ placeholder
          *     ┗ el                         ┗ el
-         * 
+         *
          *                  Not Allowed:
          *    el                           el
-         *     ┣ parent                     ┣ parent 
+         *     ┣ parent                     ┣ parent
          *     ┃  ┣ placeholder     -->     ┣ p┃laceholder   <-- error
-         *     ┃  ┗ child                   ┃  ┗ child 
+         *     ┃  ┗ child                   ┃  ┗ child
          *     ┗ el                         ┗ el
-         * 
-         * 
+         *
+         *
          * - Moving to the right makes the placeholder the last child of the
          * next element down in the nested hierarchy:
-         * 
+         *
          *    el                           el
-         *     ┣ parent                    ┣ parent 
+         *     ┣ parent                    ┣ parent
          *     ┃  ┗ child           -->    ┃  ┣ child
          *     ┣ placeholder               ┃  ┗ placeholder
          *     ┗ el                        ┗ el
-         */ 
+         */
         if (ctx.nest) {
-            const xInterval = ctx.prevNestX - ctx.mouse.x;
-            if (ctx.nestInterval - ((-1) ** ctx.isRTL) * xInterval < 0) {
+            const xInterval = ctx.prevNestX - ctx.pointer.x;
+            if (ctx.nestInterval - (-1) ** ctx.isRTL * xInterval < 0) {
                 // Place placeholder after its parent in its parent's list only
                 // if the placeholder is the last child of its parent
-                // (ignoring the current element which is in the dom) 
+                // (ignoring the current element which is in the dom)
                 let nextElement = position.next;
                 if (nextElement === ctx.current.element) {
                     nextElement = nextElement.nextElementSibling;
@@ -238,9 +244,9 @@ export const useSortableList = makeDraggableHook({
                         onMove(position);
                     }
                 }
-                // Recenter the mouse coordinates to this step
-                ctx.prevNestX = ctx.mouse.x;
-            } else if (ctx.nestInterval + ((-1) ** ctx.isRTL) * xInterval < 0) {
+                // Recenter the pointer coordinates to this step
+                ctx.prevNestX = ctx.pointer.x;
+            } else if (ctx.nestInterval + (-1) ** ctx.isRTL * xInterval < 0) {
                 // Place placeholder as the last child of its previous sibling,
                 // (ignoring the current element which is in the dom)
                 let parent = position.previous;
@@ -251,12 +257,13 @@ export const useSortableList = makeDraggableHook({
                     getChildList(parent).appendChild(ctx.current.placeHolder);
                     onMove(position);
                 }
-                // Recenter the mouse coordinates to this step
-                ctx.prevNestX = ctx.mouse.x;
+                // Recenter the pointer coordinates to this step
+                ctx.prevNestX = ctx.pointer.x;
             }
         }
-        const closestEl = document.elementFromPoint(ctx.selectorX, ctx.mouse.y);
-        if (!closestEl) { // Cursor outside of viewport
+        const closestEl = document.elementFromPoint(ctx.selectorX, ctx.pointer.y);
+        if (!closestEl) {
+            // Cursor outside of viewport
             return;
         }
         const element = closestEl.closest(ctx.elementSelector);
@@ -270,14 +277,14 @@ export const useSortableList = makeDraggableHook({
             // element. If the position is not allowed but nesting is allowed,
             // place the placeholder as the last child of the previous sibling
             // instead.
-            if (ctx.mouse.y - eRect.y < 10) {
+            if (ctx.pointer.y - eRect.y < 10) {
                 if (pos === 2 || pos === 10) {
                     element.before(ctx.current.placeHolder);
                     onMove(position);
-                    // Recenter the mouse coordinates to this step
-                    ctx.prevNestX = ctx.mouse.x;
+                    // Recenter the pointer coordinates to this step
+                    ctx.prevNestX = ctx.pointer.x;
                 }
-            } else if (ctx.mouse.y - eRect.y > 15 && pos === 4) {
+            } else if (ctx.pointer.y - eRect.y > 15 && pos === 4) {
                 // Place placeholder after the hovered element in its parent's
                 // list if the cursor is not in the upper part of the
                 // element and if the placeholder is currently before the
@@ -287,8 +294,8 @@ export const useSortableList = makeDraggableHook({
                 if (ctx.nest) {
                     getChildList(element).prepend(ctx.current.placeHolder);
                     onMove(position);
-                    // Recenter the mouse coordinates to this step
-                    ctx.prevNestX = ctx.mouse.x;
+                    // Recenter the pointer coordinates to this step
+                    ctx.prevNestX = ctx.pointer.x;
                 } else {
                     element.after(ctx.current.placeHolder);
                     onMove(position);
@@ -304,10 +311,13 @@ export const useSortableList = makeDraggableHook({
                     getChildList(group).appendChild(ctx.current.placeHolder);
                     onMove(position);
                 }
-                // Recenter the mouse coordinates to this step
-                ctx.prevNestX = ctx.mouse.x;
+                // Recenter the pointer coordinates to this step
+                ctx.prevNestX = ctx.pointer.x;
                 callHandler("onGroupEnter", { group, element: ctx.current.placeHolder });
-                callHandler("onGroupLeave", { group: position.group, element: ctx.current.placeHolder });
+                callHandler("onGroupLeave", {
+                    group: position.group,
+                    element: ctx.current.placeHolder,
+                });
             }
         }
     },
@@ -329,10 +339,10 @@ export const useSortableList = makeDraggableHook({
         }
     },
     // Run the onDragEnd handler from the parameters.
-    onDragEnd({ ctx, callHandler }) {
-        return { 
+    onDragEnd({ ctx }) {
+        return {
             element: ctx.current.element,
-            group: ctx.currentGroup
+            group: ctx.currentGroup,
         };
     },
 });

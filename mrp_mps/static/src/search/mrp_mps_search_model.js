@@ -10,21 +10,22 @@ export class MrpMpsSearchModel extends SearchModel {
      * @override
      */
     _getFieldDomain(field, autocompleteValues) {
-        let domain = super._getFieldDomain(...arguments);
         if (field.fieldName === "bom_id") {
-            const value = autocompleteValues[0].value;
-            const operator = autocompleteValues[0].operator;
-            const additionalDomain = [
-                "|",
-                    ["product_id.bom_line_ids.bom_id", operator, value],
+            const domains = autocompleteValues.map(({ value, operator }) => {
+                let domain = [
                     "|",
-                        ["product_id.variant_bom_ids", operator, value],
-                        "&",
-                            ["product_tmpl_id.bom_ids.product_id", "=", false],
-                            ["product_tmpl_id.bom_ids", operator, value],
-            ];
-            domain = Domain.or([additionalDomain, domain.toList()]);
+                        ["product_id.bom_line_ids.bom_id", operator, value],
+                        "|",
+                            ["product_id.variant_bom_ids", operator, value],
+                            "&",
+                                ["product_tmpl_id.bom_ids.product_id", "=", false],
+                                ["product_tmpl_id.bom_ids", operator, value],
+                ];
+                return new Domain(domain);
+            });
+            return Domain.or(domains);
+        } else {
+            return super._getFieldDomain(...arguments);
         }
-        return domain;
     }
 };

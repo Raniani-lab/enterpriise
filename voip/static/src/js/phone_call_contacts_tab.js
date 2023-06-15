@@ -38,6 +38,15 @@ const PhoneCallContactsTab = PhoneCallTab.extend({
 
     /**
      * @override
+     */
+    _getSelectedPhoneCall() {
+        if (!this._selectedPhoneCallId) {
+            return undefined;
+        }
+        return this._phoneCalls.find((call) => call.partnerId === this._phoneCallDetails.partnerId);
+    },
+    /**
+     * @override
      * @return {Promise}
      */
     async initPhoneCall() {

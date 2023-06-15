@@ -456,9 +456,10 @@ class TestGeneralLedgerReport(TestAccountReportsCommon, odoo.tests.HttpCase):
         """ Test the lines generated when a user filters on the search bar and prints the report """
         options = self._generate_options(self.report, fields.Date.from_string('2017-01-01'), fields.Date.from_string('2017-12-31'))
         options['filter_search_bar'] = '400'
+        options['unfold_all'] = True
 
         self.assertLinesValues(
-            self.report.with_context(print_mode=True)._get_lines(options),
+            self.report._get_lines(options),
             #   Name                                    Debit           Credit          Balance
             [   0,                                      4,              5,              6],
             [
@@ -479,7 +480,7 @@ class TestGeneralLedgerReport(TestAccountReportsCommon, odoo.tests.HttpCase):
         options['filter_search_bar'] = '999'
 
         self.assertLinesValues(
-            self.report.with_context(print_mode=True)._get_lines(options),
+            self.report._get_lines(options),
             #   Name                                          Debit           Credit          Balance
             [   0,                                            4,              5,              6],
             [

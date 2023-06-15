@@ -568,7 +568,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
                     'class': 'number',
                 })
 
-        unfold_all = self._context.get('print_mode') or options.get('unfold_all')
+        unfold_all = options.get('unfold_all')
         line_id = report._get_generic_line_id('account.account', account.id)
         return {
             'id': line_id,

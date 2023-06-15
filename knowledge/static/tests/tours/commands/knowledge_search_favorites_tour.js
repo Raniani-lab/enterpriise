@@ -45,7 +45,7 @@ const embedKnowledgeKanbanViewSteps = function (article) {
 const validateFavoriteFiltersSteps = function (kanban1, kanban2) {
     return [{
         content: 'Open the search panel menu',
-        trigger: `.o_knowledge_embedded_view:contains(${kanban1}) .o_control_panel .o_searchview_dropdown_toggler`,
+        trigger: `.o_knowledge_embedded_view .o_control_panel:contains(${kanban1}) .o_searchview_dropdown_toggler`,
     }, {
         trigger: ".o_favorite_menu .o_add_favorite",
     }, {
@@ -129,6 +129,11 @@ registry.category("web_tour.tours").add("knowledge_items_search_favorites_tour",
         {
             trigger: "button:contains('Insert')",
         },
+        // wait for kanban 1 to be inserted
+        {
+            trigger: ".o_knowledge_embedded_view .o_control_panel:contains(Items 1)",
+            run: () => {},
+        },
         // Create the second Kanban
         {
             trigger: ".odoo-editor-editable > h1",
@@ -146,8 +151,9 @@ registry.category("web_tour.tours").add("knowledge_items_search_favorites_tour",
         {
             trigger: "button:contains('Insert')",
         },
+        // wait for kanban 2 to be inserted
         {
-            trigger: "span:contains('Items 2')", // wait for kanban 2 to be inserted,
+            trigger: ".o_knowledge_embedded_view .o_control_panel:contains(Items 2)",
             run: () => {},
         },
         ...validateFavoriteFiltersSteps("Items 1", "Items 2"),
@@ -161,19 +167,23 @@ registry.category("web_tour.tours").add("knowledge_search_favorites_tour", {
         // insert a first kanban view
         ...embedKnowledgeKanbanViewSteps("Article 1"),
         { // wait for embedded view to load and click on rename button
-            trigger: '.o_knowledge_behavior_type_embedded_view:contains(Articles) .o_knowledge_toolbar button:contains(Rename)',
+            trigger: '.o_knowledge_behavior_type_embedded_view:has(.o_knowledge_embedded_view .o_control_panel:contains(Articles)) .o_knowledge_toolbar button:contains(Rename)',
             allowInvisible: true,
         }, { // rename the view Kanban 1
             trigger: '.modal-dialog input.form-control',
             run: `text Kanban 1`,
         }, { // click on rename
             trigger: "button:contains('Rename')",
+        }, { // check the application of the rename
+            trigger: '.o_knowledge_embedded_view .o_control_panel:contains(Kanban 1)',
+            run: () => {},
         },
         stepUtils.toggleHomeMenu(),
         // insert a second kanban view
         ...embedKnowledgeKanbanViewSteps("Article 1"),
         { // wait for embedded view to load
-            trigger: '.o_knowledge_behavior_type_embedded_view:contains(Articles)',
+            trigger: '.o_knowledge_embedded_view .o_control_panel:contains(Articles)',
+            run: () => {},
         },
         ...validateFavoriteFiltersSteps("Kanban 1", "Articles"),
     ],

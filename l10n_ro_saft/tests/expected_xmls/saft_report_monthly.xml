@@ -16,10 +16,10 @@
             </Address>
             <Contact>
                 <ContactPerson>
-                    <FirstName>Romanian</FirstName>
-                    <LastName>Company</LastName>
+                    <FirstName>Mr Big</FirstName>
+                    <LastName>CEO</LastName>
                 </ContactPerson>
-                <Telephone>+40 723545439</Telephone>
+                <Telephone>+40 723545000</Telephone>
             </Contact>
             <TaxRegistration>
                 <TaxRegistrationNumber>RO1234567897</TaxRegistrationNumber>
@@ -116,13 +116,6 @@
                         <PostalCode>010001</PostalCode>
                         <Country>RO</Country>
                     </Address>
-                    <Contact>
-                        <ContactPerson>
-                            <FirstName>Romanian</FirstName>
-                            <LastName>Partner</LastName>
-                        </ContactPerson>
-                        <Telephone>+40 234285561</Telephone>
-                    </Contact>
                     <TaxRegistration>
                         <TaxRegistrationNumber>RO18547290</TaxRegistrationNumber>
                     </TaxRegistration>
@@ -143,13 +136,6 @@
                         <PostalCode>42000</PostalCode>
                         <Country>FR</Country>
                     </Address>
-                    <Contact>
-                        <ContactPerson>
-                            <FirstName>French</FirstName>
-                            <LastName>Partner</LastName>
-                        </ContactPerson>
-                        <Telephone>+33 477284765</Telephone>
-                    </Contact>
                     <TaxRegistration>
                         <TaxRegistrationNumber>FR23334175221</TaxRegistrationNumber>
                     </TaxRegistration>

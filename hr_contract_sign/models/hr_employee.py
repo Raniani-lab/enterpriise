@@ -33,7 +33,7 @@ class HrEmployee(models.Model):
         self.ensure_one()
         contracts = self.env['hr.contract'].sudo().search([('employee_id', '=', self.id)])
         sign_from_contract = contracts.mapped('sign_request_ids')
-        sign_from_role = self.env['sign.request.item']
+        sign_from_role = self.env['sign.request']
         partner_ids = self.user_id.partner_id | self.work_contact_id
         if partner_ids:
             sign_from_role = self.env['sign.request.item'].search([

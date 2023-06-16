@@ -330,11 +330,21 @@ class AccountGeneralLedger(models.AbstractModel):
 
         for partner in all_partners:
             _track_address(partner, partner)
-            _track_contact(partner, partner)
-            for child in partner.child_ids:
-                if child.type == 'contact':
-                    _track_address(partner, child)
-                    _track_contact(partner, child)
+            # For individual partners, they are their own ContactPerson.
+            # For company partners, the child contact with lowest ID is the ContactPerson.
+            # For the current company, all child contacts are ContactPersons
+            # (to give users flexibility to indicate several ContactPersons).
+            if partner.is_company:
+                children = partner.child_ids.filtered(lambda p: p.type == 'contact' and p.active and not p.is_company).sorted('id')
+                if partner == values['company'].partner_id:
+                    if not children:
+                        raise UserError(_("Please define one or more Contacts belonging to your company."))
+                    for child in children:
+                        _track_contact(partner, child)
+                elif children:
+                    _track_contact(partner, children[0])
+            else:
+                _track_contact(partner, partner)
 
         no_partner_address = self.env['res.partner']
         for partner in all_partners:

@@ -25,6 +25,12 @@ class TestDKSaftReport(TestAccountReportsCommon):
             'partner_id': cls.company_data['company'].partner_id.id,
             'acc_number': 'DK5000400440116243',
         })
+        cls.env['res.partner'].create({
+            'name': 'Mr Big CEO',
+            'is_company': False,
+            'phone': '+45 32 12 34 77',
+            'parent_id': cls.company_data['company'].partner_id.id,
+        })
 
         (cls.partner_a + cls.partner_b).write({
             'street': 'Paradisæblevej, 12',

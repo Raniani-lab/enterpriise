@@ -18,10 +18,10 @@
             </Address>
             <Contact>
                 <ContactPerson>
-                    <FirstName>company_1_data</FirstName>
+                    <FirstName>Mr Big CEO</FirstName>
                     <LastName></LastName>
                 </ContactPerson>
-                <Telephone>+45 32 12 34 56</Telephone>
+                <Telephone>+45 32 12 34 77</Telephone>
             </Contact>
             <TaxRegistration>
                 <TaxRegistrationNumber>DK12345674</TaxRegistrationNumber>
@@ -101,10 +101,10 @@
                 </Address>
                 <Contact>
                     <ContactPerson>
-                        <FirstName>company_1_data</FirstName>
+                        <FirstName>Mr Big CEO</FirstName>
                         <LastName></LastName>
                     </ContactPerson>
-                    <Telephone>+45 32 12 34 56</Telephone>
+                    <Telephone>+45 32 12 34 77</Telephone>
                 </Contact>
                 <TaxRegistration>
                     <TaxRegistrationNumber>DK12345674</TaxRegistrationNumber>
@@ -193,10 +193,10 @@
                 </Address>
                 <Contact>
                     <ContactPerson>
-                        <FirstName>company_1_data</FirstName>
+                        <FirstName>Mr Big CEO</FirstName>
                         <LastName></LastName>
                     </ContactPerson>
-                    <Telephone>+45 32 12 34 56</Telephone>
+                    <Telephone>+45 32 12 34 77</Telephone>
                 </Contact>
                 <TaxRegistration>
                     <TaxRegistrationNumber>DK12345674</TaxRegistrationNumber>

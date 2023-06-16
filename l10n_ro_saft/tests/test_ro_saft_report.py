@@ -32,6 +32,13 @@ class TestRoSaftReport(TestAccountReportsCommon):
             'l10n_ro_saft_tax_accounting_basis': 'A',
         })
 
+        cls.env['res.partner'].create({
+            'name': 'Mr Big CEO',
+            'is_company': False,
+            'phone': '+40 723545000',
+            'parent_id': cls.company_data['company'].partner_id.id,
+        })
+
         cls.partner_a.write({
             'name': 'Romanian Partner',
             'is_company': True,

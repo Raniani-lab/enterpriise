@@ -2081,3 +2081,38 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
             {'flag': 'liquidity',       'amount_currency': -37436.50,   'currency_id': self.currency_data['currency'].id,   'balance': -38049.09},
             {'flag': 'new_aml',         'amount_currency': 37436.50,    'currency_id': self.currency_data['currency'].id,   'balance': 38049.09},
         ])
+
+    def test_matching_zero_amount_misc_entry(self):
+        """ Check for division by zero with foreign currencies and some 0 making a broken rate. """
+        self.company_data['default_journal_bank'].currency_id = self.currency_data['currency']
+        st_line = self._create_st_line(0.0, amount_currency=10.0, foreign_currency_id=self.company_data['currency'].id)
+
+        entry = self.env['account.move'].create({
+            'date': '2019-01-01',
+            'line_ids': [
+                Command.create({
+                    'account_id': self.company_data['default_account_receivable'].id,
+                    'currency_id': self.currency_data['currency'].id,
+                    'debit': 1.0,
+                    'credit': 0.0,
+                }),
+                Command.create({
+                    'account_id': self.company_data['default_account_revenue'].id,
+                    'currency_id': self.currency_data['currency'].id,
+                    'debit': 0.0,
+                    'credit': 1.0,
+                }),
+            ]
+        })
+        entry.action_post()
+
+        wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
+        aml = entry.line_ids.filtered('debit')
+        wizard._action_add_new_amls(aml)
+        self.assertRecordValues(wizard.line_ids, [
+            # pylint: disable=C0326
+            {'flag': 'liquidity',       'balance': 10.0},
+            {'flag': 'new_aml',         'balance': -1.0},
+            {'flag': 'exchange_diff',   'balance': 1.0},
+            {'flag': 'auto_balance',    'balance': -10.0},
+        ])

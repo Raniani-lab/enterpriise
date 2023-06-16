@@ -358,14 +358,14 @@ class BankRecWidget(models.Model):
                 continue
 
             open_balance -= line.balance
+            journal_transaction_rate = abs(transaction_amount / journal_amount) if journal_amount else 0.0
+            company_transaction_rate = abs(transaction_amount / company_amount) if company_amount else 0.0
             if line.currency_id == self.transaction_currency_id:
                 open_amount_currency -= line.amount_currency
             elif line.currency_id == self.journal_currency_id:
-                open_amount_currency -= transaction_currency\
-                    .round(line.amount_currency * abs(transaction_amount / journal_amount))
+                open_amount_currency -= transaction_currency.round(line.amount_currency * journal_transaction_rate)
             else:
-                open_amount_currency -= transaction_currency\
-                    .round(line.balance * abs(transaction_amount / company_amount))
+                open_amount_currency -= transaction_currency.round(line.balance * company_transaction_rate)
 
         # Create a new auto-balance line.
         account = None

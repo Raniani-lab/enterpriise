@@ -4,6 +4,7 @@ import { deserializeDateTime, serializeDateTime } from "@web/core/l10n/dates";
 import { formatPercentage } from "@web/views/fields/formatters";
 import { GanttModel, computeRange } from "@web_gantt/gantt_model";
 import { usePlanningModelActions } from "../planning_hooks";
+import { Domain } from "@web/core/domain";
 
 const GROUPBY_COMBINATIONS = [
     "role_id",
@@ -43,8 +44,31 @@ export class PlanningGanttModel extends GanttModel {
      * @override
      */
     load(searchParams) {
-        const { context } = searchParams;
+        const { context, domain } = searchParams;
         this.hideOpenShift = Boolean(context.hide_open_shift);
+        let displayOpenShift = false;
+        for (const node of domain) {
+            if (
+                node.length === 3 &&
+                node[0] === "resource_id" &&
+                node[1] === "!=" &&
+                node[2] === false
+            ) {
+                return super.load({
+                    ...searchParams,
+                    context: { ...context, show_job_title: true },
+                });
+            }
+            if (
+                node.length === 3 &&
+                ["department_id", "manager_id", "resource_id", "job_title"].includes(node[0])
+            ) {
+                displayOpenShift = true;
+            }
+        }
+        if (displayOpenShift) {
+            searchParams.domain = Domain.or([domain, "[('resource_id', '=', false)]"]).toList();
+        }
         return super.load({ ...searchParams, context: { ...context, show_job_title: true } });
     }
 

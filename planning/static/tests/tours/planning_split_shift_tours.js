@@ -3,7 +3,7 @@
 import { registry } from "@web/core/registry";
 
 registry.category("web_tour.tours").add('planning_split_shift_week', {
-    url: '/web',
+    url: '/web?debug=tests',
     test: true,
     steps: () => [{
     trigger: '.o_app[data-menu-xmlid="planning.planning_menu_root"]',
@@ -20,6 +20,23 @@ registry.category("web_tour.tours").add('planning_split_shift_week', {
             );
         }
     },
+},{
+    trigger: ".o_searchview_dropdown_toggler",
+    content: "Open Filter",
+}, {
+    trigger: ".o_add_custom_filter",
+    content: "Click on custom filter",
+}, {
+    trigger: ".o_model_field_selector",
+    content: "Write domain excluding open shifts",
+    run() {
+        const input = document.querySelector(".o_domain_debug_input")
+        input.value = '[("resource_id", "!=", False)]';
+        input.dispatchEvent(new Event("change", { bubbles: true, cancelable: false }));
+    }
+}, {
+    trigger: ".modal-footer > .btn-primary",
+    content: "Add custom filter",
 }, {
     trigger: ".o_searchview_input",
     content: "Search planning shifts assigned to Aramis",

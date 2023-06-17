@@ -516,7 +516,7 @@ msgstr ""
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,help:payment_sepa_direct_debit.field_payment_provider__code
 msgid "The technical code of this payment provider."
-msgstr ""
+msgstr "이 결제대행업체의 기술 코드입니다."
 
 #. module: payment_sepa_direct_debit
 #. odoo-python
@@ -570,7 +570,7 @@ msgstr "확인됨"
 #: code:addons/payment_sepa_direct_debit/static/src/js/payment_form.js:0
 #, python-format
 msgid "We are not able to process your payment."
-msgstr ""
+msgstr "결제를 진행할 수 없습니다."
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,help:payment_sepa_direct_debit.field_payment_provider__sdd_signature_required

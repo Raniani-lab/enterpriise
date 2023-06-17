@@ -179,7 +179,7 @@ msgstr "Export format for accounting's reports"
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_account_reports_export_wizard
 msgid "Export wizard for accounting's reports"
-msgstr "Export wizard for accounting's reports"
+msgstr "會計報表匯出精靈"
 
 #. module: documents_account
 #: model:mail.activity.type,name:documents_account.mail_documents_activity_data_fs

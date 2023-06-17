@@ -1551,7 +1551,7 @@ msgstr "Podpowiedź wyświetlana w podpowiedzi podpisu"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign
 msgid "Home"
-msgstr "Dom"
+msgstr "Menu Gówne"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_report_container

@@ -164,7 +164,7 @@ msgstr "Aktivitet"
 #: model:mail.message.subtype,name:helpdesk_fsm.mt_team_ticket_task_done
 #: model:mail.message.subtype,name:helpdesk_fsm.mt_ticket_task_done
 msgid "Task Done"
-msgstr ""
+msgstr "Uppgift utförd"
 
 #. module: helpdesk_fsm
 #. odoo-python

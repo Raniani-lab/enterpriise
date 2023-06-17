@@ -5,7 +5,7 @@
 # Translators:
 # Braulio D. López Vázquez <bdl@odoo.com>, 2022
 # Martin Trigaux, 2022
-# Lucia Pacheco <lpo@odoo.com>, 2022
+# Lucia Pacheco, 2022
 # Fernanda Alvarez, 2023
 # 
 msgid ""
@@ -190,7 +190,7 @@ msgstr "Disfrute del trabajo colaborativo en sus hojas de cálculo."
 #. module: documents_spreadsheet
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_documents_document__raw
 msgid "File Content (raw)"
-msgstr "Contenido del archivo (raw)"
+msgstr "Contenido del archivo (sin procesar)"
 
 #. module: documents_spreadsheet
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_documents_document__handler

@@ -164,7 +164,7 @@ msgstr "Centímetros"
 #. module: delivery_dhl
 #: model:ir.model.fields,help:delivery_dhl.field_delivery_carrier__dhl_dutiable
 msgid "Check this if your package is dutiable."
-msgstr "Seleccione esta casilla si su paquete contiene mercancía imponible"
+msgstr "Seleccione esta casilla si su paquete es gravable."
 
 #. module: delivery_dhl
 #: model_terms:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form_with_provider_dhl
@@ -338,8 +338,7 @@ msgstr "H - Economy Select"
 #: code:addons/delivery_dhl/models/delivery_dhl.py:0
 #, python-format
 msgid "Hint: The destination may not require the dutiable option."
-msgstr ""
-"Pista: puede que el destino no tenga la opción para material imponible."
+msgstr "Pista: puede que el destino no necesite la opción gravable."
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__i
@@ -356,7 +355,7 @@ msgstr "Pulgadas"
 #: code:addons/delivery_dhl/models/delivery_dhl.py:0
 #, python-format
 msgid "Invalid syntax for DHL custom data."
-msgstr "Sintaxis inválida para los datos personalizados de DHL."
+msgstr "Sintaxis no válida para los datos personalizados de DHL."
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__j

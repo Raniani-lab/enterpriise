@@ -962,7 +962,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:mrp_workorder.action_mrp_workorder_show_steps
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__quality_point_count
 msgid "Steps"
-msgstr ""
+msgstr "Passos"
 
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_stock_move

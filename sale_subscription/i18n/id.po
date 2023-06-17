@@ -2177,7 +2177,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_template_action
 #: model:ir.ui.menu,name:sale_subscription.menu_template_of_subscription
 msgid "Plans"
-msgstr ""
+msgstr "Rencana"
 
 #. module: sale_subscription
 #. odoo-javascript

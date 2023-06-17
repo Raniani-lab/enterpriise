@@ -455,7 +455,7 @@ msgstr ""
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__hr_expense__extract_state__to_validate
 msgid "To validate"
-msgstr ""
+msgstr "待驗證"
 
 #. module: hr_expense_extract
 #: model:ir.actions.act_window,name:hr_expense_extract.action_expense_sample_receipt

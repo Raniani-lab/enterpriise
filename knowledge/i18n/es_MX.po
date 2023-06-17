@@ -1274,7 +1274,7 @@ msgstr "Puede escribir"
 #: code:addons/knowledge/models/knowledge_article_member.py:0
 #, python-format
 msgid "Can not update the article or partner of a member."
-msgstr "No se puede actualizar el artículo o partner de un miembro."
+msgstr "No se puede actualizar el artículo o contacto de un miembro."
 
 #. module: knowledge
 #. odoo-python
@@ -1457,7 +1457,7 @@ msgstr "Creado el"
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_mail_invite
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_trash_notification
 msgid "Dear"
-msgstr "Estimado/a"
+msgstr "Apreciable"
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__internal_permission
@@ -1665,7 +1665,7 @@ msgstr "¿Tiene subartículos normales?"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_invite__have_share_partners
 msgid "Have Share Partners"
-msgstr "Tiene partners compartidos"
+msgstr "Tiene contactos compartidos"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -2838,7 +2838,7 @@ msgstr "Espacio de trabajo"
 #. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_member_unique_article_partner
 msgid "You already added this partner on this article."
-msgstr "Ya agregó a este partner a este artículo."
+msgstr "Ya agregó este contacto a este artículo."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_frontend

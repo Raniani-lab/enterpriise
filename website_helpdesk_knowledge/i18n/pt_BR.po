@@ -46,8 +46,8 @@ msgid ""
 "<span style=\"font-size: 18px;\">Search our documentation for answers<br/>to"
 " common questions</span>"
 msgstr ""
-"<span style=\"font-size: 18px;\">Procure respostas em nossa "
-"documentação<br/>para perguntas frequentes</span>"
+"<span style=\"font-size: 18px;\">Encontre em nossa documentação as "
+"respostas<br/>para as perguntas mais frequentes</span>"
 
 #. module: website_helpdesk_knowledge
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_knowledge.knowledge_base_articles_card

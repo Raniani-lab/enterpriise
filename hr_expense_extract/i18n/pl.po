@@ -525,7 +525,7 @@ msgstr "Oczekiwanie na zatwierdzenie"
 #: code:addons/hr_expense_extract/static/src/js/tours/expense_tour.js:0
 #, python-format
 msgid "Wasting time recording your receipts? Let’s try a better way."
-msgstr ""
+msgstr "Marnujesz czas na rejestrowanie paragonów? Wypróbujmy lepszy sposób."
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense_extract_words__word_page

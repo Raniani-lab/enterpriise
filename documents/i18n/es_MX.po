@@ -725,7 +725,7 @@ msgstr "Archivar"
 #: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.xml:0
 #, python-format
 msgid "Archive original file(s)"
-msgstr "Archivar fichero(s) original(es)"
+msgstr "Archivar archivos originales"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
@@ -753,7 +753,7 @@ msgstr ""
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_finance_afv
 msgid "Ask for Validation"
-msgstr "Pedir validación"
+msgstr "Solicitar validación"
 
 #. module: documents
 #: model:documents.facet,name:documents.documents_marketing_assets
@@ -1106,7 +1106,7 @@ msgstr "Nombre en pantalla"
 #: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
 msgid "Do you really want to unlink this record?"
-msgstr "¿Realmente desea desvincular este registro?"
+msgstr "¿Está seguro de que desea desvincular este registro?"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_document
@@ -1348,7 +1348,7 @@ msgstr "Contenido del archivo (base64)"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__raw
 msgid "File Content (raw)"
-msgstr "Contenido del archivo (raw)"
+msgstr "Contenido del archivo (sin procesar)"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__file_size
@@ -1546,9 +1546,9 @@ msgid ""
 "Incoming letters sent to <span class=\"o_folder_description_alias\">inbox "
 "email alias</span> will be added to your inbox automatically."
 msgstr ""
-"Las cartas entrantes enviadas a la <span "
+"La correspondencia entrante enviada a la <span "
 "class=\"o_folder_description_alias\">bandeja de entrada del seudónimo de "
-"correo electrónico</span> se agregarán a su bandeja de entrada de forma "
+"correo electrónico</span> se agregará a su bandeja de entrada de forma "
 "automática."
 
 #. module: documents
@@ -1585,7 +1585,7 @@ msgstr "Compartido"
 #. module: documents
 #: model:documents.facet,name:documents.documents_internal_knowledge
 msgid "Knowledge"
-msgstr "Conocimiento"
+msgstr "Información"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document____last_update
@@ -1921,7 +1921,7 @@ msgstr "Tipo de la siguiente actividad"
 #: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.js:0
 #, python-format
 msgid "No document has been selected"
-msgstr "No se seleccionó ningún archivo"
+msgstr "No se seleccionó ningún documento"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
@@ -2008,8 +2008,8 @@ msgid ""
 "creation of new records completely."
 msgstr ""
 "ID opcional de un hilo (registro) al que se adjuntarán todos los mensajes "
-"entrantes, incluso si no son respuestas del mismo. Si se configura se "
-"deshabilitará completamente la creación de nuevos registros."
+"entrantes, incluso si no fueron respuestas del mismo. Si se establece, se "
+"deshabilitará por completo la creación de nuevos registros."
 
 #. module: documents
 #. odoo-javascript
@@ -2929,14 +2929,18 @@ msgstr "No puede crear carpetas recursivas."
 #: code:addons/documents/models/document.py:0
 #, python-format
 msgid "You don't have the right to move documents to that workspace."
-msgstr "No tiene los derechos de mover documentos a ese espacio de trabajo."
+msgstr ""
+"No cuenta con los permisos necesarios para mover documentos a ese espacio de"
+" trabajo."
 
 #. module: documents
 #. odoo-javascript
 #: code:addons/documents/static/src/views/search/documents_search_panel.js:0
 #, python-format
 msgid "You don't have the rights to move documents to that workspace"
-msgstr "No tiene los derechos para mover documentos a ese espacio de trabajo"
+msgstr ""
+"No cuenta con los permisos necesarios para mover documentos a ese espacio de"
+" trabajo"
 
 #. module: documents
 #. odoo-javascript
@@ -2999,7 +3003,7 @@ msgstr "dropdown-item"
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "e.g. Discuss proposal"
-msgstr "Por ejemplo, discutir propuesta"
+msgstr "Por ejemplo, hablar de la propuesta"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form
@@ -3009,7 +3013,7 @@ msgstr "por ejemplo, finanzas"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_request_form_view
 msgid "e.g. Missing Expense"
-msgstr "Por ejemplo, Gasto perdido"
+msgstr "Por ejemplo, Gasto faltante"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.facet_view_form
@@ -3019,7 +3023,7 @@ msgstr "Por ejemplo, Estado"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.tag_view_form
 msgid "e.g. To Validate"
-msgstr "Por ejemplo, Por validad"
+msgstr "Por ejemplo, Por validar"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view

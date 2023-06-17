@@ -17,14 +17,15 @@
 # Alena Vlasova, 2022
 # Gennady Marchenko <gennadym@gmail.com>, 2022
 # Sergey Vernyayev, 2022
+# Elena Da, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-16 09:00+0000\n"
+"POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Sergey Vernyayev, 2022\n"
+"Last-Translator: Elena Da, 2023\n"
 "Language-Team: Russian (https://app.transifex.com/odoo/teams/41243/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -366,6 +367,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__analytic_distribution
 msgid "Analytic"
 msgstr "Аналитический"
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset__analytic_distribution_search
+msgid "Analytic Distribution Search"
+msgstr ""
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__analytic_precision
@@ -1999,6 +2005,8 @@ msgid ""
 "There are unposted depreciations prior to the selected operation date, "
 "please deal with them first."
 msgstr ""
+"Имеются неучтенные амортизационные отчисления до выбранной даты операции, "
+"сначала разберитесь с ними."
 
 #. module: account_asset
 #. odoo-javascript

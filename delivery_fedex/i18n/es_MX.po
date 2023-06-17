@@ -32,8 +32,7 @@ msgid ""
 "<br/>According to your needs, you will need to contact different "
 "certifications :"
 msgstr ""
-"<br/>Dependiendo de sus necesidades, deberá contactar distintas "
-"certificaciones:"
+"<br/>Deberá contar con distintas certificaciones según sus necesidades:"
 
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
@@ -62,7 +61,7 @@ msgstr "Servicios avanzados con certificación de etiqueta"
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "Advanced Services without Label Certification"
-msgstr "Servicios avanzados sin cetificación de etiqueta"
+msgstr "Servicios avanzados sin certificación de etiqueta"
 
 #. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_droppoff_type__business_service_center
@@ -299,7 +298,7 @@ msgstr "INTERNATIONAL_PRIORITY"
 #: code:addons/delivery_fedex/models/delivery_fedex.py:0
 #, python-format
 msgid "Invalid syntax for FedEx extra data."
-msgstr "Sintaxis inválida para los datos extra de FedEx."
+msgstr "Sintaxis no válida para los datos adicionales de FedEx."
 
 #. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_weight_unit__kg

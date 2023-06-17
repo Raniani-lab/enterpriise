@@ -2119,7 +2119,7 @@ msgstr ""
 #: code:addons/web_studio/models/ir_model.py:0
 #, python-format
 msgid "High Priority"
-msgstr ""
+msgstr "Alta prioridade"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2467,7 +2467,7 @@ msgstr "Many2one"
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
 msgid "Map"
-msgstr ""
+msgstr "Mapa"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2852,7 +2852,7 @@ msgstr "Número de Entradas"
 #: code:addons/web_studio/static/src/client_action/app_creator/app_creator.xml:0
 #, python-format
 msgid "Odoo Studio"
-msgstr "Odoo Studio"
+msgstr "Odoo Estúdio"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2948,7 +2948,7 @@ msgstr "Formato de papel"
 #: code:addons/web_studio/static/src/legacy/js/edit_menu.js:0
 #, python-format
 msgid "Parent Menu"
-msgstr "Menu Superior(pai)"
+msgstr "Menu primário"
 
 #. module: web_studio
 #. odoo-python
@@ -3683,7 +3683,7 @@ msgstr "Listrado"
 #: model:ir.model.fields,field_description:web_studio.field_ir_model_data__studio
 #, python-format
 msgid "Studio"
-msgstr "Studio"
+msgstr "Estúdio"
 
 #. module: web_studio
 #: model:ir.actions.client,name:web_studio.action_web_studio_app_creator
@@ -3731,7 +3731,7 @@ msgstr ""
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_customizations_filter
 msgid "Studio Customizations"
-msgstr "Personalizações do Studio"
+msgstr "Personalizações do Estúdio"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_studio_mixin
@@ -4266,7 +4266,7 @@ msgstr "Visualizações"
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Visible for"
-msgstr ""
+msgstr "Visível para"
 
 #. module: web_studio
 #. odoo-javascript

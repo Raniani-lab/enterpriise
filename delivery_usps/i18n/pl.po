@@ -128,7 +128,7 @@ msgstr "Wewnętrzne"
 #. module: delivery_usps
 #: model_terms:ir.ui.view,arch_db:delivery_usps.view_delivery_carrier_form_with_provider_usps
 msgid "Label Format"
-msgstr ""
+msgstr "Format etykiety"
 
 #. module: delivery_usps
 #: model:ir.model.fields.selection,name:delivery_usps.selection__delivery_carrier__usps_size_container__large
@@ -266,7 +266,7 @@ msgstr "Prosimy podać poprawny kod ZIP w adresie swojej firmy"
 #: code:addons/delivery_usps/models/usps_request.py:0
 #, python-format
 msgid "Please provide at least one item to ship."
-msgstr ""
+msgstr "Podaj co najmniej jeden przedmiot do wysyłki."
 
 #. module: delivery_usps
 #. odoo-python
@@ -347,7 +347,7 @@ msgstr "Próbka"
 #: code:addons/delivery_usps/models/delivery_usps.py:0
 #, python-format
 msgid "Shipment #%s has been cancelled"
-msgstr ""
+msgstr "Przesyłka #%s została anulowana"
 
 #. module: delivery_usps
 #. odoo-python
@@ -394,6 +394,8 @@ msgid ""
 "The estimated shipping price cannot be computed because the weight is missing for the following product(s): \n"
 " %s"
 msgstr ""
+"Nie można obliczyć szacunkowej ceny wysyłki, ponieważ brakuje wagi dla następujących produktów:\n"
+"%s"
 
 #. module: delivery_usps
 #. odoo-python

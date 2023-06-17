@@ -1690,7 +1690,7 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "Set as Checked"
-msgstr ""
+msgstr "Ställ till:"
 
 #. module: account_accountant
 #. odoo-javascript

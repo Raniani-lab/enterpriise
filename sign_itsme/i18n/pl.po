@@ -40,7 +40,7 @@ msgstr "Potwierdź swoją tożsamość"
 #. module: sign_itsme
 #: model:sign.item.role,name:sign_itsme.sign_item_role_itsme_customer
 msgid "Customer (identified with itsme®)"
-msgstr "Klient (identyfikowany za pomocą itsme®)"
+msgstr "Klient (zidentyfikowany za pomocą itsme®)"
 
 #. module: sign_itsme
 #: model:ir.model.fields,field_description:sign_itsme.field_sign_item_role__auth_method

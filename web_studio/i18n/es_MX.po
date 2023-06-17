@@ -634,7 +634,7 @@ msgstr "Asignar fechas y visualizar registros en un calendario"
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Attach a picture to a record"
-msgstr "Añadir imagen a un registro"
+msgstr "Agregar una imagen a un registro"
 
 #. module: web_studio
 #. odoo-javascript

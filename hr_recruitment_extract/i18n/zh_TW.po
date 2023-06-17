@@ -239,7 +239,7 @@ msgstr ""
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__hr_applicant__extract_state__to_validate
 msgid "To validate"
-msgstr ""
+msgstr "待驗證"
 
 #. module: hr_recruitment_extract
 #. odoo-python

@@ -39,6 +39,13 @@ msgid ""
 "    <p>Odoo S.A.</p>\n"
 "</div>"
 msgstr ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"    <p>Hyvä,<br></p>\n"
+"    <p>Sovelluksen sisäisten ostojen hahmontunnistukseen tarvittavat krediitit ovat loppu.<br>\n"
+"    Voit ladata lisää krediittejä tilillesi kirjanpitomoduulin asetuksien sivulla.</p>\n"
+"    <p>Ystävällisin terveisin,<br></p>\n"
+"    <p>Odoo S.A.</p>\n"
+"</div>"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr

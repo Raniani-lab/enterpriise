@@ -21,9 +21,9 @@
 # Mikko Salmela <salmemik@gmail.com>, 2022
 # Jarmo Kortetjärvi <jarmo.kortetjarvi@gmail.com>, 2022
 # Joakim Weckman, 2023
-# Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023
 # Kari Lindgren <kari.lindgren@emsystems.fi>, 2023
 # Konsta Aavaranta, 2023
+# Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023
 # 
 msgid ""
 msgstr ""
@@ -31,7 +31,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:36+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Konsta Aavaranta, 2023\n"
+"Last-Translator: Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023\n"
 "Language-Team: Finnish (https://app.transifex.com/odoo/teams/41243/fi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -89,7 +89,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "%s is not a numeric value"
-msgstr ""
+msgstr "%s ei ole numeerinen arvo"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.aged_report_line_template
@@ -135,7 +135,7 @@ msgstr "'external' -moottori ei tue groupby-, limit- eikä offset-toimintoja."
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "(%s lines)"
-msgstr ""
+msgstr "(%s riviä)"
 
 #. module: account_reports
 #. odoo-python
@@ -156,7 +156,7 @@ msgstr "(-) Maksamatta olevat maksut"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "(1 line)"
-msgstr ""
+msgstr "(1 rivi)"
 
 #. module: account_reports
 #. odoo-python
@@ -447,6 +447,8 @@ msgid ""
 "<span>This company is part of a tax unit. You're currently not viewing the "
 "whole unit. To change that, use the Tax Unit filter.</span>"
 msgstr ""
+"<span>Tämä yritys on osa veroyksikköä. Et näe tällä hetkellä koko yksikköä. "
+"Voit muuttaa sen käyttämällä Veroyksikkö-suodatinta.</span>"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_main_template
@@ -756,7 +758,7 @@ msgstr "Määrä valuutassa: %s"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
 msgid "Analytic Accounts:"
-msgstr "Kustannuspaikat"
+msgstr "Kustannuspaikat:"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report__filter_analytic_groupby
@@ -1451,14 +1453,14 @@ msgstr "EU-myyntien erityiskäsittelijä"
 #: code:addons/account_reports/models/account_sales_report.py:0
 #, python-format
 msgid "EC tax on non EC countries"
-msgstr ""
+msgstr "EY:n vero yhteisön ulkopuolisille maille"
 
 #. module: account_reports
 #. odoo-python
 #: code:addons/account_reports/models/account_sales_report.py:0
 #, python-format
 msgid "EC tax on same country"
-msgstr ""
+msgstr "EY:n vero samassa maassa"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_equity0
@@ -1499,7 +1501,7 @@ msgstr "Loppusaldo"
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_comparison
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
 msgid "End Date :"
-msgstr "Päättymispäivä"
+msgstr "Päättymispäivä:"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
@@ -1528,7 +1530,7 @@ msgstr "Loppusaldo :"
 #: code:addons/account_reports/models/account_sales_report.py:0
 #, python-format
 msgid "Entries with partners with no VAT"
-msgstr ""
+msgstr "Merkinnät yhteistyökumppaneiden kanssa ilman arvonlisäveroa"
 
 #. module: account_reports
 #. odoo-python
@@ -2030,7 +2032,7 @@ msgstr "Lisää alaviite"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.sales_report_main_template
 msgid "Intra-community taxes are applied on"
-msgstr ""
+msgstr "Yhteisön sisäisiä veroja sovelletaan"
 
 #. module: account_reports
 #. odoo-python
@@ -2163,7 +2165,7 @@ msgstr "Edellinen kvartaali"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_reports_journal_dashboard_kanban_view
 msgid "Last Statement balance + Transactions since statement"
-msgstr ""
+msgstr "Viimeisimmän tiliotteen saldo + tapahtumat tiliotteen jälkeen"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.bank_reconciliation_report_cell_template_link_last_statement
@@ -2388,7 +2390,7 @@ msgstr "Yritykseltä puuttuu ALV-tunniste. Määritä se."
 #: code:addons/account_reports/wizard/multicurrency_revaluation.py:0
 #, python-format
 msgid "No adjustment needed"
-msgstr "Korjauksia ei tarvita."
+msgstr "Korjauksia ei tarvita"
 
 #. module: account_reports
 #. odoo-python
@@ -2530,7 +2532,7 @@ msgstr "Kumppani"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
 msgid "Partner Categories:"
-msgstr "Partnerikategoriat"
+msgstr "Partnerikategoriat:"
 
 #. module: account_reports
 #. odoo-python
@@ -3109,6 +3111,8 @@ msgid ""
 "The Accounts Coverage Report is only available for the Profit and Loss and "
 "Balance Sheet reports."
 msgstr ""
+"Tilinpäätöskattavuusraportti on käytettävissä vain tulos- ja taseraporttien "
+"osalta."
 
 #. module: account_reports
 #. odoo-python
@@ -3228,7 +3232,7 @@ msgstr "Tämä tili ilmoitetaan raportissa usealla rivillä"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "This account is reported multiple times on the same line of the report"
-msgstr ""
+msgstr "Tämä tili ilmoitetaan useita kertoja samalla raportin rivillä"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
@@ -3532,7 +3536,7 @@ msgstr "Väärä tunnus partnerin pääkirjan rivin laajentamiseen: %s"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Wrong format for if_other_expr_above/if_other_expr_below formula: %s"
-msgstr ""
+msgstr "Väärä muoto if_other_expr_above/if_other_expr_below-kaavalle: %s"
 
 #. module: account_reports
 #. odoo-python
@@ -3563,12 +3567,12 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template
 msgid "[Draft]"
-msgstr ""
+msgstr "[Luonnos]"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.sales_report_main_template
 msgid "addressed to"
-msgstr ""
+msgstr "osoitettu"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template
@@ -3614,7 +3618,7 @@ msgstr "alkusaldo on erilainen kuin edellinen loppusaldo"
 #: code:addons/account_reports/static/src/xml/account_report_template.xml:0
 #, python-format
 msgid "in the next period."
-msgstr "seuraavassa kaudessa"
+msgstr "seuraavassa kaudessa."
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.sales_report_main_template
@@ -3646,12 +3650,12 @@ msgstr "raportin mallin nimi"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.sales_report_main_template
 msgid "partners"
-msgstr ""
+msgstr "yhteistyökumppanit"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template
 msgid "prior or included in this period"
-msgstr "ennen tätä kautta tai sisältyen tähän kauteen."
+msgstr "ennen tätä kautta, tai sisältyen tähän kauteen"
 
 #. module: account_reports
 #: model:ir.model.fields.selection,name:account_reports.selection__res_company__account_tax_periodicity__trimester
@@ -3671,7 +3675,7 @@ msgstr "tiliotteet"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.sales_report_main_template
 msgid "that are not established abroad."
-msgstr ""
+msgstr "jotka eivät ole sijoittautuneet ulkomaille."
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
@@ -3698,7 +3702,7 @@ msgstr "joka ei johdu tiliotteesta eikä maksuista."
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.sales_report_main_template
 msgid "who are not established in any of the EC countries."
-msgstr ""
+msgstr "jotka eivät ole sijoittautuneet mihinkään EY-maahan."
 
 #. module: account_reports
 #. odoo-javascript
@@ -3712,12 +3716,12 @@ msgstr "siirretään kohteelle"
 #: code:addons/account_reports/static/src/xml/account_report_template.xml:0
 #, python-format
 msgid "will be carried over to this line in the next period."
-msgstr "siirretään seuraavan kauden riville"
+msgstr "siirretään seuraavan kauden riville."
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.sales_report_main_template
 msgid "without a valid intra-community VAT number."
-msgstr ""
+msgstr "ilman voimassa olevaa yhteisön sisäistä alv-numeroa."
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_line_template

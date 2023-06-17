@@ -1394,7 +1394,7 @@ msgstr ""
 #. module: social
 #: model:ir.ui.menu,name:social.menu_social_global
 msgid "Social Marketing"
-msgstr "Mídias Sociais"
+msgstr "Redes Sociais"
 
 #. module: social
 #. odoo-javascript
@@ -1677,12 +1677,12 @@ msgstr "Campanha UTM"
 #: model:ir.model,name:social.model_utm_medium
 #: model:ir.model.fields,field_description:social.field_social_account__utm_medium_id
 msgid "UTM Medium"
-msgstr ""
+msgstr "Meio do UTM"
 
 #. module: social
 #: model:ir.model,name:social.model_utm_source
 msgid "UTM Source"
-msgstr ""
+msgstr "Origem do UTM"
 
 #. module: social
 #. odoo-python

@@ -128,13 +128,13 @@ msgstr ""
 #. module: account_avatax
 #: model_terms:ir.ui.view,arch_db:account_avatax.res_config_settings_view_form
 msgid "Automatically compute tax rates"
-msgstr "Calcular tasas de impuestos automáticamente."
+msgstr "Calcular tasas de impuestos de forma automática"
 
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_res_company__avalara_api_id
 #: model:ir.model.fields,field_description:account_avatax.field_res_config_settings__avalara_api_id
 msgid "Avalara API ID"
-msgstr "ID de Avalara API"
+msgstr "ID de la API de Avalara"
 
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_res_company__avalara_api_key
@@ -146,7 +146,7 @@ msgstr "Clave de la API de Avalara"
 #: model:ir.model.fields,field_description:account_avatax.field_res_company__avalara_address_validation
 #: model:ir.model.fields,field_description:account_avatax.field_res_config_settings__avalara_address_validation
 msgid "Avalara Address Validation"
-msgstr "Validación de la dirección Avalara"
+msgstr "Validación de la dirección de Avalara"
 
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_account_avatax__avatax_unique_code
@@ -185,7 +185,7 @@ msgstr "Inicio de sesión Avalara"
 #: model:ir.model.fields,field_description:account_avatax.field_res_partner__avalara_partner_code
 #: model:ir.model.fields,field_description:account_avatax.field_res_users__avalara_partner_code
 msgid "Avalara Partner Code"
-msgstr "Código de partner Avalara"
+msgstr "Código de contacto Avalara"
 
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_res_partner__avalara_show_address_validation
@@ -203,7 +203,7 @@ msgstr "Avatax"
 #: model:ir.model.fields,field_description:account_avatax.field_product_product__avatax_category_id
 #: model:ir.model.fields,field_description:account_avatax.field_product_template__avatax_category_id
 msgid "Avatax Category"
-msgstr "Categoría Avatax"
+msgstr "Categoría de Avatax"
 
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_account_bank_statement_line__avatax_tax_date
@@ -220,7 +220,7 @@ msgstr "Cuenta de factura Avatax"
 #. module: account_avatax
 #: model:ir.model,name:account_avatax.model_avatax_exemption
 msgid "Avatax Partner Exemption Codes"
-msgstr "Códigos de excepción del partner Avatax"
+msgstr "Códigos de excepción del contacto de Avatax"
 
 #. module: account_avatax
 #: model:ir.model,name:account_avatax.model_product_avatax_category
@@ -325,7 +325,7 @@ msgstr "Creado el"
 #: model:ir.model.fields,help:account_avatax.field_res_partner__avalara_partner_code
 #: model:ir.model.fields,help:account_avatax.field_res_users__avalara_partner_code
 msgid "Customer Code set in Avalara for this partner."
-msgstr "El código de cliente establecido en Avalara para este partner."
+msgstr "El código de cliente establecido en Avalara para este contacto."
 
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_exemption__description
@@ -504,7 +504,7 @@ msgstr "Producción"
 #. module: account_avatax
 #: model:ir.model.fields.selection,name:account_avatax.selection__res_company__avalara_environment__sandbox
 msgid "Sandbox"
-msgstr "Sandbox"
+msgstr "Entorno de pruebas"
 
 #. module: account_avatax
 #: model_terms:ir.ui.view,arch_db:account_avatax.avatax_validate_address_view_form
@@ -623,7 +623,7 @@ msgstr ""
 #: model:ir.model.fields,help:account_avatax.field_res_users__avatax_unique_code
 msgid "Use this code to cross-reference in the Avalara portal."
 msgstr ""
-"Use este código para hacer una referencia cruzada en el portal Avalara."
+"Use este código para hacer una referencia cruzada en el portal de Avalara."
 
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_exemption__valid_country_ids
@@ -647,7 +647,7 @@ msgid ""
 "Validate and correct the addresses of partners in North America with "
 "Avalara."
 msgstr ""
-"Validar y corregir las direcciones de partners en Norteamérica con Avalara."
+"Validar y corregir las direcciones de contactos en Norteamérica con Avalara."
 
 #. module: account_avatax
 #: model_terms:ir.ui.view,arch_db:account_avatax.avatax_validate_address_view_form

@@ -238,7 +238,7 @@ msgstr "Konfiguration"
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_rental_wizard
 msgid "Configure the rental of a product"
-msgstr ""
+msgstr "Konfigurera uthyrning av en produkt"
 
 #. module: sale_renting
 #. odoo-javascript
@@ -745,7 +745,7 @@ msgstr ""
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_rental_order_wizard
 msgid "Pick-up/Return products"
-msgstr ""
+msgstr "Upphämtning/återlämning av produkter"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_gantt
@@ -961,7 +961,7 @@ msgstr ""
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_sale_rental_report
 msgid "Rental Analysis Report"
-msgstr ""
+msgstr "Analysrapport om uthyrning"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_form
@@ -988,7 +988,7 @@ msgstr ""
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_sale_rental_schedule
 msgid "Rental Schedule"
-msgstr ""
+msgstr "Tidsplan för uthyrning"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order__rental_status
@@ -1014,7 +1014,7 @@ msgstr ""
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_rental_order_wizard_line
 msgid "RentalOrderLine transient representation"
-msgstr ""
+msgstr "Hyresorderrad temporär representation"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_view_search

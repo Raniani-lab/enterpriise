@@ -91,6 +91,7 @@ msgstr "Vista Gantt"
 #, python-format
 msgid "Gantt child can only be field or template, got %s"
 msgstr ""
+"Una riga figlia Gantt può essere solo un campo o un modello, tu hai %s"
 
 #. module: web_gantt
 #. odoo-python

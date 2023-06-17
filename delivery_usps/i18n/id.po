@@ -60,7 +60,7 @@ msgstr "Dokumen"
 #. module: delivery_usps
 #: model:ir.model.fields.selection,name:delivery_usps.selection__delivery_carrier__usps_delivery_nature__domestic
 msgid "Domestic"
-msgstr ""
+msgstr "Lokal"
 
 #. module: delivery_usps
 #. odoo-python

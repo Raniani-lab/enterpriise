@@ -4339,7 +4339,7 @@ msgstr "Benutzer-Avatar-Platzhalter"
 #: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
 msgid "User is not a member of the selected group."
-msgstr ""
+msgstr "Der Benutzer ist kein Mitglied der ausgewählten Gruppe."
 
 #. module: web_studio
 #. odoo-javascript

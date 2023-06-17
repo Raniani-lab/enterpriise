@@ -5,9 +5,9 @@
 # Translators:
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2023
 # Martin Trigaux, 2023
-# Jolien De Paepe, 2023
 # Dylan Kiss, 2023
 # Guido Leenders, 2023
+# Jolien De Paepe, 2023
 # 
 msgid ""
 msgstr ""
@@ -15,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-03-09 11:44+0000\n"
 "PO-Revision-Date: 2023-02-03 07:08+0000\n"
-"Last-Translator: Guido Leenders, 2023\n"
+"Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1168,13 +1168,13 @@ msgstr "Kosten van verkoop en diensten"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.form_325_wizard_view_form
 msgid "Create 325 Form"
-msgstr ""
+msgstr "Maak opgave 325"
 
 #. module: l10n_be_reports
 #: model:ir.actions.act_window,name:l10n_be_reports.action_open_create_325_form
 #: model:ir.ui.menu,name:l10n_be_reports.menu_action_create_325_form
 msgid "Create 325 form"
-msgstr ""
+msgstr "Maak opgave 325"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__create_uid
@@ -1305,12 +1305,12 @@ msgstr ""
 #: code:addons/l10n_be_reports/models/account_sales_report.py:0
 #, python-format
 msgid "EC Sales List Audit"
-msgstr ""
+msgstr "Audit BTW-opgave van de intracommunautaire handelingen"
 
 #. module: l10n_be_reports
 #: model:account.report,name:l10n_be_reports.belgian_ec_sales_report
 msgid "EU Sales List"
-msgstr ""
+msgstr "BTW-opgave van de intracommunautaire handelingen"
 
 #. module: l10n_be_reports
 #. odoo-python
@@ -1764,7 +1764,7 @@ msgstr "Open"
 #. module: l10n_be_reports
 #: model:ir.ui.menu,name:l10n_be_reports.menu_action_open_325_tree_view
 msgid "Open 325 forms"
-msgstr ""
+msgstr "Open opgaves 325"
 
 #. module: l10n_be_reports
 #. odoo-python

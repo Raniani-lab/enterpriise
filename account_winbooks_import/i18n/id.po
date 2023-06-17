@@ -29,11 +29,15 @@ msgid ""
 "                        The export of data from Winbooks for closed years might contain unbalanced entries. However if you want to try to import everything, Odoo will set the difference of balance in a Suspense Account.\n"
 "                    </span>"
 msgstr ""
+"<span/>\n"
+"                    <span class=\"text-warning mb4 mt16\" attrs=\"{'invisible': [('only_open', '=', True)]}\">\n"
+"                        Data yang diekspor dari Winbooks untuk tahun-tahun yang ditutup mungkin memiliki entri yang tidak seimbang. Namun bila Anda ingin mengimpor semuanya, Odoo akan menaruh perbedaan dari ketidakseimbangan tersebut di Suspense Account.\n"
+"                    </span>"
 
 #. module: account_winbooks_import
 #: model:ir.model,name:account_winbooks_import.model_account_winbooks_import_wizard
 msgid "Account Winbooks import wizard"
-msgstr ""
+msgstr "Wizard impor Akun Winbooks"
 
 #. module: account_winbooks_import
 #. odoo-python
@@ -57,7 +61,7 @@ msgstr "Perusahaan"
 #: code:addons/account_winbooks_import/wizard/import_wizard.py:0
 #, python-format
 msgid "Company Settings"
-msgstr ""
+msgstr "Pengaturan Perusahaan"
 
 #. module: account_winbooks_import
 #. odoo-python
@@ -66,7 +70,7 @@ msgstr ""
 #: code:addons/account_winbooks_import/wizard/import_wizard.py:0
 #, python-format
 msgid "Counterpart (generated at import from Winbooks)"
-msgstr ""
+msgstr "Counterpart (dibuat pada impor dari Winbooks)"
 
 #. module: account_winbooks_import
 #: model:ir.model.fields,field_description:account_winbooks_import.field_account_winbooks_import_wizard__create_uid
@@ -106,19 +110,19 @@ msgstr "Impor"
 #. module: account_winbooks_import
 #: model_terms:ir.ui.view,arch_db:account_winbooks_import.winbooks_import_form
 msgid "Import (safe-mode)"
-msgstr ""
+msgstr "Impor (safe-mode)"
 
 #. module: account_winbooks_import
 #. odoo-javascript
 #: code:addons/account_winbooks_import/static/src/xml/account_winbooks_import.xml:0
 #, python-format
 msgid "Import WBK"
-msgstr ""
+msgstr "Impor WBK"
 
 #. module: account_winbooks_import
 #: model:ir.model.fields,field_description:account_winbooks_import.field_account_winbooks_import_wizard__only_open
 msgid "Import only open years"
-msgstr ""
+msgstr "Impor hanya tahun-tahun terbuka"
 
 #. module: account_winbooks_import
 #: model:ir.model,name:account_winbooks_import.model_account_move_line
@@ -148,7 +152,7 @@ msgstr "Terakhir diperbarui pada"
 #. module: account_winbooks_import
 #: model:ir.model.fields,help:account_winbooks_import.field_account_move_line__winbooks_matching_number
 msgid "Matching number that was used in Winbooks"
-msgstr ""
+msgstr "Nomor yang cocok yang dulu digunakan di Winbooks"
 
 #. module: account_winbooks_import
 #: model:ir.model.fields.selection,name:account_winbooks_import.selection__res_company__account_onboarding_winbooks_state__not_done
@@ -160,7 +164,7 @@ msgstr "Not done"
 #: code:addons/account_winbooks_import/wizard/import_wizard.py:0
 #, python-format
 msgid "Please define the country on your company."
-msgstr ""
+msgstr "Mohon definisikan negara pada perusahaan Anda."
 
 #. module: account_winbooks_import
 #: model_terms:ir.ui.view,arch_db:account_winbooks_import.winbooks_import_form
@@ -170,12 +174,12 @@ msgstr "Pencarian Tahap"
 #. module: account_winbooks_import
 #: model:ir.model.fields,field_description:account_winbooks_import.field_res_company__account_onboarding_winbooks_state
 msgid "State of the onboarding winbooks step"
-msgstr ""
+msgstr "Status langkah onboarding winbooks"
 
 #. module: account_winbooks_import
 #: model:ir.model.fields,field_description:account_winbooks_import.field_account_winbooks_import_wizard__suspense_code
 msgid "Suspense Account Code"
-msgstr ""
+msgstr "Kode Suspense Account"
 
 #. module: account_winbooks_import
 #. odoo-python
@@ -184,6 +188,8 @@ msgstr ""
 msgid ""
 "The code for the Suspense Account you entered doesn't match any account"
 msgstr ""
+"Kode untuk Suspense Account yang Anda masukkan tidak cocok dengan akun "
+"apapun"
 
 #. module: account_winbooks_import
 #. odoo-python
@@ -193,6 +199,8 @@ msgid ""
 "The following banks were used for multiple partners in Winbooks, which is not allowed in Odoo. The bank number has been only set on one of each group:\n"
 "%s"
 msgstr ""
+"Bank-bank berikut digunakan untuk lebih dari satu mitra di Winbooks, sesuatu yang tidak diizinkan di Odoo. Nomor bank hanya ditetapkan ke satu dari setiap kelompok:\n"
+"%s"
 
 #. module: account_winbooks_import
 #: model:ir.model.fields,help:account_winbooks_import.field_account_winbooks_import_wizard__suspense_code
@@ -201,16 +209,19 @@ msgid ""
 "unbalanced moves. This might be an account from your Winbooks data, or an "
 "account that you created in Odoo before the import."
 msgstr ""
+"Ini adalah kode untuk akun yang sebaiknya dimasukkan counterpart dari "
+"pergerakan tidak seimbang. Ini mungkin akun dari data Winbooks Anda, atau "
+"akun yang dibuat di Odoo sebelum impor."
 
 #. module: account_winbooks_import
 #: model:ir.actions.act_window,name:account_winbooks_import.winbooks_import_action
 msgid "Winbooks Import"
-msgstr ""
+msgstr "Impor Winbooks"
 
 #. module: account_winbooks_import
 #: model:ir.model.fields,field_description:account_winbooks_import.field_account_move_line__winbooks_matching_number
 msgid "Winbooks Matching Number"
-msgstr ""
+msgstr "Nomor Winbooks yang Cocok"
 
 #. module: account_winbooks_import
 #: model:ir.model.fields,help:account_winbooks_import.field_account_winbooks_import_wizard__only_open
@@ -218,6 +229,8 @@ msgid ""
 "Years closed in Winbooks are likely to have incomplete data. The counter "
 "part of incomplete entries will be set in a suspense account"
 msgstr ""
+"Tahun-tahun tertutup di Winbooks kemungkinan memiliki data tidak lengkap. "
+"Counterpart dari entri tidak lengkap akan dibuat di suspense account"
 
 #. module: account_winbooks_import
 #. odoo-python

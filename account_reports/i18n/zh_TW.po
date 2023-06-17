@@ -844,21 +844,21 @@ msgstr "Balance of %s"
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
 #, python-format
 msgid "Balance tax advance payment account"
-msgstr "Balance tax advance payment account"
+msgstr "預繳稅項賬戶結餘"
 
 #. module: account_reports
 #. odoo-python
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
 #, python-format
 msgid "Balance tax current account (payable)"
-msgstr "Balance tax current account (payable)"
+msgstr "稅款往來賬戶結餘（應付）"
 
 #. module: account_reports
 #. odoo-python
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
 #, python-format
 msgid "Balance tax current account (receivable)"
-msgstr "Balance tax current account (receivable)"
+msgstr "稅款往來賬戶結餘（應收）"
 
 #. module: account_reports
 #: model:ir.actions.client,name:account_reports.action_account_report_bank_reconciliation
@@ -1141,12 +1141,12 @@ msgstr "設定"
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
 #, python-format
 msgid "Configure your TAX accounts - %s"
-msgstr "Configure your TAX accounts - %s"
+msgstr "設定你的稅務賬戶 － %s"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
 msgid "Configure your tax accounts"
-msgstr "Configure your tax accounts"
+msgstr "設定你的稅務賬戶"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_res_partner
@@ -1599,7 +1599,7 @@ msgstr "Export to"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_reports_export_wizard
 msgid "Export wizard for accounting's reports"
-msgstr "Export wizard for accounting's reports"
+msgstr "會計報表匯出精靈"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_report_expression_form
@@ -2248,7 +2248,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_multicurrency_revaluation_wizard
 msgid "Multicurrency Revaluation Wizard"
-msgstr "Multicurrency Revaluation Wizard"
+msgstr "多幣種重新估值精靈"
 
 #. module: account_reports
 #. odoo-python
@@ -2667,7 +2667,7 @@ msgstr "應收"
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
 #, python-format
 msgid "Receivable tax amount"
-msgstr "Receivable tax amount"
+msgstr "應收稅額"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_executivesummary_debtors0

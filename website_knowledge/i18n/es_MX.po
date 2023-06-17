@@ -75,7 +75,7 @@ msgstr "Compartido con usted"
 #. module: website_knowledge
 #: model:ir.model.fields,help:website_knowledge.field_knowledge_article__website_url
 msgid "The full URL to access the document through the website."
-msgstr "El URL completo para acceder al documento a través del sitio web."
+msgstr "La URL completa para acceder al documento a través del sitio web."
 
 #. module: website_knowledge
 #: model:ir.model.fields,field_description:website_knowledge.field_knowledge_article__website_published

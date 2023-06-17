@@ -808,7 +808,7 @@ msgstr "Pausa"
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_form
 msgid "Pause timer"
-msgstr ""
+msgstr "Pausar cronômetro "
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -981,7 +981,7 @@ msgstr "Iniciar"
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_form
 msgid "Start timer"
-msgstr ""
+msgstr "Iniciar cronômetro"
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -1006,7 +1006,7 @@ msgstr ""
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_form
 msgid "Stop timer"
-msgstr ""
+msgstr "Parar cronômetro "
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.hr_timesheet_report_search_grid

@@ -195,6 +195,10 @@ msgid ""
 "be claimed within 8 weeks starting from the date on which your account was "
 "debited."
 msgstr ""
+"Osana oikeuksiasi sinulla on oikeus saada palautus pankiltasi pankkisi "
+"kanssa tekemäsi sopimuksen ehtojen mukaisesti. Oikeutesi selitetään "
+"selvityksessä, jonka saat pankistasi. Palautusta on haettava 8 viikon "
+"kuluessa siitä päivästä, jona tililtäsi veloitettiin."
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__message_attachment_count
@@ -658,7 +662,7 @@ msgstr "Virheiden määrä"
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_sdd_mandate__paid_invoices_nber
 msgid "Number of invoices paid with this mandate."
-msgstr "Maksetut laskut"
+msgstr "Maksetut laskut."
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_sdd_mandate__message_needaction_counter
@@ -879,7 +883,7 @@ msgstr "SDD-järjestelmä perustuu asiakkaan toimeksiantoon."
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
 msgid "SEPA Business-to-Business Direct Debit Mandate"
-msgstr ""
+msgstr "SEPA Business-to-Business-suoraveloitusvaltuutus"
 
 #. module: account_sepa_direct_debit
 #: model:account.payment.method,name:account_sepa_direct_debit.payment_method_sdd
@@ -1084,6 +1088,10 @@ msgid ""
 "debited, but you are entitled to request your bank not to debit your account"
 " up until the day on which the payment is due."
 msgstr ""
+"Tämä valtuutus on tarkoitettu ainoastaan yritysten välisiin liiketoimiin. "
+"Sinulla ei ole oikeutta saada pankiltasi hyvitystä sen jälkeen, kun tiliäsi "
+"on veloitettu, mutta sinulla on oikeus pyytää pankkiasi olemaan "
+"veloittamatta tiliäsi siihen päivään asti, jona maksu on erääntynyt."
 
 #. module: account_sepa_direct_debit
 #. odoo-python

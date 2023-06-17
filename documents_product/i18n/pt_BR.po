@@ -106,7 +106,7 @@ msgstr "Produto"
 #: model:ir.model.fields,field_description:documents_product.field_res_company__product_tags
 #: model:ir.model.fields,field_description:documents_product.field_res_config_settings__product_tags
 msgid "Product Tags"
-msgstr "Tags do produto"
+msgstr "Marcadores de produto"
 
 #. module: documents_product
 #: model:ir.model,name:documents_product.model_product_product

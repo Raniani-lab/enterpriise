@@ -32,6 +32,9 @@ msgid ""
 "                        This lot is expired\n"
 "                    </span>"
 msgstr ""
+"<span class=\"fa fa-exclamation-triangle text-danger ms-4\" attrs=\"{'invisible': ['|', ('is_expired', '=', False), ('picking_type_use_existing_lots', '=', False)]}\">\n"
+"                        만료된 로트입니다\n"
+"                    </span>"
 
 #. module: stock_barcode_product_expiry
 #: model:ir.model,name:stock_barcode_product_expiry.model_stock_move_line

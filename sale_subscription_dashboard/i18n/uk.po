@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2022
+# Tymofii Lytvynenko <till.svit@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2022\n"
+"Last-Translator: Tymofii Lytvynenko <till.svit@gmail.com>, 2023\n"
 "Language-Team: Ukrainian (https://app.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -65,12 +66,12 @@ msgstr "30 днів тому"
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "<i>There is no invoice during this period.</i>"
-msgstr ""
+msgstr "<i>Протягом цього періоду інвойс не виставляється.</i>"
 
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "<i>There is no subscription modification during this period.</i>"
-msgstr ""
+msgstr "<i>У цей період зміни підписки не відбуваються.</i>"
 
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.move_line_entries_report_search
@@ -149,7 +150,7 @@ msgstr "Поточний MRR"
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "Current MRR ("
-msgstr ""
+msgstr "Поточні щомісячні попередні доходи ("
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -386,6 +387,8 @@ msgid ""
 "List all invoices containing non-recurring sales and the amount of\n"
 "                        non-recurring revenues in these invoices for this particular salesperson."
 msgstr ""
+"Перелік усіх інвойсів, що містять разові продажі, та суму разових доходів у цих інвойсах\n"
+"разові надходження в цих інвойсах для цього конкретного продавця."
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -471,7 +474,7 @@ msgstr "NRR"
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "NRR ("
-msgstr ""
+msgstr "NRR ("
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -599,7 +602,7 @@ msgstr "Попередній MRR"
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "Previous MRR ("
-msgstr ""
+msgstr "Попередні щомісячні періодичні доходи ("
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -742,6 +745,10 @@ msgid ""
 "                        (e.g. two upsells occuring on the same day, or a subscription getting closed and re-opened\n"
 "                        on the same day)."
 msgstr ""
+"Зміни підписки об'єднують усі зміни, що відбулися за\n"
+"вибраний період. Зверніть увагу, що модифікації, які відбулися в один день, можуть бути згруповані разом\n"
+"(наприклад, два підвищення цін, що відбулися в один день, або закриття і повторне відкриття підписки\n"
+"в один день)."
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript

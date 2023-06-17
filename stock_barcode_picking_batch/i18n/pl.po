@@ -65,7 +65,7 @@ msgstr "Transfery zbiorcze"
 #. module: stock_barcode_picking_batch
 #: model:ir.model,name:stock_barcode_picking_batch.model_stock_barcode_cancel_operation
 msgid "Cancel Operation"
-msgstr ""
+msgstr "Anuluj operację"
 
 #. module: stock_barcode_picking_batch
 #. odoo-python
@@ -135,7 +135,7 @@ msgstr "Przesunięcia produktu (pozycja przesunięcia zasobów)"
 #: code:addons/stock_barcode_picking_batch/static/src/models/barcode_picking_batch_model.js:0
 #, python-format
 msgid "Scan the package %s"
-msgstr ""
+msgstr "Skanowanie paczki %s"
 
 #. module: stock_barcode_picking_batch
 #. odoo-javascript

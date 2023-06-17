@@ -88,7 +88,7 @@ msgstr "Viimeksi päivitetty"
 #. module: timer
 #: model:ir.model.constraint,message:timer.constraint_timer_timer_unique_timer
 msgid "Only one timer occurrence by model, record and user"
-msgstr ""
+msgstr "Vain yksi ajastimen esiintyminen mallia, tietuetta ja käyttäjää kohti"
 
 #. module: timer
 #. odoo-python
@@ -107,7 +107,7 @@ msgstr "Toista"
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_timer__res_id
 msgid "Res"
-msgstr ""
+msgstr "Res"
 
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_timer__res_model
@@ -140,12 +140,12 @@ msgstr "Viimeisin ajastimen tauko"
 #. module: timer
 #: model:ir.model,name:timer.model_timer_mixin
 msgid "Timer Mixin"
-msgstr ""
+msgstr "Ajastin Mixin"
 
 #. module: timer
 #: model:ir.model,name:timer.model_timer_timer
 msgid "Timer Module"
-msgstr ""
+msgstr "Ajastinmoduuli"
 
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_mixin__timer_start

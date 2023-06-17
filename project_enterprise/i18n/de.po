@@ -26,7 +26,7 @@ msgstr ""
 #: code:addons/project_enterprise/models/project_task.py:0
 #, python-format
 msgid "%s other task(s) for the same employee at the same time."
-msgstr ""
+msgstr "%s andere Aufgabe(n) für denselben Mitarbeiter zur selben Zeit."
 
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_form

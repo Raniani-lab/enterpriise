@@ -59,7 +59,8 @@ msgid ""
 "Please define at least one address (Zip/City) for the following partners: "
 "%s."
 msgstr ""
-"Defina al menos un domicilio (zip/ciudad) para los siguientes partners: %s."
+"Defina al menos un domicilio (código postal/ciudad) para los siguientes "
+"contactos: %s."
 
 #. module: account_saft
 #. odoo-python

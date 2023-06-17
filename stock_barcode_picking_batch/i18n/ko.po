@@ -53,7 +53,7 @@ msgstr "이송 일괄 작업"
 #. module: stock_barcode_picking_batch
 #: model:ir.model.fields,field_description:stock_barcode_picking_batch.field_stock_barcode_cancel_operation__batch_name
 msgid "Batch Transfer Name"
-msgstr ""
+msgstr "이송 일괄 작업 이름"
 
 #. module: stock_barcode_picking_batch
 #. odoo-javascript
@@ -66,7 +66,7 @@ msgstr "이송 일괄 작업"
 #. module: stock_barcode_picking_batch
 #: model:ir.model,name:stock_barcode_picking_batch.model_stock_barcode_cancel_operation
 msgid "Cancel Operation"
-msgstr ""
+msgstr "작업 쉬초"
 
 #. module: stock_barcode_picking_batch
 #. odoo-python
@@ -93,7 +93,7 @@ msgstr "작성 취소"
 #. module: stock_barcode_picking_batch
 #: model:ir.model.fields,field_description:stock_barcode_picking_batch.field_stock_picking__display_batch_button
 msgid "Display Batch Button"
-msgstr ""
+msgstr "일괄 작업 버튼 표시"
 
 #. module: stock_barcode_picking_batch
 #: model_terms:ir.ui.view,arch_db:stock_barcode_picking_batch.stock_barcode_batch_picking_view_kanban
@@ -110,14 +110,14 @@ msgstr "이송 일괄 작업을 찾을 수 없습니다."
 #: code:addons/stock_barcode_picking_batch/static/src/models/barcode_picking_batch_model.js:0
 #, python-format
 msgid "No ready transfers found"
-msgstr ""
+msgstr "준비된 이송 작업 없음"
 
 #. module: stock_barcode_picking_batch
 #. odoo-python
 #: code:addons/stock_barcode_picking_batch/models/stock_picking_batch.py:0
 #, python-format
 msgid "Open picking batch form"
-msgstr ""
+msgstr "일괄 픽업 양식 열기"
 
 #. module: stock_barcode_picking_batch
 #. odoo-javascript
@@ -136,7 +136,7 @@ msgstr "품목 이동 (재고 이동 상세)"
 #: code:addons/stock_barcode_picking_batch/static/src/models/barcode_picking_batch_model.js:0
 #, python-format
 msgid "Scan the package %s"
-msgstr ""
+msgstr "%s 패키지 스캔 "
 
 #. module: stock_barcode_picking_batch
 #. odoo-javascript
@@ -157,14 +157,14 @@ msgstr "이송 일괄 작업을 위한 이송을 선택하세요"
 #: code:addons/stock_barcode_picking_batch/static/src/models/barcode_picking_batch_model.js:0
 #, python-format
 msgid "The Batch Transfer has been validated"
-msgstr ""
+msgstr "일괄 이송 작업이 승인되었습니다"
 
 #. module: stock_barcode_picking_batch
 #. odoo-javascript
 #: code:addons/stock_barcode_picking_batch/static/src/models/barcode_picking_batch_model.js:0
 #, python-format
 msgid "The batch picking has been cancelled"
-msgstr ""
+msgstr "일괄 이송 작업이 취소되었습니다"
 
 #. module: stock_barcode_picking_batch
 #: model_terms:ir.actions.act_window,help:stock_barcode_picking_batch.stock_barcode_batch_picking_action_kanban
@@ -196,7 +196,7 @@ msgstr "이 이송 일괄 작업은 이미 완료되었습니다"
 #: code:addons/stock_barcode_picking_batch/static/src/models/barcode_picking_batch_model.js:0
 #, python-format
 msgid "This batch transfer is cancelled"
-msgstr ""
+msgstr "이 일괄 이송 작업이 취소되었습니다"
 
 #. module: stock_barcode_picking_batch
 #. odoo-javascript
@@ -205,7 +205,7 @@ msgstr ""
 msgid ""
 "This batch transfer is still draft, it must be confirmed before being "
 "processed"
-msgstr ""
+msgstr "이 일괄 이송 작업은 미결 상태이므로, 처리 전에 승인이 완료되어야 합니다."
 
 #. module: stock_barcode_picking_batch
 #: model:ir.model,name:stock_barcode_picking_batch.model_stock_picking

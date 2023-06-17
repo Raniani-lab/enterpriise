@@ -1625,7 +1625,7 @@ msgid ""
 "The employee %s arrived %s months ago. An appraisal for %s is created. You "
 "can assess %s & determinate the date for '1to1' meeting before %s."
 msgstr ""
-"El empleado %s llegó hace %s meses. Se creó una evaluacón para %s. Puede "
+"El empleado %s llegó hace %s meses. Se creó una evaluación para %s. Puede "
 "evaluar a %s y determinar la fecha para una reunión 1 a 1 antes de %s."
 
 #. module: hr_appraisal
@@ -1691,7 +1691,7 @@ msgstr "Tipo de actividad de excepción registrada."
 #, python-format
 msgid "Unable to post message, please configure the sender's email address."
 msgstr ""
-"No se puede publicar el mensaje, por favor modifique la dirección de correo "
+"No se puede publicar el mensaje, configure la dirección de correo "
 "electrónico del remitente."
 
 #. module: hr_appraisal

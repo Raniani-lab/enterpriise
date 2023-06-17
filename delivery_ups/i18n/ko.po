@@ -527,7 +527,7 @@ msgstr "선적 방법"
 #. module: delivery_ups
 #: model:ir.model,name:delivery_ups.model_stock_package_type
 msgid "Stock package type"
-msgstr ""
+msgstr "재고 포장 유형"
 
 #. module: delivery_ups
 #. odoo-python

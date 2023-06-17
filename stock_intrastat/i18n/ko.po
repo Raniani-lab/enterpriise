@@ -28,7 +28,7 @@ msgstr "재정 기준 국가"
 #. module: stock_intrastat
 #: model:ir.model,name:stock_intrastat.model_stock_intrastat_report_handler
 msgid "Intrastat Report Custom Handler (Stock)"
-msgstr ""
+msgstr "Intrastat 보고서 사용자 지정 처리기 (재고)"
 
 #. module: stock_intrastat
 #: model:ir.model.fields,field_description:stock_intrastat.field_stock_warehouse__intrastat_region_id

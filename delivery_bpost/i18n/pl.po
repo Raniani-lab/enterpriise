@@ -151,7 +151,7 @@ msgstr "Wewnętrzne"
 #. module: delivery_bpost
 #: model_terms:ir.ui.view,arch_db:delivery_bpost.view_delivery_carrier_form_with_provider_bpost
 msgid "Label Format"
-msgstr ""
+msgstr "Format etykiety"
 
 #. module: delivery_bpost
 #: model_terms:ir.ui.view,arch_db:delivery_bpost.view_delivery_carrier_form_with_provider_bpost
@@ -195,7 +195,7 @@ msgstr ""
 #: code:addons/delivery_bpost/models/bpost_request.py:0
 #, python-format
 msgid "Please provide at least one item to ship."
-msgstr ""
+msgstr "Podaj co najmniej jeden przedmiot do wysyłki."
 
 #. module: delivery_bpost
 #: model:ir.model.fields,field_description:delivery_bpost.field_delivery_carrier__delivery_type
@@ -237,7 +237,7 @@ msgstr ""
 #: code:addons/delivery_bpost/models/delivery_bpost.py:0
 #, python-format
 msgid "Shipment #%s has been cancelled"
-msgstr ""
+msgstr "Przesyłka #%s została anulowana"
 
 #. module: delivery_bpost
 #. odoo-python
@@ -254,7 +254,7 @@ msgstr "Sposoby dostawy"
 #. module: delivery_bpost
 #: model:ir.model,name:delivery_bpost.model_stock_package_type
 msgid "Stock package type"
-msgstr ""
+msgstr "Typ pakietu magazynowego"
 
 #. module: delivery_bpost
 #. odoo-python
@@ -289,6 +289,8 @@ msgid ""
 "The estimated shipping price cannot be computed because the weight is missing for the following product(s): \n"
 " %s"
 msgstr ""
+"Nie można obliczyć szacunkowej ceny wysyłki, ponieważ brakuje wagi dla następujących produktów:\n"
+"%s"
 
 #. module: delivery_bpost
 #. odoo-python

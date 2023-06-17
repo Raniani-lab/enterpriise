@@ -53,7 +53,7 @@ msgstr "Klient"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Daily Rentals"
-msgstr ""
+msgstr "Wynajem dzienny"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -98,7 +98,7 @@ msgstr "Okres"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Picked-up Qty"
-msgstr ""
+msgstr "Ilość odebrana"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -136,28 +136,28 @@ msgstr "Oferty"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Rental Analysis by Customer"
-msgstr ""
+msgstr "Analiza wynajmu według klienta"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Rental Analysis by Product"
-msgstr ""
+msgstr "Analiza wynajmu według produktu"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Rental Analysis by Product Category"
-msgstr ""
+msgstr "Analiza wynajmu według kategorii produktów"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Rental Analysis by Salesman"
-msgstr ""
+msgstr "Analiza wynajmu przez sprzedawcę"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -171,7 +171,7 @@ msgstr "Wynajmy"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Returned Qty"
-msgstr ""
+msgstr "Zwrócona ilość"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -205,7 +205,7 @@ msgstr "Najwięksi klienci"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Top Product Categories"
-msgstr ""
+msgstr "Najważniejsze kategorie produktów"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -219,21 +219,21 @@ msgstr "Główne produkty"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Top Salespeople"
-msgstr ""
+msgstr "Najlepsi sprzedawcy"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "rental stats - current"
-msgstr ""
+msgstr "statystyki wynajmu - aktualne"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "rental stats - previous"
-msgstr ""
+msgstr "statystyki wynajmu - poprzednie"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript

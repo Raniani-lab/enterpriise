@@ -594,7 +594,7 @@ msgstr "Tipo de la siguiente actividad"
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_journal_dashboard_inherit_online_sync
 msgid "Next sync:"
-msgstr "Próxima sincronización"
+msgstr "Próxima sincronización:"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__next_refresh
@@ -657,7 +657,7 @@ msgstr "Enlace en línea de la siguiente sincronización"
 #: model:ir.model.fields,field_description:account_online_synchronization.field_res_partner__online_partner_information
 #: model:ir.model.fields,field_description:account_online_synchronization.field_res_users__online_partner_information
 msgid "Online Partner Information"
-msgstr "Información en línea del partner"
+msgstr "Información en línea del contacto"
 
 #. module: account_online_synchronization
 #: model:ir.actions.act_window,name:account_online_synchronization.action_account_online_link_form
@@ -684,7 +684,7 @@ msgstr "Declaración inicial: primera sincronización"
 #: code:addons/account_online_synchronization/models/account_online.py:0
 #, python-format
 msgid "Please reconnect your online account."
-msgstr "Por favor vuelva a conectar su cuenta electrónica."
+msgstr "Vuelva a conectar su cuenta electrónica."
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_journal_dashboard_inherit_online_sync

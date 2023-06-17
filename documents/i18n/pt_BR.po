@@ -6,8 +6,8 @@
 # Marcel Savegnago <marcel.savegnago@gmail.com>, 2022
 # Silmar <pinheirosilmar@gmail.com>, 2022
 # Martin Trigaux, 2022
-# Kevilyn Rosa, 2023
 # Éder Brito <britoederr@gmail.com>, 2023
+# Kevilyn Rosa, 2023
 # Layna Nascimento, 2023
 # 
 msgid ""
@@ -1341,8 +1341,8 @@ msgid ""
 "ID of the parent record holding the alias (example: project holding the task"
 " creation alias)"
 msgstr ""
-"ID do registro pai segurando o apelido (exemplo: projeto segurando o apelido"
-" de criação de tarefa)"
+"ID do registro primário que detém o alias (exemplo: projeto detém o alias da"
+" criação de tarefa)"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_exception_icon
@@ -2831,7 +2831,7 @@ msgstr "por exemplo, Discutir proposta"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form
 msgid "e.g. Finance"
-msgstr ""
+msgstr "ex., finanças"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_request_form_view

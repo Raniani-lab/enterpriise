@@ -238,7 +238,7 @@ msgstr "ユーザ"
 #. module: website_helpdesk_livechat
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.helpdesk_team_view_form_inherit_website_helpdesk_livechat
 msgid "View Channels"
-msgstr ""
+msgstr "チャネルを見る"
 
 #. module: website_helpdesk_livechat
 #. odoo-python

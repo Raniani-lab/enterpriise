@@ -193,7 +193,7 @@ msgstr "Wytyczanie HTTP"
 #: code:addons/web_enterprise/static/src/webclient/navbar/navbar.js:0
 #, python-format
 msgid "Home menu"
-msgstr "Menu główne"
+msgstr "Menu gówne"
 
 #. module: web_enterprise
 #. odoo-javascript

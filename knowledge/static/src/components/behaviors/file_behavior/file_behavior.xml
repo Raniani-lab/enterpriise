@@ -37,14 +37,4 @@
             </BehaviorToolbar>
         </div>
     </t>
-    <t t-name="knowledge.WysiwygFileBehavior">
-        <div t-attf-class="o_knowledge_behavior_anchor #{behaviorType}" t-att-data-behavior-props="behaviorProps" data-oe-protected="true">
-            <div class="o_knowledge_file_image"
-                data-prop-name="fileImage" t-out="fileImage"/>
-            <div class="o_knowledge_file_description">
-                <div class="o_knowledge_file_name" t-out="fileName"/>
-                <div class="o_knowledge_file_extension" t-out="fileExtension"/>
-            </div>
-        </div>
-    </t>
 </templates>

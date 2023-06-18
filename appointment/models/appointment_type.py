@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import ast
 import calendar as cal
 import random
 import pytz
@@ -285,13 +286,19 @@ class AppointmentType(models.Model):
 
     def action_calendar_meetings(self):
         self.ensure_one()
+        management_views = []
         if self.schedule_based_on == 'users':
-            action = self.env["ir.actions.actions"]._for_xml_id("calendar.action_calendar_event")
+            if len(self.staff_user_ids) <= 1:
+                action = self.env["ir.actions.actions"]._for_xml_id("calendar.action_calendar_event")
+            else:
+                action = self.env["ir.actions.actions"]._for_xml_id("appointment.calendar_event_action_view_bookings_users")
+                management_views = ['gantt']
         else:
-            action = self.env["ir.actions.actions"]._for_xml_id("appointment.calendar_event_action_view_bookings")
-            action['views'] = [
-                [self.env.ref('appointment.calendar_event_view_tree_booking').id, 'tree'],
-            ]
+            action = self.env["ir.actions.actions"]._for_xml_id("appointment.calendar_event_action_view_bookings_resources")
+            if self.resource_manage_capacity:
+                management_views = ['tree']
+            else:
+                management_views = ['gantt']
         appointments = self.meeting_ids.filtered_domain([
             ('start', '>=', datetime.today())
         ])
@@ -299,18 +306,37 @@ class AppointmentType(models.Model):
             ('start', '>=', datetime.today() + timedelta(weeks=1))
         ])
 
-        for view_type in ('calendar', 'pivot'):
-            if view_type not in action['view_mode']:
-                action['view_mode'] = f'{view_type},{action["view_mode"]}'
-            if not any(view == view_type for (_, view) in action['views']):
-                action['views'].insert(0, (False, view_type))
+        # Add and reorder views
+        action = AppointmentType.insert_reorder_action_views(action, management_views + ['calendar', 'pivot'])
 
-        action['context'] = {
+        action['context'] = ast.literal_eval(action['context'])
+        action['context'].update({
+            'default_scale': self._get_gantt_scale(),
             'default_appointment_type_id': self.id,
+            'default_partner_ids': [],
             'search_default_appointment_type_id': self.id,
             'default_mode': "month" if nbr_appointments_week_later else "week",
             'initial_date': appointments[0].start if appointments else datetime.today(),
-        }
+        })
+        return action
+
+    @api.model
+    def action_calendar_meetings_resources_all(self):
+        action = self.env["ir.actions.actions"]._for_xml_id("appointment.calendar_event_action_view_bookings_resources")
+        action['context'] = ast.literal_eval(action['context'])
+        action['context'].update({
+            'default_scale': self.search([('schedule_based_on', '=', 'resources')])._get_gantt_scale(),
+        })
+        return action
+
+    @api.model
+    def action_calendar_meetings_users_all(self):
+        action = self.env["ir.actions.actions"]._for_xml_id("appointment.calendar_event_action_view_bookings_users")
+        action = AppointmentType.insert_reorder_action_views(action, ['gantt'])
+        action['context'] = ast.literal_eval(action['context'])
+        action['context'].update({
+            'default_scale': self.search([('schedule_based_on', '=', 'users')])._get_gantt_scale(),
+        })
         return action
 
     def action_share_invite(self):
@@ -337,6 +363,56 @@ class AppointmentType(models.Model):
     def action_toggle_published(self):
         for record in self:
             record.is_published = not record.is_published
+
+    # --------------------------------------
+    # View Utils
+    # --------------------------------------
+
+    @staticmethod
+    def insert_reorder_action_views(action, first_view_names):
+        """Set the first N entries in views_ids of an action dict reusing existing views.
+
+        :param action dict: Dict representing an action.
+        :param first_view_names list[str]: List of the names of the first N views.
+        :return dict: The original action, with view_mode and view_ids modified.
+        """
+        existing_views = [view for view in action["view_mode"].split(',') if view not in first_view_names]
+        action['view_mode'] = ",".join(first_view_names + existing_views)
+        for view_type in reversed(first_view_names):
+            to_insert = (False, view_type)
+            try:
+                existing_view_id = next(index for index, view_tuple
+                                        in enumerate(action['views'])
+                                        if view_tuple[1] == view_type)
+                to_insert = action['views'].pop(existing_view_id)
+            except StopIteration:
+                pass
+            action['views'].insert(0, to_insert)
+        return action
+
+    def _get_gantt_scale(self):
+        """Return the default scale to show related meetings in gantt.
+
+        The idea is to show a relevant time frame based on available meetings.
+        For example: if the last available meeting is the same week as "now", no need to show an entire year, a week will suffice.
+        """
+        now = datetime.utcnow()
+        last_meeting_values = self.env['calendar.event'].search_read([
+            ('appointment_type_id', 'in', self.ids),
+            ('appointment_resource_id', '!=', False),
+            ('stop', '>=', now.date()),
+        ], ['stop'], limit=1, order='stop desc')
+        last_meeting_end = last_meeting_values[0]['stop'] if last_meeting_values else False
+        if not last_meeting_end or now.date() == last_meeting_end.date():
+            return 'day'
+        same_year = now.year == last_meeting_end.year
+        same_month = now.month == last_meeting_end.month
+        same_week = now.isocalendar().week == last_meeting_end.isocalendar().week
+        if same_year and same_month and same_week:
+            return 'week'
+        if same_year and same_month:
+            return 'month'
+        return 'year'
 
     # --------------------------------------
     # Slots Generation

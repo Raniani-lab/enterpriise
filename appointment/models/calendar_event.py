@@ -23,6 +23,10 @@ class CalendarEvent(models.Model):
                 res['appointment_type_id'] = appointment_types[0].id
         if 'name' in fields_list and 'name' not in res and resource_id:
             res.setdefault('name', _('Booking for %(resource_name)s', resource_name=self.env['appointment.resource'].browse(resource_id).name))
+        if self.env.context.get('appointment_default_add_organizer_to_attendees') and 'partner_ids' in fields_list:
+            organizer_partner = self.env['res.users'].browse(res.get('user_id', [])).partner_id
+            if organizer_partner:
+                res['partner_ids'] = organizer_partner.ids
         return res
 
     def _default_access_token(self):
@@ -127,11 +131,13 @@ class CalendarEvent(models.Model):
     def _read_group_appointment_resource_id(self, resources, domain, order):
         if not self.env.context.get('appointment_booking_gantt_show_all_resources'):
             return resources
+        # Assume shared resources will be used with multi-resource bookings -> hide
+        filter_shared_resources = [('appointment_type_ids.resource_manage_capacity', '=', False)]
         # If we have a default appointment type, we only want to show those resources
         default_appointment_type = self.env.context.get('default_appointment_type_id')
         if default_appointment_type:
-            return self.env['appointment.type'].browse(default_appointment_type).resource_ids
-        return self.env['appointment.resource'].search([])
+            return self.env['appointment.type'].browse(default_appointment_type).resource_ids.filtered_domain(filter_shared_resources)
+        return self.env['appointment.resource'].search(filter_shared_resources)
 
     def _read_group_user_id(self, users, domain, order):
         if not self.env.context.get('appointment_booking_gantt_show_all_resources'):
@@ -144,15 +150,6 @@ class CalendarEvent(models.Model):
     def _generate_access_token(self):
         for event in self:
             event.access_token = self._default_access_token()
-
-    def _get_public_fields(self):
-        return super()._get_public_fields() | {
-            'appointment_resource_id',
-            'appointment_resource_ids',
-            'appointment_type_id',
-            'resource_total_capacity_reserved',
-            'resource_total_capacity_used',
-        }
 
     def action_cancel_meeting(self, partner_ids):
         """ In case there are more than two attendees (responsible + another attendee),
@@ -181,8 +178,10 @@ class CalendarEvent(models.Model):
     def _get_public_fields(self):
         return super()._get_public_fields() | {
             'appointment_resource_id',
+            'appointment_resource_ids',
             'appointment_type_id',
             'resource_total_capacity_reserved',
+            'resource_total_capacity_used',
         }
 
     def _track_template(self, changes):

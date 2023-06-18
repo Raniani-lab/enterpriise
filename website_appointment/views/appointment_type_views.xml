@@ -20,12 +20,6 @@
                     <span class="text-bg-success">Published</span>
                 </div>
             </xpath>
-            <xpath expr="//div[hasclass('o_kanban_ungrouped_action_buttons')]" position="attributes">
-                <attribute name="class" add="pe-lg-5" separator=" "/>
-            </xpath>
-            <xpath expr="//div[hasclass('o_kanban_ungrouped_action_buttons')]/button[@name='action_share_invite']" position="attributes">
-                <attribute name="class" add="me-4" separator=" "/>
-            </xpath>
             <xpath expr="//div[hasclass('o_appointment_kanban_box')]/div[1]" position="inside">
                 <span>
                     <a t-attf-href="#{record.website_url.raw_value}" class="me-2">Published</a>

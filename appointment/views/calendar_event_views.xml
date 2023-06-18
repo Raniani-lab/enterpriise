@@ -131,8 +131,8 @@
         </field>
     </record>
 
-    <record id="calendar_event_view_gantt_booking" model="ir.ui.view">
-        <field name="name">calendar.event.view.gantt.booking</field>
+    <record id="calendar_event_view_gantt_booking_resource" model="ir.ui.view">
+        <field name="name">calendar.event.view.gantt.booking.resource</field>
         <field name="model">calendar.event</field>
         <field name="arch" type="xml">
             <gantt class="o_appointment_ressource_booking_gantt"
@@ -188,21 +188,70 @@
         </field>
     </record>
 
-    <record id="calendar_event_action_view_bookings" model="ir.actions.act_window">
+    <record id="calendar_event_view_gantt_booking_user" model="ir.ui.view">
+        <field name="name">calendar.event.view.gantt.meeting.user</field>
+        <field name="model">calendar.event</field>
+        <field name="inherit_id" ref="appointment.calendar_event_view_gantt_booking_resource"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <gantt position="attributes">
+                <attribute name="default_group_by">user_id</attribute>
+            </gantt>
+        </field>
+    </record>
+
+    <record id="calendar_event_action_view_bookings_resources" model="ir.actions.act_window">
         <field name="name">Appointment Resource Booking</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">calendar.event</field>
         <field name="view_ids" eval="[(5, 0, 0),
-            (0, 0, {'view_mode': 'gantt', 'view_id': ref('appointment.calendar_event_view_gantt_booking')}),
+            (0, 0, {'view_mode': 'gantt', 'view_id': ref('appointment.calendar_event_view_gantt_booking_resource')}),
             (0, 0, {'view_mode': 'tree', 'view_id': ref('appointment.calendar_event_view_tree_booking')}),
         ]"/>
         <field name="view_mode">gantt,tree,form</field>
-        <field name="context">{'default_resource_total_capacity_reserved': 1}</field>
+        <field name="context">{'appointment_booking_gantt_domain': [('appointment_resource_id', '!=', False)],
+                               'appointment_default_add_organizer_to_attendees': False,
+                               'default_partner_ids': [],
+                               'default_resource_total_capacity_reserved': 1}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 No Appointment or Resource were found.
             </p>
         </field>
+    </record>
+
+    <record id="calendar_event_action_view_bookings_users" model="ir.actions.act_window">
+        <field name="name">User Appointments</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">calendar.event</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+            (0, 0, {'view_mode': 'gantt', 'view_id': ref('appointment.calendar_event_view_gantt_booking_user')}),
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('appointment.calendar_event_view_tree_booking')}),
+        ]"/>
+        <field name="view_mode">gantt,tree,form</field>
+        <field name="context">{'appointment_booking_gantt_domain': [('appointment_type_id.schedule_based_on', '=', 'users'), ('user_id', '!=', False)],
+                               'appointment_default_add_organizer_to_attendees': True,
+                               'default_partner_ids': []}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No Appointment or Resource were found.
+            </p>
+        </field>
+    </record>
+
+    <record id="calendar_event_action_all_resources_bookings" model="ir.actions.server" >
+        <field name="name">Schedule Resources</field>
+        <field name="model_id" ref="appointment.model_appointment_type"/>
+        <field name="type">ir.actions.server</field>
+        <field name="state">code</field>
+        <field name="code">action = model.action_calendar_meetings_resources_all()</field>
+    </record>
+    <record id="calendar_event_action_all_users_appointments" model="ir.actions.server" >
+        <field name="name">Schedule Resources</field>
+        <field name="model_id" ref="appointment.model_appointment_type"/>
+        <field name="type">ir.actions.server</field>
+        <field name="state">code</field>
+        <field name="code">action = model.action_calendar_meetings_users_all()</field>
     </record>
 
     <!-- Calendar Reporting -->

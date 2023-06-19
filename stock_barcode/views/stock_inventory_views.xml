@@ -20,9 +20,9 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-6 my-2 d-flex align-items-baseline">
+                    <div class="col-12 my-2 d-flex align-items-baseline">
                         <i class="fa fa-fw fa-lg fa-cube me-3" title="Counted Quantity"/>
-                        <field name="inventory_quantity" class="w-50 w-md-100 text-end" options="{'type': 'number'}" placeholder="Counted Quantity"/>
+                        <field name="inventory_quantity" class="w-100 w-md-50 text-end" options="{'type': 'number'}" placeholder="Counted Quantity"/>
                         <field name="quantity" widget="set_reserved_qty_button" field_to_set="inventory_quantity"/>
                     </div>
                 </div>

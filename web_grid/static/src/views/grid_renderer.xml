@@ -151,7 +151,7 @@
                 <t t-set="fieldName" t-value="rowField.name"/>
                 <GridComponent
                     t-if="row.initialRecordValues[fieldName] or rowField_index === 0"
-                    classNames="'d-flex z-index-1 text-truncate o_grid_field_' + fieldName.replace('_id','') + [isMobile ? '' : ' text-nowrap']"
+                    classNames="`d-flex z-index-1 text-truncate o_grid_field_${fieldName.replace('_id','')}${isMobile ? '' : ' text-nowrap'}${row.isAdditionalRow ? ' pe-1' : ''}`"
                     name="fieldName"
                     value="row.initialRecordValues[fieldName]"
                     model="props.model"

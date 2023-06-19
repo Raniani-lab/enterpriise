@@ -24,7 +24,7 @@
             <attribute name="t-if">not combination_info.get('is_rental')</attribute>
         </xpath>
         <xpath expr="//span[@itemprop='listPrice']" position="attributes">
-            <attribute name="t-if">not combination_info.get('is_rental')</attribute>
+            <attribute name="t-if" add="not combination_info.get('is_rental')" separator=" and "/>
         </xpath>
         <xpath expr="//h3[hasclass('css_non_editable_mode_hidden')]" position="attributes">
             <attribute name="t-if">not combination_info.get('is_rental')</attribute>
@@ -116,6 +116,9 @@
         <xpath expr="//div[hasclass('product_price')]/*[1]" position="before">
             <span t-if="product.rent_ok and template_price_vals['rental_duration']
                 and (not website.prevent_zero_price_sale or template_price_vals['price_reduce'])" class="h6">from</span>
+        </xpath>
+        <xpath expr="//div[hasclass('product_price')]/*/del" position="attributes">
+            <attribute name="t-if" add="not product.rent_ok" separator=" and "/>
         </xpath>
         <xpath expr="//span[@itemprop='priceCurrency']" position="after">
             <span t-if="product.rent_ok and template_price_vals['rental_duration']

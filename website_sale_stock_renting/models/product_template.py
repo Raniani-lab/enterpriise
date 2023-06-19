@@ -78,6 +78,8 @@ class ProductTemplate(models.Model):
                     ('state', 'in', ('sent', 'sale', 'done')),
                     ('return_date', '>', from_date),
                     ('reservation_begin', '<', to_date),
+                    # We're in sudo, need to restrict the search to the SOL of the website company
+                    ('company_id', '=', self.env.company.id),
                 ],
                 order="reservation_begin asc"
             )

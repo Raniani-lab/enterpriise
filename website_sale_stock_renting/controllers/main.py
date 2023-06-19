@@ -12,7 +12,7 @@ class WebsiteSaleStockRenting(WebsiteSaleRenting):
         fuzzy_search_term, product_count, search_result = super()._shop_lookup_products(attrib_set, options, post, search, website)
         if options.get('from_date') and options.get('to_date'):
             try:
-                search_result = search_result._filter_on_available_rental_products(
+                search_result = search_result.sudo()._filter_on_available_rental_products(
                     fields.Datetime.to_datetime(options.get('from_date')),
                     fields.Datetime.to_datetime(options.get('to_date')),
                     request.website._get_warehouse_available(),

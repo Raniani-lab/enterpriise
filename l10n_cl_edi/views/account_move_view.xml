@@ -28,7 +28,7 @@
                                 <field name="origin_doc_number" required="True"/>
                                 <field name="l10n_cl_reference_doc_type_id" attrs="{'required': [('parent.move_type', 'in', ['out_invoice', 'out_refund'])]}"/>
                                 <field name="l10n_cl_reference_doc_internal_type" invisible="True"/>
-                                <field name="reference_doc_code" attrs="{'invisible': [('l10n_cl_reference_doc_internal_type', '!=', False)]}"/>
+                                <field name="reference_doc_code"/>
                                 <field name="reason"/>
                                 <field name="date"/>
                             </group>

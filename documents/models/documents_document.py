@@ -35,6 +35,7 @@ class Document(models.Model):
     _description = 'Document'
     _inherit = ['mail.thread.cc', 'mail.activity.mixin']
     _order = 'id desc'
+    _systray_view = 'activity'
 
     # Attachment
     attachment_id = fields.Many2one('ir.attachment', ondelete='cascade', auto_join=True, copy=False)

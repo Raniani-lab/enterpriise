@@ -43,7 +43,7 @@
             <div t-if="line.temporal_type == 'subscription'" class="text-muted d-none d-md-block small"
                  t-esc="line.pricing_id.name"/>
         </xpath>
-        <xpath expr="//td[hasclass('td-price')]/span" position="after">
+        <xpath expr="//td[hasclass('td-price')]" position="inside">
             <div t-if="line.temporal_type == 'subscription'">
                 <span>per</span>
                 <span t-if="line.pricing_id.recurrence_id.duration > 1" t-esc="line.pricing_id.recurrence_id.duration"/>

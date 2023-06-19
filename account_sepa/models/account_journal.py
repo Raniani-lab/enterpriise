@@ -102,14 +102,7 @@ class AccountJournal(models.Model):
         # Create the GrpHdr XML block
         GrpHdr = etree.SubElement(CstmrCdtTrfInitn, "GrpHdr")
         MsgId = etree.SubElement(GrpHdr, "MsgId")
-        val_MsgId = str(int(time.time() * 100))[-10:]
-        if self.company_id.sepa_initiating_party_name:
-            company_name = self.company_id.sepa_initiating_party_name[:15]
-        else:
-            company_name = self.company_id.name[:15]
-        val_MsgId = sanitize_communication(company_name) + val_MsgId
-        val_MsgId = str(random.random()) + val_MsgId
-        val_MsgId = val_MsgId[-30:]
+        val_MsgId = str(time.time())
         MsgId.text = val_MsgId
         CreDtTm = etree.SubElement(GrpHdr, "CreDtTm")
         CreDtTm.text = time.strftime("%Y-%m-%dT%H:%M:%S")

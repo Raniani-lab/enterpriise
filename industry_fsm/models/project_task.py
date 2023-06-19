@@ -420,6 +420,7 @@ class Task(models.Model):
             }
 
         template_id = self.env.ref('industry_fsm.mail_template_data_task_report').id
+        self.message_subscribe(partner_ids=tasks_with_report.partner_id.ids)
         return {
             'name': _("Send report"),
             'type': 'ir.actions.act_window',

@@ -57,8 +57,10 @@ class WorksheetTemplate(models.Model):
         return templates
 
     def write(self, vals):
+        old_company_ids = self.company_ids
         res = super().write(vals)
-        if 'company_ids' in vals:
+        if 'company_ids' in vals and self.company_ids:
+            update_company_ids = old_company_ids - self.company_ids
             template_dict = defaultdict(lambda: self.env['worksheet.template'])
             for template in self:
                 template_dict[template.res_model] |= template
@@ -66,8 +68,9 @@ class WorksheetTemplate(models.Model):
                 for model, name in self._get_models_to_check_dict()[res_model]:
                     records = self.env[model].search([('worksheet_template_id', 'in', templates.ids)])
                     for record in records:
+                        company_names = ', '.join(update_company_ids.mapped('name'))
                         if record.company_id not in record.worksheet_template_id.company_ids:
-                            raise UserError(_("There is still %s linked to this template. Please unlink them first.") % name)
+                            raise UserError(_("Unfortunately, you cannot unlink this worksheet template from %s because the template is still connected to tasks within the company.", company_names))
         return res
 
     def unlink(self):

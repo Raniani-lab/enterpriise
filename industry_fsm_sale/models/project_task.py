@@ -205,6 +205,10 @@ class Task(models.Model):
             return False
         return super(Task, self)._get_last_sol_of_customer()
 
+    def _show_time_and_material(self):
+        # check time and material section should visible or not in portal
+        return self.allow_material and self.allow_billable and self.sale_order_id and self.is_fsm
+
     def action_view_invoices(self):
         invoices = self.mapped('sale_order_id.invoice_ids')
         # prevent view with onboarding banner

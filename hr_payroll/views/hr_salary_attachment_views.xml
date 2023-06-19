@@ -5,6 +5,7 @@
         <field name="model">hr.salary.attachment</field>
         <field name="arch" type="xml">
             <tree string="Salary Attachments" multi_edit="1">
+                <field name="currency_id" invisible="1"/>
                 <field name="employee_ids" widget="many2many_avatar_employee"/>
                 <field name="description"/>
                 <field name="deduction_type_id" options="{'no_open': True, 'no_create_edit': True, 'no_create': True}"/>

@@ -29,11 +29,14 @@ class TestMxEdiCommon(AccountEdiTestCommon):
 
         # ==== Config ====
 
-        cls.certificate = cls.env['l10n_mx_edi.certificate'].create({
-            'content': base64.encodebytes(misc.file_open('l10n_mx_edi/demo/pac_credentials/certificate.cer', 'rb').read()),
-            'key': base64.encodebytes(misc.file_open('l10n_mx_edi/demo/pac_credentials/certificate.key', 'rb').read()),
-            'password': '12345678a',
-        })
+        # The test certificate is expired since the 19th of June. However, since the tests are only testing the xml
+        # values without sending anything, we don't really care about the certificate validity.
+        with freeze_time(cls.frozen_today):
+            cls.certificate = cls.env['l10n_mx_edi.certificate'].create({
+                'content': base64.encodebytes(misc.file_open('l10n_mx_edi/demo/pac_credentials/certificate.cer', 'rb').read()),
+                'key': base64.encodebytes(misc.file_open('l10n_mx_edi/demo/pac_credentials/certificate.key', 'rb').read()),
+                'password': '12345678a',
+            })
         cls.certificate.write({
             'date_start': '2016-01-01 01:00:00',
             'date_end': '2018-01-01 01:00:00',

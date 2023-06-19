@@ -94,7 +94,7 @@
                     <td t-att-colspan="5" t-att-style="'padding-top: 3rem;'">
                         <t t-set="taxGrids" t-value="props.line.tax_grid_summary_lines"/>
 
-                        <t t-if="'tax_grid_summary_lines' in props.line &amp;&amp; Object.keys(taxGrids).length > 0">
+                        <t t-if="'tax_grid_summary_lines' in props.line and Object.keys(taxGrids).length > 0">
                             <t t-set="hasTaxesGridsSeveralCountries" t-value="Object.keys(taxGrids).length > 1"/>
 
                             <table class="o_account_reports_subtable table table-sm table-striped">

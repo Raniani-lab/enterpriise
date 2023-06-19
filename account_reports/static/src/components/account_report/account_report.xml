@@ -47,7 +47,7 @@
                 <div class="o_account_reports_body" t-ref="accountReportBody">
                     <!-- Warnings -->
                     <div id="warnings_div">
-                        <t t-if="controller.filters.show_draft &amp;&amp; !controller.options.all_entries &amp;&amp; controller.options.unposted_in_period">
+                        <t t-if="controller.filters.show_draft and !controller.options.all_entries and controller.options.unposted_in_period">
                             <div class="alert alert-info text-center mb-0" >
                                 <span>
                                     There are

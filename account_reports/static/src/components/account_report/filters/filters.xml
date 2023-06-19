@@ -34,7 +34,7 @@
         </t>
 
         <!-- Analytic filter -->
-        <t t-if="controller.groups.analytic_accounting &amp;&amp; controller.filters.show_analytic">
+        <t t-if="controller.groups.analytic_accounting and controller.filters.show_analytic">
             <div class="acc_rep_filter_analytic">
                 <t t-call="account_reports.AccountReportFilterAnalytic"/>
             </div>
@@ -76,7 +76,7 @@
         </t>
 
         <!-- Tax unit filter -->
-        <t t-if="'available_tax_units' in this.controller.options &amp;&amp; controller.options.available_tax_units.length > 0">
+        <t t-if="'available_tax_units' in this.controller.options and controller.options.available_tax_units.length > 0">
             <div class="acc_rep_filter_tax_unit">
                 <t t-call="account_reports.AccountReportFilterTaxUnit"/>
             </div>

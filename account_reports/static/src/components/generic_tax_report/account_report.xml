@@ -8,7 +8,7 @@
                 </div>
             </t>
 
-            <t t-if="controller.report.root_report_id &amp;&amp; controller.options.available_tax_units &amp;&amp; controller.options.tax_unit === 'company_only'">
+            <t t-if="controller.report.root_report_id and controller.options.available_tax_units and controller.options.tax_unit === 'company_only'">
                 <div class="alert alert-info text-center mb-0">
                     <span>This company is part of a tax unit. You're currently not viewing the whole unit. To change that, use the Tax Unit filter.</span>
                 </div>

@@ -5,11 +5,11 @@
             <t t-set-slot="toggler">
                 <span class="fa fa-filter me-1"/>Options:
 
-                <t t-if="controller.groups.account_readonly &amp;&amp; controller.filters.show_draft">
+                <t t-if="controller.groups.account_readonly and controller.filters.show_draft">
                     <t t-esc="(controller.options.all_entries) ? 'With Draft Entries' : 'Posted Entries Only'"/>
                 </t>
 
-                <t t-if="controller.filters.show_unreconciled &amp;&amp; controller.options.unreconciled">
+                <t t-if="controller.filters.show_unreconciled and controller.options.unreconciled">
                     <t t-esc="(controller.filters.show_draft) ? ', Only Show Unreconciled Entries' : 'Only Show Unreconciled Entries'"/>
                 </t>
 
@@ -18,7 +18,7 @@
                 </t>
             </t>
 
-            <t t-if="controller.groups.account_readonly &amp;&amp; controller.filters.show_draft">
+            <t t-if="controller.groups.account_readonly and controller.filters.show_draft">
                 <DropdownItem
                     class="{ 'filter_show_draft_hook': true, 'selected': controller.options.all_entries }"
                     onSelected="() => this.toggleFilter('all_entries')"
@@ -27,7 +27,7 @@
                 </DropdownItem>
             </t>
 
-            <t t-if="controller.groups.account_readonly &amp;&amp; controller.filters.show_analytic_groupby">
+            <t t-if="controller.groups.account_readonly and controller.filters.show_analytic_groupby">
                 <DropdownItem
                     class="{ 'selected': controller.options.include_analytic_without_aml }"
                     onSelected="() => this.toggleFilter('include_analytic_without_aml')"

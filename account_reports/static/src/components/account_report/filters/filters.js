@@ -26,6 +26,7 @@ export class AccountReportFilters extends Component {
 
     setup() {
         this.dialog = useService("dialog");
+        this.companyService = useService("company");
         this.controller = useState(this.env.controller);
     }
 
@@ -192,5 +193,23 @@ export class AccountReportFilters extends Component {
             };
 
         await this.controller.load(this.controller.options);
+    }
+
+    async filterTaxUnit(taxUnit) {
+        this.controller.updateOption('tax_unit', taxUnit.id);
+        this.controller.saveSessionOptions();
+
+        const selectedCompanies = new Set(this.companyService.allowedCompanyIds)
+        const taxUnitCompanies = new Set(taxUnit.company_ids);
+
+        // We remove all elements that are present on both sets
+        selectedCompanies.forEach((companyId) => {
+           if (taxUnitCompanies.has(companyId)) {
+               taxUnitCompanies.delete(companyId);
+               selectedCompanies.delete(companyId);
+           }
+        });
+
+        await this.companyService.setCompanies("toggle", ...selectedCompanies, ...taxUnitCompanies);
     }
 }

@@ -22,7 +22,7 @@
 
                 <DropdownItem
                     class="{ 'selected': controller.options.tax_unit === taxUnit.id }"
-                    onSelected="() => this.updateFilter('tax_unit', taxUnit.id)"
+                    onSelected="() => this.filterTaxUnit(taxUnit)"
                 >
                     <t t-esc="taxUnit.name"/>
                 </DropdownItem>

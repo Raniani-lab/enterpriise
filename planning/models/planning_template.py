@@ -97,6 +97,7 @@ class PlanningTemplate(models.Model):
             timedelta(hours=end_datetime.hour, minutes=end_datetime.minute).total_seconds() / 3600,
         )
 
+    @api.depends('role_id')
     def _compute_display_name(self):
         for shift_template in self:
             name = '{} {}'.format(

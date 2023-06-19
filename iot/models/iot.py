@@ -72,6 +72,7 @@ class IotDevice(models.Model):
     is_scanner = fields.Boolean(string='Is Scanner', compute="_compute_is_scanner", inverse="_set_scanner",
         help="Manually switch the device type between keyboard and scanner")
 
+    @api.depends('iot_id')
     def _compute_display_name(self):
         for i in self:
             i.display_name = f"[{i.iot_id.name}] {i.name}"

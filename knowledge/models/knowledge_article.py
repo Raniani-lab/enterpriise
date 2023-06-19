@@ -955,6 +955,7 @@ class Article(models.Model):
         })
         return record.id, record.display_name
 
+    @api.depends('icon')
     def _compute_display_name(self):
         for rec in self:
             rec.display_name = f"{rec.icon or self._get_no_icon_placeholder()} {rec.name or _('Untitled')}"

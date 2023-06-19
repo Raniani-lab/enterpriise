@@ -603,6 +603,8 @@ class IrModelField(models.Model):
             return ['name', 'field_description', 'model', 'model_id.name']
         return ['field_description']
 
+    @api.depends('field_description', 'model_id')
+    @api.depends_context('studio')
     def _compute_display_name(self):
         if not self.env.context.get('studio'):
             return super()._compute_display_name()

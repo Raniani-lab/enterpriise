@@ -254,6 +254,7 @@ class ConsolidationAccount(models.Model):
 
     # ORM OVERRIDES
 
+    @api.depends('code')
     def _compute_display_name(self):
         for record in self:
             record.display_name = f'{record.code} {record.name}' if record.code else record.name
@@ -319,6 +320,7 @@ class ConsolidationGroup(models.Model):
             if record.child_ids and len(record.child_ids) > 0 and record.account_ids and len(record.account_ids) > 0:
                 raise ValidationError(_("An account group can only have accounts or other groups children but not both!"))
 
+    @api.depends('parent_id')
     def _compute_display_name(self):
         for section in self:
             orig_section = section

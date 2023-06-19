@@ -69,6 +69,8 @@ class SaleOrderLine(models.Model):
         self.filtered(lambda sol: not sol.is_expense)._post_process_planning_sale_line()
         return res
 
+    @api.depends('product_id', 'planning_hours_to_plan', 'planning_hours_planned')
+    @api.depends_context('with_planning_remaining_hours')
     def _compute_display_name(self):
         super()._compute_display_name()
         if not self.env.context.get('with_planning_remaining_hours'):

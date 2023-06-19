@@ -52,6 +52,8 @@ class HelpdeskSLA(models.Model):
         for sla in self:
             sla.ticket_count = sla_data.get(sla.id, 0)
 
+    @api.depends('team_id')
+    @api.depends_context('with_team_name')
     def _compute_display_name(self):
         if not self._context.get('with_team_name'):
             return super()._compute_display_name()

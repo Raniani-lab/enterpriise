@@ -63,6 +63,8 @@ class ResourceResource(models.Model):
             self.env['hr.employee'].sudo().with_context(from_planning=False).create(create_vals)
         return resources
 
+    @api.depends('employee_id')
+    @api.depends_context('show_job_title')
     def _compute_display_name(self):
         if not self.env.context.get('show_job_title'):
             return super()._compute_display_name()

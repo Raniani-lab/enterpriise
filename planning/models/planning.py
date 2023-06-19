@@ -754,6 +754,8 @@ class Planning(models.Model):
             """ % {'table_name': self._table}
             self.env.cr.execute(query)
 
+    @api.depends(lambda self: self._display_name_fields())
+    @api.depends_context('group_by')
     def _compute_display_name(self):
         group_by = self.env.context.get('group_by', [])
         field_list = [fname for fname in self._display_name_fields() if fname not in group_by]

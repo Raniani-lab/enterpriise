@@ -187,6 +187,7 @@ class Form325(models.Model):
         compute='_compute_form_281_50_total_amount',
     )
 
+    @api.depends('reference_year', 'is_test')
     def _compute_display_name(self):
         for f_325 in self:
             f_325.display_name = f"325 - {f_325.reference_year}{' - TEST' if f_325.is_test else ''}"

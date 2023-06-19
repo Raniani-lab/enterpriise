@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class AccountDisallowedExpensesCategory(models.Model):
@@ -9,6 +9,7 @@ class AccountDisallowedExpensesCategory(models.Model):
 
     car_category = fields.Boolean('Car Category', help='This checkbox makes the vehicle mandatory while booking a vendor bill.')
 
+    @api.depends('car_category')
     def _compute_display_name(self):
         super()._compute_display_name()
         # Do no display the rate in the name for car expenses

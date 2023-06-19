@@ -29,6 +29,7 @@ class DataMergeGroup(models.Model):
         compute='_compute_similarity', store=True)
     record_ids = fields.One2many('data_merge.record', 'group_id')
 
+    @api.depends('model_id', 'similarity')
     def _compute_display_name(self):
         for group in self:
             group.display_name = _('%s - Similarity: %s%%', group.model_id.name, int(group.similarity * 100))

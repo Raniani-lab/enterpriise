@@ -185,6 +185,7 @@ class AccountBatchPayment(models.Model):
             return self.env['ir.sequence'].with_context(sequence_date=sequence_date).next_by_code(sequence_code)
         return vals['name']
 
+    @api.depends('state')
     def _compute_display_name(self):
         state_values = dict(self._fields['state'].selection)
         for batch in self:

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import fields, models, _
+from odoo import api, fields, models, _
 
 
 class ProductAvataxCategory(models.Model):
@@ -12,6 +12,7 @@ class ProductAvataxCategory(models.Model):
     code = fields.Char(required=True)
     description = fields.Char(required=True)
 
+    @api.depends('code', 'description')
     def _compute_display_name(self):
         for category in self:
             category.display_name = _('[%s] %s', category.code, category.description[0:50])

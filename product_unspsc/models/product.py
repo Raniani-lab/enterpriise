@@ -35,6 +35,7 @@ class ProductCode(models.Model):
         help='Indicate if this code could be used in products or in UoM',)
     active = fields.Boolean()
 
+    @api.depends('code')
     def _compute_display_name(self):
         for prod in self:
             prod.display_name = f"{prod.code} {prod.name or ''}"

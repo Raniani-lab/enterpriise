@@ -56,6 +56,7 @@ class L10nPeEdiVehicle(models.Model):
         help="The number of the vehicle's special authorization",
     )
 
+    @api.depends('license_plate')
     def _compute_display_name(self):
         # OVERRIDE
         for vehicle in self:

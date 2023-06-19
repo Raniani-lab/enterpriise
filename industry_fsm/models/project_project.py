@@ -13,6 +13,8 @@ class Project(models.Model):
         "Worksheets", compute="_compute_allow_worksheets", store=True, readonly=False)
     allow_milestones = fields.Boolean(compute='_compute_allow_milestones', store=True, readonly=False)
 
+    @api.depends('is_fsm', 'is_internal_project', 'company_id')
+    @api.depends_context('allowed_company_ids')
     def _compute_display_name(self):
         super()._compute_display_name()
         if len(self.env.context.get('allowed_company_ids', [])) <= 1:

@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import fields, models, api
 
 
 class L10nPEPleUsage(models.Model):
@@ -10,6 +10,7 @@ class L10nPEPleUsage(models.Model):
     name = fields.Char(required=True)
     active = fields.Boolean(default=True)
 
+    @api.depends('code')
     def _compute_display_name(self):
         for prod in self:
             prod.display_name = f"{prod.code} {prod.name or ''}"

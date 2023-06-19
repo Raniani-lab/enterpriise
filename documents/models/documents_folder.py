@@ -32,6 +32,8 @@ class DocumentFolder(models.Model):
 
         return res
 
+    @api.depends('parent_folder_id')
+    @api.depends_context('hierarchical_naming')
     def _compute_display_name(self):
         hierarchical_naming = self.env.context.get('hierarchical_naming', True)
         for record in self:

@@ -40,6 +40,7 @@ class PlanningRecurrency(models.Model):
             if any(recurrency.company_id != planning.company_id for planning in recurrency.slot_ids):
                 raise ValidationError(_('An shift must be in the same company as its recurrency.'))
 
+    @api.depends('repeat_type', 'repeat_interval', 'repeat_until')
     def _compute_display_name(self):
         for recurrency in self:
             if recurrency.repeat_type == 'forever':

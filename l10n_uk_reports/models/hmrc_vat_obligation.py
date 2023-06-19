@@ -32,6 +32,7 @@ class HmrcVatObligation(models.Model):
     company_id = fields.Many2one('res.company', 'Company', required=True,
         default=lambda self: self.env.company)
 
+    @api.depends('date_due', 'date_start', 'date_end')
     def _compute_display_name(self):
         for o in self:
             o.display_name = f"{o.date_due} ({o.date_start} - {o.date_end})"

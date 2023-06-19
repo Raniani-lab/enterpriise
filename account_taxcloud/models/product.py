@@ -13,6 +13,7 @@ class ProductTicCategory(models.Model):
     code = fields.Integer(string="TIC Category Code", required=True)
     description = fields.Char(string='TIC Description', required=True)
 
+    @api.depends('code', 'description')
     def _compute_display_name(self):
         for category in self:
             category.display_name = _('[%s] %s', category.code, category.description[0:50])

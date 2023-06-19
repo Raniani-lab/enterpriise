@@ -30,6 +30,8 @@ class Employee(models.Model):
         ('employee_token_unique', 'unique(employee_token)', 'Error: each employee token must be unique')
     ]
 
+    @api.depends('job_title')
+    @api.depends_context('show_job_title')
     def _compute_display_name(self):
         if not self.env.context.get('show_job_title'):
             return super()._compute_display_name()

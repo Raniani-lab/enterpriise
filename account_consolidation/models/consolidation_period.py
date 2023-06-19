@@ -421,6 +421,7 @@ class ConsolidationPeriodComposition(models.Model):
             if comp.composed_period_id == comp.using_period_id:
                 raise ValidationError(_("The Composed Analysis Period must be different from the Analysis Period"))
 
+    @api.depends('composed_period_id')
     def _compute_display_name(self):
         for record in self:
             record.display_name = record.composed_period_id.display_name

@@ -55,6 +55,7 @@ class SocialLivePost(models.Model):
         for live_post in self:
             live_post.live_post_link = False
 
+    @api.depends('state', 'account_id')
     def _compute_display_name(self):
         """ ex: [Facebook] Odoo Social: posted, [Twitter] Mitchell Admin: failed, ... """
         state_description_values = dict(self._fields['state']._description_selection(self.env))

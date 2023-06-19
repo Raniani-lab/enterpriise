@@ -52,6 +52,7 @@ class L10nLuYearlyTaxReportManual(models.Model):
     submitted_rcs = fields.Boolean(string="Annual accounts submitted to the Trade and Companies Register (RCS)", states={'exported': [('readonly', True)]}, tracking=True)
     company_ids = fields.Many2many('res.company', string="Companies", required=True, default=_get_default_company_ids)
 
+    @api.depends('company_ids', 'year')
     def _compute_display_name(self):
         for r in self:
             r.display_name = _('Yearly Tax Report Manual Data') + ' (' + ', '.join(r.company_ids.mapped('name')) + ') ' + r.year

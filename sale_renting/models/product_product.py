@@ -1,6 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models, _
+from odoo import api, fields, models, _
 
 
 class ProductProduct(models.Model):
@@ -8,6 +8,8 @@ class ProductProduct(models.Model):
 
     qty_in_rent = fields.Float("Quantity currently in rent", compute='_get_qty_in_rent')
 
+    @api.depends('rent_ok')
+    @api.depends_context('rental_products')
     def _compute_display_name(self):
         super()._compute_display_name()
         if not self._context.get('rental_products'):

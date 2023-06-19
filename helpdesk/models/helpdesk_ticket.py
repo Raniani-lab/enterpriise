@@ -385,6 +385,8 @@ class HelpdeskTicket(models.Model):
     # ORM overrides
     # ------------------------------------------------------------
 
+    @api.depends('ticket_ref', 'partner_name')
+    @api.depends_context('with_partner')
     def _compute_display_name(self):
         display_partner_name = self._context.get('with_partner', False)
         for ticket in self:

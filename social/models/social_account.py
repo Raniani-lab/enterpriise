@@ -88,6 +88,7 @@ class SocialAccount(models.Model):
         for account in self:
             account.stats_link = False
 
+    @api.depends('media_id')
     def _compute_display_name(self):
         """ ex: [Facebook] Odoo Social, [Twitter] Mitchell Admin, ... """
         for account in self:

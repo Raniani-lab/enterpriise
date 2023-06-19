@@ -118,6 +118,7 @@ class L10nBe28110(models.Model):
                 record.xml_validation_state = 'invalid'
                 record.error_message = str(err)
 
+    @api.depends('reference_year', 'is_test')
     def _compute_display_name(self):
         for record in self:
             record.display_name = f'{record.reference_year}{_("- Test") if record.is_test else ""}'

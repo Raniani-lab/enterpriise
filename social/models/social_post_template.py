@@ -116,6 +116,7 @@ class SocialPostTemplate(models.Model):
         res._set_attachemnt_res_id()
         return res
 
+    @api.depends('message')
     def _compute_display_name(self):
         for record in self:
             record.display_name = record.message if len(record.message) < 50 else f'{record.message[:47]}...'

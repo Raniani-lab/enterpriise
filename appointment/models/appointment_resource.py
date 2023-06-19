@@ -69,6 +69,7 @@ class AppointmentResource(models.Model):
             resource.source_resource_ids = resource.source_resource_ids + new_resources - old_resources
             resource.destination_resource_ids = resource.destination_resource_ids - old_resources
 
+    @api.depends('capacity')
     def _compute_display_name(self):
         """ Display the capacity of the resource next to its name if resource_manage_capacity is enabled """
         for resource in self:

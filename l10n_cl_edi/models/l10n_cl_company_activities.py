@@ -23,7 +23,7 @@ class CompanyActivities(models.Model):
                                          'they are added in the future.')
     active = fields.Boolean('Active', help='Allows you to hide the activity without removing it.', default=True)
 
-    @api.model
+    @api.depends('code')
     def _compute_display_name(self):
         for record in self:
             record.display_name = f'({record.code}) {record.name}'

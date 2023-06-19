@@ -59,6 +59,8 @@ class ProductTemplate(models.Model):
             }
         }
 
+    @api.depends('rent_ok')
+    @api.depends_context('rental_products')
     def _compute_display_name(self):
         super()._compute_display_name()
         if not self._context.get('rental_products'):

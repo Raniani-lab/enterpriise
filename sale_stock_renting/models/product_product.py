@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import timedelta
-from odoo import _, fields, models
+from odoo import _, api, fields, models
 
 
 class ProductProduct(models.Model):
@@ -14,6 +14,8 @@ class ProductProduct(models.Model):
             if product.rent_ok and not product.sale_ok:
                 product.show_forecasted_qty_status_button = False
 
+    @api.depends('type', 'rent_ok', 'qty_available', 'qty_in_rent')
+    @api.depends_context('sale_stock_renting_show_total_qty')
     def _compute_display_name(self):
         super()._compute_display_name()
         if self.env.context.get('sale_stock_renting_show_total_qty'):

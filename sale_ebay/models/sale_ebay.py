@@ -36,6 +36,7 @@ class EbayCategory(models.Model):
                 parent_id = parent.category_parent_id if parent.category_parent_id else '0'
             rec.full_name = name
 
+    @api.depends('full_name')
     def _compute_display_name(self):
         for cat in self:
             cat.display_name = cat.full_name

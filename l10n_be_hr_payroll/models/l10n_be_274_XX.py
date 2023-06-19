@@ -85,6 +85,7 @@ class L10nBe274XX(models.Model):
     xls_file = fields.Binary(string="XLS file")
     xls_filename = fields.Char()
 
+    @api.depends('date_start')
     def _compute_display_name(self):
         for record in self:
             record.display_name = format_date(self.env, record.date_start, date_format="MMMM y", lang_code=self.env.user.lang)

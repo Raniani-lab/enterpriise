@@ -104,6 +104,7 @@ class AppointmentSlot(models.Model):
         self.ensure_one()
         return self.end_hour if self.end_hour else 24
 
+    @api.depends('slot_type', 'weekday', 'start_datetime', 'end_datetime', 'start_hour', 'end_hour')
     def _compute_display_name(self):
         weekdays = dict(self._fields['weekday'].selection)
         for slot in self:

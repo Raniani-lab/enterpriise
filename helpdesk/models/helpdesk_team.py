@@ -325,6 +325,8 @@ class HelpdeskTeam(models.Model):
     # ORM overrides
     # ------------------------------------------------------------
 
+    @api.depends('company_id')
+    @api.depends_context('allowed_company_ids')
     def _compute_display_name(self):
         super()._compute_display_name()
         if len(self.env.context.get('allowed_company_ids', [])) <= 1:

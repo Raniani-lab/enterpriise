@@ -493,6 +493,7 @@ class L10n_luStoredSalesReport(models.Model):
     ])
     company_id = fields.Many2one(comodel_name='res.company', default=lambda self: self.env.company.id)
 
+    @api.depends('year', 'period', 'codes', 'attachment_id')
     def _compute_display_name(self):
         for r in self:
             r.display_name = f"{r.year}/{r.period}/{r.codes} : {r.attachment_id.name}"

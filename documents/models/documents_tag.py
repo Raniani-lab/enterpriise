@@ -19,6 +19,8 @@ class Tags(models.Model):
         ('facet_name_unique', 'unique (facet_id, name)', "Tag already exists for this facet"),
     ]
 
+    @api.depends('facet_id')
+    @api.depends_context('simple_name')
     def _compute_display_name(self):
         if self._context.get('simple_name'):
             return super()._compute_display_name()

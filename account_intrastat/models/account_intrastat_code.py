@@ -72,6 +72,7 @@ class AccountIntrastatCode(models.Model):
         help='Date from which a code may be used.',
     )
 
+    @api.depends('code', 'description')
     def _compute_display_name(self):
         for r in self:
             text = r.name or r.description

@@ -45,6 +45,7 @@ class ArticleTemplate(models.Model):
          ),
     ]
 
+    @api.depends('icon')
     def _compute_display_name(self):
         no_icon_placeholder = self.env['knowledge.article']._get_no_icon_placeholder()
         for rec in self:

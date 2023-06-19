@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class PlanningTemplate(models.Model):
@@ -9,6 +9,7 @@ class PlanningTemplate(models.Model):
     project_id = fields.Many2one('project.project', string="Project",
                                  company_dependent=True, copy=True)
 
+    @api.depends('project_id')
     def _compute_display_name(self):
         super()._compute_display_name()
         for shift_template in self:

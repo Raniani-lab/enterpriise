@@ -151,6 +151,7 @@ class Form28150(models.Model):
         readonly=True,
     )
 
+    @api.depends('reference_year', 'partner_name')
     def _compute_display_name(self):
         for record in self:
             record.display_name = f"{record.reference_year} {record.partner_name}"

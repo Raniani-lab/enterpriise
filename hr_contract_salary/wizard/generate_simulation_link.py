@@ -113,6 +113,7 @@ class GenerateSimulationLink(models.TransientModel):
         else:
             self.contract_id = self.employee_job_id.default_contract_id
 
+    @api.depends('employee_id', 'applicant_id')
     def _compute_display_name(self):
         for w in self:
             w.display_name = w.employee_id.name or w.applicant_id.partner_name

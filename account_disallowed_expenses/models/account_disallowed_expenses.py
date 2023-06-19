@@ -23,7 +23,7 @@ class AccountDisallowedExpensesCategory(models.Model):
             'Disallowed expenses category code should be unique in each company.')
     ]
 
-    @api.depends('current_rate')
+    @api.depends('current_rate', 'code')
     def _compute_display_name(self):
         for record in self:
             rate = record.current_rate or _('No Rate')

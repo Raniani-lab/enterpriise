@@ -93,7 +93,7 @@ class Forecast(models.Model):
         return {
             project.id: {
                 'value': allocated_hours_sum,
-                'max_value': project.allocated_hours
+                'max_value': project.sudo().allocated_hours
             }
             for project, allocated_hours_sum in planning_read_group
         }

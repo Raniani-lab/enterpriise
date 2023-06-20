@@ -87,7 +87,7 @@ class Forecast(models.Model):
     def _gantt_progress_bar_project_id(self, res_ids, start, stop):
         project_dict = {
             project.id: project.allocated_hours
-            for project in self.env['project.project'].search([('id', 'in', res_ids)])
+            for project in self.env['project.project'].sudo().search([('id', 'in', res_ids)])
         }
         planning_read_group = self.env['planning.slot']._read_group(
             [('project_id', 'in', res_ids), ('start_datetime', '<=', stop), ('end_datetime', '>=', start)],

@@ -290,6 +290,10 @@ export class TimerTimesheetGridRenderer extends TimesheetGridRenderer {
      * @param {import("@web_grid/views/grid_model").GridRow} row
      */
     async onTimerClick(row) {
+        if (this.timerState.addTimeMode) {
+            row.addTime();
+            return;
+        }
         if (this.timerState.timerRunning && this.timerState.timerRunningRowId === row.id) {
             await this.onTimerStopped(row);
             return;

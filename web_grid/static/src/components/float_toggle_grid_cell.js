@@ -5,7 +5,7 @@ import { formatFloatFactor } from "@web/views/fields/formatters";
 import { useGridCell, useMagnifierGlass } from "@web_grid/hooks/grid_cell_hook";
 import { standardGridCellProps } from "./grid_cell";
 
-import { Component, useRef, useState } from "@odoo/owl";
+import { Component, useRef, useState, useEffect } from "@odoo/owl";
 
 function formatter(value, options = {}) {
     return formatFloatFactor(value, options);
@@ -20,6 +20,7 @@ export class FloatToggleGridCell extends Component {
 
     setup() {
         this.rootRef = useRef("root");
+        this.buttonRef = useRef("toggleButton");
         this.magnifierGlassHook = useMagnifierGlass();
         this.state = useState({
             edit: this.props.editMode,
@@ -27,6 +28,15 @@ export class FloatToggleGridCell extends Component {
             cell: null,
         });
         useGridCell();
+
+        useEffect(
+            (buttonEl) => {
+                if (buttonEl) {
+                    buttonEl.focus();
+                }
+            },
+            () => [this.buttonRef.el]
+        );
     }
 
     get factor() {
@@ -50,9 +60,7 @@ export class FloatToggleGridCell extends Component {
 
     isEditable(props = this.props) {
         return (
-            !props.readonly &&
-            this.state.cell?.readonly === false &&
-            !this.state.cell.row.isSection
+            !props.readonly && this.state.cell?.readonly === false && !this.state.cell.row.isSection
         );
     }
 
@@ -70,10 +78,14 @@ export class FloatToggleGridCell extends Component {
     }
 
     onCellClick(ev) {
-        if (this.isEditable() && !this.state.edit && !ev.target.closest('.o_grid_search_btn')) {
+        if (this.isEditable() && !this.state.edit && !ev.target.closest(".o_grid_search_btn")) {
             this.onChange();
             this.props.onEdit(true);
         }
+    }
+
+    onKeyDown(ev) {
+        this.props.onKeyDown(ev, this.state.cell);
     }
 }
 

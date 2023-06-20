@@ -5,6 +5,8 @@
             <button t-if="state.edit"
                     class="o_field_float_toggle"
                     t-on-click="onChange"
+                    t-on-keydown="onKeyDown"
+                    t-ref="toggleButton"
             >
                 <t t-out="formattedValue" />
             </button>

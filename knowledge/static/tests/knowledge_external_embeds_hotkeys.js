@@ -175,7 +175,7 @@ QUnit.module("Knowledge External Embeds Hotkeys", (hooks) => {
 
         const htmlField = await htmlFieldReadyPromise;
 
-        const editable = htmlField.wysiwyg.el;
+        const editable = htmlField.wysiwyg.odooEditor.editable;
         const embedViewTargetNode = editable.querySelector('.embedded_view_target');
         const regularHtmlFieldNode = editable.querySelector('.regular_html_field_node');
 

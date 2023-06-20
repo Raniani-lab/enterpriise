@@ -3,7 +3,6 @@
 import { _t, qweb as QWeb } from "web.core";
 import { ArticleTemplatePickerDialog } from "@knowledge/components/article_template_picker_dialog/article_template_picker_dialog";
 import { encodeDataBehaviorProps } from "@knowledge/js/knowledge_utils";
-import { getWysiwygClass } from "web_editor.loader";
 import { HtmlField, htmlField } from "@web_editor/js/backend/html_field";
 import { ItemCalendarPropsDialog } from "@knowledge/components/item_calendar_props_dialog/item_calendar_props_dialog";
 import { onWillUpdateProps } from "@odoo/owl";
@@ -11,6 +10,7 @@ import { PromptEmbeddedViewNameDialog } from "@knowledge/components/prompt_embed
 import { registry } from "@web/core/registry";
 import { sprintf } from "@web/core/utils/strings";
 import { useService } from "@web/core/utils/hooks";
+import { KnowledgeWysiwyg } from '@knowledge/js/knowledge_wysiwyg';
 
 
 /**
@@ -23,6 +23,10 @@ import { useService } from "@web/core/utils/hooks";
  */
 export class KnowledgeArticleHtmlField extends HtmlField {
     static template = "knowledge.KnowledgeArticleHtmlField";
+    static components = {
+        ...HtmlField.components,
+        Wysiwyg: KnowledgeWysiwyg,
+     };
 
     /**
      * @override
@@ -34,15 +38,6 @@ export class KnowledgeArticleHtmlField extends HtmlField {
         this.orm = useService("orm");
         onWillUpdateProps(nextProps => {
             this.state.isWysiwygHelperActive = this.isWysiwygHelperActive(nextProps);
-        });
-    }
-
-    /**
-     * @override
-     */
-    async _getWysiwygClass() {
-        return getWysiwygClass({
-            moduleName: "knowledge.wysiwyg"
         });
     }
 

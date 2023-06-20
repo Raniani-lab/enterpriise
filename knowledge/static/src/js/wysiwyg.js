@@ -2,7 +2,7 @@
 
 import { Component } from '@odoo/owl';
 import { qweb as QWeb, _t } from 'web.core';
-import Wysiwyg from 'web_editor.wysiwyg';
+import { Wysiwyg } from '@web_editor/js/wysiwyg/wysiwyg';
 import { ItemCalendarPropsDialog } from "@knowledge/components/item_calendar_props_dialog/item_calendar_props_dialog";
 import { PromptEmbeddedViewNameDialog } from '@knowledge/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog';
 import {
@@ -17,12 +17,9 @@ import {
 import {
     isSelectionInSelectors
 } from '@web_editor/js/editor/odoo-editor/src/utils/utils';
+import { patch } from "@web/core/utils/patch";
 
-Wysiwyg.include({
-    defaultOptions: {
-        ...Wysiwyg.prototype.defaultOptions,
-        allowCommandFile: true,
-    },
+patch(Wysiwyg.prototype, 'knowledge_wysiswyg', {
     /**
      * @override
      */
@@ -42,7 +39,10 @@ Wysiwyg.include({
                 this._onHistoryResetFromSteps();
             }
         };
-        return finalOptions;
+        return {
+            allowCommandFile: true,
+            ...finalOptions,
+        };
     },
     /**
      * @override
@@ -117,11 +117,11 @@ Wysiwyg.include({
                     const restoreSelection = preserveCursor(this.odooEditor.document);
                     const viewType = 'kanban';
                     this._openEmbeddedViewDialog(viewType, async (name) => {
-                        await this._rpc({
-                            model: 'knowledge.article',
-                            method: 'create_default_item_stages',
-                            args: [[this.options.recordInfo.res_id]],
-                        });
+                        await this.orm.call(
+                            'knowledge.article',
+                            'create_default_item_stages',
+                            [[this.options.recordInfo.res_id]],
+                        );
                         this._insertEmbeddedView('knowledge.knowledge_article_item_action_stages', viewType, name, restoreSelection, {
                             active_id: this.options.recordInfo.res_id,
                             default_parent_id: this.options.recordInfo.res_id,
@@ -274,11 +274,12 @@ Wysiwyg.include({
      */
     _insertEmbeddedView: async function (actWindowId, viewType, name, restoreSelection, context={}, additionalViewProps={}) {
         context.knowledge_embedded_view_framework = 'owl';
-        const embeddedViewBlock = $(await this._rpc({
-            model: 'knowledge.article',
-            method: 'render_embedded_view',
-            args: [[this.options.recordInfo.res_id], actWindowId, viewType, name, context, additionalViewProps],
-        }))[0];
+
+        const embeddedViewBlock = $(await this.orm.call(
+            'knowledge.article',
+            'render_embedded_view',
+            [[this.options.recordInfo.res_id], actWindowId, viewType, name, context, additionalViewProps],
+        ))[0];
         this._notifyNewBehavior(embeddedViewBlock, restoreSelection);
     },
     /**

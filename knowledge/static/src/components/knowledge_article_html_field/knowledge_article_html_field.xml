@@ -4,7 +4,7 @@
         <xpath expr="//div[@t-ref='spellcheck']" position="attributes">
             <attribute name="t-attf-class">o_field_knowledge_html_field_container #{ this.state.isEmpty ? 'oe_empty' : '' }</attribute>
         </xpath>
-        <xpath expr="//HtmlFieldWysiwygAdapterComponent" position="after">
+        <xpath expr="//Wysiwyg" position="after">
             <div t-if="state.isWysiwygHelperActive and state.isEmpty" class="o_knowledge_helper pb-3">
                 <p class="text-muted">Start typing to continue with an empty page or pick an option below to get started.</p>
                 <div class="d-flex flex-column">

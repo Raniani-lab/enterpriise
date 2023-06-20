@@ -2,16 +2,14 @@
 
 import { registry } from "@web/core/registry";
 import { LazyComponent } from "@web/core/assets";
-import { loadWysiwyg } from "web_editor.loader";
 import { useService } from "@web/core/utils/hooks";
 import { standardActionServiceProps } from "@web/webclient/actions/action_service";
 
-import { Component, onWillStart, xml } from "@odoo/owl";
+import { Component, xml } from "@odoo/owl";
 
 class StudioActionLoader extends Component {
     setup() {
         this.orm = useService("orm");
-        onWillStart(loadWysiwyg);
     }
 }
 StudioActionLoader.components = { LazyComponent };

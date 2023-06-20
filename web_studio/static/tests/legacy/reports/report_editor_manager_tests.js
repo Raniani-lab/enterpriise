@@ -3,7 +3,7 @@
 import ace from "web_editor.ace";
 import config from "web.config";
 import { Markup } from "web.utils";
-import { MediaDialogWrapper } from "@web_editor/components/media_dialog/media_dialog";
+import { MediaDialogWrapper } from "@web_editor/components/media_dialog/media_dialog_wrapper";
 import testUtils from "web.test_utils";
 import studioTestUtils from "web_studio.testUtils";
 import session from "web.session";

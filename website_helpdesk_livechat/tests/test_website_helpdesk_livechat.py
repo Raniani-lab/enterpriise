@@ -17,7 +17,12 @@ class TestWebsiteHelpdeskLivechat(HelpdeskCommon):
         })
 
         user = self.helpdesk_manager
-        self.patch(type(self.env['im_livechat.channel']), '_get_available_users', lambda _: user)
+
+        def _compute_available_operator_ids(channel_self):
+            for record in channel_self:
+                record.available_operator_ids = user
+
+        self.patch(type(self.env['im_livechat.channel']), '_compute_available_operator_ids', _compute_available_operator_ids)
 
         self.test_team.use_website_helpdesk_livechat = True
 

@@ -294,7 +294,7 @@ export const DialingPanel = Widget.extend({
      */
     _hideHeader() {
         this._$searchBar.hide();
-        this._$tabs.parent().hide();
+        this._$tabs.hide();
     },
     /**
      * @private

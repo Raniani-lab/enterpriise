@@ -8,6 +8,13 @@
             >
                 Show Zero Balance Accounts
             </DropdownItem>
+
+            <DropdownItem
+                class="{ 'selected': controller.options.consolidation_hierarchy }"
+                onSelected="() => this.toggleFilter('consolidation_hierarchy')"
+            >
+               Hierarchy and Subtotals
+            </DropdownItem>
         </xpath>
     </t>
 </templates>

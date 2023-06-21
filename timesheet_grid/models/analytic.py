@@ -502,6 +502,8 @@ class AnalyticLine(models.Model):
             ('project_id', '=', self.project_id.id),
             ('task_id', '=', self.task_id.id),
             ('date', '=', fields.Date.today()),
+            ('name', '=', '/'),
+            ('validated', '=', False),
         ]
 
     def _add_timesheet_time(self, minutes_spent, try_to_match=False):
@@ -522,7 +524,7 @@ class AnalyticLine(models.Model):
         last_timesheet_id = self.search(domain, limit=1)
         # If the last timesheet of the day for this project and task has no description,
         # we match both together.
-        if last_timesheet_id.name == '/' and not last_timesheet_id.validated:
+        if last_timesheet_id:
             last_timesheet_id.unit_amount += amount
             self.unlink()
         else:

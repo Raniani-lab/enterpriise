@@ -4,7 +4,7 @@
     <record id="mrp_eco_action" model="ir.actions.act_window">
         <field name="name">Engineering Change Orders</field>
         <field name="res_model">mrp.eco</field>
-        <field name="view_mode">kanban,tree,calendar,pivot,graph,form</field>
+        <field name="view_mode">kanban,tree,calendar,pivot,graph,form,activity</field>
         <field name="domain">[('type_id', '=',active_id)]</field>
         <field name="context">{'search_default_type_id': [active_id], 'default_type_ids': active_ids, 'default_type_id': active_id}</field>
         <field name="help" type="html">
@@ -21,7 +21,7 @@
     <record id="mrp_eco_action_approval_my" model="ir.actions.act_window">
         <field name="name">Engineering Change Orders</field>
         <field name="res_model">mrp.eco</field>
-        <field name="view_mode">kanban,tree,calendar,pivot,graph,form</field>
+        <field name="view_mode">kanban,tree,calendar,pivot,graph,form,activity</field>
         <field name="context">{'search_default_type_id': [active_id], 'default_type_ids': active_ids, 'default_type_id': active_id, 'search_default_toapprove_my': True}</field>
         <field name="domain">[('type_id', '=',active_id)]</field>
         <field name="help" type="html">
@@ -38,7 +38,7 @@
     <record id="mrp_eco_action_approval" model="ir.actions.act_window">
         <field name="name">Engineering Change Orders</field>
         <field name="res_model">mrp.eco</field>
-        <field name="view_mode">kanban,tree,calendar,pivot,graph,form</field>
+        <field name="view_mode">kanban,tree,calendar,pivot,graph,form,activity</field>
         <field name="context">{'search_default_type_id': [active_id], 'default_type_ids': active_ids, 'default_type_id': active_id, 'search_default_toapprove': True}</field>
         <field name="domain">[('type_id', '=',active_id)]</field>
         <field name="help" type="html">
@@ -55,7 +55,7 @@
     <record id="mrp_eco_action_late" model="ir.actions.act_window">
         <field name="name">Engineering Change Orders</field>
         <field name="res_model">mrp.eco</field>
-        <field name="view_mode">kanban,tree,calendar,pivot,graph,form</field>
+        <field name="view_mode">kanban,tree,calendar,pivot,graph,form,activity</field>
         <field name="context">{'search_default_type_id': [active_id], 'default_type_ids': active_ids, 'default_type_id': active_id, 'search_default_changetoapply': True}</field>
         <field name="domain">[('type_id', '=',active_id)]</field>
         <field name="help" type="html">
@@ -592,7 +592,7 @@
     <record id="mrp_eco_action_main" model="ir.actions.act_window">
         <field name="name">Engineering Change Orders</field>
         <field name="res_model">mrp.eco</field>
-        <field name="view_mode">kanban,tree,calendar,pivot,graph,form</field>
+        <field name="view_mode">kanban,tree,calendar,pivot,graph,form,activity</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
               No engineering change order found

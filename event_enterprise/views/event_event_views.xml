@@ -36,7 +36,7 @@
     </record>
 
     <record id="event.action_event_view" model="ir.actions.act_window">
-        <field name="view_mode">kanban,calendar,tree,gantt,form,pivot,graph,map</field>
+        <field name="view_mode">kanban,calendar,tree,gantt,form,pivot,graph,map,activity</field>
     </record>
 
 </odoo>

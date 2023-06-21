@@ -112,6 +112,9 @@
                     <field name="is_timer_running" invisible="1"/>
                 </xpath>
                 <xpath expr="//div/span[@name='duration']" position="replace"/>
+                <field name="name" position="attributes">
+                    <attribute name="required">0</attribute>
+                </field>
                 <xpath expr="//div[hasclass('o_kanban_record_headings')]" position="after">
                     <div attrs="{ 'invisible': ['|', ('readonly_timesheet', '=', True), ('display_timer', '!=', False)]}">
                         <field name="unit_amount" widget="timesheet_uom" options="{'force_button': true}"/>

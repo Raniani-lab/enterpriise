@@ -14,7 +14,7 @@
                 <setting id="fiscalyear" string="Fiscal Year">
                     <div class="content-group">
                         <div class="d-flex mt16 align-items-baseline">
-                            <label for="fiscalyear_last_month" string="Last Day" class="col-lg-3 o_light_label"/>
+                            <label for="fiscalyear_last_month" string="Last Day" class="col-lg-3 o_light_label pe-2 pe-lg-0"/>
                             <div class="col-lg-9">
                                 <field name="fiscalyear_last_month" class="pe-2"/>
                                 <field name="fiscalyear_last_day"/>

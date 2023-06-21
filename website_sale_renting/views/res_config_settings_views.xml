@@ -10,11 +10,9 @@
                     <setting id="sale_renting_minimal_duration" string="Minimal time of rental" help="Minimal duration between pickup and return.">
                         <div class="content-group">
                             <div class="row mt16">
-                                <div class="col-12">
-                                    <label class="pe-2" for="renting_minimal_time_duration"/>
-                                    <field class="w-25 me-2" name="renting_minimal_time_duration"/>
-                                    <field class="w-25" name="renting_minimal_time_unit"/>
-                                </div>
+                                <label class="pe-2" for="renting_minimal_time_duration"/>
+                                <field class="w-25 me-2" name="renting_minimal_time_duration"/>
+                                <field class="w-25" name="renting_minimal_time_unit"/>
                             </div>
                         </div>
                     </setting>

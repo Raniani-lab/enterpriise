@@ -2,7 +2,7 @@
 <odoo>
 <data>
     <!-- Article layout -->
-    <template id="knowledge.layout" name="knowledge Layout" inherit_id="web.frontend_layout" primary="True">
+    <template id="website_knowledge.layout" name="Knowledge Public Layout" inherit_id="web.frontend_layout" primary="True">
         <xpath expr="//header" position="before">
             <t t-set="no_header" t-value="True"/>
             <t t-set="no_footer" t-value="True"/>
@@ -10,9 +10,9 @@
         </xpath>
     </template>
 
-    <template id="knowledge_article_view_frontend" name="Knowledge Portal">
-        <t t-call="knowledge.layout">
-            <div class="container-fluid h-100 o_knowledge_form_view p-0" t-att-data-article-id="article.id if article else False">
+    <template id="website_knowledge.article_view_public" name="Knowledge Public">
+        <t t-call="website_knowledge.layout">
+            <div class="container-fluid h-100 o_knowledge_public_view p-0" t-att-data-article-id="article.id if article else False">
                 <div class="d-sm-flex h-100">
                     <aside t-att-class="'o_knowledge_sidebar' + (' flex-shrink-0 p-0' if show_sidebar else ' d-none')">
                         <div class="d-flex flex-column h-100">
@@ -45,11 +45,6 @@
                                 <!-- Log In -->
                                 <div class="d-table my-auto o_knowledge_public_virality">
                                     <t t-call="portal.placeholder_user_sign_in">
-                                        <t t-set="_item_class" t-valuef="nav-item d-table-cell text-center"/>
-                                        <t t-set="_link_class" t-valuef="nav-link fw-bold"/>
-                                    </t>
-                                    <t t-call="portal.user_dropdown">
-                                        <t t-set="_user_name" t-value="True"/>
                                         <t t-set="_item_class" t-valuef="nav-item d-table-cell text-center"/>
                                         <t t-set="_link_class" t-valuef="nav-link fw-bold"/>
                                     </t>
@@ -88,12 +83,12 @@
         </t>
     </template>
 
-    <template id="knowledge_article_tree_frontend" name="Frontend Article Tree">
+    <template id="website_knowledge.public_sidebar" name="Public Articles Sidebar">
         <!-- Search tree -->
         <t t-if="search_tree">
             <t t-if="articles">
                 <ul class="o_search_tree m-0 px-0 py-2">
-                    <t t-call="knowledge.articles_template" />
+                    <t t-call="website_knowledge.articles_template" />
                 </ul>
             </t>
             <t t-else="">
@@ -102,40 +97,19 @@
         </t>
         <!-- Section tree -->
         <t t-else="">
-            <t t-call="knowledge.knowledge_article_tree_favorites" />
-            <t t-set="visible_articles" t-value="root_articles"/>
-            <section t-if="visible_articles">
+            <section t-if="all_visible_articles">
                 <div class="o_section_header h4 mb-0">Public Articles</div>
                 <ul class="o_tree o_tree_workspace m-0 px-0 py-2">
-                    <t t-call="knowledge.articles_template">
-                        <t t-set="articles" t-value="public_articles"/>
-                        <t t-set="public_section" t-value="True"/>
+                    <t t-call="website_knowledge.articles_template">
+                        <t t-set="articles" t-value="root_articles"/>
                     </t>
                 </ul>
             </section>
         </t>
     </template>
-    <template id="knowledge_article_tree_favorites">
-        <!-- Go through 'all_visible_articles' if available to avoid extra ACL queries -->
-        <section class="o_favorite_container" t-if="all_visible_articles.filtered(lambda article: article in favorites_sudo.article_id)">
-            <div class="o_section_header h4 mb-0">Favorites</div>
-            <ul class="o_tree_favorite">
-                <!-- We loop on favorites_sudo and not filtered visible_articles to ensure the
-                articles are shown based on knowledge.article.favorite's sequence field -->
-                <t t-foreach="favorites_sudo" t-as="favorite_sudo">
-                    <t t-call="knowledge.articles_template">
-                        <t t-set="articles" t-value="all_visible_articles.filtered(lambda article: article == favorite_sudo.article_id)"/>
-                        <t t-set="isFavoriteTree" t-value="true"/>
-                    </t>
-                </t>
-            </ul>
-        </section>
-        <section class="o_favorite_container" t-else=""/>
-    </template>
 
-    <template id="articles_template">
+    <template id="website_knowledge.articles_template">
         <t t-set="unfolded_articles_ids" t-value="unfolded_articles_ids or []"/>
-        <t t-set="unfolded_favorite_articles_ids" t-value="unfolded_favorite_articles_ids or []"/>
 
         <!--
             Limit shown articles to 'articles_displayed_limit' for every sub-tree (defaults to 50).
@@ -182,26 +156,20 @@
         <t t-set="articles" t-value="articles[:articles_displayed_limit]"/>
 
         <t t-foreach="articles" t-as="article">
-            <t t-set="favorite" t-value="favorites_sudo.filtered(lambda f: f.article_id == article) if favorites_sudo else False"/>
             <t t-set="children"
-                    t-value="all_visible_articles.filtered(lambda child: child.parent_id == article and not child.is_article_item)
-                             if all_visible_articles else article.child_ids.filtered(lambda child: not child.is_article_item)"/>
-            <t t-set="unfoldChildren" t-value="bool(
-                children and (
-                    (not isFavoriteTree and article.id in unfolded_articles_ids)
-                    or (isFavoriteTree and article.id in unfolded_favorite_articles_ids)
-                ))"/>
-            <t t-set="isActive" t-value="article.id == active_article_id if active_article_id else False"/>
+                t-value="all_visible_articles.filtered(lambda child: child.parent_id == article and not child.is_article_item)
+                        if all_visible_articles else article.child_ids.filtered(lambda child: not child.is_article_item)"/>
+            <t t-set="unfold_children" t-value="bool(children and article.id in unfolded_articles_ids)"/>
+            <t t-set="is_active" t-value="article.id == active_article_id if active_article_id else False"/>
             <li t-attf-class="o_article position-relative
                               #{ 'o_article_tree_child' if has_parent else ''}
-                              #{ 'o_article_has_children' if children or article.has_article_children else ''}
+                              #{ 'o_article_has_children' if article.has_article_children else ''}
                               #{ 'o_knowledge_article_force_show_active_article' if is_force_show_active_article else ''}"
-                t-att-data-favorite-article-id="favorite.id if favorite else False"
                 t-att-data-article-id="article.id">
-                <div t-attf-class="o_article_handle d-flex align-items-center #{ 'o_article_active fw-bold text-900' if isActive else 'text-muted' }">
+                <div t-attf-class="o_article_handle d-flex align-items-center #{ 'o_article_active fw-bold text-900' if is_active else 'text-muted' }">
                     <button type="button"
                             class="flex-shrink-1 o_article_caret btn text-muted p-0 border-0">
-                        <i t-att-class="'align-self-center fa fa-fw fa-caret-' + ('down' if unfoldChildren or not article.has_article_children else 'right')"/>
+                        <i t-att-class="'align-self-center fa fa-fw fa-caret-' + ('down' if unfold_children else 'right')"/>
                     </button>
                     <div class="w-100 min-w-0 d-flex">
                         <div class="o_article_name p-1 flex-grow-1 text-truncate cursor-pointer">
@@ -209,8 +177,8 @@
                         </div>
                     </div>
                 </div>
-                <ul t-if="unfoldChildren">
-                    <t t-call="knowledge.articles_template">
+                <ul t-if="unfold_children">
+                    <t t-call="website_knowledge.articles_template">
                         <t t-set="articles" t-value="children.sorted('sequence')"/>
                         <t t-set="articles_count" t-value="len(children)"/>
                         <t t-set="articles_displayed_offset" t-value="0"/>
@@ -226,7 +194,7 @@
                          and (force_show_active_article not in all_articles
                               or all_articles.ids.index(force_show_active_article.id) > articles_displayed_limit)"/>
             <t t-if="force_show_active_article and not show_load_more_ellipsis"
-                t-call="knowledge.articles_template">
+                t-call="website_knowledge.articles_template">
                 <!-- Happens when the article to "force show" (the active article) is EXACTLY
                      the next one in line (so Article 51 and we would normally show only the first 50).
                      In other cases, we show an "ellipsis", so a "..." link in between the displayed article
@@ -242,7 +210,6 @@
                     #{'ps-4' if not has_parent else ''}
                     #{'o_knowledge_article_load_more_ellipsis' if show_load_more_ellipsis else ''}"
                 t-att-data-parent-id="articles[0].parent_id.id if has_parent and articles else False"
-                t-att-data-public-section="public_section or False"
                 t-att-data-limit="articles_displayed_limit"
                 t-att-data-offset="articles_displayed_offset + articles_displayed_limit">
                 <t t-if="show_load_more_ellipsis">
@@ -253,7 +220,7 @@
                 </t>
             </a>
             <t t-if="show_load_more_ellipsis"
-                t-call="knowledge.articles_template">
+                t-call="website_knowledge.articles_template">
                 <t t-set="articles" t-value="force_show_active_article"/>
                 <t t-set="is_force_show_active_article" t-value="True"/>
                 <t t-set="force_show_active_article" t-value="False"/>

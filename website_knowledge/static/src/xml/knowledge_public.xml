@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="knowledge.embedded_view_placeholder">
+    <t t-name="website_knowledge.embedded_view_placeholder">
         <!-- Note: A visitor will not have the rights to load an embedded view.
         Instead of hidding it, we will display a small placeholder suggesting the
         visitor to connect to see the embedded view. When the user clicks on that
@@ -16,7 +16,7 @@
             <div class="o_knowledge_embedded_view_placeholder_cover d-flex flex-column align-items-center justify-content-center">
                 <p class="o_view_nocontent_empty_folder m-0"></p>
                 <p class="fw-bold">This view is only available for internal users</p>
-                <a t-if="!isLoggedIn" t-attf-href="/web/login?redirect=#{url}" class="btn btn-primary">Log in</a>
+                <a t-attf-href="/web/login?redirect=#{url}" class="btn btn-primary">Log in</a>
             </div>
         </div>
     </t>

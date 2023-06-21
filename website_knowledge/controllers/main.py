@@ -3,15 +3,29 @@
 
 import werkzeug
 
-from odoo import http
+from odoo import http, _
 from odoo.http import request
 from odoo.addons.knowledge.controllers.main import KnowledgeController
+from odoo.exceptions import AccessError
 from odoo.osv import expression
 
 
 class KnowledgeWebsiteController(KnowledgeController):
 
     _KNOWLEDGE_TREE_ARTICLES_LIMIT = 50
+
+    # ------------------------
+    # Article Access Routes
+    # ------------------------
+
+    @http.route('/knowledge/home', type='http', auth='public', website=True, sitemap=False)
+    def access_knowledge_home(self):
+        if request.env.user._is_public():
+            article = request.env["knowledge.article"]._get_first_accessible_article()
+            if not article:
+                raise werkzeug.exceptions.NotFound()
+            return request.redirect("/knowledge/article/%s" % article.id)
+        return super().access_knowledge_home()
 
     # Override routes to display articles to public users
     @http.route('/knowledge/article/<int:article_id>', type='http', auth='public', website=True, sitemap=False)
@@ -20,50 +34,34 @@ class KnowledgeWebsiteController(KnowledgeController):
             article = request.env['knowledge.article'].sudo().browse(kwargs['article_id'])
             if not article.exists():
                 raise werkzeug.exceptions.NotFound()
-            if not article.website_published:
-                # public users can't access articles that are not published, let them login first
-                return request.redirect('/web/login?redirect=/knowledge/article/%s' % kwargs['article_id'])
+            if article.website_published:
+                return self._redirect_to_public_view(article, kwargs.get('no_sidebar', False))
+            # public users can't access articles that are not published, let them login first
+            return request.redirect('/web/login?redirect=/knowledge/article/%s' % kwargs['article_id'])
         return super().redirect_to_article(**kwargs)
 
-    def _check_sidebar_display(self):
-        """ With publish management, not all published articles should be
-        displayed in the side panel.
-        Only those should be available in the side panel:
-          - Public articles = Published workspace article
-          - Shared with you = Non-Published Workspace article you have access to
-                              + shared articles you are member of
-
-        Note: Here we need to split the check into 2 different requests as sudo
-        is needed to access members, but sudo will grant access to workspace
-        article user does not have access to.
-        """
-        accessible_workspace_roots = request.env["knowledge.article"].search_count(
-            [("parent_id", "=", False), ("category", "=", "workspace")],
-            limit=1,
+    def _redirect_to_public_view(self, article, no_sidebar=False):
+        # The sidebar is hidden if no_sidebar is True or if there is no article
+        # to show in the sidebar (i.e. no published root workspace article).
+        show_sidebar = False if no_sidebar else request.env["knowledge.article"].search_count(
+            self._prepare_public_root_articles_domain(), limit=1
         )
-        if accessible_workspace_roots > 0:
-            return True
-        # Need sudo to access members
-        displayable_shared_articles = request.env["knowledge.article"].sudo().search_count(
-            [
-                ("parent_id", "=", False),
-                ("category", "=", "shared"),
-                ("article_member_ids.partner_id", "=", request.env.user.partner_id.id),
-                ("article_member_ids.permission", "!=", "none")
-            ],
-            limit=1,
-        )
-        return displayable_shared_articles > 0
-
-    def _redirect_to_public_view(self, article, hide_side_bar=False):
-        show_sidebar = False if hide_side_bar else self._check_sidebar_display()
-        return request.render('knowledge.knowledge_article_view_frontend', {
+        return request.render('website_knowledge.article_view_public', {
             'article': article,
-            'readonly_mode': True,  # used to bypass access check (to speed up loading)
             'show_sidebar': show_sidebar
         })
 
-    def _prepare_articles_tree_html_values(self, active_article_id, unfolded_articles_ids=False, unfolded_favorite_articles_ids=False):
+    def _prepare_public_root_articles_domain(self):
+        """ Public root articles are root articles that are published and in the workspace
+        """
+        return [("parent_id", "=", False), ("category", "=", "workspace"), ("website_published", "=", True)]
+
+    # ------------------------
+    # Articles tree generation
+    # ------------------------
+
+    @http.route('/knowledge/public_sidebar', type='json', auth='public')
+    def get_public_sidebar(self, active_article_id=False, unfolded_articles_ids=False):
         """ Prepares all the info needed to render the article tree view side panel in portal
 
         :param int active_article_id: used to highlight the given article_id in the template;
@@ -71,23 +69,15 @@ class KnowledgeWebsiteController(KnowledgeController):
           of the given article ids. Unfolded articles are saved into local storage.
           When reloading/opening the article page, previously unfolded articles
           nodes must be opened;
-        :param unfolded_favorite_articles_ids: same as ``unfolded_articles_ids``
-          but specific for 'Favorites' tree.
         """
+        # Sudo to speed up the search, as permissions will be computed anyways
+        # when getting the visible articles
         root_articles_ids = request.env['knowledge.article'].sudo().search(
-            [("parent_id", "=", False)]
+            self._prepare_public_root_articles_domain(), order="sequence, id"
         ).ids
 
-        favorites_sudo = request.env['knowledge.article.favorite'].sudo()
-        if not request.env.user._is_public():
-            favorites_sudo = favorites_sudo.search(
-                [("user_id", "=", request.uid), ('is_article_active', '=', True)]
-            )
-            # Add favorite articles, which are root articles in the favorite tree
-            root_articles_ids += favorites_sudo.article_id.ids
-
         active_article_ancestor_ids = []
-        unfolded_ids = (unfolded_articles_ids or []) + (unfolded_favorite_articles_ids or [])
+        unfolded_ids = unfolded_articles_ids or []
 
         # Add active article and its parents in list of unfolded articles
         active_article = request.env['knowledge.article'].sudo().browse(active_article_id)
@@ -96,37 +86,19 @@ class KnowledgeWebsiteController(KnowledgeController):
             unfolded_ids += active_article_ancestor_ids
 
         all_visible_articles = request.env['knowledge.article'].get_visible_articles(root_articles_ids, unfolded_ids)
-        root_articles = all_visible_articles.filtered(lambda article: not article.parent_id)
 
-        shared_articles = values['root_articles'].filtered(lambda a: a.user_has_access)
-        public_articles = (values['root_articles'] - shared_articles).filtered(lambda a: a.website_published and a.category == 'workspace')
-
-        return {
+        return request.env['ir.qweb']._render('website_knowledge.public_sidebar', {
             "active_article_id": active_article_id,
             "active_article_ancestor_ids": active_article_ancestor_ids,
             "articles_displayed_limit": self._KNOWLEDGE_TREE_ARTICLES_LIMIT,
             "articles_displayed_offset": 0,
             "all_visible_articles": all_visible_articles,
-            "root_articles": root_articles,
+            "root_articles": all_visible_articles.filtered(lambda article: not article.parent_id),
             "unfolded_articles_ids": unfolded_ids,
-            "unfolded_favorite_articles_ids": unfolded_favorite_articles_ids,
-            "favorites_sudo": favorites_sudo,
-            'shared_articles': shared_articles,
-            'public_articles': public_articles,
-        }
+        })
 
-    @http.route('/knowledge/tree_panel/portal', type='json', auth='public')
-    def get_tree_panel_portal(self, active_article_id=False, unfolded_articles_ids=False, unfolded_favorite_articles_ids=False):
-        """ Frontend access for left panel. """
-        template_values = self._prepare_articles_tree_html_values(
-            active_article_id,
-            unfolded_articles_ids=unfolded_articles_ids,
-            unfolded_favorite_articles_ids=unfolded_favorite_articles_ids
-        )
-        return request.env['ir.qweb']._render('knowledge.knowledge_article_tree_frontend', template_values)
-
-    @http.route('/knowledge/tree_panel/portal/search', type='json', auth='public')
-    def get_tree_panel_portal_search(self, search_term, active_article_id=False):
+    @http.route('/knowledge/public_sidebar/search', type='json', auth='public')
+    def get_public_sidebar_search(self, search_term, active_article_id=False):
         """ Frontend access for left panel when making a search.
             Renders articles based on search term and ordered alphabetically.
 
@@ -145,17 +117,15 @@ class KnowledgeWebsiteController(KnowledgeController):
             limit=self._KNOWLEDGE_TREE_ARTICLES_LIMIT,
         )
 
-        values = {
-            "search_tree": True, # Display the flatenned tree instead of the basic tree with sections
+        return request.env['ir.qweb']._render('website_knowledge.public_sidebar', {
+            "search_tree": True,  # Display the flatenned tree instead of the basic tree with sections
             "active_article_id": active_article_id,
             "articles_displayed_limit": self._KNOWLEDGE_TREE_ARTICLES_LIMIT,
             'articles': all_visible_articles,
-        }
+        })
 
-        return request.env['ir.qweb']._render('knowledge.knowledge_article_tree_frontend', values)
-
-    @http.route('/knowledge/tree_panel/load_more', type='json', auth='public', sitemap=False)
-    def tree_panel_load_more(self, category, limit, offset, active_article_id=False, parent_id=False, **kwargs):
+    @http.route('/knowledge/public_sidebar/load_more', type='json', auth='public')
+    def public_sidebar_load_more(self, limit, offset, active_article_id=False, parent_id=False):
         """" Route called when loading more articles in a particular sub-tree.
 
         Fetching is done based either on a parent, either on root articles when no parent is
@@ -171,10 +141,10 @@ class KnowledgeWebsiteController(KnowledgeController):
 
         if parent_id:
             parent_id = int(parent_id)
-            articles_domain = [('parent_id', '=', parent_id)]
+            articles_domain = [('parent_id', '=', parent_id), ('website_published', '=', True)]
         else:
             # root articles
-            articles_domain = self._get_load_more_roots_domain(**kwargs)
+            articles_domain = self._prepare_public_root_articles_domain()
 
         offset = int(offset)
         limit = int(limit)
@@ -216,7 +186,7 @@ class KnowledgeWebsiteController(KnowledgeController):
                     ancestor_id in articles.ids for ancestor_id in active_article_ancestors.ids):
                 articles |= active_article_ancestors
 
-        return request.env['ir.qweb']._render('knowledge.articles_template', {
+        return request.env['ir.qweb']._render('website_knowledge.articles_template', {
             "active_article_id": active_article_id,
             "active_article_ancestor_ids": active_article_ancestor_ids,
             "articles": articles,
@@ -228,12 +198,8 @@ class KnowledgeWebsiteController(KnowledgeController):
             "unfolded_articles_ids": unfolded_articles_ids,
         })
 
-    @http.route('/knowledge/home', type='http', auth='public', website=True, sitemap=False)
-    def access_knowledge_home(self):
-        return super().access_knowledge_home()
-
-    @http.route('/knowledge/tree_panel/children', type='json', auth='public', website=True, sitemap=False)
-    def get_tree_panel_children(self, parent_id):
+    @http.route('/knowledge/public_sidebar/children', type='json', auth='public')
+    def get_public_sidebar_children(self, parent_id):
         parent = request.env['knowledge.article'].search([('id', '=', parent_id)])
         if not parent:
             raise AccessError(_("This Article cannot be unfolded. Either you lost access to it or it has been deleted."))
@@ -241,41 +207,9 @@ class KnowledgeWebsiteController(KnowledgeController):
         articles = parent.child_ids.filtered(
             lambda a: not a.is_article_item
         ).sorted("sequence") if parent.has_article_children else request.env['knowledge.article']
-        return request.env['ir.qweb']._render('knowledge.articles_template', {
+        return request.env['ir.qweb']._render('website_knowledge.articles_template', {
             'articles': articles,
             "articles_displayed_limit": self._KNOWLEDGE_TREE_ARTICLES_LIMIT,
             "articles_displayed_offset": 0,
             "has_parent": True,
         })
-
-    @http.route('/knowledge/tree_panel/favorites', type='json', auth='user')
-    def get_tree_panel_favorites(self, active_article_id=False, unfolded_favorite_articles_ids=False):
-        unfolded_favorite_articles_ids = self._article_ids_exists(unfolded_favorite_articles_ids)
-
-        favorites_sudo = request.env['knowledge.article.favorite'].sudo().search([
-            ("user_id", "=", request.env.user.id), ('is_article_active', '=', True)
-        ])
-
-        all_visible_article_domains = expression.OR([
-            [
-                ('parent_id', 'child_of', favorites_sudo.article_id.ids),
-                ('is_article_item', '=', False),
-            ],
-            [('id', 'in', favorites_sudo.article_id.ids)],
-        ])
-
-        all_visible_articles = request.env['knowledge.article'].search(all_visible_article_domains)
-
-        return request.env['ir.qweb']._render('knowledge.knowledge_article_tree_favorites', {
-            "favorites_sudo": favorites_sudo,
-            "active_article_id": active_article_id,
-            "all_visible_articles": all_visible_articles,
-            "articles_displayed_limit": self._KNOWLEDGE_TREE_ARTICLES_LIMIT,
-            "unfolded_favorite_articles_ids": unfolded_favorite_articles_ids,
-        })
-
-    def _get_load_more_roots_domain(self, **kwargs):
-        """Only one section when website is not installed, so the only
-        condition is that the articles are root articles.
-        """
-        return [('parent_id', '=', False)]

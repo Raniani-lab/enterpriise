@@ -17,7 +17,9 @@
 $knowledge-bg--active: #1ba1e4;
 $knowledge-bg--hover: $gray-300;
 
-.o_knowledge_form_view {
+// .o_knowledge_public_view refers to the article view for public users, see
+// template "knowledge_article_public_view" in website_knowledge
+.o_knowledge_form_view, .o_knowledge_public_view {
 
     background-color: var(--knowledge-view-bg, $o-white);
     .o_knowledge_sidebar {

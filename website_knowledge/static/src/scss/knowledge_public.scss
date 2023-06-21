@@ -1,6 +1,4 @@
-// Note: although this class is called "_form_view", it's used on the public frontend page
-// and not in the backend. See 'knowledge_templates_frontend.xml'.
-.o_knowledge_form_view {
+.o_knowledge_public_view {
     --knowledge-article-sidebar-size: 300px;
     // Header
     // --------------------------------------------------------------------------
@@ -57,22 +55,6 @@
     .o_knowledge_sidebar {
         width: clamp(200px, var(--knowledge-article-sidebar-size), 576px);
         transition: width 0.15s linear;
-
-        .ui-sortable-placeholder {
-            height: 5px;
-            background-color: rgba($knowledge-bg--active, 0.7);
-        }
-
-        // Force same style in portal and website
-        font-size: 1rem;
-
-        .o_section_header {
-            font-size: 1.3125rem;
-        }
-
-        .knowledge_search_bar {
-            font-size: 0.875rem;
-        }
             
         .o_article_active > div {
             background-color: rgba($knowledge-bg--active, 0.2);
@@ -97,7 +79,7 @@
 }
 
 @include media-breakpoint-down(sm) {
-    .o_knowledge_form_view {
+    .o_knowledge_public_view {
         .o_knowledge_sidebar {
             width: 100%;
         }
@@ -105,7 +87,7 @@
 }
 
 @include media-breakpoint-up(sm) {
-    .o_knowledge_form_view {
+    .o_knowledge_public_view {
         .o_scroll_view {
             @include o-position-absolute(0, 0, 0, 0);
             overflow-y: auto;

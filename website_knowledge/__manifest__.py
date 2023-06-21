@@ -10,7 +10,7 @@
         'security/ir.model.access.csv',
         'security/ir_rule.xml',
         'views/knowledge_views.xml',
-        'views/knowledge_templates_frontend.xml',
+        'views/knowledge_templates_public.xml',
     ],
     'installable': True,
     'auto_install': True,

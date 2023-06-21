@@ -21,12 +21,7 @@ class KnowledgeController(http.Controller):
         article = request.env["knowledge.article"]._get_first_accessible_article()
         if request.env.user._is_internal():
             return self._redirect_to_backend_view(article)
-        elif request.env.user._is_portal():
-            return self._redirect_to_portal_view(article)
-
-        if not article:
-            raise werkzeug.exceptions.NotFound()
-        return request.redirect("/knowledge/article/%s" % article.id)
+        return self._redirect_to_portal_view(article)
 
     @http.route('/knowledge/article/<int:article_id>', type='http', auth='user')
     def redirect_to_article(self, article_id):
@@ -38,10 +33,7 @@ class KnowledgeController(http.Controller):
 
         if request.env.user._is_internal():
             return self._redirect_to_backend_view(article)
-        elif request.env.user._is_portal():
-            return self._redirect_to_portal_view(article)
-
-        return self._redirect_to_public_view(article)
+        return self._redirect_to_portal_view(article)
 
     @http.route('/knowledge/article/invite/<int:member_id>/<string:invitation_hash>', type='http', auth='public')
     def article_invite(self, member_id, invitation_hash):
@@ -77,13 +69,6 @@ class KnowledgeController(http.Controller):
             request.env.ref('knowledge.knowledge_menu_root').id
         ))
 
-    def _check_sidebar_display(self):
-        # exclude private articles as they are not used in the side panel.
-        return request.env["knowledge.article"].search_count(
-            [("parent_id", "=", False), ("category", "!=", "private")],
-            limit=1,
-        ) > 0
-
     def _redirect_to_portal_view(self, article):
         # We build the session information necessary for the web client to load
         session_info = request.env['ir.http'].session_info()
@@ -112,19 +97,6 @@ class KnowledgeController(http.Controller):
             'knowledge.knowledge_portal_view',
             {'session_info': session_info},
         )
-
-    # ------------------------
-    # Articles tree generation
-    # ------------------------
-
-    @staticmethod
-    def _article_ids_exists(articles_ids):
-        if not articles_ids:
-            return set()
-        # we might get IDs from the localstorage that are not real records anymore (unlink, ...)
-        # the 'child_of' operator using parent_path does not like that (will throw MissingRecord errors)
-        # -> make sure we filter out children of existing articles
-        return set(request.env['knowledge.article'].sudo().browse(articles_ids).exists().ids)
 
     # ------------------------
     # Article permission panel

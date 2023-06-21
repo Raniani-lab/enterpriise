@@ -217,8 +217,8 @@ class L10nInGSTReturnPeriod(models.Model):
             total_by_companies = self.env['account.move.line']._read_group(domain, ['company_id'], ['balance:sum'])
             total = 0.00
             for total_by_company in total_by_companies:
-                if total_by_company['company_id'][0] in (record.company_ids or record.company_id).ids:
-                    total += total_by_company['balance'] * -1
+                if total_by_company[0].id in (record.company_ids or record.company_id).ids:
+                    total += total_by_company[1] * -1
             record.expected_amount = total
 
     @api.depends("company_ids", "company_id")
@@ -235,8 +235,8 @@ class L10nInGSTReturnPeriod(models.Model):
             total_by_companies = AccountMove._read_group(domain, ['company_id'], ['amount_total_in_currency_signed:sum'])
             total = 0.00
             for total_by_company in total_by_companies:
-                if total_by_company['company_id'][0] in (record.company_ids or record.company_id).ids:
-                    total += total_by_company['amount_total_in_currency_signed'] * -1
+                if total_by_company[0].id in (record.company_ids or record.company_id).ids:
+                    total += total_by_company[1] * -1
             record.bill_amount = total
 
     @api.depends('month', 'quarter', 'year')

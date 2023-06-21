@@ -22,7 +22,7 @@
                 <field name="order_line" string="Product" filter_domain="[('order_line.product_id', 'ilike', self)]"/>
                 <field name="sale_order_template_id"/>
                 <field name="analytic_account_id" groups="analytic.group_analytic_accounting"/>
-                <filter name="my_subscriptions" string="My Subscriptions" domain="[('user_id','=',uid), ('is_subscription', '=', True)]"/>
+                <filter name="my_subscriptions" string="My Subscriptions" domain="[('user_id','=',uid), ('subscription_state', '!=', False)]"/>
                 <filter string="Unassigned" name="contracts_not_assigned" help="Subscriptions that are not assigned to an account manager." domain="[('user_id', '=', False)]"/>
                 <separator/>
                 <filter name="quotations" string="Quotations" domain="[('subscription_state','in', ['1_draft', '2_renewal'])]"/>
@@ -82,11 +82,11 @@
         <field name="res_model">sale.order</field>
         <field name="view_mode">tree,kanban,form,pivot,graph,cohort,activity</field>
         <field name="context">{
-            'default_is_subscription': 1,
+            'default_subscription_state': '1_draft',
             'search_default_progress': 1,
             'search_default_paused': 1,
         }</field>
-        <field name="domain">[('is_subscription', '=', True), ('subscription_state', 'not in', ['2_renewal', '5_renewed'] )]</field>
+        <field name="domain">[('subscription_state', 'not in', ['2_renewal', '5_renewed', False] )]</field>
         <field name="search_view_id" eval='sale_subscription_view_search'/>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
@@ -129,8 +129,9 @@
         <field name="context">{
             'search_default_my_subscription':1,
             'search_default_to_renew':1,
+            'default_subscription_state': '1_draft',
         }</field>
-        <field name="domain" eval="[('is_subscription', '=', True)]"/>
+        <field name="domain" eval="[('subscription_state', '!=', False)]"/>
         <field name="search_view_id" eval='sale_subscription_view_search'/>
         <field name="help" type="html">
           <p class="o_view_nocontent_smiling_face">
@@ -340,6 +341,7 @@
         <field name="view_mode">tree,kanban,form,pivot,graph,cohort,activity</field>
         <field name="context">{
             'search_default_my_subscriptions': 1,
+            'default_subscription_state': '1_draft',
         }</field>
         <!-- All kind of subscription except upsell -->
         <field name="domain">[('subscription_state', 'in', ['1_draft', '2_renewal', '3_progress', '4_paused', '5_renewed', '6_churn'])]</field>
@@ -405,7 +407,8 @@
             </field>
             <field name="sale_order_template_id" position="replace">
                 <field name="sale_order_template_id" string="Subscription Plan"
-                       attrs="{'readonly': [('state', '=', 'sale')], 'invisible': [('subscription_state', '=', '7_upsell')]}"
+                       attrs="{'invisible': [('subscription_state', '=', '7_upsell')]}"
+                       options="{'no_quick_create': True}"
                        domain="[('is_subscription', '=', True)]"/>
             </field>
         </field>

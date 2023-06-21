@@ -188,7 +188,9 @@ class SaleOrder(models.Model):
                 continue
             elif order.subscription_state in ['2_renewal', '7_upsell']:
                 continue
-            elif order.is_subscription:
+            elif order.is_subscription or order.state == 'draft' and order.subscription_state == '1_draft':
+                # We keep the subscription state 1_draft to keep the subscription quotation in the subscription app
+                # quotation view.
                 order.subscription_state = '2_renewal' if order.subscription_id else '1_draft'
             else:
                 order.subscription_state = False
@@ -673,8 +675,6 @@ class SaleOrder(models.Model):
         old_partners = {s.id: s.partner_id.id for s in subscriptions}
         res = super().write(vals)
         for subscription in subscriptions:
-            if not subscription.subscription_state:
-                subscription.subscription_state = vals.get('subscription_state') or '1_draft'
             if subscription.partner_id.id != old_partners[subscription.id]:
                 subscription.message_unsubscribe([old_partners[subscription.id]])
                 subscription.message_subscribe(subscription.partner_id.ids)
@@ -728,7 +728,7 @@ class SaleOrder(models.Model):
             elif order.subscription_state == '2_renewal':
                 cancel_message_body = escape(_("The renewal %s has been canceled.")) % order._get_html_link()
                 order.subscription_id.message_post(body=cancel_message_body)
-            elif order.subscription_state in SUBSCRIPTION_PROGRESS_STATE and not self.invoice_ids:
+            elif order.subscription_state in SUBSCRIPTION_PROGRESS_STATE + SUBSCRIPTION_DRAFT_STATE and not self.invoice_ids:
                 order.order_log_ids.sudo().unlink()
                 order.subscription_state = False
             elif order.subscription_state in SUBSCRIPTION_PROGRESS_STATE:
@@ -762,6 +762,8 @@ class SaleOrder(models.Model):
                 recurring_order |= order
                 if not order.subscription_state:
                     order.subscription_state = '1_draft'
+            elif order.subscription_state != '7_upsell':
+                order.subscription_state = False
 
         new_subscriptions = recurring_order - renewal
         # _prepare_confirmation_values will update subscription_state for all confirmed subscription.
@@ -773,6 +775,16 @@ class SaleOrder(models.Model):
         upsell._confirm_upsell()
 
         return res_sub and res_other
+
+    def action_quotation_send(self):
+        if len(self) == 1:
+            # Raise error before other popup if used on one SO.
+            has_recurring_line = self.order_line.filtered(lambda l: l.product_id.recurring_invoice)
+            if has_recurring_line and not self.recurrence_id:
+                raise UserError(_('You cannot send a sale order with recurring product and no recurrence.'))
+            if self.recurrence_id and not has_recurring_line:
+                raise UserError(_('You cannot send a sale order with a recurrence and no recurring product.'))
+        return super().action_quotation_send()
 
     def _confirm_subscription(self):
         today = fields.Date.today()

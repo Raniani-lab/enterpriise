@@ -4,7 +4,7 @@
         <div class="o_pdis_main_screen d-flex flex-column vh-100 w-100 bg-view overflow-hidden user-select-none">
             <div class="o_pdis_navbar d-flex justify-content-between">
                 <div class="d-flex align-items-center justify-content-start">
-                    <button 
+                    <button
                         t-attf-class="btn position-relative h-100 px-4 rounded-0 border-end shadow-none {{ !this.preparationDisplay.showCategoryFilter ? 'border-bottom' : ''}}" 
                         t-on-click="() => { this.toggleCategoryFilter(); this.showSidebar = !this.showSidebar }">
                         <div class="position-relative px-1">
@@ -25,12 +25,12 @@
                 <div class="o_pdis_sidebar d-flex flex-column text-800" t-att-class="{'hide-category d-none': !this.preparationDisplay.showCategoryFilter}">
                     <div t-if="this.filterSelected" class="btn btn-info btn-lg mt-2 mb-0 ms-3 me-2" t-on-click="() => this.resetFilter()">
                         Clear All Filters
-                    </div>   
+                    </div>
                     <div class="o_pdis_categories mh-100 overflow-auto px-3 mb-auto">
                         <t t-foreach="this.preparationDisplay.categories" t-as="category" t-key="category">
                             <Category category="category_value" />
                         </t>
-                    </div>  
+                    </div>
                     <div class="o_pdis_logo d-flex justify-content-center py-1 border-top">
                         <img src="/web/static/img/logo.png" />
                     </div>
@@ -41,15 +41,15 @@
                     <t t-set="hasOrders" t-value="this.preparationDisplay.lastStage.orderCount and !this.env.debug"/>
                     <t t-set="isDebug" t-value="this.env.debug"/>
                     <div t-attf-class="o_pdis_actions  {{ (this.filterSelected and this.showSidebar) or (isLastStage and hasOrders) or isDebug ? 'd-flex' : 'd-none'}} align-items-center border-start">
-                        <div 
-                            t-if="this.filterSelected and this.showSidebar" 
+                        <div
+                            t-if="this.filterSelected and this.showSidebar"
                             t-attf-class="{{ (this.filterSelected and this.showSidebar) or isLastStage or isDebug ? 'd-flex' : 'd-none'}} align-items-center flex-grow-1 overflow-hidden">
                             <t t-set="filters" t-value="this.getFilters()"/>
                             <div class="tags d-flex flex-nowrap ps-3 pe-2 overflow-auto">
                                 <t t-foreach="filters.categoryFilters" t-as="category"  t-key="category.id">
                                     <div class="btn btn-info me-1 flex-shrink-0" t-on-click="() => this.preparationDisplay.toggleCategory(category)">
                                         <t t-esc="category.name"/>
-                                        <i class="oi oi-close ps-2" aria-hidden="true"/> 
+                                        <i class="oi oi-close ps-2" aria-hidden="true"/>
                                     </div>
                                 </t>
                                 <t t-foreach="filters.productFilters" t-as="product" t-key="product.id">

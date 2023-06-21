@@ -59,4 +59,4 @@ export class PreparationDisplay extends Component {
 }
 
 PreparationDisplay.components = { Category, Stages, Order };
-PreparationDisplay.template = `PreparationDisplay`;
+PreparationDisplay.template = `pos_preparation_display.PreparationDisplay`;

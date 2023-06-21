@@ -537,3 +537,12 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
             refund_move = self.env['account.move'].browse(res['res_id'])
             self.assertEqual(inv.reversal_move_id, refund_move, "The initial move should be reversed")
             self.assertEqual(subscription.next_invoice_date, datetime.date(2023, 3, 18), "The next invoice date not incremented")
+
+    def test_subscription_invoice_after_payment(self):
+        self.amount = self.subscription.amount_total
+        tx = self._create_transaction(flow='redirect', sale_order_ids=[self.subscription.id], state='done')
+        with mute_logger('odoo.addons.sale.models.payment_transaction'):
+            tx._reconcile_after_done()
+        self.assertEqual(self.subscription.state, 'sale')
+        self.assertEqual(len(self.subscription.invoice_ids), 1)
+        self.assertEqual(self.subscription.invoice_ids.state, 'posted')

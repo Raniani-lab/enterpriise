@@ -261,7 +261,6 @@ class SaleOrder(models.Model):
                 continue
             order.recurring_total = 0
 
-
     @api.depends('amount_untaxed', 'recurring_total')
     def _compute_non_recurring_total(self):
         for order in self:

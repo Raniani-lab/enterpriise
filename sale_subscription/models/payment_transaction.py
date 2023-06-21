@@ -99,12 +99,23 @@ class PaymentTransaction(models.Model):
         return self.filtered(_filter_invoiced_subscription)
 
     def _get_partial_payment_subscription_transaction(self):
-        # filter transaction which are only a partial payment of subscription
+        # filter transaction which are only a partial payment of subscription and that don't fulfill a payment that
+        # is already existing
         tx_with_partial_payments = self.env["payment.transaction"]
         for tx in self:
-            for order in tx.sale_order_ids.filtered(lambda so: so.state == 'sale' and so.is_subscription):
-                if order.currency_id.compare_amounts(tx.amount, order.amount_total) != 0:
-                    tx_with_partial_payments |= tx
+            order = tx.sale_order_ids.filtered(lambda so: so.state == 'sale')
+            if not any(order.mapped('is_subscription')):
+                # not subscription related
+                continue
+            elif len(order) > 1:
+                # we don't support multiple order per tx. Accounting should invoice manually
+                tx_with_partial_payments |= tx
+            elif order.currency_id.compare_amounts(
+                    sum(order.transaction_ids.filtered(lambda tx: tx.renewal_state == 'authorized' and not tx.invoice_ids).mapped('amount')),
+                    order.amount_total
+                ) != 0:
+                # The payment amount and other unused transactions will confirm and pay the invoice
+                tx_with_partial_payments |= tx
         return tx_with_partial_payments
 
     def _invoice_sale_orders(self):
@@ -113,7 +124,7 @@ class PaymentTransaction(models.Model):
         transaction_to_invoice -= self._get_partial_payment_subscription_transaction()
         # Update the next_invoice_date of SOL when the payment_mode is 'success_payment'
         # We have to do it here because when a client confirms and pay a SO from the portal with success_payment
-        # The next_invoice_date won't be update by the reconcile_pending_transaction callback (do_payment is not called)
+        # The next_invoice_date won't be updated by the reconcile_pending_transaction callback (do_payment is not called)
         # Create invoice
         res = super(PaymentTransaction, transaction_to_invoice)._invoice_sale_orders()
         return res

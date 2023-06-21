@@ -39,6 +39,13 @@ class account_journal(models.Model):
             kanban_first=False,
         )
 
+    def action_open_reconcile_statement(self):
+        return self.env['account.bank.statement.line']._action_open_bank_reconciliation_widget(
+            default_context={
+                'search_default_statement_id': self.env.context.get('statement_id'),
+            },
+        )
+
     def action_new_transaction(self):
         self.ensure_one()
         action = self.env['ir.actions.act_window']._for_xml_id('account_accountant.action_bank_statement_line_form_bank_rec_widget')

@@ -1111,7 +1111,7 @@ class BankRecWidget(models.Model):
                 ('payment_id', '!=', False),
             ],
             'no_separator': True,
-            'is_default': True,
+            'is_default': False,
         }
 
         misc_matching_filter = {
@@ -1473,8 +1473,3 @@ class BankRecWidget(models.Model):
         return {
             'balance_amount': balance,
         }
-
-    @api.model
-    def action_open_bank_reconciliation_report(self, journal_id):
-        # abstract
-        raise UserWarning(_("Please install the 'Accounting Reports' module."))

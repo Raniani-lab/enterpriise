@@ -263,7 +263,7 @@ export class BankRecKanbanController extends KanbanController {
             // Accessible methods from sub-components.
             methods: {
                 withNewState: this.withNewState.bind(this),
-                actionOpenBankReconciliationReport: this.actionOpenBankReconciliationReport.bind(this),
+                actionOpenBankGL: this.actionOpenBankGL.bind(this),
                 focusManualOperationField: this.focusManualOperationField.bind(this),
                 getState: this.getState.bind(this),
                 actionAddNewAml: this.actionAddNewAml.bind(this),
@@ -723,10 +723,10 @@ export class BankRecKanbanController extends KanbanController {
     // RPC
     // -----------------------------------------------------------------------------
 
-    async actionOpenBankReconciliationReport(journalId) {
+    async actionOpenBankGL(journalId) {
         const actionData = await this.orm.call(
-            "bank.rec.widget",
-            "action_open_bank_reconciliation_report",
+            "account.journal",
+            "action_open_bank_balance_in_gl",
             [journalId],
         );
         this.action.doAction(actionData);
@@ -1075,6 +1075,52 @@ export class BankRecKanbanRenderer extends KanbanRenderer {
     setup() {
         super.setup();
         this.globalState = useState(this.env.methods.getState());
+        this.action = useService("action");
+    }
+
+    /**
+    Prepares a list of statements based on the statement_id of the bank statement line records.
+    Statements are only displayed above the first line of the statement (all lines might not be visible in the kanban)
+    **/
+    groups() {
+        const { list } = this.props;
+        let statementGroups = [];
+        for (const record of list.records) {
+            let lastItem = statementGroups.slice(-1);
+            let statementId = record.data.statement_id && record.data.statement_id[0];
+            if (statementId && (!lastItem.length || lastItem[0].id != statementId)) {
+                statementGroups.push({
+                    id: statementId,
+                    name: record.data.statement_name,
+                    balance: formatMonetary(record.data.statement_balance_end_real, {currencyId: record.data.currency_id[0]}),
+                });
+            }
+        }
+        return statementGroups;
+    }
+
+    openStatementDialog(statementId) {
+        const action = {
+            type: "ir.actions.act_window",
+            name: this.env._t("Edit Statement"),
+            res_model: "account.bank.statement",
+            res_id: statementId,
+            views: [[false, "form"]],
+            target: "new",
+            context: {
+                dialog_size: 'medium',
+                form_view_ref: 'account_accountant.view_bank_statement_form_with_buttons',
+            },
+        }
+        const options = {
+            onClose: async () => {
+                this.env.methods.withNewState(async(newState) => {
+                    await this.props.list.model.root.load();
+                    newState.__kanbanNotify = true;
+                });
+            }
+        }
+        this.action.doAction(action, options);
     }
 }
 

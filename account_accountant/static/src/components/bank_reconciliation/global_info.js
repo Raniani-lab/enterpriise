@@ -36,8 +36,8 @@ export class BankRecGlobalInfo extends Component {
     }
 
     /** Open the bank reconciliation report. **/
-    actionOpenBankReconciliationReport() {
-        this.env.methods.actionOpenBankReconciliationReport(this.props.journalId);
+    actionOpenBankGL() {
+        this.env.methods.actionOpenBankGL(this.props.journalId);
     }
 
 }

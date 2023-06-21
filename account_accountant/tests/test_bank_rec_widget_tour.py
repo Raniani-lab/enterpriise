@@ -69,3 +69,6 @@ class TestBankRecWidget(TestBankRecWidgetCommon, HttpCase):
 
     def test_tour_bank_rec_widget_rainbowman_reset(self):
         self.start_tour('/web?debug=assets', 'account_accountant_bank_rec_widget_rainbowman_reset', login=self.env.user.login)
+
+    def test_tour_bank_rec_widget_statements(self):
+        self.start_tour('/web?debug=assets', 'account_accountant_bank_rec_widget_statements', login=self.env.user.login)

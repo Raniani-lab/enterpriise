@@ -3,12 +3,12 @@
 
     <t t-name="account_accountant.BankRecGlobalInfo" owl="1">
         <div t-if="state.journalId"
-             class="text-nowrap d-flex ms-2 p-1 w-100"
-             t-on-click="(ev) => this.actionOpenBankReconciliationReport()">
-            <span class="flex-fill text-900 fs-4 pe-none">
-                Balance:
+             class="journal-balance d-flex w-100"
+             t-on-click="(ev) => this.actionOpenBankGL()">
+            <span class="btn flex-fill text-900 text-start ps-0 fw-bold fs-4 align-self-center">
+                Balance
             </span>
-            <span class="btn btn-link fs-4 py-0"
+            <span class="btn btn-link pe-0 fw-bold fs-4 align-self-center"
                   t-esc="state.balance_amount"/>
         </div>
     </t>

@@ -14,6 +14,10 @@
                     <button type="object" name="action_open_reconcile" class="btn btn-primary" groups="account.group_account_user"> Reconcile <t t-out="dashboard.number_to_reconcile"/> Items</button>
                 </t>
             </xpath>
+            <xpath expr="//button[@name='action_new_transaction']" position="replace">
+                <button t-if="dashboard.number_to_reconcile > 0" type="object" name="action_open_reconcile" class="btn btn-primary" groups="account.group_account_user"> Reconcile <t t-out="dashboard.number_to_reconcile"/> Items</button>
+                <button t-if="dashboard.number_to_reconcile == 0" type="object" name="action_new_transaction" class="btn btn-primary" groups="account.group_account_invoice">New Transaction</button>
+            </xpath>
             <xpath expr="//div[@id='dashboard_bank_cash_right']" position="inside">
                 <t t-if="dashboard.number_to_check > 0">
                     <div class="row">

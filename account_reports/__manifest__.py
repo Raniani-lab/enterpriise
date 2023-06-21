@@ -18,7 +18,6 @@ Accounting Reports
         'data/profit_and_loss.xml',
         'data/aged_partner_balance.xml',
         'data/general_ledger.xml',
-        'data/bank_reconciliation_report.xml',
         'data/trial_balance.xml',
         'data/sales_report.xml',
         'data/partner_ledger.xml',

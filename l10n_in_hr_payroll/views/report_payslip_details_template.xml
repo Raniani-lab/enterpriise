@@ -90,6 +90,22 @@
                                     <td><span t-field="o.employee_id.l10n_in_esic_number"/></td>
                                 </tr>
                             </table>
+                            <div class="row">
+                                <div class="col-3 border px-0" t-foreach="o._get_employee_timeoff_data()" t-as="timeoff_data">
+                                    <div class="mx-2 mt-2">
+                                        <strong><t t-out="timeoff_data[0]"/></strong>
+                                    </div>
+                                    <div class="border-top"/>
+                                    <div class="mx-2">
+                                        <strong>Total: </strong> <t t-out="timeoff_data[1].get('max_leaves')"/>
+                                        <t t-if="timeoff_data[1].get('request_unit') == 'hour'">Hours</t>
+                                        <t t-else="">Days</t>
+                                    </div>
+                                    <div class="mx-2">
+                                        <strong>Remaining:</strong> <t t-out="timeoff_data[1].get('remaining_leaves')"/>
+                                    </div>
+                                </div>
+                            </div>
                             <table class="table table-sm">
                                 <thead class="o_black_border">
                                     <tr>

@@ -444,7 +444,7 @@ class Form325(models.Model):
         amount_paid_per_partner_based_on_bill_reconciled AS (
             SELECT paid_expense_line.partner_id AS partner_id,
                     -- amount_total_signed is negative for in_invoice
-                   SUM((apr.amount / - move.amount_total_signed) * ABS(paid_expense_line.balance)) AS paid_amount
+                   SUM((apr.amount / ABS(move.amount_total_signed)) * (paid_expense_line.balance)) AS paid_amount
               FROM paid_expense_line
               JOIN account_move move ON paid_expense_line.move_id = move.id
               JOIN account_partial_reconcile apr ON paid_expense_line.payable_id = apr.credit_move_id OR paid_expense_line.payable_id = apr.debit_move_id

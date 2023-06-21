@@ -1,4 +1,5 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+from datetime import datetime, timedelta
 from freezegun import freeze_time
 
 from odoo import Command
@@ -138,3 +139,56 @@ class TestMrpAnalyticAccountHr(TestMrpAnalyticAccount):
         mo = mo_form.save()
         mo.button_mark_done()
         self.assertEqual(mo.state, 'done')
+
+    def test_mrp_analytic_account_employee(self):
+        """
+            Test adding a user time to a work order.
+        """
+        user = self.env['res.users'].create({
+            'name': 'Marc Demo',
+            'email': 'mark.brown23@example.com',
+            'image_1920': False,
+            'login': 'demo_1',
+            'password': 'demo_123'
+        })
+        self.env['hr.employee'].create({
+            'user_id': user.id,
+            'image_1920': False,
+            'hourly_cost': 15,
+        })
+        workcenter = self.env['mrp.workcenter'].create({
+            'name': 'Workcenter',
+            'default_capacity': 1,
+            'time_efficiency': 100,
+            'costs_hour': 10,
+        })
+        # add a workorder to the BoM
+        self.bom.write({
+            'operation_ids': [(0, 0, {
+                    'name': 'Test Operation 2',
+                    'workcenter_id': workcenter.id,
+                    'time_cycle': 60,
+                })
+            ]
+        })
+        mo_form = Form(self.env['mrp.production'])
+        mo_form.product_id = self.product
+        mo_form.bom_id = self.bom
+        mo_form.product_qty = 1.0
+        mo_form.analytic_account_id = self.analytic_account
+        mo = mo_form.save()
+        mo.action_confirm()
+
+        self.env['mrp.workcenter.productivity'].create({
+            'workcenter_id': workcenter.id,
+            'date_start': datetime.now() - timedelta(minutes=30),
+            'date_end': datetime.now(),
+            'loss_id': self.env.ref('mrp.block_reason7').id,
+            'workorder_id': mo.workorder_ids[1].id,
+            'user_id': user.id,
+        })
+        mo_form = Form(mo)
+        mo_form.qty_producing = 1.0
+        mo = mo_form.save()
+        mo.button_mark_done()
+        self.assertEqual(len(self.analytic_account.line_ids), 4, '2 lines for workcenters costs 2 for employee cost')

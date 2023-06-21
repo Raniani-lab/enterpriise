@@ -54,29 +54,6 @@ Wysiwyg.include({
                     });
                 },
             },
-            {
-                category: _t('Navigation'),
-                name: _t('Calendar'),
-                priority: 10,
-                description: _t('Schedule an appointment'),
-                fontawesome: 'fa-calendar',
-                callback: () => {
-                    const label = _t('Our Appointment Types');
-                    const url = `${window.location.origin}/appointment`;
-                    const selection = this.odooEditor.document.getSelection();
-                    const anchorNode = selection && selection.anchorNode;
-                    const existingLink = closestElement(anchorNode, 'a');
-                    if (existingLink) {
-                        existingLink.setAttribute('href', url);
-                        existingLink.textContent = label;
-                    } else {
-                        const link = document.createElement('a');
-                        link.setAttribute('href', url);
-                        link.textContent = label;
-                        this.odooEditor.execCommand('insert', link);
-                    }
-                },
-            },
         );
         return {...options, commands, categories};
     }

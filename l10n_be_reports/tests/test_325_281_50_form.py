@@ -1030,3 +1030,52 @@ class TestResPartner(AccountTestInvoicingCommon):
                 'paid_amount': 0.0,
             }
         ])
+
+    def test_281_50_positive_and_negative_line_should_compensate(self):
+        """Ensure form 281.50 handles negative lines put on the same account"""
+        partner_id = self.partner_b
+        product_id = self.product_b
+        bill = self.env['account.move'].create({
+            'move_type': 'in_invoice',
+            'partner_id': partner_id.id,
+            'invoice_payment_term_id': False,
+            'invoice_date': fields.Date.from_string('2000-05-12'),
+            'currency_id': self.currency_data['currency'].id,
+            'invoice_line_ids': [
+                Command.create({
+                    'product_id': product_id.id,
+                    'account_id': product_id.property_account_expense_id.id,
+                    'partner_id': partner_id.id,
+                    'product_uom_id': product_id.uom_id.id,
+                    'quantity': 1.0,
+                    'discount': 0.0,
+                    'price_unit': 1000,
+                    'tax_ids': [],
+                }),
+                Command.create({
+                    'product_id': product_id.id,
+                    'account_id': product_id.property_account_expense_id.id,
+                    'partner_id': partner_id.id,
+                    'product_uom_id': product_id.uom_id.id,
+                    'quantity': 1.0,
+                    'discount': 0.0,
+                    'price_unit': -100,
+                    'tax_ids': [],
+                }),
+            ]
+        })
+        bill.action_post()
+        self.pay_bill(bill=bill, amount=900.0, date='2000-05-12')
+
+        form_325 = self.create_325_form(ref_year=2000)
+        self.assertRecordValues(form_325.form_281_50_ids.filtered(lambda x: x.partner_id.id == self.partner_b.id), [
+            {
+                'partner_id': self.partner_b.id,
+                'commissions': 0.0,
+                'atn': 0.0,
+                'fees': 900.0,
+                'exposed_expenses': 0.0,
+                'total_remuneration': 900.0,
+                'paid_amount': 900.0,
+            }
+        ])

@@ -2030,3 +2030,54 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
             {'flag': 'new_aml',      'account_id': inv_line.account_id.id,                          'balance':   980.0},
             {'flag': 'manual',       'account_id': reco_model.line_ids[0].account_id.id,            'balance':    20.0},
         ])
+
+    def test_exchange_diff_on_partial_aml_multi_currency(self):
+        self.company_data['default_journal_bank'].currency_id = self.currency_data['currency']
+        st_line = self._create_st_line(-36000.0) # rate 1:2
+        inv_line = self._create_invoice_line(
+            'in_invoice',
+            invoice_date='2016-01-01', # rate 1:3
+            currency_id=self.currency_data['currency'].id,
+            invoice_line_ids=[{'price_unit': 38000.0}],
+        )
+
+        wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
+        wizard._action_add_new_amls(inv_line)
+
+        self.assertRecordValues(wizard.line_ids, [
+            # pylint: disable=C0326
+            {'flag': 'liquidity',       'amount_currency': -36000.0,    'currency_id': self.currency_data['currency'].id,   'balance': -18000.0},
+            {'flag': 'new_aml',         'amount_currency': 36000.0,     'currency_id': self.currency_data['currency'].id,   'balance': 12000.0},
+            {'flag': 'exchange_diff',   'amount_currency': 0.0,         'currency_id': self.currency_data['currency'].id,   'balance': 6000.0},
+        ])
+
+    def test_exchange_diff_on_partial_aml_multi_currency_close_amount(self):
+        self.currency_data['rates'].rate = 0.9839
+        self.company_data['default_journal_bank'].currency_id = self.currency_data['currency']
+
+        st_line = self._create_st_line(-37436.50)
+        self.assertRecordValues(st_line.line_ids, [
+            # pylint: disable=C0326
+            {'amount_currency': -37436.50,  'balance': -38049.09},
+            {'amount_currency': 37436.50,   'balance': 38049.09},
+        ])
+
+        inv_line = self._create_invoice_line(
+            'in_invoice',
+            invoice_date=st_line.date,
+            currency_id=self.currency_data['currency'].id,
+            invoice_line_ids=[{'price_unit': 37436.52}],
+        )
+        self.assertRecordValues(inv_line, [{
+            'amount_currency': -37436.52,
+            'balance': -38049.11,
+        }])
+
+        wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
+        wizard._action_add_new_amls(inv_line)
+
+        self.assertRecordValues(wizard.line_ids, [
+            # pylint: disable=C0326
+            {'flag': 'liquidity',       'amount_currency': -37436.50,   'currency_id': self.currency_data['currency'].id,   'balance': -38049.09},
+            {'flag': 'new_aml',         'amount_currency': 37436.50,    'currency_id': self.currency_data['currency'].id,   'balance': 38049.09},
+        ])

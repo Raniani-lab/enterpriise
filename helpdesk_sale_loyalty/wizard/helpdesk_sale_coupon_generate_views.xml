@@ -20,7 +20,7 @@
                         </group>
                     </sheet>
                     <footer>
-                        <button name="generate_coupon" type="object" string="Generate Coupon" class="oe_highlight" data-hotkey="q"/>
+                        <button name="action_coupon_generate_send" type="object" string="Send by Email" class="oe_highlight"/>
                         <button special="cancel" data-hotkey="x" string="Discard"/>
                     </footer>
                 </form>

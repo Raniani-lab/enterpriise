@@ -16,7 +16,7 @@ class HrContract(models.Model):
 
     def _get_contract_wage_field(self):
         self.ensure_one()
-        if self.structure_type_id.country_id.code == 'LU':
+        if self._is_struct_from_country('LU'):
             return 'l10n_lu_wage_with_sacrifices'
         return super()._get_contract_wage_field()
 

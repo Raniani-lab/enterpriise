@@ -71,7 +71,7 @@ class HrContract(models.Model):
 
     def _get_contract_wage_field(self):
         self.ensure_one()
-        if self.structure_type_id.country_id.code == 'BE':
+        if self._is_struct_from_country('BE'):
             return 'wage_on_signature'
         return super()._get_contract_wage_field()
 

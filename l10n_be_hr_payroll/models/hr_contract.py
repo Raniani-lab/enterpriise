@@ -526,7 +526,7 @@ class HrContract(models.Model):
     # override to add work_entry_type from leave
     def _get_leave_work_entry_type_dates(self, leave, date_from, date_to, employee):
         result = super()._get_leave_work_entry_type_dates(leave, date_from, date_to, employee)
-        if self.structure_type_id.country_id.code != 'BE':
+        if not self._is_struct_from_country('BE'):
             return result
 
         # The public holidays are paid only during the 14 first days of unemployment
@@ -725,7 +725,9 @@ class HrContract(models.Model):
             ('id', 'not in', self.ids),
         ]
         employees_already_started = self.env['hr.contract'].search(employees_with_contract_domain).mapped('employee_id')
-        for contract in self.filtered(lambda c: c.structure_type_id and c.structure_type_id.country_id.code == "BE"):
+        for contract in self:
+            if not contract._is_struct_from_country('BE'):
+                continue
             if contract.time_credit:
                 contract._create_credit_time_next_activity()
             if contract.employee_id not in employees_already_started:

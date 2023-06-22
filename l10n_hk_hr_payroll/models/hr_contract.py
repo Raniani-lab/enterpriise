@@ -23,7 +23,7 @@ class HrContract(models.Model):
 
     def _get_interval_leave_work_entry_type(self, interval, leaves, bypassing_codes):
         self.ensure_one()
-        if self.structure_type_id.country_id.code != 'HK':
+        if not self._is_struct_from_country('HK'):
             return super()._get_interval_leave_work_entry_type(interval, leaves, bypassing_codes)
 
         interval_start = interval[0].astimezone(pytz.utc).replace(tzinfo=None)

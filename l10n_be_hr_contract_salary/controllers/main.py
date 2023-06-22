@@ -473,7 +473,7 @@ class HrContractSalary(main.HrContractSalary):
     def _get_personal_infos_langs(self, contract, personal_info):
         active_langs = super()._get_personal_infos_langs(contract, personal_info)
         personal_info_lang = request.env.ref('l10n_be_hr_contract_salary.hr_contract_salary_personal_info_lang')
-        if contract.structure_type_id.country_id.code == 'BE' and personal_info == personal_info_lang:
+        if contract._is_struct_from_country('BE') and personal_info == personal_info_lang:
             belgian_langs = active_langs.filtered(lambda l: l.code in ["fr_BE", "fr_FR", "nl_BE", "nl_NL", "de_BE", "de_DE"])
             return active_langs if not belgian_langs else belgian_langs
         return active_langs

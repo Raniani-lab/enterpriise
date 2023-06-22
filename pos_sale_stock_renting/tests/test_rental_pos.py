@@ -8,6 +8,13 @@ from odoo.tests.common import tagged
 
 @tagged('post_install', '-at_install')
 class TestPoSRental(TestPointOfSaleHttpCommon):
+
+    @classmethod
+    def setUpClass(cls, chart_template_ref=None):
+        super().setUpClass(chart_template_ref=chart_template_ref)
+        if 'sale_order_line_id' not in cls.env['pos.order.line']:
+            cls.skipTest(cls, "`pos_sale` is not installed")
+
     def test_rental_with_lots(self):
         """ Test rental product with lots """
         self.tracked_product_id = self.env['product.product'].create({

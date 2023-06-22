@@ -9,7 +9,7 @@
     'sequence': 6,
     'summary': "Link between PoS and Stock Rental.",
     'description': """""",
-    'depends': ['pos_sale', 'sale_stock_renting'],
+    'depends': ['point_of_sale', 'sale_stock_renting'],
     'data': [],
     'demo': [],
     'installable': True,

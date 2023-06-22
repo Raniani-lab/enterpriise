@@ -1065,10 +1065,12 @@ class BankRecWidget(models.Model):
                 amount_currency_after_partial = current_amount_currency + auto_amount_currency
 
                 # Get the bank transaction rate.
-                rate = abs(auto_amount_currency) / abs(auto_balance)
+                transaction_amount, _transaction_currency, _journal_amount, _journal_currency, company_amount, _company_currency \
+                    = self.st_line_id._get_accounting_amounts_and_currencies()
+                rate = abs(company_amount / transaction_amount) if transaction_amount else 0.0
 
                 # Compute the amounts to make a partial.
-                balance_after_partial = line.company_currency_id.round(amount_currency_after_partial / rate)
+                balance_after_partial = line.company_currency_id.round(amount_currency_after_partial * rate)
                 new_line_balance = line.company_currency_id.round(balance_after_partial * abs(line.balance) / abs(current_balance))
                 exchange_diff_line_balance = balance_after_partial - new_line_balance
                 return {

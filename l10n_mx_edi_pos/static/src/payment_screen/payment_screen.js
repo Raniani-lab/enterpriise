@@ -13,7 +13,7 @@ patch(PaymentScreen.prototype, "l10n_mx_edi_pos.PaymentScreen", {
     //@override
     async toggleIsToInvoice() {
         const _super = this._super;
-        if (this.pos.company.country.code === 'MX' && !this.currentOrder.is_to_invoice()) {
+        if (this.pos.company.country?.code === 'MX' && !this.currentOrder.is_to_invoice()) {
             const { confirmed, payload } = await this.popup.add(AddInfoPopup);
             if (confirmed) {
                 this.currentOrder.l10n_mx_edi_cfdi_to_public = (payload.l10n_mx_edi_cfdi_to_public === true || payload.l10n_mx_edi_cfdi_to_public === '1');
@@ -25,6 +25,6 @@ patch(PaymentScreen.prototype, "l10n_mx_edi_pos.PaymentScreen", {
         _super(...arguments);
     },
     areMxFieldsVisible() {
-        return this.pos.company.country.code === 'MX' && this.currentOrder.is_to_invoice();
+        return this.pos.company.country?.code === 'MX' && this.currentOrder.is_to_invoice();
     },
 });

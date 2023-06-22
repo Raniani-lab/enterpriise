@@ -85,7 +85,7 @@ class PosOrderProFormaBe(models.Model):
         POS ID: {config_name}
         FDM Identifier: {fdmIdentifier}
         """.format(
-            title="PRO FORMA SALES" if self.amount_paid >= 0 else "PRO FORMA REFUNDS",
+            title="PRO FORMA SALES" if self.amount_total >= 0 else "PRO FORMA REFUNDS",
             create_date=self.create_date,
             cashier_name=self.employee_id.name or self.user_id.name,
             lines=lines,

@@ -10,8 +10,21 @@ class ReportSaleDetails(models.AbstractModel):
     @api.model
     def get_sale_details(self, date_start=False, date_stop=False, config_ids=False, session_ids=False):
         data = super(ReportSaleDetails, self).get_sale_details(date_start, date_stop, config_ids, session_ids)
-        if session_ids:
-            session = self.env['pos.session'].search([('id', 'in', session_ids)])
+        sessions = []
+        configs = []
+        if config_ids:
+            configs = self.env['pos.config'].search([('id', 'in', config_ids)])
+            if session_ids:
+                sessions = self.env['pos.session'].search([('id', 'in', session_ids)])
+            else:
+                sessions = self.env['pos.session'].search([('config_id', 'in', configs.ids), ('start_at', '>=', date_start), ('stop_at', '<=', date_stop)])
+        else:
+            sessions = self.env['pos.session'].search([('id', 'in', session_ids)])
+            for session in sessions:
+                configs.append(session.config_id)
+
+        if len(sessions) == 1:
+            session = sessions[0]
             if session.config_id.iface_fiscal_data_module:
                 data = self._set_default_belgian_taxes_if_empty(data, 'taxes')
                 data = self._set_default_belgian_taxes_if_empty(data, 'refund_taxes')

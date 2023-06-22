@@ -24,6 +24,25 @@
             </t>
         </xpath>
 
+        <xpath expr="//t[@id='tax-details']" position="replace">
+            <br/>
+            <div class="pos-receipt-taxes">
+                <span></span>
+                <span>VAT%</span>
+                <span>VAT</span>
+                <span>ExVAT</span>
+                <span>Total</span>
+                <t t-foreach="receipt.tax_details" t-as="tax" t-key="tax.tax.id">
+                    <span t-esc="getTaxLetter(tax.tax.amount)" />
+                    <span><t t-esc="tax.tax.amount"/> %</span> 
+                    <span t-esc="env.pos.format_currency(tax.amount, false)" />
+                    <span t-esc="env.pos.format_currency(tax.base, false)" />
+                    <span t-esc="env.pos.format_currency(tax.amount + tax.base, false)" />
+                </t>
+            </div>
+            <br/>
+        </xpath>
+
         <xpath expr="//div[hasclass('pos-receipt-contact')]" position="inside">
             <t t-if="env.pos.useBlackBoxBe()">
                 <div>

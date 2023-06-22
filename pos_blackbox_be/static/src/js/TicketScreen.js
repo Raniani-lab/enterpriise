@@ -25,7 +25,17 @@ odoo.define('pos_blackbox_be.TicketScreen', function(require) {
             super._onUpdateSelectedOrderline({ detail });
         }
         shouldHideDeleteButton(order) {
-            return this.env.pos.useBlackBoxBe() || super.shouldHideDeleteButton(order);
+            return (
+                (this.env.pos.useBlackBoxBe() && (this.isDefaultOrderEmpty(order) ||
+                order.locked ||
+                order
+                    .get_paymentlines()
+                    .some(
+                    (payment) =>
+                        payment.is_electronic() &&
+                        payment.get_payment_status() === "done"))
+                || !order.is_empty())
+                || super.shouldHideDeleteButton(order));
         }
     };
 

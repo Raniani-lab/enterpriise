@@ -31,6 +31,20 @@ odoo.define('pos_blackbox_be.OrderReceipt', function(require) {
                 }
                 return receipt_render_env;
             }
+            getTaxLetterMapping() {
+                if (this.env.pos.useBlackBoxBe()) {
+                    return {
+                        0: "D",
+                        6: "C",
+                        12: "B",
+                        21: "A",
+                    };
+                }
+                return {};
+            }
+            getTaxLetter(taxAmount) {
+                return this.getTaxLetterMapping()[taxAmount] || "";
+            }
         };
 
     Registries.Component.extend(OrderReceipt, PosBlackBoxBeOrderReceipt);

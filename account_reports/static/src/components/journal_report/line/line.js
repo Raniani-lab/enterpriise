@@ -9,11 +9,14 @@ export class JournalReportLine extends AccountReportLine {
     // -----------------------------------------------------------------------------------------------------------------
     // Classes
     // -----------------------------------------------------------------------------------------------------------------
-    getJournalReportLineClasses() {
-        let classes = "acc_rep_line acc_rep_line_indent";
+    get lineClasses() {
+        let classes = super.lineClasses;
 
-        if (this.props.line.name_class) classes += ` ${this.props.line.name_class}`;
-        if (this.props.line.unfoldable) classes += " js_account_report_foldable o_foldable_total";
+        if (this.props.line.id.includes("|headers~~"))
+            classes += ' accent_header';
+
+        if (this.props.line.move_id)
+            classes += ' accent_line';
 
         return classes;
     }

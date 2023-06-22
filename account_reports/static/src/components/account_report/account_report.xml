@@ -5,29 +5,34 @@
     </t>
 
     <t t-name="account_reports.AccountReportCustomizable" owl="1">
-        <div class="o_action">
+        <div class="o_action account_report" t-att-class="cssCustomClass">
             <ControlPanel>
                 <!-- Export buttons -->
                 <!-- First button is the main one, extra ones will collapse into dropdown if lack of space -->
                 <t t-set-slot="control-panel-create-button">
                     <t t-if="controller.buttons.length">
                         <t t-set="button" t-value="controller.buttons[0]"/>
-                        <button class="btn btn-primary"
-                                t-on-click="(ev) => controller.reportAction(ev, button.action, button.action_param, true)"
-                            >
-                                <t t-out="button.name"/>
+                        <button
+                            class="btn btn-primary"
+                            t-on-click="(ev) => controller.reportAction(ev, button.action, button.action_param, true)"
+                        >
+                            <t t-out="button.name"/>
                         </button>
                     </t>
                 </t>
-                <t t-set-slot="control-panel-always-buttons" t-if="controller.buttons.length > 1">
-                    <t t-foreach="controller.buttons" t-as="button" t-key="button_index">
-                        <div t-if="button_index != 0">
-                            <button class="btn btn-secondary"
-                                t-on-click="(ev) => controller.reportAction(ev, button.action, button.action_param, true)"
-                            >
-                                <t t-out="button.name"/>
-                            </button>
-                        </div>
+
+                <t t-if="controller.buttons.length > 1">
+                    <t t-set-slot="control-panel-always-buttons">
+                        <t t-foreach="controller.buttons" t-as="button" t-key="button_index">
+                            <div t-if="button_index != 0">
+                                <button
+                                    class="btn btn-secondary"
+                                    t-on-click="(ev) => controller.reportAction(ev, button.action, button.action_param, true)"
+                                >
+                                    <t t-out="button.name"/>
+                                </button>
+                            </div>
+                        </t>
                     </t>
                 </t>
 
@@ -44,70 +49,83 @@
             </ControlPanel>
 
             <div class="o_content">
-                <div class="o_account_reports_body" t-ref="accountReportBody">
-                    <!-- Warnings -->
-                    <div t-if="controller.warnings">
-                        <t t-foreach="controller.warnings" t-as="warningTemplateRef" t-key="warningTemplateRef">
-                            <t t-set="warningParams" t-value="controller.warnings[warningTemplateRef]"/>
+                <!-- Sections -->
+                <div id="section_selector" class="section_selector">
+                    <t t-foreach="controller.options.sections" t-as="section" t-key="section_index">
+                        <button
+                            t-att-class="(controller.options.selected_section_id === section.id) ? 'btn btn-secondary' : 'btn btn-primary'"
+                            t-on-click="() => controller.switchToSection(section.id)"
+                            t-out="section.name"
+                        />
+                    </t>
 
-                            <div t-att-class="`alert alert-${warningParams['alert_type'] || 'info'} text-center mb-0`">
-                                <t t-call="{{ warningTemplateRef }}"/>
-                            </div>
-                        </t>
-                    </div>
-
-                    <div id="section_selector">
-                      <t t-foreach="controller.options.sections" t-as="section" t-key="section_index">
-                          <button
-                              t-att-class="(controller.options.selected_section_id === section.id) ?  'btn btn-secondary' : 'btn btn-primary'"
-                              t-on-click="() => controller.switchToSection(section.id)"
-                              t-out="section.name"
-                          />
-                      </t>
-                      <t t-if="controller.options['has_inactive_sections']">
-                          <button class="btn btn-secondary" t-on-click="(ev) => controller.reportAction(ev, 'action_display_inactive_sections')" >+</button>
-                      </t>
-                    </div>
-
-                    <div class="o_account_reports_page o_account_reports_no_print">
-                        <div class="table-responsive">
-                            <table class="o_account_reports_table table-hover">
-                                <t t-component="env.component('AccountReportHeader')"/>
-
-                                <t t-if="controller.lines">
-                                    <tbody>
-                                        <t t-foreach="controller.lines" t-as="line" t-key="line.id">
-                                            <t t-if="controller.areLinesOrdered()">
-                                                <t t-set="orderedIndex" t-value="controller.linesOrder[line_index]"/>
-                                                <t t-set="orderedLine" t-value="controller.lines[orderedIndex]"/>
-
-                                                <t t-component="env.component('AccountReportLine')" t-props="{ lineIndex: orderedIndex, line: orderedLine }"/>
-                                            </t>
-                                            <t t-else="">
-                                                <t t-component="env.component('AccountReportLine')" t-props="{ lineIndex: line_index, line: line }"/>
-                                            </t>
-                                        </t>
-                                    </tbody>
-                                </t>
-                            </table>
-                        </div>
-
-                        <!-- Footnotes -->
-                        <t t-if="controller.hasVisibleFootnotes">
-                            <ol class="footnotes">
-                                <t t-foreach="controller.visibleFootnotes" t-as="footnote" t-key="footnote.id">
-                                    <li class="footnote" t-att-id="footnote.href">
-                                        <t t-out="footnote.text"/>
-
-                                        <a t-on-click="() => controller.deleteFootnote(footnote)">
-                                            <i class="fa fa-fw fa-trash-o"/>
-                                        </a>
-                                    </li>
-                                </t>
-                            </ol>
-                        </t>
-                    </div>
+                    <t t-if="controller.options['has_inactive_sections']">
+                        <button class="btn btn-secondary" t-on-click="(ev) => controller.reportAction(ev, 'action_display_inactive_sections')" >+</button>
+                    </t>
                 </div>
+
+                <t t-if="controller.lines.length">
+                    <!-- Warnings -->
+                    <t t-if="controller.warnings">
+                        <div id="warnings">
+                            <t t-foreach="controller.warnings" t-as="warningTemplateRef" t-key="warningTemplateRef">
+                                <t t-set="warningParams" t-value="controller.warnings[warningTemplateRef]"/>
+
+                                <div t-att-class="`alert alert-${warningParams['alert_type'] || 'info'} text-center mt-2 mx-3`">
+                                    <t t-call="{{ warningTemplateRef }}"/>
+                                </div>
+                            </t>
+                        </div>
+                    </t>
+
+                    <!-- Table -->
+                    <table
+                        class="table table-borderless table-hover"
+                        t-att-class="tableClasses"
+                    >
+                        <t t-component="env.component('AccountReportHeader')"/>
+                        <tbody>
+                            <t t-foreach="controller.lines" t-as="line" t-key="line.id">
+                                <t t-if="controller.areLinesOrdered()">
+                                    <t t-set="orderedIndex" t-value="controller.linesOrder[line_index]"/>
+                                    <t t-set="orderedLine" t-value="controller.lines[orderedIndex]"/>
+
+                                    <t t-component="env.component('AccountReportLine')" t-props="{ lineIndex: orderedIndex, line: orderedLine }"/>
+                                </t>
+                                <t t-else="">
+                                    <t t-component="env.component('AccountReportLine')" t-props="{ lineIndex: line_index, line: line }"/>
+                                </t>
+                            </t>
+                        </tbody>
+                    </table>
+
+                    <!-- Footnotes -->
+                    <t t-if="controller.hasVisibleFootnotes">
+                        <ol class="footnotes">
+                            <t t-foreach="controller.visibleFootnotes" t-as="footnote" t-key="footnote.id">
+                                <li t-att-id="footnote.href">
+                                    <t t-out="footnote.text"/>
+
+                                    <button
+                                        class="btn btn_footnote_delete"
+                                        t-on-click="() => controller.deleteFootnote(footnote)"
+                                    >
+                                        <i class="fa fa-trash-o"/>
+                                    </button>
+                                </li>
+                            </t>
+                        </ol>
+                    </t>
+                </t>
+                <t t-else="">
+                    <!-- No content -->
+                    <div class="o_view_nocontent">
+                        <div class="o_nocontent_help">
+                            <p class="o_view_nocontent_neutral_face">No data to display !</p>
+                            <p>There is no data to display for the given filters.</p>
+                        </div>
+                    </div>
+                </t>
             </div>
         </div>
     </t>

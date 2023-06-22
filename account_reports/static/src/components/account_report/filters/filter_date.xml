@@ -3,7 +3,7 @@
     <t t-name="account_reports.AccountReportFilterDate" owl="1">
         <Dropdown togglerClass="'btn btn-secondary'">
             <t t-set-slot="toggler">
-                <span class="fa fa-calendar me-1"/>
+                <i class="fa fa-calendar me-1"/>
 
                 <t t-if="controller.options.date.filter === 'custom'">
                     <t t-if="controller.options.date.mode === 'single'">
@@ -99,41 +99,54 @@
 
             <div class="dropdown-divider"/>
 
-            <a class="dropdown-item">Custom</a>
-            <div class="acc_rep_search o_filter_date">
-                <t t-if="controller.options.date.mode === 'range'">
-                    <label>Start Date :</label>
+            <t t-if="controller.options.date.mode === 'range'">
+                <span
+                    class="dropdown-item date"
+                    t-att-class="(controller.options.date.filter == 'custom') ? 'selected' : ''"
+                >
+                    <label>From</label>
                     <DateTimeInput
                         type="'date'"
                         value="dateFrom('date')"
                         onChange="(dateFrom) => this.setDateFrom('date', dateFrom)"
                     />
 
-                    <label>End Date :</label>
+                    <label>to</label>
                     <DateTimeInput
                         type="'date'"
                         value="dateTo('date')"
                         onChange="(dateTo) => this.setDateTo('date', dateTo)"
                     />
-                </t>
 
-                <t t-if="controller.options.date.mode === 'single'">
-                    <label>Date :</label>
-                    <DateTimeInput
-                        type="'date'"
-                        value="dateTo('date')"
-                        onChange="(dateTo) => this.setDateTo('date', dateTo)"
-                    />
-                </t>
+                    <button
+                        class="btn btn-sm btn-primary float-end"
+                        t-on-click="() => this.updateFilter('date.filter', 'custom')"
+                    >
+                        Apply
+                    </button>
+                </span>
+            </t>
 
-                <button
-                    class="btn btn-primary"
-                    type="button"
-                    t-on-click="() => this.updateFilter('date.filter', 'custom')"
+            <t t-if="controller.options.date.mode === 'single'">
+                <span
+                    class="dropdown-item date"
+                    t-att-class="(controller.options.date.filter == 'custom') ? 'selected' : ''"
                 >
-                    Apply
-                </button>
-            </div>
+                    <label>As of</label>
+                    <DateTimeInput
+                        type="'date'"
+                        value="dateTo('date')"
+                        onChange="(dateTo) => this.setDateTo('date', dateTo)"
+                    />
+
+                    <button
+                        class="btn btn-sm btn-primary float-end"
+                        t-on-click="() => this.updateFilter('date.filter', 'custom')"
+                    >
+                        Apply
+                    </button>
+                </span>
+            </t>
         </Dropdown>
     </t>
 </templates>

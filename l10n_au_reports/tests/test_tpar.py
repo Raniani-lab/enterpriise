@@ -68,7 +68,7 @@ class TestAustraliaTparReport(TestAccountReportsCommon):
             #    Name,                       ABN, Total GST, Gross Paid, Tax Withheld
             [    0,                            1,         2,          3,           4,],
             [
-                ('partner_a',   "22 225 459 588",       50.0,       550.0,        "",),
+                ('partner_a',   "22 225 459 588",       50.0,       550.0,       0.0,),
                 ('partner_b',   "11 225 459 588",       30.0,       189.0,     141.0,),
                 ('Total',                   None,       80.0,       739.0,     141.0,),
             ],

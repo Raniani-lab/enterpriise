@@ -577,20 +577,20 @@ class CashFlowReportCustomHandler(models.AbstractModel):
         return {
             'opening_balance': {'name': _('Cash and cash equivalents, beginning of period'), 'level': 0},
             'net_increase': {'name': _('Net increase in cash and cash equivalents'), 'level': 0},
-                'operating_activities': {'name': _('Cash flows from operating activities'), 'level': 2, 'parent_line_id': 'net_increase'},
-                    'advance_payments_customer': {'name': _('Advance Payments received from customers'), 'level': 3, 'parent_line_id': 'operating_activities'},
-                    'received_operating_activities': {'name': _('Cash received from operating activities'), 'level': 3, 'parent_line_id': 'operating_activities'},
-                    'advance_payments_suppliers': {'name': _('Advance payments made to suppliers'), 'level': 3, 'parent_line_id': 'operating_activities'},
-                    'paid_operating_activities': {'name': _('Cash paid for operating activities'), 'level': 3, 'parent_line_id': 'operating_activities'},
-                'investing_activities': {'name': _('Cash flows from investing & extraordinary activities'), 'level': 2, 'parent_line_id': 'net_increase'},
-                    'investing_activities_cash_in': {'name': _('Cash in'), 'level': 3, 'parent_line_id': 'investing_activities'},
-                    'investing_activities_cash_out': {'name': _('Cash out'), 'level': 3, 'parent_line_id': 'investing_activities'},
-                'financing_activities': {'name': _('Cash flows from financing activities'), 'level': 2, 'parent_line_id': 'net_increase'},
-                    'financing_activities_cash_in': {'name': _('Cash in'), 'level': 3, 'parent_line_id': 'financing_activities'},
-                    'financing_activities_cash_out': {'name': _('Cash out'), 'level': 3, 'parent_line_id': 'financing_activities'},
-                'unclassified_activities': {'name': _('Cash flows from unclassified activities'), 'level': 2, 'parent_line_id': 'net_increase'},
-                    'unclassified_activities_cash_in': {'name': _('Cash in'), 'level': 3, 'parent_line_id': 'unclassified_activities'},
-                    'unclassified_activities_cash_out': {'name': _('Cash out'), 'level': 3, 'parent_line_id': 'unclassified_activities'},
+                'operating_activities': {'name': _('Cash flows from operating activities'), 'level': 2, 'parent_line_id': 'net_increase', 'class': 'fw-bold'},
+                    'advance_payments_customer': {'name': _('Advance Payments received from customers'), 'level': 4, 'parent_line_id': 'operating_activities'},
+                    'received_operating_activities': {'name': _('Cash received from operating activities'), 'level': 4, 'parent_line_id': 'operating_activities'},
+                    'advance_payments_suppliers': {'name': _('Advance payments made to suppliers'), 'level': 4, 'parent_line_id': 'operating_activities'},
+                    'paid_operating_activities': {'name': _('Cash paid for operating activities'), 'level': 4, 'parent_line_id': 'operating_activities'},
+                'investing_activities': {'name': _('Cash flows from investing & extraordinary activities'), 'level': 2, 'parent_line_id': 'net_increase', 'class': 'fw-bold'},
+                    'investing_activities_cash_in': {'name': _('Cash in'), 'level': 4, 'parent_line_id': 'investing_activities'},
+                    'investing_activities_cash_out': {'name': _('Cash out'), 'level': 4, 'parent_line_id': 'investing_activities'},
+                'financing_activities': {'name': _('Cash flows from financing activities'), 'level': 2, 'parent_line_id': 'net_increase', 'class': 'fw-bold'},
+                    'financing_activities_cash_in': {'name': _('Cash in'), 'level': 4, 'parent_line_id': 'financing_activities'},
+                    'financing_activities_cash_out': {'name': _('Cash out'), 'level': 4, 'parent_line_id': 'financing_activities'},
+                'unclassified_activities': {'name': _('Cash flows from unclassified activities'), 'level': 2, 'parent_line_id': 'net_increase', 'class': 'fw-bold'},
+                    'unclassified_activities_cash_in': {'name': _('Cash in'), 'level': 4, 'parent_line_id': 'unclassified_activities'},
+                    'unclassified_activities_cash_out': {'name': _('Cash out'), 'level': 4, 'parent_line_id': 'unclassified_activities'},
             'closing_balance': {'name': _('Cash and cash equivalents, closing balance'), 'level': 0},
         }
 
@@ -607,17 +607,19 @@ class CashFlowReportCustomHandler(models.AbstractModel):
 
             value = report_data[layout_line_id].get(expression_label, 0.0).get(column_group_key, 0.0) if layout_line_id in report_data else 0.0
 
-            column_values.append({
-                'name': report.format_value(options, value, blank_if_zero=column['blank_if_zero'], figure_type=column['figure_type']),
-                'no_format': value,
-                'class': 'number',
-            })
+            column_values.append(report._build_column_dict(
+                options=options,
+                no_format=value,
+                figure_type=column['figure_type'],
+                expression_label=column['expression_label'],
+                blank_if_zero=column['blank_if_zero'],
+            ))
 
         return {
             'id': line_id,
             'name': layout_line_data['name'],
             'level': layout_line_data['level'],
-            'class': 'o_account_reports_totals_below_sections' if self.env.company.totals_below_sections else '',
+            'class': layout_line_data.get('class', ''),
             'columns': column_values,
             'unfoldable': unfoldable,
             'unfolded': line_id in options['unfolded_lines'] or unfold_all,
@@ -635,11 +637,13 @@ class CashFlowReportCustomHandler(models.AbstractModel):
 
             value = aml_data[expression_label].get(column_group_key, 0.0)
 
-            column_values.append({
-                'name': report.format_value(options, value, blank_if_zero=column['blank_if_zero'], figure_type=column['figure_type']),
-                'no_format': value,
-                'class': 'number',
-            })
+            column_values.append(report._build_column_dict(
+                options=options,
+                no_format=value,
+                figure_type=column['figure_type'],
+                expression_label=column['expression_label'],
+                blank_if_zero=column['blank_if_zero'],
+            ))
 
         return {
             'id': line_id,
@@ -666,17 +670,17 @@ class CashFlowReportCustomHandler(models.AbstractModel):
             if not self.env.company.currency_id.is_zero(delta):
                 unexplained_difference = True
 
-            column_values.append({
-                'name': report.format_value(options, delta, blank_if_zero=False, figure_type='monetary'),
-                'no_format': delta,
-                'class': 'number',
-            })
+            column_values.append(report._build_column_dict(
+                options=options,
+                no_format=delta,
+                figure_type='monetary',
+                expression_label='delta',
+            ))
 
         if unexplained_difference:
             return {
                 'id': report._get_generic_line_id(None, None, markup='unexplained_difference'),
                 'name': 'Unexplained Difference',
-                'level': 0,
-                'class': 'o_account_reports_totals_below_sections' if self.env.company.totals_below_sections else '',
+                'level': 1,
                 'columns': column_values,
             }

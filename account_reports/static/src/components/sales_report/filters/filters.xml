@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
     <t t-name="account_reports.SalesReportFilters" t-inherit="account_reports.AccountReportFiltersCustomizable" owl="1">
-        <xpath expr="//div[hasclass('acc_rep_filter_variant')]" position="before">
-            <div class="acc_rep_filter_code">
-                <t t-call="account_reports.SalesReportFilterCode"/>
-            </div>
+        <xpath expr="//div[@id='filter_variant']" position="before">
+            <t t-call="account_reports.SalesReportFilterCode"/>
         </xpath>
     </t>
 </templates>

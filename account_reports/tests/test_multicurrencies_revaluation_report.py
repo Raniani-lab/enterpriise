@@ -341,11 +341,11 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
             [   0,                                                  1,           2,           3,        4],
             [
                 ('Accounts To Adjust',                             '',          '',          '',       ''),
-                ('Gol (1 USD = 3.0 Gol)',                      3000.0,      1000.0,      1000.0,       ''),
-                ('121000 Account Receivable',                  3000.0,      1000.0,      1000.0,       ''),
-                ('INV/2016/00003 receivable_line',             3000.0,      1000.0,      1000.0,       ''),
-                ('Total 121000 Account Receivable',            3000.0,      1000.0,      1000.0,       ''),
-                ('Total Gol',                                  3000.0,      1000.0,      1000.0,       ''),
+                ('Gol (1 USD = 3.0 Gol)',                      3000.0,      1000.0,      1000.0,      0.0),
+                ('121000 Account Receivable',                  3000.0,      1000.0,      1000.0,      0.0),
+                ('INV/2016/00003 receivable_line',             3000.0,      1000.0,      1000.0,      0.0),
+                ('Total 121000 Account Receivable',            3000.0,      1000.0,      1000.0,      0.0),
+                ('Total Gol',                                  3000.0,      1000.0,      1000.0,      0.0),
             ],
             options,
             currency_map={

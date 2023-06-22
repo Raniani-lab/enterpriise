@@ -3,7 +3,7 @@
     <t t-name="account_reports.AccountReportFilterFiscalPosition" owl="1">
         <Dropdown togglerClass="'btn btn-secondary'">
             <t t-set-slot="toggler">
-                <span class="fa fa-book me-1"/>Fiscal Position: <t t-esc="selectedFiscalPositionName"/>
+                <i class="fa fa-book me-1"/>Fiscal Position: <t t-esc="selectedFiscalPositionName"/>
             </t>
 
             <t t-if="controller.groups.account_readonly and controller.options.allow_domestic">

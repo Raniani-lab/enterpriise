@@ -51,8 +51,8 @@ class SwedishSalesReportTest(AccountSalesReportCommon):
             #   Partner                 VAT Number,         Goods,                              Triangular,                         Services,
             [   0,                      1,                  2,                                  3,                                  4],
             [
-                (self.partner_a.name,   self.partner_a.vat, f'6,000.00{NON_BREAKING_SPACE}kr',  '',                                 f'7,000.00{NON_BREAKING_SPACE}kr'),
-                (self.partner_b.name,   self.partner_b.vat, '',                                 f'2,000.00{NON_BREAKING_SPACE}kr',  f'4,000.00{NON_BREAKING_SPACE}kr'),
+                (self.partner_a.name,   self.partner_a.vat, f'6,000.00{NON_BREAKING_SPACE}kr',  f'0.00{NON_BREAKING_SPACE}kr',      f'7,000.00{NON_BREAKING_SPACE}kr'),
+                (self.partner_b.name,   self.partner_b.vat, f'0.00{NON_BREAKING_SPACE}kr',      f'2,000.00{NON_BREAKING_SPACE}kr',  f'4,000.00{NON_BREAKING_SPACE}kr'),
                 ('Total',               '',                 f'6,000.00{NON_BREAKING_SPACE}kr',  f'2,000.00{NON_BREAKING_SPACE}kr',  f'11,000.00{NON_BREAKING_SPACE}kr'),
             ],
             options,

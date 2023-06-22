@@ -105,7 +105,7 @@ class TestAccountReportsCommon(AccountTestInvoicingCommon):
             key = 'growth_comparison_data'
             self.assertEqual(len(value[key]) + 1, len(expected_value))
             # Check name, value and class.
-            self.assertEqual(tuple([value['name'], value[key]['name'], value[key]['class']]), expected_value)
+            self.assertEqual(tuple([value['name'], value[key]['name'], value[key]['growth']]), expected_value)
 
     def assertHeadersValues(self, headers, expected_headers):
         ''' Helper to compare the headers returned by the _get_table method

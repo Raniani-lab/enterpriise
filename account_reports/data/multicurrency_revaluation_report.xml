@@ -10,7 +10,6 @@
             <record id="multicurrency_revaluation_report_balance_currency" model="account.report.column">
                 <field name="name">Balance in Foreign Currency</field>
                 <field name="expression_label">balance_currency</field>
-                <field name="figure_type">none</field>
             </record>
             <record id="multicurrency_revaluation_report_balance_operation" model="account.report.column">
                 <field name="name">Balance at Operation Rate</field>
@@ -28,7 +27,7 @@
         <field name="line_ids">
             <record id="multicurrency_revaluation_to_adjust" model="account.report.line">
                 <field name="name">Accounts To Adjust</field>
-                <field name="code">multicurrency_included</field> <!--Used in multicurrency_report_line_template-->
+                <field name="code">multicurrency_included</field>
                 <field name="groupby">currency_id, account_id, id</field>
                 <field name="expression_ids">
                     <record id="multicurrency_revaluation_to_adjust_balance_currency" model="account.report.expression">
@@ -36,6 +35,12 @@
                         <field name="engine">custom</field>
                         <field name="formula">_report_custom_engine_multi_currency_revaluation_to_adjust</field>
                         <field name="subformula">balance_currency</field>
+                    </record>
+                    <record id="multicurrency_revaluation_to_adjust_balance_currency_forced_currency" model="account.report.expression">
+                        <field name="label">_currency_balance_currency</field>
+                        <field name="engine">custom</field>
+                        <field name="formula">_report_custom_engine_multi_currency_revaluation_to_adjust</field>
+                        <field name="subformula">currency_id</field>
                     </record>
                     <record id="multicurrency_revaluation_to_adjust_balance_operation" model="account.report.expression">
                         <field name="label">balance_operation</field>
@@ -70,6 +75,12 @@
                         <field name="engine">custom</field>
                         <field name="formula">_report_custom_engine_multi_currency_revaluation_excluded</field>
                         <field name="subformula">balance_currency</field>
+                    </record>
+                    <record id="multicurrency_revaluation_excluded_balance_currency_forced_currency" model="account.report.expression">
+                        <field name="label">_currency_balance_currency</field>
+                        <field name="engine">custom</field>
+                        <field name="formula">_report_custom_engine_multi_currency_revaluation_excluded</field>
+                        <field name="subformula">currency_id</field>
                     </record>
                     <record id="multicurrency_revaluation_excluded_balance_operation" model="account.report.expression">
                         <field name="label">balance_operation</field>

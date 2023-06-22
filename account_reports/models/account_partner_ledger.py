@@ -18,9 +18,10 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
 
     def _get_custom_display_config(self):
         return {
+            'client_css_custom_class': 'partner_ledger',
             'templates': {
                 'AccountReportLineName': 'account_reports.PartnerLedgerLineName',
-            }
+            },
         }
 
     def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals, warnings=None):
@@ -584,19 +585,14 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
         for column in options['columns']:
             col_expr_label = column['expression_label']
             value = partner_values[column['column_group_key']].get(col_expr_label)
-
-            if col_expr_label in {'debit', 'credit', 'balance'}:
-                formatted_value = report.format_value(options, value, figure_type=column['figure_type'], blank_if_zero=column['blank_if_zero'])
-            else:
-                formatted_value = report.format_value(options, value, figure_type=column['figure_type']) if value is not None else value
-
             unfoldable = unfoldable or (col_expr_label in ('debit', 'credit') and not company_currency.is_zero(value))
-
-            column_values.append({
-                'name': formatted_value,
-                'no_format': value,
-                'class': 'number'
-            })
+            column_values.append(report._build_column_dict(
+                options=options,
+                no_format=value,
+                figure_type=column['figure_type'],
+                expression_label=column['expression_label'],
+                blank_if_zero=column['blank_if_zero'],
+            ))
 
         line_id = report._get_generic_line_id('res.partner', partner.id) if partner else report._get_generic_line_id('res.partner', None, markup='no_partner')
 
@@ -604,7 +600,7 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
             'id': line_id,
             'name': partner is not None and (partner.name or '')[:128] or self._get_no_partner_line_label(),
             'columns': column_values,
-            'level': 2 + level_shift,
+            'level': 1 + level_shift,
             'trust': partner.trust if partner else None,
             'unfoldable': unfoldable,
             'unfolded': line_id in options['unfolded_lines'] or unfold_all,
@@ -653,20 +649,20 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
                         col_class = ''
                     formatted_value = report.format_value(options, col_value, figure_type=column['figure_type'])
 
-                columns.append({
-                    'name': formatted_value,
-                    'no_format': col_value,
-                    'class': col_class,
-                })
+                columns.append(report._build_column_dict(
+                    options=options,
+                    no_format=col_value,
+                    figure_type=column['figure_type'],
+                    expression_label=column['expression_label'],
+                ))
 
         return {
             'id': report._get_generic_line_id('account.move.line', aml_query_result['id'], parent_line_id=partner_line_id),
             'parent_id': partner_line_id,
             'name': format_date(self.env, aml_query_result['date']),
-            'class': 'text-muted' if aml_query_result['key'] == 'indirectly_linked_aml' else 'text',  # do not format as date to prevent text centering
             'columns': columns,
             'caret_options': caret_type,
-            'level': 4 + level_shift,
+            'level': 3 + level_shift,
         }
 
     def _get_report_line_total(self, options, totals_by_column_group):
@@ -675,22 +671,16 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
         for column in options['columns']:
             col_expr_label = column['expression_label']
             value = totals_by_column_group[column['column_group_key']].get(column['expression_label'])
-
-            if col_expr_label in {'debit', 'credit', 'balance'}:
-                formatted_value = report.format_value(options, value, figure_type=column['figure_type'], blank_if_zero=False)
-            else:
-                formatted_value = report.format_value(options, value, figure_type=column['figure_type']) if value else None
-
-            column_values.append({
-                'name': formatted_value,
-                'no_format': value,
-                'class': 'number'
-            })
+            column_values.append(report._build_column_dict(
+                options=options,
+                no_format=value,
+                figure_type=column['figure_type'],
+                expression_label=column['expression_label'],
+            ))
 
         return {
             'id': report._get_generic_line_id(None, None, markup='total'),
             'name': _('Total'),
-            'class': 'total',
             'level': 1,
             'columns': column_values,
         }

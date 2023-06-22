@@ -3,31 +3,18 @@
     <t t-name="account_reports.AccountReportFilterAnalyticGroupby" owl="1">
         <Dropdown togglerClass="'btn btn-secondary'">
             <t t-set-slot="toggler">
-                <span class="fa fa-folder-open me-1"/>Analytic Group By
+                <i class="fa fa-folder-open me-1"/>Analytic Group By
             </t>
 
-            <div class="container">
-                <div class="row">
-                    <div class="col-3 ps-2 pe-2">
-                        <label>Accounts</label>
-                    </div>
-                    <div class="col ps-2 pe-2">
-                        <Record t-props="recordProps('Analytic accounts', 'account.analytic.account', 'analytic_accounts_groupby')" t-slot-scope="data">
-                            <Many2ManyTagsField id="'record_data'" name="'record_data'" record="data.record"/>
-                        </Record>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-3 ps-2 pe-2">
-                        <label>Plans</label>
-                    </div>
-                    <div class="col ps-2 pe-2">
-                        <Record t-props="recordProps('Analytic plans', 'account.analytic.plan', 'analytic_plans_groupby')" t-slot-scope="data">
-                            <Many2ManyTagsField id="'record_data'" name="'record_data'" record="data.record"/>
-                        </Record>
-                    </div>
-                </div>
-            </div>
+            <label>Accounts</label>
+            <Record t-props="recordProps('Analytic accounts', 'account.analytic.account', 'analytic_accounts_groupby')" t-slot-scope="data">
+                <Many2ManyTagsField id="'record_data'" name="'record_data'" record="data.record"/>
+            </Record>
+
+            <label>Plans</label>
+            <Record t-props="recordProps('Analytic plans', 'account.analytic.plan', 'analytic_plans_groupby')" t-slot-scope="data">
+                <Many2ManyTagsField id="'record_data'" name="'record_data'" record="data.record"/>
+            </Record>
         </Dropdown>
     </t>
 </templates>

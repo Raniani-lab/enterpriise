@@ -5,51 +5,46 @@
     </t>
 
     <t t-name="account_reports.AccountReportLineCellCustomizable" owl="1">
-        <div class="acc_rep_column_value">
-            <table class="w-100">
-                <tr>
-                    <t t-if="props.cell.info_popup_data">
-                        <td class="p-0 text-start">
-                            <a
-                                class="acc_rep_popup fa fa-question-circle"
-                                t-on-click="(ev) => this.showCarryoverPopover(ev)"
-                            />
-                        </td>
-                    </t>
+        <td
+            data-id="line_cell"
+            class="line_cell"
+            t-att-class="cellClasses"
+            t-att-data-expression_label="props.cell.expression_label"
+        >
+            <div class="wrapper">
+                <t t-if="props.cell.info_popup_data">
+                    <a
+                        class="fa fa-question-circle"
+                        t-on-click="(ev) => this.carryoverPopover(ev)"
+                    />
+                </t>
 
-                    <t t-if="props.cell.edit_popup_data">
-                        <td class="p-0 text-start">
-                            <a
-                                class="acc_rep_popup fa fa-pencil"
-                                t-on-click="(ev) => this.editPopover(ev)"
-                            />
-                        </td>
-                    </t>
+                <t t-if="props.cell.edit_popup_data">
+                    <a
+                        class="fa fa-pencil"
+                        t-on-click="(ev) => this.editPopover(ev)"
+                    />
+                </t>
 
-                    <td
-                        t-att-class="classes"
-                        t-att-style="props.cell.style || 'text-align:right'"
-                    >
-                        <t t-if="props.cell.auditable">
-                            <a t-on-click="() => this.audit()">
-                                <t t-if="props.cell.figure_type === 'boolean'">
-                                    <t t-out="(props.cell.name) ? 'Yes' : 'No'"/>
-                                </t>
-                                <t t-else="">
-                                    <t t-out="props.cell.name"/>
-                                </t>
-                            </a>
-                        </t>
-                        <t t-else="">
-                            <t t-if="props.cell.name">
-                                <span class="acc_rep_column_value">
-                                    <t t-out="props.cell.name"/>
-                                </span>
-                            </t>
-                        </t>
-                    </td>
-                </tr>
-            </table>
-        </div>
+                <div class="content">
+                    <t t-if="props.cell.auditable">
+                        <a t-on-click="() => this.audit()">
+                            <t t-component="env.component('AccountReportEllipsis')" t-props="{
+                                name: props.cell.name,
+                                type: props.cell.figure_type,
+                                maxCharacters: 32,
+                            }"/>
+                        </a>
+                    </t>
+                    <t t-else="">
+                        <t t-component="env.component('AccountReportEllipsis')" t-props="{
+                            name: props.cell.name,
+                            type: props.cell.figure_type,
+                            maxCharacters: 32,
+                        }"/>
+                    </t>
+                </div>
+            </div>
+        </td>
     </t>
 </templates>

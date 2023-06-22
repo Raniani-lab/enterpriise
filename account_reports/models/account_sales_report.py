@@ -16,9 +16,6 @@ class ECSalesReportCustomHandler(models.AbstractModel):
             'components': {
                 'AccountReportFilters': 'account_reports.SalesReportFilters',
             },
-            'templates': {
-                'AccountReport': 'account_reports.SalesReport',
-            }
         }
 
     def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals, warnings=None):
@@ -68,7 +65,9 @@ class ECSalesReportCustomHandler(models.AbstractModel):
                     lines.append((0, self._get_report_line_partner(report, options, partner, partner_values, markup=tax_ec_category)))
 
         # Report total line.
-        lines.append((0, self._get_report_line_total(report, options, totals_by_column_group)))
+        if lines:
+            lines.append((0, self._get_report_line_total(report, options, totals_by_column_group)))
+
         return lines
 
     def _caret_options_initializer(self):
@@ -137,11 +136,12 @@ class ECSalesReportCustomHandler(models.AbstractModel):
         for column in options['columns']:
             expression_label = column['expression_label']
             value = partner_values[column['column_group_key']].get(expression_label)
-            column_values.append({
-                'name': report.format_value(options, value, figure_type=column['figure_type']) if value is not None else value,
-                'no_format': value,
-                'class': 'number' if column['figure_type'] == 'monetary' else 'text'
-            }) # value is not None => allows to avoid the "0.0" or None values but only those
+            column_values.append(report._build_column_dict(
+                options=options,
+                no_format=value,
+                figure_type=column['figure_type'],
+                expression_label=column['expression_label'],
+            )) # value is not None => allows to avoid the "0.0" or None values but only those
 
         return {
             'id': report._get_generic_line_id('res.partner', partner.id, markup=markup),
@@ -162,11 +162,12 @@ class ECSalesReportCustomHandler(models.AbstractModel):
         column_values = []
         for column in options['columns']:
             value = totals_by_column_group[column['column_group_key']].get(column['expression_label'])
-            column_values.append({
-                'name': report.format_value(options, value, figure_type=column['figure_type']) if value is not None else None,
-                'no_format': value if column['figure_type'] == 'monetary' else '',
-                'class': 'number' if column['figure_type'] == 'monetary' else 'text'
-            })
+            column_values.append(report._build_column_dict(
+                options=options,
+                no_format=value if column['figure_type'] == 'monetary' else '',
+                figure_type=column['figure_type'],
+                expression_label=column['expression_label'],
+            ))
 
         return {
             'id': report._get_generic_line_id(None, None, markup='total'),

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<templates>
-    <t t-name="account_consolidation.ConsolidationReport" t-inherit="account_reports.AccountReportCustomizable" owl="1">
-        <xpath expr="//div[hasclass('o_account_reports_page')]" position="attributes">
-            <attribute name="class">o_account_reports_page o_account_reports_no_print o_account_consolidation_trial_balance_report</attribute>
-        </xpath>
-    </t>
-</templates>

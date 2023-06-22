@@ -243,7 +243,7 @@ class DisallowedExpensesFleetCustomHandler(models.AbstractModel):
         fleet_rate = self._get_single_value(values, 'fleet_rate')
         account_rate = self._get_single_value(values, 'account_rate')
 
-        current_rate = ''
+        current_rate = None
         if fleet_rate is not False:
             if fleet_rate is not None:
                 if account_rate:

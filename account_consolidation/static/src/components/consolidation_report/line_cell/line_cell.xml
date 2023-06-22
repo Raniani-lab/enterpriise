@@ -1,47 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
-    <t t-name="account_consolidation.ConsolidationReportLineCell" t-inherit="account_reports.AccountReportLineCellCustomizable" owl="1">
-        <xpath expr="//div[hasclass('acc_rep_column_value')]" position="replace">
-            <t t-if="props.type === 'header'">
-                <t t-out="props.cell.name"/>
-                <br/>
-                <t t-if="props.cell.consolidation_rate">
-                    <span class="subtitle">
-                        Conso Rate: <t t-out="props.cell.consolidation_rate"/>%<br/>
-                        <t t-if="props.cell.from_currency">
-                            Avg Rate: 1<t t-out="props.cell.from_currency"/> = <t t-out="props.cell.currency_rate_avg"/><t t-out="props.cell.to_currency"/>
-                            / End Rate: 1<t t-out="props.cell.from_currency"/> = <t t-out="props.cell.currency_rate_end"/><t t-out="props.cell.to_currency"/>
-                        </t>
-                    </span>
-                </t>
-                <br/>
-                <br/>
-            </t>
-
-            <t t-if="props.type === 'line'">
-                <t t-if="props.cell.journal_id">
-                    <Dropdown togglerClass="'btn btn-link p-0 fw-bolder no_print'">
-                        <t t-set-slot="toggler">
-                            <span t-att-class="`acc_rep_level${ props.line.level || 2 }`">
-                                <t t-out="props.cell.name"/>
-                            </span>
-                        </t>
-
-                        <DropdownItem onSelected="() => this.audit()">
-                            Audit
-                        </DropdownItem>
-                    </Dropdown>
-
-                    <div class="print_only">
-                        <t t-out="props.cell.name"/>
-                    </div>
+    <t t-name="account_consolidation.ConsolidationReportLineCell" owl="1">
+        <td
+            data-id="line_cell"
+            class="line_cell"
+            t-att-class="cellClasses"
+        >
+            <div class="content">
+                <t t-if="props.cell.auditable">
+                    <a t-on-click="() => this.audit()">
+                        <t t-component="env.component('AccountReportEllipsis')" t-props="{
+                            name: props.cell.name,
+                            type: props.cell.figure_type,
+                            maxCharacters: 32,
+                        }"/>
+                    </a>
                 </t>
                 <t t-else="">
-                    <span class="acc_rep_column_value">
-                        <t t-out="props.cell.name"/>
-                    </span>
+                    <t t-component="env.component('AccountReportEllipsis')" t-props="{
+                        name: props.cell.name,
+                        type: props.cell.figure_type,
+                        maxCharacters: 32,
+                    }"/>
                 </t>
-            </t>
-        </xpath>
+            </div>
+        </td>
     </t>
 </templates>

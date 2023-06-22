@@ -8,7 +8,7 @@ registry.category("web_tour.tours").add('account_reports_sections', {
     steps: () => [
         {
             content: "Open variant selector",
-            trigger: ".acc_rep_filter_variant button",
+            trigger: "#filter_variant button",
             run: 'click',
         },
         {
@@ -18,12 +18,12 @@ registry.category("web_tour.tours").add('account_reports_sections', {
         },
         {
             content: "Check the lines of section 1 are displayed",
-            trigger: ".acc_rep_line_name:contains('Section 1 line')",
+            trigger: ".line_name:contains('Section 1 line')",
             run: function(){},
         },
         {
             content: "Check the columns of section 1 are displayed",
-            trigger: ".acc_rep_column_header td:last():contains('Column 1')",
+            trigger: "#table_header th:last():contains('Column 1')",
             run: function(){},
         },
         {
@@ -33,12 +33,12 @@ registry.category("web_tour.tours").add('account_reports_sections', {
         },
         {
             content: "Check the filters displayed belong to section 1 (journals filter is not enabled on section 2, nor the composite report)",
-            trigger: ".acc_rep_filter_journal",
+            trigger: "#filter_journal",
             run: function(){},
         },
         {
             content: "Check the date chosen by default",
-            trigger: ".acc_rep_filter_date button:contains('2023')",
+            trigger: "#filter_date button:contains('2023')",
             run: function(){},
         },
         {
@@ -48,12 +48,12 @@ registry.category("web_tour.tours").add('account_reports_sections', {
         },
         {
             content: "Check the lines of section 2 are displayed",
-            trigger: ".acc_rep_line_name:contains('Section 2 line')",
+            trigger: ".line_name:contains('Section 2 line')",
             run: function(){},
         },
         {
             content: "Check the columns of section 2 are displayed",
-            trigger: ".acc_rep_column_header td:last():contains('Column 2')",
+            trigger: "#table_header th:last():contains('Column 2')",
             run: function(){},
         },
         {
@@ -63,22 +63,22 @@ registry.category("web_tour.tours").add('account_reports_sections', {
         },
         {
             content: "Check the filters displayed belong to section 2 (comparison filter is not enabled on section 1, nor the composite report)",
-            trigger: ".acc_rep_filter_comparison",
+            trigger: "#filter_comparison",
             run: function(){},
         },
         {
             content: "Open date switcher",
-            trigger: ".acc_rep_filter_date button",
+            trigger: "#filter_date button",
             run: 'click',
         },
         {
             content: "Select another date",
-            trigger: ".acc_rep_filter_date span:contains('Last Financial Year')",
+            trigger: "#filter_date span:contains('Last Financial Year')",
             run: 'click'
         },
         {
             content: "Wait for refresh",
-            trigger: ".acc_rep_filter_date button:contains('2022')",
+            trigger: "#filter_date button:contains('2022')",
             run: function(){},
         },
         {
@@ -88,7 +88,7 @@ registry.category("web_tour.tours").add('account_reports_sections', {
         },
         {
             content: "Check the date chosen on section 2 has been propagated to section 1",
-            trigger: ".acc_rep_filter_date button:contains('2022')",
+            trigger: "#filter_date button:contains('2022')",
             run: function(){},
         },
     ]

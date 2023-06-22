@@ -13,7 +13,7 @@ registry.category("web_tour.tours").add('account_reports', {
             content: "Initial foldable",
             trigger: ".o_content",
             run: () => {
-                Asserts.DOMContainsNumber("tbody > tr:not(.d-none)", 28);
+                Asserts.DOMContainsNumber("tbody > tr:not(.d-none):not(.empty)", 28);
             }
         },
         {
@@ -23,9 +23,9 @@ registry.category("web_tour.tours").add('account_reports', {
         },
         {
             content: "Line is unfolded",
-            trigger: "tr:nth-child(4) span:contains('101401')",
+            trigger: "tr:nth-child(4) .name:contains('101401')",
             run: () => {
-                Asserts.DOMContainsNumber("tbody > tr:not(.d-none)", 30);
+                Asserts.DOMContainsNumber("tbody > tr:not(.d-none):not(.empty)", 30);
             }
         },
         {
@@ -37,7 +37,7 @@ registry.category("web_tour.tours").add('account_reports', {
             content: "Line is folded",
             trigger: ".o_content",
             run: () => {
-                Asserts.DOMContainsNumber("tbody > tr:not(.d-none)", 28);
+                Asserts.DOMContainsNumber("tbody > tr:not(.d-none):not(.empty)", 28);
             }
         },
         //--------------------------------------------------------------------------------------------------------------
@@ -69,7 +69,7 @@ registry.category("web_tour.tours").add('account_reports', {
         {
             content: "Check order on lines and footnotes",
             trigger: ".o_content",
-            extra_trigger: "tr:nth-child(11):not(.d-none) span:contains('101404')",
+            extra_trigger: "tr:nth-child(11):not(.d-none) .name:contains('101404')",
             run: () => {
                 // Check line number
                 Asserts.isEqual(document.querySelector("tr:nth-child(4) sup a").textContent, "1");
@@ -80,7 +80,7 @@ registry.category("web_tour.tours").add('account_reports', {
                 Asserts.isTrue(document.querySelector("tr:nth-child(11) sup a").href.endsWith("#footnote_2"));
 
                 // Check footnotes
-                const footnotes = document.querySelectorAll(".footnotes .footnote");
+                const footnotes = document.querySelectorAll(".footnotes li");
 
                 Asserts.isTrue(footnotes[0].textContent.includes("Footnote 101401"));
                 Asserts.isTrue(footnotes[1].textContent.includes("Footnote 101404"));
@@ -96,7 +96,7 @@ registry.category("web_tour.tours").add('account_reports', {
             content: "Caret option is displayed",
             trigger: "tr:nth-child(7)",
             run: () => {
-                Asserts.hasClass("tr:nth-child(7) .dropdown-menu", "show");
+                Asserts.hasClass("tr:nth-child(7) .dropdown", "show");
             }
         },
         {
@@ -137,7 +137,7 @@ registry.category("web_tour.tours").add('account_reports', {
                 Asserts.isTrue(document.querySelector("tr:nth-child(11) sup a").href.endsWith("#footnote_3"));
 
                 // Check footnotes
-                const footnotes = document.querySelectorAll(".footnotes .footnote");
+                const footnotes = document.querySelectorAll(".footnotes li");
 
                 Asserts.isTrue(footnotes[0].textContent.includes("Footnote 101401"));
                 Asserts.isTrue(footnotes[1].textContent.includes("Footnote 121000"));
@@ -209,7 +209,7 @@ registry.category("web_tour.tours").add('account_reports', {
                 Asserts.isTrue(document.querySelector("tr:nth-child(11) sup a").href.endsWith("#footnote_2"));
 
                 // Check footnotes
-                const footnotes = document.querySelectorAll(".footnotes .footnote");
+                const footnotes = document.querySelectorAll(".footnotes li");
 
                 Asserts.isTrue(footnotes[0].textContent.includes("Footnote 101401"));
                 Asserts.isTrue(footnotes[1].textContent.includes("Footnote 101404"));
@@ -232,7 +232,7 @@ registry.category("web_tour.tours").add('account_reports', {
                 Asserts.isTrue(document.querySelector("tr:nth-child(11) sup a").href.endsWith("#footnote_1"));
 
                 // Check footnotes
-                const footnotes = document.querySelectorAll(".footnotes .footnote");
+                const footnotes = document.querySelectorAll(".footnotes li");
 
                 Asserts.isTrue(footnotes[0].textContent.includes("Footnote 101404"));
             }
@@ -260,7 +260,7 @@ registry.category("web_tour.tours").add('account_reports', {
         },
         {
             content: "Click sort",
-            trigger: "th.sortable",
+            trigger: "th .btn_sortable",
             run: "click"
         },
         {
@@ -269,21 +269,21 @@ registry.category("web_tour.tours").add('account_reports', {
             run: () => {
                 // Receivables
                 Asserts.isEqual(document.querySelector("tr:nth-child(17) td:nth-child(2)").textContent, "25.00");
-                Asserts.isEqual(document.querySelector("tr:nth-child(18) td:nth-child(2)").textContent, "25.00");
+                Asserts.isEqual(document.querySelector("tr:nth-child(19) td:nth-child(2)").textContent, "25.00");
 
                 // Bank and Cash Accounts
-                Asserts.isEqual(document.querySelector("tr:nth-child(20) td:nth-child(2)").textContent, "75.00");
                 Asserts.isEqual(document.querySelector("tr:nth-child(21) td:nth-child(2)").textContent, "75.00");
+                Asserts.isEqual(document.querySelector("tr:nth-child(22) td:nth-child(2)").textContent, "75.00");
 
                 // Current Assets
-                Asserts.isEqual(document.querySelector("tr:nth-child(23) td:nth-child(2)").textContent, "50.00");
-                Asserts.isEqual(document.querySelector("tr:nth-child(24) td:nth-child(2)").textContent, "100.00");
-                Asserts.isEqual(document.querySelector("tr:nth-child(25) td:nth-child(2)").textContent, "150.00");
+                Asserts.isEqual(document.querySelector("tr:nth-child(24) td:nth-child(2)").textContent, "50.00");
+                Asserts.isEqual(document.querySelector("tr:nth-child(25) td:nth-child(2)").textContent, "100.00");
+                Asserts.isEqual(document.querySelector("tr:nth-child(26) td:nth-child(2)").textContent, "150.00");
             }
         },
         {
             content: "Click sort",
-            trigger: "th.sortable",
+            trigger: "th .btn_sortable",
             run: "click"
         },
         {
@@ -306,7 +306,7 @@ registry.category("web_tour.tours").add('account_reports', {
         },
         {
             content: "Click sort",
-            trigger: "th.sortable",
+            trigger: "th .btn_sortable",
             run: "click"
         },
         {

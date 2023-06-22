@@ -3,7 +3,7 @@
     <t t-name="account_reports.AccountReportFilterVariant" owl="1">
         <Dropdown togglerClass="'btn btn-secondary'">
             <t t-set-slot="toggler">
-                <span class="fa fa-book me-1"/>Report: <t t-esc="selectedVariantName"/>
+                <i class="fa fa-book me-1"/>Report: <t t-esc="selectedVariantName"/>
             </t>
 
             <t t-foreach="controller.options.available_variants" t-as="variant" t-key="variant_index">

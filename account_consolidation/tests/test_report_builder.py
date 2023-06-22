@@ -311,11 +311,13 @@ class TestComparisonBuilder(AccountConsolidationTestCase):
                 'columns': [
                     {
                         'name': f'1,000.00{NON_BREAKING_SPACE}€',
-                        'no_format': 1000.0
+                        'no_format': 1000.0,
+                        'figure_type': 'monetary',
                     },
                     {
                         'name': f'-2,000.00{NON_BREAKING_SPACE}€',
-                        'no_format': -2000.0
+                        'no_format': -2000.0,
+                        'figure_type': 'monetary',
                     }
                 ]
             },
@@ -329,11 +331,13 @@ class TestComparisonBuilder(AccountConsolidationTestCase):
                 'columns': [
                     {
                         'name': f'1,000.00{NON_BREAKING_SPACE}€',
-                        'no_format': 1000.0
+                        'no_format': 1000.0,
+                        'figure_type': 'monetary',
                     },
                     {
                         'name': f'-2,000.00{NON_BREAKING_SPACE}€',
-                        'no_format': -2000.0
+                        'no_format': -2000.0,
+                        'figure_type': 'monetary',
                     }
                 ]
             },
@@ -346,11 +350,13 @@ class TestComparisonBuilder(AccountConsolidationTestCase):
                     {
                         'name': f'1,000.00{NON_BREAKING_SPACE}€',
                         'no_format': 1000.0,
+                        'figure_type': 'monetary',
                         'class': 'number'
                     },
                     {
                         'name': f'-2,000.00{NON_BREAKING_SPACE}€',
                         'no_format': -2000.0,
+                        'figure_type': 'monetary',
                         'class': 'number'
                     }
                 ],
@@ -377,8 +383,8 @@ class TestComparisonBuilder(AccountConsolidationTestCase):
             'unfoldable': True,
             'unfolded': False,
             'columns': [
-                {'name': f'0.00{NON_BREAKING_SPACE}€', 'no_format': 0.0},
-                {'name': f'0.00{NON_BREAKING_SPACE}€', 'no_format': 0.0}
+                {'name': f'0.00{NON_BREAKING_SPACE}€', 'no_format': 0.0, 'figure_type': 'monetary'},
+                {'name': f'0.00{NON_BREAKING_SPACE}€', 'no_format': 0.0, 'figure_type': 'monetary'}
             ]
         }]
         self.assertListEqual(expected, section_line)
@@ -442,9 +448,9 @@ class TestComparisonBuilder(AccountConsolidationTestCase):
         # €
         euro_exp = {'id': self.report._get_generic_line_id(None, None, 'grouped_accounts_total'),
                     'name': 'Total', 'class': 'total', 'level': 1,
-                    'columns': [{'name': f'0.00{NON_BREAKING_SPACE}€', 'no_format': 0.0, 'class': 'number'},
-                                {'name': f'1,500,000.00{NON_BREAKING_SPACE}€', 'no_format': 1500000.0, 'class': 'number text-danger'},
-                                {'name': f'-2,000.00{NON_BREAKING_SPACE}€', 'no_format': -2000.0, 'class': 'number text-danger'}]}
+                    'columns': [{'name': f'0.00{NON_BREAKING_SPACE}€', 'figure_type': 'monetary', 'no_format': 0.0, 'class': 'number'},
+                                {'name': f'1,500,000.00{NON_BREAKING_SPACE}€', 'figure_type': 'monetary', 'no_format': 1500000.0, 'class': 'number text-danger'},
+                                {'name': f'-2,000.00{NON_BREAKING_SPACE}€', 'figure_type': 'monetary', 'no_format': -2000.0, 'class': 'number text-danger'}]}
         options = self.report.get_options()
         euro_total_line = self.builder._build_total_line(totals, options, include_percentage=False)
         self.assertDictEqual(euro_total_line, euro_exp)
@@ -455,9 +461,9 @@ class TestComparisonBuilder(AccountConsolidationTestCase):
 
         usd_exp = {'id': self.report._get_generic_line_id(None, None, 'grouped_accounts_total'),
                    'name': 'Total', 'class': 'total', 'level': 1,
-                   'columns': [{'name': f'${NON_BREAKING_SPACE}0.00', 'no_format': 0.0, 'class': 'number'},
-                               {'name': f'${NON_BREAKING_SPACE}1,500,000.00', 'no_format': 1500000.0, 'class': 'number text-danger'},
-                               {'name': f'${NON_BREAKING_SPACE}-2,000.00', 'no_format': -2000.0, 'class': 'number text-danger'}]}
+                   'columns': [{'name': f'${NON_BREAKING_SPACE}0.00', 'figure_type': 'monetary', 'no_format': 0.0, 'class': 'number'},
+                               {'name': f'${NON_BREAKING_SPACE}1,500,000.00', 'figure_type': 'monetary', 'no_format': 1500000.0, 'class': 'number text-danger'},
+                               {'name': f'${NON_BREAKING_SPACE}-2,000.00', 'figure_type': 'monetary', 'no_format': -2000.0, 'class': 'number text-danger'}]}
         self.assertDictEqual(usd_total_line, usd_exp)
         patched_bpc.assert_not_called()
         # WITH PERCENTAGE
@@ -465,8 +471,8 @@ class TestComparisonBuilder(AccountConsolidationTestCase):
         euro_prct_total_line = self.builder._build_total_line(totals, options, include_percentage=True)
         euro_exp_prct = {'id': self.report._get_generic_line_id(None, None, 'grouped_accounts_total'),
                          'name': 'Total', 'class': 'total', 'level': 1,
-                         'columns': [{'name': f'0.00{NON_BREAKING_SPACE}€', 'no_format': 0.0, 'class': 'number'},
-                                     {'name': f'-2,000.00{NON_BREAKING_SPACE}€', 'no_format': -2000.0, 'class': 'number text-danger'},
+                         'columns': [{'name': f'0.00{NON_BREAKING_SPACE}€', 'figure_type': 'monetary', 'no_format': 0.0, 'class': 'number'},
+                                     {'name': f'-2,000.00{NON_BREAKING_SPACE}€', 'figure_type': 'monetary', 'no_format': -2000.0, 'class': 'number text-danger'},
                                      patched_bpc.return_value]}
         self.assertDictEqual(euro_prct_total_line, euro_exp_prct)
 
@@ -532,6 +538,7 @@ class TestDefaultBuilder(AccountConsolidationTestCase):
             'columns': [{
                 'name': self.builder.value_formatter(t),
                 'no_format': t,
+                'figure_type': 'monetary',
                 'class': 'number',
                 'journal_id': False  # False as no company period id is set on journals
             } for t in totals]

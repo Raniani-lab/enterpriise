@@ -152,9 +152,9 @@ class IntrastatExpiryReportTest(TestAccountReportsCommon):
             #    country code,  transaction code,  commodity code,  origin country
             [    2,             3,                 5,               6  ],
             [
-                ('DE',          None,              '100',           'QU'),
-                ('DE',          None,              '101',           'QU'),
-                ('DE',          None,              '102',           'QU'),
+                ('DE',          '',                '100',           'QU'),
+                ('DE',          '',                '101',           'QU'),
+                ('DE',          '',                '102',           'QU'),
             ],
             options,
         )

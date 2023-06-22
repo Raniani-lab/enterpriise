@@ -18,7 +18,7 @@ registry.category("web_tour.tours").add('account_reports_search', {
         },
         {
             content: 'test if the product sale line is present',
-            trigger: '.acc_rep_line_name:contains("400000 Product Sales")',
+            trigger: '.line_name:contains("400000 Product Sales")',
         },
         {
             content: "click search",
@@ -32,11 +32,11 @@ registry.category("web_tour.tours").add('account_reports_search', {
         },
         {
             content: 'test if the receivable line is present',
-            trigger: '.acc_rep_line_name:contains("121000 Account Receivable")',
+            trigger: '.line_name:contains("121000 Account Receivable")',
         },
         {
             content: 'check that the product sale line is not present',
-            trigger: '.acc_rep_line_name:not(:contains("400000 Product Sales"))',
+            trigger: '.line_name:not(:contains("400000 Product Sales"))',
         },
     ]
 });

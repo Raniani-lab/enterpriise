@@ -3,7 +3,7 @@
     <t t-name="account_reports.SalesReportFilterCode" owl="1">
         <Dropdown togglerClass="'btn btn-secondary'">
             <t t-set-slot="toggler">
-                <span class="fa fa-filter me-1"/> Codes: <t t-esc="selectedEcTaxName"/>
+                <i class="fa fa-filter me-1"/> Codes: <t t-esc="selectedEcTaxName"/>
             </t>
 
             <t t-foreach="controller.options.ec_tax_filter_selection" t-as="ecTax" t-key="ecTax_index">

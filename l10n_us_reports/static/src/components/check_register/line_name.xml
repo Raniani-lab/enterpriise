@@ -1,11 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
     <t t-name="l10n_us_reports.CheckRegisterLineName" t-inherit="account_reports.AccountReportLineNameCustomizable" owl="1">
-        <xpath expr="//span[hasclass('acc_rep_line_name')]" position="inside">
-            <t t-if="props.line.unfolded">
-                <a class="oe_link_reports no_print ms-2" t-on-click="(ev) => controller.reportAction(ev, 'open_journal_items', { line_id: props.line.id, view_ref: 'account.view_move_line_tree_grouped_partner' })">
-                    ⇒ Journal Items
-                </a>
+        <xpath expr="//td[@data-id='line_name']" position="attributes">
+            <t t-if="props.line.unfoldable">
+                <attribute name="class" add="more" separator=" "/>
+            </t>
+        </xpath>
+
+        <xpath expr="//td[@data-id='line_name']//div[hasclass('wrapper')]//div[hasclass('content')]" position="inside">
+            <t t-if="props.line.unfoldable">
+                <Dropdown togglerClass="'btn_more'" position="'right-start'">
+                    <t t-set-slot="toggler">
+                        <i class="fa fa-ellipsis-v"/>
+                    </t>
+
+                    <DropdownItem onSelected="(ev) => controller.reportAction(ev, 'open_journal_items', {
+                        line_id: props.line.id,
+                        view_ref: 'account.view_move_line_tree_grouped_partner',
+                    })">
+                        Journal Items
+                    </DropdownItem>
+                </Dropdown>
             </t>
         </xpath>
     </t>

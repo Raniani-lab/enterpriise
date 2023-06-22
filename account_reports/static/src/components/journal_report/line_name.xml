@@ -1,34 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
     <t t-name="account_reports.JournalReportLineName" t-inherit="account_reports.AccountReportLineNameCustomizable" owl="1">
-        <xpath expr="//span[hasclass('acc_rep_line_name')]" position="replace">
-            <span class="acc_rep_line_name" t-att-title="props.line.title_hover">
-                <!-- Invoice name -->
-                <t t-if="'move_id' in props.line and 'date' in props.line">
-                    <a t-on-click="(ev) => controller.reportAction(ev, 'journal_report_action_open_business_doc', { line_id: props.line.id })">
-                        <t t-out="props.line.name"/>
-                    </a>
-                    <t t-out="`- ${props.line.date}`"/>
-                </t>
-                <t t-else="">
+        <xpath expr="//td[@data-id='line_name']//div[@data-id='content']" position="replace">
+            <!-- Invoice name -->
+            <t t-if="'move_id' in props.line and 'date' in props.line">
+                <a t-on-click="(ev) => controller.reportAction(ev, 'journal_report_action_open_business_doc', { line_id: props.line.id })">
                     <t t-out="props.line.name"/>
-                </t>
+                </a>
+                <t t-out="`- ${props.line.date}`"/>
+            </t>
+            <t t-else="">
+                <t t-out="props.line.name"/>
+            </t>
 
-                <!-- Journal name -->
-                <t t-if="controller.groups.account_user and 'journal_id' in props.line">
-                    <a
-                        class="oe_link_reports ms-2"
-                        t-on-click="(ev) => controller.reportAction(ev, 'open_journal_items', {
-                            line_id: props.line.id,
-                            name: props.line.name,
-                            journal_id: props.line.journal_id,
-                            journal_type: props.line.journal_type,
-                        })"
-                    >
-                        => Journal Items
-                    </a>
-                </t>
-            </span>
+            <!-- Journal name -->
+            <t t-if="controller.groups.account_user and 'journal_id' in props.line">
+                <button
+                    class="btn btn_action"
+                    t-on-click="(ev) => controller.reportAction(ev, 'open_journal_items', {
+                        line_id: props.line.id,
+                        name: props.line.name,
+                        journal_id: props.line.journal_id,
+                        journal_type: props.line.journal_type,
+                    })"
+                >
+                    Journal Items
+                </button>
+            </t>
         </xpath>
     </t>
 </templates>

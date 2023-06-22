@@ -107,7 +107,7 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
             #   Name                                    Balance
             [   0,                                      1],
             [
-                ('Test carryover',                      ''),
+                ('Test carryover',                     0.0),
             ],
             options,
         )
@@ -126,7 +126,7 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
             #   Name                                    Balance
             [   0,                                      1],
             [
-                ('Test carryover',                      ''),
+                ('Test carryover',                     0.0),
             ],
             options,
         )
@@ -244,7 +244,7 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
             #   Name                                    Balance
             [   0,                                      1],
             [
-                ('Test carryover',                      ''),
+                ('Test carryover',                     0.0),
             ],
             options,
         )
@@ -283,7 +283,7 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
             #   Name                                    Balance
             [   0,                                      1],
             [
-                ('Test carryover',                      ''),
+                ('Test carryover',                     0.0),
             ],
             options,
         )
@@ -302,7 +302,7 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
             #   Name                                    Balance
             [   0,                                      1],
             [
-                ('Test carryover',                      ''),
+                ('Test carryover',                     0.0),
             ],
             options,
         )
@@ -319,7 +319,7 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
             #   Name                                    Balance
             [   0,                                      1],
             [
-                ('Test carryover',                      ''),
+                ('Test carryover',                     0.0),
             ],
             options,
         )

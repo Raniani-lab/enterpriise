@@ -7,10 +7,6 @@ import { DropdownItem } from "@web/core/dropdown/dropdown_item";
 
 export class ConsolidationReportLineCell extends AccountReportLineCell {
     static template = "account_consolidation.ConsolidationReportLineCell";
-    static props = {
-        ...super.props,
-        type: String,
-    }
     static components = {
         ...super.components,
         Dropdown,

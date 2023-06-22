@@ -13,7 +13,6 @@ class USReportCustomHandler(models.AbstractModel):
     def _get_custom_display_config(self):
         return {
             'templates': {
-                'AccountReport': 'l10n_us_reports.CheckRegister',
                 'AccountReportLineName': 'l10n_us_reports.CheckRegisterLineName',
             },
         }

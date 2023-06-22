@@ -98,10 +98,10 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
             #   Name                Total               Before       Current              Later
             [   0,                  1,                  2,           3,                   4                        ],
             [
-                ('EXP0 Expense 0',  1000 + 1050,        '',          250 + 150,           750 + 900                ),
-                ('EXP1 Expense 1',  1225,               '',          350,                 875                      ),
-                ('EXP2 Expense 2',  1680 + 0,           '',          600 * (10/30) + 0,   600 * (2 + 14/30) + 0    ),
-                ('TOTALS',          4955,               '',          950,                 4005                     ),
+                ('EXP0 Expense 0',  1000 + 1050,        0.00,        250 + 150,           750 + 900                ),
+                ('EXP1 Expense 1',  1225,               0.00,        350,                 875                      ),
+                ('EXP2 Expense 2',  1680 + 0,           0.00,        600 * (10/30) + 0,   600 * (2 + 14/30) + 0    ),
+                ('TOTALS',          4955,               0.00,        950,                 4005                     ),
             ],
             options,
         )
@@ -130,10 +130,10 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
             #   Name                Total               Before                       Current                 Later
             [   0,                  1,                  2,                           3,                      4     ],
             [
-                ('EXP0 Expense 0',  1000 + 1050,        750 + 750,                   250 + 300,              ''    ),
-                ('EXP1 Expense 1',  1225,               1050,                        175,                    ''    ),
-                ('EXP2 Expense 2',  1680 + 225,         600 * (2 + 10/30) + 0,       600 * (14/30) + 225,    ''    ),
-                ('TOTALS',          5180,               3950,                        1230,                   ''    ),
+                ('EXP0 Expense 0',  1000 + 1050,        750 + 750,                   250 + 300,              0.0   ),
+                ('EXP1 Expense 1',  1225,               1050,                        175,                    0.0   ),
+                ('EXP2 Expense 2',  1680 + 225,         600 * (2 + 10/30) + 0,       600 * (14/30) + 225,    0.0   ),
+                ('TOTALS',          5180,               3950,                        1230,                   0.0   ),
             ],
             options,
         )
@@ -157,10 +157,10 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
             #   Name                Total               Before       Current                 Later
             [   0,                  1,                  2,           3,                      4     ],
             [
-                ('EXP0 Expense 0',  1000 + 1050,        '',          750 + 750,              550   ),
-                ('EXP1 Expense 1',  1225,               '',          1050,                   175   ),
-                ('EXP2 Expense 2',  1680 + 0,           '',          600 * (2 + 10/30) + 0,  280   ),
-                ('TOTALS',          4955,               '',          3950,                   1005  ),
+                ('EXP0 Expense 0',  1000 + 1050,        0.0,         750 + 750,              550   ),
+                ('EXP1 Expense 1',  1225,               0.0,         1050,                   175   ),
+                ('EXP2 Expense 2',  1680 + 0,           0.0,         600 * (2 + 10/30) + 0,  280   ),
+                ('TOTALS',          4955,               0.0,         3950,                   1005  ),
             ],
             options,
         )
@@ -173,10 +173,10 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
             #   Name                Total               Before                       Current                 Later
             [   0,                  1,                  2,                           3,                      4     ],
             [
-                ('EXP0 Expense 0',  1000 + 1050,        750 + 750,                   250 + 300,              ''    ),
-                ('EXP1 Expense 1',  1225,               1050,                        175,                    ''    ),
-                ('EXP2 Expense 2',  1680 + 225,         600 * (2 + 10/30) + 0,       600 * (14/30) + 225,    ''    ),
-                ('TOTALS',          5180,               3950,                        1230,                   ''    ),
+                ('EXP0 Expense 0',  1000 + 1050,        750 + 750,                   250 + 300,              0.0   ),
+                ('EXP1 Expense 1',  1225,               1050,                        175,                    0.0   ),
+                ('EXP2 Expense 2',  1680 + 225,         600 * (2 + 10/30) + 0,       600 * (14/30) + 225,    0.0   ),
+                ('TOTALS',          5180,               3950,                        1230,                   0.0   ),
             ],
             options,
         )
@@ -200,10 +200,10 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
             #   Name                Total            Before      Current         Later
             [   0,                  1,               2,          3,              4     ],
             [
-                ('EXP0 Expense 0',  1000 + 1050,     '',         1000 + 1050,    ''    ),
-                ('EXP1 Expense 1',  1225,            '',         1225,           ''    ),
-                ('EXP2 Expense 2',  1680 + 225,      '',         1680 + 225,     ''    ),
-                ('TOTALS',          5180,            '',         5180,           ''    ),
+                ('EXP0 Expense 0',  1000 + 1050,     0.0,        1000 + 1050,    0.0   ),
+                ('EXP1 Expense 1',  1225,            0.0,        1225,           0.0   ),
+                ('EXP2 Expense 2',  1680 + 225,      0.0,        1680 + 225,     0.0   ),
+                ('TOTALS',          5180,            0.0,        5180,           0.0   ),
             ],
             options,
         )
@@ -235,10 +235,10 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
             #   Name                Total               Before       Current              Later
             [   0,                  1,                  2,           3,                   4                        ],
             [
-                ('REV0 Revenue 0',  1000 + 1050,        '',          250 + 150,           750 + 900                ),
-                ('REV1 Revenue 1',  1225,               '',          350,                 875                      ),
-                ('REV2 Revenue 2',  1680 + 0,           '',          600 * (10/30) + 0,   600 * (2 + 14/30) + 0    ),
-                ('TOTALS',          4955,               '',          950,                 4005                     ),
+                ('REV0 Revenue 0',  1000 + 1050,        0.0,         250 + 150,           750 + 900                ),
+                ('REV1 Revenue 1',  1225,               0.0,         350,                 875                      ),
+                ('REV2 Revenue 2',  1680 + 0,           0.0,         600 * (10/30) + 0,   600 * (2 + 14/30) + 0    ),
+                ('TOTALS',          4955,               0.0,         950,                 4005                     ),
             ],
             options,
         )
@@ -267,10 +267,10 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
             #   Name                Total               Before                       Current                 Later
             [   0,                  1,                  2,                           3,                      4     ],
             [
-                ('REV0 Revenue 0',  1000 + 1050,        750 + 750,                   250 + 300,              ''    ),
-                ('REV1 Revenue 1',  1225,               1050,                        175,                    ''    ),
-                ('REV2 Revenue 2',  1680 + 225,         600 * (2 + 10/30) + 0,       600 * (14/30) + 225,    ''    ),
-                ('TOTALS',          5180,               3950,                        1230,                   ''    ),
+                ('REV0 Revenue 0',  1000 + 1050,        750 + 750,                   250 + 300,              0.0   ),
+                ('REV1 Revenue 1',  1225,               1050,                        175,                    0.0   ),
+                ('REV2 Revenue 2',  1680 + 225,         600 * (2 + 10/30) + 0,       600 * (14/30) + 225,    0.0   ),
+                ('TOTALS',          5180,               3950,                        1230,                   0.0   ),
             ],
             options,
         )
@@ -294,10 +294,10 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
             #   Name                Total               Before       Current                 Later
             [   0,                  1,                  2,           3,                      4     ],
             [
-                ('REV0 Revenue 0',  1000 + 1050,        '',          750 + 750,              550   ),
-                ('REV1 Revenue 1',  1225,               '',          1050,                   175   ),
-                ('REV2 Revenue 2',  1680 + 0,           '',          600 * (2 + 10/30) + 0,  280   ),
-                ('TOTALS',          4955,               '',          3950,                   1005  ),
+                ('REV0 Revenue 0',  1000 + 1050,        0.0,         750 + 750,              550   ),
+                ('REV1 Revenue 1',  1225,               0.0,         1050,                   175   ),
+                ('REV2 Revenue 2',  1680 + 0,           0.0,         600 * (2 + 10/30) + 0,  280   ),
+                ('TOTALS',          4955,               0.0,         3950,                   1005  ),
             ],
             options,
         )
@@ -310,10 +310,10 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
             #   Name                Total               Before                       Current                 Later
             [   0,                  1,                  2,                           3,                      4     ],
             [
-                ('REV0 Revenue 0',  1000 + 1050,        750 + 750,                   250 + 300,              ''    ),
-                ('REV1 Revenue 1',  1225,               1050,                        175,                    ''    ),
-                ('REV2 Revenue 2',  1680 + 225,         600 * (2 + 10/30) + 0,       600 * (14/30) + 225,    ''    ),
-                ('TOTALS',          5180,               3950,                        1230,                   ''    ),
+                ('REV0 Revenue 0',  1000 + 1050,        750 + 750,                   250 + 300,              0.0   ),
+                ('REV1 Revenue 1',  1225,               1050,                        175,                    0.0   ),
+                ('REV2 Revenue 2',  1680 + 225,         600 * (2 + 10/30) + 0,       600 * (14/30) + 225,    0.0   ),
+                ('TOTALS',          5180,               3950,                        1230,                   0.0   ),
             ],
             options,
         )
@@ -337,10 +337,10 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
             #   Name                Total            Before      Current         Later
             [   0,                  1,               2,          3,              4     ],
             [
-                ('REV0 Revenue 0',  1000 + 1050,     '',         1000 + 1050,    ''    ),
-                ('REV1 Revenue 1',  1225,            '',         1225,           ''    ),
-                ('REV2 Revenue 2',  1680 + 225,      '',         1680 + 225,     ''    ),
-                ('TOTALS',          5180,            '',         5180,           ''    ),
+                ('REV0 Revenue 0',  1000 + 1050,     0.0,        1000 + 1050,    0.0   ),
+                ('REV1 Revenue 1',  1225,            0.0,        1225,           0.0   ),
+                ('REV2 Revenue 2',  1680 + 225,      0.0,        1680 + 225,     0.0   ),
+                ('TOTALS',          5180,            0.0,        5180,           0.0   ),
             ],
             options,
         )
@@ -372,10 +372,10 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
             #   Name                Total               Before       Current     Later
             [   0,                  1,                  2,           3,          4       ],
             [
-                ('EXP0 Expense 0',  1000 + 1050,        '',          418.33,     1631.67 ),
-                ('EXP1 Expense 1',  1225,               '',          361.67,     863.33  ),
-                ('EXP2 Expense 2',  1680 + 0,           '',          220,        1460    ),
-                ('TOTALS',          4955,               '',          1000,       3955    ),
+                ('EXP0 Expense 0',  1000 + 1050,        0.0,         418.33,     1631.67 ),
+                ('EXP1 Expense 1',  1225,               0.0,         361.67,     863.33  ),
+                ('EXP2 Expense 2',  1680 + 0,           0.0,         220,        1460    ),
+                ('TOTALS',          4955,               0.0,         1000,       3955    ),
             ],
             options,
         )
@@ -404,10 +404,10 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
             #   Name                Total               Before       Current     Later
             [   0,                  1,                  2,           3,          4       ],
             [
-                ('EXP0 Expense 0',  1000 + 1050,        '',          1500,       550     ),
-                ('EXP1 Expense 1',  1225,               '',          1050,       175     ),
-                ('EXP2 Expense 2',  1680 + 0,           '',          1400,       280     ),
-                ('TOTALS',          4955,               '',          3950,       1005    ),
+                ('EXP0 Expense 0',  1000 + 1050,        0.0,         1500,       550     ),
+                ('EXP1 Expense 1',  1225,               0.0,         1050,       175     ),
+                ('EXP2 Expense 2',  1680 + 0,           0.0,         1400,       280     ),
+                ('TOTALS',          4955,               0.0,         3950,       1005    ),
             ],
             options,
         )
@@ -470,10 +470,10 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
             #   Name                Total    Before      Dec 2022    Jan 2023    Feb 2023    Mar 2023    Apr 2023 (Current)  Later
             [   0,                  1,       2,          3,          4,          5,          6,          7,                  8,      ],
             [
-                ('EXP0 Expense 0',  2050,    '',         '',         400,        550,        550,        550,                ''      ),
-                ('EXP1 Expense 1',  1225,    '',         '',         350,        350,        350,        175,                ''      ),
-                ('EXP2 Expense 2',  1905,    '',         '',         200,        600,        600,        505,                ''      ),
-                ('TOTALS',          5180,    '',         '',         950,        1500,       1500,       1230,               ''      ),
+                ('EXP0 Expense 0',  2050,    0.0,        0.0,        400,        550,        550,        550,                0.0     ),
+                ('EXP1 Expense 1',  1225,    0.0,        0.0,        350,        350,        350,        175,                0.0     ),
+                ('EXP2 Expense 2',  1905,    0.0,        0.0,        200,        600,        600,        505,                0.0     ),
+                ('TOTALS',          5180,    0.0,        0.0,        950,        1500,       1500,       1230,               0.0     ),
             ],
             options,
         )
@@ -638,8 +638,8 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
             #   Name                Total        Before      Current     Later
             [   0,                  1,           2,          3,          4     ],
             [
-                ('EXP0 Expense 0',  1000,        750,        250,        ''    ),
-                ('TOTALS',          1000,        750,        250,        ''    ),
+                ('EXP0 Expense 0',  1000,        750,        250,        0     ),
+                ('TOTALS',          1000,        750,        250,        0     ),
             ],
             options,
         )

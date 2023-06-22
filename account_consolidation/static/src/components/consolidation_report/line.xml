@@ -2,20 +2,14 @@
 <templates>
     <t t-name="account_consolidation.ConsolidationReportLine" t-inherit="account_reports.AccountReportLineCustomizable" owl="1">
         <xpath expr="//tr" position="replace">
-            <tr
-                t-att-class="lineClasses"
-                t-att-style="props.line.style"
-            >
+            <tr>
                 <!-- Name column -->
                 <t t-component="env.component('AccountReportLineName')" t-props="{ lineIndex: props.lineIndex, line: props.line }"/>
 
                 <!-- Value columns -->
                 <t t-foreach="props.line.columns" t-as="cell" t-key="cell_index">
-                    <td
-                        t-att-class="getLineDataCellClasses(cell_index)"
-                        t-att-style="getLineDataCellStyles(cell_index)"
-                    >
-                         <t t-component="env.component('AccountReportLineCell')" t-props="{ line: props.line, cell: cell, type: 'line' }"/>
+                    <td>
+                         <t t-component="env.component('AccountReportLineCell')" t-props="{ line: props.line, cell: cell }"/>
                     </td>
                 </t>
             </tr>

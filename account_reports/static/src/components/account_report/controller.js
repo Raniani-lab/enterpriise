@@ -266,7 +266,7 @@ export class AccountReportController {
     //------------------------------------------------------------------------------------------------------------------
     // Helpers
     //------------------------------------------------------------------------------------------------------------------
-    get hasComparisonColumn() {
+    get hasGrowthComparisonColumn() {
         return Boolean(this.options.show_growth_comparison);
     }
 
@@ -368,7 +368,7 @@ export class AccountReportController {
         return 'debug_popup_data' in this.lines[lineIndex];
     }
 
-    lineHasComparisonData(lineIndex) {
+    lineHasGrowthComparisonData(lineIndex) {
         return Boolean(this.lines[lineIndex].growth_comparison_data);
     }
 
@@ -461,7 +461,7 @@ export class AccountReportController {
 
         // Update options
         if (!this.options.unfolded_lines.includes(targetLine.id))
-            this.options.unfolded_lines.push(targetLine.id)
+            this.options.unfolded_lines.push(targetLine.id);
 
         this.saveSessionOptions(this.options);
     }

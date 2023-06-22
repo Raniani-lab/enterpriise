@@ -1,0 +1,48 @@
+.account_report {
+    .filter_date {
+        .dropdown-item.date {
+            &.focus { background-color: inherit }
+            &.selected:hover { background-color: inherit }
+            &.selected:focus { background-color: inherit }
+            .o_datetime_input {
+                display: inline;
+                width: 86px;
+                margin: 0 8px;
+                padding: 0 4px;
+                text-align: center;
+            }
+        }
+    }
+
+    .filter_comparison {
+        .dropdown-item.period {
+            &.focus { background-color: inherit }
+            &.selected:hover { background-color: inherit }
+            &.selected:focus { background-color: inherit }
+            label { width: 146px; }
+            input[type=number] {
+                display: inline;
+                width: 86px;
+                margin: 0 8px;
+                border-top: none;
+                border-left: none;
+                border-right: none;
+                border-bottom: 1px solid var(--o-input-border-color);
+                text-align: center;
+            }
+        }
+
+        .dropdown-item.date {
+            &.focus { background-color: inherit }
+            &.selected:hover { background-color: inherit }
+            &.selected:focus { background-color: inherit }
+            .o_datetime_input {
+                display: inline;
+                width: 86px;
+                margin: 0 8px;
+                padding: 0 4px;
+                text-align: center;
+            }
+        }
+    }
+}

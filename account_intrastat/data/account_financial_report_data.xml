@@ -15,57 +15,56 @@
                 <record id="intrastat_report_column_system" model="account.report.column">
                     <field name="name">System</field>
                     <field name="expression_label">system</field>
-                    <field name="figure_type">none</field>
+                    <field name="figure_type">string</field>
                 </record>
                 <record id="intrastat_report_column_country_code" model="account.report.column">
                     <field name="name">Country</field>
                     <field name="expression_label">country_name</field>
-                    <field name="figure_type">none</field>
+                    <field name="figure_type">string</field>
                 </record>
                 <record id="intrastat_report_column_transaction_code" model="account.report.column">
                     <field name="name">Transaction Code</field>
                     <field name="expression_label">transaction_code</field>
-                    <field name="figure_type">none</field>
+                    <field name="figure_type">string</field>
                 </record>
                 <record id="intrastat_report_column_region_code" model="account.report.column">
                     <field name="name">Region Code</field>
                     <field name="expression_label">region_code</field>
-                    <field name="figure_type">none</field>
+                    <field name="figure_type">string</field>
                 </record>
                 <record id="intrastat_report_column_commodity_code" model="account.report.column">
                     <field name="name">Commodity Code</field>
                     <field name="expression_label">commodity_code</field>
-                    <field name="figure_type">none</field>
+                    <field name="figure_type">string</field>
                 </record>
                 <record id="intrastat_report_column_product_origin_country" model="account.report.column">
                     <field name="name">Origin</field>
                     <field name="expression_label">intrastat_product_origin_country_name</field>
-                    <field name="figure_type">none</field>
+                    <field name="figure_type">string</field>
                 </record>
                 <record id="intrastat_report_column_partner_vat" model="account.report.column">
                     <field name="name">Partner VAT</field>
                     <field name="expression_label">partner_vat</field>
-                    <field name="figure_type">none</field>
+                    <field name="figure_type">string</field>
                 </record>
                 <record id="intrastat_report_column_transport_code" model="account.report.column">
                     <field name="name">Transport Code</field>
                     <field name="expression_label">transport_code</field>
-                    <field name="figure_type">none</field>
+                    <field name="figure_type">string</field>
                 </record>
                 <record id="intrastat_report_column_incoterm_code" model="account.report.column">
                     <field name="name">Incoterm Code</field>
                     <field name="expression_label">incoterm_code</field>
-                    <field name="figure_type">none</field>
+                    <field name="figure_type">string</field>
                 </record>
                 <record id="intrastat_report_column_weight" model="account.report.column">
                     <field name="name">Weight</field>
                     <field name="expression_label">weight</field>
-                    <field name="figure_type">none</field>
+                    <field name="figure_type">string</field>
                 </record>
                 <record id="intrastat_report_column_supplementary_units" model="account.report.column">
                     <field name="name">Supplementary Units</field>
                     <field name="expression_label">supplementary_units</field>
-                    <field name="figure_type">none</field>
                 </record>
                 <record id="intrastat_report_column_value" model="account.report.column">
                     <field name="name">Value</field>

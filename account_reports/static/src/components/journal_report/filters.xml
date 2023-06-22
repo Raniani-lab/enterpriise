@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
     <t t-name="account_reports.JournalReportFilters" t-inherit="account_reports.AccountReportFiltersCustomizable" owl="1">
-        <xpath expr="//div[hasclass('acc_rep_filter_extra_options')]" position="replace">
+        <xpath expr="//div[@id='filter_extra_options']" position="replace">
             <t t-call="account_reports.JournalReportFilterExtraOptions"/>
         </xpath>
     </t>

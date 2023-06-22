@@ -3,31 +3,25 @@
     <t t-name="account_reports.MulticurrencyRevaluationReportFilterExchangeRate" owl="1">
         <Dropdown togglerClass="'btn btn-secondary'">
             <t t-set-slot="toggler">
-                <span class="fa fa-line-chart"/> Exchange Rates
+                <i class="fa fa-line-chart"/> Exchange Rates
             </t>
 
-            <div class="acc_rep_search mb-3">
-                <t t-foreach="Object.values(this.controller.options.currency_rates)" t-as="currencyRate" t-key="currencyRate_index">
-                    <label>
-                        1 <t t-esc="currencyRate.currency_main"/> <i class="fa fa-arrow-right"/> <t t-esc="currencyRate.currency_name"/>
-                    </label>
-                    <input
-                        type="number"
-                        min="0"
-                        step="0.000001"
-                        t-att-value="currencyRate.rate"
-                        t-att-name="currencyRate.currency_id"
-                    />
-                </t>
+            <t t-foreach="Object.values(this.controller.options.currency_rates)" t-as="currencyRate" t-key="currencyRate_index">
+                <label>
+                    1 <t t-esc="currencyRate.currency_main"/> <i class="fa fa-arrow-right"/> <t t-esc="currencyRate.currency_name"/>
+                </label>
+                <input
+                    type="number"
+                    min="0"
+                    step="0.000001"
+                    t-att-value="currencyRate.rate"
+                    t-att-name="currencyRate.currency_id"
+                />
+            </t>
 
-                <button
-                    class="btn btn-primary"
-                    type="button"
-                    t-on-click="() => this.filterExchangeRate()"
-                >
-                    Apply
-                </button>
-            </div>
+            <button t-on-click="() => this.filterExchangeRate()">
+                Apply
+            </button>
         </Dropdown>
     </t>
 </templates>

@@ -6,69 +6,77 @@
 
     <t t-name="account_reports.AccountReportLineNameCustomizable" owl="1">
         <td
-            t-att-class="getClasses()"
-            t-att-colspan="props.line.colspan || 1"
+            data-id="line_name"
+            class="line_name"
+            t-att-class="lineNameClasses"
             t-on-click="() => this.toggleFoldable()"
+            t-att-colspan="props.line.colspan || 1"
+            tabindex="1"
         >
-            <t t-if="props.line.unfoldable">
-                <span class="o_account_reports_caret_icon">
-                    <i t-att-class="props.line.unfolded ? 'fa fa-caret-down' : 'fa fa-caret-right'"/>
-                </span>
-            </t>
+            <div class="wrapper">
+                <t t-if="props.line.unfoldable">
+                    <!-- Foldable -->
+                    <button data-id="btn_foldable" class="btn btn_foldable">
+                        <i t-att-class="props.line.unfolded ? 'fa fa-caret-down' : 'fa fa-caret-right'"/>
+                    </button>
+                </t>
+                <t t-else="">
+                    <!-- This keeps the same indentation for when we don't have a btn_foldable button -->
+                    <button class="btn btn_foldable_empty"/>
+                </t>
 
-            <t t-if="props.line.caret_options">
-                <div class="dropdown dropend">
-                    <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown">
-                        <span t-att-class="getDomainClasses()" t-att-title="props.line.title_hover">
-                            <t t-out="props.line.name"/>
-                            <i class="fa fa-caret-down ms-2"/>
-                        </span>
+                <t t-if="props.line.action_id">
+                    <!-- Actions -->
+                    <a class="clickable" t-on-click="() => this.triggerAction()">
+                        <t t-out="props.line.name"/>
                     </a>
+                </t>
+                <t t-elif="controller.isLoadMoreLine(props.lineIndex)">
+                    <!-- Load more -->
+                    <a class="clickable" t-on-click="() => this.loadMore()">
+                        <t t-out="props.line.name"/>
+                    </a>
+                </t>
+                <t t-else="">
+                    <div data-id="content" class="content">
+                        <t t-component="env.component('AccountReportEllipsis')" t-props="{
+                            name: props.line.name,
+                            type: 'string',
+                            maxCharacters: 80,
+                        }"/>
 
-                    <!-- Visible footnotes -->
-                    <t t-if="hasVisibleFootnote">
-                        <sup>
-                            <b class="o_account_reports_footnote_sup">
-                                <a t-att-href="props.line.visible_footnote.href">
+                        <t t-if="hasVisibleFootnote">
+                            <!-- Visible footnotes -->
+                            <sup>
+                                <a class="btn btn_footnote_go" t-att-href="props.line.visible_footnote.href">
                                     <t t-out="props.line.visible_footnote.number"/>
                                 </a>
-                            </b>
-                        </sup>
-                    </t>
-
-                    <!-- Caret options -->
-                    <div class="dropdown-menu o_account_reports_domain_dropdown">
-                        <t t-if="hasCaretOptions">
-                            <t t-foreach="caretOptions" t-as="caretOption" t-key="caretOption_index">
-                                <a class="dropdown-item" t-on-click="() => this.caretAction(caretOption)">
-                                    <t t-out="caretOption.name"/>
-                                </a>
-                            </t>
+                            </sup>
                         </t>
 
-                        <a class="dropdown-item" t-on-click="() => controller.addFootnote(props.line.id)">
-                            Annotate
-                        </a>
+                        <t t-if="hasCaretOptions">
+                            <!-- Caret options -->
+                            <Dropdown togglerClass="'btn btn_dropdown'" position="'right-start'">
+                                <t t-set-slot="toggler">
+                                    <i class="fa fa-ellipsis-v"/>
+                                </t>
+
+                                <div data-id="caret_options">
+                                    <t t-foreach="caretOptions" t-as="caretOption" t-key="caretOption_index">
+                                        <DropdownItem onSelected="() => this.caretAction(caretOption)">
+                                            <t t-out="caretOption.name"/>
+                                        </DropdownItem>
+                                    </t>
+
+                                    <DropdownItem onSelected="() => controller.addFootnote(props.line.id)">
+                                        Annotate
+                                    </DropdownItem>
+                                </div>
+                            </Dropdown>
+                        </t>
                     </div>
-                </div>
-            </t>
-            <t t-else="">
-                <span class="acc_rep_line_name" t-att-title="props.line.title_hover">
-                    <t t-if="props.line.action_id">
-                        <a t-on-click="() => this.triggerAction()">
-                            <t t-out="props.line.name"/>
-                        </a>
-                    </t>
-                    <t t-elif="controller.isLoadMoreLine(props.lineIndex)">
-                        <a t-on-click="() => this.loadMore()">
-                            <t t-out="props.line.name"/>
-                        </a>
-                    </t>
-                    <t t-else="">
-                        <t t-out="props.line.name"/>
-                    </t>
-                </span>
-            </t>
+                </t>
+            </div>
         </td>
     </t>
 </templates>

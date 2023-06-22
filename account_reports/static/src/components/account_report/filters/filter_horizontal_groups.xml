@@ -3,7 +3,7 @@
     <t t-name="account_reports.AccountReportFilterHorizontalGroups" owl="1">
         <Dropdown togglerClass="'btn btn-secondary'">
             <t t-set-slot="toggler">
-                <span class="fa fa-filter me-1"/>Horizontal Group: <t t-esc="selectedHorizontalGroupName"/>
+                <i class="fa fa-filter me-1"/>Horizontal Group: <t t-esc="selectedHorizontalGroupName"/>
             </t>
 
             <DropdownItem

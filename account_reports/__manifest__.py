@@ -59,7 +59,6 @@ Accounting Reports
         'web.assets_backend': [
             'account_reports/static/src/components/**/*',
             'account_reports/static/src/js/**/*',
-            'account_reports/static/src/scss/account_financial_report.scss',
         ],
         'web.dark_mode_assets_backend': [
             'account_reports/static/src/scss/*.dark.scss',

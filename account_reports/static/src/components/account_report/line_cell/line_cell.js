@@ -26,16 +26,47 @@ export class AccountReportLineCell extends Component {
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+    // Helpers
+    // -----------------------------------------------------------------------------------------------------------------
+    isNumeric(type) {
+        return ['float', 'integer', 'monetary', 'percentage'].includes(type);
+    }
+
+    // -----------------------------------------------------------------------------------------------------------------
     // Attributes
     // -----------------------------------------------------------------------------------------------------------------
-    get classes() {
-        let classes = "acc_rep_line pt-0 pb-0 pe-0";
+    get cellClasses() {
+        let classes = "";
 
-        if (this.props.line && this.props.line.class) classes += ` ${this.props.line.class}`;
+        if (this.props.cell.auditable)
+            classes += " auditable";
 
-        if (this.props.cell && typeof this.props.cell.no_format === 'number') classes += " number"
+        if (this.props.cell.figure_type === 'date')
+            classes += " date";
 
-        if (this.props.cell && this.props.cell.no_format < 0) classes += " color-red"
+        if (this.props.cell.figure_type === 'string')
+            classes += " text";
+
+        if (this.isNumeric(this.props.cell.figure_type)) {
+            classes += " numeric text-end";
+
+            if (this.props.cell.no_format !== undefined)
+                switch (Math.sign(this.props.cell.no_format)) {
+                    case 1:
+                        break;
+                    case 0:
+                    case -0:
+                        classes += " muted";
+                        break;
+                    case -1:
+                        classes += " text-danger";
+                        break;
+                }
+        }
+
+        if (this.props.cell.class)
+            classes += ` ${this.props.cell.class}`;
+
         return classes;
     }
 
@@ -94,7 +125,7 @@ export class AccountReportLineCell extends Component {
     //------------------------------------------------------------------------------------------------------------------
     // Carryover popover
     //------------------------------------------------------------------------------------------------------------------
-    showCarryoverPopover(ev) {
+    carryoverPopover(ev) {
         const close = () => {
             this.popoverCloseFn();
             this.popoverCloseFn = null;

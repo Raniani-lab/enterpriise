@@ -17,12 +17,11 @@ class TrialBalanceCustomHandler(models.AbstractModel):
         return {
             'components': {
                 'AccountReportFilters': 'account_consolidation.ConsolidationReportFilters',
-                'AccountReportLine': 'account_consolidation.ConsolidationReportLine',
                 'AccountReportLineCell': 'account_consolidation.ConsolidationReportLineCell',
             },
             'templates': {
-                'AccountReport': 'account_consolidation.ConsolidationReport',
                 'AccountReportHeader': 'account_consolidation.ConsolidationReportHeader',
+                'AccountReportLine': 'account_consolidation.ConsolidationReportLine',
                 'AccountReportLineName': 'account_consolidation.ConsolidationReportLineName',
             },
             'pdf_export': {
@@ -76,10 +75,10 @@ class TrialBalanceCustomHandler(models.AbstractModel):
         if len(selected_periods) == 1:
             columns += self._get_journals_headers(options)
         else:
-            periods_columns = [{'name': period.display_name, 'class': 'number'} for period in selected_periods]
+            periods_columns = [{'name': period.display_name, 'class': 'number', 'figure_type': 'monetary'} for period in selected_periods]
             # Add the percentage column
             if len(selected_periods) == 2:
-                columns += periods_columns + [{'name': '%', 'class': 'number'}]
+                columns += periods_columns + [{'name': '%', 'class': 'number', 'figure_type': 'monetary'}]
             else:
                 columns += periods_columns
         return [columns]
@@ -88,7 +87,7 @@ class TrialBalanceCustomHandler(models.AbstractModel):
         journal_ids = JournalsHandler.get_selected_values(options)
         journals = self.env['consolidation.journal'].browse(journal_ids)
         journal_columns = [self._get_journal_col(j, options) for j in journals]
-        return journal_columns + [{'name': _('Total'), 'class': 'number'}]
+        return journal_columns + [{'name': _('Total'), 'class': 'number', 'figure_type': 'monetary'}]
 
     def _get_journal_col(self, journal, options):
         journal_name = journal.name
@@ -109,6 +108,7 @@ class TrialBalanceCustomHandler(models.AbstractModel):
                 'currency_rate_end': cp.currency_rate_end,
                 'to_currency': to_currency,
                 'class': 'number',
+                'figure_type': 'monetary',
                 'template': 'account_consolidation.cell_template_consolidation_report',
             }
 
@@ -116,6 +116,7 @@ class TrialBalanceCustomHandler(models.AbstractModel):
             'name': journal.name,
             'consolidation_rate': journal.rate_consolidation,
             'class': 'number',
+            'figure_type': 'monetary',
             'template': 'account_consolidation.cell_template_consolidation_report',
         }
 

@@ -3,30 +3,37 @@
     <t t-name="account_reports.AccountReportFilterComparison" owl="1">
         <Dropdown togglerClass="'btn btn-secondary'">
             <t t-set-slot="toggler">
-                <span class="fa fa-bar-chart me-1"/>Comparison:
+                <i class="fa fa-bar-chart me-1"/>Comparison
 
                 <t t-if="controller.options.comparison.filter === 'custom'">
                     <t t-if="controller.options.date.mode === 'range'">
-                        <t t-esc="`${ dateFrom('comparison') } - ${ dateTo('comparison') }`"/>
+                        <t t-esc="`: ${ localeDateFrom('comparison') } - ${ localeDateTo('comparison') }`"/>
                     </t>
                     <t t-if="controller.options.date.mode === 'single'">
-                        <t t-esc="`Date: ${ dateTo('comparison') }`"/>
+                        <t t-esc="`: ${ localeDateTo('comparison') }`"/>
                     </t>
                 </t>
                 <t t-else="">
                     <t t-if="controller.options.comparison.string">
-                        <t t-esc="controller.options.comparison.string"/>
+                        <t t-esc="`: ${ controller.options.comparison.string }`"/>
                     </t>
                 </t>
             </t>
 
-            <DropdownItem onSelected="() => this.updateFilter('comparison.filter', 'no_comparison')">No Comparison</DropdownItem>
+            <DropdownItem
+                class="{ 'selected': (controller.options.comparison.filter == 'no_comparison') }"
+                onSelected="() => this.updateFilter('comparison.filter', 'no_comparison')"
+            >
+                No Comparison
+            </DropdownItem>
 
             <div class="dropdown-divider"/>
 
-            <a class="dropdown-item">Previous Period</a>
-            <div class="acc_rep_search o_filter_date">
-                <label>Number of periods :</label>
+            <span
+                class="dropdown-item period"
+                t-att-class="(controller.options.comparison.filter == 'previous_period') ? 'selected' : ''"
+            >
+                <label>Previous Period</label>
                 <input
                     min="1"
                     type="number"
@@ -34,16 +41,21 @@
                     t-on-change="(ev) => this.setNumberPeriods(ev)"
                 />
 
-                <button class="btn btn-primary" type="button" t-on-click="() => this.updateFilter('comparison.filter', 'previous_period')">
+                <button
+                    class="btn btn-sm btn-primary float-end"
+                    t-on-click="() => this.updateFilter('comparison.filter', 'previous_period')"
+                >
                     Apply
                 </button>
-            </div>
+            </span>
 
             <div class="dropdown-divider"/>
 
-            <a class="dropdown-item">Same Period Last Year</a>
-            <div class="acc_rep_search o_filter_date">
-                <label>Number of periods :</label>
+            <span
+                class="dropdown-item period"
+                t-att-class="(controller.options.comparison.filter == 'same_last_year') ? 'selected' : ''"
+            >
+                <label>Same Period Last Year</label>
                 <input
                     min="1"
                     type="number"
@@ -51,44 +63,64 @@
                     t-on-change="(ev) => this.setNumberPeriods(ev)"
                 />
 
-                <button class="btn btn-primary" type="button" t-on-click="() => this.updateFilter('comparison.filter', 'same_last_year')">
+                <button
+                    class="btn btn-sm btn-primary float-end"
+                    t-on-click="() => this.updateFilter('comparison.filter', 'same_last_year')"
+                >
                     Apply
                 </button>
-            </div>
+            </span>
 
             <div class="dropdown-divider"/>
 
-            <a class="dropdown-item">Custom</a>
-            <div class="acc_rep_search o_filter_date">
-                <t t-if="controller.options.date.mode === 'range'">
-                    <label>Start Date :</label>
+            <t t-if="controller.options.date.mode === 'range'">
+                <span
+                    class="dropdown-item date"
+                    t-att-class="(controller.options.comparison.filter == 'custom') ? 'selected' : ''"
+                >
+                    <label>From</label>
                     <DateTimeInput
                         type="'date'"
                         value="dateFrom('comparison')"
                         onChange="(dateFrom) => this.setDateFrom('comparison', dateFrom)"
                     />
 
-                    <label>End Date :</label>
+                    <label>to</label>
                     <DateTimeInput
                         type="'date'"
                         value="dateTo('comparison')"
                         onChange="(dateTo) => this.setDateTo('comparison', dateTo)"
                     />
-                </t>
 
-                <t t-if="controller.options.date.mode === 'single'">
+                    <button
+                        class="btn btn-sm btn-primary float-end"
+                        t-on-click="() => this.updateFilter('comparison.filter', 'custom')"
+                    >
+                        Apply
+                    </button>
+                </span>
+            </t>
+
+            <t t-if="controller.options.date.mode === 'single'">
+                <span
+                    class="dropdown-item date"
+                    t-att-class="(controller.options.comparison.filter == 'custom') ? 'selected' : ''"
+                >
                     <label>Date :</label>
                     <DateTimeInput
                         type="'date'"
                         value="dateTo('comparison')"
                         onChange="(dateTo) => this.setDateTo('comparison', dateTo)"
                     />
-                </t>
 
-                <button class="btn btn-primary" type="button" t-on-click="() => this.updateFilter('comparison.filter', 'custom')">
-                    Apply
-                </button>
-            </div>
+                    <button
+                        class="btn btn-sm btn-primary float-end"
+                        t-on-click="() => this.updateFilter('comparison.filter', 'custom')"
+                    >
+                        Apply
+                    </button>
+                </span>
+            </t>
         </Dropdown>
     </t>
 </templates>

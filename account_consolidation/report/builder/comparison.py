@@ -85,6 +85,7 @@ class ComparisonBuilder(AbstractBuilder):
             return {
                 'name': ('%s%%' % val),
                 'no_format': val,
+                'figure_type': 'percentage',
                 'class': ' '.join(classes)
             }
         # res > 0
@@ -95,4 +96,4 @@ class ComparisonBuilder(AbstractBuilder):
         # orig > 0 :: RED
 
         else:
-            return {'name': _('n/a')}
+            return {'name': _('n/a'), 'figure_type': 'percentage'}

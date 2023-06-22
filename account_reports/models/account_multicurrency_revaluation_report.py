@@ -52,12 +52,12 @@ class MulticurrencyRevaluationReportCustomHandler(models.AbstractModel):
         }
 
         options['company_currency'] = options['currency_rates'].pop(str(self.env.company.currency_id.id))
-
         options['custom_rate'] = any(
             not float_is_zero(cr['rate'] - rates[cr['currency_id']], 6)
             for cr in options['currency_rates'].values()
         )
 
+        options['multi_currency'] = True
         options['buttons'].append({'name': _('Adjustment Entry'), 'sequence': 30, 'action': 'action_multi_currency_revaluation_open_revaluation_wizard'})
 
     def _custom_line_postprocessor(self, report, options, lines, warnings=None):
@@ -175,10 +175,9 @@ class MulticurrencyRevaluationReportCustomHandler(models.AbstractModel):
 
     def _multi_currency_revaluation_get_custom_lines(self, options, line_code, current_groupby, next_groupby, offset=0, limit=None):
         def build_result_dict(report, query_res):
-            foreign_currency = self.env['res.currency'].browse(query_res['currency_id'][0]) if len(query_res['currency_id']) == 1 else None
-
             return {
-                'balance_currency': report.format_value(options, query_res['balance_currency'], currency=foreign_currency, figure_type='monetary'),
+                'balance_currency': query_res['balance_currency'] if len(query_res['currency_id']) == 1 else None,
+                'currency_id': query_res['currency_id'][0] if len(query_res['currency_id']) == 1 else None,
                 'balance_operation': query_res['balance_operation'],
                 'balance_current': query_res['balance_current'],
                 'adjustment': query_res['adjustment'],
@@ -192,6 +191,7 @@ class MulticurrencyRevaluationReportCustomHandler(models.AbstractModel):
         if not current_groupby:
             return {
                 'balance_currency': None,
+                'currency_id': None,
                 'balance_operation': None,
                 'balance_current': None,
                 'adjustment': None,

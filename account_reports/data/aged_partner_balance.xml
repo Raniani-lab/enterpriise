@@ -21,17 +21,16 @@
             <record id="aged_receivable_report_amount_currency" model="account.report.column">
                 <field name="name">Amount Currency</field>
                 <field name="expression_label">amount_currency</field>
-                <field name="figure_type">none</field>
             </record>
             <record id="aged_receivable_report_currency" model="account.report.column">
                 <field name="name">Currency</field>
                 <field name="expression_label">currency</field>
-                <field name="figure_type">none</field>
+                <field name="figure_type">string</field>
             </record>
             <record id="aged_receivable_report_account_name" model="account.report.column">
                 <field name="name">Account</field>
                 <field name="expression_label">account_name</field>
-                <field name="figure_type">none</field>
+                <field name="figure_type">string</field>
             </record>
             <record id="aged_receivable_report_expected_date" model="account.report.column">
                 <field name="name">Expected Date</field>
@@ -93,6 +92,12 @@
                       <field name="formula">_report_custom_engine_aged_receivable</field>
                       <field name="subformula">amount_currency</field>
                       <field name="auditable" eval="False"/>
+                  </record>
+                  <record id="aged_receivable_line_amount_currency_forced_currency" model="account.report.expression">
+                      <field name="label">_currency_amount_currency</field>
+                      <field name="engine">custom</field>
+                      <field name="formula">_report_custom_engine_aged_receivable</field>
+                      <field name="subformula">currency_id</field>
                   </record>
                   <record id="aged_receivable_line_currency" model="account.report.expression">
                       <field name="label">currency</field>
@@ -183,17 +188,16 @@
             <record id="aged_payable_report_amount_currency" model="account.report.column">
                 <field name="name">Amount Currency</field>
                 <field name="expression_label">amount_currency</field>
-                <field name="figure_type">none</field>
             </record>
             <record id="aged_payable_report_currency" model="account.report.column">
                 <field name="name">Currency</field>
                 <field name="expression_label">currency</field>
-                <field name="figure_type">none</field>
+                <field name="figure_type">string</field>
             </record>
             <record id="aged_payable_report_account_name" model="account.report.column">
                 <field name="name">Account</field>
                 <field name="expression_label">account_name</field>
-                <field name="figure_type">none</field>
+                <field name="figure_type">string</field>
             </record>
             <record id="aged_payable_report_expected_date" model="account.report.column">
                 <field name="name">Expected Date</field>
@@ -255,6 +259,12 @@
                         <field name="formula">_report_custom_engine_aged_payable</field>
                         <field name="subformula">amount_currency</field>
                         <field name="auditable" eval="False"/>
+                    </record>
+                    <record id="aged_payable_line_amount_currency_forced_currency" model="account.report.expression">
+                        <field name="label">_currency_amount_currency</field>
+                        <field name="engine">custom</field>
+                        <field name="formula">_report_custom_engine_aged_payable</field>
+                        <field name="subformula">currency_id</field>
                     </record>
                     <record id="aged_payable_line_currency" model="account.report.expression">
                         <field name="label">currency</field>

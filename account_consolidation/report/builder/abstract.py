@@ -272,6 +272,7 @@ class AbstractBuilder(ABC):
         cols = [{
             'name': self.value_formatter(total),
             'no_format': total,
+            'figure_type': 'monetary',
             'class': 'number' + (' text-muted' if float_is_zero(total, 6) else '')}
             for total in totals]
 
@@ -365,7 +366,7 @@ class AbstractBuilder(ABC):
         if section_totals is None:
             section_totals = self._get_default_line_totals(options, **kwargs)
 
-        section_line['columns'] = [{'name': self.value_formatter(total), 'no_format': total} for total in section_totals]
+        section_line['columns'] = [{'name': self.value_formatter(total), 'no_format': total, 'figure_type': 'monetary'} for total in section_totals]
 
         return section_totals, lines
 
@@ -381,7 +382,8 @@ class AbstractBuilder(ABC):
         """
         cols = [{
             'name': self.value_formatter(total), 'no_format': total,
-            'class': 'number' + (' text-danger' if not float_is_zero(total, 6) else '')
+            'class': 'number' + (' text-danger' if not float_is_zero(total, 6) else ''),
+            'figure_type': 'monetary',
         } for total in totals]
 
         report = self.env['account.report'].browse(options['report_id'])

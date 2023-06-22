@@ -19,10 +19,8 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
     def _get_custom_display_config(self):
         return {
             'templates': {
-                'AccountReport': 'account_reports.GeneralLedger',
                 'AccountReportLineName': 'account_reports.GeneralLedgerLineName',
             },
-
             'pdf_export': {
                 'pdf_export_main': 'account_reports.general_ledger_pdf_export_main',
             },
@@ -121,7 +119,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             'id': report._get_generic_line_id(None, None, markup='tax_decl_header_1'),
             'name': _('Name'),
             'columns': [{'name': labels_replacement.get(col['expression_label'], '')} for col in options['columns']],
-            'level': 2,
+            'level': 3,
             'unfoldable': False,
             'unfolded': False,
         }]
@@ -562,19 +560,20 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             col_expr_label = column['expression_label']
 
             if col_value is None or (col_expr_label == 'amount_currency' and not account.currency_id):
-                line_columns.append({})
+                line_columns.append({'expression_label': column['expression_label']})
 
             else:
+                format_params = {}
                 if col_expr_label == 'amount_currency':
-                    formatted_value = report.format_value(options, col_value, currency=account.currency_id, figure_type=column['figure_type'])
-                else:
-                    formatted_value = report.format_value(options, col_value, figure_type=column['figure_type'], blank_if_zero=col_expr_label != 'balance')
+                    format_params['currency'] = account.currency_id
 
-                line_columns.append({
-                    'name': formatted_value,
-                    'no_format': col_value,
-                    'class': 'number',
-                })
+                line_columns.append(report._build_column_dict(
+                    options=options,
+                    no_format=col_value,
+                    figure_type=column['figure_type'],
+                    expression_label=column['expression_label'],
+                    **format_params,
+                ))
 
         unfold_all = options['print_mode'] or options.get('unfold_all')
         line_id = report._get_generic_line_id('account.account', account.id)
@@ -586,7 +585,6 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             'unfoldable': has_lines,
             'unfolded': has_lines and (line_id in options.get('unfolded_lines') or unfold_all),
             'expand_function': '_report_expand_unfoldable_line_general_ledger',
-            'class': 'o_account_reports_totals_below_sections' if self.env.company.totals_below_sections else '',
         }
 
     def _get_aml_line(self, report, parent_line_id, options, eval_dict, init_bal_by_col_group):
@@ -596,36 +594,23 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             col_value = eval_dict[column['column_group_key']].get(col_expr_label)
 
             if col_value is None:
-                line_columns.append({})
+                line_columns.append({'expression_label': column['expression_label']})
             else:
-                col_class = 'number'
-
                 if col_expr_label == 'amount_currency':
                     currency = self.env['res.currency'].browse(eval_dict[column['column_group_key']]['currency_id'])
-
-                    if currency != self.env.company.currency_id:
-                        formatted_value = report.format_value(options, col_value, currency=currency, figure_type=column['figure_type'])
-                    else:
-                        formatted_value = ''
-                elif col_expr_label == 'date':
-                    formatted_value = format_date(self.env, col_value)
-                    col_class = 'date'
+                    if currency == self.env.company.currency_id:
+                        col_value = None
                 elif col_expr_label == 'balance':
                     col_value += init_bal_by_col_group[column['column_group_key']]
-                    formatted_value = report.format_value(options, col_value, figure_type=column['figure_type'], blank_if_zero=False)
-                elif col_expr_label == 'communication' or col_expr_label == 'partner_name':
-                    col_class = 'acc_rep_line_ellipsis'
-                    formatted_value = report.format_value(options, col_value, figure_type=column['figure_type'])
-                else:
-                    formatted_value = report.format_value(options, col_value, figure_type=column['figure_type'])
-                    if col_expr_label not in ('debit', 'credit'):
-                        col_class = ''
 
-                line_columns.append({
-                    'name': formatted_value,
-                    'no_format': col_value,
-                    'class': col_class,
-                })
+                line_columns.append(report._build_column_dict(
+                    options=options,
+                    no_format=col_value,
+                    figure_type=column['figure_type'],
+                    expression_label=column['expression_label'],
+                    currency=currency if col_expr_label == 'amount_currency' else None,
+                    blank_if_zero=column['blank_if_zero'],
+                ))
 
         aml_id = None
         move_name = None
@@ -646,7 +631,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             'parent_id': parent_line_id,
             'name': move_name,
             'columns': line_columns,
-            'level': 2,
+            'level': 3,
         }
 
     @api.model
@@ -655,19 +640,23 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
         for column in options['columns']:
             col_value = eval_dict[column['column_group_key']].get(column['expression_label'])
             if col_value is None:
-                line_columns.append({})
+                line_columns.append(report._build_column_dict(
+                    options=options,
+                    no_format='',
+                    figure_type='monetary',
+                    expression_label=column['expression_label'],
+                ))
             else:
-                formatted_value = report.format_value(options, col_value, blank_if_zero=False, figure_type='monetary')
-                line_columns.append({
-                    'name': formatted_value,
-                    'no_format': col_value,
-                    'class': 'number',
-                })
+                line_columns.append(report._build_column_dict(
+                    options=options,
+                    no_format=col_value,
+                    figure_type='monetary',
+                    expression_label=column['expression_label'],
+                ))
 
         return {
             'id': report._get_generic_line_id(None, None, markup='total'),
             'name': _('Total'),
-            'class': 'total',
             'level': 1,
             'columns': line_columns,
         }

@@ -20,11 +20,14 @@ class BelgianECSalesReportCustomHandler(models.AbstractModel):
         """
         lines = super()._dynamic_lines_generator(report, options, all_column_groups_expression_totals, warnings=warnings)
         colname_to_idx = {col['expression_label']: idx for idx, col in enumerate(options['columns'])}
-        total = lines[-1][-1]['columns'][colname_to_idx['balance']]['no_format']
-        # This test requires the total, so needs to be checked after the lines are computed, but before the rendering
-        # of the template. This is why we add it here even if it's not an option per se.
-        if warnings is not None and not self.total_consistent_with_tax_report(options, total):
-            warnings['l10n_be_reports.sales_report_warning_cross_check'] = {'alert_type': 'warning'}
+
+        if lines:
+            total = lines[-1][-1]['columns'][colname_to_idx['balance']]['no_format']
+
+            # This test requires the total, so needs to be checked after the lines are computed, but before the rendering
+            # of the template. This is why we add it here even if it's not an option per se.
+            if warnings is not None and not self.total_consistent_with_tax_report(options, total):
+                warnings['l10n_be_reports.sales_report_warning_cross_check'] = {'alert_type': 'warning'}
 
         return lines
 
@@ -181,7 +184,7 @@ class BelgianECSalesReportCustomHandler(models.AbstractModel):
 
         xml_data = {
             'clientnbr': seq,
-            'amountsum': lines[-1]['columns'][colname_to_idx['balance']]['no_format'],
+            'amountsum': lines[-1]['columns'][colname_to_idx['balance']]['no_format'] if lines else 0,
         }
 
         date_from = fields.Date.from_string(options['date'].get('date_from'))

@@ -16,6 +16,7 @@ class AssetsReportCustomHandler(models.AbstractModel):
 
     def _get_custom_display_config(self):
         return {
+            'client_css_custom_class': 'depreciation_schedule',
             'templates': {
                 'AccountReportFilters': 'account_asset.DepreciationScheduleFilters',
             }
@@ -36,19 +37,32 @@ class AssetsReportCustomHandler(models.AbstractModel):
         for column_data in options['columns']:
             col_value = totals_by_column_group[column_data['column_group_key']].get(column_data['expression_label'])
             if column_data.get('figure_type') == 'monetary':
-                total_columns.append({'name': report.format_value(options, col_value, self.env.company.currency_id, figure_type=column_data.get('figure_type'), blank_if_zero=column_data['blank_if_zero']), 'no_format': col_value})
+                total_columns.append(report._build_column_dict(
+                    options=options,
+                    no_format=col_value,
+                    figure_type='monetary',
+                    expression_label=column_data.get('expression_label'),
+                    currency=self.env.company.currency_id,
+                    blank_if_zero=column_data['blank_if_zero'],
+                ))
             else:
-                total_columns.append({})
+                total_columns.append(report._build_column_dict(
+                    options=options,
+                    no_format='',
+                    figure_type=column_data.get('figure_type'),
+                    expression_label=column_data.get('expression_label'),
+                ))
 
-        lines.append({
-            'id': report._get_generic_line_id(None, None, markup='total'),
-            'level': 1,
-            'class': 'total',
-            'name': _('Total'),
-            'columns': total_columns,
-            'unfoldable': False,
-            'unfolded': False,
-        })
+        if lines:
+            lines.append({
+                'id': report._get_generic_line_id(None, None, markup='total'),
+                'level': 1,
+                'name': _('Total'),
+                'columns': total_columns,
+                'unfoldable': False,
+                'unfolded': False,
+            })
+
         return [(0, line) for line in lines]
 
     def _generate_report_lines_without_grouping(self, report, options, prefix_to_match=None, parent_id=None, forced_account_id=None):
@@ -91,12 +105,21 @@ class AssetsReportCustomHandler(models.AbstractModel):
                 if col_value is None:
                     all_columns.append({})
                 elif column_data['figure_type'] == 'monetary':
-                    all_columns.append({
-                        'name': report.format_value(options, col_value, company_currency, figure_type='monetary', blank_if_zero=column_data['blank_if_zero']),
-                        'no_format': col_value,
-                    })
+                    all_columns.append(report._build_column_dict(
+                        options=options,
+                        no_format=col_value,
+                        figure_type=column_data['figure_type'],
+                        expression_label=column_data['expression_label'],
+                        currency=company_currency,
+                        blank_if_zero=column_data['blank_if_zero'],
+                    ))
                 else:
-                    all_columns.append({'name': col_value, 'no_format': col_value})
+                    all_columns.append(report._build_column_dict(
+                        options=options,
+                        no_format=col_value,
+                        figure_type=column_data['figure_type'],
+                        expression_label=column_data['expression_label'],
+                    ))
 
                 # add to the total line
                 if column_data['figure_type'] == 'monetary':
@@ -112,7 +135,6 @@ class AssetsReportCustomHandler(models.AbstractModel):
                 'unfolded': False,
                 'caret_options': 'account_asset_line',
                 'assets_account_id': account_id,
-                'class': 'o_account_asset_contrast_inner',
             }
             if parent_id:
                 line['parent_id'] = parent_id
@@ -290,7 +312,6 @@ class AssetsReportCustomHandler(models.AbstractModel):
                 'unfoldable': True,
                 'unfolded': options.get('unfold_all', False),
                 'level': 1,
-                'class': 'o_account_asset_contrast',
 
                 # This value is stored here for convenience; it will be removed from the result
                 'group_lines': [],
@@ -328,12 +349,21 @@ class AssetsReportCustomHandler(models.AbstractModel):
             for column_index in range(len(options['columns'])):
                 tot_val = group_totals.get(column_index)
                 if tot_val is None:
-                    account_line_vals['columns'].append({})
+                    account_line_vals['columns'].append(report._build_column_dict(
+                        options=options,
+                        no_format='',
+                        figure_type=options['columns'][column_index]['figure_type'],
+                        expression_label=options['columns'][column_index]['expression_label'],
+                    ))
                 else:
-                    account_line_vals['columns'].append({
-                        'name': report.format_value(options, tot_val, self.env.company.currency_id, figure_type='monetary', blank_if_zero=options['columns'][column_index]['blank_if_zero']),
-                        'no_format': tot_val,
-                    })
+                    account_line_vals['columns'].append(report._build_column_dict(
+                        options=options,
+                        no_format=tot_val,
+                        figure_type=options['columns'][column_index]['figure_type'],
+                        expression_label=options['columns'][column_index]['expression_label'],
+                        currency=self.env.company.currency_id,
+                        blank_if_zero=options['columns'][column_index]['blank_if_zero'],
+                    ))
 
         return rslt_lines
 
@@ -444,14 +474,6 @@ class AssetsReportCustomHandler(models.AbstractModel):
             'offset_increment': len(lines),
             'has_more': False,
         }
-
-    def _custom_line_postprocessor(self, report, options, lines, warnings=None):
-        for line in lines:
-            for column in line['columns']:
-                if 'no_format' in column and column['no_format'] == 0:
-                    column_class = column.get('class') or ''
-                    column['class'] = column_class + ' o_asset_blank_if_zero_value'
-        return lines
 
 
 class AssetsReport(models.Model):

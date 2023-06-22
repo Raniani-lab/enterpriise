@@ -125,11 +125,12 @@ class ChileanReportCustomHandler(models.AbstractModel):
             expression_label = column['expression_label']
             value = vals.get(column['column_group_key'], {}).get(expression_label, False)
 
-            columns.append({
-                'name': report.format_value(options, value, figure_type=column['figure_type']) if value is not None else None,
-                'no_format': value,
-                'class': 'number',
-            })
+            columns.append(report._build_column_dict(
+                options=options,
+                no_format=value,
+                figure_type=column['figure_type'],
+                expression_label=column['expression_label'],
+            ))
 
         return {
             'id': report._get_generic_line_id('account.account', vals_id),
@@ -154,15 +155,15 @@ class ChileanReportCustomHandler(models.AbstractModel):
             expression_label = column['expression_label']
             value = total_vals.get(column['column_group_key'], {}).get(expression_label, False)
 
-            columns.append({
-                'name': report.format_value(options, value, figure_type=column['figure_type']) if value is not None else None,
-                'no_format': value,
-                'class': 'number',
-            })
+            columns.append(report._build_column_dict(
+                options=options,
+                no_format=value,
+                figure_type=column['figure_type'],
+                expression_label=column['expression_label'],
+            ))
         return {
             'id': report._get_generic_line_id(None, None, markup='total'),
             'name': name,
-            'class': 'total',
             'level': level,
             'columns': columns,
         }

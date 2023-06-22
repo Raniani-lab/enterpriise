@@ -191,11 +191,12 @@ class IntrastatReportCustomHandler(models.AbstractModel):
             if options.get('commodity_flow') != 'code' and column['expression_label'] == 'system':
                 value = f"{value} ({line_vals.get(column['column_group_key'], {}).get('type', False)})"
 
-            columns.append({
-                'name': report.format_value(options, value, figure_type=column['figure_type']) if value else None,
-                'no_format': value,
-                'class': 'number' if expression_label in number_values else '',
-            })
+            columns.append(report._build_column_dict(
+                options=options,
+                no_format=value,
+                figure_type=column['figure_type'],
+                expression_label=column['expression_label'],
+            ))
 
         if warnings is not None:
             warnings_map = (
@@ -236,17 +237,17 @@ class IntrastatReportCustomHandler(models.AbstractModel):
         columns = []
         for column in options['columns']:
             expression_label = column['expression_label']
-            value = total_vals.get(column['column_group_key'], {}).get(expression_label, False)
+            value = total_vals.get(column['column_group_key'], {}).get(expression_label, None)
 
-            columns.append({
-                'name': report.format_value(options, value, figure_type=column['figure_type']) if value else None,
-                'no_format': value,
-                'class': 'number',
-            })
+            columns.append(report._build_column_dict(
+                options=options,
+                no_format=value,
+                figure_type=column['figure_type'],
+                expression_label=column['expression_label'],
+            ))
         return {
             'id': report._get_generic_line_id(None, None, markup='total'),
             'name': _('Total'),
-            'class': 'total',
             'level': 1,
             'columns': columns,
         }

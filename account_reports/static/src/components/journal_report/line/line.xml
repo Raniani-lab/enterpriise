@@ -1,34 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
     <t t-name="account_reports.JournalReportLine" t-inherit="account_reports.AccountReportLineCustomizable" owl="1">
-        <xpath expr="//tr" position="attributes">
+        <xpath expr="//tr[@data-id='line']" position="attributes">
             <attribute name="t-if">!('is_tax_section_line' in props.line)</attribute>
         </xpath>
 
-        <xpath expr="//tr" position="after">
+        <xpath expr="//tr[@data-id='line']" position="after">
             <t t-else="">
-                <tr t-att-class="lineClasses" t-att-style="props.line.style">
-                    <td
-                        t-att-class="getJournalReportLineClasses()"
-                        t-att-style="'padding-top: 3rem; padding-left: 8px;'"
-                        t-att-colspan="2"
-                    >
+                <tr id="line" class="subtable" t-att-class="lineClasses">
+                    <td t-att-colspan="2">
                         <t t-if="'tax_report_lines' in props.line">
                             <t t-set="taxesByCountry" t-value="props.line.tax_report_lines"/>
                             <t t-set="hasTaxesSeveralCountries" t-value="Object.keys(taxesByCountry).length > 1"/>
 
-                            <table class="o_account_reports_subtable table table-sm table-striped">
+                            <table class="table">
                                 <thead>
                                     <tr>
-                                        <th class="acc_rep_column_header acc_rep_line_name"
-                                            t-att-colspan="taxesByCountry.length > 1 ? 3 : 4"
-                                        >
+                                        <th t-att-colspan="taxesByCountry.length > 1 ? 3 : 4">
                                             Taxes Applied
                                             <t t-if="controller.groups.account_user">
                                                 <a
+                                                    class="btn btn_action"
                                                     t-on-click="(ev) => this.openTaxJournalItems(ev, 'Taxes Applied', 'tax')"
                                                 >
-                                                    => Audit
+                                                    Audit
                                                 </a>
                                             </t>
                                         </th>
@@ -38,8 +33,8 @@
                                             <th>Country</th>
                                         </t>
                                         <th>Name</th>
-                                        <th class="acc_rep_column_header text-end">Base Amount</th>
-                                        <th class="acc_rep_column_header text-end">Tax Amount</th>
+                                        <th class="text-end">Base Amount</th>
+                                        <th class="text-end">Tax Amount</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -47,19 +42,10 @@
                                         <t t-foreach="props.line.tax_report_lines[country]" t-as="tax" t-key="tax_index">
                                             <tr>
                                                 <t t-if="hasTaxesSeveralCountries">
-                                                    <t t-if="tax_index == 0">
-                                                        <td>
-                                                            <span>
-                                                                <t t-out="country"/>
-                                                            </span>
-                                                        </td>
-                                                    </t>
-                                                    <t t-else="">
-                                                        <td/>
-                                                    </t>
+                                                    <td t-out="(tax_index == 0) ? country : ''"/>
                                                 </t>
 
-                                                <td class="acc_rep_line_name">
+                                                <td>
                                                     <a
                                                         t-on-click="(ev) => controller.reportAction(ev,
                                                             'journal_report_action_dropdown_audit_default_tax_report', {
@@ -72,17 +58,8 @@
                                                     </a>
                                                 </td>
 
-                                                <td class="text-end font-monospace">
-                                                    <span>
-                                                       <t t-out="tax.base_amount"/>
-                                                    </span>
-                                                </td>
-
-                                                <td class="text-end font-monospace">
-                                                    <span>
-                                                       <t t-out="tax.tax_amount"/>
-                                                    </span>
-                                                </td>
+                                                <td class="text-end" t-out="tax.base_amount"/>
+                                                <td class="text-end" t-out="tax.tax_amount"/>
                                             </tr>
                                         </t>
                                     </t>
@@ -91,34 +68,34 @@
                         </t>
                     </td>
 
-                    <td t-att-colspan="5" t-att-style="'padding-top: 3rem;'">
+                    <td t-att-colspan="5">
                         <t t-set="taxGrids" t-value="props.line.tax_grid_summary_lines"/>
 
-                        <t t-if="'tax_grid_summary_lines' in props.line and Object.keys(taxGrids).length > 0">
+                        <t t-if="'tax_grid_summary_lines' in props.line and Object.keys(taxGrids).length">
                             <t t-set="hasTaxesGridsSeveralCountries" t-value="Object.keys(taxGrids).length > 1"/>
-
-                            <table class="o_account_reports_subtable table table-sm table-striped">
+                            <table class="table">
                                 <thead>
                                     <tr>
-                                        <th class="acc_rep_column_header account_report_line_name" t-att-colspan="(hasTaxesGridsSeveralCountries) ? 5 : 4">
+                                        <th t-att-colspan="(hasTaxesGridsSeveralCountries) ? 5 : 4">
                                             Impacted Tax Grids
                                             <t t-if="controller.groups.account_user">
                                                 <a
+                                                    class="btn btn_action"
                                                     t-on-click="(ev) => this.openTaxJournalItems(ev, 'Impacted Tax Grids', 'tag')"
                                                 >
-                                                    => Audit
+                                                    Audit
                                                 </a>
                                             </t>
                                         </th>
                                     </tr>
                                     <tr>
                                         <t t-if="hasTaxesGridsSeveralCountries">
-                                            <th class="acc_rep_column_header">Country</th>
+                                            <th>Country</th>
                                         </t>
                                         <th>Grid</th>
-                                        <th class="acc_rep_column_header text-end">+</th>
-                                        <th class="acc_rep_column_header text-end">-</th>
-                                        <th class="acc_rep_column_header text-end">Impact On Grid</th>
+                                        <th class="text-end">+</th>
+                                        <th class="text-end">-</th>
+                                        <th class="text-end">Impact On Grid</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -126,19 +103,10 @@
                                         <t t-foreach="taxGrids[country]" t-as="grid" t-key="grid_index">
                                             <tr>
                                                 <t t-if="hasSeveralGrids">
-                                                    <t t-if="grid_index == 0">
-                                                        <td>
-                                                            <span>
-                                                                <t t-out="country"/>
-                                                            </span>
-                                                        </td>
-                                                    </t>
-                                                    <t t-else="">
-                                                        <td/>
-                                                    </t>
+                                                    <td t-out="(grid_index == 0) ? country : ''"/>
                                                 </t>
 
-                                                <td class="acc_rep_line_name">
+                                                <td>
                                                     <a
                                                         t-on-click="(ev) => controller.reportAction(ev,
                                                             'journal_report_tax_tag_template_open_aml', {
@@ -151,23 +119,9 @@
                                                     </a>
                                                 </td>
 
-                                                <td class="text-end font-monospace">
-                                                    <span>
-                                                        <t t-out="taxGrids[country][grid]['+'] || 0"/>
-                                                    </span>
-                                                </td>
-
-                                                <td class="text-end font-monospace">
-                                                    <span>
-                                                        <t t-out="taxGrids[country][grid]['-'] || 0"/>
-                                                    </span>
-                                                </td>
-
-                                                <td class="text-end font-monospace">
-                                                    <span>
-                                                        <t t-out="taxGrids[country][grid]['impact']"/>
-                                                    </span>
-                                                </td>
+                                                <td class="text-end" t-out="taxGrids[country][grid]['+'] || 0"/>
+                                                <td class="text-end" t-out="taxGrids[country][grid]['-'] || 0"/>
+                                                <td class="text-end" t-out="taxGrids[country][grid]['impact']"/>
                                             </tr>
                                         </t>
                                     </t>

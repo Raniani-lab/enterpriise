@@ -3,14 +3,14 @@
     <t t-name="account_reports.AccountReportFilterJournal" owl="1">
         <Dropdown togglerClass="'btn btn-secondary'">
             <t t-set-slot="toggler">
-                <span class="fa fa-book me-1"/>Journals: <t t-esc="controller.options.name_journal_group"/>
+                <i class="fa fa-book me-1"/>Journals: <t t-esc="controller.options.name_journal_group"/>
             </t>
 
             <t t-foreach="controller.options.journals" t-as="journal" t-key="journal_index">
                 <t t-if="journal.id === 'divider'">
                     <div class="dropdown-divider"/>
 
-                    <DropdownItem class="'fw-bold'">
+                    <DropdownItem>
                         <t t-esc="journal.name"/>
                      </DropdownItem>
 

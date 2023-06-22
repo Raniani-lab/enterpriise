@@ -7,14 +7,13 @@ import { ControlPanel } from "@web/search/control_panel/control_panel";
 import { Component, onWillStart, useState, useSubEnv } from "@odoo/owl";
 
 import { AccountReportController } from "@account_reports/components/account_report/controller";
-
+import { AccountReportEllipsis } from "@account_reports/components/account_report/ellipsis/ellipsis";
 import { AccountReportFilters } from "@account_reports/components/account_report/filters/filters";
-import { AccountReportSearchBar } from "@account_reports/components/account_report/search_bar/search_bar";
-
 import { AccountReportHeader } from "@account_reports/components/account_report/header/header";
 import { AccountReportLine } from "@account_reports/components/account_report/line/line";
 import { AccountReportLineCell } from "@account_reports/components/account_report/line_cell/line_cell";
 import { AccountReportLineName } from "@account_reports/components/account_report/line_name/line_name";
+import { AccountReportSearchBar } from "@account_reports/components/account_report/search_bar/search_bar";
 
 export class AccountReport extends Component {
     static template = "account_reports.AccountReport";
@@ -26,11 +25,11 @@ export class AccountReport extends Component {
     };
     static components = {
         ControlPanel,
-        AccountReportFilters,
         AccountReportSearchBar,
     };
 
     static customizableComponents = [
+        AccountReportEllipsis,
         AccountReportFilters,
         AccountReportHeader,
         AccountReportLine,
@@ -63,10 +62,14 @@ export class AccountReport extends Component {
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    // Custom components and templates overrides
+    // Custom overrides
     // -----------------------------------------------------------------------------------------------------------------
     static registerCustomComponent(customComponent) {
         registry.category("account_reports_custom_components").add(customComponent.template, customComponent);
+    }
+
+    get cssCustomClass() {
+        return this.controller.data.custom_display.client_css_custom_class || "";
     }
 
     getComponent(name) {
@@ -85,6 +88,18 @@ export class AccountReport extends Component {
             return customTemplates[name];
 
         return `account_reports.${ name }Customizable`;
+    }
+
+    // -----------------------------------------------------------------------------------------------------------------
+    // Table
+    // -----------------------------------------------------------------------------------------------------------------
+    get tableClasses() {
+        let classes = "";
+
+        if (this.controller.options.columns.length > 1)
+            classes += " striped";
+
+        return classes;
     }
 }
 

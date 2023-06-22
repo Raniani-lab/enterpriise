@@ -827,25 +827,32 @@ class GenericTaxReportCustomHandler(models.AbstractModel):
 
                 # Add the tax base amount.
                 if index == len(groupby_fields) - 1:
-                    columns.append({
-                       'no_format': sign * tax_base_amount,
-                       'name': report.format_value(options, sign * tax_base_amount, figure_type='monetary'),
-                       'style': 'white-space:nowrap;',
-                    })
+                    columns.append(report._build_column_dict(
+                        options=options,
+                        no_format=sign * tax_base_amount,
+                        figure_type='monetary',
+                        expression_label='base_amount'
+                    ))
                 else:
-                    columns.append({'name': '', 'style': 'white-space:nowrap;',})
+                    columns.append(report._build_column_dict(
+                        options=options,
+                        no_format='',
+                        figure_type='monetary',
+                        expression_label='base_amount'
+                    ))
 
                 # Add the tax amount.
-                columns.append({
-                   'no_format': sign * tax_amount,
-                   'name': report.format_value(options, sign * tax_amount, figure_type='monetary'),
-                   'style': 'white-space:nowrap;',
-                })
+                columns.append(report._build_column_dict(
+                    options=options,
+                    no_format=sign * tax_amount,
+                    figure_type='monetary',
+                    expression_label='tax_amount'
+                ))
 
             # Prepare line.
             default_vals = {
                 'columns': columns,
-                'level': index + 1,
+                'level': index if index == 0 else index + 1,
                 'unfoldable': False,
             }
             report_line = self._build_report_line(report, options, default_vals, groupby_key, sorting_map[key][0], parent_line_id)

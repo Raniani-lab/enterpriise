@@ -4,16 +4,23 @@
         <xpath expr="//thead" position="replace">
             <thead class="o_account_reports_header_hierarchy">
                 <tr>
-                    <th class="acc_rep_column_header" style="width:40%;"/>
+                    <th/>
                     <t t-foreach="columnHeaders" t-as="columnHeader" t-key="columnHeader_index">
                         <t t-foreach="columnHeader" t-as="header" t-key="header_index">
-                            <th
-                                t-att-class="`acc_rep_column_header ${ header.class }`"
-                                t-att-colspan="header.colspan"
-                                t-att-style="header.style"
-                                t-att-title="header.title"
-                            >
-                                <t t-component="env.component('AccountReportLineCell')" t-props="{ cell: header, type: 'header' }"/>
+                            <th t-att-colspan="header.colspan" t-att-title="header.title">
+                                <t t-out="header.name"/>
+                                <br/>
+                                <t t-if="header.consolidation_rate">
+                                    <span class="subtitle">
+                                        Conso Rate: <t t-out="header.consolidation_rate"/>%<br/>
+                                        <t t-if="header.from_currency">
+                                            Avg Rate: 1<t t-out="header.from_currency"/> = <t t-out="header.currency_rate_avg"/><t t-out="header.to_currency"/>
+                                            / End Rate: 1<t t-out="header.from_currency"/> = <t t-out="header.currency_rate_end"/><t t-out="header.to_currency"/>
+                                        </t>
+                                    </span>
+                                </t>
+                                <br/>
+                                <br/>
                             </th>
                         </t>
                     </t>

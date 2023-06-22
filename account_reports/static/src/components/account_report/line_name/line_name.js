@@ -1,7 +1,8 @@
 /** @odoo-module */
 
+import { Dropdown } from "@web/core/dropdown/dropdown";
+import { DropdownItem } from "@web/core/dropdown/dropdown_item";
 import { useService } from "@web/core/utils/hooks";
-
 import { Component, useState } from "@odoo/owl";
 
 export class AccountReportLineName extends Component {
@@ -10,6 +11,10 @@ export class AccountReportLineName extends Component {
         lineIndex: Number,
         line: Object,
     };
+    static components = {
+        Dropdown,
+        DropdownItem,
+    }
 
     setup() {
         this.action = useService("action");
@@ -50,22 +55,18 @@ export class AccountReportLineName extends Component {
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    // Attributes
+    // Classes
     // -----------------------------------------------------------------------------------------------------------------
-    getClasses() {
-        let classes = "acc_rep_name_ellipsis acc_rep_line acc_rep_line_indent";
+    get lineNameClasses() {
+        let classes = "text";
 
-        if (this.props.line.class) classes += ` ${this.props.line.class}`;
-        if (this.props.line.unfoldable) classes += " js_account_report_foldable o_foldable_total";
+        if (this.props.line.unfoldable)
+            classes += " unfoldable";
+
+        if (this.props.line.class)
+            classes += ` ${ this.props.line.class }`;
 
         return classes;
-    }
-
-    getDomainClasses() {
-        if (this.props.line.caret_options && this.props.line.level)
-            return 'acc_rep_domain_line_' + this.props.line.level + ' acc_rep_line_name';
-
-        return 'acc_rep_domain_line_2 acc_rep_line_name';
     }
 
     // -----------------------------------------------------------------------------------------------------------------

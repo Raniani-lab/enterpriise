@@ -20,24 +20,22 @@ export class AccountReportLine extends Component {
     }
 
     // -----------------------------------------------------------------------------------------------------------------
-    // Classes
+    // Line
     // -----------------------------------------------------------------------------------------------------------------
     get lineClasses() {
-        let classes;
-
-        if (!this.props.line.caret_options && 'level' in this.props.line)
-            classes = `acc_rep_searchable acc_rep_level${this.props.line.level}`;
-        else
-            classes = "acc_rep_default_style";
-
-        if (this.props.line.class)
-            classes += ` ${this.props.line.class}`;
-
-        if (this.props.line.unfolded)
-            classes += " acc_rep_parent_unfolded";
+        let classes = ('level' in this.props.line) ? `line_level_${this.props.line.level}` : 'line_level_default';
 
         if (!this.props.line.visible)
             classes += " d-none";
+
+        if (this.props.line.unfolded)
+            classes += " unfolded";
+
+        if (this.controller.isTotalLine(this.props.lineIndex))
+            classes += " total";
+
+        if (this.props.line.class)
+            classes += ` ${this.props.line.class}`;
 
         // Search
         if ("lines_searched" in this.controller) {
@@ -60,11 +58,23 @@ export class AccountReportLine extends Component {
         return classes;
     }
 
-    get comparisonClasses() {
-        let classes = "acc_rep_column_value text-nowrap";
+    // -----------------------------------------------------------------------------------------------------------------
+    // Growth comparison
+    // -----------------------------------------------------------------------------------------------------------------
+    get growthComparisonClasses() {
+        let classes = "text-end";
 
-        if (this.props.line.growth_comparison_data.class)
-            classes += ` ${this.props.line.growth_comparison_data.class}`;
+        switch(this.props.line.growth_comparison_data.growth) {
+            case 1:
+                classes += " text-success";
+                break;
+            case 0:
+                classes += " muted";
+                break;
+            case -1:
+                classes += " text-danger";
+                break;
+        }
 
         return classes;
     }
@@ -85,12 +95,12 @@ export class AccountReportLine extends Component {
             ev.currentTarget,
             AccountReportDebugPopover,
             {
-                expressions_detail: JSON.parse(this.props.line.debug_popup_data).expressions_detail,
+                expressionsDetail: JSON.parse(this.props.line.debug_popup_data).expressions_detail,
                 onClose: close,
             },
             {
                 closeOnClickAway: true,
-                position: localization.direction === "rtl" ? "bottom" : "left",
+                position: localization.direction === "rtl" ? "left" : "right",
             },
         );
     }

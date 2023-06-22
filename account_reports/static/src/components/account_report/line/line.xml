@@ -5,45 +5,58 @@
     </t>
 
     <t t-name="account_reports.AccountReportLineCustomizable" owl="1">
-        <tr t-att-class="lineClasses" t-att-style="props.line.style" tabindex="0">
+        <!-- Adds an empty row above line with level 0 to add some spacing (it is the easiest and cleanest way) -->
+        <t t-if="props.lineIndex != 0 and props.line.level === 0">
+            <tr class="empty">
+                <td/>
+                <t t-foreach="props.line.columns" t-as="cell" t-key="cell_index">
+                    <td/>
+                </t>
+                <t t-if="controller.hasGrowthComparisonColumn">
+                    <td/>
+                </t>
+                <t t-if="controller.hasDebugColumn">
+                    <td/>
+                </t>
+            </tr>
+        </t>
+
+        <tr
+            data-id="line"
+            t-att-class="lineClasses"
+        >
             <!-- Name column -->
             <t t-component="env.component('AccountReportLineName')" t-props="{ lineIndex: props.lineIndex, line: props.line }"/>
 
             <!-- Value columns -->
             <t t-foreach="props.line.columns" t-as="cell" t-key="cell_index">
-                <td>
-                    <t t-component="env.component('AccountReportLineCell')" t-props="{ line: props.line, cell: cell }"/>
-                </td>
+                <t t-component="env.component('AccountReportLineCell')" t-props="{ line: props.line, cell: cell }"/>
             </t>
 
             <!-- Growth comparison column -->
-            <t t-if="controller.hasComparisonColumn">
-                <td class="text-end" style="width: 1%;">
-                    <t t-if="controller.lineHasComparisonData(props.lineIndex)">
-                        <span t-att-class="comparisonClasses">
-                            <t t-out="props.line.growth_comparison_data.name"/>
-                        </span>
-                    </t>
-                </td>
+            <t t-if="controller.hasGrowthComparisonColumn">
+                <t t-if="controller.lineHasGrowthComparisonData(props.lineIndex)">
+                    <td t-att-class="growthComparisonClasses">
+                        <t t-out="props.line.growth_comparison_data.name"/>
+                    </td>
+                </t>
+                <t t-else="">
+                    <td/>
+                </t>
             </t>
 
             <!-- Debug column -->
             <t t-if="controller.hasDebugColumn">
-                <td class="text-end" style="width: 1%;">
-                    <span class="acc_rep_column_value text-nowrap">
-                        <t t-if="props.line.code">
-                            <span>
-                                <t t-out="props.line.code"/>
-                            </span>
-                        </t>
+                <td>
+                    <t t-if="props.line.code">
+                        <t t-out="props.line.code"/>
+                    </t>
 
-                        <t t-if="controller.lineHasDebugData(props.lineIndex)">
-                            <a
-                                class="acc_rep_popup fa fa-info-circle"
-                                t-on-click="(ev) => this.showDebugPopover(ev)"
-                            />
-                        </t>
-                    </span>
+                    <t t-if="controller.lineHasDebugData(props.lineIndex)">
+                        <button class="btn btn_debug" t-on-click="(ev) => this.showDebugPopover(ev)">
+                            <i class="fa fa-info-circle"/>
+                        </button>
+                    </t>
                 </td>
             </t>
         </tr>

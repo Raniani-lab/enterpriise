@@ -3,7 +3,7 @@
     <t t-name="account_reports.AccountReportFilterExtraOptions" owl="1">
         <Dropdown togglerClass="'btn btn-secondary'">
             <t t-set-slot="toggler">
-                <span class="fa fa-filter me-1"/>Options:
+                <i class="fa fa-filter me-1"/>Options:
 
                 <t t-if="controller.groups.account_readonly and controller.filters.show_draft">
                     <t t-esc="(controller.options.all_entries) ? 'With Draft Entries' : 'Posted Entries Only'"/>

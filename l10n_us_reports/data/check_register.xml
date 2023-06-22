@@ -13,17 +13,17 @@
                 <record id="check_register_report_date" model="account.report.column">
                     <field name="name">Date</field>
                     <field name="expression_label">date</field>
-                    <field name="figure_type">none</field>
+                    <field name="figure_type">date</field>
                 </record>
                 <record id="check_register_report_communication" model="account.report.column">
                     <field name="name">Communication</field>
                     <field name="expression_label">communication</field>
-                    <field name="figure_type">none</field>
+                    <field name="figure_type">string</field>
                 </record>
                 <record id="check_register_report_partner" model="account.report.column">
                     <field name="name">Partner</field>
                     <field name="expression_label">partner_name</field>
-                    <field name="figure_type">none</field>
+                    <field name="figure_type">string</field>
                 </record>
                 <record id="check_register_report_currency" model="account.report.column">
                     <field name="name">Currency</field>

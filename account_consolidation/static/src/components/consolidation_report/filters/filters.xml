@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
     <t t-name="account_consolidation.ConsolidationReportFilters" t-inherit="account_reports.AccountReportFiltersCustomizable" owl="1">
-        <xpath expr="//div[hasclass('acc_rep_filter_extra_options')]" position="before">
+        <xpath expr="//div[@id='filter_extra_options']" position="before">
             <!-- Comparison filter -->
             <t t-if="controller.options.periods.length > 0">
                 <Dropdown togglerClass="'btn btn-secondary me-1'">
@@ -21,7 +21,7 @@
             </t>
 
             <!-- Journal filter -->
-            <t t-if="controller.options.consolidation_journals &amp;&amp; !hasSelectedPeriod">
+            <t t-if="controller.options.consolidation_journals and !hasSelectedPeriod">
                 <Dropdown togglerClass="'btn btn-secondary me-1'">
                     <t t-set-slot="toggler">
                         <span class="fa fa-bar-book"/>Journals: <t t-esc="selectedJournalName"/>
@@ -40,7 +40,7 @@
         </xpath>
 
         <!-- Extra options filter -->
-        <xpath expr="//div[hasclass('acc_rep_filter_extra_options')]" position="replace">
+        <xpath expr="//div[@id='filter_extra_options']" position="replace">
             <t t-call="account_consolidation.ConsolidationReportFilterExtraOptions"/>
         </xpath>
     </t>

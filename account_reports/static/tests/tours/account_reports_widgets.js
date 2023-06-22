@@ -8,25 +8,26 @@ registry.category("web_tour.tours").add('account_reports_widgets', {
     steps: () => [
         {
             content: "change date filter",
-            trigger: ".acc_rep_filter_date button",
+            trigger: "#filter_date button",
             run: 'click',
         },
         {
             content: "change date filter",
-            trigger: ".acc_rep_filter_date span:contains('Last Financial Year')",
+            trigger: "#filter_date span:contains('Last Financial Year')",
             run: 'click'
         },
         {
             content: "wait refresh",
-            trigger: ".acc_rep_filter_date button:contains('2019')",
+            trigger: "#filter_date button:contains('2019')",
         },
         {
             content: "change comparison filter",
-            trigger: ".acc_rep_filter_comparison button",
+            trigger: "#filter_comparison .btn:first()",
+            run: 'click',
         },
         {
             content: "wait for Apply button and click on it",
-            trigger: ".acc_rep_filter_comparison .acc_rep_search.o_filter_date:first() button",
+            trigger: "#filter_comparison .dropdown-menu .btn:first()",
             run: 'click',
         },
         {

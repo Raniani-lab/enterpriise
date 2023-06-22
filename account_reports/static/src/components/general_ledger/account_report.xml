@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<templates>
-    <t t-name="account_reports.GeneralLedger" t-inherit="account_reports.AccountReportCustomizable" owl="1">
-        <xpath expr="//table" position="attributes">
-            <attribute name="class">o_account_reports_table table-hover table-bold-unfold o_general_ledger</attribute>
-        </xpath>
-    </t>
-</templates>

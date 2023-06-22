@@ -79,9 +79,9 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                              4,          5,          6],
             [
                 # Accounts.
-                ('101401 Bank',                 460.0,      '',     460.0),
+                ('101401 Bank',                 460.0,      0.0,    460.0),
                 ('121000 Account Receivable',   460.0,      460.0,    0.0),
-                ('400000 Product Sales',        '',         460.0, -460.0),
+                ('400000 Product Sales',        0.0,        460.0, -460.0),
                 # Report Total.
                 ('Total',                       920.0,      920.0,    0.0),
             ],
@@ -98,18 +98,18 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                                      1,                    4,             5,             6],
             [
                 # Account.
-                ('101401 Bank',                         '',              460.00,            '',        460.00),
+                ('101401 Bank',                         '',              460.00,          0.00,        460.00),
                 ('121000 Account Receivable',           '',              460.00,        460.00,          0.00),
                 # Account Move Lines.from unfolded account
-                ('MISC/2016/01/0001',                   '02/01/2016',     69.00,            '',         69.00),
-                ('MISC/2016/01/0001',                   '02/01/2016',    161.00,            '',        230.00),
-                ('BNK1/2016/00001',                     '02/01/2016',        '',        230.00,          0.00),
-                ('MISC/2016/01/0001',                   '03/01/2016',     69.00,            '',         69.00),
-                ('MISC/2016/01/0001',                   '03/01/2016',    161.00,            '',        230.00),
-                ('BNK1/2016/00002',                     '03/01/2016',        '',        230.00,          0.00),
+                ('MISC/2016/01/0001',                   '02/01/2016',     69.00,          0.00,         69.00),
+                ('MISC/2016/01/0001',                   '02/01/2016',    161.00,          0.00,        230.00),
+                ('BNK1/2016/00001',                     '02/01/2016',      0.00,        230.00,          0.00),
+                ('MISC/2016/01/0001',                   '03/01/2016',     69.00,          0.00,         69.00),
+                ('MISC/2016/01/0001',                   '03/01/2016',    161.00,          0.00,        230.00),
+                ('BNK1/2016/00002',                     '03/01/2016',      0.00,        230.00,          0.00),
                 # Account Total.
                 ('Total 121000 Account Receivable',     '',              460.00,        460.00,          0.00),
-                ('400000 Product Sales',                '',                  '',        460.00,       -460.00),
+                ('400000 Product Sales',                '',                0.00,        460.00,       -460.00),
                 # Report Total.
                 ('Total',                               '',              920.00,        920.00,          0.00),
             ],
@@ -130,31 +130,31 @@ class TestAccountReports(TestAccountReportsCommon):
                 ('ASSETS',                                      460.0),
                 ('Current Assets',                              460.0),
                 ('Bank and Cash Accounts',                      460.0),
-                ('Receivables',                                 ''),
-                ('Current Assets',                              ''),
-                ('Prepayments',                                 ''),
+                ('Receivables',                                   0.0),
+                ('Current Assets',                                0.0),
+                ('Prepayments',                                   0.0),
                 ('Total Current Assets',                        460.0),
-                ('Plus Fixed Assets',                           ''),
-                ('Plus Non-current Assets',                     ''),
+                ('Plus Fixed Assets',                             0.0),
+                ('Plus Non-current Assets',                       0.0),
                 ('Total ASSETS',                                460.0),
 
-                ('LIABILITIES',                                 ''),
-                ('Current Liabilities',                         ''),
-                ('Current Liabilities',                         ''),
-                ('Payables',                                    ''),
-                ('Total Current Liabilities',                   ''),
-                ('Plus Non-current Liabilities',                ''),
-                ('Total LIABILITIES',                           ''),
+                ('LIABILITIES',                                   0.0),
+                ('Current Liabilities',                           0.0),
+                ('Current Liabilities',                           0.0),
+                ('Payables',                                      0.0),
+                ('Total Current Liabilities',                     0.0),
+                ('Plus Non-current Liabilities',                  0.0),
+                ('Total LIABILITIES',                             0.0),
 
                 ('EQUITY',                                      460.0),
                 ('Unallocated Earnings',                        460.0),
                 ('Current Year Unallocated Earnings',           460.0),
                 ('Current Year Earnings',                       460.0),
-                ('Current Year Allocated Earnings',             ''),
+                ('Current Year Allocated Earnings',               0.0),
                 ('Total Current Year Unallocated Earnings',     460.0),
-                ('Previous Years Unallocated Earnings',         ''),
+                ('Previous Years Unallocated Earnings',           0.0),
                 ('Total Unallocated Earnings',                  460.0),
-                ('Retained Earnings',                           ''),
+                ('Retained Earnings',                             0.0),
                 ('Total EQUITY',                                460.0),
 
                 ('LIABILITIES + EQUITY',                        460.0),
@@ -189,8 +189,8 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                                       4,              5,              6],
             [
                 # Accounts.
-                ('101403 Outstanding Receipts',        115,             '',            115),
-                ('121000 Account Receivable',           '',            115,           -115),
+                ('101403 Outstanding Receipts',        115,              0,            115),
+                ('121000 Account Receivable',            0,            115,           -115),
                 # Report Total.
                 ('Total',                              115,            115,             0),
             ],
@@ -206,10 +206,10 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                                       4,              5,              6],
             [
                 # Accounts.
-                ('101403 Outstanding Receipts',        115,             '',            115),
+                ('101403 Outstanding Receipts',        115,              0,            115),
                 ('121000 Account Receivable',          115,            115,              0),
-                ('251000 Tax Received',                 '',             15,            -15),
-                ('400000 Product Sales',                '',            100,           -100),
+                ('251000 Tax Received',                  0,             15,            -15),
+                ('400000 Product Sales',                 0,            100,           -100),
                 # Report Total.
                 ('Total',                              230,            230,             0),
             ],
@@ -287,9 +287,9 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                                       5,              6,              7],
             [
                 # Accounts.
-                ('101401 Bank',                        350,             '',            350),
+                ('101401 Bank',                        350,              0,            350),
                 ('121000 Account Receivable',          245,            455,           -210),
-                ('400000 Product Sales',                '',            140,           -140),
+                ('400000 Product Sales',                 0,            140,           -140),
                 # Report Total.
                 ('Total',                              595,            595,              0),
             ],
@@ -308,11 +308,11 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                                       5,              6,              7],
             [
                 # Accounts.
-                ('101401 Bank',                        350,             '',            350),
+                ('101401 Bank',                        350,              0,            350),
                 ('121000 Account Receivable',          500,            500,              0),
-                ('400000 Product Sales',                '',             60,            -60),
-                ('499000 Other Income',                 '',            150,           -150),
-                ('999999 Undistributed Profits/Losses', '',            140,           -140),
+                ('400000 Product Sales',                 0,             60,            -60),
+                ('499000 Other Income',                  0,            150,           -150),
+                ('999999 Undistributed Profits/Losses',  0,            140,           -140),
                 # Report Total.
                 ('Total',                              850,            850,              0),
             ],
@@ -330,10 +330,10 @@ class TestAccountReports(TestAccountReportsCommon):
             [   0,                                       5,              6,              7],
             [
                 # Accounts.
-                ('101401 Bank',                        350,             '',            350),
+                ('101401 Bank',                        350,              0,            350),
                 ('121000 Account Receivable',          500,            500,              0),
-                ('400000 Product Sales',                '',            200,           -200),
-                ('499000 Other Income',                 '',            150,           -150),
+                ('400000 Product Sales',                 0,            200,           -200),
+                ('499000 Other Income',                  0,            150,           -150),
                 # Report Total.
                 ('Total',                              850,            850,              0),
             ],

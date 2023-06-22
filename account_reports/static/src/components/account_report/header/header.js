@@ -31,6 +31,10 @@ export class AccountReportHeader extends Component {
         return columnHeaders;
     }
 
+    columnHeadersColspan(column_index, header, compactOffset = 0) {
+        return header.colspan || this.controller.columnHeadersRenderData.level_colspan[column_index];
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
     // Custom subheaders
     // -----------------------------------------------------------------------------------------------------------------
@@ -47,23 +51,15 @@ export class AccountReportHeader extends Component {
     // -----------------------------------------------------------------------------------------------------------------
     // Sortable
     // -----------------------------------------------------------------------------------------------------------------
-    sortableClasses(columIndex, column) {
-        let sortableClasses = "";
-
-        if (column.sortable) {
-            sortableClasses += " sortable"
-
-            switch (this.controller.linesCurrentOrderByColumn(columIndex)) {
-                case "ASC":
-                    sortableClasses += " down";
-                    break;
-                case "DESC":
-                    sortableClasses += " up";
-                    break;
-            }
+    sortableClasses(columIndex) {
+        switch (this.controller.linesCurrentOrderByColumn(columIndex)) {
+            case "ASC":
+                return "fa fa-long-arrow-up";
+            case "DESC":
+                return "fa fa-long-arrow-down";
+            default:
+                return "fa fa-arrows-v";
         }
-
-        return sortableClasses;
     }
 
     async sortLinesByColumn(columnIndex, column) {

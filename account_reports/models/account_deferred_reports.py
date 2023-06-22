@@ -11,13 +11,6 @@ class DeferredReportCustomHandler(models.AbstractModel):
     _inherit = 'account.report.custom.handler'
     _description = 'Deferred Expense Report Custom Handler'
 
-    def _get_custom_display_config(self):
-        return {
-            'templates': {
-                'AccountReport': 'account_reports.DeferredReports',
-            }
-        }
-
     def _get_deferred_report_type(self):
         raise NotImplementedError("This method is not implemented in the deferred report handler.")
 
@@ -225,11 +218,13 @@ class DeferredReportCustomHandler(models.AbstractModel):
     def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals, warnings=None):
         def get_columns(totals):
             return [
-                {
-                    'no_format': totals[period],
-                    'name': report.format_value(options, totals[period], currency=self.env.company.currency_id, figure_type='monetary'),
-                    'class': 'number'
-                }
+                report._build_column_dict(
+                    options=options,
+                    no_format=totals[period],
+                    figure_type='monetary',
+                    expression_label='total',
+                    currency=self.env.company.currency_id,
+                )
                 for period in periods
             ]
 
@@ -264,13 +259,11 @@ class DeferredReportCustomHandler(models.AbstractModel):
                 'name': f"{totals_account['account'].code} {totals_account['account'].name}",
                 'level': 1,
                 'columns': get_columns(totals_account),
-                'class': 'o_account_deferred_column_contrast',
             }))
         if totals_per_account:
             report_lines.append((0, {
                 'id': report._get_generic_line_id(None, None, markup='total'),
                 'name': 'TOTALS',
-                'class': 'total',
                 'level': 1,
                 'columns': get_columns(totals_all_accounts),
             }))

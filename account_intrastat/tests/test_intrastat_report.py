@@ -180,10 +180,10 @@ class TestIntrastatReport(TestAccountReportsCommon):
             [       1,    2,     3,     4,     5,          6,    10,    12],
             [
                 # account.move (invoice) 1
-                ('19 (Dispatch)', 'Netherlands', '101', '102', '100', None, 0.3,  80.0),
-                ('19 (Dispatch)', 'Netherlands', '101', '102', '100', None, 1.2, 240.0),
+                ('19 (Dispatch)', 'Netherlands', '101', '102', '100', '', '0.3',  80.0),
+                ('19 (Dispatch)', 'Netherlands', '101', '102', '100', '', '1.2', 240.0),
                 # account.move (bill) 2
-                ('29 (Arrival)', 'Netherlands', '101', '102', '100', None, 0.5, 950.0),
+                ('29 (Arrival)', 'Netherlands', '101', '102', '100', '', '0.5', 950.0),
             ],
             options,
         )
@@ -200,7 +200,7 @@ class TestIntrastatReport(TestAccountReportsCommon):
                 # account.move (invoice) 1
                 ('INV/2022/00001', '19 (Dispatch)',  80.0),
                 ('INV/2022/00001', '19 (Dispatch)', 240.0),
-                ('Total',  None, 320),
+                ('Total', '', 320),
             ],
             options,
         )
@@ -231,7 +231,7 @@ class TestIntrastatReport(TestAccountReportsCommon):
             #
             [    0,                1,               2,             5,             11, ],
             [
-                ('INV/2022/00001', '19 (Dispatch)', 'Belgium',     '97040000',    None)
+                ('INV/2022/00001', '19 (Dispatch)', 'Belgium',     '97040000',    '')
             ],
             options,
         )

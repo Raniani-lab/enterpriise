@@ -24,7 +24,8 @@ class DisallowedExpensesCustomHandler(models.AbstractModel):
             lines.append((0, self._get_category_line(options, result, current, len(current))))
             self._update_total_values(totals, options, result)
 
-        lines.append((0, self._get_total_line(report, options, totals)))
+        if (lines):
+            lines.append((0, self._get_total_line(report, options, totals)))
 
         return lines
 
@@ -251,6 +252,7 @@ class DisallowedExpensesCustomHandler(models.AbstractModel):
     def _get_column_values(self, options, values, update_vals=True):
         column_values = []
 
+        report = self.env['account.report'].browse(options['report_id'])
         for column in options['columns']:
             vals = values.get(column['column_group_key'], {})
             if vals and update_vals:
@@ -262,17 +264,14 @@ class DisallowedExpensesCustomHandler(models.AbstractModel):
             if not col_val and blank_totals:
                 column_values.append({})
             else:
-                column_values.append({
-                    'name': self.env['account.report'].format_value(
-                        options,
-                        col_val,
-                        blank_if_zero=blank_totals,
-                        figure_type=column['figure_type'],
-                        digits=2 if column['figure_type'] == 'percentage' else None
-                    ),
-                    'no_format': col_val,
-                    'class': 'number',
-                })
+                column_values.append(report._build_column_dict(
+                    options=options,
+                    no_format=col_val,
+                    figure_type=column['figure_type'],
+                    expression_label=column['expression_label'],
+                    blank_if_zero=blank_totals,
+                    digits=2 if column['figure_type'] == 'percentage' else None,
+                ))
 
         return column_values
 
@@ -285,7 +284,6 @@ class DisallowedExpensesCustomHandler(models.AbstractModel):
         return {
             'id': report._get_generic_line_id(None, None, markup='total'),
             'name': _('Total'),
-            'class': 'total',
             'level': 1,
             'columns': self._get_column_values(options, totals, update_vals=False),
         }
@@ -339,7 +337,7 @@ class DisallowedExpensesCustomHandler(models.AbstractModel):
         return all(values[key][0] == x for x in values[key]) and values[key][0]
 
     def _get_current_rate(self, values):
-        return self._get_single_value(values, 'account_rate') or ''
+        return self._get_single_value(values, 'account_rate') or None
 
     def _get_current_disallowed_amount(self, values):
         return values['account_disallowed_amount']

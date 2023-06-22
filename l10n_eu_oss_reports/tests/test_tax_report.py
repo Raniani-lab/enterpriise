@@ -103,9 +103,9 @@ class OSSTaxReportTest(TestAccountReportsCommon):
                 ("16.0% LU VAT (16.0%)",   1000,              160),
                 ("7.0% LU VAT (7.0%)",     -500,              -35),
                 ("Total Luxembourg",         '',              125),
-                ("Netherlands",              '',               ''),
-                ("21.0% NL VAT (21.0%)",     '',               ''),
-                ("Total Netherlands",        '',               ''),
+                ("Netherlands",              '',              0.0),
+                ("21.0% NL VAT (21.0%)",    0.0,              0.0),
+                ("Total Netherlands",        '',              0.0),
                 ("Total Sales",              '',               85),
             ],
             options,
@@ -266,7 +266,7 @@ class TestTaxReportOSSNoMapping(TestAccountReportsCommon):
             [   0,                    1],
             [
                 ('Invoice base', 100.00),
-                ('Refund base',      ''),
+                ('Refund base',    0.00),
             ],
             options,
         )

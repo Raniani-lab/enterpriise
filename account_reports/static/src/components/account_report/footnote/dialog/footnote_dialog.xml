@@ -5,9 +5,9 @@
     </t>
 
     <t t-name="account_reports.AccountReportFootnoteDialogCustomizable" owl="1">
-        <Dialog title="title">
-            <form role="form">
-                <textarea placeholder="Insert foot note here" rows='4' t-ref="text">
+        <Dialog contentClass="'account_report_footnote_dialog'" title="title" size="'md'">
+            <form>
+                <textarea t-ref="text" placeholder="Insert foot note here">
                     <t t-out="props.text"/>
                 </textarea>
             </form>

@@ -1,41 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
     <t t-name="account_reports.AccountReportEditPopover" owl="1">
-        <div class="d-flex align-items-center">
-            <t t-if="props.cell.figure_type === 'boolean'">
-                <div class="d-flex align-items-center gap-1">
-                    <!-- Yes -->
-                    <input
-                        id="edit_popover_boolean_true"
-                        class="account_reports_popup_no_hide"
-                        name="edit_popover_boolean"
-                        type="radio"
-                        value="1"
-                        t-att-checked="props.cell.no_format"
-                        t-ref="booleanTrue"
-                    />
-                    <label for="edit_popover_boolean_true" class="fw-bold">Yes</label>
+        <t t-if="props.cell.figure_type === 'boolean'">
+            <!-- Yes -->
+            <input
+                id="edit_popover_boolean_true"
+                name="edit_popover_boolean"
+                type="radio"
+                value="1"
+                t-att-checked="props.cell.no_format"
+                t-ref="booleanTrue"
+            />
+            <label for="edit_popover_boolean_true">Yes</label>
 
-                    <!-- No -->
-                    <input
-                        id="edit_popover_boolean_false"
-                        class="account_reports_popup_no_hide"
-                        name="edit_popover_boolean"
-                        type="radio"
-                        value="0"
-                        t-att-checked="!props.cell.no_format"
-                        t-ref="booleanFalse"
-                    />
-                    <label for="edit_popover_boolean_false" class="fw-bold">No</label>
-                </div>
-            </t>
-            <t t-else="">
-                <input class="account_reports_popup_no_hide" t-ref="input"/>
-            </t>
+            <!-- No -->
+            <input
+                id="edit_popover_boolean_false"
+                name="edit_popover_boolean"
+                type="radio"
+                value="0"
+                t-att-checked="!props.cell.no_format"
+                t-ref="booleanFalse"
+            />
+            <label for="edit_popover_boolean_false">No</label>
+        </t>
+        <t t-else="">
+            <input t-ref="input"/>
+        </t>
 
-            <button class="btn btn-primary btn-sm" t-on-click="() => this.edit()">
-                Post
-            </button>
-        </div>
+        <button t-on-click="() => this.edit()">
+            Post
+        </button>
     </t>
 </templates>

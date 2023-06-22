@@ -838,8 +838,13 @@ class AccountReport(models.Model):
             name = account_group.display_name if account_group else _('(No Group)')
             columns = []
             for column_total, column in zip(column_totals, options['columns']):
-                figure_type = column.get('figure_type')
-                columns.append({'name': self.format_value(options, column_total, figure_type=figure_type, blank_if_zero=column['blank_if_zero']), 'no_format': column_total})
+                columns.append(self._build_column_dict(
+                    options=options,
+                    no_format=column_total,
+                    figure_type=column.get('figure_type'),
+                    expression_label=column.get('expression_label'),
+                    blank_if_zero=column['blank_if_zero'],
+                ))
             return {
                 'id': line_id,
                 'name': name,
@@ -1271,15 +1276,15 @@ class AccountReport(models.Model):
             }
 
             for report_column in self.column_ids:
-                columns.append({
-                    'name': report_column.name,
-                    'column_group_key': column_group_key,
-                    'expression_label': report_column.expression_label,
-                    'sortable': report_column.sortable,
-                    'figure_type': report_column.figure_type,
-                    'blank_if_zero': report_column.blank_if_zero,
-                    'style': "text-align: right; white-space: nowrap;",
-                })
+                columns.append(self._build_column_dict(
+                    options=options,
+                    no_format=report_column.name,
+                    expression_label=report_column.expression_label,
+                    figure_type=report_column.figure_type,
+                    column_group_key=column_group_key,
+                    sortable=report_column.sortable,
+                    blank_if_zero=report_column.blank_if_zero,
+                ))
 
         return columns, column_groups
 
@@ -1925,7 +1930,7 @@ class AccountReport(models.Model):
                 first_value, second_value = line['columns'][0]['no_format'], line['columns'][1]['no_format']
 
                 if not first_value and not second_value:  # For layout lines and such, with no values
-                    line['growth_comparison_data'] = {'name': '', 'class': ''}
+                    line['growth_comparison_data'] = {'name': '0.0%', 'growth': 0}
                 else:
                     green_on_positive = True
                     model, line_id = self._get_model_info_from_id(line['id'])
@@ -2032,7 +2037,6 @@ class AccountReport(models.Model):
             **section_line_dict,
             'id': self._get_generic_line_id(None, None, parent_line_id=section_line_dict['id'], markup='total'),
             'level': section_line_dict['level'] + 1,
-            'class': 'total',
             'name': _("Total %s", section_line_dict['name']),
             'parent_id': section_line_dict['id'],
             'unfoldable': False,
@@ -2125,6 +2129,7 @@ class AccountReport(models.Model):
 
             # Handle manual edition popup
             edit_popup_data = {}
+            formatter_params = {}
             if column_expression.engine == 'external' and column_expression.subformula \
                 and len(options.get('multi_company', [])) < 2 \
                 and (not options['available_vat_fiscal_positions'] or options['fiscal_position'] != 'all'):
@@ -2149,37 +2154,28 @@ class AccountReport(models.Model):
                         'column_value': column_value,
                     }
 
-                formatter_params = {'digits': rounding}
-            else:
-                formatter_params = {}
+                formatter_params['digits'] = rounding
 
             # Build result
-            blank_if_zero = column_expression.blank_if_zero or column_data.get('blank_if_zero')
+            if column_value:
+                foreign_currency_id = target_line_res_dict.get(f'_currency_{column_expr_label}', {}).get('value')
+                if foreign_currency_id:
+                    formatter_params['currency'] = self.env['res.currency'].browse(foreign_currency_id)
 
-            if column_value is None:
-                formatted_name = ''
-            else:
-                formatted_name = self.format_value(
-                    options,
-                    column_value,
-                    figure_type=figure_type,
-                    blank_if_zero=blank_if_zero,
-                    **formatter_params
-                )
-
-            column_data = {
-                'name': formatted_name,
-                'style': 'white-space:nowrap; text-align:right;',
-                'no_format': column_value,
-                'column_group_key': options['columns'][len(columns)]['column_group_key'],
-                'auditable': column_value is not None and column_expression.auditable,
-                'expression_label': column_expr_label,
-                'has_sublines': column_has_sublines,
-                'report_line_id': line.id,
-                'class': 'number' if isinstance(column_value, (int, float)) else '',
-                'is_zero': column_value is None or (figure_type in ('float', 'integer', 'monetary') and self.is_zero(column_value, figure_type=figure_type, **formatter_params)),
-                'figure_type': figure_type,
-            }
+            column_data = self._build_column_dict(
+                options=options,
+                no_format=column_value,
+                figure_type=figure_type,
+                expression_label=column_expr_label,
+                column_group_key=options['columns'][len(columns)]['column_group_key'],
+                auditable=column_value is not None and column_expression.auditable,
+                has_sublines=column_has_sublines,
+                report_line_id=line.id,
+                is_zero=column_value is None or (figure_type in ('float', 'integer', 'monetary') and self.is_zero(column_value, figure_type=figure_type, **formatter_params)),
+                green_on_positive=column_expression.green_on_positive,
+                blank_if_zero=column_expression.blank_if_zero or column_data.get('blank_if_zero'),
+                **formatter_params,
+            )
 
             if info_popup_data:
                 column_data['info_popup_data'] = json.dumps(info_popup_data)
@@ -2190,6 +2186,29 @@ class AccountReport(models.Model):
             columns.append(column_data)
 
         return columns
+
+    def _build_column_dict(
+            self, options, no_format, figure_type, expression_label,
+            currency=False, column_group_key=None, report_line_id=None, auditable=False, sortable=False, blank_if_zero=False,
+            has_sublines=False, is_zero=False, green_on_positive=False, digits=1, classes=None,
+    ):
+        rslt = {
+            'name': self.format_value(options, no_format, figure_type=figure_type, blank_if_zero=blank_if_zero, digits=digits, currency=currency),
+            'no_format': no_format,
+            'figure_type': figure_type,
+            'expression_label': expression_label,
+            'column_group_key': column_group_key,
+            'report_line_id': report_line_id,
+            'auditable': auditable,
+            'sortable': sortable,
+            'blank_if_zero': blank_if_zero,
+            'has_sublines': has_sublines,
+            'is_zero': is_zero,
+            'green_on_positive': green_on_positive,
+        }
+        if classes:
+            rslt['class'] = classes
+        return rslt
 
     def _get_dynamic_lines(self, options, all_column_groups_expression_totals, warnings=None):
         if self.custom_handler_model_id:
@@ -3869,14 +3888,12 @@ class AccountReport(models.Model):
 
         warnings = {}
         all_column_groups_expression_totals = self._compute_expression_totals_for_each_column_group(self.line_ids.expression_ids, options)
-        lines = self._get_lines(options, all_column_groups_expression_totals=all_column_groups_expression_totals, warnings=warnings)
 
         # Convert all_column_groups_expression_totals to a json-friendly form (its keys are records)
         json_friendly_column_group_totals = self._get_json_friendly_column_group_totals(all_column_groups_expression_totals)
 
         return {
             'caret_options': self._get_caret_options(),
-
             'column_headers_render_data': self._get_column_headers_render_data(options),
             'column_groups_totals': json_friendly_column_group_totals,
             'context': self.env.context,
@@ -3898,7 +3915,7 @@ class AccountReport(models.Model):
                 'account_readonly': self.user_has_groups('account.group_account_readonly'),
                 'account_user': self.user_has_groups('account.group_account_user'),
             },
-            'lines': self._format_lines_for_ellipsis(lines, options),
+            'lines': self._get_lines(options, all_column_groups_expression_totals=all_column_groups_expression_totals, warnings=warnings),
             'warnings': warnings,
             'report': {
                 'company_name': self.env.company.name,
@@ -4106,7 +4123,6 @@ class AccountReport(models.Model):
                 lines_with_totals_below.append(line_dict)
 
                 if line_dict['id'] in lines_needing_total_below and any(col.get('no_format') is not None for col in line_dict['columns']):
-                    line_dict['class'] = f"{line_dict.get('class', '')} o_account_reports_totals_below_sections"
                     totals_below_stack.append(self._generate_total_below_section_line(line_dict))
 
             while totals_below_stack:
@@ -4138,7 +4154,6 @@ class AccountReport(models.Model):
         return {
             'id': self._get_generic_line_id(None, None, parent_line_id=parent_line_id, markup='load_more'),
             'name': _("Load more..."),
-            'class': 'o_account_reports_load_more text-center',
             'parent_id': parent_line_id,
             'expand_function': expand_function_name,
             'columns': [{} for col in options['columns']],
@@ -4236,11 +4251,13 @@ class AccountReport(models.Model):
                 col_expr_label = column['expression_label']
                 value = prefix_expression_totals_by_group[column['column_group_key']][col_expr_label]
 
-                column_values.append({
-                    'name': self.format_value(options, value, figure_type=column['figure_type'], blank_if_zero=column['blank_if_zero']),
-                    'no_format': value,
-                    'class': 'number'
-                })
+                column_values.append(self._build_column_dict(
+                    options=options,
+                    no_format=value,
+                    figure_type=column['figure_type'],
+                    expression_label=column['expression_label'],
+                    blank_if_zero=column['blank_if_zero'],
+                ))
 
             line_id = self._get_generic_line_id(None, None, parent_line_id=parent_line_dict_id, markup=f"groupby_prefix_group:{prefix_key}")
 
@@ -4261,7 +4278,6 @@ class AccountReport(models.Model):
                 'name': prefix_group_line_name,
                 'unfoldable': True,
                 'unfolded': unfold_all or line_id in options['unfolded_lines'],
-                'class': 'o_account_reports_prefix_group',
                 'columns': column_values,
                 'groupby': groupby,
                 'level': parent_level + 1,
@@ -4330,14 +4346,17 @@ class AccountReport(models.Model):
         return matched_prefix
 
     @api.model
-    def format_value(self, options, value, currency=False, blank_if_zero=True, figure_type=None, digits=1):
+    def format_value(self, options, value, currency=False, blank_if_zero=False, figure_type=None, digits=1):
         """ Formats a value for display in a report (not especially numerical). figure_type provides the type of formatting we want.
         """
+        if value is None:
+            return ''
+
         if figure_type == 'none':
             return value
 
-        if value is None:
-            return ''
+        if isinstance(value, str) or figure_type == 'string':
+            return str(value)
 
         if figure_type == 'monetary':
             if options.get('multi_currency'):
@@ -4351,8 +4370,6 @@ class AccountReport(models.Model):
             digits = 0
         elif figure_type == 'boolean':
             return bool(value)
-        elif figure_type == 'string':
-            return str(value)
         elif figure_type in ('date', 'datetime'):
             return format_date(self.env, value)
         else:
@@ -4725,25 +4742,21 @@ class AccountReport(models.Model):
             if col_value is None or (col_expr_label == 'amount_currency' and not account_currency):
                 line_columns.append({})
             else:
-                if col_expr_label == 'amount_currency':
-                    formatted_value = self.format_value(options, col_value, currency=account_currency, figure_type=column['figure_type'])
-                else:
-                    formatted_value = self.format_value(options, col_value, figure_type=column['figure_type'])
-
-                line_columns.append({
-                    'name': formatted_value,
-                    'no_format': col_value,
-                    'class': 'number',
-                })
+                line_columns.append(self._build_column_dict(
+                    options=options,
+                    no_format=col_value,
+                    figure_type=column['figure_type'],
+                    expression_label=column['expression_label'],
+                    currency=account_currency if col_expr_label == 'amount_currency' else None,
+                ))
 
         if not any(column.get('no_format') for column in line_columns):
             return None
 
         return {
             'id': self._get_generic_line_id(None, None, parent_line_id=parent_line_id, markup='initial'),
-            'class': 'o_account_reports_initial_balance',
             'name': _("Initial Balance"),
-            'level': 2 + level_shift,
+            'level': 3 + level_shift,
             'parent_id': parent_line_id,
             'columns': line_columns,
         }
@@ -4758,9 +4771,10 @@ class AccountReport(models.Model):
         :return:                    The new columns to add to line['columns'].
         '''
         if float_is_zero(value2, precision_rounding=0.1):
-            return {'name': _('n/a'), 'class': 'number'}
+            return {'name': _('n/a'), 'growth': 0}
         else:
-            res = round((value1 - value2) / value2 * 100, 1)
+            values_diff = value1 - value2
+            growth = round(values_diff / value2 * 100, 1)
 
             # In case the comparison is made on a negative figure, the color should be the other
             # way around. For example:
@@ -4769,12 +4783,13 @@ class AccountReport(models.Model):
             #
             # The percentage is negative, which is mathematically correct, but my sales increased
             # => it should be green, not red!
-            if float_is_zero(res, precision_rounding=0.1):
-                return {'name': '0.0%', 'class': 'number'}
-            elif (res > 0) != (green_on_positive and value2 > 0):
-                return {'name': str(res) + '%', 'class': 'number color-red'}
+            if float_is_zero(growth, precision_rounding=0.1):
+                return {'name': '0.0%', 'growth': 0}
             else:
-                return {'name': str(res) + '%', 'class': 'number color-green'}
+                return {
+                    'name': str(growth) + '%',
+                    'growth': -1 if ((values_diff > 0) ^ green_on_positive) else 1,
+                }
 
     def _display_growth_comparison(self, options):
         ''' Helper determining if the growth comparison feature should be displayed or not.
@@ -5411,12 +5426,13 @@ class AccountReportCustomHandler(models.AbstractModel):
         This function returns a dict (possibly empty, if there is no custom display config):
 
         {
+            'client_css_custom_class: 'class',
             'components': {
 
             },
             'pdf_export': {
 
-            }
+            },
             'templates': {
 
             },

@@ -3,7 +3,6 @@
     <t t-name="account_consolidation.ConsolidationReportLineName" t-inherit="account_reports.AccountReportLineNameCustomizable" owl="1">
         <xpath expr="//td" position="replace">
             <td
-                t-att-class="getClasses()"
                 t-att-colspan="props.line.colspan || 1"
                 t-on-click="() => this.toggleFoldable()"
             >

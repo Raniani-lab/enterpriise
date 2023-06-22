@@ -460,3 +460,20 @@ class TestTimesheetValidation(TestCommonTimesheet, MockEmail):
                 'unit_amount': 1.0,
                 'date': date.today() - relativedelta(days=1),
             })
+
+    @freeze_time('2023-06-22 09:00:00')
+    def test_start_timer_timezone(self):
+        """
+            Check for non-infinite recursion due to date change
+            caused by timezone offset.
+        """
+        self.user_employee.tz = 'Etc/GMT+12'
+        # The date for the user_employee is therefore one day before the date defined by the system
+        timesheet = self.env['account.analytic.line'].with_user(self.user_employee).create({
+            'name': "My timesheet",
+            'project_id': self.project_customer.id,
+            'task_id': self.task1.id,
+            'unit_amount': 2.0,
+        })
+        timesheet.with_user(self.user_employee).action_timer_start()
+        # Causes infinite recursion if: date context < date system without timezone

@@ -57,3 +57,8 @@ class SaleOrderLine(models.Model):
         if self.product_id.project_template_id.is_fsm:
             values.pop('sale_line_id', False)
         return values
+
+    def _compute_invoice_status(self):
+        sol_from_task_without_amount = self.filtered(lambda sol: sol.task_id and sol.task_id.is_fsm and sol.price_unit == 0)
+        sol_from_task_without_amount.invoice_status = 'no'
+        super(SaleOrderLine, self - sol_from_task_without_amount)._compute_invoice_status()

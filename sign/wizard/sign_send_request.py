@@ -173,7 +173,7 @@ class SignSendRequestSigner(models.TransientModel):
         if missing_roles:
             missing_roles_str = ', '.join(missing_roles)
             raise UserError(_(
-                'The following roles must be set to create the signature request: %(roles)s',
+                'Please select recipients for the following roles: %(roles)s',
                 roles=missing_roles_str,
             ))
         return super().create(vals_list)

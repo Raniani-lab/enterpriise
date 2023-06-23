@@ -11,13 +11,13 @@ class AccountChartTemplate(models.AbstractModel):
 
         company = company or self.env.company
         default_misc_journal = self.env['account.journal'].search([
-            ('company_id.id', '=', company.id),
+            *self.env['account.journal']._check_company_domain(company),
             ('type', '=', 'general'),
             ('show_on_dashboard', '=', True)
         ], limit=1)
         if not default_misc_journal:
             default_misc_journal = self.env['account.journal'].search([
-                ('company_id.id', '=', company.id),
+                *self.env['account.journal']._check_company_domain(company),
                 ('type', '=', 'general')
             ], limit=1)
         if not default_misc_journal:

@@ -40,7 +40,8 @@ class SaleOrderAlert(models.Model):
     mrr_max = fields.Monetary('MRR Range Max', currency_field='currency_id')
     product_ids = fields.Many2many(
         'product.product', string='Specific Products',
-        domain="[('product_tmpl_id.recurring_invoice', '=', True), '|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+        check_company=True,
+        domain="[('product_tmpl_id.recurring_invoice', '=', True)]")
     mrr_change_amount = fields.Float('MRR Change Amount')
     mrr_change_unit = fields.Selection(selection='_get_selection_mrr_change_unit', string='MRR Change Unit', default='percentage')
     mrr_change_period = fields.Selection([('1month', '1 Month'), ('3months', '3 Months')], string='MRR Change Period',

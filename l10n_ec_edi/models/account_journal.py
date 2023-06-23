@@ -54,8 +54,8 @@ class AccountJournal(models.Model):
             if not journal.country_code == 'EC' or not journal.l10n_ec_entity or not journal.l10n_ec_emission:
                 continue
             duplicated_journals = self.search([
+                *self._check_company_domain(journal.company_id),
                 ('id', '!=', journal.id),  # other journals
-                ('company_id', '=', journal.company_id.id),
                 ('type', '=', journal.type),
                 ('l10n_ec_withhold_type', '=', journal.l10n_ec_withhold_type),
                 ('l10n_ec_is_purchase_liquidation', '=', journal.l10n_ec_is_purchase_liquidation),

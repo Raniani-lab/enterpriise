@@ -40,7 +40,7 @@ class res_company(models.Model):
         tax_results = defaultdict(lambda: {'debit': 0, 'credit': 0})
         for kp_journal_item in response.json():
             item_account = self.env['account.account'].search([
-                ('company_id', '=', self.id),
+                *self.env['account.account']._check_company_domain(self),
                 ('deprecated', '=', False),
                 '|', ('l10n_au_kp_account_identifier', '=', kp_journal_item['accountCode']), ('code', '=', kp_journal_item['accountCode'])
             ], limit=1, order='l10n_au_kp_account_identifier')
@@ -50,7 +50,7 @@ class res_company(models.Model):
             tax = False
             if kp_journal_item.get('taxCode'):
                 tax = self.env['account.tax'].search([
-                    ('company_id', '=', self.id),
+                    *self.env['account.tax']._check_company_domain(self),
                     ('l10n_au_kp_tax_identifier', '=', kp_journal_item['taxCode'])], limit=1)
 
             if tax:

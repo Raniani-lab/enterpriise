@@ -25,10 +25,10 @@ class ResCompany(models.Model):
         ('2_months', 'every 2 months'),
         ('monthly', 'monthly')], string="Delay units", help="Periodicity", default='monthly', required=True)
     account_tax_periodicity_reminder_day = fields.Integer(string='Start from', default=7, required=True)
-    account_tax_periodicity_journal_id = fields.Many2one('account.journal', string='Journal', domain=[('type', '=', 'general')])
-    account_revaluation_journal_id = fields.Many2one('account.journal', domain=[('type', '=', 'general')])
-    account_revaluation_expense_provision_account_id = fields.Many2one('account.account', string='Expense Provision Account')
-    account_revaluation_income_provision_account_id = fields.Many2one('account.account', string='Income Provision Account')
+    account_tax_periodicity_journal_id = fields.Many2one('account.journal', string='Journal', domain=[('type', '=', 'general')], check_company=True)
+    account_revaluation_journal_id = fields.Many2one('account.journal', domain=[('type', '=', 'general')], check_company=True)
+    account_revaluation_expense_provision_account_id = fields.Many2one('account.account', string='Expense Provision Account', check_company=True)
+    account_revaluation_income_provision_account_id = fields.Many2one('account.account', string='Income Provision Account', check_company=True)
     account_tax_unit_ids = fields.Many2many(string="Tax Units", comodel_name='account.tax.unit', help="The tax units this company belongs to.")
     account_representative_id = fields.Many2one('res.partner', string='Accounting Firm',
                                                 help="Specify an Accounting Firm that will act as a representative when exporting reports.")
@@ -52,7 +52,11 @@ class ResCompany(models.Model):
         account_tax_periodicity_journal_id field. This is useful in case a
         CoA was already installed on the company at the time the module
         is installed, so that the field is set automatically when added."""
-        return self.env['account.journal'].search([('type', '=', 'general'), ('show_on_dashboard', '=', True), ('company_id', '=', self.id)], limit=1)
+        return self.env['account.journal'].search([
+            *self.env['account.journal']._check_company_domain(self),
+            ('type', '=', 'general'),
+            ('show_on_dashboard', '=', True),
+        ], limit=1)
 
     def write(self, values):
         tax_closing_update_dependencies = ('account_tax_periodicity', 'account_tax_periodicity_reminder_day', 'account_tax_periodicity_journal_id.id')

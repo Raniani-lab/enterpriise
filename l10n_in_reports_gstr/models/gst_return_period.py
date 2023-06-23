@@ -1479,8 +1479,14 @@ class L10nInGSTReturnPeriod(models.Model):
                         })
                         checked_bills += matched_bills
                 else:
-                    partner = 'vat' in gstr2b_bill and self.env['res.partner'].search([('vat', '=', gstr2b_bill['vat']), ('company_id', 'in', (False, self.company_id.id))], limit=1)
-                    journal = self.env['account.journal'].search([('type', '=', 'purchase'), ('company_id', '=', self.company_id.id)], limit=1)
+                    partner = 'vat' in gstr2b_bill and self.env['res.partner'].search([
+                        *self.env['res.partner']._check_company_domain(self.company_id),
+                        ('vat', '=', gstr2b_bill['vat']),
+                    ], limit=1)
+                    journal = self.env['account.journal'].search([
+                        *self.env['account.journal']._check_company_domain(self.company_id),
+                        ('type', '=', 'purchase')
+                    ], limit=1)
                     default_l10n_in_gst_treatment = (gstr2b_bill.get('section_code') == 'impg' and 'overseas') or (gstr2b_bill.get('section_code') == 'impgsez' and 'special_economic_zone') or 'regular'
                     create_vals.append({
                         "move_type": gstr2b_bill.get('bill_type') == 'credit_note' and "in_refund" or "in_invoice",

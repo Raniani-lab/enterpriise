@@ -12,6 +12,9 @@ class TestAllReportsGeneration(AccountTestInvoicingCommon):
     def setUpClass(cls, chart_template_ref=None):
         super().setUpClass(chart_template_ref=chart_template_ref)
 
+        # do not disable buttons because of multiple companies selected
+        cls.env = cls.env(context={'allowed_company_ids': cls.env.company.ids})
+
         cls.reports = cls.env['account.report'].with_context(active_test=False).search([])
         # The consolidation report needs a consolidation.period to be open, which we won't have by default.
         # Therefore, instead of testing it here, wse skip it and add a dedicated test in the consolidation module.

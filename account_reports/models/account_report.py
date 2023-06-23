@@ -104,7 +104,7 @@ class AccountReport(models.Model):
 
     def _get_filter_journals(self, options, additional_domain=None):
         return self.env['account.journal'].with_context(active_test=False).search([
-                ('company_id', 'in', [comp['id'] for comp in options.get('multi_company', self.env.company)]),
+                *self.env['account.journal']._check_company_domain([comp['id'] for comp in options.get('multi_company', self.env.company)]),
                 *(additional_domain or []),
             ], order="company_id, name")
 
@@ -150,9 +150,11 @@ class AccountReport(models.Model):
             })
 
         for journal in all_journals:
-            per_company_map[journal.company_id.id]['available_journals'] |= journal
+            for branch in journal.company_id._accessible_branches():
+                per_company_map[branch.id]['available_journals'] |= journal
         for journal_group in all_journal_groups:
-            per_company_map[journal_group.company_id.id]['available_journal_groups'] |= journal_group
+            for branch in journal_group.company_id._accessible_branches():
+                per_company_map[branch.id]['available_journal_groups'] |= journal_group
 
         # Adapt the code from previous options.
         journal_group_action = None
@@ -799,7 +801,7 @@ class AccountReport(models.Model):
 
     def _init_options_hierarchy(self, options, previous_options=None):
         company_ids = self.get_report_company_ids(options)
-        if self.filter_hierarchy != 'never' and self.env['account.group'].search([('company_id', 'in', company_ids)], limit=1):
+        if self.filter_hierarchy != 'never' and self.env['account.group'].search(self.env['account.group']._check_company_domain(company_ids), limit=1):
             options['display_hierarchy_filter'] = True
             if previous_options and 'hierarchy' in previous_options:
                 options['hierarchy'] = previous_options['hierarchy']
@@ -979,7 +981,7 @@ class AccountReport(models.Model):
     def _init_options_fiscal_position(self, options, previous_options=None):
         if self.filter_fiscal_position and self.country_id and len(options.get('multi_company', [])) <= 1:
             vat_fpos_domain = [
-                ('company_id', '=', next(comp_id for comp_id in self.get_report_company_ids(options))),
+                *self.env['account.fiscal.position']._check_company_domain(next(comp_id for comp_id in self.get_report_company_ids(options))),
                 ('foreign_vat', '!=', False),
             ]
 
@@ -1294,8 +1296,8 @@ class AccountReport(models.Model):
     ####################################################
     def _init_options_buttons(self, options, previous_options=None):
         options['buttons'] = [
-            {'name': _('PDF'), 'sequence': 10, 'action': 'export_file', 'action_param': 'export_to_pdf', 'file_export_type': _('PDF')},
-            {'name': _('XLSX'), 'sequence': 20, 'action': 'export_file', 'action_param': 'export_to_xlsx', 'file_export_type': _('XLSX')},
+            {'name': _('PDF'), 'sequence': 10, 'action': 'export_file', 'action_param': 'export_to_pdf', 'file_export_type': _('PDF'), 'branch_allowed': True},
+            {'name': _('XLSX'), 'sequence': 20, 'action': 'export_file', 'action_param': 'export_to_xlsx', 'file_export_type': _('XLSX'), 'branch_allowed': True},
             {'name': _('Save'), 'sequence': 100, 'action': 'open_report_export_wizard'},
         ]
 
@@ -1482,6 +1484,8 @@ class AccountReport(models.Model):
             initializer(options, previous_options=previous_options)
 
         # Sort the buttons list by sequence, for rendering
+        if not self.env['res.company']._all_branches_selected():
+            options['buttons'] = [button for button in options['buttons'] if button.get('branch_allowed')]
         options['buttons'] = sorted(options['buttons'], key=lambda x: x.get('sequence', 90))
 
         return options
@@ -2921,7 +2925,10 @@ class AccountReport(models.Model):
         prefix_params = []
         company_ids = [comp_opt['id'] for comp_opt in options.get('multi_company', self.env.company)]
         for prefix, excluded_prefixes in prefixes_to_compute:
-            account_domain = [('company_id', 'in', company_ids), ('code', '=like', f'{prefix}%')]
+            account_domain = [
+                *self.env['account.account']._check_company_domain(company_ids),
+                ('code', '=like', f'{prefix}%'),
+            ]
             excluded_prefixes_domains = []
 
             for excluded_prefix in excluded_prefixes:
@@ -4856,7 +4863,10 @@ class AccountReport(models.Model):
         candidate_duplicate_codes = defaultdict(lambda: self.env["account.report.line"])  # {candidate_duplicate_account_code: {lines_with_that_code,}}
         duplicate_codes = defaultdict(lambda: self.env["account.report.line"])  # {verified duplicate_account_code: {lines_with_that_code,}}
         duplicate_codes_same_line = defaultdict(lambda: self.env["account.report.line"])  # {duplicate_account_code: {line_with_that_code_multiple_times,}}
-        common_account_domain = [('company_id', '=', self.env.company.id), ('deprecated', '=', False)]
+        common_account_domain = [
+            *self.env['account.account']._check_company_domain(self.env.company),
+            ('deprecated', '=', False),
+        ]
 
         expressions = self.line_ids.expression_ids._expand_aggregations()
         for i, expr in enumerate(expressions):

@@ -3,7 +3,7 @@
 
 from odoo import api, fields, models
 
-ACCOUNT_DOMAIN = lambda self: [('deprecated', '=', False), ('account_type', 'not in', ('asset_receivable', 'liability_payable', 'asset_cash', 'liability_credit_card', 'off_balance')), ('company_id', '=', self.env.company.id)]
+ACCOUNT_DOMAIN = [('deprecated', '=', False), ('account_type', 'not in', ('asset_receivable', 'liability_payable', 'asset_cash', 'liability_credit_card', 'off_balance'))]
 
 
 class ResConfigSettings(models.TransientModel):
@@ -11,32 +11,37 @@ class ResConfigSettings(models.TransientModel):
 
     property_stock_journal = fields.Many2one(
         'account.journal', "Stock Journal",
-        domain="[('company_id', '=', allowed_company_ids[0])]",
+        check_company=True,
         compute='_compute_property_stock_account',
         inverse='_set_property_stock_journal')
     property_account_income_categ_id = fields.Many2one(
         'account.account', "Income Account",
+        check_company=True,
         domain=ACCOUNT_DOMAIN,
         compute='_compute_property_stock_account',
         inverse='_set_property_account_income_categ_id')
     property_account_expense_categ_id = fields.Many2one(
         'account.account', "Expense Account",
+        check_company=True,
         domain=ACCOUNT_DOMAIN,
         compute='_compute_property_stock_account',
         inverse='_set_property_account_expense_categ_id')
     property_stock_valuation_account_id = fields.Many2one(
         'account.account', "Stock Valuation Account",
-        domain="[('company_id', '=', allowed_company_ids[0]), ('deprecated', '=', False)]",
+        check_company=True,
+        domain="[('deprecated', '=', False)]",
         compute='_compute_property_stock_account',
         inverse='_set_property_stock_valuation_account_id')
     property_stock_account_input_categ_id = fields.Many2one(
         'account.account', "Stock Input Account",
-        domain="[('company_id', '=', allowed_company_ids[0]), ('deprecated', '=', False)]",
+        check_company=True,
+        domain="[('deprecated', '=', False)]",
         compute='_compute_property_stock_account',
         inverse='_set_property_stock_account_input_categ_id')
     property_stock_account_output_categ_id = fields.Many2one(
         'account.account', "Stock Output Account",
-        domain="[('company_id', '=', allowed_company_ids[0]), ('deprecated', '=', False)]",
+        check_company=True,
+        domain="[('deprecated', '=', False)]",
         compute='_compute_property_stock_account',
         inverse='_set_property_stock_account_output_categ_id')
 

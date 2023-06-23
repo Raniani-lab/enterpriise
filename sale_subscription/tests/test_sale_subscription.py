@@ -1312,6 +1312,7 @@ class TestSubscription(TestSubscriptionCommon):
         other_company_data = self.setup_company_data("Company 3", chart_template=self.env.company.chart_template)
         tax_group_2 = self.env['account.tax.group'].create({
             'name': 'Test tax group',
+            'company_id': other_company_data['company'].id,
             'tax_receivable_account_id': other_company_data['default_account_receivable'].copy().id,
             'tax_payable_account_id': other_company_data['default_account_payable'].copy().id,
         })

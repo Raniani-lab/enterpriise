@@ -258,8 +258,8 @@ class AccountAvatax(models.AbstractModel):
             key = (tax_name, doc.company_id)
             if key not in tax_cache:
                 tax_cache[key] = self.env['account.tax'].search([
+                    *self.env['account.tax']._check_company_domain(doc.company_id),
                     ('name', '=', tax_name),
-                    ('company_id', '=', doc.company_id.id),
                 ]) or self.env['account.tax'].sudo().with_company(doc.company_id).create({
                     'name': tax_name,
                     'amount': detail['rate'] * 100,

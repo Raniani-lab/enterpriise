@@ -41,7 +41,9 @@ class WorkflowActionRuleAccount(models.Model):
     @api.depends_context('company')
     def _compute_suitable_journal_ids(self):
         for rule in self:
-            if self.env['account.journal'].search([('company_id', '=', self.env.company.id)]):
+            if self.env['account.journal'].search([
+                *self.env['account.journal']._check_company_domain(self.env.company),
+            ]):
                 move = self.env["account.move"].new({'move_type': rule.move_type})
                 rule.suitable_journal_ids = rule.move_type and move.suitable_journal_ids._origin
                 rule.display_journal_id = bool(rule.move_type)

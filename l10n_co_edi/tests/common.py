@@ -111,6 +111,7 @@ class TestCoEdiCommon(AccountEdiTestCommon):
             'l10n_co_edi_type': cls.env.ref('l10n_co_edi.tax_type_0').id
         })
         cls.retention_tax = cls.tax.copy({
+            'name': 'retention_tax',
             'l10n_co_edi_type': cls.env.ref('l10n_co_edi.tax_type_9').id
         })
 

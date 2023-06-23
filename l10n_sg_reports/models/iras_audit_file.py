@@ -193,7 +193,9 @@ class IrasAuditFile(models.Model):
             }
         })
         accounts_results = self._general_ledger_query_values(options)
-        all_accounts = self.env['account.account'].search([('company_id', '=', company.id)])
+        all_accounts = self.env['account.account'].search([
+            *self.env['account.account']._check_company_domain(company),
+        ])
 
         for account in all_accounts:
             initial_bal = dict(accounts_results).get(account.id, {'initial_balance': {'balance': 0, 'amount_currency': 0, 'debit': 0, 'credit': 0}})['initial_balance']

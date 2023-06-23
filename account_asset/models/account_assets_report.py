@@ -391,10 +391,10 @@ class AssetsReportCustomHandler(models.AbstractModel):
                    asset.method_period AS asset_method_period,
                    asset.method_progress_factor AS asset_method_progress_factor,
                    asset.state AS asset_state,
+                   asset.company_id AS company_id,
                    account.code AS account_code,
                    account.name AS account_name,
                    account.id AS account_id,
-                   account.company_id AS company_id,
                    COALESCE(SUM(move.depreciation_value) FILTER (WHERE move.date < %(date_from)s AND {move_filter}), 0) + COALESCE(asset.already_depreciated_amount_import, 0) AS depreciated_before,
                    COALESCE(SUM(move.depreciation_value) FILTER (WHERE move.date BETWEEN %(date_from)s AND %(date_to)s AND {move_filter}), 0) AS depreciated_during
               FROM account_asset AS asset

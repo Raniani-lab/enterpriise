@@ -14,7 +14,7 @@ class AccountDisallowedExpensesCategory(models.Model):
     active = fields.Boolean(default=True, help="Set active to false to hide the category without removing it.")
     rate_ids = fields.One2many('account.disallowed.expenses.rate', 'category_id', string='Rate')
     company_id = fields.Many2one('res.company')
-    account_ids = fields.One2many('account.account', 'disallowed_expenses_category_id')
+    account_ids = fields.One2many('account.account', 'disallowed_expenses_category_id', check_company=True)
     current_rate = fields.Char(compute='_compute_current_rate', string='Current Rate')
 
     _sql_constraints = [

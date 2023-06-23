@@ -434,9 +434,9 @@ class FetchmailServer(models.Model):
 
     def _get_dte_purchase_journal(self, company_id):
         return self.env['account.journal'].search([
+            *self.env['account.journal']._check_company_domain(company_id),
             ('type', '=', 'purchase'),
             ('l10n_latam_use_documents', '=', True),
-            ('company_id', '=', company_id)
         ], limit=1)
 
     def _get_document_number(self, xml_content):
@@ -463,8 +463,8 @@ class FetchmailServer(models.Model):
     def _get_withholding_taxes(self, company_id, dte_line):
         # Get withholding taxes from DTE line
         tax_codes = [int(element.text) for element in dte_line.findall('.//ns0:CodImpAdic', namespaces=XML_NAMESPACES)]
-        return set(self.env['account.tax'].with_context(allowed_company_ids=[company_id]).search([
-            ('company_id', '=', company_id),
+        return set(self.env['account.tax'].search([
+            *self.env['account.tax']._check_company_domain(company_id),
             ('type_tax_use', '=', 'purchase'),
             ('l10n_cl_sii_code', 'in', tax_codes)
         ]))
@@ -485,7 +485,10 @@ class FetchmailServer(models.Model):
         4) if 3 previous criteria fail, check product name, and return false if fails
         """
         if partner_id:
-            supplier_info_domain = [('partner_id', '=', partner_id), ('company_id', 'in', [company_id, False])]
+            supplier_info_domain = [
+                *self.env['product.supplierinfo']._check_company_domain(company_id),
+                ('partner_id', '=', partner_id),
+            ]
             if product_code:
                 # 1st criteria
                 supplier_info_domain.append(('product_code', '=', product_code))
@@ -498,13 +501,16 @@ class FetchmailServer(models.Model):
         # 3rd criteria
         if product_code:
             product = self.env['product.product'].sudo().search([
+                *self.env['product.product']._check_company_domain(company_id),
                 '|', ('default_code', '=', product_code), ('barcode', '=', product_code),
-                ('company_id', 'in', [company_id, False]), ], limit=1)
+            ], limit=1)
             if product:
                 return product
         # 4th criteria
         return self.env['product.product'].sudo().search([
-            ('company_id', 'in', [company_id, False]), ('name', 'ilike', product_name)], limit=1)
+            *self.env['product.product']._check_company_domain(company_id),
+            ('name', 'ilike', product_name),
+        ], limit=1)
 
     def _get_dte_lines(self, dte_xml, company_id, partner_id):
         """
@@ -512,9 +518,11 @@ class FetchmailServer(models.Model):
         If no products are found, it puts only the description of the products in the draft invoice lines
         """
         gross_amount = dte_xml.findtext('.//ns0:MntBruto', namespaces=XML_NAMESPACES) is not None
-        default_purchase_tax = self.env['account.tax'].search(
-            [('l10n_cl_sii_code', '=', 14), ('type_tax_use', '=', 'purchase'),
-             ('company_id', '=', company_id)], limit=1)
+        default_purchase_tax = self.env['account.tax'].search([
+            *self.env['account.tax']._check_company_domain(company_id),
+            ('l10n_cl_sii_code', '=', 14),
+            ('type_tax_use', '=', 'purchase'),
+        ], limit=1)
         currency = self._get_dte_currency(dte_xml)
         invoice_lines = []
         for dte_line in dte_xml.findall('.//ns0:Detalle', namespaces=XML_NAMESPACES):

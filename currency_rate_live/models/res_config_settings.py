@@ -759,7 +759,10 @@ class ResCompany(models.Model):
     def run_update_currency(self):
         """ This method is called from a cron job to update currency rates.
         """
-        records = self.search([('currency_next_execution_date', '<=', fields.Date.today())])
+        records = self.search([
+            ('currency_next_execution_date', '<=', fields.Date.today()),
+            ('parent_id', '=', False),
+        ])
         if records:
             to_update = self.env['res.company']
             for record in records:

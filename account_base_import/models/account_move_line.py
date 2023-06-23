@@ -48,7 +48,7 @@ class AccountMoveLine(models.Model):
             # but we need to pass ids to prevent creation if they already exist
             journal_codes_ids = {}
             journal_codes = self.env["account.journal"].search_read(
-                domain=[("company_id", "=", self.env.company.id)],
+                domain=self.env['account.journal']._check_company_domain(self.env.company),
                 fields=["code"]
             )
             for journal in journal_codes:

@@ -788,8 +788,8 @@ class AccountMoveLine(models.Model):
             if self.journal_id.l10n_ec_is_purchase_liquidation:
                 # law mandates to withhold 100% VAT on purchase liquidations
                 vat_withhold_tax = self.env['account.tax'].search([
+                    *self.env['account.tax']._check_company_domain(self.company_id),
                     ('tax_group_id.l10n_ec_type', '=', 'withhold_vat_purchase'),
-                    ('company_id', '=', self.company_id.id),
                     ('l10n_ec_code_applied', '=', '731'),  # code for vat withhold 100%
                 ])
             elif product_type == 'services':

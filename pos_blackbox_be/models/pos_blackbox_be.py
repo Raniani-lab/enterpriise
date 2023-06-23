@@ -39,8 +39,10 @@ class pos_config(models.Model):
     blackbox_pos_production_id = fields.Char("Registered IoT Box serial number",
         help='e.g. BODO001... The IoT Box must be certified by Odoo S.A. to be used with the blackbox.',
         copy=False)
-    iface_fiscal_data_module = fields.Many2one('iot.device',
-                                               domain="[('type', '=', 'fiscal_data_module'), '|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+    iface_fiscal_data_module = fields.Many2one(
+        'iot.device',
+        checkk_company=True,
+        domain="[('type', '=', 'fiscal_data_module')]")
 
     @api.constrains("module_pos_discount", "module_pos_loyalty","blackbox_pos_production_id")
     def _check_blackbox_config(self):
@@ -763,7 +765,12 @@ class ProductProduct(models.Model):
             if company.chart_template == 'be':
                 work_in = self.env.ref('pos_blackbox_be.product_product_work_in')
                 work_out = self.env.ref('pos_blackbox_be.product_product_work_out')
-                taxes = self.env['account.tax'].sudo().with_context(active_test=False).search([('amount', '=', 0.0), ('type_tax_use', '=', 'sale'), ('name', '=', '0%'), ('company_id', '=', company.id)])
+                taxes = self.env['account.tax'].sudo().with_context(active_test=False).search([
+                    *self.env['account.tax']._check_company_domain(company),
+                    ('amount', '=', 0.0),
+                    ('type_tax_use', '=', 'sale'),
+                    ('name', '=', '0%'),
+                ])
                 if not taxes.active:
                     taxes.active = True
                 work_in.with_company(company.id).write({'taxes_id': [(4, taxes.id)]})
@@ -778,7 +785,12 @@ class AccountChartTemplate(models.Model):
         if template_code == 'be':
             work_in = self.env.ref('pos_blackbox_be.product_product_work_in')
             work_out = self.env.ref('pos_blackbox_be.product_product_work_out')
-            taxes = self.env['account.tax'].sudo().with_context(active_test=False).search([('amount', '=', 0.0), ('type_tax_use', '=', 'sale'), ('name', '=', '0%'), ('company_id', '=', company.id)])
+            taxes = self.env['account.tax'].sudo().with_context(active_test=False).search([
+                *self.env['account.tax']._check_company_domain(company),
+                ('amount', '=', 0.0),
+                ('type_tax_use', '=', 'sale'),
+                ('name', '=', '0%'),
+            ])
             if not taxes.active:
                 taxes.active = True
             work_in.with_context(install_mode=True).with_company(company.id).write({'taxes_id': [(4, taxes.id)]})

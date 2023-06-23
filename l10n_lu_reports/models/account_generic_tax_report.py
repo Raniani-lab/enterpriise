@@ -56,7 +56,7 @@ class LuxembourgishTaxReportCustomHandler(models.AbstractModel):
                 values[split_line_code] = {'value': balance, 'field_type': 'number'}
 
         on_payment = self.env['account.tax'].search([
-            ('company_id', 'in', report.get_report_company_ids(options)),
+            *self.env['account.tax']._check_company_domain(report.get_report_company_ids(options)),
             ('tax_exigibility', '=', 'on_payment')
         ], limit=1)
         values['204'] = {'value': on_payment and '0' or '1', 'field_type': 'boolean'}

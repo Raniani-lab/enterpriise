@@ -95,7 +95,7 @@ class TrialBalanceCustomHandler(models.AbstractModel):
 
         coa_options = self._l10n_mx_get_sat_options(options)
         accounts = self.env['account.account'].search([
-            ('company_id', '=', self.env.company.id),
+            *self.env['account.account']._check_company_domain(self.env.company),
             ('account_type', '!=', 'equity_unaffected'),
             ('group_id', '!=', False),
         ])

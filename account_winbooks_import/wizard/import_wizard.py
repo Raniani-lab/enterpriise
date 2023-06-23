@@ -197,7 +197,7 @@ class WinbooksImportWizard(models.TransientModel):
             if property_name:
                 self.env['ir.property']._set_default(property_name, model_name, account, self.env.company)
             if tax_group_name:
-                self.env['account.tax.group'].search([('company_id', '=', self.env.company.id)])[tax_group_name] = account
+                self.env['account.tax.group'].search(self.env['account.tax.group']._check_company_domain(self.env.company))[tax_group_name] = account
 
         _logger.info("Import Accounts")
         account_data = {}
@@ -235,8 +235,10 @@ class WinbooksImportWizard(models.TransientModel):
         for key, val in grouped.items():
             if key == '3':  # 3=general account, 9=title account
                 for rec in val:
-                    account = AccountAccount.search(
-                        [('code', '=', rec.get('NUMBER')), ('company_id', '=', self.env.company.id)], limit=1)
+                    account = AccountAccount.search([
+                        *AccountAccount._check_company_domain(self.env.company),
+                        ('code', '=', rec.get('NUMBER')),
+                    ], limit=1)
                     if account:
                         account_data[rec.get('NUMBER')] = account.id
                         rec['CENTRALID'] and manage_centralid(account, rec['CENTRALID'])
@@ -308,8 +310,10 @@ class WinbooksImportWizard(models.TransientModel):
         for rec in dbf_records:
             if not rec.get('DBKID'):
                 continue
-            journal = AccountJournal.search(
-                [('code', '=', rec.get('DBKID')), ('company_id', '=', self.env.company.id)], limit=1)
+            journal = AccountJournal.search([
+                *AccountJournal._check_company_domain(self.env.company),
+                ('code', '=', rec.get('DBKID')),
+            ], limit=1)
             if not journal:
                 if rec.get('DBKTYPE') == '4':
                     journal_type = 'bank' if 'IBAN' in rec.get('DBKOPT') else 'cash'

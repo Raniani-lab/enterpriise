@@ -45,9 +45,9 @@ class AccountTaxUnit(models.Model):
                 fp_identifier = 'account.tax_unit_%s_fp_%s' % (unit.id, company.id)
                 existing_fp = self.env.ref(fp_identifier, raise_if_not_found=False)
                 if create_or_refresh:
-                    taxes_to_map = self.env['account.tax'].with_context(allowed_company_ids=self.env.user.company_ids.ids).search([
-                        ('company_id', '=', company.id),
-                    ])
+                    taxes_to_map = self.env['account.tax'].with_context(
+                        allowed_company_ids=self.env.user.company_ids.ids,
+                    ).search(self.env['account.tax']._check_company_domain(company))
                     data = {
                         'xml_id': fp_identifier,
                         'values': {

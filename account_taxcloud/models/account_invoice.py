@@ -95,10 +95,10 @@ class AccountMove(models.Model):
                     raise_warning = True
                     tax_rate = float_round(tax_rate, precision_digits=3)
                     tax = self.env['account.tax'].sudo().with_context(active_test=False).search([
+                        *self.env['account.tax']._check_company_domain(company),
                         ('amount', '=', tax_rate),
                         ('amount_type', '=', 'percent'),
                         ('type_tax_use', '=', 'sale'),
-                        ('company_id', '=', company.id),
                     ], limit=1)
                     if tax:
                         # Only set if not already set, otherwise it triggers a
@@ -107,7 +107,7 @@ class AccountMove(models.Model):
                         if not tax.active:
                             tax.active = True  # Needs to be active to be included in invoice total computation
                     else:
-                        tax = self.env['account.tax'].sudo().with_context(default_company_id=company.id).create({
+                        tax = self.env['account.tax'].sudo().with_context(default_company_id=company.root_id.id).create({
                             'name': 'Tax %.3f %%' % (tax_rate),
                             'amount': tax_rate,
                             'amount_type': 'percent',

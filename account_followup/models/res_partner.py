@@ -96,7 +96,7 @@ class ResPartner(models.Model):
         ])]
 
     def _search_followup_line(self, operator, value):
-        company_domain = [('company_id', '=', self.env.company.id)]
+        company_domain = [('company_id', 'parent_of', self.env.company.id)]
         if isinstance(value, str):
             domain = [('name', operator, value)]
         elif isinstance(value, (int, list, tuple)):
@@ -121,7 +121,7 @@ class ResPartner(models.Model):
             total_due = 0
             for aml in partner.unreconciled_aml_ids:
                 is_overdue = today > aml.date_maturity if aml.date_maturity else today > aml.date
-                if aml.company_id == self.env.company and not aml.blocked:
+                if self.env.company in aml.company_id.parent_ids and not aml.blocked:
                     total_due += aml.amount_residual
                     if is_overdue:
                         total_overdue += aml.amount_residual
@@ -140,7 +140,7 @@ class ResPartner(models.Model):
     def _compute_unpaid_invoices(self):
         for partner in self:
             unpaid_receivable_lines = self.env['account.move.line'].search([
-                ('company_id', '=', self.env.company.id),
+                ('company_id', 'child_of', self.env.company.id),
                 ('move_id.commercial_partner_id', '=', partner.id),
                 ('parent_state', '=', 'posted'),
                 ('move_id.payment_state', 'in', ('not_paid', 'partial')),
@@ -188,7 +188,7 @@ class ResPartner(models.Model):
         today = fields.Date.context_today(self)
         for partner in self:
             current_followup_line = partner.followup_line_id
-            previous_followup_line = self.env['account_followup.followup.line'].search([('delay', '<', current_followup_line.delay), ('company_id', '=', self.env.company.id)], order='delay desc', limit=1)
+            previous_followup_line = self.env['account_followup.followup.line'].search([('delay', '<', current_followup_line.delay), ('company_id', 'parent_of', self.env.company.id)], order='delay desc', limit=1)
             for unreconciled_aml in partner.unreconciled_aml_ids:
                 if not unreconciled_aml.blocked:
                     unreconciled_aml.followup_line_id = previous_followup_line
@@ -202,7 +202,7 @@ class ResPartner(models.Model):
             ('account_id.account_type', '=', 'asset_receivable'),
             ('parent_state', '=', 'posted'),
             ('partner_id', 'in', self.ids),
-            ('company_id', '=', self.env.company.id),
+            ('company_id', 'child_of', self.env.company.id),
         ]
 
     def _get_followup_responsible(self):
@@ -258,7 +258,7 @@ class ResPartner(models.Model):
             if is_overdue:
                 has_overdue_invoices = True
 
-            if aml.company_id == self.env.company and not aml.blocked:
+            if self.env.company in aml.company_id.parent_ids and not aml.blocked:
                 if aml.followup_line_id and aml.followup_line_id.delay >= (highest_followup_line or first_followup_line).delay:
                     highest_followup_line = aml.followup_line_id
                 max_delay = max(max_delay, aml_delay)
@@ -294,7 +294,7 @@ class ResPartner(models.Model):
 
     @api.model
     def _get_first_followup_level(self):
-        return self.env['account_followup.followup.line'].search([('company_id', '=', self.env.company.id)], order='delay asc', limit=1)
+        return self.env['account_followup.followup.line'].search([('company_id', 'parent_of', self.env.company.id)], order='delay asc', limit=1)
 
     def _update_next_followup_action_date(self, followup_line):
         """Updates the followup_next_action_date of the right account move lines
@@ -359,7 +359,7 @@ class ResPartner(models.Model):
            - 'next_followup_line_id': the followup ID of the next followup line
            - 'next_delay': the delay in days of the next followup line
         """
-        followup_lines = self.env['account_followup.followup.line'].search([('company_id', '=', self.env.company.id)], order="delay asc")
+        followup_lines = self.env['account_followup.followup.line'].search([('company_id', 'parent_of', self.env.company.id)], order="delay asc")
 
         previous_line_id = None
         followup_lines_info = {}
@@ -427,7 +427,7 @@ class ResPartner(models.Model):
                     SELECT next_ful.id
                       FROM account_followup_followup_line next_ful
                      WHERE next_ful.delay > COALESCE(ful.delay, %(min_delay)s - 1)
-                       AND next_ful.company_id = %(company_id)s
+                       AND next_ful.company_id = %(root_company_id)s
                   ORDER BY next_ful.delay ASC
                      LIMIT 1
                  )
@@ -436,11 +436,11 @@ class ResPartner(models.Model):
              AND aml.parent_state = 'posted'
              AND aml.reconciled IS NOT TRUE
              AND aml.blocked IS FALSE
-             AND aml.company_id = %(company_id)s
+             AND aml.company_id = ANY(%(company_ids)s)
              {"" if partner_ids is None else "AND aml.partner_id IN %(partner_ids)s"}
         GROUP BY partner.id
             ) partner
-            LEFT JOIN account_followup_followup_line ful ON ful.delay = partner.followup_delay AND ful.company_id = %(company_id)s
+            LEFT JOIN account_followup_followup_line ful ON ful.delay = partner.followup_delay AND ful.company_id = %(root_company_id)s
             -- Get the followup status data
             LEFT OUTER JOIN LATERAL (
                 SELECT line.id
@@ -454,7 +454,7 @@ class ResPartner(models.Model):
                    AND line.reconciled IS NOT TRUE
                    AND line.balance > 0
                    AND line.blocked IS FALSE
-                   AND line.company_id = %(company_id)s
+                   AND line.company_id = ANY(%(company_ids)s)
                    AND COALESCE(ful.delay, %(min_delay)s - 1) <= partner.followup_delay
                    AND COALESCE(line.date_maturity, line.date) + COALESCE(ful.delay, %(min_delay)s - 1) < %(current_date)s
                  LIMIT 1
@@ -470,15 +470,16 @@ class ResPartner(models.Model):
                    AND line.reconciled IS NOT TRUE
                    AND line.balance > 0
                    AND line.blocked IS FALSE
-                   AND line.company_id = %(company_id)s
+                   AND line.company_id = ANY(%(company_ids)s)
                    AND COALESCE(line.date_maturity, line.date) < %(current_date)s
                  LIMIT 1
             ) exceeded_unreconciled_aml ON true
             LEFT OUTER JOIN ir_property prop_date ON prop_date.res_id = CONCAT('res.partner,', partner.id)
                                                  AND prop_date.name = 'followup_next_action_date'
-                                                 AND prop_date.company_id = %(company_id)s
+                                                 AND prop_date.company_id = %(root_company_id)s
         """, {
-            'company_id': self.env.company.id,
+            'company_ids': self.env.company.search([('id', 'child_of', self.env.company.id)]).ids,
+            'root_company_id': self.env.company.root_id.id,
             'partner_ids': tuple(partner_ids or []),
             'current_date': fields.Date.context_today(self),  # Allow mocking the current day for testing purpose.
             'min_delay': self._get_first_followup_level().delay or 0,

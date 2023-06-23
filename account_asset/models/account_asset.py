@@ -81,26 +81,37 @@ class AccountAsset(models.Model):
         copy=False,
     )
     paused_prorata_date = fields.Date(compute='_compute_paused_prorata_date')  # number of days to shift the computation of future deprecations
-    account_asset_id = fields.Many2one('account.account', string='Fixed Asset Account', compute='_compute_account_asset_id', help="Account used to record the purchase of the asset at its original price.", store=True, readonly=False, states={'close': [('readonly', True)]}, domain="[('company_id', '=', company_id), ('account_type', '!=', 'off_balance')]")
+    account_asset_id = fields.Many2one(
+        'account.account',
+        string='Fixed Asset Account',
+        compute='_compute_account_asset_id',
+        help="Account used to record the purchase of the asset at its original price.",
+        store=True, readonly=False, states={'close': [('readonly', True)]},
+        check_company=True,
+        domain="[('account_type', '!=', 'off_balance')]",
+    )
     account_depreciation_id = fields.Many2one(
         comodel_name='account.account',
         string='Depreciation Account',
         states={'close': [('readonly', True)]},
-        domain="[('account_type', 'not in', ('asset_receivable', 'liability_payable', 'asset_cash', 'liability_credit_card', 'off_balance')), ('deprecated', '=', False), ('company_id', '=', company_id)]",
+        check_company=True,
+        domain="[('account_type', 'not in', ('asset_receivable', 'liability_payable', 'asset_cash', 'liability_credit_card', 'off_balance')), ('deprecated', '=', False)]",
         help="Account used in the depreciation entries, to decrease the asset value."
     )
     account_depreciation_expense_id = fields.Many2one(
         comodel_name='account.account',
         string='Expense Account',
         states={'close': [('readonly', True)]},
-        domain="[('account_type', 'not in', ('asset_receivable', 'liability_payable', 'asset_cash', 'liability_credit_card', 'off_balance')), ('deprecated', '=', False), ('company_id', '=', company_id)]",
+        check_company=True,
+        domain="[('account_type', 'not in', ('asset_receivable', 'liability_payable', 'asset_cash', 'liability_credit_card', 'off_balance')), ('deprecated', '=', False)]",
         help="Account used in the periodical entries, to record a part of the asset as expense.",
     )
 
     journal_id = fields.Many2one(
         'account.journal',
         string='Journal',
-        domain="[('type', '=', 'general'), ('company_id', '=', company_id)]",
+        check_company=True,
+        domain="[('type', '=', 'general')]",
         compute='_compute_journal_id', store=True, readonly=True,
         states={'draft': [('readonly', False)], 'model': [('readonly', False)]},
     )
@@ -156,7 +167,10 @@ class AccountAsset(models.Model):
             if asset.journal_id and asset.journal_id.company_id == asset.company_id:
                 asset.journal_id = asset.journal_id
             else:
-                asset.journal_id = self.env['account.journal'].search([('type', '=', 'general'), ('company_id', '=', asset.company_id.id)], limit=1)
+                asset.journal_id = self.env['account.journal'].search([
+                    *self.env['account.journal']._check_company_domain(asset.company_id),
+                    ('type', '=', 'general'),
+                ], limit=1)
 
     @api.depends('salvage_value', 'original_value')
     def _compute_total_depreciable_value(self):

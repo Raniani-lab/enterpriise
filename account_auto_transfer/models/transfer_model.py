@@ -21,7 +21,10 @@ class TransferModel(models.Model):
         return company.compute_fiscalyear_dates(date.today())['date_from'] if company else None
 
     def _get_default_journal(self):
-        return self.env['account.journal'].search([('company_id', '=', self.env.company.id), ('type', '=', 'general')], limit=1)
+        return self.env['account.journal'].search([
+            *self.env['account.journal']._check_company_domain(self.env.company),
+            ('type', '=', 'general'),
+        ], limit=1)
 
     name = fields.Char(required=True)
     journal_id = fields.Many2one('account.journal', required=True, string="Destination Journal", default=_get_default_journal)

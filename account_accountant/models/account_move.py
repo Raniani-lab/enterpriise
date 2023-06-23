@@ -212,6 +212,7 @@ class AccountMove(models.Model):
                 'move_type': 'entry',
                 'deferred_original_move_ids': [Command.set(line.move_id.ids)],
                 'journal_id': deferred_journal.id,
+                'company_id': self.company_id.id,
                 'date': line.move_id.invoice_date + relativedelta(day=31),
                 'auto_post': 'at_date',
                 'ref': ref,
@@ -241,6 +242,7 @@ class AccountMove(models.Model):
                     'move_type': 'entry',
                     'deferred_original_move_ids': [Command.set(line.move_id.ids)],
                     'journal_id': deferred_journal.id,
+                    'company_id': self.company_id.id,
                     'date': period[1],
                     'auto_post': 'at_date',
                     'ref': ref,
@@ -523,7 +525,6 @@ class AccountMoveLine(models.Model):
             """, {
                 'lang': psql_lang,
                 'description': parsed_description,
-                'company_id': self.move_id.journal_id.company_id.id or self.env.company.id,
             })
             result = self.env.cr.dictfetchone()
             if result:
@@ -548,22 +549,20 @@ class AccountMoveLine(models.Model):
 
     def _predict_account(self):
         field = 'account_move_line.account_id'
-        additional_queries = ["""
-                SELECT id as account_id,
-                       setweight(to_tsvector(%(lang)s, name), 'B') AS document
-                  FROM account_account account
-                 WHERE account.deprecated IS NOT TRUE
-                   AND account.internal_group  = 'expense'
-                   AND company_id = %(company_id)s
-        """]
         if self.move_id.is_purchase_document(True):
             excluded_group = 'income'
         else:
             excluded_group = 'expense'
-        query = self._build_predictive_query([
-            ('account_id.deprecated', '=', False),
-            ('account_id.internal_group', '!=', excluded_group),
+        account_query = self.env['account.account']._where_calc([
+            *self.env['account.account']._check_company_domain(self.move_id.company_id or self.env.company),
+            ('deprecated', '=', False),
+            ('internal_group', '!=', excluded_group),
         ])
+        additional_queries = [self.env.cr.mogrify(*account_query.select(
+            "account_account.id AS account_id",
+            "setweight(to_tsvector(%%(lang)s, name), 'B') AS document",
+        )).decode()]
+        query = self._build_predictive_query([('account_id', 'in', account_query)])
         return self._predicted_field(field, query, additional_queries)
 
     @api.onchange('name')

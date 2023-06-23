@@ -172,7 +172,7 @@ class TestEdiResults(TestMxEdiCommon):
              patch('odoo.addons.l10n_mx_edi.models.account_edi_format.AccountEdiFormat._l10n_mx_edi_post_invoice_pac',
                    new=mocked_l10n_mx_edi_pac):
             tax_16_incl = self.env['account.tax'].create({
-                'name': 'tax_16',
+                'name': 'tax_16_incl',
                 'amount_type': 'percent',
                 'amount': 16,
                 'type_tax_use': 'sale',

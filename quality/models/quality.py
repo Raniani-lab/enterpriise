@@ -29,8 +29,7 @@ class QualityPoint(models.Model):
 
     def _get_default_team_id(self):
         company_id = self.company_id.id or self.env.context.get('default_company_id', self.env.company.id)
-        domain = ['|', ('company_id', '=', company_id), ('company_id', '=', False)]
-        return self.team_id._get_quality_team(domain)
+        return self.team_id._get_quality_team(self.env['quality.alert.team']._check_company_domain(company_id))
 
     def _get_default_test_type_id(self):
         domain = self._get_type_default_domain()
@@ -46,7 +45,8 @@ class QualityPoint(models.Model):
         default=_get_default_team_id, required=True)
     product_ids = fields.Many2many(
         'product.product', string='Products',
-        domain="[('type', 'in', ('product', 'consu')), '|', ('company_id', '=', False), ('company_id', '=', company_id)]",
+        check_company=True,
+        domain="[('type', 'in', ('product', 'consu'))]",
         help="Quality Point will apply to every selected Products.")
     product_category_ids = fields.Many2many(
         'product.category', string='Product Categories',
@@ -240,13 +240,14 @@ class QualityCheck(models.Model):
     control_date = fields.Datetime('Control Date', tracking=True)
     product_id = fields.Many2one(
         'product.product', 'Product', check_company=True,
-        domain="[('type', 'in', ['consu', 'product']), '|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+        domain="[('type', 'in', ['consu', 'product'])]")
     picking_id = fields.Many2one('stock.picking', 'Picking', check_company=True)
     partner_id = fields.Many2one(
         related='picking_id.partner_id', string='Partner')
     lot_id = fields.Many2one(
         'stock.lot', 'Lot/Serial',
-        domain="[('product_id', '=', product_id), '|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+        check_company=True,
+        domain="[('product_id', '=', product_id)]")
     user_id = fields.Many2one('res.users', 'Responsible', tracking=True)
     team_id = fields.Many2one(
         'quality.alert.team', 'Team', required=True, check_company=True)
@@ -355,13 +356,13 @@ class QualityAlert(models.Model):
     check_id = fields.Many2one('quality.check', 'Check', check_company=True)
     product_tmpl_id = fields.Many2one(
         'product.template', 'Product', check_company=True,
-        domain="[('type', 'in', ['consu', 'product']), '|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+        domain="[('type', 'in', ['consu', 'product'])]")
     product_id = fields.Many2one(
         'product.product', 'Product Variant',
         domain="[('product_tmpl_id', '=', product_tmpl_id)]")
     lot_id = fields.Many2one(
         'stock.lot', 'Lot', check_company=True,
-        domain="['|', ('product_id', '=', product_id), ('product_id.product_tmpl_id', '=', product_tmpl_id), '|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+        domain="['|', ('product_id', '=', product_id), ('product_id.product_tmpl_id', '=', product_tmpl_id)]")
     priority = fields.Selection([
         ('0', 'Normal'),
         ('1', 'Low'),

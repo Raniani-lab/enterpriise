@@ -116,7 +116,9 @@ class ResCompany(models.Model):
             if c.l10n_cl_dte_service_provider == 'SIIDEMO':
                 c._create_demo_caf_files()
                 sales_journals = self.env['account.journal'].search([
-                    ('type', '=', 'sale'), ('l10n_latam_use_documents', '=', True), ('company_id', '=', c.id)])
+                    *self.env['account.journal']._check_company_domain(c),
+                    ('type', '=', 'sale'), ('l10n_latam_use_documents', '=', True),
+                ])
                 for sj in sales_journals:
                     sj.l10n_cl_point_of_sale_type = 'online'
 

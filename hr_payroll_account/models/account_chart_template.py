@@ -35,7 +35,7 @@ class AccountChartTemplate(models.AbstractModel):
             accounts = {}
             for code in account_codes:
                 account = AccountAccount.search([
-                    ('company_id', '=', company.id),
+                    *AccountAccount._check_company_domain(company),
                     ('code', '=like', '%s%%' % code)], limit=1)
                 if not account:
                     raise ValidationError(_('No existing account for code %s', code))

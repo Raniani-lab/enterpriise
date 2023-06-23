@@ -64,7 +64,7 @@ class AccountReconcileWizard(models.TransientModel):
         comodel_name='account.journal',
         string='Journal',
         check_company=True,
-        domain="[('type', '=', 'general'), ('company_id', '=', company_id)]",
+        domain="[('type', '=', 'general')]",
         compute='_compute_journal_id',
         store=True,
         readonly=False,
@@ -74,7 +74,7 @@ class AccountReconcileWizard(models.TransientModel):
         comodel_name='account.account',
         string='Account',
         check_company=True,
-        domain="[('deprecated', '=', False), ('company_id', '=', company_id), ('internal_group', '!=', 'off_balance')]")
+        domain="[('deprecated', '=', False), ('internal_group', '!=', 'off_balance')]")
     label = fields.Char(string='Label', default='Write-Off')
     tax_id = fields.Many2one(
         comodel_name='account.tax',
@@ -217,8 +217,10 @@ class AccountReconcileWizard(models.TransientModel):
     @api.depends('company_id')
     def _compute_journal_id(self):
         for wizard in self:
-            wizard.journal_id = self.env['account.journal']\
-                .search([('company_id', '=', wizard.company_id.id), ('type', '=', 'general')], limit=1)
+            wizard.journal_id = self.env['account.journal'].search([
+                *self.env['account.journal']._check_company_domain(wizard.company_id),
+                ('type', '=', 'general')
+            ], limit=1)
 
     @api.depends('amount', 'amount_currency')
     def _compute_is_write_off_required(self):
@@ -433,6 +435,7 @@ class AccountReconcileWizard(models.TransientModel):
         partner = partners if len(partners) == 1 else None
         write_off_vals = {
             'journal_id': self.journal_id.id,
+            'company_id': self.company_id.id,
             'date': self._get_date_after_lock_date() or self.date,
             'to_check': self.to_check,
             'line_ids': self._create_write_off_lines(partner=partner)
@@ -472,6 +475,7 @@ class AccountReconcileWizard(models.TransientModel):
             ]
         transfer_vals = {
             'journal_id': self.journal_id.id,
+            'company_id': self.company_id.id,
             'date': self._get_date_after_lock_date() or self.date,
             'line_ids': line_ids,
         }

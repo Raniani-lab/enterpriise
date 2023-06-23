@@ -45,18 +45,21 @@ class ResCompany(models.Model):
     )
     l10n_ec_withhold_goods_tax_id = fields.Many2one(
         comodel_name='account.tax',
+        check_company=True,
         string="Withhold Consumables",
         help="When no profit withhold is found in partner or product, if product is a stockable or consumable"
              "the withhold fallbacks to this tax code"
     )
     l10n_ec_withhold_services_tax_id = fields.Many2one(
         comodel_name='account.tax',
+        check_company=True,
         string="Withhold Services",
         help="When no profit withhold is found in partner or product, if product is a service or not set'"
              "the withhold fallbacks to this tax code"
     )
     l10n_ec_withhold_credit_card_tax_id = fields.Many2one(
         comodel_name='account.tax',
+        check_company=True,
         string="Withhold Credit Card",
         help="When payment method will be credit card apply this withhold",
     )

@@ -191,8 +191,8 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
         # a single search and then iterate it.
         if groupby_companies:
             candidates_account_ids = self.env['account.account']._name_search(options.get('filter_search_bar'), [
+                *self.env['account.account']._check_company_domain(list(groupby_companies.keys())),
                 ('account_type', '=', 'equity_unaffected'),
-                ('company_id', 'in', list(groupby_companies.keys())),
             ])
             for account in self.env['account.account'].browse(candidates_account_ids):
                 company_unaffected_earnings = groupby_companies.get(account.company_id.id)

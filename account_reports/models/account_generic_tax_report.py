@@ -271,17 +271,17 @@ class AccountTaxReportHandler(models.AbstractModel):
         # account id we find on the taxes.
         if len(move_vals_lines) == 0:
             rep_ln_in = self.env['account.tax.repartition.line'].search([
+                *self.env['account.tax.repartition.line']._check_company_domain(company),
                 ('account_id.deprecated', '=', False),
                 ('repartition_type', '=', 'tax'),
                 ('document_type', '=', 'invoice'),
-                ('company_id', '=', company.id),
                 ('tax_id.type_tax_use', '=', 'purchase')
             ], limit=1)
             rep_ln_out = self.env['account.tax.repartition.line'].search([
+                *self.env['account.tax.repartition.line']._check_company_domain(company),
                 ('account_id.deprecated', '=', False),
                 ('repartition_type', '=', 'tax'),
                 ('document_type', '=', 'invoice'),
-                ('company_id', '=', company.id),
                 ('tax_id.type_tax_use', '=', 'sale')
             ], limit=1)
 
@@ -398,7 +398,10 @@ class AccountTaxReportHandler(models.AbstractModel):
         if options['fiscal_position'] == 'domestic':
             fiscal_positions = self.env['account.fiscal.position']
         elif options['fiscal_position'] == 'all':
-            fiscal_positions = self.env['account.fiscal.position'].search([('company_id', '=', company.id), ('foreign_vat', '!=', False)])
+            fiscal_positions = self.env['account.fiscal.position'].search([
+                *self.env['account.fiscal.position']._check_company_domain(company),
+                ('foreign_vat', '!=', False),
+            ])
         else:
             fpos_ids = [options['fiscal_position']]
             fiscal_positions = self.env['account.fiscal.position'].browse(fpos_ids)

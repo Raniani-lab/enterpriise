@@ -102,7 +102,7 @@ class AccountBankStatementLine(models.Model):
                             there is still some statement lines to process.
                 limit_time: Maximum time allowed to run in seconds. 0 if the Cron is allowed to run without time limit.
         """
-        def _compute_st_lines_to_reconcile(configured_company_ids):
+        def _compute_st_lines_to_reconcile(configured_company):
             # Find the bank statement lines that are not reconciled and try to reconcile them automatically.
             # The ones that are never be processed by the CRON before are processed first.
             remaining_line_id = None
@@ -110,7 +110,7 @@ class AccountBankStatementLine(models.Model):
             domain = [
                 ('is_reconciled', '=', False),
                 ('create_date', '>', start_time.date() - relativedelta(months=3)),
-                ('company_id', 'in', configured_company_ids),
+                ('company_id', 'in', configured_company.ids),
             ]
             query_obj = self._search(domain, limit=limit)
             query_obj.order = '"account_bank_statement_line"."cron_last_check" ASC NULLS FIRST,"account_bank_statement_line"."id"'
@@ -135,13 +135,15 @@ class AccountBankStatementLine(models.Model):
         query_obj.order = 'company_id'
         query_str, query_params = query_obj.select('DISTINCT company_id')
         self._cr.execute(query_str, query_params)
-        configured_company_ids = [r[0] for r in self._cr.fetchall()]
-        if not configured_company_ids:
+        configured_company = children_company = self.env['res.company'].browse([r[0] for r in self._cr.fetchall()])
+        if not configured_company:
             return
+        while children_company := children_company.child_ids:
+            configured_company += children_company
 
         self.env['account.bank.statement.line'].flush_model()
         # we either already have statement lines to reconcile or compute them
-        st_lines, remaining_line_id = (self, None) if self else _compute_st_lines_to_reconcile(configured_company_ids)
+        st_lines, remaining_line_id = (self, None) if self else _compute_st_lines_to_reconcile(configured_company)
 
         nb_auto_reconciled_lines = 0
         for index, st_line in enumerate(st_lines):
@@ -183,7 +185,7 @@ class AccountBankStatementLine(models.Model):
             account_number_nums = sanitize_account_number(self.account_number)
             if account_number_nums:
                 domain = [('sanitized_acc_number', 'ilike', account_number_nums)]
-                for extra_domain in ([('company_id', '=', self.company_id.id)], []):
+                for extra_domain in (self.env['res.partner.bank']._check_company_domain(self.company_id), []):
                     bank_accounts = self.env['res.partner.bank'].search(extra_domain + domain)
                     if len(bank_accounts.partner_id) == 1:
                         return bank_accounts.partner_id
@@ -196,7 +198,7 @@ class AccountBankStatementLine(models.Model):
                     ('name', 'ilike', self.partner_name),
                 ],
                 [
-                    ('company_id', '=', self.company_id.id),
+                    ('company_id', 'parent_of', self.company_id.id),
                     ('company_id', '=', False),
                 ],
             )
@@ -206,8 +208,8 @@ class AccountBankStatementLine(models.Model):
                     return partner
         # Retrieve the partner from the 'reconcile models'.
         rec_models = self.env['account.reconcile.model'].search([
+            *self.env['account.reconcile.model']._check_company_domain(self.company_id),
             ('rule_type', '!=', 'writeoff_button'),
-            ('company_id', '=', self.company_id.id),
         ])
         for rec_model in rec_models:
             partner = rec_model._get_partner_from_mapping(self)

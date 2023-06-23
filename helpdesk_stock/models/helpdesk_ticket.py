@@ -9,7 +9,8 @@ class HelpdeskTicket(models.Model):
     _inherit = 'helpdesk.ticket'
 
     product_id = fields.Many2one('product.product', string='Product', tracking=True,
-        domain="[('sale_ok', '=', True), ('id', 'in', suitable_product_ids), '|', ('company_id', '=', False), ('company_id', '=', company_id)]",
+        check_company=True,
+        domain="[('sale_ok', '=', True), ('id', 'in', suitable_product_ids)]",
         help="Product this ticket is about. If selected, only the sales orders, deliveries and invoices including this product will be visible.")
     suitable_product_ids = fields.Many2many('product.product', compute='_compute_suitable_product_ids')
     has_partner_picking = fields.Boolean(compute='_compute_suitable_product_ids')

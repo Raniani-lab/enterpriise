@@ -171,7 +171,9 @@ class FecImportWizard(models.TransientModel):
 
     def _generator_fec_account_journal(self, rows, cache):
         """ Import the journals from fec data files """
-        journals = {journal.code: journal for journal in self.env['account.journal'].search([('company_id', '=', self.company_id.id)])}
+        journals = {journal.code: journal for journal in self.env['account.journal'].search([
+            *self.env['account.journal']._check_company_domain(self.company_id),
+        ])}
         new_ids = {}
         for record in rows:
             journal_code = record.get("JournalCode")
@@ -222,11 +224,11 @@ class FecImportWizard(models.TransientModel):
 
         # Get the accounts for the debit and credit differences
         debit_account, credit_account = [
-            self.env["account.account"].search(
-                [('code', '=like', code), ('company_id', '=', self.company_id.id)],
-                order='code',
-                limit=1,
-            ) for code in ('6580%', '7580%')
+            self.env["account.account"].search([
+                *self.env['account.account']._check_company_domain(self.company_id),
+                ('code', '=like', code),
+            ], order='code', limit=1)
+            for code in ('6580%', '7580%')
         ]
 
         # Check the moves for rounding issues
@@ -649,9 +651,9 @@ class FecImportWizard(models.TransientModel):
         """ Build a cache with all the data needed by the generators, so that the query is done just one time """
 
         # Retrieve all the data from the database
-        accounts = self.env["account.account"].search([("company_id", "=", self.company_id.id)])
-        journals = self.env["account.journal"].search([("company_id", "=", self.company_id.id)])
-        partners = self.env["res.partner"].search([("company_id", "in", [self.company_id.id, False])])
+        accounts = self.env["account.account"].search(self.env['account.account']._check_company_domain(self.company_id))
+        journals = self.env["account.journal"].search(self.env['account.journal']._check_company_domain(self.company_id))
+        partners = self.env["res.partner"].search(self.env['res.partner']._check_company_domain(self.company_id))
         currencies = self.env["res.currency"].search([])
 
         # Build the cache dictionary

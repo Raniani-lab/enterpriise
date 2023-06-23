@@ -134,9 +134,9 @@ class SaleOrder(models.Model):
         tax = False
         if amount > 0 and rate > 0:
             tax = self.env['account.tax'].with_context(active_test=False).sudo().search([
+                *self.env['account.tax']._check_company_domain(company),
                 ('amount', '=', rate),
                 ('amount_type', '=', 'percent'),
-                ('company_id', '=', company.id),
                 ('price_include', '=', True),
                 ('type_tax_use', '=', 'sale')], limit=1)
             if not tax:

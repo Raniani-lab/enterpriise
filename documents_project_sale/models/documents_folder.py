@@ -13,7 +13,7 @@ class DocumentsFolder(models.Model):
     def _check_company_is_products_company(self):
         for folder in self:
             if folder.product_template_ids and folder.product_template_ids.company_id:
-                different_company_templates = folder.product_template_ids.filtered(lambda template: template.company_id != self.company_id)
+                different_company_templates = folder.product_template_ids.filtered_domain(self.env['product.template']._check_company_domain(self.company_id))
                 if not different_company_templates:
                     continue
                 if len(different_company_templates) == 1:

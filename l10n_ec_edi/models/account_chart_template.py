@@ -38,8 +38,9 @@ class AccountChartTemplate(models.AbstractModel):
             ]
             for new_values in new_journals_values:
                 journal = self.env['account.journal'].search([
+                    *self.env['account.journal']._check_company_domain(company),
                     ('code', '=', new_values['code']),
-                    ('company_id', '=', company.id)])
+                ])
                 if not journal:
                     self.env['account.journal'].create({
                         **new_values,
@@ -61,12 +62,12 @@ class AccountChartTemplate(models.AbstractModel):
         # Set proper profit withhold tax on RIMPE on taxpayer type
         for company in companies.filtered(lambda r: r.account_fiscal_country_id.code == 'EC'):
             tax_rimpe_entrepreneur = self.env['account.tax'].search([
+                *self.env['account.tax']._check_company_domain(company),
                 ('l10n_ec_code_base', '=', '343'),
-                ('company_id', '=', company.id)
             ], limit=1)
             tax_rimpe_popular_business = self.env['account.tax'].search([
+                *self.env['account.tax']._check_company_domain(self.env.company),
                 ('l10n_ec_code_base', '=', '332'),
-                ('company_id', '=', company.id)
             ], limit=1)
             if tax_rimpe_entrepreneur:
                 rimpe_entrepreneur = self.env.ref('l10n_ec_edi.l10n_ec_taxpayer_type_13')  # RIMPE Regime Entrepreneur
@@ -79,19 +80,19 @@ class AccountChartTemplate(models.AbstractModel):
         # Sets fallback taxes for purchase withholds
         for company in companies.filtered(lambda r: r.account_fiscal_country_id.code == 'EC'):
             company.l10n_ec_withhold_services_tax_id = self.env['account.tax'].search([
+                *self.env['account.tax']._check_company_domain(company),
                 ('l10n_ec_code_ats', '=', '3440'),
                 ('tax_group_id.l10n_ec_type', '=', 'withhold_income_purchase'),
-                ('company_id', '=', company.id),
             ], limit=1)
             company.l10n_ec_withhold_credit_card_tax_id = self.env['account.tax'].search([
+                *self.env['account.tax']._check_company_domain(company),
                 ('l10n_ec_code_ats', '=', '332G'),
                 ('tax_group_id.l10n_ec_type', '=', 'withhold_income_purchase'),
-                ('company_id', '=', company.id),
             ], limit=1)
             company.l10n_ec_withhold_goods_tax_id = self.env['account.tax'].search([
+                *self.env['account.tax']._check_company_domain(company),
                 ('l10n_ec_code_ats', '=', '312'),
                 ('tax_group_id.l10n_ec_type', '=', 'withhold_income_purchase'),
-                ('company_id', '=', company.id),
             ], limit=1)
 
     @template('ec', 'account.tax')

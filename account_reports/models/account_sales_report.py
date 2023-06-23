@@ -90,11 +90,10 @@ class ECSalesReportCustomHandler(models.AbstractModel):
         """
         super()._custom_options_initializer(report, options, previous_options=previous_options)
         self._init_core_custom_options(report, options, previous_options)
-        company_id = self.env.company.id
         options.update({
             'sales_report_taxes': {
                 'goods': tuple(self.env['account.tax'].search([
-                    ('company_id', '=', company_id),
+                    *self.env['account.tax']._check_company_domain(self.env.company),
                     ('amount', '=', 0.0),
                     ('amount_type', '=', 'percent'),
                 ]).ids),

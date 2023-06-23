@@ -13,7 +13,7 @@ class HrPayslip(models.Model):
 
     date = fields.Date('Date Account', states={'draft': [('readonly', False)], 'verify': [('readonly', False)]}, readonly=True,
         help="Keep empty to use the period of the validation(Payslip) date.")
-    journal_id = fields.Many2one('account.journal', 'Salary Journal', related="struct_id.journal_id", domain="[('company_id', '=', company_id)]")
+    journal_id = fields.Many2one('account.journal', 'Salary Journal', related="struct_id.journal_id", check_company=True)
     move_id = fields.Many2one('account.move', 'Accounting Entry', readonly=True, copy=False)
 
     def action_payslip_cancel(self):
@@ -213,7 +213,7 @@ class HrContract(models.Model):
     _inherit = 'hr.contract'
     _description = 'Employee Contract'
 
-    analytic_account_id = fields.Many2one('account.analytic.account', 'Analytic Account', domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+    analytic_account_id = fields.Many2one('account.analytic.account', 'Analytic Account', check_company=True)
 
 class HrPayrollStructure(models.Model):
     _inherit = 'hr.payroll.structure'

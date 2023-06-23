@@ -111,7 +111,7 @@ class BankRecWidgetLine(models.Model):
         compute='_compute_tax_ids',
         store=True,
         readonly=False,
-        domain="[('company_id', '=', company_id)]",
+        check_company=True,
     )
     tax_tag_ids = fields.Many2many(
         comodel_name='account.account.tag',

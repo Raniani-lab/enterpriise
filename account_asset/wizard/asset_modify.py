@@ -23,33 +23,57 @@ class AssetModify(models.TransientModel):
     # if we should display the fields for the creation of gross increase asset
     gain_value = fields.Boolean(compute="_compute_gain_value")
 
-    account_asset_id = fields.Many2one('account.account', string="Gross Increase Account", domain="[('deprecated', '=', False), ('company_id', '=', company_id)]")
-    account_asset_counterpart_id = fields.Many2one('account.account', domain="[('deprecated', '=', False), ('company_id', '=', company_id)]", string="Asset Counterpart Account")
-    account_depreciation_id = fields.Many2one('account.account', domain="[('deprecated', '=', False), ('company_id', '=', company_id)]", string="Depreciation Account")
-    account_depreciation_expense_id = fields.Many2one('account.account', domain="[('deprecated', '=', False), ('company_id', '=', company_id)]", string="Expense Account")
+    account_asset_id = fields.Many2one(
+        'account.account',
+        string="Gross Increase Account",
+        check_company=True,
+        domain="[('deprecated', '=', False)]",
+    )
+    account_asset_counterpart_id = fields.Many2one(
+        'account.account',
+        check_company=True,
+        domain="[('deprecated', '=', False)]",
+        string="Asset Counterpart Account",
+    )
+    account_depreciation_id = fields.Many2one(
+        'account.account',
+        check_company=True,
+        domain="[('deprecated', '=', False)]",
+        string="Depreciation Account",
+    )
+    account_depreciation_expense_id = fields.Many2one(
+        'account.account',
+        check_company=True,
+        domain="[('deprecated', '=', False)]",
+        string="Expense Account",
+    )
     modify_action = fields.Selection(selection="_get_selection_modify_options", string="Action")
     company_id = fields.Many2one('res.company', related='asset_id.company_id')
 
     invoice_ids = fields.Many2many(
         comodel_name='account.move',
         string="Customer Invoice",
+        check_company=True,
         domain="[('move_type', '=', 'out_invoice'), ('state', '=', 'posted')]",
         help="The disposal invoice is needed in order to generate the closing journal entry.",
     )
     invoice_line_ids = fields.Many2many(
         comodel_name='account.move.line',
+        check_company=True,
         domain="[('move_id', '=', invoice_id), ('display_type', '=', 'product')]",
         help="There are multiple lines that could be the related to this asset",
     )
     gain_account_id = fields.Many2one(
         comodel_name='account.account',
-        domain="[('deprecated', '=', False), ('company_id', '=', company_id)]",
+        check_company=True,
+        domain="[('deprecated', '=', False)]",
         compute="_compute_accounts", inverse="_inverse_gain_account", readonly=False, compute_sudo=True,
         help="Account used to write the journal item in case of gain",
     )
     loss_account_id = fields.Many2one(
         comodel_name='account.account',
-        domain="[('deprecated', '=', False), ('company_id', '=', company_id)]",
+        check_company=True,
+        domain="[('deprecated', '=', False)]",
         compute="_compute_accounts", inverse="_inverse_loss_account", readonly=False, compute_sudo=True,
         help="Account used to write the journal item in case of loss",
     )

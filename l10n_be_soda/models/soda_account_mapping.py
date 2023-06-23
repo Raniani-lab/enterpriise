@@ -26,10 +26,10 @@ class SodaAccountMapping(models.Model):
     @api.depends('code', 'company_id')
     def _compute_account_id(self):
         for mapping in self:
-            mapping.account_id = self.env['account.account'].search(
-                [('code', 'like', f'{mapping.code}%'), ('company_id', '=', self.company_id.id)],
-                limit=1
-            )
+            mapping.account_id = self.env['account.account'].search([
+                *self.env['account.account']._check_company_domain(self.company_id),
+                ('code', 'like', f'{mapping.code}%'),
+            ], limit=1)
 
     @api.model
     def find_or_create_mapping_entries(self, soda_code_to_name_mapping, company_id):
@@ -43,7 +43,7 @@ class SodaAccountMapping(models.Model):
         soda_account_codes = list(soda_code_to_name_mapping.keys())
         # Find existing account mappings for the provided SODA codes
         soda_account_mappings = self.search([
-            ('company_id', '=', company_id.id),
+            *self._check_company_domain(company_id),
             ('code', 'in', soda_account_codes),
         ])
         soda_account_mapping_codes = set(soda_account_mappings.mapped('code'))

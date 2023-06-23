@@ -762,6 +762,7 @@ class TestAccountAsset(TestAccountReportsCommon):
             'method_number': 5,
             'name': "Hashed Car",
             'journal_id': CEO_car.journal_id.copy().id,
+            'acquisition_date': today + relativedelta(years=-3, month=1, day=1),
         })
         Hashed_car.journal_id.restrict_mode_hash_table = True
         Hashed_car.validate()
@@ -790,6 +791,7 @@ class TestAccountAsset(TestAccountReportsCommon):
             'original_value': 12000.0,
             'method_number': 10,
             'name': "Locked Car",
+            'acquisition_date': today + relativedelta(years=-3, month=1, day=1),
         })
         Locked_car.validate()
         Locked_car.company_id.fiscalyear_lock_date = today + relativedelta(years=-1)
@@ -2010,6 +2012,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         Test that the analytic filter works correctly.
         """
         truck_b = self.truck.copy()
+        truck_b.acquisition_date = self.truck.acquisition_date
         truck_b.validate()
         self.truck.analytic_distribution = {self.analytic_account.id: 100}
         self.env['account.move']._autopost_draft_entries()
@@ -2052,6 +2055,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         Test that the analytic groupby works correctly.
         """
         truck_b = self.truck.copy()
+        truck_b.acquisition_date = self.truck.acquisition_date
         truck_b.validate()
         self.truck.analytic_distribution = {self.analytic_account.id: 100}
         self.env['account.move']._autopost_draft_entries()

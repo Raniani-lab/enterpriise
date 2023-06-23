@@ -1,6 +1,7 @@
 /** @odoo-module */
 
 import { registry } from "@web/core/registry";
+import { stepUtils } from "@web_tour/tour_service/tour_utils";
 
 
 registry.category("web_tour.tours").add('helpdesk_pick_template_as_message_from_knowledge', {
@@ -22,11 +23,9 @@ registry.category("web_tour.tours").add('helpdesk_pick_template_as_message_from_
     run: 'click',
 }, { // check that the content of the template block has been added to the mail composer
     trigger: '.o_mail_composer_form .o_field_html p:contains("Hello world")',
-}, { // click on the "send" button of the mail composer
-    trigger: '.o_mail_send',
+}, { // cancel the message, no need to send it and trigger a backend `write` (see discuss tests for that)
+    trigger: 'footer button:contains(Discard)',
     run: 'click'
-}, { // check that the chatter contains the content of the template block
-    trigger: '.oe_chatter .o-mail-Message-body p:contains("Hello world")',
 }]});
 
 registry.category("web_tour.tours").add('helpdesk_pick_template_as_description_from_knowledge', {
@@ -47,5 +46,6 @@ registry.category("web_tour.tours").add('helpdesk_pick_template_as_description_f
     trigger: '.o_knowledge_behavior_type_template .o_knowledge_toolbar_button_text:contains("Use as Description")',
     run: 'click',
 }, { // check that the description contains content of the template block
-    trigger: '.o_form_sheet .o_field_html .note-editable > p:contains("Hello world")',
-}]});
+    trigger: '.o_form_sheet .o_field_html .odoo-editor-editable p:contains("Hello world")',
+}, ...stepUtils.discardForm(),
+]});

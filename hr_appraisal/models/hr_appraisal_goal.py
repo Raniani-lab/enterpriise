@@ -33,8 +33,10 @@ class HrAppraisalGoal(models.Model):
     @api.depends_context('uid')
     @api.depends('employee_id')
     def _compute_is_manager(self):
-        self.employee_autocomplete_ids = self.env.user.employee_id.employee_autocomplete_ids if self.env.user.employee_id else False
-        self.is_manager = self.env.user.has_group('hr_appraisal.group_hr_appraisal_user') or self.employee_autocomplete_ids
+        self.employee_autocomplete_ids = self.env.user.get_employee_autocomplete_ids()
+        self.is_manager =\
+            self.env.user.has_group('hr_appraisal.group_hr_appraisal_user')\
+            or len(self.employee_autocomplete_ids) > 1
 
     @api.depends('employee_id')
     def _compute_manager_id(self):

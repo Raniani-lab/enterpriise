@@ -113,12 +113,12 @@ class HrAppraisal(models.Model):
     @api.depends_context('uid')
     @api.depends('manager_ids', 'employee_id', 'employee_id.parent_id')
     def _compute_user_manager_rights(self):
-        user_appraisal_admin = self.user_has_groups('hr_appraisal.group_hr_appraisal_user')
-        user_employee_id = self.env.user.employee_id
-        self.employee_autocomplete_ids = user_employee_id.employee_autocomplete_ids
+        self.employee_autocomplete_ids = self.env.user.get_employee_autocomplete_ids()
         for appraisal in self:
-            appraisal.manager_user_ids = appraisal.manager_ids.mapped('user_id')
-            appraisal.is_manager = user_appraisal_admin or user_employee_id in appraisal.manager_ids + appraisal.employee_id.parent_id
+            appraisal.manager_user_ids = appraisal.manager_ids.user_id
+            appraisal.is_manager =\
+                self.user_has_groups('hr_appraisal.group_hr_appraisal_user')\
+                or self.env.user.employee_id in (appraisal.manager_ids | appraisal.employee_id.parent_id)
 
     @api.depends_context('uid')
     @api.depends('employee_id', 'employee_feedback_published')

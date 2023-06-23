@@ -21,20 +21,12 @@ class HrEmployee(models.Model):
     appraisal_count = fields.Integer(compute='_compute_appraisal_count', store=True, groups="hr.group_hr_user")
     uncomplete_goals_count = fields.Integer(compute='_compute_uncomplete_goals_count')
     appraisal_ids = fields.One2many('hr.appraisal', 'employee_id')
-    employee_autocomplete_ids = fields.Many2many('hr.employee', compute='_compute_employee_autocomplete_ids')
 
     @api.constrains('next_appraisal_date')
     def _check_next_appraisal_date(self):
         today = fields.Date.today()
         if not self.env.context.get('install_mode') and any(employee.next_appraisal_date and employee.next_appraisal_date < today for employee in self):
             raise ValidationError(_("You cannot set 'Next Appraisal Date' in the past."))
-
-    @api.depends_context('uid')
-    def _compute_employee_autocomplete_ids(self):
-        if self.user_has_groups('hr_appraisal.group_hr_appraisal_user'):
-            self.employee_autocomplete_ids = self.env['hr.employee'].search([('company_id', '=', self.env.company.id)])
-        else:
-            self.employee_autocomplete_ids = self.env.user.employee_id.child_ids + self.env.user.employee_id + self.env['hr.appraisal'].search([('company_id', '=', self.env.company.id)]).employee_id
 
     def _compute_related_partner(self):
         for rec in self:

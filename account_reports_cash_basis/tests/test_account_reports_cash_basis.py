@@ -5,6 +5,8 @@ from odoo import fields, Command
 
 from odoo.addons.account_reports.tests.common import TestAccountReportsCommon
 
+import json
+
 
 @tagged('post_install', '-at_install')
 class TestAccountReports(TestAccountReportsCommon):
@@ -328,5 +330,53 @@ class TestAccountReports(TestAccountReportsCommon):
                 ('499000 Other Income',                 '',            150,           -150),
                 # Report Total.
                 ('Total',                              850,            850,              0),
+            ],
+        )
+
+    def test_cash_basis_general_ledger_load_more_lines(self):
+        invoice_date = fields.Date.from_string('2023-01-01')
+        invoice = self.init_invoice('out_invoice', amounts=[3000.0], taxes=[], partner=self.partner_a, invoice_date=invoice_date, post=True)
+        for _ in range(3):
+            self.env['account.payment.register'].with_context(active_ids=invoice.ids, active_model='account.move')\
+                .create({'payment_date': invoice_date, 'amount': 1000})._create_payments()
+        report = self.env.ref('account_reports.general_ledger_report')
+        report.load_more_limit = 2
+        options = self._generate_options(report, invoice_date, invoice_date)
+        options['report_cash_basis'] = True
+        lines = report._get_lines(options)
+        lines_to_unfold_id = lines[5]['id'] # Mark the '101200 Account Receivable' line to be unfolded.
+        options['unfolded_lines'] = [lines_to_unfold_id]
+        lines = report._get_lines(options)
+        self.assertLinesValues(
+            lines,
+            #   Name                                    Debit       Credit     Balance
+            [0, 5, 6, 7],
+            [
+                # Accounts.
+                ('101402 Outstanding Receipts',         3000.0,     '',         3000.0),
+                ('101404 Bank',                         460.0,      '',         460.0),
+                ('121000 Account Receivable',           3460.0,     3460.0,     0.0),
+                # Expanded line
+                ('400000 Product Sales',                '',         3000.0,     -3000.0),
+                ('INV/2023/00001',                      '',         2000.0,     -2000.0),  # The 2 first payments are grouped
+                ('Load more...',                        '',         '',         ''),
+                ('Total 400000 Product Sales',          '',         3000.0,     -3000.0),
+                ('999999 Undistributed Profits/Losses', '',         460.0,      -460.0),
+                # Report Total.
+                ('Total',                               6920.0,     6920.0,     0.0),
+            ],
+        )
+
+        load_more_1 = report._expand_unfoldable_line('_report_expand_unfoldable_line_general_ledger',
+            lines[5]['id'], lines[7]['groupby'], options,
+            json.loads(lines[7]['progress']),
+            lines[7]['offset'])
+
+        self.assertLinesValues(
+            load_more_1,
+            #   Name, Debit, Credit, Balance
+            [0, 5, 6, 7],
+            [
+                ('INV/2023/00001', '', 1000.0, -3000.0),  # The last payment is displayed on another line
             ],
         )

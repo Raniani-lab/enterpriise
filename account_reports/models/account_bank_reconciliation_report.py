@@ -525,9 +525,9 @@ class BankReconciliationReportCustomHandler(models.AbstractModel):
                     elif col_expr_label == 'date':
                         col_class = 'date'
                         formatted_value = format_date(self.env, col_value)
+                    elif col_expr_label == 'currency' and no_convert:
+                        col_value = ''
                     else:
-                        if no_convert:
-                            col_value = ''
                         formatted_value = report.format_value(col_value, figure_type=column['figure_type'])
 
                     columns.append({

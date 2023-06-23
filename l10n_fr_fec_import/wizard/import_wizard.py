@@ -435,6 +435,7 @@ class FecImportWizard(models.TransientModel):
                 "ref": piece_ref,
                 "account_id": f"l10n_fr_fec_import.account_{account_code}",
                 "fec_matching_number": matching or False,
+                "tax_ids": [],  # Avoid default taxes on the accounts to be set
             }
 
             # Save the matching number for eventual balance issues

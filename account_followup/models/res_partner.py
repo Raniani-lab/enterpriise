@@ -435,7 +435,6 @@ class ResPartner(models.Model):
              AND aml.parent_state = 'posted'
              AND aml.reconciled IS NOT TRUE
              AND aml.blocked IS FALSE
-             AND aml.balance > 0
              AND aml.company_id = %(company_id)s
              {"" if partner_ids is None else "AND aml.partner_id IN %(partner_ids)s"}
         GROUP BY partner.id

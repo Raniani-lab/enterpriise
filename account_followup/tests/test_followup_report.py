@@ -248,3 +248,44 @@ class TestAccountFollowupReports(TestAccountReportsCommon):
 
         lines = report._get_followup_report_lines(options)
         self.assertEqual(len(lines), 0, "There should be no line displayed")
+
+    def test_negative_followup_report(self):
+        ''' Test negative or null followup reports: if a contact has an overdue invoice but has a negative of null total due, no action is needed.
+        '''
+        self.env['account_followup.followup.line'].create({
+            'company_id': self.env.company.id,
+            'name': 'First Reminder',
+            'delay': 15,
+            'send_email': False,
+        })
+        self.env['account.move'].create({
+            'move_type': 'out_invoice',
+            'invoice_date': '2016-01-01',
+            'partner_id': self.partner_a.id,
+            'invoice_line_ids': [Command.create({
+                'quantity': 1,
+                'price_unit': 500,
+                'tax_ids': [],
+            })]
+        }).action_post()
+
+        self.env['account.move'].create({
+            'move_type': 'out_refund',
+            'invoice_date': '2016-01-15',
+            'partner_id': self.partner_a.id,
+            'invoice_line_ids': [Command.create({
+                'quantity': 1,
+                'price_unit': 300,
+                'tax_ids': [],
+            })]
+        }).action_post()
+        self.assertEqual(self.partner_a.total_due, 200)
+        self.assertEqual(self.partner_a.followup_status, 'in_need_of_action')
+
+        self.env['account.payment'].create({
+            'move_type': 'inbound',
+            'partner_id': self.partner_a.id,
+            'amount': 400,
+        }).action_post()
+        self.assertEqual(self.partner_a.total_due, -200)
+        self.assertEqual(self.partner_a.followup_status, 'no_action_needed')

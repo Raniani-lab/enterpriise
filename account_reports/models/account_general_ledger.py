@@ -99,7 +99,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
 
             # load_more_limit canno( be passed to this call, otherwise it won't be applied per account but on the whole result.
             # We gain perf from batching, but load every result, even if the limit restricts them later.
-            'aml_values': self._get_aml_values(report, options, account_ids_to_expand),
+            'aml_values': self._get_aml_values(report, options, account_ids_to_expand)[0],
         }
 
     def _tax_declaration_lines(self, report, options, tax_type):
@@ -334,7 +334,14 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
         rslt = {account_id: {} for account_id in expanded_account_ids}
         aml_query, aml_params = self._get_query_amls(report, options, expanded_account_ids, offset=offset, limit=limit)
         self._cr.execute(aml_query, aml_params)
+        aml_results_number = 0
+        has_more = False
         for aml_result in self._cr.dictfetchall():
+            aml_results_number += 1
+            if aml_results_number == limit:
+                has_more = True
+                break
+
             if aml_result['ref']:
                 aml_result['communication'] = f"{aml_result['ref']} - {aml_result['name']}"
             else:
@@ -361,7 +368,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             else:
                 account_result[aml_key][aml_result['column_group_key']] = aml_result
 
-        return rslt
+        return rslt, has_more
 
     def _get_query_amls(self, report, options, expanded_account_ids, offset=0, limit=None):
         """ Construct a query retrieving the account.move.lines when expanding a report line with or without the load
@@ -697,30 +704,22 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
 
         # Get move lines
         limit_to_load = report.load_more_limit + 1 if report.load_more_limit and not options['print_mode'] else None
-
+        has_more = False
         if unfold_all_batch_data:
             aml_results = unfold_all_batch_data['aml_values'][model_id]
         else:
-            aml_results = self._get_aml_values(report, options, [model_id], offset=offset, limit=limit_to_load)[model_id]
+            aml_results, has_more = self._get_aml_values(report, options, [model_id], offset=offset, limit=limit_to_load)
+            aml_results = aml_results[model_id]
 
-        has_more = False
-        treated_results_count = 0
         next_progress = progress
         for aml_result in aml_results.values():
-            if limit_to_load and treated_results_count == report.load_more_limit:
-                # Enough elements loaded. Only the one due to the +1 in the limit passed when computing aml_results is left.
-                # This element won't generate a line now, but we use it to know that we'll need to add a load_more line.
-                has_more = True
-                break
-
             new_line = self._get_aml_line(report, line_dict_id, options, aml_result, next_progress)
             lines.append(new_line)
             next_progress = init_load_more_progress(new_line)
-            treated_results_count += 1
 
         return {
             'lines': lines,
-            'offset_increment': treated_results_count,
+            'offset_increment': report.load_more_limit,
             'has_more': has_more,
             'progress': next_progress,
         }

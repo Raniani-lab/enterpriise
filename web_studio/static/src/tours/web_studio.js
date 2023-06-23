@@ -1,8 +1,8 @@
 /** @odoo-module */
 
-import { _t } from "web.core";
-import "web.legacy_tranlations_loaded";
-import utils from "web_studio.utils";
+import { _t } from "@web/legacy/js/services/core";
+import "@web/legacy/translations_loaded";
+import utils from "@web_studio/utils";
 import { registry } from "@web/core/registry";
 import { markup } from "@odoo/owl";
 

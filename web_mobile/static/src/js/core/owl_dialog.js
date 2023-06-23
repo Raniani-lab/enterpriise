@@ -1,8 +1,8 @@
 /** @odoo-module **/
 
-import OwlDialog from "web.OwlDialog";
-import { useBackButton } from "web_mobile.hooks";
-import { patch } from "web.utils";
+import OwlDialog from "@web/legacy/js/core/owl_dialog";
+import { useBackButton } from "@web_mobile/js/core/hooks";
+import { patch } from '@web/legacy/js/core/utils';
 
 patch(OwlDialog.prototype, "web_mobile", {
     setup() {

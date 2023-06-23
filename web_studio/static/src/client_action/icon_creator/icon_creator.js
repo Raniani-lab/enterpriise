@@ -16,7 +16,7 @@ const DEFAULT_ICON = {
  *
  * Component which purpose is to design an app icon. It can be an uploaded image
  * which will be displayed as is, or an icon customized with the help of presets
- * of colors and icon symbols (@see web_studio.utils for the full list of colors
+ * of colors and icon symbols (@see web_studio/static/src/utils for the full list of colors
  * and icon classes).
  * @extends Component
  */

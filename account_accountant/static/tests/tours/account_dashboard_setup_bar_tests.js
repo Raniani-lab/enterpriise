@@ -1,9 +1,9 @@
 /** @odoo-module **/
 
-import "account.dashboard.setup.tour";
-import { _t } from "web.core";
+import "@account/../tests/tours/account_dashboard_setup_bar_tests";
+import { _t } from "@web/legacy/js/services/core";
 import { registry } from "@web/core/registry";
-import "web.legacy_tranlations_loaded";
+import "@web/legacy/translations_loaded";
 import { patch } from "@web/core/utils/patch";
 
 patch(registry.category("web_tour.tours").get("account_render_report"), "patch_account_render_report", {
@@ -16,6 +16,6 @@ patch(registry.category("web_tour.tours").get("account_render_report"), "patch_a
         }, {
             trigger: `a:contains(${_t("Customer Invoices")})`,
         });
-        return originalSteps; 
+        return originalSteps;
     }
 });

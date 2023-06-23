@@ -2,7 +2,7 @@
 
 import { MrpTimer } from "@mrp/widgets/timer";
 import { useService } from "@web/core/utils/hooks";
-import time from 'web.time';
+import time from '@web/legacy/js/core/time';
 
 const { Component, onWillStart } = owl;
 

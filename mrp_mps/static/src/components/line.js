@@ -2,7 +2,7 @@
 
 import { CheckBox } from "@web/core/checkbox/checkbox";
 import { useService, useBus } from "@web/core/utils/hooks";
-import fieldUtils from 'web.field_utils';
+import fieldUtils from '@web/legacy/js/fields/field_utils';
 
 const { Component, useRef, onPatched } = owl;
 

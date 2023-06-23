@@ -1,9 +1,9 @@
-/** @odoo-module alias=planning.calendar_frontend **/
+/** @odoo-module **/
 /* eslint-disable no-undef */
 
-import publicWidget from "web.public.widget";
-import time from "web.time";
-import translation from "web.translation";
+import publicWidget from "@web/legacy/js/public/public_widget";
+import time from "@web/legacy/js/core/time";
+import translation from "@web/legacy/js/core/translation";
 const _t = translation._t;
 
 publicWidget.registry.PlanningView = publicWidget.Widget.extend({
@@ -47,7 +47,7 @@ publicWidget.registry.PlanningView = publicWidget.Widget.extend({
                 $('[data-bs-toggle="popover"]').popover('hide');
             }
         });
-        // code used to dismiss popover when opening another popover 
+        // code used to dismiss popover when opening another popover
         $('[data-bs-toggle="popover"]').on('click', function (e) {
             $('[data-bs-toggle="popover"]').not(this).popover('hide');
         });

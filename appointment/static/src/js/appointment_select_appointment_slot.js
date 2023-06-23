@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
-import core from "web.core";
-import publicWidget from "web.public.widget";
+import core from "@web/legacy/js/services/core";
+import publicWidget from "@web/legacy/js/public/public_widget";
 var qweb = core.qweb;
 
 publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({

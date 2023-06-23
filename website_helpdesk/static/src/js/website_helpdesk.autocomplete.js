@@ -1,9 +1,9 @@
 /** @odoo-module  */
 
-import concurrency from 'web.concurrency';
-import publicWidget from 'web.public.widget';
+import concurrency from '@web/legacy/js/core/concurrency';
+import publicWidget from '@web/legacy/js/public/public_widget';
 
-import { qweb } from 'web.core';
+import { qweb } from "@web/legacy/js/services/core";
 import { debounce } from "@web/core/utils/timing";
 
 publicWidget.registry.knowledgeBaseAutocomplete = publicWidget.Widget.extend({

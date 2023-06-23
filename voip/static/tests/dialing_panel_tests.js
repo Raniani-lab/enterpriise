@@ -7,11 +7,11 @@ import { voipService } from "@voip/voip_service";
 
 import { browser } from "@web/core/browser/browser";
 import { registry } from "@web/core/registry";
-import mobile from "web_mobile.core";
+import mobile from "@web_mobile/js/services/core";
 import { ringtoneService } from "@voip/ringtone_service";
 import { makeFakeUserService } from "@web/../tests/helpers/mock_services";
 import { patchWithCleanup } from "@web/../tests/helpers/utils";
-import { dom, nextTick, mock } from "web.test_utils";
+import { dom, nextTick, mock } from "@web/../tests/legacy/helpers/test_utils";
 import { userAgentService } from "@voip/user_agent_service";
 
 /**

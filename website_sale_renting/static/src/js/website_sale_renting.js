@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { WebsiteSale } from 'website_sale.website_sale';
+import { WebsiteSale } from '@website_sale/js/website_sale';
 import { RentingMixin } from '@website_sale_renting/js/renting_mixin';
 import '@website_sale_renting/js/variant_mixin';
 import { serializeDateTime } from "@web/core/l10n/dates";

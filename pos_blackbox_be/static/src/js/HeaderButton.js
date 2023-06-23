@@ -1,5 +1,5 @@
-/** @odoo-module alias=pos_blackbox_be.HeaderButton **/
-    
+/** @odoo-module **/
+
     import HeaderButton from "point_of_sale.HeaderButton";
     import Registries from "point_of_sale.Registries";
 

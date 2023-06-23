@@ -1,10 +1,10 @@
 /** @odoo-module **/
-        
-    import core from "web.core";
+
+    import core from "@web/legacy/js/services/core";
     import { registry } from "@web/core/registry";
     import { stepUtils } from "@web_tour/tour_service/tour_utils";
-    import "web.legacy_tranlations_loaded";
-    
+    import "@web/legacy/translations_loaded";
+
     var _t = core._t;
     const { markup } = owl;
 
@@ -40,4 +40,3 @@
         content: _t("Your manager will have to approve (or refuse) your expense reports."),
         position: 'bottom',
     }]});
-    

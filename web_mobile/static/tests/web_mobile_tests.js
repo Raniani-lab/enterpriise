@@ -1,17 +1,17 @@
 /** @odoo-module **/
 
-import Dialog from "web.Dialog";
-import dom from "web.dom";
-import OwlDialog from "web.OwlDialog";
-import Popover from "web.Popover";
+import Dialog from "@web/legacy/js/core/dialog";
+import dom from "@web/legacy/js/core/dom";
+import OwlDialog from "@web/legacy/js/core/owl_dialog";
+import Popover from "@web/legacy/js/core/popover";
 import session from "web.session";
-import makeTestEnvironment from "web.test_env";
-import testUtils from "web.test_utils";
-import Widget from "web.Widget";
+import makeTestEnvironment from "@web/../tests/legacy/helpers/test_env";
+import testUtils from "@web/../tests/legacy/helpers/test_utils";
+import Widget from "@web/legacy/js/core/widget";
 
-import { useBackButton } from "web_mobile.hooks";
-import { BackButtonEventMixin } from "web_mobile.mixins";
-import mobile from "web_mobile.core";
+import { useBackButton } from "@web_mobile/js/core/hooks";
+import { BackButtonEventMixin } from "@web_mobile/js/core/mixins";
+import mobile from "@web_mobile/js/services/core";
 /*import UserPreferencesFormView from "web_mobile.UserPreferencesFormView";*/
 
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
@@ -283,7 +283,7 @@ QUnit.module("web_mobile", {
             }
         }
         DummyComponent.template = xml`<div/>`;
-        
+
         const target = getFixture();
         const env = makeTestEnv();
 

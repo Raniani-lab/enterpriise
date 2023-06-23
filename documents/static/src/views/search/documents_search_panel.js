@@ -4,9 +4,10 @@ import { browser } from "@web/core/browser/browser";
 import { SearchPanel } from "@web/search/search_panel/search_panel";
 import { usePopover } from "@web/core/popover/popover_hook";
 import { useService } from "@web/core/utils/hooks";
-import { device } from "web.config";
-import { sprintf } from "web.utils";
+import config from "@web/legacy/js/services/config";
+import { sprintf } from "@web/legacy/js/core/utils";
 
+const { device } = config
 const VALUE_SELECTOR = [".o_search_panel_category_value", ".o_search_panel_filter_value"].join();
 const FOLDER_VALUE_SELECTOR = ".o_search_panel_category_value";
 const LONG_TOUCH_THRESHOLD = 400;

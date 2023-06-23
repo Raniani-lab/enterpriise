@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { _t } from "web.core";
+import { _t } from "@web/legacy/js/services/core";
 import { AbstractBehavior } from "@knowledge/components/behaviors/abstract_behavior/abstract_behavior";
 import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { useService } from "@web/core/utils/hooks";

@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import BarcodeModel from '@stock_barcode/models/barcode_model';
-import { patch } from 'web.utils';
+import { patch } from '@web/legacy/js/core/utils';
 
 patch(BarcodeModel.prototype, 'stock_barcode_mrp_subcontracting', {
 

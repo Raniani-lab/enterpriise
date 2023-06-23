@@ -5,7 +5,7 @@ import { patch } from "@web/core/utils/patch";
 
 patch(RunningTourActionHelper.prototype, 'stock_barcode.RunningTourActionHelper', {
     _scan(element, barcode) {
-        odoo.__DEBUG__.services['web.core'].bus.trigger('barcode_scanned', barcode, element);
+        odoo.__DEBUG__.services['@web/legacy/js/services/core'].bus.trigger('barcode_scanned', barcode, element);
     },
     scan(barcode, element) {
         this._scan(this._get_action_values(element), barcode);

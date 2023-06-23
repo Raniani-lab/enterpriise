@@ -1,6 +1,6 @@
-/** @odoo-module alias=web_mobile.hooks **/
+/** @odoo-module **/
 
-import { backButtonManager } from "web_mobile.core";
+import ServiceCore from "@web_mobile/js/services/core";
 
 import { onMounted, onPatched, onWillUnmount, useComponent } from "@odoo/owl";
 
@@ -16,11 +16,11 @@ import { onMounted, onPatched, onWillUnmount, useComponent } from "@odoo/owl";
  *
  * @param {function} func the function to execute when the back button is
  *  pressed. The function is called with the custom event as param.
- * @param {function} [shouldEnable] the function to execute when the DOM is 
- *  patched to check if the backbutton should be enabled or disabled ; 
+ * @param {function} [shouldEnable] the function to execute when the DOM is
+ *  patched to check if the backbutton should be enabled or disabled ;
  *  if undefined will be enabled on mount and disabled on unmount.
  */
-function useBackButton(func, shouldEnable) {
+export function useBackButton(func, shouldEnable) {
     const component = useComponent();
     let isEnabled = false;
 
@@ -28,7 +28,7 @@ function useBackButton(func, shouldEnable) {
      * Enables the func listener, overriding default back button behavior.
      */
     function enable() {
-        backButtonManager.addListener(component, func);
+        ServiceCore.backButtonManager.addListener(component, func);
         isEnabled = true;
     }
 
@@ -37,7 +37,7 @@ function useBackButton(func, shouldEnable) {
      * no other listeners are present.
      */
     function disable() {
-        backButtonManager.removeListener(component);
+        ServiceCore.backButtonManager.removeListener(component);
         isEnabled = false;
     }
 
@@ -66,5 +66,3 @@ function useBackButton(func, shouldEnable) {
         }
     });
 }
-
-export default { useBackButton };

@@ -2,9 +2,9 @@
 'use strict';
 
 import { fetchValidHeadings } from './tools/knowledge_tools.js';
-import publicWidget from 'web.public.widget';
+import publicWidget from '@web/legacy/js/public/public_widget';
 import session from 'web.session';
-import { qweb as QWeb } from 'web.core';
+import { qweb as QWeb } from "@web/legacy/js/services/core";
 import { debounce, throttleForAnimation } from "@web/core/utils/timing";
 
 publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend({
@@ -26,7 +26,7 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend({
             this.resId = this.$id;  // necessary for the 'KnowledgeTreePanelMixin' extension
             this.storageKey = "knowledge.unfolded.ids";
             this.unfoldedArticlesIds = localStorage.getItem(this.storageKey)?.split(";").map(Number) || [];
-            
+
             this._renderTree(this.$id, '/knowledge/tree_panel/portal');
             this._setResizeListener();
             // Debounce the search articles method to reduce the number of rpcs
@@ -218,7 +218,7 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend({
                 this.unfoldedArticlesIds.push(articleId);
             }
             $icon.removeClass('fa-caret-right');
-            $icon.addClass('fa-caret-down');  
+            $icon.addClass('fa-caret-down');
         }
         localStorage.setItem(this.storageKey, this.unfoldedArticlesIds.join(";"),
         );

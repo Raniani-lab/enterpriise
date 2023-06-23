@@ -5,14 +5,14 @@ import { PhoneCallContactsTab } from "@voip/legacy/phone_call_contacts_tab";
 import { PhoneCallRecentTab } from "@voip/legacy/phone_call_recent_tab";
 import { UserAgent } from "@voip/legacy/user_agent";
 
-import config from "web.config";
-import core from "web.core";
+import config from "@web/legacy/js/services/config";
+import core from "@web/legacy/js/services/core";
 import { _lt, _t } from "@web/core/l10n/translation";
 import { sprintf } from "@web/core/utils/strings";
-import Dialog from "web.Dialog";
-import dom from "web.dom";
-import mobile from "web_mobile.core";
-import Widget from "web.Widget";
+import Dialog from "@web/legacy/js/core/dialog";
+import dom from "@web/legacy/js/core/dom";
+import mobile from "@web_mobile/js/services/core";
+import Widget from "@web/legacy/js/core/widget";
 import { debounce } from "@web/core/utils/timing";
 
 const YOUR_ARE_ALREADY_IN_A_CALL = _lt("You are already in a call");

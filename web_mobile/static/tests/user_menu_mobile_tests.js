@@ -10,7 +10,7 @@ import { click as _click, getFixture, mount, patchWithCleanup } from "@web/../te
 import { menuService } from "@web/webclient/menus/menu_service";
 import { actionService } from "@web/webclient/actions/action_service";
 
-import mobile from "web_mobile.core";
+import mobile from "@web_mobile/js/services/core";
 
 const serviceRegistry = registry.category("services");
 const userMenuRegistry = registry.category("user_menuitems");

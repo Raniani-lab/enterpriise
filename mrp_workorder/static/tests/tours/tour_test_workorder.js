@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { registry } from "@web/core/registry";
-import helper from 'mrp_workorder.tourHelper';
+import helper from '@mrp_workorder/../tests/tours/tour_helper_mrp_workorder';
 
 registry.category("web_tour.tours").add('test_production_with_employee', {test: true, steps: () => [
     { trigger: 'div.popup' },

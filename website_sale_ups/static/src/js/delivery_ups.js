@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-    import ajax from "web.ajax";
+    import ajax from "@web/legacy/js/core/ajax";
 
     $(document).ready(function () {
 

@@ -9,7 +9,7 @@ import { registry } from "@web/core/registry";
 import { session } from "@web/session";
 import { enterpriseSubscriptionService } from "@web_enterprise/webclient/home_menu/enterprise_subscription_service";
 import { homeMenuService } from "@web_enterprise/webclient/home_menu/home_menu_service";
-import testUtils from "web.test_utils";
+import testUtils from "@web/../tests/legacy/helpers/test_utils";
 
 const serviceRegistry = registry.category("services");
 

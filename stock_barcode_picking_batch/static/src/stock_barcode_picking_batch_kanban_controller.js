@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { patch } from 'web.utils';
+import { patch } from '@web/legacy/js/core/utils';
 import { StockBarcodeKanbanController } from '@stock_barcode/kanban/stock_barcode_kanban_controller';
 
 patch(StockBarcodeKanbanController.prototype, 'stock_barcode_picking_batch', {

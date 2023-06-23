@@ -1,10 +1,10 @@
-/** @odoo-module alias=social_push_notifications.NotificationManager **/
+/** @odoo-module **/
 /* global firebase */
 
-import core from "web.core";
-import publicWidget from "web.public.widget";
-import localStorage from "web.local_storage";
-import NotificationRequestPopup from "social_push_notifications.NotificationRequestPopup";
+import core from "@web/legacy/js/services/core";
+import publicWidget from "@web/legacy/js/public/public_widget";
+import localStorage from "@web/legacy/js/core/local_storage";
+import NotificationRequestPopup from "@social_push_notifications/js/push_notification_request_popup";
 
 publicWidget.registry.NotificationWidget =  publicWidget.Widget.extend({
     selector: '#wrapwrap',
@@ -269,7 +269,7 @@ publicWidget.registry.NotificationWidget =  publicWidget.Widget.extend({
      *
      * The configuration is stored for 7 days to still receive visual updates if the configuration
      * changes on the backend side.
-     * 
+     *
      * @param {String} [nextAskPermissionKeySuffix] optional - Suffix of the cache entry
      * @param {Object} [forcedPopupConfig] optional - Properties that will overwrite the notification request configuration.
      * @param {String} forcedPopupConfig.title optional - Title of the popup.
@@ -391,7 +391,7 @@ publicWidget.registry.NotificationWidget =  publicWidget.Widget.extend({
      * The module will guarantee that no other push notification request for
      * the `nextAskPermissionKeySuffix` key will issued if the user dismissed
      * a request using the same key within the last 7 days.
-     * 
+     *
      * This can be useful in specific context, e.g:
      * When favoriting event.tracks, we want to re-ask the user to enable the push
      * notifications even if the user recently dismisses the default one. By
@@ -399,7 +399,7 @@ publicWidget.registry.NotificationWidget =  publicWidget.Widget.extend({
      * the 7 days restriction set by the first request expires. When the user
      * dismisses the new request, a 7 days restriction will also be applied to the
      * provided key.
-     * 
+     *
      * @param {String} [nextAskPermissionKeySuffix] Suffix of the cache entry.
      * @param {Object} [forcedPopupConfig] Properties of the popup.
      * @param {String} forcedPopupConfig.title optional - Title of the popup.

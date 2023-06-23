@@ -1,7 +1,7 @@
-/** @odoo-module alias=web_mobile.mixins **/
+/** @odoo-module **/
 
 import session from "web.session";
-import mobile from "web_mobile.core";
+import mobile from "@web_mobile/js/services/core";
 import { isIosApp } from "@web/core/browser/feature_detection";
 
 /**
@@ -12,7 +12,7 @@ import { isIosApp } from "@web/core/browser/feature_detection";
  * @name BackButtonEventMixin
  *
  */
-var BackButtonEventMixin = {
+export var BackButtonEventMixin = {
     /**
      * Register event listener for 'backbutton' event when attached to the DOM
      */
@@ -63,7 +63,7 @@ const UpdateDeviceAccountControllerMixin = {
     },
 };
 
-async function updateAccountOnMobileDevice() {
+export async function updateAccountOnMobileDevice() {
     const updated = session.updateAccountOnMobileDevice();
     // Crapy workaround for unupdatable Odoo Mobile App iOS (Thanks Apple :@)
     if (!isIosApp()){

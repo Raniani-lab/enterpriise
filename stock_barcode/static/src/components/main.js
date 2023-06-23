@@ -4,8 +4,8 @@ import { Chatter } from "@mail/core/web/chatter";
 
 import BarcodePickingModel from '@stock_barcode/models/barcode_picking_model';
 import BarcodeQuantModel from '@stock_barcode/models/barcode_quant_model';
-import { bus } from 'web.core';
-import config from 'web.config';
+import { bus } from "@web/legacy/js/services/core";
+import config from '@web/legacy/js/services/config';
 import GroupedLineComponent from '@stock_barcode/components/grouped_line';
 import LineComponent from '@stock_barcode/components/line';
 import PackageLineComponent from '@stock_barcode/components/package_line';

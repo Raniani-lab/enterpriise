@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import SpreadsheetCollaborativeChannel from "@spreadsheet_edition/bundle/o_spreadsheet/collaborative/spreadsheet_collaborative_channel";
-import makeTestEnvironment from "web.test_env";
+import makeTestEnvironment from "@web/../tests/legacy/helpers/test_env";
 
 import { EventBus } from "@odoo/owl";
 

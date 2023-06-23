@@ -1,8 +1,8 @@
 /** @odoo-module **/
 
-import { _t } from 'web.core';
-import time from 'web.time';
-import publicWidget from 'web.public.widget';
+import { _t } from "@web/legacy/js/services/core";
+import time from '@web/legacy/js/core/time';
+import publicWidget from '@web/legacy/js/public/public_widget';
 import { msecPerUnit, RentingMixin } from '@website_sale_renting/js/renting_mixin';
 import { deserializeDateTime } from "@web/core/l10n/dates";
 import { luxonToMoment, momentToLuxon } from "@website_sale_renting/js/date_utils";

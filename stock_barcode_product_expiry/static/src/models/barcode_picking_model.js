@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import BarcodePickingModel from '@stock_barcode/models/barcode_picking_model';
-import { patch } from 'web.utils';
+import { patch } from '@web/legacy/js/core/utils';
 
 patch(BarcodePickingModel.prototype, 'stock_barcode_product_expiry', {
 

@@ -1,13 +1,13 @@
-/** @odoo-module alias=pos_blackbox_be.pos_blackbox_be **/
+/** @odoo-module **/
 /* global Sha1 */
     import models from "point_of_sale.models";
     import { Gui } from "point_of_sale.Gui";
-    import core    from "web.core";
-    import Class from "web.Class";
+    import core    from "@web/legacy/js/services/core";
+    import Class from "@web/legacy/js/core/class";
     import devices from "point_of_sale.devices";
     import { range } from "@web/core/utils/numbers";
     var _t      = core._t;
-    import utils from "web.utils";
+    import utils from "@web/legacy/js/core/utils";
     const round_pr = utils.round_precision;
 
     var orderline_super = models.Orderline.prototype;

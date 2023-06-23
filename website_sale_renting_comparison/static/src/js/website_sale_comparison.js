@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
-import publicWidget from 'web.public.widget';
-import 'website_sale_comparison.comparison';
+import publicWidget from '@web/legacy/js/public/public_widget';
+import '@website_sale_comparison/js/website_sale_comparison';
 import { RentingMixin } from '@website_sale_renting/js/renting_mixin';
 
 publicWidget.registry.ProductComparison.include(RentingMixin);

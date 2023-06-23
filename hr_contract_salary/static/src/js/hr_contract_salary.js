@@ -1,9 +1,9 @@
-/** @odoo-module alias=hr_contract_salary **/
+/** @odoo-module **/
 
-import concurrency from "web.concurrency";
-import publicWidget from "web.public.widget";
-import utils from "web.utils";
-import {qweb, _t} from "web.core";
+import concurrency from "@web/legacy/js/core/concurrency";
+import publicWidget from "@web/legacy/js/public/public_widget";
+import utils from "@web/legacy/js/core/utils";
+import {qweb, _t} from "@web/legacy/js/services/core";
 import { sprintf } from "@web/core/utils/strings";
 import { debounce } from "@web/core/utils/timing";
 

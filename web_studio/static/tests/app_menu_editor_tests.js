@@ -10,9 +10,9 @@ import { AppMenuEditor } from "@web_studio/client_action/editor/app_menu_editor/
 import { getFixture, mount, click, editInput, nextTick } from "@web/../tests/helpers/utils";
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
 import { mapLegacyEnvToWowlEnv } from "@web/legacy/utils";
-import makeTestEnvironment from "web.test_env";
+import makeTestEnvironment from "@web/../tests/legacy/helpers/test_env";
 
-import { dom } from "web.test_utils";
+import { dom } from "@web/../tests/legacy/helpers/test_utils";
 const dragAndDrop = dom.dragAndDrop;
 import { setupViewRegistries } from "@web/../tests/views/helpers";
 

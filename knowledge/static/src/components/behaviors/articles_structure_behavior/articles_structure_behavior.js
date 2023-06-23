@@ -2,7 +2,7 @@
 
 import { AbstractBehavior } from "@knowledge/components/behaviors/abstract_behavior/abstract_behavior";
 import { useService } from "@web/core/utils/hooks";
-import { qweb as QWeb }  from "web.core";
+import { qweb as QWeb }  from "@web/legacy/js/services/core";
 import {
     markup,
     useEffect,

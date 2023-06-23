@@ -5,7 +5,7 @@ import { afterNextRender, click, start, startServer } from "@mail/../tests/helpe
 
 import { patchWithCleanup } from "@web/../tests/helpers/utils";
 
-import { methods } from "web_mobile.core";
+import { methods } from "@web_mobile/js/services/core";
 
 QUnit.module("chat_window (patch)");
 

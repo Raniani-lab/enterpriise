@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { NewContentModal, MODULE_STATUS } from '@website/systray_items/new_content';
-import { patch } from 'web.utils';
+import { patch } from '@web/legacy/js/core/utils';
 const { xml } = owl;
 
 patch(NewContentModal.prototype, 'website_enterprise_user_navbar', {

@@ -1,8 +1,8 @@
 /** @odoo-module **/
 
 import BarcodePickingModel from '@stock_barcode/models/barcode_picking_model';
-import { patch } from 'web.utils';
-import { _t } from 'web.core';
+import { patch } from '@web/legacy/js/core/utils';
+import { _t } from "@web/legacy/js/services/core";
 
 
 patch(BarcodePickingModel.prototype, 'stock_barcode_mrp_subcontracting', {

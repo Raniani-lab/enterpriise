@@ -2,7 +2,7 @@
 
 import { nextTick, getFixture } from "@web/../tests/helpers/utils";
 import { registry } from "@web/core/registry";
-import { dom, fields } from "web.test_utils";
+import { dom, fields } from "@web/../tests/legacy/helpers/test_utils";
 
 import { actionService } from "@web/webclient/actions/action_service";
 import { createSpreadsheet, createSpreadsheetTemplate } from "../spreadsheet_test_utils";

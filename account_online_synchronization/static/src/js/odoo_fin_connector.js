@@ -1,9 +1,9 @@
-/** @odoo-module alias=account_online_synchronization.odoo_fin_connector **/
+/** @odoo-module **/
 "use strict";
 
 import { registry } from "@web/core/registry";
 import { loadJS } from "@web/core/assets";
-import { getCookie } from "web.utils.cookies";
+import { getCookie } from "@web/legacy/js/core/cookie_utils";
 const actionRegistry = registry.category('actions');
 /* global OdooFin, debugMode */
 
@@ -11,7 +11,7 @@ function OdooFinConnector(parent, action) {
     const orm = parent.services.orm;
     const actionService = parent.services.action;
     const notificationService = parent.services.notification;
-    
+
     const id = action.id;
     action.params.colorScheme = getCookie("color_scheme");
     let mode = action.params.mode || 'link';
@@ -43,7 +43,7 @@ function OdooFinConnector(parent, action) {
                             notificationService.add(data.message, data);
                             break;
                         case 'exchange_token':
-                            await orm.call('account.online.link', 'exchange_token', 
+                            await orm.call('account.online.link', 'exchange_token',
                                 [[id], data], {context: action.context});
                             break;
                         case 'success':
@@ -59,7 +59,7 @@ function OdooFinConnector(parent, action) {
                 },
                 onAddBank: async function () {
                     // If the user doesn't find his bank
-                    actionResult = await orm.call('account.online.link', 'create_new_bank_account_action', 
+                    actionResult = await orm.call('account.online.link', 'create_new_bank_account_action',
                     [], {context: action.context});
                     return actionService.doAction(actionResult);
                 }

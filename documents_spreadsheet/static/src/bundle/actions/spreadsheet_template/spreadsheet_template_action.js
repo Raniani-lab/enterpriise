@@ -1,6 +1,6 @@
 /** @odoo-module **/
 import { registry } from "@web/core/registry";
-import { _t } from "web.core";
+import { _t } from "@web/legacy/js/services/core";
 
 import SpreadsheetComponent from "@spreadsheet_edition/bundle/actions/spreadsheet_component";
 import { useService } from "@web/core/utils/hooks";

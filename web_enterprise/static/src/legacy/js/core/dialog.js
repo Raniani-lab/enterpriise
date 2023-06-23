@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
-import config from "web.config";
-import Dialog from "web.Dialog";
+import config from "@web/legacy/js/services/config";
+import Dialog from "@web/legacy/js/core/dialog";
 if (config.device.isMobile) {
     Dialog.include({
         /**

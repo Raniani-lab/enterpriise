@@ -2,7 +2,7 @@
 
 import { ActivityMenu } from "@mail/core/web/activity_menu";
 
-import { patch } from "web.utils";
+import { patch } from '@web/legacy/js/core/utils';
 
 patch(ActivityMenu.prototype, "documents", {
     async onClickRequestDocument() {

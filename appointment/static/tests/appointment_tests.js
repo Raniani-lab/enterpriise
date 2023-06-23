@@ -5,7 +5,7 @@ import { clickAllDaySlot } from "@web/../tests/views/calendar/helpers";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
 import { registry } from "@web/core/registry";
 import { userService } from "@web/core/user_service";
-import testUtils from 'web.test_utils';
+import testUtils from '@web/../tests/legacy/helpers/test_utils';
 
 const serviceRegistry = registry.category("services");
 
@@ -179,7 +179,7 @@ QUnit.test('verify appointment links button are displayed', async function (asse
         type: "calendar",
         resModel: 'calendar.event',
         serverData,
-        arch: 
+        arch:
         `<calendar class="o_calendar_test"
                     js_class="attendee_calendar"
                     all_day="allday"
@@ -305,7 +305,7 @@ QUnit.test('discard slot in calendar', async function (assert) {
         "The calendar is now in a mode to create custom appointment time slots");
     assert.containsN(target, '.fc-event', 2);
     assert.containsNone(target, '.o_calendar_slot');
-    
+
     // Same behavior as previous next button
     await click(target.querySelector('.ui-datepicker-calendar > tbody > tr:nth-child(2) > td:nth-child(6) > a'));
     await nextTick();
@@ -335,7 +335,7 @@ QUnit.test("cannot move real event in slots-creation mode", async function (asse
         type: "calendar",
         resModel: 'calendar.event',
         serverData,
-        arch: 
+        arch:
         `<calendar class="o_calendar_test"
                     js_class="attendee_calendar"
                     all_day="allday"
@@ -388,7 +388,7 @@ QUnit.test("create slots for custom appointment type", async function (assert) {
         type: "calendar",
         resModel: 'calendar.event',
         serverData,
-        arch: 
+        arch:
         `<calendar class="o_calendar_test"
                     js_class="attendee_calendar"
                     all_day="allday"
@@ -415,7 +415,7 @@ QUnit.test("create slots for custom appointment type", async function (assert) {
         "The calendar is now in a mode to create custom appointment time slots");
     assert.containsN(target, '.fc-event', 2);
     assert.containsNone(target, '.o_calendar_slot');
-    
+
     // Same behavior as previous next button
     await click(target.querySelector('.ui-datepicker-calendar > tbody > tr:nth-child(2) > td:nth-child(6) > a'));
     assert.containsOnce(target, '.fc-event', 'There is one calendar event');
@@ -440,7 +440,7 @@ QUnit.test('filter works in slots-creation mode', async function (assert) {
         type: "calendar",
         resModel: 'calendar.event',
         serverData,
-        arch: 
+        arch:
         `<calendar class="o_calendar_test"
                     js_class="attendee_calendar"
                     all_day="allday"
@@ -510,7 +510,7 @@ QUnit.test('click & copy appointment type url', async function (assert) {
         type: "calendar",
         resModel: 'calendar.event',
         serverData,
-        arch: 
+        arch:
         `<calendar class="o_calendar_test"
                     js_class="attendee_calendar"
                     all_day="allday"

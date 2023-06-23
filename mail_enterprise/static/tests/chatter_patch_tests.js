@@ -12,7 +12,7 @@ import {
 } from "@mail/../tests/helpers/test_utils";
 
 import { getFixture } from "@web/../tests/helpers/utils";
-import { fields } from "web.test_utils";
+import { fields } from "@web/../tests/legacy/helpers/test_utils";
 
 const { editInput } = fields;
 

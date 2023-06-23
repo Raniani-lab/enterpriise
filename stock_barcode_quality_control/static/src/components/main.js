@@ -1,8 +1,8 @@
 /** @odoo-module **/
 
-import { bus } from 'web.core';
+import { bus } from "@web/legacy/js/services/core";
 import MainComponent from '@stock_barcode/components/main';
-import { patch } from 'web.utils';
+import { patch } from '@web/legacy/js/core/utils';
 
 patch(MainComponent.prototype, 'stock_barcode_quality_control', {
     get hasQualityChecksTodo() {

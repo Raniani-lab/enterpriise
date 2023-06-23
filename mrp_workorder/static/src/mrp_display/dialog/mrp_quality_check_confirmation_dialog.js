@@ -2,7 +2,7 @@
 
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import DocumentViewer from '@mrp_workorder/components/viewer';
-import fieldUtils from "web.field_utils";
+import fieldUtils from "@web/legacy/js/fields/field_utils";
 import { FloatField } from "@web/views/fields/float/float_field";
 import { Many2OneField } from "@web/views/fields/many2one/many2one_field";
 import { TabletImageField } from "@quality/tablet_image_field/tablet_image_field";

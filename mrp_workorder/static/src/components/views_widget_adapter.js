@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { ComponentAdapter } from 'web.OwlCompatibility';
+import { ComponentAdapter } from '@web/legacy/js/owl_compatibility';
 
 export default class ViewsWidgetAdapter extends ComponentAdapter {
     setup() {

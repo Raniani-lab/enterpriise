@@ -1,4 +1,4 @@
-/** @odoo-module alias=web_mobile.core **/
+/** @odoo-module **/
 /* global OdooDeviceUtility */
 
 import { uniqueId } from "@web/core/utils/functions";
@@ -6,7 +6,7 @@ import { uniqueId } from "@web/core/utils/functions";
 var available = typeof OdooDeviceUtility !== 'undefined';
 var DeviceUtility;
 var deferreds = {};
-var methods = {};
+export var methods = {};
 
 if (available){
     DeviceUtility = OdooDeviceUtility;

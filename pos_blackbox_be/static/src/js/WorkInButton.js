@@ -1,5 +1,5 @@
-/** @odoo-module alias=pos_blackbox_be.WorkInButton **/
-    
+/** @odoo-module **/
+
     import PosComponent from "point_of_sale.PosComponent";
     import ProductScreen from "point_of_sale.ProductScreen";
     import { useListener } from "@web/core/utils/hooks";

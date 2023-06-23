@@ -1,9 +1,9 @@
 /** @odoo-module **/
 
-import core from "web.core";
-import Session from "web.Session";
+import core from "@web/legacy/js/services/core";
+import Session from "@web/legacy/js/core/session";
 
-import mobile from "web_mobile.core";
+import mobile from "@web_mobile/js/services/core";
 
 const DEFAULT_AVATAR_SIZE = 128;
 

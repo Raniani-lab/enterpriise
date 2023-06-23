@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import { KanbanController } from '@web/views/kanban/kanban_controller';
-import { bus } from 'web.core';
+import { bus } from "@web/legacy/js/services/core";
 
 const { onMounted, onWillUnmount } = owl;
 

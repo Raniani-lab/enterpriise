@@ -1,9 +1,9 @@
-/** @odoo-module alias=web_enterprise.PromoteStudioDialog **/
-    
-    import core from "web.core";
-    import Dialog from "web.Dialog";
-    import framework from "web.framework";
-    import localStorage from "web.local_storage";
+/** @odoo-module **/
+
+    import core from "@web/legacy/js/services/core";
+    import Dialog from "@web/legacy/js/core/dialog";
+    import framework from "@web/legacy/js/core/misc";
+    import localStorage from "@web/legacy/js/core/local_storage";
     const qweb = core.qweb;
 
     const PromoteStudioDialog = Dialog.extend({

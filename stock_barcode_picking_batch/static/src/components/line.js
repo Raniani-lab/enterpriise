@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import LineComponent from '@stock_barcode/components/line';
-import { patch } from 'web.utils';
+import { patch } from '@web/legacy/js/core/utils';
 
 
 patch(LineComponent.prototype, 'stock_barcode_picking_batch', {

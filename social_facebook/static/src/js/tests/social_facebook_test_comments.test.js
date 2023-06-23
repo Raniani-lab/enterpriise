@@ -6,7 +6,7 @@ import { getFixture } from "@web/../tests/helpers/utils";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers"
 import { registry } from "@web/core/registry";;
 
-import testUtils from "web.test_utils";
+import testUtils from "@web/../tests/legacy/helpers/test_utils";
 
 let target;
 let serverData;
@@ -331,7 +331,7 @@ QUnit.module('Facebook Comments', (hooks) => {
                             removeEventListener: () => {},
                         }
                     });
-                } }; 
+                } };
             }
         }, { force: true });
     });
@@ -525,7 +525,7 @@ QUnit.module('Facebook Comments', (hooks) => {
             ".o_social_comment_wrapper .o_social_comment_message div.o_social_comment_text:contains('Sub Comment 2')",
             "Second sub comment should be loaded");
 
-        
+
         // 3. Check like/dislike behavior
 
         // 3a. Check like status and count
@@ -569,7 +569,7 @@ QUnit.module('Facebook Comments', (hooks) => {
         assert.containsOnce(body,
             ".o_social_comment .o_social_comment:contains('Sub Comment 2') .o_social_likes_count:contains('11')",
             "Sub comment 2 should have 11 likes");
-        
+
         // 4. Add comment
 
         // Patch "addComment" to return new comment

@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { mock } from "web.test_utils";
+import { mock } from "@web/../tests/legacy/helpers/test_utils";
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 import * as BarcodeScanner from "@web/webclient/barcode/barcode_scanner";
 import { destroy, getFixture } from "@web/../tests/helpers/utils";

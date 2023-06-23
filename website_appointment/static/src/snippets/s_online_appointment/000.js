@@ -1,6 +1,6 @@
-/** @odoo-module alias=website_appointment.s_online_appointment **/
+/** @odoo-module **/
 
-import publicWidget from "web.public.widget";
+import publicWidget from "@web/legacy/js/public/public_widget";
 
 
 const OnlineAppointmentCtaWidget = publicWidget.Widget.extend({

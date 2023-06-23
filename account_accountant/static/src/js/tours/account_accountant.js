@@ -1,12 +1,12 @@
 /** @odoo-module **/
-    
-    import core from "web.core";
-    import {Markup} from "web.utils";
+
+    import core from "@web/legacy/js/services/core";
+    import { Markup } from "@web/legacy/js/core/utils";
     import { registry } from "@web/core/registry";
     import { stepUtils } from "@web_tour/tour_service/tour_utils";
     import { patch } from "@web/core/utils/patch";
 
-    import "web.legacy_tranlations_loaded";
+    import "@web/legacy/translations_loaded";
 
     const _t = core._t;
     const { markup } = owl;
@@ -28,7 +28,7 @@
                     content: _t('Go to invoicing'),
                     auto: true,
                 });
-            return originalSteps; 
+            return originalSteps;
         }
     });
 

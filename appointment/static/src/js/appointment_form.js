@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import publicWidget from "web.public.widget";
+import publicWidget from "@web/legacy/js/public/public_widget";
 
 publicWidget.registry.appointmentForm = publicWidget.Widget.extend({
     selector: '.o_appointment_attendee_form',

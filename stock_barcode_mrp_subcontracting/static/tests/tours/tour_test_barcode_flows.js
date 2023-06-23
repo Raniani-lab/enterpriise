@@ -1,10 +1,10 @@
 /** @odoo-module **/
 
-import core from "web.core";
+import core from "@web/legacy/js/services/core";
 import { registry } from "@web/core/registry";
-import helper from "stock_barcode.tourHelper";
+import helper from '@stock_barcode/../tests/tours/tour_helper_stock_barcode';
 import { stepUtils } from "@stock_barcode/../tests/tours/tour_step_utils";
-import "web.legacy_tranlations_loaded";
+import "@web/legacy/translations_loaded";
 
 
 var _t = core._t;
@@ -114,10 +114,10 @@ registry.category("web_tour.tours").add('test_receipt_flexible_subcontracted_pro
     {
         trigger: "div[name=move_line_raw_ids] td[name=qty_done]",
     },
-    
+
     {
         trigger: "div[name=move_line_raw_ids] [name=qty_done] input",
-        run: "text 2", 
+        run: "text 2",
     },
     {
         trigger: ".modal-footer .btn-primary[name=subcontracting_record_component]",

@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { _t, _lt } from "web.core";
+import { _t, _lt } from "@web/legacy/js/services/core";
 import * as spreadsheet from "@odoo/o-spreadsheet";
 import { REINSERT_LIST_CHILDREN } from "../list/list_actions";
 import { INSERT_PIVOT_CELL_CHILDREN, REINSERT_PIVOT_CHILDREN } from "../pivot/pivot_actions";

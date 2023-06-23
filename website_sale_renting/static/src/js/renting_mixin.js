@@ -3,7 +3,7 @@
 import { serializeDateTime, deserializeDateTime } from "@web/core/l10n/dates";
 import { momentToLuxon } from "@website_sale_renting/js/date_utils";
 import { sprintf } from "@web/core/utils/strings";
-import { _lt, _t } from "web.core";
+import { _lt, _t } from "@web/legacy/js/services/core";
 
 export const msecPerUnit = {
     hour: 3600 * 1000,

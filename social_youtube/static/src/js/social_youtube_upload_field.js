@@ -11,8 +11,8 @@ const {
     useRef,
     useState,
 } = owl;
-import core from 'web.core';
-import utils from 'web.utils';
+import core from "@web/legacy/js/services/core";
+import utils from '@web/legacy/js/core/utils';
 import { sprintf } from "@web/core/utils/strings";
 
 const _t = core._t;

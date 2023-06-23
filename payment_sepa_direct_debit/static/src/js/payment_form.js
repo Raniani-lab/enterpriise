@@ -1,8 +1,8 @@
 /** @odoo-module **/
 
-import core from "web.core";
-import checkoutForm from "payment.checkout_form";
-import manageForm from "payment.manage_form";
+import core from "@web/legacy/js/services/core";
+import checkoutForm from "@payment/js/checkout_form";
+import manageForm from "@payment/js/manage_form";
 
 const _t = core._t;
 

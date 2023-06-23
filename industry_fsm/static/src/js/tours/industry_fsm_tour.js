@@ -1,9 +1,9 @@
-/** @odoo-module alias=industry_fsm.tour **/
+/** @odoo-module **/
 
-import core from "web.core";
+import core from "@web/legacy/js/services/core";
 import { registry } from "@web/core/registry";
 import { markup } from "@odoo/owl";
-import "web.legacy_tranlations_loaded";
+import "@web/legacy/translations_loaded";
 
 var _t = core._t;
 

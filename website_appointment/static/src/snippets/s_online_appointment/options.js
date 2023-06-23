@@ -1,8 +1,8 @@
 /** @odoo-module **/
 
-import { Class, registry } from 'web_editor.snippets.options';
+import options from '@web_editor/js/editor/snippets.options';
 
-registry.OnlineAppointmentOptions = Class.extend({
+options.registry.OnlineAppointmentOptions = options.Class.extend({
     allAppointmentTypesById: {},
 
     /**

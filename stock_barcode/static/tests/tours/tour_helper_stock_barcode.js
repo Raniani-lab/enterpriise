@@ -1,4 +1,4 @@
-/** @odoo-module alias=stock_barcode.tourHelper **/
+/** @odoo-module **/
 
 import { TourError } from "@web_tour/tour_service/tour_utils";
 

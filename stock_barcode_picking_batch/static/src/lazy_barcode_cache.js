@@ -2,7 +2,7 @@
 
 import LazyBarcodeCache from '@stock_barcode/lazy_barcode_cache';
 
-import {patch} from 'web.utils';
+import { patch } from '@web/legacy/js/core/utils';
 
 patch(LazyBarcodeCache.prototype, 'stock_barcode_picking_batch', {
     /**

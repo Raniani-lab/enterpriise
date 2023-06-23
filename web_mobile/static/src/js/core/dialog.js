@@ -1,7 +1,7 @@
 /** @odoo-module **/
-    
-    import Dialog from "web.Dialog";
-    import mobileMixins from "web_mobile.mixins";
+
+    import Dialog from "@web/legacy/js/core/dialog";
+    import mobileMixins from "@web_mobile/js/core/mixins";
 
     Dialog.include(
         Object.assign({}, mobileMixins.BackButtonEventMixin, {

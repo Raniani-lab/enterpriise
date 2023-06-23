@@ -1,9 +1,9 @@
 /** @odoo-module **/
 
-import { PdfGroupName } from "@documents/owl/components/pdf_group_name/pdf_group_name";
-import { PdfPage } from "@documents/owl/components/pdf_page/pdf_page";
+import { PdfGroupName } from '@documents/owl/components/pdf_group_name/pdf_group_name';
+import { PdfPage } from '@documents/owl/components/pdf_page/pdf_page';
 import { getBundle, loadBundle } from "@web/core/assets";
-import { csrf_token } from "web.core";
+import { csrf_token } from "@web/legacy/js/services/core";
 import { useCommand } from "@web/core/commands/command_hook";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { Dialog } from "@web/core/dialog/dialog";

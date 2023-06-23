@@ -1,4 +1,4 @@
-/** @odoo-module alias=documents.component.PdfPage **/
+/** @odoo-module **/
 
 import { Component, onMounted, onPatched, useState, useRef } from "@odoo/owl";
 

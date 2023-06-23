@@ -1,6 +1,6 @@
-/** @odoo-module alias=l10n_mx_edi_website_sale.website_sale**/
+/** @odoo-module **/
 
-import { WebsiteSale } from 'website_sale.website_sale';
+import { WebsiteSale } from '@website_sale/js/website_sale';
 
 WebsiteSale.include({
 

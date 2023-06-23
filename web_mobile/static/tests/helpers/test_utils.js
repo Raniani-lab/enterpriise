@@ -1,5 +1,5 @@
-/** @odoo-module alias=web_mobile.testUtils **/
-    
+/** @odoo-module **/
+
     /**
      * Transforms base64 encoded data to a Blob object
      *

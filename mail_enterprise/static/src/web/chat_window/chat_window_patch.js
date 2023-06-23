@@ -4,7 +4,7 @@ import { ChatWindow } from "@mail/core/common/chat_window";
 
 import { patch } from "@web/core/utils/patch";
 
-import { useBackButton } from "web_mobile.hooks";
+import { useBackButton } from "@web_mobile/js/core/hooks";
 
 patch(ChatWindow.prototype, "mail_enterprise", {
     setup() {

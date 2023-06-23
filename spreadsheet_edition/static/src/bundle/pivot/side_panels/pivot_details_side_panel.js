@@ -4,8 +4,8 @@ import { Domain } from "@web/core/domain";
 import { DomainSelector } from "@web/core/domain_selector/domain_selector";
 import { DomainSelectorDialog } from "@web/core/domain_selector_dialog/domain_selector_dialog";
 import { useService } from "@web/core/utils/hooks";
-import { _t } from "web.core";
-import { time_to_str } from "web.time";
+import { _t } from "@web/legacy/js/services/core";
+import { time_to_str } from "@web/legacy/js/core/time";
 import EditableName from "../../o_spreadsheet/editable_name/editable_name";
 
 import { Component, onWillStart, onWillUpdateProps } from "@odoo/owl";

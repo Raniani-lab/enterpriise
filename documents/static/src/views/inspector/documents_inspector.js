@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
-import { device } from "web.config";
-import { str_to_datetime } from "web.time";
+import config from "@web/legacy/js/services/config";
+import { str_to_datetime } from "@web/legacy/js/core/time";
 import { session } from "@web/session";
 import { KeepLast } from "@web/core/utils/concurrency";
 import { intersection } from "@web/core/utils/arrays";
@@ -16,8 +16,9 @@ import { DocumentsInspectorField } from "./documents_inspector_field";
 import { download } from "@web/core/network/download";
 import { onNewPdfThumbnail } from "../helper/documents_pdf_thumbnail_service";
 import { useTriggerRule } from "@documents/views/hooks";
-import { get_link_proportion } from 'documents.utils';
+import dUtils from '@documents/views/helper/documents_utils';
 
+const { device } = config
 const { Component, markup, useEffect, useState, useRef, onPatched, onWillUpdateProps, onWillStart } = owl;
 
 async function toggleArchive(model, resModel, resIds, doArchive) {
@@ -321,7 +322,7 @@ export class DocumentsInspector extends Component {
 
     async onShare() {
         const resIds = this.resIds;
-        const linkProportion = await get_link_proportion(this.orm, resIds ? resIds : false);
+        const linkProportion = await dUtils.get_link_proportion(this.orm, resIds ? resIds : false);
         if (linkProportion == 'all') {
             this.notificationService.add(
                 this.env._t("Links cannot be shared."),

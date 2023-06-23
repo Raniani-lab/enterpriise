@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import BarcodePickingModel from '@stock_barcode/models/barcode_picking_model';
-import { _t } from "web.core";
+import { _t } from "@web/legacy/js/services/core";
 
 export default class BarcodeMRPModel extends BarcodePickingModel {
     constructor(params) {

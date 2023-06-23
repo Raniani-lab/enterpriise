@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import helper from 'stock_barcode.tourHelper';
+import helper from '@stock_barcode/../tests/tours/tour_helper_stock_barcode';
 import { registry } from "@web/core/registry";
 import { stepUtils } from "./tour_step_utils";
 
@@ -2077,7 +2077,7 @@ registry.category("web_tour.tours").add('test_picking_type_mandatory_scan_comple
         run: 'scan LOC-01-01-00'
     },
     // product1 line is split, 1 qty moves to Section 1, the rest is left as default
-    {   
+    {
         trigger: '.o_barcode_client_action',
         extra_trigger: '.o_barcode_line.o_line_completed .o_line_destination_location .fw-bold:contains("Section 1")',
         run: function() {

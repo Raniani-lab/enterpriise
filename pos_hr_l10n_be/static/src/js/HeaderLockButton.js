@@ -1,5 +1,5 @@
-/** @odoo-module alias=pos_hr_l10n_be.HeaderLockButton **/
-    
+/** @odoo-module **/
+
     import HeaderLockButton from "point_of_sale.HeaderLockButton";
     import Registries from "point_of_sale.Registries";
 

@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
-import options from 'web_editor.snippets.options';
-import { _t } from 'web.core';
+import options from '@web_editor/js/editor/snippets.options';
+import { _t } from "@web/legacy/js/services/core";
 
 options.registry.RentalSearchOptions = options.Class.extend({
     events: Object.assign({}, options.Class.prototype.events || {}, {

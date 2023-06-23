@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
-import core from "web.core";
-import publicWidget from "web.public.widget";
+import core from "@web/legacy/js/services/core";
+import publicWidget from "@web/legacy/js/public/public_widget";
 import { debounce } from "@web/core/utils/timing";
 
 var qweb = core.qweb;
@@ -52,7 +52,7 @@ publicWidget.registry.appointmentTypeSelect = publicWidget.Widget.extend({
         const filterResourceIds = this.$("input[name='filter_resource_ids']").val();
         const inviteToken = this.$("input[name='invite_token']").val();
         self.$(".o_appointment_appointments_list_form").attr('action', `/appointment/${appointmentTypeID}${window.location.search}`);
-        
+
         this._rpc({
             route: `/appointment/${appointmentTypeID}/get_message_intro`,
             params: {

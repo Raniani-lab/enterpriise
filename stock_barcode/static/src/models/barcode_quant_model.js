@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import BarcodeModel from '@stock_barcode/models/barcode_model';
-import {_t} from "web.core";
+import {_t} from "@web/legacy/js/services/core";
 import { sprintf } from '@web/core/utils/strings';
 
 export default class BarcodeQuantModel extends BarcodeModel {

@@ -5,7 +5,7 @@ import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { AttachToMessageMacro, UseAsAttachmentMacro } from "@knowledge/macros/file_macros";
 import { sprintf } from "@web/core/utils/strings";
 import { useService } from "@web/core/utils/hooks";
-import utils from "web.utils";
+import utils from "@web/legacy/js/core/utils";
 import {
     encodeDataBehaviorProps,
 } from "@knowledge/js/knowledge_utils";

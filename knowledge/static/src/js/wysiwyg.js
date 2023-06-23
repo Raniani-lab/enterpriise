@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { Component } from '@odoo/owl';
-import { qweb as QWeb, _t } from 'web.core';
+import { qweb as QWeb, _t } from "@web/legacy/js/services/core";
 import { Wysiwyg } from '@web_editor/js/wysiwyg/wysiwyg';
 import { ItemCalendarPropsDialog } from "@knowledge/components/item_calendar_props_dialog/item_calendar_props_dialog";
 import { PromptEmbeddedViewNameDialog } from '@knowledge/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog';
@@ -10,7 +10,7 @@ import {
     setCursorEnd,
 } from '@web_editor/js/editor/odoo-editor/src/OdooEditor';
 import { ArticleSelectionBehaviorDialog } from '@knowledge/components/behaviors/article_behavior_dialog/article_behavior_dialog';
-import { Markup } from 'web.utils';
+import { Markup } from "@web/legacy/js/core/utils";
 import {
     encodeDataBehaviorProps,
 } from "@knowledge/js/knowledge_utils";

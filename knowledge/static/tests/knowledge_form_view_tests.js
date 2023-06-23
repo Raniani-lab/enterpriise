@@ -3,7 +3,7 @@
 import { onWillStart, onMounted } from "@odoo/owl";
 import { click, getFixture, makeDeferred, nextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
-import { qweb as QWeb } from "web.core";
+import { qweb as QWeb } from "@web/legacy/js/services/core";
 import { patch, unpatch } from "@web/core/utils/patch";
 import { HtmlField } from "@web_editor/js/backend/html_field";
 import { parseHTML } from "@web_editor/js/editor/odoo-editor/src/utils/utils";

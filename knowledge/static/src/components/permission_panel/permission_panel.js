@@ -3,7 +3,7 @@
 import { session } from "@web/session";
 import { ConfirmationDialog, AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { _lt } from "@web/core/l10n/translation";
-import { _t } from 'web.core';
+import { _t } from "@web/legacy/js/services/core";
 import { useService } from '@web/core/utils/hooks';
 import { Component, onWillStart, useState } from "@odoo/owl";
 
@@ -77,7 +77,7 @@ export class PermissionPanel extends Component {
                 await this.loadPanel();
                 // Reload record
                 this.env.model.root.load();
-                
+
             }
         });
     }

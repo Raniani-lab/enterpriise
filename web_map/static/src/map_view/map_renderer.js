@@ -3,7 +3,7 @@
 /*global L*/
 
 import { renderToString } from "@web/core/utils/render";
-import { delay } from "web.concurrency";
+import { delay } from "@web/legacy/js/core/concurrency";
 
 import {
     Component,

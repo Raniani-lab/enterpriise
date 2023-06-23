@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
-import mobile from "web_mobile.core";
-import ajax from "web.ajax";
+import mobile from "@web_mobile/js/services/core";
+import ajax from "@web/legacy/js/core/ajax";
 import { session } from "@web/session";
 
 //Send info only if client is mobile

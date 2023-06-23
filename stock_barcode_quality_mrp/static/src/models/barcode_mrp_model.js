@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import BarcodeMRPModel from '@stock_barcode_mrp/models/barcode_mrp_model';
-import { patch } from 'web.utils';
+import { patch } from '@web/legacy/js/core/utils';
 
 patch(BarcodeMRPModel.prototype, 'stock_barcode_quality_mrp', {
     openQualityChecksMethod: 'check_quality',

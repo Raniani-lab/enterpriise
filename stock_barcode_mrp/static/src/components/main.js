@@ -4,8 +4,8 @@ import MainComponent from "@stock_barcode/components/main";
 import BarcodeMRPModel from "../models/barcode_mrp_model";
 import HeaderComponent from "./header";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { _t } from 'web.core';
-import { patch } from 'web.utils';
+import { _t } from "@web/legacy/js/services/core";
+import { patch } from '@web/legacy/js/core/utils';
 import { useState } from "@odoo/owl";
 
 patch(MainComponent.prototype, 'stock_barcode_mrp', {

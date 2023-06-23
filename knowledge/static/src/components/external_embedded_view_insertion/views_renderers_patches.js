@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { _t } from "web.core";
+import { _t } from "@web/legacy/js/services/core";
 import { CalendarRenderer } from "@web/views/calendar/calendar_renderer";
 import { CohortRenderer } from "@web_cohort/cohort_renderer";
 import { GanttRenderer } from "@web_gantt/gantt_renderer";

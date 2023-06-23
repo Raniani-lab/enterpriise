@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
-import SalaryPackageWidget from "hr_contract_salary";
-import core from "web.core";
+import SalaryPackageWidget from "@hr_contract_salary/js/hr_contract_salary";
+import core from "@web/legacy/js/services/core";
 
 var qweb = core.qweb;
 

@@ -1,7 +1,7 @@
 /** @odoo-module **/
-    
+
 import { getOrigin } from "@web/core/utils/urls";
-    import testUtils from "web.test_utils";
+    import testUtils from "@web/../tests/legacy/helpers/test_utils";
 
     import { start, startServer } from "@mail/../tests/helpers/test_utils";
     import { patchUiSize, SIZES } from "@mail/../tests/helpers/patch_ui_size";

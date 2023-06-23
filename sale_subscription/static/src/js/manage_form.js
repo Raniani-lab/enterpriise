@@ -1,9 +1,9 @@
 /** @odoo-module **/
-    
-    import core from "web.core";
-    import Dialog from "web.Dialog";
 
-    import manageForm from "payment.manage_form";
+    import core from "@web/legacy/js/services/core";
+    import Dialog from "@web/legacy/js/core/dialog";
+
+    import manageForm from "@payment/js/manage_form";
 
     const _t = core._t;
 
@@ -11,7 +11,7 @@
         /**
          * Build the confirmation dialog based on the linked records' information.
          *
-         * @override method from payment.manage_form
+         * @override method from @payment/js/manage_form
          * @private
          * @param {Array} linkedRecordsInfo - The list of information about linked records.
          * @param confirmCallback - The original callback method called when the user clicks on the

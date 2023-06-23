@@ -4,7 +4,7 @@ import BarcodePickingBatchModel from '@stock_barcode_picking_batch/models/barcod
 import MainComponent from '@stock_barcode/components/main';
 import OptionLine from '@stock_barcode_picking_batch/components/option_line';
 
-import { patch } from 'web.utils';
+import { patch } from '@web/legacy/js/core/utils';
 
 patch(MainComponent.prototype, 'stock_barcode_picking_batch', {
     //--------------------------------------------------------------------------

@@ -12,7 +12,7 @@ import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
 import { registry } from "@web/core/registry";
 import { ListRenderer } from "@web/views/list/list_renderer";
 import { createSpreadsheetFromListView, toggleCogMenuSpreadsheet } from "../utils/list_helpers";
-import { dom } from "web.test_utils";
+import { dom } from "@web/../tests/legacy/helpers/test_utils";
 import { doMenuAction } from "@spreadsheet/../tests/utils/ui";
 import { session } from "@web/session";
 

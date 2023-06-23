@@ -1,4 +1,4 @@
-/** @odoo-module alias=documents.utils */
+/** @odoo-module */
 
 export default {
     async get_link_proportion(orm, documents_ids = false, domain = false){

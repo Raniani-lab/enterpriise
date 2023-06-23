@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import config from "web.config";
+import config from "@web/legacy/js/services/config";
 import { FormRenderer } from '@web/views/form/form_renderer';
 import { KnowledgeCoverDialog } from '@knowledge/components/knowledge_cover/knowledge_cover_dialog';
 import { useService } from "@web/core/utils/hooks";
@@ -74,7 +74,7 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
 
     //--------------------------------------------------------------------------
     // Private
-    //--------------------------------------------------------------------------    
+    //--------------------------------------------------------------------------
 
     /**
      * Resize the name input by updating the value of the span hidden behind

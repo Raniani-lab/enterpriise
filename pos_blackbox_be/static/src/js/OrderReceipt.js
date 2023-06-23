@@ -1,5 +1,5 @@
-/** @odoo-module alias=pos_blackbox_be.OrderReceipt **/
-    
+/** @odoo-module **/
+
     import OrderReceipt from "point_of_sale.OrderReceipt";
     import Registries from "point_of_sale.Registries";
 

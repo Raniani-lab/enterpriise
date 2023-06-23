@@ -1,6 +1,6 @@
-/** @odoo-module alias=social_push_notifications.NotificationRequestPopup **/
+/** @odoo-module **/
 
-import Widget from "web.Widget";
+import Widget from "@web/legacy/js/core/widget";
 
 /**
  * Simple widget that shows a small popup to request the notifications permission.

@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
-import { ComponentAdapter } from 'web.OwlCompatibility';
-import { FieldBinaryFile } from 'web.basic_fields';
+import { ComponentAdapter } from '@web/legacy/js/owl_compatibility';
+import { FieldBinaryFile } from '@web/legacy/js/fields/basic_fields';
 
 import { patch } from "@web/core/utils/patch";
 

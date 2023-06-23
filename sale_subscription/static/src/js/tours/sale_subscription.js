@@ -1,9 +1,9 @@
 /** @odoo-module **/
 "use_strict";
 
-import core from "web.core";
+import core from "@web/legacy/js/services/core";
 import { registry } from "@web/core/registry";
-import "web.legacy_tranlations_loaded";
+import "@web/legacy/translations_loaded";
 
 var _t = core._t;
 const { markup } = owl;

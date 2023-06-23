@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import { _t } from "@web/core/l10n/translation";
-import Dialog from "web.OwlDialog";
+import Dialog from "@web/legacy/js/core/owl_dialog";
 import { useService } from "@web/core/utils/hooks";
 
 import { DEFAULT_LINES_NUMBER } from "@spreadsheet/helpers/constants";

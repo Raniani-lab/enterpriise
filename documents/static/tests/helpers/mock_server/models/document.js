@@ -3,7 +3,7 @@
 import { patch } from "@web/core/utils/patch";
 import { MockServer } from "@web/../tests/helpers/mock_server";
 
-import Domain from 'web.Domain';
+import Domain from '@web/legacy/js/core/domain';
 
 patch(MockServer.prototype, 'documents/models/document', {
     //--------------------------------------------------------------------------

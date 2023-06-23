@@ -2,7 +2,7 @@
 
 import * as spreadsheet from "@odoo/o-spreadsheet";
 import { nextTick } from "@web/../tests/helpers/utils";
-import { dom } from "web.test_utils";
+import { dom } from "@web/../tests/legacy/helpers/test_utils";
 import { getBasicData } from "@spreadsheet/../tests/utils/data";
 import { getCell, getCellFormula } from "@spreadsheet/../tests/utils/getters";
 import { selectCell } from "@spreadsheet/../tests/utils/commands";

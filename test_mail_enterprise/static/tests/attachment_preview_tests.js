@@ -10,7 +10,7 @@ import {
     startServer,
 } from "@mail/../tests/helpers/test_utils";
 
-import testUtils, { file } from "web.test_utils";
+import testUtils, { file } from "@web/../tests/legacy/helpers/test_utils";
 const { createFile, inputFiles } = file;
 
 QUnit.module("attachment preview");

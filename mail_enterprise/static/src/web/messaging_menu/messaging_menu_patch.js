@@ -4,7 +4,7 @@ import { MessagingMenu } from "@mail/core/web/messaging_menu";
 
 import { patch } from "@web/core/utils/patch";
 
-import { useBackButton } from "web_mobile.hooks";
+import { useBackButton } from "@web_mobile/js/core/hooks";
 
 patch(MessagingMenu.prototype, "mail_enterprise", {
     setup() {

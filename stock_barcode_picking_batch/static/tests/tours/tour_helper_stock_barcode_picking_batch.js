@@ -1,6 +1,6 @@
-/** @odoo-module alias=stock_barcode_picking_batch.tourHelper **/
+/** @odoo-module **/
 
-import helper from 'stock_barcode.tourHelper';
+import helper from '@stock_barcode/../tests/tours/tour_helper_stock_barcode';
 
 /**
  * Checks the line is linked to the given picking.

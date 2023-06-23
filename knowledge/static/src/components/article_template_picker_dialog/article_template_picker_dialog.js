@@ -1,9 +1,9 @@
 /** @odoo-module */
 
-import { _t } from "web.core";
+import { _t } from "@web/legacy/js/services/core";
 import { Component, onWillStart, useState } from "@odoo/owl";
 import { Dialog } from "@web/core/dialog/dialog";
-import { groupBy } from "web.utils";
+import { groupBy } from "@web/legacy/js/core/utils";
 import { HtmlField } from "@web_editor/js/backend/html_field";
 import { Record } from "@web/views/record";
 import { useService } from "@web/core/utils/hooks";

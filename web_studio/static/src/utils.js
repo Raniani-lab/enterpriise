@@ -1,4 +1,4 @@
-/** @odoo-module alias=web_studio.utils default=false **/
+/** @odoo-module default=false **/
 export const COLORS = [
     "#FFFFFF",
     "#262c34",

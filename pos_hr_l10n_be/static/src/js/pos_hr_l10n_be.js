@@ -1,5 +1,5 @@
 /** @odoo-module **/
-    import core from "web.core";
+    import core from "@web/legacy/js/services/core";
     import { Gui } from "point_of_sale.Gui";
     import models from "point_of_sale.models";
     import devices from "point_of_sale.devices";

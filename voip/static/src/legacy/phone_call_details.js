@@ -2,12 +2,12 @@
 
 import { SelectInputDeviceDialog } from "@voip/legacy/audio_input_device";
 
-import config from "web.config";
-import core from "web.core";
+import config from "@web/legacy/js/services/config";
+import core from "@web/legacy/js/services/core";
 import { isMobileOS } from "@web/core/browser/feature_detection";
 import { debounce } from "@web/core/utils/timing";
 import session from "web.session";
-import Widget from "web.Widget";
+import Widget from "@web/legacy/js/core/widget";
 
 const QWeb = core.qweb;
 

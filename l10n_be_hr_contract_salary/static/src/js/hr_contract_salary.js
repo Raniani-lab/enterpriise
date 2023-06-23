@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import hrContractSalary from "hr_contract_salary";
+import hrContractSalary from "@hr_contract_salary/js/hr_contract_salary";
 
 hrContractSalary.include({
     events: Object.assign({}, hrContractSalary.prototype.events, {

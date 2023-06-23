@@ -4,7 +4,7 @@ import { CharField, charField } from "@web/views/fields/char/char_field";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 
-import core from 'web.core';
+import core from "@web/legacy/js/services/core";
 const QWeb = core.qweb;
 
 const { useEffect, useRef } = owl;
@@ -21,7 +21,7 @@ export class TwitterUsersAutocompleteField extends CharField {
                 classes: {'ui-autocomplete': 'o_social_twitter_users_autocomplete'},
                 source: async (request, response) => {
                     const accountId = this.props.record.data.account_id[0];
-    
+
                     const suggestions = await this.orm.call(
                         'social.account',
                         'twitter_search_users',

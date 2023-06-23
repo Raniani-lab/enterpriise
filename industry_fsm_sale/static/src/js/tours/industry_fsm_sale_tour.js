@@ -3,10 +3,10 @@
  * Add custom steps to take products and sales order into account
  */
 import { registry } from "@web/core/registry";
-import 'industry_fsm.tour';
-import { _t } from 'web.core';
-import "web.legacy_tranlations_loaded";
-import { Markup } from 'web.utils';
+import '@industry_fsm/js/tours/industry_fsm_tour';
+import { _t } from "@web/legacy/js/services/core";
+import "@web/legacy/translations_loaded";
+import { Markup } from "@web/legacy/js/core/utils";
 import { patch } from "@web/core/utils/patch";
 
 patch(registry.category("web_tour.tours").get("industry_fsm_tour"), "patch_industry_fsm_sale_tour", {
@@ -57,7 +57,7 @@ patch(registry.category("web_tour.tours").get("industry_fsm_tour"), "patch_indus
             trigger: "span:contains('Customer Invoice')",
             run() {},
             auto: true,
-        });        
-        return originalSteps; 
+        });
+        return originalSteps;
     }
 });

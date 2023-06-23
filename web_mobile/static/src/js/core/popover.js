@@ -1,10 +1,10 @@
 /** @odoo-module **/
 
-import Popover from "web.Popover";
-import { useBackButton } from "web_mobile.hooks";
-import { patch } from "web.utils";
+import Popover from "@web/legacy/js/core/popover";
+import { useBackButton } from "@web_mobile/js/core/hooks";
+import utils from "@web/legacy/js/core/utils";
 
-patch(Popover.prototype, "web_mobile", {
+utils.patch(Popover.prototype, "web_mobile", {
     setup() {
         this._super(...arguments);
         useBackButton(this._onBackButton.bind(this), () => this.state.displayed);

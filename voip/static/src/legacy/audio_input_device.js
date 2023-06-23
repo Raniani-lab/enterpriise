@@ -2,7 +2,7 @@
 
 import { browser } from "@web/core/browser/browser";
 import { _t } from "@web/core/l10n/translation";
-import Dialog from "web.Dialog";
+import Dialog from "@web/legacy/js/core/dialog";
 
 const SelectInputDeviceDialog = Dialog.extend({
     template: "voip.SelectInputDevices",

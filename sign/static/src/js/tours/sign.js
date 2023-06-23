@@ -2,13 +2,12 @@
 
 "use strict";
 
-import { _t } from "web.core";
-import "web.legacy_tranlations_loaded";
+import { _t } from "@web/legacy/js/services/core";
+import "@web/legacy/translations_loaded";
 import { registry } from "@web/core/registry";
 import { stepUtils } from "@web_tour/tour_service/tour_utils";
 
-import { Markup } from "web.utils";
-
+import { Markup } from "@web/legacy/js/core/utils";
 
 registry.category("web_tour.tours").add('sign_tour', {
     url: "/web",

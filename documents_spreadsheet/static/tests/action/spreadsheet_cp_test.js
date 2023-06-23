@@ -10,7 +10,7 @@ import {
 } from "@web/../tests/helpers/utils";
 import { x2ManyCommands } from "@web/core/orm_service";
 import { browser } from "@web/core/browser/browser";
-import { fields, dom } from "web.test_utils";
+import { fields, dom } from "@web/../tests/legacy/helpers/test_utils";
 import { createSpreadsheet } from "../spreadsheet_test_utils";
 import { getBasicData, getBasicServerData } from "@spreadsheet/../tests/utils/data";
 import { createSpreadsheetFromPivotView } from "../utils/pivot_helpers";

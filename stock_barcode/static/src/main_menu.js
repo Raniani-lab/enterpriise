@@ -1,12 +1,12 @@
 /** @odoo-module **/
 
 import * as BarcodeScanner from '@web/webclient/barcode/barcode_scanner';
-import { bus } from 'web.core';
+import { bus } from "@web/legacy/js/services/core";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { session } from "@web/session";
-import { date_to_str } from "web.time";
+import { date_to_str } from "@web/legacy/js/core/time";
 
 const { Component, onMounted, onWillUnmount, onWillStart, useState } = owl;
 

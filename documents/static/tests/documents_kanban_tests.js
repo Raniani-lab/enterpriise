@@ -30,7 +30,7 @@ import {
     pagerPrevious,
 } from "@web/../tests/search/helpers";
 
-import testUtils from "web.test_utils";
+import testUtils from "@web/../tests/legacy/helpers/test_utils";
 import {
     editInput,
     clickOpenedDropdownItem,
@@ -41,7 +41,7 @@ import {
     patchWithCleanup,
     triggerEvent,
 } from "@web/../tests/helpers/utils";
-import { str_to_datetime } from "web.time";
+import { str_to_datetime } from "@web/legacy/js/core/time";
 import { session } from "@web/session";
 import { browser, makeRAMLocalStorage } from "@web/core/browser/browser";
 

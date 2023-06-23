@@ -8,7 +8,7 @@ import { useSetupView } from "@web/views/view_hook";
 import { PdfManager } from "@documents/owl/components/pdf_manager/pdf_manager";
 import { x2ManyCommands } from "@web/core/orm_service";
 import { ShareFormViewDialog } from "@documents/views/helper/share_form_view_dialog";
-import { get_link_proportion } from 'documents.utils';
+import dUtils from '@documents/views/helper/documents_utils';
 
 const { EventBus, onWillStart, markup, useComponent, useEnv, useRef, useSubEnv } = owl;
 
@@ -158,7 +158,7 @@ export function useDocumentView(helpers) {
                     ? [x2ManyCommands.replaceWith(resIds)]
                     : false,
             };
-            const linkProportion = await get_link_proportion(orm, resIds ? resIds : false, defaultVals.domain);
+            const linkProportion = await dUtils.get_link_proportion(orm, resIds ? resIds : false, defaultVals.domain);
             if (linkProportion == 'all') {
                 notification.add(
                     env._t("Links cannot be shared."),

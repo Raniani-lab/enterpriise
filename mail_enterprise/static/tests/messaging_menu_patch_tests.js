@@ -5,7 +5,7 @@ import { afterNextRender, click, start } from "@mail/../tests/helpers/test_utils
 
 import { patchWithCleanup } from "@web/../tests/helpers/utils";
 
-import { methods } from "web_mobile.core";
+import { methods } from "@web_mobile/js/services/core";
 
 QUnit.module("messaging_menu (patch)");
 

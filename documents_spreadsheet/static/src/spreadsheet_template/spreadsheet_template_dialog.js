@@ -4,12 +4,12 @@ import { Dialog } from "@web/core/dialog/dialog";
 import { SearchBar } from "@web/search/search_bar/search_bar";
 import { Pager } from "@web/core/pager/pager";
 
-import { DropPrevious } from "web.concurrency";
+import { DropPrevious } from "@web/legacy/js/core/concurrency";
 import { SearchModel } from "@web/search/search_model";
 import { useBus, useService } from "@web/core/utils/hooks";
 import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
 import { getDefaultConfig } from "@web/views/view";
-import { _t } from "web.core";
+import { _t } from "@web/legacy/js/services/core";
 
 import { Component, useState, useSubEnv, useChildSubEnv, onWillStart } from "@odoo/owl";
 

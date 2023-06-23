@@ -4,7 +4,7 @@ import { Component, xml } from "@odoo/owl";
 
 import { DialingPanel } from "@voip/legacy/dialing_panel";
 
-import { ComponentAdapter } from "web.OwlCompatibility";
+import { ComponentAdapter } from "@web/legacy/js/owl_compatibility";
 
 export class DialingPanelAdapter extends ComponentAdapter {}
 

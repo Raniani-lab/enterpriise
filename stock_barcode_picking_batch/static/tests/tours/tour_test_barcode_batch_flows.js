@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { registry } from "@web/core/registry";
-import helper from "stock_barcode_picking_batch.tourHelper";
+import helper from "@stock_barcode_picking_batch/../tests/tours/tour_helper_stock_barcode_picking_batch";
 import { stepUtils } from "@stock_barcode/../tests/tours/tour_step_utils";
 
 function checkState(state) {

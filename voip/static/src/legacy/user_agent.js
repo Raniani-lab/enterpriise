@@ -1,11 +1,11 @@
 /* @odoo-module */
 
-import Class from "web.Class";
+import Class from "@web/legacy/js/core/class";
 import { browser } from "@web/core/browser/browser";
 import { _t } from "@web/core/l10n/translation";
 import { escape, sprintf } from "@web/core/utils/strings";
-import mixins from "web.mixins";
-import ServicesMixin from "web.ServicesMixin";
+import mixins from "@web/legacy/js/core/mixins";
+import ServicesMixin from "@web/legacy/js/core/service_mixins";
 
 const CALL_STATE = {
     NO_CALL: 0,

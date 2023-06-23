@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { _t } from "web.core";
+import { _t } from "@web/legacy/js/services/core";
 import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { isVisible } from "@web/core/utils/ui";
 import { MacroEngine } from "@web/core/macro";

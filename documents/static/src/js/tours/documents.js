@@ -1,9 +1,9 @@
 /** @odoo-module **/
 
-import { _t } from "web.core";
-import {Markup} from "web.utils";
+import { _t } from "@web/legacy/js/services/core";
+import { Markup } from "@web/legacy/js/core/utils";
 import { registry } from "@web/core/registry";
-import "web.legacy_tranlations_loaded";
+import "@web/legacy/translations_loaded";
 
 const { markup } = owl;
 

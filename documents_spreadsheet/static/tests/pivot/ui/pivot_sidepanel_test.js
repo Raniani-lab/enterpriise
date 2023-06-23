@@ -2,7 +2,7 @@
 
 import * as spreadsheet from "@odoo/o-spreadsheet";
 import { click, getFixture, nextTick } from "@web/../tests/helpers/utils";
-import { dom } from "web.test_utils";
+import { dom } from "@web/../tests/legacy/helpers/test_utils";
 import {
     getBasicData,
     getBasicPivotArch,

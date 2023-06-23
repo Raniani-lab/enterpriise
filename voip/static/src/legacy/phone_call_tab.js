@@ -3,8 +3,8 @@
 import { PhoneCall } from "@voip/legacy/phone_call";
 import { PhoneCallDetails } from "@voip/legacy/phone_call_details";
 
-import fieldUtils from "web.field_utils";
-import Widget from "web.Widget";
+import fieldUtils from "@web/legacy/js/fields/field_utils";
+import Widget from "@web/legacy/js/core/widget";
 
 export const PhoneCallTab = Widget.extend({
     template: "voip.PhoneCallTab",

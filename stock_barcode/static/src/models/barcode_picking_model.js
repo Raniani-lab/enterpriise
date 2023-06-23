@@ -2,7 +2,7 @@
 
 import BarcodeModel from '@stock_barcode/models/barcode_model';
 import { BackorderDialog } from '../components/backorder_dialog';
-import { _t, _lt } from "web.core";
+import { _t, _lt } from "@web/legacy/js/services/core";
 import { escape, sprintf } from '@web/core/utils/strings';
 import { session } from '@web/session';
 import { markup } from '@odoo/owl';
@@ -497,7 +497,7 @@ export default class BarcodePickingModel extends BarcodeModel {
         this.lastScanned.packageId = false;
         this.lastScanned.product = false;
         this.scannedLinesVirtualId = [];
-    
+
     }
 
     get considerPackageLines() {

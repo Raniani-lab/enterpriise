@@ -9,7 +9,7 @@ import { hotkeyService } from "@web/core/hotkeys/hotkey_service";
 import { notificationService } from "@web/core/notifications/notification_service";
 import { uiService } from "@web/core/ui/ui_service";
 import { registry } from "@web/core/registry";
-import testUtils from "web.test_utils";
+import testUtils from "@web/../tests/legacy/helpers/test_utils";
 
 const serviceRegistry = registry.category("services");
 

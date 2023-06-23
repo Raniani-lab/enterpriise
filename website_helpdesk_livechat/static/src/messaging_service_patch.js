@@ -4,7 +4,7 @@ import { Messaging } from "@mail/core/common/messaging_service";
 
 import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
-import { patch } from "web.utils";
+import { patch } from '@web/legacy/js/core/utils';
 
 patch(Messaging.prototype, "website_helpdesk_livechat", {
     initMessagingCallback(data) {

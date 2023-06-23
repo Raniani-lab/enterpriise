@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { registry } from "@web/core/registry";
-import { createFile } from "web.test_utils_file";
+import { createFile } from "@web/../tests/legacy/helpers/test_utils_file";
 
 registry.category("web_tour.tours").add('hr_contract_salary_tour', {
         test: true,

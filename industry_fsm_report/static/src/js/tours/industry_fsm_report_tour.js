@@ -6,7 +6,7 @@
 
 import { registry } from "@web/core/registry";
 import { patch } from "@web/core/utils/patch";
-import 'industry_fsm.tour';
+import '@industry_fsm/js/tours/industry_fsm_tour';
 
 patch(registry.category("web_tour.tours").get("industry_fsm_tour"), "patch_industry_fsm_report_tour", {
     steps() {
@@ -23,6 +23,6 @@ patch(registry.category("web_tour.tours").get("industry_fsm_tour"), "patch_indus
             content: ('At least a field is rendered'),
             auto: true,
         });
-        return originalSteps; 
+        return originalSteps;
     }
 });

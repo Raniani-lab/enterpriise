@@ -4,8 +4,8 @@
  * In this file, we override some relational fields to improve the UX in mobile.
  */
 
-import config from "web.config";
-import relational_fields from "web.relational_fields";
+import config from "@web/legacy/js/services/config";
+import relational_fields from "@web/legacy/js/fields/relational_fields";
 
 if (config.device.isMobile) {
     var FieldMany2One = relational_fields.FieldMany2One;

@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import session from 'web.session';
-import mobile from 'web_mobile.core';
+import mobile from '@web_mobile/js/services/core';
 import { patchWithCleanup, clickSave, getFixture } from "@web/../tests/helpers/utils";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
 

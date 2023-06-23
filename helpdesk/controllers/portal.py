@@ -64,7 +64,7 @@ class CustomerPortal(portal.CustomerPortal):
         }
         searchbar_inputs = {
             'content': {'input': 'content', 'label': Markup(_('Search <span class="nolabel"> (in Content)</span>'))},
-            'id': {'input': 'id', 'label': _('Search in Reference')},
+            'ticket_ref': {'input': 'ticket_ref', 'label': _('Search in Reference')},
             'message': {'input': 'message', 'label': _('Search in Messages')},
             'user': {'input': 'user', 'label': _('Search in Assigned to')},
             'status': {'input': 'status', 'label': _('Search in Stage')},
@@ -114,8 +114,8 @@ class CustomerPortal(portal.CustomerPortal):
         # search
         if search and search_in:
             search_domain = []
-            if search_in == 'id':
-                search_domain = OR([search_domain, [('id', 'ilike', search)]])
+            if search_in == 'ticket_ref':
+                search_domain = OR([search_domain, [('ticket_ref', 'ilike', search)]])
             if search_in == 'content':
                 search_domain = OR([search_domain, ['|', ('name', 'ilike', search), ('description', 'ilike', search)]])
             if search_in == 'user':

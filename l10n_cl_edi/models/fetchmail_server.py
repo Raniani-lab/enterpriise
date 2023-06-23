@@ -116,7 +116,7 @@ class FetchmailServer(models.Model):
         return super(FetchmailServer, self.filtered(lambda s: not s.l10n_cl_is_dte)).fetch_mail()
 
     def _process_incoming_email(self, msg_txt):
-        parsed_values = self.env['mail.thread']._message_parse_extract_payload(msg_txt)
+        parsed_values = self.env['mail.thread']._message_parse_extract_payload(msg_txt, {})
         body, attachments = parsed_values['body'], parsed_values['attachments']
         from_address = msg_txt.get('from')
         for attachment in attachments:

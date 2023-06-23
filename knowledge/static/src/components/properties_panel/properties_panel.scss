@@ -1,6 +1,11 @@
 .o_knowledge_properties_field {
-    & .o_field_properties .o_field_property_label {
-        padding-left: 0.5rem !important;
+    & .o_field_properties {
+        & .o_field_property_label, & .o_property_field_value, & .o_field_property_add {
+            padding-left: 0.5rem !important;
+        }
 
+        & .o_field_property_label {
+            margin: 5px 5px 5px 0px;
+        }
     }
 }

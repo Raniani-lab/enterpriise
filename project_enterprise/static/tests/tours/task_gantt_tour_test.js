@@ -40,6 +40,9 @@ registry.category("web_tour.tours").add('project_enterprise_tour', {
         trigger: '.o_project_name input',
         run: 'text New Project'
     }, {
+        trigger: 'div[name="allow_billable"] input',
+        run: 'click',
+    }, {
         trigger: '.o_open_tasks',
         run: function (actions) {
             actions.auto('.modal:visible .btn.btn-primary');

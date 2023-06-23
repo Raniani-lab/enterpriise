@@ -107,12 +107,10 @@ class HrAppraisal(models.Model):
             appraisal.manager_user_ids = appraisal.manager_ids.mapped('user_id')
         is_appraisal_manager = self.user_has_groups('hr_appraisal.group_hr_appraisal_user')
         self.is_appraisal_manager = is_appraisal_manager
+        self.employee_autocomplete_ids = self.env.user.get_employee_autocomplete_ids()
         if is_appraisal_manager:
             self.is_implicit_manager = False
-            self.employee_autocomplete_ids = self.env['hr.employee'].search([('company_id', '=', self.env.company.id)])
         else:
-            child_ids = self.env.user.employee_id.child_ids
-            self.employee_autocomplete_ids = child_ids + self.env.user.employee_id
             self.is_implicit_manager = len(self.employee_autocomplete_ids) > 1
 
     @api.depends_context('uid')

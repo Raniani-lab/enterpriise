@@ -546,7 +546,13 @@ QUnit.module("spreadsheet pivot view", {}, () => {
 
     QUnit.test("groupby week is sorted", async (assert) => {
         assert.expect(4);
-
+        const initialLocale = moment.locale();
+        moment.defineLocale("FR-test", {
+            week: {
+                dow: 1, // Monday is the first day of the week.
+            },
+        });
+        moment.locale("FR-test");
         const { model } = await createSpreadsheetFromPivotView({
             serverData: {
                 models: getBasicData(),
@@ -563,20 +569,22 @@ QUnit.module("spreadsheet pivot view", {}, () => {
         });
         assert.strictEqual(
             getCellContent(model, "A3"),
-            `=ODOO.PIVOT.HEADER(1,"date:week","15/2016")`
+            `=ODOO.PIVOT.HEADER(1,"date:week","16/2016")`
         );
         assert.strictEqual(
             getCellContent(model, "A4"),
-            `=ODOO.PIVOT.HEADER(1,"date:week","43/2016")`
+            `=ODOO.PIVOT.HEADER(1,"date:week","44/2016")`
         );
         assert.strictEqual(
             getCellContent(model, "A5"),
-            `=ODOO.PIVOT.HEADER(1,"date:week","49/2016")`
+            `=ODOO.PIVOT.HEADER(1,"date:week","50/2016")`
         );
         assert.strictEqual(
             getCellContent(model, "A6"),
-            `=ODOO.PIVOT.HEADER(1,"date:week","50/2016")`
+            `=ODOO.PIVOT.HEADER(1,"date:week","51/2016")`
         );
+        moment.locale(initialLocale);
+        moment.updateLocale("FR-test", null);
     });
 
     QUnit.test("Can save a pivot in a new spreadsheet", async (assert) => {

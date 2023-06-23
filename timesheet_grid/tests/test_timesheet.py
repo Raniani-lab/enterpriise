@@ -493,3 +493,31 @@ class TestTimesheetValidation(TestCommonTimesheet, MockEmail):
                 'unit_amount': 1.0,
                 'date': date.today() - relativedelta(days=1),
             })
+
+    def test_validate_multi_company_with_prevent_old_timesheets_encoding(self):
+        """
+            Check timesheets validation with `prevent_old_timesheets_encoding` setting
+            in a multi-company context.
+        """
+        company_A = self.env['res.company'].create({'name': 'Company A'})
+        company_B = self.env['res.company'].create({'name': 'Company B'})
+
+        self.env['res.config.settings'].with_company(company_A).create({
+            'prevent_old_timesheets_encoding': True,
+        }).execute()
+
+        self.user_manager.write({'company_ids': [Command.link(company_A.id), Command.link(company_B.id)]})
+
+        employee_A = self.env['hr.employee'].with_company(company_A).create({'name': 'Employee A'})
+        employee_B = self.env['hr.employee'].with_company(company_B).create({'name': 'Employee B'})
+
+        project_A = self.env['project.project'].with_company(company_A).create({'name': 'Project A'})
+        project_B = self.env['project.project'].with_company(company_B).create({'name': 'Project B'})
+
+        timesheets = self.env['account.analytic.line'].with_user(self.user_manager).create([
+            {'employee_id': employee_A.id, 'project_id': project_A.id},
+            {'employee_id': employee_B.id, 'project_id': project_B.id},
+        ])
+
+        # Validate timesheets belonging to two different companies at the same time
+        timesheets.with_user(self.user_manager).action_validate_timesheet()

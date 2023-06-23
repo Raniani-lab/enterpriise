@@ -450,10 +450,11 @@ class AnalyticLine(models.Model):
         analytic_lines._stop_all_users_timer()
 
         analytic_lines.sudo().write({'validated': True})
-        analytic_lines.filtered(lambda t: t.employee_id.sudo().company_id.prevent_old_timesheets_encoding) \
-                      ._update_last_validated_timesheet_date()
 
-        if any(analytic_lines.employee_id.sudo().company_id.mapped('prevent_old_timesheets_encoding')):
+        # For timesheets in a company with `prevent_old_timesheets_encoding` setting enabled
+        analytic_lines = analytic_lines.filtered(lambda t: t.employee_id.sudo().company_id.prevent_old_timesheets_encoding)
+        if analytic_lines:
+            analytic_lines._update_last_validated_timesheet_date()
             # Interrupt the timesheet with a timer running that is before the last validated date for each employee
             running_analytic_lines = self.env['account.analytic.line'].search([
                 ('company_id', 'in',

@@ -60,7 +60,8 @@
                 </div>
             </xpath>
             <xpath expr="//field[@name='department_id']" position='after'>
-                <field name="extract_document_uuid" groups="base.group_no_one" widget="CopyClipboardChar"/>
+                <field name="extract_document_uuid" groups="base.group_no_one" widget="CopyClipboardChar"
+                       attrs="{'invisible': [('extract_document_uuid', '=', False)]}"/>
             </xpath>
         </field>
     </record>

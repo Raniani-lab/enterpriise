@@ -38,6 +38,7 @@ tour.register('helpdesk_pick_file_as_attachment_from_knowledge', {
     run: 'click',
 }, { // check that the file is added to the attachments
     trigger: '.o_AttachmentBox .o_AttachmentCard:contains("Onboarding")',
+    run: () => {},
 }]);
 
 tour.register('helpdesk_pick_file_as_message_attachment_from_knowledge', {
@@ -61,6 +62,7 @@ tour.register('helpdesk_pick_file_as_message_attachment_from_knowledge', {
 }, { // wait for the file to be uploaded
     trigger: '.o_Chatter_composer .o_AttachmentCard i.fa-check',
     run: () => {},
-}, { // check that the file is added to the attachment of the message
-    trigger: '.o_Chatter_composer .o_AttachmentList .o_AttachmentCard:contains("Onboarding")',
+}, { // check that the file is added to the attachment of the message, and that the file finished being uploaded
+    trigger: '.o_Chatter_composer .o_AttachmentList .o_AttachmentCard:contains("Onboarding") .o_AttachmentCard_asideItemUploaded',
+    run: () => {},
 }]);

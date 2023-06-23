@@ -7,6 +7,34 @@ import {
 } from "@odoo/owl";
 
 export class AbstractBehavior extends Component {
+    static props = {
+        anchor: { type: Element },
+        // HtmlElement children of the original anchor, before Component
+        // rendering. They are the Elements that were used to extract html
+        // props for this Behavior. This prop usage is to recover the OIDs set
+        // by the editor on those nodes and to remove them from the DOM once
+        // the mounting is done. Cases where the nodes possess a collaborative
+        // OID to recover:
+        // - received a node from a collaborator
+        // - loaded the article as it is stored in the database in edit mode
+        // - switching from readonly to edit mode
+        // - undo/redo in the editor with the Behavior appearing/disappearing
+        // - copy/paste, drag/drop elements with the Behavior
+        blueprintNodes: { type: Array },
+        readonly: { type: Boolean },
+        record: { type: Object },
+        // Element containing all Behavior anchors. It can either be the
+        // OdooEditor.editable, or the readonlyElementRef.el.
+        root: { type: Element },
+        // Hook for Behavior executed when they are mounted and synchronized
+        // (have the correct oids for their collaborative nodes). Typically, it
+        // is handled by the html_field and its purpose is to insert the
+        // Behavior anchor at the correct position in the editable when it is
+        // fully pre-rendered (=rendered outside of the editable).
+        onPreRendered: { type: Function, optional: true},
+        wysiwyg: { type: Object, optional: true },
+    };
+
     setup() {
         super.setup();
         this.setupAnchor();
@@ -43,6 +71,22 @@ export class AbstractBehavior extends Component {
             });
         }
     }
+
+    //--------------------------------------------------------------------------
+    // TECHNICAL
+    //--------------------------------------------------------------------------
+
+    /**
+     * @abstract
+     * This method is is a hook executed during the onMounted hook, but
+     * before the rendered Behavior is inserted in the editor (in edit mode).
+     * It can be useful to manually insert nodes that can not be managed by OWL
+     * templating system (i.e. because they will be altered by the editor),
+     * before being observed by the editor and/or assigned an oid.
+     * @see ArticlesStructureBehavior for an example.
+     */
+    extraRender() {}
+
     /**
      * This method is used to ensure that the correct attributes are set
      * on the anchor of the Behavior. Attributes could be incorrect for the
@@ -57,6 +101,7 @@ export class AbstractBehavior extends Component {
             this.props.anchor.dataset.oeProtected = "true";
         }
     }
+
     /**
      * @param {Element} blueprint node containing all original DOM nodes
      *                  from this.props.blueprintNodes.
@@ -89,42 +134,12 @@ export class AbstractBehavior extends Component {
             overrideOids(node, blueprintElement);
         });
     }
+
+    //--------------------------------------------------------------------------
+    // GETTERS/SETTERS
+    //--------------------------------------------------------------------------
+
     get editor () {
         return this.props.wysiwyg ? this.props.wysiwyg.odooEditor : undefined;
     }
-    /**
-     * @abstract
-     * This method is is a hook executed during the onMounted hook, but
-     * before the rendered Behavior is inserted in the editor (in edit mode).
-     * It can be useful to manually insert nodes that can not be managed by OWL
-     * templating system (i.e. because they will be altered by the editor),
-     * before being observed by the editor and/or assigned an oid.
-     * @see ArticlesStructureBehavior for an example.
-     */
-    extraRender() {}
 }
-
-AbstractBehavior.props = {
-    readonly: { type: Boolean },
-    anchor: { type: Element },
-    wysiwyg: { type: Object, optional: true},
-    record: { type: Object },
-    root: { type: Element },
-    // Hook for Behavior executed when they are mounted and synchronized (have
-    // the correct oids for their collaborative nodes). Typically, it is handled
-    // by the html_field and its purpose is to insert the Behavior anchor
-    // at the correct position in the editable when it is fully pre-rendered
-    // (=rendered outside of the editable).
-    onPreRendered: { type: Function, optional: true},
-    // HtmlElement children of the original anchor, before Component rendering.
-    // They are the Elements that were used to extract html props for this
-    // Behavior. This prop usage is to recover the OIDs set by the editor on
-    // those nodes and to remove them from the DOM once the mounting is done.
-    // Cases where the nodes possess a collaborative OID to recover
-    // - received a node from a collaborator
-    // - loaded the article as it is stored in the database in edit mode
-    // - switching from readonly to edit mode
-    // - undo/redo in the editor with the Behavior appearing/disappearing
-    // - copy/paste, drag/drop elements with the Behavior
-    blueprintNodes: { type: Array },
-};

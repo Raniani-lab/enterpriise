@@ -148,6 +148,10 @@ export class ArticlesStructureBehavior extends AbstractBehavior {
         })
     }
 
+    //--------------------------------------------------------------------------
+    // TECHNICAL
+    //--------------------------------------------------------------------------
+
     /**
      * @override
      */
@@ -175,41 +179,15 @@ export class ArticlesStructureBehavior extends AbstractBehavior {
         });
     }
 
+    //--------------------------------------------------------------------------
+    // BUSINESS
+    //--------------------------------------------------------------------------
+
     _appendArticlesStructureContent() {
         const parser = new DOMParser();
         // this.content always comes from the database, or from a sanitized
         // collaborative step (DOMPurify).
         this.articlesStructureContent.el.replaceChildren(...parser.parseFromString(this.content, 'text/html').body.children);
-    }
-
-    /**
-     * @returns {HTMLElement}
-     */
-    async _renderArticlesStructure () {
-        const articleId = this.props.record.resId;
-        const allArticles = await this._fetchAllArticles(articleId);
-        return renderToMarkup('knowledge.ArticlesStructureContent', {
-            'articles': this._buildArticlesStructure(articleId, allArticles),
-            'showAllChildren': this.showAllChildren,
-        });
-    }
-
-    /**
-     * @returns {Array[Object]}
-     */
-    async _fetchAllArticles (articleId) {
-        const domain = [
-            ['parent_id', !this.showAllChildren ? '=' : 'child_of', articleId],
-            ['is_article_item', '=', false]
-        ];
-        const { records } = await this.orm.webSearchRead('knowledge.article', domain, {
-            specification: {
-                display_name: {},
-                parent_id: {},
-            },
-            order: 'sequence',
-        });
-        return records;
     }
 
     /**
@@ -233,7 +211,39 @@ export class ArticlesStructureBehavior extends AbstractBehavior {
         return articles;
     }
 
-    // Listeners:
+    /**
+     * @returns {Array[Object]}
+     */
+    async _fetchAllArticles (articleId) {
+        const domain = [
+            ['parent_id', !this.showAllChildren ? '=' : 'child_of', articleId],
+            ['is_article_item', '=', false]
+        ];
+        const { records } = await this.orm.webSearchRead('knowledge.article', domain, {
+            specification: {
+                display_name: {},
+                parent_id: {},
+            },
+            order: 'sequence',
+        });
+        return records;
+    }
+
+    /**
+     * @returns {HTMLElement}
+     */
+    async _renderArticlesStructure () {
+        const articleId = this.props.record.resId;
+        const allArticles = await this._fetchAllArticles(articleId);
+        return renderToMarkup('knowledge.ArticlesStructureContent', {
+            'articles': this._buildArticlesStructure(articleId, allArticles),
+            'showAllChildren': this.showAllChildren,
+        });
+    }
+
+    //--------------------------------------------------------------------------
+    // HANDLERS
+    //--------------------------------------------------------------------------
 
     /**
      * Opens the article in the side tree menu.

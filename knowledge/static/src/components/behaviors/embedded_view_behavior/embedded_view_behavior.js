@@ -24,6 +24,22 @@ import {
  * to handle errors that may occur when loading an embedded view.
  */
 export class EmbeddedViewBehavior extends AbstractBehavior {
+    static components = {
+        EmbeddedViewManager,
+    };
+    static props = {
+        ...AbstractBehavior.props,
+        action_help: { type: Object, optional: true},
+        action_xml_id: { type: String, optional: true },
+        act_window: { type: Object, optional: true },
+        additionalViewProps: { type: Object, optional: true},
+        context: { type: Object, optional: true },
+        display_name: { type: String, optional: true },
+        embedded_view_id: { type: String, optional: true },
+        view_type: { type: String },
+    };
+    static template = "knowledge.EmbeddedViewBehavior";
+
     setup () {
         super.setup();
         this.actionService = useService('action');
@@ -137,6 +153,10 @@ export class EmbeddedViewBehavior extends AbstractBehavior {
         });
     }
 
+    //--------------------------------------------------------------------------
+    // TECHNICAL
+    //--------------------------------------------------------------------------
+
     setupIntersectionObserver() {
         this.observer = setIntersectionObserver(this.props.anchor, async () => {
             await this.loadData();
@@ -144,40 +164,18 @@ export class EmbeddedViewBehavior extends AbstractBehavior {
         });
     }
 
-    async loadData () {
-        const context = makeContext([this.props.context || {}, {
-            knowledgeEmbeddedViewId: this.knowledgeEmbeddedViewId
-        }]);
-        try {
-            const action = await this.actionService.loadAction(
-                this.props.act_window || this.props.action_xml_id,
-                context
-            );
-            if (action.type !== "ir.actions.act_window") {
-                this.state.error = true;
-                return;
-            }
-            if (this.props.display_name) {
-                action.name = this.props.display_name;
-                action.display_name = this.props.display_name;
-            }
-            if (this.props.action_help) {
-                action.help = this.props.action_help;
-            }
-            this.embeddedViewManagerProps = {
-                el: this.props.anchor,
-                action,
-                additionalViewProps: this.props.additionalViewProps,
-                context,
-                viewType: this.props.view_type,
-                setTitle: this.setTitle.bind(this),
-                getTitle: this.getTitle.bind(this),
-                readonly: this.props.readonly,
-                record: this.props.record,
-            };
-        } catch {
-            this.state.error = true;
-        }
+    //--------------------------------------------------------------------------
+    // GETTERS/SETTERS
+    //--------------------------------------------------------------------------
+
+    /**
+     * Get the title of the embedded view.
+     * @returns {String}
+     */
+    getTitle () {
+        return this.embeddedViewManagerProps.action.display_name ||
+            this.embeddedViewManagerProps.action.name ||
+            '';
     }
 
     /**
@@ -202,29 +200,43 @@ export class EmbeddedViewBehavior extends AbstractBehavior {
         }
     }
 
-    /**
-     * Get the title of the embedded view.
-     * @returns {String}
-     */
-    getTitle () {
-        return this.embeddedViewManagerProps.action.display_name ||
-               this.embeddedViewManagerProps.action.name ||
-               '';
+    //--------------------------------------------------------------------------
+    // BUSINESS
+    //--------------------------------------------------------------------------
+
+    async loadData () {
+        const context = makeContext([this.props.context || {}, {
+            knowledgeEmbeddedViewId: this.knowledgeEmbeddedViewId
+        }]);
+        try {
+            const action = await this.actionService.loadAction(
+                this.props.act_window || this.props.action_xml_id,
+                context
+            );
+            if (action.type !== "ir.actions.act_window") {
+                this.state.error = true;
+                return;
+            }
+            if (this.props.display_name) {
+                action.name = this.props.display_name;
+                action.display_name = this.props.display_name;
+            }
+            if (this.props.action_help) {
+                action.help = this.props.action_help;
+            }
+            this.embeddedViewManagerProps = {
+                anchor: this.props.anchor,
+                action,
+                additionalViewProps: this.props.additionalViewProps,
+                context,
+                viewType: this.props.view_type,
+                setTitle: this.setTitle.bind(this),
+                getTitle: this.getTitle.bind(this),
+                readonly: this.props.readonly,
+                record: this.props.record,
+            };
+        } catch {
+            this.state.error = true;
+        }
     }
 }
-
-EmbeddedViewBehavior.template = "knowledge.EmbeddedViewBehavior";
-EmbeddedViewBehavior.components = {
-    EmbeddedViewManager,
-};
-EmbeddedViewBehavior.props = {
-    ...AbstractBehavior.props,
-    additionalViewProps: { type: Object, optional: true},
-    embedded_view_id: { type: String, optional: true },
-    act_window: { type: Object, optional: true },
-    action_xml_id: { type: String, optional: true },
-    context: { type: Object, optional: true },
-    display_name: { type: String, optional: true },
-    view_type: { type: String },
-    action_help: { type: Object, optional: true},
-};

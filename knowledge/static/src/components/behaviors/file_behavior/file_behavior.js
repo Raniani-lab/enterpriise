@@ -23,9 +23,9 @@ export class FileBehavior extends AbstractBehavior {
     };
     static props = {
         ...AbstractBehavior.props,
-        fileName: { type: String, optional: true },
         fileExtension: { type: String, optional: true },
         fileImage: { type: Object, optional: true },
+        fileName: { type: String, optional: true },
     };
     static template = "knowledge.FileBehavior";
 
@@ -50,31 +50,11 @@ export class FileBehavior extends AbstractBehavior {
             });
         }
     }
-    /**
-     * Callback function called when the user clicks on the "Download" button.
-     * The function will simply open a link that will trigger the download of
-     * the associated file. If the url is not valid, the function will display
-     * an error message.
-     * @param {Event} ev
-     */
-    async onClickDownload(ev) {
-        const fileLink = this.props.anchor.querySelector('.o_knowledge_file_image > a');
-        if (!fileLink || !fileLink.hasAttribute('href')) {
-            return;
-        }
-        const title = fileLink.getAttribute('title');
-        const href = fileLink.getAttribute('href');
-        try {
-            await downloadFile(href);
-        } catch {
-            this.dialogService.add(AlertDialog, {
-                body: _t('Oops, the file %s could not be found. Please replace this file box by a new one to re-upload the file.', title),
-                title: _t('Missing File'),
-                confirm: () => {},
-                confirmLabel: _t('Ok'),
-            });
-        }
-    }
+
+    //--------------------------------------------------------------------------
+    // HANDLERS
+    //--------------------------------------------------------------------------
+
     /**
      * Callback function called when the user clicks on the "Send as Message" button.
      * The function will execute a macro that will open the last opened form view,
@@ -113,6 +93,33 @@ export class FileBehavior extends AbstractBehavior {
         });
         macro.start();
     }
+
+    /**
+     * Callback function called when the user clicks on the "Download" button.
+     * The function will simply open a link that will trigger the download of
+     * the associated file. If the url is not valid, the function will display
+     * an error message.
+     * @param {Event} ev
+     */
+    async onClickDownload(ev) {
+        const fileLink = this.props.anchor.querySelector('.o_knowledge_file_image > a');
+        if (!fileLink || !fileLink.hasAttribute('href')) {
+            return;
+        }
+        const title = fileLink.getAttribute('title');
+        const href = fileLink.getAttribute('href');
+        try {
+            await downloadFile(href);
+        } catch {
+            this.dialogService.add(AlertDialog, {
+                body: _t('Oops, the file %s could not be found. Please replace this file box by a new one to re-upload the file.', title),
+                title: _t('Missing File'),
+                confirm: () => {},
+                confirmLabel: _t('Ok'),
+            });
+        }
+    }
+
     /**
      * Callback function called when the user clicks on the "Use As Attachment" button.
      * The function will execute a macro that will open the last opened form view

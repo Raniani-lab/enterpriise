@@ -37,7 +37,7 @@
         t-if="isAttributeSupported('help')"
         name="'help'"
         type="'string'"
-        value="props.node.attrs.help"
+        value="props.node.attrs.help || props.node.field.help"
         onChange.bind="onChangeAttribute"
     >
         Help Tooltip

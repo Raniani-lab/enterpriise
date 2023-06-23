@@ -37,7 +37,7 @@ QUnit.module(
                     coucou: {
                         fields: {
                             id: { string: "Id", type: "integer" },
-                            display_name: { string: "Name", type: "char" },
+                            display_name: { string: "Name", type: "char", help: "Display Name" },
                             m2o: { string: "Product", type: "many2one", relation: "product" },
                             char_field: { string: "A char", type: "char" },
                             priority: {
@@ -111,7 +111,7 @@ QUnit.module(
         QUnit.module("Interactive Editor Sidebar");
 
         QUnit.test("show properties sidepanel on field selection", async function (assert) {
-            assert.expect(6);
+            assert.expect(7);
 
             await createViewEditor({
                 serverData,
@@ -120,7 +120,7 @@ QUnit.module(
                 arch: `
                     <form>
                         <sheet>
-                            <field name="name"/>
+                            <field name="display_name"/>
                         </sheet>
                     </form>
                 `,
@@ -170,6 +170,14 @@ QUnit.module(
                 ),
                 "Text (char)",
                 "the widget in sidebar should be set by default"
+            );
+
+            assert.strictEqual(
+                target.querySelector(
+                    ".o_web_studio_sidebar .o_web_studio_property #help"
+                ).value,
+                "Display Name",
+                "the help tooltip in the sidebar should default to the field tooltip"
             );
         });
 

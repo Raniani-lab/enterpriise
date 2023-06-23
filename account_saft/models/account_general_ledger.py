@@ -119,6 +119,7 @@ class AccountGeneralLedger(models.AbstractModel):
                 account_move.create_date                    AS move_create_date,
                 account_move.invoice_date                   AS move_invoice_date,
                 account_move.invoice_origin                 AS move_invoice_origin,
+                account_move.statement_line_id              AS move_statement_line_id,
                 tax.id                                      AS tax_id,
                 {tax_name}                                  AS tax_name,
                 tax.amount                                  AS tax_amount,
@@ -169,6 +170,8 @@ class AccountGeneralLedger(models.AbstractModel):
                 'date': line_vals['date'],
                 'create_date': line_vals['move_create_date'],
                 'partner_id': line_vals['partner_id'],
+                'journal_type': line_vals['journal_type'],
+                'statement_line_id': line_vals['move_statement_line_id'],
                 'line_vals_list': [],
             }
             move_vals_map.setdefault(line_vals['move_id'], move_vals)

@@ -7,6 +7,7 @@ from odoo.addons.sale.models.sale_order import SALE_ORDER_STATE
 class RentalReport(models.Model):
     _name = "sale.rental.report"
     _description = "Rental Analysis Report"
+    _rec_name = 'order_id'
     _auto = False
 
     date = fields.Date('Date', readonly=True)

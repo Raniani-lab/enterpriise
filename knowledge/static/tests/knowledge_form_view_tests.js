@@ -193,7 +193,7 @@ QUnit.module("Knowledge - Articles Structure Command", (hooks) => {
 const testAppendBehavior = async (editable) => {
     const wysiwyg = $(editable).data('wysiwyg');
 
-    const insertedDiv = renderToElement('knowledge.abstract_behavior', {
+    const insertedDiv = renderToElement('knowledge.AbstractBehaviorBlueprint', {
         behaviorType: "o_knowledge_behavior_type_template",
     });
     wysiwyg.appendBehaviorBlueprint(insertedDiv);

@@ -188,7 +188,7 @@ export class ArticlesStructureBehavior extends AbstractBehavior {
     async _renderArticlesStructure () {
         const articleId = this.props.record.resId;
         const allArticles = await this._fetchAllArticles(articleId);
-        return renderToMarkup('knowledge.articles_structure', {
+        return renderToMarkup('knowledge.ArticlesStructureContent', {
             'articles': this._buildArticlesStructure(articleId, allArticles),
             'showAllChildren': this.showAllChildren,
         });

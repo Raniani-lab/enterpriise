@@ -36,6 +36,14 @@ msgid ""
 "                </p>\n"
 "            "
 msgstr ""
+"\n"
+"                <p class=\"o_view_nocontent_smiling_face\">\n"
+"                    لم يتبقَّ شيء للقيام به هنا!\n"
+"                </p>\n"
+"                <p>\n"
+"                    لم يتم العثور على معاملات تطابق عوامل التصفية التي حددتها.\n"
+"                </p>\n"
+"            "
 
 #. module: account_accountant
 #. odoo-javascript

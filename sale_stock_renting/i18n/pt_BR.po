@@ -4,7 +4,6 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Bruno Pergher, 2023
 # Kevilyn Rosa, 2023
 # 
 msgid ""
@@ -157,6 +156,7 @@ msgstr "Período mínimo de tempo entre dois aluguéis"
 #, python-format
 msgid "No valid quant has been found in location %s for serial number %s !"
 msgstr ""
+"Nenhum código válido foi encontrado no local %s para o número de série %s!"
 
 #. module: sale_stock_renting
 #: model:ir.model.fields,help:sale_stock_renting.field_rental_wizard__lot_ids
@@ -260,7 +260,7 @@ msgstr "Relatório de análise de locações"
 #. module: sale_stock_renting
 #: model:ir.model,name:sale_stock_renting.model_sale_rental_schedule
 msgid "Rental Schedule"
-msgstr "Cronograma de Aluguel"
+msgstr "Cronograma de locação"
 
 #. module: sale_stock_renting
 #. odoo-python

@@ -4,7 +4,6 @@
 # 
 # Translators:
 # Braulio D. López Vázquez <bdl@odoo.com>, 2022
-# Cécile Collart <cco@odoo.com>, 2022
 # Martin Trigaux, 2022
 # Lucia Pacheco, 2022
 # Fernanda Alvarez, 2023
@@ -563,8 +562,8 @@ msgstr "Enviar SMS"
 msgid ""
 "Send the SEPA mandate in attachement, to partners who signed a new mandate"
 msgstr ""
-"Enviar el mandato de la SEPA como archivo adjunto a los partners que "
-"firmaron un nuevo mandato"
+"Enviar el mandato SEPA como archivo adjunto a los contactos que firmaron un "
+"nuevo mandato"
 
 #. module: payment_sepa_direct_debit
 #: model:mail.template,description:payment_sepa_direct_debit.mail_template_sepa_notify_debit
@@ -752,7 +751,7 @@ msgstr "Si los números de teléfono deben verificarse por código SMS."
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.payment_provider_form
 msgid ""
 "You don't have enough credit to send SMS. You can buy new credits here:"
-msgstr "No tiene saldo suficiente para mandar un SMS. Recargue crédito aquí:"
+msgstr "No tiene crédito suficiente para mandar un SMS, consiga más aquí:"
 
 #. module: payment_sepa_direct_debit
 #: model:mail.template,subject:payment_sepa_direct_debit.mail_template_sepa_notify_validation
@@ -785,7 +784,7 @@ msgstr "Su código de confirmación es %s"
 #. module: payment_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.inline_form
 msgid "upon validation."
-msgstr "en la validación"
+msgstr "en la validación."
 
 #. module: payment_sepa_direct_debit
 #: model:mail.template,report_name:payment_sepa_direct_debit.mail_template_sepa_notify_validation

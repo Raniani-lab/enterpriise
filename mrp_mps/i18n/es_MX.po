@@ -86,7 +86,7 @@ msgstr "Reabastecimiento real"
 #: code:addons/mrp_mps/models/mrp_mps.py:0
 #, python-format
 msgid "Actual Replenishment %s %s (%s - %s)"
-msgstr "Reabasetecimiento real %s%s(%s-%s)"
+msgstr "Reabastecimiento real %s%s(%s-%s)"
 
 #. module: mrp_mps
 #. odoo-javascript

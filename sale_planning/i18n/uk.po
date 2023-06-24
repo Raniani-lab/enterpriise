@@ -80,7 +80,7 @@ msgstr "Кінцева дата"
 #. module: sale_planning
 #: model:planning.role,name:sale_planning.planning_role_tester
 msgid "Functional Tester"
-msgstr ""
+msgstr "Функціональний тестувальник"
 
 #. module: sale_planning
 #: model:product.template,name:sale_planning.technical_maintainance_product_product_template
@@ -101,6 +101,10 @@ msgid ""
 "when confirming the Sales Order. Only employees with this role will "
 "automatically be assigned shifts for Sales Orders containing this service."
 msgstr ""
+"Якщо ввімкнено, зміна буде автоматично згенерована для вибраної ролі під час"
+" підтвердження замовлення на продаж. Лише співробітникам із цією роллю "
+"автоматично призначатимуться зміни для замовлень на продаж, які містять цю "
+"послугу."
 
 #. module: sale_planning
 #: model_terms:ir.ui.view,arch_db:sale_planning.planning_analysis_report_view_search
@@ -165,7 +169,7 @@ msgid ""
 "Plannable services should be a service product, product\n"
 "%s."
 msgstr ""
-"Плановані послуги повинні бути сервісним товаром, товаром\n"
+"Плановані послуги повинні бути послугою, товаром\n"
 "%s."
 
 #. module: sale_planning
@@ -174,7 +178,7 @@ msgstr ""
 #, python-format
 msgid "Plannable services should use an UoM within the %s category."
 msgstr ""
-"Плановані послуги повинні використовувати од. вим. в межах категорії %s."
+"Заплановані послуги повинні використовувати од. вим. в межах категорії %s."
 
 #. module: sale_planning
 #: model:ir.model,name:sale_planning.model_planning_analysis_report
@@ -262,6 +266,9 @@ msgid ""
 "are automatically planned, the remaining hours of the sales order item, as "
 "well as the role defined on the service, are taken into account."
 msgstr ""
+"Товар замовлення клієнта, для якого буде виконано ця зміна. Коли замовлення "
+"на продаж плануються автоматично, враховуються години, що залишилися для "
+"рядка замовлення на продаж, а також роль, визначена в послузі."
 
 #. module: sale_planning
 #: model:ir.actions.act_window,name:sale_planning.sale_planning_action_schedule_by_sale_order
@@ -358,12 +365,12 @@ msgstr "Переглянути розклад"
 #: code:addons/sale_planning/static/src/views/hooks.js:0
 #, python-format
 msgid "View Shifts"
-msgstr ""
+msgstr "Переглянути зміни"
 
 #. module: sale_planning
 #: model:planning.role,name:sale_planning.planning_role_planner
 msgid "Work Planner"
-msgstr ""
+msgstr "Робочий планувальник"
 
 #. module: sale_planning
 #: model_terms:ir.ui.view,arch_db:sale_planning.product_template_form_view_invoice_policy_inherit_sale_planning

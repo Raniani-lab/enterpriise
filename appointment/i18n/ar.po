@@ -696,7 +696,7 @@ msgstr "تم تنسيق مدة الموعد بالكلمات "
 #: code:addons/appointment/models/appointment_type.py:0
 #, python-format
 msgid "Appointment Duration should be higher than 0.00."
-msgstr ""
+msgstr "يجب أن تكون مدة الموعد أعلى من 0.00. "
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_calendar_event__appointment_invite_id

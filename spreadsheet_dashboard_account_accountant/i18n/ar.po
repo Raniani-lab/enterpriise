@@ -1061,7 +1061,8 @@ msgstr "الدائن"
 #, python-format
 msgid "payable + credit card + current liabilities + non-current liabilities"
 msgstr ""
-"الدائن + البطاقة الائتمانية + الأصول المتداولة + الأصول غير المتداولة "
+"الدائن + البطاقة الائتمانية + الالتزامات المتداولة + الالتزامات غير "
+"المتداولة "
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript

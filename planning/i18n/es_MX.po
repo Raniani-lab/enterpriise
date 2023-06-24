@@ -84,7 +84,7 @@ msgstr "1:00 PM - 5:00 PM (4h) - Jeffrey Kelly"
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "28 August 2022 - 03 September 2022"
-msgstr "28 de agosto 2022 - 03 de septiembre 2022"
+msgstr "28 de agosto de 2022 - 03 de septiembre de 2022"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -330,8 +330,8 @@ msgid ""
 "<i class=\"fa fa-check-circle text-success\"/> This shift is no longer "
 "assigned to you."
 msgstr ""
-"<i class=\"fa fa-check-circle text-success\"/> Este turno ya no está "
-"asignado a usted"
+"<i class=\"fa fa-check-circle text-success\"/> Ya no está a cargo de este "
+"turno."
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_shift_notification
@@ -358,8 +358,8 @@ msgid ""
 "<i class=\"fa fa-exclamation-circle text-warning\"/> This shift is already "
 "assigned to another employee."
 msgstr ""
-"<i class=\"fa fa-exclamation-circle text-warning\"/> Este turno ya ha sido "
-"asignado a otro empleado."
+"<i class=\"fa fa-exclamation-circle text-warning\"/>Ya se le asignó este "
+"turno a otro empleado."
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_shift_notification
@@ -655,7 +655,7 @@ msgstr "Administrador"
 msgid ""
 "All subsequent shifts will be deleted. Are you sure you want to continue?"
 msgstr ""
-"Todos los turnos subsecuentes se eliminarán. ¿Está seguro que desea "
+"Todos los turnos subsecuentes se eliminarán. ¿Está seguro de que desea "
 "continuar?"
 
 #. module: planning
@@ -672,7 +672,7 @@ msgstr "Tiempo asignado"
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__allocated_percentage
 msgid "Allocated Time %"
-msgstr "Tiempo asignado %"
+msgstr "% de tiempo asignado"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_analysis_report__allocated_percentage
@@ -752,10 +752,9 @@ msgid ""
 "open shifts for the roles you will be needing to complete a mission. Then, "
 "assign those open shifts to the resources that are available.</i>"
 msgstr ""
-"Asigne un <b>recurso</b>, o déjelo abierto por el momento. <i>Consejo: cree "
-"turnos abiertos para las funciones que necesitará para cumplir las tareas. "
-"Posteriormente, asigne dichos turnos abiertos a los recursos "
-"disponibles.</i>"
+"Asigne un <b>recurso</b> o déjelo abierto por el momento. <i>Consejo: cree "
+"turnos abiertos para las funciones que necesitará para cumplir las tareas.  "
+"Luego, designe dichos turnos abiertos a los recursos disponibles.</i>"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_resource_resource__avatar_128
@@ -957,9 +956,9 @@ msgid ""
 "assign those open shifts to the resources that are available."
 msgstr ""
 "Defina las funciones que sus recursos realizan (por ejemplo, chef, "
-"bartender, mesero...). Cree turnos abiertos para las funciones que necesita "
-"para completar las tareas. Posteriormente, asigne dichos turnos abiertos a "
-"los recursos que están disponibles."
+"bartender, mesero...). Cree turnos abiertos para las funciones que "
+"necesitará para completar las tareas. Luego, asigne dichos turnos abiertos a"
+" los recursos disponibles."
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -970,8 +969,8 @@ msgid ""
 msgstr ""
 "Defina las funciones que sus recursos realizan (por ejemplo, chef, "
 "bartender, mesero, etc.). Cree turnos abiertos para las funciones que "
-"necesitará para cumplir las tareas. Posteriormente, asigne dichos turnos "
-"abiertos a los recursos disponibles."
+"necesitará para cumplir las tareas, luego asígnelos a los recursos "
+"disponibles."
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_role_view_kanban
@@ -1052,10 +1051,10 @@ msgid ""
 "notified of the change. Press CTRL (or Cmd on Mac) while dragging a shift to"
 " duplicate it."
 msgstr ""
-"Arrastre un turno a otro día para reprogramarlo, o a otra fila para "
-"reasignar el turno. Si el turno fue publicado, se notificará al usuario del "
-"cambio automáticamente. Presione CTRL (o Cmd en Mac) mientras arrastra un "
-"turno para duplicarlo."
+"Arrastre un turno a otro día para reprogramarlo o a otra fila para "
+"reasignarlo. Si el turno se publicó, se notificará en automático del cambio "
+"al usuario. Presione CTRL (o Cmd en Mac) mientras arrastra un turno para "
+"duplicarlo."
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_role_view_kanban
@@ -1094,7 +1093,8 @@ msgstr "Eli Lambert (mesero)"
 #. module: planning
 #: model:mail.template,description:planning.email_template_slot_single
 msgid "Email sent automatically when publishing a shift"
-msgstr "Correo electrónico que se evnía cuando se publica un turno"
+msgstr ""
+"Correo electrónico a enviar en automático cada que se publique un turno"
 
 #. module: planning
 #: model:mail.template,description:planning.email_template_planning_planning
@@ -2113,7 +2113,7 @@ msgstr "Fecha de inicio"
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_slot_template_view_search
 msgid "Start Hour"
-msgstr "Iniciar hora"
+msgstr "Hora de inicio"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_analysis_report__state
@@ -2327,7 +2327,7 @@ msgstr "No se implementó esta barra de progreso."
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__was_copied
 msgid "This Shift Was Copied From Previous Week"
-msgstr "Este turno fue copiado de la semana anterior"
+msgstr "Este turno se copió de la semana pasada"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
@@ -2340,8 +2340,9 @@ msgid ""
 "This open shift is no longer available, or the planning has been updated in "
 "the meantime. Please contact your manager for further information."
 msgstr ""
-"Este turno abierto ya no está disponible o la planeación ha sido actualizada"
-" desde entonces. Contacte a su gerente para obtener más información."
+"Puede ser que este turno abierto ya no esté disponible o que la planeación "
+"se haya actualizado desde entonces. Contacte a su gerente para obtener más "
+"información."
 
 #. module: planning
 #. odoo-javascript

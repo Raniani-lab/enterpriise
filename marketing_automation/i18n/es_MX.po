@@ -119,7 +119,7 @@ msgstr "<i class=\"fa fa-pie-chart\"/> Detalles"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "<i class=\"fa fa-plus-circle\"/> Add child activity"
-msgstr "<i class=\"fa fa-plus-circle\"/> Añadir actividad subordinada"
+msgstr "<i class=\"fa fa-plus-circle\"/> Agregar actividad subordinada"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -287,7 +287,7 @@ msgid ""
 "Be aware that participants that had no more activities could be reintroduced"
 " into the campaign and new traces could be created for them."
 msgstr ""
-"Tenga en cuenta que los participantes que ya no tenían actividades podían "
+"Tenga en cuenta que los participantes que ya no tenían actividades podrían "
 "volver a introducirse en la campaña y crear nuevos vínculos de seguimiento."
 
 #. module: marketing_automation
@@ -357,7 +357,7 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__child_ids
 msgid "Child Activities"
-msgstr "Actividades hijas"
+msgstr "Actividades subordinadas"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -386,7 +386,7 @@ msgid ""
 "Come back later once your campaigns are running to overview your "
 "participants."
 msgstr ""
-"Regrese después ya que sus campañas estén funcionando y supervise los "
+"Regrese cuando sus campañas estén funcionando para supervisar a los "
 "participantes."
 
 #. module: marketing_automation
@@ -503,7 +503,8 @@ msgstr "Dominio"
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_activity__activity_domain
 msgid "Domain that applies to this activity and its child activities"
-msgstr "Dominio que se aplica a esta actividad y sus actividades hijas. "
+msgstr ""
+"Dominio que se aplica a esta actividad y sus actividades subordinadas. "
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -1160,7 +1161,7 @@ msgstr "ID de registro"
 #: code:addons/marketing_automation/models/marketing_participant.py:0
 #, python-format
 msgid "Record deleted"
-msgstr "Registro borrado"
+msgstr "Registro eliminado"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign_test__model_name
@@ -1327,7 +1328,7 @@ msgid ""
 " apply the modifications you've just made."
 msgstr ""
 "Algunos participantes ya están participando en esta campaña. Haga clic en "
-"\"Actualizar\" para introducir las modificaciones que acaba de realizar."
+"\"Actualizar\" para aplicar las modificaciones que acaba de realizar."
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__source_id
@@ -1412,7 +1413,7 @@ msgid ""
 msgstr ""
 "Cambiar el modelo objetivo invalida las actividades existentes. Deberá "
 "actualizar las acciones de la actividad para que sean las mismas que el "
-"mismo modelo, o borrar las acciones."
+"mismo modelo, o eliminarlas."
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__require_sync

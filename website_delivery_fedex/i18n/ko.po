@@ -85,6 +85,8 @@ msgid ""
 "There was an error retrieving Fedex localisations:\n"
 "%s"
 msgstr ""
+"Fedex 지점을 검색하는 동안 오류가 발생했습니다:\n"
+"%s"
 
 #. module: website_delivery_fedex
 #: model:ir.model.fields,field_description:website_delivery_fedex.field_delivery_carrier__fedex_use_locations

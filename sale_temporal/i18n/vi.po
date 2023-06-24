@@ -112,7 +112,7 @@ msgstr "Thời hạn"
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__duration_display
 msgid "Duration Display"
-msgstr ""
+msgstr "Hiển thị thời lượng"
 
 #. module: sale_temporal
 #: model:ir.model.fields,help:sale_temporal.field_product_product__display_price
@@ -340,12 +340,12 @@ msgstr "Sản phẩm (%s) có giá trị không tương thích: %s"
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_template_form_view_pricing
 msgid "Time-based pricing"
-msgstr ""
+msgstr "Định giá theo thời gian"
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_pricelist_view
 msgid "Time-based rules"
-msgstr ""
+msgstr "Quy tắc theo thời gian"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__unit

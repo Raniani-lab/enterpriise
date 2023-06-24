@@ -45,14 +45,15 @@ msgstr "%s Documents"
 #: code:addons/documents/static/src/views/documents_model_mixin.js:0
 #, python-format
 msgid "%s Documents (%s locked)"
-msgstr "%s Documents (%s bloqués)"
+msgstr "%s Documents (%s verrouillés)"
 
 #. module: documents
 #. odoo-javascript
 #: code:addons/documents/static/src/views/search/documents_search_panel.js:0
 #, python-format
 msgid "%s file(s) not moved because they are locked by another user"
-msgstr "%s fichier(s) non déplacé(s), car bloqué(s) par un autre utilisateur"
+msgstr ""
+"%s fichier(s) non déplacé(s), car verrouillé(s) par un autre utilisateur"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
@@ -179,8 +180,8 @@ msgid ""
 "<i class=\"fa fa-lock oe_inline\" title=\"Locked\" attrs=\"{'invisible': "
 "[('lock_uid', '=', False)]}\"/>"
 msgstr ""
-"<i class=\"fa fa-lock oe_inline\" title=\"Bloqué\" attrs=\"{'invisible': "
-"[('lock_uid', '=', False)]}\"/>"
+"<i class=\"fa fa-lock oe_inline\" title=\"Verrouillé\" attrs=\"{'invisible':"
+" [('lock_uid', '=', False)]}\"/>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
@@ -1271,14 +1272,14 @@ msgstr "Date d'échéance"
 #: code:addons/documents/static/src/views/search/documents_search_panel.xml:0
 #, python-format
 msgid "Edit"
-msgstr "Éditer"
+msgstr "Modifier"
 
 #. module: documents
 #. odoo-javascript
 #: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
 msgid "Edit the linked record"
-msgstr "Éditer l'enregistrement lié"
+msgstr "Modifier l'enregistrement lié"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
@@ -1429,7 +1430,7 @@ msgstr ""
 #: model:ir.model.fields,help:documents.field_documents_folder__group_ids
 msgid "Groups able to see the workspace and read/create/edit its documents."
 msgstr ""
-"Groupes capables de voir l'espace de travail et de lire/créer/éditer ses "
+"Groupes capables de voir l'espace de travail et de lire/créer/modifier ses "
 "documents."
 
 #. module: documents
@@ -1706,18 +1707,18 @@ msgstr "En cours de chargement..."
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
 #, python-format
 msgid "Lock"
-msgstr "Bloquer"
+msgstr "Verrouiller"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__is_locked
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Locked"
-msgstr "Bloqué"
+msgstr "Verrouillé"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__lock_uid
 msgid "Locked by"
-msgstr "Bloqué par"
+msgstr "Verrouillé par"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
@@ -2728,7 +2729,7 @@ msgstr "Désarchiver"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
 msgid "Unlock"
-msgstr "Débloquer"
+msgstr "Déverrouiller"
 
 #. module: documents
 #. odoo-javascript

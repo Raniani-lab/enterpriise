@@ -237,7 +237,7 @@ msgstr "Libellé dupliqué"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
 #, python-format
 msgid "Edit"
-msgstr "Éditer"
+msgstr "Modifier"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -245,7 +245,7 @@ msgstr "Éditer"
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/side_panels/pivot_details_side_panel.xml:0
 #, python-format
 msgid "Edit domain"
-msgstr "Éditer le domaine"
+msgstr "Modifier le domaine"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -357,7 +357,7 @@ msgstr "Lier un menu Odoo"
 #: code:addons/spreadsheet_edition/static/src/assets/insert_action_link_menu/insert_action_link_menu.xml:0
 #, python-format
 msgid "Link menu in spreadsheet"
-msgstr "Lier le menu dans feuille de calcul"
+msgstr "Lien vers le menu dans feuille de calcul"
 
 #. module: spreadsheet_edition
 #. odoo-javascript

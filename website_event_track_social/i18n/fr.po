@@ -41,7 +41,7 @@ msgstr ""
 #. module: website_event_track_social
 #: model_terms:ir.ui.view,arch_db:website_event_track_social.event_track_view_form
 msgid "Edit Push Reminder"
-msgstr "Éditer le rappel push"
+msgstr "Modifier le rappel push"
 
 #. module: website_event_track_social
 #: model:ir.model.fields,field_description:website_event_track_social.field_event_track__firebase_enable_push_notifications

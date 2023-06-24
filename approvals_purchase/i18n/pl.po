@@ -8,6 +8,7 @@
 # Martin Trigaux, 2022
 # Maksym <ms@myodoo.pl>, 2022
 # Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023
+# Tadeusz Karpiński, 2023
 # 
 msgid ""
 msgstr ""
@@ -15,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-07-12 07:57+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023\n"
+"Last-Translator: Tadeusz Karpiński, 2023\n"
 "Language-Team: Polish (https://app.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -100,14 +101,14 @@ msgstr "Zamówienia Zakupu"
 #. module: approvals_purchase
 #: model:ir.model.fields,field_description:approvals_purchase.field_approval_product_line__po_uom_qty
 msgid "Purchase UoM Quantity"
-msgstr "Ilość zakupów UoM"
+msgstr "Zakup JM Ilość"
 
 #. module: approvals_purchase
 #: model:ir.model.fields,help:approvals_purchase.field_approval_product_line__po_uom_qty
 msgid ""
 "The quantity converted into the UoM used by the product in Purchase Order."
 msgstr ""
-"Ilość przeliczona na UoM wykorzystywana przez produkt w zamówieniu zakupu"
+"Ilość przeliczona na JM wykorzystywana przez produkt w zamówieniu zakupu"
 
 #. module: approvals_purchase
 #: code:addons/approvals_purchase/models/approval_request.py:0

@@ -4095,6 +4095,7 @@ msgid ""
 "You cannot delete %s as it is used in another module but you can archive it "
 "instead."
 msgstr ""
+"لا يمكنك حذف %s حيث إنه مستخدَم في تطبيق آخر. يرجى أرشفته عوضاً عن ذلك. "
 
 #. module: hr_payroll
 #. odoo-python

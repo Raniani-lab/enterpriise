@@ -24,6 +24,7 @@
 # Paweł Michoń <michon.pawel@wp.pl>, 2022
 # Paweł Wodyński <pw@myodoo.pl>, 2022
 # Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023
+# Tadeusz Karpiński, 2023
 # 
 msgid ""
 msgstr ""
@@ -31,7 +32,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023\n"
+"Last-Translator: Tadeusz Karpiński, 2023\n"
 "Language-Team: Polish (https://app.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -921,7 +922,7 @@ msgstr "Ilość wykonanych:"
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock_barcode.field_stock_move_line__product_packaging_uom_qty
 msgid "Quantity of the Packaging in the UoM of the Stock Move Line."
-msgstr "Ilość opakowań w UoM linii ruchu zapasów."
+msgstr "Ilość opakowań w JM linii ruchu zapasów."
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_quant
@@ -1263,7 +1264,7 @@ msgid ""
 "Scanned quantity uses %s as Unit of Measure, but this UoM is not compatible "
 "with the line's one (%s)."
 msgstr ""
-"Zeskanowana ilość używa %s jako jednostki miary, ale ta jednostka UoM nie "
+"Zeskanowana ilość używa %s jako jednostki miary, ale ta jednostka JM nie "
 "jest zgodna z jednostką (%s) linii."
 
 #. module: stock_barcode

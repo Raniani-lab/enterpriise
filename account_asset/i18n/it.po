@@ -557,7 +557,7 @@ msgstr "Rilevazione cespite/ricavo"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
 #, python-format
 msgid "Assets"
-msgstr "Attività"
+msgstr "Cespiti"
 
 #. module: account_asset
 #: model:ir.ui.menu,name:account_asset.menu_finance_config_assets

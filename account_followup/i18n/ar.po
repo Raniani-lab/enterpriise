@@ -1082,6 +1082,8 @@ msgid ""
 "You are trying to send an Email, but no follow-up contact has any email "
 "address set for customer '%s'"
 msgstr ""
+"أنت تحاول إرسال بريد إلكتروني، ولكن ليس لجهات اتصال المتابعة عناوين بريد "
+"إلكتروني معدّة للعميل \"%s\" "
 
 #. module: account_followup
 #. odoo-python
@@ -1091,6 +1093,8 @@ msgid ""
 "You are trying to send an SMS, but no follow-up contact has any mobile/phone"
 " number set for customer '%s'"
 msgstr ""
+"أنت تحاول إرسال رسالة نصية قصيرة، ولكن ليس لجهات اتصال المتابعة أرقام هواتف "
+"معدّة للعميل \"%s\" "
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_followup_line_form

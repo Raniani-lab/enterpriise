@@ -151,9 +151,9 @@ msgid ""
 "connection, that the server address you entered is valid, and that the "
 "server is online."
 msgstr ""
-"No se pudo conectar con el servidor. Verifique que dispone de conexión a "
-"internet, que el valor introducido para la dirección del servidor es válido "
-"y que el servidor está en línea."
+"No se pudo conectar con el servidor. Verifique que cuenta con conexión a "
+"internet, valor introducido para la dirección del servidor es válido y el "
+"servidor está en línea."
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -589,9 +589,9 @@ msgid ""
 "your administrator in order to install the module \"Synchronization with the"
 " external timesheet application\""
 msgstr ""
-"El servidor no es compatible con la sincronización de Hojas de hora. Debe "
+"El servidor no es compatible con la sincronización de Hojas de horas. Debe "
 "contactar a su administrador para instalar el módulo \"Sincronización con la"
-" aplicación externa Hojas de tiempo\""
+" aplicación externa Hojas de horas\""
 
 #. module: project_timesheet_synchro
 #. odoo-javascript

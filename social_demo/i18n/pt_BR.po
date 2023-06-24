@@ -73,7 +73,7 @@ msgstr ""
 #. module: social_demo
 #: model:ir.model,name:social_demo.model_social_account
 msgid "Social Account"
-msgstr "Conta de Rede Social"
+msgstr "Conta de rede social"
 
 #. module: social_demo
 #: model:utm.campaign,title:social_demo.social_utm_campaign

@@ -395,7 +395,7 @@ msgstr "Durée en minutes."
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Edit"
-msgstr "Éditer"
+msgstr "Modifier"
 
 #. module: voip
 #. odoo-javascript

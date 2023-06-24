@@ -341,7 +341,7 @@ msgstr ""
 #. module: social_twitter
 #: model:ir.model,name:social_twitter.model_social_account
 msgid "Social Account"
-msgstr "Conta de Rede Social"
+msgstr "Conta de rede social"
 
 #. module: social_twitter
 #: model:ir.model,name:social_twitter.model_social_live_post

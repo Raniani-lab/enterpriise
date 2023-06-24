@@ -50,7 +50,7 @@ msgid ""
 "For each scheduled appointment, create a new opportunity and assign it to "
 "the responsible user."
 msgstr ""
-"Dla każdego zaplanowanego spotkania utwórz nową okazję i przypisz ją do "
+"Dla każdego zaplanowanego spotkania utwórz nową szansę i przypisz ją do "
 "odpowiedzialnego użytkownika."
 
 #. module: appointment_crm
@@ -59,7 +59,7 @@ msgid ""
 "Link an opportunity/lead to the appointment type created.\n"
 "Used when creating a custom appointment type from the Meeting action in the crm form view."
 msgstr ""
-"Powiązanie okazji/leada z utworzonym typem spotkania.\n"
+"Powiązanie szansy/sygnału z utworzonym typem spotkania.\n"
 "Używane podczas tworzenia niestandardowego typu spotkania z akcji Spotkanie w widoku formularza crm."
 
 #. module: appointment_crm

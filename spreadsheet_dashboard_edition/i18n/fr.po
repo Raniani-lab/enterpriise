@@ -24,7 +24,7 @@ msgstr ""
 #. module: spreadsheet_dashboard_edition
 #: model_terms:ir.ui.view,arch_db:spreadsheet_dashboard_edition.spreadsheet_dashboard_view_list
 msgid "Edit"
-msgstr "Éditer"
+msgstr "Modifier"
 
 #. module: spreadsheet_dashboard_edition
 #: model:ir.model.fields,field_description:spreadsheet_dashboard_edition.field_spreadsheet_dashboard__raw

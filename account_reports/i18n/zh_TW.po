@@ -883,7 +883,7 @@ msgstr "銀行和現金"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_bank_rec_widget
 msgid "Bank reconciliation widget for a single statement line"
-msgstr ""
+msgstr "單一結單資料行的銀行對賬小工具"
 
 #. module: account_reports
 #. odoo-python

@@ -21,7 +21,6 @@
 # Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2022
 # Marcin Młynarczyk <mlynarczyk@gmail.com>, 2022
 # Dariusz Żbikowski <darek@krokus.com.pl>, 2022
-# Paweł Wodyński <pw@myodoo.pl>, 2022
 # Martin Trigaux, 2022
 # Tomasz Leppich <t.leppich@gmail.com>, 2022
 # Piotr Szlązak <szlazakpiotr@gmail.com>, 2022
@@ -29,6 +28,8 @@
 # Maksym <ms@myodoo.pl>, 2023
 # Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2023
 # Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023
+# Paweł Wodyński <pw@myodoo.pl>, 2023
+# Tadeusz Karpiński, 2023
 # 
 msgid ""
 msgstr ""
@@ -36,7 +37,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023\n"
+"Last-Translator: Tadeusz Karpiński, 2023\n"
 "Language-Team: Polish (https://app.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1240,8 +1241,8 @@ msgid ""
 "Renewal: The Sales Order replaced the subscription's content with its own"
 msgstr ""
 "Utworzenie: Zamówienie sprzedaży utworzyło subskrypcję\n"
-"Upsell: Zlecenie sprzedaży dodało wiersze do subskrypcji\n"
-"Odnowienie: Zlecenie sprzedaży zastąpiło zawartość subskrypcji własną zawartością."
+"Upsell: Zamówienie sprzedaży dodało wiersze do subskrypcji\n"
+"Odnowienie: Zamówienie sprzedaży zastąpiło zawartość subskrypcji własną zawartością."
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__cron_nextcall
@@ -2586,12 +2587,12 @@ msgstr "Zamówienie sprzedaży"
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_order_alert
 msgid "Sale Order Alert"
-msgstr "Alert zlecenia sprzedaży"
+msgstr "Alert zamówienia sprzedaży"
 
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.action_sale_order_lines
 msgid "Sale Order Lines"
-msgstr "Linie zleceń sprzedaży"
+msgstr "Linie zamówień sprzedaży"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_order_log
@@ -3341,7 +3342,7 @@ msgstr "Ta subskrypcja już działa. Nie ma potrzeby jej odnawiania."
 msgid ""
 "This bar allows to filter the opportunities based on scheduled activities."
 msgstr ""
-"Ten pasek umożliwia filtrowanie okazji na podstawie zaplanowanych działań."
+"Ten pasek umożliwia filtrowanie szans na podstawie zaplanowanych działań."
 
 #. module: sale_subscription
 #. odoo-javascript

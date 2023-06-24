@@ -190,9 +190,9 @@ msgid ""
 "automatic recalculation. Be careful that reordering the lines doesn't "
 "recompute them.</span>"
 msgstr ""
-"<span><strong>Astuce l:</strong> Chaque fois que vous éditez la quantité ou "
-"le montant d'une ligne, les lignes suivants sont recalculées. Nous vous "
-"conseillons d'éditer les lignes de haut en bas pour éviter que vos "
+"<span><strong>Astuce l:</strong> Chaque fois que vous modifiez la quantité "
+"ou le montant d'une ligne, les lignes suivants sont recalculées. Nous vous "
+"conseillons d'modifier les lignes de haut en bas pour éviter que vos "
 "changements soient écrasés par le recalcul automatique. Soyez conscient que "
 "réordonner les lignes ne les recalcule pas.</span>"
 
@@ -1322,7 +1322,7 @@ msgstr "Fiche de paie brouillon"
 #: model:ir.actions.server,name:hr_payroll.action_edit_payslip_lines
 #, python-format
 msgid "Edit Payslip Lines"
-msgstr "Éditer les lignes de fiche de paie"
+msgstr "Modifier les lignes de fiche de paie"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_edit_payslip_line__edit_payslip_lines_wizard_id
@@ -3601,7 +3601,7 @@ msgstr ""
 #: code:addons/hr_payroll/wizard/hr_payroll_edit_payslip_lines_wizard.py:0
 #, python-format
 msgid "This payslip has been manually edited by %s."
-msgstr "Cette fiche de paie a été éditée manuellement par %s."
+msgstr "Cette fiche de paie a été modifiée manuellement par %s."
 
 #. module: hr_payroll
 #. odoo-python

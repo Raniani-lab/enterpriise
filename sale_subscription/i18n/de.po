@@ -2630,7 +2630,7 @@ msgstr "Zeitraum, für den der KPI berechnet wird"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Plan Details"
-msgstr "Details planen"
+msgstr "Plandetails"
 
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_template_action

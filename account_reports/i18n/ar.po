@@ -72,7 +72,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "%s is not a numeric value"
-msgstr ""
+msgstr "%s ليست قيمة عددية "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.aged_report_line_template
@@ -3082,6 +3082,7 @@ msgid ""
 "The Accounts Coverage Report is only available for the Profit and Loss and "
 "Balance Sheet reports."
 msgstr ""
+"تقرير تغطية الحسابات متاح فقط لتقارير الأرباح والخسائر والميزانية العمومية. "
 
 #. module: account_reports
 #. odoo-python

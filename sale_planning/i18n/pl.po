@@ -12,6 +12,7 @@
 # Wojciech Warczakowski <w.warczakowski@gmail.com>, 2022
 # Łukasz Grzenkowicz <lukasz.grzenkowicz@gmail.com>, 2022
 # Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023
+# Tadeusz Karpiński, 2023
 # 
 msgid ""
 msgstr ""
@@ -19,7 +20,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023\n"
+"Last-Translator: Tadeusz Karpiński, 2023\n"
 "Language-Team: Polish (https://app.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -172,6 +173,7 @@ msgstr ""
 #, python-format
 msgid "Plannable services should use an UoM within the %s category."
 msgstr ""
+"Usługi podlegające planowaniu powinny korzystać z JM w ramach kategorii %s."
 
 #. module: sale_planning
 #: model:ir.model,name:sale_planning.model_planning_analysis_report
@@ -260,8 +262,8 @@ msgid ""
 "well as the role defined on the service, are taken into account."
 msgstr ""
 "Pozycja zlecenia sprzedaży, dla której będzie wykonywana ta zmiana. Podczas "
-"automatycznego planowania zleceń sprzedaży brane są pod uwagę pozostałe "
-"godziny pozycji zlecenia sprzedaży, a także rola zdefiniowana na serwisie."
+"automatycznego planowania zamówień sprzedaży brane są pod uwagę pozostałe "
+"godziny pozycji zamówienia sprzedaży, a także rola zdefiniowana na serwisie."
 
 #. module: sale_planning
 #: model:ir.actions.act_window,name:sale_planning.sale_planning_action_schedule_by_sale_order
@@ -274,7 +276,7 @@ msgid ""
 "Schedule your human and material resources across roles, projects and sales "
 "orders."
 msgstr ""
-"Zaplanuj zasoby ludzkie i materiałowe w ramach ról, projektów i zleceń "
+"Zaplanuj zasoby ludzkie i materiałowe w ramach ról, projektów i zamówień "
 "sprzedaży."
 
 #. module: sale_planning

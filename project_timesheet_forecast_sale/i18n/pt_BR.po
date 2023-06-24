@@ -34,7 +34,7 @@ msgstr "Conta Analítica"
 #. module: project_timesheet_forecast_sale
 #: model:ir.model.fields,field_description:project_timesheet_forecast_sale.field_planning_analysis_report__billable_allocated_hours
 msgid "Billable Hours Allocated"
-msgstr "Billable Hours Allocated"
+msgstr "Horas faturáveis alocadas"
 
 #. module: project_timesheet_forecast_sale
 #: model:planning.role,name:project_timesheet_forecast_sale.planning_role_consultant

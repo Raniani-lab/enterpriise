@@ -34,147 +34,147 @@ msgstr "(순매출 - 매출원가) / 순매출"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "< 0.7: company might be stuck with non liquid assets"
-msgstr ""
+msgstr "< 0.7: 회사가 비유동 자산에 묶여 있을 수 있습니다"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "< 0.8: income might be too low"
-msgstr ""
+msgstr "< 0.8: 수익이 지나치게 낮을 수 있습니다"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "< 0: company might not be able to meet obligations"
-msgstr ""
+msgstr "< 0: 회사가 의무를 이행하지 못할 수 있습니다"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "< 1: weak financial performance"
-msgstr ""
+msgstr "< 1: 재무 실적 약화"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "< 2.5: mature company who accumulated a lot of money"
-msgstr ""
+msgstr "< 2.5: 많은 금액을 누적하고 있는 성장이 정체된 회사"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "< 20%: hard to become profitable"
-msgstr ""
+msgstr "< 20%: 수익 창출이 어려움"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "< 2: company might be slow to pay suppliers"
-msgstr ""
+msgstr "< 2: 회사가 공급업체에 지불하는 것이 느릴 수 있음"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "< 3%: not efficient at generating business"
-msgstr ""
+msgstr "< 3%: 비즈니스 창출에 효율적이지 않음"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "< 5%: not efficient at operating business"
-msgstr ""
+msgstr "< 5%: 비즈니스 운영이 효율적이지 않음"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "< 6: company might not get paid for sales quickly enough"
-msgstr ""
+msgstr "< 6: 회사가 판매 대금을 빨리 받지 못할 수 있음"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "> 0: company can meet financial obligations at any time"
-msgstr ""
+msgstr "> 0: 회사가 언제든지 재정적인 의무를 이행할 수 있음"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "> 1.5: strong financial performance"
-msgstr ""
+msgstr "> 1.5: 재무 실적 강함"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "> 10%: very efficient"
-msgstr ""
+msgstr "> 10%: 매우 효율적"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "> 10%: very efficient at operating business"
-msgstr ""
+msgstr "> 10%: 비즈니스 운영이 매우 효율적임"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "> 10: company gets paid for sales quickly"
-msgstr ""
+msgstr "> 10: 회사가 판매 대금을 신속하게 회수함"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "> 1: company in highly solvent position"
-msgstr ""
+msgstr "> 1: 회사 유동성이 높음"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "> 1: income allow to meet financial obligations"
-msgstr ""
+msgstr "> 1: 수익으로 재정적인 의무를 이행할 수 있음"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "> 3: company liquidates debts to suppliers quickly"
-msgstr ""
+msgstr "> 3: 회사가 공급업체에 신속하게 부채를 청산할 수 있음"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "> 50%: hugely profitable business"
-msgstr ""
+msgstr "> 50%: 비즈니스 수익성이 대단히 높음"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "> 5: company owns a lot of debt and not of a lot of own money"
-msgstr ""
+msgstr "> 5: 회사에 부채가 매우 많으며 자체 자금은 많지 않음"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Account type"
-msgstr ""
+msgstr "계정 유형"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -204,7 +204,7 @@ msgstr "평균 채권자 기간(일)"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Average debtor days"
-msgstr ""
+msgstr "평균 채무자 일 수"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -220,7 +220,7 @@ msgstr "평균 채무자 기간(일)"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Balance sheet"
-msgstr ""
+msgstr "재무상태표"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -235,7 +235,7 @@ msgstr "은행 및 현금"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Best if compared with competitors"
-msgstr ""
+msgstr "경쟁사 대비 최고"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -257,7 +257,7 @@ msgstr "현금"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Cash flow"
-msgstr ""
+msgstr "현금 흘므"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -273,7 +273,7 @@ msgstr "현금흐름 / 유동부채"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Cash flow ratio"
-msgstr ""
+msgstr "현금 흐름 비율"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -327,7 +327,7 @@ msgstr "수익 원가"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Cost of revenue"
-msgstr ""
+msgstr "수익 비용"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -394,7 +394,7 @@ msgstr "유동자산 – 유동부채"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Current expense"
-msgstr ""
+msgstr "경상비"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -402,7 +402,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Current income"
-msgstr ""
+msgstr "경상수입"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -417,7 +417,7 @@ msgstr "유동부채"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Current ratio"
-msgstr ""
+msgstr "경상비율"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -425,7 +425,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Debt-to-equity"
-msgstr ""
+msgstr "부채비율"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -446,7 +446,7 @@ msgstr "감가상각"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "EBIT"
-msgstr ""
+msgstr "EBIT (영업이익)"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -454,7 +454,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "EBIT / Net sales"
-msgstr ""
+msgstr "EBIT / 순매출액"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -478,7 +478,7 @@ msgstr "경비"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Financial independence"
-msgstr ""
+msgstr "재정적 자립"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -540,7 +540,7 @@ msgstr "KPI"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "KPIS"
-msgstr ""
+msgstr "핵심 성과 지표 (KPIS)"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -555,14 +555,14 @@ msgstr "월"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Month-Year"
-msgstr ""
+msgstr "월-연"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Net Credit Purchases / Average accounts payable balance for period"
-msgstr ""
+msgstr "순 신용 구매액 / 기간 동안의 미지급금 잔액 평균"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -593,7 +593,7 @@ msgstr "당기순이익 / 매출액"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Net profit"
-msgstr ""
+msgstr "순이익"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -603,14 +603,14 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Net profit margin"
-msgstr ""
+msgstr "순이익 마진"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Net sales"
-msgstr ""
+msgstr "순매출액"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -638,56 +638,56 @@ msgstr "대차대조표에 계상되지 않은 항목"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Offset -1 - Month"
-msgstr ""
+msgstr "상계 - 1 - 월"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Offset -1 - Month-Year"
-msgstr ""
+msgstr "상계 -1 - 월-연"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Offset -1 - Start date"
-msgstr ""
+msgstr "상계 -1 - 시작일"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Offset -1 - Year"
-msgstr ""
+msgstr "상계 -1 - Year"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Offset -4 - Month"
-msgstr ""
+msgstr "상계 -4 - 월"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Offset -4 - Month-Year"
-msgstr ""
+msgstr "상계 -4 - 월-연"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Offset -4 - Start date"
-msgstr ""
+msgstr "상계 -4 - 시작일"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Offset -4 - Year"
-msgstr ""
+msgstr "상계 -4 - 연"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -695,7 +695,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Operating margin"
-msgstr ""
+msgstr "영업이익률"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -709,7 +709,7 @@ msgstr "기타 소득"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Other variables"
-msgstr ""
+msgstr "기타 변수"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -723,7 +723,7 @@ msgstr "지급금"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Payable turnover"
-msgstr ""
+msgstr "매입채무회전율"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -741,7 +741,7 @@ msgstr "지급금"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Payables / Expenses * 120"
-msgstr ""
+msgstr "매입채무 / 비용 * 120"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -771,14 +771,14 @@ msgstr "선급금"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Previous expense"
-msgstr ""
+msgstr "전기 비용"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Previous income"
-msgstr ""
+msgstr "전기 수입"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -811,7 +811,7 @@ msgstr "당좌자산 / 유동자산"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Quick ratio"
-msgstr ""
+msgstr "당좌 비율"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -827,7 +827,7 @@ msgstr "미수금"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Receivable turnover"
-msgstr ""
+msgstr "매출채권회전율"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -843,7 +843,7 @@ msgstr "미수금"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Receivables / Income * 120"
-msgstr ""
+msgstr "매출채권 / 수입 *120"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -851,7 +851,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Return on investments"
-msgstr ""
+msgstr "투자 수익"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -865,7 +865,7 @@ msgstr "수익"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Sales on account / Average accounts receivable balance for period"
-msgstr ""
+msgstr "매출 / 기간별 평균 매출채권 잔액"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript

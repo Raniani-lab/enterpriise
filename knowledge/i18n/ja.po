@@ -8,14 +8,15 @@
 # Andy Yiu, 2023
 # Ryoko Tsuda <ryoko@quartile.co>, 2023
 # Martin Trigaux, 2023
+# Junko Augias, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-14 06:16+0000\n"
+"POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Martin Trigaux, 2023\n"
+"Last-Translator: Junko Augias, 2023\n"
 "Language-Team: Japanese (https://app.transifex.com/odoo/teams/41243/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -803,7 +804,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/js/knowledge_renderers.js:0
 #, python-format
 msgid ""
-"Are you sure you want to move \"%s%s\" to private? Only you will be able to "
+"Are you sure you want to move \"%s\" to private? Only you will be able to "
 "access it."
 msgstr ""
 
@@ -812,7 +813,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/js/knowledge_renderers.js:0
 #, python-format
 msgid ""
-"Are you sure you want to move \"%s%s\" to the Workspace? It will be shared "
+"Are you sure you want to move \"%s\" to the Workspace? It will be shared "
 "with all internal users."
 msgstr ""
 
@@ -821,8 +822,8 @@ msgstr ""
 #: code:addons/knowledge/static/src/js/knowledge_renderers.js:0
 #, python-format
 msgid ""
-"Are you sure you want to move \"%s%s\" under \"%s%s\"? It will be shared "
-"with the same persons."
+"Are you sure you want to move \"%s\" under \"%s%s\"? It will be shared with "
+"the same persons."
 msgstr ""
 
 #. module: knowledge
@@ -2028,7 +2029,7 @@ msgstr "宛先"
 #: code:addons/knowledge/static/src/components/behaviors/articles_structure_behavior/articles_structure_behavior.xml:0
 #, python-format
 msgid "Refresh"
-msgstr ""
+msgstr "更新"
 
 #. module: knowledge
 #. odoo-javascript

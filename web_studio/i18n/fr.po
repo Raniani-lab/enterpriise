@@ -790,7 +790,7 @@ msgstr "Peut supprimer"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Can Edit"
-msgstr "Peut éditer"
+msgstr "Peut modifier"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__can_validate
@@ -860,7 +860,7 @@ msgstr "Case à cocher"
 #. module: web_studio
 #: model:ir.model.fields,help:web_studio.field_ir_model_data__studio
 msgid "Checked if it has been edited with Studio."
-msgstr "Coché si cela a été édité par Studio"
+msgstr "Coché si cela a été modifié par Studio"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1619,28 +1619,28 @@ msgstr "Dupliquer"
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #, python-format
 msgid "Edit"
-msgstr "Éditer"
+msgstr "Modifier"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/studio_home_menu/icon_creator_dialog/icon_creator_dialog.js:0
 #, python-format
 msgid "Edit Application Icon"
-msgstr "Éditer l'icône de l'application"
+msgstr "Modifier l'icône de l'application"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_manager.xml:0
 #, python-format
 msgid "Edit Form View"
-msgstr "Éditer la vue formulaire"
+msgstr "Modifier la vue formulaire"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_manager.xml:0
 #, python-format
 msgid "Edit List View"
-msgstr "Éditer la vue liste"
+msgstr "Modifier la vue liste"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1648,7 +1648,7 @@ msgstr "Éditer la vue liste"
 #: code:addons/web_studio/static/src/legacy/xml/edit_menu.xml:0
 #, python-format
 msgid "Edit Menu"
-msgstr "Éditer le menu"
+msgstr "Modifier le menu"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1656,21 +1656,21 @@ msgstr "Éditer le menu"
 #: code:addons/web_studio/static/src/legacy/xml/edit_menu.xml:0
 #, python-format
 msgid "Edit Menu Item"
-msgstr "Éditer la rubrique"
+msgstr "Modifier la rubrique"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/js/common/new_field_dialog.js:0
 #, python-format
 msgid "Edit Value"
-msgstr "Éditer la valeur"
+msgstr "Modifier la valeur"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Edit Values"
-msgstr "Éditer les valeurs"
+msgstr "Modifier les valeurs"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1678,7 +1678,7 @@ msgstr "Éditer les valeurs"
 #: code:addons/web_studio/static/src/legacy/xml/new_field_dialog.xml:0
 #, python-format
 msgid "Edit selection"
-msgstr "Éditer la sélection"
+msgstr "Modifier la sélection"
 
 #. module: web_studio
 #. odoo-javascript

@@ -2293,7 +2293,7 @@ msgstr "Usuário Público"
 #: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Re-send SMS"
-msgstr ""
+msgstr "Reenviar SMS"
 
 #. module: sign
 #. odoo-javascript
@@ -3933,7 +3933,7 @@ msgstr ""
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "Your confirmation code is %s"
-msgstr ""
+msgstr "O seu código de confirmação é %s"
 
 #. module: sign
 #. odoo-javascript

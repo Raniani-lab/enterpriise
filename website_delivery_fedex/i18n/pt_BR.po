@@ -27,6 +27,8 @@ msgid ""
 "<b class=\"o_fedex_order_location\"/>\n"
 "                    <span class=\"fa fa-trash-o ms-2 o_remove_fedex_order_location\" aria-label=\"Remove this location\" title=\"Remove this location\"/>"
 msgstr ""
+"<b class=\"o_fedex_order_location\"/>\n"
+"                    <span class=\"fa fa-trash-o ms-2 o_remove_fedex_order_location\" aria-label=\"Remove this location\" title=\"Remove this location\"/>"
 
 #. module: website_delivery_fedex
 #: model:ir.model.fields,help:website_delivery_fedex.field_delivery_carrier__fedex_use_locations
@@ -39,7 +41,7 @@ msgstr ""
 #. module: website_delivery_fedex
 #: model:ir.model.fields,field_description:website_delivery_fedex.field_sale_order__fedex_access_point_address
 msgid "Fedex Address"
-msgstr ""
+msgstr "Endereço do Fedex"
 
 #. module: website_delivery_fedex
 #. odoo-python

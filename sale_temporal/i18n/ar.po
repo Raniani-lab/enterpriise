@@ -340,12 +340,12 @@ msgstr "المنتج (%s) به قيم غير متوافقة: %s "
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_template_form_view_pricing
 msgid "Time-based pricing"
-msgstr ""
+msgstr "الأسعار المبنية على الوقت "
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_pricelist_view
 msgid "Time-based rules"
-msgstr ""
+msgstr "القواعد المبنية على الوقت "
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__unit

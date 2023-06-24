@@ -267,7 +267,7 @@ msgstr "Menu déroulant"
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_product_product_kanban_material
 msgid "Edit"
-msgstr "Éditer"
+msgstr "Modifier"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_project__allow_quotations

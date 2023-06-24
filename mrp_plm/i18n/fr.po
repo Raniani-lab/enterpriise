@@ -750,7 +750,7 @@ msgstr "Modifications de l'acheminement OMT"
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 msgid "Edit Task"
-msgstr "Éditer la tâche"
+msgstr "Modifier la tâche"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__effectivity

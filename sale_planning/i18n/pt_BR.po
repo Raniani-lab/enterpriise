@@ -76,7 +76,7 @@ msgstr "Desenvolvedor (serviços de planejamento)"
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_planning_slot__end_datetime
 msgid "End Date"
-msgstr "Data Final"
+msgstr "Data final"
 
 #. module: sale_planning
 #: model:planning.role,name:sale_planning.planning_role_tester
@@ -122,7 +122,7 @@ msgstr "Nenhum turno encontrado. Vamos criar um!"
 #: model_terms:ir.ui.view,arch_db:sale_planning.planning_analysis_report_view_search
 #: model_terms:ir.ui.view,arch_db:sale_planning.planning_slot_view_search_inherit_sale_planning
 msgid "Non Billable"
-msgstr "Não Faturável"
+msgstr "Não faturável"
 
 #. module: sale_planning
 #: model:ir.model.constraint,message:sale_planning.constraint_planning_slot_check_datetimes_set_or_plannable_slot
@@ -152,7 +152,7 @@ msgstr ""
 #: code:addons/sale_planning/static/src/xml/planning_gantt.xml:0
 #, python-format
 msgid "Plan Orders"
-msgstr "Plano de Ordens"
+msgstr "Planejar pedidos"
 
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_planning_slot__sale_line_plannable
@@ -187,7 +187,7 @@ msgstr "Relatório de análise de planejamento"
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_sale_order__planning_first_sale_line_id
 msgid "Planning First Sale Line"
-msgstr "Planning First Sale Line"
+msgstr "Planejamento da primeira linha de vendas"
 
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_sale_order__planning_hours_planned
@@ -216,7 +216,7 @@ msgstr "Função de planejamento"
 #. module: sale_planning
 #: model:ir.model,name:sale_planning.model_planning_slot
 msgid "Planning Shift"
-msgstr "Planejar Turno"
+msgstr "Planejar turno"
 
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_sale_order_line__planning_slot_ids

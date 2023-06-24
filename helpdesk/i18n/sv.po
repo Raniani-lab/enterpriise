@@ -19,7 +19,9 @@
 # Chrille Hedberg <hedberg.chrille@gmail.com>, 2022
 # Mikael Åkerberg <mikael.akerberg@mariaakerberg.com>, 2023
 # Simon Nilsson, 2023
-# Lasse Larsson, 2023
+# Lasse L, 2023
+# Robin Calvin, 2023
+# Björn Hayer, 2023
 # 
 msgid ""
 msgstr ""
@@ -27,7 +29,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Lasse Larsson, 2023\n"
+"Last-Translator: Björn Hayer, 2023\n"
 "Language-Team: Swedish (https://app.transifex.com/odoo/teams/41243/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -92,12 +94,12 @@ msgstr "2 dagar till start"
 #. module: helpdesk
 #: model:helpdesk.sla,name:helpdesk.helpdesk_sla_2
 msgid "7 days to finish"
-msgstr "7 dagar för att avsluta"
+msgstr "7 dagar för att färdigställa"
 
 #. module: helpdesk
 #: model:helpdesk.sla,name:helpdesk.helpdesk_sla_3
 msgid "8 hours to finish"
-msgstr "8 timmar för att avsluta"
+msgstr "8 timmar för att färdigställa"
 
 #. module: helpdesk
 #: model_terms:digest.tip,tip_description:helpdesk.digest_tip_helpdesk_0
@@ -337,7 +339,7 @@ msgstr ""
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
 msgid "<i class=\"fa fa-ellipsis-v\" role=\"img\" aria-label=\"Manage\" title=\"Manage\"/>"
-msgstr "<i class=\"fa fa-ellipsis-v\" role=\"img\" aria-label=\"Manage\" title=\"Manage\"/>"
+msgstr "<i class=\"fa fa-ellipsis-v\" role=\"img\" aria-label=\"Hantera\" title=\"Hantera\"/>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
@@ -345,8 +347,8 @@ msgid ""
 "<i class=\"fa fa-envelope-o\" title=\"Domain alias\" role=\"img\" aria-"
 "label=\"Domain alias\"/>&amp;nbsp;"
 msgstr ""
-"<i class=”fa fa-envelope-o” title=”Domänalias” role=”img” aria-"
-"label=”Domänalias”/>&amp;nbsp;"
+"<i class=\"fa fa-envelope-o\" title=\"Domänalias\" role=\"img\" aria-"
+"label=\"Domänalias\"/>&amp;nbsp;"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -356,9 +358,9 @@ msgid ""
 "                            <i class=\"fa fa-fw o_button_icon fa-meh-o text-warning\" attrs=\"{'invisible': ['|', ('rating_avg', '&lt;', 2.33), ('rating_avg', '&gt;=', 3.66)]}\" title=\"Okay\"/>\n"
 "                            <i class=\"fa fa-fw o_button_icon fa-frown-o text-danger\" attrs=\"{'invisible': [('rating_avg', '&gt;=', 2.33)]}\" title=\"Dissatisfied\"/>"
 msgstr ""
-"<i class=”fa fa-fw o_button_icon fa-smile-o text-success” attrs=”{’invisible’: [(’rating_avg’, ’&lt;’, 3.66)]}” title=”Nöjd”/>\n"
-"                            <i class=”fa fa-fw o_button_icon fa-meh-o text-warning” attrs=”{’invisible’: [’|’, (’rating_avg’, ’&lt;’, 2.33), (’rating_avg’, ’&gt;=’, 3.66)]}” title=”Okej”/>\n"
-"                            <i class=”fa fa-fw o_button_icon fa-frown-o text-danger” attrs=”{’invisible’: [(’rating_avg’, ’&gt;=’, 2.33)]}” title=”Missnöjd”/>"
+"<i class=\"fa fa-fw o_button_icon fa-smile-o text-success\" attrs=\"{'invisible': [('rating_avg', '<', 3.66)]}\" title=\"Nöjd\"/>\n"
+"                            <i class=\"fa fa-fw o_button_icon fa-meh-o text-warning\" attrs=\"{'invisible': ['|', ('rating_avg', '<', 2.33), ('rating_avg', '>=', 3.66)]}\" title=\"Okej\"/>\n"
+"                            <i class=\"fa fa-fw o_button_icon fa-frown-o text-danger\" attrs=\"{'invisible': [('rating_avg', '>=', 2.33)]}\" title=\"Missnöjd\"/>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_form
@@ -366,8 +368,8 @@ msgid ""
 "<i class=\"fa fa-lg fa-clock-o me-2\" aria-label=\"Sla Deadline\" "
 "title=\"Sla Deadline\"/>"
 msgstr ""
-"<i class=”fa fa-lg fa-clock-o me-2” aria-label=”SLA Tidsgräns” title=”SLA "
-"Tidsgräns”/>"
+"<i class=\"fa fa-lg fa-clock-o me-2\" aria-label=\"SLA Tidsgräns\" "
+"title=\"SLA Tidsgräns\"/>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -407,10 +409,10 @@ msgid ""
 "title=\"By saving this change, the customer email will also be updated.\" "
 "attrs=\"{'invisible': [('is_partner_email_update', '=', False)]}\"/>"
 msgstr ""
-"<span class=”fa fa-exclamation-triangle text-warning oe_edit_only” "
-"title=”Genom att spara denna ändring kommer även kundens e-postadress att "
-"uppdateras.” attrs=”{’invisible’: [(’is_partner_email_update’, ’=’, "
-"False)]}”/>"
+"<span class=\"fa fa-exclamation-triangle text-warning oe_edit_only\" "
+"title=\"Genom att spara denna ändring kommer även kundens e-postadress att "
+"uppdateras.\" attrs=\"{'invisible': [('is_partner_email_update', '=', "
+"False)]}\"/>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_form
@@ -420,10 +422,10 @@ msgid ""
 "updated.\" attrs=\"{'invisible': [('is_partner_phone_update', '=', "
 "False)]}\"/>"
 msgstr ""
-"<span class=”fa fa-exclamation-triangle text-warning oe_edit_only” "
-"title=”Genom att spara denna ändring kommer även kundens telefonnummer att "
-"uppdateras.” attrs=”{’invisible’: [(’is_partner_phone_update’, ’=’, "
-"False)]}”/>"
+"<span class=\"fa fa-exclamation-triangle text-warning oe_edit_only\" "
+"title=\"Genom att spara denna ändring kommer även kundens telefonnummer att "
+"uppdateras.\" attrs=\"{'invisible': [('is_partner_phone_update', '=', "
+"False)]}\"/>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_view_form
@@ -557,8 +559,8 @@ msgid ""
 "A Python dictionary that will be evaluated to provide default values when "
 "creating new records for this alias."
 msgstr ""
-"En Python-katalog som används för standardvärden när nya poster skapas för "
-"detta alias."
+"Ett Python-dictionary som kommer att evalueras för att tillhandahålla "
+"standardvärden vid skapande av nya poster för detta alias."
 
 #. module: helpdesk
 #: model:ir.model.constraint,message:helpdesk.constraint_helpdesk_tag_name_uniq
@@ -624,7 +626,7 @@ msgstr "Ikon för aktivitetstyp"
 #: model:ir.actions.act_window,name:helpdesk.mail_activity_type_action_config_helpdesk
 #: model:ir.ui.menu,name:helpdesk.helpdesk_menu_config_activity_type
 msgid "Activity Types"
-msgstr "Aktivitetstyp"
+msgstr "Aktivitetstyper"
 
 #. module: helpdesk
 #. odoo-javascript
@@ -652,7 +654,7 @@ msgid ""
 "of the stage."
 msgstr ""
 "Lägg till en beskrivning för att hjälpa dina kollegor att förstå betydelsen "
-"och syftet med stadiet."
+"och syftet med etappen."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_stage_view_form
@@ -672,8 +674,8 @@ msgid ""
 "Add your stage and place it at the right step of your workflow by dragging &"
 " dropping it."
 msgstr ""
-"Lägg till ditt stadium och placera det vid rätt steg i ditt arbetsflöde "
-"genom att dra & släppa det."
+"Lägg till din etapp och placera den vid rätt steg i ditt arbetsflöde genom "
+"att dra & släppa det."
 
 #. module: helpdesk
 #: model:res.groups,name:helpdesk.group_helpdesk_manager
@@ -745,7 +747,7 @@ msgstr "Tillåt dina kunder stänga sina egna ärenden"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.view_helpdesk_stage_delete_wizard
 msgid "Archive Stages"
-msgstr "Arkivera Stadier"
+msgstr "Arkivera Etapper"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_report_analysis_view_search
@@ -801,7 +803,7 @@ msgstr "Tilldelad"
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_report_analysis__user_id
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket_report_analysis__user_id
 msgid "Assigned To"
-msgstr "Tilldelad"
+msgstr "Tilldelad Till"
 
 #. module: helpdesk
 #. odoo-python
@@ -823,7 +825,7 @@ msgstr "Tilldelad till"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_search_analysis
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_search_analysis_closed
 msgid "Assignee"
-msgstr "Tilldelad"
+msgstr "Uppdragstagare"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -842,7 +844,7 @@ msgid ""
 "                                You can customize the meaning of each state."
 msgstr ""
 "I varje steg kan medarbetarna blockera ärenden eller markera dem som redo för nästa steg.\n"
-"                                Du kan anpassa betydelsen av varje status."
+"                                Du kan anpassa betydelsen av varje etapp."
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__message_attachment_count
@@ -862,7 +864,7 @@ msgstr ""
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__auto_assignment
 msgid "Automatic Assignment"
-msgstr "Automatisk Uppgift"
+msgstr "Automatisk tilldelning"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__auto_close_ticket
@@ -872,7 +874,7 @@ msgstr "Automatisk stängning"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.team_rating_progress_data
 msgid "Average"
-msgstr "Medel"
+msgstr "Genomsnitt"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__avg_response_hours
@@ -936,7 +938,7 @@ msgstr "Genomsnitt Senaste 7 dagarna"
 #: code:addons/helpdesk/static/src/components/helpdesk_team_dashboard/helpdesk_team_dashboard.xml:0
 #, python-format
 msgid "Avg Open Hours"
-msgstr "Genomsnittliga öppettider"
+msgstr "Genomsnittliga öppna timmar"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.team_rating_progress_data
@@ -1018,7 +1020,7 @@ msgstr "Stäng inaktiva ärenden automatiskt"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.tickets_followup
 msgid "Close the ticket"
-msgstr "Stäng ärende"
+msgstr "Stäng ärendet"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.tickets_followup
@@ -1032,7 +1034,7 @@ msgstr "Stäng ärende"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
 #, python-format
 msgid "Closed"
-msgstr "Avslutad"
+msgstr "Stängd"
 
 #. module: helpdesk
 #. odoo-javascript
@@ -1177,8 +1179,8 @@ msgid ""
 "Create teams to organize your tickets by expertise or geographical region, "
 "and define a different workflow for each team."
 msgstr ""
-"Skapa lag för att organisera dina ärenden efter expertis eller geografisk "
-"region, och definiera en annan arbetsflöde för varje lag."
+"Skapa team för att organisera dina ärenden efter expertis eller geografisk "
+"region, och definiera ett annat arbetsflöde för varje team."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -1363,7 +1365,7 @@ msgstr "Ta bort"
 #: model_terms:ir.ui.view,arch_db:helpdesk.view_helpdesk_stage_unarchive_wizard
 #, python-format
 msgid "Delete Stage"
-msgstr "Radera steg"
+msgstr "Radera etapper"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -1397,7 +1399,7 @@ msgstr "Sammanställning"
 #: model_terms:ir.ui.view,arch_db:helpdesk.view_helpdesk_stage_delete_wizard
 #: model_terms:ir.ui.view,arch_db:helpdesk.view_helpdesk_stage_unarchive_wizard
 msgid "Discard"
-msgstr "Avbryt"
+msgstr "Förkasta"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla__display_name
@@ -1450,7 +1452,7 @@ msgstr "Rullgardinsmeny"
 #. module: helpdesk
 #: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_team__assign_method__balanced
 msgid "Each user has an equal number of open tickets"
-msgstr "Varje användare har lika många öppna ärenden"
+msgstr "Varje användare har samma antal öppna ärenden"
 
 #. module: helpdesk
 #: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_team__assign_method__randomly
@@ -1487,7 +1489,7 @@ msgid ""
 msgstr ""
 "E-post skickas automatiskt till kunden när ärendet når detta skede.\n"
 "Som standard kommer e-postmeddelandet att skickas från helpdesk-teamets e-postalias.\n"
-"Annars kommer det att skickas från företagets e-postadress, eller från fång-allt (som definierat i Systemparametrarna)."
+"Annars kommer det att skickas från företagets e-postadress, eller från catchall (som definierat i Systemparametrarna)."
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__email_cc
@@ -1541,7 +1543,7 @@ msgstr "Överskridna arbetstimmar"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla__exclude_stage_ids
 msgid "Excluding Stages"
-msgstr "Uteslutande stadier"
+msgstr "Uteslutande etapper"
 
 #. module: helpdesk
 #: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_sla_status__status__failed
@@ -1585,12 +1587,12 @@ msgstr "Första uppgiftsdatum"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_stage__fold
 msgid "Folded in Kanban"
-msgstr "Hoplagd i kanban"
+msgstr "Ihopfälld i kanban"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Follow All Team's Tickets"
-msgstr "Följ Alla Teamets Ärenden"
+msgstr "Följ Alla Teams Ärenden"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_report_analysis_view_search
@@ -1625,12 +1627,12 @@ msgstr "Font Awesome-ikon t.ex. fa-tasks"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
 msgid "Future Activities"
-msgstr "Kommande aktiviteter"
+msgstr "Framtida aktiviteter"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Get in touch with your website visitors"
-msgstr "Ta kontakt med besökarna på din webbplats"
+msgstr "Hör av dig till besökarna på din webbplats"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_ticket_analysis_action
@@ -1659,8 +1661,8 @@ msgid ""
 "Grant employees access to your helpdesk team or tickets by adding them as "
 "followers."
 msgstr ""
-"Ge anställda tillgång till ditt helpdesk-team eller ärenden genom att lägga "
-"till dem som följare."
+"Ge anställda tillgång till ditt kundtjänst-team eller ärenden genom att "
+"lägga till dem som följare."
 
 #. module: helpdesk
 #. odoo-python
@@ -1670,8 +1672,8 @@ msgid ""
 "Grant portal users access to your helpdesk team or tickets by adding them as"
 " followers."
 msgstr ""
-"Ge portalanvändare tillgång till ditt helpdesk-team eller ärenden genom att "
-"lägga till dem som följare."
+"Ge portalanvändare tillgång till ditt kundtjänst-team eller ärenden genom "
+"att lägga till dem som följare."
 
 #. module: helpdesk
 #: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_ticket__kanban_state__done
@@ -1831,7 +1833,7 @@ msgstr "Helpdesk: Förfrågan om ärendebetyg"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
 #, python-format
 msgid "High Priority"
-msgstr "Hög prioritet"
+msgstr "Hög Prioritet"
 
 #. module: helpdesk
 #: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_sla__priority__2
@@ -1925,7 +1927,7 @@ msgstr "Om markerad så finns det meddelanden som kräver din uppmärksamhet."
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__message_has_error
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
-msgstr "Om markerad har det uppstått leveransfel för vissa meddelanden."
+msgstr "Om markerad så har det uppstått leveransfel för vissa meddelanden."
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__portal_show_rating
@@ -1933,8 +1935,8 @@ msgid ""
 "If enabled, portal users will have access to your customer satisfaction statistics from the last 30 days in their portal.\n"
 "They will only have access to the ratings themselves, and not to the written feedback if any was left. You can also manually hide ratings of your choosing."
 msgstr ""
-"Om aktiverat kommer portalanvändare att ha tillgång till dina kundnöjdhetsstatistik från de senaste 30 dagarna i deras portal.\n"
-"De kommer endast att ha tillgång till betygen i sig, och inte till den skriftliga feedbacken om någon lämnades. Du kan också manuellt dölja betyg efter eget val."
+"Om aktiverat kommer portalanvändare att ha tillgång till din kundnöjdhetsstatistik från de senaste 30 dagarna i deras portal.\n"
+"De kommer endast att ha tillgång till betygen i sig, och inte till någon eventuell skriftlig feedback som lämnats. Du kan också manuellt dölja betyg efter eget tycke."
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__alias_bounced_content
@@ -1942,8 +1944,8 @@ msgid ""
 "If set, this content will automatically be sent out to unauthorized users "
 "instead of the default message."
 msgstr ""
-"Om angiven kommer detta innehåll automatiskt att skickas ut till obehöriga "
-"användare istället för standardmeddelandet."
+"Om angivet så kommer detta innehåll att automatiskt skickas ut till "
+"obehöriga användare istället för standardmeddelandet."
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla__time
@@ -1974,7 +1976,7 @@ msgstr "Pågående"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__from_stage_ids
 msgid "In Stages"
-msgstr "I Stadier"
+msgstr "I Etapper"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__auto_close_day
@@ -1984,12 +1986,12 @@ msgstr "Inaktiv period (dagar)"
 #. module: helpdesk
 #: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_team__privacy_visibility__invited_internal
 msgid "Invited internal users"
-msgstr "Inbjudna interna användare"
+msgstr "Inbjudna internanvändare"
 
 #. module: helpdesk
 #: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_team__privacy_visibility__portal
 msgid "Invited portal users and all internal users"
-msgstr "Inbjudna portal- och interna användare"
+msgstr "Inbjudna portal- och samtliga internanvändare"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__message_is_follower
@@ -2014,7 +2016,7 @@ msgid ""
 "team so that they can be displayed on the portal."
 msgstr ""
 "Det är nödvändigt att aktivera kundbetyg i inställningarna för ditt "
-"helpdesk-team så att de kan visas på portalen."
+"kundtjänst-team så att de kan visas på portalen."
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__legend_blocked
@@ -2030,12 +2032,12 @@ msgstr "Kanban - löpande förklaring"
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__kanban_state
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket_report_analysis__kanban_state
 msgid "Kanban State"
-msgstr "Kanbanstatus"
+msgstr "Kanbanetapp"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__kanban_state_label
 msgid "Kanban State Label"
-msgstr "Kanban Statusetikett"
+msgstr "Kanbanetapp etikett"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__legend_done
@@ -2055,7 +2057,7 @@ msgstr "Kpi Kundtjänst Stängningsvärde på Ärenden"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.team_rating_data
 msgid "Last 3 months"
-msgstr "Senaste 3 månader"
+msgstr "Senaste 3 månaderna"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_report_analysis_view_search
@@ -2067,7 +2069,7 @@ msgstr "Senaste 30 dagarna"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_report_analysis_view_search
 #: model_terms:ir.ui.view,arch_db:helpdesk.team_rating_data
 msgid "Last 30 days"
-msgstr "Senaste 30 dagar"
+msgstr "Senaste 30 dagarna"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_report_analysis_view_search
@@ -2078,7 +2080,7 @@ msgstr "Senaste 7 dagarna"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_report_analysis_view_search
 #: model_terms:ir.ui.view,arch_db:helpdesk.team_rating_data
 msgid "Last 7 days"
-msgstr "Senaste 7 dagar"
+msgstr "Senaste 7 dagarna"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla____last_update
@@ -2092,7 +2094,7 @@ msgstr "Senaste 7 dagar"
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket_report_analysis____last_update
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket_type____last_update
 msgid "Last Modified on"
-msgstr "Senast redigerad den"
+msgstr "Senast ändrad den"
 
 #. module: helpdesk
 #. odoo-python
@@ -2124,7 +2126,7 @@ msgstr "Senast uppdaterad av"
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__write_date
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket_type__write_date
 msgid "Last Updated on"
-msgstr "Senast uppdaterad på"
+msgstr "Senast uppdaterad den"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
@@ -2134,7 +2136,7 @@ msgstr "Försenade aktiviteter"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.team_rating_data
 msgid "Latest Ratings"
-msgstr "Senaste betyg"
+msgstr "Senaste betygen"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -2191,7 +2193,7 @@ msgstr "Låg prioritet"
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__message_main_attachment_id
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__message_main_attachment_id
 msgid "Main Attachment"
-msgstr "Bilaga"
+msgstr "Huvudbilaga"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_sla_action
@@ -2217,7 +2219,7 @@ msgid ""
 "Maximum number of working hours a ticket should take to reach the target "
 "stage, starting from the date it was created."
 msgstr ""
-"Maximalt antal arbetstimmar som ett ärende bör ta för att nå målstadiet, med"
+"Maximalt antal arbetstimmar som ett ärende bör ta för att nå måletappen, med"
 " början från det datum då det skapades."
 
 #. module: helpdesk
@@ -2240,7 +2242,7 @@ msgstr "Medium"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_report_analysis_view_search
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
 msgid "Medium Priority"
-msgstr "Medelhög prioritet"
+msgstr "Medelhög Prioritet"
 
 #. module: helpdesk
 #: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_sla__priority__1
@@ -2282,7 +2284,7 @@ msgstr "Lägsta prioritet"
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_sla__stage_id
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_sla_status__sla_stage_id
 msgid "Minimum stage a ticket needs to reach in order to satisfy this SLA."
-msgstr "Minsta steg som ett ärende måste nå för att uppfylla detta SLA."
+msgstr "Minsta etapp som ett ärende måste nå för att uppfylla detta SLA."
 
 #. module: helpdesk
 #: model:ir.model,name:helpdesk.model_ir_module_module
@@ -2292,7 +2294,7 @@ msgstr "Modul"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__to_stage_id
 msgid "Move to Stage"
-msgstr "Flytta till Stadie"
+msgstr "Flytta till Etapp"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__my_activity_date_deadline
@@ -2397,7 +2399,7 @@ msgstr "Nästa aktivitetstyp"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
 msgid "No Rating"
-msgstr "Inget mdöme"
+msgstr "Inget omdöme"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_sla_action
@@ -2430,7 +2432,7 @@ msgstr "Ingen data ännu!"
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_stage_action
 msgid "No stages found. Let's create one!"
-msgstr "Inga steg hittades. Låt oss skapa en!"
+msgstr "Inga etapper hittades. Låt oss skapa en!"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_tag_action
@@ -2440,17 +2442,17 @@ msgstr "Inga taggar hittades. Låt oss skapa en!"
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_team_dashboard_action_main
 msgid "No teams found"
-msgstr "Inga lag hittade"
+msgstr "Inga team hittades"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_team_action
 msgid "No teams found. Let's create one!"
-msgstr "Inga lag har hittats. Låt oss skapa ett!"
+msgstr "Inga team hittades. Låt oss skapa ett!"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_my_ticket_action_no_create
 msgid "No tickets found"
-msgstr "Inga ärende hittades"
+msgstr "Inga ärenden hittades"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_ticket_action_main_my
@@ -2458,7 +2460,7 @@ msgstr "Inga ärende hittades"
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_ticket_action_team
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_ticket_action_unassigned
 msgid "No tickets found. Let's create one!"
-msgstr "Inga ärenden hittades. Låt oss skapa en!"
+msgstr "Inga ärenden hittades. Låt oss skapa ett!"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_ticket_type_action
@@ -2475,7 +2477,7 @@ msgstr "Inga"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_report_analysis__sla_status_ongoing
 msgid "Number SLA In Progress"
-msgstr "Antal SLA Pågående"
+msgstr "Antal Pågående SLA"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__message_needaction_counter
@@ -2545,7 +2547,7 @@ msgstr "Okej"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__oldest_unanswered_customer_message_date
 msgid "Oldest Unanswered Customer Message Date"
-msgstr "Äldsta obesvarade kundmeddelande Datum"
+msgstr "Datum för äldsta obesvarade kundmeddelande"
 
 #. module: helpdesk
 #: model:helpdesk.stage,name:helpdesk.stage_on_hold
@@ -2587,8 +2589,8 @@ msgid ""
 "creation of new records completely."
 msgstr ""
 "Valfritt ID för en tråd (post) som alla inkommande meddelanden kommer att "
-"bifogas, även om de inte svarade på den. Om det är inställt kommer detta att"
-" inaktivera skapandet av nya poster helt."
+"bifogas till, även om de är obesvarade. Om inställt så kommer detta att "
+"inaktivera skapandet av nya poster fullständigt."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.team_rating_page
@@ -2627,9 +2629,9 @@ msgid ""
 " necessarily the model given by alias_model_id (example: project "
 "(parent_model) and task (model))"
 msgstr ""
-"Överordnad modell innehåller alias. Modellen som innehåller aliasreferensen "
-"är inte nödvändigtvis den modell som ges av alias_model_id (exempel: projekt"
-" (parent_model) och aktivitet (modell))"
+"Överordnad modell som innehåller alias. Modellen som innehåller "
+"aliasreferensen är inte nödvändigtvis den modell som ges av alias_model_id "
+"(exempel: projekt (parent_model) och aktivitet (modell))"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__is_partner_email_update
@@ -2644,7 +2646,7 @@ msgstr "Partners Telefon kommer att Uppdateras"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__partner_ticket_ids
 msgid "Partner Tickets"
-msgstr "Partnerärende"
+msgstr "Partnerärenden"
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__privacy_visibility
@@ -2672,7 +2674,7 @@ msgstr ""
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__rating_percentage_satisfaction
 msgid "Percentage of happy ratings"
-msgstr "Procent av glada betyg"
+msgstr "Procentandel positiva betyg"
 
 #. module: helpdesk
 #. odoo-javascript
@@ -2680,8 +2682,7 @@ msgstr "Procent av glada betyg"
 #: code:addons/helpdesk/static/src/components/helpdesk_team_dashboard/helpdesk_team_dashboard.xml:0
 #, python-format
 msgid "Percentage of tickets that were closed without failing any SLAs."
-msgstr ""
-"Procentandel ärenden som avslutades utan att några SLA inte uppfylldes."
+msgstr "Procentandel ärenden som avslutades utan att några SLA gick fel."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -2740,7 +2741,7 @@ msgid ""
 "- partners: only authenticated partners\n"
 "- followers: only followers of the related document or members of following channels\n"
 msgstr ""
-"Princip för att publicera ett meddelande på dokumentet med hjälp av mailgateway.\n"
+"Policy för att publicera ett meddelande på dokumentet med hjälp av mailgateway.\n"
 "- alla: alla kan posta\n"
 "- partner: endast autentiserade partner\n"
 "- följare: endast följare av det relaterade dokumentet eller medlemmar av följande kanaler\n"
@@ -2812,7 +2813,7 @@ msgstr "Betyg (/5)"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_avg_text
 msgid "Rating Avg Text"
-msgstr "Betyg genomsnittlig Text"
+msgstr "Genomsnittsbetyg Text"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_last_feedback
@@ -2833,7 +2834,7 @@ msgstr "Betyg Senaste Värde"
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__rating_percentage_satisfaction
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_percentage_satisfaction
 msgid "Rating Satisfaction"
-msgstr "Betyggsättning"
+msgstr "Betyg nöjdhetsgrad"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_last_text
@@ -2869,12 +2870,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_view_search
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_view_tree
 msgid "Reach Stage"
-msgstr "Nå Stadie"
+msgstr "Nå Etapp"
 
 #. module: helpdesk
 #: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_sla_status__status__reached
 msgid "Reached"
-msgstr "Nått"
+msgstr "Uppnått"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_status__reached_datetime
@@ -2942,7 +2943,7 @@ msgstr "Utskickad återbetalning"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_credit_notes
 msgid "Refunds"
-msgstr "Krediteringar"
+msgstr "Återbetalningar"
 
 #. module: helpdesk
 #: model:helpdesk.tag,name:helpdesk.tag_repair
@@ -2971,7 +2972,7 @@ msgstr "Reparationer"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.portal_helpdesk_ticket
 msgid "Reported on"
-msgstr "Rapporterad på"
+msgstr "Rapporterad den"
 
 #. module: helpdesk
 #: model:ir.ui.menu,name:helpdesk.helpdesk_ticket_report_menu_main
@@ -3000,7 +3001,7 @@ msgstr "Retur annullerad"
 #: model:mail.message.subtype,name:helpdesk.mt_team_ticket_return_done
 #: model:mail.message.subtype,name:helpdesk.mt_ticket_return_done
 msgid "Return Done"
-msgstr "Retur klart"
+msgstr "Retur fullbordad"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -3039,7 +3040,7 @@ msgstr "SLA misslyckades"
 #. module: helpdesk
 #: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_sla_report_analysis__sla_status__ongoing
 msgid "SLA Ongoing"
-msgstr "SLA fortsätter"
+msgstr "SLA pågående"
 
 #. module: helpdesk
 #: model:ir.actions.act_window,name:helpdesk.helpdesk_sla_action
@@ -3077,17 +3078,17 @@ msgstr "SLA-policy Beskrivning"
 #. module: helpdesk
 #: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_sla_report_analysis__sla_status__reached
 msgid "SLA Reached"
-msgstr "SLA uppnått"
+msgstr "SLA uppnådd"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_report_analysis__sla_reached_datetime
 msgid "SLA Reached Date"
-msgstr "SLA Nått Datum"
+msgstr "SLA Nådd Datum"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_report_analysis__sla_stage_id
 msgid "SLA Stage"
-msgstr "SLA Steg"
+msgstr "SLA-etapp"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__sla_status_ids
@@ -3105,7 +3106,7 @@ msgstr "SLA-status"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_report_analysis_view_search
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
 msgid "SLA Status Analysis"
-msgstr "SLA Status Analys"
+msgstr "SLA-status Analys"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_report_analysis__sla_status_fail
@@ -3118,7 +3119,7 @@ msgstr "SLA-status Misslyckad"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_search_analysis
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
 msgid "SLA Success"
-msgstr "SLA framgång"
+msgstr "SLA lyckade"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_report_analysis_view_search
@@ -3126,7 +3127,7 @@ msgstr "SLA framgång"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_search_analysis
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
 msgid "SLA in Progress"
-msgstr "SLA pågår"
+msgstr "SLA pågående"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__sla_ids
@@ -3162,12 +3163,12 @@ msgstr "Nöjd"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Save this page and refresh to activate the feature"
-msgstr "Spara sidan och uppdatera för att aktivera funktionen"
+msgstr "Spara och uppdatera sidan för att aktivera funktionen"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Save this page and refresh to activate the feature."
-msgstr "Spara sidan och uppdatera för att aktivera funktionen."
+msgstr "Spara och uppdatera sidan för att aktivera funktionen."
 
 #. module: helpdesk
 #. odoo-javascript
@@ -3214,7 +3215,7 @@ msgstr "Sök i referens"
 #: code:addons/helpdesk/controllers/portal.py:0
 #, python-format
 msgid "Search in Stage"
-msgstr "Sök i stegen"
+msgstr "Sök i etapper"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__access_token
@@ -3226,7 +3227,7 @@ msgstr "Säkerhetstoken"
 #: code:addons/helpdesk/static/src/js/tours/helpdesk.js:0
 #, python-format
 msgid "Select the <b>customer</b> of your ticket."
-msgstr "Välj <b>kund</b> för din ärende."
+msgstr "Välj <b>kund</b> för ditt ärende."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -3258,7 +3259,7 @@ msgstr "Tjänst"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Set an Email Template on Stages"
-msgstr "Skapa en e-postmall för stadier"
+msgstr "Skapa en e-postmall för etapper"
 
 #. module: helpdesk
 #: model:mail.template,description:helpdesk.new_ticket_request_email_template
@@ -3267,8 +3268,8 @@ msgid ""
 "Set this template on a project's stage to automate email when tasks reach "
 "stages"
 msgstr ""
-"Ställ in denna mall på ett projekts stadie för att automatisera e-post när "
-"uppgifter når stadier"
+"Ställ in denna mall på ett projekts etapp för att automatisera e-post när "
+"uppgifter når etapper"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
@@ -3343,7 +3344,7 @@ msgstr "Ändrad etapp"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_stage_view_form
 msgid "Stage Description and States Meaning"
-msgstr "Stegbeskrivning och Staternas Betydelse"
+msgstr "Etappbeskrivning och Etappernas Betydelse"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_stage_view_form
@@ -3360,12 +3361,12 @@ msgstr "Etapper"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_stage_delete_wizard__stages_active
 msgid "Stages Active"
-msgstr "Aktiva Steg"
+msgstr "Aktiva Etapper"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_stage_delete_wizard__stage_ids
 msgid "Stages To Delete"
-msgstr "Stadier att ta bort"
+msgstr "Etapper att ta bort"
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__stage_ids
@@ -3373,8 +3374,8 @@ msgid ""
 "Stages the team will use. This team's tickets will only be able to be in "
 "these stages."
 msgstr ""
-"Steg som teamet kommer att använda. Detta teams ärenden kommer bara att "
-"kunna vara i dessa steg."
+"Etapper som teamet kommer att använda. Detta teams ärenden kommer endast att"
+" kunna befinna sig i dessa etapper."
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_report_analysis__sla_status
@@ -3453,13 +3454,13 @@ msgstr "Mål"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_res_users__helpdesk_target_rating
 msgid "Target Customer Rating"
-msgstr "Målkundbetyg"
+msgstr "Mål kundbetyg"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla__stage_id
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_status__sla_stage_id
 msgid "Target Stage"
-msgstr "Målstadium"
+msgstr "Mål Etapp"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_res_users__helpdesk_target_success
@@ -3469,17 +3470,18 @@ msgstr "Målsättnings framgångsfrekvens"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_res_users__helpdesk_target_closed
 msgid "Target Tickets to Close"
-msgstr "Målärenden att Stänga"
+msgstr "Målärenden att stänga"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_stage_view_form
 msgid "Task in progress. Click to block or set as done."
-msgstr "Pågående uppgift. Klicka för att blockera eller ange som utfört."
+msgstr "Pågående aktivitet. Klicka för att blockera eller ange som utförd."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_stage_view_form
 msgid "Task is blocked. Click to unblock or set as done."
-msgstr "Ärendet är blockerat. Klicka för avblockering eller klarmarkering."
+msgstr ""
+"Aktiviteten är blockerad. Klicka för avblockering eller klarmarkering."
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla__team_id
@@ -3503,12 +3505,12 @@ msgstr "Teammedlemmar"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_search
 msgid "Team Search"
-msgstr "Gruppsökning"
+msgstr "Teamsökning"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__team_privacy_visibility
 msgid "Team Visibility"
-msgstr "Teamets synlighet"
+msgstr "Teamsynlighet"
 
 #. module: helpdesk
 #: model:ir.actions.act_window,name:helpdesk.helpdesk_team_action
@@ -3569,8 +3571,8 @@ msgid ""
 "The time spent in these stages won't be taken into account in the "
 "calculation of the SLA."
 msgstr ""
-"Den tid som spenderas i dessa skeden kommer inte att beaktas vid beräkningen"
-" av SLA."
+"Den tid som spenderas i dessa etapper kommer inte att beaktas vid "
+"beräkningen av SLA."
 
 #. module: helpdesk
 #. odoo-python
@@ -3581,12 +3583,12 @@ msgid ""
 " internal users\" in order to use the website form."
 msgstr ""
 "Teamets synlighet måste ställas in som \"Inbjudna portalanvändare och alla "
-"interna användare\" för att webbplatsformuläret ska kunna användas."
+"internanvändare\" för att webbplatsformuläret ska kunna användas."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.portal_helpdesk_ticket
 msgid "There are currently no Ticket for your account."
-msgstr "Det finns för närvarande ingen ärende för ditt konto."
+msgstr "Det finns för närvarande inget ärende för ditt konto."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.team_rating_page
@@ -3611,7 +3613,7 @@ msgstr ""
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__medium_id
 msgid "This is the method of delivery, e.g. Postcard, Email, or Banner Ad"
 msgstr ""
-"Detta är leveransmetoden, t.ex. 'Postkort', 'E-post' eller 'Bannerannons'"
+"Detta är leveransmetoden, t.ex. 'Postkort', 'E-post' eller 'Annonsruta'"
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__source_id
@@ -3625,7 +3627,7 @@ msgstr ""
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_stage_view_form
 msgid "This step is done. Click to block or set in progress."
-msgstr "Etappen klar. Klicka för blockering eller starta."
+msgstr "Etappen klar. Klicka för blockering eller sätt till pågående."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.view_helpdesk_stage_delete_confirmation_wizard
@@ -3633,7 +3635,7 @@ msgid ""
 "This will archive the stages and all of the tickets they contain from the "
 "following teams:"
 msgstr ""
-"Detta kommer att arkivera stadierna och alla ärenden de innehåller från "
+"Detta kommer att arkivera etapperna och alla ärenden de innehåller från "
 "följande team:"
 
 #. module: helpdesk
@@ -3730,12 +3732,12 @@ msgstr "Ärendets SLA-status"
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_report_analysis__ticket_stage_id
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket_report_analysis__ticket_stage_id
 msgid "Ticket Stage"
-msgstr "Ärendets Stadie"
+msgstr "Ärendets Etapp"
 
 #. module: helpdesk
 #: model:mail.message.subtype,name:helpdesk.mt_team_ticket_stage
 msgid "Ticket Stage Changed"
-msgstr "Ärendestadiet Ändrat"
+msgstr "Ärendets etapp ändrad"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_report_analysis__ticket_type_id
@@ -3816,7 +3818,7 @@ msgstr "Ärendesökning"
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_stage__fold
 msgid "Tickets in a folded stage are considered as closed."
-msgstr "Ärenden i ett sammanfällt stadie betraktas som avslutade."
+msgstr "Ärenden i en ihopfälld etapp betraktas som avslutade."
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_helpdesk_sale_timesheet
@@ -3873,7 +3875,7 @@ msgstr "Dagens aktiviteter"
 #: code:addons/helpdesk/static/src/components/helpdesk_team_dashboard/helpdesk_team_dashboard.xml:0
 #, python-format
 msgid "Today Average Rating"
-msgstr "Idag Genomsnittlig rating"
+msgstr "Dagens genomsnittlig bedömning"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__total_response_hours
@@ -3883,7 +3885,7 @@ msgstr "Total utväxlingstid i timmar"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Track &amp; Bill Time"
-msgstr "Spåra &amp; Räkna tid"
+msgstr "Spåra &amp; Fakturerings tid"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -3985,7 +3987,7 @@ msgstr "Olästa meddelanden"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
 #, python-format
 msgid "Urgent"
-msgstr "Bråttom"
+msgstr "Brådskande"
 
 #. module: helpdesk
 #. odoo-javascript
@@ -4102,7 +4104,7 @@ msgstr "Arbetstid"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_report_analysis__ticket_assignation_hours
 msgid "Working Hours to Assign"
-msgstr "Arbetstid för att tilldela"
+msgstr "Arbetstid att tilldela"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_report_analysis__ticket_close_hours
@@ -4134,7 +4136,8 @@ msgstr ""
 msgid ""
 "Would you like to unarchive all of the tickets contained in these stages as "
 "well?"
-msgstr "Skulle du vilja avarkivera alla ärenden som ingår i dessa steg också?"
+msgstr ""
+"Skulle du vilja avarkivera alla ärenden som ingår i dessa etapper också?"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.view_helpdesk_stage_delete_wizard
@@ -4142,8 +4145,8 @@ msgid ""
 "You cannot delete stages containing tickets. You can either archive them or "
 "first delete all of their tickets."
 msgstr ""
-"Du kan inte radera steg som innehåller ärenden. Du kan antingen arkivera dem"
-" eller först radera alla deras ärenden."
+"Du kan inte radera etapper som innehåller ärenden. Du kan antingen arkivera "
+"dem eller först radera alla deras ärenden."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.view_helpdesk_stage_delete_wizard
@@ -4151,8 +4154,8 @@ msgid ""
 "You cannot delete stages containing tickets. You should first delete all of "
 "their tickets."
 msgstr ""
-"Du kan inte radera steg som innehåller ärenden. Du bör först ta bort alla "
-"deras ärenden."
+"Du kan inte radera etapper som innehåller ärenden. Du bör först ta bort alla"
+" deras ärenden."
 
 #. module: helpdesk
 #: model:ir.model.constraint,message:helpdesk.constraint_res_users_target_closed_not_zero
@@ -4210,12 +4213,12 @@ msgstr "har skapats från ärende:"
 #. module: helpdesk
 #: model:ir.actions.server,name:helpdesk.helpdesk_ratings_server_action
 msgid "helpdesk view rating"
-msgstr "helpdesk visa betyg"
+msgstr "helpdesk visa bedömning"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "team search"
-msgstr "gruppsökning"
+msgstr "teamsökning"
 
 #. module: helpdesk
 #. odoo-python
@@ -4237,7 +4240,7 @@ msgstr ""
 #: model:mail.template,subject:helpdesk.new_ticket_request_email_template
 #: model:mail.template,subject:helpdesk.solved_ticket_request_email_template
 msgid "{{ object.display_name }}"
-msgstr "{{ objekt.display_namn }}"
+msgstr "{{ object.display_namn }}"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.team_rating_data

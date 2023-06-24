@@ -179,7 +179,7 @@ msgstr "Postagens"
 #. module: social_linkedin
 #: model:ir.model,name:social_linkedin.model_social_account
 msgid "Social Account"
-msgstr "Conta de Rede Social"
+msgstr "Conta de rede social"
 
 #. module: social_linkedin
 #: model:ir.model,name:social_linkedin.model_social_live_post

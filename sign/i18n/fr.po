@@ -40,7 +40,7 @@ msgstr "%s n'a pas pu signer le document : crédit insuffisant."
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "%s has been edited and signed"
-msgstr "%s a été édité et signé"
+msgstr "%s a été modifié et signé"
 
 #. module: sign
 #. odoo-python
@@ -303,7 +303,7 @@ msgstr "<span class=\"text-muted\">Non disponible</span>"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_item_type_view_form
 msgid "<span>(1.0 = full page size)</span>"
-msgstr "<span>(1.0 = taille de la page complète)</span>"
+msgstr "<span>(1.0 = taille de la pleine page)</span>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_terms_conditions_setting_banner
@@ -643,7 +643,7 @@ msgstr "Utilisateurs autorisés :"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__auto_field
 msgid "Auto-fill Partner Field"
-msgstr "Champ partenaire complété automatiquement"
+msgstr "Remplir automatiquement le champ partenaire"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
@@ -1219,12 +1219,12 @@ msgstr "Économies environnementales en utilisant les Signatures électroniques"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign._doc_sign
 msgid "Edit"
-msgstr "Éditer"
+msgstr "Modifier"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.res_config_settings_view_form
 msgid "Edit field types"
-msgstr "Éditer les types de champ"
+msgstr "Modifier les types de champ"
 
 #. module: sign
 #. odoo-javascript
@@ -1232,7 +1232,7 @@ msgstr "Éditer les types de champ"
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #, python-format
 msgid "Edit template name"
-msgstr "Éditer le nom du modèle"
+msgstr "Modifier le nom du modèle"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__signer_email
@@ -1424,7 +1424,7 @@ msgstr "Trame"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item_value__frame_has_hash
 msgid "Frame Has Hash"
-msgstr "La trame a du hash"
+msgstr "La trame est hachée"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__frame_hash
@@ -1654,7 +1654,7 @@ msgstr "Dans les favoris, retirez-le"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_log__log_hash
 msgid "Inalterability Hash"
-msgstr "Hash inaltérable"
+msgstr "Hachage inaltérable"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_item_view_form
@@ -2839,7 +2839,7 @@ msgstr "Signataire"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "Signatory's hash :"
-msgstr "Hash du signataire :"
+msgstr "Hachage du signataire :"
 
 #. module: sign
 #. odoo-javascript

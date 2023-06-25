@@ -74,7 +74,9 @@ class DocumentShare(models.Model):
         """
             Allows overriding the domain in customizations for modifying the search() domain
         """
-        if self.include_sub_folders:
+        if self.type == 'ids':
+            return []
+        elif self.include_sub_folders:
             return [[('folder_id', 'child_of', self.folder_id.id)]]
         else:
             return [[('folder_id', '=', self.folder_id.id)]]

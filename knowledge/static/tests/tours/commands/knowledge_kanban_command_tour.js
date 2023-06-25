@@ -108,7 +108,7 @@ registry.category("web_tour.tours").add('knowledge_item_kanban_custom_act_window
         const wysiwyg = $(this.$anchor[0].closest('.odoo-editor-editable')).data('wysiwyg');
         const context = articleItemsKanbanActionContext(wysiwyg);
         const restoreSelection = () => {
-            setSelection(this.$anchor[0]);
+            return setSelection(this.$anchor[0]);
         }
         wysiwyg._insertEmbeddedView(undefined, articleItemsKanbanAction, "kanban", articleItemsKanbanAction.name, restoreSelection, context);
     },

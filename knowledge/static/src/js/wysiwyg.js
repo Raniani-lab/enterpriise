@@ -345,7 +345,7 @@ patch(Wysiwyg.prototype, {
             // Set the cursor to the end of the article by not normalizing the position.
             // By not normalizing we ensure that we will use the articleś body as the container
             // and not an invisible character.
-            setCursorEnd(this.odooEditor.editable, false);
+            return setCursorEnd(this.odooEditor.editable, false);
         }
         const insert = (anchor) => {
             const fragment = this.odooEditor.document.createDocumentFragment();
@@ -354,18 +354,22 @@ patch(Wysiwyg.prototype, {
             const p = this.odooEditor.document.createElement('p');
             p.append(this.odooEditor.document.createElement('br'));
             fragment.append(anchor, p);
-            const [behavior] = this.odooEditor.execCommand('insert', fragment);
-            behavior.scrollIntoView();
+            const insertedNodes = this.odooEditor.execCommand('insert', fragment);
+            if (insertedNodes) {
+                insertedNodes[0].scrollIntoView();
+                return insertedNodes;
+            }
         };
         // Clone behaviorBlueprint to be sure that the nodes are not modified
         // during the first insertion attempt and that the correct nodes
         // are inserted the second time.
         this._notifyNewBehavior(behaviorBlueprint.cloneNode(true), restoreSelection, (anchor) => {
-            insert(anchor);
+            const insertedNodes = insert(anchor);
             this._onHistoryResetFromSteps = () => {
                 this._notifyNewBehavior(behaviorBlueprint.cloneNode(true), restoreSelection, insert);
                 this._onHistoryResetFromSteps = undefined;
             };
+            return insertedNodes;
         });
     },
     /**

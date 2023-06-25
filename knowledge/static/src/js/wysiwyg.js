@@ -25,7 +25,7 @@ patch(Wysiwyg.prototype, {
      */
     async resetEditor() {
         await super.resetEditor(...arguments);
-        this.$editable[0].dispatchEvent(new Event('refresh_behaviors'));
+        this.$editable[0].dispatchEvent(new Event('mount_knowledge_behaviors'));
     },
     /**
      * @override
@@ -219,10 +219,10 @@ patch(Wysiwyg.prototype, {
      */
     _notifyNewBehavior(anchor, restoreSelection, insert = null) {
         const type = Array.from(anchor.classList).find(className => className.startsWith('o_knowledge_behavior_type_'));
-        this.$editable[0].dispatchEvent(new CustomEvent('refresh_behaviors', { detail: { behaviorData: {
+        this.$editable[0].dispatchEvent(new CustomEvent('mount_knowledge_behaviors', { detail: { behaviorData: {
             anchor,
             behaviorType: type,
-            setCursor: true,
+            shouldSetCursor: true,
             restoreSelection,
             behaviorStatus: 'new',
             insert,

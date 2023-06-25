@@ -70,7 +70,7 @@ export class EmbeddedViewBehavior extends AbstractBehavior {
                 this.setupIntersectionObserver();
             } else {
                 // If the anchor is not already in the editable, it means that
-                // it was pre-rendered in a d-none element and is waiting
+                // it was mounted in a d-none element and is waiting
                 // to be inserted. The intersectionObserver must wait for the
                 // anchor to be in the editable before being set up, because
                 // it will not detect that it is visible if the insertion

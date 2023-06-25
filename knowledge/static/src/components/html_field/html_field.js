@@ -3,7 +3,11 @@
 import { HtmlField, htmlField } from "@web_editor/js/backend/html_field";
 import { patch } from "@web/core/utils/patch";
 import { templates } from "@web/core/assets";
-import { decodeDataBehaviorProps } from "@knowledge/js/knowledge_utils";
+import {
+    copyOids,
+    decodeDataBehaviorProps,
+    getPropNameNodes,
+} from "@knowledge/js/knowledge_utils";
 import { Deferred, Mutex } from "@web/core/utils/concurrency";
 import { useService } from "@web/core/utils/hooks";
 import {
@@ -68,10 +72,13 @@ const HtmlFieldPatch = {
             appAnchorsObserver: new MutationObserver(() => {
                 // Clean Behaviors that are not currently in the DOM.
                 const anchors = this.behaviorState.observedElement.querySelectorAll('.o_knowledge_behavior_anchor');
-                const preRenderingAnchors = this.behaviorState.handlerRef.el?.querySelectorAll('.o_knowledge_behavior_anchor') || [];
-                this.destroyBehaviorApps(new Set([...anchors, ...preRenderingAnchors]));
+                // If the DOM is altered manually (i.e. in a tour when using
+                // `text` instruction on the html_field node, the handlerRef el
+                // is removed, therefore we have to ensure that it exists).
+                const hiddenMountedAnchors = this.behaviorState.handlerRef.el?.querySelectorAll('.o_knowledge_behavior_anchor') || [];
+                this.destroyBehaviorApps(new Set([...anchors, ...hiddenMountedAnchors]));
                 // Schedule a scan for new Behavior anchors to render.
-                this.updateBehaviors();
+                this.mountBehaviors();
             }),
             // Owl does not support destroying an App when its container node is
             // not in the DOM. This reference is a `d-none` element used to
@@ -80,18 +87,18 @@ const HtmlFieldPatch = {
             handlerRef: useRef("behaviorHandler"),
             // Element currently being observed for Behaviors Components.
             observedElement: null,
-            // Mutex to prevent multiple _updateBehavior methods running at
+            // Mutex to prevent multiple _mountBehaviors methods running at
             // once.
             updateMutex: new Mutex(),
         };
-        this.boundRefreshBehaviors = this._onRefreshBehaviors.bind(this);
+        this.boundMountBehaviors = this._onMountBehaviors.bind(this);
         this.knowledgeCommandsService = useService('knowledgeCommandsService');
         onWillDestroy(() => {
             this.behaviorState.appAnchorsObserver.disconnect();
             this.destroyBehaviorApps();
         });
         onWillUnmount(() => {
-            this._removeRefreshBehaviorsListeners();
+            this._removeMountBehaviorsListeners();
         });
         // Update Behaviors and reset the observer when the html_field
         // DOM element changes.
@@ -101,13 +108,16 @@ const HtmlFieldPatch = {
                 this.behaviorState.appAnchorsObserver.disconnect();
                 this.behaviorState.observedElement = null;
                 this.destroyBehaviorApps();
-                if (this.props.readonly || this.wysiwyg?.odooEditor) {
-                    // Restart the observer only if the html_field element is
-                    // ready to display its value. If it is not ready (async),
-                    // it will be started in @see startWysiwyg.
-                    this.startAppAnchorsObserver();
-                    this.updateBehaviors();
-                }
+            }
+            if (
+                !this.behaviorState.observedElement &&
+                this.valueContainerElement
+            ) {
+                // Restart the observer only if the html_field element is
+                // ready to display its value. If it is not ready (async),
+                // it will be started in @see startWysiwyg.
+                this.startAppAnchorsObserver();
+                this.mountBehaviors();
             }
         }, () => {
             return [this.valueContainerElement];
@@ -148,10 +158,10 @@ const HtmlFieldPatch = {
         const options = super.wysiwygOptions;
         /**
          * @param {Element} element to scan for new Behaviors
-         * @returns {Promise|null} resolved when the pre-rendering is done, or
-         *                         null if there is nothing to pre-render
+         * @returns {Promise|null} resolved when the mounting is done, or
+         *                         null if there is nothing to mount
          */
-        const renderExternalBehaviors = (element) => {
+        const mountCollaborativeBehaviors = (element) => {
             let behaviorsData = [];
             // Check that the mutex is idle synchronously to avoid unnecessary
             // overheads in the editor that would be caused by returning a
@@ -162,9 +172,9 @@ const HtmlFieldPatch = {
                     return null;
                 }
             }
-            return this.updateBehaviors(behaviorsData, element);
+            return this.mountBehaviors(behaviorsData, element);
         };
-        options.postProcessExternalSteps = renderExternalBehaviors;
+        options.postProcessExternalSteps = mountCollaborativeBehaviors;
         return options;
     },
 
@@ -177,13 +187,13 @@ const HtmlFieldPatch = {
      */
     async startWysiwyg() {
         await super.startWysiwyg(...arguments);
-        this._addRefreshBehaviorsListeners();
+        this._addMountBehaviorsListeners();
         this.startAppAnchorsObserver();
-        await this.updateBehaviors();
+        await this.mountBehaviors();
         const behaviorBlueprint = this.knowledgeCommandsService.popPendingBehaviorBlueprint({
-            model: this.env.model?.root?.resModel,
+            model: this.props.record.resModel,
             field: this.props.name,
-            resId: this.env.model?.root?.resId,
+            resId: this.props.record.resId,
         });
         if (behaviorBlueprint) {
             this.wysiwyg.appendBehaviorBlueprint(behaviorBlueprint);
@@ -205,7 +215,7 @@ const HtmlFieldPatch = {
     async _toInline() {
         // Prevent any new Behavior rendering during `toInline` processing.
         this.behaviorState.appAnchorsObserver.disconnect();
-        this._removeRefreshBehaviorsListeners();
+        this._removeMountBehaviorsListeners();
         // Wait for the `udpateBehaviors` mutex to ensure that it is idle during
         // `toInline` processing (we don't want it to mess with DOM nodes).
         await this.behaviorState.updateMutex.getUnlockedDef();
@@ -216,7 +226,7 @@ const HtmlFieldPatch = {
         this.destroyBehaviorApps();
         await super._toInline(...arguments);
         // Reactivate Behavior rendering.
-        this._addRefreshBehaviorsListeners();
+        this._addMountBehaviorsListeners();
         this.startAppAnchorsObserver();
     },
 
@@ -233,7 +243,7 @@ const HtmlFieldPatch = {
         const promise = super.updateValue(...arguments);
         // Update Behaviors after the updateValue to ensure that they all are
         // properly mounted (they could have been destroyed by `_toInline`).
-        promise.then(() => this.updateBehaviors());
+        promise.then(() => this.mountBehaviors());
         // Return the `super` promise, not the `then` promise, so that the
         // urgentSave can continue even when Behaviors are being mounted.
         return promise;
@@ -286,10 +296,18 @@ const HtmlFieldPatch = {
             } else {
                 shouldBeRemoved = true;
             }
-            // A Component should always be destroyed in the DOM.
-            this.behaviorState.handlerRef.el.append(anchor);
+            if (this.behaviorState.handlerRef.el) {
+                // A Component should always be destroyed in the DOM.
+                this.behaviorState.handlerRef.el.append(anchor);
+            } else {
+                // Last resort if handlerRef.el was removed manually from the
+                // DOM (i.e. by a `text` operation in a tour), the Behavior
+                // will be destroyed in the document body.
+                shouldBeRemoved = true;
+                document.body.append(anchor);
+            }
         }
-        anchor.oKnowledgeBehavior.updatePromise.resolve(false);
+        anchor.oKnowledgeBehavior.mountedPromise.resolve(false);
         anchor.oKnowledgeBehavior.destroy();
         delete anchor.oKnowledgeBehavior;
         if (shouldBeRemoved) {
@@ -323,8 +341,8 @@ const HtmlFieldPatch = {
     /**
      * Mount Behaviors in visible anchors that should contain one.
      *
-     * Since any mutation can trigger an updateBehaviors call, the mutex ensure
-     * that the next updateBehaviors call always await the previous one.
+     * Since any mutation can trigger an mountBehaviors call, the mutex ensure
+     * that the next mountBehaviors call always await the previous one.
      *
      * @param {Array[Object]} behaviorsData - optional - Contains information on
      *                        which Behavior to update. If not set, the
@@ -341,34 +359,38 @@ const HtmlFieldPatch = {
      *                     differently. Statuses:
      * - undefined:        - No need for extra care, the anchor is and
      *                       will stay present in the editable until the
-     *                       Behavior finishes being pre-rendered
+     *                       Behavior finishes being mounted
      * - 'new':            - Result of a wysiwyg command, the anchor is not
      *                       in the editable and as such there is no OID to
      *                       recover from the blueprint (html value before
      *                       Component rendering)
      *     @param {Function} [behaviorsData.insert] optional - Instructions on
-     *                       how to insert the Behavior when pre-rendering is
-     *                       done. Takes the Element to be inserted as an
-     *                       argument
+     *                       how to insert the Behavior when it is mounted.
+     *                       Takes the Element to be inserted as an argument
      *     @param {Function} [behaviorsData.restoreSelection] optional - Method
      *                       to restore the selection in the editable before
      *                       inserting the rendered Behavior at the correct
      *                       position (where the user typed the command)
-     *     @param {boolean} [behaviorsData.setCursor] optional - Whether to use
-     *                      the setCursor method of the Behavior if it has one
-     *                      when it is mounted and inserted in the editable
+     *     @param {boolean} [behaviorsData.shouldSetCursor] optional - Whether
+     *                      to use the setCursor method of the Behavior if it
+     *                      has one when it is mounted and inserted in the
+     *                      editable
      * @param {HtmlElement} target - optional - the node to scan for new
-     *                      Behavior to instanciate. Defaults to
+     *                      Behavior to instantiate. Defaults to
      *                      this.valueContainerElement
      * @returns {Promise} Resolved when the mutex updating Behaviors is idle.
      */
-    async updateBehaviors(behaviorsData = [], target = null) {
-        this.behaviorState.updateMutex.exec(() => this._updateBehaviors(behaviorsData, target));
+    async mountBehaviors(behaviorsData = [], target = null) {
+        this.behaviorState.updateMutex.exec(() => this._mountBehaviors(behaviorsData, target));
         return this.behaviorState.updateMutex.getUnlockedDef();
     },
 
-    async _updateBehaviors(behaviorsData, target) {
-        if (!document.body.contains(this.valueContainerElement)) {
+    async _mountBehaviors(behaviorsData, target) {
+        if (
+            (target && !document.body.contains(target)) ||
+            !document.body.contains(this.valueContainerElement) ||
+            !document.body.contains(this.behaviorState.handlerRef.el)
+        ) {
             // Validate that the working environment is ready.
             return;
         }
@@ -400,6 +422,13 @@ const HtmlFieldPatch = {
             const anchor = this._prepareBehaviorAnchor(behaviorData, renderingContainerElement);
             // Prepare the props passed to the Behavior Component.
             const props = this._prepareBehaviorProps(Behavior, behaviorData, anchor);
+            if (!props) {
+                // If an error occured when preparing the Behavior props, stop
+                // trying to mount it.
+                continue;
+            }
+            // Extract the configuration from the Odoo main Owl App to use it
+            // for the Behavior App.
             const config = (({env, dev, translatableAttributes, translateFn}) => {
                 return { env, dev, translatableAttributes, translateFn };
             })(this.__owl__.app);
@@ -412,16 +441,16 @@ const HtmlFieldPatch = {
             // App.mount is not resolved if the App is destroyed before it
             // is mounted, so instead, await a Deferred that is resolved
             // when the App is mounted (true) or destroyed (false).
-            anchor.oKnowledgeBehavior.updatePromise = new Deferred();
+            anchor.oKnowledgeBehavior.mountedPromise = new Deferred();
             anchor.oKnowledgeBehavior.mount(anchor).then(
-                () => anchor.oKnowledgeBehavior.updatePromise.resolve(true)
+                () => anchor.oKnowledgeBehavior.mountedPromise.resolve(true)
             );
-            const promise = anchor.oKnowledgeBehavior.updatePromise.then(async (isMounted) => {
+            const promise = anchor.oKnowledgeBehavior.mountedPromise.then(async (isMounted) => {
                 // isMounted is true if the App was mounted and false if it
                 // was destroyed before being mounted. If it was mounted,
                 // update child behaviors inside anchor
                 if (isMounted) {
-                    await this._updateBehaviors([], anchor);
+                    await this._mountBehaviors([], anchor);
                 }
             });
             promises.push(promise);
@@ -451,19 +480,21 @@ const HtmlFieldPatch = {
             // Edit mode, Behavior comes from an anchor already in the DOM.
             // Mounting is done in the Handler in a clone, and the insertion
             // should swap the clone with the original node.
-            anchor = behaviorData.anchor.cloneNode(false);
-            anchor.oid = behaviorData.anchor.oid;
+            // Copy the current state of the Behavior blueprint
+            // before it is modified, in order to save the current
+            // OIDs and recover them when the Component is rendered.
+            anchor = copyOids(behaviorData.anchor);
             renderingContainerElement.append(anchor);
             behaviorData.insert = (anchor) => {
                 if (this.wysiwyg.odooEditor.editable.contains(behaviorData.anchor)) {
-                    // Ignore the insertion if the preRendered element
+                    // Ignore the insertion if the mounted element
                     // cannot be moved in the DOM.
-                    this.wysiwyg.odooEditor.observerUnactive('knowledge_update_behaviors');
+                    this.wysiwyg.odooEditor.observerUnactive('mount_knowledge_behaviors');
                     behaviorData.anchor.parentElement.replaceChild(anchor, behaviorData.anchor);
-                    // Bypass the editor observer, so oids need to be set
+                    // Bypass the editor observer, so oids have to be set
                     // manually.
                     this.wysiwyg.odooEditor.idSet(anchor);
-                    this.wysiwyg.odooEditor.observerActive('knowledge_update_behaviors');
+                    this.wysiwyg.odooEditor.observerActive('mount_knowledge_behaviors');
                 }
             };
         }
@@ -473,7 +504,7 @@ const HtmlFieldPatch = {
     /**
      * Prepare the Behavior Component props.
      *
-     * @param {Class} Behavior The Behavior Class that will be instanciated
+     * @param {Class} Behavior The Behavior Class that will be instantiated
      * @param {Object} behaviorData @see mountBehaviors
      * @param {Element} anchor Node in which the Behavior will be mounted
      * @returns {Object} props to be given to the Behavior Component. Returns
@@ -489,36 +520,41 @@ const HtmlFieldPatch = {
             record: this.props.record,
             // readonlyElementRef.el or editable
             root: this.valueContainerElement,
-            blueprintNodes: [...behaviorData.anchor.childNodes],
+            // Nodes which have necessary oids for the editor. Those nodes
+            // should also be removed from the anchor during the insertion
+            // process. In edit mode, those are clones taken from the blueprint,
+            // To avoid a case where the original childNodes are modified during
+            // Behavior mounting.
+            blueprintNodes: [...anchor.childNodes],
         };
         let behaviorProps = {};
-        if (behaviorData.anchor.hasAttribute("data-behavior-props")) {
-            // Parse non-html props stored on the anchor of the Behavior.
+        if (anchor.hasAttribute("data-behavior-props")) {
+            // Parse non-html props stored on the anchor of the Behavior as the
+            // value of the data-behavior-props attribute.
             try {
-                behaviorProps = decodeDataBehaviorProps(behaviorData.anchor.dataset.behaviorProps);
+                behaviorProps = decodeDataBehaviorProps(anchor.dataset.behaviorProps);
             } catch (error){
-                // If data-behavior-props can not be decoded, ignore it.
-                // User can then choose to remove it or not if the Behavior
-                // is broken as a result of this.
-                console.warn(error.message);
-            }
-        }
-        // Add non-html props of the Behavior, that were stored (encoded)
-        // in the data-behavior-props attribute.
-        for (const prop in behaviorProps) {
-            if (prop in Behavior.props) {
-                props[prop] = behaviorProps[prop];
+                // If data-behavior-props can not be decoded, ignore it and stop
+                // trying to mount this Behavior for this call.
+                if (this.env.debug) {
+                    console.warn(`Error during Behavior props parsing, it will be displayed raw.`, anchor, error);
+                }
+                return null;
             }
         }
         // Add html props of the Behavior, each one of them is stored in a
         // (sub-)child element of the anchor with the attribute
         // data-prop-name, the name of the prop is the attribute value, and
         // the value of the prop is the content of that node).
-        const propNodes = behaviorData.anchor.querySelectorAll("[data-prop-name]");
+        const propNodes = getPropNameNodes(anchor);
         for (const node of propNodes) {
-            if (node.dataset.propName in Behavior.props) {
-                // Safe because sanitized by the editor and backend.
-                props[node.dataset.propName] = markup(node.innerHTML);
+            // Safe because sanitized by the editor and backend.
+            behaviorProps[node.dataset.propName] = markup(node.innerHTML);
+        }
+        // Filter props to keep only the ones from the schema.
+        for (const prop in behaviorProps) {
+            if (prop in Behavior.props) {
+                props[prop] = behaviorProps[prop];
             }
         }
         if (!this.props.readonly) {
@@ -526,8 +562,8 @@ const HtmlFieldPatch = {
             // to verify that the insertion of the Behavior takes place
             // in the correct article.
             const targetRecordId = this.env.model?.root?.resId;
-            // Callback to insert a preRendered Behavior in the editable.
-            props.onPreRendered = () => {
+            // Callback to insert a mounted Behavior in the editable.
+            props.onReadyToInsertInEditor = () => {
                 try {
                     if (targetRecordId !== this.env.model?.root?.resId) {
                         // If the prerendering finished after the user
@@ -541,9 +577,11 @@ const HtmlFieldPatch = {
                     if (!(error instanceof DOMException)) {
                         throw error;
                     }
-                    // Ignore the insertion if the preRendered element
-                    // can not be moved in the DOM.
-                    console.warn(error.message);
+                    // Ignore the insertion if the mounted element
+                    // can not be moved in the editable.
+                    if (this.env.debug) {
+                        console.warn(`Error while trying to restore the selection in the DOM`, error);
+                    }
                     return;
                 }
                 if (behaviorData.insert) {
@@ -551,9 +589,8 @@ const HtmlFieldPatch = {
                 } else {
                     this.wysiwyg.odooEditor.execCommand('insert', anchor);
                 }
-                if (this.wysiwyg?.odooEditor && behaviorData.setCursor &&
-                    behaviorData.anchor.oKnowledgeBehavior.root.component.setCursor) {
-                    behaviorData.anchor.oKnowledgeBehavior.root.component.setCursor();
+                if (behaviorData.shouldSetCursor && anchor.oKnowledgeBehavior.root.component.setCursor) {
+                    anchor.oKnowledgeBehavior.root.component.setCursor();
                 }
             };
         }
@@ -565,7 +602,7 @@ const HtmlFieldPatch = {
      *
      * @param {HTMLElement} target Element to scan for Behaviors
      * @returns {Array[Object]} Array filled with the results of the scan.
-     *          Any Behavior that is not instanciated at the moment of the scan
+     *          Any Behavior that is not instantiated at the moment of the scan
      *          will have one entry added in this Array, with the condition that
      *          it is not a child of another Behavior that is not mounted yet
      *          (those will have to be scanned again when their parent is
@@ -591,7 +628,7 @@ const HtmlFieldPatch = {
                 // its children Behaviors from the scan, as their anchor will
                 // change when this Behavior is mounted (replace all children
                 // nodes by their mounted version). They will be mounted after
-                // their parent during _updateBehaviors.
+                // their parent during _mountBehaviors.
                 const anchorSubNodes = anchor.querySelectorAll('.o_knowledge_behavior_anchor');
                 for (const anchorSubNode of anchorSubNodes) {
                     anchorsSet.delete(anchorSubNode);
@@ -628,20 +665,20 @@ const HtmlFieldPatch = {
     // HANDLERS
     //--------------------------------------------------------------------------
 
-    _addRefreshBehaviorsListeners() {
+    _addMountBehaviorsListeners() {
         if (this.wysiwyg?.odooEditor?.editable) {
-            this.wysiwyg.odooEditor.editable.addEventListener('refresh_behaviors', this.boundRefreshBehaviors);
+            this.wysiwyg.odooEditor.editable.addEventListener('mount_knowledge_behaviors', this.boundMountBehaviors);
         }
     },
 
-    _onRefreshBehaviors(ev) {
+    _onMountBehaviors(ev) {
         const {behaviorData} = ev.detail || {};
-        this.updateBehaviors((behaviorData) ? [behaviorData] : []);
+        this.mountBehaviors((behaviorData) ? [behaviorData] : []);
     },
 
-    _removeRefreshBehaviorsListeners() {
+    _removeMountBehaviorsListeners() {
         if (this.wysiwyg?.odooEditor?.editable) {
-            this.wysiwyg.odooEditor.editable.removeEventListener('refresh_behaviors', this.boundRefreshBehaviors);
+            this.wysiwyg.odooEditor.editable.removeEventListener('mount_knowledge_behaviors', this.boundMountBehaviors);
         }
     },
 };

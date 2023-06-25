@@ -18,6 +18,9 @@ import {
     BehaviorToolbar,
     BehaviorToolbarButton,
 } from "@knowledge/components/behaviors/behavior_toolbar/behavior_toolbar";
+import {
+    getPropNameNode,
+} from "@knowledge/js/knowledge_utils";
 
 
 export class TemplateBehavior extends AbstractBehavior {
@@ -97,10 +100,11 @@ export class TemplateBehavior extends AbstractBehavior {
 
     /**
      * Set the cursor of the user inside the template block when the user types
-     * the `/clipboard` command.
+     * the `/clipboard` command (Used for a new TemplateBehavior on its first
+     * mount).
      */
     setCursor() {
-        setCursorStart(this.props.anchor.querySelector('[data-prop-name="content"] > p'));
+        setCursorStart(getPropNameNode("content", this.props.anchor).querySelector("p"));
     }
 
     showTooltip() {

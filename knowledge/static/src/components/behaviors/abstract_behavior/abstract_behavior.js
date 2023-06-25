@@ -5,6 +5,11 @@ import {
     Component,
     onMounted,
 } from "@odoo/owl";
+import {
+    copyOids,
+    getPropNameNode,
+} from "@knowledge/js/knowledge_utils";
+
 
 export class AbstractBehavior extends Component {
     static props = {
@@ -21,17 +26,20 @@ export class AbstractBehavior extends Component {
         // - undo/redo in the editor with the Behavior appearing/disappearing
         // - copy/paste, drag/drop elements with the Behavior
         blueprintNodes: { type: Array },
+        // Hook for Behavior executed when they are mounted and synchronized
+        // (have the correct oids for their collaborative nodes). Typically, it
+        // is handled by the html_field and its purpose is to synchronously
+        // insert the Behavior anchor at the correct position in the editable.
+        // In edit mode, we cannot let OWL mount a Behavior directly in the
+        // editable as it is an asynchronous process and the state of the html
+        // field can change while the Behavior is being mounted (at that point
+        // it has to be discarded).
+        onReadyToInsertInEditor: { type: Function, optional: true },
         readonly: { type: Boolean },
         record: { type: Object },
         // Element containing all Behavior anchors. It can either be the
         // OdooEditor.editable, or the readonlyElementRef.el.
         root: { type: Element },
-        // Hook for Behavior executed when they are mounted and synchronized
-        // (have the correct oids for their collaborative nodes). Typically, it
-        // is handled by the html_field and its purpose is to insert the
-        // Behavior anchor at the correct position in the editable when it is
-        // fully pre-rendered (=rendered outside of the editable).
-        onPreRendered: { type: Function, optional: true},
         wysiwyg: { type: Object, optional: true },
     };
 
@@ -43,17 +51,16 @@ export class AbstractBehavior extends Component {
             onMounted(() => {
                 // Reconstruct the blueprint as an Element outside the DOM, but
                 // with the original nodes to keep their OIDs.
-                const blueprint = document.createElement('DIV');
-                // Adding the blueprintNodes to the blueprint Element will
-                // effectively remove them from the DOM. They are only removed
-                // at this point because we never want the HtmlField to be in
-                // a "corrupted" state during an asynchronous timespan (before
-                // the mounting process).
+                const blueprint = this.props.anchor.cloneNode(false);
+                // Remove blueprint nodes (not rendered by OWL) from the anchor
+                // in the DOM, but keep them in order to extract useful oids
+                // from them.
                 blueprint.replaceChildren(...this.props.blueprintNodes);
                 // hook for extra rendering steps for Behavior (not done by
                 // OWL templating system).
                 this.extraRender();
                 if (this.props.anchor.oid) {
+                    blueprint.oid = this.props.anchor.oid;
                     // copy OIDs from the blueprint in case those OIDs
                     // are used in collaboration.
                     // this step is done before the component is inserted in the
@@ -61,12 +68,16 @@ export class AbstractBehavior extends Component {
                     this.synchronizeOids(blueprint);
                 }
                 // the rendering was done outside of the OdooEditor,
-                // onPreRendered contains instructions on how to move the
-                // preRendered content in the editable.
-                this.props.onPreRendered();
+                // onReadyToInsertInEditor contains instructions on how to move
+                // the mounted content in the editable.
+                this.props.onReadyToInsertInEditor();
             });
         } else {
             onMounted(() => {
+                // Remove blueprint nodes (not rendered by OWL) from the anchor
+                // in the dom. It is the best timing to do it since their
+                // removal will occur synchronously with the addition of OWL
+                // nodes.
                 this.props.blueprintNodes.forEach(child => child.remove());
             });
         }
@@ -111,27 +122,13 @@ export class AbstractBehavior extends Component {
         // be synchronized in collaborative mode from the blueprint.
         this.props.anchor.querySelectorAll('[data-oe-protected="false"][data-prop-name]').forEach(node => {
             const propName = node.dataset.propName;
-            const blueprintElement = blueprint.querySelector(`[data-prop-name="${propName}"]`);
+            const blueprintElement = getPropNameNode(propName, blueprint);
             if (!blueprintElement) {
                 return;
             }
             // copy OIDs from the blueprint for a collaborative
             // node of the behavior
-            const overrideOids = function (current, blueprintCurrent) {
-                if (!current || !blueprintCurrent) {
-                    console.warn('There was an issue during the collaborative synchronization, some elements may not be shared properly.')
-                    return;
-                }
-                current.oid = blueprintCurrent.oid;
-                delete current.ouid;
-                if (current.nodeType === Node.ELEMENT_NODE && current.firstChild && blueprintCurrent.firstChild) {
-                    overrideOids(current.firstChild, blueprintCurrent.firstChild);
-                }
-                if (current.nextSibling && blueprintCurrent.nextSibling) {
-                    overrideOids(current.nextSibling, blueprintCurrent.nextSibling);
-                }
-            }
-            overrideOids(node, blueprintElement);
+            copyOids(blueprintElement, node);
         });
     }
 

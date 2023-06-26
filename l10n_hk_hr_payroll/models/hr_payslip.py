@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import base64
+import re
 
 from collections import defaultdict
 from datetime import datetime
@@ -208,9 +209,10 @@ class Payslip(models.Model):
         return header
 
     def _generate_hsbc_autopay(self, header_data: dict, payments_data: dict) -> str:
+        acc_number = re.sub(r"[^0-9]", "", header_data['autopay_partner_bank_id'].acc_number)
         header = (
             f'PHF{header_data["payment_set_code"]}{header_data["ref"]:<12}{header_data["payment_date"]:%Y%m%d}'
-            f'{header_data["autopay_partner_bank_id"].acc_number + "SA" + header_data["currency"]:<35}'
+            f'{acc_number + "SA" + header_data["currency"]:<35}'
             f'{header_data["currency"]}{header_data["payslips_count"]:07}{int(header_data["amount_total"] * 100):017}'
             f'{"":<1}{"":<311}\n'
         )
@@ -279,7 +281,7 @@ class Payslip(models.Model):
                 'ref': payslip.employee_id.l10n_hk_autopay_ref or '',
                 'type': payslip.employee_id.l10n_hk_autopay_account_type,
                 'amount': sum(payslip.line_ids.filtered(lambda line: line.code == rule_code).mapped('amount')),
-                'identifier': payslip.employee_id.l10n_hk_autopay_identifier or '',
+                'identifier': re.sub(r'[^a-zA-Z0-9]', '', payslip.employee_id.identification_id or ''),
                 'bank_code': payslip.employee_id.get_l10n_hk_autopay_bank_code(),
                 'autopay_field': payslip.employee_id.get_l10n_hk_autopay_field(),
                 'bank_account_name': payslip.employee_id.bank_account_id.acc_holder_name or '',

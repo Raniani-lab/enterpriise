@@ -101,7 +101,7 @@ class HrEmployee(models.Model):
     def get_l10n_hk_autopay_field(self) -> str:
         self.ensure_one()
         if self.l10n_hk_autopay_account_type == 'bban':
-            return self.bank_account_id.acc_number
+            return re.sub(r"[^0-9]", "", self.bank_account_id.acc_number)
         if self.l10n_hk_autopay_account_type == 'svid':
             return self.l10n_hk_autopay_svid
         if self.l10n_hk_autopay_account_type == 'emal':

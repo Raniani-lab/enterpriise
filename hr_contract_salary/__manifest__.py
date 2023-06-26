@@ -24,7 +24,7 @@
         'views/hr_contract_views.xml',
         'views/hr_job_views.xml',
         'views/res_config_settings_views.xml',
-        'views/hr_contract_salary_advantage_views.xml',
+        'views/hr_contract_salary_benefit_views.xml',
         'views/hr_contract_salary_personal_info_views.xml',
         'views/hr_contract_salary_resume_views.xml',
         'views/hr_contract_salary_offer_views.xml',
@@ -32,7 +32,7 @@
         'data/ir_cron_data.xml',
         'data/mail_template_data.xml',
         'data/mail_templates.xml',
-        'data/hr_contract_salary_advantages_data.xml',
+        'data/hr_contract_salary_benefits_data.xml',
         'data/hr_contract_salary_personal_info_data.xml',
         'data/hr_contract_salary_resume_data.xml',
 

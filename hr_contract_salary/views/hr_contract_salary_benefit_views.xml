@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="hr_contract_advantage_action" model="ir.actions.act_window">
-        <field name="name">Advantages</field>
-        <field name="res_model">hr.contract.salary.advantage</field>
+    <record id="hr_contract_benefit_action" model="ir.actions.act_window">
+        <field name="name">Benefits</field>
+        <field name="res_model">hr.contract.salary.benefit</field>
         <field name="context">{'search_default_groupby_structure_type': 1}</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-    <record id="hr_contract_advantage_view_tree" model="ir.ui.view">
-        <field name="name">hr.contract.salary.advantage.view.tree</field>
-        <field name="model">hr.contract.salary.advantage</field>
+    <record id="hr_contract_benefit_view_tree" model="ir.ui.view">
+        <field name="name">hr.contract.salary.benefit.view.tree</field>
+        <field name="model">hr.contract.salary.benefit</field>
         <field name="arch" type="xml">
-            <tree string="Salary Package Advantage">
+            <tree string="Salary Package Benefit">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="res_field_id"/>
@@ -21,9 +21,9 @@
         </field>
     </record>
 
-    <record id="hr_contract_advantage_view_search" model="ir.ui.view">
-        <field name="name">hr.contract.salary.advantage.view.search</field>
-        <field name="model">hr.contract.salary.advantage</field>
+    <record id="hr_contract_benefit_view_search" model="ir.ui.view">
+        <field name="name">hr.contract.salary.benefit.view.search</field>
+        <field name="model">hr.contract.salary.benefit</field>
         <field name="arch" type="xml">
             <search>
                 <field name="name"/>
@@ -34,14 +34,14 @@
         </field>
     </record>
 
-    <record id="hr_contract_advantage_view_form" model="ir.ui.view">
-        <field name="name">hr.contract.salary.advantage.view.form</field>
-        <field name="model">hr.contract.salary.advantage</field>
+    <record id="hr_contract_benefit_view_form" model="ir.ui.view">
+        <field name="name">hr.contract.salary.benefit.view.form</field>
+        <field name="model">hr.contract.salary.benefit</field>
         <field name="arch" type="xml">
-            <form string="Salary Package Advantage">
+            <form string="Salary Package Benefit">
                 <field name="has_admin_access" invisible="1"/>
                 <sheet>
-                    <label for="name" string="Advantage"/>
+                    <label for="name" string="Benefits"/>
                     <div class="oe_title mb-3">
                         <h1><field name="name" placeholder="e.g. Meal Vouchers"/></h1>
                     </div>
@@ -52,7 +52,7 @@
                             <field name="cost_res_field_public"
                                 invisible="has_admin_access"/>
                             <field name="field" invisible="1"/>
-                            <field name="advantage_type_id"/>
+                            <field name="benefit_type_id"/>
                             <field name="sequence" invisible="1"/>
                             <field name="res_field_id"
                                 groups="base.group_erp_manager"
@@ -80,7 +80,7 @@
                                     The current requested documents are the followings: <field name="requested_documents_fields_string" nolabel="1"/>
                                 </span>
                             </div>
-                            <field name="advantage_ids" widget="many2many_tags"/>
+                            <field name="benefit_ids" widget="many2many_tags"/>
                             <field name="requested_documents" invisible="1"/>
                             <separator string="Activity"/>
                             <field name="activity_type_id" options="{'no_create_edit': True}"/>
@@ -148,8 +148,8 @@
         sequence="100"/>
 
     <menuitem
-        id="salary_package_advantage"
-        action="hr_contract_advantage_action"
+        id="salary_package_benefit"
+        action="hr_contract_benefit_action"
         parent="hr_contract_salary.salary_package_menu"
         sequence="1"/>
 

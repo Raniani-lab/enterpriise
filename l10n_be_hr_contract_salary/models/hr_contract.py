@@ -62,8 +62,8 @@ class HrContract(models.Model):
         return res + [cars, vehicle_contracts]
 
     @api.model
-    def _advantage_white_list(self):
-        return super()._advantage_white_list() + [
+    def _benefit_white_list(self):
+        return super()._benefit_white_list() + [
             'private_car_reimbursed_amount',
             'yearly_commission_cost',
             'meal_voucher_average_monthly_amount',
@@ -71,9 +71,9 @@ class HrContract(models.Model):
             'double_holiday_wage',
         ]
 
-    def _get_advantage_values_company_car_total_depreciated_cost(self, contract, advantages):
-        has_car = advantages['fold_company_car_total_depreciated_cost']
-        selected_car = advantages['select_company_car_total_depreciated_cost']
+    def _get_benefit_values_company_car_total_depreciated_cost(self, contract, benefits):
+        has_car = benefits['fold_company_car_total_depreciated_cost']
+        selected_car = benefits.get('select_company_car_total_depreciated_cost')
         if not has_car or not selected_car:
             return {
                 'transport_mode_car': False,
@@ -97,9 +97,9 @@ class HrContract(models.Model):
             'car_id': int(car_id),
         }
 
-    def _get_advantage_values_company_bike_depreciated_cost(self, contract, advantages):
-        has_bike = advantages['fold_company_bike_depreciated_cost']
-        selected_bike = advantages.get('select_company_bike_depreciated_cost', None)
+    def _get_benefit_values_company_bike_depreciated_cost(self, contract, benefits):
+        has_bike = benefits['fold_company_bike_depreciated_cost']
+        selected_bike = benefits.get('select_company_bike_depreciated_cost', None)
         if not has_bike or not selected_bike:
             return {
                 'transport_mode_bike': False,
@@ -122,20 +122,20 @@ class HrContract(models.Model):
             'bike_id': int(bike_id),
         }
 
-    def _get_advantage_values_wishlist_car_total_depreciated_cost(self, contract, advantages):
+    def _get_benefit_values_wishlist_car_total_depreciated_cost(self, contract, benefits):
         # make sure the key `fold_wishlist_car_total_depreciated_cost` is present, super() needs it
-        advantages['fold_wishlist_car_total_depreciated_cost'] = advantages.get('fold_wishlist_car_total_depreciated_cost')
+        benefits['fold_wishlist_car_total_depreciated_cost'] = benefits.get('fold_wishlist_car_total_depreciated_cost')
         return {}
 
-    def _get_advantage_values_insured_relative_spouse(self, contract, advantages):
-        return {'insured_relative_spouse': advantages['fold_insured_relative_spouse']}
+    def _get_benefit_values_insured_relative_spouse(self, contract, benefits):
+        return {'insured_relative_spouse': benefits['fold_insured_relative_spouse']}
 
-    def _get_advantage_values_l10n_be_ambulatory_insured_spouse(self, contract, advantages):
-        return {'l10n_be_ambulatory_insured_spouse': advantages['fold_l10n_be_ambulatory_insured_spouse']}
+    def _get_benefit_values_l10n_be_ambulatory_insured_spouse(self, contract, benefits):
+        return {'l10n_be_ambulatory_insured_spouse': benefits['fold_l10n_be_ambulatory_insured_spouse']}
 
     def _get_description_company_car_total_depreciated_cost(self, new_value=None):
-        advantage = self.env.ref('l10n_be_hr_contract_salary.l10n_be_transport_company_car')
-        description = advantage.description or ""
+        benefit = self.env.ref('l10n_be_hr_contract_salary.l10n_be_transport_company_car')
+        description = benefit.description or ""
         if new_value is None or not new_value:
             if self.car_id:
                 new_value = 'old-%s' % self.car_id.id
@@ -196,8 +196,8 @@ class HrContract(models.Model):
         self.ensure_one()
         return '<span class="form-text">The commission is scalable and starts from the 1st € sold. The commission plan has stages with accelerators. At 100%%, 3 months are paid in Warrant which results to a monthly NET commission value of %s € and 9 months in cash which result in a GROSS monthly commission of %s €, taxable like your usual monthly pay.</span>' % (round(self.warrant_value_employee, 2), round(self.commission_on_target, 2))
 
-    def _get_advantage_values_ip_value(self, contract, advantages):
-        if not advantages['ip_value'] or not ast.literal_eval(advantages['ip_value']):
+    def _get_benefit_values_ip_value(self, contract, benefits):
+        if not benefits['ip_value'] or not ast.literal_eval(benefits['ip_value']):
             return {
                 'ip': False,
                 'ip_wage_rate': contract.ip_wage_rate

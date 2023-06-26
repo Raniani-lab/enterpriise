@@ -11,7 +11,7 @@
         'l10n_be_hr_payroll_fleet',
     ],
     'data': [
-        'data/hr_contract_salary_advantage_data.xml',
+        'data/hr_contract_salary_benefit_data.xml',
         'data/hr_contract_salary_resume_data.xml',
         'data/hr_contract_salary_personal_info_data.xml',
         'data/cp200/employee_termination_fees_data.xml',
@@ -28,7 +28,7 @@
     ],
     'demo': [
         'data/l10n_be_hr_contract_salary_demo.xml',
-        # 'data/hr_contract_salary_advantage_demo.xml',
+        # 'data/hr_contract_salary_benefit_demo.xml',
     ],
     'license': 'OEEL-1',
     'auto_install': True,

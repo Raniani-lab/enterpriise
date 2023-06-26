@@ -112,7 +112,7 @@ class HrContract(models.Model):
         ratio = self._get_yearly_cost_sacrifice_ratio()
         fixed = self._get_yearly_cost_sacrifice_fixed()
         if inverse:
-            return (self._get_advantages_costs() + self._get_salary_costs_factor() * self.wage_with_holidays + fixed) / ratio
+            return (self._get_benefits_costs() + self._get_salary_costs_factor() * self.wage_with_holidays + fixed) / ratio
         return self.final_yearly_costs * ratio - fixed
 
     def _is_salary_sacrifice(self):
@@ -143,43 +143,43 @@ class HrContract(models.Model):
                 if contract.wage != contract.wage_with_holidays:
                     contract.wage = contract.wage_with_holidays
 
-    def _get_advantage_description(self, advantage, new_value=None):
+    def _get_benefit_description(self, benefit, new_value=None):
         self.ensure_one()
-        if hasattr(self, '_get_description_%s' % advantage.field):
-            description = getattr(self, '_get_description_%s' % advantage.field)(new_value)
+        if hasattr(self, '_get_description_%s' % benefit.field):
+            description = getattr(self, '_get_description_%s' % benefit.field)(new_value)
         else:
-            description = advantage.description
+            description = benefit.description
         return html_sanitize(description)
 
-    def _get_advantage_fields(self, triggers=True):
+    def _get_benefit_fields(self, triggers=True):
         types = ('float', 'integer', 'monetary', 'boolean')
         if not triggers:
             types += ('text',)
-        nonstored_whitelist = self._advantage_white_list()
-        advantage_fields = set(
+        nonstored_whitelist = self._benefit_white_list()
+        benefit_fields = set(
             field.name for field in self._fields.values() if field.type in types and (field.store or not field.store and field.name in nonstored_whitelist))
         if not triggers:
-            advantage_fields |= {'wage_with_holidays'}
-        return tuple(advantage_fields - self._advantage_black_list())
+            benefit_fields |= {'wage_with_holidays'}
+        return tuple(benefit_fields - self._benefit_black_list())
 
     @api.model
-    def _advantage_black_list(self):
+    def _benefit_black_list(self):
         return set(MAGIC_COLUMNS + [
             'wage_on_signature', 'active',
             'date_generated_from', 'date_generated_to'])
 
     @api.model
-    def _advantage_white_list(self):
+    def _benefit_white_list(self):
         return []
 
     @api.depends(lambda self: (
         'wage',
-        'structure_type_id.salary_advantage_ids.res_field_id',
-        'structure_type_id.salary_advantage_ids.impacts_net_salary',
-        *self._get_advantage_fields()))
+        'structure_type_id.salary_benefits_ids.res_field_id',
+        'structure_type_id.salary_benefits_ids.impacts_net_salary',
+        *self._get_benefit_fields()))
     def _compute_final_yearly_costs(self):
         for contract in self:
-            contract.final_yearly_costs = contract._get_advantages_costs() + contract._get_salary_costs_factor() * contract.wage
+            contract.final_yearly_costs = contract._get_benefits_costs() + contract._get_salary_costs_factor() * contract.wage
 
     @api.depends('company_id', 'job_id')
     def _compute_structure_type_id(self):
@@ -211,23 +211,23 @@ class HrContract(models.Model):
         self.ensure_one()
         return 12.0
 
-    def _get_advantages_costs(self):
+    def _get_benefits_costs(self):
         self.ensure_one()
-        advantages = self.env['hr.contract.salary.advantage'].search([
+        benefits = self.env['hr.contract.salary.benefit'].search([
             ('impacts_net_salary', '=', True),
             ('structure_type_id', '=', self.structure_type_id.id),
             ('cost_res_field_id', '!=', False),
         ])
-        if not advantages:
+        if not benefits:
             return 0
-        monthly_advantages = advantages.filtered(lambda a: a.advantage_type_id.periodicity == 'monthly')
-        monthly_cost = sum(self[advantage.cost_field] if advantage.cost_field in self else 0 for advantage in monthly_advantages)
-        yearly_cost = sum(self[advantage.cost_field] if advantage.cost_field in self else 0 for advantage in advantages - monthly_advantages)
+        monthly_benefits = benefits.filtered(lambda a: a.benefit_type_id.periodicity == 'monthly')
+        monthly_cost = sum(self[benefit.cost_field] if benefit.cost_field in self else 0 for benefit in monthly_benefits)
+        yearly_cost = sum(self[benefit.cost_field] if benefit.cost_field in self else 0 for benefit in benefits - monthly_benefits)
         return monthly_cost * 12 + yearly_cost
 
     def _get_gross_from_employer_costs(self, yearly_cost):
         self.ensure_one()
-        remaining_for_gross = yearly_cost - self._get_advantages_costs()
+        remaining_for_gross = yearly_cost - self._get_benefits_costs()
         return remaining_for_gross / self._get_salary_costs_factor()
 
     @api.depends('sign_request_ids.nb_closed')

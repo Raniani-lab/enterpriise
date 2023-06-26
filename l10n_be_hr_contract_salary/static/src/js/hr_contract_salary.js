@@ -11,7 +11,7 @@ hrContractSalary.include({
         "change input[name='children']": "onchangeChildren",
     }),
 
-    getAdvantages() {
+    getBenefits() {
         var res = this._super.apply(this, arguments);
         res.contract.l10n_be_canteen_cost = parseFloat($("input[name='l10n_be_canteen_cost']").val() || "0.0");
         return res
@@ -36,8 +36,8 @@ hrContractSalary.include({
         }
     },
 
-    onchangeFoldedResetInteger(advantageField) {
-        if (advantageField === 'private_car_reimbursed_amount_manual' || advantageField === 'l10n_be_bicyle_cost_manual') {
+    onchangeFoldedResetInteger(benefitField) {
+        if (benefitField === 'private_car_reimbursed_amount_manual' || benefitField === 'l10n_be_bicyle_cost_manual') {
             return false;
         } else {
             return this._super.apply(this, arguments);

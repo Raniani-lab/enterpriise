@@ -220,8 +220,8 @@ class HrContract(models.Model):
 
 
     @api.model
-    def _advantage_white_list(self):
-        return super()._advantage_white_list() + [
+    def _benefit_white_list(self):
+        return super()._benefit_white_list() + [
             'insurance_amount',
             'ip_value',
             'l10n_be_ambulatory_insurance_amount',

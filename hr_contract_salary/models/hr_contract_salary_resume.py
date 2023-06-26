@@ -29,15 +29,15 @@ class HrContractSalaryResume(models.Model):
     value_type = fields.Selection([
         ('fixed', 'Fixed Value'),
         ('contract', 'Contract Value'),
-        ('sum', 'Sum of Advantages Values'),
+        ('sum', 'Sum of Benefits Values'),
         ('monthly_total', 'Monthly Total')], required=True, default='fixed',
         help='Pick how the value of the information is computed:\n'
              'Fixed value: Set a determined value static for all links\n'
              'Contract value: Get the value from a field on the contract record\n'
              'Payslip value: Get the value from a field on the payslip record\n'
-             'Sum of Advantages value: You can pick in all advantages and compute a sum of them\n'
-             'Monthly Total: The information will be a total of all the informations in the category Monthly Advantages')
-    advantage_ids = fields.Many2many('hr.contract.salary.advantage')
+             'Sum of Benefits value: You can pick in all benefits and compute a sum of them\n'
+             'Monthly Total: The information will be a total of all the informations in the category Monthly Benefits')
+    benefit_ids = fields.Many2many('hr.contract.salary.benefit')
     code = fields.Selection(_get_available_fields)
     fixed_value = fields.Float()
     category_id = fields.Many2one('hr.contract.salary.resume.category', required=True, help='Pick a category to display this information')
@@ -46,5 +46,5 @@ class HrContractSalaryResume(models.Model):
     uom = fields.Selection([
         ('days', 'Days'),
         ('percent', 'Percent'),
-        ('currency', 'Currency')], string="Advantage Unit of Measure", default='currency')
+        ('currency', 'Currency')], string="Unit of Measure", default='currency')
     active = fields.Boolean('Active', default=True)

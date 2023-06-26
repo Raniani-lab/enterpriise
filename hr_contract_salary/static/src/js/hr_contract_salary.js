@@ -10,7 +10,7 @@ import { getDataURLFromFile } from "@web/core/utils/urls";
 publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
     selector: '#hr_cs_form',
     events: {
-        "change .advantage_input": "onchangeAdvantage",
+        "change .benefit_input": "onchangeBenefit",
         "change input.folded": "onchangeFolded",
         "change .personal_info": "onchangePersonalInfo",
         "click #hr_cs_submit": "submitSalaryPackage",
@@ -63,21 +63,21 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         return Promise.all([
             this._super(),
             this.updateGross(),
-            this.setUpAdvantages(),
+            this.setUpBenefits(),
         ]);
     },
 
-    setUpAdvantages() {
-        // When we load the advantages, if any of the advantage is not set and it has
-        // dependent advantages (or requested documents),
-        // unset those dependent advantages (or hide those requested documents)
+    setUpBenefits() {
+        // When we load the benefits, if any of the advantage is not set and it has
+        // dependent benefits (or requested documents),
+        // unset those dependent benefits (or hide those requested documents)
         $('input')
             .toArray()
             .forEach(async input => {
-                let dependentAdvantages = $(input).data('advantage_ids-dependent');
+                let dependentBenefits = $(input).data('benefit_ids-dependent');
                 const requested_documents = $(input).data('requested_documents');
-                let mandatoryAdvantageSelected;
-                if (dependentAdvantages || requested_documents) {
+                let mandatoryBenefitSelected;
+                if (dependentBenefits || requested_documents) {
                     let newValue = $(input).data('value');
                     if (input.type === 'radio') {
                         const target = $("input[name='" + input.name + "']").toArray().find(elem => elem.checked);
@@ -90,21 +90,21 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
                     } else {
                         newValue = input.value;
                     }
-                    mandatoryAdvantageSelected = Boolean(+newValue);
+                    mandatoryBenefitSelected = Boolean(+newValue);
                 }
 
-                if (dependentAdvantages) {
-                    dependentAdvantages = dependentAdvantages.trim().split(' ');
-                    for (const dependentAdvantage of dependentAdvantages) {
-                        if (!mandatoryAdvantageSelected) {
-                            this.updateDependentAdvantages(dependentAdvantage, mandatoryAdvantageSelected);
+                if (dependentBenefits) {
+                    dependentBenefits = dependentBenefits.trim().split(' ');
+                    for (const mandatoryBenefitSelected of dependentBenefits) {
+                        if (!mandatoryBenefitSelected) {
+                            this.updateDependentBenefits(dependentBenefits, mandatoryBenefitSelected);
                         }
                     }
                 }
                 if (requested_documents) {
                     requested_documents.split(',').forEach(requested_document => {
                         const document_div = $("div[name='" + requested_document + "']");
-                        mandatoryAdvantageSelected ? document_div.removeClass('d-none') : document_div.addClass('d-none');
+                        mandatoryBenefitSelected ? document_div.removeClass('d-none') : document_div.addClass('d-none');
                     });
                 }
             });
@@ -153,16 +153,16 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         return documentSrcs;
     },
 
-    getAdvantages() {
-        const advantages = {
+    getBenefits() {
+        const benefits = {
             'contract': {},
             'employee': {},
             'address': {},
             'bank_account': {},
         };
-        advantages.employee.job_title = $("input[name='job_title']").val();
-        advantages.employee.employee_job_id = $("input[name='employee_job_id']").val();
-        advantages.employee.department_id = $("input[name='department_id']").val();
+        benefits.employee.job_title = $("input[name='job_title']").val();
+        benefits.employee.employee_job_id = $("input[name='employee_job_id']").val();
+        benefits.employee.department_id = $("input[name='department_id']").val();
         $('input')
             .toArray()
             .filter(input => input.hasAttribute('applies-on'))
@@ -170,11 +170,11 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
             .forEach(input => {
                 const appliesOn = $(input).attr('applies-on');
                 if (input.type === 'checkbox') {
-                    advantages[appliesOn][input.name] = input.checked;
+                    benefits[appliesOn][input.name] = input.checked;
                 } else if (input.type === 'radio' && input.checked) {
-                    advantages[appliesOn][input.name] = $(input).data('value');
+                    benefits[appliesOn][input.name] = $(input).data('value');
                 } else if (input.type !== 'hidden' && input.type !== 'radio') {
-                    advantages[appliesOn][input.name] = input.value;
+                    benefits[appliesOn][input.name] = input.value;
                 }
             });
         $('textarea')
@@ -182,16 +182,16 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
             .filter(area => area.hasAttribute('applies-on'))
             .forEach(area => {
                 const appliesOn = $(area).attr('applies-on');
-                advantages[appliesOn][area.name] = area.value;
+                benefits[appliesOn][area.name] = area.value;
             });
-        $('select.advantage_input,select.personal_info')
+        $('select.benefit_input,select.personal_info')
             .toArray()
             .filter(select => select.name !== 'simulation_working_schedule')
             .forEach(select => {
                 const appliesOn = $(select).attr('applies-on');
-                advantages[appliesOn][select.name] = $(select).val();
+                benefits[appliesOn][select.name] = $(select).val();
             });
-        return advantages;
+        return benefits;
     },
 
     updateGrossToNetModal(data) {
@@ -205,7 +205,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         $("input[name='NET']").removeClass('o_outdated');
     },
 
-    onchangeFoldedResetInteger(advantageField) {
+    onchangeFoldedResetInteger(benefitField) {
         return true;
     },
 
@@ -226,8 +226,8 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
     },
 
     onchangeSlider(event) {
-        let advantageField = event.target.name.replace("_slider", "");;
-        $("input[name='" + advantageField + "']").val(event.target.value);
+        let benefitField = event.target.name.replace("_slider", "");;
+        $("input[name='" + benefitField + "']").val(event.target.value);
     },
 
     onchangeCountry(event) {
@@ -282,7 +282,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         return isInvalidInput;
     },
 
-    async onchangeAdvantage(event) {
+    async onchangeBenefit(event) {
         // Check that https://github.com/odoo/enterprise/commit/e4fdb4df1d0d6aa5e8880ce1b4cc289a075479fd#diff-aa5bcb2caed35c99a7bd3e018a104342 is still valid
         // Will check when the user has entered a floating value in the integer field
         if (this._isInvalidInput()) {
@@ -292,15 +292,15 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         if (event.target.type === 'number' && parseFloat(event.target.value) < 0) {
             $(event.target).val(0);
         }
-        let advantageField = event.target.name;
-        if (advantageField.includes('_slider')) {
-            advantageField = advantageField.replace("_slider", "");
-        } else if (advantageField.includes('_manual')) {
-            advantageField = advantageField.replace("_manual", "");
-        } else if (advantageField.includes('_radio')) {
-            advantageField = advantageField.replace("_radio", "");
-        } else if (advantageField.includes('select_')) {
-            advantageField = advantageField.replace("select_", "");
+        let benefitField = event.target.name;
+        if (benefitField.includes('_slider')) {
+            benefitField = benefitField.replace("_slider", "");
+        } else if (benefitField.includes('_manual')) {
+            benefitField = benefitField.replace("_manual", "");
+        } else if (benefitField.includes('_radio')) {
+            benefitField = benefitField.replace("_radio", "");
+        } else if (benefitField.includes('select_')) {
+            benefitField = benefitField.replace("select_", "");
         }
         const requested_documents = $(event.target).data('requested_documents');
         if (requested_documents) {
@@ -321,7 +321,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         let newValue;
         if (event.target.type === 'radio') {
             const target = $("input[name='" + event.target.name + "']").toArray().find(elem => elem.checked);
-            const description = $("span[name='description_" + advantageField + "']");
+            const description = $("span[name='description_" + benefitField + "']");
             $(target).hasClass('hide_description') ? description.addClass('d-none') : description.removeClass('d-none');
             newValue = $(target).data('value');
             if (newValue === 'No') {
@@ -333,45 +333,45 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
             newValue = event.target.value;
         }
 
-        const dependentAdvantages = $(event.target).data('advantage_ids-dependent');
+        const dependentBenefits = $(event.target).data('benefit_ids-dependent');
 
-        const mandatoryAdvantageSelected = Boolean(+newValue);
-        this.updateDependentAdvantages(dependentAdvantages, mandatoryAdvantageSelected);
-        await this.updateAfterChangingAdvantage(event.target.type, advantageField, newValue);
+        const mandatoryBenefitSelected = Boolean(+newValue);
+        this.updateDependentBenefits(dependentBenefits, mandatoryBenefitSelected);
+        await this.updateAfterChangingBenefit(event.target.type, benefitField, newValue);
     },
 
-    updateDependentAdvantages (dependentAdvantages, mandatoryAdvantageSelected) {
-        if (!dependentAdvantages) {
+    updateDependentBenefits (dependentBenefits, mandatoryBenefitSelected) {
+        if (!dependentBenefits) {
             return;
         }
-        dependentAdvantages.trim().split(' ').forEach(async dependentAdvantage => {
+        dependentBenefits.trim().split(' ').forEach(async dependentBenefit => {
             /*
-            Let's say the advantage X depends on A, B, C
-            If one of the mandatory advantages, A, is selected
+            Let's say the benefit X depends on A, B, C
+            If one of the mandatory benefits, A, is selected
                 check that the B and C are selected too - if yes
                     Enable X
             Else
                 disable X
             */
-            const target = $("input[name='" + dependentAdvantage + "']");
-            if (!mandatoryAdvantageSelected) { // Here we unset the dependent advantage
-                let dependentAdvantageSelected =  this.checkInputSelected(dependentAdvantage);
-                let dependentAdvantageField = dependentAdvantage;
+            const target = $("input[name='" + dependentBenefit + "']");
+            if (!mandatoryBenefitSelected) { // Here we unset the dependent benefit
+                let dependentBenefitSelected =  this.checkInputSelected(dependentBenefit);
+                let dependentBenefitField = dependentBenefit;
                 let type = target.toArray()[0].type;
-                if (dependentAdvantage.includes('select_')) {
-                    dependentAdvantageField = dependentAdvantage.replace("select_", "");
+                if (dependentBenefit.includes('select_')) {
+                    dependentBenefitField = dependentBenefit.replace("select_", "");
                     type = 'select';
-                } else if (dependentAdvantage.includes('manual')) {
+                } else if (dependentBenefit.includes('manual')) {
                     type = 'manual';
-                    dependentAdvantageField = dependentAdvantage.replace("_manual", "");
-                } else if (dependentAdvantage.includes('_slider')) {
+                    dependentBenefitField = dependentBenefit.replace("_manual", "");
+                } else if (dependentBenefit.includes('_slider')) {
                     type = 'slider';
-                    dependentAdvantageField = dependentAdvantage.replace("_slider", "");
-                } else if (dependentAdvantage.includes('_radio')) {
+                    dependentBenefitField = dependentBenefit.replace("_slider", "");
+                } else if (dependentBenefit.includes('_radio')) {
                     type = 'radio';
-                    dependentAdvantageField = dependentAdvantage.replace("_radio", "");
+                    dependentBenefitField = dependentBenefit.replace("_radio", "");
                 }
-                if (dependentAdvantageSelected) { // no need to update it if it was not selected to start with
+                if (dependentBenefitSelected) { // no need to update it if it was not selected to start with
                     let targetType = target.toArray()[0].type;
                     if (targetType === 'checkbox') {
                         target.click();
@@ -380,22 +380,22 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
                         toCheck[0].click();
                     }
                     $(target).val(0).trigger('change');
-                    await this.updateAfterChangingAdvantage(type, dependentAdvantageField, 0);
+                    await this.updateAfterChangingBenefit(type, dependentBenefitField, 0);
                 }
                 target.attr("disabled", "disabled");
                 target.parent().addClass('o_disabled');
 
-                const mandatoryAdvantagesNames = $(target).data('advantage_ids-mandatory-names').trim().split(';').filter(elem => elem != '');
-                const dep = mandatoryAdvantagesNames.shift();
-                let title = _t('In order to choose %s, first you need to choose:\n %s', dep, mandatoryAdvantagesNames.join('\n '));
+                const mandatoryBenefitsNames = $(target).data('benefit_ids-mandatory-names').trim().split(';').filter(elem => elem != '');
+                const dep = mandatoryBenefitsNames.shift();
+                let title = _t('In order to choose %s, first you need to choose:\n %s', dep, mandatoryBenefitsNames.join('\n '));
 
                 $(target).closest('div').parent().attr("title", title);
                 $(target).closest('div')[0].style.cursor = "pointer";
             } else {
-                const mandatoryAdvantages = $(target).data('advantage_ids-mandatory').trim().split(' ');
-                const allMandatorySelected = mandatoryAdvantages.every(adv => this.checkInputSelected(adv));
+                const mandatoryBenefits = $(target).data('benefit_ids-mandatory').trim().split(' ');
+                const allMandatorySelected = mandatoryBenefits.every(adv => this.checkInputSelected(adv));
                 if (allMandatorySelected) {
-                    const targets = $("input[name='" + dependentAdvantage + "']").toArray().filter(elem => elem.hasAttribute('disabled'));
+                    const targets = $("input[name='" + dependentBenefit + "']").toArray().filter(elem => elem.hasAttribute('disabled'));
                     if (targets) {
                         $(targets).removeAttr('disabled');
                         target.parent().removeClass('o_disabled');
@@ -407,8 +407,8 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         });
     },
 
-    checkInputSelected(advantage) {
-        const target = $("input[name='" + advantage + "']").toArray();
+    checkInputSelected(benefit) {
+        const target = $("input[name='" + benefit + "']").toArray();
         let type = target[0].type;
         let newValue;
         if (type === 'radio') {
@@ -421,21 +421,21 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         return Boolean(+newValue);
     },
 
-    async updateAfterChangingAdvantage(type, advantageField, newValue) {
+    async updateAfterChangingBenefit(type, benefitField, newValue) {
         if (type !== 'file') {
             const result = await this._rpc({
-                route: '/salary_package/onchange_advantage',
+                route: '/salary_package/onchange_benefit',
                 params: {
-                    'advantage_field': advantageField,
+                    'benefit_field': benefitField,
                     'new_value': newValue,
                     'contract_id': parseInt($("input[name='contract']").val()),
-                    'advantages': this.getAdvantages({includeFiles: false}),
+                    'benefits': this.getBenefits({includeFiles: false}),
                 },
             });
             if (type !== 'select') {
-                $("input[name='" + advantageField + "']").val(result.new_value);
+                $("input[name='" + benefitField + "']").val(result.new_value);
             }
-            $("span[name='description_" + advantageField + "']").html(result.description);
+            $("span[name='description_" + benefitField + "']").html(result.description);
             if (result.extra_values) {
                 result.extra_values.forEach((extra_value) => {
                     $("input[name='" + extra_value[0] + "']").val(extra_value[1]);
@@ -476,7 +476,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
                 params: {
                     'contract_id': parseInt($("input[name='contract']").val()),
                     'offer_id': parseInt($("input[name='offer_id']").val()),
-                    'advantages': self.getAdvantages({includeFiles: false}),
+                    'benefits': self.getBenefits({includeFiles: false}),
                     'simulation_working_schedule': $("select[name='simulation_working_schedule']").val(),
                 },
             }).then(data => {
@@ -614,18 +614,18 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
 
     async getFormInfo() {
         const personalDocuments = await this.getPersonalDocuments();
-        let advantages = this.getAdvantages();
-        advantages = {
-            'employee': Object.assign(advantages.employee, personalDocuments.employee),
-            'contract': Object.assign(advantages.contract, personalDocuments.contract),
-            'address': Object.assign(advantages.address, personalDocuments.address),
-            'bank_account': Object.assign(advantages.bank_account, personalDocuments.bank_account),
+        let benefits = this.getBenefits();
+        benefits = {
+            'employee': Object.assign(benefits.employee, personalDocuments.employee),
+            'contract': Object.assign(benefits.contract, personalDocuments.contract),
+            'address': Object.assign(benefits.address, personalDocuments.address),
+            'bank_account': Object.assign(benefits.bank_account, personalDocuments.bank_account),
         }
 
         return {
             'contract_id': parseInt($("input[name='contract']").val()),  /* YTI TO REMOVE*/
             'token': $("input[name='token']").val(),
-            'advantages': advantages,
+            'benefits': benefits,
             'offer_id': parseInt($("input[name='offer_id']").val()) || false,
             'original_link': $("input[name='original_link']").val()
         };

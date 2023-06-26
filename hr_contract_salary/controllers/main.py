@@ -49,7 +49,7 @@ class SignContract(Sign):
             contract.hash_token = False
             if contract.applicant_id:
                 contract.applicant_id.emp_id = contract.employee_id
-            self._create_activity_advantage(contract, 'running')
+            self._create_activity_benefit(contract, 'running')
             contract.wage_on_signature = contract.wage_with_holidays
             offer.state = "half_signed"
 
@@ -61,27 +61,27 @@ class SignContract(Sign):
                     contract.applicant_id._move_to_hired_stage()
             if contract.employee_id.work_contact_id:
                 contract.employee_id.work_contact_id.active = True
-            self._create_activity_advantage(contract, 'countersigned')
-            self._send_advantage_sign_request(contract)
+            self._create_activity_benefit(contract, 'countersigned')
+            self._send_benefit_sign_request(contract)
             offer.state = "full_signed"
 
-    def _create_activity_advantage(self, contract, contract_state):
-        advantages = request.env['hr.contract.salary.advantage'].sudo().search([
+    def _create_activity_benefit(self, contract, contract_state):
+        benefits = request.env['hr.contract.salary.benefit'].sudo().search([
             ('structure_type_id', '=', contract.structure_type_id.id),
             ('activity_type_id', '!=', False),
             ('activity_creation', '=', contract_state)])
-        for advantage in advantages:
-            field = advantage.res_field_id.name
+        for benefit in benefits:
+            field = benefit.res_field_id.name
             value = contract[field]
-            if (advantage.activity_creation_type == "onchange" and contract[field] != contract.origin_contract_id[field]) or \
-                    advantage.activity_creation_type == "always" and value:
+            if (benefit.activity_creation_type == "onchange" and contract[field] != contract.origin_contract_id[field]) or \
+                    benefit.activity_creation_type == "always" and value:
                 contract.activity_schedule(
-                    activity_type_id=advantage.activity_type_id.id,
-                    note="%s: %s" % (advantage.name or advantage.res_field_id.name, value),
-                    user_id=advantage.activity_responsible_id.id)
+                    activity_type_id=benefit.activity_type_id.id,
+                    note="%s: %s" % (benefit.name or benefit.res_field_id.name, value),
+                    user_id=benefit.activity_responsible_id.id)
 
-    def _send_advantage_sign_request(self, contract):
-        advantages = request.env['hr.contract.salary.advantage'].sudo().search([
+    def _send_benefit_sign_request(self, contract):
+        benefits = request.env['hr.contract.salary.benefit'].sudo().search([
             ('structure_type_id', '=', contract.structure_type_id.id),
             ('sign_template_id', '!=', False)])
 
@@ -89,14 +89,14 @@ class SignContract(Sign):
         SignRequestSudo = request.env['sign.request'].with_user(contract.hr_responsible_id).sudo()
 
         sent_templates = request.env['sign.template']
-        for advantage in advantages:
-            field = advantage.res_field_id.name
+        for benefit in benefits:
+            field = benefit.res_field_id.name
             value = contract[field]
-            sign_template = advantage.sign_template_id
+            sign_template = benefit.sign_template_id
             if sign_template in sent_templates:
                 continue
-            if (advantage.activity_creation_type == "onchange" and contract[field] != contract.origin_contract_id[field]) or \
-                    advantage.activity_creation_type == "always" and value:
+            if (benefit.activity_creation_type == "onchange" and contract[field] != contract.origin_contract_id[field]) or \
+                    benefit.activity_creation_type == "always" and value:
 
                 sent_templates |= sign_template
 
@@ -108,10 +108,10 @@ class SignContract(Sign):
                         Command.create({'role_id': request.env.ref('hr_contract_sign.sign_item_role_job_responsible').id,
                                         'partner_id': contract.hr_responsible_id.partner_id.id}),
                     ],
-                    'reference': _('Signature Request - %s', advantage.name or contract.name),
-                    'subject': _('Signature Request - %s', advantage.name or contract.name),
+                    'reference': _('Signature Request - %s', benefit.name or contract.name),
+                    'subject': _('Signature Request - %s', benefit.name or contract.name),
                 })
-                sign_request_sudo.message_subcribe(partner_ids=advantage.sign_copy_partner_id.ids)
+                sign_request_sudo.message_subcribe(partner_ids=benefit.sign_copy_partner_id.ids)
                 sign_request_sudo.toggle_favorited()
 
                 contract.sign_request_ids += sign_request_sudo
@@ -332,84 +332,84 @@ class HrContractSalary(http.Controller):
                 dropdown_options[personal_info.field] = values
         return mapped_personal_infos, dropdown_options, initial_values
 
-    def _get_advantages(self, contract, offer):
-        return request.env['hr.contract.salary.advantage'].sudo().search([
+    def _get_benefits(self, contract, offer):
+        return request.env['hr.contract.salary.benefit'].sudo().search([
             ('structure_type_id', '=', contract.structure_type_id.id)])
 
-    def _get_advantages_values(self, contract, offer):
+    def _get_benefits_values(self, contract, offer):
         initial_values = {}
         dropdown_options = {}
         dropdown_group_options = {}
 
-        # ADVANTAGES
-        advantages = self._get_advantages(contract, offer)
-        mapped_advantages = defaultdict(lambda: request.env['hr.contract.salary.advantage'])
-        for advantage in advantages:
-            mapped_advantages[advantage.advantage_type_id] |= advantage
-            field = advantage.field
+        # benefits
+        benefits = self._get_benefits(contract, offer)
+        mapped_benefits = defaultdict(lambda: request.env['hr.contract.salary.benefit'])
+        for benefit in benefits:
+            mapped_benefits[benefit.benefit_type_id] |= benefit
+            field = benefit.field
             initial_values[field] = contract[field]
 
-            if advantage.folded:
-                fold_field = 'fold_%s' % (advantage.field)
-                advantage_fold_field = advantage.fold_field or advantage.field
-                initial_values[fold_field] = contract[advantage_fold_field] if advantage_fold_field and advantage_fold_field in contract else 0
+            if benefit.folded:
+                fold_field = 'fold_%s' % (benefit.field)
+                benefit_fold_field = benefit.fold_field or benefit.field
+                initial_values[fold_field] = contract[benefit_fold_field] if benefit_fold_field and benefit_fold_field in contract else 0
 
-            if advantage.display_type == 'manual':
-                manual_field = '%s_manual' % (advantage.field)
-                field = advantage.manual_field or advantage.field
+            if benefit.display_type == 'manual':
+                manual_field = '%s_manual' % (benefit.field)
+                field = benefit.manual_field or benefit.field
                 initial_values[manual_field] = contract[field] if field and field in contract else 0
-            if advantage.display_type == 'text':
-                text_field = '%s_text' % (advantage.field)
-                field = advantage.manual_field or advantage.field
+            if benefit.display_type == 'text':
+                text_field = '%s_text' % (benefit.field)
+                field = benefit.manual_field or benefit.field
                 initial_values[text_field] = contract[field] if field and field in contract else ''
-            elif advantage.display_type == 'dropdown' or advantage.display_type == 'dropdown-group':
+            elif benefit.display_type == 'dropdown' or benefit.display_type == 'dropdown-group':
                 initial_values['select_%s' % field] = contract[field]
 
-        dropdown_advantages = advantages.filtered(lambda a: a.display_type == 'dropdown')
-        for dropdown_advantage in dropdown_advantages:
-            dropdown_options[dropdown_advantage.field] = \
-                [(value.value, value.value) for value in dropdown_advantage.value_ids.filtered(lambda v: v.display_type == 'line')]
-        dropdown_group_advantages = advantages.filtered(lambda a: a.display_type == 'dropdown-group')
-        for dropdown_group_advantage in dropdown_group_advantages:
+        dropdown_benefits = benefits.filtered(lambda a: a.display_type == 'dropdown')
+        for dropdown_benefit in dropdown_benefits:
+            dropdown_options[dropdown_benefit.field] = \
+                [(value.value, value.value) for value in dropdown_benefit.value_ids.filtered(lambda v: v.display_type == 'line')]
+        dropdown_group_benefits = benefits.filtered(lambda a: a.display_type == 'dropdown-group')
+        for dropdown_group_benefit in dropdown_group_benefits:
             values = OrderedDict()
             values[""] = []
             current_section = ""
-            for value in dropdown_group_advantage.value_ids:
+            for value in dropdown_group_benefit.value_ids:
                 if value.display_type == 'section':
                     current_section = value.name
                     values[current_section] = []
                 else:
                     values[current_section].append((value.value, value.value))
-            dropdown_group_options[dropdown_group_advantage.field] = values
-        advantage_types = sorted(advantages.mapped('advantage_type_id'), key=lambda x: x.sequence)
-        mapped_dependent_advantages = defaultdict(lambda: '')
-        mapped_mandatory_advantages = defaultdict(lambda: '')
-        # When the dependent advantage is disabled, on hover over we display the information
-        # regarding which (mandatory) advantages need to be selected, in order to be able to select
-        # the (dependent) advantage in question. For this purpose, here we build the string for each dependent advantage.
-        # The string starts with the display name of the dependent advantage and is followed by the display names
-        # of the mandatory advantages, separated by semicolon.
-        mapped_mandatory_advantages_names = defaultdict(lambda: '')
-        for dependent_advantage in advantages:
-            mapped_mandatory_advantages_names[dependent_advantage] = (dependent_advantage.fold_label or dependent_advantage.name) + ';'
-            if dependent_advantage.folded:
-                dependent_name = 'fold_%s' % (dependent_advantage.field)
+            dropdown_group_options[dropdown_group_benefit.field] = values
+        benefit_types = sorted(benefits.mapped('benefit_type_id'), key=lambda x: x.sequence)
+        mapped_dependent_benefits = defaultdict(lambda: '')
+        mapped_mandatory_benefits = defaultdict(lambda: '')
+        # When the dependent benefit is disabled, on hover over we display the information
+        # regarding which (mandatory) benefits need to be selected, in order to be able to select
+        # the (dependent) benefit in question. For this purpose, here we build the string for each dependent benefit.
+        # The string starts with the display name of the dependent benefit and is followed by the display names
+        # of the mandatory benefits, separated by semicolon.
+        mapped_mandatory_benefits_names = defaultdict(lambda: '')
+        for dependent_benefit in benefits:
+            mapped_mandatory_benefits_names[dependent_benefit] = (dependent_benefit.fold_label or dependent_benefit.name) + ';'
+            if dependent_benefit.folded:
+                dependent_name = 'fold_%s' % (dependent_benefit.field)
             else:
-                dependent_name = dependent_advantage.field + '_' + dependent_advantage.display_type
-            dependent_advantage_str = dependent_name + ' '
-            for mandatory_advantage in dependent_advantage.advantage_ids:
-                mapped_dependent_advantages[mandatory_advantage] += dependent_advantage_str
-                if mandatory_advantage.folded:
-                    mandatory_name = 'fold_%s' % (mandatory_advantage.field)
+                dependent_name = dependent_benefit.field + '_' + dependent_benefit.display_type
+            dependent_benefit_str = dependent_name + ' '
+            for mandatory_benefit in dependent_benefit.benefit_ids:
+                mapped_dependent_benefits[mandatory_benefit] += dependent_benefit_str
+                if mandatory_benefit.folded:
+                    mandatory_name = 'fold_%s' % (mandatory_benefit.field)
                 else:
-                    mandatory_name = mandatory_advantage.field + '_' + mandatory_advantage.display_type
-                mapped_mandatory_advantages[dependent_advantage] += mandatory_name + ' '
-                mapped_mandatory_advantages_names[dependent_advantage] += (mandatory_advantage.fold_label or mandatory_advantage.name) + ';'
-        return mapped_advantages, mapped_dependent_advantages, mapped_mandatory_advantages, mapped_mandatory_advantages_names, advantage_types, dropdown_options, dropdown_group_options, initial_values
+                    mandatory_name = mandatory_benefit.field + '_' + mandatory_benefit.display_type
+                mapped_mandatory_benefits[dependent_benefit] += mandatory_name + ' '
+                mapped_mandatory_benefits_names[dependent_benefit] += (mandatory_benefit.fold_label or mandatory_benefit.name) + ';'
+        return mapped_benefits, mapped_dependent_benefits, mapped_mandatory_benefits, mapped_mandatory_benefits_names, benefit_types, dropdown_options, dropdown_group_options, initial_values
 
     def _get_salary_package_values(self, contract, offer):
         mapped_personal_infos, dropdown_options_1, initial_values_1 = self._get_personal_infos(contract)
-        mapped_advantages, mapped_dependent_advantages, mandatory_advantages, mandatory_advantages_names, advantage_types, dropdown_options_2, dropdown_group_options, initial_values_2 = self._get_advantages_values(contract, offer)
+        mapped_benefits, mapped_dependent_benefits, mandatory_benefits, mandatory_benefits_names, benefit_types, dropdown_options_2, dropdown_group_options, initial_values_2 = self._get_benefits_values(contract, offer)
         all_initial_values = {**initial_values_1, **initial_values_2}
         all_initial_values = {key: round(value, 2) if isinstance(value, float) else value for key, value in all_initial_values.items()}
         all_dropdown_options = {**dropdown_options_1, **dropdown_options_2}
@@ -417,19 +417,19 @@ class HrContractSalary(http.Controller):
             'contract': contract,
             'states': request.env['res.country.state'].search([]),
             'countries': request.env['res.country'].search([]),
-            'advantages': mapped_advantages,
-            'dependent_advantages': mapped_dependent_advantages,
-            'mandatory_advantages': mandatory_advantages,
-            'mandatory_advantages_names': mandatory_advantages_names,
-            'advantage_types': advantage_types,
+            'benefits': mapped_benefits,
+            'dependent_benefits': mapped_dependent_benefits,
+            'mandatory_benefits': mandatory_benefits,
+            'mandatory_benefits_names': mandatory_benefits_names,
+            'benefit_types': benefit_types,
             'mapped_personal_infos': mapped_personal_infos,
             'dropdown_options': all_dropdown_options,
             'dropdown_group_options': dropdown_group_options,
             'initial_values': all_initial_values,
         }
 
-    def _get_new_contract_values(self, contract, employee, advantages, offer):
-        contract_advantages = self._get_advantages(contract, offer)
+    def _get_new_contract_values(self, contract, employee, benefits, offer):
+        contract_benefits = self._get_benefits(contract, offer)
         contract_vals = {
             'active': False,
             'name': contract.name if contract.state == 'draft' else "Package Simulation",
@@ -439,8 +439,8 @@ class HrContractSalary(http.Controller):
             'currency_id': contract.company_id.currency_id.id,
             'employee_id': employee.id,
             'structure_type_id': contract.structure_type_id.id,
-            'wage': advantages['wage'],
-            'final_yearly_costs': advantages['final_yearly_costs'],
+            'wage': benefits['wage'],
+            'final_yearly_costs': benefits['final_yearly_costs'],
             'resource_calendar_id': contract.resource_calendar_id.id,
             'default_contract_id': contract.default_contract_id.id,
             'hr_responsible_id': contract.hr_responsible_id.id,
@@ -452,20 +452,20 @@ class HrContractSalary(http.Controller):
         if 'work_entry_source' in contract:
             contract_vals['work_entry_source'] = contract.work_entry_source
 
-        for advantage in contract_advantages:
-            if not advantage.res_field_id or advantage.field not in contract:
+        for benefit in contract_benefits:
+            if not benefit.res_field_id or benefit.field not in contract:
                 continue
-            if hasattr(contract, '_get_advantage_values_%s' % (advantage.field)):
-                contract_vals.update(getattr(contract, '_get_advantage_values_%s' % (advantage.field))(contract, advantages))
+            if hasattr(contract, '_get_benefit_values_%s' % (benefit.field)):
+                contract_vals.update(getattr(contract, '_get_benefit_values_%s' % (benefit.field))(contract, benefits))
                 continue
-            if advantage.folded:
-                contract_vals[advantage.fold_field or advantage.field] = advantages['fold_%s' % (advantage.field)]
-            if advantage.display_type == 'dropdown':
-                contract_vals[advantage.field] = advantages[advantage.field]
-            if advantage.display_type in ['manual', 'text']:
-                contract_vals[advantage.manual_field or advantage.field] = advantages['%s_%s' % (advantage.field, 'manual' if advantage.display_type == 'manual' else 'text')]
+            if benefit.folded:
+                contract_vals[benefit.fold_field or benefit.field] = benefits['fold_%s' % (benefit.field)]
+            if benefit.display_type == 'dropdown':
+                contract_vals[benefit.field] = benefits[benefit.field]
+            if benefit.display_type in ['manual', 'text']:
+                contract_vals[benefit.manual_field or benefit.field] = benefits['%s_%s' % (benefit.field, 'manual' if benefit.display_type == 'manual' else 'text')]
             else:
-                contract_vals[advantage.field] = advantages[advantage.field]
+                contract_vals[benefit.field] = benefits[benefit.field]
         return contract_vals
 
     def _update_personal_info(self, employee, contract, personal_infos_values, no_name_write=False):
@@ -562,14 +562,14 @@ class HrContractSalary(http.Controller):
         if attachment_create_vals:
             request.env['ir.attachment'].sudo().create(attachment_create_vals)
 
-    def create_new_contract(self, contract, offer_id, advantages, no_write=False, **kw):
+    def create_new_contract(self, contract, offer_id, benefits, no_write=False, **kw):
         # Generate a new contract with the current modifications
         contract_diff = []
-        contract_values = advantages['contract']
+        contract_values = benefits['contract']
         personal_infos = {
-            'employee': advantages['employee'],
-            'address': advantages['address'],
-            'bank_account': advantages['bank_account'],
+            'employee': benefits['employee'],
+            'address': benefits['address'],
+            'bank_account': benefits['bank_account'],
         }
         offer = request.env['hr.contract.salary.offer'].sudo().browse(offer_id).exists()
         applicant = offer.applicant_id
@@ -655,12 +655,12 @@ class HrContractSalary(http.Controller):
         return new_contract, contract_diff
 
     @http.route('/salary_package/update_salary', type="json", auth="public")
-    def update_salary(self, contract_id=None, offer_id=None, advantages=None, **kw):
+    def update_salary(self, contract_id=None, offer_id=None, benefits=None, **kw):
         result = {}
         contract = self._check_access_rights(contract_id)
 
-        new_contract = self.create_new_contract(contract, offer_id, advantages)[0]
-        final_yearly_costs = float(advantages['contract']['final_yearly_costs'] or 0.0)
+        new_contract = self.create_new_contract(contract, offer_id, benefits)[0]
+        final_yearly_costs = float(benefits['contract']['final_yearly_costs'] or 0.0)
         new_gross = new_contract._get_gross_from_employer_costs(final_yearly_costs)
         new_contract.write({
             'wage': new_gross,
@@ -708,10 +708,10 @@ class HrContractSalary(http.Controller):
                 value = new_contract[resume_line.code] if resume_line.code in new_contract else 0
             if resume_line.value_type == 'sum':
                 resume_explanation = _('Equals to the sum of the following values:\n\n%s',
-                    '\n+ '.join(resume_line.advantage_ids.res_field_id.sudo().mapped('field_description')))
-                for advantage in resume_line.advantage_ids:
-                    if not advantage.fold_field or (advantage.fold_field and new_contract[advantage.fold_field]):
-                        field = advantage.field
+                    '\n+ '.join(resume_line.benefit_ids.res_field_id.sudo().mapped('field_description')))
+                for benefit in resume_line.benefit_ids:
+                    if not benefit.fold_field or (benefit.fold_field and new_contract[benefit.fold_field]):
+                        field = benefit.field
                         value += new_contract[field]
             if resume_line.impacts_monthly_total:
                 monthly_total += value / 12.0 if resume_line.category_id.periodicity == 'yearly' else value
@@ -724,23 +724,23 @@ class HrContractSalary(http.Controller):
             result['resume_lines_mapped'][resume_line.category_id.name][resume_line.code] = (resume_line.name, round(float(monthly_total), 2), uoms['currency'], uoms['position'], resume_explanation, resume_line.uom)
         return result
 
-    @http.route(['/salary_package/onchange_advantage'], type='json', auth='public')
-    def onchange_advantage(self, advantage_field, new_value, contract_id, advantages):
-        # Return a dictionary describing the new advantage configuration:
-        # - new_value: The advantage new_value (same by default)
-        # - description: The dynamic description corresponding to the advantage new value
+    @http.route(['/salary_package/onchange_benefit'], type='json', auth='public')
+    def onchange_benefit(self, benefit_field, new_value, contract_id, benefits):
+        # Return a dictionary describing the new benefit configuration:
+        # - new_value: The benefit new_value (same by default)
+        # - description: The dynamic description corresponding to the benefit new value
         # - extra_value: A list of tuple (input name, input value) change another input due
-        #                to the advantage new_value
+        #                to the benefit new_value
         # Override this controllers to add customize
-        # the returned value for a specific advantage
+        # the returned value for a specific benefit
         contract = self._check_access_rights(contract_id)
-        advantage = request.env['hr.contract.salary.advantage'].sudo().search([
+        benefit = request.env['hr.contract.salary.benefit'].sudo().search([
             ('structure_type_id', '=', contract.structure_type_id.id),
-            ('res_field_id.name', '=', advantage_field)])
-        if hasattr(contract, '_get_description_%s' % advantage_field):
-            description = getattr(contract, '_get_description_%s' % advantage_field)(new_value)
+            ('res_field_id.name', '=', benefit_field)])
+        if hasattr(contract, '_get_description_%s' % benefit_field):
+            description = getattr(contract, '_get_description_%s' % benefit_field)(new_value)
         else:
-            description = advantage.description
+            description = benefit.description
         return {'new_value': new_value, 'description': description, 'extra_values': False}
 
     @http.route(['/salary_package/onchange_personal_info'], type='json', auth='public')
@@ -771,13 +771,13 @@ class HrContractSalary(http.Controller):
             }
         }
         # Contract Information
-        contract_advantages = request.env['hr.contract.salary.advantage'].sudo().search([('structure_type_id', '=', contract.structure_type_id.id)])
-        contract_info = {advantage_type.name: [] for advantage_type in sorted(contract_advantages.mapped('advantage_type_id'), key=lambda x: x.sequence)}
-        for advantage in contract_advantages:
-            if advantage.folded and advantage.fold_field:
-                value = _('Yes') if contract[advantage.fold_field] else _('No')
-                contract_info[advantage.advantage_type_id.name].append((field_names['hr.contract'][advantage.fold_field], value))
-            field_name = advantage.field
+        contract_benefits = request.env['hr.contract.salary.benefit'].sudo().search([('structure_type_id', '=', contract.structure_type_id.id)])
+        contract_info = {benefit_type.name: [] for benefit_type in sorted(contract_benefits.mapped('benefit_type_id'), key=lambda x: x.sequence)}
+        for benefit in contract_benefits:
+            if benefit.folded and benefit.fold_field:
+                value = _('Yes') if contract[benefit.fold_field] else _('No')
+                contract_info[benefit.benefit_type_id.name].append((field_names['hr.contract'][benefit.fold_field], value))
+            field_name = benefit.field
             if not field_name or field_name not in contract:
                 continue
             field_value = contract[field_name]
@@ -785,7 +785,7 @@ class HrContractSalary(http.Controller):
                 field_value = field_value.name
             elif isinstance(field_value, float):
                 field_value = round(field_value, 2)
-            contract_info[advantage.advantage_type_id.name].append((field_names['hr.contract'][field_name], field_value))
+            contract_info[benefit.benefit_type_id.name].append((field_names['hr.contract'][field_name], field_value))
         # Add wage information
         contract_info[_('Wage')] = [
             (_('Monthly Gross Salary'), contract.wage_with_holidays),
@@ -836,7 +836,7 @@ class HrContractSalary(http.Controller):
             new_contract_id)
 
     @http.route(['/salary_package/submit'], type='json', auth='public')
-    def submit(self, contract_id=None, offer_id=None, advantages=None, **kw):
+    def submit(self, contract_id=None, offer_id=None, benefits=None, **kw):
         offer = request.env['hr.contract.salary.offer'].sudo().browse(offer_id).exists()
         if not offer.applicant_id and not offer.employee_contract_id:
             raise UserError(_('This link is invalid. Please contact the HR Responsible to get a new one...'))
@@ -847,7 +847,7 @@ class HrContractSalary(http.Controller):
             if contract.employee_id.user_id == request.env.user:
                 kw['employee'] = contract.employee_id
         kw['package_submit'] = True
-        new_contract = self.create_new_contract(contract, offer_id, advantages, no_write=True, **kw)
+        new_contract = self.create_new_contract(contract, offer_id, benefits, no_write=True, **kw)
 
         if isinstance(new_contract, dict) and new_contract.get('error'):
             return new_contract

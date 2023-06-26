@@ -6,7 +6,7 @@
             <select
                 t-if="part_time"
                 name="simulation_working_schedule"
-                class="form-control advantage_input"
+                class="form-control benefit_input"
                 required="1">
                 <option value="100" selected="1">Full Time</option>
                 <option value="90">9/10</option>

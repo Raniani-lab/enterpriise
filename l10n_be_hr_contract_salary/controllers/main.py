@@ -83,67 +83,67 @@ class HrContractSalary(main.HrContractSalary):
         return super().salary_package(offer_id, **kw)
 
     @route()
-    def onchange_advantage(self, advantage_field, new_value, contract_id, advantages):
-        res = super().onchange_advantage(advantage_field, new_value, contract_id, advantages)
+    def onchange_benefit(self, benefit_field, new_value, contract_id, benefits):
+        res = super().onchange_benefit(benefit_field, new_value, contract_id, benefits)
         insurance_fields = [
             'insured_relative_children', 'insured_relative_adults',
             'fold_insured_relative_spouse', 'has_hospital_insurance']
         ambulatory_insurance_fields = [
             'l10n_be_ambulatory_insured_children', 'l10n_be_ambulatory_insured_adults',
             'fold_l10n_be_ambulatory_insured_spouse', 'l10n_be_has_ambulatory_insurance']
-        if advantage_field == "km_home_work":
+        if benefit_field == "km_home_work":
             new_value = new_value if new_value else 0
             res['extra_values'] = [
                 ('private_car_reimbursed_amount_manual', new_value),
                 ('l10n_be_bicyle_cost_manual', new_value),
-                ('l10n_be_bicyle_cost', round(request.env['hr.contract']._get_private_bicycle_cost(float(new_value)), 2) if advantages['contract']['fold_l10n_be_bicyle_cost'] else 0),
-                ('private_car_reimbursed_amount', round(request.env['hr.contract']._get_private_car_reimbursed_amount(float(new_value)), 2)  if advantages['contract']['fold_private_car_reimbursed_amount'] else 0),
+                ('l10n_be_bicyle_cost', round(request.env['hr.contract']._get_private_bicycle_cost(float(new_value)), 2) if benefits['contract']['fold_l10n_be_bicyle_cost'] else 0),
+                ('private_car_reimbursed_amount', round(request.env['hr.contract']._get_private_car_reimbursed_amount(float(new_value)), 2)  if benefits['contract']['fold_private_car_reimbursed_amount'] else 0),
             ]
-        if advantage_field == 'public_transport_reimbursed_amount':
+        if benefit_field == 'public_transport_reimbursed_amount':
             new_value = new_value if new_value else 0
             res['new_value'] = round(request.env['hr.contract']._get_public_transport_reimbursed_amount(float(new_value)), 2)
-        elif advantage_field == 'train_transport_reimbursed_amount':
+        elif benefit_field == 'train_transport_reimbursed_amount':
             new_value = new_value if new_value else 0
             res['new_value'] = round(request.env['hr.contract']._get_train_transport_reimbursed_amount(float(new_value)), 2)
-        elif advantage_field == 'private_car_reimbursed_amount':
+        elif benefit_field == 'private_car_reimbursed_amount':
             new_value = new_value if new_value else 0
             res['new_value'] = round(request.env['hr.contract']._get_private_car_reimbursed_amount(float(new_value)), 2)
             res['extra_values'] = [
                 ('km_home_work', new_value),
                 ('l10n_be_bicyle_cost_manual', new_value),
-                ('l10n_be_bicyle_cost', round(request.env['hr.contract']._get_private_bicycle_cost(float(new_value)), 2) if advantages['contract']['fold_l10n_be_bicyle_cost'] else 0),
+                ('l10n_be_bicyle_cost', round(request.env['hr.contract']._get_private_bicycle_cost(float(new_value)), 2) if benefits['contract']['fold_l10n_be_bicyle_cost'] else 0),
             ]
-        elif advantage_field == 'ip_value':
+        elif benefit_field == 'ip_value':
             contract = self._check_access_rights(contract_id)
             res['new_value'] = contract.ip_wage_rate if float(new_value) else 0
-        elif advantage_field in ['company_car_total_depreciated_cost', 'company_bike_depreciated_cost'] and new_value:
+        elif benefit_field in ['company_car_total_depreciated_cost', 'company_bike_depreciated_cost'] and new_value:
             car_options, vehicle_id = new_value.split('-')
             contract = self._check_access_rights(contract_id)
             if car_options == 'new':
                 res['new_value'] = round(request.env['fleet.vehicle.model'].sudo().with_company(contract.company_id).browse(int(vehicle_id)).default_total_depreciated_cost, 2)
             else:
                 res['new_value'] = round(request.env['fleet.vehicle'].sudo().with_company(contract.company_id).browse(int(vehicle_id)).total_depreciated_cost, 2)
-        elif advantage_field == 'wishlist_car_total_depreciated_cost':
+        elif benefit_field == 'wishlist_car_total_depreciated_cost':
             res['new_value'] = 0
-        elif advantage_field == 'fold_company_car_total_depreciated_cost' and not res['new_value']:
+        elif benefit_field == 'fold_company_car_total_depreciated_cost' and not res['new_value']:
             res['extra_values'] = [('company_car_total_depreciated_cost', 0)]
-        elif advantage_field == 'fold_wishlist_car_total_depreciated_cost' and not res['new_value']:
+        elif benefit_field == 'fold_wishlist_car_total_depreciated_cost' and not res['new_value']:
             res['extra_values'] = [('wishlist_car_total_depreciated_cost', 0)]
-        elif advantage_field == 'fold_company_bike_depreciated_cost' and not res['new_value']:
+        elif benefit_field == 'fold_company_bike_depreciated_cost' and not res['new_value']:
             res['extra_values'] = [('company_bike_depreciated_cost', 0)]
-        elif advantage_field in insurance_fields:
+        elif benefit_field in insurance_fields:
             child_amount = float(request.env['ir.config_parameter'].sudo().get_param('hr_contract_salary.hospital_insurance_amount_child', default=7.2))
             adult_amount = float(request.env['ir.config_parameter'].sudo().get_param('hr_contract_salary.hospital_insurance_amount_adult', default=20.5))
-            adv = advantages['contract']
+            adv = benefits['contract']
             child_count = int(adv['insured_relative_children_manual'] or False)
             has_hospital_insurance = float(adv['has_hospital_insurance_radio']) == 1.0 if 'has_hospital_insurance_radio' in adv else False
             adult_count = int(adv['insured_relative_adults_manual'] or False) + int(adv['fold_insured_relative_spouse']) + int(has_hospital_insurance)
             insurance_amount = request.env['hr.contract']._get_insurance_amount(child_amount, child_count, adult_amount, adult_count)
             res['extra_values'] = [('has_hospital_insurance', insurance_amount)]
-        if advantage_field in ambulatory_insurance_fields:
+        if benefit_field in ambulatory_insurance_fields:
             child_amount = float(request.env['ir.config_parameter'].sudo().get_param('hr_contract_salary.ambulatory_insurance_amount_child', default=7.2))
             adult_amount = float(request.env['ir.config_parameter'].sudo().get_param('hr_contract_salary.ambulatory_insurance_amount_adult', default=20.5))
-            adv = advantages['contract']
+            adv = benefits['contract']
             child_count = int(adv['l10n_be_ambulatory_insured_children_manual'] or False)
             l10n_be_has_ambulatory_insurance = float(adv['l10n_be_has_ambulatory_insurance_radio']) == 1.0 if 'l10n_be_has_ambulatory_insurance_radio' in adv else False
             adult_count = int(adv['l10n_be_ambulatory_insured_adults_manual'] or False) \
@@ -153,20 +153,20 @@ class HrContractSalary(main.HrContractSalary):
                 child_amount, child_count,
                 adult_amount, adult_count)
             res['extra_values'] = [('l10n_be_has_ambulatory_insurance', insurance_amount)]
-        if advantage_field == 'l10n_be_bicyle_cost':
+        if benefit_field == 'l10n_be_bicyle_cost':
             new_value = new_value if new_value else 0
             res['new_value'] = round(request.env['hr.contract']._get_private_bicycle_cost(float(new_value)), 2)
             res['extra_values'] = [
                 ('km_home_work', new_value),
                 ('private_car_reimbursed_amount_manual', new_value),
-                ('private_car_reimbursed_amount', round(request.env['hr.contract']._get_private_car_reimbursed_amount(float(new_value)), 2)  if advantages['contract']['fold_private_car_reimbursed_amount'] else 0),
+                ('private_car_reimbursed_amount', round(request.env['hr.contract']._get_private_car_reimbursed_amount(float(new_value)), 2)  if benefits['contract']['fold_private_car_reimbursed_amount'] else 0),
             ]
-        if advantage_field == 'fold_l10n_be_bicyle_cost':
-            distance = advantages['employee']['km_home_work'] or '0'
-            res['extra_values'] = [('l10n_be_bicyle_cost', round(request.env['hr.contract']._get_private_bicycle_cost(float(distance)), 2) if advantages['contract']['fold_l10n_be_bicyle_cost'] else 0)]
-        if advantage_field == 'fold_private_car_reimbursed_amount':
-            distance = advantages['employee']['km_home_work'] or '0'
-            res['extra_values'] = [('private_car_reimbursed_amount', round(request.env['hr.contract']._get_private_car_reimbursed_amount(float(distance)), 2)  if advantages['contract']['fold_private_car_reimbursed_amount'] else 0)]
+        if benefit_field == 'fold_l10n_be_bicyle_cost':
+            distance = benefits['employee']['km_home_work'] or '0'
+            res['extra_values'] = [('l10n_be_bicyle_cost', round(request.env['hr.contract']._get_private_bicycle_cost(float(distance)), 2) if benefits['contract']['fold_l10n_be_bicyle_cost'] else 0)]
+        if benefit_field == 'fold_private_car_reimbursed_amount':
+            distance = benefits['employee']['km_home_work'] or '0'
+            res['extra_values'] = [('private_car_reimbursed_amount', round(request.env['hr.contract']._get_private_car_reimbursed_amount(float(distance)), 2)  if benefits['contract']['fold_private_car_reimbursed_amount'] else 0)]
         return res
 
     def _get_default_template_values(self, contract, offer):
@@ -175,15 +175,15 @@ class HrContractSalary(main.HrContractSalary):
         values['contract_type_id'] = offer.contract_type_id.id
         return values
 
-    def _get_advantages(self, contract, offer):
-        res = super()._get_advantages(contract, offer)
+    def _get_benefits(self, contract, offer):
+        res = super()._get_benefits(contract, offer)
         force_new_car = offer.new_car
         if offer.applicant_id or force_new_car or contract.available_cars_amount < contract.max_unused_cars:
             res -= request.env.ref('l10n_be_hr_contract_salary.l10n_be_transport_new_car')
         return res
 
-    def _get_advantages_values(self, contract, offer):
-        mapped_advantages, mapped_dependent_advantages, mandatory_advantages, mandatory_advantages_names, advantage_types, dropdown_options, dropdown_group_options, initial_values = super()._get_advantages_values(contract, offer)
+    def _get_benefits_values(self, contract, offer):
+        mapped_benefits, mapped_dependent_benefits, mandatory_benefits, mandatory_benefits_names, benefit_types, dropdown_options, dropdown_group_options, initial_values = super()._get_benefits_values(contract, offer)
 
         available_cars = request.env['fleet.vehicle'].sudo().with_company(contract.company_id).search(
             contract._get_available_vehicles_domain(contract.employee_id.work_contact_id)).sorted(key=lambda car: car.total_depreciated_cost)
@@ -280,14 +280,14 @@ class HrContractSalary(main.HrContractSalary):
                 ) for model in can_be_requested_models])
             return result
 
-        advantages = self._get_advantages(contract, offer)
-        car_advantage = advantages.filtered(
+        benefits = self._get_benefits(contract, offer)
+        car_benefit = benefits.filtered(
             lambda a: a.res_field_id.name == 'company_car_total_depreciated_cost'
         )
-        bike_advantage = advantages.filtered(
+        bike_benefit = benefits.filtered(
             lambda a: a.res_field_id.name == 'company_bike_depreciated_cost'
         )
-        wishlist_car_advantage = advantages.filtered(
+        wishlist_car_benefit = benefits.filtered(
             lambda a: a.res_field_id.name == 'wishlist_car_total_depreciated_cost'
         )
 
@@ -303,7 +303,7 @@ class HrContractSalary(main.HrContractSalary):
         else:
             wishlist_new_cars = True
 
-        if car_advantage.display_type == 'dropdown-group':
+        if car_benefit.display_type == 'dropdown-group':
             dropdown_group_options['company_car_total_depreciated_cost'] = \
                 generate_dropdown_group_data(available_cars, can_be_requested_models, False, allow_new_cars)
         else:
@@ -311,7 +311,7 @@ class HrContractSalary(main.HrContractSalary):
                 generate_dropdown_data(available_cars, can_be_requested_models, False, allow_new_cars)
 
         if wishlist_new_cars:
-            if wishlist_car_advantage.display_type == 'dropdown-group':
+            if wishlist_car_benefit.display_type == 'dropdown-group':
                 dropdown_group_options['wishlist_car_total_depreciated_cost'] = \
                     generate_dropdown_group_data(available_cars, can_be_requested_models, True, True)
             else:
@@ -323,7 +323,7 @@ class HrContractSalary(main.HrContractSalary):
         # Bike stuff
         can_be_requested_models = request.env['fleet.vehicle.model'].sudo().with_company(contract.company_id).search(
         contract._get_possible_model_domain(vehicle_type='bike')).sorted(key=lambda model: model.default_total_depreciated_cost)
-        if bike_advantage.display_type == 'dropdown-group':
+        if bike_benefit.display_type == 'dropdown-group':
             dropdown_group_options['company_bike_depreciated_cost'] = \
                 generate_dropdown_group_data(available_bikes, can_be_requested_models, False, True, 'Bike')
         else:
@@ -352,10 +352,10 @@ class HrContractSalary(main.HrContractSalary):
         initial_values['has_hospital_insurance'] = contract.insurance_amount
         initial_values['l10n_be_has_ambulatory_insurance'] = contract.l10n_be_ambulatory_insurance_amount
 
-        return mapped_advantages, mapped_dependent_advantages, mandatory_advantages, mandatory_advantages_names, advantage_types, dropdown_options, dropdown_group_options, initial_values
+        return mapped_benefits, mapped_dependent_benefits, mandatory_benefits, mandatory_benefits_names, benefit_types, dropdown_options, dropdown_group_options, initial_values
 
-    def _get_new_contract_values(self, contract, employee, advantages, offer):
-        res = super()._get_new_contract_values(contract, employee, advantages, offer)
+    def _get_new_contract_values(self, contract, employee, benefits, offer):
+        res = super()._get_new_contract_values(contract, employee, benefits, offer)
         fields_to_copy = [
             'has_laptop', 'time_credit', 'work_time_rate',
             'rd_percentage', 'no_onss', 'no_withholding_taxes'
@@ -367,15 +367,15 @@ class HrContractSalary(main.HrContractSalary):
         for field_id_to_copy in field_ids_to_copy:
             if field_id_to_copy in contract:
                 res[field_id_to_copy] = contract[field_id_to_copy].id
-        res['has_hospital_insurance'] = float(advantages['has_hospital_insurance_radio']) == 1.0 if 'has_hospital_insurance_radio' in advantages else False
-        res['l10n_be_has_ambulatory_insurance'] = float(advantages['l10n_be_has_ambulatory_insurance_radio']) == 1.0 if 'l10n_be_has_ambulatory_insurance_radio' in advantages else False
-        res['l10n_be_canteen_cost'] = advantages['l10n_be_canteen_cost'] if 'l10n_be_canteen_cost' in advantages else False
-        res['ip'] = bool(advantages['ip_value_radio']) if 'ip_value_radio' in advantages else False
-        res['ip_wage_rate'] = advantages['ip_value'] if 'ip_value' in advantages else 0
+        res['has_hospital_insurance'] = float(benefits['has_hospital_insurance_radio']) == 1.0 if 'has_hospital_insurance_radio' in benefits else False
+        res['l10n_be_has_ambulatory_insurance'] = float(benefits['l10n_be_has_ambulatory_insurance_radio']) == 1.0 if 'l10n_be_has_ambulatory_insurance_radio' in benefits else False
+        res['l10n_be_canteen_cost'] = benefits['l10n_be_canteen_cost'] if 'l10n_be_canteen_cost' in benefits else False
+        res['ip'] = bool(benefits['ip_value_radio']) if 'ip_value_radio' in benefits else False
+        res['ip_wage_rate'] = benefits['ip_value'] if 'ip_value' in benefits else 0
         return res
 
-    def create_new_contract(self, contract, offer_id, advantages, no_write=False, **kw):
-        new_contract, contract_diff = super().create_new_contract(contract, offer_id, advantages, no_write=no_write, **kw)
+    def create_new_contract(self, contract, offer_id, benefits, no_write=False, **kw):
+        new_contract, contract_diff = super().create_new_contract(contract, offer_id, benefits, no_write=no_write, **kw)
         offer = request.env['hr.contract.salary.offer'].sudo().browse(offer_id).exists()
         if new_contract.time_credit:
             new_contract.date_end = contract.date_end
@@ -391,9 +391,9 @@ class HrContractSalary(main.HrContractSalary):
                     return {'error': True, 'error_msg': _("Sorry, the selected car has been selected by someone else. Please refresh and try again.")}
 
             # Don't create simulation cars but create the wishlist car is set
-            wishlist_car = advantages['contract'].get('fold_wishlist_car_total_depreciated_cost', False)
+            wishlist_car = benefits['contract'].get('fold_wishlist_car_total_depreciated_cost', False)
             if wishlist_car:
-                dummy, model_id = advantages['contract']['select_wishlist_car_total_depreciated_cost'].split('-')
+                dummy, model_id = benefits['contract']['select_wishlist_car_total_depreciated_cost'].split('-')
                 model = request.env['fleet.vehicle.model'].sudo().with_company(new_contract.company_id).browse(int(model_id))
                 state_waiting_list = request.env.ref('fleet.fleet_vehicle_state_waiting_list', raise_if_not_found=False)
                 car = request.env['fleet.vehicle'].sudo().create({

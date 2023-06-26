@@ -47,16 +47,6 @@
         <field name="struct_id" ref="l10n_in_hr_payroll.structure_with_pf"/>
     </record>
 
-    <record id="hr_salary_rule_pf_with_pf" model="hr.salary.rule">
-        <field name="code">PF</field>
-        <field name="name">Provident fund - Employee</field>
-        <field name="category_id" ref="hr_payroll.DED"/>
-        <field name="sequence" eval="107"/>
-        <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = - categories.BASIC * 0.12</field>
-        <field name="struct_id" ref="l10n_in_hr_payroll.structure_with_pf"/>
-    </record>
-
     <record id="hr_salary_rule_spl_with_pf" model="hr.salary.rule">
         <field name="code">SPL</field>
         <field name="name">Supplementary Allowance</field>
@@ -129,7 +119,11 @@ else:
         <field name="category_id" ref="hr_payroll.DED"/>
         <field name="sequence" eval="107"/>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = - categories.BASIC * 0.12</field>
+        <field name="amount_python_compute">
+total_days = sum(payslip.worked_days_line_ids.mapped('number_of_days'))
+total_worked_days = total_days - (worked_days.LEAVE90 and worked_days.LEAVE90.number_of_days)
+result = - categories.BASIC * 0.12 if  ((categories.BASIC) &lt; 15000) else -(1800/total_days) * total_worked_days
+        </field>
         <field name="struct_id" ref="l10n_in_hr_payroll.structure_with_pf"/>
     </record>
 
@@ -139,7 +133,11 @@ else:
         <field name="category_id" ref="hr_payroll.DED"/>
         <field name="sequence" eval="110"/>
         <field name="amount_select">code</field>
-        <field name="amount_python_compute">result = - categories.BASIC * 0.12</field>
+         <field name="amount_python_compute">
+total_days = sum(payslip.worked_days_line_ids.mapped('number_of_days'))
+total_worked_days = total_days - (worked_days.LEAVE90 and worked_days.LEAVE90.number_of_days)
+result = - categories.BASIC * 0.12 if  ((categories.BASIC) &lt; 15000) else -(1800/total_days) * total_worked_days
+        </field>
         <field name="struct_id" ref="l10n_in_hr_payroll.structure_with_pf"/>
     </record>
 

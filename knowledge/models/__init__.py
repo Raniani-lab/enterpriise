@@ -8,6 +8,5 @@ from . import knowledge_article_template_category
 from . import knowledge_article
 from . import knowledge_article_stage
 from . import knowledge_cover
-from . import ir_ui_view
 from . import res_partner
 from . import res_users

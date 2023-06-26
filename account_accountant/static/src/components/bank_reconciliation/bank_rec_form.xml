@@ -600,6 +600,18 @@
         </div>
     </t>
 
+    <!-- Notebook - transaction_details_tab -->
+    <t t-name="account_accountant.BankRecRecordNotebookTransactionDetails" owl="1">
+        <div class="bank_rec_widget_form_transaction_details_anchor o_group row align-items-start">
+            <div class="o_wrap_field d-flex d-sm-contents flex-column mb-3 mb-sm-0">
+                <div class="o_cell o_wrap_label flex-grow-1 flex-sm-grow-0 w-100 text-break text-900">
+                    <label class="o_form_label">Notes</label>
+                </div>
+                <span t-out="data.st_line_narration"/>
+            </div>
+        </div>
+    </t>
+
     <!-- Main template -->
     <t t-name="account_accountant.BankRecRecordForm" owl="1">
         <div class="o_xxl_form_view h-100 o_view_controller o_form_view">
@@ -639,6 +651,12 @@
                                title="'Discuss'"
                                isVisible="true">
                                 <t t-call="account_accountant.BankRecRecordNotebookChatter"/>
+                            </t>
+                            <t t-set-slot="transaction_details_tab"
+                               name="'transaction_details_tab'"
+                               title="'Transaction Details'"
+                               isVisible="data.state == 'reconciled' and data.st_line_narration and data.st_line_narration != ''">
+                                <t t-call="account_accountant.BankRecRecordNotebookTransactionDetails"/>
                             </t>
                         </BankRecNotebook>
 

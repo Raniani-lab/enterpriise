@@ -334,6 +334,7 @@ class ApprovalApprover(models.Model):
     required = fields.Boolean(default=False, readonly=True)
     category_approver = fields.Boolean(compute='_compute_category_approver')
     can_edit = fields.Boolean(compute='_compute_can_edit')
+    can_edit_user_id = fields.Boolean(compute='_compute_can_edit', help="Simple users should not be able to remove themselves as approvers because they will lose access to the record if they misclick.")
 
     def action_approve(self):
         self.request_id.action_approve(self)
@@ -365,3 +366,4 @@ class ApprovalApprover(models.Model):
         is_user = self.env.user.has_group('approvals.group_approval_user')
         for approval in self:
             approval.can_edit = not approval.user_id or not approval.category_approver or is_user
+            approval.can_edit_user_id = is_user or approval.request_id.request_owner_id == self.env.user

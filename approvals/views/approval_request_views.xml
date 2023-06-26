@@ -172,7 +172,8 @@
                                     <field name="existing_request_user_ids" column_invisible="True"/>
                                     <field name="sequence" column_invisible="True"/>
                                     <field name="can_edit" column_invisible="True"/>
-                                    <field name="user_id" string="Approver" readonly="not can_edit or status != 'new'" force_save="1" />
+                                    <field name="can_edit_user_id" column_invisible="True"/>
+                                    <field name="user_id" string="Approver" readonly="not can_edit_user_id or status != 'new'" force_save="1" />
                                     <field name="required" readonly="not can_edit" force_save="1"/>
                                     <field name="status"/>
                                     <field name="company_id" column_invisible="True"/>

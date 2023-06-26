@@ -22,6 +22,7 @@ class DocumentShare(models.Model):
 
     access_token = fields.Char(required=True, default=lambda x: str(uuid.uuid4()), groups="documents.group_documents_user")
     full_url = fields.Char(string="URL", compute='_compute_full_url')
+    links_count = fields.Integer(string="Number of Links", compute='_compute_links_count')
     date_deadline = fields.Date(string="Valid Until")
     state = fields.Selection([
         ('live', "Live"),
@@ -187,6 +188,19 @@ class DocumentShare(models.Model):
     def _compute_full_url(self):
         for record in self:
             record.full_url = "%s/document/share/%s/%s" % (record.get_base_url(), record.id, record.access_token)
+
+    @api.depends('type', 'document_ids', 'domain')
+    def _compute_links_count(self):
+        domains = [record._get_documents_domain()[0] for record in self if record.type == "domain"]
+        documents_from_domain = self.env['documents.document'].search(expression.OR(domains))
+
+        for record in self:
+            documents = []
+            if record.type == "ids":
+                documents = record.document_ids
+            elif record.type == "domain":
+                documents = documents_from_domain.filtered_domain(record._get_documents_domain()[0])
+            record.links_count = sum(1 for document in documents if document.type == 'url')
 
     def _inverse_action(self):
         # Prevent the alias from existing if the option is removed

@@ -8,6 +8,7 @@ import { useSetupView } from "@web/views/view_hook";
 import { PdfManager } from "@documents/owl/components/pdf_manager/pdf_manager";
 import { x2ManyCommands } from "@web/core/orm_service";
 import { ShareFormViewDialog } from "@documents/views/helper/share_form_view_dialog";
+import { get_link_proportion } from 'documents.utils';
 
 const { EventBus, onWillStart, markup, reactive, useComponent, useEnv, useRef, useSubEnv } = owl;
 
@@ -142,15 +143,24 @@ export function useDocumentView(helpers) {
             });
         },
         onClickShareDomain: async () => {
+            const resIds = await env.model.root.getResIds(true);
             const defaultVals = {
                 domain: env.searchModel.domain,
                 folder_id: env.searchModel.getSelectedFolderId(),
                 tag_ids: [x2ManyCommands.replaceWith(env.searchModel.getSelectedTagIds())],
                 type: env.model.root.selection.length ? "ids" : "domain",
                 document_ids: env.model.root.selection.length
-                    ? [x2ManyCommands.replaceWith(await env.model.root.getResIds(true))]
+                    ? [x2ManyCommands.replaceWith(resIds)]
                     : false,
             };
+            const linkProportion = await get_link_proportion(orm, resIds ? resIds : false, defaultVals.domain);
+            if (linkProportion == 'all') {
+                notification.add(
+                    env._t("Links cannot be shared."),
+                    { type: "danger", },
+                );
+                return;
+            }
             const vals = helpers?.sharePopupAction ? await helpers.sharePopupAction(defaultVals) : defaultVals;
             const act = await orm.call("documents.share", "open_share_popup", [vals]);
             const shareResId = act.res_id;

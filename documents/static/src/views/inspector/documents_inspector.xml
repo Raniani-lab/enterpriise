@@ -55,11 +55,18 @@
                              t-att-title="record.data.name"/>
                     </t>
                 </t>
-                <div t-elif="record.data.url"
-                     class="o_image o_mimetype_icon"
-                     t-attf-data-mimetype="{{mimetype}}"
-                     t-on-click.stop.prevent="() => this.openPreview(record)"
-                     t-att-title="record.data.name"/>
+                <t t-elif="record.data.url and record.data.url_preview_image">
+                    <a target="new" t-att-href="record.data.url">
+                        <img t-att-src="record.data.url_preview_image"
+                            t-att-title="record.data.name"
+                            t-att-href="record.data.url"
+                            class="o_documents_inspector_image o_preview_available o_object_fit_contain"/>
+                    </a>
+                </t>
+                <div t-elif="record.data.url" class="o_image o_mimetype_icon"
+                    t-att-data-mimetype="mimetype"
+                    t-on-click.stop.prevent="() => this.openPreview(record)"
+                    t-att-title="record.data.name"/>
                 <div t-elif="record.data.type === 'empty'"
                      class="o_inspector_request_icon fa fa-upload fa-5x"
                      t-att-title="record.data.name"

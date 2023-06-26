@@ -126,6 +126,9 @@ export class PlanningControllerActions {
                 this.autoPlanSuccessNotification(),
                 { type: "success" }
             );
+            if (this.env.searchModel.highlightPlannedIds) {
+                this.toggleHighlightPlannedFilter(this.env.searchModel.highlightPlannedIds);
+            }
             this.toggleHighlightPlannedFilter(highlightPlannedIds);
         }
     }

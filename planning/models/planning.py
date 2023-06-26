@@ -974,7 +974,7 @@ class Planning(models.Model):
                 [('resource_id', '=', False)],
             ]),
             [],
-            ['id:recordset', 'start_datetime:min', 'end_datetime:min'],
+            ['id:recordset', 'start_datetime:min', 'end_datetime:max'],
         )[0]
         if not open_shifts:
             return []

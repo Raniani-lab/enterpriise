@@ -665,6 +665,51 @@ QUnit.module("Views", (hooks) => {
         ]);
     });
 
+    QUnit.test("groupBy doesn't change the scale", async function (assert) {
+        patchDate(2017, 0, 25, 0, 0, 0);
+        await makeView({
+            type: "grid",
+            resModel: "analytic.line",
+            serverData,
+            arch: `<grid>
+                    <field name="project_id" type="row" section="1"/>
+                    <field name="task_id" type="row"/>
+                    <field name="date" type="col">
+                        <range name="week" string="Week" span="week" step="day"/>
+                        <range name="month" string="Month" span="month" step="day"/>
+                    </field>
+                    <field name="unit_amount" type="measure" widget="float_time"/>
+                </grid>`,
+            searchViewArch: `
+                    <search>
+                        <filter string="Task" name="groupby_task" domain="[]" context="{'group_by': 'task_id'}"/>
+                    </search>
+                `,
+            async mockRPC(route, args) {
+                if (args.method === "grid_unavailability") {
+                    return {};
+                }
+            },
+        });
+
+        await click(target, ".scale_button_selection");
+        await click(target, ".o_view_scale_selector .o_scale_button_month");
+        assert.strictEqual(
+            target.querySelector(".o_view_scale_selector button.scale_button_selection")
+                .textContent,
+            "Month",
+            "The active range should be Month"
+        );
+        await toggleSearchBarMenu(target)
+        await click(target, "div.o_group_by_menu > span.o_menu_item");
+        assert.strictEqual(
+            target.querySelector(".o_view_scale_selector button.scale_button_selection")
+                .textContent,
+            "Month",
+            "The active range should still be Month"
+        );
+    });
+
     QUnit.test("groupBy with column field should not be supported", async function (assert) {
         patchDate(2017, 0, 25, 0, 0, 0);
         const grid = await makeView({

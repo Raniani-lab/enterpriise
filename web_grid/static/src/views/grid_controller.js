@@ -75,11 +75,9 @@ export class GridController extends Component {
     }
 
     onWillUpdateProps(nextProps) {
-        let activeRangeName = nextProps.archInfo.activeRangeName;
         if ("grid_range" in nextProps.context) {
-            activeRangeName = nextProps.context.grid_range;
+            this.state.activeRangeName = nextProps.context.grid_range;
         }
-        this.state.activeRangeName = activeRangeName;
     }
 
     get isMobile() {

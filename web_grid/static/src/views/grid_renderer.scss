@@ -74,6 +74,10 @@
                 background: $o-white;
             }
 
+            &:not(.o_grid_row_even) {
+                @extend .bg-light;
+            }
+
             .o_grid_column_title {
                 &:not(.o_grid_row_even) {
                     background: $light;

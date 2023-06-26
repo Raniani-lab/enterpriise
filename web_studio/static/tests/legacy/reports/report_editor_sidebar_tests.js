@@ -1,7 +1,5 @@
 /** @odoo-module **/
 
-import { nextTick } from "@web/../tests/helpers/utils";
-
 import testUtils from "web.test_utils";
 
 import studioTestUtils from "web_studio.testUtils";
@@ -179,7 +177,7 @@ QUnit.module('Studio', {}, function () {
         });
 
         QUnit.test("'Options' tab with multiple nodes", async function (assert) {
-            assert.expect(9);
+            assert.expect(13);
 
             var node1 = {
                 node: {
@@ -222,27 +220,50 @@ QUnit.module('Studio', {}, function () {
 
             // expand the first node
             // BS4 collapsing is asynchronous
-            await new Promise((resolve) => {
-                $(document.body).one("hidden.bs.collapse", () => {
+            let shownProm = new Promise(resolve => {
+                $(document.body).one("shown.bs.collapse", (ev) => {
+                    const label = ev.target.getAttribute("aria-labelledby");
+                    assert.strictEqual(document.body.querySelector(`#${label}`).textContent.trim(), "div")
                     resolve();
                 });
-                testUtils.dom.click(sidebar.$('.o_web_studio_sidebar_content .o_web_studio_accordion > .card:first [data-bs-toggle="collapse"]:first'));
-            })
+            });
+
+            let hiddenProm = new Promise((resolve) => {
+                $(document.body).one("hidden.bs.collapse", (ev) => {
+                    const label = ev.target.getAttribute("aria-labelledby");
+                    assert.strictEqual(document.body.querySelector(`#${label}`).textContent.trim(), "span")
+                    resolve();
+                });
+            });
+
+            testUtils.dom.click(sidebar.$('.o_web_studio_sidebar_content .o_web_studio_accordion > .card:first [data-bs-toggle="collapse"]:first'));
+            await Promise.all([shownProm, hiddenProm]);
             // await end of transitions: https://getbootstrap.com/docs/5.0/components/collapse/#example
-            await nextTick()
             assert.doesNotHaveClass(sidebar.$('.o_web_studio_sidebar_content .card:has(.o_text:contains(span)) .collapse:first'), 'show',
                 "the 'span' node should have been closed");
             assert.hasClass(sidebar.$('.o_web_studio_sidebar_content .card:has(.o_text:contains(div)) .collapse:first'),'show',
                 "the 'div' node should be expanded");
 
             // reexpand the second node
-            await new Promise((resolve) => {
-                $(document.body).one("shown.bs.collapse", () => {
+            shownProm = new Promise(resolve => {
+                $(document.body).one("shown.bs.collapse", (ev) => {
+                    const label = ev.target.getAttribute("aria-labelledby");
+                    assert.strictEqual(document.body.querySelector(`#${label}`).textContent.trim(), "span")
                     resolve();
                 });
-                testUtils.dom.click(sidebar.$('.o_web_studio_sidebar_content .o_web_studio_accordion > .card:last [data-bs-toggle="collapse"]:first'));
-            })
-            await nextTick();
+            });
+
+            hiddenProm = new Promise((resolve) => {
+                $(document.body).one("hidden.bs.collapse", (ev) => {
+                    const label = ev.target.getAttribute("aria-labelledby");
+                    assert.strictEqual(document.body.querySelector(`#${label}`).textContent.trim(), "div")
+                    resolve();
+                });
+            });
+
+            testUtils.dom.click(sidebar.$('.o_web_studio_sidebar_content .o_web_studio_accordion > .card:last [data-bs-toggle="collapse"]:first'));
+            await Promise.all([shownProm, hiddenProm]);
+
             assert.hasClass(sidebar.$('.o_web_studio_sidebar_content .card:has(.o_text:contains(span)) .collapse:first'),'show',
                 "the 'span' node should be expanded again");
             assert.doesNotHaveClass(sidebar.$('.o_web_studio_sidebar_content .card:has(.o_text:contains(div)) .collapse:first'), 'show',

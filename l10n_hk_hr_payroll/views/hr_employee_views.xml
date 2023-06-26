@@ -23,7 +23,6 @@
                            attrs="{
                             'invisible': [('l10n_hk_autopay_account_type', '!=', 'mobn')],
                             'required': [('l10n_hk_autopay_account_type', '=', 'mobn')]}"/>
-                    <field name="l10n_hk_autopay_identifier" />
                     <field name="l10n_hk_autopay_ref" />
                 </group>
             </xpath>

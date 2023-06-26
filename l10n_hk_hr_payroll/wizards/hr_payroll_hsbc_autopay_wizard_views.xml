@@ -10,6 +10,7 @@
                 <field name="autopay_type" invisible="1" />
                 <group>
                     <group>
+                        <field name="payment_date" />
                         <field name="batch_type" />
                         <field name="payment_set_code" />
                         <field name="ref" />

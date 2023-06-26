@@ -36,9 +36,6 @@ class Payslip(models.Model):
         'Second Batch AutoPay Gross',
         compute='_compute_gross',
         store=True)
-    hsbc_export = fields.Binary(string='HSBC Autopay File')
-    hsbc_export_date = fields.Datetime(string='HSBC Generation Date')
-    hsbc_export_filename = fields.Char(string='HSBC File Name')
 
     @api.depends('worked_days_line_ids')
     def _compute_worked_days_leaves_count(self):
@@ -201,9 +198,10 @@ class Payslip(models.Model):
         return total
 
     def _generate_h2h_autopay(self, header_data: dict) -> str:
+        ctime = datetime.now()
         header = (
             f'H{header_data["digital_pic_id"]:<11}HKMFPS02{"":<3}'
-            f'{header_data["customer_ref"]:<35}{header_data["payment_date"]:%Y/%m/%d%H:%M:%S}'
+            f'{header_data["customer_ref"]:<35}{ctime:%Y/%m/%d%H:%M:%S}'
             f'{"":<1}{header_data["authorisation_type"]}{"":<2}PH{"":<79}\n'
         )
         return header
@@ -226,7 +224,7 @@ class Payslip(models.Model):
         data = '\n'.join(datas)
         return header + data
 
-    def _create_apc_file(self, payment_set_code: str, batch_type: str = 'first', ref: str = None, file_name: str = None, **kwargs):
+    def _create_apc_file(self, payment_date, payment_set_code: str, batch_type: str = 'first', ref: str = None, file_name: str = None, **kwargs):
         invalid_payslips = self.filtered(lambda p: p.currency_id.name not in ['HKD', 'CNY'])
         if invalid_payslips:
             raise UserError(_("Only accept HKD or CNY currency.\nInvalid currency for the following payslips:\n%s", '\n'.join(invalid_payslips.mapped('name'))))
@@ -254,7 +252,6 @@ class Payslip(models.Model):
         if not payslips:
             raise UserError(_("No payslip to generate the HSBC autopay report."))
 
-        payment_date = fields.Datetime.now()
         autopay_type = self.company_id.l10n_hk_autopay_type
         if autopay_type == 'h2h':
             h2h_header_data = {

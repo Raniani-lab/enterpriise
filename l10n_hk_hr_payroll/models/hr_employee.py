@@ -63,7 +63,6 @@ class HrEmployee(models.Model):
     l10n_hk_autopay_svid = fields.Char(string='FPS Identifier', groups="hr.group_hr_user")
     l10n_hk_autopay_emal = fields.Char(string='Autopay Email Address', groups="hr.group_hr_user")
     l10n_hk_autopay_mobn = fields.Char(string='Autopay Mobile Number', groups="hr.group_hr_user")
-    l10n_hk_autopay_identifier = fields.Char(string='Autopay Identifier', groups="hr.group_hr_user")
     l10n_hk_autopay_ref = fields.Char(string='Autopay Reference', groups="hr.group_hr_user")
 
     @api.constrains('l10n_hk_mpf_vc_percentage')

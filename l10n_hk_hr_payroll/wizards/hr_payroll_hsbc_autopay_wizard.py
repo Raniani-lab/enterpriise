@@ -24,6 +24,7 @@ class HrPayslipRunHsbcAutopayWizard(models.TransientModel):
             ('V', 'File Level Authorisation with ability to view instructions')],
         string="Authorisation Type", default='A'
     )
+    payment_date = fields.Date(string="Payment Date", required=True, default=fields.Date.today)
     batch_type = fields.Selection(selection=[('first', "First Batch"), ('second', "Second Batch")], string="Batch Type", required=True, default='first')
     company_id = fields.Many2one('res.company', string='Company', required=True, default=lambda self: self.env.company)
     digital_pic_id = fields.Char(string="Digital Picture ID", size=11)
@@ -40,7 +41,7 @@ class HrPayslipRunHsbcAutopayWizard(models.TransientModel):
         payslip_run_id = self.env['hr.payslip.run'].browse(self.env.context['active_id'])
         payslips = payslip_run_id.mapped('slip_ids').filtered(lambda p: p.net_wage > 0)
         payslips.sudo()._create_apc_file(
-            self.payment_set_code, self.batch_type, self.ref, self.file_name,
+            self.payment_date, self.payment_set_code, self.batch_type, self.ref, self.file_name,
             authorisation_type=self.authorisation_type,
             customer_ref=self.customer_ref,
             digital_pic_id=self.digital_pic_id,

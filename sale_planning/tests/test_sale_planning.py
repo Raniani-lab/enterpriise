@@ -275,3 +275,40 @@ class TestSalePlanning(TestCommonSalePlanning):
                 sum(slots.mapped(lambda s: s._get_slot_duration())) * percent / 100, qty,
                 msg='Total duration * allocated percentage should be 1 hour, as sold',
             )
+
+    def test_copy_no_allocated_percentage(self):
+        """Mostly to test that the copy method does not crash when there is no allocated percentage."""
+        so = self.env['sale.order'].create({
+            "partner_id": self.planning_partner.id,
+        })
+        sol = self.env['sale.order.line'].create({
+            "product_id": self.plannable_product.id,
+            "product_uom_qty": 10,
+            "order_id": so.id,
+        })
+        so.action_confirm()
+
+        PlanningSlot = self.env['planning.slot']
+        start = datetime(2019, 6, 25, 8, 0)
+        slot = PlanningSlot.create({
+            'start_datetime': start,
+            'end_datetime': start + timedelta(hours=1),
+            'allocated_percentage': 0,
+            'sale_line_id': sol.id,
+        })
+        self.assertEqual(slot.allocated_percentage, 0)
+
+        copy_start = start + timedelta(weeks=1)
+        PlanningSlot.action_copy_previous_week(
+            str(copy_start), [
+                # dummy domain
+                ('start_datetime', '=', True),
+                ('end_datetime', '=', True),
+            ]
+        )
+
+        copy = PlanningSlot.search([('start_datetime', '=', copy_start), ('sale_line_id', '=', sol.id)])
+        self.assertEqual(len(copy), 1)
+        self.assertEqual(copy.allocated_percentage, 0)
+        self.assertEqual(copy.allocated_hours, 0)
+        self.assertEqual(copy.end_datetime, copy_start + timedelta(hours=1))

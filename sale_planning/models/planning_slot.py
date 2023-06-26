@@ -593,7 +593,7 @@ class PlanningSlot(models.Model):
 
             :return a bool representing wether or not there are still hours remaining
         """
-        if self.sale_line_id.product_id.planning_enabled:
+        if self.allocated_percentage and self.sale_line_id.product_id.planning_enabled:
             if float_utils.float_compare(remaining_hours_to_plan[self.sale_line_id], 0.0, precision_digits=2) != 1:
                 return False
             # The allocated hours of the slot can be computed as for a slot with allocation_type == 'planning'

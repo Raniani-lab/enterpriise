@@ -7,6 +7,7 @@ import re
 
 from collections import defaultdict
 from datetime import datetime, timedelta
+from lxml import html
 from markupsafe import Markup
 from urllib import parse
 from werkzeug.urls import url_join
@@ -15,7 +16,7 @@ from odoo import api, Command, fields, models, _
 from odoo.addons.web.controllers.utils import clean_action
 from odoo.exceptions import AccessError, ValidationError, UserError
 from odoo.osv import expression
-from odoo.tools import get_lang
+from odoo.tools import get_lang, is_html_empty
 
 ARTICLE_PERMISSION_LEVEL = {'none': 0, 'read': 1, 'write': 2}
 
@@ -891,6 +892,10 @@ class Article(models.Model):
         """ Creates a copy of an article. != duplicate article (see `copy`).
         Creates a new private article with the same body, icon and cover,
         but drops other fields such as members, childs, permissions etc.
+
+        Note that the body of the copy will be updated so that the embedded
+        views listing the article items of the original article will now list
+        the article items of the copy.
         """
         self.ensure_one()
         article_vals = {
@@ -898,6 +903,7 @@ class Article(models.Model):
                 "partner_id": self.env.user.partner_id.id,
                 "permission": 'write'
             })],
+            "article_properties_definition": self.article_properties_definition,
             "body": self.body,
             "cover_image_id": self.cover_image_id.id,
             "full_width": self.full_width,
@@ -908,7 +914,30 @@ class Article(models.Model):
             "is_locked": False,
             "parent_id": False,
         }
-        return self.create(article_vals)
+        article = self.create(article_vals)
+
+        # Update the ID references stored in the body of the article:
+        if not is_html_empty(self.body):
+            needs_embed_view_update = False
+            fragment = html.fragment_fromstring(self.body, create_parent=True)
+            for element in fragment.findall(".//*[@data-behavior-props]"):
+                if "o_knowledge_behavior_type_embedded_view" in element.get("class"):
+                    behavior_props = json.loads(parse.unquote(element.get("data-behavior-props")))
+                    context = behavior_props.get("context", {})
+                    if context.get("default_is_article_item") and context.get("active_id") == self.id:
+                        context.update({
+                            "active_id": article.id,
+                            "default_parent_id": article.id
+                        })
+                        element.set("data-behavior-props", parse.quote(json.dumps(behavior_props), safe="()*!'"))
+                        needs_embed_view_update = True
+
+            if needs_embed_view_update:
+                article.write({
+                    "body": html.tostring(fragment)
+                })
+
+        return article
 
     def action_home_page(self):
         """ Redirect to the home page of knowledge, which displays an article.

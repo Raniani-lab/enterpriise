@@ -54,14 +54,14 @@ export class GridCell {
      */
     get context() {
         return {
-            ...this.row.section.context,
+            ...this.row.section?.context,
             ...this.row.context,
             ...this.column.context,
         };
     }
 
     get title() {
-        const rowTitle = this.row.section.isFake
+        const rowTitle = !this.row.section || this.row.section.isFake
             ? this.row.title
             : `${this.row.section.title} / ${this.row.title}`;
         const columnTitle = this.column.title;

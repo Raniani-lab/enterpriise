@@ -526,6 +526,13 @@ QUnit.module("Views", (hooks) => {
             getNodesTextContent(target.querySelectorAll(".o_grid_row.o_grid_row_total")),
             ["2:30", "7:30"]
         );
+        assert.containsNone(
+            target,
+            ".o_grid_search_btn",
+            "No search button should be displayed in the grid cells."
+        );
+        await hoverGridCell(target.querySelectorAll('.o_grid_section.o_grid_highlightable')[1]);
+        await click(target, ".o_grid_cell button.o_grid_search_btn");
 
         // Click on next period to have no data
         await click(target, ".o_grid_navigation_buttons button span.oi-arrow-left");
@@ -541,6 +548,36 @@ QUnit.module("Views", (hooks) => {
             "div.bg-info",
             "No column should be the current date since we move in the following week."
         );
+    });
+
+    QUnit.test("clicking on the info icon on a cell triggers a do_action for section rows", async function (assert) {
+        patchDate(2017, 0, 25, 0, 0, 0);
+        await makeView({
+            type: "grid",
+            resModel: "analytic.line",
+            serverData,
+            arch: `<grid>
+                    <field name="project_id" type="row" section="1"/>
+                    <field name="task_id" type="row"/>
+                    <field name="date" type="col">
+                        <range name="week" string="Week" span="week" step="day"/>
+                        <range name="month" string="Month" span="month" step="day"/>
+                    </field>
+                    <field name="unit_amount" type="measure" widget="float_time"/>
+                </grid>`,
+            async mockRPC(route, args) {
+                if (args.method === "grid_unavailability") {
+                    return {};
+                }
+            },
+        });
+        assert.containsNone(
+            target,
+            ".o_grid_search_btn",
+            "No search button should be displayed in the grid cells."
+        );
+        await hoverGridCell(target.querySelectorAll('.o_grid_section.o_grid_highlightable')[1]);
+        await click(target, ".o_grid_cell button.o_grid_search_btn");
     });
 
     QUnit.test("Add/remove groupbys in search view", async function (assert) {

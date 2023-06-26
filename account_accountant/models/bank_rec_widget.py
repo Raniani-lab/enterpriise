@@ -40,6 +40,10 @@ class BankRecWidget(models.Model):
         related='st_line_id.is_reconciled',
         depends=['st_line_id'],
     )
+    st_line_narration = fields.Html(
+        related='st_line_id.move_id.narration',
+        depends=['st_line_id'],
+    )
     transaction_currency_id = fields.Many2one(
         comodel_name='res.currency',
         compute='_compute_transaction_currency_id',

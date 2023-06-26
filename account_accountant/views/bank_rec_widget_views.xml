@@ -492,7 +492,19 @@
                                            nolabel="1"
                                            attrs="{'invisible': ['|', ('form_extra_text', '=', False), ('form_index', '=', False)]}"
                                            widget="bank_rec_html"/>
+                                    <label for="st_line_narration"
+                                           string="Notes"
+                                           attrs="{'invisible': [('st_line_narration', '=', False)]}"/>
+                                    <field name="st_line_narration"
+                                           attrs="{'invisible': [('st_line_narration', '=', False)]}"/>
                                 </group>
+                            </group>
+                        </page>
+                        <page name="transaction_details_tab"
+                              string="Transaction Details"
+                              attrs="{'invisible': ['|', ('state', '!=', 'reconciled'), ('st_line_narration', '=', False)]}">
+                            <group>
+                                <field name="st_line_narration" string="Notes" readonly="1"/>
                             </group>
                         </page>
                         <page name="discuss_tab" string="Discuss">

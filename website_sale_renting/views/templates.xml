@@ -106,7 +106,7 @@
                position="attributes">
             <attribute name="t-if">not product.rent_ok</attribute>
         </xpath>
-        <xpath expr="//div[hasclass('o_variant_pills_input_value')]/t[@t-call='website_sale.badge_extra_price']"
+        <xpath expr="//label[hasclass('o_variant_pills_input_value')]/t[@t-call='website_sale.badge_extra_price']"
                position="attributes">
             <attribute name="t-if">not product.rent_ok</attribute>
         </xpath>

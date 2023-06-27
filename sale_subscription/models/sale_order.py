@@ -852,7 +852,7 @@ class SaleOrder(models.Model):
             elif parent.start_date == parent.next_invoice_date:
                 raise ValidationError(_("You can not upsell or renew a subscription that has not been invoiced yet. "
                                         "Please, update directly the %s contract or invoice it first.", parent.name))
-            other_renew_so_ids = parent.subscription_child_ids.filtered(lambda so: so.subscription_state == '2_renewal') - renew
+            other_renew_so_ids = parent.subscription_child_ids.filtered(lambda so: so.subscription_state == '2_renewal' and so.state != 'cancel') - renew
             if other_renew_so_ids:
                 other_renew_so_ids._action_cancel()
 

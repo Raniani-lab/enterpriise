@@ -3,7 +3,7 @@
 
     <!-- Mention that the token will be saved when paying for a subscription. -->
     <template id="payment_checkout_inherit" inherit_id="payment.checkout">
-        <xpath expr="//div[@name='o_payment_inline_form']" position="inside">
+        <xpath expr="//div[@t-attf-id='o_payment_provider_inline_checkout_form_{{provider.id}}']" position="inside">
             <label t-if="is_subscription" class="fst-italic">
                 Your payment details will be saved for automatic renewals.
             </label>

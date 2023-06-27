@@ -65,3 +65,6 @@ class TestUi(odoo.tests.HttpCase, SignRequestCommon):
         self.assertEqual(len(blank_template.sign_item_ids), 2)
         self.assertEqual(blank_template.responsible_count, 2)
         self.assertEqual(set(blank_template.sign_item_ids.mapped("type_id.item_type")), set(["text", "signature"]))
+
+    def test_report_modal(self):
+        self.start_tour("/web", "sign_report_modal_tour", login="admin")

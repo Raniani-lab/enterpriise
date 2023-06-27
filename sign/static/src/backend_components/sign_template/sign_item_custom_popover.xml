@@ -39,7 +39,7 @@
                 <div class="mb-2">
                     <div class="checkbox">
                         <label for="o_sign_required_field">
-                            <input type="checkbox" id="o_sign_required_field" t-att-checked="state.required" t-on-change="(e) => this.onChange('required', e.target.value)"/> Mandatory field
+                            <input type="checkbox" id="o_sign_required_field" t-att-checked="state.required" t-on-change="(e) => this.onChange('required', e.target.checked)"/> Mandatory field
                             </label>
                         </div>
                     </div>

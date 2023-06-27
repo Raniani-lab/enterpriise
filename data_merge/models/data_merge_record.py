@@ -379,20 +379,37 @@ class DataMergeRecord(models.Model):
                 }
 
                 # Query to check the number of columns in the referencing table
-                query = """SELECT COUNT(column_name) FROM information_schema.columns WHERE table_name ILIKE %s"""
-                self._cr.execute(query, (table, ))
+                query = psycopg2.sql.SQL(
+                    """
+                    SELECT COUNT({column_name})
+                    FROM {table}
+                    WHERE {table_name} ILIKE %s
+                    """
+                ).format(
+                    table=psycopg2.sql.Identifier('information_schema', 'columns'),
+                    table_name=psycopg2.sql.Identifier('table_name'),
+                    column_name=psycopg2.sql.Identifier('column_name')
+                )
+                self._cr.execute(query, (query_dict['table'],))
                 column_count = self._cr.fetchone()[0]
 
                 ## Relation table for M2M
                 if column_count == 2:
                     # Retrieve the "other" column
-                    query = """
-                        SELECT column_name
-                        FROM information_schema.columns
+                    query = psycopg2.sql.SQL(
+                        """
+                        SELECT {column_name}
+                        FROM {table}
                         WHERE
-                            table_name LIKE '%s'
-                        AND column_name <> '%s'""" % (table, column)
-                    self._cr.execute(query, ())
+                            {table_name} LIKE %s
+                        AND {column_name} <> %s
+                        """
+                    ).format(
+                        table=psycopg2.sql.Identifier('information_schema', 'columns'),
+                        table_name=psycopg2.sql.Identifier('table_name'),
+                        column_name=psycopg2.sql.Identifier('column_name')
+                    )
+                    self._cr.execute(query, (query_dict['table'], query_dict['column']))
                     othercol = self._cr.fetchone()[0]
                     query_dict.update({'othercol': othercol})
 
@@ -400,17 +417,22 @@ class DataMergeRecord(models.Model):
                         # This query will filter out existing records
                         # e.g. if the record to merge has tags A, B, C and the master record has tags C, D, E
                         #      we only need to add tags A, B
-                        query = """
-                            UPDATE %(table)s o
-                            SET %(column)s = %%(destination_id)s            --- master record
-                            WHERE %(column)s = %%(record_id)s         --- record to merge
+                        query = psycopg2.sql.SQL(
+                            """
+                            UPDATE {table} o
+                            SET {column} =  %(destination_id)s            --- master record
+                            WHERE {column} = %(record_id)s         --- record to merge
                             AND NOT EXISTS (
-                                SELECT 1
-                                FROM %(table)s i
-                                WHERE %(column)s = %%(destination_id)s
-                                AND i.%(othercol)s = o.%(othercol)s
-                            )""" % query_dict
-
+                            SELECT 1
+                            FROM  {table} i
+                            WHERE {column} = %(destination_id)s
+                            AND i.{othercol} = o.{othercol}
+                            )
+                            """).format(
+                            table=psycopg2.sql.Identifier(query_dict['table']),
+                            column=psycopg2.sql.Identifier(query_dict['column']),
+                            othercol=psycopg2.sql.Identifier(query_dict['othercol']),
+                        )
                         params = {
                             'destination_id': destination.id,
                             'record_id': rec_id,
@@ -418,11 +440,15 @@ class DataMergeRecord(models.Model):
                         }
                         self._cr.execute(query, params)
                 else:
-                    query = """
-                        UPDATE %(table)s o
-                        SET %(column)s = %%(destination_id)s            --- master record
-                        WHERE %(column)s = %%(record_id)s          --- record to merge
-                    """ % query_dict
+                    query = psycopg2.sql.SQL(
+                        """
+                        UPDATE {table} o
+                        SET {column}  = %(destination_id)s            --- master record
+                        WHERE {column} = %(record_id)s         --- record to merge
+                        """).format(
+                        table=psycopg2.sql.Identifier(query_dict['table']),
+                        column=psycopg2.sql.Identifier(query_dict['column']),
+                    )
                     for rec_id in source_ids:
                         try:
                             with self._cr.savepoint():

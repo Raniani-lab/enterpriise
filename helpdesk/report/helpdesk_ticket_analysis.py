@@ -71,7 +71,7 @@ class HelpdeskTicketReport(models.Model):
                    T.sla_deadline AS ticket_deadline,
                    NULLIF(T.sla_deadline_hours, 0) AS ticket_deadline_hours,
                    NULLIF(T.close_hours, 0) AS ticket_close_hours,
-                   EXTRACT(EPOCH FROM (COALESCE(T.assign_date, NOW()) - T.create_date)) / 3600 AS ticket_open_hours,
+                   EXTRACT(EPOCH FROM (COALESCE(T.assign_date, NOW() AT TIME ZONE 'UTC') - T.create_date)) / 3600 AS ticket_open_hours,
                    NULLIF(T.assign_hours, 0) AS ticket_assignation_hours,
                    T.close_date AS close_date,
                    T.assign_date AS assign_date,
@@ -84,7 +84,7 @@ class HelpdeskTicketReport(models.Model):
                    NULLIF(T.first_response_hours, 0) AS first_response_hours,
                    NULLIF(T.avg_response_hours, 0) AS avg_response_hours,
                    CASE
-                       WHEN (T.sla_deadline IS NOT NULL AND T.sla_deadline > NOW()) THEN TRUE ELSE FALSE
+                       WHEN (T.sla_deadline IS NOT NULL AND T.sla_deadline > NOW() AT TIME ZONE 'UTC') THEN TRUE ELSE FALSE
                    END AS sla_success
         """
         return select_str

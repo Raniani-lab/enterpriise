@@ -9,7 +9,7 @@ from odoo import api, fields, models
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
-    referrer_id = fields.Many2one('res.partner', 'Referrer', domain=[('grade_id', '!=', False)])
+    referrer_id = fields.Many2one('res.partner', 'Referrer', domain=[('grade_id', '!=', False)], tracking=True)
     commission_plan_frozen = fields.Boolean(
         'Freeze Plan', tracking=True,
         help="Whether the commission plan is frozen. When checked, the commission plan won't automatically be updated according to the partner level.")

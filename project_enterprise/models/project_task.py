@@ -105,7 +105,7 @@ class Task(models.Model):
                AND T2.state NOT IN ('1_done', '1_canceled')
                AND T2.planned_date_begin IS NOT NULL
                AND T2.planned_date_end IS NOT NULL
-               AND T2.planned_date_end > NOW()
+               AND T2.planned_date_end > NOW() AT TIME ZONE 'UTC'
                AND T2.project_id IS NOT NULL
                AND (T.planned_date_begin::TIMESTAMP, T.planned_date_end::TIMESTAMP)
           OVERLAPS (T2.planned_date_begin::TIMESTAMP, T2.planned_date_end::TIMESTAMP)
@@ -117,7 +117,7 @@ class Task(models.Model):
                AND T.state NOT IN ('1_done', '1_canceled')
                AND T.planned_date_begin IS NOT NULL
                AND T.planned_date_end IS NOT NULL
-               AND T.planned_date_end > NOW()
+               AND T.planned_date_end > NOW() AT TIME ZONE 'UTC'
                AND T.project_id IS NOT NULL
           GROUP BY T.id
           %s
@@ -166,13 +166,13 @@ class Task(models.Model):
                 AND T1.planned_date_end > T2.planned_date_begin
                 AND T1.planned_date_begin IS NOT NULL
                 AND T1.planned_date_end IS NOT NULL
-                AND T1.planned_date_end > NOW()
+                AND T1.planned_date_end > NOW() AT TIME ZONE 'UTC'
                 AND T1.active = 't'
                 AND T1.state NOT IN ('1_done', '1_canceled')
                 AND T1.project_id IS NOT NULL
                 AND T2.planned_date_begin IS NOT NULL
                 AND T2.planned_date_end IS NOT NULL
-                AND T2.planned_date_end > NOW()
+                AND T2.planned_date_end > NOW() AT TIME ZONE 'UTC'
                 AND T2.project_id IS NOT NULL
                 AND T2.active = 't'
                 AND T2.state NOT IN ('1_done', '1_canceled')

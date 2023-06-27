@@ -14,7 +14,7 @@ class HrAppraisal(models.Model):
             new_appraisals = self.filtered(lambda a: a.state == 'new')
             new_appraisals._copy_skills_when_confirmed()
 
-        if 'state' in vals and vals['state'] == 'done':
+        if 'state' in vals and (vals['state'] == 'done'):
             for appraisal in self:
                 employee_skills = appraisal.employee_id.employee_skill_ids
                 appraisal_skills = appraisal.skill_ids
@@ -56,14 +56,15 @@ class HrAppraisal(models.Model):
         for appraisal in self:
             employee_skills = appraisal.employee_id.employee_skill_ids
             # in case the employee confirms its appraisal
-            self.env['hr.appraisal.skill'].sudo().create([{
-                'appraisal_id': appraisal.id,
-                'skill_id': skill.skill_id.id,
-                'previous_skill_level_id': skill.skill_level_id.id,
-                'skill_level_id': skill.skill_level_id.id,
-                'skill_type_id': skill.skill_type_id.id,
-                'employee_skill_id': skill.id,
-            } for skill in employee_skills])
+            if not appraisal.skill_ids: # check in case we are coming from a previously canceled appraisal and not recreate them
+                self.env['hr.appraisal.skill'].sudo().create([{
+                    'appraisal_id': appraisal.id,
+                    'skill_id': skill.skill_id.id,
+                    'previous_skill_level_id': skill.skill_level_id.id,
+                    'skill_level_id': skill.skill_level_id.id,
+                    'skill_type_id': skill.skill_type_id.id,
+                    'employee_skill_id': skill.id,
+                } for skill in employee_skills])
 
 
 class HrAppraisalSkill(models.Model):

@@ -149,12 +149,12 @@
                 <field name="show_manager_feedback_full" invisible="1"/>
                 <field name="is_manager" invisible="1"/>
                 <field name="employee_autocomplete_ids" invisible="1"/>
+                <div class="oe_chatter">
+                  <field name="message_follower_ids" groups="base.group_user"/>
+                  <field name="activity_ids"/>
+                  <field name="message_ids"/>
+                </div>
           </sheet>
-          <div class="oe_chatter">
-              <field name="message_follower_ids" groups="base.group_user"/>
-              <field name="activity_ids"/>
-              <field name="message_ids"/>
-          </div>
           </form>
         </field>
     </record>
@@ -166,7 +166,7 @@
             <tree string="Appraisal" multi_edit="1" sample="1">
                 <field name="active" invisible="1"/>
                 <field name="employee_id" string="Name" readonly="1" widget="many2one_avatar_user"/>
-                <field name="date_close" widget="remaining_days" attrs="{'invisible': [('state', 'in', ['done', 'cancel'])]}"/>
+                <field name="date_close" widget="remaining_days"/>
                 <field name="date_final_interview" widget="remaining_days"/>
                 <field name="state" widget="badge" readonly="1" decoration-info="state in ('new','pending')" decoration-success="state == 'done'"/>
                 <field name="company_id" readonly="1" groups="base.group_multi_company"/>
@@ -266,7 +266,7 @@
                                         <field name="department_id"/>
                                     </div>
                                     <div class="o_kanban_inline_block">
-                                        <div attrs="{'invisible': [('state', 'in', ['done', 'cancel'])]}">
+                                        <div>
                                         <t t-if="record.date_close.raw_value and luxon.DateTime.fromISO(record.date_close.raw_value) &lt; luxon.DateTime.local()" t-set="red">oe_kanban_text_red</t>
                                             <span t-attf-class="#{red}"><field name="date_close"/></span>
                                         </div>

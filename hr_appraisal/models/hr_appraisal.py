@@ -37,7 +37,7 @@ class HrAppraisal(models.Model):
     employee_user_id = fields.Many2one('res.users', string="Employee User", related='employee_id.user_id')
     company_id = fields.Many2one('res.company', related='employee_id.company_id', store=True)
     department_id = fields.Many2one(
-        'hr.department', related='employee_id.department_id', string='Department', store=True)
+        'hr.department', compute='_compute_department_id', string='Department', store=True)
     image_128 = fields.Image(related='employee_id.image_128')
     image_1920 = fields.Image(related='employee_id.image_1920')
     avatar_128 = fields.Image(related='employee_id.avatar_128')
@@ -46,8 +46,8 @@ class HrAppraisal(models.Model):
     last_appraisal_date = fields.Date(related='employee_id.last_appraisal_date')
     employee_appraisal_count = fields.Integer(related='employee_id.appraisal_count')
     uncomplete_goals_count = fields.Integer(related='employee_id.uncomplete_goals_count')
-    employee_feedback_template = fields.Html(compute='_compute_feedback_templates', translate=True)
-    manager_feedback_template = fields.Html(compute='_compute_feedback_templates', translate=True)
+    employee_feedback_template = fields.Html(default=lambda self: self.env.company.appraisal_employee_feedback_template, compute='_compute_feedback_templates', translate=True)
+    manager_feedback_template = fields.Html(default=lambda self: self.env.company.appraisal_manager_feedback_template, compute='_compute_feedback_templates', translate=True)
 
     date_close = fields.Date(
         string='Appraisal Date', help='Date of the appraisal, automatically updated when the appraisal is Done or Cancelled.', required=True, index=True,
@@ -82,6 +82,14 @@ class HrAppraisal(models.Model):
     assessment_note = fields.Many2one('hr.appraisal.note', string="Final Rating", help="This field is not visible to the Employee.", domain="[('company_id', '=', company_id)]")
     note = fields.Html(string="Private Note", help="The content of this note is not visible by the Employee.")
     appraisal_plan_posted = fields.Boolean()
+
+    @api.depends('employee_id')
+    def _compute_department_id(self):
+        for appraisal in self:
+            if appraisal.employee_id:
+                appraisal.department_id = appraisal.employee_id.department_id
+            else:
+                appraisal.department_id = False
 
     @api.depends_context('uid')
     @api.depends('employee_id', 'manager_ids')
@@ -189,6 +197,7 @@ class HrAppraisal(models.Model):
         if self.employee_id:
             manager = self.employee_id.parent_id
             self.manager_ids = manager if manager != self.employee_id else False
+            self.department_id = self.employee_id.department_id
 
     def subscribe_employees(self):
         for appraisal in self:
@@ -404,7 +413,7 @@ class HrAppraisal(models.Model):
         self.state = 'done'
 
     def action_back(self):
-        self.action_confirm()
+        self.state = 'new'
 
     def action_open_employee_appraisals(self):
         self.ensure_one()

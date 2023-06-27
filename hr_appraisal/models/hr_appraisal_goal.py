@@ -15,6 +15,7 @@ class HrAppraisalGoal(models.Model):
         'hr.employee', string="Employee",
         default=lambda self: self.env.user.employee_id, required=True)
     employee_autocomplete_ids = fields.Many2many('hr.employee', compute='_compute_is_manager')
+    company_id = fields.Many2one(related='employee_id.company_id')
     manager_id = fields.Many2one('hr.employee', string="Manager", compute="_compute_manager_id", readonly=False, store=True, required=True)
     manager_user_id = fields.Many2one('res.users', related='manager_id.user_id')
     progression = fields.Selection(selection=[
@@ -27,6 +28,7 @@ class HrAppraisalGoal(models.Model):
     description = fields.Html()
     deadline = fields.Date(tracking=True)
     is_manager = fields.Boolean(compute='_compute_is_manager')
+    tag_ids = fields.Many2many('hr.appraisal.goal.tag', string="Tags")
 
     @api.depends_context('uid')
     @api.depends('employee_id')

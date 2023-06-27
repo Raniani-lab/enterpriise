@@ -20,7 +20,7 @@
                 overflow-wrap: break-word;
                 word-wrap: break-word;
                 display: flex;
-                font-size: 15px;
+                font-size: 16px;
             }
             .o_kanban_record_top_left {
                 flex: 1 1 auto;
@@ -40,7 +40,9 @@
     .o_form_sheet {
         padding-bottom: 0 !important;
     }
-
+    .o_form_sheet_bg{
+        max-width: 100% !important;
+    }
     div.o_field_boolean_toggle_confirm, div.o_field_boolean_toggle {
         display: inline-flex;
     }

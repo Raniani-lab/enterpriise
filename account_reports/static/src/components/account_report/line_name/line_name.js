@@ -109,7 +109,8 @@ export class AccountReportLineName extends Component {
             ],
         );
 
-        this.controller.replaceLineWith(this.props.lineIndex, newLines);
+        this.controller.assignLinesVisibility(newLines)
+        await this.controller.replaceLineWith(this.props.lineIndex, newLines);
     }
 
     // -----------------------------------------------------------------------------------------------------------------

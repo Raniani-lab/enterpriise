@@ -733,5 +733,5 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             'lines': lines,
             'offset_increment': treated_results_count,
             'has_more': has_more,
-            'progress': json.dumps(next_progress),
+            'progress': next_progress,
         }

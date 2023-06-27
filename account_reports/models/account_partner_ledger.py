@@ -408,7 +408,7 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
             'lines': lines,
             'offset_increment': treated_results_count,
             'has_more': has_more,
-            'progress': json.dumps(next_progress)
+            'progress': next_progress
         }
 
     def _get_aml_values(self, options, partner_ids, offset=0, limit=None):

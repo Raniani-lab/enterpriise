@@ -368,7 +368,7 @@ class JournalReportCustomHandler(models.AbstractModel):
             'after_load_more_lines': after_load_more_lines,
             'offset_increment': treated_results_count,
             'has_more': has_more,
-            'progress': json.dumps(next_progress),
+            'progress': next_progress,
         }
 
     def _report_expand_unfoldable_line_journal_report_expand_journal_line_by_month(self, line_dict_id, groupby, options, progress, offset, unfold_all_batch_data):

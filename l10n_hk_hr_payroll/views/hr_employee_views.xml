@@ -23,15 +23,32 @@
                     <field name="l10n_hk_autopay_ref" />
                 </group>
             </xpath>
+            <xpath expr="//page[@name='personal_information']//label[@for='private_street']" position="before">
+                <field name="l10n_hk_surname" invisible="company_country_code != 'HK'" />
+                <field name="l10n_hk_given_name" invisible="company_country_code != 'HK'" />
+                <field name="l10n_hk_name_in_chinese" invisible="company_country_code != 'HK'" />
+            </xpath>
+            <xpath expr="//field[@name='private_car_plate']" position="after">
+                <label for="l10n_hk_rental_id"/>
+                <div class="o_row">
+                    <field name="l10n_hk_rental_id" readonly="1" invisible="company_country_code != 'HK'"/>
+                    <button class="btn btn-link" type="object" name="action_open_rentals" invisible="l10n_hk_rental_id">
+                        <span class="fa fa-arrow-right"></span><span> History</span>
+                    </button>
+                </div>
+            </xpath>
+            <xpath expr="//page[@name='personal_information']//field[@name='spouse_birthdate']" position="after">
+                <field name="l10n_hk_spouse_identification_id" invisible="company_country_code != 'HK' or marital not in ['married', 'cohabitant']" />
+                <field name="l10n_hk_spouse_passport_id" invisible="company_country_code != 'HK' or marital not in ['married', 'cohabitant']" />
+                <field name="l10n_hk_spouse_passport_place_of_issue" invisible="company_country_code != 'HK' or marital not in ['married', 'cohabitant']" />
+            </xpath>
+            <xpath expr="//page[@name='personal_information']//field[@name='passport_id']" position="after">
+                <field name="l10n_hk_passport_place_of_issue" invisible="company_country_code != 'HK'" />
+            </xpath>
             <xpath expr="//page[@name='hr_settings']/group" position="inside">
                 <group name="mpf" string="MPF" invisible="company_country_code != 'HK'">
                     <field name="l10n_hk_mpf_vc_option" />
                     <field name="l10n_hk_mpf_vc_percentage" widget="percentage" invisible="l10n_hk_mpf_vc_option != 'custom'" />
-                </group>
-                <group name="rental" string="Rental" invisible="company_country_code != 'HK'">
-                    <field name="currency_id" invisible="1" />
-                    <field name="l10n_hk_rental_date_start" />
-                    <field name="l10n_hk_rental_amount" />
                 </group>
             </xpath>
         </field>

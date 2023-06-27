@@ -47,8 +47,6 @@
         <field name="name">Employee HK</field>
         <field name="user_id" ref="demo_user_hk" />
         <field name="company_id" ref="demo_company_hk"/>
-        <field name="l10n_hk_rental_date_start" eval="time.strftime('%Y-03-01')" />
-        <field name="l10n_hk_rental_amount">8000</field>
         <field name="resource_calendar_id" ref="calendar_hk"/>
     </record>
 
@@ -61,7 +59,17 @@
         <field name="employee_id" ref="demo_employee_hk" />
         <field name="structure_type_id" ref="structure_type_employee_cap57" />
         <field name="state">open</field>
-        <field name="l10n_hk_internet" eval="1"/>
+    </record>
+
+    <record id="demo_rental_hk" model="l10n_hk.rental">
+        <field name="name">Demo Rental HK</field>
+        <field name="employee_id" ref="demo_employee_hk" />
+        <field name="company_id" ref="demo_company_hk" />
+        <field name="state">open</field>
+        <field name="date_start" eval="time.strftime('%Y-01-01')" />
+        <field name="amount">8000</field>
+        <field name="nature">flat</field>
+        <field name="address">1, Hong Kong Street</field>
     </record>
 
     <function model="hr.contract" name="_compute_employee_contract" eval="[ref('l10n_hk_hr_payroll.demo_contract_hk')]" />
@@ -70,7 +78,7 @@
 
     <!-- PUBLIC HOLIDAYS -->
 
-    <record id="demo_public_holiday_1" model="resource.calendar.leaves">
+    <record id="demo_public_holiday_1" model="resource.calendar.leaves" context="{'tz': 'Asia/Hong_Kong'}">
         <field name="name">The first day of January</field>
         <field name="company_id" ref="demo_company_hk" />
         <field name="date_from" eval="time.strftime('%Y-01-01 00:00:00')" />

@@ -18,6 +18,41 @@ class HrEmployee(models.Model):
         "res.currency",
         string='Currency',
         related='company_id.currency_id')
+    l10n_hk_surname = fields.Char(
+        "Surname",
+        groups="hr.group_hr_user",
+        tracking=True,
+        copy=False)
+    l10n_hk_given_name = fields.Char(
+        "Given Name",
+        groups="hr.group_hr_user",
+        tracking=True,
+        copy=False)
+    l10n_hk_name_in_chinese = fields.Char(
+        "Name in Chinese",
+        groups="hr.group_hr_user",
+        tracking=True,
+        copy=False)
+    l10n_hk_passport_place_of_issue = fields.Char(
+        "Place of Issue",
+        groups="hr.group_hr_user",
+        tracking=True,
+        copy=False)
+    l10n_hk_spouse_identification_id = fields.Char(
+        "Spouse Identification No",
+        groups="hr.group_hr_user",
+        tracking=True,
+        copy=False)
+    l10n_hk_spouse_passport_id = fields.Char(
+        "Spouse Passport No",
+        groups="hr.group_hr_user",
+        tracking=True,
+        copy=False)
+    l10n_hk_spouse_passport_place_of_issue = fields.Char(
+        "Spouse Place of Issue",
+        groups="hr.group_hr_user",
+        tracking=True,
+        copy=False)
     l10n_hk_mpf_vc_option = fields.Selection(
         selection=[
             ("none", "Only Mandatory Contribution"),
@@ -31,6 +66,21 @@ class HrEmployee(models.Model):
         groups="hr.group_hr_user",
         tracking=True,
         copy=False)
+    l10n_hk_rental_id = fields.Many2one(
+        'l10n_hk.rental',
+        string='Current Rental',
+        groups="hr.group_hr_user",
+        copy=False,
+    )
+    l10n_hk_rental_ids = fields.One2many(
+        'l10n_hk.rental',
+        'employee_id',
+        string='Rentals',
+        copy=False,
+        groups="hr.group_hr_user")
+    l10n_hk_rentals_count = fields.Integer(
+        compute='_compute_l10n_hk_rentals_count',
+        groups="hr.group_hr_user")
     l10n_hk_rental_date_start = fields.Date(
         "Rental Start Date",
         groups="hr.group_hr_user",
@@ -109,3 +159,29 @@ class HrEmployee(models.Model):
             return self.l10n_hk_autopay_mobn
         if self.l10n_hk_autopay_account_type == 'hkid':
             return self.identification_id
+
+    @api.depends('l10n_hk_rental_ids')
+    def _compute_l10n_hk_rentals_count(self):
+        for employee in self:
+            employee.l10n_hk_rentals_count = len(employee.l10n_hk_rental_ids)
+
+    def action_open_rentals(self):
+        self.ensure_one()
+        action = self.env["ir.actions.actions"]._for_xml_id('l10n_hk_hr_payroll.action_l10n_hk_rental')
+        action['views'] = [(False, 'form')]
+        if not self.l10n_hk_rental_ids:
+            action['context'] = {'default_employee_id': self.id}
+            action['target'] = 'new'
+            return action
+
+        target_rental = self.l10n_hk_rental_id
+        if target_rental:
+            action['res_id'] = target_rental.id
+            return action
+
+        target_rental = self.l10n_hk_rental_ids.filtered(lambda r: r.state == 'draft')
+        if target_rental:
+            action['res_id'] = target_rental[0].id
+
+        action['res_id'] = self.l10n_hk_rental_ids[0].id
+        return action

@@ -1,7 +1,7 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 
 class ResCompany(models.Model):
@@ -14,3 +14,14 @@ class ResCompany(models.Model):
         default='h2h',
     )
     l10n_hk_autopay_partner_bank_id = fields.Many2one(string="Autopay Account", comodel_name='res.partner.bank', copy=False)
+    l10n_hk_employer_name = fields.Char("Employer's Name shown on reports")
+    l10n_hk_employer_file_number = fields.Char("Employer's File Number")
+    l10n_hk_manulife_mpf_scheme = fields.Char("Manulife MPF Scheme", size=8)
+
+    @api.constrains("l10n_hk_employer_file_number")
+    def _check_l10n_hk_employer_file_number(self):
+        for company in self:
+            if company.l10n_hk_employer_file_number:
+                file_number = company.l10n_hk_employer_file_number.strip()
+                if len(file_number) != 12 or file_number[3] != '-':
+                    raise UserError(_("The Employer's File Number must be in the format of XXX-XXXXXXXX."))

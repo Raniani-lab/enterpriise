@@ -311,6 +311,24 @@ class Payslip(models.Model):
                 'l10n_hk_autopay_export_second_batch_filename': (file_name or 'HSBC_Autopay_export_second_batch') + '.apc',
             })
 
+    @api.model
+    def _cron_generate_pdf(self, batch_size=False):
+        is_rescheduled = super()._cron_generate_pdf(batch_size=batch_size)
+        if is_rescheduled:
+            return is_rescheduled
+
+        for model in ['l10n_hk.ir56b.line', 'l10n_hk.ir56e.line', 'l10n_hk.ir56f.line', 'l10n_hk.ir56g.line']:
+            lines = self.env[model].search([('pdf_to_generate', '=', True)])
+            if lines:
+                BATCH_SIZE = batch_size or 30
+                lines_batch = lines[:BATCH_SIZE]
+                lines_batch._generate_pdf()
+                lines_batch.write({'pdf_to_generate': False})
+                if len(lines) > BATCH_SIZE:
+                    self.env.ref('hr_payroll.ir_cron_generate_payslip_pdfs')._trigger()
+                    return True
+        return False
+
     def write(self, vals):
         res = super().write(vals)
         if 'input_line_ids' in vals:

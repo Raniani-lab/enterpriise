@@ -1,0 +1,39 @@
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
+from odoo import api, fields, models
+
+
+class L10nHkIr56b(models.Model):
+    _inherit = 'l10n_hk.ir56b'
+
+    documents_enabled = fields.Boolean(compute='_compute_documents_enabled')
+
+    @api.depends('company_id.documents_payroll_folder_id', 'company_id.documents_hr_settings')
+    def _compute_documents_enabled(self):
+        for sheet in self:
+            sheet.documents_enabled = sheet.company_id._payroll_documents_enabled() and all(not line.pdf_to_post for line in sheet.line_ids)
+
+    def action_post_in_documents(self):
+        self.ensure_one()
+        if not self.company_id._payroll_documents_enabled():
+            return
+        self.line_ids.write({'pdf_to_post': True})
+        self.env.ref('hr_payroll.ir_cron_generate_payslip_pdfs')._trigger()
+
+
+class L10nHkIr56bLine(models.Model):
+    _inherit = 'l10n_hk.ir56b.line'
+
+    pdf_to_post = fields.Boolean()
+
+    def _post_pdf(self):
+        self.env['documents.document'].create([{
+            'owner_id': line.employee_id.user_id.id,
+            'datas': line.pdf_file,
+            'name': line.pdf_filename,
+            'folder_id': line.sheet_id.company_id.documents_payroll_folder_id.id,
+        } for line in self])
+        template = self.env.ref('documents_l10n_hk_hr_payroll.mail_template_ir56b', raise_if_not_found=False)
+        if template:
+            for line in self:
+                template.send_mail(line.employee_id.id, email_layout_xmlid='mail.mail_notification_light')

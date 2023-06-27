@@ -9,7 +9,7 @@ from odoo import fields, models
 class HrContract(models.Model):
     _inherit = "hr.contract"
 
-    l10n_hk_internet = fields.Boolean(
+    l10n_hk_internet = fields.Monetary(
         string="HK: Internet Subscription",
         tracking=True,
         help="A benefit in kind is paid for the employee's internet subcription.")

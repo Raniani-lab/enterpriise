@@ -78,7 +78,7 @@ class AccountReport(models.Model):
                     (aml2.id = part.credit_move_id OR aml2.id = part.debit_move_id)
                     AND aml.id != aml2.id
                 JOIN (
-                    SELECT move_id, account_id, ABS(SUM(balance)) AS total_per_account
+                    SELECT move_id, account_id, SUM(ABS(balance)) AS total_per_account
                     FROM ONLY account_move_line account_move_line
                     GROUP BY move_id, account_id
                 ) sub_aml ON (aml.account_id = sub_aml.account_id AND aml.move_id=sub_aml.move_id)

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # pylint: disable=C0326
 from odoo.tests import tagged
-from odoo import fields
+from odoo import fields, Command
 
 from odoo.addons.account_reports.tests.common import TestAccountReportsCommon
 
@@ -210,6 +210,130 @@ class TestAccountReports(TestAccountReportsCommon):
                 ('400000 Product Sales',                '',            100,           -100),
                 # Report Total.
                 ('Total',                              230,            230,             0),
+            ],
+            options,
+        )
+
+    def test_cash_basis_ar_ap_both_in_debit_and_credit(self):
+        other_revenue = self.revenue_account_1.copy(default={'name': 'Other Income', 'code': '499000'})
+
+        moves = self.env['account.move'].create([{
+            'move_type': 'entry',
+            'date': '2000-01-01',
+            'journal_id': self.company_data['default_journal_misc'].id,
+            'line_ids': [
+                Command.create({'name': '1',   'debit': 350.0,   'credit': 0.0,     'account_id': self.receivable_account_1.id}),
+                Command.create({'name': '2',   'debit': 0.0,     'credit': 150.0,   'account_id': self.receivable_account_1.id}),
+                Command.create({'name': '3',   'debit': 0.0,     'credit': 200.0,   'account_id': self.revenue_account_1.id}),
+            ],
+        }, {
+            'move_type': 'entry',
+            'date': '2001-01-01',
+            'journal_id': self.company_data['default_journal_misc'].id,
+            'line_ids': [
+                Command.create({'name': '4',   'debit': 350.0,   'credit': 0.0,     'account_id': self.liquidity_account.id}),
+                Command.create({'name': '5',   'debit': 0.0,     'credit': 350.0,   'account_id': self.receivable_account_1.id}),
+            ],
+        }, {
+            'move_type': 'entry',
+            'date': '2002-01-01',
+            'journal_id': self.company_data['default_journal_misc'].id,
+            'line_ids': [
+                Command.create({'name': '6',   'debit': 150.0,   'credit': 0.0,     'account_id': self.receivable_account_1.id}),
+                Command.create({'name': '7',   'debit': 0.0,     'credit': 150.0,   'account_id': other_revenue.id}),
+            ],
+        }])
+        moves.action_post()
+
+        ar1 = moves.line_ids.filtered(lambda x: x.name == '1')
+        ar2 = moves.line_ids.filtered(lambda x: x.name == '2')
+        ar5 = moves.line_ids.filtered(lambda x: x.name == '5')
+        ar6 = moves.line_ids.filtered(lambda x: x.name == '6')
+
+        (ar1 | ar5).reconcile()
+        (ar2 | ar6).reconcile()
+
+        # Check the impact in the reports: the invoice date should be the one the invoice appears at, since it greater than the payment's
+        report = self.env.ref('account_reports.general_ledger_report')
+
+        options = self._generate_options(report, fields.Date.to_date('2000-01-01'), fields.Date.to_date('2000-01-01'))
+        options['report_cash_basis'] = True
+
+        self.assertLinesValues(
+            report._get_lines(options),
+            #   Name                                     Debit           Credit          Balance
+            [   0,                                       5,              6,              7],
+            [
+                # Accounts.
+                # There should be no lines in this report.
+
+                # Report Total.
+                ('Total',                                0,              0,              0),
+            ],
+            options,
+        )
+
+        # Delete the temporary cash basis table manually in order to run another _get_lines in the same transaction
+        self.env.cr.execute("DROP TABLE cash_basis_temp_account_move_line")
+
+        options = self._generate_options(report, fields.Date.to_date('2001-01-01'), fields.Date.to_date('2001-01-01'))
+        options['report_cash_basis'] = True
+
+        self.assertLinesValues(
+            report._get_lines(options),
+            #   Name                                     Debit           Credit          Balance
+            [   0,                                       5,              6,              7],
+            [
+                # Accounts.
+                ('101401 Bank',                        350,             '',            350),
+                ('121000 Account Receivable',          245,            455,           -210),
+                ('400000 Product Sales',                '',            140,           -140),
+                # Report Total.
+                ('Total',                              595,            595,              0),
+            ],
+            options,
+        )
+
+        # Delete the temporary cash basis table manually in order to run another _get_lines in the same transaction
+        self.env.cr.execute("DROP TABLE cash_basis_temp_account_move_line")
+
+        options = self._generate_options(report, fields.Date.to_date('2002-01-01'), fields.Date.to_date('2002-01-01'))
+        options['report_cash_basis'] = True
+
+        self.assertLinesValues(
+            report._get_lines(options),
+            #   Name                                     Debit           Credit          Balance
+            [   0,                                       5,              6,              7],
+            [
+                # Accounts.
+                ('101401 Bank',                        350,             '',            350),
+                ('121000 Account Receivable',          500,            500,              0),
+                ('400000 Product Sales',                '',             60,            -60),
+                ('499000 Other Income',                 '',            150,           -150),
+                ('999999 Undistributed Profits/Losses', '',            140,           -140),
+                # Report Total.
+                ('Total',                              850,            850,              0),
+            ],
+            options,
+        )
+        # Delete the temporary cash basis table manually in order to run another _get_lines in the same transaction
+        self.env.cr.execute("DROP TABLE cash_basis_temp_account_move_line")
+
+        options = self._generate_options(report, fields.Date.to_date('2000-01-01'), fields.Date.to_date('2002-12-31'))
+        options['report_cash_basis'] = True
+
+        self.assertLinesValues(
+            report._get_lines(options),
+            #   Name                                     Debit           Credit          Balance
+            [   0,                                       5,              6,              7],
+            [
+                # Accounts.
+                ('101401 Bank',                        350,             '',            350),
+                ('121000 Account Receivable',          500,            500,              0),
+                ('400000 Product Sales',                '',            200,           -200),
+                ('499000 Other Income',                 '',            150,           -150),
+                # Report Total.
+                ('Total',                              850,            850,              0),
             ],
             options,
         )

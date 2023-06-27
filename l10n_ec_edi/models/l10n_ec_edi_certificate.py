@@ -84,16 +84,12 @@ class L10nEcCertificate(models.Model):
 
         # Signature rendering: prepare certificate values
         public_key = public_cert.public_key()
-        common_name = public_cert.issuer.get_attributes_for_oid(NameOID.COMMON_NAME)[0].value
-        org_unit = public_cert.issuer.get_attributes_for_oid(NameOID.ORGANIZATIONAL_UNIT_NAME)[0].value
-        org_name = public_cert.issuer.get_attributes_for_oid(NameOID.ORGANIZATION_NAME)[0].value
-        country_name = public_cert.issuer.get_attributes_for_oid(NameOID.COUNTRY_NAME)[0].value
         qweb_values.update({
             'sig_certif_digest': b64encode(public_cert.fingerprint(hashes.SHA1())).decode(),
             'x509_certificate': bytes_as_block(public_cert.public_bytes(encoding=serialization.Encoding.DER)),
             'rsa_modulus': bytes_as_block(int_as_bytes(public_key.public_numbers().n)),
             'rsa_exponent': bytes_as_block(int_as_bytes(public_key.public_numbers().e)),
-            'x509_issuer_description': 'CN={}, OU={}, O={}, C={}'.format(common_name, org_unit, org_name, country_name),
+            'x509_issuer_description': public_cert.issuer.rfc4514_string(),
             'x509_serial_number': public_cert.serial_number,
         })
 

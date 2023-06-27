@@ -14,6 +14,13 @@ class ArgentinianReportCustomHandler(models.AbstractModel):
     _inherit = 'account.tax.report.handler'
     _description = 'Argentinian Report Custom Handler'
 
+    def _get_custom_display_config(self):
+        return {
+            'templates': {
+                'AccountReportFilters': 'l10n_ar_reports.L10nArReportsFiltersCustomizable',
+            },
+        }
+
     def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
         # dict of the form {move_id: {column_group_key: {expression_label: value}}}
         move_info_dict = {}

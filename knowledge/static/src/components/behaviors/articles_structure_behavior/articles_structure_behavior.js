@@ -116,11 +116,6 @@ export class ArticlesStructureBehavior extends AbstractBehavior {
                     this._appendArticlesStructureContent();
                     this.editor.historyStep();
                     this.state.changeContent = false;
-                    // The editor may not have the focus when the button has
-                    // been clicked on, because the button is
-                    // contentEditable="false". This ensures that the change
-                    // is properly registered.
-                    this.props.record.askChanges();
                 }
             }, () => [this.state.changeContent]);
         } else {

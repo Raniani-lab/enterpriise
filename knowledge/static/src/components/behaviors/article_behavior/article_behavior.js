@@ -16,13 +16,17 @@ export class ArticleBehavior extends AbstractBehavior {
             /**
              * @param {Event} event
              */
-            const onLinkClick = event => {
+            const onLinkClick = async event => {
                 if (!event.currentTarget.closest('.o_knowledge_editor')) {
                     // Use the link normally if not already in Knowledge
                     return;
                 }
                 event.preventDefault();
                 event.stopPropagation();
+                // TODO: remove when the model correctly asks the htmlField if
+                // it is dirty. This askChanges is necessary because the
+                // /article Behavior can be used outside of Knowledge.
+                await this.props.record.askChanges();
                 this.openArticle();
             };
             this.props.anchor.addEventListener('click', onLinkClick);

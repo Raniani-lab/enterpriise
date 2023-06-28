@@ -294,14 +294,22 @@ const HtmlFieldPatch = {
         this.startAppAnchorsObserver();
     },
     /**
+     * This method should stay quasi-synchronous and is not allowed to await
+     * more than the super promise, because it is used in the process of an
+     * urgentSave during a `beforeunload` handling, and the browser does not
+     * let enough time to add many asynchronous calls, and definitely not enough
+     * time for a rpc roundtrip.
+     *
      * @override
      */
     async updateValue() {
-        const _super = this._super.bind(this);
-        // Update Behaviors to ensure that they all are properly mounted, and
-        // wait for the mutex to be idle.
-        await this.updateBehaviors();
-        await _super(...arguments);
+        const promise = this._super(...arguments);
+        // Update Behaviors after the updateValue to ensure that they all are
+        // properly mounted (they could have been destroyed by `_toInline`).
+        promise.then(() => this.updateBehaviors());
+        // Return the `super` promise, not the `then` promise, so that the
+        // urgentSave can continue even when Behaviors are being mounted.
+        return promise;
     },
     /**
      * Mount Behaviors in visible anchors that should contain one.
@@ -395,7 +403,7 @@ const HtmlFieldPatch = {
                         // cannot be moved in the DOM.
                         this.wysiwyg.odooEditor.observerUnactive('knowledge_update_behaviors');
                         behaviorData.anchor.parentElement.replaceChild(anchor, behaviorData.anchor);
-                        // Bypass the editor observer, so oids needs to be set
+                        // Bypass the editor observer, so oids need to be set
                         // manually.
                         this.wysiwyg.odooEditor.idSet(anchor);
                         this.wysiwyg.odooEditor.observerActive('knowledge_update_behaviors');
@@ -410,6 +418,7 @@ const HtmlFieldPatch = {
                 record: this.props.record,
                 // readonlyElementRef.el or editable
                 root: this.valueContainerElement,
+                blueprintNodes: [...behaviorData.anchor.childNodes],
             };
             let behaviorProps = {};
             if (behaviorData.anchor.hasAttribute("data-behavior-props")) {
@@ -476,25 +485,8 @@ const HtmlFieldPatch = {
                         behaviorData.anchor.oKnowledgeBehavior.root.component.setCursor();
                     }
                 };
-                if (behaviorData.behaviorStatus !== 'new') {
-                    // Copy the current state of the Behavior blueprint
-                    // before it is modified, in order to save the current
-                    // OIDs and recover them when the Component is rendered.
-                    props.blueprint = document.createElement('DIV');
-                    props.blueprint.append(...behaviorData.anchor.childNodes);
-                }
             }
-            // Empty the anchor because OWL will fill it with the rendered
-            // Behavior.
-            anchor.replaceChildren();
             const config = (({env, dev, translatableAttributes, translateFn}) => {
-                env = Object.create(env);
-                Object.assign(env, {
-                    // Register "beforeLeave" callbacks in the environment
-                    // of the Behavior. If the Behavior does a doAction,
-                    // those callbacks will be called for this field.
-                    __beforeLeave__: this.env.__beforeLeave__,
-                });
                 return { env, dev, translatableAttributes, translateFn };
             })(this.__owl__.app);
             anchor.oKnowledgeBehavior = new App(Behavior, {

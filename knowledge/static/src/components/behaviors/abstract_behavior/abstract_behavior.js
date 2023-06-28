@@ -13,15 +13,24 @@ export class AbstractBehavior extends Component {
         this.knowledgeCommandsService = useService('knowledgeCommandsService');
         if (!this.props.readonly) {
             onMounted(() => {
+                // Reconstruct the blueprint as an Element outside the DOM, but
+                // with the original nodes to keep their OIDs.
+                const blueprint = document.createElement('DIV');
+                // Adding the blueprintNodes to the blueprint Element will
+                // effectively remove them from the DOM. They are only removed
+                // at this point because we never want the HtmlField to be in
+                // a "corrupted" state during an asynchronous timespan (before
+                // the mounting process).
+                blueprint.replaceChildren(...this.props.blueprintNodes);
                 // hook for extra rendering steps for Behavior (not done by
                 // OWL templating system).
                 this.extraRender();
-                if (this.props.blueprint) {
+                if (this.props.anchor.oid) {
                     // copy OIDs from the blueprint in case those OIDs
                     // are used in collaboration.
                     // this step is done before the component is inserted in the
                     // editable (when it is still in the rendering zone)
-                    this.synchronizeOids();
+                    this.synchronizeOids(blueprint);
                 }
                 // the rendering was done outside of the OdooEditor,
                 // onPreRendered contains instructions on how to move the
@@ -44,12 +53,16 @@ export class AbstractBehavior extends Component {
             this.props.anchor.dataset.oeProtected = "true";
         }
     }
-    synchronizeOids() {
+    /**
+     * @param {Element} blueprint node containing all original DOM nodes
+     *                  from this.props.blueprintNodes.
+     */
+    synchronizeOids(blueprint) {
         // extract OIDs from `data-oe-protected='false'` elements which need to
         // be synchronized in collaborative mode from the blueprint.
         this.props.anchor.querySelectorAll('[data-oe-protected="false"][data-prop-name]').forEach(node => {
             const propName = node.dataset.propName;
-            const blueprintElement = this.props.blueprint.querySelector(`[data-prop-name="${propName}"]`);
+            const blueprintElement = blueprint.querySelector(`[data-prop-name="${propName}"]`);
             if (!blueprintElement) {
                 return;
             }
@@ -99,15 +112,15 @@ AbstractBehavior.props = {
     // at the correct position in the editable when it is fully pre-rendered
     // (=rendered outside of the editable).
     onPreRendered: { type: Function, optional: true},
-    // Html value before Component rendering. It is the  HtmlElement that was
-    // used to extract props for this Behavior. Its use as a prop is to recover
-    // the OIDs set by the editor, so it is only set when the Behavior is not
-    // new (= not the result of a command of the current user).
-    // Cases where the blueprint prop is set:
+    // HtmlElement children of the original anchor, before Component rendering.
+    // They are the Elements that were used to extract html props for this
+    // Behavior. This prop usage is to recover the OIDs set by the editor on
+    // those nodes and to remove them from the DOM once the mounting is done.
+    // Cases where the nodes possess a collaborative OID to recover
     // - received a node from a collaborator
-    // - loaded the article as it is stored in the database
-    // - switching edit/readonly mode
+    // - loaded the article as it is stored in the database in edit mode
+    // - switching from readonly to edit mode
     // - undo/redo in the editor with the Behavior appearing/disappearing
-    // - copy/paste, drag/drop
-    blueprint: { type: Element, optional: true},
+    // - copy/paste, drag/drop elements with the Behavior
+    blueprintNodes: { type: Array },
 };

@@ -22,6 +22,23 @@ export class KnowledgeArticleFormController extends FormController {
     }
 
     /**
+     * @TODO remove when the model correctly asks the htmlField if it is dirty.
+     * Ensure that all fields did have the opportunity to commit their changes
+     * so as to set the record dirty if needed. This is what should be done
+     * in the generic controller but is not because the html field reports
+     * itself as dirty too often. This override can be omitted as soon as the
+     * htmlField dirty feature is reworked/improved. It is needed in Knowledge
+     * because the body of an article is its core feature and it's best that it
+     * is saved more often than needed than the opposite.
+     *
+     * @override
+     */
+    async beforeLeave() {
+        await this.model.root.askChanges();
+        return super.beforeLeave();
+    }
+
+    /**
      * Check that the title is set or not before closing the tab and
      * save the whole article.
      * @override 
@@ -81,15 +98,6 @@ export class KnowledgeArticleFormController extends FormController {
             return;
         }
 
-        // Usually in a form view, an input field is added to the list of dirty
-        // fields of a record when the input loses the focus.
-        // In this case, the focus could still be on the name input or in the
-        // body when clicking on an article name. Since the blur event is not
-        // asynchronous, the focused field is not yet added in the record's 
-        // list of dirty fields when saving before opening another article.
-        // askChanges() allows to make sure that these fields are added to the
-        // record's list of dirty fields if they have been modified.
-        await this.model.root.askChanges();
         // blur to remove focus on the active element
         document.activeElement.blur();
         

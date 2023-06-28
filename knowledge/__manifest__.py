@@ -91,6 +91,7 @@
             'knowledge/static/tests/knowledge_form_view_tests.js',
             'knowledge/static/tests/form_controller_patch_tests.js',
             'knowledge/static/tests/knowledge_external_embeds_hotkeys.js',
+            'knowledge/static/tests/knowledge_form_view_tests.js'
         ],
         'web.tests_assets': [
             'knowledge/static/tests/mock_services.js',

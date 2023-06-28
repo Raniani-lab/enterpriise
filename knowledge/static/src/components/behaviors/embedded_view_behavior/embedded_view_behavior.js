@@ -91,9 +91,6 @@ export class EmbeddedViewBehavior extends AbstractBehavior {
             anchor.addEventListener('beforeinput', bypassEditorEventListeners);
             anchor.addEventListener('paste', bypassEditorEventListeners);
             anchor.addEventListener('drop', bypassEditorEventListeners);
-            // This is needed to ensure that any modification done to the anchor's data-behavior-props
-            // is saved in DB.
-            this.props.record.askChanges();
         });
 
         onWillDestroy(() => {

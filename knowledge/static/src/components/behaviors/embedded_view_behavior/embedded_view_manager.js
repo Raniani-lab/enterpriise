@@ -152,7 +152,6 @@ export class EmbeddedViewManager extends Component {
         favorites.push(favorite);
         data.favorites = favorites;
         this.props.el.setAttribute("data-behavior-props", encodeDataBehaviorProps(data));
-        await this.props.record.askChanges();
     }
 
     /**
@@ -170,7 +169,6 @@ export class EmbeddedViewManager extends Component {
         const favorites = data.favorites || [];
         data.favorites = favorites.filter((favorite) => favorite.name != searchItem.description);
         this.props.el.setAttribute("data-behavior-props", encodeDataBehaviorProps(data));
-        await this.props.record.askChanges();
     }
 
     /**

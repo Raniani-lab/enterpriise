@@ -848,7 +848,8 @@ class HrPayslip(models.Model):
 
         start_date = self.date_from
         end_date = self.date_to
-        week_start = self.env["res.lang"]._lang_get(self.env.user.lang).week_start
+        lang = self.employee_id.lang or self.env.user.lang
+        week_start = self.env["res.lang"]._lang_get(lang).week_start
         schedule = self.struct_id.schedule_pay or self.contract_id.schedule_pay
         if schedule == 'monthly':
             period_name = self._format_date_cached(cache, start_date, "MMMM Y")
@@ -880,7 +881,8 @@ class HrPayslip(models.Model):
     def _format_date_cached(self, cache, date, date_format=False):
         key = (date, date_format)
         if key not in cache:
-            cache[key] = format_date(env=self.env, value=date, lang_code=self.env.user.lang, date_format=date_format)
+            lang = self.employee_id.lang or self.env.user.lang
+            cache[key] = format_date(env=self.env, value=date, lang_code=lang, date_format=date_format)
         return cache[key]
 
     @api.depends('employee_id', 'struct_id', 'date_from', 'date_to')

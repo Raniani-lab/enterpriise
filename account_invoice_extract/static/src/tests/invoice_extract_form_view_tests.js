@@ -6,6 +6,7 @@ import { start, startServer } from "@mail/../tests/helpers/test_utils";
 import { click, triggerEvent } from "@web/../tests/helpers/utils";
 
 import invoiceExtractTestUtils from "@account_invoice_extract/tests/helpers/invoice_extract_test_utils";
+import { accountMove } from '@account/components/account_move_service/account_move_service';
 
 QUnit.module(
     "invoice_extract_form_view_tests.js",
@@ -84,6 +85,9 @@ QUnit.module(
             };
             const { openFormView } = await start({
                 serverData: { views },
+                services: {
+                    'account_move': accountMove,
+                },
                 mockRPC(route, args) {
                     if (args.method === "get_boxes") {
                         return Promise.resolve(invoiceExtractTestUtils.createBoxesData());

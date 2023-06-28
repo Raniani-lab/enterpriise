@@ -1179,6 +1179,47 @@ QUnit.module(
             assert.deepEqual(model.getters.getGlobalFilterValue("42"), [41, 37]);
         });
 
+        QUnit.test(
+            "Change all domains -> Set corresponding model should allow saving",
+            async function (assert) {
+                const serverData = getBasicServerData();
+                serverData.models["vehicle"] = {
+                    fields: {},
+                    records: [],
+                };
+                serverData.models["partner"].fields.vehicle_ids = {
+                    relation: "vehicle",
+                    string: "Vehicle",
+                    type: "many2many",
+                    searchable: true,
+                };
+                serverData.models["ir.model"].records.push({
+                    id: 34,
+                    name: "Vehicle",
+                    model: "vehicle",
+                });
+
+                const { model } = await createSpreadsheetFromPivotView({ serverData });
+                const label = "Product";
+                await openGlobalFilterSidePanel();
+                await clickCreateFilter("relation");
+                await selectModelForRelation("product");
+                await saveGlobalFilter();
+                await click(target, ".o-sidePanel .fa-cog");
+
+                assert.strictEqual(target.querySelector(".o_global_filter_label").value, label);
+
+                await click(target, ".o_side_panel_collapsible_title");
+                await click(target, ".o_model_field_selector_value");
+                await click(target.querySelectorAll(".o_model_field_selector_popover_item")[3]);
+                await click(target, ".o_model_field_selector_popover_close");
+                await selectModelForRelation("vehicle");
+                await editGlobalFilterLabel("test case");
+                await saveGlobalFilter();
+                assert.equal(model.getters.getGlobalFilters()[0].label, "test case");
+            }
+        );
+
         QUnit.test("Can clear a text filter values", async function (assert) {
             const { model } = await createSpreadsheetFromPivotView();
             await addGlobalFilter(

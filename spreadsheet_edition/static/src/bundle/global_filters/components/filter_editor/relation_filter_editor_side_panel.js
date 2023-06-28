@@ -121,10 +121,10 @@ export class RelationFilterEditorSidePanel extends AbstractFilterEditorSidePanel
         this.relationState.relatedModel.technical = technical;
         this.relationState.relatedModel.label = label;
 
-        for (const [index, object] of Object.entries(this.fieldMatchings)) {
+        this.fieldMatchings.forEach((object, index) => {
             const field = this._findRelation(object.fields());
             this.onSelectedField(index, field ? field.name : undefined, field);
-        }
+        });
     }
 
     async fetchModelFromName() {

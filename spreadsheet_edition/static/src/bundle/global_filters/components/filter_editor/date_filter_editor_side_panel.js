@@ -104,7 +104,7 @@ export class DateFilterEditorSidePanel extends AbstractFilterEditorSidePanel {
     }
 
     /**
-     * @param {string} index
+     * @param {number} index
      * @param {number} offset
      */
     onOffsetSelected(index, offset) {

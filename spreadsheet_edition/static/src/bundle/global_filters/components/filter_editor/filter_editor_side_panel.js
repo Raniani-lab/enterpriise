@@ -9,6 +9,8 @@ import { SidePanelCollapsible } from "../side_panel_collapsible/side_panel_colla
 import { FilterEditorLabel } from "./filter_editor_label";
 
 import { onWillStart, Component, useRef, useState, toRaw } from "@odoo/owl";
+
+const { toNumber } = spreadsheet.helpers;
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
 
 /**
@@ -168,11 +170,13 @@ export class AbstractFilterEditorSidePanel extends Component {
     }
 
     /**
-     * @param {string} index
+     * @param {number} index
      * @param {string|undefined} chain
      * @param {Field|undefined} field
      */
     onSelectedField(index, chain, field) {
+        //ensure index type to use it in a set
+        index = toNumber(index);
         if (!chain || !field) {
             this.fieldMatchings[index].fieldMatch = {};
             return;

@@ -102,7 +102,7 @@ class MulticurrencyRevaluationReportCustomHandler(models.AbstractModel):
             line_dict['unfolded'] = True
             line_dict['unfoldable'] = False
 
-    def action_multi_currency_revaluation_open_revaluation_wizard(self, context):
+    def action_multi_currency_revaluation_open_revaluation_wizard(self, options):
         """Open the revaluation wizard."""
         form = self.env.ref('account_reports.view_account_multicurrency_revaluation_wizard', False)
         return {
@@ -114,7 +114,10 @@ class MulticurrencyRevaluationReportCustomHandler(models.AbstractModel):
             'views': [(form.id, 'form')],
             'multi': 'True',
             'target': 'new',
-            'context': context,
+            'context': {
+                **self._context,
+                'multicurrency_revaluation_report_options': options,
+            },
         }
 
     # ACTIONS

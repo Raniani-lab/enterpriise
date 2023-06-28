@@ -23,36 +23,38 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
         cls.receivable_account_1 = cls.company_data['default_account_receivable']
         cls.receivable_account_2 = cls.copy_account(cls.company_data['default_account_receivable'])
 
-        cls.receivable_move = cls.env['account.move'].create({
-            'move_type': 'entry',
-            'date': '2016-01-01',
-            'journal_id': cls.company_data['default_journal_sale'].id,
-            'line_ids': [
-                Command.create({
-                    'name': 'receivable_line_1',
-                    'debit': 800.0,
-                    'credit': 0.0,
-                    'currency_id': cls.currency_data['currency'].id,
-                    'amount_currency': 2000.0,
-                    'account_id': cls.receivable_account_1.id,
-                }),
-                Command.create({
-                    'name': 'receivable_line_2',
-                    'debit': 200.0,
-                    'credit': 0.0,
-                    'currency_id': cls.currency_data['currency'].id,
-                    'amount_currency': 500.0,
-                    'account_id': cls.receivable_account_2.id,
-                }),
-                Command.create({
-                    'name': 'revenue_line',
-                    'debit': 0.0,
-                    'credit': 1000.0,
-                    'account_id': cls.company_data['default_account_revenue'].id,
-                }),
-            ],
-        })
-        cls.receivable_move.action_post()
+        cls.receivable_moves = cls.env['account.move']
+        for _i in range(2):
+            cls.receivable_moves += cls.env['account.move'].create({
+                'move_type': 'entry',
+                'date': '2016-01-01',
+                'journal_id': cls.company_data['default_journal_sale'].id,
+                'line_ids': [
+                    Command.create({
+                        'name': 'receivable_line_1',
+                        'debit': 400.0,
+                        'credit': 0.0,
+                        'currency_id': cls.currency_data['currency'].id,
+                        'amount_currency': 1000.0,
+                        'account_id': cls.receivable_account_1.id,
+                    }),
+                    Command.create({
+                        'name': 'receivable_line_2',
+                        'debit': 100.0,
+                        'credit': 0.0,
+                        'currency_id': cls.currency_data['currency'].id,
+                        'amount_currency': 250.0,
+                        'account_id': cls.receivable_account_2.id,
+                    }),
+                    Command.create({
+                        'name': 'revenue_line',
+                        'debit': 0.0,
+                        'credit': 500.0,
+                        'account_id': cls.company_data['default_account_revenue'].id,
+                    }),
+                ],
+            })
+        cls.receivable_moves.action_post()
         cls.report = cls.env.ref('account_reports.multicurrency_revaluation_report')
 
     def test_same_currency(self):
@@ -78,9 +80,10 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
             ],
         })
         payment_move.action_post()
-        (payment_move + self.receivable_move).line_ids\
-            .filtered(lambda line: line.account_id == self.receivable_account_1)\
-            .reconcile()
+        for receivable_move in self.receivable_moves: #To guarantee reconciliation order: first move will be fully reconciled
+            (payment_move + receivable_move).line_ids\
+                .filtered(lambda line: line.account_id == self.receivable_account_1)\
+                .reconcile()
 
         self.env.invalidate_all()
 
@@ -95,11 +98,12 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
                 ('Accounts To Adjust',                      '',             '',             '',              ''),
                 ('Gol (1 USD = 3.0 Gol)',               1200.0,          480.0,          400.0,          -80.00),
                 ('121000 Account Receivable',            700.0,          280.0,         233.33,          -46.67),
-                ('INV/2016/00001 receivable_line_1',     700.0,          280.0,         233.33,          -46.67),
+                ('INV/2016/00002 receivable_line_1',     700.0,          280.0,         233.33,          -46.67),
                 ('Total 121000 Account Receivable',      700.0,          280.0,         233.33,          -46.67),
-                ('121000.1 Account Receivable',        500.0,          200.0,         166.67,          -33.33),
-                ('INV/2016/00001 receivable_line_2',     500.0,          200.0,         166.67,          -33.33),
-                ('Total 121000.1 Account Receivable',  500.0,          200.0,         166.67,          -33.33),
+                ('121000.1 Account Receivable',          500.0,          200.0,         166.67,          -33.33),
+                ('INV/2016/00002 receivable_line_2',     250.0,          100.0,          83.33,          -16.67),
+                ('INV/2016/00001 receivable_line_2',     250.0,          100.0,          83.33,          -16.67),
+                ('Total 121000.1 Account Receivable',    500.0,          200.0,         166.67,          -33.33),
                 ('Total Gol',                           1200.0,          480.0,          400.0,           -80.0),
             ],
             options,
@@ -123,11 +127,12 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
                 ('Accounts To Adjust',                              '',             '',             '',             ''),
                 ('Gol (1 USD = 2.0 Gol)',                       1200.0,          480.0,          600.0,          120.0),
                 ('121000 Account Receivable',                    700.0,          280.0,          350.0,           70.0),
-                ('INV/2016/00001 receivable_line_1',             700.0,          280.0,          350.0,           70.0),
+                ('INV/2016/00002 receivable_line_1',             700.0,          280.0,          350.0,           70.0),
                 ('Total 121000 Account Receivable',              700.0,          280.0,          350.0,           70.0),
-                ('121000.1 Account Receivable',                500.0,          200.0,          250.0,           50.0),
-                ('INV/2016/00001 receivable_line_2',             500.0,          200.0,          250.0,           50.0),
-                ('Total 121000.1 Account Receivable',          500.0,          200.0,          250.0,           50.0),
+                ('121000.1 Account Receivable',                  500.0,          200.0,          250.0,           50.0),
+                ('INV/2016/00002 receivable_line_2',             250.0,          100.0,          125.0,           25.0),
+                ('INV/2016/00001 receivable_line_2',             250.0,          100.0,          125.0,           25.0),
+                ('Total 121000.1 Account Receivable',            500.0,          200.0,          250.0,           50.0),
                 ('Total Gol',                                   1200.0,          480.0,          600.0,          120.0),
             ],
             options,
@@ -136,7 +141,7 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
             },
         )
 
-        self.env.context = {**self.env.context, **options}
+        self.env.context = {**self.env.context, 'multicurrency_revaluation_report_options': {**options, 'unfold_all': False}}
         wizard = self.env['account.multicurrency.revaluation.wizard'].create({
             'journal_id': self.company_data['default_journal_misc'].id,
             'expense_provision_account_id': self.company_data['default_account_expense'].id,
@@ -190,9 +195,10 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
             ],
         })
         payment_move.action_post()
-        (payment_move + self.receivable_move).line_ids\
-            .filtered(lambda line: line.account_id == self.receivable_account_1)\
-            .reconcile()
+        for receivable_move in self.receivable_moves: #To guarantee reconciliation order: first move will be fully reconciled
+            (payment_move + receivable_move).line_ids\
+                .filtered(lambda line: line.account_id == self.receivable_account_1)\
+                .reconcile()
 
         # Test the report in 2017.
         options = self._generate_options(self.report, fields.Date.from_string('2016-01-01'), fields.Date.from_string('2017-01-01'))
@@ -206,9 +212,10 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
             [
                 ('Accounts To Adjust',                            '',         '',         '',         ''),
                 ('Gol (1 USD = 2.0 Gol)',                      500.0,      200.0,      250.0,       50.0),
-                ('121000.1 Account Receivable',              500.0,      200.0,      250.0,       50.0),
-                ('INV/2016/00001 receivable_line_2',           500.0,      200.0,      250.0,       50.0),
-                ('Total 121000.1 Account Receivable',        500.0,      200.0,      250.0,       50.0),
+                ('121000.1 Account Receivable',                500.0,      200.0,      250.0,       50.0),
+                ('INV/2016/00002 receivable_line_2',           250.0,      100.0,      125.0,       25.0),
+                ('INV/2016/00001 receivable_line_2',           250.0,      100.0,      125.0,       25.0),
+                ('Total 121000.1 Account Receivable',          500.0,      200.0,      250.0,       50.0),
                 ('Total Gol',                                  500.0,      200.0,      250.0,       50.0),
             ],
             options,
@@ -240,9 +247,10 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
             ],
         })
         payment_move.action_post()
-        (payment_move + self.receivable_move).line_ids\
-            .filtered(lambda line: line.account_id == self.receivable_account_1)\
-            .reconcile()
+        for receivable_move in self.receivable_moves: #To guarantee reconciliation order: first move will be fully reconciled
+            (payment_move + receivable_move).line_ids\
+                .filtered(lambda line: line.account_id == self.receivable_account_1)\
+                .reconcile()
 
         # Test the report in 2017.
         options = self._generate_options(self.report, fields.Date.from_string('2017-01-01'), fields.Date.from_string('2017-12-31'))
@@ -261,15 +269,16 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
             [
                 ('Accounts To Adjust',                              '',             '',             '',             ''),
                 ('Gol (1 USD = 2.0 Gol)',                        500.0,          200.0,          250.0,           50.0),
-                ('121000.1 Account Receivable',                500.0,          200.0,          250.0,           50.0),
-                ('INV/2016/00001 receivable_line_2',             500.0,          200.0,          250.0,           50.0),
-                ('Total 121000.1 Account Receivable',          500.0,          200.0,          250.0,           50.0),
+                ('121000.1 Account Receivable',                  500.0,          200.0,          250.0,           50.0),
+                ('INV/2016/00002 receivable_line_2',             250.0,          100.0,          125.0,           25.0),
+                ('INV/2016/00001 receivable_line_2',             250.0,          100.0,          125.0,           25.0),
+                ('Total 121000.1 Account Receivable',            500.0,          200.0,          250.0,           50.0),
                 ('Total Gol',                                    500.0,          200.0,          250.0,           50.0),
 
                 ('Excluded Accounts',                               '',             '',             '',             ''),
                 ('Gol (1 USD = 2.0 Gol)',                        700.0,          280.0,          350.0,           70.0),
                 ('121000 Account Receivable',                    700.0,          280.0,          350.0,           70.0),
-                ('INV/2016/00001 receivable_line_1',             700.0,          280.0,          350.0,           70.0),
+                ('INV/2016/00002 receivable_line_1',             700.0,          280.0,          350.0,           70.0),
                 ('Total 121000 Account Receivable',              700.0,          280.0,          350.0,           70.0),
                 ('Total Gol',                                    700.0,          280.0,          350.0,           70.0),
             ],
@@ -279,7 +288,7 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
             },
         )
 
-        self.env.context = {**self.env.context, **options}
+        self.env.context = {**self.env.context, 'multicurrency_revaluation_report_options': {**options, 'unfold_all': False}}
         wizard = self.env['account.multicurrency.revaluation.wizard'].create({
             'journal_id': self.company_data['default_journal_misc'].id,
             'expense_provision_account_id': self.company_data['default_account_expense'].id,
@@ -299,7 +308,7 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
         Make sure no adjustment lines are generated if the rate is unchanged
         (i.e. do not create 0 balance adjustment lines)
         """
-        self.receivable_move.button_cancel()
+        self.receivable_moves.button_cancel()
 
         receivable_move = self.env['account.move'].create({
             'move_type': 'entry',
@@ -334,7 +343,7 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
                 ('Accounts To Adjust',                             '',          '',          '',       ''),
                 ('Gol (1 USD = 3.0 Gol)',                      3000.0,      1000.0,      1000.0,       ''),
                 ('121000 Account Receivable',                  3000.0,      1000.0,      1000.0,       ''),
-                ('INV/2016/00002 receivable_line',             3000.0,      1000.0,      1000.0,       ''),
+                ('INV/2016/00003 receivable_line',             3000.0,      1000.0,      1000.0,       ''),
                 ('Total 121000 Account Receivable',            3000.0,      1000.0,      1000.0,       ''),
                 ('Total Gol',                                  3000.0,      1000.0,      1000.0,       ''),
             ],
@@ -344,7 +353,7 @@ class TestMultiCurrenciesRevaluationReport(TestAccountReportsCommon):
             },
         )
         with self.assertRaises(UserError, msg="No adjustment should be needed"):
-            self.env.context = {**self.env.context, **options}
+            self.env.context = {**self.env.context, 'multicurrency_revaluation_report_options': {**options, 'unfold_all': False}}
             self.env['account.multicurrency.revaluation.wizard'].create({
                 'journal_id': self.company_data['default_journal_misc'].id,
                 'expense_provision_account_id': self.company_data['default_account_expense'].id,

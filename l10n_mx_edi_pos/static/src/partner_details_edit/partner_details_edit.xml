@@ -6,22 +6,28 @@
             <t t-if="pos.company.country?.code === 'MX'">
                 <h3>Additional invoicing information</h3>
                 <div class="partner-detail div_l10n_mx_edi_additional_fields"
-                     t-att-style="state.display_mx_fields ? undefined : 'display: none'">
+                    t-if="isMexicoSelected()">
                     <span class="label">Fiscal Regime</span>
-                    <select class="detail" name="l10n_mx_edi_fiscal_regime" t-on-change="captureChange" t-att-class="{'border-red': missingFields.includes('l10n_mx_edi_fiscal_regime')}">
+                    <select 
+                        class="detail" 
+                        name="l10n_mx_edi_fiscal_regime" 
+                        t-model="changes.l10n_mx_edi_fiscal_regime"
+                        t-att-class="{'border-red': missingFields.includes('l10n_mx_edi_fiscal_regime')}">
                         <t t-foreach="pos.l10n_mx_edi_fiscal_regime" t-as="fiscal_regime" t-key="fiscal_regime.value">
-                            <option t-att-value="fiscal_regime.value"
-                                    t-att-selected="props.partner.l10n_mx_edi_fiscal_regime ? ((fiscal_regime.value === props.partner.l10n_mx_edi_fiscal_regime) ? true : undefined) : undefined">
-                                <t t-out="fiscal_regime.name" />
-                            </option>
+                            <option 
+                                t-att-value="fiscal_regime.value"
+                                t-out="fiscal_regime.name" />
                         </t>
                     </select>
                 </div>
                 <div class="partner-detail">
                     <span class="label">No Tax Breakdown</span>
-                    <input type="checkbox" name="l10n_mx_edi_no_tax_breakdown" style="width: 15px; height: 15px" t-on-change="captureChangeNoTaxBreakdown"
-                           t-att-checked="props.partner.l10n_mx_edi_no_tax_breakdown ? 'checked': undefined"
-                           t-att-class="{'border-red': missingFields.includes('l10n_mx_edi_no_tax_breakdown')}"/>
+                    <input 
+                        type="checkbox" 
+                        name="l10n_mx_edi_no_tax_breakdown" 
+                        t-model="changes.l10n_mx_edi_no_tax_breakdown"
+                        style="width: 15px; height: 15px" 
+                        t-att-class="{'border-red': missingFields.includes('l10n_mx_edi_no_tax_breakdown')}"/>
                 </div>
             </t>
         </xpath>

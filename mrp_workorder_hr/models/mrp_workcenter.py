@@ -56,7 +56,7 @@ class MrpWorkcenterProductivity(models.Model):
     @api.depends('user_id')
     def _compute_employee(self):
         for time in self:
-            if time.user_id and time.user_id.employee_id:
+            if time.workcenter_id.allow_employee and time.user_id and time.user_id.employee_id:
                 time.employee_id = time.user_id.employee_id
 
     @api.depends('duration')

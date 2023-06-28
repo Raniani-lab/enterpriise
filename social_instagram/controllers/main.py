@@ -117,11 +117,11 @@ class SocialInstagramController(SocialController):
         accounts_to_create = []
         has_existing_accounts = False
         for account in accounts['data']:
-            instagram_access_token = account['access_token']
+            instagram_access_token = account.get('access_token')
             facebook_account_id = account['id']
             instagram_account_id = account.get('instagram_business_account', {}).get('id')
 
-            if not instagram_account_id:
+            if not instagram_access_token or not instagram_account_id:
                 continue
 
             instagram_accounts_endpoint = url_join(

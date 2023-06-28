@@ -598,7 +598,7 @@
         <record id="rule_parameter_value_work_bonus_reference_wage_low_july_2023" model="hr.rule.parameter.value">
             <field name="parameter_value">2013.64</field>
             <field name="rule_parameter_id" ref="rule_parameter_work_bonus_reference_wage_low"/>
-            <field name="date_from" eval="datetime(2023, 6, 1).date()"/>
+            <field name="date_from" eval="datetime(2023, 7, 1).date()"/>
         </record>
 
         <record id="rule_parameter_work_bonus_reference_wage_high" model="hr.rule.parameter">
@@ -660,7 +660,7 @@
         <record id="rule_parameter_work_bonus_reference_wage_middle_july_2023" model="hr.rule.parameter.value">
             <field name="parameter_value">2571.45</field>
             <field name="rule_parameter_id" ref="rule_parameter_work_bonus_reference_wage_middle"/>
-            <field name="date_from" eval="datetime(2023, 6, 1).date()"/>
+            <field name="date_from" eval="datetime(2023, 7, 1).date()"/>
         </record>
 
         <record id="rule_parameter_work_bonus_basic_amount" model="hr.rule.parameter">
@@ -716,7 +716,7 @@
         <record id="rule_parameter_value_work_bonus_basic_amount_july_2023" model="hr.rule.parameter.value">
             <field name="parameter_value">262.16</field>
             <field name="rule_parameter_id" ref="rule_parameter_work_bonus_basic_amount"/>
-            <field name="date_from" eval="datetime(2023, 6, 1).date()"/>
+            <field name="date_from" eval="datetime(2023, 7, 1).date()"/>
         </record>
 
         <record id="rule_parameter_work_bonus_coeff" model="hr.rule.parameter">
@@ -743,7 +743,7 @@
         <record id="rule_parameter_work_bonus_coeff_low_july_2023" model="hr.rule.parameter.value">
             <field name="parameter_value">0.2579</field>
             <field name="rule_parameter_id" ref="rule_parameter_work_bonus_coeff_low"/>
-            <field name="date_from" eval="datetime(2023, 6, 1).date()"/>
+            <field name="date_from" eval="datetime(2023, 7, 1).date()"/>
         </record>
 
         <record id="rule_parameter_ip_first_bracket" model="hr.rule.parameter">

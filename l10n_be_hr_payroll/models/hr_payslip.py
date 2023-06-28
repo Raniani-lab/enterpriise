@@ -979,7 +979,7 @@ def compute_employment_bonus_employees(payslip, categories, worked_days, inputs)
     salary = categories.BRUT * total_hours / paid_hours  # S = (W/H) x U
 
     # 2. - Détermination du montant de base de la réduction (R)
-    if payslip.date_from < date(2023, 6, 1):
+    if payslip.date_from < date(2023, 7, 1):
         if salary <= wage_lower_bound:
             result = bonus_basic_amount
         elif salary <= payslip.rule_parameter('work_bonus_reference_wage_high'):

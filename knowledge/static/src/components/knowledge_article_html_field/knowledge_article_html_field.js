@@ -120,10 +120,9 @@ export class KnowledgeArticleHtmlField extends HtmlField {
              * @param {string} name
              */
             save: async name => {
-                const title = name ? sprintf(_t("Kanban of %s"), name) : _t("Kanban of Article Items");
                 const behaviorProps = {
                     action_xml_id: "knowledge.knowledge_article_item_action_stages",
-                    display_name: title,
+                    display_name: name ? sprintf(_t("Kanban of %s"), name) : _t("Kanban of Article Items"),
                     view_type: "kanban",
                     context: {
                         active_id: this.props.record.resId,
@@ -131,6 +130,7 @@ export class KnowledgeArticleHtmlField extends HtmlField {
                         default_is_article_item: true,
                     }
                 };
+                const title = name || _t("Article Items");
                 const body = QWeb.render("knowledge.article_item_template", {
                     behaviorProps: encodeDataBehaviorProps(behaviorProps),
                     title
@@ -151,10 +151,9 @@ export class KnowledgeArticleHtmlField extends HtmlField {
              * @param {string} name
              */
             save: async name => {
-                const title = name ? sprintf(_t("List of %s"), name) : _t("List of Article Items");
                 const behaviorProps = {
                     action_xml_id: "knowledge.knowledge_article_item_action",
-                    display_name: title,
+                    display_name: name ? sprintf(_t("List of %s"), name) : _t("List of Article Items"),
                     view_type: "list",
                     context: {
                         active_id: this.props.record.resId,
@@ -162,6 +161,7 @@ export class KnowledgeArticleHtmlField extends HtmlField {
                         default_is_article_item: true,
                     }
                 };
+                const title = name || _t("Article Items");
                 const body = QWeb.render("knowledge.article_item_template", {
                     behaviorProps: encodeDataBehaviorProps(behaviorProps),
                     title
@@ -180,9 +180,7 @@ export class KnowledgeArticleHtmlField extends HtmlField {
      */
     async updateArticle(title, body, values) {
         this.wysiwyg.setValue(body);
-        if (!this.props.record.data.name) {
-            await this.env.renameArticle(title);
-        }
+        await this.env.renameArticle(title);
         await this.props.record.update(values);
     }
 }

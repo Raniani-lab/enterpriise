@@ -14,6 +14,7 @@ import { DateFilterValue } from "@spreadsheet/global_filters/components/filter_d
 import { globalFiltersFieldMatchers } from "@spreadsheet/global_filters/plugins/global_filters_core_plugin";
 import { SpreadsheetModelFieldSelector } from "./components/model_field_selector/spreadsheet_model_field_selector";
 
+const { toNumber } = spreadsheet.helpers;
 const { onMounted, onWillStart, useState } = owl;
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
 
@@ -213,10 +214,10 @@ export default class FilterEditorSidePanel extends LegacyComponent {
         this.state.relation.relatedModel.technical = technical;
         this.state.relation.relatedModel.label = label;
 
-        for (const [index, object] of Object.entries(this.state.fieldMatchings)) {
+        this.state.fieldMatchings.forEach((object, index) => {
             const field = this._findRelation(object.fields());
             this.selectedField(index, field ? field.name : undefined, field);
-        }
+        });
     }
 
     async fetchModelFromName() {
@@ -255,11 +256,13 @@ export default class FilterEditorSidePanel extends LegacyComponent {
     }
 
     /**
-     * @param {string} index
+     * @param {number} index
      * @param {string|undefined} chain
      * @param {Object | undefined} field
      */
     selectedField(index, chain, field) {
+        // ensure index type to use it in a set
+        index = toNumber(index);
         if (!chain || !field) {
             this.state.fieldMatchings[index].fieldMatch = {};
             return;
@@ -287,7 +290,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
     }
 
     /**
-     * @param {string} index
+     * @param {number} index
      * @param {string} offset
      */
     onSetFieldOffset(index, offset) {

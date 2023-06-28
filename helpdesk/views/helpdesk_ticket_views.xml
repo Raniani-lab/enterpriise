@@ -6,6 +6,9 @@
         <field name="model">helpdesk.ticket</field>
         <field name="arch" type="xml">
             <activity string="Ticket">
+                <field name="legend_normal" invisible="1"/>
+                <field name="legend_blocked" invisible="1"/>
+                <field name="legend_done" invisible="1"/>
                 <field name="user_id"/>
                 <templates>
                     <div t-name="activity-box">
@@ -14,13 +17,14 @@
                         <div class="w-100">
                             <div class="d-flex justify-content-between">
                                 <span class="o_helpdesk_activity_box_title">
-                                    <field name="name" display="full"/>
+                                    <field name="name" display="full" class="o_text_block"/>
                                 </span>
                                 <span class="flex-shrink-0">
-                                    #<field name="ticket_ref"/>
+                                    <field name="kanban_state" nolabel="1" widget="state_selection"/>
+                                    <span class="m-1"/>#<field name="ticket_ref"/>
                                 </span>
                             </div>
-                            <field name="partner_id" muted="1" display="full"/>
+                            <field name="partner_id" muted="1" display="full" class="o_text_block"/>
                         </div>
                     </div>
                 </templates>

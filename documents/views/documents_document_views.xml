@@ -279,7 +279,7 @@
                             role="img" t-att-title="record.owner_id.value" t-att-alt="record.owner_id.value"/>
                         <div class="ms-2">
                             <field class="o_text_block" name="name" display="full"/>
-                            <field name="owner_id" muted="1" display="full" invisible="1"/>
+                            <field name="owner_id" muted="1" display="full" class="o_text_block" invisible="1"/>
                         </div>
                     </div>
                 </templates>

@@ -254,14 +254,22 @@ const HtmlFieldPatch = {
         this.startAppAnchorsObserver();
     },
     /**
+     * This method should stay quasi-synchronous and is not allowed to await
+     * more than the super promise, because it is used in the process of an
+     * urgentSave during a `beforeunload` handling, and the browser does not
+     * let enough time to add many asynchronous calls, and definitely not enough
+     * time for a rpc roundtrip.
+     *
      * @override
      */
     async updateValue() {
-        const _super = this._super.bind(this);
-        // Update Behaviors to ensure that they all are properly mounted, and
-        // wait for the mutex to be idle.
-        await this.updateBehaviors();
-        await _super(...arguments);
+        const promise = this._super(...arguments);
+        // Update Behaviors after the updateValue to ensure that they all are
+        // properly mounted (they could have been destroyed by `_toInline`).
+        promise.then(() => this.updateBehaviors());
+        // Return the `super` promise, not the `then` promise, so that the
+        // urgentSave can continue even when Behaviors are being mounted.
+        return promise;
     },
     /**
      * Mount Behaviors in visible anchors that should contain one.
@@ -325,7 +333,8 @@ const HtmlFieldPatch = {
                     anchor: anchor,
                     wysiwyg: this.wysiwyg,
                     record: this.props.record,
-                    root: this.injectorEl
+                    root: this.injectorEl,
+                    blueprintNodes: [...anchor.childNodes],
                 };
                 let behaviorProps = {};
                 if (anchor.hasAttribute("data-behavior-props")) {
@@ -345,7 +354,6 @@ const HtmlFieldPatch = {
                         props[node.dataset.propName] = markup(node.innerHTML);
                     }
                 }
-                anchor.replaceChildren();
                 if (!this.props.readonly && this.wysiwyg && this.wysiwyg.odooEditor) {
                     this.wysiwyg.odooEditor.observerActive('injectBehavior');
                 }

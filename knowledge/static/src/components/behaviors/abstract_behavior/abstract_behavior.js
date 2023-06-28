@@ -26,6 +26,11 @@ export class AbstractBehavior extends Component {
                 this.editor.observerUnactive(`knowledge_behavior_id_${this.observerId}`);
             });
             onMounted(() => {
+                // Remove non-owl nodes after the mount process because we
+                // never want the HtmlField to be in a "corrupted" state
+                // during an asynchronous timespan so we cannot remove them
+                // earlier.
+                this.props.blueprintNodes.forEach(child => child.remove());
                 this.editor.idSet(this.props.anchor);
                 this.editor.observerActive(`knowledge_behavior_id_${this.observerId}`);
             });
@@ -63,4 +68,11 @@ AbstractBehavior.props = {
     wysiwyg: { type: Object, optional: true},
     record: { type: Object },
     root: { type: Element },
+    // TODO: make it mandatory in master, as a bugfix we don't add required
+    // props.
+    blueprintNodes: { type: Array, optional: true },
 };
+
+AbstractBehavior.defaultProps = {
+    blueprintNodes: [],
+}

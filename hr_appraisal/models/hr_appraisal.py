@@ -61,7 +61,7 @@ class HrAppraisal(models.Model):
     manager_ids = fields.Many2many(
         'hr.employee', 'appraisal_manager_rel', 'hr_appraisal_id',
         context={'active_test': False},
-        domain="[('active', '=', 'True'), '|', ('company_id', '=', False), ('company_id', '=', company_id)]")
+        domain="[('id', '!=', employee_id), ('active', '=', 'True'), '|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     manager_user_ids = fields.Many2many('res.users', string="Manager Users", compute='_compute_user_manager_rights')
     meeting_ids = fields.Many2many('calendar.event', string='Meetings')
     meeting_count_display = fields.Char(string='Meeting Count', compute='_compute_meeting_count')
@@ -192,7 +192,8 @@ class HrAppraisal(models.Model):
     def _onchange_employee_id(self):
         self = self.sudo()  # fields are not on the employee public
         if self.employee_id:
-            self.manager_ids = self.employee_id.parent_id
+            manager = self.employee_id.parent_id
+            self.manager_ids = manager if manager != self.employee_id else False
 
     def subscribe_employees(self):
         for appraisal in self:

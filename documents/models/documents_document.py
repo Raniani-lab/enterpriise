@@ -22,6 +22,8 @@ from odoo.tools.mimetypes import get_extension
 from odoo.tools.misc import clean_context
 from odoo.addons.mail.tools import link_preview
 
+from .documents_facet import N_FACET_COLORS
+
 
 def _sanitize_file_extension(extension):
     """ Remove leading and trailing spacing + Remove leading "." """
@@ -611,10 +613,9 @@ class Document(models.Model):
         """
         tags = self.env['documents.tag']._get_tags(domain, folder_id)
         facets = list(OrderedDict.fromkeys([tag['group_id'] for tag in tags]))
-        facet_colors = self.env['documents.facet'].FACET_ORDER_COLORS
         for tag in tags:
-            color_index = facets.index(tag['group_id']) % len(facet_colors)
-            tag['group_hex_color'] = facet_colors[color_index]
+            color_index = (facets.index(tag['group_id']) % N_FACET_COLORS) + 1
+            tag['color_index'] = color_index
 
         return tags
 

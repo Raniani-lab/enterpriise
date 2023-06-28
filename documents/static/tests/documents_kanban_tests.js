@@ -3325,7 +3325,7 @@ QUnit.module("documents", {}, function () {
                             ".o_search_panel .o_search_panel_filter_group:nth-of-type(1) label:nth-of-type(1) > span"
                         )
                         .textContent.replace(/\s/g, ""),
-                    "●Priority",
+                    "Priority",
                     "the first facet should be 'Priority'"
                 );
                 assert.strictEqual(
@@ -3343,7 +3343,7 @@ QUnit.module("documents", {}, function () {
                             ".o_search_panel .o_search_panel_filter_group:last-child label:nth-of-type(1) > span"
                         )
                         .textContent.replace(/\s/g, ""),
-                    "●Status",
+                    "Status",
                     "the last facet should be 'Status'"
                 );
                 assert.strictEqual(
@@ -3899,12 +3899,12 @@ QUnit.module("documents", {}, function () {
                     "This record should have 3 tags"
                 );
 
-                assert.strictEqual(
+                assert.hasClass(
                     target.querySelector(
                         ".o_kanban_record:nth-of-type(3) .o_field_documents_many2many_tags .o_tag:nth-of-type(1)"
-                    ).style.backgroundColor,
-                    "rgb(108, 193, 237)",
-                    "should have the right color"
+                    ),
+                    "o_tag_color_2",
+                    "should have the right tag color class"
                 );
             });
 
@@ -3936,18 +3936,14 @@ QUnit.module("documents", {}, function () {
                     "Third record should have 3 tags"
                 );
 
-                assert.deepEqual(
+                assert.strictEqual(
                     [
                         ...target.querySelectorAll(
                             ".o_kanban_record:nth-of-type(3) .o_field_documents_many2many_tags .o_tag"
                         )
-                    ].map(n => n.style.backgroundColor),
-                    [
-                        "rgb(74, 79, 89)",
-                        "rgb(74, 79, 89)",
-                        "rgb(74, 79, 89)"
-                    ],
-                    "should have 3 tags with grey color by default"
+                    ].filter(n => n.classList.contains('o_tag_color_0')).length,
+                    3,
+                    "Should have 3 default tag class (o_tag_color_0)"
                 );
             });
 
@@ -4236,7 +4232,7 @@ QUnit.module("documents", {}, function () {
                 const tag = find(
                     target,
                     ".o_search_panel_filter:nth-of-type(2) .o_search_panel_group_header:nth-of-type(1)",
-                    "●Priority"
+                    "Priority"
                 );
                 assert.containsOnce(tag, ".o_documents_search_panel_section_edit");
 

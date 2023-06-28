@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<templates>
-    <t t-name="documents.DocumentsTagsList" t-inherit="web.TagsList" t-inherit-mode="primary" owl="1">
-        <!-- Add color -->
-        <xpath expr="//t/span" position="attributes">
-            <attribute name="t-attf-style">{{ getStyleForTag(tag) }}</attribute>
-        </xpath>
-    </t>
-</templates>

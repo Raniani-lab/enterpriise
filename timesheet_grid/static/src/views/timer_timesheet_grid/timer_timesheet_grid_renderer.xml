@@ -40,7 +40,7 @@
     <t t-name="timesheet_grid.TimerGridHeader" t-inherit="web_grid.Header">
         <xpath expr="//div[hasclass('o_grid_column_title')]" position="before">
             <div t-if="showTimerButton"
-                 class="o_grid_column_timer_button bg-view border-bottom"
+                 class="o_grid_column_timer_button border-bottom"
                  t-attf-style="grid-row: {{rowsGap}}; grid-column: 1;"
             />
         </xpath>
@@ -58,7 +58,8 @@
     <t t-name="timesheet_grid.TimerGridRow" t-inherit="web_grid.Row">
         <xpath expr="//div[@name='row']" position="before">
             <div t-if="showTimerButton"
-                class="o_grid_row_timer o_grid_highlightable d-flex align-items-center px-3 py-1 transition-base"
+                class="o_grid_row o_grid_row_timer o_grid_highlightable d-flex align-items-center justify-content-center py-1"
+                t-att-class="{'o_grid_row_even' : isEven}"
                 t-att-data-row="row.id"
                 t-att-data-grid-row="rowPosition"
                 t-att-data-grid-column="1"
@@ -79,6 +80,7 @@
     <t t-name="timesheet_grid.TimerGridAddLine" t-inherit="web_grid.AddLine">
         <xpath expr="//div[@t-if='props.createInline']" position="before">
             <div t-if="showTimerButton"
+                 class="o_grid_row o_grid_row_timer"
                  t-attf-style="grid-row: {{rowPosition}}; grid-column: 1;"
             />
         </xpath>

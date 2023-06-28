@@ -1,11 +1,11 @@
 .o_timer_timesheet_grid_view .o_grid_renderer {
     .o_grid_row_timer {
         &.o_grid_row_even:not(.o_grid_highlighted) {
-            @extend .bg-view, .bg-opacity-50;
+            background: $o-white;
         }
 
         &.o_grid_row_highlighted {
-            @extend .bg-200, .bg-opacity-25;
+            @extend .bg-200;
         }
     }
 
@@ -15,5 +15,30 @@
 
     .timesheet-timer {
         @include o-gantt-zindex(view-nocontent);
+    }
+}
+
+// This is a trick setting a max-width on the first column of the grid to avoid the
+// overlap on the first row and its column_title because of the extra width of the
+// o_grid_navigation_wrap.
+
+@include media-breakpoint-up(md){
+    $o-first-column-width: 4rem;
+
+    .o_grid_row_timer {
+        width: $o-first-column-width;
+    }
+
+    .o_grid_column_timer_button + .o_grid_navigation_wrap {
+        margin-right: $o-first-column-width;
+
+        &::before {
+            content: "";
+            @include o-position-absolute(0, -$o-first-column-width);
+            box-sizing: content-box;
+            height: 100%;
+            width: $o-first-column-width;
+            border-bottom: 1px solid $border-color;
+        }
     }
 }

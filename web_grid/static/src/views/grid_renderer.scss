@@ -6,7 +6,7 @@
     height: inherit;
 
     .o_grid_row, .o_grid_section {
-        min-height: 3rem;
+        min-height: 2.5rem;
     }
 
     span, button {
@@ -27,6 +27,9 @@
     .o_grid_column_title {
         &.o_grid_highlighted:not(.bg-info) {
             --bg-opacity: 0;
+            &:not(.o_grid_row_highlighted) {
+                background-color: $o-gray-200;
+            }
         }
 
         &.fw-bold:not(.o_grid_highlighted) {
@@ -34,8 +37,8 @@
         }
     }
 
-    .o_grid_section.o_grid_highlighted:not(.o_grid_section_title) > .position-absolute:not(.bg-info-light) {
-        background: $o-gray-400;
+    .o_grid_section.o_grid_highlighted > .position-absolute:not(.bg-info-light) {
+        background: $o-gray-200;
     }
 
     .o_grid_row:not(.o_grid_row_total):not(.o_grid_column_total) {
@@ -43,9 +46,9 @@
             --text-opacity: .5;
         }
 
-        &.o_grid_highlighted:not(.o_grid_add_line) {
+        &.o_grid_highlighted {
             &.o_grid_row_highlighted {
-                background: $o-gray-300;
+                background: $o-gray-200;
             }
 
             &.o_grid_row_highlighted,.o_grid_cell_highlighted {
@@ -56,7 +59,7 @@
 
             &.o_grid_cell_highlighted {
                 &:not(.o_grid_cell_today) {
-                    background: $o-gray-300;
+                    background: $o-gray-200;
                 }
             }
 
@@ -108,6 +111,16 @@
 
     .o_grid_row_title:not(.o_grid_row_even),
     .o_grid_add_line_first_cell {
-        background: $o-gray-200;
+        background: $o-gray-100;
+    }
+
+    .o_field_timesheet_many2one {
+        .o_form_uri {
+            color: $body-color;
+
+            &:hover {
+                color: $o-action;
+            }
+        }
     }
 }

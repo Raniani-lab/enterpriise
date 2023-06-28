@@ -2,7 +2,7 @@
 <templates>
     <t t-name="web_grid.Renderer">
         <div class="o_grid_renderer flex-grow-1" t-ref="renderer">
-            <div class="o_grid_grid d-grid gap-0 border-bottom bg-200"
+            <div class="o_grid_grid d-grid gap-0 border-bottom bg-100"
                  t-attf-style="grid-template-rows: {{ gridTemplateRows }} ; grid-template-columns: {{ gridTemplateColumns }}"
                  t-on-mouseover.stop="onMouseOver"
                  t-on-mouseout.stop="onMouseOut"
@@ -34,58 +34,65 @@
         </div>
     </t>
     <t t-name="web_grid.Header">
-        <div class="o_grid_column_title o_grid_navigation_wrap position-md-sticky start-0 d-flex align-items-center gap-2 px-3 border-bottom bg-100 overflow-visible"
+        <div class="o_grid_column_title o_grid_navigation_wrap position-md-sticky top-0 start-0 d-flex align-items-center gap-2 px-3 border-bottom bg-100 overflow-visible"
              t-attf-style="grid-row: {{rowsGap}}; grid-column: {{columnsGap - 1}} / span {{columnsGap}};">
             <t t-call="web_grid.NavigationButtons"/>
         </div>
         <div t-foreach="props.columns"
              t-as="column"
              t-key="column.id"
-             class="o_grid_column_title o_grid_highlightable position-relative px-3 py-2 border-bottom text-center transition-base"
+             class="o_grid_column_title o_grid_highlightable position-relative position-md-sticky top-0 d-flex align-items-center justify-content-center px-3 py-2 border-bottom text-bg-100"
              t-att-class="{
-                'bg-100 fw-bold' : !column.isToday,
-                'bg-info bg-opacity-25 fw-bolder': column.isToday,
+                'fw-bolder': column.isToday,
+                'fw-bold' : !column.isToday,
                 'text-opacity-25' : getUnavailableClass(column) === 'o_grid_unavailable'
              }"
              t-att-data-grid-row="rowsGap"
              t-att-data-grid-column="column_index + 1 + columnsGap"
              t-attf-style="grid-row: {{rowsGap}}; grid-column: {{column_index + 1 + columnsGap}};"
         >
-            <span t-esc="column.title"/>
+            <div class="position-absolute top-0 start-0 w-100 h-100"
+                 t-att-class="{
+                    'o_grid_cell_overlay_today bg-info': column.isToday,
+                    'o_grid_cell_overlay bg-700' : !column.isToday,
+                }"/>
+            <span class="z-index-1" t-out="column.title"/>
         </div>
         <div t-if="!props.options.hideLineTotal"
-             class="o_grid_column_title o_grid_row_total position-md-sticky end-0 d-flex align-items-center justify-content-center px-3 py-2 fw-bold text-center"
+             class="o_grid_column_title o_grid_row_total position-md-sticky top-0 end-0 d-flex align-items-center justify-content-center text-bg-700 px-3 py-2 fw-bold text-center"
              t-attf-style="grid-row: {{rowsGap}}; grid-column: {{props.columns.length + 1 + columnsGap}};"
         >
-            <t t-esc="measureLabel"/>
+            <span class="z-index-1" t-out="measureLabel"/>
         </div>
     </t>
     <t t-name="web_grid.Section">
         <t t-set="section" t-value="row"/>
         <t t-set="rowPosition" t-value="getRowPosition(section)"/>
         <t t-if="!section.isFake">
-            <div class="o_grid_section o_grid_section_title o_grid_highlightable d-flex align-items-center ps-3 border-top bg-400 bg-opacity-25 fw-bold"
+            <div class="o_grid_section o_grid_section_title o_grid_highlightable d-flex align-items-center ps-3 border-top bg-200 fw-bold"
                  t-att-class="{
-                    'z-index-1 position-md-sticky start-0': !props.model.useSampleModel,
+                    'position-md-sticky start-0': !props.model.useSampleModel,
                  }"
                  t-att-data-grid-row="rowPosition"
                  t-att-data-grid-column="columnsGap"
                  t-attf-style="grid-row: {{rowPosition}}; grid-column: {{columnsGap}};"
             >
-                <GridComponent
-                    classNames="'text-truncate'"
-                    name="props.sectionField.name"
-                    model="props.model"
-                    row="section"
-                    t-props="getFieldAdditionalProps(props.sectionField.name)"
-                />
+                <div class="position-absolute top-0 start-0 w-100 h-100 bg-700"/>
+                    <GridComponent
+                        classNames="'text-truncate'"
+                        name="props.sectionField.name"
+                        model="props.model"
+                        row="section"
+                        t-props="getFieldAdditionalProps(props.sectionField.name)"
+                    />
             </div>
             <div t-foreach="props.columns"
                 t-as="column"
                 t-key="column.id"
-                class="o_grid_section o_grid_highlightable position-relative d-flex align-items-center justify-content-center bg-400 bg-opacity-25 fw-bold"
+                class="o_grid_section o_grid_highlightable position-relative d-flex align-items-center justify-content-center fw-bold"
                 t-att-class="{
-                    'border-top' : !column.isToday,
+                    'bg-info bg-opacity-50' : column.isToday,
+                    'text-bg-200 border-top' : !column.isToday,
                     'text-opacity-25' : getUnavailableClass(column) === 'o_grid_unavailable'
                 }"
                 t-att-data-row="section.id"
@@ -93,32 +100,33 @@
                 t-att-data-grid-row="rowPosition"
                 t-att-data-grid-column="column_index + 1 + columnsGap"
                 t-attf-style="grid-row: {{rowPosition}}; grid-column: {{column_index + 1 + columnsGap}};"
-            >   <div class="position-absolute top-0 start-0 w-100 h-100 opacity-50 transition-base "
-                     t-att-class="{
-                        'bg-info-light' : column.isToday,
-                     }"
+            >
+                <div class="position-absolute top-0 start-0 w-100 h-100 "
+                    t-att-class="{
+                       'o_grid_cell_overlay_today bg-info bg-opacity-25' : column.isToday,
+                       'o_grid_cell_overlay bg-700' : !column.isToday,
+                    }"
                 />
                 <div class="o_grid_cell_readonly position-relative d-flex justify-content-center align-items-center w-100 h-100">
-                    <span t-att-class="{
+                    <span class="z-index-1" t-att-class="{
                             'text-opacity-25' : section.cells[column.id].value === 0
                           }"
-                          t-esc="formatValue(section.cells[column.id].value)"
+                          t-out="formatValue(section.cells[column.id].value)"
                     />
                 </div>
             </div>
             <div t-if="!props.options.hideLineTotal"
-                 class="o_grid_section o_grid_row_total o_grid_highlightable position-relative position-md-sticky end-0 d-flex align-items-center justify-content-center px-3 py-1 fw-bold text-bg-700"
+                 class="o_grid_section o_grid_row_total o_grid_highlightable position-relative position-md-sticky end-0 d-flex align-items-center justify-content-center px-3 py-1 fw-bold text-bg-800"
+                 t-att-class="{
+                    'text-opacity-25': section.grandTotal === 0
+                 }"
                  t-att-data-grid-row="rowPosition"
                  t-att-data-grid-column="props.columns.length + 1 + columnsGap"
                  t-attf-style="grid-row: {{rowPosition}}; grid-column: {{props.columns.length + 1 + columnsGap}};"
             >
-                <div class="position-absolute top-0 start-0 w-100 h-100 opacity-25 bg-dark transition-base"/>
-                <div class="position-relative d-flex align-items-center w-100">
-                    <span t-att-class="{
-                            'text-opacity-25': section.grandTotal === 0
-                            }"
-                            t-esc="formatValue(section.grandTotal)"
-                    />
+                <div class="o_grid_cell_overlay_total position-absolute top-0 start-0 w-100 h-100 bg-900"/>
+                <div class="position-relative d-flex align-items-center">
+                    <span t-out="formatValue(section.grandTotal)"/>
                 </div>
             </div>
         </t>
@@ -127,45 +135,51 @@
         <t t-set="rowPosition" t-value="getRowPosition(row)"/>
         <t t-set="isEven" t-value="rowPosition % 2 !== 0"/>
         <div name="row"
-             class="o_grid_row o_grid_row_title o_grid_highlightable d-flex flex-column flex-md-row justify-content-center justify-content-md-start align-items-md-center px-3 py-1 transition-base"
+             class="o_grid_row o_grid_row_title o_grid_highlightable position-relative d-flex flex-column flex-md-row justify-content-center justify-content-md-start align-items-md-center px-3 py-1"
              t-att-class="{
-                'z-index-1 position-md-sticky start-0': !props.model.useSampleModel,
-                'o_grid_row_even': isEven,
-                'fst-italic pe-1': row.isAdditionalRow,
+                'position-md-sticky start-0': !props.model.useSampleModel,
+                'bg-view': isEven,
+                'bg-100': !isEven,
+                'fst-italic': row.isAdditionalRow,
+                'text-opacity-25' : getUnavailableClass(row) === 'o_grid_unavailable'
              }"
              t-att-data-grid-row="rowPosition"
              t-att-data-grid-column="columnsGap"
              t-attf-style="grid-row: {{rowPosition}}; grid-column: {{columnsGap}};"
         >
+
             <t t-set="rowFields" t-value="props.model.rowFields.map(field => field.name)"/>
-            <t t-foreach="props.rowFields" t-as="rowField" t-key="rowField_index">
-                <t t-set="fieldName" t-value="rowField.name"/>
-                <GridComponent
-                    t-if="row.initialRecordValues[fieldName] or rowField_index === 0"
-                    classNames="'text-truncate o_grid_field_' + fieldName.replace('_id','') + [isMobile ? '' : ' text-nowrap']"
-                    name="fieldName"
-                    value="row.initialRecordValues[fieldName]"
-                    model="props.model"
-                    row="row"
-                    t-props="getFieldAdditionalProps(fieldName)"
-                />
-                <span t-if="!rowField_last and row.initialRecordValues[props.rowFields[rowField_index + 1].name]"
-                        class="o_grid_row_data_separator d-none d-md-inline px-2 text-300"
+            <div class="o_grid_cell_overlay position-absolute top-0 start-0 w-100 h-100 bg-700"/>
+            <t t-set="rowFields" t-value="props.model.rowFields.map(field => field.name)"/>
+                <t t-foreach="props.rowFields" t-as="rowField" t-key="rowField_index">
+                    <t t-set="fieldName" t-value="rowField.name"/>
+                    <GridComponent
+                        t-if="row.initialRecordValues[fieldName] or rowField_index === 0"
+                        classNames="'text-truncate o_grid_field_' + fieldName.replace('_id','') + [isMobile ? '' : ' text-nowrap']"
+                        name="fieldName"
+                        value="row.initialRecordValues[fieldName]"
+                        model="props.model"
+                        row="row"
+                        t-props="getFieldAdditionalProps(fieldName)"
+                    />
+                    <span t-if="!rowField_last and row.initialRecordValues[props.rowFields[rowField_index + 1].name]"
+                            class="o_grid_row_data_separator d-none d-md-inline px-2 text-300"
                 >
                     |
                 </span>
-            </t>
+                </t>
         </div>
         <div t-foreach="row.model.columnsArray"
              t-as="column"
              t-key="column.id"
-             class="o_grid_row o_grid_highlightable position-relative d-flex align-items-center justify-content-center transition-base"
+             class="o_grid_row o_grid_highlightable position-relative d-flex align-items-center justify-content-center"
              t-att-class="{
                  'o_grid_cell_today': column.isToday,
-                 'o_grid_row_even': isEven,
+                 'text-bg-view': isEven,
+                 'text-900': !isEven,
                  'fst-italic': row.isAdditionalRow,
                  'text-danger': row.cells[column.id].value lt 0,
-                 'text-opacity-50': getUnavailableClass(column, { section, row }) === 'o_grid_unavailable',
+                 'text-opacity-25': getUnavailableClass(column, { section, row }) === 'o_grid_unavailable',
              }"
              t-att-data-row="row.id"
              t-att-data-column="column.id"
@@ -174,10 +188,11 @@
              t-attf-style="grid-row: {{rowPosition}}; grid-column: {{column_index + 1 + columnsGap}};"
              t-on-click.prevent.synthetic="onCellClick"
         >
-            <div class="position-absolute top-0 start-0 w-100 h-100 opacity-50 transition-base"
+            <div class="position-absolute top-0 start-0 w-100 h-100"
                  t-att-class="{
-                   'bg-info' : column.isToday,
-                }"
+                    'o_grid_cell_overlay_today bg-info bg-opacity-25' : column.isToday,
+                    'o_grid_cell_overlay bg-700' : !column.isToday,
+                 }"
             />
             <div class="o_grid_cell_readonly position-relative d-flex justify-content-center align-items-center w-100 h-100">
                 <span t-att-class="{
@@ -188,25 +203,30 @@
             </div>
         </div>
         <div t-if="!props.options.hideLineTotal"
-             class="o_grid_row o_grid_row_total o_grid_highlightable position-relative position-md-sticky end-0 d-flex align-items-center justify-content-center px-3 py-1 transition-base"
+             class="o_grid_row o_grid_row_total o_grid_highlightable position-relative position-md-sticky end-0 d-flex align-items-center justify-content-center px-3 py-1 text-bg-700"
              t-att-class="{
                 'fst-italic': row.isAdditionalRow,
                 'bg-danger text-bg-danger': row.grandTotal lt 0,
+                'text-opacity-50': row.grandTotal === 0
              }"
              t-att-data-grid-row="rowPosition"
              t-att-data-grid-column="props.columns.length + 1 + columnsGap"
              t-attf-style="grid-row: {{rowPosition}}; grid-column: {{props.columns.length + 1 + columnsGap}};"
         >
-            <div class="position-absolute top-0 start-0 w-100 h-100 bg-opacity-25 transition-base"/>
-            <span>
-                <t t-esc="formatValue(row.grandTotal)"/>
-            </span>
+            <div class="o_grid_cell_overlay_total position-absolute top-0 start-0 w-100 h-100 bg-900"/>
+            <span class="z-index-1" t-out="formatValue(row.grandTotal)"/>
+
         </div>
     </t>
     <t t-name="web_grid.AddLine">
         <t t-set="rowPosition" t-value="getRowPosition(row or undefined, true)"/>
+        <t t-set="isEven" t-value="rowPosition % 2 !== 0"/>
         <div t-if="props.createInline"
-             class="o_grid_row o_grid_add_line o_grid_add_line_first_cell position-md-sticky start-0 d-flex align-items-center ps-3 z-index-1 transition-base"
+             class="o_grid_row o_grid_add_line o_grid_add_line_first_cell position-md-sticky start-0 d-flex align-items-center z-index-1 ps-3"
+             t-att-class="{
+                'bg-view': isEven,
+                'bg-100': !isEven,
+             }"
              t-attf-style="grid-row: {{rowPosition}}; grid-column: {{columnsGap}};"
         >
             <a class="btn btn-link o_text_overflow"
@@ -218,23 +238,34 @@
         <div t-foreach="props.columns"
              t-as="column"
              t-key="column.id"
-             class="o_grid_row o_grid_add_line o_grid_highlightable transition-base"
+             class="o_grid_row o_grid_add_line o_grid_highlightable position-relative"
              t-att-class="{
-                'bg-info bg-opacity-25 opacity-50': column.isToday,
-             }"
+                   'o_grid_cell_today' : column.isToday,
+                   'bg-view': isEven
+                }"
              t-att-data-grid-row="rowPosition"
              t-att-data-grid-column="column_index + 1 + columnsGap"
              t-attf-style="grid-row: {{rowPosition}}; grid-column: {{column_index + 1 + columnsGap}};"
-        />
-        <div class="o_grid_add_line position-md-sticky end-0 text-bg-700 transition-base"
+        >
+            <div class="position-absolute top-0 start-0 w-100 h-100"
+                 t-att-class="{
+                    'o_grid_cell_overlay_today bg-info bg-opacity-25' : column.isToday,
+                    'o_grid_cell_overlay bg-700' : !column.isToday,
+                 }"
+            />
+            </div>
+        <div class="o_grid_add_line position-md-sticky end-0 text-bg-700"
              t-attf-style="grid-row: {{rowPosition}}; grid-column: {{props.columns.length + 1 + columnsGap}};"
         ></div>
     </t>
     <t t-name="web_grid.Footer">
         <t t-if="!props.options.hideColumnTotal">
             <t t-set="rowPosition" t-value="getTotalRowPosition()"/>
-            <div class="bg-view"
+            <t t-set="isEven" t-value="rowPosition % 2 !== 0"/>
+            <div class=""
                  t-att-class="{
+                    'bg-view': isEven,
+                    'bg-100': !isEven,
                     'z-index-1 position-md-sticky start-0': !props.model.useSampleModel,
                  }"
                  t-attf-style="grid-row: {{rowPosition}}; grid-column: {{columnsGap}};"/>
@@ -244,8 +275,9 @@
             <div t-foreach="props.columns"
                  t-as="column"
                  t-key="column.id"
-                 class="o_grid_row o_grid_column_total o_grid_highlightable bg-view transition-base"
+                 class="o_grid_row o_grid_column_total o_grid_highlightable"
                  t-att-class="{
+                    'bg-view': isEven,
                     'text-danger': column.grandTotal lt 0,
                  }"
                  t-att-data-grid-row="rowPosition"
@@ -255,11 +287,11 @@
                 <t t-set="grandTotal"
                    t-value="grandTotal + column.grandTotal"
                 />
-                <div class="h-100 d-flex justify-content-center align-items-center transition-base"
+                <div class="h-100 d-flex justify-content-center align-items-center"
                      t-if="column.grandTotal !== 0">
                     <div class="o_grid_bar_chart_total_title"
                          t-att-class="{
-                         'text-opacity-50' : getUnavailableClass(column) === 'o_grid_unavailable'
+                            'text-opacity-25' : getUnavailableClass(column) === 'o_grid_unavailable'
                          }">
                         <span class="fs-5 fw-bolder">
                             <t t-esc="formatValue(column.grandTotal)"/>
@@ -270,7 +302,7 @@
             <div t-if="!props.options.hideLineTotal"
                 t-att-data-grid-row="rowPosition"
                 t-att-data-grid-column="props.columns.length + 1 + columnsGap"
-                class="o_grid_highlightable position-md-sticky end-0 d-flex align-items-center justify-content-center text-bg-700 fw-bold transition-base"
+                class="o_grid_highlightable position-md-sticky end-0 d-flex align-items-center justify-content-center text-bg-800 fw-bold"
                 t-att-class="{
                     'bg-danger text-bg-danger': grandTotal lt 0,
                 }"
@@ -285,8 +317,11 @@
     <t t-name="web_grid.barChart">
         <t t-if="!props.options.hideColumnTotal">
             <t t-set="rowPosition" t-value="getTotalRowPosition()"/>
+            <t t-set="isEven" t-value="(rowPosition + 1) % 2 !== 0"/>
             <div class="o_grid_row_barChart"
                  t-att-class="{
+                    'bg-view': isEven,
+                    'bg-100': !isEven,
                     'z-index-1 position-md-sticky start-0': !props.model.useSampleModel,
                  }"
                  t-attf-style="grid-row: {{rowPosition + 1}}; grid-column: {{columnsGap}};"/>
@@ -294,7 +329,8 @@
             <div t-foreach="props.columns"
                 t-as="column"
                 t-key="column.id"
-                class="o_grid_row o_grid_column_total o_grid_highlightable o_grid_bar_chart_container transition-base"
+                class="o_grid_row o_ jgrid_column_total o_grid_highlightable o_grid_bar_chart_container"
+                t-att-class="{'bg-view': isEven}"
                 t-att-data-grid-row="rowPosition + 1"
                 t-att-data-grid-column="column_index + 1 + columnsGap"
                 t-attf-style="grid-row: {{rowPosition + 1}}; grid-column: {{column_index + 1 + columnsGap}};"
@@ -309,7 +345,7 @@
                 </div>
             </div>
             <div t-if="!props.options.hideLineTotal"
-                 class="o_grid_row o_grid_column_total o_grid_row_total o_grid_highlightable position-md-sticky end-0 transition-base"
+                 class="o_grid_row o_grid_column_total o_grid_row_total o_grid_highlightable position-md-sticky end-0 bg-700"
                  t-att-data-grid-row="rowPosition + 1"
                  t-att-data-grid-column="props.columns.length + 1 + columnsGap"
                  t-attf-style="grid-row: {{rowPosition + 1}}; grid-column: {{props.columns.length + 1 + columnsGap}};"

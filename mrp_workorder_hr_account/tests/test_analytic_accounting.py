@@ -161,6 +161,7 @@ class TestMrpAnalyticAccountHr(TestMrpAnalyticAccount):
             'default_capacity': 1,
             'time_efficiency': 100,
             'costs_hour': 10,
+            'allow_employee': True,
         })
         # add a workorder to the BoM
         self.bom.write({

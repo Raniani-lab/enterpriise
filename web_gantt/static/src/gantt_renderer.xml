@@ -16,8 +16,8 @@
             }};--Gantt__Template-columns:{{
                 gridTemplate.columns
             }}"
-            t-on-mousemove="throttledOnMouseMove"
-            t-on-mouseleave="onMouseLeave"
+            t-on-pointermove="throttledOnPointerMove"
+            t-on-pointerleave="onPointerLeave"
         >
             <t t-call="{{ constructor.headerTemplate }}"/>
             <t t-if="model.metaData.groupedBy.length">

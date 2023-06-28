@@ -365,7 +365,7 @@ async function hoverCell(cell, options) {
         evAttrs.clientX += Math.ceil(partWidth * (part - 1));
     }
 
-    await triggerEvents(cell, null, ["mouseenter", ["mousemove", evAttrs]]);
+    await triggerEvents(cell, null, ["pointerenter", ["pointermove", evAttrs]]);
 }
 
 /**
@@ -401,10 +401,10 @@ async function hoverPillCell(pill) {
 export async function resizePill(pill, side, deltaOrPosition, shouldDrop = true) {
     const drop = async () => {
         await dropHandle();
-        await triggerEvent(pill, null, "mouseleave");
+        await triggerEvent(pill, null, "pointerleave");
     };
 
-    await triggerEvent(pill, null, "mouseenter");
+    await triggerEvent(pill, null, "pointerenter");
 
     const { row, column } = getGridStyle(pill);
 

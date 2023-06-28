@@ -1353,7 +1353,7 @@ QUnit.test("show cell buttons when hovering a cell: 2-level grouped", async (ass
 });
 
 QUnit.test("hovering a cell with special character", async (assert) => {
-    assert.expect(1)
+    assert.expect(1);
     // add special character to data
     serverData.models.users.records[0].name = "User' 1";
 
@@ -1367,8 +1367,12 @@ QUnit.test("hovering a cell with special character", async (assert) => {
 
     // hover on first header "User' 1" with data-row-id equal to [{"user_id":[1,"User' 1"]}]
     // the "'" must be escaped with "\\'" in findSiblings to prevent the selector to crash
-    await triggerEvent(target.querySelector(".o_gantt_row_header"), null, "mouseenter");
-    assert.hasClass(target.querySelector(".o_gantt_row_header"), "o_gantt_group_hovered", "hover style is applied to the element");
+    await triggerEvent(target.querySelector(".o_gantt_row_header"), null, "pointerenter");
+    assert.hasClass(
+        target.querySelector(".o_gantt_row_header"),
+        "o_gantt_group_hovered",
+        "hover style is applied to the element"
+    );
 });
 
 QUnit.test("if a cell_create is specified to false then do not show + icon", async (assert) => {
@@ -2059,7 +2063,7 @@ QUnit.test("resize a pill", async (assert) => {
     assert.containsOnce(target, SELECTORS.resizable);
     assert.containsNone(target, SELECTORS.resizeHandle);
 
-    await triggerEvent(getPillWrapper("Task 1"), null, "mouseenter");
+    await triggerEvent(getPillWrapper("Task 1"), null, "pointerenter");
 
     // No start resizer because the start date overflows
     assert.containsNone(target, SELECTORS.resizeStartHandle);
@@ -2074,7 +2078,7 @@ QUnit.test("resize a pill", async (assert) => {
     assert.containsOnce(target, ".o_gantt_pill", "there should still be one pill (Task 1)");
     assert.containsOnce(target, SELECTORS.resizable);
 
-    await triggerEvent(getPillWrapper("Task 1"), null, "mouseenter");
+    await triggerEvent(getPillWrapper("Task 1"), null, "pointerenter");
 
     // No end resizer because the end date overflows
     assert.containsOnce(target, SELECTORS.resizeStartHandle);
@@ -2136,7 +2140,7 @@ QUnit.test("resize a pill (2)", async (assert) => {
 
     assert.containsOnce(target, SELECTORS.pill);
 
-    await triggerEvent(getPillWrapper("Task 2"), null, "mouseenter");
+    await triggerEvent(getPillWrapper("Task 2"), null, "pointerenter");
 
     assert.hasClass(getPillWrapper("Task 2"), CLASSES.resizable);
     assert.containsN(target, SELECTORS.resizeHandle, 2);
@@ -2867,7 +2871,7 @@ QUnit.test("drag&drop on other pill in grouped view", async (assert) => {
     const { drop } = await dragPill("Task 2");
     await drop({ pill: "Task 1" });
 
-    await click(document.body); // To simulate the full 'mouseup' sequence
+    await click(document.body); // To simulate the full 'pointerup' sequence
 
     def.resolve();
     await nextTick();

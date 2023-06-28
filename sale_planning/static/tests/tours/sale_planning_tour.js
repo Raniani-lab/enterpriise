@@ -12,7 +12,7 @@ registry.category("web_tour.tours").add('sale_planning_test_tour', {
             trigger: ".o_gantt_cell.o_gantt_hoverable",
             content: "Click on magnify icon to see list of sale order",
             run: function () {
-                this.$anchor[0].dispatchEvent(new MouseEvent("mousemove", { bubbles: true }));
+                this.$anchor[0].dispatchEvent(new PointerEvent("pointermove", { bubbles: true, cancelable: true }));
             },
         }, {
             trigger: ".o_gantt_cells .o_gantt_cell_plan",

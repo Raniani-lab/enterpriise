@@ -256,7 +256,7 @@ export class GanttRenderer extends Component {
             }).popoverTemplate;
         }
 
-        this.throttledOnMouseMove = throttleForAnimation((ev) => this.onMouseMove(ev));
+        this.throttledOnPointerMove = throttleForAnimation((ev) => this.onPointerMove(ev));
 
         useExternalListener(window, "keydown", (ev) => this.onWindowKeyDown(ev));
         useExternalListener(window, "keyup", (ev) => this.onWindowKeyUp(ev));
@@ -663,7 +663,7 @@ export class GanttRenderer extends Component {
     }
 
     /**
-     * @param {MouseEvent} ev
+     * @param {PointerEvent} ev
      */
     computeDerivedParamsFromHover(ev) {
         const { canCellCreate, canPlan, scale } = this.model.metaData;
@@ -1840,8 +1840,8 @@ export class GanttRenderer extends Component {
         }
     }
 
-    onMouseLeave() {
-        this.throttledOnMouseMove.cancel();
+    onPointerLeave() {
+        this.throttledOnPointerMove.cancel();
 
         if (!this.isDragging) {
             const hoveredConnectorId = this.hovered.connector?.dataset.connectorId;
@@ -1862,16 +1862,18 @@ export class GanttRenderer extends Component {
      * Updates all hovered elements, then calls "computeDerivedParamsFromHover".
      *
      * @see computeDerivedParamsFromHover
-     * @param {MouseEvent} ev
+     * @param {PointerEvent} ev
      */
-    onMouseMove(ev) {
+    onPointerMove(ev) {
         // Lazily compute elements from point as it is a costly operation
         let els = null;
         const pointedEls = () => els || (els = document.elementsFromPoint(ev.clientX, ev.clientY));
 
         // To find hovered elements, also from pointed elements
         const find = (selector) =>
-            (ev.target.closest && ev.target.closest(selector)) || pointedEls().find((el) => el.matches(selector)) || null;
+            ev.target.closest?.(selector) ||
+            pointedEls().find((el) => el.matches(selector)) ||
+            null;
 
         this.hovered.connector = find(".o_gantt_connector");
         this.hovered.hoverable = find(".o_gantt_hoverable");
@@ -1881,7 +1883,7 @@ export class GanttRenderer extends Component {
     }
 
     /**
-     * @param {MouseEvent} ev
+     * @param {PointerEvent} ev
      * @param {Pill} pill
      */
     onPillClicked(ev, pill) {

@@ -28,7 +28,7 @@ import { CLASSES, SELECTORS, getPill, getPillWrapper } from "./helpers";
  * @param {"remove" | "reschedule-forward" | "reschedule-backward"} button
  */
 async function clickConnectorButton(connector, button) {
-    await triggerEvent(connector, null, "mousemove");
+    await triggerEvent(connector, null, "pointermove");
     switch (button) {
         case "remove": {
             return click(connector, SELECTORS.connectorRemoveButton);
@@ -544,7 +544,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                 COLORS.default.color
             );
 
-            await triggerEvent(getConnector(1), null, "mousemove");
+            await triggerEvent(getConnector(1), null, "pointermove");
 
             assert.hasClass(getConnector(1), CLASSES.highlightedConnector);
             assert.hasAttrValue(
@@ -564,7 +564,7 @@ QUnit.module("Views > GanttView", (hooks) => {
             "Connectors that are not hovered don't display buttons."
         );
 
-        await triggerEvent(getConnector(1), null, "mousemove");
+        await triggerEvent(getConnector(1), null, "pointermove");
 
         assert.containsN(
             getConnector(1),
@@ -587,7 +587,7 @@ QUnit.module("Views > GanttView", (hooks) => {
 
             const task1Pill = getPill("Task 1");
 
-            await triggerEvent(task1Pill, null, "mousemove");
+            await triggerEvent(task1Pill, null, "pointermove");
 
             const firstConnector = getConnector(1); // (start at task1Pill)
             assert.containsNone(
@@ -597,7 +597,7 @@ QUnit.module("Views > GanttView", (hooks) => {
             );
             assert.hasClass(firstConnector, CLASSES.highlightedConnector);
 
-            await triggerEvent(firstConnector, null, "mousemove");
+            await triggerEvent(firstConnector, null, "pointermove");
 
             assert.hasClass(firstConnector, CLASSES.highlightedConnector);
             assert.containsN(
@@ -808,7 +808,7 @@ QUnit.module("Views > GanttView", (hooks) => {
                 );
             }
 
-            await triggerEvent(getPill("Task 2", { nth: 1 }), null, "mousemove");
+            await triggerEvent(getPill("Task 2", { nth: 1 }), null, "pointermove");
 
             // Both pills should be highlighted
             assert.hasClass(getPillWrapper("Task 2", { nth: 1 }), CLASSES.highlightedPill);
@@ -844,7 +844,7 @@ QUnit.module("Views > GanttView", (hooks) => {
             assert.containsNone(target, SELECTORS.highlightedConnector);
             assert.containsNone(target, SELECTORS.highlightedPill);
 
-            await triggerEvent(getConnector(1), null, "mousemove");
+            await triggerEvent(getConnector(1), null, "pointermove");
 
             assert.containsOnce(target, SELECTORS.highlightedConnector);
             assert.containsN(target, SELECTORS.highlightedPill, 2);
@@ -860,7 +860,7 @@ QUnit.module("Views > GanttView", (hooks) => {
 
         assert.ok(getZIndex(getPillWrapper("Task 2")) > getZIndex(getConnector(1)));
 
-        await triggerEvent(getConnector(1), null, "mousemove");
+        await triggerEvent(getConnector(1), null, "pointermove");
 
         assert.ok(getZIndex(getPillWrapper("Task 2")) < getZIndex(getConnector(1)));
     });

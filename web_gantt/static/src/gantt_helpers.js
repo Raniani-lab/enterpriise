@@ -153,13 +153,15 @@ export function useMultiHover({ ref, selector, related, className }) {
      */
     const findSiblings = (el) =>
         ref.el.querySelectorAll(
-            related.map((attr) => `[${attr}='${el.getAttribute(attr).replace(/'/g, "\\'")}']`).join("")
+            related
+                .map((attr) => `[${attr}='${el.getAttribute(attr).replace(/'/g, "\\'")}']`)
+                .join("")
         );
 
     /**
-     * @param {MouseEvent} ev
+     * @param {PointerEvent} ev
      */
-    const onMouseEnter = (ev) => {
+    const onPointerEnter = (ev) => {
         for (const sibling of findSiblings(ev.target)) {
             sibling.classList.add(...classList);
             classedEls.add(sibling);
@@ -167,9 +169,9 @@ export function useMultiHover({ ref, selector, related, className }) {
     };
 
     /**
-     * @param {MouseEvent} ev
+     * @param {PointerEvent} ev
      */
-    const onMouseLeave = (ev) => {
+    const onPointerLeave = (ev) => {
         for (const sibling of findSiblings(ev.target)) {
             sibling.classList.remove(...classList);
             classedEls.delete(sibling);
@@ -183,8 +185,8 @@ export function useMultiHover({ ref, selector, related, className }) {
         (...targets) => {
             if (targets.length) {
                 for (const target of targets) {
-                    target.addEventListener("mouseenter", onMouseEnter);
-                    target.addEventListener("mouseleave", onMouseLeave);
+                    target.addEventListener("pointerenter", onPointerEnter);
+                    target.addEventListener("pointerleave", onPointerLeave);
                 }
                 return () => {
                     for (const el of classedEls) {
@@ -192,8 +194,8 @@ export function useMultiHover({ ref, selector, related, className }) {
                     }
                     classedEls.clear();
                     for (const target of targets) {
-                        target.removeEventListener("mouseenter", onMouseEnter);
-                        target.removeEventListener("mouseleave", onMouseLeave);
+                        target.removeEventListener("pointerenter", onPointerEnter);
+                        target.removeEventListener("pointerleave", onPointerLeave);
                     }
                 };
             }
@@ -407,7 +409,7 @@ export const useGanttResizable = makeDraggableHook({
         showHandles: [Function],
     },
     onComputeParams({ ctx, params, addCleanup, addEffectCleanup, getRect }) {
-        const onElementMouseEnter = (ev) => {
+        const onElementPointerEnter = (ev) => {
             if (ctx.dragging) {
                 return;
             }
@@ -434,7 +436,7 @@ export const useGanttResizable = makeDraggableHook({
             }
         };
 
-        const onElementMouseLeave = () => {
+        const onElementPointerLeave = () => {
             const remove = () => Object.values(handles).forEach((h) => h.remove());
             if (ctx.dragging || ctx.current.element) {
                 addCleanup(remove);
@@ -447,11 +449,11 @@ export const useGanttResizable = makeDraggableHook({
         ctx.precision = params.precision;
 
         for (const el of ctx.ref.el.querySelectorAll(params.elements)) {
-            el.addEventListener("mouseenter", onElementMouseEnter);
-            el.addEventListener("mouseleave", onElementMouseLeave);
+            el.addEventListener("pointerenter", onElementPointerEnter);
+            el.addEventListener("pointerleave", onElementPointerLeave);
             addEffectCleanup(() => {
-                el.removeEventListener("mouseenter", onElementMouseEnter);
-                el.removeEventListener("mouseleave", onElementMouseLeave);
+                el.removeEventListener("pointerenter", onElementPointerEnter);
+                el.removeEventListener("pointerleave", onElementPointerLeave);
             });
         }
 

@@ -545,7 +545,7 @@ var ViewEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
                 attrs: _.pick(node.attrs, self.expr_attrs[node.tag]),
                 xpath_info: xpath_info,
             };
-            self._do({
+            const operation = {
                 type: type,
                 target: target,
                 position: position,
@@ -554,7 +554,11 @@ var ViewEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
                     attrs: new_attrs,
                     field_description: _.extend(field_description, values),
                 },
-            }).then(function () {
+            };
+            if (type === "move") {
+                operation.node.xpath_info = data.sourceXpathInfo;
+            }
+            self._do(operation).then(function () {
                 framework.unblockUI();
                 if (self.editor.selectField && field_description) {
                     self.editor.selectField(field_description.name);
@@ -1241,7 +1245,8 @@ var ViewEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
         config.structureChange = (params) => {
             const legacyNode = getLegacyNode(params.xpath, archXml);
             const xpathInfo = xpathToLegacyXpathInfo(params.xpath);
-            const data = {...params, node: legacyNode, xpathInfo }
+            const sourceXpathInfo = params.sourceXpath && xpathToLegacyXpathInfo(params.sourceXpath);
+            const data = {...params, node: legacyNode, xpathInfo, sourceXpathInfo }
             resetViewCompilerCache();
             this._onViewChange({data});
         }

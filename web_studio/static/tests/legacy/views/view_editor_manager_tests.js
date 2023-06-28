@@ -1059,6 +1059,16 @@ QUnit.module('ViewEditorManager', {
                         node: {
                             tag: 'field',
                             attrs: {name: 'm2o'},
+                            xpath_info: [
+                                {
+                                    indice: 1,
+                                    tag: "tree"
+                                },
+                                {
+                                    indice: 3,
+                                    tag: "field"
+                                }
+                            ]
                         },
                         position: 'before',
                         target: {
@@ -2186,6 +2196,24 @@ QUnit.module('ViewEditorManager', {
                         node: {
                             tag: 'field',
                             attrs: {name: 'm2o'},
+                            xpath_info: [
+                                {
+                                    indice: 1,
+                                    tag: "form"
+                                },
+                                {
+                                    indice: 1,
+                                    tag: "sheet"
+                                },
+                                {
+                                    indice: 1,
+                                    tag: "group"
+                                },
+                                {
+                                    indice: 3,
+                                    tag: "field"
+                                }
+                            ]
                         },
                         position: 'before',
                         target: {
@@ -7031,6 +7059,16 @@ QUnit.module('ViewEditorManager', {
                         tag: 'field',
                         attrs: {name: 'coucou_id'},
                         subview_xpath: "//field[@name='product_ids']/tree[1]",
+                        xpath_info: [
+                            {
+                                indice: 1,
+                                tag: "tree"
+                            },
+                            {
+                                indice: 2,
+                                tag: "field"
+                            }
+                        ]
                     },
                     position: 'before',
                     target: {

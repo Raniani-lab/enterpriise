@@ -781,3 +781,33 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
                     <attribute name="create">false</attribute>
                 </xpath>
             </data>""")
+
+    def test_move_similar_field(self):
+        self.testView.arch = '''
+            <form>
+                <sheet>
+                    <group><group>
+                        <field name="active" />
+                    </group></group>
+                    <notebook>
+                        <page string="one">
+                            <group><group><field name="display_name" /></group></group>
+                        </page>
+                        <page string="two">
+                            <group><group><field name="display_name" /></group></group>
+                        </page>
+                   </notebook>
+                </sheet>
+            </form>
+        '''
+
+        self.start_tour("/web?debug=tests", 'web_studio_test_move_similar_field', login="admin", timeout=400)
+
+        studioView = _get_studio_view(self.testView)
+        assertViewArchEqual(self, studioView.arch, '''
+        <data>
+            <xpath expr="//field[@name='active']" position="before">
+                <xpath expr="//form[1]/sheet[1]/notebook[1]/page[2]/group[1]/group[1]/field[@name='display_name']" position="move" />
+            </xpath>
+        </data>
+        ''')

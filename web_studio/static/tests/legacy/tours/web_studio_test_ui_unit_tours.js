@@ -561,3 +561,31 @@ tour.register("web_studio_test_edit_form_subview_attributes",
         },
     ]
 );
+
+tour.register("web_studio_test_move_similar_field",
+    {
+        test: true,
+    },
+    [
+        {
+            trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
+        },
+        {
+            extra_trigger: ".o_form_view",
+            trigger: ".o_web_studio_navbar_item a",
+        },
+        {
+            extra_trigger: ".o_web_studio_form_view_editor",
+            trigger: ".o_notebook_headers .nav-item:eq(1) a",
+        },
+        {
+            trigger: ".tab-pane.active [data-field-name=display_name]",
+            run: "drag_and_drop_native (.o_web_studio_form_view_editor .o_web_studio_hook:eq(1))",
+        },
+        {
+            trigger: ".o_web_studio_leave",
+            run() {
+            },
+        },
+    ]
+);

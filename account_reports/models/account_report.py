@@ -1322,7 +1322,7 @@ class AccountReport(models.Model):
         for attachment generation.
         """
         type_mapping = {
-            'xlsx': 'application/vnd.ms-excel',
+            'xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             'pdf': 'application/pdf',
             'xml': 'application/xml',
             'xaf': 'application/vnd.sun.xml.writer',

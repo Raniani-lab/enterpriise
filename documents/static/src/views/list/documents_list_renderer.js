@@ -7,9 +7,9 @@ import { DocumentsInspector } from "../inspector/documents_inspector";
 import { FileUploadProgressContainer } from "@web/core/file_upload/file_upload_progress_container";
 import { FileUploadProgressDataRow } from "@web/core/file_upload/file_upload_progress_record";
 import { DocumentsDropZone } from "../helper/documents_drop_zone";
-import { CheckBox } from "@web/core/checkbox/checkbox";
 import { DocumentsActionHelper } from "../helper/documents_action_helper";
 import { DocumentsFileViewer } from "../helper/documents_file_viewer";
+import { DocumentsListRendererCheckBox } from "./documents_list_renderer_checkbox";
 
 const { useRef } = owl;
 
@@ -71,25 +71,6 @@ export class DocumentsListRenderer extends ListRenderer {
             archInfo: this.props.archInfo,
             withFilePreview: !this.env.documentsView.previewStore.documentList,
         };
-    }
-}
-
-// We need the actual event when clicking on a checkbox (to support multi select), only accept onClick
-export class DocumentsListRendererCheckBox extends CheckBox {
-    /**
-     * @override
-     */
-    onChange(ev) {}
-
-    /**
-     * @override
-     */
-    onClick(ev) {
-        if (ev.target.tagName !== "INPUT") {
-            return;
-        }
-        ev.stopPropagation();
-        this.props.onChange(ev);
     }
 }
 

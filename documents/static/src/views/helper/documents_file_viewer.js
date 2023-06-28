@@ -7,6 +7,7 @@ const { Component, useEffect, useRef, useState } = owl;
 export class DocumentsFileViewer extends Component {
     static props = [
         "parentRoot", // Parent's root element, used to know the zone to use.
+        "previewStore",
     ];
 
     setup() {
@@ -14,7 +15,6 @@ export class DocumentsFileViewer extends Component {
         this.state = useState({
             topOffset: 0,
         });
-        this.previewState = useState(this.env.documentsView.previewStore);
 
         const onKeydown = this.onIframeKeydown.bind(this);
         useEffect(
@@ -70,7 +70,7 @@ export class DocumentsFileViewer extends Component {
 
     onIframeKeydown(ev) {
         if (ev.key === "Escape") {
-            this.previewState.documentList = undefined;
+            this.env.model.env.documentsView.bus.trigger("documents-close-preview");
         }
     }
 }

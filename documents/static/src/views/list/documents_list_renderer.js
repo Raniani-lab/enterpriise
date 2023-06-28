@@ -7,18 +7,47 @@ import { DocumentsInspector } from "../inspector/documents_inspector";
 import { FileUploadProgressContainer } from "@web/core/file_upload/file_upload_progress_container";
 import { FileUploadProgressDataRow } from "@web/core/file_upload/file_upload_progress_record";
 import { DocumentsDropZone } from "../helper/documents_drop_zone";
-import { CheckBox } from "@web/core/checkbox/checkbox";
 import { DocumentsActionHelper } from "../helper/documents_action_helper";
 import { DocumentsFileViewer } from "../helper/documents_file_viewer";
+import { DocumentsListRendererCheckBox } from "./documents_list_renderer_checkbox";
 
 const { useRef } = owl;
 
 export class DocumentsListRenderer extends ListRenderer {
+    static props = [...ListRenderer.props, "inspectedDocuments", "previewStore"];
+    static template = "documents.DocumentsListRenderer";
+    static recordRowTemplate = "documents.DocumentsListRenderer.RecordRow";
+    static components = Object.assign({}, ListRenderer.components, {
+        DocumentsInspector,
+        DocumentsListRendererCheckBox,
+        FileUploadProgressContainer,
+        FileUploadProgressDataRow,
+        DocumentsDropZone,
+        DocumentsActionHelper,
+        DocumentsFileViewer,
+    });
+
     setup() {
         super.setup();
         this.root = useRef("root");
         const { uploads } = useService("file_upload");
         this.documentUploads = uploads;
+    }
+
+    getDocumentsAttachmentViewerProps() {
+        return { previewStore: this.props.previewStore };
+    }
+
+    getDocumentsInspectorProps() {
+        return {
+            documents: this.props.inspectedDocuments.length
+                ? this.props.inspectedDocuments
+                : this.props.list.selection,
+            count: this.props.list.model.useSampleModel ? 0 : this.props.list.count,
+            fileSize: this.props.list.fileSize,
+            archInfo: this.props.archInfo,
+            withFilePreview: !this.props.previewStore.documentList,
+        };
     }
 
     /**
@@ -62,46 +91,4 @@ export class DocumentsListRenderer extends ListRenderer {
     get hasSelectors() {
         return this.props.allowSelectors;
     }
-
-    getDocumentsInspectorProps() {
-        return {
-            selection: this.props.list.selection,
-            count: this.props.list.model.useSampleModel ? 0 : this.props.list.count,
-            fileSize: this.props.list.fileSize,
-            archInfo: this.props.archInfo,
-            withFilePreview: !this.env.documentsView.previewStore.documentList,
-        };
-    }
 }
-
-// We need the actual event when clicking on a checkbox (to support multi select), only accept onClick
-export class DocumentsListRendererCheckBox extends CheckBox {
-    /**
-     * @override
-     */
-    onChange(ev) {}
-
-    /**
-     * @override
-     */
-    onClick(ev) {
-        if (ev.target.tagName !== "INPUT") {
-            return;
-        }
-        ev.stopPropagation();
-        this.props.onChange(ev);
-    }
-}
-
-DocumentsListRenderer.template = "documents.DocumentsListRenderer";
-DocumentsListRenderer.recordRowTemplate = "documents.DocumentsListRenderer.RecordRow";
-
-DocumentsListRenderer.components = Object.assign({}, ListRenderer.components, {
-    DocumentsInspector,
-    DocumentsListRendererCheckBox,
-    FileUploadProgressContainer,
-    FileUploadProgressDataRow,
-    DocumentsDropZone,
-    DocumentsActionHelper,
-    DocumentsFileViewer,
-});

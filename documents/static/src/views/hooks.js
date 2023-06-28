@@ -10,7 +10,7 @@ import { x2ManyCommands } from "@web/core/orm_service";
 import { ShareFormViewDialog } from "@documents/views/helper/share_form_view_dialog";
 import { get_link_proportion } from 'documents.utils';
 
-const { EventBus, onWillStart, markup, reactive, useComponent, useEnv, useRef, useSubEnv } = owl;
+const { EventBus, onWillStart, markup, useComponent, useEnv, useRef, useSubEnv } = owl;
 
 /**
  * Controller/View hooks
@@ -204,6 +204,8 @@ export function useDocumentView(helpers) {
  */
 function useDocumentsViewFilePreviewer({
     getSelectedDocumentsElements,
+    setInspectedDocuments,
+    setPreviewStore,
     isRecordPreviewable = () => true,
 }) {
     const component = useComponent();
@@ -212,18 +214,12 @@ function useDocumentsViewFilePreviewer({
     /** @type {import("@documents/core/document_service").DocumentService} */
     const documentService = useService("document.document");
 
-    env.documentsView.previewStore = reactive({
-        inspectedDocuments: [],
-        fileViewer: null,
-    });
-
     const onOpenDocumentsPreview = async ({
         documents,
         mainDocument,
         isPdfSplit,
         rules,
         hasPdfSplit,
-        selection,
     }) => {
         const openPdfSplitter = (documents) => {
             let newDocumentIds = [];
@@ -258,7 +254,6 @@ function useDocumentsViewFilePreviewer({
                                 isRangeSelection: false,
                             });
                         }
-                        component.model.notify();
                     },
                 }
             );
@@ -304,14 +299,6 @@ function useDocumentsViewFilePreviewer({
                 openPdfSplitter(documents);
             },
             onDeleteCallback: () => {
-                component.env.documentsView.previewStore.documentList = null;
-                selectedDocument.record.toggleSelection(false);
-                // Restore selection
-                if (selection.length >= 1) {
-                    for (const rec of selection) {
-                        rec.toggleSelection(true);
-                    }
-                }
                 // We want to focus on the first selected document's element
                 const elements = getSelectedDocumentsElements();
                 if (elements.length) {
@@ -322,40 +309,36 @@ function useDocumentsViewFilePreviewer({
                         .querySelector(".o_documents_view")
                         .classList.remove("overflow-hidden");
                 }
-                component.render(true);
+
+                setInspectedDocuments([]);
+                setPreviewStore({});
             },
             onSelectDocument: (record) => {
-                for (const rec of component.model.root.selection) {
-                    rec.selected = false;
+                // change the inspected documents only if we inspect only one
+                if (documents.length <= 1) {
+                    setInspectedDocuments([record]);
                 }
-                record.toggleSelection(true);
             },
             hasPdfSplit,
             selectedDocument,
         };
 
-        for (const rec of component.model.root.selection) {
-            rec.selected = false;
-        }
-        selectedDocument.record.toggleSelection(true);
-        component.env.documentsView.previewStore.documentList = documentService.documentList;
-        const index = documentsRecords.indexOf(selectedDocument);
-        component.env.documentsView.previewStore.attachments = documentsRecords.map(
-            (doc) => doc.attachment
-        );
-        component.env.documentsView.previewStore.startIndex = index;
-        component.env.documentsView.previewStore.close = () => {
-            component.env.documentsView.previewStore.attachments = undefined;
+        const previewStore = {
+            documentList: documentService.documentList,
+            startIndex: documentsRecords.indexOf(selectedDocument),
+            attachments: documentsRecords.map((doc) => doc.attachment),
         };
+
+        setInspectedDocuments(documents);
+        setPreviewStore({ ...previewStore });
     };
 
     useBus(bus, "documents-open-preview", async (ev) => {
         component.onOpenDocumentsPreview(ev.detail);
     });
     useBus(bus, "documents-close-preview", () => {
-        if (component.env.documentsView.previewStore.close) {
-            component.env.documentsView.previewStore.close();
-        }
+        setInspectedDocuments([]);
+        setPreviewStore({});
     });
 
     return {

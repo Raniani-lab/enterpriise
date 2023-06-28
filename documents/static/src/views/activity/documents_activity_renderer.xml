@@ -9,7 +9,7 @@
                     <t t-call="mail.ActivityViewBody"/>
                     <t t-call="mail.ActivityViewFooter"/>
                 </table>
-                <DocumentsFileViewer parentRoot="root"/>
+                <DocumentsFileViewer parentRoot="root" t-props="getDocumentsAttachmentViewerProps()"/>
             </div>
             <DocumentsInspector t-props="getDocumentsInspectorProps()"/>
         </div>

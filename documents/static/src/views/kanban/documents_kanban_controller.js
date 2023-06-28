@@ -3,6 +3,7 @@
 import { KanbanController } from "@web/views/kanban/kanban_controller";
 
 import { preSuperSetup, useDocumentView } from "@documents/views/hooks";
+const { useState } = owl;
 
 export class DocumentsKanbanController extends KanbanController {
     setup() {
@@ -10,6 +11,11 @@ export class DocumentsKanbanController extends KanbanController {
         super.setup(...arguments);
         const properties = useDocumentView(this.documentsViewHelpers());
         Object.assign(this, properties);
+
+        this.documentStates = useState({
+            inspectedDocuments: [],
+            previewStore: {},
+        });
     }
 
     get modelParams() {
@@ -24,6 +30,12 @@ export class DocumentsKanbanController extends KanbanController {
     documentsViewHelpers() {
         return {
             getSelectedDocumentsElements: () => this.root.el.querySelectorAll(".o_kanban_record.o_record_selected"),
+            setInspectedDocuments: (inspectedDocuments) => {
+                this.documentStates.inspectedDocuments = inspectedDocuments;
+            },
+            setPreviewStore: (previewStore) => {
+                this.documentStates.previewStore = previewStore;
+            },
         };
     }
 }

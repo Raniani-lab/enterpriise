@@ -15,6 +15,18 @@ import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
 const { useRef } = owl;
 
 export class DocumentsKanbanRenderer extends KanbanRenderer {
+    static props = [...KanbanRenderer.props, "inspectedDocuments", "previewStore"];
+    static template = "documents.DocumentsKanbanRenderer";
+    static components = Object.assign({}, KanbanRenderer.components, {
+        DocumentsInspector,
+        DocumentsDropZone,
+        FileUploadProgressContainer,
+        FileUploadProgressKanbanRecord,
+        KanbanRecord: DocumentsKanbanRecord,
+        DocumentsActionHelper,
+        DocumentsFileViewer,
+    });
+
     setup() {
         super.setup();
         this.root = useRef("root");
@@ -80,23 +92,18 @@ export class DocumentsKanbanRenderer extends KanbanRenderer {
         }
     }
 
+    getDocumentsAttachmentViewerProps() {
+        return { previewStore: this.props.previewStore };
+    }
+
     getDocumentsInspectorProps() {
         return {
-            selection: this.props.list.selection,
+            documents: this.props.inspectedDocuments.length
+                ? this.props.inspectedDocuments
+                : this.props.list.selection,
             count: this.props.list.model.useSampleModel ? 0 : this.props.list.count,
             fileSize: this.props.list.fileSize,
             archInfo: this.props.archInfo,
         };
     }
 }
-
-DocumentsKanbanRenderer.template = "documents.DocumentsKanbanRenderer";
-DocumentsKanbanRenderer.components = Object.assign({}, KanbanRenderer.components, {
-    DocumentsInspector,
-    DocumentsDropZone,
-    FileUploadProgressContainer,
-    FileUploadProgressKanbanRecord,
-    KanbanRecord: DocumentsKanbanRecord,
-    DocumentsActionHelper,
-    DocumentsFileViewer,
-});

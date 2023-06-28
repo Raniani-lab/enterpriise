@@ -9,5 +9,9 @@
                 <t t-call="documents.DocumentsViews.ControlPanel"/>
             </t>
         </xpath>
+        <xpath expr="//Layout/t[@t-component='props.Renderer']" position="attributes">
+            <attribute name="inspectedDocuments">documentStates.inspectedDocuments</attribute>
+            <attribute name="previewStore">documentStates.previewStore</attribute>
+        </xpath>
     </t>
 </templates>

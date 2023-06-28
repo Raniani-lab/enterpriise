@@ -15,7 +15,7 @@ export class DocumentsInspectorField extends Field {
         if (
             this.field.component === Many2OneField &&
             new Set(
-                this.props.selection.map((rec) => (rec.data[this.props.name] ? rec.data[this.props.name][0] : false))
+                this.props.documents.map((rec) => (rec.data[this.props.name] ? rec.data[this.props.name][0] : false))
             ).size > 1
         ) {
             props.value = [null, _t("Multiple values")];
@@ -31,7 +31,7 @@ export class DocumentsInspectorField extends Field {
             };
         }
 
-        delete props.selection;
+        delete props.documents;
         delete props.inspectorReadonly;
         delete props.lockAction;
         return props;

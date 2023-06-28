@@ -52,7 +52,6 @@ patch(DocumentsInspector.prototype, "documents_spreadsheet_documents_inspector",
             isPdfSplit: false,
             rules: [],
             hasPdfSplit: false,
-            selection: [record],
         });
     },
 
@@ -60,7 +59,7 @@ patch(DocumentsInspector.prototype, "documents_spreadsheet_documents_inspector",
      * @override
      */
     async onDownload() {
-        const selection = this.props.selection;
+        const selection = this.props.documents || [];
         if (selection.some((record) => record.data.handler === "spreadsheet")) {
             if (selection.length === 1) {
                 const record = await this.orm.call(
@@ -102,7 +101,7 @@ patch(DocumentsInspector.prototype, "documents_spreadsheet_documents_inspector",
      * @override
      */
     async createShareVals() {
-        const selection = this.props.selection;
+        const selection = this.props.documents;
         const vals = await this._super();
         if (selection.every((doc) => doc.data.handler !== "spreadsheet")) {
             return vals;

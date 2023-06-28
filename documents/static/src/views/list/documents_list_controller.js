@@ -3,6 +3,7 @@
 import { ListController } from "@web/views/list/list_controller";
 
 import { preSuperSetup, useDocumentView } from "@documents/views/hooks";
+const { useState } = owl;
 
 export class DocumentsListController extends ListController {
     setup() {
@@ -10,6 +11,11 @@ export class DocumentsListController extends ListController {
         super.setup(...arguments);
         const properties = useDocumentView(this.documentsViewHelpers());
         Object.assign(this, properties);
+
+        this.documentStates = useState({
+            inspectedDocuments: [],
+            previewStore: {},
+        });
     }
 
     get modelParams() {
@@ -31,6 +37,12 @@ export class DocumentsListController extends ListController {
                 this.root.el.querySelectorAll(
                     ".o_data_row.o_data_row_selected .o_list_record_selector"
                 ),
+            setInspectedDocuments: (inspectedDocuments) => {
+                this.documentStates.inspectedDocuments = inspectedDocuments;
+            },
+            setPreviewStore: (previewStore) => {
+                this.documentStates.previewStore = previewStore;
+            },
         };
     }
 }

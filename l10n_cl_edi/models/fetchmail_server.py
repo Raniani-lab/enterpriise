@@ -149,7 +149,7 @@ class FetchmailServer(models.Model):
                     try:
                         move._l10n_cl_send_receipt_acknowledgment()
                     except Exception as error:
-                        move.message_post(body=error)
+                        move.message_post(body=str(error))
         elif origin_type == 'incoming_sii_dte_result':
             self._process_incoming_sii_dte_result(att_content)
         elif origin_type in ['incoming_acknowledge', 'incoming_commercial_accept', 'incoming_commercial_reject']:

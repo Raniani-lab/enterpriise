@@ -261,7 +261,7 @@ class L10nClEdiUtilMixin(models.AbstractModel):
     def _report_connection_err(self, error):
         # raise error
         if not self.env.context.get('cron_skip_connection_errs'):
-            self.message_post(body=error)
+            self.message_post(body=str(error))
         else:
             _logger.warning(error)
 

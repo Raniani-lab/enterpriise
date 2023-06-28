@@ -340,7 +340,7 @@ class AccountMove(models.Model):
         try:
             self._l10n_cl_send_receipt_acknowledgment()
         except Exception as error:
-            self.message_post(body=error)
+            self.message_post(body=str(error))
 
     def _l10n_cl_send_receipt_acknowledgment(self):
         """

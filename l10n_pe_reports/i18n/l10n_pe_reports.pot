@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-02 23:45+0000\n"
-"PO-Revision-Date: 2023-10-02 23:45+0000\n"
+"POT-Creation-Date: 2023-09-26 19:51+0000\n"
+"PO-Revision-Date: 2023-09-26 19:51+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,29 +18,29 @@ msgstr ""
 #. module: l10n_pe_reports
 #: model:ir.model,name:l10n_pe_reports.model_account_report
 msgid "Accounting Report"
-msgstr "Informe financiero"
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model:ir.model.fields,field_description:l10n_pe_reports.field_l10n_pe_ple_usage__active
 msgid "Active"
-msgstr "Activo"
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model:ir.model.fields,field_description:l10n_pe_reports.field_res_country__l10n_pe_agreement_code
 msgid "Agreement Code"
-msgstr "Código del acuerdo"
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model:ir.model.fields,help:l10n_pe_reports.field_res_country__l10n_pe_agreement_code
 msgid "Agreement code defined by SUNAT to avoid double taxation."
-msgstr "Código definido por la SUNAT para evitar la doble tributación."
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model:account.report.column,name:l10n_pe_reports.tax_report_ple_14_1_amount_total
 #: model:account.report.column,name:l10n_pe_reports.tax_report_ple_8_1_amount_total
 #: model:account.report.column,name:l10n_pe_reports.tax_report_ple_8_2_amount_total
 msgid "Amount Total"
-msgstr "Total"
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model:account.report.column,name:l10n_pe_reports.tax_report_ple_8_1_base_igv
@@ -61,52 +61,52 @@ msgstr ""
 #. module: l10n_pe_reports
 #: model:ir.model.fields,field_description:l10n_pe_reports.field_l10n_pe_ple_usage__code
 msgid "Code"
-msgstr "Código"
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model:ir.model.fields,field_description:l10n_pe_reports.field_res_country__l10n_pe_code
 msgid "Code PE"
-msgstr "Código PE"
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model:ir.model,name:l10n_pe_reports.model_res_country
 msgid "Country"
-msgstr "País"
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model:ir.model.fields,help:l10n_pe_reports.field_res_country__l10n_pe_code
 msgid "Country code to be used on purchase reports."
-msgstr "Código de país utilizado en reportes de compra."
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model:ir.model.fields,field_description:l10n_pe_reports.field_l10n_pe_ple_usage__create_uid
 msgid "Created by"
-msgstr "Creado por"
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model:ir.model.fields,field_description:l10n_pe_reports.field_l10n_pe_ple_usage__create_date
 msgid "Created on"
-msgstr "Creado el"
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model:account.report.column,name:l10n_pe_reports.tax_report_ple_14_1_customer
 #: model:account.report.column,name:l10n_pe_reports.tax_report_ple_8_1_customer
 #: model:account.report.column,name:l10n_pe_reports.tax_report_ple_8_2_customer
 msgid "Customer"
-msgstr "Tercero"
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model:account.report.column,name:l10n_pe_reports.tax_report_ple_14_1_customer_vat
 #: model:account.report.column,name:l10n_pe_reports.tax_report_ple_8_1_customer_vat
 msgid "Customer VAT"
-msgstr "Num. ID"
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model:ir.model.fields,field_description:l10n_pe_reports.field_account_bank_statement_line__l10n_pe_dua_invoice_id
 #: model:ir.model.fields,field_description:l10n_pe_reports.field_account_move__l10n_pe_dua_invoice_id
 #: model:ir.model.fields,field_description:l10n_pe_reports.field_account_payment__l10n_pe_dua_invoice_id
 msgid "DUA Invoice"
-msgstr "Factura DUA"
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model:ir.model.fields,help:l10n_pe_reports.field_account_bank_statement_line__l10n_pe_dua_invoice_id
@@ -114,28 +114,27 @@ msgstr "Factura DUA"
 #: model:ir.model.fields,help:l10n_pe_reports.field_account_payment__l10n_pe_dua_invoice_id
 msgid "DUA invoice that accredits the tax credit on the importation of goods."
 msgstr ""
-"Factura DUA que acredita el impuesto acreditado en la importación de bienes"
 
 #. module: l10n_pe_reports
 #: model:account.report.column,name:l10n_pe_reports.tax_report_ple_14_1_date
 #: model:account.report.column,name:l10n_pe_reports.tax_report_ple_8_1_date
 #: model:account.report.column,name:l10n_pe_reports.tax_report_ple_8_2_invoice_date
 msgid "Date"
-msgstr "Fecha"
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model:ir.model.fields,field_description:l10n_pe_reports.field_account_bank_statement_line__l10n_pe_detraction_number
 #: model:ir.model.fields,field_description:l10n_pe_reports.field_account_move__l10n_pe_detraction_number
 #: model:ir.model.fields,field_description:l10n_pe_reports.field_account_payment__l10n_pe_detraction_number
 msgid "Detraction"
-msgstr "Detracción"
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model:ir.model.fields,field_description:l10n_pe_reports.field_account_bank_statement_line__l10n_pe_detraction_date
 #: model:ir.model.fields,field_description:l10n_pe_reports.field_account_move__l10n_pe_detraction_date
 #: model:ir.model.fields,field_description:l10n_pe_reports.field_account_payment__l10n_pe_detraction_date
 msgid "Detraction Date"
-msgstr "Fecha de detracción"
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model:ir.model.fields,field_description:l10n_pe_reports.field_l10n_pe_ple_usage__display_name
@@ -147,14 +146,14 @@ msgstr ""
 #: model:account.report.column,name:l10n_pe_reports.tax_report_ple_8_1_doc_type
 #: model:account.report.column,name:l10n_pe_reports.tax_report_ple_8_2_document_type
 msgid "Doc. Type"
-msgstr "Tipo Doc."
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model:account.report.column,name:l10n_pe_reports.tax_report_ple_14_1_base_exo
 #: model:account.report.column,name:l10n_pe_reports.tax_report_ple_8_1_base_exo
 #: model:account.report.column,name:l10n_pe_reports.tax_report_ple_8_2_exo
 msgid "EXO"
-msgstr "Exonerado"
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model:account.report.column,name:l10n_pe_reports.tax_report_ple_14_1_base_exp
@@ -165,12 +164,12 @@ msgstr ""
 #: model:account.report.column,name:l10n_pe_reports.tax_report_ple_8_1_base_free
 #: model:account.report.column,name:l10n_pe_reports.tax_report_ple_8_2_free
 msgid "FREE"
-msgstr "Gratuito"
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model:ir.model,name:l10n_pe_reports.model_account_general_ledger_report_handler
 msgid "General Ledger Custom Handler"
-msgstr "Gestor personalizado del libro mayor"
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model:account.report.column,name:l10n_pe_reports.tax_report_ple_14_1_icbper
@@ -228,8 +227,6 @@ msgstr ""
 msgid ""
 "If a detraction value is set (date or number), both values must be filled."
 msgstr ""
-"Si se establece un valor de detracción (fecha o número), se deben completar "
-"ambos valores."
 
 #. module: l10n_pe_reports
 #. odoo-python
@@ -239,22 +236,20 @@ msgid ""
 "In order to generate the PLE reports, please update l10n_pe module to update"
 " the required data."
 msgstr ""
-"Para generar los reportes PLE, actualice el módulo l10n_pe para "
-"actualizarlos datos requeridos."
 
 #. module: l10n_pe_reports
 #: model:ir.model.fields,help:l10n_pe_reports.field_account_bank_statement_line__l10n_pe_detraction_date
 #: model:ir.model.fields,help:l10n_pe_reports.field_account_move__l10n_pe_detraction_date
 #: model:ir.model.fields,help:l10n_pe_reports.field_account_payment__l10n_pe_detraction_date
 msgid "Indicate the date of issuance of the detraction deposit certificate"
-msgstr "Fecha de emisión del certificado del depósito de detracción"
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model:ir.model.fields,help:l10n_pe_reports.field_account_bank_statement_line__l10n_pe_detraction_number
 #: model:ir.model.fields,help:l10n_pe_reports.field_account_move__l10n_pe_detraction_number
 #: model:ir.model.fields,help:l10n_pe_reports.field_account_payment__l10n_pe_detraction_number
 msgid "Indicate the number of issuance of the detraction deposit certificate"
-msgstr "Indicar la fecha de emisión del certificado de depósito de detracción"
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model:ir.model.fields,help:l10n_pe_reports.field_account_bank_statement_line__l10n_pe_service_modality
@@ -264,13 +259,11 @@ msgid ""
 "Indicate the service modality, fill this field if the invoice is for a "
 "service. This will be used on 8.2 report."
 msgstr ""
-"Indique la modalidad del servicio, llene este campo si la factura es por un "
-"servicio. Esto se usará en el informe 8.2."
 
 #. module: l10n_pe_reports
 #: model:ir.model,name:l10n_pe_reports.model_account_move
 msgid "Journal Entry"
-msgstr "Asiento contable"
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model:ir.model.fields,field_description:l10n_pe_reports.field_l10n_pe_ple_usage____last_update
@@ -290,40 +283,61 @@ msgstr ""
 #. module: l10n_pe_reports
 #: model:ir.model.fields,field_description:l10n_pe_reports.field_l10n_pe_ple_usage__name
 msgid "Name"
-msgstr "Nombre"
+msgstr ""
 
 #. module: l10n_pe_reports
 #. odoo-python
 #: code:addons/l10n_pe_reports/models/account_general_ledger.py:0
 #, python-format
 msgid "Only Peruvian company can generate PLE 5.3 report."
-msgstr "Solo empresas de Perú pueden generar el reporte PLE 5.3."
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model:account.report.column,name:l10n_pe_reports.tax_report_ple_8_1_vat_other
 #: model:account.report.column,name:l10n_pe_reports.tax_report_ple_8_2_other_taxes
 msgid "Other Taxes"
-msgstr "Otros Impuestos"
+msgstr ""
+
+#. module: l10n_pe_reports
+#. odoo-python
+#: code:addons/l10n_pe_reports/models/account_general_ledger.py:0
+#, python-format
+msgid "PLE 5.1"
+msgstr ""
+
+#. module: l10n_pe_reports
+#. odoo-python
+#: code:addons/l10n_pe_reports/models/account_general_ledger.py:0
+#, python-format
+msgid "PLE 5.3"
+msgstr ""
+
+#. module: l10n_pe_reports
+#. odoo-python
+#: code:addons/l10n_pe_reports/models/account_general_ledger.py:0
+#, python-format
+msgid "PLE 6.1"
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model:ir.model,name:l10n_pe_reports.model_l10n_pe_tax_ple_report_handler
 msgid "PLE Generic Report"
-msgstr "Reporte genérico PLE"
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model:ir.model,name:l10n_pe_reports.model_l10n_pe_tax_ple_8_1_report_handler
 msgid "PLE Purchase Report 8.1 (Now RCE 8.4)"
-msgstr "PLE Registro de Compras 8.1 (Ahora RCE 8.4)"
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model:ir.model,name:l10n_pe_reports.model_l10n_pe_tax_ple_8_2_report_handler
 msgid "PLE Purchase Report 8.2 (Now RCE 8.5)"
-msgstr "PLE Registro de Compras de No Domiciliados 8.2 (Ahora RCE 8.5)"
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model:ir.model,name:l10n_pe_reports.model_l10n_pe_tax_ple_14_1_report_handler
 msgid "PLE Sales Report 14.1 (Now RVIE 14.2)"
-msgstr "PLE Registro de Ventas 14.1 (Ahora RVIE 14.2)"
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model_terms:ir.ui.view,arch_db:l10n_pe_reports.view_invoice_form
@@ -350,22 +364,22 @@ msgstr ""
 #: model:ir.model.fields,field_description:l10n_pe_reports.field_account_move__l10n_pe_service_modality
 #: model:ir.model.fields,field_description:l10n_pe_reports.field_account_payment__l10n_pe_service_modality
 msgid "Service Modality"
-msgstr "Modalidad de servicio"
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model:ir.model.fields.selection,name:l10n_pe_reports.selection__account_move__l10n_pe_service_modality__1
 msgid "Service provided entirely in Peru"
-msgstr "Servicio prestado integralmente en Perú"
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model:ir.model.fields.selection,name:l10n_pe_reports.selection__account_move__l10n_pe_service_modality__3
 msgid "Service provided exclusively abroad"
-msgstr "Servicio prestado exclusivamente en el extranjero"
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model:ir.model.fields.selection,name:l10n_pe_reports.selection__account_move__l10n_pe_service_modality__2
 msgid "Service provided partly in Peru and part abroad"
-msgstr "Servicio prestado parte en Perú y parte en el Extranjero"
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model:ir.model,name:l10n_pe_reports.model_l10n_pe_ple_usage
@@ -373,8 +387,6 @@ msgid ""
 "Service that is reflected in the declared invoice and must be classified "
 "according to table 31, used on purchase report 8.2"
 msgstr ""
-"Servicio que se refleja en la factura declarada y debe ser clasificado según"
-" tabla 31, utilizado en registro de compra 8.2"
 
 #. module: l10n_pe_reports
 #: model:ir.model.fields,help:l10n_pe_reports.field_account_bank_statement_line__l10n_pe_usage_type_id
@@ -384,8 +396,6 @@ msgid ""
 "Service that is reflected in the declared invoice and must be classified "
 "according to table 31: Type of Usage."
 msgstr ""
-"Servicio incluido en la factura declarada, debe ser clasificado de acuerdo a"
-" la tabla 31: Tipo de Uso"
 
 #. module: l10n_pe_reports
 #. odoo-python
@@ -407,39 +417,36 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
-"Estado de los siguientes documentos es Publicado, pero no están validados en la SUNAT:\n"
-"\n"
-"%s"
 
 #. module: l10n_pe_reports
 #: model:ir.model.fields,field_description:l10n_pe_reports.field_account_bank_statement_line__l10n_pe_usage_type_id
 #: model:ir.model.fields,field_description:l10n_pe_reports.field_account_move__l10n_pe_usage_type_id
 #: model:ir.model.fields,field_description:l10n_pe_reports.field_account_payment__l10n_pe_usage_type_id
 msgid "Usage Type"
-msgstr "Tipo de uso"
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model:account.report,name:l10n_pe_reports.tax_report_ple_purchase_8_1
 msgid "VAT Report (RCE Purchase 8.4)"
-msgstr "RCE Registro de Compras 8.4"
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model:account.report,name:l10n_pe_reports.tax_report_ple_purchase_8_2
 msgid "VAT Report (RCE Purchase 8.5)"
-msgstr "RCE Registro de Compras no Domiciliados 8.5"
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model:account.report,name:l10n_pe_reports.tax_report_ple_sales_14_1
 msgid "VAT Report (RVIE Sales 14.4)"
-msgstr "RVIE Registro de Ventas 14.4"
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model:ir.model.fields,help:l10n_pe_reports.field_l10n_pe_ple_usage__code
 msgid "Value to be used in the purchase report."
-msgstr "Valor utilizado en el reporte de Compras"
+msgstr ""
 
 #. module: l10n_pe_reports
 #: model:account.report.column,name:l10n_pe_reports.tax_report_ple_8_1_base_withholdings
 #: model:account.report.column,name:l10n_pe_reports.tax_report_ple_8_2_withholdings
 msgid "Withholdings"
-msgstr "Retenciones"
+msgstr ""

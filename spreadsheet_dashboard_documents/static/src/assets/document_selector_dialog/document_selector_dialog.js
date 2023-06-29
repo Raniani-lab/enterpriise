@@ -11,6 +11,7 @@ export class DocumentSelectorDialog extends Component {
         this.selectedSpreadsheet = null;
         this.orm = useService("orm");
         this.actionService = useService("action");
+        this.title = this.env._t("Create a Dashboard or select a Spreadsheet");
     }
 
     onSpreadsheetSelected({ spreadsheet }) {
@@ -27,6 +28,14 @@ export class DocumentSelectorDialog extends Component {
             this.actionService.switchView("form", {
                 resId: this.props.dashboardGroupId,
             });
+        } else {
+            const action = await this.orm.call(
+                "spreadsheet.dashboard",
+                "action_open_new_dashboard",
+                [this.props.dashboardGroupId]
+            );
+            // open the new dashboard
+            this.actionService.doAction(action, { clear_breadcrumbs: false });
         }
         this.props.close();
     }

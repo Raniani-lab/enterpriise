@@ -1,7 +1,6 @@
 from uuid import uuid4
 from odoo.tests.common import TransactionCase
 
-
 class TestSpreadsheetDocumentToDashboard(TransactionCase):
     def test_create_wizard(self):
         group = self.env["spreadsheet.dashboard.group"].create(
@@ -115,3 +114,16 @@ class TestSpreadsheetDocumentToDashboard(TransactionCase):
         self.assertEqual(dashboard_revision.revision_id, revision.revision_id)
         self.assertEqual(dashboard_revision.res_id, dashboard.id)
         self.assertEqual(dashboard_revision.res_model, "spreadsheet.dashboard")
+
+    def test_action_open_new_dashboard(self):
+        group = self.env["spreadsheet.dashboard.group"].create(
+            {"name": "a group"}
+        )
+        action = self.env["spreadsheet.dashboard"].action_open_new_dashboard(group.id)
+        dashboard_id = action["params"]["spreadsheet_id"]
+        dashboard = self.env["spreadsheet.dashboard"].browse(dashboard_id)
+        self.assertTrue(dashboard.exists())
+        self.assertEqual(dashboard.name, "Untitled dashboard")
+        self.assertEqual(dashboard.spreadsheet_binary_data, dashboard._empty_spreadsheet_data_base64())
+        self.assertEqual(action["type"], "ir.actions.client")
+        self.assertEqual(action["tag"], "action_edit_dashboard")

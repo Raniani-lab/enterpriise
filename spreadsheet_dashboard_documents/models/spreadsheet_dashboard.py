@@ -1,4 +1,4 @@
-from odoo import api, models
+from odoo import _, api, models
 
 
 class SpreadsheetDashboard(models.Model):
@@ -27,3 +27,17 @@ class SpreadsheetDashboard(models.Model):
             revisions_data.append(revision_id.copy_data({"res_id": dashboard.id, "res_model": "spreadsheet.dashboard"})[0])
         revision_ids = self.env["spreadsheet.revision"].create(revisions_data)
         dashboard.spreadsheet_revision_ids = revision_ids
+
+    @api.model
+    def action_open_new_dashboard(self, dashboard_group_id):
+        dashboard = self.create({
+            "name": _("Untitled dashboard"),
+            "dashboard_group_id": dashboard_group_id,
+        })
+        return {
+            "type": "ir.actions.client",
+            "tag": "action_edit_dashboard",
+            "params": {
+                "spreadsheet_id": dashboard.id,
+            },
+        }

@@ -26,6 +26,6 @@ class QualityCheck(models.Model):
         res = super().action_print()
 
         if quality_point_id.device_id:
-            res['device_id'] = quality_point_id.device_id.id
+            res['device_ids'] = quality_point_id.device_id.id
 
         return res

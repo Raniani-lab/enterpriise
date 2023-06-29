@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import secrets
+
 from odoo import api, fields, models
 
 
@@ -98,3 +100,22 @@ class KeyboardLayout(models.Model):
     name = fields.Char('Name')
     layout = fields.Char('Layout')
     variant = fields.Char('Variant')
+
+class IotChannel(models.Model):
+    _name = "iot.channel"
+    _description = "The Websocket Iot Channel"
+
+    name = fields.Char('Name', default=lambda self: f'iot_channel-{secrets.token_hex(16)}')
+    company_id = fields.Many2one('res.company', default=lambda self: self.env.company) #One2one
+
+    def get_iot_channel(self):
+        if self.env.is_system():
+            iot_channel = self.env['iot.channel'].search([('company_id', "=", self.env.company.id)], limit=1)
+            if not iot_channel.ids:
+                iot_channel = self.env['iot.channel'].sudo().create({})
+            return iot_channel.name
+        return False
+
+    _sql_constraints = [
+        ('unique_name', 'unique(name)', 'The channel name must be unique'),
+    ]

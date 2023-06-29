@@ -234,6 +234,12 @@
             </p>
         </field>
     </record>
+
+    <record id="action_iot_delete_linked_devices_menu" model="ir.actions.client">
+        <field name="name">Clear Selected Devices</field>
+        <field name="tag">iot_delete_linked_devices_action</field>
+    </record>
+    
     <menuitem
         id="iot_box_menu_action"
         action="iot_box_action"
@@ -244,6 +250,12 @@
         action="iot_device_action"
         parent="iot_menu_root"
         sequence="2"/>
+    <menuitem
+        id="view_iot_selected_printer_local_action"
+        name="Clear Selected Devices"
+        action="action_iot_delete_linked_devices_menu"
+        parent="iot_menu_root"
+        sequence="3"/>
 
     <!-- ir.action.report add the device -->
     <record id="act_report_xml_view_iot" model="ir.ui.view">

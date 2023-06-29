@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates xml:space="preserve">
+    <t t-name="frontdesk.DrinkPage">
+        <div>
+            <h1>How can we delight you?</h1>
+            <div class="row g-3 my-4 overflow-auto o_drink_container">
+                <div class="col-sm-6 col-md-4 col-lg-3" t-foreach="props.drinkInfo" t-as="drink" t-key="drink.id">
+                    <div class="card o_drink_card" t-on-click="() => this._onDrinkSelect(drink.id)">
+                        <img class="card-img-top" t-attf-src="/frontdesk/{{drink.id}}/get_frontdesk_drinks" alt="Drink image"/>
+                        <div class="card-body px-0 py-2">
+                            <div class="text-center p-1 fs-4" t-out="drink.name" id="drink"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <button t-att-class="props.theme === 'light' ? 'btn-outline-dark' : 'btn-outline-light'" class="btn fs-3 py-2 px-5" t-on-click="() => props.showScreen('EndPage')">Nothing, thanks.</button>
+        </div>
+    </t>
+</templates>

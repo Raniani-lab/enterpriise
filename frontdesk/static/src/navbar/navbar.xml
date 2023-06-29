@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates xml:space="preserve">
+    <t t-name="frontdesk.Navbar">
+        <nav class="navbar px-2">
+            <a t-if="props.currentComponent === 'HostPage' or !props.isMobile" class="fs-4 fw-bold" href="#" t-on-click="() => props.currentComponent === 'VisitorForm' ? props.showScreen('WelcomePage') : props.showScreen('VisitorForm')">
+                <i class="fa fa-chevron-left me-1"/>Back
+            </a>
+            <div t-if="props.isMobile or !props.isPlannedVisitors or props.currentComponent === 'HostPage'" class="fs-3 text-center">Welcome to <b><t t-out="props.companyInfo.name"/></b></div>
+            <img t-attf-src="/web/image/res.company/{{ props.companyInfo.id }}/logo" alt="Company Logo" width="60px"/>
+        </nav>
+    </t>
+</templates>

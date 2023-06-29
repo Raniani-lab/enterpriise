@@ -1,0 +1,18 @@
+.o_frontdesk .o-autocomplete {
+    position: relative;
+    .o-autocomplete--input {
+        padding: .8rem;
+        border: 1px solid #e7e9ed;
+        border-radius: 0.25rem;
+    }
+
+    .o-autocomplete--dropdown-menu {
+        position: absolute !important;
+        min-width: 100%;
+        max-height: 300px;
+        overflow-y: auto;
+        .dropdown-item {
+            padding: .8rem;
+        }
+    }
+}

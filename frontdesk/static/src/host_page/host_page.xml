@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates xml:space="preserve">
+    <t t-name="frontdesk.HostPage">
+        <div class="vh-100">
+            <div class="container px-4 py-5">
+                <div class="row g-0 d-flex justify-content-center">
+                    <div class="col-md-6">
+                        <h1 class="mb-3">Who are you visiting?</h1>
+                        <form t-on-submit.prevent="_onConfirm">
+                            <Many2One update.bind="selectedHost" disableButton.bind="disableButton" stationId="props.stationId" token="props.token"/>
+                            <button t-ref="button" class="btn btn-primary p-2 fs-2 w-100 mt-3" disabled="disabled">Confirm</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

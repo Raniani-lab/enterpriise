@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates xml:space="preserve">
+    <t t-name="frontdesk.VisitorForm">
+        <div class="w-auto align-self-end me-4 mt-2" t-if="props.langs.length > 1 and props.isMobile and props.currentComponent === 'VisitorForm'">
+            <select class="form-select form-select-lg border-0 bg-white" aria-label="form-select-lg example" t-on-change="(ev) => props.onChangeLang(ev)">
+                <t t-foreach="props.langs" t-as="lang" t-key="lang.code">
+                    <option t-att-value="lang.code" t-att-selected="lang.code === props.currentLang ? true : undefined"><t t-out="lang.name"/></option>
+                </t>
+            </select>
+        </div>
+        <div class="flex-fill d-flex flex-column justify-content-center px-4 py-5">
+            <form class="row d-flex justify-content-center align-items-start" t-on-submit.prevent="_onSubmit">
+                <div class="col-sm-12" t-att-class="props.isPlannedVisitors ? 'col-lg-9 col-xl-7' : 'col-md-8 col-lg-6 col-xl-5'">
+                    <div>
+                        <label for="name" class="form-label">Your Name</label>
+                        <input type="text" class="form-control py-2 fs-3" id="name" t-ref="inputName" placeholder="e.g. John Doe" required="1" t-att-value="props.visitorData.visitorName"/>
+                    </div>
+                    <t t-if="props.stationInfo.authenticate_guest">
+                        <div t-if="props.stationInfo.ask_email !== 'none'" class="mt-3">
+                            <label for="email" class="form-label">Your Email <t t-if="props.stationInfo.ask_email === 'optional'">(optional)</t></label>
+                            <input type="email" class="form-control py-2 fs-3" id="email" t-ref="inputEmail" placeholder="e.g. john@company.com" t-att-required="props.stationInfo.ask_email === 'required'" t-att-value="props.visitorData.visitorEmail"/>
+                        </div>
+                        <div t-if="props.stationInfo.ask_phone !== 'none'" class="mt-3">
+                            <label for="phone" class="form-label">Your Phone Number <t t-if="props.stationInfo.ask_phone === 'optional'">(optional)</t></label>
+                            <input type="phone" class="form-control py-2 fs-3" id="phone" t-ref="inputPhone" t-att-required="props.stationInfo.ask_phone === 'required'" t-att-value="props.visitorData.visitorPhone"/>
+                        </div>
+                        <div t-if="props.stationInfo.ask_company !== 'none'" class="mt-3">
+                            <label for="company" class="form-label">Your Company <t t-if="props.stationInfo.ask_company === 'optional'">(optional)</t></label>
+                            <input type="text" class="form-control py-2 fs-3" id="company" t-ref="inputCompany" placeholder="e.g. My Company" t-att-required="props.stationInfo.ask_company === 'required'" t-att-value="props.visitorData.visitorCompany"/>
+                        </div>
+                    </t>
+                    <button type="submit" class="btn btn-primary mt-4 py-2 fs-3 w-100">Check In</button>
+                </div>
+            </form>
+        </div>
+    </t>
+</templates>

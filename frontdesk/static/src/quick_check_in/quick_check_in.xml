@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates xml:space="preserve">
+    <t t-name="frontdesk.QuickCheckIn">
+        <div class="px-4 py-5 h-100 o_side_panel overflow-auto">
+            <h1>Quick Check In</h1>
+            <div class="fs-4 fw-medium mt-2">Are you one of these people?</div>
+            <t t-foreach="props.plannedVisitors" t-as="visitor" t-key="visitor.id">
+                <div class="card mt-4 border-0" t-on-click="() => this._onClick(visitor)">
+                    <div class="card-body visitor-card-body p-4 border-0">
+                        <div class="fs-4 fw-medium"><t t-out="visitor.name"/></div>
+                        <div class="fs-5" t-if="visitor.company"><t t-out="visitor.company"/></div>
+                    </div>
+                </div>
+            </t>
+        </div>
+    </t>
+</templates>

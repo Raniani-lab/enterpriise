@@ -50,11 +50,11 @@ class SignContract(Sign):
                     'cost_generated': model.default_recurring_cost_amount_depreciated,
                 }))
             if contract.new_bike_model_id:
+                model = contract.new_bike_model_id.sudo()
                 contract.update({
                     'new_bike': False,
                     'new_bike_model_id': False,
                 })
-                model = contract.new_bike_model_id.sudo()
                 contract.bike_id = Vehicle.create(dict(vehicle_vals, **{
                     'model_id': model.id,
                     'car_value': model.default_car_value,

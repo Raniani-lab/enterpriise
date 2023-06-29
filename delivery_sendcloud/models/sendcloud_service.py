@@ -97,7 +97,7 @@ class SendCloud:
         parcels = self._prepare_parcel(picking, sender_id, is_return)
 
         # the id of the access_point needs to be passed as parameter following Sendcloud API's
-        if picking.sale_id.access_point_address:
+        if 'access_point_address' in picking.sale_id:
             for parcel in parcels:
                 parcel['to_service_point'] = picking.sale_id.access_point_address['id']
 
@@ -110,7 +110,8 @@ class SendCloud:
         res = self._send_request('parcels', 'post', data, params=parameters)
         res_parcels = res.get('parcels')
         if not res_parcels:
-            raise UserError(_('Something went wrong, parcel not returned from Sendcloud'))
+            error_message = res['failed_parcels'][0].get('errors', False)
+            raise UserError(_("Something went wrong, parcel not returned from Sendcloud:\n %s'.", error_message))
         return res_parcels
 
     def track_shipment(self, parcel_id):

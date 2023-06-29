@@ -411,7 +411,9 @@ msgstr ""
 #. odoo-python
 #: code:addons/delivery_sendcloud/models/sendcloud_service.py:0
 #, python-format
-msgid "Something went wrong, parcel not returned from Sendcloud"
+msgid ""
+"Something went wrong, parcel not returned from Sendcloud:\n"
+" %s'."
 msgstr ""
 
 #. module: delivery_sendcloud

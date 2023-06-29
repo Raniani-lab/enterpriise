@@ -41,6 +41,15 @@ class AccountMove(models.Model):
         help="Service that is reflected in the declared invoice and must be classified according to table 31: Type "
         "of Usage.",
     )
+    l10n_pe_sunat_transaction_type = fields.Selection(
+        selection=[
+            ("opening", "Opening Entry"),
+            ("closing", "Closing Entry"),
+        ],
+        string="PLE Transaction Type",
+        help="Please choose the transaction type for the SUNAT reports 5.1, 5.2, and 6.1. It's important to note that "
+        "this selection will not impact the account move; its sole purpose is to correctly flag the transaction in "
+        "the exported txt file.")
 
     @api.constrains("l10n_pe_detraction_date", "l10n_pe_detraction_number")
     def _check_l10n_pe_detraction(self):

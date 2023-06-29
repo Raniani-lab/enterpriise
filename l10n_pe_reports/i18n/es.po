@@ -1,13 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* l10n_pe_reports
+#     * l10n_pe_reports
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.4alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-06-29 09:26+0000\n"
-"PO-Revision-Date: 2023-06-29 09:26+0000\n"
+"POT-Creation-Date: 2023-08-24 17:48+0000\n"
+"PO-Revision-Date: 2023-08-24 17:48+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,7 @@ msgstr ""
 #. module: l10n_pe_reports
 #: model:ir.model,name:l10n_pe_reports.model_account_report
 msgid "Accounting Report"
-msgstr "Informe financiero"
+msgstr "Reporte contable"
 
 #. module: l10n_pe_reports
 #: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_L_PA
@@ -100,6 +100,11 @@ msgid "Biological assets"
 msgstr "Activos biológicos"
 
 #. module: l10n_pe_reports
+#: model:ir.model.fields.selection,name:l10n_pe_reports.selection__res_company__l10n_pe_chart_of_accounts__1
+msgid "Business general accounting plan"
+msgstr "Plan contable empresarial"
+
+#. module: l10n_pe_reports
 #: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_E_CA
 msgid "Capital"
 msgstr ""
@@ -110,6 +115,44 @@ msgid "Cash and cash equivalents"
 msgstr "Efectivo y otros medios líquidos equivalentes"
 
 #. module: l10n_pe_reports
+#: model:ir.model.fields,field_description:l10n_pe_reports.field_res_company__l10n_pe_chart_of_accounts
+#: model:ir.model.fields,field_description:l10n_pe_reports.field_res_config_settings__l10n_pe_chart_of_accounts
+msgid "Chart of Accounts PLE 5.3 (PE)"
+msgstr "Catalogo de cuentas PLE 5.3 (PE)"
+
+#. module: l10n_pe_reports
+#: model:ir.model.fields.selection,name:l10n_pe_reports.selection__res_company__l10n_pe_chart_of_accounts__3
+msgid ""
+"Chart of accounts for companies in the financial system, supervised by SBS"
+msgstr ""
+"Plan de cuentas para empresas del sistema financiero, supervisadas por SBS"
+
+#. module: l10n_pe_reports
+#: model:ir.model.fields.selection,name:l10n_pe_reports.selection__res_company__l10n_pe_chart_of_accounts__5
+msgid ""
+"Chart of accounts for companies in the insurance system, supervised by SBS"
+msgstr ""
+"Plan de cuentas para empresas del sistema asegurador, supervisadas por SBS"
+
+#. module: l10n_pe_reports
+#: model:ir.model.fields.selection,name:l10n_pe_reports.selection__res_company__l10n_pe_chart_of_accounts__4
+msgid "Chart of accounts for healthcare providers, supervised by SBS"
+msgstr ""
+"Plan de cuentas para entidades prestadoras de salud, supervisadas por SBS"
+
+#. module: l10n_pe_reports
+#: model:ir.model.fields.selection,name:l10n_pe_reports.selection__res_company__l10n_pe_chart_of_accounts__6
+msgid "Chart of accounts of private pension fund managers, supervised by SBS"
+msgstr ""
+"Plan de cuentas de las administradoras privadas de fondos de pensiones, "
+"supervisadas por SBS"
+
+#. module: l10n_pe_reports
+#: model:ir.model.fields.selection,name:l10n_pe_reports.selection__account_move__l10n_pe_sunat_transaction_type__closing
+msgid "Closing Entry"
+msgstr "Entrada de Cierre"
+
+#. module: l10n_pe_reports
 #: model:ir.model.fields,field_description:l10n_pe_reports.field_l10n_pe_ple_usage__code
 msgid "Code"
 msgstr "Código"
@@ -118,6 +161,16 @@ msgstr "Código"
 #: model:ir.model.fields,field_description:l10n_pe_reports.field_res_country__l10n_pe_code
 msgid "Code PE"
 msgstr "Código PE"
+
+#. module: l10n_pe_reports
+#: model:ir.model,name:l10n_pe_reports.model_res_company
+msgid "Companies"
+msgstr "Compañias"
+
+#. module: l10n_pe_reports
+#: model:ir.model,name:l10n_pe_reports.model_res_config_settings
+msgid "Config Settings"
+msgstr "Opciones de configuración"
 
 #. module: l10n_pe_reports
 #: model:ir.model,name:l10n_pe_reports.model_res_country
@@ -169,7 +222,8 @@ msgstr "Factura DUA"
 #: model:ir.model.fields,help:l10n_pe_reports.field_account_move__l10n_pe_dua_invoice_id
 #: model:ir.model.fields,help:l10n_pe_reports.field_account_payment__l10n_pe_dua_invoice_id
 msgid "DUA invoice that accredits the tax credit on the importation of goods."
-msgstr "Factura DUA que acredita el impuesto acreditado en la importación de bienes"
+msgstr ""
+"Factura DUA que acredita el impuesto acreditado en la importación de bienes"
 
 #. module: l10n_pe_reports
 #: model:account.report.column,name:l10n_pe_reports.tax_report_ple_14_1_date
@@ -266,6 +320,16 @@ msgstr "Ingresos financieros"
 #: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_L_FI
 msgid "Financial liabilities"
 msgstr "Pasivos financieros"
+
+#. module: l10n_pe_reports
+#: model:ir.model,name:l10n_pe_reports.model_account_general_ledger_report_handler
+msgid "General Ledger Custom Handler"
+msgstr "Gestor personalizado del libro mayor"
+
+#. module: l10n_pe_reports
+#: model:ir.model.fields.selection,name:l10n_pe_reports.selection__res_company__l10n_pe_chart_of_accounts__7
+msgid "Government chart of accounts"
+msgstr "Plan contable gubernamental"
 
 #. module: l10n_pe_reports
 #: model:account.report.line,name:l10n_pe_reports.account_financial_report_pnl_A_4
@@ -433,6 +497,18 @@ msgid "Non-Current Liabilities"
 msgstr "Pasivos no corrientes"
 
 #. module: l10n_pe_reports
+#. odoo-python
+#: code:addons/l10n_pe_reports/models/account_general_ledger.py:0
+#, python-format
+msgid "Only Peruvian company can generate PLE 5.3 report."
+msgstr "Solo empresas de Perú pueden generar el reporte PLE 5.3."
+
+#. module: l10n_pe_reports
+#: model:ir.model.fields.selection,name:l10n_pe_reports.selection__account_move__l10n_pe_sunat_transaction_type__opening
+msgid "Opening Entry"
+msgstr "Entrada de Apertura"
+
+#. module: l10n_pe_reports
 #: model:account.report.line,name:l10n_pe_reports.account_financial_report_pnl_E
 msgid "Operating Expenses"
 msgstr "Los gastos de operación"
@@ -469,8 +545,34 @@ msgid "Other revenues and expenses"
 msgstr "Otros ingresos y gastos"
 
 #. module: l10n_pe_reports
+#: model:ir.model.fields.selection,name:l10n_pe_reports.selection__res_company__l10n_pe_chart_of_accounts__99
+msgid "Others"
+msgstr "Otros"
+
+#. module: l10n_pe_reports
 #: model:account.report.line,name:l10n_pe_reports.ple_14_1_line
 msgid "PLE 14.1"
+msgstr ""
+
+#. module: l10n_pe_reports
+#. odoo-python
+#: code:addons/l10n_pe_reports/models/account_general_ledger.py:0
+#, python-format
+msgid "PLE 5.1"
+msgstr ""
+
+#. module: l10n_pe_reports
+#. odoo-python
+#: code:addons/l10n_pe_reports/models/account_general_ledger.py:0
+#, python-format
+msgid "PLE 5.3"
+msgstr ""
+
+#. module: l10n_pe_reports
+#. odoo-python
+#: code:addons/l10n_pe_reports/models/account_general_ledger.py:0
+#, python-format
+msgid "PLE 6.1"
 msgstr ""
 
 #. module: l10n_pe_reports
@@ -499,14 +601,46 @@ msgid "PLE Purchase Report 8.2"
 msgstr "PLE Registro de Compras 8.2"
 
 #. module: l10n_pe_reports
+#: model_terms:ir.ui.view,arch_db:l10n_pe_reports.res_config_settings_form_inherit_l10n_pe_reports
+msgid "PLE Reports"
+msgstr "Reportes PLE"
+
+#. module: l10n_pe_reports
 #: model:ir.model,name:l10n_pe_reports.model_l10n_pe_tax_ple_14_1_report_handler
 msgid "PLE Sales Report 14.1"
 msgstr "PLE Registro de Ventas 14.1"
 
 #. module: l10n_pe_reports
+#: model:ir.model.fields,field_description:l10n_pe_reports.field_account_bank_statement_line__l10n_pe_sunat_transaction_type
+#: model:ir.model.fields,field_description:l10n_pe_reports.field_account_move__l10n_pe_sunat_transaction_type
+#: model:ir.model.fields,field_description:l10n_pe_reports.field_account_payment__l10n_pe_sunat_transaction_type
+msgid "PLE Transaction Type"
+msgstr "Tipo de transacción PLE"
+
+#. module: l10n_pe_reports
+#: model_terms:ir.ui.view,arch_db:l10n_pe_reports.res_config_settings_form_inherit_l10n_pe_reports
+msgid "PLE Type of CoA"
+msgstr "Tipo de catalogo de cuentas PLE"
+
+#. module: l10n_pe_reports
 #: model_terms:ir.ui.view,arch_db:l10n_pe_reports.view_invoice_form
 msgid "Peru"
 msgstr ""
+
+#. module: l10n_pe_reports
+#: model:ir.model.fields,help:l10n_pe_reports.field_account_bank_statement_line__l10n_pe_sunat_transaction_type
+#: model:ir.model.fields,help:l10n_pe_reports.field_account_move__l10n_pe_sunat_transaction_type
+#: model:ir.model.fields,help:l10n_pe_reports.field_account_payment__l10n_pe_sunat_transaction_type
+msgid ""
+"Please choose the transaction type for the SUNAT reports 5.1, 5.2, and 6.1. "
+"It's important to note that this selection will not impact the account move;"
+" its sole purpose is to correctly flag the transaction in the exported txt "
+"file."
+msgstr ""
+"Elija el tipo de transacción para los reportes de SUNAT 5.1, 5.2 y 6.1. "
+"Es importante resaltar que esta opción no impactará en el movimiento contable;"
+" su único propósito es marcar correctamente la transacción en el archivo txt "
+"a exportar."
 
 #. module: l10n_pe_reports
 #: model:account.report,name:l10n_pe_reports.account_financial_report_pnl
@@ -570,6 +704,11 @@ msgid "Revaluation funds"
 msgstr "Fondos de revalorización"
 
 #. module: l10n_pe_reports
+#: model:ir.model.fields.selection,name:l10n_pe_reports.selection__res_company__l10n_pe_chart_of_accounts__2
+msgid "Revised chart of accounts"
+msgstr "Plan contable revisado"
+
+#. module: l10n_pe_reports
 #: model:account.report.line,name:l10n_pe_reports.account_financial_report_pnl_B_3
 msgid "Sales and distribution expenses"
 msgstr "Gastos de distribución"
@@ -610,7 +749,6 @@ msgstr ""
 "Servicio que se refleja en la factura declarada y debe ser clasificado según"
 " tabla 31, utilizado en registro de compra 8.2"
 
-
 #. module: l10n_pe_reports
 #: model:ir.model.fields,help:l10n_pe_reports.field_account_bank_statement_line__l10n_pe_usage_type_id
 #: model:ir.model.fields,help:l10n_pe_reports.field_account_move__l10n_pe_usage_type_id
@@ -620,7 +758,7 @@ msgid ""
 "according to table 31: Type of Usage."
 msgstr ""
 "Servicio incluido en la factura declarada, debe ser clasificado de acuerdo a"
-" la tabla 31: Tipo de Uso
+" la tabla 31: Tipo de Uso"
 
 #. module: l10n_pe_reports
 #: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_E_R_SCA
@@ -639,6 +777,9 @@ msgstr "Ingresos por subarrendamiento y otros"
 
 #. module: l10n_pe_reports
 #. odoo-python
+#: code:addons/l10n_pe_reports/models/account_general_ledger.py:0
+#: code:addons/l10n_pe_reports/models/account_general_ledger.py:0
+#: code:addons/l10n_pe_reports/models/account_general_ledger.py:0
 #: code:addons/l10n_pe_reports/models/account_ple_reports.py:0
 #: code:addons/l10n_pe_reports/models/account_ple_reports.py:0
 #, python-format
@@ -659,15 +800,23 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
-"Estado de los siguientes documentos es Publicado, pero no estan validados en la SUNAT:\n"
+"Estado de los siguientes documentos es Publicado, pero no están validados en la SUNAT:\n"
 "\n"
 "%s"
-
 
 #. module: l10n_pe_reports
 #: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_A_C_RE
 msgid "Trade and other receivables"
 msgstr "Deudores comerciales y otras cuentas a cobrar"
+
+#. module: l10n_pe_reports
+#: model_terms:ir.ui.view,arch_db:l10n_pe_reports.res_config_settings_form_inherit_l10n_pe_reports
+msgid ""
+"Type of chart of accounts required for the generation of PLE reports, this "
+"will not add or remove any accounts from your current chart of accounts."
+msgstr ""
+"Tipo de catalogo de cuentas requerido para la generación de los reportes PLE, este "
+"no agregará ni eliminará ninguna cuenta de su actual catalogo de cuentas."
 
 #. module: l10n_pe_reports
 #: model:account.report.line,name:l10n_pe_reports.account_financial_report_bs_E_U
@@ -705,6 +854,14 @@ msgstr "PLE Registro de Ventas 14.1"
 #: model:ir.model.fields,help:l10n_pe_reports.field_l10n_pe_ple_usage__code
 msgid "Value to be used in the purchase report."
 msgstr "Valor utilizado en el reporte de Compras"
+
+#. module: l10n_pe_reports
+#: model:ir.model.fields,help:l10n_pe_reports.field_res_company__l10n_pe_chart_of_accounts
+#: model:ir.model.fields,help:l10n_pe_reports.field_res_config_settings__l10n_pe_chart_of_accounts
+msgid "Value used on PLE 5.3 report to indicate the chart of accounts used."
+msgstr ""
+"Valor utilizado en el reporte PLE 5.3 para indicar el catalogo de cuentas "
+"utilizado."
 
 #. module: l10n_pe_reports
 #: model:account.report.column,name:l10n_pe_reports.tax_report_ple_8_1_base_withholdings

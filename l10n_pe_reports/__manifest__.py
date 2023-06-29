@@ -28,6 +28,7 @@
         "data/l10n_pe.ple.usage.csv",
         "data/res.country.csv",
         "views/account_move_view.xml",
+        "views/res_config_settings_views.xml",
     ],
     "installable": True,
     "auto_install": True,

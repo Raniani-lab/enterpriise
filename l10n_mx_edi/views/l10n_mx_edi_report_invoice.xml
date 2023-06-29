@@ -131,7 +131,7 @@
                 </div>
             </t>
         </xpath>
-        <xpath expr="//p[@name='incoterm']" position="after">
+        <xpath expr="//div[@name='comment']" position="after">
             <t t-if="o.partner_id.l10n_mx_edi_fiscal_regime">
                 <p name="l10n_mx_fiscal_regime_receptor">
                     Fiscal Regime Receptor: <span t-esc="o.partner_id.l10n_mx_edi_fiscal_regime"/>

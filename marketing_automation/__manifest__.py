@@ -24,9 +24,6 @@
         'views/marketing_campaign_views.xml',
         'data/ir_cron_data.xml',
     ],
-    'demo': [
-        'data/marketing_automation_demo.xml'
-    ],
     'application': True,
     'license': 'OEEL-1',
     'uninstall_hook': 'uninstall_hook',

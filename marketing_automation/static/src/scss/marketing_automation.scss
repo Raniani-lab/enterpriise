@@ -357,3 +357,40 @@
 .o_ma_scheduled {
     background-color: $o-brand-odoo;
 }
+
+.o_ma_templates_container {
+    pointer-events: auto;
+    .marketing-template {
+        &, * {
+            transition: all .15s;
+        }
+        min-height: 17vh; 
+        img {
+            filter: invert(.5);
+        }
+
+        &:hover {
+            * {
+                color: $o-enterprise-color !important;
+            }
+
+            background-color: var(--o-color-4);
+            box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.1), 0 2px 2px 0 rgba(0, 0, 0, 0.05);
+            border-color: $o-enterprise-color !important;
+
+            img {
+                filter: invert(0);
+            }
+
+            .card-body {
+                background-color: var(--o-color-4) !important;
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .o_view_nocontent.o_ma_campaign_container  {
+        align-items: start;
+    }
+}

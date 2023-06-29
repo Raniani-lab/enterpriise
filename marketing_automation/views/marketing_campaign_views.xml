@@ -5,7 +5,7 @@
         <field name="name">marketing.campaign.view.kanban</field>
         <field name="model">marketing.campaign</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="state" quick_create="false" sample="1">
+            <kanban js_class="marketing_campaign_kanban_view" default_group_by="state" quick_create="false" sample="0">
                 <field name="name"/>
                 <field name="state" readonly="1"/>
                 <templates>
@@ -90,7 +90,7 @@
                     </div>
                     <group>
                         <field name="name" invisible="1"/>
-                        <field name="user_id" groups="base.group_no_one" class="oe_inline"/>
+                        <field name="user_id" groups="base.group_no_one" widget="many2one_avatar_user" class="oe_inline"/>
                         <label for="model_id" string="Target"/>
                         <div name="mailing_container">
                             <div class="row">
@@ -319,7 +319,7 @@
         <field name="name">marketing.campaign.view.tree</field>
         <field name="model">marketing.campaign</field>
         <field name="arch" type="xml">
-            <tree string="Campaign" sample="1">
+            <tree js_class="marketing_campaign_list_view" string="Campaign" sample="1">
                 <field name="name" />
                 <field name="model_id" string="Target" readonly="state != 'draft'"/>
                 <field name="mass_mailing_count" string="Mailings"/>
@@ -354,11 +354,15 @@
         <field name="res_model">marketing.campaign</field>
         <field name="view_mode">kanban,tree,form</field>
         <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">
-                Create a Marketing Automation Campaign
-            </p><p>
-                Define workflows by chaining up activities and let Odoo handle the rest.
-            </p>
+            <div class="o_action_helper" style="position: fixed; bottom: 0; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+                <p style="margin-top: 0; color: #111827; font-weight: bold; font-size: 2vw;">
+                    Create a Campaign
+                </p>
+                <p style="margin-top: 0; font-size: 1vw;">
+                    Create one or load a template prepared by our experts.
+                    Then sit down and let Odoo handle the rest.
+                </p>
+            </div>
         </field>
     </record>
 

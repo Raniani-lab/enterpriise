@@ -205,15 +205,14 @@ class SaleOrderLine(models.Model):
 
     @api.depends('temporal_type', 'price_subtotal', 'pricing_id')
     def _compute_recurring_monthly(self):
-        subscription_lines = self.filtered(lambda l: l.temporal_type == 'subscription')
-        for line in subscription_lines:
-            if not line.order_id.recurrence_id:
+        for line in self:
+            if not line.temporal_type == 'subscription' or not line.order_id.recurrence_id.duration:
+                line.recurring_monthly = 0
                 continue
-            if line.order_id.recurrence_id.unit not in INTERVAL_FACTOR.keys():
+            elif line.order_id.recurrence_id.unit not in INTERVAL_FACTOR.keys():
                 raise ValidationError(_("The time unit cannot be used. Please chose one of these unit: %s.",
                                         ", ".join(['Month, Year', 'One Time'])))
             line.recurring_monthly = line.price_subtotal * INTERVAL_FACTOR[line.order_id.recurrence_id.unit] / line.order_id.recurrence_id.duration
-        (self - subscription_lines).recurring_monthly = 0
 
     @api.depends('order_id.subscription_id', 'product_id', 'product_uom', 'price_unit', 'order_id')
     def _compute_parent_line_id(self):

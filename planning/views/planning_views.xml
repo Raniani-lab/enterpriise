@@ -245,7 +245,7 @@
                         groups="planning.group_planning_manager" attrs="{'invisible': ['|', ('state', '=', 'draft'), ('resource_type', '=', 'material')]}" data-hotkey="q" invisible="context.get('search_default_my_shifts')"/>
                     
                     <button name="action_self_assign" class="btn btn-secondary float-end" type="object" string="I Take It" attrs="{'invisible': ['|', '|', '|', ('employee_id', '!=', False), ('start_datetime', '=', False), ('end_datetime', '=', False), ('is_past', '=', True)]}" close="1" data-hotkey="q"/>
-                    <button name="action_self_unassign" class="btn btn-secondary float-end" type="object" string="I Am Unavailable" attrs="{'invisible': ['|', '|', '|', ('is_assigned_to_me', '=', False), ('allow_self_unassign', '=', False), ('is_past', '=', True), ('is_unassign_deadline_passed', '=', True)]}" close="1" data-hotkey="w"/>
+                    <button name="action_self_unassign" class="btn btn-secondary float-end" type="object" string="I Am Unavailable" attrs="{'invisible': ['|', '|', '|', ('is_assigned_to_me', '=', False), ('allow_self_unassign', '=', False), ('is_past', '=', True), ('is_unassign_deadline_passed', '=', True)]}" close="1" data-hotkey="w" invisible="not context.get('search_default_my_shifts')"/>
                     <button string="Discard" special="cancel" data-hotkey="z" class="btn-secondary float-end" close="1" fullscreen="True" groups="planning.group_planning_manager"/>
                     <button name="unlink" type="object" icon="fa-trash" title="Remove" class="btn-secondary float-end d-none d-md-inline" close="1" attrs="{'invisible': [('id', '=', False)]}" groups="planning.group_planning_manager" data-hotkey="d"/>
                 </footer>

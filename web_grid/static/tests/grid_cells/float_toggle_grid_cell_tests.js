@@ -110,6 +110,7 @@ QUnit.module("Grid Cells", (hook) => {
         assert.strictEqual(firstCell.dataset.gridRow, "2");
         assert.strictEqual(firstCell.dataset.gridColumn, "2");
         await hoverGridCell(firstCell);
+        await nextTick();
         assert.containsOnce(
             target,
             ".o_grid_cell",

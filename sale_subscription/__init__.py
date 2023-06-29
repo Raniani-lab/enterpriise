@@ -15,20 +15,16 @@ def _pre_init_sale_subscription(env):
     """
     env.cr.execute("""
         ALTER TABLE "sale_order_line"
-        ADD COLUMN "parent_line_id" int4,
-        ADD COLUMN "pricing_id" int4
+        ADD COLUMN "parent_line_id" int4
     """)
     env.cr.execute("""
         ALTER TABLE "sale_order"
         ADD COLUMN "is_subscription" bool,
         ADD COLUMN  "payment_exception" bool,
-        
         ADD COLUMN  "close_reason_id" int4,
         ADD COLUMN  "subscription_state" varchar,
         ADD COLUMN  "rating_last_value" double precision,
         ADD COLUMN  "end_date" date,
-        ADD COLUMN  "country_id" int4,
-        ADD COLUMN  "industry_id" int4,
         ADD COLUMN  "payment_token_id" int4,
         ADD COLUMN  "kpi_1month_mrr_delta" double precision,
         ADD COLUMN  "kpi_1month_mrr_percentage" double precision,

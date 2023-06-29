@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, models, api, _
+from odoo.osv import expression
 
 
 class Project(models.Model):
@@ -65,3 +66,9 @@ class Project(models.Model):
             'fsm_mode': self.is_fsm,
         })
         return action
+
+    def _get_projects_to_make_billable_domain(self):
+        return expression.AND([
+            super()._get_projects_to_make_billable_domain(),
+            [('is_fsm', '=', False)],
+        ])

@@ -464,3 +464,9 @@ class Task(models.Model):
         if self.env.context.get('fsm_mark_as_sent') and not self.fsm_is_sent:
             self.fsm_is_sent = True
         return super()._message_post_after_hook(message, msg_vals)
+
+    def _get_projects_to_make_billable_domain(self, additional_domain=None):
+        return expression.AND([
+            super()._get_projects_to_make_billable_domain(additional_domain),
+            [('is_fsm', '=', False)],
+        ])

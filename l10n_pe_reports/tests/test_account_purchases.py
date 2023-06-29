@@ -37,7 +37,7 @@ class TestPePurchase(TestAccountReportsCommon):
                     "date": date_invoice,
                     "invoice_payment_term_id": False,
                     "l10n_latam_document_type_id": (invoice_type or self.env.ref("l10n_pe.document_type01")).id,
-                    "l10n_pe_usage_type_id": self.env.ref("l10n_pe_reports_book.ple_usage_type_00").id,
+                    "l10n_pe_usage_type_id": self.env.ref("l10n_pe_reports.ple_usage_type_00").id,
                     "invoice_line_ids": [
                         (0, 0, {
                             "name": f"test {tax.amount}",
@@ -67,7 +67,7 @@ class TestPePurchase(TestAccountReportsCommon):
             refund = self.env["account.move"].browse(move_reversal.reverse_moves()["res_id"])
             refund.l10n_latam_document_type_id = refund_type or self.env.ref("l10n_pe.document_type07")
             refund.l10n_latam_document_number = "FFF %s" % str(number).zfill(4)
-            refund.l10n_pe_usage_type_id = self.env.ref("l10n_pe_reports_book.ple_usage_type_00")
+            refund.l10n_pe_usage_type_id = self.env.ref("l10n_pe_reports.ple_usage_type_00")
             refund.action_post()
             number += 1
         return moves
@@ -83,7 +83,7 @@ class TestPePurchase(TestAccountReportsCommon):
         # Moves for not Peruvian partner must be ignored
         partner_c = self.partner_a.copy({"country_id": self.env.ref("base.mx").id})
         moves[0].copy({"partner_id": partner_c.id})
-        report = self.env.ref("l10n_pe_reports_book.tax_report_ple_purchase_8_1")
+        report = self.env.ref("l10n_pe_reports.tax_report_ple_purchase_8_1")
 
         options = self._generate_options(
             report, fields.Date.from_string("2022-01-01"), fields.Date.from_string("2022-12-31")
@@ -123,7 +123,7 @@ class TestPePurchase(TestAccountReportsCommon):
         )
         # Moves with document type not in ("91", "97", "98") must be ignored
         self._prepare_purchase_moves()
-        report = self.env.ref("l10n_pe_reports_book.tax_report_ple_purchase_8_2")
+        report = self.env.ref("l10n_pe_reports.tax_report_ple_purchase_8_2")
 
         options = self._generate_options(
             report, fields.Date.from_string("2022-01-01"), fields.Date.from_string("2022-12-31")

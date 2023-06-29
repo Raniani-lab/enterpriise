@@ -1,24 +1,34 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 {
     'name': 'Peru - Accounting Reports',
     'countries': ['pe'],
-    'version': '1.0',
-    'category': 'Accounting/Localizations/Reporting',
-    'author': "Odoo SA",
-    'description': """
-        Accounting reports for Peru
+    "summary": """
+        Electronic accounting reports
+            - Sales report
+            - Purchase report
+        P&L + balance Sheet
     """,
-    'depends': [
-        'account_reports',
-        'l10n_pe',
+    "version": "1.0",
+    "author": "Vauxoo, Odoo SA",
+    "category": "Accounting/Localizations/Reporting",
+    "website": "https://www.odoo.com/app/accounting",
+    "license": "OEEL-1",
+    "depends": [
+        "l10n_pe_edi",
+        "account_reports",
     ],
-    'data': [
+    "data": [
+        "security/ir.model.access.csv",
         "data/balance_sheet.xml",
         "data/profit_loss.xml",
+        "data/account_ple_purchase_8_1_report.xml",
+        "data/account_ple_purchase_8_2_report.xml",
+        "data/account_ple_sales_14_1_report.xml",
+        "data/l10n_pe.ple.usage.csv",
+        "data/res.country.csv",
+        "views/account_move_view.xml",
     ],
-    'installable': True,
-    'auto_install': True,
-    'website': 'https://www.odoo.com/app/accounting',
-    'license': 'OEEL-1',
+    "installable": True,
+    "auto_install": True,
 }

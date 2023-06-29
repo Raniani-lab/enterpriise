@@ -75,7 +75,7 @@ class TestPeSales(TestAccountReportsCommon):
         # Move in draft must be ignored
         moves[0].copy()
 
-        report = self.env.ref("l10n_pe_reports_book.tax_report_ple_sales_14_1")
+        report = self.env.ref("l10n_pe_reports.tax_report_ple_sales_14_1")
         options = self._generate_options(
             report, fields.Date.from_string("2022-01-01"), fields.Date.from_string("2022-12-31")
         )
@@ -172,7 +172,7 @@ class TestPeSales(TestAccountReportsCommon):
         moves.action_post()
         moves.write({"edi_state": "sent"})
 
-        report = self.env.ref("l10n_pe_reports_book.tax_report_ple_sales_14_1")
+        report = self.env.ref("l10n_pe_reports.tax_report_ple_sales_14_1")
         options = self._generate_options(
             report, fields.Date.from_string("2022-01-01"), fields.Date.from_string("2022-12-31")
         )

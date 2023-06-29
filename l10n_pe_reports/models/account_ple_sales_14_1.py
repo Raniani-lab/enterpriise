@@ -11,7 +11,7 @@ class AccountReport(models.Model):
     def _get_options_all_entries_domain(self, options):
         """For sale reports, must be considered cancelled and posted documents"""
         result = super()._get_options_all_entries_domain(options)
-        if self and self != self.env.ref("l10n_pe_reports_book.tax_report_ple_sales_14_1"):
+        if self and self != self.env.ref("l10n_pe_reports.tax_report_ple_sales_14_1"):
             return result
         return ["|", ("parent_state", "=", "posted"), "&",
                 ("parent_state", "=", "cancel"), ("move_id.l10n_pe_edi_cancel_cdr_number", "!=", False)]

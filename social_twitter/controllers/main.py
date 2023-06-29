@@ -257,4 +257,7 @@ class SocialTwitterController(SocialController):
             headers=headers,
             timeout=5
         )
+        if not response.ok:
+            message = response.json()['errors'][0].get('message') if response.json().get('errors') else _('Authentication failed. Please enter valid credentials.')
+            raise SocialValidationException(message)
         return response.json()

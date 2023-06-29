@@ -79,7 +79,13 @@ msgid "An error occurred (%s)"
 msgstr ""
 
 #. module: social_twitter
-#. odoo-javascript
+#: code:addons/social_twitter/controllers/main.py:0
+#, python-format
+msgid "Authentication failed. Please enter valid credentials."
+msgstr ""
+
+#. module: social_twitter
+#. openerp-web
 #: code:addons/social_twitter/static/src/xml/social_twitter_templates.xml:0
 #: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
 #, python-format

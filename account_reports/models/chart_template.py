@@ -1,5 +1,6 @@
 # coding: utf-8
-from odoo import fields, models
+from odoo import fields, models, _
+from odoo.exceptions import ValidationError
 
 
 class AccountChartTemplate(models.AbstractModel):
@@ -14,6 +15,14 @@ class AccountChartTemplate(models.AbstractModel):
             ('type', '=', 'general'),
             ('show_on_dashboard', '=', True)
         ], limit=1)
+        if not default_misc_journal:
+            default_misc_journal = self.env['account.journal'].search([
+                ('company_id.id', '=', company.id),
+                ('type', '=', 'general')
+            ], limit=1)
+        if not default_misc_journal:
+            raise ValidationError(_("No default miscellaneous journal could be found for the active company"))
+
         company.update({
             'totals_below_sections': company.anglo_saxon_accounting,
             'account_tax_periodicity_journal_id': default_misc_journal,

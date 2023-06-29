@@ -15,7 +15,7 @@ patch(PosStore.prototype, "l10n_cl_edi_pos.PosStore", {
         }
     },
     isChileanCompany() {
-        return this.company?.country.code == "CL";
+        return this.company.country?.code == "CL";
     },
     doNotAllowRefundAndSales() {
         return this.isChileanCompany() || this._super(...arguments);

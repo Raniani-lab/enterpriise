@@ -7,5 +7,6 @@ patch(PartnerDetailsEdit.prototype, "l10n_cl_edi_pos.PartnerDetailsEdit", {
     setup() {
         this._super(...arguments);
         this.intFields.push("l10n_latam_identification_type_id");
+        this.changes.l10n_cl_sii_taxpayer_type = "1";
     },
 });

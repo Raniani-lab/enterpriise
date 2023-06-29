@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 
 {
-    'name': "Chilian module for Point of Sale",
+    'name': "Chilean module for Point of Sale",
 
     'summary': """
-Chilian module for Point of Sale
+Chilean module for Point of Sale
 """,
 
     'description': """
-This module brings the technical requirement for the Chilian regulation.
+This module brings the technical requirement for the Chilean regulation.
 Install this if you are using the Point of Sale app in Chili.    
 
 """,

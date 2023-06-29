@@ -159,7 +159,7 @@ Wysiwyg.include({
                             default_parent_id: this.options.recordInfo.res_id,
                             default_is_article_item: true,
                         });
-                    });
+                    }, restoreSelection);
                 }
             }, {
                 category: _t('Knowledge Databases'),
@@ -177,7 +177,7 @@ Wysiwyg.include({
                             default_parent_id: this.options.recordInfo.res_id,
                             default_is_article_item: true,
                         });
-                    });
+                    }, restoreSelection);
                 }
             }, {
                 category: _t('Knowledge Databases'),
@@ -195,7 +195,7 @@ Wysiwyg.include({
                             default_parent_id: this.options.recordInfo.res_id,
                             default_is_article_item: true,
                         });
-                    });
+                    }, restoreSelection);
                 }
             }, {
                 category: _t('Knowledge'),
@@ -370,11 +370,13 @@ Wysiwyg.include({
      * @param {String} viewType
      * @param {Function} save
      */
-    _openEmbeddedViewDialog: function (viewType, save) {
+    _openEmbeddedViewDialog: function (viewType, save, onClose) {
         Component.env.services.dialog.add(PromptEmbeddedViewNameDialog, {
             isNew: true,
             viewType: viewType,
             save: save
+        }, {
+            onClose: onClose || (() => {}),
         });
     },
 });

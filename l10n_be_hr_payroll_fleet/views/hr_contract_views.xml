@@ -9,62 +9,62 @@
                 <field name="transport_mode_car" invisible="1"/>
                 <label for="transport_mode_car"
                     string="Catalog Company Car"
-                    attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('country_code', '!=', 'BE')]}"
+                    invisible="wage_type == 'hourly' or country_code != 'BE'"
                     groups="fleet.fleet_group_manager"/>
             </label>
             <div name="transport_mode_car" position="replace">
-                <div name="transport_mode_car" attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('country_code', '!=', 'BE')]}"
+                <div name="transport_mode_car" invisible="wage_type == 'hourly' or country_code != 'BE'"
                     class="o_checkbox_optional_field"
                     groups="fleet.fleet_group_manager">
-                    <field name="transport_mode_car" attrs="{'invisible': [('wage_type', '=', 'hourly')]}" nolabel="1"/>
-                    <field name="car_id" nolabel="1" attrs="{'invisible': [('transport_mode_car', '=', False)]}"/>
+                    <field name="transport_mode_car" invisible="wage_type == 'hourly'" nolabel="1"/>
+                    <field name="car_id" nolabel="1" invisible="not transport_mode_car"/>
                 </div>
             </div>
             <xpath expr="//label[@for='fuel_card']" position="before">
                 <field name="new_car" invisible="1"/>
                 <label for="new_car" string="New Company Car"
                     groups="fleet.fleet_group_manager"
-                    attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('country_code', '!=', 'BE')]}"/>
+                    invisible="wage_type == 'hourly' or country_code != 'BE'"/>
                 <div name="new_car_model_id_div"
                     class="o_checkbox_optional_field"
                     groups="fleet.fleet_group_manager"
-                    attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('country_code', '!=', 'BE')]}">
-                    <field name="new_car" attrs="{'invisible': [('wage_type', '=', 'hourly')]}" nolabel="1"/>
-                    <field name="new_car_model_id" attrs="{'invisible': [('new_car', '=', False)]}" nolabel="1"/>
+                    invisible="wage_type == 'hourly' or country_code != 'BE'">
+                    <field name="new_car" invisible="wage_type == 'hourly'" nolabel="1"/>
+                    <field name="new_car_model_id" invisible="not new_car" nolabel="1"/>
                 </div>
             </xpath>
             <xpath expr="//label[@for='fuel_card']" position="attributes">
-                <attribute name="attrs">{'invisible': ['|', ('wage_type', '=', 'hourly'), ('transport_mode_car', '=', False), ('new_car', '=', False)]}</attribute>
+                <attribute name="invisible">(wage_type == 'hourly' or not transport_mode_car) and not new_car</attribute>
             </xpath>
             <xpath expr="//div[@name='fuel_card_div']" position="attributes">
-                <attribute name="attrs">{'invisible': ['|', ('wage_type', '=', 'hourly'), ('transport_mode_car', '=', False), ('new_car', '=', False)]}</attribute>
+                <attribute name="invisible">(wage_type == 'hourly' or not transport_mode_car) and not new_car</attribute>
             </xpath>
             <xpath expr="//div[@name='fuel_card_div']" position="inside">
-                <span attrs="{'invisible': [('fuel_type', '=', False)]}">(Fuel Type: <field name="fuel_type" class="oe_inline" readonly="1"/>)</span>
+                <span invisible="not fuel_type">(Fuel Type: <field name="fuel_type" class="oe_inline" readonly="1"/>)</span>
             </xpath>
             <field name="car_atn" position="attributes">
-                <attribute name="attrs">{'invisible': [('transport_mode_car', '=', False), ('new_car', '=', False)]}</attribute>
+                <attribute name="invisible">not transport_mode_car and not new_car</attribute>
             </field>
             <field name="car_atn" position="after">
                 <label for="transport_mode_bike" string="Catalog Company Bike"
-                    attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('country_code', '!=', 'BE')]}"
+                    invisible="wage_type == 'hourly' or country_code != 'BE'"
                     groups="fleet.fleet_group_manager"/>
                 <div name="bike_id_div"
-                    attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('country_code', '!=', 'BE')]}"
+                    invisible="wage_type == 'hourly' or country_code != 'BE'"
                     class="o_checkbox_optional_field"
                     groups="fleet.fleet_group_manager">
                     <field name="transport_mode_bike" nolabel="1"/>
-                    <field name="bike_id" nolabel="1" attrs="{'invisible': [('transport_mode_bike', '=', False)], 'required': [('transport_mode_bike', '=', True)]}"/>
+                    <field name="bike_id" nolabel="1" invisible="not transport_mode_bike" required="transport_mode_bike"/>
                 </div>
                 <label for="new_bike" string="New Company Bike"
                     groups="fleet.fleet_group_manager"
-                    attrs="{'invisible': ['|', ('wage_type', '=', 'hourly'), ('country_code', '!=', 'BE')]}"/>
+                    invisible="wage_type == 'hourly' or country_code != 'BE'"/>
                 <div name="new_bike_model_id_div"
                     class="o_checkbox_optional_field"
                     groups="fleet.fleet_group_manager"
-                    attrs="{'invisible': [('country_code', '!=', 'BE')]}">
-                    <field name="new_bike" attrs="{'invisible': [('wage_type', '=', 'hourly')]}" nolabel="1"/>
-                    <field name="new_bike_model_id" attrs="{'invisible': [('new_bike', '=', False)], 'required': [('new_bike', '=', True)]}" nolabel="1"/>
+                    invisible="country_code != 'BE'">
+                    <field name="new_bike" invisible="wage_type == 'hourly'" nolabel="1"/>
+                    <field name="new_bike_model_id" invisible="not new_bike" required="new_bike" nolabel="1"/>
                 </div>
             </field>
         </field>

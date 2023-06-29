@@ -9,7 +9,7 @@
             <xpath expr="//block[@name='integration']" position="inside">
                 <setting help="Schedule &amp; make calls from your database">
                     <field name="module_voip"/>
-                    <div class="content-group" attrs="{'invisible': [('module_voip','=',False)]}">
+                    <div class="content-group" invisible="not module_voip">
                         <div class="row mt16">
                             <label for="pbx_ip" class="col-4 col-lg-4 o_light_label"/>
                             <field name="pbx_ip" nolabel="1"/>

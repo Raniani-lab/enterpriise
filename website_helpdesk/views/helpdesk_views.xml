@@ -6,13 +6,14 @@
         <field name="model">helpdesk.team</field>
         <field name="arch" type="xml">
             <xpath expr="//button[@name='action_view_sla_policy']" position="after">
-                <field name="is_published" widget="website_redirect_button" attrs="{'invisible': [('use_website_helpdesk_form', '=', False)]}"/>
+                <field name="is_published" widget="website_redirect_button" invisible="not use_website_helpdesk_form"/>
             </xpath>
             <xpath expr="//div[@id='website_form_channel']//setting" position="inside">
-                <label for="website_id" class="me-2" groups="website.group_multi_website" attrs="{'invisible': [('use_website_helpdesk_form', '=', False)]}"/>
+                <label for="website_id" class="me-2" groups="website.group_multi_website" invisible="not use_website_helpdesk_form"/>
                 <field name="website_id" options="{'no_create': True}"
                         context="{'default_company_id': company_id}" groups="website.group_multi_website"
-                        attrs="{'invisible': [('use_website_helpdesk_form', '=', False)], 'required': [('use_website_helpdesk_form', '=', True)]}"/>
+                        invisible="not use_website_helpdesk_form"
+                        required="use_website_helpdesk_form"/>
             </xpath>
         </field>
     </record>

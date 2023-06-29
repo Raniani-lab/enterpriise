@@ -16,10 +16,10 @@
                         <field name="ref" />
                         <field name="file_name" />
                     </group>
-                    <group attrs="{'invisible': [('autopay_type', '!=', 'h2h')]}">
-                        <field name="digital_pic_id" attrs="{'required' : [('autopay_type', '=', 'h2h')]}" />
+                    <group invisible="autopay_type != 'h2h'">
+                        <field name="digital_pic_id" required="autopay_type == 'h2h'" />
                         <field name="customer_ref" />
-                        <field name="authorisation_type" attrs="{'required' : [('autopay_type', '=', 'h2h')]}" />
+                        <field name="authorisation_type" required="autopay_type == 'h2h'" />
                     </group>
                 </group>
                 <footer>

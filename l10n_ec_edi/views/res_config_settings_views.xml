@@ -8,7 +8,7 @@
             <field name="inherit_id" ref="account.res_config_settings_view_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//block[@id='invoicing_settings']" position="after">
-                    <block id="l10n_ec_edi_settings" title="Ecuadorian Localization" attrs="{'invisible': [('country_code', '!=', 'EC')]}">
+                    <block id="l10n_ec_edi_settings" title="Ecuadorian Localization" invisible="country_code != 'EC'">
                         <setting id="l10n_ec_edi_invoicing" string="Electronic Invoicing">
                             <div class="mt16">
                                 <div>
@@ -39,10 +39,10 @@
                             <div>
                                 <field name="l10n_ec_production_env"/>
                                 <label for="l10n_ec_production_env" class="o_light_label"/>
-                                <div class="text-muted" attrs="{'invisible': [('l10n_ec_production_env', '=', False)]}">
+                                <div class="text-muted" invisible="not l10n_ec_production_env">
                                     Production mode: EDI data is sent to the government.
                                 </div>
-                                <div class="text-muted" attrs="{'invisible': [('l10n_ec_production_env', '!=', False)]}">
+                                <div class="text-muted" invisible="l10n_ec_production_env">
                                     Test mode: EDI data is sent to test servers.
                                 </div>
                             </div>

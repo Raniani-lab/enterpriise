@@ -7,15 +7,15 @@
         <field name="inherit_id" ref="hr_payroll.hr_payslip_run_form"/>
         <field name="arch" type="xml">
             <button name="action_paid" position="before">
-                <button name="action_open_sepa_wizard" type="object" string="Create Payment Report" class="oe_highlight" attrs="{'invisible': ['|', ('state', 'not in', ['close', 'paid']), ('sepa_export', '!=', False)]}"/>
+                <button name="action_open_sepa_wizard" type="object" string="Create Payment Report" class="oe_highlight" invisible="state not in ['close', 'paid'] or sepa_export"/>
             </button>
             <button name="action_paid" position="after">
-                <button name="action_open_sepa_wizard" type="object" string="Create Payment Report" attrs="{'invisible': ['|', ('state', 'not in', ['close', 'paid']), ('sepa_export', '=', False)]}"/>
+                <button name="action_open_sepa_wizard" type="object" string="Create Payment Report" invisible="state not in ['close', 'paid'] or not sepa_export"/>
             </button>
             <xpath expr="//div[hasclass('o_row')]" position="after">
                 <field name="sepa_export_filename" invisible="1"/>
-                <field name="sepa_export" filename="sepa_export_filename" attrs="{'invisible': [('sepa_export', '=', False)]}" readonly="1"/>
-                <field name="sepa_export_date" attrs="{'invisible': [('sepa_export','=', False)]}" readonly="1"/>
+                <field name="sepa_export" filename="sepa_export_filename" readonly="1" invisible="not sepa_export"/>
+                <field name="sepa_export_date" readonly="1" invisible="not sepa_export"/>
             </xpath>
         </field>
     </record>
@@ -28,10 +28,10 @@
         <field name="arch" type="xml">
             <button name="action_payslip_paid" position="replace">
                 <button name="action_open_sepa_wizard" type="object" string="Create Payment Report" class="oe_highlight" 
-                    attrs="{'invisible': ['|', ('payslip_run_id', '!=', False), ('state', '!=', 'done')]}"/>
+                    invisible="payslip_run_id or state != 'done'"/>
             </button>
             <notebook position="inside">
-                <page string="Exported File" name="exported_file" attrs="{'invisible': [('sepa_export','=', False)]}">
+                <page string="Exported File" name="exported_file" invisible="not sepa_export">
                     <group>
                         <field name="sepa_export_filename" invisible="1"/>
                         <field name="sepa_export" filename="sepa_export_filename" readonly="1"/>

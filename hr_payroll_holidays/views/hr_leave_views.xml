@@ -39,7 +39,7 @@
                     type="object"
                     class="oe_highlight"
                     groups="hr_payroll.group_hr_payroll_user"
-                    attrs="{'invisible': ['|', ('payslip_state', '!=', 'blocked'), ('state', '!=', 'validate')]}"/>
+                    invisible="payslip_state != 'blocked' or state != 'validate'"/>
             </button>
         </field>
     </record>

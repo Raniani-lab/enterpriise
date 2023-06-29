@@ -13,7 +13,7 @@
                         <field name="hr_contract_timeoff_auto_allocation"/>
                         <div class="mt16">
                             <label for="hr_contract_timeoff_auto_allocation_type_id" class="mr8"/>
-                            <field name="hr_contract_timeoff_auto_allocation_type_id" attrs="{'required': [('hr_contract_timeoff_auto_allocation', '=', True)]}"/>
+                            <field name="hr_contract_timeoff_auto_allocation_type_id" required="hr_contract_timeoff_auto_allocation"/>
                         </div>
                     </setting>
                 </block>

@@ -19,8 +19,7 @@
         <field name="inherit_id" ref="sale.product_template_form_view"/>
         <field name="arch" type="xml">
             <page name="sales" position="attributes">
-                <attribute name="attrs">{'invisible': [('sale_ok', '=', False), ('recurring_invoice', '=', False)]}
-                </attribute>
+                <attribute name="invisible">not sale_ok and not recurring_invoice</attribute>
                 <attribute name="class">page_sales</attribute>
             </page>
             <div name="options" position="inside">

@@ -7,7 +7,7 @@
             <field name="arch" type="xml">
                 <form string="Make Adjustment Entry">
                     <field name="company_id" invisible="1"/>
-                    <div attrs="{'invisible': [('show_warning_move_id', '=', False)]}" class="alert alert-warning" role="alert">Proceed with caution as there might be an existing adjustment for this period (<field name="show_warning_move_id"/>)</div>
+                    <div invisible="not show_warning_move_id" class="alert alert-warning" role="alert">Proceed with caution as there might be an existing adjustment for this period (<field name="show_warning_move_id"/>)</div>
                     <group>
                         <group>
                             <field name="journal_id"/>

@@ -29,7 +29,7 @@
                 <setting id="avatax_settings" string="AvaTax" help="Automatically compute tax rates"
                     documentation="/applications/finance/accounting/taxation/taxes/avatax.html">
                     <field name="setting_account_avatax"/>
-                    <div class="content-group" attrs="{'invisible': [('setting_account_avatax', '=', False)]}">
+                    <div class="content-group" invisible="not setting_account_avatax">
                         <div class="row mt16">
                             <label string="Environment" for="avalara_environment" class="col-lg-3 o_light_label"/>
                             <field name="avalara_environment"/>

@@ -9,7 +9,7 @@
             <xpath expr="//div[@name='advanced_options']" position="inside">
                 <field name="l10n_mx_edi_enable_cfdi" invisible="1"/>
                 <div name="option_cfdi_xml"
-                     attrs="{'invisible': [('l10n_mx_edi_enable_cfdi', '=', False)]}">
+                     invisible="not l10n_mx_edi_enable_cfdi">
                     <field name="l10n_mx_edi_checkbox_cfdi"/>
                     <b><label for="l10n_mx_edi_checkbox_cfdi"/></b>
                 </div>

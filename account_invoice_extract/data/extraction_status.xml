@@ -8,23 +8,18 @@
         <field name="arch" type="xml">
             <xpath expr="//header" position="inside">
                 <button name="action_manual_send_for_digitization" class="oe_highlight" string="Digitize document" type="object"
-                attrs="{'invisible': [('extract_can_show_send_button', '=', False)]}" data-hotkey="w" />
+                    invisible="not extract_can_show_send_button" data-hotkey="w" />
                 <button name="action_reload_ai_data" string="Reload AI Data" type="object"
-                attrs="{'invisible':['|', '|',
-                       ('move_type', 'not in', ('in_invoice', 'in_refund', 'out_invoice', 'out_refund')),
-                       ('state', '!=', 'draft'),
-                       ('extract_state', 'not in', ['waiting_validation', 'validation_to_send'])]}" />
+                    invisible="move_type not in ('in_invoice', 'in_refund', 'out_invoice', 'out_refund') or state != 'draft' or extract_state not in ['waiting_validation', 'validation_to_send']" />
             </xpath>
             <xpath expr="//header" position='after'>
-                <field name="extract_state" attrs="{'invisible':True}"/>
-                <field name="extract_word_ids" attrs="{'invisible':True}"/>
-                <field name="extract_attachment_id" attrs="{'invisible':True}"/>
-                <field name="extract_can_show_send_button" attrs="{'invisible':True}"/>
-                <field name="extract_can_show_banners" attrs="{'invisible':True}"/>
+                <field name="extract_state" invisible="True"/>
+                <field name="extract_word_ids" invisible="True"/>
+                <field name="extract_attachment_id" invisible="True"/>
+                <field name="extract_can_show_send_button" invisible="True"/>
+                <field name="extract_can_show_banners" invisible="True"/>
                 <div role="status" class="alert alert-danger mb8 text-center"
-                     attrs="{'invisible':['|',
-                            ('extract_can_show_banners', '=', False),
-                            ('extract_state', 'not in', ['not_enough_credit'])]}">
+                     invisible="not extract_can_show_banners or extract_state != 'not_enough_credit'">
                     You don't have enough credit to extract data from your invoice.
                     <button type="object" name="buy_credits" class="btn btn-link">
                         <i class="oi oi-fw o_button_icon oi-arrow-right"/>
@@ -36,9 +31,7 @@
                     </button>
                 </div>
                 <div role="status" class="alert alert-info mb8 text-center" name="waiting_extraction"
-                     attrs="{'invisible':['|',
-                            ('extract_can_show_banners', '=', False),
-                            ('extract_state', 'not in', ['waiting_upload', 'waiting_extraction'])]}">
+                     invisible="not extract_can_show_banners or extract_state not in ['waiting_upload', 'waiting_extraction']">
                     All fields will be automated by Artificial Intelligence, it might take 5 seconds.
                     <button type="object" name="check_ocr_status" class="btn btn-link">
                         <i class="oi oi-fw o_button_icon oi-arrow-right"/>
@@ -47,9 +40,7 @@
                 </div>
                 <field name="extract_status" invisible="1" options="{'format': false}"/>
                 <div role="status" class="alert alert-info mb8 text-center" name="extraction_status"
-                     attrs="{'invisible':['|',
-                            ('extract_can_show_banners', '=', False),
-                            ('extract_state', 'not in', ['extract_not_ready'])]}">
+                     invisible="not extract_can_show_banners or extract_state != 'extract_not_ready'">
                     The data extraction is not finished yet. The extraction usually takes between 5 and 10 seconds.
                     <button type="object" name="check_ocr_status" class="btn btn-link">
                         <i class="oi oi-fw o_button_icon oi-arrow-right"/>
@@ -57,9 +48,7 @@
                     </button>
                 </div>
                 <div role="status" class="alert alert-danger mb8 text-center"
-                     attrs="{'invisible':['|',
-                            ('extract_can_show_banners', '=', False),
-                            ('extract_state', 'not in', ['error_status'])]}">
+                     invisible="not extract_can_show_banners or extract_state != 'error_status'">
                     <field name="extract_error_message" class="oe_inline" style="width:auto !important;"/>
                     <button type="object" name="action_manual_send_for_digitization" class="btn btn-link">
                         <i class="oi oi-fw o_button_icon oi-arrow-right"/>
@@ -74,7 +63,7 @@
             <xpath expr="//page[@id='other_tab']//group[@name='accounting_info_group']" position="after">
                 <group string="Extraction Information"
                        name="extraction_info_group"
-                       attrs="{'invisible': ['|', ('move_type', 'not in', ('in_invoice', 'in_refund', 'out_invoice', 'out_refund')), ('extract_state', 'in', ('no_extract_requested', 'not_enough_credit'))]}"
+                       invisible="move_type not in ('in_invoice', 'in_refund', 'out_invoice', 'out_refund') or extract_state in ('no_extract_requested', 'not_enough_credit')"
                        groups="base.group_no_one">
                     <field name="extract_document_uuid" widget="CopyClipboardChar"/>
                 </group>

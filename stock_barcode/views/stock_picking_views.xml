@@ -6,8 +6,8 @@
         <field name="inherit_id" ref="stock.view_stock_move_line_detailed_operation_tree"/>
         <field name="arch" type="xml">
             <xpath expr="//tree" position="inside">
-                <field name="product_barcode" invisible="1"/>
-                <field name="location_processed" invisible="1"/>
+                <field name="product_barcode" column_invisible="True"/>
+                <field name="location_processed" column_invisible="True"/>
             </xpath>
             <xpath expr="//field[@name='qty_done']" position="attributes">
                 <attribute name="options">{'barcode_events': True}</attribute>
@@ -42,26 +42,26 @@
                     <button name="action_view_reception_report" string="Allocation" type="object"
                         context="{'default_picking_ids': [id]}"
                         class="btn btn-primary o_reception_report" icon="fa-list"
-                        attrs="{'invisible': [('show_allocation', '=', False)]}"
+                        invisible="not show_allocation"
                         groups="stock.group_reception_report"/>
-                    <field name="partner_id"/>
-                    <field name="scheduled_date" readonly="1" attrs="{'invisible': [('scheduled_date', '=', False)]}"/>
-                    <field name="origin" readonly="1" attrs="{'invisible': [('origin', '=', False)]}"/>
-                    <field name="state" readonly="1" attrs="{'invisible': [('state', '=', False)]}"/>
-                    <field name="priority" readonly="1" attrs="{'invisible': [('priority', '=', False)]}"/>
-                    <field name="owner_id" readonly="1" attrs="{'invisible': [('owner_id', '=', False)]}" groups="stock.group_tracking_owner"/>
+                    <field name="partner_id" readonly="state in ['cancel', 'done']"/>
+                    <field name="scheduled_date" readonly="1" invisible="not scheduled_date"/>
+                    <field name="origin" readonly="1" invisible="not origin"/>
+                    <field name="state" readonly="1" invisible="not state"/>
+                    <field name="priority" readonly="1" invisible="not priority"/>
+                    <field name="owner_id" readonly="1" invisible="not owner_id" groups="stock.group_tracking_owner"/>
                     <field name="company_id" readonly="1" groups="base.group_multi_company"/>
-                    <field name="move_ids" readonly="1" attrs="{'invisible': [('move_ids', '=', False)]}">
+                    <field name="move_ids" readonly="1" invisible="not move_ids">
                         <kanban>
                             <templates>
                                 <t t-name="kanban-box">
                                     <div class="oe_kanban_global_click">
                                         <div class="row">
                                             <div class="col-6 o_kanban_record_title">
-                                                <field name="product_id"/>
+                                                <field name="product_id" readonly="state == 'done'"/>
                                             </div>
                                             <div class="col-6 text-end">
-                                                <field name="product_uom_qty"/>
+                                                <field name="product_uom_qty" readonly="state == 'done'"/>
                                             </div>
                                         </div>
                                         <div class="row">
@@ -77,7 +77,7 @@
                             </templates>
                         </kanban>
                     </field>
-                    <field name="note" readonly="1" attrs="{'invisible': [('note', '=', False)]}"/>
+                    <field name="note" readonly="1" invisible="not note"/>
                 </group>
                 <div class="o_barcode_control d-flex fixed-bottom">
                     <button string="Discard" class="btn btn-secondary o_discard" special="cancel"/>
@@ -142,7 +142,7 @@
                         <group name="restrict_scan_settings" string="Mandatory Scan">
                             <field name="restrict_scan_source_location" string="Source Location"
                                     groups="stock.group_stock_multi_locations"
-                                    attrs="{'invisible': [('code', '=', 'incoming')]}"/>
+                                    invisible="code == 'incoming'"/>
                             <field name="restrict_scan_product" string="Product"/>
                             <field name="restrict_scan_tracking_number" string="Lot/Serial"
                                     groups="stock.group_production_lot"/>
@@ -150,22 +150,19 @@
                                     groups="stock.group_tracking_lot" string="Put in Pack"/>
                             <field name="restrict_scan_dest_location" string="Destination Location"
                                     groups="stock.group_stock_multi_locations"
-                                    attrs="{'invisible': [('code', '=', 'outgoing')]}"/>
+                                    invisible="code == 'outgoing'"/>
                         </group>
                         <field name="show_barcode_validation" invisible="1"/>
-                        <group name="barcode_validation" string="Final Validation" attrs="{'invisible': [('show_barcode_validation', '=', False)]}">
+                        <group name="barcode_validation" string="Final Validation" invisible="not show_barcode_validation">
                             <!-- show_barcode_validation handles combined groups/invisible complexity -->
                             <field name="barcode_validation_full"
-                                attrs="{'invisible': [('restrict_scan_product', '=', True)]}"/>
+                                invisible="restrict_scan_product"/>
                             <field name="barcode_validation_all_product_packed"
                                     groups="stock.group_tracking_lot"
-                                    attrs="{'invisible': [('restrict_put_in_pack', '!=', 'optional')]}"/>
+                                    invisible="restrict_put_in_pack != 'optional'"/>
                             <field name="barcode_validation_after_dest_location"
                                     groups="stock.group_stock_multi_locations"
-                                    attrs="{'invisible': ['|',
-                                        ('code', '=', 'outgoing'),
-                                        ('restrict_scan_dest_location', '!=', 'optional'),
-                                    ]}"/>
+                                    invisible="code == 'outgoing' or restrict_scan_dest_location != 'optional'"/>
                         </group>
                     </page>
                 </notebook>

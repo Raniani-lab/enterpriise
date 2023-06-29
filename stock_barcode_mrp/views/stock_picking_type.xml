@@ -30,17 +30,17 @@
         <field name="inherit_id" ref="stock_barcode.stock_barcode_view_picking_type_form"/>
         <field name="arch" type="xml">
             <field name="restrict_put_in_pack" position="attributes">
-                <attribute name="attrs">{'invisible': [('code', '=', 'mrp_operation')]}</attribute>
+                <attribute name="invisible">code == 'mrp_operation'</attribute>
             </field>
             <field name="barcode_validation_all_product_packed" position="attributes">
-                <attribute name="attrs">{'invisible': [('code', '=', 'mrp_operation')]}</attribute>
+                <attribute name="invisible">code == 'mrp_operation'</attribute>
             </field>
             <field name="barcode_validation_full" position="replace">
                 <field name="barcode_validation_full"
-                    attrs="{'invisible': ['|', ('restrict_scan_product', '=', True), ('code', '=', 'mrp_operation')]}"/>
+                    invisible="restrict_scan_product or code == 'mrp_operation'"/>
                 <field name="barcode_validation_full" string="Allow full order validation"
                     help="Allow user to produce all even if no components were scanned"
-                    attrs="{'invisible': ['|', ('restrict_scan_product', '=', True), ('code', '!=', 'mrp_operation')]}"/>
+                    invisible="restrict_scan_product or code != 'mrp_operation'"/>
             </field>
         </field>
     </record>

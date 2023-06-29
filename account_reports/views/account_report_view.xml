@@ -51,7 +51,7 @@
                 <tree editable="top" create="1" delete="1">
                     <field name="code"/>
                     <field name="name"/>
-                    <field name="company_id" invisible="1"/>
+                    <field name="company_id" column_invisible="True"/>
                     <field name="account_type"/>
                     <field name="current_balance"/>
                     <field name="tax_ids" optional="hide" widget="many2many_tags"/>
@@ -69,7 +69,7 @@
                 <form>
                     <header>
                         <field name="is_account_coverage_report_available" invisible="1"/>
-                        <button class="btn btn-secondary float-end" attrs="{'invisible': [('is_account_coverage_report_available', '=', False)]}"
+                        <button class="btn btn-secondary float-end" invisible="not is_account_coverage_report_available"
                                 name="action_download_xlsx_accounts_coverage_report" type="object" string="Accounts Coverage Report"/>
                     </header>
                     <sheet>
@@ -82,18 +82,18 @@
                         <group>
                             <group>
                                 <field name="root_report_id" domain="[('root_report_id', '=', None)]"/>
-                                <field name="availability_condition" required="1" attrs="{'invisible': [('root_report_id', '=', False)]}"/>
+                                <field name="availability_condition" required="1" invisible="not root_report_id"/>
                                 <field name="use_sections"/>
                             </group>
                             <group>
                                 <field name="active" widget="boolean_toggle"/>
-                                <field name="country_id" attrs="{'invisible': [('availability_condition', '!=', 'country')], 'required': [('availability_condition', '=', 'country')]}"/>
-                                <field name="chart_template" attrs="{'invisible': [('availability_condition', '!=', 'coa')], 'required': [('availability_condition', '=', 'coa')]}"/>
+                                <field name="country_id" invisible="availability_condition != 'country'" required="availability_condition == 'country'"/>
+                                <field name="chart_template" invisible="availability_condition != 'coa'" required="availability_condition == 'coa'"/>
                             </group>
                         </group>
 
                         <notebook>
-                            <page string="Lines" attrs="{'invisible': [('use_sections', '=', True)]}">
+                            <page string="Lines" invisible="use_sections">
                                 <field name="line_ids" no_label="1">
                                     <tree limit="2000">
                                         <field name="sequence" widget="handle"/>
@@ -108,7 +108,7 @@
                                 </field>
                             </page>
 
-                            <page string="Sections" attrs="{'invisible': [('use_sections', '=', False)]}" >
+                            <page string="Sections" invisible="not use_sections" >
                                 <field
                                     name="section_report_ids"
                                     no_label="1"
@@ -118,7 +118,7 @@
                                 />
                             </page>
 
-                            <page string="Columns" attrs="{'invisible': [('use_sections', '=', True)]}">
+                            <page string="Columns" invisible="use_sections">
                                 <field name="column_ids">
                                     <tree editable="bottom">
                                         <field name="sequence" widget="handle"/>
@@ -131,7 +131,7 @@
                                 </field>
                             </page>
 
-                            <page string="Options" attrs="{'invisible': [('use_sections', '=', True)]}">
+                            <page string="Options" invisible="use_sections">
                                 <group>
                                     <group >
                                         <field name="load_more_limit"/>
@@ -224,7 +224,7 @@
                                 <group>
                                     <field name="engine"/>
                                     <field name="formula"/>
-                                    <field name="subformula" attrs="{'required': [('engine', '=', 'domain')]}"/>
+                                    <field name="subformula" required="engine == 'domain'"/>
                                 </group>
                             </page>
                             <page string="Options">
@@ -297,7 +297,7 @@
             <field name="model">account.report.external.value</field>
             <field name="arch" type="xml">
                 <tree create="0">
-                    <field name="report_country_id" invisible="1"/>
+                    <field name="report_country_id" column_invisible="True"/>
                     <field name="name"/>
                     <field name="date"/>
                     <field name="value"/>

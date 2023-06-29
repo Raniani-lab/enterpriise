@@ -16,12 +16,12 @@
                         <div class="text-muted">
                             Create HSBC payment
                         </div>
-                        <div class="content-group" attrs="{'invisible': [('l10n_hk_autopay', '!=', True)]}">
+                        <div class="content-group" invisible="not l10n_hk_autopay">
                             <div class="row mt16 ms-2">
                                 <label for="l10n_hk_autopay_type" class="col-md-6 p-0 m-0 o_light_label"></label>
-                                <field name="l10n_hk_autopay_type" class="col-lg-6 p-0" attrs="{'required': [('l10n_hk_autopay', '=', True)]}" />
+                                <field name="l10n_hk_autopay_type" class="col-lg-6 p-0" required="l10n_hk_autopay" />
                                 <label for="l10n_hk_autopay_partner_bank_id" string="Bank Account" class="col-md-6 p-0 m-0 o_light_label"></label>
-                                <field name="l10n_hk_autopay_partner_bank_id" class="col-lg-6 p-0" attrs="{'required': [('l10n_hk_autopay', '=', True)]}" />
+                                <field name="l10n_hk_autopay_partner_bank_id" class="col-lg-6 p-0" required="l10n_hk_autopay" />
                             </div>
                         </div>
                     </div>

@@ -14,7 +14,7 @@
                     name="action_project_sharing_view_ticket"
                     type="object"
                     icon="fa-life-ring"
-                    attrs="{'invisible': [('display_helpdesk_ticket_button', '=', False)]}"
+                    invisible="not display_helpdesk_ticket_button"
                     help="Ticket from this task"/>
             </xpath>
         </field>

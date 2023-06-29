@@ -6,15 +6,15 @@
         <field name="arch" type="xml">
             <form>
                 <field name="set_sign_order" invisible="1"/>
-                <field name="template_id" context="{'kanban_view_ref': 'sign.sign_template_view_kanban_mobile'}" attrs="{'invisible': [('has_default_template', '=', True)]}" options="{'no_create_edit': True}"/>
-                <field colspan="2" name="signer_ids" placeholder="Write email or search contact..." attrs="{'invisible': [('signers_count', '=', 0)]}" class="o_sign_flat_o2m pe-none">
+                <field name="template_id" context="{'kanban_view_ref': 'sign.sign_template_view_kanban_mobile'}" invisible="has_default_template" options="{'no_create_edit': True}"/>
+                <field colspan="2" name="signer_ids" placeholder="Write email or search contact..." invisible="signers_count == 0" class="o_sign_flat_o2m pe-none">
                     <tree editable="bottom" create="false" delete="false">
                         <field name="role_id" force_save="1" options="{'no_open': True}" nolabel="1" class="pe-auto"/>
                         <field name="partner_id" placeholder="Name or email..." context="{'force_email': True, 'show_email': True}" nolabel="1" class="pe-auto"/>
-                        <field name="mail_sent_order" attrs="{'column_invisible': [('parent.set_sign_order', '=', False)]}" class="pe-auto"/>
+                        <field name="mail_sent_order" column_invisible="not parent.set_sign_order" class="pe-auto"/>
                     </tree>
                 </field>
-                <field name="signer_id" attrs="{'invisible': ['|', ('signers_count', '!=', 0), ('template_id', '=', False)], 'required': [('signers_count', '=', 0)]}" context="{'force_email':True, 'show_email': True}"/>
+                <field name="signer_id" invisible="signers_count != 0 or not template_id" required="signers_count == 0" context="{'force_email':True, 'show_email': True}"/>
                 <field name="activity_id" invisible="1"/>
                 <field name="signers_count" invisible="1"/>
                 <field name="has_default_template" invisible="1"/>
@@ -26,7 +26,7 @@
                 </group>
 
                 <div invisible="not context.get('sign_directly_without_mail',False)">
-                    <div attrs="{'invisible' :[('cc_partner_ids', '=', [])]}">
+                    <div invisible="not cc_partner_ids">
                         <field name="message_cc" placeholder="Optional Message..."/>
                         <group>
                             <field name="attachment_ids" widget="many2many_binary" string="Attach a file" nolabel="1" class="o_sign_attachments"/>
@@ -47,7 +47,7 @@
                         <group>
                             <group string="Signature Options">
                                 <field name="filename" placeholder="Name for the file"  colspan="2"/>
-                                <field name="set_sign_order" attrs="{'invisible': [('signers_count', '&lt;', 2)]}" groups="sign.show_sign_order"/>
+                                <field name="set_sign_order" invisible="signers_count &lt; 2" groups="sign.show_sign_order"/>
                                 <field name="refusal_allowed"/>
                             </group>
                             <group string="Expiration &amp; Reminders">
@@ -71,7 +71,7 @@
 
                 <footer>
                     <div invisible="context.get('sign_directly_without_mail',False)">
-                        <button string="Sign Now" name="sign_directly" type="object" class="btn-primary" attrs="{'invisible': [('is_user_signer', '=', False)]}" data-hotkey="q"/>
+                        <button string="Sign Now" name="sign_directly" type="object" class="btn-primary" invisible="not is_user_signer" data-hotkey="q"/>
                     </div>
                     <button string="Send" name="send_request" type="object" class="btn-primary" invisible="context.get('sign_directly_without_mail',False)" data-hotkey="w"/>
                     <button string="Sign Now" name="sign_directly" context="{'no_sign_mail': True, 'sign_all': True}" type="object" class="btn-primary" invisible="not context.get('sign_directly_without_mail',False)" data-hotkey="q"/>

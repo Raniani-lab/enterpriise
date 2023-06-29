@@ -40,7 +40,7 @@
                                 <span class="o_stat_text">Actions</span>
                             </div>
                         </button>
-                        <button name="action_see_documents" type="object" class="oe_stat_button" icon="fa-file-text-o" attrs="{'invisible' : [('document_count', '=', 0)]}">
+                        <button name="action_see_documents" type="object" class="oe_stat_button" icon="fa-file-text-o" invisible="document_count == 0">
                             <div class="o_field_widget o_stat_info">
                                 <span class="o_stat_value"><field name="document_count"/></span>
                                 <span class="o_stat_text">Documents</span>
@@ -84,11 +84,11 @@
                                 <group string="Write Access">
                                     <field name="group_ids" widget="many2many_tags"/>
                                     <field name="user_specific_write" string="Own Documents Only"
-                                        attrs="{'invisible': ['|', ('user_specific', '=', False), ('group_ids', '=', [])]}"/>
+                                        invisible="not user_specific or not group_ids"/>
                                 </group>
                                 <group string="Read Access">
                                     <field name="read_group_ids" widget="many2many_tags"/>
-                                    <field name="user_specific" attrs="{'invisible':[('read_group_ids', '=', [])]}"/>
+                                    <field name="user_specific" invisible="not read_group_ids"/>
                                 </group>
                             </group>
                         </page>

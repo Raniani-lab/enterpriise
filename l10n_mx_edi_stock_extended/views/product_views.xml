@@ -8,8 +8,8 @@
             <field name="inherit_id" ref="product_unspsc.product_template_unspsc"/>
             <field name="arch" type="xml">
                 <field name="unspsc_code_id" position="after">
-                    <field name="l10n_mx_edi_hazardous_material_code" attrs="{'invisible': [('fiscal_country_codes', 'not ilike', 'MX')]}"/>
-                    <field name="l10n_mx_edi_hazard_package_type" attrs="{'invisible': [('fiscal_country_codes', 'not ilike', 'MX')]}"/>
+                    <field name="l10n_mx_edi_hazardous_material_code" invisible="'MX'.lower() not in (fiscal_country_codes or '').lower()"/>
+                    <field name="l10n_mx_edi_hazard_package_type" invisible="'MX'.lower() not in (fiscal_country_codes or '').lower()"/>
                 </field>
             </field>
         </record>

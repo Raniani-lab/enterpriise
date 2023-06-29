@@ -10,7 +10,7 @@
                         string="Send Mail"/>
                 </header>
                 <sheet>
-                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
                     <group>
                         <group name="duration_details">
                             <field name="date_from"/>
@@ -20,7 +20,7 @@
                         </group>
                         <group name="alert_type">
                             <field name="onclick" widget="radio"/>
-                            <field name="url" attrs="{'invisible': [('onclick', '!=', 'url')], 'required': [('onclick', '=', 'url')]}" placeholder="https://www.google.com"/>
+                            <field name="url" invisible="onclick != 'url'" required="onclick == 'url'" placeholder="https://www.google.com"/>
                         </group>
                     </group>
                     <group col="1">

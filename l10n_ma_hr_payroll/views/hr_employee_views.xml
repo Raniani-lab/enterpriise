@@ -8,13 +8,13 @@
         <field name="arch" type="xml">
             <group name="payroll_group" position="inside">
                 <field name="l10n_ma_cin_number"
-                    attrs="{'invisible': [('company_country_code', '!=', 'MA')]}"/>
+                    invisible="company_country_code != 'MA'"/>
                 <field name="l10n_ma_cnss_number"
-                    attrs="{'invisible': [('company_country_code', '!=', 'MA')]}"/>
+                    invisible="company_country_code != 'MA'"/>
                 <field name="l10n_ma_cimr_number"
-                    attrs="{'invisible': [('company_country_code', '!=', 'MA')]}"/>
+                    invisible="company_country_code != 'MA'"/>
                 <field name="l10n_ma_mut_number"
-                    attrs="{'invisible': [('company_country_code', '!=', 'MA')]}"/>
+                    invisible="company_country_code != 'MA'"/>
             </group>
         </field>
     </record>

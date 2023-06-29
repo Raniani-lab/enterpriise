@@ -49,7 +49,7 @@
             <field name="arch" type="xml">
                 <div name="button_box" position="inside">
                     <button name="%(mrp_account_enterprise.action_cost_struct_mrp_production)d" type="action"
-                        class="oe_stat_button" icon="fa-dollar" attrs="{'invisible': [('state', '!=', 'done')]}">
+                        class="oe_stat_button" icon="fa-dollar" invisible="state != 'done'">
                         <div class="o_stat_info">
                             <span class="o_stat_text">Cost Analysis</span>
                         </div>
@@ -77,7 +77,7 @@
                 <xpath expr="//button[@name='action_view_mos']" position="after">
                     <field name="mrp_product_qty" invisible="1" groups="mrp.group_mrp_user"/>
                     <button groups="mrp.group_mrp_user" name="action_cost_structure" type="object"
-                        class="oe_stat_button" icon="fa-dollar" attrs="{'invisible': [('mrp_product_qty', '=', 0)]}">
+                        class="oe_stat_button" icon="fa-dollar" invisible="mrp_product_qty == 0">
                         <div class="o_stat_info">
                             <span class="o_stat_text">Cost Analysis</span>
                         </div>
@@ -95,7 +95,7 @@
                 <field name="mrp_product_qty" invisible="1" groups="mrp.group_mrp_user"/>
                 <button name="action_cost_structure" type="object"
                     groups="mrp.group_mrp_user"
-                    class="oe_stat_button" icon="fa-dollar" attrs="{'invisible': [('mrp_product_qty', '=', 0)]}">
+                    class="oe_stat_button" icon="fa-dollar" invisible="mrp_product_qty == 0">
                     <div class="o_stat_info">
                         <span class="o_stat_text">Cost Analysis</span>
                     </div>

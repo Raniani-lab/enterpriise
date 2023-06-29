@@ -8,7 +8,7 @@
             <xpath expr="//setting[@id='website_marketing_automation']" position="after">
                 <setting help="Send push notifications and configure this website's notifications permission request">
                     <field name="firebase_enable_push_notifications"/>
-                    <div class="content-group" attrs="{'invisible': [('firebase_enable_push_notifications', '=', False)]}">
+                    <div class="content-group" invisible="not firebase_enable_push_notifications">
                         <div class="mt16">
                             <label for="notification_request_title" string="Title" class="o_form_label"/>
                             <field name="notification_request_title" class="w-100"
@@ -30,9 +30,9 @@
                         </div>
                     </div>
                 </setting>
-                <setting attrs="{'invisible': [('firebase_enable_push_notifications', '=', False)]}" groups="base.group_no_one" help="Use your own Firebase Account for this website's push notifications">
+                <setting invisible="not firebase_enable_push_notifications" groups="base.group_no_one" help="Use your own Firebase Account for this website's push notifications">
                     <field name="firebase_use_own_account"/>
-                    <div class="content-group" attrs="{'invisible': [('firebase_use_own_account', '=', False)]}">
+                    <div class="content-group" invisible="not firebase_use_own_account">
                         <div class="mt16">
                             <label for="firebase_project_id" string="Project ID" class="o_form_label"/>
                             <field name="firebase_project_id" class="w-100" placeholder='e.g. "my-project-id"'/>

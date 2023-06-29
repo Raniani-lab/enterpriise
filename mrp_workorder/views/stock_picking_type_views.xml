@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="stock.view_picking_type_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='show_reserved']" position="after">
-                <field name="prefill_lot_tablet" groups="stock.group_production_lot" attrs="{'invisible': [('code', '!=', 'mrp_operation')]}"/>
+                <field name="prefill_lot_tablet" groups="stock.group_production_lot" invisible="code != 'mrp_operation'"/>
             </xpath>
         </field>
     </record>

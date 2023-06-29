@@ -48,7 +48,7 @@
                     </t>
                     <div t-name="kanban-box" class="oe_kanban_global_click oe_kanban_card o_appointment_kanban_card">
                         <div class="o_appointment_kanban_card_ungrouped row">
-                            <div class="ribbon ribbon-top-right" attrs="{'invisible': [('active', '=', True)]}">
+                            <div class="ribbon ribbon-top-right" invisible="active">
                                 <span class="text-bg-danger">Archived</span>
                             </div>
                             <div class="d-flex flex-wrap">
@@ -73,8 +73,8 @@
                                     </div>
                                 </div>
                                 <div class="align-self-center my-sm-auto col">
-                                    <field name="staff_user_ids" widget="many2many_avatar_user" readonly="true" attrs="{'invisible': [('schedule_based_on', '!=', 'users')]}"/>
-                                    <field name="resource_ids" widget="many2many_tags_avatar" readonly="true" attrs="{'invisible': [('schedule_based_on', '=', 'users')]}"/>
+                                    <field name="staff_user_ids" widget="many2many_avatar_user" readonly="True" invisible="schedule_based_on != 'users'"/>
+                                    <field name="resource_ids" widget="many2many_tags_avatar" readonly="True" invisible="schedule_based_on == 'users'"/>
                                 </div>
                                 <div class="align-self-center text-large col">
                                     <span class="fw-normal d-block">
@@ -97,7 +97,7 @@
                         </div>
                         <div class="o_appointment_kanban_card_grouped oe_kanban_global_click">
                             <div class="o_kanban_card_header">
-                                <div class="ribbon ribbon-top-right" attrs="{'invisible': [('active', '=', True)]}">
+                                <div class="ribbon ribbon-top-right" invisible="active">
                                     <span class="text-bg-danger">Archived</span>
                                 </div>
                                 <div class="o_kanban_card_header_title">
@@ -124,7 +124,7 @@
                                         <div class="col-6"/>
                                         <div class="col-6">
                                             <button class="btn btn-link btn-sm py-0 fa fa-lg fa-link" name="action_share_invite" type="object" title="Share"
-                                                    attrs="{'invisible': [('active', '=', False)]}"/>
+                                                    invisible="not active"/>
                                         </div>
                                     </div>
                                 </div>
@@ -148,7 +148,7 @@
                 <field name="name" readonly="1"/>
                 <field name="location_id"/>
                 <field name="appointment_tz"/>
-                <field name="schedule_based_on" invisible="1"/>
+                <field name="schedule_based_on" column_invisible="True"/>
                 <field name="staff_user_ids" widget="many2many_avatar_user" optional="hide"/>
                 <field name="resource_ids" string="Resources" widget="many2many_tags_avatar" optional="hide"/>
                 <field name="country_ids" widget="many2many_tags" groups="base.group_no_one" optional="show"/>
@@ -165,11 +165,11 @@
                 <field name="sequence" widget="handle"/>
                 <field name="name" readonly="1"/>
                 <field name="appointment_tz"/>
-                <field name="schedule_based_on" invisible="1"/>
+                <field name="schedule_based_on" column_invisible="True"/>
                 <field name="staff_user_ids" widget="many2many_tags" optional="hide"
-                    attrs="{'invisible': [('schedule_based_on', '!=', 'users')]}"/>
+                    invisible="schedule_based_on != 'users'"/>
                 <field name="resource_ids" string="Resources" widget="many2many_tags" optional="hide"
-                    attrs="{'invisible': [('schedule_based_on', '=', 'users')]}"/>
+                    invisible="schedule_based_on == 'users'"/>
                 <field name="category" groups="base.group_no_one"/>
             </tree>
         </field>
@@ -184,18 +184,18 @@
                 <field name="is_published" invisible="1"/>
                 <header>
                     <button name="action_customer_preview" string="Preview" type="object" class="btn btn-primary"
-                        attrs="{'invisible': [('active', '=', False)]}"/>
+                        invisible="not active"/>
                     <button name="action_share_invite" string="Share" type="object" class="btn btn-secondary"
-                        attrs="{'invisible': [('active', '=', False)]}"/>
+                        invisible="not active"/>
                 </header>
                 <sheet>
                     <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger"
-                        attrs="{'invisible': [('active', '=', True)]}"/>
+                        invisible="active"/>
                     <div class="oe_button_box" name="button_box" groups="base.group_user">
                         <button class="oe_stat_button" type="object"
                             name="action_appointment_resources"
                             icon="fa-cubes"
-                            attrs="{'invisible': [('schedule_based_on', '=', 'users')]}">
+                            invisible="schedule_based_on == 'users'">
                             <field string="Resources" name="resource_count" widget="statinfo"/>
                         </button>
                         <button class="oe_stat_button" type="object"
@@ -217,14 +217,14 @@
                     </div>
                     <group>
                         <group name="left_details">
-                            <label for="appointment_duration" attrs="{'invisible': [('category', '=', 'custom')]}"/>
-                            <div attrs="{'invisible': [('category', '=', 'custom')]}">
+                            <label for="appointment_duration" invisible="category == 'custom'"/>
+                            <div invisible="category == 'custom'">
                                 <field name="appointment_duration" class="oe_inline me-1 o_input_5ch" widget="float_time"/><span> hours</span>
                             </div>
                             <label for="min_schedule_hours" string="Scheduling"/>
                             <div>
                                 <span>at least <field name="min_schedule_hours" class="oe_inline ms-2 me-1 o_input_5ch" widget="float_time"/> hours before</span><br/>
-                                <div class="my-2" attrs="{'invisible': [('category', '=', 'custom')]}">
+                                <div class="my-2" invisible="category == 'custom'">
                                     <span>and not after <field name="max_schedule_days" class="oe_inline mx-1 o_input_5ch"/> days</span>
                                 </div>
                             </div>
@@ -236,20 +236,22 @@
                         <group name="right_details">
                             <field name="staff_user_count" invisible="1"/>
                             <field name="resource_count" invisible="1"/>
-                            <field name="schedule_based_on" widget="radio" options="{'horizontal': true}" required="1"
-                                attrs="{'readonly': [('category', '!=', 'website')]}"/>
+                            <field name="schedule_based_on" widget="radio" options="{'horizontal': true}"
+                                required="1"
+                                readonly="category != 'website'"/>
                             <!-- Users Details -->
                             <field name="staff_user_ids" widget="many2many_avatar_user"
-                                attrs="{'readonly': [('category', '!=', 'website')], 'invisible': [('schedule_based_on', '=', 'resources')]}"
+                                invisible="schedule_based_on == 'resources'"
+                                readonly="category != 'website'"
                                 options="{'no_open': False}"/>
                             <!-- Resources Details-->
                             <field name="resource_ids" string="Resources" widget="many2many_tags_avatar"
                                 options="{'no_quick_create': True}"
-                                attrs="{'invisible': [('schedule_based_on', '=', 'users')]}"/>
-                            <label for="resource_manage_capacity" attrs="{'invisible': [('schedule_based_on', '=', 'users')]}"/>
-                            <div attrs="{'invisible': [('schedule_based_on', '=', 'users')]}">
+                                invisible="schedule_based_on == 'users'"/>
+                            <label for="resource_manage_capacity" invisible="schedule_based_on == 'users'"/>
+                            <div invisible="schedule_based_on == 'users'">
                                 <field name="resource_manage_capacity" class="oe_inline"/>
-                                <span attrs="{'invisible': [('resource_manage_capacity', '=', False)]}">
+                                <span invisible="not resource_manage_capacity">
                                     (Total: <field name="resource_total_capacity" class="oe_inline o_input_5ch"/> persons)
                                 </span>
                             </div>
@@ -263,20 +265,20 @@
                             <field name="slot_ids">
                                 <tree editable="bottom" class="o_appointment_slots_list">
                                     <field name="weekday" string="Every"
-                                        attrs="{'column_invisible': [('parent.category', '=', 'custom')]}"/>
+                                        column_invisible="parent.category == 'custom'"/>
                                     <field name="start_hour" string="From" widget="float_time"
-                                        attrs="{'column_invisible': [('parent.category', '=', 'custom')]}"/>
+                                        column_invisible="parent.category == 'custom'"/>
                                     <button name="durationArrow" class="fa fa-long-arrow-right text-center" title="Until (max)"
-                                        attrs="{'column_invisible': [('parent.category', '=', 'custom')]}"/>
+                                        column_invisible="parent.category == 'custom'"/>
                                     <field name="end_hour" string="To" widget="float_time"
-                                        attrs="{'column_invisible': [('parent.category', '=', 'custom')]}"/>
-                                    <field name="start_datetime" attrs="{'column_invisible': [('parent.category', '!=', 'custom')]}"/>
-                                    <field name="end_datetime" attrs="{'column_invisible': [('parent.category', '!=', 'custom')]}"/>
+                                        column_invisible="parent.category == 'custom'"/>
+                                    <field name="start_datetime" column_invisible="parent.category != 'custom'"/>
+                                    <field name="end_datetime" column_invisible="parent.category != 'custom'"/>
                                     <field name="restrict_to_user_ids" widget="many2many_avatar_user" domain="[('id', 'in', parent.staff_user_ids)]"
-                                        attrs="{'column_invisible': ['|', ('parent.schedule_based_on', '!=', 'users'), ('parent.category', 'in', ['custom', 'anytime'])]}"
+                                        column_invisible="parent.schedule_based_on != 'users' or parent.category in ['custom', 'anytime']"
                                         options="{'no_create': True}" optional="hide"/>
                                     <field name="restrict_to_resource_ids" widget="many2many_tags_avatar" domain="[('id', 'in', parent.resource_ids)]"
-                                        attrs="{'column_invisible': ['|', ('parent.schedule_based_on', '=', 'users'), ('parent.category', 'in', ['custom', 'anytime'])]}"
+                                        column_invisible="parent.schedule_based_on == 'users' or parent.category in ['custom', 'anytime']"
                                         options="{'no_create': True}" optional="hide"/>
                                 </tree>
                             </field>
@@ -287,10 +289,10 @@
                                     <field name="appointment_tz"/>
                                     <field name="location_id" context="{'show_address': 1}"
                                            placeholder="Keep it empty if the meeting takes place online"/>
-                                    <label for="resource_manual_confirmation" attrs="{'invisible': [('schedule_based_on', '=', 'users')]}"/>
-                                    <div class="d-flex" attrs="{'invisible': [('schedule_based_on', '=', 'users')]}">
+                                    <label for="resource_manual_confirmation" invisible="schedule_based_on == 'users'"/>
+                                    <div class="d-flex" invisible="schedule_based_on == 'users'">
                                         <field name="resource_manual_confirmation" class="oe_inline"/>
-                                        <div attrs="{'invisible': [('resource_manual_confirmation', '=', False)]}">
+                                        <div invisible="not resource_manual_confirmation">
                                             <span>
                                                 when over
                                                 <field name="resource_manual_confirmation_percentage" class="oe_inline o_input_5ch mx-1" widget="percentage"/>
@@ -325,16 +327,16 @@
                                             </group>
                                             <group name="question_form_right">
                                                 <field name="placeholder" placeholder='e.g. "I feel nauseous..."'
-                                                    attrs="{'invisible': [('question_type', 'in', ('select', 'radio', 'checkbox'))]}"/>
+                                                    invisible="question_type in ('select', 'radio', 'checkbox')"/>
                                                 <field name="question_required"/>
                                             </group>
                                         </group>
-                                        <notebook attrs="{'invisible': [('question_type', 'in', ('char', 'text'))]}">
+                                        <notebook invisible="question_type in ('char', 'text')">
                                             <page string="Answers" name="answers">
                                                 <field name="answer_ids">
                                                     <tree editable="bottom">
                                                         <!-- 'display_name' is necessary for the many2many_tags to work on the appointment view -->
-                                                        <field name="display_name" invisible="1"/>
+                                                        <field name="display_name" column_invisible="True"/>
                                                         <field name="sequence" widget="handle"/>
                                                         <field name="name"/>
                                                     </tree>

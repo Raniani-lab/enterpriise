@@ -6,32 +6,29 @@
         <field name="inherit_id" ref="hr.view_employee_form"/>
         <field name="arch" type="xml">
             <xpath expr="//page[@name='personal_information']/group" position="inside">
-                <group string='Autopay' attrs="{'invisible': [('company_country_code', '!=', 'HK')]}">
+                <group string='Autopay' invisible="company_country_code != 'HK'">
                     <field name="l10n_hk_autopay_account_type" />
                     <field name="l10n_hk_autopay_svid"
                            placeholder="0240402"
-                           attrs="{
-                            'invisible': [('l10n_hk_autopay_account_type', '!=', 'svid')],
-                            'required': [('l10n_hk_autopay_account_type', '=', 'svid')]}"/>
+                           invisible="l10n_hk_autopay_account_type != 'svid'"
+                           required="l10n_hk_autopay_account_type == 'svid'"/>
                     <field name="l10n_hk_autopay_emal"
                            placeholder="susan.wong@abc.com.hk"
-                           attrs="{
-                            'invisible': [('l10n_hk_autopay_account_type', '!=', 'emal')],
-                            'required': [('l10n_hk_autopay_account_type', '=', 'emal')]}"/>
+                           invisible="l10n_hk_autopay_account_type != 'emal'"
+                           required="l10n_hk_autopay_account_type == 'emal'"/>
                     <field name="l10n_hk_autopay_mobn"
                            placeholder="+852-92223333"
-                           attrs="{
-                            'invisible': [('l10n_hk_autopay_account_type', '!=', 'mobn')],
-                            'required': [('l10n_hk_autopay_account_type', '=', 'mobn')]}"/>
+                           invisible="l10n_hk_autopay_account_type != 'mobn'"
+                           required="l10n_hk_autopay_account_type == 'mobn'"/>
                     <field name="l10n_hk_autopay_ref" />
                 </group>
             </xpath>
             <xpath expr="//page[@name='hr_settings']/group" position="inside">
-                <group name="mpf" string="MPF" attrs="{'invisible': [('company_country_code', '!=', 'HK')]}">
+                <group name="mpf" string="MPF" invisible="company_country_code != 'HK'">
                     <field name="l10n_hk_mpf_vc_option" />
-                    <field name="l10n_hk_mpf_vc_percentage" widget="percentage" attrs="{'invisible': [('l10n_hk_mpf_vc_option', '!=', 'custom')]}" />
+                    <field name="l10n_hk_mpf_vc_percentage" widget="percentage" invisible="l10n_hk_mpf_vc_option != 'custom'" />
                 </group>
-                <group name="rental" string="Rental" attrs="{'invisible': [('company_country_code', '!=', 'HK')]}">
+                <group name="rental" string="Rental" invisible="company_country_code != 'HK'">
                     <field name="currency_id" invisible="1" />
                     <field name="l10n_hk_rental_date_start" />
                     <field name="l10n_hk_rental_amount" />

@@ -45,7 +45,7 @@
                 <field name="default_resource_calendar_id"/>
                 <field name="wage_type"/>
                 <field name="default_struct_id" domain="[('id', 'in', struct_ids)]"/>
-                <field name="struct_ids" invisible="1"/>
+                <field name="struct_ids" column_invisible="True"/>
             </tree>
         </field>
     </record>

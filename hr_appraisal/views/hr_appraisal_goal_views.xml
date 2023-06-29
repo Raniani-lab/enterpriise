@@ -8,10 +8,10 @@
                 <header>
                     <button name="action_confirm" type="object"
                             string="Mark as Done" class="oe_highlight"
-                            attrs="{'invisible': [('progression', '=', '100')]}"/>
+                            invisible="progression == '100'"/>
                 </header>
                 <sheet>
-                    <widget name="web_ribbon" title="Done" bg_color="text-bg-success" attrs="{'invisible': [('progression', '!=', '100')]}"/>
+                    <widget name="web_ribbon" title="Done" bg_color="text-bg-success" invisible="progression != '100'"/>
                     <div class="oe_title">
                         <label for="name" string="Goal"/>
                         <h1>
@@ -22,11 +22,11 @@
                         <group>
                             <field name="is_manager" invisible="1"/>
                             <field name="employee_autocomplete_ids" invisible="1"/>
-                            <field name="employee_id" domain="[['id', 'in', employee_autocomplete_ids]]" attrs="{'readonly': [('is_manager', '=', False)]}" widget="many2one_avatar_user"/>
+                            <field name="employee_id" domain="[['id', 'in', employee_autocomplete_ids]]" readonly="not is_manager" widget="many2one_avatar_user"/>
                             <field name="progression" widget="selection_badge"/>
                         </group>
                         <group>
-                            <field name="manager_id" force_save="1" attrs="{'readonly': [('is_manager', '=', False)]}" widget="many2one_avatar_user"/>
+                            <field name="manager_id" force_save="1" readonly="not is_manager" widget="many2one_avatar_user"/>
                             <field name="deadline"/>
                             <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                         </group>
@@ -76,7 +76,7 @@
                     </t>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_card oe_kanban_global_click oe_kanban_content">
-                            <div class="ribbon ribbon-top-right" attrs="{'invisible': [('progression', '!=', '100')]}">
+                            <div class="ribbon ribbon-top-right" invisible="progression != '100'">
                                 <span class="text-bg-success">Done</span>
                             </div>
                             <div class="o_kanban_record_top mb-0">

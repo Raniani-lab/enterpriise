@@ -9,9 +9,9 @@
                     <!--Hide calendar for non-admin as resource_calendar_leaves_rule_group_user_modify prevents the creation-->
                     <field name="calendar_id" invisible="1"/>
                     <field name="calendar_id" placeholder="Pick a Work Schedule..." options="{'no_create': True}"
-                           attrs="{'invisible': [('appointment_resource_ids', '!=', [])]}" groups="base.group_no_one"/>
+                           invisible="appointment_resource_ids" groups="base.group_no_one"/>
                     <field name="appointment_resource_ids" widget="many2many_tags" options="{'no_create': True}"
-                           placeholder="Restrict to specific Resources" attrs="{'invisible': [('calendar_id', '!=', False)]}"/>
+                           placeholder="Restrict to specific Resources" invisible="calendar_id"/>
                     <field name="leave_start_dt" string="Dates" placeholder="08:00" widget="daterange"  options="{'end_date_field': 'end'}"/>
                     <field name="leave_end_dt" invisible="1"/>
                     <field name="reason" placeholder="e.g. Inventory count and valuation"/>

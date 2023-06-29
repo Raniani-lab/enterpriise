@@ -9,12 +9,12 @@
             <field name="stage_id" position="before">
                 <field name="use_coupons" invisible="1"/>
                 <button type="action" name="%(helpdesk_sale_coupon_generate_action)d" string="Coupon"
-                    attrs="{'invisible': [('use_coupons', '=', False)]}"
+                    invisible="not use_coupons"
                     context="{'default_ticket_id': id, 'default_company_id': company_id}" data-hotkey="o"/>
             </field>
             <button name="action_open_helpdesk_ticket" position="before">
                 <button class="oe_stat_button" name="open_coupons" icon="fa-ticket"
-                    type="object" attrs="{'invisible': [('coupons_count', '=', 0)]}">
+                    type="object" invisible="coupons_count == 0">
                     <field name="coupons_count" string="Coupons" widget="statinfo" />
                 </button>
             </button>

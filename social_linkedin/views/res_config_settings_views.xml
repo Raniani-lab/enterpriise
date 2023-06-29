@@ -8,7 +8,7 @@
             <xpath expr="//block[hasclass('o_social_developer_settings')]" position="inside">
                 <setting string="Linkedin Developer Account">
                     <field name="linkedin_use_own_account"/>
-                    <div class="content-group" attrs="{'invisible': [('linkedin_use_own_account', '=', False)]}">
+                    <div class="content-group" invisible="not linkedin_use_own_account">
                         <div class="mt16">
                             <label for="linkedin_app_id" class="col-3 col-lg-3 o_form_label"/>
                             <field name="linkedin_app_id" class="oe_inline"/>

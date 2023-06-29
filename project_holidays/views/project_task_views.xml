@@ -8,8 +8,7 @@
             <xpath expr="//div[@role='alert']" position="after">
                 <div role="alert"
                      class="alert alert-warning d-flex align-items-center mb-2"
-                     attrs="{'invisible': ['|', ('leave_warning', '=', False), ('user_ids', '=', False)]}"
-                     >
+                     invisible="not leave_warning or not user_ids">
                         <i class="fa fa-user-times me-2" role="img" title="Leave warning"/>
                         <field name="leave_warning" nolabel="1" class="m-0"/>
                 </div>

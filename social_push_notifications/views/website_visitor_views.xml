@@ -9,7 +9,7 @@
             <xpath expr="//header" position="inside">
                 <field name="has_push_notifications" invisible="1"/>
                 <button name="action_send_push_notification" string="Send Push Notification" type="object" class="oe_highlight"
-                    attrs="{'invisible': [('has_push_notifications', '=', False)]}"/>
+                    invisible="not has_push_notifications"/>
             </xpath>
             <xpath expr="//field[@name='lang_id']" position="after">
                 <field name="has_push_notifications" />
@@ -23,9 +23,9 @@
         <field name="inherit_id" ref="website.website_visitor_view_tree"/>
         <field name="arch" type="xml">
             <xpath expr="//tree" position="inside">
-                <field name="has_push_notifications" invisible="1"/>
+                <field name="has_push_notifications" column_invisible="True"/>
                 <button name="action_send_push_notification" string="Send Push Notification" type="object" icon="fa-bell"
-                   attrs="{'invisible': [('has_push_notifications', '=', False)]}"/>
+                   invisible="not has_push_notifications"/>
             </xpath>
         </field>
     </record>
@@ -40,12 +40,12 @@
             </field>
             <xpath expr="//div[hasclass('w_visitor_kanban_actions')]" position="inside">
                 <button name="action_send_push_notification" type="object" class="btn btn-secondary"
-                        attrs="{'invisible': [('has_push_notifications', '=', False)]}">Push
+                        invisible="not has_push_notifications">Push
                 </button>
             </xpath>
             <xpath expr="//div[hasclass('w_visitor_kanban_actions_ungrouped')]" position="inside">
                 <button name="action_send_push_notification" type="object" class="btn btn-secondary border"
-                        attrs="{'invisible': [('has_push_notifications', '=', False)]}">Push
+                        invisible="not has_push_notifications">Push
                 </button>
             </xpath>
         </field>

@@ -7,13 +7,13 @@
         <field name="arch" type="xml">
             <xpath expr="//block[@id='pos_interface_section']" position="before">
                 <field name="pos_is_company_country_germany" invisible="1"/>
-                <div attrs="{'invisible': [('pos_is_company_country_germany','=',False)]}">
-                    <block title="Fiskaly API" attrs="{'invisible': [('pos_l10n_de_fiskaly_tss_id','!=',False)]}">
+                <div invisible="not pos_is_company_country_germany">
+                    <block title="Fiskaly API" invisible="pos_l10n_de_fiskaly_tss_id">
                         <setting string="Create TSS" help="Create a Technical Security System which is mandatory by the new regulations of Germany.">
                             <field name="pos_l10n_de_create_tss_flag"/>
                         </setting>
                     </block>
-                    <block title="Fiskaly API" attrs="{'invisible': [('pos_l10n_de_fiskaly_tss_id','=', False)]}">
+                    <block title="Fiskaly API" invisible="not pos_l10n_de_fiskaly_tss_id">
                         <setting>
                             <field name="pos_l10n_de_fiskaly_tss_id"/>
                         </setting>

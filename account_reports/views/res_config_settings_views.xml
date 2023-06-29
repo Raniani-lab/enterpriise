@@ -26,7 +26,7 @@
                         </div>
                         <div class="row">
                             <label string="Journal" for="account_tax_periodicity_journal_id" class="col-lg-3 o_light_label"/>
-                            <field name="account_tax_periodicity_journal_id" attrs="{'required': [('has_chart_of_accounts', '=', True)]}"/>
+                            <field name="account_tax_periodicity_journal_id" required="has_chart_of_accounts"/>
                         </div>
                         <div class="mt8">
                             <button name="open_tax_group_list" icon="oi-arrow-right" type="object" string="Configure your tax accounts" class="btn-link"/>
@@ -36,7 +36,7 @@
             </setting>
 
             <block id="analytic" position="after">
-                <block title="Reporting" id="account_reports_settings" groups="account.group_account_user" attrs="{'invisible': [('module_account_reports', '=', False)]}">
+                <block title="Reporting" id="account_reports_settings" groups="account.group_account_user" invisible="not module_account_reports">
                     <setting title="This allows you to choose the position of totals in your financial reports." company_dependent="1" help="When ticked, totals and subtotals appear below the sections of the report">
                         <field name="totals_below_sections"/>
                     </setting>

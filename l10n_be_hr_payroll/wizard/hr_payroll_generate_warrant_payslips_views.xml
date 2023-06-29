@@ -23,15 +23,15 @@
                     <tree editable="bottom">
                         <field name="employee_id"/>
                         <field name="commission_amount"/>
-                        <field name="currency_id" invisible="1"/>
+                        <field name="currency_id" column_invisible="True"/>
                     </tree>
                 </field>
-                <div states="export">
+                <div invisible="state != 'export'">
                     <h2>Export Complete</h2>
                     <p>The file has been downloaded.</p>
                     <p>CSV format: you may edit it directly with your favorite spreadsheet software, the rightmost column (value) contains the commission value over 3 months. When you're done, reimport the file to generate the commission payslips with the accurate commissions.</p>
                 </div>
-                <div states="import">
+                <div invisible="state != 'import'">
                     <h2>Import Complete</h2>
                     <p>When you're done with the commission edition, click on the 'Generate Payslip' button to generate a batch of payslips using the commissions you've provided.</p>
                 </div>

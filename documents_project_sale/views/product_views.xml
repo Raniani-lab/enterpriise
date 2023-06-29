@@ -8,7 +8,9 @@
             <field name="product_tooltip" position="before">
                 <field name="documents_allowed_company_id" invisible="1"/>
                 <field name="project_template_use_documents" invisible="1"/>
-                <field name="template_folder_id" attrs="{'invisible': ['|', ('service_tracking', 'not in', ('task_in_project', 'project_only')), '&amp;', ('project_template_id', '!=', False), ('project_template_use_documents', '=', False)]}" context="{'documents_project': True, 'default_company_id': company_id}"/>
+                <field name="template_folder_id"
+                    invisible="service_tracking not in ('task_in_project', 'project_only') or (project_template_id and not project_template_use_documents)"
+                    context="{'documents_project': True, 'default_company_id': company_id}"/>
             </field>
         </field>
     </record>

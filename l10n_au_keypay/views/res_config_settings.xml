@@ -15,7 +15,7 @@ action = records.action_kp_payroll_fetch_payrun()
         <field name="inherit_id" ref="account.res_config_settings_view_form" />
         <field name="arch" type="xml">
             <xpath expr="//block[@id='account_reports_settings']" position="after">
-                <block title="Australian Localization" id="l10n_au" groups="account.group_account_manager" attrs="{'invisible': [('country_code', '!=', 'AU')]}">
+                <block title="Australian Localization" id="l10n_au" groups="account.group_account_manager" invisible="country_code != 'AU'">
                     <field name="country_code" invisible="1" />
                     <setting id="l10n_au_keypay">
                         <div class="row">
@@ -29,12 +29,12 @@ action = records.action_kp_payroll_fetch_payrun()
                     </setting>
                     <setting id="l10n_au_keypay_company" help="Allows to synchronize Employment Hero payroll for this company" company_dependent="1">
                         <field name="l10n_au_kp_enable"/>
-                        <div class="content-group" attrs="{'invisible':[('l10n_au_kp_enable', '=', False)]}">
+                        <div class="content-group" invisible="not l10n_au_kp_enable">
                             <div class="mt8">
                                 <button name="%(action_kp_payroll_fetch_payrun)d" type="action" string="Fetch Payruns Manually" class="oe_link" id="action_kp_payroll_fetch_payrun"/>
                             </div>
                         </div>
-                        <div class="content-group mt8" attrs="{'invisible':[('l10n_au_kp_enable', '=', False)]}">
+                        <div class="content-group mt8" invisible="not l10n_au_kp_enable">
                             <div class="row">
                                 <label for="l10n_au_kp_identifier" class="col-lg-4 o_light_label"/>
                                 <field name="l10n_au_kp_identifier"/>

@@ -40,9 +40,9 @@
                         </group>
                         <group name="answer_input_form_right">
                             <field name="value_answer_id"
-                                attrs="{'invisible': [('question_type','in',['char', 'text'])]}"/>
+                                invisible="question_type in ['char', 'text']"/>
                             <field name="value_text_box"
-                                attrs="{'invisible': [('question_type','in',['select','radio', 'checkbox'])]}"/>
+                                invisible="question_type in ['select', 'radio', 'checkbox']"/>
                             <field name="calendar_event_id"/>
                         </group>
                     </group>

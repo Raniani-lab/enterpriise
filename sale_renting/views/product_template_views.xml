@@ -13,12 +13,10 @@
                 </span>
             </xpath>
             <xpath expr="//notebook/page[@name='sales']" position="attributes">
-                <attribute name="attrs">
-                    {'invisible':[('sale_ok','=',False), ('rent_ok', '=', False)]}
-                </attribute>
+                <attribute name="invisible">not sale_ok and not rent_ok</attribute>
             </xpath>
             <group name="pricing" position="after">
-                <group string="Reservations" name="extra_rental" attrs="{'invisible': [('rent_ok', '=', False)]}">
+                <group string="Reservations" name="extra_rental" invisible="not rent_ok">
                     <field name="extra_hourly" widget="monetary"/>
                     <field name="extra_daily" widget="monetary"/>
                     <field name="currency_id" invisible="1"/>

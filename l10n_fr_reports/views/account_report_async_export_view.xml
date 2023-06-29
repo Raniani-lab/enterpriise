@@ -28,7 +28,7 @@
                     <field name="state" widget="statusbar" statusbar_visible="sent,accepted,rejected"/>
                 </header>
                 <div class="alert alert-info" role="alert" style="margin-bottom:0px;"
-                     attrs="{'invisible': [('state', 'in', ['accepted', 'rejected'])]}">
+                     invisible="state in ['accepted', 'rejected']">
                     <div>This export will be processed asynchronously</div>
                     <button name="button_process_report" type="object" class="oe_link" string="Process now"/>
                 </div>

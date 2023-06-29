@@ -7,9 +7,9 @@
             <field name="inherit_id" ref="base.view_partner_form" />
             <field name="arch" type="xml">
                 <group name="fiscal_information" position="inside">
-                    <field name="l10n_br_tax_regime" attrs="{'invisible': [('fiscal_country_codes', 'not ilike', 'BR')]}"/>
-                    <field name="l10n_br_taxpayer" attrs="{'invisible': [('fiscal_country_codes', 'not ilike', 'BR')]}"/>
-                    <field name="l10n_br_activity_sector" attrs="{'invisible': [('fiscal_country_codes', 'not ilike', 'BR')]}"/>
+                    <field name="l10n_br_tax_regime" invisible="'BR'.lower() not in (fiscal_country_codes or '').lower()"/>
+                    <field name="l10n_br_taxpayer" invisible="'BR'.lower() not in (fiscal_country_codes or '').lower()"/>
+                    <field name="l10n_br_activity_sector" invisible="'BR'.lower() not in (fiscal_country_codes or '').lower()"/>
                 </group>
             </field>
         </record>

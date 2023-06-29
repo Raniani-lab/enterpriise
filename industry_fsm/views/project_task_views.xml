@@ -29,17 +29,17 @@
                 <field name="display_send_report_secondary" invisible="1"/>
                 <field name="comment" invisible="1"/>
                 <button name="action_preview_worksheet" type="object" string="Sign Report" class="btn-primary"
-                    attrs="{'invisible': [('display_sign_report_primary', '=', False)]}" data-hotkey="y"/>
+                    invisible="not display_sign_report_primary" data-hotkey="y"/>
                 <button name="action_send_report" type="object" string="Send Report" class="btn-primary"
-                    attrs="{'invisible': [('display_send_report_primary', '=', False)]}" data-hotkey="g"/>
+                    invisible="not display_send_report_primary" data-hotkey="g"/>
                 <button class="btn-primary" name="action_fsm_validate" type="object" string="Mark as done"
-                        attrs="{'invisible': [('display_mark_as_done_primary', '=', False)]}" data-hotkey="v"/>
+                        invisible="not display_mark_as_done_primary" data-hotkey="v"/>
                 <button name="action_preview_worksheet" type="object" string="Sign Report" class="btn-secondary"
-                    attrs="{'invisible': [('display_sign_report_secondary', '=', False)]}" data-hotkey="y"/>
+                    invisible="not display_sign_report_secondary" data-hotkey="y"/>
                 <button name="action_send_report" type="object" string="Send Report" class="btn-secondary"
-                    attrs="{'invisible': [('display_send_report_secondary', '=', False)]}" data-hotkey="g"/>
+                    invisible="not display_send_report_secondary" data-hotkey="g"/>
                 <button class="btn-secondary" name="action_fsm_validate" type="object" string="Mark as done"
-                        attrs="{'invisible': [('display_mark_as_done_secondary', '=', False)]}" data-hotkey="v"/>
+                        invisible="not display_mark_as_done_secondary" data-hotkey="v"/>
             </xpath>
             <xpath expr="//button[@name='action_recurring_tasks']" position="before">
                 <button
@@ -47,7 +47,7 @@
                     name="action_fsm_worksheet"
                     icon="fa-pencil" type="object"
                     groups="project.group_project_user"
-                    attrs="{'invisible': ['|', '&amp;', ('partner_id', '=', False), ('is_fsm', '=', False), '|', ('allow_worksheets', '=', False), ('comment', '!=', False)]}">
+                    invisible="not partner_id and not is_fsm or not allow_worksheets or comment">
                     <div class="o_stat_info">
                         <span class="o_stat_text">Worksheet</span>
                     </div>
@@ -57,7 +57,7 @@
                     name="action_fsm_worksheet"
                     icon="fa-check" type="object"
                     groups="project.group_project_user"
-                    attrs="{'invisible': ['|', '|', ('partner_id', '=', False), ('allow_worksheets', '=', False), ('comment', '=', False)]}">
+                    invisible="not partner_id or not allow_worksheets or not comment">
                         <div class="o_stat_info">
                             <span class="o_stat_text">Worksheet</span>
                             <span class="o_stat_text">Complete</span>
@@ -65,10 +65,10 @@
                 </button>
             </xpath>
             <xpath expr="//label[@for='date_deadline']" position="attributes">
-                <attribute name="attrs">{'invisible': [('is_fsm', '=', True)]}</attribute>
+                <attribute name="invisible">is_fsm</attribute>
             </xpath>
             <xpath expr="//field[@name='date_deadline']" position="attributes">
-                <attribute name="attrs">{'invisible': [('is_fsm', '=', True)]}</attribute>
+                <attribute name="invisible">is_fsm</attribute>
                 <attribute name="decoration-danger">date_deadline &lt; current_date</attribute>
             </xpath>
             <xpath expr="//page[@name='extra_info']" position="attributes">
@@ -89,40 +89,42 @@
                     name="action_preview_worksheet"
                     icon="fa-globe" type="object"
                     groups="project.group_project_user"
-                    attrs="{'invisible': [('worksheet_signature', '=', False)]}">
+                    invisible="not worksheet_signature">
                 </button>
             </xpath>
             <field name="is_fsm" string="is FSM?" invisible="1"/>
             <field name="partner_id" position="attributes">
                 <attribute name="context">{'show_address': is_fsm, 'res_partner_search_mode': 'customer'}</attribute>
-                <attribute name="attrs">{'required': [('is_fsm', '=', True)], 'invisible': [('project_id', '=', False)]}</attribute>
+                <attribute name="invisible">not project_id</attribute>
+                <attribute name="required">is_fsm</attribute>
             </field>
             <xpath expr="//field[@name='depend_on_ids']/tree/field[@name='partner_id']" position="after">
-                <field name="is_fsm" invisible="1"/>
+                <field name="is_fsm" column_invisible="True"/>
             </xpath>
             <xpath expr="//field[@name='depend_on_ids']/tree/field[@name='partner_id']" position="attributes">
-                <attribute name="attrs">{'required': [('is_fsm', '=', True)]}</attribute>
+                <attribute name="required">is_fsm</attribute>
             </xpath>
             <xpath expr="//field[@name='child_ids']/tree/field[@name='partner_id']" position="after">
-                <field name="is_fsm" invisible="1"/>
+                <field name="is_fsm" column_invisible="True"/>
             </xpath>
             <xpath expr="//field[@name='child_ids']/tree/field[@name='partner_id']" position="attributes">
-                <attribute name="attrs">{'column_invisible': [('parent.partner_id', '=', False)], 'required': [('is_fsm', '=', True), ('parent.partner_id', '!=', False)]}</attribute>
+                <attribute name="column_invisible">not parent.partner_id</attribute>
+                <attribute name="required">is_fsm and parent.partner_id</attribute>
             </xpath>
             <field name="partner_id" position="after">
-                <label for="action_fsm_navigate" attrs="{'invisible': [('is_fsm', '=', False)]}"/>
-                <div attrs="{'invisible': [('is_fsm', '=', False)]}">
+                <label for="action_fsm_navigate" invisible="not is_fsm"/>
+                <div invisible="not is_fsm">
                     <button
                         name="action_fsm_navigate" type="object" class="btn btn-link ps-0 pt-0 pb-2"
                         icon="oi-arrow-right" string="Navigate To" colspan="2"
-                        attrs="{'invisible': [('is_fsm', '=', False)]}"/>
+                        invisible="not is_fsm"/>
                 </div>
                 <field name="is_task_phone_update" invisible="1"/>
-                <label for="partner_phone" attrs="{'invisible': [('is_fsm', '=', False)]}"/>
-                <div class="o_row o_row_readonly" attrs="{'invisible': [('is_fsm', '=', False)]}">
+                <label for="partner_phone" invisible="not is_fsm"/>
+                <div class="o_row o_row_readonly" invisible="not is_fsm">
                     <field name="partner_phone" widget="phone"/>
                     <span class="fa fa-exclamation-triangle text-warning oe_edit_only"
-                        title="By saving this change, the customer phone number will also be updated." attrs="{'invisible': ['|', ('partner_id', '=', False), ('is_task_phone_update', '=', False)]}"/>
+                        title="By saving this change, the customer phone number will also be updated." invisible="not partner_id or not is_task_phone_update"/>
                 </div>
             </field>
             <field name="project_id" position="attributes">
@@ -172,7 +174,7 @@
             <field name="user_ids" position="before">
                 <field name="is_fsm" invisible="1"/>
                 <field name="allow_worksheets" invisible="1"/>
-                <field name="partner_id" attrs="{'required': [('is_fsm', '=', True)], 'invisible': [('is_fsm', '=', False)]}" widget="res_partner_many2one" context="{'res_partner_search_mode': 'customer'}"/>
+                <field name="partner_id" invisible="not is_fsm" required="is_fsm" widget="res_partner_many2one" context="{'res_partner_search_mode': 'customer'}"/>
             </field>
         </field>
     </record>
@@ -185,7 +187,7 @@
         <field name="inherit_id" ref="quick_create_task_form_fsm"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='project_id']" position="replace">
-                <field name="project_id" attrs="{'invisible': [('is_fsm', '=', False)]}" domain="[('is_fsm', '=', True)]"/>
+                <field name="project_id" invisible="not is_fsm" domain="[('is_fsm', '=', True)]"/>
             </xpath>
         </field>
     </record>

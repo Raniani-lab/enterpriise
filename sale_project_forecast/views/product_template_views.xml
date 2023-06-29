@@ -7,10 +7,10 @@
         <field name="inherit_id" ref="sale_planning.product_template_form_view_invoice_policy_inherit_sale_planning"/>
         <field name="arch" type="xml">
             <xpath expr="//div[@name='service_policy_div']" position="attributes">
-                <attribute name="attrs">{'invisible': ['|', ('type', '!=', 'service'), ('service_policy', 'in', ['delivered_manual', 'delivered_milestones'])]}</attribute>
+                <attribute name="invisible">type != 'service' or service_policy in ['delivered_manual', 'delivered_milestones']</attribute>
             </xpath>
             <xpath expr="//label[@for='planning_enabled']" position="attributes">
-                <attribute name="attrs">{'invisible': ['|', ('type', '!=', 'service'), ('service_policy', 'in', ['delivered_manual', 'delivered_milestones'])]}</attribute>
+                <attribute name="invisible">type != 'service' or service_policy in ['delivered_manual', 'delivered_milestones']</attribute>
             </xpath>
         </field>
     </record>

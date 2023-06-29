@@ -9,7 +9,7 @@
             <field name="arch" type="xml">
                 <page name="information" class="o_hr_contract_salary_information" position="inside">
                     <group name="untaxed" string="Moroccan Localization"
-                        attrs="{'invisible': [('country_code', '!=', 'MA')]}">
+                        invisible="country_code != 'MA'">
                         <field name="l10n_ma_hra"
                             class="o_hr_narrow_field"/>
                         <field name="l10n_ma_da"

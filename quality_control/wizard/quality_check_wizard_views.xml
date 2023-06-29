@@ -18,7 +18,7 @@
 
                 <h2 class="o_row d-flex justify-content-between">
                     <span>
-                        <span attrs="{'invisible': [('product_id', '=', False)]}">
+                        <span invisible="not product_id">
                             <field name="product_id" readonly="1" options="{'no_open': True}"/>
                             :
                         </span>
@@ -31,54 +31,54 @@
                     </span>
                 </h2>
                 <field name="note" readonly="1"/>
-                <group attrs="{'invisible': [('measure_on', '!=', 'move_line')]}">
+                <group invisible="measure_on != 'move_line'">
                     <group>
-                        <field name="lot_name" string="Lot/SN" attrs="{'invisible': ['|', ('show_lot_text', '!=', True), ('product_tracking', '=', 'none')]}"/>
-                        <field name="lot_line_id" string="Lot/SN" attrs="{'invisible': ['|', ('show_lot_text', '=', True), ('product_tracking', '=', 'none')]}"/>
+                        <field name="lot_name" string="Lot/SN" invisible="not show_lot_text or product_tracking == 'none'"/>
+                        <field name="lot_line_id" string="Lot/SN" invisible="show_lot_text or product_tracking == 'none'"/>
                         <label for="qty_line"/>
                         <div class="o_row">
                             <field name="qty_line"/>
                             <field name="uom_id"/>
                         </div>
-                        <label for="qty_to_test" attrs="{'invisible': [('is_lot_tested_fractionally', '!=', True)]}"/>
-                        <div class="o_row" attrs="{'invisible': [('is_lot_tested_fractionally', '!=', True)]}">
+                        <label for="qty_to_test" invisible="not is_lot_tested_fractionally"/>
+                        <div class="o_row" invisible="not is_lot_tested_fractionally">
                             <field name="qty_to_test"/>
                             <field name="uom_id"/>
                         </div>
-                        <label for="qty_tested" attrs="{'invisible': [('is_lot_tested_fractionally', '!=', True)]}"/>
-                        <div class="o_row" attrs="{'invisible': [('is_lot_tested_fractionally', '!=', True)]}">
-                            <field name="qty_tested" attrs="{'readonly': [('quality_state', '!=', 'none')]}"/>
+                        <label for="qty_tested" invisible="not is_lot_tested_fractionally"/>
+                        <div class="o_row" invisible="not is_lot_tested_fractionally">
+                            <field name="qty_tested" readonly="quality_state != 'none'"/>
                             <field name="uom_id"/>
                         </div>
                     </group>
                 </group>
                 <group>
                     <group>
-                        <label for="measure" attrs="{'invisible': [('test_type', '!=', 'measure')]}"/>
-                        <div attrs="{'invisible': [('test_type', '!=', 'measure')]}" class="o_row">
-                            <field name="measure" attrs="{'readonly': [('quality_state', '!=', 'none')]}"/>
+                        <label for="measure" invisible="test_type != 'measure'"/>
+                        <div invisible="test_type != 'measure'" class="o_row">
+                            <field name="measure" readonly="quality_state != 'none'"/>
                             <field name="norm_unit" string="Unit of Measure"/>
                         </div>
                     </group>
                 </group>
                 <label for="picture" invisible="1"/>
-                <div attrs="{'invisible': [('test_type', '!=', 'picture')]}">
-                    <field name="picture" widget="image" attrs="{'readonly': [('quality_state', '!=', 'none')]}"/>
+                <div invisible="test_type != 'picture'">
+                    <field name="picture" widget="image" readonly="quality_state != 'none'"/>
                 </div>
                 <group>
-                    <field name="additional_note" attrs="{'readonly': [('quality_state', '!=', 'none')]}"/>
+                    <field name="additional_note" readonly="quality_state != 'none'"/>
                 </group>
                 <footer>
                     <button name="do_measure" type="object" class="btn-primary" string="Validate"
-                        attrs="{'invisible': [ '|', ('quality_state', '!=', 'none'), ('test_type', '!=', 'measure')]}" data-hotkey="q"/>
+                        invisible="quality_state != 'none' or test_type != 'measure'" data-hotkey="q"/>
                     <button name="do_pass" type="object" class="btn-primary" string="Validate"
-                        attrs="{'invisible': [ '|', ('quality_state', '!=', 'none'), ('test_type', 'not in', ('picture', 'instructions') )]}" data-hotkey="w"/>
+                        invisible="quality_state != 'none' or test_type not in ('picture', 'instructions')" data-hotkey="w"/>
                     <button name="do_pass" type="object" class="btn-primary" string="Pass"
-                        attrs="{'invisible': ['|', ('quality_state', '!=', 'none'), ('test_type', '!=', 'passfail')]}" data-hotkey="w"/>
+                        invisible="quality_state != 'none' or test_type != 'passfail'" data-hotkey="w"/>
                     <button name="do_fail" type="object" class="btn-primary" string="Fail"
-                        attrs="{'invisible': ['|', ('quality_state', '!=', 'none'), ('test_type', '!=', 'passfail')]}" data-hotkey="k"/>
-                    <button name="action_generate_previous_window" type="object" class="btn-secondary" string="Previous" attrs="{'invisible': [('position_current_check', '=', 1)]}"/>
-                    <button name="action_generate_next_window" type="object" class="btn-secondary" string="Next" attrs="{'invisible': [('is_last_check', '=', True)]}"/>
+                        invisible="quality_state != 'none' or test_type != 'passfail'" data-hotkey="k"/>
+                    <button name="action_generate_previous_window" type="object" class="btn-secondary" string="Previous" invisible="position_current_check == 1"/>
+                    <button name="action_generate_next_window" type="object" class="btn-secondary" string="Next" invisible="is_last_check"/>
                     <button string="Cancel" class="btn btn-secondary" special="cancel" data-hotkey="x" />
                 </footer>
             </form>
@@ -92,7 +92,7 @@
         <field name="arch" type="xml">
             <form string="Quality Check Failed">
                 <field name="test_type" invisible="1"/>
-                <div class="alert alert-warning" role="alert" attrs="{'invisible': [('test_type', '!=', 'measure')]}" >
+                <div class="alert alert-warning" role="alert" invisible="test_type != 'measure'" >
                     <field name="warning_message"/>
                 </div>
                 <div>
@@ -101,11 +101,11 @@
                 <footer>
 
                     <button name="action_generate_next_window" type="object" class="btn-primary" string="Confirm Measure"
-                        attrs="{'invisible': [('test_type', '!=', 'measure')]}" data-hotkey="w"/>
+                        invisible="test_type != 'measure'" data-hotkey="w"/>
                     <button name="action_generate_next_window" type="object" class="btn-primary" string="OK"
-                        attrs="{'invisible': [('test_type', '!=', 'passfail')]}" data-hotkey="w"/>
+                        invisible="test_type != 'passfail'" data-hotkey="w"/>
                     <button name="correct_measure" type="object" class="btn-secondary" string="Correct Measure"
-                        attrs="{'invisible': [('test_type', '!=', 'measure')]}" data-hotkey="q"/>
+                        invisible="test_type != 'measure'" data-hotkey="q"/>
                 </footer>
             </form>
         </field>

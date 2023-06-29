@@ -15,22 +15,22 @@
                 <group>
                     <field name="leave_ids">
                         <tree>
-                            <field name="employee_id" widget="many2one_avatar_user"/>
-                            <field name="holiday_status_id"/>
+                            <field name="employee_id" widget="many2one_avatar_user" readonly="state in ['cancel', 'refuse', 'validate', 'validate1']"/>
+                            <field name="holiday_status_id" readonly="state in ['cancel', 'refuse', 'validate', 'validate1']"/>
                             <field name="name" optional="hide"/>
-                            <field name="date_from" optional="show"/>
-                            <field name="date_to" optional="show"/>
+                            <field name="date_from" optional="show" readonly="state in ['cancel', 'refuse', 'validate', 'validate1']"/>
+                            <field name="date_to" optional="show" readonly="state in ['cancel', 'refuse', 'validate', 'validate1']"/>
                             <field name="number_of_days"/>
-                            <field name="state" invisible="1"/>
+                            <field name="state" column_invisible="True"/>
                         </tree>
                     </field>
-                    <group attrs="{'invisible': [('export_file', '=', False)]}">
+                    <group invisible="not export_file">
                         <field name="export_file" readonly="1" filename="export_filename"/>
                     </group>
                 </group>
                 <footer>
-                    <button name="action_generate_export_file" type="object" string="Generate Export File" class="oe_highlight" attrs="{'invisible': [('export_file', '!=', False)]}"/>
-                    <button name="action_generate_export_file" type="object" string="Generate Export File" attrs="{'invisible': [('export_file', '=', False)]}"/>
+                    <button name="action_generate_export_file" type="object" string="Generate Export File" class="oe_highlight" invisible="export_file"/>
+                    <button name="action_generate_export_file" type="object" string="Generate Export File" invisible="not export_file"/>
                     <button string="CANCEL" class="btn btn-default" special="cancel"/>
                 </footer>
             </form>

@@ -25,7 +25,7 @@
                     </group>
 
                     <group colspan="3">
-                        <group string="SMS" name="sms" attrs="{'invisible':[('sms', '=', False)]}" colspan="2">
+                        <group string="SMS" name="sms" invisible="not sms" colspan="2">
                             <group colspan="2">
                                 <field name="sms_template_id" options="{'no_create': True}"
                                        context="{'default_model': 'res.partner', 'default_body': sms_body}"/>
@@ -34,13 +34,13 @@
                                 <label for="sms_body" colspan="2"/>
                                 <field name="sms_body" string="Sms Content" class="oe-bordered-editor" widget="text"
                                        placeholder="Write your message here..." force_save="1" nolabel="1"
-                                       attrs="{'readonly': [('can_edit_body', '=', False)]}" colspan="2"/>
+                                       readonly="not can_edit_body" colspan="2"/>
                             </group>
                         </group>
                     </group>
                 </group>
 
-                <group name="email_header" attrs="{'invisible':[('email','=',False)]}">
+                <group name="email_header" invisible="not email">
                     <group colspan="2" col="6">
                         <group colspan="1">
                             <label for="email_recipient_ids"/>
@@ -57,21 +57,21 @@
                         </group>
                         <group colspan="5">
                             <field name="subject" string="Email Subject" placeholder="Kind reminder!" nolabel="1"
-                                   attrs="{'required': [('email', '=', True)]}" colspan="2"/>
+                                   required="email" colspan="2"/>
                         </group>
                     </group>
                 </group>
 
-                <group name="email_content" attrs="{'invisible':[('email','=',False), ('print','=',False)]}">
+                <group name="email_content" invisible="not email and not print">
                     <group colspan="2">
                         <label for="body" colspan="2"/>
                         <field name="body" string="Letter/Email Content" class="oe-bordered-editor"
                                placeholder="Write your message here..." force_save="1" nolabel="1"
-                               options="{'style-inline': true}" attrs="{'readonly': [('can_edit_body', '=', False)]}" colspan="2"/>
+                               options="{'style-inline': true}" readonly="not can_edit_body" colspan="2"/>
                     </group>
                 </group>
 
-                <group name="attachments" col="4" attrs="{'invisible': [('email','=',False),('print','=',False)]}">
+                <group name="attachments" col="4" invisible="not email and not print">
                     <group colspan="2">
                         <field name="join_invoices"/>
                     </group>
@@ -81,19 +81,19 @@
                     </group>
                     <group colspan="2">
                         <field name="attachment_ids" widget="many2many_binary" nolabel="1"
-                               colspan="2" attrs="{'invisible':[('join_invoices','=',False)]}"/>
+                               colspan="2" invisible="not join_invoices"/>
                     </group>
                 </group>
 
                 <footer>
                     <button string="Send &amp; Print"
-                            attrs="{'invisible':['|',('print', '=', False), '&amp;', ('email','=',False),('sms', '=', False)]}"
+                            invisible="not print or not email and not sms"
                             name="process_followup" type="object" class="btn-primary" data-hotkey="q"/>
                     <button string="Send"
-                            attrs="{'invisible':['|',('print', '=', True),'&amp;',('email','=',False),('sms', '=', False)]}"
+                            invisible="print or not email and not sms"
                             name="process_followup" type="object" class="btn-primary" data-hotkey="q"/>
                     <button string="Print"
-                            attrs="{'invisible': ['|','|',('print', '=', False),('email','=',True),('sms', '=', True)]}"
+                            invisible="not print or email or sms"
                             name="process_followup"
                             type="object" class="btn-primary" data-hotkey="q"/>
                     <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="x"/>

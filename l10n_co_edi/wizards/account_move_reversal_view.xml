@@ -9,7 +9,7 @@
                 <field name="reason" position="after">
                     <field name="country_code" invisible="1"/>
                     <field name="l10n_co_edi_description_code_credit"
-                           attrs="{'invisible': [('country_code', '!=', 'CO')]}"/>
+                           invisible="country_code != 'CO'"/>
                 </field>
             </field>
         </record>

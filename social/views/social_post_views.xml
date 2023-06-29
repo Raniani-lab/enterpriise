@@ -180,68 +180,69 @@
             <xpath expr="//sheet" position="before">
                 <header>
                     <button name="action_post" string="Post" type="object" class="oe_highlight"
-                        attrs="{'invisible': ['|', ('state', '!=', 'draft'), ('post_method', '=', 'scheduled')]}"
+                        invisible="state != 'draft' or post_method == 'scheduled'"
                         groups="social.group_social_user" />
                     <button name="action_post" string="Post Now" type="object"
-                        attrs="{'invisible': [('state', '!=', 'scheduled')]}"
+                        invisible="state != 'scheduled'"
                         groups="social.group_social_user" data-hotkey="v" />
                     <button name="action_set_draft" string="Cancel" type="object"
-                        attrs="{'invisible': [('state', '!=', 'scheduled')]}"
+                        invisible="state != 'scheduled'"
                         groups="social.group_social_user" data-hotkey="x" />
                     <button name="action_schedule" string="Schedule" type="object" class="oe_highlight"
-                        attrs="{'invisible': ['|', ('state', '!=', 'draft'), ('post_method', '=', 'now')]}"
+                        invisible="state != 'draft' or post_method == 'now'"
                         groups="social.group_social_user" data-hotkey="q" />
                     <field name="state" widget="statusbar"/>
                 </header>
             </xpath>
 
             <xpath expr="//sheet/group[1]" position="before">
-                <div class="oe_button_box" name="button_box" attrs="{'invisible': [('state', '=', 'draft')]}">
+                <div class="oe_button_box" name="button_box" invisible="state == 'draft'">
                     <button class="oe_stat_button" name="action_redirect_to_clicks" type="object" icon="fa-mouse-pointer">
                         <field name="click_count" string="Clicks" widget="statinfo"/>
                     </button>
-                    <button class="oe_stat_button o_social_post_engagement_stat_btn" icon="fa-thumbs-up" attrs="{'invisible': [('engagement', '=', 0)]}">
+                    <button class="oe_stat_button o_social_post_engagement_stat_btn" icon="fa-thumbs-up" invisible="engagement == 0">
                         <field string="Engagement" name="engagement" widget="statinfo" />
                     </button>
                     <button class="oe_stat_button" icon="fa-newspaper-o" type="object" name="social_stream_post_action_my"
-                        attrs="{'invisible': [('stream_posts_count', '=', 0)]}">
+                        invisible="stream_posts_count == 0">
                         <field string="Feed Posts" name="stream_posts_count" widget="statinfo" />
                     </button>
                 </div>
             </xpath>
 
             <xpath expr="//field[@name='account_ids']" position="attributes">
-                <attribute name="attrs">{'invisible': ['|', ('has_active_accounts', '=', False), ('state', 'in', ['posting', 'posted'])]}</attribute>
+                <attribute name="invisible">not has_active_accounts or state in ['posting', 'posted']</attribute>
                 <!-- Remove the domain added on the social post template form view and allow to select Youtube accounts for a social post -->
                 <attribute name="domain">[('id', 'in', account_allowed_ids)]</attribute>
             </xpath>
 
             <xpath expr="//field[@name='message']" position="attributes">
-                <attribute name="attrs">{'required': [(1, '=', 1)], 'readonly': ['|', ('has_active_accounts', '=', False), ('state', 'in', ['posting', 'posted'])]}</attribute>
+                <attribute name="readonly">not has_active_accounts or state in ['posting', 'posted']</attribute>
+                <attribute name="required">True</attribute>
             </xpath>
 
             <xpath expr="//field[@name='image_ids']" position="attributes">
-                <attribute name="attrs">{'readonly': [('state', 'in', ['posting', 'posted'])]}</attribute>
+                <attribute name="readonly">state in ['posting', 'posted']</attribute>
             </xpath>
 
             <xpath expr="//field[@name='account_ids']" position="before">
                 <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"
-                        attrs="{'readonly': [('state', 'in', ['posting', 'posted'])]}"/>
+                        readonly="state in ['posting', 'posted']"/>
                 <field name="company_id" groups="!base.group_multi_company" invisible="1"/>
                 <field name="account_allowed_ids" invisible="1"/>
             </xpath>
 
             <xpath expr="//field[@name='image_ids']" position="after">
                 <field string="Campaign" name="utm_campaign_id"
-                    attrs="{'readonly': [('state', 'in', ['posting', 'posted'])]}"
+                    readonly="state in ['posting', 'posted']"
                     context="{'form_view_ref': 'social.utm_campaign_view_form_quick_create_social'}"/>
-                <field name="post_method" widget="radio" attrs="{'invisible': [('state', '!=', 'draft')]}"/>
-                <field name="scheduled_date" attrs="{'invisible': ['|', ('post_method', '=', 'now'), ('state', 'in', ['posting', 'posted'])], 'required': [('post_method', '!=', 'now')]}" />
+                <field name="post_method" widget="radio" invisible="state != 'draft'"/>
+                <field name="scheduled_date" invisible="post_method == 'now' or state in ['posting', 'posted']" required="post_method != 'now'" />
             </xpath>
 
             <xpath expr="//group[@name='previews_placeholder']" position="after">
                 <group name="live_posts" colspan="2" string="Posts By Accounts"
-                    attrs="{'invisible': [('state', 'not in', ['posting', 'posted'])]}">
+                    invisible="state not in ['posting', 'posted']">
                     <field name="live_post_ids" colspan="2" nolabel="1">
                         <kanban>
                             <field name="account_id"/>
@@ -265,7 +266,7 @@
                                         </div>
                                         <div class="text-end mt-4">
                                             <button name="action_retry_post" string="Retry" type="object" class="btn btn-primary"
-                                                attrs="{'invisible': [('state', '!=', 'failed')]}">
+                                                invisible="state != 'failed'">
                                                 Retry
                                             </button>
                                         </div>

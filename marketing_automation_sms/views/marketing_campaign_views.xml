@@ -59,7 +59,7 @@
             </xpath>
             <xpath expr="//button[@name='action_view_mailings']" position="after">
                 <button name="action_view_sms" type="object" icon="fa-mobile" class="oe_stat_button"
-                    attrs="{'invisible': [('mailing_sms_count', '=', 0)]}">
+                    invisible="mailing_sms_count == 0">
                     <field name="mailing_sms_count" widget="statinfo" string="SMS"/>
                 </button>
             </xpath>

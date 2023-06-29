@@ -30,13 +30,13 @@
                     data-hotkey="g"
                     groups="!hr_appraisal.group_hr_appraisal_user"
                     class="btn btn-primary"
-                    attrs="{'invisible': &quot;[('parent_user_id', '!=', uid), ('ongoing_appraisal_count','!=', 0)]&quot;}"/>
+                    invisible="parent_user_id != uid and ongoing_appraisal_count != 0"/>
                 <button name="action_send_appraisal_request"
                     string="Request Appraisal"
                     type="object"
                     data-hotkey="g"
                     groups="hr_appraisal.group_hr_appraisal_user"
-                    attrs="{'invisible': &quot;[('ongoing_appraisal_count','!=', 0)]&quot;}"
+                    invisible="ongoing_appraisal_count != 0"
                     class="btn btn-primary"/>
             </xpath>
             <div name="button_box" position="inside">
@@ -44,10 +44,9 @@
                 <field name="ongoing_appraisal_count" invisible="1"/>
                 <field name="last_appraisal_id" invisible="1"/>
                 <button name="action_open_last_appraisal"
-                    class="oe_stat_button" attrs="{'invisible': [('last_appraisal_id', '=', False)]}"
+                    class="oe_stat_button" invisible="not last_appraisal_id"
                     icon="fa-star-half-o"
-                    type="object"
-                    >
+                    type="object">
                     <div class="o_field_widget o_stat_info">
                         <span class="o_stat_value">
                             <field name="last_appraisal_date" readonly="1"/>
@@ -65,8 +64,8 @@
                 <field name="parent_user_id" invisible="1"/>
             </group>
             <field name="coach_id" position="after">
-                <field name="next_appraisal_date" attrs="{'invisible': [('ongoing_appraisal_count','!=', 0)]}"/>
-                <field name="next_appraisal_date" placeholder="Ongoing" attrs="{'invisible': [('ongoing_appraisal_count','=', 0)]}"/>
+                <field name="next_appraisal_date" invisible="ongoing_appraisal_count != 0"/>
+                <field name="next_appraisal_date" placeholder="Ongoing" invisible="ongoing_appraisal_count == 0"/>
             </field>
         </field>
     </record>

@@ -8,8 +8,8 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='fedex_duty_payment']" position="after">
                 <field name="fedex_use_locations"/>
-                <label for="fedex_locations_radius_value" attrs="{'invisible': [('fedex_use_locations', '=', False)]}"/>
-                <span attrs="{'invisible': [('fedex_use_locations', '=', False)]}">
+                <label for="fedex_locations_radius_value" invisible="not fedex_use_locations"/>
+                <span invisible="not fedex_use_locations">
                     <field name="fedex_locations_radius_value" style="padding-right: 5px"/>
                     <field name="fedex_locations_radius_unit"/>
                 </span>

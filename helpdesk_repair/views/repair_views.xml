@@ -8,7 +8,7 @@
         <field name="inherit_id" ref="repair.view_repair_order_form"/>
         <field name="arch" type="xml">
             <field name="tag_ids" position="after">
-                <field name="ticket_id" readonly="1" attrs="{'invisible': [('ticket_id', '=', False)]}"/>
+                <field name="ticket_id" readonly="1" invisible="not ticket_id"/>
             </field>
         </field>
     </record>

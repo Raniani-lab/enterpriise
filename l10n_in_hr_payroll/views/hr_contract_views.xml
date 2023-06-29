@@ -6,13 +6,13 @@
         <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//group[@name='salary_info']" position="inside">
-                <group string="Allowance" attrs="{'invisible': [('country_code', '!=', 'IN')]}">
+                <group string="Allowance" invisible="country_code != 'IN'">
                     <field name="l10n_in_driver_salay"/>
                     <field name="l10n_in_house_rent_allowance_metro_nonmetro"/>
                     <field name="l10n_in_supplementary_allowance"/>
                     <field name="l10n_in_gratuity"/>
                 </group>
-                <group string="Deduction" attrs="{'invisible': [('country_code', '!=', 'IN')]}">
+                <group string="Deduction" invisible="country_code != 'IN'">
                     <field name="l10n_in_tds"/>
                     <field name="l10n_in_voluntary_provident_fund"/>
                     <field name="l10n_in_medical_insurance"/>

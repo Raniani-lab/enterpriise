@@ -42,16 +42,16 @@
         <field name="model">marketing.campaign</field>
         <field name="arch" type="xml">
             <form string="Campaign">
-                <header attrs="{'invisible': [('active', '=', False)]}">
-                    <button name="action_start_campaign" type="object" class="btn-primary" string="Start" attrs="{'invisible': ['|', ('state', '=', 'running'), ('active', '=', False)]}" />
-                    <button name="action_stop_campaign" type="object" states="running" class="btn-primary" string="Stop" />
-                    <button name="%(marketing_campaign_test_action)d" type="action" attrs="{'invisible': ['|', ('marketing_activity_ids', '=', []), ('state', '=', 'stopped') ]}" class="btn-secondary" string="Launch a Test" />
-                    <button name="sync_participants" type="object" states="running" class="btn-secondary" string="Generate participants" groups="base.group_no_one" confirm="Are you sure you want to proceed?"/>
-                    <button name="execute_activities" type="object" states="running" class="btn-secondary" string="Execute activities" groups="base.group_no_one" confirm="Are you sure you want to proceed?"/>
+                <header invisible="not active">
+                    <button name="action_start_campaign" type="object" class="btn-primary" string="Start" invisible="state == 'running' or not active" />
+                    <button name="action_stop_campaign" type="object" invisible="state != 'running'" class="btn-primary" string="Stop" />
+                    <button name="%(marketing_campaign_test_action)d" type="action" invisible="not marketing_activity_ids or state == 'stopped'" class="btn-secondary" string="Launch a Test" />
+                    <button name="sync_participants" type="object" invisible="state != 'running'" class="btn-secondary" string="Generate participants" groups="base.group_no_one" confirm="Are you sure you want to proceed?"/>
+                    <button name="execute_activities" type="object" invisible="state != 'running'" class="btn-secondary" string="Execute activities" groups="base.group_no_one" confirm="Are you sure you want to proceed?"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,running,stopped" />
                 </header>
                 <field name="require_sync" invisible="1"/>
-                <div class="text-center alert alert-primary" role="alert" attrs="{'invisible': [('require_sync', '=', False)]}">
+                <div class="text-center alert alert-primary" role="alert" invisible="not require_sync">
                     <div class="h4 mt8"><strong>The workflow has been modified!</strong></div>
                     <p>Some participants are already running on this campaign. Click on 'Update' to apply the modifications you've just made.</p>
                     <p>Be aware that participants that had no more activities could be reintroduced into the campaign and new traces could be created for them.</p>
@@ -63,24 +63,24 @@
                 <sheet>
                     <div name="button_box" class="oe_button_box">
                         <button name="action_view_mailings" type="object" icon="fa-envelope-o" class="oe_stat_button"
-                            attrs="{'invisible': [('mass_mailing_count', '=', 0)]}">
+                            invisible="mass_mailing_count == 0">
                             <field name="mass_mailing_count" widget="statinfo" string="Templates"/>
                         </button>
                         <button name="action_view_tracker_statistics" type="object" icon="fa-mouse-pointer" class="oe_stat_button"
-                            attrs="{'invisible': [('link_tracker_click_count', '=', 0), ('state', '=', 'draft')]}">
+                            invisible="link_tracker_click_count == 0 and state == 'draft'">
                             <field name="link_tracker_click_count" widget="statinfo" string="Clicks"/>
                         </button>
                         <button name="%(marketing_participant_action_campaign_test)d" type="action"
-                            icon="fa-flask" class="oe_stat_button" attrs="{'invisible': [('test_participant_count', '=', 0)]}">
+                            icon="fa-flask" class="oe_stat_button" invisible="test_participant_count == 0">
                             <field name="test_participant_count" widget="statinfo" string="Tests" />
                         </button>
                         <button name="%(marketing_participant_action_campaign)d" type="action"
                             icon="fa-code-fork fa-rotate-180 fa-flip-vertical" class="oe_stat_button"
-                            attrs="{'invisible': [('total_participant_count', '=', 0), ('state', '=', 'draft')]}">
+                            invisible="total_participant_count == 0 and state == 'draft'">
                             <field name="total_participant_count" widget="statinfo" string="Participants" />
                         </button>
                     </div>
-                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
                     <div class="oe_title">
                         <h1><field class="text-break" name="title" required="1" placeholder="e.g. eCommerce Offers Plan" /></h1>
                     </div>
@@ -93,7 +93,7 @@
                                 <div class="col-xs-12 col-md-3">
                                     <field name="model_id"
                                         string="Target"
-                                        attrs="{'readonly': [('state', '!=', 'draft')]}"
+                                        readonly="state != 'draft'"
                                         options="{'no_create': True, 'no_open': True}"
                                         context="{'tree_view_ref': 'marketing_automation.ir_model_view_tree_marketing'}"/>
                                 </div>
@@ -117,8 +117,8 @@
                         <field name="utm_campaign_id" required="0" invisible="1"/>
                     </group>
                     <div class="o_ma_hierarchy">
-                        <div class="o_ma_hierarchy_title" attrs="{'invisible': [('marketing_activity_ids', '=', [])]}">Workflow</div>
-                        <div class="o_ma_hierarchy_readonly oe_read_only" attrs="{'invisible': [('marketing_activity_ids', '!=', [])]}">
+                        <div class="o_ma_hierarchy_title" invisible="not marketing_activity_ids">Workflow</div>
+                        <div class="o_ma_hierarchy_readonly oe_read_only" invisible="marketing_activity_ids">
                             <h3>No activity for this campaign.</h3>
                         </div>
                         <field name="marketing_activity_ids" widget="hierarchy_kanban" mode="kanban" nolabel="1"
@@ -130,7 +130,7 @@
                                 'default_utm_campaign_id': utm_campaign_id,
                             }">
                             <kanban default_order="interval_standardized">
-                                <field name="interval_standardized" invisible="1" />
+                                <field name="interval_standardized" />
                                 <field name="id" />
                                 <field name="model_name" />
                                 <field name="name" />
@@ -319,7 +319,7 @@
         <field name="arch" type="xml">
             <tree string="Campaign" sample="1">
                 <field name="name" />
-                <field name="model_id" string="Target" attrs="{'readonly' :[('state' , '!=', 'draft')]}"/>
+                <field name="model_id" string="Target" readonly="state != 'draft'"/>
                 <field name="mass_mailing_count" string="Mailings"/>
                 <field name="link_tracker_click_count" string="Clicks"/>
                 <field name="total_participant_count" string="Participants"/>

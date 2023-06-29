@@ -8,8 +8,8 @@
             <tree string="Helpdesk Team" multi_edit="1" sample="1">
                 <field name="sequence" widget="handle"/>
                 <field name="name" class="field_name" string="Name"/>
-                <field name="use_alias" invisible="1"/>
-                <field name="alias_email" string="Email Alias" widget="email" attrs="{'invisible': [('use_alias', '=', False)]}" readonly="1"/>
+                <field name="use_alias" column_invisible="True"/>
+                <field name="alias_email" string="Email Alias" widget="email" readonly="1" invisible="not use_alias"/>
                 <field name="company_id" groups="base.group_multi_company" readonly="1" context="{'create': False}"/>
             </tree>
         </field>
@@ -53,10 +53,10 @@
                             <field name="open_ticket_count" string="Tickets" widget="statinfo"/>
                         </button>
                         <field name="rating_count" invisible="1"/>
-                        <button name="action_view_team_rating" type="object" class="oe_stat_button" icon="" attrs="{'invisible': ['|', ('use_rating', '=', False), ('rating_count', '=', 0)]}" groups="helpdesk.group_use_rating" title="Average Rating">
-                            <i class="fa fa-fw o_button_icon fa-smile-o text-success" attrs="{'invisible': [('rating_avg', '&lt;', 3.66)]}" title="Satisfied"/>
-                            <i class="fa fa-fw o_button_icon fa-meh-o text-warning" attrs="{'invisible': ['|', ('rating_avg', '&lt;', 2.33), ('rating_avg', '&gt;=', 3.66)]}" title="Okay"/>
-                            <i class="fa fa-fw o_button_icon fa-frown-o text-danger" attrs="{'invisible': [('rating_avg', '&gt;=', 2.33)]}" title="Dissatisfied"/>
+                        <button name="action_view_team_rating" type="object" class="oe_stat_button" icon="" invisible="not use_rating or rating_count == 0" groups="helpdesk.group_use_rating" title="Average Rating">
+                            <i class="fa fa-fw o_button_icon fa-smile-o text-success" invisible="rating_avg &lt; 3.66" title="Satisfied"/>
+                            <i class="fa fa-fw o_button_icon fa-meh-o text-warning" invisible="rating_avg &lt; 2.33 or rating_avg &gt;= 3.66" title="Okay"/>
+                            <i class="fa fa-fw o_button_icon fa-frown-o text-danger" invisible="rating_avg &gt;= 2.33" title="Dissatisfied"/>
                             <div class="o_field_widget o_stat_info">
                                 <span class="o_stat_value">
                                     <field name="rating_avg" nolabel="1" widget="float" digits="[1, 1]"/> / 5
@@ -66,11 +66,11 @@
                                 </span>
                             </div>
                         </button>
-                        <button name="action_view_sla_policy" type="object" icon="fa-calendar-check-o" class="oe_stat_button" attrs="{'invisible': [('use_sla', '=', False)]}">
+                        <button name="action_view_sla_policy" type="object" icon="fa-calendar-check-o" class="oe_stat_button" invisible="not use_sla">
                             <field name="sla_policy_count" string="SLA Policies" widget="statinfo"/>
                         </button>
                     </div>
-                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
                     <div class="oe_title" id='title'>
                         <label for="name" string="Name"/>
                         <h1 id="name"><field name="name" options="{'line_breaks': False}" widget="text" placeholder="e.g. Customer Care"/></h1>
@@ -87,12 +87,12 @@
                         >
                             <field name="privacy_visibility" class="mt16 o_light_label" widget="radio"/>
                             <div>
-                                <span class="text-muted o_row ps-1" attrs="{'invisible':[('access_instruction_message', '=', '')]}">
+                                <span class="text-muted o_row ps-1" invisible="access_instruction_message == ''">
                                     <i class="fa fa-lightbulb-o"/>&amp;nbsp;<field class="align-top d-inline ms-2" name="access_instruction_message" nolabel="1"/>
                                 </span>
                             </div>
                             <div>
-                                <span class="text-muted o_row ps-1" attrs="{'invisible':[('privacy_visibility_warning', '=', '')]}">
+                                <span class="text-muted o_row ps-1" invisible="privacy_visibility_warning == ''">
                                     <i class="fa fa-warning"/>&amp;nbsp;<field class="align-top d-inline ms-2" name="privacy_visibility_warning" nolabel="1"/>
                                 </span>
                             </div>
@@ -110,11 +110,11 @@
                             </setting>
                             <setting help="Automate the assignment of new tickets to the right people, and make sure all tickets are being handled">
                                 <field name="auto_assignment"/>
-                                <div attrs="{'invisible': [('auto_assignment', '=', False)]}" class="mt16">
+                                <div invisible="not auto_assignment" class="mt16">
                                     <field name="assign_method" class="o_light_label w-100" widget="radio"/>
                                     <div class="o_row mt16">
                                         <label for="member_ids"/>
-                                        <field name="member_ids" widget="many2many_avatar_user" attrs="{'required': [('auto_assignment', '=', True)]}"
+                                        <field name="member_ids" widget="many2many_avatar_user" required="auto_assignment"
                                         class="ms-2" options="{'no_quick_create': True}"/>
                                     </div>
                                 </div>
@@ -126,28 +126,28 @@
                         <setting id="alias_channels" help="Create tickets by sending an email to an alias"
                             documentation="/applications/services/helpdesk/overview/receiving_tickets.html">
                             <field name="use_alias"/>
-                            <div attrs="{'invisible': [('use_alias','=',False)]}" class="mt16">
-                                <div class="oe_edit_only" attrs="{'invisible': [('alias_domain', '=', False)]}">
+                            <div invisible="not use_alias" class="mt16">
+                                <div class="oe_edit_only" invisible="not alias_domain">
                                     <strong>Alias </strong>
                                     <field name="alias_name" class="w-25"/>@<field name="alias_domain" class="oe_inline" readonly="1"/><br/>
                                     <label for="alias_contact"/>
                                     <field name="alias_contact" string="Accept Emails From"/>
                                 </div>
-                                <p class="oe_read_only" attrs="{'invisible': [('alias_domain', '=', False)]}">
+                                <p class="oe_read_only" invisible="not alias_domain">
                                 <strong>Alias </strong><field name="alias_id" class="oe_read_only oe_inline" required="False"/>
                                 </p>
                                 <field name="has_external_mail_server" invisible="1"/>
-                                <p class="text-muted o_row ps-1" attrs="{'invisible': ['|', ('alias_domain', '!=', False), ('has_external_mail_server', '!=', False)]}">
+                                <p class="text-muted o_row ps-1" invisible="alias_domain or has_external_mail_server">
                                     <i class="fa fa-lightbulb-o" role='img'/><span class="ms-2">To use an email alias, the first step is to configure an Alias Domain. You can achieve this by navigating to the General Settings and configuring the corresponding field</span>
                                 </p>
-                                <p attrs="{'invisible': [('alias_domain', '!=', False)]}">
+                                <p invisible="alias_domain">
                                     <button name="%(base_setup.action_general_configuration)d" type="action" string="Set an Alias Domain" icon="oi-arrow-right" class="btn-link"/>
                                 </p>
                             </div>
                         </setting>
                         <setting help="Get in touch with your website visitors. Create and search tickets from your conversations. Answer in an instant by using canned responses.">
                             <field name="use_website_helpdesk_livechat"/>
-                            <div class="text-muted o_row ps-1 mt16" attrs="{'invisible':[('use_website_helpdesk_livechat', '=', False)]}">
+                            <div class="text-muted o_row ps-1 mt16" invisible="not use_website_helpdesk_livechat">
                                 <i class="fa fa-lightbulb-o"/>
                                 <span class="ms-2">
                                     Type <b>/helpdesk</b> to create tickets<br/>
@@ -191,15 +191,15 @@
                                   help="Make sure tickets are handled on time"
                                   documentation="/applications/services/helpdesk/overview/sla.html">
                             <field name="use_sla"/>
-                            <div class="mt16" attrs="{'invisible': [('use_sla', '=', False)]}">
+                            <div class="mt16" invisible="not use_sla">
                                 <label for="resource_calendar_id"/>
-                                <field name="resource_calendar_id" attrs="{'required': [('use_sla', '=', True)]}"/>
+                                <field name="resource_calendar_id" required="use_sla"/>
                             </div>
                         </setting>
                         <setting id="rating" help="Track customer satisfaction on tickets"
                             documentation="/applications/services/helpdesk/overview/ratings.html">
                             <field name="use_rating"/>
-                            <div id="use_rating" attrs="{'invisible': [('use_rating', '=', False)]}">
+                            <div id="use_rating" invisible="not use_rating">
                                 <field name="portal_show_rating" class="oe_inline"/>
                                 <label for="portal_show_rating" string="Publish this team's ratings on your website"/>
                                 <div class="mt-3">
@@ -215,11 +215,11 @@
                         </setting>
                         <setting help="Close inactive tickets automatically">
                             <field name="auto_close_ticket"/>
-                            <div class="content-group" attrs="{'invisible': [('auto_close_ticket', '=', False)]}">
+                            <div class="content-group" invisible="not auto_close_ticket">
                                 <field name="stage_ids" invisible="1"/>
                                 <div class="mt16">
                                     <label for="to_stage_id"/>
-                                    <field name="to_stage_id" class="ms-2 oe_inline" attrs="{'required': [('auto_close_ticket', '=', True)]}" context="{'default_team_id': active_id}"/>
+                                    <field name="to_stage_id" class="ms-2 oe_inline" required="auto_close_ticket" context="{'default_team_id': active_id}"/>
                                 </div>
                                 <div class="mt8">
                                     <strong>After</strong><field name="auto_close_day" class="mx-2 oe_inline text-center" required="1"/><span>days of inactivity</span>
@@ -356,7 +356,7 @@
                                                 </span>
                                             </a>
                                         </div>
-                                        <div class="mb4" groups="helpdesk.group_use_sla" attrs="{'invisible': ['|', ('use_sla', '=', False), ('success_rate', '&lt;', 0.0)]}">
+                                        <div class="mb4" groups="helpdesk.group_use_sla" invisible="not use_sla or success_rate &lt; 0.0">
                                             <a name="action_view_success_rate" type="object" title="Percentage of tickets whose SLAs have successfully been reached on time over the total number of tickets closed within the past 7 days." class="justify-content-between flex-nowrap d-inline-flex w-100">
                                                 <span>SLA Success Rate</span>
                                                 <span class="ms-3">
@@ -398,7 +398,7 @@
                                             <span class="text-muted">Urgent</span>
                                         </a>
                                     </div>
-                                    <div class="col border-start" groups="helpdesk.group_use_sla" attrs="{'invisible': [('use_sla', '=', False)]}">
+                                    <div class="col border-start" groups="helpdesk.group_use_sla" invisible="not use_sla">
                                         <a name="action_view_sla_failed" type="object" class="d-flex flex-column align-items-center" title="Number of open tickets with at least one SLA failed.">
                                             <span class="fw-bold"><field name="sla_failed"/></span>
                                             <span class="text-muted">Failed</span>

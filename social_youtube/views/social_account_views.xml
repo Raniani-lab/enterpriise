@@ -9,13 +9,13 @@
             <xpath expr="//header" position="inside">
                 <button name="action_youtube_revoke" type="object" string="Revoke"
                     groups="social.group_social_manager"
-                    attrs="{'invisible': [('media_type', '!=', 'youtube')]}"/>
+                    invisible="media_type != 'youtube'"/>
             </xpath>
             <xpath expr="//group[@name='social_account_global']" position="after">
                 <group name="youtube_disclaimer" class="o_social_disclaimer_group">
                     <field name="media_type" invisible="1"/>
                     <div colspan="2" class="alert alert-info oe_inline" role="alert"
-                        attrs="{'invisible': [('media_type', '!=', 'youtube')]}">
+                        invisible="media_type != 'youtube'">
                         By using our Social YouTube Application, you implicitly agree to the:
                         <ul>
                             <li>

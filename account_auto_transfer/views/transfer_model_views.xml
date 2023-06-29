@@ -58,17 +58,17 @@
                 <header>
                     <button name="action_activate" type="object"
                             string="Activate" class="oe_highlight"
-                            attrs="{'invisible': ['|', ('state', '=', 'in_progress'), ('id', '=', False)]}"/>
+                            invisible="state == 'in_progress' or not id"/>
                     <button name="action_perform_auto_transfer" type="object"
                             string="Compute Transfer" class="oe_highlight"
-                            attrs="{'invisible': ['|', ('state', '!=', 'in_progress'), ('id', '=', False)]}"/>
+                            invisible="state != 'in_progress' or not id"/>
                     <button name="action_disable" type="object"
                             string="Disable"
-                            attrs="{'invisible': ['|', ('state', '!=', 'in_progress'), ('id', '=', False)]}"/>
+                            invisible="state != 'in_progress' or not id"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
-                    <div name="button_box" class="oe_button_box" attrs="{'invisible': [('id', '=', False)]}">
+                    <div name="button_box" class="oe_button_box" invisible="not id">
                         <button class="oe_stat_button" type="action"
                                 name="%(generated_transfers_action)d" icon="fa-book"
                                 context="{'search_default_transfer_model_id': active_id, 'default_transfer_model_id': active_id}">
@@ -109,12 +109,12 @@
                             <field name="line_ids" nolabel="1" colspan="2"
                                    context="{'default_transfer_model_id': active_id}">
                                 <tree editable="bottom">
-                                    <field name="percent_is_readonly" invisible="1"/>
+                                    <field name="percent_is_readonly" column_invisible="True"/>
                                     <field name="sequence" widget="handle"/>
                                     <field name="analytic_account_ids"
                                            widget="many2many_tags"/>
                                     <field name="partner_ids" widget="many2many_tags" domain="[('parent_id', '=', False)]"/>
-                                    <field name="percent" string="Percent (%)" attrs="{'readonly': [('percent_is_readonly', '=', True)]}"/>
+                                    <field name="percent" string="Percent (%)" readonly="percent_is_readonly"/>
                                     <field name="account_id"/>
                                 </tree>
                             </field>

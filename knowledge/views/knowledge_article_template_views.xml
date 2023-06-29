@@ -43,8 +43,8 @@
                         <field name="body" widget="text"/>
                         <field name="description"/>
                         <field name="parent_id" domain="[('id', '!=', active_id)]"/>
-                        <field name="is_template_item" attrs="{'invisible': [('parent_id', '=', False)]}"/>
-                        <field name="template_properties" attrs="{'invisible': [('parent_id', '=', False)]}"/>
+                        <field name="is_template_item" invisible="not parent_id"/>
+                        <field name="template_properties" invisible="not parent_id"/>
                         <field name="category_id"/>
                         <field name="sequence"/>
                     </group>

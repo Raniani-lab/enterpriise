@@ -6,12 +6,12 @@
         <field name="inherit_id" ref="point_of_sale.res_config_settings_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//div[hasclass('pos_iot_config')]" position="replace">
-                <div class="content-group pos_iot_config" attrs="{'invisible' : [('pos_is_posbox', '=', False)]}">
+                <div class="content-group pos_iot_config" invisible="not pos_is_posbox">
                     <div class="row">
                         <label string="Receipt Printer" for="pos_iface_printer_id" class="col-lg-4 o_light_label"/>
                         <field name="pos_iface_printer_id"/>
                     </div>
-                    <div class="row" attrs="{'invisible': [('pos_iface_printer_id', '=', False)]}">
+                    <div class="row" invisible="not pos_iface_printer_id">
                         <label string="Cashdrawer" for="pos_iface_cashdrawer" class="col-lg-4 o_light_label"/>
                         <field name="pos_iface_cashdrawer"/>
                     </div>

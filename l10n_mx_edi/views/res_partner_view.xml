@@ -8,11 +8,11 @@
             <field name="inherit_id" ref="account.view_partner_property_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//notebook[last()]" position="inside">
-                    <page string="MX EDI" name="addenda" attrs="{'invisible': [('fiscal_country_codes', 'not ilike', 'MX')]}">
+                    <page string="MX EDI" name="addenda" invisible="'MX'.lower() not in (fiscal_country_codes or '').lower()">
                         <group>
                             <field name="country_code" invisible="1"/>
                             <field name="l10n_mx_edi_addenda"/>
-                            <field name="l10n_mx_edi_addenda_doc" attrs="{'invisible': [('l10n_mx_edi_addenda', '=', False)]}"/>
+                            <field name="l10n_mx_edi_addenda_doc" invisible="not l10n_mx_edi_addenda"/>
                             <field name="l10n_mx_edi_fiscal_regime"/>
                             <field name="l10n_mx_edi_no_tax_breakdown"/>
                             <field name="l10n_mx_edi_usage"/>

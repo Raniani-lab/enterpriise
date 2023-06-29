@@ -14,7 +14,7 @@
             </xpath>
             <xpath expr="//div[@name='button_box']" position="inside">
                 <field name="has_slots" invisible="1"/>
-                <button string="Planning" attrs="{'invisible': [('has_slots', '=', False)]}" class="oe_stat_button" icon="fa-tasks" name="action_view_planning" type="object"/>
+                <button string="Planning" invisible="not has_slots" class="oe_stat_button" icon="fa-tasks" name="action_view_planning" type="object"/>
             </xpath>
         </field>
     </record>
@@ -44,7 +44,7 @@
                         <label for="name" string="Employee Name"/>
                         <h1>
                             <field name="name" placeholder="e.g. John Doe" required="True"/>
-                            <a title="Chat" icon="fa-comments" href="#" class="ml8 o_employee_chat_btn" invisible="not context.get('chat_icon')" attrs="{'invisible': [('user_id','=', False)]}" role="button"><i class="fa fa-comments"/></a>
+                            <a title="Chat" icon="fa-comments" href="#" class="ml8 o_employee_chat_btn" invisible="not context.get('chat_icon') or not user_id" role="button"><i class="fa fa-comments"/></a>
                         </h1>
                         <h2>
                             <field name="job_title" placeholder="Job Title" />

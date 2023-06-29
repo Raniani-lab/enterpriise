@@ -8,11 +8,11 @@
         <field name="arch" type="xml">
             <form string="Participant" create="false">
                 <header>
-                    <button name="action_set_completed" type="object" states="running" class="btn-secondary" string="Stop"/>
+                    <button name="action_set_completed" type="object" invisible="state != 'running'" class="btn-secondary" string="Stop"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
-                    <widget name="web_ribbon" title="Test" bg_color="text-bg-danger" attrs="{'invisible': [('is_test', '=', False)]}"/>
+                    <widget name="web_ribbon" title="Test" bg_color="text-bg-danger" invisible="not is_test"/>
                     <div class="oe_title">
                         <span class="o_form_label">Record</span>
                         <field name="is_test" invisible="1"/>
@@ -32,8 +32,8 @@
                         </group>
                     </group>
                     <div class="o_ma_hierarchy">
-                        <div class="o_ma_hierarchy_title" attrs="{'invisible': [('trace_ids', '=', [])]}">Workflow</div>
-                        <div class="o_ma_hierarchy_readonly" attrs="{'invisible': [('trace_ids', '!=', [])]}">
+                        <div class="o_ma_hierarchy_title" invisible="not trace_ids">Workflow</div>
+                        <div class="o_ma_hierarchy_readonly" invisible="trace_ids">
                             <h3>No activity</h3>
                             <p>
                                 It will be generated automatically once you save this record.
@@ -142,7 +142,7 @@
                 <field name="campaign_id" readonly="True" optional="hide"/>
                 <field name="model_id" string="Target Model"/>
                 <field name="state" readonly="True" widget="badge" decoration-info="state == 'running'" decoration-success="state == 'completed'" decoration-danger="state == 'unlinked'"/>
-                <field name="is_test" invisible="1"/>
+                <field name="is_test" column_invisible="True"/>
             </tree>
         </field>
     </record>

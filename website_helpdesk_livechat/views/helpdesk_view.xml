@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="helpdesk.helpdesk_team_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='use_website_helpdesk_livechat']" position="after">
-                <div id='im_livechat' attrs="{'invisible': [('use_website_helpdesk_livechat', '=', False)]}">
+                <div id='im_livechat' invisible="not use_website_helpdesk_livechat">
                     <div class="mt16">
                         <button name="action_view_channel" type="object" string="Configure Live Chat Channel" icon="oi-arrow-right" class="btn-link"/>
                     </div>

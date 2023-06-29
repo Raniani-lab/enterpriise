@@ -12,8 +12,8 @@
                     <field name="rejected_payment_ids" invisible="1"/>
 
                     <div>
-                        <span attrs="{'invisible': [('nb_batch_payment_ids', '!=', 1)]}"><field name="nb_rejected_payment_ids"/> payments from the batch have been removed.</span>
-                        <span attrs="{'invisible': [('nb_batch_payment_ids', '=', 1)]}"><field name="nb_rejected_payment_ids"/> payments from <field name="nb_batch_payment_ids"/> batches have been removed.</span>
+                        <span invisible="1 not in nb_batch_payment_ids"><field name="nb_rejected_payment_ids"/> payments from the batch have been removed.</span>
+                        <span invisible="1 in nb_batch_payment_ids"><field name="nb_rejected_payment_ids"/> payments from <field name="nb_batch_payment_ids"/> batches have been removed.</span>
                         <br/>
                         <span>Do you want to cancel payments to retry them later or keep the batch open with unprocess payments, if you expect them later.</span>
                     </div>

@@ -7,12 +7,12 @@
         <field name="arch" type="xml">
             <xpath expr="//setting[@id='process_mrp_barcodes']" position="inside">
                 <field name="show_barcode_nomenclature" invisible="1"/>
-                <div class="content-group row mt16" attrs="{'invisible': [('show_barcode_nomenclature', '=', False)]}">
+                <div class="content-group row mt16" invisible="not show_barcode_nomenclature">
                     <label for="barcode_nomenclature_id" string="Barcode Nomenclature" class="col-lg-3 o_light_label"/>
-                    <field name="barcode_nomenclature_id" attrs="{'required': [('module_stock_barcode', '=', True)]}" options="{'no_open': 1}"/>
+                    <field name="barcode_nomenclature_id" required="module_stock_barcode" options="{'no_open': 1}"/>
                 </div>
                 <div class="content-group">
-                    <div class="mt8" attrs="{'invisible': [('module_stock_barcode', '=', False)]}">
+                    <div class="mt8" invisible="not module_stock_barcode">
                         <button class="btn-link" type="action" string="Configure Product Barcodes" name="%(stock_barcode.product_action_barcodes)d" icon="fa-arrow-right"/>
                     </div>
                 </div>
@@ -22,7 +22,7 @@
                     </a>
                 </div>
                 <field name="stock_barcode_demo_active" invisible="1"/>
-                <div attrs="{'invisible': [('stock_barcode_demo_active', '!=', True)]}">
+                <div invisible="not stock_barcode_demo_active">
                     <a href="stock_barcode/static/img/barcodes_demo.pdf" class="oe_link" target="_blank">
                         <i class="fa fa-print"/> Print barcode demo sheet
                     </a>

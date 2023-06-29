@@ -15,9 +15,9 @@
                             groups="event.group_event_manager"/>
                     <button string="Discard" special="cancel" data-hotkey="x" class="btn-secondary" close="1"/>
                     <button name="action_unschedule" type="object" string="Unschedule" class="btn-secondary" close="1"
-                            attrs="{'invisible': [('id', '=', False)]}" groups="event.group_event_manager"/>
+                            invisible="not id" groups="event.group_event_manager"/>
                     <button name="unlink" type="object" icon="fa-trash" title="Delete" class="btn-secondary float-end"
-                            close="1" attrs="{'invisible': [('id', '=', False)]}"
+                            close="1" invisible="not id"
                             groups="event.group_event_manager" data-hotkey="d"/>
                 </footer>
             </xpath>

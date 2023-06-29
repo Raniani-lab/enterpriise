@@ -21,12 +21,10 @@
                         <field name="license_plate"/>
                         <field name="is_m1l"/>
                         <field name="authorization_issuing_entity"
-                            attrs="{'invisible': [('is_m1l', '=', True)]}"
-                        />
+                            invisible="is_m1l"/>
                         <field name="authorization_issuing_entity_number"
-                            attrs="{'invisible': ['|', ('is_m1l', '=', True), ('authorization_issuing_entity', '=', False)]}"
-                        />
-                        <field name="operator_id" attrs="{'invisible': [('is_m1l', '=', True)]}"/>
+                            invisible="is_m1l or not authorization_issuing_entity"/>
+                        <field name="operator_id" invisible="is_m1l"/>
                         <field name="company_id" groups="base.group_multi_company"/>
                     </group>
                 </sheet>

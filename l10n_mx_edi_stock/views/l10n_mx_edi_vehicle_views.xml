@@ -33,10 +33,10 @@
                             <tree editable="bottom">
                                 <field name="type" required="1"/>
                                 <field name="operator_id"/>
-                                <field name="part_ids" widget="many2many_tags" options="{'no_create': True}" attrs="{'invisible': [('type', '=', '01')]}"/>
+                                <field name="part_ids" widget="many2many_tags" options="{'no_create': True}" invisible="type == '01'"/>
                             </tree>
                         </field>
-                        <field name="trailer_ids" attrs="{'invisible': [('vehicle_config', 'in', ('C2', 'C3', 'OTROSG', 'GPLUTA', 'GPLUTB', 'GPLUTC', 'GPLUTD', 'GPLATA', 'GPLATB', 'GPLATC', 'GPLATD'))]}">
+                        <field name="trailer_ids" invisible="vehicle_config in ('C2', 'C3', 'OTROSG', 'GPLUTA', 'GPLUTB', 'GPLUTC', 'GPLUTD', 'GPLATA', 'GPLATB', 'GPLATC', 'GPLATD')">
                             <tree editable="bottom">
                                 <field name="name"/>
                                 <field name="sub_type"/>

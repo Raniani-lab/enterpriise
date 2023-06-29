@@ -15,7 +15,7 @@
                         <field name="code" readonly="1"/>
                         <field name="name" readonly="1"/>
                         <field name="account_id" required="1"/>
-                        <field name="company_id" invisible="1"/>
+                        <field name="company_id" column_invisible="True"/>
                     </tree>
                 </field>
                 <footer>

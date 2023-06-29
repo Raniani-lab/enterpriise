@@ -18,7 +18,7 @@
         <field name="inherit_id" ref="account.view_account_form"/>
         <field name="arch" type="xml">
             <xpath expr="//page[@name='accounting']" position="after">
-                <page string="Automation" attrs="{'invisible': [('can_create_asset', '=', False)]}">
+                <page string="Automation" invisible="not can_create_asset">
                     <group>
                         <group>
                             <field name="can_create_asset" invisible="1"/>
@@ -26,15 +26,15 @@
                             <td class="o_td_label">
                                 <label for="create_asset" string="Automate Asset"/>
                             </td>
-                            <field name="create_asset" attrs="{'invisible': [('can_create_asset', '=', False)]}" nolabel="1" widget="radio"/>
-                            <field name="multiple_assets_per_line" string="Manage Items" attrs="{'invisible': ['|', ('can_create_asset', '=', False), ('create_asset', '=', 'no')]}"/>
-                            <td class="o_td_label" invisible="context.get('hide_model_on_account')" attrs="{'invisible': ['|', ('create_asset', '=', 'no'), ('can_create_asset', '=', False)]}">
-                                <label for="asset_model" string="Asset Model" attrs="{'invisible': ['|', ('create_asset', '=', 'no'), ('can_create_asset', '=', False)]}"/>
+                            <field name="create_asset" invisible="not can_create_asset" nolabel="1" widget="radio"/>
+                            <field name="multiple_assets_per_line" string="Manage Items" invisible="not can_create_asset or create_asset == 'no'"/>
+                            <td class="o_td_label" invisible="context.get('hide_model_on_account') or (create_asset == 'no' or not can_create_asset)">
+                                <label for="asset_model" string="Asset Model" invisible="create_asset == 'no' or not can_create_asset"/>
                             </td>
                             <field name="asset_model"
-                                   invisible="context.get('hide_model_on_account')"
                                    domain="[('state', '=', 'model')]"
-                                   attrs="{'invisible': ['|', ('create_asset', '=', 'no'), ('can_create_asset', '=', False)], 'required': ['&amp;', ('create_asset', '=', 'validate'), ('can_create_asset', '=', True)]}"
+                                   invisible="context.get('hide_model_on_account') or (create_asset == 'no' or not can_create_asset)"
+                                   required="create_asset == 'validate' and can_create_asset"
                                    nolabel="1"
                                    context="{
                                         'default_state': 'model',

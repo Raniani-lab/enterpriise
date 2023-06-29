@@ -8,13 +8,13 @@
             <xpath expr="//div[hasclass('pos_iot_config')]" position="replace">
                 <!-- The domain declared for iface_scale_id uses `company_id`. -->
                 <field name="company_id" invisible="1" />
-                <div class="content-group pos_iot_config" attrs="{'invisible' : [('is_posbox', '=', False)]}">
+                <div class="content-group pos_iot_config" invisible="not is_posbox">
                     <div class="row">
                         <label string="Receipt Printer" for="iface_printer_id" class="col-lg-4 o_light_label"/>
                         <field name="iface_printer_id"/>
                         <field name="iface_print_via_proxy" invisible="1"/>
                     </div>
-                    <div class="row" attrs="{'invisible': [('iface_printer_id', '=', False)]}">
+                    <div class="row" invisible="not iface_printer_id">
                         <label string="Cashdrawer" for="iface_cashdrawer" class="col-lg-4 o_light_label"/>
                         <field name="iface_cashdrawer"/>
                     </div>

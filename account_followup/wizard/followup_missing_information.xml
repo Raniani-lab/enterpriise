@@ -19,7 +19,7 @@
         <field name="model">res.partner</field>
         <field name="arch" type="xml">
             <tree create="false" editable="bottom">
-                <field name="name" readonly="true"/>
+                <field name="name" readonly="True"/>
                 <field name="email"/>
                 <field name="mobile"/>
                 <field name="phone"/>

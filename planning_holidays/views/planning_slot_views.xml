@@ -6,10 +6,10 @@
         <field name="inherit_id" ref="planning.planning_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//div[@role='alert']" position="attributes">
-                <attribute name="attrs">{'invisible': [('overlap_slot_count', '=', 0), ('request_to_switch', '=', False), '|', ('leave_warning', '=', False), ('employee_id', '=', False)]}</attribute>
+                <attribute name="invisible">overlap_slot_count == 0 and not request_to_switch and (not leave_warning or not employee_id)</attribute>
             </xpath>
             <xpath expr="//button[@name='action_see_overlaping_slots']" position="before">
-                <p class="align-middle mb-0" attrs="{'invisible': ['|', ('leave_warning', '=', False), ('employee_id', '=', False)]}">
+                <p class="align-middle mb-0" invisible="not leave_warning or not employee_id">
                     <field name="leave_warning" nolabel="1"/>
                 </p>
             </xpath>

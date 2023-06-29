@@ -6,8 +6,8 @@
         <field name="model">amazon.offer</field>
         <field name="arch" type="xml">
             <tree string="Amazon Offers" editable="top">
-                <field name="account_id" invisible="1"/>
-                <field name="active_marketplace_ids" invisible="1"/>
+                <field name="account_id" column_invisible="True"/>
+                <field name="active_marketplace_ids" column_invisible="True"/>
                 <field name="marketplace_id" options="{'no_create_edit': True, 'no_open': True}"/>
                 <field name="product_id"/>
                 <field name="sku"/>

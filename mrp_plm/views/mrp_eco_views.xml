@@ -366,7 +366,7 @@
                                 <div class="oe_kanban_bottom_right">
                                     <div class="float-start mr4" groups="base.group_user">
                                         <field name="activity_ids" widget="kanban_activity"/>
-                                        <field name="kanban_state" widget="state_selection" attrs="{'readonly': [('allow_change_kanban_state', '=', False)]}"/>
+                                        <field name="kanban_state" widget="state_selection" readonly="not allow_change_kanban_state"/>
                                     </div>
                                     <field name="user_id" widget="many2one_avatar_user"/>
                                 </div>
@@ -390,17 +390,17 @@
                 <field name="user_can_reject" invisible="1"/>
                 <field name="allow_apply_change" invisible="1"/>
                 <header>
-                    <field name="stage_id" widget="statusbar" options="{'clickable': '1'}" attrs="{'invisible': ['|', ('active', '=', False), ('state', '=', 'confirmed')]}"/>
+                    <field name="stage_id" widget="statusbar" options="{'clickable': '1'}" invisible="not active or state == 'confirmed'"/>
                     <button string="Start Revision" name="action_new_revision" type="object"
-                            class="oe_highlight" attrs="{'invisible': [('state', '!=', 'confirmed')]}"/>
-                    <button string="Apply Rebase" name="apply_rebase" help="Rebase new revision of BoM with previous eco bom and old bom changes." type="object" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'rebase')]}"/>
-                    <button string="Conflict Resolved" name="conflict_resolve" type="object" class="oe_highlight" attrs="{'invisible': [('state', '!=', 'conflict')]}" confirm="System will automatically resolved the conflict(s) and apply changes. Do you agree?"/>
+                            class="oe_highlight" invisible="state != 'confirmed'"/>
+                    <button string="Apply Rebase" name="apply_rebase" help="Rebase new revision of BoM with previous eco bom and old bom changes." type="object" class="oe_highlight" invisible="state != 'rebase'"/>
+                    <button string="Conflict Resolved" name="conflict_resolve" type="object" class="oe_highlight" invisible="state != 'conflict'" confirm="System will automatically resolved the conflict(s) and apply changes. Do you agree?"/>
                     <button string="Approve" name="approve" type="object"
-                            class="oe_highlight" attrs="{'invisible': [('user_can_approve', '=', False)]}"/>
+                            class="oe_highlight" invisible="not user_can_approve"/>
                     <button string="Reject" name="reject" type="object"
-                            class="oe_highlight" attrs="{'invisible': [('user_can_reject', '=', False)]}"/>
+                            class="oe_highlight" invisible="not user_can_reject"/>
                     <button string="Apply Changes" name="action_apply" type="object"
-                            class="oe_highlight" attrs="{'invisible': ['|', ('allow_apply_change', '=', False), ('state', '=', 'done')]}"/>
+                            class="oe_highlight" invisible="not allow_apply_change or state == 'done'"/>
                 </header>
                 <sheet>
                     <field name="legend_blocked" invisible="1"/>
@@ -410,11 +410,11 @@
                         <field name="production_id" invisible="1" force_save="1"/>
                         <button string="Production" class="oe_stat_button" icon="fa-wrench"
                             name="action_open_production" type="object"
-                            attrs="{'invisible': [('production_id', '=', False)]}"/>
-                        <button class="oe_stat_button" name="action_see_attachments" type="object" icon="fa-file-text-o" attrs="{'invisible': ['|', ('state', '=', 'confirmed'), ('type', '=', 'routing')]}">
+                            invisible="not production_id"/>
+                        <button class="oe_stat_button" name="action_see_attachments" type="object" icon="fa-file-text-o" invisible="state == 'confirmed' or type == 'routing'">
                             <field string="Documents" name="mrp_document_count" widget="statinfo"/>
                         </button>
-                        <button name="open_new_bom" icon="fa-flask" type="object" attrs="{'invisible': [('new_bom_id', '=', False)]}" class="oe_stat_button">
+                        <button name="open_new_bom" icon="fa-flask" type="object" invisible="not new_bom_id" class="oe_stat_button">
                         <div class="o_field_widget o_stat_info mr4">
                             <div>
                                 <span>Revision</span><br/>
@@ -423,39 +423,39 @@
                         </div>
                         </button>
                     </div>
-                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
                     <field name="allow_change_kanban_state" invisible="1"/>
-                    <field name="kanban_state" widget="state_selection" attrs="{'readonly': [('allow_change_kanban_state', '=', False)]}"/>
+                    <field name="kanban_state" widget="state_selection" readonly="not allow_change_kanban_state"/>
                     <div class="oe_title">
                         <label for="name" string="Description"/>
-                        <h2><field name="name" placeholder="e.g. Awesome Product 2.0" attrs="{'readonly': [('state', '=', 'done')]}"/></h2>
+                        <h2><field name="name" placeholder="e.g. Awesome Product 2.0" readonly="state == 'done'"/></h2>
                     </div>
                     <group>
                         <group>
                             <field name="active" invisible="1"/>
-                            <field name="type_id" options="{'no_open': True, 'no_create': True}" attrs="{'readonly': [('state', '!=', 'confirmed')]}"/>
-                            <field name="type" widget="radio" attrs="{'readonly': [('state', '!=', 'confirmed')]}"/>
-                            <field name="product_tmpl_id" domain="[('type', 'in', ['consu', 'product'])]" attrs="{'readonly': [('state', '!=', 'confirmed')], 'invisible': [('type', '=', 'routing')], 'required': [('type', 'in', ('bom', 'both', 'product'))]}"/>
-                            <field name="bom_id" context="{'default_product_tmpl_id': product_tmpl_id}" attrs="{'readonly': [('state', '!=', 'confirmed')], 'invisible': [('type', 'in', ('routing', 'product'))], 'required': [('type', 'in', ('bom', 'both'))]}"/>
+                            <field name="type_id" options="{'no_open': True, 'no_create': True}" readonly="state != 'confirmed'"/>
+                            <field name="type" widget="radio" readonly="state != 'confirmed'"/>
+                            <field name="product_tmpl_id" domain="[('type', 'in', ['consu', 'product'])]" invisible="type == 'routing'" readonly="state != 'confirmed'" required="type in ('bom', 'both', 'product')"/>
+                            <field name="bom_id" context="{'default_product_tmpl_id': product_tmpl_id}" invisible="type in ('routing', 'product')" readonly="state != 'confirmed'" required="type in ('bom', 'both')"/>
                             <field name="new_bom_id" invisible="1"/>
                             <field name="company_id" invisible="1"/>
                             <field name="company_id" groups="base.group_multi_company"/>
                         </group>
                         <group>
-                            <field name="user_id" attrs="{'readonly': [('state', '=', 'done')]}" domain="[('share', '=', False)]"/>
-                            <field name="effectivity" widget="radio" attrs="{'readonly': [('state', '=', 'done')]}" required="1"/>
-                            <field name="effectivity_date" attrs="{'invisible': [('effectivity', '=', 'asap')], 'readonly': [('state', '=', 'done')]}"/>
+                            <field name="user_id" readonly="state == 'done'" domain="[('share', '=', False)]"/>
+                            <field name="effectivity" widget="radio" required="1" readonly="state == 'done'"/>
+                            <field name="effectivity_date" invisible="effectivity == 'asap'" readonly="state == 'done'"/>
                             <field name="state" invisible="1"/>
-                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" attrs="{'readonly': [('state', '=', 'done')]}"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" readonly="state == 'done'"/>
                             <field name="current_bom_id" invisible="1"/>
                         </group>
                     </group>
                     <notebook>
                         <page string="Note" name="note">
-                            <field name="note" attrs="{'readonly': [('state', '=', 'done')]}" placeholder="Description of the change and its reason."/>
+                            <field name="note" readonly="state == 'done'" placeholder="Description of the change and its reason."/>
                         </page>
                         <page string="BoM Changes" name="bom_changes"
-                            attrs="{'invisible': ['|', '|', ('state', '=', 'confirmed'), ('type', 'in', ('product','routing')), ('bom_change_ids','=',[])]}"
+                            invisible="state == 'confirmed' or type in ('product', 'routing') or not bom_change_ids"
                             help="Changes made on the new revision bill of materials">
                             <field name="bom_change_ids">
                                 <tree decoration-danger="change_type=='remove'" decoration-info="change_type=='add'">
@@ -467,7 +467,7 @@
                                 </tree>
                             </field>
                         </page>
-                        <page string="BoM Rebase" name="bom_rebase" attrs="{'invisible': [('bom_rebase_ids', '=', [])]}">
+                        <page string="BoM Rebase" name="bom_rebase" invisible="not bom_rebase_ids">
                             <field name="bom_rebase_ids" readonly="1" help="Changes made on old bill of materials">
                                 <tree decoration-danger="conflict">
                                     <field name="change_type"/>
@@ -475,13 +475,13 @@
                                     <field name="upd_product_qty" widget="plm_upd_qty"/>
                                     <field name="uom_change" groups="uom.group_uom"/>
                                     <field name="operation_change" groups="mrp.group_mrp_routings"/>
-                                    <field name="conflict" invisible="1"/>
+                                    <field name="conflict" column_invisible="True"/>
                                 </tree>
                             </field>
                         </page>
                         <page string="Previous Eco Bom Changes" name="previous_eco_bom_changes"
                             help="Changes made in previous eco"
-                            attrs="{'invisible': [('previous_change_ids', '=', [])]}">
+                            invisible="not previous_change_ids">
                             <field name="previous_change_ids" readonly="1">
                                 <tree decoration-danger="conflict">
                                     <field name="change_type"/>
@@ -489,12 +489,12 @@
                                     <field name="upd_product_qty" widget="plm_upd_qty"/>
                                     <field name="uom_change" groups="uom.group_uom"/>
                                     <field name="operation_change" groups="mrp.group_mrp_routings"/>
-                                    <field name="conflict" invisible="1"/>
+                                    <field name="conflict" column_invisible="True"/>
                                 </tree>
                             </field>
                         </page>
                         <page string="Operation Changes" name="operation_changes"
-                            attrs="{'invisible': [('routing_change_ids', '=', [])]}"
+                            invisible="not routing_change_ids"
                             help="Changes made on the operation.">
                             <field name="routing_change_ids">
                                 <tree decoration-danger="change_type=='remove'" decoration-info="change_type=='add'">
@@ -517,8 +517,8 @@
                                     <field name="approval_date"/>
                                     <field name="template_stage_id"/>
                                     <field name="required_user_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                                    <field name="eco_stage_id" invisible="1"/>
-                                    <field name="is_closed" invisible="1"/>
+                                    <field name="eco_stage_id" column_invisible="True"/>
+                                    <field name="is_closed" column_invisible="True"/>
                                 </tree>
                                 <form>
                                     <group>
@@ -632,8 +632,8 @@
                         <label for="upd_product_qty"/>
                         <div class="o_row">
                             <field name="upd_product_qty"/>
-                            <field name="old_uom_id" attrs="{'invisible': [('change_type', '!=', 'remove')]}" options="{'no_open':True,'no_create':True}" groups="uom.group_uom"/>
-                            <field name="new_uom_id" attrs="{'invisible': [('change_type', '=', 'remove')]}" options="{'no_open':True,'no_create':True}" groups="uom.group_uom"/>
+                            <field name="old_uom_id" invisible="change_type != 'remove'" options="{'no_open':True,'no_create':True}" groups="uom.group_uom"/>
+                            <field name="new_uom_id" invisible="change_type == 'remove'" options="{'no_open':True,'no_create':True}" groups="uom.group_uom"/>
                         </div>
                     </group>
                     <group string="ECO details">

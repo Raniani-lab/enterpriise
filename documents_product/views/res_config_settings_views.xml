@@ -14,10 +14,10 @@
                     <block>
                         <setting company_dependent="1" help="Centralize files attached to products">
                             <field name="documents_product_settings"/>
-                            <div class="content-group" attrs="{'invisible' : [('documents_product_settings', '=', False)]}">
+                            <div class="content-group" invisible="not documents_product_settings">
                                 <div class="row mt16">
                                     <label class="o_form_label col-lg-3" for="product_folder" string="Workspace"/>
-                                    <field name="product_folder" attrs="{'required' : [('documents_product_settings', '=', True)]}"/>
+                                    <field name="product_folder" required="documents_product_settings"/>
                                 </div>
                                 <div class="row">
                                     <label class="o_form_label col-lg-3" for="product_tags" string="Default Tags"/>

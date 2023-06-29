@@ -10,7 +10,7 @@
                 <data>
                     <field name='l10n_mx_edi_payment_method_id' position="before">
                         <field name="l10n_mx_address_issued_id"
-                               attrs="{'invisible':  ['|', ('type', 'not in', ('sale', 'cash', 'bank')), ('country_code', '!=', 'MX')]}"
+                               invisible="type not in ('sale', 'cash', 'bank') or country_code != 'MX'"
                                context="{'default_type': 'invoice'}"/>
                     </field>
                 </data>

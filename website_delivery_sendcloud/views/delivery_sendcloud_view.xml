@@ -8,8 +8,8 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='sendcloud_shipping_rules']" position="after">
                 <field name="sendcloud_use_locations"/>
-                <label for="sendcloud_locations_radius_value" attrs="{'invisible': [('sendcloud_use_locations', '=', False)]}"/>
-                <span attrs="{'invisible': [('sendcloud_use_locations', '=', False)]}">
+                <label for="sendcloud_locations_radius_value" invisible="not sendcloud_use_locations"/>
+                <span invisible="not sendcloud_use_locations">
                     <field name="sendcloud_locations_radius_value" class="pe-1"/>
                     <field name="sendcloud_locations_radius_unit"/>
                 </span>

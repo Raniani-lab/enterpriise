@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="helpdesk.helpdesk_team_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//button[@name='action_view_sla_policy']" position="before">
-                <button class="oe_stat_button" icon="fa-wrench" type="object" name="action_view_repairs" attrs="{'invisible': [('use_product_repairs', '=', False)]}">
+                <button class="oe_stat_button" icon="fa-wrench" type="object" name="action_view_repairs" invisible="not use_product_repairs">
                     <field name="repairs_count" string="Repairs" widget="statinfo"/>
                 </button>
             </xpath>

@@ -13,11 +13,11 @@
         <field name="arch" type="xml">
             <form string="Appraisal" class="o_appraisal_form">
             <header>
-                <button name="action_confirm" string="Confirm" type="object" class="oe_highlight" attrs="{'invisible': &quot;['|',('state','!=','new'), '&amp;', ('manager_user_ids', 'not in', uid), '&amp;', ('employee_user_id', '!=', uid), ('is_manager', '=', False)]&quot;}" data-hotkey="q"/>
-                <button name="action_done" string="Mark as Done" type="object" class="oe_highlight" attrs="{'invisible': &quot;['|', ('state','!=','pending'), '&amp;', ('manager_user_ids', 'not in', uid), ('is_manager', '=', False)]&quot;}" data-hotkey="v"/>
-                <button name="action_send_appraisal_request" string="Send by email" states="new" type="object" data-hotkey="g"/>
-                <button name="action_cancel" string="Cancel" type="object" attrs="{'invisible': &quot;['|', ('state','!=','pending'), '&amp;', ('manager_user_ids', 'not in', uid), ('is_manager', '=', False)]&quot;}" data-hotkey="x"/>
-                <button name="action_back" string="Reopen" type="object" attrs="{'invisible': &quot;['|', '&amp;', ('state','!=','done'), ('state','!=','cancel'), '&amp;', ('manager_user_ids', 'not in', uid), ('is_manager', '=', False)]&quot;}" data-hotkey="w"/>
+                <button name="action_confirm" string="Confirm" type="object" class="oe_highlight" invisible="state != 'new' or 'uid' not in manager_user_ids and employee_user_id != uid and not is_manager" data-hotkey="q"/>
+                <button name="action_done" string="Mark as Done" type="object" class="oe_highlight" invisible="state != 'pending' or 'uid' not in manager_user_ids and not is_manager" data-hotkey="v"/>
+                <button name="action_send_appraisal_request" string="Send by email" invisible="state != 'new'" type="object" data-hotkey="g"/>
+                <button name="action_cancel" string="Cancel" type="object" invisible="state != 'pending' or 'uid' not in manager_user_ids and not is_manager" data-hotkey="x"/>
+                <button name="action_back" string="Reopen" type="object" invisible="state != 'done' and state != 'cancel' or 'uid' not in manager_user_ids and not is_manager" data-hotkey="w"/>
                 <field name="state" widget="statusbar" statusbar_visible="new,pending,done" options="{'fold_field': 'fold'}"/>
             </header>
             <sheet>
@@ -28,7 +28,7 @@
                             <span class="o_stat_text">Goals</span>
                         </div>
                     </button>
-                    <button class="oe_stat_button" name="action_open_employee_appraisals" icon="fa-star-half-o" type="object" attrs="{'invisible': ['|', ('employee_appraisal_count', '&lt;', 2), ('employee_id', '=', False)]}">
+                    <button class="oe_stat_button" name="action_open_employee_appraisals" icon="fa-star-half-o" type="object" invisible="employee_appraisal_count &lt; 2 or not employee_id">
                         <div class="o_field_widget o_stat_info">
                             <span class="o_stat_value"><field name="employee_appraisal_count"/></span>
                             <span class="o_stat_text">Appraisals</span>
@@ -41,11 +41,11 @@
                         </div>
                     </button>
                 </div>
-                <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
                 <div class="row justify-content-between position-relative w-100 m-0 mb-2">
                     <div class="oe_title mw-75 ps-0 pe-2">
                         <h1>
-                            <field name="employee_id" domain="[('id', 'in', employee_autocomplete_ids)]" attrs="{'readonly': ['|', ('state', '!=', 'new'), ('is_manager', '=', False)]}" placeholder="e.g. John Doe"/>
+                            <field name="employee_id" domain="[('id', 'in', employee_autocomplete_ids)]" readonly="state != 'new' or not is_manager" placeholder="e.g. John Doe"/>
                         </h1>
                     </div>
                     <div class="o_employee_avatar mw-25 m-0 p-0">
@@ -54,15 +54,8 @@
                 </div>
                 <group>
                     <group>
-                        <field name="manager_ids" widget="many2many_avatar_user" options="{'color_field': 'color'}" required="1" attrs="{
-                            'readonly': &quot;[
-                            '|',
-                            ('state', '=', ('done')),
-                            '&amp;',
-                            ('state', '=', ('pending')),
-                            '&amp;',
-                            ('manager_user_ids', 'not in', uid), ('is_manager', '=', False)]&quot;}"/>
-                        <field name="date_close" attrs="{'readonly':[('state','in', ['done','cancel'])]}"/>
+                        <field name="manager_ids" widget="many2many_avatar_user" options="{'color_field': 'color'}" required="1" readonly="state == 'done' or (state == 'pending' and 'uid' not in manager_user_ids and not is_manager)"/>
+                        <field name="date_close" readonly="state in ['done', 'cancel']"/>
                     </group>
                     <group>
                         <field name="department_id"/>
@@ -71,15 +64,7 @@
                         <field name="id" invisible="1"/>
                         <field name="company_id" invisible="1"/>
                         <field name="company_id" groups="base.group_multi_company" required="1"/>
-                        <field name="assessment_note" options="{'no_create': True, 'no_open': True}" attrs="{
-                            'invisible': &quot;['|', ('state', '=', 'new'), ('employee_user_id', '=', uid)]&quot;,
-                            'readonly': &quot;[
-                            '|',
-                            ('state', '=', 'done'),
-                            '&amp;',
-                            ('state', '=', ('pending')),
-                            '&amp;',
-                            ('manager_user_ids', 'not in', uid), ('is_manager', '=', False)]&quot;}"/>
+                        <field name="assessment_note" options="{'no_create': True, 'no_open': True}" invisible="state == 'new' or employee_user_id == uid" readonly="state == 'done' or (state == 'pending' and 'uid' not in manager_user_ids and not is_manager)"/>
                     </group>
                 </group>
                 <notebook>
@@ -89,23 +74,21 @@
                                 <div class="row">
                                     <div class="o_appraisal_feedback_title col-12 d-flex justify-content-between">
                                         <h3>Employee's Feedback</h3>
-                                        <div class="h-100" attrs="{'invisible': [('state', '=', 'done')]}">
-                                            <span class="text-end" attrs="{'invisible': [('employee_feedback_published', '=', True)]}">Not Visible to Manager</span>
-                                            <span class="text-end" attrs="{'invisible': [('employee_feedback_published', '=', False)]}">Visible &amp; Editable by Manager</span>
+                                        <div class="h-100" invisible="state == 'done'">
+                                            <span class="text-end" invisible="employee_feedback_published">Not Visible to Manager</span>
+                                            <span class="text-end" invisible="not employee_feedback_published">Visible &amp; Editable by Manager</span>
                                             <field name="employee_feedback_published" nolabel="1" widget="boolean_toggle_confirm"
-                                                attrs="{'invisible': &quot;[('state', '=', 'new'), ('employee_user_id', '=', uid)]&quot;}" class="ms-2 me-0"/>
+                                                invisible="state == 'new' and employee_user_id == uid" class="ms-2 me-0"/>
                                         </div>
                                     </div>
                                     <div class="col-12 o_appraisal_input position-relative">
-                                        <span class="o_appraisal_overlay o_highlight" attrs="{'invisible': ['|', '|', ('can_see_employee_publish', '=', True), ('employee_feedback_published', '=', True), ('employee_feedback_template', '=', False)]}">
+                                        <span class="o_appraisal_overlay o_highlight" invisible="can_see_employee_publish or employee_feedback_published or not employee_feedback_template">
                                             <div>Self Assessment will show here</div>
                                             <div>once published</div>
                                         </span>
-                                        <field name="employee_feedback" class="o_appraisal_template" nolabel="1" attrs="{
-                                            'invisible': [('employee_feedback_published', '=', False), ('can_see_employee_publish', '=', False)],
-                                            'readonly': ['|', ('state', 'not in', ['new', 'pending']), ('can_see_employee_publish', '=', False)]}"/>
+                                        <field name="employee_feedback" class="o_appraisal_template" nolabel="1" invisible="not employee_feedback_published and not can_see_employee_publish" readonly="state not in ['new', 'pending'] or not can_see_employee_publish"/>
                                         <field name="employee_feedback_template" class="o_appraisal_blur"
-                                            attrs="{'invisible': ['|', ('employee_feedback_published', '=', True), ('can_see_employee_publish', '=', True)]}"/>
+                                            invisible="employee_feedback_published or can_see_employee_publish"/>
                                     </div>
                                 </div>
                             </div>
@@ -113,29 +96,29 @@
                                 <div class="row">
                                     <div class="o_appraisal_feedback_title col-12 d-flex justify-content-between">
                                         <h3>Manager's Feedback</h3>
-                                        <div class="h-100" attrs="{'invisible': [('state', '=', 'done')]}">
-                                            <span class="text-end" attrs="{'invisible': ['|', ('manager_feedback_published', '=', True), ('can_see_manager_publish', '=', False)]}">Not Visible to Employee</span>
-                                            <span class="text-end" attrs="{'invisible': ['|', ('manager_feedback_published', '=', False), ('can_see_manager_publish', '=', False)]}">Visible to Employee</span>
-                                            <field name="manager_feedback_published" nolabel="1" widget="boolean_toggle" class="ms-2 me-0" attrs="{'invisible': [('can_see_manager_publish', '=', False)]}"/>
+                                        <div class="h-100" invisible="state == 'done'">
+                                            <span class="text-end" invisible="manager_feedback_published or not can_see_manager_publish">Not Visible to Employee</span>
+                                            <span class="text-end" invisible="not manager_feedback_published or not can_see_manager_publish">Visible to Employee</span>
+                                            <field name="manager_feedback_published" nolabel="1" widget="boolean_toggle" class="ms-2 me-0" invisible="not can_see_manager_publish"/>
                                         </div>
                                     </div>
                                     <div class="col-12 o_appraisal_input position-relative">
-                                        <span class="o_appraisal_overlay" attrs="{'invisible': ['|', '|', ('can_see_manager_publish', '=', True), ('manager_feedback_published', '=', True), ('manager_feedback_template', '=', False)]}">
+                                        <span class="o_appraisal_overlay" invisible="can_see_manager_publish or manager_feedback_published or not manager_feedback_template">
                                             <div>Manager Assessment will show here</div>
                                             <div>once published</div>
                                         </span>
                                         <field name="manager_feedback" class="o_appraisal_template" nolabel="1"
-                                            attrs="{'invisible': [('manager_feedback_published', '=', False), ('can_see_manager_publish', '=', False)],
-                                                    'readonly': ['|', ('can_see_manager_publish', '=', False), ('state', 'not in', ['new', 'pending'])]}"/>
+                                            invisible="not manager_feedback_published and not can_see_manager_publish"
+                                            readonly="not can_see_manager_publish or state not in ['new', 'pending']"/>
                                         <field name="manager_feedback_template" class="o_appraisal_blur"
-                                            attrs="{'invisible': ['|', ('manager_feedback_published', '=', True), ('can_see_manager_publish', '=', True)]}"/>
+                                            invisible="manager_feedback_published or can_see_manager_publish"/>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </page>
-                    <page string="Private Note" attrs="{'invisible': &quot;[('employee_user_id', '=', uid)]&quot;}">
-                        <field name="note" attrs="{'readonly': &quot;['|', ('state', '=', 'done'), '&amp;', ('manager_user_ids', 'not in', uid), ('is_manager', '=', False)]&quot;}"
+                    <page string="Private Note" invisible="employee_user_id == uid">
+                        <field name="note" readonly="state == 'done' or ('uid' not in manager_user_ids and not is_manager)"
                                 placeholder="Private note (only accessible to people set as managers)"/>
                     </page>
                 </notebook>
@@ -163,7 +146,7 @@
         <field name="model">hr.appraisal</field>
         <field name="arch" type="xml">
             <tree string="Appraisal" multi_edit="1" sample="1">
-                <field name="active" invisible="1"/>
+                <field name="active" column_invisible="True"/>
                 <field name="employee_id" string="Name" readonly="1" widget="many2one_avatar_user"/>
                 <field name="date_close" widget="remaining_days"/>
                 <field name="date_final_interview" widget="remaining_days"/>
@@ -243,13 +226,13 @@
                         <div class="oe_kanban_card oe_kanban_global_click o_kanban_record_has_image_fill o_kanban_card_appraisal">
                             <field name="avatar_128" class="o_kanban_image_fill_left" widget="background_image"/>
 
-                            <div class="ribbon ribbon-top-right" attrs="{'invisible': [('state', '!=', 'done')]}">
+                            <div class="ribbon ribbon-top-right" invisible="state != 'done'">
                                 <span class="bg-success">Done</span>
                             </div>
-                            <div class="ribbon ribbon-top-right" attrs="{'invisible': ['|', ('state', '!=', 'pending'), ('waiting_feedback', '=', True)]}">
+                            <div class="ribbon ribbon-top-right" invisible="state != 'pending' or waiting_feedback">
                                 <span class="bg-info">Ready</span>
                             </div>
-                            <div class="ribbon ribbon-top-right" attrs="{'invisible': [('state', '!=', 'cancel')]}">
+                            <div class="ribbon ribbon-top-right" invisible="state != 'cancel'">
                                 <span class="bg-secondary">Canceled</span>
                             </div>
                             <div class="oe_kanban_details d-flex justify-content-between flex-column">

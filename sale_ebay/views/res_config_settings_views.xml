@@ -18,7 +18,7 @@
                                 <label for="ebay_dev_id" class="col-lg-4 o_light_label"/>
                                 <field name="ebay_dev_id" class="col-lg-8 oe_inline"/>
                             </div>
-                            <div attrs="{'invisible': [('ebay_domain','=', 'prod')]}">
+                            <div invisible="ebay_domain == 'prod'">
                                 <div class="row">
                                     <label for="ebay_sandbox_token" class="col-lg-4 o_light_label"/>
                                     <field name="ebay_sandbox_token" class="col-lg-8 oe_inline"/>
@@ -32,7 +32,7 @@
                                     <field name="ebay_sandbox_cert_id" class="col-lg-8 oe_inline"/>
                                 </div>
                             </div>
-                            <div attrs="{'invisible': [('ebay_domain','=', 'sand')]}">
+                            <div invisible="ebay_domain == 'sand'">
                                 <div class="row">
                                     <label for="ebay_prod_token" class="col-lg-4 o_light_label"/>
                                     <field name="ebay_prod_token" class="col-lg-8 oe_inline"/>
@@ -99,7 +99,7 @@
                             </div>
                         </div>
                     </setting>
-                    <setting attrs="{'invisible': ['|', '|', '|', ('ebay_dev_id', '=', False),('ebay_sandbox_token', '=', False),('ebay_sandbox_app_id', '=', False),('ebay_sandbox_cert_id', '=', False),]}" string="Synchronization" help="Import eBay config data and sync transactions">
+                    <setting invisible="not ebay_dev_id or not ebay_sandbox_token or not ebay_sandbox_app_id or not ebay_sandbox_cert_id" string="Synchronization" help="Import eBay config data and sync transactions">
                         <div class="content-group">
                             <div class="row mt8">
                                 <div class="col-lg-6" title="Sync now"> 

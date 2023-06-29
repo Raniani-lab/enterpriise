@@ -13,14 +13,14 @@
                 <button name="button_update_avatax"
                         type="object"
                         string="Compute Taxes Using Avatax"
-                        attrs="{'invisible':['|', '|', ('locked', '=', True), ('state', '=', 'cancel'), ('is_avatax', '=', False)]}"
+                        invisible="locked or state == 'cancel' or not is_avatax"
                         groups="sales_team.group_sale_salesman,account.group_account_invoice"/>
             </div>
             <xpath expr="//tree/field[@name='tax_id']" position="attributes">
-                <attribute name="attrs">{'column_invisible': [('parent.is_avatax', '=', True)]}</attribute>
+                <attribute name="column_invisible">parent.is_avatax</attribute>
             </xpath>
             <group name="sales_person" position="inside">
-                <field name="avatax_unique_code" attrs="{'invisible': [('is_avatax', '=', False)]}"/>
+                <field name="avatax_unique_code" invisible="not is_avatax"/>
             </group>
         </field>
     </record>

@@ -10,18 +10,16 @@
                 <field name="is_taxcloud_configured" invisible="1"/>
             </form>
             <xpath expr="//tree/field[@name='tax_id']" position="attributes">
-                <attribute name="attrs">{
-                    'readonly': ['|', ('qty_invoiced', '&gt;', 0), ('is_downpayment', '==', True)],
-                    'column_invisible': [('parent.is_taxcloud', '=', True)]
-                }</attribute>
+                <attribute name="column_invisible">parent.is_taxcloud</attribute>
+                <attribute name="readonly">qty_invoiced &gt; 0 or is_downpayment</attribute>
             </xpath>
             <xpath expr="//tree/field[@name='price_tax']" position="replace"/>
             <xpath expr="//tree/field[@name='tax_id']" position="after">
-                <field name="price_tax" string="Tax" attrs="{'column_invisible': [('parent.is_taxcloud', '=', False)]}"/>
+                <field name="price_tax" string="Tax" column_invisible="not parent.is_taxcloud"/>
             </xpath>
             <xpath expr="//header" position="after">
                 <div class="alert alert-info text-center" role="alert"
-                     attrs="{'invisible': ['|', ('is_taxcloud_configured', '=', True), ('is_taxcloud', '=', False)]}">
+                     invisible="is_taxcloud_configured or not is_taxcloud">
                     Please enter your Taxcloud credentials to compute tax rates automatically.
                     <a class="alert-link" href="/web#action=account.action_account_config" role="button">Go to Settings.</a>
                 </div>
@@ -33,7 +31,7 @@
                 <button name="validate_taxes_on_sales_order"
                         string="Update taxes"
                         type="object"
-                        attrs="{'invisible': [('is_taxcloud', '=', False)]}"/>
+                        invisible="not is_taxcloud"/>
             </div>
         </field>
     </record>

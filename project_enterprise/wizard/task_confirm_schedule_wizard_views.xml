@@ -16,14 +16,14 @@
                             <field name="task_id"/>
                             <field name="date_begin"/>
                             <field name="date_end" widget="task_confirm_date_end_with_warning"/>
-                            <field name="warning" invisible="1"/>
+                            <field name="warning" column_invisible="True"/>
                             <field name="schedule_task"/>
                         </tree>
                     </field>
                 </sheet>
                 <footer>
                     <field name="selected_line_count" invisible="1"/>
-                    <button string="Schedule Tasks" name="action_confirm" type="object" class="btn-primary" attrs="{'invisible': [('selected_line_count', '=', 0)]}"/>
+                    <button string="Schedule Tasks" name="action_confirm" type="object" class="btn-primary" invisible="selected_line_count == 0"/>
                     <button string="Discard" class="btn btn-default" special="cancel" data-hotkey="x"/>
                 </footer>
             </form>

@@ -10,7 +10,7 @@
                 <button name="button_l10n_br_avatax"
                         type="object"
                         string="Compute Taxes using Avatax"
-                        attrs="{'invisible':['|', '|', '|', ('state', '!=', 'draft'), ('is_move_sent', '=', True), ('move_type', 'not in', ('out_invoice', 'out_refund')), ('is_l10n_br_avatax', '=', False)]}"
+                        invisible="state != 'draft' or is_move_sent or move_type not in ('out_invoice', 'out_refund') or not is_l10n_br_avatax"
                         groups="account.group_account_invoice"/>
             </button>
         </field>

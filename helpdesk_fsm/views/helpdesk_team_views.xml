@@ -8,9 +8,9 @@
             <field name="inherit_id" ref="helpdesk.helpdesk_team_view_form" />
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='use_fsm']" position="after">
-                    <div attrs="{'invisible': [('use_fsm', '=', False)]}" class="mt-2">
+                    <div invisible="not use_fsm" class="mt-2">
                         <label for="fsm_project_id" string="Project" class="me-2"/>
-                        <field name="fsm_project_id" attrs="{'required': [('use_fsm', '=', True)]}" context="{'default_is_fsm': True}" />
+                        <field name="fsm_project_id" required="use_fsm" context="{'default_is_fsm': True}" />
                     </div>
                 </xpath>
             </field>

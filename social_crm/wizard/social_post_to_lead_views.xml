@@ -22,8 +22,8 @@
                         <group col="2">
                             <field name="partner_id" widget="res_partner_many2one"
                                 context="{'res_partner_search_mode': 'customer'}"
-                                attrs="{'required': [('action', '=', 'exist')],
-                                        'invisible': [('action', '!=', 'exist')]}"/>
+                                invisible="action != 'exist'"
+                                required="action == 'exist'"/>
                         </group>
                     </group>
                 </group>

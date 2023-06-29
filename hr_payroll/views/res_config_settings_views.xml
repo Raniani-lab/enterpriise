@@ -20,7 +20,7 @@
                         <field name="module_l10n_fr_hr_payroll" invisible="1"/>
                         <field name="module_l10n_be_hr_payroll" invisible="1"/>
                         <field name="module_l10n_in_hr_payroll" invisible="1"/>
-                        <block title="Payroll" id="hr_payroll_localization" attrs="{'invisible': ['|', '|', ('module_l10n_fr_hr_payroll', '=', True), ('module_l10n_be_hr_payroll', '=', True), ('module_l10n_in_hr_payroll', '=', True)]}">
+                        <block title="Payroll" id="hr_payroll_localization" invisible="module_l10n_fr_hr_payroll or module_l10n_be_hr_payroll or module_l10n_in_hr_payroll">
                             <setting string="Payroll Rules" help="Payroll rules that apply to your country">
                                 <div class="mt8" id="localization_text">
                                     <button name="%(open_payroll_modules)d" icon="oi-arrow-right" type="action" string="Choose a Payroll Localization" class="btn-link"/>
@@ -31,7 +31,7 @@
                             <setting string="Payroll Entries" help="Post payroll slips in accounting">
                                 <field name="module_hr_payroll_account"/>
                             </setting>
-                            <setting attrs="{'invisible': [('module_hr_payroll_account', '=', False)]}" string="Payroll SEPA" help="Create SEPA payment">
+                            <setting invisible="not module_hr_payroll_account" string="Payroll SEPA" help="Create SEPA payment">
                                 <field name="module_hr_payroll_account_sepa"/>
                             </setting>
                         </block>

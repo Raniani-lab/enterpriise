@@ -8,38 +8,33 @@
             <xpath expr="//page[@name='settings']//field[@name='sale_line_id']" position="before">
                 <field name="pricing_type" invisible="1"/>
                 <field name="timesheet_product_id" string="Default Service" context="{'default_detailed_type': 'service', 'default_service_policy': 'delivered_timesheet', 'default_service_type': 'timesheet'}"
-                    attrs="{'invisible': ['|', '|', ('allow_timesheets', '=', False), ('pricing_type', '=', False), ('is_fsm', '=', False)], 'required': [('is_fsm', '=', True), ('allow_billable', '=', True), ('allow_timesheets', '=', True)]}"/>
+                    invisible="not allow_timesheets or not pricing_type or not is_fsm"
+                    required="is_fsm and allow_billable and allow_timesheets"/>
             </xpath>
             <xpath expr="//page[@name='settings']//group/field[@name='sale_line_id']" position="attributes">
-                <attribute name="attrs">{'invisible': ['|', '|', ('is_fsm', '=', True), ('allow_billable', '=', False), ('partner_id', '=', False)]}</attribute>
+                <attribute name="invisible">is_fsm or not allow_billable or not partner_id</attribute>
             </xpath>
             <xpath expr="//page[@name='settings']//group/field[@name='sale_line_id'][2]" position="attributes">
-                <attribute name="attrs">{'invisible': ['|', '|', ('is_fsm', '=', True), ('allow_billable', '=', False), ('partner_id', '=', False)]}</attribute>
+                <attribute name="invisible">is_fsm or not allow_billable or not partner_id</attribute>
             </xpath>
 
             <xpath expr="//field[@name='sale_line_employee_ids']/tree/field[@name='sale_line_id'][1]" position="attributes">
-                <attribute name="attrs">{
-                    'column_invisible': ['|', ('parent.id', '!=', False), ('parent.is_fsm', '=', True)],
-                    'required': [('parent.is_fsm', '=', False)],
-                }</attribute>
+                <attribute name="column_invisible">parent.id or parent.is_fsm</attribute>
+                <attribute name="required">not parent.is_fsm</attribute>
             </xpath>
             <xpath expr="//field[@name='sale_line_employee_ids']/tree/field[@name='sale_line_id'][2]" position="attributes">
-                <attribute name="attrs">{
-                    'column_invisible': ['|', ('parent.id', '=', False), ('parent.is_fsm', '=', True)],
-                    'required': [('parent.is_fsm', '=', False)],
-                }</attribute>
+                <attribute name="column_invisible">not parent.id or parent.is_fsm</attribute>
+                <attribute name="required">not parent.is_fsm</attribute>
             </xpath>
             <xpath expr="//field[@name='sale_line_employee_ids']/tree/field[@name='sale_line_id'][3]" position="attributes">
-                <attribute name="attrs">{
-                    'column_invisible': ['|', ('parent.id', '=', False), ('parent.is_fsm', '=', True)],
-                    'required': [('parent.is_fsm', '=', False)],
-                }</attribute>
+                <attribute name="column_invisible">not parent.id or parent.is_fsm</attribute>
+                <attribute name="required">not parent.is_fsm</attribute>
             </xpath>
             <xpath expr="//field[@name='sale_line_employee_ids']/tree/field[@name='sale_line_id']" position="after">
-                <field name="timesheet_product_id" attrs="{'column_invisible': [('parent.is_fsm', '=', False)], 'required': [('parent.is_fsm', '=', True)]}" context="{'default_detailed_type': 'service', 'default_service_policy': 'delivered_timesheet', 'default_service_type': 'timesheet'}"/>
+                <field name="timesheet_product_id" column_invisible="not parent.is_fsm" required="parent.is_fsm" context="{'default_detailed_type': 'service', 'default_service_policy': 'delivered_timesheet', 'default_service_type': 'timesheet'}"/>
             </xpath>
             <xpath expr="//field[@name='sale_line_employee_ids']/tree/field[@name='price_unit']" position="attributes">
-                <attribute name="attrs">{'readonly': ['|', ('parent.is_fsm', '=', False), ('timesheet_product_id', '=', False)]}</attribute>
+                <attribute name="readonly">not parent.is_fsm or not timesheet_product_id</attribute>
             </xpath>
             <xpath expr="//group[@name='group_sales_invoicing']/div" position="inside">
                 <field name="is_fsm" invisible="1"/>
@@ -53,10 +48,10 @@
                 </setting>
             </xpath>
             <xpath expr="//page[@name='billing_employee_rate']" position="attributes">
-                <attribute name="attrs">{'invisible': ['|', '|', '&amp;', ('allow_timesheets', '=', False), ('is_fsm', '=', True), ('allow_billable', '=', False), '&amp;', ('partner_id', '=', False), ('is_fsm', '=', False)]}</attribute>
+                <attribute name="invisible">not allow_timesheets and is_fsm or not allow_billable or not partner_id and not is_fsm</attribute>
             </xpath>
              <xpath expr="//field[@name='partner_id']" position="attributes">
-                <attribute name="attrs">{'invisible': [('allow_billable', '=', False), ('is_fsm', '=', False)]}</attribute>
+                <attribute name="invisible">not allow_billable and not is_fsm</attribute>
             </xpath>
         </field>
     </record>
@@ -93,10 +88,10 @@
                 <attribute name="invisible">context.get('fsm_mode')</attribute>
             </field>
             <field name="partner_id" position="after">
-                <field name="is_fsm" invisible="1"/>
+                <field name="is_fsm" column_invisible="True"/>
             </field>
             <field name="partner_id" position="attributes">
-                <attribute name="attrs">{'invisible': [('allow_billable', '=', False), ('is_fsm', '=', False)]}</attribute>
+                <attribute name="invisible">not allow_billable and not is_fsm</attribute>
             </field>
         </field>
     </record>

@@ -7,7 +7,7 @@
             <field name="inherit_id" ref="account.res_config_settings_view_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//block[@id='invoicing_settings']" position="after">
-                    <block title="Colombian Electronic Invoicing" id="l10n_mx_co_settings" attrs="{'invisible': [('country_code', '!=', 'CO')]}">
+                    <block title="Colombian Electronic Invoicing" id="l10n_mx_co_settings" invisible="country_code != 'CO'">
                         <setting string="Carvajal Configuration" help="Configure your Carvajal credentials here" title="Configure your Carvajal credentials here.">
                             <div class="content-group">
                                 <div class="row mt16">

@@ -135,22 +135,22 @@
                     </div>
                     <group name="iot_device_details">
                         <group>
-                            <field name="iot_id" attrs="{'readonly': ['|', ('type', '!=', 'printer'), ('connection', '!=', 'network')]}"/>
+                            <field name="iot_id" readonly="type != 'printer' or connection != 'network'"/>
                             <field name="iot_ip" invisible="True"/>
                             <field name="identifier" readonly="True"/>
                             <field name="type"/>
-                            <field name="is_scanner" attrs="{'invisible': [('type', 'not in', ['keyboard', 'scanner'])]}" widget="boolean_toggle"/>
-                            <field name="manufacturer" attrs="{'invisible': [('manufacturer', '=', '')]}"/>
+                            <field name="is_scanner" invisible="type not in ['keyboard', 'scanner']" widget="boolean_toggle"/>
+                            <field name="manufacturer" invisible="manufacturer == ''"/>
                             <field name="connection"/>
                             <field name="connected"/>
-                            <field name="keyboard_layout" attrs="{'invisible': [('type', 'not in', ['keyboard', 'scanner'])]}"/>
-                            <field name="display_url" attrs="{'invisible': [('type', '!=', 'display')]}"/>
+                            <field name="keyboard_layout" invisible="type not in ['keyboard', 'scanner']"/>
+                            <field name="display_url" invisible="type != 'display'"/>
                             <div class='fw-bold' groups="base.group_no_one">Last Sent Value</div>
                             <widget name="iot_device_value_display" groups="base.group_no_one"/>
                         </group>
                     </group>
                     <notebook>
-                        <page string="Printer Reports" name="reports" attrs="{'invisible': [('type', '!=', 'printer')]}">
+                        <page string="Printer Reports" name="reports" invisible="type != 'printer'">
                             <field name="report_ids" widget="many2many" context="{'tree_view_ref': 'iot.act_report_xml_view_tree_iot'}"/>
                         </page>
                     </notebook>

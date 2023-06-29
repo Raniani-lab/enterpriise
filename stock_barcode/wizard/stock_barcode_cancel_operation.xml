@@ -11,7 +11,7 @@
                     <button name="action_cancel_operation" type="object" class="oe_highlight" data-hotkey="q">
                         <span>
                             Cancel
-                            <field name="picking_name" attrs="{'invisible': [('picking_id', '=', False)]}"/>
+                            <field name="picking_name" invisible="not picking_id"/>
                         </span>
                     </button>
                     <button string="Don't cancel" class="btn-secondary" special="cancel" data-hotkey="x" />

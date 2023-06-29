@@ -16,12 +16,12 @@
                         </setting>
                     </block>
                     <block title="Appraisals">
-                        <div class="alert alert-warning" role="alert" attrs="{'invisible':[('appraisal_plan','=',False)]}">
+                        <div class="alert alert-warning" role="alert" invisible="not appraisal_plan">
                             When the Appraisals plan is saved, it will overwrite all empty Next Appraisal Dates for every employee.
                         </div>
                         <setting string="Appraisals Plans" company_dependent="1" help="Automatically generate appraisals">
                             <field name="appraisal_plan"/>
-                            <div attrs="{'invisible': [('appraisal_plan','=',False)]}" class="mt8">
+                            <div invisible="not appraisal_plan" class="mt8">
                                 <div class="content-group">
                                     <field name="duration_after_recruitment" class="text-center w-10" style="width: 10%; min-width: 4rem;"/>
                                     <label for="duration_after_recruitment" string=" months after recruitment, then after" class="o_light_label"/>

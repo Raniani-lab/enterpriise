@@ -8,10 +8,10 @@
         <field name="priority" eval="30"/>
         <field name="arch" type="xml">
             <div name="disallowed_expense_rate_history" position="attributes">
-                <attribute name="attrs">{'invisible': [('country_code', '=', 'BE')]}</attribute>
+                <attribute name="invisible">country_code == 'BE'</attribute>
             </div>
             <div name="tax_deduction_div" position="inside">
-                <button string="History" class="btn btn-secondary" name="action_view_disallowed_expenses_rate" attrs="{'invisible': [('country_code', '!=', 'BE')]}" type="object"/>
+                <button string="History" class="btn btn-secondary" name="action_view_disallowed_expenses_rate" invisible="country_code != 'BE'" type="object"/>
             </div>
         </field>
     </record>

@@ -5,7 +5,7 @@
         <field name="model">hr.salary.attachment</field>
         <field name="arch" type="xml">
             <tree string="Salary Attachments" multi_edit="1">
-                <field name="currency_id" invisible="1"/>
+                <field name="currency_id" column_invisible="True"/>
                 <field name="employee_ids" widget="many2many_avatar_employee"/>
                 <field name="description"/>
                 <field name="deduction_type_id" options="{'no_open': True, 'no_create_edit': True, 'no_create': True}"/>
@@ -13,8 +13,8 @@
                 <field name="total_amount" optional="hide" widget="monetary"/>
                 <field name="paid_amount" optional="hide" widget="monetary"/>
                 <field name="date_start"/>
-                <field name="employee_count" invisible="1"/>
-                <field name="state" widget="badge" decoration-success="state == 'open'" decoration-info="state == 'close'" decoration-danger="state == 'cancel'" attrs="{'invisible': [('state', '=', 'open'), ('employee_count', '&gt;', 1)]}"/>
+                <field name="employee_count" column_invisible="True"/>
+                <field name="state" widget="badge" decoration-success="state == 'open'" decoration-info="state == 'close'" decoration-danger="state == 'cancel'" invisible="state == 'open' and employee_count &gt; 1"/>
             </tree>
         </field>
     </record>
@@ -26,24 +26,24 @@
             <form string="Salary Attachment">
                 <header>
                     <button name="action_done" type="object" string="Mark as Completed"
-                        attrs="{'invisible': ['|', ('state', 'not in', ['open', 'cancel']), ('employee_count', '&gt;', 1)]}"/>
+                        invisible="state not in ['open', 'cancel'] or employee_count &gt; 1"/>
                     <button name="action_done" type="object" string="Create Individual Attachments"
-                        class="oe_highlight" attrs="{'invisible': ['|', ('state', '!=', 'open'), ('employee_count', '&lt;=', 1)]}"/>
+                        class="oe_highlight" invisible="state != 'open' or employee_count &lt;= 1"/>
                     <button name="action_open" type="object" string="Running"
-                        attrs="{'invisible': ['|', ('state', 'not in', ['close', 'cancel']), ('employee_count', '&gt;', 1)]}"/>
+                        invisible="state not in ['close', 'cancel'] or employee_count &gt; 1"/>
                     <button name="action_cancel" type="object" string="Cancel"
-                        states="open,close"/>
+                        invisible="state not in ('open', 'close')"/>
                     <field name="state" widget="statusbar"
-                        attrs="{'invisible': [('employee_count', '&gt;', 1)]}"/>
+                        invisible="employee_count &gt; 1"/>
                 </header>
-                <div role="alert" class="alert alert-warning text-center" attrs="{'invisible': [('has_similar_attachment', '=', False)]}">
+                <div role="alert" class="alert alert-warning text-center" invisible="not has_similar_attachment">
                     <field name="has_similar_attachment_warning"/>
                     <field name="has_similar_attachment" invisible="1"/>
                 </div>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button type="object" name="action_open_payslips" class="oe_stat_button"
-                            icon="fa-money" id="open_payslips" attrs="{'invisible': [('payslip_count', '=', 0)]}">
+                            icon="fa-money" id="open_payslips" invisible="payslip_count == 0">
                             <field name="payslip_count" widget="statinfo" string="Payslips" />
                         </button>
                     </div>
@@ -58,14 +58,14 @@
                             <field name="description"/>
                             <field name="deduction_type_id" options="{'no_open': True, 'no_create_edit': True, 'no_create': True}"/>
                             <field name="date_start"/>
-                            <field name="date_estimated_end" attrs="{'invisible': [('date_estimated_end', '=', False)]}"/>
-                            <field name="date_end" attrs="{'invisible': ['|', ('date_end', '=', False), ('state', '=', 'open')]}"/>
+                            <field name="date_estimated_end" invisible="not date_estimated_end"/>
+                            <field name="date_end" invisible="not date_end or state == 'open'"/>
                             <field name="attachment" filename="attachment_name"/>
                         </group>
                         <group>
                             <field name="monthly_amount"/>
-                            <field name="total_amount" attrs="{'invisible': [('has_total_amount', '=', False)], 'required': [('has_total_amount', '=', True)]}"/>
-                            <field name="paid_amount" attrs="{'invisible': [('paid_amount', '=', 0)]}"/>
+                            <field name="total_amount" invisible="not has_total_amount" required="has_total_amount"/>
+                            <field name="paid_amount" invisible="paid_amount == 0"/>
                         </group>
                     </group>
                 </sheet>

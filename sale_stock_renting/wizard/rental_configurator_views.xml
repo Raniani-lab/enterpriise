@@ -14,8 +14,8 @@
                     <field name="uom_id"
                         class="oe_inline"
                         options="{'no_open': 1}"
-                        attrs="{'invisible': [('is_product_storable', '=', True)]}"/>
-                    <span class="oe_inline" attrs="{'invisible': [('is_product_storable', '=', False)]}">
+                        invisible="is_product_storable"/>
+                    <span class="oe_inline" invisible="not is_product_storable">
                         (<field name="qty_available_during_period" class="oe_inline" nolabel="1"/>
                         <text class="oe_inline"> </text>
                         <field name="product_uom_id" class="oe_inline"/>
@@ -27,11 +27,11 @@
                 <field name="lot_ids"
                     widget="many2many_tags"
                     placeholder="Select available serial numbers."
-                    attrs="{'invisible': [('tracking', '!=', 'serial')]}"
+                    invisible="tracking != 'serial'"
                     options="{'no_open': 1, 'no_create_edit': 1}"/>
             </xpath>
             <notebook position="inside">
-                <page string="Stock" name="stock" attrs="{'invisible': [('is_product_storable', '=', False)]}">
+                <page string="Stock" name="stock" invisible="not is_product_storable">
                     <group>
                         <group>
                             <field name="warehouse_id" groups="stock.group_stock_multi_warehouses"/>
@@ -45,7 +45,7 @@
                 </page>
                 <page string="Serials Tracking"
                     name="serials_tracking"
-                    attrs="{'invisible': [('tracking', '!=', 'serial')]}">
+                    invisible="tracking != 'serial'">
                     <group>
                         <field name="rented_lot_ids" widget="many2many_tags"/>
                         <field name="rentable_lot_ids" widget="many2many_tags"/>

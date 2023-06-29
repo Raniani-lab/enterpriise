@@ -11,18 +11,18 @@
                         string="Publish &amp; Send" type="object" groups="planning.group_planning_manager" invisible="context.get('search_default_my_shifts')"/>
                 </header>
                 <field name="start_datetime" widget="daterange" options="{'end_date_field': 'end_datetime'}"/>
-                <field name="end_datetime" invisible="1" />
+                <field name="end_datetime" column_invisible="True" />
                 <field name="allocated_hours" widget="float_time" sum="Allocated Hours" readonly="1" decoration-danger="allocated_percentage &gt; 100"/>
-                <field name="allocated_percentage" readonly="1" avg="Allocated Percentage" optional="hide" decoration-danger="allocated_percentage &gt; 100" attrs="{'invisible': [('resource_type', '=', 'material')]}"/>
+                <field name="allocated_percentage" avg="Allocated Percentage" optional="hide" decoration-danger="allocated_percentage &gt; 100" readonly="1" invisible="resource_type == 'material'"/>
                 <field name="resource_id" widget="many2one_avatar_resource" optional="show"
-                    attrs="{'readonly': ['|', ('start_datetime', '=', False), ('end_datetime', '=', False)]}" context="{'from_planning': True, 'search_view_ref': 'planning.resource_resource_search_view_roles', 'search_default_role_ids': role_id, 'show_job_title': True, 'form_view_ref': 'planning.resource_resource_with_employee_form_view_inherit'}" placeholder="Open Shift"/>
-                <field name="resource_type" invisible="1"/>
+                    readonly="not start_datetime or not end_datetime" context="{'from_planning': True, 'search_view_ref': 'planning.resource_resource_search_view_roles', 'search_default_role_ids': role_id, 'show_job_title': True, 'form_view_ref': 'planning.resource_resource_with_employee_form_view_inherit'}" placeholder="Open Shift"/>
+                <field name="resource_type" column_invisible="True"/>
                 <field name="role_id" optional="show" context="{'search_default_resource_ids': resource_id}" placeholder="e.g. Bartender"/>
                 <field name="company_id" groups="base.group_multi_company" optional="hide" readonly="1"/>
-                <field name="company_id" invisible="1"/>
+                <field name="company_id" column_invisible="True"/>
                 <field name="name" optional="hide" />
                 <field name="state" decoration-success="state == 'published'" widget="badge" optional="hide" groups="planning.group_planning_manager" readonly="1"/>
-                <field name="recurrency_id" invisible="1"/>
+                <field name="recurrency_id" column_invisible="True"/>
             </tree>
         </field>
     </record>
@@ -34,26 +34,25 @@
             <form js_class="planning_form">
                 <header>
                     <button string="Publish &amp; Send" type="object" name="action_send" class="btn btn-primary"
-                        close="1" attrs="{'invisible': ['|', ('state', '=', 'published'), ('resource_type', '=', 'material')]}" groups="planning.group_planning_manager" data-hotkey="q" invisible="context.get('search_default_my_shifts')"/>
+                        close="1" groups="planning.group_planning_manager" data-hotkey="q" invisible="context.get('search_default_my_shifts') or (state == 'published' or resource_type == 'material')"/>
                     <button name="action_self_assign" class="btn btn-primary" type="object" string="I Take It" groups="!planning.group_planning_manager"
-                        attrs="{'invisible': &quot;['|', '|', '|', '|', '|', ('is_users_role', '=', False), ('is_past', '=', True), ('start_datetime', '=', False), ('end_datetime', '=', False), '&amp;', ('resource_id', '!=', False), ('request_to_switch', '=', False), '&amp;', ('user_id', '=', uid), '|', ('allow_self_unassign', '=', True), ('request_to_switch', '=', True)]&quot;}" close="1" invisible="context.get('search_default_my_shifts')"/>
+                        close="1" invisible="context.get('search_default_my_shifts') or (not is_users_role or is_past or not start_datetime or not end_datetime or resource_id and not request_to_switch or user_id == uid and (allow_self_unassign or request_to_switch))"/>
                     <button name="action_self_assign" class="btn btn-secondary" type="object" string="I Take It" groups="!planning.group_planning_manager"
-                        attrs="{'invisible': &quot;['|', '|', '|', '|', '|', ('is_users_role', '=', True), ('is_past', '=', True), ('start_datetime', '=', False), ('end_datetime', '=', False), '&amp;', ('resource_id', '!=', False), ('request_to_switch', '=', False), '&amp;', ('user_id', '=', uid), '|', ('allow_self_unassign', '=', True), ('request_to_switch', '=', True)]&quot;}" close="1" invisible="context.get('search_default_my_shifts')"/>
+                        close="1" invisible="context.get('search_default_my_shifts') or (is_users_role or is_past or not start_datetime or not end_datetime or resource_id and not request_to_switch or user_id == uid and (allow_self_unassign or request_to_switch))"/>
                     <button name="action_switch_shift" class="btn btn-secondary" type="object" string="Ask To Switch" groups="!planning.group_planning_manager"
-                        attrs="{'invisible': ['|', '|', '|', ('is_assigned_to_me', '=', False), ('is_past', '=', True), ('request_to_switch', '=', True), ('allow_self_unassign', '=', True)]}"/>
+                        invisible="not is_assigned_to_me or is_past or request_to_switch or allow_self_unassign"/>
                     <button name="action_cancel_switch" class="btn btn-secondary" type="object" string="Cancel Switch" groups="!planning.group_planning_manager"
-                        attrs="{'invisible': &quot;['|', '|', '|', '|', ('start_datetime', '=', False), ('end_datetime', '=', False), ('request_to_switch', '=', False), ('allow_self_unassign', '=', True), '&amp;', ('user_id', '!=', uid), ('request_to_switch', '=', True)]&quot;}" close="1"/>
+                        invisible="not start_datetime or not end_datetime or not request_to_switch or allow_self_unassign or user_id != uid and request_to_switch" close="1"/>
 
                     <button name="action_self_unassign" class="btn btn-secondary" type="object" string="I Am Unavailable"
-                        attrs="{'invisible': ['|', '|', '|', '|', ('is_assigned_to_me', '=', False), ('allow_self_unassign', '=', False),
-                        ('is_past', '=', True), ('is_unassign_deadline_passed', '=', True), ('resource_type', '=', 'material')]}" invisible="not context.get('search_default_my_shifts')"/>
+                        invisible="not context.get('search_default_my_shifts') or (not is_assigned_to_me or not allow_self_unassign or is_past or is_unassign_deadline_passed or resource_type == 'material')"/>
                     <button string="Send" type="object" name="action_send" class="btn btn-secondary" close="1"
-                        attrs="{'invisible': ['|', ('state', '=', 'draft'), ('resource_type', '=', 'material')]}" groups="planning.group_planning_manager" data-hotkey="v" invisible="context.get('search_default_my_shifts')"/>
+                        groups="planning.group_planning_manager" data-hotkey="v" invisible="context.get('search_default_my_shifts') or (state == 'draft' or resource_type == 'material')"/>
                     <button string="Reset to Draft" type="object" name="action_unpublish"
                         class="btn btn-secondary" close="1" groups="planning.group_planning_manager"
-                        attrs="{'invisible': ['|', ('state', '=', 'draft'), ('resource_type', '=', 'material')]}" data-hotkey="q"/>
+                        invisible="state == 'draft' or resource_type == 'material'" data-hotkey="q"/>
                     <button string="Auto Plan" type="object" name="auto_plan_id" class="btn btn-secondary"
-                        groups="planning.group_planning_manager" attrs="{'invisible': [('resource_id', '!=', False)]}" data-hotkey="p" invisible="context.get('search_default_my_shifts')"/>
+                        groups="planning.group_planning_manager" data-hotkey="p" invisible="context.get('search_default_my_shifts') or resource_id"/>
                     <field name="state" widget="statusbar" groups="planning.group_planning_manager" invisible="context.get('search_default_my_shifts')"/>
                 </header>
                 <field name="is_past" invisible="1"/>
@@ -68,17 +67,17 @@
                 <field name="is_users_role" invisible="1"/>
                 <field name="request_to_switch" invisible="1"/>
                 <field name="repeat" invisible="1"/>
-                <div class="alert alert-info oe_edit_only mb-0" role="status" attrs="{'invisible': ['|', ('id', '=', False), ('repeat', '=', False)]}">
+                <div class="alert alert-info oe_edit_only mb-0" role="status" invisible="not id or not repeat">
                     <span class="ms-2 me-4">Edit</span>
                     <field name="recurrence_update" widget="radio" class="mb-0" options="{'horizontal': true}"/>
                 </div>
-                <div role="alert" class="alert alert-warning mb-0 p-3 text-center" attrs="{'invisible': [('overlap_slot_count', '=', 0), '|', ('request_to_switch', '=', False), ('allow_self_unassign', '=', True)]}">
-                    <button name="action_see_overlaping_slots" type="object" class="btn-link pe-1" attrs="{'invisible': [('overlap_slot_count', '=', 0)]}">
+                <div role="alert" class="alert alert-warning mb-0 p-3 text-center" invisible="overlap_slot_count == 0 and (not request_to_switch or allow_self_unassign)">
+                    <button name="action_see_overlaping_slots" type="object" class="btn-link pe-1" invisible="overlap_slot_count == 0">
                         <field name="overlap_slot_count"/> other shift(s)
                     </button>
-                    <span class="align-middle" attrs="{'invisible': [('overlap_slot_count', '=', 0)]}">for this resource at the same time.</span>
+                    <span class="align-middle" invisible="overlap_slot_count == 0">for this resource at the same time.</span>
                     <p class="align-middle"
-                        attrs="{'invisible': ['|', ('request_to_switch', '=', False), ('allow_self_unassign', '=', True)]}"
+                        invisible="not request_to_switch or allow_self_unassign"
                         style="margin-bottom: 5.5px; margin-top: 5px">
                         <span>The employee assigned would like to switch shifts with someone else.</span>
                     </p>
@@ -94,14 +93,13 @@
                         domain="[['id', 'in', template_autocomplete_ids]]"
                         widget="selection_badge" options="{'horizontal': true}"
                         groups="planning.group_planning_manager"
-                        attrs="{'invisible': [('template_autocomplete_ids', '=', []), ('template_id', '=', False)]}"
-                    />
+                        invisible="not template_autocomplete_ids and not template_id"/>
                     <field name="template_autocomplete_ids" invisible="1"/>
                     <field name="recurrency_id" invisible='1'/>
                     <group>
                         <group>
                             <field name="resource_id" context="{'search_view_ref': 'planning.resource_resource_search_view_roles', 'search_default_role_ids': role_id, 'from_planning': True, 'show_job_title': True, 'tree_view_ref': 'planning.resource_resource_tree_view_inherit'}" options="{'no_create_edit': True}"
-                                attrs="{'readonly': ['|', ('start_datetime', '=', False), ('end_datetime', '=', False)]}" widget="many2one_avatar_resource" placeholder="Open Shift"/>
+                                readonly="not start_datetime or not end_datetime" widget="many2one_avatar_resource" placeholder="Open Shift"/>
                             <field name="role_id" context="{'search_default_resource_ids': resource_id}" placeholder="e.g. Bartender"/>
                             <field name="company_id" groups="base.group_multi_company"/>
                             <field name="company_id" invisible="1"/>
@@ -112,8 +110,8 @@
                             <field name="end_datetime" invisible="1" />
                             <label for="allocated_hours"/>
                             <div class="o_row">
-                                <field name="allocated_hours" widget="float_time" class="oe_inline" attrs="{'required': [('resource_type', '=', 'material')]}"/>
-                                <span attrs="{'invisible': [('resource_type', '=', 'material')]}">
+                                <field name="allocated_hours" widget="float_time" class="oe_inline" required="resource_type == 'material'"/>
+                                <span invisible="resource_type == 'material'">
                                     (<field name="allocated_percentage" class="oe_inline" decoration-danger="allocated_percentage &gt; 100"/> %)
                                 </span>
                             </div>
@@ -124,13 +122,13 @@
                             <label for="repeat"/>
                             <field name="repeat"/>
                             <div class="o_checkbox_optional_field">
-                                <div attrs="{'invisible': [('repeat', '=', False)]}" class="d-flex">
+                                <div invisible="not repeat" class="d-flex">
                                     <label for="repeat_interval" string="Every"/>
                                     <field name="repeat_interval" class="ms-2" style="max-width: 4rem;"/>
                                     <field name="repeat_unit" class="ms-2"/>
-                                    <field name="repeat_type" nolabel="1" class="ms-2" attrs="{'required': [('repeat', '=', True)]}"/>
-                                    <field name="repeat_until" class="ms-2" nolabel="1" attrs="{'invisible': [('repeat_type', '!=', 'until')], 'required': [('repeat_type', '=', 'until'), ('repeat', '=', True)]}"/>
-                                    <field name="repeat_number" class="ms-2" attrs="{'invisible': [('repeat_type', '!=', 'x_times')], 'required': [('repeat_type', '=', 'x_times'), ('repeat', '=', True)]}" style="max-width: 4rem;"/>
+                                    <field name="repeat_type" nolabel="1" class="ms-2" required="repeat"/>
+                                    <field name="repeat_until" class="ms-2" nolabel="1" invisible="repeat_type != 'until'" required="repeat_type == 'until' and repeat"/>
+                                    <field name="repeat_number" class="ms-2" invisible="repeat_type != 'x_times'" required="repeat_type == 'x_times' and repeat" style="max-width: 4rem;"/>
                                 </div>
                             </div>
                         </div>
@@ -247,29 +245,29 @@
                     <field name="confirm_delete" invisible="1"/>
                     <field name="is_unassign_deadline_passed" invisible="1"/>
                     <field name="request_to_switch" invisible="1"/>
-                    <button string="Save" special="save" data-hotkey="q" class="btn btn-primary ms-1" close="1" groups="planning.group_planning_manager" attrs="{'invisible': [('confirm_delete', '=', True)]}"/>
-                    <button string="Save" special="save" data-hotkey="q" class="btn btn-primary ms-1" close="1" groups="planning.group_planning_manager" attrs="{'invisible': [('confirm_delete', '=', False)]}" confirm="All subsequent shifts will be deleted. Are you sure you want to continue?" />
+                    <button string="Save" special="save" data-hotkey="q" class="btn btn-primary ms-1" close="1" groups="planning.group_planning_manager" invisible="confirm_delete"/>
+                    <button string="Save" special="save" data-hotkey="q" class="btn btn-primary ms-1" close="1" groups="planning.group_planning_manager" invisible="not confirm_delete" confirm="All subsequent shifts will be deleted. Are you sure you want to continue?" />
                     <button string="Publish &amp; Send" type="object" name="action_send" class="btn btn-primary" close="1"
-                        attrs="{'invisible': ['|', ('state', '=', 'published'), ('resource_type', '=', 'material')]}" groups="planning.group_planning_manager" data-hotkey="v" invisible="context.get('search_default_my_shifts')"/>
+                        groups="planning.group_planning_manager" data-hotkey="v" invisible="context.get('search_default_my_shifts') or (state == 'published' or resource_type == 'material')"/>
                     <button string="Send" type="object" name="action_send" class="btn btn-secondary" close="1"
-                        attrs="{'invisible': ['|', ('state', '=', 'draft'), ('resource_type', '=', 'material')]}" groups="planning.group_planning_manager" data-hotkey="s" invisible="context.get('search_default_my_shifts')"/>
+                        groups="planning.group_planning_manager" data-hotkey="s" invisible="context.get('search_default_my_shifts') or (state == 'draft' or resource_type == 'material')"/>
                     <button string="Auto Plan" type="object" name="auto_plan_id" class="btn btn-secondary"
-                        groups="planning.group_planning_manager" attrs="{'invisible': [('resource_id', '!=', False)]}" data-hotkey="p" invisible="context.get('search_default_my_shifts')"/>
+                        groups="planning.group_planning_manager" data-hotkey="p" invisible="context.get('search_default_my_shifts') or resource_id"/>
                     <button string="Reset to Draft" type="object" name="action_unpublish" class="btn btn-secondary" close="1"
-                        groups="planning.group_planning_manager" attrs="{'invisible': ['|', ('state', '=', 'draft'), ('resource_type', '=', 'material')]}" data-hotkey="r" invisible="context.get('search_default_my_shifts')"/>
+                        groups="planning.group_planning_manager" data-hotkey="r" invisible="context.get('search_default_my_shifts') or (state == 'draft' or resource_type == 'material')"/>
 
                     <button name="action_self_assign" class="btn btn-primary" type="object" string="I Take It" groups="!planning.group_planning_manager"
-                        attrs="{'invisible': &quot;['|', '|', '|', '|', '|', ('is_users_role', '=', False), ('is_past', '=', True), ('start_datetime', '=', False), ('end_datetime', '=', False), '&amp;', ('resource_id', '!=', False), ('request_to_switch', '=', False), '&amp;', ('user_id', '=', uid), '|', ('allow_self_unassign', '=', True), ('request_to_switch', '=', True)]&quot;}" close="1"/>
+                        invisible="not is_users_role or is_past or not start_datetime or not end_datetime or resource_id and not request_to_switch or user_id == uid and (allow_self_unassign or request_to_switch)" close="1"/>
                     <button name="action_self_assign" class="btn btn-secondary float-end" type="object" string="I Take It" groups="!planning.group_planning_manager"
-                        attrs="{'invisible': &quot;['|', '|', '|', '|', '|', ('is_users_role', '=', True), ('is_past', '=', True), ('start_datetime', '=', False), ('end_datetime', '=', False), '&amp;', ('resource_id', '!=', False), ('request_to_switch', '=', False), '&amp;', ('user_id', '=', uid), '|', ('allow_self_unassign', '=', True), ('request_to_switch', '=', True)]&quot;}" close="1"/>
+                        invisible="is_users_role or is_past or not start_datetime or not end_datetime or resource_id and not request_to_switch or user_id == uid and (allow_self_unassign or request_to_switch)" close="1"/>
                     <button name="action_switch_shift" class="btn btn-secondary float-end" type="object" string="Ask To Switch" close="1" groups="!planning.group_planning_manager"
-                        attrs="{'invisible': ['|', '|', '|', ('is_assigned_to_me', '=', False), ('is_past', '=', True), ('request_to_switch', '=', True), ('allow_self_unassign', '=', True)]}"/>
+                        invisible="not is_assigned_to_me or is_past or request_to_switch or allow_self_unassign"/>
                     <button name="action_cancel_switch" class="btn btn-secondary" type="object" string="Cancel Switch" groups="!planning.group_planning_manager"
-                        attrs="{'invisible': &quot;['|', '|', '|', '|', ('start_datetime', '=', False), ('end_datetime', '=', False), ('request_to_switch', '=', False), ('allow_self_unassign', '=', True), '&amp;', ('user_id', '!=', uid), ('request_to_switch', '=', True)]&quot;}" close="1"/>
+                        invisible="not start_datetime or not end_datetime or not request_to_switch or allow_self_unassign or user_id != uid and request_to_switch" close="1"/>
 
-                    <button name="action_self_unassign" class="btn btn-secondary float-end" type="object" string="I Am Unavailable" attrs="{'invisible': ['|', '|', '|', ('is_assigned_to_me', '=', False), ('allow_self_unassign', '=', False), ('is_past', '=', True), ('is_unassign_deadline_passed', '=', True)]}" close="1" data-hotkey="w"/>
+                    <button name="action_self_unassign" class="btn btn-secondary float-end" type="object" string="I Am Unavailable" invisible="not is_assigned_to_me or not allow_self_unassign or is_past or is_unassign_deadline_passed" close="1" data-hotkey="w"/>
                     <button string="Discard" special="cancel" data-hotkey="x" class="btn-secondary float-end" close="1" fullscreen="True" groups="planning.group_planning_manager"/>
-                    <button name="unlink" type="object" icon="fa-trash" title="Remove" class="btn-secondary float-end d-none d-md-inline" close="1" attrs="{'invisible': [('id', '=', False)]}" groups="planning.group_planning_manager" data-hotkey="d"/>
+                    <button name="unlink" type="object" icon="fa-trash" title="Remove" class="btn-secondary float-end d-none d-md-inline" close="1" invisible="not id" groups="planning.group_planning_manager" data-hotkey="d"/>
                 </footer>
             </xpath>
         </field>
@@ -371,7 +369,7 @@
                 <field name="resource_type" invisible="1"/>
                 <field name="is_hatched" invisible="1" />
                 <field name="resource_type" invisible="1"/>
-                <field name="role_id" filters="1" color="color" attrs="{'invisible': [('resource_type', '=', 'material')]}"/>
+                <field name="role_id" filters="1" color="color" invisible="resource_type == 'material'"/>
                 <field name="allocated_hours" invisible="1"/>
                 <field name="allocated_percentage" invisible="1"/>
                 <field name="state" invisible="1"/>
@@ -413,7 +411,7 @@
                 <field name="name"/>
                 <field name="resource_id" avatar_field="avatar_128" widget="many2one_avatar_resource"/>
                 <field name="resource_type" invisible="1"/>
-                <field name="role_id" filters="1" color="color" attrs="{'invisible': [('resource_type', '=', 'material')]}"/>
+                <field name="role_id" filters="1" color="color" invisible="resource_type == 'material'"/>
                 <field name="allocated_hours" invisible="1"/>
                 <field name="allocated_percentage" invisible="1"/>
                 <field name="state" invisible="1"/>
@@ -515,7 +513,7 @@
         <field name="arch" type="xml">
             <form string="Planning Role">
                 <sheet>
-                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
                     <group>
                         <field name="active" invisible="1" />
                         <field name="name"/>

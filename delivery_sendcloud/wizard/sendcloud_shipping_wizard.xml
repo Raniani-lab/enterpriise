@@ -9,17 +9,17 @@
                 </div>
                 <group string="Delivery">
                     <field name="shipping_product"/>
-                    <field name="ship_carrier"  attrs="{'invisible': [('shipping_product', '=', False)]}"/>
-                    <field name="ship_min_weight" attrs="{'invisible': [('shipping_product', '=', False)]}"/>
-                    <field name="ship_max_weight" attrs="{'invisible': [('shipping_product', '=', False)]}"/>
-                    <field name="ship_country_ids" widget="many2many_tags" attrs="{'invisible': [('shipping_product', '=', False)]}"/>
+                    <field name="ship_carrier"  invisible="not shipping_product"/>
+                    <field name="ship_min_weight" invisible="not shipping_product"/>
+                    <field name="ship_max_weight" invisible="not shipping_product"/>
+                    <field name="ship_country_ids" widget="many2many_tags" invisible="not shipping_product"/>
                 </group>
                 <group string="Return">
                     <field name="return_product" required="context.get('return_on_delivery')"/>
-                    <field name="return_carrier" attrs="{'invisible': [('return_product', '=', False)]}"/>
-                    <field name="return_min_weight" attrs="{'invisible': [('return_product', '=', False)]}"/>
-                    <field name="return_max_weight" attrs="{'invisible': [('return_product', '=', False)]}"/>
-                    <field name="return_country_ids" widget="many2many_tags" attrs="{'invisible': [('return_product', '=', False)]}"/>
+                    <field name="return_carrier" invisible="not return_product"/>
+                    <field name="return_min_weight" invisible="not return_product"/>
+                    <field name="return_max_weight" invisible="not return_product"/>
+                    <field name="return_country_ids" widget="many2many_tags" invisible="not return_product"/>
                 </group>
                 <footer>
                     <button name="action_validate" type="object" string="Select" class="btn-primary" data-hotkey="q"/>

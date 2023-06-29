@@ -18,16 +18,16 @@
                             </div>
                         </group>
                     </group>
-                    <p class="alert alert-warning" role="alert" attrs="{'invisible': [('batch_ids', '!=', [])]}">
+                    <p class="alert alert-warning" role="alert" invisible="batch_ids">
                         There are no payslip batches for the selected period.
                     </p>
-                    <group attrs="{'invisible': [('situational_unemployment_ids', '=', [])]}">
+                    <group invisible="not situational_unemployment_ids">
                         <notebook>
                             <page string="Situational Unemployment">
                                 <field name="situational_unemployment_ids" nolabel="1" force_save="1">
                                     <tree editable="bottom" create="0" delete="0">
-                                        <field name="currency_id" invisible="1"/>
-                                        <field name="payslip_id" invisible="1"/>
+                                        <field name="currency_id" column_invisible="True"/>
+                                        <field name="payslip_id" column_invisible="True"/>
                                         <field name="employee_id" widget="many2one_avatar_employee"/>
                                         <field name="hours" widget="float_time" force_save="1"/>
                                         <field name="amount" force_save="1"/>
@@ -36,13 +36,13 @@
                             </page>
                         </notebook>
                     </group>
-                    <p attrs="{'invisible': [('decsal_file', '=', False)]}">
+                    <p invisible="not decsal_file">
                         Your DECSAL file has been generated: <field name="decsal_file" readonly="1" filename="decsal_name"/>
                     </p>
                 </sheet>
                 <footer>
                     <button string="Generate Declaration" name="action_generate_declaration" type="object" class="btn btn-primary"
-                        attrs="{'invisible': ['|', ('can_generate', '=', False), ('decsal_file', '!=', False)]}"/>
+                        invisible="not can_generate or decsal_file"/>
                     <button special="cancel" string="Close" type="object" class="btn btn-secondary"/>
                 </footer>
             </form>

@@ -10,7 +10,8 @@
                 <field name="display_sol" invisible="1"/>
             </xpath>
             <xpath expr="//field[@name='so_line']" position="attributes">
-                <attribute name="attrs">{'invisible': ['|', ('display_sol', '!=', True), ('allow_billable', '=', False)], 'readonly': [('readonly_timesheet', '=', True)]}</attribute>
+                <attribute name="invisible">not display_sol or not allow_billable</attribute>
+                <attribute name="readonly">readonly_timesheet</attribute>
             </xpath>
         </field>
     </record>

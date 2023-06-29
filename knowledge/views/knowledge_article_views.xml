@@ -38,26 +38,26 @@
                     <widget name="knowledge_topbar"/>
                     <!-- Invisible Article Warning Banner-->
                     <div class="alert alert-info text-center mb-0" role="alert" groups="base.group_user"
-                         attrs="{'invisible': ['|', '|', '|', ('id', '=', False), ('internal_permission', '=', 'none'), ('is_article_visible_by_everyone', '=', True), ('is_article_visible', '=', True)]}">
+                         invisible="not id or internal_permission == 'none' or is_article_visible_by_everyone or is_article_visible">
                         <field name="user_has_access_parent_path" invisible="1"/>
                         This article is only displayed to its members.
-                        <a attrs="{'invisible': [('user_has_access_parent_path', '!=', True)]}" role="button" type="object" name="action_join" class="text-decoration-underline oe_link alert-link">
+                        <a invisible="not user_has_access_parent_path" role="button" type="object" name="action_join" class="text-decoration-underline oe_link alert-link">
                             Join
                         </a>
                     </div>
                     <!-- Archived Article Warning Banner-->
                     <div class="alert alert-warning text-center mb-0" role="alert"
-                         attrs="{'invisible': ['|', ('active', '=', True), ('to_delete', '=', True)]}">
+                         invisible="active or to_delete">
                         This article is archived.
                         <a role="button" class="text-decoration-underline oe_link alert-link" type="object" name="action_unarchive"
-                        attrs="{'invisible': [('user_can_write', '=', False)]}" >Unarchive</a>
+                        invisible="not user_can_write" >Unarchive</a>
                     </div>
                     <!-- Trashed Article Warning Banner-->
-                    <div class="alert alert-warning text-center mb-0" role="alert" attrs="{'invisible': [('to_delete', '=', False)]}">
+                    <div class="alert alert-warning text-center mb-0" role="alert" invisible="not to_delete">
                         This Article is in Trash and will be deleted on the <field class="mb-0" name="deletion_date"/>.
                         <a role="button" type="object" name="action_unarchive_article"
                                 class="text-decoration-underline oe_link alert-link"
-                                attrs="{'invisible': [('user_can_write', '=', False)]}" >
+                                invisible="not user_can_write" >
                             Restore
                         </a>
                     </div>
@@ -68,30 +68,30 @@
                                     <div class="o_scroll_view_lg">
                                         <!-- Article body -->
                                         <div class="o_knowledge_body d-flex flex-column"
-                                             attrs="{'invisible': [('id', '=', False)]}">
+                                             invisible="not id">
                                              <!-- Full Width handling -->
                                              <span class="o_knowledge_article_view_form_dynamic_width d-none"
-                                                   attrs="{'invisible': [('full_width', '=', True)]}"/>
+                                                   invisible="full_width"/>
                                             <!-- Article Cover -->
                                             <field name="cover_image_url" invisible="1" />
                                             <field name="cover_image_position" invisible="1" />
-                                            <widget name="knowledge_cover" attrs="{'invisible': [('cover_image_id', '=', False)]}"/>
+                                            <widget name="knowledge_cover" invisible="not cover_image_id"/>
                                             <!-- Article Icon -->
-                                            <field name="icon" widget="knowledge_icon" attrs="{'readonly': ['|', '|', ('is_locked', '=', True), ('user_can_write', '=', False), ('active', '=', False)], 'invisible': [('icon', '=', False)]}" class="o_knowledge_icon o_large mt-n3 mb-n4"/>
+                                            <field name="icon" widget="knowledge_icon" invisible="not icon" readonly="is_locked or not user_can_write or not active" class="o_knowledge_icon o_large mt-n3 mb-n4"/>
                                             <!-- Article body -->
                                             <div class="o_knowledge_editor mt-3">
                                                 <field name="body" widget="knowledge_article_html_field" class="o_field_html" no_label="1" groups="base.group_user"
                                                     options="{'collaborative': true, 'collaborative_trigger': 'start', 'resizable': False, 'knowledge_commands': true}"
-                                                    attrs="{'readonly': ['|', '|', ('is_locked', '=', True), ('user_can_write', '=', False), ('active', '=', False)]}"/>
+                                                    readonly="is_locked or not user_can_write or not active"/>
                                                 <!-- Portal users get some commands disabled, notably /image and /file, as they don't have access to ir.attachment -->
                                                 <field name="body" widget="html" no_label="1" groups="base.group_portal"
                                                     options="{'collaborative': true, 'collaborative_trigger': 'start', 'resizable': False, 'knowledge_commands': true, 'allowCommandImage': false, 'allowCommandVideo': false, 'allowCommandFile': false}"
-                                                    attrs="{'readonly': ['|', '|', ('is_locked', '=', True), ('user_can_write', '=', False), ('active', '=', False)]}"/>
+                                                    readonly="is_locked or not user_can_write or not active"/>
                                             </div>
                                         </div>
                                     </div>
                                     <!-- No Content Helper -->
-                                    <div class="o_view_nocontent" attrs="{'invisible': [('id', '!=', False)]}">
+                                    <div class="o_view_nocontent" invisible="id">
                                         <div class="o_nocontent_help">
                                             <p class="o_view_nocontent_smiling_face">
                                                  No article yet.
@@ -112,7 +112,7 @@
                             </div>
                         </div>
                     </div>
-                <field name="icon" invisible="1" attrs="{'readonly': ['|', ('is_locked', '=', True), ('user_can_write', '=', False)] }"/>
+                <field name="icon" invisible="1" readonly="is_locked or not user_can_write"/>
             </form>
         </field>
     </record>
@@ -124,18 +124,18 @@
             <tree default_order="is_user_favorite desc, favorite_count desc"
                   js_class="knowledge_article_view_tree">
                 <field name="display_name" string="Name"/>
-                <field name="is_user_favorite" invisible="1"/>
+                <field name="is_user_favorite" column_invisible="True"/>
                 <button name="action_toggle_favorite" string=" " type="object"
                         icon="fa-star pe-2" class="o_knowledge_toggle_favorite"
-                        attrs="{'invisible': [('is_user_favorite', '=', False)]}"/>
+                        invisible="not is_user_favorite"/>
                 <button name="action_toggle_favorite" string=" " type="object"
                         icon="fa-star-o pe-2" class="o_knowledge_toggle_favorite"
-                        attrs="{'invisible': [('is_user_favorite', '=', True)]}"/>
+                        invisible="is_user_favorite"/>
                 <field name="parent_id"/>
                 <field name="create_uid" string="Created by" widget="many2one_avatar_user" optional="show"/>
                 <field name="create_date" string="Created on" optional="show"/>
                 <field name="category" optional="hide"/>
-                <field name="favorite_count" invisible="1"/>
+                <field name="favorite_count" column_invisible="True"/>
                 <field name="root_article_id" optional="hide"/>
                 <field name="last_edition_uid" widget="many2one_avatar_user" optional="hide"/>
                 <field name="last_edition_date" string="Last Edit Date" optional="hide"/>
@@ -151,15 +151,15 @@
             <tree create="0" default_order="write_date desc"
                   js_class="knowledge_article_view_tree">
                 <field name="display_name" string="Name"/>
-                <field name="is_user_favorite" invisible="1"/>
+                <field name="is_user_favorite" column_invisible="True"/>
                 <button name="action_toggle_favorite" string=" " type="object"
                         icon="fa-star pe-2" class="o_knowledge_toggle_favorite"
-                        attrs="{'invisible': [('is_user_favorite', '=', False)]}"/>
+                        invisible="not is_user_favorite"/>
                 <button name="action_toggle_favorite" string=" " type="object"
                         icon="fa-star-o pe-2" class="o_knowledge_toggle_favorite"
-                        attrs="{'invisible': [('is_user_favorite', '=', True)]}"/>
+                        invisible="is_user_favorite"/>
                 <field name="category" optional="hide"/>
-                <field name="favorite_count" invisible="1"/>
+                <field name="favorite_count" column_invisible="True"/>
                 <field name="root_article_id" optional="hide"/>
                 <field name="parent_id"/>
                 <field name="last_edition_uid" widget="many2one_avatar_user"/>
@@ -190,21 +190,21 @@
             <tree create="1" js_class="knowledge_article_view_tree_embedded" default_order="sequence asc, write_date desc, id desc">
                 <field name="sequence" widget="handle"/>
                 <field name="display_name" string="Name"/>
-                <field name="is_user_favorite" invisible="1"/>
+                <field name="is_user_favorite" column_invisible="True"/>
                 <button name="action_toggle_favorite" string=" " type="object"
                         icon="fa-star pe-2" class="o_knowledge_toggle_favorite"
-                        attrs="{'invisible': [('is_user_favorite', '=', False)]}"/>
+                        invisible="not is_user_favorite"/>
                 <button name="action_toggle_favorite" string=" " type="object"
                         icon="fa-star-o pe-2" class="o_knowledge_toggle_favorite"
-                        attrs="{'invisible': [('is_user_favorite', '=', True)]}"/>
+                        invisible="is_user_favorite"/>
                 <field name="create_uid" string="Created by" widget="many2one_avatar_user" optional="show"/>
                 <field name="create_date" string="Created on" optional="show"/>
                 <field name="category" optional="hide"/>
-                <field name="favorite_count" invisible="1"/>
+                <field name="favorite_count" column_invisible="True"/>
                 <field name="root_article_id" optional="hide"/>
                 <field name="last_edition_uid" widget="many2one_avatar_user" optional="hide"/>
                 <field name="last_edition_date" string="Last Edit Date" optional="hide"/>
-                <field name="parent_id" invisible="1"/>
+                <field name="parent_id" column_invisible="True"/>
                 <field name="article_properties"/>
             </tree>
         </field>
@@ -215,7 +215,7 @@
         <field name="model">knowledge.article</field>
         <field name="arch" type="xml">
             <kanban create="0" class="o_knowledge_article_kanban_view">
-                <field name="is_user_favorite" invisible="1"/>
+                <field name="is_user_favorite"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_global_click">
@@ -230,9 +230,9 @@
                                          To let the user add an article to their favorites, we will instead call an
                                          intermediate action that will do a sudo call on the `knowledge.article` model. -->
                                     <a type="object" name="action_toggle_favorite" class="o_knowledge_toggle_favorite mb-auto mt-1 me-1">
-                                        <i attrs="{'invisible': [('is_user_favorite', '=', False)]}"
+                                        <i invisible="not is_user_favorite"
                                            class="fa fa-star" title="Remove from favorites"/>
-                                        <i attrs="{'invisible': [('is_user_favorite', '=', True)]}"
+                                        <i invisible="is_user_favorite"
                                            class="fa fa-star-o" title="Add to favorites"/>
                                     </a>
                                 </div>
@@ -257,12 +257,12 @@
                     js_class="knowledge_article_view_kanban_embedded"
                     class="o_knowledge_article_kanban_view"
                     default_order="sequence asc, write_date desc, id desc">
-                <field name="icon" invisible="1"/>
-                <field name="is_locked" invisible="1"/>
-                <field name="is_user_favorite" invisible="1"/>
+                <field name="icon"/>
+                <field name="is_locked"/>
+                <field name="is_user_favorite"/>
                 <field name="sequence" widget="handle"/>
-                <field name="user_has_write_access" invisible="1"/>
-                <field name="article_url" invisible="1"/>
+                <field name="user_has_write_access"/>
+                <field name="article_url"/>
                 <field name="article_properties"/>
                 <field name="cover_image_url"/>
                 <field name="activity_ids"/>
@@ -280,9 +280,9 @@
                             </div>
                             <div class="o_kanban_record_bottom d-flex flex-column align-items-end justify-content-between">
                                 <a type="object" name="action_toggle_favorite" class="o_knowledge_toggle_favorite mb-auto pe-1">
-                                    <i attrs="{'invisible': [('is_user_favorite', '=', False)]}"
+                                    <i invisible="not is_user_favorite"
                                        class="fa fa-star" title="Remove from favorites"/>
-                                    <i attrs="{'invisible': [('is_user_favorite', '=', True)]}"
+                                    <i invisible="is_user_favorite"
                                        class="fa fa-star-o" title="Add to favorites"/>
                                 </a>
                                 <div class="oe_kanban_bottom_right">

@@ -7,7 +7,7 @@
             <field name="arch" type="xml">
                 <form string="Export Options">
                     <field name="control_value" invisible="1"/>
-                    <div class="alert alert-warning" role="alert" attrs="{'invisible': [('control_value', '=', False)]}">
+                    <div class="alert alert-warning" role="alert" invisible="not control_value">
                         Some controls failed
                     </div>
                     <div class="mb-4">

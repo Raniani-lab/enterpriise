@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <xpath expr="//group[@name='second']" position="after">
                 <group>
-                    <group string="IoT" attrs='{"invisible": [("code", "not in", ["incoming", "outgoing", "internal"])]}'>
+                    <group string="IoT" invisible="code not in ['incoming', 'outgoing', 'internal']">
                         <field name="iot_scale_ids" widget="many2many_tags"/>
                         <field name="iot_printer_id"/>
                     </group>

@@ -52,9 +52,9 @@
                         <group>
                             <field name="structure_type_id"/>
                         	<field name="value_type"/>
-                            <field name="advantage_ids" attrs="{'invisible': [('value_type', '!=', 'sum')]}" widget="many2many_tags"/>
-                            <field name="code" attrs="{'invisible': [('value_type', 'not in', ['payslip', 'contract'])], 'required': [('value_type', 'in', ['payslip', 'contract'])]}"/>
-                            <field name="fixed_value" attrs="{'invisible': [('value_type', '!=', 'fixed')]}"/>
+                            <field name="advantage_ids" invisible="value_type != 'sum'" widget="many2many_tags"/>
+                            <field name="code" invisible="value_type not in ['payslip', 'contract']" required="value_type in ['payslip', 'contract']"/>
+                            <field name="fixed_value" invisible="value_type != 'fixed'"/>
                         </group>
                     </group>
                 </sheet>

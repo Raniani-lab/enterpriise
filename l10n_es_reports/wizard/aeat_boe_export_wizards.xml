@@ -14,7 +14,7 @@
                             <field name="complementary_declaration"/>
                             <field name="company_partner_id" invisible="True"/>
                             <field name="partner_bank_id"/>
-                            <field name="previous_report_number" attrs="{'invisible': [('complementary_declaration', '=', False)]}"/>
+                            <field name="previous_report_number" invisible="not complementary_declaration"/>
                         </group>
                     </group>
 
@@ -37,7 +37,7 @@
                             <field name="company_partner_id" invisible="True"/>
                             <field name="partner_bank_id"/>
                             <field name="complementary_declaration"/>
-                            <field name="previous_report_number" attrs="{'invisible': [('complementary_declaration', '=', False)]}"/>
+                            <field name="previous_report_number" invisible="not complementary_declaration"/>
                         </group>
                     </group>
 
@@ -61,9 +61,9 @@
                             <field name="partner_bank_id"/>
                             <field name="complementary_declaration"/>
                             <field name="monthly_return"/>
-                            <field name="previous_report_number" attrs="{'invisible': [('complementary_declaration', '=', False)]}"/>
+                            <field name="previous_report_number" invisible="not complementary_declaration"/>
                             <field name="using_sii"/>
-                            <field name="exempted_from_mod_390" attrs="{'invisible': [('exempted_from_mod_390_available', '=', False)]}"/>
+                            <field name="exempted_from_mod_390" invisible="not exempted_from_mod_390_available"/>
                             <field name="exempted_from_mod_390_available" invisible="1"/>
                         </group>
                     </group>

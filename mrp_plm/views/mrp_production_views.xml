@@ -17,7 +17,7 @@
         <field name="arch" type="xml">
             <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
                 <button class="oe_stat_button" name="action_open_eco" type="object" icon="fa-cogs"
-                    groups="mrp_plm.group_plm_user" attrs="{'invisible': [('eco_count', '&lt;', 1)]}"
+                    groups="mrp_plm.group_plm_user" invisible="eco_count &lt; 1"
                     context="{'default_production_id': id, 'default_bom_id': bom_id, 'default_product_tmpl_id': product_tmpl_id}">
                     <div class="o_field_widget o_stat_info">
                         <span class="o_stat_value"><field name="eco_count"/></span>
@@ -29,13 +29,7 @@
                 <field name="latest_bom_id" invisible="1"/>
             </xpath>
             <xpath expr="//button[@name='action_update_bom']" position="attributes">
-                <attribute name="attrs">{'invisible': [
-                    '|',
-                        '&amp;',
-                            ('is_outdated_bom', '=', False),
-                            ('latest_bom_id', '=', False),
-                        ('state', 'not in', ['draft', 'confirmed'])
-                ]}</attribute>
+                <attribute name="invisible">not is_outdated_bom and not latest_bom_id or state not in ['draft', 'confirmed']</attribute>
             </xpath>
         </field>
     </record>

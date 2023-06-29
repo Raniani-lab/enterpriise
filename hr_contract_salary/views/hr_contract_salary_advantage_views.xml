@@ -15,7 +15,7 @@
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="res_field_id"/>
-                <field name="field" invisible="1"/>
+                <field name="field" column_invisible="True"/>
                 <field name="structure_type_id"/>
             </tree>
         </field>
@@ -48,9 +48,9 @@
                     <group class="px-3">
                         <group class="o_form_fw_labels">
                             <field name="res_field_public"
-                                attrs="{'invisible': [('has_admin_access', '=', True)]}"/>
+                                invisible="has_admin_access"/>
                             <field name="cost_res_field_public"
-                                attrs="{'invisible': [('has_admin_access', '=', True)]}"/>
+                                invisible="has_admin_access"/>
                             <field name="field" invisible="1"/>
                             <field name="advantage_type_id"/>
                             <field name="sequence" invisible="1"/>
@@ -67,16 +67,16 @@
                                 widget="many2many_tags"/>
                             <label for="requested_documents_fields_string"
                                 class="m-0"
-                                attrs="{'invisible': [('has_admin_access', '=', True)]}"/>
-                            <div attrs="{'invisible': [('has_admin_access', '=', True)]}"
+                                invisible="has_admin_access"/>
+                            <div invisible="has_admin_access"
                                 class="alert alert-warning m-0 w-100" role="alert">
                                 <span>
                                     This field can only be modified by a server administrator, contact them if these field requires modifications.
                                 </span>
-                                <span attrs="{'invisible': [('requested_documents_fields_string', '!=', False)]}">
+                                <span invisible="requested_documents_fields_string">
                                     There are currently no requested fields.
                                 </span>
-                                <span attrs="{'invisible': [('requested_documents_fields_string', '=', False)]}">
+                                <span invisible="not requested_documents_fields_string">
                                     The current requested documents are the followings: <field name="requested_documents_fields_string" nolabel="1"/>
                                 </span>
                             </div>
@@ -84,13 +84,13 @@
                             <field name="requested_documents" invisible="1"/>
                             <separator string="Activity"/>
                             <field name="activity_type_id" options="{'no_create_edit': True}"/>
-                            <field name="activity_creation" widget="radio" attrs="{'invisible': [('activity_type_id', '=', False)], 'required': [('activity_type_id', '!=', False)]}"/>
-                            <field name="activity_creation_type" widget="radio" attrs="{'invisible': [('activity_type_id', '=', False)], 'required': [('activity_type_id', '!=', False)]}"/>
-                            <field name="activity_responsible_id" options="{'no_create_edit': True}" attrs="{'invisible': [('activity_type_id', '=', False)], 'required': [('activity_type_id', '!=', False)]}"/>
+                            <field name="activity_creation" widget="radio" invisible="not activity_type_id" required="activity_type_id"/>
+                            <field name="activity_creation_type" widget="radio" invisible="not activity_type_id" required="activity_type_id"/>
+                            <field name="activity_responsible_id" options="{'no_create_edit': True}" invisible="not activity_type_id" required="activity_type_id"/>
                             <separator string="sign"/>
                             <field name="sign_template_id"/>
-                            <field name="sign_copy_partner_id" attrs="{'invisible': [('sign_template_id', '=', False)]}" context="{'force_email':True, 'show_email': True}"/>
-                            <field name="sign_frenquency" widget="radio" attrs="{'invisible': [('sign_template_id', '=', False)]}"/>
+                            <field name="sign_copy_partner_id" invisible="not sign_template_id" context="{'force_email':True, 'show_email': True}"/>
+                            <field name="sign_frenquency" widget="radio" invisible="not sign_template_id"/>
                         </group>
                         <group>
                             <field name="field" invisible="1"/>
@@ -100,32 +100,34 @@
                             <separator string="Display"/>
                             <field name="show_name"/>
                             <field name="display_type" required="1"/>
-                            <field name="value_ids" attrs="{'invisible': [('display_type', 'not in', ['dropdown', 'radio', 'dropdown-group'])]}">
+                            <field name="value_ids" invisible="display_type not in ['dropdown', 'radio', 'dropdown-group']">
                                 <tree editable="bottom">
                                     <control>
                                         <create name="add_line_control" string="Add a line"/>
                                         <create name="add_section_control" string="Add a section" context="{'default_display_type': 'section'}"/>
                                     </control>
-                                    <field name="display_type" invisible="1"/>
+                                    <field name="display_type" column_invisible="True"/>
                                     <field name="sequence" widget="handle"/>
                                     <field name="name"/>
                                     <field name="value"
-                                        attrs="{'invisible': [('display_type', '=', 'section')], 'required': [('display_type', '!=', 'section')]}"/>
+                                        invisible="display_type == 'section'"
+                                        required="display_type != 'section'"/>
                                     <field name="color"
-                                        attrs="{'invisible': [('display_type', '=', 'section')], 'required': [('display_type', '!=', 'section')]}"/>
-                                    <field name="hide_description" attrs="{'invisible': [('display_type', '=', 'section')]}"/>
+                                        invisible="display_type == 'section'"
+                                        required="display_type != 'section'"/>
+                                    <field name="hide_description" invisible="display_type == 'section'"/>
                                 </tree>
                             </field>
                             <field name="icon"/>
                             <field name="hide_description"/>
                             <field name="folded"/>
-                            <field name="fold_label" attrs="{'invisible': [('folded', '=', False)]}"/>
-                            <field name="fold_res_field_id" attrs="{'invisible': [('folded', '=', False)]}" options="{'no_create': True, 'no_edit': True, 'no_open': True}"/>
+                            <field name="fold_label" invisible="not folded"/>
+                            <field name="fold_res_field_id" invisible="not folded" options="{'no_create': True, 'no_edit': True, 'no_open': True}"/>
                             <field name="fold_field" invisible="1"/>
-                            <field name="manual_res_field_id" attrs="{'invisible': [('display_type', '!=', 'manual')]}" options="{'no_create': True, 'no_edit': True, 'no_open': True}"/>
+                            <field name="manual_res_field_id" invisible="display_type != 'manual'" options="{'no_create': True, 'no_edit': True, 'no_open': True}"/>
                             <field name="manual_field" invisible="1"/>
-                            <field name="slider_min" attrs="{'invisible': [('display_type', '!=', 'slider')]}"/>
-                            <field name="slider_max" attrs="{'invisible': [('display_type', '!=', 'slider')]}"/>
+                            <field name="slider_min" invisible="display_type != 'slider'"/>
+                            <field name="slider_max" invisible="display_type != 'slider'"/>
                         </group>
                     </group>
                     <notebook>

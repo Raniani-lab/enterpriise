@@ -58,22 +58,22 @@
         <field name="inherit_id" ref="sale_management.sale_order_template_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//label[@id='sale_order_template_title']" position="replace">
-                <label for="name" attrs="{'invisible': [('recurrence_id', '!=', False)]}"/>
-                <label for="name" string="Subscription Plan" attrs="{'invisible': [('recurrence_id', '=', False)]}"/>
+                <label for="name" invisible="recurrence_id"/>
+                <label for="name" string="Subscription Plan" invisible="not recurrence_id"/>
             </xpath>
             <xpath expr="//field[@name='active']" position="after">
                 <field name="is_subscription" invisible="1"/>
             </xpath>
             <xpath expr="//notebook/page[@name='order_lines']/field/tree/field[@name='name']" position="after">
-                <field name="recurring_invoice" invisible="1"/>
-                <field name="recurrence_id" invisible="1"/>
+                <field name="recurring_invoice" column_invisible="True"/>
+                <field name="recurrence_id" column_invisible="True"/>
             </xpath>
             <xpath expr="//notebook/page[@name='order_lines']/field/tree/field[@name='product_uom_id']" position="after">
                  <button name="open_product_pricing" string="prices" type="object" class="btn btn-primary"
-                        attrs="{'invisible': ['|', ('recurring_invoice', '=', False), ('recurrence_id', '=', False)]}"/>
+                        invisible="not recurring_invoice or not recurrence_id"/>
             </xpath>
             <xpath expr="//notebook/page[@name='optional_products']/field/tree/field[@name='name']" position="after">
-                <field name="recurring_invoice" invisible="1"/>
+                <field name="recurring_invoice" column_invisible="True"/>
             </xpath>
             <group name="sale_info" position="inside">
                 <field name="invoice_mail_template_id" string="Invoice Email" groups="base.group_no_one"/>
@@ -84,21 +84,21 @@
                            domain="[('unit', 'not in', ['hour', 'day'])]"
                            options="{'no_create': True}"/>
                     <field name="recurring_rule_boundary" widget="radio" options="{'horizontal': true}"
-                           attrs="{'invisible': [('recurrence_id','=', False)]}"/>
+                           invisible="not recurrence_id"/>
                     <label for="recurring_rule_count"
-                           attrs="{'invisible': ['|', ('recurrence_id','=', False), ('recurring_rule_boundary','=','unlimited')]}"/>
-                    <div attrs="{'invisible': ['|', ('recurrence_id','=', False), ('recurring_rule_boundary','=','unlimited')]}">
+                           invisible="not recurrence_id or recurring_rule_boundary == 'unlimited'"/>
+                    <div invisible="not recurrence_id or recurring_rule_boundary == 'unlimited'">
                         <field name="recurring_rule_count" style="width: 3rem;"/>
                         <field name="recurring_rule_type" class="oe_inline"/>
                     </div>
-                    <field name="user_closable" attrs="{'invisible': [('recurrence_id','=', False)]}"/>
-                    <label for="auto_close_limit" attrs="{'invisible': [('recurrence_id','=', False)]}"/>
-                    <div class="o_row" attrs="{'invisible': [('recurrence_id','=', False),]}">
+                    <field name="user_closable" invisible="not recurrence_id"/>
+                    <label for="auto_close_limit" invisible="not recurrence_id"/>
+                    <div class="o_row" invisible="not recurrence_id">
                         <field name="auto_close_limit" class="oe_inline"/>
                         <div>days after due date</div>
                     </div>
                     <field name="journal_id" options="{'no_create': True}"
-                           attrs="{'invisible': [('recurrence_id','=', False)]}"
+                           invisible="not recurrence_id"
                            groups="account.group_account_manager"/>
                     <!-- company_id invisible to be available in domains -->
                     <field name="company_id" invisible="1"/>

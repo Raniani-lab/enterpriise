@@ -29,7 +29,7 @@
                 <attribute name="color">worksheet_color</attribute>
             </xpath>
             <xpath expr="//field[@name='name']" position="after">
-                <field name="worksheet_template_id" attrs="{'invisible': [('worksheet_template_id', '=', False)]}" filters="1" color="color"/>
+                <field name="worksheet_template_id" invisible="not worksheet_template_id" filters="1" color="color"/>
             </xpath>
         </field>
     </record>
@@ -87,7 +87,7 @@
         <field name="inherit_id" ref="industry_fsm.quick_create_task_form_fsm"/>
         <field name="arch" type="xml">
             <field name="user_ids" position="before">
-                <field name="worksheet_template_id" attrs="{'invisible':[('allow_worksheets', '=', False)]}" options="{'no_open': True, 'no_create': True}" context="{'default_res_model': 'project.task'}"/>
+                <field name="worksheet_template_id" invisible="not allow_worksheets" options="{'no_open': True, 'no_create': True}" context="{'default_res_model': 'project.task'}"/>
             </field>
         </field>
     </record>
@@ -113,7 +113,7 @@
             <xpath expr="//setting[@id='industry_fsm']" position="replace">
                 <setting class="col-lg-12" help="Create reports to be signed off by your customers" id="industry_fsm">
                     <field name="allow_worksheets"/>
-                    <div class="mt-3 d-flex flex-wrap" attrs="{'invisible': [('allow_worksheets', '=', False)]}">
+                    <div class="mt-3 d-flex flex-wrap" invisible="not allow_worksheets">
                         <label for="worksheet_template_id" class="fw-bold" string="Worksheet Template"/>
                         <field name="worksheet_template_id" class="oe_inline ps-2" context="{'default_res_model': 'project.task'}"/>
                     </div>
@@ -160,16 +160,16 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@widget='project']" position="after">
                 <field name="allow_worksheets" invisible="1"/>
-                <field name="worksheet_template_id" options="{'no_open': True, 'no_create': True}" context="{'form_view_ref': 'industry_fsm_report.worksheet_template_view_form_no_design_button', 'default_res_model': 'project.task'}" attrs="{'invisible': [('allow_worksheets', '=', False)]}"/>
+                <field name="worksheet_template_id" options="{'no_open': True, 'no_create': True}" context="{'form_view_ref': 'industry_fsm_report.worksheet_template_view_form_no_design_button', 'default_res_model': 'project.task'}" invisible="not allow_worksheets"/>
             </xpath>
             <xpath expr="//button[@name='action_recurring_tasks']" position="before">
                 <field name="worksheet_count" invisible="1"/>
             </xpath>
             <xpath expr="//button[hasclass('oe_worksheet')]" position="attributes">
-                <attribute name="attrs">{'invisible': ['|', '&amp;', ('is_fsm', '=', False), ('partner_id', '=', False), '|', '|', '|', ('allow_worksheets', '=', False),  ('worksheet_template_id', '=', False), ('worksheet_count', '!=', 0), ('comment', '!=', False)]}</attribute>
+                <attribute name="invisible">not is_fsm and not partner_id or not allow_worksheets or not worksheet_template_id or worksheet_count != 0 or comment</attribute>
             </xpath>
             <xpath expr="//button[hasclass('oe_worksheet_completed')]" position="attributes">
-                <attribute name="attrs">{'invisible': ['|', '|', '|', ('partner_id', '=', False), ('allow_worksheets', '=', False), ('worksheet_template_id', '=', False), '&amp;', ('worksheet_count', '=', 0), ('comment', '=', False)]}</attribute>
+                <attribute name="invisible">not partner_id or not allow_worksheets or not worksheet_template_id or worksheet_count == 0 and not comment</attribute>
             </xpath>
             <xpath expr="//field[@name='child_ids']/tree/field[@name='project_id']" position="after">
                 <field name="worksheet_template_id" optional="hide"/>

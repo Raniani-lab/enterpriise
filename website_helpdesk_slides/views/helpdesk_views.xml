@@ -6,7 +6,7 @@
         <field name="model">helpdesk.team</field>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='use_website_helpdesk_slides']" position="after">
-                <div class="mt16" attrs="{'invisible': [('use_website_helpdesk_slides', '=', False)]}">
+                <div class="mt16" invisible="not use_website_helpdesk_slides">
                     <label for="website_slide_channel_ids"/>
                     <field name="website_slide_channel_ids" widget="many2many_tags"/>
                 </div>

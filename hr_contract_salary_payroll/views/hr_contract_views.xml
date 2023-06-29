@@ -7,7 +7,7 @@
         <field name="priority">50</field>
         <field name="arch" type="xml">
             <group name="employee_costs" position="attributes">
-                <attribute name="attrs">{'invisible': [('wage_type', '=', 'hourly')]}</attribute>
+                <attribute name="invisible">wage_type == 'hourly'</attribute>
             </group>
         </field>
     </record>

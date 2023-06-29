@@ -15,41 +15,43 @@
                 <button string="Generate Delivery Guide"
                         name="l10n_mx_edi_cfdi_try_send"
                         type="object"
-                        attrs="{'invisible': ['|', ('l10n_mx_edi_is_cfdi_needed', '=', False), ('l10n_mx_edi_cfdi_state', '=', 'sent')]}"/>
+                        invisible="not l10n_mx_edi_is_cfdi_needed or l10n_mx_edi_cfdi_state == 'sent'"/>
                 <button string="Cancel Delivery Guide"
                         name="l10n_mx_edi_cfdi_try_cancel"
                         type="object"
-                        attrs="{'invisible': ['|', ('l10n_mx_edi_is_cfdi_needed', '=', False), ('l10n_mx_edi_cfdi_state', '!=', 'sent')]}"/>
+                        invisible="not l10n_mx_edi_is_cfdi_needed or l10n_mx_edi_cfdi_state != 'sent'"/>
                 <button string="Update SAT"
                         name="l10n_mx_edi_cfdi_try_sat"
                         type="object"
-                        attrs="{'invisible' : [('l10n_mx_edi_update_sat_needed', '=', False)]}"/>
+                        invisible="not l10n_mx_edi_update_sat_needed"/>
             </xpath>
 
             <xpath expr="//field[@name='origin']" position="after">
                 <field name="l10n_mx_edi_cfdi_state"
-                       attrs="{'invisible': [('l10n_mx_edi_cfdi_state', '=', False)]}"/>
+                       invisible="not l10n_mx_edi_cfdi_state"/>
                 <field name="l10n_mx_edi_cfdi_sat_state"
-                       attrs="{'invisible': [('l10n_mx_edi_cfdi_sat_state', '=', False)]}"/>
+                       invisible="not l10n_mx_edi_cfdi_sat_state"/>
                 <field name="l10n_mx_edi_cfdi_uuid"
-                       attrs="{'invisible': [('l10n_mx_edi_cfdi_uuid', '=', False)]}"/>
+                       invisible="not l10n_mx_edi_cfdi_uuid"/>
                 <field name="l10n_mx_edi_cfdi_origin"
-                       attrs="{'invisible': [('l10n_mx_edi_is_cfdi_needed', '=', False)]}"/>
+                       invisible="not l10n_mx_edi_is_cfdi_needed"/>
                 <field name="l10n_mx_edi_cfdi_cancel_picking_id"
-                       attrs="{'invisible': [('l10n_mx_edi_cfdi_cancel_picking_id', '=', False)]}"/>
+                       invisible="not l10n_mx_edi_cfdi_cancel_picking_id"/>
             </xpath>
 
             <!-- Documents tab -->
             <xpath expr="//notebook" position="inside">
                  <page string="🇲🇽 Delivery Guide"
                        name="mx_edi"
-                       attrs="{'invisible': [('l10n_mx_edi_is_cfdi_needed', '=', False)]}">
+                       invisible="not l10n_mx_edi_is_cfdi_needed">
                     <group>
                         <group string="Transport" name="mx_edi_group_transport">
                              <field name="l10n_mx_edi_transport_type"
-                                    attrs="{'readonly': [('l10n_mx_edi_cfdi_state', '=', 'sent')]}"/>
+                                    readonly="l10n_mx_edi_cfdi_state == 'sent'"/>
                              <field name="l10n_mx_edi_vehicle_id"
-                                    attrs="{'invisible': [('l10n_mx_edi_transport_type', '!=', '01')], 'required': [('l10n_mx_edi_transport_type', '=', '01')], 'readonly': [('l10n_mx_edi_cfdi_state', '=', 'sent')]}"/>
+                                    invisible="l10n_mx_edi_transport_type != '01'"
+                                    readonly="l10n_mx_edi_cfdi_state == 'sent'"
+                                    required="l10n_mx_edi_transport_type == '01'"/>
                         </group>
 
                         <group string="Distance" name="mx_edi_group_distance">
@@ -58,45 +60,45 @@
                                         type="object"
                                         string="Get Coordinates"
                                         class="btn btn-secondary mx-1"
-                                        attrs="{'invisible': [('l10n_mx_edi_cfdi_state', '=', 'sent')]}"/>
+                                        invisible="l10n_mx_edi_cfdi_state == 'sent'"/>
                                 <button name="l10n_mx_edi_action_calculate_distance"
                                         type="object"
                                         string="Compute Distance"
                                         class="btn btn-secondary mx-1"
-                                        attrs="{'invisible': ['|', '|', '|', '|', ('l10n_mx_edi_cfdi_state', '=', 'sent'), ('l10n_mx_edi_src_lat', '=', 0), ('l10n_mx_edi_src_lon', '=', 0), ('l10n_mx_edi_des_lat', '=', 0), ('l10n_mx_edi_des_lon', '=', 0)]}"/>
+                                        invisible="l10n_mx_edi_cfdi_state == 'sent' or l10n_mx_edi_src_lat == 0 or l10n_mx_edi_src_lon == 0 or l10n_mx_edi_des_lat == 0 or l10n_mx_edi_des_lon == 0"/>
                             </div>
                             <field name="l10n_mx_edi_src_lat"
-                                   attrs="{'readonly': [('l10n_mx_edi_cfdi_state', '=', 'sent')]}"/>
+                                   readonly="l10n_mx_edi_cfdi_state == 'sent'"/>
                             <field name="l10n_mx_edi_src_lon"
-                                   attrs="{'readonly': [('l10n_mx_edi_cfdi_state', '=', 'sent')]}"/>
+                                   readonly="l10n_mx_edi_cfdi_state == 'sent'"/>
                             <field name="l10n_mx_edi_des_lat"
-                                   attrs="{'readonly': [('l10n_mx_edi_cfdi_state', '=', 'sent')]}"/>
+                                   readonly="l10n_mx_edi_cfdi_state == 'sent'"/>
                             <field name="l10n_mx_edi_des_lon"
-                                   attrs="{'readonly': [('l10n_mx_edi_cfdi_state', '=', 'sent')]}"/>
+                                   readonly="l10n_mx_edi_cfdi_state == 'sent'"/>
                             <field name="l10n_mx_edi_distance"
-                                   attrs="{'readonly': [('l10n_mx_edi_cfdi_state', '=', 'sent')]}"/>
+                                   readonly="l10n_mx_edi_cfdi_state == 'sent'"/>
                         </group>
                     </group>
                 </page>
 
                 <page id="edi_documents"
                       string="🇲🇽 CFDI"
-                      attrs="{'invisible': [('l10n_mx_edi_document_ids', '=', [])]}">
+                      invisible="not l10n_mx_edi_document_ids">
                     <field name="l10n_mx_edi_document_ids">
                         <tree create="false" delete="false" edit="false" no_open="1">
                             <!-- Invisible fields -->
-                            <field name="attachment_id" invisible="1"/>
-                            <field name="message" invisible="1"/>
+                            <field name="attachment_id" column_invisible="True"/>
+                            <field name="message" column_invisible="True"/>
 
                             <!-- Visible fields -->
                             <field name="datetime"/>
                             <field name="state" widget="l10n_mx_edi_document_state"/>
-                            <field name="sat_state" attrs="{'invisible': [('sat_state', '=', False)]}"/>
+                            <field name="sat_state" invisible="not sat_state"/>
 
                             <button name="action_download_file"
                                     type="object"
                                     string="Download"
-                                    attrs="{'invisible': [('attachment_id', '=', False)]}"/>
+                                    invisible="not attachment_id"/>
                         </tree>
                     </field>
                 </page>

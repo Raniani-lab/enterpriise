@@ -34,10 +34,9 @@
                                 <field name="sign" invisible="1"/>
                             </group>
                             <group>
-                                <field name="parent_id" attrs="{'invisible': [('chart_id', '=', False)]}"
+                                <field name="parent_id" invisible="not chart_id"
                                        domain="[('chart_id', '=', chart_id), ('id', '!=', active_id)]"
-                                       context="{'default_chart_id': chart_id, 'from_section': True}"
-                                />
+                                       context="{'default_chart_id': chart_id, 'from_section': True}"/>
                                 <field name="sequence" groups="base.group_no_one"/>
                             </group>
                         </group>

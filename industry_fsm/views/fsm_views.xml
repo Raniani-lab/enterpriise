@@ -23,10 +23,10 @@
                 <attribute name="optional">show</attribute>
             </field>
             <field name="partner_id" position="after">
-                <field name="is_fsm" invisible="1"/>
+                <field name="is_fsm" column_invisible="True"/>
             </field>
             <field name="partner_id" position="attributes">
-                <attribute name="attrs">{'required': [('is_fsm', '=', True)]}</attribute>
+                <attribute name="required">is_fsm</attribute>
             </field>
         </field>
     </record>
@@ -90,10 +90,10 @@
             <calendar date_start="planned_date_begin" date_stop="planned_date_end" string="Tasks" mode="month" color="user_ids" event_open_popup="1" form_view_id="%(project.view_task_form2)d" quick_add="0" show_unusual_days="True">
                 <field name="name"/>
                 <field name="project_id" filters="1"/>
-                <field name="user_ids" widget="many2many_avatar_user" attrs="{'invisible': [('user_ids', '=', [])]}"/>
+                <field name="user_ids" widget="many2many_avatar_user" invisible="not user_ids"/>
                 <field name="partner_id" widget="res_partner_many2one" context="{'show_address': 1}"/>
-                <field name="partner_phone" widget="phone" attrs="{'invisible': [('partner_phone', '=', False)]}"/>
-                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" attrs="{'invisible': [('tag_ids', '=', [])]}"/>
+                <field name="partner_phone" widget="phone" invisible="not partner_phone"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" invisible="not tag_ids"/>
             </calendar>
         </field>
     </record>
@@ -126,7 +126,7 @@
                 </span>
             </xpath>
             <div name="date_deadline" position="attributes">
-                <attribute name="attrs">{'invisible': ['|', ('is_fsm', '=', True), ('state', 'in', ['1_done','1_canceled'])]}</attribute>
+                <attribute name="invisible">is_fsm or state in ['1_done', '1_canceled']</attribute>
             </div>
         </field>
     </record>
@@ -799,7 +799,7 @@
                 <field name="is_fsm" invisible="1"/>
             </xpath>
             <xpath expr="//group/field[@name='company_id']" position="attributes">
-                <attribute name="attrs">{'required': [('is_fsm', '=', True)]}</attribute>
+                <attribute name="required">is_fsm</attribute>
             </xpath>
         </field>
     </record>

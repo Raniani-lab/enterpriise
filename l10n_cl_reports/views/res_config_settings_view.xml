@@ -18,7 +18,7 @@
                         </div>
                     </div>
                 </setting>
-                <setting id="l10n_cl_fpp_settings" string="Proportional Factor for the fiscal year" help="If you use a proportional factor, select this to be used during the F29 proposal for the fiscal year." attrs="{'invisible': [('country_code', '!=', 'CL')]}">
+                <setting id="l10n_cl_fpp_settings" string="Proportional Factor for the fiscal year" help="If you use a proportional factor, select this to be used during the F29 proposal for the fiscal year." invisible="country_code != 'CL'">
                     <div class="content-group">
                         <div class="row">
                             <label string="FPP (%)" for="l10n_cl_report_fpp_value" class="col-lg-3 o_light_label"/>

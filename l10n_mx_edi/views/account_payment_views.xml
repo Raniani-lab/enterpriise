@@ -15,61 +15,63 @@
                         name="l10n_mx_edi_cfdi_payment_force_try_send"
                         type="object"
                         groups="account.group_account_invoice"
-                        attrs="{'invisible' : [('l10n_mx_edi_force_pue_payment_needed', '=', False)]}"/>
+                        invisible="not l10n_mx_edi_force_pue_payment_needed"/>
                 <button string="Update SAT"
                         name="l10n_mx_edi_cfdi_try_sat"
                         type="object"
                         groups="account.group_account_invoice"
-                        attrs="{'invisible' : [('l10n_mx_edi_update_sat_needed', '=', False)]}"/>
+                        invisible="not l10n_mx_edi_update_sat_needed"/>
             </xpath>
 
             <group name="main_group" position="after">
                 <group name="l10n_mx_edi_main_group"
                        string="🇲🇽 CFDI"
-                       attrs="{'invisible': [('l10n_mx_edi_is_cfdi_needed', '=', False)]}">
+                       invisible="not l10n_mx_edi_is_cfdi_needed">
 
                     <group name="l10n_mx_edi_group_1">
                         <field name="l10n_mx_edi_payment_method_id"
-                               attrs="{'invisible': [('country_code', '!=', 'MX')], 'readonly': [('state', '!=', 'draft')]}"/>
+                               invisible="country_code != 'MX'"
+                               readonly="state != 'draft'"/>
                         <field name="l10n_mx_edi_cfdi_origin"
-                               attrs="{'invisible': ['|', ('country_code', '!=', 'MX'), ('l10n_mx_edi_cfdi_origin', '=', False)], 'readonly': [('state', '!=', 'draft')]}"/>
+                               invisible="country_code != 'MX' or not l10n_mx_edi_cfdi_origin"
+                               readonly="state != 'draft'"/>
                     </group>
                     <group name="l10n_mx_edi_group_2">
                         <field name="l10n_mx_edi_cfdi_state"
-                               attrs="{'invisible': [('l10n_mx_edi_cfdi_state', '=', False)]}"/>
+                               invisible="not l10n_mx_edi_cfdi_state"/>
                         <field name="l10n_mx_edi_cfdi_uuid"
-                               attrs="{'invisible': [('l10n_mx_edi_cfdi_uuid', '=', False)]}"/>
+                               invisible="not l10n_mx_edi_cfdi_uuid"/>
                         <field name="l10n_mx_edi_cfdi_cancel_id"
-                               attrs="{'invisible': [('l10n_mx_edi_cfdi_cancel_id', '=', False)]}"/>
+                               invisible="not l10n_mx_edi_cfdi_cancel_id"/>
                         <field name="l10n_mx_edi_cfdi_sat_state"
-                               attrs="{'invisible': [('l10n_mx_edi_cfdi_sat_state', '=', False)]}"/>
+                               invisible="not l10n_mx_edi_cfdi_sat_state"/>
                     </group>
 
                     <field name="l10n_mx_edi_payment_document_ids"
-                           attrs="{'invisible': [('l10n_mx_edi_payment_document_ids', '=', [])]}">
+                           invisible="not l10n_mx_edi_payment_document_ids">
                         <tree create="false" delete="false" edit="false" no_open="1">
                             <!-- Invisible fields -->
-                            <field name="attachment_id" invisible="1"/>
-                            <field name="cancel_payment_button_needed" invisible="1"/>
-                            <field name="message" invisible="1"/>
+                            <field name="attachment_id" column_invisible="True"/>
+                            <field name="cancel_payment_button_needed" column_invisible="True"/>
+                            <field name="message" column_invisible="True"/>
 
                             <!-- Visible fields -->
                             <field name="datetime"/>
                             <field name="state" widget="l10n_mx_edi_document_state"/>
-                            <field name="sat_state" attrs="{'invisible': [('sat_state', '=', False)]}"/>
+                            <field name="sat_state" invisible="not sat_state"/>
 
                             <button name="action_download_file"
                                     type="object"
                                     string="Download"
-                                    attrs="{'invisible': [('attachment_id', '=', False)]}"/>
+                                    invisible="not attachment_id"/>
                             <button name="action_force_payment_cfdi"
                                     type="object"
                                     string="Force CFDI"
-                                    attrs="{'invisible': [('state', '!=', 'payment_sent_pue')]}"/>
+                                    invisible="state != 'payment_sent_pue'"/>
                             <button name="action_cancel_payment_cfdi"
                                     type="object"
                                     string="Cancel"
-                                    attrs="{'invisible': [('cancel_payment_button_needed', '=', False)]}"/>
+                                    invisible="not cancel_payment_button_needed"/>
                         </tree>
                     </field>
                 </group>

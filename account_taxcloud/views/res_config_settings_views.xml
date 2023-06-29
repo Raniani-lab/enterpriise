@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="account.res_config_settings_view_form"/>
         <field name="arch" type="xml">
             <setting id="taxcloud_settings" position="inside">
-                <div class="content-group" attrs="{'invisible': [('module_account_taxcloud', '=', False)]}">
+                <div class="content-group" invisible="not module_account_taxcloud">
                     <div class="row mt16">
                         <label string="API ID" for="taxcloud_api_id" class="col-lg-3 o_light_label"/>
                         <field name="taxcloud_api_id" class="oe_inline"/>
@@ -23,7 +23,7 @@
                             <i title="Import/update TICs from TaxCloud" role="img" aria-label="Import/update TICs from TaxCloud" class="fa fa-refresh fa-fw"/>
                         </button>
                     </div>
-                    <div class="mt16" attrs="{'invisible': [('taxcloud_api_id', '!=', ''), ('taxcloud_api_key', '!=', '')]}">
+                    <div class="mt16" invisible="taxcloud_api_id != '' and taxcloud_api_key != ''">
                         <a href="https://www.odoo.com/documentation/master/applications/finance/accounting/taxation/taxes/taxcloud.html" target="_new">
                             <i class="oi oi-fw oi-arrow-right"/>How to Get Credentials</a>
                     </div>

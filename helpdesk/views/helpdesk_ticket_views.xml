@@ -175,25 +175,25 @@
         <field name="model">helpdesk.ticket</field>
         <field name="arch" type="xml">
             <tree string="Tickets" multi_edit="1" sample="1" default_order="priority desc, sla_deadline, id">
-                <field name="company_id" invisible="1"/>
-                <field name="use_sla" invisible="1"/>
-                <field name="fold" invisible="1"/>
-                <field name="legend_normal" invisible="1"/>
-                <field name="legend_blocked" invisible="1"/>
-                <field name="legend_done" invisible="1"/>
+                <field name="company_id" column_invisible="True"/>
+                <field name="use_sla" column_invisible="True"/>
+                <field name="fold" column_invisible="True"/>
+                <field name="legend_normal" column_invisible="True"/>
+                <field name="legend_blocked" column_invisible="True"/>
+                <field name="legend_done" column_invisible="True"/>
                 <field name="ticket_ref" string="ID" readonly="1" optional="show"/>
                 <field name="priority" optional="show" widget="priority"/>
                 <field name="name" string="Name"/>
-                <field name="team_id" optional="show" readonly="1" invisible="context.get('default_team_id', False)"/>
-                <field name="team_id" optional="hide" readonly="1" invisible="not context.get('default_team_id', False)"/>
+                <field name="team_id" optional="show" readonly="1" column_invisible="context.get('default_team_id', False)"/>
+                <field name="team_id" optional="hide" readonly="1" column_invisible="not context.get('default_team_id', False)"/>
                 <field name="user_id" optional="show" widget="many2one_avatar_user" options="{'no_quick_create': True}"/>
                 <field name="partner_id" domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]" optional="show" options="{'no_open': True}"/>
-                <field name="company_id" groups="base.group_multi_company" optional="show" readonly="1" invisible="context.get('default_team_id', False)"/>
-                <field name="company_id" groups="base.group_multi_company" optional="hide" readonly="1" invisible="not context.get('default_team_id', False)"/>
+                <field name="company_id" groups="base.group_multi_company" optional="show" readonly="1" column_invisible="context.get('default_team_id', False)"/>
+                <field name="company_id" groups="base.group_multi_company" optional="hide" readonly="1" column_invisible="not context.get('default_team_id', False)"/>
                 <field name="activity_ids" widget="list_activity" optional="show"/>
                 <field name="my_activity_date_deadline" string="My Deadline" widget="remaining_days" optional="hide"/>
-                <field name="sla_status_ids" widget="helpdesk_sla_many2many_tags" attrs="{'invisible': [('use_sla', '=', False)]}" options="{'color_field': 'color'}" string="SLAs" optional="hide" readonly="1"/>
-                <field name="sla_deadline" attrs="{'invisible': ['|', ('use_sla', '=', False), ('fold', '=', True)]}" optional="show" widget="remaining_days"/>
+                <field name="sla_status_ids" widget="helpdesk_sla_many2many_tags" options="{'color_field': 'color'}" string="SLAs" optional="hide" readonly="1" invisible="not use_sla"/>
+                <field name="sla_deadline" invisible="not use_sla or fold" optional="show" widget="remaining_days"/>
                 <field name="create_date" optional="hide" readonly="1" string="Creation Date"/>
                 <field name="write_date" optional="hide" readonly="1"/>
                 <field name="ticket_type_id" options="{'no_create_edit': True}" optional="hide"/>
@@ -201,7 +201,7 @@
                 <field name="properties"/>
                 <field name="rating_last_text" string="Rating" decoration-danger="rating_last_text == 'ko'"
                     decoration-warning="rating_last_text == 'ok'" decoration-success="rating_last_text == 'top'"
-                    attrs="{'invisible': [('rating_last_text', '=', 'none')]}"
+                    invisible="rating_last_text == 'none'"
                     class="fw-bold" widget="badge" optional="hide"/>
                 <field name="kanban_state" nolabel="1" optional="show" widget="state_selection" options="{'hide_label': True}"/>
                 <field name="stage_id" optional="show" readonly="not context.get('default_team_id', False)"/>
@@ -340,16 +340,16 @@
                     <field name="company_id" invisible="1"/>
                     <field name="team_privacy_visibility" invisible="1"/>
                     <div class="oe_button_box" name="button_box">
-                        <button name="action_open_ratings" type="object" class="oe_stat_button" icon="" attrs="{'invisible': ['|', ('use_rating', '=', False), ('rating_count', '=', 0)]}" groups="helpdesk.group_use_rating">
-                            <i class="fa fa-fw o_button_icon fa-smile-o text-success" attrs="{'invisible': [('rating_avg', '&lt;', 3.66)]}" title="Satisfied"/>
-                            <i class="fa fa-fw o_button_icon fa-meh-o text-warning" attrs="{'invisible': ['|', ('rating_avg', '&lt;', 2.33), ('rating_avg', '&gt;=', 3.66)]}" title="Okay"/>
-                            <i class="fa fa-fw o_button_icon fa-frown-o text-danger" attrs="{'invisible': [('rating_avg', '&gt;=', 2.33)]}" title="Dissatisfied"/>
+                        <button name="action_open_ratings" type="object" class="oe_stat_button" icon="" invisible="not use_rating or rating_count == 0" groups="helpdesk.group_use_rating">
+                            <i class="fa fa-fw o_button_icon fa-smile-o text-success" invisible="rating_avg &lt; 3.66" title="Satisfied"/>
+                            <i class="fa fa-fw o_button_icon fa-meh-o text-warning" invisible="rating_avg &lt; 2.33 or rating_avg &gt;= 3.66" title="Okay"/>
+                            <i class="fa fa-fw o_button_icon fa-frown-o text-danger" invisible="rating_avg &gt;= 2.33" title="Dissatisfied"/>
                             <div class="o_field_widget o_stat_info">
                                 <span class="o_stat_value"><field name="rating_avg_text" nolabel="1"/></span>
                                 <span class="o_stat_text">Rating</span>
                             </div>
                         </button>
-                        <button class="oe_stat_button" type="object" name="action_open_helpdesk_ticket" icon="fa-life-ring" attrs="{'invisible': ['|', ('partner_id', '=', False), ('partner_ticket_count', '=', 0)]}">
+                        <button class="oe_stat_button" type="object" name="action_open_helpdesk_ticket" icon="fa-life-ring" invisible="not partner_id or partner_ticket_count == 0">
                             <div class="o_field_widget o_stat_info">
                                 <div class="d-flex align-items-baseline gap-1">
                                     <span class="o_stat_value order-1">
@@ -366,7 +366,7 @@
                             </div>
                         </button>
                     </div>
-                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
                     <field name="kanban_state" widget="state_selection"/>
                     <field name="use_sla" invisible="1"/>
                     <field name="fold" invisible="1"/>
@@ -374,8 +374,8 @@
                         <h1><field name="name" options="{'line_breaks': False}" widget="text" class="field_name" placeholder="e.g. Product arrived damaged"/></h1>
                     </div>
                     <div class="d-flex mb-4">
-                        <field name="sla_status_ids" widget="helpdesk_sla_many2many_tags" attrs="{'invisible': [('use_sla', '=', False)]}" options="{'color_field': 'color', 'no_edit_color': True}" class="mb-0" readonly="1" groups="helpdesk.group_use_sla"/>
-                        <div attrs="{'invisible': ['|', ('sla_deadline', '=', False), ('use_sla', '=', False)]}" groups="helpdesk.group_use_sla" class="mx-2 text-muted d-inline-flex align-items-center h-100">
+                        <field name="sla_status_ids" widget="helpdesk_sla_many2many_tags" options="{'color_field': 'color', 'no_edit_color': True}" class="mb-0" readonly="1" invisible="not use_sla" groups="helpdesk.group_use_sla"/>
+                        <div invisible="not sla_deadline or not use_sla" groups="helpdesk.group_use_sla" class="mx-2 text-muted d-inline-flex align-items-center h-100">
                             <i class="fa fa-lg fa-clock-o me-2 mt-1" aria-label="Sla Deadline" title="Sla Deadline"/>
                             <field name="sla_deadline" class="mb-0" widget="remaining_days"/>
                         </div>
@@ -397,7 +397,7 @@
                             <div class="o_row o_row_readonly">
                                 <field name="partner_phone" widget="phone" string="Phone"/>
                                 <span class="fa fa-exclamation-triangle text-warning oe_edit_only"
-                                title="By saving this change, the customer phone number will also be updated." attrs="{'invisible': [('is_partner_phone_update', '=', False)]}"/>
+                                title="By saving this change, the customer phone number will also be updated." invisible="not is_partner_phone_update"/>
                             </div>
                             <field name="email_cc" groups="base.group_no_one"/>
                         </group>
@@ -411,7 +411,7 @@
                             <field name="description"/>
                         </page>
                         <page string="Extra Info" name="extra_info"
-                              attrs="{'invisible': [('display_extra_info', '=', False)]}">
+                              invisible="not display_extra_info">
                             <group>
                                 <field name="company_id" groups="base.group_multi_company" context="{'create': False}"/>
                             </group>

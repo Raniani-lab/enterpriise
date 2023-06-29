@@ -13,14 +13,14 @@
                 </header>
             </xpath>
             <page name='workorder_page_work_instruction' position="after">
-                <page string="Finished Steps" name="finished_steps" attrs="{'invisible': [('check_ids', '=', [])]}">
+                <page string="Finished Steps" name="finished_steps" invisible="not check_ids">
                     <field name="check_ids" domain="[('quality_state', '!=', 'none')]" readonly="1" context="{'form_view_ref': 'mrp_workorder.quality_check_workorder_form'}">
                         <tree>
-                            <field name="quality_state" invisible="1"/>
-                            <field name="test_type" invisible="1"/>
+                            <field name="quality_state" column_invisible="True"/>
+                            <field name="test_type" column_invisible="True"/>
                             <field name="control_date" string="Date"/>
                             <field name="user_id" string="Operator"/>
-                            <field name="finished_lot_id" string="Finished Lot/Serial Number" attrs="{'column_invisible': [('parent.product_tracking', '=', 'none')]}"/>
+                            <field name="finished_lot_id" string="Finished Lot/Serial Number" column_invisible="parent.product_tracking == 'none'"/>
                             <field name="title"/>
                             <field name="result"/>
                         </tree>
@@ -35,13 +35,13 @@
                 <field name="employee_id" domain="['|',(parent.all_employees_allowed , '=', True),('id', 'in', parent.allowed_employees)]"/>
             </xpath>
             <xpath expr="//field[@name='time_ids']/tree/field[@name='user_id']" position="attributes">
-                <attribute name="attrs">{'column_invisible': True}</attribute>
+                <attribute name="column_invisible">True</attribute>
             </xpath>
             <xpath expr="//field[@name='check_ids']/tree/field[@name='user_id']" position="after">
                 <field name="employee_id" />
             </xpath>
             <xpath expr="//field[@name='check_ids']/tree/field[@name='user_id']" position="attributes">
-                <attribute name="attrs">{'column_invisible': True}</attribute>
+                <attribute name="column_invisible">True</attribute>
             </xpath>
             <xpath expr="//field[@name='workcenter_id']" position="after">
                 <field name="employee_assigned_ids" widget="many2many_avatar_employee"/>
@@ -58,14 +58,14 @@
         <field name="inherit_id" ref="mrp.mrp_production_workorder_tree_editable_view"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='state']" position="after">
-                <field name="production_state" invisible="1"/>
+                <field name="production_state" column_invisible="True"/>
             </xpath>
             <xpath expr="//button[@name='button_unblock']" position="after">
                 <field name="employee_ids" widget="many2many_avatar_employee" readonly="1" nolabel="1"/>
             </xpath>
             <xpath expr="//field[@name='name']" position="after">
-                    <field name="allowed_employees" invisible="1"/>
-                    <field name="all_employees_allowed" invisible="1"/>
+                    <field name="allowed_employees" column_invisible="True"/>
+                    <field name="all_employees_allowed" column_invisible="True"/>
                     <field name="employee_assigned_ids" widget="many2many_avatar_user" domain="not all_employees_allowed and [('id','in',allowed_employees)] or []" optional="hidden"/>
             </xpath>
             <xpath expr="//tree" position='attributes'>
@@ -147,8 +147,8 @@ if env.user.has_group('mrp.group_mrp_workorder_dependencies'):
                         <div class="o_workorder_field">
                             <field name="product_id" context="{'display_default_code': False}" options="{'no_open': True}" readonly="1"/>
                             <label for="qty_producing" string=":"/>
-                            <field name="qty_producing" class="oe_inline text-start" attrs="{'readonly': ['|', '|', ('allow_producing_quantity_change', '=', False), ('product_tracking', '=', 'serial'), ('state', 'in', ('done', 'cancel'))]}" required="1"/>
-                            / <field name="qty_remaining" class="oe_inline text-start" attrs="{'invisible': [('state', '=', 'done')]}"/> <field name="qty_production" class="oe_inline text-start" attrs="{'invisible': [('state', '!=', 'done')]}"/>
+                            <field name="qty_producing" class="oe_inline text-start" required="1" readonly="not allow_producing_quantity_change or product_tracking == 'serial' or state in ('done', 'cancel')"/>
+                            / <field name="qty_remaining" class="oe_inline text-start" invisible="state == 'done'"/> <field name="qty_production" class="oe_inline text-start" invisible="state != 'done'"/>
                             <label for="product_uom_id" string="" class="oe_inline"/>
                             <field name="product_uom_id" options="{'no_open': True}" class="oe_inline" readonly="1"/>
                         </div>
@@ -156,9 +156,9 @@ if env.user.has_group('mrp.group_mrp_workorder_dependencies'):
                     <div class="o_workorder_bar_right o_workorder_bar_content">
                         <span style="width:auto; display:block;">
                         <button class="btn-secondary btn-link o_unblock" type="workorder_event" name="popupEmployeeManagement">
-                            <span attrs="{'invisible': [('employee_name', '!=', False)]}">Log In </span>
-                            <field name="employee_name" attrs="{'invisible': [('employee_name', '=', False)]}" readonly="1" class="me-2"/>
-                            <field name="employee_ids" widget="kanban.many2many_avatar_employee" readonly="1" attrs="{'invisible': [('employee_name', '=', False)]}" options="{'no_create': True}"/>
+                            <span invisible="employee_name">Log In </span>
+                            <field name="employee_name" readonly="1" invisible="not employee_name" class="me-2"/>
+                            <field name="employee_ids" widget="kanban.many2many_avatar_employee" readonly="1" invisible="not employee_name" options="{'no_create': True}"/>
                         </button>
                         </span>
                     </div>
@@ -167,26 +167,26 @@ if env.user.has_group('mrp.group_mrp_workorder_dependencies'):
                     <div class="o_workorder_bar_left o_workorder_action o_workorder_bar_content">
                         <button name="openMenuPopup" class="btn btn-secondary o_workorder_icon_btn fa fa-bars" type="workorder_event" title="menu"/>
                         <span groups="mrp_workorder.group_mrp_wo_tablet_timer">
-                            <button name="button_pending" type="object" class="btn btn-secondary" attrs="{'invisible': True}" barcode_trigger="pause" string="PAUSE"/>
-                            <button name="button_start" type="object" class="btn btn-warning" attrs="{'invisible': True}" barcode_trigger="pause" string="CONTINUE"/>
-                            <button name="button_unblock" type="object" class="btn btn-secondary btn-danger o_unblock" attrs="{'invisible': [('working_state', '!=', 'blocked')]}">Unblock</button>
+                            <button name="button_pending" type="object" class="btn btn-secondary" invisible="True" barcode_trigger="pause" string="PAUSE"/>
+                            <button name="button_start" type="object" class="btn btn-warning" invisible="True" barcode_trigger="pause" string="CONTINUE"/>
+                            <button name="button_unblock" type="object" class="btn btn-secondary btn-danger o_unblock" invisible="working_state != 'blocked'">Unblock</button>
                             <field name="duration" widget="mrp_timer" class="ms-1" readonly="1"/>
                         </span>
                     </div>
                     <div class="o_workorder_bar_center o_workorder_bar_content">
                         <div class="o_workorder_field o_workorder_lot">
-                            <div attrs="{'invisible': [('product_tracking', '=', 'none')]}">
-                                <label for="finished_lot_id" string="Lot" attrs="{'invisible': [('product_tracking', '!=', 'lot')]}"/>
-                                <label for="finished_lot_id" string="Serial" attrs="{'invisible': [('product_tracking', '!=', 'serial')]}"/>
+                            <div invisible="product_tracking == 'none'">
+                                <label for="finished_lot_id" string="Lot" invisible="product_tracking != 'lot'"/>
+                                <label for="finished_lot_id" string="Serial" invisible="product_tracking != 'serial'"/>
                                 <field name="finished_lot_id" context="{'default_product_id': product_id, 'default_company_id': company_id}" domain="[('product_id', '=', product_id)]"/>
-                                <button name="action_generate_serial" type="object" class="btn btn-secondary fa fa-plus" aria-label="Creates a new serial/lot number" title="Creates a new serial/lot number" role="img" attrs="{'invisible': [('finished_lot_id', '!=', False)]}"/>
+                                <button name="action_generate_serial" type="object" class="btn btn-secondary fa fa-plus" aria-label="Creates a new serial/lot number" title="Creates a new serial/lot number" role="img" invisible="finished_lot_id"/>
                             </div>
                         </div>
                     </div>
                     <div class="o_workorder_bar_right o_workorder_bar_content">
-                        <button name="do_finish" type="object" string="Mark as Done" icon="fa-check" attrs="{'invisible': ['|', ('current_quality_check_id', '!=', False), '&amp;', ('is_last_unfinished_wo', '=', False), ('is_last_lot', '=', False)]}" class="btn-primary" barcode_trigger="cloWO"/>
-                        <button name="action_open_manufacturing_order" type="object" string="Mark as Done and Close MO" icon="fa-check" attrs="{'invisible': ['|', ('current_quality_check_id', '!=', False), ('is_last_unfinished_wo', '=', False)]}" class="btn-primary" barcode_trigger="cloMO"/>
-                        <button name="record_production" type="object" string="Record production" attrs="{'invisible': ['|', '|', ('current_quality_check_id', '!=', False), ('is_last_unfinished_wo', '=', True), ('is_last_lot', '=', True)]}" barcode_trigger="record" class="btn-primary"/>
+                        <button name="do_finish" type="object" string="Mark as Done" icon="fa-check" invisible="current_quality_check_id or not is_last_unfinished_wo and not is_last_lot" class="btn-primary" barcode_trigger="cloWO"/>
+                        <button name="action_open_manufacturing_order" type="object" string="Mark as Done and Close MO" icon="fa-check" invisible="current_quality_check_id or not is_last_unfinished_wo" class="btn-primary" barcode_trigger="cloMO"/>
+                        <button name="record_production" type="object" string="Record production" invisible="current_quality_check_id or is_last_unfinished_wo or is_last_lot" barcode_trigger="record" class="btn-primary"/>
                     </div>
                 </div>
             </form>

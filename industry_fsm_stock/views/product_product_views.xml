@@ -18,7 +18,7 @@
                 <li>On hand: <field name="qty_available"/> <field name="uom_id"/></li>
             </xpath>
             <xpath expr="//ul" position="after">
-                <button class="btn align-self-end" type="object" name="action_assign_serial" attrs="{'invisible': ['|', ('tracking', '=', 'none'), ('fsm_quantity', '=', 0)]}">
+                <button class="btn align-self-end" type="object" name="action_assign_serial" invisible="tracking == 'none' or fsm_quantity == 0">
                     <i t-att-class="record.serial_missing.raw_value and 'fa fa-list text-danger' or 'fa fa-list text-success'" title="Lot/Serial number"></i>
                 </button>
             </xpath>

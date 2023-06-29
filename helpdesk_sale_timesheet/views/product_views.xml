@@ -7,9 +7,9 @@
         <field name="arch" type="xml">
             <group name="sale" position="after">
                 <group>
-                    <group string="Helpdesk" name="helpdesk" attrs="{'invisible': ['|', ('type', '!=', 'service'), ('sale_ok', '=', False)]}" groups="helpdesk.group_use_sla">
-                        <field name="sla_id" groups="!helpdesk.group_helpdesk_user" attrs="{'invisible': ['|', ('type', '!=', 'service'), ('sale_ok', '=', False)]}" options="{'no_quick_create': True, 'no_open': True}" context="{'with_team_name': True}"/>
-                        <field name="sla_id" groups="helpdesk.group_helpdesk_user" attrs="{'invisible': ['|', ('type', '!=', 'service'), ('sale_ok', '=', False)]}" options="{'no_quick_create': True}" context="{'with_team_name': True}"/>
+                    <group string="Helpdesk" name="helpdesk" invisible="type != 'service' or not sale_ok" groups="helpdesk.group_use_sla">
+                        <field name="sla_id" groups="!helpdesk.group_helpdesk_user" invisible="type != 'service' or not sale_ok" options="{'no_quick_create': True, 'no_open': True}" context="{'with_team_name': True}"/>
+                        <field name="sla_id" groups="helpdesk.group_helpdesk_user" invisible="type != 'service' or not sale_ok" options="{'no_quick_create': True}" context="{'with_team_name': True}"/>
                     </group>
                 </group>
             </group>

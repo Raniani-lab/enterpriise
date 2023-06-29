@@ -10,11 +10,11 @@
             </field>
             <field name="contract_start_date" position="after">
                 <field name="show_new_car" invisible="1"/>
-                <field name="new_car" attrs="{'invisible': [('show_new_car', '=', False)]}" />
+                <field name="new_car" invisible="not show_new_car" />
                 <field name="car_id"/>
                 <field name="assigned_car_warning" class="alert alert-warning"
                        role="alert" colspan="2" nolabel="1"
-                       attrs="{'invisible':[('assigned_car_warning', '=', False)]}"/>
+                       invisible="not assigned_car_warning"/>
                 <field name="l10n_be_canteen_cost" invisible="1"/>
             </field>
         </field>

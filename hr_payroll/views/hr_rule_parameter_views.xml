@@ -10,12 +10,12 @@
                         <field name="name"/>
                         <field name="code"/>
                     </group>
-                    <div string="Versions"  class="o_salary_rule_container position-relative" attrs="{'invisible': [('id', '!=', False)]}">
+                    <div string="Versions"  class="o_salary_rule_container position-relative" invisible="id">
                         <group class="pe-none user-select-none mt-4 opacity-25 lh-1">
                             <div>
                                 <span>Versions</span>
                                 <field name="parameter_version_ids"
-                                        colspan="2" nolabel="1" attrs="{'invisible': [('id', '!=', False)]}">
+                                        colspan="2" nolabel="1" invisible="id">
                                     <tree>
                                         <field name="date_from"/>
                                         <field name="parameter_value"/>
@@ -27,7 +27,7 @@
                             Save your Salary Rule in order to add Parameter Values.
                         </span>
                     </div>
-                    <group string="Versions" attrs="{'invisible': [('id', '=', False)]}">
+                    <group string="Versions" invisible="not id">
                         <field name="parameter_version_ids" nolabel="1" colspan="2"
                                 context="{'default_rule_parameter_id': active_id}">
                             <tree editable="bottom">

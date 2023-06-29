@@ -7,8 +7,7 @@
             <field name="priority">100</field>
             <field name="arch" type="xml">
                 <form string="Bank Statement">
-                    <div class="alert alert-warning text-center" role="alert" attrs="{
-                                'invisible': [('is_valid','=',True), ('is_complete','=',True)]}">
+                    <div class="alert alert-warning text-center" role="alert" invisible="is_valid and is_complete">
                         <field name="problem_description"/>
                     </div>
                     <sheet>
@@ -39,9 +38,9 @@
                         <button string="Save" class="btn-primary" special="save"  data-hotkey="S"/>
                         <button string="Discard" class="btn-secondary" special="cancel" data-hotkey="J"/>
                         <button string="Print" class="btn-secondary" name="action_generate_attachment" type="object" data-hotkey="P"
-                                attrs="{'invisible': ['|', ('id', '=', False), ('attachment_ids','!=',[])]}"/>
+                                invisible="not id or attachment_ids"/>
                         <button string="Delete" class="btn-danger ms-auto" name="unlink" type="object" data-hotkey="X"
-                                attrs="{'invisible': [('id', '=', False)]}"
+                                invisible="not id"
                                 confirm="Are you sure you want to delete this statement?"/>
                     </footer>
                 </xpath>
@@ -114,22 +113,22 @@
             <field name="arch" type="xml">
                 <kanban js_class="bank_rec_widget_kanban"
                         on_create="account_accountant.action_bank_statement_line_form_bank_rec_widget">
-                    <field name="id" invisible="1"/>
-                    <field name="state" invisible="1"/>
-                    <field name="statement_complete" invisible="1"/>
-                    <field name="statement_valid" invisible="1"/>
-                    <field name="statement_balance_end_real" invisible="1"/>
-                    <field name="statement_name" invisible="1"/>
-                    <field name="sequence" invisible="1"/>
-                    <field name="company_id" invisible="1"/>
-                    <field name="journal_id" invisible="1"/>
-                    <field name="statement_id" invisible="1"/>
-                    <field name="is_reconciled" invisible="1"/>
-                    <field name="to_check" invisible="1"/>
-                    <field name="partner_bank_id" invisible="1"/>
-                    <field name="currency_id" invisible="1"/>
-                    <field name="foreign_currency_id" invisible="1"/>
-                    <field name="statement_line_id" invisible="1"/>
+                    <field name="id"/>
+                    <field name="state"/>
+                    <field name="statement_complete"/>
+                    <field name="statement_valid"/>
+                    <field name="statement_balance_end_real"/>
+                    <field name="statement_name"/>
+                    <field name="sequence"/>
+                    <field name="company_id"/>
+                    <field name="journal_id"/>
+                    <field name="statement_id"/>
+                    <field name="is_reconciled"/>
+                    <field name="to_check"/>
+                    <field name="partner_bank_id"/>
+                    <field name="currency_id"/>
+                    <field name="foreign_currency_id"/>
+                    <field name="statement_line_id"/>
                     <templates>
                         <t t-name="kanban-box">
                             <div t-if="!record.statement_id.raw_value"
@@ -153,7 +152,7 @@
                                     <!-- Row 1 -->
                                     <div id="row1_col1">
                                         <strong>
-                                            <field name="date"/>
+                                            <field name="date" readonly="state in ['cancel', 'posted']"/>
                                         </strong>
                                     </div>
                                     <div t-attf-id="row1_col2"
@@ -200,46 +199,45 @@
                       decoration-muted="state == 'draft'"
                       default_order="internal_index desc">
                     <!--Invisible fields-->
-                    <field name="statement_complete" invisible="1"/>
-                    <field name="statement_valid" invisible="1"/>
-                    <field name="state" invisible="1"/>
-                    <field name="is_reconciled" invisible="1"/>
-                    <field name="to_check" invisible="1"/>
-                    <field name="country_code" invisible="1"/>
-                    <field name="currency_id" invisible="1"/>
-                    <field name="company_id" invisible="1"/>
+                    <field name="statement_complete" column_invisible="True"/>
+                    <field name="statement_valid" column_invisible="True"/>
+                    <field name="state" column_invisible="True"/>
+                    <field name="is_reconciled" column_invisible="True"/>
+                    <field name="to_check" column_invisible="True"/>
+                    <field name="country_code" column_invisible="True"/>
+                    <field name="currency_id" column_invisible="True"/>
+                    <field name="company_id" column_invisible="True"/>
 
                     <!--Visible fields-->
-                    <field name="sequence" widget="handle" invisible="1"/> <!--Until we add the JS class-->
-                    <field name="date" attrs="{'readonly': [('is_reconciled', '=', True),('amount', '!=', 0)]}"
+                    <field name="sequence" widget="handle" column_invisible="True"/> <!--Until we add the JS class-->
+                    <field name="date" readonly="is_reconciled and amount != 0"
                            options="{'warn_future': true}"/>
                     <field name="move_id" optional="hidden" required="0"/>
-                    <field name="payment_ref" required="1" attrs="{'readonly': [('is_reconciled', '=', True),('amount', '!=', 0)]}"/>
-                    <field name="partner_id" attrs="{'readonly': [('is_reconciled', '=', True),('amount', '!=', 0)]}"/>
+                    <field name="payment_ref" required="1" readonly="is_reconciled and amount != 0"/>
+                    <field name="partner_id" readonly="is_reconciled and amount != 0"/>
                     <field name="narration"
                            string="Notes"
-                           attrs="{'readonly': [('is_reconciled', '=', True), ('amount', '!=', 0)],
-                                   'invisible': [('narration', '=', False)]}"
+                           invisible="not narration"
+                           readonly="is_reconciled and amount != 0"
                            optional="hidden"/>
-                    <field name="ref" attrs="{'readonly': [('is_reconciled', '=', True),('amount', '!=', 0)]}" optional="hidden"/>
+                    <field name="ref" readonly="is_reconciled and amount != 0" optional="hidden"/>
                     <field name="transaction_type" optional="hidden"/>
                     <field name="foreign_currency_id"
                            optional="hidden"
                            groups="base.group_multi_currency"
                            domain="[('id', '!=', currency_id)]"
                            options="{'no_open': True, 'no_create': True}"
-                           attrs="{'readonly': [('is_reconciled', '=', True),('amount', '!=', 0)]}"
-                    />
+                           readonly="is_reconciled and amount != 0"/>
                     <field name="amount_currency"
                            optional="hidden"
                            groups="base.group_multi_currency"
-                           attrs="{'invisible': [('foreign_currency_id', '=', False)], 'readonly': [('is_reconciled', '=', True),('amount', '!=', 0)]}"
-                    />
-                    <field name="amount" attrs="{'readonly': [('is_reconciled', '=', True),('amount', '!=', 0)]}" />
+                           invisible="not foreign_currency_id"
+                           readonly="is_reconciled and amount != 0"/>
+                    <field name="amount" readonly="is_reconciled and amount != 0" />
                     <field name="journal_id"
                            domain="[('type', 'in', ['bank','cash'])]"
-                           attrs="{'readonly': ['|',('statement_id', '!=', False),('is_reconciled', '=', True),('amount', '!=', 0)]}"
-                           invisible="bool(context.get('default_journal_id'))"/>
+                           column_invisible="bool(context.get('default_journal_id'))"
+                           readonly="(statement_id or is_reconciled) and amount != 0"/>
                     <field name="running_balance" class="oe_read_only"/>
                     <field name="account_number" optional="hidden"/>
                     <field name="statement_id"
@@ -253,11 +251,10 @@
                             }"
                            decoration-danger="statement_complete == False or statement_valid == False"
                            widget="bank_rec_list_many2one_multi_id"
-                           attrs="{'readonly': [('id', '=', False)]}"
-                    />
+                           readonly="not id"/>
                     <field name="id"
                            widget="bank_rec_list_view_switcher"
-                           attrs="{'invisible': [('id', '=', False)]}"/>
+                           invisible="not id"/>
                 </tree>
             </field>
         </record>
@@ -277,26 +274,27 @@
                     <field name="company_id" invisible="1"/>
                     <group>
                         <group>
-                            <field name="date" attrs="{'readonly': [('is_reconciled', '=', True),('amount', '!=', 0)]}"/>
-                            <field name="payment_ref" required="1"
-                                   attrs="{'readonly': [('is_reconciled', '=', True), ('amount', '!=', 0)]}"/>
+                            <field name="date" readonly="is_reconciled and amount != 0"/>
+                            <field name="payment_ref"
+                                   required="1"
+                                   readonly="is_reconciled and amount != 0"/>
                             <field name="partner_id"
-                                   attrs="{'readonly': [('is_reconciled', '=', True), ('amount', '!=', 0)]}"/>
+                                   readonly="is_reconciled and amount != 0"/>
                         </group>
                         <group>
-                            <field name="amount" attrs="{'readonly': [('is_reconciled', '=', True), ('amount', '!=', 0)]}"/>
+                            <field name="amount" readonly="is_reconciled and amount != 0"/>
                             <field name="foreign_currency_id"
                                    groups="base.group_multi_currency"
                                    domain="[('id', '!=', currency_id)]"
                                    options="{'no_open': True, 'no_create': True}"
-                                   attrs="{'readonly': [('is_reconciled', '=', True), ('amount', '!=', 0)]}"/>
+                                   readonly="is_reconciled and amount != 0"/>
                             <field name="amount_currency"
                                    groups="base.group_multi_currency"
-                                   attrs="{'invisible': [('foreign_currency_id', '=', False)], 'readonly': [('is_reconciled', '=', True), ('amount', '!=', 0)]}"/>
+                                   invisible="not foreign_currency_id"
+                                   readonly="is_reconciled and amount != 0"/>
                             <field name="journal_id"
                                    domain="[('type', 'in', ['bank', 'cash'])]"
-                                   attrs="{'readonly': [('is_reconciled', '=', True),('amount', '!=', 0)]}"
-                                   readonly="context.get('default_journal_id')"/>
+                                   readonly="context.get('default_journal_id') or (is_reconciled and amount != 0)"/>
                         </group>
                     </group>
                     <footer>
@@ -378,10 +376,10 @@
                       count_limit="40"
                       js_class="bank_rec_amls_list_view">
                     <!-- Invisible fields -->
-                    <field name="company_id" invisible="1"/>
-                    <field name="payment_id" invisible="1"/>
-                    <field name="currency_id" invisible="1"/>
-                    <field name="company_currency_id" invisible="1"/>
+                    <field name="company_id" column_invisible="True"/>
+                    <field name="payment_id" column_invisible="True"/>
+                    <field name="currency_id" column_invisible="True"/>
+                    <field name="company_currency_id" column_invisible="True"/>
 
                     <field name="account_id"
                            options="{'no_open': True, 'no_create': True}"

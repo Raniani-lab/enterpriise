@@ -8,7 +8,7 @@
             <setting id="taxcloud_settings" position="after">
                 <setting id="avatax_settings" string="AvaTax Brazil"
                          help="Automatically compute tax rates"
-                         attrs="{'invisible': [('country_code', '!=', 'BR')]}"
+                         invisible="country_code != 'BR'"
                          company_dependent="1"> <!-- TODO: add documentation attr when docs are published -->
                 <field name="l10n_br_avatax_api_identifier" invisible="1"/>
                 <field name="l10n_br_avatax_api_key" invisible="1"/>
@@ -23,20 +23,20 @@
                         <field name="l10n_br_avatax_portal_email"/>
                         <div class="mt16">
                             <button name="create_account" type="object" class="btn-link" noSaveDialog="1"
-                                    attrs="{'invisible': [('l10n_br_avatax_show_overwrite_warning', '=', False)]}"
+                                    invisible="not l10n_br_avatax_show_overwrite_warning"
                                     confirm="Creating a new account will permanently remove your current Avatax account from Odoo, but it won't delete the account on the Avatax side. Do you wish to proceed?">
                                 <i title="Create a new account" role="img" aria-label="Create a new account" class="fa fa-plug fa-fw"/>
                                 Create a new account
                             </button>
                             <button name="create_account" type="object" class="btn-link" noSaveDialog="1"
-                                    attrs="{'invisible': [('l10n_br_avatax_show_overwrite_warning', '=', True)]}">
+                                    invisible="l10n_br_avatax_show_overwrite_warning">
                                 <i title="Create account" role="img" aria-label="Create account" class="fa fa-plug fa-fw"/>
                                 Create account
                             </button>
                         </div>
                     </div>
                     <div class="mt16"
-                         attrs="{'invisible': ['!', '&amp;', ('l10n_br_avatax_api_identifier', 'not in', (False, '')), ('l10n_br_avatax_api_key', 'not in', (False, ''))]}">
+                         invisible="l10n_br_avatax_api_identifier in (False, '') or l10n_br_avatax_api_key in (False, '')">
                         <button name="button_l10n_br_avatax_ping" type="object" class="btn-link">
                             <i title="Test connection" role="img" aria-label="Test connection" class="fa fa-plug fa-fw"/>
                             Test connection
@@ -53,7 +53,7 @@
                         </button>
                     </div>
                             <field name="l10n_br_tax_regime" invisible="1"/>
-                            <div class="row" title="This only applies if you are a simplified tax regime company." attrs="{'invisible': [('l10n_br_tax_regime', '!=', 'simplified')]}">
+                            <div class="row" title="This only applies if you are a simplified tax regime company." invisible="l10n_br_tax_regime != 'simplified'">
                                 <label for="l10n_br_icms_rate" class="col-lg-3 o_light_label" />
                                 <field name="l10n_br_icms_rate" class="w-50"/>
                             </div>

@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='company_id']" position="after">
                 <field name="country_code" invisible="1"/>
-                <field name="l10n_mx_edi_payment_method_id" attrs="{'invisible': [('country_code', '!=', 'MX')]}"/>
+                <field name="l10n_mx_edi_payment_method_id" invisible="country_code != 'MX'"/>
             </xpath>
         </field>
     </record>

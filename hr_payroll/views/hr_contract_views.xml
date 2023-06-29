@@ -15,39 +15,39 @@
             <xpath expr="//label[@for='wage']" position="before">
                 <field name="wage_type"/>
                 <field name="schedule_pay"/>
-                <label for="hourly_wage" attrs="{'invisible': [('wage_type', '!=', 'hourly')]}"/>
-                <div class="o_row mw-50" name="hourly_wage" attrs="{'invisible': [('wage_type', '!=', 'hourly')]}">
+                <label for="hourly_wage" invisible="wage_type != 'hourly'"/>
+                <div class="o_row mw-50" name="hourly_wage" invisible="wage_type != 'hourly'">
                     <field name="hourly_wage" nolabel="1"/>
                     <span>/ hour</span>
                 </div>
             </xpath>
             <xpath expr="//div[@name='wage_period_label']" position="attributes">
-                <attribute name="attrs">{'invisible': [('schedule_pay', '!=', 'monthly')]}</attribute>
+                <attribute name="invisible">schedule_pay != 'monthly'</attribute>
             </xpath>
             <xpath expr="//div[@name='wage_period_label']" position="after">
-                <div class="mb-3" attrs="{'invisible': [('schedule_pay', '!=', 'annually')]}">/ year</div>
-                <div class="mb-3" attrs="{'invisible': [('schedule_pay', '!=', 'semi-annually')]}">/ half-year</div>
-                <div class="mb-3" attrs="{'invisible': [('schedule_pay', '!=', 'quarterly')]}">/ quarter</div>
-                <div class="mb-3" attrs="{'invisible': [('schedule_pay', '!=', 'bi-monthly')]}">/ two months</div>
-                <div class="mb-3" attrs="{'invisible': [('schedule_pay', '!=', 'semi-monthly')]}">/ half-month</div>
-                <div class="mb-3" attrs="{'invisible': [('schedule_pay', '!=', 'bi-weekly')]}">/ two weeks</div>
-                <div class="mb-3" attrs="{'invisible': [('schedule_pay', '!=', 'weekly')]}">/ week</div>
-                <div class="mb-3" attrs="{'invisible': [('schedule_pay', '!=', 'daily')]}">/ day</div>
+                <div class="mb-3" invisible="schedule_pay != 'annually'">/ year</div>
+                <div class="mb-3" invisible="schedule_pay != 'semi-annually'">/ half-year</div>
+                <div class="mb-3" invisible="schedule_pay != 'quarterly'">/ quarter</div>
+                <div class="mb-3" invisible="schedule_pay != 'bi-monthly'">/ two months</div>
+                <div class="mb-3" invisible="schedule_pay != 'semi-monthly'">/ half-month</div>
+                <div class="mb-3" invisible="schedule_pay != 'bi-weekly'">/ two weeks</div>
+                <div class="mb-3" invisible="schedule_pay != 'weekly'">/ week</div>
+                <div class="mb-3" invisible="schedule_pay != 'daily'">/ day</div>
             </xpath>
             <xpath expr="//label[@for='wage']" position="attributes">
-                <attribute name="attrs">{'invisible': [('wage_type', '=', 'hourly')]}</attribute>
+                <attribute name="invisible">wage_type == 'hourly'</attribute>
             </xpath>
             <xpath expr="//div[@name='wage']" position="attributes">
-                <attribute name="attrs">{'invisible': [('wage_type', '=', 'hourly')]}</attribute>
+                <attribute name="invisible">wage_type == 'hourly'</attribute>
             </xpath>
             <div name="button_box" position="inside">
                 <button class="oe_stat_button" name="action_open_payslips"
                         type="object" icon="fa-dollar" groups="hr_payroll.group_hr_payroll_user"
-                        attrs="{'invisible': ['|', ('payslips_count', '=', 0), ('state', '=', 'draft')]}">
+                        invisible="payslips_count == 0 or state == 'draft'">
                     <field name="payslips_count" string="Payslips" widget="statinfo"/>
                 </button>
                 <button class="oe_stat_button" string="Salary Attachments" name="action_open_salary_attachments"
-                        type="object" icon="fa-book" attrs="{'invisible': [('salary_attachments_count', '=', 0)]}">
+                        type="object" icon="fa-book" invisible="salary_attachments_count == 0">
                     <field name="salary_attachments_count" string="Salary Attachments" widget="statinfo"/>
                 </button>
             </div>
@@ -56,10 +56,10 @@
                     <label for="time_credit"/>
                     <div class="o_row">
                         <field name="time_credit" class="oe_inline"/>
-                        <field name="work_time_rate" attrs="{'invisible': [('time_credit', '=', False)]}" widget="percentage"/>
+                        <field name="work_time_rate" invisible="not time_credit" widget="percentage"/>
                     </div>
-                    <field name="standard_calendar_id" attrs="{'invisible': [('time_credit', '=', False)]}" help="The Standard Calendar is the calendar used by the people working at a 100% rate. It's used here to compute your part-time percentage."/>
-                    <field name="time_credit_type_id" attrs="{'invisible': [('time_credit', '=', False)], 'required': [('time_credit', '=', True)]}"/>
+                    <field name="standard_calendar_id" invisible="not time_credit" help="The Standard Calendar is the calendar used by the people working at a 100% rate. It's used here to compute your part-time percentage."/>
+                    <field name="time_credit_type_id" invisible="not time_credit" required="time_credit"/>
             </group>
         </field>
     </record>

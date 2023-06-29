@@ -10,7 +10,7 @@
                 What do you want to do with the files in the workspace?
                 <footer>
                     <button name="delete" type="object" class="btn btn-primary" string="Delete"/>
-                    <button name="delete_and_move" type="object" class="btn btn-primary" string="Move to parent workspace" attrs="{'invisible': [('parent_folder_id', '=', False)]}"/>
+                    <button name="delete_and_move" type="object" class="btn btn-primary" string="Move to parent workspace" invisible="not parent_folder_id"/>
                     <button special="cancel" string="Cancel" data-hotkey="x"/>
                 </footer>
             </form>

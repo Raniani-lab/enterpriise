@@ -12,10 +12,10 @@
                     <div class="col-12 my-2 d-flex align-items-baseline">
                         <i class="fa fa-fw fa-lg fa-tags me-3" title="Product"/>
                         <field name="product_id" placeholder="Product"
-                            attrs="{'readonly': [('id', '!=', False)]}"
                             context="{'default_detailed_type': 'product'}"
                             domain="[('type', 'in', ['product'])]"
-                            required="1"/>
+                            required="1"
+                            readonly="id"/>
                     </div>
                 </div>
                 <div class="row">
@@ -27,7 +27,7 @@
                 </div>
                 <div class="row justify-content-center justify-content-md-start">
                     <div class="col-10 col-md-8 my-2 ms-md-5 align-items-baseline"
-                        attrs="{'invisible': [('tracking', '=', 'serial')]}">
+                        invisible="tracking == 'serial'">
                         <widget name="digipad" quantity_field="inventory_quantity"/>
                     </div>
                 </div>
@@ -36,32 +36,32 @@
                         <i class="fa fa-fw fa-lg fa-map-marker me-3" title="Location"/>
                         <field name="location_id" placeholder="Location"
                             options="{'no_create': True}" force_save="1"
-                            attrs="{'readonly': [('id', '!=', False)]}"/>
+                            readonly="id"/>
                     </div>
                 </div>
                 <div class="row" groups="stock.group_production_lot"
-                    attrs="{'invisible': ['&amp;', ('id', '!=', False), ('lot_id', '=', False)]}">
-                    <div class="col-12 col-md-6 my-2 d-flex align-items-baseline" attrs="{'invisible': ['|',('tracking', '=','none'), ('product_id','=', False)]}">
+                    invisible="id and not lot_id">
+                    <div class="col-12 col-md-6 my-2 d-flex align-items-baseline" invisible="tracking == 'none' or not product_id">
                         <i class="fa fa-fw fa-lg fa-barcode me-3" title="Serial/Lot Number"/>
                         <field name="lot_id"
-                            attrs="{'readonly': [('id', '!=', False)]}"
+                            readonly="id"
                             context="{'default_company_id': company_id, 'default_product_id': product_id}"
                             placeholder="Serial/Lot Number"/>
                     </div>
                 </div>
                 <div class="row" groups="stock.group_tracking_lot"
-                    attrs="{'invisible': ['&amp;', ('id', '!=', False), ('package_id', '=', False)]}">
+                    invisible="id and not package_id">
                     <div class="col-12 col-md-6 my-2 d-flex align-items-baseline">
                         <i class="fa fa-fw fa-lg fa-archive me-3" title="Package"/>
                         <field name="package_id" placeholder="Package"
-                            attrs="{'readonly': [('id', '!=', False)]}"
+                            readonly="id"
                             domain="[('location_id', '=', location_id)]"/>
                     </div>
                 </div>
                 <div class="row" groups="stock.group_tracking_owner">
                     <div class="col-12 col-md-6 my-2 d-flex align-items-baseline">
                         <i class="fa fa-fw fa-lg fa-user-o me-3" title="Owner"/>
-                        <field name="owner_id" placeholder="Owner" attrs="{'readonly': [('id', '!=', False)]}"/>
+                        <field name="owner_id" placeholder="Owner" readonly="id"/>
                     </div>
                 </div>
                 <div class="fixed-bottom">

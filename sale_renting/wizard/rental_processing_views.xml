@@ -13,16 +13,14 @@
                     <field name="rental_wizard_line_ids">
                         <tree create="false" editable="top">
                             <field name="product_id" readonly="1" force_save="1" options="{'no_open': True}"/>
-                            <field name="order_line_id" invisible="1"/>
-                            <field name="rental_order_wizard_id" invisible="1"/>
-                            <field name="qty_reserved" readonly="1" attrs="{'column_invisible':[('parent.status', '=', 'return')]}"/>
-                            <field name="qty_delivered" attrs="{'readonly':[('parent.status', '=', 'return')]}" force_save="1"/>
-                            <field name="qty_returned" attrs="{'column_invisible':[('parent.status', '=', 'pickup')]}"/>
-                            <field name="is_late" invisible="1"/>
-                            <field name="status" invisible="1"/>
-                            <button icon="fa-clock-o" attrs="{
-                                'column_invisible': ['|', ('parent.has_late_lines', '=', False), ('parent.status', '=', 'pickup')],
-                                'invisible': [('is_late', '=', False)]}"
+                            <field name="order_line_id" column_invisible="True"/>
+                            <field name="rental_order_wizard_id" column_invisible="True"/>
+                            <field name="qty_reserved" readonly="1" column_invisible="parent.status == 'return'"/>
+                            <field name="qty_delivered" readonly="parent.status == 'return'" force_save="1"/>
+                            <field name="qty_returned" column_invisible="parent.status == 'pickup'"/>
+                            <field name="is_late" column_invisible="True"/>
+                            <field name="status" column_invisible="True"/>
+                            <button icon="fa-clock-o" column_invisible="not parent.has_late_lines or parent.status == 'pickup'" invisible="not is_late"
                                 class="text-danger" title="Some delay cost will be added to the sales order."/>
                         </tree>
                     </field>

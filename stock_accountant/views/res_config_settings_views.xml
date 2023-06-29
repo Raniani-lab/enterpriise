@@ -21,7 +21,7 @@
                     </setting>
                     <setting help="Enable automatic accounting entries for stock movements" id="default_stock_valuation_accounts">
                         <field name="group_stock_accounting_automatic" string="Automatic Accounting"/>
-                        <div name="default_accounts" class="content-group" attrs="{'invisible': [('group_stock_accounting_automatic','=',False)]}">
+                        <div name="default_accounts" class="content-group" invisible="not group_stock_accounting_automatic">
                             <div class="text-muted">
                                 The below accounts will be used by default for automatic inventory valuation.
                             </div>

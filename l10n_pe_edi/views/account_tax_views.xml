@@ -8,7 +8,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='l10n_pe_edi_unece_category']" position="after">
                     <field name="l10n_pe_edi_affectation_reason"
-                           attrs="{'invisible': [('country_code', '!=', 'PE')]}"
+                           invisible="country_code != 'PE'"
                            options="{'no_open': True, 'no_create': True}"/>
                 </xpath>
             </field>
@@ -20,7 +20,7 @@
             <field name="inherit_id" ref="account.view_tax_group_tree"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='tax_payable_account_id']" position="after">
-                    <field name="l10n_pe_edi_code" attrs="{'invisible': [('country_code', '!=', 'PE')]}" optional="hide"/>
+                    <field name="l10n_pe_edi_code" invisible="country_code != 'PE'" optional="hide"/>
                 </xpath>
             </field>
         </record>

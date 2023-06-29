@@ -6,7 +6,7 @@
         <field name="arch" type="xml">
             <form string="Signature Request">
                 <div role="alert" class="alert alert-warning text-center"
-                    attrs="{'invisible': [('template_warning', '=', False)]}"
+                    invisible="not template_warning"
                     title="No template available">
                     <span class="fa fa-exclamation-triangle"/>
                     <field name="template_warning" nolabel="1" readonly="1"/>
@@ -23,12 +23,11 @@
                         force_save="1"/>
                     <field name="partner_name"/>
                 </group>
-                <group attrs="{'invisible': [('sign_template_ids', '=', [])]}" string="Sign Request Options">
+                <group invisible="not sign_template_ids" string="Sign Request Options">
                     <field name="applicant_role_id" options="{'no_create': True}"/>
                     <field name="responsible_id" options="{'no_create_edit': True}"
-                        attrs="{
-                            'invisible': [('has_both_template', '=', False)],
-                            'required': [('has_both_template', '=', True)]}"/>
+                        invisible="not has_both_template"
+                        required="has_both_template"/>
                 </group>
                 <group class="o_label_nowrap" string="Mail Options">
                     <field name="subject" placeholder="Signature Request"/>

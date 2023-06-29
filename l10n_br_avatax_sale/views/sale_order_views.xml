@@ -11,7 +11,7 @@
                     <button name="button_l10n_br_avatax"
                             type="object"
                             string="Compute Taxes Using Avatax"
-                            attrs="{'invisible':['|', ('state', 'in', ('done', 'cancel')), ('is_l10n_br_avatax', '=', False)]}"
+                            invisible="state in ('done', 'cancel') or not is_l10n_br_avatax"
                             groups="sales_team.group_sale_salesman,account.group_account_invoice"/>
                 </div>
             </xpath>

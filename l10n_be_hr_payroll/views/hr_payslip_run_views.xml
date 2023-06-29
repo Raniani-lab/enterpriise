@@ -9,7 +9,7 @@
                 <field name="l10n_be_display_eco_voucher_button" invisible="1"/>
             </field>
             <button name="action_draft" position="after">
-                <button string="Eco-Vouchers" name="action_l10n_be_eco_vouchers" type="object" attrs="{'invisible': [('l10n_be_display_eco_voucher_button', '=', False)]}"/>
+                <button string="Eco-Vouchers" name="action_l10n_be_eco_vouchers" type="object" invisible="not l10n_be_display_eco_voucher_button"/>
             </button>
         </field>
     </record>

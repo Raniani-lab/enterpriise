@@ -24,10 +24,10 @@
                         <button name="%(consolidation_account_action)d" class="btn-primary"
                                 context="{'search_default_chart_id': active_id, 'default_chart_id': active_id}"
                                 type="action" string="Review Chart Of Accounts"
-                                attrs="{'invisible': [('id', '=', False)]}"/>
+                                invisible="not id"/>
                     </header>
                     <sheet>
-                        <div class="oe_button_box" name="button_box" attrs="{'invisible': [('id', '=', False)]}">
+                        <div class="oe_button_box" name="button_box" invisible="not id">
                             <button class="oe_stat_button" type="action" name="%(consolidation_group_action)d"
                                     icon="fa-sitemap"
                                     context="{'search_default_chart_id':active_id, 'default_chart_id': active_id}">
@@ -65,11 +65,11 @@
                                 <tree>
                                     <field name="name" string="Company Name"/>
                                     <field name="currency_id"/>
-                                    <field name="account_consolidation_currency_is_different" invisible="1"/>
+                                    <field name="account_consolidation_currency_is_different" column_invisible="True"/>
                                     <button type="object" name="action_open_mapping"
                                             string="Map Accounts" class="oe_highlight btn-sm"/>
                                     <button type="object" name="action_open_rate_ranges"
-                                            attrs="{'invisible': [('account_consolidation_currency_is_different', '=', False)]}"
+                                            invisible="not account_consolidation_currency_is_different"
                                             string="Historical Rates" class="oe_highlight btn-sm"/>
                                 </tree>
                             </field>

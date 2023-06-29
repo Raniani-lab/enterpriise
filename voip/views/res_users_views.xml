@@ -8,7 +8,7 @@
             <group name="messaging" position="after">
                 <!-- This group is not displayed in the forms of portal users (share = True) in order to avoid confusing
                      administrators with irrelevant settings. -->
-                <group name="voip_user_config" string="VoIP" attrs="{'invisible': [('share', '=', True)]}">
+                <group name="voip_user_config" string="VoIP" invisible="share">
                     <field name="voip_username" readonly="0"/>
                     <field name="voip_secret" password="True" readonly="0"/>
                     <field name="should_call_from_another_device" readonly="0"/>

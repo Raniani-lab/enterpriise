@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="point_of_sale.view_pos_printer_form"/>
         <field name="arch" type="xml">
             <field name="proxy_ip" position="replace">
-                <field name="device_id" attrs="{'invisible': [('printer_type', '!=', 'iot')]}"/>
+                <field name="device_id" invisible="printer_type != 'iot'"/>
             </field>
         </field>
     </record>

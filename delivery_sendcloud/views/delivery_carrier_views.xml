@@ -6,20 +6,20 @@
     <field name="inherit_id" ref="delivery.view_delivery_carrier_form"/>
     <field name="arch" type="xml">
       <xpath expr="//div[@name='title']" position="after">
-        <div colspan="2" class="alert alert-warning" attrs="{'invisible': ['|', ('delivery_type', '!=', 'sendcloud'), ('prod_environment', '=', True)]}" role="status">
+        <div colspan="2" class="alert alert-warning" invisible="delivery_type != 'sendcloud' or prod_environment" role="status">
           <p><i class="fa fa-exclamation-triangle"/> In test environment, to avoid charges, your shippings are automatically <b>cancelled</b> after the label creation.</p>
         </div>
       </xpath>
       <page name="destination" position="before">
-        <page string="SendCloud Configuration" name="sendcloud_configuration" attrs="{'invisible': [('delivery_type', '!=', 'sendcloud')]}">
+        <page string="SendCloud Configuration" name="sendcloud_configuration" invisible="delivery_type != 'sendcloud'">
           <group>
             <group string="Integration">
-              <field name="sendcloud_public_key" attrs="{'required': [('delivery_type', '=', 'sendcloud')]}"/>
-              <field name="sendcloud_secret_key" attrs="{'required': [('delivery_type', '=', 'sendcloud')]}"/>
+              <field name="sendcloud_public_key" required="delivery_type == 'sendcloud'"/>
+              <field name="sendcloud_secret_key" required="delivery_type == 'sendcloud'"/>
               <div colspan='2'>
                 <button name="action_load_sendcloud_shipping_products" string="Load your SendCloud shipping products" type="object" class="oe_inline oi oi-arrow-right oe_link"/>
               </div>
-              <div colspan="2" class="alert alert-warning" attrs="{'invisible': [('sendcloud_shipping_id', '!=', False)]}" role="status">
+              <div colspan="2" class="alert alert-warning" invisible="sendcloud_shipping_id" role="status">
                 <p><i class="fa fa-exclamation-triangle"/> Do not forget to load your SendCloud shipping products for a valid configuration.</p>
               </div>
               <field name="sendcloud_shipping_id" readonly="True"/>
@@ -29,8 +29,8 @@
               <field name="sendcloud_shipping_rules"/>
               <field name="sendcloud_default_package_type_id" string="Default Package Type"/>
               <field name="can_generate_return" invisible="1"/>
-              <field name="return_label_on_delivery" attrs="{'invisible': ['|', ('can_generate_return', '=', False), ('sendcloud_return_id', '=', False)]}"/>
-              <field name="get_return_label_from_portal" attrs="{'invisible': [('return_label_on_delivery', '=', False)]}"/>
+              <field name="return_label_on_delivery" invisible="not can_generate_return or not sendcloud_return_id"/>
+              <field name="get_return_label_from_portal" invisible="not return_label_on_delivery"/>
             </group>
           </group>
         </page>

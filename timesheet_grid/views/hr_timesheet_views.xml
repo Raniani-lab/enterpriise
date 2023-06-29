@@ -13,20 +13,13 @@
                     <attribute name="js_class">timesheet_timer_list</attribute>
                 </xpath>
                 <xpath expr="/tree" position="inside">
-                    <field name="readonly_timesheet" invisible="1"/>
-                    <field name="is_timer_running" invisible="1"/>
-                    <field name="timer_start" invisible="1"/>
-                    <field name="display_timer" invisible="1"/>
+                    <field name="readonly_timesheet" column_invisible="True"/>
+                    <field name="is_timer_running" column_invisible="True"/>
+                    <field name="timer_start" column_invisible="True"/>
+                    <field name="display_timer" column_invisible="True"/>
                 </xpath>
                 <xpath expr="//field[@name='unit_amount']" position="attributes">
-                    <attribute name="attrs">{
-                        'readonly': [
-                            ('id', '!=', False),
-                            '|',
-                                ('readonly_timesheet', '=', True),
-                                ('timer_start', '!=', False)
-                        ]}
-                    </attribute>
+                    <attribute name="readonly">id and (readonly_timesheet or timer_start)</attribute>
                     <attribute name="widget">timesheet_uom_timer</attribute>
                 </xpath>
             </field>
@@ -116,15 +109,15 @@
                     <attribute name="required">0</attribute>
                 </field>
                 <xpath expr="//div[hasclass('o_kanban_record_headings')]" position="after">
-                    <div attrs="{ 'invisible': ['|', ('readonly_timesheet', '=', True), ('display_timer', '!=', False)]}">
+                    <div invisible="readonly_timesheet or display_timer">
                         <field name="unit_amount" widget="timesheet_uom" options="{'force_button': true}"/>
                     </div>
                     <div class="ms-1">
-                        <div attrs="{ 'invisible': ['|', ('readonly_timesheet', '=', True), ('display_timer', '=', False)] }">
+                        <div invisible="readonly_timesheet or not display_timer">
                             <field name="duration_unit_amount" widget="timesheet_uom_timer" decoration-danger="duration_unit_amount &gt; 24 or unit_amount &lt; 0"
                                 decoration-muted="unit_amount == 0"/>
                         </div>
-                        <div attrs="{'invisible': [('readonly_timesheet', '=', False)]}">
+                        <div invisible="not readonly_timesheet">
                             <field name="unit_amount_validate" widget="timesheet_uom" decoration-danger="duration_unit_amount &gt; 24 or unit_amount &lt; 0"
                                 decoration-muted="unit_amount == 0"/>
                         </div>
@@ -152,14 +145,14 @@
                     <field name="timer_start" invisible="1"/>
                 </xpath>
                 <xpath expr="//field[@name='unit_amount']" position="attributes">
-                    <attribute name="attrs">{'readonly': ['|', ('id', '!=', False), ('readonly_timesheet', '=', True), ('timer_start', '!=', False)]}</attribute>
+                    <attribute name="readonly">(id or readonly_timesheet) and timer_start</attribute>
                 </xpath>
                 <xpath expr="//sheet" position="before">
                     <header>
                         <button string="Validate" name="action_validate_timesheet" type="object" class="btn btn-primary"
-                            attrs="{'invisible': ['|', ('validated', '=', True), ('user_can_validate', '=', False)]}" context="{'use_notification': False}" data-hotkey="q"/>
+                            invisible="validated or not user_can_validate" context="{'use_notification': False}" data-hotkey="q"/>
                         <button string="Reset to draft" name="action_invalidate_timesheet" type="object" class="btn btn-secondary"
-                            attrs="{'invisible': ['|', ('validated', '=', False), ('user_can_validate', '=', False)]}" context="{'use_notification': False}" data-hotkey="r"/>
+                            invisible="not validated or not user_can_validate" context="{'use_notification': False}" data-hotkey="r"/>
                         <field name="validated_status" widget="statusbar"/>
                     </header>
                 </xpath>
@@ -354,15 +347,15 @@
                     <field name="display_timer_pause" invisible="1"/>
                     <field name="display_timer_resume" invisible="1"/>
                     <button class="btn-primary" name="action_timer_start" type="object" string="Start" data-hotkey="z"
-                        attrs="{'invisible': ['|', ('display_timer_start_primary', '=', False), ('encode_uom_in_days', '=', True)]}" groups="hr_timesheet.group_hr_timesheet_user"/>
+                        invisible="not display_timer_start_primary or encode_uom_in_days" groups="hr_timesheet.group_hr_timesheet_user"/>
                     <button class="btn-secondary" name="action_timer_start" type="object" string="Start" data-hotkey="z"
-                        attrs="{'invisible': ['|', ('display_timer_start_secondary', '=', False), ('encode_uom_in_days', '=', True)]}" groups="hr_timesheet.group_hr_timesheet_user"/>
+                        invisible="not display_timer_start_secondary or encode_uom_in_days" groups="hr_timesheet.group_hr_timesheet_user"/>
                     <button class="btn-primary o_fsm_stop" name="action_timer_stop" type="object" string="Stop" data-hotkey="z"
-                        attrs="{'invisible': ['|', ('display_timer_stop', '=', False), ('encode_uom_in_days', '=', True)]}" groups="hr_timesheet.group_hr_timesheet_user"/>
+                        invisible="not display_timer_stop or encode_uom_in_days" groups="hr_timesheet.group_hr_timesheet_user"/>
                     <button class="btn-secondary" name="action_timer_pause" type="object" string="Pause" data-hotkey="w"
-                        attrs="{'invisible': ['|', ('display_timer_pause', '=', False), ('encode_uom_in_days', '=', True)]}" groups="hr_timesheet.group_hr_timesheet_user"/>
+                        invisible="not display_timer_pause or encode_uom_in_days" groups="hr_timesheet.group_hr_timesheet_user"/>
                     <button class="btn-secondary" name="action_timer_resume" type="object" string="Resume" data-hotkey="w"
-                        attrs="{'invisible': ['|', ('display_timer_resume', '=', False), ('encode_uom_in_days', '=', True)]}" groups="hr_timesheet.group_hr_timesheet_user"/>
+                        invisible="not display_timer_resume or encode_uom_in_days" groups="hr_timesheet.group_hr_timesheet_user"/>
                     <field name="timer_start" widget="timer_start_field" class="align-self-center me-auto ms-2 h2" groups="hr_timesheet.group_hr_timesheet_user"/>
                 </xpath>
             </field>
@@ -658,7 +651,7 @@
             <field name="inherit_id" ref="hr.res_users_view_form_profile" />
             <field name="arch" type="xml">
                 <xpath expr="//group[@name='managers']" position="inside">
-                    <field name="timesheet_manager_id" attrs="{'readonly': [('can_edit', '=', False)]}"/>
+                    <field name="timesheet_manager_id" readonly="not can_edit"/>
                 </xpath>
                 <xpath expr="//group[@name='managers']" position="attributes">
                     <attribute name="invisible">0</attribute>

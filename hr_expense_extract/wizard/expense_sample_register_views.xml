@@ -15,9 +15,9 @@
                     <group> 
                         <field name="journal_id" options="{'no_open': True, 'no_create': True}"/>
                         <field name="payment_method_line_id" widget="radio"
-                            attrs="{'invisible': [('hide_payment_method_line', '=', True)]}" />
+                            invisible="hide_payment_method_line" />
                         <field name="partial_mode" widget="radio"
-                            attrs="{'invisible': [('hide_partial', '=', True)]}" />
+                            invisible="hide_partial" />
                     </group>
                     <group> 
                         <field name="amount" widget="monetary" options="{'currency_field': 'currency_id'}" />

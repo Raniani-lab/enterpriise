@@ -18,7 +18,7 @@
         <field name="arch" type="xml">
             <field name="partner_bank_id" position="after">
                 <field name="sepa_pain_version" invisible="1"/>
-                <field name="sepa_uetr" attrs="{'invisible': [('sepa_pain_version', '!=', 'pain.001.001.09')]}"/>
+                <field name="sepa_uetr" invisible="sepa_pain_version != 'pain.001.001.09'"/>
             </field>
         </field>
     </record>

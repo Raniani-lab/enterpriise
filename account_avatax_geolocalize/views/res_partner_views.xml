@@ -7,12 +7,10 @@
         <field name="arch" type="xml">
             <xpath expr="//div[@name='geo_localize_button']" position="replace">
                 <field name="is_avatax_valid" invisible="1"/>
-                <button attrs="{'invisible': ['|', ('partner_latitude', '!=', 0), ('partner_longitude', '!=', 0)]}"
+                <button invisible="partner_latitude != 0 or partner_longitude != 0"
                         icon="fa-gear" string="Compute based on address" title="Compute Localization"
                         name="geo_localize" type="object" class="btn btn-link p-0"/>
-                <button attrs="{'invisible': ['|', ('is_avatax_valid', '=', True),
-                                              '&amp;',('partner_latitude', '=', 0),
-                                              ('partner_longitude', '=', 0)]}"
+                <button invisible="is_avatax_valid or partner_latitude == 0 and partner_longitude == 0"
                         icon="fa-refresh" string="Refresh" title="Refresh Localization"
                         name="geo_localize" type="object" class="btn btn-link p-0"/>
             </xpath>

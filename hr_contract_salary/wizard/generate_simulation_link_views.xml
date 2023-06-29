@@ -29,19 +29,19 @@
                     </div>
                     <field name="email_to" invisible="True"/>
                     <div class="o_row">
-                        <span class="text-muted fst-italic" attrs="{'invisible': [('contract_id', '!=', False)]}">An offer template need to be selected to have an offer link.</span>
-                        <span class="text-muted fst-italic" attrs="{'invisible': [('display_warning_message', '=', False)]}">An applicant name needs to be set to have an offer link.</span>
+                        <span class="text-muted fst-italic" invisible="contract_id">An offer template need to be selected to have an offer link.</span>
+                        <span class="text-muted fst-italic" invisible="not display_warning_message">An applicant name needs to be set to have an offer link.</span>
                     </div>
                     <div class="alert alert-danger text-center"
                         role="alert" colspan="2"
-                        attrs="{'invisible':['|', ('email_to', '!=', False), ('applicant_id', '!=', False)]}">
+                        invisible="email_to or applicant_id">
                         The employee does not have a valid work email set. The Simulation Link won't be able to be completed.
                     </div>
                 </group>
                 <footer>
-                    <button name="action_save" type="object" string="Save" class="oe_highlight" data-hotkey="q" attrs="{'invisible':[('email_to', '=', False), ('applicant_id', '=', False)]}"/>
+                    <button name="action_save" type="object" string="Save" class="oe_highlight" data-hotkey="q" invisible="not email_to and not applicant_id"/>
                     <button string="Discard" class="btn btn-secondary" special="cancel" data-hotkey="x"/>
-                    <button name="action_send_offer" type="object" string="Send By Email" class="btn btn-secondary" data-hotkey="e" attrs="{'invisible':[('email_to', '=', False), ('applicant_id', '=', False)]}"/>
+                    <button name="action_send_offer" type="object" string="Send By Email" class="btn btn-secondary" data-hotkey="e" invisible="not email_to and not applicant_id"/>
                 </footer>
             </form>
         </field>

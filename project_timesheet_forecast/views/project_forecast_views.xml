@@ -17,24 +17,24 @@
             <xpath expr="//div[@name='button_box']" position="inside">
                 <!-- Clickable -->
                 <button type="object" name="action_open_timesheets" icon="fa-clock-o"
-                    attrs="{'invisible': ['|', '|', '|', ('can_open_timesheets', '=', False), ('project_id', '=', False), ('allow_timesheets', '=', False), ('employee_id', '=', False)]}">
+                    invisible="not can_open_timesheets or not project_id or not allow_timesheets or not employee_id">
                     <div class="o_stat_info">
                         <span class="o_stat_value">
                             <field name="effective_hours" widget="timesheet_uom"/>
-                            <span attrs="{'invisible': [('encode_uom_in_days', '=', True)]}"> Hours</span>
-                            <span attrs="{'invisible': [('encode_uom_in_days', '=', False)]}"> Days</span>
+                            <span invisible="encode_uom_in_days"> Hours</span>
+                            <span invisible="not encode_uom_in_days"> Days</span>
                         </span>
                         <span class="o_stat_text">Recorded</span>
                     </div>
                 </button>
                 <!-- Non Clickable -->
                 <button icon="fa-clock-o" disabled="1" class="pe-none"
-                    attrs="{'invisible': ['|', '|', '|', ('can_open_timesheets', '=', True), ('project_id', '=', False), ('allow_timesheets', '=', False), ('employee_id', '=', False)]}">
+                    invisible="can_open_timesheets or not project_id or not allow_timesheets or not employee_id">
                     <div class="o_stat_info">
                         <span class="o_stat_value">
                             <field name="effective_hours" widget="timesheet_uom"/>
-                            <span attrs="{'invisible': [('encode_uom_in_days', '=', True)]}"> Hours</span>
-                            <span attrs="{'invisible': [('encode_uom_in_days', '=', False)]}"> Days</span>
+                            <span invisible="encode_uom_in_days"> Hours</span>
+                            <span invisible="not encode_uom_in_days"> Days</span>
                         </span>
                         <span class="o_stat_text">Recorded</span>
                     </div>
@@ -60,7 +60,7 @@
         <field name="inherit_id" ref="project_forecast.planning_slot_view_tree"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='allocated_percentage']" position="after">
-                <field name="effective_hours" sum="Effective Hours" widget="float_time" optional="hide" attrs="{'invisible': [('effective_hours', '=', 0)]}"/>
+                <field name="effective_hours" sum="Effective Hours" widget="float_time" optional="hide" invisible="effective_hours == 0"/>
             </xpath>
         </field>
     </record>

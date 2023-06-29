@@ -12,18 +12,18 @@
                         <label for="appointment_type_id"/>
                         <field name="appointment_type_id"/>
                     </div>
-                    <group attrs="{'invisible': [('slot_type', '=', 'unique')]}">
+                    <group invisible="slot_type == 'unique'">
                         <group>
                             <field name="restrict_to_user_ids"
                                 widget="many2many_avatar_user"
                                 options="{'no_create': True}"
                                 domain="[('id', 'in', 'appointment_type_id.staff_user_ids')]"
-                                attrs="{'invisible': [('schedule_based_on', '!=', 'users')]}"/>
+                                invisible="schedule_based_on != 'users'"/>
                             <field name="restrict_to_resource_ids"
                                 widget="many2many_tags_avatar"
                                 options="{'no_create': True}"
                                 domain="[('id', 'in', 'appointment_type_id.resource_ids')]"
-                                attrs="{'invisible': [('schedule_based_on', '!=', 'resources')]}"/>
+                                invisible="schedule_based_on != 'resources'"/>
                             <field name="weekday"/>
                         </group>
                         <group>
@@ -31,7 +31,7 @@
                             <field name="end_hour" widget="float_time"/>
                         </group>
                     </group>
-                    <group attrs="{'invisible': [('slot_type', '=', 'recurring')]}">
+                    <group invisible="slot_type == 'recurring'">
                         <group>
                             <field name="start_datetime"/>
                             <field name="end_datetime"/>

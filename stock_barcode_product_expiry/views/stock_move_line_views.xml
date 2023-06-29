@@ -12,14 +12,12 @@
             <field name="is_expired" invisible="1"/>
             <div class="row" groups="stock.group_production_lot">
                 <div class="col-12 col-md-6 my-2 d-flex align-items-baseline"
-                    attrs="{'invisible': [('use_expiration_date', '=', False)]}">
+                    invisible="not use_expiration_date">
                     <i class="fa fa-fw fa-lg fa-calendar me-3" title="Expiration Date"/>
                     <field name="expiration_date" force_save="1" widget="date"
-                    attrs="{
-                        'readonly': [('picking_type_use_existing_lots', '=', True)],
-                    }"/>
+                    readonly="picking_type_use_existing_lots"/>
                     <span class="fa fa-exclamation-triangle text-danger ms-4"
-                        attrs="{'invisible': ['|', ('is_expired', '=', False), ('picking_type_use_existing_lots', '=', False)]}">
+                        invisible="not is_expired or not picking_type_use_existing_lots">
                         This lot is expired
                     </span>
                 </div>

@@ -164,27 +164,27 @@
         <field name="arch" type="xml">
             <form create="false">
                 <header>
-                    <button type="object" name="access_content" string="Access" class="oe_highlight" attrs="{'invisible': [('url', '=', False)]}"/>
-                    <button type="object" name="access_content" string="Download" class="oe_highlight" attrs="{'invisible': [('type', '!=', 'binary')]}"/>
+                    <button type="object" name="access_content" string="Access" class="oe_highlight" invisible="not url"/>
+                    <button type="object" name="access_content" string="Download" class="oe_highlight" invisible="type != 'binary'"/>
                     <button type="object" name="create_share" string="Share"/>
-                    <button type="object" name="toggle_lock" string="Lock" attrs="{'invisible': [('lock_uid', '!=', False)]}"/>
-                    <button type="object" name="toggle_lock" string="Unlock" attrs="{'invisible': [('lock_uid', '=', False)]}"/>
-                    <button type="object" name="toggle_active" string="Archive" attrs="{'invisible': [('active', '=', False)]}"/>
-                    <button type="object" name="toggle_active" string="Restore" attrs="{'invisible': [('active', '=', True)]}"/>
+                    <button type="object" name="toggle_lock" string="Lock" invisible="lock_uid"/>
+                    <button type="object" name="toggle_lock" string="Unlock" invisible="not lock_uid"/>
+                    <button type="object" name="toggle_active" string="Archive" invisible="not active"/>
+                    <button type="object" name="toggle_active" string="Restore" invisible="active"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button name="open_resource" type="object" class="oe_stat_button" icon="fa-external-link" attrs="{'invisible': ['|', ('res_id', '=', False), ('res_model', 'in', [False, 'documents.document'])]}">
+                        <button name="open_resource" type="object" class="oe_stat_button" icon="fa-external-link" invisible="not res_id or res_model in [False, 'documents.document']">
                             <div class="o_field_widget o_stat_info">
                                 <span class="o_stat_text">Related <br/> Record</span>
                             </div>
                         </button>
                     </div>
-                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
-                    <field name="thumbnail" nolabel="1" widget="image" class="oe_avatar" options="{&quot;preview_image&quot;:&quot;thumbnail&quot;}" attrs="{ 'invisible' : [('thumbnail', '=', False)]}"/>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
+                    <field name="thumbnail" nolabel="1" widget="image" class="oe_avatar" options="{&quot;preview_image&quot;:&quot;thumbnail&quot;}" invisible="not thumbnail"/>
                     <div class="oe_title" aria-label="Name">
                         <h1>
-                            <field name="name" class="oe_inline" placeholder="Document Name" attrs="{'readonly': [('is_locked', '=', True)]}" required="True"/> <i class="fa fa-lock oe_inline" title="Locked" attrs="{'invisible': [('lock_uid', '=', False)]}"/>
+                            <field name="name" class="oe_inline" placeholder="Document Name" required="True" readonly="is_locked"/> <i class="fa fa-lock oe_inline" title="Locked" invisible="not lock_uid"/>
                         </h1>
                     </div>
                     <field name="is_locked" invisible="1"/>
@@ -193,10 +193,10 @@
                     <field name="res_model" invisible="1"/>
                     <group>
                         <group>
-                            <field name="datas" string="File" filename="name" attrs="{'invisible':[('type','=','url')], 'readonly': [('is_locked', '=', True)]}"/>
-                            <field name="url" attrs="{ 'invisible' : [('type', '!=', 'url')], 'readonly': [('is_locked', '=', True)]}"/>
-                            <field name="folder_id" attrs="{'readonly': [('is_locked', '=', True)]}"/>
-                            <field name="owner_id" attrs="{'readonly': [('is_locked', '=', True)]}"/>
+                            <field name="datas" string="File" filename="name" invisible="type == 'url'" readonly="is_locked"/>
+                            <field name="url" invisible="type != 'url'" readonly="is_locked"/>
+                            <field name="folder_id" readonly="is_locked"/>
+                            <field name="owner_id" readonly="is_locked"/>
                             <field name="partner_id"/>
                             <field name="tag_ids" widget="many2many_tags"/>
                         </group>
@@ -204,13 +204,13 @@
                             <field name="type"/>
                             <field name="create_date"/>
                             <field name="create_uid"/>
-                            <field name="lock_uid" readonly="1" attrs="{'invisible': [('lock_uid', '=', False)]}"/>
+                            <field name="lock_uid" readonly="1" invisible="not lock_uid"/>
                         </group>
                     </group>
                     <group groups="base.group_no_one">
                         <field name="group_ids" widget="many2many_tags"/>
                         <field name="company_id" groups="base.group_multi_company"/>
-                        <field name="file_size" attrs="{ 'invisible' : [('type', '!=', 'binary')]}"/>
+                        <field name="file_size" invisible="type != 'binary'"/>
                         <field name="mimetype"/>
                     </group>
                 </sheet>

@@ -19,7 +19,7 @@
         <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_tree"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='task_id']" position="after">
-                <field name="helpdesk_ticket_id" invisible="1"/>
+                <field name="helpdesk_ticket_id" column_invisible="True"/>
             </xpath>
         </field>
     </record>
@@ -30,14 +30,16 @@
         <field name="inherit_id" ref="hr_timesheet.timesheet_view_tree_user"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='task_id']" position="attributes">
-                <attribute name="attrs">{'invisible': [('helpdesk_ticket_id', '!=', False)], 'readonly': [('readonly_timesheet', '=', True)]}</attribute>
+                <attribute name="invisible">helpdesk_ticket_id</attribute>
+                <attribute name="readonly">readonly_timesheet</attribute>
             </xpath>
             <xpath expr="//field[@name='task_id']" position="after">
-                <field name="has_helpdesk_team" invisible="1"/>
+                <field name="has_helpdesk_team" column_invisible="True"/>
                 <field name="helpdesk_ticket_id" string="Ticket"
-                    attrs="{'invisible': ['|', ('has_helpdesk_team', '=', False), ('task_id', '!=', False)], 'readonly': [('readonly_timesheet', '=', True)]}"
+                    invisible="not has_helpdesk_team or task_id"
+                    readonly="readonly_timesheet"
                     optional="hide" groups="helpdesk_timesheet.group_use_helpdesk_timesheet"/>
-                <field name="helpdesk_ticket_id" invisible="1"/>
+                <field name="helpdesk_ticket_id" column_invisible="True"/>
             </xpath>
         </field>
     </record>
@@ -112,11 +114,13 @@
             <xpath expr="//field[@name='project_id']" position="after">
                 <field name="display_task" invisible="1"/>
                 <field name="helpdesk_ticket_id" string="Ticket"
-                    attrs="{'invisible': [('display_task', '=', True)], 'readonly': [('readonly_timesheet', '=', True)]}"
+                    invisible="display_task"
+                    readonly="readonly_timesheet"
                     options="{'no_open': True}" groups="helpdesk_timesheet.group_use_helpdesk_timesheet"/>
             </xpath>
             <xpath expr="//field[@name='task_id']" position="attributes">
-                <attribute name="attrs">{'invisible': [('display_task', '!=', True)], 'readonly': [('readonly_timesheet', '=', True)]}</attribute>
+                <attribute name="invisible">not display_task</attribute>
+                <attribute name="readonly">readonly_timesheet</attribute>
             </xpath>
         </field>
     </record>

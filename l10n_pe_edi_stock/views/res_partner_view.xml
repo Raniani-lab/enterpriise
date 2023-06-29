@@ -7,15 +7,15 @@
         <field name="arch" type="xml">
             <xpath expr="//group[@name='accounting_entries']" position="after">
                 <group string="Peru" name="peru"
-                       attrs="{'invisible': ['|', ('country_code', 'not in', ['PE', False]), ('fiscal_country_codes', 'not ilike', 'PE')]}">
+                       invisible="country_code not in ['PE', False] or 'PE'.lower() not in (fiscal_country_codes or '').lower()">
                     <field name="l10n_pe_edi_operator_license"
-                        attrs="{'invisible': [('company_type', '!=', 'person')]}"/>
+                        invisible="company_type != 'person'"/>
                     <field name="l10n_pe_edi_mtc_number"
-                        attrs="{'invisible': [('company_type', '!=', 'company')]}"/>
+                        invisible="company_type != 'company'"/>
                     <field name="l10n_pe_edi_authorization_issuing_entity"
-                        attrs="{'invisible': [('company_type', '!=', 'company')]}"/>
+                        invisible="company_type != 'company'"/>
                     <field name="l10n_pe_edi_authorization_number"
-                        attrs="{'invisible': [('company_type', '!=', 'company')]}"/>
+                        invisible="company_type != 'company'"/>
                 </group>
             </xpath>
         </field>

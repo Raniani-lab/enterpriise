@@ -15,7 +15,7 @@
                         <field name="selected_account" widget="online_account_radio" nolabel="1"/>
                     </div>
                     <footer>
-                        <button attrs="{'invisible': [('selected_account', '=', False)]}" name="sync_now" class="btn-primary" string="Connect Bank" type="object" data-hotkey="q"/>
+                        <button invisible="not selected_account" name="sync_now" class="btn-primary" string="Connect Bank" type="object" data-hotkey="q"/>
                         <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="x"/>
                     </footer>
                 </form>

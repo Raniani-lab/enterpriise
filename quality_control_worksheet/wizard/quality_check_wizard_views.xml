@@ -7,8 +7,8 @@
         <field name="arch" type="xml">
             <xpath expr="//button[@name='do_measure']" position='after'>
                 <field name='worksheet_template_id' invisible="1"/>
-                <button name="do_worksheet" type="object" class="btn-primary" string="Worksheet" attrs="{'invisible': ['|', ('quality_state', '!=', 'none'), ('test_type', '!=', 'worksheet')]}"/>
-                <button name="do_worksheet" type="object" class="btn-secondary" string="Worksheet" attrs="{'invisible': ['|', ('quality_state', '=', 'none'), ('test_type', '!=', 'worksheet')]}"/>
+                <button name="do_worksheet" type="object" class="btn-primary" string="Worksheet" invisible="quality_state != 'none' or test_type != 'worksheet'"/>
+                <button name="do_worksheet" type="object" class="btn-secondary" string="Worksheet" invisible="quality_state == 'none' or test_type != 'worksheet'"/>
             </xpath>
         </field>
     </record>

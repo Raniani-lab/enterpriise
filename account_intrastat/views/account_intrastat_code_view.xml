@@ -95,9 +95,9 @@
                             <field name="code"/>
                             <field name="type"/>
                             <field name="supplementary_unit"/>
-                            <field name="country_id" attrs="{'invisible': [('type', '!=', 'region')], 'required': [('type', '=', 'region')]}" options="{'no_create': True}"/>
-                            <field name="start_date" attrs="{'invisible':[('type', 'not in', ('transaction','commodity'))]}"/>
-                            <field name="expiry_date" attrs="{'invisible':[('type', 'not in', ('transaction','commodity'))]}"/>
+                            <field name="country_id" invisible="type != 'region'" required="type == 'region'" options="{'no_create': True}"/>
+                            <field name="start_date" invisible="type not in ('transaction', 'commodity')"/>
+                            <field name="expiry_date" invisible="type not in ('transaction', 'commodity')"/>
                             <field name="description"/>
                         </group>
                     </sheet>

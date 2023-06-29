@@ -59,14 +59,12 @@
             <field name="partner_id" position="after">
                 <field name="commission_plan_frozen" invisible="1"/>
                 <field name="referrer_id" context="{'res_partner_search_mode': 'supplier'}"/>
-                <field name="commission_plan_frozen" attrs="{'required': [('referrer_id', '!=', False), ('is_subscription', '=', True)],
-                                                                  'invisible': ['|', ('referrer_id', '=', False), ('is_subscription', '=', False)]}"/>
-                <field name="commission_plan_id" attrs="{'readonly': [('is_subscription', '=', True), ('commission_plan_frozen', '=', False)],
-                                                         'invisible': [('referrer_id', '=', False)]}"
+                <field name="commission_plan_frozen" invisible="not referrer_id or not is_subscription" required="referrer_id and is_subscription"/>
+                <field name="commission_plan_id" invisible="not referrer_id" readonly="is_subscription and not commission_plan_frozen"
                        domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]"/>
             </field>
             <field name="tax_totals" position="after">
-                <field name="commission" widget='monetary' options="{'currency_field': 'currency_id'}" attrs="{'invisible': ['|', ('referrer_id', '=', False), ('commission_plan_id', '=', False)]}"/>
+                <field name="commission" widget='monetary' options="{'currency_field': 'currency_id'}" invisible="not referrer_id or not commission_plan_id"/>
             </field>
         </field>
     </record>

@@ -9,7 +9,7 @@
                 <field name="country_code" invisible="1"/>
                 <field name="module_l10n_fr_hr_payroll" invisible="1"/>
                 <field name="country_code" invisible="1"/>
-                <block title="Payroll" attrs="{'invisible': ['|', ('module_l10n_fr_hr_payroll', '=', False), ('country_code', '!=', 'FR')]}">
+                <block title="Payroll" invisible="not module_l10n_fr_hr_payroll or country_code != 'FR'">
                     <setting string="Paie" company_dependent="1">
                         <div class="content-group">
                             <div class="row mt16">

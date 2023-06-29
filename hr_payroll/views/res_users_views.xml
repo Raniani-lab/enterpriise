@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="hr.res_users_view_form_profile"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='country_of_birth']" position="after">
-                <field name="is_non_resident" eval="False" attrs="{'readonly': [('can_edit', '=', False)]}"/>
+                <field name="is_non_resident" eval="False" readonly="not can_edit"/>
             </xpath>
         </field>
     </record>

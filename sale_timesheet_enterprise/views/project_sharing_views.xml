@@ -34,14 +34,14 @@
                 <attribute name="name">portal_effective_hours</attribute>
             </xpath>
             <xpath expr="//button[@name='action_view_subtask_timesheet']" position="attributes">
-                <attribute name="attrs">{'invisible' : [('portal_subtask_effective_hours', '=', 0.0)]}</attribute>
+                <attribute name="invisible">portal_subtask_effective_hours == 0.0</attribute>
             </xpath>
             <xpath expr="//field[@name='subtask_effective_hours']" position="attributes">
                 <attribute name="name">portal_subtask_effective_hours</attribute>
-                <attribute name="attrs">{'invisible' : [('portal_subtask_effective_hours', '=', 0.0)]}</attribute>
+                <attribute name="invisible">portal_subtask_effective_hours == 0.0</attribute>
             </xpath>
             <xpath expr="//span[@id='total_hours_spent_label']" position="attributes">
-                <attribute name="attrs">{'invisible': [('portal_subtask_effective_hours', '=', 0.0)]}</attribute>
+                <attribute name="invisible">portal_subtask_effective_hours == 0.0</attribute>
             </xpath>
             <xpath expr="//label[@for='total_hours_spent']" position="attributes">
                 <attribute name="for">portal_total_hours_spent</attribute>
@@ -51,7 +51,7 @@
             </xpath>
             <xpath expr="//field[@name='total_hours_spent']" position="attributes">
                 <attribute name="name">portal_total_hours_spent</attribute>
-                <attribute name="attrs">{'invisible' : [('portal_subtask_effective_hours', '=', 0.0)]}</attribute>
+                <attribute name="invisible">portal_subtask_effective_hours == 0.0</attribute>
             </xpath>
             <xpath expr="//label[@for='remaining_hours']" position="attributes">
                 <attribute name="for">portal_remaining_hours</attribute>

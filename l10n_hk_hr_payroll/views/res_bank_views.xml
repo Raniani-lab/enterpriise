@@ -9,7 +9,7 @@
             <xpath expr="//field[@name='bic']" position="after">
                 <!-- # TODO: move this field to hr_payroll in master -->
                 <field name="country_code" invisible="1"/>
-                <field name="l10n_hk_bank_code" attrs="{'invisible': [('country_code', '!=', 'HK')]}" />
+                <field name="l10n_hk_bank_code" invisible="country_code != 'HK'" />
             </xpath>
         </field>
     </record>

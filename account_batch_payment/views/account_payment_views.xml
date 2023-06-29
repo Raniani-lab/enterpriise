@@ -63,7 +63,7 @@
                     <field name="batch_payment_id" invisible="1"/>
                     <button name="button_open_batch_payment" type="object"
                             class="oe_stat_button" icon="fa-bars"
-                            attrs="{'invisible': [('batch_payment_id','=', False)]}">
+                            invisible="not batch_payment_id">
                         <span>Batch Payment</span>
                     </button>
                 </div>

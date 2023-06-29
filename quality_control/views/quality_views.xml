@@ -65,7 +65,7 @@
                     <field name="company_id" invisible="1"/>
                     <field name="product_id" invisible="1"/>
                     <div class="oe_button_box" name="button_box">
-                        <button name="action_see_check" type="object" attrs="{'invisible': [('check_id', '=', False)]}" class="oe_stat_button" icon="fa-check-square-o">
+                        <button name="action_see_check" type="object" invisible="not check_id" class="oe_stat_button" icon="fa-check-square-o">
                             <div class="o_field_widget o_stat_info">
                                 <span class="o_stat_value"><field name="check_id" readonly="1"/></span>
                                 <span class="o_stat_text">Quality Check</span>
@@ -108,7 +108,7 @@
                                 </group>
                                 <group>
                                     <field name="date_assign"/>
-                                    <field name="date_close" attrs="{'invisible': [('date_close', '=', False)]}"/>
+                                    <field name="date_close" invisible="not date_close"/>
                                 </group>
                             </group>
                         </page>
@@ -218,63 +218,63 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="do_pass" type="object" class="btn-primary" attrs="{'invisible': [('quality_state', '!=', 'none')]}" string="Pass" data-hotkey="q"/>
-                    <button name="do_pass" type="object" attrs="{'invisible': [('quality_state', '!=', 'fail')]}" groups="quality.group_quality_manager" string="Pass" data-hotkey="q"/>
-                    <button name="do_fail" type="object" class="btn-primary" attrs="{'invisible': [('quality_state', '!=', 'none')]}" string="Fail" data-hotkey="w"/>
-                    <button name="do_fail" type="object" attrs="{'invisible': [('quality_state', '!=', 'pass')]}" groups="quality.group_quality_manager" string="Fail" data-hotkey="w"/>
-                    <button name="do_measure" type="object" attrs="{'invisible': ['|', ('test_type', '!=', 'measure'), ('quality_state', '!=', 'none')]}" string="Measure" data-hotkey="v"/>
-                    <button name="do_alert" type="object" attrs="{'invisible': ['|', ('alert_ids', '!=', []), ('quality_state', '!=', 'pass')]}" string="Create Alert" data-hotkey="g"/>
-                    <button name="do_alert" type="object" class="btn-primary" attrs="{'invisible': ['|', ('alert_ids', '!=', []), ('quality_state', '!=', 'fail')]}" string="Create Alert" data-hotkey="g"/>
+                    <button name="do_pass" type="object" class="btn-primary" invisible="quality_state != 'none'" string="Pass" data-hotkey="q"/>
+                    <button name="do_pass" type="object" invisible="quality_state != 'fail'" groups="quality.group_quality_manager" string="Pass" data-hotkey="q"/>
+                    <button name="do_fail" type="object" class="btn-primary" invisible="quality_state != 'none'" string="Fail" data-hotkey="w"/>
+                    <button name="do_fail" type="object" invisible="quality_state != 'pass'" groups="quality.group_quality_manager" string="Fail" data-hotkey="w"/>
+                    <button name="do_measure" type="object" invisible="test_type != 'measure' or quality_state != 'none'" string="Measure" data-hotkey="v"/>
+                    <button name="do_alert" type="object" invisible="alert_ids or quality_state != 'pass'" string="Create Alert" data-hotkey="g"/>
+                    <button name="do_alert" type="object" class="btn-primary" invisible="alert_ids or quality_state != 'fail'" string="Create Alert" data-hotkey="g"/>
                     <field name="quality_state" widget="statusbar"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button name="action_see_alerts" icon="fa-bell" type="object" class="oe_stat_button" attrs="{'invisible': [('alert_count', '=', 0)]}">
+                        <button name="action_see_alerts" icon="fa-bell" type="object" class="oe_stat_button" invisible="alert_count == 0">
                             <field name="alert_count" string="Alerts" widget="statinfo"/>
                         </button>
                     </div>
                     <group>
                         <group>
                             <field name="company_id" invisible="1"/>
-                            <field name="product_id" attrs="{'invisible' : [('measure_on', '=', 'operation')]}"/>
-                            <field name="measure_on" attrs="{'readonly': [('point_id', '!=', False)]}"/>
+                            <field name="product_id" invisible="measure_on == 'operation'"/>
+                            <field name="measure_on" readonly="point_id"/>
                             <field name="show_lot_text" invisible="1"/>
                             <field name="move_line_id" invisible="1"/>
                             <field name="product_tracking" invisible="1"/>
                             <field name="is_lot_tested_fractionally" invisible="1"/>
-                            <field name="lot_name" attrs="{'invisible': ['|', ('product_tracking', '=', 'none'), '|', ('show_lot_text', '=', False), '|', ('measure_on', '!=', 'move_line'), ('move_line_id', '=', False)]}"/>
-                            <field name="lot_id" attrs="{'invisible': ['|', ('product_tracking', '=', 'none'), '|', ('show_lot_text', '=', True), ('measure_on', '!=', 'move_line')]}"/>
-                            <label for="qty_line" attrs="{'invisible': [('move_line_id', '=', False)]}"/>
-                            <div class="o_row" attrs="{'invisible': [('move_line_id', '=', False)]}">
+                            <field name="lot_name" invisible="product_tracking == 'none' or not show_lot_text or measure_on != 'move_line' or not move_line_id"/>
+                            <field name="lot_id" invisible="product_tracking == 'none' or show_lot_text or measure_on != 'move_line'"/>
+                            <label for="qty_line" invisible="not move_line_id"/>
+                            <div class="o_row" invisible="not move_line_id">
                                 <field name="qty_line"/> 
                                 <field name="uom_id" groups="uom.group_uom"/>
                             </div>
-                            <label for="qty_to_test" attrs="{'invisible': ['|', ('move_line_id', '=', False), '|', ('measure_on', '!=', 'move_line'), ('is_lot_tested_fractionally', '=', False)]}"/>
-                            <div class="o_row" attrs="{'invisible': ['|', ('move_line_id', '=', False), '|', ('measure_on', '!=', 'move_line'), ('is_lot_tested_fractionally', '=', False)]}">
+                            <label for="qty_to_test" invisible="not move_line_id or measure_on != 'move_line' or not is_lot_tested_fractionally"/>
+                            <div class="o_row" invisible="not move_line_id or measure_on != 'move_line' or not is_lot_tested_fractionally">
                                 <field name="qty_to_test"/> 
                                 <field name="uom_id" groups="uom.group_uom"/>
                             </div>
-                            <label for="qty_tested" attrs="{'invisible': ['|', ('measure_on', '!=', 'move_line'), ('is_lot_tested_fractionally', '=', False)]}"/>
-                            <div class="o_row" attrs="{'invisible': ['|', ('measure_on', '!=', 'move_line'), ('is_lot_tested_fractionally', '=', False)]}">
-                                <field name="qty_tested" attrs="{'readonly': [('quality_state', '!=', 'none')]}"/> 
+                            <label for="qty_tested" invisible="measure_on != 'move_line' or not is_lot_tested_fractionally"/>
+                            <div class="o_row" invisible="measure_on != 'move_line' or not is_lot_tested_fractionally">
+                                <field name="qty_tested" readonly="quality_state != 'none'"/> 
                                 <field name="uom_id" groups="uom.group_uom"/>
                             </div>
                             <field name="test_type" invisible="1"/>
-                            <field name="measure" attrs="{'invisible': [('test_type', '!=', 'measure')]}"/>
+                            <field name="measure" invisible="test_type != 'measure'"/>
                             <field name="alert_ids" invisible="1"/>
                         </group>
                         <group>
-                            <field name="picking_id" attrs="{'invisible': [('quality_state', 'in', ('pass', 'fail')), ('picking_id', '=', False)]}"/>
+                            <field name="picking_id" invisible="quality_state in ('pass', 'fail') and not picking_id"/>
                             <field name="point_id"/>
-                            <field string="Type" name="test_type_id" options="{'no_open': True, 'no_create': True}" attrs="{'readonly': [('point_id', '!=', False)]}"/>
+                            <field string="Type" name="test_type_id" options="{'no_open': True, 'no_create': True}" readonly="point_id"/>
                             <field name="control_date" invisible="1"/>
                             <field name="team_id"/>
                             <field name="company_id" groups="base.group_multi_company"/>
                             <field name="user_id" string="Control Person" invisible="1"/>
-                            <field name="partner_id" string="Partner" attrs="{'invisible': [('partner_id', '=', False)]}"/>
+                            <field name="partner_id" string="Partner" invisible="not partner_id"/>
                         </group>
                     </group>
-                    <group attrs="{'invisible': [('test_type', '!=', 'picture')]}">
+                    <group invisible="test_type != 'picture'">
                         <field name="picture" widget="image"/>
                     </group>
                       <notebook>
@@ -343,8 +343,8 @@
                 <field name="name" decoration-bf="1"/>
                 <field name="measure_on" optional="show"/>
                 <field name='product_id' optional="show"/>
-                <field name="lot_id" invisible="context.get('show_lots_text')"/>
-                <field name="lot_name" invisible="not context.get('show_lots_text')"/>
+                <field name="lot_id" column_invisible="context.get('show_lots_text')"/>
+                <field name="lot_name" column_invisible="not context.get('show_lots_text')"/>
                 <field name="picking_id" optional="hide" string="Transfer"/>
                 <field name="control_date" string="Checked Date" optional="show"/>
                 <field name="user_id" string="Checked By" optional="show" widget='many2one_avatar_user'/>
@@ -485,10 +485,10 @@
         <field name="inherit_id" ref="stock.product_template_form_view_procurement_button"/>
         <field name="arch" type="xml">
             <xpath expr="//button[@name='action_view_related_putaway_rules']" position="after">
-                <button name="action_see_quality_control_points" type="object" class="oe_stat_button" icon="fa-list" attrs="{'invisible':[('type', 'not in', ['product', 'consu'])]}" groups="quality.group_quality_user">
+                <button name="action_see_quality_control_points" type="object" class="oe_stat_button" icon="fa-list" invisible="type not in ['product', 'consu']" groups="quality.group_quality_user">
                     <field string="Quality Points" name="quality_control_point_qty" widget="statinfo"/>
                 </button>
-                <button name="action_see_quality_checks" type="object" class="oe_stat_button" icon="fa-check" attrs="{'invisible':['|', ('type', 'not in', ['product', 'consu']), ('quality_pass_qty', '=', 0),('quality_fail_qty', '=', 0)]}" groups="quality.group_quality_user">
+                <button name="action_see_quality_checks" type="object" class="oe_stat_button" icon="fa-check" invisible="(type not in ['product', 'consu'] or quality_pass_qty == 0) and quality_fail_qty == 0" groups="quality.group_quality_user">
                     <div class="o_field_widget o_stat_info mr4">
                         <span class="o_stat_text">Pass:</span>
                         <span class="o_stat_text">Fail:</span>
@@ -509,10 +509,10 @@
         <field name="inherit_id" ref="stock.product_form_view_procurement_button"/>
         <field name="arch" type="xml">
             <xpath expr="//button[@name='action_view_related_putaway_rules']" position="after">
-                <button name="action_see_quality_control_points" type="object" icon="fa-list" class="oe_stat_button" attrs="{'invisible':[('type', 'not in', ['product', 'consu'])]}" groups="quality.group_quality_user">
+                <button name="action_see_quality_control_points" type="object" icon="fa-list" class="oe_stat_button" invisible="type not in ['product', 'consu']" groups="quality.group_quality_user">
                     <field string="Quality Points" name="quality_control_point_qty" widget="statinfo"/>
                 </button>
-                <button name="action_see_quality_checks" type="object" class="oe_stat_button" icon="fa-check" groups="quality.group_quality_user" attrs="{'invisible':[ ('quality_pass_qty', '=', 0),('quality_fail_qty', '=', 0)]}" >
+                <button name="action_see_quality_checks" type="object" class="oe_stat_button" icon="fa-check" groups="quality.group_quality_user" invisible="quality_pass_qty == 0 and quality_fail_qty == 0" >
                     <div class="o_field_widget o_stat_info mr4">
                         <span class="o_stat_text">Pass:</span>
                         <span class="o_stat_text">Fail:</span>
@@ -533,7 +533,7 @@
         <field name="arch" type="xml">
             <xpath expr="//div[@name='button_box']" position="inside">
                 <button name="%(quality_check_action_production_lot)d" type="action"
-                    attrs="{'invisible': [('quality_check_qty', '=', 0)]}"
+                    invisible="quality_check_qty == 0"
                     icon="fa-check" class="oe_stat_button" groups="quality.group_quality_user">
                     <field string="Quality Checks" name="quality_check_qty" widget="statinfo"/>
                 </button>
@@ -834,7 +834,7 @@
                     <field string="Quality Checks" name="check_count" widget="statinfo"/>
                 </button>
                 <button name="action_see_spc_control" type="object" class="oe_stat_button"
-                    attrs="{'invisible': ['|', ('check_count', '=', 0), ('test_type', '!=', 'measure')]}">
+                    invisible="check_count == 0 or test_type != 'measure'">
                     <span class="fa fa-2x" data-icon="&#x2211;" style="padding-left: 10px;" role="img" aria-label="Statistics" title="Statistics"/>
                     <div class="o_field_widget o_stat_info mr4">
                         <span class="o_stat_text">AVG:</span>
@@ -848,37 +848,37 @@
             </xpath>
             <xpath expr="//page[@name='instructions']" position="after">
                 <page string="Message If Failure" name="message_if_failure"
-                    attrs="{'invisible': [('test_type', 'in', ['picture', 'instructions', 'register_consumed_materials', 'print_label'])]}">
+                    invisible="test_type in ['picture', 'instructions', 'register_consumed_materials', 'print_label']">
                     <field name="failure_message"/>
                 </page>
             </xpath>
             <xpath expr="//field[@name='test_type']" position="before">
                 <field name="measure_on"/>
                 <field name="measure_frequency_type" string="Control Frequency"/>
-                <label for="measure_frequency_value" string="" attrs="{'invisible': [('measure_frequency_type', '=', 'all')]}"/>
-                <div class="o_row" attrs="{'invisible': [('measure_frequency_type', '=', 'all')]}">
-                    <span attrs="{'invisible': [('measure_frequency_type', '=', 'all')]}">Every </span>
-                    <field name="measure_frequency_value" nolabel="1" attrs="{'invisible': [('measure_frequency_type', '!=', 'random')]}"/>
-                    <label for="measure_frequency_value" string="% of Operations" attrs="{'invisible': ['|', ('measure_on', '=', 'move_line'), ('measure_frequency_type', '!=', 'random')]}"/>
-                    <label for="measure_frequency_value" string="% of Transfers" attrs="{'invisible': ['|', ('measure_on', '!=', 'move_line'), ('measure_frequency_type', '!=', 'random')]}"/>
-                    <field name="measure_frequency_unit_value" string="Frequency" nolabel="1" attrs="{'invisible': [('measure_frequency_type', '!=', 'periodical')]}"/>
-                    <field name="measure_frequency_unit" attrs="{'invisible': [('measure_frequency_type', '!=', 'periodical')], 'required': [('measure_frequency_type', '=', 'periodical')]}"/>
+                <label for="measure_frequency_value" string="" invisible="measure_frequency_type == 'all'"/>
+                <div class="o_row" invisible="measure_frequency_type == 'all'">
+                    <span invisible="measure_frequency_type == 'all'">Every </span>
+                    <field name="measure_frequency_value" nolabel="1" invisible="measure_frequency_type != 'random'"/>
+                    <label for="measure_frequency_value" string="% of Operations" invisible="measure_on == 'move_line' or measure_frequency_type != 'random'"/>
+                    <label for="measure_frequency_value" string="% of Transfers" invisible="measure_on != 'move_line' or measure_frequency_type != 'random'"/>
+                    <field name="measure_frequency_unit_value" string="Frequency" nolabel="1" invisible="measure_frequency_type != 'periodical'"/>
+                    <field name="measure_frequency_unit" invisible="measure_frequency_type != 'periodical'" required="measure_frequency_type == 'periodical'"/>
                 </div>
-                <field name="is_lot_tested_fractionally" attrs="{'invisible': [('measure_on', '!=', 'move_line')]}" string="Partial Transfer Test"/>
-                <label for="testing_percentage_within_lot" attrs="{'invisible': ['|', ('measure_on', '!=', 'move_line'), ('is_lot_tested_fractionally', '!=', True)]}" string="Percentage"/>
-                <div class="o_row" attrs="{'invisible': ['|', ('measure_on', '!=', 'move_line'), ('is_lot_tested_fractionally', '!=', True)]}">
+                <field name="is_lot_tested_fractionally" invisible="measure_on != 'move_line'" string="Partial Transfer Test"/>
+                <label for="testing_percentage_within_lot" invisible="measure_on != 'move_line' or not is_lot_tested_fractionally" string="Percentage"/>
+                <div class="o_row" invisible="measure_on != 'move_line' or not is_lot_tested_fractionally">
                     <field name="testing_percentage_within_lot" nolabel="1"/>
                     <label for="testing_percentage_within_lot" string="%"/>
                 </div>
             </xpath>
             <xpath expr="//field[@name='test_type_id']" position="after">
-                <label for="norm" attrs="{'invisible': [('test_type', '!=', 'measure')]}"/>
-                <div class="o_row" attrs="{'invisible': [('test_type', '!=', 'measure')]}">
-                    <field name="norm" attrs="{'required': [('test_type', '=', 'measure')]}"/>
-                    <field name="norm_unit" string="Unit of Measure" attrs="{'required': [('test_type', '=', 'measure')]}"/>
+                <label for="norm" invisible="test_type != 'measure'"/>
+                <div class="o_row" invisible="test_type != 'measure'">
+                    <field name="norm" required="test_type == 'measure'"/>
+                    <field name="norm_unit" string="Unit of Measure" required="test_type == 'measure'"/>
                 </div>
-                <label for="tolerance_min" string="Tolerance" attrs="{'invisible': [('test_type', '!=', 'measure')]}"/>
-                <div attrs="{'invisible': [('test_type', '!=', 'measure')]}" class="o_row">
+                <label for="tolerance_min" string="Tolerance" invisible="test_type != 'measure'"/>
+                <div invisible="test_type != 'measure'" class="o_row">
                     <span>from </span> <field name="tolerance_min"/>
                     <span>to </span> <field name="tolerance_max"/>
                 </div>

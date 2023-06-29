@@ -10,7 +10,8 @@
                 <data>
                     <xpath expr="//field[@name='journal_id']" position="after">
                         <field name="l10n_mx_edi_payment_method_id"
-                               attrs="{'invisible': [('country_code', '!=', 'MX')], 'required': [('country_code', '=', 'MX')]}"/>
+                               invisible="country_code != 'MX'"
+                               required="country_code == 'MX'"/>
                     </xpath>
                 </data>
             </field>

@@ -14,7 +14,7 @@
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="res_field_id"/>
-                <field name="field" invisible="1"/>
+                <field name="field" column_invisible="True"/>
                 <field name="structure_type_id"/>
             </tree>
         </field>
@@ -45,15 +45,15 @@
                             <field name="structure_type_id"/>
                         	<field name="position"/>
                             <field name="display_type" required="1"/>
-                            <field name="dropdown_selection" attrs="{'invisible': [('display_type', '!=', 'dropdown')], 'required': [('display_type', '=', 'dropdown')] }"/>
-                            <field name="value_ids" attrs="{'invisible': ['|', ('display_type', 'not in', ['dropdown', 'radio']), ('dropdown_selection', '!=', 'specific')]}">
+                            <field name="dropdown_selection" invisible="display_type != 'dropdown'" required="display_type == 'dropdown'"/>
+                            <field name="value_ids" invisible="display_type not in ['dropdown', 'radio'] or dropdown_selection != 'specific'">
                                 <tree editable="bottom">
                                     <field name="sequence" widget="handle"/>
                                     <field name="name"/>
                                     <field name="value"/>
                                 </tree>
                             </field>
-                            <field name="impacts_net_salary" attrs="{'invisible': [('display_type', 'in', ['text', 'email', 'document'])]}"/>
+                            <field name="impacts_net_salary" invisible="display_type in ['text', 'email', 'document']"/>
                         </group>
                     </group>
                 </sheet>

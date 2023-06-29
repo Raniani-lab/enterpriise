@@ -58,11 +58,11 @@
                 <field name="active" invisible="1" />
                 <sheet>
                     <div class="oe_button_box" name="button_box" invisible="not context.get('display_stat_button', False)">
-                        <button class="oe_stat_button" type="object" name="action_open_helpdesk_ticket" icon="fa-life-ring" attrs="{'invisible': [('ticket_count', '=', 0)]}">
+                        <button class="oe_stat_button" type="object" name="action_open_helpdesk_ticket" icon="fa-life-ring" invisible="ticket_count == 0">
                             <field name="ticket_count" widget="statinfo" string="Tickets"/>
                         </button>
                     </div>
-                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" attrs="{'invisible': [('active', '=', True)]}" />
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active" />
                     <group>
                         <group>
                             <field name="name"/>

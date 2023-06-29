@@ -191,7 +191,7 @@
                 <field name="sale_order_template_id"/>
                 <field name="currency_id"/>
                 <field name="activity_ids"/>
-                <field name="health" attrs="{'invisible': [('health', '!=', 'bad')]}"/>
+                <field name="health"/>
                 <field name="payment_exception"/>
                 <field name="rating_ids"/>
                 <field name="activity_state" />
@@ -207,11 +207,11 @@
                                     <field name="recurring_total" widget="monetary"/>
                                 </strong>
                                 <div class="o_kanban_record_title">
-                                    <field name="partner_id"/>
+                                    <field name="partner_id" readonly="state in ['cancel', 'sale']"/>
                                 </div>
                                 <div class="o_kanban_record_body">
                                     <field name="recurrence_id" class="float-end"/>
-                                    <field name="name"/>
+                                    <field name="name" readonly="state != 'draft'"/>
                                     <div t-if="record.payment_exception.raw_value" class="badge rounded-pill text-bg-danger me-2 mt-1">
                                         Payment Failure
                                     </div>
@@ -230,7 +230,7 @@
                                         </b>
                                     </div>
                                     <div class="oe_kanban_bottom_right">
-                                        <field name="health" widget="state_selection" readonly="1" attrs="{'invisible': [('health', '!=', 'bad')]}"/>
+                                        <field name="health" widget="state_selection" readonly="1" invisible="health != 'bad'"/>
                                         <field name="user_id" widget="many2one_avatar_user"/>
                                     </div>
                                 </div>
@@ -267,18 +267,19 @@
             <field name="next_invoice_date" string="Next Invoice" class="fw-bold"
                    decoration-info="first_contract_date and first_contract_date &gt; current_date"
                    decoration-danger="next_invoice_date and next_invoice_date &lt; current_date"
-                   attrs="{'invisible': [('subscription_state', 'not in', ['3_progress', '4_paused'])]}" readonly="1"/>
+                   readonly="1"
+                   invisible="subscription_state not in ['3_progress', '4_paused']"/>
             <field name="team_id" optional="hide"/>
             <field name="user_id" widget="many2one_avatar_user"/>
             <field name="activity_ids" widget="list_activity" optional="show" readonly="1"/>
-            <field name="company_id" invisible="1" readonly="1"/>
+            <field name="company_id" readonly="1" column_invisible="True"/>
             <field name="company_id" groups="base.group_multi_company" readonly="1"/>
             <field name="tag_ids" optional="hide" widget="many2many_tags" options="{'color_field': 'color'}" readonly="1"/>
             <field name="recurring_monthly" string="MRR" optional="hide" readonly="1"/>
             <field name="recurring_total" string="Recurring" optional="show" readonly="1"/>
             <field name="recurrence_id" optional="show" readonly="1"/>
             <field name="non_recurring_total" string="Non Recurring" optional="hide" readonly="1"/>
-            <field name="sale_order_template_id" string="Plan" optional="hide"/>
+            <field name="sale_order_template_id" string="Plan" optional="hide" readonly="state in ['cancel', 'sale']"/>
             <field name="amount_total" decoration-bf="1" widget='monetary' options="{'currency_field': 'currency_id'}" optional="hide" readonly="1"
                 decoration-info="invoice_status == 'to invoice'"/>
             <field name="subscription_state" string="Status" widget="badge"
@@ -292,9 +293,9 @@
                     decoration-success="state == 'sale'"
                     decoration-info="state == 'draft'"
                     decoration-primary="state == 'sent'"
-                    widget="badge" optional="hide"/>            <field name="pricelist_id" invisible="1" readonly="1"/>
-            <field name="currency_id" invisible="1" readonly="1"/>
-            <field name="invoice_status" invisible="1"/>
+                    widget="badge" optional="hide"/>            <field name="pricelist_id" readonly="1" column_invisible="True"/>
+            <field name="currency_id" readonly="1" column_invisible="True"/>
+            <field name="invoice_status" column_invisible="True"/>
         </tree>
       </field>
     </record>
@@ -408,7 +409,8 @@
             </field>
             <field name="sale_order_template_id" position="replace">
                 <field name="sale_order_template_id" string="Subscription Plan"
-                       attrs="{'invisible': [('subscription_state', '=', '7_upsell')]}"
+                       invisible="subscription_state == '7_upsell'"
+                       readonly="state in ['cancel', 'sale']"
                        options="{'no_quick_create': True}"
                        domain="[('is_subscription', '=', True)]"/>
             </field>
@@ -478,9 +480,9 @@
                     <div role="alert" class="alert alert-warning" invisible="not visible_in_portal or not empty_retention_message and retention_button_text and retention_button_link or empty_retention_message and not retention_button_text and not retention_button_link">
                         <strong>Warning:</strong> the survey can only be shown if all information is set. Please complete:
                         <ul>
-                            <li attrs="{'invisible': [('empty_retention_message', '=', False)]}">message</li>
-                            <li attrs="{'invisible': [('retention_button_text', '!=', False)]}">button text</li>
-                            <li attrs="{'invisible': [('retention_button_link', '!=', False)]}">button link</li>
+                            <li invisible="not empty_retention_message">message</li>
+                            <li invisible="retention_button_text">button text</li>
+                            <li invisible="retention_button_link">button link</li>
                         </ul>
                     </div>
                 </sheet>

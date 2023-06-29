@@ -14,18 +14,18 @@
                 data-hotkey="g"
                 groups="!hr_appraisal.group_hr_appraisal_user"
                 class="btn btn-primary"
-                attrs="{'invisible': &quot;[('parent_user_id', '!=', uid), ('ongoing_appraisal_count','!=', 0)]&quot;}"/>
+                invisible="parent_user_id != uid and ongoing_appraisal_count != 0"/>
             <button name="action_send_appraisal_request"
                 string="Request Appraisal"
                 type="object"
                 data-hotkey="g"
                 groups="hr_appraisal.group_hr_appraisal_user"
-                attrs="{'invisible': &quot;[('ongoing_appraisal_count','!=', 0)]&quot;}"
+                invisible="ongoing_appraisal_count != 0"
                 class="btn btn-primary"/>
         </xpath>
             <xpath expr="//field[@name='work_email']" position="after">
                 <field name="is_manager" invisible="1"/>
-                <field name="next_appraisal_date" attrs="{'invisible': [('is_manager', '=', False)]}"/>
+                <field name="next_appraisal_date" invisible="not is_manager"/>
             </xpath>
         </field>
     </record>

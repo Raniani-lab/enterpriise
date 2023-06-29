@@ -15,7 +15,7 @@ import {
     xpathToLegacyXpathInfo,
     cleanClickedElements,
 } from "@web_studio/client_action/view_editor/editors/utils";
-import { Reactive } from "@web_studio/client_action/utils";
+import { Reactive, memoizeOnce } from "@web_studio/client_action/utils";
 import { getModifier, resetViewCompilerCache } from "@web/views/view_compiler";
 import { _t } from "@web/core/l10n/translation";
 import { EditorOperations, SnackbarIndicator } from "@web_studio/client_action/editor/edition_flow";
@@ -24,22 +24,6 @@ import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 
 const editorsRegistry = registry.category("studio_editors");
 const viewRegistry = registry.category("views");
-
-// A custom memoize function that doesn't store all results
-// First the core/function/memoize tool may yield incorrect result in our case.
-// Second, the keys we use usually involve archs themselves that could be heavy in the long run.
-function memoizeOnce(callback) {
-    let key, value;
-
-    return function (...args) {
-        if (key === args[0]) {
-            return value;
-        }
-        key = args[0];
-        value = callback.call(this, ...args);
-        return value;
-    };
-}
 
 class EditorOperationsWithSnackbar extends EditorOperations {
     constructor(params) {

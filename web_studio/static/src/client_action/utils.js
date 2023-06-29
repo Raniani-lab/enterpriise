@@ -66,3 +66,18 @@ export class Reactive {
         return reactive(this);
     }
 }
+
+// A custom memoize function that doesn't store all results
+// First the core/function/memoize tool may yield incorrect result in our case.
+// Second, the keys we use usually involve archs themselves that could be heavy in the long run.
+export function memoizeOnce(callback) {
+    let key, value;
+    return function (...args) {
+        if (key === args[0]) {
+            return value;
+        }
+        key = args[0];
+        value = callback.call(this, ...args);
+        return value;
+    };
+}

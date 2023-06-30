@@ -62,7 +62,7 @@
                 content: _t('Let’s go back to the dashboard.'),
                 position: 'bottom',
             }, {
-                trigger: 'a[data-method="setting_init_bank_account_action"].o_onboarding_step_action',
+                trigger: 'a[data-method="action_open_step_bank_account"].o_onboarding_step_action',
                 content: _t('Connect your bank and get your latest transactions.'),
                 position: 'bottom',
                 run: function () {

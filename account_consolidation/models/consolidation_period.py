@@ -251,10 +251,10 @@ class ConsolidationPeriod(models.Model):
         return action
 
     def action_save_onboarding_create_step(self):
-        """
-        Save the "done" state of onboarding step of create first analysis period
-        """
-        self.env.user.company_id.sudo().set_onboarding_step_done('consolidation_create_period_state')
+        """Validate the onboarding step of creating the first analysis period."""
+        self.env['onboarding.onboarding.step'].action_validate_step(
+            'account_consolidation.onboarding_onboarding_step_create_consolidation_period'
+        )
 
     # PROTECTEDS
 

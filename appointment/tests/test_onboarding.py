@@ -13,7 +13,7 @@ class AppointmentOnboardingTest(AppointmentCommon):
             2. The step record is deleted
             3. The first user tries to validate the step
         """
-        appointment_onboarding_panel = self.env.ref('appointment.appointment_onboarding_panel')
+        appointment_onboarding_panel = self.env.ref('appointment.onboarding_onboarding_appointment')
         # Simulate controller to create onboarding_progress_id
         appointment_onboarding_panel._search_or_create_progress()
 
@@ -51,7 +51,7 @@ class AppointmentOnboardingTest(AppointmentCommon):
 
     def test_validation_responses(self):
         """ Check that the step validation actions return the right responses (used in webclient)."""
-        appointment_onboarding_panel = self.env.ref('appointment.appointment_onboarding_panel')
+        appointment_onboarding_panel = self.env.ref('appointment.onboarding_onboarding_appointment')
         appointment_onboarding_panel._search_or_create_progress()
 
         self.assertEqual(

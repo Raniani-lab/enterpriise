@@ -56,6 +56,7 @@ class SpreadsheetMixin(models.AbstractModel):
             "revisions": spreadsheet_sudo._build_spreadsheet_messages(),
             "snapshot_requested": can_write and spreadsheet_sudo._should_be_snapshotted(),
             "isReadonly": not can_write,
+            "default_currency": self.env["res.currency"].get_company_currency_for_spreadsheet(),
         }
 
     def dispatch_spreadsheet_message(self, message: CollaborationMessage, share_id=None, access_token=None):

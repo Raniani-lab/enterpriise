@@ -15,6 +15,7 @@ import { initCallbackRegistry } from "@spreadsheet/o_spreadsheet/init_callbacks"
 import { loadSpreadsheetDependencies } from "@spreadsheet/helpers/helpers";
 import { RecordFileStore } from "../image/record_file_store";
 
+const { createCurrencyFormat } = spreadsheet.helpers;
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
 
 const { Model } = spreadsheet;
@@ -116,6 +117,14 @@ export class AbstractSpreadsheetAction extends Component {
             const sheetId = this.model.getters.getActiveSheetId();
             this.model.dispatch("EVALUATE_CELLS", { sheetId });
         });
+        const defaultCurrency = this.record.default_currency;
+        const defaultCurrencyFormat = defaultCurrency
+            ? createCurrencyFormat({
+                  symbol: defaultCurrency.symbol,
+                  position: defaultCurrency.position,
+                  decimalPlaces: defaultCurrency.decimalPlaces,
+              })
+            : undefined;
         this.model = new Model(
             migrate(this.spreadsheetData),
             {
@@ -125,6 +134,7 @@ export class AbstractSpreadsheetAction extends Component {
                     loadCurrencies: this.loadCurrencies.bind(this),
                     loadLocales: this.loadLocales.bind(this),
                 },
+                defaultCurrencyFormat,
                 transportService: this.transportService,
                 client: {
                     id: uuidGenerator.uuidv4(),

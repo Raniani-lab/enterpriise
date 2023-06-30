@@ -9,7 +9,7 @@ import { getFixture, nextTick, click, patchWithCleanup } from "@web/../tests/hel
 import { createSpreadsheet } from "../spreadsheet_test_utils";
 import { selectCell } from "@spreadsheet/../tests/utils/commands";
 import { doMenuAction } from "@spreadsheet/../tests/utils/ui";
-import { getCellContent, getCellValue } from "@spreadsheet/../tests/utils/getters";
+import { getCell, getCellContent, getCellValue } from "@spreadsheet/../tests/utils/getters";
 import MockSpreadsheetCollaborativeChannel from "@spreadsheet_edition/../tests/utils/mock_spreadsheet_collaborative_channel";
 
 const { topbarMenuRegistry } = spreadsheet.registries;
@@ -138,6 +138,38 @@ QUnit.module(
                 },
             });
             assert.ok(model.getters.isReadonly());
+        });
+
+        QUnit.test("format menu with default currency", async function (assert) {
+            const { model, env } = await createSpreadsheet({
+                mockRPC: async function (route, args) {
+                    if (args.method === "join_spreadsheet_session") {
+                        return {
+                            data: {},
+                            name: "name",
+                            revisions: [],
+                            default_currency: {
+                                code: "θdoo",
+                                symbol: "θ",
+                                position: "after",
+                                decimalPlaces: 2,
+                            },
+                        };
+                    }
+                },
+            });
+            await doMenuAction(
+                topbarMenuRegistry,
+                ["format", "format_number", "format_number_currency"],
+                env
+            );
+            assert.equal(getCell(model, "A1").format, "#,##0.00[$θ]");
+            await doMenuAction(
+                topbarMenuRegistry,
+                ["format", "format_number", "format_number_currency_rounded"],
+                env
+            );
+            assert.equal(getCell(model, "A1").format, "#,##0[$θ]");
         });
 
         QUnit.test("dialog window not normally displayed", async function (assert) {

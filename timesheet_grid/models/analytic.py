@@ -622,13 +622,18 @@ class AnalyticLine(models.Model):
         rounded_minutes = self._timer_rounding(timer, minimum_duration, rounding)
         return rounded_minutes / 60
 
+    @api.model
+    def _add_time_to_timesheet_fields(self):
+        return ['task_id']
+
     def action_add_time_to_timesheet(self, vals):
         minutes = int(self.env['ir.config_parameter'].sudo().get_param('timesheet_grid.timesheet_min_duration', 15))
         if self:
-            task_id = vals.get('task_id', False)
-            if self.task_id.id == task_id and self.project_id.id == vals['project_id']:
-                self.unit_amount += minutes / 60
-                return self.id
+            for field in self._add_time_to_timesheet_fields():
+                val = vals.get(field, False)
+                if self[field].id == val and self.project_id.id == vals['project_id']:
+                    self.unit_amount += minutes / 60
+                    return self.id
         timesheet = self.create({
             **vals,
             'unit_amount': minutes / 60,

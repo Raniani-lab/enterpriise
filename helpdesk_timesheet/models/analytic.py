@@ -94,3 +94,7 @@ class AccountAnalyticLine(models.Model):
 
     def _get_timesheet_timer_data(self, timer=None):
         return {**super()._get_timesheet_timer_data(), 'helpdesk_ticket_id': self.helpdesk_ticket_id.id}
+
+    @api.model
+    def _add_time_to_timesheet_fields(self):
+        return super()._add_time_to_timesheet_fields() + ['helpdesk_ticket_id']

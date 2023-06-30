@@ -32,11 +32,15 @@ export class TimerGridRow extends GridRow {
         this.timerRunning = false;
     }
 
+    get timeData() {
+        return {
+            'project_id': this.valuePerFieldName?.project_id?.[0],
+            'task_id': this.valuePerFieldName?.task_id?.[0],
+        }
+    }
+
     async addTime() {
-        await this.model.addTime(
-            this.valuePerFieldName.project_id[0],
-            this.valuePerFieldName.task_id && this.valuePerFieldName.task_id[0]
-        );
+        await this.model.addTime(this.timeData);
     }
 }
 
@@ -224,11 +228,11 @@ export class TimerTimesheetGridModel extends TimesheetGridModel {
         delete this.data.timer;
     }
 
-    async addTime(projectId, taskId = undefined) {
+    async addTime(data) {
         const timesheetId = this.data.timer && this.data.timer.id;
         await this.orm.call(this.resModel, "action_add_time_to_timesheet", [
             timesheetId,
-            { project_id: projectId, task_id: taskId },
+            data,
         ]);
         await this.fetchData();
     }

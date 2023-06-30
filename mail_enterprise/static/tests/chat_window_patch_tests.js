@@ -56,7 +56,7 @@ QUnit.test("[technical] chat window should properly override the back button", a
     await click(".o-mail-NotificationItem:contains(test)");
     assert.verifySteps(["overrideBackButton: true"]);
 
-    await click(".o-mail-ChatWindow [title='Close conversation']");
+    await click(".o-mail-ChatWindow [title*='Close']");
     // The messaging menu is re-open when a chat window is closed,
     // so we need to close it because it overrides the back button too.
     // As long as something overrides the back button, it can't be disabled.

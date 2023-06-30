@@ -37,7 +37,7 @@ class TestBasicFeaturesSettings(TestProjectCommon):
             with Form(self.env['project.project']) as project_form:
                 project_form.name = 'My Ducks Project'
                 project_form.is_fsm = True
-                self.assertFalse(project_form._values[project_flag], f"The {project_flag} feature should be disabled by default on new FSM projects")
+                self.assertFalse(project_form[project_flag], f"The {project_flag} feature should be disabled by default on new FSM projects")
 
         self.project_pigs.write({project_flag: True})
         self.assertTrue(self.project_pigs[project_flag], f"The {project_flag} feature should be enabled on the project")

@@ -878,8 +878,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         move_line_ids = move_ids.mapped('line_ids').filtered(lambda x: x.debit)
 
         asset_form = Form(self.env['account.asset'].with_context(default_original_move_line_ids=move_line_ids.ids))
-        asset_form._values['original_move_line_ids'] = [(6, 0, move_line_ids.ids)]
-        asset_form._perform_onchange('original_move_line_ids')
+        asset_form.original_move_line_ids = move_line_ids
         asset_form.account_depreciation_expense_id = self.company_data['default_account_expense']
 
         asset = asset_form.save()
@@ -1253,8 +1252,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         move_line_id = move_id.mapped('line_ids').filtered(lambda x: x.debit)
 
         asset_form = Form(self.env['account.asset'])
-        asset_form._values['original_move_line_ids'] = [(6, 0, move_line_id.ids)]
-        asset_form._perform_onchange('original_move_line_ids')
+        asset_form.original_move_line_ids = move_line_id
         asset_form.account_depreciation_expense_id = self.company_data['default_account_expense']
 
         asset = asset_form.save()
@@ -1589,8 +1587,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         asset_form = Form(self.env['account.asset'].with_context(
             default_original_move_line_ids=move_line_ids.ids,
         ))
-        asset_form._values['original_move_line_ids'] = [Command.set(move_line_ids.ids)]
-        asset_form._perform_onchange('original_move_line_ids')
+        asset_form.original_move_line_ids = move_line_ids
         asset_form.account_depreciation_expense_id = self.company_data['default_account_expense']
 
         new_assets_manu = asset_form.save()

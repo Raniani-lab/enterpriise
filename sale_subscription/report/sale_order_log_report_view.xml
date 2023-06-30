@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- MRR GROWTH -->
+    <!-- MRR Breakdown -->
     <record id="view_sale_order_log_growth_pivot" model="ir.ui.view">
         <field name="name">sale.order.log.report.pivot</field>
         <field name="model">sale.order.log.report</field>
         <field name="arch" type="xml">
             <pivot string="Sale Order Log Analysis" sample="1">
-                <field name="event_date" interval="month" type="row"/>
-                <field name="recurring_yearly_graph" invisible="1"/>
-                <field name="recurring_monthly_graph" invisible="1"/>
-                <field name="amount_signed_graph" invisible="1"/>
+                <field name="event_date" interval="month" type="rowt"/>
+                <field name="mrr_change_normalized" string="MRR Change" type="measure"/>
+                <field name="arr_change_normalized" string="ARR Change" type="measure"/>
+                <field name="amount_signed" invisible="1"/>
+                <field name="recurring_monthly" invisible="1"/>
+                <field name="recurring_yearly" invisible="1"/>
             </pivot>
         </field>
     </record>
@@ -19,11 +21,10 @@
         <field name="name">sale.order.log.report.graph</field>
         <field name="model">sale.order.log.report</field>
         <field name="arch" type="xml">
-            <graph string="Sale Order Log Analysis" type="bar" sample="1">
+            <graph string="Sale Order Log Analysis" type="bar" sample="1" cumulated_start="1">
                 <field name="event_date" interval="month" type="col"/>
-                <field name="recurring_monthly_graph" string="Monthly Recurring Revenue" type="measure"/>
-                <field name="recurring_yearly_graph" string="Annual Recurring Revenue" type="measure"/>
-                <field name="amount_signed_graph" string="MRR Change" type="measure"/>
+                <field name="mrr_change_normalized" string="MRR Change" type="measure"/>
+                <field name="arr_change_normalized" string="ARR Change" type="measure"/>
                 <field name="amount_signed" invisible="1"/>
                 <field name="recurring_monthly" invisible="1"/>
                 <field name="recurring_yearly" invisible="1"/>
@@ -68,7 +69,6 @@
         <field name="context">{
             'search_default_group_by_event_date': 1,
             'search_default_group_by_event_type': 1,
-            'pivot_measures': ['recurring_monthly'],
             }
         </field>
     </record>
@@ -81,9 +81,8 @@
         <field name="arch" type="xml">
             <graph string="Sale Order Log Analysis" type="line" sample="1" cumulated="1" cumulated_start="1">
                 <field name="event_date" interval="month" type="col"/>
-                <field name="amount_signed_graph" string="MRR Change" type="measure"/>
-                <field name="recurring_yearly_graph" string="Annual Recurring Revenue" type="measure"/>
-                <field name="recurring_monthly_graph" string="Monthly Recurring Revenue" type="measure"/>
+                <field name="mrr_change_normalized" string="MRR Change" type="measure"/>
+                <field name="arr_change_normalized" string="ARR Change" type="measure"/>
                 <field name="amount_signed" invisible="1"/>
                 <field name="recurring_monthly" invisible="1"/>
                 <field name="recurring_yearly" invisible="1"/>
@@ -93,12 +92,11 @@
 
 
     <record id="sale_order_log_analysis_action" model="ir.actions.act_window">
-        <field name="name">MRR Timeline</field>
+        <field name="name">MRR Analysis</field>
         <field name="res_model">sale.order.log.report</field>
         <field name="view_mode">graph,tree,pivot</field>
         <field name="context">{
             'search_default_group_by_event_date': 1,
-            'pivot_measures': ['recurring_monthly'],
             }
         </field>
     </record>
@@ -158,7 +156,7 @@
         </field>
     </record>
 
-    <menuitem id="menu_sale_order_log_growth_report" name="MRR Growth"
+    <menuitem id="menu_sale_order_log_growth_report" name="MRR Breakdown"
               parent="sale_subscription.menu_sale_subscription_report" action="sale_order_log_growth_action"
               sequence="30"/>
     <menuitem id="menu_sale_order_log_analysis_report" name="MRR Analysis"

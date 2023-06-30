@@ -34,15 +34,14 @@ class SaleOrderLogReport(models.Model):
         readonly=True
     )
     event_date = fields.Date(readonly=True)
-    contract_number = fields.Integer("# Contracts", readonly=True)
+    contract_number = fields.Integer("Active Subscriptions Change", readonly=True)
     currency_id = fields.Many2one('res.currency', string='Currency', readonly=True)
     pricelist_id = fields.Many2one('product.pricelist', 'Pricelist', readonly=True)
     amount_signed = fields.Monetary("MRR Change", readonly=True)
-    amount_signed_graph = fields.Monetary("MRR Change (graph)", readonly=True)
+    mrr_change_normalized = fields.Monetary('MRR Change (normalized)', readonly=True)
+    arr_change_normalized = fields.Monetary('ARR Change (normalized)', readonly=True)
     recurring_monthly = fields.Monetary('Monthly Recurring Revenue', readonly=True)
-    recurring_monthly_graph = fields.Monetary('Monthly Recurring Revenue (graph)', readonly=True)
     recurring_yearly = fields.Monetary('Annual Recurring Revenue', readonly=True)
-    recurring_yearly_graph = fields.Monetary('Annual Recurring Revenue (graph)', readonly=True)
     template_id = fields.Many2one('sale.order.template', 'Subscription Template', readonly=True)
     recurrence_id = fields.Many2one('sale.temporal.recurrence', 'Recurrence', readonly=True)
     country_id = fields.Many2one('res.country', 'Customer Country', readonly=True)
@@ -106,14 +105,11 @@ class SaleOrderLogReport(models.Model):
             so.state AS state,
             so.pricelist_id AS pricelist_id,
             log.origin_order_id AS origin_order_id,
-
             log.amount_signed AS amount_signed,
             log.recurring_monthly AS recurring_monthly,
             log.recurring_monthly * 12 AS recurring_yearly,
-
-            log.amount_signed * r2.rate/r1.rate AS amount_signed_graph,
-            log.amount_signed * r2.rate/r1.rate AS recurring_monthly_graph, -- will be integrated for cumulated values
-            log.amount_signed * 12 * r2.rate/r1.rate AS recurring_yearly_graph, -- will be integrated for cumulated values,
+            log.amount_signed * r2.rate/r1.rate AS mrr_change_normalized,
+            log.amount_signed * 12 * r2.rate/r1.rate AS arr_change_normalized,
             r1.rate AS currency_rate,
             r2.rate AS user_rate,
             log.currency_id AS LOG_cur_id,

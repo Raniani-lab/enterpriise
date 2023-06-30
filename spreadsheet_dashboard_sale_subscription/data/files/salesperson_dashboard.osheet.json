@@ -41,7 +41,7 @@
       "cells": {
         "A7": {
           "style": 1,
-          "content": "[Subscriptions](odoo://view/{\"viewType\":\"graph\",\"action\":{\"domain\":[[\"event_type\",\"!=\",\"3_transfer\"]],\"context\":{\"group_by\":[\"event_type\"],\"graph_measure\":\"amount_signed_graph\",\"graph_mode\":\"bar\",\"graph_groupbys\":[\"event_type\"],\"graph_order\":null,\"graph_stacked\":true},\"modelName\":\"sale.order.log.report\",\"views\":[[false,\"graph\"],[false,\"list\"],[false,\"pivot\"],[false,\"search\"]]},\"threshold\":0,\"name\":\"MRR Growth\"})"
+          "content": "[Subscriptions](odoo://view/{\"viewType\":\"graph\",\"action\":{\"domain\":[[\"event_type\",\"!=\",\"3_transfer\"]],\"context\":{\"group_by\":[\"event_type\"],\"graph_measure\":\"mrr_change_normalized\",\"graph_mode\":\"bar\",\"graph_groupbys\":[\"event_type\"],\"graph_order\":null,\"graph_stacked\":true},\"modelName\":\"sale.order.log.report\",\"views\":[[false,\"graph\"],[false,\"list\"],[false,\"pivot\"],[false,\"search\"]]},\"threshold\":0,\"name\":\"MRR Growth\"})"
         },
         "A19": {
           "style": 1,
@@ -933,7 +933,7 @@
               "groupBy": [
                 "event_type"
               ],
-              "measure": "amount_signed_graph",
+              "measure": "mrr_change_normalized",
               "order": null,
               "resModel": "sale.order.log.report"
             },
@@ -1066,16 +1066,16 @@
           "content": "Previous"
         },
         "C2": {
-          "content": "=ODOO.PIVOT(5,\"amount_signed_graph\")"
+          "content": "=ODOO.PIVOT(5,\"mrr_change_normalized\")"
         },
         "C3": {
-          "content": "=ODOO.PIVOT(6,\"amount_signed_graph\")"
+          "content": "=ODOO.PIVOT(6,\"mrr_change_normalized\")"
         },
         "C4": {
-          "content": "=ODOO.PIVOT(7,\"amount_signed_graph\")"
+          "content": "=ODOO.PIVOT(7,\"mrr_change_normalized\")"
         },
         "C5": {
-          "content": "=ODOO.PIVOT(8,\"amount_signed_graph\")"
+          "content": "=ODOO.PIVOT(8,\"mrr_change_normalized\")"
         },
         "D1": {
           "style": 9,
@@ -1668,7 +1668,7 @@
       "id": "5",
       "measures": [
         {
-          "field": "amount_signed_graph"
+          "field": "mrr_change_normalized"
         }
       ],
       "model": "sale.order.log.report",
@@ -1714,7 +1714,7 @@
       "id": "6",
       "measures": [
         {
-          "field": "amount_signed_graph"
+          "field": "mrr_change_normalized"
         }
       ],
       "model": "sale.order.log.report",
@@ -1760,7 +1760,7 @@
       "id": "7",
       "measures": [
         {
-          "field": "amount_signed_graph"
+          "field": "mrr_change_normalized"
         }
       ],
       "model": "sale.order.log.report",
@@ -1806,7 +1806,7 @@
       "id": "8",
       "measures": [
         {
-          "field": "amount_signed_graph"
+          "field": "mrr_change_normalized"
         }
       ],
       "model": "sale.order.log.report",

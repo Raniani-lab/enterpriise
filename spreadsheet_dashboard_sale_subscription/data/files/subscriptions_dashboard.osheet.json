@@ -77,12 +77,12 @@
             "cells": {
                 "A7": {
                     "style": 1,
-                    "content": "[Monthly recurring revenue](odoo://view/{\"viewType\":\"graph\",\"action\":{\"domain\":[[\"event_type\",\"!=\",\"3_transfer\"]],\"context\":{\"group_by\":[],\"graph_measure\":\"recurring_monthly_graph\",\"graph_mode\":\"line\",\"graph_groupbys\":[\"event_date:month\"],\"graph_order\":null,\"graph_stacked\":true,\"graph_cumulated\":false},\"modelName\":\"sale.order.log.report\",\"views\":[[false,\"graph\"],[false,\"list\"],[false,\"pivot\"],[false,\"search\"]]},\"threshold\":0,\"name\":\"MRR Analysis\"})",
+                    "content": "[Monthly recurring revenue](odoo://view/{\"viewType\":\"graph\",\"action\":{\"domain\":[[\"event_type\",\"!=\",\"3_transfer\"]],\"context\":{\"group_by\":[],\"graph_measure\":\"mrr_change_normalized\",\"graph_mode\":\"line\",\"graph_groupbys\":[\"event_date:month\"],\"graph_order\":null,\"graph_stacked\":true,\"graph_cumulated\":false},\"modelName\":\"sale.order.log.report\",\"views\":[[false,\"graph\"],[false,\"list\"],[false,\"pivot\"],[false,\"search\"]]},\"threshold\":0,\"name\":\"MRR Analysis\"})",
                     "border": 1
                 },
                 "A19": {
                     "style": 1,
-                    "content": "[Monthly growth](odoo://view/{\"viewType\":\"graph\",\"action\":{\"domain\":[[\"event_type\",\"!=\",\"3_transfer\"]],\"context\":{\"group_by\":[\"event_date:month\",\"event_type\"],\"graph_measure\":\"amount_signed_graph\",\"graph_mode\":\"bar\",\"graph_groupbys\":[\"event_date:month\",\"event_type\"],\"graph_order\":null,\"graph_stacked\":true},\"modelName\":\"sale.order.log.report\",\"views\":[[false,\"graph\"],[false,\"list\"],[false,\"pivot\"],[false,\"search\"]]},\"threshold\":0,\"name\":\"MRR Growth\"})",
+                    "content": "[Monthly growth](odoo://view/{\"viewType\":\"graph\",\"action\":{\"domain\":[[\"event_type\",\"!=\",\"3_transfer\"]],\"context\":{\"group_by\":[\"event_date:month\",\"event_type\"],\"graph_measure\":\"mrr_change_normalized\",\"graph_mode\":\"bar\",\"graph_groupbys\":[\"event_date:month\",\"event_type\"],\"graph_order\":null,\"graph_stacked\":true},\"modelName\":\"sale.order.log.report\",\"views\":[[false,\"graph\"],[false,\"list\"],[false,\"pivot\"],[false,\"search\"]]},\"threshold\":0,\"name\":\"MRR Growth\"})",
                     "border": 1
                 },
                 "A32": {
@@ -1753,7 +1753,7 @@
                             "groupBy": [
                                 "event_date:month"
                             ],
-                            "measure": "recurring_monthly_graph",
+                            "measure": "mrr_change_normalized",
                             "order": null,
                             "resModel": "sale.order.log.report"
                         },
@@ -1818,7 +1818,7 @@
                                 "event_date:month",
                                 "event_type"
                             ],
-                            "measure": "amount_signed_graph",
+                            "measure": "mrr_change_normalized",
                             "order": null,
                             "resModel": "sale.order.log.report"
                         },
@@ -1905,7 +1905,7 @@
                     "content": "KPI"
                 },
                 "A2": {
-                    "content": "=ODOO.PIVOT.HEADER(1,\"measure\",\"recurring_monthly_graph\")"
+                    "content": "=ODOO.PIVOT.HEADER(1,\"measure\",\"mrr_change_normalized\")"
                 },
                 "A3": {
                     "content": "=ODOO.PIVOT.HEADER(2,\"measure\",\"recurring_yearly\")"
@@ -1939,13 +1939,13 @@
                     "content": "Current"
                 },
                 "B2": {
-                    "content": "=ODOO.PIVOT(1,\"recurring_monthly_graph\")"
+                    "content": "=ODOO.PIVOT(1,\"mrr_change_normalized\")"
                 },
                 "B3": {
                     "content": "=ODOO.PIVOT(2,\"recurring_yearly\")"
                 },
                 "B4": {
-                    "content": "=IFERROR(ODOO.PIVOT(3,\"recurring_monthly_graph\",\"event_type\",\"0_creation\",\"event_date:year\",2023))"
+                    "content": "=IFERROR(ODOO.PIVOT(3,\"mrr_change_normalized\",\"event_type\",\"0_creation\",\"event_date:year\",2023))"
                 },
                 "B5": {
                     "content": "=ODOO.PIVOT(10,\"order_reference\")"
@@ -1976,7 +1976,7 @@
                 },
                 "C4": {
                     "style": 8,
-                    "content": "=ODOO.PIVOT(3,\"recurring_monthly_graph\",\"event_type\",\"0_creation\",\"event_date:year\",2022)"
+                    "content": "=ODOO.PIVOT(3,\"mrr_change_normalized\",\"event_type\",\"0_creation\",\"event_date:year\",2022)"
                 },
                 "D1": {
                     "style": 2,
@@ -2220,7 +2220,7 @@
             "id": "1",
             "measures": [
                 {
-                    "field": "recurring_monthly_graph"
+                    "field": "mrr_change_normalized"
                 }
             ],
             "model": "sale.order.log.report",
@@ -2231,7 +2231,7 @@
                     [],
                     []
                 ],
-                "measure": "amount_signed_graph",
+                "measure": "mrr_change_normalized",
                 "order": "desc"
             },
             "fieldMatching": {
@@ -2360,7 +2360,7 @@
             "id": "3",
             "measures": [
                 {
-                    "field": "recurring_monthly_graph"
+                    "field": "mrr_change_normalized"
                 }
             ],
             "model": "sale.order.log.report",
@@ -2373,7 +2373,7 @@
                     [],
                     []
                 ],
-                "measure": "recurring_yearly_graph",
+                "measure": "arr_change_normalized",
                 "order": "asc"
             },
             "fieldMatching": {

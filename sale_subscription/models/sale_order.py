@@ -389,6 +389,7 @@ class SaleOrder(models.Model):
             return
         result = self.env['sale.order']._read_group([
                 ('subscription_state', '=', '2_renewal'),
+                ('state', '=', 'draft'),
                 ('subscription_id', 'in', self.ids)
             ],
             ['subscription_id'],
@@ -427,7 +428,7 @@ class SaleOrder(models.Model):
             ['origin_order_id'],
             ['__count'],
         )
-        counters = {origin_order: count + 1 for origin_order, count in result}
+        counters = {origin_order.id: count + 1 for origin_order, count in result}
         for so in self:
             so.history_count = counters.get(so.origin_order_id.id or so.id, 0)
 
@@ -455,7 +456,8 @@ class SaleOrder(models.Model):
         self.is_renewing = False
         renew_order_ids = self.env['sale.order'].search([
             ('id', 'in', self.subscription_child_ids.ids),
-            ('subscription_state', '=', '2_renewal')
+            ('subscription_state', '=', '2_renewal'),
+            ('state', '=', 'draft'),
         ]).subscription_id
         renew_order_ids.is_renewing = True
 
@@ -840,11 +842,11 @@ class SaleOrder(models.Model):
 
     def _confirm_renewal(self):
         """
-        When confirming an renew order, the recurring product lines must be updated
+        When confirming a renewal order, the recurring product lines must be updated
         """
         today = fields.Date.today()
         for renew in self:
-            # When parent subscription reaches his end_date, it will be closed with a close_reason_renew so it won't be considered as a simple churn.
+            # When parent subscription reaches his end_date, it will be closed with a close_reason_renew, so it won't be considered as a simple churn.
             parent = renew.subscription_id
             if renew.start_date < parent.next_invoice_date:
                 raise ValidationError(_("You cannot validate a renewal quotation starting before the next invoice date "
@@ -852,6 +854,12 @@ class SaleOrder(models.Model):
             elif parent.start_date == parent.next_invoice_date:
                 raise ValidationError(_("You can not upsell or renew a subscription that has not been invoiced yet. "
                                         "Please, update directly the %s contract or invoice it first.", parent.name))
+            elif parent.subscription_state == '5_renewed':
+                raise ValidationError(_("You cannot renew a subscription that has been renewed. "))
+            elif self.search_count([('origin_order_id', '=', renew.origin_order_id.id),
+                                    ('subscription_state', 'in', SUBSCRIPTION_PROGRESS_STATE),
+                                    ('id', 'not in', [parent.id, renew.id])], limit=1):
+                raise ValidationError(_("You cannot renew a contract that already has an active subscription. "))
             other_renew_so_ids = parent.subscription_child_ids.filtered(lambda so: so.subscription_state == '2_renewal' and so.state != 'cancel') - renew
             if other_renew_so_ids:
                 other_renew_so_ids._action_cancel()
@@ -921,7 +929,7 @@ class SaleOrder(models.Model):
             action['res_id'] = renewal.id
             action['views'] = [(self.env.ref('sale_subscription.sale_subscription_primary_form_view').id, 'form')]
         else:
-            action['domain'] = [('subscription_id', '=', self.id), ('subscription_state', '=', '2_renewal')]
+            action['domain'] = [('subscription_id', '=', self.id), ('subscription_state', '=', '2_renewal'), ('state', '=', 'draft')]
             action['views'] = [(self.env.ref('sale.view_quotation_tree').id, 'tree'),
                                (self.env.ref('sale_subscription.sale_subscription_primary_form_view').id, 'form')]
 

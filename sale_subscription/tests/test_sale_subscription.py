@@ -1874,7 +1874,7 @@ class TestSubscription(TestSubscriptionCommon):
             renewal_so.order_line.invoice_lines.move_id._post()
             self.assertEqual(renewal_so.start_date, datetime.date(2023, 1, 1))
             self.assertEqual(renewal_so.next_invoice_date, datetime.date(2024, 1, 1))
-            action = self.subscription.prepare_renewal_order()
+            action = subscription_2.prepare_renewal_order()
             renewal_so_2 = self.env['sale.order'].browse(action['res_id'])
             renewal_so_2.action_confirm()
             # We don't invoice renewal_so_2 yet to see what happens.

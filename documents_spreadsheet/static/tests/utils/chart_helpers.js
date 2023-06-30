@@ -63,6 +63,9 @@ export async function spawnGraphViewForSpreadsheet(params = {}) {
  * @property {number} [documentId] ID of an existing document
  * @property {function} [actions] Actions to execute on the graph view
  *                                before inserting in spreadsheet
+ * @property {function} [mockRPC] Mock rpc function
+ * @property {object} [serverData] Data to be injected in the mock server
+ * @property {object} [additionalContext] additional context for the action
  */
 
 /**

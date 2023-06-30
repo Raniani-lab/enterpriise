@@ -72,7 +72,7 @@ export class ListingDetailsSidePanel extends Component {
             onConfirm: (domain) =>
                 this.env.model.dispatch("UPDATE_ODOO_LIST_DOMAIN", {
                     listId: this.props.listId,
-                    domain: new Domain(domain).toList(),
+                    domain: new Domain(domain).toJson(),
                 }),
         });
     }

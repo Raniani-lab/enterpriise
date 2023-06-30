@@ -745,6 +745,52 @@ QUnit.module("spreadsheet pivot view", {}, () => {
         assert.strictEqual(getCellContent(model, "A4"), `=ODOO.PIVOT.HEADER(1)`);
     });
 
+    QUnit.test("pivot with a contextual domain", async (assert) => {
+        const uid = 7;
+        const serverData = getBasicServerData();
+        serverData.models.partner.records = [
+            {
+                id: 1,
+                probability: 0.5,
+                foo: uid,
+                bar: true,
+            },
+        ];
+        serverData.views["partner,false,search"] = /* xml */ `
+            <search>
+                <filter string="Filter" name="filter" domain="[('foo', '=', uid)]"/>
+            </search>
+        `;
+        serverData.views["partner,false,pivot"] = /* xml */ `
+            <pivot>
+                <field name="probability" type="measure"/>
+            </pivot>
+        `;
+        const { model } = await createSpreadsheetFromPivotView({
+            serverData,
+            additionalContext: { search_default_filter: 1 },
+            mockRPC: function (route, args) {
+                if (args.method === "read_group") {
+                    assert.deepEqual(
+                        args.kwargs.domain,
+                        [["foo", "=", uid]],
+                        "data should be fetched with the evaluated the domain"
+                    );
+                    assert.step("read_group");
+                }
+            },
+        });
+        const pivotId = "1";
+        const domain = model.getters.getPivotDefinition("1").domain;
+        assert.deepEqual(domain, '[("foo", "=", uid)]', "It should have the raw domain string");
+        assert.deepEqual(
+            model.exportData().pivots[pivotId].domain,
+            '[("foo", "=", uid)]',
+            "domain is exported with the dynamic value"
+        );
+        assert.verifySteps(["read_group", "read_group"]);
+    });
+
     QUnit.test("pivot with a quote in name", async function (assert) {
         assert.expect(1);
 

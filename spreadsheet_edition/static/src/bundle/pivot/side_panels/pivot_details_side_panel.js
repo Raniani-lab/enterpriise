@@ -88,7 +88,7 @@ export default class PivotDetailsSidePanel extends Component {
             onConfirm: (domain) =>
                 this.env.model.dispatch("UPDATE_ODOO_PIVOT_DOMAIN", {
                     pivotId: this.props.pivotId,
-                    domain: new Domain(domain).toList(),
+                    domain: new Domain(domain).toJson(),
                 }),
         });
     }

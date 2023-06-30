@@ -6,7 +6,13 @@ import { InsertListSpreadsheetMenu } from "@spreadsheet_edition/assets/list_view
 import { selectCell, setCellContent } from "@spreadsheet/../tests/utils/commands";
 import { getBasicData, getBasicServerData } from "@spreadsheet/../tests/utils/data";
 import { getCellFormula, getEvaluatedCell } from "@spreadsheet/../tests/utils/getters";
-import { click, getFixture, nextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
+import {
+    click,
+    getFixture,
+    nextTick,
+    patchWithCleanup,
+    patchDate,
+} from "@web/../tests/helpers/utils";
 import { toggleActionMenu } from "@web/../tests/search/helpers";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
 import { registry } from "@web/core/registry";
@@ -383,6 +389,53 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
         await dom.triggerEvent(document.body.querySelector(".o_sp_en_name"), "input");
         await click(document.body.querySelector(".o_sp_en_save"));
         assert.equal(model.getters.getListName(listA3), "new name");
+    });
+
+    QUnit.test("list with a contextual domain", async (assert) => {
+        patchDate(2016, 4, 14, 0, 0, 0);
+        const serverData = getBasicServerData();
+        serverData.models.partner.records = [
+            {
+                id: 1,
+                probability: 0.5,
+                date: "2016-05-14",
+            },
+        ];
+        serverData.views["partner,false,search"] = /* xml */ `
+            <search>
+                <filter string="Filter" name="filter" domain="[('date', '=', context_today())]"/>
+            </search>
+        `;
+        serverData.views["partner,false,list"] = /* xml */ `
+            <tree>
+                <field name="foo"/>
+            </tree>
+        `;
+        const { model } = await createSpreadsheetFromListView({
+            serverData,
+            additionalContext: { search_default_filter: 1 },
+            mockRPC: function (route, args) {
+                if (args.method === "search_read") {
+                    assert.deepEqual(
+                        args.kwargs.domain,
+                        [["date", "=", "2016-05-13"]],
+                        "data should be fetched with the evaluated the domain"
+                    );
+                    assert.step("search_read");
+                }
+            },
+        });
+        const listId = "1";
+        assert.deepEqual(
+            model.getters.getListDefinition(listId).domain,
+            '[("date", "=", context_today())]'
+        );
+        assert.deepEqual(
+            model.exportData().lists[listId].domain,
+            '[("date", "=", context_today())]',
+            "domain is exported with the dynamic value"
+        );
+        assert.verifySteps(["search_read"]);
     });
 
     QUnit.test("Update the list domain from the side panel", async function (assert) {

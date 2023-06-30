@@ -2,6 +2,7 @@
 
 import * as spreadsheet from "@odoo/o-spreadsheet";
 import { initCallbackRegistry } from "@spreadsheet/o_spreadsheet/init_callbacks";
+import { Domain } from "@web/core/domain";
 
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
 
@@ -13,7 +14,10 @@ export function insertChart(chartData) {
             order: chartData.metaData.order,
             resModel: chartData.metaData.resModel,
         },
-        searchParams: { ...chartData.searchParams },
+        searchParams: {
+            ...chartData.searchParams,
+            domain: new Domain(chartData.searchParams.domain).toJson(),
+        },
         stacked: chartData.metaData.stacked,
         title: chartData.name,
         background: "#FFFFFF",

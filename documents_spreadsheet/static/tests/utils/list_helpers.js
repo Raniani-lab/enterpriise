@@ -33,6 +33,7 @@ import { onMounted } from "@odoo/owl";
  * @param {string} [params.model] Model name of the list
  * @param {Object} [params.serverData] Data to be injected in the mock server
  * @param {Function} [params.mockRPC] Mock rpc function
+ * @param {object} [params.additionalContext] additional action context
  * @param {object[]} [params.orderBy] orderBy argument
  * @returns {Promise<object>} Webclient
  */
@@ -44,15 +45,19 @@ export async function spawnListViewForSpreadsheet(params = {}) {
         mockRPC,
     });
 
-    await doAction(webClient, {
-        name: "Partners",
-        res_model: model || "partner",
-        type: "ir.actions.act_window",
-        views: [[false, "list"]],
-        context: {
-            group_by: params.groupBy || [],
+    await doAction(
+        webClient,
+        {
+            name: "Partners",
+            res_model: model || "partner",
+            type: "ir.actions.act_window",
+            views: [[false, "list"]],
+            context: {
+                group_by: params.groupBy || [],
+            },
         },
-    });
+        { additionalContext: params.additionalContext || {} }
+    );
 
     /** sort the view by field */
     const target = getFixture();
@@ -75,6 +80,7 @@ export async function spawnListViewForSpreadsheet(params = {}) {
  * @param {function} [params.mockRPC] Mock rpc function
  * @param {object[]} [params.orderBy] orderBy argument
  * @param {(fixture: HTMLElement) => Promise<void>} [params.actions] orderBy argument
+ * @param {object} [params.additionalContext] additional action context
  * @param {number} [params.linesNumber]
  *
  * @returns {Promise<{model: Model, webClient: object, env: object}>}
@@ -97,6 +103,7 @@ export async function createSpreadsheetFromListView(params = {}) {
         serverData: params.serverData,
         mockRPC: params.mockRPC,
         orderBy: params.orderBy,
+        additionalContext: params.additionalContext,
     });
     const target = getFixture();
     if (params.actions) {

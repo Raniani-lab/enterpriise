@@ -1,5 +1,6 @@
 /** @odoo-module **/
 import * as spreadsheet from "@odoo/o-spreadsheet";
+import { Domain } from "@web/core/domain";
 
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
 
@@ -26,7 +27,7 @@ export function insertList({ list, threshold, fields, name }) {
             fields,
         },
         searchParams: {
-            domain: list.domain,
+            domain: new Domain(list.domain).toJson(),
             context: list.context,
             orderBy: list.orderBy,
         },

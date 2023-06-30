@@ -65,7 +65,7 @@ patch(ListRenderer.prototype, {
         return {
             list: {
                 model: model.resModel,
-                domain: model.domain,
+                domain: this.env.searchModel.domainString,
                 orderBy: model.orderBy,
                 context: omit(model.context, ...Object.keys(this.userService.context)),
                 columns: this.getColumnsForSpreadsheet(),

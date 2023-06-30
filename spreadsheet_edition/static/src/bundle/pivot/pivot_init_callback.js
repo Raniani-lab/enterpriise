@@ -1,6 +1,7 @@
 /** @odoo-module **/
 import * as spreadsheet from "@odoo/o-spreadsheet";
 import PivotDataSource from "@spreadsheet/pivot/pivot_data_source";
+import { Domain } from "@web/core/domain";
 
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
 
@@ -16,6 +17,7 @@ export function insertPivot(pivotData) {
         },
         searchParams: {
             ...pivotData.searchParams,
+            domain: new Domain(pivotData.searchParams.domain).toJson(),
             // groups from the search bar are included in `fullRowGroupBys` and `fullColGroupBys`
             // but takes precedence if they are defined
             groupBy: [],

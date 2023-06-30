@@ -39,6 +39,7 @@ export const patchGraphSpreadsheet = () => ({
                 metaData: this.model.metaData,
                 searchParams: {
                     ...this.model.searchParams,
+                    domain: this.env.searchModel.domainString,
                     context: omit(
                         this.model.searchParams.context,
                         ...Object.keys(this.userService.context),

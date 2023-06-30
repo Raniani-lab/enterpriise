@@ -56,12 +56,12 @@ class CashFlowReportCustomHandler(models.AbstractModel):
         }
 
         # Process liquidity moves
-        for aml_groupby_account in self._get_liquidity_moves(report, options, currency_table_query, payment_account_ids, payment_move_ids):
+        for aml_groupby_account in self._get_liquidity_moves(report, options, currency_table_query, payment_account_ids, payment_move_ids, tags_ids.values()):
             for aml_data in aml_groupby_account.values():
                 self._dispatch_aml_data(tags_ids, aml_data, layout_data, report_data)
 
         # Process reconciled moves
-        for aml_groupby_account in self._get_reconciled_moves(report, options, currency_table_query, payment_account_ids, payment_move_ids):
+        for aml_groupby_account in self._get_reconciled_moves(report, options, currency_table_query, payment_account_ids, payment_move_ids, tags_ids.values()):
             for aml_data in aml_groupby_account.values():
                 self._dispatch_aml_data(tags_ids, aml_data, layout_data, report_data)
 
@@ -251,7 +251,7 @@ class CashFlowReportCustomHandler(models.AbstractModel):
 
         return self._cr.dictfetchall()
 
-    def _get_liquidity_moves(self, report, options, currency_table_query, payment_account_ids, payment_move_ids):
+    def _get_liquidity_moves(self, report, options, currency_table_query, payment_account_ids, payment_move_ids, cash_flow_tag_ids):
         ''' Fetch all information needed to compute lines from liquidity moves.
         The difficulty is to represent only the not-reconciled part of balance.
 
@@ -294,6 +294,7 @@ class CashFlowReportCustomHandler(models.AbstractModel):
                     ON account_account.id = account_move_line.account_id
                 LEFT JOIN account_account_account_tag
                     ON account_account_account_tag.account_account_id = account_move_line.account_id
+                    AND account_account_account_tag.account_account_tag_id IN %s
                 WHERE account_move_line.move_id IN %s
                     AND account_move_line.account_id NOT IN %s
                     AND account_partial_reconcile.max_date BETWEEN %s AND %s
@@ -319,6 +320,7 @@ class CashFlowReportCustomHandler(models.AbstractModel):
                     ON account_account.id = account_move_line.account_id
                 LEFT JOIN account_account_account_tag
                     ON account_account_account_tag.account_account_id = account_move_line.account_id
+                    AND account_account_account_tag.account_account_tag_id IN %s
                 WHERE account_move_line.move_id IN %s
                     AND account_move_line.account_id NOT IN %s
                     AND account_partial_reconcile.max_date BETWEEN %s AND %s
@@ -342,6 +344,7 @@ class CashFlowReportCustomHandler(models.AbstractModel):
                     ON account_account.id = account_move_line.account_id
                 LEFT JOIN account_account_account_tag
                     ON account_account_account_tag.account_account_id = account_move_line.account_id
+                    AND account_account_account_tag.account_account_tag_id IN %s
                 WHERE account_move_line.move_id IN %s
                     AND account_move_line.account_id NOT IN %s
                 GROUP BY account_move_line.account_id, account_account.code, account_name, account_account.account_type, account_account_account_tag.account_account_tag_id
@@ -352,9 +355,9 @@ class CashFlowReportCustomHandler(models.AbstractModel):
 
             column_group_payment_move_ids = tuple(payment_move_ids.get(column_group_key, [None]))
             params += [
-                column_group_key, column_group_payment_move_ids, payment_account_ids, date_from, date_to,
-                column_group_key, column_group_payment_move_ids, payment_account_ids, date_from, date_to,
-                column_group_key, column_group_payment_move_ids, payment_account_ids
+                column_group_key, tuple(cash_flow_tag_ids), column_group_payment_move_ids, payment_account_ids, date_from, date_to,
+                column_group_key, tuple(cash_flow_tag_ids), column_group_payment_move_ids, payment_account_ids, date_from, date_to,
+                column_group_key, tuple(cash_flow_tag_ids), column_group_payment_move_ids, payment_account_ids,
             ]
 
         self._cr.execute(' UNION ALL '.join(queries), params)
@@ -375,7 +378,7 @@ class CashFlowReportCustomHandler(models.AbstractModel):
 
         return list(reconciled_aml_groupby_account.values())
 
-    def _get_reconciled_moves(self, report, options, currency_table_query, payment_account_ids, payment_move_ids):
+    def _get_reconciled_moves(self, report, options, currency_table_query, payment_account_ids, payment_move_ids, cash_flow_tag_ids):
         ''' Retrieve all moves being not a liquidity move to be shown in the cash flow statement.
         Each amount must be valued at the percentage of what is actually paid.
         E.g. An invoice of 1000 being paid at 50% must be valued at 500.
@@ -511,11 +514,12 @@ class CashFlowReportCustomHandler(models.AbstractModel):
                     ON account_account.id = account_move_line.account_id
                 LEFT JOIN account_account_account_tag
                     ON account_account_account_tag.account_account_id = account_move_line.account_id
+                    AND account_account_account_tag.account_account_tag_id IN %s
                 WHERE account_move_line.move_id IN %s
                 GROUP BY account_move_line.move_id, account_move_line.account_id, account_account.code, account_name, account_account.account_type, account_account_account_tag.account_account_tag_id
             ''')
 
-            params += [column['column_group_key'], tuple(reconciled_percentage_per_move[column['column_group_key']].keys()) or (None,)]
+            params += [column['column_group_key'], tuple(cash_flow_tag_ids), tuple(reconciled_percentage_per_move[column['column_group_key']].keys()) or (None,)]
 
         self._cr.execute(' UNION ALL '.join(queries), params)
 

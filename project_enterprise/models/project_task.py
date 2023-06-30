@@ -346,21 +346,29 @@ class Task(models.Model):
             return self.env['res.users']
 
         last_start_date = fields.Datetime.from_string(start_date) - relativedelta(**{f"{scale}s": 1})
-        domain = filter_domain_leaf(domain, lambda field: field not in ['planned_date_begin', 'date_deadline'])
+        next_start_date = fields.Datetime.from_string(start_date) + relativedelta(**{f"{scale}s": 1})
+        domain = filter_domain_leaf(domain, lambda field: field not in ['planned_date_begin', 'date_deadline', 'state'])
         domain_expand = [
             ('planned_date_begin', '>=', last_start_date),
-            ('date_deadline', '<=', start_date),
+            ('date_deadline', '<', next_start_date)
         ]
         project_id = self._context.get('default_project_id')
         if project_id:
             domain_expand = expression.OR([[
                 ('project_id', '=', project_id),
                 ('state', 'not in', list(CLOSED_STATES)),
+                ('planned_date_begin', '=', False),
+                ('date_deadline', '=', False),
             ], domain_expand])
+        else:
+            domain_expand = expression.AND([[
+                ('project_id', '!=', False),
+            ], domain_expand])
+        domain_expand = expression.AND([domain_expand, domain])
         search_on_comodel = self._search_on_comodel(domain, "user_ids", "res.users", order)
         if search_on_comodel:
             return search_on_comodel | self.env.user
-        return self.search(expression.AND([domain_expand, domain])).user_ids | self.env.user
+        return self.search(domain_expand).user_ids | self.env.user
 
     @api.model
     def _group_expand_project_ids(self, projects, domain, order):

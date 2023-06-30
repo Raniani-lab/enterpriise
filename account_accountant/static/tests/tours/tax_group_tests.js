@@ -1,8 +1,9 @@
 /** @odoo-module */
 
-import tour from 'web_tour.tour';
+import "account.tax.group.tour.tests"
+import { registry } from "@web/core/registry";
 
-const { steps } = tour.tours.account_tax_group;
+const { steps } = registry.category("web_tour.tours").get("account_tax_group");
 
 const accountMenuClickIndex = steps.findIndex(step => step.id === 'account_menu_click');
 

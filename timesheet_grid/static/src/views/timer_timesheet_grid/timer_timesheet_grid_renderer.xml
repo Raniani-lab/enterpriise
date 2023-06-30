@@ -99,6 +99,14 @@
             <attribute name="t-att-class">{
                 'text-success' : column.grandTotal === column._dataPoint.data.workingHours.daily[column.value],
                 'text-danger' : column.grandTotal lt column._dataPoint.data.workingHours.daily[column.value],
+                'text-warning' : column.grandTotal gt column._dataPoint.data.workingHours.daily[column.value],
+            }</attribute>
+        </xpath>
+        <xpath expr="//div[@t-if='!props.options.hideLineTotal']" position="attributes">
+            <attribute name="t-att-class">{
+                'text-bg-danger': getWeeklyOvertime() lt 0,
+                'text-bg-success': getWeeklyOvertime() == 0,
+                'text-bg-warning': getWeeklyOvertime() gt 0,
             }</attribute>
         </xpath>
     </t>
@@ -111,14 +119,16 @@
         </xpath>
         <xpath expr="//div[hasclass('o_grid_bar_chart_total_pill')]" position="after">
             <span t-if="column.grandTotal !== column.model.data.workingHours.daily[column.value]"
-                   class="o_grid_bar_chart_overtime position-absolute top-50 start-50 translate-middle px-2 rounded-pill bg-white fw-bolder text-warning transition-base"
+                   class="o_grid_bar_chart_overtime position-absolute top-50 start-50 translate-middle px-2 rounded-pill bg-white fw-bolder transition-base"
+                   t-att-class="getDailyOvertime(column) &lt; 0 ? 'text-danger':'text-warning'"
                    title="Daily overtime"> <t t-esc="formatDailyOvertime(column)"/>
             </span>
         </xpath>
         <xpath expr="//div[hasclass('o_grid_row_total') and hasclass('o_grid_column_total')]/div" position="inside">
             <t t-set="weeklyOvertime" t-value="getWeeklyOvertime()"/>
             <span t-if="weeklyOvertime !== 0"
-                   class="o_grid_bar_chart_overtime position-absolute top-50 start-50 translate-middle px-2 rounded-pill bg-white fw-bolder text-warning transition-base"
+                   class="o_grid_bar_chart_overtime position-absolute top-50 start-50 translate-middle px-2 rounded-pill bg-white fw-bolder transition-base"
+                   t-att-class="weeklyOvertime > 0 ? 'text-warning':'text-danger'"
                    title="Weekly overtime">
                 <t t-esc="formatWeeklyOvertime(weeklyOvertime)"/>
             </span>

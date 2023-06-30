@@ -1022,9 +1022,9 @@ QUnit.module("Views", (hooks) => {
             const columnTotalEls = target.querySelectorAll(".o_grid_column_total");
             const columnTotalWithBarchartTotalTitle = {
                 danger: [],
-                classic: [],
+                warning: [],
                 get total() {
-                    return this.danger.length + this.classic.length;
+                    return this.danger.length + this.warning.length;
                 },
             };
             const emptyColumnTotalCells = [];
@@ -1041,8 +1041,9 @@ QUnit.module("Views", (hooks) => {
                     } else {
                         if (columnTotalTitleEl.querySelector("span.text-danger")) {
                             columnTotalWithBarchartTotalTitle.danger.push(node);
-                        } else {
-                            columnTotalWithBarchartTotalTitle.classic.push(node);
+                        }
+                        else if (columnTotalTitleEl.querySelector("span.text-warning")) {
+                            columnTotalWithBarchartTotalTitle.warning.push(node);
                         }
                     }
                 }
@@ -1064,9 +1065,9 @@ QUnit.module("Views", (hooks) => {
                 "3 column totals should have a total displayed in red since the employee has not done all his working hours"
             );
             assert.strictEqual(
-                columnTotalWithBarchartTotalTitle.classic.length,
+                columnTotalWithBarchartTotalTitle.warning.length,
                 1,
-                "1 column totals should have a total displayed in black color since the employee has done all his working hours"
+                "1 column totals should have a total displayed in orange since the employee has done extra working hours"
             );
             assert.containsN(
                 target,
@@ -1086,6 +1087,18 @@ QUnit.module("Views", (hooks) => {
                 target,
                 ".o_grid_bar_chart_container.o_grid_highlighted .o_grid_bar_chart_overtime",
                 "The overtime of the total column hovered should be visible"
+            );
+
+            const overTimeColor = ["text-danger","text-warning","text-danger","text-danger"];
+            const columnTotalOverTimeEls = target.querySelectorAll(".o_grid_bar_chart_container .o_grid_bar_chart_overtime");
+            columnTotalOverTimeEls.forEach((element, i) => {
+                assert.hasClass(element, overTimeColor[i], "Daily overtime should have been displayed in different color.");
+            });
+
+            assert.containsOnce(
+                target,
+                ".o_grid_highlightable.position-md-sticky.end-0.d-flex.align-items-center.justify-content-center.fw-bold.text-bg-danger",
+                "Total overtime should be displayed in red because employees have not done all work of the week"
             );
         }
     );

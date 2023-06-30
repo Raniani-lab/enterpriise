@@ -170,11 +170,14 @@ class TestAccountReports(TestAccountReportsCommon):
             'payment_date': payment_date,
         })._create_payments()
 
+        # Make a second invoice without payment; it will allow being sure the cash basis options is well used when computing the report
+        # (as it will then not appear in its lines)
+        self.init_invoice('out_invoice', amounts=[100.0], partner=self.partner_a, invoice_date=invoice_date, post=True)
+
         # Check the impact in the reports: the invoice date should be the one the invoice appears at, since it greater than the payment's
         report = self.env.ref('account_reports.general_ledger_report')
 
-        options = self._generate_options(report, payment_date, payment_date)
-        options['cash_basis'] = True
+        options = self._generate_options(report, payment_date, payment_date, default_options={'report_cash_basis': True})
 
         self.assertLinesValues(
             # pylint: disable=C0326
@@ -190,8 +193,7 @@ class TestAccountReports(TestAccountReportsCommon):
             ],
         )
 
-        options = self._generate_options(report, invoice_date, invoice_date)
-        options['cash_basis'] = True
+        options = self._generate_options(report, invoice_date, invoice_date, default_options={'report_cash_basis': True})
 
         self.assertLinesValues(
             # pylint: disable=C0326

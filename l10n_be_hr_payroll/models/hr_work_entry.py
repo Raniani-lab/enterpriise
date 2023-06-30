@@ -11,6 +11,15 @@ class HrWorkEntry(models.Model):
         string='Credit time', readonly=True,
         help="This is a credit time work entry.")
 
+    def init(self):
+        # speeds up `l10n_be.work.entry.daily.benefit.report`
+        self.env.cr.execute("""
+            CREATE INDEX IF NOT EXISTS hr_work_entry_daily_benefit_idx
+                ON hr_work_entry (active, employee_id)
+                WHERE state IN ('draft', 'validated');
+        """)
+        super().init()
+
     def _get_leaves_entries_outside_schedule(self):
         return super()._get_leaves_entries_outside_schedule().filtered(lambda w: not w.is_credit_time)
 

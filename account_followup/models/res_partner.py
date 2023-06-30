@@ -381,6 +381,7 @@ class ResPartner(models.Model):
         self.env['account.move.line'].check_access_rights('read')
         self.env['account.move.line'].flush_model()
         self.env['res.partner'].flush_model()
+        self.env['ir.property'].flush_model()
         self.env['account_followup.followup.line'].flush_model()
 
         # Put the data in a cache in the database to avoid running costly query multiple times in same transaction.

@@ -28,7 +28,7 @@
                                                 <a
                                                     t-on-click="(ev) => this.openTaxJournalItems(ev, 'Taxes Applied', 'tax')"
                                                 >
-                                                    => Audit
+                                                    ⇒ Audit
                                                 </a>
                                             </t>
                                         </th>

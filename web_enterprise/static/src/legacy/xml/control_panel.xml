@@ -54,7 +54,7 @@
             <div t-else="" class="o_cp_bottom">
                 <div class="o_cp_bottom_left">
                     <!-- Additional content: buttons (legacy) -->
-                    <div class="o_cp_buttons" role="toolbar" aria-label="Control panel toolbar" t-ref="buttons">
+                    <div class="o_cp_buttons gap-1" role="toolbar" aria-label="Control panel toolbar" t-ref="buttons">
                         <t t-slot="buttons"/>
                     </div>
                 </div>

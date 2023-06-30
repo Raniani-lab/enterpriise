@@ -13,16 +13,16 @@
            </t>
        </xpath>
 
-       <xpath expr="//span[hasclass('acc_rep_line_name')]" position="inside">
+       <xpath expr="//span[hasclass('acc_rep_line_name')]" position="after">
           <t t-if="props.line.unfolded">
               <a
-                  class="oe_link_reports ms-2"
+                  class="oe_link_reports"
                   t-on-click="(ev) => controller.reportAction(ev, 'caret_option_open_record_form', { line_id: props.line.id })"
               >
                   Open
               </a>
               <a
-                  class="oe_link_reports ms-2"
+                  class="oe_link_reports text-nowrap"
                   t-on-click="(ev) => controller.reportAction(ev, 'open_journal_items', { line_id: props.line.id })"
               >
                   ⇒ Journal Items

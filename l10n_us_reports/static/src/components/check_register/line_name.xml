@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
     <t t-name="l10n_us_reports.CheckRegisterLineName" t-inherit="account_reports.AccountReportLineNameCustomizable" owl="1">
-        <xpath expr="//span[hasclass('acc_rep_line_name')]" position="inside">
+        <xpath expr="//span[hasclass('acc_rep_line_name')]" position="after">
             <t t-if="props.line.unfolded">
-                <a class="oe_link_reports no_print ms-2" t-on-click="(ev) => controller.reportAction(ev, 'open_journal_items', { line_id: props.line.id, view_ref: 'account.view_move_line_tree_grouped_partner' })">
+                <a class="oe_link_reports no_print text-nowrap" t-on-click="(ev) => controller.reportAction(ev, 'open_journal_items', { line_id: props.line.id, view_ref: 'account.view_move_line_tree_grouped_partner' })">
                     ⇒ Journal Items
                 </a>
             </t>

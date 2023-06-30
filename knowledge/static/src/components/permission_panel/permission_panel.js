@@ -171,7 +171,7 @@ export class PermissionPanel extends Component {
         const loseAccessMessage = _t('Are you sure you want to set your permission to "none"? If you do, you will no longer have access to the article.');
         const message = willLoseAccess ? loseAccessMessage : willLoseWrite ? loseWriteMessage : restrictMessage ;
         const title = willLoseAccess ? _t('Leave Article') : _t('Change Permission');
-        const confirmLabel = willLoseAccess ? _t('Lose Access') : _t('Restrict own access');
+        const confirmLabel = willLoseAccess ? _t('Lose Access') : this.isLoggedUser(member) ? _t('Restrict own access') : _t('Restrict Access');
         this._showConfirmDialog(message, title, { confirmLabel, confirm, cancel: discard } );
     }
 

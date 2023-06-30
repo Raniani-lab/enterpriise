@@ -113,9 +113,9 @@
             <xpath expr="//setting[@id='industry_fsm']" position="replace">
                 <setting help="Create reports to be signed off by your customers" id="industry_fsm">
                     <field name="allow_worksheets"/>
-                    <div class="mt-3 d-flex" attrs="{'invisible': [('allow_worksheets', '=', False)]}">
-                        <label for="worksheet_template_id" string="Worksheet Template"/>
-                        <field name="worksheet_template_id" class="oe_inline" context="{'default_res_model': 'project.task'}"/>
+                    <div class="mt-3 d-flex flex-wrap" attrs="{'invisible': [('allow_worksheets', '=', False)]}">
+                        <label for="worksheet_template_id" class="fw-bold" string="Worksheet Template"/>
+                        <field name="worksheet_template_id" class="oe_inline ps-2" context="{'default_res_model': 'project.task'}"/>
                     </div>
                 </setting>
             </xpath>

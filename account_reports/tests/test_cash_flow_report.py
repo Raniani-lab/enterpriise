@@ -5,6 +5,8 @@ from .common import TestAccountReportsCommon
 from odoo import fields
 from odoo.tests import tagged
 
+from odoo import Command
+
 @tagged('post_install', '-at_install')
 class TestCashFlowReport(TestAccountReportsCommon):
     @classmethod
@@ -1166,4 +1168,60 @@ class TestCashFlowReport(TestAccountReportsCommon):
             ['Cash in',                                                                ''],
             ['Cash out',                                                           -400.0],
             ['Cash and cash equivalents, closing balance',                          100.0],
+        ])
+
+    def test_cash_flow_handle_multiple_tags(self):
+        ''' Ensure that the balances are correct in the following situations:
+            - when several non-cash-flow-report account tags are set
+            - when a mix of several non-cash-flow-report tags and one cash-flow report tag are set.
+        '''
+
+        options = self._generate_options(self.report, fields.Date.from_string('2016-01-01'), fields.Date.from_string('2016-01-01'))
+
+        unrelated_tag_1 = self.env['account.account.tag'].create({
+            'name': 'Unrelated Tag 1',
+            'applicability': 'accounts',
+        })
+        unrelated_tag_2 = self.env['account.account.tag'].create({
+            'name': 'Unrelated Tag 2',
+            'applicability': 'accounts',
+        })
+
+        # account_no_tag will now have 2 tags unrelated to the Cash Flow Report.
+        # account_financing will now have the `account.account_tag_financing` tag, plus the two unrelated tags.
+        (self.account_no_tag + self.account_financing).write({
+            'tag_ids': [Command.link(unrelated_tag_1.id), Command.link(unrelated_tag_2.id)],
+        })
+
+        move = self.env['account.move'].create({
+            'move_type': 'entry',
+            'date': '2016-01-01',
+            'journal_id': self.bank_journal.id,
+            'line_ids': [
+                (0, 0, {'debit': 800.0, 'credit':   0.0, 'account_id': self.account_bank.id}),
+                (0, 0, {'debit':   0.0, 'credit': 300.0, 'account_id': self.account_no_tag.id}),
+                (0, 0, {'debit':   0.0, 'credit': 500.0, 'account_id': self.account_financing.id}),
+            ],
+        })
+
+        move.action_post()
+
+        self.assertLinesValues(self.report._get_lines(options), [0, 1], [
+            ['Cash and cash equivalents, beginning of period',                         ''],
+            ['Net increase in cash and cash equivalents',                           800.0],
+            ['Cash flows from operating activities',                                   ''],
+            ['Advance Payments received from customers',                               ''],
+            ['Cash received from operating activities',                                ''],
+            ['Advance payments made to suppliers',                                     ''],
+            ['Cash paid for operating activities',                                     ''],
+            ['Cash flows from investing & extraordinary activities',                   ''],
+            ['Cash in',                                                                ''],
+            ['Cash out',                                                               ''],
+            ['Cash flows from financing activities',                                500.0],
+            ['Cash in',                                                             500.0],
+            ['Cash out',                                                               ''],
+            ['Cash flows from unclassified activities',                             300.0],
+            ['Cash in',                                                             300.0],
+            ['Cash out',                                                               ''],
+            ['Cash and cash equivalents, closing balance',                          800.0],
         ])

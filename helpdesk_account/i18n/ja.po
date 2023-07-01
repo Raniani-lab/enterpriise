@@ -60,7 +60,7 @@ msgstr ""
 #. module: helpdesk_account
 #: model_terms:ir.ui.view,arch_db:helpdesk_account.view_account_move_reversal_inherit_helpdesk_account
 msgid "Invoices to Refund"
-msgstr ""
+msgstr "返金対象請求書"
 
 #. module: helpdesk_account
 #: model:ir.model,name:helpdesk_account.model_account_move

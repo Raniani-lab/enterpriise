@@ -99,7 +99,7 @@ msgstr "/ Mois"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_note_demo_content
 msgid "1. Save documents to terminated employees"
-msgstr "1. Sauvegarder les documents des employés licenciés"
+msgstr "1. Enregistrer les documents des employés licenciés"
 
 #. module: hr_payroll
 #: model:hr.salary.rule,name:hr_payroll.hr_salary_rule_13th_month_salary

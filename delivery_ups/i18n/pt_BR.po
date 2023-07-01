@@ -524,7 +524,7 @@ msgstr "Métodos de envio"
 #. module: delivery_ups
 #: model:ir.model,name:delivery_ups.model_stock_package_type
 msgid "Stock package type"
-msgstr ""
+msgstr "Tipo de pacote de estoque"
 
 #. module: delivery_ups
 #. odoo-python

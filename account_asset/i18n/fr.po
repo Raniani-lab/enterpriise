@@ -143,7 +143,7 @@ msgid ""
 "disposal entry will be posted on the %s account <b>%s</b>."
 msgstr ""
 "Une écriture d'amortissement sera comptabilisée le et comprendra la date "
-"%s.<br/> Une écriture d'élimination sera comptabilisée dans le compte %s "
+"%s.<br/> Une écriture de cession sera comptabilisée dans le compte %s "
 "<b>%s</b>."
 
 #. module: account_asset
@@ -533,7 +533,7 @@ msgstr "Immobilisation créée"
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Asset disposed. %s"
-msgstr "Actif éliminé. %s"
+msgstr "Actif cédé. %s"
 
 #. module: account_asset
 #. odoo-python
@@ -740,7 +740,7 @@ msgstr "Créer et valider"
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_account__create_asset__draft
 msgid "Create in draft"
-msgstr "Créer un brouillon"
+msgstr "Créer en brouillon"
 
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_account_asset_form
@@ -1118,26 +1118,26 @@ msgstr "Nom d'affichage"
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Disposal"
-msgstr "Élimination"
+msgstr "Cession"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__disposal_date
 msgid "Disposal Date"
-msgstr "Date d'élimination"
+msgstr "Date de cession"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Disposal Move"
-msgstr "Écriture d'élimination"
+msgstr "Écriture de cession"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Disposal Moves"
-msgstr "Écritures d'élimination"
+msgstr "Écritures de cession"
 
 #. module: account_asset
 #. odoo-python
@@ -1145,7 +1145,7 @@ msgstr "Écritures d'élimination"
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
 #, python-format
 msgid "Dispose"
-msgstr "Éliminer"
+msgstr "Céder"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__state__draft
@@ -1194,7 +1194,7 @@ msgstr "Compte de charges"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Expense Board"
-msgstr "Tableau de charges"
+msgstr "Tableau des charges"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
@@ -1225,7 +1225,7 @@ msgstr "Premier amortissement"
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__account_asset_id
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_search
 msgid "Fixed Asset Account"
-msgstr "Compte d'immobilisation"
+msgstr "Compte d'immobilisations"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_follower_ids
@@ -1898,14 +1898,14 @@ msgstr "Ventes : Comptabilisation des produits"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Save as Model"
-msgstr "Sauvegarder en tant que Modèle"
+msgstr "Enregistrer en tant que Modèle"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Save model"
-msgstr "Sauvegarder le modèle"
+msgstr "Enregistrer le modèle"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__select_invoice_line_id
@@ -2016,7 +2016,7 @@ msgid ""
 "The disposal invoice is needed in order to generate the closing journal "
 "entry."
 msgstr ""
-"La facture d'élimination est nécessaire pour générer la pièce comptable de "
+"La facture de cession est nécessaire pour générer la pièce comptable de "
 "clôture."
 
 #. module: account_asset
@@ -2190,8 +2190,8 @@ msgid ""
 "increase. Please use 'Dispose' on the increase(s)."
 msgstr ""
 "Vous ne pouvez pas automatiser la pièce comptable pour une immobilisation "
-"qui a une valeur augmentée courante. Veuillez utiliser l'option 'Éliminer' "
-"pour la (ou les) augmentation(s)."
+"qui a une valeur augmentée courante. Veuillez utiliser l'option 'Céder' pour"
+" la (ou les) augmentation(s)."
 
 #. module: account_asset
 #. odoo-python

@@ -1129,14 +1129,14 @@ msgstr "Vendeur"
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Save the product."
-msgstr "Sauvegardez le produit."
+msgstr "Enregistrez le produit."
 
 #. module: sale_renting
 #. odoo-javascript
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Save the quotation."
-msgstr "Sauvegardez le devis."
+msgstr "Enregistrez le devis."
 
 #. module: sale_renting
 #: model:ir.ui.menu,name:sale_renting.menu_rental_schedule

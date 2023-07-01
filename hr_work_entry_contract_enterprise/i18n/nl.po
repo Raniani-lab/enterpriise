@@ -52,7 +52,7 @@ msgstr "Loonadministratie"
 #: model:ir.ui.menu,name:hr_work_entry_contract_enterprise.menu_work_entry
 #: model_terms:ir.ui.view,arch_db:hr_work_entry_contract_enterprise.hr_work_entry_gantt
 msgid "Work Entries"
-msgstr "Werk boekingen"
+msgstr "Werkboekingen"
 
 #. module: hr_work_entry_contract_enterprise
 #: model:ir.ui.menu,name:hr_work_entry_contract_enterprise.menu_hr_work_entry_type_view

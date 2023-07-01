@@ -4,7 +4,7 @@
 # 
 # Translators:
 # Friederike Fasterling-Nesselbosch, 2022
-# Martin Trigaux, 2022
+# Martin Trigaux, 2023
 # Larissa Manderfeld, 2023
 # 
 msgid ""
@@ -43,7 +43,7 @@ msgstr "Nichts anzuzeigen"
 #. module: stock_barcode_mrp_subcontracting
 #: model:ir.model,name:stock_barcode_mrp_subcontracting.model_stock_move_line
 msgid "Product Moves (Stock Move Line)"
-msgstr "Produktbewegungen (Lagerbewegung)"
+msgstr "Produktbewegungen (Lagerbuchung)"
 
 #. module: stock_barcode_mrp_subcontracting
 #. odoo-javascript
@@ -57,7 +57,7 @@ msgstr "Komponenten erfassen"
 #: code:addons/stock_barcode_mrp_subcontracting/static/src/components/line.xml:0
 #, python-format
 msgid "Show subcontract Details"
-msgstr "Details zum Untervertrag anzeigen"
+msgstr "Details zur Unterauftragsvergabe anzeigen"
 
 #. module: stock_barcode_mrp_subcontracting
 #: model:ir.model,name:stock_barcode_mrp_subcontracting.model_stock_picking

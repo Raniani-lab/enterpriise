@@ -26,6 +26,8 @@ msgid ""
 "<span class=\"s_website_form_label_content\">Name</span>\n"
 "                                            <span class=\"s_website_form_mark\"> *</span>"
 msgstr ""
+"<span class=\"s_website_form_label_content\">Nome</span>\n"
+"                                            <span class=\"s_website_form_mark\"> *</span>"
 
 #. module: website_studio
 #. odoo-javascript

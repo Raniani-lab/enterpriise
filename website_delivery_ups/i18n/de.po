@@ -29,7 +29,7 @@ msgstr "(Mein Konto abrechnen)"
 #. module: website_delivery_ups
 #: model_terms:ir.ui.view,arch_db:website_delivery_ups.payment_delivery_methods_inherit_website_sale_delivery
 msgid "<i class=\"fa fa-trash-o\" role=\"img\" aria-label=\"Delete\" title=\"Delete\"/>"
-msgstr "<i class=\"fa fa-trash-o\" role=\"img\" aria-label=\"Delete\" title=\"Löschen\"/>"
+msgstr "<i class=\"fa fa-trash-o\" role=\"img\" aria-label=\"Delete\" title=\"Delete\"/>"
 
 #. module: website_delivery_ups
 #: model_terms:payment.provider,pending_msg:website_delivery_ups.payment_provider_ups_cod
@@ -37,9 +37,9 @@ msgid ""
 "<i>Pending</i>, Thanks for choosing COD(Collect on Delivery/Cash on "
 "Delivery) option. Delivery boy will collect the payment on delivery."
 msgstr ""
-"<i>Ausstehend.</i> Vielen Dank für Ihre Entscheidung zur Option CSB (COD, "
-"Collect on Delivery bzw. Cash on Delivery). Die Zahlung wird bei Lieferung "
-"vom Lieferanten angenommen."
+"<i>Ausstehend.</i> Vielen Dank für Ihre Entscheidung zur Option „Nachnahme“ "
+"(Lieferung gegen Nachnahme bzw. Zahlung bei Lieferung). Die Zahlung wird bei"
+" Lieferung vom Lieferanten angenommen."
 
 #. module: website_delivery_ups
 #: model_terms:ir.ui.view,arch_db:website_delivery_ups.payment_delivery_methods_inherit_website_sale_delivery
@@ -54,7 +54,7 @@ msgstr "Anwenden"
 #. module: website_delivery_ups
 #: model:payment.provider,name:website_delivery_ups.payment_provider_ups_cod
 msgid "COD"
-msgstr "CSB"
+msgstr "Nachnahme"
 
 #. module: website_delivery_ups
 #: model_terms:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
@@ -107,17 +107,17 @@ msgstr "Verkaufsauftrag"
 #. module: website_delivery_ups
 #: model_terms:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
 msgid "UPS Bill My Account"
-msgstr "UPS Mein Konto abrechnen"
+msgstr "Mein UPS-Konto abrechnen"
 
 #. module: website_delivery_ups
 #: model_terms:ir.ui.view,arch_db:website_delivery_ups.property_ups_carrier_account_inherit_portal_details
 msgid "UPS Number Account"
-msgstr "UPS Nummer Konto"
+msgstr "Nummer des UPS-Kontos"
 
 #. module: website_delivery_ups
 #: model_terms:ir.ui.view,arch_db:website_delivery_ups.res_config_settings_view_form_inherit_website_delivery_ups
 msgid "UPS Shipping Methods"
-msgstr "UPS Versandmethoden"
+msgstr "UPS-Versandmethoden"
 
 #. module: website_delivery_ups
 #: model_terms:ir.ui.view,arch_db:website_delivery_ups.payment_delivery_methods_inherit_website_sale_delivery
@@ -127,17 +127,17 @@ msgstr "Verwendetes Konto"
 #. module: website_delivery_ups
 #: model_terms:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
 msgid "Your UPS Account Number"
-msgstr "Ihre UPS Account-Nummer"
+msgstr "Ihre UPS-Konzonummer"
 
 #. module: website_delivery_ups
 #: model_terms:payment.provider,auth_msg:website_delivery_ups.payment_provider_ups_cod
 msgid "Your payment has been authorized."
-msgstr "Ihre Zahlung wurde genehmigt."
+msgstr "Ihre Zahlung wurde autorisiert."
 
 #. module: website_delivery_ups
 #: model_terms:payment.provider,cancel_msg:website_delivery_ups.payment_provider_ups_cod
 msgid "Your payment has been cancelled."
-msgstr "Ihre Zahlung wurde storniert."
+msgstr "Ihre Zahlung wurde abgebrochen."
 
 #. module: website_delivery_ups
 #: model_terms:payment.provider,done_msg:website_delivery_ups.payment_provider_ups_cod

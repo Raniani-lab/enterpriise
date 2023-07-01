@@ -1468,7 +1468,7 @@ msgstr "Taxe CE sur le même pays"
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_equity0
 msgid "EQUITY"
-msgstr "CAPITAUX PROPRES"
+msgstr "FONDS PROPRES"
 
 #. module: account_reports
 #. odoo-python
@@ -2131,7 +2131,7 @@ msgstr "PASSIF"
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_liabilities_and_equity_view0
 msgid "LIABILITIES + EQUITY"
-msgstr "PASSIF + CAPITAUX PROPRES"
+msgstr "PASSIF + FONDS PROPRES"
 
 #. module: account_reports
 #. odoo-python
@@ -2637,17 +2637,17 @@ msgstr ""
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_fixed_assets_view0
 msgid "Plus Fixed Assets"
-msgstr "Plus immobilisations corporelles"
+msgstr "Plus immobilisations"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_non_current_assets_view0
 msgid "Plus Non-current Assets"
-msgstr "Plus actifs non courants"
+msgstr "Plus actif immobilisé"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_non_current_liabilities0
 msgid "Plus Non-current Liabilities"
-msgstr "Plus passif immoblisé"
+msgstr "Plus passif immobilisé"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_executivesummary_position0
@@ -2857,7 +2857,7 @@ msgstr "Même période que l'exercice passé"
 #: code:addons/account_reports/static/src/js/account_reports.js:0
 #, python-format
 msgid "Save"
-msgstr "Sauvegarder"
+msgstr "Enregistrer"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report__search_template

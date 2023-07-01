@@ -3,9 +3,9 @@
 # 	* account_invoice_extract
 # 
 # Translators:
-# Martin Trigaux, 2022
 # Michael Hofer, 2023
 # Larissa Manderfeld, 2023
+# Martin Trigaux, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:36+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Larissa Manderfeld, 2023\n"
+"Last-Translator: Martin Trigaux, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -32,6 +32,13 @@ msgid ""
 "    <p>Odoo S.A.</p>\n"
 "</div>"
 msgstr ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"    <p>Guten Tag <br>,</p>\n"
+"    <p>Sie haben kein Guthaben mehr auf Ihrem IAP-Konto für OCR-Rechnungen.<br>\n"
+"    Sie können Ihr Guthaben wieder auf der Seite für Buchhaltungseinstellungen aufladen.</p>\n"
+"    <p>Mit freundlichen Grüßen<br></p>\n"
+"    <p>Odoo S.A.</p>\n"
+"</div>"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
@@ -73,7 +80,7 @@ msgstr ""
 #: model:mail.template,name:account_invoice_extract.account_invoice_extract_no_credit
 #: model:mail.template,subject:account_invoice_extract.account_invoice_extract_no_credit
 msgid "Account Invoice Extract Notification"
-msgstr ""
+msgstr "Konto Benachrichtigung für Rechnungsextraktion"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
@@ -123,7 +130,7 @@ msgstr "Kann den ocr erneut senden Button anzeigen"
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_move__extract_can_show_send_button
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_payment__extract_can_show_send_button
 msgid "Can show the ocr send button"
-msgstr "Kann den ocr senden Button zeigen"
+msgstr "Kann Schaltfläche zum OCR-Versand anzeigen"
 
 #. module: account_invoice_extract
 #: model:ir.model,name:account_invoice_extract.model_res_company
@@ -138,7 +145,7 @@ msgstr "Vollständiger Flow"
 #. module: account_invoice_extract
 #: model:ir.model,name:account_invoice_extract.model_res_config_settings
 msgid "Config Settings"
-msgstr "Konfiguration "
+msgstr "Konfigurationseinstellungen "
 
 #. module: account_invoice_extract
 #. odoo-python
@@ -152,7 +159,7 @@ msgstr "Konnte die KI-Daten nicht neu laden."
 #: code:addons/account_invoice_extract/static/src/js/invoice_extract_form_renderer.js:0
 #, python-format
 msgid "Create"
-msgstr "Anlegen"
+msgstr "Erstellen"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__create_uid
@@ -233,7 +240,7 @@ msgstr "Wort entnehmen"
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_move__extract_state
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_payment__extract_state
 msgid "Extract state"
-msgstr "Auszugstatus"
+msgstr "Extraktionsstatus"
 
 #. module: account_invoice_extract
 #: model:ir.model,name:account_invoice_extract.model_account_invoice_extract_words
@@ -243,7 +250,7 @@ msgstr "Aus Rechnungsscan extrahierte Wörter"
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
 msgid "Extraction Information"
-msgstr "Informationsextraktion"
+msgstr "Extraktionsinformationen"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__field
@@ -260,7 +267,7 @@ msgstr "ID"
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_move__extract_remote_id
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_payment__extract_remote_id
 msgid "Id of the request to IAP-OCR"
-msgstr "ID der IAP-OCR Anfrage"
+msgstr "ID der IAP-OCR-Anfrage"
 
 #. module: account_invoice_extract
 #. odoo-python
@@ -291,7 +298,7 @@ msgstr "OCR für Rechnungen: Rechnungen analysieren"
 #: model:ir.actions.server,name:account_invoice_extract.ir_cron_update_ocr_status_ir_actions_server
 #: model:ir.cron,cron_name:account_invoice_extract.ir_cron_update_ocr_status
 msgid "Invoice OCR: Update All Status"
-msgstr "Rechnung Texterkennung: Alle Status aktualisieren"
+msgstr "OCR für Rechnungen: Alle Status aktualisieren"
 
 #. module: account_invoice_extract
 #: model:ir.actions.server,name:account_invoice_extract.ir_cron_ocr_validate_ir_actions_server
@@ -302,7 +309,7 @@ msgstr "OCR für Rechnungen: Rechnungen validieren"
 #. module: account_invoice_extract
 #: model:ir.model,name:account_invoice_extract.model_account_move
 msgid "Journal Entry"
-msgstr "Buchungssatz"
+msgstr "Journalbuchung"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words____last_update
@@ -312,7 +319,7 @@ msgstr "Zuletzt geändert am"
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__write_uid
 msgid "Last Updated by"
-msgstr "Zuletzt aktualisiert durch"
+msgstr "Zuletzt aktualisiert von"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__write_date
@@ -349,7 +356,7 @@ msgstr "KI-Daten neu laden"
 #. module: account_invoice_extract
 #: model:ir.actions.server,name:account_invoice_extract.model_account_send_for_digitalization
 msgid "Send Bills for digitization"
-msgstr "Rechnungen zur Digitalisierung verseenden"
+msgstr "Rechnungen zur Digitalisierung versenden"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
@@ -440,7 +447,7 @@ msgstr "Benutzer ausgewählt"
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_res_config_settings__extract_in_invoice_digitalization_mode
 msgid "Vendor Bills"
-msgstr "Eingangsrechnungen"
+msgstr "Lieferantenrechnungen"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__waiting_extraction

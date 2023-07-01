@@ -4,7 +4,6 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Lucia Pacheco, 2022
 # Fernanda Alvarez, 2023
 # 
 msgid ""
@@ -71,4 +70,4 @@ msgstr "Enviar notificación push"
 #: code:addons/website_event_social/models/event.py:0
 #, python-format
 msgid "You do not have access to this action."
-msgstr "No cuenta con el acceso necesario para realizar esta acción"
+msgstr "No cuenta con el permiso necesario para realizar esta acción."

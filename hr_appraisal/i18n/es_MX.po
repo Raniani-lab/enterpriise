@@ -41,7 +41,7 @@ msgstr "%s Metas"
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "1 Meeting"
-msgstr "1 Junta"
+msgstr "1 reunión"
 
 #. module: hr_appraisal
 #: model:ir.model.fields.selection,name:hr_appraisal.selection__hr_appraisal_goal__progression__100
@@ -215,7 +215,7 @@ msgstr ""
 "<p class=\"o_view_nocontent_smiling_face\">\n"
 "                            Programar una evaluación\n"
 "                        </p><p>\n"
-"                            Planee evaluaciones con sus compañeros, recolecte y discuta retroalimentación.\n"
+"                            Planee evaluaciones con sus compañeros, recolecte y hable sobre la retroalimentación.\n"
 "                        </p>"
 
 #. module: hr_appraisal
@@ -731,8 +731,8 @@ msgid ""
 "Date of the appraisal, automatically updated when the appraisal is Done or "
 "Cancelled."
 msgstr ""
-"Fecha de la evaluación, se actualiza automáticamente cuando se cancela o se "
-"lleva a cabo la evaluación."
+"Fecha de la evaluación, se actualiza de forma automática cuando se cancela o"
+" se lleva a cabo la evaluación."
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__deadline
@@ -915,13 +915,13 @@ msgstr "Seguidores"
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_partner_ids
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__message_partner_ids
 msgid "Followers (Partners)"
-msgstr "Seguidores (partners)"
+msgstr "Seguidores (contactos)"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__activity_type_icon
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal_goal__activity_type_icon
 msgid "Font awesome icon e.g. fa-tasks"
-msgstr "Icono de Font Awesome ej. fa-tasks"
+msgstr "Icono de Font Awesome, por ejemplo, fa-tasks"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__email_from
@@ -1244,7 +1244,7 @@ msgstr "Necesita mejorar"
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__activity_calendar_event_id
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__activity_calendar_event_id
 msgid "Next Activity Calendar Event"
-msgstr "Siguiente evento en el calendario de actividades."
+msgstr "Siguiente evento en el calendario de actividades"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__activity_date_deadline
@@ -1275,14 +1275,14 @@ msgstr "Siguiente fecha de evaluación"
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Next Meeting"
-msgstr "Próxima junta"
+msgstr "Próxima reunión"
 
 #. module: hr_appraisal
 #. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "No Meeting"
-msgstr "Sin juntas"
+msgstr "Sin reuniones"
 
 #. module: hr_appraisal
 #. odoo-python
@@ -1343,8 +1343,8 @@ msgstr ""
 "Idioma de traducción opcional (código ISO) a seleccionar para el envío de "
 "correos electrónicos. Si no se selecciona esta opción, se utilizará la "
 "versión en inglés. Por lo general, se usa una expresión de marcador de "
-"posición para indicar el idioma adecuado, por ejemplo, "
-"${object.partner_id.lang}."
+"posición para indicar el idioma adecuado, por ejemplo, {{ "
+"object.partner_id.lang }}."
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__parent_user_id
@@ -1363,7 +1363,7 @@ msgstr "Gente que gestiono"
 #: model_terms:ir.actions.act_window,help:hr_appraisal.open_view_hr_appraisal_tree
 msgid "Plan appraisals with your colleagues, collect and discuss feedback."
 msgstr ""
-"Planee evaluaciones con sus compañeros, recolecte y discuta la "
+"Planee evaluaciones con sus compañeros, recolecte y hable sobre la "
 "retroalimentación."
 
 #. module: hr_appraisal
@@ -1382,8 +1382,7 @@ msgstr "Nota privada"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Private note (only accessible to people set as managers)"
-msgstr ""
-"Nota privada (solo es accesible para personas establecidas como gerentes)"
+msgstr "Nota privada (solo los gerentes pueden acceder a ella)"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__progression
@@ -1412,7 +1411,7 @@ msgstr "Partner relacionado"
 #: model:ir.model.fields,help:hr_appraisal.field_hr_employee_base__parent_user_id
 msgid "Related user name for the resource to manage its access."
 msgstr ""
-"Nombre de usuario relacionado con el recurso para gestionar su acceso. "
+"Nombre de usuario relacionado con el recurso para gestionar su acceso."
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__render_model
@@ -1543,9 +1542,9 @@ msgid ""
 "Today: Activity date is today\n"
 "Planned: Future activities."
 msgstr ""
-"Estado basado en actividades\n"
-"Vencida: la fecha límite ya pasó\n"
-"Hoy: la fecha límite es hoy\n"
+"Estado según las actividades\n"
+"Vencida: ya pasó la fecha límite\n"
+"Hoy: hoy es la fecha de la actividad\n"
 "Planeada: futuras actividades."
 
 #. module: hr_appraisal
@@ -1580,8 +1579,8 @@ msgid ""
 "Thanks to your Appraisal Plan, without any new manual Appraisal, the new "
 "Appraisal will be automatically created on %s."
 msgstr ""
-"Gracias a su plan de evaluación, sin ninguna nueva evaluación manual, la "
-"nueva evaluación se creará automáticamente en %s."
+"De acuerdo a su plan de evaluación, se creará la nueva evaluación de forma "
+"automática en %s."
 
 #. module: hr_appraisal
 #. odoo-python
@@ -1732,8 +1731,8 @@ msgid ""
 "You arrived %s months ago. Your appraisal is created you can assess yourself"
 " here. Your manager will determinate the date for your '1to1' meeting."
 msgstr ""
-"Llegó hace %s meses. Su evaluación se creó y puede evaluarse a sí mismo "
-"aquí. Su gerente determinará la fecha de su reunión 1 a 1."
+"Lleva %s meses en este trabajo. Puede ver y realizar su evaluación aquí, su "
+"gerente le avisará qué día podrán tener su reunión 1 a 1."
 
 #. module: hr_appraisal
 #. odoo-python
@@ -1773,14 +1772,13 @@ msgid ""
 "assess yourself here. Your manager will determinate the date for your '1to1'"
 " meeting."
 msgstr ""
-"Su última evaluación fue hace %s meses. Su evaluación se creó y puede "
-"evaluarse a sí mismo aquí. Su gerente determinará la fecha para su reunión 1"
-" a 1."
+"Su última evaluación fue hace %s meses. Puede ver y realizar su evaluación "
+"aquí, su gerente le avisará qué día podrán tener su reunión 1 a 1."
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "e.g. John Doe"
-msgstr "Por ejemplo, John Doe"
+msgstr "Por ejemplo, Juan Pérez"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_goal_view_form

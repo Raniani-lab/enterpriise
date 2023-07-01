@@ -3,7 +3,6 @@
 # 	* documents_project
 # 
 # Translators:
-# Friederike Fasterling-Nesselbosch, 2022
 # Martin Trigaux, 2023
 # Larissa Manderfeld, 2023
 # 
@@ -33,7 +32,7 @@ msgid ""
 "A set of condition and actions which will be available to all attachments "
 "matching the conditions"
 msgstr ""
-"Eine Reihe an Bedingungen und Aktionen die für alle Anhänge verfügbar sind "
+"Eine Reihe an Bedingungen und Aktionen die für alle Anhänge verfügbar sind, "
 "die den Bedingungen entprechen"
 
 #. module: documents_project
@@ -49,7 +48,7 @@ msgstr "Dateianhang"
 #. module: documents_project
 #: model_terms:ir.ui.view,arch_db:documents_project.edit_project_document_form_inherit
 msgid "Categorize and share your documents with your customers"
-msgstr "Kategorisieren und teilen Sie Ihre Dokumente mit Ihren Kunden"
+msgstr "Kategorisieren und teilen Sie Ihre Dokumente mit Ihren Kunden."
 
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_documents_facet
@@ -59,7 +58,7 @@ msgstr "Kategorie"
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_documents_workflow_rule__create_model
 msgid "Create"
-msgstr "Anlegen"
+msgstr "Erstellen"
 
 #. module: documents_project
 #: model:documents.workflow.rule,name:documents_project.documents_project_rule
@@ -74,7 +73,7 @@ msgstr "Standard-Stichwörter"
 #. module: documents_project
 #: model:documents.workflow.rule,name:documents_project.documents_project_rule_deprecate
 msgid "Deprecate"
-msgstr "Veraltet"
+msgstr "Nicht mehr verwenden"
 
 #. module: documents_project
 #: model:documents.tag,name:documents_project.documents_project_status_deprecated
@@ -108,7 +107,7 @@ msgstr "Dokumente &amp; Analysen"
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_documents_folder
 msgid "Documents Workspace"
-msgstr "Arbeitsbereich \"Dokumente\""
+msgstr "Arbeitsbereich „Dokumente“"
 
 #. module: documents_project
 #: model:documents.tag,name:documents_project.documents_project_status_draft
@@ -118,7 +117,7 @@ msgstr "Entwurf"
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_documents_document__is_shared
 msgid "Is Shared"
-msgstr "Ist freigegeben"
+msgstr "Ist geteilt"
 
 #. module: documents_project
 #: model:documents.workflow.rule,name:documents_project.documents_project_rule_mark_as_draft
@@ -140,7 +139,7 @@ msgstr "Neue Aufgabe aus Dokumenten"
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_project_project__document_count
 msgid "Number of documents in Project"
-msgstr "Anzahl Dokumente im Projekt"
+msgstr "Anzahl Dokumente in Projekt"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_project_task__document_count
@@ -203,7 +202,7 @@ msgid ""
 "The \"%s\" workspace should either be in the \"%s\" company like this "
 "project or be open to all companies."
 msgstr ""
-"Der Arbeitsbereich „%s\" sollte sich entweder im Unternehmen „%s“ befinden, "
+"Der Arbeitsbereich „%s“ sollte sich entweder im Unternehmen „%s“ befinden, "
 "wie dieses Projekt, oder für alle Unternehmen zugänglich sein."
 
 #. module: documents_project
@@ -230,7 +229,7 @@ msgstr ""
 "Dieser Arbeitsbereich sollte im selben Unternehmen bleiben wie das folgende Projekt, mit dem er verknüpft ist:\n"
 "%s\n"
 "\n"
-"Bitte aktualisieren Sie das Unternehmen des Projekts oder lassen Sie das Unternehmen dieses Arbeitsbereichs leer."
+"Bitte aktualisieren Sie das Unternehmen der Projekte oder lassen Sie das Unternehmen dieses Arbeitsbereichs leer."
 
 #. module: documents_project
 #: model:documents.tag,name:documents_project.documents_project_status_to_validate
@@ -254,12 +253,12 @@ msgstr "Dokumente verwenden"
 #. module: documents_project
 #: model:documents.workflow.rule,name:documents_project.documents_project_rule_validate
 msgid "Validate"
-msgstr "Bestätigen"
+msgstr "Validieren"
 
 #. module: documents_project
 #: model:documents.tag,name:documents_project.documents_project_status_validated
 msgid "Validated"
-msgstr "Genehmigt"
+msgstr "Validiert"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_project_project__documents_folder_id
@@ -288,7 +287,7 @@ msgid ""
 "\n"
 "Please update the company of all projects so that they remain in the same company as their workspace, or leave the company of the \"%s\" workspace blank."
 msgstr ""
-"Sie können das Unternehmen dieses Projekts nicht ändern, weil der Arbeitsbereich mit den anderen folgenden Projekten verknüpft ist, die sich noch im „%s“-Unternehmen befinden:\n"
+"Sie können das Unternehmen dieses Projekts nicht ändern, weil der Arbeitsbereich mit den anderen folgenden Projekten verknüpft ist, die sich noch im Unternehmen „%s“ befinden:\n"
 "%s\n"
 "\n"
 "Bitte aktualisieren Sie das Unternehmen aller Projekte, sodass sie im selben Unternehmen wie ihr Arbeitsbereich bleiben, oder lassen Sie das Unternehmen des Arbeitsbereichs „%s“ leer."
@@ -302,7 +301,7 @@ msgstr "Sie können kein Unternehmen im Projekte-Arbeitsbereich einstellen."
 #. module: documents_project
 #: model_terms:ir.ui.view,arch_db:documents_project.share_page
 msgid "documents shared"
-msgstr "freigegebene Dokumente"
+msgstr "geteilte Dokumente"
 
 #. module: documents_project
 #: code:addons/documents_project/models/workflow.py:0

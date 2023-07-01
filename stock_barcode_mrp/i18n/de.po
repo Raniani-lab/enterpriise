@@ -23,12 +23,12 @@ msgstr ""
 #. module: stock_barcode_mrp
 #: model:ir.model,name:stock_barcode_mrp.model_stock_move_line
 msgid "Product Moves (Stock Move Line)"
-msgstr "Produktbewegungen (Lagerbewegung)"
+msgstr "Produktbewegungen (Lagerbuchung)"
 
 #. module: stock_barcode_mrp
 #: model:ir.model,name:stock_barcode_mrp.model_product_product
 msgid "Product Variant"
-msgstr "Produktvarianten"
+msgstr "Produktvariante"
 
 #. module: stock_barcode_mrp
 #. odoo-javascript

@@ -5,8 +5,8 @@
 # Translators:
 # Wolfgang Taferner, 2022
 # Friederike Fasterling-Nesselbosch, 2022
-# Martin Trigaux, 2022
 # Larissa Manderfeld, 2023
+# Martin Trigaux, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Larissa Manderfeld, 2023\n"
+"Last-Translator: Martin Trigaux, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -39,7 +39,7 @@ msgstr " (Kopie)"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__total_depreciation_entries_count
 msgid "# Depreciation Entries"
-msgstr "# Abschreibungseinträgebuchungen"
+msgstr "# Abschreibungsbuchungen"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__gross_increase_count
@@ -59,8 +59,8 @@ msgid ""
 "%s Future entries will be recomputed to depreciate the asset following the "
 "changes."
 msgstr ""
-"%s Künftige Posten werden neu berechnet, um den Vermögenswert nach den "
-"Änderungen abzuschreiben."
+"%s Künftige Posten werden neu berechnet, um den Vermögensgegenstand nach den"
+" Änderungen abzuschreiben."
 
 #. module: account_asset
 #. odoo-python
@@ -74,14 +74,14 @@ msgstr "%s erstellt von Rechnung: %s"
 #: code:addons/account_asset/report/account_assets_report.py:0
 #, python-format
 msgid "%s m"
-msgstr "%s m"
+msgstr "%s M"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/report/account_assets_report.py:0
 #, python-format
 msgid "%s y"
-msgstr "%s j"
+msgstr "%s J"
 
 #. module: account_asset
 #. odoo-python
@@ -102,7 +102,7 @@ msgstr "(inkl."
 msgid "A deferred expense has been created for this move:"
 msgstr ""
 "Für diesen Buchungssatz wurde ein aktiver Rechnungsabgrenzungsposten "
-"gebildet: "
+"erstellt:"
 
 #. module: account_asset
 #. odoo-python
@@ -111,7 +111,7 @@ msgstr ""
 msgid "A deferred revenue has been created for this move:"
 msgstr ""
 "Für diesen Buchungssatz wurde ein passiver Rechnungsatzabgrenzungsposten "
-"gebildet:"
+"erstellt:"
 
 #. module: account_asset
 #. odoo-python
@@ -130,9 +130,9 @@ msgid ""
 "Future entries will be recomputed to depreciate the asset following the "
 "changes."
 msgstr ""
-"Ein Abschreibungseintrag wird am und einschließlich des Datums %s "
-"veröffentlicht. <br/> %s Zukünftige Buchungen werden neu berechnet, um die "
-"Anlage entsprechend der Änderungen abzuschreiben."
+"Ein Abschreibungsposten wird am und einschließlich des Datums %s gebucht. "
+"<br/> %s Zukünftige Buchungen werden neu berechnet, um die Anlage "
+"entsprechend der Änderungen abzuschreiben."
 
 #. module: account_asset
 #. odoo-python
@@ -142,8 +142,8 @@ msgid ""
 "A depreciation entry will be posted on and including the date %s.<br/> A "
 "disposal entry will be posted on the %s account <b>%s</b>."
 msgstr ""
-"Eine Abschreibungsbuchung wird am %s und einschließlich dieses Datums "
-"gebucht.<br/> Eine Ausbuchung wird auf das %s Konto <b>%s</b> gebucht. "
+"Ein Abschreibungsposten wird am %s und einschließlich dieses Datums "
+"gebucht.<br/> Eine Ausbuchung wird auf das %s Konto <b>%s</b> gebucht."
 
 #. module: account_asset
 #. odoo-python
@@ -154,10 +154,10 @@ msgid ""
 "second entry will neutralize the original income and post the  outcome of "
 "this sale on account <b>%s</b>."
 msgstr ""
-"Eine Abschreibungsbuchung wird am %s und einschließlich dieses Datums "
+"Ein Abschreibungsposten wird am %s und einschließlich dieses Datums "
 "gebucht.<br/> Eine zweite Buchung wird die ursprüngliche Einnahme "
 "neutralisieren und das Ergebnis dieses Verkaufs auf dem Konto <b>%s</b> "
-"verbucht"
+"verbuchen."
 
 #. module: account_asset
 #. odoo-python
@@ -171,7 +171,7 @@ msgstr "Ein mit %s verknüpftes Dokument wurde gelöscht: %s"
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "A document linked to this move has been deleted: %s"
-msgstr "Ein mit dieser Bewegung verknüpftes Dokument wurde gelöscht: %s"
+msgstr "Ein mit dieser Buchung verknüpftes Dokument wurde gelöscht: %s"
 
 #. module: account_asset
 #. odoo-python
@@ -201,7 +201,7 @@ msgid ""
 "legal reports, and set the rules to close a fiscal year and generate opening"
 " entries."
 msgstr ""
-"Die Kontoart wird zu Informationszwecken verwendet, um länderspezifische "
+"Der Kontotyp wird zu Informationszwecken verwendet, um länderspezifische "
 "gesetzliche Berichte zu erstellen und die Regeln für den Abschluss eines "
 "Geschäftsjahres und die Erstellung von Eröffnungsbuchungen festzulegen."
 
@@ -209,8 +209,8 @@ msgstr ""
 #: model:ir.model.fields,help:account_asset.field_account_asset__account_depreciation_id
 msgid "Account used in the depreciation entries, to decrease the asset value."
 msgstr ""
-"Konto, das in den Abschreibungsbuchungen verwendet wird, um den Anlagenwert "
-"zu verringern."
+"Konto, das in den Abschreibungsbuchungen verwendet wird, um den "
+"Vermögenswert zu verringern."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__account_depreciation_expense_id
@@ -224,12 +224,12 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Account used to recognize the expense"
-msgstr "Konto zur Erfassung des Aufwands"
+msgstr "Konto zur Realisierung des Aufwands"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Account used to recognize the revenue"
-msgstr "Für die Einnahmen verwendetes Konto"
+msgstr "Konto zur Realisierung des Umsatzes"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
@@ -245,13 +245,14 @@ msgstr "Konto zur Erfassung der passiven Rechnungsabgrenzung"
 #: model:ir.model.fields,help:account_asset.field_account_asset__account_asset_id
 msgid ""
 "Account used to record the purchase of the asset at its original price."
-msgstr "Konto, zur Buchung der Anlage zu ihren Anschaffungskosten."
+msgstr ""
+"Konto, auf dem der Kauf der Anlage zu seinem ursprünglichen Preis verbucht "
+"wird."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_asset_modify__gain_account_id
 msgid "Account used to write the journal item in case of gain"
-msgstr ""
-"Konto, auf dem die Journalposition im Falle eines Gewinns verbucht wird"
+msgstr "Konto, auf dem die Buchungszeile im Falle eines Gewinns verbucht wird"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_res_company__gain_account_id
@@ -259,14 +260,14 @@ msgid ""
 "Account used to write the journal item in case of gain while selling an "
 "asset"
 msgstr ""
-"Konto, das zum Schreiben des Journalposten im Falle eines Gewinns beim "
-"Verkauf eines Vermögenswerts verwendet wird"
+"Konto, das für die Buchungszeile im Falle eines Gewinns beim Verkauf einer "
+"Anlage verwendet wird"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_asset_modify__loss_account_id
 msgid "Account used to write the journal item in case of loss"
 msgstr ""
-"Konto, auf dem die Journalposition im Falle eines Verlusts verbucht wird"
+"Konto, auf dem die Buchungszeile im Falle eines Verlusts verbucht wird"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_res_company__loss_account_id
@@ -274,18 +275,18 @@ msgid ""
 "Account used to write the journal item in case of loss while selling an "
 "asset"
 msgstr ""
-"Konto für die Verbuchung des Journalpostens im Falle eines Verlusts beim "
-"Verkauf eines Vermögenswerts"
+"Konto, das für die Buchungszeile im Falle eines Verlusts beim Verkauf einer "
+"Anlage verwendet wird"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Accounting"
-msgstr "Finanzen"
+msgstr "Buchhaltung"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_report
 msgid "Accounting Report"
-msgstr "Finanzbericht"
+msgstr "Buchhaltungsbericht"
 
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_acquisition_date
@@ -317,7 +318,7 @@ msgstr "Aktivitäten"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_exception_decoration
 msgid "Activity Exception Decoration"
-msgstr "Ausnahmenkennzeichung"
+msgstr "Aktivitätsausnahme-Dekoration"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_state
@@ -327,12 +328,12 @@ msgstr "Status der Aktivität"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_type_icon
 msgid "Activity Type Icon"
-msgstr "Aktivitätstyp-Icon"
+msgstr "Symbol des Aktivitätstyps"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
 msgid "Add an internal note"
-msgstr "Eine interne Notiz hinterlassen"
+msgstr "Interne Notiz hinzufügen"
 
 #. module: account_asset
 #. odoo-python
@@ -348,12 +349,12 @@ msgstr "Alle Zeilen sollten von demselben Konto stammen"
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "All the lines should be posted"
-msgstr "Alle Zeilen sollten gebucht werden"
+msgstr "Alle Zeilen sollten gebucht sein"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__already_depreciated_amount_import
 msgid "Already Depreciated Amount Import"
-msgstr "Bereits abgeschriebener Betrag Einführung"
+msgstr "Import des bereits abgeschriebenen Betrags"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__parent_id
@@ -367,7 +368,7 @@ msgstr ""
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "An asset has been created for this move:"
-msgstr "Eine Anlage wurde erstellt für die Buchung:"
+msgstr "Ein Vermögensgegenstand wurde erstellt für die Buchung:"
 
 #. module: account_asset
 #. odoo-python
@@ -376,8 +377,7 @@ msgstr "Eine Anlage wurde erstellt für die Buchung:"
 #, python-format
 msgid "An asset will be created for the value increase of the asset. <br/>"
 msgstr ""
-"Ein Vermögenswert wird für die Wertsteigerung des Anlagevermögens erstellt. "
-"<br/>"
+"Ein Vermögenswert wird für die Wertsteigerung der Anlage erstellt. <br/>"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__analytic_distribution
@@ -387,12 +387,12 @@ msgstr "Kostenstelle"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__analytic_distribution_search
 msgid "Analytic Distribution Search"
-msgstr "Suche nach Kostenstellenverteilung"
+msgstr "Suche nach Kostenverteilung"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__analytic_precision
 msgid "Analytic Precision"
-msgstr "Analysegenauigkeit"
+msgstr "Kostengenauigkeit"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -416,19 +416,19 @@ msgstr "Archiviert"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 #, python-format
 msgid "Asset"
-msgstr "Aktiva"
+msgstr "Vermögensgegenstand"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Asset Account"
-msgstr "Anlagenkonto"
+msgstr "Aktivkonto"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Asset Cancelled"
-msgstr "Vermögenswert storniert"
+msgstr "Vermögensgegenstand storniert"
 
 #. module: account_asset
 #. odoo-python
@@ -440,9 +440,9 @@ msgid ""
 "%(dep_delta)s. This corresponds to %(move_count)s cancelled "
 "%(word)s:<br>%(entries)s"
 msgstr ""
-"Aktiva storniert <br>Dem Konto %(exp_acc)s wurden %(exp_delta)s "
-"gutgeschrieben, während das Konto %(dep_acc)s mit %(dep_delta)s belastet "
-"wurde. Das entspricht stornierten %(move_count)s %(word)s:<br>%(entries)s"
+"Vermögensgegenstand storniert <br>Dem Konto %(exp_acc)s wurden %(exp_delta)s"
+" gutgeschrieben, während das Konto %(dep_acc)s mit %(dep_delta)s belastet "
+"wurde. Das entspricht %(move_count)s stornierten %(word)s:<br>%(entries)s"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__account_asset_counterpart_id
@@ -454,12 +454,12 @@ msgstr "Aktiva-Gegenkonto"
 #: model:ir.model.fields,field_description:account_asset.field_account_move__asset_id_display_name
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__asset_id_display_name
 msgid "Asset Id Display Name"
-msgstr "Anlage ID Anzeigename"
+msgstr "Anzeigename der Anlagen-ID"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__asset_lifetime_days
 msgid "Asset Lifetime Days"
-msgstr "Lebensdauertage des Vermögenswerts"
+msgstr "Lebensdauertage des Vermögensgegenstandes"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_account__asset_model
@@ -470,39 +470,39 @@ msgstr "Lebensdauertage des Vermögenswerts"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_revenue_model_search
 msgid "Asset Model"
-msgstr "Asset Model"
+msgstr "Vermögensmodell"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Asset Model name"
-msgstr "Name des Asset Models"
+msgstr "Name des Vermögensmodell"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_account_asset_model_form
 #: model:ir.ui.menu,name:account_asset.menu_action_account_asset_model_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_purchase_tree
 msgid "Asset Models"
-msgstr "Anlagenklasse"
+msgstr "Vermögensmodelle"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__name
 msgid "Asset Name"
-msgstr "Asset Name"
+msgstr "Name des Vermögensgegenstands"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 msgid "Asset Options"
-msgstr "Asset-Optionen"
+msgstr "Vermögensoptionen"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__asset_paused_days
 msgid "Asset Paused Days"
-msgstr "Pausierte Tage des Vermögenswerts"
+msgstr "Pausierte Tage des Vermögensgegenstandes"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_asset_report_handler
 msgid "Asset Report Custom Handler"
-msgstr "Anlagenbericht Benutzerdefinierter Handler"
+msgstr "Bericht über Vermögensgegenstände Benutzerdefinierter Handler"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_account__asset_type
@@ -511,59 +511,59 @@ msgstr "Anlagenbericht Benutzerdefinierter Handler"
 #: model:ir.model.fields,field_description:account_asset.field_account_move__asset_asset_type
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__asset_asset_type
 msgid "Asset Type"
-msgstr "Anlagetyp"
+msgstr "Art des Vermögensgegenstandes"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_bank_statement_line__asset_value_change
 #: model:ir.model.fields,field_description:account_asset.field_account_move__asset_value_change
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__asset_value_change
 msgid "Asset Value Change"
-msgstr "Wertänderung der Anlage"
+msgstr "Wertänderung des Vermögensgegenstandes"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Asset Values"
-msgstr "Anlagen Wert"
+msgstr "Vermögenswerte"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Asset created"
-msgstr "Anlage erzeugt"
+msgstr "Vermögensgegenstand erstellt"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Asset disposed. %s"
-msgstr "Vermögenswert veräußert. %s"
+msgstr "Vermögensgegenstand veräußert. %s"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Asset paused. %s"
-msgstr "Vermögenswert pausiert. %s"
+msgstr "Vermögensgegenstand pausiert. %s"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Asset sold. %s"
-msgstr "Vermögenswert verkauft. %s"
+msgstr "Vermögensgegenstand verkauft. %s"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "Asset unpaused. %s"
-msgstr "Asset nicht pausiert. %s"
+msgstr "Vermögensgegenstand nicht pausiert. %s"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_asset
 msgid "Asset/Revenue Recognition"
-msgstr "Anlage-/Umsatzrealisierung"
+msgstr "Realisierung von Vermögenswerten/Umsätzen"
 
 #. module: account_asset
 #. odoo-python
@@ -577,32 +577,32 @@ msgstr "Anlage-/Umsatzrealisierung"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
 #, python-format
 msgid "Assets"
-msgstr "Anlagevermögen"
+msgstr "Aktiva"
 
 #. module: account_asset
 #: model:ir.ui.menu,name:account_asset.menu_finance_config_assets
 msgid "Assets and Revenues"
-msgstr "Anlagen und Umsätze"
+msgstr "Vermögen und Erträge"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Assets in closed state"
-msgstr "Abgeschriebene Anlagen"
+msgstr "Vermögensgegenstände im abgeschlossenen Status"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Assets in draft and open states"
-msgstr "Anlagen im Status Entwurf und Offen"
+msgstr "Vermögensgegenstände im Status Entwurf und Offen"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_attachment_count
 msgid "Attachment Count"
-msgstr "# Anhänge"
+msgstr "Anzahl Anhänge"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 msgid "Automate Asset"
-msgstr "Abschreibungen automatisieren"
+msgstr "Aktiva automatisieren"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
@@ -617,7 +617,7 @@ msgstr "Passive Rechnungsabgrenzung automatisieren"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 msgid "Automation"
-msgstr "Automation"
+msgstr "Automatisierung"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__prorata_computation_type__daily_computation
@@ -627,7 +627,7 @@ msgstr "Basierend auf Tagen pro Periode"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Bills"
-msgstr "Rechnung"
+msgstr "Rechnungen"
 
 #. module: account_asset
 #. odoo-python
@@ -640,7 +640,7 @@ msgstr "Buchwert"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_account__can_create_asset
 msgid "Can Create Asset"
-msgstr "Kann eine Anlage erstellen"
+msgstr "Kann Vermögensgegenstand erstellen"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
@@ -650,12 +650,12 @@ msgstr "Abbrechen"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Cancel Asset"
-msgstr "Vermögenswert stornieren"
+msgstr "Vermögensgegenstand stornieren"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__state__cancelled
 msgid "Cancelled"
-msgstr "Abgebrochen"
+msgstr "Storniert"
 
 #. module: account_asset
 #. odoo-python
@@ -707,17 +707,17 @@ msgstr "Berechnung"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Compute Depreciation"
-msgstr "Abschreibungen berechnen"
+msgstr "Abschreibung berechnen"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Compute Expense"
-msgstr "Abschreibungen berechnen"
+msgstr "Aufwand berechnen"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Compute Revenue"
-msgstr "Ertragsbuchungen erstellen"
+msgstr "Ertrag berechnen"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -734,12 +734,12 @@ msgstr "Konstante Perioden"
 #: model:ir.model.fields,field_description:account_asset.field_account_account__create_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_move_line_tree
 msgid "Create Asset"
-msgstr "Erstelle eine Anlage"
+msgstr "Vermögensgegenstand erstellen"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_account__create_asset__validate
 msgid "Create and validate"
-msgstr "Anlegen und bestätigen"
+msgstr "Erstellen und validieren"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_account__create_asset__draft
@@ -749,17 +749,17 @@ msgstr "Entwurf erstellen"
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_account_asset_form
 msgid "Create new asset"
-msgstr "Neue Anlage erstellen"
+msgstr "Neuen Vermögensgegenstand erstellen"
 
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_account_asset_model_form
 msgid "Create new asset model"
-msgstr "Neues Anlagenmodell erstellen"
+msgstr "Neues Vermögensmodell erstellen"
 
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_account_expense_form
 msgid "Create new deferred expense"
-msgstr "Neue Rechnungsabgrenzung erstellen"
+msgstr "Neuen aktiven Rechnungsabgrenzungsposten erstellen"
 
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_account_expense_model_form
@@ -769,7 +769,7 @@ msgstr "Neue Vorlage für passive Rechnungsabgrenzungen erstellen"
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_account_revenue_form
 msgid "Create new deferred revenue"
-msgstr "Neue Umsatzabgrenzungsposten erstellen"
+msgstr "Neuen passiven Rechnungsabgrenzungsposten erstellen"
 
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_account_revenue_model_form
@@ -798,12 +798,12 @@ msgstr "Kumulierte Abschreibung"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Cumulative Expense"
-msgstr "Kummulierte Ausgaben"
+msgstr "Kumulierter Aufwand"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Cumulative Revenue"
-msgstr "Kumulierte Erlöse"
+msgstr "Kumulierte Erträge"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__currency_id
@@ -824,7 +824,7 @@ msgstr "Aktuelle Werte"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__invoice_ids
 msgid "Customer Invoice"
-msgstr "Ausgangsrechnung"
+msgstr "Kundenrechnung"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__date
@@ -844,7 +844,7 @@ msgstr "Startdatum der Abschreibung"
 #: code:addons/account_asset/report/account_assets_report.py:0
 #, python-format
 msgid "Dec. then Straight"
-msgstr "Abnehmend dann geradlinig"
+msgstr "Degressiv, dann linear"
 
 #. module: account_asset
 #. odoo-python
@@ -852,7 +852,7 @@ msgstr "Abnehmend dann geradlinig"
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__method__degressive
 #, python-format
 msgid "Declining"
-msgstr "Abnehmend"
+msgstr "Degressiv"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__method_progress_factor
@@ -867,12 +867,12 @@ msgstr "Degressiv, dann linear"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
 msgid "Def. Expenses"
-msgstr ""
+msgstr "Aktive Rechnungsabgrenzung"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
 msgid "Def. Revenues"
-msgstr ""
+msgstr "Passive Rechnungsabgrenzung"
 
 #. module: account_asset
 #. odoo-python
@@ -881,19 +881,19 @@ msgstr ""
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__asset_type__expense
 #, python-format
 msgid "Deferred Expense"
-msgstr "Aktive Rechnugsabgrenzung"
+msgstr "Aktive Rechnungsabgrenzung"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_expense_tree
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_expense_model_search
 msgid "Deferred Expense Account"
-msgstr "Aktives Rechnungsabgrenzungskonto"
+msgstr "Konto für Aktive Rechnungsabgrenzung"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Deferred Expense Amount"
-msgstr "Betrag für aktive Rechnungsabgrenzung"
+msgstr "Betrag der Aktiven Rechnungsabgrenzung"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
@@ -904,35 +904,35 @@ msgstr "Model für Passive Rechnungsabgrenzung"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Deferred Expense Model name"
-msgstr "Name des aktiven Rechnungsabgrenzungs-Modells"
+msgstr "Modellname für Aktive Rechnungsabgrenzung"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_account_expense_model_form
 #: model:ir.ui.menu,name:account_asset.menu_action_account_expense_model_recognition
 msgid "Deferred Expense Models"
-msgstr "Aktive Rechnungsabgrenzungs-Modelle"
+msgstr "Modelle für Aktive Rechnungsabgrenzung"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 msgid "Deferred Expense Options"
-msgstr "Aktive Rechnungsabgrenzungs-Optionen"
+msgstr "Optionen für Aktive Rechnungsabgrenzung"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Deferred Expense name"
-msgstr "Name des aktiven Rechnungsabgrenzungsmodells"
+msgstr "Name der aktiven Rechnungsabgrenzung"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_account_expense_form
 #: model:ir.ui.menu,name:account_asset.menu_action_account_expense_recognition
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_tree
 msgid "Deferred Expenses"
-msgstr "Aktive Rechnungsabgrenzung"
+msgstr "Aktive Rechnungsabgrenzungsposten"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_expense_tree
 msgid "Deferred Expenses Models"
-msgstr "Rechnugsabgrenzungs-Modelle"
+msgstr "Modelle für Aktive Rechnungsabgrenzung"
 
 #. module: account_asset
 #. odoo-python
@@ -947,58 +947,58 @@ msgstr "Passive Rechnungsabgrenzung"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_revenue_model_search
 msgid "Deferred Revenue Account"
-msgstr "Passives Rechnungsabgrenzungs-Konto"
+msgstr "Konto für Passive Rechnungsabgrenzung"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Deferred Revenue Amount"
-msgstr "Betrag für passive Rechnungsabgrenzung"
+msgstr "Betrag der Passiven Rechnungsabgrenzung"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 msgid "Deferred Revenue Model"
-msgstr "Passivea Rechnungsabgrenzungs-Modell"
+msgstr "Modell für Passive Rechnungsabgrenzung"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Deferred Revenue Model name"
-msgstr "Name des passiven Rechnungsabgrenzungsmodells"
+msgstr "Name des Passiven Rechnungsabgrenzungsmodells"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_account_revenue_model_form
 #: model:ir.ui.menu,name:account_asset.menu_action_account_revenue_model_recognition
 msgid "Deferred Revenue Models"
-msgstr "Passive Rechnungsabgrenzungs-Modelle"
+msgstr "Modelle für Passive Rechnungsabgrenzung"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 msgid "Deferred Revenue Options"
-msgstr "Passive Rechnungsabgrenzungs-Optionen"
+msgstr "Optionen für Passive Rechnungsabgrenzung"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Deferred Revenue name"
-msgstr "Passive Rechnungsabgrenzungsbezeichnung"
+msgstr "Name der Passiven Rechnungsabgrenzung"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_account_revenue_form
 #: model:ir.ui.menu,name:account_asset.menu_action_account_revenue_recognition
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_sale_tree
 msgid "Deferred Revenues"
-msgstr "Passive Rechnungsabgrenzung"
+msgstr "Passive Rechnungsabgrenzungsposten"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_sale_tree
 msgid "Deferred Revenues Models"
-msgstr "Passive Rechnungsabgrenzungsmodelle"
+msgstr "Modelle für Passive Rechnungsabgrenzung"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "Deferred expense"
-msgstr "Aktive Rechnugsabgrenzung"
+msgstr "Aktive Rechnungsabgrenzung"
 
 #. module: account_asset
 #. odoo-python
@@ -1048,7 +1048,7 @@ msgstr "Abgeschriebener Betrag"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 #, python-format
 msgid "Depreciation"
-msgstr "Abschreibungen"
+msgstr "Abschreibung"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__account_depreciation_id
@@ -1060,7 +1060,7 @@ msgstr "Abschreibungskonto"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Depreciation Board"
-msgstr "Abschreibungsspiegel"
+msgstr "Abschreibungsübersicht"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -1071,7 +1071,7 @@ msgstr "Abschreibungsdatum"
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__depreciation_move_ids
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Depreciation Lines"
-msgstr "Abschreibungsbuchungen"
+msgstr "Abschreibungszeilen"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -1083,14 +1083,14 @@ msgstr "Abschreibungsmethode"
 #: model:ir.actions.client,name:account_asset.action_account_report_assets
 #: model:ir.ui.menu,name:account_asset.menu_action_account_report_assets
 msgid "Depreciation Schedule"
-msgstr "Anlagenspiegel"
+msgstr "Abschreibungsplan"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "Depreciation board modified %s"
-msgstr "Abschreibungstafel geändert %s"
+msgstr "Abschreibungsübersicht geändert %s"
 
 #. module: account_asset
 #. odoo-python
@@ -1109,7 +1109,7 @@ msgstr "Abschreibungsbuchung %s storniert (%s)"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__display_account_asset_id
 msgid "Display Account Asset"
-msgstr "Anlagenkonto anzeigen"
+msgstr "Aktivkonto anzeigen"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__display_name
@@ -1122,26 +1122,26 @@ msgstr "Anzeigename"
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Disposal"
-msgstr "Ausbuchung"
+msgstr "Veräußerung"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__disposal_date
 msgid "Disposal Date"
-msgstr "Datum der Ausbuchung"
+msgstr "Datum der Veräußerung"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Disposal Move"
-msgstr "Ausbuchung"
+msgstr "Veräußerungsbuchung"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Disposal Moves"
-msgstr "Ausbuchungen"
+msgstr "Veräußerungsbuchungen"
 
 #. module: account_asset
 #. odoo-python
@@ -1149,7 +1149,7 @@ msgstr "Ausbuchungen"
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
 #, python-format
 msgid "Dispose"
-msgstr "Ausbuchung"
+msgstr "Veräußern"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__state__draft
@@ -1174,7 +1174,7 @@ msgstr "Dauer"
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_duration_rate
 msgid "Duration / Rate"
-msgstr "Dauer / Rate"
+msgstr "Dauer/Rate"
 
 #. module: account_asset
 #. odoo-python
@@ -1183,7 +1183,7 @@ msgstr "Dauer / Rate"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_tree
 #, python-format
 msgid "Expense"
-msgstr "betrieblicher Aufwand"
+msgstr "Ausgabe"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__account_depreciation_expense_id
@@ -1198,7 +1198,7 @@ msgstr "Aufwandskonto"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Expense Board"
-msgstr "Ausgaben Übersicht"
+msgstr "Ausgabenübersicht"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
@@ -1208,17 +1208,17 @@ msgstr "Ausgabendatum"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Expense Lines"
-msgstr "Ausgabenpositionen"
+msgstr "Ausgabenzeilen"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_expense_tree
 msgid "Expense Name"
-msgstr "Ausgaben Name"
+msgstr "Name der Ausgabe"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Expense Recognition"
-msgstr "Ausgabenrealisierung"
+msgstr "Aufwandsrealisierung"
 
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_first_depreciation
@@ -1229,27 +1229,27 @@ msgstr "Erste Abschreibung"
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__account_asset_id
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_search
 msgid "Fixed Asset Account"
-msgstr "Anlagenkonto"
+msgstr "Konto für Sachanlagen"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_follower_ids
 msgid "Followers"
-msgstr "Abonnenten"
+msgstr "Follower"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_partner_ids
 msgid "Followers (Partners)"
-msgstr "Abonnenten (Partner)"
+msgstr "Follower (Partner)"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__activity_type_icon
 msgid "Font awesome icon e.g. fa-tasks"
-msgstr "FontAwesome Icon, z.B. fa-tasks"
+msgstr "FontAwesome-Icon, z. B. fa-tasks"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_account__form_view_ref
 msgid "Form View Ref"
-msgstr "Formular Ansicht Ref"
+msgstr "Formular-Ansichtsref."
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
@@ -1275,7 +1275,7 @@ msgstr "Gewinn oder Verlust"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__gain_value
 msgid "Gain Value"
-msgstr "Buchwert"
+msgstr "Gewinnwert"
 
 #. module: account_asset
 #. odoo-python
@@ -1283,7 +1283,7 @@ msgstr "Buchwert"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 #, python-format
 msgid "Gross Increase"
-msgstr "Brutto Werterhöhung"
+msgstr "Bruttoerhöhung"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__account_asset_id
@@ -1293,7 +1293,7 @@ msgstr "Bruttoerhöhungskonto"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__gross_increase_value
 msgid "Gross Increase Value"
-msgstr "Brutto Werterhöhung"
+msgstr "Bruttowertsteigerung"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.assets_search_template_extra_options
@@ -1327,18 +1327,19 @@ msgstr "Icon"
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__activity_exception_icon
 msgid "Icon to indicate an exception activity."
-msgstr "Icon, um eine Ausnahme anzuzeigen."
+msgstr "Icon, um eine Ausnahmeaktivität anzuzeigen."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr "Falls markiert, benötigen neue Nachrichten Ihre Kenntnisnahme."
+msgstr "Falls markiert, erfordern neue Nachrichten Ihre Aufmerksamkeit."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__message_has_error
 #: model:ir.model.fields,help:account_asset.field_account_asset__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
-msgstr "Das Senden einer Nachrichten ist fehlgeschlagen, wenn aktiv."
+msgstr ""
+"Falls markiert, weisen einige Nachrichten einen Zustellungsfehler auf."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_account__asset_model
@@ -1347,7 +1348,7 @@ msgid ""
 "Journal Items on this account are posted."
 msgstr ""
 "Wenn diese Option ausgewählt ist, wird automatisch ein Aufwand/Ertrag "
-"erstellt, wenn Journalposten auf diesem Konto gebucht werden."
+"erstellt, wenn Buchungszeilen auf diesem Konto gebucht werden."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__already_depreciated_amount_import
@@ -1358,8 +1359,8 @@ msgid ""
 msgstr ""
 "Im Falle eines Imports aus einer anderen Software müssen Sie dieses Feld "
 "möglicherweise verwenden, um den richtigen Abschreibungstabellenbericht zu "
-"erhalten. Dies ist der Wert, der bereits mit Einträgen abgeschrieben wurde, "
-"die nicht aus diesem Modell berechnet wurden"
+"erhalten. Dies ist der Wert, der bereits mit Posten abgeschrieben wurde, die"
+" nicht aus diesem Modell berechnet wurden"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__informational_text
@@ -1369,18 +1370,17 @@ msgstr "Informativer Text"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__invoice_line_ids
 msgid "Invoice Line"
-msgstr "Rechnungsposition"
+msgstr "Rechnungszeile"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_is_follower
 msgid "Is Follower"
-msgstr "Ist ein Abonnent"
+msgstr "Ist Follower"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__salvage_value
 msgid "It is the amount you plan to have that you cannot depreciate."
-msgstr ""
-"Das ist der geplante Erinnerungswert, der nicht abgeschrieben werden kann."
+msgstr "Das ist der geplante Wert, der nicht abgeschrieben werden kann."
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__journal_id
@@ -1395,13 +1395,13 @@ msgstr "Journal"
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Journal Entries"
-msgstr "Buchungssätze"
+msgstr "Journalbuchungen"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_move
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Journal Entry"
-msgstr "Buchungssatz"
+msgstr "Journalbuchung"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_move_line
@@ -1423,8 +1423,8 @@ msgstr "Buchungszeilen"
 msgid ""
 "Journal Items of {account} should have a label in order to generate an asset"
 msgstr ""
-"Buchungssätze von {account} müssen entsprechend gekennzeichnet sein, um eine"
-" Anlage daraus zu erzeugen"
+"Buchungszeilen von {account} müssen entsprechend gekennzeichnet sein, um "
+"einen Vermögensgegenstand daraus zu erzeugen"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset____last_update
@@ -1436,7 +1436,7 @@ msgstr "Zuletzt geändert am"
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__write_uid
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__write_uid
 msgid "Last Updated by"
-msgstr "Zuletzt aktualisiert durch"
+msgstr "Zuletzt aktualisiert von"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__write_date
@@ -1461,7 +1461,7 @@ msgstr "Linear"
 #: model:ir.model.fields,field_description:account_asset.field_account_move__linked_asset_type
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__linked_asset_type
 msgid "Linked Asset Type"
-msgstr ""
+msgstr "Verknüpfter Vermögenstyp"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__asset_modify__gain_or_loss__loss
@@ -1482,12 +1482,12 @@ msgstr "Hauptanhang"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 msgid "Manage Items"
-msgstr "Einträge verwalten"
+msgstr "Zeilen verwalten"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_has_error
 msgid "Message Delivery error"
-msgstr "Fehler beim Senden der Nachricht"
+msgstr "Nachricht mit Zustellungsfehler"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_ids
@@ -1498,7 +1498,7 @@ msgstr "Nachrichten"
 #: model:account.report.column,name:account_asset.assets_report_first_method
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__method
 msgid "Method"
-msgstr "Abschreibungsart"
+msgstr "Methode"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__model_id
@@ -1519,7 +1519,7 @@ msgstr "Bearbeiten"
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
 #, python-format
 msgid "Modify Asset"
-msgstr "Anlage bearbeiten"
+msgstr "Vermögensgegenstand bearbeiten"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -1529,12 +1529,12 @@ msgstr "Abschreibung ändern"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Modify Expense"
-msgstr "Ausgaben bearbeiten"
+msgstr "Aufwand bearbeiten"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Modify Revenue"
-msgstr "Rechnungsabgrenzung ändern"
+msgstr "Ertrag bearbeiten"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__method_period__1
@@ -1545,7 +1545,7 @@ msgstr "Monate"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_account__multiple_assets_per_line
 msgid "Multiple Assets per Line"
-msgstr "Mehrere Assets pro Zeile"
+msgstr "Mehrere Vermögenswerte pro Zeile"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_account__multiple_assets_per_line
@@ -1553,13 +1553,14 @@ msgid ""
 "Multiple asset items will be generated depending on the bill line quantity "
 "instead of 1 global asset."
 msgstr ""
-"Es werden mehrere Anlagenpositionen in Abhängigkeit von der Menge der "
-"Rechnungszeile anstelle einer einzigen globalen Anlage erzeugt."
+"Es werden mehrere Aktivposten in Abhängigkeit von der Menge der "
+"Rechnungszeile anstelle eines einzigen globalen Vermögensgegenstandes "
+"erzeugt."
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__my_activity_date_deadline
 msgid "My Activity Deadline"
-msgstr "Deadline für meine Aktivitäten"
+msgstr "Frist für meine Aktivitäten"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_asset_modify__value_residual
@@ -1569,7 +1570,7 @@ msgstr "Neuer Restwert der Anlage"
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_asset_modify__salvage_value
 msgid "New salvage amount for the asset"
-msgstr "Neuer Restwert der Anlage"
+msgstr "Neuer Veräußerungswert der Anlage"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_calendar_event_id
@@ -1584,7 +1585,7 @@ msgstr "Nächste Aktivitätsfrist"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_summary
 msgid "Next Activity Summary"
-msgstr "Zusammenfassung nächste Aktion"
+msgstr "Zusammenfassung der nächsten Aktivität"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_type_id
@@ -1594,12 +1595,12 @@ msgstr "Nächster Aktivitätstyp"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Next Period Expense"
-msgstr "Ausgaben in der nächsten Periode"
+msgstr "Ausgaben der nächsten Periode"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Next Period Revenue"
-msgstr "Einnahmen für die nächste Periode"
+msgstr "Einnahmen der nächsten Periode"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_account__create_asset__no
@@ -1661,12 +1662,13 @@ msgstr "Anzahl der Monate in einer Periode"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_sale_tree
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Number of Recognitions"
-msgstr "Abschreibedauer"
+msgstr "Anzahl Realisierungen"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__gross_increase_count
 msgid "Number of assets made to increase the value of the asset"
-msgstr "Anzahl Anlagen für die Werterhöhung der Anlage"
+msgstr ""
+"Anzahl der Vermögenswerte, die den Wert des Vermögensgegenstandes erhöhen"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_bank_statement_line__asset_number_days
@@ -1683,7 +1685,7 @@ msgstr "Anzahl Abschreibungsbuchungen (gebucht oder nicht)"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_has_error_counter
 msgid "Number of errors"
-msgstr "# Fehler"
+msgstr "Anzahl der Fehler"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__message_needaction_counter
@@ -1693,19 +1695,19 @@ msgstr "Anzahl der Nachrichten, die eine Aktion erfordern"
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr "Anzahl der Nachrichten mit einem Fehler beim Senden."
+msgstr "Anzahl der Nachrichten mit Zustellungsfehler."
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__state__paused
 msgid "On Hold"
-msgstr "On Hold"
+msgstr "Zurückgestellt"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/report/account_assets_report.py:0
 #, python-format
 msgid "Open Asset"
-msgstr "Anlage öffnen"
+msgstr "Offener Vermögensgegenstand"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__original_value
@@ -1724,7 +1726,7 @@ msgstr "Übergeordnet"
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
 #, python-format
 msgid "Pause"
-msgstr "Pause"
+msgstr "Pausieren"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__paused_prorata_date
@@ -1741,24 +1743,24 @@ msgstr "Länge der Periode"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Posted Entries"
-msgstr "Gebuchte Einträge"
+msgstr "Gebuchte Posten"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__prorata_date
 msgid "Prorata Date"
-msgstr "Prorata-Datum"
+msgstr "Pro-Rata-Datum"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Prorata Date can not be empty"
-msgstr ""
+msgstr "Pro-Rata-Datum darf nicht leer sein"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__asset_type__purchase
 msgid "Purchase: Asset"
-msgstr "Einkauf: Anlagevermögen"
+msgstr "Einkauf: Vermögensgegenstand"
 
 #. module: account_asset
 #. odoo-python
@@ -1771,27 +1773,27 @@ msgstr "Neu bewerten"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Recognition Values"
-msgstr "Erfassungswerte"
+msgstr "Realisierungswerte"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_move_line__asset_ids
 msgid "Related Assets"
-msgstr "Verknüpfter Vermögenswert"
+msgstr "Verknüpfte Vermögenswerte"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Related Expenses"
-msgstr "Dazugehörige Ausgaben"
+msgstr "Zugehörige Ausgaben"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__related_purchase_value
 msgid "Related Purchase Value"
-msgstr "Zugehöriger Kaufwert"
+msgstr "Zugehöriger Einkaufswert"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Related Sales"
-msgstr "Verknüpfter Verkauf"
+msgstr "Zugehöriger Verkauf"
 
 #. module: account_asset
 #. odoo-python
@@ -1830,35 +1832,35 @@ msgstr "Abschreibung fortsetzen"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 #, python-format
 msgid "Revenue"
-msgstr "Umsatz"
+msgstr "Ertrag"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_sale_tree
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_revenue_model_search
 msgid "Revenue Account"
-msgstr "Erlöskonto"
+msgstr "Ertragskonto"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Revenue Board"
-msgstr "Abgrenzungsübersicht"
+msgstr "Ertragsübersicht"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Revenue Date"
-msgstr "Erlösdatum"
+msgstr "Ertragsdatum"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Revenue Lines"
-msgstr "Erlösbuchungszeilen"
+msgstr "Ertragszeile"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_sale_tree
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_sale_tree
 msgid "Revenue Name"
-msgstr "Erlös Name"
+msgstr "Ertragsbezeichnung"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
@@ -1884,7 +1886,7 @@ msgstr "Laufend"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_has_sms_error
 msgid "SMS Delivery error"
-msgstr "SMS Zustellungsfehler"
+msgstr "SMS-Zustellungsfehler"
 
 #. module: account_asset
 #. odoo-python
@@ -1896,19 +1898,19 @@ msgstr "Verkauf"
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__asset_type__sale
 msgid "Sale: Revenue Recognition"
-msgstr "Verkauf: Erfolgswirksamer Umsatz"
+msgstr "Verkauf: Umsatzrealisierung"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Save as Model"
-msgstr "Als Vorlage speichern"
+msgstr "Als Modell speichern"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Save model"
-msgstr "Speichern der Vorlage"
+msgstr "Modell speichern"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__select_invoice_line_id
@@ -1936,14 +1938,14 @@ msgstr "Starten"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Show all records which has next action date is before today"
-msgstr "Alle Einträge mit vor heute geplanten Aktionen anzeigen"
+msgstr "Alle Datensätze mit vor heute geplanten Aktionen anzeigen"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "Some fields are missing {}"
-msgstr "Einige Felder wurden nicht erfasst {}"
+msgstr "Einige Felder fehlen {}"
 
 #. module: account_asset
 #. odoo-python
@@ -1967,7 +1969,7 @@ msgid ""
 msgstr ""
 "Status basierend auf Aktivitäten\n"
 "Überfällig: Fälligkeitsdatum bereits überschritten\n"
-"Heute: Aktivität besitzt heutiges Datum\n"
+"Heute: Aktivitätsdatum ist heute\n"
 "Geplant: anstehende Aktivitäten."
 
 #. module: account_asset
@@ -1981,7 +1983,7 @@ msgid ""
 "Sum of the depreciable value, the salvage value and the book value of all "
 "value increase items"
 msgstr ""
-"Summe des Abschreibungswerts, des Restwerts und des Buchwerts aller "
+"Summe des Abschreibungswerts, des Veräußerungswerts und des Buchwerts aller "
 "wertsteigenden Posten"
 
 #. module: account_asset
@@ -2005,12 +2007,13 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_asset_modify__asset_id
 msgid "The asset to be modified by this wizard"
-msgstr "Die zu modifizierende Anlage in diesem Wizard"
+msgstr "Der durch diesen Assistenten zu bearbeitenden Vermögensgegenstand"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__children_ids
 msgid "The children are the gains in value of this asset"
-msgstr "Die abhängigen Elemente sind die Wertgewinne dieser Anlage"
+msgstr ""
+"Die abhängigen Elemente sind die Wertgewinne dieses Vermögensgegenstandes"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_asset_modify__invoice_ids
@@ -2018,14 +2021,14 @@ msgid ""
 "The disposal invoice is needed in order to generate the closing journal "
 "entry."
 msgstr ""
-"Der Ausbuchungsbeleg wird gebraucht, um die Schlussbuchung zu erstellen"
+"Der Veräußerungsbeleg wird gebraucht, um die Schlussbuchung zu erstellen"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__method_number
 msgid "The number of depreciations needed to depreciate your asset"
 msgstr ""
-"Die Anzahl der Abschreibungsbuchungen, die das Anlagegut über die "
-"Nutzungsdauer vollständig abschreibt."
+"Die Anzahl der Abschreibungen, die erforderlich sind, um Ihren "
+"Vermögensgegenstand abzuschreiben"
 
 #. module: account_asset
 #. odoo-python
@@ -2038,7 +2041,8 @@ msgstr "Der Restwert der letzten Abschreibung sollte 0 sein"
 #: model:ir.model.fields,help:account_asset.field_asset_modify__invoice_line_ids
 msgid "There are multiple lines that could be the related to this asset"
 msgstr ""
-"Es gibt zahlreiche Buchungszeilen, die mit dieser Anlage verbunden sind"
+"Es gibt zahlreiche Buchungszeilen, die mit dieser Anlage verbunden sein "
+"könnten"
 
 #. module: account_asset
 #. odoo-python
@@ -2056,7 +2060,7 @@ msgstr ""
 #: code:addons/account_asset/static/src/components/move_reversed/move_reversed.xml:0
 #, python-format
 msgid "This move has been reversed"
-msgstr "Diese Buchung wurde umgekehrt"
+msgstr "Diese Buchung wurde storniert"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
@@ -2094,7 +2098,7 @@ msgstr "Umwandlung in einen passiven Rechnungsabgrenzungsposten"
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "Turn as an asset"
-msgstr "Umwandlung in eine Anlage"
+msgstr "In Vermögenswert umwandeln"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__account_type
@@ -2104,7 +2108,7 @@ msgstr "Kontotyp"
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__activity_exception_decoration
 msgid "Type of the exception activity on record."
-msgstr "Typ der Ausnahme im Datensatz."
+msgstr "Typ der Ausnahmeaktivität im Datensatz."
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -2152,10 +2156,10 @@ msgid ""
 "You can manually close an asset when the depreciation is over.\n"
 "By cancelling an asset, all depreciation entries will be reversed"
 msgstr ""
-"Beim Anlegen einer Anlage ist der Status „Entwurf“.\n"
-"Wird die Anlage bestätigt, geht der Status auf „Laufend“ und die Abschreibungszeilen können in der Buchhaltung gebucht werden.\n"
-"Der Status „Zurückgestellt“ kann manuell gesetzt werden, wenn die Abschreibung einer Anlage für einige Zeit unterbrochen werden soll.\n"
-"Nach Ablauf der Abschreibung kann eine Anlage manuell abgeschlossen werden. Wird eine Abschreibungszeile storniert, werden alle Abschreibungsbuchungen rückgängig gemacht"
+"Beim Anlegen eines Vermögensgegenstandes ist der Status „Entwurf“.\n"
+"Wird der Vermögensgegenstand bestätigt, geht der Status auf „Laufend“ und die Abschreibungszeilen können in der Buchhaltung gebucht werden.\n"
+"Der Status „Zurückgestellt“ kann manuell gesetzt werden, wenn die Abschreibung eines Vermögensgegenstandes für einige Zeit unterbrochen werden soll.\n"
+"Nach Ablauf der Abschreibung kann ein Vermögensgegenstand manuell abgeschlossen werden. Wird ein Vermögensgegenstand storniert, werden alle Abschreibungsbuchungen rückgängig gemacht"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__method_period__12
@@ -2171,8 +2175,8 @@ msgid ""
 "You can't post an entry related to a draft asset. Please post the asset "
 "before."
 msgstr ""
-"Sie können keinen Eintrag zu einem Analagenentwurf veröffentlichen. Bitte "
-"buchen Sie die Anlage vorher."
+"Sie können keinen Eintrag zu einem Vermögensgegenstandsentwurf "
+"veröffentlichen. Bitte buchen Sie den Vermögensgegenstand vorher."
 
 #. module: account_asset
 #. odoo-python
@@ -2190,9 +2194,9 @@ msgid ""
 "You cannot automate the journal entry for an asset that has a running gross "
 "increase. Please use 'Dispose' on the increase(s)."
 msgstr ""
-"Sie können den Journaleintrag für einen Vermögenswert, der eine laufende "
+"Sie können die Journalbuchung für einen Vermögenswert, der eine laufende "
 "Bruttoerhöhung aufweist, nicht automatisieren. Bitte verwenden Sie "
-"\"Entsorgen\" für die Erhöhung(en)."
+"„Veräußern“ für die Erhöhung(en)."
 
 #. module: account_asset
 #. odoo-python
@@ -2220,8 +2224,8 @@ msgid ""
 "You cannot delete an asset linked to posted entries.\n"
 "You should either confirm the asset, then, sell or dispose of it, or cancel the linked journal entries."
 msgstr ""
-"Sie können eine Anlage, die mit Buchungen verknüpft ist, nicht löschen.\n"
-"Sie sollten die Anlage entweder bestätigen und dann verkaufen oder veräußern oder die verknüpften Journalbuchungen stornieren."
+"Sie können einen Vermögensgegenstand, der mit Buchungen verknüpft ist, nicht löschen.\n"
+"Sie sollten den Vermögensgegenstand entweder bestätigen und dann verkaufen oder veräußern oder die verknüpften Journalbuchungen stornieren."
 
 #. module: account_asset
 #. odoo-python
@@ -2229,7 +2233,7 @@ msgstr ""
 #, python-format
 msgid "You cannot reset to draft an entry related to a posted asset"
 msgstr ""
-"Sie können den Entwurf eines Eintrags für eine gebuchte Anlage nicht "
+"Sie können den Entwurf eines Eintrags für einen gebuchten Aktivposten nicht "
 "zurücksetzen"
 
 #. module: account_asset
@@ -2266,17 +2270,17 @@ msgstr "abschreibungsfähig)"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "e.g. Annual Subscription"
-msgstr "z.B. Jahresabonnement"
+msgstr "z. B. Jahresabonnement"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "e.g. Annually Paid Insurance"
-msgstr "z.B. Jährlich bezahlte Versicherung"
+msgstr "z. B. Jährlich bezahlte Versicherung"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "e.g. Laptop iBook"
-msgstr "z.B. Laptop iBook"
+msgstr "z. B. Laptop iBook"
 
 #. module: account_asset
 #. odoo-python
@@ -2290,4 +2294,4 @@ msgstr "Buchungen"
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "entry"
-msgstr "Eingang"
+msgstr "Buchung"

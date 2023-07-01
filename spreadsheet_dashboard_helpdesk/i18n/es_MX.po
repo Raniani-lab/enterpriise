@@ -139,7 +139,7 @@ msgstr "Análisis de ticket por tipo de ticket"
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Ticket Type"
-msgstr "Tipo de boleto"
+msgstr "Tipo de ticket"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript

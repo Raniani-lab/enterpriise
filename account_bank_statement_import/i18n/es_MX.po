@@ -66,8 +66,8 @@ msgid ""
 "Cannot find in which journal import this statement. Please manually select a"
 " journal."
 msgstr ""
-"No se encontró un diario contable al cual importar el extracto bancario. "
-"Seleccione uno manualmente."
+"No se encontró un diario contable al cual importar el extracto bancario, "
+"seleccione uno manualmente."
 
 #. module: account_bank_statement_import
 #. odoo-python
@@ -127,7 +127,7 @@ msgstr "No se proporcionó ningún archivo adjunto"
 #: code:addons/account_bank_statement_import/models/account_journal.py:0
 #, python-format
 msgid "No currency found matching '%s'."
-msgstr "No se ha encontrado ninguna moneda que concuerde con '%s'."
+msgstr "No se ha encontrado ninguna divisa que concuerde con \"%s\"."
 
 #. module: account_bank_statement_import
 #. odoo-python
@@ -136,7 +136,7 @@ msgstr "No se ha encontrado ninguna moneda que concuerde con '%s'."
 msgid ""
 "The account of this statement (%s) is not the same as the journal (%s)."
 msgstr ""
-"La cuenta bancaria de este extracto (%s) no es la misma que la del diario "
+"La cuenta de este estado de cuenta (%s) no es la misma que la del diario "
 "(%s)"
 
 #. module: account_bank_statement_import
@@ -162,7 +162,7 @@ msgstr "No se pueden importar los siguientes archivos:\n"
 #: code:addons/account_bank_statement_import/models/account_journal.py:0
 #, python-format
 msgid "This file doesn't contain any statement for account %s."
-msgstr "Este archivo no contiene ningún estado de cuenta %s."
+msgstr "Este archivo no contiene ningún estado de cuenta para la cuenta %s."
 
 #. module: account_bank_statement_import
 #. odoo-python
@@ -197,4 +197,4 @@ msgstr "Debe configurar una cuenta predeterminada para el diario: %s"
 #: code:addons/account_bank_statement_import/models/account_journal.py:0
 #, python-format
 msgid "You uploaded an invalid or empty file."
-msgstr "Ha subido un archivo que no es válido o está vacío."
+msgstr "Subió un archivo que no es válido o está vacío."

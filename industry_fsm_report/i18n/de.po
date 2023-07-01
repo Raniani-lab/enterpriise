@@ -59,7 +59,7 @@ msgstr "Kommentare"
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.project_project_form_inherit_industry_fsm_report
 msgid "Create reports to be signed off by your customers"
 msgstr ""
-"Erstellen Sie Berichte, die von Ihren Kunden unterzeichnet werden müssen"
+"Erstellen Sie Berichte, die von Ihren Kunden unterzeichnet werden müssen."
 
 #. module: industry_fsm_report
 #: model:ir.model.fields,help:industry_fsm_report.field_project_task__worksheet_template_id
@@ -67,19 +67,19 @@ msgid ""
 "Create templates for each type of intervention you have and customize their "
 "content with your own custom fields."
 msgstr ""
-"Erstellen Sie Vorlagen für jede Art von Intervention und passen Sie deren "
+"Erstellen Sie Vorlagen für jede Art von Tätigkeit und passen Sie deren "
 "Inhalt mit Ihren eigenen benutzerdefinierten Feldern an."
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.x_project_task_worksheet_template_2_ir_ui_view_3
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.x_project_task_worksheet_template_3_ir_ui_view_3
 msgid "Created on"
-msgstr "Angelegt am"
+msgstr "Erstellt am"
 
 #. module: industry_fsm_report
 #: model_terms:ir.actions.act_window,help:industry_fsm_report.fsm_worksheets_action_settings
 msgid "Customize worksheet templates for each type of intervention.<br>"
-msgstr "Passen Sie Arbeitsblattvorlagen für jede Art von Einsatz an.<br>"
+msgstr "Passen Sie Arbeitsblattvorlagen für jede Art von Tätigkeit an.<br>"
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.report_custom_x_project_task_worksheet_template_3
@@ -90,7 +90,7 @@ msgstr "Datum"
 #: model:ir.model,name:industry_fsm_report.x_project_task_worksheet_template_2_ir_model_1
 #: model:ir.model.fields,field_description:industry_fsm_report.field_project_project__worksheet_template_id
 msgid "Default Worksheet"
-msgstr "Standard-Arbeitsblatt."
+msgstr "Standardarbeitsblatt"
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.report_custom_x_project_task_worksheet_template_3
@@ -184,12 +184,12 @@ msgstr "Aufgabenwiederholung"
 #. module: industry_fsm_report
 #: model:ir.model,name:industry_fsm_report.model_report_industry_fsm_worksheet_custom
 msgid "Task Worksheet Custom Report"
-msgstr "Aufgabe Arbeitsbericht"
+msgstr "Arbeitsblatt für Aufgabe Benutzerdefinierter Bericht"
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.report_custom_x_project_task_worksheet_template_3
 msgid "Worker Signature"
-msgstr "Unterschrift Mitarbeiter"
+msgstr "Unterschrift des Arbeiters"
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.portal_my_task

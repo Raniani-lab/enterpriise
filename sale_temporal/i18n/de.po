@@ -5,9 +5,9 @@
 # Translators:
 # Jérôme JEK <jek@odoo.com>, 2022
 # Friederike Fasterling-Nesselbosch, 2022
-# Martin Trigaux, 2022
 # Michael Hofer, 2022
 # Jolien De Paepe, 2023
+# Martin Trigaux, 2023
 # Larissa Manderfeld, 2023
 # 
 msgid ""
@@ -29,7 +29,7 @@ msgstr ""
 #: code:addons/sale_temporal/models/product_template.py:0
 #, python-format
 msgid "%(amount)s (fixed)"
-msgstr "%(amount)s (fix)"
+msgstr "%(amount)s (Festpreis)"
 
 #. module: sale_temporal
 #. odoo-python
@@ -58,7 +58,7 @@ msgstr "Unternehmen"
 #: model_terms:ir.actions.act_window,help:sale_temporal.product_pricing_action
 #: model_terms:ir.actions.act_window,help:sale_temporal.sale_temporal_recurrence_action
 msgid "Create a new recurrence"
-msgstr "Eine neue Wiederholung anlegen"
+msgstr "Eine neue Wiederholung erstellen"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__create_uid
@@ -140,7 +140,7 @@ msgstr "ID"
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_order__internal_note
 msgid "Internal Note"
-msgstr "Interne Mitteilung"
+msgstr "Interne Notiz"
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.sale_subscription_order_view_form
@@ -220,7 +220,7 @@ msgstr "Zeitraum"
 #: model_terms:ir.ui.view,arch_db:sale_temporal.sale_temporal_recurrence_view_form
 #: model_terms:ir.ui.view,arch_db:sale_temporal.sale_temporal_recurrence_view_tree
 msgid "Periodicity"
-msgstr "Zeitraum"
+msgstr "Periodizität"
 
 #. module: sale_temporal
 #: model:ir.actions.act_window,name:sale_temporal.sale_temporal_recurrence_action
@@ -262,7 +262,7 @@ msgstr "Produktvorlagen"
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_product_product
 msgid "Product Variant"
-msgstr "Produktvarianten"
+msgstr "Produktvariante"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__product_variant_ids
@@ -277,7 +277,7 @@ msgstr "Produkte"
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__recurrence_id
 msgid "Recurrency"
-msgstr "Häufigkeit"
+msgstr "Wiederholung"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricelist__product_pricing_ids
@@ -292,17 +292,17 @@ msgstr "Wiederkehrende Preislistenregeln"
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_sale_temporal_recurrence
 msgid "Sale temporal Recurrence"
-msgstr "Temporärer wiederkehrender Verkauf"
+msgstr "Zeitlich begrenzter wiederkehrender Verkauf"
 
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_sale_order
 msgid "Sales Order"
-msgstr "Verkaufsauftrag "
+msgstr "Verkaufsauftrag"
 
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_sale_order_line
 msgid "Sales Order Line"
-msgstr "Kundenauftragszeile"
+msgstr "Verkaufsauftragszeile"
 
 #. module: sale_temporal
 #: model:ir.model.fields,help:sale_temporal.field_product_pricing__product_variant_ids
@@ -326,7 +326,7 @@ msgstr "Anzeige der Abonnementeinheit"
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_order_line__temporal_type
 msgid "Temporal Type"
-msgstr "Zeitlicher Typ"
+msgstr "Zeitlich begrenzeter Typ"
 
 #. module: sale_temporal
 #: model:ir.model.constraint,message:sale_temporal.constraint_sale_temporal_recurrence_temporal_recurrence_duration

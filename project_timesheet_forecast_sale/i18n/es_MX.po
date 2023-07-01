@@ -26,7 +26,7 @@ msgstr ""
 #: code:addons/project_timesheet_forecast_sale/models/project.py:0
 #, python-format
 msgid "%(name)s's Timesheets and Planning Analysis"
-msgstr "Las hojas de hora y análisis de planeación de %(name)s"
+msgstr "Hojas de horas y análisis de planeación de %(name)s"
 
 #. module: project_timesheet_forecast_sale
 #: model:ir.model,name:project_timesheet_forecast_sale.model_account_analytic_line
@@ -87,7 +87,7 @@ msgstr "Línea de la orden de venta"
 #: model:ir.model.fields,help:project_timesheet_forecast_sale.field_project_project__display_planning_timesheet_analysis
 msgid "Should we display the planning and timesheet analysis button?"
 msgstr ""
-"¿Debemos mostrar el botón de análisis de la planificación y de la hoja de "
+"¿Debemos mostrar el botón de análisis de la planeación y de las hojas de "
 "horas?"
 
 #. module: project_timesheet_forecast_sale
@@ -111,16 +111,16 @@ msgstr ""
 #: model:ir.model.fields,help:project_timesheet_forecast_sale.field_planning_analysis_report__non_billable_allocated_hours
 msgid "Sum of hours allocated to shifts not linked to a SOL."
 msgstr ""
-"Suma de horas asignadas a turnos que no están vinculados a las líneas de la "
-"orden de venta."
+"Suma de horas asignadas a turnos que no están vinculados a las líneas de una"
+" orden de venta."
 
 #. module: project_timesheet_forecast_sale
 #: code:addons/project_timesheet_forecast_sale/models/project.py:0
 #, python-format
 msgid "Timesheets and Planning"
-msgstr "Hoja de horas y planificación"
+msgstr "Hojas de horas y planeación"
 
 #. module: project_timesheet_forecast_sale
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast_sale.project_timesheet_forecast_view_kanban_inherit_sale_timesheet
 msgid "Timesheets and Planning Analysis"
-msgstr "Análisis de planeación y hoja de horas"
+msgstr "Análisis de planeación y hojas de horas"

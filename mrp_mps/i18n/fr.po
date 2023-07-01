@@ -558,7 +558,7 @@ msgstr "Stock de sécurité"
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.mrp_mps_production_schedule_form_view
 msgid "Save"
-msgstr "Sauvegarder"
+msgstr "Enregistrer"
 
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_mrp_production_schedule

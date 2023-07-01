@@ -3,9 +3,9 @@
 # 	* project_helpdesk
 # 
 # Translators:
-# Martin Trigaux, 2022
 # DE T1 <e2f8846@yahoo.com>, 2022
 # Friederike Fasterling-Nesselbosch, 2022
+# Martin Trigaux, 2023
 # Larissa Manderfeld, 2023
 # 
 msgid ""
@@ -37,7 +37,7 @@ msgstr "Umwandeln"
 #. module: project_helpdesk
 #: model:ir.model,name:project_helpdesk.model_helpdesk_ticket_convert_wizard
 msgid "Convert Helpdesk Tickets to Tasks"
-msgstr "Helpdesk-Tickets in Tasks umwandeln"
+msgstr "Kundendiensttickets in Aufgaben umwandeln"
 
 #. module: project_helpdesk
 #: model:ir.model,name:project_helpdesk.model_project_task_convert_wizard
@@ -139,7 +139,7 @@ msgstr "Wiederkehrende Aufgaben können nicht in Tickets umgewandelt werden."
 #: model:ir.model.fields,field_description:project_helpdesk.field_helpdesk_ticket_convert_wizard__stage_id
 #: model:ir.model.fields,field_description:project_helpdesk.field_project_task_convert_wizard__stage_id
 msgid "Stage"
-msgstr "Stufe"
+msgstr "Phase"
 
 #. module: project_helpdesk
 #: model:ir.model,name:project_helpdesk.model_project_task
@@ -151,7 +151,7 @@ msgstr "Aufgabe"
 #: code:addons/project_helpdesk/wizard/project_task_convert_wizard.py:0
 #, python-format
 msgid "Task converted into ticket %s"
-msgstr "Aufgabe in Ticket %s verwandelt"
+msgstr "Aufgabe in Ticket %s umgewandelt"
 
 #. module: project_helpdesk
 #. odoo-python
@@ -170,7 +170,7 @@ msgstr "Team"
 #: code:addons/project_helpdesk/wizard/helpdesk_ticket_convert_wizard.py:0
 #, python-format
 msgid "Ticket converted into task %s"
-msgstr "Ticket in Aufgabe %s verwandelt"
+msgstr "Ticket in Aufgabe %s umgewandelt"
 
 #. module: project_helpdesk
 #. odoo-python

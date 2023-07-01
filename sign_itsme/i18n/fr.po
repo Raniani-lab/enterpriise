@@ -110,7 +110,7 @@ msgid ""
 " could not be saved."
 msgstr ""
 "Les données d'identification itsme® n'ont pas pu être transmises à Odoo, la "
-"signature n'a pas pu être sauvegardée."
+"signature n'a pas pu être enregistrée."
 
 #. module: sign_itsme
 #: model:ir.model.fields.selection,name:sign_itsme.selection__sign_item_role__auth_method__itsme

@@ -3475,7 +3475,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/tours/web_studio.js:0
 #, python-format
 msgid "Save."
-msgstr "Sauvegarder."
+msgstr "Enregistrer."
 
 #. module: web_studio
 #. odoo-javascript
@@ -4108,7 +4108,7 @@ msgid ""
 "There are %s records using selection values not listed in those you are trying to save.\n"
 "Are you sure you want to remove the selection values of those records?"
 msgstr ""
-"Il y a %s enregistrements utilisant des valeurs de sélection qui ne figurent pas dans ceux que vous essayez de sauvegarder.\n"
+"Il y a %s enregistrements utilisant des valeurs de sélection qui ne figurent pas dans ceux que vous essayez d'enregistrer.\n"
 "Êtes-vous sûr de vouloir supprimer les valeurs de sélection de ces enregistrements ?"
 
 #. module: web_studio

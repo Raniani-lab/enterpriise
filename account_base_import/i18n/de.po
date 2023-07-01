@@ -5,7 +5,7 @@
 # Translators:
 # Felix Schubert <felix.schubert@go-erp.com>, 2022
 # Daniela W, 2022
-# Martin Trigaux, 2022
+# Martin Trigaux, 2023
 # Larissa Manderfeld, 2023
 # 
 msgid ""
@@ -25,7 +25,7 @@ msgstr ""
 #. module: account_base_import
 #: model_terms:ir.ui.view,arch_db:account_base_import.res_config_settings_import_view_form
 msgid "<span class=\"o_form_label\">Initial Setup</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">Ersteinstellung</span>"
 
 #. module: account_base_import
 #: model_terms:ir.ui.view,arch_db:account_base_import.res_config_settings_import_view_form
@@ -52,7 +52,7 @@ msgstr "Importmodul für Winbooks-Konten"
 #. module: account_base_import
 #: model_terms:ir.ui.view,arch_db:account_base_import.res_config_settings_import_view_form
 msgid "Accounting Import"
-msgstr "Buchhaltung Import"
+msgstr "Buchhaltungsimport"
 
 #. module: account_base_import
 #. odoo-javascript
@@ -60,14 +60,14 @@ msgstr "Buchhaltung Import"
 #: model:ir.actions.client,name:account_base_import.action_open_import_guide
 #, python-format
 msgid "Accounting Import Guide"
-msgstr "Buchungen Import Leitfaden"
+msgstr "Leitfaden für Buchhaltungsimport"
 
 #. module: account_base_import
 #. odoo-javascript
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "Accounting Import Options"
-msgstr "Buchungen Import Optionen"
+msgstr "Buchhaltung-Importoptionen"
 
 #. module: account_base_import
 #: model:ir.model,name:account_base_import.model_base_import_import
@@ -85,7 +85,7 @@ msgstr "Kontenplan"
 #. module: account_base_import
 #: model_terms:ir.ui.view,arch_db:account_base_import.res_config_settings_import_view_form
 msgid "Choose how you want to setup your CoA"
-msgstr "Wählen Sie aus, wie Sie Ihr CoA einrichten wollen"
+msgstr "Wählen Sie aus, wie Sie Ihrn Kontenplan einrichten möchten"
 
 #. module: account_base_import
 #. odoo-javascript
@@ -111,7 +111,7 @@ msgstr "Herunterladen"
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "Excel Import"
-msgstr "Excel Import"
+msgstr "Excel-Import"
 
 #. module: account_base_import
 #. odoo-javascript
@@ -125,7 +125,7 @@ msgstr "FEC"
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "FEC Import module"
-msgstr "FEC Import Modul"
+msgstr "FEC-Importmodul"
 
 #. module: account_base_import
 #. odoo-javascript
@@ -133,7 +133,7 @@ msgstr "FEC Import Modul"
 #: model_terms:ir.ui.view,arch_db:account_base_import.res_config_settings_import_view_form
 #, python-format
 msgid "Import"
-msgstr "Import"
+msgstr "Importieren"
 
 #. module: account_base_import
 #. odoo-javascript
@@ -164,7 +164,7 @@ msgstr "Kontakte importieren"
 #: model:ir.actions.client,name:account_base_import.action_account_move_line_import
 #, python-format
 msgid "Import Journal Items"
-msgstr "Journalzeilen importieren"
+msgstr "Buchungszeilen importieren"
 
 #. module: account_base_import
 #: model:ir.actions.client,name:account_base_import.action_partner_import
@@ -184,7 +184,8 @@ msgstr "Kontakte importieren"
 #, python-format
 msgid "Import customers or suppliers (partners) and their contacts using a"
 msgstr ""
-"Importieren Sie Kunden oder Lieferanten (Partner) und deren Kontakte mit"
+"Importieren Sie Kunden oder Lieferanten (Partner) und deren Kontakte mit "
+"einer"
 
 #. module: account_base_import
 #. odoo-javascript
@@ -221,7 +222,7 @@ msgid ""
 "                            Use the"
 msgstr ""
 "Die meisten Buchhaltungssoftwares in Frankreich unterstützen den Export von FEC-Dateien zu Prüfungszwecken..\n"
-"                            Verwenden Sie das"
+"                            Verwenden Sie die"
 
 #. module: account_base_import
 #. odoo-javascript
@@ -230,7 +231,7 @@ msgstr ""
 msgid "Optional, but useful to import open receivables & payables using a"
 msgstr ""
 "Optional, aber nützlich für den Import von offenen Forderungen und "
-"Verbindlichkeiten mit"
+"Verbindlichkeiten mit einer"
 
 #. module: account_base_import
 #. odoo-javascript
@@ -252,7 +253,7 @@ msgstr "Der Importdatei fehlen die folgenden erforderlichen Spalten: %s"
 #: code:addons/account_base_import/models/account_account.py:0
 #, python-format
 msgid "The import file must contain the 'code' column"
-msgstr "Das Import File muss die 'code' Spalte beinhalten"
+msgstr "Die Importdatei muss die „code“-Spalte beinhalten"
 
 #. module: account_base_import
 #. odoo-javascript
@@ -263,9 +264,9 @@ msgid ""
 " import. Only use the Journal Items import for unreconciled entries in your "
 "Payable and Receivable Accounts."
 msgstr ""
-"Tipp: Wir empfehlen, Ihre Anfangssalden über den Kontenplanimport zu "
-"importieren. Verwenden Sie den Import von Journalposten nur für nicht "
-"abgestimmte Einträge in Ihren Kreditoren- und Debitorenkonten."
+"Tipp: Wir empfehlen, Ihre Anfangssalden über den Kontenplan zu importieren. "
+"Verwenden Sie den Import von Buchungszeilen nur für nicht abgestimmte Posten"
+" in Ihren Kreditoren- und Debitorenkonten."
 
 #. module: account_base_import
 #. odoo-javascript
@@ -273,7 +274,7 @@ msgstr ""
 #, python-format
 msgid "Use predefined format to import your data faster."
 msgstr ""
-"Verwenden Sie vordefinierte Formate, um Ihre Daten schneller zu importieren"
+"Verwenden Sie vordefinierte Formate, um Ihre Daten schneller zu importieren."
 
 #. module: account_base_import
 #. odoo-javascript
@@ -300,7 +301,7 @@ msgid ""
 "                            Use the"
 msgstr ""
 "Winbooks ist eine alte belgische Buchhaltungssoftware, die von Exact übernommen wurde.\n"
-"                            Verwenden Sie das"
+"                            Verwenden Sie die"
 
 #. module: account_base_import
 #. odoo-javascript
@@ -326,7 +327,7 @@ msgid ""
 "to import a Winbooks full back-up (Maintenance > Backup) to get the chart of accounts, contacts, taxes, history of journal entries, and documents.\n"
 "                            Support versions: Winbooks Desktop 5.50, 6, 7, 8."
 msgstr ""
-", um ein vollständiges Winbooks-Backup zu importieren (Wartung > Backup), um den Kontenplan, die Kontakte, die Steuern, die Historie der Journalbuchungen und die Dokumente zu erhalten.\n"
+", um ein vollständiges Winbooks-Back-up zu importieren (Wartung > Back-up), um den Kontenplan, die Kontakte, die Steuern, die Historie der Journalbuchungen und die Dokumente zu erhalten.\n"
 "                            Unterstützte Versionen: Winbooks Desktop 5.50, 6, 7, 8."
 
 #. module: account_base_import

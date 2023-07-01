@@ -3,9 +3,9 @@
 # 	* spreadsheet_dashboard_mrp_account
 # 
 # Translators:
-# Martin Trigaux, 2022
 # Friederike Fasterling-Nesselbosch, 2022
 # Larissa Manderfeld, 2023
+# Martin Trigaux, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2022-09-29 09:37+0000\n"
-"Last-Translator: Larissa Manderfeld, 2023\n"
+"Last-Translator: Martin Trigaux, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,7 +33,7 @@ msgstr "Verfügbare Zeit (Min)"
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Average Cost / Unit"
-msgstr "Durchschnittliche Gesamtkosten / Einheit"
+msgstr "Durchschnittliche Kosten/Einheit"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
@@ -105,7 +105,7 @@ msgstr "Meistproduzierte Produkte"
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "OEE"
-msgstr "OEE"
+msgstr "GAE"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
@@ -113,7 +113,7 @@ msgstr "OEE"
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Operation Type"
-msgstr "Vorgangstyp"
+msgstr "Vorgangsart"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
@@ -137,7 +137,7 @@ msgstr "Zeitraum"
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Previous"
-msgstr "Zurück"
+msgstr "Vorherige"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
@@ -239,14 +239,14 @@ msgstr "Durchschnittskosten - vorherig"
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "oee - current"
-msgstr "oee - aktuell"
+msgstr "gae - aktuell"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "oee - previous"
-msgstr "oee - vorherig"
+msgstr "gae - vorherig"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
@@ -263,11 +263,11 @@ msgstr "seit dem letzten Zeitraum"
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "stats mo - current"
-msgstr "stats mo - aktuell"
+msgstr "Statistiken FA - aktuell"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "stats mo - previous"
-msgstr "stats mo - vorherig"
+msgstr "Statistiken FA - vorherig"

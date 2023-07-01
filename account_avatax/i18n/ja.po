@@ -661,7 +661,7 @@ msgstr "郵便番号"
 #: code:addons/account_avatax/models/product.py:0
 #, python-format
 msgid "[%s] %s"
-msgstr ""
+msgstr "[%s] %s"
 
 #. module: account_avatax
 #: model:ir.model.fields,help:account_avatax.field_product_category__avatax_category_id

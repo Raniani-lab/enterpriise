@@ -4154,7 +4154,7 @@ msgstr ""
 msgid ""
 "You cannot save a sale order with a recurrence and no recurring product."
 msgstr ""
-"Vous ne pouvez pas sauvegarder un bon de commande avec une récurrence et "
+"Vous ne pouvez pas enregistrer un bon de commande avec une récurrence et "
 "sans produit récurrent."
 
 #. module: sale_subscription
@@ -4163,7 +4163,7 @@ msgstr ""
 #, python-format
 msgid "You cannot save a sale order with recurring product and no recurrence."
 msgstr ""
-"Vous ne pouvez pas sauvegarder un bon de commande avec un produit récurrent "
+"Vous ne pouvez pas enregistrer un bon de commande avec un produit récurrent "
 "et sans récurrence."
 
 #. module: sale_subscription
@@ -4258,7 +4258,7 @@ msgstr "Votre contrat est récurrent"
 #: model_terms:ir.ui.view,arch_db:sale_subscription.payment_checkout_inherit
 msgid "Your payment details will be saved for automatic renewals."
 msgstr ""
-"Vos détails de paiement seront sauvegardés pour les renouvellements "
+"Vos détails de paiement seront enregistrés pour les renouvellements "
 "automatiques."
 
 #. module: sale_subscription

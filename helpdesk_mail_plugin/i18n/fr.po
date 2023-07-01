@@ -69,14 +69,14 @@ msgstr "Aucun ticket trouvé pour ce contact."
 #: code:addons/helpdesk_mail_plugin/static/src/to_translate/translations_outlook.xml:0
 #, python-format
 msgid "Save Contact to create new Tickets."
-msgstr "Sauvegardez le contact pour créer de nouveaux tickets."
+msgstr "Enregistrez le contact pour créer de nouveaux tickets."
 
 #. module: helpdesk_mail_plugin
 #. odoo-javascript
 #: code:addons/helpdesk_mail_plugin/static/src/to_translate/translations_gmail.xml:0
 #, python-format
 msgid "Save the contact to create new tickets."
-msgstr "Sauvegardez le contact pour créer de nouveaux tickets."
+msgstr "Enregistrez le contact pour créer de nouveaux tickets."
 
 #. module: helpdesk_mail_plugin
 #. odoo-javascript

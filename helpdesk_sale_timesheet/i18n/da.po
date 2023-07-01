@@ -41,7 +41,7 @@ msgstr "Konverter Helpdesk sager til opgaver "
 #. module: helpdesk_sale_timesheet
 #: model:ir.model,name:helpdesk_sale_timesheet.model_project_task_convert_wizard
 msgid "Convert Project Tasks to Tickets"
-msgstr "Omdan Projekt opgaver til supportsager"
+msgstr "Omdan projektopgaver til supportsager"
 
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.tickets_followup_timesheet

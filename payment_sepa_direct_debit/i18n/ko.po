@@ -24,7 +24,7 @@ msgstr ""
 #. module: payment_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.inline_form
 msgid "+32123456789"
-msgstr ""
+msgstr "+32123456789"
 
 #. module: payment_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.sdd_payment_mandate_form
@@ -42,6 +42,8 @@ msgid ""
 "<strong>Name of the reference party:</strong>\n"
 "                            ......................................"
 msgstr ""
+"<strong>참조인 이름 :</strong>\n"
+"                            ......................................"
 
 #. module: payment_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.sdd_payment_mandate_form
@@ -220,14 +222,14 @@ msgstr ""
 #. module: payment_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.inline_form
 msgid "A copy of the mandate will be sent by email to"
-msgstr ""
+msgstr "위임장 사본을 다음 이메일로 발송합니다."
 
 #. module: payment_sepa_direct_debit
 #. odoo-python
 #: code:addons/payment_sepa_direct_debit/models/sdd_mandate.py:0
 #, python-format
 msgid "Both the phone number and the verification code are required."
-msgstr ""
+msgstr "전화번호와 인증코드 모두 필수입니다."
 
 #. module: payment_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.payment_provider_form
@@ -249,7 +251,7 @@ msgstr "연락처"
 #: code:addons/payment_sepa_direct_debit/static/src/js/payment_form.js:0
 #, python-format
 msgid "Could not send the verification code."
-msgstr ""
+msgstr "인증 코드를 발송할 수 없습니다."
 
 #. module: payment_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.sdd_mandate_form
@@ -273,14 +275,14 @@ msgstr "전화 번호가 잘못되었습니다."
 #: code:addons/payment_sepa_direct_debit/controllers/main.py:0
 #, python-format
 msgid "Missing or invalid IBAN."
-msgstr ""
+msgstr "누락되었거나 유효하지 않은 IBAN 입니다."
 
 #. module: payment_sepa_direct_debit
 #. odoo-python
 #: code:addons/payment_sepa_direct_debit/models/payment_transaction.py:0
 #, python-format
 msgid "No transaction found matching reference %s."
-msgstr ""
+msgstr "%s 참조와 일치하는 거래 항목이 없습니다."
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,field_description:payment_sepa_direct_debit.field_payment_provider__sdd_signature_required
@@ -316,7 +318,7 @@ msgstr "전화번호"
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,field_description:payment_sepa_direct_debit.field_payment_provider__sdd_sms_verification_required
 msgid "Phone Verification"
-msgstr ""
+msgstr "전화 인증"
 
 #. module: payment_sepa_direct_debit
 #. odoo-javascript
@@ -330,7 +332,7 @@ msgstr "SMS 재전송"
 #: code:addons/payment_sepa_direct_debit/models/payment_provider.py:0
 #, python-format
 msgid "Restricted to countries in the SEPA zone. Forbidden countries: %s"
-msgstr ""
+msgstr "SEPA 지역에 있는 국가로 제한됩니다. %s의 경우 허용되지 않지 않습니다."
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model,name:payment_sepa_direct_debit.model_sdd_mandate
@@ -345,7 +347,7 @@ msgstr "SEPA 출금 이체"
 #. module: payment_sepa_direct_debit
 #: model:account.payment.method,name:payment_sepa_direct_debit.payment_method_sepa_direct_debit
 msgid "SEPA Direct Debit (provider)"
-msgstr ""
+msgstr "SEPA 자동이체 (공급업체)"
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,field_description:payment_sepa_direct_debit.field_payment_token__sdd_mandate_id
@@ -361,7 +363,7 @@ msgstr "SEPA 자동 이체 : 요금 알림"
 #. module: payment_sepa_direct_debit
 #: model:mail.template,name:payment_sepa_direct_debit.mail_template_sepa_notify_validation
 msgid "SEPA Direct Debit: Validation Notification"
-msgstr ""
+msgstr "SEPA 자동 이체 : 인증 알림"
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,field_description:payment_sepa_direct_debit.field_payment_provider__sdd_sms_credits
@@ -387,7 +389,7 @@ msgstr "크레딧이 충분하지 않아 SMS를 보낼 수 없습니다."
 #: code:addons/payment_sepa_direct_debit/controllers/main.py:0
 #, python-format
 msgid "SMS verification is disabled."
-msgstr ""
+msgstr "SMS 인증이 비활성화되었습니다."
 
 #. module: payment_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.inline_form
@@ -398,12 +400,12 @@ msgstr "SMS 보내기"
 #: model:mail.template,description:payment_sepa_direct_debit.mail_template_sepa_notify_validation
 msgid ""
 "Send the SEPA mandate in attachement, to partners who signed a new mandate"
-msgstr ""
+msgstr "신규 위임장에 서명한 협력사로 SEPA 위임장 첨부 파일을 전송합니다."
 
 #. module: payment_sepa_direct_debit
 #: model:mail.template,description:payment_sepa_direct_debit.mail_template_sepa_notify_debit
 msgid "Sent to the customer to indicate their account will be charged"
-msgstr ""
+msgstr "계정에 요금이 청구된다는 내용을 고객에게 안내하기 위해 전송합니다"
 
 #. module: payment_sepa_direct_debit
 #. odoo-javascript
@@ -439,66 +441,66 @@ msgstr "온라인 서명일"
 #: code:addons/payment_sepa_direct_debit/models/payment_provider.py:0
 #, python-format
 msgid "The bank account of the journal is not a valid IBAN."
-msgstr ""
+msgstr "전표의 은행 계좌 IBAN이 유효하지 않습니다."
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,help:payment_sepa_direct_debit.field_sdd_mandate__signed_on
 msgid "The date of the signature"
-msgstr ""
+msgstr "서명 일자"
 
 #. module: payment_sepa_direct_debit
 #. odoo-python
 #: code:addons/payment_sepa_direct_debit/models/payment_transaction.py:0
 #, python-format
 msgid "The mandate is invalid."
-msgstr ""
+msgstr "유효하지 않은 위임장입니다."
 
 #. module: payment_sepa_direct_debit
 #. odoo-python
 #: code:addons/payment_sepa_direct_debit/models/payment_provider.py:0
 #, python-format
 msgid "The mandate owner and customer do not match."
-msgstr ""
+msgstr "위임장 소유자와 고객이 일치하지 않습니다."
 
 #. module: payment_sepa_direct_debit
 #. odoo-python
 #: code:addons/payment_sepa_direct_debit/models/sdd_mandate.py:0
 #, python-format
 msgid "The mandate was signed by %s."
-msgstr ""
+msgstr "위임장 서명자는 %s 입니다."
 
 #. module: payment_sepa_direct_debit
 #. odoo-python
 #: code:addons/payment_sepa_direct_debit/models/sdd_mandate.py:0
 #, python-format
 msgid "The mandate was verified with phone number %s."
-msgstr ""
+msgstr "위임장이 %s 전화번호로 인증되었습니다."
 
 #. module: payment_sepa_direct_debit
 #. odoo-python
 #: code:addons/payment_sepa_direct_debit/controllers/main.py:0
 #, python-format
 msgid "The name and signature must be provided."
-msgstr ""
+msgstr "이름과 서명은 필수 항목입니다."
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,help:payment_sepa_direct_debit.field_sdd_mandate__signed_by
 msgid "The name of the signer"
-msgstr ""
+msgstr "서명자 이름"
 
 #. module: payment_sepa_direct_debit
 #. odoo-python
 #: code:addons/payment_sepa_direct_debit/models/sdd_mandate.py:0
 #, python-format
 msgid "The phone number does not match."
-msgstr ""
+msgstr "전화번호가 일치하지 않습니다."
 
 #. module: payment_sepa_direct_debit
 #. odoo-python
 #: code:addons/payment_sepa_direct_debit/controllers/main.py:0
 #, python-format
 msgid "The phone number must be provided and verified."
-msgstr ""
+msgstr "전화번호를 입력 후 인증해야 합니다."
 
 #. module: payment_sepa_direct_debit
 #. odoo-python
@@ -506,12 +508,12 @@ msgstr ""
 #: code:addons/payment_sepa_direct_debit/models/sdd_mandate.py:0
 #, python-format
 msgid "The phone number should be in international format."
-msgstr ""
+msgstr "전화번호는 국제 번호 형식이어야 합니다."
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,help:payment_sepa_direct_debit.field_sdd_mandate__phone_number
 msgid "The phone number used for verification by SMS code"
-msgstr ""
+msgstr "SMS 코드로 인증에 사용되는 전화번호"
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,help:payment_sepa_direct_debit.field_payment_provider__code
@@ -523,28 +525,28 @@ msgstr "이 결제대행업체의 기술 코드입니다."
 #: code:addons/payment_sepa_direct_debit/models/payment_transaction.py:0
 #, python-format
 msgid "The token is not linked to a mandate."
-msgstr ""
+msgstr "토큰이 위임장에 연결되어 있지 않습니다."
 
 #. module: payment_sepa_direct_debit
 #. odoo-python
 #: code:addons/payment_sepa_direct_debit/models/payment_transaction.py:0
 #, python-format
 msgid "The transaction is not linked to a token."
-msgstr ""
+msgstr "거래가 토큰에 연결되어 있지 않습니다."
 
 #. module: payment_sepa_direct_debit
 #. odoo-python
 #: code:addons/payment_sepa_direct_debit/models/sdd_mandate.py:0
 #, python-format
 msgid "The verification code does not match."
-msgstr ""
+msgstr "일치하지 않는 인증 코드입니다."
 
 #. module: payment_sepa_direct_debit
 #. odoo-python
 #: code:addons/payment_sepa_direct_debit/models/sdd_mandate.py:0
 #, python-format
 msgid "This mandate has already been verified."
-msgstr ""
+msgstr "이미 승인된 위임장입니다."
 
 #. module: payment_sepa_direct_debit
 #. odoo-python
@@ -552,7 +554,7 @@ msgstr ""
 #: code:addons/payment_sepa_direct_debit/controllers/main.py:0
 #, python-format
 msgid "Unknown mandate ID."
-msgstr ""
+msgstr "알 수 없는 위임 ID 입니다."
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,field_description:payment_sepa_direct_debit.field_sdd_mandate__verification_code
@@ -575,12 +577,12 @@ msgstr "결제를 진행할 수 없습니다."
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,help:payment_sepa_direct_debit.field_payment_provider__sdd_signature_required
 msgid "Whether a signature is required to create a new mandate."
-msgstr ""
+msgstr "새로운 위임장을 생성하기 위해 서명이 필요한지 여부입니다."
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,help:payment_sepa_direct_debit.field_payment_provider__sdd_sms_verification_required
 msgid "Whether phone numbers must be verified by an SMS code."
-msgstr ""
+msgstr "SMS 코드로 전화번호를 인증해야 하는지 여부입니다."
 
 #. module: payment_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.payment_provider_form
@@ -593,7 +595,7 @@ msgstr "SMS를 보낼 충분한 크레딧이 없습니다. 당신은 여기에�
 msgid ""
 "Your SEPA Direct Debit Mandate with {{ "
 "object.payment_journal_id.company_id.name }}"
-msgstr ""
+msgstr "{{ object.payment_journal_id.company_id.name }} 관련 SEPA 자동이체 위임장"
 
 #. module: payment_sepa_direct_debit
 #. odoo-python
@@ -602,7 +604,7 @@ msgstr ""
 msgid ""
 "Your company must have a creditor identifier in order to issue a SEPA Direct"
 " Debit payment request. It can be set in Accounting settings."
-msgstr ""
+msgstr "SEPA 자동이체 결제 요청을 하려면 회사에 채권자 식별 기호가 있어야 합니다. 회계 모듈의 설정에서 정의할 수 있습니다."
 
 #. module: payment_sepa_direct_debit
 #. odoo-python

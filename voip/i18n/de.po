@@ -3,9 +3,9 @@
 # 	* voip
 # 
 # Translators:
-# Martin Trigaux, 2022
 # Friederike Fasterling-Nesselbosch, 2022
 # Larissa Manderfeld, 2023
+# Martin Trigaux, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Larissa Manderfeld, 2023\n"
+"Last-Translator: Martin Trigaux, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,7 +24,7 @@ msgstr ""
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__nbr
 msgid "# of Cases"
-msgstr "Fälle"
+msgstr "# Fälle"
 
 #. module: voip
 #. odoo-javascript
@@ -80,12 +80,12 @@ msgstr "Aktivität"
 #: code:addons/voip/static/src/models/call_queue_switch_view.js:0
 #, python-format
 msgid "Add to Call Queue"
-msgstr "An Anruf-Warteschlage anhängen"
+msgstr "Zur Anruf-Warteschlange hinzufügen"
 
 #. module: voip
 #: model:ir.actions.server,name:voip.action_add_to_call_queue
 msgid "Add to call queue"
-msgstr "An Anruf-Warteschlage anhängen"
+msgstr "Zur Anruf-Warteschlange hinzufügen"
 
 #. module: voip
 #. odoo-javascript
@@ -116,7 +116,7 @@ msgstr ""
 msgid ""
 "Are you sure that you want to close this website? There's a call ongoing."
 msgstr ""
-"Sind Sie sicher, dass Sie diese Website schließen wollen? Es läuft gerade "
+"Sind Sie sicher, dass Sie diese Website schließen möchten? Es läuft gerade "
 "ein Gespräch."
 
 #. module: voip
@@ -140,7 +140,7 @@ msgstr "Avatar"
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Backspace"
-msgstr "zurück"
+msgstr "Zurück"
 
 #. module: voip
 #. odoo-javascript
@@ -153,7 +153,7 @@ msgstr "zurück"
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Call"
-msgstr "Anrufe"
+msgstr "Anruf"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__call_date
@@ -183,7 +183,7 @@ msgstr "Anruf von einem anderen Gerät"
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid "Call rejected (reason: \"%(reasonPhrase)s\")"
-msgstr "Anruf abgelehnt (Begründung: \"%(reasonPhrase)s\")"
+msgstr "Anruf abgelehnt (Begründung: „%(reasonPhrase)s“)"
 
 #. module: voip
 #. odoo-python
@@ -199,7 +199,7 @@ msgstr "Anruf an %s"
 #: code:addons/voip/static/src/voip_service.js:0
 #, python-format
 msgid "Calling %s"
-msgstr "%s Anrufen"
+msgstr "%s anrufen"
 
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
@@ -254,10 +254,10 @@ msgid ""
 "            • Ask: Always ask whether the softphone or the device's phone must be used\n"
 "        "
 msgstr ""
-"Wählen Sie die Methode, mit der Sie einen Anruf über die mobile Anwendung tätigen möchten::\n"
+"Wählen Sie die Methode, mit der Sie einen Anruf über die mobile Anwendung tätigen möchten:\n"
 "            • VoIP: Immer das Odoo-Softphone verwenden\n"
 "            • Telefon des Geräts: Immer das Telefon des Geräts verwenden\n"
-"            • Fragen: Immer fragen, ob das Softphone oder das Telefon des Geräts verwendet werden muss.\n"
+"            • Fragen: Immer fragen, ob das Softphone oder das Telefon des Geräts verwendet werden soll.\n"
 "        "
 
 #. module: voip
@@ -265,7 +265,7 @@ msgstr ""
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "Click to unblock"
-msgstr "Klicken, um Sperre aufzuheben"
+msgstr "Zum Entblockieren klicken"
 
 #. module: voip
 #. odoo-javascript
@@ -278,14 +278,14 @@ msgstr "Schließen"
 #. module: voip
 #: model:ir.model,name:voip.model_res_config_settings
 msgid "Config Settings"
-msgstr "Konfiguration "
+msgstr "Konfigurationseinstellungen "
 
 #. module: voip
 #. odoo-javascript
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid "Connecting..."
-msgstr "Verbinden..."
+msgstr "Verbinden ..."
 
 #. module: voip
 #: model:ir.model,name:voip.model_res_partner
@@ -316,7 +316,7 @@ msgstr "Erstellt am"
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Creation Date"
-msgstr "Erzeugt am"
+msgstr "Erstellungsdatum"
 
 #. module: voip
 #. odoo-javascript
@@ -345,7 +345,7 @@ msgstr "Telefon des Geräts"
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__direction
 msgid "Direction"
-msgstr "Strategie"
+msgstr "Leitung"
 
 #. module: voip
 #. odoo-javascript
@@ -377,7 +377,7 @@ msgstr "Nicht verschieben"
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__date_deadline
 msgid "Due Date"
-msgstr "Fälligkeit"
+msgstr "Fälligkeitsdatum"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__duration
@@ -418,7 +418,7 @@ msgstr "Nummer oder Namen eingeben"
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Enter the number..."
-msgstr "Nummer eingeben..."
+msgstr "Nummer eingeben ..."
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_users__external_device_number
@@ -442,7 +442,9 @@ msgstr ""
 #. module: voip
 #: model:ir.model.fields,help:voip.field_voip_phonecall__sequence
 msgid "Gives the sequence order when displaying a list of Phonecalls."
-msgstr "Liefert die Sortier-Reihenfolge bei Telefonat-Listanzeige."
+msgstr ""
+"Gibt die Reihenfolge an, in der eine Liste von Telefonanrufen angezeigt "
+"wird."
 
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
@@ -455,19 +457,19 @@ msgstr "Gruppieren nach"
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Hang up but keep call in queue"
-msgstr "Auflegen aber Anruf in die Warteschlange verschieben"
+msgstr "Auflegen, aber Anruf in die Warteschlange verschieben"
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__done
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall_report__state__done
 msgid "Held"
-msgstr "Erledigt"
+msgstr "Geführt"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_users__how_to_call_on_mobile
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__how_to_call_on_mobile
 msgid "How to place calls on mobile"
-msgstr "Wie Anrufe mobil tätigen"
+msgstr "Wie Anrufe auf Handy tätigen"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__id
@@ -494,8 +496,8 @@ msgid ""
 msgstr ""
 "Wenn diese Option aktiviert ist, wird bei einem Anruf in Odoo der Anruf an "
 "die „Externe Gerätenummer“ weitergeleitet. Verwenden Sie diese Option, um "
-"den Anruf in Odoo zu tätigen, ihn aber von einem anderen Gerät aus zu "
-"bearbeiten - z. B. von Ihrem Tischtelefon aus."
+"den Anruf in Odoo zu tätigen, ihn aber von einem anderen Gerät auszuführen -"
+" z. B. von Ihrem Tischtelefon aus."
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_users__external_device_number
@@ -525,7 +527,7 @@ msgstr "In 2 Monaten"
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__in_queue
 msgid "In Call Queue"
-msgstr "In Ruf-Warteschlange"
+msgstr "In Anruf-Warteschlange"
 
 #. module: voip
 #. odoo-javascript
@@ -546,7 +548,7 @@ msgstr ""
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__direction__incoming
 msgid "Incoming"
-msgstr "Eingang"
+msgstr "Eingehend"
 
 #. module: voip
 #. odoo-javascript
@@ -571,14 +573,14 @@ msgstr "Eingehender Anruf von %s (%s)"
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Incoming call from..."
-msgstr "Eingehender Anruf von..."
+msgstr "Eingehender Anruf von ..."
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_partner__has_call_in_queue
 #: model:ir.model.fields,field_description:voip.field_res_users__has_call_in_queue
 #: model:ir.model.fields,field_description:voip.field_voip_queue_mixin__has_call_in_queue
 msgid "Is in the Call Queue"
-msgstr "Ist in der Warteschlange"
+msgstr "Ist in der Anruf-Warteschlange"
 
 #. module: voip
 #. odoo-javascript
@@ -586,7 +588,7 @@ msgstr "Ist in der Warteschlange"
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Keypad"
-msgstr "Tastenfeld"
+msgstr "Tastatur"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall____last_update
@@ -604,7 +606,7 @@ msgstr "Zuletzt gesehener Telefonanruf"
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__write_uid
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__write_uid
 msgid "Last Updated by"
-msgstr "Zuletzt aktualisiert durch"
+msgstr "Zuletzt aktualisiert von"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__write_date
@@ -719,7 +721,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__pending
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall_report__state__pending
 msgid "Not Held"
-msgstr "Nicht Telefoniert"
+msgstr "Nicht geführt"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__note
@@ -825,7 +827,7 @@ msgstr ""
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__res_config_settings__mode__prod
 msgid "Production"
-msgstr "Produktivbetrieb"
+msgstr "Produktion"
 
 #. module: voip
 #. odoo-javascript
@@ -840,7 +842,7 @@ msgstr "Neueste"
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Refresh the Panel"
-msgstr "Das Panel auffrischen"
+msgstr "Das Panel aktualisieren"
 
 #. module: voip
 #. odoo-javascript
@@ -915,7 +917,7 @@ msgstr "Verantwortlich"
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Ringing..."
-msgstr "Es klingelt..."
+msgstr "Es klingelt ..."
 
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.res_config_settings_view_form
@@ -939,7 +941,7 @@ msgstr "Aktivität planen"
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Schedule Next"
-msgstr "Nächstes Gespräch planen"
+msgstr "Nächste Aktivität planen"
 
 #. module: voip
 #. odoo-javascript
@@ -951,7 +953,7 @@ msgstr "Suchen"
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Search Phonecalls"
-msgstr "Anruf suchen"
+msgstr "Telefonanrufe suchen"
 
 #. module: voip
 #. odoo-javascript
@@ -959,12 +961,12 @@ msgstr "Anruf suchen"
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Send mail"
-msgstr "E-Mail senden"
+msgstr "E-Mail versenden"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__sequence
 msgid "Sequence"
-msgstr "Reihenfolge"
+msgstr "Sequenz"
 
 #. module: voip
 #. odoo-python
@@ -1009,7 +1011,7 @@ msgstr "Anruf annehmen"
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_config_settings__pbx_ip
 msgid "The IP address of your PBX Server"
-msgstr "Die IP-Adresse Ihres PBX-Server"
+msgstr "Die IP-Adresse Ihres PBX-Servers"
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_config_settings__wsServer
@@ -1096,8 +1098,8 @@ msgid ""
 "If the call is not applicable anymore, the status can be set to Cancelled."
 msgstr ""
 "Der Status ist „Zu erledigen“, wenn ein Anruf angelegt wird.\n"
-"Wenn der Anruf beendet ist, wird der Status „Gehalten“.\n"
-"Wenn der Anruf nicht mehr erforderlich ist, kann der Status auf „Storniert“ gesetzt werden."
+"Wenn der Anruf beendet ist, wird der Status „Geführt“.\n"
+"Wenn der Anruf nicht mehr erforderlich ist, kann der Status auf „Abgebrochen“ gesetzt werden."
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_users__voip_username
@@ -1163,12 +1165,12 @@ msgstr "VOIP-Anruf"
 #. module: voip
 #: model:ir.model,name:voip.model_voip_phonecall_log_wizard
 msgid "VOIP Phonecall log Wizard"
-msgstr "VOIP-Anruf Protokoll-Assistent"
+msgstr "Assistent für VOIP-Anrufprotokolle"
 
 #. module: voip
 #: model:ir.model,name:voip.model_voip_phonecall_report
 msgid "VOIP Phonecalls by user report"
-msgstr "Bericht VOIP-Anrufe pro Benutzer"
+msgstr "Bericht über VOIP-Anrufe pro Benutzer"
 
 #. module: voip
 #: model:ir.model,name:voip.model_voip_queue_mixin
@@ -1205,7 +1207,7 @@ msgstr "VoIP-Geheimnis"
 #: model:ir.model.fields,field_description:voip.field_res_users__voip_username
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__voip_username
 msgid "VoIP username / Extension number"
-msgstr "VoIP-Benutzername/-Durchwahlnummer"
+msgstr "VoIP-Benutzername/-Nebenstellennummer"
 
 #. module: voip
 #. odoo-javascript
@@ -1245,7 +1247,7 @@ msgstr ""
 msgid ""
 "Your browser could not support WebRTC. Please check your configuration."
 msgstr ""
-"Ihr Browser unterstützt WebRTC nicht. Bitte überprüfen Sie ihre "
+"Ihr Browser unterstützt WebRTC nicht. Bitte überprüfen Sie Ihre "
 "Einstellungen."
 
 #. module: voip
@@ -1264,7 +1266,7 @@ msgstr ""
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "min"
-msgstr "min"
+msgstr "Min"
 
 #. module: voip
 #. odoo-javascript

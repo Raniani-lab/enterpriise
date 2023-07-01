@@ -739,7 +739,7 @@ msgstr "Embalagem"
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__product_packaging_uom_qty
 msgid "Packaging Quantity"
-msgstr "Quantidade de embalagens"
+msgstr "Quantidade por embalagem"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_backorder_confirmation__partial_move_count
@@ -1275,7 +1275,7 @@ msgstr "Fonte de Pacotes"
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_package_type
 msgid "Stock package type"
-msgstr ""
+msgstr "Tipo de pacote de estoque"
 
 #. module: stock_barcode
 #. odoo-javascript

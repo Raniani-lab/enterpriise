@@ -28,7 +28,7 @@ msgstr "アクセスグループ"
 #. module: spreadsheet_dashboard_documents
 #: model_terms:ir.ui.view,arch_db:spreadsheet_dashboard_documents.spreadsheet_dashboard_view_list
 msgid "Add a spreadsheet"
-msgstr ""
+msgstr "スプレッドシートを追加"
 
 #. module: spreadsheet_dashboard_documents
 #. odoo-javascript

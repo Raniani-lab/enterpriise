@@ -3,7 +3,6 @@
 # 	* website_appointment
 # 
 # Translators:
-# 敬雲 林 <chingyun@yuanchih-consult.com>, 2022
 # Martin Trigaux, 2022
 # Tony Ng, 2023
 # 
@@ -73,7 +72,7 @@ msgstr ""
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointments_cards
 msgid "Add an intro message here..."
-msgstr ""
+msgstr "加入簡介資料⋯"
 
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_validated
@@ -162,7 +161,7 @@ msgstr "詳細資料<span class=\"chevron position-absolute d-block\"/>"
 #: code:addons/website_appointment/static/src/xml/appointment_no_slot.xml:0
 #, python-format
 msgid "Go back to Appointment"
-msgstr ""
+msgstr "返回預約列表"
 
 #. module: website_appointment
 #: model:ir.model.fields,field_description:website_appointment.field_appointment_type__is_published
@@ -280,7 +279,7 @@ msgstr "使用者"
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointments_cards
 msgid "View availability <i class=\"fa fa-arrow-right\"/>"
-msgstr ""
+msgstr "檢視可用時段 <i class=\"fa fa-arrow-right\"/>"
 
 #. module: website_appointment
 #: model:ir.model.fields,field_description:website_appointment.field_appointment_type__website_published
@@ -322,7 +321,7 @@ msgstr "網站 opengraph 圖片"
 #: code:addons/website_appointment/static/src/xml/appointment_no_slot.xml:0
 #, python-format
 msgid "contact us"
-msgstr "聯繫我們"
+msgstr "聯絡我們"
 
 #. module: website_appointment
 #. odoo-javascript

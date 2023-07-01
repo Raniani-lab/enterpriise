@@ -436,7 +436,7 @@ msgstr "Ratio actuel"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Debt-to-equity"
-msgstr "Ratio emprunts/capitaux propres"
+msgstr "Ratio emprunts/fonds propres"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -472,7 +472,7 @@ msgstr "BAII / Ventes nettes"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Equity"
-msgstr "Capitaux propres"
+msgstr "Fonds propres"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -496,7 +496,7 @@ msgstr "Indépendance financière"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Fixed Assets"
-msgstr "Immobilisations corporelles"
+msgstr "Immobilisations"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -629,14 +629,14 @@ msgstr "Ventes nettes"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Non-current Assets"
-msgstr "Actifs non courants"
+msgstr "Actif immobilisé"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Non-current Liabilities"
-msgstr "Passifs non courants"
+msgstr "Passif immobilisé"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -935,14 +935,14 @@ msgstr "Passifs totaux"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Total liabilities / Total shareholders’ equity"
-msgstr "Total du passif / Total des capitaux propres"
+msgstr "Total du passif / Total des fonds propres"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Total shareholder's equity"
-msgstr "Total des capitaux propres"
+msgstr "Total des fonds propres"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -1072,7 +1072,7 @@ msgstr "dette"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "payable + credit card + current liabilities + non-current liabilities"
-msgstr "dettes + carte de crédit + passifs circulants + passifs non courants"
+msgstr "dettes + carte de crédit + passif circulant + passif immobilisé"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -1163,7 +1163,7 @@ msgid ""
 "receivable + bank and cash + current assets + non-current assets + "
 "prepayments + fixed assets"
 msgstr ""
-"créance + banque et trésorerie + actifs circulants + actifs non courants + "
+"créances + banque et trésorerie + actif circulant + actif immobilisé + "
 "acomptes + immobilisations"
 
 #. module: spreadsheet_dashboard_account_accountant

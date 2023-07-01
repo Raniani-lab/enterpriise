@@ -1324,7 +1324,7 @@ msgstr "Dérivés de gré à gré – Dérivés de credit"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "OTC Derivatives – Equity"
-msgstr "Dérivés de gré à gré – Capitaux propres"
+msgstr "Dérivés de gré à gré – Fonds propres"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0

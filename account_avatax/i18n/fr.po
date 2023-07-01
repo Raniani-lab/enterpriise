@@ -511,7 +511,7 @@ msgstr "Sandbox"
 #. module: account_avatax
 #: model_terms:ir.ui.view,arch_db:account_avatax.avatax_validate_address_view_form
 msgid "Save Validated"
-msgstr "Sauvegarde validée"
+msgstr "Enregistrement validé"
 
 #. module: account_avatax
 #: code:addons/account_avatax/models/account_avatax_unique_code.py:0

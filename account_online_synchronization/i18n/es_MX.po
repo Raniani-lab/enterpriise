@@ -352,12 +352,12 @@ msgstr "Seguidores"
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__message_partner_ids
 msgid "Followers (Partners)"
-msgstr "Seguidores (partners)"
+msgstr "Seguidores (contactos)"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__activity_type_icon
 msgid "Font awesome icon e.g. fa-tasks"
-msgstr "Icono de Font Awesome ej. fa-tasks"
+msgstr "Icono de Font Awesome, por ejemplo, fa-tasks"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_link_journal__sync_date
@@ -407,12 +407,12 @@ msgstr "Si se encuentra seleccionado, algunos mensajes tienen error de envío."
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_account__inverse_balance_sign
 msgid "If checked, the balance sign will be inverted"
-msgstr "Si está marcado se invertirá el signo de balance"
+msgstr "Si se encuentra seleccionado, se invertirá el signo de balance"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_account__inverse_transaction_sign
 msgid "If checked, the transaction sign will be inverted"
-msgstr "Si está marcado se invertirá el signo de transacción"
+msgstr "Si se encuentra seleccionado, se invertirá el signo de transacción"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__auto_sync
@@ -445,7 +445,7 @@ msgstr "Error interno"
 #: code:addons/account_online_synchronization/models/account_online.py:0
 #, python-format
 msgid "Invalid value for proxy_mode config parameter."
-msgstr "Valor nulo para proxy_mode parametro de configuración."
+msgstr "Valor nulo para el parámetro de configuración proxy_mode."
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_account__inverse_balance_sign
@@ -522,17 +522,17 @@ msgstr "Última sincronización"
 #: code:addons/account_online_synchronization/models/account_online.py:0
 #, python-format
 msgid "Link Account to Journal"
-msgstr "Vincula la cuenta a un diario"
+msgstr "Vincular la cuenta a un diario"
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.view_account_link_journal_form_wizard
 msgid "Link account to journal"
-msgstr "Vincula la cuenta a un diario"
+msgstr "Vincular la cuenta a un diario"
 
 #. module: account_online_synchronization
 #: model:ir.model,name:account_online_synchronization.model_account_link_journal
 msgid "Link list of bank accounts to journals"
-msgstr "Vincula la lista de cuentas bancarias a los diarios"
+msgstr "Vincular la lista de cuentas bancarias a los diarios"
 
 #. module: account_online_synchronization
 #: model:ir.model,name:account_online_synchronization.model_account_link_journal_line
@@ -554,7 +554,7 @@ msgstr "Mensaje"
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__message_has_error
 msgid "Message Delivery error"
-msgstr "Error de envío de mensaje"
+msgstr "Error al enviar el mensaje"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__message_ids
@@ -574,7 +574,7 @@ msgstr "Nombre"
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__activity_calendar_event_id
 msgid "Next Activity Calendar Event"
-msgstr "Siguiente evento en el calendario de actividades."
+msgstr "Siguiente evento en el calendario de actividades"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__activity_date_deadline
@@ -742,9 +742,9 @@ msgid ""
 "Today: Activity date is today\n"
 "Planned: Future activities."
 msgstr ""
-"Estado basado en actividades\n"
-"Vencida: la fecha límite ya pasó\n"
-"Hoy: la fecha límite es hoy\n"
+"Estado según las actividades\n"
+"Vencida: ya pasó la fecha límite\n"
+"Hoy: hoy es la fecha de la actividad\n"
 "Planeada: futuras actividades."
 
 #. module: account_online_synchronization
@@ -807,13 +807,13 @@ msgid ""
 "To create a synchronization with your banking institution,<br>\n"
 "                please click on <b>Add a Bank Account</b>."
 msgstr ""
-"Para crear una sincronización con su institución bancaria,\n"
+"Para crear una sincronización con su institución bancaria,<br>\n"
 "                haga clic en <b>agregar una cuenta bancaria</b>."
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__access_token
 msgid "Token used to access API."
-msgstr "Token utilizado para ingresar API"
+msgstr "Token utilizado para ingresar a la API."
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__refresh_token
@@ -873,8 +873,8 @@ msgid ""
 "bank account(s).<br/>\n"
 "                            Let's associate each one with an accounting journal."
 msgstr ""
-"cuenta(s) bancaria(s).<br/>\n"
-"                           Vinculemos cada una a un diario"
+"cuentas bancarias.<br/>\n"
+"                           Vinculemos cada una a un diario."
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_journal_dashboard_inherit_online_sync

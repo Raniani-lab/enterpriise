@@ -30,7 +30,7 @@ msgstr "Por proyecto"
 #. module: project_forecast
 #: model_terms:ir.actions.act_window,help:project_forecast.project_forecast_action_from_project
 msgid "Let's start your planning by adding a new shift."
-msgstr "Empecemos su planeación añadiendo un nuevo turno."
+msgstr "Comencemos con su planeación, agregue un nuevo turno."
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.planning_analysis_report_view_search

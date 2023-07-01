@@ -1828,7 +1828,7 @@ msgstr ""
 #: code:addons/appointment/static/src/xml/appointment_no_slot.xml:0
 #, python-format
 msgid "Sorry, we have no availability for an appointment."
-msgstr ""
+msgstr "Sentimos muito, não há disponibilidade para reuniões."
 
 #. module: appointment
 #. odoo-javascript

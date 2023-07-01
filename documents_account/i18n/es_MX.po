@@ -3,8 +3,8 @@
 # 	* documents_account
 # 
 # Translators:
-# Patricia Gutiérrez Capetillo <pagc@odoo.com>, 2022
 # Braulio D. López Vázquez <bdl@odoo.com>, 2022
+# Patricia Gutiérrez Capetillo <pagc@odoo.com>, 2022
 # Lucia Pacheco, 2022
 # Martin Trigaux, 2022
 # Fernanda Alvarez, 2023
@@ -369,9 +369,8 @@ msgid ""
 "Wow... 6 documents processed in a few seconds, You're good.<br/>The tour is "
 "complete. Try uploading your own documents now."
 msgstr ""
-"Guau... 6 documentos procesados en solo unos segundos. Usted es muy "
-"bueno.<br/>El tour está completo. Intente subir sus propios documentos "
-"ahora."
+"Wow... procesó 6 documentos en cuestión de segundos, en verdad es un "
+"experto.<br/>Terminamos el tour. Ahora, intente cargar sus documentos."
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_config_settings__account_folder

@@ -3,8 +3,7 @@
 # 	* sale_timesheet_enterprise
 # 
 # Translators:
-# Martin Trigaux, 2022
-# Michael Hofer, 2022
+# Martin Trigaux, 2023
 # Larissa Manderfeld, 2023
 # 
 msgid ""
@@ -39,7 +38,7 @@ msgstr "<span class=\"o_stat_text\">Verkaufsauftrag</span>"
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields.selection,name:sale_timesheet_enterprise.selection__res_config_settings__invoiced_timesheet__all
 msgid "All recorded timesheets"
-msgstr "Alle erfassten Stundenzettel"
+msgstr "Alle erfassten Zeitnachweise"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model,name:sale_timesheet_enterprise.model_account_analytic_line
@@ -55,7 +54,7 @@ msgstr ""
 #. module: sale_timesheet_enterprise
 #: model:ir.model,name:sale_timesheet_enterprise.model_res_config_settings
 msgid "Config Settings"
-msgstr "Konfiguration "
+msgstr "Konfigurationseinstellungen "
 
 #. module: sale_timesheet_enterprise
 #. odoo-javascript
@@ -86,7 +85,7 @@ msgstr "Hat Zugriff auf Verkaufsaufträge"
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_sharing_inherit_project_task_view_form
 msgid "Hours Spent"
-msgstr "Geleistete Stunden"
+msgstr "Aufgewendete Stunden"
 
 #. module: sale_timesheet_enterprise
 #. odoo-python
@@ -124,7 +123,7 @@ msgstr "Portal restliche Stunden"
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__portal_subtask_effective_hours
 msgid "Portal Subtask Effective Hours"
-msgstr "Portal-Unteraufgabe tatsächliche Stunden"
+msgstr "Portal Teilaufgabe tatsächliche Stunden"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__portal_total_hours_spent
@@ -153,7 +152,7 @@ msgstr "Verkaufsauftrag"
 #. module: sale_timesheet_enterprise
 #: model:ir.model,name:sale_timesheet_enterprise.model_sale_order_line
 msgid "Sales Order Line"
-msgstr "Auftragsposition"
+msgstr "Verkaufsauftragszeile"
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_sharing_inherit_project_task_view_tree
@@ -180,32 +179,33 @@ msgstr ""
 #: model:ir.model.fields,help:sale_timesheet_enterprise.field_project_task__portal_subtask_effective_hours
 msgid "Time spent on the sub-tasks (and their own sub-tasks) of this task."
 msgstr ""
-"Erfaste Zeiten in Unteraufgaben (und deren Unteraufgaben) dieser Aufgabe."
+"Aufgewendete Zeit für Teilaufgaben (und deren Teilaufgaben) dieser Aufgabe."
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,help:sale_timesheet_enterprise.field_project_task__portal_effective_hours
 msgid "Time spent on this task, excluding its sub-tasks."
-msgstr "Erfasste Zeiten ohne Zeiten der Unteraufgaben"
+msgstr "Aufgewendete Zeiten für diese Aufgabe, ohne Teilaufgaben"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,help:sale_timesheet_enterprise.field_project_task__portal_total_hours_spent
 msgid "Time spent on this task, including its sub-tasks."
-msgstr "Erfasste Zeiten dieser Aufgabe, inkl. Unteraufgaben"
+msgstr "Aufgewendete Zeiten für diese Aufgabe, einschließlich Teilaufgaben"
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.timesheet_view_grid_by_billing_rate
 msgid "Timesheets"
-msgstr "Zeiterfassung"
+msgstr "Zeiterfassungen"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_res_config_settings__invoiced_timesheet
 msgid "Timesheets Invoicing"
-msgstr "Stundenzettelabrechnung"
+msgstr "Abrechnung von Zeiterfassungen"
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.res_config_settings_view_form
 msgid "Timesheets taken into account when invoicing your time"
-msgstr "Berücksichtigung von Stundenzetteln bei der Abrechnung Ihrer Zeit"
+msgstr ""
+"Zeiterfassungsbögen werden bei der Abrechnung Ihrer Zeit berücksichtigt"
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_sharing_inherit_project_task_view_tree
@@ -218,13 +218,13 @@ msgid ""
 "Total remaining time, can be re-estimated periodically by the assignee of "
 "the task."
 msgstr ""
-"Verbleibende Gesamtzeit, kann periodisch neu berechnet werden durch den "
-"zugewiesenen verantwortlichen Mitarbeiter."
+"Verbleibende Gesamtzeit, kann periodisch neu berechnet werden durch den der "
+"Aufgabe zugewiesenen verantwortlichen Mitarbeiter."
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields.selection,name:sale_timesheet_enterprise.selection__res_config_settings__invoiced_timesheet__approved
 msgid "Validated timesheets only"
-msgstr "Nur validierte Stundenzettel"
+msgstr "Nur validierte Zeiterfassungen"
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.timesheet_view_grid_by_billing_rate
@@ -237,5 +237,5 @@ msgid ""
 "With the 'all recorded timesheets' option, all timesheets will be invoiced without distinction, even if they haven't been validated. Additionally, all timesheets will be accessible in your customers' portal. \n"
 "When you choose the 'validated timesheets only' option, only the validated timesheets will be invoiced and appear in your customers' portal."
 msgstr ""
-"Mit der Option „Alle verzeichneten Zeiterfassungen“ werden alle Zeiterfassungen ohne Ausnahme in Rechnung gestellt, auch wenn sie nicht validiert wurden. Außerdem sind alle Zeiterfassungen in Ihrem Kundenportal verfügbar.\n"
+"Mit der Option „Alle erfassten Zeitnachweise“ werden alle Zeiterfassungen ohne Ausnahme in Rechnung gestellt, auch wenn sie nicht validiert wurden. Außerdem sind alle Zeiterfassungen in Ihrem Kundenportal verfügbar.\n"
 "Wenn Sie die Option „Nur validierte Zeiterfassungen“ auswählen, werden nur die validierten Zeiterfassungen in Rechnung gestellt und in Ihrem Kundenportal angezeigt."

@@ -78,8 +78,8 @@ msgid ""
 msgstr ""
 "\n"
 "                 Ihr Mietprodukt hat ungültige Abhol- (%(start_date)s) und\n"
-"                Rückgabedaten (%(end_date)s). Leider bieten wir keine Abholungen\n"
-"                Rückgaben an diesen Wochentagen an.\n"
+"                Rückgabedaten (%(end_date)s). Leider bieten wir weder Abholungen\n"
+"                noch Rückgaben an diesen Wochentagen an.\n"
 "            "
 
 #. module: website_sale_renting
@@ -94,8 +94,8 @@ msgid ""
 "        "
 msgstr ""
 "\n"
-"            Einige Ihrer Mietprodukte (%(product)s) können nicht während der\n"
-"            ausgewählten Dauer gemietet werden und Ihr Warenkorb muss aktualisiert werden. Entschuldigen Sie die\n"
+"            Einige Ihrer Mietprodukte (%(product)s) können nicht während des\n"
+"            ausgewählten Zeitraums gemietet werden und Ihr Warenkorb muss aktualisiert werden. Entschuldigen Sie die\n"
 "            Unannehmlichkeiten.\n"
 "        "
 
@@ -173,7 +173,7 @@ msgstr "<span>pro</span>"
 #. module: website_sale_renting
 #: model_terms:ir.ui.view,arch_db:website_sale_renting.rental_product
 msgid "<strong class=\"attribute_name\">Rental Period</strong>"
-msgstr "<strong class=\"attribute_name\">Mietzeitraumd</strong>"
+msgstr "<strong class=\"attribute_name\">Mietzeitraum</strong>"
 
 #. module: website_sale_renting
 #: model_terms:ir.ui.view,arch_db:website_sale_renting.rental_product
@@ -219,7 +219,7 @@ msgstr "Benutzerdefinierter Bereich"
 #. module: website_sale_renting
 #: model_terms:ir.ui.view,arch_db:website_sale_renting.snippet_options
 msgid "Datepicker"
-msgstr "Datumswähler"
+msgstr "Terminplaner"
 
 #. module: website_sale_renting
 #: model_terms:ir.ui.view,arch_db:website_sale_renting.s_rental_search_options
@@ -312,7 +312,7 @@ msgstr "Produkt"
 #. module: website_sale_renting
 #: model:ir.model,name:website_sale_renting.model_product_product
 msgid "Product Variant"
-msgstr "Produktvarianten"
+msgstr "Produktvariante"
 
 #. module: website_sale_renting
 #: model_terms:ir.ui.view,arch_db:website_sale_renting.res_config_settings_view_form
@@ -327,12 +327,12 @@ msgstr "Vermietungssuche"
 #. module: website_sale_renting
 #: model:ir.model,name:website_sale_renting.model_sale_order
 msgid "Sales Order"
-msgstr "Verkaufsauftrag "
+msgstr "Verkaufsauftrag"
 
 #. module: website_sale_renting
 #: model:ir.model,name:website_sale_renting.model_sale_order_line
 msgid "Sales Order Line"
-msgstr "Kundenauftragszeile"
+msgstr "Verkaufsauftragszeile"
 
 #. module: website_sale_renting
 #: model:ir.model.fields,field_description:website_sale_renting.field_res_company__renting_forbidden_sat
@@ -383,12 +383,12 @@ msgstr "Donnerstag"
 #. module: website_sale_renting
 #: model_terms:ir.ui.view,arch_db:website_sale_renting.s_rental_search_options
 msgid "Timing"
-msgstr "Timing"
+msgstr "Terminierung"
 
 #. module: website_sale_renting
 #: model_terms:ir.ui.view,arch_db:website_sale_renting.rental_product
 msgid "Total"
-msgstr "Total"
+msgstr "Gesamt"
 
 #. module: website_sale_renting
 #: model:ir.model.fields,field_description:website_sale_renting.field_res_company__renting_forbidden_tue
@@ -424,7 +424,7 @@ msgstr "Sie können Ihr Mietprodukt an diesem Wochentag nicht abholen."
 #: code:addons/website_sale_renting/static/src/js/renting_mixin.js:0
 #, python-format
 msgid "You cannot return your rental on that day of the week."
-msgstr "Sie können Ihr Mietprodukt an diesem Wochentag nicht zurückbringen"
+msgstr "Sie können Ihr Mietprodukt an diesem Wochentag nicht zurückgeben."
 
 #. module: website_sale_renting
 #. odoo-python
@@ -437,7 +437,7 @@ msgstr "Ihr Mietprodukt kann nicht in der Vergangenheit abgeholt werden."
 #: model_terms:ir.ui.view,arch_db:website_sale_renting.products_item
 #: model_terms:ir.ui.view,arch_db:website_sale_renting.suggested_products_list
 msgid "from"
-msgstr "Von"
+msgstr "von"
 
 #. module: website_sale_renting
 #: model_terms:ir.ui.view,arch_db:website_sale_renting.products

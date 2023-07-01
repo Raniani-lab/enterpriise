@@ -26,7 +26,7 @@ msgstr ""
 #: code:addons/documents_spreadsheet/wizard/save_spreadsheet_template.py:0
 #, python-format
 msgid "\"%s\" saved as template"
-msgstr "\"%s\" sauvegardé comme modèle"
+msgstr "\"%s\" enregistré comme modèle"
 
 #. module: documents_spreadsheet
 #. odoo-python
@@ -313,7 +313,7 @@ msgstr "Révisions"
 #. module: documents_spreadsheet
 #: model:ir.actions.act_window,name:documents_spreadsheet.save_spreadsheet_template_action
 msgid "Save as template"
-msgstr "Sauvegarder en tant que modèle"
+msgstr "Enregistrer en tant que modèle"
 
 #. module: documents_spreadsheet
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_spreadsheet_template__sequence

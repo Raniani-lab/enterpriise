@@ -13,6 +13,7 @@
 # Marcin Młynarczyk <mlynarczyk@gmail.com>, 2022
 # Krzysztof Przygoda, 2022
 # Łukasz Grzenkowicz <lukasz.grzenkowicz@gmail.com>, 2023
+# Tadeusz Karpiński <tadeusz.karpinski@braintec.com>, 2023
 # Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023
 # 
 msgid ""
@@ -188,7 +189,7 @@ msgstr "Poprzedni"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Process Duration"
-msgstr ""
+msgstr "Czas trwania procesu"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -308,7 +309,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Top Mediums"
-msgstr ""
+msgstr "Najważniejsze media"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -322,7 +323,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Top Sources"
-msgstr ""
+msgstr "Najważniejsze źródła"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript

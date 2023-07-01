@@ -39,7 +39,7 @@ msgstr "Arbeitsblatt korrigieren"
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.x_quality_check_worksheet_template_1_ir_ui_view_3
 msgid "Created on"
-msgstr "Angelegt am"
+msgstr "Erstellt am"
 
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.report_custom_x_quality_check_worksheet_template_1
@@ -71,7 +71,7 @@ msgstr "Produkt"
 #. module: quality_control_worksheet
 #: model:ir.model,name:quality_control_worksheet.model_quality_check
 msgid "Quality Check"
-msgstr "Qualitätskontrolle"
+msgstr "Qualitätsprüfung"
 
 #. module: quality_control_worksheet
 #. odoo-python
@@ -95,7 +95,7 @@ msgstr "Qualitätsprobleme"
 #: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_check__worksheet_template_id
 #: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_check_wizard__worksheet_template_id
 msgid "Quality Template"
-msgstr "Qualitäts-Vorlage"
+msgstr "Qualitätsvorlage"
 
 #. module: quality_control_worksheet
 #: model:ir.model,name:quality_control_worksheet.model_report_quality_control_quality_worksheet
@@ -106,7 +106,7 @@ msgstr "Bericht über Qualitätsarbeitsblatt"
 #: model:ir.actions.act_window,name:quality_control_worksheet.quality_control_worksheet_template_action_settings
 #: model:ir.ui.menu,name:quality_control_worksheet.settings_worksheet_template
 msgid "Quality Worksheet Templates"
-msgstr "Arbeitsblattvorlagen Qualität"
+msgstr "Qualitätsarbeitsblattvorlagen"
 
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.report_custom_x_quality_check_worksheet_template_1
@@ -126,7 +126,7 @@ msgstr "Vorlage"
 #. module: quality_control_worksheet
 #: model:ir.model,name:quality_control_worksheet.model_quality_check_wizard
 msgid "Wizard for Quality Check Pop Up"
-msgstr "Assistent für Qualitätsprüfung Pop Up"
+msgstr "Assistent für Qualitätsprüfungs-Pop-Up"
 
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.report_custom_x_quality_check_worksheet_template_1

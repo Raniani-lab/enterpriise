@@ -191,7 +191,7 @@ msgstr ""
 #. module: website_helpdesk_livechat
 #: model:chatbot.script.step,message:website_helpdesk_livechat.chatbot_script_helpdesk_step_administrative_customer_ref_input
 msgid "Please write below your customer reference."
-msgstr ""
+msgstr "請於下方填寫客戶參考編號。"
 
 #. module: website_helpdesk_livechat
 #. odoo-javascript
@@ -229,6 +229,8 @@ msgid ""
 "To start with, do you have a customer reference?\n"
 "They are written on each invoice you received, next to your name."
 msgstr ""
+"首先，你有客戶參考編號嗎？\n"
+"應該在你收到的每張發票上，寫了在你的名稱旁邊的。"
 
 #. module: website_helpdesk_livechat
 #: model:ir.model,name:website_helpdesk_livechat.model_res_users

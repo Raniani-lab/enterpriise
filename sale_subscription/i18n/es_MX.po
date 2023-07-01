@@ -7,8 +7,8 @@
 # Braulio D. López Vázquez <bdl@odoo.com>, 2022
 # Lucia Pacheco, 2022
 # Martin Trigaux, 2023
-# Fernanda Alvarez, 2023
 # Aimée Mendoza Sánchez, 2023
+# Fernanda Alvarez, 2023
 # 
 msgid ""
 msgstr ""
@@ -16,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Aimée Mendoza Sánchez, 2023\n"
+"Last-Translator: Fernanda Alvarez, 2023\n"
 "Language-Team: Spanish (Mexico) (https://app.transifex.com/odoo/teams/41243/es_MX/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1805,7 +1805,7 @@ msgstr "Pagos fallidos"
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__on_change_field_ids
 msgid "Fields that trigger the onchange."
-msgstr "Campos que desencadenan el cambio."
+msgstr "Campos que desencadenan el \"onchange\"."
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__origin_order_id
@@ -1968,8 +1968,8 @@ msgid ""
 "If present, this condition must be satisfied before executing the action "
 "rule."
 msgstr ""
-"Si se selecciona, se debe cumplir esta condición antes de ejecutar la regla "
-"de acción."
+"Si está marcada esta casilla, se debe cumplir esta condición antes de "
+"ejecutar la regla de acción."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__filter_pre_domain
@@ -1977,8 +1977,8 @@ msgid ""
 "If present, this condition must be satisfied before the update of the "
 "record."
 msgstr ""
-"Si se selecciona, se debe cumplir esta condición antes de actualizar el "
-"registro."
+"Si está marcada esta casilla, se debe cumplir esta condición antes de la "
+"actualización del registro."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order__end_date
@@ -3625,7 +3625,7 @@ msgstr ""
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__website_url
 msgid "The full URL to access the server action through the website."
 msgstr ""
-"El URL completo para acceder a la acción de servidor a través del sitio web."
+"La URL completa para acceder a la acción de servidor a través del sitio web."
 
 #. module: sale_subscription
 #. odoo-python
@@ -4059,8 +4059,8 @@ msgid ""
 "When dealing with multiple actions, the execution order is based on the "
 "sequence. Low number means high priority."
 msgstr ""
-"Cuando trabaja con múltiples acciones, el orden de ejecución está basado en "
-"la secuencia. Un número menor tiene mayor prioridad."
+"Cuando se trabaja con múltiples acciones, el orden de ejecución se basa en "
+"la secuencia. Los números menores tienen mayor prioridad."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__trg_date_id

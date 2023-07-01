@@ -3,8 +3,8 @@
 # 	* hr_contract_sign
 # 
 # Translators:
-# Martin Trigaux, 2022
 # Larissa Manderfeld, 2023
+# Martin Trigaux, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Larissa Manderfeld, 2023\n"
+"Last-Translator: Martin Trigaux, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -64,7 +64,7 @@ msgstr "Dateianhang"
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__contract_id
 msgid "Contract"
-msgstr "Arbeitsvertrag"
+msgstr "Vertrag"
 
 #. module: hr_contract_sign
 #: model:ir.model,name:hr_contract_sign.model_hr_contract_history
@@ -74,7 +74,7 @@ msgstr "Vertragshistorie"
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__cc_partner_ids
 msgid "Copy to"
-msgstr "kopieren nach"
+msgstr "Kopieren nach"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__create_uid
@@ -99,7 +99,7 @@ msgstr "Anzeigename"
 #. module: hr_contract_sign
 #: model:ir.actions.act_window,name:hr_contract_sign.sign_contract_wizard_action
 msgid "Document Signature"
-msgstr "Signatur Dokument"
+msgstr "Dokumentsignatur"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_plan_activity_type__sign_template_id
@@ -119,7 +119,7 @@ msgid ""
 "        "
 msgstr ""
 "Zu unterzeichnende Dokumente. Es können nur Dokumente mit 1 oder 2 verschiedenen Verantwortlichen ausgewählt werden.\n"
-"Dokumente mit einem Verantwortlichen müssen nur vom Mitarbeiter unterzeichnet werden, während Dokumente mit zwei verschiedenen Verantwortlichen sowohl vom Mitarbeiter als auch vom Vorgesetzten unterzeichnet werden müssen."
+"Dokumente mit 1 Verantwortlichen müssen nur vom Mitarbeiter unterzeichnet werden, während Dokumente mit 2 verschiedenen Verantwortlichen sowohl vom Mitarbeiter als auch vom Verantwortlichen unterzeichnet werden müssen."
 
 #. module: hr_contract_sign
 #: model:ir.model,name:hr_contract_sign.model_hr_employee
@@ -144,13 +144,13 @@ msgid ""
 "Employee's role on the templates to sign. The same role must be present in "
 "all the templates"
 msgstr ""
-"Die Rolle des Mitarbeiters auf den zu signierenden Vorlagen. Die gleiche "
-"Rolle muss in allen Vorlagen angegeben werden"
+"Die Rolle des Mitarbeiters auf den zu unterzeichnenden Vorlagen. Die gleiche"
+" Rolle muss in allen Vorlagen angegeben werden"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__employee_ids
 msgid "Employees"
-msgstr "Personal"
+msgstr "Mitarbeiter"
 
 #. module: hr_contract_sign
 #: model:sign.item.role,name:hr_contract_sign.sign_item_role_job_responsible
@@ -180,7 +180,7 @@ msgstr "Zuletzt geändert am"
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__write_uid
 msgid "Last Updated by"
-msgstr "Zuletzt aktualisiert durch"
+msgstr "Zuletzt aktualisiert von"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__write_date
@@ -233,7 +233,7 @@ msgstr "Optionale Nachricht ..."
 #. module: hr_contract_sign
 #: model:ir.model,name:hr_contract_sign.model_hr_plan_wizard
 msgid "Plan Wizard"
-msgstr "Plan Assistent"
+msgstr "Planungsassistent"
 
 #. module: hr_contract_sign
 #: model:ir.model,name:hr_contract_sign.model_hr_plan_activity_type
@@ -250,7 +250,7 @@ msgstr "Mögliche Vorlage"
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_history__sign_request_ids
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_employee__sign_request_ids
 msgid "Requested Signatures"
-msgstr "Angeforderte Signaturen"
+msgstr "Angefragte Signaturen"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__responsible_id
@@ -272,7 +272,7 @@ msgstr "Senden"
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_employee__sign_request_count
 #: model:ir.model.fields,field_description:hr_contract_sign.field_res_users__sign_request_count
 msgid "Sign Request Count"
-msgstr "Anzahl der Zeichenanforderungen"
+msgstr "Anzahl Signaturanfragen"
 
 #. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.view_hr_contract_sign
@@ -283,7 +283,7 @@ msgstr "Signaturanfragenoptionen"
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__sign_template_responsible_ids
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_plan_activity_type__sign_template_responsible_ids
 msgid "Sign Template Responsible"
-msgstr "Unterzeichnung Vorlage Verantwortlicher"
+msgstr "Signaturvorlage Verantwortlicher"
 
 #. module: hr_contract_sign
 #: model:ir.model,name:hr_contract_sign.model_hr_contract_sign_document_wizard
@@ -316,7 +316,7 @@ msgstr "Betreff"
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__template_warning
 msgid "Template Warning"
-msgstr "Vorlage Warnung"
+msgstr "Vorlagenwarnung"
 
 #. module: hr_contract_sign
 #: model:ir.model,name:hr_contract_sign.model_res_users

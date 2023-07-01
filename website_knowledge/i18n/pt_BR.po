@@ -29,7 +29,7 @@ msgstr ""
 #. module: website_knowledge
 #: model_terms:ir.ui.view,arch_db:website_knowledge.knowledge_article_view_form
 msgid "Anyone can view"
-msgstr ""
+msgstr "Qualquer um pode visualizar"
 
 #. module: website_knowledge
 #: model_terms:ir.ui.view,arch_db:website_knowledge.knowledge_article_view_form
@@ -55,7 +55,7 @@ msgstr "Artigo de conhecimento"
 #. module: website_knowledge
 #: model_terms:ir.ui.view,arch_db:website_knowledge.website_knowledge_article_tree_frontend
 msgid "Public articles"
-msgstr ""
+msgstr "Artigos públicos"
 
 #. module: website_knowledge
 #: model_terms:ir.ui.view,arch_db:website_knowledge.knowledge_article_view_form
@@ -65,12 +65,12 @@ msgstr ""
 #. module: website_knowledge
 #: model_terms:ir.ui.view,arch_db:website_knowledge.knowledge_article_view_form
 msgid "Share to web"
-msgstr ""
+msgstr "Compartilhar na web"
 
 #. module: website_knowledge
 #: model_terms:ir.ui.view,arch_db:website_knowledge.website_knowledge_article_tree_frontend
 msgid "Shared with you"
-msgstr ""
+msgstr "Compartilhado com você"
 
 #. module: website_knowledge
 #: model:ir.model.fields,help:website_knowledge.field_knowledge_article__website_url

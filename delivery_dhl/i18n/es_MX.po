@@ -190,12 +190,12 @@ msgstr "DHL"
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_account_number
 msgid "DHL Account Number"
-msgstr "Número de cuenta DHL"
+msgstr "Número de cuenta de DHL"
 
 #. module: delivery_dhl
 #: model_terms:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form_with_provider_dhl
 msgid "DHL Configuration"
-msgstr "Configuración DHL"
+msgstr "Configuración de DHL"
 
 #. module: delivery_dhl
 #. odoo-python
@@ -225,7 +225,7 @@ msgstr "Tipo de paquete DHL"
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_password
 msgid "DHL Password"
-msgstr "Contraseña DHL"
+msgstr "Contraseña de DHL"
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_product_code
@@ -236,7 +236,7 @@ msgstr "Producto DHL"
 #: model_terms:ir.ui.view,arch_db:delivery_dhl.res_config_settings_view_form_sale
 #: model_terms:ir.ui.view,arch_db:delivery_dhl.res_config_settings_view_form_stock
 msgid "DHL Shipping Methods"
-msgstr "Métodos de envío DHL"
+msgstr "Métodos de envío de DHL"
 
 #. module: delivery_dhl
 #. odoo-python
@@ -270,8 +270,8 @@ msgstr "DHL EE. UU. -> Internacional"
 msgid ""
 "DHL account number is missing, please modify your delivery method settings."
 msgstr ""
-"Falta el número de cuenta DHL, por favor modifique los ajustes de su método "
-"de envío."
+"Falta el número de cuenta de DHL, modifique los ajustes de su método de "
+"envío."
 
 #. module: delivery_dhl
 #. odoo-python
@@ -286,7 +286,8 @@ msgstr ""
 #: code:addons/delivery_dhl/models/dhl_request.py:0
 #, python-format
 msgid "DHL password is missing, please modify your delivery method settings."
-msgstr "Falta su contraseña DHL, modifique los ajustes de su método de envío."
+msgstr ""
+"Falta su contraseña de DHL, modifique los ajustes de su método de envío."
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_duty_payment
@@ -440,15 +441,15 @@ msgid ""
 "Please define an incoterm in the associated sale order or set a default "
 "incoterm for the company in the accounting's settings."
 msgstr ""
-"Por favor, defina un Incoterm en la orden de venta asociada o establezca un "
-"incoterm predeterminado para la empresa en los ajustes de la empresa."
+"Defina un incoterm en la orden de venta asociada o establezca uno "
+"predeterminado para la empresa en los ajustes de contabilidad."
 
 #. module: delivery_dhl
 #. odoo-python
 #: code:addons/delivery_dhl/models/dhl_request.py:0
 #, python-format
 msgid "Please provide at least one item to ship."
-msgstr "Por favor, proporcione al menos un artículo para enviar."
+msgstr "Proporcione al menos un artículo para enviar."
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_package_weight_unit__l
@@ -521,7 +522,7 @@ msgid ""
 "The address of the customer is missing or wrong (Missing field(s) :\n"
 " %s)"
 msgstr ""
-"No se encontró la dirección del cliente o es incorrecta (campos faltantes):\n"
+"No se encontró la dirección del cliente o no es la correcta (campos faltantes:\n"
 "%s)"
 
 #. module: delivery_dhl
@@ -532,7 +533,7 @@ msgid ""
 "The address of your company warehouse is missing or wrong (Missing field(s) :\n"
 " %s)"
 msgstr ""
-"No se encontró la dirección del almacén de su empresa o es incorrecta (campos faltantes):\n"
+"No se encontró la dirección del almacén de su empresa o no es la correcta (campos faltantes:\n"
 "%s)"
 
 #. module: delivery_dhl
@@ -542,8 +543,8 @@ msgid ""
 "        There are 3 possible keys: 'rate', 'ship', 'return', to which you can add your custom data.\n"
 "        More info on https://xmlportal.dhl.com/"
 msgstr ""
-"Los datos personalizados en DHL se organiza como en un archivo json..\n"
-"        Hay 3 claves posibles: 'tarifa', 'envío', 'devolución' que puede agregar a sus datos personalizados.\n"
+"Los datos personalizados en DHL se organizan como en un archivo json.\n"
+"        Hay 3 claves posibles: 'tarifa', 'envío', 'devolución' a las que puede agregar a sus datos personalizados.\n"
 "        Puede consultar más información en https://xmlportal.dhl.com/"
 
 #. module: delivery_dhl
@@ -554,7 +555,7 @@ msgid ""
 "The estimated shipping price cannot be computed because the weight is missing for the following product(s): \n"
 " %s"
 msgstr ""
-"El precio estimado de envío no puede ser calculado porque falta el peso para los siguientes productos: \n"
+"No se puede calcular el precio estimado de envío porque falta el peso de los siguientes productos:\n"
 " %s"
 
 #. module: delivery_dhl

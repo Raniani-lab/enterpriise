@@ -1132,7 +1132,7 @@ msgstr "Écritures comptables à lettrer"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_digest_digest__kpi_account_bank_cash_value
 msgid "Kpi Account Bank Cash Value"
-msgstr "Valeur en espèces du compte en banque Kpi"
+msgstr "Valeur en espèces du compte bancaire Kpi"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1677,24 +1677,24 @@ msgstr "Résiduel"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
 msgid "Save"
-msgstr "Sauvegarder"
+msgstr "Enregistrer"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_form_bank_rec_widget
 msgid "Save & Close"
-msgstr "Sauvegarder & Fermer"
+msgstr "Enregistrer & Fermer"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_form_bank_rec_widget
 msgid "Save & New"
-msgstr "Sauvegarder & Créer"
+msgstr "Enregistrer & Créer"
 
 #. module: account_accountant
 #. odoo-javascript
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Save and New"
-msgstr "Sauvegarder et Créer"
+msgstr "Enregistrer et Créer"
 
 #. module: account_accountant
 #. odoo-javascript

@@ -166,7 +166,7 @@ msgstr "Detalhes<span class=\"chevron position-absolute d-block\"/>"
 #: code:addons/website_appointment/static/src/xml/appointment_no_slot.xml:0
 #, python-format
 msgid "Go back to Appointment"
-msgstr "Voltar ao compromisso"
+msgstr "Retorne aos compromissos"
 
 #. module: website_appointment
 #: model:ir.model.fields,field_description:website_appointment.field_appointment_type__is_published

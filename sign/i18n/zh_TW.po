@@ -3861,7 +3861,7 @@ msgstr ""
 msgid ""
 "You cannot share this document by link, because it has fields to be filled "
 "by different roles. Use Send button instead."
-msgstr ""
+msgstr "此文件不可透過連結分享，因為有欄位需要由不同角色的人填寫。請改用「發送」按鈕。"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_iap_credits_banner

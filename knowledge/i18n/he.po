@@ -4,7 +4,6 @@
 # 
 # Translators:
 # Fishfur A Banter <fishfurbanter@gmail.com>, 2022
-# hed shefer <hed@laylinetech.com>, 2022
 # Lilach Gilliam <lilach@apprcase.com>, 2022
 # Leandro Noijovich <eliel.sorcerer@gmail.com>, 2022
 # Amit Spilman <amit@laylinetech.com>, 2022
@@ -17,14 +16,15 @@
 # NoaFarkash, 2022
 # Roy Sayag, 2023
 # ZVI BLONDER <ZVIBLONDER@gmail.com>, 2023
+# hed shefer <hed@laylinetech.com>, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-14 06:16+0000\n"
+"POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: ZVI BLONDER <ZVIBLONDER@gmail.com>, 2023\n"
+"Last-Translator: hed shefer <hed@laylinetech.com>, 2023\n"
 "Language-Team: Hebrew (https://app.transifex.com/odoo/teams/41243/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -804,7 +804,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/js/knowledge_renderers.js:0
 #, python-format
 msgid ""
-"Are you sure you want to move \"%s%s\" to private? Only you will be able to "
+"Are you sure you want to move \"%s\" to private? Only you will be able to "
 "access it."
 msgstr ""
 
@@ -813,7 +813,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/js/knowledge_renderers.js:0
 #, python-format
 msgid ""
-"Are you sure you want to move \"%s%s\" to the Workspace? It will be shared "
+"Are you sure you want to move \"%s\" to the Workspace? It will be shared "
 "with all internal users."
 msgstr ""
 
@@ -822,8 +822,8 @@ msgstr ""
 #: code:addons/knowledge/static/src/js/knowledge_renderers.js:0
 #, python-format
 msgid ""
-"Are you sure you want to move \"%s%s\" under \"%s%s\"? It will be shared "
-"with the same persons."
+"Are you sure you want to move \"%s\" under \"%s%s\"? It will be shared with "
+"the same persons."
 msgstr ""
 
 #. module: knowledge
@@ -1169,7 +1169,7 @@ msgstr ""
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_frontend
 msgid "Create my own Workspace <i class=\"fa fa-book\"/>"
-msgstr ""
+msgstr "יצירת סביבה שלי <i class=\"fa fa-book\"/>"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__create_uid
@@ -2555,7 +2555,7 @@ msgstr ""
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_frontend
 msgid "You are currently visiting as a Guest User"
-msgstr ""
+msgstr "אתה מחובר כמשתמש פורטל"
 
 #. module: knowledge
 #. odoo-python

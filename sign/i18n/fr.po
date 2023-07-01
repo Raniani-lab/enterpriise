@@ -2522,7 +2522,7 @@ msgstr "Ventes"
 #: model:ir.model.fields.selection,name:sign.selection__sign_log__action__save
 #, python-format
 msgid "Save"
-msgstr "Sauvegarder"
+msgstr "Enregistrer"
 
 #. module: sign
 #. odoo-javascript
@@ -2531,7 +2531,7 @@ msgstr "Sauvegarder"
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #, python-format
 msgid "Saved"
-msgstr "Sauvegardé"
+msgstr "Enregistré"
 
 #. module: sign
 #. odoo-python
@@ -4082,7 +4082,7 @@ msgstr "Votre nom"
 #: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Your signature has been saved."
-msgstr "Votre signature a été sauvegardée."
+msgstr "Votre signature a été enregistrée."
 
 #. module: sign
 #. odoo-javascript

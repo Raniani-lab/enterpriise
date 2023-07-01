@@ -3,8 +3,8 @@
 # 	* account_intrastat
 # 
 # Translators:
-# Martin Trigaux, 2023
 # Larissa Manderfeld, 2023
+# Martin Trigaux, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:17+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Larissa Manderfeld, 2023\n"
+"Last-Translator: Martin Trigaux, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -52,17 +52,17 @@ msgstr ""
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
 msgid "<span class=\"fa fa-filter\"/> Options:"
-msgstr "<span class=\"fa fa-filter\"/>Optionen:"
+msgstr "<span class=\"fa fa-filter\"/> Optionen:"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_vat
 msgid "<span class=\"fa fa-filter\"/> Partners:"
-msgstr "<span class=\"fa fa-filter\"/>"
+msgstr "<span class=\"fa fa-filter\"/> Partner:"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_move_line_tree_view_account_intrastat_transaction_codes
 msgid "Account move line"
-msgstr "Kontobewegungszeile"
+msgstr "Kontobuchungszeile"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
@@ -95,7 +95,7 @@ msgstr "Nach Land"
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "By type"
-msgstr "Nach Typ"
+msgstr "Nach Art"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_intrastat_main_template
@@ -134,12 +134,12 @@ msgstr "Unternehmen"
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_res_config_settings__company_country_id
 msgid "Company country"
-msgstr "Land der Gesellschaft"
+msgstr "Land des Unternehmens"
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_res_config_settings
 msgid "Config Settings"
-msgstr "Konfiguration "
+msgstr "Konfigurationseinstellungen "
 
 #. module: account_intrastat
 #: model:account.report.column,name:account_intrastat.intrastat_report_column_country_code
@@ -190,12 +190,12 @@ msgstr "Erweiterter Modus"
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_vat
 msgid "Include VAT"
-msgstr "Inklusive Mehrwertsteuer"
+msgstr "MwSt. einschließen"
 
 #. module: account_intrastat
 #: model:account.report.column,name:account_intrastat.intrastat_report_column_incoterm_code
 msgid "Incoterm Code"
-msgstr "Internationale Handelsklauseln"
+msgstr "Incoterm-Code"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_account_move_line__intrastat_transaction_id
@@ -211,21 +211,21 @@ msgstr "Intrastat"
 #: model:ir.ui.menu,name:account_intrastat.menu_report_intrastat_code
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_report_intrastat_code_form
 msgid "Intrastat Code"
-msgstr "Intrastat Nummer (Code)"
+msgstr "Intrastat-Nummer (Code)"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_account_bank_statement_line__intrastat_country_id
 #: model:ir.model.fields,field_description:account_intrastat.field_account_move__intrastat_country_id
 #: model:ir.model.fields,field_description:account_intrastat.field_account_payment__intrastat_country_id
 msgid "Intrastat Country"
-msgstr "Intrastat Land"
+msgstr "Intrastat-Land"
 
 #. module: account_intrastat
 #: model:account.report,name:account_intrastat.intrastat_report
 #: model:ir.actions.client,name:account_intrastat.action_account_report_intrastat
 #: model:ir.ui.menu,name:account_intrastat.menu_action_account_report_intrastat
 msgid "Intrastat Report"
-msgstr "Intrastat Bericht"
+msgstr "Intrastat-Bericht"
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_account_intrastat_report_handler
@@ -237,29 +237,29 @@ msgstr "Intrastat-Bericht Benutzerdefinierter Handler"
 #: model:ir.model.fields,field_description:account_intrastat.field_account_move__intrastat_transport_mode_id
 #: model:ir.model.fields,field_description:account_intrastat.field_account_payment__intrastat_transport_mode_id
 msgid "Intrastat Transport Mode"
-msgstr "Intrastat Verkehrszweig"
+msgstr "Intrastat-Verkehrszweigmodus"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_report_intrastat_code_tree
 msgid "Intrastat code"
-msgstr "Intrastat Nummer (code)"
+msgstr "Intrastat-Nummer (Code)"
 
 #. module: account_intrastat
 #: model:ir.model.fields,help:account_intrastat.field_account_bank_statement_line__intrastat_country_id
 #: model:ir.model.fields,help:account_intrastat.field_account_move__intrastat_country_id
 #: model:ir.model.fields,help:account_intrastat.field_account_payment__intrastat_country_id
 msgid "Intrastat country, arrival for sales, dispatch for purchases"
-msgstr "Intrastat-Land, Ankunft zum Verkauf, Versand zum Kauf"
+msgstr "Intrastat-Land, Ankunft für Verkäufe, Versand für Einkäufe"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_res_country__intrastat
 msgid "Intrastat member"
-msgstr "Intrastat Mitglied"
+msgstr "Intrastat-Mitglied"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_res_company__intrastat_region_id
 msgid "Intrastat region"
-msgstr "Intrastat Region"
+msgstr "Intrastat-Region"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_move_line_tree_view_account_intrastat_transaction_codes
@@ -283,7 +283,7 @@ msgstr "Produkte mit ungültigem Intrastat-Transaktionscode."
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_account_move
 msgid "Journal Entry"
-msgstr "Buchungssatz"
+msgstr "Journalbuchung"
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_account_move_line
@@ -293,7 +293,7 @@ msgstr "Buchungszeile"
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_vat
 msgid "Only with VAT numbers"
-msgstr "Nur mit Umsatzsteuer-Identifikationsnummer"
+msgstr "Nur mit USt-IdNr."
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.report_invoice_document_intrastat_2019
@@ -320,12 +320,12 @@ msgstr "Produkt"
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_account_move_line__intrastat_product_origin_country_id
 msgid "Product Country"
-msgstr "Produktherkunft"
+msgstr "Produktland"
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_product_product
 msgid "Product Variant"
-msgstr "Produktvarianten"
+msgstr "Produktvariante"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__type__region
@@ -398,14 +398,14 @@ msgstr ""
 #: model:ir.model.fields,help:account_intrastat.field_product_product__intrastat_supplementary_unit_amount
 #: model:ir.model.fields,help:account_intrastat.field_product_template__intrastat_supplementary_unit_amount
 msgid "The number of supplementary units per product quantity."
-msgstr "Die Anzahl zusätzlicher Einheiten je Produktmenge"
+msgstr "Die Anzahl zusätzlicher Einheiten je Produktmenge."
 
 #. module: account_intrastat
 #. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Total"
-msgstr "Total"
+msgstr "Gesamt"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__type__transaction
@@ -416,7 +416,7 @@ msgstr "Transaktion"
 #. module: account_intrastat
 #: model:account.report.column,name:account_intrastat.intrastat_report_column_transaction_code
 msgid "Transaction Code"
-msgstr "Transaktions-Code"
+msgstr "Transaktionscode"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
@@ -426,12 +426,12 @@ msgstr "Transport"
 #. module: account_intrastat
 #: model:account.report.column,name:account_intrastat.intrastat_report_column_transport_code
 msgid "Transport Code"
-msgstr "Transport Code"
+msgstr "Verkehrszweig-Code"
 
 #. module: account_intrastat
 #: model:ir.model.constraint,message:account_intrastat.constraint_account_intrastat_code_intrastat_region_code_unique
 msgid "Triplet code/type/country_id must be unique."
-msgstr "Genetischer Code/typ/Länder_id muss eindeutig sein."
+msgstr "Dreiergruppe code/type/country_id muss eindeutig sein."
 
 #. module: account_intrastat
 #. odoo-python
@@ -445,7 +445,7 @@ msgstr "Undefinierte Anzahl zusätzlicher Einheiten für Produkte."
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Undefined weight products."
-msgstr "Undefiniertes Gewichteprodukt"
+msgstr "Undefiniertes Gewichtsprodukt"
 
 #. module: account_intrastat
 #: model:account.report.column,name:account_intrastat.intrastat_report_column_value
@@ -457,7 +457,7 @@ msgstr "Wert"
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "View Journal Entry"
-msgstr "Buchungssatz anzeigen"
+msgstr "Journalbuchung anzeigen"
 
 #. module: account_intrastat
 #: model:account.report.column,name:account_intrastat.intrastat_report_column_weight
@@ -467,7 +467,7 @@ msgstr "Gewicht"
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_vat
 msgid "With VAT numbers"
-msgstr "Mit Umsatzsteuer-Identifikationsnummer"
+msgstr "Mit USt-IdNr."
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__c/k
@@ -602,4 +602,4 @@ msgstr "Gewichte"
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_intrastat_main_template
 msgid "when they are required."
-msgstr ", wenn erforderlich."
+msgstr ", wenn sie erforderlich sind."

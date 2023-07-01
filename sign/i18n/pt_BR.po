@@ -943,7 +943,7 @@ msgstr "Cliente"
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request_item__access_url
 msgid "Customer Portal URL"
-msgstr "Endereço do Portal do Consumidor"
+msgstr "URL do portal do cliente"
 
 #. module: sign
 #: model:ir.ui.menu,name:sign.sign_template_menu

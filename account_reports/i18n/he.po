@@ -176,7 +176,7 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_move_form_vat_return
 msgid "-> Check your tax report"
-msgstr ""
+msgstr "יש לבדוק את דו\"ח המע\"מ"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_move_form_vat_return
@@ -2847,7 +2847,7 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_move_form_vat_return
 msgid "Some controls failed."
-msgstr ""
+msgstr "ישנם בדיקות תקינות שנכשלו"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template

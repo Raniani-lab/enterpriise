@@ -2118,7 +2118,7 @@ msgstr ""
 #: code:addons/web_studio/models/ir_model.py:0
 #, python-format
 msgid "High Priority"
-msgstr ""
+msgstr "Høy Prioritet"
 
 #. module: web_studio
 #. odoo-javascript

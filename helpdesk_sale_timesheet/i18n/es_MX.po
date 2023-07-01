@@ -138,7 +138,7 @@ msgstr "Orden de venta del proyecto"
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_ticket__sale_order_id
 msgid "Ref. Sales Order"
-msgstr " Referencia de orden de venta "
+msgstr "Referencia de orden de venta "
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_ticket__use_helpdesk_sale_timesheet
@@ -211,10 +211,10 @@ msgid ""
 "Remove the sales order item in order to make this ticket non-billable.\n"
 "You can also change or remove the sales order item of each timesheet entry individually."
 msgstr ""
-"El artículo de la orden de venta al que se agregará el tiempo dedicado en este ticket par que se facture a su cliente.\n"
+"El artículo de la orden de venta al que se agregará el tiempo dedicado a este ticket para que se facture a su cliente.\n"
 "De forma predeterminada, se seleccionará el último artículo de orden de venta prepagado que tenga tiempo restante.\n"
-"Borre el artículo de la orden de venta para hacer este ticket no facturable.\n"
-"También puede cambiar o borrar el artículo de la orden de venta de cada entrada de hojas de horas de forma individual."
+"Elimine el artículo de la orden de venta para que este ticket no sea facturable.\n"
+"También puede cambiar o eliminar el artículo de la orden de venta de cada entrada de la hoja de horas de forma individual."
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_sla__sale_line_ids
@@ -244,7 +244,7 @@ msgstr "Tickets"
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.helpdesk_ticket_view_search_inherit_helpdesk_sale_timesheet
 msgid "Tickets in Overtime"
-msgstr "Tickets en horas extra"
+msgstr "Tickets en horas adicionales"
 
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.tickets_followup_timesheet

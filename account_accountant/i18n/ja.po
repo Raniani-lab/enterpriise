@@ -382,7 +382,7 @@ msgstr "残高"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
 #, python-format
 msgid "Balance:"
-msgstr ""
+msgstr "残高："
 
 #. module: account_accountant
 #. odoo-javascript
@@ -2047,7 +2047,7 @@ msgstr "複数のパートナーの買掛金勘定と売掛金勘定を同時に
 #: code:addons/account_accountant/wizard/account_change_lock_date.py:0
 #, python-format
 msgid "You cannot set a lock date in the future."
-msgstr ""
+msgstr "ロック日を未来に設定することはできません。"
 
 #. module: account_accountant
 #. odoo-python

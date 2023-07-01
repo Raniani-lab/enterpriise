@@ -1929,7 +1929,7 @@ msgstr ""
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form_in_gantt
 msgid "Save"
-msgstr "Sauvegarder"
+msgstr "Enregistrer"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.employee_no_email_list_wizard
@@ -1939,14 +1939,14 @@ msgstr "Sauver & Envoyer l'horaire"
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__template_creation
 msgid "Save as Template"
-msgstr "Sauvegarder comme modèle"
+msgstr "Enregistrer comme modèle"
 
 #. module: planning
 #. odoo-javascript
 #: code:addons/planning/static/src/js/tours/planning.js:0
 #, python-format
 msgid "Save this shift once it is ready."
-msgstr "Sauvegardez ce poste une fois qu'il est prêt."
+msgstr "Enregistrez ce poste une fois qu'il est prêt."
 
 #. module: planning
 #: model:ir.model,name:planning.model_planning_planning
@@ -2352,7 +2352,7 @@ msgstr ""
 #: code:addons/planning/static/src/views/planning_form/planning_form_view.js:0
 #, python-format
 msgid "This shift was successfully saved as a template."
-msgstr "Le poste a été sauvegardé avec succès en tant que modèle."
+msgstr "Le poste a été enregistré avec succès en tant que modèle."
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.resource_resource_kanban_view

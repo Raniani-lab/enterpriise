@@ -29,7 +29,7 @@ msgstr "Code Avalara"
 #. module: account_avatax_sale
 #: model_terms:ir.ui.view,arch_db:account_avatax_sale.order_form_inherit
 msgid "Compute Taxes Using Avatax"
-msgstr "Calculer les taxes à l'aide d'Avatax"
+msgstr "Calculer les taxes avec Avatax"
 
 #. module: account_avatax_sale
 #: model:ir.model.fields,field_description:account_avatax_sale.field_sale_order__is_avatax

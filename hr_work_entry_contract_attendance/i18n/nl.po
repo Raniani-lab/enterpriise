@@ -4,7 +4,6 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
 # Jolien De Paepe, 2023
 # 
 msgid ""
@@ -33,11 +32,11 @@ msgid ""
 "    "
 msgstr ""
 "\n"
-"        Bepaalt de bron voor de werkinvoergeneratie\n"
+"        Bepaalt de bron voor de werkboekinggeneratie\n"
 "\n"
-"        Werkschema: Werkinvoeren worden gegenereerd voor onderstaande werkuren.\n"
-"        Aanwezigheden: Werkinvoeren worden gegenereerd op basis van de aanwezigheden van de werknemer (Aanwezigheden app vereist)\n"
-"        Planning: Werkinvoeren worden gegenereerd op basis van de planning van de werknemer (Planning app vereist)\n"
+"        Werkschema: Werkboekingen worden gegenereerd voor onderstaande werkuren.\n"
+"        Aanwezigheden: Werkboekingen worden gegenereerd op basis van de aanwezigheden van de werknemer (Aanwezigheden app vereist)\n"
+"        Planning: Werkboekingen worden gegenereerd op basis van de planning van de werknemer (Planning app vereist)\n"
 "    "
 
 #. module: hr_work_entry_contract_attendance
@@ -59,14 +58,14 @@ msgstr "Arbeidsovereenkomst"
 #. module: hr_work_entry_contract_attendance
 #: model:ir.model,name:hr_work_entry_contract_attendance.model_hr_work_entry
 msgid "HR Work Entry"
-msgstr "HR werkinvoer"
+msgstr "HR werkboeking"
 
 #. module: hr_work_entry_contract_attendance
 #: model:ir.model,name:hr_work_entry_contract_attendance.model_hr_work_entry_regeneration_wizard
 msgid "Regenerate Employee Work Entries"
-msgstr "Werkinvoeren van werknemer hergenereren"
+msgstr "Werkboekingen van werknemer hergenereren"
 
 #. module: hr_work_entry_contract_attendance
 #: model:ir.model.fields,field_description:hr_work_entry_contract_attendance.field_hr_contract__work_entry_source
 msgid "Work Entry Source"
-msgstr "Bron werkinvoer"
+msgstr "Bron werkboeking"

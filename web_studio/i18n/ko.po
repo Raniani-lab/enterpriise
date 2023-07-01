@@ -3613,7 +3613,7 @@ msgstr "정렬 기준"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Sorting"
-msgstr ""
+msgstr "정렬"
 
 #. module: web_studio
 #. odoo-javascript

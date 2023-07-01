@@ -4,9 +4,9 @@
 # 
 # Translators:
 # Friederike Fasterling-Nesselbosch, 2022
-# Martin Trigaux, 2022
 # Stefan Reisich <nafex@gmx.net>, 2023
 # Larissa Manderfeld, 2023
+# Martin Trigaux, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Larissa Manderfeld, 2023\n"
+"Last-Translator: Martin Trigaux, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,13 +33,13 @@ msgid ""
 "360 Degree Feedback is a system or process in which managers will ask feedback from the people who work around the employee.\n"
 "            This typically includes the employee's manager, peers, and direct reports."
 msgstr ""
-"Beim 360-Grad-Feedback handelt es sich um ein System oder Verfahren, bei dem die Vorgesetzten die Menschen im Umfeld des Mitarbeiters um Feedback bitten.\n"
-"            Dazu gehören in der Regel der Vorgesetzte des Mitarbeiters, Kollegen und direkte Mitarbeiter."
+"Beim 360-Grad-Feedback handelt es sich um ein System oder Verfahren, bei dem Manager die Menschen im Umfeld des Mitarbeiters um Feedback bitten.\n"
+"            Dazu gehören in der Regel der Manager des Mitarbeiters, Kollegen und direkte Mitarbeiter."
 
 #. module: hr_appraisal_survey
 #: model:survey.survey,title:hr_appraisal_survey.appraisal_360_feedback_template
 msgid "360 Feedback"
-msgstr "360° Feedback"
+msgstr "360°-Feedback"
 
 #. module: hr_appraisal_survey
 #: model:mail.template,body_html:hr_appraisal_survey.mail_template_appraisal_ask_feedback
@@ -128,7 +128,7 @@ msgid ""
 "<span class=\"o_stat_text\">Feedback</span>\n"
 "                        <span class=\"o_stat_text\">Survey</span>"
 msgstr ""
-"<span class=\"o_stat_text\">Feedback</span>\n"
+"<span class=\"o_stat_text\">Feedback-</span>\n"
 "                        <span class=\"o_stat_text\">Umfrage</span>"
 
 #. module: hr_appraisal_survey
@@ -168,12 +168,12 @@ msgstr ""
 #. module: hr_appraisal_survey
 #: model_terms:ir.actions.act_window,help:hr_appraisal_survey.survey_survey_action_appraisal
 msgid "Add a new survey"
-msgstr "Fügen Sie eine neue Umfrage hinzu"
+msgstr "Eine neue Umfrage hinzufügen"
 
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.appraisal_ask_feedback_view_form
 msgid "Add employees..."
-msgstr "Mitarbeiter hinzufügen..."
+msgstr "Mitarbeiter hinzufügen ..."
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_2_3
@@ -199,7 +199,7 @@ msgid ""
 "href=\"%s\" target=\"_blank\">survey</a>"
 msgstr ""
 "Es wurde um ein Bewertungsfeedback gebeten. Bitte nehmen Sie sich etwas "
-"Zeit, den <a href=\"%s\" target=\"_blank\">Fragebogen </a> auszufüllen."
+"Zeit, die <a href=\"%s\" target=\"_blank\">Umfrage </a> auszufüllen."
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.arow_3_1_11
@@ -209,13 +209,13 @@ msgstr "Analytische Fähigkeiten"
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__deadline
 msgid "Answer Deadline"
-msgstr "Antwort Deadline"
+msgstr "Antwortfrist"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__appraisal_id
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_survey_user_input__appraisal_id
 msgid "Appraisal"
-msgstr "Bewertung"
+msgstr "Mitarbeiterbeurteilung"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__employee_id
@@ -225,18 +225,18 @@ msgstr "Zu beurteilender Mitarbeiter"
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_survey_survey__is_appraisal
 msgid "Appraisal Managers Only"
-msgstr "Nur Beurteilungs-Manager"
+msgstr "Nur Beurteilungsmanager"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_hr_department__appraisal_survey_template_id
 msgid "Appraisal Survey"
-msgstr "Mitarbeiterbeurteilung Umfrage"
+msgstr "Beurteilungsumfrage"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_res_company__appraisal_survey_template_id
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_res_config_settings__appraisal_survey_template_id
 msgid "Appraisal Survey Template"
-msgstr "Mitarbeiterbeurteilung Umfragen-Vorlage"
+msgstr "Beurteilungsumfragenvorlage"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_1_3
@@ -256,7 +256,7 @@ msgstr "Beurteilung: Um Feedback bitten"
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_1_5
 msgid "Appraiser"
-msgstr "Beurteilender Vorgesetzter"
+msgstr "Beurteiler"
 
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.appraisal_ask_feedback_view_form
@@ -302,7 +302,7 @@ msgstr "Zurück zur Beurteilung"
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__can_edit_body
 msgid "Can Edit Body"
-msgstr "Darf Körper bearbeiten"
+msgstr "Darf Inhalt bearbeiten"
 
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.appraisal_ask_feedback_view_form
@@ -438,7 +438,7 @@ msgstr "Hast du Ratschläge für mich, damit ich mich verbessern kann?"
 #. module: hr_appraisal_survey
 #: model:ir.model,name:hr_appraisal_survey.model_hr_appraisal
 msgid "Employee Appraisal"
-msgstr "Mitarbeiter Beurteilung"
+msgstr "Mitarbeiterbeurteilung"
 
 #. module: hr_appraisal_survey
 #: model:survey.survey,title:hr_appraisal_survey.appraisal_feedback_template
@@ -453,7 +453,7 @@ msgstr "Mitarbeiterkommentare"
 #. module: hr_appraisal_survey
 #: model:survey.survey,title:hr_appraisal_survey.opinion_form
 msgid "Employee Opinion Form"
-msgstr "Selbstbeurteilungsformular"
+msgstr "Meinungsformular für Mitarbeiter"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_3
@@ -475,7 +475,7 @@ msgstr "Hat die Anforderungen und Erwartungen übertroffen"
 #: code:addons/hr_appraisal_survey/wizard/appraisal_ask_feedback.py:0
 #, python-format
 msgid "Fill the feedback form on survey"
-msgstr "Füllen Sie das Feedback-Formular zur Umfrage aus"
+msgstr "Füllen Sie das Feedback-Formular aus"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__email_from
@@ -622,7 +622,7 @@ msgstr "Niemals"
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_2_1
 msgid "Objectives"
-msgstr "Aufgaben"
+msgstr "Zielvorgaben"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.x_360_5_4
@@ -642,10 +642,10 @@ msgid ""
 "a placeholder expression that provides the appropriate language, e.g. {{ "
 "object.partner_id.lang }}."
 msgstr ""
-"Optionale Übersetzung (ISO Code) zur Auswahl beim E-Mailversand. Falls es "
-"keinen Eintrag gibt, wird die Englische Version verwendet. Es sollte sich "
-"normalerweise um einen Platzhalter Ausdruck handeln, der die passende "
-"Sprache enthält, z.B. {{ object.partner_id.lang }}."
+"Optionale Übersetzung (ISO-Code) zur Auswahl beim E-Mailversand. Falls es "
+"keinen Eintrag gibt, wird die englische Version verwendet. Es sollte sich "
+"normalerweise um einen Platzhalterausdruck handeln, der die passende Sprache"
+" enthält, z. B. {{ object.partner_id.lang }}."
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1
@@ -655,7 +655,7 @@ msgstr "Allgemeiner Zweck der Mitarbeiterbeurteilung"
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_4_2
 msgid "Personal Performance Objectives"
-msgstr "Persönliche Arbeitsleistung"
+msgstr "Persönliche Leistungsziele"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_1_2
@@ -665,7 +665,7 @@ msgstr "Stellenbezeichnung"
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_4_1
 msgid "Professional Development Objectives"
-msgstr "Berufliche Entwicklungsobjekte"
+msgstr "Berufliche Entwicklungsziele"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_4
@@ -675,12 +675,12 @@ msgstr "Berufliche Entwicklung und Arbeitsleistung"
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_4_3
 msgid "Project Objectives"
-msgstr "Projektgegenstand"
+msgstr "Projektziele"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.arow_3_1_12
 msgid "Promptness and attendance record"
-msgstr "Anwesenheitszeit"
+msgstr "Anwesenheitszeiten"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.x_360_5_2
@@ -700,7 +700,7 @@ msgstr "Die Beiträge von Teamkollegen und Mitstreitern anerkennen"
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__render_model
 msgid "Rendering Model"
-msgstr "Rendering Model"
+msgstr "Rendering-Modell"
 
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_survey_page_statistics_header
@@ -710,7 +710,7 @@ msgstr "Beantwortet:"
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_2_2
 msgid "Results"
-msgstr "Suchergebnisse"
+msgstr "Ergebnisse"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.arow_3_2_1
@@ -718,8 +718,8 @@ msgid ""
 "Results of the bottom-up survey and mitigation actions to face technical, "
 "organizational, structural and/or relational issues"
 msgstr ""
-"Ergebnisse der Befragung zu Maßnahmen zur Bewältigung von technischen, "
-"organisatorischen, strukturellen und / oder sonstigen Beziehungsfragen"
+"Ergebnisse der Umfrage zu Maßnahmen zur Bewältigung von technischen, "
+"organisatorischen, strukturellen und/oder sonstigen Beziehungsfragen"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.y_360_5_5
@@ -773,12 +773,12 @@ msgstr "Betreff"
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.appraisal_ask_feedback_view_form
 msgid "Subject..."
-msgstr "Betreff..."
+msgstr "Betreff ..."
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_3_2
 msgid "Supervisors only"
-msgstr "Nur beurteilende Vorgesetzte"
+msgstr "Nur Vorgesetzte"
 
 #. module: hr_appraisal_survey
 #: model:ir.model,name:hr_appraisal_survey.model_survey_survey
@@ -794,22 +794,22 @@ msgstr "Umfrage"
 #: code:addons/hr_appraisal_survey/models/survey.py:0
 #, python-format
 msgid "Survey Feedback"
-msgstr "Umfragen-Feedback"
+msgstr "Umfragenfeedback"
 
 #. module: hr_appraisal_survey
 #: model:ir.model,name:hr_appraisal_survey.model_survey_question_answer
 msgid "Survey Label"
-msgstr "Umfrageüberschrift"
+msgstr "Umfragebezeichnung"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__survey_template_id
 msgid "Survey Template"
-msgstr "Umfragen-Vorlage"
+msgstr "Umfragevorlage"
 
 #. module: hr_appraisal_survey
 #: model:ir.model,name:hr_appraisal_survey.model_survey_user_input
 msgid "Survey User Input"
-msgstr "Benutzereingaben"
+msgstr "Umfrage-Benutzereingabe"
 
 #. module: hr_appraisal_survey
 #: model:ir.actions.act_window,name:hr_appraisal_survey.survey_survey_action_appraisal
@@ -821,8 +821,7 @@ msgstr "Umfragen"
 #: model:mail.template,subject:hr_appraisal_survey.mail_template_appraisal_ask_feedback
 msgid "Take part in {{ object.employee_id.name or 'this' }} appraisal"
 msgstr ""
-"Nehmen Sie teil an der Mitarbeiterbeurteilung {{object.employee_id.name or "
-"'this' }} "
+"Nehmen Sie teil an Beurteilung {{object.employee_id.name or 'this' }} "
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.arow_3_1_4
@@ -851,7 +850,7 @@ msgid ""
 "The employee may choose to offer comments or explanation regarding the "
 "completed review."
 msgstr ""
-"Der Mitarbeiter hat die Möglichkeit, Kommentare oder Erklärungen zu der "
+"Der Mitarbeiter hat die Möglichkeit, Kommentare oder Erklärungen zu den "
 "abgeschlossenen Bewertungen abzugeben."
 
 #. module: hr_appraisal_survey
@@ -890,7 +889,7 @@ msgid ""
 "The following employees do not have any email : \n"
 "%s"
 msgstr ""
-"Der Mitarbeiter hate keine E-Mail-Adresse hinterlegt und wird keine E-mails erhalten.\n"
+"Der Mitarbeiter hat keine E-Mail-Adresse hinterlegt und wird keine E-Mails erhalten.\n"
 "Folgende Mitarbeiter haben keine E-Mail-Adresse:\n"
 "%s"
 
@@ -901,8 +900,8 @@ msgid ""
 " define a default Survey Template related to this department."
 msgstr ""
 "Dieses Feld wird zusammen mit der 360-Feedback-Einstellung in der App "
-"Beurteilungen verwendet. Ziel ist es, eine Standard-Umfragevorlage für diese"
-" Abteilung zu definieren."
+"Mitarbeiterbeurteilung verwendet. Ziel ist es, eine Standard-Umfragevorlage "
+"für diese Abteilung zu definieren."
 
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_survey_button_form_view
@@ -930,8 +929,8 @@ msgid ""
 "To assist employees in their professional growth, through the identification"
 " of strengths and opportunities for development"
 msgstr ""
-"Unterstützung der Mitarbeiter bei ihrer beruflichen Entwicklung durch die "
-"Ermittlung von Stärken und Entwicklungsmöglichkeiten"
+"Um Mitarbeiter bei ihrer beruflichen Entwicklung durch die Ermittlung von "
+"Stärken und Entwicklungsmöglichkeiten zu unterstützen"
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1
@@ -945,7 +944,7 @@ msgstr ""
 #, python-format
 msgid "Unable to post message, please configure the sender's email address."
 msgstr ""
-"Die Nachricht kann nicht gepostet werden, bitte konfigurieren Sie die "
+"Die Nachricht kann nicht veröffentlicht werden, bitte konfigurieren Sie die "
 "E-Mail-Adresse des Absenders."
 
 #. module: hr_appraisal_survey
@@ -953,12 +952,14 @@ msgstr ""
 msgid ""
 "Use the following space to make any comments regarding the above performance"
 " evaluation."
-msgstr "Benutzen Sie den folgenden Platz zur Kommentierung Ihrer Beurteilung."
+msgstr ""
+"Nutzen Sie den folgende Bereich, um Anmerkungen zur obigen "
+"Leistungsbewertung zu machen."
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__user_body
 msgid "User Contents"
-msgstr "Nutzer-Inhalte"
+msgstr "Benutzerinhalte"
 
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.survey_user_input_view_tree
@@ -1012,7 +1013,7 @@ msgid ""
 "                send invitations and analyze answers."
 msgstr ""
 "Sie können Umfragen erstellen, die für Beurteilungen genutzt werden. Gestalten Sie Ihre Beurteilung ganz einfach,\n"
-"versenden Sie Einladungen und analysieren Sie antworten."
+"                versenden Sie Einladungen und analysieren Sie Antworten."
 
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_survey_button_form_view

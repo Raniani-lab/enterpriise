@@ -38,7 +38,7 @@ msgstr "Configuração"
 #. module: hr_work_entry_contract_enterprise
 #: model:ir.ui.menu,name:hr_work_entry_contract_enterprise.menu_work_entry_conflicts
 msgid "Conflicts"
-msgstr ""
+msgstr "Conflitos"
 
 #. module: hr_work_entry_contract_enterprise
 #: model:ir.ui.menu,name:hr_work_entry_contract_enterprise.menu_hr_payroll_root

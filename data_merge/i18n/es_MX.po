@@ -66,7 +66,7 @@ msgstr "<span class=\"oe_inline\">%</span>"
 #. module: data_merge
 #: model:ir.model.constraint,message:data_merge.constraint_data_merge_rule_uniq_model_id_field_id
 msgid "A field can only appear once!"
-msgstr "¡Un campo solo puede aparecer una vez!"
+msgstr "Un campo solo puede aparecer una vez."
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_group__active
@@ -618,8 +618,8 @@ msgid ""
 "Records with a similarity percentage above this threshold will be "
 "automatically merged"
 msgstr ""
-"Registros con un porcentaje de similitud por encima de este umbral se "
-"fusionarán automáticamente"
+"Los registros con un porcentaje de similitud por encima de este umbral se "
+"fusionarán en automático"
 
 #. module: data_merge
 #: model_terms:ir.ui.view,arch_db:data_merge.view_data_merge_record_search

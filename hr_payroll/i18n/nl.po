@@ -1173,7 +1173,7 @@ msgstr "Standaard geplande betaling"
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_structure_type__default_work_entry_type_id
 msgid "Default Work Entry Type"
-msgstr "Standaard type werkinvoer"
+msgstr "Standaard type werkboeking"
 
 #. module: hr_payroll
 #. odoo-javascript
@@ -1672,7 +1672,7 @@ msgstr "HR werkboeking"
 #. module: hr_payroll
 #: model:ir.model,name:hr_payroll.model_hr_work_entry_type
 msgid "HR Work Entry Type"
-msgstr "HR werk boekingssoort"
+msgstr "HR werkboekingssoort"
 
 #. module: hr_payroll
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_work_entry_type__round_days__half
@@ -2466,7 +2466,7 @@ msgstr "Deeltijd"
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_contract__time_credit_type_id
 msgid "Part Time Work Entry Type"
-msgstr "Parttime werkinvoertype"
+msgstr "Parttime werkboekingtype"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_line__partner_id
@@ -2509,7 +2509,7 @@ msgstr "Loonadministratie"
 #. module: hr_payroll
 #: model:ir.actions.server,name:hr_payroll.action_reset_work_entries
 msgid "Payroll - Technical: Reset Work Entries"
-msgstr "Loonadministratie - technisch: werkinvoer resetten"
+msgstr "Loonadministratie - technisch: werkboeking resetten"
 
 #. module: hr_payroll
 #: model:ir.actions.act_window,name:hr_payroll.payroll_report_action
@@ -3314,7 +3314,7 @@ msgstr ""
 #: code:addons/hr_payroll/wizard/hr_payroll_payslips_by_employees.py:0
 #, python-format
 msgid "Some work entries could not be validated."
-msgstr "Sommige werk boekingen konden niet bevestigd worden."
+msgstr "Sommige werkboekingen konden niet bevestigd worden."
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_contract__standard_calendar_id
@@ -3437,8 +3437,8 @@ msgid ""
 "The Work Entry checked as Unforeseen Absence will be counted in absenteeism "
 "at work report."
 msgstr ""
-"De werkinvoer die is aangevinkt als Onvoorziene afwezigheid, wordt meegeteld"
-" in het verzuimrapport."
+"De werkboeking die is aangevinkt als Onvoorziene afwezigheid, wordt "
+"meegeteld in het verzuimrapport."
 
 #. module: hr_payroll
 #: model:ir.model.fields,help:hr_payroll.field_hr_payroll_edit_payslip_line__code
@@ -3534,7 +3534,7 @@ msgstr ""
 #. module: hr_payroll
 #: model:ir.model.fields,help:hr_payroll.field_hr_work_entry_type__unpaid_structure_ids
 msgid "The work entry won’t grant any money to employee in payslip."
-msgstr "De werkinvoer geeft geen geld aan de werknemer op de loonstrook."
+msgstr "De werkboeking geeft geen geld aan de werknemer op de loonstrook."
 
 #. module: hr_payroll
 #. odoo-python
@@ -3961,7 +3961,7 @@ msgstr "Werkdagen"
 #: model:ir.ui.menu,name:hr_payroll.menu_hr_payroll_work_entries_root
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_form
 msgid "Work Entries"
-msgstr "Werk boekingen"
+msgstr "Werkboekingen"
 
 #. module: hr_payroll
 #: model:ir.actions.act_window,name:hr_payroll.hr_work_entry_report_action
@@ -3990,13 +3990,13 @@ msgstr ""
 #. module: hr_payroll
 #: model:ir.ui.menu,name:hr_payroll.menu_hr_work_entry_report
 msgid "Work Entry Analysis"
-msgstr "Werkinvoeranalyse"
+msgstr "Werkboekinganalyse"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_report__work_entry_source
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_work_entry_report__work_entry_source
 msgid "Work Entry Source"
-msgstr "Bron werkinvoer"
+msgstr "Bron werkboeking"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_edit_payslip_worked_days_line__work_entry_type_id
@@ -4019,7 +4019,7 @@ msgstr "Werktijdtarief"
 #. module: hr_payroll
 #: model:ir.model.fields,help:hr_payroll.field_hr_payroll_structure_type__default_work_entry_type_id
 msgid "Work entry type for regular attendances."
-msgstr "Type werkinvoer voor regelmatige aanwezigheid."
+msgstr "Type werkboeking voor regelmatige aanwezigheid."
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_contract__work_time_rate

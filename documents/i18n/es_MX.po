@@ -53,7 +53,7 @@ msgstr "%s Documentos (%s bloqueados)"
 #: code:addons/documents/static/src/views/search/documents_search_panel.js:0
 #, python-format
 msgid "%s file(s) not moved because they are locked by another user"
-msgstr "%s archivo o archivos sin mover porque otro usuario los bloqueó"
+msgstr "%s archivos sin mover porque otro usuario los bloqueó"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
@@ -68,8 +68,8 @@ msgid ""
 "request a signature, convert to vendor bills with AI, etc."
 msgstr ""
 ". Los archivos escaneados aparecerán de forma automática en su espacio de "
-"trabajo. Posteriormente, procese sus documentos en lote con la herramienta "
-"de división: active acciones definidas por el usuario, solicite una firma, "
+"trabajo. Luego, procese sus documentos en lote con la herramienta de "
+"división: active acciones definidas por el usuario, solicite una firma, "
 "convierta a facturas de proveedor con IA, etc."
 
 #. module: documents
@@ -119,8 +119,8 @@ msgstr "<b>Bytes</b>"
 #, python-format
 msgid "<b>Deselect this page</b> as we plan to process all bills first."
 msgstr ""
-"<b>Deseleccione esta página</b> ya que planeamos procesar todas las facturas"
-" primero."
+"<b>Deje de seleccionar esta página</b> para procesar todas las facturas "
+"primero."
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.format_file_size
@@ -140,7 +140,7 @@ msgstr "<b>Mb</b>"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid "<br/>Powered by"
-msgstr "<br/>Con tecnología de"
+msgstr "<br/>Con la tecnología de"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
@@ -174,7 +174,7 @@ msgstr "<i class=\"fa fa-globe\" title=\"URL de documento\"/>"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
 msgid "<i class=\"fa fa-link\"/> Go to URL"
-msgstr "<i class=\"fa fa-link\"/> Ir al URL"
+msgstr "<i class=\"fa fa-link\"/> Ir a la URL"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
@@ -218,7 +218,7 @@ msgstr "<span class=\"o_stat_text\">Registro<br/> relacionado</span>"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid "<span style=\"color:white;\">&amp;nbsp;Documents.</span>"
-msgstr "<span style=\"color:white;\"> Documentos.</span>"
+msgstr "<span style=\"color:white;\">Documentos.</span>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
@@ -390,7 +390,7 @@ msgstr ""
 "                                                    </a>\n"
 "                                                </div>\n"
 "                                            </center><br>\n"
-"                                            Envíenos el documento que falta <t t-if=\"object.date_deadline\"> antes del vencimiento del enlace (planeado para el <t t-out=\"object.date_deadline\">2021-05-17</t>)</t>.\n"
+"                                            Envíenos el documento que falta<t t-if=\"object.date_deadline\"> antes del vencimiento del enlace (planeado para el <t t-out=\"object.date_deadline\">2021-05-17</t>)</t>.\n"
 "                                            <t t-if=\"user and user.signature\">\n"
 "                                                <br>\n"
 "                                                <t t-out=\"user.signature or ''\">--<br>Mitchell Admin</t>\n"
@@ -414,10 +414,10 @@ msgstr ""
 "                                    <tr><td valign=\"middle\" align=\"left\" style=\"opacity: 0.7;\">\n"
 "                                        <t t-out=\"object.create_uid.company_id.phone or ''\">+1 650-123-4567</t>\n"
 "                                        <t t-if=\"object.create_uid.company_id.email\">\n"
-"                                            | <a t-attf-href=\"'mailto:%s' % {{ object.create_uid.company_id.email }}\" style=\"text-decoration:none; color: #454748;\" t-out=\"object.create_uid.company_id.email or ''\">info@suempresa.com</a>\n"
+"                                            | <a t-attf-href=\"'mailto:%s' % {{ object.create_uid.company_id.email }}\" style=\"text-decoration:none; color: #454748;\" t-out=\"object.create_uid.company_id.email or ''\">info@yourcompany.com</a>\n"
 "                                        </t>\n"
 "                                        <t t-if=\"object.create_uid.company_id.website\">\n"
-"                                            | <a t-attf-href=\"'%s' % {{ object.create_uid.company_id.website }}\" style=\"text-decoration:none; color: #454748;\" t-out=\"object.create_uid.company_id.website or ''\">http://www.ejemplo.com</a>\n"
+"                                            | <a t-attf-href=\"'%s' % {{ object.create_uid.company_id.website }}\" style=\"text-decoration:none; color: #454748;\" t-out=\"object.create_uid.company_id.website or ''\">http://www.example.com</a>\n"
 "                                        </t>\n"
 "                                    </td></tr>\n"
 "                                </table>\n"
@@ -446,8 +446,8 @@ msgid ""
 "A Python dictionary that will be evaluated to provide default values when "
 "creating new records for this alias."
 msgstr ""
-"Un diccionario Python que se evaluará para proporcionar valores "
-"predeterminados al crear nuevos registros para este seudónimo."
+"Se evaluará un diccionario de Python con el fin de proporcionar valores "
+"predefinidos cuando se creen nuevos registros para este seudónimo."
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_workflow_rule
@@ -685,7 +685,7 @@ msgid ""
 "PDFs to"
 msgstr ""
 "Una forma sencilla de procesar los correos entrantes es configurar su "
-"escáner para que envíe los archivos PDF a"
+"escáner para que envíe los archivos PDF al"
 
 #. module: documents
 #: model_terms:digest.tip,tip_description:documents.digest_tip_documents_0
@@ -696,19 +696,19 @@ msgid ""
 "launch user defined actions, request a signature, convert to vendor bills "
 "with AI, etc."
 msgstr ""
-"Una forma sencilla de procesar correos entrantes es configurando su escáner "
-"para que envíe archivos PDF al correo electrónico de su espacio de trabajo. "
-"Los archivos escaneados aparecerán automáticamente en su espacio de trabajo."
-" Luego, procese sus documentos en lotes con la herramienta de división: "
-"lance acciones definidas por usuarios, solicite firmas, conviértalos a "
-"facturas de proveedor con IA, etc."
+"Una forma sencilla de procesar los correos entrantes es configurando su "
+"escáner para que envíe archivos PDF al correo electrónico de su espacio de "
+"trabajo. Los archivos escaneados aparecerán de forma automática en su "
+"espacio de trabajo. Luego, procese sus documentos por lotes con la "
+"herramienta de división: lance acciones definidas por usuarios, solicite "
+"firmas, conviértalos a facturas de proveedor con IA, etc."
 
 #. module: documents
 #. odoo-javascript
 #: code:addons/documents/static/src/views/hooks.js:0
 #, python-format
 msgid "An error occured while uploading."
-msgstr "Ocurrió un error en la subida."
+msgstr "Ocurrió un error durante la carga."
 
 #. module: documents
 #. odoo-javascript
@@ -747,8 +747,8 @@ msgstr "¿Está seguro de que desea eliminar este registro?"
 msgid ""
 "As this PDF contains multiple documents, let's split and process in bulk."
 msgstr ""
-"Ya que este PDF contiene múltiples documentos, vamos a dividirlo y "
-"procesarlo en lote."
+"Como este PDF contiene varios documentos, vamos a dividirlo y procesarlo en "
+"lote."
 
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_finance_afv
@@ -876,7 +876,7 @@ msgstr "Suma de verificación/SHA1"
 #: code:addons/documents/models/workflow.py:0
 #, python-format
 msgid "Choose a record to link"
-msgstr "Elegir un registro para vincular"
+msgstr "Elija un registro para vincular"
 
 #. module: documents
 #. odoo-javascript
@@ -1153,7 +1153,7 @@ msgstr ""
 #: code:addons/documents/models/mail_activity.py:0
 #, python-format
 msgid "Document Request: %s Uploaded by: %s"
-msgstr "Solicitud de documento: %ssubido por:%s"
+msgstr "Solicitud de documento: %s Subido por:%s"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__has_write_access
@@ -1408,12 +1408,12 @@ msgstr "Seguidores"
 #: model:ir.model.fields,field_description:documents.field_documents_document__message_partner_ids
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_partner_ids
 msgid "Followers (Partners)"
-msgstr "Seguidores (partners)"
+msgstr "Seguidores (contactos)"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__activity_type_icon
 msgid "Font awesome icon e.g. fa-tasks"
-msgstr "Icono de Font Awesome ej. fa-tasks"
+msgstr "Icono de Font Awesome, por ejemplo, fa-tasks"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
@@ -1481,8 +1481,8 @@ msgid ""
 "ID of the parent record holding the alias (example: project holding the task"
 " creation alias)"
 msgstr ""
-"ID del registro padre que contiene el seudónimo (por ejemplo: el proyecto "
-"que contiene el seudónimo de creación de la tarea)"
+"ID del registro principal que tiene el seudónimo (ejemplo: el proyecto que "
+"contiene el seudónimo para la creación de tareas)"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_exception_icon
@@ -1515,8 +1515,8 @@ msgid ""
 "If set, this content will automatically be sent out to unauthorized users "
 "instead of the default message."
 msgstr ""
-"Si esta opción está activada, se enviará automáticamente este contenido a "
-"los usuarios no autorizados en lugar del mensaje predeterminado."
+"Si se establece, este contenido se enviará de forma automática a usuarios no"
+" autorizados en lugar del mensaje predeterminado."
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
@@ -1899,7 +1899,7 @@ msgstr "Nuevo espacio de trabajo"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_calendar_event_id
 msgid "Next Activity Calendar Event"
-msgstr "Siguiente evento en el calendario de actividades."
+msgstr "Siguiente evento en el calendario de actividades"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_date_deadline
@@ -2027,12 +2027,12 @@ msgstr "Otro"
 #: model:ir.model.fields,field_description:documents.field_documents_folder__user_specific
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form
 msgid "Own Documents Only"
-msgstr "Solamente documentos propios"
+msgstr "Solo documentos propios"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__user_specific_write
 msgid "Own Documents Only (Write)"
-msgstr "Documentos propios solamente (escritura)"
+msgstr "Solo documentos propios (escritura)"
 
 #. module: documents
 #: model:ir.model.constraint,message:documents.constraint_documents_folder_check_user_specific
@@ -2040,8 +2040,8 @@ msgid ""
 "Own Documents Only may not be enabled for write groups if it is not enabled "
 "for read groups."
 msgstr ""
-"Tal vez Documentos propios solamente no esté habilitado para grupos de "
-"escritura si no está habilitado para grupos de lectura."
+"Quizás Solo documentos propios no esté habilitado para grupos de edición si "
+"no está habilitado para grupos de lectura."
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__owner_id
@@ -2070,7 +2070,7 @@ msgstr "Carpeta padre"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_parent_model_id
 msgid "Parent Model"
-msgstr "Modelo padre"
+msgstr "Modelo principal"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__parent_path
@@ -2080,13 +2080,13 @@ msgstr "Ruta padre"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_parent_thread_id
 msgid "Parent Record Thread ID"
-msgstr "ID del hilo del registro padre"
+msgstr "ID del hilo del registro principal"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__parent_folder_id
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_search
 msgid "Parent Workspace"
-msgstr "Espacio de trabajo padre"
+msgstr "Espacio de trabajo principal"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_parent_model_id
@@ -2095,9 +2095,9 @@ msgid ""
 " necessarily the model given by alias_model_id (example: project "
 "(parent_model) and task (model))"
 msgstr ""
-"Modelo padre que posee el seudónimo. El modelo que contiene la referencia "
-"del seudónimo no es necesariamente el modelo dado por alias_model_id "
-"(example: project (parent_model) and task (model))"
+"Modelo principal que posee el seudónimo. El modelo que contiene la "
+"referencia del seudónimo no es necesariamente el modelo dado por "
+"alias_model_id (por ejemplo: proyecto (parent_model) y tarea (model))"
 
 #. module: documents
 #. odoo-javascript
@@ -2114,10 +2114,10 @@ msgid ""
 "- partners: only authenticated partners\n"
 "- followers: only followers of the related document or members of following channels\n"
 msgstr ""
-"Política para publicar un mensaje en el documento utilizando el servidor de correo.\n"
-"- todo el mundo: todos pueden publicar\n"
-"- partners: solo partners autenticados\n"
-"- seguidores: solo seguidores del documento relacionado o miembros de los siguientes canales\n"
+"Política sobre cómo publicar un mensaje en el documento utilizando el servidor de correo.\n"
+"- todos: todos pueden publicar\n"
+"- contactos: solo los contactos verificados\n"
+"- seguidores: solo los seguidores del documento relacionado o los miembros de los canales\n"
 
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_document__thumbnail_status__present
@@ -2152,7 +2152,7 @@ msgstr "Registro"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_force_thread_id
 msgid "Record Thread ID"
-msgstr "ID del hilo del registro hijo"
+msgstr "ID del hilo de registro"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__domain_folder_id
@@ -2313,7 +2313,7 @@ msgstr "Enviar al departamento legal"
 #. module: documents
 #: model:mail.template,description:documents.mail_template_document_request
 msgid "Sent to partner when requesting a document from them"
-msgstr "Se envía al partner cuando se le solicita un documento"
+msgstr "Se envía al contacto cuando se le solicita un documento"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__sequence
@@ -2336,7 +2336,7 @@ msgstr "Establecer contacto"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__user_id
 msgid "Set Owner"
-msgstr "Establecer dueño"
+msgstr "Establecer propietario"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__tag_action_ids
@@ -2346,7 +2346,7 @@ msgstr "Establecer etiquetas"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__has_owner_activity
 msgid "Set the activity on the document owner"
-msgstr "Configure la actividad en el documento dueño"
+msgstr "Configure la actividad en el propietario del documento"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.configuration_action
@@ -2417,7 +2417,7 @@ msgstr "Forma en la que se compartió"
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__create_share_id
 msgid "Share used to create this document"
-msgstr "Compartición que se utiliza para crear este documento"
+msgstr "Espacio compartido que se utiliza para crear este documento"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
@@ -2489,9 +2489,9 @@ msgid ""
 "Today: Activity date is today\n"
 "Planned: Future activities."
 msgstr ""
-"Estado basado en actividades\n"
-"Vencida: la fecha límite ya pasó\n"
-"Hoy: la fecha límite es hoy\n"
+"Estado según las actividades\n"
+"Vencida: ya pasó la fecha límite\n"
+"Hoy: hoy es la fecha de la actividad\n"
 "Planeada: futuras actividades."
 
 #. module: documents
@@ -2580,9 +2580,9 @@ msgid ""
 "a new record of this model (e.g. a Project Task)"
 msgstr ""
 "El modelo (tipo de documento de Odoo) al que corresponde este seudónimo. "
-"Cualquier correo electrónico entrante que no responda a un registro "
-"existente causará la creación de un nuevo registro en este modelo (por "
-"ejemplo, una tarea de proyecto)."
+"Cualquier correo entrante que no sea respuesta a un registro existente "
+"causará la creación de un nuevo registro de este modelo (por ejemplo, una "
+"tarea de proyecto)."
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_name
@@ -2590,9 +2590,8 @@ msgid ""
 "The name of the email alias, e.g. 'jobs' if you want to catch emails for "
 "<jobs@example.odoo.com>"
 msgstr ""
-"El nombre de este seudónimo de correo electrónico. Por ejemplo, "
-"\"trabajos\", si lo que quiere es obtener los correos para "
-"<jobs@example.odoo.com>"
+"Use el seudónimo del correo electrónico, por ejemplo, \"jobs\" si desea "
+"recibir correos electrónicos en <jobs@example.odoo.com>"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_user_id
@@ -2613,7 +2612,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
 msgid "The share url has been copied to your clipboard."
-msgstr "El URL para compartir se copió al portapapeles."
+msgstr "La URL para compartir se copió al portapapeles."
 
 #. module: documents
 #: model:ir.model.constraint,message:documents.constraint_documents_share_share_unique
@@ -2686,7 +2685,7 @@ msgstr "Por validar"
 #. module: documents
 #: model:mail.activity.type,name:documents.mail_documents_activity_data_tv
 msgid "To validate"
-msgstr "Validar"
+msgstr "Por validar"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
@@ -2888,14 +2887,13 @@ msgid ""
 "Wow... 6 documents processed in a few seconds, You're good.<br/>The tour is "
 "complete. Try uploading your own documents now."
 msgstr ""
-"Guau... 6 documentos procesados en solo unos segundos. Usted es muy "
-"bueno.<br/>El tour está completo. Intente subir sus propios documentos "
-"ahora."
+"Wow... procesó 6 documentos en cuestión de segundos, en verdad es un "
+"experto.<br/>Terminamos el tour. Ahora, intente cargar sus documentos."
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form
 msgid "Write Access"
-msgstr "Acceso de escritura"
+msgstr "Permiso de escritura"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__group_ids
@@ -3008,7 +3006,7 @@ msgstr "Por ejemplo, hablar de la propuesta"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form
 msgid "e.g. Finance"
-msgstr "por ejemplo, finanzas"
+msgstr "Por ejemplo, finanzas"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_request_form_view

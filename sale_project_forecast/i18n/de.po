@@ -3,7 +3,7 @@
 # 	* sale_project_forecast
 # 
 # Translators:
-# Martin Trigaux, 2022
+# Martin Trigaux, 2023
 # Larissa Manderfeld, 2023
 # 
 msgid ""
@@ -23,17 +23,17 @@ msgstr ""
 #. module: sale_project_forecast
 #: model:ir.model,name:sale_project_forecast.model_planning_slot
 msgid "Planning Shift"
-msgstr "Schichtplanung"
+msgstr "Schicht der Planung"
 
 #. module: sale_project_forecast
 #: model:ir.model.fields,field_description:sale_project_forecast.field_planning_slot__sale_line_id
 msgid "Sales Order Item"
-msgstr "Auftragselement"
+msgstr "Verkaufsauftragsposition"
 
 #. module: sale_project_forecast
 #: model:ir.model,name:sale_project_forecast.model_sale_order_line
 msgid "Sales Order Line"
-msgstr "Kundenauftragszeile"
+msgstr "Verkaufsauftragszeile"
 
 #. module: sale_project_forecast
 #: model:ir.model.fields,help:sale_project_forecast.field_planning_slot__sale_line_id
@@ -42,7 +42,7 @@ msgid ""
 "are automatically planned, the remaining hours of the sales order item, as "
 "well as the role defined on the service, are taken into account."
 msgstr ""
-"Verkaufauftragsposition, für die diese Schicht durchgeführt wird. Wenn "
+"Verkaufsauftragsposition, für die diese Schicht durchgeführt wird. Wenn "
 "Verkaufsaufträge automatisch geplant werden, werden die restlichen Stunden "
 "der Verkaufsauftragsposition sowie die für die Dienstleistung bestimmten "
 "Rollen berücksichtigt."

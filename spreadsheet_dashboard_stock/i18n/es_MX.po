@@ -35,7 +35,7 @@ msgstr "días"
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Average Cycle Time"
-msgstr "Ciclo de tiempo promedio"
+msgstr "Tiempo de ciclo promedio"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript

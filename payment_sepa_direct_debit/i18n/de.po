@@ -3,10 +3,9 @@
 # 	* payment_sepa_direct_debit
 # 
 # Translators:
-# Udo Hennig <info@udohennig.de>, 2022
-# Martin Trigaux, 2022
 # Felix Schubert <felix.schubert@go-erp.com>, 2022
 # Larissa Manderfeld, 2023
+# Martin Trigaux, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:38+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Larissa Manderfeld, 2023\n"
+"Last-Translator: Martin Trigaux, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,12 +29,12 @@ msgstr "+32123456789"
 #. module: payment_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.sdd_payment_mandate_form
 msgid "<strong>Authenticated by SMS by:</strong>"
-msgstr "<strong>Authentifiziert per SMS</strong>"
+msgstr "<strong>Authentifiziert per SMS von:</strong>"
 
 #. module: payment_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.sdd_payment_mandate_form
 msgid "<strong>Date and place of signature:</strong>"
-msgstr "<strong>Datum und Ort der Unterschift</strong>"
+msgstr "<strong>Datum und Ort der Unterschrift</strong>"
 
 #. module: payment_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.sdd_payment_mandate_form
@@ -389,7 +388,7 @@ msgstr "Eine Kopie des Mandates wird per E-Mail gesendet an"
 #: code:addons/payment_sepa_direct_debit/models/sdd_mandate.py:0
 #, python-format
 msgid "Both the phone number and the verification code are required."
-msgstr "Telefonnummer und Verifizierungs-Code werden benötigt."
+msgstr "Telefonnummer und Verifizierungscode werden benötigt."
 
 #. module: payment_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.payment_provider_form
@@ -411,7 +410,7 @@ msgstr "Kontakt"
 #: code:addons/payment_sepa_direct_debit/static/src/js/payment_form.js:0
 #, python-format
 msgid "Could not send the verification code."
-msgstr "Verifizierungs-Code konnte nicht bestätigt werden."
+msgstr "Verifizierungscode konnte nicht gesendet werden."
 
 #. module: payment_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.sdd_mandate_form
@@ -428,7 +427,7 @@ msgstr "IBAN"
 #: code:addons/payment_sepa_direct_debit/controllers/main.py:0
 #, python-format
 msgid "Incorrect phone number."
-msgstr "fehlerhafte Telefonnummer"
+msgstr "Fehlerhafte Telefonnummer."
 
 #. module: payment_sepa_direct_debit
 #. odoo-python
@@ -462,7 +461,7 @@ msgstr "Zahlungsanbieter"
 #. module: payment_sepa_direct_debit
 #: model:ir.model,name:payment_sepa_direct_debit.model_payment_token
 msgid "Payment Token"
-msgstr "Zahlungs-Token"
+msgstr "Zahlungstoken"
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model,name:payment_sepa_direct_debit.model_payment_transaction
@@ -518,17 +517,17 @@ msgstr "SEPA-Lastschriftmandat"
 #: model:mail.template,name:payment_sepa_direct_debit.mail_template_sepa_notify_debit
 #: model:mail.template,subject:payment_sepa_direct_debit.mail_template_sepa_notify_debit
 msgid "SEPA Direct Debit: Charge Notification"
-msgstr "SEPA Direct Debit: Ändere Benachrichtigung"
+msgstr "SEPA-Lastschrift: Belastungsbenachrichtigung"
 
 #. module: payment_sepa_direct_debit
 #: model:mail.template,name:payment_sepa_direct_debit.mail_template_sepa_notify_validation
 msgid "SEPA Direct Debit: Validation Notification"
-msgstr "SEPA-Lastschriftverfahren: Validierungsbenachrichtigung"
+msgstr "SEPA-Lastschrift: Validierungsbenachrichtigung"
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,field_description:payment_sepa_direct_debit.field_payment_provider__sdd_sms_credits
 msgid "SMS Credits"
-msgstr "SMS Guthaben"
+msgstr "SMS-Guthaben"
 
 #. module: payment_sepa_direct_debit
 #. odoo-javascript
@@ -554,7 +553,7 @@ msgstr "SMS-Verifizierung ist deaktiviert."
 #. module: payment_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.inline_form
 msgid "Send SMS"
-msgstr "SMS senden"
+msgstr "SMS versenden"
 
 #. module: payment_sepa_direct_debit
 #: model:mail.template,description:payment_sepa_direct_debit.mail_template_sepa_notify_validation
@@ -576,13 +575,13 @@ msgstr ""
 #: code:addons/payment_sepa_direct_debit/static/src/js/payment_form.js:0
 #, python-format
 msgid "Server Error"
-msgstr "Server fehler"
+msgstr "Serverfehler"
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,field_description:payment_sepa_direct_debit.field_sdd_mandate__signature
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.inline_form
 msgid "Signature"
-msgstr "Signatur"
+msgstr "Unterschrift"
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,field_description:payment_sepa_direct_debit.field_sdd_mandate__signed_by
@@ -597,7 +596,7 @@ msgstr "Unterzeichnet am"
 #. module: payment_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.sdd_payment_mandate_form
 msgid "Signed online on"
-msgstr "Online unterschrieben bei"
+msgstr "Online unterzeichnet am"
 
 #. module: payment_sepa_direct_debit
 #. odoo-python
@@ -663,7 +662,7 @@ msgstr "Die Telefonnummer stimmt nicht überein."
 #: code:addons/payment_sepa_direct_debit/controllers/main.py:0
 #, python-format
 msgid "The phone number must be provided and verified."
-msgstr "Die Telefonnummer muss angegeben und überprüft werden."
+msgstr "Die Telefonnummer muss angegeben und verifiziert werden."
 
 #. module: payment_sepa_direct_debit
 #. odoo-python
@@ -703,7 +702,7 @@ msgstr "Die Transaktion ist nicht mit einem Token verknüpft."
 #: code:addons/payment_sepa_direct_debit/models/sdd_mandate.py:0
 #, python-format
 msgid "The verification code does not match."
-msgstr "Der Verifizierungs-Code stimmt nicht überein."
+msgstr "Der Verifizierungscode passt nicht."
 
 #. module: payment_sepa_direct_debit
 #. odoo-python
@@ -724,12 +723,12 @@ msgstr "Unbekannte Mandats-ID."
 #: model:ir.model.fields,field_description:payment_sepa_direct_debit.field_sdd_mandate__verification_code
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.inline_form
 msgid "Verification Code"
-msgstr "Überprüfungscode"
+msgstr "Verifizierungscode"
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,field_description:payment_sepa_direct_debit.field_sdd_mandate__verified
 msgid "Verified"
-msgstr "Bestätigt"
+msgstr "Verifiziert"
 
 #. module: payment_sepa_direct_debit
 #. odoo-javascript
@@ -754,8 +753,8 @@ msgstr "Ob Telefonnummern per SMS-Code verifiziert werden müssen."
 msgid ""
 "You don't have enough credit to send SMS. You can buy new credits here:"
 msgstr ""
-"Sie haben nicht genug Guthaben um eine SMS zu senden. Neues Guthaben können "
-"Sie hier kaufen:"
+"Sie haben nicht genug Guthaben, um eine SMS zu senden. Neues Guthaben können"
+" Sie hier kaufen:"
 
 #. module: payment_sepa_direct_debit
 #: model:mail.template,subject:payment_sepa_direct_debit.mail_template_sepa_notify_validation
@@ -788,7 +787,7 @@ msgstr "Ihr Bestätigungscode lautet %s"
 #. module: payment_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.inline_form
 msgid "upon validation."
-msgstr "nach Bestätigung"
+msgstr "nach Validierung."
 
 #. module: payment_sepa_direct_debit
 #: model:mail.template,report_name:payment_sepa_direct_debit.mail_template_sepa_notify_validation

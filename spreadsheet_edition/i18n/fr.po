@@ -631,21 +631,21 @@ msgstr "Révision"
 #: code:addons/spreadsheet_edition/static/src/bundle/o_spreadsheet/editable_name/editable_name.xml:0
 #, python-format
 msgid "Save"
-msgstr "Sauvegarder"
+msgstr "Enregistrer"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/bundle/o_spreadsheet/menu_item_registry.js:0
 #, python-format
 msgid "Save as template"
-msgstr "Sauvegarder en tant que modèle"
+msgstr "Enregistrer en tant que modèle"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/bundle/actions/control_panel/spreadsheet_control_panel.xml:0
 #, python-format
 msgid "Saved"
-msgstr "Sauvegardé"
+msgstr "Enregistré"
 
 #. module: spreadsheet_edition
 #. odoo-javascript

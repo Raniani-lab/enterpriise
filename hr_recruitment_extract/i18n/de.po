@@ -3,8 +3,8 @@
 # 	* hr_recruitment_extract
 # 
 # Translators:
-# Martin Trigaux, 2022
-# Michael Hofer, 2023
+# Michael Hofer, 2022
+# Martin Trigaux, 2023
 # Larissa Manderfeld, 2023
 # 
 msgid ""
@@ -26,7 +26,7 @@ msgstr ""
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
 #, python-format
 msgid "%s's Application"
-msgstr "%ss Bewerbung"
+msgstr "Bewerbung von %s"
 
 #. module: hr_recruitment_extract
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_extract.hr_recruitment_extract_view_form
@@ -87,7 +87,7 @@ msgstr "Dateianhang"
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
 #, python-format
 msgid "CV is being Digitized"
-msgstr "CV wird digitalisiert"
+msgstr "Lebenslauf wird digitalisiert"
 
 #. module: hr_recruitment_extract
 #: model:ir.model,name:hr_recruitment_extract.model_res_company
@@ -144,14 +144,14 @@ msgstr ""
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
 #, python-format
 msgid "Generated Applicant"
-msgstr "Erstellerter Bewerber"
+msgstr "Generierte Bewerber"
 
 #. module: hr_recruitment_extract
 #. odoo-python
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
 #, python-format
 msgid "Generated Applicants"
-msgstr "Erstellte Bewerber"
+msgstr "Generierte Bewerber"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__is_first_stage
@@ -178,7 +178,7 @@ msgstr "OCR in Personalbeschaffung: Lebenslauf analysieren"
 #: model:ir.actions.server,name:hr_recruitment_extract.ir_cron_update_ocr_status_ir_actions_server
 #: model:ir.cron,cron_name:hr_recruitment_extract.ir_cron_update_ocr_status
 msgid "Recruitment OCR: Update All Status"
-msgstr "OCR in Personalbeschaffung: Status aktualisieren"
+msgstr "OCR in Personalbeschaffung: Alle Status aktualisieren"
 
 #. module: hr_recruitment_extract
 #: model:ir.actions.server,name:hr_recruitment_extract.ir_cron_ocr_validate_ir_actions_server
@@ -226,7 +226,7 @@ msgstr "Server ist nicht verfügbar. Bitte versuchen Sie es später"
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__state_processed
 msgid "State Processed"
-msgstr ""
+msgstr "Status verarbeitet"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_status_code
@@ -269,7 +269,7 @@ msgstr "Wartende Extraktion"
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__hr_applicant__extract_state__extract_not_ready
 msgid "Waiting extraction, but not ready"
-msgstr ""
+msgstr "Wartende Extraktion, aber nicht bereit"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__hr_applicant__extract_state__waiting_upload

@@ -1472,7 +1472,7 @@ msgid ""
 "The saved filter targets different model and is incompatible with this "
 "campaign."
 msgstr ""
-"Le filtre sauvegardé cible différents modèles et n'est pas compatible avec "
+"Le filtre enregistré cible différents modèles et n'est pas compatible avec "
 "cette campagne."
 
 #. module: marketing_automation

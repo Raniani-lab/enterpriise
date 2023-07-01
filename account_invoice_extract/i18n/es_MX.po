@@ -432,7 +432,7 @@ msgstr "Se rechazó el documento porque es muy pequeño"
 #. module: account_invoice_extract
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__to_validate
 msgid "To validate"
-msgstr "Validar"
+msgstr "Por validar"
 
 #. module: account_invoice_extract
 #. odoo-python

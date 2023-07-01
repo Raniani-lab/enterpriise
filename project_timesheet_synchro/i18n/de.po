@@ -3,8 +3,8 @@
 # 	* project_timesheet_synchro
 # 
 # Translators:
-# Martin Trigaux, 2022
 # Larissa Manderfeld, 2023
+# Martin Trigaux, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Larissa Manderfeld, 2023\n"
+"Last-Translator: Martin Trigaux, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,7 +33,7 @@ msgstr "&emsp;Start"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "&emsp;Stop"
-msgstr "&emsp;Stop"
+msgstr "&emsp;Stopp"
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -55,7 +55,7 @@ msgstr "Aktion"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Activity created"
-msgstr "Aktivität angelegt"
+msgstr "Aktivität erstellt"
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -75,14 +75,14 @@ msgstr "Kostenstelle"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Are you sure that you want to delete this activity?"
-msgstr "Möchten Sie diese Aktivität wirklich löschen?"
+msgstr "Sind Sie sicher, dass Sie diese Aktivität löschen möchten?"
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Are you sure that you want to reset the app?"
-msgstr "Sind Sie sicher, dass Sie die App zurücksetzen wollen?"
+msgstr "Sind Sie sicher, dass Sie die App zurücksetzen möchten?"
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -111,8 +111,8 @@ msgstr ""
 msgid ""
 "Could not find server. Please check that the url you entered is correct."
 msgstr ""
-"Server konnte nicht gefunden werden. Bitte stellen Sie sicher, dass die von "
-"Ihnen eingegebene URL korrekt ist."
+"Server konnte nicht gefunden werden. Bitte überprüfen Sie, ob die von Ihnen "
+"eingegebene URL korrekt ist."
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -136,8 +136,8 @@ msgid ""
 "and that the server is online."
 msgstr ""
 "Der Server konnte nicht erreicht werden. Bitte vergewissern Sie sich, dass "
-"Sie eine Internetverbindung habe, dass die von Ihnen gemachten Angaben zur "
-"Serveradresse und zum Datenbankname gültig sind und dass der Server online "
+"Sie eine Internetverbindung haben, dass die von Ihnen gemachten Angaben zur "
+"Serveradresse und zum Datenbanknamen gültig sind und dass der Server online "
 "ist."
 
 #. module: project_timesheet_synchro
@@ -160,7 +160,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/js/project_timesheet.js:0
 #, python-format
 msgid "Create Task : "
-msgstr "Aufgabe anlegen: "
+msgstr "Aufgabe erstellen: "
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -168,7 +168,7 @@ msgstr "Aufgabe anlegen: "
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Current activity"
-msgstr "Momentane Tätigkeit"
+msgstr "Aktuelle Aktivität"
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -182,7 +182,7 @@ msgstr "Datenbank"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Default project"
-msgstr "Standard-Projekt"
+msgstr "Standardprojekt"
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -231,7 +231,7 @@ msgstr "Daten speichern"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Last sync :"
-msgstr "Letzter Sync :"
+msgstr "Letzte Synchronisierung:"
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -246,7 +246,7 @@ msgstr "Gesperrt"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Logged in as"
-msgstr "Eingeloggt als"
+msgstr "Angemeldet als"
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -256,7 +256,7 @@ msgstr "Eingeloggt als"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Login"
-msgstr "Login"
+msgstr "Anmelden"
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -264,7 +264,7 @@ msgstr "Login"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Login to an on premise Odoo instance"
-msgstr "In einer On."
+msgstr "Melden Sie sich in einer Odoo-Instanz an"
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -489,14 +489,14 @@ msgstr "Einstellungen"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Show password"
-msgstr "Zeige Passwort"
+msgstr "Passwort anzeigen"
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Sign In"
-msgstr "Sign In"
+msgstr "Anmelden"
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -518,7 +518,7 @@ msgstr "Statistik"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Subtract"
-msgstr "Abzug von"
+msgstr "Abziehen"
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -533,7 +533,7 @@ msgstr "Jetzt synchronisieren"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Sync in progress"
-msgstr "Synchronisierung wird ausgeführt"
+msgstr "Synchronisierung im Gange"
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -578,7 +578,7 @@ msgid ""
 "Enterprise Edition version 9 or newer."
 msgstr ""
 "Der Server unterstützt keine Synchronisierung von Zeiterfassungen. Odoo-"
-"Enterprise-Edition Version 9 oder neuer ist erforderlich-"
+"Enterprise-Edition Version 9 oder neuer ist erforderlich."
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -589,9 +589,9 @@ msgid ""
 "your administrator in order to install the module \"Synchronization with the"
 " external timesheet application\""
 msgstr ""
-"Der Server unterstützt nicht die Synchronisierung von Zeiterfassungen. "
-"Wenden Sie sich an Ihren Administrator, um das Modul „Synchronisierung mit "
-"der externen Zeiterfassungsanwendung“ zu installieren."
+"Der Server unterstützt keine Zeiterfassungssynchronisierung. Wenden Sie sich"
+" an Ihren Administrator, um das Modul „Synchronisierung mit der externen "
+"Zeiterfassungsanwendung“ zu installieren."
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -603,10 +603,10 @@ msgid ""
 "''Synchronization with the external timesheet application'' (available in "
 "Odoo Enterprise Edition)."
 msgstr ""
-"Der Server, mit dem Sie verbunden sind, unterstützt keine Zeiterfassungs-"
-"Synchronisierung. Kontaktieren Sie Ihren Administrator, um das Modul "
-"„Synchronisierung mit der externen Zeiterfassungs-Anwendung“ (verfügbar in "
-"der Odoo Enterprise-Ausgabe) zu installieren."
+"Der Server, mit dem Sie verbunden sind, unterstützt keine "
+"Zeiterfassungssynchronisierung. Wenden Sie sich an Ihren Administrator, um "
+"das Modul „Synchronisierung mit der externen Zeiterfassungsanwendung“ "
+"(verfügbar in der Odoo-Enterprise-Ausgabe) zu installieren."
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -620,14 +620,14 @@ msgstr "Diese Woche"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Time spent (hh:mm)"
-msgstr "Geleistete Stunden (hh:mm)"
+msgstr "Zeitaufwand (hh:mm)"
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Time spent (hhmm)"
-msgstr "Geleistete Stunden (hhmm)"
+msgstr "Zeitaufwand (hhmm)"
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -669,14 +669,14 @@ msgstr "Heutiger Plan"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Toggle action"
-msgstr "Aktion umschalten"
+msgstr "Aktion ein/aus"
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Total :"
-msgstr "Summe :"
+msgstr "Gesamt:"
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -709,7 +709,7 @@ msgstr "Woche"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Work Summary"
-msgstr "Tätigkeitsbeschreibung"
+msgstr "Tätigkeitszusammenfassung"
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -752,7 +752,7 @@ msgid ""
 " it is activated, you'll be able to"
 msgstr ""
 "Sie haben eine E-Mail mit einem Link für die Aktivierung Ihres Kontos "
-"erhalten. Sobald es aktiviert ist, können Sie"
+"erhalten. Sobald es aktiviert ist, können Sie sich"
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -773,7 +773,7 @@ msgstr "Ihre Datenbank und Ihr Konto wurden erstellt!"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "ex: admin@example.com"
-msgstr "ex: admin@beispiel.com"
+msgstr "z. B.: admin@beispiel.com"
 
 #. module: project_timesheet_synchro
 #. odoo-javascript
@@ -810,4 +810,4 @@ msgstr "verbleibend)"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "sign in"
-msgstr "Sign In"
+msgstr "anmelden"

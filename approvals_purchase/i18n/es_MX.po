@@ -57,7 +57,7 @@ msgstr "Crear solicitudes de cotización"
 #. module: approvals_purchase
 #: model_terms:ir.ui.view,arch_db:approvals_purchase.exception_approval_request_canceled
 msgid "Exception occurred: the Approval Request"
-msgstr "Excepción encontrada: solicitud de aprobación "
+msgstr "Excepción encontrada: la solicitud de aprobación "
 
 #. module: approvals_purchase
 #: model_terms:ir.ui.view,arch_db:approvals_purchase.exception_approval_request_canceled
@@ -83,7 +83,7 @@ msgstr "Productos"
 #. module: approvals_purchase
 #: model:ir.model.fields,field_description:approvals_purchase.field_approval_request__purchase_order_count
 msgid "Purchase Order Count"
-msgstr "Conteo de órdenes de compra"
+msgstr "Número de órdenes de compra"
 
 #. module: approvals_purchase
 #: model:ir.model.fields,field_description:approvals_purchase.field_approval_product_line__purchase_order_line_id
@@ -126,7 +126,7 @@ msgstr ""
 #. module: approvals_purchase
 #: model_terms:ir.ui.view,arch_db:approvals_purchase.exception_approval_request_canceled
 msgid "cancelled"
-msgstr "Cancelado"
+msgstr "cancelado"
 
 #. module: approvals_purchase
 #: model_terms:ir.ui.view,arch_db:approvals_purchase.exception_approval_request_canceled
@@ -135,7 +135,7 @@ msgid ""
 "            Manual actions may be needed."
 msgstr ""
 "se ha cancelado.\n"
-"                Es posible que se requieran acciones manuales."
+"                Es probable que deba hacerlo de forma manual."
 
 #. module: approvals_purchase
 #: model_terms:ir.ui.view,arch_db:approvals_purchase.exception_approval_request_canceled

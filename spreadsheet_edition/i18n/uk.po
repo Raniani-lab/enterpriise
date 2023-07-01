@@ -222,7 +222,7 @@ msgstr "Завантажити"
 #: code:addons/spreadsheet_edition/static/src/bundle/o_spreadsheet/menu_item_registry.js:0
 #, python-format
 msgid "Download as JSON"
-msgstr ""
+msgstr "Завантажити як JSON"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -490,14 +490,14 @@ msgstr "Зміщення періоду"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_field_offset.js:0
 #, python-format
 msgid "Period offset applied to this source"
-msgstr ""
+msgstr "До цього джерела застосовано зміщення періоду"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/assets/pivot_view/pivot_view.js:0
 #, python-format
 msgid "Pivot contains duplicate groupbys"
-msgstr ""
+msgstr "Зведена таблиця містить дублікати groupby"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -616,7 +616,7 @@ msgstr "Перейменувати"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_field_offset.js:0
 #, python-format
 msgid "Requires a selected field"
-msgstr ""
+msgstr "Вимагає вибране поле"
 
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_revision__revision_id
@@ -740,7 +740,7 @@ msgstr "Знімок електронної таблиці"
 #: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.js:0
 #, python-format
 msgid "Spreadsheets"
-msgstr ""
+msgstr "Електронні таблиці"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -754,7 +754,7 @@ msgstr "Стовпчаста діаграма"
 #: code:addons/spreadsheet_edition/static/src/bundle/chart/side_panels/odoo_line/odoo_line_config_panel.xml:0
 #, python-format
 msgid "Stacked linechart"
-msgstr ""
+msgstr "Лінійна діаграма з накопиченням"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -834,7 +834,7 @@ msgstr "посилання"
 #: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.js:0
 #, python-format
 msgid "list"
-msgstr ""
+msgstr "список"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -854,7 +854,7 @@ msgstr "Відмовлено у перегляді електронної таб
 #: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.js:0
 #, python-format
 msgid "pivot"
-msgstr ""
+msgstr "зведена таблиця"
 
 #. module: spreadsheet_edition
 #. odoo-javascript

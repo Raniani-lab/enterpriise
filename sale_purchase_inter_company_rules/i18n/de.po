@@ -3,7 +3,7 @@
 # 	* sale_purchase_inter_company_rules
 # 
 # Translators:
-# Martin Trigaux, 2022
+# Martin Trigaux, 2023
 # Larissa Manderfeld, 2023
 # 
 msgid ""
@@ -23,7 +23,7 @@ msgstr ""
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields,field_description:sale_purchase_inter_company_rules.field_purchase_order__auto_generated
 msgid "Auto Generated Purchase Order"
-msgstr "Automatisch generierte Bestellung"
+msgstr "Automatisch generierter Einkaufsautrag"
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields,field_description:sale_purchase_inter_company_rules.field_sale_order__auto_generated
@@ -71,8 +71,8 @@ msgid ""
 "Default value to set on Purchase(Sales) Orders that will be created based on"
 " Sale(Purchase) Orders made to this company"
 msgstr ""
-"Standardwert, um Beschaffungs(Verkaufs-)aufträge festzulegen, die basierend "
-"auf Verkaufs(Beschaffungs-)aufträgen für dieses Unternehmen erstellt werden."
+"Standardwert, um Einkaufs-(Verkaufs-)aufträge festzulegen, die basierend auf"
+" Verkaufs-(Einkaufs-)aufträgen für dieses Unternehmen erstellt werden."
 
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/res_company.py:0
@@ -82,7 +82,7 @@ msgid ""
 "warehouse %(warehouse)s when a company confirms a %(event_type)s for "
 "%(company)s."
 msgstr ""
-"Generieren Sie ein %(validation)s%(generated_object)s unter Benutzung des "
+"Generieren Sie %(validation)s%(generated_object)s unter Verwendung des "
 "Lagerhauses %(warehouse)s, wenn ein Unternehmen ein %(event_type)s bestätigt"
 " für %(company)s. "
 
@@ -102,23 +102,23 @@ msgstr ""
 msgid ""
 "Inter company user of company %(name)s doesn't have enough access rights"
 msgstr ""
-"Firmenübergreifender Benutzer der Firma %(name)s hat nicht genügend "
-"Zugriffsrechte"
+"Unternehmensübergreifender Benutzer des Unternehmen %(name)s hat nicht "
+"genügend Zugriffsrechte"
 
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/sale_order.py:0
 #, python-format
 msgid "Inter company user of company %s doesn't have enough access rights"
 msgstr ""
-"Der Inter-Company Benutzer für diese %s Unternehmen hat nicht genug "
-"Zugriffsrechte"
+"Unternehmensübergreifender Benutzer für dieses Unternehmen %s hat nicht "
+"genügend Zugriffsrechte"
 
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/purchase_order.py:0
 #, python-format
 msgid "Provide at least one user for inter company relation for %(name)s"
 msgstr ""
-"Hinterlegen Sie mindestens einen Benutzer für zwischenbetriebliche "
+"Hinterlegen Sie mindestens einen Benutzer für unternehmensübergreifende "
 "Beziehungen für %(name)s"
 
 #. module: sale_purchase_inter_company_rules
@@ -132,7 +132,7 @@ msgstr ""
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model,name:sale_purchase_inter_company_rules.model_purchase_order
 msgid "Purchase Order"
-msgstr "Bestellung"
+msgstr "Einkaufsauftrag"
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields,field_description:sale_purchase_inter_company_rules.field_res_company__rule_type
@@ -142,24 +142,24 @@ msgstr "Regel"
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model,name:sale_purchase_inter_company_rules.model_sale_order
 msgid "Sales Order"
-msgstr "Verkaufsauftrag "
+msgstr "Verkaufsauftrag"
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model,name:sale_purchase_inter_company_rules.model_sale_order_line
 msgid "Sales Order Line"
-msgstr "Kundenauftragszeile"
+msgstr "Verkaufsauftragszeile"
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields,help:sale_purchase_inter_company_rules.field_res_company__rule_type
 msgid "Select the type to setup inter company rules in selected company."
 msgstr ""
-"Wählen Sie den Typ, um konzerninterne Regeln im ausgewählten Unternehmen "
-"aufzustellen."
+"Wählen Sie den Typ, um unternehmensübergreifende Regeln im ausgewählten "
+"Unternehmen aufzustellen."
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields,field_description:sale_purchase_inter_company_rules.field_sale_order__auto_purchase_order_id
 msgid "Source Purchase Order"
-msgstr "Herkunft Bestellung"
+msgstr "Herkunft Einkaufsauftrag"
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields,field_description:sale_purchase_inter_company_rules.field_purchase_order__auto_sale_order_id
@@ -174,12 +174,12 @@ msgstr "Einkaufsauftrag synchronisieren"
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields.selection,name:sale_purchase_inter_company_rules.selection__res_company__rule_type__sale
 msgid "Synchronize Sales Order"
-msgstr "Kundenauftrag synchronisieren"
+msgstr "Verkaufsauftrag synchronisieren"
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields.selection,name:sale_purchase_inter_company_rules.selection__res_company__rule_type__sale_purchase
 msgid "Synchronize Sales and Purchase Order"
-msgstr "Verkauf und Bestellung synchronisieren"
+msgstr "Verkaufs und Einkaufsauftrag synchronisieren"
 
 #. module: sale_purchase_inter_company_rules
 #: model_terms:ir.ui.view,arch_db:sale_purchase_inter_company_rules.res_config_settings_view_form
@@ -189,12 +189,12 @@ msgstr "Lagerhaus verwenden"
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields,field_description:sale_purchase_inter_company_rules.field_res_company__warehouse_id
 msgid "Warehouse"
-msgstr "Lager"
+msgstr "Lagerhaus"
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields,field_description:sale_purchase_inter_company_rules.field_res_config_settings__warehouse_id
 msgid "Warehouse For Purchase Orders"
-msgstr "Lager für Bestellungen"
+msgstr "Lagerhaus für Einkaufsaufträge"
 
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/purchase_order.py:0
@@ -205,7 +205,7 @@ msgid ""
 "\n"
 "(SO currency: %(so_currency)s, Pricelist: %(pricelist)s, Partner: %(partner)s (ID: %(id)s))"
 msgstr ""
-"Sie können keinen Verkaufsauftrag aus einem Kaufauftrag erstellen, da die Währung der Verkaufspreisliste von der Währung der Einkaufspreisliste abweicht.\n"
+"Sie können keinen Verkaufsauftrag aus einem Einkaufsauftrag erstellen, da die Währung der Verkaufspreisliste von der Währung der Einkaufspreisliste abweicht.\n"
 "Die Währung des Verkaufsauftrags wird aus der Preisliste des Unternehmenspartners übernommen.\n"
 "\n"
 "(Währung des Verkaufsauftrags: %(so_currency)s, Preisliste: %(pricelist)s, Partner: %(partner)s (ID: %(id)s))"
@@ -214,7 +214,7 @@ msgstr ""
 #: code:addons/sale_purchase_inter_company_rules/models/res_company.py:0
 #, python-format
 msgid "draft"
-msgstr "zusammenstellen"
+msgstr "Entwurf"
 
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/res_company.py:0

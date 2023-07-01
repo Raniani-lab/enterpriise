@@ -1641,6 +1641,8 @@ msgid ""
 "Invoice_{{ (object.name or '').replace('/','_') }}{{ object.state == 'draft'"
 " and '_draft' or '' }}"
 msgstr ""
+"Faktura_{{ (object.name eller ’’).replace(’/’,’_’) }}{{ object.state == "
+"’draft’ och ’_utkast’ eller ’’ }}"
 
 #. module: sale_subscription
 #: model:mail.template,report_name:sale_subscription.email_payment_success

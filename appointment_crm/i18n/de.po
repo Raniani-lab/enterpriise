@@ -3,8 +3,8 @@
 # 	* appointment_crm
 # 
 # Translators:
-# Martin Trigaux, 2022
 # Larissa Manderfeld, 2023
+# Martin Trigaux, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Larissa Manderfeld, 2023\n"
+"Last-Translator: Martin Trigaux, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,12 +23,12 @@ msgstr ""
 #. module: appointment_crm
 #: model:ir.model,name:appointment_crm.model_appointment_type
 msgid "Appointment Type"
-msgstr "Termintyp"
+msgstr "Terminart"
 
 #. module: appointment_crm
 #: model:ir.model,name:appointment_crm.model_calendar_event
 msgid "Calendar Event"
-msgstr "Calendar Event"
+msgstr "Kalender-Ereignis"
 
 #. module: appointment_crm
 #. odoo-javascript
@@ -36,8 +36,7 @@ msgstr "Calendar Event"
 #, python-format
 msgid "Click in your calendar to pick meeting time proposals for"
 msgstr ""
-"Klicken Sie in Ihren Kalender, um Vorschläge für Besprechungszeiten "
-"auszuwählen."
+"Klicken Sie in Ihren Kalender, um Zeitvorschläge für Meetings auszuwählen."
 
 #. module: appointment_crm
 #: model:ir.model.fields,field_description:appointment_crm.field_appointment_type__lead_create

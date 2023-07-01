@@ -34,7 +34,7 @@ msgstr "&nbsp;"
 #: code:addons/web_gantt/static/src/js/gantt_controller.js:0
 #, python-format
 msgid "Are you sure to delete this record?"
-msgstr "Sind Sie sicher, dass Sie diesen Datensatz löschen wollen?"
+msgstr "Sind Sie sicher, dass Sie diesen Datensatz löschen möchten?"
 
 #. module: web_gantt
 #: model:ir.model,name:web_gantt.model_base
@@ -46,7 +46,7 @@ msgstr "Basis"
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Collapse rows"
-msgstr "Zeilen ausblenden"
+msgstr "Zeilen einklappen"
 
 #. module: web_gantt
 #. odoo-javascript
@@ -54,7 +54,7 @@ msgstr "Zeilen ausblenden"
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Create"
-msgstr "Anlegen"
+msgstr "Erstellen"
 
 #. module: web_gantt
 #. odoo-javascript
@@ -103,7 +103,7 @@ msgstr "Gantt muss ein „date_start“-Attribut haben"
 #: code:addons/web_gantt/models/ir_ui_view.py:0
 #, python-format
 msgid "Gantt must have a 'date_stop' attribute"
-msgstr "Gantt muss ein 'date_stop'-Attribut haben"
+msgstr "Gantt muss ein „date_stop“-Attribut haben"
 
 #. module: web_gantt
 #. odoo-python
@@ -121,7 +121,7 @@ msgstr ""
 #: code:addons/web_gantt/models/ir_ui_view.py:0
 #, python-format
 msgid "Gantt view can contain only one templates tag"
-msgstr "Gantt-Ansicht kann nur ein Vorlagentag beinhalten"
+msgstr "Gantt-Ansicht kann nur ein Vorlagen-Stichwort beinhalten"
 
 #. module: web_gantt
 #. odoo-javascript
@@ -186,21 +186,21 @@ msgstr "Weiter"
 #: code:addons/web_gantt/static/src/js/gantt_controller.js:0
 #, python-format
 msgid "Open"
-msgstr "Offen"
+msgstr "Öffnen"
 
 #. module: web_gantt
 #. odoo-javascript
 #: code:addons/web_gantt/static/src/js/gantt_controller.js:0
 #, python-format
 msgid "Plan"
-msgstr "Planung"
+msgstr "Planen"
 
 #. module: web_gantt
 #. odoo-javascript
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Plan existing"
-msgstr "Bestehender Plan"
+msgstr "Vorhandenes planen"
 
 #. module: web_gantt
 #. odoo-javascript
@@ -232,7 +232,7 @@ msgstr "Start:"
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Stop:"
-msgstr "Stop:"
+msgstr "Stopp:"
 
 #. module: web_gantt
 #. odoo-javascript
@@ -246,7 +246,7 @@ msgstr "Heute"
 #: code:addons/web_gantt/static/src/js/gantt_model.js:0
 #, python-format
 msgid "Undefined %s"
-msgstr "Undefiniert  %s"
+msgstr "%s Undefiniert"
 
 #. module: web_gantt
 #: model:ir.model,name:web_gantt.model_ir_ui_view

@@ -33,7 +33,8 @@ class SpreadsheetMixin(models.AbstractModel):
     def copy(self, default=None):
         self.ensure_one()
         new_spreadsheet = super().copy(default)
-        self.sudo()._copy_revisions_to(new_spreadsheet.sudo())
+        if not default or "spreadsheet_revision_ids" not in default:
+            self.sudo()._copy_revisions_to(new_spreadsheet.sudo())
         return new_spreadsheet
 
     def join_spreadsheet_session(self, share_id=None, access_token=None):

@@ -26,7 +26,7 @@
         }
     }
     .o_knowledge_embedded_view {
-        .o_content:not(.o_view_sample_data) .o_view_nocontent {
+        .o_content:not(.o_view_sample_data) .o_view_nocontent:not(.o_knowledge_item_calendar_nocontent) {
             display: none !important;
         }
         .breadcrumb {

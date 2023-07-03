@@ -168,16 +168,26 @@ export class ItemCalendarModel extends CalendarModel {
     /**
      * @override
      * Compute the domain used to fetch the items using the properties used as
-     * start and end date
+     * start and end date. The properties definition is used in the domain to
+     * make sure to not match records that still use the "previous" dateStart
+     * property when this property has been changed (if the type of a property
+     * changed, the property will be replaced by a new one but the change will
+     * be propagated to the records using that property when writing on them)
      */
     computeRangeDomain(data) {
         const { fieldMapping } = this.meta;
         const formattedEnd = serializeDateTime(data.range.end);
         const formattedStart = serializeDateTime(data.range.start);
 
-        const domain = [[`article_properties.${fieldMapping.date_start}`, "<=", formattedEnd]];
+        const domain = [
+            [`article_properties.${fieldMapping.date_start}`, "<=", formattedEnd],
+            ['parent_id.article_properties_definition', 'ilike', `"${fieldMapping.date_start}"`]
+        ];
         if (fieldMapping.date_stop) {
-            domain.push([`article_properties.${fieldMapping.date_stop}`, ">=", formattedStart]);
+            domain.push(
+                [`article_properties.${fieldMapping.date_stop}`, ">=", formattedStart],
+                ['parent_id.article_properties_definition', 'ilike', `"${fieldMapping.date_stop}"`]
+            );
         }
         return domain;
     }

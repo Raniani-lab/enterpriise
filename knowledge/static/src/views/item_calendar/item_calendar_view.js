@@ -8,17 +8,27 @@ import { calendarView } from '@web/views/calendar/calendar_view';
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { ItemCalendarModel } from "@knowledge/views/item_calendar/item_calendar_model";
 import { registry } from "@web/core/registry";
-import { onWillUpdateProps } from "@odoo/owl";
+import { onMounted, onWillUpdateProps } from "@odoo/owl";
 
 export class KnowledgeArticleItemsCalendarController extends CalendarController {
     static template = "knowledge.ArticleItemsCalendarController";
 
     setup() {
         super.setup();
+
+        onMounted(async () => {
+            // Show error message if the start date property is invalid (if it
+            // has been deleted or its type changed)
+            if (!this.model.meta.invalid && Object.keys(this.model.data.records).length === 0) {
+                const propertiesDefinition = await this.orm.read(this.props.resModel, [this.props.context.active_id], ["article_properties_definition"]);
+                this.state.missingConfiguration = !propertiesDefinition[0].article_properties_definition.some(property => property.name === this.props.itemCalendarProps.dateStartPropertyId);
+            }
+        });
         onWillUpdateProps((nextProps) => {
             // Udpate the model if the itemCalendarProps were updated
             if (JSON.stringify(this.props.itemCalendarProps) !== JSON.stringify(nextProps.itemCalendarProps)) {
                 this.updateModel(nextProps.itemCalendarProps);
+                this.state.missingConfiguration = false;
             }
         });
     }
@@ -84,6 +94,7 @@ export class KnowledgeArticleItemsCalendarController extends CalendarController 
             this.model.meta.canCreate = this.env.knowledgeArticleUserCanWrite;
             this.updateModel(this.props.itemCalendarProps);
         } else {
+            this.state.missingConfiguration = true;
             this.model.meta.invalid = true;
         }
     }

@@ -27,6 +27,14 @@
                 <ViewScaleSelector scales="scales" currentScale="model.scale" setScale.bind="setScale" />
             </div>
         </xpath>
+        <xpath expr="//div[@class='o_calendar_container']" position="inside">
+            <div t-if="state.missingConfiguration" class="o_view_nocontent o_knowledge_item_calendar_nocontent">
+                <div class="o_nocontent_help">
+                    <p class="o_view_nocontent_empty_folder"/>
+                    <p class="display-6">Missing Calendar configuration.</p>
+                </div>
+            </div>
+        </xpath>
     </t>
 
     <t t-name="knowledge.ArticleItemsCalendarCommonPopover.body" t-inherit="web.CalendarCommonPopover.body" owl="1">

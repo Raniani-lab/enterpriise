@@ -377,9 +377,8 @@ registry.category("web_tour.tours").add('knowledge_calendar_command_tour', {
 }, { // Go back to parent article
     trigger: '.o_knowledge_tree .o_article_name:contains("EditorCommandsArticle")',
     run: 'click',
-}, { // Make sure view is not crashed
-    trigger: '.o_knowledge_article_view_calendar_embedded_view',
-    extra_trigger: '.o_knowledge_behavior_type_embedded_view',
+}, { // Make sure view is not crashed and shows nocontent helper
+    trigger: '.o_knowledge_article_view_calendar_embedded_view .o_knowledge_item_calendar_nocontent',
     run: () => {},
 }, ...endKnowledgeTour()
 ]});

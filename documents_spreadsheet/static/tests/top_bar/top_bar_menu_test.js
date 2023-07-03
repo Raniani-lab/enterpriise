@@ -71,9 +71,14 @@ QUnit.module("documents_spreadsheet > Topbar Menu Items", {}, function () {
                 if (args.method === "copy" && args.model === "documents.document") {
                     assert.step("copy");
                     assert.equal(
-                        args.kwargs.default.handler,
-                        "spreadsheet",
-                        "It should be a spreadsheet document"
+                        args.kwargs.default.spreadsheet_snapshot,
+                        false,
+                        "It should reset the snapshot"
+                    );
+                    assert.deepEqual(
+                        args.kwargs.default.spreadsheet_revision_ids,
+                        [],
+                        "It should reset the revisions"
                     );
                     assert.equal(
                         args.kwargs.default.spreadsheet_data,

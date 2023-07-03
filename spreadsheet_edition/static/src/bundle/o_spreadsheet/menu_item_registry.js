@@ -13,21 +13,21 @@ const { topbarMenuRegistry } = spreadsheet.registries;
 topbarMenuRegistry.addChild("new_sheet", ["file"], {
     name: _t("New"),
     sequence: 10,
-    isVisible: (env) => !env.isDashboardSpreadsheet,
+    isVisible: (env) => env.newSpreadsheet,
     execute: (env) => env.newSpreadsheet(),
     icon: "o-spreadsheet-Icon.NEW",
 });
 topbarMenuRegistry.addChild("make_copy", ["file"], {
     name: _t("Make a copy"),
     sequence: 20,
-    isVisible: (env) => !env.isDashboardSpreadsheet,
+    isVisible: (env) => env.makeCopy,
     execute: (env) => env.makeCopy(),
     icon: "o-spreadsheet-Icon.COPY_FILE",
 });
 topbarMenuRegistry.addChild("save_as_template", ["file"], {
     name: _t("Save as template"),
     sequence: 40,
-    isVisible: (env) => !env.isDashboardSpreadsheet,
+    isVisible: (env) => env.saveAsTemplate,
     execute: (env) => env.saveAsTemplate(),
     icon: "o-spreadsheet-Icon.SAVE",
 });

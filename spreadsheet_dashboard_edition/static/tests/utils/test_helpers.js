@@ -1,10 +1,11 @@
 /** @odoo-module **/
-import { patchWithCleanup, makeDeferred } from "@web/../tests/helpers/utils";
+import { patchWithCleanup, makeDeferred, nextTick } from "@web/../tests/helpers/utils";
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 
 import {
     prepareWebClientForSpreadsheet,
     getSpreadsheetActionModel,
+    getSpreadsheetActionEnv,
 } from "@spreadsheet_edition/../tests/utils/webclient_helpers";
 import { DashboardEditAction } from "../../src/bundle/action/dashboard_edit_action";
 import { getDashboardBasicServerData } from "./test_data";
@@ -55,7 +56,11 @@ export async function createDashboardEditAction(params) {
         { clearBreadcrumbs: true } // Sometimes in test defining custom action, Odoo opens on the action instead of opening on root
     );
     await actionMountedDef;
-    return { model: getSpreadsheetActionModel(spreadsheetAction) };
+    await nextTick();
+    return {
+        model: getSpreadsheetActionModel(spreadsheetAction),
+        env: getSpreadsheetActionEnv(spreadsheetAction),
+    };
 }
 
 /**

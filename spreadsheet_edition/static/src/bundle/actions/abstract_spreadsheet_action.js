@@ -13,6 +13,7 @@ import { DataSources } from "@spreadsheet/data_sources/data_sources";
 import { initCallbackRegistry } from "@spreadsheet/o_spreadsheet/init_callbacks";
 
 import { loadSpreadsheetDependencies } from "@spreadsheet/helpers/helpers";
+import { RecordFileStore } from "../image/record_file_store";
 
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
 
@@ -50,6 +51,16 @@ export class AbstractSpreadsheetAction extends Component {
         this.http = useService("http");
         this.user = useService("user");
         this.ui = useService("ui");
+        /** @type {SpreadsheetCollaborativeService} */
+        this.spreadsheetCollaborative = useService("spreadsheet_collaborative");
+        this.fileStore = new RecordFileStore(this.resModel, this.resId, this.http, this.orm);
+        this.transportService = this.spreadsheetCollaborative.getCollaborativeChannel(
+            Component.env,
+            this.resModel,
+            this.resId,
+            this.shareId,
+            this.accessToken
+        );
         useSetupAction({
             beforeLeave: this._leaveSpreadsheet.bind(this),
             beforeUnload: this._leaveSpreadsheet.bind(this),
@@ -62,8 +73,6 @@ export class AbstractSpreadsheetAction extends Component {
             },
         });
         useSubEnv({
-            newSpreadsheet: this.createNewSpreadsheet.bind(this),
-            makeCopy: this._makeCopy.bind(this),
             download: this.download.bind(this),
             downloadAsJson: this.downloadAsJson.bind(this),
         });
@@ -168,16 +177,30 @@ export class AbstractSpreadsheetAction extends Component {
      * @param {SpreadsheetRecord} record
      */
     _initializeWith(record) {
-        throw new Error("not implemented by children");
+        this.state.spreadsheetName = record.name;
+        this.spreadsheetData = record.data;
+        this.stateUpdateMessages = record.revisions;
+        this.snapshotRequested = record.snapshot_requested;
+        this.isReadonly = record.isReadonly;
+        this.record = record;
     }
 
     /**
      * Make a copy of the current document
-     * @private
+     * @protected
      */
-    _makeCopy() {
+    async makeCopy() {
         const { data, thumbnail } = this.getSaveData();
-        this.makeCopy({ data, thumbnail });
+        const defaultValues = {
+            spreadsheet_data: JSON.stringify(data),
+            spreadsheet_snapshot: false,
+            spreadsheet_revision_ids: [],
+            thumbnail,
+        };
+        const id = await this.orm.call(this.resModel, "copy", [this.resId], {
+            default: defaultValues,
+        });
+        this._openSpreadsheet(id);
     }
 
     /**
@@ -191,21 +214,40 @@ export class AbstractSpreadsheetAction extends Component {
         }
     }
 
-    async makeCopy() {
-        throw new Error("not implemented by children");
+    async _onSpreadSheetNameChanged(detail) {
+        const { name } = detail;
+        this.state.spreadsheetName = name;
+        this.env.config.setDisplayName(this.state.spreadsheetName);
     }
+
     async createNewSpreadsheet() {
         throw new Error("not implemented by children");
     }
-    async onSpreadsheetLeft() {
-        throw new Error("not implemented by children");
+
+    async onSpreadsheetLeft({ thumbnail, data }) {
+        if (this.accessToken) {
+            return;
+        }
+        await this.orm.write(
+            this.resModel,
+            [this.resId],
+            this.onSpreadsheetLeftUpdateVals({ thumbnail, data })
+        );
+    }
+
+    onSpreadsheetLeftUpdateVals({ data, thumbnail }) {
+        return { thumbnail };
     }
 
     /**
      * @returns {Promise<SpreadsheetRecord>}
      */
     async _fetchData() {
-        throw new Error("not implemented by children");
+        return this.orm.call(this.resModel, "join_spreadsheet_session", [
+            this.resId,
+            this.shareId,
+            this.accessToken,
+        ]);
     }
 
     /**

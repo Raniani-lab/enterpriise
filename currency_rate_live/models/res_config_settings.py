@@ -8,12 +8,27 @@ import logging
 from pytz import timezone
 
 import requests
+import requests.adapters
+from urllib3.util.ssl_ import create_urllib3_context
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools.translate import _
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
-from odoo.addons.account.tools import LegacyHTTPAdapter
+
+class LegacyHTTPAdapter(requests.adapters.HTTPAdapter):
+    """ An adapter to allow unsafe legacy renegotiation necessary to connect to
+    gravely outdated ETA production servers.
+    """
+
+    def init_poolmanager(self, *args, **kwargs):
+        # This is not defined before Python 3.12
+        # cfr. https://github.com/python/cpython/pull/93927
+        # Origin: https://github.com/openssl/openssl/commit/ef51b4b9
+        OP_LEGACY_SERVER_CONNECT = 0x04
+        context = create_urllib3_context(options=OP_LEGACY_SERVER_CONNECT)
+        kwargs["ssl_context"] = context
+        return super().init_poolmanager(*args, **kwargs)
 
 BANXICO_DATE_FORMAT = '%d/%m/%Y'
 CBUAE_URL = "https://centralbank.ae/umbraco/Surface/Exchange/GetExchangeRateAllCurrency"

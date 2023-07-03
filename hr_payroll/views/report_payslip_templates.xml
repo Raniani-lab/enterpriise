@@ -85,43 +85,47 @@
                 <table class="table table-sm">
                     <thead class="o_black_border">
                         <tr>
-                            <th>Name</th>
-                            <th>Number of Hours</th>
-                            <th>Number of Days</th>
-                            <th class="text-end">Amount</th>
+                            <th id="line_header_name">Name</th>
+                            <th id="line_header_hours">Number of Hours</th>
+                            <th id="line_header_days">Number of Days</th>
+                            <th id="line_header_amount" class="text-end">Amount</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <span t-foreach="o.worked_days_line_ids" t-as="worked_days">
-                            <t t-if="worked_days.code != 'OUT'">
-                                <tr style="color:none">
-                                    <td>
-                                        <span t-field="worked_days.name"/>
-                                    </td>
-                                    <td><span t-field="worked_days.number_of_hours"/></td>
-                                    <td><span t-field="worked_days.number_of_days"/></td>
-                                    <td class="text-end"><span t-esc="worked_days.amount" digits="[42, 2]"
-                                            t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></td>
+                        <t id="worked_days_lines">
+                            <span t-foreach="o.worked_days_line_ids" t-as="worked_days">
+                                <t t-if="worked_days.code != 'OUT'">
+                                    <tr style="color:none">
+                                        <td id="worked_days_name">
+                                            <span t-field="worked_days.name"/>
+                                        </td>
+                                        <td id="worked_days_hours"><span t-field="worked_days.number_of_hours"/></td>
+                                        <td id="worked_days_days"><span t-field="worked_days.number_of_days"/></td>
+                                        <td id="worked_days_amount" class="text-end"><span t-esc="worked_days.amount" digits="[42, 2]"
+                                                t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'/></td>
+                                    </tr>
+                                </t>
+                            </span>
+                        </t>
+                        <t id="payslip_lines">
+                            <span t-foreach="o.line_ids.filtered(lambda line: line.appears_on_payslip)" t-as="line">
+                                <t t-set="line_styling" t-value="line.get_payslip_styling_dict()"/>
+                                <t t-set="line_style"/>
+                                <t t-set="line_class"/>
+                                <t t-if="line.code in line_styling">
+                                    <t t-set="line_style" t-value="line_styling[line.code]['line_style']"/>
+                                    <t t-set="line_class" t-value="line_styling[line.code]['line_class']"/>
+                                </t>
+                                <tr t-att-class="line_class" t-att-style="line_style" id="line_display">
+                                    <td id="payslip_line_name"><span t-field="line.name"/></td>
+                                    <td id="payslip_line_rate"></td>
+                                    <td id="payslip_line_quantity"><span t-if="line.quantity > 1" t-esc="line.quantity"/></td>
+                                    <td id="payslip_line_total" class="text-end"><span t-esc="line.total"
+                                            t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'
+                                            t-att-style="'color:#875A7B;' if line.total &lt; 0 else ''"/></td>
                                 </tr>
-                            </t>
-                        </span>
-                        <span t-foreach="o.line_ids.filtered(lambda line: line.appears_on_payslip)" t-as="line">
-                            <t t-set="line_styling" t-value="line.get_payslip_styling_dict()"/>
-                            <t t-set="line_style"/>
-                            <t t-set="line_class"/>
-                            <t t-if="line.code in line_styling">
-                                <t t-set="line_style" t-value="line_styling[line.code]['line_style']"/>
-                                <t t-set="line_class" t-value="line_styling[line.code]['line_class']"/>
-                            </t>
-                            <tr t-att-class="line_class" t-att-style="line_style" id="line_display">
-                                <td><span t-field="line.name"/></td>
-                                <td></td>
-                                <td><span t-if="line.quantity > 1" t-esc="line.quantity"/></td>
-                                <td class="text-end"><span t-esc="line.total"
-                                        t-options='{"widget": "monetary", "display_currency": o.company_id.currency_id}'
-                                        t-att-style="'color:#875A7B;' if line.total &lt; 0 else ''"/></td>
-                            </tr>
-                        </span>
+                            </span>
+                        </t>
                     </tbody>
                 </table>
             </div>

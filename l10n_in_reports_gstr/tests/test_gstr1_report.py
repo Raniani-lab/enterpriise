@@ -104,6 +104,9 @@ class TestReports(TestAccountReportsCommon):
         b2b_invoice_nongsttax = cls.l10n_in_reports_gstr1_inv_init(registered_partner_1, non_gst_supplies, invoice_line_vals={'price_unit': 500, 'quantity': 2})
         cls.l10n_in_reports_gstr1_inv_init(inv=b2b_invoice_nongsttax, invoice_line_vals={'quantity': 1})
 
+        # if no tax is applied then it will be out of scope and not considered in GSTR1
+        cls.l10n_in_reports_gstr1_inv_init(registered_partner_1, [], invoice_line_vals={'price_unit': 500, 'quantity': 2})
+
         cls.gstr_report = cls.env['l10n_in.gst.return.period'].create({
             'company_id': cls.company_data["company"].id,
             'periodicity': 'monthly',

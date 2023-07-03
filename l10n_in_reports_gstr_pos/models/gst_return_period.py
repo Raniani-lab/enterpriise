@@ -73,8 +73,8 @@ class L10nInReportAccount(models.Model):
 
         def _is_pos_order_line_matched_account_move_line(account_move_line, details_pos_line):
             return details_pos_line['account_id'] == account_move_line.account_id.id \
-                and (account_move_line.credit > 0.00 and details_pos_line['price_subtotal'] > 0.00) \
-                or (account_move_line.debit > 0.00 and details_pos_line['price_subtotal'] < 0.00) \
+                and ((account_move_line.credit > 0.00 and details_pos_line['price_subtotal'] > 0.00) \
+                or (account_move_line.debit > 0.00 and details_pos_line['price_subtotal'] < 0.00)) \
                 and details_pos_line['tax_ids'] == account_move_line.tax_ids.ids
 
         pos_journal_items = journal_items.filtered(lambda l: l.move_id.l10n_in_pos_session_ids and l.move_id.move_type == "entry")
@@ -132,26 +132,26 @@ class L10nInReportAccount(models.Model):
     def _get_section_domain(self, section_code):
         domain = super()._get_section_domain(section_code)
         if section_code == "b2cs":
-            domain.remove(("move_id.move_type", "in", ["out_invoice", "out_refund"]))
+            domain.remove(("move_id.move_type", "in", ["out_invoice", "out_refund", "out_receipt"]))
             domain.remove(("move_id.l10n_in_gst_treatment", "in", ("unregistered", "consumer", "composition")))
             domain += ["|",
-            "&", ("move_id.move_type", "in", ["out_invoice", "out_refund"]),
+            "&", ("move_id.move_type", "in", ["out_invoice", "out_refund", "out_receipt"]),
                 ("move_id.l10n_in_gst_treatment", "in", ("unregistered", "consumer", "composition")),
             "&", ("move_id.move_type", "=", "entry"),
                 ("move_id.l10n_in_pos_session_ids", "!=", False)
             ]
         if section_code == "nil":
-            domain.remove(("move_id.move_type", "in", ["out_invoice", "out_refund"]))
+            domain.remove(("move_id.move_type", "in", ["out_invoice", "out_refund", "out_receipt"]))
             domain += ["|", "&",
                 ("move_id.move_type", "=", "entry"),
                 ("move_id.l10n_in_pos_session_ids", "!=", False),
-                ("move_id.move_type", "in", ["out_invoice", "out_refund"]),
+                ("move_id.move_type", "in", ["out_invoice", "out_refund", "out_receipt"]),
             ]
         if section_code == "hsn":
-            domain.remove(("move_id.move_type", "in", ["out_invoice", "out_refund"]))
+            domain.remove(("move_id.move_type", "in", ["out_invoice", "out_refund", "out_receipt"]))
             domain += ["|", "&",
                 ("move_id.move_type", "=", "entry"),
                 ("move_id.l10n_in_pos_session_ids", "!=", False),
-                ("move_id.move_type", "in", ["out_invoice", "out_refund"]),
+                ("move_id.move_type", "in", ["out_invoice", "out_refund", "out_receipt"]),
             ]
         return domain

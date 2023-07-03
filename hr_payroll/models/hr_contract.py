@@ -229,7 +229,7 @@ class HrContract(models.Model):
 
             for interval in credit_time_intervals:
                 work_entry_type_id = contract.time_credit_type_id
-                contract_vals += [{
+                new_vals = {
                     'name': "%s: %s" % (work_entry_type_id.name, employee.name),
                     'date_start': interval[0].astimezone(pytz.utc).replace(tzinfo=None),
                     'date_stop': interval[1].astimezone(pytz.utc).replace(tzinfo=None),
@@ -238,7 +238,11 @@ class HrContract(models.Model):
                     'contract_id': contract.id,
                     'company_id': contract.company_id.id,
                     'state': 'draft',
-                }]
+                }
+                # YTI TODO: Clean this brol in master
+                if 'is_credit_time' in self.env['hr.work.entry']:
+                    new_vals['is_credit_time'] = True
+                contract_vals.append(new_vals)
         return contract_vals
 
     def _get_work_time_rate(self):

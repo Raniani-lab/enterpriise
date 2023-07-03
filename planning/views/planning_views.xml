@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <tree string="Shift List" multi_edit="1" sample="1" editable="top">
                 <field name="resource_id" groups="planning.group_planning_user" widget="many2one_avatar_resource" optional="show"
-                    attrs="{'readonly': ['|', ('start_datetime', '=', False), ('end_datetime', '=', False)]}" context="{'show_job_title': True}"/>
+                    attrs="{'readonly': ['|', ('start_datetime', '=', False), ('end_datetime', '=', False)]}" context="{'show_job_title': True, 'form_view_ref': 'planning.resource_resource_with_employee_form_view_inherit'}"/>
                 <field name="resource_type" invisible="1"/>
                 <field name="role_id" optional="show" attrs="{'invisible': [('resource_type', '=', 'material')]}" placeholder="e.g. Bartender"/>
                 <field name="company_id" groups="base.group_multi_company" optional="hide" readonly="1"/>

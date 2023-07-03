@@ -131,6 +131,7 @@ class PlanningSlot(models.Model):
     def create(self, vals_list):
         res = super().create(vals_list)
         if res.sale_line_id:
+            res.sale_line_id.sudo()._compute_planning_hours_planned()  # ensure it is computed before doing postprocess
             res.sale_line_id.sudo()._post_process_planning_sale_line(ids_to_exclude=res.ids)
         return res
 

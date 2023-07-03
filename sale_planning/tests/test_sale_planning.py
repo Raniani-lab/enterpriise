@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details
+
+import pytz
+
 from math import ceil
 from datetime import datetime, timedelta
 from freezegun import freeze_time
@@ -313,3 +316,46 @@ class TestSalePlanning(TestCommonSalePlanning):
         self.assertEqual(copy.allocated_percentage, 0)
         self.assertEqual(copy.allocated_hours, 0)
         self.assertEqual(copy.end_datetime, copy_start + timedelta(hours=1))
+
+    def test_copy_previous_week_with_slot_to_plan(self):
+        so = self.env['sale.order'].create({
+            'partner_id': self.planning_partner.id,
+        })
+        sol = self.env['sale.order.line'].create({
+            'product_id': self.plannable_product.id,
+            'product_uom_qty': 10,
+            'order_id': so.id,
+        })
+        so.action_confirm()
+
+        PlanningSlot = self.env['planning.slot']
+        slot_to_plan = PlanningSlot.search([('start_datetime', '=', False), ('sale_line_id', '=', sol.id)])
+        self.assertEqual(len(slot_to_plan), 1)
+        start = datetime(2019, 6, 25, 8, 0, tzinfo=pytz.utc)
+        slot = PlanningSlot.create({
+            'start_datetime': start.replace(tzinfo=None),
+            'end_datetime': (start + timedelta(hours=5)).replace(tzinfo=None),
+            'sale_line_id': sol.id,
+        })
+        self.assertEqual(slot.allocated_hours, 5)
+        self.assertEqual(slot_to_plan.allocated_hours, 5)
+        copy_start = start + timedelta(weeks=1)
+        PlanningSlot.action_copy_previous_week(
+            str(copy_start.replace(tzinfo=None)),
+            [],
+        )
+        copy = PlanningSlot.search([
+            ('start_datetime', '=', copy_start),
+            ('sale_line_id', '=', sol.id),
+        ])
+        self.assertEqual(len(copy), 1)
+        self.assertFalse(slot_to_plan.exists())
+        PlanningSlot = PlanningSlot.with_context(
+            default_start_datetime='2021-07-25 00:00:00',
+            default_end_datetime='2021-07-31 23:59:59',
+            scale='week',
+            focus_date='2021-07-31 00:00:00',
+            planning_gantt_active_sale_order_id=so.id,
+        )
+        shifts = PlanningSlot.auto_plan_ids([('start_datetime', '=', '2019-07-01 00:00:00'), ('end_datetime', '=', '2019-07-07 23:59:59')])
+        self.assertEqual(len(shifts), 0)

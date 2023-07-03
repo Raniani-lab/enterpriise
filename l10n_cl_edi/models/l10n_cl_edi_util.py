@@ -227,6 +227,7 @@ class L10nClEdiUtilMixin(models.AbstractModel):
         http://www.sii.cl/factura_electronica/factura_mercado/instructivo_emision.pdf
         """
         digest_value = Markup(re.sub(r'\n\s*$', '', message, flags=re.MULTILINE))
+        digest_value_tree = etree.tostring(etree.fromstring(digest_value)[0])
         if xml_type in ['doc', 'recep', 'token']:
             signed_info_template = 'l10n_cl_edi.signed_info_template'
         else:
@@ -234,7 +235,7 @@ class L10nClEdiUtilMixin(models.AbstractModel):
         signed_info = self.env['ir.qweb']._render(signed_info_template, {
             'uri': '#{}'.format(uri),
             'digest_value': base64.b64encode(
-                self._get_sha1_digest(etree.tostring(etree.fromstring(digest_value)[0], method='c14n'))).decode(),
+                self._get_sha1_digest(etree.tostring(etree.fromstring(digest_value_tree), method='c14n'))).decode(),
         })
         signed_info_c14n = Markup(etree.tostring(etree.fromstring(signed_info), method='c14n', exclusive=False,
                                           with_comments=False, inclusive_ns_prefixes=None).decode())

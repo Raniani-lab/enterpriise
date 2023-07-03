@@ -126,13 +126,10 @@ export class AccountReportLineCell extends Component {
     // Carryover popover
     //------------------------------------------------------------------------------------------------------------------
     carryoverPopover(ev) {
-        const close = () => {
+        if (this.popoverCloseFn) {
             this.popoverCloseFn();
             this.popoverCloseFn = null;
         }
-
-        if (this.popoverCloseFn)
-            close();
 
         this.popoverCloseFn = this.popover.add(
             ev.currentTarget,
@@ -141,7 +138,6 @@ export class AccountReportLineCell extends Component {
                 carryoverData: JSON.parse(this.props.cell.info_popup_data),
                 options: this.controller.options,
                 context: this.controller.context,
-                onClose: close,
             },
             {
                 closeOnClickAway: true,

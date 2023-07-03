@@ -41,7 +41,9 @@
                     <tr>
                         <td/>
                         <td>
-                            <button t-on-click="() => this.viewCarryoverLinesAction(ev, props.carryoverData.expression_id)">
+                            <button
+                                t-on-click="() => this.viewCarryoverLinesAction(props.carryoverData.expression_id)"
+                            >
                                 View Carryover Lines
                             </button>
                         </td>

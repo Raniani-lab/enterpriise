@@ -8,11 +8,13 @@ export class AccountReportCarryoverPopover extends Component {
     static props = {
         close: Function,
         carryoverData: Object,
-        onClose: Function,
+        options: Object,
+        context: Object,
     };
 
     setup() {
         this.actionService = useService("action");
+        this.orm = useService("orm");
     }
 
     //------------------------------------------------------------------------------------------------------------------

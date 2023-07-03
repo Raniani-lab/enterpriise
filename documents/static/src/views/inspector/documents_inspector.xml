@@ -179,23 +179,23 @@
                 <tbody>
                     <t t-if="nbPreviews === 1">
                         <t t-call="documents.DocumentsInspector.field">
-                            <t t-set="field">name</t>
+                            <t t-set="field" t-translation="off">name</t>
                         </t>
                         <t t-if="records[0].data.type === 'url'" t-call="documents.DocumentsInspector.field">
-                            <t t-set="field">url</t>
+                            <t t-set="field" t-translation="off">url</t>
                         </t>
                     </t>
                     <t t-call="documents.DocumentsInspector.field">
-                        <t t-set="field">partner_id</t>
+                        <t t-set="field" t-translation="off">partner_id</t>
                         <t t-set="additionalProps" t-value="{canOpen: false}"/>
                     </t>
                     <t t-call="documents.DocumentsInspector.field">
-                        <t t-set="field">owner_id</t>
+                        <t t-set="field" t-translation="off">owner_id</t>
                         <t t-set="additionalProps" t-value="{canOpen: false, canCreate: false, canCreateEdit: false, canQuickCreate: false}"/>
                     </t>
                     <t t-call="documents.DocumentsInspector.field">
-                        <t t-set="icon">fa fa-folder text-odoo</t>
-                        <t t-set="field">folder_id</t>
+                        <t t-set="icon" t-translation="off">fa fa-folder text-odoo</t>
+                        <t t-set="field" t-translation="off">folder_id</t>
                         <t t-set="additionalProps" t-value="{canOpen: false, canCreate: false, canCreateEdit: false, canQuickCreate: false}"/>
                     </t>
                     <tr class="o_inspector_divider"/>

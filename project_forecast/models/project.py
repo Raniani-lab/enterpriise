@@ -59,6 +59,7 @@ class Project(models.Model):
             'additional_context': json.dumps({
                 'active_id': self.id,
             }),
+            'show': True,
             'sequence': 12,
         })
         return buttons

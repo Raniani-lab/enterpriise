@@ -673,6 +673,8 @@ class HrPayslip(models.Model):
             'float_compare': float_compare,
             "relativedelta": relativedelta,
             'UserError': UserError,
+            'date': date,
+            'datetime': datetime,
         }
 
     def _get_localdict(self):

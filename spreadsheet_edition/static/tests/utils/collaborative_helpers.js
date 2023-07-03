@@ -9,18 +9,18 @@ import { registry } from "@web/core/registry";
 import { makeFakeLocalizationService } from "@web/../tests/helpers/mock_services";
 import { DataSources } from "@spreadsheet/data_sources/data_sources";
 import { setupDataSourceEvaluation } from "@spreadsheet/../tests/utils/model";
-import { spreadsheetCollaborativeService } from "@spreadsheet_edition/bundle/o_spreadsheet/collaborative/spreadsheet_collaborative_service";
 
 const serviceRegistry = registry.category("services");
 
 export function makeFakeSpreadsheetService() {
     return {
-        ...spreadsheetCollaborativeService,
+        dependencies: [],
         start() {
-            const fakeSpreadsheetService = spreadsheetCollaborativeService.start(...arguments);
-            fakeSpreadsheetService.getCollaborativeChannel = () =>
-                new MockSpreadsheetCollaborativeChannel();
-            return fakeSpreadsheetService;
+            return {
+                makeCollaborativeChannel() {
+                    return new MockSpreadsheetCollaborativeChannel();
+                },
+            };
         },
     };
 }

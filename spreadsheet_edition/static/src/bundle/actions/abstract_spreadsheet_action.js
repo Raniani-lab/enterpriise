@@ -51,11 +51,9 @@ export class AbstractSpreadsheetAction extends Component {
         this.http = useService("http");
         this.user = useService("user");
         this.ui = useService("ui");
-        /** @type {SpreadsheetCollaborativeService} */
-        this.spreadsheetCollaborative = useService("spreadsheet_collaborative");
         this.fileStore = new RecordFileStore(this.resModel, this.resId, this.http, this.orm);
-        this.transportService = this.spreadsheetCollaborative.getCollaborativeChannel(
-            Component.env,
+        const spreadsheetService = useService("spreadsheet_collaborative");
+        this.transportService = spreadsheetService.makeCollaborativeChannel(
             this.resModel,
             this.resId,
             this.shareId,

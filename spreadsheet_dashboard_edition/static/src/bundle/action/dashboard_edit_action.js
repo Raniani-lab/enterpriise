@@ -6,12 +6,6 @@ import SpreadsheetComponent from "@spreadsheet_edition/bundle/actions/spreadshee
 import { SpreadsheetControlPanel } from "@spreadsheet_edition/bundle/actions/control_panel/spreadsheet_control_panel";
 import { _t } from "@web/core/l10n/translation";
 
-/**
- * @typedef {import("@spreadsheet_edition/bundle/actions/abstract_spreadsheet_action").SpreadsheetRecord} SpreadsheetRecord
-
- * @typedef {import("@spreadsheet_edition/bundle/o_spreadsheet/collaborative/spreadsheet_collaborative_service").SpreadsheetCollaborativeService} SpreadsheetCollaborativeService
- */
-
 import { useSubEnv } from "@odoo/owl";
 
 export class DashboardEditAction extends AbstractSpreadsheetAction {

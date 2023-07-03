@@ -13,6 +13,7 @@
  * push them in the long polling bus for other clients.
  */
 export default class SpreadsheetCollaborativeChannel {
+    static dependencies = ["bus_service", "orm"];
     /**
      * @param {Env} env
      * @param {string} resModel model linked to the spreadsheet
@@ -22,6 +23,7 @@ export default class SpreadsheetCollaborativeChannel {
      */
     constructor(env, resModel, resId, shareId, accessToken) {
         this.env = env;
+        this.orm = env.services.orm.silent;
         this.resId = resId;
         this.resModel = resModel;
         this.shareId = shareId;
@@ -63,14 +65,12 @@ export default class SpreadsheetCollaborativeChannel {
      * @param {Object} message
      */
     sendMessage(message) {
-        return this.env.services.rpc(
-            {
-                model: this.resModel,
-                method: "dispatch_spreadsheet_message",
-                args: [this.resId, message, this.shareId, this.accessToken],
-            },
-            { shadow: true }
-        );
+        return this.orm.call(this.resModel, "dispatch_spreadsheet_message", [
+            this.resId,
+            message,
+            this.shareId,
+            this.accessToken,
+        ]);
     }
 
     /**

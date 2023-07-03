@@ -1,7 +1,11 @@
 /** @odoo-module */
 
+import { registry } from "@web/core/registry";
+import { ormService } from "@web/core/orm_service";
+
+import { makeTestEnv } from "@web/../tests/helpers/mock_env";
+
 import SpreadsheetCollaborativeChannel from "@spreadsheet_edition/bundle/o_spreadsheet/collaborative/spreadsheet_collaborative_channel";
-import makeTestEnvironment from "@web/../tests/legacy/helpers/test_env";
 
 import { EventBus } from "@odoo/owl";
 
@@ -25,16 +29,23 @@ class MockBusService {
 }
 
 QUnit.module("spreadsheet_edition > SpreadsheetCollaborativeChannel", {
-    beforeEach: function () {
+    beforeEach: async function () {
         const busService = new MockBusService();
         const rpc = function (route, params) {
             // Mock the server behavior: new revisions are pushed in the bus
             if (params.method === "dispatch_spreadsheet_message") {
                 const [documentId, message] = params.args;
                 busService.notify({ type: "spreadsheet", payload: { id: documentId, message } });
+                return true;
             }
         };
-        this.env = makeTestEnvironment({ services: { bus_service: busService } }, rpc);
+        registry.category("services").add("orm", ormService);
+        registry.category("services").add("bus_service", {
+            start: () => busService,
+        });
+        this.env = await makeTestEnv({
+            mockRPC: rpc,
+        });
     },
 });
 

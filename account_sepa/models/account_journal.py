@@ -263,6 +263,18 @@ class AccountJournal(models.Model):
             Cd = etree.SubElement(SvcLvl, "Cd")
             Cd.text = 'SEPA'
 
+        # 1/ the SALA purpose code is standard for all SEPA, and guarantees a series
+        #    of things in instant payment: https://www.sepaforcorporates.com/sepa-payments/sala-sepa-salary-payments.
+        # 2/ the "High" priority level is also an attribute of the payment
+        #    that we should specify as well for salary payments
+        #    See https://www.febelfin.be/sites/default/files/2019-04/standard-credit_transfer-xml-v32-en_0.pdf section 2.6
+        if self.env.context.get('sepa_payroll_sala'):
+            InstrPrty = etree.SubElement(PmtTpInf, "InstrPrty")
+            InstrPrty.text = 'HIGH'
+            CtgyPurp = etree.SubElement(PmtTpInf, "CtgyPurp")
+            Cd = etree.SubElement(CtgyPurp, "Cd")
+            Cd.text = 'SALA'
+
         return PmtTpInf
 
     def _get_Dbtr(self, pain_version, sct_generic=False):
@@ -439,6 +451,27 @@ class AccountJournal(models.Model):
         else:
             Ustrd = etree.SubElement(RmtInf, "Ustrd")
             Ustrd.text = sanitize_communication(payment['ref'])
+            # sanitize_communication() automatically removes leading slash
+            # characters in payment references, due to the requirements of
+            # European Payment Council, available here:
+            # https://www.europeanpaymentscouncil.eu/document-library/implementation-guidelines/sepa-credit-transfer-customer-psp-implementation
+            # (cfr Section 1.4 Character Set)
+
+            # However, the /A/  four-character prefix is a requirement of belgian law.
+            # The existence of such legal prefixes may be a reason why the leading slash
+            # is forbidden in normal SEPA payment references, to avoid conflicts.
+
+            # Legal references for Belgian salaries:
+            # https://www.ejustice.just.fgov.be/eli/loi/1967/10/10/1967101056/justel#Art.1411bis
+            # Article 1411bis of Belgian Judicial Code mandating the use of special codes
+            # for identifying payments of protected amounts, and the related penalties
+            # for payment originators, in case of misuse.
+
+            # https://www.ejustice.just.fgov.be/eli/arrete/2006/07/04/2006009525/moniteur
+            # Royal Decree defining "/A/ " as the code for salaries, in the context of
+            # Article 1411bis
+            if self.env.context.get('l10n_be_hr_payroll_sepa_salary_payment'):
+                Ustrd.text = f"/A/ {Ustrd.text}"
         return RmtInf
 
     def _is_qr_iban(self, payment_dict):

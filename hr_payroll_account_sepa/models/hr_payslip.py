@@ -64,21 +64,24 @@ class HrPayslip(models.Model):
                 sct_generic = True
 
         # Generate XML File
-        xml_doc = journal_id.sudo().create_iso20022_credit_transfer(payments_data, True, sct_generic)
+        xml_doc = journal_id.sudo().with_context(
+            sepa_payroll_sala=True,
+            l10n_be_hr_payroll_sepa_salary_payment=journal_id.company_id.account_fiscal_country_id.code == "BE"
+        ).create_iso20022_credit_transfer(payments_data, True, sct_generic)
         xml_binary = base64.encodebytes(xml_doc)
 
         # Save XML file on the payslip
         self.write({
             'sepa_export_date': fields.Date.today(),
             'sepa_export': xml_binary,
-            'sepa_export_filename': (file_name or 'SEPA_export') + '.xml',
+            'sepa_export_filename': (file_name or 'SEPA_export') + ('.xml' if file_name and not file_name.endswith('.xml') else ''),
         })
 
         # Set payslip runs to paid state, if needed
         self.mapped('payslip_run_id').write({
             'sepa_export_date': fields.Date.today(),
             'sepa_export': xml_binary,
-            'sepa_export_filename': (file_name or 'SEPA_export') + '.xml',
+            'sepa_export_filename': (file_name or 'SEPA_export') + ('.xml' if file_name and not file_name.endswith('.xml') else ''),
         })
         payslip_runs = self.mapped('payslip_run_id').filtered(
             lambda run: run.state == 'close' and all(slip.state in ['paid', 'cancel'] for slip in run.slip_ids))

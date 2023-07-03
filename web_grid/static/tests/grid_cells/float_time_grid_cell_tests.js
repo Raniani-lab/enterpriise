@@ -68,6 +68,9 @@ QUnit.module("Grid Cells", (hook) => {
         await hoverGridCell(cell);
         await nextTick();
         assert.containsOnce(target, ".o_grid_cell", "The component should be mounted");
+        if (!target.querySelectorAll(".o_grid_cell span").length) {
+            await nextTick();
+        }
         assert.containsOnce(
             target,
             ".o_grid_cell span",

@@ -477,7 +477,7 @@ services reception has been received as well.
             if self.company_id.l10n_cl_dte_service_provider == 'SIIDEMO':
                 msg += _(' -- Response simulated in Demo Mode')
         else:
-            msg = _('Document %s failed with the following response:') % (action_response[status_type].desciption) + \
+            msg = _('Document %s failed with the following response:') % (action_response[status_type].description) + \
                   '<br/><strong>%s: %s.</strong>' % (cod_response, description_response)
             if cod_response == 9 and self.company_id.l10n_cl_dte_service_provider == 'SIITEST':
                 msg += _('<br/><br/>If you are trying to test %s of documents, you should send this %s as a vendor '

@@ -1,69 +1,39 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from collections import defaultdict
-import pytz
 
 from pytz import timezone
 
-from odoo import fields, models
+from odoo import models
 from odoo.addons.hr_work_entry_contract.models.hr_work_intervals import WorkIntervals
+
 
 class HrContract(models.Model):
     _inherit = 'hr.contract'
 
-    work_entry_source = fields.Selection(
-        selection_add=[('attendance', 'Attendances')],
-        ondelete={'attendance': 'set default'},
-    )
-
-    def _get_more_vals_attendance_interval(self, interval):
-        result = super()._get_more_vals_attendance_interval(interval)
-        if interval[2]._name == 'hr.attendance':
-            result.append(('attendance_id', interval[2].id))
-        return result
-
     def _get_attendance_intervals(self, start_dt, end_dt):
         ##################################
-        #   ATTENDANCE BASED CONTRACTS   #
+        #   PLANNING BASED CONTRACTS     #
         ##################################
-        attendance_based_contracts = self.filtered(lambda c: c.work_entry_source == 'attendance')
-        search_domain = [
-            ('employee_id', 'in', attendance_based_contracts.employee_id.ids),
-            ('check_in', '<', end_dt),
-            ('check_out', '>', start_dt), # We ignore attendances which don't have a check_out
-        ]
-        resource_ids = attendance_based_contracts.employee_id.resource_id.ids
-        attendances = self.env['hr.attendance'].sudo().search(search_domain) if attendance_based_contracts\
-            else self.env['hr.attendance']
-        intervals = defaultdict(list)
-        for attendance in attendances:
-            intervals[attendance.employee_id.resource_id.id].append((
-                max(start_dt, pytz.utc.localize(attendance.check_in)),
-                min(end_dt, pytz.utc.localize(attendance.check_out)),
-                attendance))
-        mapped_intervals = {r: WorkIntervals(intervals[r]) for r in resource_ids}
-        mapped_intervals.update(super()._get_attendance_intervals(
-            start_dt, end_dt))
+        mapped_intervals = super()._get_attendance_intervals(start_dt, end_dt)
 
-        ##################################
-        #   CALENDAR BASED CONTRACTS     #
-        ##################################
-        calendar_based_contracts = self.filtered(lambda c: c.work_entry_source == 'calendar' and c.company_id.hr_attendance_overtime)
-        if not calendar_based_contracts:
+        planning_based_contracts = self.filtered(lambda c: c.work_entry_source == 'planning' and c.company_id.hr_attendance_overtime)
+        if not planning_based_contracts:
+            return mapped_intervals
+
+        attendances = self.env['hr.attendance'].sudo().search([
+            ('employee_id', 'in', planning_based_contracts.employee_id.ids),
+            ('check_in', '<=', end_dt),
+            ('check_out', '>=', start_dt), #We ignore attendances without check_out date
+        ])
+        if not attendances:
             return mapped_intervals
 
         public_leaves = self.env['resource.calendar.leaves'].search([
             ('resource_id', '=', False),
             '|', ('calendar_id', '=', False), ('calendar_id', 'in', self.resource_calendar_id.ids),
             ('date_from', '>=', start_dt),
-            ('date_to', '<=', end_dt)
-        ])
-
-        attendances = self.env['hr.attendance'].sudo().search([
-            ('employee_id', 'in', calendar_based_contracts.employee_id.ids),
-            ('check_in', '<=', end_dt),
-            ('check_out', '>=', start_dt), #We ignore attendances without check_out date
+            ('date_to', '<=', end_dt),
         ])
 
         resource_ids = attendances.employee_id.resource_id.ids
@@ -79,8 +49,6 @@ class HrContract(models.Model):
                 start = interval[0]
                 day = (start.year, start.month, start.day)
                 work_intervals_by_resource_day[resource_id][day].append(interval)
-
-        lunch_intervals_by_resource = self._get_lunch_intervals(start_dt, end_dt)
 
         for attendance in attendances:
             resource = attendance.employee_id.resource_id
@@ -110,8 +78,7 @@ class HrContract(models.Model):
                         if end > check_out_tz:
                             new_work_intervals.append((check_out_tz, end, calendar_attendance))
                 work_intervals = WorkIntervals(new_work_intervals)
-            lunch_intervals = lunch_intervals_by_resource.get(resource.id, WorkIntervals([]))
-            overtime_intervals = attendance_intervals - work_intervals - lunch_intervals
+            overtime_intervals = attendance_intervals - work_intervals
             if self.company_id.overtime_company_threshold:
                 overtime_intervals = WorkIntervals([
                     (start, end, calendar_attendance) \
@@ -119,23 +86,3 @@ class HrContract(models.Model):
                     if (end - start).seconds / 60 > self.company_id.overtime_company_threshold])
             work_intervals_by_resources[resource.id] = work_intervals | overtime_intervals
         return work_intervals_by_resources
-
-    def _get_interval_work_entry_type(self, interval):
-        self.ensure_one()
-        if self.work_entry_source == 'attendance': # The overtimes are only in the case of a contract based on the calendar
-            return super()._get_interval_work_entry_type(interval)
-        if 'overtime_work_entry_type_id' in interval[2] and interval[2].overtime_work_entry_type_id[:1]:
-            return interval[2].overtime_work_entry_type_id[:1]
-        if isinstance(interval[2], self.env['hr.attendance'].__class__):
-            return self.env.ref('hr_work_entry.overtime_work_entry_type')
-        return super()._get_interval_work_entry_type(interval)
-
-    def _get_valid_leave_intervals(self, attendances, interval):
-        self.ensure_one()
-        badge_attendances = WorkIntervals([
-            (start, end, record) for (start, end, record) in attendances \
-            if start <= interval[1] and end > interval[0] and isinstance(record, self.env['hr.attendance'].__class__)])
-        if badge_attendances:
-            leave_interval = WorkIntervals([interval])
-            return list(leave_interval - badge_attendances)
-        return super()._get_valid_leave_intervals(attendances, interval)

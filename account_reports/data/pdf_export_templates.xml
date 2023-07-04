@@ -142,7 +142,7 @@
                     </t>
                 </div>
                 <div class="col-12">
-                    <t t-if="options.get('available_horizontal_groups') != None">
+                    <t t-if="options.get('available_horizontal_groups') != []">
                         <t t-call="account_reports.template_horizontal_group_display"/>
                     </t>
                 </div>
@@ -158,7 +158,9 @@
                     </t>
                 </div>
                 <div class="col-12" name="pdf_options_header">
-                    <t t-call="account_reports.filter_extra_options_template"/>
+                    <t t-if="not options.get('closing_entry')">
+                        <t t-call="account_reports.filter_extra_options_template"/>
+                    </t>
                 </div>
             </div>
         </div>

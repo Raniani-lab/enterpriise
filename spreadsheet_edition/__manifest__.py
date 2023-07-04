@@ -31,7 +31,6 @@
         ],
         'web.qunit_suite_tests': [
             'spreadsheet_edition/static/tests/**/*',
-            ('include', 'spreadsheet.o_spreadsheet'),
         ],
         'web.qunit_mobile_suite_tests': [
             'spreadsheet_edition/static/tests/utils/mock_server.js',

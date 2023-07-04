@@ -26,6 +26,17 @@ export class DashboardEditAction extends AbstractSpreadsheetAction {
             name,
         });
     }
+
+    async shareSpreadsheet(data, excelExport) {
+        const url = await this.orm.call("spreadsheet.dashboard.share", "action_get_share_url", [
+            {
+                dashboard_id: this.resId,
+                spreadsheet_data: JSON.stringify(data),
+                excel_files: excelExport.files,
+            },
+        ]);
+        return url;
+    }
 }
 
 DashboardEditAction.template = "spreadsheet_dashboard_edition.DashboardEditAction";

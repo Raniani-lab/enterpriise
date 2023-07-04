@@ -189,6 +189,68 @@ QUnit.module(
             assert.verifySteps(["share url copied"]);
         });
 
+        QUnit.test("changing contents will recreate the share", async function (assert) {
+            const spreadsheetId = 789;
+            const model = new Model();
+            const serverData = getBasicServerData();
+            let counter = 0;
+            serverData.models["documents.document"].records = [
+                {
+                    name: "My spreadsheet",
+                    id: spreadsheetId,
+                    spreadsheet_data: JSON.stringify(model.exportData()),
+                    folder_id: 465,
+                },
+            ];
+            patchWithCleanup(browser, {
+                navigator: {
+                    clipboard: {
+                        writeText: (url) => {},
+                    },
+                },
+            });
+            const { model: newModel } = await createSpreadsheet({
+                serverData,
+                spreadsheetId,
+                mockRPC: async function (route, args) {
+                    if (args.method === "action_get_share_url") {
+                        return `localhost:8069/share/url/${++counter}`;
+                    }
+                },
+            });
+            await click(target, "i.fa-share-alt");
+            await nextTick();
+            assert.strictEqual(
+                target.querySelector(".o_field_CopyClipboardChar").innerText,
+                "localhost:8069/share/url/1"
+            );
+
+            await click(target, "i.fa-share-alt"); // close share dropdown
+
+            await click(target, "i.fa-share-alt");
+            await nextTick();
+            assert.strictEqual(
+                target.querySelector(".o_field_CopyClipboardChar").innerText,
+                "localhost:8069/share/url/1"
+            );
+
+            await click(target, "i.fa-share-alt"); // close share dropdown
+            newModel.dispatch("UPDATE_CELL", {
+                col: 0,
+                row: 1,
+                sheetId: newModel.getters.getActiveSheetId(),
+                content: "I am new value",
+            });
+            await nextTick();
+
+            await click(target, "i.fa-share-alt");
+            await nextTick();
+            assert.strictEqual(
+                target.querySelector(".o_field_CopyClipboardChar").innerText,
+                "localhost:8069/share/url/2"
+            );
+        });
+
         QUnit.test("toggle favorite", async function (assert) {
             assert.expect(5);
             await createSpreadsheet({

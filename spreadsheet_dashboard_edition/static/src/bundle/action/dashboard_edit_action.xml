@@ -6,6 +6,7 @@
             model="model"
             spreadsheetName="state.spreadsheetName"
             isReadonly="isReadonly"
+            onSpreadsheetShared.bind="shareSpreadsheet"
             onSpreadsheetNameChanged.bind="_onSpreadSheetNameChanged" />
         <SpreadsheetComponent model="model"/>
     </div>

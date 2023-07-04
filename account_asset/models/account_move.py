@@ -53,11 +53,11 @@ class AccountMove(models.Model):
         for move in self:
             asset = move.asset_id or move.reversed_entry_id.asset_id  # reversed moves are created before being assigned to the asset
             if asset:
-                account = asset.account_depreciation_expense_id
+                account_internal_group = 'expense'
                 asset_depreciation = sum(
-                    move.line_ids.filtered(lambda l: l.account_id == account).mapped('balance')
+                    move.line_ids.filtered(lambda l: l.account_id.internal_group == account_internal_group or l.account_id == asset.account_depreciation_expense_id).mapped('balance')
                 )
-                # Special case of closing entry
+                # Special case of closing entry - only disposed assets of type 'purchase' should match this condition
                 if any(
                     line.account_id == asset.account_asset_id
                     and float_compare(-line.balance, asset.original_value, precision_rounding=asset.currency_id.rounding) == 0

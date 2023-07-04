@@ -9,7 +9,7 @@
     'description': """
         Automatic accounting for MRP
     """,
-    'depends': ['mrp_account', 'account_accountant'],
+    'depends': ['mrp_account', 'stock_accountant'],
     'data': [
         'views/res_config_settings_views.xml',
     ],

@@ -13,7 +13,7 @@ const oldGetInvalidMessage = RentingMixin._getInvalidMessage;
  */
 RentingMixin._getInvalidMessage = function (startDate, endDate, productId) {
     let message = oldGetInvalidMessage.apply(this, arguments);
-    if (message || !startDate || !endDate || !this.rentingAvailabilities || !this.preparationTime) {
+    if (message || !startDate || !endDate || !this.rentingAvailabilities || this.preparationTime === undefined) {
         return message;
     }
     if (this._isDurationWithHours() && startDate < luxon.DateTime.now().plus({hours: this.preparationTime})) {

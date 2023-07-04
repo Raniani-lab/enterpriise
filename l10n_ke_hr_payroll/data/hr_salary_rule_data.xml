@@ -77,6 +77,7 @@ result = result
 lower_limit = payslip.rule_parameter('l10n_ke_nssf_lower_limit')
 upper_limit = payslip.rule_parameter('l10n_ke_nssf_upper_limit')
 pensionable = categories.BASIC + categories.COMMISSION
+result = 0
 
 if upper_limit &lt; pensionable:
     result = (upper_limit - lower_limit) * 0.06

@@ -6,6 +6,7 @@ import {
     getFixture,
     nextTick,
     patchWithCleanup,
+    mount,
 } from "@web/../tests/helpers/utils";
 import { doAction, getActionManagerServerData, loadState } from "@web/../tests/webclient/helpers";
 import { registry } from "@web/core/registry";
@@ -15,9 +16,15 @@ import { homeMenuService } from "@web_enterprise/webclient/home_menu/home_menu_s
 import { ormService } from "@web/core/orm_service";
 import { enterpriseSubscriptionService } from "@web_enterprise/webclient/home_menu/enterprise_subscription_service";
 import { registerCleanup } from "@web/../tests/helpers/cleanup";
+import { browser } from "@web/core/browser/browser";
 import { errorService } from "@web/core/errors/error_service";
 import { session } from "@web/session";
-import { browser } from "@web/core/browser/browser";
+import { shareUrlMenuItem } from "@web_enterprise/webclient/share_url/share_url";
+import { hotkeyService } from "@web/core/hotkeys/hotkey_service";
+import { menuService } from "@web/webclient/menus/menu_service";
+import { actionService } from "@web/webclient/actions/action_service";
+import { makeTestEnv } from "@web/../tests/helpers/mock_env";
+import { UserMenu } from "@web/webclient/user_menu/user_menu";
 
 import { Component, xml } from "@odoo/owl";
 
@@ -570,6 +577,67 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             );
             assert.strictEqual(apps[0].textContent, "App2", "first displayed app is App2");
             assert.strictEqual(apps[1].textContent, "App1", "second displayed app is App1");
+        }
+    );
+
+    QUnit.test(
+        "Share URL item is present in the user menu when running as PWA",
+        async function (assert) {
+            patchWithCleanup(browser, {
+                matchMedia: (media) => {
+                    if (media === "(display-mode: standalone)") {
+                        return { matches: true };
+                    } else {
+                        this._super();
+                    }
+                },
+            });
+
+            serviceRegistry.add("hotkey", hotkeyService);
+            serviceRegistry.add("action", actionService);
+            serviceRegistry.add("menu", menuService);
+
+            const env = await makeTestEnv();
+
+            registry.category("user_menuitems").add("share_url", shareUrlMenuItem);
+            await mount(UserMenu, fixture, { env });
+            await click(fixture.querySelector(".o_user_menu button"));
+            assert.containsOnce(fixture, ".o_user_menu .dropdown-item");
+            assert.strictEqual(
+                fixture.querySelector(".o_user_menu .dropdown-item span").textContent,
+                "Share",
+                "share button is visible"
+            );
+        }
+    );
+
+    QUnit.test(
+        "Share URL item is not present in the user menu when not running as PWA",
+        async function (assert) {
+            patchWithCleanup(browser, {
+                matchMedia: (media) => {
+                    if (media === "(display-mode: standalone)") {
+                        return { matches: false };
+                    } else {
+                        this._super();
+                    }
+                },
+            });
+
+            serviceRegistry.add("hotkey", hotkeyService);
+            serviceRegistry.add("action", actionService);
+            serviceRegistry.add("menu", menuService);
+
+            const env = await makeTestEnv();
+
+            registry.category("user_menuitems").add("share_url", shareUrlMenuItem);
+            await mount(UserMenu, fixture, { env });
+            await click(fixture.querySelector(".o_user_menu button"));
+            assert.containsNone(
+                fixture,
+                ".o_user_menu .dropdown-item",
+                "share button is not visible"
+            );
         }
     );
 });

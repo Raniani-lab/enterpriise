@@ -3,9 +3,10 @@
 from datetime import datetime, time, timedelta
 from pytz import UTC
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.tools import float_round
 from odoo.addons.resource.models.utils import sum_intervals, HOURS_PER_DAY
+from odoo.exceptions import UserError
 
 
 class Employee(models.Model):
@@ -178,6 +179,18 @@ class Employee(models.Model):
         action = super().action_timesheet_from_employee()
         action['context']['group_expand'] = True
         return action
+
+    def get_last_validated_timesheet_date(self):
+        if self.user_has_groups('hr_timesheet.group_timesheet_manager'):
+            return {}
+
+        if not self.user_has_groups('hr_timesheet.group_hr_timesheet_user'):
+            raise UserError(_('You are not allowed to see timesheets.'))
+
+        return {
+            employee.id: employee.last_validated_timesheet_date
+            for employee in self.sudo()
+        }
 
 
 class HrEmployeePublic(models.Model):

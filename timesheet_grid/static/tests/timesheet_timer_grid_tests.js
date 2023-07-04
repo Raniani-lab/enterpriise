@@ -79,6 +79,8 @@ QUnit.module("Views", (hooks) => {
                 } else if (args.method === "get_server_time") {
                     assert.strictEqual(args.model, "timer.timer");
                     return serializeDateTime(DateTime.now());
+                } else if (args.method === "get_last_validated_timesheet_date") {
+                    return false;
                 }
                 return timesheetGridSetup.mockTimesheetGridRPC(route, args);
             },
@@ -118,6 +120,8 @@ QUnit.module("Views", (hooks) => {
                     return serializeDateTime(DateTime.now());
                 } else if (args.method === "action_timer_unlink") {
                     return null;
+                } else if (args.method === "get_last_validated_timesheet_date") {
+                    return "2017-01-25";
                 }
                 return timesheetGridSetup.mockTimesheetGridRPC(route, args);
             },
@@ -210,6 +214,50 @@ QUnit.module("Views", (hooks) => {
             ".btn_start_timer",
             "The start button should be rendered since a timer has been dropped"
         );
+        assert.containsOnce(
+            target,
+            ".o_grid_add_line .btn-link",
+            "should not have Add a line button"
+        );
+    });
+
+    QUnit.test("basic timesheet timer grid view without Add a line button", async function (assert) {
+        const { openView } = await start({
+            serverData,
+            async mockRPC(route, args) {
+                if (args.method === "get_running_timer") {
+                    return {
+                        step_timer: 30,
+                    };
+                } else if (args.method === "action_start_new_timesheet_timer") {
+                    return false;
+                } else if (args.method === "get_daily_working_hours") {
+                    assert.strictEqual(args.model, "hr.employee");
+                    return {};
+                } else if (args.method === "get_server_time") {
+                    assert.strictEqual(args.model, "timer.timer");
+                    return serializeDateTime(DateTime.now());
+                } else if (args.method === "action_timer_unlink") {
+                    return null;
+                } else if (args.method === "get_last_validated_timesheet_date") {
+                    return "2017-01-30";
+                }
+                return timesheetGridSetup.mockTimesheetGridRPC(route, args);
+            },
+        });
+
+        await openView({
+            res_model: "analytic.line",
+            views: [[false, "grid"]],
+            context: { group_by: ["project_id", "task_id"] },
+        });
+
+        assert.containsN(
+            target,
+            ".o_grid_add_line .btn-link",
+            0,
+            "should not have Add a line button"
+        );
     });
 
     QUnit.test("Timer already running", async function (assert) {
@@ -241,6 +289,8 @@ QUnit.module("Views", (hooks) => {
                 } else if (args.method === "get_server_time") {
                     assert.strictEqual(args.model, "timer.timer");
                     return serializeDateTime(DateTime.now());
+                } else if (args.method === "get_last_validated_timesheet_date") {
+                    return false;
                 }
                 return timesheetGridSetup.mockTimesheetGridRPC(route, args);
             },
@@ -324,6 +374,8 @@ QUnit.module("Views", (hooks) => {
                 } else if (args.method === "action_timer_stop") {
                     timerRunning = false;
                     return 0.15;
+                } else if (args.method === "get_last_validated_timesheet_date") {
+                    return false;
                 }
                 return timesheetGridSetup.mockTimesheetGridRPC(route, args);
             },
@@ -420,6 +472,8 @@ QUnit.module("Views", (hooks) => {
                 } else if (args.method === "action_timer_unlink") {
                     timerRunning = false;
                     return null;
+                } else if (args.method === "get_last_validated_timesheet_date") {
+                    return false;
                 }
                 return timesheetGridSetup.mockTimesheetGridRPC(route, args);
             },
@@ -484,6 +538,8 @@ QUnit.module("Views", (hooks) => {
                 } else if (args.method === "get_daily_working_hours") {
                     assert.strictEqual(args.model, "hr.employee");
                     return {};
+                } else if (args.method === "get_last_validated_timesheet_date") {
+                    return false;
                 }
                 return timesheetGridSetup.mockTimesheetGridRPC(route, args);
             },
@@ -578,6 +634,8 @@ QUnit.module("Views", (hooks) => {
                 } else if (args.method === "get_server_time") {
                     assert.strictEqual(args.model, "timer.timer");
                     return serializeDateTime(DateTime.now());
+                } else if (args.method === "get_last_validated_timesheet_date") {
+                    return false;
                 }
                 return timesheetGridSetup.mockTimesheetGridRPC(route, args);
             },
@@ -706,6 +764,8 @@ QUnit.module("Views", (hooks) => {
                     return serializeDateTime(DateTime.now());
                 } else if (args.method === "action_timer_stop") {
                     return null;
+                } else if (args.method === "get_last_validated_timesheet_date") {
+                    return false;
                 }
                 return timesheetGridSetup.mockTimesheetGridRPC(route, args);
             },
@@ -882,6 +942,8 @@ QUnit.module("Views", (hooks) => {
                 } else if (args.method === "action_timer_stop") {
                     timerRunning = false;
                     return null;
+                } else if (args.method === "get_last_validated_timesheet_date") {
+                    return false;
                 }
                 return timesheetGridSetup.mockTimesheetGridRPC(route, args);
             },
@@ -931,6 +993,8 @@ QUnit.module("Views", (hooks) => {
                             dailyWorkingHours[serializeDate(currentDate)] = 7;
                         }
                         return dailyWorkingHours;
+                    } else if (args.method === "get_last_validated_timesheet_date") {
+                        return false;
                     }
                     return timesheetGridSetup.mockTimesheetGridRPC(route, args);
                 },

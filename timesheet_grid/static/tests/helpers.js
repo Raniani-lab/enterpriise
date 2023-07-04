@@ -74,6 +74,13 @@ export class TimesheetGridSetupHelper {
             );
             unavailabilityDates.false = [dateStart, dateEnd];
             return unavailabilityDates;
+        } else if (args.method === "get_last_validated_timesheet_date") {
+            return {
+                1: false,
+                2: "2017-01-30",
+                3: "2017-01-29",
+                4: "2017-01-01",
+            };
         } else if (args.model !== "analytic.line" && args.method === "web_read_group") {
             return {
                 groups: [],
@@ -228,7 +235,7 @@ export class TimesheetGridSetupHelper {
                             <field name="unit_amount" />
                         </tree>`,
                 "analytic.line,false,grid": `
-                        <grid js_class="timesheet_grid" barchart_total="1">
+                        <grid js_class="timesheet_grid" barchart_total="1" create_inline="1">
                             <field name="employee_id" type="row" widget="timesheet_many2one_avatar_employee"/>
                             <field name="project_id" type="row" widget="timesheet_many2one"/>
                             <field name="task_id" type="row" widget="timesheet_many2one"/>
@@ -240,7 +247,7 @@ export class TimesheetGridSetupHelper {
                             <field name="unit_amount" type="measure" widget="float_time"/>
                             <button string="Action" type="action" name="action_name" />
                         </grid>`,
-                "analytic.line,1,grid": `<grid js_class="timesheet_grid" barchart_total="1">
+                "analytic.line,1,grid": `<grid js_class="timesheet_grid" barchart_total="1" create_inline="1">
                         <field name="employee_id" type="row" section="1" widget="timesheet_many2one_avatar_employee"/>
                         <field name="project_id" type="row" widget="timesheet_many2one"/>
                         <field name="task_id" type="row" widget="timesheet_many2one"/>

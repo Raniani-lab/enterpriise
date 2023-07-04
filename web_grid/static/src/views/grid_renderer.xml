@@ -14,7 +14,7 @@
                     </t>
                     <t t-else="">
                         <t t-call="web_grid.Row"/>
-                        <t t-if="props.createInline and row.id === row.section.lastRow.id">
+                        <t t-if="displayAddLine">
                             <t t-call="web_grid.AddLine"/>
                         </t>
                     </t>

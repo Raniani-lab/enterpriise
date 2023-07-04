@@ -225,6 +225,10 @@ export class GridRenderer extends Component {
         return 1;
     }
 
+    get displayAddLine() {
+        return this.props.createInline && this.row.id === this.row.section.lastRow.id;
+    }
+
     getColumnBarChartHeightStyle(column) {
         let heightPercentage = 0;
         if (this.props.model.maxColumnsTotal !== 0) {

@@ -220,6 +220,12 @@ QUnit.module("Views", (hooks) => {
             6,
             "should have 6 rows displayed in the grid"
         );
+        assert.containsN(
+            target,
+            ".o_grid_add_line .btn-link",
+            2,
+            "should have 2 Add a line button"
+        );
     });
 
     QUnit.test("timesheet with employee section - groupby employees", async function (assert) {

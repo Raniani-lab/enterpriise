@@ -1,12 +1,14 @@
 /** @odoo-module */
 
 import { useService } from "@web/core/utils/hooks";
+import { deserializeDate } from "@web/core/l10n/dates";
 
 import { TimesheetGridRenderer } from "../timesheet_grid/timesheet_grid_renderer";
 import { GridTimerButtonCell } from "../../components/grid_timer_button_cell/grid_timer_button_cell";
 import { GridTimesheetTimerHeader } from "../../components/grid_timesheet_timer_header/grid_timesheet_timer_header";
 
 import { useState, useExternalListener, reactive } from "@odoo/owl";
+import { session } from "@web/session";
 
 export class TimerTimesheetGridRenderer extends TimesheetGridRenderer {
     static template = "timesheet_grid.TimerGridRenderer";
@@ -308,5 +310,18 @@ export class TimerTimesheetGridRenderer extends TimesheetGridRenderer {
             }
         }
         await this.onTimerStarted({ row });
+    }
+
+    async _getLastValidatedTimesheetDate() {
+        const res = await this.props.model.orm.call(
+            "res.users",
+            "get_last_validated_timesheet_date",
+            [session.user_id],
+        );
+        this.lastValidatedTimesheetDate = res && deserializeDate(res);
+    }
+
+    get displayAddLine() {
+        return super.displayAddLine && (!this.lastValidatedTimesheetDate || this.lastValidatedTimesheetDate.startOf("day") < this.props.model.navigationInfo.periodEnd.startOf("day"));
     }
 }

@@ -2,7 +2,7 @@
 
 import { _t } from 'web.core';
 import { sprintf } from '@web/core/utils/strings';
-import { formatDateTime } from "@web/core/l10n/dates";
+import { formatDate, formatDateTime } from "@web/core/l10n/dates";
 import { RentingMixin } from '@website_sale_renting/js/renting_mixin';
 
 const oldGetInvalidMessage = RentingMixin._getInvalidMessage;
@@ -27,11 +27,12 @@ RentingMixin._getInvalidMessage = function (startDate, endDate, productId) {
             if (interval.end > startDate) {
                 if (interval.quantity_available <= 0) {
                     if (!message) {
-                        message = _t("The product is not available for all the selected time period:\n");
+                        message = _t("The product is not available for the following time period(s):\n");
                     }
                     message += " " + sprintf(
                         _t("- From %s to %s.\n"),
-                        formatDateTime(interval.start), formatDateTime(interval.end)
+                        this._isDurationWithHours() ? formatDateTime(interval.start) : formatDate(interval.start),
+                        this._isDurationWithHours() ? formatDateTime(interval.end) : formatDate(interval.end)
                     );
                 }
             }

@@ -1,23 +1,23 @@
 /** @odoo-module */
 
-import { SocialPostFormatterMixin } from '@social/js/social_post_formatter_mixin';
+import { SocialPostFormatterMixinBase } from '@social/js/social_post_formatter_mixin';
 
-import { patch } from '@web/core/utils/patch';
+import { patchWithCleanup } from "@web/../tests/helpers/utils";
 
 QUnit.module('Social Formatter Regex', {}, () => {
     QUnit.test('Facebook Message', (assert) => {
         assert.expect(1);
 
-        patch(SocialPostFormatterMixin, "test_formatted_mixin_facebook", {
+        patchWithCleanup(SocialPostFormatterMixinBase, {
             _getMediaType() { return 'facebook' },
             _formatPost() {
                 this.originalPost = { account_id: { raw_value: 42 } };
-                return this._super(...arguments);
+                return super._formatPost(...arguments);
             }
         });
 
         const testMessage = 'Hello @[542132] Odoo-Social, check this out: https://www.odoo.com?utm=mail&param=1 #crazydeals #odoo';
-        const finalMessage = SocialPostFormatterMixin._formatPost(testMessage);
+        const finalMessage = SocialPostFormatterMixinBase._formatPost(testMessage);
 
         assert.equal(finalMessage, [
             "Hello",
@@ -32,12 +32,12 @@ QUnit.module('Social Formatter Regex', {}, () => {
     QUnit.test('Instagram Message', (assert) => {
         assert.expect(1);
 
-        patch(SocialPostFormatterMixin, "test_formatted_mixin_instagram", {
+        patchWithCleanup(SocialPostFormatterMixinBase, {
             _getMediaType() { return 'instagram' },
         });
 
         const testMessage = 'Hello @Odoo.Social, check this out: https://www.odoo.com #crazydeals #odoo';
-        const finalMessage = SocialPostFormatterMixin._formatPost(testMessage);
+        const finalMessage = SocialPostFormatterMixinBase._formatPost(testMessage);
 
         assert.equal(finalMessage, [
             "Hello",
@@ -52,12 +52,12 @@ QUnit.module('Social Formatter Regex', {}, () => {
     QUnit.test('LinkedIn Message', (assert) => {
         assert.expect(1);
 
-        patch(SocialPostFormatterMixin, "test_formatted_mixin_linkedin", {
+        patchWithCleanup(SocialPostFormatterMixinBase, {
             _getMediaType() { return 'linkedin' },
         });
 
         const testMessage = 'Hello, check this out: https://www.odoo.com #crazydeals #odoo';
-        const finalMessage = SocialPostFormatterMixin._formatPost(testMessage);
+        const finalMessage = SocialPostFormatterMixinBase._formatPost(testMessage);
 
         assert.equal(finalMessage, [
             "Hello, check this out:",
@@ -70,12 +70,12 @@ QUnit.module('Social Formatter Regex', {}, () => {
     QUnit.test('Twitter Message', (assert) => {
         assert.expect(1);
 
-        patch(SocialPostFormatterMixin, "test_formatted_mixin_twitter", {
+        patchWithCleanup(SocialPostFormatterMixinBase, {
             _getMediaType() { return 'twitter' },
         });
 
         const testMessage = 'Hello @Odoo-Social, check this out: https://www.odoo.com #crazydeals #odoo';
-        const finalMessage = SocialPostFormatterMixin._formatPost(testMessage);
+        const finalMessage = SocialPostFormatterMixinBase._formatPost(testMessage);
 
         assert.equal(finalMessage, [
             "Hello",
@@ -90,12 +90,12 @@ QUnit.module('Social Formatter Regex', {}, () => {
     QUnit.test('YouTube Message', (assert) => {
         assert.expect(1);
 
-        patch(SocialPostFormatterMixin, "test_formatted_mixin_youtube", {
+        patchWithCleanup(SocialPostFormatterMixinBase, {
             _getMediaType() { return 'youtube' },
         });
 
         const testMessage = 'Hello, check this out: https://www.odoo.com #crazydeals #odoo';
-        const finalMessage = SocialPostFormatterMixin._formatPost(testMessage);
+        const finalMessage = SocialPostFormatterMixinBase._formatPost(testMessage);
 
         assert.equal(finalMessage, [
             "Hello, check this out:",

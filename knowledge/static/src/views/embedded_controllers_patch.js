@@ -2,14 +2,14 @@
 
 import { useService } from '@web/core/utils/hooks';
 
-const EmbeddedControllersPatch = {
+export const EmbeddedControllersPatch = (T) => class EmbeddedControllersPatch extends T {
     /**
      * @override
      */
     setup() {
-        this._super(...arguments);
+        super.setup(...arguments);
         this.orm = useService('orm');
-    },
+    }
     /**
      * Action when clicking on the Create button for list and kanban embedded
      * views (for knowledge.article).
@@ -22,7 +22,7 @@ const EmbeddedControllersPatch = {
     async createRecord() {
         const { onCreate } = this.props.archInfo;
         if (this.canQuickCreate && onCreate === "quick_create") {
-            return this._super(...arguments);
+            return super.createRecord(...arguments);
         }
 
         const articleId = await this.orm.call('knowledge.article', 'article_create', [], {
@@ -34,9 +34,5 @@ const EmbeddedControllersPatch = {
             await this.orm.call('knowledge.article', 'action_home_page', [articleId]),
             {}
         );
-    },
-};
-
-export {
-    EmbeddedControllersPatch
+    }
 };

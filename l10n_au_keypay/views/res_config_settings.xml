@@ -27,7 +27,7 @@ action = records.action_kp_payroll_fetch_payrun()
                             <field name="l10n_au_kp_base_url"/>
                         </div>
                     </setting>
-                    <setting id="l10n_au_keypay_company" help="Allows to synchronize keypay payroll for this company" company_dependent="1">
+                    <setting id="l10n_au_keypay_company" help="Allows to synchronize Employment Hero payroll for this company" company_dependent="1">
                         <field name="l10n_au_kp_enable"/>
                         <div class="content-group" attrs="{'invisible':[('l10n_au_kp_enable', '=', False)]}">
                             <div class="mt8">

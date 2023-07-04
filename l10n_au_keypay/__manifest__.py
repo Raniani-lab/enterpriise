@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
-    'name': 'Keypay Australian Payroll',
+    'name': 'Employment Hero Australian Payroll',
     'countries': ['au'],
     'category': 'Accounting',
     'depends': [
@@ -11,8 +11,8 @@
     ],
     'version': '1.0',
     'description': """
-        KeyPay Payroll Integration
-        This Module will synchronise all payrun journals from KeyPay to Odoo.
+        Employment Hero Payroll Integration
+        This Module will synchronise all payrun journals from Employment Hero to Odoo.
     """,
     'author': 'Odoo S.A.,Inspired Software Pty Limited',
     'contributors': [

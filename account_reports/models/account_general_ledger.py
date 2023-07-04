@@ -116,7 +116,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             'unfoldable': False,
             'unfolded': False,
         }, {
-            'id': report._get_generic_line_id(None, None, markup='tax_decl_header_1'),
+            'id': report._get_generic_line_id(None, None, markup='tax_decl_header_2'),
             'name': _('Name'),
             'columns': [{'name': labels_replacement.get(col['expression_label'], '')} for col in options['columns']],
             'level': 3,

@@ -400,6 +400,7 @@ class QualityCheck(models.Model):
             'lot_id': self.lot_id.id,
             'company_id': self.move_id.company_id.id,
         }
+        qty_done = self.qty_done
         for quant in quants:
             vals = shared_vals.copy()
             quantity = quant.quantity - quant.reserved_quantity
@@ -410,20 +411,20 @@ class QualityCheck(models.Model):
                 continue
             vals.update({
                 'location_id': quant.location_id.id,
-                'qty_done': min(quantity, self.qty_done),
+                'qty_done': min(quantity, qty_done),
             })
 
             vals_list.append(vals)
-            self.qty_done -= vals['qty_done']
+            qty_done -= vals['qty_done']
             # If all the qty_done is distributed, we can close the loop
-            if float_compare(self.qty_done, 0, precision_rounding=self.product_id.uom_id.rounding) <= 0:
+            if float_compare(qty_done, 0, precision_rounding=self.product_id.uom_id.rounding) <= 0:
                 break
 
-        if float_compare(self.qty_done, 0, precision_rounding=self.product_id.uom_id.rounding) > 0:
+        if float_compare(qty_done, 0, precision_rounding=self.product_id.uom_id.rounding) > 0:
             vals = shared_vals.copy()
             vals.update({
                 'location_id': self.move_id.location_id.id,
-                'qty_done': self.qty_done,
+                'qty_done': qty_done,
             })
 
             vals_list.append(vals)

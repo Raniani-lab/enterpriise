@@ -87,8 +87,8 @@
             <xpath expr="//sheet/group/group/field[@name='account_depreciation_expense_id']" position="attributes">
                 <attribute name="string">Expense Account</attribute>
                 <attribute name="help">Account used to recognize the expense</attribute>
-                <attribute name="domain">[('account_type', '=', 'expense')]</attribute>
-                <attribute name="context">{'default_account_type': 'expense', 'account_type_domain': [('account_type', '=', 'expense')]}</attribute>
+                <attribute name="domain">[('account_type', 'in', ('expense', 'expense_direct_cost'))]</attribute>
+                <attribute name="context">{'default_account_type': 'expense', 'account_type_domain': [('account_type', 'in', ('expense', 'expense_direct_cost'))]}</attribute>
             </xpath>
             <xpath expr="//sheet/group/group/field[@name='account_depreciation_id']" position="attributes">
                 <attribute name="string">Deferred Expense Account</attribute>
@@ -99,8 +99,8 @@
             <xpath expr="//notebook/page/group/group//field[@name='account_depreciation_expense_id']" position="attributes">
                 <attribute name="string">Expense Account</attribute>
                 <attribute name="help">Account used to recognize the expense</attribute>
-                <attribute name="domain">[('account_type', '=', 'expense')]</attribute>
-                <attribute name="context">{'default_account_type': 'expense', 'account_type_domain': [('account_type', '=', 'expense')]}</attribute>
+                <attribute name="domain">[('account_type', 'in', ('expense', 'expense_direct_cost'))]</attribute>
+                <attribute name="context">{'default_account_type': 'expense', 'account_type_domain': [('account_type', 'in', ('expense', 'expense_direct_cost'))]}</attribute>
             </xpath>
             <xpath expr="//notebook/page/group/group//field[@name='account_depreciation_id']" position="attributes">
                 <attribute name="string">Deferred Expense Account</attribute>

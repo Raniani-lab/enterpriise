@@ -80,7 +80,7 @@ class HelpdeskTeam(models.Model):
     access_instruction_message = fields.Char('Access Instruction Message', compute='_compute_access_instruction_message')
     ticket_ids = fields.One2many('helpdesk.ticket', 'team_id', string='Tickets')
 
-    use_alias = fields.Boolean('Email Alias', default=True)
+    use_alias = fields.Boolean('Use Alias', default=True)
     has_external_mail_server = fields.Boolean(compute='_compute_has_external_mail_server')
     allow_portal_ticket_closing = fields.Boolean('Closure by Customers')
     use_website_helpdesk_form = fields.Boolean('Website Form', compute='_compute_use_website_helpdesk_form', readonly=False, store=True)
@@ -129,7 +129,6 @@ class HelpdeskTeam(models.Model):
         string='Move to Stage',
         compute="_compute_assign_stage_id", readonly=False, store=True,
         domain="[('id', 'in', stage_ids)]")
-    display_alias_name = fields.Char(string='Alias email', compute='_compute_display_alias_name')
     alias_email_from = fields.Char(compute='_compute_alias_email_from')
 
     @api.constrains('use_website_helpdesk_form', 'privacy_visibility')
@@ -148,14 +147,6 @@ class HelpdeskTeam(models.Model):
                 (val, stage_id) for stage_id, val in stages_dict.items() if stage_id in team.stage_ids.ids
             ])
             team.to_stage_id = stage_ids[0][1] if stage_ids else team.stage_ids and team.stage_ids.ids[-1]
-
-    @api.depends('alias_name', 'alias_domain')
-    def _compute_display_alias_name(self):
-        for team in self:
-            alias_name = ''
-            if team.alias_name and team.alias_domain:
-                alias_name = "%s@%s" % (team.alias_name, team.alias_domain)
-            team.display_alias_name = alias_name
 
     def _compute_alias_email_from(self):
         res = self._notify_get_reply_to()

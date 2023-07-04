@@ -100,7 +100,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin):
             Message-ID: {message_id}
             Subject: Incoming bill
             From:  Someone <someone@some.company.com>
-            To: {alias.alias_name}@{alias.alias_domain}
+            To: {alias.display_name}
             Content-Type: multipart/alternative; boundary="000000000000a47519057e029630"
 
             --000000000000a47519057e029630

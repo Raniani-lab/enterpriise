@@ -3,10 +3,12 @@
 import * as spreadsheet from "@odoo/o-spreadsheet";
 import { getBasicServerData } from "@spreadsheet/../tests/utils/data";
 import { doMenuAction } from "@spreadsheet/../tests/utils/ui";
-import { click, mockDownload, nextTick } from "@web/../tests/helpers/utils";
+import { click, mockDownload, nextTick, triggerEvent } from "@web/../tests/helpers/utils";
 import { createSpreadsheet } from "../spreadsheet_test_utils";
 import { mockActionService } from "@documents_spreadsheet/../tests/spreadsheet_test_utils";
 import { UNTITLED_SPREADSHEET_NAME } from "@spreadsheet/helpers/constants";
+import { setCellContent } from "@spreadsheet/../tests/utils/commands";
+import { getCellContent } from "@spreadsheet/../tests/utils/getters";
 
 const { topbarMenuRegistry } = spreadsheet.registries;
 
@@ -113,5 +115,20 @@ QUnit.module("documents_spreadsheet > Topbar Menu Items", {}, function () {
         await doMenuAction(topbarMenuRegistry, menuPath, env);
         await nextTick();
         assert.verifySteps(["currencies-loaded"]);
+    });
+
+    QUnit.test("Can Insert odoo formulas from Insert > Functions > Odoo", async function (assert) {
+        const { model } = await createSpreadsheet();
+
+        setCellContent(model, "A1", `Hi :)`);
+
+        await click(document.querySelector(".o-topbar-menu[data-id='insert']"));
+        await click(document.querySelector(".o-menu-item[data-name='insert_function']"));
+        await click(document.querySelector(".o-menu-root[title='Odoo']"));
+        await click(document.querySelector(".o-menu-item[title='ODOO.CURRENCY.RATE']"));
+
+        await triggerEvent(document.activeElement, null, "keydown", { key: "Enter" });
+
+        assert.equal(getCellContent(model, "A1"), "=ODOO.CURRENCY.RATE()");
     });
 });

@@ -6,9 +6,9 @@
             <attribute name="t-if">!props.record.data.is_rental || !props.record.data.return_date || !props.record.data.start_date</attribute>
         </xpath>
         <xpath expr="//div" position="after">
-            <div t-else="">
+            <div class="p-2" t-else="">
             <h6>Availability</h6>
-            <table>
+            <table class="table table-borderless table-sm">
                 <tbody>
                     <tr>
                         <td>
@@ -16,7 +16,7 @@
                             <small> <span t-out="props.calcData.stock_start_date"/></small>
                             <small> to <span t-out="props.calcData.stock_end_date"/></small>
                         </td>
-                        <td>
+                        <td class="text-end">
                             <t t-out="props.record.data.virtual_available_at_date"/> <t t-out="props.record.data.product_uom[1]"/>
                         </td>
                     </tr>

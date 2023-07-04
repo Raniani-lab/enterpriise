@@ -5,7 +5,7 @@ from pytz import timezone
 
 from odoo import api, fields, models, _
 from odoo.addons.l10n_mx_edi.models.res_company import FISCAL_REGIMES_SELECTION
-
+from odoo.addons.l10n_mx_edi.models.account_move import USAGE_SELECTION
 
 class ResPartner(models.Model):
     _inherit = 'res.partner'
@@ -31,6 +31,18 @@ class ResPartner(models.Model):
     l10n_mx_edi_no_tax_breakdown = fields.Boolean(
         string="No Tax Breakdown",
         help="Includes taxes in the price and does not add tax information to the CFDI. Particularly in handy for IEPS.")
+
+    l10n_mx_edi_usage = fields.Selection(
+        selection=USAGE_SELECTION,
+        string="Usage",
+        help="The code that corresponds to the use that will be made of the receipt by the recipient.",
+    )
+    l10n_mx_edi_payment_method_id = fields.Many2one(
+        comodel_name='l10n_mx_edi.payment.method',
+        string="Payment Way",
+        help="Indicates the way the invoice was/will be paid, where the options could be: "
+             "Cash, Nominal Check, Credit Card, etc. Leave empty if unkown and the XML will show 'Unidentified'.",
+    )
 
     @api.depends('country_code')
     def _compute_l10n_mx_edi_fiscal_regime(self):

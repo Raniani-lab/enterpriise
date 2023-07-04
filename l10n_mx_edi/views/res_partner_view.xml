@@ -15,6 +15,8 @@
                             <field name="l10n_mx_edi_addenda_doc" attrs="{'invisible': [('l10n_mx_edi_addenda', '=', False)]}"/>
                             <field name="l10n_mx_edi_fiscal_regime"/>
                             <field name="l10n_mx_edi_no_tax_breakdown"/>
+                            <field name="l10n_mx_edi_usage"/>
+                            <field name="l10n_mx_edi_payment_method_id"/>
                         </group>
                     </page>
                 </xpath>

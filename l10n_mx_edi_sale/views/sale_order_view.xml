@@ -8,6 +8,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='validity_date']" position="after">
                     <field name="l10n_mx_edi_cfdi_to_public" attrs="{'invisible': [('country_code', '!=', 'MX')]}"/>
+                    <field name="l10n_mx_edi_payment_method_id" attrs="{'invisible': [('country_code', '!=', 'MX')]}"/>
                     <field name="l10n_mx_edi_usage" attrs="{'invisible': [('country_code', '!=', 'MX')]}"/>
                 </xpath>
             </field>

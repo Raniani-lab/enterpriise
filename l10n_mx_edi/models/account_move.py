@@ -119,7 +119,9 @@ class AccountMove(models.Model):
     l10n_mx_edi_usage = fields.Selection(
         selection=USAGE_SELECTION,
         string="Usage",
-        default='S01',
+        readonly=False,
+        store=True,
+        compute='_compute_l10n_mx_edi_usage',
         help="Used in CFDI to express the key to the usage that will gives the receiver to this invoice. This "
              "value is defined by the customer.\nNote: It is not cause for cancellation if the key set is not the usage "
              "that will give the receiver of the document.",
@@ -545,17 +547,33 @@ class AccountMove(models.Model):
             else:
                 move.l10n_mx_edi_cfdi_to_public = False
 
-    @api.depends('journal_id', 'statement_line_id')
+    @api.depends('journal_id', 'statement_line_id', 'partner_id')
     def _compute_l10n_mx_edi_payment_method_id(self):
+        default_payment_method = self.env.ref('l10n_mx_edi.payment_method_otros', raise_if_not_found=False)
+        statement_payment_method = self.env.ref('l10n_mx_edi.payment_method_transferencia', raise_if_not_found=False)
         for move in self:
-            if move.l10n_mx_edi_payment_method_id:
-                move.l10n_mx_edi_payment_method_id = move.l10n_mx_edi_payment_method_id
-            elif move.statement_line_id:
-                move.l10n_mx_edi_payment_method_id = self.env.ref('l10n_mx_edi.payment_method_transferencia', raise_if_not_found=False)
-            elif move.journal_id.l10n_mx_edi_payment_method_id:
-                move.l10n_mx_edi_payment_method_id = move.journal_id.l10n_mx_edi_payment_method_id
+            if move.country_code == 'MX':
+                move.l10n_mx_edi_payment_method_id = (
+                    move.partner_id.l10n_mx_edi_payment_method_id or
+                    move.l10n_mx_edi_payment_method_id or
+                    statement_payment_method or
+                    move.journal_id.l10n_mx_edi_payment_method_id or
+                    default_payment_method
+                )
             else:
-                move.l10n_mx_edi_payment_method_id = self.env.ref('l10n_mx_edi.payment_method_otros', raise_if_not_found=False)
+                move.l10n_mx_edi_payment_method_id = False
+
+    @api.depends('partner_id')
+    def _compute_l10n_mx_edi_usage(self):
+        for move in self:
+            if move.country_code == 'MX':
+                move.l10n_mx_edi_usage = (
+                    move.partner_id.l10n_mx_edi_usage or
+                    move.l10n_mx_edi_usage or
+                    'S01'
+                )
+            else:
+                move.l10n_mx_edi_usage = False
 
     @api.depends('l10n_mx_edi_cfdi_uuid')
     def _compute_l10n_mx_edi_cfdi_cancel_id(self):

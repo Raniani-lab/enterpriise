@@ -939,14 +939,16 @@ class Task(models.Model):
             action['views'] = [(gantt_view.id, 'gantt'), (map_view.id, 'map')] + [(state, view) for state, view in action['views'] if view not in ['gantt', 'map']]
         action.update({
             'name': _('Overlapping Tasks'),
+            'domain' : [
+                ('user_ids', 'in', self.user_ids.ids),
+                ('planned_date_begin', '<', self.planned_date_end),
+                ('planned_date_end', '>', self.planned_date_begin),
+            ],
             'context': {
                 'fsm_mode': False,
                 'task_nameget_with_hours': False,
                 'initialDate': self.planned_date_begin,
                 'search_default_conflict_task': True,
-                'search_default_planned_date_begin': self.planned_date_begin,
-                'search_default_planned_date_end': self.planned_date_end,
-                'search_default_user_ids': self.user_ids.ids,
             }
         })
         return action

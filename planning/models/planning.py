@@ -1440,7 +1440,7 @@ class Planning(models.Model):
 
     def _calculate_slot_duration(self):
         self.ensure_one()
-        if not self.start_datetime:
+        if not self.start_datetime or not self.end_datetime:
             return 0.0
         period = self.end_datetime - self.start_datetime
         slot_duration = period.total_seconds() / 3600

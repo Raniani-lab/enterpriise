@@ -32,7 +32,7 @@
 
 <t t-name="web_enterprise.EnterpriseNavBar.SectionsMenu" t-inherit="web.NavBar.SectionsMenu" t-inherit-mode="extension" owl="1">
     <xpath expr="//MenuDropdown" position="attributes">
-        <attribute name="togglerClass" add="'btn btn-light'" separator=" + ' ' + "/>
+        <attribute name="togglerClass" add="'btn btn-light fw-normal'" separator=" + ' ' + "/>
     </xpath>
 
     <xpath expr="//DropdownItem" position="attributes">

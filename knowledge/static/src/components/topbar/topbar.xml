@@ -117,11 +117,6 @@
                                     t-if="props.record.data.user_can_write and props.record.data.is_locked and props.record.data.active">
                                     <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-unlock"/> Unlock
                                 </button>
-                                <button class="ps-0 dropdown-item" t-on-click="deleteArticle"
-                                    t-if="props.record.data.user_can_write and props.record.data.active
-                                          and (isInternalUser or props.record.data.category == 'private')">
-                                    <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-trash"/> Delete
-                                </button>
                                 <button class="ps-0 dropdown-item" t-on-click="unarchiveArticle"
                                     t-if="props.record.data.to_delete and props.record.data.user_can_write
                                           and (isInternalUser or props.record.data.category == 'private')">
@@ -144,6 +139,11 @@
                                     t-if="props.record.data.user_can_write and props.record.data.is_article_item and !props.record.data.has_item_parent"
                                     t-on-click="() => this.setIsArticleItem(false)">
                                     <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-sitemap"/> Convert into Article
+                                </button>
+                                <button class="ps-0 dropdown-item" t-on-click="deleteArticle"
+                                    t-if="props.record.data.user_can_write and props.record.data.active
+                                          and (isInternalUser or props.record.data.category == 'private')">
+                                    <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-trash"/> Delete
                                 </button>
                                 <div class="dropdown-divider" t-if="props.record.data.user_can_write and props.record.data.active"/>
                                 <div class="ps-0 dropdown-item user-select-none d-inline-flex align-items-start" t-if="props.record.data.user_can_write and props.record.data.active"

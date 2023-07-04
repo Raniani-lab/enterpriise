@@ -45,11 +45,12 @@ class SignContract(Sign):
                     'co2': model.default_co2,
                     'fuel_type': model.default_fuel_type,
                 }))
-                vehicle_contract = contract.car_id.log_contracts[0]
-                vehicle_contract.write(dict(contracts_vals , **{
-                    'recurring_cost_amount_depreciated': model.default_recurring_cost_amount_depreciated,
-                    'cost_generated': model.default_recurring_cost_amount_depreciated,
-                }))
+                vehicle_contract = contract.car_id.log_contracts and contract.car_id.log_contracts[0]
+                if vehicle_contract:
+                    vehicle_contract.write(dict(contracts_vals, **{
+                        'recurring_cost_amount_depreciated': model.default_recurring_cost_amount_depreciated,
+                        'cost_generated': model.default_recurring_cost_amount_depreciated,
+                    }))
             if contract.new_bike_model_id:
                 model = contract.new_bike_model_id.sudo()
                 contract.update({
@@ -63,11 +64,12 @@ class SignContract(Sign):
                     'co2': model.default_co2,
                     'fuel_type': model.default_fuel_type,
                 }))
-                vehicle_contract = contract.bike_id.log_contracts[0]
-                vehicle_contract.write(dict(contracts_vals , **{
-                    'recurring_cost_amount_depreciated': model.default_recurring_cost_amount_depreciated,
-                    'cost_generated': model.default_recurring_cost_amount_depreciated,
-                }))
+                vehicle_contract = contract.bike_id.log_contracts and contract.bike_id.log_contracts[0]
+                if vehicle_contract:
+                    vehicle_contract.write(dict(contracts_vals, **{
+                        'recurring_cost_amount_depreciated': model.default_recurring_cost_amount_depreciated,
+                        'cost_generated': model.default_recurring_cost_amount_depreciated,
+                    }))
 
 class HrContractSalary(main.HrContractSalary):
 
@@ -402,11 +404,12 @@ class HrContractSalary(main.HrContractSalary):
                     'company_id': new_contract.company_id.id,
                     'future_driver_id': new_contract.employee_id.work_contact_id.id
                 })
-                vehicle_contract = car.log_contracts[0]
-                vehicle_contract.recurring_cost_amount_depreciated = model.default_recurring_cost_amount_depreciated
-                vehicle_contract.cost_generated = model.default_recurring_cost_amount_depreciated
-                vehicle_contract.cost_frequency = 'no'
-                vehicle_contract.purchaser_id = new_contract.employee_id.work_contact_id.id
+                vehicle_contract = car.log_contracts and car.log_contracts[0]
+                if vehicle_contract:
+                    vehicle_contract.recurring_cost_amount_depreciated = model.default_recurring_cost_amount_depreciated
+                    vehicle_contract.cost_generated = model.default_recurring_cost_amount_depreciated
+                    vehicle_contract.cost_frequency = 'no'
+                    vehicle_contract.purchaser_id = new_contract.employee_id.work_contact_id.id
             return new_contract, contract_diff
 
         if new_contract.transport_mode_car and new_contract.new_car:
@@ -422,11 +425,12 @@ class HrContractSalary(main.HrContractSalary):
                 'fuel_type': model.default_fuel_type,
                 'company_id': new_contract.company_id.id,
             })
-            vehicle_contract = new_contract.car_id.log_contracts[0]
-            vehicle_contract.recurring_cost_amount_depreciated = model.default_recurring_cost_amount_depreciated
-            vehicle_contract.cost_generated = model.default_recurring_cost_amount_depreciated
-            vehicle_contract.cost_frequency = 'no'
-            vehicle_contract.purchaser_id = employee.work_contact_id.id
+            vehicle_contract = new_contract.car_id.log_contracts and new_contract.car_id.log_contracts[0]
+            if vehicle_contract:
+                vehicle_contract.recurring_cost_amount_depreciated = model.default_recurring_cost_amount_depreciated
+                vehicle_contract.cost_generated = model.default_recurring_cost_amount_depreciated
+                vehicle_contract.cost_frequency = 'no'
+                vehicle_contract.purchaser_id = employee.work_contact_id.id
         return new_contract, contract_diff
 
     def _get_compute_results(self, new_contract):

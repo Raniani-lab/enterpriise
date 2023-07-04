@@ -174,7 +174,7 @@ class TestPayrollAccountCommon(odoo.tests.HttpCase):
         model_opel = cls.env.ref("fleet.model_corsa").with_company(cls.company_id)
         model_opel.can_be_requested = True
 
-        cls.env['fleet.vehicle'].create({
+        vehicle = cls.env['fleet.vehicle'].create({
             'model_id': cls.model_a3.id,
             'license_plate': '1-JFC-095',
             'acquisition_date': time.strftime('%Y-01-01'),
@@ -183,6 +183,13 @@ class TestPayrollAccountCommon(odoo.tests.HttpCase):
             'plan_to_change_car': True,
             'car_value': 38000,
             'company_id': cls.company_id.id,
+        })
+        cls.env['fleet.vehicle.log.contract'].create({
+            'vehicle_id': vehicle.id,
+            'recurring_cost_amount_depreciated': vehicle.model_id.default_recurring_cost_amount_depreciated,
+            'purchaser_id': vehicle.driver_id.id,
+            'company_id': vehicle.company_id.id,
+            'user_id': vehicle.manager_id.id if vehicle.manager_id else cls.env.user.id
         })
 
         a_recv = cls.env['account.account'].create({

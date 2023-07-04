@@ -9371,6 +9371,14 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'fuel_type': 'diesel',
             'co2': 89,
         })
+        vehicle = self.contract.car_id
+        self.env['fleet.vehicle.log.contract'].create({
+            'vehicle_id': vehicle.id,
+            'recurring_cost_amount_depreciated': vehicle.model_id.default_recurring_cost_amount_depreciated,
+            'purchaser_id': vehicle.driver_id.id,
+            'company_id': vehicle.company_id.id,
+            'user_id': vehicle.manager_id.id if vehicle.manager_id else self.env.user.id
+        })
         self.contract.car_id.log_contracts.recurring_cost_amount_depreciated = 562.52
         self.contract.write({
             'wage': 3542.63,
@@ -9466,6 +9474,14 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'car_value': 28138.86,
             'fuel_type': 'diesel',
             'co2': 88.00,
+        })
+        vehicle = self.contract.car_id
+        self.env['fleet.vehicle.log.contract'].create({
+            'vehicle_id': vehicle.id,
+            'recurring_cost_amount_depreciated': vehicle.model_id.default_recurring_cost_amount_depreciated,
+            'purchaser_id': vehicle.driver_id.id,
+            'company_id': vehicle.company_id.id,
+            'user_id': vehicle.manager_id.id if vehicle.manager_id else self.env.user.id
         })
         self.contract.car_id.log_contracts.recurring_cost_amount_depreciated = 503.12
         self.contract.write({

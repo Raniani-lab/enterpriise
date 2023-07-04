@@ -1381,7 +1381,7 @@ registry.category("web_tour.tours").add("web_studio_alter_field_existing_in_mult
     steps: [
         {
             // open studio
-            trigger: ".o_main_navbar .o_web_studio_navbar_item a",
+            trigger: ".o_main_navbar .o_web_studio_navbar_item button",
             extra_trigger: ".o_home_menu_background",
         },
         {
@@ -1596,7 +1596,7 @@ registry.category("web_tour.tours").add("web_studio_monetary_change_currency_fie
         },
         {
             // open studio with the record
-            trigger: ".o_main_navbar .o_web_studio_navbar_item a",
+            trigger: ".o_main_navbar .o_web_studio_navbar_item button",
             extra_trigger: ".o_form_saved",
         },
         {

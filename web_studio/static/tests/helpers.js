@@ -23,7 +23,7 @@ export function registerStudioDependencies() {
 }
 
 export async function openStudio(target, params = {}) {
-    await click(target.querySelector(".o_main_navbar .o_web_studio_navbar_item a"));
+    await click(target.querySelector(".o_main_navbar .o_web_studio_navbar_item button"));
     await legacyExtraNextTick();
     if (params.noEdit) {
         const studioTabViews = target.querySelector(".o_web_studio_menu_item a");

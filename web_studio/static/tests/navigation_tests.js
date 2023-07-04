@@ -127,7 +127,7 @@ QUnit.module("Studio", (hooks) => {
         await createEnterpriseWebClient({ serverData });
         assert.containsOnce(target, ".o_main_navbar");
 
-        assert.containsNone(target, ".o_main_navbar .o_web_studio_navbar_item a");
+        assert.containsNone(target, ".o_main_navbar .o_web_studio_navbar_item button");
     });
 
     QUnit.test("open Studio with act_window", async function (assert) {
@@ -153,7 +153,7 @@ QUnit.module("Studio", (hooks) => {
             ],
             "should have loaded the action"
         );
-        assert.containsOnce(target, ".o_main_navbar .o_web_studio_navbar_item a");
+        assert.containsOnce(target, ".o_main_navbar .o_web_studio_navbar_item button");
 
         await openStudio(target);
 
@@ -573,7 +573,7 @@ QUnit.module("Studio", (hooks) => {
             },
         });
 
-        await click(target, ".o_web_studio_navbar_item a");
+        await click(target, ".o_web_studio_navbar_item button");
         await click(target, ".o_web_studio_new_app");
         await click(target, ".o_web_studio_app_creator_next");
         await editInput(target, ".o_web_studio_app_creator_name input", "testApp");

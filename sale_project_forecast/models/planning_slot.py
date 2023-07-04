@@ -2,6 +2,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models
+from odoo.osv import expression
+
+from odoo.addons.project.models.project_task import CLOSED_STATES
+from odoo.addons.resource.models.utils import filter_domain_leaf
 
 class PlanningSlot(models.Model):
     _inherit = 'planning.slot'
@@ -37,3 +41,10 @@ class PlanningSlot(models.Model):
     # -----------------------------------------------------------------
     # Business methods
     # -----------------------------------------------------------------
+
+    def _get_shifts_to_plan_domain(self, view_domain=None):
+        domain = super()._get_shifts_to_plan_domain(view_domain)
+        if self.env.context.get('default_project_id'):
+            domain = filter_domain_leaf(domain, lambda field: field != "project_id")
+            domain = expression.AND([domain, [('sale_order_id', 'in', self.env['project.project'].browse(self.env.context.get('default_project_id'))._fetch_sale_order_items({'project.task': [('state', 'not in', list(CLOSED_STATES))]}).order_id.ids)]])
+        return domain

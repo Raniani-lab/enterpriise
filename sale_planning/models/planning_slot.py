@@ -6,7 +6,6 @@ from datetime import datetime, timedelta
 import pytz
 
 from odoo import _, api, fields, models
-from odoo.addons.resource.models.utils import filter_domain_leaf
 from odoo.osv import expression
 from odoo.tools import float_utils, DEFAULT_SERVER_DATETIME_FORMAT
 
@@ -518,27 +517,28 @@ class PlanningSlot(models.Model):
             for sale_line, employee_ids in employee_per_sol
         }
 
+    def _get_shifts_to_plan_domain(self, view_domain=None):
+        new_view_domain = []
+        if view_domain:
+            for clause in view_domain:
+                if isinstance(clause, str) or clause[0] not in ['start_datetime', 'end_datetime']:
+                    new_view_domain.append(clause)
+                elif clause[0] in ['start_datetime', 'end_datetime']:
+                    new_view_domain.append([clause[0], '=', False])
+        else:
+            new_view_domain = [('start_datetime', '=', False)]
+        domain = expression.AND([new_view_domain, [('sale_line_id', '!=', False)]])
+        if self.env.context.get('planning_gantt_active_sale_order_id'):
+            domain = expression.AND([domain, [('sale_order_id', '=', self.env.context.get('planning_gantt_active_sale_order_id'))]])
+        return domain
+
     @api.model
     def auto_plan_ids(self, view_domain):
         res = super(PlanningSlot, self).auto_plan_ids(view_domain)
         if self._context.get('planning_slot_id'):
             # It means we are looking to assign one shift in particular to an available resource, which we do in planning.
             return res
-        new_view_domain = []
-        for clause in view_domain:
-            if isinstance(clause, str) or clause[0] not in ['start_datetime', 'end_datetime']:
-                new_view_domain.append(clause)
-            elif clause[0] in ['start_datetime', 'end_datetime']:
-                new_view_domain.append([clause[0], '=', False])
-        if not view_domain:
-            new_view_domain = [('start_datetime', '=', False)]
-        domain = expression.AND([new_view_domain, [('sale_line_id', '!=', False)]])
-        if self.env.context.get('planning_gantt_active_sale_order_id'):
-            domain = expression.AND([domain, [('sale_order_id', '=', self.env.context.get('planning_gantt_active_sale_order_id'))]])
-        elif self.env.context.get('default_project_id'):
-            domain = filter_domain_leaf(domain, lambda field: field != "project_id")
-            domain = expression.AND([new_view_domain, [('sale_order_id', 'in', self.env['project.project'].browse(self.env.context.get('default_project_id'))._fetch_sale_order_items({'project.task': [('is_closed', '=', False)]}).order_id.ids)]])
-        slots_to_assign = self._get_ordered_slots_to_assign(domain)
+        slots_to_assign = self._get_ordered_slots_to_assign(self._get_shifts_to_plan_domain(view_domain))
         start_datetime = max(datetime.strptime(self.env.context.get('default_start_datetime'), DEFAULT_SERVER_DATETIME_FORMAT), fields.Datetime.now().replace(hour=0, minute=0, second=0))
         employee_per_sol = self._get_employee_per_sol_within_period(slots_to_assign, start_datetime, self.env.context.get('default_end_datetime'))
         PlanningShift = self.env['planning.slot']

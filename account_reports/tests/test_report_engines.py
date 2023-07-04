@@ -1293,3 +1293,18 @@ class TestReportEngines(TestAccountReportsCommon):
             ],
             options,
         )
+
+    def test_change_expression_engine_to_tax_tags(self):
+        """
+        Ensure that tax tags are created when switching the expression engine to tax tags if formula is unchanged.
+        """
+        formula = 'dudu'
+        test_line_1 = self._prepare_test_report_line(
+            self._prepare_test_expression_external(formula, [self._prepare_test_external_values(100.0, '2020-01-01')], label='external'),
+        )
+        report = self._create_report([test_line_1], country_id=self.fake_country.id)
+        tags = self.env['account.account.tag']._get_tax_tags(formula, self.fake_country.id)
+        self.assertEqual(len(tags), 0)
+        report.line_ids[0].expression_ids[0].engine = 'tax_tags'
+        tags = self.env['account.account.tag']._get_tax_tags(formula, self.fake_country.id)
+        self.assertEqual(tags.mapped('name'), ['-' + formula, '+' + formula])

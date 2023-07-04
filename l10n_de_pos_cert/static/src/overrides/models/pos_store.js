@@ -17,16 +17,15 @@ const RATE_ID_MAPPING = {
     5: "NULL",
 };
 
-patch(PosStore.prototype, "l10n_de_pos_cert.PosStore", {
+patch(PosStore.prototype, {
     // @Override
     async setup() {
-        await this._super(...arguments);
+        await super.setup(...arguments);
         this.token = "";
         this.vatRateMapping = {};
     },
     //@Override
     async after_load_server_data() {
-        const _super = this._super;
         if (this.isCountryGermanyAndFiskaly()) {
             await this.env.services.orm
                 .call("pos.config", "l10n_de_get_fiskaly_urls_and_keys", [this.config.id])
@@ -41,7 +40,7 @@ patch(PosStore.prototype, "l10n_de_pos_cert.PosStore", {
                     this.initVatRates(data["dsfinvk_url"] + "/api/v0");
                 });
         }
-        return _super(...arguments);
+        return super.after_load_server_data(...arguments);
     },
     getApiToken() {
         return this.token;
@@ -123,9 +122,8 @@ patch(PosStore.prototype, "l10n_de_pos_cert.PosStore", {
      * - Failure to send to Odoo => the order is already sent to Fiskaly, we store them locally with the TSS info
      */
     async _flush_orders(orders, options) {
-        const _super = this._super;
         if (!this.isCountryGermanyAndFiskaly()) {
-            return _super(...arguments);
+            return super._flush_orders(...arguments);
         }
         if (!orders || !orders.length) {
             return Promise.resolve([]);
@@ -176,7 +174,7 @@ patch(PosStore.prototype, "l10n_de_pos_cert.PosStore", {
                 }
             }
             try {
-                result = await _super(...arguments);
+                result = await super._flush_orders(...arguments);
             } catch (error) {
                 odooError = error;
             }

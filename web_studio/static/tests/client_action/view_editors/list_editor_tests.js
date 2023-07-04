@@ -25,7 +25,7 @@ import { doAction } from "@web/../tests/webclient/helpers";
 import { openStudio } from "../../helpers";
 import { session } from "@web/session";
 import { ListRenderer } from "@web/views/list/list_renderer";
-
+import { registerCleanup } from "@web/../tests/helpers/cleanup";
 import { SIDEBAR_SAFE_FIELDS } from "@web_studio/client_action/view_editor/editors/sidebar_safe_fields";
 
 /** @type {Node} */
@@ -53,7 +53,7 @@ async function unfoldExistingFieldsSection() {
 
 function setFieldAvailableInSidebar(key) {
     const sideBarPushedIndex = SIDEBAR_SAFE_FIELDS.push(key) - 1;
-    patchWithCleanup(SIDEBAR_SAFE_FIELDS, () => {
+    registerCleanup(() => {
         SIDEBAR_SAFE_FIELDS.splice(sideBarPushedIndex, 1);
     });
 }
@@ -2148,7 +2148,7 @@ QUnit.module(
             let triggerError = false;
             patchWithCleanup(ListRenderer.prototype, {
                 setup() {
-                    this._super();
+                    super.setup();
                     owl.onWillRender(() => {
                         if (triggerError) {
                             triggerError = false;

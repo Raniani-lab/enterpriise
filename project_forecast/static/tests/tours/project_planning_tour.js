@@ -3,9 +3,9 @@
 import { registry } from "@web/core/registry";
 import { patch } from "@web/core/utils/patch";
 
-patch(registry.category("web_tour.tours").get("planning_test_tour"), "patch_planning_test_tour", {
+patch(registry.category("web_tour.tours").get("planning_test_tour"), {
     steps() {
-        const originalSteps = this._super();
+        const originalSteps = super.steps();
         const projectPlanningStartStepIndex = originalSteps.findIndex((step) => step.id && step.id === "project_planning_start");
         originalSteps.splice(projectPlanningStartStepIndex + 1, 0, {
             trigger: ".o_field_many2one[name='project_id'] input",

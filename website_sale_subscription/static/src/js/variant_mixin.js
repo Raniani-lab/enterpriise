@@ -11,9 +11,9 @@ import { patch } from "@web/core/utils/patch";
  * @param {object} combination
  */
 
-patch(VariantMixin, "VariantMixinSubscription" , {
+patch(VariantMixin, {
     _onChangeCombination(ev, $parent, combination) {
-        const result = this._super.apply(this, arguments);
+        const result = super._onChangeCombination(...arguments);
         if (!this.isWebsite || !combination.is_subscription) {
             return result;
         }

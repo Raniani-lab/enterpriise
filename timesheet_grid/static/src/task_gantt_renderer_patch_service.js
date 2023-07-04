@@ -4,13 +4,13 @@ import { patch } from "@web/core/utils/patch";
 import { TaskGanttRenderer } from "@project_enterprise/task_gantt_renderer";
 import { useService } from "@web/core/utils/hooks";
 
-patch(TaskGanttRenderer.prototype, "task_gantt_renderer_patch_service", {
+patch(TaskGanttRenderer.prototype, {
     setup() {
-        this._super();
+        super.setup();
         this.timesheetUOMService = useService("timesheet_uom");
     },
     getPopoverProps(pill) {
-        const props = this._super(...arguments);
+        const props = super.getPopoverProps(...arguments);
         const ctx = props.context;
         const { record } = pill;
         const formatter = this.timesheetUOMService.formatter;

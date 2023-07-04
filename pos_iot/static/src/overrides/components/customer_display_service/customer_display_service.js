@@ -3,12 +3,12 @@
 import { RemoteDisplay } from "@point_of_sale/app/customer_display/customer_display_service";
 import { patch } from "@web/core/utils/patch";
 
-patch(RemoteDisplay, "pos_iot.RemoteDisplay static", {
+patch(RemoteDisplay, {
     serviceDependencies: [...RemoteDisplay.serviceDependencies, "iot_longpolling"],
 });
-patch(RemoteDisplay.prototype, "pos_iot.RemoteDisplay", {
+patch(RemoteDisplay.prototype, {
     setup(pos, { iot_longpolling }) {
-        this._super(...arguments);
+        super.setup(...arguments);
         this.iotLongpolling = iot_longpolling;
     },
     /**

@@ -49,6 +49,6 @@ class DashboardSelectorPanel extends SpreadsheetSelectorPanel {
     }
 }
 
-patch(SpreadsheetSelectorDialog, "spreadsheet_dashboard_edition.DashboardSelectorPanel", {
+patch(SpreadsheetSelectorDialog, {
     components: { ...SpreadsheetSelectorDialog.components, DashboardSelectorPanel },
 });

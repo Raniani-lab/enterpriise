@@ -2,7 +2,6 @@
 
 import { click, getFixture, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { doAction, getActionManagerServerData } from "@web/../tests/webclient/helpers";
-import { patch, unpatch } from "@web/core/utils/patch";
 import { session } from "@web/session";
 import { ListRenderer } from "@web/views/list/list_renderer";
 import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
@@ -28,17 +27,8 @@ QUnit.module("Studio", (hooks) => {
         registerStudioDependencies();
         patchWithCleanup(session, { is_system: true });
         target = getFixture();
-        patch(
-            ListRenderer.prototype,
-            "web_enterprise.ListRendererDesktop",
-            patchListRendererDesktop
-        );
-        patch(ListRenderer.prototype, "web_studio.ListRenderer", patchListRendererStudio);
-    });
-
-    hooks.afterEach(() => {
-        unpatch(ListRenderer.prototype, "web_enterprise.ListRendererDesktop");
-        unpatch(ListRenderer.prototype, "web_studio.ListRenderer");
+        patchWithCleanup(ListRenderer.prototype, patchListRendererDesktop());
+        patchWithCleanup(ListRenderer.prototype, patchListRendererStudio());
     });
 
     QUnit.module("ListView");

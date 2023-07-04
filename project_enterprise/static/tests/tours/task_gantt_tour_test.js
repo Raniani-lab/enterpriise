@@ -30,9 +30,9 @@ function openProjectUpdateAndReturnToTasks(view, viewClass) {
     ];
 }
 
-patch(registry.category("web_tour.tours").get("project_test_tour"), "patch_project_enterprise_tour", {
+patch(registry.category("web_tour.tours").get("project_test_tour"), {
     steps() {
-        const originalSteps = this._super();
+        const originalSteps = super.steps();
         const taskCreationStepIndex = originalSteps.findIndex((step) => step.id === "quick_create_tasks");
 
         originalSteps.splice(taskCreationStepIndex + 1, 0, {

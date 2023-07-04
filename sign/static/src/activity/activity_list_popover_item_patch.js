@@ -3,9 +3,9 @@
 import { ActivityListPopoverItem } from "@mail/core/web/activity_list_popover_item";
 import { patch } from "@web/core/utils/patch";
 
-patch(ActivityListPopoverItem.prototype, "sign", {
+patch(ActivityListPopoverItem.prototype, {
     get hasMarkDoneButton() {
-        return this._super() && this.props.activity.activity_category !== "sign_request";
+        return super.hasMarkDoneButton && this.props.activity.activity_category !== "sign_request";
     },
 
     async onClickRequestSign() {

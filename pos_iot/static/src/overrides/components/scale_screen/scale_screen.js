@@ -6,9 +6,9 @@ import { ErrorPopup } from "@point_of_sale/app/errors/popups/error_popup";
 import { ErrorTracebackPopup } from "@point_of_sale/app/errors/popups/error_traceback_popup";
 import { useService, useBus } from "@web/core/utils/hooks";
 
-patch(ScaleScreen.prototype, "pos_iot.ScaleScreen", {
+patch(ScaleScreen.prototype, {
     setup() {
-        this._super(...arguments);
+        super.setup(...arguments);
         this.popup = useService("popup");
         useBus(this.hardwareProxy, "change_status", this.onProxyStatusChange);
     },
@@ -42,13 +42,13 @@ patch(ScaleScreen.prototype, "pos_iot.ScaleScreen", {
         if (!this.isManualMeasurement) {
             this.scale.action({ action: "start_reading" });
         }
-        this._super(...arguments);
+        super.onMounted(...arguments);
     },
     /**
      * @override
      */
     onWillUnmount() {
-        this._super(...arguments);
+        super.onWillUnmount(...arguments);
         // FIXME POSREF shouldn't the stop_reading action be awaited before removing the listener?
         this.scale.action({ action: "stop_reading" });
         this.scale.removeListener();

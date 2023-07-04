@@ -2,7 +2,7 @@
 import { patch } from "@web/core/utils/patch";
 import { Order } from "@pos_preparation_display/app/components/order/order";
 
-patch(Order.prototype, "pos_restaurant_preparation_display.Order", {
+patch(Order.prototype, {
     get cardColor() {
         const table = this.props.order.table;
         let tableOrdersInStage = [];

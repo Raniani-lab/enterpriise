@@ -50,7 +50,7 @@ QUnit.module("documents", {}, function () {
                 }
                 patchWithCleanup(DocumentsListRenderer, {
                     init() {
-                        this._super(...arguments);
+                        super.init(...arguments);
                         this.LONG_TOUCH_THRESHOLD = 0;
                     },
                 });

@@ -3,7 +3,7 @@
 import { patch } from "@web/core/utils/patch";
 import { MockServer } from "@web/../tests/helpers/mock_server";
 
-patch(MockServer.prototype, "web_studio.MockServer", {
+patch(MockServer.prototype, {
     performRPC(route, args) {
         if (route === "/web/dataset/call_kw/res.users/has_group") {
             return true;
@@ -33,7 +33,7 @@ patch(MockServer.prototype, "web_studio.MockServer", {
             return Promise.resolve(this.mockGetStudioViewArch(args));
         }
 
-        return this._super(...arguments);
+        return super.performRPC(...arguments);
     },
 
     mockActivityAllowed() {

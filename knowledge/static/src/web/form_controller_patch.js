@@ -4,9 +4,9 @@ import { useService } from "@web/core/utils/hooks";
 import { patch } from "@web/core/utils/patch";
 import { FormController } from "@web/views/form/form_controller";
 
-patch(FormController.prototype, "knowledge", {
+patch(FormController.prototype, {
     setup() {
-        this._super();
+        super.setup();
         this.command = useService("command");
     },
 

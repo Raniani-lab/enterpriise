@@ -140,7 +140,7 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
 
         patchWithCleanup(ListRenderer.prototype, {
             getListForSpreadsheet() {
-                const result = this._super(...arguments);
+                const result = super.getListForSpreadsheet(...arguments);
                 assert.deepEqual(
                     result.list.context,
                     {

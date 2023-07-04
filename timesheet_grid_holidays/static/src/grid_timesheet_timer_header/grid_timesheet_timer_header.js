@@ -5,9 +5,9 @@ import { patch } from "@web/core/utils/patch";
 
 import { GridTimesheetTimerHeader } from "@timesheet_grid/components/grid_timesheet_timer_header/grid_timesheet_timer_header";
 
-patch(GridTimesheetTimerHeader.prototype, "timesheet_grid_holidays.GridTimesheetTimerHeader", {
+patch(GridTimesheetTimerHeader.prototype, {
     getFieldInfo(fieldName) {
-        const fieldInfo = this._super(fieldName);
+        const fieldInfo = super.getFieldInfo(fieldName);
         if (fieldName === "task_id") {
             fieldInfo.domain = Domain.and([
                 fieldInfo.domain || [],

@@ -13,7 +13,7 @@ const PermissionPanelWebsiteKnowledgePatch = {
     }
 };
 
-patch(PermissionPanel.prototype, 'website_knowledge_patch', PermissionPanelWebsiteKnowledgePatch);
+patch(PermissionPanel.prototype, PermissionPanelWebsiteKnowledgePatch);
 PermissionPanel.components = {
     ...PermissionPanel.components,
     CopyClipboardCharField,

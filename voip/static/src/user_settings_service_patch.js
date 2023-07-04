@@ -13,9 +13,9 @@ const VOIP_CONFIG_KEYS = [
     "voip_username",
 ];
 
-patch(UserSettings.prototype, "Add VoIP config", {
+patch(UserSettings.prototype, {
     updateFromCommands(settings) {
-        this._super(settings);
+        super.updateFromCommands(settings);
         for (const key of VOIP_CONFIG_KEYS) {
             if (key in settings) {
                 this[key] = settings[key];

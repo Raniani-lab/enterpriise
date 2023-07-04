@@ -6,7 +6,7 @@ import { patch } from "@web/core/utils/patch";
 
 EmojiPicker.props.push("hasRemoveFeature?");
 
-patch(EmojiPicker.prototype, "knowledge", {
+patch(EmojiPicker.prototype, {
     removeEmoji() {
         this.props.onSelect(false);
         this.gridRef.el.scrollTop = 0;

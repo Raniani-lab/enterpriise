@@ -3,9 +3,9 @@
 import { PartnerDetailsEdit } from "@point_of_sale/app/screens/partner_list/partner_editor/partner_editor";
 import { patch } from "@web/core/utils/patch";
 
-patch(PartnerDetailsEdit.prototype, "l10n_mx_edi_pos.PartnerDetailsEdit", {
+patch(PartnerDetailsEdit.prototype, {
     setup() {
-        this._super(...arguments);
+        super.setup(...arguments);
         this.changes.l10n_mx_edi_fiscal_regime = this.getPartnerMxFiscalRegime();
         this.changes.l10n_mx_edi_no_tax_breakdown = this.props.partner.l10n_mx_edi_no_tax_breakdown;
     },

@@ -5,9 +5,9 @@ import { PosStore } from "@point_of_sale/app/store/pos_store";
 import { AlertPopup } from "@point_of_sale/app/utils/alert_popup/alert_popup";
 import { _t } from "@web/core/l10n/translation";
 
-patch(PosStore.prototype, "pos_preparation_display.PosStore", {
+patch(PosStore.prototype, {
     async setup() {
-        await this._super(...arguments);
+        await super.setup(...arguments);
         this.preparationDisplays = [];
     },
 
@@ -20,7 +20,7 @@ patch(PosStore.prototype, "pos_preparation_display.PosStore", {
 
     // @override - add preparation display categories to global order preparation categories
     get orderPreparationCategories() {
-        let categoryIds = this._super();
+        let categoryIds = super.orderPreparationCategories;
         if (this.preparationDisplayCategoryIds) {
             categoryIds = new Set([...categoryIds, ...this.preparationDisplayCategoryIds]);
         }
@@ -29,19 +29,19 @@ patch(PosStore.prototype, "pos_preparation_display.PosStore", {
 
     // @override
     async _processData(loadedData) {
-        await this._super(loadedData);
+        await super._processData(loadedData);
         this.preparationDisplays = loadedData["pos_preparation_display.display"];
     },
 
     // @override
     async after_load_server_data() {
-        await this._super(...arguments);
+        await super.after_load_server_data(...arguments);
         this._initializePreparationDisplay();
     },
 
     // @override
     async updateModelsData(models_data) {
-        await this._super(...arguments);
+        await super.updateModelsData(...arguments);
         if ("pos_preparation_display.display" in models_data) {
             this.preparationDisplays = models_data["pos_preparation_display.display"];
             this._initializePreparationDisplay();
@@ -49,7 +49,6 @@ patch(PosStore.prototype, "pos_preparation_display.PosStore", {
     },
 
     async sendOrderInPreparation(order, cancelled = false) {
-        const _super = this._super;
         let result = true;
 
         if (this.preparationDisplayCategoryIds.size) {
@@ -66,6 +65,6 @@ patch(PosStore.prototype, "pos_preparation_display.PosStore", {
             });
         }
 
-        return _super(order, cancelled);
+        return super.sendOrderInPreparation(order, cancelled);
     },
 });

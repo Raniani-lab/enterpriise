@@ -6,9 +6,9 @@ import { useService } from "@web/core/utils/hooks";
 
 import "@web_enterprise/views/list/list_renderer_desktop";
 
-export const patchListRendererStudio = {
+export const patchListRendererStudio = () => ({
     setup() {
-        this._super(...arguments);
+        super.setup(...arguments);
         this.studioService = useService("studio");
     },
     /**
@@ -19,6 +19,6 @@ export const patchListRendererStudio = {
     onSelectedAddCustomField() {
         this.studioService.open();
     },
-};
+});
 
-patch(ListRenderer.prototype, "web_studio.ListRenderer", patchListRendererStudio);
+export const unpatchListRendererStudio = patch(ListRenderer.prototype, patchListRendererStudio());

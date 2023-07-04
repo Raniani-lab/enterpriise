@@ -47,7 +47,7 @@ QUnit.module("hr_mobile", (hooks) => {
                 if (path === '/web/image') {
                     return `data:image/png;base64,${MY_IMAGE}`;
                 }
-                return this._super(...arguments);
+                return super.url(...arguments);
             },
             username: "demo",
             name: "Marc Demo",

@@ -2,7 +2,7 @@
 import { registry } from "@web/core/registry";
 import { download } from "@web/core/network/download";
 import { ReportEditorModel } from "@web_studio/client_action/report_editor/report_editor_model";
-import { patch, unpatch } from "@web/core/utils/patch";
+import { patch } from "@web/core/utils/patch";
 import { assertEqual, stepNotInStudio } from "@web_studio/../tests/tours/tour_helpers";
 
 const getBoundingClientRect = Element.prototype.getBoundingClientRect;
@@ -54,17 +54,13 @@ function openEditorPowerBox(element, offset = 0) {
 // to be sure we leave the tour when the save is done.
 function patchReportEditorModelForSilentSave() {
     const saveProms = [];
-    patch(ReportEditorModel.prototype, "studioTestSilentSave", {
+    const _unpatch = patch(ReportEditorModel.prototype, {
         saveReport() {
-            const prom = this._super(...arguments);
+            const prom = super.saveReport(...arguments);
             saveProms.push(prom);
             return prom;
         },
     });
-
-    function _unpatch() {
-        unpatch(ReportEditorModel.prototype, "studioTestSilentSave");
-    }
 
     return {
         wait: async (unpatch = true) => {
@@ -309,14 +305,14 @@ registry.category("web_tour.tours").add("web_studio.test_print_preview", {
             trigger: ".o_web_studio_sidebar button[name='report_print_preview']",
             run(helpers) {
                 downloadProm = new Promise(resolve => {
-                    patch(download, "studio_test_download", {
+                    const unpatch = patch(download, {
                         _download(options) {
                             steps.push("download report")
                             const context = JSON.parse(options.data.context);
                             assertEqual(context["report_pdf_no_attachment"], true);
                             assertEqual(context["discard_logo_check"], true);
                             assertEqual(context["active_ids"].length, 1);
-                            unpatch(download, "studio_test_download")
+                            unpatch();
                             resolve();
                         }
                     })

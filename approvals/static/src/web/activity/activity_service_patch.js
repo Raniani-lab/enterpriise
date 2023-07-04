@@ -4,9 +4,9 @@ import { ActivityService } from "@mail/core/web/activity_service";
 
 import { patch } from "@web/core/utils/patch";
 
-patch(ActivityService.prototype, "approvals/web/activity", {
+patch(ActivityService.prototype, {
     insert(data) {
-        const activity = this._super(...arguments);
+        const activity = super.insert(...arguments);
         if ("approver_id" in data && "approver_status" in data) {
             if (!data.approver_id) {
                 delete activity.approval;

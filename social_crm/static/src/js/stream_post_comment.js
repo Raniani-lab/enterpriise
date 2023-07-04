@@ -2,13 +2,13 @@
 
 import { StreamPostComment } from '@social/js/stream_post_comment';
 
-import { patch } from '@web/core/utils/patch';
+import { patch } from "@web/core/utils/patch";
 import { useService } from "@web/core/utils/hooks";
 import { serializeDateTime } from "@web/core/l10n/dates";
 
-patch(StreamPostComment.prototype, 'stream_post_comment_crm', {
+patch(StreamPostComment.prototype, {
     setup() {
-        this._super(...arguments);
+        super.setup(...arguments);
 
         this.actionService = useService("action");
     },

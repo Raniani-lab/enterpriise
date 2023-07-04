@@ -19,7 +19,7 @@ function makeArchChanger() {
     let mockServer = null;
     patchWithCleanup(MockServer.prototype, {
         init() {
-            this._super(...arguments);
+            super.init(...arguments);
             mockServer = this;
         },
     });

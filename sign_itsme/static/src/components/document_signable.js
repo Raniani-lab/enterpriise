@@ -6,9 +6,9 @@ import { Document } from "@sign/components/sign_request/document_signable";
 import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { ItsmeDialog } from "@sign_itsme/dialogs/itsme_dialog";
 
-patch(SignablePDFIframe.prototype, "SignablePDFIframeItsmePatch", {
+patch(SignablePDFIframe.prototype, {
     postRender() {
-        const res = this._super();
+        const res = super.postRender();
         if (this.props.errorMessage) {
             const [errorMessage, title] = processErrorMessage.call(this, this.props.errorMessage);
             this.dialog.add(
@@ -31,7 +31,6 @@ patch(SignablePDFIframe.prototype, "SignablePDFIframeItsmePatch", {
     },
 
     async getAuthDialog() {
-        const superCall = this._super;
         if (this.props.authMethod === "itsme") {
             const credits = await this.rpc("/itsme/has_itsme_credits");
             if (credits) {
@@ -48,13 +47,13 @@ patch(SignablePDFIframe.prototype, "SignablePDFIframeItsmePatch", {
                 };
             }
         }
-        return superCall();
+        return super.getAuthDialog();
     },
 });
 
-patch(Document.prototype, "DocumentItsmePatch", {
+patch(Document.prototype, {
     getDataFromHTML() {
-        this._super();
+        super.getDataFromHTML();
         this.showThankYouDialog = Boolean(
             this.props.parent.querySelector("#o_sign_show_thank_you_dialog")
         );
@@ -62,7 +61,7 @@ patch(Document.prototype, "DocumentItsmePatch", {
     },
 
     get iframeProps() {
-        const props = this._super();
+        const props = super.iframeProps;
         return {
             ...props,
             showThankYouDialog: this.showThankYouDialog,

@@ -6,16 +6,16 @@ import { IoTLongpolling, iotLongpollingService } from "@iot/iot_longpolling";
 import { patch } from "@web/core/utils/patch";
 import { IoTErrorPopup } from "@pos_iot/app/io_t_error_popup/io_t_error_popup";
 
-patch(iotLongpollingService, "pos_iot.IoTLongpolling", {
+patch(iotLongpollingService, {
     dependencies: ["popup", "hardware_proxy", ...iotLongpollingService.dependencies],
 });
-patch(IoTLongpolling.prototype, "pos_iot.IotLongpolling", {
+patch(IoTLongpolling.prototype, {
     setup({ popup, hardware_proxy }) {
-        this._super(...arguments);
+        super.setup(...arguments);
         this.popup = popup;
         this.hardwareProxy = hardware_proxy;
     },
-    _doWarnFail: function (url) {
+    _doWarnFail(url) {
         this.popup.add(IoTErrorPopup, {
             title: _t("Connection to IoT Box failed"),
             url: url,
@@ -35,10 +35,10 @@ patch(IoTLongpolling.prototype, "pos_iot.IotLongpolling", {
     },
     _onSuccess(iot_ip, result) {
         this.hardwareProxy.setProxyConnectionStatus(iot_ip, true);
-        return this._super.apply(this, arguments);
+        return super._onSuccess(...arguments);
     },
     action(iot_ip, device_identifier, data) {
-        var res = this._super.apply(this, arguments);
+        var res = super.action(...arguments);
         res.then(() => {
             this.hardwareProxy.setProxyConnectionStatus(iot_ip, true);
         }).guardedCatch(() => {

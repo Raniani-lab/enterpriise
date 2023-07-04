@@ -3,7 +3,7 @@
 import { patch } from "@web/core/utils/patch";
 import { MockServer } from "@web/../tests/helpers/mock_server";
 
-patch(MockServer.prototype, 'documents/controllers/main', {
+patch(MockServer.prototype, {
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
@@ -19,6 +19,6 @@ patch(MockServer.prototype, 'documents/controllers/main', {
         ) {
             return Promise.resolve();
         }
-        return this._super(...arguments);
+        return super._performRPC(...arguments);
     },
 });

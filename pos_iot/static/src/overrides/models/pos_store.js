@@ -9,9 +9,9 @@ import { DeviceController } from "@iot/device_controller";
 import { IoTPrinter } from "@pos_iot/app/iot_printer";
 import { PaymentIngenico, PaymentWorldline } from "@pos_iot/app/payment";
 
-patch(PosStore.prototype, "pos_iot.PosStore", {
+patch(PosStore.prototype, {
     async _processData(loadedData) {
-        await this._super(...arguments);
+        await super._processData(...arguments);
         this._loadIotDevice(loadedData["iot.device"]);
         this.hardwareProxy.iotBoxes = loadedData["iot.box"];
     },
@@ -48,7 +48,7 @@ patch(PosStore.prototype, "pos_iot.PosStore", {
             });
             return new IoTPrinter({ device });
         } else {
-            return this._super(...arguments);
+            return super.create_printer(...arguments);
         }
     },
 
@@ -67,7 +67,7 @@ patch(PosStore.prototype, "pos_iot.PosStore", {
                 body: _t("Please process or cancel the current transaction."),
             });
         } else {
-            return this._super(...arguments);
+            return super.showScreen(...arguments);
         }
     },
     connectToProxy() {

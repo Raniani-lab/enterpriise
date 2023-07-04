@@ -4,9 +4,9 @@ import { Messaging } from "@mail/core/common/messaging_service";
 
 import { patch } from "@web/core/utils/patch";
 
-patch(Messaging.prototype, "Retrieve VoIP data sent by init_messaging", {
+patch(Messaging.prototype, {
     initMessagingCallback({ voipConfig }) {
-        this._super(...arguments);
+        super.initMessagingCallback(...arguments);
         this.store.voipConfig = voipConfig;
     },
 });

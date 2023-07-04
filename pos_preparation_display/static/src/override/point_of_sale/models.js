@@ -2,7 +2,7 @@
 import { Order } from "@point_of_sale/app/store/models";
 import { patch } from "@web/core/utils/patch";
 
-patch(Order.prototype, "pos_preparation_display.Order", {
+patch(Order.prototype, {
     // This function send order change to preparation display.
     // For sending changes to printer see printChanges function.
     async sendChanges(cancelled) {

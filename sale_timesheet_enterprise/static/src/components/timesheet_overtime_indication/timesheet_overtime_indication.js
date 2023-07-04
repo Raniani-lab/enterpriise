@@ -7,7 +7,6 @@ import { TimesheetOvertimeIndication } from "@timesheet_grid/components/timeshee
 
 patch(
     TimesheetOvertimeIndication.prototype,
-    "sale_timesheet_enterprise.TimesheetOvertimeIndication",
     {
         get title() {
             if (this.props.name === "project_id") {
@@ -19,7 +18,7 @@ patch(
                     this.props.worked_hours
                 );
             }
-            return this._super();
+            return super.title;
         },
     }
 );

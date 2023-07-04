@@ -3,14 +3,13 @@
 import { patch } from "@web/core/utils/patch";
 import { MockServer } from "@web/../tests/helpers/mock_server";
 
-patch(MockServer.prototype, "appointment_mock_server", {
+patch(MockServer.prototype, {
     /**
      * Simulate the creation of a custom appointment type
      * by receiving a list of slots.
      * @override
      */
     async _performRPC(route, args) {
-        const _super = this._super.bind(this);
         if (route === "/appointment/appointment_type/create_custom") {
             const slots = args.slots;
             if (slots.length === 0) {
@@ -75,6 +74,6 @@ patch(MockServer.prototype, "appointment_mock_server", {
                 invite_url: `http://amazing.odoo.com/appointment/${appointment_type_id}?filter_staff_user_ids=%5B${1}%5D`,
             }
         }
-        return _super(...arguments);
+        return super._performRPC(...arguments);
     },
 });

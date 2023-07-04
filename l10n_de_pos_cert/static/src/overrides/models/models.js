@@ -6,10 +6,10 @@ import { convertFromEpoch } from "@l10n_de_pos_cert/app/utils";
 import { TaxError } from "@l10n_de_pos_cert/app/errors";
 import { patch } from "@web/core/utils/patch";
 
-patch(Order.prototype, "l10n_de_pos_cert.Order", {
+patch(Order.prototype, {
     // @Override
     setup() {
-        this._super(...arguments);
+        super.setup(...arguments);
         if (this.pos.isCountryGermanyAndFiskaly()) {
             this.fiskalyUuid = this.fiskalyUuid || null;
             this.transactionState = this.transactionState || "inactive"; // Used to know when we need to create the fiskaly transaction
@@ -48,7 +48,7 @@ patch(Order.prototype, "l10n_de_pos_cert.Order", {
     },
     // @Override
     export_for_printing() {
-        const receipt = this._super(...arguments);
+        const receipt = super.export_for_printing(...arguments);
         if (this.pos.isCountryGermanyAndFiskaly()) {
             if (this.isTransactionFinished()) {
                 receipt["tss"] = {};
@@ -63,7 +63,7 @@ patch(Order.prototype, "l10n_de_pos_cert.Order", {
     },
     //@Override
     export_as_JSON() {
-        const json = this._super(...arguments);
+        const json = super.export_as_JSON(...arguments);
         if (this.pos.isCountryGermanyAndFiskaly()) {
             json["fiskaly_uuid"] = this.fiskalyUuid;
             json["transaction_state"] = this.transactionState;
@@ -78,7 +78,7 @@ patch(Order.prototype, "l10n_de_pos_cert.Order", {
     },
     //@Override
     init_from_JSON(json) {
-        this._super(...arguments);
+        super.init_from_JSON(...arguments);
         if (this.pos.isCountryGermanyAndFiskaly()) {
             this.fiskalyUuid = json.fiskaly_uuid;
             this.transactionState = json.transaction_state;
@@ -105,7 +105,7 @@ patch(Order.prototype, "l10n_de_pos_cert.Order", {
             }
         }
         try {
-            this._super(...arguments);
+            super.add_product(...arguments);
         } catch (error) {
             if (this.pos.isCountryGermanyAndFiskaly() && error instanceof TaxError) {
                 await this.env.services.pos._showTaxError();

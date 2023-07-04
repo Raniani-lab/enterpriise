@@ -5,7 +5,7 @@ import { _t } from "@web/core/l10n/translation";
 import { patch } from "@web/core/utils/patch";
 import { ErrorPopup } from "@point_of_sale/app/errors/popups/error_popup";
 
-patch(PosStore.prototype, "pos_l10n_se.PosStore", {
+patch(PosStore.prototype, {
     useBlackBoxSweden() {
         return !!this.config.iface_sweden_fiscal_data_module;
     },
@@ -13,14 +13,13 @@ patch(PosStore.prototype, "pos_l10n_se.PosStore", {
         if (this.useBlackBoxSweden()) {
             return false;
         }
-        return this._super(...arguments);
+        return super.cashierHasPriceControlRights(...arguments);
     },
     disallowLineQuantityChange() {
-        const result = this._super(...arguments);
+        const result = super.disallowLineQuantityChange(...arguments);
         return this.useBlackBoxSweden() || result;
     },
     async push_single_order(order) {
-        const _super = this._super;
         if (this.useBlackBoxSweden() && order) {
             if (!order.receipt_type) {
                 order.receipt_type = "normal";
@@ -33,7 +32,7 @@ patch(PosStore.prototype, "pos_l10n_se.PosStore", {
                 order.blackbox_tax_category_d = order.get_specific_tax(0);
                 var data = await this.push_order_to_blackbox(order);
                 this.set_data_for_push_order_from_blackbox(order, data);
-                return _super(...arguments);
+                return super.push_single_order(...arguments);
             } catch (err) {
                 order.finalized = false;
                 return Promise.reject({
@@ -43,7 +42,7 @@ patch(PosStore.prototype, "pos_l10n_se.PosStore", {
                 });
             }
         } else {
-            return _super(...arguments);
+            return super.push_single_order(...arguments);
         }
     },
     async push_order_to_blackbox(order) {
@@ -103,7 +102,7 @@ patch(PosStore.prototype, "pos_l10n_se.PosStore", {
     },
 });
 
-patch(Order.prototype, "pos_l10n_se.Order", {
+patch(Order.prototype, {
     get_specific_tax(amount) {
         var tax = this.get_tax_details().find((tax) => tax.tax.amount === amount);
         if (tax) {
@@ -112,7 +111,6 @@ patch(Order.prototype, "pos_l10n_se.Order", {
         return false;
     },
     async add_product(product, options) {
-        const _super = this._super;
         if (this.pos.useBlackBoxSweden() && product.taxes_id.length === 0) {
             await this.env.services.popup(ErrorPopup, {
                 title: _t("POS error"),
@@ -139,21 +137,21 @@ patch(Order.prototype, "pos_l10n_se.Order", {
                 body: _t("You can only make positive or negative order. You cannot mix both."),
             });
         } else {
-            return _super(...arguments);
+            return super.add_product(...arguments);
         }
         return false;
     },
     wait_for_push_order() {
-        var result = this._super(...arguments);
+        var result = super.wait_for_push_order(...arguments);
         result = Boolean(this.pos.useBlackBoxSweden() || result);
         return result;
     },
     init_from_JSON(json) {
-        this._super(...arguments);
+        super.init_from_JSON(...arguments);
         this.is_refund = json.is_refund || false;
     },
     export_as_JSON() {
-        var json = this._super(...arguments);
+        var json = super.export_as_JSON(...arguments);
 
         var to_return = Object.assign(json, {
             receipt_type: this.receipt_type,
@@ -182,9 +180,9 @@ patch(Order.prototype, "pos_l10n_se.Order", {
     },
 });
 
-patch(Orderline.prototype, "pos_l10n_se.Orderline", {
+patch(Orderline.prototype, {
     export_for_printing() {
-        var json = this._super(...arguments);
+        var json = super.export_for_printing(...arguments);
 
         var to_return = Object.assign(json, {
             product_type: this.get_product().type,

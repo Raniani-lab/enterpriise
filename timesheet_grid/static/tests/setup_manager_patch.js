@@ -10,9 +10,9 @@ const savedGridComponentRegistry = registry.category("saved_grid_components");
 
 QUnit.begin(() => copyRegistry(gridComponentRegistry, savedGridComponentRegistry));
 
-patch(setupManager, "timesheet_grid", {
+patch(setupManager, {
     setupServiceRegistries() {
-        this._super(...arguments);
+        super.setupServiceRegistries(...arguments);
         // Restore the grid component registry to its original state
         // since it is required by some services.
         clearRegistryWithCleanup(registry.category("grid_components"));

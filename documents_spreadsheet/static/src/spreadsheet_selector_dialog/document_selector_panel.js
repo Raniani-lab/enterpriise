@@ -55,6 +55,6 @@ export class DocumentsSelectorPanel extends SpreadsheetSelectorPanel {
         return this.orm.call("documents.document", "action_open_new_spreadsheet");
     }
 }
-patch(SpreadsheetSelectorDialog, "documents_spreadsheet.SpreadsheetSelectorDialog", {
+patch(SpreadsheetSelectorDialog, {
     components: { ...SpreadsheetSelectorDialog.components, DocumentsSelectorPanel },
 });

@@ -6,7 +6,7 @@ import { x2ManyCommands } from "@web/core/orm_service";
 import { patch } from "@web/core/utils/patch";
 
 const { extractProps } = saleOrderLineProductField;
-patch(saleOrderLineProductField, "sale_renting_field", {
+patch(saleOrderLineProductField, {
     extractProps({ options }) {
         const props = extractProps(...arguments);
         props.rent = options.rent;
@@ -14,17 +14,17 @@ patch(saleOrderLineProductField, "sale_renting_field", {
     },
 });
 
-patch(SaleOrderLineProductField, "sale_renting_props", {
+patch(SaleOrderLineProductField, {
     props: {
         ...SaleOrderLineProductField.props,
         rent: { type: Boolean, optional: true },
     },
 });
 
-patch(SaleOrderLineProductField.prototype, 'sale_renting', {
+patch(SaleOrderLineProductField.prototype, {
 
     async _onProductUpdate() {
-        this._super(...arguments);
+        super._onProductUpdate(...arguments);
         if (this.props.record.data.is_product_rentable && this.props.rent) {
             // The rental configurator is only expected to open in Rental App
             //      (rent specified true in the xml field options)
@@ -34,24 +34,24 @@ patch(SaleOrderLineProductField.prototype, 'sale_renting', {
     },
 
     _editLineConfiguration() {
-        this._super(...arguments);
+        super._editLineConfiguration(...arguments);
         if (this.props.record.data.is_rental) {
             this._openRentalConfigurator(true);
         }
     },
 
     get isConfigurableLine() {
-        return this._super(...arguments) || !!this.props.record.data.is_rental;
+        return super.isConfigurableLine || !!this.props.record.data.is_rental;
     },
 
     configurationButtonFAIcon() {
         if (this.props.record.data.is_rental) {
             return 'fa-calendar';
         }
-        return this._super(...arguments);
+        return super.configurationButtonFAIcon(...arguments);
     },
 
-    _defaultRentalData: function (edit) {
+    _defaultRentalData(edit) {
         const recordData = this.props.record.data;
         var data = {
             default_quantity: recordData.product_uom_qty,

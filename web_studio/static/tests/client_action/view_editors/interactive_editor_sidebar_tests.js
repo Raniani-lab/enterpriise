@@ -725,7 +725,7 @@ QUnit.module(
             const xmlEditorDef = makeDeferred();
             patchWithCleanup(CodeEditor.prototype, {
                 setup() {
-                    this._super();
+                    super.setup();
                     owl.onMounted(() => xmlEditorDef.resolve());
                 },
             });

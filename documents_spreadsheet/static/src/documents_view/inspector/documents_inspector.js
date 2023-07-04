@@ -12,12 +12,12 @@ import { XLSX_MIME_TYPE } from "@documents_spreadsheet/helpers";
 
 inspectorFields.push("handler");
 
-patch(DocumentsInspector.prototype, "documents_spreadsheet_documents_inspector", {
+patch(DocumentsInspector.prototype, {
     /**
      * @override
      */
     setup() {
-        this._super(...arguments);
+        super.setup(...arguments);
         this.orm = useService("orm");
         this.notification = useService("notification");
     },
@@ -26,7 +26,7 @@ patch(DocumentsInspector.prototype, "documents_spreadsheet_documents_inspector",
      * @override
      */
     getRecordAdditionalData(record) {
-        const result = this._super(...arguments);
+        const result = super.getRecordAdditionalData(...arguments);
         result.isSheet = record.data.handler === "spreadsheet";
         result.isXlsx = record.data.mimetype === XLSX_MIME_TYPE;
         return result;
@@ -36,7 +36,7 @@ patch(DocumentsInspector.prototype, "documents_spreadsheet_documents_inspector",
      * @override
      */
     getPreviewClasses(record, additionalData) {
-        let result = this._super(...arguments);
+        let result = super.getPreviewClasses(...arguments);
         if (additionalData.isSheet) {
             return result.replace("o_documents_preview_mimetype", "o_documents_preview_image");
         }
@@ -93,7 +93,7 @@ patch(DocumentsInspector.prototype, "documents_spreadsheet_documents_inspector",
                 }
             }
         } else {
-            this._super(...arguments);
+            super.onDownload(...arguments);
         }
     },
 
@@ -102,7 +102,7 @@ patch(DocumentsInspector.prototype, "documents_spreadsheet_documents_inspector",
      */
     async createShareVals() {
         const selection = this.props.documents;
-        const vals = await this._super();
+        const vals = await super.createShareVals();
         if (selection.every((doc) => doc.data.handler !== "spreadsheet")) {
             return vals;
         }

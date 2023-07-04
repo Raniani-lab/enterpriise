@@ -5,12 +5,12 @@ import { DocumentsInspector } from "@documents/views/inspector/documents_inspect
 import { patch } from '@web/core/utils/patch';
 import { useService } from "@web/core/utils/hooks";
 
-patch(DocumentsInspector.prototype, 'documents_account_documents_inspector', {
+patch(DocumentsInspector.prototype, {
     /**
      * @override
      */
     setup() {
-        this._super(...arguments);
+        super.setup(...arguments);
         this.user = useService("user");
         onWillStart(async () => {
             this.purchaseGroup = await this.user.hasGroup('account.group_purchase_receipts');
@@ -22,7 +22,7 @@ patch(DocumentsInspector.prototype, 'documents_account_documents_inspector', {
      * Override to allow the creation of vendor receipt when the group is enabled.
      */
     getCommonRules() {
-        let commonRules = this._super.apply();
+        let commonRules = super.getCommonRules();
         if (!this.purchaseGroup) {
             commonRules = commonRules.filter((rec) => rec._values.create_model !== 'account.move.in_receipt');
         }

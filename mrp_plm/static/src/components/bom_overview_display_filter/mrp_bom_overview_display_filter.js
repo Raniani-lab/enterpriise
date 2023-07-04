@@ -3,17 +3,16 @@
 import { patch } from "@web/core/utils/patch";
 import { BomOverviewDisplayFilter } from "@mrp/components/bom_overview_display_filter/mrp_bom_overview_display_filter";
 
-patch(BomOverviewDisplayFilter.prototype, "mrp_plm", {
+patch(BomOverviewDisplayFilter.prototype, {
     setup() {
-        this._super.apply();
+        super.setup();
         if (this.props.showOptions.ecoAllowed) {
             this.displayOptions.ecos = this.env._t('ECOs');
         }
     },
 });
 
-
-patch(BomOverviewDisplayFilter, "mrp_plm", {
+patch(BomOverviewDisplayFilter, {
     props: {
         ...BomOverviewDisplayFilter.props,
         showOptions: { 

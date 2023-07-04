@@ -2,7 +2,6 @@
 
 import { getFixture, patchWithCleanup, click, nextTick } from "@web/../tests/helpers/utils";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
-import { patch, unpatch } from "@web/core/utils/patch";
 import { session } from "@web/session";
 import { ListRenderer } from "@web/views/list/list_renderer";
 import { browser } from "@web/core/browser/browser";
@@ -36,16 +35,9 @@ QUnit.module(
                     },
                 },
             };
-            patch(
-                ListRenderer.prototype,
-                "web_enterprise.ListRendererDesktop",
-                patchListRendererDesktop
-            );
+            patchWithCleanup(ListRenderer.prototype, patchListRendererDesktop());
 
             setupViewRegistries();
-        },
-        afterEach() {
-            unpatch(ListRenderer.prototype, "web_enterprise.ListRendererDesktop");
         },
     },
     function () {

@@ -17,9 +17,9 @@ topbarMenuRegistry.addChild("add_document_to_dashboard", ["file"], {
 
 /** @typedef {import("@spreadsheet/o_spreadsheet/o_spreadsheet").Model} Model */
 
-patch(SpreadsheetAction.prototype, "spreadsheet_dashboard_documents.SpreadsheetAction", {
+patch(SpreadsheetAction.prototype, {
     setup() {
-        this._super();
+        super.setup();
         useSubEnv({
             canAddDocumentAsDashboard: true,
             createDashboardFromDocument: this._createDashboardFromDocument.bind(this),

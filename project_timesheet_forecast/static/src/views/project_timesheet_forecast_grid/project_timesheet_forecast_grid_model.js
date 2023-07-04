@@ -5,12 +5,12 @@ import { serializeDate } from "@web/core/l10n/dates";
 import { patch } from "@web/core/utils/patch";
 import { TimesheetGridDataPoint } from "@timesheet_grid/views/timesheet_grid/timesheet_grid_model";
 
-patch(TimesheetGridDataPoint.prototype, "project_timesheet_forecast.TimesheetGridDataPoint", {
+patch(TimesheetGridDataPoint.prototype, {
     /**
      * @override
      */
     _postFetchAdditionalData() {
-        const additionalGroups = this._super();
+        const additionalGroups = super._postFetchAdditionalData();
 
         if (!this.searchParams.context.group_expand || this.navigationInfo.periodEnd <= this.model.today) {
             return additionalGroups;

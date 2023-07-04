@@ -1,9 +1,9 @@
 /** @odoo-module */
 
-import { patch } from '@web/core/utils/patch';
+import { patch } from "@web/core/utils/patch";
 import { ProjectRightSidePanel } from '@project/components/project_right_side_panel/project_right_side_panel';
 
-patch(ProjectRightSidePanel.prototype, '@project_account_budget/components/project_right_side_panel/project_right_side_panel', {
+patch(ProjectRightSidePanel.prototype, {
     async loadBudgets() {
         const budgets = await this.orm.call(
             'project.project',

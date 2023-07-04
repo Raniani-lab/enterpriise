@@ -38,7 +38,7 @@ async function createSpreadsheetAction(actionTag, params) {
     let spreadsheetAction;
     patchWithCleanup(SpreadsheetActionComponent.prototype, {
         setup() {
-            this._super();
+            super.setup();
             spreadsheetAction = this;
         },
     });

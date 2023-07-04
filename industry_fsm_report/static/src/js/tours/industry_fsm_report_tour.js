@@ -8,9 +8,9 @@ import { registry } from "@web/core/registry";
 import { patch } from "@web/core/utils/patch";
 import '@industry_fsm/js/tours/industry_fsm_tour';
 
-patch(registry.category("web_tour.tours").get("industry_fsm_tour"), "patch_industry_fsm_report_tour", {
+patch(registry.category("web_tour.tours").get("industry_fsm_tour"), {
     steps() {
-        const originalSteps = this._super();
+        const originalSteps = super.steps();
         const stepIndex = originalSteps.findIndex((step) => step.id === "sign_report");
         originalSteps.splice(stepIndex, 0, {
             trigger: 'div[name="worksheet_map"] h5#task_worksheet',

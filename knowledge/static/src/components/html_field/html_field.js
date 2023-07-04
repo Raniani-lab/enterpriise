@@ -31,7 +31,7 @@ const HtmlFieldPatch = {
      * @override
      */
     setup() {
-        this._super(...arguments);
+        super.setup(...arguments);
         this.behaviorTypes = {
             o_knowledge_behavior_type_article: {
                 Behavior: ArticleBehavior,
@@ -210,7 +210,7 @@ const HtmlFieldPatch = {
      * @override
      */
     get wysiwygOptions() {
-        const options = this._super();
+        const options = super.wysiwygOptions;
         /**
          * @param {Element} element to scan for new Behaviors
          * @returns {Promise|null} resolved when the pre-rendering is done, or
@@ -250,7 +250,7 @@ const HtmlFieldPatch = {
      * @override
      */
     async startWysiwyg() {
-        await this._super(...arguments);
+        await super.startWysiwyg(...arguments);
         this._addRefreshBehaviorsListeners();
         this.startAppAnchorsObserver();
         await this.updateBehaviors();
@@ -276,7 +276,6 @@ const HtmlFieldPatch = {
      * @override
      */
     async _toInline() {
-        const _super = this._super.bind(this);
         // Prevent any new Behavior rendering during `toInline` processing.
         this.behaviorState.appAnchorsObserver.disconnect();
         this._removeRefreshBehaviorsListeners();
@@ -288,7 +287,7 @@ const HtmlFieldPatch = {
         // OWL stay in the DOM as the html_field value, but are not managed
         // by OWL during the `toInline` processing.
         this.destroyBehaviorApps();
-        await _super(...arguments);
+        await super._toInline(...arguments);
         // Reactivate Behavior rendering.
         this._addRefreshBehaviorsListeners();
         this.startAppAnchorsObserver();
@@ -303,7 +302,7 @@ const HtmlFieldPatch = {
      * @override
      */
     async updateValue() {
-        const promise = this._super(...arguments);
+        const promise = super.updateValue(...arguments);
         // Update Behaviors after the updateValue to ensure that they all are
         // properly mounted (they could have been destroyed by `_toInline`).
         promise.then(() => this.updateBehaviors());
@@ -579,16 +578,16 @@ const HtmlFieldPatch = {
     },
 };
 
-patch(HtmlField.prototype, 'knowledge_html_field', HtmlFieldPatch);
+patch(HtmlField.prototype, HtmlFieldPatch);
 
-patch(htmlField, "knowledge_html_field", {
+patch(htmlField, {
     supportedOptions: [...htmlField.supportedOptions, {
         label: _t("Enable Knowledge commands"),
         name: "knowledge_commands",
         type: "boolean"
     }],
     extractProps(fieldInfo) {
-        const props = this._super(...arguments);
+        const props = super.extractProps(...arguments);
         props.wysiwygOptions.knowledgeCommands = fieldInfo.options.knowledge_commands;
         if ('allowCommandFile' in fieldInfo.options) {
             props.wysiwygOptions.allowCommandFile = Boolean(fieldInfo.options.allowCommandFile);

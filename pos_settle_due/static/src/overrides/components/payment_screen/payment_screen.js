@@ -6,7 +6,7 @@ import { floatIsZero } from "@web/core/utils/numbers";
 import { ConfirmPopup } from "@point_of_sale/app/utils/confirm_popup/confirm_popup";
 import { sprintf } from "@web/core/utils/strings";
 
-patch(PaymentScreen.prototype, "pos_settle_due.PaymentScreen", {
+patch(PaymentScreen.prototype, {
     get partnerInfos() {
         const order = this.currentOrder;
         return this.pos.getPartnerCredit(order.get_partner());
@@ -18,7 +18,6 @@ patch(PaymentScreen.prototype, "pos_settle_due.PaymentScreen", {
     },
     //@override
     async validateOrder(isForceValidate) {
-        const _super = this._super;
         const order = this.currentOrder;
         const change = order.get_change();
         const paylaterPaymentMethod = this.pos.payment_methods.filter(
@@ -49,7 +48,7 @@ patch(PaymentScreen.prototype, "pos_settle_due.PaymentScreen", {
                 if (confirmed) {
                     const paylaterPayment = order.add_paymentline(paylaterPaymentMethod);
                     paylaterPayment.set_amount(-change);
-                    return _super(...arguments);
+                    return super.validateOrder(...arguments);
                 }
             } else {
                 const { confirmed } = await this.popup.add(ConfirmPopup, {
@@ -70,15 +69,15 @@ patch(PaymentScreen.prototype, "pos_settle_due.PaymentScreen", {
                     }
                     const paylaterPayment = order.add_paymentline(paylaterPaymentMethod);
                     paylaterPayment.set_amount(-change);
-                    return _super(...arguments);
+                    return super.validateOrder(...arguments);
                 }
             }
         } else {
-            return _super(...arguments);
+            return super.validateOrder(...arguments);
         }
     },
     async afterOrderValidation(suggestToSync = false) {
-        await this._super(...arguments);
+        await super.afterOrderValidation(...arguments);
         const hasCustomerAccountAsPaymentMethod = this.currentOrder
             .get_paymentlines()
             .find((paymentline) => paymentline.payment_method.type === "pay_later");

@@ -2,7 +2,7 @@
 
 import { DocumentSelector } from '@web_editor/components/media_dialog/document_selector';
 import { TABS, MediaDialog } from '@web_editor/components/media_dialog/media_dialog';
-import { patch } from '@web/core/utils/patch';
+import { patch } from "@web/core/utils/patch";
 
 /**
  * Override the @see DocumentSelector to manage files in a @see MediaDialog used
@@ -40,7 +40,7 @@ export class KnowledgeDocumentSelector extends DocumentSelector {
 KnowledgeDocumentSelector.mediaSpecificClasses = [];
 KnowledgeDocumentSelector.tagNames = DocumentSelector.tagNames;
 
-patch(TABS, 'knowledge_media_dialog_tabs', {
+patch(TABS, {
     KNOWLEDGE_DOCUMENTS: {
         ...TABS.DOCUMENTS,
         id: 'KNOWLEDGE_DOCUMENTS',
@@ -48,12 +48,12 @@ patch(TABS, 'knowledge_media_dialog_tabs', {
     }
 });
 
-patch(MediaDialog.prototype, 'knowledge_media_dialog', {
+patch(MediaDialog.prototype, {
     /**
      * @override
      */
     addTabs() {
-        this._super(...arguments);
+        super.addTabs(...arguments);
 
         if (this.props.knowledgeDocuments) {
             this.addTab(TABS.KNOWLEDGE_DOCUMENTS);

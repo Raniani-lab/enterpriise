@@ -5,7 +5,7 @@ import { patch } from "@web/core/utils/patch";
 
 import "@crm/activity_menu_patch";
 
-patch(ActivityMenu.prototype, "crm_enterprise", {
+patch(ActivityMenu.prototype, {
     availableViews(group) {
         if (group.model === "crm.lead") {
             return [
@@ -19,6 +19,6 @@ patch(ActivityMenu.prototype, "crm_enterprise", {
                 [false, "activity"],
             ];
         }
-        return this._super(...arguments);
+        return super.availableViews(...arguments);
     },
 });

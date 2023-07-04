@@ -5,9 +5,9 @@ import { useService } from "@web/core/utils/hooks";
 import { FileViewer } from "@web/core/file_viewer/file_viewer";
 import { onWillUpdateProps } from "@odoo/owl";
 
-patch(FileViewer.prototype, "documents", {
+patch(FileViewer.prototype, {
     setup() {
-        this._super();
+        super.setup();
         /** @type {import("@documents/core/document_service").DocumentService} */
         this.documentService = useService("document.document");
         this.onSelectDocument = this.documentService.documentList?.onSelectDocument;
@@ -46,10 +46,10 @@ patch(FileViewer.prototype, "documents", {
     },
     close() {
         this.documentService.documentList?.onDeleteCallback();
-        this._super();
+        super.close();
     },
     next() {
-        this._super();
+        super.next();
         if (this.onSelectDocument) {
             const documentList = this.documentService.documentList;
             if (
@@ -69,7 +69,7 @@ patch(FileViewer.prototype, "documents", {
         }
     },
     previous() {
-        this._super();
+        super.previous();
         if (this.onSelectDocument) {
             const documentList = this.documentService.documentList;
             if (

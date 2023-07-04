@@ -4,16 +4,16 @@ import { StreamPostKanbanRecord } from '@social/js/stream_post_kanban_record';
 import { StreamPostCommentsTwitter } from './stream_post_comments';
 import { StreamPostTwitterQuote } from './stream_post_twitter_quote';
 
-import { patch } from '@web/core/utils/patch';
+import { patch } from "@web/core/utils/patch";
 import { sprintf } from '@web/core/utils/strings';
 import { useService } from '@web/core/utils/hooks';
 
 const { useEffect } = owl;
 
-patch(StreamPostKanbanRecord.prototype, 'social_twitter.StreamPostKanbanRecord', {
+patch(StreamPostKanbanRecord.prototype, {
 
     setup() {
-        this._super(...arguments);
+        super.setup(...arguments);
         this.notification = useService('notification');
 
         useEffect((commentEl) => {

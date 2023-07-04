@@ -3,7 +3,7 @@
 import { patch } from "@web/core/utils/patch";
 import { MockServer } from "@web/../tests/helpers/mock_server";
 
-patch(MockServer.prototype, 'documents/models/share', {
+patch(MockServer.prototype, {
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
@@ -16,6 +16,6 @@ patch(MockServer.prototype, 'documents/models/share', {
         if (args.model === 'documents.share' && args.method === 'check_access_rights') {
             return true;
         }
-        return this._super(...arguments);
+        return super._performRPC(...arguments);
     },
 });

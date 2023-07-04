@@ -41,7 +41,7 @@ QUnit.module("Views > GanttView", (hooks) => {
         patchDate(2021, 9, 10, 8, 0, 0);
         patchWithCleanup(TaskGanttRenderer.prototype, {
             setup() {
-                this._super.apply(this, arguments);
+                super.setup(...arguments);
                 renderer = this;
             },
         });

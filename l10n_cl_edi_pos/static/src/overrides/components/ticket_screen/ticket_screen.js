@@ -3,7 +3,7 @@
 import { TicketScreen } from "@point_of_sale/app/screens/ticket_screen/ticket_screen";
 import { patch } from "@web/core/utils/patch";
 
-patch(TicketScreen.prototype, "l10n_cl_edi_pos.TicketScreen", {
+patch(TicketScreen.prototype, {
     setPartnerToRefundOrder(partner, destinationOrder) {
         if (this.pos.isChileanCompany()) {
             if (
@@ -14,7 +14,7 @@ patch(TicketScreen.prototype, "l10n_cl_edi_pos.TicketScreen", {
                 destinationOrder.set_partner(partner);
             }
         } else {
-            this._super(...arguments);
+            super.setPartnerToRefundOrder(...arguments);
         }
     },
 });

@@ -3,7 +3,7 @@
 import { patch } from "@web/core/utils/patch";
 import { PosStore } from "@point_of_sale/app/store/pos_store";
 
-patch(PosStore.prototype, "pos_settle_due.PosStore", {
+patch(PosStore.prototype, {
     getPartnerCredit(partner) {
         const order = this.get_order();
         const partnerInfos = {

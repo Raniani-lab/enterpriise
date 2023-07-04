@@ -10,9 +10,9 @@ import { preserveCursor, closestElement } from '@web_editor/js/editor/odoo-edito
 import { patch } from "@web/core/utils/patch";
 
 const { Component } = owl;
-patch(Wysiwyg.prototype, 'appointment/static/src/js/wysiwyg.js', {
-    _getPowerboxOptions: function () {
-        const options = this._super.apply(this, arguments);
+patch(Wysiwyg.prototype, {
+    _getPowerboxOptions() {
+        const options = super._getPowerboxOptions(...arguments);
         const {commands, categories} = options;
         categories.push({ name: _t('Navigation'), priority: 40 });
         commands.push(

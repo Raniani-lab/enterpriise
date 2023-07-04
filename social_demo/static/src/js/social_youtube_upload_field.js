@@ -2,9 +2,9 @@
 
 import { YoutubeUploadField } from '@social_youtube/js/social_youtube_upload_field';
 
-import { patch } from '@web/core/utils/patch';
+import { patch } from "@web/core/utils/patch";
 
-patch(YoutubeUploadField.prototype, 'social_demo.YoutubeUploadField', {
+patch(YoutubeUploadField.prototype, {
 
     /**
      * When the user selects a file, as we are in demo mode, the video will not be uploaded.

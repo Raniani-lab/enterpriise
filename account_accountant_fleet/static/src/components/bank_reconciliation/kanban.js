@@ -3,9 +3,9 @@ import { patch } from "@web/core/utils/patch";
 
 import { BankRecKanbanController } from "@account_accountant/components/bank_reconciliation/kanban";
 
-patch(BankRecKanbanController.prototype, "account_accountant_fleet", {
+patch(BankRecKanbanController.prototype, {
     getOne2ManyColumns() {
-        const columns = this._super(...arguments);
+        const columns = super.getOne2ManyColumns(...arguments);
         const lineIdsRecords = this.state.bankRecRecordData.line_ids.records;
 
         if (lineIdsRecords.some((r) => r.data.vehicle_id || r.data.vehicle_required)) {

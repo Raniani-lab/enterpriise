@@ -6,9 +6,9 @@ import { patch } from "@web/core/utils/patch";
 
 import { useBackButton } from "@web_mobile/js/core/hooks";
 
-patch(MessagingMenu.prototype, "mail_enterprise", {
+patch(MessagingMenu.prototype, {
     setup() {
-        this._super();
+        super.setup();
         useBackButton(
             () => this.close(),
             () => this.state.isOpen

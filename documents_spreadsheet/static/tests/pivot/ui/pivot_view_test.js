@@ -1067,7 +1067,7 @@ QUnit.module("spreadsheet pivot view", {}, () => {
         let spreadsheetAction;
         patchWithCleanup(SpreadsheetAction.prototype, {
             setup() {
-                this._super();
+                super.setup();
                 spreadsheetAction = this;
             },
         });
@@ -1091,7 +1091,7 @@ QUnit.module("spreadsheet pivot view", {}, () => {
         let spreadsheetAction;
         patchWithCleanup(SpreadsheetAction.prototype, {
             setup() {
-                this._super();
+                super.setup();
                 spreadsheetAction = this;
             },
         });

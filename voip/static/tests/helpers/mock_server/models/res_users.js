@@ -5,7 +5,7 @@ import "@mail/../tests/helpers/mock_server/models/res_users"; // ensure mail ove
 import { patch } from "@web/core/utils/patch";
 import { MockServer } from "@web/../tests/helpers/mock_server";
 
-patch(MockServer.prototype, "voip/models/res_users", {
+patch(MockServer.prototype, {
     /**
      * @override
      * @returns {Object}
@@ -14,7 +14,7 @@ patch(MockServer.prototype, "voip/models/res_users", {
         const getConfig = (key) =>
             this.getRecords("ir.config_parameter", [["key", "=", key]])[0].value;
         return {
-            ...this._super(...args),
+            ...super._mockResUsers_InitMessaging(...args),
             voipConfig: {
                 mode: getConfig("voip.mode"),
                 pbxAddress: getConfig("voip.pbx_ip"),

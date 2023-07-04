@@ -4,9 +4,9 @@ import { AttendeeCalendarCommonRenderer } from "@calendar/views/attendee_calenda
 import { patch } from "@web/core/utils/patch";
 import { useAppointmentRendererHook } from "@appointment/views/appointment_calendar/hooks";
 
-patch(AttendeeCalendarCommonRenderer.prototype, "appointment_calendar_common_renderer", {
+patch(AttendeeCalendarCommonRenderer.prototype, {
     setup() {
-        this._super(...arguments);
+        super.setup(...arguments);
         const fns = useAppointmentRendererHook(
             () => [this.fc.el],
         );
@@ -14,7 +14,7 @@ patch(AttendeeCalendarCommonRenderer.prototype, "appointment_calendar_common_ren
     },
 
     get options() {
-        const options = this._super();
+        const options = super.options;
         if (this.getEventTimeFormat) {
             options.eventTimeFormat = this.getEventTimeFormat();
         }
@@ -28,7 +28,7 @@ patch(AttendeeCalendarCommonRenderer.prototype, "appointment_calendar_common_ren
     mapRecordsToEvents() {
         this.maxResId = Math.max(Object.keys(this.props.model.data.records).map((id) => Number.parseInt(id)));
         const res = [
-            ...this._super(...arguments),
+            ...super.mapRecordsToEvents(...arguments),
             ...Object.values(this.props.model.data.slots).map((r) => this.convertSlotToEvent(r)),
         ];
         return res;
@@ -52,10 +52,10 @@ patch(AttendeeCalendarCommonRenderer.prototype, "appointment_calendar_common_ren
      */
     fcEventToRecord(event) {
         if (!event.extendedProps || !event.extendedProps.slotId) {
-            return this._super(...arguments);
+            return super.fcEventToRecord(...arguments);
         }
         return {
-            ...this._super({
+            ...super.fcEventToRecord({
                 allDay: event.allDay,
                 date: event.date,
                 start: event.start,
@@ -70,7 +70,7 @@ patch(AttendeeCalendarCommonRenderer.prototype, "appointment_calendar_common_ren
      */
     onEventClick(info) {
         if (!this.isSlotCreationMode()) {
-            return this._super(...arguments);
+            return super.onEventClick(...arguments);
         }
         info.jsEvent.preventDefault();
         info.jsEvent.stopPropagation();
@@ -84,7 +84,7 @@ patch(AttendeeCalendarCommonRenderer.prototype, "appointment_calendar_common_ren
      * @override
      */
     onEventRender(info) {
-        this._super(...arguments);
+        super.onEventRender(...arguments);
         const { el, event } = info;
         if (event.extendedProps.slotId) {
             el.classList.add("o_calendar_slot");
@@ -110,7 +110,7 @@ patch(AttendeeCalendarCommonRenderer.prototype, "appointment_calendar_common_ren
      * @override
      */
     isSelectionAllowed(event) {
-        let result = this._super(...arguments);
+        let result = super.isSelectionAllowed(...arguments);
         if (this.isSlotCreationMode()) {
             result = result && luxon.DateTime.fromJSDate(event.start) > luxon.DateTime.now();
         }
@@ -122,7 +122,7 @@ patch(AttendeeCalendarCommonRenderer.prototype, "appointment_calendar_common_ren
      */
     async onSelect(info) {
         if (!this.isSlotCreationMode()) {
-            return this._super(...arguments);
+            return super.onSelect(...arguments);
         }
         this.props.model.createSlot(this.fcEventToRecord(info));
         this.fc.api.unselect();
@@ -133,7 +133,7 @@ patch(AttendeeCalendarCommonRenderer.prototype, "appointment_calendar_common_ren
      */
     onDateClick(info) {
         if (!this.isSlotCreationMode()) {
-            return this._super(...arguments);
+            return super.onDateClick(...arguments);
         }
         // Disabled in month view
         if (this.props.model.scale === "month") {
@@ -151,7 +151,7 @@ patch(AttendeeCalendarCommonRenderer.prototype, "appointment_calendar_common_ren
      */
     onEventDrop(info) {
         if (!this.isSlotCreationMode()) {
-            return this._super(...arguments);
+            return super.onEventDrop(...arguments);
         }
         this.props.model.updateSlot(this.fcEventToRecord(info.event));
     },
@@ -161,7 +161,7 @@ patch(AttendeeCalendarCommonRenderer.prototype, "appointment_calendar_common_ren
      */
     onEventResize(info) {
         if (!this.isSlotCreationMode()) {
-            return this._super(...arguments);
+            return super.onEventResize(...arguments);
         }
         this.props.model.updateSlot(this.fcEventToRecord(info.event));
     },
@@ -171,7 +171,7 @@ patch(AttendeeCalendarCommonRenderer.prototype, "appointment_calendar_common_ren
      */
     onEventDragStart(info) {
         if (!this.isSlotCreationMode()) {
-            return this._super(...arguments);
+            return super.onEventDragStart(...arguments);
         }
     },
 
@@ -180,7 +180,7 @@ patch(AttendeeCalendarCommonRenderer.prototype, "appointment_calendar_common_ren
      */
     onEventResizeStart(info) {
         if (!this.isSlotCreationMode()) {
-            return this._super(...arguments);
+            return super.onEventResizeStart(...arguments);
         }
     },
 
@@ -189,7 +189,7 @@ patch(AttendeeCalendarCommonRenderer.prototype, "appointment_calendar_common_ren
      */
     onEventMouseEnter(info) {
         if (!this.isSlotCreationMode()) {
-            return this._super(...arguments);
+            return super.onEventMouseEnter(...arguments);
         }
         const buttonEl = info.el.querySelector(".fc-bg > button");
         buttonEl && buttonEl.classList.remove("o_hidden");
@@ -200,7 +200,7 @@ patch(AttendeeCalendarCommonRenderer.prototype, "appointment_calendar_common_ren
      */
     onEventMouseLeave(info) {
         if (!this.isSlotCreationMode()) {
-            return this._super(...arguments);
+            return super.onEventMouseLeave(...arguments);
         }
         const buttonEl = info.el.querySelector(".fc-bg > button");
         buttonEl && buttonEl.classList.add("o_hidden");
@@ -211,7 +211,7 @@ patch(AttendeeCalendarCommonRenderer.prototype, "appointment_calendar_common_ren
      */
     onEventAllow(dropInfo, draggedEvent) {
         if (!this.isSlotCreationMode()) {
-            return (this._super && this._super(...arguments)) || true;
+            return super.onEventAllow?.(...arguments) || true;
         }
         return draggedEvent.extendedProps.slotId && luxon.DateTime.fromJSDate(dropInfo.start) > luxon.DateTime.now();
     },

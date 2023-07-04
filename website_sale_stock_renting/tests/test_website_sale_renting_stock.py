@@ -47,6 +47,7 @@ class TestWebsiteSaleStockRenting(TestWebsiteSaleRentingCommon):
         cls.current_website = cls.env['website'].get_current_website()
         cls.env['product.pricelist'].create({
             'name': 'Default website sale renting pricelist',
+            'sequence': 4,
             'currency_id': cls.current_website.currency_id.id,
             'website_id': cls.current_website.id,
         })

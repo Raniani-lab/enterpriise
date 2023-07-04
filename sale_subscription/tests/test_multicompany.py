@@ -13,16 +13,19 @@ class TestSubscriptionMultiCompany(TestSubscriptionCommon):
     def setUpClass(cls):
         super().setUpClass()
 
-        cls.partner.property_product_pricelist = cls.env['product.pricelist'].create(
-            {'name': "Test Pricelist"}
-        )
+        cls.partner.property_product_pricelist = cls.env['product.pricelist'].create({
+            'name': "Test Pricelist",
+            'sequence': 4,
+        })
         cls.new_currency = cls.env['res.currency'].create({
             'name': 'New Currency',
             'symbol': ':)',
             'rate_ids': [Command.create({'rate': .5, 'name': time.strftime('%Y-%m-%d')})],
         })
         cls.pricelist_new_currency = cls.env['product.pricelist'].create({
-            'name': 'New Currency pricelist', 'currency_id': cls.new_currency.id
+            'name': 'New Currency pricelist',
+            'currency_id': cls.new_currency.id,
+            'sequence': 2,
         })
         cls.partner_new_currency = cls.env['res.partner'].create({
             'name': 'New Currency partner',

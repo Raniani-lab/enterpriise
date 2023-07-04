@@ -2,14 +2,15 @@
 <odoo noupdate="1">
 
     <record id="payment.payment_provider_sepa_direct_debit" model="payment.provider">
-        <field name="code">sepa_direct_debit</field>
+        <field name="code">custom</field>
+        <field name="custom_mode">sepa_direct_debit</field>
         <field name="image_128"
                type="base64"
                file="payment_sepa_direct_debit/static/description/icon.png"/>
         <field name="inline_form_view_id" ref="inline_form"/>
         <field name="allow_tokenization">True</field>
         <field name="pending_msg" type="html">
-            <p>Your payment request has been received. Waiting for bank approval.</p>
+            <p>Please make an unique payment transfer to confirm the SEPA mandate.</p>
         </field>
         <!-- Eurozone countries -->
         <!-- France including French Guiana, Guadeloupe, Martinique, Mayotte, Saint Barthélemy,

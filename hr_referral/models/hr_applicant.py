@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import json
+from markupsafe import Markup, escape
 from werkzeug.urls import url_encode
 
 from odoo import api, fields, models, _
@@ -130,7 +131,7 @@ class Applicant(models.Model):
             subject = _('Referral: %s') % (self.name)
         url = url_encode({'action': 'hr_referral.action_hr_applicant_employee_referral', 'active_model': self._name})
         action_url = '/web#' + url
-        body = ("<a class='o_document_link' href=%s>%s</a><br>%s") % (action_url, subject, body)
+        body = Markup("<a class='o_document_link' href=%s>%s</a><br>%s") % (action_url, subject, body)
         odoobot = self.env.ref('base.partner_root')
         # Do *not* notify on `self` as it will lead to unintended behavior.
         # See opw-3285752
@@ -196,10 +197,17 @@ class Applicant(models.Model):
                     'company_id': self.company_id.id
                 })
             available_points += gained_points
-            url = '/web#%s' % url_encode({'action': 'hr_referral.action_hr_referral_reward', 'active_model': 'hr.referral.reward'})
-            additional_message = (gained_points > 0 and _(" You've gained %(gained)s points with this progress.<br/>"
-                "It makes you a new total of %(total)s points. Visit <a href=\"%(url)s\">this link</a> to pick a gift!",
-                gained=gained_points, total=available_points, url=url)) or ''
+            additional_message = ''
+            if gained_points > 0:
+                additional_message = escape(_(
+                    " You've gained {gained} points with this progress.{new_line}"
+                    "It makes you a new total of {total} points. Visit {link1}this link{link2} to pick a gift!")).format(
+                    gained=gained_points,
+                    new_line=Markup('<br/>'),
+                    total=available_points,
+                    link1=Markup('<a href="/web#action=hr_referral.action_hr_referral_reward&active_model=hr.referral.reward">'),
+                    link2=Markup('</a>'),
+                )
             if self.stage_id.hired_stage:
                 self.referral_state = 'hired'
                 self._send_notification(_('Your referrer is hired!') + additional_message)

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import json
 import datetime
 from dateutil.relativedelta import relativedelta
 from math import copysign
@@ -549,15 +550,6 @@ class AccountAsset(models.Model):
     def compute_depreciation_board(self):
         self.ensure_one()
         new_depreciation_moves_data = self._recompute_board()
-
-        # We check whether none of the moves are calculated before a lock date.
-        # If so, we change the date of these moves to the end of the first period after the lock date.
-        lock_date = self.company_id._get_user_fiscal_lock_date()
-        if lock_date > datetime.date.min:
-            first_move_date_after_lock_date = self._get_end_period_date(lock_date + relativedelta(days=1))
-            for move_data in new_depreciation_moves_data:
-                if move_data['date'] <= lock_date:
-                    move_data['date'] = first_move_date_after_lock_date
 
         # Need to unlink draft move before adding new one because if we create new move before, it will cause an error
         # in the compute for the depreciable/cumulative value

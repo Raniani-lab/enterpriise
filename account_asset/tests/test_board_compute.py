@@ -61,36 +61,6 @@ class TestAccountAssetNew(AccountTestInvoicingCommon):
             self._get_depreciation_move_values(date='2024-12-31', depreciation_value=12000, remaining_value=0, depreciated_value=60000, state='draft'),
         ])
 
-    def test_linear_purchase_5_years_no_prorata_asset_lock_date(self):
-        self.car.company_id.fiscalyear_lock_date = '2021-06-30'
-        self.car.validate()
-
-        self.assertEqual(self.car.state, 'open')
-        self.assertEqual(self.car.book_value, 36000)
-        self.assertRecordValues(self.car.depreciation_move_ids, [
-            self._get_depreciation_move_values(date='2021-12-31', depreciation_value=12000, remaining_value=48000, depreciated_value=12000, state='posted'),
-            self._get_depreciation_move_values(date='2021-12-31', depreciation_value=12000, remaining_value=36000, depreciated_value=24000, state='posted'),
-            self._get_depreciation_move_values(date='2022-12-31', depreciation_value=12000, remaining_value=24000, depreciated_value=36000, state='draft'),
-            self._get_depreciation_move_values(date='2023-12-31', depreciation_value=12000, remaining_value=12000, depreciated_value=48000, state='draft'),
-            self._get_depreciation_move_values(date='2024-12-31', depreciation_value=12000, remaining_value=0, depreciated_value=60000, state='draft'),
-        ])
-
-    def test_linear_purchase_5_years_no_prorata_asset_after_lock_date(self):
-        asset = self.create_asset(value=60000, periodicity='monthly', periods=5, method='linear', salvage_value=0)
-        asset.write({'acquisition_date': '2022-06-15'})
-        asset.company_id.fiscalyear_lock_date = '2022-02-28'
-        asset.validate()
-
-        self.assertEqual(asset.state, 'open')
-        self.assertEqual(asset.book_value, 0)
-        self.assertRecordValues(asset.depreciation_move_ids, [
-            self._get_depreciation_move_values(date='2022-03-31', depreciation_value=12000, remaining_value=48000, depreciated_value=12000, state='posted'),
-            self._get_depreciation_move_values(date='2022-03-31', depreciation_value=12000, remaining_value=36000, depreciated_value=24000, state='posted'),
-            self._get_depreciation_move_values(date='2022-03-31', depreciation_value=12000, remaining_value=24000, depreciated_value=36000, state='posted'),
-            self._get_depreciation_move_values(date='2022-04-30', depreciation_value=12000, remaining_value=12000, depreciated_value=48000, state='posted'),
-            self._get_depreciation_move_values(date='2022-05-31', depreciation_value=12000, remaining_value=0, depreciated_value=60000, state='posted'),
-        ])
-
     def test_linear_purchase_5_years_no_prorata_with_imported_amount_asset(self):
         self.car.write({'already_depreciated_amount_import': 1000})
         self.car.validate()
@@ -131,25 +101,6 @@ class TestAccountAssetNew(AccountTestInvoicingCommon):
         self.assertEqual(self.car.book_value, 42000)
         self.assertRecordValues(self.car.depreciation_move_ids, [
             self._get_depreciation_move_values(date='2020-12-31', depreciation_value=6000, remaining_value=54000, depreciated_value=6000, state='posted'),
-            self._get_depreciation_move_values(date='2021-12-31', depreciation_value=12000, remaining_value=42000, depreciated_value=18000, state='posted'),
-            self._get_depreciation_move_values(date='2022-12-31', depreciation_value=12000, remaining_value=30000, depreciated_value=30000, state='draft'),
-            self._get_depreciation_move_values(date='2023-12-31', depreciation_value=12000, remaining_value=18000, depreciated_value=42000, state='draft'),
-            self._get_depreciation_move_values(date='2024-12-31', depreciation_value=12000, remaining_value=6000, depreciated_value=54000, state='draft'),
-            self._get_depreciation_move_values(date='2025-12-31', depreciation_value=6000, remaining_value=0, depreciated_value=60000, state='draft'),
-        ])
-
-    def test_linear_purchase_5_years_constant_periods_asset_lock_date(self):
-        self.car.company_id.fiscalyear_lock_date = '2021-06-30'
-        self.car.write({
-            'prorata_computation_type': 'constant_periods',
-            'prorata_date': '2020-07-01',
-        })
-        self.car.validate()
-
-        self.assertEqual(self.car.state, 'open')
-        self.assertEqual(self.car.book_value, 42000)
-        self.assertRecordValues(self.car.depreciation_move_ids, [
-            self._get_depreciation_move_values(date='2021-12-31', depreciation_value=6000, remaining_value=54000, depreciated_value=6000, state='posted'),
             self._get_depreciation_move_values(date='2021-12-31', depreciation_value=12000, remaining_value=42000, depreciated_value=18000, state='posted'),
             self._get_depreciation_move_values(date='2022-12-31', depreciation_value=12000, remaining_value=30000, depreciated_value=30000, state='draft'),
             self._get_depreciation_move_values(date='2023-12-31', depreciation_value=12000, remaining_value=18000, depreciated_value=42000, state='draft'),

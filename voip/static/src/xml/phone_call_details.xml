@@ -53,11 +53,11 @@
             </div>
         </div>
         <div class="o_dial_incoming_buttons justify-content-around mt-5">
-            <button aria-label="Reject call" class="o_dial_reject_button btn btn-danger rounded-circle" title="Reject">
-                <i class="fa fa-2x fa-phone p-2"/>
+            <button aria-label="Reject call" class="o_dial_reject_button btn btn-danger d-inline-flex justify-content-center align-items-center rounded-circle" title="Reject">
+                <i class="fa fa-2x fa-phone"/>
             </button>
-            <button aria-label="Take call" class="o_dial_accept_button btn btn-success rounded-circle" title="Accept">
-                <i class="fa fa-2x fa-phone p-2"/>
+            <button aria-label="Take call" class="o_dial_accept_button btn btn-success d-inline-flex justify-content-center align-items-center rounded-circle" title="Accept">
+                <i class="fa fa-2x fa-phone"/>
             </button>
         </div>
         <div class="o_dial_keypad_button_container mx-3 my-4">

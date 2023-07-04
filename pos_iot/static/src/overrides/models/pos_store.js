@@ -6,8 +6,8 @@ import { ErrorPopup } from "@point_of_sale/app/errors/popups/error_popup";
 import { _t } from "@web/core/l10n/translation";
 import { PaymentScreen } from "@point_of_sale/app/screens/payment_screen/payment_screen";
 import { DeviceController } from "@iot/device_controller";
-import { IoTPrinter } from "@pos_iot/js/iot_printer";
-import { PaymentIngenico, PaymentWorldline } from "@pos_iot/js/payment";
+import { IoTPrinter } from "@pos_iot/app/iot_printer";
+import { PaymentIngenico, PaymentWorldline } from "@pos_iot/app/payment";
 
 patch(PosStore.prototype, "pos_iot.PosStore", {
     async _processData(loadedData) {

@@ -21,8 +21,7 @@ Install this if you are using the Point of Sale app with restaurant in Germany.
 
     'assets': {
         'point_of_sale._assets_pos': [
-            'l10n_de_pos_res_cert/static/src/js/PaymentScreen.js',
-            'l10n_de_pos_res_cert/static/src/js/pos.js',
+            'l10n_de_pos_res_cert/static/src/**/*',
         ],
     },
     'license': 'OEEL-1',

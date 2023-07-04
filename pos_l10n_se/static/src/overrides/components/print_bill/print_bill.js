@@ -1,5 +1,5 @@
 /** @odoo-module */
-import { PrintBillButton } from "@pos_restaurant/js/Screens/ProductScreen/ControlButtons/PrintBillButton";
+import { PrintBillButton } from "@pos_restaurant/app/control_buttons/print_bill_button/print_bill_button";
 import { patch } from "@web/core/utils/patch";
 
 patch(PrintBillButton.prototype, "pos_l10n_se.PrintBillButton", {

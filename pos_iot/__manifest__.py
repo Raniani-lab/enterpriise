@@ -27,10 +27,7 @@ Supported devices include payment terminals, receipt printers, scales and custom
             'iot/static/src/iot_longpolling.js',
             'iot/static/src/device_controller.js',
             'iot/static/src/iot_connection_error_dialog.js',
-            'pos_iot/static/src/js/**/*.js',
-            'pos_iot/static/src/css/pos.css',
-            'pos_iot/static/src/xml/**/*',
-            'pos_iot/static/src/app/**/*',
+            'pos_iot/static/src/**/*',
         ],
         'web.assets_tests': [
             'pos_iot/static/tests/**/*',

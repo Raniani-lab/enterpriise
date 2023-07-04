@@ -32,10 +32,7 @@ Install this if you are using the Point of Sale app in Germany.
     ],
     'assets': {
         'point_of_sale._assets_pos': [
-            'l10n_de_pos_cert/static/src/css/**/*',
-            'l10n_de_pos_cert/static/src/js/**/*',
-            'l10n_de_pos_cert/static/src/xml/**/*',
-            'l10n_de_pos_cert/static/src/app/**/*',
+            'l10n_de_pos_cert/static/src/**/*',
         ],
     },
     'license': 'OEEL-1',

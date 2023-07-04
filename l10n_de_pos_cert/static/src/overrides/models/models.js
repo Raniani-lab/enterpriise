@@ -2,8 +2,8 @@
 
 import { Order } from "@point_of_sale/app/store/models";
 import { uuidv4 } from "@point_of_sale/utils";
-import { convertFromEpoch } from "@l10n_de_pos_cert/js/utils";
-import { TaxError } from "@l10n_de_pos_cert/js/errors";
+import { convertFromEpoch } from "@l10n_de_pos_cert/app/utils";
+import { TaxError } from "@l10n_de_pos_cert/app/errors";
 import { patch } from "@web/core/utils/patch";
 
 patch(Order.prototype, "l10n_de_pos_cert.Order", {

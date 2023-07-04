@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { LoginScreen } from "@pos_hr/js/LoginScreen";
+import { LoginScreen } from "@pos_hr/app/login_screen/login_screen";
 import { patch } from "@web/core/utils/patch";
 import { isBarcodeScannerSupported, scanBarcode } from "@web/webclient/barcode/barcode_scanner";
 import { ErrorPopup } from "@point_of_sale/app/errors/popups/error_popup";

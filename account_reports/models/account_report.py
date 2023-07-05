@@ -850,6 +850,8 @@ class AccountReport(models.Model):
         untouched, only the lines related to an account.account are put in a hierarchy
         according to the account.group's and their prefixes.
         """
+        if not lines:
+            return lines
 
         def get_account_group_hierarchy(account):
             # Create codes path in the hierarchy based on account.
@@ -927,25 +929,30 @@ class AccountReport(models.Model):
                     if child_group not in treated_child_groups
                 ] + to_treat
 
-        new_lines, account_lines, total_lines = [], [], []
-        parent_line_id = account_id = None
+        def create_hierarchy_dict():
+            return defaultdict(lambda: {
+                'lines': [],
+                'totals': [0.0 for column in options['columns']],
+                'child_groups': self.env['account.group'],
+            })
+
+        new_lines, total_lines = [], []
+
+        # root_line_id is the id of the parent line of the lines we want to render
+        root_line_id = self._build_parent_line_id(self._parse_line_id(lines[0]['id'])) or None
+        last_account_line_id = account_id = None
         current_level = 0
         account_line_children_map = defaultdict(list)
+        account_groups = self.env['account.group']
         root_account_groups = self.env['account.group']
-        hierarchy = defaultdict(lambda: {
-            'lines': [],
-            'totals': [0.0 for column in options['columns']],
-            'child_groups': self.env['account.group'],
-        })
-        res_model = None
+        hierarchy = create_hierarchy_dict()
 
         for line in lines:
             markup, res_model, model_id = self._parse_line_id(line['id'])[-1]
 
             # Account lines are used as the basis for the computation of the hierarchy.
             if res_model == 'account.account':
-                account_lines.append(line)
-                parent_line_id = line['parent_id'] if markup.startswith('groupby:') else line['id']
+                last_account_line_id = line['id']
                 current_level = line['level']
                 account_id = model_id
                 account = self.env[res_model].browse(account_id)
@@ -967,27 +974,30 @@ class AccountReport(models.Model):
 
             # This is not an account line, so we check to see if it is a descendant of the last account line.
             # If so, it is added to the mapping of the lines that are related to this account.
-            elif parent_line_id and line.get('parent_id', '').startswith(parent_line_id):
+            elif last_account_line_id and line.get('parent_id', '').startswith(last_account_line_id):
                 account_line_children_map[account_id].append(line)
 
             # This is a total line that is not linked to an account. It is saved in order to be added at the end.
             elif markup == 'total':
                 total_lines.append(line)
 
-            # This line is not impacted by the hierarchy and is simply added as is.
-            # We also reinitialize the account-related variables.
+            # This line ends the scope of the current hierarchy and is (possibly) the root of a new hierarchy.
+            # We render the current hierarchy and set up to build a new hierarchy
             else:
+                render_lines(root_account_groups, current_level, root_line_id, skip_no_group=False)
+
                 new_lines.append(line)
-                parent_line_id = account_id = None
+
+                # Reset the hierarchy-related variables for a new hierarchy
+                root_line_id = line['id']
+                last_account_line_id = account_id = None
                 current_level = 0
                 account_line_children_map = defaultdict(list)
                 root_account_groups = self.env['account.group']
                 account_groups = self.env['account.group']
+                hierarchy = create_hierarchy_dict()
 
-        if res_model != 'account.account':
-            parent_line_id = None
-
-        render_lines(root_account_groups, current_level, parent_line_id, skip_no_group=False)
+        render_lines(root_account_groups, current_level, root_line_id, skip_no_group=False)
 
         return new_lines + total_lines
 

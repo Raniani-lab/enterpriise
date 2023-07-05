@@ -1,9 +1,6 @@
 /** @odoo-module **/
 
 import { click, insertText, start, startServer } from "@mail/../tests/helpers/test_utils";
-import { DEBOUNCE_FETCH_SUGGESTION_TIME } from "@mail/core/common/suggestion_service";
-
-import { nextTick } from "@web/../tests/helpers/utils";
 
 import { addModelNamesToFetch } from "@bus/../tests/helpers/model_definitions_helpers";
 
@@ -68,13 +65,10 @@ QUnit.test("canned response should work in helpdesk ticket", async (assert) => {
         substitution: "Hello! How are you?",
     });
     const ticketId = pyEnv["helpdesk.ticket"].create({ name: "My helpdesk ticket" });
-    const { advanceTime, openFormView } = await start({ hasTimeControl: true });
+    const { openFormView } = await start();
     await openFormView("helpdesk.ticket", ticketId);
     assert.containsNone($, ".o-mail-Composer-suggestion:contains(hello)");
     await click(".o-mail-Chatter button:contains(Send message)");
     await insertText(".o-mail-Composer-input", ":");
-    await advanceTime(DEBOUNCE_FETCH_SUGGESTION_TIME);
-    await nextTick();
-    await nextTick();
     assert.containsOnce($, ".o-mail-Composer-suggestion:contains(hello)");
 });

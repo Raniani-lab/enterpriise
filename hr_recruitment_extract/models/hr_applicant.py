@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import re
+import string
+
 from odoo import api, models, _
 from odoo.addons.iap.tools import iap_tools
 from odoo.exceptions import UserError
@@ -68,6 +71,31 @@ class HrApplicant(models.Model):
             self.email_from = email_from_ocr
             self.partner_phone = phone_ocr
             self.partner_mobile = mobile_ocr
+
+            # If the 'hr_recruitment_skills' module is installed, extract skills from OCR results
+            if self.env['ir.module.module']._get('hr_recruitment_skills').state == 'installed':
+                ocr_text_lower = ocr_results['full_text_annotation'].lower()
+                splitting_characters = string.punctuation.replace('-', '') + ' ' + '\n'
+                ocr_tokens = re.split('|'.join(re.escape(char) for char in splitting_characters), ocr_text_lower)
+                target_search_set = set(filter(lambda token: len(token) >= 3, ocr_tokens))
+                skills = self.env['hr.skill'].search([]).filtered(
+                    lambda skill: skill.name.lower() in target_search_set and len(skill.name) >= 3)
+
+                applicant_skills = self.env['hr.applicant.skill']
+                for skill in skills:
+                    existing_applicant_skill = self.env['hr.applicant.skill'].search([
+                        ('applicant_id', '=', self.id),
+                        ('skill_id', '=', skill.id),
+                    ])
+
+                    if not existing_applicant_skill:
+                        applicant_skill = self.env['hr.applicant.skill'].create({
+                            'applicant_id': self.id,
+                            'skill_id': skill.id,
+                            'skill_type_id': skill.skill_type_id.id,
+                            'skill_level_id': skill.skill_type_id.skill_level_ids.filtered('default_level').id,
+                        })
+                        applicant_skills += applicant_skill
 
     def action_send_for_digitization(self):
         if any(not applicant.is_in_extractable_state for applicant in self):

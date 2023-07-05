@@ -28,6 +28,7 @@ class TestRecruitmentExtractProcess(TestHrCommon, TestExtractMixin):
                 'email': {'selected_value': {'content': 'john@doe.com'}, 'candidates': []},
                 'phone': {'selected_value': {'content': '+32488888888'}, 'candidates': []},
                 'mobile': {'selected_value': {'content': '+32499999999'}, 'candidates': []},
+                'full_text_annotation': '',
             }],
         }
 
@@ -165,3 +166,38 @@ class TestRecruitmentExtractProcess(TestHrCommon, TestExtractMixin):
             self.applicant.write({'stage_id': hired_stages[0].id})
 
         self.assertEqual(self.applicant.extract_state, 'done')
+
+    def test_skill_search_on_ocr_results(self):
+        if not self.env['ir.module.module']._get('hr_recruitment_skills').state == 'installed':
+            self.skipTest("If the 'hr_recruitment_skills' module isn't installed we don't extract skills!")
+
+        extract_response = self.get_result_success_response()
+        extract_response['results'][0]['full_text_annotation'] = 'UIUX designer and graphist'
+
+        levels = self.env['hr.skill.level'].create([{
+            'name': f'Level {x}',
+            'level_progress': x * 10,
+        } for x in range(10)])
+
+        skill_type = self.env['hr.skill.type'].create({
+            'name': 'Technical',
+            'skill_level_ids': levels.ids,
+        })
+        skills = self.env['hr.skill'].create([{
+            'name': 'UIUX',
+            'skill_type_id': skill_type.id,
+        }, {
+            'name': 'graphist',
+            'skill_type_id': skill_type.id,
+        }])
+
+        with self._mock_iap_extract(extract_response=extract_response):
+            self.applicant._check_ocr_status()
+
+        created_applicant_skills = self.env['hr.applicant.skill'].search_read(
+            [('applicant_id', '=', self.applicant.id)],
+            fields=['skill_id']
+        )
+
+        for applicant_skills in created_applicant_skills:
+            self.assertIn(applicant_skills['skill_id'][0], skills.mapped('id'))

@@ -27,7 +27,7 @@ def _get_init_messaging_result(self):
     return res
 
 def _get_query_count(self):
-    return 83
+    return 73
 
 
 TestDiscussFullPerformance._get_init_messaging_result = _get_init_messaging_result

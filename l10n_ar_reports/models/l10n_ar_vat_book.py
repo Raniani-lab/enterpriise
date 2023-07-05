@@ -43,6 +43,9 @@ class ArgentinianReportCustomHandler(models.AbstractModel):
             move_id = result['id']
             column_group_key = result['column_group_key']
 
+            # Convert date to string to be displayed in the xlsx report
+            result['date'] = result['date'].strftime("%Y-%m-%d")
+
             # For number rendering, take the opposite for sales taxes
             sign = -1.0 if result['tax_type'] == 'sale' else 1.0
 

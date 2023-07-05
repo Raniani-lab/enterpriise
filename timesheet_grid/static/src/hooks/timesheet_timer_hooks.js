@@ -263,7 +263,10 @@ export class TimesheetTimerRendererHook {
     }
 
     _onKeydown(ev) {
-        if (this.propsList.editedRecord) {
+        if (
+            this.propsList.editedRecord ||
+            ['input', 'textarea'].includes(ev.target.tagName.toLowerCase())
+        ) {
             return;
         }
         switch (ev.key) {

@@ -943,6 +943,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         wizard._action_validate()
         liquidity_line, suspense_line, other_line = st_line._seek_for_lines()
         self.assertRecordValues(st_line, [{'partner_id': partner.id}])
+        self.assertRecordValues(st_line.move_id, [{'partner_id': partner.id}])
         self.assertRecordValues(liquidity_line + other_line, [
             # pylint: disable=C0326
             {'account_id': liquidity_line.account_id.id,    'partner_id': partner.id,   'balance': 1000.0},
@@ -968,6 +969,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         wizard._action_validate()
         liquidity_line, _suspense_line, other_line = st_line._seek_for_lines()
         self.assertRecordValues(st_line, [{'partner_id': False}])
+        self.assertRecordValues(st_line.move_id, [{'partner_id': False}])
         self.assertRecordValues(liquidity_line + other_line, [
             # pylint: disable=C0326
             {'account_id': liquidity_line.account_id.id,    'partner_id': False,        'balance': 1000.0},

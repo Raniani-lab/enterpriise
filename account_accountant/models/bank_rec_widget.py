@@ -1246,7 +1246,7 @@ class BankRecWidget(models.Model):
             skip_account_move_synchronization=True,
             force_delete=True,
         )
-        move_ctx.write({'line_ids': [Command.clear()] + line_ids_create_command_list})
+        move_ctx.write({'partner_id': partner_to_set.id, 'line_ids': [Command.clear()] + line_ids_create_command_list})
         if move_ctx.state == 'draft':
             move_ctx.action_post()
 

@@ -18,6 +18,7 @@ import {
     patchWithCleanup,
 } from "@web/../tests/helpers/utils";
 import { setupViewRegistries } from "@web/../tests/views/helpers";
+import { getBundle, loadBundle } from "@web/core/assets";
 import { registry } from "@web/core/registry";
 import { fileUploadService } from "@web/core/file_upload/file_upload_service";
 import { browser } from "@web/core/browser/browser";
@@ -127,6 +128,7 @@ QUnit.module(
                 display_name: "Workspace1",
                 has_write_access: true,
             });
+            await getBundle("spreadsheet.o_spreadsheet").then(loadBundle);
             const model = new Model();
             const documentId = pyEnv["documents.document"].create({
                 name: "My spreadsheet",
@@ -195,7 +197,6 @@ QUnit.module(
             });
             await click(target, ".o_kanban_record:nth-of-type(1) .o_record_selector");
             await click(target, "button.o_inspector_share");
-            await nextTick();
             assert.verifySteps(["spreadsheet_shared", "share url copied", "notification"]);
         });
 
@@ -205,6 +206,7 @@ QUnit.module(
                 display_name: "Workspace1",
                 has_write_access: true,
             });
+            await getBundle("spreadsheet.o_spreadsheet").then(loadBundle);
             const model = new Model();
             const documentId = pyEnv["documents.document"].create({
                 name: "My spreadsheet",
@@ -257,7 +259,6 @@ QUnit.module(
             const menu = target.querySelector(".o_control_panel .d-xl-inline-flex .btn-group");
             await click(menu, ".dropdown-toggle");
             await click(menu, "button.dropdown-item.o_documents_kanban_share_domain");
-            await nextTick();
             assert.verifySteps(["spreadsheet_shared"]);
         });
 
@@ -267,6 +268,7 @@ QUnit.module(
                 display_name: "Workspace1",
                 has_write_access: true,
             });
+            await getBundle("spreadsheet.o_spreadsheet").then(loadBundle);
             const model = new Model();
             const documentId = pyEnv["documents.document"].create({
                 name: "My spreadsheet",
@@ -316,7 +318,6 @@ QUnit.module(
             const menu = target.querySelector(".o_control_panel .d-xl-inline-flex .btn-group");
             await click(menu, ".dropdown-toggle");
             await click(menu, "button.dropdown-item.o_documents_kanban_share_domain");
-            await nextTick();
             assert.verifySteps(["spreadsheet_shared"]);
         });
 

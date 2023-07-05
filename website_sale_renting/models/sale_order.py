@@ -20,7 +20,9 @@ class SaleOrder(models.Model):
     def _verify_updated_quantity(
         self, order_line, product_id, new_qty, start_date=None, end_date=None, **kwargs
     ):
-        new_qty, warning = super()._verify_updated_quantity(order_line, product_id, new_qty, **kwargs)
+        new_qty, warning = super()._verify_updated_quantity(
+            order_line, product_id, new_qty, start_date=start_date, end_date=end_date, **kwargs
+        )
         start_date = start_date or order_line.start_date
         end_date = end_date or order_line.return_date
 

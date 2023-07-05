@@ -248,3 +248,41 @@ class TestWebsiteSaleStockRenting(TestWebsiteSaleRentingCommon):
             )
             self.assertTrue(values.get('warning', False))
             self.assertEqual(values.get('quantity'), 0)
+
+    def test_stock_availability_for_pickedup_products_not_yet_returned(self):
+        self.so.action_confirm()
+        pickup_action = self.so.open_pickup()
+        wizard = Form(self.env['rental.order.wizard'].with_context(pickup_action['context'])).save()
+        with freeze_time(self.sol.start_date):
+            wizard.apply()
+        so = self.env['sale.order'].create({
+            'partner_id': self.partner.id,
+            'company_id': self.company.id,
+            'warehouse_id': self.wh.id,
+        })
+
+        vals = [
+            {'days': -1, 'available': 2, 'warning': True},
+            {'days': 1, 'available': 5, 'warning': False},
+        ]
+
+        with MockRequest(self.env, website=self.current_website, sale_order_id=so.id):
+            website_so = self.current_website.sale_get_order()
+            for val in vals:
+                from_date = self.sol.return_date + relativedelta(days=val['days'])
+                to_date = self.sol.return_date + relativedelta(days=2)
+                cart_qty, free_qty = website_so._get_cart_and_free_qty(
+                    product=self.computer, start_date=from_date, end_date=to_date
+                )
+                self.assertEqual(cart_qty, 0, "Cart is empty")
+                self.assertEqual(free_qty, val['available'])
+                values = website_so._cart_update(
+                    product_id=self.computer.id, add_qty=5, start_date=from_date, end_date=to_date
+                )
+                self.assertEqual(values.get('quantity'), val['available'])
+                if val['warning']:
+                    self.assertTrue(values.get('warning', False))
+                else:
+                    self.assertFalse(values.get('warning', False))
+                # empty cart
+                values = website_so._cart_update(product_id=self.computer.id, add_qty=-10)

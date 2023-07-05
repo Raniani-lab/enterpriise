@@ -27,8 +27,8 @@
                     <button t-on-click="onClickSelectAvailabilities" class="btn btn-primary o_appointment_select_slots" aria-label="Share Availabilities" title="Share Availabilities">
                         Share Availabilities
                     </button>
-                    <button id="dropdownAppointmentLink" class="btn btn-primary col-2 dropdown-toggle flex-grow-0" data-bs-toggle="dropdown">
-                        <span class="fa fa-2x fa-angle-down"/>
+                    <button id="dropdownAppointmentLink" class="btn btn-primary dropdown-toggle flex-grow-0" data-bs-toggle="dropdown">
+                        <span class="oi oi-chevron-down"/>
                     </button>
                     <div id="dropdownMenuAppointmentLink" class="dropdown-menu dropdown-menu-end col w-100" data-labelledby="dropdownAppointmentLink">
                         <button t-on-click="onClickSelectAvailabilities" id="select_availabilities" class="o_appointment_select_slots dropdown-item">

@@ -34,7 +34,7 @@ export class TaskGanttRenderer extends GanttRenderer {
         let index = 0;
         for (const m of this.model.data.milestones) {
             const { is_deadline_exceeded, is_reached } = m;
-            for (let i = index; i < this.columns.length - 1; i++) {
+            for (let i = index; i < this.columns.length ; i++) {
                 const column = this.columns[i];
                 if (column.stop < m.deadline) {
                     index++;

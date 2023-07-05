@@ -13,11 +13,11 @@
             <t t-set="columnInfo" t-value="columnMilestones[column.id]"/>
             <t t-if="columnInfo.milestones.length">
                 <div class="o_project_milestone_diamond"
-                    t-att-class="{ 'o_unreached_milestones': columnInfo.hasDeadLineExceeded, 'edge_slot': slot_last }"
+                    t-att-class="{ 'o_unreached_milestones': columnInfo.hasDeadLineExceeded, 'edge_slot': column_last }"
                     t-on-mouseenter="(ev) => this.onMilestoneMouseEnter(ev, columnInfo.milestones)"
                     t-on-mouseleave="onMilestoneMouseLeave"
                     >
-                    <i class="fa fa-check o_milestones_reached" t-att-class="{ 'edge_slot': slot_last }" t-if="columnInfo.allReached"/>
+                    <i class="fa fa-check o_milestones_reached" t-att-class="{ 'edge_slot': column_last }" t-if="columnInfo.allReached"/>
                 </div>
             </t>
         </xpath>

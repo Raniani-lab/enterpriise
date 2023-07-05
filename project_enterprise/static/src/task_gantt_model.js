@@ -92,7 +92,7 @@ export class TaskGanttModel extends GanttModel {
      * @override
      */
     async _fetchData(metaData) {
-        const startDate = serializeDateTime(metaData.startDate);
+        const startDate = metaData.startDate.toISODate();
         const scale = metaData.scale.id;
         this.searchParams.context = {
             ...this.searchParams.context,
@@ -106,7 +106,7 @@ export class TaskGanttModel extends GanttModel {
                 .call("project.milestone", "search_milestone_from_task", [], {
                     task_domain: this.searchParams.domain,
                     milestone_domain: [
-                        ["deadline", "<=", serializeDateTime(metaData.stopDate)],
+                        ["deadline", "<=", metaData.stopDate.toISODate()],
                         ["deadline", ">=", startDate],
                     ],
                     fields: [

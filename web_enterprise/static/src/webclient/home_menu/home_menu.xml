@@ -18,7 +18,7 @@
                         t-att-href="app.href || ('#menu_id='+app.id+'&amp;action_id='+app.actionID)"
                         t-on-click.prevent="() => this._onAppClick(app)"
                         >
-                        <img t-if="app.webIconData" class="o_app_icon rounded"
+                        <img t-if="app.webIconData" class="o_app_icon rounded-3"
                             t-attf-src="{{app.webIconData}}"
                         />
                         <div t-else="" class="o_app_icon position-relative d-flex justify-content-center align-items-center w-75 p-2 rounded-3 ratio ratio-1x1"

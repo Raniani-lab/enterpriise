@@ -18,11 +18,11 @@ class TestHrPayrollAccountCommon(TestPayslipContractBase):
     def setUpClass(cls):
         super(TestHrPayrollAccountCommon, cls).setUpClass()
 
-        cls.private_address = cls.env['res.partner'].create({'name': 'A private address'})
+        cls.work_contact = cls.env['res.partner'].create({'name': 'A work contact'})
         cls.work_address = cls.env['res.partner'].create({'name': 'A work address'})
 
         cls.hr_employee_john = cls.env['hr.employee'].create({
-            'address_home_id': cls.private_address.id,
+            'work_contact_id': cls.work_contact.id,
             'address_id': cls.work_address.id,
             'birthday': '1984-05-01',
             'children': 0.0,
@@ -34,7 +34,7 @@ class TestHrPayrollAccountCommon(TestPayslipContractBase):
         })
 
         cls.hr_employee_mark = cls.env['hr.employee'].create({
-            'address_home_id': cls.private_address.id,
+            'work_contact_id': cls.work_contact.id,
             'address_id': cls.work_address.id,
             'birthday': '1984-05-01',
             'children': 0.0,

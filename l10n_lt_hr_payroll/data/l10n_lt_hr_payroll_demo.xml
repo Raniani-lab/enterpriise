@@ -71,14 +71,7 @@
 
     <record id="res_partner_norberta_private_address" model="res.partner">
         <field name="name">Norberta Pociute</field>
-        <field name="street">14, Vytauto g.</field>
-        <field name="city">Vilnius</field>
-        <field name="zip">69466</field>
-        <field name="country_id" ref="base.lt"/>
-        <field name="phone">+0032476543210</field>
-        <field name="email">norberta.pociute@example.com</field>
         <field name="company_id" ref="l10n_lt_hr_payroll.res_company_lt"/>
-        <field name="type">private</field>
     </record>
 
     <record id="res_partner_bank_account_norberta" model="res.partner.bank">
@@ -93,7 +86,12 @@
         <field name="gender">female</field>
         <field name="marital">single</field>
         <field name="job_title">Software Developer</field>
-        <field name="address_home_id" ref="l10n_lt_hr_payroll.res_partner_norberta_private_address"/>
+        <field name="private_street">14, Vytauto g.</field>
+        <field name="private_city">Vilnius</field>
+        <field name="private_zip">69466</field>
+        <field name="private_country_id" ref="base.lt"/>
+        <field name="private_phone">+0032476543210</field>
+        <field name="private_email">norberta.pociute@example.com</field>
         <field name="address_id" ref="l10n_lt_hr_payroll.res_partner_norberta_work_address"/>
         <field name="emergency_contact">Knutt Poirish</field>
         <field name="emergency_phone">+0032498765432</field>

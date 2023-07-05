@@ -13,9 +13,9 @@
                                 <div class="col-md-12">
                                     <h1>Customize your salary</h1>
                                 </div>
+                                <input type="hidden" name="offer_id" t-att-value="offer_id"/>
                                 <input type="hidden" name="token" t-att-value="token"/>
-                                <input type="hidden" name="applicant_id" t-att-value="applicant_id"/>
-                                <input type="hidden" name="employee_contract_id" t-att-value="employee_contract_id"/>
+                                <!-- YTI PROBABLY TO REMOVE -->
                                 <input type="hidden" name="original_link" t-att-value="original_link"/>
                                 <input type="hidden" name="contract_type_id" t-att-value="contract_type_id"/>
                                 <input type="hidden" name="employee_job_id" t-att-value="employee_job_id"/>

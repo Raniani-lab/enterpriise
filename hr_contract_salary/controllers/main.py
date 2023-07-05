@@ -7,6 +7,7 @@ from collections import defaultdict, OrderedDict
 from odoo import fields, http, models, _, Command, SUPERUSER_ID
 
 from odoo.addons.sign.controllers.main import Sign
+from odoo.exceptions import UserError
 from odoo.http import request
 from odoo.tools import consteq
 from odoo.tools.image import image_data_uri
@@ -20,11 +21,15 @@ class SignContract(Sign):
 
     @http.route()
     def sign(self, sign_request_id, token, sms_token=False, signature=None, **kwargs):
-        result = super(SignContract, self).sign(sign_request_id, token, sms_token=sms_token, signature=signature, **kwargs)
+        result = super().sign(sign_request_id, token, sms_token=sms_token, signature=signature, **kwargs)
         if result.get('success'):
             request_item = request.env['sign.request.item'].sudo().search([('access_token', '=', token)])
             contract = request.env['hr.contract'].sudo().with_context(active_test=False).search([
                 ('sign_request_ids', 'in', request_item.sign_request_id.ids)])
+            offer = request.env['hr.contract.salary.offer'].sudo().search([
+                ('sign_request_ids', 'in', request_item.sign_request_id.ids)])
+            if offer.state in ['expired', 'refused']:
+                raise UserError(_('This offer is outdated, please request an updated link...'))
             request_template_id = request_item.sign_request_id.template_id.id
             # Only if the signed document is the document to sign from the salary package
             contract_documents = [
@@ -32,21 +37,21 @@ class SignContract(Sign):
                 contract.contract_update_template_id.id,
             ]
             if contract and request_template_id in contract_documents:
-                self._update_contract_on_signature(request_item, contract)
+                self._update_contract_on_signature(request_item, contract, offer)
                 if request_item.sign_request_id.nb_closed == 1:
                     return dict(result, **{'url': '/salary_package/thank_you/' + str(contract.id)})
         return result
 
-    def _update_contract_on_signature(self, request_item, contract):
+    def _update_contract_on_signature(self, request_item, contract, offer):
         # Only the applicant/employee has signed
         if request_item.sign_request_id.nb_closed == 1:
             contract.active = True
             contract.hash_token = False
             if contract.applicant_id:
-                contract.applicant_id.access_token = False
                 contract.applicant_id.emp_id = contract.employee_id
             self._create_activity_advantage(contract, 'running')
             contract.wage_on_signature = contract.wage_with_holidays
+            offer.state = "half_signed"
 
         # Both applicant/employee and HR responsible have signed
         if request_item.sign_request_id.nb_closed == 2:
@@ -54,10 +59,11 @@ class SignContract(Sign):
                 contract.employee_id.active = True
                 if contract.applicant_id:
                     contract.applicant_id._move_to_hired_stage()
-            if contract.employee_id.address_home_id:
-                contract.employee_id.address_home_id.active = True
+            if contract.employee_id.work_contact_id:
+                contract.employee_id.work_contact_id.active = True
             self._create_activity_advantage(contract, 'countersigned')
             self._send_advantage_sign_request(contract)
+            offer.state = "full_signed"
 
     def _create_activity_advantage(self, contract, contract_state):
         advantages = request.env['hr.contract.salary.advantage'].sudo().search([
@@ -98,7 +104,7 @@ class SignContract(Sign):
                     'template_id': sign_template.id,
                     'request_item_ids': [
                         Command.create({'role_id': request.env.ref('sign.sign_item_role_employee').id,
-                                        'partner_id': contract.employee_id.address_home_id.id}),
+                                        'partner_id': contract.employee_id.work_contact_id.id}),
                         Command.create({'role_id': request.env.ref('hr_contract_sign.sign_item_role_job_responsible').id,
                                         'partner_id': contract.hr_responsible_id.partner_id.id}),
                     ],
@@ -124,48 +130,17 @@ class HrContractSalary(http.Controller):
         except:
             return request.env['hr.contract']
 
-    def _apply_url_value(self, contract, field_name, value):
-        old_value = contract
-        configurator_fields = [
-            'applicant_id', 'employee_contract_id', 'contract_type_id',
-            'employee_job_id', 'department_id', 'job_title',
-        ]
-        if field_name in configurator_fields:
-            return {field_name: value}
-        if field_name == 'job_id':
-            return {'redirect_to_job': value}
-        if field_name == 'allow':
-            return {'whitelist': value}
-        if field_name == 'part':
-            return {'part_time': True}
-
-        if field_name in old_value:
-            old_value = old_value[field_name]
-        else:
-            old_value = ""
-
-        if isinstance(old_value, models.BaseModel):
-            old_value = ""
-        elif old_value:
-            try:
-                value = float(value)
-            except Exception:
-                pass
-            if field_name == "final_yearly_costs":
-                return {'final_yearly_costs': value}
-            setattr(contract, field_name, value)
-        return {}
-
-    def _get_default_template_values(self, contract):
-        values = self._get_salary_package_values(contract)
+    def _get_default_template_values(self, contract, offer):
+        values = self._get_salary_package_values(contract, offer)
         values.update({
             'redirect_to_job': False,
-            'applicant_id': False,
-            'contract_type_id': False,
-            'employee_contract_id': False,
-            'employee_job_id': False,
-            'department_id': False,
-            'job_title': False,
+            # YTI PROBABLY TO REMOVE
+            'applicant_id': offer.applicant_id.id,
+            'employee_contract_id': offer.employee_contract_id.id,
+            'contract_type_id': offer.contract_type_id.id,
+            'employee_job_id': offer.employee_job_id.id,
+            'department_id': offer.department_id.id,
+            'job_title': offer.job_title,
             'whitelist': False,
             'part_time': False,
             'final_yearly_costs': contract.final_yearly_costs,
@@ -173,7 +148,13 @@ class HrContractSalary(http.Controller):
         return values
 
     @http.route(['/salary_package/simulation/contract/<int:contract_id>'], type='http', auth="public", website=True, sitemap=False)
-    def salary_package(self, contract_id=None, **kw):
+    def salary_package_deprecated(self, contract_id=None, **kw):
+        return request.render('http_routing.http_error', {
+            'status_code': _('Oops'),
+            'status_message': _('This offer is outdated, please request an updated link...')})
+
+    @http.route(['/salary_package/simulation/offer/<int:offer_id>'], type='http', auth="public", website=True, sitemap=False)
+    def salary_package(self, offer_id=None, **kw):
         response = False
 
         debug = request.session.debug
@@ -183,39 +164,36 @@ class HrContractSalary(http.Controller):
 
         request.env.cr.execute('SAVEPOINT salary')
 
-        contract = request.env['hr.contract'].sudo().browse(contract_id)
-        if not contract.exists():
-            return request.render('http_routing.http_error', {'status_code': _('Oops'),
-                                                         'status_message': _('This contract has been updated, please request an updated link..')})
+        offer = request.env['hr.contract.salary.offer'].sudo().browse(offer_id)
+        contract = offer.contract_template_id
+        if not offer.exists() or offer.state in ['expired', 'refused']:
+            return request.render('http_routing.http_error', {
+                'status_code': _('Oops'),
+                'status_message': _('This offer has been updated, please request an updated link..')})
 
         if not request.env.user.has_group('hr_contract.group_hr_contract_manager'):
-            if kw.get('applicant_id'):
-                applicant = request.env['hr.applicant'].sudo().browse(int(kw.get('applicant_id')))
+            if offer.applicant_id:
                 if not kw.get('token') or \
-                        not applicant.access_token or \
-                        not consteq(applicant.access_token, kw.get('token')) or \
-                        applicant.access_token_end_date < fields.Date.today():
-                    return request.render(
-                        'http_routing.http_error',
-                        {'status_code': _('Oops'),
-                         'status_message': _('This link is invalid. Please contact the HR Responsible to get a new one...')})
-            if contract.employee_id and not contract.employee_id.user_id and not kw.get('applicant_id'):
-                return request.render(
-                    'http_routing.http_error',
-                    {'status_code': _('Oops'),
-                     'status_message': _('The employee is not linked to an existing user, please contact the administrator..')})
+                        not offer.access_token or \
+                        not consteq(offer.access_token, kw.get('token')) or \
+                        offer.offer_end_date < fields.Date.today():
+                    return request.render('http_routing.http_error', {
+                        'status_code': _('Oops'),
+                        'status_message': _('This link is invalid. Please contact the HR Responsible to get a new one...')})
+            if contract.employee_id and not contract.employee_id.user_id and not offer.applicant_id:
+                return request.render('http_routing.http_error', {
+                    'status_code': _('Oops'),
+                    'status_message': _('The employee is not linked to an existing user, please contact the administrator..')})
             if contract.employee_id and contract.employee_id.user_id != request.env.user:
                 raise NotFound()
-            if contract.employee_id and \
-                    contract.employee_id.salary_simulator_link_end_validity < fields.Date.today():
-                return request.render(
-                    'http_routing.http_error',
-                    {'status_code': _('Oops'),
+            if contract.employee_id and offer.offer_end_date < fields.Date.today():
+                return request.render('http_routing.http_error', {
+                    'status_code': _('Oops'),
                     'status_message': _('This link is invalid. Please contact the HR Responsible to get a new one...')})
 
         employee_contract = False
-        if kw.get('employee_contract_id'):
-            employee_contract = request.env['hr.contract'].sudo().browse(int(kw.get('employee_contract_id')))
+        if offer.employee_contract_id:
+            employee_contract = offer.employee_contract_id
             # do not recreate a new employee if the salary configurator is launched with a new
             # type of contract (in the event that the employee changes jobs) since the contract
             # is a template without an employee
@@ -227,44 +205,41 @@ class HrContractSalary(http.Controller):
 
         if not contract.employee_id or not employee_contract:
             contract_country = contract.company_id.country_id
-            address_home_id = request.env['res.partner'].with_context(
-                tracking_disable=True
-            ).with_user(SUPERUSER_ID).sudo().create({
-                'name': 'Simulation',
-                'type': 'private',
-                'country_id': contract_country.id,
-                'active': False,
-                'company_id': contract.company_id.id,
-            })
             # Pre-filling
-            temporary_name = ""
-            temporary_mobile = ""
+            temporary_name = False
+            temporary_mobile = False
+            private_email = False
             # Pre-filling name / phone / mail if coming from an applicant
-            if kw.get('applicant_id'):
-                applicant = request.env['hr.applicant'].sudo().browse(int(kw.get('applicant_id')))
-                temporary_name = applicant.partner_name
-                temporary_mobile = applicant.partner_phone
-                address_home_id.email = applicant.email_from
+            if offer.applicant_id:
+                temporary_name = offer.applicant_id.partner_name
+                temporary_mobile = offer.applicant_id.partner_phone
+                private_email = offer.applicant_id.email_from
             contract.employee_id = request.env['hr.employee'].with_context(
                 tracking_disable=True,
                 salary_simulation=True,
             ).with_user(SUPERUSER_ID).sudo().create({
                 'name': temporary_name,
-                'phone': temporary_mobile,
+                'private_phone': temporary_mobile,
+                'private_email': private_email,
                 'active': False,
                 'country_id': contract_country.id,
+                'private_country_id': contract_country.id,
                 'certificate': False,  # To force encoding it
                 'company_id': contract.company_id.id,
                 'resource_calendar_id': contract.resource_calendar_id.id,
-                'address_home_id': address_home_id.id,
             })
 
-        if 'applicant_id' in kw:
+        if offer.applicant_id:
             contract = contract.with_context(is_applicant=True)
 
-        values = self._get_default_template_values(contract)
+        values = self._get_default_template_values(contract, offer)
         for field_name, value in kw.items():
-            values.update(self._apply_url_value(contract, field_name, value))
+            if field_name == 'job_id':
+                values['redirect_to_job'] = value
+            if field_name == 'allow':
+                values['whitelist'] = value
+            if field_name == 'part':
+                values['part_time'] = True
         new_gross = contract.sudo()._get_gross_from_employer_costs(values['final_yearly_costs'])
         contract.write({
             'wage': new_gross,
@@ -276,6 +251,7 @@ class HrContractSalary(http.Controller):
             'default_mobile': request.env['ir.default'].sudo()._get('hr.contract', 'mobile'),
             'original_link': get_current_url(request.httprequest.environ),
             'token': kw.get('token'),
+            'offer_id': offer.id,
             'master_department_id': request.env['hr.department'].sudo().browse(int(values['department_id'])).master_department_id.id if values['department_id'] else False
         })
 
@@ -309,7 +285,6 @@ class HrContractSalary(http.Controller):
         dropdown_options = {}
         targets = {
             'employee': contract.employee_id,
-            'address': contract.employee_id.address_home_id,
             'bank_account': contract.employee_id.bank_account_id,
         }
 
@@ -358,17 +333,17 @@ class HrContractSalary(http.Controller):
                 dropdown_options[personal_info.field] = values
         return mapped_personal_infos, dropdown_options, initial_values
 
-    def _get_advantages(self, contract):
+    def _get_advantages(self, contract, offer):
         return request.env['hr.contract.salary.advantage'].sudo().search([
             ('structure_type_id', '=', contract.structure_type_id.id)])
 
-    def _get_advantages_values(self, contract):
+    def _get_advantages_values(self, contract, offer):
         initial_values = {}
         dropdown_options = {}
         dropdown_group_options = {}
 
         # ADVANTAGES
-        advantages = self._get_advantages(contract)
+        advantages = self._get_advantages(contract, offer)
         mapped_advantages = defaultdict(lambda: request.env['hr.contract.salary.advantage'])
         for advantage in advantages:
             mapped_advantages[advantage.advantage_type_id] |= advantage
@@ -433,9 +408,9 @@ class HrContractSalary(http.Controller):
                 mapped_mandatory_advantages_names[dependent_advantage] += (mandatory_advantage.fold_label or mandatory_advantage.name) + ';'
         return mapped_advantages, mapped_dependent_advantages, mapped_mandatory_advantages, mapped_mandatory_advantages_names, advantage_types, dropdown_options, dropdown_group_options, initial_values
 
-    def _get_salary_package_values(self, contract):
+    def _get_salary_package_values(self, contract, offer):
         mapped_personal_infos, dropdown_options_1, initial_values_1 = self._get_personal_infos(contract)
-        mapped_advantages, mapped_dependent_advantages, mandatory_advantages, mandatory_advantages_names, advantage_types, dropdown_options_2, dropdown_group_options, initial_values_2 = self._get_advantages_values(contract)
+        mapped_advantages, mapped_dependent_advantages, mandatory_advantages, mandatory_advantages_names, advantage_types, dropdown_options_2, dropdown_group_options, initial_values_2 = self._get_advantages_values(contract, offer)
         all_initial_values = {**initial_values_1, **initial_values_2}
         all_initial_values = {key: round(value, 2) if isinstance(value, float) else value for key, value in all_initial_values.items()}
         all_dropdown_options = {**dropdown_options_1, **dropdown_options_2}
@@ -454,8 +429,8 @@ class HrContractSalary(http.Controller):
             'initial_values': all_initial_values,
         }
 
-    def _get_new_contract_values(self, contract, employee, advantages):
-        contract_advantages = self._get_advantages(contract)
+    def _get_new_contract_values(self, contract, employee, advantages, offer):
+        contract_advantages = self._get_advantages(contract, offer)
         contract_vals = {
             'active': False,
             'name': contract.name if contract.state == 'draft' else "Package Simulation",
@@ -498,7 +473,6 @@ class HrContractSalary(http.Controller):
         def resolve_value(field_name, values):
             targets = {
                 'employee': request.env['hr.employee'],
-                'address': request.env['res.partner'],
                 'bank_account': request.env['res.partner.bank'],
             }
             field_value = values[field_name]
@@ -512,7 +486,6 @@ class HrContractSalary(http.Controller):
             '|', ('structure_type_id', '=', False), ('structure_type_id', '=', contract.structure_type_id.id)])
 
         employee_infos = personal_infos_values['employee']
-        address_infos = personal_infos_values['address']
         bank_account_infos = personal_infos_values['bank_account']
 
         for key in ['employee_job_id', 'department_id']:
@@ -528,7 +501,7 @@ class HrContractSalary(http.Controller):
         employee_vals = {'job_title': employee_infos['job_title'],
                          'job_id': employee_infos['employee_job_id'],
                          'department_id': employee_infos['department_id']}
-        address_home_vals = {}
+        work_contact_vals = {}
         bank_account_vals = {}
         attachment_create_vals = []
         for personal_info in personal_infos:
@@ -549,24 +522,23 @@ class HrContractSalary(http.Controller):
                     })
                 else:
                     employee_vals[field_name] = resolve_value(field_name, employee_infos)
-            elif field_name in address_infos and personal_info.applies_on == 'address':
-                address_home_vals[field_name] = resolve_value(field_name, address_infos)
             elif field_name in bank_account_infos and personal_info.applies_on == 'bank_account':
                 bank_account_vals[field_name] = resolve_value(field_name, bank_account_infos)
 
-        address_home_vals['name'] = employee_vals['name']
+        work_contact_vals['name'] = employee_vals['name']
+        work_contact_vals['email'] = employee_vals['private_email']
 
         # Update personal info on the private address
-        if employee.address_home_id:
+        if employee.work_contact_id:
             if no_name_write:
-                del address_home_vals['name']
-            partner = employee.address_home_id
+                del work_contact_vals['name']
+            partner = employee.work_contact_id
             # We shouldn't modify the partner email like this
-            address_home_vals.pop('email', None)
-            partner.write(address_home_vals)
+            work_contact_vals.pop('email', None)
+            partner.write(work_contact_vals)
         else:
-            address_home_vals['active'] = False
-            partner = request.env['res.partner'].sudo().with_context(lang=None, tracking_disable=True).create(address_home_vals)
+            work_contact_vals['active'] = False
+            partner = request.env['res.partner'].sudo().with_context(lang=None, tracking_disable=True).create(work_contact_vals)
 
         # Update personal info on the employee
         if bank_account_vals:
@@ -580,13 +552,10 @@ class HrContractSalary(http.Controller):
 
             employee_vals['bank_account_id'] = bank_account.id
 
-        employee_vals['address_home_id'] = partner.id
+        employee_vals['work_contact_id'] = partner.id
 
         if job.address_id:
             employee_vals['address_id'] = job.address_id.id
-
-        if partner.type != 'private':
-            partner.type = 'private'
 
         if not no_name_write:
             employee_vals['name'] = employee_infos['name']
@@ -594,7 +563,7 @@ class HrContractSalary(http.Controller):
         if attachment_create_vals:
             request.env['ir.attachment'].sudo().create(attachment_create_vals)
 
-    def create_new_contract(self, contract, advantages, no_write=False, **kw):
+    def create_new_contract(self, contract, offer_id, advantages, no_write=False, **kw):
         # Generate a new contract with the current modifications
         contract_diff = []
         contract_values = advantages['contract']
@@ -603,7 +572,8 @@ class HrContractSalary(http.Controller):
             'address': advantages['address'],
             'bank_account': advantages['bank_account'],
         }
-        applicant = request.env['hr.applicant'].sudo().browse(kw.get('applicant_id')).exists()
+        offer = request.env['hr.contract.salary.offer'].sudo().browse(offer_id).exists()
+        applicant = offer.applicant_id
         employee = kw.get('employee') or contract.employee_id or applicant.emp_id
         if not employee and applicant:
             existing_contract = request.env['hr.contract'].sudo().with_context(active_test=False).search([
@@ -617,6 +587,7 @@ class HrContractSalary(http.Controller):
                 'name': 'Simulation Employee',
                 'active': False,
                 'company_id': contract.company_id.id,
+                'lang': contract.company_id.partner_id.lang,
                 'resource_calendar_id': contract.resource_calendar_id.id,
             })
 
@@ -660,7 +631,7 @@ class HrContractSalary(http.Controller):
         self._update_personal_info(employee, contract, personal_infos, no_name_write=bool(kw.get('employee')))
         new_contract = request.env['hr.contract'].with_context(
             tracking_disable=True
-        ).sudo().create(self._get_new_contract_values(contract, employee, contract_values))
+        ).sudo().create(self._get_new_contract_values(contract, employee, contract_values, offer))
 
         # get differences for contract information
         if no_write:
@@ -685,11 +656,11 @@ class HrContractSalary(http.Controller):
         return new_contract, contract_diff
 
     @http.route('/salary_package/update_salary', type="json", auth="public")
-    def update_salary(self, contract_id=None, advantages=None, **kw):
+    def update_salary(self, contract_id=None, offer_id=None, advantages=None, **kw):
         result = {}
         contract = self._check_access_rights(contract_id)
 
-        new_contract = self.create_new_contract(contract, advantages)[0]
+        new_contract = self.create_new_contract(contract, offer_id, advantages)[0]
         final_yearly_costs = float(advantages['contract']['final_yearly_costs'] or 0.0)
         new_gross = new_contract._get_gross_from_employer_costs(final_yearly_costs)
         new_contract.write({
@@ -829,9 +800,6 @@ class HrContractSalary(http.Controller):
             if info.applies_on == 'employee':
                 field_label = field_names['hr.employee'][info.field]
                 field_value = contract.employee_id[info.field]
-            if info.applies_on == 'address':
-                field_label = field_names['res.partner'][info.field]
-                field_value = contract.employee_id.address_home_id[info.field]
             if info.applies_on == 'bank_account':
                 field_label = field_names['res.partner.bank'][info.field]
                 field_value = contract.employee_id.bank_account_id[info.field]
@@ -843,45 +811,44 @@ class HrContractSalary(http.Controller):
         result[_('Personal Information')] = personal_infos
         return {'mapped_data': result}
 
-    def _send_mail_message(self, template, kw, values, new_contract_id=None):
-        model = 'hr.applicant' if kw.get('applicant_id') else 'hr.contract'
-        res_id = kw.get('applicant_id') or new_contract_id or kw.get('employee_contract_id')
+    def _send_mail_message(self, offer, template, kw, values, new_contract_id=None):
+        model = 'hr.contract' if new_contract_id else 'hr.contract.salary.offer'
+        res_id = new_contract_id or offer.id
         request.env[model].sudo().browse(res_id).message_post_with_source(
             template,
             render_values=values,
             subtype_xmlid='mail.mt_comment',
         )
 
-    def send_email(self, contract, **kw):
+    def send_email(self, offer, contract, **kw):
         self._send_mail_message(
+            offer,
             'hr_contract_salary.hr_contract_salary_email_template',
             kw,
             self._get_email_info(contract, **kw))
         return contract.id
 
-    def send_diff_email(self, differences, new_contract_id, **kw):
+    def send_diff_email(self, offer, differences, new_contract_id, **kw):
         self._send_mail_message(
+            offer,
             'hr_contract_salary.hr_contract_salary_diff_email_template',
             kw,
             {'differences': differences},
             new_contract_id)
-        return
 
     @http.route(['/salary_package/submit'], type='json', auth='public')
-    def submit(self, contract_id=None, advantages=None, **kw):
-        if not kw.get('applicant_id') and not kw.get('employee_contract_id'):
-            return request.render(
-                'http_routing.http_error',
-                {'status_code': _('Oops'),
-                 'status_message': _('This link is invalid. Please contact the HR Responsible to get a new one...')})
+    def submit(self, contract_id=None, offer_id=None, advantages=None, **kw):
+        offer = request.env['hr.contract.salary.offer'].sudo().browse(offer_id).exists()
+        if not offer.applicant_id and not offer.employee_contract_id:
+            raise UserError(_('This link is invalid. Please contact the HR Responsible to get a new one...'))
 
         contract = self._check_access_rights(contract_id)
-        if kw.get('employee_contract_id', False):
-            contract = request.env['hr.contract'].sudo().browse(kw.get('employee_contract_id'))
+        if offer.employee_contract_id:
+            contract = offer.employee_contract_id
             if contract.employee_id.user_id == request.env.user:
                 kw['employee'] = contract.employee_id
         kw['package_submit'] = True
-        new_contract = self.create_new_contract(contract, advantages, no_write=True, **kw)
+        new_contract = self.create_new_contract(contract, offer_id, advantages, no_write=True, **kw)
 
         if isinstance(new_contract, dict) and new_contract.get('error'):
             return new_contract
@@ -895,12 +862,12 @@ class HrContractSalary(http.Controller):
             ('state', '=', 'open'),
         ])
         if current_contract:
-            self.send_diff_email(contract_diff, new_contract.id, **kw)
+            self.send_diff_email(offer, contract_diff, new_contract.id, **kw)
 
-        self.send_email(new_contract, **kw)
+        self.send_email(offer, new_contract, **kw)
 
-        applicant = request.env['hr.applicant'].sudo().browse(kw.get('applicant_id')).exists()
-        if applicant and kw.get('token', False):
+        applicant = offer.applicant_id
+        if applicant and offer.access_token:
             hash_token_access = hashlib.sha1(kw.get('token').encode("utf-8")).hexdigest()
             existing_contract = request.env['hr.contract'].sudo().search([
                 ('applicant_id', '=', applicant.id), ('hash_token', '=', hash_token_access), ('active', '=', False)])
@@ -921,7 +888,7 @@ class HrContractSalary(http.Controller):
                 'name': 'New contract - ' + new_contract.employee_id.name,
                 'origin_contract_id': contract_id,
             })
-        sign_template = new_contract.contract_update_template_id if kw.get('employee_contract_id') else new_contract.sign_template_id
+        sign_template = new_contract.contract_update_template_id if offer.employee_contract_id else new_contract.sign_template_id
         if not sign_template:
             return {'error': 1, 'error_msg': _('No signature template defined on the contract. Please contact the HR responsible.')}
         if not new_contract.hr_responsible_id:
@@ -935,7 +902,7 @@ class HrContractSalary(http.Controller):
             'request_item_ids': [
                 Command.create({
                     'role_id': request.env.ref('sign.sign_item_role_employee').id,
-                    'partner_id': new_contract.employee_id.address_home_id.id,
+                    'partner_id': new_contract.employee_id.work_contact_id.id,
                     'mail_sent_order': 1
                 }),
                 Command.create({
@@ -989,11 +956,18 @@ class HrContractSalary(http.Controller):
         ]).access_token
 
         new_contract.sign_request_ids += sign_request_sudo
+        offer.sign_request_ids += sign_request_sudo
 
         if new_contract:
-            if kw.get('applicant_id'):
-                new_contract.sudo().applicant_id = kw.get('applicant_id')
-            if kw.get('employee_contract_id'):
-                new_contract.sudo().origin_contract_id = kw.get('employee_contract_id')
+            if offer.applicant_id:
+                new_contract.sudo().applicant_id = offer.applicant_id
+            if offer.employee_contract_id:
+                new_contract.sudo().origin_contract_id = offer.employee_contract_id
 
-        return {'job_id': new_contract.job_id.id, 'request_id': sign_request_sudo.id, 'token': access_token, 'error': 0, 'new_contract_id': new_contract.id}
+        return {
+            'job_id': new_contract.job_id.id,
+            'request_id': sign_request_sudo.id,
+            'token': access_token,
+            'error': 0,
+            'new_contract_id': new_contract.id
+        }

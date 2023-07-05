@@ -60,7 +60,7 @@ class L10nBeHrPayrollEcoVoucherController(http.Controller):
             quantity = 1
             amount = round(line.amount, 2)
             birthdate = employee.birthday or fields.Date.today()
-            lang = employee.sudo().address_home_id.lang
+            lang = employee.lang
             if lang == 'fr_FR':
                 lang = 'FR'
             elif lang == 'nl_NL':

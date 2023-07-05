@@ -18,12 +18,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         cls.env.user.tz = 'Europe/Amsterdam'
 
-        cls.address_home = cls.env['res.partner'].create([{
-            'name': "Test Employee",
-            'company_id': cls.env.company.id,
-            'type': "private"
-        }])
-
         cls.resource_calendar_40_hours_per_week = cls.env['resource.calendar'].create([{
             'name': "Test Calendar : 40 Hours/Week",
             'company_id': cls.env.company.id,
@@ -61,7 +55,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         cls.employee = cls.env['hr.employee'].create([{
             'name': "Test Employee",
-            'address_home_id': cls.address_home.id,
             'resource_calendar_id': cls.resource_calendar_40_hours_per_week.id,
             'company_id': cls.env.company.id,
             'country_id': cls.env.ref('base.ch').id,

@@ -53,7 +53,6 @@ class TestHrRecruitmentSign(HttpCase):
         })
         self.applicant.partner_id = self.env['res.partner'].create({
             'is_company': False,
-            'type': 'private',
             'name': self.applicant.partner_name,
             'email': self.applicant.email_from,
         })

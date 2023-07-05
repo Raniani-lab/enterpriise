@@ -24,7 +24,6 @@ class TestHrAppraisalRequest(TransactionCase):
             'parent_id': cls.manager.id,
             'work_email': 'michael@odoo.com',
             'user_id': cls.employee_user.id,
-            'address_home_id': cls.env['res.partner'].create({'name': 'Private contact', 'email': 'private@email.com'}).id,
         })
         cls.employee.work_email = 'chouxblanc@donc.com'
 
@@ -55,7 +54,7 @@ class TestHrAppraisalRequest(TransactionCase):
     def test_manager_request_work_email_2(self):
         """ Send appraisal to work email """
         self.employee.user_id = False
-        self.employee.address_home_id = False
+        self.employee.work_contact_id = False
         appraisal = self.env['hr.appraisal'].create({'employee_id': self.employee.id, 'manager_ids': self.employee.parent_id})
         request = self.request_appraisal_from(appraisal, user=self.manager_user)
         self.assertEqual(request.recipient_ids.email, self.employee.work_email)

@@ -43,6 +43,8 @@ class HrContract(models.Model):
     wage_with_holidays = fields.Monetary(compute='_compute_wage_with_holidays', inverse='_inverse_wage_with_holidays',
         tracking=True, string="Wage with Holidays")
     wage_on_signature = fields.Monetary(string="Wage on Payroll", help="Wage on contract signature", tracking=True, group_operator="avg")
+    salary_offer_ids = fields.One2many('hr.contract.salary.offer', 'employee_contract_id')
+    salary_offers_count = fields.Integer(compute='_compute_salary_offers_count', compute_sudo=True)
 
     # Employer costs fields
     final_yearly_costs = fields.Monetary(
@@ -83,6 +85,15 @@ class HrContract(models.Model):
             if not contract.job_id or not contract.job_id.default_contract_id:
                 continue
             contract.default_contract_id = contract.job_id.default_contract_id
+
+    def _compute_salary_offers_count(self):
+        offers_data = self.env['hr.contract.salary.offer']._read_group(
+            domain=[('employee_contract_id', 'in', self.ids)],
+            groupby=['employee_contract_id'],
+            aggregates=['__count'])
+        mapped_data = {contract.id: count for contract, count in offers_data}
+        for contract in self:
+            contract.salary_offers_count = mapped_data.get(contract.id, 0)
 
     def _get_yearly_cost_sacrifice_ratio(self):
         return 1.0 - self.holidays / 231.0
@@ -232,8 +243,7 @@ class HrContract(models.Model):
 
     def _get_redundant_salary_data(self):
         employees = self.mapped('employee_id').filtered(lambda employee: not employee.active)
-        partners = employees.mapped('address_home_id').filtered(
-            lambda partner: not partner.active and partner.type == 'private')
+        partners = employees.work_contact_id.filtered(lambda partner: not partner.active)
         return [employees, partners]
 
     def _clean_redundant_salary_data(self):
@@ -271,32 +281,41 @@ class HrContract(models.Model):
         action['res_id'] = self.origin_contract_id.id
         return action
 
+    def action_show_offers(self):
+        self.ensure_one()
+        action = self.env['ir.actions.act_window']._for_xml_id('hr_contract_salary.hr_contract_salary_offer_action')
+        action['domain'] = [('id', 'in', self.salary_offer_ids.ids)]
+        action['context'] = {'default_employee_contract_id': self.id}
+        if self.salary_offers_count == 1:
+            action.update({
+                "views": [[False, "form"]],
+                "res_id": self.salary_offer_ids.id,
+            })
+        return action
+
     def send_offer(self):
         self.ensure_one()
-        if self.employee_id.address_home_id:
-            try:
-                template_id = self.env.ref('hr_contract_salary.mail_template_send_offer').id
-            except ValueError:
-                template_id = False
-            path = '/salary_package/contract/' + str(self.id)
-            ctx = {
-                'default_email_layout_xmlid': 'mail.mail_notification_light',
-                'default_model': 'hr.contract',
-                'default_res_ids': self.ids,
-                'default_template_id': template_id,
-                'default_composition_mode': 'comment',
-                'salary_package_url': self.get_base_url() + path,
-            }
-            return {
-                'type': 'ir.actions.act_window',
-                'view_mode': 'form',
-                'res_model': 'mail.compose.message',
-                'views': [[False, 'form']],
-                'target': 'new',
-                'context': ctx,
-            }
-        else:
-            raise ValidationError(_("No private address defined on the employee!"))
+        try:
+            template_id = self.env.ref('hr_contract_salary.mail_template_send_offer').id
+        except ValueError:
+            template_id = False
+        path = '/salary_package/contract/' + str(self.id)
+        ctx = {
+            'default_email_layout_xmlid': 'mail.mail_notification_light',
+            'default_model': 'hr.contract',
+            'default_res_ids': self.ids,
+            'default_template_id': template_id,
+            'default_composition_mode': 'comment',
+            'salary_package_url': self.get_base_url() + path,
+        }
+        return {
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'mail.compose.message',
+            'views': [[False, 'form']],
+            'target': 'new',
+            'context': ctx,
+        }
 
     def action_archive(self):
         res = super().action_archive()

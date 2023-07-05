@@ -121,16 +121,9 @@ class TestPayrollCommon(TransactionCase):
             ]
         })
 
-        address_home_georges = cls.env['res.partner'].create({
-            'name': 'Georges',
-            'company_id': cls.belgian_company.id,
-            'type': 'private',
-            'country_id': cls.env.ref('base.be').id
-        })
-
         cls.employee_georges = cls.env['hr.employee'].create({
             'name': 'Georges',
-            'address_home_id': address_home_georges.id,
+            'private_country_id': cls.env.ref('base.be').id,
             'resource_calendar_id': cls.resource_calendar.id,
             'company_id': cls.belgian_company.id,
             'marital': "single",
@@ -204,16 +197,9 @@ class TestPayrollCommon(TransactionCase):
         contract.write({'state': 'open'})  # By default, the state is 'draft' when we create a new contract
         cls.georges_contracts |= contract
 
-        address_home_john = cls.env['res.partner'].create({
-            'name': 'John Doe',
-            'company_id': cls.belgian_company.id,
-            'type': 'private',
-            'country_id': cls.env.ref('base.be').id
-        })
-
         cls.employee_john = cls.employee_georges.copy({
             'name': 'John Doe',
-            'address_home_id': address_home_john.id,
+            'private_country_id': cls.env.ref('base.be').id,
             'resource_calendar_id': cls.resource_calendar.id,
             'contract_ids': []
         })
@@ -257,16 +243,9 @@ class TestPayrollCommon(TransactionCase):
 
         cls.john_contracts |= contract
 
-        address_home_a = cls.env['res.partner'].create({
-            'name': 'A',
-            'company_id': cls.belgian_company.id,
-            'type': 'private',
-            'country_id': cls.env.ref('base.be').id
-        })
-
         cls.employee_a = cls.employee_georges.copy({
             'name': 'A',
-            'address_home_id': address_home_a.id,
+            'private_country_id': cls.env.ref('base.be').id,
             'resource_calendar_id': cls.resource_calendar.id,
             'contract_ids': []
         })
@@ -283,16 +262,9 @@ class TestPayrollCommon(TransactionCase):
 
         cls.a_contracts = first_contract_a
 
-        address_home_test = cls.env['res.partner'].create({
-            'name': 'Employee Test',
-            'company_id': cls.belgian_company.id,
-            'type': 'private',
-            'country_id': cls.env.ref('base.be').id
-        })
-
         cls.employee_test = cls.employee_georges.copy({
             'name': 'Employee Test',
-            'address_home_id': address_home_test.id,
+            'private_country_id': cls.env.ref('base.be').id,
             'resource_calendar_id': cls.resource_calendar.id,
             'contract_ids': []
         })

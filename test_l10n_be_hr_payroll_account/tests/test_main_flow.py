@@ -310,7 +310,7 @@ class TestHR(common.TransactionCase):
                 employee=self.user.employee_id,
                 start=Date.today().replace(day=16),
                 car=self.env['fleet.vehicle'].search([
-                    ('driver_id', '=', self.user.employee_id.address_home_id.id),
+                    ('driver_id', '=', self.user.employee_id.work_contact_id.id),
                     ('company_id', '=', self.user.employee_id.company_id.id),
                 ], limit=1),
                 wage=2500,
@@ -383,11 +383,9 @@ class TestHR(common.TransactionCase):
             model=car_model,
         )
 
-        # Add access rigths to be able to access the employee's private address
         # (in real use, the HR managing employees cars would be granted hr and fleet rights)
-        with additional_groups(self.hr_fleet_manager, 'base.group_private_addresses'):
-            with Form(car.with_user(self.hr_fleet_manager)) as car_form:
-                car_form.driver_id = self.env['res.partner'].search([('id', '=', self.user.employee_id.address_home_id.id)], limit=1)
+        with Form(car.with_user(self.hr_fleet_manager)) as car_form:
+            car_form.driver_id = self.env['res.partner'].search([('id', '=', self.user.employee_id.work_contact_id.id)], limit=1)
 
     def _test_payroll(self):
         struct = self.create_structure(

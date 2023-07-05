@@ -47,9 +47,7 @@
                                     </td>
                                     <td><strong>Address</strong></td>
                                     <td>
-                                        <t t-if="employee.address_home_id">
-                                            <span t-field="employee.address_home_id.name"/>
-                                        </t>
+                                        <span t-field="employee.private_street"/> - <span t-field="employee.private_street2"/> - <span t-field="employee.private_zip"/> - <span t-field="employee.private_city"/> - <span t-field="employee.private_state_id"/> - <span t-field="employee.private_country_id"/>
                                     </td>
                                     <td></td>
                                 </tr>

@@ -30,16 +30,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         cls.EMPLOYEES_COUNT = 5
 
-        cls.private_addresses = cls.env['res.partner'].create([{
-            'name': "Test Employee %s" % (i),
-            'company_id': cls.env.company.id,
-            'type': "private",
-            'street': 'Employee Street %s' %(i),
-            'zip': '100%s' % (i),
-            'city': 'Employee City %s' %(i),
-            'country_id': cls.env.ref('base.be').id,
-        } for i in range(cls.EMPLOYEES_COUNT)])
-
         cls.resource_calendar_38_hours_per_week = cls.env['resource.calendar'].create([{
             'name': "Test Calendar : 38 Hours/Week",
             'company_id': cls.env.company.id,
@@ -78,7 +68,10 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         cls.employees = cls.env['hr.employee'].create([{
             'name': "Test Employee %s" % (i),
-            'address_home_id': cls.private_addresses[i].id,
+            'private_street': 'Employee Street %s' %(i),
+            'private_zip': '100%s' % (i),
+            'private_city': 'Employee City %s' %(i),
+            'private_country_id': cls.env.ref('base.be').id,
             'resource_calendar_id': cls.resource_calendar_38_hours_per_week.id,
             'company_id': cls.env.company.id,
             'km_home_work': 75,
@@ -98,7 +91,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         cls.cars = cls.env['fleet.vehicle'].create([{
             'name': "Test Car %s" % (i),
             'license_plate': "TEST%s" % (i),
-            'driver_id': cls.employees[i].address_home_id.id,
+            'driver_id': cls.employees[i].work_contact_id.id,
             'company_id': cls.env.company.id,
             'model_id': cls.model.id,
             'first_contract_date': datetime.date(2020, 10, 8),

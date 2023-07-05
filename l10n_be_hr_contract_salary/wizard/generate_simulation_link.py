@@ -12,10 +12,31 @@ class GenerateSimulationLink(models.TransientModel):
                                                                          raise_if_not_found=False))
 
     new_car = fields.Boolean(string="Force New Cars List", help="The employee will be able to choose a new car even if the maximum number of used cars available is reached.")
-    show_new_car = fields.Boolean(compute='_compute_show_new_car')
-    car_id = fields.Many2one('fleet.vehicle', string='Default Vehicle', compute='_compute_car_id', readonly=False, domain="[('vehicle_type', '=', 'car')]", help="Default employee's company car. If left empty, the default value will be the employee's current car.")
+    show_new_car = fields.Boolean(compute='_compute_show_new_car', store=True)
+    car_id = fields.Many2one('fleet.vehicle', string='Default Vehicle', compute='_compute_car_id', store=True, readonly=False, domain="[('vehicle_type', '=', 'car')]", help="Default employee's company car. If left empty, the default value will be the employee's current car.")
     l10n_be_canteen_cost = fields.Float(
         string="Canteen Cost", compute='_compute_l10n_be_canteen_cost', store=True, readonly=False)
+    assigned_car_warning = fields.Char(compute='_compute_assigned_car_warning')
+
+    @api.depends('applicant_id.partner_id', 'employee_id.partner_id', 'car_id')
+    def _compute_assigned_car_warning(self):
+        model = self.env.context.get('active_model')
+        self.assigned_car_warning = False
+        for link in self:
+            warning = []
+            partners = self.env['res.partner']
+            if model == 'hr.contract' and link.employee_id:
+                partners |= link.employee_id.work_contact_id
+                if link.employee_id.applicant_id:
+                    partners |= link.employee_id.applicant_id.partner_id
+            elif model == 'hr.applicant':
+                partners |= link.applicant_id.partner_id if link.applicant_id else False
+            if link.car_id.driver_id and link.car_id.driver_id not in partners:
+                warning.append(f"Car is already assigned to {link.car_id.driver_id.name} as a driver.")
+            if link.car_id.future_driver_id and link.car_id.future_driver_id not in partners:
+                warning.append(f"Car is already assigned to {link.car_id.future_driver_id.name} as a future driver.")
+            if warning:
+                link.assigned_car_warning = f"Warning: {' '.join(warning)}"
 
     @api.depends('applicant_id.partner_id', 'employee_id.partner_id')
     def _compute_car_id(self):
@@ -25,7 +46,7 @@ class GenerateSimulationLink(models.TransientModel):
             car = self.env['fleet.vehicle']
             if model == 'hr.contract':
                 if wizard.employee_id:
-                    partner |= wizard.employee_id.address_home_id
+                    partner |= wizard.employee_id.work_contact_id
                     # In case the car was reserved for an applicant, while
                     # the simulation link is sent for the corresponding employee
                     if wizard.employee_id.applicant_id:
@@ -38,10 +59,6 @@ class GenerateSimulationLink(models.TransientModel):
                     ('driver_id', '=', False),
                 ], limit=1)
             wizard.car_id = car if car else False
-
-    def _get_url_triggers(self):
-        res = super()._get_url_triggers()
-        return res + ['new_car', 'car_id', 'contract_type_id', 'l10n_be_canteen_cost']
 
     @api.depends('contract_id.available_cars_amount', 'contract_id.max_unused_cars')
     def _compute_show_new_car(self):
@@ -56,3 +73,14 @@ class GenerateSimulationLink(models.TransientModel):
     def _compute_l10n_be_canteen_cost(self):
         for wizard in self:
             wizard.l10n_be_canteen_cost = wizard.contract_id.l10n_be_canteen_cost
+
+    def _get_offer_values(self):
+        values = super()._get_offer_values()
+        values.update({
+            'contract_type_id': self.contract_type_id.id,
+            'new_car': self.new_car,
+            'show_new_car': self.show_new_car,
+            'car_id': self.car_id.id,
+            'l10n_be_canteen_cost': self.l10n_be_canteen_cost,
+        })
+        return values

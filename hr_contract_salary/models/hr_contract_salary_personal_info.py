@@ -4,7 +4,7 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 
-MODELS_MAPPED = {'employee': 'hr.employee', 'address': 'res.partner', 'bank_account': 'res.partner.bank'}
+MODELS_MAPPED = {'employee': 'hr.employee', 'bank_account': 'res.partner.bank'}
 
 
 class HrContractSalaryPersonalInfo(models.Model):
@@ -41,7 +41,6 @@ class HrContractSalaryPersonalInfo(models.Model):
     value_ids = fields.One2many('hr.contract.salary.personal.info.value', 'personal_info_id')
     applies_on = fields.Selection([
         ('employee', 'Employee'),
-        ('address', 'Private Home Address'),
         ('bank_account', 'Bank Account')
     ], default='employee')
     res_model = fields.Char(compute='_compute_res_model')
@@ -82,8 +81,6 @@ class HrContractSalaryPersonalInfo(models.Model):
                 return False
             if info.applies_on == 'employee':
                 info_value = contract.employee_id[info.field]
-            elif info.applies_on == 'address':
-                info_value = contract.employee_id.address_home_id[info.field]
             else:
                 info_value = contract.employee_id.bank_account_id[info.field]
             if info.value_ids:

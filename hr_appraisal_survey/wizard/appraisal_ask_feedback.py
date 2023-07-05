@@ -81,7 +81,7 @@ class AppraisalAskFeedback(models.TransientModel):
         employees_info = employees.mapped(lambda employee: {
             'id': employee.id,
             'email': employee.work_email or employee.user_id.partner_id.email,
-            'partner_id': employee.user_id.partner_id or employee.address_home_id
+            'partner_id': employee.user_id.partner_id or employee.work_contact_id
         })
         emails = [e['email'] for e in employees_info]
         partner_ids = [e['partner_id']['id'] for e in employees_info]

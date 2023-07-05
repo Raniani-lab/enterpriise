@@ -71,14 +71,7 @@
 
     <record id="res_partner_demetra_voinea_private_address" model="res.partner">
         <field name="name">Demetra Voinea</field>
-        <field name="street">Bulevardul Alexandru Ioan Cuza</field>
-        <field name="city">Bucuresti</field>
-        <field name="zip">011052</field>
-        <field name="country_id" ref="base.ro"/>
-        <field name="phone">031 106 3746</field>
-        <field name="email">demetra.voinea@example.com</field>
         <field name="company_id" ref="l10n_ro_hr_payroll.res_company_ro"/>
-        <field name="type">private</field>
     </record>
 
     <record id="res_partner_bank_account_demetra_voinea" model="res.partner.bank">
@@ -93,7 +86,12 @@
         <field name="gender">female</field>
         <field name="marital">single</field>
         <field name="job_title">Software Developer</field>
-        <field name="address_home_id" ref="l10n_ro_hr_payroll.res_partner_demetra_voinea_private_address"/>
+        <field name="private_street">Bulevardul Alexandru Ioan Cuza</field>
+        <field name="private_city">Bucuresti</field>
+        <field name="private_zip">011052</field>
+        <field name="private_country_id" ref="base.ro"/>
+        <field name="private_phone">031 106 3746</field>
+        <field name="private_email">demetra.voinea@example.com</field>
         <field name="address_id" ref="l10n_ro_hr_payroll.res_partner_demetra_voinea_work_address"/>
         <field name="emergency_contact">Ilarie Voinea</field>
         <field name="emergency_phone">031 106 3746</field>

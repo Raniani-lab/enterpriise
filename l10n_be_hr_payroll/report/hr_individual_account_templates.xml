@@ -37,8 +37,14 @@
                                     <tr>
                                         <td><strong>Address</strong></td>
                                         <td colspan="3">
-                                            <div t-field="employee.address_home_id"
-                                                t-options='{"widget": "contact", "fields": ["address", "name", "phone"], "no_marker": True, "phone_icons": True}'/>
+                                            <span class="w-100 d-block">
+                                                <t t-esc="employee.private_street"/><br/>
+                                                <t t-if="employee.private_street2">
+                                                    <t t-esc="employee.private_street"/><br/>
+                                                </t>
+                                                <t t-esc="employee.private_zip"/> <t t-esc="employee.private_city"/><br/>
+                                                <t t-esc="employee.private_country_id.name"/><br/>
+                                            </span>
                                         </td>
                                     </tr>
                                     <tr>

@@ -183,9 +183,8 @@ class L10nBeIndividualAccountLine(models.Model):
             for employee, employee_data in rendering_data.items():
                 _logger.info('Printing Individual Account sheet (%s/%s)', counter, sheet_count)
                 counter += 1
-                employee_lang = employee.sudo().address_home_id.lang
                 sheet_filename = _('%s-individual-account-%s', employee.name, sheet.year)
-                sheet_file, dummy = report_sudo.with_context(lang=employee_lang)._render_qweb_pdf(
+                sheet_file, dummy = report_sudo.with_context(lang=employee.lang)._render_qweb_pdf(
                     report_id,
                     [employee.id], data={
                         'year': int(sheet.year),

@@ -54,7 +54,7 @@
 
     <record id="sign_item_cdi_developer_03" model="sign.item">
         <field name="type_id" ref="sign.sign_item_type_text"/>
-        <field name="name">employee_id.address_home_id.city</field>
+        <field name="name">employee_id.private_city</field>
         <field name="required" eval="True"/>
         <field name="responsible_id" ref="sign.sign_item_role_employee"/>
         <field name="page">1</field>
@@ -67,7 +67,7 @@
 
     <record id="sign_item_cdi_developer_04" model="sign.item">
         <field name="type_id" ref="sign.sign_item_type_text"/>
-        <field name="name">employee_id.address_home_id.country_id.name</field>
+        <field name="name">employee_id.private_country_id.name</field>
         <field name="required" eval="True"/>
         <field name="responsible_id" ref="sign.sign_item_role_employee"/>
         <field name="page">1</field>
@@ -80,7 +80,7 @@
 
     <record id="sign_item_cdi_developer_05" model="sign.item">
         <field name="type_id" ref="sign.sign_item_type_text"/>
-        <field name="name">employee_id.address_home_id.street</field>
+        <field name="name">employee_id.private_street</field>
         <field name="required" eval="True"/>
         <field name="responsible_id" ref="sign.sign_item_role_employee"/>
         <field name="page">1</field>

@@ -24,5 +24,5 @@
         ],
     },
     'post_init_hook': '_pos_restaurant_preparation_display_post_init',
-    'license': 'LGPL-3',
+    'license': 'OEEL-1',
 }

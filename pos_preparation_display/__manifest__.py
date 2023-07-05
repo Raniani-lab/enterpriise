@@ -68,5 +68,5 @@
             'pos_preparation_display/static/tests/tours/**/*',
         ],
     },
-    'license': 'LGPL-3',
+    'license': 'OEEL-1',
 }

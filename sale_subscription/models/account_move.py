@@ -14,6 +14,7 @@ class AccountMove(models.Model):
         posted_moves = super()._post(soft=soft)
         automatic_invoice = self.env.context.get('recurring_automatic')
         all_subscription_ids = []
+        post_hook_subscription_ids = []
         for move in posted_moves:
             if not move.invoice_line_ids.subscription_id:
                 continue
@@ -38,7 +39,7 @@ class AccountMove(models.Model):
                     subscription.next_invoice_date = max(end_dates) + relativedelta(days=1)
                     all_subscription_ids.append(subscription.id)
                 if not automatic_invoice:
-                    subscription._post_invoice_hook()
+                    post_hook_subscription_ids.append(subscription.id)
 
             if all_subscription_ids:
                 # update the renewal quotes to start at the next invoice date values
@@ -53,5 +54,6 @@ class AccountMove(models.Model):
                             'next_invoice_date': next_invoice_date,
                             'start_date': next_invoice_date,
                         })
+            self.env['sale.order'].browse(post_hook_subscription_ids)._post_invoice_hook()
 
         return posted_moves

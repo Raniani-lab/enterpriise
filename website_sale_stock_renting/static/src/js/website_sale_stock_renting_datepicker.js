@@ -81,31 +81,6 @@ WebsiteSaleDaterangePicker.include({
     },
 
     /**
-     * Override to invalid dates where the product is unavailable
-     *
-     * @param {moment} date
-     */
-    _isInvalidDate(date) {
-        const result = this._super.apply(this, arguments);
-        if (!result) {
-            const productId = this._getProductId();
-            if (!productId) {
-                return false;
-            }
-            const dateStart = date.startOf('day');
-            for (const interval of this.rentingAvailabilities[productId]) {
-                if (interval.start.startOf('day') > dateStart) {
-                    return false;
-                }
-                if (interval.end.endOf('day') > dateStart && interval.quantity_available <= 0) {
-                    return true;
-                }
-            }
-        }
-        return result;
-    },
-
-    /**
      * Set Custom CSS to a given daterangepicker cell
      *
      * This function is used in the daterange picker objects and meant to be easily overriden.

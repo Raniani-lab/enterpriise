@@ -288,3 +288,45 @@ QUnit.test("open a dialog to schedule task", async (assert) => {
     await click(target, ".modal footer .o_select_button");
     assert.verifySteps(["schedule_tasks"]);
 });
+
+QUnit.test("Lines are displayed in alphabetic order, except for the first one", async (assert) => {
+    for (const user of [
+        {id: 102, name: "Omega"},
+        {id: 103, name: "Theta"},
+        {id: 104, name: "Rho"},
+        {id: 105, name: "Zeta"},
+        {id: 106, name: "Kappa"},
+    ]) {
+        ganttViewParams.serverData.models["res.users"].records.push(user);
+        ganttViewParams.serverData.models.task.records.push({
+            id: user.id,
+            name: "Citron en Suédois",
+            start: "2021-06-02 08:00:00",
+            stop: "2021-06-12 08:00:00",
+            project_id: 1,
+            user_ids: user.id,
+        });
+    };
+
+    await makeView({
+        ...ganttViewParams,
+        groupBy: ["user_ids"],
+    });
+
+    assert.deepEqual(
+        [...target.querySelectorAll(".o_gantt_row_headers .o_gantt_row_title")].map((el) =>
+            el.innerText.trim()
+        ),
+        [
+            "👤 Unassigned",
+            "Jane Doe",
+            "John Doe",
+            "Kappa",
+            "Omega",
+            "Rho",
+            "Theta",
+            "Zeta",
+        ],
+        "The lines should be sorted by alphabetical order ('👤 Unassigned' is always first)"
+    );
+});

@@ -279,7 +279,7 @@
                     <field name="share_link" widget="CopyClipboardChar" readonly="1" class="mb-3"/>
                 </group>
                 <footer>
-                    <button string="Share &amp; Close" class="btn-primary" special="cancel" data-hotkey="z"/>
+                    <button string="Share &amp; Close" class="btn-primary" special="cancel" data-hotkey="x"/>
                     <button string="Sign Now" name="go_to_signable_document" type="object" attrs="{'invisible': [('share_link', '=', False)]}" data-hotkey="q"/>
                 </footer>
             </form>

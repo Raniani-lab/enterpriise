@@ -115,7 +115,7 @@
                     <footer position="replace">
                         <button name="action_save_onboarding_consolidation_step" class="btn btn-primary" type="object"
                                 string="Apply" data-hotkey="q"/>
-                        <button special="cancel" data-hotkey="z" string="Cancel"/>
+                        <button special="cancel" data-hotkey="x" string="Cancel"/>
                     </footer>
                 </form>
             </field>

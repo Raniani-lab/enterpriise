@@ -35,7 +35,7 @@
                 </sheet>
                 <footer>
                     <button string="Validate" name="action_validate" type="object" class="btn-primary" attrs="{'invisible': [('months_count', '>', 12.0)]}" data-hotkey="q"/>
-                    <button special="cancel" data-hotkey="z" string="Close" type="object" class="btn-primary"/>
+                    <button special="cancel" data-hotkey="x" string="Close" type="object" class="btn-primary"/>
                 </footer>
             </form>
         </field>

@@ -24,7 +24,7 @@
                 <footer>
                     <field name="selected_line_count" invisible="1"/>
                     <button string="Schedule Tasks" name="action_confirm" type="object" class="btn-primary" attrs="{'invisible': [('selected_line_count', '=', 0)]}"/>
-                    <button string="Discard" class="btn btn-default" special="cancel" data-hotkey="z"/>
+                    <button string="Discard" class="btn btn-default" special="cancel" data-hotkey="x"/>
                 </footer>
             </form>
         </field>

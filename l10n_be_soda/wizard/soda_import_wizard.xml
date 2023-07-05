@@ -21,9 +21,9 @@
                 <footer>
                     <button string="Save &amp; Import" type="object"
                         name="action_save_and_import" class="btn-primary"
-                        data-hotkey="c"/>
+                        data-hotkey="q"/>
                     <button string="Cancel" class="btn-secondary"
-                        special="cancel" data-hotkey="z"/>
+                        special="cancel" data-hotkey="x"/>
                 </footer>
             </form>
         </field>

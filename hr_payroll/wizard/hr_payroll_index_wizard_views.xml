@@ -16,7 +16,7 @@
                     <footer>
                         <button string="Confirm" name="action_confirm" attrs="{'invisible': [('display_warning', '=', True)]}" type="object" class="oe_highlight" data-hotkey="q"/>
                         <button string="Confirm" name="action_confirm" attrs="{'invisible': [('display_warning', '=', False)]}" type="object" class="btn btn-primary disabled"/>
-                        <button string="Cancel" class="btn btn-secondary" special="cancel" data-hotkey="z"/>
+                        <button string="Cancel" class="btn btn-secondary" special="cancel" data-hotkey="x"/>
                     </footer>
                </form>
             </field>

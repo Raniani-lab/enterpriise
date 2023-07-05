@@ -34,7 +34,7 @@
                 <field name="attachment_ids" widget="many2many_binary" string="Attach a file"/>
                 <footer>
                     <button name="validate_signature" string="Send" type="object" class="oe_highlight" data-hotkey="q"/>
-                    <button string="Discard" class="btn-secondary" special="cancel" data-hotkey="z"/>
+                    <button string="Discard" class="btn-secondary" special="cancel" data-hotkey="x"/>
                 </footer>
             </form>
         </field>

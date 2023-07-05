@@ -76,10 +76,10 @@
                     <button name="do_pass" type="object" class="btn-primary" string="Pass"
                         attrs="{'invisible': ['|', ('quality_state', '!=', 'none'), ('test_type', '!=', 'passfail')]}" data-hotkey="w"/>
                     <button name="do_fail" type="object" class="btn-primary" string="Fail"
-                        attrs="{'invisible': ['|', ('quality_state', '!=', 'none'), ('test_type', '!=', 'passfail')]}" data-hotkey="x"/>
+                        attrs="{'invisible': ['|', ('quality_state', '!=', 'none'), ('test_type', '!=', 'passfail')]}" data-hotkey="k"/>
                     <button name="action_generate_previous_window" type="object" class="btn-secondary" string="Previous" attrs="{'invisible': [('position_current_check', '=', 1)]}"/>
                     <button name="action_generate_next_window" type="object" class="btn-secondary" string="Next" attrs="{'invisible': [('is_last_check', '=', True)]}"/>
-                    <button string="Cancel" class="btn btn-secondary" special="cancel" data-hotkey="z" />
+                    <button string="Cancel" class="btn btn-secondary" special="cancel" data-hotkey="x" />
                 </footer>
             </form>
         </field>

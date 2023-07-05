@@ -55,8 +55,8 @@
             <xpath expr="//div[hasclass('oe_chatter')]" position="after">
                 <div invisible="not context.get('discard_on_footer_button', False)">
                     <footer class="oe_edit_only">
-                        <button special="save" data-hotkey="v" string="Save" class="oe_highlight"/>
-                        <button string="Discard" special="cancel" data-hotkey="z"/>
+                        <button special="save" data-hotkey="q" string="Save" class="oe_highlight"/>
+                        <button string="Discard" special="cancel" data-hotkey="x"/>
                     </footer>
                 </div>
             </xpath>

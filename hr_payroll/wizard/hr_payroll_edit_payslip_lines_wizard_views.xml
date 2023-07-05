@@ -34,7 +34,7 @@
                 </field>
                 <footer>
                     <button name="action_validate_edition" string="Validate Edition" type="object" class="oe_highlight" data-hotkey="q"/>
-                    <button string="Discard" special="cancel" data-hotkey="z" class="btn-secondary"/>
+                    <button string="Discard" special="cancel" data-hotkey="x" class="btn-secondary"/>
                 </footer>
             </form>
         </field>

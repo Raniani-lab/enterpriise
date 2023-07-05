@@ -46,8 +46,8 @@
                     </page>
                 </notebook>
                 <footer>
-                    <button string="Add" class="btn-primary" special="save" data-hotkey="v"/>
-                    <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="z"/>
+                    <button string="Add" class="btn-primary" special="save" data-hotkey="q"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="x"/>
                 </footer>
             </form>
         </field>

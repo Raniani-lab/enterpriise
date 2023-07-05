@@ -35,8 +35,8 @@
 
                 <footer>
                     <button name="generate_lot" string="Validate" type="object" class="oe_highlight" attrs="{'invisible': [('fsm_done', '=', True)]}" data-hotkey="q"/>
-                    <button string="Discard" class="btn-secondary" special="cancel" data-hotkey="z" attrs="{'invisible': [('fsm_done', '=', True)]}"/>
-                    <button string="Close" special="cancel" data-hotkey="z" class="oe_highlight" attrs="{'invisible': [('fsm_done', '=', False)]}"/>
+                    <button string="Discard" class="btn-secondary" special="cancel" data-hotkey="x" attrs="{'invisible': [('fsm_done', '=', True)]}"/>
+                    <button string="Close" special="cancel" data-hotkey="x" class="oe_highlight" attrs="{'invisible': [('fsm_done', '=', False)]}"/>
                 </footer>
             </form>
         </field>

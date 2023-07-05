@@ -34,7 +34,7 @@
                     <field name="activity_note" widget="html"/>
                     <footer>
                         <button name="request_document" type="object" string="Request" class="btn btn-primary" data-hotkey="q"/>
-                        <button string="Discard" class="btn-secondary" special="cancel" data-hotkey="z"/>
+                        <button string="Discard" class="btn-secondary" special="cancel" data-hotkey="x"/>
                     </footer>
                 </sheet>
             </form>

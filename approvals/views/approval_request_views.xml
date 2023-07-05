@@ -82,12 +82,12 @@
                 <header>
                     <field name="user_status" invisible="1"/>
                     <field name="has_access_to_request" invisible="1"/>
-                    <button name="action_confirm" string="Submit" type="object" attrs="{'invisible': ['|', ('approver_ids', '=', []), ('request_status','!=','new')]}" class="btn-primary" data-hotkey="v"/>
-                    <button name="action_approve" string="Approve" type="object" attrs="{'invisible':['|', ('request_status', 'in', ['approved', 'refused', 'cancel']), ('user_status','!=','pending')]}" data-hotkey="q"/>
-                    <button name="action_refuse" string="Refuse" type="object" attrs="{'invisible':['|', ('request_status', 'in', ['approved', 'refused', 'cancel']), ('user_status','!=','pending')]}" data-hotkey="x"/>
+                    <button name="action_confirm" string="Submit" type="object" attrs="{'invisible': ['|', ('approver_ids', '=', []), ('request_status','!=','new')]}" class="btn-primary" data-hotkey="q"/>
+                    <button name="action_approve" string="Approve" type="object" attrs="{'invisible':['|', ('request_status', 'in', ['approved', 'refused', 'cancel']), ('user_status','!=','pending')]}" data-hotkey="v"/>
+                    <button name="action_refuse" string="Refuse" type="object" attrs="{'invisible':['|', ('request_status', 'in', ['approved', 'refused', 'cancel']), ('user_status','!=','pending')]}" data-hotkey="z"/>
                     <button name="action_withdraw" string="Withdraw" type="object" attrs="{'invisible':['|','|',('request_status','=','new'),('user_status','in',['waiting', 'pending','cancel']),('user_status','=',False)]}" data-hotkey="y"/>
                     <button name="action_draft" string="Back To Draft" type="object" attrs="{'invisible':['|',('request_status','!=','cancel'),'&amp;',('user_status','=',False),('has_access_to_request','=',False)]}" data-hotkey="w"/>
-                    <button name="action_cancel" string="Cancel" type="object" attrs="{'invisible':['|',('request_status','in',['new','cancel']),'&amp;',('user_status','=',False),('has_access_to_request','=',False)]}" data-hotkey="z"/>
+                    <button name="action_cancel" string="Cancel" type="object" attrs="{'invisible':['|',('request_status','in',['new','cancel']),'&amp;',('user_status','=',False),('has_access_to_request','=',False)]}" data-hotkey="x"/>
                     <widget name="attach_document" string="Attach Document" action="message_post" attrs="{'invisible': [('attachment_number', '&lt;', 1)]}"/>
                     <widget name="attach_document" string="Attach Document" action="message_post" highlight="1" attrs="{'invisible': [('attachment_number', '&gt;=', 1)]}"/>
                     <field name="request_status" widget="statusbar"/>

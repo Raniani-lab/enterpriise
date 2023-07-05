@@ -24,7 +24,7 @@
                 </group>
                 <footer>
                     <button name="submit_declaration" string="Submit Declaration" type="object" class="oe_highlight" data-hotkey="q"/>
-                    <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="z"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="x"/>
                 </footer>
             </form>
         </field>

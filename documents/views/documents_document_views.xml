@@ -241,8 +241,8 @@
                         <field name="tag_ids" invisible="1"/>
                     </group>
                 <footer>
-                    <button special="save" data-hotkey="v" string="Add" class="btn btn-primary"/>
-                    <button string="Discard" class="btn-secondary" special="cancel" data-hotkey="z"/>
+                    <button special="save" data-hotkey="q" string="Add" class="btn btn-primary"/>
+                    <button string="Discard" class="btn-secondary" special="cancel" data-hotkey="x"/>
                 </footer>
                 </sheet>
             </form>

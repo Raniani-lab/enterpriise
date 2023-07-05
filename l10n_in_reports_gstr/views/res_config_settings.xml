@@ -59,7 +59,7 @@
                                 name="l10n_in_gstr_validate_otp"
                                 data-hotkey="q"
                                 type="object"/>
-                        <button special="cancel" data-hotkey="z" string="Cancel"/>
+                        <button special="cancel" data-hotkey="x" string="Cancel"/>
                     </footer>
                 </sheet>
             </form>

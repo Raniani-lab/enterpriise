@@ -9,7 +9,7 @@
                 <field name="employee_feedback_ids" widget="many2many_tags" readonly="1" attrs="{'invisible': [('employee_feedback_ids', '=', [])]}"/>
             </field>
             <xpath expr="//button[@name='action_cancel']" position="after">
-                <button name="action_ask_feedback" data-hotkey="q" string="Ask Feedback" attrs="{
+                <button name="action_ask_feedback" data-hotkey="a" string="Ask Feedback" attrs="{
                     'invisible': [('state', '!=', 'pending')]}" type="object"/>
             </xpath>
             <xpath expr="//button[@name='action_open_goals']" position="before">

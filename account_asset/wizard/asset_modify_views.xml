@@ -94,7 +94,7 @@
                     <button string="Cancel"
                             class="btn-secondary"
                             special="cancel"
-                            data-hotkey="z"/>
+                            data-hotkey="x"/>
                 </footer>
             </form>
         </field>

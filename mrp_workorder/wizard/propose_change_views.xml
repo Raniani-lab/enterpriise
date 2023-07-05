@@ -16,8 +16,8 @@
                     </group>
                 </group>
                 <footer>
-                    <button name="process" class="btn btn-primary" type="object" string="Propose Change"/>
-                    <button string="Discard" class="btn-default btn-secondary" special="cancel" data-hotkey="z"/>
+                    <button name="process" class="btn btn-primary" type="object" string="Propose Change" data-hotkey="q"/>
+                    <button string="Discard" class="btn-default btn-secondary" special="cancel" data-hotkey="x"/>
                 </footer>
             </form>
         </field>

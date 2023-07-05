@@ -26,7 +26,7 @@
                 <footer>
                     <button string="Generate Payslips" name="generate_payslips" type="object" class="btn-primary" data-hotkey="w" confirm="This will add the eco-vouchers amounts on the open payslips in this batch associated with the respective employees, and create new payslips where they don't exist. Are you sure you want to proceed?"/>
                     <button string="Export XLS" name="action_export_xls" type="object" data-hotkey="q"/>
-                    <button string="Discard" special="cancel" type="object" data-hotkey="z" />
+                    <button string="Discard" special="cancel" type="object" data-hotkey="x" />
                 </footer>
             </form>
         </field>

@@ -31,7 +31,7 @@
                         <field name="warning_line_ids" attrs="{'invisible': [('warning_line_ids', '=', [])]}"/>
                     </sheet>
                     <footer>
-                        <button string="Close" class="btn-secondary" special="cancel" data-hotkey="z"/>
+                        <button string="Close" class="btn-secondary" special="cancel" data-hotkey="x"/>
                         <button string="Proceed with validation" type="object" name="proceed_with_validation" class="btn btn-primary" attrs="{'invisible': [('error_line_ids', '!=', [])]}" data-hotkey="q"/>
                     </footer>
                 </form>

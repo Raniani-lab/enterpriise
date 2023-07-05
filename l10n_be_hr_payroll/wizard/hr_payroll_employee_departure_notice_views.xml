@@ -40,7 +40,7 @@
                 <footer>
                     <button name="validate_termination" string="Validate" type="object" class="oe_highlight" attrs="{'invisible': [('notice_respect','=','without')]}" data-hotkey="q"/>
                     <button name="compute_termination_fee" string="Validate &amp; Compute termination fees" type="object" class="oe_highlight" attrs="{'invisible': [('notice_respect','=','with')]}" data-hotkey="q"/>
-                    <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="z"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="x"/>
                 </footer>
             </form>
         </field>

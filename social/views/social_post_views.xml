@@ -187,7 +187,7 @@
                         groups="social.group_social_user" data-hotkey="v" />
                     <button name="action_set_draft" string="Cancel" type="object"
                         attrs="{'invisible': [('state', '!=', 'scheduled')]}"
-                        groups="social.group_social_user" data-hotkey="z" />
+                        groups="social.group_social_user" data-hotkey="x" />
                     <button name="action_schedule" string="Schedule" type="object" class="oe_highlight"
                         attrs="{'invisible': ['|', ('state', '!=', 'draft'), ('post_method', '=', 'now')]}"
                         groups="social.group_social_user" data-hotkey="q" />

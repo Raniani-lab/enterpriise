@@ -75,7 +75,7 @@
                     </div>
                     <button string="Send" name="send_request" type="object" class="btn-primary" invisible="context.get('sign_directly_without_mail',False)" data-hotkey="w"/>
                     <button string="Sign Now" name="sign_directly" context="{'no_sign_mail': True, 'sign_all': True}" type="object" class="btn-primary" invisible="not context.get('sign_directly_without_mail',False)" data-hotkey="q"/>
-                    <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="z"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="x"/>
                 </footer>
             </form>
         </field>

@@ -14,7 +14,7 @@
                             <field name="picking_name" attrs="{'invisible': [('picking_id', '=', False)]}"/>
                         </span>
                     </button>
-                    <button string="Don't cancel" class="btn-secondary" special="cancel" data-hotkey="z" />
+                    <button string="Don't cancel" class="btn-secondary" special="cancel" data-hotkey="x" />
                 </footer>
             </form>
         </field>

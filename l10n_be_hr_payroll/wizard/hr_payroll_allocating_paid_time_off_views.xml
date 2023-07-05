@@ -21,7 +21,7 @@
                 </group>
                 <footer>
                     <button name="generate_allocation" string="Generate Time Off Allocations" type="object" class="oe_highlight" data-hotkey="q"/>
-                    <button string="Discard" class="btn-secondary" special="cancel" data-hotkey="z"/>
+                    <button string="Discard" class="btn-secondary" special="cancel" data-hotkey="x"/>
                 </footer>
             </form>
         </field>

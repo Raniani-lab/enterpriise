@@ -26,7 +26,7 @@
                     </div>
 
                     <footer>
-                        <button string="Cancel" special="cancel" data-hotkey="z"/>
+                        <button string="Cancel" special="cancel" data-hotkey="x"/>
                         <widget name="send_hmrc_button" attrs="{'invisible': [('accept_legal', '=', False)]}"/>
                     </footer>
                 </form>

@@ -31,7 +31,7 @@
                     </group>
                 </div>
                 <footer>
-                    <button class="btn btn-primary" type="object" name="reload_page" string="Close" data-hotkey="w"/>
+                    <button class="btn btn-primary" type="object" name="reload_page" string="Close" data-hotkey="x"/>
                 </footer>
             </form>
         </field>

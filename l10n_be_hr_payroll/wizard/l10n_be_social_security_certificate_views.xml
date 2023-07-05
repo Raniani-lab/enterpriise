@@ -23,9 +23,9 @@
                 </div>
                 <footer>
                     <button name="print_report" string="Print" type="object" class="btn-primary" states="draft" data-hotkey="q"/>
-                    <button name="action_validate" string="Validate" type="object" class="btn-primary" states="done" data-hotkey="q"/>
+                    <button name="action_validate" string="Validate" type="object" class="btn-primary" states="done" data-hotkey="v"/>
                     <button name="print_report" string="Print" type="object" states="done" data-hotkey="w"/>
-                    <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="z" />
+                    <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="x" />
                 </footer>
             </form>
         </field>

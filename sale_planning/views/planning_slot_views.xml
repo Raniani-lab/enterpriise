@@ -187,7 +187,7 @@
                 <field name="sale_line_plannable" invisible="1"/>
                 <button string="Unschedule" type="object" name="action_unschedule" class="btn btn-secondary" close="1"
                     groups="planning.group_planning_manager"
-                    attrs="{'invisible': ['|', ('id', '=', False), ('sale_line_plannable', '=', False)]}" data-hotkey="x"/>
+                    attrs="{'invisible': ['|', ('id', '=', False), ('sale_line_plannable', '=', False)]}" data-hotkey="z"/>
             </xpath>
         </field>
     </record>

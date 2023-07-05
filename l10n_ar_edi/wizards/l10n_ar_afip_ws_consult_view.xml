@@ -20,9 +20,9 @@
                     </group>
                 </group>
                 <footer>
-                    <button string="Get Invoice Detail" name="button_confirm" type="object" class="oe_highlight" />
+                    <button string="Get Invoice Detail" name="button_confirm" type="object" class="oe_highlight" data-hotkey="q"/>
                     or
-                    <button string="Cancel" class="oe_link" special="cancel" data-hotkey="z"/>
+                    <button string="Cancel" class="oe_link" special="cancel" data-hotkey="x"/>
                 </footer>
             </form>
         </field>

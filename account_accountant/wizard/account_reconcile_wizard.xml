@@ -51,9 +51,9 @@
                     </group>
                 </group>
                 <footer>
-                    <button string="Reconcile" class="btn-primary" name="reconcile" type="object" data-hotkey="v"/>
+                    <button string="Reconcile" class="btn-primary" name="reconcile" type="object" data-hotkey="q"/>
                     <button string="Reconcile &amp; open" class="btn-primary" name="reconcile_open" type="object" data-hotkey="o"/>
-                    <button string="Discard" special="cancel" data-hotkey="z"/>
+                    <button string="Discard" special="cancel" data-hotkey="x"/>
                 </footer>
             </form>
         </field>

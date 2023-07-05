@@ -181,8 +181,8 @@
                         </group>
                     </group>
                     <footer>
-                        <button special="save" data-hotkey="v" string="Share" class="btn btn-primary"/>
-                        <button special="cancel" string="Discard" class="btn btn-secondary" data-hotkey="w"/>
+                        <button special="save" data-hotkey="q" string="Share" class="btn btn-primary"/>
+                        <button special="cancel" string="Discard" class="btn btn-secondary" data-hotkey="x"/>
                     </footer>
                 </sheet>
             </form>

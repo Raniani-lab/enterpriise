@@ -157,9 +157,9 @@
                 <xpath expr="//sheet" position="before">
                     <header>
                         <button string="Validate" name="action_validate_timesheet" type="object" class="btn btn-primary"
-                            attrs="{'invisible': ['|', ('validated', '=', True), ('user_can_validate', '=', False)]}" context="{'use_notification': False}" data-hotkey="v"/>
+                            attrs="{'invisible': ['|', ('validated', '=', True), ('user_can_validate', '=', False)]}" context="{'use_notification': False}" data-hotkey="q"/>
                         <button string="Reset to draft" name="action_invalidate_timesheet" type="object" class="btn btn-secondary"
-                            attrs="{'invisible': ['|', ('validated', '=', False), ('user_can_validate', '=', False)]}" context="{'use_notification': False}" data-hotkey="q"/>
+                            attrs="{'invisible': ['|', ('validated', '=', False), ('user_can_validate', '=', False)]}" context="{'use_notification': False}" data-hotkey="r"/>
                         <field name="validated_status" widget="statusbar"/>
                     </header>
                 </xpath>
@@ -293,7 +293,7 @@
             <field name="mode">primary</field>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='unit_amount']" position="before">
-                    <button type="object" class="btn-primary" name="action_validate_timesheet" string="Validate" data-hotkey="v"/>
+                    <button type="object" class="btn-primary" name="action_validate_timesheet" string="Validate" data-hotkey="q"/>
                 </xpath>
             </field>
         </record>

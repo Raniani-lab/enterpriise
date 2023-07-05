@@ -15,9 +15,9 @@
                 </div>
             </div>
             <t t-set-slot="footer">
-                <button t-if="this.props.isNew" class="btn btn-primary" t-on-click="() => this.save()" data-hotkey="I">Insert</button>
-                <button t-else="" class="btn btn-primary" t-on-click="() => this.save()" data-hotkey="R">Rename</button>
-                <button class="btn btn-secondary" t-on-click="() => this.props.close()" data-hotkey="D">Discard</button>
+                <button t-if="this.props.isNew" class="btn btn-primary" t-on-click="() => this.save()" data-hotkey="q">Insert</button>
+                <button t-else="" class="btn btn-primary" t-on-click="() => this.save()" data-hotkey="r">Rename</button>
+                <button class="btn btn-secondary" t-on-click="() => this.props.close()" data-hotkey="x">Discard</button>
             </t>
         </Dialog>
     </t>

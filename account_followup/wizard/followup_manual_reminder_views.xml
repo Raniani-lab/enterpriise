@@ -96,7 +96,7 @@
                             attrs="{'invisible': ['|','|',('print', '=', False),('email','=',True),('sms', '=', True)]}"
                             name="process_followup"
                             type="object" class="btn-primary" data-hotkey="q"/>
-                    <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="z"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="x"/>
                 </footer>
             </form>
         </field>

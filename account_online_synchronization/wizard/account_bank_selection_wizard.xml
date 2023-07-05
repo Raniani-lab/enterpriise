@@ -16,7 +16,7 @@
                     </div>
                     <footer>
                         <button attrs="{'invisible': [('selected_account', '=', False)]}" name="sync_now" class="btn-primary" string="Connect Bank" type="object" data-hotkey="q"/>
-                        <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="z"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="x"/>
                     </footer>
                 </form>
             </field>

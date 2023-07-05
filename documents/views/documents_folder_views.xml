@@ -99,8 +99,8 @@
                 </sheet>
                 <footer class="justify-content-between">
                     <div class="btn-group">
-                        <button class="btn btn-primary" special="save" data-hotkey="s">Save</button>
-                        <button class="btn btn-secondary" special="cancel" data-hotkey="j">Discard</button>
+                        <button class="btn btn-primary" special="save" data-hotkey="q">Save</button>
+                        <button class="btn btn-secondary" special="cancel" data-hotkey="x">Discard</button>
                     </div>
                     <button class="btn btn-danger text-uppercase" name="%(documents.documents_folder_deletion_wizard_action)d" type="action" context="{'default_folder_id': id}" data-hotkey="d">Delete</button>
                 </footer>

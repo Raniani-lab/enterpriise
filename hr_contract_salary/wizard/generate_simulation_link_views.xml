@@ -40,7 +40,7 @@
                 </group>
                 <footer>
                     <button name="action_save" type="object" string="Save" class="oe_highlight" data-hotkey="q" attrs="{'invisible':[('email_to', '=', False), ('applicant_id', '=', False)]}"/>
-                    <button string="Discard" class="btn btn-secondary" special="cancel" data-hotkey="z"/>
+                    <button string="Discard" class="btn btn-secondary" special="cancel" data-hotkey="x"/>
                     <button name="action_send_offer" type="object" string="Send By Email" class="btn btn-secondary" data-hotkey="e" attrs="{'invisible':[('email_to', '=', False), ('applicant_id', '=', False)]}"/>
                 </footer>
             </form>

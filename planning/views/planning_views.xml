@@ -247,16 +247,16 @@
                     <field name="confirm_delete" invisible="1"/>
                     <field name="is_unassign_deadline_passed" invisible="1"/>
                     <field name="request_to_switch" invisible="1"/>
-                    <button string="Save" special="save" data-hotkey="v" class="btn btn-primary ms-1" close="1" groups="planning.group_planning_manager" attrs="{'invisible': [('confirm_delete', '=', True)]}"/>
-                    <button string="Save" special="save" data-hotkey="v" class="btn btn-primary ms-1" close="1" groups="planning.group_planning_manager" attrs="{'invisible': [('confirm_delete', '=', False)]}" confirm="All subsequent shifts will be deleted. Are you sure you want to continue?" />
+                    <button string="Save" special="save" data-hotkey="q" class="btn btn-primary ms-1" close="1" groups="planning.group_planning_manager" attrs="{'invisible': [('confirm_delete', '=', True)]}"/>
+                    <button string="Save" special="save" data-hotkey="q" class="btn btn-primary ms-1" close="1" groups="planning.group_planning_manager" attrs="{'invisible': [('confirm_delete', '=', False)]}" confirm="All subsequent shifts will be deleted. Are you sure you want to continue?" />
                     <button string="Publish &amp; Send" type="object" name="action_send" class="btn btn-primary" close="1"
-                        attrs="{'invisible': ['|', ('state', '=', 'published'), ('resource_type', '=', 'material')]}" groups="planning.group_planning_manager" data-hotkey="q" invisible="context.get('search_default_my_shifts')"/>
+                        attrs="{'invisible': ['|', ('state', '=', 'published'), ('resource_type', '=', 'material')]}" groups="planning.group_planning_manager" data-hotkey="v" invisible="context.get('search_default_my_shifts')"/>
                     <button string="Send" type="object" name="action_send" class="btn btn-secondary" close="1"
                         attrs="{'invisible': ['|', ('state', '=', 'draft'), ('resource_type', '=', 'material')]}" groups="planning.group_planning_manager" data-hotkey="s" invisible="context.get('search_default_my_shifts')"/>
                     <button string="Auto Plan" type="object" name="auto_plan_id" class="btn btn-secondary"
                         groups="planning.group_planning_manager" attrs="{'invisible': [('resource_id', '!=', False)]}" data-hotkey="p" invisible="context.get('search_default_my_shifts')"/>
                     <button string="Reset to Draft" type="object" name="action_unpublish" class="btn btn-secondary" close="1"
-                        groups="planning.group_planning_manager" attrs="{'invisible': ['|', ('state', '=', 'draft'), ('resource_type', '=', 'material')]}" data-hotkey="q" invisible="context.get('search_default_my_shifts')"/>
+                        groups="planning.group_planning_manager" attrs="{'invisible': ['|', ('state', '=', 'draft'), ('resource_type', '=', 'material')]}" data-hotkey="r" invisible="context.get('search_default_my_shifts')"/>
 
                     <button name="action_self_assign" class="btn btn-primary" type="object" string="I Take It" groups="!planning.group_planning_manager"
                         attrs="{'invisible': &quot;['|', '|', '|', '|', '|', ('is_users_role', '=', False), ('is_past', '=', True), ('start_datetime', '=', False), ('end_datetime', '=', False), '&amp;', ('resource_id', '!=', False), ('request_to_switch', '=', False), '&amp;', ('user_id', '=', uid), '|', ('allow_self_unassign', '=', True), ('request_to_switch', '=', True)]&quot;}" close="1"/>
@@ -268,7 +268,7 @@
                         attrs="{'invisible': &quot;['|', '|', '|', '|', ('start_datetime', '=', False), ('end_datetime', '=', False), ('request_to_switch', '=', False), ('allow_self_unassign', '=', True), '&amp;', ('user_id', '!=', uid), ('request_to_switch', '=', True)]&quot;}" close="1"/>
 
                     <button name="action_self_unassign" class="btn btn-secondary float-end" type="object" string="I Am Unavailable" attrs="{'invisible': ['|', '|', '|', ('is_assigned_to_me', '=', False), ('allow_self_unassign', '=', False), ('is_past', '=', True), ('is_unassign_deadline_passed', '=', True)]}" close="1" data-hotkey="w"/>
-                    <button string="Discard" special="cancel" data-hotkey="z" class="btn-secondary float-end" close="1" fullscreen="True" groups="planning.group_planning_manager"/>
+                    <button string="Discard" special="cancel" data-hotkey="x" class="btn-secondary float-end" close="1" fullscreen="True" groups="planning.group_planning_manager"/>
                     <button name="unlink" type="object" icon="fa-trash" title="Remove" class="btn-secondary float-end d-none d-md-inline" close="1" attrs="{'invisible': [('id', '=', False)]}" groups="planning.group_planning_manager" data-hotkey="d"/>
                 </footer>
             </xpath>

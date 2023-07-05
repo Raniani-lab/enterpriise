@@ -299,12 +299,12 @@
                     <footer>
                         <button string="Save &amp; Close" type="object"
                                 name="action_save_close" class="btn btn-primary"
-                                data-hotkey="c"/>
+                                data-hotkey="q"/>
                         <button string="Save &amp; New" type="object"
                                 name="action_save_new" class="btn btn-primary"
                                 data-hotkey="n"/>
                         <button string="Cancel" class="btn-secondary"
-                                special="cancel" data-hotkey="z"/>
+                                special="cancel" data-hotkey="x"/>
                     </footer>
                 </form>
             </field>

@@ -18,7 +18,7 @@
                     </group>
                     <footer>
                         <button name="next_step" string="Sign Document" type="object" class="btn-primary" data-hotkey="q"/>
-                        <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="z"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="x"/>
                     </footer>
                 </sheet>
             </form>

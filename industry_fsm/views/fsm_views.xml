@@ -762,7 +762,7 @@
             <xpath expr="//div[@name='alias_def']" position="after">
                 <footer>
                     <button string="Create" name="%(industry_fsm.project_tasks_action_fsm)d" type="action" class="btn-primary o_open_tasks" data-hotkey="q"/>
-                    <button string="Discard" class="btn-secondary" special="cancel" data-hotkey="z"/>
+                    <button string="Discard" class="btn-secondary" special="cancel" data-hotkey="x"/>
                 </footer>
             </xpath>
         </field>

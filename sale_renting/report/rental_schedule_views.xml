@@ -203,7 +203,7 @@
                     </group>
                 </sheet>
                 <footer>
-                    <button type="button" string="Ok" special="cancel" data-hotkey="z" class="btn-primary" close="1"/>
+                    <button type="button" string="Ok" special="cancel" data-hotkey="x" class="btn-primary" close="1"/>
                 </footer>
             </form>
         </field>

@@ -23,7 +23,7 @@
                                 type="object"
                                 class="btn btn-primary"
                                 close="1"
-                                data-hotkey="c"/>
+                                data-hotkey="q"/>
                         <button string="Expect Payments Later"
                                 name="button_continue"
                                 type="object"
@@ -35,7 +35,7 @@
                                 type="object"
                                 class="btn btn-secondary"
                                 close="1"
-                                data-hotkey="z"/>
+                                data-hotkey="x"/>
                     </footer>
                 </form>
             </field>

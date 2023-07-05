@@ -8,7 +8,7 @@
         <field name="arch" type="xml">
             <xpath expr="//header" position="inside">
                 <button name="action_manual_send_for_digitization" class="oe_highlight" string="Send For Digitization" type="object"
-                attrs="{'invisible': [('extract_can_show_send_button', '=', False)]}" data-hotkey="x" />
+                attrs="{'invisible': [('extract_can_show_send_button', '=', False)]}" data-hotkey="w" />
                 <button name="action_reload_ai_data" string="Reload AI Data" type="object"
                 attrs="{'invisible':['|', '|',
                        ('move_type', 'not in', ('in_invoice', 'in_refund', 'out_invoice', 'out_refund')),

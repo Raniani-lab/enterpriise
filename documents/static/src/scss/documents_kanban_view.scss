@@ -55,8 +55,8 @@
         .o_kanban_record .o_kanban_attachment {
             &.o_record_selected, &.o_record_selected ~ div  {
                 opacity: 1;
-                border-color: $o-brand-primary;
-                box-shadow: 0 0 0 1px $o-brand-primary;
+                border-color: $o-component-active-border;
+                background-color: $o-component-active-bg;
             }
 
             &.oe_file_request {
@@ -163,7 +163,7 @@
                 @include o-hover-opacity(0.8, 1);
 
                 &:before{
-                    color: $o-brand-primary;
+                    color: $o-action;
                     content:"\f058";
                 }
             }

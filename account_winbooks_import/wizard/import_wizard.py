@@ -636,7 +636,7 @@ class WinbooksImportWizard(models.TransientModel):
             data = {
                 'date': rec.get('DATE', False),
                 'name': rec.get('COMMENT'),
-                'amount': rec.get('AMOUNTEUR'),
+                'amount': -rec.get('AMOUNTEUR'),
                 'general_account_id': account_data.get(rec.get('ACCOUNTGL')),
                 'move_line_id': move_line_id,
             }

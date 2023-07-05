@@ -2732,7 +2732,7 @@ QUnit.module("documents", {}, function () {
                 await click(target.querySelectorAll(".o_record_selector")[1]);
                 assert.containsN(target, ".o_record_selected", 2);
                 await click(target, ".o_documents_inspector .o_field_widget[name=folder_id] input");
-                assert.containsN(target, ".o_documents_inspector .o_field_widget[name=folder_id] .o-autocomplete li", 4)
+                assert.containsN(target, ".o_documents_inspector .o_field_widget[name=folder_id] .o-autocomplete li", 5)
                 await click(target.querySelectorAll(".o_documents_inspector .o_field_widget[name=folder_id] .o-autocomplete li")[2]);
                 assert.containsN(target, ".o_kanban_record:not(.o_kanban_ghost)", 3);
             });

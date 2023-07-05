@@ -1220,3 +1220,122 @@ class TestCashFlowReport(TestAccountReportsCommon):
             ['Cash out',                                                              0.0],
             ['Cash and cash equivalents, closing balance',                          800.0],
         ], options)
+
+    def test_cash_flow_hierarchy(self):
+        """ Test the 'hierarchy' option. I.e. we want to ensure that each section of the report (e.g. "Cash and cash equivalents, beginning of period" and "Cash and cash equivalents, closing balance") has its own dedicated hierarchy and they are not mixed up together.
+        """
+        options = self._generate_options(self.report, '2016-01-01', '2016-12-31')
+        self.env.company.totals_below_sections = True
+
+        # Create the account groups for the bank and cash accounts
+        self.env['account.group'].create([
+            {'name': 'Group Bank & Cash',   'code_prefix_start': '10',   'code_prefix_end': '10'},
+            {'name': 'Group Bank',          'code_prefix_start': '1014', 'code_prefix_end': '1014'},
+            {'name': 'Group Cash',          'code_prefix_start': '1015', 'code_prefix_end': '1015'},
+        ])
+        self.account_bank.code = "10140499"
+        self.account_cash.code = "10150199"
+
+        # Create opening balance
+        self.env['account.move'].create({
+            'move_type': 'entry',
+            'date': '2015-01-01',
+            'journal_id': self.misc_journal.id,
+            'line_ids': [
+                (0, 0, {'debit': 100.0,     'credit':   0.0,   'account_id': self.account_bank.id}),
+                (0, 0, {'debit':  50.0,     'credit':   0.0,   'account_id': self.account_cash.id}),
+                (0, 0, {'debit':   0.0,     'credit': 150.0,   'account_id': self.account_no_tag.id}),
+            ],
+        }).action_post()
+
+        # Test the report with the hierarchy option disabled
+        # To make sure that the lines are in the right place we also check their 'level'
+        options['hierarchy'] = False
+        lines_wo_hierarchy = [
+            {
+                'name': line['name'],
+                'level': line['level'],
+                'book_value': line['columns'][-1]['name']
+            }
+            for line in self.report._get_lines(options)
+        ]
+        expected_values_wo_hierarchy = [
+            {'name': "Cash and cash equivalents, beginning of period",            'level': 0,    'book_value': '$\xa0150.00'},
+              {'name': "10140499 Bank",                                           'level': 1,    'book_value': '$\xa0100.00'},
+              {'name': "10150199 Cash",                                           'level': 1,    'book_value': '$\xa050.00'},
+              {'name': "Total Cash and cash equivalents, beginning of period",    'level': 1,    'book_value': '$\xa0150.00'},
+            {'name': "Net increase in cash and cash equivalents",                 'level': 0,    'book_value': '$\xa00.00'},
+                {'name': "Cash flows from operating activities",                  'level': 2,    'book_value': '$\xa00.00'},
+                  {'name': "Advance Payments received from customers",            'level': 4,    'book_value': '$\xa00.00'},
+                  {'name': "Cash received from operating activities",             'level': 4,    'book_value': '$\xa00.00'},
+                  {'name': "Advance payments made to suppliers",                  'level': 4,    'book_value': '$\xa00.00'},
+                  {'name': "Cash paid for operating activities",                  'level': 4,    'book_value': '$\xa00.00'},
+                {'name': "Cash flows from investing & extraordinary activities",  'level': 2,    'book_value': '$\xa00.00'},
+                  {'name': "Cash in",                                             'level': 4,    'book_value': '$\xa00.00'},
+                  {'name': "Cash out",                                            'level': 4,    'book_value': '$\xa00.00'},
+                {'name': "Cash flows from financing activities",                  'level': 2,    'book_value': '$\xa00.00'},
+                  {'name': "Cash in",                                             'level': 4,    'book_value': '$\xa00.00'},
+                  {'name': "Cash out",                                            'level': 4,    'book_value': '$\xa00.00'},
+                {'name': "Cash flows from unclassified activities",               'level': 2,    'book_value': '$\xa00.00'},
+                  {'name': "Cash in",                                             'level': 4,    'book_value': '$\xa00.00'},
+                  {'name': "Cash out",                                            'level': 4,    'book_value': '$\xa00.00'},
+            {'name': "Cash and cash equivalents, closing balance",                'level': 0,    'book_value': '$\xa0150.00'},
+              {'name': "10140499 Bank",                                           'level': 1,    'book_value': '$\xa0100.00'},
+              {'name': "10150199 Cash",                                           'level': 1,    'book_value': '$\xa050.00'},
+              {'name': "Total Cash and cash equivalents, closing balance",        'level': 1,    'book_value': '$\xa0150.00'}
+        ]
+        # assertEqual is used and not assertLinesValues because we want to check the 'level'
+        self.assertEqual(len(lines_wo_hierarchy), len(expected_values_wo_hierarchy))
+        self.assertEqual(lines_wo_hierarchy, expected_values_wo_hierarchy)
+
+        # Test the report with the hierarchy option enabled
+        # To make sure that the lines are in the right place we also check their 'level'
+        options['hierarchy'] = True
+        lines = [
+            {
+                'name': line['name'],
+                'level': line['level'],
+                'book_value': line['columns'][-1]['name']
+            }
+            for line in self.report._get_lines(options)
+        ]
+        expected_values = [
+            {'name': "Cash and cash equivalents, beginning of period",            'level': 0,    'book_value': '$\xa0150.00'},
+              {'name': "10 Group Bank & Cash",                                    'level': 1,    'book_value': '$\xa0150.00'},
+                {'name': "1014 Group Bank",                                       'level': 2,    'book_value': '$\xa0100.00'},
+                  {'name': "10140499 Bank",                                       'level': 3,    'book_value': '$\xa0100.00'},
+                  {'name': "Total 1014 Group Bank",                               'level': 3,    'book_value': '$\xa0100.00'},
+                {'name': "1015 Group Cash",                                       'level': 2,    'book_value': '$\xa050.00'},
+                  {'name': "10150199 Cash",                                       'level': 3,    'book_value': '$\xa050.00'},
+                  {'name': "Total 1015 Group Cash",                               'level': 3,    'book_value': '$\xa050.00'},
+                {'name': "Total 10 Group Bank & Cash",                            'level': 2,    'book_value': '$\xa0150.00'},
+              {'name': "Total Cash and cash equivalents, beginning of period",    'level': 1,    'book_value': '$\xa0150.00'},
+            {'name': "Net increase in cash and cash equivalents",                 'level': 0,    'book_value': '$\xa00.00'},
+                {'name': "Cash flows from operating activities",                  'level': 2,    'book_value': '$\xa00.00'},
+                  {'name': "Advance Payments received from customers",            'level': 4,    'book_value': '$\xa00.00'},
+                  {'name': "Cash received from operating activities",             'level': 4,    'book_value': '$\xa00.00'},
+                  {'name': "Advance payments made to suppliers",                  'level': 4,    'book_value': '$\xa00.00'},
+                  {'name': "Cash paid for operating activities",                  'level': 4,    'book_value': '$\xa00.00'},
+                {'name': "Cash flows from investing & extraordinary activities",  'level': 2,    'book_value': '$\xa00.00'},
+                  {'name': "Cash in",                                             'level': 4,    'book_value': '$\xa00.00'},
+                  {'name': "Cash out",                                            'level': 4,    'book_value': '$\xa00.00'},
+                {'name': "Cash flows from financing activities",                  'level': 2,    'book_value': '$\xa00.00'},
+                  {'name': "Cash in",                                             'level': 4,    'book_value': '$\xa00.00'},
+                  {'name': "Cash out",                                            'level': 4,    'book_value': '$\xa00.00'},
+                {'name': "Cash flows from unclassified activities",               'level': 2,    'book_value': '$\xa00.00'},
+                  {'name': "Cash in",                                             'level': 4,    'book_value': '$\xa00.00'},
+                  {'name': "Cash out",                                            'level': 4,    'book_value': '$\xa00.00'},
+            {'name': "Cash and cash equivalents, closing balance",                'level': 0,    'book_value': '$\xa0150.00'},
+              {'name': "10 Group Bank & Cash",                                    'level': 1,    'book_value': '$\xa0150.00'},
+                {'name': "1014 Group Bank",                                       'level': 2,    'book_value': '$\xa0100.00'},
+                  {'name': "10140499 Bank",                                       'level': 3,    'book_value': '$\xa0100.00'},
+                  {'name': "Total 1014 Group Bank",                               'level': 3,    'book_value': '$\xa0100.00'},
+                {'name': "1015 Group Cash",                                       'level': 2,    'book_value': '$\xa050.00'},
+                  {'name': "10150199 Cash",                                       'level': 3,    'book_value': '$\xa050.00'},
+                  {'name': "Total 1015 Group Cash",                               'level': 3,    'book_value': '$\xa050.00'},
+                {'name': "Total 10 Group Bank & Cash",                            'level': 2,    'book_value': '$\xa0150.00'},
+              {'name': "Total Cash and cash equivalents, closing balance",        'level': 1,    'book_value': '$\xa0150.00'}
+        ]
+        # assertEqual is used and not assertLinesValues because we want to check the 'level'
+        self.assertEqual(len(lines), len(expected_values))
+        self.assertEqual(lines, expected_values)

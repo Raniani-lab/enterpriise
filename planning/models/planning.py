@@ -1250,7 +1250,7 @@ class Planning(models.Model):
                 )
         # Add the flexible status per resource to the output
         flexible_per_resource = {resource.id: not bool(resource.calendar_id) for resource in set(resources)}
-        flexible_per_resource[False] = False
+        flexible_per_resource[False] = True
         return [work_interval_per_resource, flexible_per_resource]
 
     @api.model

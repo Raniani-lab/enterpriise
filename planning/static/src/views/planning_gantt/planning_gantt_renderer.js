@@ -180,7 +180,7 @@ export class PlanningGanttRenderer extends GanttRenderer {
      * @returns {boolean}
      */
     isFlexibleHours(record) {
-        return !!this.model.data.isFlexibleHours?.[record.resource_id[0]];
+        return !!this.model.data.isFlexibleHours?.[record.resource_id && record.resource_id[0]];
     }
 
     /**

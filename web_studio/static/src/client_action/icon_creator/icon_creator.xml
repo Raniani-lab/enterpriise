@@ -3,7 +3,7 @@
 
 <t t-name="web_studio.IconCreator">
     <div class="o_web_studio_icon_creator">
-        <div t-if="props.type === 'base64'" class="o_web_studio_uploaded_image"
+        <div t-if="props.type === 'base64'" class="o_web_studio_uploaded_image mx-auto"
             t-attf-style="background-image: url({{props.webIconData}})"
         />
         <t t-else="">

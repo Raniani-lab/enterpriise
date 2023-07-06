@@ -39,13 +39,10 @@
     .o_app {
         .o_app_icon {
             max-width: $o-home-menu-app-icon-max-width;
+            aspect-ratio: 1;
             padding: 10px;
-            background: {
-                size: cover;
-                repeat: no-repeat;
-                position: center;
-                color: var(--AppSwitcherIcon-background, rgba(#fff, 1));
-            }
+            background-color: var(--AppSwitcherIcon-background, rgba(#fff, 1));
+            object-fit: cover;
             transform-origin: center bottom;
             transition: box-shadow ease-in 0.1s, transform ease-in 0.1s;
             box-shadow: var(--AppSwitcherIcon-inset-shadow, inset 0 0 0 1px rgba(0,0,0, .2)), 

@@ -51,13 +51,14 @@
     <xpath expr="//button[contains(@class, 'o-web-studio-interactive-list-edit-item')]" position="attributes">
         <attribute name="class" remove="fa-pencil-square-o" separator=" " />
         <attribute name="t-att-class"> { 'fa-pencil-square-o': !item.isInEdition, 'fa-check': item.isInEdition } </attribute>
+        <attribute name="t-attf-data-tooltip"> {{ item.isInEdition ? 'Add selection' : 'Edit selection' }} </attribute>
     </xpath>
 
     <xpath expr="//button[contains(@class, 'o-web-studio-interactive-list-remove-item')]" position="attributes">
         <attribute name="t-if">!item.isInEdition</attribute>
     </xpath>
     <xpath expr="//button[contains(@class, 'o-web-studio-interactive-list-remove-item')]" position="after">
-        <button t-if="item.isInEdition" type="button" class="btn btn-danger fa fa-times o-web-studio-interactive-list-discard-changes" aria-label="Discard changes" data-tooltip="Discard changes" t-on-click="() => this.discardItemChanges(item) " />
+        <button t-if="item.isInEdition" type="button" class="btn btn-secondary fa fa-times o-web-studio-interactive-list-discard-changes" aria-label="Discard changes" data-tooltip="Discard changes" t-on-click="() => this.discardItemChanges(item) " />
     </xpath>
 </t>
 

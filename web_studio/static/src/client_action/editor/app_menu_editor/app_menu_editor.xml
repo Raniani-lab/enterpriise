@@ -16,7 +16,7 @@
                     </ul>
                 </div>
                 <div class="o_web_studio_edit_menu_desc small align-self-end">
-                    <i class="fa fa-info-circle"></i>Drag a menu to the right to create a sub-menu
+                    <i class="fa fa-info-circle me-1"/>Drag a menu to the right to create a sub-menu
                 </div>
             </div>
 
@@ -35,13 +35,13 @@
 
     <t t-name="web_studio.InteractiveItemsList.Item">
         <li t-att-data-sequence="itemSequence" t-attf-class="{{ item.isDraggable ? 'o-draggable': '' }}" t-att-data-item-id="item.id" t-att-id="item.id">
-            <div class="input-group">
-                <span class="input-group-text fa fa-bars" role="img" aria-label="Value of list" title="Value of list" t-attf-class="{{ item.isDraggable ? 'o-draggable-handle' : '' }}" t-attf-style="{{ item.isDraggable ? 'cursor: move;' : '' }}" />
+            <div class="input-group mb-1">
+                <span class="input-group-text fa fa-bars bg-view" role="img" aria-label="Value of list" title="Value of list" t-attf-class="{{ item.isDraggable ? 'o-draggable-handle' : '' }}" t-attf-style="{{ item.isDraggable ? 'cursor: move;' : '' }}" />
                 <span class="form-control o-web-studio-interactive-list-item-label" t-esc="item.name" />
 
-                <button type="button" class="btn btn-primary fa fa-pencil-square-o o-web-studio-interactive-list-edit-item" aria-label="Edit selection" data-tooltip="Edit selection" t-on-click="() => this.editItem(item)" />
+                <button type="button" class="btn btn-secondary fa fa-pencil-square-o o-web-studio-interactive-list-edit-item" aria-label="Edit selection" data-tooltip="Edit selection" t-on-click="() => this.editItem(item)" />
 
-                <button type="button" t-att-class="{ disabled: !item.isRemovable }"  class="btn btn-danger fa fa-trash-o o-web-studio-interactive-list-remove-item" aria-label="Remove selection" data-tooltip="Remove selection" t-on-click="() => this.removeItem(item)" />
+                <button type="button" t-att-class="{ disabled: !item.isRemovable }"  class="btn btn-secondary fa fa-trash-o o-web-studio-interactive-list-remove-item" aria-label="Remove selection" data-tooltip="Remove selection" t-on-click="() => this.removeItem(item)" />
             </div>
             <ul class="p-0 ms-5" t-if="item.children">
                 <t t-foreach="item.children" t-as="item" t-key="item.id">

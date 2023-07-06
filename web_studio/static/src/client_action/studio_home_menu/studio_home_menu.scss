@@ -3,6 +3,7 @@
   --homeMenuCaption-color: #fff;
   
   @include o-web-studio-app-creator-background;
+  padding-bottom: $o-navbar-height;
 
   .database_expiration_panel {
     visibility: hidden;
@@ -41,8 +42,7 @@
 
     .o_web_studio_edit_icon {
       visibility: hidden;
-      @include o-position-absolute($top: 5px, $right: 25px);
-
+      @include o-position-absolute($top: $font-size-sm * -0.5, $right: calc((#{$o-home-menu-app-icon-max-width} * 0.5) - #{$font-size-sm * 0.5}));
       i {
         background-color: $o-brand-primary;
         border-radius: 20%;

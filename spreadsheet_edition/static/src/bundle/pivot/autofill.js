@@ -3,6 +3,8 @@
 import * as spreadsheet from "@odoo/o-spreadsheet";
 
 import { Component } from "@odoo/owl";
+import { containsReferences } from "@spreadsheet/helpers/helpers";
+
 const { autofillModifiersRegistry, autofillRulesRegistry } = spreadsheet.registries;
 
 //--------------------------------------------------------------------------
@@ -18,7 +20,11 @@ AutofillTooltip.props = { content: Array };
 
 autofillRulesRegistry
     .add("autofill_pivot", {
-        condition: (cell) => cell && cell.isFormula && cell.content.match(/=\s*ODOO\.PIVOT/),
+        condition: (cell) =>
+            cell &&
+            cell.isFormula &&
+            cell.content.match(/=\s*ODOO\.PIVOT/) &&
+            !containsReferences(cell),
         generateRule: (cell, cells) => {
             const increment = cells.filter(
                 (cell) => cell && cell.isFormula && cell.content.match(/=\s*ODOO\.PIVOT/)

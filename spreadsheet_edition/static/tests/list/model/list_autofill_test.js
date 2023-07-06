@@ -5,7 +5,13 @@ import { nextTick } from "@web/../tests/helpers/utils";
 import * as spreadsheet from "@odoo/o-spreadsheet";
 const { toCartesian } = spreadsheet.helpers;
 import { getCell, getCellFormula, getCellValue } from "@spreadsheet/../tests/utils/getters";
-import { autofill, setCellFormat, setCellStyle } from "@spreadsheet/../tests/utils/commands";
+import {
+    autofill,
+    selectCell,
+    setCellContent,
+    setCellFormat,
+    setCellStyle,
+} from "@spreadsheet/../tests/utils/commands";
 import { createSpreadsheetWithList } from "@spreadsheet/../tests/utils/list";
 import { waitForDataSourcesLoaded } from "@spreadsheet/../tests/utils/model";
 
@@ -128,6 +134,19 @@ QUnit.module("spreadsheet > list autofill", {}, () => {
         await waitForDataSourcesLoaded(model);
         assert.strictEqual(getCellValue(model, "A3"), 1);
     });
+
+    QUnit.test(
+        "Autofill with references works like any regular function (no custom autofill)",
+        async function (assert) {
+            const { model } = await createSpreadsheetWithList();
+            setCellContent(model, "A1", '=ODOO.LIST(1, A1,"probability")');
+            selectCell(model, "A1");
+
+            model.dispatch("AUTOFILL_SELECT", { col: 0, row: 1 });
+            model.dispatch("AUTOFILL");
+            assert.equal(getCellFormula(model, "A2"), '=ODOO.LIST(1, A2,"probability")');
+        }
+    );
 
     QUnit.test("Tooltip of list formulas", async function (assert) {
         const { model } = await createSpreadsheetWithList();

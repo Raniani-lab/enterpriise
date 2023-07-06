@@ -142,7 +142,7 @@ class DeliveryCarrier(models.Model):
             'delivery_sendcloud.sendcloud_label_tracking',
             render_values={'type': 'Return', 'parcels': parcels},
             subtype_xmlid='mail.mt_note',
-            attachment_ids=doc_ids
+            attachment_ids=doc_ids.ids
         )
         # if picking is not a return means we are pregenerating the return label on delivery
         # thus we save the returned parcel id in a seperate field

@@ -101,7 +101,7 @@ class ExtractMixin(models.AbstractModel):
         for rec in self.search([('extract_state', '=', 'waiting_upload')]):
             try:
                 with self.env.cr.savepoint(flush=False):
-                    rec.upload_to_extract()
+                    rec.with_company(rec.company_id).upload_to_extract()
                     # We handle the flush manually so that if an error occurs, e.g. a concurrent update error,
                     # the savepoint will be rollbacked when exiting the context manager
                     self.env.cr.flush()

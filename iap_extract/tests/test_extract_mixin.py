@@ -34,11 +34,9 @@ class TestExtractMixin(common.TransactionCase):
         cls.env['iap.account'].create([
             {
                 'service_name': 'partner_autocomplete',
-                'company_ids': [(6, 0, cls.env.user.company_id.ids)],
             },
             {
                 'service_name': 'invoice_ocr',
-                'company_ids': [(6, 0, cls.env.user.company_id.ids)],
                 'account_token': 'test_token',
             }
         ])

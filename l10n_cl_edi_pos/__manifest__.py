@@ -9,7 +9,7 @@ Chilean module for Point of Sale
 
     'description': """
 This module brings the technical requirement for the Chilean regulation.
-Install this if you are using the Point of Sale app in Chili.    
+Install this if you are using the Point of Sale app in Chile.    
 
 """,
 

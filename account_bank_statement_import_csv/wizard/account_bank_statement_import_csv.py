@@ -63,8 +63,6 @@ class AccountBankStmtImportCSV(models.TransientModel):
             self._parse_float_from_data(data, index_debit, 'debit', options)
             self._parse_float_from_data(data, index_credit, 'credit', options)
             import_fields.append('amount')
-            import_fields.remove('debit')
-            import_fields.remove('credit')
             convert_to_amount = True
 
         # add starting balance and ending balance to context
@@ -77,6 +75,10 @@ class AccountBankStmtImportCSV(models.TransientModel):
                                             else abs(self._convert_to_float(data[0][index_credit]))-abs(self._convert_to_float(data[0][index_debit]))
             statement_vals['balance_end_real'] = data[len(data)-1][index_balance]
             import_fields.remove('balance')
+
+        if convert_to_amount:
+            import_fields.remove('debit')
+            import_fields.remove('credit')
 
         for index, line in enumerate(data):
             line.append(index)

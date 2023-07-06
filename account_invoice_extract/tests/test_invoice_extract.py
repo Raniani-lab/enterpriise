@@ -393,6 +393,23 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin):
 
         self.assertEqual(invoice.currency_id, eur_currency)
 
+        # test with the invoice having an invoice line
+        invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
+        invoice.currency_id = usd_currency.id
+        self.env['account.move.line'].create({
+            'move_id': invoice.id,
+            'account_id': self.company_data['default_account_expense'].id,
+            'name': 'Test Invoice Line',
+        })
+
+        extract_response = self.get_result_success_response()
+        extract_response['results'][0]['currency']['selected_value']['content'] = '€'
+        with self._mock_iap_extract(extract_response, {}):
+            invoice.with_user(test_user)._check_ocr_status()
+
+        # test if the currency is still the same after extracting the invoice
+        self.assertEqual(invoice.currency_id, usd_currency)
+
     def test_same_name_currency(self):
         # test that when we have several currencies with the same name, and no antecedants with the partner, we take the one that is on our company.
         cad_currency = self.env['res.currency'].with_context({'active_test': False}).search([('name', '=', 'CAD')])

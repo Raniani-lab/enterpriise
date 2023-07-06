@@ -931,16 +931,16 @@ class AccountMove(models.Model):
             if self.is_sale_document() and self.quick_edit_mode:
                 move_form.name = invoice_id_ocr
 
-            if currency_ocr and (move_form.currency_id == move_form.company_currency_id or force_write):
-                currency = self._get_currency(currency_ocr, move_form.partner_id)
-                if currency:
-                    move_form.currency_id = currency
-
             if payment_ref_ocr and (not move_form.payment_reference or force_write):
                 move_form.payment_reference = payment_ref_ocr
 
             add_lines = not move_form.invoice_line_ids or force_write
             if add_lines:
+                if currency_ocr and (move_form.currency_id == move_form.company_currency_id or force_write):
+                    currency = self._get_currency(currency_ocr, move_form.partner_id)
+                    if currency:
+                        move_form.currency_id = currency
+
                 if force_write:
                     move_form.invoice_line_ids = [Command.clear()]
                 vals_invoice_lines = self._get_invoice_lines(ocr_results)

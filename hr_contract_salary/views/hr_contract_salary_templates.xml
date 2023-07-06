@@ -63,7 +63,7 @@
                             <label class="col-md-3 pt-0 ps-4 col-form-label" t-att-for="advantage.field">
                                 <i t-att-class="(advantage.icon or '') + ' fa-1x fa-fw bg-odoo'"/> <t t-if="advantage.show_name"><t t-esc="advantage.name"/></t>
                             </label>
-                            <div class="col-md-7">
+                            <div class="col-md-6">
                                 <t t-if="advantage.folded">
                                     <label class="hr_cs_control hr_cs_control_checkbox mb-2">
                                         <t t-esc="advantage.fold_label"/>
@@ -182,11 +182,15 @@
                                     <span class="form-text" t-att-name="'description_' + (advantage.field or 'undefined')"><t t-out="contract._get_advantage_description(advantage)"/></span>
                                 </div>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <t t-if="advantage.res_field_id">
                                 <div class="input-group">
+                                    <div
+                                        t-if="contract.company_id.currency_id.position == 'before' and advantage.uom == 'currency'"
+                                        t-out="contract.company_id.currency_id.symbol"
+                                        class="w-25 input-group-text form-control o_left text-end d-block"/>
                                     <input
-                                        class="form-control"
+                                        t-att-class="'form-control text-start' if contract.company_id.currency_id.position == 'before' and advantage.uom == 'currency' else 'form-control mw-50 text-end'"
                                         type="text"
                                         disabled="disabled"
                                         placeholder="0"
@@ -196,7 +200,9 @@
                                     <div class="input-group-text">
                                         <t t-if="advantage.uom == 'days'">Days</t>
                                         <t t-if="advantage.uom == 'percent'">%</t>
-                                        <t t-if="advantage.uom == 'currency'"><t t-esc="contract.company_id.currency_id.symbol"/></t>
+                                        <t t-if="advantage.uom == 'currency' and contract.company_id.currency_id.position == 'after'">
+                                            <t t-out="contract.company_id.currency_id.symbol"/>
+                                        </t>
                                     </div>
                                 </div>
                                 </t>

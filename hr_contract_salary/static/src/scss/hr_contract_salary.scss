@@ -64,7 +64,7 @@
                 cursor: default;
                 text-align: right;
             }
-            .input-group .form-control[disabled] + .input-group-text {
+            .input-group .form-control[disabled] + .input-group-text, .o_left {
                 border: none;
                 background-color: transparent;
             }

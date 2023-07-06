@@ -695,7 +695,7 @@ class HrContractSalary(http.Controller):
         monthly_total = 0
         monthly_total_lines = resume_lines.filtered(lambda l: l.value_type == 'monthly_total')
 
-        uoms = {'days': _('Days'), 'percent': '%', 'currency': new_contract.company_id.currency_id.symbol}
+        uoms = {'days': _('Days'), 'percent': '%', 'currency': new_contract.company_id.currency_id.symbol, 'position': new_contract.company_id.currency_id.position}
 
         resume_explanation = False
         for resume_line in resume_lines - monthly_total_lines:
@@ -719,9 +719,9 @@ class HrContractSalary(http.Controller):
                 value = round(float(value), 2)
             except:
                 pass
-            result['resume_lines_mapped'][resume_line.category_id.name][resume_line.code] = (resume_line.name, value, uom, resume_explanation)
+            result['resume_lines_mapped'][resume_line.category_id.name][resume_line.code] = (resume_line.name, value, uom, resume_explanation, new_contract.company_id.currency_id.position, resume_line.uom)
         for resume_line in monthly_total_lines:
-            result['resume_lines_mapped'][resume_line.category_id.name][resume_line.code] = (resume_line.name, round(float(monthly_total), 2), uoms['currency'], resume_explanation)
+            result['resume_lines_mapped'][resume_line.category_id.name][resume_line.code] = (resume_line.name, round(float(monthly_total), 2), uoms['currency'], uoms['position'], resume_explanation, resume_line.uom)
         return result
 
     @http.route(['/salary_package/onchange_advantage'], type='json', auth='public')

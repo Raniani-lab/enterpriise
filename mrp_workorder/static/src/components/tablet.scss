@@ -55,6 +55,7 @@ $o-wo-tablet-text: color-contrast($o-wo-tablet-bg, $body-color, #FFF);
         }
         .o_form_nosheet {
             padding: 0;
+            background: none;
         }
         &.form_top {
             border-bottom: 1px solid $o-wo-tablet-border-bg;

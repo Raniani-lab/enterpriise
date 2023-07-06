@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="hr_recruitment.hr_applicant_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//header" position="inside">
-                <button name="action_manual_send_for_digitization" class="oe_highlight" string="Send For Digitization" type="object"
+                <button name="action_manual_send_for_digitization" class="oe_highlight" string="Digitize document" type="object"
                 attrs="{'invisible': [('extract_can_show_send_button', '=', False)]}" data-hotkey="s"/>
             </xpath>
             <xpath expr="//header" position='after'>
@@ -24,7 +24,7 @@
                     </button>
                     <button type="object" name="action_manual_send_for_digitization" class="btn btn-link">
                         <i class="oi oi-fw o_button_icon oi-arrow-right"/>
-                        Resend For Digitization
+                        Retry
                     </button>
                 </div>
                 <div role="status" class="alert alert-info mb8 text-center"
@@ -55,7 +55,7 @@
                     <field name="extract_error_message" class="oe_inline" style="width:auto !important;"/>
                     <button type="object" name="action_manual_send_for_digitization" class="btn btn-link">
                         <i class="oi oi-fw o_button_icon oi-arrow-right"/>
-                        Resend For Digitization
+                        Retry
                     </button>
                 </div>
             </xpath>

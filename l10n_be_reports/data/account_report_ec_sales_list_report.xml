@@ -42,6 +42,7 @@
                 <field name="expression_label">balance</field>
                 <field name="figure_type">monetary</field>
                 <field name="sortable" eval="True"/>
+                <field name="blank_if_zero" eval="False"/>
             </record>
         </field>
     </record>

@@ -24,7 +24,7 @@
         <field name="name">mrp.production.tree.inherit.planning</field>
         <field name="model">mrp.production</field>
         <field name="arch" type="xml">
-            <tree default_order="date_start asc" decoration-info="state=='confirmed'" decoration-danger="date_start&lt;current_date and state not in ('done','cancel')" decoration-muted="state in ('done','cancel')" string="Manufacturing Orders" name="Production">
+            <tree create="false" default_order="date_start asc" decoration-info="state=='confirmed'" decoration-danger="date_start&lt;current_date and state not in ('done','cancel')" decoration-muted="state in ('done','cancel')" string="Manufacturing Orders" name="Production">
                 <field name="message_needaction" column_invisible="True"/>
                 <field name="name"/>
                 <field name="date_start"/>

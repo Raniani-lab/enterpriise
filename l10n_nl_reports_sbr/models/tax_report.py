@@ -89,6 +89,7 @@ class DutchReportCustomHandler(models.AbstractModel):
             model_trl_to_codes[self.env.ref(tax_report_line_id).id] = code
 
         for line in lines:
-            if code := model_trl_to_codes.get(self.env['account.report']._get_model_info_from_id(line['id'])[1]):
+            code = model_trl_to_codes.get(self.env['account.report']._get_model_info_from_id(line['id'])[1])
+            if code:
                 codes_values[code] = str(int(line['columns'][0]['no_format']))
         return codes_values

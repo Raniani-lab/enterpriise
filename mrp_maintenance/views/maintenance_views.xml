@@ -66,6 +66,18 @@
         </field>
     </record>
 
+    <record id="maintenance_request_view_form_inherit_mrp_workorder" model="ir.ui.view">
+        <field name="name">maintenance.request.view.form.inherit.mrp.tablet</field>
+        <field name="model">maintenance.request</field>
+        <field name="inherit_id" ref="mrp_maintenance.maintenance_request_view_form_inherit_mrp"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="js_class">maintenance_request_form</attribute>
+            </xpath>
+        </field>
+    </record>
+
     <record id="maintenance_request_view_search_inherit_mrp" model="ir.ui.view">
         <field name="name">maintenence.request.view.search.inherit.mrp</field>
         <field name="model">maintenance.request</field>

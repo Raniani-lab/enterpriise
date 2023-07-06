@@ -24,6 +24,7 @@ Maintenance in MRP
     'demo': ['data/mrp_maintenance_demo.xml'],
     'assets': {
         'web.assets_backend': [
+            'mrp_maintenance/static/src/**/*.js',
             'mrp_maintenance/static/src/**/*.xml',
         ],
     },

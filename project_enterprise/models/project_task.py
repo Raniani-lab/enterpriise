@@ -354,8 +354,6 @@ class Task(models.Model):
             domain_expand = expression.OR([[
                 ('project_id', '=', project_id),
                 ('state', 'not in', list(CLOSED_STATES)),
-                ('planned_date_begin', '=', False),
-                ('planned_date_end', '=', False),
             ], domain_expand])
         return self.search(expression.AND([domain_expand, domain])).user_ids | self.env.user
 

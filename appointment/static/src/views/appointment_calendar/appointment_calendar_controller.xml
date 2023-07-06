@@ -38,6 +38,9 @@
                             class="o_appointment_button_link o_appointment_search_create_anytime_appointment dropdown-item">
                             <span class="align-bottom">Any Time</span>
                         </button>
+                        <button t-on-click="onClickCustomLink" class="dropdown-item">
+                            <span class="align-bottom">Custom Link</span>
+                        </button>
                         <t t-set="appointments" t-value="appointmentState.data.appointment_types_info"/>
                         <div t-if="appointments.length > 0" role="separator" class="dropdown-divider"/>
                         <t t-foreach="appointments" t-as="appointment" t-key="appointment.id">

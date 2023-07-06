@@ -49,6 +49,20 @@ patch(AttendeeCalendarController.prototype, "appointment_calendar_controller", {
         setTimeout(async () => await navigator.clipboard.writeText(this.appointmentState.lastAppointmentUrl));
     },
 
+    onClickCustomLink() {
+        this.actionService.doAction({
+            type: 'ir.actions.act_window',
+            res_model: 'appointment.invite',
+            name: this.env._t('Share Link'),
+            views: [[false, 'form']],
+            target: 'new',
+            context: {
+                ...this.props.context,
+                dialog_size: 'medium',
+            },
+        })
+    },
+
     onClickSelectAvailabilities() {
         this.env.calendarState.mode = "slots-creation";
     },

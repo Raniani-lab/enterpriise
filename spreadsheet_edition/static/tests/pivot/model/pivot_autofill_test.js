@@ -187,6 +187,22 @@ QUnit.module("spreadsheet > pivot_autofill", {}, () => {
         );
     });
 
+    QUnit.test(
+        "Autofill with references works like any regular function (no custom autofill)",
+        async function (assert) {
+            const { model } = await createSpreadsheetWithPivot();
+            setCellContent(model, "A1", `=ODOO.PIVOT(1,"probability","bar",B2,"foo",$C$3)`);
+            selectCell(model, "A1");
+
+            model.dispatch("AUTOFILL_SELECT", { col: 0, row: 1 });
+            model.dispatch("AUTOFILL");
+            assert.equal(
+                getCellFormula(model, "A2"),
+                `=ODOO.PIVOT(1,"probability","bar",B3,"foo",$C$3)`
+            );
+        }
+    );
+
     QUnit.test("Autofill pivot values with date in rows", async function (assert) {
         assert.expect(6);
 

@@ -18,7 +18,7 @@ class HelpdeskCommon(TransactionCase):
 
         # we create a helpdesk user and a manager
         Users = cls.env['res.users'].with_context(tracking_disable=True)
-        cls.main_company_id = cls.env.ref('base.main_company').id
+        cls.main_company_id = cls.env.user.company_id.id
         cls.partner = cls.env['res.partner'].create({
             'name': 'Customer Credee'
         })

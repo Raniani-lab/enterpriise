@@ -5,7 +5,7 @@ from dateutil.relativedelta import relativedelta
 from freezegun import freeze_time
 
 from odoo import fields
-from odoo.tests import tagged
+from odoo.tests import Form, tagged
 from odoo.addons.website.tools import MockRequest
 from odoo.addons.website_sale_renting.tests.common import TestWebsiteSaleRentingCommon
 
@@ -102,7 +102,7 @@ class TestWebsiteSaleStockRenting(TestWebsiteSaleRentingCommon):
     def test_sol_pickup(self):
         self.so.action_confirm()
         pickup_action = self.so.open_pickup()
-        wizard = self.env['rental.order.wizard'].with_context(pickup_action['context']).create({})
+        wizard = Form(self.env['rental.order.wizard'].with_context(pickup_action['context'])).save()
         with freeze_time(self.sol.start_date):
             wizard.apply()
         from_date = self.now
@@ -124,11 +124,11 @@ class TestWebsiteSaleStockRenting(TestWebsiteSaleRentingCommon):
     def test_sol_return(self):
         self.so.action_confirm()
         pickup_action = self.so.open_pickup()
-        wizard = self.env['rental.order.wizard'].with_context(pickup_action['context']).create({})
+        wizard = Form(self.env['rental.order.wizard'].with_context(pickup_action['context'])).save()
         with freeze_time(self.sol.start_date):
             wizard.apply()
         return_action = self.so.open_return()
-        wizard = self.env['rental.order.wizard'].with_context(return_action['context']).create({})
+        wizard = Form(self.env['rental.order.wizard'].with_context(return_action['context'])).save()
         with freeze_time(self.sol.return_date):
             wizard.apply()
         from_date = self.now
@@ -185,7 +185,7 @@ class TestWebsiteSaleStockRenting(TestWebsiteSaleRentingCommon):
     def test_multiple_sol_with_first_one_picked_up(self):
         self.so.action_confirm()
         pickup_action = self.so.open_pickup()
-        wizard = self.env['rental.order.wizard'].with_context(pickup_action['context']).create({})
+        wizard = Form(self.env['rental.order.wizard'].with_context(pickup_action['context'])).save()
         with freeze_time(self.sol.start_date):
             wizard.apply()
         so2 = self.env['sale.order'].create({

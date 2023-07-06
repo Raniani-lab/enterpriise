@@ -114,6 +114,7 @@ class RentalOrderLine(models.Model):
         # can we ascertain the warehouse_id.lot_stock_id of a sale.order doesn't change???
 
         for sol in lines:
+            sol = sol.with_company(sol.company_id)
             rented_location = sol.company_id.rental_loc_id
             stock_location = sol.order_id.warehouse_id.lot_stock_id
             if sol.product_id.tracking == 'serial' and (vals.get('pickedup_lot_ids', False) or vals.get('returned_lot_ids', False)):

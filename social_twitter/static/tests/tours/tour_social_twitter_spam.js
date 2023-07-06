@@ -1,15 +1,18 @@
 /** @odoo-module */
 
-import { StreamPostCommentsReplyTwitter } from '@social_twitter/js/stream_post_comments_reply';
-
-import { patch } from "@web/core/utils/patch";
+import { patch } from '@web/core/utils/patch';
 import { registry } from "@web/core/registry";
 
 let uniqueSeed = 0;
 
-patch(StreamPostCommentsReplyTwitter.prototype, {
-    get authorPictureSrc() { return '' }
-});
+odoo.loader.bus.addEventListener("module-started", (e) => {
+    if (e.moduleName === "@social_twitter/js/stream_post_comments_reply") {
+        patch(e.module.StreamPostCommentsReplyTwitter.prototype, "social_twitter_spam", {
+            get authorPictureSrc() { return '' }
+        });
+    }
+})
+
 
 const triggerEnterEvent = (element) => {
     const ev = new window.KeyboardEvent('keydown', { bubbles: true, key: "Enter" });

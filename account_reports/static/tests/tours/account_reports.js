@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { Asserts } from "@account_reports/js/tours/asserts";
+import { Asserts } from "./asserts";
 import { registry } from "@web/core/registry";
 
 registry.category("web_tour.tours").add('account_reports', {

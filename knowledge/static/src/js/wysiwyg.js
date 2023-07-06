@@ -3,7 +3,6 @@
 import { Component } from '@odoo/owl';
 import { renderToElement } from "@web/core/utils/render";
 import { Wysiwyg } from '@web_editor/js/wysiwyg/wysiwyg';
-import { ItemCalendarPropsDialog } from "@knowledge/components/item_calendar_props_dialog/item_calendar_props_dialog";
 import { PromptEmbeddedViewNameDialog } from '@knowledge/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog';
 import {
     preserveCursor,
@@ -389,6 +388,7 @@ patch(Wysiwyg.prototype, {
      * Inserts an item calendar view
      */
     _insertItemCalendar: function () {
+        const { ItemCalendarPropsDialog } = odoo.loader.modules.get("@knowledge/components/item_calendar_props_dialog/item_calendar_props_dialog");
         const restoreSelection = preserveCursor(this.odooEditor.document);
         // Shows a dialog allowing the user to set the itemCalendarProps
         // (properties used by the itemCalendar view)

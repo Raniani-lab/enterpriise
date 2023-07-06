@@ -41,7 +41,7 @@ rsync -a "${__dir}/../__manifest__.py" "${__dir}/pos_blackbox_be/"
 echo "Obfuscating JS..."
 js_files | xargs -n 1 -0 minify --template {{filename}}.js
 
-# boot.js scans string representations of functions for the substring
+# module_loader.js scans string representations of functions for the substring
 # 'require' so we have to make sure that that doesn't get renamed. The
 # minifier will put all require related stuff on the first line which
 # means we can figure out what they translated 'require' to and

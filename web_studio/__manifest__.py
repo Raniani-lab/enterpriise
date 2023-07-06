@@ -51,7 +51,6 @@ Note: Only the admin user is allowed to make those customizations.
             'web_studio/static/src/systray_item/**/*.js',
             'web_studio/static/src/studio_service.js',
             'web_studio/static/src/utils.js',
-            'web_studio/static/src/tours/**/*.js',
 
             'web_studio/static/src/home_menu/**/*.js',
             'web_studio/static/src/views/**/*.js',
@@ -89,7 +88,7 @@ Note: Only the admin user is allowed to make those customizations.
             'web/static/lib/bootstrap/scss/_variables.scss',
             "web/static/src/webclient/actions/reports/report.scss",
             'web_studio/static/src/client_action/report_editor/report_iframe.scss',
-            "web/static/src/boot.js",
+            "web/static/src/module_loader.js",
             "web_editor/static/src/js/editor/odoo-editor/src/**/*",
             ("remove", "web_editor/static/src/js/editor/odoo-editor/src/qweb_sample.js")
         ],
@@ -99,6 +98,7 @@ Note: Only the admin user is allowed to make those customizations.
             # as web.tests_assets would
             ('include', 'web_studio.studio_assets'),
             'web_studio/static/tests/**/*.js',
+            ('remove', 'web_studio/static/tests/tours/**/*'),
         ],
         'web.qunit_mobile_suite_tests': [
             'web_studio/static/tests/views/disable_patch.js',

@@ -1,7 +1,6 @@
 /** @odoo-module */
 import { registry } from "@web/core/registry";
 import { download } from "@web/core/network/download";
-import { ReportEditorModel } from "@web_studio/client_action/report_editor/report_editor_model";
 import { patch } from "@web/core/utils/patch";
 import { assertEqual, stepNotInStudio } from "@web_studio/../tests/tours/tour_helpers";
 
@@ -54,6 +53,7 @@ function openEditorPowerBox(element, offset = 0) {
 // to be sure we leave the tour when the save is done.
 function patchReportEditorModelForSilentSave() {
     const saveProms = [];
+    const { ReportEditorModel } = odoo.loader.modules.get("@web_studio/client_action/report_editor/report_editor_model");
     const _unpatch = patch(ReportEditorModel.prototype, {
         saveReport() {
             const prom = super.saveReport(...arguments);

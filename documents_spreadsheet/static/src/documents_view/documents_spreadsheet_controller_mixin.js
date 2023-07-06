@@ -45,9 +45,7 @@ export const DocumentsSpreadsheetControllerMixin = () => ({
             if (doc.data.handler === "spreadsheet") {
                 const resId = doc.resId;
                 await loadBundle("spreadsheet.o_spreadsheet");
-                const { fetchSpreadsheetModel, freezeOdooData } = await odoo.runtimeImport(
-                    "@spreadsheet/helpers/model"
-                );
+                const { fetchSpreadsheetModel, freezeOdooData } = odoo.loader.modules.get("@spreadsheet/helpers/model");
                 const model = await fetchSpreadsheetModel(this.env, "documents.document", resId);
                 const data = await freezeOdooData(model);
                 spreadsheetShares.push({

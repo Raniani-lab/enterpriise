@@ -52,7 +52,9 @@
                     odoo.__session_info__ = <t t-out="json.dumps(request.env['ir.http'].get_frontend_session_info_sign())"/>;
                 </script>
                 <t t-call-assets="sign.assets_public_sign" t-css="false"/>
-                <t t-call="web.conditional_assets_tests"/>
+                <t t-call="web.conditional_assets_tests">
+                    <t t-set="ignore_missing_deps" t-value="True"/>
+                </t>
 
                 <script type="text/javascript">
                     odoo.define("sign.document_custom_page", ["@sign/components/sign_request/document_signable"], function (require) {

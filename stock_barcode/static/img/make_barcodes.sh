@@ -115,7 +115,7 @@ cat > barcodes_demo_header_pg_1.ps << HEADER
 (O-BTN.pack) 456 58 showCode
 
 (Don't have any barcode scanner? Right click on your screen > Inspect > Console and type the following command:) 45 35 showFooter
-(   odoo.__DEBUG__.services["@web/legacy/js/services/core"].bus.trigger("barcode_scanned", "setyourbarcodehere", \$(".o_web_client")[0])) 45 25 showFooter
+(   odoo.loader.modules.get("@web/legacy/js/services/core").bus.trigger("barcode_scanned", "setyourbarcodehere", \$(".o_web_client")[0])) 45 25 showFooter
 (and replace "setyourbarcodehere" by the barcode you would like to scan OR use our mobile app.) 45 15 showFooter
 HEADER
 
@@ -181,7 +181,7 @@ cat > barcodes_demo_header_pg_2.ps << HEADER
 (O-BTN.validate) 271 168 showCode
 
 (Don't have any barcode scanner? Right click on your screen > Inspect > Console and type the following command:) 45 35 showFooter
-(   odoo.__DEBUG__.services["@web/legacy/js/services/core"].bus.trigger("barcode_scanned", "setyourbarcodehere", \$(".o_web_client")[0])) 45 25 showFooter
+(   odoo.loader.modules.get("@web/legacy/js/services/core").bus.trigger("barcode_scanned", "setyourbarcodehere", \$(".o_web_client")[0])) 45 25 showFooter
 (and replace "setyourbarcodehere" by the barcode you would like to scan OR use our mobile app.) 45 15 showFooter
 HEADER
 

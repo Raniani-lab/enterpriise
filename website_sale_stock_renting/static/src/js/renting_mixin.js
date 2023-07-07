@@ -22,9 +22,14 @@ RentingMixin._getInvalidMessage = function (startDate, endDate, productId) {
     if (!this.rentingAvailabilities[productId]) {
         return message;
     }
+    let end = luxon.DateTime.now();
     for (const interval of this.rentingAvailabilities[productId]) {
-        if (interval.start <= endDate) {
-            if (interval.end > startDate) {
+        if (interval.start < endDate) {
+            end = interval.end;
+            if (this._isDurationWithHours()) {
+                end = end.plus({hours: this.preparationTime});
+            }
+            if (end > startDate) {
                 if (interval.quantity_available <= 0) {
                     if (!message) {
                         message = _t("The product is not available for the following time period(s):\n");
@@ -32,10 +37,11 @@ RentingMixin._getInvalidMessage = function (startDate, endDate, productId) {
                     message += " " + sprintf(
                         _t("- From %s to %s.\n"),
                         this._isDurationWithHours() ? formatDateTime(interval.start) : formatDate(interval.start),
-                        this._isDurationWithHours() ? formatDateTime(interval.end) : formatDate(interval.end)
+                        this._isDurationWithHours() ? formatDateTime(end) : formatDate(end)
                     );
                 }
             }
+            end -= interval.end;
         } else {
             break;
         }

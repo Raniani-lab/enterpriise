@@ -284,7 +284,7 @@ class L10nNlTaxReportSBRWizard(models.TransientModel):
 
     def action_download_xbrl_file(self):
         options = self.env.context['options']
-        options['code_values'] = self._generate_general_codes_values()
+        options['code_values'] = self._generate_general_codes_values(options)
         return {
             'type': 'ir_actions_account_report_download',
             'data': {
@@ -316,7 +316,7 @@ class L10nNlTaxReportSBRWizard(models.TransientModel):
                     _('Closing Entry'),
                     {'options': options},
                 )
-        options['code_values'] = self._generate_general_codes_values()
+        options['code_values'] = self._generate_general_codes_values(options)
         xbrl_data = report_handler.export_tax_report_to_xbrl(options)
         report_file = xbrl_data['file_content']
 
@@ -365,10 +365,12 @@ class L10nNlTaxReportSBRWizard(models.TransientModel):
             }
         }
 
-    def _generate_general_codes_values(self):
+    def _generate_general_codes_values(self, options):
         self._check_values()
+        report = self.env['account.report'].browse(options['report_id'])
+        vat = report.get_vat_for_export(options)
         return {
-            'identifier': self.env.company.vat,
+            'identifier': vat,
             'startDate': fields.Date.to_string(self.date_from),
             'endDate': fields.Date.to_string(self.date_to),
             'ContactInitials': self.contact_initials or '',
@@ -377,7 +379,7 @@ class L10nNlTaxReportSBRWizard(models.TransientModel):
             'ContactTelephoneNumber': re.sub(r"[^\+\d]", "", self.contact_phone or ''),
             'ContactType': self.contact_type,
             'DateTimeCreation': fields.Datetime.now().strftime("%Y%m%d%H%M"),
-            'MessageReferenceSupplierVAT': ((self.env.company.account_representative_id.vat or self.env.company.vat) + '-' + str(uuid.uuid4()))[:20],
+            'MessageReferenceSupplierVAT': ((self.env.company.account_representative_id.vat or vat) + '-' + str(uuid.uuid4()))[:20],
             'ProfessionalAssociationForTaxServiceProvidersName': self.env.company.account_representative_id.name or '',
             'SoftwarePackageName': 'Odoo',
             'SoftwarePackageVersion': '.'.join(self.sudo().env.ref('base.module_base').latest_version.split('.')[0:3]),

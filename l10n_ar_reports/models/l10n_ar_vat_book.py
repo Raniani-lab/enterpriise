@@ -1,6 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo import api, models, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, RedirectWarning
 from odoo.tools.float_utils import float_split_str
 
 from collections import OrderedDict
@@ -292,6 +292,36 @@ class ArgentinianReportCustomHandler(models.AbstractModel):
             doc_number = partner.l10n_ar_vat or (commercial_partner.country_id.l10n_ar_legal_entity_vat
                 if commercial_partner.is_company else commercial_partner.country_id.l10n_ar_natural_vat)
             doc_code = '80'
+            if not commercial_partner.country_id:
+                raise RedirectWarning(
+                    message=_("The partner '%s' does not have a country configured.", commercial_partner.name),
+                    action={
+                        'type': 'ir.actions.act_window',
+                        'res_model': 'res.partner',
+                        'views': [(False, 'form')],
+                        'res_id': commercial_partner.id,
+                        'name': _('Partner'),
+                        'view_mode': 'form',
+                    },
+                    button_text=_('Edit Partner'),
+                )
+            if not doc_number:
+                raise RedirectWarning(
+                    message=_(
+                        "The country '%s' does not have a '%s' configured.",
+                        commercial_partner.country_id.name,
+                        _('Legal Entity VAT') if commercial_partner.is_company else _('Natural Person VAT')
+                    ),
+                    action={
+                        'type': 'ir.actions.act_window',
+                        'res_model': 'res.country',
+                        'views': [(False, 'form')],
+                        'res_id': commercial_partner.country_id.id,
+                        'name': _('Country'),
+                        'view_mode': 'form',
+                    },
+                    button_text=_('Edit Country'),
+                )
         else:
             doc_number = partner.ensure_vat()
             doc_code = '80'

@@ -781,7 +781,7 @@ class SaleOrder(models.Model):
                 sub.start_date = today
             sub._set_deferred_end_date_from_template()
             sub.order_line._reset_subscription_qty_to_invoice()
-            last_transaction = sub.transaction_ids._get_last()
+            last_transaction = sub.transaction_ids.sudo()._get_last()
             last_token = last_transaction.token_id
             if last_token and last_transaction and self.currency_id.compare_amounts(last_transaction.amount, sub.amount_total) >= 0:
                 sub._save_token_from_payment()

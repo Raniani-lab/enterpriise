@@ -7,15 +7,15 @@ import { useBus } from "@web/core/utils/hooks";
 
 const tabsDisplay = {
     new: {
-        class: "o_web_studio_new",
+        class: "o_web_studio_new px-2",
         title: _lt("Add"),
     },
     view: {
-        class: "o_web_studio_view",
+        class: "o_web_studio_view px-2",
         title: _lt("View"),
     },
     properties: {
-        class: "o_web_studio_properties",
+        class: "o_web_studio_properties px-2",
         title: _lt("Properties"),
     },
 };

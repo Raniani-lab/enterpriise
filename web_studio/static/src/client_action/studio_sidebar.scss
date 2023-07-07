@@ -6,13 +6,20 @@
     .o_notebook_headers {
         position: sticky;
         top: 0;
+        flex-shrink: 0;
         z-index: 200;
         margin-bottom: $o-web-studio-sidebar-margin;
+        overflow-y: hidden;
+
+        ul {
+            border-bottom: none;
+        }
 
         li {
             flex: 1 0 auto;
             text-align: center;
             background-color: $o-web-studio-bg-dark;
+            margin: 0;
 
             .active, &:first-child:last-child {
                 background-color: $o-web-studio-bg-medium;

@@ -279,7 +279,7 @@ class FetchmailServer(models.Model):
 
             dte_attachment = self.env['ir.attachment'].create({
                 'name': 'DTE_{}.xml'.format(document_number),
-                'res_model': self._name,
+                'res_model': move._name,
                 'res_id': move.id,
                 'type': 'binary',
                 'datas': base64.b64encode(etree.tostring(dte_xml))

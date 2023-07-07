@@ -640,6 +640,7 @@ class Article(models.Model):
         defaults = self.default_get(['article_member_ids', 'internal_permission', 'parent_id'])
         vals_by_parent_id = {}
         vals_as_sudo = []
+        parent_ids = set()
 
         for vals in vals_list:
             can_sudo = False
@@ -647,6 +648,8 @@ class Article(models.Model):
             member_ids = vals.get('article_member_ids') or defaults.get('article_member_ids') or False
             internal_permission = vals.get('internal_permission') or defaults.get('internal_permission') or False
             parent_id = vals.get('parent_id') or defaults.get('parent_id') or False
+            if parent_id:
+                parent_ids.add(parent_id)
 
             # force write permission for workspace articles
             if not parent_id and not internal_permission:
@@ -671,15 +674,18 @@ class Article(models.Model):
                 vals_by_parent_id.setdefault(parent_id, []).append(vals)
             vals_as_sudo.append(can_sudo)
 
+        # check access to parents
+        if parent_ids:
+            try:
+                self.check_access_rights('write')
+                self.env['knowledge.article'].browse(list(parent_ids)).check_access_rule('write')
+            except AccessError:
+                raise AccessError(_("You cannot create an article under articles on which you cannot write"))
+
         # compute all maximum sequences / parent
         max_sequence_by_parent = {}
         if vals_by_parent_id:
             parent_ids = list(vals_by_parent_id.keys())
-            try:
-                self.check_access_rights('write')
-                self.env['knowledge.article'].browse(parent_ids).check_access_rule('write')
-            except AccessError:
-                raise AccessError(_("You cannot create an article under articles on which you cannot write"))
             max_sequence_by_parent = self._get_max_sequence_inside_parents(parent_ids)
 
         # update sequences

@@ -120,6 +120,14 @@ class TestKnowledgeArticleBusiness(KnowledgeCommonBusinessCase):
         with self.assertRaises(exceptions.AccessError):
             Article.article_create(title=_title, parent_id=readonly_article.id, is_private=False)
 
+        # Test fix: cannot create under unwritable parent even if a sequence is set.
+        with self.assertRaises(exceptions.AccessError):
+            Article.create({
+                "name": "I've a sequence, can I bypass security ? Was internal Right ? no more !",
+                "parent_id": readonly_article.id,
+                "sequence": 10
+            })
+
         private_nonmember = Article.sudo().create({
             'article_member_ids': [
                 (0, 0, {'partner_id': self.partner_employee2.id,

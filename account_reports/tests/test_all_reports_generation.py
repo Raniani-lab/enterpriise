@@ -16,7 +16,7 @@ class TestAllReportsGeneration(AccountTestInvoicingCommon):
         if cls.env.ref('l10n_generic_coa.configurable_chart_template', raise_if_not_found=False):
             available_country_ids += [cls.env.ref('base.us').id, False]
 
-        cls.reports = cls.env['account.report'].search([('country_id', 'in', available_country_ids)])
+        cls.reports = cls.env['account.report'].search([('country_id', 'in', available_country_ids)]).with_context(allowed_company_ids=cls.company_data['company'].ids)
         # The consolidation report needs a consolidation.period to be open, which we won't have by default.
         # Therefore, instead of testing it here, wse skip it and add a dedicated test in the consolidation module.
         conso_report = cls.env.ref('account_consolidation.consolidated_balance_report', raise_if_not_found=False)

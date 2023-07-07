@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, models, fields, _
+from odoo import api, models, fields, Command, _
 from odoo.osv import expression
 
 
@@ -13,7 +13,8 @@ class PlanningSend(models.TransientModel):
     def default_get(self, default_fields):
         res = super().default_get(default_fields)
         if 'slot_ids' in res and 'employee_ids' in default_fields:
-            res['employee_ids'] = self.env['planning.slot'].browse(res['slot_ids'][0][2]).employee_id.sudo().sorted('name').ids
+            employees = self.env['planning.slot'].browse(res['slot_ids'][0][2]).employee_id
+            res['employee_ids'] = [Command.set(employees.sudo().sorted('name').ids)]
         return res
 
     start_datetime = fields.Datetime("Period", required=True)

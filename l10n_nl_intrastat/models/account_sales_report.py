@@ -30,6 +30,7 @@ class DutchECSalesReportCustomHandler(models.AbstractModel):
         results = self._cr.dictfetchall()
 
         for result in results:
+            result['amount_product'] += result['amount_triangular']
             column_group_key = result['column_group_key']
             partner_id = result['partner_id']
 
@@ -102,43 +103,29 @@ class DutchECSalesReportCustomHandler(models.AbstractModel):
         }
 
     def _get_lines_query_params(self, report, options, column_group_key):
-        goods_and_services_0_tax_tags_ids = self.env.ref('l10n_nl.tax_report_rub_3b_tag')._get_matching_tags().ids
-        triangular_tax = self.env.ref('l10n_nl.tax_report_rub_3bt_tag', raise_if_not_found=False)
-        triangular_tax_tags_ids = triangular_tax._get_matching_tags().ids if triangular_tax else []
         goods, triangular, services = [options['ec_tax_filter_selection'][i]['selected'] for i in range(3)]
         tables, where_clause, where_params = report._query_get(options, 'strict_range')
+        goods_and_services_0_tax_tags_ids = tuple(self.env.ref('l10n_nl.tax_report_rub_3b_tag')._get_matching_tags().ids)
+        triangular_tax = self.env.ref('l10n_nl.tax_report_rub_3bt_tag', raise_if_not_found=False)
+        triangular_tax_tags_ids = tuple(triangular_tax._get_matching_tags().ids) if triangular_tax and triangular else (-1,)
+        services_filter = "" if services else "AND product_t.type != 'service'\n"
 
         params = [
             column_group_key,
+            goods_and_services_0_tax_tags_ids if goods else (-1,),
+            triangular_tax_tags_ids,
             *where_params,
+            (goods_and_services_0_tax_tags_ids + triangular_tax_tags_ids),
         ]
-        filter_selection_where = ""
-        if not goods:
-            if not triangular:
-                filter_selection_where += "AND product_t.type = 'service'\n"
-                params += [tuple(goods_and_services_0_tax_tags_ids)]
-            else:
-                if services:
-                    # goods and services use the same tax, but goods and triangular transactions are both linked to products
-                    # so we need a special case for the filters Triangular + Services without Goods
-                    filter_selection_where += "AND (product_t.type = 'service' OR product_t.type != 'service' AND line_tag.account_account_tag_id IN %s)\n"
-                    params += [tuple(triangular_tax_tags_ids + goods_and_services_0_tax_tags_ids)]
-                params += [tuple(triangular_tax_tags_ids)]
-        elif triangular:
-            params += [tuple(triangular_tax_tags_ids + goods_and_services_0_tax_tags_ids)]
-        else:
-            params += [tuple(goods_and_services_0_tax_tags_ids)]
-        if not services:
-            filter_selection_where += "AND product_t.type != 'service'\n"
-
         query = f"""
             SELECT %s AS column_group_key,
                    account_move_line.partner_id,
                    p.name AS partner_name,
                    p.vat,
                    country.code AS country_code,
-                   ROUND(SUM(CASE WHEN product_t.type != 'service' THEN account_move_line.credit - account_move_line.debit ELSE 0 END)) as amount_product,
-                   ROUND(SUM(CASE WHEN product_t.type = 'service' THEN account_move_line.credit - account_move_line.debit ELSE 0 END)) as amount_service
+                   ROUND(SUM(CASE WHEN product_t.type != 'service' AND line_tag.account_account_tag_id IN %s THEN account_move_line.credit - account_move_line.debit ELSE 0 END)) as amount_product,
+                   ROUND(SUM(CASE WHEN product_t.type = 'service' THEN account_move_line.credit - account_move_line.debit ELSE 0 END)) as amount_service,
+                   ROUND(SUM(CASE WHEN product_t.type != 'service' AND line_tag.account_account_tag_id IN %s THEN account_move_line.credit - account_move_line.debit ELSE 0 END)) as amount_triangular
             FROM {tables}
             LEFT JOIN res_partner p ON account_move_line.partner_id = p.id
             LEFT JOIN res_company company ON account_move_line.company_id = company.id
@@ -154,7 +141,7 @@ class DutchECSalesReportCustomHandler(models.AbstractModel):
             AND account_move_line.parent_state = 'posted'
             AND company_country.id != country.id
             AND country.intrastat = TRUE AND (country.code != 'GB' OR account_move_line.date < '2021-01-01')
-            {filter_selection_where}
+            {services_filter}
             GROUP BY account_move_line.partner_id, p.name, p.vat, country.code
             HAVING ROUND(SUM(CASE WHEN product_t.type != 'service' THEN account_move_line.credit - account_move_line.debit ELSE 0 END)) != 0
             OR ROUND(SUM(CASE WHEN product_t.type = 'service' THEN account_move_line.credit - account_move_line.debit ELSE 0 END)) != 0

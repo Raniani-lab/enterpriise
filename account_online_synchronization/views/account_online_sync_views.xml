@@ -51,8 +51,8 @@
                     </sheet>
                     <!-- Chatter -->
                     <div class="oe_chatter">
-                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
-                        <field name="message_ids" widget="mail_thread"/>
+                        <field name="message_follower_ids" groups="base.group_user"/>
+                        <field name="message_ids"/>
                         <field name="activity_ids"/>
                     </div>
                 </form>

@@ -3,8 +3,8 @@
 
 import ctypes
 from pathlib import Path
-from queue import Queue
 from time import sleep
+from threading import Thread
 
 from odoo.addons.hw_drivers.driver import Driver
 from odoo.addons.hw_drivers.event_manager import event_manager
@@ -39,14 +39,18 @@ easyCTEP.lastTransactionStatus.argtypes = [
     ctypes.c_char_p
 ]
 
+# All the terminal errors can be found in the section "Codes d'erreur" here:
+# https://help.winbooks.be/pages/viewpage.action?pageId=64455643#LiaisonversleterminaldepaiementBanksysenTCP/IP-Codesd'erreur
 TERMINAL_ERRORS = {
     '1802': 'Terminal is busy',
     '1803': 'Timeout expired',
     '2629': 'User cancellation',
 }
 
+# Manually cancelled by cashier, do not show these errors
 IGNORE_ERRORS = [
-    '2630',  # Manually cancelled by cashier, do not show the error
+    '2628', # External Equipment Cancellation
+    '2630', # Device Cancellation
 ]
 
 
@@ -59,7 +63,6 @@ class WorldlineDriver(Driver):
         self.device_connection = 'network'
         self.device_name = 'Worldline terminal %s' % self.device_identifier
         self.device_manufacturer = 'Worldline'
-        self.actions = Queue()
         self.cid = None
         self.owner = None
 
@@ -74,35 +77,15 @@ class WorldlineDriver(Driver):
 
     def _action_default(self, data):
         if data['messageType'] == 'Transaction':
-            self.actions.put({
-                'type': 'transaction',
-                'action_identifier': data['actionIdentifier'],
-                'amount': data['amount'] / 100,
-                'reference': data['TransactionID'],
-                'cid': data['cid'],
-                'owner': self.data['owner'],
-            })
+            Thread(target=self.processTransaction, args=(data.copy(), self.data['owner'])).start()
         elif data['messageType'] == 'Cancel':
-            self.cancelTransaction()
+            Thread(target=self.cancelTransaction).start()
         elif data['messageType'] == 'LastTransactionStatus':
-            self.actions.put({
-                'type': 'lastTransactionStatus',
-            })
+            Thread(target=self.lastTransactionStatus).start()
 
-    def run(self):
-        while True:
-            action = self.actions.get()
-            if action['type'] == 'transaction':
-                self.processTransaction(action)
-            elif action['type'] == 'lastTransactionStatus':
-                self.lastTransactionStatus()
-            # After a payment has been processed, the display on the terminal still shows some
-            # information for about 4-5 seconds. No request can be processed during this period.
-            sleep(5)
-
-    def processTransaction(self, transaction):
+    def processTransaction(self, transaction, owner):
         self.cid = transaction['cid']
-        self.owner = transaction['owner']
+        self.owner = owner
 
         if transaction['amount'] <= 0:
             return self.send_status(error='The terminal cannot process negative or null transactions.')
@@ -117,14 +100,18 @@ class WorldlineDriver(Driver):
         error_code = ctypes.create_string_buffer(10)
         result = easyCTEP.startTransaction(
             ctypes.cast(self.dev, ctypes.c_void_p),
-            ctypes.c_char_p(str(transaction['amount']).encode('utf-8')),
-            ctypes.c_char_p(str(transaction['reference']).encode('utf-8')),
-            ctypes.c_ulong(transaction['action_identifier']),
+            ctypes.c_char_p(str(transaction['amount'] / 100).encode('utf-8')),
+            ctypes.c_char_p(str(transaction['TransactionID']).encode('utf-8')),
+            ctypes.c_ulong(transaction['actionIdentifier']),
             merchant_receipt,
             customer_receipt,
             card,
             error_code,
         )
+
+        # After a payment has been processed, the display on the terminal still shows some
+        # information for about 4-5 seconds. No request can be processed during this period.
+        sleep(5)
 
         if result == 1:
             # Transaction successful
@@ -141,17 +128,20 @@ class WorldlineDriver(Driver):
             if error_code not in IGNORE_ERRORS:
                 error_msg = '%s (Error code: %s)' % (TERMINAL_ERRORS.get(error_code, 'Transaction was not processed correctly'), error_code)
                 self.send_status(error=error_msg)
+            # Transaction was cancelled
+            else:
+                self.send_status(stage='Cancel')
         elif result == -1:
             # Terminal disconnection, check status manually
             self.send_status(disconnected=True)
 
     def cancelTransaction(self):
+        self.send_status(stage='waitingCancel')
+
         error_code = ctypes.create_string_buffer(10)
         result = easyCTEP.abortTransaction(ctypes.cast(self.dev, ctypes.c_void_p), error_code)
 
-        if result:
-            self.send_status(stage='Cancel')
-        else:
+        if not result:
             error_code = error_code.value.decode('utf-8')
             error_msg = '%s (Error code: %s)' % (TERMINAL_ERRORS.get(error_code, 'Transaction could not be cancelled'), error_code)
             self.send_status(stage='Cancel', error=error_msg)

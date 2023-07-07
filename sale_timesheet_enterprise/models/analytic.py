@@ -14,6 +14,11 @@ class AnalyticLine(models.Model):
         invoiced_timesheets.display_timer = False
         super(AnalyticLine, self - invoiced_timesheets)._compute_display_timer()
 
+    @api.depends('validated')
+    def _compute_so_line(self):
+        non_validated_timesheets = self.filtered(lambda timesheet: not timesheet.validated)
+        super(AnalyticLine, non_validated_timesheets)._compute_so_line()
+
     @api.model
     def grid_update_cell(self, domain, measure_field_name, value):
         return super().grid_update_cell(

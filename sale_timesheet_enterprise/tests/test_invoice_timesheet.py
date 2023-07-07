@@ -41,6 +41,11 @@ class TestInvoiceTimesheet(TestCommonSaleTimesheet):
             'order_id': sale_order.id,
         })
 
+        so_line_product_3 = self.env['sale.order.line'].create({
+            'product_id': self.product_delivery_timesheet2.id,
+            'order_id': sale_order.id,
+        })
+
         # let's log some timesheets
         timesheet_1 = self.env['account.analytic.line'].create({
             'date': fields.Date.today() - timedelta(days=1),
@@ -86,8 +91,17 @@ class TestInvoiceTimesheet(TestCommonSaleTimesheet):
         self.assertFalse(so_line_product_2.qty_delivered, "No hours delivered (as no timsheet linked to this so_line)")
 
         # Change the SO line on the task
-        task_id.sale_line_id = so_line_product_2
+        task_id.sale_line_id = so_line_product_3
+        self.assertEqual(timesheet_2.so_line, so_line_product_1, "SO line must remain same for validated Timesheet")
 
+        # Make validated Timesheet to Draft to change SO line
+        timesheet_2.action_invalidate_timesheet()
+
+        # Change the SO line on the task
+        task_id.sale_line_id = so_line_product_2
+        self.assertEqual(timesheet_2.so_line, so_line_product_2, "SO line must change for Timesheet which are Draft")
+
+        timesheet_2.action_validate_timesheet()
         self.assertEqual(so_line_product_1.qty_invoiced, 2, "2 hours must be invoiced (only timsheet 1)")
         self.assertEqual(so_line_product_1.qty_delivered, 2, "Timesheet 1 stay on this so_line (as already invoiced), so 2 hours must be delivered")
         self.assertFalse(so_line_product_2.qty_invoiced, "No hours yet invoiced")

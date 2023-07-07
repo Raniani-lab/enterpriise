@@ -19,9 +19,9 @@ class AccountAnalyticLine(models.Model):
             else:
                 line.display_sol = not line.helpdesk_ticket_id or line.helpdesk_ticket_id.use_helpdesk_sale_timesheet
 
-    @api.depends('task_id.sale_line_id', 'project_id.sale_line_id', 'employee_id', 'project_id.allow_billable', 'helpdesk_ticket_id.sale_line_id')
+    @api.depends('helpdesk_ticket_id.sale_line_id')
     def _compute_so_line(self):
-        non_billed_helpdesk_timesheets = self.filtered(lambda t: not t.is_so_line_edited and t.helpdesk_ticket_id and t._is_not_billed())
+        non_billed_helpdesk_timesheets = self.filtered(lambda t: not t.is_so_line_edited and t.helpdesk_ticket_id and t._is_not_billed() and not t.validated)
         for timesheet in non_billed_helpdesk_timesheets:
             timesheet.so_line = timesheet.project_id.allow_billable and timesheet.helpdesk_ticket_id.sale_line_id
         super(AccountAnalyticLine, self - non_billed_helpdesk_timesheets)._compute_so_line()

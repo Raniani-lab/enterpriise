@@ -1308,7 +1308,7 @@ msgstr "Audit du relevé à la TVA des opérations intracommunautaires"
 
 #. module: l10n_be_reports
 #: model:account.report,name:l10n_be_reports.belgian_ec_sales_report
-msgid "EU Sales List"
+msgid "EC Sales List"
 msgstr "Relevé à la TVA des opérations intracommunautaires"
 
 #. module: l10n_be_reports

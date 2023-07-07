@@ -14,6 +14,10 @@ class DutchReportCustomHandler(models.AbstractModel):
         super()._custom_options_initializer(report, options, previous_options=previous_options)
         options['buttons'].append({'name': _('XBRL'), 'sequence': 30, 'action': 'open_xbrl_wizard', 'file_export_type': _('XBRL')})
 
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
+        # Overridden to prevent having unnecessary lines from the generic tax report.
+        return []
+
     def open_xbrl_wizard(self, options):
         report = self.env['account.report'].browse(options['report_id'])
         if report.filter_multi_company and report.filter_multi_company != 'tax_units' and len(options.get('multi_company', [])) > 1:

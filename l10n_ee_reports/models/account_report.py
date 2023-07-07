@@ -7,11 +7,8 @@ from odoo.exceptions import RedirectWarning, UserError
 
 class EstonianTaxReportCustomHandler(models.AbstractModel):
     _name = 'l10n_ee.tax.report.handler'
-    _inherit = 'account.generic.tax.report.handler'
+    _inherit = 'account.tax.report.handler'
     _description = 'Estonian Tax Report Custom Handler'
-
-    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
-        return []
 
     def _custom_options_initializer(self, report, options, previous_options=None):
         super()._custom_options_initializer(report, options, previous_options=previous_options)
@@ -116,7 +113,7 @@ class EstonianTaxReportCustomHandler(models.AbstractModel):
 
 class EstonianKmdInfReportCustomHandler(models.AbstractModel):
     _name = 'l10n_ee.kmd.inf.report.handler'
-    _inherit = 'account.generic.tax.report.handler'
+    _inherit = 'account.tax.report.handler'
     _description = 'Estonian KMD INF Report Custom Handler'
 
     def _report_custom_engine_kmd_inf_common(self, options, current_groupby, next_groupby, kmd_inf_part):

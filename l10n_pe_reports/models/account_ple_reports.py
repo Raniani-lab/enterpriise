@@ -15,9 +15,6 @@ class PeruvianTaxPleReportCustomHandler(models.AbstractModel):
     _inherit = "account.tax.report.handler"
     _description = "PLE Generic Report"
 
-    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
-        return []
-
     def _custom_options_initializer(self, report, options, previous_options=None):
         super()._custom_options_initializer(report, options, previous_options=previous_options)
 

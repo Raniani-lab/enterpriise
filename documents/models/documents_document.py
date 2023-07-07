@@ -205,8 +205,10 @@ class Document(models.Model):
             stream = io.BytesIO(base64.b64decode(self.datas))
             try:
                 return PdfFileReader(stream, strict=False).numPages > 1
-            except (ValueError, PdfReadError):
+            except (ValueError, PdfReadError, KeyError):
                 # ValueError for known bug in PyPDF2 v.1.26 (details in commit message)
+                # PdfReadError: Non-pdf attachment stored as pdf in accounting (details in commit message)
+                # KeyError happens when the user uploads a corrupted pdf (details in commit message)
                 pass
 
     def _get_models(self, domain):

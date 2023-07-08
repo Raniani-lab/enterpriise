@@ -100,7 +100,7 @@ msgstr "Produkt hinzufügen"
 #: code:addons/mrp_mps/static/src/models/master_production_schedule_model.js:0
 #, python-format
 msgid "Are you sure you want to delete these records?"
-msgstr "Wollen Sie diese Datensätze wirklich löschen?"
+msgstr "Sind Sie sicher, dass Sie diese Datensätze löschen möchten?"
 
 #. module: mrp_mps
 #. odoo-javascript

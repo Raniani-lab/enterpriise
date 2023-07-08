@@ -848,7 +848,7 @@ msgstr "O contrato de origem é um modelo de contrato?"
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__employee_job_id
 #, python-format
 msgid "Job Position"
-msgstr "Vaga de emprego"
+msgstr "Cargo"
 
 #. module: hr_contract_salary
 #. odoo-python

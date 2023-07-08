@@ -2257,6 +2257,7 @@ msgid ""
 "Note a description of your parameter, when it's used, how is it computed, "
 "what's the source, ..."
 msgstr ""
+"قم بكتابة وصف لمعاييرك، متى يتم استخدامها، كيف يتم احتسابها، ما المصدر، ..."
 
 #. module: hr_payroll
 #. odoo-python
@@ -3507,6 +3508,8 @@ msgid ""
 "There's no contract set on payslip %s for %s. Check that there is at least a"
 " contract set on the employee form."
 msgstr ""
+"لم يتم إعداد عقد في إيصال الدفع %s لـ %s. تحقق مما إذا كان هناك عقد في "
+"استمارة الموظف على الأقل. "
 
 #. module: hr_payroll
 #. odoo-python

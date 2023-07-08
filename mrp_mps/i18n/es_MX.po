@@ -415,7 +415,7 @@ msgstr "Movimiento"
 #: code:addons/mrp_mps/static/src/components/main.xml:0
 #, python-format
 msgid "No product yet. Add one to start scheduling."
-msgstr "No hay productos aún. Agregue uno para empezar a programar."
+msgstr "Todavía no hay productos. Agregue uno para empezar a programar."
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.res_config_settings_view_form
@@ -614,7 +614,7 @@ msgstr "¡La combinación de almacén y producto debe ser única!"
 #: code:addons/mrp_mps/static/src/components/line.xml:0
 #, python-format
 msgid "The confirmed demand, based on the confirmed sales orders."
-msgstr "La demanda confirmada, basada en las órdenes de venta confirmadas."
+msgstr "La demanda confirmada, según las órdenes de venta confirmadas."
 
 #. module: mrp_mps
 #. odoo-javascript
@@ -632,7 +632,7 @@ msgstr ""
 #: code:addons/mrp_mps/static/src/components/line.xml:0
 #, python-format
 msgid "The forecasted demand. This value has to be entered manually."
-msgstr "La demanda pronosticada. Este valor debe ingresarse manualmente."
+msgstr "La demanda pronosticada. Este valor debe ingresarse de forma manual."
 
 #. module: mrp_mps
 #. odoo-javascript

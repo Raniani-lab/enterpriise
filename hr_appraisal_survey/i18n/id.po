@@ -401,7 +401,7 @@ msgstr "Pengambilan keputusan"
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.res_config_settings_view_form_hr_appraisal_survey
 msgid "Default Template"
-msgstr ""
+msgstr "Templat Default"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.arow_3_2_2

@@ -791,7 +791,7 @@ msgstr ""
 "                    <t t-if=\"ctx.get('payment_token') and ctx.get('total_amount')\">\n"
 "                        unser letzter Versuch, die Zahlung für Ihr Abonnement mit Ihrer Zahlungsmethode\n"
 "                        <t t-out=\"ctx.get('payment_token') or ''\">TOKEN</t>\n"
-"                        über <t t-out=\"ctx['total_amount'] or ''\">100</t> <t t-out=\"ctx.get('currency') or ''\">$</t> zu verarbeiten ist gescheitert.\n"
+"                        über <t t-out=\"ctx['total_amount'] or ''\">100</t> <t t-out=\"ctx.get('currency') or ''\">$</t> zu verarbeiten, ist gescheitert.\n"
 "                        <t t-if=\"ctx.get('error')\">\n"
 "                            Ihre Bank oder Ihr Kreditinstitut hat folgende Angaben zu dem Problem gemacht: <pre t-out=\"ctx['error'] or ''\"></pre>.\n"
 "                        </t>\n"
@@ -3920,7 +3920,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_digest
 msgid "Untaxed Total:"
-msgstr "Nettobetrag"
+msgstr "Nettobetrag:"
 
 #. module: sale_subscription
 #. odoo-python

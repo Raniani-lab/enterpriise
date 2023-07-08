@@ -9,6 +9,7 @@
 # Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2022
 # Martin Trigaux, 2022
 # Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023
+# Samuek Kobylarz, 2023
 # 
 msgid ""
 msgstr ""
@@ -16,7 +17,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:28+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023\n"
+"Last-Translator: Samuek Kobylarz, 2023\n"
 "Language-Team: Polish (https://app.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -246,7 +247,7 @@ msgstr "Przegląd ręczny"
 #: code:addons/account_base_import/models/account_move_line.py:0
 #, python-format
 msgid "The import file is missing the following required columns: %s"
-msgstr ""
+msgstr "W pliku importowym brakuje następujących wymaganych kolumn:%s"
 
 #. module: account_base_import
 #. odoo-python

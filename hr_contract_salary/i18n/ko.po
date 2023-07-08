@@ -4,8 +4,8 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Daye Jeong, 2023
 # Sarah Park, 2023
+# Daye Jeong, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Sarah Park, 2023\n"
+"Last-Translator: Daye Jeong, 2023\n"
 "Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -39,6 +39,14 @@ msgid ""
 "</div>\n"
 "        "
 msgstr ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"    <h2>축하합니다!</h2>\n"
+"    하기 링크를 클릭하여 연봉 패키지 내역을 구성할 수 있습니다.\n"
+"    <div style=\"padding: 16px 0px 16px 0px;\">\n"
+"        <a t-att-href=\"ctx.get('salary_package_url')\" target=\"_blank\" style=\"background-color: #875a7b; text-decoration: none; color: #fff; padding: 8px 16px 8px 16px; border-radius: 5px;\">연봉 패키지 구성하기</a>\n"
+"    </div>\n"
+"</div>\n"
+"        "
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package_thank_you
@@ -52,6 +60,9 @@ msgid ""
 "                            Before accessing the simulation link, you first need to set up an offer template.\n"
 "                    </span>"
 msgstr ""
+"<span class=\"alert alert-warning\" role=\"alert\" colspan=\"2\" attrs=\"{'invisible':[('contract_id', '!=', False)]}\">\n"
+"                            시뮬레이션 링크에 액세스하기 전에 오퍼 양식을 설정해야 합니다.\n"
+"                    </span>"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_view_form
@@ -86,12 +97,12 @@ msgstr "<span class=\"o_stat_text\">검토</span>"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package_thank_you
 msgid "<span class=\"text-muted mr4 ml4\">|</span>"
-msgstr ""
+msgstr "<span class=\"text-muted mr4 ml4\">|</span>"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.generate_simulation_link_view_form
 msgid "<span> /year</span>"
-msgstr ""
+msgstr "<span> /년</span>"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_view_form
@@ -122,12 +133,12 @@ msgstr "활성"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__activity_creation
 msgid "Activity Creation"
-msgstr ""
+msgstr "활동 생성하기"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__activity_creation_type
 msgid "Activity Creation Type"
-msgstr ""
+msgstr "활동 생성 유형"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__activity_type_id
@@ -156,23 +167,23 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume__advantage_ids
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_advantage_view_form
 msgid "Advantage"
-msgstr ""
+msgstr "이점"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__res_field_id
 msgid "Advantage Field"
-msgstr ""
+msgstr "이점 필드"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__advantage_type_id
 msgid "Advantage Type"
-msgstr ""
+msgstr "이점 유형"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__uom
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume__uom
 msgid "Advantage Unit of Measure"
-msgstr ""
+msgstr "추가 혜택 단위"
 
 #. module: hr_contract_salary
 #: model:ir.actions.act_window,name:hr_contract_salary.hr_contract_advantage_action
@@ -183,19 +194,19 @@ msgstr "장점"
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__display_type__always
 msgid "Always Selected"
-msgstr ""
+msgstr "항상 선택"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_employee_report__final_yearly_costs
 msgid "Annual Employee Budget"
-msgstr ""
+msgstr "연간 직원 예산"
 
 #. module: hr_contract_salary
 #. odoo-python
 #: code:addons/hr_contract_salary/controllers/main.py:0
 #, python-format
 msgid "Annual Employer Cost"
-msgstr ""
+msgstr "연간 고용 비용"
 
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_hr_applicant
@@ -279,7 +290,7 @@ msgstr "체크박스"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info__child_ids
 msgid "Child"
-msgstr ""
+msgstr "하위"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_salary_advantage__activity_creation_type
@@ -316,12 +327,12 @@ msgstr "설정 구성"
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_hr_contract_salary_advantage_type
 msgid "Contract Advantage Type"
-msgstr ""
+msgstr "계약 혜택 유형"
 
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_hr_contract_salary_advantage_value
 msgid "Contract Advantage Value"
-msgstr ""
+msgstr "계약 혜택의 가치"
 
 #. module: hr_contract_salary
 #. odoo-python
@@ -363,7 +374,7 @@ msgstr "근로 계약 업데이트 문서 서식"
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_resume__value_type__contract
 msgid "Contract Value"
-msgstr ""
+msgstr "계약 가치"
 
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_hr_contract_employee_report
@@ -373,34 +384,34 @@ msgstr "근로 계약 및 직원 현황 보고서"
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_salary_advantage__res_field_id
 msgid "Contract field linked to this advantage"
-msgstr ""
+msgstr "이 혜택과 연결된 계약 필드"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_salary_advantage__cost_res_field_id
 msgid ""
 "Contract field linked to this advantage cost. If not set, the advantage "
 "won't be taken into account when computing the employee budget."
-msgstr ""
+msgstr "이 복리후생 비용과 관련된 계약 필드입니다. 설정하지 않으면 직원 예산을 계산할 때 이 혜택이 고려되지 않습니다."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_salary_advantage__fold_res_field_id
 msgid "Contract field used to fold this advantage."
-msgstr ""
+msgstr "이 복리후생을 접을 때 사용되는 계약 필드입니다."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_salary_advantage__manual_res_field_id
 msgid "Contract field used to manually encode an advantage value."
-msgstr ""
+msgstr "복리후생 값을 수동으로 인코딩하는 데 사용되는 계약 필드입니다."
 
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_hr_contract_history
 msgid "Contract history"
-msgstr ""
+msgstr "계약 내역"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__activity_creation__countersigned
 msgid "Contract is countersigned"
-msgstr ""
+msgstr "계약서에 연대 서명이 완료됨"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_view_form
@@ -410,12 +421,12 @@ msgstr "근로 계약 검토"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__cost_res_field_id
 msgid "Cost Field"
-msgstr ""
+msgstr "비용 필드"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__cost_field
 msgid "Cost Field Name"
-msgstr ""
+msgstr "비용 필드 이름"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_personal_info__dropdown_selection__country
@@ -436,7 +447,7 @@ msgstr "국적"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__hash_token
 msgid "Created From Token"
-msgstr ""
+msgstr "토큰에서 생성"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__create_uid
@@ -558,7 +569,7 @@ msgstr "표시 유형"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__display_warning_message
 msgid "Display Warning Message"
-msgstr ""
+msgstr "경고 메시지 표시"
 
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info.value,name:hr_contract_salary.hr_contract_salary_personal_info_certificate_doctor
@@ -573,7 +584,7 @@ msgstr "문서"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_sign_document_wizard__sign_template_ids
 msgid "Documents to sign"
-msgstr ""
+msgstr "서명할 문서"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_sign_document_wizard__sign_template_ids
@@ -582,6 +593,9 @@ msgid ""
 "        Documents with 1 responsible will only have to be signed by the employee while documents with 2 different responsible will have to be signed by both the employee and the responsible.\n"
 "        "
 msgstr ""
+"서명할 문서. 담당자가 1명이거나 2명인 문서만 선택할 수 있습니다.\n"
+"        담당자가 1명인 문서는 해당 직원의 서명만 필요하며, 담당자가 2명인 문서는 신청자와 담당자모두의 서명이 필요합니다.\n"
+"        "
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__display_type__dropdown
@@ -591,7 +605,7 @@ msgstr "드롭다운"
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__display_type__dropdown-group
 msgid "Dropdown Group"
-msgstr ""
+msgstr "드롭다운 그룹"
 
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_email
@@ -607,7 +621,7 @@ msgstr "이메일 받는 사람"
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_salary_advantage__sign_copy_partner_id
 msgid "Email address to which to transfer the signature."
-msgstr ""
+msgstr "서명을 전송할 이메일 주소."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__employee_id
@@ -636,12 +650,12 @@ msgstr "직원 사진"
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__activity_creation__running
 msgid "Employee signs his contract"
-msgstr ""
+msgstr "직원이 계약서에 서명"
 
 #. module: hr_contract_salary
 #: model:mail.template,name:hr_contract_salary.mail_template_send_offer
 msgid "Employee: Contract And Salary Package"
-msgstr ""
+msgstr "직원: 계약 및 연봉 패키지"
 
 #. module: hr_contract_salary
 #. odoo-python
@@ -652,6 +666,9 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
+"다음 값의 합계와 같습니다:\n"
+"\n"
+"%s"
 
 #. module: hr_contract_salary
 #: model:hr.contract.salary.advantage,name:hr_contract_salary.advantage_extra_time_off
@@ -679,22 +696,22 @@ msgstr "전공"
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume__fixed_value
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_resume__value_type__fixed
 msgid "Fixed Value"
-msgstr ""
+msgstr "고정 값"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__fold_field
 msgid "Fold Field Name"
-msgstr ""
+msgstr "축소된 필드 이름"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__fold_label
 msgid "Fold Label"
-msgstr ""
+msgstr "라벨 접기"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__fold_res_field_id
 msgid "Fold Res Field"
-msgstr ""
+msgstr "리소스 필드 접기"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__folded
@@ -709,7 +726,7 @@ msgstr "성별"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_applicant_view_form
 msgid "Generate Offer"
-msgstr ""
+msgstr "오퍼 생성"
 
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_generate_simulation_link
@@ -741,12 +758,12 @@ msgstr "그룹별"
 msgid ""
 "HR Responsible %s should be a User of Sign and have a valid email address "
 "when New Contract Document Template is specified"
-msgstr ""
+msgstr "인사 담당자 %s는 새 계약 문서의 서식을 지정할 때 전자서명의 사용자이며 유효한 이메일 주소를 가지고 있어야 합니다."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info__helper
 msgid "Helper"
-msgstr ""
+msgstr "헬퍼"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package_personal_information
@@ -756,23 +773,23 @@ msgstr "숨기기 <i class=\"fa fa-chevron-up\"/>"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info_value__hide_children
 msgid "Hide Children"
-msgstr ""
+msgstr "하위 숨기기"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__hide_description
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage_value__hide_description
 msgid "Hide Description"
-msgstr ""
+msgstr "설명 숨기기"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_salary_personal_info_value__hide_children
 msgid "Hide children personal info when checked."
-msgstr ""
+msgstr "체크 시 하위 개인 정보를 숨깁니다."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_salary_advantage__hide_description
 msgid "Hide the description if the advantage is not taken."
-msgstr ""
+msgstr "혜택을 사용하지 않을 경우 설명을 숨깁니다."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__id
@@ -811,7 +828,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info__info_type_id
 msgid "Info Type"
-msgstr ""
+msgstr "정보 유형"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_personal_info_view_form
@@ -827,7 +844,7 @@ msgstr "정수"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info__is_required
 msgid "Is Required"
-msgstr ""
+msgstr "필수 사항"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__is_origin_contract_template
@@ -898,7 +915,7 @@ msgstr "최근 갱신 일자"
 #. module: hr_contract_salary
 #: model_terms:ir.actions.act_window,help:hr_contract_salary.action_hr_contract_templates
 msgid "Let's create one"
-msgstr ""
+msgstr "하나 만들어 봅시다."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage_value__display_type__line
@@ -908,7 +925,7 @@ msgstr "선"
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_personal_info__position__left
 msgid "Main Panel"
-msgstr ""
+msgstr "기본 패널"
 
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info.value,name:hr_contract_salary.hr_contract_salary_personal_info_gender_male
@@ -918,17 +935,17 @@ msgstr "남성"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__manual_field
 msgid "Manual Field Name"
-msgstr ""
+msgstr "수동 필드 이름"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__display_type__manual
 msgid "Manual Input"
-msgstr ""
+msgstr "수동 입력"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__manual_res_field_id
 msgid "Manual Res Field"
-msgstr ""
+msgstr "수동 리소스 필드"
 
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info.value,name:hr_contract_salary.hr_contract_salary_personal_info_certificate_master
@@ -943,6 +960,7 @@ msgid ""
 "Mismatch between res_field_id %(field)s and model %(model)s for info "
 "%(personal_info)s"
 msgstr ""
+"res_field_id %(field)s와 모델 %(model)s중 %(personal_info)s에 대한 내용이 일치하지 않습니다."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage_type__periodicity__monthly
@@ -953,30 +971,30 @@ msgstr "월간"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_history_view_form
 msgid "Monthly Cost"
-msgstr ""
+msgstr "월별 비용"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__monthly_yearly_costs
 msgid "Monthly Cost (Real)"
-msgstr ""
+msgstr "월별 비용 (실질)"
 
 #. module: hr_contract_salary
 #. odoo-python
 #: code:addons/hr_contract_salary/controllers/main.py:0
 #, python-format
 msgid "Monthly Gross Salary"
-msgstr ""
+msgstr "월간 총 급여액"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_resume__value_type__monthly_total
 msgid "Monthly Total"
-msgstr ""
+msgstr "월간 총계"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_history__reference_monthly_wage
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_history_view_form
 msgid "Monthly Wage"
-msgstr ""
+msgstr "월별 임금"
 
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_name
@@ -994,7 +1012,7 @@ msgstr "이름"
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_salary_personal_info__res_field_id
 msgid "Name of the field related to this personal info."
-msgstr ""
+msgstr "이 개인 정보와 관련된 필드 이름입니다."
 
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_identification_id
@@ -1036,7 +1054,7 @@ msgstr "직무에 대해 HR 책임자가 정의하지 않았습니다. 관리자
 #. module: hr_contract_salary
 #: model_terms:ir.actions.act_window,help:hr_contract_salary.action_hr_contract_templates
 msgid "No Template found"
-msgstr ""
+msgstr "서식을 찾을 수 없습니다"
 
 #. module: hr_contract_salary
 #. odoo-python
@@ -1059,29 +1077,29 @@ msgstr "계약에 정의된 서명 서식이 없습니다. 담당 HR에 문의�
 #: code:addons/hr_contract_salary/static/src/js/hr_contract_salary.js:0
 #, python-format
 msgid "Not a valid e-mail address"
-msgstr ""
+msgstr "이메일 주소가 올바르지 않습니다"
 
 #. module: hr_contract_salary
 #. odoo-javascript
 #: code:addons/hr_contract_salary/static/src/js/hr_contract_salary.js:0
 #, python-format
 msgid "Not a valid input in integer field"
-msgstr ""
+msgstr "정수 필드에 올바른 입력이 아닙니다."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__holidays
 msgid "Number of days of paid leaves the employee gets per year."
-msgstr ""
+msgstr "직원이 연간 유급으로 받을 수 있는 휴가 일수."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__contract_id
 msgid "Offer Template"
-msgstr ""
+msgstr "서식 제공"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__url
 msgid "Offer link"
-msgstr ""
+msgstr "제안 링크"
 
 #. module: hr_contract_salary
 #. odoo-python
@@ -1108,7 +1126,7 @@ msgstr "원 계약"
 #: code:addons/hr_contract_salary/controllers/main.py:0
 #, python-format
 msgid "Original Link"
-msgstr ""
+msgstr "원본 링크"
 
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info.value,name:hr_contract_salary.hr_contract_salary_personal_info_certificate_other
@@ -1148,7 +1166,7 @@ msgstr "개인 문서"
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info_value__personal_info_id
 #: model:ir.ui.menu,name:hr_contract_salary.salary_package_personal_info
 msgid "Personal Info"
-msgstr ""
+msgstr "개인 정보"
 
 #. module: hr_contract_salary
 #. odoo-python
@@ -1190,7 +1208,7 @@ msgstr "이전 계약"
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_personal_info__applies_on__address
 msgid "Private Home Address"
-msgstr ""
+msgstr "개인 집 주소"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_applicant__proposed_contracts
@@ -1225,7 +1243,7 @@ msgstr "재계산"
 #. module: hr_contract_salary
 #: model:mail.template,name:hr_contract_salary.mail_template_send_offer_applicant
 msgid "Recruitment: Your Salary Package"
-msgstr ""
+msgstr "채용: 급여 패키지"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage_value__color__red
@@ -1240,12 +1258,12 @@ msgstr "관련된 필드"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__requested_documents_field_ids
 msgid "Requested Documents"
-msgstr ""
+msgstr "요청된 문서"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__requested_documents
 msgid "Requested Documents Fields"
-msgstr ""
+msgstr "요청된 문서 필드"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info__res_model
@@ -1267,14 +1285,14 @@ msgstr "근로 계약 검토 &amp; 사인"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_payroll_structure_type__salary_advantage_ids
 msgid "Salary Advantage"
-msgstr ""
+msgstr "급여 혜택"
 
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_hr_contract_salary_advantage
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_advantage_view_form
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_advantage_view_tree
 msgid "Salary Package Advantage"
-msgstr ""
+msgstr "급여 패키지 혜택"
 
 #. module: hr_contract_salary
 #: model:ir.ui.menu,name:hr_contract_salary.salary_package_menu
@@ -1288,34 +1306,34 @@ msgstr "급여 내역 구성기"
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_resume_view_form
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_resume_view_tree
 msgid "Salary Package Personal Info"
-msgstr ""
+msgstr "급여 패키지 개인 정보"
 
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_hr_contract_salary_personal_info_type
 msgid "Salary Package Personal Info Type"
-msgstr ""
+msgstr "급여 패키지 개인 정보 유형"
 
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_hr_contract_salary_personal_info_value
 msgid "Salary Package Personal Info Value"
-msgstr ""
+msgstr "급여 패키지 개인 정보 값"
 
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_hr_contract_salary_resume
 msgid "Salary Package Resume"
-msgstr ""
+msgstr "급여 패키지 요약"
 
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_hr_contract_salary_resume_category
 msgid "Salary Package Resume Category"
-msgstr ""
+msgstr "급여 패키지 개요 카테고리"
 
 #. module: hr_contract_salary
 #. odoo-python
 #: code:addons/hr_contract_salary/controllers/main.py:0
 #, python-format
 msgid "Salary Package Summary"
-msgstr ""
+msgstr "급여 패키지 요약"
 
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_hr_payroll_structure_type
@@ -1348,7 +1366,7 @@ msgstr "선택"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info__dropdown_selection
 msgid "Selection Nature"
-msgstr ""
+msgstr "선택 속성"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.generate_simulation_link_view_form
@@ -1363,13 +1381,13 @@ msgstr "사본을 보낼 위치"
 #. module: hr_contract_salary
 #: model:mail.template,description:hr_contract_salary.mail_template_send_offer_applicant
 msgid "Sent automatically when you generate an offer for an application"
-msgstr ""
+msgstr "지원서에 대해 제안을 생성하면 자동으로 전송됩니다"
 
 #. module: hr_contract_salary
 #: model:mail.template,description:hr_contract_salary.mail_template_send_offer
 msgid ""
 "Sent manually when you generate a simulation link on the employee contract"
-msgstr ""
+msgstr "직원 계약서에서 시뮬레이션 링크를 생성할 때 수동으로 전송합니다"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__sequence
@@ -1390,7 +1408,7 @@ msgstr "보기 <i class=\"fa fa-chevron-down\"/>"
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_personal_info__position__right
 msgid "Side Panel"
-msgstr ""
+msgstr "사이드 패널"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__sign_frenquency
@@ -1420,12 +1438,12 @@ msgstr "슬라이더"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__slider_max
 msgid "Slider Max"
-msgstr ""
+msgstr "최대 슬라이더"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__slider_min
 msgid "Slider Min"
-msgstr ""
+msgstr "최소 슬라이더"
 
 #. module: hr_contract_salary
 #. odoo-javascript
@@ -1433,12 +1451,12 @@ msgstr ""
 #: code:addons/hr_contract_salary/static/src/js/hr_contract_salary.js:0
 #, python-format
 msgid "Some required fields are not filled"
-msgstr ""
+msgstr "일부 필수 입력란이 채워지지 않았습니다"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_personal_info__dropdown_selection__specific
 msgid "Specific Values"
-msgstr ""
+msgstr "특정 값"
 
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_state_id
@@ -1469,12 +1487,12 @@ msgstr "구조 유형"
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_resume__value_type__sum
 msgid "Sum of Advantages Values"
-msgstr ""
+msgstr "혜택 값의 합계"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__sign_template_id
 msgid "Template to Sign"
-msgstr ""
+msgstr "서명할 서식"
 
 #. module: hr_contract_salary
 #: model:ir.ui.menu,name:hr_contract_salary.hr_menu_contract_templates
@@ -1504,7 +1522,7 @@ msgstr "이 근로 계약과 중복된 계약."
 msgid ""
 "The employee does not have a valid email set in the private information. The"
 " Simulation Link won't be able to be completed."
-msgstr ""
+msgstr "직원의 개인 정보에 유효한 이메일이 설정되어 있지 않습니다. 시뮬레이션 링크를 완료할 수 없습니다."
 
 #. module: hr_contract_salary
 #. odoo-python
@@ -1513,7 +1531,7 @@ msgstr ""
 msgid ""
 "The employee is not linked to an existing user, please contact the "
 "administrator.."
-msgstr ""
+msgstr "직원이 기존 사용자와 연결되어 있지 않습니다. 자세한 사항은 관리자에게 문의하세요.."
 
 #. module: hr_contract_salary
 #. odoo-python
@@ -1521,7 +1539,7 @@ msgstr ""
 #, python-format
 msgid ""
 "The minimum value for the slider should be inferior to the maximum value."
-msgstr ""
+msgstr "슬라이더의 최소값은 최대값보다 작아야 합니다."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__signatures_count
@@ -1533,26 +1551,26 @@ msgstr "가장 많은 서명을 가진 pdf 계약의 서명 수입니다."
 msgid ""
 "The type of activity that will be created automatically on the contract if "
 "this advantage is chosen by the employee."
-msgstr ""
+msgstr "직원이 이 혜택을 선택할 경우 자동으로 계약에 생성되는 활동 유형입니다."
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package_advantages
 msgid "There is no available option to customize your salary"
-msgstr ""
+msgstr "급여를 맞춤 설정할 수 있는 옵션이 없습니다"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package_thank_you
 msgid ""
 "They will review your contract.<br/> Feel free to contact them if you have "
 "any questions."
-msgstr ""
+msgstr "계약서를 검토할 예정입니다.<br/> 궁금한 점이 있으시면 언제든지 연락 주십시오."
 
 #. module: hr_contract_salary
 #. odoo-python
 #: code:addons/hr_contract_salary/controllers/main.py:0
 #, python-format
 msgid "This contract has been updated, please request an updated link.."
-msgstr ""
+msgstr "계약이 업데이트되었습니다. 새로 업데이트된 링크를 요청하세요.."
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.generate_simulation_link_view_form
@@ -1560,7 +1578,7 @@ msgid ""
 "This job position does not have any contract template related and the "
 "advantages will be related to the current employee contract instead of the "
 "new job position."
-msgstr ""
+msgstr "이 직책에는 계약서 서식에 지정되어 있는 혜택이 없으므로 새 직책이 아닌 현재 직원 계약과 관련된 기존 혜택이 제공됩니다."
 
 #. module: hr_contract_salary
 #. odoo-python
@@ -1569,22 +1587,22 @@ msgstr ""
 #, python-format
 msgid ""
 "This link is invalid. Please contact the HR Responsible to get a new one..."
-msgstr ""
+msgstr "잘못된 링크입니다. 새 링크를 받으려면 인사 담당자에게 문의하세요..."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__monthly_yearly_costs
 msgid "Total real monthly cost of the employee for the employer."
-msgstr ""
+msgstr "고용주가 지불해야 할 직원에 대한 총 월별 실제 비용"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__final_yearly_costs
 msgid "Total real yearly cost of the employee for the employer."
-msgstr ""
+msgstr "고용주가 지불해야 할 직원에 대한 연간 총 실제 비용"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_history__reference_yearly_cost
 msgid "Total yearly cost of the employee for the employer."
-msgstr ""
+msgstr "고용주의 연간 총 직원 비용."
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.res_config_settings_view_form
@@ -1603,7 +1621,7 @@ msgstr "가치"
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume__value_type
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_resume_view_search
 msgid "Value Type"
-msgstr ""
+msgstr "값 유형"
 
 #. module: hr_contract_salary
 #. odoo-python
@@ -1615,34 +1633,34 @@ msgstr "임금"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__wage_on_signature
 msgid "Wage on Payroll"
-msgstr ""
+msgstr "급여 명세서 내 급여"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__wage_on_signature
 msgid "Wage on contract signature"
-msgstr ""
+msgstr "계약서 서명 시 급여"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_history__reference_monthly_wage
 msgid "Wage update with holidays retenues"
-msgstr ""
+msgstr "휴일 수당을 포함하여 급여 업데이트"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__wage_with_holidays
 msgid "Wage with Holidays"
-msgstr ""
+msgstr "휴일 포함 급여"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__activity_creation_type__onchange
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__sign_frenquency__always
 msgid "When the advantage is modified"
-msgstr ""
+msgstr "혜택이 변경된 경우"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__activity_creation_type__always
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__sign_frenquency__onchange
 msgid "When the advantage is set"
-msgstr ""
+msgstr "혜택이 설정된 경우"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage_type__periodicity__yearly
@@ -1655,12 +1673,12 @@ msgstr "매년"
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_history__reference_yearly_cost
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_history_view_form
 msgid "Yearly Cost"
-msgstr ""
+msgstr "연간 비용"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__final_yearly_costs
 msgid "Yearly Cost (Real)"
-msgstr ""
+msgstr "연간 비용 (실질)"
 
 #. module: hr_contract_salary
 #. odoo-python
@@ -1703,12 +1721,12 @@ msgstr "일"
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_personal_info_view_form
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_resume_view_form
 msgid "e.g. Birthdate"
-msgstr ""
+msgstr "예. 생년월일"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_advantage_view_form
 msgid "e.g. Meal Vouchers"
-msgstr ""
+msgstr "예. 식권"
 
 #. module: hr_contract_salary
 #: model:mail.template,subject:hr_contract_salary.mail_template_send_offer

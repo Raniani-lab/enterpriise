@@ -1097,12 +1097,12 @@ msgstr "Oops"
 #. module: hr_contract_salary
 #: model:sign.template,redirect_url_text:hr_contract_salary.sign_template_cdi_developer
 msgid "Open Link"
-msgstr ""
+msgstr "リンクを開く"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__origin_contract_id
 msgid "Origin Contract"
-msgstr ""
+msgstr "参照元契約書"
 
 #. module: hr_contract_salary
 #. odoo-python

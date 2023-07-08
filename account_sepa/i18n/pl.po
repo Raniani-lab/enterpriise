@@ -92,7 +92,7 @@ msgstr "Standardowe"
 #. module: account_sepa
 #: model:ir.model.fields.selection,name:account_sepa.selection__account_journal__sepa_pain_version__pain_001_003_03
 msgid "German"
-msgstr ""
+msgstr "Niemiecki"
 
 #. module: account_sepa
 #: model:ir.model.fields,field_description:account_sepa.field_account_journal__has_sepa_ct_payment_method
@@ -261,7 +261,7 @@ msgstr ""
 #. module: account_sepa
 #: model:ir.model.fields.selection,name:account_sepa.selection__account_journal__sepa_pain_version__pain_001_001_03_se
 msgid "Swedish"
-msgstr ""
+msgstr "Szwedzki"
 
 #. module: account_sepa
 #: model:ir.model.fields.selection,name:account_sepa.selection__account_journal__sepa_pain_version__pain_001_001_03_ch_02

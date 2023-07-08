@@ -65,7 +65,7 @@ msgstr "Planungsanalysebericht"
 #. module: project_timesheet_forecast_sale
 #: model:ir.model,name:project_timesheet_forecast_sale.model_planning_slot
 msgid "Planning Shift"
-msgstr "Schichtplanung"
+msgstr "Schicht der Planung"
 
 #. module: project_timesheet_forecast_sale
 #: model:ir.model,name:project_timesheet_forecast_sale.model_project_project

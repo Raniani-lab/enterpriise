@@ -144,6 +144,9 @@ msgid ""
 "specific.\" role=\"img\" aria-label=\"Values set here are company-"
 "specific.\" groups=\"base.group_multi_company\"/>"
 msgstr ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
+"specific.\" role=\"img\" aria-label=\"Šeit iestatītās vērtības ir "
+"specifiskas uzņēmumam.\" groups=\"base.group_multi_company\"/>"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
@@ -1225,7 +1228,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/components/matching_link_widget/matching_link_widget.xml:0
 #, python-format
 msgid "Match"
-msgstr ""
+msgstr "Pieskaņot"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -2149,7 +2152,7 @@ msgstr "reference"
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "remaining)"
-msgstr ""
+msgstr "atlikuši)"
 
 #. module: account_accountant
 #. odoo-javascript

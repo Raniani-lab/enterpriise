@@ -158,7 +158,7 @@ msgstr "Sin hojas de horas"
 #. module: project_timesheet_forecast
 #: model_terms:ir.actions.act_window,help:project_timesheet_forecast.project_timesheet_forecast_report_action
 msgid "No data yet!"
-msgstr "¡No hay datos aún!"
+msgstr "Todavía no hay información"
 
 #. module: project_timesheet_forecast
 #: model_terms:ir.actions.act_window,help:project_timesheet_forecast.project_timesheet_action_schedule_by_role
@@ -331,4 +331,4 @@ msgstr "Tipo"
 #: code:addons/project_timesheet_forecast/models/project_forecast.py:0
 #, python-format
 msgid "You do not have the right to create timesheets."
-msgstr "No tiene los derechos de acceso para crear hojas de horas."
+msgstr "No tiene autorización para crear hojas de horas."

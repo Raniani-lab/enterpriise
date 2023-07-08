@@ -606,7 +606,7 @@ msgstr ""
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_resource_resource__avatar_128
 msgid "Avatar 128"
-msgstr ""
+msgstr "Ikona 128"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -824,7 +824,7 @@ msgstr "Struktūrvienība"
 #. module: planning
 #: model:ir.model,name:planning.model_hr_departure_wizard
 msgid "Departure Wizard"
-msgstr ""
+msgstr "Izbraukuma vednis"
 
 #. module: planning
 #: model:planning.role,name:planning.planning_role_developer
@@ -1035,7 +1035,7 @@ msgstr "Prognoze"
 #: model:ir.model.fields.selection,name:planning.selection__planning_recurrency__repeat_type__forever
 #: model:ir.model.fields.selection,name:planning.selection__planning_slot__repeat_type__forever
 msgid "Forever"
-msgstr ""
+msgstr "Uz visiem laikiem"
 
 #. module: planning
 #. odoo-python
@@ -1311,7 +1311,7 @@ msgstr "Mēneši"
 #: model_terms:ir.ui.view,arch_db:planning.planning_role_view_search
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "My Department"
-msgstr ""
+msgstr "Mana struktūrvienība"
 
 #. module: planning
 #: model:ir.actions.act_window,name:planning.planning_action_my_calendar
@@ -1558,7 +1558,7 @@ msgstr ""
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.brand_promotion
 msgid "Plans"
-msgstr ""
+msgstr "Plāni"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__previous_template_id
@@ -1980,7 +1980,7 @@ msgstr ""
 #: code:addons/planning/models/planning_recurrency.py:0
 #, python-format
 msgid "The number of repetitions cannot be negative."
-msgstr ""
+msgstr "Atkārtojumu skaits nevar būt negatīvs."
 
 #. module: planning
 #: model:ir.model.constraint,message:planning.constraint_planning_recurrency_check_repeat_interval_positive

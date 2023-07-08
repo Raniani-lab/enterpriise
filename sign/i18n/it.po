@@ -507,7 +507,7 @@ msgstr "Tutti"
 #. module: sign
 #: model:ir.ui.menu,name:sign.sign_request_documents
 msgid "All documents"
-msgstr ""
+msgstr "Tutti i documenti"
 
 #. module: sign
 #. odoo-python

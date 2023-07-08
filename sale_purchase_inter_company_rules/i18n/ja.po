@@ -25,12 +25,12 @@ msgstr ""
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields,field_description:sale_purchase_inter_company_rules.field_purchase_order__auto_generated
 msgid "Auto Generated Purchase Order"
-msgstr ""
+msgstr "自動生成された購買オーダ"
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields,field_description:sale_purchase_inter_company_rules.field_sale_order__auto_generated
 msgid "Auto Generated Sales Order"
-msgstr ""
+msgstr "自動生成された販売オーダ"
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields,field_description:sale_purchase_inter_company_rules.field_res_company__auto_validation
@@ -62,7 +62,7 @@ msgstr "コンフィグ設定"
 msgid ""
 "Configure correct warehouse for company(%s) from Menu: "
 "Settings/Users/Companies"
-msgstr ""
+msgstr "メニューから会社（%s）の正しい倉庫を設定する： 設定/ユーザー/会社"
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields,help:sale_purchase_inter_company_rules.field_res_company__warehouse_id
@@ -70,7 +70,7 @@ msgstr ""
 msgid ""
 "Default value to set on Purchase(Sales) Orders that will be created based on"
 " Sale(Purchase) Orders made to this company"
-msgstr ""
+msgstr "この会社への販売（購買）オーダに基づいて作成される購買（販売）オーダに設定されるデフォルト値。"
 
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/res_company.py:0
@@ -96,25 +96,25 @@ msgstr ""
 #, python-format
 msgid ""
 "Inter company user of company %(name)s doesn't have enough access rights"
-msgstr ""
+msgstr "企業内ユーザー%(name)sには十分なアクセス権がありません。"
 
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/sale_order.py:0
 #, python-format
 msgid "Inter company user of company %s doesn't have enough access rights"
-msgstr ""
+msgstr "会社%sの社内ユーザーには十分なアクセス権がありません。"
 
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/purchase_order.py:0
 #, python-format
 msgid "Provide at least one user for inter company relation for %(name)s"
-msgstr ""
+msgstr "社内関係のために少なくとも一人のユーザーを%(name)sのために与える"
 
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/sale_order.py:0
 #, python-format
 msgid "Provide one user for intercompany relation for % "
-msgstr ""
+msgstr "社内関係のために1人のユーザーを提供する% "
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model,name:sale_purchase_inter_company_rules.model_purchase_order
@@ -144,7 +144,7 @@ msgstr "選択した会社で会社間ルールを設定するタイプを選択
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields,field_description:sale_purchase_inter_company_rules.field_sale_order__auto_purchase_order_id
 msgid "Source Purchase Order"
-msgstr ""
+msgstr "ソース購買オーダ"
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields,field_description:sale_purchase_inter_company_rules.field_purchase_order__auto_sale_order_id
@@ -154,17 +154,17 @@ msgstr "ソース販売オーダ"
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields.selection,name:sale_purchase_inter_company_rules.selection__res_company__rule_type__purchase
 msgid "Synchronize Purchase Order"
-msgstr ""
+msgstr "購買オーダを同期する"
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields.selection,name:sale_purchase_inter_company_rules.selection__res_company__rule_type__sale
 msgid "Synchronize Sales Order"
-msgstr ""
+msgstr "販売オーダを同期する"
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields.selection,name:sale_purchase_inter_company_rules.selection__res_company__rule_type__sale_purchase
 msgid "Synchronize Sales and Purchase Order"
-msgstr ""
+msgstr "販売・購買オーダを同期する"
 
 #. module: sale_purchase_inter_company_rules
 #: model_terms:ir.ui.view,arch_db:sale_purchase_inter_company_rules.res_config_settings_view_form
@@ -179,7 +179,7 @@ msgstr "倉庫"
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields,field_description:sale_purchase_inter_company_rules.field_res_config_settings__warehouse_id
 msgid "Warehouse For Purchase Orders"
-msgstr ""
+msgstr "購買オーダ用の倉庫"
 
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/purchase_order.py:0
@@ -190,6 +190,10 @@ msgid ""
 "\n"
 "(SO currency: %(so_currency)s, Pricelist: %(pricelist)s, Partner: %(partner)s (ID: %(id)s))"
 msgstr ""
+"販売価格リストの通貨が購買価格リストの通貨と異なるため、購買オーダから販売オーダを作成することができません。\n"
+"販売オーダの通貨は取引先の価格表から取得します。\n"
+"\n"
+"（販売オーダの通貨：%(so_currency)s 価格表：%(pricelist)s 取引先：%(partner)s (ID: %(id)s))"
 
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/res_company.py:0
@@ -202,7 +206,7 @@ msgstr "ドラフト"
 #: code:addons/sale_purchase_inter_company_rules/models/res_company.py:0
 #, python-format
 msgid "purchase order"
-msgstr ""
+msgstr "販売オーダ"
 
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/res_company.py:0
@@ -215,7 +219,7 @@ msgstr "購買/販売オーダ"
 #: code:addons/sale_purchase_inter_company_rules/models/res_company.py:0
 #, python-format
 msgid "sales order"
-msgstr ""
+msgstr "販売オーダ"
 
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/res_company.py:0

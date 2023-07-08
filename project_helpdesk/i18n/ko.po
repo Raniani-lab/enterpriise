@@ -7,6 +7,7 @@
 # JH CHOI <hwangtog@gmail.com>, 2022
 # Heesoo Choi, 2022
 # Daye Jeong, 2023
+# Sarah Park, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Daye Jeong, 2023\n"
+"Last-Translator: Sarah Park, 2023\n"
 "Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -51,7 +52,7 @@ msgstr "프로젝트 작업을 티켓으로 전환"
 #: model_terms:ir.ui.view,arch_db:project_helpdesk.helpdesk_ticket_convert_to_task_wizard_view_form
 #, python-format
 msgid "Convert to Task"
-msgstr ""
+msgstr "작업으로 전환"
 
 #. module: project_helpdesk
 #. odoo-python
@@ -67,14 +68,14 @@ msgstr "티켓으로 전환"
 #: code:addons/project_helpdesk/wizard/helpdesk_ticket_convert_wizard.py:0
 #, python-format
 msgid "Converted Tasks"
-msgstr ""
+msgstr "전환된 작업"
 
 #. module: project_helpdesk
 #. odoo-python
 #: code:addons/project_helpdesk/wizard/project_task_convert_wizard.py:0
 #, python-format
 msgid "Converted Tickets"
-msgstr ""
+msgstr "전환된 작업"
 
 #. module: project_helpdesk
 #: model:ir.model.fields,field_description:project_helpdesk.field_helpdesk_ticket_convert_wizard__create_uid
@@ -133,7 +134,7 @@ msgstr "프로젝트"
 #: code:addons/project_helpdesk/models/project.py:0
 #, python-format
 msgid "Recurring tasks cannot be converted into tickets."
-msgstr ""
+msgstr "반복 작업은 상담으로 전환할 수 없습니다."
 
 #. module: project_helpdesk
 #: model:ir.model.fields,field_description:project_helpdesk.field_helpdesk_ticket_convert_wizard__stage_id
@@ -151,14 +152,14 @@ msgstr "작업"
 #: code:addons/project_helpdesk/wizard/project_task_convert_wizard.py:0
 #, python-format
 msgid "Task converted into ticket %s"
-msgstr ""
+msgstr "작업이 %s 상담으로 전환되었습니다."
 
 #. module: project_helpdesk
 #. odoo-python
 #: code:addons/project_helpdesk/wizard/helpdesk_ticket_convert_wizard.py:0
 #, python-format
 msgid "Task created from ticket %s"
-msgstr ""
+msgstr "%s 상담에서 작업이 생성되었습니다."
 
 #. module: project_helpdesk
 #: model:ir.model.fields,field_description:project_helpdesk.field_project_task_convert_wizard__team_id
@@ -170,11 +171,11 @@ msgstr "팀"
 #: code:addons/project_helpdesk/wizard/helpdesk_ticket_convert_wizard.py:0
 #, python-format
 msgid "Ticket converted into task %s"
-msgstr ""
+msgstr "작업이 %s 상담으로 전환되었습니다."
 
 #. module: project_helpdesk
 #. odoo-python
 #: code:addons/project_helpdesk/wizard/project_task_convert_wizard.py:0
 #, python-format
 msgid "Ticket created from task %s"
-msgstr ""
+msgstr "%s 작업에서 상담이 생성되었습니다."

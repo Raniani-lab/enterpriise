@@ -28,7 +28,7 @@ msgstr "Widget rekonsiliasi bank untuk satu baris rekening koran"
 #. module: sale_account_accountant
 #: model:ir.model.fields,field_description:sale_account_accountant.field_bank_rec_widget__matched_sale_order_ids
 msgid "Matched Sale Order"
-msgstr ""
+msgstr "Sale Order yang Cocok"
 
 #. module: sale_account_accountant
 #: model:ir.model,name:sale_account_accountant.model_account_reconcile_model
@@ -43,7 +43,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_account_accountant.view_bank_rec_widget_form_inherit_sale_order
 #, python-format
 msgid "Sale Orders"
-msgstr ""
+msgstr "Sale Orders"
 
 #. module: sale_account_accountant
 #: model_terms:ir.ui.view,arch_db:sale_account_accountant.view_bank_rec_widget_form_inherit_sale_order
@@ -53,9 +53,9 @@ msgstr "Terdapat"
 #. module: sale_account_accountant
 #: model_terms:ir.ui.view,arch_db:sale_account_accountant.view_bank_rec_widget_form_inherit_sale_order
 msgid "matching the communication of the bank statement line."
-msgstr ""
+msgstr "mencocokkan komunikasi baris laporan bank."
 
 #. module: sale_account_accountant
 #: model_terms:ir.ui.view,arch_db:sale_account_accountant.view_bank_rec_widget_form_inherit_sale_order
 msgid "uninvoiced sales orders"
-msgstr ""
+msgstr "sales order yang belum difaktur"

@@ -214,15 +214,15 @@ msgstr "Modo de envío en archivos adjuntos de candidatos"
 #, python-format
 msgid "Server is currently under maintenance. Please retry later"
 msgstr ""
-"El servidor se encuentra actualmente en mantenimiento. Por favor, inténtelo "
-"más tarde."
+"Por el momento, el servidor se encuentra en mantenimiento. Inténtelo más "
+"tarde."
 
 #. module: hr_recruitment_extract
 #. odoo-python
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
 #, python-format
 msgid "Server not available. Please retry later"
-msgstr "El servidor no está disponible. Por favor, inténtelo más tarde."
+msgstr "El servidor no está disponible, inténtelo más tarde."
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__state_processed

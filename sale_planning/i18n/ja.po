@@ -7,6 +7,7 @@
 # Noma Yuki, 2022
 # Yoshi Tashiro (Quartile) <tashiro@roomsfor.hk>, 2022
 # Ryoko Tsuda <ryoko@quartile.co>, 2023
+# Junko Augias, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Ryoko Tsuda <ryoko@quartile.co>, 2023\n"
+"Last-Translator: Junko Augias, 2023\n"
 "Language-Team: Japanese (https://app.transifex.com/odoo/teams/41243/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,6 +30,9 @@ msgid ""
 "                        as\n"
 "                    </span>"
 msgstr ""
+"<span attrs=\"{'invisible': [('planning_enabled', '=', False)]}\" class=\"oe_inline me-2\">\n"
+"                        以下としての：\n"
+"                    </span>"
 
 #. module: sale_planning
 #: model_terms:ir.ui.view,arch_db:sale_planning.view_order_form_inherit_sale_planning
@@ -48,7 +52,7 @@ msgstr ""
 #. module: sale_planning
 #: model_terms:ir.ui.view,arch_db:sale_planning.planning_slot_view_gantt_inherit_sale_planning
 msgid "<strong>Sales Order Item  — </strong>"
-msgstr ""
+msgstr "<strong>販売オーダ項目  — </strong>"
 
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_planning_slot__allocated_hours
@@ -69,7 +73,7 @@ msgstr "販売オーダごと"
 #. module: sale_planning
 #: model:product.template,name:sale_planning.developer_product_product_template
 msgid "Developer (Plan services)"
-msgstr ""
+msgstr "ディベロッパー（計画サービス）"
 
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_planning_slot__end_datetime
@@ -84,7 +88,7 @@ msgstr "ファンクショナルテスター"
 #. module: sale_planning
 #: model:product.template,name:sale_planning.technical_maintainance_product_product_template
 msgid "IT Technical Maintenance (Plan services)"
-msgstr ""
+msgstr "IT技術メンテナンス（計画サービス）"
 
 #. module: sale_planning
 #: model:planning.role,name:sale_planning.planning_role_technician
@@ -100,6 +104,7 @@ msgid ""
 "when confirming the Sales Order. Only employees with this role will "
 "automatically be assigned shifts for Sales Orders containing this service."
 msgstr ""
+"有効にすると、販売オーダを確認する際に、選択された役割のシフトが自動的に生成されます。この役割を持つ従業員のみ、このサービスを含む販売オーダのシフトが自動的に割り当てられます。"
 
 #. module: sale_planning
 #: model_terms:ir.ui.view,arch_db:sale_planning.planning_analysis_report_view_search
@@ -123,7 +128,7 @@ msgstr "請求対象外"
 msgid ""
 "Only slots linked to a sale order with a plannable service can be "
 "unscheduled."
-msgstr ""
+msgstr "計画可能なサービスを伴う販売オーダにリンクされたスロットのみ、スケジュール解除が可能です。"
 
 #. module: sale_planning
 #: model:ir.actions.act_window,name:sale_planning.planning_action_orders_planned
@@ -133,7 +138,7 @@ msgstr ""
 #. module: sale_planning
 #: model_terms:product.template,description:sale_planning.developer_product_product_template
 msgid "Our developer will help you to add new features to your Software."
-msgstr ""
+msgstr "当社の開発者は、お客様のソフトウェアに新しい機能を追加するのをお手伝いします。"
 
 #. module: sale_planning
 #. odoo-javascript
@@ -160,40 +165,42 @@ msgid ""
 "Plannable services should be a service product, product\n"
 "%s."
 msgstr ""
+"計画可能なサービスはサービスプロダクト、プロダクトである必要があります\n"
+"%s"
 
 #. module: sale_planning
 #. odoo-python
 #: code:addons/sale_planning/models/product.py:0
 #, python-format
 msgid "Plannable services should use an UoM within the %s category."
-msgstr ""
+msgstr "計画可能なサービスは%sカテゴリー内の単位を使用する必要があります。"
 
 #. module: sale_planning
 #: model:ir.model,name:sale_planning.model_planning_analysis_report
 msgid "Planning Analysis Report"
-msgstr ""
+msgstr "計画分析レポート"
 
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_sale_order__planning_first_sale_line_id
 msgid "Planning First Sale Line"
-msgstr ""
+msgstr "販売第一項目の計画"
 
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_sale_order__planning_hours_planned
 #: model:ir.model.fields,field_description:sale_planning.field_sale_order_line__planning_hours_planned
 msgid "Planning Hours Planned"
-msgstr ""
+msgstr "計画で予定されている時間"
 
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_sale_order__planning_hours_to_plan
 #: model:ir.model.fields,field_description:sale_planning.field_sale_order_line__planning_hours_to_plan
 msgid "Planning Hours To Plan"
-msgstr ""
+msgstr "計画で予定する時間"
 
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_sale_order__planning_initial_date
 msgid "Planning Initial Date"
-msgstr ""
+msgstr "初回計画日"
 
 #. module: sale_planning
 #: model:ir.model,name:sale_planning.model_planning_role
@@ -210,7 +217,7 @@ msgstr "計画シフト"
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_sale_order_line__planning_slot_ids
 msgid "Planning Slot"
-msgstr ""
+msgstr "計画スロット"
 
 #. module: sale_planning
 #: model:ir.model,name:sale_planning.model_product_template
@@ -220,7 +227,7 @@ msgstr "プロダクト"
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_planning_analysis_report__role_product_ids
 msgid "Role Product"
-msgstr ""
+msgstr "役割プロダクト"
 
 #. module: sale_planning
 #: model:ir.model,name:sale_planning.model_sale_order
@@ -254,6 +261,7 @@ msgid ""
 "are automatically planned, the remaining hours of the sales order item, as "
 "well as the role defined on the service, are taken into account."
 msgstr ""
+"このシフトが実行される販売オーダ項目。販売オーダが自動的に計画される場合、販売オーダ項目の残り時間とサービス上で定義された役割が考慮されます。"
 
 #. module: sale_planning
 #: model:ir.actions.act_window,name:sale_planning.sale_planning_action_schedule_by_sale_order
@@ -294,7 +302,7 @@ msgstr "開始日"
 #. module: sale_planning
 #: model_terms:product.template,description:sale_planning.technical_maintainance_product_product_template
 msgid "Take a rest. We'll do our best."
-msgstr ""
+msgstr "お休み下さい。私たちがベストを尽くします。"
 
 #. module: sale_planning
 #. odoo-javascript
@@ -319,7 +327,7 @@ msgstr "割り当てる販売オーダがないか、または、利用可能な
 msgid ""
 "This Sale Order Item doesn't have a target value of planned hours. Planned "
 "hours :"
-msgstr ""
+msgstr "この販売オーダ項目には予定時間の目標値がありません。予定時間："
 
 #. module: sale_planning
 #. odoo-javascript
@@ -327,12 +335,12 @@ msgstr ""
 #, python-format
 msgid ""
 "This resource is not available for this shift during the selected period."
-msgstr ""
+msgstr "このリソースは、選択された期間中、このシフトでは使用できません。"
 
 #. module: sale_planning
 #: model_terms:ir.ui.view,arch_db:sale_planning.planning_view_form_in_gantt_inherit_sale_planning
 msgid "Unschedule"
-msgstr ""
+msgstr "予定解除する"
 
 #. module: sale_planning
 #. odoo-python
@@ -351,12 +359,12 @@ msgstr ""
 #. module: sale_planning
 #: model:planning.role,name:sale_planning.planning_role_planner
 msgid "Work Planner"
-msgstr ""
+msgstr "業務プランナー"
 
 #. module: sale_planning
 #: model_terms:ir.ui.view,arch_db:sale_planning.product_template_form_view_invoice_policy_inherit_sale_planning
 msgid "e.g. Consultant"
-msgstr ""
+msgstr "例：コンサルタント"
 
 #. module: sale_planning
 #. odoo-python

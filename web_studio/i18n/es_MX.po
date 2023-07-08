@@ -3015,7 +3015,7 @@ msgstr "Configuración del formato de papel"
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Paper format"
-msgstr "Formato de hoja"
+msgstr "Formato de papel"
 
 #. module: web_studio
 #. odoo-javascript

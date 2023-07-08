@@ -284,7 +284,7 @@ msgstr ""
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,field_description:payment_sepa_direct_debit.field_payment_provider__sdd_signature_required
 msgid "Online Signature"
-msgstr ""
+msgstr "Tanda Tangan Online"
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model,name:payment_sepa_direct_debit.model_account_payment_method
@@ -421,12 +421,12 @@ msgstr "Tanda Tangan"
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,field_description:payment_sepa_direct_debit.field_sdd_mandate__signed_by
 msgid "Signed By"
-msgstr ""
+msgstr "Ditandangani Oleh"
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,field_description:payment_sepa_direct_debit.field_sdd_mandate__signed_on
 msgid "Signed On"
-msgstr ""
+msgstr "Ditandatangani Pada"
 
 #. module: payment_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.sdd_payment_mandate_form
@@ -557,7 +557,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:payment_sepa_direct_debit.field_sdd_mandate__verification_code
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.inline_form
 msgid "Verification Code"
-msgstr ""
+msgstr "Kode Verifikasi"
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,field_description:payment_sepa_direct_debit.field_sdd_mandate__verified

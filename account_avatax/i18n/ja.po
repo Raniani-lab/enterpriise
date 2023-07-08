@@ -415,12 +415,14 @@ msgid ""
 "Odoo could not change the state of the transaction related to %(document)s in AvaTax\n"
 "Please check the status of `%(technical)s` in the AvaTax portal."
 msgstr ""
+"OdooがAvaTaxで%(document)sに関連する取引のステータスを変更できませんでした。\n"
+"AvaTaxポータルで`%(technical)s`の状態を確認して下さい。"
 
 #. module: account_avatax
 #: code:addons/account_avatax/models/res_company.py:0
 #, python-format
 msgid "Odoo could not fetch the exemption codes of %(company)s"
-msgstr ""
+msgstr "Odooは%(company)sの免責コードを取得できませんでした。"
 
 #. module: account_avatax
 #: code:addons/account_avatax/models/account_avatax.py:0
@@ -429,12 +431,14 @@ msgid ""
 "Odoo could not fetch the taxes related to %(document)s.\n"
 "Please check the status of `%(technical)s` in the AvaTax portal."
 msgstr ""
+"Odooは%(document)sに関連する税を取得できませんでした。\n"
+"AvaTaxポータルで`%(technical)s`のステータスを確認して下さい。"
 
 #. module: account_avatax
 #: code:addons/account_avatax/wizard/avatax_validate_address.py:0
 #, python-format
 msgid "Odoo could not validate the address of %(partner)s with Avalara."
-msgstr ""
+msgstr "OdooはAvalaraと%(partner)sの所在地を検証できませんでした。"
 
 #. module: account_avatax
 #: code:addons/account_avatax/models/account_avatax.py:0
@@ -443,11 +447,13 @@ msgid ""
 "Odoo could not void the transaction related to %(document)s in AvaTax\n"
 "Please check the status of `%(technical)s` in the AvaTax portal."
 msgstr ""
+"OdooがAvaTaxで%(document)sに関連する取引を無効化できませんでした。\n"
+"AvaTaxポータルで`%(technical)s`のステータスを確認してください。"
 
 #. module: account_avatax
 #: model_terms:ir.ui.view,arch_db:account_avatax.avatax_validate_address_view_form
 msgid "Original Address"
-msgstr ""
+msgstr "参照元所在地"
 
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_validate_address__partner_id
@@ -458,7 +464,7 @@ msgstr "取引先"
 #: code:addons/account_avatax/models/account_avatax.py:0
 #, python-format
 msgid "Please add your AvaTax credentials"
-msgstr ""
+msgstr "AvaTaxの認証情報を追加して下さい。"
 
 #. module: account_avatax
 #: model:ir.model,name:account_avatax.model_product_template
@@ -483,18 +489,18 @@ msgstr "製造"
 #. module: account_avatax
 #: model:ir.model.fields.selection,name:account_avatax.selection__res_company__avalara_environment__sandbox
 msgid "Sandbox"
-msgstr ""
+msgstr "Sandbox"
 
 #. module: account_avatax
 #: model_terms:ir.ui.view,arch_db:account_avatax.avatax_validate_address_view_form
 msgid "Save Validated"
-msgstr ""
+msgstr "検証済と保存する"
 
 #. module: account_avatax
 #: code:addons/account_avatax/models/account_avatax_unique_code.py:0
 #, python-format
 msgid "Search operation not supported"
-msgstr ""
+msgstr "処理の検索はサポートされていません"
 
 #. module: account_avatax
 #: code:addons/account_avatax/models/res_company.py:0
@@ -503,6 +509,8 @@ msgid ""
 "Server Response:\n"
 "%s"
 msgstr ""
+"サーバレスポンス：\n"
+"%s"
 
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_validate_address__state_id
@@ -529,14 +537,14 @@ msgstr "Avataxから有効な住所を提案"
 #. module: account_avatax
 #: model_terms:ir.ui.view,arch_db:account_avatax.res_config_settings_view_form
 msgid "Synchronize the exemption codes from Avatax"
-msgstr ""
+msgstr "Avataxから免税コードを同期する"
 
 #. module: account_avatax
 #: model:ir.model.fields,help:account_avatax.field_res_config_settings__avalara_partner_code
 msgid ""
 "The Avalara Company Code for this company. Avalara will interpret as DEFAULT"
 " if it is not set."
-msgstr ""
+msgstr "この会社のAvalara会社コード。設定されていない場合、Avalara は DEFAULT と解釈します。"
 
 #. module: account_avatax
 #: code:addons/account_avatax/models/account_avatax.py:0
@@ -545,6 +553,8 @@ msgid ""
 "The Avalara Tax Code is required for %(name)s (#%(id)s)\n"
 "See https://taxcode.avatax.avalara.com/"
 msgstr ""
+"Avalara税コードは以下のために必要です：%(name)s (#%(id)s)\n"
+"参照： https://taxcode.avatax.avalara.com/"
 
 #. module: account_avatax
 #. odoo-python
@@ -553,34 +563,34 @@ msgstr ""
 msgid ""
 "The following customer(s) need to have a zip, state and country when using "
 "Avatax:"
-msgstr ""
+msgstr "Avataxをご利用の際、以下のお客様は郵便番号、州、国名が必要です："
 
 #. module: account_avatax
 #: model:ir.model.fields,help:account_avatax.field_res_config_settings__avalara_commit
 msgid "The transactions will be committed for reporting in Avatax."
-msgstr ""
+msgstr "取引はAvataxでの報告にコミットされます。"
 
 #. module: account_avatax
 #: model_terms:ir.ui.view,arch_db:account_avatax.avatax_validate_address_view_form
 msgid "This is already a valid address."
-msgstr ""
+msgstr "これは既に有効なアドレスです。"
 
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_account_fiscal_position__is_avatax
 msgid "Use AvaTax API"
-msgstr ""
+msgstr "AvaTax APIを使用する"
 
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_res_company__avalara_use_upc
 #: model:ir.model.fields,field_description:account_avatax.field_res_config_settings__avalara_use_upc
 #: model_terms:ir.ui.view,arch_db:account_avatax.res_config_settings_view_form
 msgid "Use UPC"
-msgstr ""
+msgstr "UPCを使用する"
 
 #. module: account_avatax
 #: model:ir.model.fields,help:account_avatax.field_res_config_settings__avalara_use_upc
 msgid "Use Universal Product Code instead of custom defined codes in Avalara."
-msgstr ""
+msgstr "Avalaraでは、カスタム定義コードの代わりにユニバーサルプロダクトコードを使用します。"
 
 #. module: account_avatax
 #: model:ir.model.fields,help:account_avatax.field_account_avatax__avatax_unique_code
@@ -596,7 +606,7 @@ msgstr "このコードを使用して、Avalara ポータルで相互参照し�
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_exemption__valid_country_ids
 msgid "Valid Country"
-msgstr ""
+msgstr "有効な国"
 
 #. module: account_avatax
 #: model_terms:ir.ui.view,arch_db:account_avatax.res_partner_form_inherit
@@ -607,49 +617,49 @@ msgstr "検証"
 #: code:addons/account_avatax/models/res_partner.py:0
 #, python-format
 msgid "Validate address of %s"
-msgstr ""
+msgstr "%sのアドレスを検証する"
 
 #. module: account_avatax
 #: model:ir.model.fields,help:account_avatax.field_res_config_settings__avalara_address_validation
 msgid ""
 "Validate and correct the addresses of partners in North America with "
 "Avalara."
-msgstr ""
+msgstr "Avalaraで北アメリカのパートナーのアドレスを検証・訂正する。"
 
 #. module: account_avatax
 #: model_terms:ir.ui.view,arch_db:account_avatax.avatax_validate_address_view_form
 msgid "Validated Address"
-msgstr ""
+msgstr "検証済アドレス"
 
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_validate_address__validated_city
 msgid "Validated City"
-msgstr ""
+msgstr "検証済都市"
 
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_validate_address__validated_country_id
 msgid "Validated Country"
-msgstr ""
+msgstr "検証済国"
 
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_validate_address__validated_state_id
 msgid "Validated State"
-msgstr ""
+msgstr "検証済州"
 
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_validate_address__validated_street
 msgid "Validated Street"
-msgstr ""
+msgstr "検証済通名"
 
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_validate_address__validated_street2
 msgid "Validated Street2"
-msgstr ""
+msgstr "検証済通り名2"
 
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_validate_address__validated_zip
 msgid "Validated Zip Code"
-msgstr ""
+msgstr "検証済郵便番号"
 
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_validate_address__zip
@@ -668,4 +678,4 @@ msgstr "[%s] %s"
 #: model:ir.model.fields,help:account_avatax.field_product_product__avatax_category_id
 #: model:ir.model.fields,help:account_avatax.field_product_template__avatax_category_id
 msgid "https://taxcode.avatax.avalara.com/"
-msgstr ""
+msgstr "https://taxcode.avatax.avalara.com/"

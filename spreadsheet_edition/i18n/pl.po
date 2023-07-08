@@ -515,7 +515,7 @@ msgstr "Pivot zawiera zduplikowane grupy"
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/side_panels/pivot_details_side_panel.xml:0
 #, python-format
 msgid "Pivot name"
-msgstr ""
+msgstr "Nazwa przestawna"
 
 #. module: spreadsheet_edition
 #. odoo-javascript

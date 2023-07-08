@@ -319,7 +319,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "In"
-msgstr ""
+msgstr "Pēc"
 
 #. module: sale_subscription_dashboard
 #: model:ir.actions.act_window,name:sale_subscription_dashboard.action_move_line_entries_report

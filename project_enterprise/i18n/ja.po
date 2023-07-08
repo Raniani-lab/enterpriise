@@ -8,6 +8,7 @@
 # Yoshi Tashiro (Quartile) <tashiro@roomsfor.hk>, 2022
 # Ryoko Tsuda <ryoko@quartile.co>, 2022
 # 江口和志 <sandwhale1010@gmail.com>, 2022
+# Junko Augias, 2023
 # 
 msgid ""
 msgstr ""
@@ -15,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: 江口和志 <sandwhale1010@gmail.com>, 2022\n"
+"Last-Translator: Junko Augias, 2023\n"
 "Language-Team: Japanese (https://app.transifex.com/odoo/teams/41243/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -299,7 +300,7 @@ msgstr "プロジェクト"
 #. module: project_enterprise
 #: model:ir.model,name:project_enterprise.model_project_milestone
 msgid "Project Milestone"
-msgstr ""
+msgstr "プロジェクトマイルストン"
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__project_color
@@ -448,7 +449,7 @@ msgstr "未割当タスク"
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_form_in_gantt
 msgid "Unschedule"
-msgstr ""
+msgstr "予定解除する"
 
 #. module: project_enterprise
 #: model:ir.model,name:project_enterprise.model_res_users

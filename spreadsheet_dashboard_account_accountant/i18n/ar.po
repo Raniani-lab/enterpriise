@@ -563,7 +563,7 @@ msgstr "الشهر-السنة "
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Net Credit Purchases / Average accounts payable balance for period"
-msgstr ""
+msgstr "صافي المشتريات الائتمانية / متوسط رصيد حسابات الدائنين للفترة "
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -866,7 +866,7 @@ msgstr "الإيرادات "
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Sales on account / Average accounts receivable balance for period"
-msgstr ""
+msgstr "المبيعات في الحساب / متوسط رصيد حسابات الدائنين للفترة "
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript

@@ -41,7 +41,7 @@ msgid ""
 msgstr ""
 "<div style=\"margin: 0px; padding: 0px;\">\n"
 "    <h2>¡Felicidades!</h2>\n"
-"    Puede configurar su paquete salarial al hacer clic en el enlace a continuación.\n"
+"    Puede configurar su paquete salarial mediante el siguiente enlace.\n"
 "    <div style=\"padding: 16px 0px 16px 0px;\">\n"
 "        <a t-att-href=\"ctx.get('salary_package_url')\" target=\"_blank\" style=\"background-color: #875a7b; text-decoration: none; color: #fff; padding: 8px 16px 8px 16px; border-radius: 5px;\">Configure su paquete</a>\n"
 "    </div>\n"
@@ -61,7 +61,7 @@ msgid ""
 "                    </span>"
 msgstr ""
 "<span class=\"alert alert-warning\" role=\"alert\" colspan=\"2\" attrs=\"{'invisible':[('contract_id', '!=', False)]}\">\n"
-"                            Antes de acceder al enlace de simulación, primero debe configurar una plantilla de oferta.\n"
+"                            Antes de acceder al enlace de simulación debe configurar una plantilla de oferta.\n"
 "                    </span>"
 
 #. module: hr_contract_salary
@@ -231,7 +231,7 @@ msgstr "Aplica ahora"
 #: model:ir.actions.server,name:hr_contract_salary.ir_cron_clean_redundant_salary_data_ir_actions_server
 #: model:ir.cron,cron_name:hr_contract_salary.ir_cron_clean_redundant_salary_data
 msgid "Archive/Delete redundant generated salary data"
-msgstr "Archivar/eliminar datos de salario generados redundantes"
+msgstr "Archivar/eliminar datos redundantes de salario generados"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_resume_view_search
@@ -407,8 +407,8 @@ msgstr "Campo de contrato que se utiliza para plegar esta ventaja."
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_salary_advantage__manual_res_field_id
 msgid "Contract field used to manually encode an advantage value."
 msgstr ""
-"Campo de contrato que se utiliza para codificar manualmente el valor de la "
-"ventaja."
+"Campo de contrato que se utiliza para codificar de manera manual el valor de"
+" la ventaja."
 
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_hr_contract_history
@@ -596,7 +596,7 @@ msgstr "Documento"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_sign_document_wizard__sign_template_ids
 msgid "Documents to sign"
-msgstr "Documentos para firmar"
+msgstr "Documentos a firmar"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_sign_document_wizard__sign_template_ids
@@ -605,7 +605,7 @@ msgid ""
 "        Documents with 1 responsible will only have to be signed by the employee while documents with 2 different responsible will have to be signed by both the employee and the responsible.\n"
 "        "
 msgstr ""
-"Documentos para firmar. Solo se pueden seleccionar los documentos con 1 o 2 responsables diferentes.\n"
+"Documentos a firmar. Solo se pueden seleccionar los documentos con 1 o 2 responsables diferentes.\n"
 "        Los documentos con 1 responsable solo tendrán que ser firmados por el empleado, mientras que los documentos con 2 responsables diferentes tendrán que ser firmados tanto por el empleado como por el responsable.\n"
 "        "
 
@@ -804,7 +804,7 @@ msgstr "Oculta información personal de los hijos si se selecciona."
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_salary_advantage__hide_description
 msgid "Hide the description if the advantage is not taken."
-msgstr "Oculta la descripción si no se ha tomado la ventaja"
+msgstr "Oculta la descripción si no se ha tomado la ventaja."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__id
@@ -832,7 +832,7 @@ msgstr "Imagen"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume__impacts_monthly_total
 msgid "Impacts Monthly Total"
-msgstr "Total de impactos mensual"
+msgstr "Impactos en el total mensual"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__impacts_net_salary
@@ -859,7 +859,7 @@ msgstr "Entero"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info__is_required
 msgid "Is Required"
-msgstr "Es requerido"
+msgstr "Es necesario"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__is_origin_contract_template
@@ -881,7 +881,7 @@ msgstr "Puesto de trabajo"
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__job_title
 #, python-format
 msgid "Job Title"
-msgstr "Título del trabajo"
+msgstr "Puesto de trabajo"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_personal_info__dropdown_selection__lang
@@ -1066,8 +1066,8 @@ msgid ""
 "No HR responsible defined on the job position. Please contact an "
 "administrator."
 msgstr ""
-"No hay ningún responsable de RR. HH. definido para el puesto de trabajo. Por"
-" favor, contacte a un administrador."
+"No hay ningún responsable de RR. HH. definido para el puesto de trabajo, "
+"contacte a un administrador."
 
 #. module: hr_contract_salary
 #: model_terms:ir.actions.act_window,help:hr_contract_salary.action_hr_contract_templates
@@ -1079,7 +1079,7 @@ msgstr "No se encontró ninguna plantilla"
 #: code:addons/hr_contract_salary/models/hr_contract.py:0
 #, python-format
 msgid "No private address defined on the employee!"
-msgstr "¡No hay ninguna dirección privada definida del empleado!"
+msgstr "No hay ninguna dirección privada definida del empleado"
 
 #. module: hr_contract_salary
 #. odoo-python
@@ -1089,8 +1089,8 @@ msgid ""
 "No signature template defined on the contract. Please contact the HR "
 "responsible."
 msgstr ""
-"No hay plantilla de firma definida en el contrato. Por favor, contacte al "
-"responsable de recursos humanos."
+"No hay plantilla de firma definida en el contrato, contacte al responsable "
+"de recursos humanos."
 
 #. module: hr_contract_salary
 #. odoo-javascript

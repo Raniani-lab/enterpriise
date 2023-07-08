@@ -1256,7 +1256,7 @@ msgstr ""
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "menu"
-msgstr ""
+msgstr "menu"
 
 #. module: mrp_workorder
 #. odoo-javascript

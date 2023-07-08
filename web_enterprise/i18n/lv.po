@@ -221,7 +221,7 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/webclient/home_menu/home_menu.xml:0
 #, python-format
 msgid "No result"
-msgstr ""
+msgstr "Nav rezultātu"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -272,7 +272,7 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/legacy/js/views/barcode_fields.js:0
 #, python-format
 msgid "Quick search: %s"
-msgstr ""
+msgstr "Ātrā meklēšana: %s"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -319,7 +319,7 @@ msgstr "APSKATĪTIES REZULTĀTUS"
 #: code:addons/web_enterprise/static/src/legacy/xml/barcode_fields.xml:0
 #, python-format
 msgid "Scan barcode"
-msgstr ""
+msgstr "Skenēt svītrkodu"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -432,7 +432,7 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/legacy/xml/control_panel.xml:0
 #, python-format
 msgid "View switcher"
-msgstr ""
+msgstr "Skatu pārslēdzējs"
 
 #. module: web_enterprise
 #. odoo-javascript

@@ -1753,7 +1753,7 @@ msgstr "Vragen"
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_question__question_type__radio
 msgid "Radio (one answer)"
-msgstr "Radio (één antwoord)"
+msgstr "Keuzerondje (één antwoord)"
 
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_type__assign_method__random

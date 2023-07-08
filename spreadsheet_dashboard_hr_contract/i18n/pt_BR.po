@@ -78,7 +78,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Job Position"
-msgstr "Vaga de emprego"
+msgstr "Cargo"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. odoo-javascript

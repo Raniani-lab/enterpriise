@@ -3238,9 +3238,7 @@ msgstr ""
 msgid ""
 "Transactions(-) that were entered into Odoo, but not yet reconciled "
 "(Payments triggered by bills/credit notes or manually)"
-msgstr ""
-"Transactions(-) that were entered into Odoo, but not yet reconciled "
-"(Payments triggered by bills/credit notes or manually)"
+msgstr "已輸入 Odoo 但尚未對賬的交易(-)（由賬單/貸記單或手動觸發的付款）"
 
 #. module: account_reports
 #: model:account.report,name:account_reports.trial_balance_report
@@ -3252,7 +3250,7 @@ msgstr "試算表"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_trial_balance_report_handler
 msgid "Trial Balance Custom Handler"
-msgstr ""
+msgstr "試算平衡自訂處理程式"
 
 #. module: account_reports
 #. odoo-python

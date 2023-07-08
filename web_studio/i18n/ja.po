@@ -3978,7 +3978,7 @@ msgstr "新しい名前には、aからzまでの小文字、数字、および_
 #: code:addons/web_studio/controllers/main.py:0
 #, python-format
 msgid "The operation  type \"%s\" is not supported"
-msgstr "操作タイプ &quot;%s&quot;はサポートされていません"
+msgstr "オペレーションタイプ \"%s\" はサポートされていません"
 
 #. module: web_studio
 #. odoo-javascript

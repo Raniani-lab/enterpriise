@@ -50,7 +50,7 @@ msgstr ""
 #. module: sale_stock_renting
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.res_config_settings_inherit_view_form
 msgid "<span class=\"o_form_label\">Default Padding Time</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">Standardzeitpuffer</span>"
 
 #. module: sale_stock_renting
 #: model:ir.model.fields,help:sale_stock_renting.field_res_company__padding_time

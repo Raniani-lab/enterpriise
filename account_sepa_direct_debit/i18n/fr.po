@@ -5,7 +5,6 @@
 # Translators:
 # Martin Trigaux, 2022
 # Cécile Collart <cco@odoo.com>, 2022
-# Malika Berardi, 2022
 # Jolien De Paepe, 2023
 # 
 msgid ""
@@ -50,7 +49,7 @@ msgstr "<strong>Pays :</strong>"
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
 msgid "<strong>Creditor identifier:</strong>"
-msgstr "<strong>Identifiant du créancier :</strong>"
+msgstr "<strong>Identifiant créancier :</strong>"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
@@ -231,13 +230,13 @@ msgstr "Annuler"
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sepa_direct_debit_mandate_form
 msgid "Close"
-msgstr "Fermer"
+msgstr "Résilier"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields.selection,name:account_sepa_direct_debit.selection__sdd_mandate__state__closed
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sdd_mandate_search_view
 msgid "Closed"
-msgstr "Fermé"
+msgstr "Résilié"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sepa_direct_debit_mandate_form
@@ -277,7 +276,7 @@ msgstr "Est-il possible d’utiliser un mandat de prélèvement automatique ?"
 #. module: account_sepa_direct_debit
 #: model_terms:ir.actions.act_window,help:account_sepa_direct_debit.account_sepa_direct_debit_mandate_tree_act
 msgid "Create a new direct debit customer mandate"
-msgstr "Créer un nouveau mandat client à prélèvement automatique"
+msgstr "Créer un nouveau mandat client à prélèvement"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_account_payment_form
@@ -302,12 +301,12 @@ msgstr "Créancier"
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_res_config_settings__sdd_creditor_identifier
 msgid "Creditor Identifier"
-msgstr "Identifiant du créancier"
+msgstr "Identifiant créancier"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_res_config_settings__sdd_creditor_identifier
 msgid "Creditor identifier of your company within SEPA scheme."
-msgstr "Identifiant de créancier de votre société dans le régime SEPA."
+msgstr "Identifiant créancier de votre société dans le régime SEPA."
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__partner_id
@@ -336,7 +335,7 @@ msgid ""
 "after this date."
 msgstr ""
 "Date jusqu'à laquelle le mandat peut être utilisé. Il sera automatiquement "
-"clôturé après cette date. "
+"résilié après cette date. "
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_account_batch_payment__sdd_required_collection_date
@@ -360,7 +359,7 @@ msgstr "Identifiant du débiteur"
 #: model:ir.ui.menu,name:account_sepa_direct_debit.account_sepa_direct_debit_customer_mandates_menu
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sdd_res_partner_view
 msgid "Direct Debit Mandates"
-msgstr "Mandats de prélèvement automatique"
+msgstr "Mandats de prélèvement"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_account_journal_dashboard_kanban_view
@@ -482,7 +481,7 @@ msgstr "Si coché, certains messages ont une erreur de livraison."
 #, python-format
 msgid "Invalid creditor identifier. Make sure you made no typo."
 msgstr ""
-"Identifiant de créancier invalide. Assurez-vous qu’il n’y a aucune faute de "
+"Identifiant créancier invalide. Assurez-vous qu’il n’y a aucune faute de "
 "frappe."
 
 #. module: account_sepa_direct_debit
@@ -490,7 +489,7 @@ msgstr ""
 #: code:addons/account_sepa_direct_debit/models/res_company.py:0
 #, python-format
 msgid "Invalid creditor identifier. Wrong format."
-msgstr "Identifiant de créancier invalide. Format incorrect."
+msgstr "Identifiant créancier invalide. Format incorrect."
 
 #. module: account_sepa_direct_debit
 #: model:mail.message.subtype,description:account_sepa_direct_debit.sdd_mt_invoice_paid_with_mandate
@@ -506,8 +505,7 @@ msgstr "Factures réglées"
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.view_account_invoice_filter
 msgid "Invoices matching a valid SEPA Direct Debit Mandate"
-msgstr ""
-"Factures avec mandat de prélèvement automatique SEPA valide disponible"
+msgstr "Factures avec mandat de prélèvement SEPA valide disponible"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_sdd_mandate__paid_invoice_ids
@@ -545,8 +543,8 @@ msgstr "Écriture comptable"
 msgid ""
 "Journal to use to receive SEPA Direct Debit payments from this mandate."
 msgstr ""
-"Journal à utiliser pour recevoir les paiements par prélèvement automatique "
-"SEPA de ce mandat."
+"Journal à utiliser pour recevoir les paiements par prélèvement SEPA de ce "
+"mandat."
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate____last_update
@@ -674,7 +672,7 @@ msgstr ""
 "Une fois que la facture est établie\n"
 "                    dans Odoo pour un client ayant un mandat actif à la date de facturation,\n"
 "                    sa validation déclenchera le paiement automatique de la facture, et vous\n"
-"                    n’aurez plus qu’à générer un fichier XML de prélèvement automatique SEPA (SDD) contenant cette opération\n"
+"                    n’aurez plus qu’à générer un fichier XML de prélèvement SEPA (SDD) contenant cette opération\n"
 "                    et à l’envoyer à votre banque pour être payé."
 
 #. module: account_sepa_direct_debit
@@ -862,7 +860,7 @@ msgstr "Nombre de SDD"
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_res_company__sdd_creditor_identifier
 msgid "SDD creditor identifier"
-msgstr "Identifiant du créancier SDD"
+msgstr "Identifiant créancier SDD"
 
 #. module: account_sepa_direct_debit
 #. odoo-python
@@ -884,15 +882,15 @@ msgstr "Prélèvement SEPA"
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
 msgid "SEPA Direct Debit Mandate"
-msgstr "Mandat de prélèvement automatique SEPA"
+msgstr "Mandat de prélèvement SEPA"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_res_company__sdd_creditor_identifier
 msgid ""
 "SEPA Direct Debit creditor identifier of the company, given by the bank."
 msgstr ""
-"Il s’agit de l’identifiant du créancier du prélèvement automatique SEPA "
-"(fourni par la banque)."
+"Il s’agit de l’identifiant créancier du prélèvement automatique SEPA (fourni"
+" par la banque)."
 
 #. module: account_sepa_direct_debit
 #. odoo-python
@@ -902,9 +900,9 @@ msgid ""
 "SEPA Direct Debit scheme only accepts IBAN account numbers. Please select an"
 " IBAN-compliant debtor account for this mandate."
 msgstr ""
-"Le mode de prélèvement automatique SEPA ne prend en charge que les numéros "
-"de compte IBAN. Sélectionnez un compte débiteur conforme à la norme IBAN "
-"pour ce mandat."
+"Le mode de prélèvement SEPA ne prend en charge que les numéros de compte "
+"IBAN. Sélectionnez un compte débiteur conforme à la norme IBAN pour ce "
+"mandat."
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__message_has_sms_error
@@ -1003,7 +1001,7 @@ msgstr ""
 #, python-format
 msgid "The creditor identifier exceeds the maximum length of 35 characters."
 msgstr ""
-"L’identifiant du créancier dépasse la taille maximale autorisée "
+"L’identifiant créancier dépasse la taille maximale autorisée "
 "(35 caractères)."
 
 #. module: account_sepa_direct_debit
@@ -1059,7 +1057,7 @@ msgstr ""
 "Il s’agit de l’état du mandat. \n"
 "- 'Brouillon' signifie que le mandat nécessite une confirmation avant de pouvoir être utilisé. \n"
 "- 'Actif' signifie que le mandat peut être utilisé pour régler des factures. \n"
-"- 'Clôturé' signifie que le mandat a été marqué comme étant inutilisable à moins d’annuler les transactions antérieures ayant sollicité son utilisation.- 'Révoqué' signifie que le mandat a été signalé comme étant frauduleux par le client. Par conséquent, il est inutilisable (ce qui aurait dû être le cas depuis le début). Vous serez probablement amenés à rembourser les factures y étant associées (le cas échéant).\n"
+"- 'Résilié' signifie que le mandat a été marqué comme étant inutilisable à moins d’annuler les transactions antérieures ayant sollicité son utilisation.- 'Révoqué' signifie que le mandat a été signalé comme étant frauduleux par le client. Par conséquent, il est inutilisable (ce qui aurait dû être le cas depuis le début). Vous serez probablement amenés à rembourser les factures y étant associées (le cas échéant).\n"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_sdd_mandate__name
@@ -1108,7 +1106,7 @@ msgid ""
 msgstr ""
 "Définissez la valeur sur vrai si, et seulement si, vous souhaitez que le "
 "mandat ne soit utilisable pour une seule transaction. Il passera "
-"automatiquement de 'actif' à 'clôture' après le premier paiement lorsque "
+"automatiquement de 'actif' à 'résilié' après le premier paiement lorsque "
 "cette option est activée.\n"
 
 #. module: account_sepa_direct_debit
@@ -1213,7 +1211,7 @@ msgid ""
 "Your company must have a creditor identifier in order to issue SEPA Direct "
 "Debit payments requests. It can be defined in accounting module's settings."
 msgstr ""
-"Votre entreprise doit disposer d’un identifiant de créancier pour pouvoir "
+"Votre entreprise doit disposer d’un identifiant créancier pour pouvoir "
 "émettre des demandes de prélèvement automatique SEPA. Il peut être défini "
 "dans les paramètres du module de comptabilité."
 

@@ -40,14 +40,14 @@ msgstr "<i class=\"fa fa-thumbs-up me-1\" title=\"Me gusta\"/>"
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_social_live_post__facebook_post_id
 msgid "Actual Facebook ID of the post"
-msgstr "El ID de la publicación en Facebook"
+msgstr "ID de la publicación en Facebook"
 
 #. module: social_facebook
 #. odoo-python
 #: code:addons/social_facebook/models/social_stream_post.py:0
 #, python-format
 msgid "An error occurred."
-msgstr "Ocurrió un error"
+msgstr "Ocurrió un error."
 
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.res_config_settings_view_form
@@ -141,8 +141,8 @@ msgid ""
 "Facebook Page Access Token provided by the Facebook API, this should never be set manually.\n"
 "            It's used to authenticate requests when posting to or reading information from this account."
 msgstr ""
-"Token de acceso a la página de Facebook que dio el API de Facebook, esto se debería de configurar manualmente.\n"
-"            Se usa para autentificar peticiones cuando se publica o se le información de esta cuenta."
+"Token de acceso a la página de Facebook que proporcionó la API de Facebook, esto jamás se debe configurar de manera manual.\n"
+"            Se usa para autentificar peticiones cuando se publica o se lee información de esta cuenta."
 
 #. module: social_facebook
 #: model:ir.model.fields,help:social_facebook.field_social_account__facebook_account_id
@@ -150,8 +150,8 @@ msgid ""
 "Facebook Page ID provided by the Facebook API, this should never be set "
 "manually."
 msgstr ""
-"Token de acceso a la página de Facebook que dio el API de Facebook, esto "
-"jamás se debe de configurar manualmente."
+"ID de la página de Facebook que proporcionó la API de Facebook, esto jamás "
+"se debe configurar de manera manual."
 
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_social_stream_post__facebook_post_id
@@ -169,14 +169,14 @@ msgstr "Previsualización de Facebook"
 #: code:addons/social_facebook/controllers/main.py:0
 #, python-format
 msgid "Facebook did not provide a valid access token or it may have expired."
-msgstr "Facebook no le dio un token de acceso válido o ya expiró."
+msgstr "Facebook no le proporcionó un token de acceso válido o ya venció."
 
 #. module: social_facebook
 #. odoo-python
 #: code:addons/social_facebook/controllers/main.py:0
 #, python-format
 msgid "Facebook did not provide a valid access token."
-msgstr "Facebook no le dio un token de acceso válido."
+msgstr "Facebook no le proporcionó un token de acceso válido."
 
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_social_stream_post__facebook_is_event_post
@@ -219,8 +219,8 @@ msgid ""
 "Post not found. It could be because the post has been deleted on the Social "
 "Platform."
 msgstr ""
-"No se encontró la publicación. Puede ser porque se borró la publicación de "
-"la plataforma social."
+"No se encontró la publicación. Puede ser porque se eliminó la publicación de"
+" la plataforma social."
 
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.facebook_preview
@@ -310,12 +310,13 @@ msgid ""
 "specific media ('facebook', 'twitter', ...)."
 msgstr ""
 "Se utiliza para hacer comparaciones cuando necesitamos restringir algunas "
-"características para una red social específica ('facebook', 'twitter', ...)."
+"características para una red social específica (\"Facebook\", \"Twitter\", "
+"...)."
 
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_social_stream_post__facebook_user_likes
 msgid "User Likes"
-msgstr "Usar los me gusta"
+msgstr "Me gusta del usuario"
 
 #. module: social_facebook
 #. odoo-javascript
@@ -347,7 +348,7 @@ msgstr "No cuenta con una suscripción activa. Compre una aquí: %s"
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.social_stream_post_view_kanban
 msgid "added an event"
-msgstr "agregar un evento"
+msgstr "agregó un evento"
 
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.facebook_preview

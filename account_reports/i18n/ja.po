@@ -5,8 +5,8 @@
 # Translators:
 # Noma Yuki, 2023
 # Andy Yiu, 2023
-# Ryoko Tsuda <ryoko@quartile.co>, 2023
 # Martin Trigaux, 2023
+# Ryoko Tsuda <ryoko@quartile.co>, 2023
 # Junko Augias, 2023
 # 
 msgid ""
@@ -439,7 +439,7 @@ msgstr "同じ名称を持つ水平方向グループはすでに存在してい
 msgid ""
 "A tax unit can only be created between companies sharing the same main "
 "currency."
-msgstr "同じ主要通貨を共有する会社間のみに、課税単位は作成できます。"
+msgstr "同じ主要通貨を共有する会社間のみに、税ユニットを作成できます。"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_total_assets0
@@ -935,7 +935,7 @@ msgstr "繰越"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Carryover adjustment for tax unit"
-msgstr "税単位の繰越調整"
+msgstr "税ユニットの繰越調整"
 
 #. module: account_reports
 #. odoo-python
@@ -1108,7 +1108,7 @@ msgstr "会社"
 msgid ""
 "Company %s already belongs to a tax unit in %s. A company can at most be "
 "part of one tax unit per country."
-msgstr "会社 %sはすでに%sの税ユニットに属しています。1つの会社は、1つの国ごとに最大でも1つの課税単位にしか属すことができません。"
+msgstr "会社 %sはすでに%sの税ユニットに属しています。1つの会社は、1つの国ごとに最大でも1つの税ユニットにしか属すことができません。"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -2255,7 +2255,7 @@ msgid ""
 "Multiple draft tax closing entries exist for fiscal position %s after %s. There should be at most one. \n"
 " %s"
 msgstr ""
-"%s以降の会計ポジション%sに、税決算仕訳のドラフトが複数存在する。多くても1つである必要があります。\n"
+"会計ポジション%s（%s以降の）に、税決算仕訳のドラフトが複数存在します。多くても1つである必要があります。\n"
 "%s"
 
 #. module: account_reports
@@ -2554,7 +2554,7 @@ msgstr "計画"
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
 #, python-format
 msgid "Please specify the accounts necessary for the Tax Closing Entry."
-msgstr "税締切仕訳に必要な勘定科目を指定してください。"
+msgstr "税の決算仕訳に必要な勘定科目を指定してください。"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_fixed_assets_view0
@@ -2782,7 +2782,7 @@ msgstr "保存"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report__search_template
 msgid "Search Template"
-msgstr ""
+msgstr "テンプレートを検索する"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template_with_filter_input_accounts
@@ -3060,7 +3060,7 @@ msgstr "会社の国は、レポートの国と一致してません。"
 msgid ""
 "The country in which this tax unit is used to group your companies' tax "
 "reports declaration."
-msgstr "会社の確定申告をグループ化する課税単位の国。"
+msgstr "会社の確定申告をグループ化する税ユニットの国。"
 
 #. module: account_reports
 #. odoo-python
@@ -3351,7 +3351,7 @@ msgstr "VAT番号"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_company_form
 msgid "VAT Units"
-msgstr ""
+msgstr "VAT単位"
 
 #. module: account_reports
 #. odoo-python

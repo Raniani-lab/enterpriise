@@ -39,7 +39,7 @@ msgstr "'Planeación'"
 #: code:addons/planning/models/planning_template.py:0
 #, python-format
 msgid "(%s days span)"
-msgstr "(%s lapso de días)"
+msgstr "(lapso de %s días)"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.period_report_template
@@ -339,8 +339,8 @@ msgid ""
 "<i class=\"fa fa-check-circle text-success\"/> You were successfully "
 "assigned this open shift."
 msgstr ""
-"<i class=\"fa fa-check-circle text-success\"/> Se le asignó con éxito este "
-"turno abierto."
+"<i class=\"fa fa-check-circle text-success\"/> Este turno abierto se le "
+"asignó con éxito."
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_slot_template_view_kanban
@@ -529,7 +529,7 @@ msgid ""
 "                                            <span class=\"o_end_date\"/>"
 msgstr ""
 "<span class=\"o_start_date\"/>\n"
-"                                            <i class=\"mx-1 fa fa-long-arrow-right\" aria-label=\"Arrow icon\" title=\"Flecha\"/>\n"
+"                                            <i class=\"mx-1 fa fa-long-arrow-right\" aria-label=\"Icono de flecha\" title=\"Flecha\"/>\n"
 "                                            <span class=\"o_end_date\"/>"
 
 #. module: planning
@@ -715,7 +715,7 @@ msgid ""
 "orders, and estimate future needs."
 msgstr ""
 "Analice la asignación de sus recursos entre sus funciones, proyectos y "
-"órdenes de venta, y estime las futuras necesidades."
+"órdenes de venta y estime las necesidades futuras."
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_role_view_form
@@ -955,10 +955,9 @@ msgid ""
 "Create open shifts for the roles you need to complete a mission. Then, "
 "assign those open shifts to the resources that are available."
 msgstr ""
-"Defina las funciones que sus recursos realizan (por ejemplo, chef, "
-"bartender, mesero...). Cree turnos abiertos para las funciones que "
-"necesitará para completar las tareas. Luego, asigne dichos turnos abiertos a"
-" los recursos disponibles."
+"Defina las funciones que realizan sus recursos (por ejemplo, chef, "
+"bartender, mesero...). Cree turnos abiertos para las funciones que necesita "
+"para completar las tareas y asígnelos a los recursos disponibles."
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -967,10 +966,9 @@ msgid ""
 "Create open shifts for the roles you will be needing to complete a mission. "
 "Then, assign those open shifts to the resources that are available."
 msgstr ""
-"Defina las funciones que sus recursos realizan (por ejemplo, chef, "
-"bartender, mesero, etc.). Cree turnos abiertos para las funciones que "
-"necesitará para cumplir las tareas, luego asígnelos a los recursos "
-"disponibles."
+"Defina las funciones que realizan sus recursos (por ejemplo, chef, "
+"bartender, mesero...). Cree turnos abiertos para las funciones que "
+"necesitará para completar las tareas y asígnelos a los recursos disponibles."
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_role_view_kanban
@@ -1304,7 +1302,7 @@ msgid ""
 "If you are happy with your planning, you can now <b>send</b> it to your "
 "employees."
 msgstr ""
-"Si está feliz con esta planeación, puede <b>enviarla</b> a sus empleados."
+"Si está de acuerdo con esta planeación,<b>envíela</b> a sus empleados."
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_send__include_unassigned
@@ -1431,7 +1429,7 @@ msgstr ""
 #: code:addons/planning/static/src/js/tours/planning.js:0
 #, python-format
 msgid "Let's start managing your employees' schedule!"
-msgstr "¡Empecemos a gestionar los horarios de sus empleados!"
+msgstr "Empecemos a gestionar los horarios de sus empleados"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_shift_template
@@ -1550,7 +1548,7 @@ msgstr "Número de repeticiones de la planeación"
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_report_action_analysis
 msgid "No data yet!"
-msgstr "¡No hay datos aún!"
+msgstr "Todavía no hay información"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_resources
@@ -1723,7 +1721,7 @@ msgstr "Planeación: nuevo horario"
 #. module: planning
 #: model:mail.template,name:planning.email_template_slot_single
 msgid "Planning: New Shift"
-msgstr "Planeación: nuevo horario"
+msgstr "Planeación: nuevo turno"
 
 #. module: planning
 #: model:ir.actions.server,name:planning.ir_cron_forecast_schedule_ir_actions_server
@@ -1736,14 +1734,14 @@ msgstr "Planeación: generar siguientes turnos recurrentes"
 #: code:addons/planning/models/planning.py:0
 #, python-format
 msgid "Planning: new open shift available on"
-msgstr "Planeación: nuevo turno disponible en"
+msgstr "Planeación: nuevo turno abierto disponible el"
 
 #. module: planning
 #. odoo-python
 #: code:addons/planning/models/planning.py:0
 #, python-format
 msgid "Planning: new shift on"
-msgstr "Planeación: nuevo turno en"
+msgstr "Planeación: nuevo turno el"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.brand_promotion
@@ -1919,7 +1917,7 @@ msgid ""
 msgstr ""
 "Funciones que el empleado puede desempeñar. Al crear un turno para este empleado, solo se mostrarán las plantillas de turnos para estas funciones.\n"
 "De forma similar, solo se enviarán los turnos abiertos disponibles para estas funciones cuando se publique el horario.\n"
-"Adicionalmente, al empleado solo se le asignarán órdenes para estas funciones (la función de planeación predeterminada tiene prioridad sobre las demás).\n"
+"Además, al empleado solo se le asignarán órdenes para estas funciones (la función de planeación predeterminada tiene prioridad sobre las demás).\n"
 "Déjelo en blanco para que al empleado se le asignen turnos sin importar su función."
 
 #. module: planning
@@ -2149,7 +2147,7 @@ msgstr ""
 #: code:addons/planning/models/planning.py:0
 #, python-format
 msgid "The company does not allow you to self unassign."
-msgstr "La empresa no le permite asignarse usted mismo."
+msgstr "La empresa no permite que usted elimine su asignación del turno."
 
 #. module: planning
 #. odoo-python
@@ -2468,10 +2466,10 @@ msgid ""
 "needing to complete a mission. Then, assign those open shifts to the "
 "resources that are available.</i>"
 msgstr ""
-"Defina la <b>función</b> que su empleado realizará  (<i>por ejemplo, chef, "
+"Defina la <b>función</b> que realizará su empleado (<i>por ejemplo, chef, "
 "bartender, mesero, etc.</i>). <i>Consejo: cree turnos abiertos para las "
-"funciones que necesitará para cumplir las tareas. Posteriormente, asigne "
-"dichos turnos abiertos a los recursos disponibles.</i>"
+"funciones que necesitará para cumplir las tareas y luego asígneselos a los "
+"recursos disponibles.</i>"
 
 #. module: planning
 #: model:ir.model.fields.selection,name:planning.selection__planning_recurrency__repeat_unit__year
@@ -2517,7 +2515,7 @@ msgstr "No puede enviar un espacio antiguo sin asignar"
 #: code:addons/planning/models/planning.py:0
 #, python-format
 msgid "You don't have the right to self assign."
-msgstr "No tiene los derechos para asignarse a usted mismo."
+msgstr "No tiene autorización para asignarse a usted mismo."
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.slot_unassign

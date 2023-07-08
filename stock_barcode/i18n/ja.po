@@ -210,7 +210,7 @@ msgstr "適用"
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_barcode_cancel_operation_view
 msgid "Are you sure you want to cancel this operation ?"
-msgstr ""
+msgstr "このオペレーションを本当にキャンセルしますか？"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_backorder_confirmation
@@ -296,7 +296,7 @@ msgstr ""
 #: code:addons/stock_barcode/models/stock_picking.py:0
 #, python-format
 msgid "Cancel this operation ?"
-msgstr ""
+msgstr "このオペレーションをキャンセルしますか？"
 
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock_barcode.field_stock_move_line__is_completed
@@ -431,7 +431,7 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_barcode_cancel_operation_view
 msgid "Don't cancel"
-msgstr ""
+msgstr "取消しない"
 
 #. module: stock_barcode
 #. odoo-javascript
@@ -641,7 +641,7 @@ msgstr ""
 #, python-format
 msgid ""
 "No internal operation type. Please configure one in warehouse settings."
-msgstr "内部操作タイプはありません。倉庫設定で構成してください。"
+msgstr "内部オペレーションタイプがありません。倉庫設定で構成してください。"
 
 #. module: stock_barcode
 #. odoo-python
@@ -778,21 +778,21 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Press Validate or scan another product"
-msgstr ""
+msgstr "検証を押すか、他のプロダクトをスキャン"
 
 #. module: stock_barcode
 #. odoo-javascript
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Print Barcodes PDF"
-msgstr "バーコードPDFを印刷する"
+msgstr "バーコードPDFを印刷"
 
 #. module: stock_barcode
 #. odoo-javascript
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Print Delivery Slip"
-msgstr "配達伝票を印刷する"
+msgstr "配達伝票を印刷"
 
 #. module: stock_barcode
 #. odoo-javascript
@@ -806,14 +806,14 @@ msgstr "在庫の印刷"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Print Packages"
-msgstr ""
+msgstr "パッケージを印刷"
 
 #. module: stock_barcode
 #. odoo-javascript
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Print Picking Operations"
-msgstr "印刷ピッキング操作"
+msgstr "ピッキングオペレーションを印刷"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_barcode_view_picking_type_form
@@ -900,14 +900,14 @@ msgstr "それを除く"
 #: code:addons/stock_barcode/static/src/main_menu.xml:0
 #, python-format
 msgid "Scan a"
-msgstr "スキャン"
+msgstr "スキャン："
 
 #. module: stock_barcode
 #. odoo-javascript
 #: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
 #, python-format
 msgid "Scan a location"
-msgstr ""
+msgstr "ロケーションをスキャン"
 
 #. module: stock_barcode
 #. odoo-javascript
@@ -1014,7 +1014,7 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a product or the destination location."
-msgstr ""
+msgstr "プロダクトまたは移動先ロケーションをスキャン"
 
 #. module: stock_barcode
 #. odoo-javascript
@@ -1077,14 +1077,14 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/kanban/stock_barcode_kanban_renderer.xml:0
 #, python-format
 msgid "Scan a transfer, a product or a package to filter your records"
-msgstr ""
+msgstr "転送、プロダクト、またはパッケージをスキャンして、レコードをフィルタリング"
 
 #. module: stock_barcode
 #. odoo-javascript
 #: code:addons/stock_barcode/static/src/main_menu.xml:0
 #, python-format
 msgid "Scan an"
-msgstr "スキャンします"
+msgstr "スキャン："
 
 #. module: stock_barcode
 #. odoo-javascript
@@ -1120,7 +1120,7 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
 #, python-format
 msgid "Scan more products in %s or scan another location"
-msgstr ""
+msgstr "%s のプロダクトをさらにスキャンするか、または、別のロケーションをスキャン"
 
 #. module: stock_barcode
 #. odoo-javascript
@@ -1171,21 +1171,21 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan the source location"
-msgstr ""
+msgstr "移動元ロケーションをスキャン"
 
 #. module: stock_barcode
 #. odoo-javascript
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan the source location or a package"
-msgstr ""
+msgstr "移動元ロケーションまたはパッケージをスキャン"
 
 #. module: stock_barcode
 #. odoo-javascript
 #: code:addons/stock_barcode/static/src/models/barcode_model.js:0
 #, python-format
 msgid "Scan the source location, or scan a product"
-msgstr "ソースの場所をスキャンするか、製品をスキャンします"
+msgstr "移動元ロケーションをスキャン、または、プロダクトをスキャン"
 
 #. module: stock_barcode
 #. odoo-javascript
@@ -1467,7 +1467,7 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.view_backorder_confirmation
 msgid "You have processed less products than the initial demand:"
-msgstr ""
+msgstr "最初の要求より少ないプロダクトを処理しました："
 
 #. module: stock_barcode
 #. odoo-javascript
@@ -1502,7 +1502,7 @@ msgstr "ドキュメント"
 #: code:addons/stock_barcode/static/src/main_menu.xml:0
 #, python-format
 msgid "location"
-msgstr "場所"
+msgstr "ロケーション"
 
 #. module: stock_barcode
 #. odoo-javascript
@@ -1518,7 +1518,7 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/main_menu.xml:0
 #, python-format
 msgid "operation type"
-msgstr "操作タイプ"
+msgstr "オペレーションタイプ"
 
 #. module: stock_barcode
 #. odoo-javascript
@@ -1532,12 +1532,12 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/main_menu.xml:0
 #, python-format
 msgid "product"
-msgstr ""
+msgstr "プロダクト"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.view_backorder_confirmation
 msgid "products were not processed at all."
-msgstr ""
+msgstr "のプロダクトは処理されていません。"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.view_backorder_confirmation
@@ -1563,32 +1563,32 @@ msgstr "このモジュールで何ができるかを確認してください!�
 #: code:addons/stock_barcode/static/src/main_menu.xml:0
 #, python-format
 msgid "to create a new transfer from this location."
-msgstr "この場所から新しい転送を作成します。"
+msgstr "→このロケーションから新しい転送を作成"
 
 #. module: stock_barcode
 #. odoo-javascript
 #: code:addons/stock_barcode/static/src/main_menu.xml:0
 #, python-format
 msgid "to create a new transfer."
-msgstr "新しい転送を作成します。"
+msgstr "→新しい転送を作成"
 
 #. module: stock_barcode
 #. odoo-javascript
 #: code:addons/stock_barcode/static/src/main_menu.xml:0
 #, python-format
 msgid "to know its content."
-msgstr ""
+msgstr "→その中身を確認"
 
 #. module: stock_barcode
 #. odoo-javascript
 #: code:addons/stock_barcode/static/src/main_menu.xml:0
 #, python-format
 msgid "to open it."
-msgstr "開くために。"
+msgstr "→ドキュメントを開く"
 
 #. module: stock_barcode
 #. odoo-javascript
 #: code:addons/stock_barcode/static/src/main_menu.xml:0
 #, python-format
 msgid "to show its location and quantity."
-msgstr ""
+msgstr "→そのロケーションと数量を表示"

@@ -64,6 +64,17 @@ msgid ""
 "                </p>\n"
 "            "
 msgstr ""
+"\n"
+"<p class=\"o_view_nocontent_smiling_face\">\n"
+"To jest twoja nowa akcja.\n"
+"</p>\n"
+"<p>Domyślnie zawiera ona listę i widok formularza oraz ewentualnie\n"
+"inne typy widoków w zależności od opcji wybranych dla modelu.\n"
+"</p>\n"
+"<p>\n"
+"Możesz rozpocząć dostosowywanie tych ekranów, klikając ikonę Studio w prawym górnym rogu.\n"
+"w prawym górnym rogu (można tam również dostosować ten komunikat pomocy).\n"
+"</p>"
 
 #. module: web_studio
 #. odoo-python
@@ -75,6 +86,9 @@ msgid ""
 "            </p>\n"
 "            "
 msgstr ""
+"<p class=\"o_view_nocontent_empty_report\">\n"
+"Dodaj nowy raport\n"
+"</p>"
 
 #. module: web_studio
 #. odoo-python
@@ -86,6 +100,9 @@ msgid ""
 "            </p>\n"
 "            "
 msgstr ""
+"<p class=\"o_view_nocontent_smiling_face\">\n"
+"Dodaj nową akcję zautomatyzowaną\n"
+"</p>"
 
 #. module: web_studio
 #. odoo-python
@@ -97,6 +114,9 @@ msgid ""
 "            </p>\n"
 "            "
 msgstr ""
+"<p class=\"o_view_nocontent_smiling_face\">\n"
+"Dodaj nowy filtr\n"
+"</p>"
 
 #. module: web_studio
 #. odoo-python
@@ -124,7 +144,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "(t-if=\""
-msgstr ""
+msgstr "(t-if=\""
 
 #. module: web_studio
 #. odoo-javascript
@@ -4704,7 +4724,7 @@ msgstr "tydzień"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "x_studio_"
-msgstr ""
+msgstr "x_studio_"
 
 #. module: web_studio
 #. odoo-javascript

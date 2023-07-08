@@ -84,7 +84,7 @@ msgstr "Local"
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Moved Quantity"
-msgstr ""
+msgstr "Quantidade movida"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript

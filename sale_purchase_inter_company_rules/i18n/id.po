@@ -23,18 +23,18 @@ msgstr ""
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields,field_description:sale_purchase_inter_company_rules.field_purchase_order__auto_generated
 msgid "Auto Generated Purchase Order"
-msgstr ""
+msgstr "Purchase Order Dibuat Otomatis"
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields,field_description:sale_purchase_inter_company_rules.field_sale_order__auto_generated
 msgid "Auto Generated Sales Order"
-msgstr ""
+msgstr "Sales Order Dibuat Otomatis"
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields,field_description:sale_purchase_inter_company_rules.field_res_company__auto_validation
 #: model:ir.model.fields,field_description:sale_purchase_inter_company_rules.field_res_config_settings__auto_validation
 msgid "Automatic Validation"
-msgstr ""
+msgstr "Validasi Otomati"
 
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/purchase_order.py:0
@@ -61,6 +61,8 @@ msgid ""
 "Configure correct warehouse for company(%s) from Menu: "
 "Settings/Users/Companies"
 msgstr ""
+"Konfigurasi gudang yang tepat untuk perusahaan (%s) dari Menu: "
+"Pengaturan/Users/Perusahaan"
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields,help:sale_purchase_inter_company_rules.field_res_company__warehouse_id
@@ -69,6 +71,8 @@ msgid ""
 "Default value to set on Purchase(Sales) Orders that will be created based on"
 " Sale(Purchase) Orders made to this company"
 msgstr ""
+"Value default untuk ditetapkan pada Purchase(Sales) Orders yang akan dibuat "
+"berdasarkan Sale(Purchase) Orders yang dibuat untuk perusahaan ini"
 
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/res_company.py:0
@@ -78,6 +82,9 @@ msgid ""
 "warehouse %(warehouse)s when a company confirms a %(event_type)s for "
 "%(company)s."
 msgstr ""
+"Buat %(validation)s %(generated_object)s                menggunakan gudang "
+"%(warehouse)s saat perusahaan mengonfirmasi %(event_type)s untuk "
+"%(company)s."
 
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/res_company.py:0
@@ -86,31 +93,35 @@ msgid ""
 "Generate a %(validation)s %(generated_object)s                when a company"
 " confirms a %(event_type)s for %(company)s."
 msgstr ""
+"Buat %(validation)s %(generated_object)s                saat perusahaan "
+"mengonfirmasi %(event_type)s untuk %(company)s."
 
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/purchase_order.py:0
 #, python-format
 msgid ""
 "Inter company user of company %(name)s doesn't have enough access rights"
-msgstr ""
+msgstr "User antar perusahaan %(name)s tidak memiliki hak akses mencukupi"
 
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/sale_order.py:0
 #, python-format
 msgid "Inter company user of company %s doesn't have enough access rights"
 msgstr ""
+"User antar perusahaan dari perusahaan %s tidak memiliki hak akses mencukupi"
 
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/purchase_order.py:0
 #, python-format
 msgid "Provide at least one user for inter company relation for %(name)s"
 msgstr ""
+"Sediakan setidaknya satu user untuk hubungan antar perusahaan untuk %(name)s"
 
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/sale_order.py:0
 #, python-format
 msgid "Provide one user for intercompany relation for % "
-msgstr ""
+msgstr "Sediakan satu user untuk hubungan antar perusahaan untuk %"
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model,name:sale_purchase_inter_company_rules.model_purchase_order
@@ -142,32 +153,32 @@ msgstr ""
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields,field_description:sale_purchase_inter_company_rules.field_sale_order__auto_purchase_order_id
 msgid "Source Purchase Order"
-msgstr ""
+msgstr "Sumber Purchase Order"
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields,field_description:sale_purchase_inter_company_rules.field_purchase_order__auto_sale_order_id
 msgid "Source Sales Order"
-msgstr ""
+msgstr "Sumber Sales Order"
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields.selection,name:sale_purchase_inter_company_rules.selection__res_company__rule_type__purchase
 msgid "Synchronize Purchase Order"
-msgstr ""
+msgstr "Sinkronisasikan Purchase ORder"
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields.selection,name:sale_purchase_inter_company_rules.selection__res_company__rule_type__sale
 msgid "Synchronize Sales Order"
-msgstr ""
+msgstr "Sinkronisasikan Sales Order"
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields.selection,name:sale_purchase_inter_company_rules.selection__res_company__rule_type__sale_purchase
 msgid "Synchronize Sales and Purchase Order"
-msgstr ""
+msgstr "Sinkronisasikan Sales dan Purchase Order"
 
 #. module: sale_purchase_inter_company_rules
 #: model_terms:ir.ui.view,arch_db:sale_purchase_inter_company_rules.res_config_settings_view_form
 msgid "Use Warehouse"
-msgstr ""
+msgstr "Gunakan Gudang"
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields,field_description:sale_purchase_inter_company_rules.field_res_company__warehouse_id
@@ -177,7 +188,7 @@ msgstr "Gudang"
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields,field_description:sale_purchase_inter_company_rules.field_res_config_settings__warehouse_id
 msgid "Warehouse For Purchase Orders"
-msgstr ""
+msgstr "Gudang Untuk Purchase Orders"
 
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/purchase_order.py:0
@@ -188,41 +199,45 @@ msgid ""
 "\n"
 "(SO currency: %(so_currency)s, Pricelist: %(pricelist)s, Partner: %(partner)s (ID: %(id)s))"
 msgstr ""
+"Anda tidak dapat membuat SO dari PO karena mata uang daftar harga sale berbeda dari mata uang daftar harga purchase.\n"
+"Mata uang SO diambil dari daftar harga perusahaan mitra.\n"
+"\n"
+"(Mata uang SO: %(so_currency)s, Daftar harga: %(pricelist)s, Mitra: %(partner)s (ID: %(id)s))"
 
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/res_company.py:0
 #, python-format
 msgid "draft"
-msgstr ""
+msgstr "draf"
 
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/res_company.py:0
 #: code:addons/sale_purchase_inter_company_rules/models/res_company.py:0
 #, python-format
 msgid "purchase order"
-msgstr ""
+msgstr "purchase order"
 
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/res_company.py:0
 #, python-format
 msgid "purchase/sales order"
-msgstr ""
+msgstr "purchase/sales order"
 
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/res_company.py:0
 #: code:addons/sale_purchase_inter_company_rules/models/res_company.py:0
 #, python-format
 msgid "sales order"
-msgstr ""
+msgstr "sales order"
 
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/res_company.py:0
 #, python-format
 msgid "sales/purchase order"
-msgstr ""
+msgstr "sales/purchase order"
 
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/res_company.py:0
 #, python-format
 msgid "validated"
-msgstr ""
+msgstr "divalidasi"

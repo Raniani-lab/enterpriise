@@ -27,6 +27,8 @@ msgid ""
 "financial institutions use the local format.Therefore, it is frequent "
 "outside the US to have QIF date formatted day-first (dd/mm/yy)."
 msgstr ""
+"儘管舊有 QIF 日期格式是月在前 (月/日/年)，但許多金融機構使用當地格式。因此，在美國以外的地區，QIF "
+"日期格式經常會採用「日在前」(日/月/年)。"
 
 #. module: account_bank_statement_import_qif
 #: code:addons/account_bank_statement_import_qif/models/account_journal.py:0
@@ -37,7 +39,7 @@ msgstr "無法解碼QIF文件。"
 #. module: account_bank_statement_import_qif
 #: model:ir.model.fields,help:account_bank_statement_import_qif.field_account_journal__qif_decimal_point
 msgid "Field used to avoid conversion issues."
-msgstr ""
+msgstr "用於避免轉換問題的欄位。"
 
 #. module: account_bank_statement_import_qif
 #: model:ir.model,name:account_bank_statement_import_qif.model_account_journal
@@ -47,12 +49,12 @@ msgstr "日記賬"
 #. module: account_bank_statement_import_qif
 #: model:ir.model.fields,field_description:account_bank_statement_import_qif.field_account_journal__qif_date_format
 msgid "QIF Dates format"
-msgstr ""
+msgstr "QIF 日期格式"
 
 #. module: account_bank_statement_import_qif
 #: model:ir.model.fields,field_description:account_bank_statement_import_qif.field_account_journal__qif_decimal_point
 msgid "QIF Decimal Separator"
-msgstr ""
+msgstr "QIF 小數分隔符"
 
 #. module: account_bank_statement_import_qif
 #: code:addons/account_bank_statement_import_qif/models/account_journal.py:0

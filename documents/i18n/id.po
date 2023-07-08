@@ -501,7 +501,7 @@ msgstr "Tambah file baru"
 #. module: documents
 #: model:res.groups,name:documents.group_documents_manager
 msgid "Administrator"
-msgstr ""
+msgstr "Administrator"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_marketing_assets_ads

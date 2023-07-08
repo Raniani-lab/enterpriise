@@ -324,7 +324,7 @@ msgstr "Negara Pelanggan"
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__commercial_partner_id
 msgid "Customer Entity"
-msgstr ""
+msgstr "Entitas Pelanggan"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__card_name
@@ -533,12 +533,12 @@ msgstr "ID"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
 msgid "Invoicing Address:"
-msgstr ""
+msgstr "Alamat Faktur:"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
 msgid "Invoicing and Shipping Address:"
-msgstr ""
+msgstr "Faktur dan Alamat Pengiriman:"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard_line__is_late

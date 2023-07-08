@@ -226,6 +226,8 @@ msgid ""
 "Actions may trigger specific behavior like opening calendar view or "
 "automatically mark as done when a document is uploaded"
 msgstr ""
+"Darbības var palaist noteiktu uzvedību, piemēram, atvērt kalendāra skatu vai"
+" automātiski atzīmēt kā pabeigtu, kad dokuments tiek augšupielādēts."
 
 #. module: web_studio
 #. odoo-javascript
@@ -576,7 +578,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Ascending"
-msgstr ""
+msgstr "Augošs"
 
 #. module: web_studio
 #. odoo-javascript
@@ -814,7 +816,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/js/views/view_components.js:0
 #, python-format
 msgid "Checkbox"
-msgstr ""
+msgstr "Izvēles rūtiņa"
 
 #. module: web_studio
 #: model:ir.model.fields,help:web_studio.field_ir_model_data__studio
@@ -920,7 +922,7 @@ msgstr "Krāsa"
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Colors"
-msgstr ""
+msgstr "Krāsas"
 
 #. module: web_studio
 #. odoo-javascript
@@ -955,7 +957,7 @@ msgstr "Kolonnas"
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Compact"
-msgstr ""
+msgstr "Kompakts"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_res_company
@@ -1285,7 +1287,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/js/views/view_components.js:0
 #, python-format
 msgid "Date & Time"
-msgstr ""
+msgstr "Datums un laiks"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1329,7 +1331,7 @@ msgstr "Noklusētais"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Default Display Mode"
-msgstr ""
+msgstr "Noklusējuma ekrāna režīms"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1360,7 +1362,7 @@ msgstr "Default Values"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Default value"
-msgstr ""
+msgstr "Noklusējuma vērtība"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1406,7 +1408,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Descending"
-msgstr ""
+msgstr "Dilstošs"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2626,7 +2628,7 @@ msgstr "Vairāk"
 #: code:addons/web_studio/static/src/legacy/js/views/view_components.js:0
 #, python-format
 msgid "Multiline Text"
-msgstr ""
+msgstr "Daudzrindu teksts"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2928,7 +2930,7 @@ msgstr "Other"
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.act_report_xml_view_kanban
 msgid "PDF file"
-msgstr ""
+msgstr "PDF fails"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_report_paperformat
@@ -3165,7 +3167,7 @@ msgstr "Atsauksme"
 #: code:addons/web_studio/static/src/legacy/xml/approval_component.xml:0
 #, python-format
 msgid "Reject"
-msgstr ""
+msgstr "Noraidīt"
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_entry_search_view

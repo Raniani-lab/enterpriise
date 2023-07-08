@@ -258,14 +258,14 @@ msgstr ""
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
 #, python-format
 msgid "Invalid PDF (Conversion error)"
-msgstr ""
+msgstr "PDF inválido (erro de conversão)"
 
 #. module: account_invoice_extract
 #. odoo-python
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
 #, python-format
 msgid "Invalid PDF (Unable to get page count)"
-msgstr ""
+msgstr "PDF inválido (não foi possível obter contagem de páginas)"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__invoice_id
@@ -320,12 +320,12 @@ msgstr ""
 #. module: account_invoice_extract
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__no_extract_requested
 msgid "No extract requested"
-msgstr ""
+msgstr "Nenhuma extração solicitada"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__not_enough_credit
 msgid "Not enough credit"
-msgstr ""
+msgstr "Créditos insuficientes"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__ocr_selected
@@ -352,14 +352,14 @@ msgstr ""
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
 #, python-format
 msgid "Server is currently under maintenance. Please retry later"
-msgstr ""
+msgstr "O servidor está em manutenção. Tente novamente mais tarde."
 
 #. module: account_invoice_extract
 #. odoo-python
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
 #, python-format
 msgid "Server not available. Please retry later"
-msgstr ""
+msgstr "O servidor está indisponível. Tente novamente mais tarde."
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_res_company__extract_single_line_per_tax
@@ -382,6 +382,8 @@ msgid ""
 "The 'invoice_ocr' IAP account token is invalid. Please delete it to let Odoo"
 " generate a new one or fill it with a valid token."
 msgstr ""
+"O token da conta de IAP 'invoice_ocr' é inválido. Exclua-o para que o Odoo "
+"possa gerar um novo ou insira um token válido."
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
@@ -395,14 +397,14 @@ msgstr ""
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
 #, python-format
 msgid "The document could not be found"
-msgstr ""
+msgstr "O documento não foi encontrado"
 
 #. module: account_invoice_extract
 #. odoo-python
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
 #, python-format
 msgid "The document has been rejected because it is too small"
-msgstr ""
+msgstr "O documento foi rejeitado porque é muito pequeno"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__to_validate
@@ -414,7 +416,7 @@ msgstr "Para validar"
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
 #, python-format
 msgid "Unsupported image format"
-msgstr ""
+msgstr "Formato de imagem não suportado"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__user_selected
@@ -429,17 +431,17 @@ msgstr "Faturas de Fornecedor"
 #. module: account_invoice_extract
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__waiting_extraction
 msgid "Waiting extraction"
-msgstr ""
+msgstr "Aguardando extração"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__waiting_upload
 msgid "Waiting upload"
-msgstr ""
+msgstr "Aguardando carregamento"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__waiting_validation
 msgid "Waiting validation"
-msgstr ""
+msgstr "Aguardando validação"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__word_box_angle
@@ -494,7 +496,7 @@ msgstr ""
 #, python-format
 msgid ""
 "Your PDF file is protected by a password. The OCR can't extract data from it"
-msgstr ""
+msgstr "O seu PDF é protegido por senha. O OCR não pode extrair dados dele."
 
 #. module: account_invoice_extract
 #. odoo-python
@@ -504,8 +506,10 @@ msgid ""
 "Your invoice is too heavy to be processed by the OCR. Try to reduce the "
 "number of pages and avoid pages with too many text"
 msgstr ""
+"A sua fatura é muito pesada para ser processada pelo OCR. Tente reduzir o "
+"número de páginas e evite páginas com muito texto."
 
 #. module: account_invoice_extract
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__extract_not_ready
 msgid "waiting extraction, but it is not ready"
-msgstr ""
+msgstr "aguardando extração, mas ainda não está pronto"

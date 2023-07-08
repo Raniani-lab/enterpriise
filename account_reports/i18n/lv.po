@@ -525,6 +525,8 @@ msgid ""
 "Actions may trigger specific behavior like opening calendar view or "
 "automatically mark as done when a document is uploaded"
 msgstr ""
+"Darbības var palaist noteiktu uzvedību, piemēram, atvērt kalendāra skatu vai"
+" automātiski atzīmēt kā pabeigtu, kad dokuments tiek augšupielādēts."
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_mail_activity
@@ -1313,7 +1315,7 @@ msgstr "Definīcija"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_company__account_tax_periodicity
 msgid "Delay units"
-msgstr ""
+msgstr "Aizkavējuma vienība"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_depreciation0
@@ -2508,7 +2510,7 @@ msgstr ""
 #: code:addons/account_reports/static/src/js/account_reports.js:0
 #, python-format
 msgid "Plans"
-msgstr ""
+msgstr "Plāni"
 
 #. module: account_reports
 #. odoo-python
@@ -3455,7 +3457,7 @@ msgstr ""
 #: code:addons/account_reports/models/res_partner.py:0
 #, python-format
 msgid "any"
-msgstr ""
+msgstr "jebkurš"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form

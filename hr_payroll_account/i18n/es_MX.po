@@ -55,7 +55,7 @@ msgstr "Cuenta analítica"
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account.hr_payslip_run_view_form
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account.hr_payslip_view_form
 msgid "Are you sure you want to proceed ?"
-msgstr "¿Está seguro de que desea proceder?"
+msgstr "¿Está seguro de que desea continuar?"
 
 #. module: hr_payroll_account
 #: model:ir.model,name:hr_payroll_account.model_hr_contract_history

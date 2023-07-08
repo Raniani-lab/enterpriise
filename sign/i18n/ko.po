@@ -40,7 +40,7 @@ msgstr "%s는 크레딧이 충분하지 않아 서류에 서명하지 못했습�
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "%s has been edited and signed"
-msgstr ""
+msgstr "%s가 수정 및 서명되었습니다"
 
 #. module: sign
 #. odoo-python
@@ -61,7 +61,7 @@ msgstr "%s는 %s 전화번호의 SMS로 서명을 확인하였습니다."
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "%s: missing credits for extra-authentication"
-msgstr ""
+msgstr "%s: 추가 인증을 위한 크레딧이 없습니다."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
@@ -74,6 +74,8 @@ msgid ""
 ")\n"
 "            has refused the document"
 msgstr ""
+")\n"
+"            문서를 거부했습니다"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_request
@@ -87,7 +89,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
 msgid "- <em>Canceled</em>"
-msgstr ""
+msgstr "- <em>취소</em>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
@@ -124,12 +126,12 @@ msgstr "<b>문서 ID :</b>"
 #: code:addons/sign/static/src/js/tours/sign.js:0
 #, python-format
 msgid "<b>Drag & drop “Signature”</b> into the bottom of the document."
-msgstr ""
+msgstr "<b>“서명”을 드래그 앤 드롭</b>하여 문서 하단에 위치시킬 수 있습니다."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "<b>Gas:</b> 18,700 Pounds of CO² = 18,700*0.4536 = 8482.32 kg"
-msgstr ""
+msgstr "<b>Gas:</b> 18,700 Pounds of CO² = 18,700*0.4536 = 8482.32 kg"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
@@ -144,22 +146,22 @@ msgstr "<b>서명자 :</b>"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "<b>Solid Waste:</b> 1290 Pounds = 1290*0.4536 = 585.14 kg"
-msgstr ""
+msgstr "<b>고형폐기물:</b> 1290 Pounds = 1290*0.4536 = 585.14 kg"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "<b>Total Energy:</b> 27 Millions BTU = 27,000,000*0.0002931 = 7.91 kWh"
-msgstr ""
+msgstr "<b>총 에너지:</b> 27 Millions BTU = 27,000,000*0.0002931 = 7.91 kWh"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "<b>Water:</b> 23,400 Gallons = 23,400*3.78541 = 88578.59 L"
-msgstr ""
+msgstr "<b>수도:</b> 23,400 Gallons = 23,400*3.78541 = 88578.59 L"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "<b>Wood Use:</b> 4 US Short Tons = 4*907.18474 = 3628.73 kg"
-msgstr ""
+msgstr "<b>목재 사용:</b> 4 US Short Tons = 4*907.18474 = 3628.73 kg"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
@@ -205,7 +207,7 @@ msgstr "<i class=\"fa fa-globe\"/> 보기"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.signer_status_wrapper
 msgid "<small><i> Canceled </i></small>"
-msgstr ""
+msgstr "<small><i> 취소 </i></small>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.signer_status_wrapper
@@ -222,24 +224,24 @@ msgstr ""
 msgid ""
 "<small>Email Verification: The signatory has confirmed control of their "
 "email inbox by clicking on a unique link</small>"
-msgstr ""
+msgstr "<small>이메일 인증: 서명자가 이메일로 전송된 고유 인증 링크를 확인하였습니다.</small>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid ""
 "<small>SMS: The signatory has confirmed their control of the phone number "
 "using a unique code sent by SMS</small>"
-msgstr ""
+msgstr "<small>SMS: 서명자가 SMS로 전송된 고유 인증 코드를 확인했습니다.</small>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
 msgid "<span class=\"o_portal_category\">Summary</span>"
-msgstr ""
+msgstr "<span class=\"o_portal_category\">요약</span>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
 msgid "<span class=\"o_portal_category\">Your Information</span>"
-msgstr ""
+msgstr "<span class=\"o_portal_category\">사용자 정보</span>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
@@ -254,12 +256,12 @@ msgstr "<span class=\"o_stat_text\">활동 로그</span>"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.res_partner_view_form
 msgid "<span class=\"o_stat_text\">Signature Requested</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">서명이 요청됨</span>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_form
 msgid "<span class=\"o_stat_text\">Signed Document</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">서명된 문서</span>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
@@ -275,6 +277,10 @@ msgid ""
 "document when the Signature is complete. The link is private, only those "
 "that receive the link will be able to sign it.</span>"
 msgstr ""
+"<span class=\"text-muted\" attrs=\"{'invisible': [('share_link', '=', "
+"False)]}\">서명이 필요한 파일 사본을 생성하는 공유 링크입니다. 해당 파일은 아래 링크를 통해 액세스할 수 있습니다. 링크를 "
+"통해 접속한 모든 사용자는 서명이 완료되면 사본을 생성할 수 있습니다. 이 링크는 비공개로 설정되었으며, 링크를 받은 사람만이 문서에 "
+"서명할 수 있습니다.</span>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
@@ -294,7 +300,7 @@ msgstr "<span>이용약관의 미리보기 항목입니다.</span>"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
 msgid "<strong>Creation Date:</strong>"
-msgstr ""
+msgstr "<strong>작성일:</strong>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
@@ -305,7 +311,7 @@ msgstr "<strong>메시지 및 대화 이력</strong>"
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_refused
 msgid ""
 "<strong>Warning</strong> do not forward this email to other people!<br/>"
-msgstr ""
+msgstr "<strong>경고</strong> 이 이메일을 다른 사람에게 전달하지 마세요!<br/>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_request
@@ -333,7 +339,7 @@ msgstr "다음 전화 번호로 SMS가 발송됩니다. 관련이 없는 경우 
 #, python-format
 msgid ""
 "A non-shared sign request's should not have any signer with an empty partner"
-msgstr ""
+msgstr "공유되지 않은 서명 요청 문서에는 비어있는 서명자가 없어야 합니다."
 
 #. module: sign
 #. odoo-python
@@ -341,19 +347,19 @@ msgstr ""
 #, python-format
 msgid ""
 "A shared sign request should only have one signer with an empty partner"
-msgstr ""
+msgstr "공유된 서명 요청 문서에는 비어있는 서명자가 한 명만 있어야 합니다."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "A shower uses approximately 65 L of water"
-msgstr ""
+msgstr "샤워 시 약 65L의 물을 사용합니다"
 
 #. module: sign
 #. odoo-python
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "A valid sign request needs at least one sign request item"
-msgstr ""
+msgstr "서명 요청 문서에는 적어도 하나 이상의 서명 요청 항목이 필요합니다."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
@@ -457,7 +463,7 @@ msgstr "한 번만 추가"
 #: code:addons/sign/static/src/js/backend/PDFIframe.js:0
 #, python-format
 msgid "Add to all pages"
-msgstr ""
+msgstr "모든 페이지에 추가"
 
 #. module: sign
 #: model:res.groups,name:sign.group_sign_manager
@@ -474,7 +480,7 @@ msgstr "서명 채택하기"
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_log__request_state__signed
 msgid "After Signature"
-msgstr ""
+msgstr "서명 완료 후"
 
 #. module: sign
 #. odoo-javascript
@@ -494,45 +500,45 @@ msgstr "전체"
 #. module: sign
 #: model:ir.ui.menu,name:sign.sign_request_documents
 msgid "All documents"
-msgstr ""
+msgstr "모든 문서"
 
 #. module: sign
 #. odoo-python
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "All signers must have valid email addresses"
-msgstr ""
+msgstr "모든 서명자는 유효한 이메일 주소를 가지고 있어야 합니다."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.res_config_settings_view_form
 msgid ""
 "Allow signatories to provide their identity using itsme® (available in "
 "Belgium and the Netherlands)."
-msgstr ""
+msgstr "서명자가 itsme® (벨기에 및 네덜란드에서 사용 가능)를 통해 본인 인증을 하도록 허용합니다."
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__refusal_allowed
 #: model:ir.model.fields,help:sign.field_sign_send_request__refusal_allowed
 msgid "Allow the contacts to refuse the document for a specific reason."
-msgstr ""
+msgstr "연락처가 특정 사유로 문서를 거부할 수 있도록 허용합니다."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.res_config_settings_view_form
 msgid ""
 "Allow users to define a signing order, where recipients are only notified "
 "when it is their turn to sign."
-msgstr ""
+msgstr "서명 순서를 정하여 수신자가 서명할 차례가 되었을 때만 알림을 받을 수 있도록 합니다."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.res_config_settings_view_form
 msgid ""
 "Allow users to define the users or groups which have access to the template."
-msgstr ""
+msgstr "서식에 접근할 수 있는 사용자 또는 그룹을 정의할 수 있도록 허용합니다."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "An average computer will consume 750 Wh"
-msgstr ""
+msgstr "컴퓨터는 평균 750Wh를 소비합니다"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
@@ -576,7 +582,7 @@ msgstr "첨부 파일"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.res_config_settings_view_form
 msgid "Authenticate by SMS"
-msgstr ""
+msgstr "SMS 인증"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__group_ids
@@ -588,7 +594,7 @@ msgstr "인증된 그룹"
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #, python-format
 msgid "Authorized Groups:"
-msgstr ""
+msgstr "인증된 그룹:"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__authorized_ids
@@ -600,12 +606,12 @@ msgstr "인증된 사용자"
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #, python-format
 msgid "Authorized Users:"
-msgstr ""
+msgstr "인증된 사용자:"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__auto_field
 msgid "Auto-fill Partner Field"
-msgstr ""
+msgstr "협력사 필드 자동 완성"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
@@ -615,12 +621,12 @@ msgstr "기준"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "Based on various websites, here are our comparisons:"
-msgstr ""
+msgstr "다양한 웹사이트를 기준으로 비교한 결과입니다:"
 
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_log__request_state__sent
 msgid "Before Signature"
-msgstr ""
+msgstr "서명 전"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
@@ -637,17 +643,19 @@ msgid ""
 " all purposes when it is used on documents, including legally binding "
 "contracts."
 msgstr ""
+"쓰기 및 서명을 클릭함으로써 본인이 선택한 서명/이니셜이 법적 구속력이 있는 계약을 포함한 모든 용도로 문서에 사용되었을 때 자필 "
+"서명/이니셜의 유효한 전자적 의사 표현이 된다는 것에 동의합니다."
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__message_cc
 msgid "CC Message"
-msgstr ""
+msgstr "CC 메시지"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__refusal_allowed
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__refusal_allowed
 msgid "Can be refused"
-msgstr ""
+msgstr "거부 가능"
 
 #. module: sign
 #. odoo-javascript
@@ -680,18 +688,18 @@ msgstr "중앙"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign
 msgid "Certificate <i class=\"fa fa-download\"/>"
-msgstr ""
+msgstr "인증서 <i class=\"fa fa-download\"/>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "Certificate of Completion<br/>"
-msgstr ""
+msgstr "수료증 <br/>"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_role__change_authorized
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__change_authorized
 msgid "Change Authorized"
-msgstr ""
+msgstr "권한 변경"
 
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_item_type__item_type__checkbox
@@ -702,7 +710,7 @@ msgstr "체크박스"
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_template__is_sharing
 msgid "Checked if this template has created a shared document for you"
-msgstr ""
+msgstr "이 서식으로 공유 문서를 만들었는지 확인합니다"
 
 #. module: sign
 #. odoo-javascript
@@ -711,7 +719,7 @@ msgstr ""
 msgid ""
 "Click on the field to specify who should fill it in, or if it's mandatory or"
 " not."
-msgstr ""
+msgstr "필드를 클릭하여 필수 입력 사항을 지정합니다."
 
 #. module: sign
 #. odoo-javascript
@@ -755,7 +763,7 @@ msgstr "회사"
 #: model:ir.model.fields,field_description:sign.field_sign_request__communication_company_id
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__communication_company_id
 msgid "Company used for communication"
-msgstr ""
+msgstr "커뮤니케이션에 사용되는 회사"
 
 #. module: sign
 #. odoo-python
@@ -773,7 +781,7 @@ msgstr "완성된 문서"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__completed_document_attachment_ids
 msgid "Completed Documents"
-msgstr ""
+msgstr "완료된 문서"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__nb_closed
@@ -800,7 +808,7 @@ msgstr "구성"
 msgid ""
 "Configure the field types that can be used to sign documents (placeholder, "
 "auto-completion, ...)"
-msgstr ""
+msgstr "문서 서명에 사용할 수 있는 필드 유형 구성 (자리 표시자, 자동 완성 등...)"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_duplicate_template_with_pdf_view_form
@@ -812,14 +820,14 @@ msgstr "승인"
 #: code:addons/sign/static/src/js/tours/sign.js:0
 #, python-format
 msgid "Congrats, your signature is ready to be submitted!"
-msgstr ""
+msgstr "축하합니다, 서명을 제출할 준비가 되었습니다!"
 
 #. module: sign
 #. odoo-javascript
 #: code:addons/sign/static/src/js/tours/sign.js:0
 #, python-format
 msgid "Congratulations, you signed your first document!"
-msgstr ""
+msgstr "축하합니다, 첫 번째 문서에 서명하셨습니다!"
 
 #. module: sign
 #: model:ir.model,name:sign.model_res_partner
@@ -838,14 +846,14 @@ msgstr "연락처"
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 msgid "Contacts in copy"
-msgstr ""
+msgstr "연락처 사본"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_send_request__cc_partner_ids
 msgid ""
 "Contacts in copy will be notified by email once the document is either fully"
 " signed or refused."
-msgstr ""
+msgstr "문서에 서명이 완료되거나 거부되면 사본의 연락처로 이메일 알림이 전송됩니다."
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__cc_partner_ids
@@ -856,7 +864,7 @@ msgstr "복사하기"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_tree
 msgid "Create date"
-msgstr ""
+msgstr "작성일"
 
 #. module: sign
 #. odoo-javascript
@@ -907,7 +915,7 @@ msgstr "생성"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
 msgid "Current status of the signature request"
-msgstr ""
+msgstr "서명 요청 현황"
 
 #. module: sign
 #: model:sign.item.role,name:sign.sign_item_role_customer
@@ -963,21 +971,21 @@ msgstr "삭제"
 #: code:addons/sign/static/src/xml/sign_common.xml:0
 #, python-format
 msgid "Delete sign"
-msgstr ""
+msgstr "서명 삭제"
 
 #. module: sign
 #. odoo-javascript
 #: code:addons/sign/static/src/xml/sign_common.xml:0
 #, python-format
 msgid "Delete sign item"
-msgstr ""
+msgstr "서명 항목 삭제하기"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.res_config_settings_view_form
 msgid ""
 "Deliver one-time codes by SMS to identify signatories when signing a "
 "document."
-msgstr ""
+msgstr "문서 서명 시 서명인의 본인 인증을 위한 일회성 코드 번호를 SMS로 전송합니다"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign
@@ -993,7 +1001,7 @@ msgstr "디지털 서명"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_res_users__sign_signature_frame
 msgid "Digital Signature Frame"
-msgstr ""
+msgstr "전자 서명 프레임"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.res_users_view_form
@@ -1008,7 +1016,7 @@ msgstr "디지털 이니셜"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_res_users__sign_initials_frame
 msgid "Digitial Initials Frame"
-msgstr ""
+msgstr "전자 이니셜 프레임"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_item_view_form
@@ -1035,7 +1043,7 @@ msgstr "표시명"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_res_config_settings__sign_preview_ready
 msgid "Display sign preview button"
-msgstr ""
+msgstr "서명 미리보기 버튼 표시"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_requests
@@ -1046,7 +1054,7 @@ msgstr "문서"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign
 msgid "Document <i class=\"fa fa-download\"/>"
-msgstr ""
+msgstr "문서 <i class=\"fa fa-download\"/>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
@@ -1095,7 +1103,7 @@ msgstr "다운로드"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign._doc_sign
 msgid "Download Certificate"
-msgstr ""
+msgstr "인증서 다운로드"
 
 #. module: sign
 #. odoo-javascript
@@ -1128,7 +1136,7 @@ msgstr "PDF에서 필드 끌어서 놓기"
 msgid ""
 "Draw your most beautiful signature!<br>You can also create one automatically"
 " or load a signature from your computer."
-msgstr ""
+msgstr "서명을 예쁘게 그려보세요!<br> 자동으로 서명을 만들거나 컴퓨터에서 서명을 불러오기 할 수도 있습니다."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign
@@ -1161,7 +1169,7 @@ msgstr "오류 : 잘못된 PDF 파일!"
 #. module: sign
 #: model:ir.actions.report,name:sign.sign_report_green_savings_action
 msgid "Ecological Savings by using Electronical Signatures"
-msgstr ""
+msgstr "전자 서명을 사용하여 환경 보호"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign._doc_sign
@@ -1171,7 +1179,7 @@ msgstr "편집"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.res_config_settings_view_form
 msgid "Edit field types"
-msgstr ""
+msgstr "필드 유형 편집"
 
 #. module: sign
 #. odoo-javascript
@@ -1197,7 +1205,7 @@ msgstr "이메일 제목"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "Email Verification"
-msgstr ""
+msgstr "이메일 인증"
 
 #. module: sign
 #: model:sign.item.role,name:sign.sign_item_role_employee
@@ -1208,7 +1216,7 @@ msgstr "임직원"
 #: model:ir.model.fields,field_description:sign.field_res_config_settings__group_show_sign_order
 #: model:res.groups,name:sign.show_sign_order
 msgid "Enable Signing Order"
-msgstr ""
+msgstr "서명 순서 활성화"
 
 #. module: sign
 #. odoo-javascript
@@ -1237,7 +1245,7 @@ msgstr "Error 404"
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "Existing sign items are not allowed to be changed"
-msgstr ""
+msgstr "기존의 서명 항목은 변경할 수 없습니다"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
@@ -1247,7 +1255,7 @@ msgstr "곧 만료"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_role__auth_method
 msgid "Extra Authentication Step"
-msgstr ""
+msgstr "추가 인증 절차"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__favorited_ids
@@ -1257,7 +1265,7 @@ msgstr "즐겨찾기"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__favorited_ids
 msgid "Favorited Users"
-msgstr ""
+msgstr "즐겨찾는 사용자"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__name
@@ -1294,7 +1302,7 @@ msgstr "파일 컨텐츠(base64)"
 #: code:addons/sign/static/src/views/hooks.js:0
 #, python-format
 msgid "File Error"
-msgstr ""
+msgstr "파일 오류"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_duplicate_template_pdf__new_pdf
@@ -1326,7 +1334,7 @@ msgstr "마지막 유효성 검사"
 #: code:addons/sign/static/src/js/tours/sign.js:0
 #, python-format
 msgid "Follow the guide to sign the document."
-msgstr ""
+msgstr "안내에 따라 문서에 서명합니다."
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_follower_ids
@@ -1348,12 +1356,12 @@ msgstr "멋진 아이콘 폰트 예 : fa-tasks"
 msgid ""
 "For 1000kg of paper usage, with 10% of recycled paper, environmental savings"
 " are based on"
-msgstr ""
+msgstr "종이 사용량 1000kg, 재생 용지 10% 사용 시 환경 절감 효과는 다음을 기준으로"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_item_role__auth_method
 msgid "Force the signatory to identify using a second authentication method"
-msgstr ""
+msgstr "서명자가 두 번째 인증 방법을 사용하여 필수로 본인 인증하도록 설정."
 
 #. module: sign
 #. odoo-javascript
@@ -1362,22 +1370,22 @@ msgstr ""
 #: code:addons/sign/static/src/xml/sign_modal.xml:0
 #, python-format
 msgid "Frame"
-msgstr ""
+msgstr "프레임"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item_value__frame_has_hash
 msgid "Frame Has Hash"
-msgstr ""
+msgstr "프레임에 해시 포함"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__frame_hash
 msgid "Frame Hash"
-msgstr ""
+msgstr "프레임 해시"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item_value__frame_value
 msgid "Frame Value"
-msgstr ""
+msgstr "ㅍ"
 
 #. module: sign
 #. odoo-python
@@ -1409,22 +1417,22 @@ msgstr "위치정보"
 #. module: sign
 #: model:ir.ui.menu,name:sign.sign_report_green_savings
 msgid "Green Savings"
-msgstr ""
+msgstr "친환경 절약"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_report_container_pdf
 msgid "Green Savings Report"
-msgstr ""
+msgstr "친환경 절약 보고서"
 
 #. module: sign
 #: model:ir.model,name:sign.model_report_sign_green_savings_report
 msgid "Green Savings Report model"
-msgstr ""
+msgstr "친환경 절약 보고서 모델"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_report_container
 msgid "Green Savings Summary"
-msgstr ""
+msgstr "친환경 절약 요약"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
@@ -1444,7 +1452,7 @@ msgstr "HTTP 라우팅"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__has_default_template
 msgid "Has Default Template"
-msgstr ""
+msgstr "기본 템플릿 있음"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__has_message
@@ -1454,7 +1462,7 @@ msgstr "메시지가 있습니다"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__has_sign_requests
 msgid "Has Sign Requests"
-msgstr ""
+msgstr "서명 요청 있음"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__height
@@ -1472,7 +1480,7 @@ msgstr "안녕하세요"
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_item_type__tip
 msgid "Hint displayed in the signing hint"
-msgstr ""
+msgstr "서명 힌트에 표시되는 내용"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign
@@ -1482,17 +1490,17 @@ msgstr "홈"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_report_container
 msgid "How are these results calculated?"
-msgstr ""
+msgstr "이러한 결과는 어떻게 산출되나요?"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "How do we calculate?"
-msgstr ""
+msgstr "어떻게 계산하나요?"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "I've got a total weight, and now?"
-msgstr ""
+msgstr "총 무게를 계산했습니다, 다음은요?"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_duplicate_template_pdf__id
@@ -1534,7 +1542,7 @@ msgstr "예외 활동을 표시하기 위한 아이콘"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_res_config_settings__module_sign_itsme
 msgid "Identify with itsme®"
-msgstr ""
+msgstr "itsme®로 본인 확인"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_needaction
@@ -1548,7 +1556,7 @@ msgid ""
 "If checked, recipient of a document with this role can be changed after "
 "having sent the request. Useful to replace a signatory who is out of office,"
 " etc."
-msgstr ""
+msgstr "이 옵션을 선택하면 요청을 보낸 후에도 문서 수신자를 변경할 수 있습니다. 부재 중인 서명인을 대체할 때 유용합니다."
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_has_error
@@ -1565,18 +1573,23 @@ msgid ""
 "                        </code> \n"
 "                        menu."
 msgstr ""
+"알림을 더 이상 받지 않길 원하신다면 추가 인증 단계를 거쳐 비활성화할 수 있습니다. \n"
+"                        <code>\n"
+"                            서명 &gt; 설정 &gt; 직책\n"
+"                        </code> \n"
+"                        메뉴."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_not_enough_credits
 msgid ""
 "If you wish, you can request the document again after buying more credits "
 "for the operation."
-msgstr ""
+msgstr "필요한 경우, 작업에 대한 크레딧을 추가로 구매한 후 문서를 다시 요청할 수 있습니다."
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__in_progress_count
 msgid "In Progress Count"
-msgstr ""
+msgstr "진행 중인 수"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
@@ -1623,12 +1636,12 @@ msgstr "팔로워임"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__is_mail_sent
 msgid "Is Mail Sent"
-msgstr ""
+msgstr "메일 전송됨"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__is_sharing
 msgid "Is Sharing"
-msgstr ""
+msgstr "공유 됨"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__is_user_signer
@@ -1714,14 +1727,14 @@ msgstr "왼쪽"
 #: code:addons/sign/static/src/js/tours/sign.js:0
 #, python-format
 msgid "Let's <b>prepare & sign</b> our first document."
-msgstr ""
+msgstr "첫 번째 문서를 <b>준비 및 서명</b>해 봅시다."
 
 #. module: sign
 #. odoo-javascript
 #: code:addons/sign/static/src/js/tours/sign.js:0
 #, python-format
 msgid "Let's send the request by email."
-msgstr ""
+msgstr "이메일로 요청을 전송하겠습니다."
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__redirect_url_text
@@ -1772,12 +1785,12 @@ msgstr "경도"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__mail_sent_order
 msgid "Mail Sent Order"
-msgstr ""
+msgstr "메일 발송 순서"
 
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_log__action__update_mail
 msgid "Mail Update"
-msgstr ""
+msgstr "이메일 업데이트"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_main_attachment_id
@@ -1789,13 +1802,13 @@ msgstr "주요 첨부 파일"
 #: code:addons/sign/models/sign_template.py:0
 #, python-format
 msgid "Malformed expression: %(exp)s"
-msgstr ""
+msgstr "잘못된 표현식: %(exp)s"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_res_config_settings__group_manage_template_access
 #: model:res.groups,name:sign.manage_template_access
 msgid "Manage template access"
-msgstr ""
+msgstr "서식 액세스 권한 관리"
 
 #. module: sign
 #. odoo-javascript
@@ -1817,12 +1830,12 @@ msgstr "메시지 전송 오류"
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_send_request__message_cc
 msgid "Message to be sent to contacts in copy of the signed document"
-msgstr ""
+msgstr "서명된 문서의 사본으로 연락처에 보낼 메시지"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_send_request__message
 msgid "Message to be sent to signers of the specified document"
-msgstr ""
+msgstr "지정된 문서의 서명인에게 보낼 메시지"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_ids
@@ -1842,7 +1855,7 @@ msgstr "모바일"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Modify Template"
-msgstr ""
+msgstr "서식 수정"
 
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_item_type__item_type__textarea
@@ -1886,12 +1899,12 @@ msgstr "나의 서식"
 #: model:ir.actions.act_window,name:sign.sign_request_my_requests_action
 #: model:ir.ui.menu,name:sign.sign_request_my_requests
 msgid "My requests"
-msgstr ""
+msgstr "나의 요청"
 
 #. module: sign
 #: model:sign.template.tag,name:sign.sign_template_tag_2
 msgid "NDA"
-msgstr ""
+msgstr "NDA"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_role__name
@@ -1921,12 +1934,12 @@ msgstr "이름 또는 이메일..."
 #: code:addons/sign/static/src/js/tours/sign.js:0
 #, python-format
 msgid "Nearly there, keep going!"
-msgstr ""
+msgstr "거의 다 왔어요, 계속 진행해 주세요!"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__need_my_signature
 msgid "Need My Signature"
-msgstr ""
+msgstr "내 서명 필요"
 
 #. module: sign
 #. odoo-javascript
@@ -1938,7 +1951,7 @@ msgstr "서명 필드를 추가하려면 유효한 PDF가 필요합니다!"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_duplicate_template_pdf__new_template
 msgid "New Template Name"
-msgstr ""
+msgstr "새 템플릿 이름"
 
 #. module: sign
 #. odoo-python
@@ -1973,45 +1986,45 @@ msgstr "다음 활동 유형"
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #, python-format
 msgid "Next Document"
-msgstr ""
+msgstr "다음 문서"
 
 #. module: sign
 #. odoo-javascript
 #: code:addons/sign/static/src/js/backend/document_signable.js:0
 #, python-format
 msgid "Next Template"
-msgstr ""
+msgstr "다음 서식"
 
 #. module: sign
 #. odoo-javascript
 #: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Next signatory (\"%s\")"
-msgstr ""
+msgstr "다음 서명인 (\"%s\")"
 
 #. module: sign
 #. odoo-javascript
 #: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Next signatory is \"%s\""
-msgstr ""
+msgstr "다음 서명인은 \"%s\" 입니다"
 
 #. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_request_action
 msgid "No document yet"
-msgstr ""
+msgstr "문서가 없습니다"
 
 #. module: sign
 #. odoo-python
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "No specified reason"
-msgstr ""
+msgstr "지정된 이유 없음"
 
 #. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_template_action
 msgid "No template yet"
-msgstr ""
+msgstr "서식이 없습니다"
 
 #. module: sign
 #. odoo-python
@@ -2034,12 +2047,12 @@ msgstr "즐겨찾기에 없습니다. 설정합니다"
 #. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_request_waiting_for_me_action
 msgid "Nothing to sign at the moment!"
-msgstr ""
+msgstr "지금은 서명할 항목이 없습니다!"
 
 #. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_request_my_requests_action
 msgid "Nothing yet!"
-msgstr ""
+msgstr "아직 없습니다!"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_needaction_counter
@@ -2049,12 +2062,12 @@ msgstr "작업 수"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Number of documents in progress for this template."
-msgstr ""
+msgstr "이 서식으로 진행 중인 문서 수입니다."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Number of documents signed for this template."
-msgstr ""
+msgstr "이 서식에 서명된 문서 수입니다."
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_has_error_counter
@@ -2074,31 +2087,31 @@ msgstr "전송 오류 메시지 수"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__num_pages
 msgid "Number of pages"
-msgstr ""
+msgstr "페이지 수"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "One can weights 15 g"
-msgstr ""
+msgstr "캔 무게는 15g입니다"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "One liter of gas fuel will produce 8.9 kg of CO²"
-msgstr ""
+msgstr "가스 연료 1리터는 8.9kg의 CO²를 생산합니다."
 
 #. module: sign
 #. odoo-python
 #: code:addons/sign/models/sign_template.py:0
 #, python-format
 msgid "One or more selection items have no associated options"
-msgstr ""
+msgstr "하나 이상의 선택 항목에 연관된 옵션이 없습니다"
 
 #. module: sign
 #. odoo-python
 #: code:addons/sign/models/sign_template.py:0
 #, python-format
 msgid "One uploaded file cannot be read. Is it a valid PDF?"
-msgstr ""
+msgstr "업로드한 파일 중 하나를 불러올 수 없습니다. 유효한 PDF 파일인지 확인해주십시오."
 
 #. module: sign
 #. odoo-python
@@ -2153,7 +2166,7 @@ msgstr "옵션"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_duplicate_template_pdf__original_template_id
 msgid "Original File"
-msgstr ""
+msgstr "원본 파일"
 
 #. module: sign
 #. odoo-javascript
@@ -2214,7 +2227,7 @@ msgstr "자리 표시자"
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "Please configure senders'(%s) email addresses"
-msgstr ""
+msgstr "발신자(%s)의 이메일 주소를 설정하세요"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__access_url
@@ -2294,7 +2307,7 @@ msgstr "반려"
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign
 #, python-format
 msgid "Refuse Document"
-msgstr ""
+msgstr "문서 거부"
 
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_request__state__refused
@@ -2306,13 +2319,13 @@ msgstr "반려됨"
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_log__request_state__refused
 msgid "Refused Signature"
-msgstr ""
+msgstr "서명 거부됨"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
 #: model_terms:ir.ui.view,arch_db:sign.signer_status_wrapper
 msgid "Refused on"
-msgstr ""
+msgstr "다음에서 거부"
 
 #. module: sign
 #: model:ir.ui.menu,name:sign.sign_reports
@@ -2424,7 +2437,7 @@ msgstr "역할"
 #: code:addons/sign/static/src/js/backend/sign_template.js:0
 #, python-format
 msgid "Rotate Clockwise"
-msgstr ""
+msgstr "시계 방향으로 회전"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_has_sms_error
@@ -2470,7 +2483,7 @@ msgstr "저장됨"
 #: code:addons/sign/controllers/portal.py:0
 #, python-format
 msgid "Search <span class=\"nolabel\"> (in Document)</span>"
-msgstr ""
+msgstr "검색 <span class=\"nolabel\"> (문서 내)</span>"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__access_token
@@ -2498,6 +2511,7 @@ msgid ""
 "Select the contact who should sign, according to their role.<br>In this "
 "example, select your own contact to sign the document yourself."
 msgstr ""
+"직책에 따라 서명이 필요한 연락처를 선택합니다.<br> 예시에서는, 직접 문서에 서명할 수 있도록 본인의 연락처를 선택해주세요."
 
 #. module: sign
 #. odoo-javascript
@@ -2547,7 +2561,7 @@ msgstr "다음에게 보내기"
 #: code:addons/sign/static/src/js/backend/sign_request.js:0
 #, python-format
 msgid "Send the invitation"
-msgstr ""
+msgstr "초대 보내기"
 
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_request__state__sent
@@ -2578,7 +2592,7 @@ msgstr "공유"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_share_view_form
 msgid "Share & Close"
-msgstr ""
+msgstr "공유 및 닫기"
 
 #. module: sign
 #. odoo-python
@@ -2627,17 +2641,17 @@ msgstr "서명"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_res_config_settings__use_sign_terms
 msgid "Sign Default Terms & Conditions"
-msgstr ""
+msgstr "기본 이용 약관에 서명"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_res_company__sign_terms
 msgid "Sign Default Terms and Conditions"
-msgstr ""
+msgstr "기본 이용 약관에 서명"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_res_company__sign_terms_html
 msgid "Sign Default Terms and Conditions as a Web page"
-msgstr ""
+msgstr "웹페이지상의 기본 이용 약관에 서명하기"
 
 #. module: sign
 #. odoo-javascript
@@ -2649,14 +2663,14 @@ msgstr "문서 서명"
 #. module: sign
 #: model:ir.model,name:sign.model_sign_duplicate_template_pdf
 msgid "Sign Duplicate Template with new PDF"
-msgstr ""
+msgstr "새 PDF로 서식 사본에 서명"
 
 #. module: sign
 #. odoo-javascript
 #: code:addons/sign/static/src/js/backend/document_signable.js:0
 #, python-format
 msgid "Sign Next Document"
-msgstr ""
+msgstr "다음 문서에 서명"
 
 #. module: sign
 #. odoo-javascript
@@ -2672,7 +2686,7 @@ msgstr "지금 서명하기"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request_signer__mail_sent_order
 msgid "Sign Order"
-msgstr ""
+msgstr "서명 지시"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_log__sign_request_id
@@ -2702,25 +2716,25 @@ msgstr "서멍 서식 태그"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_res_config_settings__sign_terms
 msgid "Sign Terms & Conditions"
-msgstr ""
+msgstr "서명 관련 이용 약관"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_res_config_settings__sign_terms_html
 msgid "Sign Terms & Conditions as a Web page"
-msgstr ""
+msgstr "웹페이지 상의 이용 약관에 서명하기"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_res_company__sign_terms_type
 #: model:ir.model.fields,field_description:sign.field_res_config_settings__sign_terms_type
 msgid "Sign Terms & Conditions format"
-msgstr ""
+msgstr "이용 약관 서식에 서명하기"
 
 #. module: sign
 #. odoo-javascript
 #: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Sign all"
-msgstr ""
+msgstr "모두 서명"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_request
@@ -2753,12 +2767,12 @@ msgstr "서명 요청 서명자 보내기"
 #: model_terms:ir.ui.view,arch_db:sign.deleted_sign_request
 msgid ""
 "Sign up for Odoo Sign to manage your own documents and signature requests!"
-msgstr ""
+msgstr "Odoo 전자서명에 가입하여 문서 및 서명 요청을 직접 관리하세요!"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "Signatory"
-msgstr ""
+msgstr "서명인"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
@@ -2787,7 +2801,7 @@ msgstr "서명"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_requests
 msgid "Signature Date"
-msgstr ""
+msgstr "서명일"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item_value__sign_item_id
@@ -2823,7 +2837,7 @@ msgstr "서명 항목"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 msgid "Signature Options"
-msgstr ""
+msgstr "서명 옵션"
 
 #. module: sign
 #. odoo-javascript
@@ -2842,7 +2856,7 @@ msgstr "서명 요청"
 #: code:addons/sign/wizard/sign_send_request.py:0
 #, python-format
 msgid "Signature Request - %(file_name)s"
-msgstr ""
+msgstr "서명 요청 - %(file_name)s"
 
 #. module: sign
 #. odoo-python
@@ -2897,13 +2911,15 @@ msgid ""
 "Signature requested for template: %s\n"
 "Signatories: %s"
 msgstr ""
+"서식에 요청된 서명: %s\n"
+"서명인: %s"
 
 #. module: sign
 #. odoo-python
 #: code:addons/sign/models/res_partner.py:0
 #, python-format
 msgid "Signature(s)"
-msgstr ""
+msgstr "서명"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
@@ -2920,7 +2936,7 @@ msgstr "서명"
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_send_request__set_sign_order
 msgid "Signatures will be requested from lowest order to highest order."
-msgstr ""
+msgstr "서명은 가장 낮은 순서부터 높은 순서로 요청됩니다."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign
@@ -2930,22 +2946,22 @@ msgstr "서명됨"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__signed_count
 msgid "Signed Count"
-msgstr ""
+msgstr "서명 수"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Signed Documents"
-msgstr ""
+msgstr "서명된 문서"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__signed_without_extra_auth
 msgid "Signed Without Extra Authentication"
-msgstr ""
+msgstr "추가 인증 없이 서명"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_completed
 msgid "Signed document"
-msgstr ""
+msgstr "서명된 문서"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__signing_date
@@ -2959,12 +2975,12 @@ msgstr "서명된 날짜"
 #: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Signed with Odoo Sign"
-msgstr ""
+msgstr "Odoo 사인으로 서명"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__partner_id
 msgid "Signer"
-msgstr ""
+msgstr "서명인"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__request_item_ids
@@ -2982,7 +2998,7 @@ msgstr "서명자 수"
 #: code:addons/sign/controllers/portal.py:0
 #, python-format
 msgid "Signing Date"
-msgstr ""
+msgstr "서명일"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
@@ -2997,6 +3013,8 @@ msgid ""
 "Since you're the one signing this document, you can do it directly within "
 "Odoo.<br>External users can use the link provided by email."
 msgstr ""
+"이 문서에 서명하는 사람이 본인이므로,  Odoo 내에서 직접 서명하실 수 있습니다.<br> 외부 사용자는 이메일로 제공된 링크를 통해 "
+"서명하실 수 있습니다."
 
 #. module: sign
 #. odoo-javascript
@@ -3010,14 +3028,14 @@ msgstr "일부 필드는 여전히 완료해야 합니다!"
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "Some required items are not filled"
-msgstr ""
+msgstr "일부 필수 입력 항목이 유효하지 않습니다."
 
 #. module: sign
 #. odoo-python
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "Some unauthorised items are filled"
-msgstr ""
+msgstr "일부 승인되지 않은 항목이 채워져 있습니다."
 
 #. module: sign
 #. odoo-javascript
@@ -3034,19 +3052,19 @@ msgstr "누군가 이 서식을 사용하는 문서를 이미 작성 중입니�
 #: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Sorry, an error occurred, please try to fill the document again."
-msgstr ""
+msgstr "오류가 발생했습니다. 문서를 다시 작성해 주세요."
 
 #. module: sign
 #. odoo-javascript
 #: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Sorry, you cannot refuse this document"
-msgstr ""
+msgstr "죄송합니다. 이 문서는 반려하실 수 없습니다."
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__set_sign_order
 msgid "Specify Signing Order"
-msgstr ""
+msgstr "서명 순서 지정"
 
 #. module: sign
 #: model:sign.item.role,name:sign.sign_item_role_default
@@ -3092,7 +3110,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_tree
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Stop Sharing"
-msgstr ""
+msgstr "공유 중지"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__subject
@@ -3128,7 +3146,7 @@ msgstr "태그:"
 msgid ""
 "Technical name of the field on the partner model to auto-complete this "
 "signature field at the time of signature."
-msgstr ""
+msgstr "서명 필드를 자동 완성하기 위해 사용되는 파트너 모델 필드의 기술적 명칭. "
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__template_id
@@ -3145,26 +3163,26 @@ msgstr "템플릿"
 #: code:addons/sign/static/src/js/backend/sign_template.js:0
 #, python-format
 msgid "Template \"%s\""
-msgstr ""
+msgstr "서식 \"%s\""
 
 #. module: sign
 #. odoo-javascript
 #: code:addons/sign/static/src/views/hooks.js:0
 #, python-format
 msgid "Template %s"
-msgstr ""
+msgstr "서식 %s"
 
 #. module: sign
 #. odoo-javascript
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #, python-format
 msgid "Template Properties"
-msgstr ""
+msgstr "서식 속성"
 
 #. module: sign
 #: model:ir.actions.server,name:sign.sign_template_tour_trigger_action
 msgid "Template Sample Contract.pdf trigger"
-msgstr ""
+msgstr "서식 샘플 계약서.pdf 트리거"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__template_tags
@@ -3192,12 +3210,12 @@ msgstr "이용 약관"
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__res_company__sign_terms_type__html
 msgid "Terms as Web Page"
-msgstr ""
+msgstr "웹 페이지 약관"
 
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__res_company__sign_terms_type__plain
 msgid "Terms in Email"
-msgstr ""
+msgstr "이메일 약관"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_res_company__sign_terms_type
@@ -3208,6 +3226,10 @@ msgid ""
 "        Terms as Web Page - A link will be pasted at the bottom of every signature request email, leading to your content.\n"
 "        "
 msgstr ""
+"이메일 약관 - 서명이 요청된 모든 이메일 하단에 텍스트가 표시됩니다.\n"
+"\n"
+"        웹페이지 약관 - 서명이 요청된 모든 이메일 하단에 내용으로 연결되는 링크가 붙여넣기 됩니다.\n"
+"        "
 
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_item_type__item_type__text
@@ -3231,14 +3253,14 @@ msgstr "감사합니다!"
 msgid ""
 "That's it, all done!<br>The document is signed, and a copy has been sent by "
 "email to all participants, along with a traceability report."
-msgstr ""
+msgstr "모든 작업이 끝났습니다!<br> 문서에 서명이 완료되었으며, 모든 관계자들에게 추적 보고서 및 사본을 이메일로 전송했습니다."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.deleted_sign_request
 msgid ""
 "The Odoo Sign document you are trying to reach does not exist. The signature"
 " request might have been deleted or modified."
-msgstr ""
+msgstr "Odoo 서명 문서가 존재하지 않습니다. 서명 요청이 삭제되었거나 수정되었을 수 있습니다."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.encrypted_ask_password
@@ -3252,12 +3274,12 @@ msgstr "최종 문서를 생성하려면 PDF의 비밀번호가 필요합니다.
 msgid ""
 "The completed document cannot be created because the sign request is not "
 "fully signed"
-msgstr ""
+msgstr "요청된 문서에 서명이 되지 않았으므로 완료된 문서를 만들 수 없습니다."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "The computation is based on the website"
-msgstr ""
+msgstr "계산은 웹사이트를 기준으로 합니다."
 
 #. module: sign
 #. odoo-python
@@ -3266,7 +3288,7 @@ msgstr ""
 msgid ""
 "The contact of %(role)s has been changed from %(old_partner)s to "
 "%(new_partner)s."
-msgstr ""
+msgstr "%(role)s의 연락처가 %(old_partner)s에서 %(new_partner)s으로 변경되었습니다."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_completed
@@ -3279,21 +3301,21 @@ msgstr "문서"
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "The document (%s) has been rejected by one of the signers"
-msgstr ""
+msgstr "서명인 중 한명이 문서 (%s)를 반려했습니다."
 
 #. module: sign
 #. odoo-javascript
 #: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "The document has been refused"
-msgstr ""
+msgstr "해당 문서가 반려되었습니다"
 
 #. module: sign
 #. odoo-python
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "The document has been signed by a signer and cannot be edited"
-msgstr ""
+msgstr "서명인이 문서에 서명을 완료했으며, 편집할 수 없습니다."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
@@ -3308,7 +3330,7 @@ msgstr "최종 문서와 이 완료 내역이 이메일로 전송되었습니다
 #, python-format
 msgid ""
 "The following roles must be set to create the signature request: %(roles)s"
-msgstr ""
+msgstr "서명 요청을 만들려면 다음의 역할을 설정해야 합니다: %(roles)s"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
@@ -3326,14 +3348,14 @@ msgstr ""
 msgid ""
 "The mail address of %(partner)s has been updated. The request will be "
 "automatically resent."
-msgstr ""
+msgstr "%(partner)s의 메일 주소가 업데이트되었습니다. 서명 요청이 다시 자동으로 전송됩니다."
 
 #. module: sign
 #. odoo-python
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "The mail has been sent to contacts in copy: "
-msgstr ""
+msgstr "사본이 연락처의 메일로 전송되었습니다:"
 
 #. module: sign
 #. odoo-python
@@ -3347,40 +3369,40 @@ msgstr "요청하신 페이지는 유효하지 않거나 존재하지 않는 페
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "The sign request has not been fully signed"
-msgstr ""
+msgstr "요청한 서명이 완전히 완료되지 않았습니다."
 
 #. module: sign
 #. odoo-python
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "The signature has been refused by %s(%s)"
-msgstr ""
+msgstr "서명이 %s(%s)에 의해 반려되었습니다"
 
 #. module: sign
 #. odoo-python
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "The signature mail has been sent to: "
-msgstr ""
+msgstr "서명 메일이 다음 주소로 전송되었습니다:"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request_item__is_mail_sent
 msgid "The signature mail has been sent."
-msgstr ""
+msgstr "서명 메일이 전송되었습니다."
 
 #. module: sign
 #. odoo-python
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "The signature request has been edited by: %s."
-msgstr ""
+msgstr "서명 요청이 수정되었습니다: %s."
 
 #. module: sign
 #. odoo-javascript
 #: code:addons/sign/static/src/js/backend/sign_template.js:0
 #, python-format
 msgid "The template doesn't exist anymore."
-msgstr ""
+msgstr "해당 서식이 더 이상 존재하지 않습니다."
 
 #. module: sign
 #. odoo-python
@@ -3388,7 +3410,7 @@ msgstr ""
 #, python-format
 msgid ""
 "The template has more pages than the current file, it can't be applied."
-msgstr ""
+msgstr "서식에 현재 파일보다 많은 페이지가 있으므로 적용할 수 없습니다."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
@@ -3398,25 +3420,27 @@ msgid ""
 "number of contacts in copy if the sign request is signed) = total of pages. "
 "We assume that one page weights 0.005 kilograms."
 msgstr ""
+"저장한 총 시트 수는 전송된 서명 요청 수 x 문서의 시트 수 x (서명이 필요한 연락처 수 + 이미 서명을 완료한 경우 사본에 있는 "
+"연락처 수) = 총 페이지 수를 기준으로 합니다. 한 페이지는 약 0.005킬로그램으로 가정합니다."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_requests
 msgid "There are no signatures request."
-msgstr ""
+msgstr "서명 요청이 없습니다."
 
 #. module: sign
 #. odoo-javascript
 #: code:addons/sign/static/src/components/template_alert_dialog/template_alert_dialog.xml:0
 #, python-format
 msgid "These files cannot be read, they may be corrupted or encrypted."
-msgstr ""
+msgstr "해당 파일들은 읽을 수 없거나 손상되었거나 암호화되었을 수 있습니다."
 
 #. module: sign
 #. odoo-javascript
 #: code:addons/sign/static/src/components/template_alert_dialog/template_alert_dialog.xml:0
 #, python-format
 msgid "They will be removed from the uploaded files"
-msgstr ""
+msgstr "업로드한 파일에서 제거됩니다"
 
 #. module: sign
 #. odoo-python
@@ -3426,7 +3450,7 @@ msgstr ""
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "This function can only be called with sudo."
-msgstr ""
+msgstr "이 함수는 sudo로만 호출할 수 있습니다."
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__reference
@@ -3439,28 +3463,28 @@ msgstr "메일에서 문서의 이름을 지정하는 방법입니다."
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "This sign request cannot be refused"
-msgstr ""
+msgstr "이 서명 요청은 반려할 수 없습니다."
 
 #. module: sign
 #. odoo-python
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "This sign request cannot be signed"
-msgstr ""
+msgstr "이 서명 요청에 서명을 할 수 없습니다."
 
 #. module: sign
 #. odoo-python
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "This sign request item cannot be filled"
-msgstr ""
+msgstr "이 서명 요청 항목은 입력할 수 없습니다."
 
 #. module: sign
 #. odoo-python
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "This sign request item cannot be refused"
-msgstr ""
+msgstr "이 서명 요청 항목은 반려할 수 없습니다."
 
 #. module: sign
 #. odoo-python
@@ -3468,14 +3492,14 @@ msgstr ""
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "This sign request item cannot be signed"
-msgstr ""
+msgstr "이 서명 요청 항목에는 서명할 수 없습니다"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
 msgid ""
 "This will keep all the already completed signature of this request and "
 "disable every sent access, are you sure?"
-msgstr ""
+msgstr "이렇게 하면 이미 완료된 서명은 모두 유지되고, 전송된 모든 접근 권한은 비활성화됩니다. 계속 하시겠습니까?"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__tip
@@ -3490,14 +3514,14 @@ msgstr "서명하기"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "To produce 1000 kg of wood, we have to cut 12 trees"
-msgstr ""
+msgstr "1000kg의 목재를 생산하려면, 12그루의 나무를 베어야 합니다"
 
 #. module: sign
 #. odoo-python
 #: code:addons/sign/controllers/portal.py:0
 #, python-format
 msgid "To sign"
-msgstr ""
+msgstr "서명하기"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
@@ -3512,19 +3536,19 @@ msgstr "거래"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.deleted_sign_request
 msgid "Try Odoo Sign"
-msgstr ""
+msgstr "Odoo 전자서명 체험하기"
 
 #. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_template_action
 msgid "Try our sample document"
-msgstr ""
+msgstr "샘플 문서 사용해 보기"
 
 #. module: sign
 #. odoo-javascript
 #: code:addons/sign/static/src/js/tours/sign.js:0
 #, python-format
 msgid "Try out this sample contract."
-msgstr ""
+msgstr "샘플 계약서를 사용해 보세요."
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__type_id
@@ -3567,7 +3591,7 @@ msgstr "SMS를 보낼 수 없는 경우 문서 발신자에게 문의하십시�
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_item_role__auth_method__sms
 msgid "Unique Code via SMS"
-msgstr ""
+msgstr "SMS로 고유 코드 전송"
 
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_log__action__update
@@ -3584,19 +3608,19 @@ msgstr "PDF 업로드"
 #. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_request_action
 msgid "Upload a PDF file or use an existing template to begin."
-msgstr ""
+msgstr "PDF 파일을 업로드하거나 기존 서식을 활용하여 시작해 보세요."
 
 #. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_template_action
 msgid "Upload a PDF file to create your first template"
-msgstr ""
+msgstr "PDF 파일을 업로드하여 첫 번째 서식을 만들어 보세요"
 
 #. module: sign
 #. odoo-javascript
 #: code:addons/sign/static/src/views/common.xml:0
 #, python-format
 msgid "Upload a PDF file to use as a template."
-msgstr ""
+msgstr "서식으로 활용할 PDF 파일을 업로드합니다."
 
 #. module: sign
 #. odoo-javascript
@@ -3604,17 +3628,17 @@ msgstr ""
 #: code:addons/sign/static/src/views/common.xml:0
 #, python-format
 msgid "Upload a pdf that you want to sign directly"
-msgstr ""
+msgstr "직접 서명할 PDF를 업로드하기"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Use Layout"
-msgstr ""
+msgstr "레이아웃 사용하기"
 
 #. module: sign
 #: model:ir.actions.act_window,name:sign.action_sign_duplicate_template_with_pdf
 msgid "Use the layout of fields on a new PDF"
-msgstr ""
+msgstr "새 PDF에서 필드 레이아웃 사용"
 
 #. module: sign
 #: model:ir.model,name:sign.model_res_users
@@ -3630,7 +3654,7 @@ msgstr "사용자 토큰"
 #. module: sign
 #: model:res.groups,name:sign.group_sign_user
 msgid "User: Own Templates"
-msgstr ""
+msgstr "사용자: 나만의 템플릿"
 
 #. module: sign
 #. odoo-javascript
@@ -3651,7 +3675,7 @@ msgstr "승인 및 전송"
 #: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Validate & the next signatory is \"%s\""
-msgstr ""
+msgstr "승인 & 다음 서명인은 \"%s\"입니다"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign._doc_sign
@@ -3687,7 +3711,7 @@ msgstr "확인"
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
 #, python-format
 msgid "View Document"
-msgstr ""
+msgstr "문서 보기"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_refused
@@ -3709,12 +3733,12 @@ msgstr "보거나 내려받은 사람"
 #: model:ir.ui.menu,name:sign.sign_request_waiting_for_me
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Waiting for me"
-msgstr ""
+msgstr "대기 중"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Waiting for others"
-msgstr ""
+msgstr "다른 사용자를 기다리는 중"
 
 #. module: sign
 #. odoo-javascript
@@ -3727,14 +3751,14 @@ msgstr "경고"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.deleted_sign_request
 msgid "We couldn't find the signature request you're looking for!"
-msgstr ""
+msgstr "원하시는 서명 요청을 찾을 수 없습니다!"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid ""
 "We display to you a ratio based on the saved weight versus 1000 kg of paper "
 "usage."
-msgstr ""
+msgstr "절약된 무게와 종이 사용량 1000kg을 기준으로 비율을 표시합니다."
 
 #. module: sign
 #. odoo-javascript
@@ -3750,7 +3774,7 @@ msgstr "모든 사람이 서명하면 이 문서를 이메일로 보내드립니
 msgid ""
 "We'll send an email to warn other contacts in copy & signers with the reason"
 " you provided."
-msgstr ""
+msgstr "문서 사본과 서명인을 작성하신 사유와 함께 다른 연락처로 경고 메일을 전송합니다."
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__website_message_ids
@@ -3769,24 +3793,24 @@ msgstr "웹사이트 대화 이력"
 msgid ""
 "Well done, your document is ready!<br>Let's send it to get our first "
 "signature."
-msgstr ""
+msgstr "문서가 준비되었습니다!<br>이제 문서를 전송하여 첫 번째 서명을 받아보세요."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "What about those conversions I see?"
-msgstr ""
+msgstr "변환은 어떻게 되나요?"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_iap_credits_banner
 msgid "Why am I seeing this?"
-msgstr ""
+msgstr "왜 이런 화면이 표시되나요?"
 
 #. module: sign
 #. odoo-javascript
 #: code:addons/sign/static/src/xml/sign_common.xml:0
 #, python-format
 msgid "Why do you refuse to sign this document?"
-msgstr ""
+msgstr "이 문서에 서명하기를 반려하신 이유는 무엇인가요?"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__width
@@ -3810,14 +3834,14 @@ msgstr "잘못된 비밀번호"
 msgid ""
 "You can contact the person who invited you to sign the document by email for"
 " help."
-msgstr ""
+msgstr "문서에 서명하도록 초대한 사람들에게 이메일을 보내 도움을 요청할 수 있습니다."
 
 #. module: sign
 #. odoo-python
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "You can only add new items for the current role"
-msgstr ""
+msgstr "현재 역할에 대해서만 새 항목을 추가할 수 있습니다"
 
 #. module: sign
 #. odoo-python
@@ -3833,7 +3857,7 @@ msgstr "서명 요청이 있는 서식은 삭제할 수 없지만 대신 보관�
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "You cannot reassign this signatory"
-msgstr ""
+msgstr "서명인을 다시 지정할 수 없습니다"
 
 #. module: sign
 #. odoo-python
@@ -3843,16 +3867,17 @@ msgid ""
 "You cannot share this document by link, because it has fields to be filled "
 "by different roles. Use Send button instead."
 msgstr ""
+"이 문서에는 다른 사람이 입력해야 하는 필드가 포함되어 있어 링크로 공유할 수 없습니다. 대신 보내기 버튼을 사용할 수 있습니다."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_iap_credits_banner
 msgid "You have less than 20 credits remaining for"
-msgstr ""
+msgstr "남은 크레딧이 20 미만입니다"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_refused
 msgid "You have refused the document"
-msgstr ""
+msgstr "문서를 반려했습니다"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_iap_credits_banner
@@ -3860,32 +3885,34 @@ msgid ""
 "You have templates or requests using a role with an extra-authentication step with few credits remaining.<br/>\n"
 "                To remove this warning, disable the extra-authentication step in the <code>Configuration &gt; Roles</code> menu, or buy credits."
 msgstr ""
+"추가 인증 단계가 필요한 역 또는 서식이 있으나 잔여 크레딧이 부족합니다.<br/>\n"
+"                이 경고를 보지 않으시려면 <code>설정 &gt; 역할</code> 메뉴에서 추가 인증 단계를 비활성화 하거나 크레딧을 구매해 주세요."
 
 #. module: sign
 #. odoo-python
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "You must specify one signer for each role of your sign template"
-msgstr ""
+msgstr "서식에서 각 역할에 대해 한 명의 서명인을 지정해야 합니다."
 
 #. module: sign
 #. odoo-python
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "You need to define a signatory"
-msgstr ""
+msgstr "서명인을 정의해야 합니다"
 
 #. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_request_my_requests_action
 msgid ""
 "You will find all documents that you participate in here, either as a "
 "signatory or as the person who requested the signature."
-msgstr ""
+msgstr "서명을 했거나 서명을 요청한 모든 문서를 여기에서 찾을 수 있습니다."
 
 #. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_request_waiting_for_me_action
 msgid "You will find documents waiting for your signature here."
-msgstr ""
+msgstr "여기에서 서명이 필요한 문서를 찾을 수 있습니다."
 
 #. module: sign
 #. odoo-javascript
@@ -3898,7 +3925,7 @@ msgstr ""
 #: model_terms:ir.actions.act_window,help:sign.sign_request_action
 #: model_terms:ir.actions.act_window,help:sign.sign_template_action
 msgid "You're one click away from automating your signature process!"
-msgstr ""
+msgstr "클릭 한 번으로 서명이 필요한 모든 프로세스를 자동화할 수 있습니다!"
 
 #. module: sign
 #. odoo-python
@@ -3946,7 +3973,7 @@ msgstr "서명이 저장되었습니다."
 #, python-format
 msgid ""
 "Your signature was not submitted. Ensure the SMS validation code is correct."
-msgstr ""
+msgstr "서명이 제출되지 않았습니다. SMS 인증 코드가 올바른지 다시 한번 확인해 주십시오."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_completed
@@ -3958,22 +3985,22 @@ msgstr "그리고"
 #: code:addons/sign/static/src/components/template_alert_dialog/template_alert_dialog.xml:0
 #, python-format
 msgid "and the process will continue"
-msgstr ""
+msgstr "프로세스가 계속 진행됩니다"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "and:"
-msgstr ""
+msgstr "그리고:"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_iap_credits_banner
 msgid "authentication step will be skipped if you are out of credits."
-msgstr ""
+msgstr "크레딧이 부족하면 인증 단계는 건너뛰게 됩니다."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_iap_credits_banner
 msgid "authentication. The"
-msgstr ""
+msgstr "인증."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_not_enough_credits
@@ -3981,6 +4008,8 @@ msgid ""
 "because you don't have enough credits for this operation. \n"
 "                    The signatory was able to finish signing, but was not asked to authenticate fully."
 msgstr ""
+"작업을 진행하기 위한 크레딧이 충분하지 않습니다. \n"
+"                    서명인이 서명을 완료했으나 인증을 요청받는 데 실패했습니다."
 
 #. module: sign
 #. odoo-javascript
@@ -3999,12 +4028,12 @@ msgstr "예. 314159"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_item_role_view_form
 msgid "e.g. Employee"
-msgstr ""
+msgstr "예. 직원"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
 msgid "e.g. Non-disclosure agreement"
-msgstr ""
+msgstr "예. 기밀 유지 계약"
 
 #. module: sign
 #: model:sign.item.type,tip:sign.sign_item_type_checkbox
@@ -4021,22 +4050,22 @@ msgstr "다음을 채우기"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_completed
 msgid "has been completed and signed by"
-msgstr ""
+msgstr "서명 및 서류 검토를 완료했습니다"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_completed
 msgid "has been edited, completed and signed by"
-msgstr ""
+msgstr "편집, 작성 및 서명되었습니다"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_not_enough_credits
 msgid "has been signed by"
-msgstr ""
+msgstr "서명되었습니다"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "https://c.environmentalpaper.org/"
-msgstr ""
+msgstr "https://c.environmentalpaper.org/"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
@@ -4047,7 +4076,7 @@ msgstr "ip"
 #: model_terms:ir.ui.view,arch_db:sign.green_report_el
 #: model_terms:ir.ui.view,arch_db:sign.green_report_el_pdf
 msgid "like"
-msgstr ""
+msgstr "좋아요"
 
 #. module: sign
 #: model:sign.item.type,tip:sign.sign_item_type_initial
@@ -4066,7 +4095,7 @@ msgstr "다음"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_tree
 msgid "sign"
-msgstr ""
+msgstr "서명"
 
 #. module: sign
 #: model:sign.item.type,tip:sign.sign_item_type_signature
@@ -4076,24 +4105,24 @@ msgstr "서명하기"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message
 msgid "sign.message"
-msgstr ""
+msgstr "sign.message"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_cc
 msgid "sign.message_cc"
-msgstr ""
+msgstr "sign.message_cc"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "tags"
-msgstr ""
+msgstr "태그"
 
 #. module: sign
 #. odoo-javascript
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #, python-format
 msgid "this template to modify it."
-msgstr ""
+msgstr "서식을 수정합니다."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
@@ -4103,26 +4132,26 @@ msgstr "받는 사람 :"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "we've got a list of consumption for 1000 kg of paper usage."
-msgstr ""
+msgstr "종이 사용량 1,000kg에 대한 소비량 목록이 있습니다."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_not_enough_credits
 msgid "without the requested extra-authentification step ("
-msgstr ""
+msgstr "추가 인증 요청 단계 없이 ("
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_completed
 msgid "you"
-msgstr ""
+msgstr "귀하"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_report_el
 #: model_terms:ir.ui.view,arch_db:sign.green_report_el_pdf
 msgid "{{green_report_el_title}}"
-msgstr ""
+msgstr "{{green_report_el_title}}"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_report_el
 #: model_terms:ir.ui.view,arch_db:sign.green_report_el_pdf
 msgid "{{green_report_el_title}} Summary"
-msgstr ""
+msgstr "{{green_report_el_title}} 요약"

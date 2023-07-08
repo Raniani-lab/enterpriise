@@ -608,7 +608,7 @@ msgstr "Przekreślony czek"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Custody"
-msgstr ""
+msgstr "Opieka"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1295,7 +1295,7 @@ msgstr "Nie dostępny/e"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Notice Deposits"
-msgstr ""
+msgstr "Depozyty zawiadomień"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1436,7 +1436,7 @@ msgstr "Opłata za debet w rachunku bieżącym"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Pair-Off"
-msgstr ""
+msgstr "Pair-Off"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0

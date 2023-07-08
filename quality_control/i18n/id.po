@@ -737,7 +737,7 @@ msgstr "Produk"
 #. module: quality_control
 #: model:ir.model,name:quality_control.model_stock_move_line
 msgid "Product Moves (Stock Move Line)"
-msgstr ""
+msgstr "Pergerakan Produk (Baris Pergerakan Stok)"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__uom_id

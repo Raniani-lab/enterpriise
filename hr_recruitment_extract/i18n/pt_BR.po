@@ -152,12 +152,12 @@ msgstr ""
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__hr_applicant__extract_state__no_extract_requested
 msgid "No extract requested"
-msgstr ""
+msgstr "Nenhuma extração solicitada"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__hr_applicant__extract_state__not_enough_credit
 msgid "Not enough credit"
-msgstr ""
+msgstr "Créditos insuficientes"
 
 #. module: hr_recruitment_extract
 #: model:ir.actions.server,name:hr_recruitment_extract.ir_cron_ocr_parse_ir_actions_server
@@ -203,14 +203,14 @@ msgstr ""
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
 #, python-format
 msgid "Server is currently under maintenance. Please retry later"
-msgstr ""
+msgstr "O servidor está em manutenção. Tente novamente mais tarde."
 
 #. module: hr_recruitment_extract
 #. odoo-python
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
 #, python-format
 msgid "Server not available. Please retry later"
-msgstr ""
+msgstr "O servidor está indisponível. Tente novamente mais tarde."
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__state_processed
@@ -234,7 +234,7 @@ msgstr ""
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
 #, python-format
 msgid "The document could not be found"
-msgstr ""
+msgstr "O documento não foi encontrado"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__hr_applicant__extract_state__to_validate
@@ -246,12 +246,12 @@ msgstr "Para validar"
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
 #, python-format
 msgid "Unsupported image format"
-msgstr ""
+msgstr "Formato de imagem não suportado"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__hr_applicant__extract_state__waiting_extraction
 msgid "Waiting extraction"
-msgstr ""
+msgstr "Aguardando extração"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__hr_applicant__extract_state__extract_not_ready
@@ -261,12 +261,12 @@ msgstr ""
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__hr_applicant__extract_state__waiting_upload
 msgid "Waiting upload"
-msgstr ""
+msgstr "Aguardando carregamento"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__hr_applicant__extract_state__waiting_validation
 msgid "Waiting validation"
-msgstr ""
+msgstr "Aguardando validação"
 
 #. module: hr_recruitment_extract
 #. odoo-python

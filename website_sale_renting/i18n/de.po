@@ -151,12 +151,12 @@ msgstr "<small>pro</small>"
 #. module: website_sale_renting
 #: model_terms:ir.ui.view,arch_db:website_sale_renting.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Minimal time of rental</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">Minimale Mietdauer</span>"
 
 #. module: website_sale_renting
 #: model_terms:ir.ui.view,arch_db:website_sale_renting.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Unavailability days</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">Tage der Nichtverfügbarkeit</span>"
 
 #. module: website_sale_renting
 #: model_terms:ir.ui.view,arch_db:website_sale_renting.price_dynamic_filter_template_product_product

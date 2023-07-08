@@ -96,7 +96,7 @@ msgstr "Produk"
 #. module: quality_mrp_workorder
 #: model:ir.model,name:quality_mrp_workorder.model_stock_move_line
 msgid "Product Moves (Stock Move Line)"
-msgstr ""
+msgstr "Pergerakan Produk (Baris Pergerakan Stok)"
 
 #. module: quality_mrp_workorder
 #: model:ir.model,name:quality_mrp_workorder.model_product_product

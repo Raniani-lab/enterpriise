@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2023
+# Larissa Manderfeld, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:48+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Martin Trigaux, 2023\n"
+"Last-Translator: Larissa Manderfeld, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -66,7 +67,7 @@ msgstr "Erstellt am"
 #. module: account_taxcloud
 #: model_terms:ir.ui.view,arch_db:account_taxcloud.res_config_settings_view_form
 msgid "Default Category"
-msgstr "Standard-Kategorie"
+msgstr "Standardkategorie"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_res_company__tic_category_id
@@ -285,7 +286,7 @@ msgstr ""
 "verwendet werden, um spezifische Steuersätze für jede Produktart zu "
 "berechnen. Dieser Wert wird verwendet, wenn kein TIC auf dem Produkt "
 "eingestellt ist. Wenn hier kein Wert eingestellt ist, wird der in den "
-"Fakturierungseinstellungen eingestellte Standardwert verwendet."
+"Einstellungen der Rechnungsstellung eingestellte Standardwert verwendet."
 
 #. module: account_taxcloud
 #: code:addons/account_taxcloud/models/account_invoice.py:0

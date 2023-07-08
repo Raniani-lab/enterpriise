@@ -130,7 +130,7 @@ msgstr "Akun Analitik"
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_project__allow_billable
 msgid "Billable"
-msgstr ""
+msgstr "Billable"
 
 #. module: industry_fsm_sale
 #: model:project.task.type,legend_blocked:industry_fsm_sale.field_service_project_stage_0
@@ -192,7 +192,7 @@ msgstr "Buat Faktur"
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_task_form2_inherit
 msgid "Create new quotation"
-msgstr ""
+msgstr "Buat new quotation"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_view_form_inherit
@@ -479,7 +479,7 @@ msgstr "Quotation"
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__quotation_count
 msgid "Quotation Count"
-msgstr ""
+msgstr "Jumlah Quotation"
 
 #. module: industry_fsm_sale
 #. odoo-python
@@ -526,7 +526,7 @@ msgstr "Order Penjualan"
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_project__sale_line_id
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__sale_line_id
 msgid "Sales Order Item"
-msgstr ""
+msgstr "Item Sales Order"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,help:industry_fsm_sale.field_project_task__sale_line_id

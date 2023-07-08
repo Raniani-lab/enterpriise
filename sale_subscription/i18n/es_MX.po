@@ -1404,7 +1404,8 @@ msgstr "Rotación"
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Click here to add some products or services to your quotation."
-msgstr "Haga clic aquí para añadir algún producto o servicio a su cotización."
+msgstr ""
+"Haga clic aquí para agregar algún producto o servicio a su cotización."
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form

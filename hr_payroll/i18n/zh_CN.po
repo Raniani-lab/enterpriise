@@ -10,6 +10,7 @@
 # digitalliuzg8888, 2022
 # Jeffery CHEN <jeffery9@gmail.com>, 2022
 # Emily Jia <eji@odoo.com>, 2023
+# Tony Ng, 2023
 # 
 msgid ""
 msgstr ""
@@ -17,7 +18,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Emily Jia <eji@odoo.com>, 2023\n"
+"Last-Translator: Tony Ng, 2023\n"
 "Language-Team: Chinese (China) (https://app.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -50,16 +51,16 @@ msgid ""
 "- Error: %s"
 msgstr ""
 "%s:\n"
-"- 雇员。%s\n"
-"- 合同：%s\n"
-"- 工资单。%s\n"
-"- 工资规则：%s(%s)\n"
-"- 错误。%s"
+"- 员工: %s\n"
+"- 合同: %s\n"
+"- 工资单: %s\n"
+"- 工资规则: %s (%s)\n"
+"- 错误: %s"
 
 #. module: hr_payroll
 #: model:ir.actions.report,print_report_name:hr_payroll.action_report_payslip
 msgid "'Payslip - %s' % (object.name)"
-msgstr "“工资单 - %s” % （object.name）"
+msgstr "'工资单 － %s' % (object.name)"
 
 #. module: hr_payroll
 #. odoo-python

@@ -100,7 +100,7 @@ msgstr ""
 #: code:addons/web_cohort/static/src/cohort_controller.xml:0
 #, python-format
 msgid "Main actions"
-msgstr ""
+msgstr "Galvenās darbības"
 
 #. module: web_cohort
 #. odoo-javascript

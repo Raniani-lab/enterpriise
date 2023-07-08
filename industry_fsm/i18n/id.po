@@ -158,7 +158,7 @@ msgstr "Jenis Aktivitas"
 #. module: industry_fsm
 #: model:res.groups,name:industry_fsm.group_fsm_manager
 msgid "Administrator"
-msgstr ""
+msgstr "Administrator"
 
 #. module: industry_fsm
 #: model:ir.actions.act_window,name:industry_fsm.project_task_action_all_fsm
@@ -623,7 +623,7 @@ msgstr ""
 #: code:addons/industry_fsm/controllers/portal.py:0
 #, python-format
 msgid "Invalid signature data."
-msgstr ""
+msgstr "Data tanda tangan tidak valid."
 
 #. module: industry_fsm
 #. odoo-javascript
@@ -1062,7 +1062,7 @@ msgstr "Belum ada tandatangan."
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__worksheet_signed_by
 msgid "Signed By"
-msgstr ""
+msgstr "Ditandangani Oleh"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_stop_timer_wizard_form

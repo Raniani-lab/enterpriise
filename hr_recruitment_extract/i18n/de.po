@@ -127,17 +127,17 @@ msgstr "Fehlermeldung"
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_can_show_resend_button
 msgid "Extract Can Show Resend Button"
-msgstr ""
+msgstr "Extraktion kann Schaltfläche zum erneuten Senden anzeigen"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_can_show_send_button
 msgid "Extract Can Show Send Button"
-msgstr ""
+msgstr "Extraktion kann Schaltfläche zum Senden anzeigen"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_state
 msgid "Extract State"
-msgstr ""
+msgstr "Extraktionsstatus"
 
 #. module: hr_recruitment_extract
 #. odoo-python
@@ -194,7 +194,7 @@ msgstr "Verarbeitungsoptionen für Personalbeschaffung"
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_remote_id
 msgid "Request ID to IAP-OCR"
-msgstr ""
+msgstr "ID von IAP-OCR anfragen"
 
 #. module: hr_recruitment_extract
 #: model:ir.actions.server,name:hr_recruitment_extract.ir_actions_server_digitize_cv

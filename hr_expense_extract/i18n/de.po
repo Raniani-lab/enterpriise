@@ -565,4 +565,4 @@ msgstr "Ihr Manager muss Ihre Spesenabrechnungen genehmigen (oder ablehnen)."
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__hr_expense__extract_state__extract_not_ready
 msgid "waiting extraction, but it is not ready"
-msgstr "Warten Extraktion, aber es ist nicht fertig"
+msgstr "wartende Extraktion, aber nicht bereit"

@@ -42,11 +42,11 @@ msgstr "日記賬"
 #: code:addons/account_bank_statement_import_csv/models/account_journal.py:0
 #, python-format
 msgid "Mixing CSV files with other file types is not allowed."
-msgstr ""
+msgstr "不允許將 CSV 文件與其他文件類型混合。"
 
 #. module: account_bank_statement_import_csv
 #. odoo-python
 #: code:addons/account_bank_statement_import_csv/models/account_journal.py:0
 #, python-format
 msgid "Only one CSV file can be selected."
-msgstr ""
+msgstr "只能選擇一個 CSV 文件。"

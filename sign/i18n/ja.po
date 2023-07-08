@@ -2120,7 +2120,7 @@ msgstr "Oops"
 #: model:sign.template,redirect_url_text:sign.template_sign_5
 #: model:sign.template,redirect_url_text:sign.template_sign_tour
 msgid "Open Link"
-msgstr ""
+msgstr "リンクを開く"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_option__value
@@ -2747,7 +2747,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model,name:sign.model_sign_send_request
 msgid "Sign send request"
-msgstr ""
+msgstr "署名リクエスト送付"
 
 #. module: sign
 #: model:ir.model,name:sign.model_sign_send_request_signer

@@ -790,7 +790,7 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_stream_post__link_url
 msgid "Link URL"
-msgstr ""
+msgstr "URL Link"
 
 #. module: social
 #. odoo-javascript

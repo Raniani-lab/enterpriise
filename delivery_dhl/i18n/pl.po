@@ -13,8 +13,8 @@
 # Martin Trigaux, 2022
 # Piotr Szlązak <szlazakpiotr@gmail.com>, 2022
 # Maksym <ms@myodoo.pl>, 2023
-# Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023
 # Tadeusz Karpiński <tadeusz.karpinski@braintec.com>, 2023
+# Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -22,7 +22,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Tadeusz Karpiński <tadeusz.karpinski@braintec.com>, 2023\n"
+"Last-Translator: Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023\n"
 "Language-Team: Polish (https://app.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -48,92 +48,92 @@ msgstr "1 - Express krajowy 12:00"
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__2
 msgid "2 - B2C"
-msgstr ""
+msgstr "2 - B2C"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__3
 msgid "3 - B2C"
-msgstr ""
+msgstr "3 - B2C"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__4
 msgid "4 - Jetline"
-msgstr ""
+msgstr "4 - Jetline"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__5
 msgid "5 - Sprintline"
-msgstr ""
+msgstr "5 - Sprintline"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__6
 msgid "6 - Secureline"
-msgstr ""
+msgstr "6 - Secureline"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_label_template__6x4_a4_pdf
 msgid "6X4_A4_PDF"
-msgstr ""
+msgstr "6X4_A4_PDF"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_label_template__6x4_pdf
 msgid "6X4_PDF"
-msgstr ""
+msgstr "6X4_PDF"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_label_template__6x4_thermal
 msgid "6X4_thermal"
-msgstr ""
+msgstr "6X4_thermal"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__7
 msgid "7 - Express Easy"
-msgstr ""
+msgstr "7 - Express Easy"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__8
 msgid "8 - Express Easy"
-msgstr ""
+msgstr "8 - Express Easy"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_label_template__8x4_a4_pdf
 msgid "8X4_A4_PDF"
-msgstr ""
+msgstr "8X4_A4_PDF"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_label_template__8x4_a4_tc_pdf
 msgid "8X4_A4_TC_PDF"
-msgstr ""
+msgstr "8X4_A4_TC_PDF"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_label_template__8x4_ci_pdf
 msgid "8X4_CI_PDF"
-msgstr ""
+msgstr "8X4_CI_PDF"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_label_template__8x4_ci_thermal
 msgid "8X4_CI_thermal"
-msgstr ""
+msgstr "8X4_CI_thermal"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_label_template__8x4_pdf
 msgid "8X4_PDF"
-msgstr ""
+msgstr "8X4_PDF"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_label_template__8x4_ru_a4_pdf
 msgid "8X4_RU_A4_PDF"
-msgstr ""
+msgstr "8X4_RU_A4_PDF"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_label_template__8x4_thermal
 msgid "8X4_thermal"
-msgstr ""
+msgstr "8X4_thermal"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__9
 msgid "9 - Europack"
-msgstr ""
+msgstr "9 - Europack"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__a
@@ -153,12 +153,12 @@ msgstr "Azja Pacyfik"
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__b
 msgid "B - Break Bulk Express"
-msgstr ""
+msgstr "B - Break Bulk Express"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__c
 msgid "C - Medical Express"
-msgstr ""
+msgstr "C - Medical Express"
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_stock_package_type__package_carrier_type
@@ -218,7 +218,7 @@ msgstr "Dokumenty DHL"
 #: model:delivery.carrier,name:delivery_dhl.delivery_carrier_dhl_eu_dom
 #: model:product.template,name:delivery_dhl.product_product_delivery_dhl_eu_dom_product_template
 msgid "DHL EU"
-msgstr ""
+msgstr "DHL EU"
 
 #. module: delivery_dhl
 #: model:delivery.carrier,name:delivery_dhl.delivery_carrier_dhl_eu_intl
@@ -265,7 +265,7 @@ msgstr "DHL SiteID"
 #: model:delivery.carrier,name:delivery_dhl.delivery_carrier_dhl_us_dom
 #: model:product.template,name:delivery_dhl.product_product_delivery_dhl_us_dom_product_template
 msgid "DHL US"
-msgstr ""
+msgstr "DHL US"
 
 #. module: delivery_dhl
 #: model:delivery.carrier,name:delivery_dhl.delivery_carrier_dhl_us_intl
@@ -315,7 +315,7 @@ msgstr "Cła opłacane przez"
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__e
 msgid "E - Express 9:00"
-msgstr ""
+msgstr "E - Express 9:00"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_label_image_format__epl2
@@ -352,7 +352,7 @@ msgstr "Wskazówka: Miejsce docelowe może nie wymagać opcji oclenia."
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__i
 msgid "I - Break Bulk Economy"
-msgstr ""
+msgstr "I - Break Bulk Economy"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_package_dimension_unit__i
@@ -369,7 +369,7 @@ msgstr "Nieprawidłowa składnia danych niestandardowych DHL."
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__j
 msgid "J - Jumbo Box"
-msgstr ""
+msgstr "J - Jumbo Box"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__k
@@ -384,7 +384,7 @@ msgstr "Kilogramy"
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__l
 msgid "L - Express 10:30"
-msgstr ""
+msgstr "L - Express 10:30"
 
 #. module: delivery_dhl
 #: model_terms:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form_with_provider_dhl
@@ -404,7 +404,7 @@ msgstr "Szablon etykiety"
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__m
 msgid "M - Express 10:30"
-msgstr ""
+msgstr "M - Express 10:30"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__n
@@ -414,7 +414,7 @@ msgstr "N - Domestic Express"
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__o
 msgid "O - DOM Express 10:30"
-msgstr ""
+msgstr "O - DOM Express 10:30"
 
 #. module: delivery_dhl
 #: model_terms:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form_with_provider_dhl
@@ -424,7 +424,7 @@ msgstr "Opcje"
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__p
 msgid "P - Express Worldwide"
-msgstr ""
+msgstr "P - Express Worldwide"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_label_image_format__pdf
@@ -477,7 +477,7 @@ msgstr "Q - Ekspres medyczny"
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__r
 msgid "R - GlobalMail Business"
-msgstr ""
+msgstr "R - GlobalMail Business"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_duty_payment__r
@@ -582,7 +582,7 @@ msgstr "U - Express międzynarodowy"
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__v
 msgid "V - Europack"
-msgstr ""
+msgstr "V - Europack"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__w
@@ -597,7 +597,7 @@ msgstr "X - Koperta Express"
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__y
 msgid "Y - Express 12:00"
-msgstr ""
+msgstr "Y - Express 12:00"
 
 #. module: delivery_dhl
 #. odoo-python
@@ -621,4 +621,4 @@ msgstr "Z - Opłaty za miejsce docelowe"
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_label_image_format__zpl2
 msgid "ZPL2"
-msgstr ""
+msgstr "ZPL2"

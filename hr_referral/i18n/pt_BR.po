@@ -684,7 +684,7 @@ msgstr "Trabalho"
 #. module: hr_referral
 #: model:ir.model,name:hr_referral.model_hr_job
 msgid "Job Position"
-msgstr "Vaga de emprego"
+msgstr "Cargo"
 
 #. module: hr_referral
 #: model:ir.actions.act_window,name:hr_referral.action_hr_job_employee_referral

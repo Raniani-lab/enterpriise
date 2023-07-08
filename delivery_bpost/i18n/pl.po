@@ -350,7 +350,7 @@ msgstr "bpack Europa Biznes"
 #. module: delivery_bpost
 #: model:ir.model.fields.selection,name:delivery_bpost.selection__delivery_carrier__bpost_international_deliver_type__bpack_world_business
 msgid "bpack World Business"
-msgstr ""
+msgstr "bpack Światowy Biznes"
 
 #. module: delivery_bpost
 #: model:ir.model.fields.selection,name:delivery_bpost.selection__delivery_carrier__bpost_international_deliver_type__bpack_world_express_pro

@@ -1236,7 +1236,7 @@ msgstr "عدد العقود المقدمة"
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_personal_info__display_type__radio
 msgid "Radio"
-msgstr "اختيار "
+msgstr "راديو "
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__display_type__radio

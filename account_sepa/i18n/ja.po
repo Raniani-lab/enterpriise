@@ -281,7 +281,7 @@ msgid ""
 "- 2 letters or digits: location code\n"
 "- 3 letters or digits: branch code, optional\n"
 msgstr ""
-"パートナー'%s'の銀行口座'%s'の「銀行」に関連付けられている'%s'BICコード'%s'は、必要な規約に従っていません。\n"
+"BICコード '%s' （以下に関連付けられているもの：銀行'%s' 銀行口座 '%s' 取引先'%s' ）は必要な規約に従っていません。\n"
 "BICコードは8文字または11文字で構成され、以下の構造と一致する必要があります：\n"
 "- 4 文字：機関コードまたは銀行コード\n"
 "- 2 文字：国コード\n"
@@ -296,7 +296,7 @@ msgid ""
 "The account %s, linked to partner '%s', is not of type IBAN.\n"
 "A valid IBAN account is required to use SEPA features."
 msgstr ""
-"取引先'%s'にリンクされている口座'%s'はIBANタイプではありません。\n"
+"口座%s（取引先 '%s'にリンクされている）はIBANタイプではありません。\n"
 "SEPA機能を使用するには、有効なIBAN口座が必要です。"
 
 #. module: account_sepa
@@ -307,7 +307,7 @@ msgid ""
 "The account %s, of journal '%s', is not of type IBAN.\n"
 "A valid IBAN account is required to use SEPA features."
 msgstr ""
-"仕訳'%s'の口座'%s'がIBANタイプではありません。\n"
+"口座%s（仕訳%sの）がIBANタイプではありません。\n"
 "SEPAの機能を使用するには、有効なIBAN口座が必要です。"
 
 #. module: account_sepa
@@ -326,7 +326,7 @@ msgstr "支払額'%(payment)s'が高すぎます。許可されている最高�
 msgid ""
 "The bank defined on account %s (from partner %s) has no BIC. Please first "
 "set one."
-msgstr "（取引先%sの）口座%sに定義されている銀行にBICがありません。まずBICを設定して下さい。"
+msgstr "口座%s（取引先の%s）に定義されている銀行にBICがありません。まずBICを設定して下さい。"
 
 #. module: account_sepa
 #. odoo-python

@@ -1251,7 +1251,7 @@ msgstr "Keuzerondje"
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__display_type__radio
 msgid "Radio Buttons"
-msgstr "Radioknoppen"
+msgstr "Keuzerondjes"
 
 #. module: hr_contract_salary
 #. odoo-javascript

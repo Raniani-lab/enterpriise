@@ -121,7 +121,7 @@ msgstr "Data wygenerowania"
 #. module: hr_payroll_account_sepa
 #: model:ir.model,name:hr_payroll_account_sepa.model_hr_payslip_run_sepa_wizard
 msgid "HR Payslip Run SEPA Wizard"
-msgstr ""
+msgstr "HR Payslip Run SEPA Wizard"
 
 #. module: hr_payroll_account_sepa
 #: model:ir.model,name:hr_payroll_account_sepa.model_hr_payslip_sepa_wizard

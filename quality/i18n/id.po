@@ -95,7 +95,7 @@ msgstr ""
 #. module: quality
 #: model:res.groups,name:quality.group_quality_manager
 msgid "Administrator"
-msgstr ""
+msgstr "Administrator"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_stage__done

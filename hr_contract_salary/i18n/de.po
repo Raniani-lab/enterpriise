@@ -161,6 +161,8 @@ msgstr "Abschnitt hinzufügen"
 #, python-format
 msgid "Advanges that are not linked to a field should always be displayed."
 msgstr ""
+"Vorteile, die nicht mit einem Feld verknüpft sind, sollten immer angezeigt "
+"werden."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage_value__advantage_id
@@ -781,7 +783,7 @@ msgstr "Helfer"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package_personal_information
 msgid "Hide <i class=\"fa fa-chevron-up\"/>"
-msgstr "<i class=\"fa fa-chevron-up\"/> ausblenden"
+msgstr "Ausblenden <i class=\"fa fa-chevron-up\"/>"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info_value__hide_children
@@ -792,7 +794,7 @@ msgstr "Kinder ausblenden"
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__hide_description
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage_value__hide_description
 msgid "Hide Description"
-msgstr "Beschreibung verbergen"
+msgstr "Beschreibung ausblenden"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_salary_personal_info_value__hide_children
@@ -1422,12 +1424,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info_value__sequence
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume_category__sequence
 msgid "Sequence"
-msgstr "Reihenfolge"
+msgstr "Sequenz"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package_personal_information
 msgid "Show <i class=\"fa fa-chevron-down\"/>"
-msgstr "<i class=\"fa fa-chevron-down\"/> anzeigen"
+msgstr "Anzeigen <i class=\"fa fa-chevron-down\"/>"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_personal_info__position__right

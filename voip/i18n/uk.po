@@ -30,21 +30,21 @@ msgstr "К-сть випадків"
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "%(number of missed calls)s missed calls"
-msgstr ""
+msgstr "%(кількість пропущених дзвінків) пропущених дзвінків"
 
 #. module: voip
 #. odoo-javascript
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "1 missed call"
-msgstr ""
+msgstr "1 пропущений дзвінок"
 
 #. module: voip
 #. odoo-javascript
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "2 missed calls"
-msgstr ""
+msgstr "2 пропущених дзвінки"
 
 #. module: voip
 #. odoo-javascript
@@ -54,6 +54,8 @@ msgid ""
 "A hardware error occured while trying to access audio recording device. "
 "Please make sure your drivers are up to date and try again."
 msgstr ""
+"Під час спроби отримати доступ до пристрою для запису звуку сталася апаратна"
+" помилка. Переконайтеся, що ваші драйвери оновлені, і повторіть спробу."
 
 #. module: voip
 #. odoo-javascript
@@ -91,6 +93,8 @@ msgid ""
 "An error occured involving the audio recording device "
 "(%(errorName)s):</br>%(errorMessage)s"
 msgstr ""
+"Сталася помилка з пристроєм для запису звуку "
+"(%(errorName)s):</br>%(errorMessage)s"
 
 #. module: voip
 #. odoo-javascript
@@ -100,6 +104,8 @@ msgid ""
 "An error occurred during the instantiation of the User Agent:</br></br> "
 "%(error message)s"
 msgstr ""
+"Виникла помилка під час встановлення агента користувача:</br></br> (помилка "
+"повідомлення)"
 
 #. module: voip
 #. odoo-javascript
@@ -166,14 +172,14 @@ msgstr "Тривалість дзвінка: %(min)sхв %(sec)sсек"
 #: model:ir.model.fields,field_description:voip.field_res_users__should_call_from_another_device
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__should_call_from_another_device
 msgid "Call from another device"
-msgstr ""
+msgstr "Дзвінок з іншого пристрою"
 
 #. module: voip
 #. odoo-javascript
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid "Call rejected (reason: \"%(reasonPhrase)s\")"
-msgstr ""
+msgstr "Дзвінок відхилено (причина: \"%(reasonPhrase)s\")"
 
 #. module: voip
 #. odoo-python
@@ -228,6 +234,10 @@ msgid ""
 " runs over HTTPS and that your browser is not set to deny access to media "
 "devices."
 msgstr ""
+"Неможливо отримати доступ до пристрою для запису звуку. Якщо ви заборонили "
+"доступ до мікрофона, надайте його та повторіть спробу. В іншому випадку "
+"переконайтеся, що цей веб-сайт працює через HTTPS і що ваш браузер не "
+"налаштовано на заборону доступу до медіапристроїв."
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_users__how_to_call_on_mobile
@@ -239,6 +249,11 @@ msgid ""
 "            • Ask: Always ask whether the softphone or the device's phone must be used\n"
 "        "
 msgstr ""
+"Виберіть спосіб здійснення виклику під час використання мобільного додатку:\n"
+"            • VoIP: Завжди використовуйте програмний телефон Odoo\n"
+"            • Телефон пристрою: завжди використовуйте телефон пристрою\n"
+"            • Запитати: Завжди запитуйте, чи потрібно використовувати програмний телефон чи телефон пристрою\n"
+"        "
 
 #. module: voip
 #. odoo-javascript
@@ -320,7 +335,7 @@ msgstr "Демо"
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__res_users_settings__how_to_call_on_mobile__phone
 msgid "Device's phone"
-msgstr ""
+msgstr "Телефон пристрою"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__direction
@@ -404,7 +419,7 @@ msgstr "Введіть номер..."
 #: model:ir.model.fields,field_description:voip.field_res_users__external_device_number
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__external_device_number
 msgid "External device number"
-msgstr ""
+msgstr "Номер зовнішнього пристрою"
 
 #. module: voip
 #. odoo-javascript
@@ -415,6 +430,9 @@ msgid ""
 "wrong. Please have an administrator verify the websocket server URL in the "
 "General Settings."
 msgstr ""
+"Не вдалося запустити агент користувача. URL-адреса сервера websocket може "
+"бути неправильною. Попросіть адміністратора перевірити URL-адресу сервера "
+"websocket у загальних налаштуваннях."
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_voip_phonecall__sequence
@@ -445,7 +463,7 @@ msgstr "Утримати"
 #: model:ir.model.fields,field_description:voip.field_res_users__how_to_call_on_mobile
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__how_to_call_on_mobile
 msgid "How to place calls on mobile"
-msgstr ""
+msgstr "Як телефонувати на мобільний"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__id
@@ -458,7 +476,7 @@ msgstr "ID"
 #: model:ir.model.fields,help:voip.field_res_users__should_auto_reject_incoming_calls
 #: model:ir.model.fields,help:voip.field_res_users_settings__should_auto_reject_incoming_calls
 msgid "If enabled, incoming calls will be automatically declined in Odoo."
-msgstr ""
+msgstr "Якщо ввімкнено, вхідні виклики автоматично відхилятимуться в Odoo."
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_users__should_call_from_another_device
@@ -468,6 +486,10 @@ msgid ""
 "device number\". Use this option to place the call in Odoo but handle it "
 "from another device - e.g. your desk phone."
 msgstr ""
+"Якщо ввімкнено, здійснення виклику в Odoo призведе до переадресації виклику "
+"на «Номер зовнішнього пристрою». Використовуйте цю опцію, щоб здійснити "
+"дзвінок в Odoo, але обробляти його з іншого пристрою, напр. ваш настільний "
+"телефон."
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_users__external_device_number
@@ -476,6 +498,8 @@ msgid ""
 "If the \"Call from another device\" option is enabled, calls placed in Odoo "
 "will be transfered to this phone number."
 msgstr ""
+"Якщо ввімкнуто опцію «Дзвінок з іншого пристрою», дзвінки, здійснені в Odoo,"
+" будуть переведені на цей номер телефону."
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall_log_wizard__reschedule_option__7d
@@ -672,7 +696,7 @@ msgstr "Мої дзвінки"
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Next activities"
-msgstr ""
+msgstr "Наступні дії"
 
 #. module: voip
 #. odoo-javascript
@@ -682,6 +706,8 @@ msgid ""
 "No audio recording device available. The application requires a microphone "
 "in order to be used."
 msgstr ""
+"Немає доступного пристрою для запису звуку. Для використання програми "
+"потрібен мікрофон."
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__pending
@@ -709,7 +735,7 @@ msgstr ""
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__direction__outgoing
 msgid "Outgoing"
-msgstr "На відправку"
+msgstr "Вихідний"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_config_settings__pbx_ip
@@ -785,6 +811,8 @@ msgid ""
 "Please try again later. If the problem persists, you may want to ask an "
 "administrator to check the configuration."
 msgstr ""
+"Будь-ласка спробуйте пізніше. Якщо проблема не зникає, ви можете попросити "
+"адміністратора перевірити конфігурацію."
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__res_config_settings__mode__prod
@@ -811,7 +839,7 @@ msgstr "Оновити панель"
 #: code:addons/voip/static/src/models/registerer.js:0
 #, python-format
 msgid "Registration rejected: %(statusCode)s %(reasonPhrase)s."
-msgstr ""
+msgstr "Реєстрацію відхилено: %(statusCode)s %(reasonPhrase)s."
 
 #. module: voip
 #. odoo-javascript
@@ -831,7 +859,7 @@ msgstr "Відхилити дзвінок"
 #: model:ir.model.fields,field_description:voip.field_res_users__should_auto_reject_incoming_calls
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__should_auto_reject_incoming_calls
 msgid "Reject incoming calls"
-msgstr ""
+msgstr "Відхилити вхідні дзвінки"
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__rejected
@@ -903,7 +931,7 @@ msgstr "Запланувати дію"
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Schedule Next"
-msgstr "Запланувати наступне"
+msgstr "Запланувати наступний"
 
 #. module: voip
 #. odoo-javascript
@@ -938,6 +966,8 @@ msgid ""
 "Some documents cannot be added to the call queue as they do not have a phone"
 " number set: %(record_names)s"
 msgstr ""
+"Деякі документи не можна додати до черги викликів, оскільки для них не "
+"встановлено номер телефону: %(record_names)s"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__reschedule_date
@@ -971,7 +1001,7 @@ msgstr "Відповісти"
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_config_settings__pbx_ip
 msgid "The IP address of your PBX Server"
-msgstr ""
+msgstr "IP-адреси вашого серверу PBX"
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_config_settings__wsServer
@@ -983,7 +1013,7 @@ msgstr "URL вашого WebSocket"
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid "The connection cannot be made.</br> Please check your configuration."
-msgstr ""
+msgstr "Не можливо виконати з'єднання.</br> Перевірте ваші налаштування."
 
 #. module: voip
 #. odoo-javascript
@@ -994,6 +1024,9 @@ msgid ""
 "verify the websocket server URL in the General Settings. If the problem "
 "persists, this is probably an issue with the server."
 msgstr ""
+"Помилка може походити від транспортного рівня. Попросіть адміністратора "
+"перевірити URL-адресу сервера websocket у загальних налаштуваннях. Якщо "
+"проблема не зникає, ймовірно, проблема із сервером."
 
 #. module: voip
 #. odoo-javascript
@@ -1004,12 +1037,15 @@ msgid ""
 "connection cannot be made. Please check your configuration.</br> (Reason "
 "received: %(reasonPhrase)s)"
 msgstr ""
+"Номер неправильний, облікові дані користувача можуть бути неправильними або "
+"неможливо встановити з’єднання. Перевірте налаштування.</br> (Отримано "
+"причину: %(reasonPhrase)s)"
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_users__voip_secret
 #: model:ir.model.fields,help:voip.field_res_users_settings__voip_secret
 msgid "The password that will be used to register with the PBX server."
-msgstr ""
+msgstr "Пароль, який буде використовуватися для реєстрації на сервері АТС."
 
 #. module: voip
 #. odoo-javascript
@@ -1034,6 +1070,10 @@ msgid ""
 "that you are reaching the right server (PBX server IP in the General "
 "Settings) and that the credentials in your user preferences are correct."
 msgstr ""
+"Серверу не вдалося автентифікувати вас. Будь ласка, попросіть адміністратора"
+" перевірити, чи ви підключаєтеся до потрібного сервера (IP-адреса сервера "
+"PBX у загальних налаштуваннях) і чи правильні облікові дані у ваших "
+"налаштуваннях користувача."
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_voip_phonecall__state
@@ -1053,6 +1093,8 @@ msgid ""
 "The username (typically the extension number) that will be used to register "
 "with the PBX server."
 msgstr ""
+"Ім’я користувача (зазвичай це внутрішній номер), яке використовуватиметься "
+"для реєстрації на сервері PBX."
 
 #. module: voip
 #. odoo-javascript
@@ -1062,6 +1104,7 @@ msgid ""
 "The websocket connection with the server has been lost. Please try to "
 "refresh the page."
 msgstr ""
+"Веб-сокет-з’єднання з сервером було втрачено. Спробуйте оновити сторінку."
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__open
@@ -1081,7 +1124,7 @@ msgstr "Завтра"
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Transfer"
-msgstr "Переміщення"
+msgstr "Перемістити"
 
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
@@ -1116,7 +1159,7 @@ msgstr "Дзвінок ІР-телефонії за звітом користу�
 #. module: voip
 #: model:ir.model,name:voip.model_voip_queue_mixin
 msgid "VOIP Queue support"
-msgstr ""
+msgstr "Підтримка VOIP Queue"
 
 #. module: voip
 #. odoo-javascript
@@ -1131,7 +1174,7 @@ msgstr "IP-телефонія"
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.voip_res_users_settings_view_form
 msgid "VoIP Configuration"
-msgstr ""
+msgstr "Налаштування VoIP"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_config_settings__mode
@@ -1142,13 +1185,13 @@ msgstr "Середовище ІР-телефонії"
 #: model:ir.model.fields,field_description:voip.field_res_users__voip_secret
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__voip_secret
 msgid "VoIP secret"
-msgstr ""
+msgstr "Секретний ключ VoIP"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_users__voip_username
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__voip_username
 msgid "VoIP username / Extension number"
-msgstr ""
+msgstr "VoIP ім'я користувача / додатковий номер"
 
 #. module: voip
 #. odoo-javascript
@@ -1205,7 +1248,7 @@ msgstr ""
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "min"
-msgstr "мінімум"
+msgstr "хв"
 
 #. module: voip
 #. odoo-javascript

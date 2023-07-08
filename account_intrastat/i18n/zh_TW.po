@@ -3,8 +3,8 @@
 # 	* account_intrastat
 # 
 # Translators:
-# Tony Ng, 2023
 # Martin Trigaux, 2023
+# Tony Ng, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:17+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Martin Trigaux, 2023\n"
+"Last-Translator: Tony Ng, 2023\n"
 "Language-Team: Chinese (Taiwan) (https://app.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -62,7 +62,7 @@ msgstr "<span class=\"fa fa-filter\"/> 業務夥伴:"
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_move_line_tree_view_account_intrastat_transaction_codes
 msgid "Account move line"
-msgstr ""
+msgstr "賬戶分錄資料行"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
@@ -100,12 +100,12 @@ msgstr "按類型"
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_intrastat_main_template
 msgid "Check the expired"
-msgstr ""
+msgstr "檢查過期的"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_intrastat_main_template
 msgid "Check the premature"
-msgstr ""
+msgstr "檢查過早的"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__type__commodity
@@ -124,7 +124,7 @@ msgstr "優惠碼"
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_product_product__intrastat_code_id
 msgid "Commodity code"
-msgstr ""
+msgstr "商品編號"
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_res_company
@@ -151,24 +151,24 @@ msgstr "國家"
 #: model:ir.model.fields,field_description:account_intrastat.field_product_product__intrastat_origin_country_id
 #: model:ir.model.fields,field_description:account_intrastat.field_product_template__intrastat_origin_country_id
 msgid "Country of Origin"
-msgstr ""
+msgstr "原產國"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_res_company__intrastat_default_invoice_transaction_code_id
 #: model:ir.model.fields,field_description:account_intrastat.field_res_config_settings__intrastat_default_invoice_transaction_code_id
 msgid "Default invoice transaction code"
-msgstr ""
+msgstr "預設發票交易代碼"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_res_company__intrastat_default_refund_transaction_code_id
 #: model:ir.model.fields,field_description:account_intrastat.field_res_config_settings__intrastat_default_refund_transaction_code_id
 msgid "Default refund transaction code"
-msgstr ""
+msgstr "預設退款交易代碼"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_res_company__intrastat_transport_mode_id
 msgid "Default transport mode"
-msgstr ""
+msgstr "預設傳輸模式"
 
 #. module: account_intrastat
 #. odoo-python
@@ -230,7 +230,7 @@ msgstr "Intrastat 報表（歐盟）"
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_account_intrastat_report_handler
 msgid "Intrastat Report Custom Handler"
-msgstr ""
+msgstr "Intrastat 報表自訂處理程式"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_account_bank_statement_line__intrastat_transport_mode_id
@@ -264,21 +264,21 @@ msgstr "國家地區"
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_move_line_tree_view_account_intrastat_transaction_codes
 msgid "Intrastat transaction code"
-msgstr ""
+msgstr "Intrastat 交易代碼"
 
 #. module: account_intrastat
 #. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Invalid commodity intrastat code products."
-msgstr ""
+msgstr "商品的 Intrastat 產品代碼無效。"
 
 #. module: account_intrastat
 #. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Invalid transaction intrastat code entries."
-msgstr ""
+msgstr "交易的 Intrastat 記項代碼無效。"
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_account_move
@@ -293,7 +293,7 @@ msgstr "日記帳項目"
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_vat
 msgid "Only with VAT numbers"
-msgstr ""
+msgstr "只包括增值稅號碼"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.report_invoice_document_intrastat_2019
@@ -308,7 +308,7 @@ msgstr ""
 #. module: account_intrastat
 #: model:account.report.column,name:account_intrastat.intrastat_report_column_partner_vat
 msgid "Partner VAT"
-msgstr ""
+msgstr "合作夥伴增值稅"
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_product_template
@@ -320,7 +320,7 @@ msgstr "商品"
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_account_move_line__intrastat_product_origin_country_id
 msgid "Product Country"
-msgstr ""
+msgstr "產品國家/地區"
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_product_product
@@ -341,22 +341,22 @@ msgstr "地區代碼"
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_intrastat_main_template
 msgid "Some lines have expired intrastat"
-msgstr ""
+msgstr "部份資料行包含已過期 Intrastat 資料"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_intrastat_main_template
 msgid "Some lines have premature intrastat"
-msgstr ""
+msgstr "部份資料行包含過早執行的 Intrastat 資料"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_intrastat_main_template
 msgid "Some lines have undefined"
-msgstr ""
+msgstr "部份資料行包含未定義資料"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_intrastat_main_template
 msgid "Some products have undefined"
-msgstr ""
+msgstr "部份產品包含未定義資料"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_extended
@@ -368,19 +368,19 @@ msgstr "標準"
 #: model:ir.model.fields,field_description:account_intrastat.field_product_template__intrastat_supplementary_unit
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "Supplementary Unit"
-msgstr ""
+msgstr "補充單位"
 
 #. module: account_intrastat
 #: model:account.report.column,name:account_intrastat.intrastat_report_column_supplementary_units
 #: model:ir.model.fields,field_description:account_intrastat.field_product_product__intrastat_supplementary_unit_amount
 #: model:ir.model.fields,field_description:account_intrastat.field_product_template__intrastat_supplementary_unit_amount
 msgid "Supplementary Units"
-msgstr ""
+msgstr "補充單位"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.product_product_tree_view_account_intrastat_supplementary_unit
 msgid "Supplementary Units per Product"
-msgstr ""
+msgstr "每產品補充單位"
 
 #. module: account_intrastat
 #: model:account.report.column,name:account_intrastat.intrastat_report_column_system
@@ -396,7 +396,7 @@ msgstr "使用該公司稅務報告的國家/地區"
 #: model:ir.model.fields,help:account_intrastat.field_product_product__intrastat_supplementary_unit_amount
 #: model:ir.model.fields,help:account_intrastat.field_product_template__intrastat_supplementary_unit_amount
 msgid "The number of supplementary units per product quantity."
-msgstr ""
+msgstr "每個產品數量的補充單位數目。"
 
 #. module: account_intrastat
 #. odoo-python
@@ -436,14 +436,14 @@ msgstr "三項 代碼/類型/ country_id必須是唯一的。"
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Undefined supplementary unit products."
-msgstr ""
+msgstr "補充單位產品未定義。"
 
 #. module: account_intrastat
 #. odoo-python
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
 #, python-format
 msgid "Undefined weight products."
-msgstr ""
+msgstr "產品重量未定義。"
 
 #. module: account_intrastat
 #: model:account.report.column,name:account_intrastat.intrastat_report_column_value
@@ -480,7 +480,7 @@ msgstr ""
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_intrastat_main_template
 msgid "commodity codes"
-msgstr ""
+msgstr "商品編號"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__ct/l
@@ -575,12 +575,12 @@ msgstr "商品"
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_intrastat_main_template
 msgid "product's commodity codes"
-msgstr ""
+msgstr "產品的商品編號"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_intrastat_main_template
 msgid "supplementary units"
-msgstr ""
+msgstr "補充單位"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__t__co2
@@ -590,12 +590,12 @@ msgstr ""
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_intrastat_main_template
 msgid "transaction codes"
-msgstr ""
+msgstr "交易編號"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_intrastat_main_template
 msgid "weights"
-msgstr ""
+msgstr "重量"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_intrastat_main_template

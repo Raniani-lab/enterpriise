@@ -134,7 +134,7 @@ msgstr "建立帳單"
 #. module: documents_account
 #: model:documents.workflow.rule,name:documents_account.credit_note_rule
 msgid "Create Credit Note"
-msgstr ""
+msgstr "建立貸記單"
 
 #. module: documents_account
 #: model:documents.workflow.rule,name:documents_account.customer_invoice_rule
@@ -154,7 +154,7 @@ msgstr "建立於"
 #. module: documents_account
 #: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_out_refund
 msgid "Credit note"
-msgstr ""
+msgstr "貸記單"
 
 #. module: documents_account
 #: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_out_invoice
@@ -318,7 +318,7 @@ msgstr ""
 #. module: documents_account
 #: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_in_refund
 msgid "Vendor Credit Note"
-msgstr "供應商採購折讓單"
+msgstr "供應商貸記單"
 
 #. module: documents_account
 #: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_in_invoice

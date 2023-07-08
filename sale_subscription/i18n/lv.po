@@ -835,7 +835,7 @@ msgstr "Aktivitāšu tipi"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_user_type
 msgid "Activity User Type"
-msgstr ""
+msgstr "Aktivitātes lietotāja veids"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__partner_ids
@@ -1093,6 +1093,10 @@ msgid ""
 "Post as Message: post on document and notify followers\n"
 "Post as Note: log a note on document"
 msgstr ""
+"Izvēlieties e-pasta sūtīšanas metodi:\n"
+"E-pasts: sūtīt e-pastus tiešā veidā\n"
+"Publicēt kā ziņojumu: ievietojiet dokumentā un paziņojiet sekotājiem\n"
+"Publicēt kā piezīmi: reģistrējiet piezīmi dokumentā"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_log__event_type__2_churn
@@ -1416,12 +1420,12 @@ msgstr "Melnraksts"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_date_deadline_range
 msgid "Due Date In"
-msgstr ""
+msgstr "Izpildes datums pēc"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_date_deadline_range_type
 msgid "Due type"
-msgstr ""
+msgstr "Izpildes veids"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__recurring_rule_boundary
@@ -1510,7 +1514,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_template__recurring_rule_boundary__unlimited
 msgid "Forever"
-msgstr ""
+msgstr "Uz visiem laikiem"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -1903,7 +1907,7 @@ msgstr "Saistītais lauks"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Log a note..."
-msgstr ""
+msgstr "Pievienot piezīmi..."
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
@@ -2162,7 +2166,7 @@ msgstr ""
 #: code:addons/sale_subscription/models/sale_order_template.py:0
 #, python-format
 msgid "Operation not supported"
-msgstr ""
+msgstr "Operācija netiek atbalstīta"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__help
@@ -2278,7 +2282,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_template_action
 #: model:ir.ui.menu,name:sale_subscription.menu_template_of_subscription
 msgid "Plans"
-msgstr ""
+msgstr "Plāni"
 
 #. module: sale_subscription
 #. odoo-javascript
@@ -2459,7 +2463,7 @@ msgstr "Iemesls"
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_line_view_tree
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Recurrence"
-msgstr ""
+msgstr "Atkārtošana"
 
 #. module: sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_periods
@@ -2736,7 +2740,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__mail_post_method
 msgid "Send as"
-msgstr ""
+msgstr "Sūtīt kā"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__sms_method
@@ -3822,7 +3826,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "e.g. Discuss proposal"
-msgstr ""
+msgstr "piem. Pārrunāt priekšlikumu"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__rating_operator__>

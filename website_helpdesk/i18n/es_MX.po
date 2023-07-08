@@ -59,7 +59,7 @@ msgid ""
 "<span class=\"s_website_form_label_content\">Subject</span>\n"
 "                                            <span class=\"s_website_form_mark\"> *</span>"
 msgstr ""
-"<span class=\"s_website_form_label_content\">Tema</span>\n"
+"<span class=\"s_website_form_label_content\">Asunto</span>\n"
 "                                            <span class=\"s_website_form_mark\"> *</span>"
 
 #. module: website_helpdesk
@@ -291,7 +291,7 @@ msgstr "La URL completa para acceder al documento a través del sitio web."
 #: code:addons/website_helpdesk/models/helpdesk.py:0
 #, python-format
 msgid "The team company and the website company should match"
-msgstr "El equipo de la empresa y la empresa del sitio web debe ser la misma."
+msgstr "La empresa del equipo y del sitio web debe ser la misma."
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.snippet_options

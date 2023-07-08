@@ -431,15 +431,15 @@ msgstr "Modo de envío en archivos adjuntos de gastos"
 #, python-format
 msgid "Server is currently under maintenance. Please retry later"
 msgstr ""
-"El servidor se encuentra actualmente en mantenimiento. Por favor, inténtelo "
-"más tarde."
+"Por el momento, el servidor se encuentra en mantenimiento. Inténtelo más "
+"tarde."
 
 #. module: hr_expense_extract
 #. odoo-python
 #: code:addons/hr_expense_extract/models/hr_expense.py:0
 #, python-format
 msgid "Server not available. Please retry later"
-msgstr "El servidor no está disponible. Por favor, inténtelo más tarde."
+msgstr "El servidor no está disponible, inténtelo más tarde."
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense__extract_status_code

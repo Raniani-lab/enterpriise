@@ -1194,7 +1194,7 @@ msgstr "لقد قمت بقياس %.2f %s وينبغي أن تكون بين %.2f 
 #: code:addons/quality_control/wizard/quality_check_wizard.py:0
 #, python-format
 msgid "You must provide a picture before validating"
-msgstr ""
+msgstr "عليك تقديم صورة قبل التصديق "
 
 #. module: quality_control
 #. odoo-python

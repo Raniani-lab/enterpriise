@@ -59,6 +59,9 @@ msgid ""
 "                                    Default Delay Costs\n"
 "                                </span>"
 msgstr ""
+"<span class=\"o_form_label\">\n"
+"                                    Standardverzugskosten\n"
+"                                </span>"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.product_product_form_view_rental_gantt

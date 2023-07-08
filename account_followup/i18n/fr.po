@@ -42,7 +42,7 @@ msgstr "%s Rappel de paiement - %s"
 #. module: account_followup
 #: model:ir.actions.report,print_report_name:account_followup.action_report_followup
 msgid "'Follow-up ' + object.display_name"
-msgstr "'Suivi ' + object.display_name"
+msgstr "'Relance ' + object.display_name"
 
 #. module: account_followup
 #: model:ir.model.fields,help:account_followup.field_res_partner__type
@@ -536,7 +536,7 @@ msgid ""
 "- Account Manager: Sales Person defined on the customer"
 msgstr ""
 "Déterminez qui sera affecté à l'activité :\n"
-"- Responsable du suivi (par défaut)\n"
+"- Responsable de la relance (par défaut)\n"
 "- Vendeur : Vendeur défini sur la facture\n"
 "- Responsable de compte : Vendeur défini sur le client"
 
@@ -581,7 +581,7 @@ msgstr "Sujet de l'email"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_form_view
 msgid "Exclude from Follow-ups"
-msgstr "Exclure des suivis"
+msgstr "Exclure des relances"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__email_recipient_ids

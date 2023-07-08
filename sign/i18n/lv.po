@@ -391,6 +391,8 @@ msgid ""
 "Actions may trigger specific behavior like opening calendar view or "
 "automatically mark as done when a document is uploaded"
 msgstr ""
+"Darbības var palaist noteiktu uzvedību, piemēram, atvērt kalendāra skatu vai"
+" automātiski atzīmēt kā pabeigtu, kad dokuments tiek augšupielādēts."
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__active
@@ -467,7 +469,7 @@ msgstr "Administrators"
 #: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Adopt Your Signature"
-msgstr ""
+msgstr "Pieņemt Jūsu parakstu"
 
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_log__request_state__signed
@@ -635,6 +637,10 @@ msgid ""
 " all purposes when it is used on documents, including legally binding "
 "contracts."
 msgstr ""
+"Noklikšķinot uz Pieņemt un parakstīt, es piekrītu, ka izvēlētais "
+"paraksts/iniciāļi būs derīgs mana ar roku rakstītā paraksta/iniciāļu "
+"elektroniskais attēlojums visiem mērķiem, kad tas tiks izmantots dokumentos,"
+" tostarp juridiski saistošos līgumos."
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__message_cc
@@ -695,7 +701,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:sign.selection__sign_item_type__item_type__checkbox
 #: model:sign.item.type,name:sign.sign_item_type_checkbox
 msgid "Checkbox"
-msgstr ""
+msgstr "Izvēles rūtiņa"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_template__is_sharing
@@ -1057,7 +1063,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_search
 msgid "Document Name"
-msgstr ""
+msgstr "Dokumenta nosaukums"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__page
@@ -1465,7 +1471,7 @@ msgstr "Augstums"
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_refused
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_request
 msgid "Hello"
-msgstr ""
+msgstr "Labdien"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_item_type__tip
@@ -1847,7 +1853,7 @@ msgstr ""
 #: model:sign.item.type,name:sign.sign_item_type_multiline_text
 #: model:sign.item.type,placeholder:sign.sign_item_type_multiline_text
 msgid "Multiline Text"
-msgstr ""
+msgstr "Daudzrindu teksts"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_share_view_form
@@ -3928,7 +3934,7 @@ msgstr ""
 #: code:addons/sign/static/src/xml/sign_common.xml:0
 #, python-format
 msgid "Your name"
-msgstr ""
+msgstr "Jūsu vārds"
 
 #. module: sign
 #. odoo-javascript
@@ -4045,7 +4051,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.green_report_el
 #: model_terms:ir.ui.view,arch_db:sign.green_report_el_pdf
 msgid "like"
-msgstr ""
+msgstr "kā"
 
 #. module: sign
 #: model:sign.item.type,tip:sign.sign_item_type_initial

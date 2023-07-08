@@ -8,6 +8,7 @@
 # Yoshi Tashiro (Quartile) <tashiro@roomsfor.hk>, 2022
 # Andy Yiu, 2022
 # Ryoko Tsuda <ryoko@quartile.co>, 2023
+# Junko Augias, 2023
 # 
 msgid ""
 msgstr ""
@@ -15,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Ryoko Tsuda <ryoko@quartile.co>, 2023\n"
+"Last-Translator: Junko Augias, 2023\n"
 "Language-Team: Japanese (https://app.transifex.com/odoo/teams/41243/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,7 +30,7 @@ msgstr ""
 #: code:addons/sale_renting/models/product_template.py:0
 #, python-format
 msgid "%s (Rental)"
-msgstr ""
+msgstr "%s （レンタル）"
 
 #. module: sale_renting
 #: model:ir.actions.report,print_report_name:sale_renting.action_report_rental_saleorder
@@ -37,6 +38,8 @@ msgid ""
 "(object.rental_status not in ('draft', 'sent') and 'Delivery or Return "
 "Receipt - %s' %(object.name)) or 'Order - %s' % (object.name)"
 msgstr ""
+"(object.rental_status が ('draft', 'sent') にない、および'配送または返品入荷 - %s' "
+"%(object.name)) または 'オーダ - %s' % (object.name)"
 
 #. module: sale_renting
 #. odoo-python
@@ -116,7 +119,7 @@ msgstr "期限後返却割増料金"
 #: model:ir.model.fields,help:sale_renting.field_product_template__rent_ok
 #: model:ir.model.fields,help:sale_renting.field_sale_order_line__is_product_rentable
 msgid "Allow renting of this product."
-msgstr ""
+msgstr "このプロダクトのレンタルを許可する"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__analytic_account_id
@@ -138,12 +141,12 @@ msgstr "顧客にその場で署名してもらう"
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "At first, let's create some products to rent."
-msgstr ""
+msgstr "まず、レンタルするプロダクトを作成しましょう。"
 
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_rental_wizard__pricing_id
 msgid "Best Pricing Rule based on duration"
-msgstr ""
+msgstr "期間を元にした最適価格ルール"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_product_product__rent_ok
@@ -172,28 +175,28 @@ msgstr "取消済"
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Click here to create a new quotation."
-msgstr ""
+msgstr "クリックして新しい見積書を作成する"
 
 #. module: sale_renting
 #. odoo-javascript
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Click here to register the pickup."
-msgstr ""
+msgstr "クリックしてピックアップを登録する"
 
 #. module: sale_renting
 #. odoo-javascript
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Click here to set up your first rental product."
-msgstr ""
+msgstr "クリックして初めてのレンタルプロダクトを設定する"
 
 #. module: sale_renting
 #. odoo-javascript
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Click here to start filling the quotation."
-msgstr ""
+msgstr "クリックして見積書の記入を始める"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__color
@@ -227,21 +230,21 @@ msgstr "設定"
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_rental_wizard
 msgid "Configure the rental of a product"
-msgstr ""
+msgstr "プロダクトのレンタルを設定する"
 
 #. module: sale_renting
 #. odoo-javascript
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Confirm the order when the customer agrees with the terms."
-msgstr ""
+msgstr "顧客が条件に同意するとオーダを確定する"
 
 #. module: sale_renting
 #. odoo-javascript
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Confirm the returned quantities and hit Validate."
-msgstr ""
+msgstr "返品数を確認し検証をクリックする"
 
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_order__rental_status__pickup
@@ -258,7 +261,7 @@ msgstr "確認済オーダ"
 #. module: sale_renting
 #: model:ir.actions.act_window,name:sale_renting.action_create_rental_order
 msgid "Create Rental Orders"
-msgstr ""
+msgstr "レンタルオーダを作成する"
 
 #. module: sale_renting
 #: model_terms:ir.actions.act_window,help:sale_renting.rental_order_action
@@ -268,24 +271,24 @@ msgstr "レンタルの最初のステップとして見積を作成しましょ
 #. module: sale_renting
 #: model_terms:ir.actions.act_window,help:sale_renting.action_rental_report
 msgid "Create a new rental order"
-msgstr ""
+msgstr "新しいレンタルオーダを作成する"
 
 #. module: sale_renting
 #: model_terms:ir.actions.act_window,help:sale_renting.rental_product_template_action
 msgid "Create a new rental product!"
-msgstr ""
+msgstr "新しいレンタルプロダクトを作成！"
 
 #. module: sale_renting
 #. odoo-javascript
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Create or select a customer here."
-msgstr ""
+msgstr "ここで顧客を作成または選択します。"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order__is_rental_order
 msgid "Created In App Rental"
-msgstr ""
+msgstr "レンタルアプリで作成済"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard__create_uid
@@ -377,7 +380,7 @@ msgstr "日"
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_res_config_settings__extra_product
 msgid "Delay Product"
-msgstr ""
+msgstr "遅延プロダクト"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__description
@@ -413,14 +416,14 @@ msgstr "経過時間"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_configurator_view_form
 msgid "Edited Rental Line"
-msgstr ""
+msgstr "編集済レンタル明細"
 
 #. module: sale_renting
 #. odoo-javascript
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Enter the product name."
-msgstr ""
+msgstr "プロダクト名を記入する"
 
 #. module: sale_renting
 #. odoo-javascript
@@ -429,7 +432,7 @@ msgstr ""
 msgid ""
 "Enter the requested dates and check the price.\n"
 " Then, click here to add the product."
-msgstr ""
+msgstr "リクエストされた日付を入力し価格を確認した後、ここをクリックしてプロダクトを追加して下さい。"
 
 #. module: sale_renting
 #. odoo-python
@@ -441,7 +444,7 @@ msgstr "見込"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
 msgid "Expected Return"
-msgstr ""
+msgstr "返却予定"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_product_product__extra_daily
@@ -466,27 +469,27 @@ msgstr "追加:"
 #: model:ir.model.fields,help:sale_renting.field_product_product__extra_daily
 #: model:ir.model.fields,help:sale_renting.field_product_template__extra_daily
 msgid "Fine by day overdue"
-msgstr ""
+msgstr "延滞料を日毎に課金"
 
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_product_product__extra_hourly
 #: model:ir.model.fields,help:sale_renting.field_product_template__extra_hourly
 msgid "Fine by hour overdue"
-msgstr ""
+msgstr "延滞料を時間毎に課金"
 
 #. module: sale_renting
 #. odoo-python
 #: code:addons/sale_renting/wizard/rental_configurator.py:0
 #, python-format
 msgid "Fixed rental price"
-msgstr ""
+msgstr "定額レンタル価格"
 
 #. module: sale_renting
 #. odoo-javascript
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Go to the orders menu."
-msgstr ""
+msgstr "オーダメニューに移動"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_view_search
@@ -499,22 +502,22 @@ msgstr "グループ化"
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard__has_late_lines
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order__has_late_lines
 msgid "Has Late Lines"
-msgstr ""
+msgstr "延滞明細があります"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order__has_pickable_lines
 msgid "Has Pickable Lines"
-msgstr ""
+msgstr "ピッキング可能な明細があります"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order__has_returnable_lines
 msgid "Has Returnable Lines"
-msgstr ""
+msgstr "返却可能な明細があります"
 
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_rental_wizard__pricing_explanation
 msgid "Helper text to understand rental price computation."
-msgstr ""
+msgstr "レンタル価格計算を理解するためのサポートテキスト"
 
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__rental_wizard__duration_unit__hour
@@ -550,7 +553,7 @@ msgstr "遅延"
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order_line__is_rental
 msgid "Is Rental"
-msgstr ""
+msgstr "レンタルか"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order_line__is_late
@@ -595,20 +598,20 @@ msgstr ""
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_form_view
 msgid "Late Pickup"
-msgstr ""
+msgstr "遅れたピックアップ"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_form_view
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_form
 msgid "Late Return"
-msgstr ""
+msgstr "返却遅れ"
 
 #. module: sale_renting
 #. odoo-javascript
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Let's now create an order."
-msgstr ""
+msgstr "オーダを作成しましょう"
 
 #. module: sale_renting
 #: model:product.template,name:sale_renting.rental_product_2_product_template
@@ -618,13 +621,13 @@ msgstr "ミーティングルーム"
 #. module: sale_renting
 #: model:ir.model.constraint,message:sale_renting.constraint_res_company_min_extra_hour
 msgid "Minimal delay time before applying fines has to be positive."
-msgstr ""
+msgstr "延滞料を課金する最小延滞時間の値は正である必要があります。"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_res_company__min_extra_hour
 #: model:ir.model.fields,field_description:sale_renting.field_res_config_settings__min_extra_hour
 msgid "Minimum delay time before applying fines."
-msgstr ""
+msgstr "延滞料を課金する最小延滞時間。"
 
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__rental_wizard__duration_unit__month
@@ -654,7 +657,7 @@ msgstr "まだデータはありません！"
 msgid ""
 "No rental price is defined on the product.\n"
 "The price used is the sales price."
-msgstr ""
+msgstr "プロダクトにレンタル価格が定義されていません。販売価格が使用されています。"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_form
@@ -673,7 +676,7 @@ msgstr "見積を確認すると、レンタルオーダになります。<br>�
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Once the rental is done, you can register the return."
-msgstr ""
+msgstr "レンタルが完了したら、返却を登録できます。"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard__order_id
@@ -706,7 +709,7 @@ msgstr "オーダ参照"
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__order_line_id
 msgid "Order line #"
-msgstr ""
+msgstr "オーダ明細数"
 
 #. module: sale_renting
 #: model:ir.ui.menu,name:sale_renting.rental_order_menu
@@ -734,7 +737,7 @@ msgstr "1時間につき"
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_rental_order_wizard
 msgid "Pick-up/Return products"
-msgstr ""
+msgstr "プロダクトピックアップ/返却"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_gantt
@@ -754,7 +757,7 @@ msgstr "ピックアップ済"
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_rental_schedule__report_line_status__pickedup
 #: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
 msgid "Pickedup"
-msgstr ""
+msgstr "ピックアップ済"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_wizard__pickup_date
@@ -775,28 +778,28 @@ msgstr "貸出日"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
 msgid "Pickup Receipt #"
-msgstr ""
+msgstr "ピックアップ受領書数"
 
 #. module: sale_renting
 #: model:ir.actions.report,name:sale_renting.action_report_rental_saleorder
 msgid "Pickup and Return Receipt"
-msgstr ""
+msgstr "ピックアップ・返却レシート"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order_line__reservation_begin
 msgid "Pickup date - padding time"
-msgstr ""
+msgstr "集荷日 - バッファ時間"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_view_kanban
 msgid "Pickup:"
-msgstr ""
+msgstr "ピックアップ："
 
 #. module: sale_renting
 #: model:ir.model.constraint,message:sale_renting.constraint_rental_wizard_rental_period_coherence
 #: model:ir.model.constraint,message:sale_renting.constraint_sale_order_line_rental_period_coherence
 msgid "Please choose a return date that is after the pickup date."
-msgstr ""
+msgstr "集荷日より後の返却日を選択して下さい。"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_wizard__pricing_explanation
@@ -838,7 +841,7 @@ msgstr "プロダクトカテゴリ"
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__product_name
 msgid "Product Reference"
-msgstr ""
+msgstr "プロダクト参照"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report__product_tmpl_id
@@ -859,7 +862,7 @@ msgstr "追加時間課金用プロダクト"
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_rental_wizard__product_id
 msgid "Product to rent (has to be rentable)"
-msgstr ""
+msgstr "レンタルするプロダクト（レンタル可能である必要があります）"
 
 #. module: sale_renting
 #: model:ir.actions.act_window,name:sale_renting.rental_product_template_action
@@ -870,7 +873,7 @@ msgstr "プロダクト"
 #. module: sale_renting
 #: model:product.template,name:sale_renting.rental_product_1_product_template
 msgid "Projector"
-msgstr ""
+msgstr "プロジェクター"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__product_uom_qty
@@ -896,7 +899,7 @@ msgstr "数量"
 #: model:ir.model.fields,field_description:sale_renting.field_product_product__qty_in_rent
 #: model:ir.model.fields,field_description:sale_renting.field_product_template__qty_in_rent
 msgid "Quantity currently in rent"
-msgstr ""
+msgstr "現在レンタル中の数量"
 
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_order__rental_status__draft
@@ -921,7 +924,7 @@ msgstr "見積"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_form_view
 msgid "RETURN"
-msgstr ""
+msgstr "返却"
 
 #. module: sale_renting
 #: model:ir.actions.act_window,name:sale_renting.rental_configurator_action
@@ -955,17 +958,17 @@ msgstr "レンタル分析レポート"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_form
 msgid "Rental Order"
-msgstr ""
+msgstr "返却オーダ"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_wizard__rental_order_line_id
 msgid "Rental Order Line"
-msgstr ""
+msgstr "返却オーダ明細"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard_line__rental_order_wizard_id
 msgid "Rental Order Wizard"
-msgstr ""
+msgstr "返却オーダ警告"
 
 #. module: sale_renting
 #: model:ir.actions.act_window,name:sale_renting.rental_order_action
@@ -977,7 +980,7 @@ msgstr "レンタルオーダ"
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_sale_rental_schedule
 msgid "Rental Schedule"
-msgstr ""
+msgstr "レンタルスケジュール"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order__rental_status
@@ -993,17 +996,17 @@ msgstr "レンタルステータス(高度)"
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard__rental_wizard_line_ids
 msgid "Rental Wizard Line"
-msgstr ""
+msgstr "レンタル警告明細"
 
 #. module: sale_renting
 #: model:ir.ui.menu,name:sale_renting.menu_sale_renting_periods
 msgid "Rental periods"
-msgstr ""
+msgstr "レンタル期間"
 
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_rental_order_wizard_line
 msgid "RentalOrderLine transient representation"
-msgstr ""
+msgstr "レンタルオーダ明細 暫定表記"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_view_search
@@ -1048,7 +1051,7 @@ msgstr "返却日"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_view_kanban
 msgid "Return:"
-msgstr ""
+msgstr "返却："
 
 #. module: sale_renting
 #. odoo-python
@@ -1069,7 +1072,7 @@ msgstr "返却済"
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_sale_temporal_recurrence
 msgid "Sale temporal Recurrence"
-msgstr ""
+msgstr "販売 一時的な繰り返し"
 
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_rental_report__state__done
@@ -1114,14 +1117,14 @@ msgstr "販売担当者"
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Save the product."
-msgstr ""
+msgstr "プロダクトを保存する"
 
 #. module: sale_renting
 #. odoo-javascript
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Save the quotation."
-msgstr ""
+msgstr "見積書を保存する"
 
 #. module: sale_renting
 #: model:ir.ui.menu,name:sale_renting.menu_rental_schedule
@@ -1142,7 +1145,7 @@ msgstr "レンタルスケジュール"
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Select your rental product."
-msgstr ""
+msgstr "レンタルプロダクトを選択する"
 
 #. module: sale_renting
 #: model:ir.actions.act_window,name:sale_renting.action_rental_config_settings
@@ -1153,7 +1156,7 @@ msgstr "管理設定"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_wizard_view_form
 msgid "Some delay cost will be added to the sales order."
-msgstr ""
+msgstr "販売オーダに遅延コストが加算されます"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order_line__start_date
@@ -1193,35 +1196,35 @@ msgstr "日次貸出数量合計"
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order_line__temporal_type
 msgid "Temporal Type"
-msgstr ""
+msgstr "一時的タイプ"
 
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_rental_wizard__duration
 msgid "The duration unit is based on the unit of the rental pricing rule."
-msgstr ""
+msgstr "期間単位はレンタル価格ルールをベースにしています"
 
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_res_company__extra_product
 msgid "The product is used to add the cost to the sales order"
-msgstr ""
+msgstr "プロダクトは販売オーダにコストを追加するために使用されます"
 
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_sale_order_line__is_late
 msgid "The products haven't been returned in time"
-msgstr ""
+msgstr "プロダクトが期日までに返却されませんでした"
 
 #. module: sale_renting
 #. odoo-javascript
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "The rental configuration is available here."
-msgstr ""
+msgstr "レンタル設定はここで使用できます"
 
 #. module: sale_renting
 #: model_terms:ir.actions.act_window,help:sale_renting.rental_order_today_pickup_action
 #: model_terms:ir.actions.act_window,help:sale_renting.rental_order_today_return_action
 msgid "There isn't any scheduled pickup or return."
-msgstr ""
+msgstr "予定されている集荷または返却はありません"
 
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_res_config_settings__extra_day
@@ -1229,6 +1232,7 @@ msgid ""
 "This is the default extra cost per day set on newly created products. You "
 "can change this value for existing products directly on the product itself."
 msgstr ""
+"これは、新しく作成されたプロダクトに設定されている1日あたりのデフォルトの追加コストです。既存のプロダクトについては、プロダクトで直接この値を変更することができます。"
 
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_res_config_settings__extra_hour
@@ -1236,25 +1240,26 @@ msgid ""
 "This is the default extra cost per hour set on newly created products. You "
 "can change this value for existing products directly on the product itself."
 msgstr ""
+"これは、新しく作成されたプロダクトに設定された時間あたりのデフォルトの追加費用です。既存のプロダクトについては、プロダクトで直接この値を変更することができます。"
 
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_rental_wizard__unit_price
 msgid ""
 "This price is based on the rental price rule that gives the cheapest price "
 "for requested duration."
-msgstr ""
+msgstr "この価格は、リクエスト期間に対して最も安い価格を提供するレンタル価格ルールに基づいています。"
 
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_res_config_settings__extra_product
 msgid "This product will be used to add fines in the Rental Order."
-msgstr ""
+msgstr "このプロダクトは、レンタルオーダーで延滞料を追加するために使用されます。"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.res_config_settings_view_form
 msgid ""
 "Those values are applied to any new rental product and can be changed on "
 "product forms."
-msgstr ""
+msgstr "これらの値は、新しいレンタルプロダクトに適用され、プロダクトフォームで変更することができます。"
 
 #. module: sale_renting
 #: model:ir.ui.menu,name:sale_renting.rental_orders_today
@@ -1266,7 +1271,7 @@ msgstr "本日のTo Do"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_view_search_without_searchpanel
 msgid "To Pickup"
-msgstr ""
+msgstr "集荷する"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_view_search_without_searchpanel
@@ -1306,21 +1311,21 @@ msgstr "検証"
 #: code:addons/sale_renting/models/sale_order.py:0
 #, python-format
 msgid "Validate a pickup"
-msgstr ""
+msgstr "集荷を検証する"
 
 #. module: sale_renting
 #. odoo-python
 #: code:addons/sale_renting/models/sale_order.py:0
 #, python-format
 msgid "Validate a return"
-msgstr ""
+msgstr "返却を検証する"
 
 #. module: sale_renting
 #. odoo-javascript
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Validate the operation after checking the picked-up quantities."
-msgstr ""
+msgstr "集荷された数量を確認した後、オペレーションを検証する"
 
 #. module: sale_renting
 #. odoo-javascript
@@ -1330,6 +1335,8 @@ msgid ""
 "Want to <b>rent products</b>? \n"
 " Let's discover Odoo Rental App."
 msgstr ""
+"<b>プロダクトをレンタル</b>したいですか? \n"
+"Odooレンタルアプリを見てみましょう。"
 
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__rental_wizard__duration_unit__week
@@ -1346,7 +1353,7 @@ msgstr "年"
 msgid ""
 "You can also create additional products or services to sell by checking *Can"
 " be Sold* in the product form (e.g. insurance)."
-msgstr ""
+msgstr "また、プロダクトフォームで「販売可能」にチェックを入れることで、販売するプロダクトやサービスを追加作成することもできます（例：保険）"
 
 #. module: sale_renting
 #: model_terms:ir.actions.act_window,help:sale_renting.rental_order_today_pickup_action
@@ -1356,18 +1363,21 @@ msgid ""
 "                <br>\n"
 "                or create a new rental order."
 msgstr ""
+"上記のフィルタを使用して、より広範囲の期間で検索することができます。\n"
+"                 <br>\n"
+"                  または新しいレンタルオーダを作成して下さい。"
 
 #. module: sale_renting
 #. odoo-python
 #: code:addons/sale_renting/wizard/rental_processing.py:0
 #, python-format
 msgid "You can't return more than what's been picked-up."
-msgstr ""
+msgstr "集荷したより多い数量を返却することはできません。"
 
 #. module: sale_renting
 #: model:ir.model.constraint,message:sale_renting.constraint_sale_order_line_rental_stock_coherence
 msgid "You cannot return more than what has been picked up."
-msgstr ""
+msgstr "集荷したより多い数量を返却することはできません。"
 
 #. module: sale_renting
 #. odoo-javascript

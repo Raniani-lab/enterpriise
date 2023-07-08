@@ -48,7 +48,7 @@ msgid ""
 "            "
 msgstr ""
 "\n"
-"                Su producto de alquiler tiene una fecha de recolección inválida (%(start_date)s).\n"
+"                Su producto de alquiler tiene una fecha de recolección que no es válida (%(start_date)s).\n"
 "                Desafortunadamente, no procesamos recolecciones en ese día.\n"
 "            "
 
@@ -63,7 +63,7 @@ msgid ""
 "            "
 msgstr ""
 "\n"
-"                Su producto de alquiler tiene una fecha de devolución inválida (%(end_date)s).\n"
+"                Su producto de alquiler tiene una fecha de devolución que no es válida (%(end_date)s).\n"
 "                Desafortunadamente, no procesamos devoluciones en ese día.\n"
 "            "
 
@@ -80,7 +80,7 @@ msgid ""
 msgstr ""
 "\n"
 "                Su producto de alquiler tiene fechas de recolección (%(start_date)s) y\n"
-"                devolución (%(end_date)s) inválidas. Desafortunadamente, no procesamos recolecciones ni\n"
+"                devolución (%(end_date)s) que no son válidas. Desafortunadamente, no procesamos recolecciones ni\n"
 "                devoluciones en esos días.\n"
 "            "
 
@@ -386,7 +386,7 @@ msgstr "Jueves"
 #. module: website_sale_renting
 #: model_terms:ir.ui.view,arch_db:website_sale_renting.s_rental_search_options
 msgid "Timing"
-msgstr "Tiemp"
+msgstr "Tiempo"
 
 #. module: website_sale_renting
 #: model_terms:ir.ui.view,arch_db:website_sale_renting.rental_product

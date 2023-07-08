@@ -162,7 +162,7 @@ msgstr ""
 #. module: web_map
 #: model_terms:ir.ui.view,arch_db:web_map.res_config_settings_view_form
 msgid "Set a MapBox account to activate routes and style"
-msgstr "Configurar una cuenta de MapBox para activar las rutas y estilo"
+msgstr "Configurar una cuenta de Mapbox para activar las rutas y estilo"
 
 #. module: web_map
 #. odoo-javascript
@@ -183,7 +183,7 @@ msgstr "Algunos puntos de enrutamiento están demasiado separados"
 #: code:addons/web_map/models/res_config_settings.py:0
 #, python-format
 msgid "The MapBox server is unreachable"
-msgstr "No se puede acceder al servidor de MapBox"
+msgstr "No se puede acceder al servidor de Mapbox"
 
 #. module: web_map
 #. odoo-python
@@ -217,8 +217,8 @@ msgstr "Esta referencia no está autorizada"
 #, python-format
 msgid "To get routing on your map, you first need to setup your Mapbox token."
 msgstr ""
-"Para obtener el enrutamiento en su mapa, primero tiene que configurar su "
-"token de Mapbox."
+"Para obtener el enrutamiento en su mapa, primero debe configurar su token de"
+" Mapbox."
 
 #. module: web_map
 #: model_terms:ir.ui.view,arch_db:web_map.res_config_settings_view_form

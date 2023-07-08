@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-15 13:30+0000\n"
+"POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2022-12-16 09:35+0000\n"
 "Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Slovenian (https://app.transifex.com/odoo/teams/41243/sl/)\n"
@@ -29,8 +29,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website_sale_subscription.cart_lines_subscription
 #: model_terms:ir.ui.view,arch_db:website_sale_subscription.cart_summary_inherit_website_sale_subscription
 #: model_terms:ir.ui.view,arch_db:website_sale_subscription.price_dynamic_filter_template_product_product_subscription
-#: model_terms:ir.ui.view,arch_db:website_sale_subscription.products_item
-#: model_terms:ir.ui.view,arch_db:website_sale_subscription.subscription_product_price
 msgid "<span>per</span>"
 msgstr ""
 

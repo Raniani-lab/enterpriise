@@ -103,7 +103,7 @@ msgstr "<strong>Gesamt</strong>"
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
 msgid "<strong>Untaxed amount</strong>"
-msgstr "<strong>Unversteuerter Betrag</strong>"
+msgstr "<strong>Nettobetrag</strong>"
 
 #. module: industry_fsm_sale
 #. odoo-python

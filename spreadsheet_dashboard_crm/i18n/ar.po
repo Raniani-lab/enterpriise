@@ -494,7 +494,7 @@ msgstr "معدل الإغلاق - الحالي "
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "close rate - previous"
-msgstr ""
+msgstr "نسبة الإغلاق - السابقة "
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript

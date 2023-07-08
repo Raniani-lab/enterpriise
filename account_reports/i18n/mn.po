@@ -128,14 +128,14 @@ msgstr ""
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
 #, python-format
 msgid "(+) Outstanding Receipts"
-msgstr "(+) Төстэй төлбөрийн орлого"
+msgstr "(+) Биелээгүй төлбөрийн орлого"
 
 #. module: account_reports
 #. odoo-python
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
 #, python-format
 msgid "(-) Outstanding Payments"
-msgstr "(-) Төстэй төлбөр төлөлтүүд"
+msgstr "(-) Биелээгүй төлбөрийн зарлагууд"
 
 #. module: account_reports
 #. odoo-python
@@ -1901,14 +1901,14 @@ msgstr ""
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
 #, python-format
 msgid "Including Unreconciled Bank Statement Payments"
-msgstr ""
+msgstr "Тулгалт хийгдээгүй төлбөрийн зарлагын бичилтүүдийг нэмж тооцвол"
 
 #. module: account_reports
 #. odoo-python
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
 #, python-format
 msgid "Including Unreconciled Bank Statement Receipts"
-msgstr ""
+msgstr "Тулгалт хийгдээгүй төлбөрийн орлогын бичилтүүдийг нэмж тооцвол"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_executivesummary_income0
@@ -2441,7 +2441,7 @@ msgstr " Бусад орлого"
 #: model_terms:ir.ui.view,arch_db:account_reports.account_reports_journal_dashboard_kanban_view
 #, python-format
 msgid "Outstanding Payments/Receipts"
-msgstr "Ижил төстэй төлбөр"
+msgstr "Биелээгүй Төлбөр/Орлого"
 
 #. module: account_reports
 #. odoo-python
@@ -2765,7 +2765,7 @@ msgstr "Дүрэм"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_reports_journal_dashboard_kanban_view
 msgid "Running Balance"
-msgstr ""
+msgstr "Яг одоогийн үлдэгдэл"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_comparison
@@ -3073,6 +3073,9 @@ msgid ""
 "The current balance in the General Ledger %s doesn't match the balance of "
 "your last bank statement %s leading to an unexplained difference of %s."
 msgstr ""
+"Ерөнхий журнал дээрх одоогийн үлдэгдэл болох %s дүн нь таны сүүлийн банкны "
+"хуулганы хаалтын үлдэгдэл %s дүнтэй таарахгүй байгаа тул энэ нь %s тэнцлийн "
+"зөрүүг бий болгож байна."
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_tax_unit__vat

@@ -141,6 +141,11 @@ class AccountMove(models.Model):
         for line in lines:
             line_start = fields.Date.to_date(line['deferred_start_date'])
             line_end = fields.Date.to_date(line['deferred_end_date'])
+            if line_end < line_start:
+                # This normally shouldn't happen, but if it does, would cause calculation errors later on.
+                # To not make the reports crash, we just set both dates to the same day.
+                # The user should fix the dates manually.
+                line_end = line_start
 
             columns = {}
             for i, period in enumerate(periods):

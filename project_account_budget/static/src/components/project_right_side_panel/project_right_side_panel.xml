@@ -7,8 +7,8 @@
             <ProjectRightSidePanelSection
                 name="'budgets'"
                 show="showBudget"
-                showData="showBudget and state.data.budget_items.data.length > 0"
-                dataClassName="'pb-3 border-bottom o_rightpanel_full_width'"
+                showData="showBudget"
+                dataClassName="'py-3'"
             >
                 <t t-set-slot="title">
                     Budgets
@@ -18,7 +18,10 @@
                         <a t-on-click="addBudget">Add Budget</a>
                     </div>
                 </t>
-                <table class="table table-sm table-striped table-hover mb-0">
+                <span t-if="!state.data.budget_items.data.length" class="text-muted fst-italic">
+                    Compare expected and actual revenues and costs.
+                </span>
+                <table t-else="" class="table table-sm table-striped table-hover mb-0">
                     <thead class="bg-100">
                         <tr>
                             <th>Budgetary Positions</th>

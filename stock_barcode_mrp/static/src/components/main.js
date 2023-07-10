@@ -132,7 +132,7 @@ patch(MainComponent.prototype, 'stock_barcode_mrp', {
 
     async saveFormView(lineRecord) {
         if (lineRecord.resModel === 'mrp.production') {
-            const recordId = lineRecord.data.id;
+            const recordId = lineRecord.resId;
             if (!this.resId) {
                 this.resId = recordId;
                 await this.env.model.confirmAndSetData(recordId);

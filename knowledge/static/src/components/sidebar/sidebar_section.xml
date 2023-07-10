@@ -8,7 +8,7 @@
             </div>
             <ul t-if="props.rootIds.length" class="o_tree">
                 <t t-foreach="props.rootIds" t-as="rootId" t-key="rootId">
-                    <KnowledgeSidebarRow article="env.getArticle(rootId)" unfolded="props.unfoldedIds.has(rootId)" unfoldedIds="props.unfoldedIds"/>
+                    <KnowledgeSidebarRow article="env.getArticle(rootId)" unfolded="props.unfoldedIds.has(rootId)" unfoldedIds="props.unfoldedIds" record="props.record"/>
                 </t>
             </ul>
             <span t-elif="noContentHelper" class="o_knowledge_empty_info text-muted">

@@ -2,7 +2,7 @@
 
 import { _lt } from "@web/core/l10n/translation";
 import { KeepLast, Race } from "@web/core/utils/concurrency";
-import { Model } from "@web/views/model";
+import { Model } from "@web/model/model";
 import { computeReportMeasures, processMeasure } from "@web/views/utils";
 
 export const MODES = ["retention", "churn"];

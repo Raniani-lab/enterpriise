@@ -94,13 +94,13 @@ import { getOrigin } from "@web/core/utils/urls";
 
             const groupLineMoveId = document.querySelectorAll('.o_group_header');
             await testUtils.dom.click(groupLineMoveId[0]);
-            assert.verifySteps(["web_search_read/account.move.line"]);
+            assert.verifySteps(["unity_web_search_read/account.move.line"]);
             await testUtils.dom.click(document.querySelectorAll('.o_data_row')[0].querySelectorAll('.o_data_cell')[1]);
             assert.containsNone(document.body, '.o_attachment_preview',
                 "The preview component shouldn't be mounted for small screens even when clicking on a line without attachment");
 
             await testUtils.dom.click(groupLineMoveId[1]);
-            assert.verifySteps(["web_search_read/account.move.line", "read/ir.attachment"]);
+            assert.verifySteps(["unity_web_search_read/account.move.line"]);
             await testUtils.dom.click(document.querySelectorAll('.o_data_row')[3].querySelectorAll('.o_data_cell')[1]);
             assert.containsNone(document.body, '.o_attachment_preview',
                 "The preview component shouldn't be mounted for small screens even when clicking on a line with attachment");
@@ -120,7 +120,7 @@ import { getOrigin } from "@web/core/utils/urls";
 
             const groupLineMoveId = document.querySelectorAll('.o_group_header');
             await testUtils.dom.click(groupLineMoveId[0]);
-            assert.verifySteps(["web_search_read/account.move.line"]);
+            assert.verifySteps(["unity_web_search_read/account.move.line"]);
 
             await testUtils.dom.click(document.querySelectorAll('.o_data_row')[0].querySelectorAll('.o_data_cell')[1]);
             assert.containsNone(document.body, '.o_attachment_preview iframe',
@@ -129,7 +129,7 @@ import { getOrigin } from "@web/core/utils/urls";
                 "There should be a message explaining why there isn't any document preview loaded");
 
             await testUtils.dom.click(groupLineMoveId[1]);
-            assert.verifySteps(["web_search_read/account.move.line", "read/ir.attachment"]);
+            assert.verifySteps(["unity_web_search_read/account.move.line"]);
             assert.containsOnce(document.body, '.o_attachment_preview p',
                 "The message explaining why there isn't any document preview loaded should still be there");
 
@@ -151,7 +151,7 @@ import { getOrigin } from "@web/core/utils/urls";
                 "the src attribute shouldn't change on the iframe");
 
             await testUtils.dom.click(groupLineMoveId[2]);
-            assert.verifySteps(["web_search_read/account.move.line", "read/ir.attachment"]);
+            assert.verifySteps(["unity_web_search_read/account.move.line"]);
             assert.containsOnce(document.body, '.o_attachment_preview iframe', "The previewer should be visible");
             assert.hasAttrValue(document.querySelector('.o_attachment_preview iframe'), 'data-src',
                 `/web/static/lib/pdfjs/web/viewer.html?file=${encodeURIComponent(getOrigin()+'/web/content/1')}#pagemode=none`,

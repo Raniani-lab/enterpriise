@@ -64,6 +64,7 @@ export class DocumentsInspector extends Component {
         "count", // Current number of records displayed in the view
         "fileSize", // Total size of (in MB) of records displayed in the view
         "documents", // Array of records
+        "fields",
     ];
 
     static components = {
@@ -475,16 +476,15 @@ export class DocumentsInspector extends Component {
 
     async removeTag(tag) {
         const record = this.props.documents[0];
-        record.model.root._multiSave(record, {
-            tag_ids: [x2ManyCommands.forget(tag.id)],
-        });
+        await record.data.tag_ids.forget({ resId: tag.id });
+        record.model.root.multiSave(record);
     }
 
     async addTag(tag, { input }) {
         const record = this.props.documents[0];
-        record.model.root._multiSave(record, {
-            tag_ids: [x2ManyCommands.linkTo(tag.value)],
-        });
+        // tag.value is the tag id
+        await record.data.tag_ids.linkTo(tag.value, tag);
+        record.model.root.multiSave(record);
         input.focus();
     }
 

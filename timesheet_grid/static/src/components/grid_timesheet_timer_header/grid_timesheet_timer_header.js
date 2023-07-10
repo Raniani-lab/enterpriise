@@ -71,7 +71,7 @@ export class GridTimesheetTimerHeader extends Component {
                 ];
             }
             fieldInfo.context = `{'search_default_my_projects': True}`;
-            fieldInfo.modifiers = { required: true };
+            fieldInfo.required = true;
         } else if (fieldName === "task_id") {
             fieldInfo.context = `{'default_project_id': project_id, 'search_default_my_tasks': True, 'search_default_open_tasks': True}`;
         } else if (fieldName === "name") {
@@ -95,13 +95,16 @@ export class GridTimesheetTimerHeader extends Component {
         const secondsElapsed = this.timerService.toSeconds;
         if (timesheet.isNew) {
             if (changes.project_id) {
-                await timesheet.save({ stayInEdition: true, noReload: true }); // create the timesheet when the project is set
-                this.props.updateTimesheet(
-                    Object.fromEntries(
-                        ["id", ...this.fieldNames].map((f) => [f, getRawValue(timesheet, f)])
-                    ),
-                    secondsElapsed
-                );
+                // create the timesheet when the project is set
+                timesheet.save({ stayInEdition: true, noReload: true }).then(() => {
+                    this.props.updateTimesheet({...Object.fromEntries(
+                                this.fieldNames.map((f) => [f, getRawValue(timesheet, f)])
+                            ),
+                            id: timesheet.resId,
+                        },
+                        secondsElapsed
+                    );
+                });
             }
             // Nothing to do since because a timesheet cannot be created without a project set or it is not a manual change.
             return;

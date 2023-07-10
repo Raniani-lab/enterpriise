@@ -24,9 +24,9 @@ export class ArticleBehavior extends AbstractBehavior {
                 event.preventDefault();
                 event.stopPropagation();
                 // TODO: remove when the model correctly asks the htmlField if
-                // it is dirty. This askChanges is necessary because the
+                // it is dirty. This isDirty is necessary because the
                 // /article Behavior can be used outside of Knowledge.
-                await this.props.record.askChanges();
+                await this.props.record.isDirty();
                 this.openArticle();
             };
             this.props.anchor.addEventListener('click', onLinkClick);

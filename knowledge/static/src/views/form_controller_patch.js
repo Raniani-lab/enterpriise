@@ -1,10 +1,10 @@
 /** @odoo-module */
 
-import { Domain } from "@web/core/domain";
 import { FormController } from "@web/views/form/form_controller";
 import { patch } from "@web/core/utils/patch";
 import { useService } from "@web/core/utils/hooks";
 import { useEffect } from "@odoo/owl";
+
 
 /**
  * Knowledge articles can interact with some records with the help of the
@@ -34,7 +34,7 @@ const FormControllerPatch = {
         // record without leaving the current form view.
         useEffect(
             () => this._commandsRecordInfoRegistration(),
-            () => [this.model.root.data.id],
+            () => [this.model.root.resId],
         );
     },
     /**
@@ -60,29 +60,9 @@ const FormControllerPatch = {
         if (this.env.config.breadcrumbs && this.env.config.breadcrumbs.length) {
             if (this.props.resModel === 'knowledge.article') {
                 this._unregisterCommandsRecordInfo(this._getBreadcrumbsIdentifier());
-            } else if (this.model.root.data.id) {
+            } else if (this.model.root.resId) {
                 this._searchCommandsRecordInfo();
             }
-        }
-    },
-    /**
-     * Evaluate a given modifier (i.e. invisible) from the raw code of the view
-     * based on the raw value and the context of the given record.
-     *
-     * @param {Object} record raw record
-     * @param {string} modifier modifier as registered in the view (xml)
-     * @returns {boolean}
-     */
-    _evalModifier(record, modifier) {
-        if (!modifier) {
-            return false;
-        }
-        try {
-            const preDomain = new Domain(modifier); // unaware of context
-            const domain = new Domain(preDomain.toList(record.context)); // aware of context
-            return domain.contains(record.data);
-        } catch {
-            return true;
         }
     },
     /**
@@ -99,14 +79,13 @@ const FormControllerPatch = {
          * html_field), and @see Domain is currently only able to evaluate such
          * a domain with the raw data.
          */
-        const record = this.model.__bm__.get(this.model.root.__bm_handle__, {raw: true});
-        const formFields = this.props.archInfo.activeFields;
+        const record = this.model.root;
         const fields = this.props.fields;
         const xmlDoc = this.props.archInfo.xmlDoc;
         const breadcrumbs = this._getBreadcrumbsIdentifier();
         // format stored by the knowledgeCommandsService
         const commandsRecordInfo = {
-            resId: this.model.root.data.id,
+            resId: this.model.root.resId,
             resModel: this.props.resModel,
             breadcrumbs: breadcrumbs,
             withChatter: false,
@@ -141,13 +120,14 @@ const FormControllerPatch = {
 
         // check if there is any html field usable with knowledge
         loopFieldNames: for (const fieldName of KNOWLEDGE_RECORDED_FIELD_NAMES) {
-            if (fieldName in formFields &&
+            if (fieldName in record.activeFields &&
                 fields[fieldName].type === 'html' &&
                 !fields[fieldName].readonly
             ) {
-                const readonlyModifier = formFields[fieldName].modifiers.readonly;
-                const invisibleModifier = formFields[fieldName].modifiers.invisible;
-                if (this._evalModifier(record, readonlyModifier) || this._evalModifier(record, invisibleModifier)) {
+
+                const readonlyModifier = record.activeFields[fieldName].readonly;
+                const invisibleModifier = record.activeFields[fieldName].invisible;
+                if (this.evalDomainFromRecord(record, readonlyModifier) || this.evalDomainFromRecord(record, invisibleModifier)) {
                     continue loopFieldNames;
                 }
                 // Parse the xmlDoc to find all instances of the field that are
@@ -162,7 +142,7 @@ const FormControllerPatch = {
                     let xmlInvisibleParent = xmlFieldParent.closest('[modifiers*="invisible"]');
                     while (xmlInvisibleParent) {
                         const invisibleParentModifier = JSON.parse(xmlInvisibleParent.getAttribute('modifiers')).invisible;
-                        if (this._evalModifier(record, invisibleParentModifier)) {
+                        if (this.evalDomainFromRecord(record, invisibleParentModifier)) {
                             continue loopDirectXmlFields;
                         }
                         xmlInvisibleParent = xmlInvisibleParent.parentElement &&

@@ -29,7 +29,7 @@ export class GenerateCommissionPayslipsFormController extends FormController {
     }
 
     async downloadExportedCSV() {
-        const recordId = this.model.root.data.id;
+        const recordId = this.model.root.resId;
         await download({
             url: `/export/warrant_payslips/${recordId}`,
             data: {}

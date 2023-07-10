@@ -6,7 +6,7 @@ import { Domain } from "@web/core/domain";
 import { serializeDate } from "@web/core/l10n/dates";
 import { localization } from "@web/core/l10n/localization";
 import { _t } from "@web/core/l10n/translation";
-import { Model } from "@web/views/model";
+import { Model } from "@web/model/model";
 
 const { DateTime, Interval } = luxon;
 

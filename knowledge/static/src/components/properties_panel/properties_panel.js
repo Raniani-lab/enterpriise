@@ -5,7 +5,7 @@ import { standardWidgetProps } from '@web/views/widgets/standard_widget_props';
 
 import { PropertiesField } from '@web/views/fields/properties/properties_field';
 
-import { Component, onMounted, onWillUpdateProps, useRef, useState } from '@odoo/owl';
+import { Component, useRef, useState } from '@odoo/owl';
 
 export class KnowledgeArticleProperties extends Component {
     static template = 'knowledge.KnowledgeArticleProperties';
@@ -15,20 +15,15 @@ export class KnowledgeArticleProperties extends Component {
     setup() {
         this.state = useState({
             displayPropertyPanel: false,
-            showNoContentHelper: false
         });
 
         this.root = useRef('root');
 
         this.env.bus.addEventListener('KNOWLEDGE:TOGGLE_PROPERTIES', this.toggleProperties.bind(this));
+    }
 
-        onWillUpdateProps((newProps) => {
-            this.state.showNoContentHelper = newProps.record.data.article_properties.filter((prop) => !prop.definition_deleted).length === 0;
-        });
-
-        onMounted(() => {
-            this.state.showNoContentHelper = this.props.record.data.article_properties.filter((prop) => !prop.definition_deleted).length === 0;
-        });
+    get showNoContentHelper() {
+        return this.props.record.data.article_properties.some((prop) => prop.definition_deleted);
     }
 
     toggleProperties(event) {

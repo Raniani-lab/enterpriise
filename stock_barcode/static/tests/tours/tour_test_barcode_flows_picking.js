@@ -2898,9 +2898,8 @@ registry.category("web_tour.tours").add('test_put_in_pack_before_dest', {test: t
 
     {
         trigger: '.o_field_widget[name="location_dest_id"] input',
-        run: 'text Section 2',
+        run: 'click',
     },
-
     {
         trigger: '.ui-menu-item > a:contains("Section 2")',
         auto: true,

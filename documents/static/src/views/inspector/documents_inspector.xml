@@ -178,18 +178,18 @@
     </t>
 
     <t t-name="documents.DocumentsInspector.field" owl="1">
-        <t t-set="fieldInfo" t-value="props.archInfo.activeFields[field]"/>
+        <t t-set="field" t-value="props.fields[fieldName]"/>
         <tr>
             <td class="o_inspector_label align-middle">
                 <span>
                     <i t-if="icon" t-attf-class="o_documents_model_color fa {{icon}}"/>
-                    <label t-att-for="field">
-                        <t t-esc="fieldInfo.string"/>
+                    <label t-att-for="fieldName">
+                        <t t-esc="field.string"/>
                     </label>
                 </span>
             </td>
             <td class="o_inspector_value w-100">
-                <DocumentsInspectorField t-props="this.getFieldProps(field, additionalProps)"/>
+                <DocumentsInspectorField t-props="this.getFieldProps(fieldName, additionalProps)"/>
             </td>
         </tr>
     </t>
@@ -200,26 +200,26 @@
                 <tbody>
                     <t t-if="nbPreviews === 1">
                         <t t-call="documents.DocumentsInspector.field">
-                            <t t-set="field" t-translation="off">name</t>
+                            <t t-set="fieldName" t-translation="off">name</t>
                         </t>
                         <t t-if="isDebugMode and records[0].data.type === 'binary'" t-call="documents.DocumentsInspector.field">
-                            <t t-set="field">file_extension</t>
+                            <t t-set="fieldName">file_extension</t>
                         </t>
                         <t t-if="records[0].data.type === 'url'" t-call="documents.DocumentsInspector.field">
-                            <t t-set="field" t-translation="off">url</t>
+                            <t t-set="fieldName" t-translation="off">url</t>
                         </t>
                     </t>
                     <t t-call="documents.DocumentsInspector.field">
-                        <t t-set="field" t-translation="off">partner_id</t>
+                        <t t-set="fieldName" t-translation="off">partner_id</t>
                         <t t-set="additionalProps" t-value="{canOpen: false}"/>
                     </t>
                     <t t-call="documents.DocumentsInspector.field">
-                        <t t-set="field" t-translation="off">owner_id</t>
+                        <t t-set="fieldName" t-translation="off">owner_id</t>
                         <t t-set="additionalProps" t-value="{canOpen: false, canCreate: false, canCreateEdit: false, canQuickCreate: false}"/>
                     </t>
                     <t t-call="documents.DocumentsInspector.field">
                         <t t-set="icon" t-translation="off">fa fa-folder text-odoo</t>
-                        <t t-set="field" t-translation="off">folder_id</t>
+                        <t t-set="fieldName" t-translation="off">folder_id</t>
                         <t t-set="additionalProps" t-value="{canOpen: false, canCreate: false, canCreateEdit: false, canQuickCreate: false}"/>
                     </t>
                     <tr class="o_inspector_divider"/>

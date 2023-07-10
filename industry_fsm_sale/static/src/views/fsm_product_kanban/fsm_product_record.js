@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { Record } from "@web/views/relational_model";
+import { Record } from "@web/model/relational_model/record";
 
 export class FsmProductRecord extends Record {
     /**
@@ -16,10 +16,10 @@ export class FsmProductRecord extends Record {
             );
             if (action && action !== true) {
                 await this.model.action.doAction(action, {
-                    onClose: () => this.model.reloadRecords(this),
+                    onClose: () => this._load(),
                 });
             } else {
-                await this.model.reloadRecords(this);
+                await this._load();
             }
             return;
         }

@@ -10,7 +10,8 @@ import { formatDate } from "@web/core/l10n/dates";
 import { localization } from "@web/core/l10n/localization";
 
 import { useSetupView } from "@web/views/view_hook";
-import { RelationalModel } from "@web/views/relational_model";
+import { RelationalModel } from "@web/model/relational_model/relational_model";
+import { makeActiveField } from "@web/model/relational_model/utils";
 import { kanbanView } from "@web/views/kanban/kanban_view";
 import { KanbanController } from "@web/views/kanban/kanban_controller";
 import { KanbanRenderer } from "@web/views/kanban/kanban_renderer";
@@ -27,10 +28,10 @@ import { AnalyticDistribution } from "@analytic/components/analytic_distribution
 import { TagsList } from "@web/core/tags_list/tags_list";
 import { HtmlField } from "@web_editor/js/backend/html_field";
 import { RainbowMan } from "@web/core/effects/rainbow_man";
+import { Notebook } from "@web/core/notebook/notebook";
 
 import { BankRecRelationalModel } from "./bank_rec_record";
 import { BankRecMonetaryField } from "./monetary_field_auto_signed_amount";
-import { BankRecNotebook } from "./notebook";
 import { BankRecViewEmbedder } from "./view_embedder";
 import { BankRecRainbowContent } from "./rainbowman_content";
 import { BankRecFinishButtons } from "./finish_buttons";
@@ -81,6 +82,7 @@ export class BankRecKanbanController extends KanbanController {
                 return [servName, useService(servName)];
             })
         );
+        this.relationalModelServices.orm = useService("orm");
 
         useChildSubEnv(this.getChildSubEnv());
 
@@ -110,6 +112,7 @@ export class BankRecKanbanController extends KanbanController {
 
             // Global info.
             journalId: null,
+            journalBalanceAmount: "",
 
             // Asynchronous validation stuff.
             lockedStLineIds: new Set(),
@@ -149,7 +152,10 @@ export class BankRecKanbanController extends KanbanController {
                     exportState.backupValues = Object.assign(
                         {},
                         this.state.bankRecEmbeddedViewsData,
-                        {initial_values: this.bankRecModel.root.getChanges(true, true)},
+                        {
+                            bankRecStLineId: this.state.bankRecStLineId,
+                            initial_values: this.bankRecModel.getInitialValues(),
+                        },
                     );
                 }
                 return exportState;
@@ -221,17 +227,7 @@ export class BankRecKanbanController extends KanbanController {
     async withNewState(func){
         const newState = {...this.state};
         await func(newState);
-        const bankRecModelNotify = newState.__bankRecRecordNotify;
-        const kanbanNotify = newState.__kanbanNotify;
-        delete newState.__bankRecRecordNotify;
-        delete newState.__kanbanNotify;
         Object.assign(this.state, newState);
-        if(bankRecModelNotify){
-            this.bankRecModel.notify();
-        }
-        if(kanbanNotify){
-            this.model.notify();
-        }
     }
 
     // -----------------------------------------------------------------------------
@@ -272,6 +268,7 @@ export class BankRecKanbanController extends KanbanController {
                 initReconCounter: this.initReconCounter.bind(this),
                 getCounterSummary: this.getCounterSummary.bind(this),
                 getRainbowManContentProps: this.getRainbowManContentProps.bind(this),
+                updateJournalState: this.updateJournalState.bind(this),
             },
         };
     }
@@ -290,7 +287,7 @@ export class BankRecKanbanController extends KanbanController {
 
         // Try to restore.
         if(this.props.state && this.props.state.backupValues && !this.props.skipRestore){
-            const backupStLineId = this.props.state.backupValues.initial_values.st_line_id;
+            const backupStLineId = this.props.state.backupValues.bankRecStLineId;
             if(this.model.root.records.find(x => x.resId === backupStLineId)){
                 stLineId = backupStLineId;
                 backupValues = this.props.state.backupValues;
@@ -355,6 +352,18 @@ export class BankRecKanbanController extends KanbanController {
                 await this._mountStLineInEdit(newState, nextStLineId);
             });
         });
+    }
+
+    onPageUpdate(page) {
+        if (this.state.bankRecNotebookPage !== page) {
+            this.state.bankRecNotebookPage = page;
+        }
+        if(
+            this.state.bankRecClickedColumn
+            && this.focusManualOperationField(this.state.bankRecClickedColumn)
+        ){
+            this.state.bankRecClickedColumn = null;
+        }
     }
 
     // -----------------------------------------------------------------------------
@@ -427,7 +436,7 @@ export class BankRecKanbanController extends KanbanController {
             // Mount a new transaction.
             await this.onchange(newState, "mount_st_line", [stLineId]);
             const bankRecEmbeddedViewsData = this.bankRecModel.root.data.return_todo_command;
-            newState.bankRecEmbeddedViewsData = markRaw(bankRecEmbeddedViewsData);
+            newState.bankRecEmbeddedViewsData = bankRecEmbeddedViewsData;
             newState.bankRecNotebookPage = null;
         }else{
             // No transaction mounted.
@@ -469,21 +478,37 @@ export class BankRecKanbanController extends KanbanController {
         );
 
         // Services.
+        function makeActiveFields(fields) {
+            const activeFields = {};
+            for (const fieldName in fields) {
+                const field = fields[fieldName];
+                activeFields[fieldName] = makeActiveField({ onChange: field.onChange});
+                if (field.relatedFields) {
+                    activeFields[fieldName].related = {
+                        fields: field.relatedFields,
+                        activeFields: makeActiveFields(field.relatedFields),
+                    }
+                }
+            }
+            return activeFields;
+        }
+        const activeFields = makeActiveFields(initialData.fields);
         this.bankRecModel = new BankRecRelationalModel(
             this.env,
             {
-                resModel: "bank.rec.widget",
-                fields: initialData.fields,
-                viewMode: "form",
-                rootType: "record",
-                activeFields: initialData.fields,
+                config: {
+                    resModel: "bank.rec.widget",
+                    fields: initialData.fields,
+                    activeFields,
+                    mode: "edit",
+                    isMonoRecord: true,
+                }
             },
             this.relationalModelServices,
         );
 
         // Initial loading.
         await this.bankRecModel.load({
-            mode: "edit",
             values: initialData.initial_values,
         });
 
@@ -515,6 +540,12 @@ export class BankRecKanbanController extends KanbanController {
             journalId = this.props.context.default_journal_id;
         }
         newState.journalId = journalId;
+        const values = await this.orm.call(
+            "bank.rec.widget",
+            "collect_global_info_data",
+            [journalId],
+        );
+        newState.journalBalanceAmount = values.balance_amount;
     }
 
     // -----------------------------------------------------------------------------
@@ -605,18 +636,8 @@ export class BankRecKanbanController extends KanbanController {
 
     async onchange(newState, methodName, args, kwargs){
         const record = this.bankRecModel.root;
-
-        await record.update(
-            {
-                todo_command: {
-                    method_name: methodName,
-                    args: args,
-                    kwargs: kwargs,
-                },
-            },
-            { silent: true },
-        );
-        newState.bankRecRecordData = markRaw({...this.bankRecModel.root.data});
+        await record.updateToDoCommand(methodName, args, kwargs);
+        newState.bankRecRecordData = this.bankRecModel.root.data;
         newState.__bankRecRecordNotify = true;
     }
 
@@ -946,7 +967,7 @@ export class BankRecKanbanController extends KanbanController {
             newState.__kanbanNotify = true;
         }
         if(todo.reset_global_info){
-            this.updateJournalState(newState);
+            await this.updateJournalState(newState);
         }
     }
 
@@ -1016,8 +1037,9 @@ export class BankRecKanbanController extends KanbanController {
         await this.actionMountLineInEdit(line);
 
         let clickedColumn = null;
-        if (ev.target.attributes && ev.target.attributes.field) {
-            clickedColumn = ev.target.attributes.field.value;
+        const target = ev.target.tagName === "TD" ? ev.target : ev.target.closest("td");
+        if (target.attributes && target.attributes.field) {
+            clickedColumn = target.attributes.field.value;
         }
 
         // Track the clicked column to focus automatically the corresponding field on the manual operations page.
@@ -1059,7 +1081,7 @@ BankRecKanbanController.components = {
     TagsList,
     HtmlField,
     BankRecMonetaryField,
-    BankRecNotebook,
+    Notebook,
     BankRecViewEmbedder,
 }
 
@@ -1116,6 +1138,7 @@ export class BankRecKanbanRenderer extends KanbanRenderer {
             onClose: async () => {
                 this.env.methods.withNewState(async(newState) => {
                     await this.props.list.model.root.load();
+                    await this.env.methods.updateJournalState(newState);
                     newState.__kanbanNotify = true;
                 });
             }

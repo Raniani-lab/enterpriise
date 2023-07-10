@@ -11,6 +11,7 @@ export class KnowledgeArticleFormController extends FormController {
         super.setup();
         this.root = useRef('root');
         this.orm = useService('orm');
+        this.actionService = useService('action');
 
         useChildSubEnv({
             createArticle: this.createArticle.bind(this),
@@ -34,7 +35,7 @@ export class KnowledgeArticleFormController extends FormController {
      * @override
      */
     async beforeLeave() {
-        await this.model.root.askChanges();
+        await this.model.root.isDirty();
         return super.beforeLeave();
     }
 
@@ -78,22 +79,40 @@ export class KnowledgeArticleFormController extends FormController {
         );
         this.openArticle(articleId);
     }
-    
+
+    getHtmlTitle() {
+        const titleEl = this.root.el.querySelector('#body_0 h1');
+        if (titleEl) {
+            const title = titleEl.textContent.trim();
+            if (title) {
+                return title;
+            }
+        }
+    }
+
+    displayName() {
+        return this.model.root.data.name || this.env._t("New");
+    }
+
     /**
      * Callback executed before the record save (if the record is valid).
      * When an article has no name set, use the title (first h1 in the
      * body) to try to save the artice with a name.
      * @overwrite
      */
-    onWillSaveRecord(record) {
-        this.ensureArticleName();
+    async onWillSaveRecord(record, changes) {
+        if (!record.data.name) {
+            const title = this.getHtmlTitle();
+            if (title) {
+                changes.name = title;
+            }
+         }
     }
 
     /**
      * @param {integer} - resId: id of the article to open
      */
     async openArticle(resId) {
-
         if (!resId || resId === this.resId) {
             return;
         }
@@ -101,7 +120,9 @@ export class KnowledgeArticleFormController extends FormController {
         // blur to remove focus on the active element
         document.activeElement.blur();
         
-        await this.beforeLeave();
+        if (!this.model.root.isNew) {
+            await this.model.root.save();
+        }
 
         const scrollView = document.querySelector('.o_scroll_view_lg');
         if (scrollView) {
@@ -118,9 +139,7 @@ export class KnowledgeArticleFormController extends FormController {
         }
         // load the new record
         try {
-            await this.model.load({
-                resId: resId,
-            });
+            await this.model.load({ resId });
         } catch {
             this.actionService.doAction(
                 await this.orm.call('knowledge.article', 'action_home_page', [false]),

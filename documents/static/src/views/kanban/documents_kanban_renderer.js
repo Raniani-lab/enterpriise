@@ -71,7 +71,7 @@ export class DocumentsKanbanRenderer extends KanbanRenderer {
         if (ev.target.closest(".o_kanban_record:not(.o_kanban_ghost)")) {
             return;
         }
-        this.props.list.selection.forEach(el => el.toggleSelection(false));
+        this.props.list.selection.forEach((el) => el.toggleSelection(false));
     }
 
     /**
@@ -123,8 +123,9 @@ export class DocumentsKanbanRenderer extends KanbanRenderer {
                 ? this.props.inspectedDocuments
                 : this.props.list.selection,
             count: this.props.list.model.useSampleModel ? 0 : this.props.list.count,
-            fileSize: this.props.list.fileSize,
+            fileSize: this.props.list.model.fileSize,
             archInfo: this.props.archInfo,
+            fields: this.props.list.fields,
         };
     }
 }

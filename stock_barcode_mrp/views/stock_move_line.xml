@@ -25,7 +25,7 @@
                 <attribute name="attrs">{'invisible': [('picking_code', '=', 'mrp_operation')]}</attribute>
                 <attribute name="invisible">context.get('newByProduct')</attribute>
             </xpath>
-            <xpath expr="(//div[hasclass('o_barcode_control')])[2]" position="attributes">
+            <xpath expr="//widget[@name='stock_barcode_unlink_button']" position="attributes">
                 <attribute name="invisible">context.get('newByProduct')</attribute>
             </xpath>
         </field>

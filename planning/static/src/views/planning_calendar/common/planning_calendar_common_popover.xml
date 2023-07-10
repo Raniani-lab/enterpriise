@@ -11,8 +11,8 @@
             <t t-if="timeDuration and !(data.allocated_hours or data.allocated_percentage)">$0</t>
         </xpath>
         <!-- Filter on fields -->
-        <xpath expr="//t[@t-if='!isInvisible(fieldName, slot.record)']" position="attributes">
-            <attribute name="t-if" add=" and isSet(fieldName)" separator=" "/>
+        <xpath expr="//t[@t-if='!isInvisible(fieldInfo, slot.record)']" position="attributes">
+            <attribute name="t-if" add=" and isSet(fieldInfo.name)" separator=" "/>
         </xpath>
     </t>
 

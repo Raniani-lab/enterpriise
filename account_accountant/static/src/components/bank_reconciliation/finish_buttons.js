@@ -1,21 +1,25 @@
 /** @odoo-module **/
-import { Component } from "@odoo/owl";
+import { Component, useState } from "@odoo/owl";
 
 export class BankRecFinishButtons extends Component {
     static template = "account_accountant.BankRecFinishButtons";
     static props = {};
 
-    getJournalFilter() {
-        // retrieves the searchModel's searchItem for the journal
-        return Object.values(this.env.searchModel.searchItems).filter(i => i.type == "field" && i.fieldName == "journal_id")[0];
+    setup() {
+        this.breadcrumbs = useState(this.env.config.breadcrumbs);
     }
 
-    get breadcrumbs() {
-        return this.env.config.breadcrumbs;
+    getJournalFilter() {
+        // retrieves the searchModel's searchItem for the journal
+        return Object.values(this.searchModel.searchItems).filter(i => i.type == "field" && i.fieldName == "journal_id")[0];
+    }
+
+    get searchModel() {
+        return this.env.searchModel;
     }
 
     get otherFiltersActive() {
-        const facets = this.env.searchModel.facets;
+        const facets = this.searchModel.facets;
         const journalFilterItem = this.getJournalFilter();
         for (const facet of facets) {
             if (facet.groupId !== journalFilterItem.groupId) {
@@ -26,11 +30,11 @@ export class BankRecFinishButtons extends Component {
     }
 
     clearFilters() {
-        const facets = this.env.searchModel.facets;
+        const facets = this.searchModel.facets;
         const journalFilterItem = this.getJournalFilter();
         for (const facet of facets) {
             if (facet.groupId !== journalFilterItem.groupId) {
-                this.env.searchModel.deactivateGroup(facet.groupId);
+                this.searchModel.deactivateGroup(facet.groupId);
             }
         }
     }

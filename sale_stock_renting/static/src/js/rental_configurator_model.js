@@ -12,15 +12,7 @@ patch(RentalConfiguratorController.prototype, 'sale_stock_renting', {
 
     _getRentalInfos(record) {
         const rentalInfos = this._super(...arguments);
-        rentalInfos.reserved_lot_ids = {
-          operation: 'MULTI',
-          commands: [
-            {operation: 'DELETE_ALL'},
-            {operation: 'ADD_M2M', ids: record.data.lot_ids.currentIds.map(
-                (lotId) => { return {id: lotId}; }
-            )},
-          ],
-        };
+        rentalInfos.reserved_lot_ids = record.data.lot_ids.currentIds;
         return rentalInfos;
     },
 });

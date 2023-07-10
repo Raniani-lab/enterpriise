@@ -157,9 +157,6 @@ export class TimerTimesheetGridModel extends TimesheetGridModel {
         super.setup(params, services);
         this.timesheetUOMService = services.timesheet_uom;
         this.fieldsInfo.project_id.required = true;
-        if (!("modifiers" in this.fieldsInfo.project_id)) {
-            this.fieldsInfo.project_id.modifiers = { required: true };
-        }
     }
 
     get showTimer() {
@@ -188,7 +185,7 @@ export class TimerTimesheetGridModel extends TimesheetGridModel {
     /**
      * Update the timesheet in the timer header
      *
-     * @param {import('@web/views/relational_model').Record} timesheet
+     * @param {import('@web/model/relational_model/record').Record} timesheet
      * @param {number} time the time representing in seconds to add to the timer of the timesheet
      */
     async updateTimerTimesheet(timesheetVals, time = 0.0) {

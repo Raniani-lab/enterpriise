@@ -377,9 +377,14 @@ QUnit.module("documents", {}, function () {
                 );
 
                 // check control panel buttons
-                assert.containsOnce(target, ".o_cp_buttons .btn-primary:not(.dropdown-toggle):visible");
+                assert.containsOnce(
+                    target,
+                    ".o_cp_buttons .btn-primary:not(.dropdown-toggle):visible"
+                );
                 assert.strictEqual(
-                    $(".o_cp_buttons .btn-primary:not(.dropdown-toggle):visible").get(0).textContent.trim(),
+                    $(".o_cp_buttons .btn-primary:not(.dropdown-toggle):visible")
+                        .get(0)
+                        .textContent.trim(),
                     "Upload",
                     "should have a primary 'Upload' button"
                 );
@@ -680,17 +685,26 @@ QUnit.module("documents", {}, function () {
                         if (args.method === "write") {
                             assert.deepEqual(args.args, [[4, 5], { is_editable_attachment: true }]);
                         }
-                    }
+                    },
                 });
 
                 assert.containsN(target, ".o_kanban_record:not(.o_kanban_ghost)", 5);
                 assert.containsNone(target, ".o_record_selected");
-                assert.containsOnce(target, ".o_field_widget[name=is_editable_attachment] input:checked");
+                assert.containsOnce(
+                    target,
+                    ".o_field_widget[name=is_editable_attachment] input:checked"
+                );
                 await click(target.querySelectorAll(".o_record_selector")[3]);
                 await click(target.querySelectorAll(".o_record_selector")[4]);
                 assert.containsN(target, ".o_record_selected", 2);
-                await click(target.querySelectorAll(".o_field_widget[name=is_editable_attachment] input")[4]);
-                assert.containsN(target, ".o_field_widget[name=is_editable_attachment] input:checked", 3);
+                await click(
+                    target.querySelectorAll(".o_field_widget[name=is_editable_attachment] input")[4]
+                );
+                assert.containsN(
+                    target,
+                    ".o_field_widget[name=is_editable_attachment] input:checked",
+                    3
+                );
             });
 
             QUnit.test(
@@ -1254,11 +1268,7 @@ QUnit.module("documents", {}, function () {
 
                 await click(find(target, ".o_kanban_record", "burp"));
 
-                assert.containsNone(
-                    target,
-                    ".o-FileViewer",
-                    "should not have a document preview"
-                );
+                assert.containsNone(target, ".o-FileViewer", "should not have a document preview");
                 assert.containsOnce(
                     target,
                     ".o_document_preview img",
@@ -1279,7 +1289,9 @@ QUnit.module("documents", {}, function () {
                 assert.containsOnce(target, ".o-FileViewer div[title='Split PDF']");
                 assert.containsOnce(
                     target,
-                    `iframe[data-src="/web/static/lib/pdfjs/web/viewer.html?file=${encodeURIComponent(getOrigin()+'/web/content/2?model=documents.document')}#pagemode=none"]`,
+                    `iframe[data-src="/web/static/lib/pdfjs/web/viewer.html?file=${encodeURIComponent(
+                        getOrigin() + "/web/content/2?model=documents.document"
+                    )}#pagemode=none"]`,
                     "should have an iframe with the correct pdfviewer src"
                 );
 
@@ -1857,7 +1869,7 @@ QUnit.module("documents", {}, function () {
             QUnit.test(
                 "document inspector: update info: handle concurrent updates",
                 async function (assert) {
-                    assert.expect(11);
+                    assert.expect(9);
 
                     const def = testUtils.makeTestPromise();
                     let nbWrite = 0;
@@ -1899,22 +1911,10 @@ QUnit.module("documents", {}, function () {
                     value = "temp name";
                     await editInput(target.querySelector("div[name=name] input"), null, value);
 
-                    assert.strictEqual(
-                        target.querySelector(".o_kanban_record").textContent,
-                        "yop",
-                        "should still display the old filename"
-                    );
-
                     // change filename value again (this RPC isn't blocked but must wait for
                     // the first one to return)
                     value = "new name";
                     await editInput(target.querySelector("div[name=name] input"), null, value);
-
-                    assert.strictEqual(
-                        target.querySelector(".o_kanban_record").textContent,
-                        "yop",
-                        "should still display the old filename"
-                    );
 
                     assert.step("resolve");
                     def.resolve();
@@ -2077,7 +2077,7 @@ QUnit.module("documents", {}, function () {
                             assert.deepEqual(
                                 args.args[1],
                                 {
-                                    tag_ids: [[3, 2, false]],
+                                    tag_ids: [[3, 2]],
                                 },
                                 "should write the correct value"
                             );
@@ -2127,7 +2127,7 @@ QUnit.module("documents", {}, function () {
                             assert.deepEqual(
                                 args.args[1],
                                 {
-                                    tag_ids: [[4, lastDocumentsTagId, false]],
+                                    tag_ids: [[4, lastDocumentsTagId]],
                                 },
                                 "should write the correct value"
                             );
@@ -2712,6 +2712,9 @@ QUnit.module("documents", {}, function () {
                         if (args.method === "write") {
                             assert.deepEqual(args.args, [[1, 2], { folder_id: 3 }]);
                         }
+                        if (args.method === "unlink") {
+                            throw new Error("Unlink should not be called !");
+                        }
                     },
                 });
 
@@ -2721,8 +2724,16 @@ QUnit.module("documents", {}, function () {
                 await click(target.querySelectorAll(".o_record_selector")[1]);
                 assert.containsN(target, ".o_record_selected", 2);
                 await click(target, ".o_documents_inspector .o_field_widget[name=folder_id] input");
-                assert.containsN(target, ".o_documents_inspector .o_field_widget[name=folder_id] .o-autocomplete li", 5)
-                await click(target.querySelectorAll(".o_documents_inspector .o_field_widget[name=folder_id] .o-autocomplete li")[2]);
+                assert.containsN(
+                    target,
+                    ".o_documents_inspector .o_field_widget[name=folder_id] .o-autocomplete li",
+                    5
+                );
+                await click(
+                    target.querySelectorAll(
+                        ".o_documents_inspector .o_field_widget[name=folder_id] .o-autocomplete li"
+                    )[2]
+                );
                 assert.containsN(target, ".o_kanban_record:not(.o_kanban_ghost)", 3);
             });
 
@@ -2872,10 +2883,7 @@ QUnit.module("documents", {}, function () {
                 );
 
                 assert.containsOnce(target, ".o_document_chatter_container .o-mail-Chatter");
-                assert.containsOnce(
-                    target,
-                    ".o_document_chatter_container .o-mail-Followers"
-                );
+                assert.containsOnce(target, ".o_document_chatter_container .o-mail-Followers");
                 assert.strictEqual(
                     target.querySelector(".o-mail-Followers-counter").textContent,
                     "2"
@@ -3764,7 +3772,7 @@ QUnit.module("documents", {}, function () {
                         mockRPC: function (route, args) {
                             if (
                                 route ===
-                                    "/web/dataset/call_kw/documents.document/web_search_read" &&
+                                    "/web/dataset/call_kw/documents.document/unity_web_search_read" &&
                                 args.model === "documents.document"
                             ) {
                                 assert.step(JSON.stringify(args.kwargs.domain || []));
@@ -4238,20 +4246,20 @@ QUnit.module("documents", {}, function () {
 
             QUnit.test("documents: upload with default tags", async function (assert) {
                 const file = await testUtils.file.createFile({
-                    name: 'text.txt',
-                    content: 'hello, world',
-                    contentType: 'text/plain',
+                    name: "text.txt",
+                    content: "hello, world",
+                    contentType: "text/plain",
                 });
 
                 const mockedXHRs = [];
                 this.patchDocumentXHR(mockedXHRs, (data) => {
                     assert.strictEqual(data.get("tag_ids"), "1,2");
-                    assert.step('xhrSend')
+                    assert.step("xhrSend");
                 });
 
                 await createDocumentsView({
                     type: "kanban",
-                    resModel: 'documents.document',
+                    resModel: "documents.document",
                     arch: `
                     <kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
                         <div draggable="true" class="oe_kanban_global_area">
@@ -4259,15 +4267,18 @@ QUnit.module("documents", {}, function () {
                         </div>
                     </t></templates></kanban>`,
                     context: {
-                        default_tag_ids: [1,2],
+                        default_tag_ids: [1, 2],
                     },
                 });
 
                 testUtils.file.dragoverFile($(target.querySelector(".o_kanban_renderer")), file);
                 await nextTick();
-                testUtils.file.dropFile($(target.querySelector('.o_documents_drop_over_zone')), file);
+                testUtils.file.dropFile(
+                    $(target.querySelector(".o_documents_drop_over_zone")),
+                    file
+                );
                 await nextTick();
-                assert.verifySteps(['xhrSend']);
+                assert.verifySteps(["xhrSend"]);
             });
 
             QUnit.test("documents: upload with context", async function (assert) {
@@ -4396,7 +4407,7 @@ QUnit.module("documents", {}, function () {
 
                 patchWithCleanup(kanban.env.services.notification, {
                     add(message, _option) {
-                        assert.ok(message.startsWith('Some files could not be uploaded'));
+                        assert.ok(message.startsWith("Some files could not be uploaded"));
                     },
                 });
 
@@ -4915,7 +4926,7 @@ QUnit.module("documents", {}, function () {
                 </kanban>`,
                     async mockRPC(route, args) {
                         if (
-                            route === "/web/dataset/call_kw/documents.document/web_search_read" &&
+                            route === "/web/dataset/call_kw/documents.document/unity_web_search_read" &&
                             args.model === "documents.document"
                         ) {
                             assert.deepEqual(args.kwargs.domain, [
@@ -4973,7 +4984,7 @@ QUnit.module("documents", {}, function () {
                 </kanban>`,
                     async mockRPC(route, args) {
                         if (
-                            route === "/web/dataset/call_kw/documents.document/web_search_read" &&
+                            route === "/web/dataset/call_kw/documents.document/unity_web_search_read" &&
                             args.model === "documents.document"
                         ) {
                             assert.deepEqual(args.kwargs.domain, [["folder_id", "child_of", 1]]);
@@ -5122,11 +5133,7 @@ QUnit.module("documents", {}, function () {
                     [...target.querySelectorAll(".oe_kanban_previewer")].pop().click();
                     await nextTick();
 
-                    assert.containsOnce(
-                        target,
-                        ".o-FileViewer",
-                        "should have a document preview"
-                    );
+                    assert.containsOnce(target, ".o-FileViewer", "should have a document preview");
                     assert.containsOnce(
                         target,
                         "[title='Close (Esc)']",

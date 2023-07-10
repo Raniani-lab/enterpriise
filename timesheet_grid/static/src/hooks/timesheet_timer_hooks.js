@@ -4,7 +4,7 @@ import { Domain } from "@web/core/domain";
 import { useService } from "@web/core/utils/hooks";
 import { useDebounced } from "@web/core/utils/timing";
 import { getRawValue } from "@web/views/kanban/kanban_record";
-import { DynamicRecordList } from "@web/views/relational_model";
+import { DynamicRecordList } from "@web/model/relational_model/dynamic_record_list";
 import {
     useState,
     useComponent,
@@ -54,10 +54,7 @@ export class TimesheetTimerRendererHook {
                         ["timesheet_encode_uom_id", "=", this.timesheetUOMService.timesheetUOMId],
                     ];
                 }
-                if (!fieldInfo.modifiers) {
-                    fieldInfo.modifiers = {};
-                }
-                fieldInfo.modifiers.required = true;
+                fieldInfo.required = true;
                 if (!fieldInfo.placeholder && fieldInfo.string) {
                     fieldInfo.placeholder = fieldInfo.string;
                 }
@@ -68,8 +65,8 @@ export class TimesheetTimerRendererHook {
                 }
                 fieldInfo.context = `{'default_project_id': project_id, 'search_default_my_tasks': True, 'search_default_open_tasks': True}`;
             } else if (fieldName === "name") {
-                if (fieldInfo.modifiers?.required) {
-                    fieldInfo.modifiers.required = false;
+                if (fieldInfo.required) {
+                    fieldInfo.required = false;
                 }
                 fieldInfo.placeholder = this.env._t("Describe your activity...");
             }
@@ -185,7 +182,7 @@ export class TimesheetTimerRendererHook {
             const timesheet =
                 propsList.records.find((record) => record.resId === this.timerState.timesheetId) ||
                 (await propsList.addExistingRecord(this.timerState.timersheetId, true));
-            timesheet.mode = "edit";
+            timesheet.switchMode("edit");
             this.timesheet = timesheet;
             propsList.removeRecord(timesheet);
         }

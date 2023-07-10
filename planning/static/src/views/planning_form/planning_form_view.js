@@ -29,15 +29,15 @@ export class PlanningFormController extends FormController {
         // and we update the number of occurences of the recurrency to < n,
         // ths occurence will be deleted. In that case, we need to go back to previous view.
         try {
-            return await super.saveButtonClicked({...params, throwOnError: true});
+            return await super.saveButtonClicked(params);
         } catch {
             this.env.config.historyBack()
         }
         return false;
     }
 
-    async onRecordSaved(record) {
-        if (record.isFieldDirty("repeat") && record.data["repeat"]) {
+    async onRecordSaved(record, changes) {
+        if ("repeat" in changes && record.data["repeat"]) {
             const message = this.env._t("The recurring shifts have successfully been created.");
             this.notification.add(
                 markup(

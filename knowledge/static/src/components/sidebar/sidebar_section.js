@@ -15,6 +15,7 @@ export class KnowledgeSidebarSection extends Component {
     static props = {
         rootIds: Array,
         unfoldedIds: Set,
+        record: Object,
     };
     static components = {
         KnowledgeSidebarRow,

@@ -7,7 +7,7 @@ import { DropdownItem } from "@web/core/dropdown/dropdown_item";
 import { FormViewDialog } from "@web/views/view_dialogs/form_view_dialog";
 import { Layout } from "@web/search/layout";
 import { standardViewProps } from "@web/views/standard_view_props";
-import { useModel } from "@web/views/model";
+import { useModelWithSampleData } from "@web/model/model";
 import { useService } from "@web/core/utils/hooks";
 import { SearchBar } from "@web/search/search_bar/search_bar";
 import { useSearchBarToggler } from "@web/search/search_bar/search_bar_toggler";
@@ -38,7 +38,7 @@ export class GanttController extends Component {
         this.dialogService = useService("dialog");
         this.orm = useService("orm");
 
-        this.model = useModel(this.props.Model, this.props.modelParams);
+        this.model = useModelWithSampleData(this.props.Model, this.props.modelParams);
         useSetupView({
             rootRef: useRef("root"),
             getLocalState: () => {

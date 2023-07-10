@@ -5,7 +5,7 @@ import { DropdownItem } from "@web/core/dropdown/dropdown_item";
 import { serializeDate, deserializeDate } from "@web/core/l10n/dates";
 import { useService } from "@web/core/utils/hooks";
 import { Layout } from "@web/search/layout";
-import { useModel } from "@web/views/model";
+import { useModelWithSampleData } from "@web/model/model";
 import { standardViewProps } from "@web/views/standard_view_props";
 import { useViewButtons } from "@web/views/view_button/view_button_hook";
 import { FormViewDialog } from "@web/views/view_dialogs/form_view_dialog";
@@ -48,7 +48,7 @@ export class GridController extends Component {
             defaultAnchor = deserializeDate(this.props.context.grid_anchor);
         }
         this.dialogService = useService("dialog");
-        this.model = useModel(this.props.Model, {
+        this.model = useModelWithSampleData(this.props.Model, {
             resModel: this.props.resModel,
             sectionField: this.props.archInfo.sectionField,
             rowFields: this.props.archInfo.rowFields,

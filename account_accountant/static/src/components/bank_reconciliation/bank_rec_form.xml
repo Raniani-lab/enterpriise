@@ -633,7 +633,7 @@
                         </t>
 
                         <!-- Notebook -->
-                        <BankRecNotebook t-key="state.bankRecStLineId">
+                        <Notebook t-key="state.bankRecStLineId" defaultPage="state.bankRecNotebookPage || ''" onPageUpdate.bind="onPageUpdate" >
                             <t t-set-slot="amls_tab"
                                name="'amls_tab'"
                                title="'Match Existing Entries'"
@@ -658,7 +658,7 @@
                                isVisible="data.state == 'reconciled' and data.st_line_narration and data.st_line_narration != ''">
                                 <t t-call="account_accountant.BankRecRecordNotebookTransactionDetails"/>
                             </t>
-                        </BankRecNotebook>
+                        </Notebook>
 
                     </div>
                 </div>

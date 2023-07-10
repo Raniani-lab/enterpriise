@@ -14,8 +14,9 @@ import { sprintf } from "@web/core/utils/strings";
 import { throttleForAnimation } from "@web/core/utils/timing";
 import { useService } from "@web/core/utils/hooks";
 import { useSortableList } from "@knowledge/js/sortableList";
+import { useRecordObserver } from "@web/model/relational_model/utils";
 
-import { Component, onWillStart, onWillUpdateProps, reactive, useRef, useState, useChildSubEnv } from "@odoo/owl";
+import { Component, onWillStart, reactive, useRef, useState, useChildSubEnv } from "@odoo/owl";
 
 export const SORTABLE_TOLERANCE = 10;
 
@@ -58,6 +59,8 @@ export class KnowledgeSidebar extends Component {
 
         this.favoriteTree = useRef("favoriteTree");
         this.mainTree = useRef("mainTree");
+
+        this.currentData = {};
 
         this.storageKeys = {
             size: "knowledge.sidebarSize",
@@ -192,16 +195,13 @@ export class KnowledgeSidebar extends Component {
             this.isInternalUser = await this.userService.hasGroup('base.group_user');
         });
 
-        // Update the state of the current article using its record data
-        onWillUpdateProps(async nextProps => {
-            const currentData = this.props.record.data;
-            const nextData = nextProps.record.data;
-            const article = this.getArticle(nextData.id);
-            // record.data.parent_id is in the form (id, name) if not false
-            const nextDataParentId = nextData.parent_id ? nextData.parent_id[0] : false;
+        useRecordObserver(async (record) => {
+            const article = this.getArticle(record.resId);
+            const nextDataParentId = record.data.parent_id ? record.data.parent_id[0] : false;
+
             if (article) {
-                if (nextData.is_article_item !== article.is_article_item) {
-                    if (nextData.is_article_item) {
+                if (record.data.is_article_item !== article.is_article_item) {
+                    if (record.data.is_article_item) {
                         // Article became item, remove it from the sidebar
                         this.removeArticle(article);
                     } else {
@@ -212,8 +212,8 @@ export class KnowledgeSidebar extends Component {
                         this.showArticle(article);
                     }
                 }
-                if (nextData.is_user_favorite !== article.is_user_favorite) {
-                    if (nextData.is_user_favorite) {
+                if (record.data.is_user_favorite !== article.is_user_favorite) {
+                    if (record.data.is_user_favorite) {
                         // Add the article to the favorites tree
                         this.state.favoriteIds.push(article.id);
                     } else {
@@ -221,51 +221,51 @@ export class KnowledgeSidebar extends Component {
                         this.state.favoriteIds.splice(this.state.favoriteIds.indexOf(article.id), 1);
                     }
                 }
-                if ((nextDataParentId !== article.parent_id || nextData.category !== article.category) &&
-                    (nextData.parent_id !== currentData.parent_id || nextData.category !== currentData.category)) {
+                if ((nextDataParentId !== article.parent_id || record.data.category !== article.category) &&
+                    (record.data.parent_id !== this.currentData.parent_id || record.data.category !== this.currentData.category)) {
                     // Article changed position ("Moved to")
                     if (!this.getArticle(nextDataParentId)) {
                         // Parent is not loaded, reload the tree to show moved
                         // article in the sidebar
                         await this.loadArticles();
-                        this.showArticle(this.getArticle(nextData.id));
+                        this.showArticle(this.getArticle(record.resId));
                     } else {
                         this.repositionArticle(article, {
                             parentId: nextDataParentId,
-                            category: nextData.category,
+                            category: record.data.category,
                         });
                     }
                 }
                 // Update values used to display the current article in the sidebar
                 Object.assign(article, {
-                    name: nextData.name,
-                    icon: nextData.icon,
-                    is_locked: nextData.is_locked,
-                    user_can_write: nextData.user_can_write,
-                    is_article_item: nextData.is_article_item,
-                    is_user_favorite: nextData.is_user_favorite,
+                    name: record.data.name,
+                    icon: record.data.icon,
+                    is_locked: record.data.is_locked,
+                    user_can_write: record.data.user_can_write,
+                    is_article_item: record.data.is_article_item,
+                    is_user_favorite: record.data.is_user_favorite,
                 });
             } else if (!this.state.loading) {  // New article, add it in the state and sidebar
-                if (nextData.is_user_favorite) {
+                if (record.data.is_user_favorite) {
                     // Favoriting an article that is not shown in the main
                     // tree (hidden child, item, or child of restricted)
-                    this.state.favoriteIds.push(nextData.id);
+                    this.state.favoriteIds.push(record.resId);
                 }
                 const newArticle = {
-                    id: nextData.id,
-                    name: nextData.name,
-                    icon: nextData.icon,
-                    category: nextData.category,
+                    id: record.resId,
+                    name: record.data.name,
+                    icon: record.data.icon,
+                    category: record.data.category,
                     parent_id: nextDataParentId,
-                    is_locked: nextData.is_locked,
-                    user_can_write: nextData.user_can_write,
-                    is_article_item: nextData.is_article_item,
-                    is_user_favorite: nextData.is_user_favorite,
+                    is_locked: record.data.is_locked,
+                    user_can_write: record.data.user_can_write,
+                    is_article_item: record.data.is_article_item,
+                    is_user_favorite: record.data.is_user_favorite,
                     child_ids: [],
                 };
                 this.state.articles[newArticle.id] = newArticle;
                 // Don't add new items in the sidebar
-                if (!nextData.is_article_item) {
+                if (!record.data.is_article_item) {
                     await this.insertArticle(newArticle, {
                         category: newArticle.category,
                         parentId: newArticle.parent_id,
@@ -277,6 +277,11 @@ export class KnowledgeSidebar extends Component {
                     }
                 }
             }
+
+            this.currentData = {
+                parent_id: record.data.parent_id,
+                category: record.data.category,
+            };
         });
         this.env.bus.addEventListener("knowledge.sidebar.insertNewArticle", async ({ detail }) => {
             if (this.getArticle(detail.articleId)) {

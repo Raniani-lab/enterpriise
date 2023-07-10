@@ -16,7 +16,7 @@ export class ListViewSwitcher extends Component {
     switchView() {
         // Add a new search facet to restrict the results to the selected statement line.
         const searchItem = Object.values(this.env.searchModel.searchItems).find((i) => i.fieldName === "statement_line_id");
-        const stLineId = this.props.record.data.id;
+        const stLineId = this.props.record.resId;
         const autocompleteValue = {
             label: this.props.record.data.move_id[1],
             operator: "=",

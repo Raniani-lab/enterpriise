@@ -7,7 +7,7 @@ export class TimesheetValidationKanbanController extends KanbanController {
         const result = await this.model.orm.call(this.props.resModel, "action_validate_timesheet", [
             [this.props.resIds],
         ]);
-        await this.model.notificationService.add(result.params.title, { type: result.params.type });
+        await this.model.notification.add(result.params.title, { type: result.params.type });
         this.render(true);
     }
 }

@@ -2,7 +2,7 @@
 
 import { useBus, useService } from "@web/core/utils/hooks";
 import { SEARCH_KEYS } from "@web/search/with_search/with_search";
-import { Model } from "@web/views/model";
+import { Model } from "@web/model/model";
 
 import { onWillStart, onWillUpdateProps, useComponent } from "@odoo/owl";
 
@@ -17,12 +17,12 @@ import { onWillStart, onWillUpdateProps, useComponent } from "@odoo/owl";
 export function getSearchParams(model, props, component) {
     const params = {};
     for (const key of SEARCH_KEYS) {
-        if (model.rootParams.resModel == props.resModel) {
+        if (model.config.resModel == props.resModel) {
             params[key] = props[key];
         } else {
             if (key == "domain") {
                 const production_ids = component.mrp_production.root.records.map((r) => r.resId);
-                if (model.rootParams.resModel === "mrp.workorder") {
+                if (model.config.resModel === "mrp.workorder") {
                     params[key] = [
                         ["production_id", "in", production_ids],
                     ];
@@ -35,7 +35,7 @@ export function getSearchParams(model, props, component) {
                             params[key].push(["state", "in", ["ready", "progress", "done"]]);
                         }
                     }
-                } else if (model.rootParams.resModel === "stock.move") {
+                } else if (model.config.resModel === "stock.move") {
                     params[key] = [
                         "&",
                         ["scrapped", "=", false],
@@ -43,7 +43,7 @@ export function getSearchParams(model, props, component) {
                         ["production_id", "in", production_ids],
                         ["raw_material_production_id", "in", production_ids],
                     ];
-                } else if (model.rootParams.resModel === "quality.check") {
+                } else if (model.config.resModel === "quality.check") {
                     params[key] = [
                         ["production_id", "in", production_ids],
                     ];

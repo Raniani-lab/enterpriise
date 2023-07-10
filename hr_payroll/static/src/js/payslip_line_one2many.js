@@ -90,7 +90,7 @@ export class PayslipLineField extends Field {
                     await record.save( { stayInEdition: true, noReload: true });
                     const wizardId = record.model.__bm_load_params__.res_id;
                     if (wizardId) {
-                        const line_id = record.data.id;
+                        const line_id = record.resId;
                         const action = await this.orm.call(
                             "hr.payroll.edit.payslip.lines.wizard",
                             "recompute_following_lines",

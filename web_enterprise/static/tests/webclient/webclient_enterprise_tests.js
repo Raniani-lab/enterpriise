@@ -85,7 +85,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             assert.verifySteps([
                 "/web/action/load",
                 "/web/dataset/call_kw/partner/get_views",
-                "/web/dataset/call_kw/partner/web_search_read",
+                "/web/dataset/call_kw/partner/unity_web_search_read",
             ]);
             assert.notOk(document.body.classList.contains("o_home_menu_background"));
             assert.containsNone(fixture, ".o_home_menu");
@@ -105,14 +105,14 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             assert.verifySteps([
                 "/web/action/load",
                 "/web/dataset/call_kw/partner/get_views",
-                "/web/dataset/call_kw/partner/web_search_read",
+                "/web/dataset/call_kw/partner/unity_web_search_read",
             ]);
             assert.containsNone(fixture, ".o_kanban_view");
             await nextTick();
             assert.containsOnce(fixture, ".o_kanban_view");
             await click(fixture.querySelector(".o_kanban_record"));
             await nextTick(); // there is another tick to update navbar and destroy HomeMenu
-            assert.verifySteps(["/web/dataset/call_kw/partner/read"]);
+            assert.verifySteps(["/web/dataset/call_kw/partner/web_read"]);
             assert.isVisible(fixture.querySelector(".o_menu_toggle"));
             assert.containsOnce(fixture, ".o_form_view");
             assert.strictEqual(
@@ -128,18 +128,18 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             assert.verifySteps([
                 "/web/action/load",
                 "/web/dataset/call_kw/partner/get_views",
-                "/web/dataset/call_kw/partner/web_search_read",
+                "/web/dataset/call_kw/partner/unity_web_search_read",
             ]);
             assert.containsNone(fixture, ".o_kanban_view");
             await nextTick();
             assert.containsOnce(fixture, ".o_kanban_view");
             await click(fixture.querySelector(".o_kanban_record"));
-            assert.verifySteps(["/web/dataset/call_kw/partner/read"]);
+            assert.verifySteps(["/web/dataset/call_kw/partner/web_read"]);
             await click(fixture, '.o_field_widget[name="m2o"] .o_external_button', true);
             assert.verifySteps([
                 "/web/dataset/call_kw/partner/get_formview_action",
                 "/web/dataset/call_kw/partner/get_views",
-                "/web/dataset/call_kw/partner/read",
+                "/web/dataset/call_kw/partner/web_read",
             ]);
             assert.containsOnce(fixture, ".o_form_view");
             assert.strictEqual(
@@ -159,18 +159,18 @@ QUnit.module("WebClient Enterprise", (hooks) => {
                 assert.verifySteps([
                     "/web/action/load",
                     "/web/dataset/call_kw/partner/get_views",
-                    "/web/dataset/call_kw/partner/web_search_read",
+                    "/web/dataset/call_kw/partner/unity_web_search_read",
                 ]);
                 assert.containsNone(fixture, ".o_kanban_view");
                 await nextTick();
                 assert.containsOnce(fixture, ".o_kanban_view");
                 await click(fixture.querySelector(".o_kanban_record"));
-                assert.verifySteps(["/web/dataset/call_kw/partner/read"]);
+                assert.verifySteps(["/web/dataset/call_kw/partner/web_read"]);
                 await click(fixture, '.o_field_widget[name="m2o"] .o_external_button', true);
                 assert.verifySteps([
                     "/web/dataset/call_kw/partner/get_formview_action",
                     "/web/dataset/call_kw/partner/get_views",
-                    "/web/dataset/call_kw/partner/read",
+                    "/web/dataset/call_kw/partner/web_read",
                 ]);
                 const menuToggle = fixture.querySelector(".o_menu_toggle");
                 await click(menuToggle);
@@ -188,18 +188,18 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             assert.verifySteps([
                 "/web/action/load",
                 "/web/dataset/call_kw/partner/get_views",
-                "/web/dataset/call_kw/partner/web_search_read",
+                "/web/dataset/call_kw/partner/unity_web_search_read",
             ]);
             assert.containsNone(fixture, ".o_kanban_view");
             await nextTick();
             assert.containsOnce(fixture, ".o_kanban_view");
             await click(fixture.querySelector(".o_kanban_record"));
-            assert.verifySteps(["/web/dataset/call_kw/partner/read"]);
+            assert.verifySteps(["/web/dataset/call_kw/partner/web_read"]);
             await click(fixture, '.o_field_widget[name="m2o"] .o_external_button', true);
             assert.verifySteps([
                 "/web/dataset/call_kw/partner/get_formview_action",
                 "/web/dataset/call_kw/partner/get_views",
-                "/web/dataset/call_kw/partner/read",
+                "/web/dataset/call_kw/partner/web_read",
             ]);
             const menuToggle = fixture.querySelector(".o_menu_toggle");
             await click(menuToggle);
@@ -211,7 +211,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
             await click(menuToggle);
 
             assert.verifySteps(
-                ["/web/dataset/call_kw/partner/read"],
+                ["/web/dataset/call_kw/partner/web_read"],
                 "the underlying view should reload when toggling the HomeMenu to off"
             );
             assert.containsNone(fixture, ".o_home_menu");
@@ -306,7 +306,7 @@ QUnit.module("WebClient Enterprise", (hooks) => {
         const mockRPC = (route, args) => {
             if (args.method === "create") {
                 assert.strictEqual(args.model, "partner");
-                assert.deepEqual(args.args, [
+                assert.deepEqual(args.args[0], [
                     {
                         display_name: "red right hand",
                         foo: false,

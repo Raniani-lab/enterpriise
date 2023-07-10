@@ -76,7 +76,7 @@ patch(SaleOrderLineProductField.prototype, 'sale_renting', {
 
             if (recordData.tax_id) {
                 // NOTE: this is not a true default, but a data used by business python code
-                data.sale_order_line_tax_ids = recordData.tax_id.records.map(record => record.data.id);
+                data.sale_order_line_tax_ids = recordData.tax_id.records.map(record => record.resId);
             }
 
             if (recordData.id) {
@@ -88,7 +88,7 @@ patch(SaleOrderLineProductField.prototype, 'sale_renting', {
             if (recordData.reserved_lot_ids) {
                 data.default_lot_ids = recordData.reserved_lot_ids.records.map(
                     record => {
-                        return [4, record.data.id];
+                        return [4, record.resId];
                     }
                 );
             }
@@ -127,7 +127,16 @@ patch(SaleOrderLineProductField.prototype, 'sale_renting', {
                 onClose: async (closeInfo) => {
                     const record = this.props.record;
                     if (closeInfo && !closeInfo.special) {
-                        record.update(closeInfo.rentalConfiguration);
+                        const changes = {};
+                        for (const fieldName in closeInfo.rentalConfiguration) {
+                            if (["one2many", "many2many"].includes(record.fields[fieldName].type)) {
+                                const ids = closeInfo.rentalConfiguration[fieldName];
+                                record.data[fieldName].replaceWith(ids, { silent: true });
+                            } else {
+                                changes[fieldName] = closeInfo.rentalConfiguration[fieldName];
+                            }
+                        }
+                        record.update(changes);
                     } else {
                         if (!record.data.start_date || !record.data.return_date) {
                             record.update({

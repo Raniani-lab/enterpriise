@@ -6,4 +6,5 @@ from . import test_smart_schedule
 from . import test_task_dependencies
 from . import test_task_flow
 from . import test_task_group_expand
+from . import test_task_gantt_view
 from . import test_ui

@@ -25,7 +25,7 @@ export class AccountReportLineName extends Component {
     }
 
     get hasCaretOptions() {
-        return this.caretOptions.length > 0;
+        return this.caretOptions?.length > 0;
     }
 
     async caretAction(caretOption) {

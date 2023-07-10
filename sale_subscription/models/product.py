@@ -34,9 +34,9 @@ class product_template(models.Model):
         confirmed_lines = self.env['sale.order.line'].search([
             ('product_template_id', 'in', self.ids),
             ('state', '=', 'sale')])
-        if not self.recurring_invoice and confirmed_lines:
-            self.recurring_invoice = True
+        if confirmed_lines:
             return {'warning': {
                 'title': _("Warning"),
-                'message': _("You can not change the recurring property of this product because it has been sold already as a subscription.")
+                'message': _(
+                    "You can not change the recurring property of this product because it has been sold already.")
             }}

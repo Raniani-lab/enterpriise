@@ -46,10 +46,11 @@ class AccountMove(models.Model):
                 renewal_quotes = self.env['sale.order'].search([
                     ('subscription_id', 'in', all_subscription_ids),
                     ('subscription_state', '=', '2_renewal'),
+                    ('state', 'in', ['draft', 'sent'])
                 ])
                 for quote in renewal_quotes:
                     next_invoice_date = quote.subscription_id.next_invoice_date
-                    if quote.start_date < next_invoice_date:
+                    if quote.start_date and quote.start_date < next_invoice_date:
                         quote.update({
                             'next_invoice_date': next_invoice_date,
                             'start_date': next_invoice_date,

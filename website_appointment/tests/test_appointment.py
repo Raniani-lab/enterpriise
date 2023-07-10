@@ -137,13 +137,16 @@ class WAppointmentTest(AppointmentCommon, MockVisitor):
     def test_find_customer_country_from_visitor(self):
         belgium = self.env.ref('base.be')
         usa = self.env.ref('base.us')
+        current_website = self.env['website'].get_current_website()
         appointments_belgium, appointment_usa = self.env['appointment.type'].create([
             {
                 'name': 'Appointment for Belgium',
                 'country_ids': [(6, 0, [belgium.id])],
+                'website_id': current_website.id
             }, {
                 'name': 'Appointment for the US',
                 'country_ids': [(6, 0, [usa.id])],
+                'website_id': current_website.id
             },
         ])
 
@@ -151,6 +154,7 @@ class WAppointmentTest(AppointmentCommon, MockVisitor):
             "name": 'Visitor from the US',
             'access_token': self.apt_manager.partner_id.id,
             "country_id": usa.id,
+            'website_id': current_website.id
         })
 
         wa_controller = WebsiteAppointment()
@@ -160,14 +164,17 @@ class WAppointmentTest(AppointmentCommon, MockVisitor):
         class MockGeoIPWithCountryCode:
             country_code = None
 
-        with MockRequest(self.env) as mock_request:
+        with MockRequest(self.env, website=current_website) as mock_request:
             with self.mock_visitor_from_request(force_visitor=visitor_from_the_us), \
                     patch.object(mock_request, 'geoip', new=MockGeoIPWithCountryCode()):
                 # Make sure no country was identified before
                 self.assertFalse(mock_request.env.user.country_id)
                 self.assertFalse(mock_request.geoip.country_code)
-
-                available_appointments = wa_controller._fetch_available_appointments(None, None, None, "")
+                domain = [
+                    ('category', 'in', ['punctual', 'recurring']),
+                    '|', ('end_datetime', '=', False), ('end_datetime', '>=', datetime.utcnow())
+                ]
+                available_appointments = wa_controller._fetch_and_check_private_appointment_types(None, None, None, "", domain=wa_controller._appointments_base_domain(None, False, None, domain))
 
                 self.assertNotIn(appointments_belgium, available_appointments,
                                  "US visitor should not have access to an Appointment Type restricted to Belgium.")

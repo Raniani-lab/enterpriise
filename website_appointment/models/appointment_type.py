@@ -10,7 +10,7 @@ class AppointmentType(models.Model):
     _inherit = [
         'appointment.type',
         'website.seo.metadata',
-        'website.published.mixin',
+        'website.published.multi.mixin',
         'website.cover_properties.mixin',
         'website.searchable.mixin',
     ]
@@ -77,11 +77,19 @@ class AppointmentType(models.Model):
     @api.model
     def _search_get_detail(self, website, order, options):
         invite_token = options.get('invite_token')
-        allowed_appointment_type_ids = WebsiteAppointment._fetch_available_appointments(
+        allowed_appointment_type_ids = WebsiteAppointment._fetch_and_check_private_appointment_types(
             options.get('filter_appointment_type_ids'),
             options.get('filter_staff_user_ids'),
             options.get('filter_resource_ids'),
-            invite_token).ids
+            invite_token,
+            domain=WebsiteAppointment._appointments_base_domain(
+                filter_appointment_type_ids=options.get('filter_appointment_type_ids'),
+                search=options.get('search'),
+                invite_token=invite_token,
+                additional_domain=WebsiteAppointment._appointment_website_domain(self)
+            )
+        ).ids
+
         domain = [[('id', 'in', allowed_appointment_type_ids)]]
 
         search_fields = ['name']
@@ -103,3 +111,12 @@ class AppointmentType(models.Model):
             'requires_sudo': bool(invite_token),
             'search_fields': search_fields,
         }
+
+    def action_share_invite(self):
+        action = super().action_share_invite()
+        if self.env.user.user_has_groups('website.group_multi_website'):
+            website_id = self.website_id
+        else:
+            website_id = self.env['website']
+        action['context'].update({'default_website_id': website_id.id})
+        return action

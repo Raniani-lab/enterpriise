@@ -84,42 +84,30 @@ class AppointmentController(http.Controller):
         This param is propagated through templates to allow people to go back with the initial appointment
         types filter selection
         """
+        kwargs['domain'] = self._appointment_website_domain()
         return request.render('appointment.appointments_list_layout', self._prepare_appointments_list_data(**kwargs))
 
     # Tools / Data preparation
     # ------------------------------------------------------------
 
-    @classmethod
-    def _fetch_available_appointments(cls, appointment_types, staff_users, resources, invite_token, search=None):
-        """Fetch the available appointment types
-
-        :param recordset appointment_types: Record set of appointment types for
-            the filter linked to the appointment types
-        :param recordset staff_users: Record set of users for the filter linked
-            to the staff users
-        :param recordset resources: Record set of appointment resources for the filter
-            linked to the resources
-        :param str invite_token: token of the appointment invite
-        :param str search: search bar value used to compute the search domain
-        """
-        return cls._fetch_and_check_private_appointment_types(
-            appointment_types, staff_users, resources, invite_token,
-            domain=cls._appointments_base_domain(
-                appointment_types, search, invite_token
-            )
-        )
-
     def _prepare_appointments_list_data(self, appointment_types=None, **kwargs):
         """Compute specific data used to render the list layout
 
         :param recordset appointment_types: Record set of appointments to show.
-            If not provided, fetch them using _fetch_available_appointments
+            If not provided, fetch them using _fetch_and_check_private_appointment_types
         """
-        appointment_types = appointment_types or self._fetch_available_appointments(
+
+        appointment_types = appointment_types or self._fetch_and_check_private_appointment_types(
             kwargs.get('filter_appointment_type_ids'),
             kwargs.get('filter_staff_user_ids'),
             kwargs.get('filter_resource_ids'),
             kwargs.get('invite_token'),
+            domain=self._appointments_base_domain(
+                filter_appointment_type_ids=kwargs.get('filter_appointment_type_ids'),
+                search=kwargs.get('search'),
+                invite_token=kwargs.get('invite_token'),
+                additional_domain=kwargs.get('domain')
+            )
         )
         return {
             'appointment_types': appointment_types,
@@ -130,12 +118,22 @@ class AppointmentController(http.Controller):
         }
 
     @classmethod
-    def _appointments_base_domain(cls, filter_appointment_type_ids, search=False, invite_token=False):
-        domain = [
-            ('category', 'in', ['punctual', 'recurring']),
-            '|', ('end_datetime', '=', False), ('end_datetime', '>=', datetime.utcnow()), # Remove past end datetimes
-        ]
+    def _appointments_base_domain(cls, filter_appointment_type_ids, search=False, invite_token=False, additional_domain=None):
+        """
+        Generate a domain for appointment filtering.
+        This method constructs a domain to filter appointment records based on various criteria.
+        Args:
+            filter_appointment_type_ids (str): A comma-separated string of appointment type IDs to filter by.
+                Example: "1,2,3"
+            search (str, optional): A search string to filter appointments by name (case-insensitive).
+            invite_token (bool, optional): A boolean flag indicating whether to include invite token filtering.
+                If False, it considers the user's country and published status of appointments.
+            additional_domain (list, optional): Additional domain expressions to include in the filter.
+        Returns:
+            list: A list of domain expressions suitable for use in Odoo record filtering.
+        """
 
+        domain = list(additional_domain) if additional_domain else []
         if filter_appointment_type_ids:
             filter_appointment_type_ids = unquote_plus(filter_appointment_type_ids)
             domain = expression.AND([domain, [('id', 'in', json.loads(filter_appointment_type_ids))]])
@@ -155,6 +153,12 @@ class AppointmentController(http.Controller):
             domain = expression.AND([domain, [('is_published', '=', True)]])
 
         return domain
+
+    def _appointment_website_domain(self):
+        return [
+            ('category', 'in', ['punctual', 'recurring']),
+            '|', ('end_datetime', '=', False), ('end_datetime', '>=', datetime.utcnow())
+        ]
 
     # ------------------------------------------------------------
     # APPOINTMENT TYPE PAGE VIEW
@@ -183,13 +187,22 @@ class AppointmentController(http.Controller):
         :param staff_user_id: id of the selected user, from upstream or coming back from an error.
         :param resource_selected_id: id of the selected resource, from upstream or coming back from an error.
         """
-        appointment_type = self._fetch_and_check_private_appointment_types(
+        kwargs['domain'] = self._appointments_base_domain(
+            filter_appointment_type_ids=kwargs.get('filter_appointment_type_ids'),
+            search=kwargs.get('search'),
+            invite_token=kwargs.get('invite_token'),
+            additional_domain=kwargs.get('domain')
+        )
+        available_appointments = self._fetch_and_check_private_appointment_types(
             kwargs.get('filter_appointment_type_ids'),
             kwargs.get('filter_staff_user_ids'),
             kwargs.get('filter_resource_ids'),
             kwargs.get('invite_token'),
-            current_appointment_type_id=int(appointment_type_id),
+            domain=kwargs['domain']
         )
+        appointment_type = available_appointments.filtered(lambda appt: appt.id == int(appointment_type_id))
+
+        kwargs['available_appointments'] = available_appointments
         if not appointment_type:
             raise NotFound()
 
@@ -285,12 +298,7 @@ class AppointmentController(http.Controller):
 
         return {
             'asked_capacity': int(kwargs.get('asked_capacity', 1)),
-            'available_appointments': self._fetch_available_appointments(
-                kwargs.get('filter_appointment_type_ids'),
-                kwargs.get('filter_staff_user_ids'),
-                kwargs.get('filter_resource_ids'),
-                kwargs.get('invite_token')
-            ),
+            'available_appointments': kwargs['available_appointments'],
             'filter_appointment_type_ids': kwargs.get('filter_appointment_type_ids'),
             'filter_staff_user_ids': kwargs.get('filter_staff_user_ids'),
             'filter_resource_ids': kwargs.get('filter_resource_ids'),
@@ -356,7 +364,7 @@ class AppointmentController(http.Controller):
     # ------------------------------------------------------------
 
     @staticmethod
-    def _fetch_and_check_private_appointment_types(appointment_type_ids, staff_user_ids, resource_ids, invite_token, current_appointment_type_id=False, domain=False):
+    def _fetch_and_check_private_appointment_types(appointment_type_ids, staff_user_ids, resource_ids, invite_token, domain=False):
         """
         When an invite_token is in the params, we need to check if the params used and the ones in the invitation are
         the same.
@@ -368,19 +376,12 @@ class AppointmentController(http.Controller):
         :param str staff_user_ids: list of user ids for the filter linked to the staff users in a string format
         :param str resource_ids: list of resource ids for the filter linked to the resources in a string format
         :param str invite_token: token of the appointment invite
-        :param int current_appointment_type_id: appointment type id currently used/displayed, used as fallback if there is no appointment type filter
         :param domain: a search domain used when displaying the available appointment types
         """
         appointment_type_ids = json.loads(unquote_plus(appointment_type_ids or "[]"))
-        if not appointment_type_ids and current_appointment_type_id:
-            appointment_type_ids = [current_appointment_type_id]
-        if not appointment_type_ids and domain:
+        if not appointment_type_ids and domain is not False:
             appointment_type_ids = request.env['appointment.type'].sudo().search(domain).ids
         elif not appointment_type_ids:
-            raise ValueError()
-
-        # Check that the current appointment type is include in the filter
-        if current_appointment_type_id and current_appointment_type_id not in appointment_type_ids:
             raise ValueError()
 
         appointment_types = request.env['appointment.type'].browse(appointment_type_ids).exists()
@@ -403,9 +404,6 @@ class AppointmentController(http.Controller):
         except exceptions.AccessError:
             raise Forbidden()
 
-        current_appointment_type = request.env['appointment.type'].sudo().browse(current_appointment_type_id) if current_appointment_type_id else False
-        if current_appointment_type:
-            return current_appointment_type
         if domain:
             appointment_types = appointment_types.filtered_domain(domain)
         return appointment_types
@@ -429,13 +427,20 @@ class AppointmentController(http.Controller):
         :param asked_capacity: the asked capacity for the appointment
         :param filter_appointment_type_ids: see ``Appointment.appointments()`` route
         """
-        appointment_type = self._fetch_and_check_private_appointment_types(
+        domain = self._appointments_base_domain(
+            filter_appointment_type_ids=kwargs.get('filter_appointment_type_ids'),
+            search=kwargs.get('search'),
+            invite_token=kwargs.get('invite_token')
+        )
+        available_appointments = self._fetch_and_check_private_appointment_types(
             kwargs.get('filter_appointment_type_ids'),
             kwargs.get('filter_staff_user_ids'),
             kwargs.get('filter_resource_ids'),
             kwargs.get('invite_token'),
-            current_appointment_type_id=int(appointment_type_id),
+            domain=domain,
         )
+        appointment_type = available_appointments.filtered(lambda appt: appt.id == int(appointment_type_id))
+
         if not appointment_type:
             raise NotFound()
 
@@ -462,12 +467,7 @@ class AppointmentController(http.Controller):
         return request.render("appointment.appointment_form", {
             'partner_data': partner_data,
             'appointment_type': appointment_type,
-            'available_appointments': self._fetch_available_appointments(
-                kwargs.get('filter_appointment_type_ids'),
-                kwargs.get('filter_staff_user_ids'),
-                kwargs.get('filter_resource_ids'),
-                kwargs.get('invite_token'),
-            ),
+            'available_appointments': available_appointments,
             'main_object': appointment_type,
             'datetime': date_time,
             'date_locale': f'{day_name} {date_formated}',
@@ -559,13 +559,21 @@ class AppointmentController(http.Controller):
         :param available_resource_ids: the resources ids available for the appointment
         :param asked_capacity: asked capacity for the appointment
         """
-        appointment_type = self._fetch_and_check_private_appointment_types(
+        domain = self._appointments_base_domain(
+            filter_appointment_type_ids=kwargs.get('filter_appointment_type_ids'),
+            search=kwargs.get('search'),
+            invite_token=kwargs.get('invite_token')
+        )
+
+        available_appointments = self._fetch_and_check_private_appointment_types(
             kwargs.get('filter_appointment_type_ids'),
             kwargs.get('filter_staff_user_ids'),
             kwargs.get('filter_resource_ids'),
             kwargs.get('invite_token'),
-            current_appointment_type_id=int(appointment_type_id),
+            domain=domain,
         )
+        appointment_type = available_appointments.filtered(lambda appt: appt.id == int(appointment_type_id))
+
         if not appointment_type:
             raise NotFound()
         timezone = request.session.get('timezone') or appointment_type.appointment_tz
@@ -770,13 +778,21 @@ class AppointmentController(http.Controller):
     @http.route(['/appointment/<int:appointment_type_id>/get_message_intro'],
                 type="json", auth="public", methods=['POST'], website=True)
     def get_appointment_message_intro(self, appointment_type_id, **kwargs):
-        appointment_type = self._fetch_and_check_private_appointment_types(
+        domain = self._appointments_base_domain(
+            filter_appointment_type_ids=kwargs.get('filter_appointment_type_ids'),
+            search=kwargs.get('search'),
+            invite_token=kwargs.get('invite_token')
+        )
+
+        available_appointments = self._fetch_and_check_private_appointment_types(
             kwargs.get('filter_appointment_type_ids'),
             kwargs.get('filter_staff_user_ids'),
             kwargs.get('filter_resource_ids'),
             kwargs.get('invite_token'),
-            current_appointment_type_id=int(appointment_type_id),
+            domain=domain,
         )
+        appointment_type = available_appointments.filtered(lambda appt: appt.id == int(appointment_type_id))
+
         if not appointment_type:
             raise NotFound()
 
@@ -788,13 +804,21 @@ class AppointmentController(http.Controller):
         """
             Route called when the selected user or resource or asked_capacity or the timezone is modified to adapt the possible slots accordingly
         """
-        appointment_type = self._fetch_and_check_private_appointment_types(
+        domain = self._appointments_base_domain(
+            filter_appointment_type_ids=kwargs.get('filter_appointment_type_ids'),
+            search=kwargs.get('search'),
+            invite_token=kwargs.get('invite_token')
+        )
+
+        available_appointments = self._fetch_and_check_private_appointment_types(
             kwargs.get('filter_appointment_type_ids'),
             kwargs.get('filter_staff_user_ids'),
             kwargs.get('filter_resource_ids'),
             kwargs.get('invite_token'),
-            current_appointment_type_id=int(appointment_type_id),
+            domain=domain,
         )
+        appointment_type = available_appointments.filtered(lambda appt: appt.id == int(appointment_type_id))
+
         if not appointment_type:
             raise ValueError()
 
@@ -819,12 +843,7 @@ class AppointmentController(http.Controller):
 
         return request.env['ir.qweb']._render('appointment.appointment_calendar', {
             'appointment_type': appointment_type,
-            'available_appointments': self._fetch_available_appointments(
-                kwargs.get('filter_appointment_type_ids'),
-                kwargs.get('filter_staff_user_ids'),
-                kwargs.get('filter_resource_ids'),
-                kwargs.get('invite_token')
-            ),
+            'available_appointments': available_appointments,
             'asked_capacity': asked_capacity,
             'timezone': request.session['timezone'],
             'formated_days': formated_days,

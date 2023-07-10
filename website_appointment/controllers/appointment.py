@@ -6,6 +6,7 @@ from odoo.http import request
 
 from odoo.addons.base.models.ir_qweb import keep_query
 from odoo.addons.appointment.controllers.appointment import AppointmentController
+from odoo.osv import expression
 
 
 class WebsiteAppointment(AppointmentController):
@@ -25,12 +26,18 @@ class WebsiteAppointment(AppointmentController):
         This param is propagated through templates to allow people to go back with the initial appointment
         types filter selection
         """
-        available_appointment_types = self._fetch_available_appointments(
+        kwargs['domain'] = self._appointments_base_domain(
+            filter_appointment_type_ids=kwargs.get('filter_appointment_type_ids'),
+            search=kwargs.get('search'),
+            invite_token=kwargs.get('invite_token'),
+            additional_domain=self._appointment_website_domain(),
+        )
+        available_appointment_types = self._fetch_and_check_private_appointment_types(
             kwargs.get('filter_appointment_type_ids'),
             kwargs.get('filter_staff_user_ids'),
             kwargs.get('filter_resource_ids'),
             kwargs.get('invite_token'),
-            kwargs.get('search')
+            domain=kwargs['domain'],
         )
         if len(available_appointment_types) == 1 and not kwargs.get('search'):
             # If there is only one appointment type available in the selection, skip the appointment type selection view
@@ -121,24 +128,17 @@ class WebsiteAppointment(AppointmentController):
     # Tools / Data preparation
     # ------------------------------------------------------------
 
-    def _prepare_appointments_cards_data(self, page, appointment_types=None, **kwargs):
+    def _prepare_appointments_cards_data(self, page, appointment_types, **kwargs):
         """
             Compute specific data for the cards layout like the search bar and the pager.
         """
-        if appointment_types is None:
-            appointment_types = self._fetch_available_appointments(
-                kwargs.get('filter_appointment_type_ids'),
-                kwargs.get('filter_staff_user_ids'),
-                kwargs.get('filter_resource_ids'),
-                kwargs.get('invite_token'),
-                kwargs.get('search')
-            )
 
         appointment_type_ids = kwargs.get('filter_appointment_type_ids')
-        domain = self._appointments_base_domain(
+        domain = kwargs.get('domain') or self._appointments_base_domain(
             appointment_type_ids,
-            kwargs.get('search'),
-            kwargs.get('invite_token'),
+            search=kwargs.get('search'),
+            invite_token=kwargs.get('invite_token'),
+            additional_domain=self._appointment_website_domain(),
         )
 
         website = request.website
@@ -186,3 +186,9 @@ class WebsiteAppointment(AppointmentController):
             visitor = request.env['website.visitor']._get_visitor_from_request()
             country = visitor.country_id
         return country
+
+    @classmethod
+    def _appointments_base_domain(cls, filter_appointment_type_ids, search=False, invite_token=False, additional_domain=None):
+        domain = super()._appointments_base_domain(filter_appointment_type_ids, search, invite_token, additional_domain)
+        domain = expression.AND([domain, ['|', ('website_id', '=', request.website.id), ('website_id', '=', False)]])
+        return domain

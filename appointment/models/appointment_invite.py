@@ -22,6 +22,8 @@ class AppointmentShare(models.Model):
     short_code = fields.Char('Short Code', default=lambda s: s._get_unique_short_code(), required=True)
     short_code_format_warning = fields.Boolean('Short Code Format Warning', compute="_compute_short_code_warning")
     short_code_unique_warning = fields.Boolean('Short Code Unique Warning', compute="_compute_short_code_warning")
+    disable_save_button = fields.Boolean('Computes if alert is present', compute='_compute_disable_save_button')
+
     base_book_url = fields.Char('Base Link URL', compute="_compute_base_book_url")
     book_url = fields.Char('Link URL', compute='_compute_book_url')
     redirect_url = fields.Char('Redirect URL', compute='_compute_redirect_url')
@@ -57,6 +59,22 @@ class AppointmentShare(models.Model):
     _sql_constraints = [
         ('short_code_uniq', 'UNIQUE (short_code)', 'The URL is already taken, please pick another code.')
     ]
+
+    @api.depends('short_code_format_warning',
+            'short_code_unique_warning',
+            'appointment_type_count',
+            'suggested_resource_count',
+            'suggested_staff_user_ids',
+            'resources_choice')
+    def _compute_disable_save_button(self):
+        for invite in self:
+            conditions = [
+                invite.short_code_format_warning,
+                invite.short_code_unique_warning,
+                invite.appointment_type_count == 1 and invite.resources_choice == 'current_user' and self.env.user.id not in invite.suggested_staff_user_ids.ids,
+                not invite.suggested_staff_user_ids and invite.appointment_type_count == 1 and invite.suggested_resource_count < 1,
+            ]
+            invite.disable_save_button = any(conditions)
 
     @api.constrains('short_code')
     def _check_short_code_format(self):

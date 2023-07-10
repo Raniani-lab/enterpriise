@@ -18,6 +18,7 @@ Allow clients to Schedule Appointments through your Website
         'data/calendar_data.xml',
         'data/website_data.xml',
         'views/appointment_type_views.xml',
+        'views/appointment_invite_views.xml',
         'views/calendar_menus.xml',
         'views/appointment_templates_appointments.xml',
         'views/appointment_templates_registration.xml',

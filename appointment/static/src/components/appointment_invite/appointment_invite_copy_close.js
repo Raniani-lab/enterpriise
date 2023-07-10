@@ -43,10 +43,8 @@ AppointmentInviteCopyClose.template = 'appointment.AppointmentInviteCopyClose';
 
 export const appointmentInviteCopyClose = {
     component: AppointmentInviteCopyClose,
-    extractProps(widgetInfo, dynamicInfo) {
-        return {
-            readonly: dynamicInfo.readonly,
-        };
-    },
+    fieldDependencies: [
+        { name: "disable_save_button", type: "boolean" },
+    ],
 };
 registry.category("view_widgets").add("appointment_invite_copy_close", appointmentInviteCopyClose);

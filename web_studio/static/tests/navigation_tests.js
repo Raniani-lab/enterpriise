@@ -130,6 +130,14 @@ QUnit.module("Studio", (hooks) => {
         assert.containsNone(target, ".o_main_navbar .o_web_studio_navbar_item button");
     });
 
+    QUnit.test("Studio icon matches the clickbot selector", async function (assert) {
+        // This test looks stupid, but if you ever need to adapt the selector,
+        // you must adapt it as well in the clickbot (in web), otherwise Studio
+        // might not be tested anymore by the click_everywhere test.
+        await createEnterpriseWebClient({ serverData });
+        assert.containsOnce(target, ".o_web_studio_navbar_item:not(.o_disabled) i");
+    });
+
     QUnit.test("open Studio with act_window", async function (assert) {
         assert.expect(21);
 

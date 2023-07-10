@@ -185,7 +185,8 @@
                                 <field name="user_id" invisible="1" groups="hr_timesheet.group_hr_timesheet_approver"/>
                             </group>
                             <group>
-                                <field name="employee_id" required="1" groups="hr_timesheet.group_hr_timesheet_approver" attrs="{'readonly': [('id', '!=', False), ('validated', '=', True)]}" widget="many2one_avatar_employee" context="{'active_test': True}"/>
+                                <field name="employee_id" required="1" groups="hr.group_hr_user" options="{'relation': 'hr.employee'}" attrs="{'readonly': [('id', '!=', False), ('validated', '=', True)]}" widget="many2one_avatar_employee" context="{'active_test': True}"/>
+                                <field name="employee_id" required="1" groups="!hr.group_hr_user" options="{'relation': 'hr.employee.public'}" attrs="{'readonly': [('id', '!=', False), ('validated', '=', True)]}" widget="many2one_avatar_employee" context="{'active_test': True}"/>
                                 <field name="date" attrs="{'readonly': [('id', '!=', False), ('validated', '=', True)]}"/>
                                 <field name="unit_amount" widget="timesheet_uom" attrs="{'readonly': [('id', '!=', False), '|', ('validated', '=', True), ('timer_start', '!=', False)]}" decoration-danger="unit_amount &gt; 24"/>
                             </group>

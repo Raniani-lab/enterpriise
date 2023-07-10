@@ -692,44 +692,48 @@ class AccountMove(models.Model):
 
             if qr_bill_ocr:
                 qr_content_list = qr_bill_ocr.splitlines()
-
+                # Supplier and client sections have an offset of 16
+                index_offset = 16 if self.is_sale_document() else 0
                 if not move_form.partner_id:
+                    partner_name = qr_content_list[5 + index_offset]
                     move_form.partner_id = self.env["res.partner"].with_context(clean_context(self.env.context)).create({
-                        'name': qr_content_list[5],
+                        'name': partner_name,
                         'is_company': True,
                     })
 
                 partner = move_form.partner_id
-                supplier_address_type = qr_content_list[4]
-                if supplier_address_type == 'S':
+                address_type = qr_content_list[4 + index_offset]
+                if address_type == 'S':
                     if not partner.street:
-                        street = qr_content_list[6]
-                        house_nb = qr_content_list[7]
+                        street = qr_content_list[6 + index_offset]
+                        house_nb = qr_content_list[7 + index_offset]
                         partner.street = " ".join((street, house_nb))
 
                     if not partner.zip:
-                        partner.zip = qr_content_list[8]
+                        partner.zip = qr_content_list[8 + index_offset]
 
                     if not partner.city:
-                        partner.city = qr_content_list[9]
-                elif supplier_address_type == 'K':
-                    if not partner.street:
-                        partner.street = qr_content_list[6]
-                        partner.street2 = qr_content_list[7]
+                        partner.city = qr_content_list[9 + index_offset]
 
-                supplier_country_code = qr_content_list[10]
-                if not partner.country_id and supplier_country_code:
-                    country = self.env['res.country'].search([('code', '=', supplier_country_code)])
+                elif address_type == 'K':
+                    if not partner.street:
+                        partner.street = qr_content_list[6 + index_offset]
+                        partner.street2 = qr_content_list[7 + index_offset]
+
+                country_code = qr_content_list[10 + index_offset]
+                if not partner.country_id and country_code:
+                    country = self.env['res.country'].search([('code', '=', country_code)])
                     partner.country_id = country and country.id
 
-                iban = qr_content_list[3]
-                if iban and not self.env['res.partner.bank'].search([('acc_number', '=ilike', iban)]):
-                    self.env['res.partner.bank'].create({
-                        'acc_number': iban,
-                        'company_id': move_form.company_id.id,
-                        'currency_id': move_form.currency_id.id,
-                        'partner_id': partner.id,
-                    })
+                if self.is_purchase_document():
+                    iban = qr_content_list[3]
+                    if iban and not self.env['res.partner.bank'].search([('acc_number', '=ilike', iban)]):
+                        move_form.partner_bank_id = self.with_context(clean_context(self.env.context)).env['res.partner.bank'].create({
+                            'acc_number': iban,
+                            'company_id': move_form.company_id.id,
+                            'currency_id': move_form.currency_id.id,
+                            'partner_id': partner.id,
+                        })
 
             due_date_move_form = move_form.invoice_date_due  # remember the due_date, as it could be modified by the onchange() of invoice_date
             context_create_date = fields.Date.context_today(self, self.create_date)

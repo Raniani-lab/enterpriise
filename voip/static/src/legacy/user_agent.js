@@ -582,18 +582,14 @@ export const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin
             domain = [
                 "|",
                 "|",
-                ["sanitized_phone", "ilike", number],
-                ["sanitized_mobile", "ilike", number],
+                ["phone", "ilike", number],
+                ["mobile", "ilike", number],
                 "|",
-                ["sanitized_phone", "ilike", numberSanitized],
-                ["sanitized_mobile", "ilike", numberSanitized],
+                ["phone", "ilike", numberSanitized],
+                ["mobile", "ilike", numberSanitized],
             ];
         } else {
-            domain = [
-                "|",
-                ["sanitized_phone", "ilike", number],
-                ["sanitized_mobile", "ilike", number],
-            ];
+            domain = ["|", ["phone", "ilike", number], ["mobile", "ilike", number]];
         }
         let contacts = await this.env.services.orm.call("res.partner", "search_read", [], {
             domain: [["user_ids", "!=", false], ...domain],
@@ -612,8 +608,8 @@ export const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin
             contacts = await this.env.services.orm.call("res.partner", "search_read", [], {
                 domain: [
                     "|",
-                    ["sanitized_phone", "=like", `%${lastSixDigitsNumber}`],
-                    ["sanitized_mobile", "=like", `%${lastSixDigitsNumber}`],
+                    ["phone", "=like", `%${lastSixDigitsNumber}`],
+                    ["mobile", "=like", `%${lastSixDigitsNumber}`],
                 ],
                 fields: ["display_name", "id"],
             });

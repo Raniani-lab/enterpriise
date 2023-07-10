@@ -93,8 +93,8 @@ export const PhoneCallContactsTab = PhoneCallTab.extend({
                     "|",
                     ["display_name", "ilike", search],
                     ["email", "ilike", search],
-                    ["sanitized_phone", "ilike", number],
-                    ["sanitized_mobile", "ilike", number],
+                    ["phone", "ilike", number],
+                    ["mobile", "ilike", number],
                 ];
             } else {
                 this._searchDomain = [

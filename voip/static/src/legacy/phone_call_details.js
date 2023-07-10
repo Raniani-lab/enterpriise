@@ -9,7 +9,6 @@ import { debounce } from "@web/core/utils/timing";
 import session from "web.session";
 import Widget from "web.Widget";
 
-
 const QWeb = core.qweb;
 
 function cleanNumber(number) {
@@ -516,33 +515,33 @@ export const PhoneCallDetails = Widget.extend({
             domain = [
                 "&",
                 "|",
-                ["sanitized_phone", "!=", ""],
-                ["sanitized_mobile", "!=", ""],
+                ["phone", "!=", ""],
+                ["mobile", "!=", ""],
                 "|",
                 "|",
-                ["sanitized_phone", "ilike", number],
-                ["sanitized_mobile", "ilike", number],
+                ["phone", "ilike", number],
+                ["mobile", "ilike", number],
                 ["name", "ilike", value],
             ];
         } else {
             domain = [
                 "&",
                 "|",
-                ["sanitized_phone", "!=", ""],
-                ["sanitized_mobile", "!=", ""],
+                ["phone", "!=", ""],
+                ["mobile", "!=", ""],
                 ["name", "ilike", value],
             ];
         }
         const contacts = await this.env.services.orm.call("res.partner", "search_read", [], {
             domain: [["user_ids", "!=", false], ...domain],
-            fields: ["display_name", "id", "sanitized_mobile", "sanitized_phone"],
+            fields: ["display_name", "id", "mobile", "phone"],
             limit: 8,
         });
         let lines = "";
         for (let i = 0; i < contacts.length; i++) {
             const name = contacts[i].display_name;
-            const phone = contacts[i].sanitized_phone;
-            const mobile = contacts[i].sanitized_mobile;
+            const phone = contacts[i].phone;
+            const mobile = contacts[i].mobile;
             let default_phone = phone;
             const indexOf = name.toLowerCase().indexOf(value);
             let nameBolt = "";

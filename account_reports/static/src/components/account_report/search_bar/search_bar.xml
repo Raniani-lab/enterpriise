@@ -9,7 +9,7 @@
             />
             <div class="o_searchview_input_container d-flex flex-grow-1 flex-wrap gap-1">
                 <input type="text"
-                    class="o_searchview_input d-print-none flex-grow-1 w-auto border-0"
+                    class="o_searchview_input o_input d-print-none flex-grow-1 w-auto border-0"
                     accesskey="Q"
                     placeholder="Search..."
                     role="searchbox"

@@ -25,6 +25,11 @@
     margin-bottom: calc(var(--formView-sheet-padding-x) * -1);
     padding: var(--formView-sheet-padding-x);
     background-color: $o-ma-hierarchy-background;
+
+    .o_kanban_renderer {
+        --Kanban-gap: 0;
+    }
+    
     .o_ma_hierarchy_title {
         padding: 0px 0px 0px 72px;
         font-size: 18px;
@@ -89,7 +94,7 @@
                         width: 14px;
                         height: 14px;
                         background: $o-ma-color-white;
-                        border-bottom: 1px solid $o-ma-border-color;
+                        border: 1px solid $card-border-color;
                         transform: rotate(45deg);
                     }
                     // Timeline dot
@@ -139,7 +144,7 @@
                 margin: 5px;
                 width: 28px;
                 height: 28px;
-                color: $o-ma-color-white;
+                color: white;
                 font-size: 14px;
                 border-radius: 3px;
                 background: linear-gradient(to right bottom, $o-brand-primary, darken($o-brand-primary, 5%));
@@ -183,7 +188,7 @@
                         border-bottom-color: $o-ma-border-color;
                     }
                     &.active {
-                        color: $o-brand-primary;
+                        color: map-get($o-theme-text-colors, 'primary');
                         border-bottom-color: $o-ma-color-white;
                         background-color: $o-ma-color-white;
                     }

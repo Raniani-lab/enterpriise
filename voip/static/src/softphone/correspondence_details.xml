@@ -20,16 +20,16 @@
             <div class="mx-3 my-4">
                 <div class="o_horizontal_separator">Documents</div>
                 <div class="d-flex justify-content-around my-3">
-                    <button t-if="partner" class="btn btn-light p-3 border rounded-circle" title="Send e-mail" t-on-click="onClickEmail">
+                    <button t-if="partner" class="btn btn-secondary p-3 border rounded-circle" title="Send e-mail" t-on-click="onClickEmail">
                         <i class="fa fa-fw fa-lg fa-envelope-o" role="img"/>
                     </button>
-                    <button class="btn btn-light p-3 border rounded-circle" title="Customer" t-on-click="onClickPartner">
+                    <button class="btn btn-secondary p-3 border rounded-circle" title="Customer" t-on-click="onClickPartner">
                         <i class="fa fa-fw fa-lg fa-user" role="img"/>
                     </button>
-                    <button t-if="activity and activity.res_model !== 'res.partner'" class="btn btn-light p-3 border rounded-circle" t-att-title="activity.modelName" t-on-click="onClickRecord">
+                    <button t-if="activity and activity.res_model !== 'res.partner'" class="btn btn-secondary p-3 border rounded-circle" t-att-title="activity.modelName" t-on-click="onClickRecord">
                         <i class="fa fa-fw fa-lg fa-wpforms" role="img"/>
                     </button>
-                    <button t-if="partner or activity" class="btn btn-light p-3 border rounded-circle" title="Schedule Activity" t-on-click="onClickActivity">
+                    <button t-if="partner or activity" class="btn btn-secondary p-3 border rounded-circle" title="Schedule Activity" t-on-click="onClickActivity">
                         <i class="fa fa-fw fa-lg fa-clock-o" role="img"/>
                     </button>
                 </div>
@@ -37,13 +37,13 @@
                 <t t-if="call?.isInProgress">
                     <div class="o_horizontal_separator">Call</div>
                     <div class="d-flex justify-content-around my-3">
-                        <button class="btn btn-light p-3 border rounded-circle" t-att-disabled="areInCallActionsDisabled" title="Transfer" t-ref="transferButton" t-on-click="onClickTransfer">
+                        <button class="btn btn-secondary p-3 border rounded-circle" t-att-disabled="areInCallActionsDisabled" title="Transfer" t-ref="transferButton" t-on-click="onClickTransfer">
                             <i class="fa fa-fw fa-lg fa-arrows-h" role="img"/>
                         </button>
-                        <button class="btn btn-light p-3 border rounded-circle" t-att-disabled="areInCallActionsDisabled" t-att-title="muteText" t-on-click="onClickMute">
+                        <button class="btn btn-secondary p-3 border rounded-circle" t-att-disabled="areInCallActionsDisabled" t-att-title="muteText" t-on-click="onClickMute">
                             <i t-attf-class="fa fa-fw fa-lg {{ !userAgent.session?.isMute ? 'fa-microphone' : 'fa-microphone-slash' }}" role="img"/>
                         </button>
-                        <button t-if="isMobileOs" class="btn btn-light p-3 border rounded-circle" t-att-disabled="areInCallActionsDisabled" title="Change input device" t-on-click="onClickChangeInputDevice">
+                        <button t-if="isMobileOs" class="btn btn-secondary p-3 border rounded-circle" t-att-disabled="areInCallActionsDisabled" title="Change input device" t-on-click="onClickChangeInputDevice">
                             <i t-attf-class="fa fa-fw fa-lg fa-headphones" role="img"/>
                         </button>
                     </div>
@@ -51,13 +51,13 @@
                 <t t-elif="activity">
                     <div class="o_horizontal_separator">Activity</div>
                     <div class="d-flex justify-content-around my-3">
-                        <button class="btn btn-light p-3 border rounded-circle" title="Mark as done" t-on-click="onClickMarkAsDone">
+                        <button class="btn btn-secondary p-3 border rounded-circle" title="Mark as done" t-on-click="onClickMarkAsDone">
                             <i class="fa fa-fw fa-lg fa-check" role="img"/>
                         </button>
-                        <button class="btn btn-light p-3 border rounded-circle" title="Edit" t-on-click="onClickEdit">
+                        <button class="btn btn-secondary p-3 border rounded-circle" title="Edit" t-on-click="onClickEdit">
                             <i class="fa fa-fw fa-lg fa-pencil" role="img"/>
                         </button>
-                        <button class="btn btn-light p-3 border rounded-circle" title="Cancel" t-on-click="onClickCancel">
+                        <button class="btn btn-secondary p-3 border rounded-circle" title="Cancel" t-on-click="onClickCancel">
                             <i class="fa fa-fw fa-lg fa-close" role="img"/>
                         </button>
                     </div>

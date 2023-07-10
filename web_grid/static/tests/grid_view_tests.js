@@ -1356,7 +1356,7 @@ QUnit.module("Views", (hooks) => {
 
         assert.containsNone(
             target,
-            ".o_grid_row.o_grid_highlightable.bg-200",
+            ".o_grid_row.o_grid_highlightable.bg-700",
             "No cell should be highlighted"
         );
         const cells = target.querySelectorAll(".o_grid_row .o_grid_cell_readonly");

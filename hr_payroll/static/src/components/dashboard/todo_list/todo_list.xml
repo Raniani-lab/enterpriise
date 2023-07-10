@@ -13,7 +13,7 @@
                             t-on-dblclick="() => this.startNameEdition(rec)">
                             <a t-attf-class="mb-0 nav-link text-dark {{ (isActiveNote) ? 'd-flex align-items-center justify-content-between gap-2 active border-0 border-odoo border-top ' : '' }}">
                                 <t t-if="state.isEditingNoteName &amp;&amp; isActiveNote">
-                                    <input type="text" t-ref="autofocus" t-att-value="this.bufferedText" t-on-input="onInputNoteNameInput" t-on-keydown="onKeyDownNoteNameInput" t-on-blur="handleBlur"/>
+                                    <input type="text" t-ref="autofocus" t-att-value="this.bufferedText" t-on-input="onInputNoteNameInput" t-on-keydown="onKeyDownNoteNameInput" t-on-blur="handleBlur" class="o_input"/>
                                 </t>
                                 <t t-else="">
                                     <t t-esc="(rec.name || 'untitled').substring(0, 30)"/>

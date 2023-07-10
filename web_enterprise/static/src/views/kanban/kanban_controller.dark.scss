@@ -5,6 +5,7 @@
 .o_kanban_renderer {
     --KanbanGroup-grouped-bg: #{$o-view-background-color};
     --KanbanRecord__image-bg-color: #{$o-gray-900};
-    --KanbanColumn__highlight-background: #{darken($gray-100, 5%)};
-    --KanbanColumn__highlight-border: #{$gray-100}
+    --KanbanColumn__highlight-background: #{mix($o-action, $o-gray-100, 15%)};
+    --KanbanColumn__highlight-border: #{$o-component-active-border};
+    --Kanban-background: #{$gray-100};
 }

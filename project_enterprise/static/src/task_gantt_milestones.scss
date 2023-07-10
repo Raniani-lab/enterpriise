@@ -22,7 +22,7 @@
         font-size: 10px;
     }
     &:not(.edge_slot) {
-        background-color: #e6f6f5;
+        background-color: mix(#00a09d, $o-view-background-color, 10%);
         border: solid #00a09d 1px;
         bottom: calc( -1 * var(--o-project-milestone-diamond-center));
         height: var(--o-project-milestone-diamond-size);
@@ -31,7 +31,7 @@
         transform-origin: center;
         width: var(--o-project-milestone-diamond-size);
         &.o_unreached_milestones {
-            background-color: #fbeceb;
+            background-color: mix(#d3413b, $o-view-background-color, 10%);
             border: solid #d3413b 1px;
         }
         .o_milestones_reached {

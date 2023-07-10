@@ -57,7 +57,7 @@
             <span class="z-index-1 text-center" t-out="column.title"/>
         </div>
         <div t-if="!props.options.hideLineTotal"
-             class="o_grid_column_title o_grid_row_total position-md-sticky top-0 end-0 d-flex align-items-center justify-content-center text-bg-700 px-3 py-2 fw-bold text-center"
+             class="o_grid_column_title o_grid_row_total position-md-sticky top-0 end-0 d-flex align-items-center justify-content-center text-bg-200 px-3 py-2 border-bottom fw-bold text-center"
              t-attf-style="grid-row: {{rowsGap}}; grid-column: {{props.columns.length + 1 + columnsGap}};"
         >
             <span class="z-index-1" t-out="measureLabel"/>
@@ -89,7 +89,7 @@
                 t-key="column.id"
                 class="o_grid_section o_grid_highlightable position-relative d-flex align-items-center justify-content-center fw-bold"
                 t-att-class="{
-                    'bg-info bg-opacity-50' : column.isToday,
+                    'border-top bg-info bg-opacity-50' : column.isToday,
                     'text-bg-200 border-top' : !column.isToday,
                     'text-opacity-25' : getUnavailableClass(column) === 'o_grid_unavailable'
                 }"
@@ -101,7 +101,7 @@
             >
                 <div class="position-absolute top-0 start-0 w-100 h-100"
                     t-att-class="{
-                       'o_grid_cell_overlay_today bg-info bg-opacity-25' : column.isToday,
+                       'o_grid_cell_overlay_today bg-info' : column.isToday,
                        'o_grid_cell_overlay bg-700' : !column.isToday,
                     }"
                 />
@@ -114,7 +114,7 @@
                 </div>
             </div>
             <div t-if="!props.options.hideLineTotal"
-                 class="o_grid_section o_grid_row_total o_grid_highlightable position-relative position-md-sticky end-0 z-index-1 d-flex align-items-center justify-content-center px-3 py-1 fw-bold text-bg-800"
+                 class="o_grid_section o_grid_row_total o_grid_highlightable position-relative position-md-sticky end-0 z-index-1 d-flex align-items-center justify-content-center px-3 py-1 border-top fw-bold text-bg-800"
                  t-att-class="{
                     'text-opacity-25': section.grandTotal === 0
                  }"
@@ -202,7 +202,7 @@
              class="o_grid_row o_grid_row_total o_grid_highlightable position-relative position-md-sticky end-0 d-flex align-items-center justify-content-center px-3 py-1"
              t-att-class="{
                 'fst-italic': row.isAdditionalRow,
-                'text-bg-700': row.grandTotal &gt;= 0,
+                'text-bg-200': row.grandTotal &gt;= 0,
                 'bg-danger text-bg-danger': row.grandTotal lt 0,
                 'text-opacity-50': row.grandTotal === 0
              }"
@@ -251,7 +251,7 @@
                  }"
             />
         </div>
-        <div class="o_grid_add_line position-md-sticky end-0 text-bg-700"
+        <div class="o_grid_add_line position-md-sticky end-0 text-bg-200"
              t-attf-style="grid-row: {{rowPosition}}; grid-column: {{props.columns.length + 1 + columnsGap}};"
         ></div>
     </t>
@@ -299,9 +299,8 @@
             <div t-if="!props.options.hideLineTotal"
                 t-att-data-grid-row="rowPosition"
                 t-att-data-grid-column="props.columns.length + 1 + columnsGap"
-                class="o_grid_highlightable position-md-sticky end-0 d-flex align-items-center justify-content-center fw-bold"
+                class="o_grid_highlightable position-md-sticky end-0 d-flex align-items-center justify-content-center bg-400 text-black fw-bold"
                 t-att-class="{
-                    'text-bg-800': grandTotal &gt;= 0,
                     'bg-danger text-bg-danger': grandTotal lt 0,
                 }"
                 t-attf-style="grid-row: {{rowPosition}}; grid-column: {{props.columns.length + 1 + columnsGap}};"
@@ -343,7 +342,7 @@
                 </div>
             </div>
             <div t-if="!props.options.hideLineTotal"
-                 class="o_grid_row o_grid_column_total o_grid_row_total o_grid_highlightable position-md-sticky end-0 bg-700"
+                 class="o_grid_row o_grid_column_total o_grid_row_total o_grid_highlightable position-md-sticky end-0 bg-200"
                  t-att-data-grid-row="rowPosition + 1"
                  t-att-data-grid-column="props.columns.length + 1 + columnsGap"
                  t-attf-style="grid-row: {{rowPosition + 1}}; grid-column: {{props.columns.length + 1 + columnsGap}};"

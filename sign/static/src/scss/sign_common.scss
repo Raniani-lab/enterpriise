@@ -30,6 +30,8 @@
         flex-wrap: nowrap;
         overflow: auto;
         min-height: 100%;
+        color: $o-action;
+
         .o_sign_signer_status_info {
             margin:auto;
         }
@@ -45,13 +47,13 @@
     }
     .o_sign_signer {
         &_waiting {
-            color: #0123BC;
+            color: o-text-color('info');
         }
         &_refused {
-            color: red;
+            color: o-text-color('danger');
         }
         &_completed {
-            color: green;
+            color: o-text-color('success');
         }
     }
 }

@@ -17,9 +17,3 @@ $o-colors-secondary: ()!default;
     $-adjusted: saturate(mix($-color, $o-black, 50%), 80%);
     $o-colors-secondary: append($o-colors-secondary, $-adjusted);
 }
-
-// = ControlPanel
-// TODO: move in 'control_panel.variables.scss' when it will exist
-// in bright-mode
-// ============================================================================
-$o-control-panel-background-color: $o-gray-200 !default;

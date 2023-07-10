@@ -75,6 +75,11 @@ $o-web-grid-cell-minwidth: 10ch;
     .o_grid_row, .o_grid_section {
         min-height: 2.5rem;
     }
+
+    .o_grid_section .o_grid_cell_overlay_today {
+        --bg-opacity: .25;
+    }
+
     .o_grid_section ~ .o_grid_row.o_grid_row_title {
         padding-left: calc(#{map-get($spacers, 3)} + #{$o-avatar-size} + #{map-get($spacers, 1)}) !important;
     }

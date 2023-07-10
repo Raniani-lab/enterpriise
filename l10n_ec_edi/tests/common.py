@@ -410,8 +410,6 @@ L10N_EC_EDI_XML_PURCHASE_LIQ = """
     </detalles>
     <infoAdicional>
         <campoAdicional nombre="Referencia">LiqCo 001-001-000000001</campoAdicional>
-        <campoAdicional nombre="Vendedor">Because I am accountman!</campoAdicional>
-        <campoAdicional nombre="E-mail">accountman@test.com</campoAdicional>
     </infoAdicional>
 </liquidacionCompra>""".encode()
 

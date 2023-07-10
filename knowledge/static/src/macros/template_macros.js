@@ -91,6 +91,11 @@ export class UseAsDescriptionMacro extends AbstractMacro {
                 return this.getFirstVisibleElement(`.o_field_html[name="${this.data.fieldName}"] .odoo-editor-editable`);
             }.bind(this),
             action: function (el) {
+                const wysiwyg = $(el).data('wysiwyg');
+                wysiwyg._onHistoryResetFromSteps = () => {
+                    pasteElements(this.data.dataTransfer, el);
+                    wysiwyg._onHistoryResetFromSteps = undefined;
+                };
                 pasteElements(this.data.dataTransfer, el);
             }.bind(this),
         }, this.unblockUI);

@@ -9,5 +9,5 @@ class Onboarding(models.Model):
 
     # Appointment Onboarding
     @api.model
-    def action_close_panel_onboarding(self):
+    def action_close_panel_appointment(self):
         self.action_close_panel('appointment.onboarding_onboarding_appointment')

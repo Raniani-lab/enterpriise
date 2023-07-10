@@ -618,7 +618,7 @@ class AccountOnlineLink(models.Model):
     def _success_reconnect(self):
         self.ensure_one()
         self._log_information(state='connected')
-        return {'type': 'ir.actions.client', 'tag': 'reload'}
+        return self._fetch_transactions()
 
     ##################
     # action buttons #

@@ -8,7 +8,7 @@
             t-attf-style="--Gantt__RowHeader-width:{{
                 state.rowHeaderWidth
             }}px;--Gantt__Pill-height:{{
-                pillHeight
+                pillHeight - 1
             }}px;--Gantt__Row-height:{{
                 rowHeight
             }}px;--Gantt__Template-rows:{{

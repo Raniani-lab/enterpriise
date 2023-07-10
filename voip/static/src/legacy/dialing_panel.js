@@ -361,7 +361,10 @@ export const DialingPanel = Widget.extend({
      * @private
      */
     async _fetchMissedCallFromServer() {
-        const missedCalls = this.env.services.orm.call("voip.phonecall", "get_missed_call_info");
+        const missedCalls = await this.env.services.orm.call(
+            "voip.phonecall",
+            "get_missed_call_info"
+        );
         this._missedCounter = missedCalls[0];
         this._refreshMissedCalls();
         if (this._missedCounter > 0) {

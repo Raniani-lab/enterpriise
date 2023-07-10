@@ -1923,13 +1923,14 @@ class AccountReport(models.Model):
     def _get_static_line_dict(self, options, line, all_column_groups_expression_totals, parent_id=None):
         line_id = self._get_generic_line_id('account.report.line', line.id, parent_line_id=parent_id)
         columns = self._build_static_line_columns(line, options, all_column_groups_expression_totals)
+        has_children = (any(col['has_sublines'] for col in columns) or bool(line.children_ids))
 
         rslt = {
             'id': line_id,
             'name': line.name,
             'groupby': line.groupby,
-            'unfoldable': line.foldable and (any(col['has_sublines'] for col in columns) or bool(line.children_ids)),
-            'unfolded': bool((not line.foldable and (line.children_ids or line.groupby)) or line_id in options.get('unfolded_lines', {})) or options['unfold_all'],
+            'unfoldable': line.foldable and has_children,
+            'unfolded': bool((not line.foldable and (line.children_ids or line.groupby)) or line_id in options.get('unfolded_lines', {})) or (has_children and options['unfold_all']),
             'columns': columns,
             'level': line.hierarchy_level,
             'page_break': line.print_on_new_page,
@@ -4920,7 +4921,7 @@ class AccountReportLine(models.Model):
                 # 'name' key will be set later, so that we can browse all the records of this expansion at once (in case we're dealing with records)
                 'id': line_id,
                 'unfoldable': bool(next_groupby),
-                'unfolded': options['unfold_all'] or line_id in options.get('unfolded_lines', {}),
+                'unfolded': (next_groupby and options['unfold_all']) or line_id in options.get('unfolded_lines', {}),
                 'groupby': next_groupby,
                 'columns': self.report_id._build_static_line_columns(self, options, group_totals),
                 'level': self.hierarchy_level + 2 * (prefix_groups_count + len(sub_groupby_domain) + 1) + (group_indent - 1),

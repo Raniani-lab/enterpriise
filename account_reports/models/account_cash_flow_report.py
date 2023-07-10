@@ -209,6 +209,22 @@ class CashFlowReportCustomHandler(models.AbstractModel):
 
         return payment_move_ids, tuple(payment_account_ids)
 
+    def _get_move_ids_query(self, report, payment_account_ids, column_group_options):
+        ''' Get all liquidity moves to be part of the cash flow statement.
+        :param payment_account_ids: A tuple containing all account.account's ids being used in a liquidity journal.
+        :return: query: The SQL query to retrieve the move IDs.
+        '''
+
+        tables, where_clause, where_params = report._query_get(column_group_options, 'strict_range', [('account_id', 'in', list(payment_account_ids))])
+        query = f'''
+            SELECT
+                array_agg(DISTINCT account_move_line.move_id) AS move_id
+            FROM {tables}
+            WHERE {where_clause}
+        '''
+
+        return self.env.cr.mogrify(query, where_params).decode(self.env.cr.connection.encoding)
+
     def _compute_liquidity_balance(self, report, options, currency_table_query, payment_account_ids, date_scope):
         ''' Compute the balance of all liquidity accounts to populate the following sections:
             'Cash and cash equivalents, beginning of period' and 'Cash and cash equivalents, closing balance'.
@@ -275,7 +291,10 @@ class CashFlowReportCustomHandler(models.AbstractModel):
             account_name = 'account_account.name'
 
         for column_group_key, column_group_options in report._split_options_per_column_group(options).items():
+            move_ids = self._get_move_ids_query(report, payment_account_ids, column_group_options)
+
             queries.append(f'''
+                (WITH payment_move_ids AS ({move_ids})
                 -- Credit amount of each account
                 SELECT
                     %s AS column_group_key,
@@ -295,7 +314,7 @@ class CashFlowReportCustomHandler(models.AbstractModel):
                 LEFT JOIN account_account_account_tag
                     ON account_account_account_tag.account_account_id = account_move_line.account_id
                     AND account_account_account_tag.account_account_tag_id IN %s
-                WHERE account_move_line.move_id IN %s
+                WHERE account_move_line.move_id IN (SELECT unnest(payment_move_ids.move_id) FROM payment_move_ids)
                     AND account_move_line.account_id NOT IN %s
                     AND account_partial_reconcile.max_date BETWEEN %s AND %s
                 GROUP BY account_move_line.company_id, account_move_line.account_id, account_account.code, account_name, account_account.account_type, account_account_account_tag.account_account_tag_id
@@ -321,7 +340,7 @@ class CashFlowReportCustomHandler(models.AbstractModel):
                 LEFT JOIN account_account_account_tag
                     ON account_account_account_tag.account_account_id = account_move_line.account_id
                     AND account_account_account_tag.account_account_tag_id IN %s
-                WHERE account_move_line.move_id IN %s
+                WHERE account_move_line.move_id IN (SELECT unnest(payment_move_ids.move_id) FROM payment_move_ids)
                     AND account_move_line.account_id NOT IN %s
                     AND account_partial_reconcile.max_date BETWEEN %s AND %s
                 GROUP BY account_move_line.company_id, account_move_line.account_id, account_account.code, account_name, account_account.account_type, account_account_account_tag.account_account_tag_id
@@ -345,19 +364,18 @@ class CashFlowReportCustomHandler(models.AbstractModel):
                 LEFT JOIN account_account_account_tag
                     ON account_account_account_tag.account_account_id = account_move_line.account_id
                     AND account_account_account_tag.account_account_tag_id IN %s
-                WHERE account_move_line.move_id IN %s
+                WHERE account_move_line.move_id IN (SELECT unnest(payment_move_ids.move_id) FROM payment_move_ids)
                     AND account_move_line.account_id NOT IN %s
-                GROUP BY account_move_line.account_id, account_account.code, account_name, account_account.account_type, account_account_account_tag.account_account_tag_id
+                GROUP BY account_move_line.account_id, account_account.code, account_name, account_account.account_type, account_account_account_tag.account_account_tag_id)
             ''')
 
             date_from = column_group_options['date']['date_from']
             date_to = column_group_options['date']['date_to']
 
-            column_group_payment_move_ids = tuple(payment_move_ids.get(column_group_key, [None]))
             params += [
-                column_group_key, tuple(cash_flow_tag_ids), column_group_payment_move_ids, payment_account_ids, date_from, date_to,
-                column_group_key, tuple(cash_flow_tag_ids), column_group_payment_move_ids, payment_account_ids, date_from, date_to,
-                column_group_key, tuple(cash_flow_tag_ids), column_group_payment_move_ids, payment_account_ids,
+                column_group_key, tuple(cash_flow_tag_ids), payment_account_ids, date_from, date_to,
+                column_group_key, tuple(cash_flow_tag_ids), payment_account_ids, date_from, date_to,
+                column_group_key, tuple(cash_flow_tag_ids), payment_account_ids,
             ]
 
         self._cr.execute(' UNION ALL '.join(queries), params)
@@ -399,7 +417,10 @@ class CashFlowReportCustomHandler(models.AbstractModel):
         params = []
 
         for column_group_key, column_group_options in report._split_options_per_column_group(options).items():
-            queries.append('''
+            move_ids = self._get_move_ids_query(report, payment_account_ids, column_group_options)
+
+            queries.append(f'''
+                (WITH payment_move_ids AS ({move_ids})
                 SELECT
                     %s AS column_group_key,
                     debit_line.move_id,
@@ -410,10 +431,10 @@ class CashFlowReportCustomHandler(models.AbstractModel):
                     ON account_partial_reconcile.credit_move_id = credit_line.id
                 INNER JOIN account_move_line AS debit_line
                     ON debit_line.id = account_partial_reconcile.debit_move_id
-                WHERE credit_line.move_id IN %s
+                WHERE credit_line.move_id IN (SELECT unnest(payment_move_ids.move_id) FROM payment_move_ids)
                     AND credit_line.account_id NOT IN %s
                     AND credit_line.credit > 0.0
-                    AND debit_line.move_id NOT IN %s
+                    AND debit_line.move_id NOT IN (SELECT unnest(payment_move_ids.move_id) FROM payment_move_ids)
                     AND account_partial_reconcile.max_date BETWEEN %s AND %s
                 GROUP BY debit_line.move_id, debit_line.account_id
 
@@ -429,21 +450,17 @@ class CashFlowReportCustomHandler(models.AbstractModel):
                     ON account_partial_reconcile.debit_move_id = debit_line.id
                 INNER JOIN account_move_line AS credit_line
                     ON credit_line.id = account_partial_reconcile.credit_move_id
-                WHERE debit_line.move_id IN %s
+                WHERE debit_line.move_id IN (SELECT unnest(payment_move_ids.move_id) FROM payment_move_ids)
                     AND debit_line.account_id NOT IN %s
                     AND debit_line.debit > 0.0
-                    AND credit_line.move_id NOT IN %s
+                    AND credit_line.move_id NOT IN (SELECT unnest(payment_move_ids.move_id) FROM payment_move_ids)
                     AND account_partial_reconcile.max_date BETWEEN %s AND %s
-                GROUP BY credit_line.move_id, credit_line.account_id
+                GROUP BY credit_line.move_id, credit_line.account_id)
             ''')
-
-            column_group_payment_move_ids = tuple(payment_move_ids.get(column_group_key, [None]))
 
             params += [
                 column_group_key,
-                column_group_payment_move_ids,
                 payment_account_ids,
-                column_group_payment_move_ids,
                 column_group_options['date']['date_from'],
                 column_group_options['date']['date_to'],
             ] * 2

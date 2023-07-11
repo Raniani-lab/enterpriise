@@ -51,7 +51,7 @@ class DutchReportCustomHandler(models.AbstractModel):
         # This will generate the XBRL file (similar style to XML).
         report = self.env['account.report'].browse(options['report_id'])
         lines = report._get_lines(options)
-        data = self._generate_codes_values(lines, options.get('code_values'))
+        data = self._generate_codes_values(lines, options.get('codes_values'))
 
         xbrl = self.env['ir.qweb']._render('l10n_nl_reports_sbr.tax_report_sbr', data)
         xbrl_element = etree.fromstring(xbrl)

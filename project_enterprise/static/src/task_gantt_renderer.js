@@ -131,7 +131,7 @@ export class TaskGanttRenderer extends GanttRenderer {
         this.milestonePopover.open(ev.target, {
             milestones,
             displayMilestoneDates: this.model.metaData.scale.id === "year",
-            displayProjectName: !!this.model.searchParams.context.search_default_my_tasks,
+            displayProjectName: !this.model.searchParams.context.default_project_id,
         });
     }
 

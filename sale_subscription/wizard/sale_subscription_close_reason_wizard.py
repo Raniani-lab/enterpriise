@@ -12,4 +12,4 @@ class SaleSubscriptionCloseReasonWizard(models.TransientModel):
         self.ensure_one()
         sale_order = self.env['sale.order'].browse(self.env.context.get('active_id'))
         sale_order.close_reason_id = self.close_reason_id
-        sale_order.set_close()
+        sale_order.set_close(close_reason_id=self.close_reason_id.id)

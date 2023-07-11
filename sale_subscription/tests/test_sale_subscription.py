@@ -2766,3 +2766,13 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertEqual(self.subscription.next_invoice_date, datetime.date(2023, 3, 1))
             self.assertEqual(renewal_so.start_date, datetime.date(2023, 3, 1))
             self.assertEqual(renewal_so.next_invoice_date, datetime.date(2023, 3, 1))
+
+    def test_close_reason_wizard(self):
+        self.subscription._onchange_sale_order_template_id()
+        self.subscription.action_confirm()
+        new_reason = self.env['sale.order.close.reason'].create({'name': "test reason"})
+        wiz = self.env['sale.subscription.close.reason.wizard'].with_context(active_id=self.subscription.id).create({
+            'close_reason_id': new_reason.id
+        })
+        wiz.set_close()
+        self.assertEqual(self.subscription.close_reason_id, new_reason, "The reason should be saved on the order")

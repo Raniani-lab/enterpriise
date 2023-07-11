@@ -129,6 +129,12 @@ class Project(models.Model):
         basic_projects = self.filtered(lambda project: not project.is_fsm)
         super(Project, basic_projects)._compute_partner_id()
 
+    @api.depends('is_fsm')
+    def _compute_display_sales_stat_buttons(self):
+        fsm_projects = self.filtered('is_fsm')
+        fsm_projects.display_sales_stat_buttons = False
+        super(Project, self - fsm_projects)._compute_display_sales_stat_buttons()
+
     def _get_profitability_sale_order_items_domain(self, domain=None):
         quotation_projects = self.filtered('allow_quotations')
         if quotation_projects:

@@ -215,6 +215,10 @@ class AccountMove(models.Model):
                 'date': line.move_id.invoice_date + relativedelta(day=31),
                 'auto_post': 'at_date',
                 'ref': ref,
+            })
+            # We write the lines after creation, to make sure the `deferred_original_move_ids` is set.
+            # This way we can avoid adding taxes for deferred moves.
+            move_fully_deferred.write({
                 'line_ids': [
                     Command.create({
                         'account_id': line.account_id.id,
@@ -240,6 +244,9 @@ class AccountMove(models.Model):
                     'date': period[1],
                     'auto_post': 'at_date',
                     'ref': ref,
+                })
+                # Same as before, to avoid adding taxes for deferred moves.
+                deferred_move.write({
                     'line_ids': self._get_deferred_lines(line, deferred_account, period, ref),
                 })
                 line.move_id.deferred_move_ids |= deferred_move
@@ -410,6 +417,13 @@ class AccountMoveLine(models.Model):
             for date in self._get_deferred_ends_of_month(self.deferred_start_date, self.deferred_end_date)
         ]
         return periods if len(periods) > 1 else []
+
+    def _get_computed_taxes(self):
+        if self.move_id.deferred_original_move_ids:
+            # If this line is part of a deferral move, do not (re)calculate its taxes automatically.
+            # Doing so might unvoluntarily impact the tax report in deferral moves (if a default tax is set on the account).
+            return self.tax_ids
+        return super()._get_computed_taxes()
 
     def _compute_attachment(self):
         for record in self:

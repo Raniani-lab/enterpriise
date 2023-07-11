@@ -171,6 +171,47 @@ class TestDeferredManagement(AccountTestInvoicingCommon):
             self.assertEqual(deferred_line.debit, deferred_line_debit)
             self.assertEqual(deferred_line.credit, deferred_line_credit)
 
+    def test_default_tax_on_account_not_on_deferred_entries(self):
+        """
+        Test that the default taxes on an account are not calculated on deferral entries, since this would impact the
+        tax report.
+        """
+        self.company.deferred_amount_computation_method = 'month'
+        revenue_account_with_taxes = self.env['account.account'].create({
+            'name': 'Revenue with Taxes',
+            'code': 'REVWTAXES',
+            'account_type': 'income',
+            'tax_ids': [Command.set(self.tax_sale_a.ids)]
+        })
+
+        move = self.create_invoice(
+            'out_invoice',
+            self.company_data['default_journal_sale'],
+            self.partner_a,
+            [[revenue_account_with_taxes, 1000, '2023-01-01', '2023-04-30']],
+            date='2022-12-10'
+        )
+
+        expected_line_values = [
+            # Date         [Line expense] [Line deferred]
+            ('2022-12-31',  1000,      0,      0,   1000),
+            ('2023-01-31',     0,    250,    250,      0),
+            ('2023-02-28',     0,    250,    250,      0),
+            ('2023-03-31',     0,    250,    250,      0),
+        ]
+
+        self.assert_invoice_lines(
+            move,
+            expected_line_values,
+            revenue_account_with_taxes,
+            self.company_data['default_account_deferred_revenue']
+        )
+
+        for deferred_move in move.deferred_move_ids:
+            # There are no extra lines besides the two lines we checked before
+            self.assertEqual(len(deferred_move.line_ids), 2)
+
+
     def test_deferred_values(self):
         """
         Test that the debit/credit values are correctly computed, even after a credit note is issued.

@@ -12,11 +12,10 @@
                         <i t-att-class="props.line.unfolded ? 'fa fa-caret-down' : 'fa fa-caret-right'"/>
                     </span>
                 </t>
-            <div class="d-flex align-items-center flex-grow-1 gap-1">
+
                 <span class="acc_rep_line_name">
                     <t t-out="props.line.name"/>
                 </span>
-            </div>
             </td>
         </xpath>
     </t>

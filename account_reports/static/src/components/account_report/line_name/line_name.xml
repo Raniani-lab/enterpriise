@@ -53,23 +53,21 @@
                 </div>
             </t>
             <t t-else="">
-                <div class="d-flex align-items-center gap-1">
-                    <span class="acc_rep_line_name" t-att-title="props.line.title_hover">
-                        <t t-if="props.line.action_id">
-                            <a t-on-click="() => this.triggerAction()">
-                                <t t-out="props.line.name"/>
-                            </a>
-                        </t>
-                        <t t-elif="controller.isLoadMoreLine(props.lineIndex)">
-                            <a t-on-click="() => this.loadMore()">
-                                <t t-out="props.line.name"/>
-                            </a>
-                        </t>
-                        <t t-else="">
+                <span class="acc_rep_line_name" t-att-title="props.line.title_hover">
+                    <t t-if="props.line.action_id">
+                        <a t-on-click="() => this.triggerAction()">
                             <t t-out="props.line.name"/>
-                        </t>
-                    </span>
-                </div>
+                        </a>
+                    </t>
+                    <t t-elif="controller.isLoadMoreLine(props.lineIndex)">
+                        <a t-on-click="() => this.loadMore()">
+                            <t t-out="props.line.name"/>
+                        </a>
+                    </t>
+                    <t t-else="">
+                        <t t-out="props.line.name"/>
+                    </t>
+                </span>
             </t>
         </td>
     </t>

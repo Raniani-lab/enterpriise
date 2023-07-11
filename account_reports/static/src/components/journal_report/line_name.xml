@@ -13,21 +13,22 @@
                 <t t-else="">
                     <t t-out="props.line.name"/>
                 </t>
+
+                <!-- Journal name -->
+                <t t-if="controller.groups.account_user and 'journal_id' in props.line">
+                    <a
+                        class="oe_link_reports ms-2"
+                        t-on-click="(ev) => controller.reportAction(ev, 'open_journal_items', {
+                            line_id: props.line.id,
+                            name: props.line.name,
+                            journal_id: props.line.journal_id,
+                            journal_type: props.line.journal_type,
+                        })"
+                    >
+                        => Journal Items
+                    </a>
+                </t>
             </span>
-            <!-- Journal name -->
-            <t t-if="controller.groups.account_user and 'journal_id' in props.line">
-                <a
-                    class="oe_link_reports text-nowrap"
-                    t-on-click="(ev) => controller.reportAction(ev, 'open_journal_items', {
-                        line_id: props.line.id,
-                        name: props.line.name,
-                        journal_id: props.line.journal_id,
-                        journal_type: props.line.journal_type,
-                    })"
-                >
-                    ⇒ Journal Items
-                </a>
-            </t>
         </xpath>
     </t>
 </templates>

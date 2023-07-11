@@ -189,7 +189,7 @@ $indent-size-md: 3px;
         margin-right:auto;
         border: 1px solid $o-gray-300;
     }
-    .acc_rep_line_name ~ a {
+    .acc_rep_line_name a {
         color: var(--AccountFinancial-link-color, #008784);
     }
     a {

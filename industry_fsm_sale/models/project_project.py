@@ -118,12 +118,6 @@ class Project(models.Model):
         fsm_projects.update({'sale_line_id': False})
         super(Project, self - fsm_projects)._compute_sale_line_id()
 
-    @api.depends('partner_id', 'pricing_type', 'is_fsm')
-    def _compute_display_create_order(self):
-        fsm_projects = self.filtered('is_fsm')
-        fsm_projects.update({'display_create_order': False})
-        super(Project, self - fsm_projects)._compute_display_create_order()
-
     @api.depends('sale_line_employee_ids.sale_line_id', 'sale_line_id')
     def _compute_partner_id(self):
         basic_projects = self.filtered(lambda project: not project.is_fsm)

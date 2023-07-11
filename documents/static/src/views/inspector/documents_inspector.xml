@@ -5,7 +5,7 @@
         <t t-set="currentFolder" t-value="getCurrentFolder()"/>
         <div class="o_documents_inspector h-100">
             <t t-set="nbPreviews" t-value="props.documents.length"/>
-            <div t-if="props.withFilePreview || nbPreviews === 0" class="o_documents_inspector_preview d-flex flex-row flex-wrap align-items-center justify-content-center position-relative">
+            <div class="o_documents_inspector_preview d-flex flex-row flex-wrap align-items-center justify-content-center position-relative">
                 <div t-if="nbPreviews === 0">
                     <t t-if="currentFolder">
                         <div class="o_inspector_folder_description">
@@ -83,10 +83,6 @@
                     Upload Document
                 </span>
             </div>
-            <button t-if="nbPreviews === 1 and !isMobile and !state.showChatter" class="o_inspector_open_chatter btn position-absolute top-0 end-0 me-2 mt-2 px-2 rounded-circle" title="Open chatter"
-                t-on-click.stop.prevent="() => state.showChatter = true">
-                <i class="fa fa-comments"/>
-            </button>
             <div t-if="record_index == 1 and record_size == 4" class="w-100"/>
         </t>
         <div t-if="nbPreviews &gt; 1" class="o_selection_info w-100 text-center mt-2">
@@ -174,7 +170,7 @@
                     <i class="fa fa-fw fa-upload"/>
                 </button>
             </t>
-            <button t-if="!props.withFilePreview and nbPreviews === 1 and !isMobile and !state.showChatter" class="o_inspector_button o_inspector_open_chatter btn float-end rounded-circle me-1 px-2" title="Open chatter"
+            <button t-if="nbPreviews === 1 and !isMobile and !state.showChatter" class="o_inspector_button o_inspector_open_chatter btn float-end rounded-circle me-1 px-2" title="Open chatter"
                 t-on-click.stop.prevent="() => state.showChatter = true" data-hotkey="d">
                 <i class="fa fa-comments"/>
             </button>

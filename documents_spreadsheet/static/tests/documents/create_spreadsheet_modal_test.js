@@ -10,7 +10,6 @@ import {
     triggerEvent,
     getFixture,
     click,
-    patchWithCleanup,
 } from "@web/../tests/helpers/utils";
 import { getBasicData } from "@spreadsheet/../tests/utils/data";
 
@@ -18,7 +17,6 @@ import { mockActionService } from "@documents_spreadsheet/../tests/spreadsheet_t
 import { setupViewRegistries } from "@web/../tests/views/helpers";
 import { registry } from "@web/core/registry";
 import { fileUploadService } from "@web/core/file_upload/file_upload_service";
-import { DocumentsKanbanRenderer } from "@documents/views/kanban/documents_kanban_renderer";
 import { makeFakeSpreadsheetService } from "@spreadsheet_edition/../tests/utils/collaborative_helpers";
 
 const serviceRegistry = registry.category("services");
@@ -138,16 +136,6 @@ QUnit.module(
                     return {
                         enqueueRecords: () => {},
                     };
-                },
-            });
-            // Historically the inspector had the preview on the kanban, due to it being
-            // controlled with a props we simply force the kanban view to also have it during the tests
-            // to ensure that the functionality stays the same, while keeping the tests as is.
-            patchWithCleanup(DocumentsKanbanRenderer.prototype, {
-                getDocumentsInspectorProps() {
-                    const result = this._super(...arguments);
-                    result.withFilePreview = true;
-                    return result;
                 },
             });
         },

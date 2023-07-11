@@ -64,7 +64,6 @@ export class DocumentsInspector extends Component {
         "count", // Current number of records displayed in the view
         "fileSize", // Total size of (in MB) of records displayed in the view
         "documents", // Array of records
-        "withFilePreview?", // Boolean, whether to display the thumbnails in the inspector or not
     ];
 
     static components = {
@@ -141,20 +140,18 @@ export class DocumentsInspector extends Component {
         );
 
         // Pdf thumbnails
-        if (this.props.withFilePreview) {
-            this.pdfService = useService("documents_pdf_thumbnail");
-            onWillStart(async () => {
-                this.pdfService.enqueueRecords(this.props.documents);
-            })
-            onWillUpdateProps(async (nextProps) => {
-                this.pdfService.enqueueRecords(nextProps.documents);
-            })
-            onNewPdfThumbnail(({ detail }) => {
-                if (this.props.documents.find(rec => rec.resId === detail.record.resId)) {
-                    this.render(true);
-                }
-            });
-        }
+        this.pdfService = useService("documents_pdf_thumbnail");
+        onWillStart(() => {
+            this.pdfService.enqueueRecords(this.props.documents);
+        });
+        onWillUpdateProps((nextProps) => {
+            this.pdfService.enqueueRecords(nextProps.documents);
+        });
+        onNewPdfThumbnail(({ detail }) => {
+            if (this.props.documents.find((rec) => rec.resId === detail.record.resId)) {
+                this.render(true);
+            }
+        });
 
         //Mobile specific
         if (!this.env.isSmall) {

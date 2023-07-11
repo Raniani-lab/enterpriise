@@ -1,7 +1,6 @@
 /** @odoo-module **/
 
 import { createDocumentsView, createDocumentsViewWithMessaging } from "./documents_test_utils";
-import { DocumentsKanbanRenderer } from "@documents/views/kanban/documents_kanban_renderer";
 import { documentService } from "@documents/core/document_service";
 import { storeService } from "@mail/core/common/store_service";
 import { attachmentService } from "@mail/core/common/attachment_service";
@@ -53,16 +52,6 @@ QUnit.module("documents", {}, function () {
                     init() {
                         this._super(...arguments);
                         this.LONG_TOUCH_THRESHOLD = 0;
-                    },
-                });
-                // Historically the inspector had the preview on the kanban, due to it being
-                // controlled with a props we simply force the kanban view to also have it during the tests
-                // to ensure that the functionality stays the same, while keeping the tests as is.
-                patchWithCleanup(DocumentsKanbanRenderer.prototype, {
-                    getDocumentsInspectorProps() {
-                        const result = this._super(...arguments);
-                        result.withFilePreview = true;
-                        return result;
                     },
                 });
             },

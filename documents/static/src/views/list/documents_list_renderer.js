@@ -61,7 +61,6 @@ export class DocumentsListRenderer extends ListRenderer {
             count: this.props.list.model.useSampleModel ? 0 : this.props.list.count,
             fileSize: this.props.list.fileSize,
             archInfo: this.props.archInfo,
-            withFilePreview: !this.props.previewStore.documentList,
         };
     }
 

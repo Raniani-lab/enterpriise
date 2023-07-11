@@ -3,6 +3,7 @@
 import { patch } from "@web/core/utils/patch";
 import { useService } from "@web/core/utils/hooks";
 import { FileViewer } from "@web/core/file_viewer/file_viewer";
+import { onWillUpdateProps } from "@odoo/owl";
 
 patch(FileViewer.prototype, "documents", {
     setup() {
@@ -10,6 +11,11 @@ patch(FileViewer.prototype, "documents", {
         /** @type {import("@documents/core/document_service").DocumentService} */
         this.documentService = useService("document.document");
         this.onSelectDocument = this.documentService.documentList?.onSelectDocument;
+        onWillUpdateProps((nextProps) => {
+            if (nextProps.startIndex !== this.state.index) {
+                this.activateFile(nextProps.startIndex);
+            }
+        });
     },
     get hasSplitPdf() {
         if (this.documentService.documentList?.initialRecordSelectionLength === 1) {

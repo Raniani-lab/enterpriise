@@ -19,14 +19,14 @@
         <xpath expr="//span[hasclass('acc_rep_line_name')]" position="inside">
             <t t-if="props.line.unfoldable">
                 <a
-                    class="oe_link_reports"
+                    class="oe_link_reports ms-2"
                     t-on-click="(ev) => controller.reportAction(ev, 'action_open_partner', { id: props.line.id })"
                 >
                     Open
                 </a>
 
                 <a
-                    class="oe_link_reports"
+                    class="oe_link_reports ms-2"
                     t-on-click="(ev) => controller.reportAction(ev, 'open_journal_items', {
                         line_id: props.line.id,
                         view_ref: 'account.view_move_line_tree_grouped_partner',

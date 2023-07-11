@@ -73,7 +73,7 @@ class SocialStreamPostFacebook(models.Model):
         result_json = result.json()
 
         if not result.ok:
-            _logger.error("An error occurred while fetching the comment: %s" % result.text)
+            _logger.warning("An error occurred while fetching the comment: %s", result.text)
 
             error_message = _('An error occurred.')
 

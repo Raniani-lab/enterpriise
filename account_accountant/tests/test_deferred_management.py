@@ -216,3 +216,82 @@ class TestDeferredManagement(AccountTestInvoicingCommon):
         self.company.deferred_amount_computation_method = 'month'
         move = self.create_invoice('in_invoice', self.company_data['default_journal_purchase'], self.partner_a, [(self.expense_accounts[0], 1680, '2023-01-01', '2023-01-31')], date='2023-01-01')
         self.assertEqual(len(move.deferred_move_ids), 0)
+
+    def test_taxes_deferred_after_date_added(self):
+        """
+        Test that applicable taxes get deferred also when the dates of the base line are filled in after a first save.
+        """
+        self.company.generate_deferred_entries_method = 'on_validation'
+        self.company.deferred_amount_computation_method = 'month'
+
+        expected_line_values = [
+            # Date         [Line expense] [Line deferred]
+            ('2022-12-31',     0,   1000,    1000,     0),
+            ('2022-12-31',     0,    100,     100,     0),
+            ('2023-01-31',   250,      0,       0,   250),
+            ('2023-01-31',    25,      0,       0,    25),
+            ('2023-02-28',   250,      0,       0,   250),
+            ('2023-02-28',    25,      0,       0,    25),
+            ('2023-03-31',   250,      0,       0,   250),
+            ('2023-03-31',    25,      0,       0,    25),
+        ]
+
+        partially_deductible_tax = self.env['account.tax'].create({
+            'name': 'Partially deductible Tax',
+            'amount': 20,
+            'amount_type': 'percent',
+            'type_tax_use': 'purchase',
+            'invoice_repartition_line_ids': [
+                Command.create({'repartition_type': 'base'}),
+                Command.create({
+                    'factor_percent': 50,
+                    'repartition_type': 'tax',
+                    'use_in_tax_closing': False
+                }),
+                Command.create({
+                    'factor_percent': 50,
+                    'repartition_type': 'tax',
+                    'account_id': self.company_data['default_account_tax_purchase'].id,
+                    'use_in_tax_closing': True
+                }),
+            ],
+            'refund_repartition_line_ids': [
+                Command.create({'repartition_type': 'base'}),
+                Command.create({
+                    'factor_percent': 50,
+                    'repartition_type': 'tax',
+                    'use_in_tax_closing': False
+                }),
+                Command.create({
+                    'factor_percent': 50,
+                    'repartition_type': 'tax',
+                    'account_id': self.company_data['default_account_tax_purchase'].id,
+                    'use_in_tax_closing': True
+                }),
+            ],
+        })
+
+        move = self.env['account.move'].create({
+            'move_type': 'in_invoice',
+            'partner_id': self.partner_a.id,
+            'date': '2022-12-10',
+            'invoice_date': '2022-12-10',
+            'journal_id': self.company_data['default_journal_purchase'].id,
+            'invoice_line_ids': [
+                Command.create({
+                    'quantity': 1,
+                    'account_id': self.expense_lines[0][0].id,
+                    'price_unit': self.expense_lines[0][1],
+                    'tax_ids': [Command.set(partially_deductible_tax.ids)],
+                })
+            ]
+        })
+
+        move.invoice_line_ids.write({
+            'deferred_start_date': self.expense_lines[0][2],
+            'deferred_end_date': self.expense_lines[0][3],
+        })
+
+        move.action_post()
+
+        self.assert_invoice_lines(move, expected_line_values, self.expense_accounts[0], self.company_data['default_account_deferred_expense'])

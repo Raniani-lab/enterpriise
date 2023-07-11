@@ -223,7 +223,7 @@ class AccountMove(models.Model):
                     }),
                 ],
             })
-            line.move_id.deferred_move_ids = move_fully_deferred
+            line.move_id.deferred_move_ids |= move_fully_deferred
             move_fully_deferred._post(soft=True)
 
             # Create the deferred entries for the periods [deferred_start_date, deferred_end_date]
@@ -367,12 +367,13 @@ class AccountMoveLine(models.Model):
             elif line.deferred_start_date and line.deferred_end_date and line.deferred_start_date > line.deferred_end_date:
                 raise UserError(_("You cannot create a deferred entry with a start date later than the end date."))
 
+    @api.depends('deferred_start_date', 'deferred_end_date')
     def _compute_all_tax(self):
         super()._compute_all_tax()
         for line in self:
             for key in list(line.compute_all_tax.keys()):
                 rep_line = self.env['account.tax.repartition.line'].browse(key.get('tax_repartition_line_id'))
-                if rep_line.use_in_tax_closing and line._is_compatible_account():
+                if not rep_line.use_in_tax_closing and line._is_compatible_account():
                     line.compute_all_tax[key].update({
                         'deferred_start_date': line.deferred_start_date,
                         'deferred_end_date': line.deferred_end_date,

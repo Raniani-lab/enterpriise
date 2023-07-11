@@ -500,6 +500,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
                 Command.create({
                     'factor_percent': 50,
                     'repartition_type': 'tax',
+                    'account_id': self.company_data['default_account_tax_purchase'].id,
                     'use_in_tax_closing': True
                 }),
             ],
@@ -513,6 +514,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
                 Command.create({
                     'factor_percent': 50,
                     'repartition_type': 'tax',
+                    'account_id': self.company_data['default_account_tax_purchase'].id,
                     'use_in_tax_closing': True
                 }),
             ],

@@ -1936,6 +1936,16 @@ QUnit.module(
                                 node: {
                                     tag: "field",
                                     attrs: { name: "m2o" },
+                                    xpath_info: [
+                                        {
+                                            indice: 1,
+                                            tag: "tree"
+                                        },
+                                        {
+                                            indice: 3,
+                                            tag: "field"
+                                        }
+                                    ]
                                 },
                                 position: "before",
                                 target: {

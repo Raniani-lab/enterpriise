@@ -35,4 +35,8 @@ export class PageProperties extends Component {
     onChangeAttribute(value, name) {
         return this.editNodeAttributes({ [name]: value });
     }
+
+    static props = {
+        node: { type: Object },
+    }
 }

@@ -837,3 +837,29 @@ registry.category("web_tour.tours").add("web_studio_field_group_studio_no_fetch"
         },
     ],
 });
+
+registry.category("web_tour.tours").add("web_studio_test_move_similar_field", {
+    test: true,
+    steps: [
+        {
+            trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
+        },
+        {
+            extra_trigger: ".o_form_view",
+            trigger: ".o_web_studio_navbar_item button",
+        },
+        {
+            extra_trigger: ".o_web_studio_form_view_editor",
+            trigger: ".o_notebook_headers a:contains('two')",
+        },
+        {
+            trigger: ".tab-pane.active [data-field-name=display_name]",
+            run: "drag_and_drop_native (.o_web_studio_form_view_editor .o_web_studio_hook:eq(1))",
+        },
+        {
+            trigger: ".o_web_studio_leave",
+            run() {
+            },
+        },
+    ]
+});

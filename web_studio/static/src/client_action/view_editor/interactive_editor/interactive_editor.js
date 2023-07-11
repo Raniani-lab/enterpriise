@@ -558,13 +558,9 @@ export class InteractiveEditor extends Component {
             return;
         }
 
-        const name = droppedData.fieldName || droppedData.name; // fixme, the second one is for list view
         const operation = {
             type: "move",
-            node: {
-                tag: "field",
-                attrs: { name },
-            },
+            node: this.viewEditorModel.getFullTarget(droppedData.studioXpath),
             target: this.viewEditorModel.getFullTarget(targetInfo.xpath),
             position: targetInfo.position,
         };

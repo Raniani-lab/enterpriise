@@ -1846,6 +1846,24 @@ QUnit.module("View Editors", (hooks) => {
                             node: {
                                 tag: "field",
                                 attrs: { name: "m2o" },
+                                xpath_info: [
+                                    {
+                                        indice: 1,
+                                        tag: "form"
+                                    },
+                                    {
+                                        indice: 1,
+                                        tag: "sheet"
+                                    },
+                                    {
+                                        indice: 1,
+                                        tag: "group"
+                                    },
+                                    {
+                                        indice: 3,
+                                        tag: "field"
+                                    }
+                                ]
                             },
                             position: "before",
                             target: {
@@ -3809,6 +3827,16 @@ QUnit.module("View Editors", (hooks) => {
                             tag: "field",
                             attrs: { name: "coucou_id" },
                             subview_xpath: "/form[1]/sheet[1]/field[2]/tree[1]",
+                            xpath_info: [
+                                {
+                                    indice: 1,
+                                    tag: "tree"
+                                },
+                                {
+                                    indice: 2,
+                                    tag: "field"
+                                }
+                            ]
                         },
                         position: "before",
                         target: {

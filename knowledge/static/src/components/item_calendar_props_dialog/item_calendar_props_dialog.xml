@@ -28,14 +28,14 @@
                                 </t>
                                 <t t-set-slot="bottomArea" t-slot-scope="select">
                                     <DropdownItem t-if="select.data.searchValue.length"
-                                        onSelected="() => this.createDateProperty(select.data.searchValue, 'datetime')"
+                                        onSelected="() => this.createProperty(select.data.searchValue, 'datetime', 'dateStart')"
                                         class="'o_select_menu_item o_create_datetime mb-1 d-flex align-items-center'">
                                         <div class="o_select_menu_item_label text-wrap fst-italic ms-3">
                                             Create "<t t-out="select.data.searchValue"/>" (date and time)
                                         </div>
                                     </DropdownItem>
                                     <DropdownItem t-if="select.data.searchValue.length"
-                                        onSelected="() => this.createDateProperty(select.data.searchValue, 'date')"
+                                        onSelected="() => this.createProperty(select.data.searchValue, 'date', 'dateStart')"
                                         class="'o_select_menu_item o_create_date mb-1 d-flex align-items-center'">
                                         <div class="o_select_menu_item_label text-wrap fst-italic ms-3">
                                             Create "<t t-out="select.data.searchValue"/>" (date)
@@ -55,7 +55,7 @@
                                 </t>
                                 <t t-set-slot="bottomArea" t-slot-scope="select">
                                     <DropdownItem t-if="select.data.searchValue.length"
-                                        onSelected="() => this.createDateProperty(select.data.searchValue, dateStartProperty.type, true)"
+                                        onSelected="() => this.createProperty(select.data.searchValue, dateStartProperty.type, 'dateStop')"
                                         class="'o_select_menu_item o_create_choice mb-1 d-flex align-items-center'">
                                         <div class="o_select_menu_item_label text-wrap fst-italic ms-3">
                                             Create "<t t-out="select.data.searchValue"/>"
@@ -66,12 +66,26 @@
                         </div>
                     </div>
                 </div>
-                <div t-if="colorChoices.length" class="row mb-3 o_color">
+                <div class="row mb-3 o_color">
                     <label class="col-sm-4 col-form-label">
                         Base Color On
                     </label>
                     <div class="col-sm-8 my-auto">
-                        <SelectMenu onSelect.bind="selectColor" choices="colorChoices" value="state.colorPropertyId"/>
+                        <SelectMenu onSelect.bind="selectColor" choices="colorChoices" value="state.colorPropertyId" searchPlaceholder="env._t('Start typing')">
+                            <t t-set-slot="default">
+                                <t t-if="state.colorPropertyId" t-out="colorProperty.label"/>
+                                <span t-else="" class="text-muted opacity-25">Property Field</span>
+                            </t>
+                            <t t-set-slot="bottomArea" t-slot-scope="select">
+                                <DropdownItem t-if="select.data.searchValue.length"
+                                    onSelected="() => this.createProperty(select.data.searchValue, 'selection', 'color')"
+                                    class="'o_select_menu_item o_create_choice mb-1 d-flex align-items-center'">
+                                    <div class="o_select_menu_item_label text-wrap fst-italic ms-3">
+                                        Create "<t t-out="select.data.searchValue"/>" (Selection)
+                                    </div>
+                                </DropdownItem>
+                            </t>
+                        </SelectMenu>
                     </div>
                 </div>
                 <div class="mb-3 row o_scale">

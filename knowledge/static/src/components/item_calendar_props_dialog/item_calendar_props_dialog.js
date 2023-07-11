@@ -62,8 +62,8 @@ export class ItemCalendarPropsDialog extends Component {
                 // If no date(time) properties exists, create default ones
                 if (!this.dateTimeChoices.length && !this.dateChoices.length) {
                     this.autoCreateDateProperties = true;
-                    this.createDateProperty(this.env._t("Start Date Time"), "datetime");
-                    this.createDateProperty(this.env._t("End Date Time"), "datetime", true);
+                    this.createProperty(this.env._t("Start Date Time"), "datetime", "dateStart");
+                    this.createProperty(this.env._t("End Date Time"), "datetime", "dateStop");
                 } else {
                     // If some exist, select them by default (prefer to use 2
                     // of the same type if possible, and prefer datetimes over
@@ -131,6 +131,10 @@ export class ItemCalendarPropsDialog extends Component {
         }];
     }
 
+    get colorProperty() {
+        return this.propertyFieldEntries[this.state.colorPropertyId];
+    }
+
     get dateStartProperty() {
         return this.propertyFieldEntries[this.state.dateStartPropertyId];
     }
@@ -146,9 +150,10 @@ export class ItemCalendarPropsDialog extends Component {
      * stored.
      * @param {string} label: label of the property
      * @param {string} type: type of the property (date or datetime)
-     * @param {boolean} isDateStop: whether the choice should be used as dateStop
+     * @param {string} calendarProp: for which calendar prop the property has
+     * been created
      */
-    createDateProperty(label, type, isDateStop) {
+    createProperty(label, type, calendarProp) {
         const newPropertyId = uuid();
         // Add to list of properties
         this.propertyFieldEntries[newPropertyId] = {
@@ -163,14 +168,18 @@ export class ItemCalendarPropsDialog extends Component {
         };
         if (type === "date") {
             this.dateChoices.push(newChoice);
-        } else {
+        } else if (type === "datetime") {
             this.dateTimeChoices.push(newChoice);
+        } else {
+            this.colorChoices.push(newChoice);
         }
         // Select the new choice
-        if (isDateStop) {
-            this.selectDateStop(newPropertyId);
-        } else {
+        if (calendarProp === "dateStart") {
             this.selectDateStart(newPropertyId);
+        } else if (calendarProp === "dateStop") {
+            this.selectDateStop(newPropertyId);
+        } else if (calendarProp === "color") {
+            this.selectColor(newPropertyId);
         }
     }
 
@@ -185,7 +194,7 @@ export class ItemCalendarPropsDialog extends Component {
             return;
         }
         // Create new property if needed
-        if (this.dateStartProperty.isNew || this.dateStopProperty?.isNew) {
+        if (this.dateStartProperty.isNew || this.dateStopProperty?.isNew || this.colorProperty?.isNew) {
             // Keep existing properties to not lose them.
             const propertiesDefinitions = [...this.propertiesDefinitions];
             if (this.dateStartProperty.isNew) {
@@ -200,6 +209,13 @@ export class ItemCalendarPropsDialog extends Component {
                     name: this.state.dateStopPropertyId,
                     string: this.dateStopProperty.label,
                     type: this.dateStopProperty.type,
+                });
+            }
+            if (this.colorProperty?.isNew) {
+                propertiesDefinitions.push({
+                    name: this.state.colorPropertyId,
+                    string: this.colorProperty.label,
+                    type: this.colorProperty.type,
                 });
             }
             try {

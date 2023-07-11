@@ -284,7 +284,7 @@ class L10nNlTaxReportSBRWizard(models.TransientModel):
 
     def action_download_xbrl_file(self):
         options = self.env.context['options']
-        options['code_values'] = self._generate_general_codes_values(options)
+        options['codes_values'] = self._generate_general_codes_values(options)
         return {
             'type': 'ir_actions_account_report_download',
             'data': {
@@ -316,7 +316,7 @@ class L10nNlTaxReportSBRWizard(models.TransientModel):
                     _('Closing Entry'),
                     {'options': options},
                 )
-        options['code_values'] = self._generate_general_codes_values(options)
+        options['codes_values'] = self._generate_general_codes_values(options)
         xbrl_data = report_handler.export_tax_report_to_xbrl(options)
         report_file = xbrl_data['file_content']
 

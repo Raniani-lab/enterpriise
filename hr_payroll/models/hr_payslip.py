@@ -886,7 +886,7 @@ class HrPayslip(models.Model):
     @api.depends('employee_id', 'struct_id', 'date_from', 'date_to')
     def _compute_name(self):
         formated_date_cache = {}
-        for slip in self.filtered(lambda p: p.employee_id and p.date_from):
+        for slip in self.filtered(lambda p: p.employee_id and p.date_from and p.date_to):
             lang = slip.employee_id.lang or self.env.user.lang
             context = {'lang': lang}
             payslip_name = slip.struct_id.payslip_name or _('Salary Slip')

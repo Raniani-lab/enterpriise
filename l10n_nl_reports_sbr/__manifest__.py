@@ -9,9 +9,7 @@
     'description': """
 SBR Dutch Localization
 ========================
-Allow the user to report to the Dutch government.
-
-This module allows the creation and sending of documents (XBRL) needed for the Dutch SBR system.
+Submit your Tax Reports to the Dutch tax authorities
     """,
     'depends': ['l10n_nl_reports'],
     'external_dependencies': {

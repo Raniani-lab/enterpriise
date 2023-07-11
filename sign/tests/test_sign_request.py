@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from odoo.tests.common import Form, new_test_user
 from .sign_request_common import SignRequestCommon
 from odoo import Command
 from odoo.exceptions import UserError, ValidationError
@@ -451,3 +452,13 @@ class TestSignRequest(SignRequestCommon):
         )
 
         self.assertEqual(mail.reply_to, responsible_email, 'reply_to is not set as the responsible email')
+
+    def test_sign_send_request_without_order(self):
+        wizard = Form(self.env['sign.send.request'].with_context(active_id=self.template_3_roles.id, sign_directly_without_mail=False))
+        self.assertEqual([record['mail_sent_order'] for record in wizard.signer_ids._records], [1, 1, 1])
+
+    def test_sign_send_request_order_with_order(self):
+        show_sign_order_user = new_test_user(self.env, login="user_show_sign_order", groups='sign.group_sign_manager,sign.show_sign_order')
+        wizard = Form(self.env['sign.send.request'].with_user(show_sign_order_user).with_context(active_id=self.template_3_roles.id, sign_directly_without_mail=False))
+        wizard.set_sign_order = True
+        self.assertEqual([record['mail_sent_order'] for record in wizard.signer_ids._records], [1, 2, 3])

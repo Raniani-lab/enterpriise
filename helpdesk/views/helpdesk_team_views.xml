@@ -150,8 +150,8 @@
                             <div class="text-muted o_row ps-1 mt16" invisible="not use_website_helpdesk_livechat">
                                 <i class="fa fa-lightbulb-o"/>
                                 <span class="ms-2">
-                                    Type <b>/helpdesk</b> to create tickets<br/>
-                                    Type <b>/helpdesk_search</b> to find tickets<br/>
+                                    Type <b>/ticket</b> to create tickets<br/>
+                                    Type <b>/search_tickets</b> to find tickets<br/>
                                     Type <b>:shortcut</b> to insert canned responses in your messages
                                 </span>
                             </div>

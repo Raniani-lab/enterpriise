@@ -110,30 +110,6 @@ class SaleOrderLine(models.Model):
             line.price_unit = line.parent_line_id.price_unit
         super(SaleOrderLine, line_to_recompute)._compute_price_unit()
 
-    @api.depends('product_id', 'order_id.recurrence_id')
-    def _compute_pricing(self):
-        # search pricing_ids for each variant in self
-        available_pricing_ids = self.env['product.pricing'].search([
-            ('product_template_id', 'in', self.product_id.product_tmpl_id.ids),
-            ('recurrence_id', 'in', self.order_id.recurrence_id.ids),
-            '|',
-            ('product_variant_ids', 'in', self.product_id.ids),
-            ('product_variant_ids', '=', False),
-            '|',
-            ('pricelist_id', 'in', self.order_id.pricelist_id.ids),
-            ('pricelist_id', '=', False)
-        ])
-        for line in self:
-            if not line.product_id.recurring_invoice:
-                line.pricing_id = False
-                continue
-            line.pricing_id = available_pricing_ids.filtered(
-                lambda pricing:
-                    line.product_id.product_tmpl_id == pricing.product_template_id and (
-                        line.product_id in pricing.product_variant_ids or not pricing.product_variant_ids
-                    ) and (line.order_id.pricelist_id == pricing.pricelist_id or not pricing.pricelist_id)
-            )[:1]
-
     @api.depends('temporal_type', 'invoice_lines.deferred_start_date', 'invoice_lines.deferred_end_date',
                  'order_id.next_invoice_date', 'order_id.last_invoice_date')
     def _compute_qty_to_invoice(self):

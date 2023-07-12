@@ -22,7 +22,10 @@ patch(ListRenderer.prototype, "documents_spreadsheet_list_renderer_patch", {
 
     insertListSpreadsheet() {
         const model = this.env.model.root;
-        const threshold = Math.min(model.count, model.limit);
+        const count = model.groups
+            ? model.groups.reduce((acc, group) => group.count + acc, 0)
+            : model.count;
+        const threshold = Math.min(count, model.limit);
         let name = this.env.config.getDisplayName();
         const sortBy = model.orderBy[0];
         if (sortBy) {

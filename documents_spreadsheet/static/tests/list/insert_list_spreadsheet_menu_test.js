@@ -12,6 +12,7 @@ import {
 } from "@web/../tests/helpers/utils";
 import { toggleActionMenu } from "@web/../tests/search/helpers";
 import { getSpreadsheetActionModel } from "@spreadsheet_edition/../tests/utils/webclient_helpers";
+import { getBasicServerData } from "@spreadsheet/../tests/utils/data";
 
 let target;
 QUnit.module(
@@ -145,5 +146,26 @@ QUnit.module(
             await waitForDataSourcesLoaded(model);
             assert.strictEqual(model.getters.getListName("1"), "Partners");
         });
+
+        QUnit.test(
+            "Grouped list: we take the number of elements not the number of groups",
+            async function (assert) {
+                const serverData = getBasicServerData();
+                await spawnListViewForSpreadsheet({
+                    serverData,
+                    groupBy: ["product_id"],
+                    red_model: "partner",
+                });
+
+                await toggleActionMenu(target);
+                await toggleCogMenuSpreadsheet(target);
+                await click(target.querySelector(".o_insert_list_spreadsheet_menu"));
+
+                assert.equal(
+                    target.querySelector("input#threshold").value,
+                    String(serverData.models.partner.records.length)
+                );
+            }
+        );
     }
 );

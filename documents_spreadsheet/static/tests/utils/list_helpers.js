@@ -48,6 +48,9 @@ export async function spawnListViewForSpreadsheet(params = {}) {
         res_model: model || "partner",
         type: "ir.actions.act_window",
         views: [[false, "list"]],
+        context: {
+            group_by: params.groupBy || [],
+        },
     });
 
     /** sort the view by field */

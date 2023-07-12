@@ -275,6 +275,41 @@ QUnit.module("spreadsheet > pivot_autofill", {}, () => {
         );
     });
 
+    QUnit.test("Autofill pivot values with date (week) 2020 has 53 weeks", async function (assert) {
+        const { model } = await createSpreadsheetWithPivot({
+            arch: /*xml*/ `
+                <pivot>
+                    <field name="date" interval="week" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+        });
+        setCellContent(model, "A1", '=ODOO.PIVOT.HEADER(1,"date:week","52/2020")');
+        assert.strictEqual(
+            getPivotAutofillValue(model, "A1", { direction: "bottom", steps: 1 }),
+            '=ODOO.PIVOT.HEADER(1,"date:week","53/2020")'
+        );
+    });
+
+    QUnit.test("Autofill empty pivot date value", async function (assert) {
+        for (const interval of ["day", "week", "month", "quarter", "year"]) {
+            const { model } = await createSpreadsheetWithPivot({
+                arch: /* xml */ `
+                    <pivot>
+                        <field name="date" interval="${interval}" type="row"/>
+                        <field name="probability" type="measure"/>
+                    </pivot>`,
+            });
+            setCellContent(model, "A1", `=ODOO.PIVOT.HEADER(1,"date:${interval}","false")`);
+            assert.strictEqual(
+                getPivotAutofillValue(model, "A1", { direction: "bottom", steps: 1 }),
+                `=ODOO.PIVOT.HEADER(1,"date:${interval}","false")`
+            );
+            assert.deepEqual(model.getters.getTooltipFormula(getCellFormula(model, "A1")), [
+                { value: "None" },
+            ]);
+        }
+    });
+
     QUnit.test("Autofill pivot values with date (month)", async function (assert) {
         const { model } = await createSpreadsheetWithPivot({
             arch: /*xml*/ `
@@ -626,13 +661,13 @@ QUnit.module("spreadsheet > pivot_autofill", {}, () => {
         autofill(model, "E3", "E4");
         const startingCell = getCell(model, "E3");
         assert.deepEqual(startingCell.style, style);
-        assert.deepEqual(model.getters.getCellBorder({sheetId, col, row}).left, border.left);
+        assert.deepEqual(model.getters.getCellBorder({ sheetId, col, row }).left, border.left);
         assert.equal(startingCell.format, "#,##0.0");
 
         // Check that the format of E3 has been correctly applied to E4 but not the style nor the border
         const filledCell = getCell(model, "E4");
         assert.equal(filledCell.style, undefined);
-        assert.equal(model.getters.getCellBorder({sheetId, col, row: row + 1}), null);
+        assert.equal(model.getters.getCellBorder({ sheetId, col, row: row + 1 }), null);
         assert.equal(filledCell.format, "#,##0.0");
     });
 });

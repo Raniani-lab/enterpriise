@@ -260,7 +260,7 @@ export class PivotDialog extends Component {
         }
         const field = domain[len - 2];
         const value = domain[len - 1];
-        return this.dataSource.getGroupByDisplayLabel(field, value);
+        return this.dataSource.getGroupByDisplayLabel(field, value, this.props.getters.getLocale());
     }
 
     // ---------------------------------------------------------------------

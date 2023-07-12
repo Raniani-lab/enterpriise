@@ -2,12 +2,12 @@
 
 import { _t } from "@web/core/l10n/translation";
 import { astToFormula, UIPlugin } from "@odoo/o-spreadsheet";
-import { FORMATS } from "@spreadsheet/helpers/constants";
 import {
     getFirstPivotFunction,
     getNumberOfPivotFormulas,
     makePivotFormula,
 } from "@spreadsheet/pivot/pivot_helpers";
+import { pivotTimeAdapter } from "@spreadsheet/pivot/pivot_time_adapters";
 
 /**
  * @typedef {import("@spreadsheet/pivot/pivot_table").SpreadsheetPivotTable} SpreadsheetPivotTable
@@ -514,10 +514,9 @@ export default class PivotAutofillPlugin extends UIPlugin {
      * @returns {string}
      */
     _incrementDate(date, group, increment) {
-        const format = FORMATS[group].out;
-        const interval = FORMATS[group].interval;
-        const dateMoment = moment(date, format);
-        return dateMoment.isValid() ? dateMoment.add(increment, interval).format(format) : date;
+        const adapter = pivotTimeAdapter(group);
+        const value = adapter.normalizeFunctionValue(date);
+        return adapter.increment(value, increment);
     }
     /**
      * Create a structure { field: value } from the arguments of a pivot
@@ -569,7 +568,11 @@ export default class PivotAutofillPlugin extends UIPlugin {
         if (definition.measures.length !== 1 && isColumn) {
             const measure = args[1];
             tooltips.push({
-                value: dataSource.getGroupByDisplayLabel("measure", measure),
+                value: dataSource.getGroupByDisplayLabel(
+                    "measure",
+                    measure,
+                    this.getters.getLocale()
+                ),
             });
         }
         if (!tooltips.length) {

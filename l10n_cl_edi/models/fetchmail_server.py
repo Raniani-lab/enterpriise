@@ -180,7 +180,7 @@ class FetchmailServer(models.Model):
             issuer_vat = self._get_dte_receptor_vat(dte)
             partner = self._get_partner(issuer_vat, company_id)
             if not partner:
-                _logger.error('Partner for incoming customer claim has not been found for %s' % issuer_vat)
+                _logger.warning('Partner for incoming customer claim has not been found for %s', issuer_vat)
                 continue
             document_type_code = self._get_document_type_from_xml(dte)
             document_type = self.env['l10n_latam.document.type'].search(
@@ -196,8 +196,8 @@ class FetchmailServer(models.Model):
                 ('company_id', '=', company_id)
             ], limit=1)
             if not move:
-                _logger.error('Move not found with partner: %s, name: %s, l10n_latam_document_type: %s, '
-                              'company_id: %s' % (partner.id, name, document_type.id, company_id))
+                _logger.warning('Move not found with partner: %s, name: %s, l10n_latam_document_type: %s, company_id: %s',
+                                partner.id, name, document_type.id, company_id)
                 continue
             status = {'incoming_acknowledge': 'received', 'incoming_commercial_accept': 'accepted'}.get(
                 origin_type, 'claimed')

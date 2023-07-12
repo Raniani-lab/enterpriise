@@ -3,7 +3,10 @@
 import { registry } from '@web/core/registry';
 import { standardWidgetProps } from '@web/views/widgets/standard_widget_props';
 
+import { useService } from "@web/core/utils/hooks";
 import { Chatter } from '@mail/core/web/chatter';
+import { SIZES } from "@web/core/ui/ui_service";
+
 
 import { Component, useRef, useState } from '@odoo/owl';
 
@@ -18,6 +21,7 @@ export class KnowledgeArticleChatter extends Component {
         });
 
         this.root = useRef('root')
+        this.ui = useService("ui");
 
         this.env.bus.addEventListener('KNOWLEDGE:TOGGLE_CHATTER', this.toggleChatter.bind(this));
     }
@@ -29,6 +33,10 @@ export class KnowledgeArticleChatter extends Component {
         } else {
             this.root.el?.parentElement?.classList.add('d-none');
         }
+    }
+
+    get isChatterAside() {
+        return this.ui.size >= SIZES.LG;
     }
 }
 

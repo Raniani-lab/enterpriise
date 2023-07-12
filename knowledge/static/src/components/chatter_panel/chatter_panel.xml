@@ -9,6 +9,7 @@
                 hasParentReloadOnAttachmentsChanged="true"
                 hasParentReloadOnFollowersUpdate="true"
                 hasParentReloadOnMessagePosted="true"
+                isChatterAside="isChatterAside"
             />
         </div>
     </div>

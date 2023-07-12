@@ -138,9 +138,17 @@ class CustomerPortal(payment_portal.PaymentPortal):
         progress_child = order_sudo.subscription_child_ids.filtered(lambda s: s.subscription_state in SUBSCRIPTION_PROGRESS_STATE)
         # prevent churned SO with a confirmed renewal to be reactivated. The child should be updated.
         display_payment_message = order_sudo.subscription_state in ['3_progress', '4_paused', '6_churn'] and not progress_child
+        backend_url = '/web#' + url_encode({
+                'model': order_sudo._name,
+                'id': order_sudo.id,
+                'action': order_sudo._get_portal_return_action().id,
+                'view_type': 'form',
+        })
+
         portal_page_values = {
             'page_name': 'subscription',
-            'subscription': order_sudo,
+            'sale_order': order_sudo,
+            'report_type': 'html',
             'template': order_sudo.sale_order_template_id.sudo(),
             'display_close': display_close,
             'is_follower': is_follower,
@@ -156,7 +164,9 @@ class CustomerPortal(payment_portal.PaymentPortal):
             'token_management_url': f'/my/payment_method?{url_encode(token_management_url_params)}',
             'payment_action_id': request.env.ref('payment.action_payment_provider').id,
             'display_payment_message': display_payment_message,
+            'backend_url': backend_url,
         }
+
         portal_page_values = self._get_page_view_values(
             order_sudo, access_token, portal_page_values, 'my_subscriptions_history', False)
 
@@ -178,7 +188,7 @@ class CustomerPortal(payment_portal.PaymentPortal):
             **payment_form_values,
             **payment_context,
         }
-        return request.render("sale_subscription.subscription", rendering_context)
+        return request.render("sale_subscription.subscription_portal_template", rendering_context)
 
     @http.route(['/my/subscription/<int:order_id>/close'], type='http', methods=["POST"], auth="public", website=True)
     def close_account(self, order_id, access_token=None, **kw):
@@ -192,6 +202,40 @@ class CustomerPortal(payment_portal.PaymentPortal):
                     order_sudo.message_post(body=_('Closing text: %s', kw.get('closing_text')))
                 order_sudo.set_close(close_reason_id=close_reason.id)
         return request.redirect(f'/my/subscription/{order_id}/{access_token}')
+
+    @http.route(['/my/subscriptions/<int:order_id>/change_plan'], type='http', methods=["POST"], auth="public", website=True)
+    def change_plan(self, order_id, access_token=None, **kw):
+        order_sudo, redirection = self._get_subscription(access_token, order_id)
+        if redirection:
+            return redirection
+        if order_sudo.plan_id.related_plan_id and order_sudo._can_be_edited_on_portal():
+            if new_plan := request.env['sale.subscription.plan'].browse(int(kw.get('plan_id'))):
+                order_sudo.plan_id = new_plan
+        return request.redirect(order_sudo.get_portal_url())
+
+    @http.route(['/my/subscriptions/<int:order_id>/upsell'], type='http', auth="public")
+    def subscription_portal_upsell(self, order_id, access_token=None, **kw):
+        order_sudo, redirection = self._get_subscription(access_token, order_id)
+        if redirection:
+            return redirection
+        if order_sudo.user_quantity:
+            upsell = order_sudo._create_renew_upsell_order('7_upsell', 'An upsell has been created by the client')
+            upsell.action_quotation_sent()
+            return request.redirect(upsell.get_portal_url())
+
+    @http.route(['/my/subscriptions/<int:order_id>/renewal'], type='http', auth="public")
+    def subscription_portal_renewal(self, order_id, access_token=None, **kw):
+        order_sudo, redirection = self._get_subscription(access_token, order_id)
+        if redirection:
+            return redirection
+        change_plan = kw.get('change_plan', False)
+        qs = ""
+        if change_plan:
+            qs = "&change_plan=true"
+        if order_sudo.user_extend:
+            renewal = order_sudo._create_renew_upsell_order('2_renewal', 'A renewal has been created by the client')
+            renewal.action_quotation_sent()
+            return request.redirect(renewal.get_portal_url(query_string=qs))
 
 
 class PaymentPortal(payment_portal.PaymentPortal):

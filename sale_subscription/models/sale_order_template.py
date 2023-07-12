@@ -27,11 +27,10 @@ class SaleOrderTemplate(models.Model):
             return False
         return get_timedelta(self.duration_value, self.duration_unit)
 
-    @api.depends('sale_order_template_line_ids.product_id', 'plan_id')
+    @api.depends('plan_id')
     def _compute_is_subscription(self):
         for template in self:
-            recurring_product = template.sale_order_template_line_ids.mapped('recurring_invoice')
-            template.is_subscription = recurring_product and template.plan_id
+            template.is_subscription = bool(template.plan_id)
 
     @api.model
     def _search_is_subscription(self, operator, value):

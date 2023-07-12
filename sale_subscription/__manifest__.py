@@ -41,7 +41,7 @@ Features:
         'views/sale_subscription_views.xml',
         'views/res_partner_views.xml',
         'views/account_analytic_account_views.xml',
-        'views/subscription_portal_templates.xml',
+        'views/sale_subscription_portal_templates.xml',
         'views/subscription_templates.xml',
         'views/payment_form_templates.xml',
         'views/mail_activity_plan_views.xml',

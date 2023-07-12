@@ -1939,3 +1939,5 @@ class SaleOrder(models.Model):
             self.payment_token_id = tx.token_id.id
             return True
         return False
+    def _get_name_portal_content_view(self):
+        return 'sale_subscription.subscription_portal_content' if self.is_subscription else super()._get_name_portal_content_view()

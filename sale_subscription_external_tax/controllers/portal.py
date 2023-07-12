@@ -8,9 +8,8 @@ class CustomerPortalExternalTaxes(CustomerPortal):
     def subscription(self, order_id, access_token=None, message='', message_class='', report_type=None, download=False, **kw):
         res = super().subscription(order_id, access_token=access_token, message=message, message_class='',
                                    report_type=report_type, download=download, **kw)
-        if 'subscription' not in res.qcontext:
+        if 'sale_order' not in res.qcontext:
             return res
 
-        res.qcontext['subscription']._get_and_set_external_taxes_on_eligible_records()
-
+        res.qcontext['sale_order']._get_and_set_external_taxes_on_eligible_records()
         return res

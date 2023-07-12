@@ -158,10 +158,10 @@
         <field name="model">project.task</field>
         <field name="inherit_id" ref="industry_fsm.view_task_form2_inherit"/>
         <field name="arch" type="xml">
-            <field name="project_id" position="after">
+            <xpath expr="//field[@widget='project']" position="after">
                 <field name="allow_worksheets" invisible="1"/>
                 <field name="worksheet_template_id" options="{'no_open': True, 'no_create': True}" context="{'form_view_ref': 'industry_fsm_report.worksheet_template_view_form_no_design_button', 'default_res_model': 'project.task'}" attrs="{'invisible': [('allow_worksheets', '=', False)]}"/>
-            </field>
+            </xpath>
             <xpath expr="//button[@name='action_recurring_tasks']" position="before">
                 <field name="worksheet_count" invisible="1"/>
             </xpath>
@@ -315,7 +315,7 @@
         <field name="res_model">project.task</field>
         <field name="view_mode">kanban,tree,calendar,map,pivot,graph,activity</field>
         <field name="search_view_id" ref="industry_fsm.project_task_view_search_fsm"/>
-        <field name="domain">[('is_fsm', '=', True), ('project_id', '!=', False)]</field>
+        <field name="domain">[('is_fsm', '=', True), ('project_id', '!=', False), ('display_in_project', '=', True)]</field>
         <field name="context" eval="{'fsm_mode': 1, 'task_nameget_with_hours': 1, 'default_scale': 'week'}"/>
         <field name="help" type="html">
             <p class='o_view_nocontent_smiling_face'>

@@ -4,7 +4,7 @@
 from werkzeug.exceptions import Forbidden
 
 from odoo import http, fields, _
-from odoo.exceptions import AccessError, ValidationError
+from odoo.exceptions import ValidationError
 from odoo.http import request, route
 
 
@@ -46,13 +46,12 @@ class AppointmentCalendarView(http.Controller):
         # Check if the user is a member of group_user to avoid portal user and the like to create appointment types
         if not request.env.user.user_has_groups('base.group_user'):
             raise Forbidden()
-        # Ignore the default_name in the context when creating a custom appointment type from the calendar view
         if context:
             request.update_context(**context)
-        context = request.env.context.copy()
-        if context.get('default_name'):
-            del context['default_name']
-        appointment_type = request.env['appointment.type'].with_context(context).sudo().create({
+        AppointmentType = request.env['appointment.type']
+        appointment_type = AppointmentType.with_context(
+            AppointmentType._get_clean_appointment_context()
+        ).sudo().create({
             'category': 'custom',
             'slot_ids': [(0, 0, {
                 'start_datetime': fields.Datetime.from_string(slot.get('start')),
@@ -97,17 +96,17 @@ class AppointmentCalendarView(http.Controller):
         # Check if the user is a member of group_user to avoid portal user and the like to create appointment types
         if not request.env.user.user_has_groups('base.group_user'):
             raise Forbidden()
-        appointment_type = request.env['appointment.type'].search([
+        AppointmentType = request.env['appointment.type']
+        appointment_type = AppointmentType.search([
             ('category', '=', 'anytime'),
             ('staff_user_ids', 'in', request.env.user.ids)])
         if not appointment_type:
-            # Ignore the default_name in the context when creating an anytime appointment type from the calendar view
             if context:
                 request.update_context(**context)
-            context = request.env.context.copy()
-            context.pop('default_name', None)
             appt_type_vals = self._prepare_appointment_type_anytime_values()
-            appointment_type = request.env['appointment.type'].with_context(context).sudo().create(appt_type_vals)
+            appointment_type = AppointmentType.with_context(
+                AppointmentType._get_clean_appointment_context()
+            ).sudo().create(appt_type_vals)
         return self._get_staff_user_appointment_invite_info(appointment_type)
 
     # Utility Methods
@@ -124,7 +123,9 @@ class AppointmentCalendarView(http.Controller):
         appointment_invitation_domain = self._get_staff_user_appointment_invite_domain(appointment_type)
         appointment_invitation = request.env['appointment.invite'].search(appointment_invitation_domain, limit=1)
         if not appointment_invitation:
-            appointment_invitation = request.env['appointment.invite'].create({
+            appointment_invitation = request.env['appointment.invite'].with_context(
+                request.env['appointment.type']._get_clean_appointment_context()
+            ).create({
                 'appointment_type_ids': appointment_type.ids,
                 'staff_user_ids': request.env.user.ids,
             })

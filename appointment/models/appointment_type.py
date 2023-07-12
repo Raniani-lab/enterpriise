@@ -801,6 +801,26 @@ class AppointmentType(models.Model):
             return True
         return False
 
+    @api.model
+    def _get_clean_appointment_context(self):
+        whitelist_default_fields = list(map(
+            lambda field: f'default_{field}',
+            self._get_calendar_view_appointment_type_default_context_fields_whitelist()))
+        return {
+            key: value for key, value in self.env.context.items()
+            if key in whitelist_default_fields or not key.startswith('default_')
+        }
+
+    @api.model
+    def _get_calendar_view_appointment_type_default_context_fields_whitelist(self):
+        """ White list of fields that can be defaulted in the context of the
+        calendar routes creating appointment types and invitations.
+        This is mainly used in /appointment/appointment_type/create_custom and
+        /appointment/appointment_type/search_create_anytime.
+        This list of fields can be updated the fields in other sub-modules.
+        """
+        return []
+
     # --------------------------------------
     # Staff Users - Slots Availability
     # --------------------------------------

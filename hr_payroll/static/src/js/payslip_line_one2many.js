@@ -80,7 +80,7 @@ export class PayslipLineField extends Field {
     get fieldComponentProps() {
         const props = super.fieldComponentProps;
         const record = this.props.record;
-        if (!record.isPayslipLineField) {
+        if (!record.isPayslipLineField && !this.props.name === 'sequence') {
             record.isPayslipLineField = true;
             const oldUpdate = record.update.bind(record);
             record.update = async (changes) => {

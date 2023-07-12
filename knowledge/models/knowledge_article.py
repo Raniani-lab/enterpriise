@@ -268,7 +268,7 @@ class Article(models.Model):
             if parent_id and not stages_by_parent_id.get(parent_id):
                 stages_by_parent_id[parent_id] = result['id']
         for item in items:
-            item.stage_id = stages_by_parent_id.get(item.parent_id)
+            item.stage_id = stages_by_parent_id.get(item.parent_id.id)
 
     @api.depends('parent_id', 'parent_id.inherited_permission_parent_id', 'internal_permission')
     def _compute_inherited_permission(self):

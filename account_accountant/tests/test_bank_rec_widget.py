@@ -1816,6 +1816,31 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
             {'amount_currency': 1000.0, 'tax_ids': [],                  'tax_tag_ids': [],              'tax_tag_invert': False},
         ])
 
+    def test_tax_removal(self):
+        tax_10 = self.env['account.tax'].create({
+            'name': "tax_10",
+            'amount': 10,
+        })
+        st_line = self._create_st_line(110.0)
+        wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
+        suspense_line = wizard.line_ids.filtered(lambda l: l.flag == 'auto_balance')
+
+        suspense_line.tax_ids = [Command.set(tax_10.ids)]
+        wizard._line_value_changed_tax_ids(suspense_line)
+        self.assertRecordValues(wizard.line_ids, [
+            # pylint: disable=C0326
+            { 'flag': 'liquidity', 'debit': 110.0, 'credit':   0.0 },
+            { 'flag': 'manual',    'debit':   0.0, 'credit': 100.0 },
+            { 'flag': 'tax_line',  'debit':   0.0, 'credit':  10.0 },
+        ])
+
+        suspense_line.tax_ids = [Command.clear()]
+        wizard._line_value_changed_tax_ids(suspense_line)
+        self.assertRecordValues(wizard.line_ids, [
+            # pylint: disable=C0326
+            { 'flag': 'liquidity', 'debit': 110.0, 'credit':   0.0 },
+            { 'flag': 'manual',    'debit':   0.0, 'credit': 110.0 },
+        ])
 
     def test_multi_currencies_with_custom_rate(self):
         self.company_data['default_journal_bank'].currency_id = self.currency_data['currency']

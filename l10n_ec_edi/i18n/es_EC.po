@@ -1679,6 +1679,13 @@ msgid "Withholds"
 msgstr "Retenciones"
 
 #. module: l10n_ec_edi
+#. odoo-python
+#: code:addons/l10n_ec_edi/wizard/l10n_ec_wizard_account_withhold.py:0
+#, python-format
+msgid "Withholds can only be created for posted invoices."
+msgstr "Solo se pueden crear retenciones para facturas registradas."
+
+#. module: l10n_ec_edi
 #: model:ir.model.fields,field_description:l10n_ec_edi.field_account_bank_statement_line__l10n_ec_withhold_count
 #: model:ir.model.fields,field_description:l10n_ec_edi.field_account_move__l10n_ec_withhold_count
 #: model:ir.model.fields,field_description:l10n_ec_edi.field_account_payment__l10n_ec_withhold_count

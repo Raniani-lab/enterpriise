@@ -297,8 +297,11 @@ class L10nEcWizardAccountWithhold(models.TransientModel):
         }
         invoice_months = set()
         for invoice in invoices:
-            invoice_months.add((invoice.invoice_date.month, invoice.invoice_date.year))
             errors = []
+            if invoice.state != 'posted':
+                errors.append(_("Withholds can only be created for posted invoices."))
+                continue
+            invoice_months.add((invoice.invoice_date.month, invoice.invoice_date.year))
             if not invoice.l10n_ec_sri_payment_id and self.withhold_type != 'in_withhold':
                 errors.append(_("The SRI Payment Method must be set."))
             if len(invoice_months) > 1:

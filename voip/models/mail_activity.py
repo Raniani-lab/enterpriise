@@ -76,33 +76,15 @@ class MailActivity(models.Model):
         for model, data in data_by_model.items():
             records = self.env[model].browse(data['record_ids'])
             for record, activity in zip(records, data['activities']):
-                customer = self.env['res.partner']
                 mobile = record.mobile if 'mobile' in record else False
                 phone = record.phone if 'phone' in record else False
                 # take only the first found partner if multiple customers are
                 # related to the record; anyway we will create only one phonecall
-                if hasattr(record, '_mail_get_partner_fields'):
-                    customer = next(
-                        (partner
-                            for partner in record._mail_get_partners()[record.id]
-                            if partner and (partner.phone or partner.mobile)),
-                        self.env['res.partner']
-                    )
-                else:
-                    # find relational fields linking to partners if model does not
-                    # inherit from mail.thread, just to have a fallback
-                    partner_fnames = [
-                        fname for fname, fvalue in records._fields.items()
-                        if fvalue.type == 'many2one' and fvalue.comodel_name == 'res.partner'
-                    ]
-                    customer = next(
-                        (record[fname] for fname in partner_fnames
-                            if record[fname] and (record[fname].phone or record[fname].mobile)),
-                        self.env['res.partner']
-                    )
-                if not phone and not mobile:
-                    phone = customer.phone
-                    mobile = customer.mobile
+                customers = record._mail_get_partners(introspect_fields=True)[record.id]
+                customer = customers[0] if customers else self.env['res.partner']
+                if not phone and not mobile and customer:
+                    phone = customers[0].phone
+                    mobile = customers[0].mobile
                 activity_voip_info[activity.id] = {
                     'mobile': mobile,
                     'partner': customer,

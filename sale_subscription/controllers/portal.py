@@ -108,7 +108,7 @@ class CustomerPortal(payment_portal.PaymentPortal):
         })
         return request.render("sale_subscription.portal_my_subscriptions", values)
 
-    @http.route(['/my/subscription/<int:order_id>', '/my/subscription/<int:order_id>/<access_token>'],
+    @http.route(['/my/subscriptions/<int:order_id>', '/my/subscriptions/<int:order_id>/<access_token>'],
                 type='http', auth='public', website=True)
     def subscription(self, order_id, access_token=None, message='', message_class='', report_type=None, download=False, **kw):
         order_sudo, redirection = self._get_subscription(access_token, order_id)
@@ -149,7 +149,6 @@ class CustomerPortal(payment_portal.PaymentPortal):
             'page_name': 'subscription',
             'sale_order': order_sudo,
             'report_type': 'html',
-            'template': order_sudo.sale_order_template_id.sudo(),
             'display_close': display_close,
             'is_follower': is_follower,
             'close_reasons': request.env['sale.order.close.reason'].search([]),

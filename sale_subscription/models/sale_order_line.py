@@ -23,6 +23,14 @@ class SaleOrderLine(models.Model):
     recurring_monthly = fields.Monetary(compute='_compute_recurring_monthly', string="Monthly Recurring Revenue")
     parent_line_id = fields.Many2one('sale.order.line', compute='_compute_parent_line_id', store=True, precompute=True)
 
+    @property
+    def upsell_total(self):
+        for line in self:
+            if line.order_id.subscription_state != '7_upsell':
+                return 0
+            else:
+                return (line.parent_line_id.product_uom_qty if line.parent_line_id else 0) + line.product_uom_qty
+
     def _check_line_unlink(self):
         """ Override. Check whether a line can be deleted or not."""
         undeletable_lines = super()._check_line_unlink()

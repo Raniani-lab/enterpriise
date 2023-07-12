@@ -2,6 +2,17 @@
 
     import publicWidget from "@web/legacy/js/public/public_widget";
 
+    publicWidget.registry.SubscriptionChangePlan = publicWidget.Widget.extend({
+        selector: '.o_portal_sale_sidebar',
+
+        start: async function () {
+            if (new URLSearchParams(window.location.search).get('change_plan') === 'true') {
+                const changePlanButton = document.getElementById('o_change_plan');
+                changePlanButton && changePlanButton.click();
+            }
+        }
+    });
+
     publicWidget.registry.SubscriptionCloseSelect = publicWidget.Widget.extend({
         selector: '#subscription-close-select',
         events: {

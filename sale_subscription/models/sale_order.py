@@ -144,6 +144,10 @@ class SaleOrder(models.Model):
                              string='Show Subscription on dashboard',
                              help="Whether this subscription should be displayed on the dashboard or not")
 
+    user_closable = fields.Boolean(related="plan_id.user_closable")
+    user_quantity = fields.Boolean(related="plan_id.user_quantity")
+    user_extend = fields.Boolean(related="plan_id.user_extend")
+
     _sql_constraints = [
         ('sale_subscription_state_coherence',
          "CHECK(NOT (is_subscription=TRUE AND state = 'sale' AND subscription_state='1_draft'))",
@@ -214,10 +218,14 @@ class SaleOrder(models.Model):
     def _compute_type_name(self):
         other_orders = self.env['sale.order']
         for order in self:
-            if not (order.is_subscription and order.state == 'sale'):
+            if order.is_subscription and order.state == 'sale':
+                order.type_name = _('Subscription')
+            elif order.subscription_state == '7_upsell':
+                order.type_name = _('Upsell')
+            elif order.subscription_state == '2_renewal':
+                order.type_name = _('Renewal Quotation')
+            else:
                 other_orders |= order
-                continue
-            order.type_name = _('Subscription')
 
         super(SaleOrder, other_orders)._compute_type_name()
 
@@ -1019,7 +1027,7 @@ class SaleOrder(models.Model):
         })
         return action
 
-    def _prepare_renew_upsell_order(self, subscription_state, message_body):
+    def _create_renew_upsell_order(self, subscription_state, message_body):
         self.ensure_one()
         if self.start_date == self.next_invoice_date:
             raise ValidationError(_("You can not upsell or renew a subscription that has not been invoiced yet. "
@@ -1034,6 +1042,10 @@ class SaleOrder(models.Model):
             parent_message_body = _("A renewal quotation %s has been created", order._get_html_link())
         self.message_post(body=parent_message_body)
         order.order_line._compute_tax_id()
+        return order
+
+    def _prepare_renew_upsell_order(self, subscription_state, message_body):
+        order = self._create_renew_upsell_order(subscription_state, message_body)
         action = self._get_associated_so_action()
         action['name'] = _('Upsell') if subscription_state == '7_upsell' else _('Renew')
         action['views'] = [(self.env.ref('sale_subscription.sale_subscription_primary_form_view').id, 'form')]
@@ -1178,13 +1190,7 @@ class SaleOrder(models.Model):
         subscription = self.with_company(self.company_id)
         order_lines = self.order_line._get_renew_upsell_values(subscription_state, period_end=self.next_invoice_date)
         is_subscription = subscription_state == '2_renewal'
-        option_lines_data = [fields.Command.clear()]
-        option_lines_data += [
-            fields.Command.create(
-                option._prepare_option_line_values()
-            )
-            for option in self.sale_order_template_id.sale_order_template_option_ids
-        ]
+        option_lines_data = [Command.link(option.copy().id) for option in subscription.sale_order_option_ids]
         if subscription_state == '7_upsell':
             start_date = fields.Date.today()
             next_invoice_date = self.next_invoice_date
@@ -1939,5 +1945,24 @@ class SaleOrder(models.Model):
             self.payment_token_id = tx.token_id.id
             return True
         return False
+
     def _get_name_portal_content_view(self):
         return 'sale_subscription.subscription_portal_content' if self.is_subscription else super()._get_name_portal_content_view()
+
+    def _get_upsell_portal_url(self):
+        self.ensure_one()
+        upsell = self.subscription_child_ids.filtered(lambda so: so.subscription_state == '7_upsell' and so.state == 'sent')[:1]
+        return upsell and upsell.get_portal_url()
+
+    def _get_renewal_portal_url(self):
+        self.ensure_one()
+        renewal = self.subscription_child_ids.filtered(lambda so: so.subscription_state == '2_renewal' and so.state == 'sent')[:1]
+        return renewal and renewal.get_portal_url()
+
+    def _can_be_edited_on_portal(self):
+        self.ensure_one()
+        if self.is_subscription:
+            return self.next_invoice_date == self.start_date and \
+                self.subscription_state in SUBSCRIPTION_DRAFT_STATE + SUBSCRIPTION_PROGRESS_STATE
+        else:
+            return super()._can_be_edited_on_portal()

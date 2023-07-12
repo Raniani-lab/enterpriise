@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _, _lt
+from odoo import api, fields, models, _, _lt, Command
 from odoo.tools import get_timedelta, float_compare, float_is_zero
 
 billing_period_sentence_template = {
@@ -28,8 +28,17 @@ class SaleSubscriptionPlan(models.Model):
     billing_period_display_sentence = fields.Char(compute='_compute_billing_period_display_sentence', string="Billing Period Display")
 
     # Self Service
-    user_closable = fields.Boolean(string="Self closable", default=False,
-                                   help="If checked, the user will be able to close his account from the frontend")
+    user_closable = fields.Boolean(string="Closable", default=False,
+                                   help="Customer can close their subscriptions.")
+    user_extend = fields.Boolean("Renew", default=False,
+                                 help="Customer can create a renewal quotation for their subscription.")
+    user_quantity = fields.Boolean("Add Products", default=False,
+                                   help="Allow customers to create an Upsell quote to adjust the quantity of products in their subscription."
+                                   "Only products that are listed as \"optional products\" can be modified.")
+    related_plan_id = fields.Many2many("sale.subscription.plan", "sale_subscription_plan_related_plan",
+                                       "plan_id", "related_plan_id", string="Optional Plans",
+                                       help="Allow your customers to switch from this plan to "
+                                            "another on quotation (new subscription or renewal)")
 
     # Invoicing
     auto_close_limit = fields.Integer(string="Automatic Closing", default=15,
@@ -51,6 +60,18 @@ class SaleSubscriptionPlan(models.Model):
 
     # UX
     active_subs_count = fields.Integer(compute="_compute_active_subs_count", string="Subscriptions")
+
+    def write(self, values):
+        if "related_plan_id" in values:
+            old_related = {plan.id: plan.related_plan_id for plan in self}
+        res = super().write(values)
+        if "related_plan_id" in values:
+            for plan in self:
+                if to_remove := old_related[plan.id] - plan.related_plan_id:
+                    to_remove.related_plan_id = [Command.unlink(plan.id)]
+                if to_add :=  plan.related_plan_id - old_related[plan.id]:
+                    to_add.related_plan_id = [Command.link(plan.id)]
+        return res
 
     def _compute_active_subs_count(self):
         self.active_subs_count = 0

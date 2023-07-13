@@ -2,7 +2,6 @@
 
 import { loadBundle } from "@web/core/assets";
 import { formatDateTime } from '@web/core/l10n/dates';
-import { loadEmoji } from '@web/core/emoji_picker/emoji_picker';
 import { registry } from '@web/core/registry';
 import { standardWidgetProps } from '@web/views/widgets/standard_widget_props';
 import { useService } from '@web/core/utils/hooks';
@@ -11,6 +10,7 @@ import { utils as uiUtils } from "@web/core/ui/ui_service";
 
 import { Component, onWillStart, useEffect, useRef, useState } from '@odoo/owl';
 
+import { getRandomIcon } from '@knowledge/js/knowledge_utils';
 import KnowledgeIcon from '@knowledge/components/knowledge_icon/knowledge_icon';
 import MoveArticleDialog from '@knowledge/components/move_article_dialog/move_article_dialog';
 import PermissionPanel from '@knowledge/components/permission_panel/permission_panel';
@@ -122,10 +122,7 @@ class KnowledgeTopbar extends Component {
      * @param {Event} event
      */
     async addIcon(event) {
-        const { emojis } = await loadEmoji();
-        const randomEmojis = emojis.filter(emoji => !['💩', '💀', '☠️', '🤮', '🖕', '🤢', '😒'].includes(emoji.codepoints));
-        const icon = randomEmojis[Math.floor(Math.random() * randomEmojis.length)].codepoints;
-        this.props.record.update({icon});
+        this.props.record.update({icon: await getRandomIcon()});
     }
 
     _setDates() {

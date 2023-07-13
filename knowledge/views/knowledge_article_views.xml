@@ -175,9 +175,8 @@
         <field name="priority">666</field>
         <field name="arch" type="xml">
             <form>
-                <group>
-                    <field name="name" string="Title" placeholder="My New Item"/>
-                </group>
+                <field name="icon" widget="knowledge_icon" allow_random_icon_selection="1"/>
+                <field name="name" placeholder="My New Item" class="ms-2 mb-3"/>
             </form>
         </field>
     </record>

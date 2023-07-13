@@ -60,11 +60,21 @@ registry.category("web_tour.tours").add('knowledge_kanban_command_tour', {
 }, { // Type a Title for new article in the quick create form
     trigger: '.o_knowledge_behavior_type_embedded_view .o_kanban_renderer .o_kanban_quick_create .o_input',
     run: 'text New Quick Create Item',
+}, { // Add a random icon to the new article in the quick create form
+    trigger: '.o_knowledge_behavior_type_embedded_view .o_kanban_renderer .o_kanban_quick_create a[title="Add a random icon"]',
+    run: 'click',
+}, { // Click on the icon to open the emoji picker and select another icon in the quick create form
+    trigger: '.o_knowledge_behavior_type_embedded_view .o_kanban_renderer .o_kanban_quick_create .o_article_emoji',
+    run: 'click',
+}, { // Select an emoji for the new article
+    trigger: '.o-Emoji[data-codepoints="🙃"]',
+    run: 'click',
 }, { // Click on Add to create the article
     trigger: '.o_knowledge_behavior_type_embedded_view .o_kanban_renderer .o_kanban_quick_create .o_kanban_add',
     run: 'click'
 }, { // Verify that the article has been properly created
     trigger: '.o_knowledge_behavior_type_embedded_view .o_kanban_renderer .o_kanban_record_title span:contains("New Quick Create Item")',
+    extra_trigger: '.o_knowledge_behavior_type_embedded_view .o_kanban_renderer .o_kanban_record_title .o_article_emoji:contains("🙃")',
     run: () => {},
 }, { // Create a new article using quick create in OnGoing Column
     trigger: '.o_knowledge_behavior_type_embedded_view .o_kanban_renderer .o_kanban_group .o_kanban_header_title:contains("Ongoing") .o_kanban_quick_add',

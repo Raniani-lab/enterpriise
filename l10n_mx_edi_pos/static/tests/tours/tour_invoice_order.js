@@ -43,7 +43,7 @@ registry.category("web_tour.tours").add('l10n_mx_edi_pos.tour_invoice_order', {
     },
     {
         content: "Open the list of customers",
-        trigger: "span:contains(' Customer ')",
+        trigger: "span:contains('Customer')",
     },
     {
         content: "Open the details for the first customer",

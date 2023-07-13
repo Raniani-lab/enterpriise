@@ -33,7 +33,7 @@ registry.category("web_tour.tours").add('l10n_mx_edi_pos.tour_invoice_previous_o
     },
     {
         content: "click on New Order",
-        trigger: "div.button:contains('New Order')",
+        trigger: "div button:contains('New Order')",
     },
     {
         content: "Click on the burger menu",
@@ -57,7 +57,7 @@ registry.category("web_tour.tours").add('l10n_mx_edi_pos.tour_invoice_previous_o
     },
     {
         content: "Ask an invoice for this order",
-        trigger: "div.control-button:contains('Invoice')",
+        trigger: "button.control-button:contains('Invoice')",
     },
     {
         content: "Do you want to select a customer ? Yes",

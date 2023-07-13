@@ -29,13 +29,11 @@ patch(PosStore.prototype, "pos_settle_due.PosStore", {
         partnerInfos.totalDue = partner.total_due;
         partnerInfos.totalWithCart += partner.total_due;
         partnerInfos.creditLimit = partner.credit_limit;
-        partnerInfos.overDue = partnerInfos.totalWithCart > partnerInfos.creditLimit ? true : false;
+        partnerInfos.overDue = partnerInfos.totalWithCart > partnerInfos.creditLimit;
         partnerInfos.useLimit =
             this.company.account_use_credit_limit &&
             partner.credit_limit > 0 &&
             partnerInfos.overDue
-                ? true
-                : false;
 
         return partnerInfos;
     },

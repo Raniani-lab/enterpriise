@@ -46,10 +46,6 @@
     color: #FFB347;
 }
 
-.right-content .credit-limit-warning {
-    background: #FFB347 !important;
-    border-color: #FFB347 !important;
-}
 .pos .credit-summary-line {
     display: flex;
     justify-content: space-between;
@@ -57,28 +53,4 @@
 }
 .pos .credit-limit-summary {
     color: #E67700 !important;
-}
-.pos .partnerlist-screen .partner-detail {
-    display:flex;
-}
-.pos .partnerlist-screen .partner-detail > .label {
-    width: 100px;
-}
-.pos .partnerlist-screen .partner-detail > span:last-child {
-    padding-left: 4px;
-    display:block;
-    border-radius: 3px;
-    border: solid 1px #cecbcb;
-    margin-bottom: 4px;
-    background: #F1F1F1;
-    font-family: "Lato","Lucida Grande", Helvetica, Verdana, Arial;
-    color: #4A4F59;
-    width: 340px;
-    font-size: 14px;
-    box-sizing: border-box;
-}
-@media screen and (max-width: 768px) {
-    .pos .partnerlist-screen .partner-detail > span:last-child {
-        width: 100%;
-    }
 }

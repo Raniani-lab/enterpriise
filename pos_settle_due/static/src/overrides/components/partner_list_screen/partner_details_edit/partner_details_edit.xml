@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
     <t t-name="pos_settle_due.PartnerDetailsEdit" t-inherit="point_of_sale.PartnerDetailsEdit" t-inherit-mode="extension" owl="1">
-        <xpath expr="//div[hasclass('partner-details-right')]" position="inside">
-                <div class="partner-detail">
-                    <span class="label credit-gestion">Due balance</span>
-                    <span t-esc="env.utils.formatCurrency(this.partnerInfos.totalDue)" />
-                </div>
+        <xpath expr="//div[hasclass('partner-details-box')]" position="inside">
+            <div class="partner-detail col">
+                <label class="label form-label credit-gestion">Due balance</label>
+                <input type="text" class="form-control" t-att-placeholder="env.utils.formatCurrency(this.partnerInfos.totalDue)" disabled="disabled"/> 
+            </div>
             <t t-if="this.partnerInfos.useLimit">
-                <div class="partner-detail">
-                    <span class="label credit-gestion">Credit limit</span>
-                    <span t-esc="env.utils.formatCurrency(this.partnerInfos.creditLimit)" />
+                <div class="partner-detail col">
+                    <label class="label form-label credit-gestion">Credit limit</label>
+                    <input type="text" class="form-control" t-att-placeholder="env.utils.formatCurrency(this.partnerInfos.creditLimit)" disabled="disabled" />
                 </div>
             </t>
         </xpath>

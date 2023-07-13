@@ -3,6 +3,7 @@
 import { useBus, useService } from "@web/core/utils/hooks";
 import { SEARCH_KEYS } from "@web/search/with_search/with_search";
 import { Model } from "@web/model/model";
+import { RelationalModel } from "@web/model/relational_model/relational_model";
 
 import { onWillStart, onWillUpdateProps, useComponent } from "@odoo/owl";
 
@@ -109,4 +110,14 @@ export function useModels(ModelClass, paramsList, options = {}) {
     });
 
     return models;
+}
+
+export class MESRelationalModel extends RelationalModel {
+    notify() {
+        if (this.skipNextRefresh) {
+            this.skipNextRefresh = false;
+            return;
+        }
+        super.notify(...arguments);
+    }
 }

@@ -7,14 +7,13 @@ import { useModels } from "@mrp_workorder/mrp_display/model";
 import { ControlPanelButtons } from "@mrp_workorder/mrp_display/control_panel";
 import { MrpDisplayRecord } from "@mrp_workorder/mrp_display/mrp_display_record";
 import { MrpWorkcenterDialog } from "./dialog/mrp_workcenter_dialog";
-import { RelationalModel } from "@web/model/relational_model/relational_model";
 import { makeActiveField } from "@web/model/relational_model/utils";
 import { MrpDisplayEmployeesPanel } from "@mrp_workorder/mrp_display/employees_panel";
 import { SelectionPopup } from "@mrp_workorder/components/popup";
 import { PinPopup } from "@mrp_workorder/components/pin_popup";
 import { useConnectedEmployee } from "@mrp_workorder/views/hooks/employee_hooks";
 import { SearchBar } from "@web/search/search_bar/search_bar";
-import {getSearchParams} from "./model";
+import { getSearchParams, MESRelationalModel } from "./model";
 
 const { Component, onWillDestroy, onWillStart, useState, useSubEnv } = owl;
 
@@ -87,7 +86,7 @@ export class MrpDisplay extends Component {
             };
             paramsList.push(params);
         }
-        const models = useModels(RelationalModel, paramsList);
+        const models = useModels(MESRelationalModel, paramsList);
         for (const model of models) {
             const resModelName = model.config.resModel.replaceAll(".", "_");
             this[resModelName] = model;
@@ -465,9 +464,12 @@ export class MrpDisplay extends Component {
     }
 
     async reload(){
-        await this.mrp_production.load(getSearchParams(this.mrp_production, this.props, this));
-        await this.mrp_workorder.load(getSearchParams(this.mrp_workorder, this.props, this));
-        await this.quality_check.load(getSearchParams(this.quality_check, this.props, this));
+        this.mrp_production.skipNextRefresh = true;
+        this.mrp_workorder.skipNextRefresh = true;
+        this.quality_check.skipNextRefresh = true;
+        await this.mrp_production.load(getSearchParams(this.mrp_production, this.props, this, false));
+        await this.mrp_workorder.load(getSearchParams(this.mrp_workorder, this.props, this, false));
+        await this.quality_check.load(getSearchParams(this.quality_check, this.props, this, false));
         await this.stock_move.load(getSearchParams(this.stock_move, this.props, this));
         await this.useEmployee.getConnectedEmployees();
     }

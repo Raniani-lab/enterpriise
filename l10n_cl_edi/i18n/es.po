@@ -1208,7 +1208,7 @@ msgstr "Nombre mostrado"
 #, fuzzy, python-format
 #| msgid "Document claim failed with response:"
 msgid "Document %s failed with the following response:"
-msgstr "El reclamo del documento falló con la siguiente respuesta:"
+msgstr "Documento %s falló con la siguiente respuesta:"
 
 #. module: l10n_cl_edi
 #. odoo-python
@@ -1216,7 +1216,7 @@ msgstr "El reclamo del documento falló con la siguiente respuesta:"
 #, fuzzy, python-format
 #| msgid "Document acceptance was accepted with response:"
 msgid "Document %s was accepted with the following response:"
-msgstr "La aceptación del documento fue recibida con la siguiente respuesta:"
+msgstr "Documento %s fue aceptado con la siguiente respuesta:"
 
 #. module: l10n_cl_edi
 #: model:ir.model.fields,field_description:l10n_cl_edi.field_l10n_cl_account_invoice_reference__date
@@ -2253,7 +2253,7 @@ msgstr "La fecha de vencimiento del certificado"
 #, fuzzy, python-format
 #| msgid "The document type with code %s cannot be claimed"
 msgid "The document type with code %s cannot be %s"
-msgstr "El tipo de documento con código %s no puede ser reclamado"
+msgstr "El tipo de documento con el código %s no puede ser %s"
 
 #. module: l10n_cl_edi
 #: model_terms:ir.ui.view,arch_db:l10n_cl_edi.res_config_settings_view_cl_form

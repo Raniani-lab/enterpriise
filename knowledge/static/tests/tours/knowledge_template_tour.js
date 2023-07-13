@@ -27,13 +27,8 @@ registry.category("web_tour.tours").add("knowledge_load_template", {
             trigger: '.o_breadcrumb_article_name_container:contains("My Template")',
             run: () => {},
         }, { // check that the body of the article has changed
-            trigger: '.o_knowledge_body .note-editable',
-            run: function () {
-                const body = '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>';
-                if (this.$anchor[0].innerHTML !== body) {
-                    throw new Error("The template has not been applied to the current article");
-                }
-            },
+            trigger: '.o_knowledge_body .note-editable:contains(Lorem ipsum dolor sit amet, consectetur adipisicing elit.)',
+            run: () => {},
         }, ...endKnowledgeTour()
     ]
 });

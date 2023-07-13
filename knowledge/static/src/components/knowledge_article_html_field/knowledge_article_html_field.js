@@ -5,7 +5,10 @@ import { ArticleTemplatePickerDialog } from "@knowledge/components/article_templ
 import { encodeDataBehaviorProps } from "@knowledge/js/knowledge_utils";
 import { HtmlField, htmlField } from "@web_editor/js/backend/html_field";
 import { ItemCalendarPropsDialog } from "@knowledge/components/item_calendar_props_dialog/item_calendar_props_dialog";
-import { onWillUpdateProps } from "@odoo/owl";
+import {
+    onWillUnmount,
+    onWillUpdateProps,²
+} from "@odoo/owl";
 import { PromptEmbeddedViewNameDialog } from "@knowledge/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog";
 import { registry } from "@web/core/registry";
 import { sprintf } from "@web/core/utils/strings";
@@ -39,6 +42,14 @@ export class KnowledgeArticleHtmlField extends HtmlField {
         onWillUpdateProps(nextProps => {
             this.state.isWysiwygHelperActive = this.isWysiwygHelperActive(nextProps);
         });
+        this.editorStepsCallback = () => this.state.isEmpty = this.wysiwyg.isEmpty();
+        onWillUnmount(() => {
+            if (this.wysiwyg?.odooEditor) {
+                this.wysiwyg.odooEditor.removeEventListener("historyStep", this.editorStepsCallback);
+                this.wysiwyg.odooEditor.removeEventListener("onExternalHistorySteps", this.editorStepsCallback);
+                this.wysiwyg.odooEditor.removeEventListener("historyResetFromSteps", this.editorStepsCallback);
+            }
+        });
     }
 
     /**
@@ -51,9 +62,9 @@ export class KnowledgeArticleHtmlField extends HtmlField {
             isEmpty: this.wysiwyg.isEmpty(),
             isWysiwygHelperActive: this.isWysiwygHelperActive(this.props)
         });
-        this.wysiwyg.odooEditor.addEventListener("historyStep", () => {
-            this.state.isEmpty = this.wysiwyg.isEmpty();
-        });
+        this.wysiwyg.odooEditor.addEventListener("historyStep", this.editorStepsCallback);
+        this.wysiwyg.odooEditor.addEventListener("onExternalHistorySteps", this.editorStepsCallback);
+        this.wysiwyg.odooEditor.addEventListener("historyResetFromSteps", this.editorStepsCallback);
     }
 
     /**
@@ -67,13 +78,11 @@ export class KnowledgeArticleHtmlField extends HtmlField {
     onLoadTemplateBtnClick() {
         this.dialogService.add(ArticleTemplatePickerDialog, {
             onLoadTemplate: async articleTemplateId => {
-                await this.props.record.switchMode("readonly");
-                if (this.props.record.isDirty) {
-                    await this.props.record.save();
-                }
-                await this.orm.call("knowledge.article.template", "apply_template_on_article", [articleTemplateId], {
-                    article_id: this.props.record.resId
+                const body = await this.orm.call("knowledge.article.template", "apply_template_on_article", [articleTemplateId], {
+                    article_id: this.props.record.resId,
+                    skip_body_update: true
                 });
+                this.wysiwyg.setValue(body);
                 await this.actionService.doAction("knowledge.ir_actions_server_knowledge_home_page", {
                     stackPosition: "replaceCurrentAction",
                     additionalContext: {

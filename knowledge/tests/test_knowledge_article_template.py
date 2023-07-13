@@ -31,6 +31,7 @@ class TestKnowledgeArticleTemplate(HttpCase):
 
         cls.template = Template.create({
             "body": Markup("<p>Lorem ipsum dolor sit amet</p>"),
+            'icon': 'emoji',
             "category_id": cls.personal_category.id,
             "name": "Template"
         })
@@ -70,8 +71,12 @@ class TestKnowledgeArticleTemplate(HttpCase):
 
     def test_apply_template_on_article(self):
         """ Check that that a given template is properly applied to a given article. """
+        dummy_article = self.env['knowledge.article'].create({'name': 'NoBody', 'body': False})
+        self.template.apply_template_on_article(dummy_article.id, skip_body_update=True)
+        self.assertFalse(dummy_article.body)
+        self.assertEqual(dummy_article.icon, self.template.icon)
 
-        self.template.apply_template_on_article(self.article.id)
+        self.template.apply_template_on_article(self.article.id, skip_body_update=False)
 
         # After applying the template on the article, the values of the article
         # should have been updated and new child articles should have been created
@@ -79,6 +84,7 @@ class TestKnowledgeArticleTemplate(HttpCase):
 
         # First level:
         self.assertEqual(self.article.body, Markup("<p>Lorem ipsum dolor sit amet</p>"))
+        self.assertEqual(self.article.icon, self.template.icon)
 
         # Second level:
         [child_article_1, child_article_2] = self.article.child_ids.sorted("name")

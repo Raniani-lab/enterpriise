@@ -27,7 +27,7 @@
                         attrs="{'invisible': ['|', ('display_timer_pause', '=', False), ('display_timer', '=', False)]}"/>
                     <button class="btn-secondary" name="action_timer_resume" type="object" string="Resume" data-hotkey="w"
                         attrs="{'invisible': ['|', ('display_timer_resume', '=', False), ('display_timer', '=', False)]}"/>
-                    <field name="timer_start" widget="timer_start_field" class="d-flex align-items-center align-self-center me-auto ms-2 h2 fw-bold text-secondary"
+                    <field name="timer_start" widget="timer_start_field" class="d-flex align-items-center align-self-center me-auto ms-2 h2"
                         attrs="{'invisible': [('display_timer', '=', False)]}"/>
                 </field>
                 <xpath expr="//field[@name='stage_id']" position="attributes">

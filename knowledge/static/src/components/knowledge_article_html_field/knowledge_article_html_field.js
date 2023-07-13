@@ -7,7 +7,7 @@ import { HtmlField, htmlField } from "@web_editor/js/backend/html_field";
 import { ItemCalendarPropsDialog } from "@knowledge/components/item_calendar_props_dialog/item_calendar_props_dialog";
 import {
     onWillUnmount,
-    onWillUpdateProps,²
+    onWillUpdateProps,
 } from "@odoo/owl";
 import { PromptEmbeddedViewNameDialog } from "@knowledge/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog";
 import { registry } from "@web/core/registry";

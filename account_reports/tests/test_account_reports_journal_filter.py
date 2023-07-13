@@ -69,7 +69,7 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
         j7 = self._quick_create_journal("j7", self.vanilla_company1)
         j8 = self._quick_create_journal("j8", self.vanilla_company1)
 
-        options = self.report._get_options()
+        options = self.report.get_options()
         self._assert_filter_journal(options, "All Journals", [
             (j1, False),
             (j2, False),
@@ -86,7 +86,7 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
             if option_journal.get('model') == 'account.journal' and option_journal.get('id') in (j1 + j2 + j3).ids:
                 option_journal['selected'] = True
 
-        options = self.report._get_options(previous_options=options)
+        options = self.report.get_options(previous_options=options)
         self._assert_filter_journal(options, "j1, j2, j3", [
             (j1, True),
             (j2, True),
@@ -103,7 +103,7 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
             if option_journal.get('model') == 'account.journal' and option_journal.get('id') in (j4 + j5 + j6).ids:
                 option_journal['selected'] = True
 
-        options = self.report._get_options(previous_options=options)
+        options = self.report.get_options(previous_options=options)
         self._assert_filter_journal(options, "j1, j2, j3, j4, j5 and one other", [
             (j1, True),
             (j2, True),
@@ -121,7 +121,7 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
                 option_journal['selected'] = True
                 break
 
-        options = self.report._get_options(previous_options=options)
+        options = self.report.get_options(previous_options=options)
         self._assert_filter_journal(options, "j1, j2, j3, j4, j5 and 2 others", [
             (j1, True),
             (j2, True),
@@ -139,7 +139,7 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
                 option_journal['selected'] = True
                 break
 
-        options = self.report._get_options(previous_options=options)
+        options = self.report.get_options(previous_options=options)
         self._assert_filter_journal(options, "All Journals", [
             (j1, False),
             (j2, False),
@@ -161,7 +161,7 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
         j7 = self._quick_create_journal("j7", self.vanilla_company2)
         j8 = self._quick_create_journal("j8", self.vanilla_company2)
 
-        options = self.report._get_options()
+        options = self.report.get_options()
         self._assert_filter_journal(options, "All Journals", [
             {'id': 'divider'},
             (j1, False),
@@ -180,7 +180,7 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
             if option_journal.get('model') == 'account.journal' and option_journal.get('id') in (j1 + j3 + j5 + j7).ids:
                 option_journal['selected'] = True
 
-        options = self.report._get_options(previous_options=options)
+        options = self.report.get_options(previous_options=options)
         self._assert_filter_journal(options, "j1, j5, j3, j7", [
             {'id': 'divider'},
             (j1, True),
@@ -205,7 +205,7 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
         g1 = self._quick_create_journal_group("g1", self.vanilla_company1, j2 + j4)
         g2 = self._quick_create_journal_group("g2", self.vanilla_company1, j2 + j5)
 
-        options = self.report._get_options()
+        options = self.report.get_options()
         self._assert_filter_journal(options, "g1", [
             {'id': 'divider'},
             (g1, True),
@@ -221,7 +221,7 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
 
         # Check g2.
         options['__journal_group_action'] = {'action': 'add', 'id': g2.id}
-        options = self.report._get_options(previous_options=options)
+        options = self.report.get_options(previous_options=options)
         self._assert_filter_journal(options, "g2", [
             {'id': 'divider'},
             (g1, False),
@@ -237,7 +237,7 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
 
         # Uncheck g2.
         options['__journal_group_action'] = {'action': 'remove', 'id': g2.id}
-        options = self.report._get_options(previous_options=options)
+        options = self.report.get_options(previous_options=options)
         self._assert_filter_journal(options, "All Journals", [
             {'id': 'divider'},
             (g1, False),
@@ -263,7 +263,7 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
         g2 = self._quick_create_journal_group("g2", self.vanilla_company1, j2 + j4)
         g3 = self._quick_create_journal_group("g3", self.vanilla_company2, j6)
 
-        options = self.report._get_options()
+        options = self.report.get_options()
         self._assert_filter_journal(options, "g1, g3", [
             {'id': 'divider'},
             (g1, True),
@@ -281,7 +281,7 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
 
         # Check g2.
         options['__journal_group_action'] = {'action': 'add', 'id': g2.id}
-        options = self.report._get_options(previous_options=options)
+        options = self.report.get_options(previous_options=options)
         self._assert_filter_journal(options, "g2, g3", [
             {'id': 'divider'},
             (g1, False),
@@ -299,7 +299,7 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
 
         # Uncheck g2.
         options['__journal_group_action'] = {'action': 'remove', 'id': g2.id}
-        options = self.report._get_options(previous_options=options)
+        options = self.report.get_options(previous_options=options)
         self._assert_filter_journal(options, "g3, j1, j2, j3, j4", [
             {'id': 'divider'},
             (g1, False),
@@ -317,7 +317,7 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
 
         # Uncheck g3.
         options['__journal_group_action'] = {'action': 'remove', 'id': g3.id}
-        options = self.report._get_options(previous_options=options)
+        options = self.report.get_options(previous_options=options)
         self._assert_filter_journal(options, "All Journals", [
             {'id': 'divider'},
             (g1, False),
@@ -341,7 +341,7 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
 
         g1 = self._quick_create_journal_group("g1", self.vanilla_company1, j2)
 
-        options = self.report._get_options()
+        options = self.report.get_options()
         self._assert_filter_journal(options, "g1, j3, j4", [
             {'id': 'divider'},
             (g1, True),
@@ -355,7 +355,7 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
 
         # Remove g1.
         options['__journal_group_action'] = {'action': 'remove', 'id': g1.id}
-        options = self.report._get_options(previous_options=options)
+        options = self.report.get_options(previous_options=options)
         self._assert_filter_journal(options, "All Journals", [
             {'id': 'divider'},
             (g1, False),
@@ -372,7 +372,7 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
             if option_journal.get('model') == 'account.journal' and option_journal.get('id') == j3.id:
                 option_journal['selected'] = True
 
-        options = self.report._get_options(previous_options=options)
+        options = self.report.get_options(previous_options=options)
         self._assert_filter_journal(options, "j3", [
             {'id': 'divider'},
             (g1, False),
@@ -386,7 +386,7 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
 
         # Check g1.
         options['__journal_group_action'] = {'action': 'add', 'id': g1.id}
-        options = self.report._get_options(previous_options=options)
+        options = self.report.get_options(previous_options=options)
         self._assert_filter_journal(options, "g1, j3", [
             {'id': 'divider'},
             (g1, True),
@@ -403,7 +403,7 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
             if option_journal.get('model') == 'account.journal' and option_journal.get('id') == j3.id:
                 option_journal['selected'] = False
 
-        options = self.report._get_options(previous_options=options)
+        options = self.report.get_options(previous_options=options)
         self._assert_filter_journal(options, "g1", [
             {'id': 'divider'},
             (g1, True),
@@ -417,7 +417,7 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
 
         # Uncheck g1.
         options['__journal_group_action'] = {'action': 'remove', 'id': g1.id}
-        options = self.report._get_options(previous_options=options)
+        options = self.report.get_options(previous_options=options)
         self._assert_filter_journal(options, "All Journals", [
             {'id': 'divider'},
             (g1, False),
@@ -434,7 +434,7 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
             if option_journal.get('model') == 'account.journal' and option_journal.get('id') in (j1 + j2).ids:
                 option_journal['selected'] = True
 
-        options = self.report._get_options(previous_options=options)
+        options = self.report.get_options(previous_options=options)
         self._assert_filter_journal(options, "j1, j2", [
             {'id': 'divider'},
             (g1, False),
@@ -465,7 +465,7 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
         g2 = self._quick_create_journal_group("g2", self.vanilla_company1, misc + bill)
 
         report = self.env.ref('account_reports.cash_flow_report')
-        options = report._get_options()
+        options = report.get_options()
         self._assert_filter_journal(options, "g1", [
             {'id': 'divider'},
             (g1, True),
@@ -481,7 +481,7 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
 
         # Check g2, all journals from g2 that are allowed in report should be selected
         options['__journal_group_action'] = {'action': 'add', 'id': g2.id}
-        options = report._get_options(previous_options=options)
+        options = report.get_options(previous_options=options)
         self._assert_filter_journal(options, "g2", [
             {'id': 'divider'},
             (g1, False),
@@ -497,7 +497,7 @@ class TestAccountReportsJournalFilter(AccountTestInvoicingCommon):
 
         # Uncheck g2.
         options['__journal_group_action'] = {'action': 'remove', 'id': g2.id}
-        options = report._get_options(previous_options=options)
+        options = report.get_options(previous_options=options)
         self._assert_filter_journal(options, "All Journals", [
             {'id': 'divider'},
             (g1, False),

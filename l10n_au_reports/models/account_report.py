@@ -24,7 +24,7 @@ class AustralianReportCustomHandler(models.AbstractModel):
     _inherit = 'account.report.custom.handler'
     _description = 'Australian Report Custom Handler'
 
-    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals, warnings=None):
         # dict of the form {partner_id: {column_group_key: {expression_label: value}}}
         partner_info_dict = {}
 
@@ -51,7 +51,7 @@ class AustralianReportCustomHandler(models.AbstractModel):
             column_group_total['tax_withheld'] += result['tax_withheld']
 
         # Create lines
-        report = self.env['account.report']
+        report = self.env['account.report'].browse(options['report_id'])
         lines = []
         company_currency = self.env.company.currency_id
         for partner_id, partner_info in partner_info_dict.items():
@@ -226,7 +226,7 @@ class AustralianReportCustomHandler(models.AbstractModel):
         file_content = ''.join(lines)
 
         return {
-            'file_name': report.get_default_report_filename('txt'),
+            'file_name': report.get_default_report_filename(options, 'txt'),
             'file_content': file_content,
             'file_type': 'txt',
         }

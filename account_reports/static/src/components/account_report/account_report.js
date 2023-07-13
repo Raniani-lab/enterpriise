@@ -52,7 +52,7 @@ export class AccountReport extends Component {
             AccountReport.defaultComponentsMap[customizableComponent.name] = customizableComponent;
 
         onWillStart(async () => {
-            await this.controller.load();
+            await this.controller.load(this.env);
         });
 
         useSubEnv({

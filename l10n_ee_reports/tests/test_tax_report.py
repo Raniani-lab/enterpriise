@@ -220,7 +220,7 @@ class EstonianTaxReportTest(AccountSalesReportCommon):
         move.action_post()
 
         report = self.env.ref('l10n_ee.tax_report_vat')
-        options = report._get_options()
+        options = report.get_options()
 
         expected_xml = """
             <vatDeclaration>
@@ -316,7 +316,7 @@ class EstonianTaxReportTest(AccountSalesReportCommon):
         }).action_post()
 
         report = self.env.ref('l10n_ee.tax_report_vat')
-        options = report._get_options()
+        options = report.get_options()
 
         expected_xml = """
             <vatDeclaration>
@@ -602,7 +602,7 @@ class EstonianTaxReportTest(AccountSalesReportCommon):
         move.action_post()
 
         report = self.env.ref('l10n_ee.tax_report_vat')
-        options = report._get_options()
+        options = report.get_options()
 
         expected_xml = """
             <vatDeclaration>

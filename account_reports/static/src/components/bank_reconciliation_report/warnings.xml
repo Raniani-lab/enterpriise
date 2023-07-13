@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="account_reports.bank_reconciliation_report_warning_balance" owl="1">
+        There are some
+        <a t-on-click="(ev) => controller.reportAction(ev, 'bank_reconciliation_report_open_inconsistent_statements', warningParams)">statements</a>
+        having a starting balance different from the previous ending balance.
+    </t>
+
+    <t t-name="account_reports.bank_reconciliation_report_warning_misc_entries" owl="1">
+        "<t t-out="warningParams['account_name']"/>" account balance is affected by
+        <a t-on-click="(ev) => controller.reportAction(ev, 'open_bank_miscellaneous_move_lines', warningParams)">journal items</a>
+        which doesn't result from a bank statement nor payments.
+    </t>
+</templates>

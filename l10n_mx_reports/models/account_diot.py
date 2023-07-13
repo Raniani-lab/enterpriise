@@ -51,7 +51,7 @@ class MexicanAccountReportCustomHandler(models.AbstractModel):
             {'name': _('DPIVA (txt)'), 'sequence': 60, 'action': 'export_file', 'action_param': 'action_get_dpiva_txt', 'file_export_type': _('DPIVA')},
         ))
 
-    def _report_custom_engine_diot_report(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
+    def _report_custom_engine_diot_report(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None, warnings=None):
         def build_dict(report, current_groupby, query_res):
             if not current_groupby:
                 return query_res[0] if query_res else {k: None for k in report.mapped('line_ids.expression_ids.label')}
@@ -158,7 +158,7 @@ class MexicanAccountReportCustomHandler(models.AbstractModel):
 
         diot_txt_result = '\n'.join(lines)
         return {
-            'file_name': report.get_default_report_filename('txt'),
+            'file_name': report.get_default_report_filename(options, 'txt'),
             'file_content': diot_txt_result.encode(),
             'file_type': 'txt',
         }
@@ -221,13 +221,13 @@ class MexicanAccountReportCustomHandler(models.AbstractModel):
 
         dpiva_txt_result = '\n'.join(lines)
         return {
-            'file_name': report.get_default_report_filename('txt'),
+            'file_name': report.get_default_report_filename(options, 'txt'),
             'file_content': dpiva_txt_result.encode(),
             'file_type': 'txt',
         }
 
     def _get_diot_values_per_partner(self, report, options):
-        options['unfolded_lines'] = {}  # This allows to only get the first groupby level: partner_id
+        options['unfolded_lines'] = []  # This allows to only get the first groupby level: partner_id
         col_group_results = report._compute_expression_totals_for_each_column_group(report.line_ids.expression_ids, options, groupby_to_expand="partner_id")
         if len(col_group_results) != 1:
             raise UserError(_("You can only export one period at a time with this file format!"))

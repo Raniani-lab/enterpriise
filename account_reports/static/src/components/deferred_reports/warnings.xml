@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="account_reports.deferred_report_warning_already_posted" owl="1">
+        Deferrals have already been posted. The entry that will be generated will take them into account.
+    </t>
+</templates>

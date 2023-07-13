@@ -651,7 +651,7 @@ class TestReportEngines(TestAccountReportsCommon):
 
         # Check the values.
 
-        def _custom_engine_test(expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
+        def _custom_engine_test(expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None, warnings=None):
             domain = [('account_id.code', '=', '101002')]
             domain_key = str(domain)
             formulas_dict = {domain_key: expressions}

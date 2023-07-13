@@ -74,7 +74,7 @@ class IntrastatReportCustomHandler(models.AbstractModel):
         })
 
         return {
-            'file_name': self.env['account.report'].browse(options['report_id']).get_default_report_filename('xml'),
+            'file_name': self.env['account.report'].browse(options['report_id']).get_default_report_filename(options, 'xml'),
             'file_content': file_content,
             'file_type': 'xml',
         }

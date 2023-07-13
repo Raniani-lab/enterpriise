@@ -21,7 +21,7 @@ class ArgentinianReportCustomHandler(models.AbstractModel):
             },
         }
 
-    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals, warnings=None):
         # dict of the form {move_id: {column_group_key: {expression_label: value}}}
         move_info_dict = {}
 

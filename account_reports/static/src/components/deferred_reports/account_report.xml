@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
     <t t-name="account_reports.DeferredReports" t-inherit="account_reports.AccountReportCustomizable" owl="1">
-        <xpath expr="//div[@id='warnings_div']" position="inside">
-            <t t-if="controller.options.show_banner_already_generated_entries">
-                <div class="alert alert-warning text-center mb-0">
-                    <span>
-                        Deferrals have already been posted. The entry that will be generated will take them into account.
-                    </span>
-                </div>
-            </t>
-        </xpath>
         <xpath expr="//table" position="attributes">
             <attribute name="class">o_account_reports_table table-hover table-bold-unfold o_deferred_reports</attribute>
         </xpath>

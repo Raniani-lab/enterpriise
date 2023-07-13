@@ -25,7 +25,7 @@ class L10nLuGenerateTaxReport(models.TransientModel):
     @api.model
     def default_get(self, default_fields):
         rec = super().default_get(default_fields)
-        options = self.env.ref('l10n_lu.tax_report')._get_options()
+        options = self.env.ref('l10n_lu.tax_report').get_options()
         date_from = fields.Date.from_string(options['date'].get('date_from'))
         date_to = fields.Date.from_string(options['date'].get('date_to'))
 
@@ -44,7 +44,7 @@ class L10nLuGenerateTaxReport(models.TransientModel):
 
     def _get_export_vat(self):
         report = self.env.ref('l10n_lu.tax_report')
-        options = report._get_options()
+        options = report.get_options()
         return report.get_vat_for_export(options)
 
     def _lu_get_declarations(self, declaration_template_values):
@@ -54,7 +54,7 @@ class L10nLuGenerateTaxReport(models.TransientModel):
         """
         report_gen_options = self.env.context.get('report_generation_options', {})
         report = self.env['account.report'].browse(report_gen_options.get('report_id'))
-        options = report._get_options(report_gen_options)
+        options = report.get_options(report_gen_options)
         form = self.env[report.custom_handler_model_name].get_tax_electronic_report_values(options)['forms'][0]
         self.period = form['declaration_type'][-1]
         form['field_values'] = self._remove_zero_fields(form['field_values'], report.id)
@@ -196,7 +196,7 @@ class L10nLuGenerateTaxReport(models.TransientModel):
         form['field_values']['999'] = {'value': '0' if report_id.submitted_rcs else '1', 'field_type': 'boolean'}
         # Add annex
         if self.env.context.get('tax_report_options'):
-            annex_fields, expenditures_table = self._add_annex(self.env.ref('l10n_lu.tax_report')._get_options())
+            annex_fields, expenditures_table = self._add_annex(self.env.ref('l10n_lu.tax_report').get_options())
             form['field_values'].update(annex_fields)
             # Only add the table if it contains some data
             if expenditures_table:

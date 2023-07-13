@@ -21,7 +21,7 @@ class AssetsReportCustomHandler(models.AbstractModel):
             }
         }
 
-    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals, warnings=None):
         report = self._with_context_company2code2account(report)
 
         lines, totals_by_column_group = self._generate_report_lines_without_grouping(report, options)
@@ -161,7 +161,7 @@ class AssetsReportCustomHandler(models.AbstractModel):
         options['hierarchy'] = has_account_group and hierarchy_activated or False
 
         # Automatically unfold the report when printing it or not using prefix groups, unless some specific lines have been unfolded
-        options['unfold_all'] = (self._context.get('print_mode') and not options.get('unfolded_lines')) or (report.filter_unfold_all and (previous_options or {}).get('unfold_all', not report.prefix_groups_threshold))
+        options['unfold_all'] = (options['print_mode'] and not options.get('unfolded_lines')) or (report.filter_unfold_all and (previous_options or {}).get('unfold_all', not report.prefix_groups_threshold))
 
     def _with_context_company2code2account(self, report):
         if self.env.context.get('company2code2account') is not None:
@@ -445,7 +445,7 @@ class AssetsReportCustomHandler(models.AbstractModel):
             'has_more': False,
         }
 
-    def _custom_line_postprocessor(self, report, options, lines):
+    def _custom_line_postprocessor(self, report, options, lines, warnings=None):
         for line in lines:
             for column in line['columns']:
                 if 'no_format' in column and column['no_format'] == 0:

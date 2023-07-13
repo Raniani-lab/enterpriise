@@ -9,14 +9,14 @@ export class MulticurrencyRevaluationReportFilters extends AccountReportFilters 
     //------------------------------------------------------------------------------------------------------------------
     // Custom filters
     //------------------------------------------------------------------------------------------------------------------
-    filterExchangeRate() {
+    async filterExchangeRate() {
         Object.values(this.controller.options.currency_rates).forEach((currencyRate) => {
             const input = document.querySelector(`input[name="${ currencyRate.currency_id }"]`);
 
             currencyRate.rate = input.value;
         });
 
-        this.controller.load(this.controller.options);
+        this.controller.reload('currency_rates', this.controller.options);
     }
 }
 

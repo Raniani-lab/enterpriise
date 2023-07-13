@@ -17,13 +17,6 @@ class AccountTaxReportHandler(models.AbstractModel):
     # This model is needed for the Closing Entry button to be available for all reports, including the generic one
     # With this, custom tax reports don't need to inherit from the generic tax report
 
-    def _get_custom_display_config(self):
-        return {
-            'templates': {
-                'AccountReport': 'account_reports.GenericTaxReport',
-            },
-        }
-
     def _custom_options_initializer(self, report, options, previous_options=None):
         options['buttons'].append({'name': _('Closing Entry'), 'action': 'action_periodic_vat_entries', 'sequence': 80})
 
@@ -222,7 +215,7 @@ class AccountTaxReportHandler(models.AbstractModel):
         new_options['date']['period_type'] = 'custom'
         new_options['date']['filter'] = 'custom'
         report = self.env['account.report'].browse(options['report_id'])
-        new_options = report._get_options(previous_options=new_options)
+        new_options = report.get_options(previous_options=new_options)
         # Force the use of the fiscal position from the original options (_get_options sets the fiscal
         # position to 'all' when the report is the generic tax report)
         new_options['fiscal_position'] = options['fiscal_position']
@@ -446,7 +439,7 @@ class GenericTaxReportCustomHandler(models.AbstractModel):
     _inherit = 'account.tax.report.handler'
     _description = 'Generic Tax Report Custom Handler'
 
-    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals, warnings=None):
         return self._get_dynamic_lines(report, options, 'default')
 
     def _caret_options_initializer(self):
@@ -973,7 +966,7 @@ class GenericTaxReportCustomHandlerAT(models.AbstractModel):
     _inherit = 'account.generic.tax.report.handler'
     _description = 'Generic Tax Report Custom Handler (Account -> Tax)'
 
-    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals, warnings=None):
         return super()._get_dynamic_lines(report, options, 'account_tax')
 
 
@@ -982,5 +975,5 @@ class GenericTaxReportCustomHandlerTA(models.AbstractModel):
     _inherit = 'account.generic.tax.report.handler'
     _description = 'Generic Tax Report Custom Handler (Tax -> Account)'
 
-    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals, warnings=None):
         return super()._get_dynamic_lines(report, options, 'tax_account')

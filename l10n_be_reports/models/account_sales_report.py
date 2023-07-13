@@ -14,22 +14,18 @@ class BelgianECSalesReportCustomHandler(models.AbstractModel):
     _inherit = 'account.ec.sales.report.handler'
     _description = 'Belgian EC Sales Report Custom Handler'
 
-    def _get_custom_display_config(self):
-        # EXTENDS account_reports
-        rslt = super()._get_custom_display_config()
-        rslt['templates']['AccountReport'] = 'l10n_be_reports.SalesReport'
-        return rslt
-
-    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals, warnings=None):
         """
         This method is used to get the dynamic lines of the report and adds a comparative test linked to the tax report.
         """
-        lines = super()._dynamic_lines_generator(report, options, all_column_groups_expression_totals)
+        lines = super()._dynamic_lines_generator(report, options, all_column_groups_expression_totals, warnings=warnings)
         colname_to_idx = {col['expression_label']: idx for idx, col in enumerate(options['columns'])}
         total = lines[-1][-1]['columns'][colname_to_idx['balance']]['no_format']
         # This test requires the total, so needs to be checked after the lines are computed, but before the rendering
         # of the template. This is why we add it here even if it's not an option per se.
-        options['be_tax_cross_check_warning'] = not self.total_consistent_with_tax_report(options, total)
+        if warnings is not None and not self.total_consistent_with_tax_report(options, total):
+            warnings['l10n_be_reports.sales_report_warning_cross_check'] = {'alert_type': 'warning'}
+
         return lines
 
     def _caret_options_initializer(self):
@@ -87,7 +83,7 @@ class BelgianECSalesReportCustomHandler(models.AbstractModel):
             Tax Report lines 44 + 46L + 46T - 48s44 - 48s46L - 48s46T.
         """
         vat_report = self.env.ref('l10n_be.tax_report_vat')
-        tax_report_options = vat_report._get_options(options)
+        tax_report_options = vat_report.get_options(options)
 
         expressions = self.env['account.report.expression']
         for expression_xmlid in ('l10n_be.tax_report_line_44_tag',
@@ -238,7 +234,7 @@ class BelgianECSalesReportCustomHandler(models.AbstractModel):
     </ns2:IntraConsignment>""")
 
         return {
-            'file_name': report.get_default_report_filename('xml'),
+            'file_name': report.get_default_report_filename(options, 'xml'),
             'file_content': data_rslt.encode('ISO-8859-1', 'ignore'),
             'file_type': 'xml',
         }

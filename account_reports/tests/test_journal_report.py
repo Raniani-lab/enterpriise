@@ -347,8 +347,8 @@ class TestJournalAuditReport(TestAccountReportsCommon):
         journal_line_id = report._get_generic_line_id('account.journal', self.company_data['default_journal_sale'].id)
         options['unfolded_lines'] = [
             journal_line_id,
-            report._get_generic_line_id(None, None, markup=f'{journal_line_id}|month_line 2017 1'),
-            report._get_generic_line_id(None, None, markup=f'{journal_line_id}|month_line 2017 2'),
+            report._get_generic_line_id(None, None, parent_line_id=journal_line_id, markup='month_line 2017 1'),
+            report._get_generic_line_id(None, None, parent_line_id=journal_line_id, markup='month_line 2017 2'),
         ]
 
         self.assertLinesValues(

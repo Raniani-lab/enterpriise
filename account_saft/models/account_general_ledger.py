@@ -219,7 +219,7 @@ class AccountGeneralLedger(models.AbstractModel):
 
         # Fill 'customer_vals_list' and 'supplier_vals_list'
         report = self.env.ref('account_reports.partner_ledger_report')
-        new_options = report._get_options(options)
+        new_options = report.get_options(options)
         new_options['account_type'] = [
             {'id': 'trade_receivable', 'selected': True},
             {'id': 'non_trade_receivable', 'selected': True},

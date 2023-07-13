@@ -8,8 +8,8 @@
 
             <t t-foreach="controller.options.available_variants" t-as="variant" t-key="variant_index">
                 <DropdownItem
-                    class="{ 'selected': controller.options.report_id === variant.id }"
-                    onSelected="() => this.updateFilter('report_id', variant.id)"
+                    class="{ 'selected': controller.options.selected_variant_id === variant.id }"
+                    onSelected="() => this.filterVariant(variant.id)"
                 >
                     <t t-esc="variant.name"/>
                 </DropdownItem>

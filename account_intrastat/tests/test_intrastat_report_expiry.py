@@ -103,7 +103,8 @@ class IntrastatExpiryReportTest(TestAccountReportsCommon):
             date_to=fields.Date.from_string('2022-01-31'),
             default_options={'country_format': 'code'},
         )
-        lines = report._get_lines(options)
+        warnings = {}
+        lines = report._get_lines(options, warnings=warnings)
         self.assertLinesValues(
             # pylint: disable=C0326
             lines,
@@ -116,11 +117,19 @@ class IntrastatExpiryReportTest(TestAccountReportsCommon):
             ],
             options,
         )
-        self.assertEqual(options['intrastat_warnings'], {
-            'missing_comm': invoice.invoice_line_ids.product_id.ids,
-            'expired_trans': [invoice.invoice_line_ids.filtered(lambda l: l.name == 'line_2').id],
-            'premature_trans': [invoice.invoice_line_ids.filtered(lambda l: l.name == 'line_3').id],
-        })
+
+        self.assertEqual(
+            warnings['account_intrastat.intrastat_warning_missing_comm']['ids'],
+            invoice.invoice_line_ids.product_id.ids,
+        )
+        self.assertEqual(
+            warnings['account_intrastat.intrastat_warning_expired_trans']['ids'],
+            invoice.invoice_line_ids.filtered(lambda l: l.name == 'line_2').ids,
+        )
+        self.assertEqual(
+            warnings['account_intrastat.intrastat_warning_premature_trans']['ids'],
+            invoice.invoice_line_ids.filtered(lambda l: l.name == 'line_3').ids,
+        )
 
     @freeze_time('2022-01-31')
     def test_intrastat_report_commodity_on_products(self):
@@ -135,7 +144,8 @@ class IntrastatExpiryReportTest(TestAccountReportsCommon):
             date_to=fields.Date.from_string('2022-01-31'),
             default_options={'country_format': 'code'},
         )
-        lines = report._get_lines(options)
+        warnings = {}
+        lines = report._get_lines(options, warnings=warnings)
         self.assertLinesValues(
             # pylint: disable=C0326
             lines,
@@ -148,8 +158,7 @@ class IntrastatExpiryReportTest(TestAccountReportsCommon):
             ],
             options,
         )
-        self.assertEqual(options['intrastat_warnings'], {
-            'missing_trans': invoice.invoice_line_ids.ids,
-            'expired_comm': [self.product_b.id],
-            'premature_comm': [self.product_c.id],
-        })
+
+        self.assertEqual(warnings['account_intrastat.intrastat_warning_missing_trans']['ids'], invoice.invoice_line_ids.ids)
+        self.assertEqual(warnings['account_intrastat.intrastat_warning_expired_comm']['ids'], self.product_b.ids)
+        self.assertEqual(warnings['account_intrastat.intrastat_warning_premature_comm']['ids'], self.product_c.ids)

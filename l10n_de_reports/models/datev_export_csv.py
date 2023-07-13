@@ -63,7 +63,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
         with tempfile.NamedTemporaryFile(mode='w+b', delete=True) as buf:
             with zipfile.ZipFile(buf, mode="w", compression=zipfile.ZIP_DEFLATED, allowZip64=False) as zf:
                 move_line_ids = []
-                for line in report.with_context(print_mode=True)._get_lines({**options, 'unfold_all': True}):
+                for line in report._get_lines({**options, 'print_mode': True, 'unfold_all': True}):
                     model, model_id = report._get_model_info_from_id(line['id'])
                     if model == 'account.move.line':
                         move_line_ids.append(model_id)
@@ -105,7 +105,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             buf.seek(0)
             content = buf.read()
         return {
-            'file_name': report.get_default_report_filename('ZIP'),
+            'file_name': report.get_default_report_filename(options, 'ZIP'),
             'file_content': content,
             'file_type': 'zip'
         }

@@ -15,7 +15,7 @@ class AbstractBuilder(ABC):
         self.env = env
         self.value_formatter = value_formatter
 
-    def get_lines(self, period_ids: list, options: dict, line_id: str = None) -> list:
+    def _get_lines(self, period_ids: list, options: dict, line_id: str = None) -> list:
         """
         Return the report lines based on selected period ids, the report options and the line from which the report is
         print.
@@ -275,24 +275,26 @@ class AbstractBuilder(ABC):
             'class': 'number' + (' text-muted' if float_is_zero(total, 6) else '')}
             for total in totals]
 
+        report = self.env['account.report'].browse(options['report_id'])
+
         # Line
         name = account.display_name
 
         if account.group_id:
-            account_line_id = self.env['account.report']._get_generic_line_id(None, None, markup=f'{account.id}', parent_line_id=parent_id)
+            account_line_id = report._get_generic_line_id(None, None, markup=f'{account.id}', parent_line_id=parent_id)
             account_line_parent_id = parent_id
 
             if options is not None:
                 account_line_unfolded = options.get('unfold_all', parent_id in options.get('unfolded_lines', []))
         else:
-            account_line_id = self.env['account.report']._get_generic_line_id(None, None, markup=account.id)
+            account_line_id = report._get_generic_line_id(None, None, markup=account.id)
             account_line_parent_id = None
             account_line_unfolded = False
 
         account_line = {
             'id': account_line_id,
             'unfolded': account_line_unfolded,
-            'name': len(name) > 40 and not self.env.context.get('print_mode') and name[:40] + '...' or name,
+            'name': len(name) > 40 and not options['print_mode'] and name[:40] + '...' or name,
             'title_hover': _("%s (%s Currency Conversion Method)") % (account.name, account.get_display_currency_mode()),
             'columns': cols,
             'level': level,
@@ -317,12 +319,13 @@ class AbstractBuilder(ABC):
         - the totals of the section line
         :rtype: tuple
         """
+        report = self.env['account.report'].browse(options['report_id'])
         if section.parent_id:
-            section_parent_id = self.env['account.report']._get_generic_line_id(None, None, markup=f'section_{section.parent_id.id}')
-            section_id = self.env['account.report']._get_generic_line_id(None, None, markup=f'section_{section.id}', parent_line_id=section_parent_id)
+            section_parent_id = report._get_generic_line_id(None, None, markup=f'section_{section.parent_id.id}')
+            section_id = report._get_generic_line_id(None, None, markup=f'section_{section.id}', parent_line_id=section_parent_id)
         else:
             section_parent_id = None
-            section_id = self.env['account.report']._get_generic_line_id(None, None, markup=f'section_{section.id}')
+            section_id = report._get_generic_line_id(None, None, markup=f'section_{section.id}')
 
         section_line = {
             'id': section_id,
@@ -381,8 +384,10 @@ class AbstractBuilder(ABC):
             'class': 'number' + (' text-danger' if not float_is_zero(total, 6) else '')
         } for total in totals]
 
+        report = self.env['account.report'].browse(options['report_id'])
+
         return {
-            'id': self.env['account.report']._get_generic_line_id(None, None, markup='grouped_accounts_total'),
+            'id': report._get_generic_line_id(None, None, markup='grouped_accounts_total'),
             'name': _('Total'),
             'class': 'total',
             'columns': cols,

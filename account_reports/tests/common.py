@@ -41,8 +41,8 @@ class TestAccountReportsCommon(AccountTestInvoicingCommon):
         if not default_options:
             default_options = {}
 
-        return report._get_options({
-            'report_id': report.id,
+        return report.get_options({
+            'selected_variant_id': report.id,
             'date': {
                 'date_from': date_from_str,
                 'date_to': date_to_str,
@@ -68,7 +68,7 @@ class TestAccountReportsCommon(AccountTestInvoicingCommon):
             'filter': comparison_type,
             'number_period': number_period,
         }}
-        return report._get_options(previous_options)
+        return report.get_options(previous_options)
 
     def _update_multi_selector_filter(self, options, option_key, selected_ids):
         ''' Modify a selector in the options to select .

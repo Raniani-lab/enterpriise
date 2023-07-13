@@ -18,7 +18,7 @@ class TrialBalanceCustomHandler(models.AbstractModel):
             }
         }
 
-    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals, warnings=None):
         def _update_column(line, column_key, new_value, blank_if_zero=True):
             line['columns'][column_key]['name'] = self.env['account.report'].format_value(options, new_value, figure_type='monetary', blank_if_zero=blank_if_zero)
             line['columns'][column_key]['no_format'] = new_value
@@ -41,7 +41,7 @@ class TrialBalanceCustomHandler(models.AbstractModel):
                 _update_column(line, debit_column_key, new_debit_value)
                 _update_column(line, credit_column_key, new_credit_value)
 
-        lines = [line[1] for line in self.env['account.general.ledger.report.handler']._dynamic_lines_generator(report, options, all_column_groups_expression_totals)]
+        lines = [line[1] for line in self.env['account.general.ledger.report.handler']._dynamic_lines_generator(report, options, all_column_groups_expression_totals, warnings=warnings)]
 
         total_diff_values = {
             'initial_balance': 0.0,
@@ -169,7 +169,7 @@ class TrialBalanceCustomHandler(models.AbstractModel):
 
         report._init_options_order_column(options, previous_options)
 
-    def _custom_line_postprocessor(self, report, options, lines):
+    def _custom_line_postprocessor(self, report, options, lines, warnings=None):
         # If the hierarchy is enabled, ensure to add the o_account_coa_column_contrast class to the hierarchy lines
         if options.get('hierarchy'):
             for line in lines:

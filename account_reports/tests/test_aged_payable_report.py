@@ -122,12 +122,12 @@ class TestAgedPayableReport(TestAccountReportsCommon):
         cls.env['res.currency'].search([('name', '!=', 'USD')]).with_context(force_deactivate=True).active = False
         cls.env.companies = cls.company_data['company'] + cls.company_data_2['company']
         cls.report = cls.env.ref('account_reports.aged_payable_report')
-        cls.prefix_line_id = f'{cls._get_basic_line_dict_id_from_report_line_ref("account_reports.aged_payable_line")}|'
+        cls.parent_line_id = cls._get_basic_line_dict_id_from_report_line_ref("account_reports.aged_payable_line")
 
     def test_aged_payable_unfold_1_whole_report(self):
         """ Test unfolding a line when rendering the whole report. """
         options = self._generate_options(self.report, fields.Date.from_string('2017-02-01'), fields.Date.from_string('2017-02-01'))
-        partner_a_line_id = self.env['account.report']._get_generic_line_id('res.partner', self.partner_a.id, markup=f'{self.prefix_line_id}groupby:partner_id')
+        partner_a_line_id = self.report._get_generic_line_id('res.partner', self.partner_a.id, parent_line_id=self.parent_line_id, markup='groupby:partner_id')
         options['unfolded_lines'] = [partner_a_line_id]
 
         report_lines = self.report._get_lines(options)
@@ -350,8 +350,8 @@ class TestAgedPayableReport(TestAccountReportsCommon):
     def test_aged_payablesort_lines_by_date(self):
         """ Test the sort_lines function using date as sort key. """
         options = self._generate_options(self.report, fields.Date.from_string('2017-02-01'), fields.Date.from_string('2017-02-01'))
-        partner_a_line_id = self.env['account.report']._get_generic_line_id('res.partner', self.partner_a.id, markup=f'{self.prefix_line_id}groupby:partner_id')
-        partner_b_line_id = self.env['account.report']._get_generic_line_id('res.partner', self.partner_b.id, markup=f'{self.prefix_line_id}groupby:partner_id')
+        partner_a_line_id = self.report._get_generic_line_id('res.partner', self.partner_a.id, parent_line_id=self.parent_line_id, markup='groupby:partner_id')
+        partner_b_line_id = self.report._get_generic_line_id('res.partner', self.partner_b.id, parent_line_id=self.parent_line_id, markup='groupby:partner_id')
         options['unfolded_lines'] = [partner_a_line_id, partner_b_line_id]
 
         # Sort by Expected Date increasing
@@ -435,8 +435,8 @@ class TestAgedPayableReport(TestAccountReportsCommon):
     def test_aged_payablesort_lines_by_numeric_value(self):
         """ Test the sort_lines function using float as sort key. """
         options = self._generate_options(self.report, fields.Date.from_string('2017-02-01'), fields.Date.from_string('2017-02-01'))
-        partner_a_line_id = self.env['account.report']._get_generic_line_id('res.partner', self.partner_a.id, markup=f'{self.prefix_line_id}groupby:partner_id')
-        partner_b_line_id = self.env['account.report']._get_generic_line_id('res.partner', self.partner_b.id, markup=f'{self.prefix_line_id}groupby:partner_id')
+        partner_a_line_id = self.report._get_generic_line_id('res.partner', self.partner_a.id, parent_line_id=self.parent_line_id, markup='groupby:partner_id')
+        partner_b_line_id = self.report._get_generic_line_id('res.partner', self.partner_b.id, parent_line_id=self.parent_line_id, markup='groupby:partner_id')
         options['unfolded_lines'] = [partner_a_line_id, partner_b_line_id]
 
         report_lines = self.report._get_lines(options)

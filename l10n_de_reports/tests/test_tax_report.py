@@ -57,7 +57,7 @@ class GermanTaxReportTest(AccountSalesReportCommon):
         move.action_post()
 
         report = self.env.ref('l10n_de.tax_report')
-        options = report._get_options()
+        options = report.get_options()
 
         expected_xml = """
         <Anmeldungssteuern art="UStVA" version="201801">

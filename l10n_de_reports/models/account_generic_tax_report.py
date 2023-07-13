@@ -57,7 +57,7 @@ class GermanTaxReportCustomHandler(models.AbstractModel):
 
         report = self.env['account.report'].browse(options['report_id'])
         template_context = {}
-        options = report._get_options(options)
+        options = report.get_options(options)
         date_to = datetime.strptime(options['date']['date_to'], '%Y-%m-%d')
         template_context['year'] = date_to.year
         if options['date']['period_type'] == 'month':
@@ -115,7 +115,7 @@ class GermanTaxReportCustomHandler(models.AbstractModel):
                 elem.text = "0,00"
 
         return {
-            'file_name': report.get_default_report_filename('xml'),
+            'file_name': report.get_default_report_filename(options, 'xml'),
             'file_content': etree.tostring(tree, pretty_print=True, standalone=False, encoding='ISO-8859-1',),
             'file_type': 'xml',
         }

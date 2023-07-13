@@ -9,7 +9,7 @@ class DutchECSalesReportCustomHandler(models.AbstractModel):
     _inherit = 'account.ec.sales.report.handler'
     _description = 'Dutch EC Sales Report Custom Handler'
 
-    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals, warnings=None):
         # dict of the form {partner_id: {column_group_key: {expression_label: value}}}
         partner_info_dict = {}
 

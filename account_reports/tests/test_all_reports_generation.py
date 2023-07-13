@@ -12,7 +12,7 @@ class TestAllReportsGeneration(AccountTestInvoicingCommon):
     def setUpClass(cls, chart_template_ref=None):
         super().setUpClass(chart_template_ref=chart_template_ref)
 
-        cls.reports = cls.env['account.report'].search([])
+        cls.reports = cls.env['account.report'].with_context(active_test=False).search([])
         # The consolidation report needs a consolidation.period to be open, which we won't have by default.
         # Therefore, instead of testing it here, wse skip it and add a dedicated test in the consolidation module.
         conso_report = cls.env.ref('account_consolidation.consolidated_balance_report', raise_if_not_found=False)
@@ -30,7 +30,13 @@ class TestAllReportsGeneration(AccountTestInvoicingCommon):
         for report in self.reports:
             with self.subTest(report=report.name, country=report.country_id.name):
                 # 'report_id' key is forced so that we don't open a variant when calling a root report
-                report.get_report_information({'report_id': report.id, 'unfold_all': True})
+                options = report.get_options({'selected_variant_id': report.id, 'unfold_all': True})
+
+                if report.use_sections:
+                    self.assertNotEqual(options['report_id'], report.id, "Composite reports should always reroute.")
+                    self.env['account.report'].browse(options['report_id']).get_report_information(options)
+                else:
+                    report.get_report_information(options)
 
     def test_generate_all_export_files(self):
         # Test values for the fields that become mandatory when doing exports on the reports, depending on the country
@@ -72,15 +78,20 @@ class TestAllReportsGeneration(AccountTestInvoicingCommon):
 
                 self.env.company.partner_id.write(partner_test_values.get(report.country_id.code, {}))
 
-                options = report._get_options({'report_id': report.id, '_running_export_test': True})
+                options = report.get_options({'selected_variant_id': report.id, '_running_export_test': True})
+
+                export_report = report
+                if report.use_sections:
+                    self.assertNotEqual(options['report_id'], report.id, "Composite reports should always reroute.")
+                    export_report = self.env['account.report'].browse(options['report_id'])
 
                 for option_button in options['buttons']:
                     with self.subTest(button=option_button['name']):
                         with patch.object(type(self.env['ir.actions.report']), '_run_wkhtmltopdf', lambda *args, **kwargs: b"This is a pdf"):
-                            action_dict = report.dispatch_report_action(options, option_button['action'], action_param=option_button.get('action_param'))
+                            action_dict = export_report.dispatch_report_action(options, option_button['action'], action_param=option_button.get('action_param'))
 
                             if action_dict['type'] == 'ir_actions_account_report_download':
-                                file_gen_res = report.dispatch_report_action(options, action_dict['data']['file_generator'])
+                                file_gen_res = export_report.dispatch_report_action(options, action_dict['data']['file_generator'])
                                 self.assertEqual(
                                     set(file_gen_res.keys()), {'file_name', 'file_content', 'file_type'},
                                     "File generator's result should always contain the same 3 keys."

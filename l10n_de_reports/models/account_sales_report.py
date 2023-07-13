@@ -75,7 +75,7 @@ class GermanECSalesReportCustomHandler(models.AbstractModel):
             buf.seek(0)
             res = buf.read()
         return {
-            'file_name': report.get_default_report_filename('ZIP'),
+            'file_name': report.get_default_report_filename(options, 'ZIP'),
             'file_content': res,
             'file_type': 'zip'
         }

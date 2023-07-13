@@ -462,7 +462,7 @@ class SpanishMod111TaxReportCustomHandler(models.AbstractModel):
         rslt += self._l10n_es_boe_format_string('</T1110' + year + period + '0000>')
 
         return {
-            'file_name': report.get_default_report_filename('txt'),
+            'file_name': report.get_default_report_filename(options, 'txt'),
             'file_content': rslt,
             'file_type': 'txt',
         }
@@ -510,7 +510,7 @@ class SpanishMod115TaxReportCustomHandler(models.AbstractModel):
         rslt += self._l10n_es_boe_format_string('</T1150' + year + period + '0000>')
 
         return {
-            'file_name': report.get_default_report_filename('txt'),
+            'file_name': report.get_default_report_filename(options, 'txt'),
             'file_content': rslt,
             'file_type': 'txt',
         }
@@ -557,7 +557,7 @@ class SpanishMod303TaxReportCustomHandler(models.AbstractModel):
         rslt += self._l10n_es_boe_format_string('</T3030' + year + period + '0000>')
 
         return {
-            'file_name': report.get_default_report_filename('txt'),
+            'file_name': report.get_default_report_filename(options, 'txt'),
             'file_content': rslt,
             'file_type': 'txt',
         }
@@ -594,7 +594,7 @@ class SpanishMod303TaxReportCustomHandler(models.AbstractModel):
         if exonerated_from_mod_390 == 1:
             profit_and_loss_report = self.env.ref('l10n_es_reports.financial_report_es_profit_and_loss')
             end_date = fields.Date.from_string(options['date']['date_to'])
-            transactions_volume_options = profit_and_loss_report._get_options({
+            transactions_volume_options = profit_and_loss_report.get_options({
                 'date': {
                     'date_from': '%s-01-01' % end_date.year,
                     'date_to': '%s-12-31' % end_date.year,
@@ -846,19 +846,19 @@ class SpanishMod347TaxReportCustomHandler(models.AbstractModel):
         super()._custom_options_initializer(report, options, previous_options=previous_options)
         super()._append_boe_button(options, 347)
 
-    def _report_custom_engine_threshold_insurance_bought(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
+    def _report_custom_engine_threshold_insurance_bought(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None, warnings=None):
         domain = MOD_347_CUSTOM_ENGINES_DOMAINS['l10n_es_mod347_threshold_insurance_bought']
         return self._custom_threshold_common(domain, expressions, options, date_scope, current_groupby, next_groupby, offset=offset, limit=limit)
 
-    def _report_custom_engine_threshold_regular_bought(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
+    def _report_custom_engine_threshold_regular_bought(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None, warnings=None):
         domain = MOD_347_CUSTOM_ENGINES_DOMAINS['l10n_es_mod347_threshold_regular_bought']
         return self._custom_threshold_common(domain, expressions, options, date_scope, current_groupby, next_groupby, offset=offset, limit=limit)
 
-    def _report_custom_engine_threshold_regular_sold(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
+    def _report_custom_engine_threshold_regular_sold(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None, warnings=None):
         domain = MOD_347_CUSTOM_ENGINES_DOMAINS['l10n_es_mod347_threshold_regular_sold']
         return self._custom_threshold_common(domain, expressions, options, date_scope, current_groupby, next_groupby, offset=offset, limit=limit)
 
-    def _report_custom_engine_threshold_all_operations(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
+    def _report_custom_engine_threshold_all_operations(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None, warnings=None):
         domain = MOD_347_CUSTOM_ENGINES_DOMAINS['l10n_es_mod347_threshold_all_operations']
         return self._custom_threshold_common(domain, expressions, options, date_scope, current_groupby, next_groupby, offset=offset, limit=limit)
 
@@ -905,7 +905,7 @@ class SpanishMod347TaxReportCustomHandler(models.AbstractModel):
         return threshold_currency._convert(threshold, company_currency, self.env.company, options['date']['date_to'])
 
     def _build_boe_report_options(self, options, year):
-        return self.env['account.report'].browse(options['report_id'])._get_options(
+        return self.env['account.report'].browse(options['report_id']).get_options(
             previous_options={
                 **options,
 
@@ -950,7 +950,7 @@ class SpanishMod347TaxReportCustomHandler(models.AbstractModel):
         # The header is there once for the whole year. It should use the year as date range and not quarterly. No comparison.
         yearly_options = boe_report_options.copy()
         del yearly_options['comparison']
-        yearly_options = self.env['account.report'].browse(boe_report_options['report_id'])._get_options(
+        yearly_options = self.env['account.report'].browse(boe_report_options['report_id']).get_options(
             previous_options={
                 **yearly_options,
                 'date': {'date_from': '%s-01-01' % year, 'date_to': '%s-12-31' % year, 'filter': 'custom', 'mode': 'range'},
@@ -1149,7 +1149,7 @@ class SpanishMod347TaxReportCustomHandler(models.AbstractModel):
         )
 
         return {
-            'file_name': report.get_default_report_filename('txt'),
+            'file_name': report.get_default_report_filename(options, 'txt'),
             'file_content': rslt,
             'file_type': 'txt',
         }
@@ -1292,7 +1292,7 @@ class SpanishMod349TaxReportCustomHandler(models.AbstractModel):
         rslt += self._call_on_partner_sublines(options, 'l10n_es_reports.mod_349_supplies_without_taxes_legal_representative_refunds', lambda report_data: self._write_type2_refund_records(options, report_data, current_company, 'H', 'l10n_es_reports.mod_349_supplies_without_taxes_legal_representative', period, year))
 
         return {
-            'file_name': self.env['account.report'].browse(options['report_id']).get_default_report_filename('txt'),
+            'file_name': self.env['account.report'].browse(options['report_id']).get_default_report_filename(options, 'txt'),
             'file_content': rslt,
             'file_type': 'txt',
         }

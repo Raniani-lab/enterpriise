@@ -110,7 +110,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
         self.env['ir.attachment'].l10n_lt_saft_validate_xml_from_attachment(content)
 
         return {
-            'file_name': report.get_default_report_filename('xml'),
+            'file_name': report.get_default_report_filename(options, 'xml'),
             'file_content': "\n".join(re.split(r'\n\s*\n', content)).encode(),
             'file_type': 'xml',
         }

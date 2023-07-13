@@ -4,23 +4,26 @@ from datetime import date
 
 
 class AccountConsolidationTestCase(common.TransactionCase):
-    def setUp(self):
-        super().setUp()
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
         # DEFAULT DEFAULT COMPANY
-        self.default_company = self.env.ref('base.main_company')
+        cls.default_company = cls.env.ref('base.main_company')
 
         # DEFAULT US COMPANY
-        self.us_company = self.env['res.company'].create({
-            'name': 'Vincent Company',
-            'currency_id': self.env.ref('base.USD').id,
+        cls.us_company = cls.env['res.company'].create({
+            'name': 'cls Company',
+            'currency_id': cls.env.ref('base.USD').id,
         })
 
         # DEFAULT CHART
-        self.chart = self.env['consolidation.chart'].create({
+        cls.chart = cls.env['consolidation.chart'].create({
             'name': 'Default chart',
-            'currency_id': self.env.ref('base.EUR').id,
-            'company_ids': [(6, 0, (self.us_company.id, self.default_company.id))]
+            'currency_id': cls.env.ref('base.EUR').id,
+            'company_ids': [(6, 0, (cls.us_company.id, cls.default_company.id))]
         })
+
+        cls.report = cls.env.ref('account_consolidation.consolidated_balance_report')
 
     def _create_consolidation_account(self, name='BLAH', currency_mode='end', chart=None, section=None):
         return self.env['consolidation.account'].create({
@@ -100,6 +103,6 @@ class AccountConsolidationTestCase(common.TransactionCase):
 
         current_id = None
         for ordered_group in groups_hierarchy_in_order:
-            current_id = self.env['account.report']._get_generic_line_id(None, None, 'section_%s' % ordered_group.id, parent_line_id=current_id)
+            current_id = self.report._get_generic_line_id(None, None, 'section_%s' % ordered_group.id, parent_line_id=current_id)
 
         return current_id

@@ -10,14 +10,7 @@ class DisallowedExpensesCustomHandler(models.AbstractModel):
     _inherit = 'account.report.custom.handler'
     _description = 'Disallowed Expenses Custom Handler'
 
-    def _get_custom_display_config(self):
-        return {
-            'templates': {
-                'AccountReport': 'account_disallowed_expenses.DisallowedExpensesReport',
-            }
-        }
-
-    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals, warnings=None):
         results = self._get_query_results(options, primary_fields=['category_id'])
         lines = []
 
@@ -31,7 +24,7 @@ class DisallowedExpensesCustomHandler(models.AbstractModel):
             lines.append((0, self._get_category_line(options, result, current, len(current))))
             self._update_total_values(totals, options, result)
 
-        lines.append((0, self._get_total_line(options, totals)))
+        lines.append((0, self._get_total_line(report, options, totals)))
 
         return lines
 
@@ -46,6 +39,11 @@ class DisallowedExpensesCustomHandler(models.AbstractModel):
             limit=1,
         )
         options['multi_rate_in_period'] = bool(rg)
+
+    def _custom_line_postprocessor(self, report, options, lines, warnings=None):
+        if warnings is not None and options['multi_rate_in_period']:
+            warnings['account_disallowed_expenses.warning_multi_rate'] = {}
+        return lines
 
     def _caret_options_initializer(self):
         return {
@@ -176,7 +174,7 @@ class DisallowedExpensesCustomHandler(models.AbstractModel):
         return current
 
     def _build_line_id(self, options, current, level, parent=False, markup=None):
-        report = self.env['account.report']
+        report = self.env['account.report'].browse(options['report_id'])
         parent_line_id = None
         line_id = report._get_generic_line_id('account.disallowed.expenses.category', current['category_id'])
         if current.get('account_id'):
@@ -283,9 +281,9 @@ class DisallowedExpensesCustomHandler(models.AbstractModel):
             for key in total[column_group_key]:
                 total[column_group_key][key] += values.get(column_group_key, {}).get(key) or 0.0
 
-    def _get_total_line(self, options, totals):
+    def _get_total_line(self, report, options, totals):
         return {
-            'id': self.env['account.report']._get_generic_line_id(None, None, markup='total'),
+            'id': report._get_generic_line_id(None, None, markup='total'),
             'name': _('Total'),
             'class': 'total',
             'level': 1,

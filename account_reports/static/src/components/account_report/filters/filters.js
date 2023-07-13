@@ -65,8 +65,14 @@ export class AccountReportFilters extends Component {
 
     get selectedVariantName() {
         for (const variant of this.controller.options.available_variants)
-            if (variant.id === this.controller.options.report_id)
+            if (variant.id === this.controller.options.selected_variant_id)
                 return variant.name;
+    }
+
+    get selectedSectionName() {
+        for (const section of this.controller.options.sections)
+            if (section.id === this.controller.options.selected_section_id)
+                return section.name;
     }
 
     //------------------------------------------------------------------------------------------------------------------
@@ -190,7 +196,12 @@ export class AccountReportFilters extends Component {
                 'id': parseInt(journal.id),
             };
 
-        await this.controller.load(this.controller.options);
+        await this.controller.reload('journals', this.controller.options);
+    }
+
+    async filterVariant(reportId) {
+        this.controller.saveSessionOptions({...this.controller.options, 'selected_variant_id': reportId, 'sections_source_id': reportId});
+        this.controller.displayReport(reportId);
     }
 
     async filterTaxUnit(taxUnit) {

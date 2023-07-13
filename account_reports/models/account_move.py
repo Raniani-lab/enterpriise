@@ -186,7 +186,7 @@ class AccountMove(models.Model):
         else:
             company_ids = self.env.company.ids
 
-        report_options = tax_report.with_context(allowed_company_ids=company_ids)._get_options(previous_options=options)
+        report_options = tax_report.with_context(allowed_company_ids=company_ids).get_options(previous_options=options)
         if 'tax_report_control_error' in report_options:
             # This key will be set to False in the options by a custom init_options for reports adding control lines to themselves.
             # Its presence indicate that we need to compute the report in order to run the actual checks. The options dictionary will then be

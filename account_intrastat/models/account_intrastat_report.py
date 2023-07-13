@@ -37,12 +37,9 @@ class IntrastatReportCustomHandler(models.AbstractModel):
             'components': {
                 'AccountReportFilters': 'account_intrastat.IntrastatReportFilters',
             },
-            'templates': {
-                'AccountReport': 'account_intrastat.IntrastatReport',
-            }
         }
 
-    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals, warnings=None):
         # dict of the form {move_id: {column_group_key: {expression_label: value}}}
         move_info_dict = {}
 
@@ -77,7 +74,7 @@ class IntrastatReportCustomHandler(models.AbstractModel):
         # Create lines
         lines = []
         for move_id, move_info in move_info_dict.items():
-            line = self._create_report_line(options, move_info, move_id, ['value'])
+            line = self._create_report_line(options, move_info, move_id, ['value'], warnings=warnings)
             lines.append((0, line))
 
         # Create total line if only one type of invoice is selected
@@ -169,7 +166,7 @@ class IntrastatReportCustomHandler(models.AbstractModel):
     def export_to_xlsx(self, options, response=None):
         # We need to regenerate the options to make sure we hide the country name columns as expected.
         report = self.env['account.report'].browse(options['report_id'])
-        new_options = report._get_options(previous_options={**options, 'country_format': 'code', 'commodity_flow': 'code'})
+        new_options = report.get_options(previous_options={**options, 'country_format': 'code', 'commodity_flow': 'code'})
         return report.export_to_xlsx(new_options, response=response)
 
     ####################################################
@@ -177,7 +174,7 @@ class IntrastatReportCustomHandler(models.AbstractModel):
     ####################################################
 
     @api.model
-    def _create_report_line(self, options, line_vals, line_id, number_values):
+    def _create_report_line(self, options, line_vals, line_id, number_values, warnings=None):
         """ Create a standard (non-total) line for the report
 
         :param options: report options
@@ -185,7 +182,7 @@ class IntrastatReportCustomHandler(models.AbstractModel):
         :param line_id: id of the line
         :param number_values: list of expression labels that need to have the 'number' class
         """
-        report = self.env['account.report']
+        report = self.env['account.report'].browse(options['report_id'])
         columns = []
         for column in options['columns']:
             expression_label = column['expression_label']
@@ -200,21 +197,26 @@ class IntrastatReportCustomHandler(models.AbstractModel):
                 'class': 'number' if expression_label in number_values else '',
             })
 
-        errors = (
-            ('expired_trans', 'move_line_id'),
-            ('premature_trans', 'move_line_id'),
-            ('missing_trans', 'move_line_id'),
-            ('expired_comm', 'product_id'),
-            ('premature_comm', 'product_id'),
-            ('missing_comm', 'product_id'),
-            ('missing_unit', 'product_id'),
-            ('missing_weight', 'product_id'),
-        )
-        for column_group in options['column_groups']:
-            for error, val_key in errors:
-                if line_vals.get(column_group) and line_vals[column_group].get(error):
-                    options.setdefault('intrastat_warnings', defaultdict(list))
-                    options['intrastat_warnings'][error].append(line_vals[column_group][val_key])
+        if warnings is not None:
+            warnings_map = (
+                ('expired_trans', 'move_line_id'),
+                ('premature_trans', 'move_line_id'),
+                ('missing_trans', 'move_line_id'),
+                ('expired_comm', 'product_id'),
+                ('premature_comm', 'product_id'),
+                ('missing_comm', 'product_id'),
+                ('missing_unit', 'product_id'),
+                ('missing_weight', 'product_id'),
+            )
+            for column_group in options['column_groups']:
+                for warning_code, val_key in warnings_map:
+                    if line_vals.get(column_group) and line_vals[column_group].get(warning_code):
+                        warningParams = warnings.setdefault(
+                            f'account_intrastat.intrastat_warning_{warning_code}',
+                            {'ids': [], 'alert_type': 'warning'}
+                        )
+                        warningParams['ids'].append(line_vals[column_group][val_key])
+
         return {
             'id': report._get_generic_line_id('account.move.line', line_id),
             'caret_options': 'account.move.line',
@@ -230,7 +232,7 @@ class IntrastatReportCustomHandler(models.AbstractModel):
         :param options: report options
         :param total_vals: total values dict
         """
-        report = self.env['account.report']
+        report = self.env['account.report'].browse(options['report_id'])
         columns = []
         for column in options['columns']:
             expression_label = column['expression_label']
@@ -428,7 +430,7 @@ class IntrastatReportCustomHandler(models.AbstractModel):
                 self.env.ref('account_intrastat.account_move_line_tree_view_account_intrastat_transaction_codes').id,
                 'list',
             ), (False, 'form')],
-            'domain': [('id', 'in', options['intrastat_warnings'][params['option_key']])],
+            'domain': [('id', 'in', params['ids'])],
             'context': {
                 'create': False,
                 'delete': False,
@@ -445,7 +447,7 @@ class IntrastatReportCustomHandler(models.AbstractModel):
                 self.env.ref('account_intrastat.product_product_tree_view_account_intrastat').id,
                 'list',
             ), (False, 'form')],
-            'domain': [('id', 'in', options['intrastat_warnings'][params['option_key']])],
+            'domain': [('id', 'in', params['ids'])],
             'context': {
                 'create': False,
                 'delete': False,
@@ -462,7 +464,7 @@ class IntrastatReportCustomHandler(models.AbstractModel):
                 self.env.ref('account_intrastat.product_product_tree_view_account_intrastat_supplementary_unit').id,
                 'list',
             ), (False, 'form')],
-            'domain': [('id', 'in', options['intrastat_warnings'][params['option_key']])],
+            'domain': [('id', 'in', params['ids'])],
             'context': {
                 'create': False,
                 'delete': False,
@@ -479,7 +481,7 @@ class IntrastatReportCustomHandler(models.AbstractModel):
                 self.env.ref('account_intrastat.product_product_tree_view_account_intrastat_weight').id,
                 'list',
             ), (False, 'form')],
-            'domain': [('id', 'in', options['intrastat_warnings'][params['option_key']])],
+            'domain': [('id', 'in', params['ids'])],
             'context': {
                 'create': False,
                 'delete': False,

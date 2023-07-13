@@ -28,7 +28,6 @@ class MulticurrencyRevaluationReportCustomHandler(models.AbstractModel):
                 'AccountReportFilters': 'account_reports.MulticurrencyRevaluationReportFilters',
             },
             'templates': {
-                'AccountReport': 'account_reports.MulticurrencyRevaluationReport',
                 'AccountReportLineName': 'account_reports.MulticurrencyRevaluationReportLineName',
             },
         }
@@ -59,10 +58,9 @@ class MulticurrencyRevaluationReportCustomHandler(models.AbstractModel):
             for cr in options['currency_rates'].values()
         )
 
-        options['warning_multicompany'] = len(self.env.companies) > 1
         options['buttons'].append({'name': _('Adjustment Entry'), 'sequence': 30, 'action': 'action_multi_currency_revaluation_open_revaluation_wizard'})
 
-    def _custom_line_postprocessor(self, report, options, lines):
+    def _custom_line_postprocessor(self, report, options, lines, warnings=None):
         line_to_adjust_id = self.env.ref('account_reports.multicurrency_revaluation_to_adjust').id
         line_excluded_id = self.env.ref('account_reports.multicurrency_revaluation_excluded').id
 
@@ -94,6 +92,13 @@ class MulticurrencyRevaluationReportCustomHandler(models.AbstractModel):
 
             rslt.append(line)
 
+        # Custom warnings
+        if warnings is not None:
+            if len(self.env.companies) > 1:
+                warnings['account_reports.multi_currency_revaluation_report_warning_multicompany'] = {'alert_type': 'warning'}
+            if options['custom_rate']:
+                warnings['account_reports.multi_currency_revaluation_report_warning_custom_rate'] = {'alert_type': 'warning'}
+
         return rslt
 
     def _custom_groupby_line_completer(self, report, options, line_dict):
@@ -122,9 +127,10 @@ class MulticurrencyRevaluationReportCustomHandler(models.AbstractModel):
 
     # ACTIONS
     def action_multi_currency_revaluation_open_general_ledger(self, options, params):
+        self.ensure_one()
         account_id = self.env['account.report']._get_res_id_from_line_id(params['line_id'], 'account.account')
-        account_line_id = self.env['account.report']._get_generic_line_id('account.account', account_id)
-        general_ledger_options = self.env.ref('account_reports.general_ledger_report')._get_options(options)
+        account_line_id = self._get_generic_line_id('account.account', account_id)
+        general_ledger_options = self.env.ref('account_reports.general_ledger_report').get_options(options)
         general_ledger_options['unfolded_lines'] = [account_line_id]
 
         general_ledger_action = self.env['ir.actions.actions']._for_xml_id('account_reports.action_account_report_general_ledger')
@@ -161,10 +167,10 @@ class MulticurrencyRevaluationReportCustomHandler(models.AbstractModel):
             'domain': [('currency_id', '=', currency_id)],
         }
 
-    def _report_custom_engine_multi_currency_revaluation_to_adjust(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
+    def _report_custom_engine_multi_currency_revaluation_to_adjust(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None, warnings=None):
         return self._multi_currency_revaluation_get_custom_lines(options, 'to_adjust', current_groupby, next_groupby, offset=offset, limit=limit)
 
-    def _report_custom_engine_multi_currency_revaluation_excluded(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
+    def _report_custom_engine_multi_currency_revaluation_excluded(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None, warnings=None):
         return self._multi_currency_revaluation_get_custom_lines(options, 'excluded', current_groupby, next_groupby, offset=offset, limit=limit)
 
     def _multi_currency_revaluation_get_custom_lines(self, options, line_code, current_groupby, next_groupby, offset=0, limit=None):

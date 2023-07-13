@@ -58,7 +58,7 @@ class LuxembourgishECSalesReportCustomHandler(models.AbstractModel):
 
     def get_file_data_lines(self, options):
         report = self.env['account.report'].browse(options['report_id'])
-        lines = report._get_lines(report._get_options(options))[:-1]  # Remove the total line
+        lines = report._get_lines(report.get_options(options))[:-1]  # Remove the total line
         for i, line in enumerate(lines):
             new_line = [j['no_format'] for j in line['columns']]
             lines[i] = new_line

@@ -186,7 +186,7 @@ class TrialBalanceCustomHandler(models.AbstractModel):
     def _l10n_mx_get_sat_options(self, options):
         sat_options = options.copy()
         del sat_options['comparison']
-        return self.env['account.report'].browse(options['report_id'])._get_options(
+        return self.env['account.report'].browse(options['report_id']).get_options(
             previous_options={
                 **sat_options,
                 'hierarchy': True,  # We need the hierarchy activated to get group lines

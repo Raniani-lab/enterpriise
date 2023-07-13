@@ -43,7 +43,7 @@ class SwedishSalesReportTest(AccountSalesReportCommon):
             (self.partner_b, triangular_tax, 2000),
         ])
         report = self.env.ref('l10n_se_reports.swedish_ec_sales_report')
-        options = report._get_options({'date': {'mode': 'range', 'filter': 'this_month'}})
+        options = report.get_options({'date': {'mode': 'range', 'filter': 'this_month'}})
         lines = report._get_lines(options)
         self.assertLinesValues(
             # pylint: disable=bad-whitespace

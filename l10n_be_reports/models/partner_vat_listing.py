@@ -53,7 +53,7 @@ class PartnerVATListingCustomHandler(models.AbstractModel):
             'file_export_type': _('XML')
         }]
 
-    def _report_custom_engine_partner_vat_listing(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
+    def _report_custom_engine_partner_vat_listing(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None, warnings=None):
         def build_result_dict(query_res_lines):
             if current_groupby:
                 rslt = {
@@ -265,7 +265,7 @@ class PartnerVATListingCustomHandler(models.AbstractModel):
         # Precheck
         company = self.env.company
         company_vat = company.partner_id.vat
-        report = self.env['account.report'].with_context(print_mode=True).browse(options['report_id'])
+        report = self.env['account.report'].browse(options['report_id'])
 
         if not company_vat:
             raise UserError(_('No VAT number associated with your company.'))
@@ -305,9 +305,10 @@ class PartnerVATListingCustomHandler(models.AbstractModel):
                 country = addr_partner.country_id.code
 
         # Turnover and Farmer tags are not included
+        options['print_mode'] = True
         options['date']['date_from'] = options['date']['date_from'][0:4] + '-01-01'
         options['date']['date_to'] = options['date']['date_to'][0:4] + '-12-31'
-        lines = report.with_context(print_mode=True)._get_lines(options)
+        lines = report._get_lines(options)
         partner_lines = filter(lambda line: report._get_model_info_from_id(line['id'])[0] == 'res.partner', lines)
 
         data_client_info = ''
@@ -388,7 +389,7 @@ class PartnerVATListingCustomHandler(models.AbstractModel):
 </ns2:ClientListingConsignment>""") % annual_listing_data
 
         return {
-            'file_name': report.get_default_report_filename('xml'),
+            'file_name': report.get_default_report_filename(options, 'xml'),
             'file_content': (data_begin + data_client_info + data_end).encode('ISO-8859-1', 'ignore'),
             'file_type': 'xml',
         }

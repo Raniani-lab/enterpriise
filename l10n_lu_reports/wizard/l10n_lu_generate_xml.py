@@ -49,7 +49,7 @@ class L10nLuGenerateXML(models.TransientModel):
                 )
         report_gen_options = self.env.context.get('report_generation_options', {})
         report = self.env['account.report'].browse(report_gen_options.get('report_id'))
-        options = report._get_options(report_gen_options)
+        options = report.get_options(report_gen_options)
         filename = self.env['l10n_lu.report.handler'].get_report_filename(options)
         agent_vat = agent.vat if agent else self._get_export_vat()
         company_vat = self._get_export_vat()

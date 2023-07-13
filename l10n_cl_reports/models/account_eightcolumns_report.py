@@ -12,7 +12,7 @@ class ChileanReportCustomHandler(models.AbstractModel):
     _inherit = 'account.report.custom.handler'
     _description = 'Chilean Report Custom Handler'
 
-    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals, warnings=None):
         # dict of the form {account_id: {column_group_key: {expression_label: value}}}
         lines_dict = {}
 

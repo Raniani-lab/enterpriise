@@ -16,7 +16,7 @@ class L10nLuYearlyTaxReportManual(models.Model):
 
     # ==== DEFAULTS ====
     def _get_default_company_ids(self):
-        options = self.env.ref('l10n_lu.tax_report')._get_options()
+        options = self.env.ref('l10n_lu.tax_report').get_options()
         if options.get('multi_company'):
             return [c['id'] for c in options['multi_company']]
         return self.env.company.ids if self.env.company.account_fiscal_country_id.code == "LU" else []
@@ -622,7 +622,7 @@ class L10nLuYearlyTaxReportManual(models.Model):
         for record in self:
             if record.company_ids:
                 report_id = self.env.ref('l10n_lu.tax_report')
-                options = report_id.with_context(allowed_company_ids=record.company_ids.ids)._get_options({
+                options = report_id.with_context(allowed_company_ids=record.company_ids.ids).get_options({
                     'date': {
                         'string': self.year,
                         'period_type': 'fiscalyear',
@@ -647,7 +647,7 @@ class L10nLuYearlyTaxReportManual(models.Model):
         """
         self.ensure_one()
         tax_report = self.env.ref('l10n_lu.tax_report')
-        options = tax_report._get_options({
+        options = tax_report.get_options({
             'date': {
                 'string': self.year,
                 'period_type': 'fiscalyear',
@@ -715,7 +715,7 @@ class L10nLuYearlyTaxReportManual(models.Model):
         Exact format depends on the period (monthly, quarterly, annual(simplified)).
         """
         self.ensure_one()
-        options = self.env.ref('l10n_lu.tax_report')._get_options({
+        options = self.env.ref('l10n_lu.tax_report').get_options({
             'date': {
                 'string': self.year,
                 'period_type': 'fiscalyear',

@@ -40,7 +40,7 @@ class AgedPartnerBalanceCustomHandler(models.AbstractModel):
 
         options['order_column'] = (previous_options or {}).get('order_column') or default_order_column
 
-    def _custom_line_postprocessor(self, report, options, lines):
+    def _custom_line_postprocessor(self, report, options, lines, warnings=None):
         partner_lines_map = {}
 
         # Sort line dicts by partner
@@ -73,10 +73,10 @@ class AgedPartnerBalanceCustomHandler(models.AbstractModel):
 
         return lines
 
-    def _report_custom_engine_aged_receivable(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
+    def _report_custom_engine_aged_receivable(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None, warnings=None):
         return self._aged_partner_report_custom_engine_common(options, 'asset_receivable', current_groupby, next_groupby, offset=offset, limit=limit)
 
-    def _report_custom_engine_aged_payable(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
+    def _report_custom_engine_aged_payable(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None, warnings=None):
         return self._aged_partner_report_custom_engine_common(options, 'liability_payable', current_groupby, next_groupby, offset=offset, limit=limit)
 
     def _aged_partner_report_custom_engine_common(self, options, internal_type, current_groupby, next_groupby, offset=0, limit=None):

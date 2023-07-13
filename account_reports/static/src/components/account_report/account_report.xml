@@ -13,7 +13,7 @@
                     <t t-if="controller.buttons.length">
                         <t t-set="button" t-value="controller.buttons[0]"/>
                         <button class="btn btn-primary"
-                                t-on-click="(ev) => controller.reportAction(ev, button.action, button.action_param)"
+                                t-on-click="(ev) => controller.reportAction(ev, button.action, button.action_param, true)"
                             >
                                 <t t-out="button.name"/>
                         </button>
@@ -23,7 +23,7 @@
                     <t t-foreach="controller.buttons" t-as="button" t-key="button_index">
                         <div t-if="button_index != 0">
                             <button class="btn btn-secondary"
-                                t-on-click="(ev) => controller.reportAction(ev, button.action, button.action_param)"
+                                t-on-click="(ev) => controller.reportAction(ev, button.action, button.action_param, true)"
                             >
                                 <t t-out="button.name"/>
                             </button>
@@ -46,16 +46,27 @@
             <div class="o_content">
                 <div class="o_account_reports_body" t-ref="accountReportBody">
                     <!-- Warnings -->
-                    <div id="warnings_div">
-                        <t t-if="controller.filters.show_draft and !controller.options.all_entries and controller.options.unposted_in_period">
-                            <div class="alert alert-info text-center mb-0" >
-                                <span>
-                                    There are
-                                    <a type="button" t-on-click="(ev) => controller.reportAction(ev, 'open_unposted_moves', {})">unposted Journal Entries</a>
-                                    prior or included in this period.
-                                </span>
+                    <div t-if="controller.warnings">
+                        <t t-foreach="controller.warnings" t-as="warningTemplateRef" t-key="warningTemplateRef">
+                            <t t-set="warningParams" t-value="controller.warnings[warningTemplateRef]"/>
+
+                            <div t-att-class="`alert alert-${warningParams['alert_type'] || 'info'} text-center mb-0`">
+                                <t t-call="{{ warningTemplateRef }}"/>
                             </div>
                         </t>
+                    </div>
+
+                    <div id="section_selector">
+                      <t t-foreach="controller.options.sections" t-as="section" t-key="section_index">
+                          <button
+                              t-att-class="(controller.options.selected_section_id === section.id) ?  'btn btn-secondary' : 'btn btn-primary'"
+                              t-on-click="() => controller.switchToSection(section.id)"
+                              t-out="section.name"
+                          />
+                      </t>
+                      <t t-if="controller.options['has_inactive_sections']">
+                          <button class="btn btn-secondary" t-on-click="(ev) => controller.reportAction(ev, 'action_display_inactive_sections')" >+</button>
+                      </t>
                     </div>
 
                     <div class="o_account_reports_page o_account_reports_no_print">

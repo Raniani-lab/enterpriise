@@ -91,17 +91,14 @@ class BelgianTaxReportCustomHandler(models.AbstractModel):
 
     def _get_custom_display_config(self):
         return {
-            'templates': {
-                'AccountReport': 'l10n_be_reports.TaxReport',
-            },
             'pdf_export': {
                 'pdf_export_filters': 'l10n_be_reports.pdf_export_filters',
             },
         }
 
-    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals, warnings=None):
         # Add the control lines in the report, with a high sequence to ensure they appear at the end.
-        control_lines = self._dynamic_check_lines(options, all_column_groups_expression_totals)
+        control_lines = self._dynamic_check_lines(options, all_column_groups_expression_totals, warnings)
         return control_lines or []
 
     def _custom_options_initializer(self, report, options, previous_options=None):
@@ -206,7 +203,7 @@ class BelgianTaxReportCustomHandler(models.AbstractModel):
         grids_list = []
         currency_id = self.env.company.currency_id
 
-        options = report._get_options({'no_format': True, 'date': {'date_from': date_from, 'date_to': date_to}, 'filter_unfold_all': True})
+        options = report.get_options({'no_format': True, 'date': {'date_from': date_from, 'date_to': date_to}, 'filter_unfold_all': True})
         lines = report._get_lines(options)
 
         # Create a mapping between report line ids and actual grid names
@@ -270,12 +267,12 @@ class BelgianTaxReportCustomHandler(models.AbstractModel):
         """) % file_data
 
         return {
-            'file_name': report.get_default_report_filename('xml'),
+            'file_name': report.get_default_report_filename(options, 'xml'),
             'file_content': rslt.encode(),
             'file_type': 'xml',
         }
 
-    def _dynamic_check_lines(self, options, all_column_groups_expression_totals):
+    def _dynamic_check_lines(self, options, all_column_groups_expression_totals, warnings):
         def _evaluate_check(check_func):
             columns = []
             all_check_passed = False
@@ -375,10 +372,10 @@ class BelgianTaxReportCustomHandler(models.AbstractModel):
             # in the XML wizard and on the tax closing entry without needing to recompute the whole report; just using the options.
             options['tax_report_control_error'] = True
 
-        if _evaluate_check(lambda expr_totals: not any(
+        if warnings is not None and _evaluate_check(lambda expr_totals: not any(
             [expr_totals[expr_map[grid]]['value'] for grid in ('c44', 'c46L', 'c46T', 'c48s44', 'c48s46L', 'c48s46T')]
         )):
             # remind user to submit EC Sales Report if any ec sales related taxes
-            options['be_tax_report_ec_sales_reminder'] = True
+            warnings['l10n_be_reports.tax_report_warning_ec_sales_reminder'] = {}
 
         return failed_control_lines

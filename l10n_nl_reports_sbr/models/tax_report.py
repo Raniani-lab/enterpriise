@@ -20,7 +20,7 @@ class DutchReportCustomHandler(models.AbstractModel):
             raise UserError(_('Please select only one company to send the report. If you wish to aggregate multiple companies, please create a tax unit.'))
         date_to = datetime.date.fromisoformat(options['date']['date_to'])
         closing_date_from, closing_date_to = self.env.company._get_tax_closing_period_boundaries(date_to)
-        new_options = report._get_options({
+        new_options = report.get_options({
             **options,
             'date': {
                 'date_from': closing_date_from,
@@ -53,7 +53,7 @@ class DutchReportCustomHandler(models.AbstractModel):
         xbrl_element = etree.fromstring(xbrl)
         xbrl_file = etree.tostring(xbrl_element, xml_declaration=True, encoding='utf-8')
         return {
-            'file_name': report.get_default_report_filename('xbrl'),
+            'file_name': report.get_default_report_filename(options, 'xbrl'),
             'file_content': xbrl_file,
             'file_type': 'xml',
         }

@@ -24,7 +24,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
         """
         # Get the report
         report = self.env['account.report'].with_context(no_format=True).browse(options['report_id'])
-        print_options = report._get_options(previous_options=options)
+        print_options = report.get_options(previous_options=options)
 
         # Get the lines of the report, then filter to only use the account lines (the other aren't needed.)
         lines = report._get_lines(print_options)

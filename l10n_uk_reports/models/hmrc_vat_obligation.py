@@ -156,7 +156,7 @@ class HmrcVatObligation(models.Model):
     def action_submit_vat_return(self, data=None):
         self.ensure_one()
         report = self.env.ref('l10n_uk.tax_report')
-        options = report._get_options()
+        options = report.get_options()
         options['date'].update({'date_from': fields.Date.to_string(self.date_start),
                         'date_to': fields.Date.to_string(self.date_end),
                         'filter': 'custom',

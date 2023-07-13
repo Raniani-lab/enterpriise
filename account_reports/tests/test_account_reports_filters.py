@@ -16,13 +16,13 @@ class TestAccountReportsFilters(AccountTestInvoicingCommon):
     def _assert_filter_date(self, report, previous_options, expected_date_values):
         """ Initializes and checks the 'date' option computed for the provided report and previous_options
         """
-        options = report._get_options(previous_options)
+        options = report.get_options(previous_options)
         self.assertDictEqual(options['date'], expected_date_values)
 
     def _assert_filter_comparison(self, report, previous_options, expected_period_values):
         """ Initializes and checks the 'comparison' option computed for the provided report and previous_options
         """
-        options = report._get_options(previous_options)
+        options = report.get_options(previous_options)
 
         self.assertEqual(len(options['comparison']['periods']), len(expected_period_values))
 

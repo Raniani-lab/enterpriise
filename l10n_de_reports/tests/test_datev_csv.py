@@ -38,7 +38,7 @@ class TestDatevCSV(AccountTestInvoicingCommon):
 
     def test_datev_in_invoice(self):
         report = self.env.ref('account_reports.general_ledger_report')
-        options = report._get_options()
+        options = report.get_options()
         options['date'].update({
             'date_from': '2020-01-01',
             'date_to': '2020-12-31',
@@ -83,7 +83,7 @@ class TestDatevCSV(AccountTestInvoicingCommon):
 
     def test_datev_out_invoice(self):
         report = self.env.ref('account_reports.general_ledger_report')
-        options = report._get_options()
+        options = report.get_options()
         options['date'].update({
             'date_from': '2020-01-01',
             'date_to': '2020-12-31',
@@ -115,7 +115,7 @@ class TestDatevCSV(AccountTestInvoicingCommon):
 
     def test_datev_miscellaneous(self):
         report = self.env.ref('account_reports.general_ledger_report')
-        options = report._get_options()
+        options = report.get_options()
         options['date'].update({
             'date_from': '2020-01-01',
             'date_to': '2020-12-31',
@@ -154,7 +154,7 @@ class TestDatevCSV(AccountTestInvoicingCommon):
 
     def test_datev_out_invoice_payment(self):
         report = self.env.ref('account_reports.general_ledger_report')
-        options = report._get_options()
+        options = report.get_options()
         options['date'].update({
             'date_from': '2020-01-01',
             'date_to': '2020-12-31',
@@ -195,7 +195,7 @@ class TestDatevCSV(AccountTestInvoicingCommon):
 
     def test_datev_out_invoice_payment_same_account_counteraccount(self):
         report = self.env.ref('account_reports.general_ledger_report')
-        options = report._get_options()
+        options = report.get_options()
         options['date'].update({
             'date_from': '2020-01-01',
             'date_to': '2020-12-31',
@@ -238,7 +238,7 @@ class TestDatevCSV(AccountTestInvoicingCommon):
 
     def test_datev_in_invoice_payment(self):
         report = self.env.ref('account_reports.general_ledger_report')
-        options = report._get_options()
+        options = report.get_options()
         options['date'].update({
             'date_from': '2020-01-01',
             'date_to': '2020-12-31',
@@ -279,7 +279,7 @@ class TestDatevCSV(AccountTestInvoicingCommon):
 
     def test_datev_bank_statement(self):
         report = self.env.ref('account_reports.general_ledger_report')
-        options = report._get_options()
+        options = report.get_options()
         options['date'].update({
             'date_from': '2020-01-01',
             'date_to': '2020-12-31',
@@ -311,7 +311,7 @@ class TestDatevCSV(AccountTestInvoicingCommon):
 
     def test_datev_out_invoice_paid(self):
         report = self.env.ref('account_reports.general_ledger_report')
-        options = report._get_options()
+        options = report.get_options()
         options['date'].update({
             'date_from': '2020-01-01',
             'date_to': '2020-12-31',
@@ -365,7 +365,7 @@ class TestDatevCSV(AccountTestInvoicingCommon):
 
     def test_datev_out_invoice_with_negative_amounts(self):
         report = self.env.ref('account_reports.general_ledger_report')
-        options = report._get_options()
+        options = report.get_options()
         options['date'].update({
             'date_from': '2020-01-01',
             'date_to': '2020-12-31',
@@ -426,7 +426,7 @@ class TestDatevCSV(AccountTestInvoicingCommon):
             we can put all the credit lines against this account
         """
         report = self.env.ref('account_reports.general_ledger_report')
-        options = report._get_options()
+        options = report.get_options()
         options['date'].update({
             'date_from': '2020-01-01',
             'date_to': '2020-12-31',
@@ -480,7 +480,7 @@ class TestDatevCSV(AccountTestInvoicingCommon):
     def test_datev_all_aml_present(self):
         report = self.env.ref('account_reports.general_ledger_report')
         report.load_more_limit = 3
-        options = report._get_options()
+        options = report.get_options()
         options['date'].update({
             'date_from': '2020-01-01',
             'date_to': '2020-12-31',

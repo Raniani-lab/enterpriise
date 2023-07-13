@@ -72,7 +72,7 @@ class EstonianTaxReportCustomHandler(models.AbstractModel):
                 xml_data[xml_variable] = '{:.2f}'.format(balance)
 
         kmd_inf_report = self.env.ref('l10n_ee_reports.kmd_inf_report')
-        kmd_inf_report_options = kmd_inf_report._get_options(options)
+        kmd_inf_report_options = kmd_inf_report.get_options(options)
         kmd_inf_report_options['unfold_all'] = True
 
         kmd_inf_lines = kmd_inf_report._get_lines(kmd_inf_report_options)
@@ -105,7 +105,7 @@ class EstonianTaxReportCustomHandler(models.AbstractModel):
         tree = objectify.fromstring(rendered_content)
 
         return {
-            'file_name': report.get_default_report_filename('xml'),
+            'file_name': report.get_default_report_filename(options, 'xml'),
             'file_content': etree.tostring(tree, pretty_print=True, xml_declaration=True, encoding='utf-8'),
             'file_type': 'xml',
         }
@@ -334,11 +334,9 @@ class EstonianKmdInfReportCustomHandler(models.AbstractModel):
         return build_result(query_res_lines)
 
 
-    def _report_custom_engine_kmd_inf_a(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0,
-                                        limit=None):
+    def _report_custom_engine_kmd_inf_a(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None, warnings=None):
         return self._report_custom_engine_kmd_inf_common(options, current_groupby, next_groupby, 'a')
 
 
-    def _report_custom_engine_kmd_inf_b(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0,
-                                        limit=None):
+    def _report_custom_engine_kmd_inf_b(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None, warnings=None):
         return self._report_custom_engine_kmd_inf_common(options, current_groupby, next_groupby, 'b')

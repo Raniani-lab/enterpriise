@@ -72,15 +72,16 @@ class TestL10nBeReportsPostWizard(TestAccountReportsCommon):
 
         # Posting the tax returns move with the wizard data actually posts the move
         report = self.env.ref('l10n_be.tax_report_vat')
+        options = self._generate_options(report, '2023-01-31', '2023-01-31')
 
         mock_pdf = {
-            'file_name': report.get_default_report_filename('pdf'),
+            'file_name': report.get_default_report_filename(options, 'pdf'),
             'file_content': b'',
             'file_type': 'pdf',
         }
 
         with patch.object(type(report), 'export_to_pdf', autospec=True, side_effect=lambda *args, **kwargs: mock_pdf):
-            self.tax_return_move.with_context({'l10n_be_reports_generation_options': {}}).action_post()
+            self.tax_return_move.with_context({'l10n_be_reports_generation_options': options}).action_post()
 
         self.assertRecordValues(self.tax_return_move, [{'state': 'posted'}])
         attachment_ids = self.env['ir.attachment'].search([

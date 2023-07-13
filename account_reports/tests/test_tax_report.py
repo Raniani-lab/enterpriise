@@ -1579,21 +1579,21 @@ class TestTaxReport(TestAccountReportsCommon):
         })
 
         # Case 1: 'all' allowed if multiple fpos
-        to_check = self.basic_tax_report._get_options({'fiscal_position': 'all'})
+        to_check = self.basic_tax_report.get_options({'fiscal_position': 'all', 'selected_variant_id': self.basic_tax_report.id})
         self.assertEqual(to_check['fiscal_position'], 'all', "Opening the report with 'all' fiscal_position option should work if there are fiscal positions for different states in that country")
 
         # Case 2: 'all' not allowed if domestic and no fpos
         self.foreign_vat_fpos.foreign_vat = None # No unlink because setupClass created some moves with it
-        to_check = self.basic_tax_report._get_options({'fiscal_position': 'all'})
+        to_check = self.basic_tax_report.get_options({'fiscal_position': 'all', 'selected_variant_id': self.basic_tax_report.id})
         self.assertEqual(to_check['fiscal_position'], 'domestic', "Opening the domestic report with 'all' should change to 'domestic' if there's no state-specific fiscal position in the country")
 
         # Case 3: 'all' not allowed on foreign report with 1 fpos
-        to_check = foreign_tax_report._get_options({'fiscal_position': 'all'})
+        to_check = foreign_tax_report.get_options({'fiscal_position': 'all', 'selected_variant_id': foreign_tax_report.id})
         self.assertEqual(to_check['fiscal_position'], foreign_vat_fpos.id, "Opening a foreign report with only one single fiscal position with 'all' option should change if to only select this fiscal position")
 
         # Case 4: always 'all' on generic report
         generic_tax_report = self.env.ref("account.generic_tax_report")
-        to_check = generic_tax_report._get_options({'fiscal_position': foreign_vat_fpos.id})
+        to_check = generic_tax_report.get_options({'fiscal_position': foreign_vat_fpos.id, 'selected_variant_id': generic_tax_report.id})
         self.assertEqual(to_check['fiscal_position'], 'all', "The generic report should always use 'all' fiscal position option.")
 
     def test_tax_report_multi_inv_line_no_rep_account(self):
@@ -1679,7 +1679,7 @@ class TestTaxReport(TestAccountReportsCommon):
 
         # Check the generic report
         report = self.env.ref("account.generic_tax_report")
-        options = self._generate_options(report, invoice_date, invoice_date, {'tax_report': 'generic'})
+        options = self._generate_options(report, invoice_date, invoice_date)
         self.assertLinesValues(
             report._get_lines(options),
             #   Name                         Net               Tax

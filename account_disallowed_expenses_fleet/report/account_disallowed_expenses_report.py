@@ -124,7 +124,7 @@ class DisallowedExpensesFleetCustomHandler(models.AbstractModel):
     def _build_line_id(self, options, current, level, parent=False, markup=None):
         # OVERRIDES account_disallowed_expenses.
 
-        report = self.env['account.report']
+        report = self.env['account.report'].browse(options['report_id'])
         parent_line_id = None
         line_id = report._get_generic_line_id('account.disallowed.expenses.category', current['category_id'])
         if current.get('vehicle_id') and options.get('vehicle_split'):

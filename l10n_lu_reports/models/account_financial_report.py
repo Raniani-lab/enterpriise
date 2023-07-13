@@ -198,7 +198,7 @@ class LuxembourgishFinancialReportCustomHandler(models.AbstractModel):
 
         report = self.env['account.report'].browse(options['report_id'])
         if not self.env.context.get('skip_options_recompute'):
-            options = report._get_options(options)
+            options = report.get_options(options)
         lu_template_values = self.get_financial_electronic_report_values(options)
         for form in lu_template_values['forms']:
             if references:

@@ -179,7 +179,7 @@ class AccountGenericTaxReport(models.AbstractModel):
         formatted_xml = etree.tostring(tree, pretty_print=True, xml_declaration=True, encoding='UTF-8')
 
         return {
-            'file_name': report.get_default_report_filename('xml'),
+            'file_name': report.get_default_report_filename(options, 'xml'),
             'file_content': formatted_xml,
             'file_type': 'xml',
         }

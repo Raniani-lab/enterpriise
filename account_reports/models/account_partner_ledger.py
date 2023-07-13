@@ -23,8 +23,8 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
             }
         }
 
-    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
-        if self.env.context.get('print_mode') and options.get('filter_search_bar'):
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals, warnings=None):
+        if options['print_mode'] and options.get('filter_search_bar'):
             # Handled here instead of in custom options initializer as init_options functions aren't re-called when printing the report.
             options.setdefault('forced_domain', []).append(('partner_id', 'ilike', options['filter_search_bar']))
 
@@ -329,11 +329,11 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
                     %s                                                                                                    AS column_group_key,
                     aml_with_partner.partner_id                                                                           AS groupby,
                     COALESCE(SUM(CASE WHEN aml_with_partner.balance > 0 THEN 0 ELSE ROUND(
-                            partial.amount * currency_table.rate, currency_table.precision) END), 0)                      AS debit, 
+                            partial.amount * currency_table.rate, currency_table.precision) END), 0)                      AS debit,
                     COALESCE(SUM(CASE WHEN aml_with_partner.balance < 0 THEN 0 ELSE ROUND(
-                            partial.amount * currency_table.rate, currency_table.precision) END), 0)                      AS credit, 
+                            partial.amount * currency_table.rate, currency_table.precision) END), 0)                      AS credit,
                     COALESCE(SUM(- sign(aml_with_partner.balance) * ROUND(
-                            partial.amount * currency_table.rate, currency_table.precision)), 0)                          AS balance 
+                            partial.amount * currency_table.rate, currency_table.precision)), 0)                          AS balance
                 FROM {tables}
                 JOIN account_partial_reconcile partial
                     ON account_move_line.id = partial.debit_move_id OR account_move_line.id = partial.credit_move_id
@@ -383,7 +383,7 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
                 # For the first expansion of the line, the initial balance line gives the progress
                 progress = init_load_more_progress(initial_balance_line)
 
-        limit_to_load = report.load_more_limit + 1 if report.load_more_limit and not self._context.get('print_mode') else None
+        limit_to_load = report.load_more_limit + 1 if report.load_more_limit and not options['print_mode'] else None
 
         if unfold_all_batch_data:
             aml_results = unfold_all_batch_data['aml_values'][record_id]
@@ -394,7 +394,7 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
         treated_results_count = 0
         next_progress = progress
         for result in aml_results:
-            if not self._context.get('print_mode') and report.load_more_limit and treated_results_count == report.load_more_limit:
+            if not options['print_mode'] and report.load_more_limit and treated_results_count == report.load_more_limit:
                 # We loaded one more than the limit on purpose: this way we know we need a "load more" line
                 has_more = True
                 break
@@ -505,13 +505,13 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
                     account_move_line.matching_number,
                     CASE WHEN aml_with_partner.balance > 0 THEN 0 ELSE ROUND(
                         partial.amount * currency_table.rate, currency_table.precision
-                    ) END                                                                               AS debit, 
+                    ) END                                                                               AS debit,
                     CASE WHEN aml_with_partner.balance < 0 THEN 0 ELSE ROUND(
                         partial.amount * currency_table.rate, currency_table.precision
-                    ) END                                                                               AS credit, 
+                    ) END                                                                               AS credit,
                     - sign(aml_with_partner.balance) * ROUND(
                         partial.amount * currency_table.rate, currency_table.precision
-                    )                                                                                   AS balance, 
+                    )                                                                                   AS balance,
                     account_move.name                                                                   AS move_name,
                     account_move.move_type                                                              AS move_type,
                     account.code                                                                        AS account_code,
@@ -576,11 +576,11 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
     ####################################################
     def _get_report_line_partners(self, options, partner, partner_values, level_shift=0):
         company_currency = self.env.company.currency_id
-        unfold_all = (self._context.get('print_mode') and not options.get('unfolded_lines')) or options.get('unfold_all')
+        unfold_all = (options['print_mode'] and not options.get('unfolded_lines')) or options.get('unfold_all')
 
         unfoldable = False
         column_values = []
-        report = self.env['account.report']
+        report = self.env['account.report'].browse(options['report_id'])
         for column in options['columns']:
             col_expr_label = column['expression_label']
             value = partner_values[column['column_group_key']].get(col_expr_label)
@@ -621,7 +621,7 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
             caret_type = 'account.move.line'
 
         columns = []
-        report = self.env['account.report']
+        report = self.env['account.report'].browse(options['report_id'])
         for column in options['columns']:
             col_expr_label = column['expression_label']
             if col_expr_label == 'ref':
@@ -671,7 +671,7 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
 
     def _get_report_line_total(self, options, totals_by_column_group):
         column_values = []
-        report = self.env['account.report']
+        report = self.env['account.report'].browse(options['report_id'])
         for column in options['columns']:
             col_expr_label = column['expression_label']
             value = totals_by_column_group[column['column_group_key']].get(column['expression_label'])

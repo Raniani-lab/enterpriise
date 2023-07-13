@@ -47,7 +47,7 @@ class GermanySalesReportTest(AccountSalesReportCommon):
             (self.partner_b, s_tax, 700),
         ])
         report = self.env.ref('l10n_de_reports.german_ec_sales_report')
-        options = report._get_options({'date': {'mode': 'range', 'filter': 'this_month'}})
+        options = report.get_options({'date': {'mode': 'range', 'filter': 'this_month'}})
         lines = report._get_lines(options)
         self.assertLinesValues(
             lines,

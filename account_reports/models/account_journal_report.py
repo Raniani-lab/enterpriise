@@ -34,14 +34,14 @@ class JournalReportCustomHandler(models.AbstractModel):
             },
         }
 
-    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals, warnings=None):
         """ Returns the first level of the report, journal lines. """
         journal_query_res = self._query_journal(options)
 
         # Set the options with the journals that should be unfolded by default.
         lines = []
         for journal_index, (journal_id, journal_vals) in enumerate(journal_query_res.items()):
-            journal_key = self.env['account.report']._get_generic_line_id('account.journal', journal_id)
+            journal_key = report._get_generic_line_id('account.journal', journal_id)
             lines.append(self._get_journal_line(options, journal_key, journal_vals, is_first_journal=journal_index == 0))
 
         return [(0, line) for line in lines]
@@ -180,7 +180,7 @@ class JournalReportCustomHandler(models.AbstractModel):
             # These can be fetched using any column groups or lines for this move.
             first_move_line = move_line_vals_list[0]
             general_line_vals = next(col_group_val for col_group_val in first_move_line.values())
-            if report.load_more_limit and len(move_line_vals_list) + treated_amls_count > report.load_more_limit and not self._context.get('print_mode'):
+            if report.load_more_limit and len(move_line_vals_list) + treated_amls_count > report.load_more_limit and not options['print_mode']:
                 # This element won't generate a line now, but we use it to know that we'll need to add a load_more line.
                 has_more_lines = True
                 break
@@ -295,8 +295,9 @@ class JournalReportCustomHandler(models.AbstractModel):
                     {'name': ''},
                 ])
 
+        report = self.env['account.report'].browse(options['report_id'])
         return {
-            'id': self.env['account.report']._get_generic_line_id(None, None, parent_line_id=parent_key, markup='headers'),
+            'id': report._get_generic_line_id(None, None, parent_line_id=parent_key, markup='headers'),
             'name': columns[0]['name'],
             'columns': columns[1:],
             'level': 3,
@@ -330,7 +331,7 @@ class JournalReportCustomHandler(models.AbstractModel):
         }
 
     def _report_expand_unfoldable_line_journal_report(self, line_dict_id, groupby, options, progress, offset, unfold_all_batch_data):
-        report = self.env['account.report']
+        report = self.env['account.report'].browse(options['report_id'])
         new_options = options.copy()
         if options['group_by_months']:
             # If grouped by month, we get the journal info from the parent line.
@@ -387,12 +388,13 @@ class JournalReportCustomHandler(models.AbstractModel):
         }
 
     def _get_month_lines(self, options, line_dict_id, aml_results, progress, offset):
+        report = self.env['account.report'].browse(options['report_id'])
         lines = []
 
         for month, months_with_vals in aml_results.items():
             for month_vals in months_with_vals.values():
                 date = datetime.datetime.strptime(month, '%m %Y').date()
-                line_id = self.env['account.report']._get_generic_line_id(None, None, parent_line_id=line_dict_id, markup=f'month_line {date.year} {date.month}')
+                line_id = report._get_generic_line_id(None, None, parent_line_id=line_dict_id, markup=f'month_line {date.year} {date.month}')
                 lines.append({
                     'id': line_id,
                     'name': month_vals['display_month'],
@@ -442,7 +444,7 @@ class JournalReportCustomHandler(models.AbstractModel):
         :param is_starting_balance: whether the balance is the starting or ending balance. Used for formatting.
         """
         line_columns = []
-        report = self.env['account.report']
+        report = self.env['account.report'].browse(options['report_id'])
 
         for column in options['columns']:
             col_value = eval_dict[column['column_group_key']]
@@ -479,7 +481,7 @@ class JournalReportCustomHandler(models.AbstractModel):
         :param values: The values of the move line.
         :param new_balance: The new balance of the move line, if any. Use to display the cumulated balance for bank journals.
         """
-        report = self.env['account.report']
+        report = self.env['account.report'].browse(options['report_id'])
         # Helps to format the line. If a line is linked to a partner but the account isn't receivable or payable, we want to display it in blue.
         columns = []
         for column_group_key, column_group_options in report._split_options_per_column_group(options).items():
@@ -512,7 +514,7 @@ class JournalReportCustomHandler(models.AbstractModel):
         :param current_balance: The current balance of the move line, if any. Use to display the cumulated balance for bank journals.
         :param line_index: The index of the line in the move line list. Used to write additional information in the name, such as the move reference, or the ammount in currency.
         """
-        report = self.env['account.report']
+        report = self.env['account.report'].browse(options['report_id'])
         columns = []
         general_vals = next(col_group_val for col_group_val in eval_dict.values())
         if general_vals['journal_type'] == 'bank' and general_vals['account_type'] in ('liability_credit_card', 'asset_cash'):
@@ -630,12 +632,12 @@ class JournalReportCustomHandler(models.AbstractModel):
         previous_option = options.copy()
         # Force the dates to the selected ones. Allows to get it correctly when grouped by months
         previous_option.update({
-            'report_id': generix_tax_report.id,
+            'selected_variant_id': generix_tax_report.id,
             'date_from': data.get('date_from'),
             'date_to': data.get('date_to'),
             'disable_archived_tag_test': True,
         })
-        tax_report_options = generix_tax_report._get_options(previous_option)
+        tax_report_options = generix_tax_report.get_options(previous_option)
         # Even though it doesn't have a journal selector, we can force a journal in the options to only get the lines for a specific journal.
         tax_report_options['journals'] = [{
             'id': data.get('journal_id'),
@@ -645,11 +647,12 @@ class JournalReportCustomHandler(models.AbstractModel):
         return tax_report_options
 
     def _group_lines_by_move(self, options, eval_dict, parent_line_id):
+        report = self.env['account.report'].browse(options['report_id'])
         grouped_dict = defaultdict(list)
         for move_line_vals in eval_dict.values():
             # We don't care about which column group is used for the id as it will be the same for all of them.
             move_id = next(col_group_val for col_group_val in move_line_vals.values())['move_id']
-            move_key = self.env['account.report']._get_generic_line_id('account.move', move_id, parent_line_id=parent_line_id)
+            move_key = report._get_generic_line_id('account.move', move_id, parent_line_id=parent_line_id)
             grouped_dict[move_key].append(move_line_vals)
         return grouped_dict
 
@@ -678,7 +681,7 @@ class JournalReportCustomHandler(models.AbstractModel):
             params.append(column_group_key)
             params += where_params
 
-            limit_to_load = report.load_more_limit + 1 if report.load_more_limit and not self._context.get('print_mode') else None
+            limit_to_load = report.load_more_limit + 1 if report.load_more_limit and not options['print_mode'] else None
 
             params += [limit_to_load, offset]
             queries.append(f"""
@@ -876,7 +879,7 @@ class JournalReportCustomHandler(models.AbstractModel):
             ...
         }
         """
-        report = self.env['account.report']
+        report = self.env['account.report'].browse(options['report_id'])
         tax_report_options = self._get_generic_tax_report_options(options, data)
         tax_report = self.env.ref('account.generic_tax_report')
         tax_report_lines = tax_report._get_lines(tax_report_options)

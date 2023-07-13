@@ -18,8 +18,8 @@ class USReportCustomHandler(models.AbstractModel):
             },
         }
 
-    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
-        return self.env['account.general.ledger.report.handler']._dynamic_lines_generator(report, options, all_column_groups_expression_totals)
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals, warnings=None):
+        return self.env['account.general.ledger.report.handler']._dynamic_lines_generator(report, options, all_column_groups_expression_totals, warnings=warnings)
 
     def _custom_options_initializer(self, report, options, previous_options=None):
         super()._custom_options_initializer(report, options, previous_options=previous_options)

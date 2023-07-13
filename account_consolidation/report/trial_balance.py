@@ -31,7 +31,7 @@ class TrialBalanceCustomHandler(models.AbstractModel):
             },
         }
 
-    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals, warnings=None):
         options['column_headers'] = self._get_column_headers(options)
 
         lines = self._get_lines(options)
@@ -94,7 +94,7 @@ class TrialBalanceCustomHandler(models.AbstractModel):
         journal_name = journal.name
         if journal.company_period_id:
             journal_name = journal.company_period_id.company_name
-        if self.env.context.get('print_mode') or options.get('xlsx_mode'):
+        if options['print_mode'] or options.get('xlsx_mode'):
             return {'name': journal_name}
         if journal.currencies_are_different and journal.company_period_id:
             cp = journal.company_period_id
@@ -147,7 +147,7 @@ class TrialBalanceCustomHandler(models.AbstractModel):
             journals = self.env['consolidation.journal'].browse(journal_ids)
             builder = DefaultBuilder(self.env, selected_ap._format_value, journals)
 
-        return builder.get_lines(selected_aps, options, line_id)
+        return builder._get_lines(selected_aps, options, line_id)
 
     ####################################################
     # PERIODS

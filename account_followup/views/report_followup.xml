@@ -3,14 +3,6 @@
     <data>
         <template id="template_followup_report">
             <div class='o_account_reports_body'>
-                <div id="warnings_div">
-                    <div class="alert alert-info text-center mb-0 no_print" t-if="report.filter_show_draft and not options.get('all_entries') and options.get('unposted_in_period')">
-                        <span>There are <a action="open_unposted_moves">unposted Journal Entries</a> prior or included in this period</span>
-                    </div>
-                    <div class="alert alert-warning text-center mb-0 no_print" t-if="options.get('contains_archived_tag')">
-                        <span>Some journal items appear to point to obsolete report lines. <a action="action_open_amls_with_archived_tags">Check them</a> and correct their tax tags if necessary.</span>
-                    </div>
-                </div>
                 <div class="o_account_reports_page o_account_reports_no_print o_account_followup">
                     <t t-call="account_followup.followup_filter_info_template"/>
 

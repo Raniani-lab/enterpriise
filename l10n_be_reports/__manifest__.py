@@ -37,8 +37,7 @@
     'license': 'OEEL-1',
     'assets': {
         'web.assets_backend': [
-            'l10n_be_reports/static/src/components/sales_report/**/*',
-            'l10n_be_reports/static/src/components/tax_report/**/*',
+            'l10n_be_reports/static/src/components/**/*',
         ],
     },
 }

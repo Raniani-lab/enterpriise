@@ -408,7 +408,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
         self.env['ir.attachment'].l10n_nl_reports_validate_xml_from_attachment(audit_content)
 
         return {
-            'file_name': report.get_default_report_filename('xaf'),
+            'file_name': report.get_default_report_filename(options, 'xaf'),
             'file_content': audit_content,
             'file_type': 'xml',
         }

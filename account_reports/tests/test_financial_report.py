@@ -286,7 +286,7 @@ class TestFinancialReport(TestAccountReportsCommon):
     def test_balance_sheet_last_month_vs_custom_current_year_earnings(self):
         """
         Checks the balance sheet calls the right period of the P&L when using last_month date filter, or an equivalent custom filter
-        (this used to fail due to options regeneration made by the P&L's _get_options())"
+        (this used to fail due to options regeneration made by the P&L's get_options())"
         """
         to_invoice = [('15', '11'), ('15', '12'), ('16', '01'), ('16', '02'), ('16', '03'), ('16', '04')]
         for year, month in to_invoice:

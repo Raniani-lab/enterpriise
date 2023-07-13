@@ -21,7 +21,7 @@ class ECSalesReportCustomHandler(models.AbstractModel):
             }
         }
 
-    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals, warnings=None):
         """
         Generate the dynamic lines for the report in a vertical style (one line per tax per partner).
         """
@@ -41,7 +41,7 @@ class ECSalesReportCustomHandler(models.AbstractModel):
 
         operation_categories = options['sales_report_taxes'].get('operation_category', {})
         ec_tax_filter_selection = {v.get('id'): v.get('selected') for v in options.get('ec_tax_filter_selection', [])}
-        for partner, results in self._query_partners(report, options):
+        for partner, results in self._query_partners(report, options, warnings):
             for tax_ec_category in ('goods', 'triangular', 'services'):
                 if not ec_tax_filter_selection[tax_ec_category]:
                     # Skip the line if the tax is not selected
@@ -177,7 +177,7 @@ class ECSalesReportCustomHandler(models.AbstractModel):
             'columns': column_values,
         }
 
-    def _query_partners(self, report, options):
+    def _query_partners(self, report, options, warnings=None):
         ''' Execute the queries, perform all the computation, then
         returns a lists of tuple (partner, fetched_values) sorted by the table's model _order:
             - partner is a res.parter record.
@@ -230,7 +230,13 @@ class ECSalesReportCustomHandler(models.AbstractModel):
                 groupby_partners_keyed.setdefault('full_vat_number', vat)
                 groupby_partners_keyed.setdefault('country_code', vat[:2])
 
-                self._check_warnings(options, row)
+                if warnings is not None:
+                    if row['country_code'] not in self._get_ec_country_codes(options):
+                        warnings['account_reports.sales_report_warning_non_ec_country'] = {'alert_type': 'warning'}
+                    elif not row.get('vat_number'):
+                        warnings['account_reports.sales_report_warning_missing_vat'] = {'alert_type': 'warning'}
+                    if row.get('same_country') and row['country_code']:
+                        warnings['account_reports.sales_report_warning_same_country'] = {'alert_type': 'warning'}
 
         company_currency = self.env.company.currency_id
 
@@ -248,14 +254,6 @@ class ECSalesReportCustomHandler(models.AbstractModel):
             partners = self.env['res.partner']
 
         return [(partner, groupby_partners[partner.id]) for partner in partners]
-
-    def _check_warnings(self, options, row):
-        if row['country_code'] not in self._get_ec_country_codes(options):
-            options['non_ec_country_warning'] = True
-        elif not row.get('vat_number'):
-            options['missing_vat_warning'] = True
-        if row.get('same_country'):
-            options['same_country_warning'] = row['country_code']
 
     def _get_query_sums(self, report, options):
         ''' Construct a query retrieving all the aggregated sums to build the report. It includes:

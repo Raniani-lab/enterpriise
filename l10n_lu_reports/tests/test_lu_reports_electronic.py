@@ -138,7 +138,7 @@ class LuxembourgElectronicReportTest(TestAccountReportsCommon):
         move.action_post()
 
         report = self.env.ref('l10n_lu.tax_report')
-        options = report._get_options()
+        options = report.get_options()
 
         # Add the filename in the options, which is initially done by the get_report_filename() method
         now_datetime = datetime.now()

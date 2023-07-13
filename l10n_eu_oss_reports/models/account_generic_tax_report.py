@@ -15,7 +15,7 @@ class OSSTaxReportCustomHandlerOss(models.AbstractModel):
     _inherit = 'account.generic.tax.report.handler'
     _description = 'OSS Tax Report Custom Handler'
 
-    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals, warnings=None):
         """ The country for OSS taxes can't easily be guessed from SQL, as it would create JOIN issues.
         So, instead of handling them as a grouping key in the tax report engine, we
         post process the result of a grouping made by (type_tax_use, id) to inject the
@@ -57,7 +57,7 @@ class OSSTaxReportCustomHandlerOss(models.AbstractModel):
                     )
                     rslt.append((0, tax_line))
 
-        lines = super()._dynamic_lines_generator(report, options, all_column_groups_expression_totals)
+        lines = super()._dynamic_lines_generator(report, options, all_column_groups_expression_totals, warnings=warnings)
 
         rslt = []
         tax_type_markups = {'sale', 'purchase'}
@@ -211,7 +211,7 @@ class OSSTaxReportCustomHandlerOss(models.AbstractModel):
         tree = objectify.fromstring(rendered_content)
 
         return {
-            'file_name': report.get_default_report_filename('xml'),
+            'file_name': report.get_default_report_filename(options, 'xml'),
             'file_content': etree.tostring(tree, pretty_print=True, xml_declaration=True, encoding='utf-8'),
             'file_type': 'xml',
         }

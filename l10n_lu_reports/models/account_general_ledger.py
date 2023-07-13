@@ -159,7 +159,7 @@ class AccountGeneralLedger(models.AbstractModel):
         self.env['ir.attachment'].l10n_lu_reports_validate_xml_from_attachment(content, 'saft')
 
         return {
-            'file_name': report.get_default_report_filename('xml'),
+            'file_name': report.get_default_report_filename(options, 'xml'),
             'file_content': "\n".join(re.split(r'\n\s*\n', content)).encode(),
             'file_type': 'xml',
         }

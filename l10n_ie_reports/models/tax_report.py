@@ -34,7 +34,7 @@ class IeTaxReportCustomHandler(models.AbstractModel):
         content = self.env['ir.qweb']._render('l10n_ie_reports.vat3_template', values)
 
         return {
-            'file_name': report.get_default_report_filename('xml'),
+            'file_name': report.get_default_report_filename(options, 'xml'),
             'file_content': '\n'.join(re.split(r'\n\s*\n', content)).encode(),
             'file_type': 'xml',
         }

@@ -42,7 +42,7 @@ class SwedishTaxReportCustomHandler(models.AbstractModel):
         tree = fromstring(doc)
 
         return {
-            'file_name': report.get_default_report_filename('xml'),
+            'file_name': report.get_default_report_filename(options, 'xml'),
             'file_content': etree.tostring(tree, pretty_print=True, xml_declaration=True, encoding='ISO-8859-1', doctype=DOCTYPE),
             'file_type': 'xml',
         }

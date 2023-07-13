@@ -124,7 +124,7 @@ class DeferredReportCustomHandler(models.AbstractModel):
                    line.deferred_end_date AS deferred_end_date,
                    line.deferred_end_date - line.deferred_start_date AS diff_days,
                    line.balance AS balance,
-                   move.id as move_id, 
+                   move.id as move_id,
                    move.name AS move_name,
                    account.name AS account_name
               FROM account_move_line line
@@ -139,7 +139,7 @@ class DeferredReportCustomHandler(models.AbstractModel):
                     {max_deferred_date} IS NULL
                     OR {max_deferred_date} < %(date_to)s
                )
-               AND 
+               AND
                (
                    (
                        %(date_from)s <= line.deferred_start_date
@@ -220,7 +220,7 @@ class DeferredReportCustomHandler(models.AbstractModel):
         ]
         return lines + deferred_line, original_move_ids
 
-    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals, warnings=None):
         def get_columns(totals):
             return [
                 {
@@ -231,17 +231,20 @@ class DeferredReportCustomHandler(models.AbstractModel):
                 for period in periods
             ]
 
-        options['show_banner_already_generated_entries'] = (
-            self.env.company.generate_deferred_entries_method == 'manual'
-            and self.env['account.move.line'].search_count([
-                ('company_id', '=', self.env.company.id),
-                ('deferred_start_date', '!=', False),
-                ('deferred_end_date', '!=', False),
-                ('move_id.state', '=', 'posted') if not options.get('all_entries', False) else ('move_id.state', '!=', 'cancel'),
-                ('move_id.deferred_move_ids', '!=', False),
-                ('move_id.deferred_move_ids.date', '>=', options['date']['date_to']),
-            ])
-        )
+        if warnings is not None:
+            already_posted = (
+                self.env.company.generate_deferred_entries_method == 'manual'
+                and self.env['account.move.line'].search_count([
+                    ('company_id', '=', self.env.company.id),
+                    ('deferred_start_date', '!=', False),
+                    ('deferred_end_date', '!=', False),
+                    ('move_id.state', '=', 'posted') if not options.get('all_entries', False) else ('move_id.state', '!=', 'cancel'),
+                    ('move_id.deferred_move_ids', '!=', False),
+                    ('move_id.deferred_move_ids.date', '>=', options['date']['date_to']),
+                ])
+            )
+            if already_posted:
+                warnings['account_reports.deferred_report_warning_already_posted'] = {'alert_type': 'warning'}
 
         lines = self._get_lines(options)
         periods = [

@@ -4,43 +4,5 @@
         <xpath expr="//table" position="attributes">
             <attribute name="class">o_account_reports_table table-hover table-bold-unfold</attribute>
         </xpath>
-
-        <xpath expr="//div[@id='warnings_div']" position="inside">
-            <t t-if="controller.options.missing_vat_warning">
-                <div class="alert alert-warning text-center mb-0">
-                    <span>
-                        Intra-community taxes are applied on
-                        <a t-on-click="(ev) => controller.reportAction(ev, 'get_warning_act_window', { type: 'no_vat', model: 'move' })">invoices</a>
-                        addressed to
-                        <a t-on-click="(ev) => controller.reportAction(ev, 'get_warning_act_window', { type: 'no_vat', model: 'partner' })">partners</a>
-                        without a valid intra-community VAT number.
-                    </span>
-                </div>
-            </t>
-
-            <t t-if="controller.options['same_country_warning']">
-                <div class="alert alert-warning text-center mb-0">
-                    <span>
-                        Intra-community taxes are applied on
-                        <a t-on-click="(ev) => controller.reportAction(ev, 'get_warning_act_window', { type: 'same_country', model: 'move' })">invoices</a>
-                        addressed to
-                        <a t-on-click="(ev) => controller.reportAction(ev, 'get_warning_act_window', { type: 'same_country', model: 'partner' })">partners</a>
-                        that are not established abroad.
-                    </span>
-                </div>
-            </t>
-
-            <t t-if="controller.options['non_ec_country_warning']">
-                <div class="alert alert-warning text-center mb-0">
-                    <span>
-                        Intra-community taxes are applied on
-                        <a t-on-click="(ev) => controller.reportAction(ev, 'get_warning_act_window', { type: 'non_ec_country', model: 'move' })">invoices</a>
-                        addressed to
-                        <a t-on-click="(ev) => controller.reportAction(ev, 'get_warning_act_window', { type: 'non_ec_country', model: 'partner' })">partners</a>
-                        who are not established in any of the EC countries.
-                    </span>
-                </div>
-            </t>
-        </xpath>
     </t>
 </templates>

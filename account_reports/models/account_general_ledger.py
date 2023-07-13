@@ -40,9 +40,9 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             ]
 
         # Automatically unfold the report when printing it, unless some specific lines have been unfolded
-        options['unfold_all'] = (self._context.get('print_mode') and not options.get('unfolded_lines')) or options['unfold_all']
+        options['unfold_all'] = (options['print_mode'] and not options.get('unfolded_lines')) or options['unfold_all']
 
-    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals, warnings=None):
         lines = []
         date_from = fields.Date.from_string(options['date']['date_from'])
         company_currency = self.env.company.currency_id
@@ -128,7 +128,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
 
         # Call the generic tax report
         generic_tax_report = self.env.ref('account.generic_tax_report')
-        tax_report_options = generic_tax_report._get_options({**options, 'report_id': generic_tax_report.id, 'forced_domain': [('tax_line_id.type_tax_use', '=', tax_type)]})
+        tax_report_options = generic_tax_report.get_options({**options, 'report_id': generic_tax_report.id, 'forced_domain': [('tax_line_id.type_tax_use', '=', tax_type)]})
         tax_report_lines = generic_tax_report._get_lines(tax_report_options)
         tax_type_parent_line_id = generic_tax_report._get_generic_line_id(None, None, markup=tax_type)
 
@@ -576,7 +576,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
                     'class': 'number',
                 })
 
-        unfold_all = self._context.get('print_mode') or options.get('unfold_all')
+        unfold_all = options['print_mode'] or options.get('unfold_all')
         line_id = report._get_generic_line_id('account.account', account.id)
         return {
             'id': line_id,
@@ -707,7 +707,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
                 progress = init_load_more_progress(initial_balance_line)
 
         # Get move lines
-        limit_to_load = report.load_more_limit + 1 if report.load_more_limit and not self._context.get('print_mode') else None
+        limit_to_load = report.load_more_limit + 1 if report.load_more_limit and not options['print_mode'] else None
 
         if unfold_all_batch_data:
             aml_results = unfold_all_batch_data['aml_values'][model_id]

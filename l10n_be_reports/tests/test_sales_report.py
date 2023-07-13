@@ -45,7 +45,7 @@ class BelgiumSalesReportTest(AccountSalesReportCommon):
             (self.partner_b, s_tax, 700),
         ])
 
-        options = self.report._get_options({'date': {'mode': 'range', 'filter': 'this_month'}})
+        options = self.report.get_options({'date': {'mode': 'range', 'filter': 'this_month'}})
         lines = self.report._get_lines(options)
         self.assertLinesValues(
             lines,
@@ -122,7 +122,7 @@ class BelgiumSalesReportTest(AccountSalesReportCommon):
         self._create_invoices([(self.partner_a, l_tax, 100), (self.partner_a, t_tax, 90), (self.partner_a, s_tax, 80)])
         self._create_invoices([(self.partner_a, l_tax, 42), (self.partner_a, t_tax, 42), (self.partner_a, s_tax, 42)], is_refund=True)
 
-        options = self.report._get_options({'date': {'mode': 'range', 'filter': 'this_month'}})
+        options = self.report.get_options({'date': {'mode': 'range', 'filter': 'this_month'}})
         lines = self.report._get_lines(options)
         self.assertLinesValues(
             lines,

@@ -24,7 +24,8 @@ class TestAbstractBuilder(AccountConsolidationTestCase):
     def test_get_lines(self, patched_get_plain, patched_get_hierarchy):
         patched_get_plain.return_value = [{'id': 1}]
         patched_get_hierarchy.return_value = [{'id': 2}]
-        self.assertListEqual([], self.builder.get_lines([], {}))
+        options = self.report.get_options()
+        self.assertListEqual([], self.builder._get_lines([], options))
         patched_get_plain.assert_not_called()
         patched_get_hierarchy.assert_not_called()
 
@@ -37,30 +38,28 @@ class TestAbstractBuilder(AccountConsolidationTestCase):
             'include_percentage': True
         }
         # EMPTY OPTIONS
-        options = self.report._get_options()
         self.assertListEqual(patched_get_hierarchy.return_value,
-                             self.builder.get_lines(period_ids, options, None))
+                             self.builder._get_lines(period_ids, options, None))
         patched_get_hierarchy.assert_called_once_with(options, None, **kwargs)
         patched_get_hierarchy.reset_mock()
         patched_get_plain.assert_not_called()
 
         # WITH HIERARCHY
-        options = self.report._get_options({'consolidation_hierarchy': True})
-        self.assertListEqual(patched_get_hierarchy.return_value, self.builder.get_lines(period_ids, options, None))
+        options = self.report.get_options({'consolidation_hierarchy': True})
+        self.assertListEqual(patched_get_hierarchy.return_value, self.builder._get_lines(period_ids, options, None))
         patched_get_hierarchy.assert_called_once_with(options, None, **kwargs)
         patched_get_hierarchy.reset_mock()
         patched_get_plain.assert_not_called()
 
         # WITH HIERARCHY AND LINE ID
-        options = self.report._get_options({'consolidation_hierarchy': True})
-        self.assertListEqual(patched_get_hierarchy.return_value, self.builder.get_lines(period_ids, options, 1))
+        self.assertListEqual(patched_get_hierarchy.return_value, self.builder._get_lines(period_ids, options, 1))
         patched_get_hierarchy.assert_called_once_with(options, 1, **kwargs)
         patched_get_hierarchy.reset_mock()
         patched_get_plain.assert_not_called()
 
         # WITHOUT HIERARCHY
-        options = self.report._get_options({'consolidation_hierarchy': False})
-        self.assertListEqual(patched_get_plain.return_value, self.builder.get_lines(period_ids, options, None))
+        options = self.report.get_options({'consolidation_hierarchy': False})
+        self.assertListEqual(patched_get_plain.return_value, self.builder._get_lines(period_ids, options, None))
         patched_get_plain.assert_called_once_with(options, **kwargs)
         patched_get_plain.reset_mock()
         patched_get_hierarchy.assert_not_called()
@@ -296,11 +295,11 @@ class TestComparisonBuilder(AccountConsolidationTestCase):
                 'chart_id': self.chart.id,
             })]
         })
-        options = {'unfold_all': True}
+        options = self.report.get_options({'unfold_all': True})
 
-        section_1_id = self.env['account.report']._get_generic_line_id(None, None, 'section_%s' % section.id)
-        section_2_id = self.env['account.report']._get_generic_line_id(None, None, 'section_%s' % section.child_ids[0].id, parent_line_id=section_1_id)
-        account_line_id = self.env['account.report']._get_generic_line_id(None, None, section.child_ids[0].account_ids[0].id, parent_line_id=section_2_id)
+        section_1_id = self.report._get_generic_line_id(None, None, 'section_%s' % section.id)
+        section_2_id = self.report._get_generic_line_id(None, None, 'section_%s' % section.child_ids[0].id, parent_line_id=section_1_id)
+        account_line_id = self.report._get_generic_line_id(None, None, section.child_ids[0].account_ids[0].id, parent_line_id=section_2_id)
 
         expected = [
             {
@@ -369,10 +368,10 @@ class TestComparisonBuilder(AccountConsolidationTestCase):
             'name': 'BLUH',
             'chart_id': self.chart.id,
         })
-        options = {}
+        options = self.report.get_options({'unfold_all': False})
         section_totals, section_line = self.builder._build_section_line(section, level, options, cols_amount=2, include_percentage=False)
         expected = [{
-            'id': self.env['account.report']._get_generic_line_id(None, None, 'section_%s' % section.id),
+            'id': self.report._get_generic_line_id(None, None, 'section_%s' % section.id),
             'name': 'BLUH',
             'level': level,
             'unfoldable': True,
@@ -383,7 +382,6 @@ class TestComparisonBuilder(AccountConsolidationTestCase):
             ]
         }]
         self.assertListEqual(expected, section_line)
-        options['unfold_all'] = False
         section_totals, section_line = self.builder._build_section_line(section, level, options, cols_amount=2,
                                                                         include_percentage=False)
         self.assertListEqual(expected, section_line)
@@ -397,7 +395,7 @@ class TestComparisonBuilder(AccountConsolidationTestCase):
         self.assertListEqual(expected, section_line)
 
         options['unfold_all'] = False
-        options['unfolded_lines'] = [self.env['account.report']._get_generic_line_id(None, None, 'section_%s' % section.id)]
+        options['unfolded_lines'] = [self.report._get_generic_line_id(None, None, 'section_%s' % section.id)]
         section_totals, section_line = self.builder._build_section_line(section, level, options, cols_amount=2,
                                                                         include_percentage=False)
         self.assertListEqual(expected, section_line)
@@ -442,19 +440,20 @@ class TestComparisonBuilder(AccountConsolidationTestCase):
         totals = [0.0, 1500000.0, -2000.0]
         # NO PERCENTAGE
         # €
-        euro_exp = {'id': self.env['account.report']._get_generic_line_id(None, None, 'grouped_accounts_total'),
+        euro_exp = {'id': self.report._get_generic_line_id(None, None, 'grouped_accounts_total'),
                     'name': 'Total', 'class': 'total', 'level': 1,
                     'columns': [{'name': f'0.00{NON_BREAKING_SPACE}€', 'no_format': 0.0, 'class': 'number'},
                                 {'name': f'1,500,000.00{NON_BREAKING_SPACE}€', 'no_format': 1500000.0, 'class': 'number text-danger'},
                                 {'name': f'-2,000.00{NON_BREAKING_SPACE}€', 'no_format': -2000.0, 'class': 'number text-danger'}]}
-        euro_total_line = self.builder._build_total_line(totals, {}, include_percentage=False)
+        options = self.report.get_options()
+        euro_total_line = self.builder._build_total_line(totals, options, include_percentage=False)
         self.assertDictEqual(euro_total_line, euro_exp)
         # $
         ap_usd = self._create_analysis_period(chart=other_chart)
         us_builder = ComparisonBuilder(self.env, ap_usd._format_value)
-        usd_total_line = us_builder._build_total_line(totals, [ap_usd], include_percentage=False)
+        usd_total_line = us_builder._build_total_line(totals, options, include_percentage=False)
 
-        usd_exp = {'id': self.env['account.report']._get_generic_line_id(None, None, 'grouped_accounts_total'),
+        usd_exp = {'id': self.report._get_generic_line_id(None, None, 'grouped_accounts_total'),
                    'name': 'Total', 'class': 'total', 'level': 1,
                    'columns': [{'name': f'${NON_BREAKING_SPACE}0.00', 'no_format': 0.0, 'class': 'number'},
                                {'name': f'${NON_BREAKING_SPACE}1,500,000.00', 'no_format': 1500000.0, 'class': 'number text-danger'},
@@ -463,8 +462,8 @@ class TestComparisonBuilder(AccountConsolidationTestCase):
         patched_bpc.assert_not_called()
         # WITH PERCENTAGE
         totals = [0.0, -2000.0]
-        euro_prct_total_line = self.builder._build_total_line(totals, {}, include_percentage=True)
-        euro_exp_prct = {'id': self.env['account.report']._get_generic_line_id(None, None, 'grouped_accounts_total'),
+        euro_prct_total_line = self.builder._build_total_line(totals, options, include_percentage=True)
+        euro_exp_prct = {'id': self.report._get_generic_line_id(None, None, 'grouped_accounts_total'),
                          'name': 'Total', 'class': 'total', 'level': 1,
                          'columns': [{'name': f'0.00{NON_BREAKING_SPACE}€', 'no_format': 0.0, 'class': 'number'},
                                      {'name': f'-2,000.00{NON_BREAKING_SPACE}€', 'no_format': -2000.0, 'class': 'number text-danger'},
@@ -521,11 +520,11 @@ class TestDefaultBuilder(AccountConsolidationTestCase):
     def test__format_account_line(self):
         level = 2
         totals = [12.0, 13.14]
-        line = self.builder._format_account_line(self.consolidation_account, None, level, totals, {})
+        line = self.builder._format_account_line(self.consolidation_account, None, level, totals, self.report.get_options())
         account_name = self.consolidation_account.name
         account_currency_name = self.consolidation_account.get_display_currency_mode()
         expected = {
-            'id': self.env['account.report']._get_generic_line_id(None, None, self.consolidation_account.id),
+            'id': self.report._get_generic_line_id(None, None, self.consolidation_account.id),
             'level': level,
             'name': account_name,
             'unfolded': False,

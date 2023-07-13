@@ -8,7 +8,7 @@ class CashFlowReportCustomHandler(models.AbstractModel):
     _inherit = 'account.report.custom.handler'
     _description = 'Cash Flow Report Custom Handler'
 
-    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals, warnings=None):
         # Compute the cash flow report using the direct method: https://www.investopedia.com/terms/d/direct_method.asp
         lines = []
 
@@ -628,7 +628,7 @@ class CashFlowReportCustomHandler(models.AbstractModel):
 
     def _get_layout_line(self, report, options, layout_line_id, layout_line_data, report_data):
         line_id = report._get_generic_line_id(None, None, markup=layout_line_id)
-        unfold_all = self._context.get('print_mode') or options.get('unfold_all')
+        unfold_all = options['print_mode'] or options.get('unfold_all')
         unfoldable = 'aml_groupby_account' in report_data[layout_line_id] if layout_line_id in report_data else False
 
         column_values = []

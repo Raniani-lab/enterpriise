@@ -12,7 +12,7 @@ class EstonianECSalesReportCustomHandler(models.AbstractModel):
     _inherit = 'account.ec.sales.report.handler'
     _description = 'Estonian EC Sales Report Custom Handler'
 
-    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals, warnings=None):
         lines = []
 
         for partner, results in super()._query_partners(report, options):
@@ -86,7 +86,7 @@ class EstonianECSalesReportCustomHandler(models.AbstractModel):
         tree = objectify.fromstring(rendered_content)
 
         return {
-            'file_name': report.get_default_report_filename('xml'),
+            'file_name': report.get_default_report_filename(options, 'xml'),
             'file_content': etree.tostring(tree, pretty_print=True, xml_declaration=True, encoding='utf-8'),
             'file_type': 'xml',
         }

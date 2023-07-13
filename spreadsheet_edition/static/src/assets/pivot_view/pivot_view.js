@@ -49,7 +49,10 @@ patch(PivotController.prototype, "pivot_spreadsheet", {
                     ...this.model.searchParams,
                     context: omit(
                         this.model.searchParams.context,
-                        ...Object.keys(this.userService.context)
+                        ...Object.keys(this.userService.context),
+                        "pivot_measures",
+                        "pivot_row_groupby",
+                        "pivot_column_groupby"
                     ),
                 },
                 name,

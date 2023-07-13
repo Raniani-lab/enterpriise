@@ -443,8 +443,10 @@ export class AccountReportController {
         this.assignLinesVisibility(newLines);
         this.insertLinesAfter(lineIndex, newLines);
 
-        if (this.filters.show_totals)
-            this.lines[lineIndex + newLines.length + 1].visible = true;
+        const totalIndex = lineIndex + newLines.length + 1;
+        
+        if (this.filters.show_totals && this.lines[totalIndex] && this.lines[totalIndex].isTotalLine)
+            this.lines[totalIndex].visible = true;
     }
 
     async unfoldLine(lineIndex) {

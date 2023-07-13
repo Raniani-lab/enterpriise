@@ -531,6 +531,41 @@ class AppointmentResourceBookingTest(AppointmentCommon):
         self.assertListEqual(available_resources_c12, (table2_c6 + table2_c6.linked_resource_ids).sorted('sequence').ids)
 
     @users('apt_manager')
+    def test_appointment_resources_combinable_last_availability(self):
+        """ Check that the last resource available is correctly computed with linked resources """
+        table_c2, table_c3 = self.env["appointment.resource"].create([{
+            'appointment_type_ids': self.apt_type_resource.ids,
+            'capacity': 2,
+            'name': 'Table for 2',
+            'sequence': 1,
+        }, {
+            'appointment_type_ids': self.apt_type_resource.ids,
+            'capacity': 3,
+            'name': 'Table for 3',
+            'sequence': 2,
+        }])
+        table_c2.linked_resource_ids = table_c3
+
+        # Create a booking for the first resource for all its capacity
+        start = datetime(2022, 2, 14, 15, 0, 0)
+        end = start + timedelta(hours=1)
+        self.env['calendar.event'].with_context(self._test_context).create({
+            'appointment_type_id': self.apt_type_resource.id,
+            'booking_line_ids': [(0, 0, {'appointment_resource_id': table_c2.id, 'capacity_reserved': 2, 'capacity_used': 2})],
+            'name': 'Booking 1',
+            'start': start,
+            'stop': end,
+        })
+
+        with freeze_time(self.reference_now):
+            slots = self.apt_type_resource._get_appointment_slots('UTC', asked_capacity=2)
+            resource_slots_c2 = self._filter_appointment_slots(slots)
+        available_resources_c2 = [resource['id'] for resource in resource_slots_c2[0]['available_resources']]
+        self.assertEqual(set(available_resources_c2), set(table_c3.ids),
+            "Only the table for 3 should be available as the other is booked")
+        self._test_slot_generate_available_resources(self.apt_type_resource, 2, 'UTC', start, end, table_c3, available_resources_c2, reference_date=self.reference_now)
+
+    @users('apt_manager')
     def test_appointment_resources_combinable_performance(self):
         """ Simple use case of appointment type with combinable resources """
         appointment = self.env['appointment.type'].create({
@@ -607,6 +642,60 @@ class AppointmentResourceBookingTest(AppointmentCommon):
             self.assertTrue(len(resource_slots) > 0)
             self.assertEqual(len(table1_c2_slots), 0)
             self.assertEqual(len(resource_slots), len(table1_c2_c4_slots))
+
+    @users('apt_manager')
+    def test_appointment_resources_combinable_with_time_resource(self):
+        """ Check that the last resource available is correctly computed with linked resources """
+        table_c2, table_c3 = self.env["appointment.resource"].create([{
+            'appointment_type_ids': self.apt_type_resource.ids,
+            'capacity': 2,
+            'name': 'Table for 2',
+            'sequence': 1,
+        }, {
+            'appointment_type_ids': self.apt_type_resource.ids,
+            'capacity': 3,
+            'name': 'Table for 3',
+            'sequence': 2,
+        }])
+        table_c2.linked_resource_ids = table_c3
+        self.apt_type_resource.assign_method = 'time_resource'
+
+        start = datetime(2022, 2, 14, 15, 0, 0)
+        end = start + timedelta(hours=1)
+
+        with freeze_time(self.reference_now):
+            slots = self.apt_type_resource._get_appointment_slots('UTC', asked_capacity=2)
+            resource_slots_c2 = self._filter_appointment_slots(slots)
+            slots = self.apt_type_resource._get_appointment_slots('UTC', asked_capacity=5)
+            resource_slots_c5 = self._filter_appointment_slots(slots)
+        available_resources_c2 = [resource['id'] for resource in resource_slots_c2[0]['available_resources']]
+        available_resources_c5 = [resource['id'] for resource in resource_slots_c5[0]['available_resources']]
+        self.assertEqual(set(available_resources_c2), set((table_c2 + table_c3).ids),
+            "Both resources should be available as the asked capacity is available in both")
+        self._test_slot_generate_available_resources(self.apt_type_resource, 2, 'UTC', start, end, table_c2 + table_c3, available_resources_c2, reference_date=self.reference_now)
+        self.assertEqual(set(available_resources_c5), set((table_c2 + table_c3).ids),
+            "Both resources should be available as the asked capacity correspond to the remaining total")
+        self._test_slot_generate_available_resources(self.apt_type_resource, 5, 'UTC', start, end, table_c2 + table_c3, available_resources_c5, reference_date=self.reference_now)
+
+        # Create a booking for the first resource
+        self.env['calendar.event'].with_context(self._test_context).create({
+            'appointment_type_id': self.apt_type_resource.id,
+            'booking_line_ids': [(0, 0, {'appointment_resource_id': table_c2.id, 'capacity_reserved': 1, 'capacity_used': 1})],
+            'name': 'Booking 1',
+            'start': start,
+            'stop': end,
+        })
+
+        with freeze_time(self.reference_now):
+            slots = self.apt_type_resource._get_appointment_slots('UTC', asked_capacity=2)
+            resource_slots_c2 = self._filter_appointment_slots(slots)
+            slots = self.apt_type_resource._get_appointment_slots('UTC', asked_capacity=5)
+            resource_slots_c5 = self._filter_appointment_slots(slots)
+        available_resources_c2 = [resource['id'] for resource in resource_slots_c2[0]['available_resources']]
+        self.assertEqual(set(available_resources_c2), set(table_c3.ids),
+            "Only the table for 3 should be remaining as the other is booked")
+        self._test_slot_generate_available_resources(self.apt_type_resource, 2, 'UTC', start, end, table_c3, available_resources_c2, reference_date=self.reference_now)
+        self.assertEqual(len(resource_slots_c5), 0, "There should not be enough availability for the asked capacity")
 
     @users('apt_manager')
     def test_appointment_resources_sequence(self):

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import pytz
 from contextlib import contextmanager
 from datetime import date, datetime
 from unittest.mock import patch
@@ -242,6 +243,21 @@ class AppointmentCommon(MailCommon, common.HttpCase):
                         self.assertFalse(len(day['slots']), 'Slot: out of range should have no slot for %s' % day)
                     else:
                         self.assertFalse(len(day['slots']), 'Slot: not worked should have no slot for %s' % day)
+
+    def _test_slot_generate_available_resources(self, appointment_type, asked_capacity, timezone, start_dt, end_dt, filter_resources, expected_available_resource_ids, reference_date=None):
+        """ Simulate the check done after selecting a particular time slot
+        :param appointment_type: appointment type tested
+        :param asked_capacity<int>: asked capacity for the appointment
+        :param timezone<str>: timezone selected
+        :param start_dt<datetime>: start datetime of the slot (naive UTC)
+        :param end_dt<datetime>: end datetime of the slot (naive UTC)
+        :param filter_resources<recordset>: the resources for which the appointment was booked for
+        :param expected_available_resource_ids<list>: list of resource ids available for the slot we want to check
+        """
+        slots = appointment_type._slots_generate(start_dt.astimezone(pytz.utc), end_dt.astimezone(pytz.utc), timezone, reference_date=reference_date)
+        slots = [slot for slot in slots if slot['UTC'] == (start_dt.replace(tzinfo=None), end_dt.replace(tzinfo=None))]
+        appointment_type._slots_fill_resources_availability(slots, start_dt, end_dt, filter_resources=filter_resources, asked_capacity=asked_capacity)
+        self.assertEqual(set(expected_available_resource_ids), set(slots[0]['available_resource_ids'].ids))
 
     @contextmanager
     def mockAppointmentCalls(self):

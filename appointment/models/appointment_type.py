@@ -882,7 +882,7 @@ class AppointmentType(models.Model):
         self_sudo = self.sudo()
         end_dt = start_dt + relativedelta(hours=duration)
         slots = self_sudo._slots_generate(start_dt, end_dt, timezone)
-        slots[:] = [slot for slot in slots if slot['UTC'] == (start_dt.replace(tzinfo=None), end_dt.replace(tzinfo=None))]
+        slots = [slot for slot in slots if slot['UTC'] == (start_dt.replace(tzinfo=None), end_dt.replace(tzinfo=None))]
         if slots and self_sudo.schedule_based_on == 'users' and (not staff_user or staff_user in self_sudo.staff_user_ids):
             self_sudo._slots_fill_users_availability(slots, start_dt, end_dt, staff_user)
         elif slots and self_sudo.schedule_based_on == 'resources' and (not resources or all(r in self_sudo.resource_ids for r in resources)):
@@ -1163,7 +1163,7 @@ class AppointmentType(models.Model):
                     slot['UTC'][0],
                     slot['UTC'][1],
                     resource_to_bookings=availability_values.get('resource_to_bookings'),
-                    filter_resources=slot['slot'].restrict_to_resource_ids,
+                    filter_resources=slot['slot'].restrict_to_resource_ids & available_resources or available_resources,
                 )
                 if resources_remaining_capacity['total_remaining_capacity'] < asked_capacity:
                     continue
@@ -1175,7 +1175,7 @@ class AppointmentType(models.Model):
                 del resources_remaining_capacity['total_remaining_capacity']
                 del resources_remaining_capacity[resource]
                 for linked_resource, remaining_capacity in resources_remaining_capacity.items():
-                    if linked_resource in capacity_info:
+                    if not remaining_capacity or linked_resource in capacity_info:
                         continue
                     capacity_info[linked_resource] = {
                         'total_remaining_capacity': remaining_capacity,

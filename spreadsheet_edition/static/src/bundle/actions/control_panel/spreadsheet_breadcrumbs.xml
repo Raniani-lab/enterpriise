@@ -30,6 +30,10 @@
                         <i class="fa fa-users"/> <t t-esc="connectedUsers.length"/>
                     </t>
                 </div>
+                <div class="o_spreadsheet_status"
+                    t-if="locale.mismatchedLocaleTitle">
+                    <i class="fa fa-globe text-danger" t-att-title="mismatchedLocaleTitle"/>
+                </div>
             </div>
         </t>
     </xpath>
@@ -60,6 +64,10 @@
                     <t t-else="">
                         <i class="fa fa-users"/> <t t-esc="connectedUsers.length"/>
                     </t>
+                </div>
+                <div class="o_spreadsheet_status"
+                    t-if="locale.mismatchedLocaleTitle">
+                    <i class="fa fa-globe text-danger" t-att-title="mismatchedLocaleTitle"/>
                 </div>
             </div>
         </t>

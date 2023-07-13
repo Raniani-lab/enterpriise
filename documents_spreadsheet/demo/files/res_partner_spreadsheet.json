@@ -1156,5 +1156,16 @@
                 }
             }
         }
-    ]
+    ],
+    "settings": {
+        "locale": {
+            "name": "English (US)",
+            "code": "en_US",
+            "thousandsSeparator": ",",
+            "decimalSeparator": ".",
+            "dateFormat": "mm/dd/yyyy",
+            "timeFormat": "hh:mm:ss a",
+            "formulaArgSeparator": ","
+        }
+    }
 }

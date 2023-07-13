@@ -23,7 +23,7 @@
                 </t>
             </div>
         </div>
-        <div t-if="state.showChatter and props.documents.length === 1" class="o_document_chatter_container">
+        <div t-if="state.showChatter and props.documents.length === 1" class="o_document_chatter_container" t-att-class="{ 'h-100': !isMobile }">
             <div class="o_documents_chatter_placeholder mt-2" t-ref="chatterContainer">
                 <Chatter close="isMobile ? undefined : () => state.showChatter = false" hasActivities="records[0].resModel === 'documents.document'" threadId="records[0].resId" threadModel="records[0].resModel" compactHeight="true" />
             </div>

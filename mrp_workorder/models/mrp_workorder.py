@@ -269,7 +269,7 @@ class MrpProductionWorkcenterLine(models.Model):
         }
 
     def button_start(self, bypass=False):
-        skip_employee_check = bypass or not request
+        skip_employee_check = bypass or (not request and not self.env.user.employee_id)
         if not skip_employee_check:
             connected_employees = self.env['hr.employee'].get_employees_connected()
             if len(connected_employees) == 0:

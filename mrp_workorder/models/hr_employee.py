@@ -119,10 +119,18 @@ class HrEmployee(models.Model):
         work_orders.stop_employee(self.ids)
 
     def get_employees_connected(self):
-        return request.session.get(EMPLOYEES_CONNECTED, []) if request else []
+        if request:
+            return request.session.get(EMPLOYEES_CONNECTED, [])
+        else:
+            # Test cases
+            return [self.env.user.employee_id.id]
 
     def get_session_owner(self):
-        return request.session.get(SESSION_OWNER, []) if request else []
+        if request:
+            return request.session.get(SESSION_OWNER, [])
+        else:
+            # Test cases
+            return [self.env.user.employee_id.id]
 
     def login_user_employee(self):
         if self.get_session_owner():

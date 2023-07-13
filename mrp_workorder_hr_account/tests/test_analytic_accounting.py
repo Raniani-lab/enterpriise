@@ -103,38 +103,40 @@ class TestMrpAnalyticAccountHr(TestMrpAnalyticAccount):
         Test adding an analytic account to a confirmed manufacturing order with work orders.
         """
         # add a workorder to the BoM
-        self.bom.write({
-            'operation_ids': [(0, 0, {
-                    'name': 'Test Operation 2',
-                    'workcenter_id': self.workcenter.id,
-                    'time_cycle': 60,
-                })
-            ]
-        })
-        mo_form = Form(self.env['mrp.production'])
-        mo_form.product_id = self.product
-        mo_form.bom_id = self.bom
-        mo_form.product_qty = 1.0
-        mo = mo_form.save()
-        mo.action_confirm()
-        self.assertEqual(mo.state, 'confirmed')
+        with self.with_user(self.env.ref('base.user_admin').login):
+            self.workcenter.employee_ids = [Command.clear()]
+            self.bom.write({
+                'operation_ids': [(0, 0, {
+                        'name': 'Test Operation 2',
+                        'workcenter_id': self.workcenter.id,
+                        'time_cycle': 60,
+                    })
+                ]
+            })
+            mo_form = Form(self.env['mrp.production'])
+            mo_form.product_id = self.product
+            mo_form.bom_id = self.bom
+            mo_form.product_qty = 1.0
+            mo = mo_form.save()
+            mo.action_confirm()
+            self.assertEqual(mo.state, 'confirmed')
 
-        # start the workorders
-        mo.workorder_ids[0].button_start()
-        mo.workorder_ids[1].button_start()
-        self.assertEqual(mo.workorder_ids[0].state, 'progress')
-        self.assertTrue(mo.workorder_ids[0].time_ids)
-        self.assertEqual(mo.workorder_ids[1].state, 'progress')
-        self.assertTrue(mo.workorder_ids[1].time_ids)
+            # start the workorders
+            mo.workorder_ids[0].button_start()
+            mo.workorder_ids[1].button_start()
+            self.assertEqual(mo.workorder_ids[0].state, 'progress')
+            self.assertTrue(mo.workorder_ids[0].time_ids)
+            self.assertEqual(mo.workorder_ids[1].state, 'progress')
+            self.assertTrue(mo.workorder_ids[1].time_ids)
 
-        mo.analytic_distribution = {str(self.analytic_account.id): 100.0}
-        self.assertEqual(mo.analytic_account_ids, self.analytic_account)
+            mo.analytic_distribution = {str(self.analytic_account.id): 100.0}
+            self.assertEqual(mo.analytic_account_ids, self.analytic_account)
 
-        mo_form = Form(mo)
-        mo_form.qty_producing = 1.0
-        mo = mo_form.save()
-        mo.button_mark_done()
-        self.assertEqual(mo.state, 'done')
+            mo_form = Form(mo)
+            mo_form.qty_producing = 1.0
+            mo = mo_form.save()
+            mo.button_mark_done()
+            self.assertEqual(mo.state, 'done')
 
     def test_mrp_analytic_account_employee(self):
         """

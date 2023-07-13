@@ -250,9 +250,10 @@ class AssetsReportCustomHandler(models.AbstractModel):
             # Compute the closing values
             asset_closing = asset_opening + asset_add - asset_minus
             depreciation_closing = depreciation_opening + depreciation_add - depreciation_minus
+            al_currency = self.env['res.currency'].browse(al['asset_currency_id'])
 
             # Manage the closing of the asset
-            if al['asset_state'] == 'close' and al['asset_disposal_date'] and al['asset_disposal_date'] <= fields.Date.to_date(options['date']['date_to']):
+            if al['asset_state'] == 'close' and al['asset_disposal_date'] and al['asset_disposal_date'] <= fields.Date.to_date(options['date']['date_to']) and al_currency.compare_amounts(depreciation_closing, asset_closing) == 0:
                 depreciation_minus += depreciation_closing
                 depreciation_closing = 0.0
                 asset_minus += asset_closing

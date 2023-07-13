@@ -1978,6 +1978,52 @@ class TestAccountAsset(TestAccountReportsCommon):
         self.assertEqual(len(lines), len(expected_values))
         self.assertEqual(lines, expected_values)
 
+    def test_depreciation_schedule_disposal_move_unposted(self):
+        """
+        Test the computation of values when disposing an asset, and the difference if the disposal move is posted
+        """
+        asset = self.env['account.asset'].create({
+            'name': 'test asset',
+            'method': 'linear',
+            'original_value': 1000,
+            'method_number': 5,
+            'method_period': '12',
+            'acquisition_date': fields.Date.today() + relativedelta(years=-2, month=1, day=1),
+            'account_asset_id': self.company_data['default_account_assets'].id,
+            'account_depreciation_id': self.company_data['default_account_assets'].id,
+            'account_depreciation_expense_id': self.company_data['default_account_expense'].id,
+            'journal_id': self.company_data['default_journal_misc'].id,
+        })
+        asset.validate()
+
+        expense_account_copy = self.company_data['default_account_expense'].copy()
+
+        disposal_action_view = self.env['asset.modify'].create({
+            'asset_id': asset.id,
+            'modify_action': 'dispose',
+            'loss_account_id': expense_account_copy.id,
+            'date': fields.Date.today() + relativedelta(days=-1)
+        }).sell_dispose()
+
+        report = self.env.ref('account_asset.assets_report')
+        options = self._generate_options(report, '2021-01-01', '2021-12-31')
+
+        # The disposal move is in draft and should not be considered (depreciation and book value)
+        # Values are: name, assets_before, assets+, assets-, assets_after, depreciation_before, depreciation+, depreciation-, depreciation_after, book_value
+        expected_values_asset_disposal_unposted = [
+            ("test asset", 1000.0, 0.0, 0, 1000.0, 400.0, 100.0, 0.0, 500.0, 500.0),
+        ]
+
+        self.assertLinesValues(report._get_lines(options)[2:3], [0, 5, 6, 7, 8, 9, 10, 11, 12, 13], expected_values_asset_disposal_unposted, options)
+
+        self.env['account.move'].browse(disposal_action_view.get('res_id')).action_post()
+
+        expected_values_asset_disposal_posted = [
+            ("test asset", 1000.0, 0.0, 1000.0, 0.0, 400.0, 600.0, 1000.0, 0.0, 0.0),
+        ]
+
+        self.assertLinesValues(report._get_lines(options)[2:3], [0, 5, 6, 7, 8, 9, 10, 11, 12, 13], expected_values_asset_disposal_posted, options)
+
     def test_asset_analytic_on_lines(self):
         CEO_car = self.env['account.asset'].create({
             'salvage_value': 2000.0,

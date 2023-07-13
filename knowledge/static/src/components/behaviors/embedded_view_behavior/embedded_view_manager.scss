@@ -26,7 +26,7 @@
         }
     }
     .o_knowledge_embedded_view {
-        .o_content:not(.o_view_sample_data) .o_view_nocontent {
+        .o_content:not(.o_view_sample_data) .o_view_nocontent:not(.o_knowledge_item_calendar_nocontent) {
             display: none !important;
         }
         .breadcrumb {
@@ -82,15 +82,15 @@
     }
     .o_calendar_renderer {
         height: auto !important;
-        max-height: clamp(300px, 50vh, 800px);
+        max-height: clamp(300px, 60vh, 800px);
         .o_calendar_widget {
             height: auto !important;
-            max-height: clamp(300px, 50vh, 800px);
+            min-height: clamp(300px, 60vh, 800px);
         }
     }
     .o_calendar_container {
         .o_calendar_sidebar_container {
-            max-height: clamp(300px, 50vh, 800px);
+            max-height: clamp(300px, 60vh, 800px);
         }
     }
     .o_calendar_filter .ui-menu-item a {

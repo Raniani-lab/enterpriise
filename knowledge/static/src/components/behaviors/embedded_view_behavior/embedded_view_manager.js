@@ -3,12 +3,14 @@
 import { CallbackRecorder } from "@web/webclient/actions/action_hook";
 import { getDefaultConfig } from "@web/views/view";
 import { EmbeddedView } from "@knowledge/views/embedded_view";
+import { ItemCalendarPropsDialog } from "@knowledge/components/item_calendar_props_dialog/item_calendar_props_dialog";
 import { PromptEmbeddedViewNameDialog } from "@knowledge/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog";
 import { useOwnDebugContext } from "@web/core/debug/debug_context";
 import { useService } from "@web/core/utils/hooks";
 import {
     Component,
     onWillStart,
+    useState,
     useSubEnv
 } from "@odoo/owl";
 import { decodeDataBehaviorProps, encodeDataBehaviorProps } from "@knowledge/js/knowledge_utils";
@@ -34,6 +36,7 @@ export class EmbeddedViewManager extends Component {
     static props = {
         el: { type: HTMLElement },
         action: { type: Object },
+        additionalViewProps: { type: Object, optional: true },
         context: { type: Object },
         viewType: { type: String },
         setTitle: { type: Function },
@@ -56,6 +59,14 @@ export class EmbeddedViewManager extends Component {
             ...getDefaultConfig(),
             disableSearchBarAutofocus: true,
         };
+
+        // In addition to the base viewProps (view type, model, domain, ...),
+        // embedded views can have additionalViewProps that can be edited by
+        // the end user, that are stored in the behaviorProps and that are used
+        // to load the view.
+        // These are for example currently used by the item calendar view to
+        // store the start and end date properties that the model should use.
+        this.state = useState({additionalViewProps: this.props.additionalViewProps});
 
         /**
          * @param {ViewType} viewType
@@ -81,9 +92,33 @@ export class EmbeddedViewManager extends Component {
 
         useSubEnv({
             config,
+            isEmbeddedView: true,
             services: extendedServices,
         });
         onWillStart(this.onWillStart.bind(this));
+    }
+
+    /**
+     * Edit the props used to render the item calendar
+     */
+    editItemCalendarProps() {
+        this.dialogService.add(ItemCalendarPropsDialog, {
+            isNew: false,
+            name: this.props.getTitle(),
+            saveItemCalendarProps: async (name, itemCalendarProps) => {
+                this.props.setTitle(name);
+                this.state.additionalViewProps.itemCalendarProps = itemCalendarProps;
+                const behaviorProps = decodeDataBehaviorProps(this.props.el.dataset.behaviorProps);
+                behaviorProps.additionalViewProps.itemCalendarProps = itemCalendarProps;
+                this.props.el.dataset.behaviorProps = encodeDataBehaviorProps(behaviorProps);
+            },
+            knowledgeArticleId: this.embeddedViewProps.context.active_id,
+            ...this.state.additionalViewProps.itemCalendarProps,
+        });
+    }
+
+    get allEmbeddedViewProps() {
+        return {...this.embeddedViewProps, additionalViewProps: {...this.state.additionalViewProps}};
     }
 
     /**
@@ -159,7 +194,7 @@ export class EmbeddedViewManager extends Component {
         }
         this.env.config.setDisplayName(action.display_name);
         this.env.config.views = action.views;
-        const ViewProps = {
+        const viewProps = {
             resModel: action.res_model,
             context: context,
             domain: action.domain || [],
@@ -194,23 +229,36 @@ export class EmbeddedViewManager extends Component {
             },
         };
         if (action.search_view_id) {
-            ViewProps.searchViewId = action.search_view_id[0];
+            viewProps.searchViewId = action.search_view_id[0];
         }
         if (context.orderBy) {
             try {
-                ViewProps.orderBy = JSON.parse(context.orderBy);
+                viewProps.orderBy = JSON.parse(context.orderBy);
             } catch {};
         }
         if (this.props.viewType in EMBEDDED_VIEW_LIMITS) {
-            ViewProps.limit = EMBEDDED_VIEW_LIMITS[this.props.viewType];
+            viewProps.limit = EMBEDDED_VIEW_LIMITS[this.props.viewType];
         }
-        ViewProps.irFilters = this._loadKnowledgeFavorites();
-        ViewProps.onSaveKnowledgeFavorite = this.onSaveKnowledgeFavorite.bind(this);
-        ViewProps.onDeleteKnowledgeFavorite = this.onDeleteKnowledgeFavorite.bind(this);
+        viewProps.irFilters = this._loadKnowledgeFavorites();
+        viewProps.onSaveKnowledgeFavorite = this.onSaveKnowledgeFavorite.bind(this);
+        viewProps.onDeleteKnowledgeFavorite = this.onDeleteKnowledgeFavorite.bind(this);
 
         this.EmbeddedView = EmbeddedView;
-        this.EmbeddedViewProps = ViewProps;
+        this.embeddedViewProps = viewProps;
         this.action = action;
+    }
+
+    /**
+     * Edit an embedded view.
+     * Each embedded view that needs "additionalProps" should implement their
+     * own edition dialog.
+     */
+    _onEditBtnClick() {
+        if (this.embeddedViewProps.resModel === "knowledge.article" && this.embeddedViewProps.type === "calendar") {
+            this.editItemCalendarProps();
+        } else {
+            throw new Error("Can not edit the view: The dialog is not implemented");
+        }
     }
 
     /**
@@ -235,7 +283,7 @@ export class EmbeddedViewManager extends Component {
         if (this.action.type !== "ir.actions.act_window") {
             throw new Error('Can not open the view: The action is not an "ir.actions.act_window"');
         }
-        const props = {};
+        const props = this.state.additionalViewProps || {};
         if (this.action.context.orderBy) {
             try {
                 props.orderBy = JSON.parse(this.action.context.orderBy);

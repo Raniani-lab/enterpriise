@@ -73,31 +73,6 @@ QUnit.module('appointment.wysiwyg', {
     }
 }, function () {
 
-    QUnit.test('Insert link with "/Calendar"', async function (assert) {
-        assert.expect(3);
-
-        await makeView({
-            type: 'form',
-            serverData,
-            resModel: 'note',
-            arch: '<form>' +
-                '<field name="body" widget="html" style="height: 100px"/>' +
-                '</form>',
-            resId: 1,
-        });
-        const { editor, editable, originalContent } = onMount();
-
-        // Type powerbox command + 'Enter'
-        setSelection(editable.querySelector('p'), 0);
-        await insertText(editor, '/Calendar');
-        await triggerEvent(editable, null, 'keydown', { key: 'Enter' });
-
-        assert.strictEqual(editable.innerHTML,
-            `<p><a href="${window.location.origin}/appointment">Our Appointment Types</a></p>`);
-
-        assertHistorySteps(assert, editable, originalContent);
-    });
-
     QUnit.test('Insert link with "/Appointment"', async function (assert) {
         assert.expect(3);
 
@@ -119,34 +94,6 @@ QUnit.module('appointment.wysiwyg', {
 
         assert.strictEqual(editable.innerHTML,
             `<p><a href="${linkUrl}">Schedule an Appointment</a></p>`);
-
-        assertHistorySteps(assert, editable, originalContent);
-    });
-
-    QUnit.test('Replace existing link with "/Calendar" link', async function (assert) {
-        assert.expect(3);
-
-        await makeView({
-            type: 'form',
-            serverData,
-            resModel: 'note',
-            arch: '<form>' +
-                '<field name="body" widget="html" style="height: 100px"/>' +
-                '</form>',
-            resId: 2,
-        });
-        const { editor, editable, originalContent } = onMount();
-
-        // Place cursor at beginning of link's label
-        const p = editable.querySelector('p');
-        setSelection(p.firstChild.firstChild, 0);
-
-        // Type powerbox command + 'Enter'
-        await insertText(editor, '/Calendar');
-        await triggerEvent(editable, null, 'keydown', { key: 'Enter' });
-
-        assert.strictEqual(editable.innerHTML,
-            `<p><a href="${window.location.origin}/appointment">Our Appointment Types</a></p>`);
 
         assertHistorySteps(assert, editable, originalContent);
     });

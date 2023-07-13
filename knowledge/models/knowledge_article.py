@@ -1301,7 +1301,7 @@ class Article(models.Model):
 
     @api.model
     @api.returns('knowledge.article', lambda article: article.id)
-    def article_create(self, title=False, parent_id=False, is_private=False, is_article_item=False):
+    def article_create(self, title=False, parent_id=False, is_private=False, is_article_item=False, article_properties=False):
         """ Helper to create articles, allowing to pre-compute some configuration
         values.
 
@@ -1343,6 +1343,9 @@ class Article(models.Model):
                     _("Cannot create an article under article %(parent_name)s which is a non-private parent",
                       parent_name=parent.display_name)
                 )
+
+        if is_article_item and article_properties:
+            values['article_properties'] = article_properties
 
         return self.create(values)
 
@@ -2312,27 +2315,33 @@ class Article(models.Model):
             raise_if_not_found=False
         )
 
-    def render_embedded_view(self, act_window_id_or_xml_id, view_type, name, view_context):
+    def render_embedded_view(self, act_window_id_or_xml_id, view_type, name, view_context, additional_view_props=False):
         """
         Returns the HTML tag that will be recognized by the editor as an embedded view.
         :param int | str act_window_id_or_xml_id: id or xml id of the action
         :param str view_type: type of the view ('kanban', 'list', ...)
         :param str name: display name
         :param dict view_context: context of the view
+        :param dict additional_props: additional props to use when rendering the view,
+            typically used to store start/end date property fields for the item calendar
 
         :return: rendered template for embedded views
         """
         self.ensure_one()
         action_data = self._extract_act_window_data(act_window_id_or_xml_id, name)
         action_help = action_data.pop('help', None)
+        behavior_props = {
+            'act_window': action_data,
+            'context': view_context or {},
+            'view_type': view_type,
+        }
+
+        if additional_view_props:
+            behavior_props['additionalViewProps'] = additional_view_props
 
         return self.env['ir.qweb']._render(
             'knowledge.knowledge_embedded_view', {
-                'behavior_props': parse.quote(json.dumps({
-                    'act_window': action_data,
-                    'context': view_context or {},
-                    'view_type': view_type,
-                }), safe='()*!\''),
+                'behavior_props': parse.quote(json.dumps(behavior_props), safe='()*!\''),
                 'action_help': Markup(action_help) if action_help else False,
             },
             minimal_qcontext=True,

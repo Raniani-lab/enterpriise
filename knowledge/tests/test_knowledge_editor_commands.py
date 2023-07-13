@@ -36,6 +36,10 @@ class TestKnowledgeEditorCommands(HttpCase):
         })
         self.start_tour('/web', 'knowledge_article_command_dialog_tour', login='admin')
 
+    def test_knowledge_calendar_command_tour(self):
+        """Test the /calendar command in the editor"""
+        self.start_tour('/web', 'knowledge_calendar_command_tour', login='admin')
+
     def test_knowledge_file_command_tour(self):
         """Test the /file command in the editor"""
         self.start_tour('/web', 'knowledge_file_command_tour', login='admin', step_delay=100)

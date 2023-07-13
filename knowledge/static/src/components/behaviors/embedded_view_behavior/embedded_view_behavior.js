@@ -170,6 +170,7 @@ export class EmbeddedViewBehavior extends AbstractBehavior {
             this.embeddedViewManagerProps = {
                 el: this.props.anchor,
                 action,
+                additionalViewProps: this.props.additionalViewProps,
                 context,
                 viewType: this.props.view_type,
                 setTitle: this.setTitle.bind(this),
@@ -221,6 +222,7 @@ EmbeddedViewBehavior.components = {
 };
 EmbeddedViewBehavior.props = {
     ...AbstractBehavior.props,
+    additionalViewProps: { type: Object, optional: true},
     embedded_view_id: { type: String, optional: true },
     act_window: { type: Object, optional: true },
     action_xml_id: { type: String, optional: true },

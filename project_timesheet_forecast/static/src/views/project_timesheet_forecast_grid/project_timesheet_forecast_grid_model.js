@@ -44,7 +44,7 @@ patch(TimesheetGridDataPoint.prototype, {
 
         const previousWeekSlotsInfo = this.orm.webReadGroup(
             "planning.slot",
-            domain.toList({}),
+            Domain.and([this.searchParams.domain, domain]).toList({}),
             validRowFields,
             validRowFields,
             { lazy: false }

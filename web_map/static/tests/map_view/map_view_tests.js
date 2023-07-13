@@ -1052,8 +1052,8 @@ QUnit.module("Views", (hooks) => {
         await click(target, ".leaflet-marker-icon");
         assert.strictEqual(
             target.querySelector("div.leaflet-popup a.btn.btn-primary").href,
-            "https://www.google.com/maps/dir/?api=1&destination=10,10.5",
-            "The link's URL should the right set of coordinates"
+            "https://www.google.com/maps/dir/?api=1&destination=Chauss%C3%A9e%20de%20Namur%2040%2C%201367%2C%20Ramillies",
+            "The URL of the link should contain the address"
         );
     });
 
@@ -1084,8 +1084,8 @@ QUnit.module("Views", (hooks) => {
         await click(target, ".leaflet-marker-icon");
         assert.strictEqual(
             target.querySelector("div.leaflet-popup a.btn.btn-primary").href,
-            "https://www.google.com/maps/dir/?api=1&destination=10,10.5",
-            "The link's URL should the right set of coordinates"
+            "https://www.google.com/maps/dir/?api=1&destination=Chauss%C3%A9e%20de%20Namur%2040%2C%201367%2C%20Ramillies",
+            "The URL of the link should contain the address"
         );
     });
 
@@ -1114,8 +1114,8 @@ QUnit.module("Views", (hooks) => {
         await click(target, ".leaflet-marker-icon");
         assert.strictEqual(
             target.querySelector("div.leaflet-popup a.btn.btn-primary").href,
-            "https://www.google.com/maps/dir/?api=1&destination=10.5,10",
-            "The link's URL should only contain unqiue sets of coordinates"
+            "https://www.google.com/maps/dir/?api=1&destination=Chauss%C3%A9e%20de%20Louvain%2094%2C%205310%20%C3%89ghez%C3%A9e",
+            "The URL of the link should contain the address"
         );
     });
 

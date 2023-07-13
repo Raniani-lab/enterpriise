@@ -1,21 +1,11 @@
 /** @odoo-module */
 
-import { SelectionPopup } from '@mrp_workorder_hr/components/popup';
-import { WorkingEmployeePopupWOList } from "@mrp_workorder_hr/components/working_employee_popup_wo_list";
-import { PinPopup } from '@mrp_workorder_hr/components/pin_popup';
 import { useBus, useService } from "@web/core/utils/hooks";
 import { patch } from "@web/core/utils/patch";
 import { MrpWorkorderKanbanController } from '@mrp_workorder/views/kanban/mrp_workorder_kanban_controller';
 import { useConnectedEmployee } from '../hooks/employee_hooks';
 
 const { onWillStart, useState } = owl;
-
-MrpWorkorderKanbanController.components = {
-    ...MrpWorkorderKanbanController.components,
-    SelectionPopup,
-    PinPopup,
-    WorkingEmployeePopupWOList
-}
 
 patch(MrpWorkorderKanbanController.prototype, 'mrp_workorder_hr', {
     setup() {

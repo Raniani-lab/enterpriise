@@ -2,12 +2,17 @@
 import { useService } from "@web/core/utils/hooks";
 import { browser } from "@web/core/browser/browser";
 import { useEnv } from "@odoo/owl";
+import { SelectionPopup } from "@mrp_workorder_hr/components/popup";
+import { WorkingEmployeePopupWOList } from "@mrp_workorder_hr/components/working_employee_popup_wo_list";
+import { PinPopup } from "@mrp_workorder_hr/components/pin_popup";
+import { DialogWrapper } from "@mrp_workorder_hr/components/dialog_wrapper";
 
 const { useState } = owl;
 
 export function useConnectedEmployee(model, controllerType, context, workcenterId, domain = { workcenterEmployeeDomain: [] }) {
     const orm = useService("orm");
     const notification = useService("notification");
+    const dialog = useService("dialog");
     const imageBaseURL = `${browser.location.origin}/web/image?model=hr.employee&field=avatar_128&id=`;
     const env = useEnv();
     let employees = useState({
@@ -18,17 +23,32 @@ export function useConnectedEmployee(model, controllerType, context, workcenterI
     let popup = useState({
         PinPopup: {
             isShown: false,
-            data: {},
         },
         SelectionPopup: {
             isShown: false,
-            data: {},
         },
         WorkingEmployeePopupWOList: {
             isShown: false,
-            data: {},
         }
     });
+
+    function openDialog(id, component, props) {
+        popup[id] = {
+            isShown: true,
+            close: dialog.add(
+                DialogWrapper,
+                {
+                    Component: component,
+                    componentProps: props,
+                },
+                {
+                    onClose: () => {
+                        popup[id] = { isShown: false };
+                    }
+                }
+            )
+        };
+    }
 
     async function openEmployeeSelection() {
         const connectedEmployees = await orm.call(
@@ -36,10 +56,14 @@ export function useConnectedEmployee(model, controllerType, context, workcenterI
             "get_employees_wo_by_employees",
             [null, employees.connected],
         );
-        popup.WorkingEmployeePopupWOList = {
-            data: { employees: connectedEmployees },
-            isShown: true,
-        };
+        openDialog("WorkingEmployeePopupWOList", WorkingEmployeePopupWOList, {
+            popupData: { employees: connectedEmployees },
+            onClosePopup: closePopup.bind(this),
+            onAddEmployee: popupAddEmployee.bind(this),
+            onStopEmployee: stopEmployee.bind(this),
+            onStartEmployee: startEmployee.bind(this),
+            becomeAdmin: setSessionOwner.bind(this)
+        });
     }
 
     async function startEmployee(employeeId, workorderId) {
@@ -145,10 +169,11 @@ export function useConnectedEmployee(model, controllerType, context, workcenterI
     }
 
     function askPin(employee) {
-        popup.PinPopup = {
-            data: { employee: employee },
-            isShown: true,
-        };
+        openDialog("PinPopup", PinPopup, {
+            popupData: { employee },
+            onClosePopup: closePopup.bind(this),
+            onPinValidate: checkPin.bind(this),
+        });
     }
 
     async function setSessionOwner(employee_id, pin) {
@@ -184,10 +209,11 @@ export function useConnectedEmployee(model, controllerType, context, workcenterI
             label: employee.name,
             isSelected: employees.connected.find(e => e.id === employee.id) != undefined ? true : false
         }));
-        popup.SelectionPopup = {
-            data: { title: env._t("Select Employee"), list: list },
-            isShown: true,
-        };
+        openDialog("SelectionPopup", SelectionPopup, {
+            popupData: { title: env._t("Select Employee"), list: list },
+            onClosePopup: closePopup.bind(this),
+            onSelectEmployee: selectEmployee.bind(this),
+        });
     }
 
     async function pinValidation(employeeId, pin) {
@@ -202,12 +228,15 @@ export function useConnectedEmployee(model, controllerType, context, workcenterI
         } else {
             selectEmployee(employeeId, pin);
         }
-        const pinValid = await this.useEmployee.pinValidation(employeeId, pin);
+        const pinValid = await pinValidation(employeeId, pin);
         return pinValid;
     }
 
     function closePopup(popupId) {
-        popup[popupId].isShown = false;
+        const { isShown, close } = popup[popupId];
+        if (isShown) {
+            close();
+        }
     }
 
     async function onBarcodeScanned(barcode) {

@@ -1,26 +1,27 @@
 $wo-border-separation: $border-width solid $border-color;
 
 .o_tablet_popups {
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 10;
-    background-color: rgba(60, 60, 60, 0.4);
 
     &.o_unblock {
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
         z-index: 100;
+        background-color: rgba(60, 60, 60, 0.4);
+
+        .popup {
+            z-index: 1200;
+            top: 5%;
+            left: 20%;
+            width: 60%;
+            position: fixed;
+            background: $o-gray-100;
+        }
     }
 
     .popup {
-        z-index: 1200;
-        top: 5%;
-        left: 20%;
-        width: 60%;
-        position: fixed;
-        background: $o-gray-100;
-
         .body.traceback {
             height: 238px;
             overflow: auto;

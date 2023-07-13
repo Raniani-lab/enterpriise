@@ -38,7 +38,7 @@ class CashFlowReportCustomHandler(models.AbstractModel):
 
         currency_table_query = self.env['res.currency']._get_query_currency_table(options)
 
-        payment_move_ids, payment_account_ids = self._get_liquidity_move_ids(report, options)
+        payment_account_ids = self._get_account_ids(report, options)
 
         # Compute 'Cash and cash equivalents, beginning of period'
         for aml_data in self._compute_liquidity_balance(report, options, currency_table_query, payment_account_ids, 'to_beginning_of_period'):
@@ -56,12 +56,12 @@ class CashFlowReportCustomHandler(models.AbstractModel):
         }
 
         # Process liquidity moves
-        for aml_groupby_account in self._get_liquidity_moves(report, options, currency_table_query, payment_account_ids, payment_move_ids, tags_ids.values()):
+        for aml_groupby_account in self._get_liquidity_moves(report, options, currency_table_query, payment_account_ids, tags_ids.values()):
             for aml_data in aml_groupby_account.values():
                 self._dispatch_aml_data(tags_ids, aml_data, layout_data, report_data)
 
         # Process reconciled moves
-        for aml_groupby_account in self._get_reconciled_moves(report, options, currency_table_query, payment_account_ids, payment_move_ids, tags_ids.values()):
+        for aml_groupby_account in self._get_reconciled_moves(report, options, currency_table_query, payment_account_ids, tags_ids.values()):
             for aml_data in aml_groupby_account.values():
                 self._dispatch_aml_data(tags_ids, aml_data, layout_data, report_data)
 
@@ -148,12 +148,11 @@ class CashFlowReportCustomHandler(models.AbstractModel):
     # -------------------------------------------------------------------------
     # QUERIES
     # -------------------------------------------------------------------------
-    def _get_liquidity_move_ids(self, report, options):
-        ''' Retrieve all liquidity moves to be part of the cash flow statement and also the accounts making them.
+    def _get_account_ids(self, report, options):
+        ''' Retrieve all accounts to be part of the cash flow statement and also the accounts making them.
 
         :param options: The report options.
-        :return:        payment_move_ids: A tuple containing all account.move's ids being the liquidity moves.
-                        payment_account_ids: A tuple containing all account.account's ids being used in a liquidity journal.
+        :return:        payment_account_ids: A tuple containing all account.account's ids being used in a liquidity journal.
         '''
         # Fetch liquidity accounts:
         # Accounts being used by at least one bank/cash journal.
@@ -182,32 +181,7 @@ class CashFlowReportCustomHandler(models.AbstractModel):
         if not payment_account_ids:
             return (), ()
 
-        queries = []
-        params = []
-
-        for column_group_key, column_group_options in report._split_options_per_column_group(options).items():
-            tables, where_clause, where_params = report._query_get(column_group_options, 'strict_range', [('account_id', 'in', list(payment_account_ids))])
-
-            queries.append(f'''
-                SELECT
-                    %s AS column_group_key,
-                    account_move_line.move_id
-                FROM {tables}
-                WHERE {where_clause}
-                GROUP BY account_move_line.move_id
-            ''')
-
-            params += [column_group_key, *where_params]
-
-        self._cr.execute(' UNION ALL '.join(queries), params)
-
-        payment_move_ids = {}
-
-        for res in self._cr.dictfetchall():
-            payment_move_ids.setdefault(res['column_group_key'], set())
-            payment_move_ids[res['column_group_key']].add(res['move_id'])
-
-        return payment_move_ids, tuple(payment_account_ids)
+        return tuple(payment_account_ids)
 
     def _get_move_ids_query(self, report, payment_account_ids, column_group_options):
         ''' Get all liquidity moves to be part of the cash flow statement.
@@ -267,18 +241,15 @@ class CashFlowReportCustomHandler(models.AbstractModel):
 
         return self._cr.dictfetchall()
 
-    def _get_liquidity_moves(self, report, options, currency_table_query, payment_account_ids, payment_move_ids, cash_flow_tag_ids):
+    def _get_liquidity_moves(self, report, options, currency_table_query, payment_account_ids, cash_flow_tag_ids):
         ''' Fetch all information needed to compute lines from liquidity moves.
         The difficulty is to represent only the not-reconciled part of balance.
 
         :param options:                 The report options.
         :param currency_table_query:    The floating query to handle a multi-company/multi-currency environment.
-        :param payment_move_ids:        A tuple containing all account.move's ids being the liquidity moves.
         :param payment_account_ids:     A tuple containing all account.account's ids being used in a liquidity journal.
         :return:                        A list of tuple (account_id, account_code, account_name, account_type, amount).
         '''
-        if not payment_move_ids:
-            return []
 
         reconciled_aml_groupby_account = {}
 
@@ -396,19 +367,16 @@ class CashFlowReportCustomHandler(models.AbstractModel):
 
         return list(reconciled_aml_groupby_account.values())
 
-    def _get_reconciled_moves(self, report, options, currency_table_query, payment_account_ids, payment_move_ids, cash_flow_tag_ids):
+    def _get_reconciled_moves(self, report, options, currency_table_query, payment_account_ids, cash_flow_tag_ids):
         ''' Retrieve all moves being not a liquidity move to be shown in the cash flow statement.
         Each amount must be valued at the percentage of what is actually paid.
         E.g. An invoice of 1000 being paid at 50% must be valued at 500.
 
         :param options:                 The report options.
         :param currency_table_query:    The floating query to handle a multi-company/multi-currency environment.
-        :param payment_move_ids:        A tuple containing all account.move's ids being the liquidity moves.
         :param payment_account_ids:     A tuple containing all account.account's ids being used in a liquidity journal.
         :return:                        A list of tuple (account_id, account_code, account_name, account_type, amount).
         '''
-        if not payment_move_ids:
-            return []
 
         reconciled_account_ids = {column_group_key: set() for column_group_key in options['column_groups']}
         reconciled_percentage_per_move = {column_group_key: {} for column_group_key in options['column_groups']}

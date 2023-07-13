@@ -5,6 +5,7 @@ import { useService } from "@web/core/utils/hooks";
 import { Field } from "@web/views/fields/field";
 import { X2ManyField, x2ManyField } from "@web/views/fields/x2many/x2many_field";
 import { ListRenderer } from "@web/views/list/list_renderer";
+import { useEnv } from "@odoo/owl";
 
 export class WorkedDaysField extends Field {
     setup() {
@@ -74,13 +75,13 @@ export class PayslipLineField extends Field {
     setup() {
         super.setup(...arguments);
         this.actionService = useService("action");
-        this.orm = useService("orm");
+        this.orm = useEnv().services.orm;
     }
 
     get fieldComponentProps() {
         const props = super.fieldComponentProps;
         const record = this.props.record;
-        if (!record.isPayslipLineField && !this.props.name === 'sequence') {
+        if (!record.isPayslipLineField) {
             record.isPayslipLineField = true;
             const oldUpdate = record.update.bind(record);
             record.update = async (changes) => {

@@ -2,24 +2,24 @@
 <templates>
     <t t-name="appointment.AppointmentCalendarController" t-inherit="calendar.AttendeeCalendarController" t-inherit-mode="extension" owl="1">
         <xpath expr="//div[@t-if='showSideBar']/*[1]" position="before">
-            <div id="scheduling_box" class="mb-3">
-                <div t-if="env.calendarState.mode === 'slots-creation' || appointmentState.lastAppointmentUrl" class="o_appointment_scheduling_message_box">
-                    <div class="pt-2">
-                        <p t-if="appointmentState.lastAppointmentUrl" class="mx-2 user-select-none">
-                            Link Copied in your clipboard!
+            <div id="scheduling_box" class="mb-2">
+                <div t-if="env.calendarState.mode === 'slots-creation' || appointmentState.lastAppointmentUrl" class="o_appointment_scheduling_message_box alert alert-primary">
+                    <div>
+                        <p t-if="appointmentState.lastAppointmentUrl" class="user-select-none">
+                            <i class="fa fa-check"/> Link Copied in your clipboard!
                         </p>
-                        <p t-else="" class="mx-2 user-select-none">
+                        <p t-else="" class="user-select-none">
                             Click in your calendar to pick meeting time proposals.
                         </p>
                     </div>
-                    <span class="o_appointment_scheduling_buttons d-flex px-2">
-                        <button t-attf-class="btn btn-primary col-9 mb-2 o_appointment_get_link ${this.appointmentState.lastAppointmentUrl || this.hasSlotEvents() ? '' : 'disabled pe-none'}" aria-label="Get Share Link"
+                    <span class="o_appointment_scheduling_buttons d-flex">
+                        <button t-attf-class="btn btn-primary flex-grow-1 o_appointment_get_link ${this.appointmentState.lastAppointmentUrl || this.hasSlotEvents() ? '' : 'disabled pe-none'}" aria-label="Get Share Link"
                             t-on-click="onClickGetShareLink" t-ref="copyLinkRef">
-                            Get Share Link
+                            <i class="fa fa-link"/> Get Share Link
                         </button>
-                        <button class="btn btn-secondary col-2 ms-auto mb-2 o_appointment_discard_slots" aria-label="Discard"
+                        <button class="btn btn-secondary ms-1 o_appointment_discard_slots" aria-label="Discard"
                             t-on-click="onClickDiscard">
-                            <i class="fa fa-trash"/>
+                            <i class="fa fa-times"/>
                         </button>
                     </span>
                 </div>

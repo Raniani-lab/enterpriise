@@ -854,6 +854,51 @@ QUnit.module("spreadsheet pivot view", {}, () => {
         );
     });
 
+    QUnit.test("pivot related context is not saved in the spreadsheet", async function (assert) {
+        const context = {
+            pivot_row_groupby: ["foo"],
+            pivot_column_groupby: ["bar"],
+            pivot_measures: ["probability"],
+            default_stage_id: 5,
+        };
+        const { model } = await createSpreadsheetFromPivotView({
+            additionalContext: context,
+            actions: async (target) => {
+                await toggleMenu(target, "Measures");
+                await toggleMenuItem(target, "Count");
+            },
+            mockRPC: function (route, args) {
+                if (args.method === "read_group") {
+                    assert.step(args.kwargs.fields.join(","));
+                }
+            },
+        });
+        assert.verifySteps([
+            // initial view
+            "probability:avg",
+            "probability:avg",
+            "probability:avg",
+            "probability:avg",
+            // adding count in the view
+            "probability:avg,__count",
+            "probability:avg,__count",
+            "probability:avg,__count",
+            "probability:avg,__count",
+            // loaded in the spreadsheet
+            "probability:avg,__count",
+            "probability:avg,__count",
+            "probability:avg,__count",
+            "probability:avg,__count",
+        ]);
+        assert.deepEqual(
+            model.exportData().pivots[1].context,
+            {
+                default_stage_id: 5,
+            },
+            "pivot related context is not stored in context"
+        );
+    });
+
     QUnit.test("sort first pivot column (ascending)", async (assert) => {
         const { model } = await createSpreadsheetFromPivotView({
             actions: async (target) => {

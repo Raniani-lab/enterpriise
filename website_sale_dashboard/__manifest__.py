@@ -16,9 +16,4 @@ It also provides new tools to analyse your data.
     ],
     'auto_install': ['website_sale'],
     'license': 'OEEL-1',
-    'assets': {
-        'web.assets_backend': [
-            'website_sale_dashboard/static/src/xml/website_sale_dashboard.xml',
-        ],
-    }
 }

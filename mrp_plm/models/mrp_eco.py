@@ -68,7 +68,7 @@ class MrpEcoApprovalTemplate(models.Model):
         ('optional', 'Approves, but the approval is optional'),
         ('mandatory', 'Is required to approve'),
         ('comment', 'Comments only')], 'Approval Type',
-        default='mandatory', required=True)
+        default='mandatory', required=True, index=True)
     user_ids = fields.Many2many('res.users', string='Users', domain=lambda self: [('groups_id', 'in', self.env.ref('mrp_plm.group_plm_user').id)], required=True)
     stage_id = fields.Many2one('mrp.eco.stage', 'Stage', required=True)
 
@@ -100,7 +100,7 @@ class MrpEcoApproval(models.Model):
         ('comment', 'Commented'),
         ('approved', 'Approved'),
         ('rejected', 'Rejected')], string='Status',
-        default='none', required=True)
+        default='none', required=True, index=True)
     approval_date = fields.Datetime('Approval Date')
     is_closed = fields.Boolean()
     is_approved = fields.Boolean(
@@ -225,7 +225,7 @@ class MrpEco(models.Model):
         ('rebase', 'Rebase'),
         ('conflict', 'Conflict'),
         ('done', 'Done')], string='Status',
-        copy=False, default='confirmed', readonly=True, required=True)
+        copy=False, default='confirmed', readonly=True, required=True, index=True)
     user_can_approve = fields.Boolean(
         'Can Approve', compute='_compute_user_approval',
         help='Technical field to check if approval by current user is required')

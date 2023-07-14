@@ -6,7 +6,7 @@
                     <span class="label credit-gestion">Due balance</span>
                     <span t-esc="env.utils.formatCurrency(this.partnerInfos.totalDue)" />
                 </div>
-            <t t-if="this.partnerInfos.useLimit"></t>
+            <t t-if="this.partnerInfos.useLimit">
                 <div class="partner-detail">
                     <span class="label credit-gestion">Credit limit</span>
                     <span t-esc="env.utils.formatCurrency(this.partnerInfos.creditLimit)" />

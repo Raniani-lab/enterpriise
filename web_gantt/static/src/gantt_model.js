@@ -105,7 +105,7 @@ export function computeRange(scale, date) {
  * @param {Record<string, Field>} fields
  * @param {Record<string, any>} values
  */
-function parseServerValues(fields, values) {
+export function parseServerValues(fields, values) {
     /** @type {Record<string, any>} */
     const parsedValues = {};
     if (!values) {
@@ -620,12 +620,14 @@ export class GanttModel extends Model {
      *
      * @protected
      * @param {MetaData} metaData
+     * @param {Object} [additionalContext]
      */
-    async _fetchData(metaData) {
+    async _fetchData(metaData, additionalContext) {
         const { groupedBy, pagerLimit, pagerOffset, resModel } = metaData;
         const context = {
             ...this.searchParams.context,
             group_by: groupedBy,
+            ...additionalContext,
         };
         const domain = this._getDomain(metaData);
         const fields = this._getFields(metaData);

@@ -6,13 +6,13 @@ from collections import defaultdict
 from datetime import datetime
 import pytz
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.osv import expression
 
 class HrPayslip(models.Model):
     _inherit = 'hr.payslip'
 
-    attendance_count = fields.Integer(compute='_compute_attendance_count', groups="hr_attendance.group_hr_attendance_user")
+    attendance_count = fields.Integer(compute='_compute_attendance_count')
 
     @api.depends('date_from', 'date_to', 'contract_id')
     def _compute_attendance_count(self):
@@ -42,10 +42,15 @@ class HrPayslip(models.Model):
 
     def action_open_attendances(self):
         self.ensure_one()
-        action = self.env['ir.actions.actions']._for_xml_id('hr_attendance.hr_attendance_action_employee')
-        action['context'] = {
-            'create': False,
-            'search_default_employee_id': self.employee_id.id,
+        return {
+            "type": "ir.actions.act_window",
+            "name": _("Attendances"),
+            "res_model": "hr.attendance",
+            "views": [[False, "tree"]],
+            "context": {
+                "create": 0
+            },
+            "domain": [('employee_id', '=', self.employee_id.id),
+                       ('check_in', '<=', self.date_to),
+                       ('check_out', '>=', self.date_from)]
         }
-        action['domain'] = [('check_in', '<=', self.date_to), ('check_out', '>=', self.date_from)]
-        return action

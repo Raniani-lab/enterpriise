@@ -147,7 +147,7 @@ class AccountMove(models.Model):
         try:
             self._check_status(force_write=True)
         except Exception as e:
-            _logger.error("Error while reloading AI data on account.move %d: %s", self.id, e)
+            _logger.warning("Error while reloading AI data on account.move %d: %s", self.id, e)
             raise AccessError(_lt("Couldn't reload AI data."))
 
     def _domain_company(self):

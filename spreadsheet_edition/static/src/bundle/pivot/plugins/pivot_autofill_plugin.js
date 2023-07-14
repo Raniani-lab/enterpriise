@@ -190,7 +190,7 @@ export default class PivotAutofillPlugin extends UIPlugin {
                     // Targeting row-header
                     return this._autofillRowFromValue(pivotId, currentElement);
                 }
-                if (nextColIndex < -1 || nextColIndex >= table.getColWidth()) {
+                if (nextColIndex < -1 || nextColIndex >= table.getNumberOfDataColumns()) {
                     // Outside the pivot
                     return "";
                 }
@@ -220,7 +220,7 @@ export default class PivotAutofillPlugin extends UIPlugin {
                     // Targeting col-header
                     return this._autofillColFromValue(pivotId, nextRowIndex, currentElement);
                 }
-                if (nextRowIndex >= table.getRowHeight()) {
+                if (nextRowIndex >= table.getNumberOfDataRows()) {
                     // Outside the pivot
                     return "";
                 }
@@ -287,7 +287,7 @@ export default class PivotAutofillPlugin extends UIPlugin {
                 if (
                     currentColIndex === -1 ||
                     nextColIndex < 0 ||
-                    nextColIndex >= table.getColWidth() ||
+                    nextColIndex >= table.getNumberOfDataColumns() ||
                     !nextGroup
                 ) {
                     // Outside the pivot
@@ -303,12 +303,12 @@ export default class PivotAutofillPlugin extends UIPlugin {
         } else {
             // UP-DOWN
             const rowIndex =
-                currentColIndex === table.getColWidth() - 1
-                    ? table.getColHeight() - 2 + currentElement.cols.length
+                currentColIndex === table.getNumberOfDataColumns() - 1
+                    ? table.getNumberOfHeaderRows() - 2 + currentElement.cols.length
                     : currentElement.cols.length - 1;
             const nextRowIndex = rowIndex + increment;
             const groupLevels = dataSource.getNumberOfColGroupBys();
-            if (nextRowIndex < 0 || nextRowIndex >= groupLevels + 1 + table.getRowHeight()) {
+            if (nextRowIndex < 0 || nextRowIndex >= groupLevels + 1 + table.getNumberOfDataRows()) {
                 // Outside the pivot
                 return "";
             }
@@ -371,7 +371,7 @@ export default class PivotAutofillPlugin extends UIPlugin {
         if (isColumn) {
             const colIndex = increment - 1;
             // LEFT-RIGHT
-            if (colIndex < 0 || colIndex >= table.getColWidth()) {
+            if (colIndex < 0 || colIndex >= table.getNumberOfDataColumns()) {
                 // Outside the pivot
                 return "";
             }
@@ -392,7 +392,11 @@ export default class PivotAutofillPlugin extends UIPlugin {
                 rows[0] = this._incrementDate(rows[0], group, increment);
             } else {
                 const nextIndex = currentIndex + increment;
-                if (currentIndex === -1 || nextIndex < 0 || nextIndex >= table.getRowHeight()) {
+                if (
+                    currentIndex === -1 ||
+                    nextIndex < 0 ||
+                    nextIndex >= table.getNumberOfDataRows()
+                ) {
                     return "";
                 }
                 rows = [...table.getCellsFromRowAtIndex(nextIndex).values];

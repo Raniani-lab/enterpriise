@@ -30,7 +30,6 @@ import {
     getCellContent,
     getCells,
     getCellValue,
-    getMerges,
 } from "@spreadsheet/../tests/utils/getters";
 import { session } from "@web/session";
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
@@ -83,33 +82,7 @@ QUnit.module("spreadsheet pivot view", {}, () => {
         );
         assert.strictEqual(getCellContent(model, "B3"), '=ODOO.PIVOT(1,"foo")');
         assert.strictEqual(getCellContent(model, "C3"), '=ODOO.PIVOT(1,"probability")');
-        assert.deepEqual(getMerges(model), ["B1:C1"]);
     });
-
-    QUnit.test(
-        "pivot with two measures: total cells above measures totals are merged in one",
-        async (assert) => {
-            assert.expect(2);
-            const { model } = await createSpreadsheetFromPivotView({
-                serverData: {
-                    models: getBasicData(),
-                    views: {
-                        "partner,false,pivot": /* xml */ `
-                            <pivot>
-                                <field name="foo" type="col"/>
-                                <field name="date" interval="week" type="row"/>
-                                <field name="foo" type="measure"/>
-                                <field name="probability" type="measure"/>
-                            </pivot>`,
-                        "partner,false,search": /* xml */ `<search/>`,
-                    },
-                },
-            });
-            const merges = getMerges(model);
-            assert.strictEqual(merges.length, 5);
-            assert.strictEqual(merges[4], "J1:K1");
-        }
-    );
 
     QUnit.test("Insert in spreadsheet is disabled when data is empty", async (assert) => {
         assert.expect(1);

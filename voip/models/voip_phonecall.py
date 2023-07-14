@@ -36,7 +36,7 @@ class VoipPhonecall(models.Model):
         ('done', 'Held'),
         ('rejected', 'Rejected'),
         ('missed',   'Missed')
-    ], string='Status', default='open',
+    ], string='Status', default='open', index=True,
         help='The status is set to To Do, when a call is created.\n'
              'When the call is over, the status is set to Held.\n'
              'If the call is not applicable anymore, the status can be set to Cancelled.')

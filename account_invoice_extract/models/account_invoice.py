@@ -41,7 +41,7 @@ class AccountMove(models.Model):
     @api.depends('state')
     def _compute_is_in_extractable_state(self):
         for record in self:
-            record.is_in_extractable_state = record.state == 'draft'
+            record.is_in_extractable_state = record.state == 'draft' and record.is_invoice()
 
     @api.depends(
         'state',

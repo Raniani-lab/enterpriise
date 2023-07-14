@@ -318,9 +318,6 @@
         <!-- make sure this view will be loaded after timesheet_grid.timesheet_view_search -->
         <record id="hr_timesheet.hr_timesheet_line_my_timesheet_search" model="ir.ui.view">
             <field name="inherit_id" ref="timesheet_view_search" />
-            <field name="arch" type="xml">
-                <filter name="my_department_timesheet" position="replace"/>
-            </field>
         </record>
 
         <record id="hr_timesheet_line_inherit_my_timesheet_search" model="ir.ui.view">
@@ -328,6 +325,7 @@
             <field name="model">account.analytic.line</field>
             <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_my_timesheet_search"/>
             <field name="arch" type="xml">
+                <filter name="my_department_timesheet" position="replace"/>
                 <filter name="my_team_timesheet" position="replace"/>
             </field>
         </record>

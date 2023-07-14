@@ -46,7 +46,7 @@ class ApprovalRequest(models.Model):
         ('refused', 'Refused'),
         ('cancel', 'Cancel'),
     ], default="new", compute="_compute_request_status",
-        store=True, tracking=True,
+        store=True, index=True, tracking=True,
         group_expand='_read_group_request_status')
     request_owner_id = fields.Many2one('res.users', string="Request Owner",
         check_company=True, domain="[('company_ids', 'in', company_id)]")

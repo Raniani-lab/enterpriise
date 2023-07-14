@@ -12,6 +12,7 @@ import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
 import { registry } from "@web/core/registry";
 import { ListRenderer } from "@web/views/list/list_renderer";
 import { createSpreadsheetFromListView, toggleCogMenuSpreadsheet } from "../utils/list_helpers";
+import { createSpreadsheet } from "../spreadsheet_test_utils.js";
 import { dom } from "@web/../tests/legacy/helpers/test_utils";
 import { doMenuAction } from "@spreadsheet/../tests/utils/ui";
 import { session } from "@web/session";
@@ -277,6 +278,17 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
             getCellFormula(model, "B2").replace(`ODOO.LIST(1`, `ODOO.LIST("5)`)
         ); //Invalid id
         assert.ok(getEvaluatedCell(model, "B2").error.message);
+        assert.notOk(root.isVisible(env));
+    });
+
+    QUnit.test("See record.isVisible() don't throw on spread values", async function (assert) {
+        const { env, model } = await createSpreadsheet();
+        setCellContent(model, "A1", "A1");
+        setCellContent(model, "A2", "A2");
+        setCellContent(model, "C1", "=TRANSPOSE(A1:A2)");
+        selectCell(model, "D1");
+        await nextTick();
+        const root = cellMenuRegistry.getAll().find((item) => item.id === "list_see_record");
         assert.notOk(root.isVisible(env));
     });
 

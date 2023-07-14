@@ -16,7 +16,7 @@
                         <i class="fa fa-fw text-start" t-attf-class="{{milestone.is_reached ? 'fa-check-square-o o_milestones_reached' : 'fa-square-o'}}"></i>
                     </t>
                     <strong><t t-out="milestone.name"/></strong>
-                    <span t-if="props.displayMilestoneDates"><t t-out="milestone.deadline"/></span>
+                    <span t-if="props.displayMilestoneDates"><br/><t t-out="getDeadline(milestone)"/></span>
                     <t t-set="previousProjectId" t-value="milestone.project_id[0]"></t>
                 </li>
             </ul>

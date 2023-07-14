@@ -179,8 +179,10 @@ class DataMergeRecord(models.Model):
         field_description = lambda key: IrField(key)['field_description']
 
         # Hide fields with an attr 'groups' defined or from the blacklisted fields
+        model_fields = self.env[self.res_model_name]._fields
         hidden_field = lambda key: key in MAGIC_COLUMNS or \
-            self.env[self.res_model_name]._fields[key].groups or \
+            key not in model_fields or \
+            model_fields[key].groups or \
             IrField(key)['ttype'] == 'binary'
 
         record = self._original_records()

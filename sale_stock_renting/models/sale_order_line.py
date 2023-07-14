@@ -129,7 +129,7 @@ class RentalOrderLine(models.Model):
                     removed_returned_lots = old_vals[sol.id][1] - sol.returned_lot_ids
                     sol._move_serials(returned_lots, rented_location, stock_location)
                     sol._return_serials(removed_returned_lots, stock_location, rented_location)
-            elif sol.product_id.tracking != 'serial' and (vals.get('qty_delivered', False) or vals.get('qty_returned', False)):
+            elif sol.product_id.tracking != 'serial' and any(k in vals for k in ('qty_delivered', 'qty_returned')):
                 # for products not tracked: move quantities
                 qty_delivered_change = sol.qty_delivered - old_vals[sol.id][0]
                 qty_returned_change = sol.qty_returned - old_vals[sol.id][1]

@@ -10,6 +10,7 @@ const URL_VIEW_KEY = "_view_type";
 const URL_ACTION_KEY = "_action";
 const URL_TAB_KEY = "_tab";
 const URL_MODE_KEY = "mode";
+const URL_REPORT_ID_KEY = "_report_id";
 
 export const MODES = {
     EDITOR: "editor",
@@ -102,7 +103,14 @@ export const studioService = {
                 user.updateContext({ studio: 1 });
                 state.studioMode = currentHash[URL_MODE_KEY];
                 state.editedViewType = currentHash[URL_VIEW_KEY] || null;
-                state.editorTab = currentHash[URL_TAB_KEY] || null;
+                const editorTab = currentHash[URL_TAB_KEY] || null;
+                state.editorTab = editorTab;
+                if (editorTab === "reports") {
+                    const reportId = currentHash[URL_REPORT_ID_KEY] || null;
+                    if (reportId) {
+                        state.editedReport = { res_id: reportId };
+                    }
+                }
 
                 const editedActionId = currentHash[URL_ACTION_KEY];
                 const additionalContext = {};
@@ -286,6 +294,10 @@ export const studioService = {
                 state.editedAction.context.active_id
             ) {
                 hash.active_id = state.editedAction.context.active_id;
+            }
+
+            if (state.editorTab === "reports" && state.editedReport) {
+                hash[URL_REPORT_ID_KEY] = state.editedReport.res_id;
             }
             env.services.router.pushState(hash, { replace: true });
         }

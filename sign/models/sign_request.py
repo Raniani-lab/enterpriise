@@ -82,7 +82,7 @@ class SignRequest(models.Model):
         ("refused", "Refused"),
         ("canceled", "Canceled"),
         ("expired", "Expired"),
-    ], default='sent', tracking=True, group_expand='_expand_states', copy=False)
+    ], default='sent', tracking=True, group_expand='_expand_states', copy=False, index=True)
 
     completed_document = fields.Binary(readonly=True, string="Completed Document", attachment=True, copy=False)
 
@@ -779,7 +779,7 @@ class SignRequestItem(models.Model):
         ("refused", "Refused"),
         ("completed", "Completed"),
         ("canceled", "Canceled"),
-    ], readonly=True, default="sent", copy=False)
+    ], readonly=True, default="sent", copy=False, index=True)
     color = fields.Integer(compute='_compute_color')
     ignored = fields.Boolean(required=True, default=False, copy=False)
 

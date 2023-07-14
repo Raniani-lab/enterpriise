@@ -113,7 +113,7 @@ class Article(models.Model):
     # categories and ownership
     category = fields.Selection(
         [('workspace', 'Workspace'), ('private', 'Private'), ('shared', 'Shared')],
-        compute="_compute_category", compute_sudo=True, store=True, string="Section",
+        compute="_compute_category", compute_sudo=True, store=True, index=True, string="Section",
         help='Used to categozie articles in UI, depending on their main permission definitions.')
         # Stored to improve performance when loading the article tree. (avoid looping through members if 'workspace')
     # Same as write_uid/_date but limited to the body

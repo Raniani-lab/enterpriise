@@ -87,6 +87,7 @@ class AccountMove(models.Model):
         return (
             self.state == 'draft'
             and self.message_main_attachment_id
+            and self.is_invoice()
             and not self._check_digitalization_mode(self.company_id, self.move_type, 'no_send')
         )
 

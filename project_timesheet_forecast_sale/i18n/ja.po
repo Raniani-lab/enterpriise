@@ -77,7 +77,7 @@ msgstr "プロジェクト"
 #. module: project_timesheet_forecast_sale
 #: model:ir.model,name:project_timesheet_forecast_sale.model_project_update
 msgid "Project Update"
-msgstr ""
+msgstr "プロジェクト更新"
 
 #. module: project_timesheet_forecast_sale
 #: model:ir.model,name:project_timesheet_forecast_sale.model_sale_order_line

@@ -1629,7 +1629,7 @@ msgstr "Abstimmungsmodell-Widget"
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_move_line_tree
 #, python-format
 msgid "Reconcile"
-msgstr "Abstimmen von"
+msgstr "Abstimmen"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__reconcile_model_id

@@ -121,12 +121,12 @@ msgstr "Marchandise"
 #: model_terms:ir.ui.view,arch_db:account_intrastat.product_product_tree_view_account_intrastat_supplementary_unit
 #: model_terms:ir.ui.view,arch_db:account_intrastat.product_product_tree_view_account_intrastat_weight
 msgid "Commodity Code"
-msgstr "Code de la marchandise"
+msgstr "Code marchandises"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_product_product__intrastat_code_id
 msgid "Commodity code"
-msgstr "Code de la marchandise"
+msgstr "Code marchandises"
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_res_company

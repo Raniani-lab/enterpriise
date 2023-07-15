@@ -465,7 +465,7 @@ msgstr "Volgende"
 #: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_panel.xml:0
 #, python-format
 msgid "No preview"
-msgstr "Geen preview"
+msgstr "Geen voorbeeld"
 
 #. module: spreadsheet_edition
 #. odoo-javascript

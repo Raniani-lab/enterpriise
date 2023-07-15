@@ -95,7 +95,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:partner_commission.action_commission_plans
 #: model:ir.ui.menu,name:partner_commission.menu_commission_plans
 msgid "Commission Plans"
-msgstr ""
+msgstr "手数料プラン"
 
 #. module: partner_commission
 #: model:ir.model,name:partner_commission.model_commission_plan
@@ -299,7 +299,7 @@ msgstr "プロダクトカテゴリ"
 #. module: partner_commission
 #: model:ir.model.fields,field_description:partner_commission.field_commission_plan__product_id
 msgid "Purchase Default Product"
-msgstr ""
+msgstr "購買デフォルトプロダクト"
 
 #. module: partner_commission
 #: model:ir.model,name:partner_commission.model_purchase_order

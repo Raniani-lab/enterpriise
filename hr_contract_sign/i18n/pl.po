@@ -42,7 +42,7 @@ msgstr "%s oraz %s są sygatariuszami."
 #: code:addons/hr_contract_sign/wizard/hr_contract_sign_document_wizard.py:0
 #, python-format
 msgid "%s does not have a work or private email set."
-msgstr ""
+msgstr "%s nie ma ustawionej służbowej ani prywatnej poczty e-mail. "
 
 #. module: hr_contract_sign
 #. odoo-python

@@ -29,7 +29,7 @@ msgstr "<small class=\"pe-1\">Preventivi:</small>"
 #. module: social_sale
 #: model_terms:ir.ui.view,arch_db:social_sale.social_post_view_kanban
 msgid "<small class=\"pe-1\">Revenues:</small>"
-msgstr ""
+msgstr "<small class=\"pe-1\">Ricavi:</small>"
 
 #. module: social_sale
 #: model:ir.model.fields,field_description:social_sale.field_social_post__sale_invoiced_amount

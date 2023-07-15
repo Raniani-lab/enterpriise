@@ -1236,7 +1236,7 @@ msgstr ""
 #. module: appointment
 #: model:onboarding.onboarding.step,title:appointment.appointment_onboarding_preview_invite_step
 msgid "Get your link"
-msgstr "Ihren Link erhalten"
+msgstr "Erhalten Sie Ihren Link,"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
@@ -2232,7 +2232,7 @@ msgstr "Token"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_kanban
 msgid "Total Meetings<br/>(Last 30 Days)"
-msgstr "Meetings insgesamt<br/>(Letzte 30 Tage)"
+msgstr "Meetings insgesamt<br/>(Letzten 30 Tage)"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.portal_my_appointments
@@ -2438,12 +2438,12 @@ msgstr "john.smith@example.com"
 #. module: appointment
 #: model:onboarding.onboarding.step,description:appointment.appointment_onboarding_create_appointment_type_step
 msgid "to automate appointments"
-msgstr ", um Termine zu automatisieren"
+msgstr "um Termine zu automatisieren"
 
 #. module: appointment
 #: model:onboarding.onboarding.step,description:appointment.appointment_onboarding_preview_invite_step
 msgid "to schedule appointments"
-msgstr ", um Termine zu planen"
+msgstr "um Termine zu planen"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form

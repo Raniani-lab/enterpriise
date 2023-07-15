@@ -1543,7 +1543,7 @@ msgstr "مدفوعات أصل الدين "
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Priority Credit Transfer"
-msgstr ""
+msgstr "تحويل رصيد ذو أولوية "
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1561,7 +1561,7 @@ msgstr "الاستبدال "
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Received Cash Concentration Transactions"
-msgstr ""
+msgstr "معاملات التركيز النقدي التي تم استلامها "
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1573,19 +1573,19 @@ msgstr "الشيكات المستلمة "
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Received Credit Transfers"
-msgstr ""
+msgstr "تحويلات الرصيد المستلمة "
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Received Direct Debits"
-msgstr ""
+msgstr "الخصم المباشر الذي تم استلامه "
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Received Real Time Credit Transfer"
-msgstr ""
+msgstr "عملية تحويل الرصيد في الوقت الفعلي التي تم استلامها "
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1630,7 +1630,7 @@ msgstr "إعادة الدفع "
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Repo"
-msgstr ""
+msgstr "تقرير "
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0

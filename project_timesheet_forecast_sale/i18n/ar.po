@@ -100,12 +100,12 @@ msgstr "مهندس برمجيات أول "
 #. module: project_timesheet_forecast_sale
 #: model:ir.model.fields,help:project_timesheet_forecast_sale.field_planning_analysis_report__billable_allocated_hours
 msgid "Sum of hours allocated to shifts linked to a SOL."
-msgstr ""
+msgstr "مجموع الساعات المخصصة لنوبات العمل المرتبطة ببند أمر بيع (SOL). "
 
 #. module: project_timesheet_forecast_sale
 #: model:ir.model.fields,help:project_timesheet_forecast_sale.field_planning_analysis_report__non_billable_allocated_hours
 msgid "Sum of hours allocated to shifts not linked to a SOL."
-msgstr ""
+msgstr "مجموع الساعات المخصصة لنوبات العمل غير المرتبطة ببند أمر بيع (SOL). "
 
 #. module: project_timesheet_forecast_sale
 #: code:addons/project_timesheet_forecast_sale/models/project.py:0

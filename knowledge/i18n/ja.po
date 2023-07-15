@@ -1129,7 +1129,7 @@ msgstr "連絡先"
 #: code:addons/knowledge/static/src/components/behaviors/template_behavior/template_behavior.xml:0
 #, python-format
 msgid "Copy to Clipboard"
-msgstr ""
+msgstr "クリップボードにコピーする"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_cover__attachment_url
@@ -2721,7 +2721,7 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article__user_permission__none
 msgid "none"
-msgstr ""
+msgstr "なし"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding

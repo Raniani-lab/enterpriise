@@ -61,17 +61,17 @@ msgstr "(%s dni rozpiętości)"
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.period_report_template
 msgid ".&amp;nbsp;"
-msgstr ""
+msgstr ".&amp;nbsp;"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "00:00"
-msgstr ""
+msgstr "00:00"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "04:00"
-msgstr ""
+msgstr "04:00"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -81,22 +81,22 @@ msgstr "12:00"
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "16:00"
-msgstr ""
+msgstr "16:00"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "1:00 PM - 5:00 PM (2h)"
-msgstr ""
+msgstr "13:00 - 17:00 (2 godziny)"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "1:00 PM - 5:00 PM (2h) - Jeffrey Kelly"
-msgstr ""
+msgstr "13:00 - 17:00 (2h) - Jeffrey Kelly"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "1:00 PM - 5:00 PM (4h) - Jeffrey Kelly"
-msgstr ""
+msgstr "13:00 - 17:00 (4h) - Jeffrey Kelly"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -111,17 +111,17 @@ msgstr "8:00"
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "8:00 AM - 12:00 PM (1h) - Eli Lambert"
-msgstr ""
+msgstr "8:00 - 12:00 (1h) - Eli Lambert"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "8:00 AM - 12:00 PM (4h)"
-msgstr ""
+msgstr "8:00 - 12:00 (4 godziny)"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "8:00 AM - 12:00 PM (4h) - Doris Cole"
-msgstr ""
+msgstr "8:00 - 12:00 (4h) - Doris Cole"
 
 #. module: planning
 #: model_terms:digest.tip,tip_description:planning.digest_tip_planning_0
@@ -206,6 +206,52 @@ msgid ""
 "                </div>\n"
 "            "
 msgstr ""
+"<div>\n"
+"<p>\n"
+"<t t-if=\"ctx.get('employee')\">\n"
+"Drogi <t t-out=\"ctx['employee'].name or ''\"></t>,\n"
+"</t>\n"
+"<t t-else=\"\">\n"
+"Witam,\n"
+"</t>\n"
+"<br><br>\n"
+"<t t-if=\"ctx.get('assigned_new_shift')\">\n"
+"Zostałeś przydzielony do nowej zmiany:\n"
+"</t>\n"
+"<t t-else=\"\">\n"
+"Prosimy o zapoznanie się z planem na następujący okres:\n"
+"</t>\n"
+"</p>\n"
+"<br>\n"
+"\n"
+"<table style=\"table-layout: fixed; width: 80%; margin: auto;\">\n"
+"<tr>\n"
+"<th style=\"padding: 5px;text-align: left; width: 15%;\">Od</th>\n"
+"<td style=\"padding: 5px;\" t-out=\"format_date(ctx.get('start_datetime')) or ''\">05/05/2021</td>\n"
+"</tr>\n"
+"<tr>\n"
+"<th style=\"padding: 5px;text-align: left; width: 15%;\">Do</th>\n"
+"<td style=\"padding: 5px;\" t-out=\"format_date(ctx.get('end_datetime')) or ''\">05/05/2021</td>\n"
+"</tr>\n"
+"</table>\n"
+"\n"
+"<div t-if=\"ctx.get('planning_url')\" style=\"margin: 15px;\">\n"
+"<a t-att-href=\"ctx.get('planning_url')\" target=\"_blank\" style=\"padding: 5px 10px; color: #FFFFFF; text-decoration: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius: 3px\">Zobacz swój plan</a>\n"
+"</div>\n"
+"\n"
+"<div t-if=\"ctx.get('slot_unassigned_count')\">\n"
+"<p>Dostępne są nowe wolne zmiany. Przydziel się, jeśli jesteś dostępny.</p>\n"
+"</div>\n"
+"<br>\n"
+"\n"
+"<t t-if=\"ctx.get('message')\">\n"
+"<p t-out=\"ctx['message'] or ''\"></p>\n"
+"</t>\n"
+"\n"
+"<p t-if=\"hasattr(object, 'allow_self_unassign') and object.allow_self_unassign and hasattr(object, 'self_unassign_days_before') and object.self_unassign_days_before\">\n"
+"Przypominamy, że masz <t t-out=\"object.self_unassign_days_before or ''\">5</t> dni przed rozpoczęciem zmiany, aby się z niej wypisać, jeśli jesteś niedostępny. Dziękujemy za zrozumienie.\n"
+"</p>\n"
+"</div>"
 
 #. module: planning
 #: model:mail.template,body_html:planning.email_template_slot_single
@@ -252,6 +298,46 @@ msgid ""
 "                </div>\n"
 "            "
 msgstr ""
+"<div>\n"
+"<p>Droga <t t-out=\"ctx.get('employee_name', '')\">Anito Oliver</t>,<br><br></p>\n"
+"<t t-if=\"ctx.get('open_shift_available')\">\n"
+"<p>Dostępna jest nowa zmiana:</p>\n"
+"</t>\n"
+"<t t-else=\"\">\n"
+"<p>Przydzielono Ci następujący harmonogram:</p>\n"
+"</t>\n"
+"<br>\n"
+"<table style=\"width: 80%; margin: auto;\">\n"
+"<tr>\n"
+"<th style=\"padding: 5px;text-align: left;\">Od</th>\n"
+"<td style=\"padding: 5px;\" t-out=\"ctx.get('start_datetime') or ''\">05/31/2021 08:00:00</td>\n"
+"</tr>\n"
+"<tr>\n"
+"<th style=\"padding: 5px;text-align: left;\">Do</th>\n"
+"<td style=\"padding: 5px;\" t-out=\"ctx.get('end_datetime') or ''\">05/31/2021 16:00:00</td>\n"
+"</tr>\n"
+"<tr t-if=\"object.role_id\">\n"
+"<th style=\"padding: 5px;text-align: left;\">Rola</th>\n"
+"<td style=\"padding: 5px;\" t-out=\"object.role_id.name or ''\">Barman</td>\n"
+"</tr>\n"
+"<tr t-if=\"hasattr(object, 'sale_line_id') and object.sale_line_id\">\n"
+"<th style=\"padding: 5px;text-align: left;\">Element zamówienia sprzedaży</th>\n"
+"<td style=\"padding: 5px;\" t-out=\"object.sudo().sale_line_id.name or ''\"></td>\n"
+"</tr>\n"
+"<tr t-if=\"hasattr(object, 'project_id') and object.project_id\">\n"
+"<th style=\"padding: 5px;text-align: left;\">Projekt</th>\n"
+"<td style=\"padding: 5px;\" t-out=\"object.sudo().project_id.name or ''\">Zbieranie</td>\n"
+"</tr>\n"
+"<tr t-if=\"hasattr(object, 'task_id') and object.task_id\">\n"
+"<th style=\"padding: 5px;text-align: left;\">Zadanie</th>\n"
+"<td style=\"padding: 5px;\" t-out=\"object.sudo().task_id.name or ''\">Szef kuchni</td>\n"
+"</tr>\n"
+"<tr t-if=\"hasattr(object, 'name') and object.name\">\n"
+"<th style=\"padding: 5px;text-align: left;\">Uwaga</th>\n"
+"<td style=\"padding: 5px;\" t-out=\"object.name or ''\">/</td>\n"
+"</tr>\n"
+"</table>\n"
+"</div>"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_shift_notification
@@ -349,6 +435,8 @@ msgid ""
 "<i title=\"Create\" class=\"o_gantt_cell_add fa fa-plus d-flex justify-"
 "content-center \"></i>"
 msgstr ""
+"<i title=\"Create\" class=\"o_gantt_cell_add fa fa-plus d-flex justify-"
+"content-center \"></i>"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.period_report_template
@@ -391,6 +479,8 @@ msgid ""
 "<span class=\"o_gantt_consolidated_pill_title position-absolute text-"
 "truncate px-1\">12:00</span>"
 msgstr ""
+"<span class=\"o_gantt_consolidated_pill_title position-absolute text-"
+"truncate px-1\">12:00</span>"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -398,6 +488,8 @@ msgid ""
 "<span class=\"o_gantt_consolidated_pill_title position-absolute text-"
 "truncate px-1\">16:00</span>"
 msgstr ""
+"<span class=\"o_gantt_consolidated_pill_title position-absolute text-"
+"truncate px-1\">16:00</span>"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -405,6 +497,8 @@ msgid ""
 "<span class=\"o_gantt_consolidated_pill_title position-absolute text-"
 "truncate px-1\">4:00</span>"
 msgstr ""
+"<span class=\"o_gantt_consolidated_pill_title position-absolute text-"
+"truncate px-1\">4:00</span>"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -412,6 +506,8 @@ msgid ""
 "<span class=\"o_gantt_consolidated_pill_title position-relative text-"
 "truncate px-1\">00:00</span>"
 msgstr ""
+"<span class=\"o_gantt_consolidated_pill_title position-relative text-"
+"truncate px-1\">00:00</span>"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -419,6 +515,8 @@ msgid ""
 "<span class=\"o_gantt_consolidated_pill_title position-relative text-"
 "truncate px-1\">04:00</span>"
 msgstr ""
+"<span class=\"o_gantt_consolidated_pill_title position-relative text-"
+"truncate px-1\">04:00</span>"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -426,6 +524,8 @@ msgid ""
 "<span class=\"o_gantt_consolidated_pill_title position-relative text-"
 "truncate px-1\">12:00</span>"
 msgstr ""
+"<span class=\"o_gantt_consolidated_pill_title position-relative text-"
+"truncate px-1\">12:00</span>"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -433,6 +533,8 @@ msgid ""
 "<span class=\"o_gantt_consolidated_pill_title position-relative text-"
 "truncate px-1\">8:00</span>"
 msgstr ""
+"<span class=\"o_gantt_consolidated_pill_title position-relative text-"
+"truncate px-1\">8:00</span>"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.period_report_template
@@ -441,6 +543,9 @@ msgid ""
 "                                            <i class=\"mx-1 fa fa-long-arrow-right\" aria-label=\"Arrow icon\" title=\"Arrow\"/>\n"
 "                                            <span class=\"o_end_date\"/>"
 msgstr ""
+"<span class=\"o_start_date\"/>\n"
+"<i class=\"mx-1 fa fa-long-arrow-right\" aria-label=\"Arrow icon\" title=\"Arrow\"/>\n"
+"<span class=\"o_end_date\"/>"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -451,6 +556,11 @@ msgid ""
 "class=\"o_gantt_group_hours px-1\" style=\"line-height: 35px;\"> 4 h / 40 h "
 "(10%) </span> </span>"
 msgstr ""
+"<span class=\"position-absolute o_gantt_progressbar o_gantt_group_success\" "
+"style=\"width: 10%;\"></span><span class=\"position-absolute "
+"o_gantt_text_hoverable o_gantt_group_success\"><span "
+"class=\"o_gantt_group_hours px-1\" style=\"line-height: 35px;\">4 h / 40 h "
+"(10%)  </span></span>"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -461,6 +571,11 @@ msgid ""
 "class=\"o_gantt_group_hours px-1\" style=\"line-height: 35px;\"> 6 h / 40 h "
 "(15%) </span> </span>"
 msgstr ""
+"<span class=\"position-absolute o_gantt_progressbar o_gantt_group_success\" "
+"style=\"width: 15%;\"></span><span class=\"position-absolute "
+"o_gantt_text_hoverable o_gantt_group_success\"><span "
+"class=\"o_gantt_group_hours px-1\" style=\"line-height: 35px;\">6 h / 40 h "
+"(15%)</span></span>"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -471,6 +586,11 @@ msgid ""
 "class=\"o_gantt_group_hours px-1\" style=\"line-height: 35px;\"> 13 h / 40 h"
 " (32.5%) </span> </span>"
 msgstr ""
+"<span class=\"position-absolute o_gantt_progressbar o_gantt_group_success\" "
+"style=\"width: 32.5%;\"></span><span class=\"position-absolute "
+"o_gantt_text_hoverable o_gantt_group_success\"><span "
+"class=\"o_gantt_group_hours px-1\" style=\"line-height: 35px;\">13 h / 40 h "
+"(32,5%)</span></span>"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -916,7 +1036,7 @@ msgstr ""
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "Doris Cole"
-msgstr ""
+msgstr "Doris Cole"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -974,7 +1094,7 @@ msgstr "Edytuj"
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "Eli Lambert"
-msgstr ""
+msgstr "Eli Lambert"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -1230,7 +1350,7 @@ msgstr "Czy termin cofnięcia przydziału nie minął?"
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "Jeffrey Kelly"
-msgstr ""
+msgstr "Jeffrey Kelly"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles

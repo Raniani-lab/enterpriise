@@ -93,7 +93,7 @@ msgstr "Załącznik"
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
 #, python-format
 msgid "CV is being Digitized"
-msgstr ""
+msgstr "CV jest digitalizowane"
 
 #. module: hr_recruitment_extract
 #: model:ir.model,name:hr_recruitment_extract.model_res_company
@@ -133,36 +133,36 @@ msgstr "Komunikat o błędzie"
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_can_show_resend_button
 msgid "Extract Can Show Resend Button"
-msgstr ""
+msgstr "Wyciąg może wyświetlać przycisk Wyślij ponownie"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_can_show_send_button
 msgid "Extract Can Show Send Button"
-msgstr ""
+msgstr "Wyciąg może wyświetlać przycisk Wyślij"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_state
 msgid "Extract State"
-msgstr ""
+msgstr "Stan wyodrębnienia"
 
 #. module: hr_recruitment_extract
 #. odoo-python
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
 #, python-format
 msgid "Generated Applicant"
-msgstr ""
+msgstr "Wygenerowany aplikant"
 
 #. module: hr_recruitment_extract
 #. odoo-python
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
 #, python-format
 msgid "Generated Applicants"
-msgstr ""
+msgstr "Wygenerowani aplikanci"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__is_first_stage
 msgid "Is First Stage"
-msgstr ""
+msgstr "To pierwszy etap"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__hr_applicant__extract_state__no_extract_requested
@@ -178,29 +178,29 @@ msgstr "Niewystarczająco kredytów"
 #: model:ir.actions.server,name:hr_recruitment_extract.ir_cron_ocr_parse_ir_actions_server
 #: model:ir.cron,cron_name:hr_recruitment_extract.ir_cron_ocr_parse
 msgid "Recruitment OCR: Parse CV"
-msgstr ""
+msgstr "Rekrutacja OCR: Analiza CV"
 
 #. module: hr_recruitment_extract
 #: model:ir.actions.server,name:hr_recruitment_extract.ir_cron_update_ocr_status_ir_actions_server
 #: model:ir.cron,cron_name:hr_recruitment_extract.ir_cron_update_ocr_status
 msgid "Recruitment OCR: Update All Status"
-msgstr ""
+msgstr "Rekrutacja OCR: Zaktualizuj wszystkie statusy"
 
 #. module: hr_recruitment_extract
 #: model:ir.actions.server,name:hr_recruitment_extract.ir_cron_ocr_validate_ir_actions_server
 #: model:ir.cron,cron_name:hr_recruitment_extract.ir_cron_ocr_validate
 msgid "Recruitment OCR: Validate CV"
-msgstr ""
+msgstr "Rekrutacja OCR: weryfikacja CV"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_res_config_settings__recruitment_extract_show_ocr_option_selection
 msgid "Recruitment processing option"
-msgstr ""
+msgstr "Opcja przetwarzania rekrutacji"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_remote_id
 msgid "Request ID to IAP-OCR"
-msgstr ""
+msgstr "ID wniosku do IAP-OCR"
 
 #. module: hr_recruitment_extract
 #: model:ir.actions.server,name:hr_recruitment_extract.ir_actions_server_digitize_cv
@@ -211,7 +211,7 @@ msgstr "Wyślij do digitalizacji"
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_res_company__recruitment_extract_show_ocr_option_selection
 msgid "Send mode on applicant attachments"
-msgstr ""
+msgstr "Tryb wysyłania załączników aplikanta"
 
 #. module: hr_recruitment_extract
 #. odoo-python
@@ -231,7 +231,7 @@ msgstr "Serwer nie jest dostępny. Proszę spróbować ponownie później"
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__state_processed
 msgid "State Processed"
-msgstr ""
+msgstr "Stan przetworzony"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_status_code
@@ -274,7 +274,7 @@ msgstr "Oczekująca ekstrakcja"
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__hr_applicant__extract_state__extract_not_ready
 msgid "Waiting extraction, but not ready"
-msgstr ""
+msgstr "Oczekiwanie na ekstrakcję, ale nie gotowe"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__hr_applicant__extract_state__waiting_upload
@@ -291,9 +291,9 @@ msgstr "Oczekiwanie na zatwierdzenie"
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
 #, python-format
 msgid "You cannot send a CV for an applicant who's not in first stage!"
-msgstr ""
+msgstr "Nie można wysłać CV aplikanta, który nie jest na pierwszym etapie!"
 
 #. module: hr_recruitment_extract
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_extract.hr_recruitment_extract_view_form
 msgid "You don't have enough credit to extract data from your CV."
-msgstr ""
+msgstr "Nie masz wystarczającego kredytu, aby wyodrębnić dane z CV."

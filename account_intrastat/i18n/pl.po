@@ -516,47 +516,47 @@ msgstr "kg H2O2"
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_k2o
 msgid "kg K2O"
-msgstr ""
+msgstr "kg K2O"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_koh
 msgid "kg KOH"
-msgstr ""
+msgstr "kg KOH"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_n
 msgid "kg N"
-msgstr ""
+msgstr "kg N"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_naoh
 msgid "kg NaOH"
-msgstr ""
+msgstr "kg NaOH"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_p2o5
 msgid "kg P2O5"
-msgstr ""
+msgstr "kg P2O5"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_u
 msgid "kg U"
-msgstr ""
+msgstr "kg U"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_met_am_
 msgid "kg met.am."
-msgstr ""
+msgstr "kg met.am."
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg/net_eda
 msgid "kg/net eda"
-msgstr ""
+msgstr "kg/netto eda"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__l_alc__100_%
 msgid "l alc. 100 %"
-msgstr ""
+msgstr "l alc. 100 %"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__m2
@@ -596,7 +596,7 @@ msgstr "jednostki dodatkowe"
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__t__co2
 msgid "t. CO2"
-msgstr ""
+msgstr "t. CO2"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_intrastat_main_template

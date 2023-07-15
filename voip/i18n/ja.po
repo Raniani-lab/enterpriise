@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Junko Augias, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Junko Augias, 2023\n"
 "Language-Team: Japanese (https://app.transifex.com/odoo/teams/41243/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -165,7 +166,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_res_users__should_call_from_another_device
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__should_call_from_another_device
 msgid "Call from another device"
-msgstr ""
+msgstr "他のデバイスから電話する"
 
 #. module: voip
 #. odoo-javascript
@@ -238,6 +239,10 @@ msgid ""
 "            • Ask: Always ask whether the softphone or the device's phone must be used\n"
 "        "
 msgstr ""
+"モバイルアプリケーションを使用する際に電話をかける方法を選択してください：\n"
+"- VoIP： 常にOdooソフトフォンを使用\n"
+"- デバイス電話：常にデバイス電話を使用\n"
+"- 確認：ソフトフォンかデバイス電話のどちらを使用するか常に確認"
 
 #. module: voip
 #. odoo-javascript
@@ -403,7 +408,7 @@ msgstr "番号を入力してください..."
 #: model:ir.model.fields,field_description:voip.field_res_users__external_device_number
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__external_device_number
 msgid "External device number"
-msgstr ""
+msgstr "外部デバイス番号"
 
 #. module: voip
 #. odoo-javascript
@@ -443,7 +448,7 @@ msgstr "保留"
 #: model:ir.model.fields,field_description:voip.field_res_users__how_to_call_on_mobile
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__how_to_call_on_mobile
 msgid "How to place calls on mobile"
-msgstr ""
+msgstr "携帯電話での通話方法"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__id
@@ -456,7 +461,7 @@ msgstr "ID"
 #: model:ir.model.fields,help:voip.field_res_users__should_auto_reject_incoming_calls
 #: model:ir.model.fields,help:voip.field_res_users_settings__should_auto_reject_incoming_calls
 msgid "If enabled, incoming calls will be automatically declined in Odoo."
-msgstr ""
+msgstr "有効にすると、Odooで着信が自動的に拒否されます。"
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_users__should_call_from_another_device
@@ -466,6 +471,7 @@ msgid ""
 "device number\". Use this option to place the call in Odoo but handle it "
 "from another device - e.g. your desk phone."
 msgstr ""
+"有効にすると、Odooで電話をかける場合に「外部デバイス番号」に電話が転送されます。このオプションを使用すると、Odooで電話をかけても、他のデバイス（例：デスクホンなど）から対応することができます。"
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_users__external_device_number
@@ -827,7 +833,7 @@ msgstr "通話を拒否する"
 #: model:ir.model.fields,field_description:voip.field_res_users__should_auto_reject_incoming_calls
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__should_auto_reject_incoming_calls
 msgid "Reject incoming calls"
-msgstr ""
+msgstr "着信を拒否"
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__rejected
@@ -1005,7 +1011,7 @@ msgstr ""
 #: model:ir.model.fields,help:voip.field_res_users__voip_secret
 #: model:ir.model.fields,help:voip.field_res_users_settings__voip_secret
 msgid "The password that will be used to register with the PBX server."
-msgstr ""
+msgstr "PBXサーバーでの登録に使用するパスワードです。"
 
 #. module: voip
 #. odoo-javascript
@@ -1048,7 +1054,7 @@ msgstr ""
 msgid ""
 "The username (typically the extension number) that will be used to register "
 "with the PBX server."
-msgstr ""
+msgstr "PBXサーバーへの登録に使用するユーザー名（通常は内線番号）です。"
 
 #. module: voip
 #. odoo-javascript
@@ -1057,7 +1063,7 @@ msgstr ""
 msgid ""
 "The websocket connection with the server has been lost. Please try to "
 "refresh the page."
-msgstr ""
+msgstr "サーバーとのWebsocket接続が切断されました。ページをリフレッシュして下さい。"
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__open
@@ -1112,7 +1118,7 @@ msgstr "ユーザーレポートによるVoIP電話"
 #. module: voip
 #: model:ir.model,name:voip.model_voip_queue_mixin
 msgid "VOIP Queue support"
-msgstr ""
+msgstr "VOIPキューサポート"
 
 #. module: voip
 #. odoo-javascript
@@ -1122,12 +1128,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:voip.res_users_view_form_preferences
 #, python-format
 msgid "VoIP"
-msgstr ""
+msgstr "VoIP"
 
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.voip_res_users_settings_view_form
 msgid "VoIP Configuration"
-msgstr ""
+msgstr "VoIP設定"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_config_settings__mode
@@ -1138,13 +1144,13 @@ msgstr "VoIP環境"
 #: model:ir.model.fields,field_description:voip.field_res_users__voip_secret
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__voip_secret
 msgid "VoIP secret"
-msgstr ""
+msgstr "VoIP secret"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_users__voip_username
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__voip_username
 msgid "VoIP username / Extension number"
-msgstr ""
+msgstr "VoIP ユーザー名 / 内線番号"
 
 #. module: voip
 #. odoo-javascript

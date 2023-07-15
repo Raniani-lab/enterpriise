@@ -557,7 +557,7 @@ msgstr "Imprimante"
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_view_form
 msgid "Printer Reports"
-msgstr "Rapports d'imprimante"
+msgstr "Rapports à imprimer"
 
 #. module: iot
 #: model:ir.model,name:iot.model_publisher_warranty_contract

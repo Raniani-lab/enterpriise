@@ -649,7 +649,7 @@ msgstr "حسابات دائنة مستحقة متأخرة "
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_aged_payable_report_handler
 msgid "Aged Payable Custom Handler"
-msgstr ""
+msgstr "المعالج المخصص للحسابات الدائنة المستحقة "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_reports_journal_dashboard_kanban_view
@@ -667,7 +667,7 @@ msgstr "المتأخر المدين"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_aged_receivable_report_handler
 msgid "Aged Receivable Custom Handler"
-msgstr ""
+msgstr "المعالج المخصص للحسابات المدينة المستحقة "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_reports_journal_dashboard_kanban_view
@@ -2006,7 +2006,7 @@ msgstr "إدراج تذييل هنا "
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.sales_report_main_template
 msgid "Intra-community taxes are applied on"
-msgstr ""
+msgstr "الضرائب بين المجتمعات مطبقة على "
 
 #. module: account_reports
 #. odoo-python
@@ -3684,7 +3684,7 @@ msgstr "سيتم ترحيلها إلى هذا البند في الفترة ال�
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.sales_report_main_template
 msgid "without a valid intra-community VAT number."
-msgstr ""
+msgstr "دون رقم ضريبي صالح لبين المجتمعات. "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_line_template

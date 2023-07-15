@@ -9,12 +9,11 @@
 # Andrzej Wiśniewski <a.wisniewski@hadron.eu.com>, 2022
 # Martin Trigaux, 2022
 # Marcin Młynarczyk <mlynarczyk@gmail.com>, 2022
-# Paweł Wodyński <pw@myodoo.pl>, 2022
 # Piotr Strębski <strebski@gmail.com>, 2022
 # Cécile Collart <cco@odoo.com>, 2022
-# Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023
 # Tadeusz Karpiński <tadeusz.karpinski@braintec.com>, 2023
 # Maksym <ms@myodoo.pl>, 2023
+# Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -22,7 +21,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:17+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Maksym <ms@myodoo.pl>, 2023\n"
+"Last-Translator: Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023\n"
 "Language-Team: Polish (https://app.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -62,17 +61,17 @@ msgstr ""
 #. module: documents_account
 #: model:ir.model.constraint,message:documents_account.constraint_documents_account_folder_setting_journal_unique
 msgid "A setting already exists for this journal"
-msgstr ""
+msgstr "Ustawienie dla tego dziennika już istnieje"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_config_settings__documents_account_settings
 msgid "Accounting "
-msgstr ""
+msgstr "Księgowość "
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_company__account_folder
 msgid "Accounting Workspace"
-msgstr ""
+msgstr "Obszar roboczy księgowości"
 
 #. module: documents_account
 #. odoo-javascript
@@ -92,7 +91,7 @@ msgstr "Załącznik"
 #. module: documents_account
 #: model_terms:ir.ui.view,arch_db:documents_account.res_config_settings_view_form
 msgid "Centralize accounting files and documents"
-msgstr ""
+msgstr "Centralizacja plików i dokumentów księgowych"
 
 #. module: documents_account
 #: model_terms:ir.ui.view,arch_db:documents_account.view_account_move_form_inherit_documents_account
@@ -152,7 +151,7 @@ msgstr "Utwórz rachunek"
 #. module: documents_account
 #: model:documents.workflow.rule,name:documents_account.credit_note_rule
 msgid "Create Credit Note"
-msgstr ""
+msgstr "Utwórz notę kredytową"
 
 #. module: documents_account
 #: model:documents.workflow.rule,name:documents_account.customer_invoice_rule
@@ -172,7 +171,7 @@ msgstr "Data utworzenia"
 #. module: documents_account
 #: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_out_refund
 msgid "Credit note"
-msgstr ""
+msgstr "Nota kredytowa"
 
 #. module: documents_account
 #: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_out_invoice
@@ -187,7 +186,7 @@ msgstr "Nazwa wyświetlana"
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_company__documents_account_settings
 msgid "Documents Account Settings"
-msgstr ""
+msgstr "Ustawienia konta dokumentów"
 
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_account_reports_export_wizard_format
@@ -212,7 +211,7 @@ msgstr "Folder"
 #. module: documents_account
 #: model:ir.model.fields,help:documents_account.field_account_reports_export_wizard__folder_id
 msgid "Folder where to save the generated file"
-msgstr ""
+msgstr "Folder, w którym ma zostać zapisany wygenerowany plik"
 
 #. module: documents_account
 #. odoo-python
@@ -282,7 +281,7 @@ msgstr ""
 #: code:addons/documents_account/static/src/js/tour.js:0
 #, python-format
 msgid "Let's process these bills: turn them into vendor bills."
-msgstr ""
+msgstr "Przetwórzmy te rachunki: przekształćmy je w rachunki dla sprzedawców."
 
 #. module: documents_account
 #. odoo-javascript
@@ -305,14 +304,14 @@ msgstr ""
 #. module: documents_account
 #: model:mail.activity.type,name:documents_account.mail_documents_activity_data_md
 msgid "Reconciliation request"
-msgstr ""
+msgstr "Wniosek o uzgodnienie"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_account_bank_statement_line__suspense_statement_line_id
 #: model:ir.model.fields,field_description:documents_account.field_account_move__suspense_statement_line_id
 #: model:ir.model.fields,field_description:documents_account.field_account_payment__suspense_statement_line_id
 msgid "Request document from a bank statement line"
-msgstr ""
+msgstr "Żądanie dokumentu z linii wyciągu bankowego"
 
 #. module: documents_account
 #. odoo-javascript
@@ -325,17 +324,17 @@ msgstr "Wyślij ten list do działu prawnego, przypisując mu odpowiednie tagi."
 #: model:ir.model.fields,field_description:documents_account.field_account_reports_export_wizard__tag_ids
 #: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__tag_ids
 msgid "Tags"
-msgstr "Znaczniki"
+msgstr "Tagi"
 
 #. module: documents_account
 #: model:mail.activity.type,name:documents_account.mail_documents_activity_data_vat
 msgid "Tax Statement"
-msgstr ""
+msgstr "Deklaracja podatkowa"
 
 #. module: documents_account
 #: model_terms:ir.ui.view,arch_db:documents_account.view_account_move_form_inherit_documents_account
 msgid "This invoice has been initiated by a bank transaction."
-msgstr ""
+msgstr "Ta faktura została zainicjowana przez transakcję bankową."
 
 #. module: documents_account
 #: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_in_refund
@@ -345,7 +344,7 @@ msgstr "Nota Kredytowa Dostawcy"
 #. module: documents_account
 #: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_in_invoice
 msgid "Vendor bill"
-msgstr ""
+msgstr "Rachunek sprzedawcy"
 
 #. module: documents_account
 #. odoo-javascript
@@ -375,9 +374,9 @@ msgstr ""
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_config_settings__account_folder
 msgid "account default folder"
-msgstr ""
+msgstr "domyślny folder konta"
 
 #. module: documents_account
 #: model_terms:ir.ui.view,arch_db:documents_account.view_account_move_form_inherit_documents_account
 msgid "to mark this invoice as paid."
-msgstr ""
+msgstr "aby oznaczyć tę fakturę jako opłaconą."

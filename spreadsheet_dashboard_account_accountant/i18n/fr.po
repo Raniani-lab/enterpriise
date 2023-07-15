@@ -208,14 +208,14 @@ msgstr "Agrégat"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Average creditors days"
-msgstr "Délai moyen de jours des créanciers"
+msgstr "Délai moyen de règlement fournisseur"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Average debtor days"
-msgstr "Délai moyen de jours des débiteurs"
+msgstr "Délai moyen de recouvrement"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -223,7 +223,7 @@ msgstr "Délai moyen de jours des débiteurs"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Average debtors days"
-msgstr "Délai moyen de jours des débiteurs "
+msgstr "Délai moyen de recouvrement"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -366,7 +366,7 @@ msgstr "Passifs circulants"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Current Year Earnings"
-msgstr "Bénéfices de l'année en cours"
+msgstr "Bénéfices de l'exercice en cours"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -389,7 +389,7 @@ msgstr "Actifs circulants / Passifs circulants"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Current assets to liabilities"
-msgstr "Actifs circulants par rapport aux passifs"
+msgstr "Ratio actif circulant/passif circulant"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -521,7 +521,7 @@ msgstr "Bénéfice brut "
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Gross profit margin"
-msgstr "Marge de bénéfice brut"
+msgstr "Marge bénéficiaire brut"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -615,7 +615,7 @@ msgstr "Bénéfice net"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Net profit margin"
-msgstr "La marge bénéficiaire nette"
+msgstr "Marge bénéficiaire nette"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -863,7 +863,7 @@ msgstr "Créances / Revenus * 120"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Return on investments"
-msgstr "Retour sur investissements"
+msgstr "Retour sur investissement"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -885,7 +885,7 @@ msgstr "Ventes à crédit / Solde moyen des comptes débiteurs pour la période"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Short term cash forecast"
-msgstr "Prévisions d'encaissement à court terme"
+msgstr "Prévisions de trésorerie à court terme"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript

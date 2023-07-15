@@ -70,7 +70,7 @@ msgstr "맞춤 설정 필드 추가"
 #: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
 #, python-format
 msgid "Add new fields and much more with"
-msgstr ""
+msgstr "새 필드 추가 등 다양한 기능을"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -120,7 +120,7 @@ msgstr "연락처"
 msgid ""
 "Contact your sales representative to help you to unlink your previous "
 "database"
-msgstr ""
+msgstr "이전 데이터베이스 연결을 해제하려면 영업 담당자에게 문의해주세요."
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -153,7 +153,7 @@ msgstr "해산"
 #. module: web_enterprise
 #: model:ir.actions.server,name:web_enterprise.download_contact
 msgid "Download (vCard)"
-msgstr ""
+msgstr "다운로드 (vCard)"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -180,7 +180,7 @@ msgstr "HTTP 라우팅"
 #: code:addons/web_enterprise/static/src/webclient/navbar/navbar.js:0
 #, python-format
 msgid "Home menu"
-msgstr ""
+msgstr "홈 메뉴"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -188,7 +188,7 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
 #, python-format
 msgid "Install Odoo Studio"
-msgstr ""
+msgstr "Odoo 스튜디오 설치"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -202,7 +202,7 @@ msgstr "문제를 해결하려면 관리자로 로그인하십시오."
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Login to your Odoo.com dashboard then unlink your previous database:"
-msgstr ""
+msgstr "Odoo.com 현황판에 로그인한 다음 이전 데이터베이스의 연결을 해제합니다:"
 
 #. module: web_enterprise
 #: model:ir.model,name:web_enterprise.model_ir_ui_menu
@@ -265,7 +265,7 @@ msgstr "여기에 코드 붙여 넣기"
 #: code:addons/web_enterprise/static/src/webclient/navbar/navbar.js:0
 #, python-format
 msgid "Previous view"
-msgstr ""
+msgstr "이전 보기"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -349,7 +349,7 @@ msgstr "가입 코드 :"
 #: code:addons/web_enterprise/static/src/webclient/home_menu/home_menu.xml:0
 #, python-format
 msgid "TIP"
-msgstr ""
+msgstr "팁"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -366,7 +366,7 @@ msgstr "감사합니다. 등록이 완료되었습니다! 데이터베이스 유
 msgid ""
 "Thank you, your registration was successful! Your database is valid until "
 "%s."
-msgstr ""
+msgstr "감사합니다, 등록이 완료되었습니다. 데이터베이스의 유효기간은 %s까지 입니다."
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -498,4 +498,4 @@ msgstr "구독 상품 소유자 (이메일 :"
 #: code:addons/web_enterprise/static/src/webclient/home_menu/home_menu.xml:0
 #, python-format
 msgid "— open me anywhere with"
-msgstr ""
+msgstr "— 어디서나 열어보세요"

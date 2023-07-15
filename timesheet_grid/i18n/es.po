@@ -347,7 +347,7 @@ msgstr "Días dedicados —"
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__reminder_manager_delay
 msgid "Days to Remind Manager"
-msgstr "Días para recordar al gerente"
+msgstr "Días para recordar al responsable"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__reminder_user_delay
@@ -676,18 +676,18 @@ msgstr ""
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheet_mail_manager_allow
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__reminder_manager_allow
 msgid "Manager Reminder"
-msgstr "Recordatorio para gerentes"
+msgstr "Recordatorio para responsables"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheet_mail_manager_delay
 msgid "Manager Reminder Days"
-msgstr "Días para recordar al gerente"
+msgstr "Días para recordar al responsable"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheet_mail_manager_interval
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__reminder_manager_interval
 msgid "Manager Reminder Frequency"
-msgstr "Frecuencia de recordatorio al gerente"
+msgstr "Frecuencia de recordatorio al responsable"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_merge_wizard_view_form
@@ -758,7 +758,7 @@ msgstr "Siguiente fecha programada para recordar al empleado"
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheet_mail_manager_nextdate
 msgid "Next scheduled date for manager reminder"
-msgstr "Próxima fecha programada para el recordatorio para gerentes"
+msgstr "Próxima fecha programada para el recordatorio para responsables"
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -802,8 +802,8 @@ msgid ""
 "Only a Timesheets Approver or Manager is allowed to modify a validated "
 "entry."
 msgstr ""
-"Solo una persona que pueda aprobar las hojas de horas o un gerente puede "
-"modificar una entrada que ya esté validada."
+"Solo una persona que pueda aprobar las hojas de horas o un responsable puede"
+" modificar una entrada que ya esté validada."
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_form
@@ -1198,14 +1198,14 @@ msgstr "Hojas de hora: recordatorio a los empleados"
 #. module: timesheet_grid
 #: model:mail.template,name:timesheet_grid.mail_template_timesheet_reminder_manager
 msgid "Timesheet: Manager Reminder"
-msgstr "Hojas de horas: recordatorios a los gerentes"
+msgstr "Hojas de horas: recordatorios a los responsables"
 
 #. module: timesheet_grid
 #: model:ir.actions.server,name:timesheet_grid.timesheet_reminder_manager_ir_actions_server
 #: model:ir.cron,cron_name:timesheet_grid.timesheet_reminder_manager
 msgid "Timesheet: Managers Email Reminder"
 msgstr ""
-"Parte de horas: Recordatorio mediante correo electrónico para gerentes"
+"Parte de horas: Recordatorio mediante correo electrónico para responsables"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_timesheet_merge_wizard__timesheet_ids
@@ -1299,7 +1299,7 @@ msgstr "Temporizador del usuario"
 msgid "User responsible of timesheet validation. Should be Timesheet Manager."
 msgstr ""
 "Usuario responsable de la validación del parte de horas. Debería ser un "
-"gerente de partes de horas."
+"responsable de partes de horas."
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -1368,8 +1368,8 @@ msgid ""
 "You can only reset to draft the timesheets of employees of whom you are the "
 "manager or the timesheet approver."
 msgstr ""
-"Solo puede resetear el para poner las hojas de horas a borradores de los "
-"empleados de los que es el gerente o quien aprueba las hojas de horas."
+"Solo puede resetear a borrador las hojas de horas de los empleados de los "
+"que es el responsable o aprobador."
 
 #. module: timesheet_grid
 #. odoo-python
@@ -1407,7 +1407,7 @@ msgid ""
 "You cannot delete a validated entry. Please, contact your manager or your "
 "timesheet approver."
 msgstr ""
-"No puede borrar una entrada validada. Contacte a su gerente o a quien "
+"No puede borrar una entrada validada. Contacte a su responsable o a quien "
 "aprueba sus hojas de horas."
 
 #. module: timesheet_grid

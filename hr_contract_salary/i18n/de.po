@@ -1010,7 +1010,7 @@ msgstr "Gesamt monatlich"
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_history__reference_monthly_wage
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_history_view_form
 msgid "Monthly Wage"
-msgstr "Monatliches Gehalt"
+msgstr "Monatsgehalt"
 
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_name

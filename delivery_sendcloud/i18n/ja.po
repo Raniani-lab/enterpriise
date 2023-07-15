@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # Norimichi Sugimoto <norimichi.sugimoto@tls-ltd.co.jp>, 2022
+# Junko Augias, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:28+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Norimichi Sugimoto <norimichi.sugimoto@tls-ltd.co.jp>, 2022\n"
+"Last-Translator: Junko Augias, 2023\n"
 "Language-Team: Japanese (https://app.transifex.com/odoo/teams/41243/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -152,7 +153,7 @@ msgstr "表示名"
 msgid ""
 "Ensure picking has shipping weight, if using packages, each package should "
 "have a shipping weight"
-msgstr ""
+msgstr "ピッキングに出荷重量が記載されていること、梱包を使用する場合は各梱包に出荷重量が記載されていることを確認して下さい。"
 
 #. module: delivery_sendcloud
 #: model:ir.model.fields,field_description:delivery_sendcloud.field_sendcloud_shipping_product__sendcloud_id
@@ -260,7 +261,7 @@ msgstr ""
 #: code:addons/delivery_sendcloud/models/sendcloud_service.py:0
 #, python-format
 msgid "No picking or order provided"
-msgstr ""
+msgstr "ピッキングまたはオーダが提供されていません"
 
 #. module: delivery_sendcloud
 #. odoo-python

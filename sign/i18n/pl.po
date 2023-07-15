@@ -342,8 +342,7 @@ msgstr "<strong>Wiadomości i historia komunikacji</strong>"
 msgid ""
 "<strong>Warning</strong> do not forward this email to other people!<br/>"
 msgstr ""
-"<strong>Ostrzeżenie:</strong> nie należy przekazywać tej wiadomości innym "
-"osobom!"
+"<strong>Uwaga</strong> nie przekazuj tej wiadomości innym osobom!<br/>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_request
@@ -352,9 +351,9 @@ msgid ""
 "            They will be able to access this document and sign it as yourself.<br/>\n"
 "            <span>Your IP address and localization are associated to your signature to ensure traceability.</span>"
 msgstr ""
-"<strong>Uwaga</strong> nie przekazuj tej wiadomości do innych osób!<br/>\n"
-"Będą one miał dostęp do tego dokumentu oraz podpisać go jako obe.<br/>\n"
-"<span>Twó adres IP oraz lokalizacja są dołączane do Twojego podpisu aby zapewnić śledzenie</span>"
+"<strong>Uwaga</strong> nie przekazuj tej wiadomości innym osobom!<br/>\n"
+"Będą one miały dostęp do tego dokumentu, a także będą mogły go podpisać za Ciebie.<br/>\n"
+"<span>Twój adres IP oraz lokalizacja są połączone z Twoim podpisem, aby zapewnić możliwość śledzenia.</span>"
 
 #. module: sign
 #. odoo-javascript
@@ -680,7 +679,7 @@ msgstr "Przed podpisem"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "By"
-msgstr "według/przez"
+msgstr "przez"
 
 #. module: sign
 #. odoo-javascript
@@ -3002,7 +3001,7 @@ msgstr "Podpis(y)"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "Signature:"
-msgstr "Podpis;"
+msgstr "Podpis:"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.portal_my_home_menu_sign
@@ -3201,26 +3200,26 @@ msgstr "Temat"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template_tag__name
 msgid "Tag Name"
-msgstr "Nazwa znacznika"
+msgstr "Nazwa tagu"
 
 #. module: sign
 #: model:ir.model.constraint,message:sign.constraint_sign_template_tag_name_uniq
 msgid "Tag name already exists !"
-msgstr "Nazwa znacznika już istnieje!"
+msgstr "Taki tag już istnieje!"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__tag_ids
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_tree
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_form
 msgid "Tags"
-msgstr "Znaczniki"
+msgstr "Tagi"
 
 #. module: sign
 #. odoo-javascript
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #, python-format
 msgid "Tags:"
-msgstr "Znaczniki:"
+msgstr "Tagi:"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_item_type__auto_field
@@ -3270,12 +3269,12 @@ msgstr "Wzór przykładowej umowy.pdf trigger"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__template_tags
 msgid "Template Tags"
-msgstr "Szablon znaczników"
+msgstr "Szablon tagów"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Template or Tag"
-msgstr "Szablon lub znacznik"
+msgstr "Szablon lub tag"
 
 #. module: sign
 #. odoo-python

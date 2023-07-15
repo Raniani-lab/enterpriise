@@ -249,6 +249,8 @@ msgid ""
 "One parameter is missing to use this method. You should give a start and end"
 " dates."
 msgstr ""
+"أحد المعايير غير موجود لاستخدام هذه الطريقة. عليك إدخال تواريخ البدء "
+"والانتهاء. "
 
 #. module: project_enterprise
 #. odoo-python

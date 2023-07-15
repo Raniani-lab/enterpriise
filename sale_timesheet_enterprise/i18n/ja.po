@@ -68,7 +68,7 @@ msgstr ""
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,help:sale_timesheet_enterprise.field_project_task__portal_progress
 msgid "Display progress of current task."
-msgstr ""
+msgstr "現在のタスクの進捗を表示する"
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_sharing_inherit_project_task_view_tree
@@ -106,27 +106,27 @@ msgstr "月"
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__portal_effective_hours
 msgid "Portal Effective Hours"
-msgstr ""
+msgstr "ポータル有効時間"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__portal_progress
 msgid "Portal Progress"
-msgstr ""
+msgstr "ポータル進捗"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__portal_remaining_hours
 msgid "Portal Remaining Hours"
-msgstr ""
+msgstr "ポータル残り時間"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__portal_subtask_effective_hours
 msgid "Portal Subtask Effective Hours"
-msgstr ""
+msgstr "ポータルサブタスク有効時間"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__portal_total_hours_spent
 msgid "Portal Total Hours Spent"
-msgstr ""
+msgstr "ポータルに費やした合計時間"
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_sharing_inherit_project_task_view_form
@@ -174,17 +174,17 @@ msgstr "この販売オーダ項目には予定時間の目標値がありませ
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,help:sale_timesheet_enterprise.field_project_task__portal_subtask_effective_hours
 msgid "Time spent on the sub-tasks (and their own sub-tasks) of this task."
-msgstr ""
+msgstr "このタスクのサブタスク（およびそれ自体のサブタスク）に費やした時間"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,help:sale_timesheet_enterprise.field_project_task__portal_effective_hours
 msgid "Time spent on this task, excluding its sub-tasks."
-msgstr ""
+msgstr "タスクに費やした時間（サブタスクを除く）"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,help:sale_timesheet_enterprise.field_project_task__portal_total_hours_spent
 msgid "Time spent on this task, including its sub-tasks."
-msgstr ""
+msgstr "タスクに費やした時間（サブタスクを含む）"
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.timesheet_view_grid_by_billing_rate
@@ -229,3 +229,5 @@ msgid ""
 "With the 'all recorded timesheets' option, all timesheets will be invoiced without distinction, even if they haven't been validated. Additionally, all timesheets will be accessible in your customers' portal. \n"
 "When you choose the 'validated timesheets only' option, only the validated timesheets will be invoiced and appear in your customers' portal."
 msgstr ""
+"記録された「全てのタイムシート」オプションを使用すると、すべてのタイムシートが検証されていなくても区別なく請求されます。さらに、すべてのタイムシートに顧客ポータルでアクセスできるようになります。\n"
+"「有効なタイムシートのみ」オプションを選択すると、有効なタイムシートのみが請求され、顧客ポータルに表示されます。"

@@ -10,11 +10,10 @@
 # Piotr Strębski <strebski@gmail.com>, 2022
 # Andrzej Wiśniewski <a.wisniewski@hadron.eu.com>, 2022
 # Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2022
-# zieloo <zieloo@gmail.com>, 2022
-# Natalia Gros <nag@odoo.com>, 2022
-# Wiktor Kaźmierczak <wik92tor@wp.pl>, 2022
 # Dawid Prus, 2022
 # Marcin Młynarczyk <mlynarczyk@gmail.com>, 2022
+# zieloo <zieloo@gmail.com>, 2022
+# Natalia Gros <nag@odoo.com>, 2022
 # Dariusz Żbikowski <darek@krokus.com.pl>, 2022
 # Paweł Wodyński <pw@myodoo.pl>, 2022
 # Karol Rybak <karolrybak85@gmail.com>, 2022
@@ -1080,7 +1079,7 @@ msgstr "Uprawnienia użytkownika do przesyłania dokumentów"
 #. module: documents
 #: model:ir.model,name:documents.model_documents_workflow_action
 msgid "Document Workflow Tag Action"
-msgstr "Działanie znacznika obiegu dokumentów"
+msgstr "Działanie tagu obiegu dokumentów"
 
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_share__type__ids
@@ -1607,7 +1606,7 @@ msgstr "Ogranicz grupy zapisu do dokumentów, których są właścicielami."
 #: model_terms:ir.ui.view,arch_db:documents.documents_link_to_record_form_view
 #, python-format
 msgid "Link"
-msgstr "Odnośnik"
+msgstr "Link"
 
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_workflow_rule__create_model__link_to_record
@@ -2253,7 +2252,7 @@ msgstr "Ustaw Właściciela"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__tag_action_ids
 msgid "Set Tags"
-msgstr "Ustaw Znaczniki"
+msgstr "Ustaw tagi"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__has_owner_activity
@@ -2344,7 +2343,7 @@ msgstr "Udostępnione dokumenty"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__tag_ids
 msgid "Shared Tags"
-msgstr "Udostępnione znaczniki"
+msgstr "Udostępnione tagi"
 
 #. module: documents
 #: model:ir.ui.menu,name:documents.share_menu
@@ -2425,23 +2424,23 @@ msgstr "Podsumowanie"
 #: model:ir.model.fields,field_description:documents.field_mail_activity_type__tag_ids
 #: model_terms:ir.ui.view,arch_db:documents.tag_view_search
 msgid "Tag"
-msgstr "Znacznik"
+msgstr "Tag"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__facet_ids
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_tree
 msgid "Tag Categories"
-msgstr "Kategorie znaczników"
+msgstr "Kategorie tagów"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.facet_view_form
 msgid "Tag Category"
-msgstr "Kategorie znaczniików"
+msgstr "Kategoria tagu"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.tag_view_form
 msgid "Tag Name"
-msgstr "Nazwa znacznika"
+msgstr "Nazwa tagu"
 
 #. module: documents
 #: model:ir.model.constraint,message:documents.constraint_documents_tag_facet_name_unique
@@ -2466,7 +2465,7 @@ msgstr "Kategorie tagów zdefiniowane dla tego obszaru roboczego"
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 #, python-format
 msgid "Tags"
-msgstr "Znaczniki"
+msgstr "Tagi"
 
 #. module: documents
 #: model:documents.facet,name:documents.documents_internal_template
@@ -2889,7 +2888,7 @@ msgstr "dokumenty udostępnione przez"
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "download"
-msgstr "pobieranie"
+msgstr "pobierz"
 
 #. module: documents
 #. odoo-javascript

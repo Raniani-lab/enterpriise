@@ -1308,7 +1308,7 @@ msgstr "Audit du relevé à la TVA des opérations intracommunautaires"
 
 #. module: l10n_be_reports
 #: model:account.report,name:l10n_be_reports.belgian_ec_sales_report
-msgid "EC Sales List"
+msgid "EU Sales List"
 msgstr "Relevé à la TVA des opérations intracommunautaires"
 
 #. module: l10n_be_reports
@@ -1397,7 +1397,7 @@ msgstr ""
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__form_325_id
 msgid "Form 325"
-msgstr ""
+msgstr "Relevé 325"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_res_partner__form_file

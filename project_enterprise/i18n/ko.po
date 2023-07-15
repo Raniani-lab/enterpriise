@@ -228,7 +228,7 @@ msgstr "명세"
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_map_view
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_map_view_no_title
 msgid "Milestone"
-msgstr ""
+msgstr "마일스톤"
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__partner_mobile

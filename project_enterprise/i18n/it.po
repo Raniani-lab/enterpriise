@@ -129,7 +129,7 @@ msgstr "Annulla"
 #: code:addons/project_enterprise/models/project_task.py:0
 #, python-format
 msgid "Caution: some tasks have not been scheduled"
-msgstr ""
+msgstr "Attenzione: alcune attività non sono state pianificate"
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_line_wizard__create_uid
@@ -409,14 +409,14 @@ msgstr ""
 #: code:addons/project_enterprise/wizard/task_confirm_schedule_wizard.py:0
 #, python-format
 msgid "The task has been successfully scheduled."
-msgstr ""
+msgstr "L'attività è stata pianificata con successo."
 
 #. module: project_enterprise
 #. odoo-python
 #: code:addons/project_enterprise/wizard/task_confirm_schedule_wizard.py:0
 #, python-format
 msgid "The tasks have been successfully scheduled."
-msgstr ""
+msgstr "Le attività sono state pianificate con successo."
 
 #. module: project_enterprise
 #. odoo-python

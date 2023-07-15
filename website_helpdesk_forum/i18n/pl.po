@@ -7,10 +7,10 @@
 # Wojciech Warczakowski <w.warczakowski@gmail.com>, 2022
 # Zdzisław Krajewski <zdzichucb@gmail.com>, 2022
 # Martin Trigaux, 2022
+# Paweł Wodyński <pw@myodoo.pl>, 2022
 # Marcin Młynarczyk <mlynarczyk@gmail.com>, 2022
 # Andrzej Wiśniewski <a.wisniewski@hadron.eu.com>, 2022
 # Tomasz Leppich <t.leppich@gmail.com>, 2022
-# Paweł Wodyński <pw@myodoo.pl>, 2022
 # Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2022
 # Piotr Szlązak <szlazakpiotr@gmail.com>, 2022
 # Maksym <ms@myodoo.pl>, 2022
@@ -236,7 +236,7 @@ msgstr "Rozwiązane"
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket_select_forum_wizard__tag_ids
 msgid "Tags"
-msgstr "Znaczniki"
+msgstr "Tagi"
 
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_forum_post__ticket_id

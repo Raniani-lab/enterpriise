@@ -299,7 +299,7 @@ msgstr "Proyek"
 #. module: project_enterprise
 #: model:ir.model,name:project_enterprise.model_project_milestone
 msgid "Project Milestone"
-msgstr ""
+msgstr "Milestone Project"
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__project_color

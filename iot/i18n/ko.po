@@ -292,7 +292,7 @@ msgstr ""
 #: code:addons/iot/static/src/view_widgets/iot_download_logs.xml:0
 #, python-format
 msgid "Download logs"
-msgstr ""
+msgstr "다운로드 기록"
 
 #. module: iot
 #. odoo-javascript

@@ -6,6 +6,7 @@
 # Martin Trigaux, 2022
 # Yoshi Tashiro (Quartile) <tashiro@roomsfor.hk>, 2022
 # Ryoko Tsuda <ryoko@quartile.co>, 2023
+# Junko Augias, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Ryoko Tsuda <ryoko@quartile.co>, 2023\n"
+"Last-Translator: Junko Augias, 2023\n"
 "Language-Team: Japanese (https://app.transifex.com/odoo/teams/41243/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -101,7 +102,7 @@ msgstr "プロダクトを追加"
 #: code:addons/mrp_mps/static/src/models/master_production_schedule_model.js:0
 #, python-format
 msgid "Are you sure you want to delete these records?"
-msgstr ""
+msgstr "本当にこれらのレコードを削除しますか？"
 
 #. module: mrp_mps
 #. odoo-javascript
@@ -291,7 +292,7 @@ msgstr ""
 #: code:addons/mrp_mps/static/src/components/line.xml:0
 #, python-format
 msgid "Forecast Report"
-msgstr ""
+msgstr "予測レポート"
 
 #. module: mrp_mps
 #. odoo-javascript

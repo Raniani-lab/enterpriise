@@ -482,7 +482,7 @@ msgstr "Amazonによるフルフィルメント"
 #. module: sale_amazon
 #: model:ir.model.fields.selection,name:sale_amazon.selection__sale_order__amazon_channel__fbm
 msgid "Fulfillment by Merchant"
-msgstr ""
+msgstr "業者によるフルフィルメント"
 
 #. module: sale_amazon
 #. odoo-python

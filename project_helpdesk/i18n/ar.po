@@ -131,7 +131,7 @@ msgstr "المشروع"
 #: code:addons/project_helpdesk/models/project.py:0
 #, python-format
 msgid "Recurring tasks cannot be converted into tickets."
-msgstr ""
+msgstr "لا يمكن تحويل المهام المتكررة إلى تذاكر. "
 
 #. module: project_helpdesk
 #: model:ir.model.fields,field_description:project_helpdesk.field_helpdesk_ticket_convert_wizard__stage_id

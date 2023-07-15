@@ -182,7 +182,7 @@ msgid ""
 "                                                Preview"
 msgstr ""
 "<i class=\"fa fa-arrow-right\"/>\n"
-"                                                Preview"
+"                                                Voorbeeld"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_iap_credits_banner
@@ -305,7 +305,7 @@ msgstr "<span>(1.0 = volledige pagina grootte)</span>"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_terms_conditions_setting_banner
 msgid "<span>This is a preview of your Terms &amp; Conditions.</span>"
-msgstr "<span>Dit is een preview van je algemene voorwaarden.</span>"
+msgstr "<span>Dit is een voorbeeld van je algemene voorwaarden.</span>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
@@ -1083,7 +1083,7 @@ msgstr "Weergavenaam"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_res_config_settings__sign_preview_ready
 msgid "Display sign preview button"
-msgstr "Toon ondertekenpreviewknop"
+msgstr "Toon onderteken voorbeeldknop"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_requests
@@ -2305,7 +2305,7 @@ msgstr "Positie Y"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
 msgid "Preview"
-msgstr "Preview"
+msgstr "Voorbeeld"
 
 #. module: sign
 #. odoo-javascript

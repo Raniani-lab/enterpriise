@@ -3537,7 +3537,7 @@ msgstr "Esta acción está prohibida en recibos de nómina validados."
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "This action is restricted to payroll managers only."
-msgstr "Esta acción está restringida a solo gerentes de nómina."
+msgstr "Esta acción está restringida a solo responsables de nómina."
 
 #. module: hr_payroll
 #: model:ir.model.fields,help:hr_payroll.field_hr_rule_parameter__code

@@ -371,6 +371,8 @@ msgid ""
 "<span class=\"fa fa-fw fa-calendar\" title=\"Dates\" role=\"img\" aria-"
 "label=\"Dates\"/>"
 msgstr ""
+"<span class=\"fa fa-fw fa-calendar\" title=\"Dates\" role=\"img\" aria-"
+"label=\"Dates\"/>"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_tax_unit
@@ -914,7 +916,7 @@ msgstr "Raport uzgodnień bankowych"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_bank_reconciliation_report_handler
 msgid "Bank Reconciliation Report Custom Handler"
-msgstr ""
+msgstr "Niestandardowy moduł obsługi raportów bankowych"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_bank_view0
@@ -1789,11 +1791,12 @@ msgstr "Ogólny niestandardowy moduł obsługi raportu podatkowego"
 #: model:ir.model,name:account_reports.model_account_generic_tax_report_handler_account_tax
 msgid "Generic Tax Report Custom Handler (Account -> Tax)"
 msgstr ""
+"Niestandardowy moduł obsługi raportu podatku ogólnego (Konto -> Podatek)"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_generic_tax_report_handler_tax_account
 msgid "Generic Tax Report Custom Handler (Tax -> Account)"
-msgstr ""
+msgstr "Niestandardowy moduł obsługi raportu podatkowego (Podatek -> Konto)"
 
 #. module: account_reports
 #. odoo-python
@@ -2109,7 +2112,7 @@ msgstr "Niestandardowa obsługa raportu dziennika"
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
 #, python-format
 msgid "Journal items with archived tax tags"
-msgstr "Pozycje dziennika z zarchiwizowanymi znacznikami podatkowymi"
+msgstr "Pozycje dziennika z zarchiwizowanymi tagami podatkowymi"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -2561,7 +2564,7 @@ msgstr "Raport partnera"
 #: code:addons/account_reports/static/src/js/account_reports.js:0
 #, python-format
 msgid "Partners"
-msgstr "Partnerzy"
+msgstr "Kontrahenci"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -2975,7 +2978,7 @@ msgstr "T: %s"
 #: code:addons/account_reports/static/src/js/account_reports.js:0
 #, python-format
 msgid "Tags"
-msgstr "Znaczniki"
+msgstr "Tagi"
 
 #. module: account_reports
 #. odoo-python
@@ -3586,7 +3589,7 @@ msgstr "zaadresowany do"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template
 msgid "and correct their tax tags if necessary."
-msgstr "i w razie potrzeby skorygować ich znaczniki podatkowe."
+msgstr "i w razie potrzeby skorygować ich tagi podatkowe."
 
 #. module: account_reports
 #: model:ir.model.fields.selection,name:account_reports.selection__res_company__account_tax_periodicity__year
@@ -3659,7 +3662,7 @@ msgstr "nazwa modelu raportu"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.sales_report_main_template
 msgid "partners"
-msgstr "partnerzy"
+msgstr "kontrahenci"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template

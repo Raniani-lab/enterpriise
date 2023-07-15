@@ -5,7 +5,6 @@
 # Translators:
 # Martin Trigaux, 2022
 # Tomasz Leppich <t.leppich@gmail.com>, 2022
-# Paweł Wodyński <pw@myodoo.pl>, 2022
 # Maksym <ms@myodoo.pl>, 2022
 # Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023
 # 
@@ -71,7 +70,7 @@ msgstr "Szablon Podpisu"
 #. module: documents_sign
 #: model:ir.model.fields,field_description:documents_sign.field_sign_template__documents_tag_ids
 msgid "Signed Document Tags"
-msgstr "Znaczniki Podpisanych dokumentów"
+msgstr "Tagi Podpisanych dokumentów"
 
 #. module: documents_sign
 #: model:ir.model.fields,field_description:documents_sign.field_sign_template__folder_id

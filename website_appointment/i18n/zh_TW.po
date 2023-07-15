@@ -340,7 +340,7 @@ msgstr "或"
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_staff_users_description
 msgid "others)"
-msgstr ""
+msgstr "其他人）"
 
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_staff_users_description

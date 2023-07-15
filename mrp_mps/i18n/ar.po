@@ -686,6 +686,8 @@ msgid ""
 "This is the minimum free stock you want to keep for that product at all "
 "times."
 msgstr ""
+"هذا هو الحد الأدنى للمخزون المتاح الذي يجب إبقاؤه لذلك المنتج في كل الأحيان."
+" "
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.res_config_settings_view_form

@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # Friederike Fasterling-Nesselbosch, 2022
+# Marianna Ciofani, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Friederike Fasterling-Nesselbosch, 2022\n"
+"Last-Translator: Marianna Ciofani, 2023\n"
 "Language-Team: Italian (https://app.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -46,7 +47,7 @@ msgstr "<span>Ore</span>"
 #. module: sale_planning
 #: model_terms:ir.ui.view,arch_db:sale_planning.planning_slot_view_gantt_inherit_sale_planning
 msgid "<strong>Sales Order Item  — </strong>"
-msgstr ""
+msgstr "<strong>Articolo ordine di vendita  — </strong>"
 
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_planning_slot__allocated_hours
@@ -77,7 +78,7 @@ msgstr "Data fine"
 #. module: sale_planning
 #: model:planning.role,name:sale_planning.planning_role_tester
 msgid "Functional Tester"
-msgstr ""
+msgstr "Tester funzionale"
 
 #. module: sale_planning
 #: model:product.template,name:sale_planning.technical_maintainance_product_product_template
@@ -98,6 +99,10 @@ msgid ""
 "when confirming the Sales Order. Only employees with this role will "
 "automatically be assigned shifts for Sales Orders containing this service."
 msgstr ""
+"Se abilitato, verrà automaticamente creato un turno per il ruolo selezionato"
+" alla conferma dell'ordine di vendita. Solo ai dipendenti con questo ruolo "
+"verranno assegnati automaticamente i turni per gli ordini di vendita con "
+"questo servizio."
 
 #. module: sale_planning
 #: model_terms:ir.ui.view,arch_db:sale_planning.planning_analysis_report_view_search
@@ -246,7 +251,7 @@ msgstr "Ordine di vendita"
 #: model_terms:ir.ui.view,arch_db:sale_planning.planning_slot_view_search_inherit_sale_planning
 #: model_terms:ir.ui.view,arch_db:sale_planning.resource_sale_planning
 msgid "Sales Order Item"
-msgstr "Voce ordine di vendita"
+msgstr "Articolo ordine di vendita"
 
 #. module: sale_planning
 #: model:ir.model,name:sale_planning.model_sale_order_line
@@ -260,6 +265,10 @@ msgid ""
 "are automatically planned, the remaining hours of the sales order item, as "
 "well as the role defined on the service, are taken into account."
 msgstr ""
+"Elemento dell'ordine di vendita per il quale verrà effettuato il cambio. "
+"Quando gli ordini di vendita vengono pianificati in automatico, vengono "
+"presi in considerazione le ore restanti dell'articolo dell'ordine di vendita"
+" così come il ruolo definito sul servizio."
 
 #. module: sale_planning
 #: model:ir.actions.act_window,name:sale_planning.sale_planning_action_schedule_by_sale_order
@@ -363,12 +372,12 @@ msgstr ""
 #. module: sale_planning
 #: model:planning.role,name:sale_planning.planning_role_planner
 msgid "Work Planner"
-msgstr ""
+msgstr "Pianificatore del lavoro"
 
 #. module: sale_planning
 #: model_terms:ir.ui.view,arch_db:sale_planning.product_template_form_view_invoice_policy_inherit_sale_planning
 msgid "e.g. Consultant"
-msgstr ""
+msgstr "ad es. Consulente"
 
 #. module: sale_planning
 #. odoo-python

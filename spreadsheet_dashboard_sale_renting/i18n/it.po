@@ -201,7 +201,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Top Product Categories"
-msgstr ""
+msgstr "Categorie prodotti migliori"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript

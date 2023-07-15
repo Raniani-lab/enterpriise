@@ -3172,7 +3172,7 @@ msgstr "Guarde esta página para activar la función"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Save this page and refresh to activate the feature."
-msgstr "Guardar esta página y actulizar para activar esta característica."
+msgstr "Guarde esta página y actualícela para activar esta característica."
 
 #. module: helpdesk
 #. odoo-javascript

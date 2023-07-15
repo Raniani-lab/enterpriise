@@ -220,7 +220,7 @@ msgstr "Topp Produkter"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Top Salespeople"
-msgstr ""
+msgstr "Bästa säljare"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript

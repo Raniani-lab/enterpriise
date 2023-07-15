@@ -126,7 +126,7 @@ msgstr ""
 #. module: website_sale_renting
 #: model_terms:ir.ui.view,arch_db:website_sale_renting.rental_search_result_price
 msgid "<small>per</small>"
-msgstr ""
+msgstr "<small>以下毎に：</small>"
 
 #. module: website_sale_renting
 #: model_terms:ir.ui.view,arch_db:website_sale_renting.res_config_settings_view_form
@@ -148,7 +148,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website_sale_renting.rental_products_price
 #: model_terms:ir.ui.view,arch_db:website_sale_renting.suggested_products_list
 msgid "<span>per</span>"
-msgstr ""
+msgstr "<span>以下毎に：</span>"
 
 #. module: website_sale_renting
 #: model_terms:ir.ui.view,arch_db:website_sale_renting.rental_product

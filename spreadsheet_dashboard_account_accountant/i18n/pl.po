@@ -13,8 +13,8 @@
 # Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2022
 # Martin Trigaux, 2022
 # Krzysztof Przygoda, 2022
-# Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023
 # Tadeusz Karpiński <tadeusz.karpinski@braintec.com>, 2023
+# Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -22,7 +22,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2022-09-29 09:37+0000\n"
-"Last-Translator: Tadeusz Karpiński <tadeusz.karpinski@braintec.com>, 2023\n"
+"Last-Translator: Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023\n"
 "Language-Team: Polish (https://app.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -251,7 +251,7 @@ msgstr "Najlepsze w porównaniu z konkurencją"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "COGS"
-msgstr ""
+msgstr "COGS"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -455,7 +455,7 @@ msgstr "Amortyzacja"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "EBIT"
-msgstr ""
+msgstr "EBIT"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -1078,14 +1078,14 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "possible issue in COGS (Cost of Goods sold)"
-msgstr ""
+msgstr "możliwy problem z COGS (koszt sprzedanych towarów)"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "possible issue in direct and indirect costs"
-msgstr ""
+msgstr "możliwa problem w kosztach bezpośrednich i pośrednich"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -1094,6 +1094,8 @@ msgstr ""
 msgid ""
 "possible issue in payment terms agreement with clients to get paid faster"
 msgstr ""
+"możliwy problem z uzgodnieniem warunków płatności z klientami w celu "
+"szybszego uzyskania zapłaty"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -1102,27 +1104,29 @@ msgstr ""
 msgid ""
 "possible issue in providers payments, could lead to loss of suppliers trust"
 msgstr ""
+"możliwy problem z płatnościami dla dostawców, mogący prowadzić do utraty "
+"zaufania dostawców"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "possible issue in ressources allocation or missed growth opportunities"
-msgstr ""
+msgstr "możliwe problemy z alokacją zasobów lub utracone szanse na rozwój"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "possible issue in the business model"
-msgstr ""
+msgstr "możliwy problem w modelu biznesowym"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "possible issue with asset distribution and cash availability"
-msgstr ""
+msgstr "możliwy problem z dystrybucją aktywów i dostępnością gotówki"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -1130,7 +1134,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "possible issues in cash availability at short term"
-msgstr ""
+msgstr "możliwe problemy z dostępnością gotówki w krótkim okresie"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript

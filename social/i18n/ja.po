@@ -268,7 +268,7 @@ msgstr ""
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Click to refresh."
-msgstr ""
+msgstr "クリックしてリフレッシュして下さい。"
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_form

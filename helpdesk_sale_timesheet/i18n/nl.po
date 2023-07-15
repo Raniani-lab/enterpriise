@@ -211,10 +211,9 @@ msgid ""
 "Remove the sales order item in order to make this ticket non-billable.\n"
 "You can also change or remove the sales order item of each timesheet entry individually."
 msgstr ""
-"Verkooporderregel waaraan de bestede tijd op dit ticket zal worden toegevoegd om aan je klant te worden gefactureerd.\n"
-"Het laatste vooruitbetaalde verkooporderregel met resterende tijd zal standaard worden gekozen.\n"
-"Verwijder deze verkooporderregel om deze ticket niet factureerbaar te maken.\n"
-"Je kunt ook de verkooporderregel van elke urenstaat individueel wijzigen of verwijderen."
+"Verkooporderregel waaraan de bestede tijd op deze taak zal worden toegevoegd om aan je klant te factureren. \n"
+"De verkooporderregel die op het project is ingesteld wordt standaard worden gekozen. Indien niets ingesteld zal het laatste prepaid verkooporderregel met resterende tijd worden gebruikt.\n"
+"Verwijder de verkooporderregel om deze taak niet factureerbaar te maken. Je kan ook de verkooporderregel van elke urenstaat individueel wijzigen of verwijderen."
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_sla__sale_line_ids

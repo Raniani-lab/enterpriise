@@ -151,7 +151,7 @@ msgstr "급여 구조"
 #, python-format
 msgid ""
 "The Expense Journal \"%s\" has not properly configured the default Account!"
-msgstr ""
+msgstr "경비 분개장 \"%s\"의 기본 계정을 올바르게 구성하지 않았습니다."
 
 #. module: hr_payroll_account
 #: model:ir.model.fields,help:hr_payroll_account.field_hr_salary_rule__not_computed_in_net

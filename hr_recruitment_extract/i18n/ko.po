@@ -85,7 +85,7 @@ msgstr "첨부 파일"
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
 #, python-format
 msgid "CV is being Digitized"
-msgstr ""
+msgstr "디지털 작업된 이력서입니다"
 
 #. module: hr_recruitment_extract
 #: model:ir.model,name:hr_recruitment_extract.model_res_company
@@ -142,14 +142,14 @@ msgstr ""
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
 #, python-format
 msgid "Generated Applicant"
-msgstr ""
+msgstr "생성된 지원자"
 
 #. module: hr_recruitment_extract
 #. odoo-python
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
 #, python-format
 msgid "Generated Applicants"
-msgstr ""
+msgstr "생성된 지원자"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__is_first_stage
@@ -170,24 +170,24 @@ msgstr "불충분한 신용 한도"
 #: model:ir.actions.server,name:hr_recruitment_extract.ir_cron_ocr_parse_ir_actions_server
 #: model:ir.cron,cron_name:hr_recruitment_extract.ir_cron_ocr_parse
 msgid "Recruitment OCR: Parse CV"
-msgstr ""
+msgstr "채용 OCR: CV 파싱"
 
 #. module: hr_recruitment_extract
 #: model:ir.actions.server,name:hr_recruitment_extract.ir_cron_update_ocr_status_ir_actions_server
 #: model:ir.cron,cron_name:hr_recruitment_extract.ir_cron_update_ocr_status
 msgid "Recruitment OCR: Update All Status"
-msgstr ""
+msgstr "채용 OCR: 전체 상태 업데이트"
 
 #. module: hr_recruitment_extract
 #: model:ir.actions.server,name:hr_recruitment_extract.ir_cron_ocr_validate_ir_actions_server
 #: model:ir.cron,cron_name:hr_recruitment_extract.ir_cron_ocr_validate
 msgid "Recruitment OCR: Validate CV"
-msgstr ""
+msgstr "채용 OCR: CV 승인"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_res_config_settings__recruitment_extract_show_ocr_option_selection
 msgid "Recruitment processing option"
-msgstr ""
+msgstr "채용 절차 옵션"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_remote_id
@@ -203,7 +203,7 @@ msgstr "디지털 변환을 위해 내보내기"
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_res_company__recruitment_extract_show_ocr_option_selection
 msgid "Send mode on applicant attachments"
-msgstr ""
+msgstr "지원자 첨부 파일 전송 모드"
 
 #. module: hr_recruitment_extract
 #. odoo-python
@@ -280,9 +280,9 @@ msgstr "검증 대기중"
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
 #, python-format
 msgid "You cannot send a CV for an applicant who's not in first stage!"
-msgstr ""
+msgstr "첫 단계에 들어오지 않은 지원자는 이력서를 보낼 수 없습니다."
 
 #. module: hr_recruitment_extract
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_extract.hr_recruitment_extract_view_form
 msgid "You don't have enough credit to extract data from your CV."
-msgstr ""
+msgstr "이력서에서 데이터를 추출할 수 있는 크레딧이 부족합니다."

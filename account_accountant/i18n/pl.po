@@ -71,7 +71,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "$ -2,678.00"
-msgstr ""
+msgstr "-2,678.00 USD"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -79,7 +79,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "$ 2,678.00"
-msgstr ""
+msgstr "2,678.00 USD"
 
 #. module: account_accountant
 #. odoo-python
@@ -108,7 +108,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "-1,134.50"
-msgstr ""
+msgstr "-1,134.50"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_form
@@ -278,7 +278,7 @@ msgstr "Widżet uzgadnianie rachunków"
 #: model:ir.actions.act_window,name:account_accountant.account_tag_action
 #: model:ir.ui.menu,name:account_accountant.account_tag_menu
 msgid "Account Tags"
-msgstr "Znaczniki konta"
+msgstr "Tagi konta"
 
 #. module: account_accountant
 #: model:ir.ui.menu,name:account_accountant.menu_accounting
@@ -306,7 +306,7 @@ msgstr "Dodaj transakcję"
 #. module: account_accountant
 #: model_terms:ir.actions.act_window,help:account_accountant.account_tag_action
 msgid "Add a new tag"
-msgstr "Dodaj nowy znacznik"
+msgstr "Dodaj nowy tag"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -998,7 +998,7 @@ msgstr "ID"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "INV/2032/0003"
-msgstr ""
+msgstr "INV/2032/0003"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1006,7 +1006,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "INV/2032/0012"
-msgstr ""
+msgstr "INV/2032/0012"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_bank_rec_widget__to_check
@@ -1139,7 +1139,7 @@ msgstr "Pozycje zapisów do uzgodnienia"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_digest_digest__kpi_account_bank_cash_value
 msgid "Kpi Account Bank Cash Value"
-msgstr ""
+msgstr "Rachunek Kpi Bank Wartość gotówkowa"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1163,7 +1163,7 @@ msgstr "Etykieta"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "Larry Smith"
-msgstr ""
+msgstr "Larry Smith"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -2193,7 +2193,7 @@ msgstr "Uzgodniłeś"
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__aml
 msgid "aml"
-msgstr ""
+msgstr "AML"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -2205,7 +2205,7 @@ msgstr "i śledzenie klientów"
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__auto_balance
 msgid "auto_balance"
-msgstr ""
+msgstr "auto_balance"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_reconcile_model_widget_wizard
@@ -2215,12 +2215,12 @@ msgstr "np. Opłaty bankowe"
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__early_payment
 msgid "early_payment"
-msgstr ""
+msgstr "early_payment"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__exchange_diff
 msgid "exchange_diff"
-msgstr ""
+msgstr "exchange_diff"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__liquidity
@@ -2235,7 +2235,7 @@ msgstr "ręczne"
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__new_aml
 msgid "new_aml"
-msgstr ""
+msgstr "new_aml"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -2276,7 +2276,7 @@ msgstr "sekund na transakcję."
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__tax_line
 msgid "tax_line"
-msgstr ""
+msgstr "tax_line"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.account_journal_dashboard_kanban_view
@@ -2288,7 +2288,7 @@ msgstr "do sprawdzenia"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
 #, python-format
 msgid "transaction in"
-msgstr ""
+msgstr "transakcja w"
 
 #. module: account_accountant
 #. odoo-javascript

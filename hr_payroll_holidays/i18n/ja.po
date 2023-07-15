@@ -56,7 +56,7 @@ msgstr ""
 #. module: hr_payroll_holidays
 #: model_terms:ir.ui.view,arch_db:hr_payroll_holidays.res_config_settings_view_form
 msgid "Deferred Time Off"
-msgstr ""
+msgstr "休暇の繰り延べ"
 
 #. module: hr_payroll_holidays
 #: model:ir.model.fields,field_description:hr_payroll_holidays.field_res_company__deferred_time_off_manager
@@ -115,7 +115,7 @@ msgstr ""
 #. module: hr_payroll_holidays
 #: model_terms:ir.ui.view,arch_db:hr_payroll_holidays.res_config_settings_view_form
 msgid "Postpone time off after payslip validation"
-msgstr ""
+msgstr "給与明細の確認後、休暇を繰り延べます"
 
 #. module: hr_payroll_holidays
 #: model_terms:ir.ui.view,arch_db:hr_payroll_holidays.hr_leave_view_form_inherit

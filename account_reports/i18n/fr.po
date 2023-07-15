@@ -410,7 +410,7 @@ msgid ""
 "<span class=\"o_form_label\">Tax Return Periodicity</span>\n"
 "                        <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" role=\"img\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\"/>"
 msgstr ""
-"<span class=\"o_form_label\">Périodicité de la déclaration de revenus</span>\n"
+"<span class=\"o_form_label\">Périodicité de la déclaration d'impôt</span>\n"
 "                        <span class=\"fa fa-lg fa-building-o\" title=\"Les valeurs définies ici sont spécifiques à l'entreprise.\" role=\"img\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\"/>"
 
 #. module: account_reports
@@ -817,12 +817,12 @@ msgstr "Rapports d'audit"
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_executivesummary_avgcre0
 msgid "Average creditors days"
-msgstr "Délai moyen de jours des créanciers"
+msgstr "Délai moyen de règlement fournisseur"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_executivesummary_avdebt0
 msgid "Average debtors days"
-msgstr "Délai moyen de jours des débiteurs "
+msgstr "Délai moyen de recouvrement"
 
 #. module: account_reports
 #. odoo-python
@@ -913,7 +913,7 @@ msgstr "Gestionnaire personnalisé de rapport des réconciliations bancaires"
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_bank_view0
 msgid "Bank and Cash Accounts"
-msgstr "Banque et Espèces"
+msgstr "Comptes bancaires et d'espèces"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_bank_rec_widget
@@ -1318,7 +1318,7 @@ msgstr "Bénéfices répartis de l'exercice en cours"
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_current_year_earnings_line_1
 msgid "Current Year Earnings"
-msgstr "Bénéfices de l'année en cours"
+msgstr "Bénéfices de l'exercice en cours"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_current_year_earnings0
@@ -1328,7 +1328,7 @@ msgstr "Bénéfices non répartis de l'exercice en cours"
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_executivesummary_ca_to_l0
 msgid "Current assets to liabilities"
-msgstr "Actif circulant au passif"
+msgstr "Ratio actif circulant/passif circulant"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_comparison
@@ -2899,7 +2899,7 @@ msgstr "Configuration"
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_executivesummary_st_cash_forecast0
 msgid "Short term cash forecast"
-msgstr "Prévisions d'encaissement à court terme"
+msgstr "Prévisions de trésorerie à court terme"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_multicurrency_revaluation_wizard__show_warning_move_id
@@ -3450,7 +3450,7 @@ msgstr "Portée de date inconnue : %s"
 #: model:ir.actions.client,name:account_reports.action_account_report_multicurrency_revaluation
 #: model:ir.ui.menu,name:account_reports.menu_action_account_report_multicurrency_revaluation
 msgid "Unrealized Currency Gains/Losses"
-msgstr "Écarts latents de change"
+msgstr "Écarts de conversion"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options

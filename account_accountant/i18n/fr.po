@@ -577,7 +577,7 @@ msgstr "Contreparties"
 #: code:addons/account_accountant/models/reconciliation_widget.py:0
 #, python-format
 msgid "Create Reconciliation Model"
-msgstr "Créer un modèle de rapprochement"
+msgstr "Créer un modèle de lettrage"
 
 #. module: account_accountant
 #: model:ir.actions.act_window,name:account_accountant.action_bank_statement_form_bank_rec_widget
@@ -1455,14 +1455,14 @@ msgstr "Montant ouvert en devise"
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Open balance"
-msgstr "Solde d'ouverture"
+msgstr "Solde ouvert"
 
 #. module: account_accountant
 #. odoo-python
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid "Open balance: %s"
-msgstr "Solde d'ouverture : %s"
+msgstr "Solde ouvert : %s"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.account_journal_dashboard_kanban_view
@@ -1937,7 +1937,7 @@ msgid ""
 "reconciliation model '%s'."
 msgstr ""
 "Cette opération bancaire a été automatiquement validée à l'aide du modèle de"
-" rapprochement '%s'."
+" lettrage '%s'."
 
 #. module: account_accountant
 #. odoo-javascript
@@ -2251,7 +2251,7 @@ msgstr "ou"
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "reconciliation models"
-msgstr "modèles de réconciliation"
+msgstr "modèles de lettrage"
 
 #. module: account_accountant
 #. odoo-javascript

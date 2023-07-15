@@ -32,7 +32,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid " days"
-msgstr "dagar"
+msgstr " dagar"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -66,7 +66,7 @@ msgstr "Snittaffär"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Average deal size"
-msgstr ""
+msgstr "Medelstorlek - affärer"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -89,14 +89,14 @@ msgstr "Stad"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Close Rate"
-msgstr ""
+msgstr "Slutförandefrekvens"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Close rate"
-msgstr ""
+msgstr "Stängningsfrekvens"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -397,7 +397,7 @@ msgstr "Topp Länder"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Top Lost Reasons"
-msgstr ""
+msgstr "De främsta förlorade orsakerna"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -405,14 +405,14 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Mediums"
-msgstr ""
+msgstr "De bästa medierna"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Opportunities"
-msgstr ""
+msgstr "De bästa möjligheterna"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -420,7 +420,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Sales Teams"
-msgstr ""
+msgstr "De bästa säljteamen"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -428,7 +428,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Salespeople"
-msgstr ""
+msgstr "Bästa säljare"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -436,70 +436,70 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Sources"
-msgstr ""
+msgstr "Bästa källor"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Top Tags"
-msgstr ""
+msgstr "Toppnoteringar"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Total days to assign"
-msgstr ""
+msgstr "Totalt antal dagar för tilldelning"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Total days to win"
-msgstr ""
+msgstr "Totalt antal dagar för att vinna"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Total leads"
-msgstr ""
+msgstr "Totalt antal leads"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Won leads"
-msgstr ""
+msgstr "Vunna leads"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "average deal size - current"
-msgstr ""
+msgstr "genomsnittlig affärsstorlek - nuvarande"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "average deal size - previous"
-msgstr ""
+msgstr "genomsnittlig affärsstorlek - tidigare"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "close rate - current"
-msgstr ""
+msgstr "slutförandefrekvens - nuvarande"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "close rate - previous"
-msgstr ""
+msgstr "slutförandefrekvens - föregående"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -574,7 +574,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top cities"
-msgstr ""
+msgstr "toppstäder"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -582,28 +582,28 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top countries"
-msgstr ""
+msgstr "toppländer"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top lost reasons"
-msgstr ""
+msgstr "de främsta förlorade orsakerna"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top medium"
-msgstr ""
+msgstr "bästa medium"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top mediums"
-msgstr ""
+msgstr "bästa medier"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -611,39 +611,39 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top sales team"
-msgstr ""
+msgstr "bästa säljteam"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top salespeople"
-msgstr ""
+msgstr "bästa säljare"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top salesperson"
-msgstr ""
+msgstr "toppsäljare"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top source"
-msgstr ""
+msgstr "bästa källa"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top sources"
-msgstr ""
+msgstr "bästa källor"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top tags"
-msgstr ""
+msgstr "toppnoteringar"

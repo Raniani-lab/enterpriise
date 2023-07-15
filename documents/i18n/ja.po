@@ -577,7 +577,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/hooks.js:0
 #, python-format
 msgid "An error occured while uploading."
-msgstr ""
+msgstr "アップロード中にエラーが発生しました。"
 
 #. module: documents
 #. odoo-javascript
@@ -824,7 +824,7 @@ msgstr "契約"
 #: code:addons/documents/static/src/views/documents_controller_mixin.xml:0
 #, python-format
 msgid "Control panel buttons"
-msgstr ""
+msgstr "コントロールパネルボタン"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__create_model

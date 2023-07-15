@@ -282,11 +282,11 @@ msgstr "Ingesamt eingestellt"
 #: code:addons/hr_recruitment_reports/report/hr_recruitment_report.py:0
 #, python-format
 msgid "Total Meetings"
-msgstr "Ingesamt Meetings"
+msgstr "Meetings ingesamt"
 
 #. module: hr_recruitment_reports
 #. odoo-python
 #: code:addons/hr_recruitment_reports/report/hr_recruitment_report.py:0
 #, python-format
 msgid "Total applicants"
-msgstr "Insgesamt Bewerber"
+msgstr "Bewerber ingesamt"

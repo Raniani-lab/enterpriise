@@ -1975,7 +1975,7 @@ msgstr "Limitato a un record"
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "Open chatter"
-msgstr ""
+msgstr "Apri chatter"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_force_thread_id

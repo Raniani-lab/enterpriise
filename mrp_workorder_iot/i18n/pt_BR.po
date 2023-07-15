@@ -141,7 +141,7 @@ msgstr "Anterior"
 #. module: mrp_workorder_iot
 #: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__print-slip
 msgid "Print Delivery Slip"
-msgstr ""
+msgstr "Imprimir recibo de entrega"
 
 #. module: mrp_workorder_iot
 #: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__print

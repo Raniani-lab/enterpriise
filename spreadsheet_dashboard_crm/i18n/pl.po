@@ -12,7 +12,6 @@
 # Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2022
 # Martin Trigaux, 2022
 # Marcin Młynarczyk <mlynarczyk@gmail.com>, 2022
-# Wiktor Kaźmierczak <wik92tor@wp.pl>, 2022
 # Krzysztof Przygoda, 2022
 # Paweł Wodyński <pw@myodoo.pl>, 2023
 # Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023
@@ -359,14 +358,14 @@ msgstr "Etap"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Tag"
-msgstr "Znacznik"
+msgstr "Tag"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Tags"
-msgstr "Znaczniki"
+msgstr "Tagi"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -448,7 +447,7 @@ msgstr "Najważniejsze źródła"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Top Tags"
-msgstr "Najpopularniejsze znaczniki"
+msgstr "Najpopularniejsze tagi"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript

@@ -22,17 +22,17 @@ msgstr ""
 #. module: event_sale_dashboard
 #: model:ir.model.fields,field_description:event_sale_dashboard.field_event_sale_report__avg_daily_registrations
 msgid "Average Daily Registrations"
-msgstr ""
+msgstr "Media registrazioni giornaliere"
 
 #. module: event_sale_dashboard
 #: model:ir.model.fields,field_description:event_sale_dashboard.field_event_sale_report__avg_sold_daily_registrations
 msgid "Average Daily Registrations Sold"
-msgstr ""
+msgstr "Media registrazioni vendute giornalmente"
 
 #. module: event_sale_dashboard
 #: model:ir.model.fields,field_description:event_sale_dashboard.field_event_sale_report__avg_amount_sale_order
 msgid "Average Sale Order Amount"
-msgstr ""
+msgstr "Importo medio ordine di vendita"
 
 #. module: event_sale_dashboard
 #: model:ir.model,name:event_sale_dashboard.model_event_sale_report

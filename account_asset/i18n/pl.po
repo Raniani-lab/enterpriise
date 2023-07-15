@@ -1828,7 +1828,7 @@ msgstr "Wznów"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Resume Depreciation"
-msgstr ""
+msgstr "Wznowienie amortyzacji"
 
 #. module: account_asset
 #. odoo-python
@@ -2250,7 +2250,7 @@ msgstr ""
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_balance
 msgid "book_value"
-msgstr ""
+msgstr "book_value"
 
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_date_from

@@ -358,12 +358,12 @@ msgstr "SEPAダイレクトデビットマンデート"
 #: model:mail.template,name:payment_sepa_direct_debit.mail_template_sepa_notify_debit
 #: model:mail.template,subject:payment_sepa_direct_debit.mail_template_sepa_notify_debit
 msgid "SEPA Direct Debit: Charge Notification"
-msgstr ""
+msgstr "SEPA Direct Debit: 請求通知"
 
 #. module: payment_sepa_direct_debit
 #: model:mail.template,name:payment_sepa_direct_debit.mail_template_sepa_notify_validation
 msgid "SEPA Direct Debit: Validation Notification"
-msgstr ""
+msgstr "SEPA Direct Debit: 検証通知"
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,field_description:payment_sepa_direct_debit.field_payment_provider__sdd_sms_credits
@@ -596,6 +596,8 @@ msgid ""
 "Your SEPA Direct Debit Mandate with {{ "
 "object.payment_journal_id.company_id.name }}"
 msgstr ""
+"Your SEPA Direct Debit Mandate with {{ "
+"object.payment_journal_id.company_id.name }}"
 
 #. module: payment_sepa_direct_debit
 #. odoo-python
@@ -604,7 +606,7 @@ msgstr ""
 msgid ""
 "Your company must have a creditor identifier in order to issue a SEPA Direct"
 " Debit payment request. It can be set in Accounting settings."
-msgstr ""
+msgstr " SEPA Direct Debit 支払リクエストを発行するには、貴社の債権者識別子が必要です。これは会計設定で設定できます。"
 
 #. module: payment_sepa_direct_debit
 #. odoo-python

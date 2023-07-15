@@ -318,7 +318,7 @@ msgstr "アドレスの種類"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_search_view
 msgid "Assigned to me"
-msgstr "私に割り当てられる"
+msgstr "自分に割当られた"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__join_invoices

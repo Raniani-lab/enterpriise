@@ -38,7 +38,7 @@ msgstr ""
 #: code:addons/hr_expense_extract/static/src/js/tours/expense_tour.js:0
 #, python-format
 msgid "<b>Congratulations</b>, you are now an expert of Expenses."
-msgstr ""
+msgstr "<b>Gratulacje</b>, jesteś teraz ekspertem od wydatków."
 
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
@@ -119,12 +119,12 @@ msgstr "Anuluj"
 #: code:addons/hr_expense_extract/static/src/js/tours/expense_tour.js:0
 #, python-format
 msgid "Choose a receipt."
-msgstr ""
+msgstr "Wybierz paragon."
 
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.expense_sample_receipt_view_form
 msgid "Choose a receipt:"
-msgstr ""
+msgstr "Wybierz paragon:"
 
 #. module: hr_expense_extract
 #: model:ir.model,name:hr_expense_extract.model_res_company
@@ -208,19 +208,19 @@ msgstr "Wydatek"
 #: model:ir.actions.server,name:hr_expense_extract.ir_cron_ocr_parse_ir_actions_server
 #: model:ir.cron,cron_name:hr_expense_extract.ir_cron_ocr_parse
 msgid "Expense OCR: Parse Expenses"
-msgstr ""
+msgstr "OCR wydatków: analizowanie wydatków"
 
 #. module: hr_expense_extract
 #: model:ir.actions.server,name:hr_expense_extract.ir_cron_update_ocr_status_ir_actions_server
 #: model:ir.cron,cron_name:hr_expense_extract.ir_cron_update_ocr_status
 msgid "Expense OCR: Update All Status"
-msgstr ""
+msgstr "OCR wydatków: Aktualizuj wszystkie statusy"
 
 #. module: hr_expense_extract
 #: model:ir.actions.server,name:hr_expense_extract.ir_cron_ocr_validate_ir_actions_server
 #: model:ir.cron,cron_name:hr_expense_extract.ir_cron_ocr_validate
 msgid "Expense OCR: Validate Expenses"
-msgstr ""
+msgstr "OCR wydatków: walidacja wydatków"
 
 #. module: hr_expense_extract
 #: model:ir.model,name:hr_expense_extract.model_hr_expense_sheet
@@ -232,19 +232,19 @@ msgstr "Rapord wydatków"
 #: code:addons/hr_expense_extract/models/hr_expense.py:0
 #, python-format
 msgid "Expense is being Digitized"
-msgstr ""
+msgstr "Wydatki są digitalizowane"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_res_config_settings__expense_extract_show_ocr_option_selection
 msgid "Expense processing option"
-msgstr ""
+msgstr "Opcja przetwarzania wydatków"
 
 #. module: hr_expense_extract
 #. odoo-python
 #: code:addons/hr_expense_extract/models/hr_expense.py:0
 #, python-format
 msgid "Expenses sent"
-msgstr ""
+msgstr "Wysłane wydatki"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense__extract_word_ids
@@ -259,24 +259,24 @@ msgstr "Wyciągnij stan"
 #. module: hr_expense_extract
 #: model:ir.model,name:hr_expense_extract.model_hr_expense_extract_words
 msgid "Extracted words from expense scan"
-msgstr ""
+msgstr "Wyodrębnione słowa ze skanowania wydatków"
 
 #. module: hr_expense_extract
 #. odoo-python
 #: code:addons/hr_expense_extract/models/hr_expense.py:0
 #, python-format
 msgid "Generated Expense"
-msgstr ""
+msgstr "Wygenerowane wydatki"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__hide_partial
 msgid "Hide Partial"
-msgstr ""
+msgstr "Ukryj częściowo"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__hide_payment_method_line
 msgid "Hide Payment Method Line"
-msgstr ""
+msgstr "Ukryj linię metody płatności"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_receipt__id
@@ -327,6 +327,8 @@ msgid ""
 "Let's try a sample receipt to test the automated processing of expenses with"
 " Artificial Intelligence."
 msgstr ""
+"Wypróbujmy przykładowy paragon, aby przetestować automatyczne przetwarzanie "
+"wydatków za pomocą sztucznej inteligencji."
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,help:hr_expense_extract.field_expense_sample_register__payment_method_line_id
@@ -395,33 +397,33 @@ msgstr "Rejestruj płatność"
 #. module: hr_expense_extract
 #: model:ir.actions.act_window,name:hr_expense_extract.action_expense_sample_register
 msgid "Register Sample Payment"
-msgstr ""
+msgstr "Zarejestruj przykładową płatność"
 
 #. module: hr_expense_extract
 #: model:ir.model,name:hr_expense_extract.model_expense_sample_register
 msgid "Register Sample Payments"
-msgstr ""
+msgstr "Zarejestruj przykładowe płatności"
 
 #. module: hr_expense_extract
 #. odoo-javascript
 #: code:addons/hr_expense_extract/static/src/js/tours/expense_tour.js:0
 #, python-format
 msgid "Report this expense to your manager for validation."
-msgstr ""
+msgstr "Zgłoś ten wydatek swojemu przełożonemu w celu zatwierdzenia."
 
 #. module: hr_expense_extract
 #. odoo-python
 #: code:addons/hr_expense_extract/wizard/expense_sample_receipt.py:0
 #, python-format
 msgid "Sample Employee"
-msgstr ""
+msgstr "Przykładowy pracownik"
 
 #. module: hr_expense_extract
 #. odoo-python
 #: code:addons/hr_expense_extract/wizard/expense_sample_receipt.py:0
 #, python-format
 msgid "Sample Receipt: %s"
-msgstr ""
+msgstr "Przykładowy paragon:  %s"
 
 #. module: hr_expense_extract
 #: model:ir.actions.server,name:hr_expense_extract.hr_expense_parse_action_server
@@ -432,7 +434,7 @@ msgstr "Wyślij do digitalizacji"
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_res_company__expense_extract_show_ocr_option_selection
 msgid "Send mode on expense attachments"
-msgstr ""
+msgstr "Tryb wysyłania załączników wydatków"
 
 #. module: hr_expense_extract
 #. odoo-python
@@ -457,7 +459,7 @@ msgstr "Status"
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense__state_processed
 msgid "Status regarding OCR status"
-msgstr ""
+msgstr "Status dotyczący statusu OCR"
 
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
@@ -484,19 +486,19 @@ msgstr "Do zatwierdzenia"
 #: model:ir.actions.act_window,name:hr_expense_extract.action_expense_sample_receipt
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.expense_sample_receipt_view_form
 msgid "Try Sample Receipt"
-msgstr ""
+msgstr "Wypróbuj przykładowy paragon"
 
 #. module: hr_expense_extract
 #: model:ir.model,name:hr_expense_extract.model_expense_sample_receipt
 msgid "Try Sample Receipts"
-msgstr ""
+msgstr "Wypróbuj przykładowe paragony"
 
 #. module: hr_expense_extract
 #. odoo-javascript
 #: code:addons/hr_expense_extract/static/src/js/tours/expense_tour.js:0
 #, python-format
 msgid "Try the AI with a sample receipt."
-msgstr ""
+msgstr "Wypróbuj AI z przykładowym paragonem."
 
 #. module: hr_expense_extract
 #. odoo-python
@@ -542,12 +544,12 @@ msgstr "Tekst Word"
 #: code:addons/hr_expense_extract/models/hr_expense.py:0
 #, python-format
 msgid "You cannot send a expense that is not in draft state!"
-msgstr ""
+msgstr "Nie można wysłać wydatku, który nie jest w wersji roboczej!"
 
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
 msgid "You don't have enough credit to extract data from your expense."
-msgstr ""
+msgstr "Nie masz wystarczającego kredytu, aby wyodrębnić dane z wydatków."
 
 #. module: hr_expense_extract
 #. odoo-python
@@ -563,6 +565,8 @@ msgstr "Należy przesłać taką samą ilość dokumentów i nazwy plików"
 #, python-format
 msgid "Your manager will have to approve (or refuse) your expense reports."
 msgstr ""
+"Twój przełożony będzie musiał zaakceptować (lub odrzucić) Twoje raporty "
+"wydatków."
 
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__hr_expense__extract_state__extract_not_ready

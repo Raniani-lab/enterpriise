@@ -75,7 +75,7 @@ msgstr "Arkusze danych"
 #. module: documents_product
 #: model_terms:ir.ui.view,arch_db:documents_product.res_config_settings_view_form
 msgid "Default Tags"
-msgstr "Domyślne znaczniki"
+msgstr "Domyślne tagi"
 
 #. module: documents_product
 #: model:documents.facet,name:documents_product.documents_product_documents_facet

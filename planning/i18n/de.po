@@ -445,7 +445,7 @@ msgstr "<span class=\"fw-bold\">Planen</span>"
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_slot_template_view_form
 msgid "<span class=\"ms-2 flex-shrink-1\"> Working hours</span>"
-msgstr "<span class=\"ms-2 flex-shrink-1\"> Arbeitszeiten</span>"
+msgstr "<span class=\"ms-2 flex-shrink-1\"> Arbeitsstunden</span>"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.res_config_settings_view_form
@@ -923,7 +923,7 @@ msgstr "Tage vor der Schicht für Aufhebung der Zuweisung"
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.res_config_settings_view_form
 msgid "Deadline"
-msgstr "Frist"
+msgstr "Frist:"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__unassign_deadline
@@ -1233,7 +1233,7 @@ msgstr "Zukünftig"
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.res_config_settings_view_form
 msgid "Generate shifts"
-msgstr "Schichten erzeugen"
+msgstr "Erzeugen Sie Schichten"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.brand_promotion
@@ -1417,7 +1417,7 @@ msgstr "Mitarbeiter können sich selbst abmelden"
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.res_config_settings_view_form
 msgid "Let employees unassign themselves from shifts"
-msgstr "Mitarbeitern gestatten, sich von Schichten abzumelden"
+msgstr "Gestatten Sie Mitarbeitern, sich von Schichten abzumelden"
 
 #. module: planning
 #. odoo-javascript
@@ -2554,7 +2554,7 @@ msgstr "Tage vor Beginn der Schicht"
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_slot_template_view_form
 msgid "days span)"
-msgstr "Tage auseinander)"
+msgstr "Tage)"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form

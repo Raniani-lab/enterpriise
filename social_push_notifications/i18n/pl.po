@@ -6,7 +6,6 @@
 # Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2022
 # Marcin Młynarczyk <mlynarczyk@gmail.com>, 2022
 # Radosław Biegalski <radoslaw.biegalski@openglobe.pl>, 2022
-# Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2022
 # Wiktor Kaźmierczak <wik92tor@wp.pl>, 2022
 # Martin Trigaux, 2022
 # Dariusz Żbikowski <darek@krokus.com.pl>, 2022
@@ -32,7 +31,7 @@ msgstr ""
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
 msgid "<span class=\"ps-2\">seconds</span>"
-msgstr ""
+msgstr "<span class=\"ps-2\">sekundy</span>"
 
 #. module: social_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_marketing_campaign__social_post_ids
@@ -105,6 +104,7 @@ msgstr "Włącz powiadomienia Web Push"
 #, python-format
 msgid "Enable push notifications to be notified about new features."
 msgstr ""
+"Włącz powiadomienia push, aby otrzymywać powiadomienia o nowych funkcjach."
 
 #. module: social_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_res_config_settings__firebase_admin_key_file
@@ -171,7 +171,7 @@ msgstr "Ikona"
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.social_post_template_view_form
 msgid "Icon Image"
-msgstr ""
+msgstr "Obraz ikony"
 
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
@@ -186,7 +186,7 @@ msgstr "Data ostatniej modyfikacji"
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.social_post_view_form
 msgid "Local Time"
-msgstr ""
+msgstr "Czas lokalny"
 
 #. module: social_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_social_media__media_type
@@ -235,13 +235,13 @@ msgstr "Tytuł zapytania o powiadomienia"
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.social_post_template_view_form
 msgid "Notification Title"
-msgstr ""
+msgstr "Tytuł powiadomienia"
 
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.utm_campaign_view_form
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.utm_campaign_view_kanban
 msgid "Notifications"
-msgstr "Notyfikacje"
+msgstr "Powiadomienia"
 
 #. module: social_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_marketing_campaign__social_push_notifications_count
@@ -273,17 +273,17 @@ msgstr "Obraz ikony Push"
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.website_visitor_view_search
 msgid "Push Notification Off"
-msgstr ""
+msgstr "Powiadomienie push wyłączone"
 
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.website_visitor_view_search
 msgid "Push Notification On"
-msgstr ""
+msgstr "Powiadomienie push włączone"
 
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.social_post_template_view_form
 msgid "Push Notification Options"
-msgstr ""
+msgstr "Opcje powiadomień push"
 
 #. module: social_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_social_post__push_notification_title
@@ -303,7 +303,7 @@ msgstr "Powiadomienia Push"
 #. module: social_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_website_visitor__has_push_notifications
 msgid "Push Notifications Enabled"
-msgstr ""
+msgstr "Powiadomienia push włączone"
 
 #. module: social_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_social_post__push_notifications_preview
@@ -319,12 +319,12 @@ msgstr "Subskrypcja Push"
 #. module: social_push_notifications
 #: model:ir.model,name:social_push_notifications.model_website_visitor_push_subscription
 msgid "Push Subscription for a Website Visitor"
-msgstr ""
+msgstr "Subskrypcja powiadomień push dla osoby odwiedzającej stronę WWW"
 
 #. module: social_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_website_visitor__push_subscription_ids
 msgid "Push Subscriptions"
-msgstr ""
+msgstr "Subskrypcje push"
 
 #. module: social_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_social_post__push_notification_target_url
@@ -335,7 +335,7 @@ msgstr "Docelowe URL Push"
 #. module: social_push_notifications
 #: model:ir.model.constraint,message:social_push_notifications.constraint_website_visitor_push_subscription_push_token_uniq
 msgid "Push token can't be duplicated!"
-msgstr ""
+msgstr "Token Push nie może zostać zduplikowany!"
 
 #. module: social_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_social_live_post__reached_visitor_ids
@@ -370,6 +370,8 @@ msgid ""
 "Send push notifications and configure this website's notifications "
 "permission request"
 msgstr ""
+"Wysyłanie powiadomień push i konfigurowanie żądania uprawnień do powiadomień"
+" tej strony WWW"
 
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
@@ -512,26 +514,28 @@ msgid ""
 "You have to either install \"firebase_admin>=2.17.0\" or "
 "\"google_auth>=1.18.0\" to be able to send push notifications."
 msgstr ""
+"Musisz zainstalować \"firebase_admin>=2.17.0\" lub \"google_auth>=1.18.0\", "
+"aby móc wysyłać powiadomienia push."
 
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
 msgid "e.g. \"280765099157\""
-msgstr ""
+msgstr "np. \"280765099157\""
 
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
 msgid "e.g. \"BIzbSyXhhsFHEgphW55CSg5cV7h7c_S-AuTMKc9\""
-msgstr ""
+msgstr "na przykład \"BIzbSyXhhsFHEgphW55CSg5cV7h7c_S-AuTMKc9\""
 
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
 msgid "e.g. \"CCSc77KP_LX8dTAogFakOoJ_VqNP15u0-43psDJe__a9B...\""
-msgstr ""
+msgstr "np. \"CCSc77KP_LX8dTAogFakOoJ_VqNP15u0-43psDJe__a9B...\""
 
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
 msgid "e.g. \"my-project-id\""
-msgstr ""
+msgstr "np. \"my-project-id\""
 
 #. module: social_push_notifications
 #: model:ir.model.fields,help:social_push_notifications.field_social_post__use_visitor_timezone
@@ -540,3 +544,5 @@ msgid ""
 "e.g: If you post at 15:00 your time, all visitors will receive the post at "
 "15:00 their time."
 msgstr ""
+"np.: Jeśli opublikujesz post o 15:00 swojego czasu, wszyscy odwiedzający "
+"otrzymają go o 15:00 ich czasu."

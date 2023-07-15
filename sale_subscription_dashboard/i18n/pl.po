@@ -18,6 +18,7 @@
 # Piotr Szlązak <szlazakpiotr@gmail.com>, 2022
 # Paweł Wodyński <pw@myodoo.pl>, 2022
 # Monika Grzelak <m.e.grzelak@gmail.com>, 2022
+# Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -25,7 +26,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Monika Grzelak <m.e.grzelak@gmail.com>, 2022\n"
+"Last-Translator: Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023\n"
 "Language-Team: Polish (https://app.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -78,12 +79,12 @@ msgstr "30 dni temu"
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "<i>There is no invoice during this period.</i>"
-msgstr ""
+msgstr "<i>W tym okresie nie jest wystawiana faktura.</i>"
 
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "<i>There is no subscription modification during this period.</i>"
-msgstr ""
+msgstr "<i>W tym okresie nie ma możliwości modyfikacji subskrypcji.</i>"
 
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.move_line_entries_report_search
@@ -163,7 +164,7 @@ msgstr "Bieżący MRR"
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "Current MRR ("
-msgstr ""
+msgstr "Aktualny MRR ("
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -185,7 +186,7 @@ msgstr "Własne"
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Customer Churn"
-msgstr ""
+msgstr "Odpływ klientów"
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -271,6 +272,10 @@ msgid ""
 "the average MRR of a subscription by the churn rate (e.g. if your average "
 "MRR is $ 100 and your churn rate is 5%, the LTV will be $ 100/5% = $ 2,000)"
 msgstr ""
+"Oczekiwany dochód z przeciętnej subskrypcji w całym okresie jej trwania; "
+"uzyskany przez podzielenie średniego MRR subskrypcji przez kurs rezygnacji "
+"(np. jeśli średni MRR wynosi 100 USD, a kurs rezygnacji wynosi 5%, LTV "
+"wyniesie 100 USD/5% = 2 000 USD)."
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -395,6 +400,8 @@ msgid ""
 "List all invoices containing non-recurring sales and the amount of\n"
 "                        non-recurring revenues in these invoices for this particular salesperson."
 msgstr ""
+"Lista wszystkich faktur zawierających jednorazową sprzedaż i kwotę jednorazowych przychodów w tych fakturach dla tego konkretnego sprzedawcy.\n"
+"w tych fakturach dla tego konkretnego sprzedawcy."
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -404,6 +411,8 @@ msgid ""
 "List all invoices containing non-recurring sales and the amount of non-recurring\n"
 "                    revenues in these invoices for this particular salesperson."
 msgstr ""
+"Lista wszystkich faktur zawierających jednorazową sprzedaż i kwotę jednorazowych przychodów w tych fakturach dla danego sprzedawcy.\n"
+"przychodów w tych fakturach dla tego konkretnego sprzedawcy."
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -434,6 +443,8 @@ msgid ""
 "MRR for short; total subscription revenue per month (e.g. for an annual "
 "subscription of $ 1,200, the MRR is $ 100)"
 msgstr ""
+"MRR w skrócie; całkowity przychód z subskrypcji na miesiąc (np. dla rocznej "
+"subskrypcji w wysokości 1200 USD, MRR wynosi 100 USD)."
 
 #. module: sale_subscription_dashboard
 #. odoo-python
@@ -476,7 +487,7 @@ msgstr "NRR"
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "NRR ("
-msgstr ""
+msgstr "NRR ("
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -514,7 +525,7 @@ msgstr "Nie wybrano firmy."
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Non Recurring invoices"
-msgstr ""
+msgstr "Faktury nie powtarzające się"
 
 #. module: sale_subscription_dashboard
 #. odoo-python
@@ -529,7 +540,7 @@ msgstr "Dochody jednorazowe"
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Non-Recurring Revenue :"
-msgstr ""
+msgstr "Przychody niepowtarzające się :"
 
 #. module: sale_subscription_dashboard
 #. odoo-python
@@ -562,7 +573,7 @@ msgstr "Ostrzeżenie Odoo"
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "One-shot revenue that is not part of a subscription"
-msgstr ""
+msgstr "Jednorazowy przychód, który nie jest częścią subskrypcji"
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -604,7 +615,7 @@ msgstr "Poprzedni MRR"
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "Previous MRR ("
-msgstr ""
+msgstr "Poprzedni MRR ("
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -685,7 +696,7 @@ msgstr "Konsola sprzedawcy"
 #: code:addons/sale_subscription_dashboard/models/sale_order.py:0
 #, python-format
 msgid "Salesperson report"
-msgstr ""
+msgstr "Raport sprzedawcy"
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -747,6 +758,10 @@ msgid ""
 "                        (e.g. two upsells occuring on the same day, or a subscription getting closed and re-opened\n"
 "                        on the same day)."
 msgstr ""
+"Modyfikacje subskrypcji agregują wszystkie modyfikacje, które miały miejsce w wybranym okresie.\n"
+"wybranym okresie. Należy pamiętać, że modyfikacje mające miejsce tego samego dnia mogą być grupowane razem\n"
+"(np. dwa dosprzedaże mające miejsce tego samego dnia lub zamknięcie i ponowne otwarcie subskrypcji\n"
+"tego samego dnia)."
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -758,6 +773,10 @@ msgid ""
 "                    (e.g. two upsells occuring on the same day, or a subscription getting closed and re-opened on the\n"
 "                    same day)."
 msgstr ""
+"Modyfikacje subskrypcji agregują wszystkie modyfikacje, które miały miejsce w wybranym okresie.\n"
+"okresie. Należy pamiętać, że modyfikacje mające miejsce tego samego dnia mogą być grupowane razem\n"
+"(np. dwie dosprzedaże mające miejsce tego samego dnia lub subskrypcja zamknięta i ponownie otwarta tego samego dnia).\n"
+"tego samego dnia)."
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -786,7 +805,7 @@ msgstr "Wzrost subskrypcji:"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Subscriptions plans"
-msgstr ""
+msgstr "Plany subskrypcji"
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -804,6 +823,8 @@ msgid ""
 "The current value is measured at the end of the selected period and "
 "historical data are relative to this last value."
 msgstr ""
+"Bieżąca wartość jest mierzona na koniec wybranego okresu, a dane historyczne"
+" odnoszą się do tej ostatniej wartości."
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -813,13 +834,15 @@ msgid ""
 "The following report relies on a previous calculation method. Results may "
 "differ from the new method."
 msgstr ""
+"Bieżąca wartość jest mierzona na koniec wybranego okresu, a dane historyczne"
+" odnoszą się do tej ostatniej wartości."
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "The following values are measured at the end of the selected period."
-msgstr ""
+msgstr "Następujące wartości są mierzone na koniec wybranego okresu."
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -865,6 +888,7 @@ msgstr "Bieżący kwartał"
 #, python-format
 msgid "Total net revenue (all invoices emitted during the period)"
 msgstr ""
+"Całkowity przychód netto (wszystkie faktury wystawione w danym okresie)"
 
 #. module: sale_subscription_dashboard
 #. odoo-python
@@ -875,6 +899,8 @@ msgid ""
 "Total subscription revenue per month (e.g. for an annual subscription of $ "
 "1,200, the MRR is $ 100)"
 msgstr ""
+"Całkowity przychód z subskrypcji na miesiąc (np. dla rocznej subskrypcji w "
+"wysokości 1200 USD, MRR wynosi 100 USD)."
 
 #. module: sale_subscription_dashboard
 #. odoo-python
@@ -923,7 +949,7 @@ msgstr "odchodzi, twoja podstawa subskrypcji będzie"
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "graphic"
-msgstr ""
+msgstr "grafika"
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript

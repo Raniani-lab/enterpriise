@@ -1276,7 +1276,7 @@ msgstr "Material"
 #: model:ir.actions.act_window,name:planning.planning_action_resources
 #: model:ir.ui.menu,name:planning.planning_menu_settings_resource
 msgid "Materials"
-msgstr ""
+msgstr "Material"
 
 #. module: planning
 #: model:ir.model.fields,help:planning.field_planning_slot__repeat

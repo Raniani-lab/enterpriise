@@ -38,12 +38,12 @@ msgstr "Dostępny"
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_pivot_view
 msgid "Average Cycle Time (Days)"
-msgstr ""
+msgstr "Średni czas cyklu (dni)"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_pivot_view
 msgid "Average Delay (Days)"
-msgstr ""
+msgstr "Średnie opóźnienie (dni)"
 
 #. module: stock_enterprise
 #: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__cancel
@@ -68,12 +68,12 @@ msgstr "Klienci"
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_form_view
 msgid "Cycle Time"
-msgstr ""
+msgstr "Czas cyklu"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__cycle_time
 msgid "Cycle Time (Days)"
-msgstr ""
+msgstr "Czas cyklu (dni)"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_form_view
@@ -88,7 +88,7 @@ msgstr "Opóźnienie"
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__delay
 msgid "Delay (Days)"
-msgstr ""
+msgstr "Opóźnienie (dni)"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__display_name
@@ -103,12 +103,12 @@ msgstr "Wykonano"
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_search_view
 msgid "Done Deliveries"
-msgstr ""
+msgstr "Wykonane dostawy"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_search_view
 msgid "Done Receipts"
-msgstr ""
+msgstr "Gotowe paragony"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_search_view
@@ -178,7 +178,7 @@ msgstr "Wydajność"
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__picking_name
 msgid "Picking Name"
-msgstr ""
+msgstr "Nazwa kompletacji"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__product_id
@@ -224,7 +224,7 @@ msgstr "Status"
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_pivot_view
 msgid "Stock Overview"
-msgstr ""
+msgstr "Przegląd zapasów"
 
 #. module: stock_enterprise
 #: model:ir.model,name:stock_enterprise.model_stock_report

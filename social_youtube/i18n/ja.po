@@ -7,6 +7,7 @@
 # Noma Yuki, 2022
 # Yoshi Tashiro (Quartile) <tashiro@roomsfor.hk>, 2022
 # Andy Yiu, 2022
+# Junko Augias, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Andy Yiu, 2022\n"
+"Last-Translator: Junko Augias, 2023\n"
 "Language-Team: Japanese (https://app.transifex.com/odoo/teams/41243/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -55,6 +56,8 @@ msgid ""
 "<span>These are stored up to 30 days and refreshed often to provide you an accurate depiction of reality. </span>\n"
 "                        <span>To delete these from Odoo, simply delete this account.</span>"
 msgstr ""
+"<span>これらは最大30日間保存され、現実を正確に表現するために頻繁にリフレッシュされます。</span>\n"
+"                        <span>Odooからこれらを削除するには、このアカウントを削除して下さい。</span>"
 
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_account_view_form
@@ -85,7 +88,7 @@ msgstr ""
 #: code:addons/social_youtube/controllers/main.py:0
 #, python-format
 msgid "Auth endpoint did not provide a refresh token. Please try again."
-msgstr ""
+msgstr "認証エンドポイントがリフレッシュトークンを提供しませんでした。再試行して下さい。"
 
 #. module: social_youtube
 #. odoo-javascript
@@ -208,7 +211,7 @@ msgstr "Googleプライバシーポリシー"
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_account__youtube_refresh_token
 msgid "Google Refresh Token"
-msgstr ""
+msgstr "Googleリフレッシュトークン"
 
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_account_revoke_youtube__id
@@ -289,7 +292,7 @@ msgstr "非公開"
 #: code:addons/social_youtube/static/src/js/social_youtube_upload_field.js:0
 #, python-format
 msgid "Processing..."
-msgstr ""
+msgstr "処理中..."
 
 #. module: social_youtube
 #: model:ir.model.fields.selection,name:social_youtube.selection__social_post__youtube_video_privacy__public
@@ -308,7 +311,7 @@ msgstr "理由:"
 msgid ""
 "Refresh token provided by the YouTube API, this should never be set "
 "manually."
-msgstr ""
+msgstr "YouTube APIが提供するリフレッシュトークンは、手動で設定されることは決してありません。"
 
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_account_view_form

@@ -389,7 +389,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Please select a project first"
-msgstr "Por favor, selecciona um projecto primeiro"
+msgstr "Selecione um projeto primeiro"
 
 #. module: project_timesheet_synchro
 #. odoo-javascript

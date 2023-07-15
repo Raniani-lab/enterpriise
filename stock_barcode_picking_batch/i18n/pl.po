@@ -26,12 +26,14 @@ msgstr ""
 #. module: stock_barcode_picking_batch
 #: model_terms:ir.ui.view,arch_db:stock_barcode_picking_batch.stock_move_line_product_selector_inherit
 msgid "<i class=\"fa fa-fw fa-lg fa-truck me-3\" title=\"Transfer\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-lg fa-truck me-3\" title=\"Transfer\"/>"
 
 #. module: stock_barcode_picking_batch
 #: model_terms:ir.ui.view,arch_db:stock_barcode_picking_batch.picking_view_kanban_inherit_barcode_picking_batch
 msgid "<span class=\"fa fa-external-link-square ms-1\" title=\"Open Batch Picking\"/>"
 msgstr ""
+"<span class=\"fa fa-external-link-square ms-1\" title=\"Open Batch "
+"Picking\"/>"
 
 #. module: stock_barcode_picking_batch
 #: model_terms:ir.ui.view,arch_db:stock_barcode_picking_batch.stock_barcode_batch_picking_view_info
@@ -41,7 +43,7 @@ msgstr "Przydział"
 #. module: stock_barcode_picking_batch
 #: model:ir.actions.client,name:stock_barcode_picking_batch.stock_barcode_picking_batch_client_action
 msgid "Barcode Batch Picking Client Action"
-msgstr ""
+msgstr "Akcja klienta pobierania partii z kodem kreskowym"
 
 #. module: stock_barcode_picking_batch
 #: model:ir.model,name:stock_barcode_picking_batch.model_stock_picking_batch
@@ -52,7 +54,7 @@ msgstr "Przekaz zbiorczy"
 #. module: stock_barcode_picking_batch
 #: model:ir.model.fields,field_description:stock_barcode_picking_batch.field_stock_barcode_cancel_operation__batch_name
 msgid "Batch Transfer Name"
-msgstr ""
+msgstr "Nazwa przekazu zbiorczego"
 
 #. module: stock_barcode_picking_batch
 #. odoo-javascript
@@ -72,7 +74,7 @@ msgstr "Anuluj operację"
 #: code:addons/stock_barcode_picking_batch/models/stock_picking_batch.py:0
 #, python-format
 msgid "Cancel this batch transfer ?"
-msgstr ""
+msgstr "Anulować ten przekaz zbiorczy?"
 
 #. module: stock_barcode_picking_batch
 #: model_terms:ir.ui.view,arch_db:stock_barcode_picking_batch.stock_barcode_batch_picking_view_info
@@ -92,7 +94,7 @@ msgstr "Odrzuć"
 #. module: stock_barcode_picking_batch
 #: model:ir.model.fields,field_description:stock_barcode_picking_batch.field_stock_picking__display_batch_button
 msgid "Display Batch Button"
-msgstr ""
+msgstr "Wyświetlanie przycisku partii"
 
 #. module: stock_barcode_picking_batch
 #: model_terms:ir.ui.view,arch_db:stock_barcode_picking_batch.stock_barcode_batch_picking_view_kanban
@@ -102,28 +104,28 @@ msgstr "Pozycje"
 #. module: stock_barcode_picking_batch
 #: model_terms:ir.actions.act_window,help:stock_barcode_picking_batch.stock_barcode_batch_picking_action_kanban
 msgid "No batch transfer found"
-msgstr ""
+msgstr "Nie znaleziono przekazu zbiorczego"
 
 #. module: stock_barcode_picking_batch
 #. odoo-javascript
 #: code:addons/stock_barcode_picking_batch/static/src/models/barcode_picking_batch_model.js:0
 #, python-format
 msgid "No ready transfers found"
-msgstr ""
+msgstr "Nie znaleziono gotowych transferów"
 
 #. module: stock_barcode_picking_batch
 #. odoo-python
 #: code:addons/stock_barcode_picking_batch/models/stock_picking_batch.py:0
 #, python-format
 msgid "Open picking batch form"
-msgstr ""
+msgstr "Otwórz formularz partii kompletacji"
 
 #. module: stock_barcode_picking_batch
 #. odoo-javascript
 #: code:addons/stock_barcode_picking_batch/static/src/models/barcode_picking_batch_model.js:0
 #, python-format
 msgid "Print Batch Transfer"
-msgstr ""
+msgstr "Drukowanie przekazu zbiorczego"
 
 #. module: stock_barcode_picking_batch
 #: model:ir.model,name:stock_barcode_picking_batch.model_stock_move_line
@@ -142,28 +144,28 @@ msgstr "Skanowanie paczki %s"
 #: code:addons/stock_barcode_picking_batch/static/src/models/barcode_picking_batch_model.js:0
 #, python-format
 msgid "Select an operation type for batch transfer"
-msgstr ""
+msgstr "Wybierz typ operacji dla przekazu zbiorczego"
 
 #. module: stock_barcode_picking_batch
 #. odoo-javascript
 #: code:addons/stock_barcode_picking_batch/static/src/models/barcode_picking_batch_model.js:0
 #, python-format
 msgid "Select transfers for batch transfer"
-msgstr ""
+msgstr "Wybór przekazów dla przekazów zbiorczych"
 
 #. module: stock_barcode_picking_batch
 #. odoo-javascript
 #: code:addons/stock_barcode_picking_batch/static/src/models/barcode_picking_batch_model.js:0
 #, python-format
 msgid "The Batch Transfer has been validated"
-msgstr ""
+msgstr "Przekaz zbiorczy został zatwierdzony"
 
 #. module: stock_barcode_picking_batch
 #. odoo-javascript
 #: code:addons/stock_barcode_picking_batch/static/src/models/barcode_picking_batch_model.js:0
 #, python-format
 msgid "The batch picking has been cancelled"
-msgstr ""
+msgstr "Pobieranie partii zostało anulowane"
 
 #. module: stock_barcode_picking_batch
 #: model_terms:ir.actions.act_window,help:stock_barcode_picking_batch.stock_barcode_batch_picking_action_kanban
@@ -188,14 +190,14 @@ msgstr "Operacja, w której paczka została utworzona"
 #: code:addons/stock_barcode_picking_batch/static/src/models/barcode_picking_batch_model.js:0
 #, python-format
 msgid "This batch transfer is already done"
-msgstr ""
+msgstr "Ten przekaz zbiorczy został już wykonany"
 
 #. module: stock_barcode_picking_batch
 #. odoo-javascript
 #: code:addons/stock_barcode_picking_batch/static/src/models/barcode_picking_batch_model.js:0
 #, python-format
 msgid "This batch transfer is cancelled"
-msgstr ""
+msgstr "Ten przekaz zbiorczy został anulowany"
 
 #. module: stock_barcode_picking_batch
 #. odoo-javascript
@@ -205,6 +207,8 @@ msgid ""
 "This batch transfer is still draft, it must be confirmed before being "
 "processed"
 msgstr ""
+"Ten przekaz zbiorczy jest nadal wersją roboczą, musi zostać potwierdzony "
+"przed przetworzeniem"
 
 #. module: stock_barcode_picking_batch
 #: model:ir.model,name:stock_barcode_picking_batch.model_stock_picking
@@ -221,7 +225,7 @@ msgstr "Typ operacji"
 #. module: stock_barcode_picking_batch
 #: model_terms:ir.ui.view,arch_db:stock_barcode_picking_batch.stock_barcode_batch_picking_view_info
 msgid "Unbatch Transfer"
-msgstr ""
+msgstr "Usuń zbiorczość przekazu"
 
 #. module: stock_barcode_picking_batch
 #. odoo-python
@@ -232,3 +236,6 @@ msgid ""
 "can use the info button on the top right corner of your screen to remove the"
 " transfer in question from the batch."
 msgstr ""
+"Nie można zatwierdzić przekazu, jeśli nie zarezerwowano ani nie wykonano "
+"żadnych ilości. Możesz użyć przycisku informacji w prawym górnym rogu "
+"ekranu, aby usunąć dany przelew ze zbioru."

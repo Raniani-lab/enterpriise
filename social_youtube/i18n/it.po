@@ -477,7 +477,7 @@ msgstr "Sconosciuto"
 #. module: social_youtube
 #: model:ir.model.fields.selection,name:social_youtube.selection__social_post__youtube_video_privacy__unlisted
 msgid "Unlisted"
-msgstr ""
+msgstr "Non in elenco"
 
 #. module: social_youtube
 #. odoo-javascript

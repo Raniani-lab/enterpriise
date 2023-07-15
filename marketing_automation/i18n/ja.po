@@ -1502,7 +1502,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__trigger_type
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__trigger_type
 msgid "Trigger Type"
-msgstr ""
+msgstr "トリガータイプ"
 
 #. module: marketing_automation
 #: model:ir.model,name:marketing_automation.model_utm_campaign

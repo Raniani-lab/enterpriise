@@ -35,6 +35,8 @@ msgid ""
 "<span attrs=\"{'invisible': [('encode_uom_in_days', '=', True)]}\"> Hours</span>\n"
 "                            <span attrs=\"{'invisible': [('encode_uom_in_days', '=', False)]}\"> Days</span>"
 msgstr ""
+"<span attrs=\"{'invisible': [('encode_uom_in_days', '=', True)]}\"> Godziny</span>\n"
+"<span attrs=\"{'invisible': [('encode_uom_in_days', '=', False)]}\">Dni</span>"
 
 #. module: project_timesheet_forecast
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_forecast_view_form_inherit_project_timesheet_forecast
@@ -44,12 +46,12 @@ msgstr "<span class=\"o_stat_text\">Zarejestrowane</span>"
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_planning_analysis_report__allocated_hours_cost
 msgid "Allocated Hours Cost"
-msgstr ""
+msgstr "Koszt alokowanych godzin"
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,help:project_timesheet_forecast.field_planning_analysis_report__remaining_hours
 msgid "Allocated hours minus the effective hours."
-msgstr ""
+msgstr "Alokacja godzin minus godziny efektywne."
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_planning_slot__allow_timesheets
@@ -69,7 +71,7 @@ msgstr "Przypisane do"
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_planning_slot__can_open_timesheets
 msgid "Can Open Timesheets"
-msgstr ""
+msgstr "Może otwierać karty pracy"
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__company_id
@@ -97,7 +99,7 @@ msgstr "Efektywne godziny"
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_planning_analysis_report__effective_hours_cost
 msgid "Effective Hours Cost"
-msgstr ""
+msgstr "Koszt godzin efektywnych"
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__employee_id
@@ -113,7 +115,7 @@ msgstr "Kodowanie JM w dniach"
 #. module: project_timesheet_forecast
 #: model:ir.actions.server,name:project_timesheet_forecast.planning_slot_generate_timesheet_action
 msgid "Generate Timesheets"
-msgstr ""
+msgstr "Generowanie kart pracy"
 
 #. module: project_timesheet_forecast
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
@@ -159,7 +161,7 @@ msgstr "Mój zespół"
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.planning_slot_view_search_inherit_project_timesheet_forecast
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_forecast_view_search_inherit_project_timesheet_forecast
 msgid "No Timesheets"
-msgstr ""
+msgstr "Brak kart pracy"
 
 #. module: project_timesheet_forecast
 #: model_terms:ir.actions.act_window,help:project_timesheet_forecast.project_timesheet_forecast_report_action
@@ -177,6 +179,8 @@ msgid ""
 "Number of hours on the employee's Timesheets for this task (and its sub-"
 "tasks) during the timeframe of the shift."
 msgstr ""
+"Liczba godzin na karcie pracy pracownika dla tego zadania (i jego podzadań) "
+"w ramach czasowych zmiany."
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,help:project_timesheet_forecast.field_planning_slot__effective_hours
@@ -184,6 +188,8 @@ msgid ""
 "Number of hours the employee recorded on their Timesheetes for this task "
 "(and its sub-tasks) for the period of this shift."
 msgstr ""
+"Liczba godzin zarejestrowanych przez pracownika na jego karcie pracy dla "
+"tego zadania (i jego podzadań) w okresie tej zmiany."
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__planned_hours
@@ -245,7 +251,7 @@ msgstr ""
 #. module: project_timesheet_forecast
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_analysis_view_tree
 msgid "Sum of Difference"
-msgstr ""
+msgstr "Suma różnic"
 
 #. module: project_timesheet_forecast
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_analysis_view_tree
@@ -255,27 +261,27 @@ msgstr "Suma godzin efektywnych"
 #. module: project_timesheet_forecast
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_analysis_view_tree
 msgid "Sum of Planned Hours"
-msgstr ""
+msgstr "Suma planowanych godzin"
 
 #. module: project_timesheet_forecast
 #: code:addons/project_timesheet_forecast/models/project_forecast.py:0
 #, python-format
 msgid "The timesheet entries have successfully been generated."
-msgstr ""
+msgstr "Wpisy na karcie pracy zostały pomyślnie wygenerowane."
 
 #. module: project_timesheet_forecast
 #: code:addons/project_timesheet_forecast/models/project_forecast.py:0
 #: code:addons/project_timesheet_forecast/models/project_forecast.py:0
 #, python-format
 msgid "There are no timesheets to generate or you don't have the right."
-msgstr ""
+msgstr "Nie ma kart pracy do wygenerowania lub nie masz prawa."
 
 #. module: project_timesheet_forecast
 #: code:addons/project_timesheet_forecast/models/project_forecast.py:0
 #, python-format
 msgid ""
 "This project isn't expected to have slot during this period. Planned hours :"
-msgstr ""
+msgstr "Ten projekt nie będzie miał slotów w tym okresie. Planowane godziny :"
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_planning_slot__timesheet_ids
@@ -286,13 +292,13 @@ msgstr "Karta pracy"
 #. module: project_timesheet_forecast
 #: model:ir.model,name:project_timesheet_forecast.model_project_timesheet_forecast_report_analysis
 msgid "Timesheet & Planning Statistics"
-msgstr ""
+msgstr "Karty pracy i statystyki planowania"
 
 #. module: project_timesheet_forecast
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_graph
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_pivot
 msgid "Timesheet and Planning Analysis"
-msgstr ""
+msgstr "Karta pracy i analiza planowania"
 
 #. module: project_timesheet_forecast
 #: code:addons/project_timesheet_forecast/models/project_forecast.py:0
@@ -311,7 +317,7 @@ msgstr "Arkusze czasu i analiza planowania"
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,help:project_timesheet_forecast.field_planning_slot__allow_timesheets
 msgid "Timesheets can be logged on this slot."
-msgstr ""
+msgstr "Karty pracy mogą być rejestrowane na tym slocie."
 
 #. module: project_timesheet_forecast
 #: model_terms:ir.actions.act_window,help:project_timesheet_forecast.project_timesheet_forecast_report_action
@@ -319,6 +325,8 @@ msgid ""
 "Track the progress of your projects by comparing the hours initially planned"
 " with the effective hours recorded"
 msgstr ""
+"Śledź postępy swoich projektów, porównując początkowo zaplanowane godziny z "
+"faktycznie zarejestrowanymi godzinami."
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__line_type
@@ -329,4 +337,4 @@ msgstr "Typ"
 #: code:addons/project_timesheet_forecast/models/project_forecast.py:0
 #, python-format
 msgid "You do not have the right to create timesheets."
-msgstr ""
+msgstr "Nie masz uprawnień do tworzenia kart pracy."

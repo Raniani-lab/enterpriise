@@ -3489,7 +3489,7 @@ msgstr "此收結記項不可重設為草稿，因為這樣做會刪除撥入下
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template
 msgid "[Draft]"
-msgstr ""
+msgstr "[草稿]"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.sales_report_main_template
@@ -3499,7 +3499,7 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template
 msgid "and correct their tax tags if necessary."
-msgstr ""
+msgstr "並在必要時更正其稅項標籤。"
 
 #. module: account_reports
 #: model:ir.model.fields.selection,name:account_reports.selection__res_company__account_tax_periodicity__year
@@ -3518,7 +3518,7 @@ msgstr "任意"
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
 #: model_terms:ir.ui.view,arch_db:account_reports.setup_financial_year_opening_form
 msgid "days after period"
-msgstr "（到期後幾多天）"
+msgstr "天(期間之後)"
 
 #. module: account_reports
 #: model:ir.model.fields.selection,name:account_reports.selection__res_company__account_tax_periodicity__2_months

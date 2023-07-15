@@ -123,7 +123,7 @@ msgstr ""
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #, python-format
 msgid " to "
-msgstr ""
+msgstr " do "
 
 #. module: web_studio
 #. odoo-python
@@ -137,7 +137,7 @@ msgstr "%s Raport"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "(id)"
-msgstr ""
+msgstr "(id)"
 
 #. module: web_studio
 #. odoo-javascript
@@ -523,13 +523,13 @@ msgstr "Zatwierdzenia można dokonać tylko na metodzie lub akcji, nie na obu."
 #: code:addons/web_studio/static/src/legacy/xml/approval_component.xml:0
 #, python-format
 msgid "Approve"
-msgstr "Aprobuj"
+msgstr "Zatwierdź"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__approved
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_entry_search_view
 msgid "Approved"
-msgstr "Zaaprobowane"
+msgstr "Zatwierdzone"
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.notify_approval
@@ -3827,7 +3827,7 @@ msgstr "Dostosowania w Studio"
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_studio_mixin
 msgid "Studio Mixin"
-msgstr ""
+msgstr "Studio Mixin"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3902,7 +3902,7 @@ msgstr "Zakładki"
 #: code:addons/web_studio/static/src/legacy/js/views/view_components.js:0
 #, python-format
 msgid "Tags"
-msgstr "Znaczniki"
+msgstr "Tagi"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4636,7 +4636,7 @@ msgstr "np. Nieruchomość"
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "left"
-msgstr "lewo"
+msgstr "lewy"
 
 #. module: web_studio
 #. odoo-javascript

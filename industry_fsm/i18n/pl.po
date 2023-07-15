@@ -88,6 +88,25 @@ msgid ""
 "</div>\n"
 "        "
 msgstr ""
+"<div>\n"
+"<t t-set=\"date_begin\" t-value=\"format_datetime(object.planned_date_begin, tz=object.partner_id.tz, lang_code=object.partner_id.lang)\"></t>\n"
+"\n"
+"<t t-set=\"date_end\" t-value=\"format_datetime(object.planned_date_end, tz=object.partner_id.tz, lang_code=object.partner_id.lang)\"></t>\n"
+"\n"
+"Szanowny <t t-out=\"object.partner_id.name or 'customer'\">kliencie</t>,<br><br>\n"
+"<t t-if=\"date_begin and date_end\">\n"
+"<t t-out=\"object.name or ''\">Interwencja serwisowa kotła</t> jest zaplanowana od <t t-out=\"date_begin or ''\">31.05.2021 12:30:00</t> do <t t-out=\"date_end or ''\">31.05.2021 14:30:00</t>.\n"
+"</t>\n"
+"<t t-else=\"\">\n"
+"<t t-out=\"object.name or ''\">Interwencja serwisowa kotła</t> jest zaplanowana.\n"
+"</t>\n"
+"<br><br>\n"
+"Z poważaniem,\n"
+"<t t-if=\"user.signature\">\n"
+"<br>\n"
+"<t t-out=\"user.signature or ''\">--<br>Mitchell Admin</t>\n"
+"</t>\n"
+"</div>"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.portal_task_sign_button
@@ -105,6 +124,12 @@ msgid ""
 "            </p>\n"
 "        "
 msgstr ""
+"<p>\n"
+"Szanowny <t t-out=\"object.partner_id.name or 'Customer'\">Kliencie</t>,<br><br>\n"
+"W załączniku znajduje się arkusz roboczy dla naszej operacji na miejscu. <br><br>\n"
+"W razie jakichkolwiek pytań prosimy o kontakt.<br><br>\n"
+"Z wyrazami szacunku,<br><br>\n"
+"</p>"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
@@ -424,7 +449,7 @@ msgstr "Wyświetlanie opcji Oznacz jako wykonane podstawowe"
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__display_mark_as_done_secondary
 msgid "Display Mark As Done Secondary"
-msgstr ""
+msgstr "Wyświetlanie opcji Oznacz jako zrobione Drugorzędny"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task_stop_timers_wizard__display_name
@@ -441,22 +466,22 @@ msgstr "Wyświetl liczbę spełnionych warunków"
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__display_send_report_primary
 msgid "Display Send Report Primary"
-msgstr ""
+msgstr "Wyświetlanie Wyślij raport główny"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__display_send_report_secondary
 msgid "Display Send Report Secondary"
-msgstr ""
+msgstr "Wyświetlanie Wyślij raport drugorzędny"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__display_sign_report_primary
 msgid "Display Sign Report Primary"
-msgstr ""
+msgstr "Wyświetl podpisz raport główny"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__display_sign_report_secondary
 msgid "Display Sign Report Secondary"
-msgstr ""
+msgstr "Wyświetl podpisz raport drugorzędny"
 
 #. module: industry_fsm
 #: model:ir.model.fields,help:industry_fsm.field_project_project__is_fsm
@@ -536,7 +561,7 @@ msgstr "Obsługa w terenie: Zaplanowana interwencja"
 #. module: industry_fsm
 #: model:mail.template,name:industry_fsm.mail_template_data_task_report
 msgid "Field Service: Task Report"
-msgstr ""
+msgstr "Serwis terenowy: Raport z zadania"
 
 #. module: industry_fsm
 #. odoo-javascript
@@ -784,7 +809,7 @@ msgstr "Moje ulubione projekty"
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "My Favorites Projects"
-msgstr ""
+msgstr "Moje ulubione projekty"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
@@ -854,7 +879,7 @@ msgstr "Brak zadań. Utwórzmy jakieś!"
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "Not Starred"
-msgstr ""
+msgstr "Nieoznaczony gwiazdką"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
@@ -1145,7 +1170,7 @@ msgstr "Suma godzin efektywnych"
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__tag_ids
 #: model:ir.ui.menu,name:industry_fsm.menu_project_tags_act
 msgid "Tags"
-msgstr "Znaczniki"
+msgstr "Tagi"
 
 #. module: industry_fsm
 #: model:ir.model,name:industry_fsm.model_project_task
@@ -1168,7 +1193,7 @@ msgstr "Zadanie wykonano"
 #. module: industry_fsm
 #: model:ir.actions.report,name:industry_fsm.task_custom_report
 msgid "Task Report"
-msgstr ""
+msgstr "Raport z zadania"
 
 #. module: industry_fsm
 #: model:ir.model,name:industry_fsm.model_report_industry_fsm_worksheet_custom
@@ -1215,7 +1240,7 @@ msgstr "Zadania wkrótce w godzinach nadliczbowych"
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "Tasks in Conflict"
-msgstr ""
+msgstr "Zadania w konflikcie"
 
 #. module: industry_fsm
 #. odoo-python
@@ -1390,6 +1415,8 @@ msgid ""
 "Worksheet {{ object.name }}{{ (' - ' + object.partner_id.name) if "
 "object.partner_id.name else '' }}.pdf"
 msgstr ""
+"Arkusz {{ object.name }}{{ (' - ' + object.partner_id.name) if "
+"object.partner_id.name else '' }}.pdf"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_project__allow_worksheets
@@ -1426,7 +1453,7 @@ msgstr "np. wymiana kotła"
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
 msgid "is FSM ?"
-msgstr ""
+msgstr "to FSM?"
 
 #. module: industry_fsm
 #: model:ir.actions.server,name:industry_fsm.fsm_customer_ratings_server_action
@@ -1441,4 +1468,4 @@ msgstr "dni roboczych na przypisanie"
 #. module: industry_fsm
 #: model:mail.template,subject:industry_fsm.mail_template_data_task_report
 msgid "{{ object.name }} Report"
-msgstr ""
+msgstr "{{ object.name }} Raport"

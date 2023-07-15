@@ -35,28 +35,28 @@ msgstr "giorni"
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Average Cycle Time"
-msgstr ""
+msgstr "Tempo di ciclo medio"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Average Delay"
-msgstr ""
+msgstr "Ritardo medio"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Avg cycle time"
-msgstr ""
+msgstr "Tempo di ciclo medio"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Avg delay"
-msgstr ""
+msgstr "Ritardo medio"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
@@ -151,28 +151,28 @@ msgstr "Quantità"
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Stock Moves Analysis by Destination Address "
-msgstr ""
+msgstr "Analisi movimenti stock in base all'indirizzo di destinazione"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Stock Moves Analysis by Destination Location"
-msgstr ""
+msgstr "Analisi movimenti stock in base all'ubicazione di destinazione"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Stock Moves Analysis by Product"
-msgstr ""
+msgstr "Analisi movimenti stock in base al prodotto"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Stock Moves Analysis by Warehouse"
-msgstr ""
+msgstr "Analisi movimenti stock in base al magazzino"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
@@ -186,7 +186,7 @@ msgstr "Ubicazioni migliori"
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Top Partners"
-msgstr ""
+msgstr "Partner migliori"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
@@ -200,7 +200,7 @@ msgstr "Prodotti principali"
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Top Warehouses"
-msgstr ""
+msgstr "Migliori magazzini"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
@@ -215,7 +215,7 @@ msgstr "Magazzino"
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Weekly Stock Moves"
-msgstr ""
+msgstr "Movimenti magazzino settimanali"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
@@ -223,7 +223,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "last period"
-msgstr ""
+msgstr "ultimo periodo"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
@@ -237,11 +237,11 @@ msgstr "dall'ultimo periodo"
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "stats - current"
-msgstr ""
+msgstr "statistiche-attuali"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "stats - previous"
-msgstr ""
+msgstr "statistiche-precedenti"

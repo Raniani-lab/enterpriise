@@ -44,4 +44,4 @@ msgstr "Poste du planning"
 #. module: planning_holidays
 #: model:ir.model,name:planning_holidays.model_resource_calendar_leaves
 msgid "Resource Time Off Detail"
-msgstr "Détails des congés de la ressource"
+msgstr "Détails des congés des ressources"

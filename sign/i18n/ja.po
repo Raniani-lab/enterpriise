@@ -473,7 +473,7 @@ msgstr "管理者"
 #: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Adopt Your Signature"
-msgstr ""
+msgstr "署名を承認する"
 
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_log__request_state__signed
@@ -641,6 +641,7 @@ msgid ""
 " all purposes when it is used on documents, including legally binding "
 "contracts."
 msgstr ""
+"承認＆署名をクリックすることにより、私は、選択した署名/イニシャルが、法的拘束力のある契約を含む文書に使用される場合、すべての目的において、私の手書きの署名/イニシャルの有効な電子署名となることに同意します。"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__message_cc
@@ -4051,7 +4052,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.green_report_el
 #: model_terms:ir.ui.view,arch_db:sign.green_report_el_pdf
 msgid "like"
-msgstr ""
+msgstr "以下のような："
 
 #. module: sign
 #: model:sign.item.type,tip:sign.sign_item_type_initial

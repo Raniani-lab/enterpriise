@@ -14,8 +14,8 @@
 # Dariusz Żbikowski <darek@krokus.com.pl>, 2022
 # Natalia Gros <nag@odoo.com>, 2022
 # Piotr Szlązak <szlazakpiotr@gmail.com>, 2022
-# Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023
 # Tadeusz Karpiński <tadeusz.karpinski@braintec.com>, 2023
+# Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -23,7 +23,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-06-09 14:09+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Tadeusz Karpiński <tadeusz.karpinski@braintec.com>, 2023\n"
+"Last-Translator: Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023\n"
 "Language-Team: Polish (https://app.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -310,7 +310,7 @@ msgstr "Zarządzanie gotówką"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Cash Pooling"
-msgstr ""
+msgstr "Łączenie gotówki"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -758,7 +758,7 @@ msgstr "Wypłata"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Drawing"
-msgstr ""
+msgstr "Zgłoszenie"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -788,13 +788,13 @@ msgstr "Rezerwa na premie kapitałowe"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Equity mark broker owned"
-msgstr ""
+msgstr "Posiadany przez brokera znak towarowy"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Equity mark client owned"
-msgstr ""
+msgstr "Znak towarowy należący do klienta"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1018,7 +1018,7 @@ msgstr "Gwarancje"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Inspeci/Share Exchange"
-msgstr ""
+msgstr "Inspeci/Giełda Papierów Wartościowych"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/models/account_journal.py:0
@@ -1301,7 +1301,7 @@ msgstr "Depozyty zawiadomień"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Notice Loans"
-msgstr ""
+msgstr "Powiadomienie o pożyczkach"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1642,13 +1642,13 @@ msgstr "Spłata"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Repo"
-msgstr ""
+msgstr "Repo"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Repurchase offer/Issuer Bid/Reverse Rights."
-msgstr ""
+msgstr "Oferta odkupu/Oferta kupna/Prawa odwrotne."
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1699,7 +1699,7 @@ msgstr "Odwrócenie z powodu wniosku o anulowanie płatności"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Reverse Repo"
-msgstr ""
+msgstr "Odwrotne Repo"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1712,14 +1712,14 @@ msgstr "Emisja Praw Poboru/Prawo Poboru/Oferta Praw Poboru"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "SEPA B2B Direct Debit"
-msgstr ""
+msgstr "Polecenie zapłaty SEPA B2B"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "SEPA Core Direct Debit"
-msgstr ""
+msgstr "Polecenie zapłaty SEPA Core"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0

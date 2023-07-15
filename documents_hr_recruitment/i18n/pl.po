@@ -83,7 +83,7 @@ msgstr "Utwórz aplikanta"
 #. module: documents_hr_recruitment
 #: model_terms:ir.ui.view,arch_db:documents_hr_recruitment.res_config_settings_view_form
 msgid "Default Tags"
-msgstr "Domyślne znaczniki"
+msgstr "Domyślne tagi"
 
 #. module: documents_hr_recruitment
 #: code:addons/documents_hr_recruitment/models/hr_applicant.py:0

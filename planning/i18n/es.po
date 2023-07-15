@@ -2173,8 +2173,9 @@ msgid ""
 "This open shift is no longer available, or the planning has been updated in "
 "the meantime. Please contact your manager for further information."
 msgstr ""
-"Este turno abierto ya no está disponible o la planeación ha sido actualizada"
-" desde entonces. Contacte a su gerente para obtener más información."
+"Este turno abierto ya no está disponible o la planificación ha sido "
+"actualizada desde entonces. Contacte a su responsable para obtener más "
+"información."
 
 #. module: planning
 #. odoo-javascript

@@ -124,7 +124,7 @@ msgstr "تم تسجيل الدخول! "
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,help:mrp_workorder_hr.field_mrp_routing_workcenter__employee_ratio
 msgid "Number of employees needed to complete operation."
-msgstr ""
+msgstr "عدد الموظفين المطلوبين لإتمام العملية. "
 
 #. module: mrp_workorder_hr
 #. odoo-javascript

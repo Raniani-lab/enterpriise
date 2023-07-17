@@ -2086,4 +2086,36 @@ QUnit.module("Views", (hooks) => {
         await triggerEvent(target, ".o_grid_cell input", "keydown", { key: "enter" });
         checkGridCellInRightPlace("2", "2");
     });
+
+    QUnit.test("Add custom buttons in grid view", async function (assert) {
+        await makeView({
+            type: "grid",
+            resModel: "analytic.line",
+            serverData,
+            arch: `<grid editable="1">
+                <button name="action_test" string="Test" />
+                <button name="action_test_invisible" string="Test Invisible" invisible="not context.get('coucou', False)"/>
+                <field name="project_id" type="row"/>
+                <field name="task_id" type="row"/>
+                <field name="date" type="col">
+                    <range name="week" string="Week" span="week" step="day"/>
+                    <range name="month" string="Month" span="month" step="day"/>
+                </field>
+                <field name="unit_amount" type="measure" widget="float_time"/>
+            </grid>`,
+            async mockRPC(route, args) {
+                if (args.method === "grid_unavailability") {
+                    return {};
+                }
+            },
+        });
+
+        assert.containsN(
+            target,
+            "button[name='action_test']",
+            2, // the second one is invisible for responsive.
+            "The custom button should be visible",
+        );
+        assert.containsNone(target, "button[name='action_test_invisible']");
+    });
 });

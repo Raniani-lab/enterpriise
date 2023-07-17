@@ -624,19 +624,13 @@ class AccountEdiFormat(models.Model):
                     total_taxes_withheld[tax_class]['amount_curr'] += tax_val_pay_curr
 
         # CFDI 4.0: rounding needs to be done after all DRs are added
-        # We round up for the currency rate and down for the tax values because we lost a lot of time to find out
-        # that Finkok only accepts it this way.  The other PACs accept either way and are reasonable.
-        # To prevent floating point errors we first do a classic round with high precision
         for v in total_taxes_paid.values():
-            v['base_value'] = float_round(v['base_value'], 10)
-            v['base_value'] = float_round(v['base_value'], move.currency_id.decimal_places, rounding_method='DOWN')
-            v['tax_value'] = float_round(v['tax_value'], 10)
-            v['tax_value'] = float_round(v['tax_value'], move.currency_id.decimal_places, rounding_method='DOWN')
+            v['base_value'] = float_round(v['base_value'], move.currency_id.decimal_places)
+            v['tax_value'] = float_round(v['tax_value'], move.currency_id.decimal_places)
             v['base_value_mxn'] = float_round(v['base_value'] * rate_payment_curr_mxn_40, mxn_currency.decimal_places)
             v['tax_value_mxn'] = float_round(v['tax_value'] * rate_payment_curr_mxn_40, mxn_currency.decimal_places)
         for v in total_taxes_withheld.values():
-            v['amount_curr'] = float_round(v['amount_curr'], 10)
-            v['amount_curr'] = float_round(v['amount_curr'], move.currency_id.decimal_places, rounding_method='DOWN')
+            v['amount_curr'] = float_round(v['amount_curr'], move.currency_id.decimal_places)
             v['amount_mxn'] = float_round(v['amount_curr'] * rate_payment_curr_mxn_40, mxn_currency.decimal_places)
 
         cfdi_values = {

@@ -4,7 +4,8 @@
 from datetime import timedelta, date
 from pytz import timezone, UTC
 
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
+from odoo.fields import Command
 from odoo.tools import format_datetime, format_time
 
 
@@ -111,15 +112,12 @@ class SaleOrderLine(models.Model):
             return_date_part,
         )
 
-    def _generate_delay_line(self, qty):
+    def _generate_delay_line(self, qty_returned):
         """Generate a sale order line representing the delay cost due to the late return.
 
-        :param float qty:
-        :param timedelta duration:
+        :param float qty_returned: returned quantity
         """
         self.ensure_one()
-        if qty <= 0 or not self.is_late:
-            return
 
         self = self.with_company(self.company_id)
         duration = fields.Datetime.now() - self.return_date
@@ -148,23 +146,19 @@ class SaleOrderLine(models.Model):
         if not delay_product.active:
             return
 
-        delay_price = self._convert_to_sol_currency(
-            delay_price,
-            self.product_id.currency_id,
-        )
+        delay_price = self._convert_to_sol_currency(delay_price, self.product_id.currency_id)
 
-        vals = self._prepare_delay_line_vals(delay_product, delay_price, qty)
+        order_line_vals = self._prepare_delay_line_vals(delay_product, delay_price * qty_returned)
 
         self.order_id.write({
-            'order_line': [(0, 0, vals)]
+            'order_line': [Command.create(order_line_vals)],
         })
 
-    def _prepare_delay_line_vals(self, delay_product, delay_price, qty):
+    def _prepare_delay_line_vals(self, delay_product, delay_price):
         """Prepare values of delay line.
 
-        :param float delay_price:
-        :param float quantity:
         :param delay_product: Product used for the delay_line
+        :param float delay_price: Price of the delay line
         :type delay_product: product.product
         :return: sale.order.line creation values
         :rtype dict:
@@ -173,21 +167,21 @@ class SaleOrderLine(models.Model):
         return {
             'name': delay_line_description,
             'product_id': delay_product.id,
-            'product_uom_qty': qty,
-            'product_uom': self.product_id.uom_id.id,
-            'qty_delivered': qty,
+            'product_uom_qty': 1,
+            'qty_delivered': 1,
             'price_unit': delay_price,
         }
 
     def _get_delay_line_description(self):
         # Shouldn't tz be taken from self.order_id.user_id.tz ?
         tz = self._get_tz()
-        return "%s\n%s: %s\n%s: %s" % (
+        env = self.with_context(use_babel=True).env
+        expected_date = format_datetime(env, self.return_date, tz=tz, dt_format=False)
+        now = format_datetime(env, fields.Datetime.now(), tz=tz, dt_format=False)
+        return "%s\n%s\n%s" % (
             self.product_id.name,
-            _("Expected"),
-            format_datetime(self.with_context(use_babel=True).env, self.return_date, tz=tz, dt_format=False),
-            _("Returned"),
-            format_datetime(self.with_context(use_babel=True).env, fields.Datetime.now(), tz=tz, dt_format=False)
+            _("Expected: %(date)s", date=expected_date),
+            _("Returned: %(date)s", date=now),
         )
 
     #=== ONCHANGE METHODS ===#

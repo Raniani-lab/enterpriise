@@ -11,6 +11,7 @@ from odoo.osv import expression
 from odoo.exceptions import UserError
 from odoo.tools import topological_sort
 from odoo.addons.resource.models.utils import filter_domain_leaf
+from odoo.osv.expression import is_leaf
 
 from odoo.addons.resource.models.utils import Intervals, sum_intervals, string_to_datetime
 
@@ -334,11 +335,12 @@ class Task(models.Model):
     @api.model
     def _group_expand_user_ids(self, users, domain, order):
         """ Group expand by user_ids in gantt view :
-            all users which have and open task in this project + the current user
+            all users which have and open task in this project + the current user if not filtered by assignee
         """
         start_date = self._context.get('gantt_start_date')
         scale = self._context.get('gantt_scale')
-        if not (start_date and scale):
+        if not (start_date and scale) or any(
+                is_leaf(elem) and elem[0] == 'user_ids' for elem in domain):
             return self.env['res.users']
 
         last_start_date = fields.Datetime.from_string(start_date) - relativedelta(**{f"{scale}s": 1})

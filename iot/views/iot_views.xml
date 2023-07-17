@@ -172,7 +172,7 @@
                         <div class="oe_kanban_global_click p-0">
                             <div class="row g-0">
                                 <div class="col-3 p-2 text-center align-self-center">
-                                    <t t-set="types" t-value="{'camera': 'camera', 'printer': 'printer', 'device': 'caliper', 'payment': 'payment-terminal', 'scale': 'scales', 'keyboard': 'keyboard', 'scanner': 'barcode-scanner', 'display': 'desktop', 'fiscal_data_module': 'box'}"/>
+                                    <t t-set="types" t-value="{'camera': 'camera', 'printer': 'printer', 'device': 'rulers', 'payment': 'payment-terminal', 'scale': 'scales', 'keyboard': 'keyboard', 'scanner': 'barcode-scanner', 'display': 'desktop', 'fiscal_data_module': 'fdm'}"/>
                                     <img t-attf-src="iot/static/src/img/#{types[record.type.raw_value]}.svg" t-attf-alt="Device type is #{record.type.raw_value}"/>
                                 </div>
                                 <div class="col-9 p-2 border-start">

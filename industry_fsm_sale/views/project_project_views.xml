@@ -11,10 +11,10 @@
                     attrs="{'invisible': ['|', '|', ('allow_timesheets', '=', False), ('pricing_type', '=', False), ('is_fsm', '=', False)], 'required': [('is_fsm', '=', True), ('allow_billable', '=', True), ('allow_timesheets', '=', True)]}"/>
             </xpath>
             <xpath expr="//page[@name='settings']//group/field[@name='sale_line_id']" position="attributes">
-                <attribute name="attrs">{'invisible': [('is_fsm', '=', True)]}</attribute>
+                <attribute name="attrs">{'invisible': ['|', '|', ('is_fsm', '=', True), ('allow_billable', '=', False), ('partner_id', '=', False)]}</attribute>
             </xpath>
             <xpath expr="//page[@name='settings']//group/field[@name='sale_line_id'][2]" position="attributes">
-                <attribute name="attrs">{'invisible': [('is_fsm', '=', True)]}</attribute>
+                <attribute name="attrs">{'invisible': ['|', '|', ('is_fsm', '=', True), ('allow_billable', '=', False), ('partner_id', '=', False)]}</attribute>
             </xpath>
 
             <xpath expr="//field[@name='sale_line_employee_ids']/tree/field[@name='sale_line_id']" position="attributes">

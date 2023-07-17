@@ -50,7 +50,7 @@ class AccountMove(models.Model):
                 ])
                 for quote in renewal_quotes:
                     next_invoice_date = quote.subscription_id.next_invoice_date
-                    if quote.start_date and quote.start_date < next_invoice_date:
+                    if not quote.start_date or quote.start_date < next_invoice_date:
                         quote.update({
                             'next_invoice_date': next_invoice_date,
                             'start_date': next_invoice_date,

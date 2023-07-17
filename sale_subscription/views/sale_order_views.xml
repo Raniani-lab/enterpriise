@@ -32,9 +32,9 @@
             <button name="action_cancel" position="attributes">
                 <attribute name="attrs">
                     {'invisible': [ '|', ('id', '=', False),
-                                    '|', '&amp;', ('is_subscription','=',False), ('state', 'not in', ['draft', 'sent', 'sale']),
+                                    '|', '&amp;', ('is_subscription','=',False), ('state', 'not in', ['draft', 'sent']),
                                     '&amp;', ('is_subscription','=',True),
-                                            '|', ('state', 'not in', ['draft', 'sent']), ('state', 'in', ['cancel'])]
+                                            '|', '|', ('state', 'not in', ['draft', 'sent', 'sale']), ('invoice_count', '>', 0), ('state', 'in', ['cancel'])]
                     }
                 </attribute>
             </button>

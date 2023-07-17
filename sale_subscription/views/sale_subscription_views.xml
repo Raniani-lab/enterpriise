@@ -564,6 +564,7 @@ if records:
     <menuitem action="sale_subscription_action_quotes" id="menu_sale_subscription_quotes" sequence="20" parent="menu_sale_subscription"/>
     <menuitem action="sale_subscription_action_pending" id="menu_sale_subscription_pending" sequence="30" parent="menu_sale_subscription"/>
     <menuitem action="sale_subscription_action_upsell" id="menu_sale_subscription_upsell" sequence="40" parent="menu_sale_subscription"/>
+    <menuitem id="menu_orders_customers" name="Customers" action="account.res_partner_action_customer" sequence="50" parent="menu_sale_subscription"/>
 
     <menuitem id="product_menu_catalog"
             name="Products"

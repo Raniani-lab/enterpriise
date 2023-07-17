@@ -793,6 +793,8 @@ class AccountAsset(models.Model):
     def set_to_close(self, invoice_line_ids, date=None, message=None):
         self.ensure_one()
         disposal_date = date or fields.Date.today()
+        if disposal_date <= self.company_id._get_user_fiscal_lock_date():
+            raise UserError(_("You cannot dispose of an asset before the lock date."))
         if invoice_line_ids and self.children_ids.filtered(lambda a: a.state in ('draft', 'open') or a.value_residual > 0):
             raise UserError(_("You cannot automate the journal entry for an asset that has a running gross increase. Please use 'Dispose' on the increase(s)."))
         full_asset = self + self.children_ids

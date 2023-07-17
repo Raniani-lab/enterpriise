@@ -4060,7 +4060,7 @@ class AccountReport(models.Model):
         # since custom reports could alter them (e.g. for multi-currency purposes)
         columns = [col for col in options['columns'] if col['column_group_key'] == next(k for k in options['column_groups'])]
 
-        # Compute the colspan of each header level, aka the number of single columns it contains at the base ot the hierarchy
+        # Compute the colspan of each header level, aka the number of single columns it contains at the base of the hierarchy
         level_colspan_list = column_headers_render_data['level_colspan'] = []
         for i in range(len(options['column_headers'])):
             colspan = max(len(columns), 1)

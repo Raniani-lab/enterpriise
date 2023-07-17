@@ -205,7 +205,7 @@ class LuxembourgishFinancialReportCustomHandler(models.AbstractModel):
                 references, names = _get_references(report)
                 # Only add those references on accounts with reported values (for the current or previous year);
                 # the reference has an eCDF code equal to the report code of the referred account for the current year + 1000,
-                # ot equal to the report code of the ref. account for the previous year + 999
+                # to equal to the report code of the ref. account for the previous year + 999
                 references = {r: references[r] for r in references
                               if str(int(r) - 1000) in form['field_values'] or str(int(r) - 999) in form['field_values']}
                 names = {r: names[r] for r in references

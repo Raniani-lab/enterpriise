@@ -100,7 +100,7 @@
         <field name="show_name">False</field>
         <field name="res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'company_bike_depreciated_cost')])"/>
         <field name="cost_res_field_id" model="ir.model.fields" eval="obj().search([('model', '=', 'hr.contract'), ('name', '=', 'company_bike_depreciated_cost')])"/>
-        <field name="sequence">22</field>
+        <field name="sequence">12</field>
         <field name="advantage_type_id" ref="hr_contract_salary.l10n_be_monthly_benefit"/>
         <field name="structure_type_id" ref="hr_contract.structure_type_employee_cp200"/>
         <field name="folded" eval="True"/>

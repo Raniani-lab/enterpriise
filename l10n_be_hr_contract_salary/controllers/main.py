@@ -37,6 +37,7 @@ class SignContract(Sign):
                 contract.update({
                     'new_car': False,
                     'new_car_model_id': False,
+                    'transport_mode_car': True,
                 })
                 contract.car_id = Vehicle.create(dict(vehicle_vals, **{
                     'model_id': model.id,
@@ -54,6 +55,7 @@ class SignContract(Sign):
                 contract.update({
                     'new_bike': False,
                     'new_bike_model_id': False,
+                    'transport_mode_bike': True,
                 })
                 contract.bike_id = Vehicle.create(dict(vehicle_vals, **{
                     'model_id': model.id,

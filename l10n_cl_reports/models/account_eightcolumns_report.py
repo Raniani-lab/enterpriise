@@ -68,16 +68,16 @@ class ChileanReportCustomHandler(models.AbstractModel):
             lines.append((0, line))
 
         # Subtotals line
-        lines.append((0, self._create_report_total_line(report, options, subtotals_dict, _("Subtotal"), 2)))
+        lines.append((0, self._create_report_total_line(report, options, subtotals_dict, _("Subtotal"), 2, markup='subtotals')))
         # Fiscal year results line
-        lines.append((0, self._create_report_total_line(report, options, fiscalyear_result_dict, _("Profit and Loss"), 3)))
+        lines.append((0, self._create_report_total_line(report, options, fiscalyear_result_dict, _("Profit and Loss"), 3, markup='fiscalyear_result')))
         # Previous year unallocated earnings line
         unalloc_line = self._create_report_total_line(
-            report, options, previous_years_unallocated_earnings_dict, _("Previous years unallocated earnings"), 3)
+            report, options, previous_years_unallocated_earnings_dict, _("Previous years unallocated earnings"), 3, markup='previous_years_unallocated_earnings')
         if any(not self.env.company.currency_id.is_zero(column['no_format']) for column in unalloc_line['columns']):
             lines.append((0, unalloc_line))
         # General total line
-        lines.append((0, self._create_report_total_line(report, options, totals_dict, _("Total"), 1)))
+        lines.append((0, self._create_report_total_line(report, options, totals_dict, _("Total"), 1, markup='general_total')))
 
         return lines
 
@@ -140,7 +140,7 @@ class ChileanReportCustomHandler(models.AbstractModel):
             'level': 2,
         }
 
-    def _create_report_total_line(self, report, options, total_vals, name, level=1):
+    def _create_report_total_line(self, report, options, total_vals, name, level=1, markup=''):
         """ Create a total line for the report
         :param options: report options
         :param total_vals: values necessary for the line
@@ -162,7 +162,7 @@ class ChileanReportCustomHandler(models.AbstractModel):
                 expression_label=column['expression_label'],
             ))
         return {
-            'id': report._get_generic_line_id(None, None, markup='total'),
+            'id': report._get_generic_line_id(None, None, markup=markup),
             'name': name,
             'level': level,
             'columns': columns,

@@ -64,4 +64,11 @@
         action="appointment_invite_action"
         groups="base.group_no_one"/>
 
+    <menuitem
+        id="menu_appointment_invite"
+        parent="calendar.calendar_menu_config"
+        action="resource.action_resource_calendar_leave_tree"
+        groups="base.group_no_one"
+        name="Manage Resource Leaves"/>
+
 </odoo>

@@ -1048,6 +1048,11 @@ class AppointmentType(models.Model):
             if resource_to_bookings[resource].filtered(lambda bl: bl.event_start < slot_end_dt_utc and bl.event_stop > slot_start_dt_utc):
                 return resource.shareable if self.resource_manage_capacity else False
 
+        slot_start_dt_utc_l, slot_end_dt_utc_l = pytz.utc.localize(slot_start_dt_utc), pytz.utc.localize(slot_end_dt_utc)
+        for i_start, i_stop in availability_values.get('resource_unavailabilities', {}).get(resource, []):
+            if i_start != i_stop and not i_stop <= slot_start_dt_utc_l and not i_start >= slot_end_dt_utc_l:
+                return False
+
         return True
 
     def _get_resources_remaining_capacity(self, resources, slot_start_utc, slot_stop_utc, resource_to_bookings=None, with_linked_resources=True, filter_resources=None):
@@ -1156,7 +1161,9 @@ class AppointmentType(models.Model):
               (see ``_slot_availability_prepare_resources_bookings_values()``);
           }
         """
-        return self._slot_availability_prepare_resources_bookings_values(resources, start_dt_utc, end_dt_utc)
+        resources_values = self._slot_availability_prepare_resources_bookings_values(resources, start_dt_utc, end_dt_utc)
+        resources_values.update(self._slot_availability_prepare_resources_leave_values(resources, start_dt_utc, end_dt_utc))
+        return resources_values
 
     def _slot_availability_prepare_resources_bookings_values(self, resources, start_dt_utc, end_dt_utc):
         """ This method computes bookings of resources between start_dt and end_dt
@@ -1193,3 +1200,25 @@ class AppointmentType(models.Model):
         return {
             'resource_to_bookings': resource_to_bookings,
         }
+
+    def _slot_availability_prepare_resources_leave_values(self, appointment_resources, start_dt_utc, end_dt_utc):
+        """Retrieve a list of unavailabilities for each resource.
+
+        :param <appointment.resource> appointment_resources: resources to get unavalabilities for;
+        :param datetime start_dt_utc: beginning of appointment check boundary. Timezoned to UTC;
+        :param datetime end_dt_utc: end of appointment check boundary. Timezoned to UTC;
+        :return: dict mapping resource ids to ordered list of unavailable datetime intervals
+           {
+             resource_unavailabilities: {
+               <appointment.resource, 1>: [
+                   [datetime(2022, 07, 07, 12, 0, 0), datetime(2022, 07, 07, 13, 0, 0)],
+                   [datetime(2022, 07, 07, 16, 0, 0), datetime(2022, 07, 08, 06, 0, 0)],
+                   ...],
+               ...
+             }
+           }
+        """
+        unavailabilities = appointment_resources.sudo().resource_id._get_unavailable_intervals(start_dt_utc, end_dt_utc)
+        return {'resource_unavailabilities': {
+            resource: unavailabilities.get(resource.sudo().resource_id.id, []) for resource in appointment_resources
+        }}

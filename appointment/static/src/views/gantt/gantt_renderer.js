@@ -10,7 +10,7 @@ export class AppointmentBookingGanttRenderer extends GanttRenderer {
         ...GanttRenderer.components,
         Popover: AppointmentBookingGanttPopover,
     }
-    static headerTemplate = "web_gantt.GanttRenderer.Header";
+    static headerTemplate = "appointment.AppointmentBookingGanttRenderer.Header";
 
     /**
      * @override
@@ -40,6 +40,27 @@ export class AppointmentBookingGanttRenderer extends GanttRenderer {
             enrichedPill.className += ` o_gantt_color_${color}`;
         }
         return enrichedPill;
+    }
+
+    /**
+     * Display 'Add Leaves' action button if grouping by appointment resources.
+     */
+    get showAddLeaveButton() {
+        return !!(this.model.metaData.groupedBy && this.model.metaData.groupedBy[0] === 'appointment_resource_id');
+    }
+
+    async onClickAddLeave() {
+        this.env.services.action.doAction({
+            name: this.env._t("Add a Leave"),
+            type: "ir.actions.act_window",
+            res_model: "appointment.manage.leaves",
+            view_mode: "form",
+            views: [[false, "form"]],
+            target: "new",
+            context: {},
+        }, {
+            onClose: () => this.model.fetchData(),
+        });
     }
 
     /**

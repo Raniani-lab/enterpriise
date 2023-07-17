@@ -65,7 +65,7 @@
         <field name="name">calendar.event.view.tree.booking</field>
         <field name="model">calendar.event</field>
         <field name="arch" type="xml">
-            <tree sample="1" decoration-danger="not active">
+            <tree sample="1" decoration-danger="not active" js_class="appointment_booking_list">
                 <field name="active" invisible="1"/>
                 <field name="name" string="Subject"/>
                 <field name="appointment_type_id"/>

@@ -15,6 +15,9 @@ access_calendar_alarm_portal,calendar.alarm.all,calendar.model_calendar_alarm,ba
 access_calendar_alarm_employee,calendar.alarm.all,calendar.model_calendar_alarm,base.group_user,1,0,0,0
 access_appointment_invite_user,appointment.invite.user,model_appointment_invite,base.group_user,1,1,1,0
 access_appointment_invite_manager,appointment.invite.manager,model_appointment_invite,group_appointment_manager,1,1,1,1
+access_appointment_manage_leaves_all,appointment.manage.leaves.all,model_appointment_manage_leaves,,0,0,0,0
+access_appointment_manage_leaves_user,appointment.manage.leaves.user,model_appointment_manage_leaves,base.group_user,0,0,0,0
+access_appointment_manage_leaves_manager,appointment.manage.leaves.manager,model_appointment_manage_leaves,group_appointment_manager,1,1,1,1
 access_appointment_onboarding_link_all,appointment.onboarding.link.all,model_appointment_onboarding_link,,0,0,0,0
 access_appointment_onboarding_link_user,appointment.onboarding.link.user,model_appointment_onboarding_link,base.group_user,0,0,0,0
 access_appointment_onboarding_link_manager,appointment.onboarding.link.manager,model_appointment_onboarding_link,group_appointment_manager,1,1,1,1

@@ -24,13 +24,13 @@ class TrialBalanceCustomHandler(models.AbstractModel):
             raise UserError(_("Only Mexican company can generate SAT report."))
 
         sat_values = self._l10n_mx_get_sat_values(options)
-        file_name = f"{sat_values['vat']}{sat_values['year']}{sat_values['month']}"
+        file_name = f"{sat_values['vat']}{sat_values['year']}{sat_values['month']}BN"
         sat_report = etree.fromstring(self.env['ir.qweb']._render('l10n_mx_reports.cfdibalance', sat_values))
 
         self.env['ir.attachment'].l10n_mx_reports_validate_xml_from_attachment(sat_report, 'xsd_mx_cfdibalance_1_3.xsd')
 
         return {
-            'file_name': f"{file_name}CT.xml",
+            'file_name': f"{file_name}.xml",
             'file_content': etree.tostring(sat_report, pretty_print=True, xml_declaration=True, encoding='utf-8'),
             'file_type': 'xml',
         }

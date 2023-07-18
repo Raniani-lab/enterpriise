@@ -433,7 +433,6 @@ class BankRecWidgetLine(models.Model):
     def _get_aml_values(self, **kwargs):
         self.ensure_one()
         return {
-            **kwargs,
             'name': self.name,
             'account_id': self.account_id.id,
             'currency_id': self.currency_id.id,
@@ -445,4 +444,5 @@ class BankRecWidgetLine(models.Model):
             'tax_ids': [Command.set(self.tax_ids.ids)],
             'tax_tag_ids': [Command.set(self.tax_tag_ids.ids)],
             'group_tax_id': self.group_tax_id.id,
+            **kwargs,
         }

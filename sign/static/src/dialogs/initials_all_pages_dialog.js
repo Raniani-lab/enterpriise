@@ -21,9 +21,23 @@ export class InitialsAllPagesDialog extends Component {
         this.props.addInitial(this.currentRole, true);
         this.props.close();
     }
+
+    get dialogProps() {
+        return {
+            size: "md",
+            title: this.env._t("Add Initials"),
+        };
+    }
 }
 
 InitialsAllPagesDialog.template = "sign.InitialsAllPagesDialog";
 InitialsAllPagesDialog.components = {
     Dialog,
+};
+
+InitialsAllPagesDialog.props = {
+    addInitial: Function,
+    close: Function,
+    roles: Object,
+    responsible: Number,
 };

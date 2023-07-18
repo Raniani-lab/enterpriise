@@ -11,7 +11,7 @@ registry.category("web_tour.tours").add(
     {
         test: true,
         url: "/web",
-        steps: [
+        steps: () => [
         ...stepUtils.goToAppSteps("documents.menu_root", "Open Document app"),
         {
             trigger: `div[title="${SHEET_NAME}"]`,

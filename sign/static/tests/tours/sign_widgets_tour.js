@@ -10,7 +10,7 @@ var _t = core._t;
 registry.category("web_tour.tours").add("sign_widgets_tour", {
     test: true,
     url: "/web",
-    steps: [
+    steps: () => [
         stepUtils.showAppsMenuItem(),
         {
             content: "Settings",

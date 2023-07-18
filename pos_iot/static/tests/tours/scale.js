@@ -23,7 +23,7 @@ class PosScaleDummy {
 registry.category("web_tour.tours").add("pos_iot_scale_tour", {
     url: "/web",
     test: true,
-    steps: [
+    steps: () => [
         stepUtils.showAppsMenuItem(),
         {
             trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"]',

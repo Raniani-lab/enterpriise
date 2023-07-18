@@ -8,7 +8,7 @@ import { stepUtils } from "@web_tour/tour_service/tour_utils";
 registry.category("web_tour.tours").add('knowledge_article_command_tour', {
     url: '/web',
     test: true,
-    steps: [stepUtils.showAppsMenuItem(), {
+    steps: () => [stepUtils.showAppsMenuItem(), {
     // open the Knowledge App
     trigger: '.o_app[data-menu-xmlid="knowledge.knowledge_menu_root"]',
 }, ...appendArticleLink('[name="body"]', "EditorCommandsArticle"),
@@ -24,7 +24,7 @@ const composeBody = '.modal-dialog:contains(Compose Email) [name="body"]';
 registry.category("web_tour.tours").add('knowledge_article_command_dialog_tour', {
     url: '/web',
     test: true,
-    steps: [stepUtils.showAppsMenuItem(), {
+    steps: () => [stepUtils.showAppsMenuItem(), {
     // open the Knowledge App
     trigger: '.o_app[data-menu-xmlid="knowledge.knowledge_menu_root"]',
 }, { // open the chatter

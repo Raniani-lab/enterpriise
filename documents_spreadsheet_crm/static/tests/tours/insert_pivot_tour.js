@@ -7,7 +7,7 @@ registry.category("web_tour.tours").add(
     {
         test: true,
         url: "/web",
-        steps: [
+        steps: () => [
         {
             trigger: '.o_app[data-menu-xmlid="crm.crm_menu_root"]',
             content: "Open CRM app",

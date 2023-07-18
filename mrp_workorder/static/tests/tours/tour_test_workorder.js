@@ -3,7 +3,7 @@
 import { registry } from "@web/core/registry";
 import helper from 'mrp_workorder.tourHelper';
 
-registry.category("web_tour.tours").add('test_add_component', {test: true, steps: [
+registry.category("web_tour.tours").add('test_add_component', {test: true, steps: () => [
     {
         trigger: '.o_tablet_client_action',
         run: function () {
@@ -208,7 +208,7 @@ registry.category("web_tour.tours").add('test_add_component', {test: true, steps
     {trigger: '.o_searchview_input'},
 ]});
 
-registry.category("web_tour.tours").add('test_add_step', {test: true, steps: [
+registry.category("web_tour.tours").add('test_add_step', {test: true, steps: () => [
     { trigger: '.o_tablet_client_action' },
     {
         trigger: 'input[id="qty_producing_0"]',
@@ -301,7 +301,7 @@ registry.category("web_tour.tours").add('test_add_step', {test: true, steps: [
     { trigger: '.o_searchview_input' },
 ]});
 
-registry.category("web_tour.tours").add('test_remove_step', {test: true, steps: [
+registry.category("web_tour.tours").add('test_remove_step', {test: true, steps: () => [
     { trigger: '.o_tablet_client_action' },
     {
         trigger: 'input[id="qty_producing_0"]',
@@ -442,7 +442,7 @@ registry.category("web_tour.tours").add('test_remove_step', {test: true, steps: 
     { trigger: '.o_searchview_input' },
 ]});
 
-registry.category("web_tour.tours").add('test_update_step', {test: true, steps: [
+registry.category("web_tour.tours").add('test_update_step', {test: true, steps: () => [
     { trigger: '.o_tablet_client_action' },
     {
         trigger: 'input[id="qty_producing_0"]',
@@ -552,7 +552,7 @@ registry.category("web_tour.tours").add('test_update_step', {test: true, steps: 
     { trigger: '.o_searchview_input' },
 ]});
 
-registry.category("web_tour.tours").add('test_serial_tracked_and_register', {test: true, steps: [
+registry.category("web_tour.tours").add('test_serial_tracked_and_register', {test: true, steps: () => [
     {
         trigger: '.o_tablet_client_action',
         run: function() {

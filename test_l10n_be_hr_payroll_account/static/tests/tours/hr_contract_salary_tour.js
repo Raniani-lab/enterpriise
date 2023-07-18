@@ -7,7 +7,7 @@ registry.category("web_tour.tours").add('hr_contract_salary_tour', {
         test: true,
         url: '/my',
         wait_for: Promise.resolve(odoo.__TipTemplateDef),
-        steps: [
+        steps: () => [
         {
             content: "Go on configurator",
             trigger: '.navbar',
@@ -711,7 +711,7 @@ registry.category("web_tour.tours").add('hr_contract_salary_tour_hr_sign', {
     test: true,
     url: '/web',
     wait_for: Promise.resolve(odoo.__TipTemplateDef),
-    steps: [
+    steps: () => [
     {
         content: "Log into Belgian Company",
         trigger: '.o_menu_systray .o_switch_company_menu button.dropdown-toggle',
@@ -785,7 +785,7 @@ registry.category("web_tour.tours").add('hr_contract_salary_tour_2', {
         test: true,
         url: '/web',
         wait_for: Promise.resolve(odoo.__TipTemplateDef),
-        steps: [
+        steps: () => [
         {
             content: "Log into Belgian Company",
             trigger: '.o_menu_systray .o_switch_company_menu button.dropdown-toggle',

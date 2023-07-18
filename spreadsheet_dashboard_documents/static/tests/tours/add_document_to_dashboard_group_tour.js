@@ -22,7 +22,7 @@ registry.category("web_tour.tours").add(
     {
         test: true,
         url: "/web",
-        steps: [
+        steps: () => [
         {
             trigger:
                 '.o_app[data-menu-xmlid="spreadsheet_dashboard.spreadsheet_dashboard_menu_root"]',

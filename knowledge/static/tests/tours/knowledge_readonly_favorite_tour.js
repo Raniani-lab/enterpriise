@@ -7,7 +7,7 @@ import { registry } from "@web/core/registry";
 
 registry.category("web_tour.tours").add('knowledge_readonly_favorite_tour', {
     test: true,
-    steps: [{
+    steps: () => [{
     // Make sure we are on the readonly article 1, that is not favorited, and
     // click on the toggle favorite button.
     trigger: 'a.o_knowledge_toggle_favorite:has(.fa-star-o)',

@@ -4,7 +4,7 @@ import helper from 'stock_barcode.tourHelper';
 import { registry } from "@web/core/registry";
 import { stepUtils } from "./tour_step_utils";
 
-registry.category("web_tour.tours").add('test_inventory_adjustment', {test: true, steps: [
+registry.category("web_tour.tours").add('test_inventory_adjustment', {test: true, steps: () => [
 
     {
         trigger: '.button_inventory',
@@ -104,7 +104,7 @@ registry.category("web_tour.tours").add('test_inventory_adjustment', {test: true
     },
 ]});
 
-registry.category("web_tour.tours").add('test_inventory_adjustment_multi_location', {test: true, steps: [
+registry.category("web_tour.tours").add('test_inventory_adjustment_multi_location', {test: true, steps: () => [
 
     {
         trigger: '.button_inventory',
@@ -185,7 +185,7 @@ registry.category("web_tour.tours").add('test_inventory_adjustment_multi_locatio
     },
 ]});
 
-registry.category("web_tour.tours").add('test_inventory_adjustment_tracked_product', {test: true, steps: [
+registry.category("web_tour.tours").add('test_inventory_adjustment_tracked_product', {test: true, steps: () => [
 
     {
         trigger: '.button_inventory',
@@ -345,7 +345,7 @@ registry.category("web_tour.tours").add('test_inventory_adjustment_tracked_produ
     },
 ]});
 
-registry.category("web_tour.tours").add('test_inventory_adjustment_tracked_product_multilocation', {test: true, steps: [
+registry.category("web_tour.tours").add('test_inventory_adjustment_tracked_product_multilocation', {test: true, steps: () => [
     { trigger: '.button_inventory' },
     {
         trigger: '.o_barcode_line',
@@ -431,7 +431,7 @@ registry.category("web_tour.tours").add('test_inventory_adjustment_tracked_produ
     },
 ]});
 
-registry.category("web_tour.tours").add('test_inventory_adjustment_tracked_product_permissive_quants', {test: true, steps: [
+registry.category("web_tour.tours").add('test_inventory_adjustment_tracked_product_permissive_quants', {test: true, steps: () => [
     { trigger: '.button_inventory' },
     {
         trigger: '.o_barcode_client_action',
@@ -486,7 +486,7 @@ registry.category("web_tour.tours").add('test_inventory_adjustment_tracked_produ
     },
 ]});
 
-registry.category("web_tour.tours").add('test_inventory_create_quant', {test: true, steps: [
+registry.category("web_tour.tours").add('test_inventory_create_quant', {test: true, steps: () => [
     { trigger: '.button_inventory' },
     {
         trigger: '.o_barcode_client_action',
@@ -532,7 +532,7 @@ registry.category("web_tour.tours").add('test_inventory_create_quant', {test: tr
     },
 ]});
 
-registry.category("web_tour.tours").add('test_inventory_nomenclature', {test: true, steps: [
+registry.category("web_tour.tours").add('test_inventory_nomenclature', {test: true, steps: () => [
 
     {
         trigger: '.button_inventory',
@@ -562,7 +562,7 @@ registry.category("web_tour.tours").add('test_inventory_nomenclature', {test: tr
     },
 ]});
 
-registry.category("web_tour.tours").add('test_inventory_package', {test: true, steps: [
+registry.category("web_tour.tours").add('test_inventory_package', {test: true, steps: () => [
 
     {
         trigger: '.button_inventory',
@@ -602,7 +602,7 @@ registry.category("web_tour.tours").add('test_inventory_package', {test: true, s
     },
 ]});
 
-registry.category("web_tour.tours").add('test_inventory_packaging', {test: true, steps: [
+registry.category("web_tour.tours").add('test_inventory_packaging', {test: true, steps: () => [
     { trigger: '.button_inventory' },
     // Scans a packaging when there is no existing quant for its product.
     { trigger: '.o_barcode_client_action', run: 'scan pack007' },
@@ -629,7 +629,7 @@ registry.category("web_tour.tours").add('test_inventory_packaging', {test: true,
     { trigger: '.o_notification.border-success' },
 ]});
 
-registry.category("web_tour.tours").add('test_inventory_owner_scan_package', {test: true, steps: [
+registry.category("web_tour.tours").add('test_inventory_owner_scan_package', {test: true, steps: () => [
     {
         trigger: '.button_inventory',
     },
@@ -646,7 +646,7 @@ registry.category("web_tour.tours").add('test_inventory_owner_scan_package', {te
     ...stepUtils.validateBarcodeOperation(),
 ]});
 
-registry.category("web_tour.tours").add('test_inventory_using_buttons', {test: true, steps: [
+registry.category("web_tour.tours").add('test_inventory_using_buttons', {test: true, steps: () => [
     { trigger: '.button_inventory' },
 
     // Scans product 1: must have 1 quantity and buttons +1/-1 must be visible.

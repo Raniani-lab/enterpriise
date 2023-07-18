@@ -5,7 +5,7 @@ import { registry } from "@web/core/registry";
 registry.category("web_tour.tours").add('account_reports_search', {
     test: false,
     url: '/web?#action=account_reports.action_account_report_general_ledger',
-    steps: [
+    steps: () => [
         {
             content: "click search",
             trigger: '.o_searchview_input',

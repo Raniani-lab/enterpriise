@@ -5,7 +5,7 @@ import { registry } from "@web/core/registry";
 registry.category("web_tour.tours").add("shared_sign_request_tour", {
     test: true,
     url: "/web",
-    steps: [
+    steps: () => [
         {
             content: "Open Sign APP",
             trigger: '.o_app[data-menu-xmlid="sign.menu_document"]',

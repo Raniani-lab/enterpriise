@@ -16,7 +16,7 @@ function fail(errorMessage) {
 const SHEETNAME = "Partner Spreadsheet Test";
 registry.category("web_tour.tours").add("spreadsheet_open_pivot_sheet", {
     test: true,
-    steps: [
+    steps: () => [
         {
             trigger: '.o_app[data-menu-xmlid="documents.menu_root"]',
             content: "Open document app",

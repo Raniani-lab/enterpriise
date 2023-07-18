@@ -6,7 +6,7 @@ import { stepUtils } from "@web_tour/tour_service/tour_utils";
 registry.category("web_tour.tours").add('website_appointment_tour', {
     test: true,
     url: '/web',
-    steps: [
+    steps: () => [
     stepUtils.showAppsMenuItem(),
     {
         trigger: '.o_app[data-menu-xmlid="calendar.mail_menu_calendar"]',

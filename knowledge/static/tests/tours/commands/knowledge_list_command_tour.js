@@ -11,7 +11,7 @@ let behaviorProps;
 registry.category("web_tour.tours").add('knowledge_list_command_tour', {
     url: '/web',
     test: true,
-    steps: [stepUtils.showAppsMenuItem(), { // open the Knowledge App
+    steps: () => [stepUtils.showAppsMenuItem(), { // open the Knowledge App
     trigger: '.o_app[data-menu-xmlid="knowledge.knowledge_menu_root"]',
 }, { // open the command bar
     trigger: '.odoo-editor-editable > p',

@@ -32,7 +32,7 @@ let currentViewState;
 // ----------------------------------------------------------------------------
 // Tours
 // ----------------------------------------------------------------------------
-registry.category("web_tour.tours").add('test_barcode_batch_receipt_1', {test: true, steps: [
+registry.category("web_tour.tours").add('test_barcode_batch_receipt_1', {test: true, steps: () => [
     {
         trigger: '.o_barcode_client_action',
         run: function () {
@@ -368,7 +368,7 @@ registry.category("web_tour.tours").add('test_barcode_batch_receipt_1', {test: t
     },
 ]});
 
-registry.category("web_tour.tours").add('test_barcode_batch_delivery_1', {test: true, steps: [
+registry.category("web_tour.tours").add('test_barcode_batch_delivery_1', {test: true, steps: () => [
     {
         trigger: '.o_barcode_client_action',
         run: function () {
@@ -555,7 +555,7 @@ registry.category("web_tour.tours").add('test_barcode_batch_delivery_1', {test: 
     { trigger: '.o_notification.border-success' },
 ]});
 
-registry.category("web_tour.tours").add('test_barcode_batch_delivery_2_move_entire_package', {test: true, steps: [
+registry.category("web_tour.tours").add('test_barcode_batch_delivery_2_move_entire_package', {test: true, steps: () => [
     // Should have 3 lines: 2 for product2 (one by picking) and 1 for the package pack1.
     {
         trigger: '.o_barcode_client_action',
@@ -597,7 +597,7 @@ registry.category("web_tour.tours").add('test_barcode_batch_delivery_2_move_enti
     },
 ]});
 
-registry.category("web_tour.tours").add('test_batch_create', {test: true, steps: [
+registry.category("web_tour.tours").add('test_batch_create', {test: true, steps: () => [
     {
         trigger: '.o_stock_barcode_main_menu:contains("Barcode Scanning")',
     },
@@ -684,7 +684,7 @@ registry.category("web_tour.tours").add('test_batch_create', {test: true, steps:
     },
 ]});
 
-registry.category("web_tour.tours").add('test_put_in_pack_scan_suggested_package', {test: true, steps: [
+registry.category("web_tour.tours").add('test_put_in_pack_scan_suggested_package', {test: true, steps: () => [
     {
         trigger: '.o_barcode_client_action',
         run: function () {
@@ -824,7 +824,7 @@ registry.category("web_tour.tours").add('test_put_in_pack_scan_suggested_package
     ...stepUtils.validateBarcodeOperation(),
 ]});
 
-registry.category("web_tour.tours").add('test_pack_and_same_product_several_sml', {test: true, steps: [
+registry.category("web_tour.tours").add('test_pack_and_same_product_several_sml', {test: true, steps: () => [
     {
         trigger: '.o_barcode_client_action',
         run: 'scan P00001',

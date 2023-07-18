@@ -14,7 +14,7 @@ registry.category("web_tour.tours").add('sign_tour', {
     url: "/web",
     rainbowManMessage: _t("Congratulations, you signed your first document!"),
     sequence: 150,
-    steps: [stepUtils.showAppsMenuItem(), {
+    steps: () => [stepUtils.showAppsMenuItem(), {
     trigger: '.o_app[data-menu-xmlid="sign.menu_document"]',
     content: Markup(_t("Let's <b>prepare & sign</b> our first document.")),
     position: 'bottom',

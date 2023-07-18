@@ -56,7 +56,7 @@ class TerminalProxy {
 registry.category("web_tour.tours").add("payment_terminals_tour", {
     test: true,
     url: "/web",
-    steps: [
+    steps: () => [
         stepUtils.showAppsMenuItem(),
         {
             content: "Select PoS app",

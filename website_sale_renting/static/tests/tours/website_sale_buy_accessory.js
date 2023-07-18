@@ -6,7 +6,7 @@ import tourUtils from 'website_sale.tour_utils';
 registry.category("web_tour.tours").add('shop_buy_accessory_rental_product', {
     test: true,
     url: '/shop',
-    steps: [
+    steps: () => [
         {
             content: "Search parent product write text",
             trigger: 'form input[name="search"]',

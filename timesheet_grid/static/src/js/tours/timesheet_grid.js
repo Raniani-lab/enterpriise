@@ -7,13 +7,11 @@ import { Markup } from "web.utils";
 import { registry } from "@web/core/registry";
 import { stepUtils } from "@web_tour/tour_service/tour_utils";
 
-import { markup } from "@odoo/owl";
-
 registry.category("web_tour.tours").add('timesheet_tour', {
     sequence: 100,
-    rainbowManMessage: markup(_t("Congratulations, you are now a master of Timesheets.")),
+    rainbowManMessage: () => _t("Congratulations, you are now a master of Timesheets."),
     url: "/web",
-    steps: [stepUtils.showAppsMenuItem(), {
+    steps: () => [stepUtils.showAppsMenuItem(), {
     trigger: '.o_app[data-menu-xmlid="hr_timesheet.timesheet_menu_root"]',
     content: Markup(_t('Track the <b>time spent</b> on your projects. <i>It starts here.</i>')),
     position: 'bottom',

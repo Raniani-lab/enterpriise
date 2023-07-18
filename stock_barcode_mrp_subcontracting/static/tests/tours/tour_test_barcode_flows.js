@@ -13,7 +13,7 @@ var _t = core._t;
 // Tours
 // ----------------------------------------------------------------------------
 
-registry.category("web_tour.tours").add('test_receipt_classic_subcontracted_product', {test: true, steps: [
+registry.category("web_tour.tours").add('test_receipt_classic_subcontracted_product', {test: true, steps: () => [
     {
         trigger: '.o_barcode_client_action',
         run: function () {
@@ -51,7 +51,7 @@ registry.category("web_tour.tours").add('test_receipt_classic_subcontracted_prod
 
 ]});
 
-registry.category("web_tour.tours").add('test_receipt_tracked_subcontracted_product', {test: true, steps: [
+registry.category("web_tour.tours").add('test_receipt_tracked_subcontracted_product', {test: true, steps: () => [
     {
         trigger: '.o_barcode_client_action',
         run: 'scan product_subcontracted',
@@ -101,7 +101,7 @@ registry.category("web_tour.tours").add('test_receipt_tracked_subcontracted_prod
     ...stepUtils.validateBarcodeOperation(),
 ]});
 
-registry.category("web_tour.tours").add('test_receipt_flexible_subcontracted_product', {test: true, steps: [
+registry.category("web_tour.tours").add('test_receipt_flexible_subcontracted_product', {test: true, steps: () => [
     {
         trigger: 'button.btn-secondary.o_mrp_subcontracting',
     },

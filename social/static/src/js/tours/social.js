@@ -13,7 +13,7 @@ registry.category("web_tour.tours").add('social_tour', {
         url: "/web",
         rainbowManMessage: markup(_t(`<strong>Congrats! Come back in a few minutes to check your statistics.</strong>`)),
         sequence: 190,
-        steps: [
+        steps: () => [
         stepUtils.showAppsMenuItem(),
         {
             trigger: '.o_app[data-menu-xmlid="social.menu_social_global"]',

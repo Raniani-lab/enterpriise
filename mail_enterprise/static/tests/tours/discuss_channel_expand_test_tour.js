@@ -12,7 +12,7 @@ registry
     .category("web_tour.tours")
     .add("mail_enterprise/static/tests/tours/discuss_channel_expand_test_tour.js", {
         test: true,
-        steps: [
+        steps: () => [
             {
                 content: "Click on 'Open Actions Menu' in the chat window header to show expand button",
                 trigger:

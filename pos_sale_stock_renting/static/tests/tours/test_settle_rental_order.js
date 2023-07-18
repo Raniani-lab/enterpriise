@@ -7,13 +7,21 @@ import { getSteps, startSteps } from '@point_of_sale/../tests/tours/helpers/util
 import { registry } from "@web/core/registry";
 
 //#region OrderLotsRentalTour
-startSteps();
-ProductScreen.do.clickQuotationButton();
-ProductScreen.do.selectFirstOrder();
-ProductScreen.do.enterSerialNumber('123456789');
-ProductScreen.do.clickPayButton();
-PaymentScreen.do.clickPaymentMethod('Cash');
-PaymentScreen.do.clickValidate();
-ReceiptScreen.check.isShown();
-registry.category("web_tour.tours").add('OrderLotsRentalTour', { test: true, url: '/pos/ui', steps: getSteps() });
+registry
+    .category("web_tour.tours")
+    .add('OrderLotsRentalTour', { 
+        test: true, 
+        url: '/pos/ui', 
+        steps: () => {
+            startSteps();
+            ProductScreen.do.clickQuotationButton();
+            ProductScreen.do.selectFirstOrder();
+            ProductScreen.do.enterSerialNumber('123456789');
+            ProductScreen.do.clickPayButton();
+            PaymentScreen.do.clickPaymentMethod('Cash');
+            PaymentScreen.do.clickValidate();
+            ReceiptScreen.check.isShown();
+            return getSteps();
+        } 
+    });
 //#endregion

@@ -11,7 +11,7 @@ import { stepUtils } from "@web_tour/tour_service/tour_utils";
 registry.category("web_tour.tours").add('knowledge_readonly_item_list_tour', {
     url: '/web',
     test: true,
-    steps: [stepUtils.showAppsMenuItem(), { // open the Knowledge App
+    steps: () => [stepUtils.showAppsMenuItem(), { // open the Knowledge App
     trigger: '.o_app[data-menu-xmlid="knowledge.knowledge_menu_root"]',
 }, { // scroll to the embedded view to load it
     trigger: '.o_knowledge_behavior_type_embedded_view',

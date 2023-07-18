@@ -16,7 +16,7 @@ let createdMenuString = null;
 registry.category("web_tour.tours").add("web_studio_main_and_rename", {
     url: "/web",
     test: true,
-    steps: [
+    steps: () => [
         {
             // open studio
             trigger: ".o_main_navbar .o_web_studio_navbar_item",
@@ -553,7 +553,7 @@ registry.category("web_tour.tours").add("web_studio_main_and_rename", {
 registry.category("web_tour.tours").add("web_studio_hide_fields_tour", {
     url: "/web#action=studio&mode=home_menu",
     test: true,
-    steps: [
+    steps: () => [
         {
             trigger: ".o_web_studio_new_app",
         },
@@ -659,7 +659,7 @@ registry.category("web_tour.tours").add("web_studio_hide_fields_tour", {
 registry.category("web_tour.tours").add("web_studio_model_option_value_tour", {
     url: "/web?debug=tests#action=studio&mode=home_menu",
     test: true,
-    steps: [
+    steps: () => [
         {
             trigger: ".o_web_studio_new_app",
         },
@@ -721,7 +721,7 @@ registry.category("web_tour.tours").add("web_studio_model_option_value_tour", {
 registry.category("web_tour.tours").add("web_studio_new_report_tour", {
     url: "/web",
     test: true,
-    steps: [
+    steps: () => [
         {
             // open studio
             trigger: ".o_main_navbar .o_web_studio_navbar_item",
@@ -913,7 +913,7 @@ registry.category("web_tour.tours").add("web_studio_new_report_tour", {
 registry.category("web_tour.tours").add("web_studio_new_report_basic_layout_tour", {
     url: "/web",
     test: true,
-    steps: [
+    steps: () => [
         {
             // open studio
             trigger: ".o_main_navbar .o_web_studio_navbar_item",
@@ -1104,7 +1104,7 @@ registry.category("web_tour.tours").add("web_studio_new_report_basic_layout_tour
 registry.category("web_tour.tours").add("web_studio_approval_tour", {
     url: "/web",
     test: true,
-    steps: [
+    steps: () => [
         {
             // go to Apps menu
             trigger: '.o_app[data-menu-xmlid="base.menu_management"]',
@@ -1198,7 +1198,7 @@ registry.category("web_tour.tours").add("web_studio_approval_tour", {
 registry.category("web_tour.tours").add("web_studio_custom_field_tour", {
     url: "/web",
     test: true,
-    steps: [
+    steps: () => [
         {
             // go to Apps menu
             trigger: '.o_app[data-menu-xmlid="base.menu_management"]',
@@ -1235,7 +1235,7 @@ registry.category("web_tour.tours").add("web_studio_custom_field_tour", {
 registry.category("web_tour.tours").add("web_studio_local_storage_tour", {
     url: "/web",
     test: true,
-    steps: [
+    steps: () => [
         {
             trigger: '.o_app[data-menu-xmlid="base.menu_management"]',
             run: function () {
@@ -1273,7 +1273,7 @@ registry.category("web_tour.tours").add("web_studio_local_storage_tour", {
 registry.category("web_tour.tours").add("web_studio_custom_background_tour", {
     url: "/web",
     test: true,
-    steps: [
+    steps: () => [
         {
             content: "class for custom background must be enabled (outside studio)",
             trigger: ".o_home_menu_background_custom.o_home_menu_background:not(.o_in_studio)",
@@ -1319,7 +1319,7 @@ registry.category("web_tour.tours").add("web_studio_custom_background_tour", {
 
 registry.category("web_tour.tours").add("web_studio_create_app_with_pipeline_and_user_assignment", {
     test: true,
-    steps: [
+    steps: () => [
         {
             // open studio
             trigger: ".o_main_navbar .o_web_studio_navbar_item",
@@ -1378,7 +1378,7 @@ registry.category("web_tour.tours").add("web_studio_create_app_with_pipeline_and
 
 registry.category("web_tour.tours").add("web_studio_alter_field_existing_in_multiple_views_tour", {
     test: true,
-    steps: [
+    steps: () => [
         {
             // open studio
             trigger: ".o_main_navbar .o_web_studio_navbar_item button",
@@ -1491,7 +1491,7 @@ registry.category("web_tour.tours").add("web_studio_alter_field_existing_in_mult
 registry.category("web_tour.tours").add("web_studio_monetary_create", {
     url: "/web",
     test: true,
-    steps: [
+    steps: () => [
         // This tour drag&drop a monetary field and verify that a currency is created
         {
             // open studio
@@ -1528,7 +1528,7 @@ registry.category("web_tour.tours").add("web_studio_monetary_create", {
 registry.category("web_tour.tours").add("web_studio_monetary_change_currency_name", {
     url: "/web",
     test: true,
-    steps: [
+    steps: () => [
         // Changing currency name also change the currency name in the monetary currency selection
         {
             // open studio
@@ -1570,7 +1570,7 @@ registry.category("web_tour.tours").add("web_studio_monetary_change_currency_nam
 registry.category("web_tour.tours").add("web_studio_monetary_change_currency_field", {
     url: "/web",
     test: true,
-    steps: [
+    steps: () => [
         // Change currency and verify that the view take the changes into account (the dollar appears)
         {
             // open the custom app form view
@@ -1637,7 +1637,7 @@ registry.category("web_tour.tours").add("web_studio_monetary_change_currency_fie
 registry.category("web_tour.tours").add("web_studio_monetary_change_currency_not_in_view", {
     url: "/web",
     test: true,
-    steps: [
+    steps: () => [
         // Change a currency that is not present in the view insert it in the view
         {
             // open studio
@@ -1683,7 +1683,7 @@ registry.category("web_tour.tours").add("web_studio_monetary_change_currency_not
 registry.category("web_tour.tours").add("web_studio_monetary_add_existing_monetary", {
     url: "/web",
     test: true,
-    steps: [
+    steps: () => [
         // Add an existing monetary trough the "existing fields" and verify that the currency
         // is added to the view
         {
@@ -1734,7 +1734,7 @@ registry
     .add("web_studio_monetary_create_monetary_with_existing_currency", {
         url: "/web",
         test: true,
-        steps: [
+        steps: () => [
             // Add a new monetary field, since a currency already exists, it should take it instead
             // of creating a new one
             {

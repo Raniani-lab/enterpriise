@@ -268,7 +268,7 @@ const LOAD_MORE_ADVANCED_STEPS = [{
 
 registry.category("web_tour.tours").add('knowledge_load_more_tour', {
     test: true,
-    steps: [
+    steps: () => [
         ...LOAD_MORE_SIMPLE_STEPS,
         ...LOAD_MORE_ADVANCED_STEPS,
     ]

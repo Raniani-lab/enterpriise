@@ -8,7 +8,7 @@ registry
         test: true,
         url: "/web",
         sequence: 260,
-        steps: [
+        steps: () => [
             {
                 trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
             },
@@ -37,7 +37,7 @@ registry.category("web_tour.tours").add("web_studio_test_edit_with_xml_editor", 
     test: true,
     url: "/web",
     sequence: 260,
-    steps: [
+    steps: () => [
         {
             trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
         },
@@ -85,7 +85,7 @@ registry.category("web_tour.tours").add("web_studio_test_edit_with_xml_editor", 
 registry.category("web_tour.tours").add("web_studio_enter_x2many_edition_and_add_field", {
     test: true,
     sequence: 260,
-    steps: [
+    steps: () => [
         {
             trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
         },
@@ -138,7 +138,7 @@ registry.category("web_tour.tours").add("web_studio_enter_x2many_edition_and_add
 registry.category("web_tour.tours").add("web_studio_enter_x2many_auto_inlined_subview", {
     test: true,
     sequence: 260,
-    steps: [
+    steps: () => [
         {
             trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
         },
@@ -194,7 +194,7 @@ registry
     .add("web_studio_enter_x2many_auto_inlined_subview_with_multiple_field_matching", {
         test: true,
         sequence: 260,
-        steps: [
+        steps: () => [
             {
                 trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
             },
@@ -248,7 +248,7 @@ registry
 registry.category("web_tour.tours").add("web_studio_field_with_group", {
     test: true,
     sequence: 260,
-    steps: [
+    steps: () => [
         {
             trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
         },
@@ -299,7 +299,7 @@ registry.category("web_tour.tours").add("web_studio_field_with_group", {
 registry.category("web_tour.tours").add("web_studio_elements_with_groups_form", {
     test: true,
     sequence: 260,
-    steps: [
+    steps: () => [
         {
             trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
         },
@@ -351,7 +351,7 @@ registry.category("web_tour.tours").add("web_studio_elements_with_groups_form", 
 registry.category("web_tour.tours").add("test_element_group_in_sidebar", {
     test: true,
     sequence: 260,
-    steps: [
+    steps: () => [
         {
             trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
         },
@@ -382,7 +382,7 @@ registry.category("web_tour.tours").add("test_element_group_in_sidebar", {
 registry.category("web_tour.tours").add("web_studio_custom_selection_field_edit_values", {
     test: true,
     sequence: 260,
-    steps: [
+    steps: () => [
         {
             trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
         },
@@ -432,7 +432,7 @@ registry.category("web_tour.tours").add("web_studio_custom_selection_field_edit_
 registry.category("web_tour.tours").add("web_studio_test_create_one2many_lines_then_edit_name", {
     test: true,
     sequence: 260,
-    steps: [
+    steps: () => [
         {
             trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
         },
@@ -465,7 +465,7 @@ registry.category("web_tour.tours").add("web_studio_test_create_one2many_lines_t
 registry.category("web_tour.tours").add("web_studio_test_address_view_id_no_edit", {
     test: true,
     sequence: 260,
-    steps: [
+    steps: () => [
         {
             trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
         },
@@ -510,7 +510,7 @@ registry.category("web_tour.tours").add("web_studio_test_address_view_id_no_edit
 registry.category("web_tour.tours").add("web_studio_test_create_new_model_from_existing_view", {
     test: true,
     sequence: 260,
-    steps: [
+    steps: () => [
         {
             trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
         },
@@ -541,7 +541,7 @@ registry.category("web_tour.tours").add("web_studio_test_create_new_model_from_e
 registry.category("web_tour.tours").add("web_studio_test_create_model_with_clickable_stages", {
     test: true,
     sequence: 260,
-    steps: [
+    steps: () => [
         {
             trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
         },
@@ -598,7 +598,7 @@ registry
     .add("web_studio_test_enter_x2many_edition_with_multiple_subviews", {
         test: true,
         sequence: 260,
-        steps: [
+        steps: () => [
             {
                 trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
             },
@@ -626,7 +626,7 @@ registry
     .add("web_studio_test_enter_x2many_edition_with_multiple_subviews_correct_xpath", {
         test: true,
         sequence: 260,
-        steps: [
+        steps: () => [
             {
                 trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
             },
@@ -662,7 +662,7 @@ registry
 
 registry.category("web_tour.tours").add("web_studio_test_studio_view_is_last", {
     test: true,
-    steps: [
+    steps: () => [
         {
             trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
         },
@@ -698,7 +698,7 @@ registry.category("web_tour.tours").add("web_studio_test_studio_view_is_last", {
 
 registry.category("web_tour.tours").add("web_studio_test_edit_form_subview_attributes", {
     test: true,
-    steps: [
+    steps: () => [
         {
             trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
         },
@@ -730,7 +730,7 @@ registry.category("web_tour.tours").add("web_studio_test_edit_form_subview_attri
 
 registry.category("web_tour.tours").add("web_studio_x2many_two_levels_edition", {
     test: true,
-    steps: [
+    steps: () => [
         {
             trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
         },
@@ -776,7 +776,7 @@ registry.category("web_tour.tours").add("web_studio_x2many_two_levels_edition", 
 
 registry.category("web_tour.tours").add("web_studio_field_group_studio_no_fetch", {
     test: true,
-    steps: [
+    steps: () => [
         {
             trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
         },
@@ -840,7 +840,7 @@ registry.category("web_tour.tours").add("web_studio_field_group_studio_no_fetch"
 
 registry.category("web_tour.tours").add("web_studio_test_move_similar_field", {
     test: true,
-    steps: [
+    steps: () => [
         {
             trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
         },

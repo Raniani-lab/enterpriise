@@ -8,7 +8,7 @@ const oldWriteText = navigator.clipboard.writeText;
 registry.category("web_tour.tours").add('appointment_hr_recruitment_tour', {
     url: '/web',
     test: true,
-    steps : [stepUtils.showAppsMenuItem(), {
+    steps: () => [stepUtils.showAppsMenuItem(), {
         trigger: '.o_app[data-menu-xmlid="hr_recruitment.menu_hr_recruitment_root"]',
         run: 'click',
     }, {

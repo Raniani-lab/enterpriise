@@ -21,7 +21,7 @@ const createFileBehaviorSteps = [
 registry.category("web_tour.tours").add('helpdesk_pick_file_as_attachment_from_knowledge', {
     url: '/web#action=helpdesk.helpdesk_ticket_action_main_tree',
     test: true,
-    steps: [{ // click on the first record of the list
+    steps: () => [{ // click on the first record of the list
     trigger: 'tr.o_data_row:first-child .o_data_cell[name="name"]',
     run: 'click',
 }, { // open an article
@@ -44,7 +44,7 @@ registry.category("web_tour.tours").add('helpdesk_pick_file_as_attachment_from_k
 registry.category("web_tour.tours").add('helpdesk_pick_file_as_message_attachment_from_knowledge', {
     url: '/web#action=helpdesk.helpdesk_ticket_action_main_tree',
     test: true,
-    steps: [{ // click on the first record of the list
+    steps: () => [{ // click on the first record of the list
     trigger: 'tr.o_data_row:first-child .o_data_cell[name="name"]',
     run: 'click',
 }, { // open an article

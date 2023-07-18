@@ -4,26 +4,33 @@
     import {Markup} from "web.utils";
     import { registry } from "@web/core/registry";
     import { stepUtils } from "@web_tour/tour_service/tour_utils";
+    import { patch } from "@web/core/utils/patch";
+
     import "web.legacy_tranlations_loaded";
 
     const _t = core._t;
     const { markup } = owl;
 
     // Update the invoicing tour as the menu items have changed, but we want the test to still work
-    registry.category("web_tour.tours").get("account_tour").steps.splice(0, 3,
-        ...stepUtils
-            .goToAppSteps("account_accountant.menu_accounting", _t("Go to invoicing"))
-            .map((step) => Object.assign(step, { auto: true })),
-        {
-            trigger: 'button[data-menu-xmlid="account.menu_finance_receivables"]',
-            content: _t('Go to invoicing'),
-            auto: true,
-        }, {
-            trigger: '.dropdown-item[data-menu-xmlid="account.menu_action_move_out_invoice_type"]',
-            content: _t('Go to invoicing'),
-            auto: true,
+    patch(registry.category("web_tour.tours").get("account_tour"), "patch_account_accountant_tour", {
+        steps() {
+            const originalSteps = this._super();
+            originalSteps.splice(0, 3,
+                ...stepUtils
+                    .goToAppSteps("account_accountant.menu_accounting", _t("Go to invoicing"))
+                    .map((step) => Object.assign(step, { auto: true })),
+                {
+                    trigger: 'button[data-menu-xmlid="account.menu_finance_receivables"]',
+                    content: _t('Go to invoicing'),
+                    auto: true,
+                }, {
+                    trigger: '.dropdown-item[data-menu-xmlid="account.menu_action_move_out_invoice_type"]',
+                    content: _t('Go to invoicing'),
+                    auto: true,
+                });
+            return originalSteps; 
         }
-    )
+    });
 
     registry.category("web_tour.tours").add('account_accountant_tour', {
             rainbowManMessage: function({ isTourConsumed }) {
@@ -35,7 +42,7 @@
             },
             url: "/web",
             sequence: 50,
-            steps: [
+            steps: () => [
             ...stepUtils.goToAppSteps('account_accountant.menu_accounting', _t('Let’s automate your bills, bank transactions and accounting processes.')),
             // The tour will stop here if there is at least 1 vendor bill in the database.
             // While not ideal, it is ok, since that means the user obviously knows how to create a vendor bill...
@@ -88,7 +95,7 @@
     registry.category("web_tour.tours").add('account_accountant_tour_upload_ocr_step', {
         rainbowMan: false,
         sequence: 70,
-        steps: [
+        steps: () => [
             {
                 trigger: 'button.btn-primary[name="check_status"]',
                 content: Markup(_t('Let’s use AI to fill in the form<br/><br/><i>Tip: If the OCR is not done yet, wait a few more seconds and try again.</i>')),

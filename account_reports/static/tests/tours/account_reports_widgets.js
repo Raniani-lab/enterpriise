@@ -5,7 +5,7 @@ import { registry } from "@web/core/registry";
 registry.category("web_tour.tours").add('account_reports_widgets', {
     test: true,
     url: '/web?#action=account_reports.action_account_report_pl',
-    steps: [
+    steps: () => [
         {
             content: "change date filter",
             trigger: ".acc_rep_filter_date button",

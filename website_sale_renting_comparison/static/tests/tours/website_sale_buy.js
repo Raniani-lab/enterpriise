@@ -6,7 +6,7 @@ import tourUtils from 'website_sale.tour_utils';
 registry.category("web_tour.tours").add('shop_buy_rental_product_comparison', {
     test: true,
     url: '/shop?search=Computer',
-    steps: [
+    steps: () => [
         {
             content: "click on add to comparison",
             trigger: '.o_add_compare',

@@ -8,7 +8,7 @@ registry.category("web_tour.tours").add(
     {
         url: '/web',
         test: true,
-        steps: [
+        steps: () => [
             ...stepUtils.goToAppSteps("industry_fsm.fsm_menu_root", "Open app Field Service"),
             {
                 content: "Create a new task",

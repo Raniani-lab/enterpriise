@@ -5,7 +5,7 @@ import { registry } from "@web/core/registry";
 registry.category("web_tour.tours").add('shop_buy_subscription_product', {
     test: true,
     url: '/shop',
-    steps: [
+    steps: () => [
         {
             content: "Search streaming write text",
             trigger: 'form input[name="search"]',

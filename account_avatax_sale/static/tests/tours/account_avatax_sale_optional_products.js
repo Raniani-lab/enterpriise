@@ -6,7 +6,7 @@ import { registry } from "@web/core/registry";
 registry.category("web_tour.tours").add('account_avatax_sale_optional_products', {
     test: true,
     url: '/my/quotes',
-    steps: [
+    steps: () => [
     {
         content: "open the test SO",
         trigger: 'a:containsExact("avatax test")',

@@ -4,7 +4,7 @@ import helper from 'stock_barcode.tourHelper';
 import { registry } from "@web/core/registry";
 import { stepUtils } from '@stock_barcode/../tests/tours/tour_step_utils';
 
-registry.category("web_tour.tours").add('test_immediate_receipt_kit_from_scratch_with_tracked_compo', {test: true, steps: [
+registry.category("web_tour.tours").add('test_immediate_receipt_kit_from_scratch_with_tracked_compo', {test: true, steps: () => [
     {
         trigger: '.o_barcode_client_action',
         run: 'scan kit_lot',
@@ -39,7 +39,7 @@ registry.category("web_tour.tours").add('test_immediate_receipt_kit_from_scratch
     ...stepUtils.validateBarcodeOperation('.o_line_lot_name:contains("super_lot")'),
 ]});
 
-registry.category("web_tour.tours").add('test_planned_receipt_kit_from_scratch_with_tracked_compo', {test: true, steps: [
+registry.category("web_tour.tours").add('test_planned_receipt_kit_from_scratch_with_tracked_compo', {test: true, steps: () => [
     {
         trigger: '.o_barcode_client_action',
         run: 'scan kit_lot',
@@ -75,7 +75,7 @@ registry.category("web_tour.tours").add('test_planned_receipt_kit_from_scratch_w
     ...stepUtils.validateBarcodeOperation('.o_line_lot_name:contains("super_lot")'),
 ]});
 
-registry.category("web_tour.tours").add('test_process_confirmed_mo', {test: true, steps: [
+registry.category("web_tour.tours").add('test_process_confirmed_mo', {test: true, steps: () => [
     {
         trigger: '.o_kanban_card_header:contains("Manufacturing")',
     },
@@ -108,7 +108,7 @@ registry.category("web_tour.tours").add('test_process_confirmed_mo', {test: true
     },
 ]});
 
-registry.category("web_tour.tours").add('test_barcode_production_create', {test: true, steps: [
+registry.category("web_tour.tours").add('test_barcode_production_create', {test: true, steps: () => [
     { trigger: ".o_kanban_card_header:contains('Manufacturing')" },
     { trigger: ".o-kanban-button-new" },
     // Scans final product, it should create the header line for this product.
@@ -171,7 +171,7 @@ registry.category("web_tour.tours").add('test_barcode_production_create', {test:
     ...stepUtils.validateBarcodeOperation(".o_scan_message.o_scan_validate"),
 ]});
 
-registry.category("web_tour.tours").add("test_barcode_production_create_bom", {test: true, steps: [
+registry.category("web_tour.tours").add("test_barcode_production_create_bom", {test: true, steps: () => [
     // Creates a new production from the Barcode App.
     { trigger: ".o_kanban_card_header:contains('Manufacturing')" },
     { trigger: ".o-kanban-button-new" },
@@ -231,7 +231,7 @@ registry.category("web_tour.tours").add("test_barcode_production_create_bom", {t
     ...stepUtils.validateBarcodeOperation(".o_scan_message.o_scan_validate"),
 ]})
 
-registry.category("web_tour.tours").add('test_barcode_production_create_tracked_bom', {test: true, steps: [
+registry.category("web_tour.tours").add('test_barcode_production_create_tracked_bom', {test: true, steps: () => [
     {
         trigger: '.o_kanban_card_header:contains("Manufacturing")',
     },
@@ -363,7 +363,7 @@ registry.category("web_tour.tours").add('test_barcode_production_create_tracked_
     ...stepUtils.validateBarcodeOperation(".o_validate_page.btn-success"),
 ]});
 
-registry.category("web_tour.tours").add("test_barcode_production_reserved_from_multiple_locations", {test: true, steps: [
+registry.category("web_tour.tours").add("test_barcode_production_reserved_from_multiple_locations", {test: true, steps: () => [
     {
         trigger: ".o_barcode_client_action",
         run: function() { // Check all lines are here (header + 4 compos)
@@ -479,7 +479,7 @@ registry.category("web_tour.tours").add("test_barcode_production_reserved_from_m
     ...stepUtils.validateBarcodeOperation(),
 ]});
 
-registry.category("web_tour.tours").add("test_barcode_production_component_no_stock", {test: true, steps: [
+registry.category("web_tour.tours").add("test_barcode_production_component_no_stock", {test: true, steps: () => [
     // Creates a new production from the Barcode App.
     { trigger: ".o_kanban_card_header:contains('Manufacturing')" },
     { trigger: ".o-kanban-button-new" },

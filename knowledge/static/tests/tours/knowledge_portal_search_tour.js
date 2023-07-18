@@ -13,7 +13,7 @@ import { registry } from "@web/core/registry";
 
 registry.category("web_tour.tours").add('knowledge_portal_search_tour', {
     test: true,
-    steps: [{ // Check that section tree contains all articles
+    steps: () => [{ // Check that section tree contains all articles
     content: "Check that search tree contains 'My Article'",
     trigger: '.o_article_name:contains("My Article")',
     run() {},

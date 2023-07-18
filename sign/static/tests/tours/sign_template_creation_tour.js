@@ -53,7 +53,7 @@ function dragAndDropSignItemAtHeight(type, page, height = 0.5, width = 0.5) {
 registry.category("web_tour.tours").add("sign_template_creation_tour", {
     test: true,
     url: "/web",
-    steps: [
+    steps: () => [
         stepUtils.showAppsMenuItem(),
         {
             content: "Open Sign App",

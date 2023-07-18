@@ -5,7 +5,7 @@ import { registry } from "@web/core/registry";
 registry.category("web_tour.tours").add('planning_test_tour', {
     url: '/web',
     test: true,
-    steps: [{
+    steps: () => [{
     trigger: '.o_app[data-menu-xmlid="planning.planning_menu_root"]',
     content: "Let's start managing your employees' schedule!",
     position: 'bottom',
@@ -128,7 +128,7 @@ registry.category("web_tour.tours").add('planning_test_tour', {
 registry.category("web_tour.tours").add('planning_shift_switching_backend', {
     url: '/web',
     test: true,
-    steps: [{
+    steps: () => [{
     trigger: '.o_app[data-menu-xmlid="planning.planning_menu_root"]',
     content: "Get in the planning app",
 }, {
@@ -170,7 +170,7 @@ registry.category("web_tour.tours").add('planning_shift_switching_backend', {
 registry.category("web_tour.tours").add('planning_assigning_unwanted_shift_backend', {
     url: '/web',
     test: true,
-    steps: [{
+    steps: () => [{
     trigger: '.o_app[data-menu-xmlid="planning.planning_menu_root"]',
     content: "Get in the planning app",
 }, {

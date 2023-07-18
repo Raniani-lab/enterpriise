@@ -6,7 +6,7 @@ import { stepUtils } from "@web_tour/tour_service/tour_utils";
 registry.category("web_tour.tours").add('payroll_dashboard_ui_tour', {
     test: true,
     url: '/web',
-    steps: [
+    steps: () => [
     stepUtils.showAppsMenuItem(),
     {
         content: "Open payroll app",

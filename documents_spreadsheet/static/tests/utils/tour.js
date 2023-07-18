@@ -12,7 +12,7 @@ export function registerTemplateTour(tourName, templateName) {
         {
             test: true,
             url: "/web",
-            steps: [
+            steps: () => [
             {
                 trigger: '.o_app[data-menu-xmlid="documents.menu_root"]',
                 content: "Open document app",

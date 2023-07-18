@@ -5,7 +5,7 @@
     registry.category("web_tour.tours").add('applicant_sign_request_tour', {
             test: true,
             url: '/web',
-            steps: [
+            steps: () => [
             {
                 content: "Access on the recruitment app",
                 trigger: '.o_app[data-menu-xmlid="hr_recruitment.menu_hr_recruitment_root"]',

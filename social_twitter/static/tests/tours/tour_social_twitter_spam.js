@@ -85,7 +85,7 @@ registry.category("web_tour.tours").add(
     {
         url: '/web',
         test: true,
-        steps: [
+        steps: () => [
         {
             trigger: '.o_app[data-menu-xmlid="social.menu_social_global"]',
             content: 'Open the Social App',

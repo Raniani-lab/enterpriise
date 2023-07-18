@@ -11,7 +11,7 @@ registry.category("web_tour.tours").add('helpdesk_tour', {
     url: "/web",
     rainbowManMessage: markup(_t('<center><strong><b>Good job!</b> You walked through all steps of this tour.</strong></center>')),
     sequence: 220,
-    steps: [{
+    steps: () => [{
     trigger: '.o_app[data-menu-xmlid="helpdesk.menu_helpdesk_root"]',
     content: markup(_t('Want to <b>boost your customer satisfaction</b>?<br/><i>Click Helpdesk to start.</i>')),
     position: 'bottom',

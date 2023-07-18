@@ -11,7 +11,7 @@ registry.category("web_tour.tours").add('documents_tour', {
     url: "/web",
     rainbowManMessage: markup(_t("Wow... 6 documents processed in a few seconds, You're good.<br/>The tour is complete. Try uploading your own documents now.")),
     sequence: 180,
-    steps: [{
+    steps: () => [{
     trigger: '.o_app[data-menu-xmlid="documents.menu_root"]',
     content: Markup(_t("Want to become a <b>paperless company</b>? Let's discover Odoo Documents.")),
     position: 'bottom',

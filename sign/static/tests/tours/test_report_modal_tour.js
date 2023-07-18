@@ -6,7 +6,7 @@ import { stepUtils } from "@web_tour/tour_service/tour_utils";
 registry.category("web_tour.tours").add("sign_report_modal_tour", {
     test: true,
     url: "/web",
-    steps: [
+    steps: () => [
         stepUtils.showAppsMenuItem(),
         {
             content: "Open Sign app",

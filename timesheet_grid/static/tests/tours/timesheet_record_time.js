@@ -5,7 +5,7 @@ import { registry } from "@web/core/registry";
 registry.category("web_tour.tours").add('timesheet_record_time', {
     test: true,
     url: "/web",
-    steps: [
+    steps: () => [
     {
         trigger: ".o_app[data-menu-xmlid='hr_timesheet.timesheet_menu_root']",
         content: "Open Timesheet app.",

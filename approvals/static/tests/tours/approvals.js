@@ -5,7 +5,7 @@
     registry.category("web_tour.tours").add("approvals_tour", {
         test: true,
         url: "/web",
-        steps: [
+        steps: () => [
             {
                 trigger: '.o_app[data-menu-xmlid="approvals.approvals_menu_root"]',
                 content: "open approvals app",

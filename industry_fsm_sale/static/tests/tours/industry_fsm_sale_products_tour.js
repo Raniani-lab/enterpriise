@@ -5,7 +5,7 @@ import { registry } from "@web/core/registry";
 registry.category("web_tour.tours").add('industry_fsm_sale_products_tour', {
     test: true,
     url: "/web",
-    steps: [{
+    steps: () => [{
     trigger: '.o_app[data-menu-xmlid="industry_fsm.fsm_menu_root"]',
     content: 'Go to industry FSM',
     position: 'bottom',

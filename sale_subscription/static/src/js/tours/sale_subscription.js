@@ -13,7 +13,7 @@ registry.category("web_tour.tours").add('sale_subscription_tour', {
     sequence: 250,
     rainbowMan: true,
     rainbowManMessage: markup(_t("<b>Congratulations</b>, your first subscription quotation is ready to be sent!")),
-    steps: [{
+    steps: () => [{
     trigger: '.o_app[data-menu-xmlid="sale_subscription.menu_sale_subscription_root"]',
 	content: _t('Want recurring billing via subscription management? Get started by clicking here'),
     position: 'bottom',

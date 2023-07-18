@@ -9,7 +9,7 @@ registry.category("web_tour.tours").add('planning_tour', {
     sequence: 120,
     url: '/web',
     rainbowManMessage: markup(_t("<b>Congratulations!</b></br> You are now a master of planning.")),
-    steps: [
+    steps: () => [
     {
         trigger: '.o_app[data-menu-xmlid="planning.planning_menu_root"]',
         content: markup(_t("Let's start managing your employees' schedule!")),

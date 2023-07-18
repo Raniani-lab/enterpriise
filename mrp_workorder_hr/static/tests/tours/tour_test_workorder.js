@@ -3,7 +3,7 @@
 import { registry } from "@web/core/registry";
 import helper from 'mrp_workorder.tourHelper';
 
-registry.category("web_tour.tours").add('test_production_with_employee', {test: true, steps: [
+registry.category("web_tour.tours").add('test_production_with_employee', {test: true, steps: () => [
     {trigger: 'div.popup'},
     {trigger: 'h3:contains("Change Worker")'},
     {trigger: 'div.selection-item:contains("Arthur")'},

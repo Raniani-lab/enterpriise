@@ -97,7 +97,7 @@ const validateFavoriteFiltersSteps = function (kanban1, kanban2) {
 registry.category("web_tour.tours").add("knowledge_items_search_favorites_tour", {
     url: "/web",
     test: true,
-    steps: [
+    steps: () => [
         stepUtils.showAppsMenuItem(),
         {
             // open the Knowledge App
@@ -164,7 +164,7 @@ registry.category("web_tour.tours").add("knowledge_items_search_favorites_tour",
 registry.category("web_tour.tours").add("knowledge_search_favorites_tour", {
     url: "/web",
     test: true,
-    steps: [stepUtils.showAppsMenuItem(),
+    steps: () => [stepUtils.showAppsMenuItem(),
         // insert a first kanban view
         ...embedKnowledgeKanbanViewSteps("Article 1"),
         { // wait for embedded view to load and click on rename button

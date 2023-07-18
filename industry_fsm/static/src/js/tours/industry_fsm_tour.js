@@ -10,7 +10,7 @@ var _t = core._t;
 registry.category("web_tour.tours").add('industry_fsm_tour', {
     sequence: 90,
     url: "/web",
-    steps: [{
+    steps: () => [{
     trigger: '.o_app[data-menu-xmlid="industry_fsm.fsm_menu_root"]',
     content: markup(_t('Ready to <b>manage your onsite interventions</b>? <i>Click Field Service to start.</i>')),
     position: 'bottom',

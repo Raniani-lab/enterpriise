@@ -7,7 +7,7 @@ registry.category("web_tour.tours").add('account_accountant_bank_rec_widget_ui',
     {
         test: true,
         url: '/web',
-        steps: [
+        steps: () => [
         stepUtils.showAppsMenuItem(),
         ...stepUtils.goToAppSteps('account_accountant.menu_accounting', "Open the accounting module"),
 

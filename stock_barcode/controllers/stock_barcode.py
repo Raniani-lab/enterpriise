@@ -128,8 +128,12 @@ class StockBarcodeController(http.Controller):
         barcode_field_by_model = self._get_barcode_field_by_model()
         result = defaultdict(list)
         model_names = model_name and [model_name] or list(barcode_field_by_model.keys())
+
         for model in model_names:
-            domain = [(barcode_field_by_model[model], operator, barcode)]
+            domain = [
+                (barcode_field_by_model[model], operator, barcode),
+                ('company_id', 'in', [False, request.env.company.id])
+            ]
             domain_for_this_model = domains_by_model.get(model)
             if domain_for_this_model:
                 domain = expression.AND([domain, domain_for_this_model])

@@ -1157,6 +1157,7 @@ var Text = AbstractEditComponent.extend({
             resizable: true,
             toolbarTemplate: 'web_studio.Sidebar.web_editor_toolbar',
             allowInlineAtRoot: true,
+            allowCommandVideo: false,
         };
         this.wysiwyg = new Wysiwyg(this, options);
         this.$textarea = this.$('textarea:first').val(this.directiveFields.text.value);

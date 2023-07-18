@@ -227,7 +227,22 @@ class BankRecWidget(models.Model):
                     # The statement line is already reconciled. We just need to preview the existing amls.
                     _liquidity_lines, _suspense_lines, other_lines = wizard.st_line_id._seek_for_lines()
                     for aml in other_lines:
-                        line_ids_commands.append(Command.create(wizard._lines_widget_prepare_aml_line(aml)))
+                        if wizard.state == 'reconciled':
+                            exchange_diff_aml = (aml.matched_debit_ids + aml.matched_debit_ids)\
+                                .exchange_move_id.line_ids.filtered(lambda l: l.account_id != aml.account_id)
+                            if exchange_diff_aml:
+                                line_ids_commands.append(
+                                    Command.create(wizard._lines_widget_prepare_aml_line(
+                                        aml,  # Create the aml line with un-squashed amounts (aml - exchange diff)
+                                        balance=aml.balance - exchange_diff_aml.balance,
+                                        amount_currency=aml.amount_currency - exchange_diff_aml.amount_currency
+                                    ))
+                                )
+                                line_ids_commands.append(
+                                    Command.create(wizard._lines_widget_prepare_aml_line(exchange_diff_aml))
+                                )
+                        else:
+                            line_ids_commands.append(Command.create(wizard._lines_widget_prepare_aml_line(aml)))
                 wizard.line_ids = line_ids_commands
 
                 wizard._lines_widget_add_auto_balance_line()
@@ -1623,16 +1638,35 @@ class BankRecWidget(models.Model):
         # Prepare the lines to be created.
         to_reconcile = []
         line_ids_create_command_list = []
+        aml_to_exchange_diff_vals = {}
 
         for i, line in enumerate(self.line_ids):
+            if line.flag == 'exchange_diff':
+                continue
+
+            amount_currency = line.amount_currency
+            balance = line.balance
+            if line.flag == 'new_aml':
+                to_reconcile.append((i, line.source_aml_id.id))
+                exchange_diff = self.line_ids \
+                    .filtered(lambda x: x.flag == 'exchange_diff' and x.source_aml_id == line.source_aml_id)
+                if exchange_diff:
+                    aml_to_exchange_diff_vals[i] = {
+                        'amount_residual': exchange_diff.balance,
+                        'amount_residual_currency': exchange_diff.amount_currency
+                    }
+                    # Squash amounts of exchange diff into corresponding new_aml
+                    amount_currency += exchange_diff.amount_currency
+                    balance += exchange_diff.balance
+
             line_ids_create_command_list.append(Command.create({
                 'name': line.name,
                 'sequence': i,
                 'account_id': line.account_id.id,
                 'partner_id': partner_id_to_set if line.flag in ('liquidity', 'auto_balance') else line.partner_id.id,
                 'currency_id': line.currency_id.id,
-                'amount_currency': line.amount_currency,
-                'balance': line.debit - line.credit,
+                'amount_currency': amount_currency,
+                'balance': balance,
                 'reconcile_model_id': line.reconcile_model_id.id,
                 'analytic_distribution': line.analytic_distribution,
                 'tax_repartition_line_id': line.tax_repartition_line_id.id,
@@ -1641,14 +1675,12 @@ class BankRecWidget(models.Model):
                 'group_tax_id': line.group_tax_id.id,
             }))
 
-            if line.flag == 'new_aml':
-                to_reconcile.append((i, line.source_aml_id.id))
-
         self.js_action_reconcile_st_line(
             self.st_line_id.id,
             {
                 'command_list': line_ids_create_command_list,
                 'to_reconcile': to_reconcile,
+                'exchange_diff': aml_to_exchange_diff_vals,
                 'partner_id': partner_id_to_set,
             },
         )
@@ -1759,8 +1791,6 @@ class BankRecWidget(models.Model):
     @api.model
     def js_action_reconcile_st_line(self, st_line_id, params):
         st_line = self.env['account.bank.statement.line'].browse(st_line_id)
-
-        # Remove the existing lines.
         move = st_line.move_id
 
         # Update the move.
@@ -1777,7 +1807,16 @@ class BankRecWidget(models.Model):
         # Perform the reconciliation.
         for index, counterpart_aml_id in params['to_reconcile']:
             counterpart_aml = self.env['account.move.line'].browse(counterpart_aml_id)
-            (move_ctx.line_ids.filtered(lambda x: x.sequence == index) + counterpart_aml).reconcile()
+            line_aml = move_ctx.line_ids.filtered(lambda x: x.sequence == index)
+            exchange_diff_move = False
+            # Create exchange difference move
+            exchange_amounts = params['exchange_diff'].get(index)
+            if exchange_amounts:
+                exch_diff_related_aml = line_aml if exchange_amounts['amount_residual'] * line_aml.amount_residual > 0 else counterpart_aml
+                exchange_vals = exch_diff_related_aml._prepare_exchange_difference_move_vals([exchange_amounts])
+                exchange_diff_move = self.env['account.move.line']._create_exchange_difference_move(exchange_vals)
+            rec_res = (line_aml + counterpart_aml).with_context(no_exchange_difference=True).reconcile()
+            rec_res['partials'].exchange_move_id = exchange_diff_move
 
         # Fill missing partner.
         st_line.with_context(skip_account_move_synchronization=True).partner_id = params['partner_id']

@@ -209,6 +209,28 @@ class TestQualityCheckWorkorder(TestMrpCommon):
 @tagged('post_install', '-at_install')
 class TestPickingWorkorderClientActionQuality(test_tablet_client_action.TestWorkorderClientActionCommon, HttpCase):
 
+    def test_control_per_op_quantity_quality_check(self):
+        """ Test quality point control per product on workorder operation
+        """
+        self.env['quality.point'].create({
+            'title': 'test QP1',
+            'picking_type_ids': [(4, self.env['stock.picking.type'].search([('code', '=', 'mrp_operation')], limit=1).id)],
+            'measure_on': 'move_line',
+            'product_ids': [(4, self.bom_2.product_id.id, 0)],
+            'operation_id': self.bom_2.operation_ids.id,
+            'note': 'Cut',
+        })
+
+        mo_form = Form(self.env['mrp.production'])
+        mo_form.bom_id = self.bom_2
+        mo = mo_form.save()
+        mo.action_confirm()
+
+        # Check created on the workorder not the MO
+        self.assertEqual(len(mo.check_ids), 0)
+        self.assertEqual(len(mo.workorder_ids), 1)
+        self.assertEqual(len(mo.workorder_ids.check_ids), 1)
+
     def test_register_consumed_materials_01(self):
         """
         Process a MO based on a BoM with one operation. That operation has one

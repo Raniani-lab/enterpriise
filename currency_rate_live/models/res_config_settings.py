@@ -148,6 +148,7 @@ CURRENCY_PROVIDER_SELECTION = [
     (['TR'], 'tcmb', 'Turkey Republic Central Bank'),
     (['PL'], 'nbp', 'National Bank of Poland'),
     (['BR'], 'bbr', 'Central Bank of Brazil'),
+    (['CZ'], 'cnb', 'Czech National Bank'),
 ]
 
 class ResCompany(models.Model):
@@ -754,6 +755,28 @@ class ResCompany(models.Model):
                         requested_currency_codes.remove(rec['code'])
 
         return result
+
+    def _parse_cnb_data(self, available_currencies):
+        ''' This method is used to update the currencies by using CNB service provider.
+            Rates are given against Czech Koruna
+        '''
+        request_url = "https://www.cnb.cz/cs/financni-trhy/devizovy-trh/kurzy-devizoveho-trhu/kurzy-devizoveho-trhu/denni_kurz.txt"
+        response = requests.get(request_url, timeout=3)
+        response.raise_for_status()
+        response = str(response.content, 'UTF-8')
+
+        last_update = fields.Date.to_date(datetime.datetime.strptime(response.split(' ')[0], "%d.%m.%Y"))
+        rates_lines = response.split('\n')[2:-1]
+        available_currency_names = available_currencies.mapped('name')
+        rslt = {}
+        for rate_line in rates_lines:
+            _country, _currency, amount, code, rate = rate_line.replace(',', '.').split('|')
+            if code in available_currency_names:
+                rslt[code] = (float(amount) / float(rate), last_update)
+
+        if rslt and 'CZK' in available_currency_names:
+            rslt['CZK'] = (1.0, last_update)
+        return rslt
 
     @api.model
     def run_update_currency(self):

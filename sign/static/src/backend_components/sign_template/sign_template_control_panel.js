@@ -4,7 +4,7 @@ import { useService } from "@web/core/utils/hooks";
 import { sprintf } from "@web/core/utils/strings";
 import { Component } from "@odoo/owl";
 import { ControlPanel } from "@web/search/control_panel/control_panel";
-import { multiFileUpload } from "@sign/js/backend/multi_file_upload";
+import { multiFileUpload } from "@sign/backend_components/multi_file_upload";
 
 export class SignTemplateControlPanel extends Component {
     setup() {

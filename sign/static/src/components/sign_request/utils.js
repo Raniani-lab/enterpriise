@@ -30,7 +30,7 @@ export function startHelperLines(target) {
         for (const line in helperLines) {
             const newPos = calculate[line](positions);
             Object.assign(helperLines[line].style, {
-                display: "block",
+                visibility: "visible",
                 ...newPos,
             });
         }
@@ -38,7 +38,7 @@ export function startHelperLines(target) {
 
     function hideHelperLines() {
         for (const line in helperLines) {
-            helperLines[line].style.display = "none";
+            helperLines[line].style.visibility = "hidden";
         }
     }
 
@@ -78,8 +78,8 @@ export function offset(el) {
     const box = el.getBoundingClientRect();
     const docElem = document.documentElement;
     return {
-        top: box.top + window.pageYOffset - docElem.clientTop,
-        left: box.left + window.pageXOffset - docElem.clientLeft,
+        top: box.top + window.scrollY - docElem.clientTop,
+        left: box.left + window.scrollY - docElem.clientLeft,
     };
 }
 
@@ -307,4 +307,21 @@ export function pinchService(target, handlers) {
         target.removeEventListener("touchmove", touchMove);
         target.removeEventListener("touchend", reset);
     };
+}
+
+/**
+ * Generates the PDF.JS URL from the attachment location
+ * @param { String } attachmentLocation
+ * @param { Boolean } isSmall
+ * @returns
+ */
+export function buildPDFViewerURL(attachmentLocation, isSmall) {
+    const date = new Date().toISOString();
+    const baseURL = "/web/static/lib/pdfjs/web/viewer.html";
+    // encodes single quote and double quotes as encodeURIComponent does not handle those
+    attachmentLocation = encodeURIComponent(attachmentLocation)
+        .replace(/'/g, "%27")
+        .replace(/"/g, "%22");
+    const zoom = isSmall ? "page-fit" : "page-width";
+    return `${baseURL}?unique=${date}&file=${attachmentLocation}#page=1&zoom=${zoom}`;
 }

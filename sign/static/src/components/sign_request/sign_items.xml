@@ -11,7 +11,7 @@
         </t>
         <t t-if="!readonly">
             <!-- SIGN SESSION : filling the signature values  -->
-            <button t-if="type == 'signature' || type == 'initial'" t-att-title="role" class="o_sign_sign_item text-center" style="color:#757575;" t-att-data-signature="value">
+            <button t-if="type == 'signature' || type == 'initial'" t-att-title="role"  t-attf-class="{{classes}} o_sign_sign_item text-center" style="color:#757575;"  t-att-style="style" t-att-data-signature="value">
                 <span class="o_sign_helper"/>
                 <img t-if="frame_value" t-att-src="frame_value" alt="Frame"/>
                 <img t-if="value" t-att-src="value" alt="Signature"/>
@@ -21,12 +21,20 @@
                     </span>
                 </t>
             </button>
-            <input t-if="type == 'text'" t-att-title="role" type="text" class="o_sign_sign_item" t-att-placeholder="placeholder" t-att-value="value"/>
-            <input t-if="type == 'checkbox' and value == 'on'" t-att-title="role" type="checkbox" class="o_sign_sign_item" checked="1"/>
-            <input t-elif="type == 'checkbox'" t-att-title="role" type="checkbox" class="o_sign_sign_item"/>
-            <textarea t-if="type == 'textarea'" t-att-title="role" class="o_sign_sign_item" t-att-placeholder="placeholder" t-att-value="value" t-esc="value"/>
-            <div t-if="type == 'selection'" t-att-title="role" class="o_sign_sign_item" style="white-space: normal;color: #757575;" t-att-value="value">
-                <div class="o_sign_select_options_display o_sign_select_options_display_edit"/>
+            <input t-if="type == 'text'" t-att-title="role" type="text"  t-attf-class="{{classes}} o_sign_sign_item"  t-att-style="style" t-att-placeholder="placeholder" t-att-value="value"/>
+            <input t-if="type == 'checkbox' and value == 'on'" t-att-title="role" type="checkbox" t-attf-class="{{classes}} o_sign_sign_item" t-att-style="style" checked="1"/>
+            <input t-elif="type == 'checkbox'" t-att-title="role" type="checkbox" t-attf-class="{{classes}} o_sign_sign_item" t-att-style="style"/>
+            <textarea t-if="type == 'textarea'" t-att-title="role" t-attf-class="{{classes}} o_sign_sign_item" t-att-style="style" t-att-placeholder="placeholder" t-att-value="value" t-esc="value"/>
+            <div t-if="type == 'selection'" t-att-title="role" t-attf-class="{{classes}} o_sign_sign_item" t-att-style="style" t-att-value="value">
+                <div class="o_sign_select_options_display o_sign_select_options_display_edit">
+                    <t t-foreach="options" t-key="option.value" t-as="option" t-index="index">
+                        <t t-if="option_index !== 0">
+                            <span class="o_sign_option_separator">/</span>
+                        </t>
+                        <span t-attf-class="o_sign_item_option {{ value ? (value == option.id ? 'o_sign_selected_option' : 'o_sign_not_selected_option') : ''}}" t-att-data-id="option.id" t-esc="option.value"/>
+                    </t>
+                </div>
+                
             </div>
         </t>
     </t>
@@ -58,7 +66,7 @@
                 <t t-if="option_index !== 0">
                     <span class="o_sign_option_separator">/</span>
                 </t>
-                <span class="o_sign_item_option" t-esc="option.value"/>
+                <span t-attf-class="o_sign_item_option {{ value ? (value == option.id ? 'o_sign_selected_option' : 'o_sign_not_selected_option') : ''}}" t-esc="option.value"/>
             </t>
         </div>
         <t t-if="editMode" t-call="sign.signItemConfiguration"/>

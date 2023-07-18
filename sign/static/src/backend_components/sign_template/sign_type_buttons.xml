@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="sign.signItemTypesSidebar" owl="1">
-        <div class="o_sign_field_type_toolbar d-flex flex-column">
+        <div t-attf-class="o_sign_field_type_toolbar d-flex flex-column {{ sidebarHidden ? 'd-none' : ''}} ">
             <div class="o_sign_field_type_toolbar_title d-flex justify-content-center align-items-center">Fields</div>
             <div class="o_sign_field_type_toolbar_items d-flex flex-column pb-2">
                 <t t-foreach="signItemTypes" t-as="itemType" t-key="itemType.id">

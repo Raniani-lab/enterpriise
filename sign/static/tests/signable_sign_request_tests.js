@@ -9,10 +9,10 @@ import { signInfoService } from "@sign/services/sign_info_service";
 import { registry } from "@web/core/registry";
 
 let serverData;
-let config;
 let target;
+let config;
 
-QUnit.module("document_backend_tests", ({ beforeEach }) => {
+QUnit.module("signable_document_backend_tests", ({ beforeEach }) => {
     beforeEach(() => {
         const data = {
             partner: {
@@ -47,25 +47,17 @@ QUnit.module("document_backend_tests", ({ beforeEach }) => {
         serverData = { models: data };
         target = getFixture();
         config = {
-            tag: "sign.Document",
+            tag: "sign.SignableDocument",
         };
         registry.category("services").add("signInfo", signInfoService);
     });
 
-    QUnit.test("simple rendering", async function (assert) {
-        assert.expect(7);
-
+    QUnit.test("simple rendering", async (assert) => {
+        assert.expect(5);
         const getDataFromHTML = () => {
             assert.step("getDataFromHTML");
         };
-
-        config = {
-            ...config,
-            getDataFromHTML,
-            actionContext: {
-                need_to_sign: true,
-            },
-        };
+        config.getDataFromHTML = getDataFromHTML;
 
         const webClient = await createDocumentWebClient(config, serverData);
         await doAction(webClient, actionId);
@@ -78,61 +70,55 @@ QUnit.module("document_backend_tests", ({ beforeEach }) => {
             "should display text from server"
         );
 
-        assert.containsN(target, ".o_sign_resend_access_button", 2);
-        assert.strictEqual(
-            target.querySelectorAll(".o_sign_resend_access_button")[0].textContent,
-            "Resend"
+        assert.containsNone(
+            target,
+            ".d-xl-inline-flex .o_sign_edit_button",
+            "should show edit while signing button"
         );
-        assert.strictEqual(
-            target.querySelectorAll(".o_sign_resend_access_button")[1].textContent,
-            "Send"
+        assert.containsNone(
+            target,
+            ".d-xl-inline-flex .o_sign_refuse_document_button",
+            "should show refuse button"
         );
-        assert.containsOnce(target, ".d-xl-inline-flex .o_sign_sign_directly");
     });
 
-    QUnit.test("do not crash when leaving the action", async function (assert) {
-        assert.expect(3);
+    QUnit.test("rendering with allow edit to sign", async (assert) => {
+        config.actionContext = { template_editable: true };
+        const webClient = await createDocumentWebClient(config, serverData);
 
-        config.mockRPC = (route) => {
+        await doAction(webClient, actionId);
+
+        assert.containsOnce(
+            target,
+            ".d-xl-inline-flex .o_sign_edit_button",
+            "should show edit while signing button"
+        );
+    });
+
+    QUnit.test("rendering with allow refusal", async (assert) => {
+        const mockRPC = (route) => {
             if (route === "/sign/get_document/5/abc") {
-                assert.step(route);
                 return Promise.resolve({
-                    html: "<span>def<div class='o_sign_cp_pager'></div></span>",
-                    context: {},
+                    html: `
+                    <span>
+                        def
+                        <div class='o_sign_cp_pager'></div>
+                    </span>
+                    `,
+                    context: { refusal_allowed: true },
                 });
             }
         };
 
-        const webClient = await createDocumentWebClient(config, serverData);
-
-        await doAction(webClient, actionId);
-        await doAction(webClient, actionId);
-
-        assert.verifySteps(["/sign/get_document/5/abc", "/sign/get_document/5/abc"]);
-    });
-
-    QUnit.test("show download buttons when state is signed", async (assert) => {
-        assert.expect(4);
-
-        config.actionContext = { state: "signed" };
-
+        config.mockRPC = mockRPC;
         const webClient = await createDocumentWebClient(config, serverData);
 
         await doAction(webClient, actionId);
 
-        assert.containsOnce(target, ".d-xl-inline-flex .o_sign_download_document_button");
-        assert.containsOnce(target, ".d-xl-inline-flex .o_sign_download_log_button");
-        assert.ok(
-            target
-                .querySelector(".o_sign_download_document_button")
-                .href.includes("/sign/download/5/abc/completed"),
-            "should have correct download URL"
-        );
-        assert.ok(
-            target
-                .querySelector(".o_sign_download_log_button")
-                .href.includes("/sign/download/5/abc/log"),
-            "should have correct download URL"
+        assert.containsOnce(
+            target,
+            ".d-xl-inline-flex .o_sign_refuse_document_button",
+            "should show refuse button"
         );
     });
 });

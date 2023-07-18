@@ -23,7 +23,7 @@ class Sign(http.Controller):
         sign_request = http.request.env['sign.request'].sudo().browse(sign_request_id).exists()
         if not sign_request:
             return request.render('sign.deleted_sign_request')
-        current_request_item = sign_request.request_item_ids.filtered(lambda r: r.access_token == token)
+        current_request_item = sign_request.request_item_ids.filtered(lambda r: consteq(r.access_token, token))
         if not current_request_item and sign_request.access_token != token:
             return request.not_found()
 
@@ -101,6 +101,20 @@ class Sign(http.Controller):
             'portal': post.get('portal'),
         }
 
+    def _get_document_context(self, sign_request_id, token):
+        sign_request_sudo = http.request.env['sign.request'].sudo().browse(sign_request_id).exists()
+        if not sign_request_sudo:
+            return {}
+        current_request_item_sudo = sign_request_sudo.request_item_ids.filtered(lambda r: consteq(r.access_token, token))
+        if not current_request_item_sudo:
+            return {}
+
+        refusal_allowed = current_request_item_sudo and current_request_item_sudo.state == 'sent' and sign_request_sudo.state == 'sent' and sign_request_sudo.refusal_allowed
+        return {
+            'refusal_allowed': refusal_allowed,
+            'sign_request_token': sign_request_sudo.access_token,
+        }
+
     # -------------
     #  HTTP Routes
     # -------------
@@ -123,7 +137,7 @@ class Sign(http.Controller):
         sign_request = request.env['sign.request'].sudo().browse(id)
         if not sign_request or sign_request.validity and sign_request.validity < fields.Date.today():
             return http.request.render('sign.deleted_sign_request')
-        current_request_item = sign_request.request_item_ids.filtered(lambda r: r.access_token == token)
+        current_request_item = sign_request.request_item_ids.filtered(lambda r: consteq(r.access_token, token))
         current_request_item.access_via_link = True
         return request.redirect('/sign/document/%s/%s' % (id, token))
 
@@ -241,7 +255,11 @@ class Sign(http.Controller):
     # -------------
     @http.route(["/sign/get_document/<int:id>/<token>"], type='json', auth='user')
     def get_document(self, id, token):
-        return http.Response(template='sign._doc_sign', qcontext=self.get_document_qweb_context(id, token)).render()
+        context = self.get_document_qweb_context(id, token)
+        return {
+            'html': request.env['ir.qweb']._render('sign._doc_sign', context),
+            'context': self._get_document_context(id, token)
+        }
 
     @http.route(["/sign/update_user_signature"], type="json", auth="user")
     def update_signature(self, sign_request_id, role, signature_type=None, datas=None, frame_datas=None):

@@ -4,6 +4,7 @@ import { useService } from "@web/core/utils/hooks";
 import { SignTemplateIframe } from "./sign_template_iframe";
 import { SignTemplateTopBar } from "./sign_template_top_bar";
 import { Component, useRef, useEffect, onWillUnmount } from "@odoo/owl";
+import { buildPDFViewerURL } from "@sign/components/sign_request/utils";
 import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 
 export class SignTemplateBody extends Component {
@@ -15,7 +16,7 @@ export class SignTemplateBody extends Component {
         this.dialog = useService("dialog");
         this.user = useService("user");
         this.PDFIframe = useRef("PDFIframe");
-        this.PDFViewerURL = this.buildPDFViewerURL();
+        this.PDFViewerURL = buildPDFViewerURL(this.props.attachmentLocation, this.env.isSmall);
         useEffect(
             () => {
                 return this.waitForPDF();
@@ -38,7 +39,6 @@ export class SignTemplateBody extends Component {
     doPDFPostLoad() {
         this.preventDroppingImagesOnViewerContainer();
         this.iframe = new SignTemplateIframe(
-            this.PDFIframe.el,
             this.PDFIframe.el.contentDocument,
             this.env,
             {
@@ -76,16 +76,6 @@ export class SignTemplateBody extends Component {
             },
             true
         );
-    }
-
-    buildPDFViewerURL() {
-        const date = new Date().toISOString();
-        const baseURL = "/web/static/lib/pdfjs/web/viewer.html";
-        const attachmentLocation = encodeURIComponent(this.props.attachmentLocation)
-            .replace(/'/g, "%27")
-            .replace(/"/g, "%22");
-        const zoom = this.env.isSmall ? "page-fit" : "page-width";
-        return `${baseURL}?unique=${date}&file=${attachmentLocation}#page=1&zoom=${zoom}`;
     }
 
     onTemplateNameChange(e) {

@@ -400,6 +400,7 @@ textarea.o_sign_sign_item {
     position: fixed;
     z-index: 103;
     pointer-events: none;
+    visibility: hidden;
 }
 
 .o_sign_drag_side_helper {

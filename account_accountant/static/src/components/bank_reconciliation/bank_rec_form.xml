@@ -233,7 +233,7 @@
                                 <td t-att-colspan="line_ids_columns.length - (display_currency_columns ? 5 : 3)"
                                     class="o_data_cell o_field_cell o_list_char text-wrap fw-normal"
                                     field="name">
-                                    <t t-if="['new_aml', 'aml', 'liquidity'].includes(line.data.flag) and line.data.source_aml_move_id[0]">
+                                    <t t-if="line.data.source_aml_move_id[0] and (['new_aml', 'aml'].includes(line.data.flag) or (line.data.flag == 'liquidity' and data.state == 'reconciled'))">
                                         <span class="o_form_uri fst-italic"
                                               t-out="line.data.source_aml_move_id[1]"
                                               t-on-click="() => this.actionRedirectToSourceMove(line)"/>

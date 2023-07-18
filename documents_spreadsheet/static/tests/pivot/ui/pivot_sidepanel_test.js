@@ -277,7 +277,13 @@ QUnit.module(
         });
 
         QUnit.test("Update the pivot domain from the side panel", async function (assert) {
-            const { model, env } = await createSpreadsheetFromPivotView();
+            const { model, env } = await createSpreadsheetFromPivotView({
+                mockRPC(route) {
+                    if (route === "/web/domain/validate") {
+                        return true;
+                    }
+                },
+            });
             const [pivotId] = model.getters.getPivotIds();
             model.dispatch("SELECT_PIVOT", { pivotId });
             env.openSidePanel("PIVOT_PROPERTIES_PANEL", {

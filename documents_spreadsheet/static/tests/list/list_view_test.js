@@ -300,7 +300,13 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
     });
 
     QUnit.test("Update the list domain from the side panel", async function (assert) {
-        const { model, env } = await createSpreadsheetFromListView();
+        const { model, env } = await createSpreadsheetFromListView({
+            mockRPC(route) {
+                if (route === "/web/domain/validate") {
+                    return true;
+                }
+            },
+        });
         const [listId] = model.getters.getListIds();
         model.dispatch("SELECT_ODOO_LIST", { listId });
         env.openSidePanel("LIST_PROPERTIES_PANEL", {

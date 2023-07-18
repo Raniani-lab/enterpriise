@@ -365,10 +365,12 @@ class AccountEdiFormat(models.Model):
                 ),
                 attachment_ids=attachment.ids,
             )
-        elif not auth_num or (move.edi_state == 'to_cancel' and not move.company_id.l10n_ec_production_env):
-            # No authorization number means the invoice was cancelled
+        elif move.edi_state == 'to_cancel' and not move.company_id.l10n_ec_production_env:
             # In test environment, we act as if invoice had already been cancelled for the govt
             warnings.append(_("Document with access key %s has been cancelled", move.l10n_ec_authorization_number))
+        elif not auth_num:
+            # No authorization number means the invoice was no authorized
+            errors.append(_("Document not authorized by SRI, please try again later"))
         else:
             warnings.append(_("Document with access key %s received by government and pending authorization",
                               move.l10n_ec_authorization_number))
@@ -393,9 +395,7 @@ class AccountEdiFormat(models.Model):
             return auth_num, auth_date, [_("SRI response unexpected: %s", err)], zeep_warnings
 
         errors = []
-        if not response_auth_list:
-            errors.append(_("Document not authorized by SRI, please try again later"))
-        elif not isinstance(response_auth_list, list):
+        if not isinstance(response_auth_list, list):
             response_auth_list = [response_auth_list]
 
         for doc in response_auth_list:

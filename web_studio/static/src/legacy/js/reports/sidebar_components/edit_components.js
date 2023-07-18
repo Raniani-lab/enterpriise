@@ -1146,7 +1146,12 @@ var Text = AbstractEditComponent.extend({
     //--------------------------------------------------------------------------
 
     _onBlurWysiwygEditor: function () {
-        this._triggerViewChange({text: this.wysiwyg.getValue()});
+        // Avoid blur when a modal is open.
+        // This is necessary to let the user use the link and media modal
+        // without triggering a save and reload of the editor.
+        if (!document.querySelector('.modal[role="dialog"]')) {
+            this._triggerViewChange({text: this.wysiwyg.getValue()});
+        }
     },
     _startWysiwygEditor: function () {
         var self = this;

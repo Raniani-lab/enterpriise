@@ -444,7 +444,7 @@ export const DialingPanel = Widget.extend({
      */
     _showHeader() {
         this._$searchBar.show();
-        this._$tabs.parent().show();
+        this._$tabs.show();
     },
     /**
      * @private

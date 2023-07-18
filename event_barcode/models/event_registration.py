@@ -5,6 +5,7 @@ import logging
 import os
 
 from odoo import api, fields, models
+from psycopg2.extras import execute_values
 
 _logger = logging.getLogger(__name__)
 
@@ -37,12 +38,24 @@ class EventRegistration(models.Model):
         if column_name == "barcode":
             _logger.debug("Table '%s': setting default value of new column %s to unique values for each row",
                           self._table, column_name)
-            self.env.cr.execute("SELECT id FROM %s WHERE barcode IS NULL" % self._table)
+            # we set only the barcode of registration of ongoing or future events
+            self.env.cr.execute("""
+                SELECT event_reg.id AS id
+                FROM %s AS event_reg
+                    JOIN event_event AS event
+                         ON event.id = event_reg.event_id
+                WHERE barcode IS NULL
+                  AND event.date_end > NOW()
+                """ % self._table)
             registration_ids = self.env.cr.dictfetchall()
-            query_list = [{'id': reg['id'], 'barcode': self._get_random_token()} for reg in registration_ids]
-            query = 'UPDATE ' + self._table + ' SET barcode = %(barcode)s WHERE id = %(id)s;'
-            self.env.cr._obj.executemany(query, query_list)
-
+            values_args = [(reg['id'], self._get_random_token()) for reg in registration_ids]
+            query = """
+                UPDATE {table}
+                SET barcode = vals.barcode
+                FROM (VALUES %s) AS vals(id, barcode)
+                WHERE {table}.id = vals.id
+            """.format(table=self._table)
+            execute_values(self.env.cr._obj, query, values_args)
         else:
             super(EventRegistration, self)._init_column(column_name)
 

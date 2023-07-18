@@ -5,6 +5,7 @@ import uuid
 
 from datetime import datetime, time, timedelta
 from odoo import fields, models, _, api
+from psycopg2.extras import execute_values
 
 _logger = logging.getLogger(__name__)
 
@@ -45,9 +46,14 @@ class Employee(models.Model):
             _logger.debug("Table '%s': setting default value of new column %s to unique values for each row", self._table, column_name)
             self.env.cr.execute("SELECT id FROM %s WHERE employee_token IS NULL" % self._table)
             acc_ids = self.env.cr.dictfetchall()
-            query_list = [{'id': acc_id['id'], 'employee_token': self._default_employee_token()} for acc_id in acc_ids]
-            query = 'UPDATE ' + self._table + ' SET employee_token = %(employee_token)s WHERE id = %(id)s;'
-            self.env.cr._obj.executemany(query, query_list)
+            values_args = [(acc_id['id'], self._default_employee_token()) for acc_id in acc_ids]
+            query = """
+                UPDATE {table}
+                SET employee_token = vals.token
+                FROM (VALUES %s) AS vals(id, token)
+                WHERE {table}.id = vals.id
+            """.format(table=self._table)
+            execute_values(self.env.cr._obj, query, values_args)
         else:
             super(Employee, self)._init_column(column_name)
 

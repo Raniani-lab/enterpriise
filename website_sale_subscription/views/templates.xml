@@ -54,7 +54,7 @@
 
     <!-- This is needed since the product page of subscriptions won't update when we remove subscriptions from the cart, so we need to take this into account.-->
     <template id="product_subscriptions" inherit_id="website_sale.product">
-        <xpath expr="//t[@t-cache='pricelist,product']" position="attributes">
+        <xpath expr="//t[@t-cache='pricelist,product,fiscal_position']" position="attributes">
             <attribute name="t-cache" add="bool(product.recurring_invoice and product._is_add_to_cart_possible())" separator=","/>
         </xpath>
     </template>

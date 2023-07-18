@@ -213,6 +213,7 @@ class AccountOnlineLink(models.Model):
     expiring_synchronization_date = fields.Date(help="Date when the consent for this connection expires",
                                                 readonly=True)
     journal_ids = fields.One2many(related='account_online_account_ids.journal_ids')
+    provider_type = fields.Char(help="Third Party Provider", readonly=True)
 
     ##########################
     # Wizard opening actions #

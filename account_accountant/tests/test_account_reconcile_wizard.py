@@ -390,3 +390,26 @@ class TestAccountReconcileWizard(AccountTestInvoicingCommon):
         line_3 = self.create_line_for_reconciliation(-500.0, -500.0, self.company_currency, '2016-01-01', account_1=self.payable_account_2)
         with self.assertRaises(UserError):
             (line_1 + line_2 + line_3).action_reconcile()
+
+    def test_reconcile_no_receivable_no_payable_account(self):
+        """ If you try to reconcile lines in an account that is neither from payable nor receivable
+        it should reconcile in company currency.
+        """
+        account = self.company_data['default_account_expense']
+        account.reconcile = True
+        line_1 = self.create_line_for_reconciliation(1000.0, 1000.0, self.company_currency, '2016-01-01', account_1=account)
+        line_2 = self.create_line_for_reconciliation(-500.0, -1500.0, self.foreign_currency, '2016-01-01', account_1=account)
+        wizard_input_values = {
+            'journal_id': self.misc_journal.id,
+            'account_id': self.write_off_account.id,
+            'label': 'Write-Off Test Label',
+            'allow_partials': False,
+            'date': self.test_date,
+        }
+        expected_values = [
+            {'account_id': account.id, 'name': 'Write-Off',
+             'balance': -500.0, 'amount_currency': -500.0, 'currency_id': self.company_currency.id},
+            {'account_id': self.write_off_account.id, 'name': 'Write-Off Test Label',
+             'balance': 500.0, 'amount_currency': 500.0, 'currency_id': self.company_currency.id},
+        ]
+        self.assertWizardReconcileValues(line_1 + line_2, wizard_input_values, expected_values)

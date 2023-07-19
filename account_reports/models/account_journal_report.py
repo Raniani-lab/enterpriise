@@ -4,7 +4,7 @@
 from odoo import models, _
 from odoo.tools import format_date, date_utils, get_lang
 from collections import defaultdict
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, RedirectWarning
 
 import json
 import datetime
@@ -177,6 +177,21 @@ class JournalReportCustomHandler(models.AbstractModel):
             if report.load_more_limit and len(move_line_vals_list) + treated_amls_count > report.load_more_limit and not options['print_mode']:
                 # This element won't generate a line now, but we use it to know that we'll need to add a load_more line.
                 has_more_lines = True
+                if treated_amls_count == 0:
+                    # A single move lines count exceed the load more limit, we need to raise to inform the user
+                    msg = _("The 'load more limit' setting of this report is too low to display all the lines of the entry you're trying to show.")
+                    if self.env.user.has_group('account.group_account_manager'):
+                        action = {
+                            "view_mode": "form",
+                            "res_model": "account.report",
+                            "type": "ir.actions.act_window",
+                            "res_id" : report.id,
+                            "views": [[self.env.ref("account_reports.account_report_form").id, "form"]],
+                        }
+                        title = _('Go to report configuration')
+
+                        raise RedirectWarning(msg, action, title)
+                    raise UserError(msg)
                 break
             is_unreconciled_payment = journal.type == 'bank' and not any(line for line in move_line_vals_list if next(col_group_val for col_group_val in line.values())['account_type'] in ('liability_credit_card', 'asset_cash'))
             if journal.type == 'bank':

@@ -11,7 +11,7 @@
     'description': """
         Allow clients to Schedule Appointments through the Portal
     """,
-    'depends': ['calendar', 'onboarding', 'portal', 'resource'],
+    'depends': ['calendar', 'onboarding', 'portal', 'resource', 'web_gantt'],
     'data': [
         'data/onboarding_data.xml',
         'data/calendar_data.xml',
@@ -33,6 +33,7 @@
         'views/appointment_templates_registration.xml',
         'views/appointment_templates_validation.xml',
         'views/portal_templates.xml',
+        'wizard/appointment_manage_leaves.xml',
         'wizard/appointment_onboarding_link.xml',
     ],
     'demo': [

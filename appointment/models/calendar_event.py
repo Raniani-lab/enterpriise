@@ -3,6 +3,7 @@
 
 import uuid
 import logging
+
 from odoo import _, api, fields, models, SUPERUSER_ID
 from odoo.tools import html2plaintext
 
@@ -11,27 +12,61 @@ _logger = logging.getLogger(__name__)
 class CalendarEvent(models.Model):
     _inherit = "calendar.event"
 
+    @api.model
+    def default_get(self, fields_list):
+        res = super().default_get(fields_list)
+        resource_id = res.get('appointment_resource_id') or self.env.context.get('default_appointment_resource_id')
+        # get a relevant appointment type for ease of use when coming from a view that groups by resource
+        if not res.get('appointment_type_id') and 'appointment_type_id' in fields_list and resource_id:
+            appointment_types = self.env['appointment.resource'].browse(resource_id).appointment_type_ids
+            if appointment_types:
+                res['appointment_type_id'] = appointment_types[0].id
+        if 'name' in fields_list and 'name' not in res and resource_id:
+            res.setdefault('name', _('Booking for %(resource_name)s', resource_name=self.env['appointment.resource'].browse(resource_id).name))
+        if self.env.context.get('appointment_default_add_organizer_to_attendees') and 'partner_ids' in fields_list:
+            organizer_partner = self.env['res.users'].browse(res.get('user_id', [])).partner_id
+            if organizer_partner:
+                res['partner_ids'] = organizer_partner.ids
+        return res
+
     def _default_access_token(self):
         return str(uuid.uuid4())
 
     access_token = fields.Char('Access Token', default=_default_access_token, readonly=True)
     alarm_ids = fields.Many2many(compute='_compute_alarm_ids', store=True, readonly=False)
-    appointment_type_id = fields.Many2one('appointment.type', 'Online Appointment', readonly=True, tracking=True)
     appointment_answer_input_ids = fields.One2many('appointment.answer.input', 'calendar_event_id', string="Appointment Answers")
+    appointment_attended = fields.Boolean('Attendees Arrived')
+    appointment_type_id = fields.Many2one('appointment.type', 'Online Appointment', tracking=True)
+    appointment_type_schedule_based_on = fields.Selection(related="appointment_type_id.schedule_based_on")
+    appointment_type_manage_capacity = fields.Boolean(related="appointment_type_id.resource_manage_capacity")
     appointment_invite_id = fields.Many2one('appointment.invite', 'Appointment Invitation', readonly=True, ondelete='set null')
-    booking_line_ids = fields.One2many('appointment.booking.line', 'calendar_event_id', string="Booking Lines")
+    appointment_resource_id = fields.Many2one('appointment.resource', string="Appointment Resource",
+                                              compute="_compute_appointment_resource_id", inverse="_inverse_appointment_resource_id_or_capacity",
+                                              store=True, group_expand="_read_group_appointment_resource_id")
     appointment_resource_ids = fields.Many2many('appointment.resource', string="Appointment Resources", compute="_compute_resource_ids")
-    resource_total_capacity_reserved = fields.Integer('Total Capacity Reserved', compute="_compute_resource_total_capacity")
+    booking_line_ids = fields.One2many('appointment.booking.line', 'calendar_event_id', string="Booking Lines")
+    resource_total_capacity_reserved = fields.Integer('Total Capacity Reserved', compute="_compute_resource_total_capacity", inverse="_inverse_appointment_resource_id_or_capacity")
     resource_total_capacity_used = fields.Integer('Total Capacity Used', compute="_compute_resource_total_capacity")
-
-    def _get_public_fields(self):
-        return super()._get_public_fields() | {'appointment_type_id'}
+    user_id = fields.Many2one('res.users', group_expand="_read_group_user_id")
+    _sql_constraints = [
+        ('check_resource_and_appointment_type',
+         "CHECK(appointment_resource_id IS NULL OR (appointment_resource_id IS NOT NULL AND appointment_type_id IS NOT NULL))",
+         "An event cannot book resources without an appointment type.")
+    ]
 
     @api.depends('appointment_type_id')
     def _compute_alarm_ids(self):
         for event in self.filtered('appointment_type_id'):
             if not event.alarm_ids:
                 event.alarm_ids = event.appointment_type_id.reminder_ids
+
+    @api.depends('booking_line_ids.appointment_resource_id')
+    def _compute_appointment_resource_id(self):
+        for event in self:
+            if len(event.booking_line_ids) == 1:
+                event.appointment_resource_id = event.booking_line_ids.appointment_resource_id
+            else:
+                event.appointment_resource_id = False
 
     @api.depends('booking_line_ids')
     def _compute_resource_ids(self):
@@ -73,6 +108,45 @@ class CalendarEvent(models.Model):
         if column_name != 'access_token':
             super(CalendarEvent, self)._init_column(column_name)
 
+    def _inverse_appointment_resource_id_or_capacity(self):
+        """Update booking lines as inverse of both resource capacity and resource id.
+
+        As both values are related to the booking line and resource capacity is dependant
+        on resource id existing in the first place, They need to both use the same inverse
+        field to ensure there is no ordering conflict.
+        """
+        for event in self:
+            if not event.booking_line_ids and event.appointment_resource_id:
+                self.env['appointment.booking.line'].create({
+                    'appointment_resource_id': event.appointment_resource_id.id,
+                    'calendar_event_id': event.id,
+                    'capacity_reserved': event.resource_total_capacity_reserved,
+                })
+            elif len(event.booking_line_ids) == 1 and event.appointment_resource_id:
+                event.booking_line_ids.appointment_resource_id = event.appointment_resource_id
+                event.booking_line_ids.capacity_reserved = event.resource_total_capacity_reserved
+            elif len(event.booking_line_ids) == 1:
+                event.booking_line_ids.unlink()
+
+    def _read_group_appointment_resource_id(self, resources, domain, order):
+        if not self.env.context.get('appointment_booking_gantt_show_all_resources'):
+            return resources
+        # Assume shared resources will be used with multi-resource bookings -> hide
+        filter_shared_resources = [('appointment_type_ids.resource_manage_capacity', '=', False)]
+        # If we have a default appointment type, we only want to show those resources
+        default_appointment_type = self.env.context.get('default_appointment_type_id')
+        if default_appointment_type:
+            return self.env['appointment.type'].browse(default_appointment_type).resource_ids.filtered_domain(filter_shared_resources)
+        return self.env['appointment.resource'].search(filter_shared_resources)
+
+    def _read_group_user_id(self, users, domain, order):
+        if not self.env.context.get('appointment_booking_gantt_show_all_resources'):
+            return users
+        appointment_types = self.env['appointment.type'].browse(self.env.context.get('default_appointment_type_id', []))
+        if appointment_types:
+            return appointment_types.staff_user_ids
+        return self.env['appointment.type'].search([('schedule_based_on', '=', 'users')]).staff_user_ids
+
     def _generate_access_token(self):
         for event in self:
             event.access_token = self._default_access_token()
@@ -100,6 +174,15 @@ class CalendarEvent(models.Model):
         if not self.event_tz and self.appointment_type_id.appointment_tz:
             return self.appointment_type_id.appointment_tz
         return super()._get_mail_tz()
+
+    def _get_public_fields(self):
+        return super()._get_public_fields() | {
+            'appointment_resource_id',
+            'appointment_resource_ids',
+            'appointment_type_id',
+            'resource_total_capacity_reserved',
+            'resource_total_capacity_used',
+        }
 
     def _track_template(self, changes):
         res = super(CalendarEvent, self)._track_template(changes)
@@ -161,3 +244,21 @@ class CalendarEvent(models.Model):
                      appointment_name=self.appointment_type_id.name,
                      partner_name=self.partner_id.name or _('somebody'))
         return super()._get_customer_summary()
+
+    @api.model
+    def gantt_unavailability(self, start_date, end_date, scale, group_bys=None, rows=None):
+        # skip if not dealing with appointments
+        resource_ids = [row['resId'] for row in rows if row.get('resId')]  # remove empty rows
+        if not group_bys or group_bys[0] != 'appointment_resource_id' or not resource_ids:
+            return super().gantt_unavailability(start_date, end_date, scale, group_bys=group_bys, rows=rows)
+
+        start_datetime = fields.Datetime.from_string(start_date)
+        end_datetime = fields.Datetime.from_string(end_date)
+
+        appointment_resource_ids = self.env['appointment.resource'].browse(resource_ids)
+        resource_unavailabilities = appointment_resource_ids.resource_id._get_unavailable_intervals(start_datetime, end_datetime)
+        for row in rows:
+            appointment_resource_id = appointment_resource_ids.browse(row.get('resId'))
+            row['unavailabilities'] = [{'start': start, 'stop': stop}
+                                       for start, stop in resource_unavailabilities.get(appointment_resource_id.resource_id.id, [])]
+        return rows

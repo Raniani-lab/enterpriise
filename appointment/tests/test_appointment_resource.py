@@ -4,12 +4,75 @@
 from datetime import datetime, timedelta
 from freezegun import freeze_time
 
+from odoo import Command
 from odoo.addons.appointment.tests.common import AppointmentCommon
+from odoo.exceptions import ValidationError
 from odoo.tests import tagged, users
 
 
 @tagged('appointment_resources')
 class AppointmentResource(AppointmentCommon):
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+
+        cls.appointment_manage_capacity, cls.appointment_regular = cls.env['appointment.type'].create([{
+            'appointment_tz': 'UTC',
+            'min_schedule_hours': 1.0,
+            'max_schedule_days': 8,
+            'name': 'Managed Test',
+            'resource_manage_capacity': True,
+            'schedule_based_on': 'resources',
+            'slot_ids': [(0, 0, {
+                'weekday': str(cls.reference_monday.isoweekday()),
+                'start_hour': 6,
+                'end_hour': 18,
+            })],
+        }, {
+            'appointment_tz': 'UTC',
+            'min_schedule_hours': 1.0,
+            'max_schedule_days': 8,
+            'name': 'Unmanaged Test',
+            'resource_manage_capacity': False,
+            'schedule_based_on': 'resources',
+            'slot_ids': [(0, 0, {
+                'weekday': str(cls.reference_monday.isoweekday()),
+                'start_hour': 6,
+                'end_hour': 18,
+            })],
+        }])
+
+        cls.resource_1, cls.resource_2, cls.resource_3 = cls.env['appointment.resource'].create([{
+            'appointment_type_ids': cls.appointment_manage_capacity.ids,
+            'capacity': 3,
+            'name': 'Resource 1',
+        }, {
+            'appointment_type_ids': cls.appointment_manage_capacity.ids,
+            'capacity': 2,
+            'name': 'Resource 2',
+            'shareable': True,
+        }, {
+            'appointment_type_ids': (cls.appointment_manage_capacity | cls.appointment_regular).ids,
+            'capacity': 1,
+            'name': 'Resource 3',
+        }])
+
+    @users('apt_manager')
+    def test_appointment_resource_default_appointment_type(self):
+        """Check that the default appointment type is properly deduced from the default appointment resource."""
+        resource_3_type_ids = self.resource_3.appointment_type_ids
+        Event = self.env['calendar.event']
+
+        states = [(self.resource_3, None, resource_3_type_ids[0]),
+                  (self.resource_3, resource_3_type_ids[1], resource_3_type_ids[1])]
+        for resource, default_type, expected_type_id in states:
+            context = {'default_appointment_resource_id': resource.id}
+            if default_type:
+                context.update(default_appointment_type_id=default_type.id)
+
+            event = Event.with_context(context).create({'name': 'Hello'})
+            self.assertEqual(event.appointment_type_id, expected_type_id)
 
     @users('apt_manager')
     def test_appointment_resource_link(self):
@@ -119,32 +182,54 @@ class AppointmentResource(AppointmentCommon):
         self.assertEqual(resource_2.destination_resource_ids, new_resource_2)
 
     @users('apt_manager')
+    def test_appointment_resource_field(self):
+        """Check that the appointment_resource_id field works as expected"""
+        booking = self.env['calendar.event'].with_context(self._test_context).create([{
+            'appointment_type_id': self.appointment_manage_capacity.id,
+            'name': 'Booking',
+            'start': datetime(2022, 2, 15, 14, 0, 0),
+            'stop': datetime(2022, 2, 15, 15, 0, 0),
+        }])
+
+        self.assertFalse(booking.appointment_resource_id)
+
+        booking.appointment_resource_id = self.resource_1
+        self.assertEqual(booking.appointment_resource_id, self.resource_1)
+        self.assertEqual(len(booking.booking_line_ids), 1)
+        self.assertEqual(booking.booking_line_ids.appointment_resource_id, self.resource_1)
+
+        booking_line_1 = booking.booking_line_ids[0]
+
+        booking.write({'booking_line_ids': [Command.create({
+            'appointment_resource_id': self.resource_2.id,
+            'calendar_event_id': booking.id,
+            'capacity_reserved': 1})]
+        })
+        self.assertFalse(booking.appointment_resource_id, 'More than one booking lines should mean no singular resource id.')
+        self.assertEqual(booking.booking_line_ids.appointment_resource_id, self.resource_1 | self.resource_2)
+
+        booking_lines_before = booking.booking_line_ids
+        resources_before = booking.appointment_resource_ids
+        booking.appointment_resource_id = self.resource_3
+        self.assertEqual(len(booking.booking_line_ids), 2, 'Setting the singular resource when there already are multiple booking lines should do nothing.')
+        self.assertEqual(booking_lines_before, booking.booking_line_ids)
+        self.assertEqual(resources_before, booking.appointment_resource_ids)
+
+        booking.booking_line_ids = booking_line_1
+        self.assertEqual(len(booking.booking_line_ids), 1)
+        self.assertEqual(booking.appointment_resource_id, self.resource_1)
+
+        booking.appointment_resource_id = False
+        self.assertEqual(len(booking.booking_line_ids), 0)
+        self.assertFalse(booking.appointment_resource_id)
+        self.assertFalse(booking.booking_line_ids)
+
+    @users('apt_manager')
     def test_appointment_resources_remaining_capacity(self):
         """ Test that the remaining capacity of resources are correctly computed """
-        appointment = self.env['appointment.type'].create({
-            'appointment_tz': 'UTC',
-            'min_schedule_hours': 1.0,
-            'max_schedule_days': 8,
-            'name': 'Test',
-            'resource_manage_capacity': True,
-            'schedule_based_on': 'resources',
-            'slot_ids': [(0, 0, {
-                'weekday': str(self.reference_monday.isoweekday()),
-                'start_hour': 6,
-                'end_hour': 18,
-            })],
-        })
-
-        resource_1, resource_2 = self.env['appointment.resource'].create([{
-            'appointment_type_ids': appointment.ids,
-            'capacity': 3,
-            'name': 'Resource 1',
-        }, {
-            'appointment_type_ids': appointment.ids,
-            'capacity': 2,
-            'name': 'Resource 2',
-            'shareable': True,
-        }])
+        appointment = self.appointment_manage_capacity
+        resource_1 = self.resource_1
+        resource_2 = self.resource_2
 
         start = datetime(2022, 2, 15, 14, 0, 0)
         end = start + timedelta(hours=1)
@@ -206,6 +291,44 @@ class AppointmentResource(AppointmentCommon):
             appointment._get_resources_remaining_capacity(resource_2, start, end)['total_remaining_capacity'] == 1,
             'The resource should have 1 availability left')
 
+        self.assertDictEqual(
+            appointment._get_resources_remaining_capacity(self.env['appointment.resource'], start, end),
+            {'total_remaining_capacity': 0},
+            'No result should give dict with correct accumulated values.')
+
+    @users('apt_manager')
+    def test_appointment_resources_remaining_capacity_exceeded(self):
+        """Check that we prevent creation of invalid capacities accross different events."""
+        appointment = self.appointment_manage_capacity
+        resource_2 = self.resource_2
+
+        start = datetime(2022, 2, 15, 14, 0, 0)
+        end = start + timedelta(hours=1)
+
+        self.assertTrue(appointment._get_resources_remaining_capacity(resource_2, start, end)['total_remaining_capacity'] == 2)
+
+        # Create bookings for resource
+        booking_1, booking_2, booking_3 = self.env['calendar.event'].with_context(self._test_context).create([{
+            'appointment_type_id': appointment.id,
+            'name': f'Meeting {index}',
+            'start': start,
+            'stop': end,
+        } for index in range(1, 4)])
+
+        booking_1.write({'booking_line_ids': [Command.create({
+            'appointment_resource_id': resource_2.id,
+            'capacity_reserved': 1})]
+        })
+        booking_2.write({'booking_line_ids': [Command.create({
+            'appointment_resource_id': resource_2.id,
+            'capacity_reserved': 1})]
+        })
+
+        with self.assertRaises(ValidationError):
+            booking_3.write({'booking_line_ids': [Command.create({
+                'appointment_resource_id': resource_2.id,
+                'capacity_reserved': 2})]
+            })
 
 @tagged('appointment_resources', 'post_install', '-at_install')
 class AppointmentResourceBookingTest(AppointmentCommon):
@@ -237,7 +360,7 @@ class AppointmentResourceBookingTest(AppointmentCommon):
         ])
 
         with freeze_time(self.reference_now):
-            with self.assertQueryCount(default=10):
+            with self.assertQueryCount(default=13):
                 appointment._get_appointment_slots('UTC')
 
     @users('apt_manager')
@@ -482,7 +605,7 @@ class AppointmentResourceBookingTest(AppointmentCommon):
         table1_c6.linked_resource_ids = table1_c4 + table2_c4 + table3_c4
 
         with freeze_time(self.reference_now):
-            with self.assertQueryCount(default=10):
+            with self.assertQueryCount(default=13):
                 slots = appointment._get_appointment_slots('UTC')
             resource_slots = self._filter_appointment_slots(
                 slots,
@@ -495,7 +618,7 @@ class AppointmentResourceBookingTest(AppointmentCommon):
             )
             self.assertTrue(len(resource_slots) > 0)
             self.assertEqual(len(resource_slots), len(table1_c2_slots))
-            with self.assertQueryCount(default=1):
+            with self.assertQueryCount(default=3):
                 slots = appointment._get_appointment_slots('UTC', asked_capacity=5)
             resource_slots = self._filter_appointment_slots(
                 slots,
@@ -717,7 +840,7 @@ class AppointmentResourceBookingTest(AppointmentCommon):
         ])
 
         with freeze_time(self.reference_now):
-            with self.assertQueryCount(default=10):
+            with self.assertQueryCount(default=13):
                 appointment._get_appointment_slots('UTC')
 
     @users('apt_manager')

@@ -6,7 +6,7 @@ import json
 from datetime import datetime, timedelta
 from freezegun import freeze_time
 
-from odoo import http
+from odoo import Command, http
 from odoo.addons.appointment.tests.common import AppointmentCommon
 from odoo.addons.mail.tests.common import mail_new_test_user
 from odoo.tests import common, tagged, users
@@ -99,6 +99,78 @@ class AppointmentUITest(AppointmentUICommon):
         self.authenticate(None, None)
         res = self.url_open(self.invite_all_apts.book_url)
         self.assertEqual(res.status_code, 200, "Response should = OK")
+
+
+    @users('apt_manager')
+    @freeze_time('2022-02-15T14:00:00')
+    def test_action_meeting_from_appointment_type(self):
+        """Check values of the action of viewing meetings from clicking an appointment type.
+
+        Example: Click on 'View Meetings' from an appointment type with no resource management -> open gantt
+        """
+        now = datetime.now()
+        appointment_types = self.env['appointment.type'].create([{
+            'name': 'Type Test Actions User',
+            'schedule_based_on': 'users',
+            'staff_user_ids': self.apt_manager.ids,
+        }, {
+            'name': 'Type Test Actions Users',
+            'schedule_based_on': 'users',
+            'staff_user_ids': (self.apt_manager | self.std_user).ids,
+        }, {
+            'name': 'Type Test Actions Resource',
+            'schedule_based_on': 'resources',
+            'resource_ids': [Command.create({'name': 'Test Resource', 'capacity': 1})]
+        }])
+        # create an event to test smart scale
+        self.env['calendar.event'].create({
+            'name': 'Next Month Appointment',
+            'appointment_type_id': appointment_types[2].id,
+            'start': datetime(2022, 3, 1),
+            'stop': datetime(2022, 3, 1, 1),
+        })
+        self.maxDiff = None
+        expected_xml_ids = ['calendar.action_calendar_event',
+                            'appointment.calendar_event_action_view_bookings_users',
+                            'appointment.calendar_event_action_view_bookings_resources']
+        expected_views_orders = [['calendar'], ['gantt', 'calendar'], ['gantt', 'calendar']]
+        expected_contexts = [{
+            'default_scale': 'day',
+            'default_appointment_type_id': appointment_types[0].id,
+            'search_default_appointment_type_id': appointment_types[0].id,
+            'default_mode': 'week',
+            'default_partner_ids': [],
+            'initial_date': now,
+        }, {
+            'appointment_booking_gantt_domain': [('appointment_type_id.schedule_based_on', '=', 'users'),
+                                                 ('user_id', '!=', False)],
+            'appointment_default_add_organizer_to_attendees': True,
+            'default_scale': 'day',
+            'default_appointment_type_id': appointment_types[1].id,
+            'search_default_appointment_type_id': appointment_types[1].id,
+            'default_mode': 'week',
+            'default_partner_ids': [],
+            'initial_date': now,
+        }, {
+            'appointment_booking_gantt_domain': [('appointment_resource_id', '!=', False)],
+            'appointment_default_add_organizer_to_attendees': False,
+            'default_scale': 'day',
+            'default_appointment_type_id': appointment_types[2].id,
+            'search_default_appointment_type_id': appointment_types[2].id,
+            'default_mode': 'month',
+            'default_partner_ids': [],
+            'default_resource_total_capacity_reserved': 1,
+            'initial_date': datetime(2022, 3, 1),
+        }]
+        for (appointment_type, expected_views_order,
+             expected_context, xml_id) in zip(appointment_types, expected_views_orders, expected_contexts, expected_xml_ids):
+            with self.subTest(appointment_type=appointment_type):
+                action = appointment_type.action_calendar_meetings()
+                views_order = [view_id_type[1] for view_id_type in action['views'][:len(expected_views_order)]]
+                self.assertEqual(views_order, expected_views_order)
+                self.assertDictEqual(action['context'], expected_context)
+                self.assertEqual(action['xml_id'], xml_id)
+
 
     @users('apt_manager')
     def test_appointment_meeting_url(self):

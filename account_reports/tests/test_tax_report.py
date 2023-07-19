@@ -2555,3 +2555,132 @@ class TestTaxReport(TestAccountReportsCommon):
                 ],
                 report_options[fp],
             )
+
+    def test_tax_report_w_rounding_line(self):
+        """Check that the tax report is correct when a rounding line is added to an invoice."""
+        self.env['res.config.settings'].create({
+            'company_id': self.company_data['company'].id,
+            'group_cash_rounding': True
+        })
+
+        rounding = self.env['account.cash.rounding'].create({
+            'name': 'Test rounding',
+            'rounding': 0.05,
+            'strategy': 'biggest_tax',
+            'rounding_method': 'HALF-UP',
+            'company_id': self.company_data['company'].id,
+        })
+
+        tax = self.sale_tax_percentage_incl_1.copy({
+            'name': 'The Tax Who Says Ni',
+            'amount': 21,
+        })
+
+        invoice = self.env['account.move'].create({
+            'move_type': 'out_invoice',
+            'partner_id': self.partner_a.id,
+            'invoice_line_ids': [
+                Command.create({
+                    'name': 'The Holy Grail',
+                    'quantity': 1,
+                    'price_unit': 1.26,
+                    'tax_ids': [Command.set(self.sale_tax_percentage_incl_1.ids)],
+                }),
+                Command.create({
+                    'name': 'What is your favourite colour?',
+                    'quantity': 1,
+                    'price_unit': 2.32,
+                    'tax_ids': [Command.set(tax.ids)],
+                })
+            ],
+            'invoice_cash_rounding_id': rounding.id,
+        })
+
+        invoice.action_post()
+
+        self.assertRecordValues(invoice.line_ids, [
+            {
+                'name': 'The Holy Grail',
+                'debit': 0.00,
+                'credit': 1.05,
+            },
+            {
+                'name': 'What is your favourite colour?',
+                'debit': 0.00,
+                'credit': 1.92,
+            },
+            {
+                'name': self.sale_tax_percentage_incl_1.name,
+                'debit': 0.00,
+                'credit': 0.21,
+            },
+            {
+                'name': tax.name,
+                'debit': 0.00,
+                'credit': 0.40,
+            },
+            {
+                'name': f'{tax.name} (rounding)',
+                'debit': 0.00,
+                'credit': 0.02,
+            },
+            {
+                'name': invoice.name,
+                'debit': 3.60,
+                'credit': 0.00,
+            }
+        ])
+
+        report = self.env.ref('account.generic_tax_report')
+        options = self._generate_options(report, invoice.date, invoice.date)
+
+        self.assertLinesValues(
+            report._get_lines(options),
+            #   Name                                                                                         Base      Tax
+            [   0,                                                                                           1,        2],
+            [
+                ('Sales',                                                                                   "",     0.63),
+                (f'{self.sale_tax_percentage_incl_1.name} ({self.sale_tax_percentage_incl_1.amount}%)',   1.05,     0.21),
+                (f'{tax.name} ({tax.amount}%)',                                                           1.92,     0.42),
+                ('Total Sales',                                                                            "",      0.63),
+            ],
+            options
+        )
+
+        report = self.env.ref("account.generic_tax_report_account_tax")
+        options['report_id'] = report.id
+
+        self.assertLinesValues(
+            report._get_lines(options),
+            #   Name                                                                                         Base      Tax
+            [   0,                                                                                           1,        2],
+            [
+                ('Sales',                                                                                   "",     0.63),
+                (self.company_data['default_account_revenue'].display_name,                                 "",     0.63),
+                (f'{self.sale_tax_percentage_incl_1.name} ({self.sale_tax_percentage_incl_1.amount}%)',   1.05,     0.21),
+                (f'{tax.name} ({tax.amount}%)',                                                           1.92,     0.42),
+                (f'Total {self.company_data["default_account_revenue"].display_name}',                      "",     0.63),
+                ('Total Sales',                                                                             "",     0.63),
+            ],
+            options
+        )
+
+        report = self.env.ref("account.generic_tax_report_tax_account")
+        options['report_id'] = report.id
+
+        self.assertLinesValues(
+            report._get_lines(options),
+            #   Name                                                                                               Base      Tax
+            [   0,                                                                                                 1,        2],
+            [
+                ('Sales',                                                                                         "",     0.63),
+                (f'{self.sale_tax_percentage_incl_1.name} ({self.sale_tax_percentage_incl_1.amount}%)',           "",     0.21),
+                (self.company_data['default_account_revenue'].display_name,                                     1.05,     0.21),
+                (f'Total {self.sale_tax_percentage_incl_1.name} ({self.sale_tax_percentage_incl_1.amount}%)',     "",     0.21),
+                (f'{tax.name} ({tax.amount}%)',                                                                   "",     0.42),
+                (self.company_data['default_account_revenue'].display_name,                                     1.92,     0.42),
+                (f'Total {tax.name} ({tax.amount}%)',                                                             "",     0.42),
+                ('Total Sales',                                                                                   "",     0.63),
+            ],
+            options
+        )

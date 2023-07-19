@@ -40,7 +40,11 @@ patch(MainComponent.prototype, 'stock_barcode_mrp', {
 
     get scrapViewProps() {
         const context = this.env.model._getNewLineDefaultContext({ scrapProduct: true });
-        context['product_ids'] = this.env.model.pageLines.map(line => line.product_id.id );
+        if (this.env.model.record.state != 'done') {
+            context['product_ids'] = this.env.model.pageLines.map(line => line.product_id.id);
+        } else {
+            context['product_ids'] = [this.env.model.record.product_id.id, ...this.env.model.byProductLines.map(line => line.product_id.id)];
+        }
         return {
             resModel: 'stock.scrap',
             context: context,

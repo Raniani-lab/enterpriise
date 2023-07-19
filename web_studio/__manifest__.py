@@ -59,11 +59,7 @@ Note: Only the admin user is allowed to make those customizations.
             ('remove', 'web_studio/static/src/views/kanban_report/**/*'),
             'web_studio/static/src/approval/**/*',
             'web_studio/static/src/**/*.xml',
-            ('remove', 'web_studio/static/src/legacy/xml/sidebar_web_editor.xml'),
         ],
-        'web_editor.assets_wysiwyg': {
-            'web_studio/static/src/legacy/xml/sidebar_web_editor.xml',
-        },
         'web.assets_backend_prod_only': [
             'web_studio/static/src/client_action/studio_action_loader.js',
             'web_studio/static/src/client_action/app_creator/app_creator_shortcut.js',

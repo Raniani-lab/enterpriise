@@ -1,17 +1,18 @@
 /** @odoo-module alias=web_studio.reportEditComponents **/
 
-import {ColorpickerDialog} from "web.Colorpicker";
+import { ColorpickerDialog } from '@web/legacy/js/widgets/colorpicker_dialog';
 import config from "web.config";
 import core from "web.core";
 import utils from "web.utils";
 import fieldRegistry from "web.field_registry";
 import ModelFieldSelector from "web.ModelFieldSelector";
 import StandaloneFieldManagerMixin from "web.StandaloneFieldManagerMixin";
-import { WidgetAdapterMixin } from "web.OwlCompatibility";
+import { WidgetAdapterMixin, ComponentWrapper } from "web.OwlCompatibility";
 import { pick } from "@web/core/utils/objects";
 import { intersection } from "@web/core/utils/arrays";
+import { useWowlService } from "@web/legacy/utils";
 
-import Wysiwyg from "web_editor.wysiwyg";
+import { Wysiwyg } from '@web_editor/js/wysiwyg/wysiwyg';
 
 import Abstract from "web_studio.AbstractReportComponent";
 import DomainSelectorDialog from "web.DomainSelectorDialog";
@@ -19,6 +20,12 @@ import Domain from "web.Domain";
 
 var py = window.py; // look py.js
 var qweb = core.qweb;
+
+export class WysiwygLegacy extends Wysiwyg {
+    _useService(serviceName) {
+        return useWowlService(serviceName);
+    }
+}
 
 var AbstractEditComponent = Abstract.extend(WidgetAdapterMixin, StandaloneFieldManagerMixin, {
     events: {
@@ -1085,9 +1092,6 @@ var Text = AbstractEditComponent.extend({
     template : 'web_studio.ReportText',
     selector: TextSelectorTags.split(',').join(filter + ',') + filter,
     blacklist: TextSelectorTags,
-    custom_events: {
-        wysiwyg_blur: '_onBlurWysiwygEditor',
-    },
     /**
      * @override
      */
@@ -1128,29 +1132,66 @@ var Text = AbstractEditComponent.extend({
         this._triggerViewChange({text: this.wysiwyg.getValue()});
     },
     _startWysiwygEditor: function () {
-        var self = this;
         const options = {
             lang: "odoo",
             recordInfo: {context: this.context},
+
+            toolbarOptions: {
+                showStyle: false,
+                showJustify: false,
+                showList: false,
+                showLink: false,
+                showImageShape: false,
+                showImagePadding: false,
+                showImageWidth: false,
+                showImageEdit: false,
+            },
+
             value: this.directiveFields.text.value,
             resizable: true,
-            toolbarTemplate: 'web_studio.Sidebar.web_editor_toolbar',
             allowInlineAtRoot: true,
+
+            onWysiwygBlur: this._onBlurWysiwygEditor.bind(this),
         };
-        this.wysiwyg = new Wysiwyg(this, options);
-        this.$textarea = this.$('textarea:first').val(this.directiveFields.text.value);
 
-        this.$textarea.after(this.$wysiwygWrapper);
-        this.$textarea.hide();
+        const divWrapper = document.createElement('div');
+        divWrapper.style.display = 'contents';
 
-        this.$textarea.off().on('input', function (e) { // to test simple
-            e.preventDefault();
-            e.stopImmediatePropagation();
-            self.wysiwyg.setValue($(this).val());
-            self.wysiwyg.trigger_up('wysiwyg_blur');
+        this._wysiwygStartPromise = new Promise((resolve) => {
+            const wysiwygWrapper = new ComponentWrapper(this, WysiwygLegacy, {
+                editingValue: options.value,
+                options,
+                startWysiwyg: async (wysiwyg) => {
+                    this.wysiwyg = wysiwyg;
+                    await this.wysiwyg.startEdition();
+                    resolve(wysiwyg);
+                },
+            });
+
+            // As owl requires the element to be in the dom to be mounted, we need
+            // to wait for the sidebar to be in the dom.
+            // Todo: Remove this code when converting studio to owl.
+            const i = setInterval(() => {
+                if (divWrapper.isConnected) {
+                  wysiwygWrapper.mount(divWrapper);
+                  clearInterval(i);
+                }
+            }, 100);
         });
 
-        return this.wysiwyg.insertAfter(this.$textarea);
+        this.$textarea = this.$('textarea:first').val(this.directiveFields.text.value);
+        // Used in tests to wait for the wysiwyg to be started.
+        this.$textarea.hide();
+        this.$textarea[0].after(divWrapper);
+
+
+        this.$textarea.off().on('input', async (e) => { // to test simple
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            const wysiwyg = await this._wysiwygStartPromise;
+            wysiwyg.setValue(this.$textarea.val());
+            wysiwyg.options.onWysiwygBlur();
+        });
     },
     /**
      * @override

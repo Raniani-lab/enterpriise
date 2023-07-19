@@ -3,11 +3,14 @@
 import ace from "web_editor.ace";
 import config from "web.config";
 import { Markup } from "web.utils";
-import { MediaDialogWrapper } from "@web_editor/components/media_dialog/media_dialog";
+import { MediaDialogWrapper } from "@web_editor/components/media_dialog/media_dialog_wrapper";
 import testUtils from "web.test_utils";
 import studioTestUtils from "web_studio.testUtils";
 import session from "web.session";
 import { patchWithCleanup } from "@web/../tests/helpers/utils";
+import { COLOR_PICKER_TEMPLATE } from "web_editor.test_utils";
+import { WysiwygLegacy } from '@web_studio/legacy/js/reports/sidebar_components/edit_components';
+import editComponents from 'web_studio.reportEditComponents';
 
 import { useEffect } from "@odoo/owl";
 
@@ -75,10 +78,13 @@ var loadIframeCss = function (callback) {
 };
 
 
+let _wysiwygStartPromise;
+
 QUnit.module('Studio', {}, function () {
 
 QUnit.module('ReportEditorManager', {
     beforeEach: async function () {
+        _wysiwygStartPromise = undefined;
         this.models = {
             'model.test': 'Model Test',
             'model.test.child': 'Model Test Child',
@@ -155,7 +161,20 @@ QUnit.module('ReportEditorManager', {
                     '</t>' +
                 '</kikou>',
         }];
-    }
+        patchWithCleanup(WysiwygLegacy.prototype, {
+            async _getColorpickerTemplate() {
+                return COLOR_PICKER_TEMPLATE;
+            },
+            _useService()  {},
+        });
+        patchWithCleanup(editComponents.Text.prototype, {
+            _startWysiwygEditor() {
+                const result = this._super(...arguments);
+                _wysiwygStartPromise = this._wysiwygStartPromise;
+                return result;
+            },
+        });
+    },
 }, function () {
 
     QUnit.test('empty editor rendering', async function (assert) {
@@ -609,6 +628,7 @@ QUnit.module('ReportEditorManager', {
         await testUtils.dom.click(rem.$('iframe').contents().find('span:contains(First)'));
 
         var $textarea = rem.$('.o_web_studio_sidebar_legacy .o_web_studio_active textarea[name="text"]');
+        await _wysiwygStartPromise;
         assert.strictEqual($textarea.length, 1,
             "there should be a textarea to edit the node text");
         assert.strictEqual($textarea.val(), "First span",
@@ -2172,6 +2192,9 @@ QUnit.module('ReportEditorManager', {
 
         await rem.editorIframeDef.then(async function () {
             await testUtils.dom.click(rem.$('iframe').contents().find('span'));
+            var $textarea = rem.$('.o_web_studio_sidebar_legacy .o_web_studio_active textarea[name="text"]');
+            await _wysiwygStartPromise;
+            await $textarea.data('wysiwygStartPromise');
 
             var $editable = rem.$('.o_web_studio_sidebar_legacy .card.o_web_studio_active .note-editable');
 
@@ -2281,7 +2304,9 @@ QUnit.module('ReportEditorManager', {
             await testUtils.fields.editInput(rem.$('.o_web_studio_sidebar_legacy .o_web_studio_active textarea[name="text"]'), "hello");
 
             var $textarea = rem.$('.o_web_studio_sidebar_legacy .o_web_studio_active textarea[name="text"]');
+            await _wysiwygStartPromise;
             testUtils.fields.editInput($textarea, "hello");
+            await testUtils.nextTick();
 
             assert.strictEqual(rem.$('iframe').contents().find('.page').text(), "hello",
                 "the iframe should have been updated");

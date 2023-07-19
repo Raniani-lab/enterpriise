@@ -16,7 +16,7 @@ export class PromptEmbeddedViewNameDialog extends Component {
         this.input = useRef('input');
         onMounted(() => {
             window.setTimeout(() => {
-                this.input.el.focus(); // auto-focus
+                this.input.el?.focus(); // auto-focus
             }, 0);
         });
     }

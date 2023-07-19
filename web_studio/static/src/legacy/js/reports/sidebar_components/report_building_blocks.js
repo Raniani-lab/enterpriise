@@ -8,7 +8,7 @@ import Abstract from "web_studio.AbstractReportComponent";
 import NewFieldDialog from "web_studio.NewFieldDialog";
 
 import { throttleForAnimation } from "@web/core/utils/timing";
-import { MediaDialogWrapper } from "@web_editor/components/media_dialog/media_dialog";
+import { MediaDialogWrapper } from "@web_editor/components/media_dialog/media_dialog_wrapper";
 import { ComponentWrapper } from "web.OwlCompatibility";
 
 var _t = core._t;

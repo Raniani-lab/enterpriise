@@ -31,8 +31,6 @@ class TrialBalanceCustomHandler(models.AbstractModel):
         }
 
     def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals, warnings=None):
-        options['column_headers'] = self._get_column_headers(options)
-
         lines = self._get_lines(options)
         new_lines = []
 
@@ -66,6 +64,8 @@ class TrialBalanceCustomHandler(models.AbstractModel):
 
             previous_handler_value = previous_options.get(key) if previous_options else None
             options[key] = handler.handle(previous_handler_value, base_period, options)
+
+        options['column_headers'] = self._get_column_headers(options)
 
     def _get_column_headers(self, options):
         AnalysisPeriod = self.env['consolidation.period']

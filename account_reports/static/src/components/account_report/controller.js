@@ -647,7 +647,7 @@ export class AccountReportController {
         let actionOptions = this.options;
         if (callOnSectionsSource) {
             // When calling the sections source, we want to keep track of all unfolded lines of all sections
-            const allUnfoldedLines = [];
+            const allUnfoldedLines =  this.options.sections.length ? [] : [...this.options['unfolded_lines']]
 
             for (const sectionData of this.options['sections']) {
                 const cacheKey = this.getCacheKey(this.options['sections_source_id'], sectionData['id']);

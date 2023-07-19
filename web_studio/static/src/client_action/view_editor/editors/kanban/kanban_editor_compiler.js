@@ -157,10 +157,11 @@ export class KanbanEditorCompiler extends KanbanCompiler {
                     compiled.setAttribute("t-attf-class", nextAttfClass);
 
                     // Set field name on empty
+                    const fieldId = node.getAttribute("field_id");
                     const tOut = compiled.getAttribute("t-out");
                     compiled.setAttribute(
                         "t-out",
-                        `${isEmptyExpr} ? __comp__.props.record.activeFields["${fieldName}"].string : ${tOut}`
+                        `${isEmptyExpr} ? __comp__.props.archInfo.fieldNodes['${fieldId}'].string : ${tOut}`
                     );
                 }
                 if (node.tagName === "field" || node.tagName === "widget") {

@@ -106,35 +106,6 @@ export function makeModelErrorResilient(ModelClass) {
             "The onchange triggered an error. It may indicate either a faulty call to onchange, or a faulty model python side"
         );
     }
-    // LEGACY
-    if ("_trigger_up" in ModelClass.prototype) {
-        return class ResilientModel extends ModelClass {
-            _trigger_up(ev) {
-                const evType = ev.name;
-                const payload = ev.data;
-                if (
-                    evType === "call_service" &&
-                    payload.service === "ajax" &&
-                    payload.method === "rpc"
-                ) {
-                    const args = payload.args || [];
-                    if (args[1] && args[1].method === "onchange") {
-                        const _callback = payload.callback;
-                        payload.callback = (prom) => {
-                            _callback(
-                                prom.catch((e) => {
-                                    logError(this.env.debug);
-                                    return Promise.resolve({});
-                                })
-                            );
-                        };
-                    }
-                }
-                return super._trigger_up(ev);
-            }
-        };
-    }
-
     return class ResilientModel extends ModelClass {
         setup() {
             super.setup(...arguments);
@@ -142,13 +113,13 @@ export function makeModelErrorResilient(ModelClass) {
             const debug = this.env.debug;
             this.orm = Object.assign(Object.create(orm), {
                 async call(model, method) {
-                    if (method === "onchange") {
+                    if (method === "onchange2") {
                         try {
                             return await orm.call.call(orm, ...arguments);
                         } catch {
                             logError(debug);
                         }
-                        return {};
+                        return { value: {} };
                     }
                     return orm.call.call(orm, ...arguments);
                 },

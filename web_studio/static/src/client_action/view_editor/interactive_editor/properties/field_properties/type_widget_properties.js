@@ -20,8 +20,9 @@ export class TypeWidgetProperties extends Component {
     setup() {
         this._getAvailableFields = memoize(() => {
             const fields = this.env.viewEditorModel.fields;
-            const activeFields = this.env.viewEditorModel.controllerProps.archInfo.activeFields;
-            return Object.keys(activeFields).map((fName) => {
+            const fieldNodes = this.env.viewEditorModel.controllerProps.archInfo.fieldNodes;
+            return Object.values(fieldNodes).map((fNode) => {
+                const fName = fNode.name;
                 const field = fields[fName];
                 field.name = field.name || fName;
                 return field;

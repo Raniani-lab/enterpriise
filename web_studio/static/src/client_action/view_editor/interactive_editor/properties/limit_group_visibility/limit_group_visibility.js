@@ -25,7 +25,7 @@ export class LimitGroupVisibility extends Component {
                 type: "many2many",
                 relation: "res.groups",
                 string: "Groups",
-                relatedFields: m2mFieldsToFetch,
+                related: { activeFields: m2mFieldsToFetch, fields: m2mFieldsToFetch },
             },
         };
     }
@@ -34,19 +34,19 @@ export class LimitGroupVisibility extends Component {
         return this.editNodeAttributes({ [name]: value });
     }
 
-    get groupsIds() {
+    get groupsRecords() {
         const studioGroups = JSON.parse(this.props.node.attrs.studio_groups || "[]");
-        const ids = [];
+        const records = [];
         for (let i = 0; i < studioGroups.length; i++) {
-            ids.push(studioGroups[i].id);
+            records.push({ id: studioGroups[i].id, display_name: studioGroups[i].display_name });
         }
-        return ids;
+        return records;
     }
 
     get recordProps() {
         return {
             fields: this.recordFields,
-            values: { groups_id: this.groupsIds },
+            values: { groups_id: this.groupsRecords },
             activeFields: this.recordFields,
             onRecordChanged: (record, changes) => {
                 const newIds = changes.groups_id[0][2];

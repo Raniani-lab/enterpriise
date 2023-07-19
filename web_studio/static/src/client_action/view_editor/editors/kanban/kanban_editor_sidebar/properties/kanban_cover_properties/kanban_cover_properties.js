@@ -52,7 +52,7 @@ export class KanbanCoverProperties extends Component {
     onChangeCover(value, name) {
         if (!value) {
             const vem = this.env.viewEditorModel;
-            const fieldToRemove = Object.entries(vem.controllerProps.archInfo.activeFields).filter(
+            const fieldToRemove = Object.entries(vem.controllerProps.archInfo.fieldNodes).filter(
                 ([fName, fInfo]) => {
                     return fInfo.widget === "attachment_image";
                 }
@@ -67,7 +67,7 @@ export class KanbanCoverProperties extends Component {
             })[0];
             const operation = {
                 target: {
-                    attrs: { name: fieldToRemove[0][0] },
+                    attrs: { name: fieldToRemove[0][1].name },
                     tag: "field",
                     extra_nodes: [
                         {

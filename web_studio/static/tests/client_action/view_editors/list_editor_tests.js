@@ -786,7 +786,7 @@ QUnit.module(
                 resModel: "coucou",
                 arch: arch,
                 mockRPC(route, args) {
-                    if (route === "/web/dataset/call_kw/coucou/web_search_read") {
+                    if (route === "/web/dataset/call_kw/coucou/unity_web_search_read") {
                         return {
                             records: [],
                             length: 0,
@@ -1939,13 +1939,13 @@ QUnit.module(
                                     xpath_info: [
                                         {
                                             indice: 1,
-                                            tag: "tree"
+                                            tag: "tree",
                                         },
                                         {
                                             indice: 3,
-                                            tag: "field"
-                                        }
-                                    ]
+                                            tag: "field",
+                                        },
+                                    ],
                                 },
                                 position: "before",
                                 target: {

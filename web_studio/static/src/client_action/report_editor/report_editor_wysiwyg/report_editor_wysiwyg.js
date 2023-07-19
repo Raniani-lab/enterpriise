@@ -287,10 +287,9 @@ export class ReportEditorWysiwyg extends Component {
 
     get reportRecordProps() {
         const model = this.reportEditorModel;
-        const fields = { ...model.reportFields };
         return {
-            fields,
-            activeFields: fields,
+            fields: model.reportFields,
+            activeFields: model.reportActiveFields,
             values: model.reportData,
         };
     }

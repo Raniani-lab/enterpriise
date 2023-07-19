@@ -54,9 +54,12 @@ function getActionActiveFields() {
     for (const fName of Object.keys(actionFieldsGet)) {
         activeFields[fName] = {};
     }
-    activeFields.groups_id.relatedFields = Object.fromEntries(
+
+    const groups_idRelated = Object.fromEntries(
         many2ManyTagsField.relatedFields({ options: {} }).map((f) => [f.name, f])
     );
+    activeFields.groups_id.related = { activeFields: groups_idRelated, fields: groups_idRelated };
+
     return activeFields;
 }
 

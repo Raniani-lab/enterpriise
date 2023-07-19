@@ -269,7 +269,7 @@ QUnit.module("Studio Navbar > AppMenuEditor", (hooks) => {
 
         assert.verifySteps([
             "/web/dataset/call_kw/ir.ui.menu/get_views",
-            "/web/dataset/call_kw/ir.ui.menu/read",
+            "/web/dataset/call_kw/ir.ui.menu/web_read",
         ]);
 
         assert.strictEqual(

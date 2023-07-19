@@ -89,7 +89,7 @@ export class ListEditorSidebar extends Component {
     }
 
     get sortChoices() {
-        return fieldsToChoices(this.archInfo.activeFields);
+        return fieldsToChoices(this.archInfo.fieldNodes);
     }
 
     get orderChoices() {

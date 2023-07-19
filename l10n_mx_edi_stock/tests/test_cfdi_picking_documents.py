@@ -22,6 +22,8 @@ class TestCFDIPickingWorkflow(TestMXEdiStockCommon):
                 'message': "No PAC specified.",
                 'state': 'picking_sent_failed',
                 'sat_state': False,
+                'cancellation_reason': False,
+                'cancel_button_needed': False,
                 'retry_button_needed': True,
             },
         ])
@@ -37,6 +39,8 @@ class TestCFDIPickingWorkflow(TestMXEdiStockCommon):
                 'message': "turlututu",
                 'state': 'picking_sent_failed',
                 'sat_state': False,
+                'cancellation_reason': False,
+                'cancel_button_needed': False,
                 'retry_button_needed': True,
             },
         ])
@@ -53,6 +57,8 @@ class TestCFDIPickingWorkflow(TestMXEdiStockCommon):
             'message': False,
             'state': 'picking_sent',
             'sat_state': 'not_defined',
+            'cancellation_reason': False,
+            'cancel_button_needed': True,
             'retry_button_needed': False,
         }
         self.assertRecordValues(picking.l10n_mx_edi_document_ids, [sent_doc_values])
@@ -63,13 +69,15 @@ class TestCFDIPickingWorkflow(TestMXEdiStockCommon):
         # Cancel failed.
         self.env.company.l10n_mx_edi_pac = None
         with freeze_time('2017-02-01'):
-            picking.l10n_mx_edi_cfdi_try_cancel()
+            picking._l10n_mx_edi_cfdi_try_cancel(picking.l10n_mx_edi_document_ids)
         self.assertRecordValues(picking.l10n_mx_edi_document_ids.sorted(), [
             {
                 'datetime': fields.Datetime.from_string('2017-02-01 00:00:00'),
                 'message': "No PAC specified.",
                 'state': 'picking_cancel_failed',
                 'sat_state': False,
+                'cancellation_reason': '02',
+                'cancel_button_needed': False,
                 'retry_button_needed': True,
             },
             sent_doc_values,
@@ -78,13 +86,15 @@ class TestCFDIPickingWorkflow(TestMXEdiStockCommon):
         # Set back the PAC but make it raising an error.
         self.env.company.l10n_mx_edi_pac = 'solfact'
         with freeze_time('2017-02-06'), self.with_mocked_pac_cancel_error():
-            picking.l10n_mx_edi_cfdi_try_cancel()
+            picking.l10n_mx_edi_document_ids.sorted()[0].action_retry()
         self.assertRecordValues(picking.l10n_mx_edi_document_ids.sorted(), [
             {
                 'datetime': fields.Datetime.from_string('2017-02-06 00:00:00'),
                 'message': "turlututu",
                 'state': 'picking_cancel_failed',
                 'sat_state': False,
+                'cancellation_reason': '02',
+                'cancel_button_needed': False,
                 'retry_button_needed': True,
             },
             sent_doc_values,
@@ -93,11 +103,18 @@ class TestCFDIPickingWorkflow(TestMXEdiStockCommon):
         # Cancel
         with freeze_time('2017-02-07'), self.with_mocked_pac_cancel_success():
             picking.l10n_mx_edi_document_ids.sorted()[0].action_retry()
+
+        picking.l10n_mx_edi_document_ids.invalidate_recordset(fnames=['cancel_button_needed'])
+        sent_doc_values['cancel_button_needed'] = False
+        sent_doc_values['sat_state'] = 'skip'
+
         cancel_doc_values = {
             'datetime': fields.Datetime.from_string('2017-02-07 00:00:00'),
             'message': False,
             'state': 'picking_cancel',
             'sat_state': 'not_defined',
+            'cancellation_reason': '02',
+            'cancel_button_needed': False,
             'retry_button_needed': False,
         }
         self.assertRecordValues(picking.l10n_mx_edi_document_ids.sorted(), [
@@ -114,9 +131,10 @@ class TestCFDIPickingWorkflow(TestMXEdiStockCommon):
             'message': False,
             'state': 'picking_sent',
             'sat_state': 'not_defined',
+            'cancellation_reason': False,
+            'cancel_button_needed': True,
             'retry_button_needed': False,
         }
-        sent_doc_values['sat_state'] = 'skip'
         self.assertRecordValues(picking.l10n_mx_edi_document_ids.sorted(), [
             sent_doc_values2,
             cancel_doc_values,
@@ -125,9 +143,10 @@ class TestCFDIPickingWorkflow(TestMXEdiStockCommon):
         self.assertRecordValues(picking, [{'l10n_mx_edi_cfdi_state': 'sent'}])
 
         # Sat.
-        with freeze_time('2017-04-01'), self.with_mocked_sat_call(lambda _x: 'valid'):
+        with freeze_time('2017-04-01'), self.with_mocked_sat_call(lambda x: 'valid' if x['state'] == 'picking_sent' else 'cancelled'):
             picking.l10n_mx_edi_cfdi_try_sat()
         sent_doc_values2['sat_state'] = 'valid'
+        cancel_doc_values['sat_state'] = 'cancelled'
         self.assertRecordValues(picking.l10n_mx_edi_document_ids.sorted(), [
             sent_doc_values2,
             cancel_doc_values,

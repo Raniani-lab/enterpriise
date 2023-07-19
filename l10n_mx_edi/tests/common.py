@@ -64,6 +64,8 @@ class TestMxEdiCommon(AccountTestInvoicingCommon):
         cls.tax_0 = cls.env["account.chart.template"].ref('tax9')
         cls.tax_0_exento = cls.tax_0.copy()
         cls.tax_0_exento.l10n_mx_factor_type = 'Exento'
+        cls.tax_8 = cls.env["account.chart.template"].ref('tax17')
+        cls.tax_8_ieps = cls.tax_8.copy(default={'l10n_mx_tax_type': 'ieps'})
         cls.tax_10_negative = cls.env['account.tax'].create({
             'name': 'tax_10_negative',
             'amount_type': 'percent',
@@ -73,17 +75,7 @@ class TestMxEdiCommon(AccountTestInvoicingCommon):
             'l10n_mx_tax_type': 'iva',
         })
 
-        cls.product = cls.env['product.product'].create({
-            'name': 'product_mx',
-            'weight': 2,
-            'default_code': "product_mx",
-            'uom_po_id': cls.env.ref('uom.product_uom_kgm').id,
-            'uom_id': cls.env.ref('uom.product_uom_kgm').id,
-            'lst_price': 1000.0,
-            'property_account_income_id': cls.company_data['default_account_revenue'].id,
-            'property_account_expense_id': cls.company_data['default_account_expense'].id,
-            'unspsc_code_id': cls.env.ref('product_unspsc.unspsc_code_01010101').id,
-        })
+        cls.product = cls._create_product()
 
         cls.payment_term = cls.env['account.payment.term'].create({
             'name': 'test l10n_mx_edi',
@@ -143,6 +135,8 @@ class TestMxEdiCommon(AccountTestInvoicingCommon):
             'bank_ids': [Command.create({'acc_number': "BE01234567890123"})],
         })
 
+        cls.payment_method_efectivo = cls.env.ref('l10n_mx_edi.payment_method_efectivo')
+
         # The XSD only allows specific currency names.
         cls.env.ref('base.USD').name = 'FUSD'
         cls.env.ref('base.BHD').name = 'FEUR'
@@ -176,6 +170,8 @@ class TestMxEdiCommon(AccountTestInvoicingCommon):
         cls.foreign_curr_1 = cls.currency_data['currency'] # 3:1 in 2016, 2:1 in 2017, 4:1 in 2018
         cls.foreign_curr_2 = cls.fake_usd_data['currency'] # 6:1 in 2016, 4:1 in 2017, 8:1 in 2018
 
+        cls.uuid = 0
+
     @contextmanager
     def with_mocked_pac_method(self, method_name, method_replacement):
         """ Helper to mock an rpc call to the PAC.
@@ -191,7 +187,8 @@ class TestMxEdiCommon(AccountTestInvoicingCommon):
         def success(_record, _credentials, cfdi_str):
             # Inject UUID.
             tree = etree.fromstring(cfdi_str)
-            uuid = f"00000000-0000-0000-0000-{tree.attrib['Folio'].rjust(12, '0')}"
+            self.uuid += 1
+            uuid = f"00000000-0000-0000-0000-{str(self.uuid).rjust(12, '0')}"
             stamp = f"""
                 <tfd:TimbreFiscalDigital
                     xmlns:cfdi="http://www.sat.gob.mx/cfd/4"
@@ -254,6 +251,28 @@ class TestMxEdiCommon(AccountTestInvoicingCommon):
         with patch.object(type(self.env['l10n_mx_edi.document']), '_fetch_sat_status', fetch_sat_status):
             yield
 
+    @contextmanager
+    def with_mocked_global_invoice_sequence(self, number):
+        sequence = self.env['l10n_mx_edi.document']._get_global_invoice_cfdi_sequence(self.env.company)
+        sequence.number_next = number
+        yield
+
+    @classmethod
+    def _create_product(cls, **kwargs):
+        return cls.env['product.product'].create({
+            'name': 'product_mx',
+            'weight': 2,
+            'default_code': "product_mx",
+            'uom_po_id': cls.env.ref('uom.product_uom_kgm').id,
+            'uom_id': cls.env.ref('uom.product_uom_kgm').id,
+            'lst_price': 1000.0,
+            'property_account_income_id': cls.company_data['default_account_revenue'].id,
+            'property_account_expense_id': cls.company_data['default_account_expense'].id,
+            'unspsc_code_id': cls.env.ref('product_unspsc.unspsc_code_01010101').id,
+            'taxes_id': [Command.set(cls.tax_16.ids)],
+            **kwargs,
+        })
+
     def _create_invoice(self, **kwargs):
         invoice = self.env['account.move'].create({
             'move_type': 'out_invoice',
@@ -261,7 +280,7 @@ class TestMxEdiCommon(AccountTestInvoicingCommon):
             'invoice_date': '2017-01-01',
             'date': '2017-01-01',
             'invoice_date_due': '2017-02-01', # PPD by default
-            'l10n_mx_edi_payment_method_id': self.env.ref('l10n_mx_edi.payment_method_efectivo').id,
+            'l10n_mx_edi_payment_method_id': self.payment_method_efectivo.id,
             'currency_id': self.comp_curr.id,
             'invoice_line_ids': [Command.create({'product_id': self.product.id})],
             **kwargs,
@@ -311,6 +330,11 @@ class TestMxEdiCommon(AccountTestInvoicingCommon):
 
     def _assert_invoice_payment_cfdi(self, payment, filename):
         document = payment.l10n_mx_edi_payment_document_ids.filtered(lambda x: x.state == 'payment_sent')[:1]
+        self.assertTrue(document)
+        self._assert_document_cfdi(document, filename)
+
+    def _assert_global_invoice_cfdi_from_invoices(self, invoices, filename):
+        document = invoices.l10n_mx_edi_invoice_document_ids.filtered(lambda x: x.state == 'ginvoice_sent')[:1]
         self.assertTrue(document)
         self._assert_document_cfdi(document, filename)
 

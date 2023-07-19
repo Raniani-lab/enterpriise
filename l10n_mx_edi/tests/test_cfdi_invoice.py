@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from .common import TestMxEdiCommon
 from odoo import Command
+from odoo.exceptions import UserError
 from odoo.tests import tagged
 
 from freezegun import freeze_time
@@ -50,6 +51,14 @@ class TestCFDIInvoice(TestMxEdiCommon):
         self._assert_invoice_cfdi(invoice, 'test_invoice_foreign_customer')
 
     @freeze_time('2017-01-01')
+    def test_invoice_customer_with_no_country(self):
+        self.partner_us.country_id = None
+        invoice = self._create_invoice(partner_id=self.partner_us.id)
+        with self.with_mocked_pac_sign_success():
+            invoice._l10n_mx_edi_cfdi_invoice_try_send()
+        self._assert_invoice_cfdi(invoice, 'test_invoice_customer_with_no_country')
+
+    @freeze_time('2017-01-01')
     def test_invoice_national_customer_to_public(self):
         invoice = self._create_invoice(l10n_mx_edi_cfdi_to_public=True)
         with self.with_mocked_pac_sign_success():
@@ -97,9 +106,9 @@ class TestCFDIInvoice(TestMxEdiCommon):
             'amount': 16,
             'type_tax_use': 'sale',
             'l10n_mx_factor_type': 'Tasa',
+            'l10n_mx_tax_type': 'iva',
             'price_include': True,
             'include_base_amount': True,
-            'l10n_mx_tax_type': 'iva',
         })
 
         invoice = self._create_invoice(
@@ -342,6 +351,200 @@ class TestCFDIInvoice(TestMxEdiCommon):
         with self.with_mocked_pac_sign_success():
             invoice._l10n_mx_edi_cfdi_invoice_try_send()
         self._assert_invoice_cfdi(invoice, 'test_invoice_company_branch')
+
+    @freeze_time('2017-01-05')
+    def test_global_invoice(self):
+        invoice1 = self._create_invoice(
+            l10n_mx_edi_cfdi_to_public=True,
+            invoice_date_due='2017-02-01',
+            invoice_date='2017-01-02',
+            date='2017-01-02',
+            l10n_mx_edi_payment_method_id=self.payment_method_efectivo.id,
+            invoice_line_ids=[
+                Command.create({
+                    # untaxed: 1000.0
+                    # tax: 0.0
+                    'product_id': self.product.id,
+                    'tax_ids': [],
+                }),
+                # Both following lines will be aggregated:
+                Command.create({
+                    # untaxed: 8000.0
+                    # tax: 1280.0
+                    'product_id': self.product.id,
+                    'price_unit': 2000.0,
+                    'quantity': 5,
+                    'discount': 20.0,
+                    'tax_ids': [Command.set(self.tax_16.ids)],
+                }),
+                Command.create({
+                    # untaxed: 10000.0
+                    # tax: 1600.0
+                    'product_id': self.product.id,
+                    'quantity': 10,
+                    'tax_ids': [Command.set(self.tax_16.ids)],
+                }),
+            ],
+        )
+        invoice2 = self._create_invoice(
+            l10n_mx_edi_cfdi_to_public=True,
+            invoice_date_due='2017-03-01',
+            invoice_date='2017-01-03',
+            date='2017-01-05',
+            l10n_mx_edi_payment_method_id=self.payment_method_efectivo.id,
+            invoice_line_ids=[
+                Command.create({
+                    # untaxed: 1800.0
+                    # tax: 288.0
+                    'product_id': self.product.id,
+                    'quantity': 2,
+                    'discount': 10.0,
+                    'tax_ids': [Command.set(self.tax_16.ids)],
+                }),
+                Command.create({
+                    # untaxed: 1000.0
+                    # tax: 0.0
+                    'product_id': self.product.id,
+                    'tax_ids': [Command.set(self.tax_0_exento.ids)],
+                }),
+                Command.create({
+                    # untaxed: 1000.0
+                    # tax: 80.0
+                    'product_id': self.product.id,
+                    'tax_ids': [Command.set(self.tax_8_ieps.ids)],
+                }),
+                Command.create({
+                    # untaxed: 1000.0
+                    # tax: 80.0
+                    'product_id': self.product.id,
+                    'tax_ids': [Command.set((self.tax_0_exento + self.tax_8_ieps).ids)],
+                }),
+            ],
+        )
+        invoices = invoice1 + invoice2
+
+        with self.with_mocked_pac_sign_success():
+            invoices._l10n_mx_edi_cfdi_global_invoice_try_send()
+        self._assert_global_invoice_cfdi_from_invoices(invoices, 'test_global_invoice')
+
+    @freeze_time('2017-01-05')
+    def test_global_invoice_0_iva_tax_only(self):
+        invoice1 = self._create_invoice(
+            l10n_mx_edi_cfdi_to_public=True,
+            l10n_mx_edi_payment_method_id=self.payment_method_efectivo.id,
+            invoice_line_ids=[
+                Command.create({
+                    'product_id': self.product.id,
+                    'tax_ids': [Command.set(self.tax_0.ids)],
+                }),
+            ],
+        )
+        invoice2 = self._create_invoice(
+            l10n_mx_edi_cfdi_to_public=True,
+            l10n_mx_edi_payment_method_id=self.payment_method_efectivo.id,
+            invoice_line_ids=[
+                Command.create({
+                    'product_id': self.product.id,
+                    'tax_ids': [Command.set(self.tax_0.ids)],
+                }),
+            ],
+        )
+        invoices = invoice1 + invoice2
+
+        with self.with_mocked_pac_sign_success():
+            invoices._l10n_mx_edi_cfdi_global_invoice_try_send()
+        self._assert_global_invoice_cfdi_from_invoices(invoices, 'test_global_invoice_0_iva_tax_only')
+
+    @freeze_time('2017-01-01')
+    def test_invoice_then_refund(self):
+        # Create an invoice then sign it.
+        invoice = self._create_invoice(l10n_mx_edi_cfdi_to_public=True)
+        with self.with_mocked_pac_sign_success():
+            self.env['account.move.send']\
+                .with_context(active_model=invoice._name, active_ids=invoice.ids)\
+                .create({})\
+                .action_send_and_print()
+        self._assert_invoice_cfdi(invoice, 'test_invoice_then_refund_1')
+
+        # You are no longer able to create a global invoice.
+        with self.assertRaises(UserError):
+            self.env['l10n_mx_edi.global_invoice.create']\
+                .with_context(invoice.l10n_mx_edi_action_create_global_invoice()['context'])\
+                .create({})
+
+        # Create a refund.
+        results = self.env['account.move.reversal']\
+            .with_context(active_model='account.move', active_ids=invoice.ids)\
+            .create({
+                'date': '2017-01-01',
+                'reason': "turlututu",
+                'journal_id': invoice.journal_id.id,
+            })\
+            .refund_moves()
+        refund = self.env['account.move'].browse(results['res_id'])
+        refund.auto_post = 'no'
+        refund.action_post()
+
+        # You can't make a global invoice for it.
+        with self.assertRaises(UserError):
+            self.env['l10n_mx_edi.global_invoice.create']\
+                .with_context(refund.l10n_mx_edi_action_create_global_invoice()['context'])\
+                .create({})
+
+        # Create the CFDI and sign it.
+        with self.with_mocked_pac_sign_success():
+            self.env['account.move.send']\
+                .with_context(active_model=refund._name, active_ids=refund.ids)\
+                .create({})\
+                .action_send_and_print()
+        self._assert_invoice_cfdi(refund, 'test_invoice_then_refund_2')
+        self.assertRecordValues(refund, [{
+            'l10n_mx_edi_cfdi_origin': f'01|{invoice.l10n_mx_edi_cfdi_uuid}',
+        }])
+
+    @freeze_time('2017-01-01')
+    def test_global_invoice_then_refund(self):
+        # Create a global invoice and sign it.
+        invoice = self._create_invoice(l10n_mx_edi_cfdi_to_public=True)
+        with self.with_mocked_pac_sign_success():
+            self.env['l10n_mx_edi.global_invoice.create']\
+                .with_context(invoice.l10n_mx_edi_action_create_global_invoice()['context'])\
+                .create({})\
+                .action_create_global_invoice()
+        self._assert_global_invoice_cfdi_from_invoices(invoice, 'test_global_invoice_then_refund_1')
+
+        # You are not able to create an invoice for it.
+        wizard = self.env['account.move.send']\
+            .with_context(active_model=invoice._name, active_ids=invoice.ids)\
+            .create({})
+        self.assertRecordValues(wizard, [{'l10n_mx_edi_enable_cfdi': False}])
+
+        # Refund the invoice.
+        results = self.env['account.move.reversal']\
+            .with_context(active_model='account.move', active_ids=invoice.ids)\
+            .create({
+                'date': '2017-01-01',
+                'reason': "turlututu",
+                'journal_id': invoice.journal_id.id,
+            })\
+            .refund_moves()
+        refund = self.env['account.move'].browse(results['res_id'])
+        refund.auto_post = 'no'
+        refund.action_post()
+
+        # You can't do a global invoice for a refund
+        with self.assertRaises(UserError):
+            self.env['l10n_mx_edi.global_invoice.create']\
+                .with_context(refund.l10n_mx_edi_action_create_global_invoice()['context'])\
+                .create({})
+
+        # Sign the refund.
+        with self.with_mocked_pac_sign_success():
+            self.env['account.move.send']\
+                .with_context(active_model=refund._name, active_ids=refund.ids)\
+                .create({})\
+                .action_send_and_print()
+        self._assert_invoice_cfdi(refund, 'test_global_invoice_then_refund_2')
 
     @freeze_time('2017-01-01')
     def test_invoice_pos(self):

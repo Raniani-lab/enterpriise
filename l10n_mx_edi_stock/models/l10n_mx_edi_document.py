@@ -21,12 +21,36 @@ class L10nMxEdiDocument(models.Model):
         },
     )
 
+    def _get_cancel_button_map(self):
+        # EXTENDS 'l10n_mx_edi'
+        results = super()._get_cancel_button_map()
+        results['picking_sent'] = (
+            'picking_cancel',
+            None,
+            # pylint: disable=unnecessary-lambda
+            lambda x: x.picking_id._l10n_mx_edi_cfdi_try_cancel(x),
+        )
+        return results
+
     def _get_retry_button_map(self):
         # EXTENDS 'l10n_mx_edi'
         results = super()._get_retry_button_map()
-        results['picking_sent_failed'] = lambda x: x.picking_id.l10n_mx_edi_cfdi_try_send()
-        results['picking_cancel_failed'] = lambda x: x.picking_id.l10n_mx_edi_cfdi_try_cancel()
+        results['picking_sent_failed'] = (
+            None,
+            lambda x: x.picking_id.l10n_mx_edi_cfdi_try_send(),
+        )
+        results['picking_cancel_failed'] = (
+            None,
+            lambda x: x._action_retry_picking_try_cancel(),
+        )
         return results
+
+    def _action_retry_picking_try_cancel(self):
+        """ Retry the cancellation of a the picking cfdi document that failed to be cancelled. """
+        self.ensure_one()
+        source_document = self._get_source_document_from_cancel('picking_sent')
+        if source_document:
+            self.picking_id._l10n_mx_edi_cfdi_try_cancel(source_document)
 
     @api.model
     def _create_update_picking_document(self, picking, document_values):
@@ -36,15 +60,30 @@ class L10nMxEdiDocument(models.Model):
         :param document_values: The values to create the document.
         """
         if document_values['state'] in ('picking_sent', 'picking_cancel'):
-            sat_accept_method = lambda x: x.state in ('picking_sent', 'picking_cancel')
+            accept_method_state = f"{document_values['state']}_failed"
         else:
-            sat_accept_method = None
+            accept_method_state = document_values['state']
 
-        return picking.l10n_mx_edi_document_ids._create_update_document(
+        document = picking.l10n_mx_edi_document_ids._create_update_document(
             picking,
             document_values,
-            sat_accept_method=sat_accept_method,
+            lambda x: x.state == accept_method_state,
         )
+
+        picking.l10n_mx_edi_document_ids \
+            .filtered(lambda x: x != document and x.state in {'picking_sent_failed', 'picking_cancel_failed'}) \
+            .unlink()
+
+        if document.state in ('picking_sent', 'picking_cancel'):
+            picking.l10n_mx_edi_document_ids \
+                .filtered(lambda x: (
+                    x != document
+                    and x.sat_state not in ('valid', 'cancelled', 'skip')
+                    and x.attachment_uuid == document.attachment_uuid
+                )) \
+                .write({'sat_state': 'skip'})
+
+        return document
 
     def _update_sat_state(self):
         # EXTENDS 'l10n_mx_edi'
@@ -60,13 +99,7 @@ class L10nMxEdiDocument(models.Model):
         # EXTENDS 'l10n_mx_edi'
         return super()._get_update_sat_status_domains() + [
             [
-                ('picking_id.l10n_mx_edi_cfdi_state', '=', 'sent'),
-                ('state', '=', 'picking_sent'),
-                ('sat_state', 'not in', ('valid', 'skip')),
-            ],
-            [
-                ('picking_id.l10n_mx_edi_cfdi_state', '=', 'cancel'),
-                ('state', '=', 'picking_cancel'),
-                ('sat_state', 'not in', ('cancelled', 'skip')),
+                ('state', 'in', ('picking_sent', 'picking_cancel')),
+                ('sat_state', 'not in', ('valid', 'cancelled', 'skip')),
             ],
         ]

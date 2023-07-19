@@ -53,7 +53,7 @@
                         <tree create="false" delete="false" edit="false" no_open="1">
                             <!-- Invisible fields -->
                             <field name="attachment_id" column_invisible="True"/>
-                            <field name="cancel_payment_button_needed" column_invisible="True"/>
+                            <field name="cancel_button_needed" column_invisible="True"/>
                             <field name="message" column_invisible="True"/>
 
                             <!-- Visible fields -->
@@ -69,10 +69,10 @@
                                     type="object"
                                     string="Force CFDI"
                                     invisible="state != 'payment_sent_pue'"/>
-                            <button name="action_cancel_payment_cfdi"
+                            <button name="action_cancel"
                                     type="object"
                                     string="Cancel"
-                                    invisible="not cancel_payment_button_needed"/>
+                                    invisible="not cancel_button_needed"/>
                         </tree>
                     </field>
                 </group>

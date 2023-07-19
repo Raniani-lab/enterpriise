@@ -5,7 +5,7 @@ from pytz import timezone
 
 from odoo import api, fields, models, _
 from odoo.addons.l10n_mx_edi.models.res_company import FISCAL_REGIMES_SELECTION
-from odoo.addons.l10n_mx_edi.models.account_move import USAGE_SELECTION
+from odoo.addons.l10n_mx_edi.models.l10n_mx_edi_document import USAGE_SELECTION
 
 class ResPartner(models.Model):
     _inherit = 'res.partner'

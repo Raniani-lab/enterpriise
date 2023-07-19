@@ -1,7 +1,7 @@
 # coding: utf-8
 
 from odoo import fields, models, api
-from odoo.addons.l10n_mx_edi.models.account_move import USAGE_SELECTION
+from odoo.addons.l10n_mx_edi.models.l10n_mx_edi_document import USAGE_SELECTION
 
 
 class SaleOrder(models.Model):

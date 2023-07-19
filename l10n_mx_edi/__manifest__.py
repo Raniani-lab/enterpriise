@@ -50,6 +50,7 @@ This module allows the creation of the EDI documents and the communication with 
         'views/res_country_view.xml',
 
         'wizard/l10n_mx_edi_invoice_cancel.xml',
+        'wizard/l10n_mx_edi_global_invoice_create.xml',
 
         'data/res_country_data.xml',
     ],

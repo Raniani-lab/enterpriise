@@ -16,10 +16,11 @@ class AccountMoveSend(models.Model):
 
     @api.model
     def _get_default_l10n_mx_edi_enable_cfdi(self, move):
-        return not move.invoice_pdf_report_id \
+        return (
+            not move.invoice_pdf_report_id \
             and move.l10n_mx_edi_is_cfdi_needed \
-            and move.is_invoice() \
-            and move.l10n_mx_edi_cfdi_state != 'sent'
+            and move.l10n_mx_edi_cfdi_state not in ('sent', 'global_sent')
+        )
 
     # -------------------------------------------------------------------------
     # COMPUTE METHODS
@@ -48,7 +49,10 @@ class AccountMoveSend(models.Model):
     @api.model
     def _get_invoice_extra_attachments(self, move):
         # EXTENDS 'account'
-        return super()._get_invoice_extra_attachments(move) + move.l10n_mx_edi_cfdi_attachment_id
+        attachments = super()._get_invoice_extra_attachments(move)
+        if move.l10n_mx_edi_cfdi_state == 'sent':
+            attachments += move.l10n_mx_edi_cfdi_attachment_id
+        return attachments
 
     def _get_placeholder_mail_attachments_data(self, move):
         # EXTENDS 'account'

@@ -22,7 +22,9 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
                 'message': "No PAC specified.",
                 'state': 'invoice_sent_failed',
                 'sat_state': False,
-                'retry_button_needed': True,
+                'cancellation_reason': False,
+                'cancel_button_needed': False,
+                'retry_button_needed': False,
             },
         ])
         self.assertRecordValues(invoice, [{'l10n_mx_edi_cfdi_state': None}])
@@ -30,7 +32,7 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
         # Set back the PAC but make it raising an error.
         self.env.company.l10n_mx_edi_pac = 'solfact'
         with freeze_time('2017-01-06'), self.with_mocked_pac_sign_error():
-            invoice.l10n_mx_edi_invoice_document_ids.action_retry()
+            invoice._l10n_mx_edi_cfdi_invoice_try_send()
         self.assertRecordValues(invoice.l10n_mx_edi_invoice_document_ids, [
             {
                 'move_id': invoice.id,
@@ -38,7 +40,9 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
                 'message': "turlututu",
                 'state': 'invoice_sent_failed',
                 'sat_state': False,
-                'retry_button_needed': True,
+                'cancellation_reason': False,
+                'cancel_button_needed': False,
+                'retry_button_needed': False,
             },
         ])
         self.assertRecordValues(invoice, [{'l10n_mx_edi_cfdi_state': None}])
@@ -55,6 +59,9 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
             'message': False,
             'state': 'invoice_sent',
             'sat_state': 'not_defined',
+            'attachment_origin': False,
+            'cancellation_reason': False,
+            'cancel_button_needed': True,
             'retry_button_needed': False,
         }
         self.assertRecordValues(invoice.l10n_mx_edi_invoice_document_ids, [sent_doc_values])
@@ -65,7 +72,10 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
         # Cancel failed.
         self.env.company.l10n_mx_edi_pac = None
         with freeze_time('2017-02-01'):
-            invoice._l10n_mx_edi_cfdi_invoice_try_cancel()
+            self.env['l10n_mx_edi.invoice.cancel'] \
+                .with_context(invoice.button_request_cancel()['context']) \
+                .create({'cancellation_reason': '02'}) \
+                .action_cancel_invoice()
         self.assertRecordValues(invoice.l10n_mx_edi_invoice_document_ids.sorted(), [
             {
                 'move_id': invoice.id,
@@ -73,6 +83,8 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
                 'message': "No PAC specified.",
                 'state': 'invoice_cancel_failed',
                 'sat_state': False,
+                'cancellation_reason': '02',
+                'cancel_button_needed': False,
                 'retry_button_needed': True,
             },
             sent_doc_values,
@@ -89,6 +101,8 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
                 'message': "turlututu",
                 'state': 'invoice_cancel_failed',
                 'sat_state': False,
+                'cancellation_reason': '02',
+                'cancel_button_needed': False,
                 'retry_button_needed': True,
             },
             sent_doc_values,
@@ -96,15 +110,25 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
 
         # Cancel
         with freeze_time('2017-02-07'), self.with_mocked_pac_cancel_success():
-            invoice._l10n_mx_edi_cfdi_invoice_try_cancel()
+            self.env['l10n_mx_edi.invoice.cancel'] \
+                .with_context(invoice.button_request_cancel()['context']) \
+                .create({'cancellation_reason': '02'}) \
+                .action_cancel_invoice()
+
+        invoice.l10n_mx_edi_invoice_document_ids.invalidate_recordset(fnames=['cancel_button_needed'])
+        sent_doc_values['cancel_button_needed'] = False
+
         cancel_doc_values = {
             'move_id': invoice.id,
             'datetime': fields.Datetime.from_string('2017-02-07 00:00:00'),
             'message': False,
             'state': 'invoice_cancel',
             'sat_state': 'not_defined',
+            'cancellation_reason': '02',
+            'cancel_button_needed': False,
             'retry_button_needed': False,
         }
+        sent_doc_values['sat_state'] = 'skip'
         self.assertRecordValues(invoice.l10n_mx_edi_invoice_document_ids.sorted(), [
             cancel_doc_values,
             sent_doc_values,
@@ -125,9 +149,10 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
             'message': False,
             'state': 'invoice_sent',
             'sat_state': 'not_defined',
+            'cancellation_reason': False,
+            'cancel_button_needed': True,
             'retry_button_needed': False,
         }
-        sent_doc_values['sat_state'] = 'skip'
         self.assertRecordValues(invoice.l10n_mx_edi_invoice_document_ids.sorted(), [
             sent_doc_values2,
             cancel_doc_values,
@@ -139,6 +164,7 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
         with freeze_time('2017-04-01'), self.with_mocked_sat_call(lambda _x: 'valid'):
             self.env['l10n_mx_edi.document']._fetch_and_update_sat_status(extra_domain=[('move_id.company_id', '=', self.env.company.id)])
         sent_doc_values2['sat_state'] = 'valid'
+        cancel_doc_values['sat_state'] = 'valid'
         self.assertRecordValues(invoice.l10n_mx_edi_invoice_document_ids.sorted(), [
             sent_doc_values2,
             cancel_doc_values,
@@ -163,7 +189,9 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
                 'message': "turlututu",
                 'state': 'payment_sent_failed',
                 'sat_state': False,
-                'retry_button_needed': False,
+                'cancellation_reason': False,
+                'cancel_button_needed': False,
+                'retry_button_needed': True,
             },
             sent_doc_values2,
             cancel_doc_values,
@@ -197,7 +225,9 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
                 'message': "turlututu",
                 'state': 'payment_sent_failed',
                 'sat_state': False,
-                'retry_button_needed': False,
+                'cancellation_reason': False,
+                'cancel_button_needed': False,
+                'retry_button_needed': True,
             },
             sent_doc_values2,
             cancel_doc_values,
@@ -214,6 +244,8 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
             'message': False,
             'state': 'payment_sent',
             'sat_state': 'not_defined',
+            'cancellation_reason': False,
+            'cancel_button_needed': True,
             'retry_button_needed': False,
         }
         self.assertRecordValues(invoice.l10n_mx_edi_invoice_document_ids.sorted(), [
@@ -252,6 +284,8 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
             'message': False,
             'state': 'payment_sent',
             'sat_state': 'not_defined',
+            'cancellation_reason': False,
+            'cancel_button_needed': True,
             'retry_button_needed': False,
         }
         self.assertRecordValues(invoice.l10n_mx_edi_invoice_document_ids.sorted(), [
@@ -265,13 +299,18 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
 
         # Fail to cancel the invoice.
         with freeze_time('2017-07-10'), self.with_mocked_pac_cancel_error():
-            invoice._l10n_mx_edi_cfdi_invoice_try_cancel()
+            self.env['l10n_mx_edi.invoice.cancel'] \
+                .with_context(invoice.button_request_cancel()['context']) \
+                .create({'cancellation_reason': '02'}) \
+                .action_cancel_invoice()
         cancel_doc_values2 = {
             'move_id': invoice.id,
             'datetime': fields.Datetime.from_string('2017-07-10 00:00:00'),
             'message': "turlututu",
             'state': 'invoice_cancel_failed',
             'sat_state': False,
+            'cancellation_reason': '02',
+            'cancel_button_needed': False,
             'retry_button_needed': True,
         }
         self.assertRecordValues(invoice.l10n_mx_edi_invoice_document_ids.sorted(), [
@@ -306,15 +345,23 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
 
         # Cancel successfully the invoice.
         with freeze_time('2017-07-12'), self.with_mocked_pac_cancel_success():
-            invoice._l10n_mx_edi_cfdi_invoice_try_cancel()
+            self.env['l10n_mx_edi.invoice.cancel'] \
+                .with_context(invoice.button_request_cancel()['context']) \
+                .create({'cancellation_reason': '02'}) \
+                .action_cancel_invoice()
+
+        invoice.l10n_mx_edi_invoice_document_ids.invalidate_recordset(fnames=['cancel_button_needed'])
+        sent_doc_values2['cancel_button_needed'] = False
+
         cancel_doc_values2.update({
             'datetime': fields.Datetime.from_string('2017-07-12 00:00:00'),
             'message': False,
             'state': 'invoice_cancel',
             'sat_state': 'not_defined',
+            'cancellation_reason': '02',
+            'cancel_button_needed': False,
             'retry_button_needed': False,
         })
-        cancel_doc_values['sat_state'] = 'skip'
         self.assertRecordValues(
             invoice.l10n_mx_edi_invoice_document_ids.sorted(lambda x: (x.datetime, x.move_id.id), reverse=True),
             [
@@ -368,6 +415,8 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
             'message': False,
             'state': 'invoice_sent',
             'sat_state': 'not_defined',
+            'cancel_button_needed': True,
+            'retry_button_needed': False,
         }
         self.assertRecordValues(invoice.l10n_mx_edi_invoice_document_ids, [sent_doc_values])
         self.assertRecordValues(invoice, [{'l10n_mx_edi_update_payments_needed': True}])
@@ -381,6 +430,8 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
                 'message': False,
                 'state': 'payment_sent_pue',
                 'sat_state': False,
+                'cancel_button_needed': False,
+                'retry_button_needed': False,
             },
             sent_doc_values,
         ])
@@ -399,6 +450,9 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
             'message': False,
             'state': 'invoice_sent',
             'sat_state': 'not_defined',
+            'cancellation_reason': False,
+            'cancel_button_needed': True,
+            'retry_button_needed': False,
         }
         self.assertRecordValues(invoice.l10n_mx_edi_invoice_document_ids, [sent_doc_values])
 
@@ -419,6 +473,9 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
                 'message': False,
                 'state': 'payment_sent_pue',
                 'sat_state': False,
+                'cancellation_reason': False,
+                'cancel_button_needed': False,
+                'retry_button_needed': False,
             },
             sent_doc_values,
         ])
@@ -433,19 +490,25 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
                 'message': "turlututu",
                 'state': 'payment_sent_failed',
                 'sat_state': False,
+                'cancellation_reason': False,
+                'cancel_button_needed': False,
+                'retry_button_needed': True,
             },
             sent_doc_values,
         ])
 
         # Retry.
         with freeze_time('2017-06-04'), self.with_mocked_pac_sign_success():
-            invoice.l10n_mx_edi_cfdi_invoice_try_update_payments()
+            invoice.l10n_mx_edi_invoice_document_ids.sorted()[0].action_retry()
         payment_doc_values = {
             'move_id': payment.move_id.id,
             'datetime': fields.Datetime.from_string('2017-06-04 00:00:00'),
             'message': False,
             'state': 'payment_sent',
             'sat_state': 'not_defined',
+            'cancellation_reason': False,
+            'cancel_button_needed': True,
+            'retry_button_needed': False,
         }
         self.assertRecordValues(invoice.l10n_mx_edi_invoice_document_ids.sorted(), [
             payment_doc_values,
@@ -454,13 +517,16 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
 
         # Cancel the payment.
         with freeze_time('2017-08-01'), self.with_mocked_pac_cancel_error():
-            payment.l10n_mx_edi_payment_document_ids.action_cancel_payment_cfdi()
+            payment.l10n_mx_edi_payment_document_ids.action_cancel()
         payment_doc_cancel_values = {
             'move_id': payment.move_id.id,
             'datetime': fields.Datetime.from_string('2017-08-01 00:00:00'),
             'message': "turlututu",
             'state': 'payment_cancel_failed',
             'sat_state': False,
+            'cancellation_reason': '02',
+            'cancel_button_needed': False,
+            'retry_button_needed': True,
         }
         self.assertRecordValues(invoice.l10n_mx_edi_invoice_document_ids.sorted(), [
             payment_doc_cancel_values,
@@ -476,7 +542,12 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
             'message': False,
             'state': 'payment_cancel',
             'sat_state': 'not_defined',
+            'cancellation_reason': '02',
+            'cancel_button_needed': False,
+            'retry_button_needed': False,
         })
+        payment_doc_values['sat_state'] = 'skip'
+        payment_doc_values['cancel_button_needed'] = False
         self.assertRecordValues(invoice.l10n_mx_edi_invoice_document_ids.sorted(), [
             payment_doc_cancel_values,
             payment_doc_values,
@@ -504,6 +575,9 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
             'message': False,
             'state': 'payment_sent',
             'sat_state': 'not_defined',
+            'cancellation_reason': False,
+            'cancel_button_needed': True,
+            'retry_button_needed': False,
         }
         self.assertRecordValues(invoice.l10n_mx_edi_invoice_document_ids.sorted(), [
             payment2_doc_values,
@@ -527,6 +601,9 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
             'message': False,
             'state': 'payment_sent',
             'sat_state': 'not_defined',
+            'cancellation_reason': False,
+            'cancel_button_needed': True,
+            'retry_button_needed': False,
         }
         self.assertRecordValues(invoice.l10n_mx_edi_invoice_document_ids.sorted(), [
             payment3_doc_values,
@@ -538,14 +615,18 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
 
         # Cancel payment2
         with freeze_time('2017-08-05'), self.with_mocked_pac_cancel_success():
-            payment2.l10n_mx_edi_payment_document_ids.action_cancel_payment_cfdi()
+            payment2.l10n_mx_edi_payment_document_ids.action_cancel()
         payment2_cancel_doc_values = {
             'move_id': payment2.move_id.id,
             'datetime': fields.Datetime.from_string('2017-08-05 00:00:00'),
             'message': False,
             'state': 'payment_cancel',
             'sat_state': 'not_defined',
+            'cancellation_reason': '02',
+            'cancel_button_needed': False,
+            'retry_button_needed': False,
         }
+        payment2_doc_values['sat_state'] = 'skip'
         self.assertRecordValues(invoice.l10n_mx_edi_invoice_document_ids.sorted(), [
             payment2_cancel_doc_values,
             payment3_doc_values,
@@ -775,7 +856,7 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
         ])
         payment_doc = payment.l10n_mx_edi_payment_document_ids.sorted()[0]
         with freeze_time('2017-01-03'), self.with_mocked_pac_cancel_error():
-            payment_doc.action_cancel_payment_cfdi()
+            payment_doc.action_cancel()
         pay_cancel_doc_values = {
             'move_id': payment.move_id.id,
             'invoice_ids': (invoice3 + invoice4).ids,
@@ -816,13 +897,14 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
         (payment1_rec_line + invoice1_rec_line).reconcile()
         payment_doc = payment.l10n_mx_edi_payment_document_ids.sorted()[0]
         with freeze_time('2017-01-03'), self.with_mocked_pac_cancel_success():
-            payment_doc.action_cancel_payment_cfdi()
+            payment_doc.action_retry()
         pay_cancel_doc_values.update({
             'invoice_ids': (invoice3 + invoice4).ids,
             'message': False,
             'state': 'payment_cancel',
             'sat_state': 'not_defined',
         })
+        pay_sent_doc_values2['sat_state'] = 'skip'
         self.assertRecordValues(payment.l10n_mx_edi_payment_document_ids.sorted(), [
             pay_cancel_doc_values,
             pay_sent_doc_values2,
@@ -910,6 +992,7 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
 
     @freeze_time('2017-01-01')
     def test_invoice_cancellation_01(self):
+        # Create and send the invoice.
         invoice = self._create_invoice()
         with self.with_mocked_pac_sign_success():
             invoice._l10n_mx_edi_cfdi_invoice_try_send()
@@ -922,11 +1005,13 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
             'state': 'posted',
         }])
 
+        # Create a replacement invoice.
         action_results = self.env['l10n_mx_edi.invoice.cancel'] \
             .with_context(invoice.button_request_cancel()['context']) \
             .create({}) \
             .action_create_replacement_invoice()
         new_invoice = self.env['account.move'].browse(action_results['res_id'])
+
         invoice.invalidate_recordset(fnames=['need_cancel_request', 'l10n_mx_edi_cfdi_cancel_id'])
         self.assertRecordValues(invoice, [{
             'l10n_mx_edi_cfdi_state': 'sent',
@@ -946,9 +1031,11 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
             'state': 'draft',
         }])
 
+        # Sign the replacement invoice.
         new_invoice.action_post()
         with self.with_mocked_pac_sign_success():
             new_invoice._l10n_mx_edi_cfdi_invoice_try_send()
+
         invoice.invalidate_recordset(fnames=['need_cancel_request', 'l10n_mx_edi_cfdi_cancel_id'])
         self.assertRecordValues(invoice, [{
             'l10n_mx_edi_cfdi_state': 'sent',
@@ -968,11 +1055,37 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
             'state': 'posted',
         }])
 
+        # Cancel the replacement invoice.
+        with self.with_mocked_pac_cancel_success():
+            self.env['l10n_mx_edi.invoice.cancel']\
+                .with_context(new_invoice.button_request_cancel()['context'])\
+                .create({'cancellation_reason': '02'})\
+                .action_cancel_invoice()
+
+        invoice.invalidate_recordset(fnames=['need_cancel_request', 'l10n_mx_edi_cfdi_cancel_id'])
+        self.assertRecordValues(invoice, [{
+            'l10n_mx_edi_cfdi_state': 'sent',
+            'l10n_mx_edi_invoice_cancellation_reason': False,
+            'l10n_mx_edi_cfdi_origin': False,
+            'need_cancel_request': True,
+            'show_reset_to_draft_button': False,
+            'l10n_mx_edi_cfdi_cancel_id': new_invoice.id,
+            'state': 'posted',
+        }])
+        self.assertRecordValues(new_invoice, [{
+            'l10n_mx_edi_cfdi_state': 'cancel',
+            'l10n_mx_edi_invoice_cancellation_reason': '02',
+            'l10n_mx_edi_cfdi_origin': f'04|{invoice.l10n_mx_edi_cfdi_uuid}',
+            'need_cancel_request': False,
+            'show_reset_to_draft_button': True,
+            'state': 'cancel',
+        }])
+
         with self.with_mocked_pac_cancel_success():
             self.env['l10n_mx_edi.invoice.cancel']\
                 .with_context(invoice.button_request_cancel()['context'])\
                 .create({})\
-                .action_cancel_invoices()
+                .action_cancel_invoice()
         self.assertRecordValues(invoice, [{
             'l10n_mx_edi_cfdi_state': 'cancel',
             'l10n_mx_edi_invoice_cancellation_reason': '01',
@@ -1002,7 +1115,7 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
             self.env['l10n_mx_edi.invoice.cancel'] \
                 .with_context(invoice.button_request_cancel()['context']) \
                 .create({'cancellation_reason': '02'})\
-                .action_cancel_invoices()
+                .action_cancel_invoice()
         self.assertRecordValues(invoice, [{
             'l10n_mx_edi_cfdi_state': 'cancel',
             'l10n_mx_edi_invoice_cancellation_reason': '02',
@@ -1011,3 +1124,258 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
             'show_reset_to_draft_button': True,
             'state': 'cancel',
         }])
+
+    @freeze_time('2017-01-01')
+    def test_global_invoice_cancellation_01(self):
+        # Create and send the invoice.
+        invoice1 = self._create_invoice(l10n_mx_edi_cfdi_to_public=True)
+        invoice2 = self._create_invoice(l10n_mx_edi_cfdi_to_public=True)
+        invoices = invoice1 + invoice2
+
+        # Sign as a global invoice.
+        with self.with_mocked_pac_sign_success():
+            invoices._l10n_mx_edi_cfdi_global_invoice_try_send()
+        sent_doc_values1 = {
+            'invoice_ids': invoices.ids,
+            'state': 'ginvoice_sent',
+            'attachment_uuid': invoices[0].l10n_mx_edi_cfdi_uuid,
+            'attachment_origin': False,
+            'cancellation_reason': False,
+        }
+        self.assertRecordValues(invoices.l10n_mx_edi_invoice_document_ids, [sent_doc_values1])
+        self.assertRecordValues(invoice1, [{
+            'l10n_mx_edi_cfdi_state': 'global_sent',
+            'l10n_mx_edi_cfdi_uuid': sent_doc_values1['attachment_uuid'],
+        }])
+
+        # Request a replacement for the global invoice.
+        gi_doc1 = invoices.l10n_mx_edi_invoice_document_ids
+        with self.with_mocked_pac_sign_success():
+            self.env['l10n_mx_edi.invoice.cancel']\
+                .with_context(gi_doc1.action_request_cancel()['context'])\
+                .create({})\
+                .action_create_replacement_invoice()
+        sent_doc_values2 = {
+            'invoice_ids': invoices.ids,
+            'state': 'ginvoice_sent',
+            'attachment_uuid': invoices[0].l10n_mx_edi_cfdi_uuid,
+            'attachment_origin': f"04|{sent_doc_values1['attachment_uuid']}",
+            'cancellation_reason': False,
+        }
+        self.assertRecordValues(invoices.l10n_mx_edi_invoice_document_ids.sorted(), [
+            sent_doc_values2,
+            sent_doc_values1,
+        ])
+        self.assertRecordValues(invoice1, [{
+            'l10n_mx_edi_cfdi_state': 'global_sent',
+            'l10n_mx_edi_cfdi_uuid': sent_doc_values2['attachment_uuid'],
+        }])
+
+        # Cancel the first global invoice.
+        with self.with_mocked_pac_cancel_success():
+            self.env['l10n_mx_edi.invoice.cancel']\
+                .with_context(gi_doc1.action_request_cancel()['context'])\
+                .create({})\
+                .action_cancel_invoice()
+        cancel_doc_values = {
+            'invoice_ids': invoices.ids,
+            'state': 'ginvoice_cancel',
+            'attachment_uuid': sent_doc_values1['attachment_uuid'],
+            'attachment_origin': False,
+            'cancellation_reason': '01',
+        }
+        self.assertRecordValues(invoices.l10n_mx_edi_invoice_document_ids.sorted(), [
+            cancel_doc_values,
+            sent_doc_values2,
+            sent_doc_values1,
+        ])
+        self.assertRecordValues(invoice1, [{
+            'l10n_mx_edi_cfdi_state': 'global_sent',
+            'l10n_mx_edi_cfdi_uuid': sent_doc_values2['attachment_uuid'],
+        }])
+
+    @freeze_time('2017-01-01')
+    def test_global_invoice_then_replacement_then_cancel_replacement_then_cancel_gi(self):
+        invoice1 = self._create_invoice(l10n_mx_edi_cfdi_to_public=True)
+        invoice2 = self._create_invoice(l10n_mx_edi_cfdi_to_public=True)
+        invoices = invoice1 + invoice2
+
+        # Failed to send the global invoice.
+        with self.with_mocked_pac_sign_error():
+            invoices._l10n_mx_edi_cfdi_global_invoice_try_send()
+        sent_doc_values1 = {
+            'move_id': None,
+            'invoice_ids': invoices.ids,
+            'message': "turlututu",
+            'state': 'ginvoice_sent_failed',
+            'sat_state': False,
+            'attachment_uuid': False,
+            'attachment_origin': False,
+            'cancellation_reason': False,
+            'retry_button_needed': True,
+            'cancel_button_needed': False,
+        }
+        self.assertRecordValues(invoices.l10n_mx_edi_invoice_document_ids, [sent_doc_values1])
+        self.assertTrue(invoices.l10n_mx_edi_invoice_document_ids.attachment_id)
+
+        # Successfully create the global invoice.
+        with self.with_mocked_pac_sign_success():
+            invoices.l10n_mx_edi_invoice_document_ids.action_retry()
+        gi_attachment = invoices.l10n_mx_edi_cfdi_attachment_id
+        self.assertEqual(len(gi_attachment), 1)
+        sent_doc_values1.update({
+            'message': False,
+            'state': 'ginvoice_sent',
+            'sat_state': 'not_defined',
+            'attachment_id': gi_attachment.id,
+            'attachment_uuid': invoices[0].l10n_mx_edi_cfdi_uuid,
+            'attachment_origin': False,
+            'retry_button_needed': False,
+            'cancel_button_needed': True,
+        })
+        self.assertRecordValues(invoices.l10n_mx_edi_invoice_document_ids, [sent_doc_values1])
+        self.assertRecordValues(invoices, [{'l10n_mx_edi_update_sat_needed': True}] * 2)
+
+        with self.with_mocked_sat_call(lambda _x: 'valid'):
+            self.env['l10n_mx_edi.document']._fetch_and_update_sat_status(
+                extra_domain=[('id', '=', invoices.l10n_mx_edi_invoice_document_ids.id)]
+            )
+        sent_doc_values1['sat_state'] = 'valid'
+        self.assertRecordValues(invoices.l10n_mx_edi_invoice_document_ids, [sent_doc_values1])
+
+        # Request a replacement for the global invoice.
+        gi_doc1 = invoices.l10n_mx_edi_invoice_document_ids
+        with self.with_mocked_pac_sign_success():
+            self.env['l10n_mx_edi.invoice.cancel']\
+                .with_context(gi_doc1.action_request_cancel()['context'])\
+                .create({})\
+                .action_create_replacement_invoice()
+
+        gi_doc2 = invoices.l10n_mx_edi_invoice_document_ids.sorted()[0]
+        self.assertTrue(gi_doc2.attachment_id)
+        sent_doc_values2 = {
+            'move_id': None,
+            'invoice_ids': invoices.ids,
+            'message': False,
+            'state': 'ginvoice_sent',
+            'sat_state': 'not_defined',
+            'attachment_id': gi_doc2.attachment_id.id,
+            'attachment_uuid': invoices[0].l10n_mx_edi_cfdi_uuid,
+            'attachment_origin': f'04|{gi_doc1.attachment_uuid}',
+            'cancellation_reason': False,
+            'retry_button_needed': False,
+            'cancel_button_needed': True,
+        }
+        self.assertRecordValues(invoices.l10n_mx_edi_invoice_document_ids.sorted(), [
+            sent_doc_values2,
+            sent_doc_values1,
+        ])
+
+        # Request a replacement for the global invoice but it failed.
+        with self.with_mocked_pac_sign_error():
+            self.env['l10n_mx_edi.invoice.cancel']\
+                .with_context(gi_doc2.action_request_cancel()['context'])\
+                .create({})\
+                .action_create_replacement_invoice()
+
+        gi_doc3 = invoices.l10n_mx_edi_invoice_document_ids.sorted()[0]
+        self.assertTrue(gi_doc3.attachment_id)
+        sent_doc_values3 = {
+            'move_id': None,
+            'invoice_ids': invoices.ids,
+            'message': "turlututu",
+            'state': 'ginvoice_sent_failed',
+            'sat_state': False,
+            'attachment_id': gi_doc3.attachment_id.id,
+            'attachment_uuid': False,
+            'attachment_origin': f'04|{gi_doc2.attachment_uuid}',
+            'cancellation_reason': False,
+            'retry_button_needed': True,
+            'cancel_button_needed': False,
+        }
+        self.assertRecordValues(invoices.l10n_mx_edi_invoice_document_ids.sorted(), [
+            sent_doc_values3,
+            sent_doc_values2,
+            sent_doc_values1,
+        ])
+
+        # Failed to cancel the second global invoice with cancellation reason 02.
+        with self.with_mocked_pac_cancel_error():
+            self.env['l10n_mx_edi.invoice.cancel']\
+                .with_context(gi_doc2.action_request_cancel()['context'])\
+                .create({'cancellation_reason': '02'})\
+                .action_cancel_invoice()
+        cancel_doc_values1 = {
+            'move_id': None,
+            'invoice_ids': invoices.ids,
+            'message': "turlututu",
+            'state': 'ginvoice_cancel_failed',
+            'sat_state': False,
+            'attachment_id': gi_doc2.attachment_id.id,
+            'attachment_uuid': gi_doc2.attachment_uuid,
+            'attachment_origin': f'04|{gi_doc1.attachment_uuid}',
+            'cancellation_reason': '02',
+            'retry_button_needed': True,
+            'cancel_button_needed': False,
+        }
+        self.assertRecordValues(invoices.l10n_mx_edi_invoice_document_ids.sorted(), [
+            cancel_doc_values1,
+            sent_doc_values2,
+            sent_doc_values1,
+        ])
+
+        # Retry the cancellation of the second global invoice.
+        with self.with_mocked_pac_cancel_success():
+            invoices.l10n_mx_edi_invoice_document_ids.sorted()[0].action_retry()
+
+        cancel_doc_values1.update({
+            'message': False,
+            'state': 'ginvoice_cancel',
+            'sat_state': 'not_defined',
+            'retry_button_needed': False,
+            'cancel_button_needed': False,
+        })
+        sent_doc_values2['sat_state'] = 'skip'
+        self.assertRecordValues(invoices.l10n_mx_edi_invoice_document_ids.sorted(), [
+            cancel_doc_values1,
+            sent_doc_values2,
+            sent_doc_values1,
+        ])
+
+        # Successfully cancel the first global invoice.
+        with self.with_mocked_pac_cancel_success():
+            self.env['l10n_mx_edi.invoice.cancel']\
+                .with_context(gi_doc1.action_request_cancel()['context'])\
+                .create({})\
+                .action_cancel_invoice()
+
+        cancel_doc_values2 = {
+            'move_id': None,
+            'invoice_ids': invoices.ids,
+            'message': False,
+            'state': 'ginvoice_cancel',
+            'sat_state': 'not_defined',
+            'attachment_id': gi_doc1.attachment_id.id,
+            'attachment_uuid': gi_doc1.attachment_uuid,
+            'attachment_origin': False,
+            'cancellation_reason': '01',
+            'retry_button_needed': False,
+            'cancel_button_needed': False,
+        }
+        self.assertRecordValues(invoices.l10n_mx_edi_invoice_document_ids.sorted(), [
+            cancel_doc_values2,
+            cancel_doc_values1,
+            sent_doc_values2,
+            sent_doc_values1,
+        ])
+
+    @freeze_time('2017-01-01')
+    def test_global_invoice_after_failing_send_invoice(self):
+        invoice = self._create_invoice(l10n_mx_edi_cfdi_to_public=True)
+
+        with self.with_mocked_pac_sign_error():
+            invoice._l10n_mx_edi_cfdi_invoice_try_send()
+        self.assertEqual(len(invoice.l10n_mx_edi_invoice_document_ids), 1)
+        with self.with_mocked_pac_sign_success():
+            invoice._l10n_mx_edi_cfdi_global_invoice_try_send()
+        self.assertEqual(len(invoice.l10n_mx_edi_invoice_document_ids), 1)

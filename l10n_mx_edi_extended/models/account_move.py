@@ -47,11 +47,6 @@ class AccountMove(models.Model):
     # CFDI: HELPERS
     # -------------------------------------------------------------------------
 
-    def _get_l10n_mx_edi_issued_address(self):
-        # OVERRIDE
-        self.ensure_one()
-        return self.journal_id.l10n_mx_address_issued_id or super()._get_l10n_mx_edi_issued_address()
-
     @api.depends('l10n_mx_edi_external_trade_type')
     def _compute_l10n_mx_edi_external_trade(self):
         for move in self:
@@ -66,9 +61,14 @@ class AccountMove(models.Model):
     # CFDI
     # -------------------------------------------------------------------------
 
-    def _l10n_mx_edi_get_invoice_cfdi_values(self, percentage_paid=None):
+    def _l10n_mx_edi_add_invoice_cfdi_values(self, cfdi_values, percentage_paid=None):
         # EXTENDS 'l10n_mx_edi'
-        cfdi_values = super()._l10n_mx_edi_get_invoice_cfdi_values(percentage_paid=percentage_paid)
+        self.ensure_one()
+
+        if self.journal_id.l10n_mx_address_issued_id:
+            cfdi_values['issued_address'] = self.journal_id.l10n_mx_address_issued_id
+
+        super()._l10n_mx_edi_add_invoice_cfdi_values(cfdi_values, percentage_paid=percentage_paid)
         cfdi_values['exportacion'] = self.l10n_mx_edi_external_trade_type or '01'
 
         # External Trade
@@ -120,7 +120,12 @@ class AccountMove(models.Model):
 
                 # In case of COMEX we need to fill "NumRegIdTrib" with the real tax id of the customer
                 # but let the generic RFC.
-                shipping_values = self._l10n_mx_edi_get_customer_cfdi_values(shipping, to_public=self.l10n_mx_edi_cfdi_to_public)
+                shipping_values = self.env['l10n_mx_edi.document']._get_customer_cfdi_values(
+                    shipping,
+                    cfdi_values['receptor']['issued_address'],
+                    usage=cfdi_values['receptor']['uso_cfdi'],
+                    to_public=self.l10n_mx_edi_cfdi_to_public,
+                )['receptor']
                 if (
                     shipping.country_id == shipping.commercial_partner_id.country_id
                     and shipping_values['rfc'] == 'XEXX010101000'
@@ -185,7 +190,7 @@ class AccountMove(models.Model):
                 'total': 0.0,
             })
             for line_vals in cfdi_values['conceptos_list']:
-                line = line_vals['line']
+                line = line_vals['line']['record']
                 product_values_map[line.product_id]['quantity'] += line.l10n_mx_edi_qty_umt
                 product_values_map[line.product_id]['price_unit'] += line.l10n_mx_edi_price_unit_umt
                 product_values_map[line.product_id]['total'] += line_vals['importe']
@@ -205,9 +210,7 @@ class AccountMove(models.Model):
         else:
             # Invoice lines.
             for line_vals in cfdi_values['conceptos_list']:
-                line_vals['informacion_aduanera_list'] = line_vals['line']._l10n_mx_edi_get_custom_numbers()
-
-        return cfdi_values
+                line_vals['informacion_aduanera_list'] = line_vals['line']['record']._l10n_mx_edi_get_custom_numbers()
 
 
 class AccountMoveLine(models.Model):

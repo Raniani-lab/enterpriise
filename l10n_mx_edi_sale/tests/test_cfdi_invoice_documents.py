@@ -69,7 +69,7 @@ class TestCFDIInvoiceDocuments(TestMxEdiCommon):
             self.env['l10n_mx_edi.invoice.cancel']\
                 .with_context(invoice.button_request_cancel()['context'])\
                 .create({})\
-                .action_cancel_invoices()
+                .action_cancel_invoice()
         self.assertRecordValues(sale_order, [{
             'invoice_status': "to invoice",
             'invoice_ids': (invoice + new_invoice).ids,

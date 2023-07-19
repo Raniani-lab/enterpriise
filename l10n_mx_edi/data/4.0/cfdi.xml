@@ -14,7 +14,7 @@
             t-att-FormaPago="forma_pago"
             t-att-NoCertificado="no_certificado"
             t-att-Certificado="certificado"
-            t-att-CondicionesDePago="condiciones_de_pago"
+            t-att-CondicionesDePago="format_string(condiciones_de_pago, 100)"
             t-att-SubTotal="format_float(subtotal)"
             t-att-Descuento="format_float(descuento)"
             t-att-Moneda="moneda"
@@ -24,6 +24,11 @@
             t-att-Exportacion="exportacion"
             t-att-MetodoPago="metodo_pago"
             t-att-LugarExpedicion="lugar_expedicion">
+            <cfdi:InformacionGlobal
+                t-if="information_global"
+                t-att-Periodicidad="information_global['periodicidad']"
+                t-att-Meses="information_global['meses']"
+                t-att-Año="information_global['ano']"/>
             <cfdi:CfdiRelacionados t-if="tipo_relacion and cfdi_relationado_list" t-att-TipoRelacion="tipo_relacion">
                 <t t-foreach="cfdi_relationado_list" t-as="cfdi_relationado">
                     <cfdi:CfdiRelacionado t-att-UUID="cfdi_relationado"/>

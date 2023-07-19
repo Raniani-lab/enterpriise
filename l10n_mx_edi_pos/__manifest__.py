@@ -13,6 +13,9 @@
     ],
     'data': [
         'views/pos_payment_method_views.xml',
+        'views/pos_order_views.xml',
+
+        'wizard/l10n_mx_edi_global_invoice_create.xml',
     ],
     'assets': {
         'point_of_sale._assets_pos': [

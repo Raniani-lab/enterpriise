@@ -226,89 +226,36 @@ class Picking(models.Model):
             errors.append(_("Distance in KM must be specified when using federal transport"))
         return errors
 
-    def _l10n_mx_edi_get_picking_cfdi_values(self):
+    def _l10n_mx_edi_add_picking_cfdi_values(self, cfdi_values):
         self.ensure_one()
+        company = cfdi_values['company']
 
-        def format_float(val, digits=2):
-            return '%.*f' % (digits, val)
+        if self.picking_type_id.warehouse_id.partner_id:
+            cfdi_values['issued_address'] = self.picking_type_id.warehouse_id.partner_id
+        issued_address = cfdi_values['issued_address']
 
-        # Note: We can't receive an error here since it has already been checked in '_l10n_mx_edi_prepare_picking_cfdi'.
-        company = self.env['l10n_mx_edi.document']._get_company_cfdi(self.company_id)['company']
-        certificate = company.l10n_mx_edi_certificate_ids.sudo()._get_valid_certificate()
+        self.env['l10n_mx_edi.document']._add_base_cfdi_values(cfdi_values)
+        self.env['l10n_mx_edi.document']._add_certificate_cfdi_values(cfdi_values)
+        self.env['l10n_mx_edi.document']._add_currency_cfdi_values(cfdi_values, company.currency_id)
+        self.env['l10n_mx_edi.document']._add_document_name_cfdi_values(cfdi_values, self.name)
+        self.env['l10n_mx_edi.document']._add_document_origin_cfdi_values(cfdi_values, self.l10n_mx_edi_cfdi_origin)
+        self.env['l10n_mx_edi.document']._add_customer_cfdi_values(cfdi_values, self.partner_id)
 
-        name_numbers = list(re.finditer(r'\d+', self.name))
-        issued_address = self.picking_type_id.warehouse_id.partner_id or self.company_id.partner_id.commercial_partner_id
         mx_tz = issued_address._l10n_mx_edi_get_cfdi_timezone()
         date_fmt = '%Y-%m-%dT%H:%M:%S'
 
-        origin_type, origin_uuids = None, []
-        if self.l10n_mx_edi_cfdi_origin and '|' in self.l10n_mx_edi_cfdi_origin:
-            split_origin = self.l10n_mx_edi_cfdi_origin.split('|')
-            if len(split_origin) == 2:
-                origin_type = split_origin[0]
-                origin_uuids = split_origin[1].split(',')
-
-        return {
-            'company': company,
-            'certificate': certificate,
-            'certificate_number': certificate.serial_number,
-            'certificate_key': certificate.sudo()._get_data()[0].decode('utf-8'),
+        cfdi_values.update({
             'record': self,
             'cfdi_date': self.date_done.astimezone(mx_tz).strftime(date_fmt),
             'scheduled_date': self.scheduled_date.astimezone(mx_tz).strftime(date_fmt),
-            'folio_number': name_numbers[-1].group(),
-            'origin_type': origin_type,
-            'origin_uuids': origin_uuids,
-            'serie': re.sub(r'\W+', '', self.name[:name_numbers[-1].start()]),
             'lugar_expedicion': issued_address.zip,
-            'supplier': company,
-            'customer': self.partner_id.commercial_partner_id,
             'moves': self.move_ids.filtered(lambda ml: ml.quantity_done > 0),
-            'format_float': format_float,
             'weight_uom': self.env['product.template']._get_weight_uom_id_from_ir_config_parameter(),
-        }
+        })
 
     @api.model
     def _l10n_mx_edi_prepare_picking_cfdi_template(self):
         return 'l10n_mx_edi_stock.cfdi_cartaporte'
-
-    def _l10n_mx_edi_prepare_picking_cfdi(self):
-        """ Prepare the CFDI for the current picking.
-
-        :return: a dictionary containing:
-            * error: An optional error message.
-            * cfdi_str: An optional xml as str.
-        """
-        self.ensure_one()
-
-        # == Check the config ==
-        company_values = self.env['l10n_mx_edi.document']._get_company_cfdi(self.company_id)
-        if company_values.get('errors'):
-            return company_values
-
-        company = company_values['company']
-
-        errors = self._l10n_mx_edi_cfdi_check_external_trade_config() \
-                 + company._l10n_mx_edi_cfdi_check_config() \
-                 + self._l10n_mx_edi_cfdi_check_picking_config()
-        if errors:
-            return {'errors': errors}
-
-        # == CFDI values ==
-        cfdi_values = self._l10n_mx_edi_get_picking_cfdi_values()
-        qweb_template = self._l10n_mx_edi_prepare_picking_cfdi_template()
-
-        # == Generate the CFDI ==
-        cfdi = self.env['ir.qweb']._render(qweb_template, cfdi_values)
-        cfdi_infos = self.env['l10n_mx_edi.document']._decode_cfdi_attachment(cfdi)
-        cfdi_cadena_crypted = cfdi_values['certificate'].sudo()._get_encrypted_cadena(cfdi_infos['cadena'])
-        cfdi_infos['cfdi_node'].attrib['Sello'] = cfdi_cadena_crypted
-
-        cfdi_str = etree.tostring(cfdi_infos['cfdi_node'], pretty_print=True, xml_declaration=True, encoding='UTF-8')
-        return {
-            'cfdi_filename': f'CFDI_DeliveryGuide_{self.name}.xml'.replace('/', ''),
-            'cfdi_str': cfdi_str,
-        }
 
     # -------------------------------------------------------------------------
     # CFDI: DOCUMENTS
@@ -361,10 +308,13 @@ class Picking(models.Model):
         }
         return self.env['l10n_mx_edi.document']._create_update_picking_document(self, document_values)
 
-    def _l10n_mx_edi_cfdi_document_cancel_failed(self, error):
+    def _l10n_mx_edi_cfdi_document_cancel_failed(self, error, cfdi, cancel_reason):
         """ Create/update the invoice document for 'cancel_failed'.
 
-        :param error: The error.
+        :param error:           The error.
+        :param cfdi:            The source cfdi attachment to cancel.
+        :param cancel_reason:   The reason for this cancel.
+        :return:                The created/updated document.
         """
         self.ensure_one()
 
@@ -373,11 +323,18 @@ class Picking(models.Model):
             'state': 'picking_cancel_failed',
             'sat_state': None,
             'message': error,
+            'attachment_id': cfdi.attachment_id.id,
+            'cancellation_reason': cancel_reason,
         }
         return self.env['l10n_mx_edi.document']._create_update_picking_document(self, document_values)
 
-    def _l10n_mx_edi_cfdi_document_cancel(self):
-        """ Create/update the invoice document for 'cancel'. """
+    def _l10n_mx_edi_cfdi_document_cancel(self, cfdi, cancel_reason):
+        """ Create/update the invoice document for 'cancel'.
+
+        :param cfdi:            The source cfdi attachment to cancel.
+        :param cancel_reason:   The reason for this cancel.
+        :return:                The created/updated document.
+        """
         self.ensure_one()
 
         document_values = {
@@ -385,7 +342,8 @@ class Picking(models.Model):
             'state': 'picking_cancel',
             'sat_state': 'not_defined',
             'message': None,
-            'attachment_id': self.l10n_mx_edi_cfdi_attachment_id.id,
+            'attachment_id': cfdi.attachment_id.id,
+            'cancellation_reason': cancel_reason,
         }
         return self.env['l10n_mx_edi.document']._create_update_picking_document(self, document_values)
 
@@ -397,106 +355,73 @@ class Picking(models.Model):
         """ Try to generate and send the CFDI for the current picking. """
         self.ensure_one()
 
-        # == Check xml ==
-        results = self._l10n_mx_edi_prepare_picking_cfdi()
-        if results.get('errors'):
-            self._l10n_mx_edi_cfdi_document_sent_failed(
-                "\n".join(results['errors']),
-                cfdi_filename=results.get('cfdi_filename'),
-                cfdi_str=results.get('cfdi_str'),
-            )
-            return
-
-        # Note: We can't receive an error here since it has already been checked in '_l10n_mx_edi_prepare_picking_cfdi'.
-        company = self.env['l10n_mx_edi.document']._get_company_cfdi(self.company_id)['company']
-        pac_name = company.l10n_mx_edi_pac
-
-        # == Check credentials ==
-        credentials = getattr(self.env['l10n_mx_edi.document'], f'_get_{pac_name}_credentials')(company)
-        if credentials.get('errors'):
-            self._l10n_mx_edi_cfdi_document_sent_failed(
-                "\n".join(results['errors']),
-                cfdi_filename=results['cfdi_filename'],
-                cfdi_str=results['cfdi_str'],
-            )
+        # == Check the config ==
+        errors = self._l10n_mx_edi_cfdi_check_external_trade_config() \
+                 + self._l10n_mx_edi_cfdi_check_picking_config()
+        if errors:
+            self._l10n_mx_edi_cfdi_invoice_document_sent_failed("\n".join(errors))
             return
 
         # == Lock ==
         self.env['l10n_mx_edi.document']._with_locked_records(self)
 
-        # == Check PAC ==
-        sign_results = getattr(self.env['l10n_mx_edi.document'], f'_{pac_name}_sign')(credentials, results['cfdi_str'])
-        if sign_results.get('errors'):
-            self._l10n_mx_edi_cfdi_document_sent_failed(
-                "\n".join(sign_results['errors']),
-                cfdi_filename=results['cfdi_filename'],
-                cfdi_str=results['cfdi_str'],
+        # == Send ==
+        def on_populate(cfdi_values):
+            self._l10n_mx_edi_add_picking_cfdi_values(cfdi_values)
+
+        def on_failure(error, cfdi_filename=None, cfdi_str=None):
+            self._l10n_mx_edi_cfdi_document_sent_failed(error, cfdi_filename=cfdi_filename, cfdi_str=cfdi_str)
+
+        def on_success(_cfdi_values, cfdi_filename, cfdi_str, populate_return=None):
+            document = self._l10n_mx_edi_cfdi_document_sent(cfdi_filename, cfdi_str)
+            self.message_post(
+                body=_("The CFDI document was successfully created and signed by the government."),
+                attachment_ids=document.attachment_id.ids,
             )
-            return
 
-        # == Success ==
-        document = self._l10n_mx_edi_cfdi_document_sent(results['cfdi_filename'], sign_results['cfdi_str'])
-
-        # == Chatter ==
-        self.message_post(
-            body=_("The CFDI document was successfully created and signed by the government."),
-            attachment_ids=document.attachment_id.ids,
+        qweb_template = self._l10n_mx_edi_prepare_picking_cfdi_template()
+        cfdi_filename = f'CFDI_DeliveryGuide_{self.name}.xml'.replace('/', '')
+        self.env['l10n_mx_edi.document']._send_api(
+            self.company_id,
+            qweb_template,
+            cfdi_filename,
+            on_populate,
+            on_failure,
+            on_success,
         )
 
-    def l10n_mx_edi_cfdi_try_cancel(self):
-        """ Try to cancel the CFDI for the current picking. """
+    def _l10n_mx_edi_cfdi_try_cancel(self, document):
+        """ Try to cancel the CFDI for the current picking.
+
+        :param document: The source payment document to cancel.
+        """
         self.ensure_one()
         if self.l10n_mx_edi_cfdi_state != 'sent':
             return
 
-        # == Check the config ==
-        company_values = self.env['l10n_mx_edi.document']._get_company_cfdi(self.company_id)
-        if company_values.get('errors'):
-            return company_values
-
-        company = company_values['company']
-        pac_name = company.l10n_mx_edi_pac
-
-        errors = company._l10n_mx_edi_cfdi_check_config() + self._l10n_mx_edi_cfdi_check_picking_config()
-        if errors:
-            self._l10n_mx_edi_cfdi_document_cancel_failed(
-                "\n".join(errors),
-            )
-            return
-
-        # == Check credentials ==
-        credentials = getattr(self.env['l10n_mx_edi.document'], f'_get_{pac_name}_credentials')(company)
-        if credentials.get('errors'):
-            self._l10n_mx_edi_cfdi_document_cancel_failed(
-                "\n".join(credentials['errors']),
-            )
-            return
-
         # == Lock ==
         self.env['l10n_mx_edi.document']._with_locked_records(self)
 
-        # == Check PAC ==
-        cancel_uuid = self.l10n_mx_edi_cfdi_cancel_picking_id.l10n_mx_edi_cfdi_uuid
+        # == Cancel ==
+        substitution_doc = document._get_substitution_document()
+        cancel_uuid = substitution_doc.attachment_uuid
         cancel_reason = '01' if cancel_uuid else '02'
-        cancel_results = getattr(self.env['l10n_mx_edi.document'], f'_{pac_name}_cancel')(
-            company,
-            credentials,
-            self.l10n_mx_edi_cfdi_uuid,
-            cancel_reason,
-            cancel_uuid=cancel_uuid,
-        )
-        if cancel_results.get('errors'):
-            self._l10n_mx_edi_cfdi_document_cancel_failed(
-                "\n".join(cancel_results['errors']),
-            )
-            return
 
-        # == Success ==
-        self._l10n_mx_edi_cfdi_document_cancel()
-        self.l10n_mx_edi_cfdi_origin = f'04|{self.l10n_mx_edi_cfdi_uuid}'
+        def on_failure(error):
+            self._l10n_mx_edi_cfdi_document_cancel_failed(error, document, cancel_reason)
 
-        # == Chatter ==
-        self.message_post(body=_("The CFDI document has been successfully cancelled."))
+        def on_success():
+            self._l10n_mx_edi_cfdi_document_cancel(document, cancel_reason)
+            self.l10n_mx_edi_cfdi_origin = f'04|{self.l10n_mx_edi_cfdi_uuid}'
+            self.message_post(body=_("The CFDI document has been successfully cancelled."))
+
+        document._cancel_api(self.company_id, cancel_reason, on_failure, on_success)
+
+    def l10n_mx_edi_cfdi_try_cancel(self):
+        """ Try to cancel the CFDI for the current picking. """
+        self.ensure_one()
+        source_document = self.l10n_mx_edi_document_ids.filtered(lambda x: x.state == 'picking_sent')[:1]
+        self._l10n_mx_edi_cfdi_try_cancel(source_document)
 
     def l10n_mx_edi_cfdi_try_sat(self):
         self.ensure_one()

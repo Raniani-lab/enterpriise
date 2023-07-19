@@ -1797,7 +1797,7 @@ class AccountReport(models.Model):
         if not view_xmlid:
             return None
 
-        return self.env['ir.model.data']._xmlid_lookup(view_xmlid)[2]
+        return self.env['ir.model.data']._xmlid_lookup(view_xmlid)[1]
 
     def caret_option_open_general_ledger(self, options, params):
         record_id = None

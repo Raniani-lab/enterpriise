@@ -55,6 +55,8 @@ patch(PosStore.prototype, {
             result = await order.sendChanges(cancelled);
         }
 
+        order.customerCountChanges = false;
+
         // We display this error popup only if the PoS is connected,
         // otherwise the user has already received a popup telling him
         // that this functionality will be limited.

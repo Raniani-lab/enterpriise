@@ -10,7 +10,7 @@ patch(Order.prototype, {
         // orders traceable in the preparation tools.
         // For the pos_restaurant, this is mandatory, without the server_id,
         // we cannot find the order table.
-        if (!this.server_id) {
+        if (!this.server_id || this.customerCountChanges) {
             await this.pos.sendDraftToServer();
         }
 
@@ -65,5 +65,9 @@ patch(Order.prototype, {
             displayed: true,
             pos_order_id: order.server_id || false,
         };
+    },
+    setCustomerCount(count) {
+        super.setCustomerCount(count);
+        this.customerCountChanges = true;
     },
 });

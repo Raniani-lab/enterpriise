@@ -13,9 +13,9 @@
                 <div class="o_pdis_table flex-shrink-0 pe-2" t-if="this.props.order.table.name">
                     <span t-esc="this.props.order.table.name" />
                 </div>
-                <div class="o_pdis_seats flex-shrink-0 ps-2 text-end" t-if="this.props.order.table.seats">
+                <div class="o_pdis_seats flex-shrink-0 ps-2 text-end" t-if="this.props.order.customerCount">
                     <i class="fa fa-users pe-1" aria-hidden="true"></i>
-                    <span t-esc="this.props.order.table.seats" />
+                    <span t-esc="this.props.order.customerCount" />
                 </div>
             </div>
         </xpath>

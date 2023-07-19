@@ -10,6 +10,7 @@ class PosPreparationDisplayOrder(models.Model):
         order_for_ui = super()._export_for_ui(preparation_display)
 
         if order_for_ui:
+            order_for_ui['customer_count'] = self.pos_order_id.customer_count
             order_for_ui['table'] = {
                 'id': self.pos_order_id.table_id.id,
                 'seats': self.pos_order_id.table_id.seats,

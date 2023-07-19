@@ -48,7 +48,8 @@ class PaymentTransaction(models.Model):
             return mandate_values
 
         # Convert start and end dates into datetime by setting the time to midnight.
-        start_datetime = datetime.combine(self.sale_order_ids.start_date, time())
+        start_datetime = self.sale_order_ids.start_date \
+            and datetime.combine(self.sale_order_ids.start_date, time())
         end_datetime = self.sale_order_ids.end_date \
             and datetime.combine(self.sale_order_ids.end_date, time())
         mandate_values.update({

@@ -526,21 +526,6 @@
         </field>
     </record>
 
-    <record id="stock_production_lot_form_quality_control" model="ir.ui.view">
-        <field name="name">stock.lot.form.quality</field>
-        <field name="model">stock.lot</field>
-        <field name="inherit_id" ref="stock.view_production_lot_form"/>
-        <field name="arch" type="xml">
-            <xpath expr="//div[@name='button_box']" position="inside">
-                <button name="%(quality_check_action_production_lot)d" type="action"
-                    invisible="quality_check_qty == 0"
-                    icon="fa-check" class="oe_stat_button" groups="quality.group_quality_user">
-                    <field string="Quality Checks" name="quality_check_qty" widget="statinfo"/>
-                </button>
-            </xpath>
-        </field>
-    </record>
-
     <!-- QUALITY.ALERT.TEAM -->
     <record id="quality_alert_team_dashboard_view_kanban" model="ir.ui.view">
         <field name="name">quality.alert.team.view.kanban</field>

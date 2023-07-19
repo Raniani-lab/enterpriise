@@ -4,7 +4,7 @@
 
         <record id="field_service_product" model="product.product">
             <field name="name">Field Service</field>
-            <field name="project_id" ref="industry_fsm.fsm_project"/>
+            <field name="project_id" search="[('id', '=?', ref('industry_fsm.fsm_project', raise_if_not_found=False)), ('is_fsm', '=', True)]"/>
             <field name="service_tracking">task_global_project</field>
             <field name="type">service</field>
             <field name="list_price">100</field>

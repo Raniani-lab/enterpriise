@@ -138,6 +138,7 @@ export class MrpDisplayAction extends Component {
                 searchViewFields: searchViews.fields,
                 context,
                 domain,
+                orderBy: [{name: 'state', asc: false}, {name: 'date_start', asc: true}],
             };
         });
     }

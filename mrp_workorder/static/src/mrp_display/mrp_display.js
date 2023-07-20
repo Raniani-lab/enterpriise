@@ -392,9 +392,9 @@ export class MrpDisplay extends Component {
                 return this.actionService.doAction(action, params);
             }
             this.validationStack = [];
-            if (reload) {
-                await this.reload();
-            }
+        }
+        if (reload) {
+            await this.reload();
         }
         return { success: true };
     }

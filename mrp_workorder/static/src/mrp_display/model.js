@@ -49,6 +49,9 @@ export function getSearchParams(model, props, component) {
                     ];
                 }
                 continue;
+            }else if (key === "orderBy" && model.config.resModel === "mrp.workorder"){
+                params[key] = [{name: 'state', asc: true}, {name: 'date_start', asc: true}];
+                continue;
             }
             // TODO handle domain of submodel here
             params[key] = [];

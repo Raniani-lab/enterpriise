@@ -22,6 +22,10 @@ class TestWebsiteSaleStockRenting(TestWebsiteSaleRentingCommon):
             'renting_forbidden_sat': False,
             'renting_forbidden_sun': False,
         })
+        cls.current_website = cls.env['website'].create({
+            'name': "Website Sale Stock Renting",
+            'company_id': cls.company.id,
+        })
 
         cls.wh = cls.env['stock.warehouse'].search([('company_id', '=', cls.company.id)], limit=1)
         quants = cls.env['stock.quant'].create({
@@ -34,6 +38,7 @@ class TestWebsiteSaleStockRenting(TestWebsiteSaleRentingCommon):
             'partner_id': cls.partner.id,
             'company_id': cls.company.id,
             'warehouse_id': cls.wh.id,
+            'website_id': cls.current_website.id,
         })
         cls.now = fields.Datetime.now()
         cls.sol = cls.env['sale.order.line'].create({
@@ -44,12 +49,12 @@ class TestWebsiteSaleStockRenting(TestWebsiteSaleRentingCommon):
             'is_rental': True,
             'product_uom_qty': 3,
         })
-        cls.current_website = cls.env['website'].get_current_website()
         cls.env['product.pricelist'].create({
             'name': 'Default website sale renting pricelist',
             'sequence': 4,
             'currency_id': cls.current_website.currency_id.id,
             'website_id': cls.current_website.id,
+            'company_id': cls.company.id,
         })
 
     def test_sol_draft(self):

@@ -42,46 +42,11 @@ $wo-border-separation: $border-width solid $border-color;
             overflow: auto;
         }
 
-        .title {
-            padding: 20px;
-            border-bottom: $wo-border-separation;
-            font-size: large;
-            color: $o-black;
-        }
-
-        .footer {
-            border-top: $wo-border-separation;
-            display: flex;
-            justify-content: space-around;
-        }
-
-        .btn {
-            min-width: 40%;
-            line-height: 80px;
-            margin: 5px;
-            font-size: 1.3em;
-            flex: 1 1;
-
-            cursor: pointer;
-            &:not(.btn-link) {
-                border-radius: 2px;
-            }
-        }
-
-        .btn_employee {
-            background-color: $o-gray-100;
-        }
-
         &.popup-selection .selection {
-            overflow-y: auto;
-            max-height: 40vh;
-            font-size: 16px;
-            width: auto;
             line-height: 50px;
 
-
             &-item {
-                background: $o-gray-300;
+                background: $o-gray-100;
                 cursor: pointer;
                 text-align: left;
                 padding: 0px 16px;

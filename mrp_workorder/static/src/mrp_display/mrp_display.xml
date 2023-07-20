@@ -1,33 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="mrp_workorder.MrpDisplay" owl="1">
-        <div class="o_action o_mrp_display">
+        <div class="o_action o_mrp_display h-100 overflow-auto">
             <Layout display="display" className="'d-flex' + showEmployeesPanel ? 'o_component_with_search_panel' : ''">
                 <t t-if="group_mrp_routings" t-set-slot="control-panel-top-middle">
                     <t t-call="{{ constructor.buttonTemplate }}"/>
                 </t>
-                <t t-set-slot="control-panel-always-buttons">
-                    <button class="btn fa fa-bars" t-on-click="toggleEmployeesPanel"/>
-                    <!-- <button class="btn d-none d-xl-block fa fa-refresh" t-on-click="reload"/> -->
-                    <button class="btn fa fa-refresh" t-on-click="reload"/>
+                <t t-set-slot="control-panel-additional-actions">
+                    <button class="btn btn-light oi oi-panel-right fa-flip-horizontal" t-if="group_mrp_routings" t-att-class="showEmployeesPanel ? 'active' : ''" t-on-click="toggleEmployeesPanel"/>
+                    <button class="btn btn-light fa fa-refresh" t-on-click="reload"/>
                 </t>
                 <t t-if="group_mrp_routings" t-set-slot="layout-actions">
-                    <ControlPanelButtons
-                        productions="productions"
-                        workorders="workorders"
-                        workcenters="state.workcenters"
-                        toggleWorkcenter="toggleWorkcenterDialog.bind(this)"
-                        selectWorkcenter="selectWorkcenter.bind(this)"
-                        activeWorkcenter="state.activeWorkcenter"
-                        employeeWorkorderCount="adminWorkorderIds.length"/>
+                    <t t-if="group_mrp_routings">
+                        <ControlPanelButtons
+                            productions="productions"
+                            workorders="workorders"
+                            workcenters="state.workcenters"
+                            toggleWorkcenter="toggleWorkcenterDialog.bind(this)"
+                            selectWorkcenter="selectWorkcenter.bind(this)"
+                            activeWorkcenter="state.activeWorkcenter"
+                            employeeWorkorderCount="adminWorkorderIds.length"/>
+                    </t>
+                    <SearchBar/>
                 </t>
                 <t t-set-slot="control-panel-navigation-additional">
-                    <div style="min-width: 600px;display: flex">
-                        <SearchBar/>
-                        <button class="btn w-md-25 border-start o_home_menu" t-on-click="close">
+                        <button class="o_home_menu btn btn-light text-nowrap" t-on-click="close">
                             <i class="fa fa-lg fa-sign-out me-md-1"/><span class="d-none d-md-inline">Close</span>
                         </button>
-                    </div>
                 </t>
                 <MrpDisplayEmployeesPanel t-if="showEmployeesPanel" employees="useEmployee.employees"
                     setSessionOwner.bind="useEmployee.setSessionOwner"

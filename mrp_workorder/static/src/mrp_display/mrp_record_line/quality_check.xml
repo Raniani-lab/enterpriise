@@ -9,29 +9,27 @@
             <span t-if="props.record.data.duration" t-att-class="active ? '' : 'text-muted'">
                 <MrpTimer value="props.record.data.duration" ongoing="active"/>
             </span>
-            <span t-if="props.quantityToProduce" t-on-click.stop="pass">
+            <t t-if="props.quantityToProduce">
                 <t t-if="props.record.data.product_tracking == 'serial'">
-                    <button t-if="!props.record.data.lot_id" class="btn">
-                        <i class="fa fa-2x fa-plus-square text-info"/>
-                    </button>
-                    <t t-else="" t-out="props.record.data.lot_id[1]"/>
+                    <button t-if="!props.record.data.lot_id" class="btn btn-info fa fa-plus" t-on-click.stop="pass"/>
+                    <span t-else="" t-out="props.record.data.lot_id[1]" t-on-click.stop="pass"/>
                 </t>
-                <t t-else="">
+                <button t-else="" t-on-click.stop="pass" class="btn btn-sm text-nowrap" t-att-class="isComplete ? 'btn-outline-secondary disabled' : 'btn-secondary'">
                     <t t-if="props.record.data.qty_done &amp;&amp; props.record.data.qty_done != props.quantityToProduce">
                         <t t-esc="props.record.data.qty_done"/> /
                     </t>
                     <t t-esc="props.quantityToProduce"/>
                     <span class="ms-1">
                         <t t-if="props.uom" t-esc="props.uom[1]"/>
-                        <t t-else="">Unit(s)</t>
+                        <t t-else="">Unit<t t-if="props.quantityToProduce != 1">s</t></t>
                     </span>
-                </t>
-            </span>
-            <div t-else="" class="btn o_mrp_check_icon" t-on-click.stop="pass">
-                <i t-if="props.record.data.quality_state == 'none'" class="fa-lg" t-att-class="icon"/>
-                <i t-elif="props.record.data.quality_state == 'pass'" class="state_label pass fa fa-check fa-lg"/>
-                <i t-else="" class="state_label fail fa fa-times fa-lg"/>
-            </div>
+                </button>
+            </t>
+            <button t-else="" class="btn btn-lg px-0" t-on-click.stop="pass"
+                    t-attf-class="#{props.record.data.quality_state == 'none' and icon}"
+                    t-att-class="{
+                    'pass fa fa-check text-success' : props.record.data.quality_state == 'pass',
+                    'fail fa fa-times text-danger' : props.record.data.quality_state != 'pass' &amp;&amp; props.record.data.quality_state != 'none'}"/>
         </li>
         <FileUploader t-if="props.record.data.test_type === 'picture'"
                           acceptedFileExtensions="'image/*'"

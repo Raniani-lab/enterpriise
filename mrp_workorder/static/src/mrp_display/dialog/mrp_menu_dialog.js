@@ -73,6 +73,17 @@ export class MrpMenuDialog extends Component {
         this.props.close();
     }
 
+    worksheetSuggestion(){
+        const modalBodies = document.querySelectorAll('.o_mrp_menu_dialog');
+        modalBodies.forEach(el => {
+            if (el.classList.contains("translate-slide-left")) {
+                el.classList.remove("translate-slide-left");
+            } else {
+                el.classList.add("translate-slide-left");
+            }
+        });
+    }
+
     updateStep(){
         this.proposeChange('update_step');
     }

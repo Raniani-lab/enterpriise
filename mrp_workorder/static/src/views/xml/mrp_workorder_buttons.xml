@@ -11,11 +11,11 @@
                         <span style="padding-left:5px">Log In</span>
                     </t>
                     <t t-else="">
-                        <img t-attf-src="{{useEmployee.employees.admin.path}}" class="rounded-circle o_avatar_connected" style="margin-left:5px" />
+                        <img t-attf-src="{{useEmployee.employees.admin.path}}" class="rounded o_avatar_connected" style="margin-left:5px" />
                         <span t-esc="useEmployee.employees.admin.name" style="padding-left:5px; vertical-align:middle" readonly="1"></span>
                     </t>
                 </button>
-                <button t-on-click="useEmployee.disconnectSessionAdmin" t-if="useEmployee.employees.admin.path and useEmployee.employees.connected.length!=0" class="btn btn-outline-primary o_lock_employee text-uppercase">
+                <button t-on-click="useEmployee.disconnectSessionAdmin" t-if="useEmployee.employees.admin.path and useEmployee.employees.connected.length!=0" class="btn btn-outline-primary o_lock_employee">
                     <span>Log out</span>
                 </button>
         </xpath>
@@ -55,7 +55,7 @@
                     <span t-esc="useEmployee.employees.admin.name" style="padding-left:5px; vertical-align:middle" readonly="1"></span>
                 </t>
             </button>
-            <button t-on-click="useEmployee.disconnectSessionAdmin" t-if="useEmployee.employees.admin.path and useEmployee.employees.connected.length!=0" class="btn btn-outline-primary o_lock_employee text-uppercase">
+            <button t-on-click="useEmployee.disconnectSessionAdmin" t-if="useEmployee.employees.admin.path and useEmployee.employees.connected.length!=0" class="btn btn-outline-primary o_lock_employee">
                 <span>Log out</span>
             </button>
         </xpath>

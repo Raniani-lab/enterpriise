@@ -179,7 +179,7 @@ if env.user.has_group('mrp.group_mrp_workorder_dependencies'):
                                 <label for="finished_lot_id" string="Lot" attrs="{'invisible': [('product_tracking', '!=', 'lot')]}"/>
                                 <label for="finished_lot_id" string="Serial" attrs="{'invisible': [('product_tracking', '!=', 'serial')]}"/>
                                 <field name="finished_lot_id" context="{'default_product_id': product_id, 'default_company_id': company_id}" domain="[('product_id', '=', product_id)]"/>
-                                <button name="action_generate_serial" type="object" class="btn btn-secondary fa fa-plus-square-o" aria-label="Creates a new serial/lot number" title="Creates a new serial/lot number" role="img" attrs="{'invisible': [('finished_lot_id', '!=', False)]}"/>
+                                <button name="action_generate_serial" type="object" class="btn btn-secondary fa fa-plus" aria-label="Creates a new serial/lot number" title="Creates a new serial/lot number" role="img" attrs="{'invisible': [('finished_lot_id', '!=', False)]}"/>
                             </div>
                         </div>
                     </div>

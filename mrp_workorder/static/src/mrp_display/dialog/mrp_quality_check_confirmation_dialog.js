@@ -46,11 +46,11 @@ export class MrpQualityCheckConfirmationDialog extends ConfirmationDialog {
 
     get confirmLabel() {
         if (["instructions", "passfail"].includes(this.recordData.test_type)) {
-            return this.env._t("next");
+            return this.env._t("Next");
         } else if (this.recordData.test_type === "print_label") {
-            return this.env._t("print labels");
+            return this.env._t("Print Labels");
         }
-        return this.env._t("validate");
+        return this.env._t("Validate");
     }
 
     async validate() {

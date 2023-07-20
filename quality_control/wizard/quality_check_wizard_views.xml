@@ -99,12 +99,13 @@
                     <field name="failure_message"/>
                 </div>
                 <footer>
-                    <button name="correct_measure" type="object" class="btn-primary" string="Correct Measure"
-                        attrs="{'invisible': [('test_type', '!=', 'measure')]}" data-hotkey="q"/>
-                    <button name="action_generate_next_window" type="object" string="Confirm Measure"
+
+                    <button name="action_generate_next_window" type="object" class="btn-primary" string="Confirm Measure"
                         attrs="{'invisible': [('test_type', '!=', 'measure')]}" data-hotkey="w"/>
                     <button name="action_generate_next_window" type="object" class="btn-primary" string="OK"
                         attrs="{'invisible': [('test_type', '!=', 'passfail')]}" data-hotkey="w"/>
+                    <button name="correct_measure" type="object" class="btn-secondary" string="Correct Measure"
+                        attrs="{'invisible': [('test_type', '!=', 'measure')]}" data-hotkey="q"/>
                 </footer>
             </form>
         </field>

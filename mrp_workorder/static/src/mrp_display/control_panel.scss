@@ -1,31 +1,22 @@
+.o_mrp_display {
+    .o_control_panel_breadcrumbs_actions {
+        gap: map-get($spacers, 1);
+    }
 
-.o_control_panel {
-
-    @include media-breakpoint-up(md) {
-        .o_cp_top_left, .o_cp_top_middle, .o_cp_top_right {
-            width: 33%;
+    .o_control_panel_breadcrumbs {
+        .breadcrumb,
+        .o_last_breadcrumb_item {
+            display: none !important;
         }
     }
-    .o_cp_top_middle {
-        text-align: center;
-    }
 
-    .o_selected {
-        background-color: $list-group-active-bg;
-    }
-    .o_logo_img {
-        height: 33px;
-    }
-}
+    .o_control_panel_actions {
+        flex-grow: 1;
+        gap: map-get($spacers, 2);
 
-.o_workcenter_item {
-    border-radius: 0.4em;
-    padding: 0.25rem;
-    color: white;
-    overflow: hidden;
-
-    @include media-breakpoint-up(xl) {
-        padding: 0.5rem;
+        @include media-breakpoint-down(md) {
+            flex-wrap: wrap;
+        }
     }
 }
 
@@ -34,5 +25,6 @@
     // field but it is used as a default color when there is no color field.
     .o_workcenter_item_color_#{$size - 1} {
         background-color: nth($o-colors, $size);
+        color: color-contrast(nth($o-colors, $size));
     }
 }

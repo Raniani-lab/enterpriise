@@ -2,13 +2,13 @@
 <templates xml:space="preserve">
     <t t-name="mrp_workorder.MrpQualityCheckSelectDialog" owl="1">
         <Dialog size="'md'" title="props.title" modalRef="modalRef" footer="false" withBodyPadding="false">
-            <ul class="list-group">
+            <div class="btn-group-vertical w-100 p-3">
                 <t t-foreach="checks" t-as="check" t-key="check.id">
-                    <li class="btn list-group-item o_mrp_record_line"
+                    <li class="btn btn-outline-secondary o_mrp_record_line list-group"
                         t-esc="check.display_name"
                         t-on-click="() => this.selectCheck(check)"/>
                 </t>
-            </ul>
+            </div>
         </Dialog>
     </t>
 </templates>

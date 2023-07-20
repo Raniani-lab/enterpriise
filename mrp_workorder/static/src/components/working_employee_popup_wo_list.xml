@@ -18,8 +18,8 @@
                     <t t-foreach="connectedEmployeesList" t-as="employee" t-key="employee.id">
                         <div class="o_employee_selection">
                             <div>
-                                <button class="btn_employee" t-on-click="()=> this.becomeAdmin(employee.id,pin)">
-                                    <img t-att-src="employee.src" class="ml8 rounded-circle img_employee" />
+                                <button class="btn_employee bg-100" t-on-click="()=> this.becomeAdmin(employee.id,pin)">
+                                    <img t-att-src="employee.src" class="ml8 rounded img_employee" />
                                     <span class="ml8">
                                         <t t-esc="employee.name"/>
                                     </span>
@@ -40,8 +40,8 @@
                                             <MrpTimer ongoing="wo.ongoing" value="wo.duration"/>
                                         </div>
                                         <div class="o_button_timer">
-                                            <button t-if="wo.ongoing" class="btn btn-danger text-uppercase o_btn_start_stop" t-on-click="() => this.stopEmployee(employee.id,wo.id)">Pause</button>
-                                            <button t-if="!wo.ongoing" class="btn btn-warning text-uppercase o_btn_start_stop" t-on-click="() => this.startEmployee(employee.id,wo.id)">Continue</button>
+                                            <button t-if="wo.ongoing" class="btn btn-danger o_btn_start_stop" t-on-click="() => this.stopEmployee(employee.id,wo.id)">Pause</button>
+                                            <button t-if="!wo.ongoing" class="btn btn-warning o_btn_start_stop" t-on-click="() => this.startEmployee(employee.id,wo.id)">Continue</button>
                                         </div>
                                     </div>
                                 </t>
@@ -50,8 +50,8 @@
                     </t>
                 </div>
                 <footer class="footer">
-                    <button class="btn btn-link " t-on-click="addEmployee">+ NEW OPERATOR</button>
-                    <button class="btn btn-link text-dark" t-on-click="close">CLOSE</button>
+                    <button class="btn btn-link" t-on-click="addEmployee">+ New Operator</button>
+                    <button class="btn btn-link text-dark" t-on-click="close">Close</button>
                 </footer>
             </div>
         </div>

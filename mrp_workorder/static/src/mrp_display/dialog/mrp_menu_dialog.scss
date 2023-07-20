@@ -1,19 +1,7 @@
-.button_list.o_mrp_menu_dialog {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
+.modal .modal-content .modal-body {
+    overflow-x: hidden;
+}
 
-    button {
-        flex: 1 1;
-        min-height: 80px;
-        font-size: 1.3em;
-        margin: 5px;
-        flex-basis: 45%;
-    }
-
-    span {
-        flex-basis: 100%;
-        margin-top: 15px;
-        text-align: center;
-    }
+.translate-slide-left {
+    transform: translateX(-100%);
 }

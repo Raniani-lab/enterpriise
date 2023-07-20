@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="mrp_workorder.MrpWorkcenterDialog" owl="1">
-        <Dialog size="'md'" title="props.title" modalRef="modalRef" footer="false" withBodyPadding="false">
-                <div class="button_list o_mrp_workcenter_dialog">
-                <t t-foreach="workcenters" t-as="workcenter" t-key="workcenter.id">
-                    <button
-                        class="btn"
-                        t-att-class="active ? 'btn-primary': 'btn-secondary'"
-                        t-att-disabled="disabled"
-                        t-esc="workcenter.display_name"
-                        t-on-click="() => this.selectWorkcenter(workcenter)"/>
-                </t>
+        <Dialog size="'md'" title="props.title" modalRef="modalRef">
+                <div class="o_mrp_workcenter_dialog w-100">
+                    <t t-foreach="workcenters" t-as="workcenter" t-key="workcenter.id">
+                        <button
+                            class="btn d-flex align-items-center text-start py-2 fs-3 pointer-cursor"
+                            t-att-class="{'active': active}"
+                            t-on-click="() => this.selectWorkcenter(workcenter)">
+                            <input type="checkbox" class="form-check-input position-relative me-2" t-att-checked="active"/>
+                            <t t-out="workcenter.display_name"/>
+                        </button>
+                    </t>
+                    <t t-set-slot="footer" owl="1">
+                        <button class="btn btn-primary" t-on-click="confirm">Confirm</button>
+                    </t>
                 </div>
         </Dialog>
     </t>

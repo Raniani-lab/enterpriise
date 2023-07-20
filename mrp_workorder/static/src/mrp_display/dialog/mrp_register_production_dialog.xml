@@ -2,20 +2,16 @@
 <templates xml:space="preserve">
     <t t-name="mrp_workorder.MrpRegisterProductionDialog" owl="1">
     <div class="o_tablet_popups">
-        <Dialog size="'lg'" title="props.title" modalRef="modalRef" footer="false">
+        <Dialog size="'md'" title="props.title" modalRef="modalRef">
             <t t-set-slot="header" owl="1">
                 <div class="d-flex flex w-100">
                     <div class="h4 align-self-end" t-esc="props.title"/>
-                    <div t-on-click="_cancel" class="btn ms-auto fa fa-times"/>
+                    <div t-on-click="_cancel" type="button" class="btn-close" aria-label="Close"/>
                 </div>
             </t>
             <div class="o_quality_check_body d-flex w-100">
                 <div class="o_instruction w-75" t-out="props.body"/>
                 <div t-if="recordData.additional_note" t-out="recordData.additional_note"/>
-                <div class="o_buttons w-25 text-end">
-                    <button class="btn btn-primary text-uppercase me-2" t-on-click="validate" t-esc="confirmLabel"
-                            t-att-barcode_trigger="recordData.test_type == 'print_label' ? 'print' : 'next'"/>
-                </div>
             </div>
             <div name="product_id" class="o_workorder_bar_content" t-esc="props.record.data.product_id[1]"/>
             <div class="o_workorder_bar_content">
@@ -37,7 +33,10 @@
                     </div>
                 </div>
             </div>
-            <div class="mb-5"/>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary me-2" t-on-click="validate" t-esc="confirmLabel"
+                    t-att-barcode_trigger="recordData.test_type == 'print_label' ? 'Print' : 'Next'"/>
+            </t>
         </Dialog>
         </div>
     </t>

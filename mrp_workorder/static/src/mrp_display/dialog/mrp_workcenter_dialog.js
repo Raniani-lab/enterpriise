@@ -49,7 +49,6 @@ export class MrpWorkcenterDialog extends ConfirmationDialog {
 
     selectWorkcenter(workcenter) {
         this.props.confirm(workcenter);
-        this.props.close();
     }
 
     async _loadWorkcenters() {

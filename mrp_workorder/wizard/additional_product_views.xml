@@ -20,9 +20,9 @@
                     </group>
                 </group>
                 <footer>
-                    <button name="add_product" type="object" string="Add Component" attrs="{'invisible': [('type', '=', 'byproduct')]}" class="btn-primary" data-hotkey="q"/>
-                    <button name="add_product" type="object" string="Add By-Product" attrs="{'invisible': [('type', '=', 'component')]}" class="btn-primary" data-hotkey="q"/>
-                    <button string="Discard" class="btn-default btn-secondary" special="cancel" data-hotkey="x"/>
+                    <button name="add_product" type="object" string="Add Component" attrs="{'invisible': [('type', '=', 'byproduct')]}" class="btn btn-primary" data-hotkey="q"/>
+                    <button name="add_product" type="object" string="Add By-Product" attrs="{'invisible': [('type', '=', 'component')]}" class="btn btn-primary" data-hotkey="q"/>
+                    <button string="Discard" class="btn btn-secondary" special="cancel" data-hotkey="x"/>
                 </footer>
             </form>
         </field>

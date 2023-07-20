@@ -235,7 +235,7 @@ class AccountOnlineLink(models.Model):
             resp_json = resp.json()
             return self._handle_response(resp_json, url, data, ignore_status)
         except (Timeout, ConnectionError, RequestException, ValueError):
-            _logger.exception('synchronization error')
+            _logger.warning('synchronization error')
             raise UserError(
                 _("The online synchronization service is not available at the moment. "
                   "Please try again later."))

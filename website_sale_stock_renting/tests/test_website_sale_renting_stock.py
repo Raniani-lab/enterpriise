@@ -292,3 +292,34 @@ class TestWebsiteSaleStockRenting(TestWebsiteSaleRentingCommon):
                     self.assertFalse(values.get('warning', False))
                 # empty cart
                 values = website_so._cart_update(product_id=self.computer.id, add_qty=-10)
+
+    def test_show_rental_product_that_will_be_available_in_future(self):
+        """
+        When you filter rental products on the /shop with the datepicker,
+        you should be able to see rental products that would be available in the future,
+        even if today the quantity on hand is 0 because it is being rented
+        """
+        self.sol.product_uom_qty = 5
+        self.so.action_confirm()
+        pickup_action = self.so.open_pickup()
+        wizard = Form(self.env['rental.order.wizard'].with_context(pickup_action['context'])).save()
+        with freeze_time(self.sol.start_date):
+            wizard.apply()
+        self.assertTrue(self.sol.product_template_id.qty_in_rent > 0, "We are renting the product")
+        self.assertEqual(
+            self.sol.product_template_id.qty_available,
+            0,
+            "We don't have any on hand quantity of the product, because it is rented"
+        )
+        # we are looking for a product in a period after it should be returned
+        from_date = self.sol.return_date + relativedelta(days=1)
+        to_date = self.sol.return_date + relativedelta(days=2)
+        filtered_products = self.sol.product_template_id.sudo()._filter_on_available_rental_products(
+            from_date,
+            to_date,
+            self.wh.id
+        )
+        self.assertTrue(
+            len(filtered_products) > 0,
+            "We expected to have some quantity on hand in a future period, when the rented product is returned"
+        )

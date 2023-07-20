@@ -16,10 +16,10 @@
                                 Setup GST Service for this company
                             </div>
                             <div class="text-warning" attrs="{'invisible': [('l10n_in_gstr_gst_username','in', (False,''))]}">
-                                Click on Send OTP to create token and varify username.
+                                Click on Send OTP to create token and verify username.
                                 <br/>
                                 <small>
-                                    *If you send OTP continuously more than 3 times your username will blocked for 6 hours
+                                    *If you send OTP continuously more than 3 times your username will be blocked for 6 hours
                                 </small>
                             </div>
                             <div class="content-group">

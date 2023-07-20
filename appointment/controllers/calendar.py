@@ -24,7 +24,7 @@ class AppointmentCalendarController(CalendarController):
     @route(website=True)
     def view_meeting(self, token, id):
         """Redirect the internal logged in user to the form view of calendar.event, and redirect
-           regular attendees to the website page of the calendar.event for online appointments"""
+           regular attendees to the website page of the calendar.event for appointments"""
         super(AppointmentCalendarController, self).view_meeting(token, id)
         attendee = request.env['calendar.attendee'].sudo().search([
             ('access_token', '=', token),

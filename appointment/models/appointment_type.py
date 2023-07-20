@@ -276,7 +276,7 @@ class AppointmentType(models.Model):
 
     def action_calendar_events_reporting(self):
         self.ensure_one()
-        action = self.env["ir.actions.act_window"]._for_xml_id("appointment.calendar_event_action_reporting")
+        action = self.env["ir.actions.act_window"]._for_xml_id("appointment.calendar_event_action_appointment_reporting")
         action["domain"] = [('appointment_type_id', '!=', False)]
         action["context"] = {
             'search_default_appointment_type_id': self.id,

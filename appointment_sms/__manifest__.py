@@ -4,7 +4,7 @@
 {
     'name': 'Appointment SMS',
     'version': '1.0',
-    'category': 'Marketing/Online Appointment',
+    'category': 'Services/Appointment',
     'sequence': 2150,
     'summary': 'Use SMS reminders for appointment meetings',
     'website': 'https://www.odoo.com/app/appointments',

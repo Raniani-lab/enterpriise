@@ -5,7 +5,7 @@
 {
     'name': 'Appointment Lead Generation',
     'version': '1.0',
-    'category': 'Marketing/Online Appointment',
+    'category': 'Services/Appointment',
     'sequence': 2150,
     'summary': 'Generate leads when prospects schedule appointments',
     'website': 'https://www.odoo.com/app/appointments',

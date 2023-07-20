@@ -54,7 +54,7 @@
     </template>
 
     <!-- Appointment Info & Availabilities-->
-    <template id="appointment_info" name="Online Appointment: Appointment Info">
+    <template id="appointment_info" name="Appointment: Appointment Info">
         <t t-set="no_breadcrumbs" t-value="True"/>
         <t t-call="portal.portal_layout">
             <div id="wrap" class="d-flex bg-o-color-4 px-3 mt-3">
@@ -230,7 +230,7 @@
         </div>
     </template>
 
-    <template id="appointment_calendar" name="Online Appointment">
+    <template id="appointment_calendar" name="Appointment">
         <div t-if="appointment_type.active" class="o_appointment_slots_loading d-flex align-items-center pb-5 mt-md-n5">
             <i class="fa fa-3x fa-spin fa-spinner mx-auto text-o-color-2"/>
         </div>

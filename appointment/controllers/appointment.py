@@ -602,7 +602,7 @@ class AppointmentController(http.Controller):
         else:
             Partner = Partner.create({
                 'name': name,
-                'mobile': Partner._phone_format(phone, country=self._get_customer_country()),
+                'mobile': Partner._phone_format(number=phone, country=self._get_customer_country()),
                 'email': email,
                 'lang': request.lang.code,
             })

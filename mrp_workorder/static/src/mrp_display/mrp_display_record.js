@@ -280,8 +280,6 @@ export class MrpDisplayRecord extends Component {
             return;
         }
 
-        await this.startWorking();
-
         const worksheetData = await this.getWorksheetData(record);
         const params = {
             body: record.data.note,

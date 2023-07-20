@@ -75,7 +75,7 @@ class TestStudioIrModel(TransactionCase):
         self.assertIn((self.partner_elon.id, '"Elon Tusk" <elon@spacex.com>', None, 'Contact', {}),
                       mail_suggested_recipients.get(bfr.id),
                       'custom partner field should be suggested in mail communications')
-        sms_suggested_recipients = bfr._sms_get_partner_fields()
+        sms_suggested_recipients = bfr._mail_get_partner_fields(introspect_fields=False)
         self.assertIn('x_studio_partner_id', sms_suggested_recipients,
                       'custom partner field should be included in sms communications')
 

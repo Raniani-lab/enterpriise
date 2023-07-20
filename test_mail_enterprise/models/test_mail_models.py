@@ -47,6 +47,3 @@ class MailTestActivitySMSVoip(models.Model):
 
     def _phone_get_number_fields(self):
         return ['phone_nbr', 'mobile_nbr']
-
-    def _sms_get_partner_fields(self):
-        return ['customer_id']

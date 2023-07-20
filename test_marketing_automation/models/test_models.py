@@ -48,7 +48,7 @@ class MarketingTestBlPhone(models.Model):
             if not record.mobile and record.customer_id.mobile:
                 record.mobile = record.customer_id.mobile
 
-    def _sms_get_partner_fields(self):
+    def _mail_get_partner_fields(self, introspect_fields=False):
         """ Override to return the recipient linked to SMS sending. """
         return ['customer_id']
 

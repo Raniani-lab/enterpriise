@@ -1,3 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-mail_enterprise.access_mail_partner_device,access_mail_partner_device,mail_enterprise.model_mail_partner_device,base.group_user,0,0,0,0
-mail_enterprise.access_mail_notification_web_push,access_mail_notification_web_push,mail_enterprise.model_mail_notification_web_push,base.group_user,0,0,0,0

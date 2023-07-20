@@ -14,10 +14,6 @@ screen devices.
 """,
     'auto_install': True,
     'license': 'OEEL-1',
-    'data': [
-        'security/ir.model.access.csv',
-        'data/ir_cron_data.xml',
-    ],
     'assets': {
         'web.assets_backend': [
             'mail_enterprise/static/src/core/common/**/*',

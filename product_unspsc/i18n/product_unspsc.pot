@@ -95,8 +95,8 @@ msgstr ""
 #: model:ir.model.fields,help:product_unspsc.field_product_product__unspsc_code_id
 #: model:ir.model.fields,help:product_unspsc.field_product_template__unspsc_code_id
 msgid ""
-"The UNSPSC code related to this product.  Used for edi in Colombia, Peru and"
-" Mexico"
+"The UNSPSC code related to this product.  Used for edi in Colombia, Peru, "
+"Mexico and Denmark"
 msgstr ""
 
 #. module: product_unspsc

@@ -9,10 +9,10 @@ class AppointmentManageLeaves(models.TransientModel):
     _description = 'Add or remove leaves from appointments'
 
     appointment_resource_ids = fields.Many2many('appointment.resource', string="Specific Resources")
-    calendar_id = fields.Many2one('resource.calendar', string='Resource Calendar (Global Leave)')
+    calendar_id = fields.Many2one('resource.calendar', string='Resource Calendar')
     leave_start_dt = fields.Datetime('Start Date', required=True)
     leave_end_dt = fields.Datetime('End Date', required=True)
-    reason = fields.Char('Leave Reason')
+    reason = fields.Char('Reason')
 
     def action_create_leave(self):
         leave_values = []

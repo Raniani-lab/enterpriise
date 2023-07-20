@@ -29,6 +29,7 @@ Allow clients to Schedule Appointments through the Portal
         'views/appointment_type_views.xml',
         'views/appointment_resource_views.xml',
         'views/appointment_slot_views.xml',
+        'views/resource_calendar_leaves_views.xml',
         'views/appointment_menus.xml',
         'views/calendar_menus.xml',
         'views/appointment_templates_appointments.xml',

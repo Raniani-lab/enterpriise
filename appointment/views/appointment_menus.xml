@@ -14,20 +14,21 @@
     <menuitem
         id="menu_appointment_schedule_resources"
         parent="appointment.main_menu_appointments"
-        name="Schedule"/>
+        name="Schedule"
+        sequence="11"/>
 
     <menuitem
         id="menu_appointment_schedule_resource_booking"
         parent="menu_appointment_schedule_resources"
         action="calendar_event_action_all_resources_bookings"
         groups="group_appointment_manager"
-        name="Resources Schedule"/>
+        name="Resources Bookings"/>
     <menuitem
         id="menu_appointment_schedule_staff_appointment"
         parent="menu_appointment_schedule_resources"
         action="calendar_event_action_all_users_appointments"
         groups="group_appointment_manager"
-        name="Staff Schedule"/>
+        name="Staff Bookings"/>
 
     <!-- Appointment's type, report menu-->
     <menuitem
@@ -65,6 +66,12 @@
         action="appointment_resource_action"
         groups="group_appointment_manager"/>
     <menuitem
+        id="menu_appointment_resource_leaves"
+        parent="appointment.appointment_menu_config"
+        action="appointment.resource_calendar_leaves_action_show_appointment_resources"
+        groups="group_appointment_manager"
+        name="Resource Leaves"/>
+    <menuitem
         id="menu_appointment_type_custom"
         parent="appointment.appointment_menu_config"
         action="appointment_type_action_custom"
@@ -74,6 +81,6 @@
         parent="appointment.appointment_menu_config"
         action="appointment_invite_action"
         groups="group_appointment_user"
-        name="Manage Resource Leaves"/>
+        name="Share Links"/>
 
 </odoo>

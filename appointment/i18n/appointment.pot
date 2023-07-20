@@ -370,6 +370,46 @@ msgid ""
 msgstr ""
 
 #. module: appointment
+#: model_terms:ir.ui.view,arch_db:appointment.calendar_event_view_gantt_booking_resource
+msgid "<strong>Booked for: </strong>"
+msgstr ""
+
+#. module: appointment
+#: model_terms:ir.ui.view,arch_db:appointment.calendar_event_view_gantt_booking_resource
+msgid "<strong>Contact Information</strong>"
+msgstr ""
+
+#. module: appointment
+#: model_terms:ir.ui.view,arch_db:appointment.calendar_event_view_gantt_booking_resource
+msgid "<strong>Email: </strong>"
+msgstr ""
+
+#. module: appointment
+#: model_terms:ir.ui.view,arch_db:appointment.calendar_event_view_gantt_booking_resource
+msgid "<strong>Name: </strong>"
+msgstr ""
+
+#. module: appointment
+#: model_terms:ir.ui.view,arch_db:appointment.calendar_event_view_gantt_booking_resource
+msgid "<strong>Phone: </strong>"
+msgstr ""
+
+#. module: appointment
+#: model_terms:ir.ui.view,arch_db:appointment.calendar_event_view_gantt_booking_resource
+msgid "<strong>Start Date: </strong>"
+msgstr ""
+
+#. module: appointment
+#: model_terms:ir.ui.view,arch_db:appointment.calendar_event_view_gantt_booking_resource
+msgid "<strong>Stop Date: </strong>"
+msgstr ""
+
+#. module: appointment
+#: model_terms:ir.ui.view,arch_db:appointment.calendar_event_view_gantt_booking_resource
+msgid "<strong>Type: </strong>"
+msgstr ""
+
+#. module: appointment
 #. odoo-python
 #: code:addons/appointment/controllers/calendar_view.py:0
 #, python-format
@@ -1485,6 +1525,11 @@ msgid "Last Updated on"
 msgstr ""
 
 #. module: appointment
+#: model:ir.model.fields,field_description:appointment.field_appointment_manage_leaves__reason
+msgid "Reason"
+msgstr ""
+
+#. module: appointment
 #. odoo-javascript
 #: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #, python-format
@@ -1952,9 +1997,8 @@ msgid "Resource"
 msgstr ""
 
 #. module: appointment
-#: model:ir.actions.act_window,name:appointment.calendar_event_action_view_bookings
-#: model:ir.ui.menu,name:appointment.menu_appointment_booking
-msgid "Resource Bookings"
+#: model:ir.model.fields,field_description:appointment.field_appointment_manage_leaves__calendar_id
+msgid "Resource Calendar"
 msgstr ""
 
 #. module: appointment
@@ -2023,6 +2067,15 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:appointment.appointments_list_layout
 #, python-format
 msgid "Schedule an Appointment"
+
+#. module: appointment
+#: model:ir.actions.server,name:appointment.calendar_event_action_all_resources_bookings
+msgid "Resource Bookings"
+msgstr ""
+
+#. module: appointment
+#: model:ir.actions.server,name:appointment.calendar_event_action_all_users_appointments
+msgid "Staff Bookings"
 msgstr ""
 
 #. module: appointment
@@ -2602,6 +2655,11 @@ msgid ""
 "            - Custom: the user will create and share to another user a custom appointment type with hand-picked time slots\n"
 "\n"
 "            - Anytime: the user will create and share to another user an appointment type covering all their time slots"
+msgstr ""
+
+#. module: appointment
+#: model:res.groups,name:appointment.group_appointment_user
+msgid "User"
 msgstr ""
 
 #. module: appointment

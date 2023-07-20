@@ -168,7 +168,7 @@
                                 <strong>Contact Information</strong>
                                 <li t-if="gantt_pill_contact_name"><strong>Name: </strong><t t-out="gantt_pill_contact_name"/></li>
                                 <li t-if="gantt_pill_contact_phone"><strong>Phone: </strong><t t-out="gantt_pill_contact_phone"/></li>
-                                <li t-if="gantt_pill_contact_email"><strong>EMail: </strong><t t-out="gantt_pill_contact_email"/></li>
+                                <li t-if="gantt_pill_contact_email"><strong>Email: </strong><t t-out="gantt_pill_contact_email"/></li>
                                 <br/>
                                 <strong>Booking Details</strong>
                             </t>
@@ -236,14 +236,14 @@
     </record>
 
     <record id="calendar_event_action_all_resources_bookings" model="ir.actions.server" >
-        <field name="name">Schedule Resources</field>
+        <field name="name">Resource Bookings</field>
         <field name="model_id" ref="appointment.model_appointment_type"/>
         <field name="type">ir.actions.server</field>
         <field name="state">code</field>
         <field name="code">action = model.action_calendar_meetings_resources_all()</field>
     </record>
     <record id="calendar_event_action_all_users_appointments" model="ir.actions.server" >
-        <field name="name">Schedule Resources</field>
+        <field name="name">Staff Bookings</field>
         <field name="model_id" ref="appointment.model_appointment_type"/>
         <field name="type">ir.actions.server</field>
         <field name="state">code</field>

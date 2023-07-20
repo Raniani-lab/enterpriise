@@ -524,6 +524,25 @@ class DataMergeRecord(models.Model):
                 except psycopg2.Error:
                     raise ValidationError(_('Query Failed.'))
 
+        # Company-dependent fields
+        with self._cr.savepoint():
+            params = {
+                'destination_id': f'res.partner,{destination.id}',
+                'source_ids': tuple(f'res.partner,{src}' for src in source_ids),
+            }
+            self._cr.execute("""
+UPDATE ir_property AS _ip1
+SET res_id = %(destination_id)s
+WHERE res_id IN %(source_ids)s
+AND NOT EXISTS (
+     SELECT
+     FROM ir_property AS _ip2
+     WHERE _ip2.res_id = %(destination_id)s
+     AND _ip2.fields_id = _ip1.fields_id
+     AND _ip2.company_id = _ip1.company_id
+)""", params)
+
+
     #############
     ### Override
     #############

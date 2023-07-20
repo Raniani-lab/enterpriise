@@ -178,14 +178,14 @@ class AnalyticLine(models.Model):
             'type': 'ir.actions.client',
             'tag': 'display_notification',
             'params': {
-                'title': None,
+                'message': None,
                 'type': None,  #types: success,warning,danger,info
                 'sticky': False,  #True/False will display for few seconds if false
             },
         }
         if not self.user_has_groups('hr_timesheet.group_hr_timesheet_approver'):
             notification['params'].update({
-                'title': _("You can only validate the timesheets of employees of whom you are the manager or the timesheet approver."),
+                'message': _("You can only validate the timesheets of employees of whom you are the manager or the timesheet approver."),
                 'type': 'danger'
             })
             return notification
@@ -193,7 +193,7 @@ class AnalyticLine(models.Model):
         analytic_lines = self.filtered_domain(self._get_domain_for_validation_timesheets())
         if not analytic_lines:
             notification['params'].update({
-                'title': _("You cannot validate the selected timesheets as they either belong to employees who are not part of your team or are not in a state that can be validated. This may be due to the fact that they are dated in the future."),
+                'message': _("You cannot validate the selected timesheets as they either belong to employees who are not part of your team or are not in a state that can be validated. This may be due to the fact that they are dated in the future."),
                 'type': 'danger',
             })
             return notification
@@ -212,7 +212,7 @@ class AnalyticLine(models.Model):
             lambda aal: aal.date < aal.employee_id.last_validated_timesheet_date)._stop_all_users_timer()
         if self.env.context.get('use_notification', True):
             notification['params'].update({
-                'title': _("The timesheets have successfully been validated."),
+                'message': _("The timesheets have successfully been validated."),
                 'type': 'success',
                 'next': {'type': 'ir.actions.act_window_close'},
             })
@@ -224,7 +224,7 @@ class AnalyticLine(models.Model):
             'type': 'ir.actions.client',
             'tag': 'display_notification',
             'params': {
-                'title': None,
+                'message': None,
                 'type': None,
                 'sticky': False,
             },
@@ -236,7 +236,7 @@ class AnalyticLine(models.Model):
         analytic_lines = self.filtered_domain(domain)
         if not analytic_lines:
             notification['params'].update({
-                'title': _('There are no timesheets to reset to draft or they have already been invoiced.'),
+                'message': _('There are no timesheets to reset to draft or they have already been invoiced.'),
                 'type': 'warning',
             })
             return notification
@@ -245,7 +245,7 @@ class AnalyticLine(models.Model):
         self.env['account.analytic.line']._search_last_validated_timesheet_date(analytic_lines.employee_id.ids)
         if self.env.context.get('use_notification', True):
             notification['params'].update({
-                'title': _("The timesheets have successfully been reset to draft."),
+                'message': _("The timesheets have successfully been reset to draft."),
                 'type': 'success',
                 'next': {'type': 'ir.actions.act_window_close'},
             })

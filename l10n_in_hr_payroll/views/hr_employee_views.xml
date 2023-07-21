@@ -14,7 +14,7 @@
                 </group>
             </xpath>
             <xpath expr="//field[@name='emergency_contact']" position="after">
-                <field name="l10n_in_relationship"/>
+                <field name="l10n_in_relationship" attrs="{'invisible': [('company_country_code', '!=', 'IN')]}"/>
             </xpath>
         </field>
     </record>

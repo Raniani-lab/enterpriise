@@ -513,7 +513,7 @@ msgstr ""
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_analysis_report__allocated_hours
 msgid "Allocated Hours"
-msgstr ""
+msgstr "Jam yang Dialokasikan"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__allocated_hours
@@ -1649,7 +1649,7 @@ msgstr "Ulangi Hingga"
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__repeat_interval
 msgid "Repeat every"
-msgstr ""
+msgstr "Ulangi setiap"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_recurrency__repeat_number

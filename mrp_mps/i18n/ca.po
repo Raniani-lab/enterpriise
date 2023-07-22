@@ -6,7 +6,7 @@
 # Jonatan Gk, 2022
 # Manel Fernandez Ramirez <manelfera@outlook.com>, 2022
 # Harcogourmet, 2022
-# jabelchi, 2022
+# Josep Anton Belchi, 2022
 # RGB Consulting <odoo@rgbconsulting.com>, 2022
 # Quim - eccit <quim@eccit.com>, 2022
 # Arnau Ros, 2022
@@ -276,7 +276,7 @@ msgstr "Mostra l'inventari inicial"
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_res_company__mrp_mps_show_to_replenish
 msgid "Display To Replenish"
-msgstr "Mostra per a reposar"
+msgstr "Mostra per aprovisionar"
 
 #. module: mrp_mps
 #. odoo-javascript
@@ -400,7 +400,7 @@ msgstr "Programa mestre de producció"
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_production_schedule__max_to_replenish_qty
 msgid "Maximum to Replenish"
-msgstr "Màxim per reposar"
+msgstr "Màxim a aprovisionar"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_production_schedule__min_to_replenish_qty
@@ -539,7 +539,7 @@ msgstr "Recepcions"
 #: code:addons/mrp_mps/static/src/search/mrp_mps_control_panel.xml:0
 #, python-format
 msgid "Replenish"
-msgstr "Reposar"
+msgstr "Aprovisionar"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_product_forecast__replenish_qty_updated
@@ -698,7 +698,8 @@ msgstr ""
 msgid ""
 "The quantity to replenish through Purchase Orders or Manufacturing Orders."
 msgstr ""
-"La quantitat a reposar a través de les ordres de compra o de fabricació."
+"La quantitat per aprovisionar a través de les ordres de compra o de "
+"fabricació."
 
 #. module: mrp_mps
 #: model:ir.model.fields,help:mrp_mps.field_mrp_production_schedule__forecast_target_qty
@@ -720,7 +721,7 @@ msgstr "Rang de temps"
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_product_forecast__replenish_qty
 #, python-format
 msgid "To Replenish"
-msgstr "Per a reposar"
+msgstr "Per aprovisionar"
 
 #. module: mrp_mps
 #: model:ir.model.fields,help:mrp_mps.field_mrp_production_schedule__min_to_replenish_qty

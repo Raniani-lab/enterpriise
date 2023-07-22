@@ -463,7 +463,8 @@ msgstr ""
 #: model:ir.model.fields,help:documents.field_documents_folder_deletion_wizard__parent_folder_id
 msgid "A workspace will inherit the tags of its parent workspace"
 msgstr ""
-"Un espacio de trabajo heredará las etiquetas de su espacio de trabajo padre"
+"Un espacio de trabajo heredará las etiquetas de su espacio de trabajo "
+"principal"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
@@ -1247,7 +1248,7 @@ msgstr "Descargar"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "Download all files"
-msgstr "Descarga todos los archivos"
+msgstr "Descargar todos los archivos"
 
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_share__action__downloadupload
@@ -2295,7 +2296,7 @@ msgstr "Programar una actividad"
 #: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.xml:0
 #, python-format
 msgid "Select All: Shift + A"
-msgstr "Seleccionar todos: Shift + A"
+msgstr "Seleccionar todo: Shift + A"
 
 #. module: documents
 #. odoo-javascript

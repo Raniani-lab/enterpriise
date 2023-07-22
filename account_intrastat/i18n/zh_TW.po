@@ -23,22 +23,22 @@ msgstr ""
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__1_000_kwh
 msgid "1 000 kWh"
-msgstr ""
+msgstr "千度電（兆瓦時）"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__1_000_m3
 msgid "1 000 m3"
-msgstr ""
+msgstr "千立方米"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__1_000_p/st
 msgid "1 000 p/st"
-msgstr ""
+msgstr "千件"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__100_p/st
 msgid "100 p/st"
-msgstr ""
+msgstr "百件"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_type
@@ -119,7 +119,7 @@ msgstr "優惠"
 #: model_terms:ir.ui.view,arch_db:account_intrastat.product_product_tree_view_account_intrastat_supplementary_unit
 #: model_terms:ir.ui.view,arch_db:account_intrastat.product_product_tree_view_account_intrastat_weight
 msgid "Commodity Code"
-msgstr "優惠碼"
+msgstr "商品代碼"
 
 #. module: account_intrastat
 #: model:ir.model.fields,field_description:account_intrastat.field_product_product__intrastat_code_id
@@ -470,12 +470,12 @@ msgstr ""
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__c/k
 msgid "c/k"
-msgstr ""
+msgstr "卡（克拉）"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__ce/el
 msgid "ce/el"
-msgstr ""
+msgstr "個細胞"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_intrastat_main_template
@@ -485,92 +485,92 @@ msgstr "商品編號"
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__ct/l
 msgid "ct/l"
-msgstr ""
+msgstr "噸承載能力"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__gi_f_/_s
 msgid "gi F / S"
-msgstr ""
+msgstr "克裂變同位素"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_90_%_sdt
 msgid "kg 90 % sdt"
-msgstr ""
+msgstr "公斤九成乾燥物質"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_h2o2
 msgid "kg H2O2"
-msgstr ""
+msgstr "公斤雙氧水（公斤過氧化氫）"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_k2o
 msgid "kg K2O"
-msgstr ""
+msgstr "公斤氧化鉀"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_koh
 msgid "kg KOH"
-msgstr ""
+msgstr "公斤苛性鉀（公斤氫氧化鉀）"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_n
 msgid "kg N"
-msgstr ""
+msgstr "公斤氮"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_naoh
 msgid "kg NaOH"
-msgstr ""
+msgstr "公斤苛性鈉（公斤氫氧化鈉）"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_p2o5
 msgid "kg P2O5"
-msgstr ""
+msgstr "公斤五氧化二磷"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_u
 msgid "kg U"
-msgstr ""
+msgstr "公斤鈾"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg_met_am_
 msgid "kg met.am."
-msgstr ""
+msgstr "公斤甲胺"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__kg/net_eda
 msgid "kg/net eda"
-msgstr ""
+msgstr "公斤瀝乾淨重"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__l_alc__100_%
 msgid "l alc. 100 %"
-msgstr ""
+msgstr "公升純酒精"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__m2
 msgid "m2"
-msgstr ""
+msgstr "平方米"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__m3
 msgid "m3"
-msgstr ""
+msgstr "立方米"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__p/st
 msgid "p/st"
-msgstr ""
+msgstr "件"
 
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__pa
 msgid "pa"
-msgstr ""
+msgstr "對"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.product_product_tree_view_account_intrastat_supplementary_unit
 msgid "product"
-msgstr "商品"
+msgstr "產品"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_intrastat_main_template
@@ -585,7 +585,7 @@ msgstr "補充單位"
 #. module: account_intrastat
 #: model:ir.model.fields.selection,name:account_intrastat.selection__account_intrastat_code__supplementary_unit__t__co2
 msgid "t. CO2"
-msgstr ""
+msgstr "公噸二氧化碳當量"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_intrastat_main_template
@@ -600,4 +600,4 @@ msgstr "重量"
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_intrastat_main_template
 msgid "when they are required."
-msgstr ""
+msgstr "當需要它們時。"

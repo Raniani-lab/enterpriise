@@ -33,7 +33,7 @@ msgstr "Tiket Helpdesk"
 #. module: helpdesk_sms
 #: model:ir.model.fields,field_description:helpdesk_sms.field_helpdesk_stage__sms_template_id
 msgid "SMS Template"
-msgstr ""
+msgstr "Templat SMS"
 
 #. module: helpdesk_sms
 #: model:ir.model.fields,help:helpdesk_sms.field_helpdesk_stage__sms_template_id

@@ -72,7 +72,7 @@ msgstr "Pianificazione"
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_planning_analysis_report
 msgid "Planning Analysis Report"
-msgstr ""
+msgstr "Pianificazione resoconto di analisi"
 
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_planning_slot
@@ -108,6 +108,8 @@ msgid ""
 "Schedule your human and material resources across roles, projects and sales "
 "orders."
 msgstr ""
+"Pianifica le risorse umane e materiali distribuendole tra ruoli, progetti e "
+"ordini di vendita."
 
 #. module: project_forecast
 #. odoo-python

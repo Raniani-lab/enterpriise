@@ -397,7 +397,7 @@ msgstr "Email Alias"
 #: model:ir.model.fields,help:quality_control.field_quality_check__product_tracking
 #: model:ir.model.fields,help:quality_control.field_quality_check_wizard__product_tracking
 msgid "Ensure the traceability of a storable product in your warehouse."
-msgstr ""
+msgstr "Pastikan produk yang disimpan di gudang Anda dapat dilacak."
 
 #. module: quality_control
 #: model:ir.model.fields.selection,name:quality_control.selection__quality_check__measure_success__fail

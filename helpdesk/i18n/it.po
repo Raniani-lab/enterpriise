@@ -3004,6 +3004,8 @@ msgid ""
 "SLA Policies that will automatically apply to the tickets submitted by this "
 "customer."
 msgstr ""
+"Politiche SLA che verrannoo applicate automaticamente ai ticket inviati dal "
+"cliente."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_view_form

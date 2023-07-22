@@ -227,7 +227,7 @@ msgstr ""
 "يجب أن تبقى مساحة العمل هذه في نفس شركة المشروع التالي المرتبطة به:\n"
 "%s\n"
 "\n"
-"رجى تحديث شركة تلك المشاريع  أو ترك شركة مساحة العمل هذه فارغة. "
+"يرجى تحديث شركة تلك المشاريع  أو ترك شركة مساحة العمل هذه فارغة. "
 
 #. module: documents_project
 #: model:documents.tag,name:documents_project.documents_project_status_to_validate

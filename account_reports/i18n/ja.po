@@ -3192,7 +3192,7 @@ msgstr "合計"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Total %s"
-msgstr "合計%sの"
+msgstr "合計：%s"
 
 #. module: account_reports
 #. odoo-python

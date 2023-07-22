@@ -401,7 +401,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Mediums"
-msgstr ""
+msgstr "Medie migliori"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -416,7 +416,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Sales Teams"
-msgstr ""
+msgstr "Team di vendita migliori"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -432,14 +432,14 @@ msgstr "Venditori principali"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Sources"
-msgstr ""
+msgstr "Fonti migliori"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Top Tags"
-msgstr ""
+msgstr "Tag migliori"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript

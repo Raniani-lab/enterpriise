@@ -1178,7 +1178,7 @@ msgstr "Dokumentlista"
 #. module: documents
 #: model:mail.template,name:documents.mail_template_document_request
 msgid "Document: Document Request"
-msgstr ""
+msgstr "Dokument: Dokumentförfrågan"
 
 #. module: documents
 #. odoo-javascript
@@ -1204,7 +1204,7 @@ msgstr "Dokument"
 #. module: documents
 #: model:ir.model,name:documents.model_documents_folder_deletion_wizard
 msgid "Documents Folder Deletion Wizard"
-msgstr ""
+msgstr "Guide för radering av dokumentmapp"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_link_to_record_wizard
@@ -1293,7 +1293,7 @@ msgstr "Redigera"
 #: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
 msgid "Edit the linked record"
-msgstr ""
+msgstr "Redigera den länkade posten"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
@@ -1365,7 +1365,7 @@ msgstr "Filstorlek"
 #: code:addons/documents/static/src/views/hooks.js:0
 #, python-format
 msgid "File is too large."
-msgstr ""
+msgstr "Filen är för stor."
 
 #. module: documents
 #: model:ir.model,name:documents.model_ir_binary
@@ -1541,7 +1541,7 @@ msgstr "Inkorg"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__include_sub_folders
 msgid "Include Sub Folders"
-msgstr ""
+msgstr "Inkludera undermappar"
 
 #. module: documents
 #: model_terms:documents.folder,description:documents.documents_internal_folder
@@ -1819,7 +1819,7 @@ msgstr "Flytta till arbetsområdet"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_folder_deletion_wizard_view_form
 msgid "Move to parent workspace"
-msgstr ""
+msgstr "Flytta till överordnat arbetsutrymme"
 
 #. module: documents
 #. odoo-javascript
@@ -1886,14 +1886,14 @@ msgstr "Ny prisgrupp"
 #: code:addons/documents/static/src/views/search/documents_search_panel.js:0
 #, python-format
 msgid "New Tag"
-msgstr ""
+msgstr "Ny etikett"
 
 #. module: documents
 #. odoo-javascript
 #: code:addons/documents/static/src/views/search/documents_search_panel.js:0
 #, python-format
 msgid "New Workspace"
-msgstr ""
+msgstr "Ny arbetsutrymme"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_calendar_event_id
@@ -1925,7 +1925,7 @@ msgstr "Inget dokument har valts"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "No limit"
-msgstr ""
+msgstr "Ingen begränsning"
 
 #. module: documents
 #: model_terms:ir.actions.act_window,help:documents.share_action
@@ -2054,7 +2054,7 @@ msgstr "Ägare"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "Owner: #{document.owner_id.name}"
-msgstr ""
+msgstr "Ägare: #{document.owner_id.name}"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
@@ -2064,7 +2064,7 @@ msgstr "PDF/Dokument"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder_deletion_wizard__parent_folder_id
 msgid "Parent Folder"
-msgstr ""
+msgstr "Överordnad mapp"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_parent_model_id
@@ -2103,7 +2103,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/search/documents_search_panel.js:0
 #, python-format
 msgid "Partial transfer"
-msgstr ""
+msgstr "Partiell överföring"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_contact
@@ -2282,7 +2282,7 @@ msgstr "Försäljning"
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form
 #: model_terms:ir.ui.view,arch_db:documents.tag_view_form
 msgid "Save"
-msgstr "Bokför"
+msgstr "Spara"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_option
@@ -2313,7 +2313,7 @@ msgstr "Skicka till Juridiska avdelningen"
 #. module: documents
 #: model:mail.template,description:documents.mail_template_document_request
 msgid "Sent to partner when requesting a document from them"
-msgstr ""
+msgstr "Skickas till partnern när ett dokument begärs från dem"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__sequence
@@ -2326,7 +2326,7 @@ msgstr "Sekvens"
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_finance_2018contracts
 msgid "Set As 2023 Contracts"
-msgstr ""
+msgstr "Ange som 2023 kontrakt"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__partner_id
@@ -2386,14 +2386,14 @@ msgstr "Dela länkar"
 #: code:addons/documents/models/share.py:0
 #, python-format
 msgid "Share selected files"
-msgstr ""
+msgstr "Dela valda filer"
 
 #. module: documents
 #. odoo-python
 #: code:addons/documents/models/share.py:0
 #, python-format
 msgid "Share selected workspace"
-msgstr ""
+msgstr "Dela vald arbetsyta"
 
 #. module: documents
 #. odoo-javascript
@@ -2610,7 +2610,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
 msgid "The share url has been copied to your clipboard."
-msgstr ""
+msgstr "Den delade URL har kopierats till ditt urklipp."
 
 #. module: documents
 #: model:ir.model.constraint,message:documents.constraint_documents_share_share_unique
@@ -2658,7 +2658,7 @@ msgstr "Miniatyr"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__thumbnail_status
 msgid "Thumbnail Status"
-msgstr ""
+msgstr "Status för miniatyrbild"
 
 #. module: documents
 #. odoo-javascript
@@ -2757,6 +2757,8 @@ msgid ""
 "Upload <span class=\"fw-normal\">a file or</span> drag <span class=\"fw-"
 "normal\">it here.</span>"
 msgstr ""
+"Ladda upp <span class=\"fw-normal\">en fil eller</span> dra <span "
+"class=\"fw-normal\">den hit.</span>"
 
 #. module: documents
 #. odoo-javascript
@@ -2773,7 +2775,7 @@ msgstr "Ladda upp via e-post"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "Upload by email"
-msgstr ""
+msgstr "Ladda upp via e-post"
 
 #. module: documents
 #. odoo-python
@@ -2845,7 +2847,7 @@ msgstr "Veckor"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_folder_deletion_wizard_view_form
 msgid "What do you want to do with the files in the workspace?"
-msgstr ""
+msgstr "Vad vill du göra med filerna i arbetsytan?"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.workflow_rule_action
@@ -2921,14 +2923,14 @@ msgstr "Du kan inte skapa rekursiva mappar."
 #: code:addons/documents/models/document.py:0
 #, python-format
 msgid "You don't have the right to move documents to that workspace."
-msgstr ""
+msgstr "Du har inte rättigheter att flytta dokument till den arbetsytan."
 
 #. module: documents
 #. odoo-javascript
 #: code:addons/documents/static/src/views/search/documents_search_panel.js:0
 #, python-format
 msgid "You don't have the rights to move documents to that workspace"
-msgstr ""
+msgstr "Du har inte rättigheter att flytta dokument till den arbetsytan"
 
 #. module: documents
 #. odoo-javascript
@@ -2984,7 +2986,7 @@ msgstr "nedladdning"
 #: code:addons/documents/static/src/views/documents_controller_mixin.xml:0
 #, python-format
 msgid "dropdown-item"
-msgstr ""
+msgstr "dropdown-objekt"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
@@ -3028,14 +3030,14 @@ msgstr "t.ex. https://www.youtube.com/watch?v=CP96yVnXNrY"
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "fa fa-folder text-odoo"
-msgstr ""
+msgstr "fa fa-folder text-odoo"
 
 #. module: documents
 #. odoo-javascript
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "folder_id"
-msgstr ""
+msgstr "folder_id"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__is_readonly_model
@@ -3054,14 +3056,14 @@ msgstr "namn"
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "owner_id"
-msgstr ""
+msgstr "owner_id"
 
 #. module: documents
 #. odoo-javascript
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "partner_id"
-msgstr ""
+msgstr "partner_id"
 
 #. module: documents
 #. odoo-javascript
@@ -3110,4 +3112,4 @@ msgstr "namnlös"
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "url"
-msgstr ""
+msgstr "URL"

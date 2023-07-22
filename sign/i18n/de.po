@@ -2145,7 +2145,7 @@ msgstr "Anzahl der Nachrichten, die eine Aktion erfordern"
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr "Anzahl der Nachrichten mit Zustellungsfehler."
+msgstr "Anzahl der Nachrichten mit Zustellungsfehler"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__num_pages

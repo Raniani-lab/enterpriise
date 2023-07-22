@@ -388,7 +388,7 @@ msgstr "Niedostępna partia"
 #: code:addons/sale_stock_renting/static/src/widgets/qty_at_date_widget.xml:0
 #, python-format
 msgid "View Rentals"
-msgstr "Zobacz wypożyczenia"
+msgstr "Zobacz wynajmy"
 
 #. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_rental_wizard__warehouse_id

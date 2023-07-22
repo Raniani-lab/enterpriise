@@ -1513,14 +1513,14 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/external_embedded_view_favorite_menu/insert_embedded_view.xml:0
 #, python-format
 msgid "Insert link in article"
-msgstr ""
+msgstr "Inserisci link nell'articolo"
 
 #. module: knowledge
 #. odoo-javascript
 #: code:addons/knowledge/static/src/components/external_embedded_view_favorite_menu/insert_embedded_view.xml:0
 #, python-format
 msgid "Insert view in article"
-msgstr ""
+msgstr "Inserisci vista nell'articolo"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2023,7 +2023,7 @@ msgstr "Ricarica"
 #: code:addons/knowledge/static/src/components/knowledge_emoji_picker_remove_action_view/knowledge_emoji_picker_remove_action_view.xml:0
 #, python-format
 msgid "Remove Icon"
-msgstr ""
+msgstr "Elimina icona"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2142,7 +2142,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/external_embedded_view_insertion/views_renderers_patches.js:0
 #, python-format
 msgid "Select an article"
-msgstr ""
+msgstr "Seleziona un articolo"
 
 #. module: knowledge
 #. odoo-javascript

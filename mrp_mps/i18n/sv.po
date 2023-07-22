@@ -557,7 +557,7 @@ msgstr ""
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.mrp_mps_production_schedule_form_view
 msgid "Save"
-msgstr "Bokför"
+msgstr "Spara"
 
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_mrp_production_schedule

@@ -56,7 +56,7 @@ msgstr ""
 #. module: documents_sign
 #: model:ir.model,name:documents_sign.model_sign_request
 msgid "Signature Request"
-msgstr ""
+msgstr "Permintaan Tanda Tangan"
 
 #. module: documents_sign
 #: model:ir.model,name:documents_sign.model_sign_template

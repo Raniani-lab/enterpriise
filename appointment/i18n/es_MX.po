@@ -397,7 +397,7 @@ msgstr ""
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_form
 msgid "<i class=\"fa fa-info-circle\" title=\"Info\"/>"
-msgstr "<i class=\"fa fa-info-circle\" title=\"Info\"/>"
+msgstr "<i class=\"fa fa-info-circle\" title=\"Información \"/>"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_kanban
@@ -2276,7 +2276,7 @@ msgstr ""
 "\n"
 "        Puede ser\n"
 "\n"
-"            - Sitio web: la categoría automática, las personas pueden acceder y programar una sita con usuarios del sitio web\n"
+"            - Sitio web: la categoría automática, las personas pueden acceder y programar una cita con usuarios del sitio web\n"
 "\n"
 "            - Personalizado: este usuario creará y compartirá a otro usuario con un tipo de cita personalizado y horarios escogidos personalmente\n"
 "\n"

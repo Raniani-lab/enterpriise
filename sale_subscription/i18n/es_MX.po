@@ -1685,7 +1685,7 @@ msgstr "Retraso después de la fecha de activación"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trg_date_range_type
 msgid "Delay type"
-msgstr "Tipo de retraso"
+msgstr "Tipo de atraso"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
@@ -2214,7 +2214,7 @@ msgstr "Última calificación: Satisfecho"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__least_delay_msg
 msgid "Least Delay Msg"
-msgstr "Mínimo de retraso del mensaje"
+msgstr "Mínimo de tiempo de espera del mensaje"
 
 #. module: sale_subscription
 #. odoo-javascript
@@ -4076,7 +4076,7 @@ msgstr ""
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__active
 msgid "When unchecked, the rule is hidden and will not be executed."
 msgstr ""
-"Si no se encuentra seleccionado, la regla está oculta y no se ejecutará."
+"Si no se encuentra seleccionada, la regla está oculta y no se ejecutará."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order__starred

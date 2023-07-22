@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2023
 # Jolien De Paepe, 2023
+# Gunther Clauwaert <gclauwae@hotmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-01-03 09:25+0000\n"
 "PO-Revision-Date: 2023-02-03 07:08+0000\n"
-"Last-Translator: Jolien De Paepe, 2023\n"
+"Last-Translator: Gunther Clauwaert <gclauwae@hotmail.com>, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -161,14 +162,14 @@ msgstr "Arbeidsovereenkomst"
 #: code:addons/l10n_be_hr_contract_salary/models/hr_payslip.py:0
 #, python-format
 msgid "Employees without Intellectual Property"
-msgstr ""
+msgstr "Werknemers zonder intellectueel eigendom"
 
 #. module: l10n_be_hr_contract_salary
 #. odoo-python
 #: code:addons/l10n_be_hr_contract_salary/models/hr_payslip.py:0
 #, python-format
 msgid "Employees without Withholding Taxes Exemption"
-msgstr ""
+msgstr "Werknemers zonder vrijstelling van bronbelasting"
 
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.advantage,name:l10n_be_hr_contract_salary.l10n_be_extra_time_off
@@ -214,6 +215,7 @@ msgstr "Identiteitskaart kopie (beide kanten)"
 #: model:ir.model.fields,help:l10n_be_hr_contract_salary.field_hr_job__l10n_be_contract_ip
 msgid "If checked, the job position is eligible to Intellectual Property"
 msgstr ""
+"Indien aangevinkt, komt de functie in aanmerking voor Intellectueel Eigendom"
 
 #. module: l10n_be_hr_contract_salary
 #: model:ir.model.fields,help:l10n_be_hr_contract_salary.field_hr_job__l10n_be_contract_withholding_taxes_exemption
@@ -221,6 +223,8 @@ msgid ""
 "If checked, the job position will grant a withholding taxes exemption to "
 "eligible employees"
 msgstr ""
+"Indien aangevinkt, verleent de functie een vrijstelling van bronbelasting "
+"aan werknemers die hiervoor in aanmerking komen."
 
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.advantage,name:l10n_be_hr_contract_salary.l10n_be_intellectual_property
@@ -242,7 +246,7 @@ msgstr "Internetabonnement factuur"
 #. module: l10n_be_hr_contract_salary
 #: model:ir.actions.server,name:l10n_be_hr_contract_salary.action_hr_job_payroll_configuration
 msgid "Job Configuration"
-msgstr ""
+msgstr "Functieconfiguratie"
 
 #. module: l10n_be_hr_contract_salary
 #. odoo-python
@@ -265,7 +269,7 @@ msgstr "Functies"
 #. module: l10n_be_hr_contract_salary
 #: model:hr.job,name:l10n_be_hr_contract_salary.job_developer_belgium
 msgid "Junior Developer BE"
-msgstr ""
+msgstr "Junior Ontwikkelaar BE"
 
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:l10n_be_hr_contract_salary.hr_contract_salary_personal_info_km_home_work
@@ -275,7 +279,7 @@ msgstr "Km Woon/Werk"
 #. module: l10n_be_hr_contract_salary
 #: model:ir.model.fields,field_description:l10n_be_hr_contract_salary.field_hr_contract__l10n_be_bicyle_cost
 msgid "L10N Be Bicyle Cost"
-msgstr ""
+msgstr "L10N Be Fiets Vergoeding"
 
 #. module: l10n_be_hr_contract_salary
 #: model:hr.contract.salary.personal.info.value,name:l10n_be_hr_contract_salary.hr_contract_salary_personal_info_marital_cohabitant

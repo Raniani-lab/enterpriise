@@ -3199,7 +3199,7 @@ msgstr "Dieses Geschäftsjahr"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
 msgid "This Month"
-msgstr "Dieser Monat"
+msgstr "Diesen Monat"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter

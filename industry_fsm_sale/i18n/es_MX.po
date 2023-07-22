@@ -368,7 +368,7 @@ msgstr "Es una actualización del teléfono en la tarea"
 #, python-format
 msgid "Let's <b>track the material</b> you use for your task."
 msgstr ""
-"<b>Llevemos un seguimiento de los materiales</b>que utiliza en su tarea."
+"Llevemos un <b>seguimiento de los materiales</b>que utiliza en su tarea."
 
 #. module: industry_fsm_sale
 #. odoo-javascript

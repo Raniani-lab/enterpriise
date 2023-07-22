@@ -44,7 +44,7 @@ msgstr "# spraw"
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "%(number of missed calls)s missed calls"
-msgstr "%(liczba nieodebranych połączeń) nieodebranych połączeń"
+msgstr "%(number of missed calls) nieodebranych połączeń"
 
 #. module: voip
 #. odoo-javascript
@@ -363,7 +363,7 @@ msgstr "Kierunek"
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Display Dialing Panel"
-msgstr "Panel wybierania numerów na wyświetlaczu"
+msgstr "Wyświetlaj panel wybierania"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__display_name
@@ -1237,7 +1237,7 @@ msgid ""
 "VoIP call receiver will not hear you."
 msgstr ""
 "Musisz zezwolić na dostęp do mikrofonu na swoim urządzeniu. W przeciwnym "
-"razie odbiornik połączenia VoIP nie będzie Cię słyszał."
+"razie odbiorca połączenia VoIP nie będzie Cię słyszał."
 
 #. module: voip
 #. odoo-javascript

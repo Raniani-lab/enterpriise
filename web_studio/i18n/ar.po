@@ -2673,7 +2673,7 @@ msgstr "نص متعدد الأسطر"
 #: code:addons/web_studio/static/src/legacy/xml/action_editor.xml:0
 #, python-format
 msgid "Multiple Records Views"
-msgstr "أدوات العرض متعددة السجلات"
+msgstr "نوافذ عرض للسجلات المتعددة "
 
 #. module: web_studio
 #. odoo-python

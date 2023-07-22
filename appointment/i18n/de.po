@@ -1610,7 +1610,7 @@ msgstr "Anzahl der Nachrichten, die eine Aktion erfordern"
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr "Anzahl der Nachrichten mit Zustellungsfehler."
+msgstr "Anzahl der Nachrichten mit Zustellungsfehler"
 
 #. module: appointment
 #: model:ir.model,name:appointment.model_onboarding_onboarding

@@ -36,7 +36,7 @@ msgstr "조건과 일치하는 모든 첨부 파일에서 사용할 수 있는 �
 #. module: documents_project
 #: model:documents.workflow.rule,name:documents_project.documents_project_rule_ask_for_validation
 msgid "Ask for Validation"
-msgstr ""
+msgstr "승인 요청"
 
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_ir_attachment
@@ -115,7 +115,7 @@ msgstr "임시"
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_documents_document__is_shared
 msgid "Is Shared"
-msgstr ""
+msgstr "공유되었습니다."
 
 #. module: documents_project
 #: model:documents.workflow.rule,name:documents_project.documents_project_rule_mark_as_draft

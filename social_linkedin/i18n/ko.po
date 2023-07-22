@@ -7,6 +7,7 @@
 # JH CHOI <hwangtog@gmail.com>, 2022
 # Martin Trigaux, 2023
 # Sarah Park, 2023
+# Daye Jeong, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Sarah Park, 2023\n"
+"Last-Translator: Daye Jeong, 2023\n"
 "Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -65,7 +66,7 @@ msgstr "작성자 이미지"
 msgid ""
 "Check this if you want to use your personal LinkedIn Developer Account "
 "instead of the provided one."
-msgstr ""
+msgstr "제공된 계정 대신 개인 링크드인 개발자 계정을 사용하려면 이 옵션을 선택하세요."
 
 #. module: social_linkedin
 #: model:ir.model,name:social_linkedin.model_res_config_settings
@@ -94,13 +95,13 @@ msgstr "링크드인"
 #. module: social_linkedin
 #: model:ir.model.fields,field_description:social_linkedin.field_social_account__linkedin_account_id
 msgid "LinkedIn Account ID"
-msgstr ""
+msgstr "링크드인 계정 ID"
 
 #. module: social_linkedin
 #: model:ir.model.fields,field_description:social_linkedin.field_social_account__linkedin_account_urn
 #: model:ir.model.fields,help:social_linkedin.field_social_account__linkedin_account_urn
 msgid "LinkedIn Account URN"
-msgstr ""
+msgstr "링크드인 계정 URN"
 
 #. module: social_linkedin
 #. odoo-javascript
@@ -108,7 +109,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:social_linkedin.field_social_stream_post__linkedin_comments_count
 #, python-format
 msgid "LinkedIn Comments"
-msgstr ""
+msgstr "링크드인 댓글"
 
 #. module: social_linkedin
 #: model:ir.model.fields,field_description:social_linkedin.field_social_stream_post__linkedin_likes_count
@@ -124,7 +125,7 @@ msgstr "LinkedIn 미리보기"
 #. module: social_linkedin
 #: model:ir.model.fields,field_description:social_linkedin.field_social_stream_post__linkedin_author_vanity_name
 msgid "LinkedIn Vanity Name"
-msgstr ""
+msgstr "링크드인 베니티 이름"
 
 #. module: social_linkedin
 #: model:ir.model.fields,field_description:social_linkedin.field_social_account__linkedin_access_token
@@ -134,34 +135,34 @@ msgstr "LinkedIn 액세스 토큰"
 #. module: social_linkedin
 #: model:ir.model.fields,field_description:social_linkedin.field_social_stream_post__linkedin_author_id
 msgid "LinkedIn author ID"
-msgstr ""
+msgstr "링크드인 작성자 ID"
 
 #. module: social_linkedin
 #: model:ir.model.fields,field_description:social_linkedin.field_social_stream_post__linkedin_author_urn
 msgid "LinkedIn author URN"
-msgstr ""
+msgstr "링크드인 작성자 URN"
 
 #. module: social_linkedin
 #: model:ir.model.fields,field_description:social_linkedin.field_social_stream_post__linkedin_author_image_url
 msgid "LinkedIn author image URL"
-msgstr ""
+msgstr "링크드인 작성자 이미지 URL"
 
 #. module: social_linkedin
 #. odoo-python
 #: code:addons/social_linkedin/controllers/main.py:0
 #, python-format
 msgid "LinkedIn did not provide a valid access token."
-msgstr ""
+msgstr "링크드인에서 유효한 액세스 토큰을 제공하지 않았습니다."
 
 #. module: social_linkedin
 #: model:ir.model.fields,field_description:social_linkedin.field_social_stream_post__linkedin_post_urn
 msgid "LinkedIn post URN"
-msgstr ""
+msgstr "링크드인 게시 URN"
 
 #. module: social_linkedin
 #: model_terms:ir.ui.view,arch_db:social_linkedin.res_config_settings_view_form
 msgid "Linkedin Developer Account"
-msgstr ""
+msgstr "링크드인 개발자 계정"
 
 #. module: social_linkedin
 #: model:ir.model.fields,field_description:social_linkedin.field_social_media__media_type
@@ -201,7 +202,7 @@ msgstr "소셜 게시"
 #. module: social_linkedin
 #: model:ir.model,name:social_linkedin.model_social_post_template
 msgid "Social Post Template"
-msgstr ""
+msgstr "소셜 게시물 템플릿"
 
 #. module: social_linkedin
 #: model:ir.model,name:social_linkedin.model_social_stream
@@ -239,14 +240,14 @@ msgstr ""
 #: code:addons/social_linkedin/controllers/main.py:0
 #, python-format
 msgid "There was a authentication issue during your request."
-msgstr ""
+msgstr "요청하는 동안 인증에 문제가 발생했습니다."
 
 #. module: social_linkedin
 #. odoo-python
 #: code:addons/social_linkedin/controllers/main.py:0
 #, python-format
 msgid "Unauthorized. Please contact your administrator."
-msgstr ""
+msgstr "승인할 수 없습니다. 관리자에게 문의해 주세요."
 
 #. module: social_linkedin
 #: model:ir.model.fields,field_description:social_linkedin.field_res_config_settings__linkedin_use_own_account
@@ -263,7 +264,7 @@ msgstr "일부 기능을 특정 미디어 ( 'facebook', 'twitter' 등)로 제한
 #. module: social_linkedin
 #: model:ir.model.fields,help:social_linkedin.field_social_stream_post__linkedin_author_vanity_name
 msgid "Vanity name, used to generate a link to the author"
-msgstr ""
+msgstr "작성자에 대한 링크를 생성하는 데 사용되는 베니티 이름"
 
 #. module: social_linkedin
 #. odoo-python
@@ -272,7 +273,7 @@ msgstr ""
 msgid ""
 "We could not upload your image, try reducing its size and posting it again "
 "(error: Failed during upload registering)."
-msgstr ""
+msgstr "이미지를 업로드할 수 없습니다. 이미지 크기를 조절한 후 다시 시도해 주세요. (에러: 이미지 등록 중 실패)."
 
 #. module: social_linkedin
 #. odoo-python
@@ -280,14 +281,14 @@ msgstr ""
 #, python-format
 msgid ""
 "We could not upload your image, try reducing its size and posting it again."
-msgstr ""
+msgstr "이미지를 업로드할 수 없습니다. 이미지 크기를 조절한 후 다시 시도해 주세요."
 
 #. module: social_linkedin
 #. odoo-python
 #: code:addons/social_linkedin/models/social_stream.py:0
 #, python-format
 msgid "Wrong stream type for \"%s\""
-msgstr ""
+msgstr "\"%s\"에 대한 잘못된 스트림 유형"
 
 #. module: social_linkedin
 #. odoo-python

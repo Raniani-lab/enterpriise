@@ -1100,7 +1100,7 @@ msgstr "Buka Tautan"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__origin_contract_id
 msgid "Origin Contract"
-msgstr ""
+msgstr "Kontrak Awal"
 
 #. module: hr_contract_salary
 #. odoo-python

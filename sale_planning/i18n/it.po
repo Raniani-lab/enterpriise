@@ -52,7 +52,7 @@ msgstr "<strong>Articolo ordine di vendita  — </strong>"
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_planning_slot__allocated_hours
 msgid "Allocated Time"
-msgstr ""
+msgstr "Tempo assegnato"
 
 #. module: sale_planning
 #: model_terms:ir.ui.view,arch_db:sale_planning.planning_analysis_report_view_search
@@ -63,7 +63,7 @@ msgstr "Fatturabile"
 #. module: sale_planning
 #: model:ir.ui.menu,name:sale_planning.sale_planning_menu_schedule_by_sale_order
 msgid "By Sales Order"
-msgstr ""
+msgstr "Per ordine di vendita"
 
 #. module: sale_planning
 #: model:product.template,name:sale_planning.developer_product_product_template
@@ -108,7 +108,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_planning.planning_analysis_report_view_search
 #: model_terms:ir.ui.view,arch_db:sale_planning.planning_slot_view_search_inherit_sale_planning
 msgid "My Sales Orders"
-msgstr ""
+msgstr "I miei ordini di vendita"
 
 #. module: sale_planning
 #: model_terms:ir.actions.act_window,help:sale_planning.sale_planning_action_schedule_by_sale_order
@@ -133,7 +133,7 @@ msgstr ""
 #. module: sale_planning
 #: model:ir.actions.act_window,name:sale_planning.planning_action_orders_planned
 msgid "Orders Planned"
-msgstr ""
+msgstr "Ordini pianificati"
 
 #. module: sale_planning
 #: model_terms:product.template,description:sale_planning.developer_product_product_template
@@ -182,7 +182,7 @@ msgstr ""
 #. module: sale_planning
 #: model:ir.model,name:sale_planning.model_planning_analysis_report
 msgid "Planning Analysis Report"
-msgstr ""
+msgstr "Pianificazione resoconto di analisi"
 
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_sale_order__planning_first_sale_line_id
@@ -193,7 +193,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_planning.field_sale_order__planning_hours_planned
 #: model:ir.model.fields,field_description:sale_planning.field_sale_order_line__planning_hours_planned
 msgid "Planning Hours Planned"
-msgstr ""
+msgstr "Pianificazione ore programmate"
 
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_sale_order__planning_hours_to_plan
@@ -204,7 +204,7 @@ msgstr "Pianificare le ore"
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_sale_order__planning_initial_date
 msgid "Planning Initial Date"
-msgstr ""
+msgstr "Pianificazione data iniziale"
 
 #. module: sale_planning
 #: model:ir.model,name:sale_planning.model_planning_role
@@ -281,6 +281,8 @@ msgid ""
 "Schedule your human and material resources across roles, projects and sales "
 "orders."
 msgstr ""
+"Pianifica le risorse umane e materiali distribuendole tra ruoli, progetti e "
+"ordini di vendita."
 
 #. module: sale_planning
 #: model_terms:ir.ui.view,arch_db:sale_planning.planning_analysis_report_view_search
@@ -367,7 +369,7 @@ msgstr "Vedi pianificazione"
 #: code:addons/sale_planning/static/src/views/hooks.js:0
 #, python-format
 msgid "View Shifts"
-msgstr ""
+msgstr "Visualizza turni"
 
 #. module: sale_planning
 #: model:planning.role,name:sale_planning.planning_role_planner

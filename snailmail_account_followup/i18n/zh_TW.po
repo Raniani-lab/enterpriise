@@ -70,7 +70,7 @@ msgstr ""
 #. module: snailmail_account_followup
 #: model:ir.model,name:snailmail_account_followup.model_account_followup_manual_reminder
 msgid "Wizard for sending manual reminders to clients"
-msgstr ""
+msgstr "手動傳送客戶提醒精靈"
 
 #. module: snailmail_account_followup
 #. odoo-python

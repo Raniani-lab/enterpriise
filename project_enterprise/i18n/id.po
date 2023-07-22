@@ -99,7 +99,7 @@ msgstr ""
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__allocated_hours
 msgid "Allocated Hours"
-msgstr ""
+msgstr "Jam yang Dialokasikan"
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__allocation_type

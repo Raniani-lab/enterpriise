@@ -24,7 +24,7 @@ msgstr ""
 #. module: helpdesk_sale_timesheet
 #: model:helpdesk.sla,name:helpdesk_sale_timesheet.helpdesk_sla_4
 msgid "4 hours to finish"
-msgstr ""
+msgstr "4 ore al termine"
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model,name:helpdesk_sale_timesheet.model_account_analytic_line
@@ -69,7 +69,7 @@ msgstr "Descrizione"
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_account_analytic_line__display_sol
 msgid "Display Sol"
-msgstr ""
+msgstr "Visualizza riga ordine di vendita"
 
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.tickets_followup_timesheet
@@ -127,6 +127,8 @@ msgid ""
 "Project to which the timesheets of this helpdesk team's tickets will be "
 "linked."
 msgstr ""
+"Progetto al quale verranno collegati i fogli ore relativi ai ticket di "
+"questo team di supporto."
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_ticket__project_sale_order_id
@@ -182,6 +184,8 @@ msgid ""
 "SLA Policy that will automatically apply to the tickets linked to a sales "
 "order item containing this service."
 msgstr ""
+"Politica SLA che verrà applicata automaticamente ai ticket legati "
+"all'articolo di un ordine di vendita che comprende questo servizio."
 
 #. module: helpdesk_sale_timesheet
 #. odoo-python
@@ -207,6 +211,10 @@ msgid ""
 "Remove the sales order item in order to make this ticket non-billable.\n"
 "You can also change or remove the sales order item of each timesheet entry individually."
 msgstr ""
+"Articolo dell'ordine di vendita al quale verrà aggiunto il tempo speso sul ticket per creare la fattura cliente.\n"
+"Verrà selezionato, per impostazione predefinita, l'ultimo articolo prepagato dell'ordine di vendita che ha del tempo rimanente.\n"
+"Elimina l'articolo dell'ordine di vendita in modo che il ticket non possa essere fatturato.\n"
+"Puoi anche modificare o eliminare singolarmente l'articolo dell'ordine di vendita per ogni voce del foglio ore."
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_sla__sale_line_ids
@@ -221,7 +229,7 @@ msgstr "Ordine di vendita al quale è collegato il progetto."
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.portal_helpdesk_ticket_timesheet
 msgid "Spent"
-msgstr ""
+msgstr "Impiegati"
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_sale_order__ticket_count
@@ -236,7 +244,7 @@ msgstr "Ticket"
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.helpdesk_ticket_view_search_inherit_helpdesk_sale_timesheet
 msgid "Tickets in Overtime"
-msgstr ""
+msgstr "Ticket con ore supplementari"
 
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.tickets_followup_timesheet

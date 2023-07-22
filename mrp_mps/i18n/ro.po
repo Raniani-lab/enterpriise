@@ -520,7 +520,7 @@ msgstr ""
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.mrp_mps_forecast_details_form_view
 msgid "Receipts"
-msgstr "Bonuri"
+msgstr "Recepții"
 
 #. module: mrp_mps
 #. odoo-javascript
@@ -577,7 +577,7 @@ msgstr "Dată planificată"
 #: model_terms:ir.ui.view,arch_db:mrp_mps.product_normal_form_view_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.product_template_only_form_view_mps
 msgid "Schedules"
-msgstr ""
+msgstr "Planificări"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_production_schedule__sequence

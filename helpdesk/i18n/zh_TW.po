@@ -192,6 +192,16 @@ msgid ""
 "</div>\n"
 "        "
 msgstr ""
+"<div>\n"
+"    親愛的 <t t-out=\"object.sudo().partner_id.name or '先生 / 女士'\">先生 / 女士</t>：<br><br>\n"
+"    本訊息由系統自動發出，通知你我們已完成處理你的技術支援請求（參考編號： <t t-out=\"object.id or ''\">15</t>），請求狀態現已設為「關閉」。\n"
+"    希望我們提供的服務達到你所期望。\n"
+"    如果仍有疑難，或想提出意見，歡迎回覆此電郵。回覆郵件會重開你的支援請求，使它重新生效。<br><br>\n"
+"    感謝你合作。<br>\n"
+"    順祝  安康<br><br>\n"
+"    <t t-out=\"object.team_id.name or '技術支援'\">技術支援</t>團隊\n"
+"</div>\n"
+"        "
 
 #. module: helpdesk
 #: model:mail.template,body_html:helpdesk.new_ticket_request_email_template

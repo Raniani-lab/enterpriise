@@ -30,7 +30,7 @@ msgstr "# Firmas"
 #: code:addons/hr_recruitment_sign/wizard/hr_recruitment_sign_document_wizard.py:0
 #, python-format
 msgid "%s and %s are the signatories."
-msgstr "%s y %s son signatarios."
+msgstr "%s y %s son quienes firman."
 
 #. module: hr_recruitment_sign
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_sign.hr_applicant_sign_view_form

@@ -549,12 +549,12 @@ msgstr "Autor"
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_company__appraisal_plan
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__appraisal_plan
 msgid "Automatically Generate Appraisals"
-msgstr "Generar evaluaciones automáticamente"
+msgstr "Generar valoración de forma automática"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
 msgid "Automatically generate appraisals"
-msgstr "Generar evaluaciones automáticamente "
+msgstr "Generar valoración de forma automática"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__avatar_1920
@@ -1740,7 +1740,7 @@ msgstr ""
 #, python-format
 msgid "You cannot delete appraisal which is not in draft or canceled state"
 msgstr ""
-"No puede eliminar una evaluación que no está en el estado de borrador o "
+"No puede eliminar una evaluación que no está en estado de borrador o "
 "cancelada."
 
 #. module: hr_appraisal

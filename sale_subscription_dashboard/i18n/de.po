@@ -864,7 +864,7 @@ msgstr "Dieses Geschäftsjahr"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "This Month"
-msgstr "Dieser Monat"
+msgstr "Diesen Monat"
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript

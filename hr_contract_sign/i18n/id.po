@@ -291,7 +291,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.view_hr_contract_sign
 #, python-format
 msgid "Signature Request"
-msgstr ""
+msgstr "Permintaan Tanda Tangan"
 
 #. module: hr_contract_sign
 #. odoo-python

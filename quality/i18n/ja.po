@@ -258,7 +258,7 @@ msgstr "デフォルト値"
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_point__test_type_id
 msgid "Defines the type of the quality control point."
-msgstr ""
+msgstr "品質管理ポイントのタイプを定義します。"
 
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
@@ -773,7 +773,7 @@ msgstr "品質管理ポイント"
 #. module: quality
 #: model:ir.model,name:quality.model_quality_point_test_type
 msgid "Quality Control Test Type"
-msgstr ""
+msgstr "品質管理テストタイプ"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_point__product_category_ids
@@ -785,7 +785,7 @@ msgstr ""
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_point__product_ids
 msgid "Quality Point will apply to every selected Products."
-msgstr ""
+msgstr "全ての選択されたプロダクトに適用される品質ポイント"
 
 #. module: quality
 #: model:ir.model,name:quality.model_quality_tag

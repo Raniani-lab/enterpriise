@@ -8,6 +8,7 @@
 # Dylan Kiss, 2023
 # Guido Leenders, 2023
 # Jolien De Paepe, 2023
+# Gunther Clauwaert <gclauwae@hotmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -15,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-03-09 11:44+0000\n"
 "PO-Revision-Date: 2023-02-03 07:08+0000\n"
-"Last-Translator: Jolien De Paepe, 2023\n"
+"Last-Translator: Gunther Clauwaert <gclauwae@hotmail.com>, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -226,7 +227,7 @@ msgstr "2. Naam (of benaming) en adres van de schuldeiser van de inkomsten:"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "2. Phone number:"
-msgstr ""
+msgstr "2. Telefoonnummer:"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_etablissement0
@@ -321,22 +322,22 @@ msgstr "281.16"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "281.17"
-msgstr ""
+msgstr "281.17"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "281.18"
-msgstr ""
+msgstr "281.18"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "281.20"
-msgstr ""
+msgstr "281.20"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "281.30"
-msgstr ""
+msgstr "281.30"
 
 #. module: l10n_be_reports
 #: model:res.partner.category,name:l10n_be_reports.res_partner_tag_281_50
@@ -366,12 +367,12 @@ msgstr "281.50 - Kosten"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.form_281_50_view_form
 msgid "281.50 Form"
-msgstr ""
+msgstr "Fiche 281.50"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.form_325_view_form
 msgid "281.50 Forms"
-msgstr ""
+msgstr "Fiches 281.50"
 
 #. module: l10n_be_reports
 #: model:ir.actions.report,name:l10n_be_reports.action_report_partner_281_50_pdf
@@ -387,7 +388,7 @@ msgstr "281.50 XML"
 #: model:ir.model.fields,field_description:l10n_be_reports.field_res_partner__forms_281_50
 #: model:ir.model.fields,field_description:l10n_be_reports.field_res_users__forms_281_50
 msgid "281.50 forms"
-msgstr ""
+msgstr "fiches 281.50"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_creances_plus_d_un_an0
@@ -433,22 +434,22 @@ msgstr "30/36 - Voorraden"
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.form_325_view_form
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.form_325_view_tree
 msgid "325 Form"
-msgstr ""
+msgstr "Fiche 325"
 
 #. module: l10n_be_reports
 #: model:ir.model,name:l10n_be_reports.model_l10n_be_form_325_wizard
 msgid "325 Form Wizard"
-msgstr ""
+msgstr "325 Fiche Wizard"
 
 #. module: l10n_be_reports
 #: model:ir.actions.report,name:l10n_be_reports.action_report_325_form_pdf
 msgid "325 PDF"
-msgstr ""
+msgstr "325 PDF"
 
 #. module: l10n_be_reports
 #: model:ir.actions.act_window,name:l10n_be_reports.action_open_325_tree_view
 msgid "325 forms"
-msgstr ""
+msgstr "Fiche 325"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_commandes0
@@ -922,7 +923,7 @@ msgstr "ACTIVA"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "AMOUNT TOTAL"
-msgstr ""
+msgstr "TOTAAL"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__atn
@@ -1309,7 +1310,7 @@ msgstr "Audit BTW-opgave van de intracommunautaire handelingen"
 
 #. module: l10n_be_reports
 #: model:account.report,name:l10n_be_reports.belgian_ec_sales_report
-msgid "EC Sales List"
+msgid "EU Sales List"
 msgstr "BTW-opgave van de intracommunautaire handelingen"
 
 #. module: l10n_be_reports
@@ -2004,12 +2005,12 @@ msgstr "Staat"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "Street and n°"
-msgstr ""
+msgstr "Straat en Nr."
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "TOTAL AMOUNT"
-msgstr ""
+msgstr "TOTAAL BEDRAG"
 
 #. module: l10n_be_reports
 #: model:account.report.line,name:l10n_be_reports.account_financial_report_be_actif0
@@ -2024,7 +2025,7 @@ msgstr "TOTAAL VAN DE PASSIVA"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "TOTAUX"
-msgstr ""
+msgstr "TOTALEN"
 
 #. module: l10n_be_reports
 #: model:account.report.column,name:l10n_be_reports.account_financial_report_ec_sales_tax
@@ -2053,7 +2054,7 @@ msgstr ""
 #: code:addons/l10n_be_reports/wizard/l10n_be_325_form_wizard.py:0
 #, python-format
 msgid "The reference year must be a number."
-msgstr ""
+msgstr "Het referentiejaar moet een getal zijn."
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,help:l10n_be_reports.field_res_partner__citizen_identification
@@ -2099,7 +2100,7 @@ msgstr ""
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__total_remuneration
 msgid "Total remuneration"
-msgstr ""
+msgstr "Totale bezoldiging"
 
 #. module: l10n_be_reports
 #: model:ir.model.fields,field_description:l10n_be_reports.field_l10n_be_form_281_50__treatment_type
@@ -2192,6 +2193,7 @@ msgstr "Ja"
 #, python-format
 msgid "You already generated 281.50 forms for this 325 form."
 msgstr ""
+"Je hebt al 281,50 fiches gegenereerd voor dit 325-samenvattende opgave."
 
 #. module: l10n_be_reports
 #. odoo-python
@@ -2201,6 +2203,8 @@ msgstr ""
 msgid ""
 "You can't delete a 281.50 for which its form 325 xml has been generated"
 msgstr ""
+"Je kunt geen fiche 281.50 verwijderen waarvoor de samenvattende opgave 325 "
+"xml is gegenereerd."
 
 #. module: l10n_be_reports
 #. odoo-python
@@ -2208,6 +2212,8 @@ msgstr ""
 #, python-format
 msgid "You can't use a reference year in the future or for the current year."
 msgstr ""
+"Je kunt geen referentiejaar in de toekomst of voor het huidige jaar "
+"gebruiken."
 
 #. module: l10n_be_reports
 #. odoo-python
@@ -2292,7 +2298,7 @@ msgstr "bijv. 2018"
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_325_pdf
 msgid "established by :"
-msgstr ""
+msgstr "vastgesteld door :"
 
 #. module: l10n_be_reports
 #: model_terms:ir.ui.view,arch_db:l10n_be_reports.report_281_50_pdf

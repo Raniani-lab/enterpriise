@@ -28,7 +28,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "(Net sales – COGS) / Net sales"
-msgstr "(Ventas netas - COGS) / Ventas netas"
+msgstr "(Ventas netas – COGS) / Ventas netas"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -170,7 +170,7 @@ msgstr "> 50%: el negocio es muy rentable"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "> 5: company owns a lot of debt and not of a lot of own money"
-msgstr "> 5: le empresa tiene muchas deudas pero poco dinero"
+msgstr "> 5: la empresa tiene muchas deudas pero poco dinero"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript

@@ -503,7 +503,7 @@ msgstr "<span>Ansicht</span>"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "<span>days of inactivity</span>"
-msgstr "<span>inaktive Tage</span>"
+msgstr "<span>inaktiven Tage</span>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.tickets_followup
@@ -623,8 +623,8 @@ msgid ""
 "Adapt your <b>pipeline</b> to your workflow by adding <b>stages</b> <i>(e.g."
 " Awaiting Customer Feedback, etc.).</i>"
 msgstr ""
-"Passen Sie Ihre <b>Pipeline</b> an Ihren Arbeitsablauf an, indem Sie  "
-"<b>Phasen</b> hinzufügen<i>(z. B. Warten auf Kunden-Feedback usw.).</i>"
+"Passen Sie Ihre <b>Pipeline</b> an Ihren Arbeitsablauf an, indem Sie "
+"<b>Phasen</b> hinzufügen<i>(z. B. Warten auf Kundenfeedback usw.).</i>"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_stage_action
@@ -1446,13 +1446,12 @@ msgstr "Dropdownmenu"
 #. module: helpdesk
 #: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_team__assign_method__balanced
 msgid "Each user has an equal number of open tickets"
-msgstr "Jeder Benutzer hat die gleiche Anzahl von offenen Tickets"
+msgstr "Jeder Benutzer hat dieselbe Anzahl offener Tickets"
 
 #. module: helpdesk
 #: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_team__assign_method__randomly
 msgid "Each user is assigned an equal number of tickets"
-msgstr ""
-"Jedem Benutzer wurde die gleiche Anzahl von offenen Tickets zugewiesen"
+msgstr "Jedem Benutzer wird dieselbe Anzahl Tickets zugewiesen"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
@@ -2517,7 +2516,7 @@ msgstr "Anzahl der Nachrichten, die eine Aktion erfordern"
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__message_has_error_counter
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr "Anzahl der Nachrichten mit Zustellungsfehler."
+msgstr "Anzahl der Nachrichten mit Zustellungsfehler"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
@@ -3906,7 +3905,7 @@ msgstr "Gesamtkorrespondenzzeit in Stunden"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Track &amp; Bill Time"
-msgstr "Zeitaufwand verfolgen & weiterberechnen"
+msgstr "Zeitaufwand verfolgen & abrechnen"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form

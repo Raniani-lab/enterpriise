@@ -141,6 +141,33 @@ msgid ""
 "                </div>\n"
 "            "
 msgstr ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"                    <p>\n"
+"                        <t t-if=\"object.id != object.commercial_partner_id.id\"><t t-out=\"object.name or ''\"></t> (<t t-out=\"object.commercial_partner_id.name or ''\"></t>) 你好！</t>\n"
+"                        <t t-else=\"\"><t t-out=\"object.name or ''\"></t> 你好！</t>\n"
+"                        <br>\n"
+"                    </p>\n"
+"                    <p>\n"
+"                        雖然我們已幾次提醒和催繳，但你的帳戶仍有欠款未繳清。\n"
+"                        除非欠款能在未來 8 天內全數繳清，否則，我們會展開法律行動追討欠債，不會另行通知。\n"
+"                        我相信並希望，此事並不需要動用到法律行動這一步。下文已詳列到期付款的賬項詳情。\n"
+"                        若就欠款事宜有疑問，請即聯絡 Odoo 會計部門。\n"
+"                    </p>\n"
+"                    <p>\n"
+"                        順祝 安康\n"
+"                        <t t-if=\"not is_html_empty(object._get_followup_responsible().signature)\">\n"
+"                            <br>\n"
+"                            <t t-out=\"object._get_followup_responsible().signature\"></t>\n"
+"                        </t>\n"
+"                        <t t-else=\"\">\n"
+"                            <br>\n"
+"                            --\n"
+"                            <br>\n"
+"                            <t t-out=\"object._get_followup_responsible().name\"></t>\n"
+"                        </t>\n"
+"                    </p>\n"
+"                </div>\n"
+"            "
 
 #. module: account_followup
 #: model:mail.template,body_html:account_followup.demo_followup_email_template_2
@@ -180,6 +207,40 @@ msgid ""
 "                </div>\n"
 "            "
 msgstr ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"                    <p>\n"
+"                        <t t-if=\"object.id != object.commercial_partner_id.id\"><t t-out=\"object.name or ''\"></t> (<t t-out=\"object.commercial_partner_id.name or ''\"></t>) 你好！</t>\n"
+"                        <t t-else=\"\"><t t-out=\"object.name or ''\"></t> 你好！</t>\n"
+"                        <br>\n"
+"                    </p>\n"
+"                    <p>\n"
+"                        很遺憾，雖然我們已發送催繳提醒，但你的帳戶仍有欠款未繳清，而且逾時不短。\n"
+"                    </p>\n"
+"                    <p>\n"
+"                        請即繳付有關款項，此乃當前要務。若閣下持續欠款，我們需考慮停用你的帳戶，屆時我們將無法繼續向你公司提供產品 / 服務。\n"
+"                        敬請採取一切適當措施，確保能在未來 8 天內成功完成付款。\n"
+"                    </p>\n"
+"                    <p>\n"
+"                        若出現我們未知的問題，妨礙你繳付發票款項，請盡快聯絡 Odoo 會計部門，好讓我們快速處理該問題。\n"
+"                    </p>\n"
+"                    <p>\n"
+"                        已到期付款的賬項詳情如下。\n"
+"                    </p>\n"
+"                    <p>\n"
+"                        順祝  安康\n"
+"                        <t t-if=\"not is_html_empty(object._get_followup_responsible().signature)\">\n"
+"                            <br>\n"
+"                            <t t-out=\"object._get_followup_responsible().signature\"></t>\n"
+"                        </t>\n"
+"                        <t t-else=\"\">\n"
+"                            <br>\n"
+"                            --\n"
+"                            <br>\n"
+"                            <t t-out=\"object._get_followup_responsible().name\"></t>\n"
+"                        </t>\n"
+"                    </p>\n"
+"                </div>\n"
+"            "
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.followup_search_template
@@ -428,6 +489,10 @@ msgid ""
 "- Salesperson: Sales Person defined on the invoice\n"
 "- Account Manager: Sales Person defined on the customer"
 msgstr ""
+"確定誰將被分配到該活動：\n"
+"- 跟進負責人（預設）\n"
+"- 銷售人員：發票上定義的銷售人員\n"
+"- 客戶經理：根據客戶定義的銷售人員"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__display_name
@@ -470,7 +535,7 @@ msgstr "Email Subject"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_form_view
 msgid "Exclude from Follow-ups"
-msgstr ""
+msgstr "不納入後續行動"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__email_recipient_ids
@@ -571,6 +636,9 @@ msgid ""
 "            possible to use print and e-mail templates to send specific messages to\n"
 "            the customer."
 msgstr ""
+"對於每個步驟，指定要採取的操作和延遲天數。\n"
+"            可使用列印和電郵範本向\n"
+"            客戶發送特定消息。"
 
 #. module: account_followup
 #: model:mail.template,name:account_followup.demo_followup_email_template_4
@@ -919,7 +987,7 @@ msgid ""
 "The number of days after the due date of the invoice to wait before sending "
 "the reminder. Can be negative if you want to send the reminder before the "
 "invoice due date."
-msgstr ""
+msgstr "發票到期後發送提醒前等待的天數。 如果想在發票到期前發送提醒，可設為負數。"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_tree_view
@@ -982,7 +1050,7 @@ msgstr "帶有逾期發票"
 #. module: account_followup
 #: model:ir.model,name:account_followup.model_account_followup_manual_reminder
 msgid "Wizard for sending manual reminders to clients"
-msgstr ""
+msgstr "手動傳送客戶提醒精靈"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
@@ -996,7 +1064,7 @@ msgstr "寫下訊息⋯"
 msgid ""
 "You are trying to send an Email, but no follow-up contact has any email "
 "address set for customer '%s'"
-msgstr ""
+msgstr "你正嘗試發送電郵，但沒有後續聯絡人有為客戶「%s」設置任何電郵地址."
 
 #. module: account_followup
 #. odoo-python
@@ -1005,7 +1073,7 @@ msgstr ""
 msgid ""
 "You are trying to send an SMS, but no follow-up contact has any mobile/phone"
 " number set for customer '%s'"
-msgstr ""
+msgstr "你正嘗試發送電話短訊，但沒有後續聯絡人有為客戶「%s」設置任何電話號碼."
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_followup_line_form

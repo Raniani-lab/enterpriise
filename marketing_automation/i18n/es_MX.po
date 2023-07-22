@@ -247,7 +247,7 @@ msgstr "Todas las publicaciones relacionadas en las redes sociales"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__allowed_parent_ids
 msgid "Allowed parents"
-msgstr "Padres permitidos"
+msgstr "Principales permitidos"
 
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_campaign__is_auto_campaign
@@ -385,7 +385,7 @@ msgid ""
 "Come back later once your campaigns are running to overview your "
 "participants."
 msgstr ""
-"Regrese cuando sus campañas estén funcionando para supervisar a los "
+"Regrese cuando sus campañas estén en curso para supervisar a los "
 "participantes."
 
 #. module: marketing_automation
@@ -458,7 +458,7 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__interval_type
 msgid "Delay Type"
-msgstr "Tipo de retraso"
+msgstr "Tipo de atraso"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -1327,7 +1327,7 @@ msgid ""
 "Some participants are already running on this campaign. Click on 'Update' to"
 " apply the modifications you've just made."
 msgstr ""
-"Algunos participantes ya están participando en esta campaña. Haga clic en "
+"Algunos participantes ya se encuentran en esta campaña. Haga clic en "
 "\"Actualizar\" para aplicar las modificaciones que acaba de realizar."
 
 #. module: marketing_automation
@@ -1487,7 +1487,7 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__ab_testing_total_pc
 msgid "Total A/B test percentage"
-msgstr "Porcentaje total deprueba A/B"
+msgstr "Porcentaje total de prueba A/B"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__total_bounce

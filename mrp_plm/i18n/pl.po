@@ -375,7 +375,7 @@ msgid ""
 "              used to make a finished product; through a manufacturing\n"
 "              order or a pack of products."
 msgstr ""
-"Zestawienia materiałów pozwalają zdefiniować listę wymaganych komponentów\n"
+"Zestawienia materiałowe pozwalają zdefiniować listę wymaganych komponentów\n"
 "wykorzystywanych do wytworzenia gotowego produktu; poprzez\n"
 "zamówienie lub paczkę produktów."
 
@@ -448,12 +448,12 @@ msgstr "Zmiany wprowadzone w poprzednim ECO"
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Changes made on old bill of materials"
-msgstr "Zmiany wprowadzone w starym zestawieniu materiałów"
+msgstr "Zmiany wprowadzone w starym zestawieniu materiałowym"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Changes made on the new revision bill of materials"
-msgstr "Zmiany wprowadzone w nowej wersji zestawienia materiałów"
+msgstr "Zmiany wprowadzone w nowej wersji zestawienia materiałowego"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
@@ -1102,7 +1102,7 @@ msgid ""
 "              Gather the related documentation and receive the necessary approvals\n"
 "              before applying your changes."
 msgstr ""
-"Zarządzaj zmianami produktów i zestawień materiałów za pomocą ECO.\n"
+"Zarządzaj zmianami produktów i zestawień materiałowych za pomocą ECO.\n"
 "Zbierz odpowiednią dokumentację i uzyskaj niezbędne zatwierdzenia\n"
 "przed zastosowaniem zmian."
 

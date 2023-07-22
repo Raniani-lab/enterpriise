@@ -225,7 +225,7 @@ msgstr "會計用於記錄資產採購的原始價格。"
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_asset_modify__gain_account_id
 msgid "Account used to write the journal item in case of gain"
-msgstr "Account used to write the journal item in case of gain"
+msgstr ""
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_res_company__gain_account_id
@@ -233,13 +233,11 @@ msgid ""
 "Account used to write the journal item in case of gain while selling an "
 "asset"
 msgstr ""
-"Account used to write the journal item in case of gain while selling an "
-"asset"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_asset_modify__loss_account_id
 msgid "Account used to write the journal item in case of loss"
-msgstr "Account used to write the journal item in case of loss"
+msgstr ""
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_res_company__loss_account_id
@@ -247,8 +245,6 @@ msgid ""
 "Account used to write the journal item in case of loss while selling an "
 "asset"
 msgstr ""
-"Account used to write the journal item in case of loss while selling an "
-"asset"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -331,7 +327,7 @@ msgstr "Already Depreciated Amount Import"
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__parent_id
 msgid "An asset has a parent when it is the result of gaining value"
-msgstr "An asset has a parent when it is the result of gaining value"
+msgstr ""
 
 #. module: account_asset
 #. odoo-python
@@ -1322,9 +1318,6 @@ msgid ""
 " to have the right depreciation table report. This is the value that was "
 "already depreciated with entries not computed from this model"
 msgstr ""
-"In case of an import from another software, you might need to use this field"
-" to have the right depreciation table report. This is the value that was "
-"already depreciated with entries not computed from this model"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__informational_text
@@ -1387,7 +1380,6 @@ msgstr "日記帳項目"
 msgid ""
 "Journal Items of {account} should have a label in order to generate an asset"
 msgstr ""
-"Journal Items of {account} should have a label in order to generate an asset"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset____last_update
@@ -1516,8 +1508,6 @@ msgid ""
 "Multiple asset items will be generated depending on the bill line quantity "
 "instead of 1 global asset."
 msgstr ""
-"Multiple asset items will be generated depending on the bill line quantity "
-"instead of 1 global asset."
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__my_activity_date_deadline
@@ -1629,7 +1619,7 @@ msgstr "Number of Recognitions"
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__gross_increase_count
 msgid "Number of assets made to increase the value of the asset"
-msgstr "Number of assets made to increase the value of the asset"
+msgstr ""
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_bank_statement_line__asset_number_days
@@ -1944,8 +1934,6 @@ msgid ""
 "Sum of the depreciable value, the salvage value and the book value of all "
 "value increase items"
 msgstr ""
-"Sum of the depreciable value, the salvage value and the book value of all "
-"value increase items"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__method_period
@@ -1970,7 +1958,7 @@ msgstr "待此精靈修改的資產"
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__children_ids
 msgid "The children are the gains in value of this asset"
-msgstr "The children are the gains in value of this asset"
+msgstr ""
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_asset_modify__invoice_ids

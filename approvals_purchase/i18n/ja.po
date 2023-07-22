@@ -33,7 +33,7 @@ msgstr ""
 #. module: approvals_purchase
 #: model:ir.model,name:approvals_purchase.model_approval_category
 msgid "Approval Category"
-msgstr ""
+msgstr "承認カテゴリ"
 
 #. module: approvals_purchase
 #: model:ir.model,name:approvals_purchase.model_approval_request
@@ -55,7 +55,7 @@ msgstr "見積依頼書の作成"
 #. module: approvals_purchase
 #: model_terms:ir.ui.view,arch_db:approvals_purchase.exception_approval_request_canceled
 msgid "Exception occurred: the Approval Request"
-msgstr ""
+msgstr "例外が発生しました：承認の依頼"
 
 #. module: approvals_purchase
 #: model_terms:ir.ui.view,arch_db:approvals_purchase.exception_approval_request_canceled

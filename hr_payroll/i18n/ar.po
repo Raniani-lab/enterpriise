@@ -3551,8 +3551,8 @@ msgid ""
 "This payslip can be erroneous! Work entries may not be generated for the "
 "period from %(start)s to %(end)s."
 msgstr ""
-"قد يكون إيصال الدفع هذا خاطئاً! يمكن إنشاء قيود العمل للفترة من %(start)s "
-"إلى %(end)s. "
+"قد يكون إيصال الدفع هذا خاطئاً! لا يمكن إنشاء قيود العمل للفترة من %(start)s"
+" إلى %(end)s. "
 
 #. module: hr_payroll
 #. odoo-python

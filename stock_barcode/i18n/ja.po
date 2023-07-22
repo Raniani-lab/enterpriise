@@ -1322,14 +1322,14 @@ msgstr "転送が検証されました"
 #: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
 #, python-format
 msgid "There is nothing to apply in this page."
-msgstr ""
+msgstr "このページに適用するものはありません。"
 
 #. module: stock_barcode
 #. odoo-javascript
 #: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
 #, python-format
 msgid "There is nothing to print in this page."
-msgstr ""
+msgstr "このページで印刷するものはありません。"
 
 #. module: stock_barcode
 #. odoo-javascript

@@ -125,7 +125,7 @@ msgstr "FEC"
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "FEC Import module"
-msgstr "Import du module FEC"
+msgstr "Module Import FEC"
 
 #. module: account_base_import
 #. odoo-javascript

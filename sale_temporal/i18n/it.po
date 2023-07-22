@@ -346,7 +346,7 @@ msgstr "Prezzo basato sul tempo"
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_pricelist_view
 msgid "Time-based rules"
-msgstr ""
+msgstr "Regole basate sul tempo"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__unit

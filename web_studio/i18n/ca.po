@@ -17,7 +17,7 @@
 # Manel Fernandez Ramirez <manelfera@outlook.com>, 2022
 # Quim - eccit <quim@eccit.com>, 2022
 # Martin Trigaux, 2022
-# jabelchi, 2022
+# Josep Anton Belchi, 2022
 # marcescu, 2022
 # Arnau Ros, 2022
 # jabiri7, 2022
@@ -2299,7 +2299,7 @@ msgstr "Imatge"
 #: model_terms:ir.ui.view,arch_db:web_studio.simplified_form_view_import_module
 #, python-format
 msgid "Import"
-msgstr "Importa"
+msgstr "Importar"
 
 #. module: web_studio
 #. odoo-python

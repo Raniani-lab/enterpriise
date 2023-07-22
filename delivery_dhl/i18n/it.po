@@ -170,12 +170,12 @@ msgstr "Seleziona questa casella se il tuo pacco è soggetto a tasse doganali."
 #. module: delivery_dhl
 #: model_terms:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form_with_provider_dhl
 msgid "Custom Data"
-msgstr ""
+msgstr "Dati personalizzati"
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_custom_data_request
 msgid "Custom data for DHL requests,"
-msgstr ""
+msgstr "Dati personalizzati per richieste DHL"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__d
@@ -250,7 +250,7 @@ msgstr ""
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_SiteID
 msgid "DHL SiteID"
-msgstr "DHL SiteID"
+msgstr "SiteID DHL"
 
 #. module: delivery_dhl
 #: model:delivery.carrier,name:delivery_dhl.delivery_carrier_dhl_us_dom

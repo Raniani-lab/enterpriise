@@ -679,7 +679,7 @@ msgstr "Pago de débito directo"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Direct Debit under reserve"
-msgstr "Débito directo bajo reserva"
+msgstr "Domiciliación bancaria bajo reserva"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1285,7 +1285,7 @@ msgstr "No disponible"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Notice Deposits"
-msgstr "Notificación de informe"
+msgstr "Notificación de depósitos"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0

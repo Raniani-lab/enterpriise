@@ -784,7 +784,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__completion_date
 msgid "Completion Date"
-msgstr ""
+msgstr "Tanggal Selesai"
 
 #. module: sign
 #: model:ir.model,name:sign.model_res_config_settings
@@ -1598,7 +1598,7 @@ msgstr "Informasi"
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_item_type__item_type__initial
 msgid "Initial"
-msgstr ""
+msgstr "Inisial"
 
 #. module: sign
 #: model:sign.item.type,name:sign.sign_item_type_initial
@@ -2645,7 +2645,7 @@ msgstr ""
 #: code:addons/sign/static/src/js/backend/sign_request.js:0
 #, python-format
 msgid "Sign Document"
-msgstr ""
+msgstr "Tandatangani Dokumen"
 
 #. module: sign
 #: model:ir.model,name:sign.model_sign_duplicate_template_pdf
@@ -2743,7 +2743,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model,name:sign.model_sign_send_request
 msgid "Sign send request"
-msgstr ""
+msgstr "Tandatangani permintaan pengiriman"
 
 #. module: sign
 #: model:ir.model,name:sign.model_sign_send_request_signer
@@ -2836,7 +2836,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 #, python-format
 msgid "Signature Request"
-msgstr ""
+msgstr "Permintaan Tanda Tangan"
 
 #. module: sign
 #. odoo-python
@@ -2870,7 +2870,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__sign_request_ids
 msgid "Signature Requests"
-msgstr ""
+msgstr "Permintaan Tanda Tangan"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__start_sign
@@ -3122,7 +3122,7 @@ msgstr "Label"
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #, python-format
 msgid "Tags:"
-msgstr ""
+msgstr "Tag:"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_item_type__auto_field

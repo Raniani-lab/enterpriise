@@ -166,7 +166,7 @@ msgstr "Tipos de aprobación"
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_kanban
 msgid "Approvals Types Image"
-msgstr "Imagen de tipo de aprobación"
+msgstr "Imagen de tipo de aprobaciones"
 
 #. module: approvals
 #: model:ir.actions.act_window,name:approvals.approval_request_action_to_review
@@ -1114,7 +1114,7 @@ msgstr "Para aprobar"
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_kanban
 msgid "To Review:"
-msgstr "A revisar:"
+msgstr "Por revisar:"
 
 #. module: approvals
 #: model:ir.model.fields.selection,name:approvals.selection__approval_request__request_status__new

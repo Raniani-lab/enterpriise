@@ -549,7 +549,7 @@ msgstr ""
 "            <span style=\"font-weight: bolder;\">\n"
 "                <font class=\"text-o-color-2\">صندوق قالب</font>\n"
 "            </span>\n"
-"             أأنت بحاجة إلى إعادة استخدام المحتوى\n"
+"             أأنت بحاجة إلى إعادة استخدام المحتوى؟\n"
 "        </span>"
 
 #. module: knowledge
@@ -752,7 +752,7 @@ msgstr ""
 "        <span style=\"font-weight: bolder;\">\n"
 "            <font class=\"text-o-color-2\">لوحة الأوامر</font>\n"
 "        </span>\n"
-"        (Ctrl + k/⌘ + k) ثم البحث في المقالات عن طريق بدء استفسار لـ\n"
+"        (Ctrl + k/⌘ + k) ثم البحث في المقالات عن طريق بدء استفسارك بـ\n"
 "        \"<span style=\"font-weight: bolder;\">؟</span>\".\n"
 "    </span>"
 

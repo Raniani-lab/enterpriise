@@ -25,7 +25,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Available time (min)"
-msgstr ""
+msgstr "Thời gian có sẵn (phút)"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
@@ -39,7 +39,7 @@ msgstr "Đơn vị/chi phí trung bình"
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Average cost / unit"
-msgstr ""
+msgstr "Đơn vị/chi phí trung bình"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
@@ -151,7 +151,7 @@ msgstr "Sản phẩm"
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Productive time (min)"
-msgstr ""
+msgstr "Thời gian sản xuất hiệu quả (phút)"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
@@ -210,7 +210,7 @@ msgstr "Tổng số lượng"
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Total time (min)"
-msgstr ""
+msgstr "Tổng thời gian (phút)"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript

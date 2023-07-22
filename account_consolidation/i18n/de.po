@@ -1221,7 +1221,7 @@ msgstr "Anzahl der Nachrichten, die eine Aktion erfordern"
 #. module: account_consolidation
 #: model:ir.model.fields,help:account_consolidation.field_consolidation_period__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr "Anzahl der Nachrichten mit Zustellungsfehler."
+msgstr "Anzahl der Nachrichten mit Zustellungsfehler"
 
 #. module: account_consolidation
 #. odoo-python

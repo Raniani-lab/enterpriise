@@ -818,7 +818,7 @@ msgstr "Plantilla de encuesta"
 #. module: hr_appraisal_survey
 #: model:ir.model,name:hr_appraisal_survey.model_survey_user_input
 msgid "Survey User Input"
-msgstr "Aporte de usuario de la encuesta"
+msgstr "Encuesta de opinión de los usuarios"
 
 #. module: hr_appraisal_survey
 #: model:ir.actions.act_window,name:hr_appraisal_survey.survey_survey_action_appraisal

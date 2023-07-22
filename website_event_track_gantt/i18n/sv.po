@@ -62,7 +62,7 @@ msgstr "Evenemangsspår"
 #. module: website_event_track_gantt
 #: model_terms:ir.ui.view,arch_db:website_event_track_gantt.event_track_view_form_in_gantt
 msgid "Save"
-msgstr "Bokför"
+msgstr "Spara"
 
 #. module: website_event_track_gantt
 #: model:ir.model.fields,field_description:website_event_track_gantt.field_event_event__track_gantt_initial_date

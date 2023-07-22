@@ -1947,7 +1947,7 @@ msgstr "Maaf, kami tidak memiliki slot lagi yang tersedia untuk bulan ini."
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_invite__staff_users_choice__specific_users
 msgid "Specific Users"
-msgstr ""
+msgstr "User-User Spesifik"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_slot__start_datetime

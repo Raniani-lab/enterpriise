@@ -1507,7 +1507,7 @@ msgstr ""
 #: code:addons/l10n_be_coda/models/account_journal.py:0
 #, python-format
 msgid "Reimbursement of costs"
-msgstr ""
+msgstr "Kostenerstattung"
 
 #. module: l10n_be_coda
 #. odoo-python

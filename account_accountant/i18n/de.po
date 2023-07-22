@@ -499,7 +499,7 @@ msgstr "Wählen Sie eine Zeile aus, um eine Vorschau der Anhänge zu erhalten."
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Choose counterpart or Create Write-off"
-msgstr "Gegenbuchung wählen oder Abschreibung erstellen"
+msgstr "Gegenbuchung wählen oder Ausbuchung erstellen"
 
 #. module: account_accountant
 #: model_terms:ir.actions.act_window,help:account_accountant.actions_account_fiscal_year
@@ -1078,8 +1078,8 @@ msgstr "Ist abgestimmt"
 msgid ""
 "It is mandatory to specify an account and a journal to create a write-off."
 msgstr ""
-"Es ist zwingend notwendig, ein Konto und ein Journal anzugeben, um "
-"Abschreibungen zu buchen."
+"Es ist zwingend notwendig, ein Konto und ein Journal anzugeben, um eine "
+"Ausbuchung zu erstellen."
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.account_journal_dashboard_kanban_view
@@ -2074,7 +2074,7 @@ msgstr "Unternehmenswährungsassistent"
 #: code:addons/account_accountant/models/reconciliation_widget.py:0
 #, python-format
 msgid "Write-Off"
-msgstr "Abschreibung"
+msgstr "Ausbuchung"
 
 #. module: account_accountant
 #. odoo-javascript

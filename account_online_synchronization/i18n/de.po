@@ -420,7 +420,7 @@ msgid ""
 "record"
 msgstr ""
 "Wenn möglich, werden wir versuchen, automatisch neue Transaktionen für "
-"diesen Datensatz anzurufen"
+"diesen Datensatz abzurufen"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__provider_data
@@ -628,7 +628,7 @@ msgstr "Anzahl der Nachrichten, die eine Aktion erfordern"
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr "Anzahl der Nachrichten mit Zustellungsfehler."
+msgstr "Anzahl der Nachrichten mit Zustellungsfehler"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_bank_statement_line__online_account_id

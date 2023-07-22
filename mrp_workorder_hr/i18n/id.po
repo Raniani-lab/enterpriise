@@ -43,7 +43,7 @@ msgstr ""
 #. module: mrp_workorder_hr
 #: model:ir.model,name:mrp_workorder_hr.model_report_mrp_report_bom_structure
 msgid "BOM Overview Report"
-msgstr ""
+msgstr "Laporan Gambaran Umum BOM"
 
 #. module: mrp_workorder_hr
 #. odoo-javascript

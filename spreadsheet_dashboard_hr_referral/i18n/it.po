@@ -299,7 +299,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Top Mediums"
-msgstr ""
+msgstr "Medie migliori"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -313,7 +313,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Top Sources"
-msgstr ""
+msgstr "Fonti migliori"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript

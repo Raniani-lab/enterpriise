@@ -1244,7 +1244,7 @@ msgstr "Fel"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.deleted_sign_request
 msgid "Error 404"
-msgstr ""
+msgstr "Fel 404"
 
 #. module: sign
 #. odoo-python
@@ -1894,7 +1894,7 @@ msgstr "Mina förfrågningar"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_search
 msgid "My Templates"
-msgstr ""
+msgstr "Mina mallar"
 
 #. module: sign
 #: model:ir.actions.act_window,name:sign.sign_request_my_requests_action
@@ -2468,7 +2468,7 @@ msgstr "Försäljning"
 #: model:ir.model.fields.selection,name:sign.selection__sign_log__action__save
 #, python-format
 msgid "Save"
-msgstr "Bokför"
+msgstr "Spara"
 
 #. module: sign
 #. odoo-javascript

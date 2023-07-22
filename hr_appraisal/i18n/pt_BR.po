@@ -664,7 +664,7 @@ msgstr "Prazo Final"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_view_activity
 msgid "Deadline:"
-msgstr ""
+msgstr "Prazo:"
 
 #. module: hr_appraisal
 #. odoo-python

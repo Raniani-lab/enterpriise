@@ -1293,7 +1293,7 @@ msgstr "Benutzerdefinierte Ansichten:"
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.view_base_module_uninstall_studio
 msgid "Customization made with Studio will be permanently lost"
-msgstr "Studio-Anpassungen werden dauerhaft verloren."
+msgstr "Studio-Anpassungen gehen dauerhaft verloren."
 
 #. module: web_studio
 #. odoo-javascript
@@ -3351,7 +3351,7 @@ msgstr "Aktion melden"
 #: code:addons/web_studio/static/src/legacy/xml/action_editor.xml:0
 #, python-format
 msgid "Reporting Views"
-msgstr "Ansichten für Berichtwesen"
+msgstr "Ansichten des Berichtwesens"
 
 #. module: web_studio
 #. odoo-javascript

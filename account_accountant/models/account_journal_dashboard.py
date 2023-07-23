@@ -67,6 +67,3 @@ class account_journal(models.Model):
             )
         return super().open_action()
 
-    def create_cash_statement(self):
-        # EXTENDS account
-        return self.action_open_bank_transactions()

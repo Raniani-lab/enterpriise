@@ -150,6 +150,7 @@ class AccountMove(models.Model):
                 move.asset_id.message_post(body=msg)
                 default_values['asset_id'] = move.asset_id.id
                 default_values['asset_number_days'] = -move.asset_number_days
+                default_values['asset_depreciation_beginning_date'] = default_values.get('date', move.date)
 
         return super(AccountMove, self)._reverse_moves(default_values_list, cancel)
 

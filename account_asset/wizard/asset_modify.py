@@ -203,6 +203,9 @@ class AssetModify(models.TransientModel):
         """ Modifies the duration of asset for calculating depreciation
         and maintains the history of old values, in the chatter.
         """
+        if self.date <= self.asset_id.company_id._get_user_fiscal_lock_date():
+            raise UserError(_("You can't re-evaluate the asset before the lock date."))
+
         old_values = {
             'method_number': self.asset_id.method_number,
             'method_period': self.asset_id.method_period,

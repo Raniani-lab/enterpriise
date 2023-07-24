@@ -69,8 +69,8 @@ export class InvoiceExtractFormRenderer extends AccountMoveFormRenderer {
     }
 
     fetchBoxData() {
-        this.dataMoveId = this.props.record.data.id;
-        return this.orm.call('account.move', 'get_boxes', [this.props.record.data.id]);
+        this.dataMoveId = this.props.record.resId;
+        return this.orm.call('account.move', 'get_boxes', [this.props.record.resId]);
     }
 
     /**
@@ -150,12 +150,12 @@ export class InvoiceExtractFormRenderer extends AccountMoveFormRenderer {
             preview_attachment_id === this.props.record.data.extract_attachment_id[0]
         ) {
             if (this.activeField !== undefined) {
-                if (this.dataMoveId !== this.props.record.data.id) {
+                if (this.dataMoveId !== this.props.record.resId) {
                     for (const boxesForPage of Object.values(this.boxes)) {
                         boxesForPage.length = 0;
                     }
                 }
-                const dataToFetch = this.boxes.length === 0 || (this.dataMoveId !== this.props.record.data.id);
+                const dataToFetch = this.boxes.length === 0 || (this.dataMoveId !== this.props.record.resId);
                 const prom = dataToFetch ? this.fetchBoxData() : new Promise(resolve => resolve([]));
                 prom.then((boxes) => {
                     boxes.map(b => owl.reactive(b)).forEach((box) => {
@@ -236,7 +236,7 @@ export class InvoiceExtractFormRenderer extends AccountMoveFormRenderer {
                 context: context,
                 title: this.env._t("Create"),
                 onRecordSaved: (record) => {
-                    this.props.record.update({ partner_id: [record.data.id] });
+                    this.props.record.update({ partner_id: [record.resId] });
                 },
             }
         );

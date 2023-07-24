@@ -33,6 +33,7 @@ QUnit.module("timesheet_grid", (hooks) => {
             record: {
                 isInvalid: () => false,
                 model: { bus: new EventBus() },
+                isFieldInvalid: () => {},
             },
             displayRed: false,
         };
@@ -71,6 +72,7 @@ QUnit.module("timesheet_grid", (hooks) => {
                     timer_pause: timerPause,
                     plop: duration,
                 },
+                isFieldInvalid: () => {},
             },
         };
         await mount(TimesheetDisplayTimer, target, { env, props: props });

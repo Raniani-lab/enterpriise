@@ -25,21 +25,24 @@ const loadMaxUploadSize = memoize((_null, orm) =>
  * To be executed before calling super.setup in view controllers.
  */
 export function preSuperSetup() {
-    const component = useComponent();
-    const props = component.props;
-    // Root state is shared between views to keep the selection
-    if (props.globalState && props.globalState.documentsRootState) {
-        if (!props.state) {
-            props.state = {};
-        }
-        props.state.rootState = props.globalState.documentsRootState;
-    }
     // Otherwise not available in model.env
     useSubEnv({
         documentsView: {
             bus: new EventBus(),
         },
     });
+    const component = useComponent();
+    const props = component.props;
+    // Root state is shared between views to keep the selection
+    if (props.globalState && props.globalState.sharedSelection) {
+        if (!props.state) {
+            props.state = {};
+        }
+        if (!props.state.modelState) {
+            props.state.modelState = {};
+        }
+        props.state.modelState.sharedSelection = props.globalState.sharedSelection;
+    }
 }
 
 /**
@@ -66,7 +69,7 @@ export function useDocumentView(helpers) {
     useSetupView({
         rootRef: root,
         getGlobalState: () => ({
-            documentsRootState: component.model.root.exportState(),
+            sharedSelection: component.model.exportSelection(),
         }),
     });
 

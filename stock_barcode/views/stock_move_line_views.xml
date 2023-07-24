@@ -114,12 +114,7 @@
                     <button string="Discard" class="btn btn-secondary o_discard" special="cancel"/>
                     <button string="Confirm" class="btn btn-primary o_save" special="save"/>
                 </div>
-                <div class="o_barcode_control d-flex" attrs="{'invisible': [('reserved_uom_qty', '!=', 0)]}">
-                    <button string="Delete" class="btn btn-danger text-uppercase o_delete"
-                            name="unlink" type="object">
-                        <i class="fa fa-trash-o"/> Delete
-                    </button>
-                </div>
+                <widget name="stock_barcode_unlink_button" class="o_barcode_control d-flex" attrs="{'invisible': [('reserved_uom_qty', '!=', 0)]}"/>
             </div>
         </form>
     </field>

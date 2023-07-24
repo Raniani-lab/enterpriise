@@ -6,6 +6,7 @@ import { normalizePosition, startResize } from "@sign/components/sign_request/ut
 import { SignItemCustomPopover } from "@sign/backend_components/sign_template/sign_item_custom_popover";
 import { PDFIframe } from "@sign/components/sign_request/PDF_iframe";
 import { EditablePDFIframeMixin } from "@sign/backend_components/editable_pdf_iframe_mixin";
+import { Deferred } from "@web/core/utils/concurrency";
 
 export class SignTemplateIframe extends EditablePDFIframeMixin(PDFIframe) {
     /**
@@ -33,6 +34,12 @@ export class SignTemplateIframe extends EditablePDFIframeMixin(PDFIframe) {
             obj[option.id] = option;
             return obj;
         }, {});
+        /**
+         * This is used to keep track of the sign items that are currently being
+         * fetched from the server. This is used to ensure that the sign item
+         * on which a click event is triggered is completely loaded before
+         */
+        this.negativeIds = {};
     }
 
     get allowEdit() {
@@ -59,10 +66,13 @@ export class SignTemplateIframe extends EditablePDFIframeMixin(PDFIframe) {
      * Handles opening and closing of popovers in template edition
      * @param {SignItem} signItem
      */
-    openSignItemPopup(signItem) {
+    async openSignItemPopup(signItem) {
         const shouldOpenNewPopover = !(signItem.data.id in this.closePopoverFns);
         this.closePopover();
         if (shouldOpenNewPopover) {
+            if (signItem.data.id in this.negativeIds) {
+                await this.negativeIds[signItem.data.id];
+            }
             const closeFn = this.popover.add(
                 signItem.el,
                 SignItemCustomPopover,
@@ -271,6 +281,15 @@ export class SignTemplateIframe extends EditablePDFIframeMixin(PDFIframe) {
     }
 
     async saveChanges() {
+        const items = this.signItems;
+        for (const page in items) {
+            for (const id in items[page]) {
+                const signItem = items[page][id].data;
+                if (signItem.updated) {
+                    this.negativeIds[id] = new Deferred();
+                }
+            }
+        }
         const Id2UpdatedItem = await this.props.saveTemplate();
         Object.entries(Id2UpdatedItem).forEach(([previousId, { page, id }]) => {
             if (Number(previousId) !== id && this.signItems[page][previousId]) {
@@ -280,6 +299,8 @@ export class SignTemplateIframe extends EditablePDFIframeMixin(PDFIframe) {
                     data: prevData,
                     el: prevEl,
                 };
+                this.negativeIds[previousId]?.resolve();
+                delete this.negativeIds[previousId];
                 delete this.signItems[page][previousId];
                 this.signItems[page][id].el.dataset.id = id;
             }

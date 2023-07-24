@@ -2,7 +2,7 @@
 
 import { loadJS, loadCSS } from "@web/core/assets";
 import { useService } from "@web/core/utils/hooks";
-import { useModel } from "@web/views/model";
+import { useModelWithSampleData } from "@web/model/model";
 import { standardViewProps } from "@web/views/standard_view_props";
 import { useSetupView } from "@web/views/view_hook";
 import { Layout } from "@web/search/layout";
@@ -19,7 +19,7 @@ export class MapController extends Component {
 
         /** @type {typeof MapModel} */
         const Model = this.props.Model;
-        const model = useModel(Model, this.props.modelParams);
+        const model = useModelWithSampleData(Model, this.props.modelParams);
         this.model = model;
 
         onWillUnmount(() => {

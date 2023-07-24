@@ -16,7 +16,6 @@ class EditorArchParser extends formView.ArchParser {
         const parsed = super.parse(...arguments);
         const noFetch = getStudioNoFetchFields(parsed.fieldNodes);
         parsed.fieldNodes = omit(parsed.fieldNodes, ...noFetch.fieldNodes);
-        parsed.activeFields = omit(parsed.activeFields, ...noFetch.fieldNames);
         return parsed;
     }
 

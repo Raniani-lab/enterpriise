@@ -10,7 +10,7 @@ import { KeepLast, Mutex } from "@web/core/utils/concurrency";
 import { pick } from "@web/core/utils/objects";
 import { sprintf } from "@web/core/utils/strings";
 import { formatFloat } from "@web/views/fields/formatters";
-import { Model } from "@web/views/model";
+import { Model } from "@web/model/model";
 
 const { DateTime } = luxon;
 

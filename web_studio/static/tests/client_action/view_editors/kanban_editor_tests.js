@@ -1379,7 +1379,7 @@ QUnit.module(
             serverData.models["coucou"].fields.m2m = {
                 type: "many2many",
                 string: "many 2 many",
-                relation: "res.partner",
+                relation: "partner",
             };
             const newArch = `
             <kanban>
@@ -1516,14 +1516,14 @@ QUnit.module(
                 </templates>
             </kanban>`,
                 mockRPC(route, args) {
-                    if (args.method === "onchange") {
-                        assert.step("onchange");
+                    if (args.method === "onchange2") {
+                        assert.step("onchange2");
                         throw new Error("Boom");
                     }
                 },
             });
 
-            assert.verifySteps(["onchange"]);
+            assert.verifySteps(["onchange2"]);
             assert.containsOnce(target, ".rendered");
         });
 
@@ -1555,15 +1555,15 @@ QUnit.module(
                 </templates>
             </kanban>`,
                 mockRPC(route, args) {
-                    if (args.method === "onchange") {
-                        assert.step("onchange");
+                    if (args.method === "onchange2") {
+                        assert.step("onchange2");
                         throw new Error("Boom");
                     }
                 },
             });
 
             assert.verifySteps([
-                "onchange",
+                "onchange2",
                 "The onchange triggered an error. It may indicate either a faulty call to onchange, or a faulty model python side",
             ]);
             assert.containsOnce(target, ".rendered");

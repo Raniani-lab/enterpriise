@@ -7,7 +7,8 @@ import { useModels } from "@mrp_workorder/mrp_display/model";
 import { ControlPanelButtons } from "@mrp_workorder/mrp_display/control_panel";
 import { MrpDisplayRecord } from "@mrp_workorder/mrp_display/mrp_display_record";
 import { MrpWorkcenterDialog } from "./dialog/mrp_workcenter_dialog";
-import { RelationalModel } from "@web/views/relational_model";
+import { RelationalModel } from "@web/model/relational_model/relational_model";
+import { makeActiveField } from "@web/model/relational_model/utils";
 import { MrpDisplayEmployeesPanel } from "@mrp_workorder/mrp_display/employees_panel";
 import { SelectionPopup } from "@mrp_workorder/components/popup";
 import { PinPopup } from "@mrp_workorder/components/pin_popup";
@@ -77,12 +78,18 @@ export class MrpDisplay extends Component {
 
         const paramsList = [];
         for (const { resModel, fields } of this.props.models) {
-            const params = { resModel, fields, rootType: "list", activeFields: fields };
+            const activeFields = {};
+            for (const fieldName in fields) {
+                activeFields[fieldName] = makeActiveField();
+            }
+            const params = {
+                config: { resModel, fields, activeFields },
+            };
             paramsList.push(params);
         }
         const models = useModels(RelationalModel, paramsList);
         for (const model of models) {
-            const resModelName = model.rootParams.resModel.replaceAll(".", "_");
+            const resModelName = model.config.resModel.replaceAll(".", "_");
             this[resModelName] = model;
         }
 

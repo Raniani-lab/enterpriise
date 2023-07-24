@@ -12,7 +12,6 @@ class EditorArchParser extends kanbanView.ArchParser {
         const parsed = super.parse(...arguments);
         const noFetch = getStudioNoFetchFields(parsed.fieldNodes);
         parsed.fieldNodes = omit(parsed.fieldNodes, ...noFetch.fieldNodes);
-        parsed.activeFields = omit(parsed.activeFields, ...noFetch.fieldNames);
         return parsed;
     }
 }
@@ -30,27 +29,41 @@ class OneRecordModel extends kanbanView.Model {
         }
         if (!hasRecords) {
             if (isGrouped) {
-                const params = {
-                    ...list.commonGroupParams,
-                    isFolded: false,
-                    count: 0,
-                    value: "",
-                    displayName: "",
-                    aggregates: {},
-                    groupByField: list.groupByField,
-                    groupDomain: [],
-                    rawContext: list.rawContext,
+                const commonConfig = {
+                    resModel: list.config.resModel,
+                    fields: list.config.fields,
+                    activeFields: list.config.activeFields,
+                    groupByFieldName: list.groupBy[0],
+                    list: {
+                        resModel: list.config.resModel,
+                        fields: list.config.fields,
+                        activeFields: list.config.activeFields,
+                        groupBy: [],
+                    },
                 };
-                if (["date", "datetime"].includes(list.groupByField.type)) {
-                    params.range = {};
-                }
-                const group = this.createDataPoint("group", params);
-                list.groups.push(group);
 
+                const data = {
+                    count: 0,
+                    length: 0,
+                    records: [],
+                    __domain: [],
+                    value: "fake",
+                    displayName: "fake",
+                    groups: [
+                        {
+                            display_name: false,
+                            count: 0,
+                        },
+                    ],
+                };
+
+                list.config.groups.fake = commonConfig;
+
+                const group = list._createGroupDatapoint(data);
+                list.groups.push(group);
                 list = group.list;
             }
-            await list.createRecord();
-            list.editedRecord = null;
+            await list.addNewRecord();
         }
     }
 }

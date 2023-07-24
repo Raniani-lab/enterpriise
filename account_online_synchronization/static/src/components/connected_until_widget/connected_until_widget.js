@@ -30,7 +30,7 @@ class ConnectedUntil extends Component {
     }
 
     async extendConnection() {
-        const action = await this.orm.call('account.journal', 'action_extend_consent', [this.props.record.data.id], {});
+        const action = await this.orm.call('account.journal', 'action_extend_consent', [this.props.record.resId], {});
         this.action.doAction(action);
     }
 }

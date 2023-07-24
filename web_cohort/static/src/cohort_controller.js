@@ -2,7 +2,7 @@
 
 import { useService } from "@web/core/utils/hooks";
 import { Layout } from "@web/search/layout";
-import { useModel } from "@web/views/model";
+import { useModelWithSampleData } from "@web/model/model";
 import { standardViewProps } from "@web/views/standard_view_props";
 import { useSetupView } from "@web/views/view_hook";
 import { SearchBar } from "@web/search/search_bar/search_bar";
@@ -13,7 +13,7 @@ import { Component, useRef } from "@odoo/owl";
 export class CohortController extends Component {
     setup() {
         this.actionService = useService("action");
-        this.model = useModel(this.props.Model, owl.toRaw(this.props.modelParams));
+        this.model = useModelWithSampleData(this.props.Model, owl.toRaw(this.props.modelParams));
 
         useSetupView({
             rootRef: useRef("root"),

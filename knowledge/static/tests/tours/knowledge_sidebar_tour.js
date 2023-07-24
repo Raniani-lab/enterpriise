@@ -418,7 +418,7 @@ registry.category("web_tour.tours").add('knowledge_sidebar_tour', {
     trigger: '.o_knowledge_more_options_panel .btn-lock .fa-unlock',
 }, {
     // Click on the icon of the active article in the sidebar
-    trigger: '.o_article_active .o_article_emoji',
+    trigger: '.o_article_active a.o_article_emoji',
     extra_trigger: '.breadcrumb-item.active:not(:has(.fa-lock))',
 }, {
     // Choose an icon

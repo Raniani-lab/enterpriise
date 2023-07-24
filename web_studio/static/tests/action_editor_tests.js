@@ -126,6 +126,7 @@ QUnit.module("ActionEditor", (hooks) => {
                     [1, "list"],
                     [2, "form"],
                 ],
+                groups_id: [],
             },
         };
 
@@ -155,6 +156,7 @@ QUnit.module("ActionEditor", (hooks) => {
                         type: "ir.actions.act_window",
                         views: [[2, "form"]],
                         id: 1,
+                        groups_id: [],
                     };
                 }
             }
@@ -208,6 +210,7 @@ QUnit.module("ActionEditor", (hooks) => {
                     [1, "list"],
                     [2, "form"],
                 ],
+                groups_id: [],
             },
         };
         Object.assign(serverData, { actions });
@@ -243,6 +246,7 @@ QUnit.module("ActionEditor", (hooks) => {
                     [1, "list"],
                     [2, "form"],
                 ],
+                groups_id: [],
             },
         };
         Object.assign(serverData, { actions });
@@ -256,6 +260,7 @@ QUnit.module("ActionEditor", (hooks) => {
                     { name: "testInput" },
                     "The call to edit_action must be correct"
                 );
+                actions[1].name = args.args.name;
                 await def;
                 return Promise.resolve(true);
             }
@@ -305,6 +310,7 @@ QUnit.module("ActionEditor", (hooks) => {
                     active_id: 90,
                     active_ids: [90, 91],
                 },
+                groups_id: [],
             },
         };
         Object.assign(serverData, { actions });

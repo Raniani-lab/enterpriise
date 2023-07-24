@@ -36,6 +36,7 @@ class KnowledgeTopbar extends Component {
             addingProperty: false,
             displaySharePanel: false,
         });
+        this.breadcrumbs = useState(this.env.config.breadcrumbs);
 
         this.openChat = useOpenChat('res.users');
 
@@ -65,7 +66,7 @@ class KnowledgeTopbar extends Component {
                 this.toggleProperties();
             }
             this.state.addingProperty = false;
-        }, () => [this.props.record.data.id, this.articlePropertiesIsEmpty]);
+        }, () => [this.props.record.resId, this.articlePropertiesIsEmpty]);
 
         useEffect((shareBtn) => {
             if (shareBtn) {
@@ -156,7 +157,7 @@ class KnowledgeTopbar extends Component {
         const articleId = await this.orm.call(
             'knowledge.article',
             'action_clone',
-            [this.props.record.data.id]
+            [this.props.record.resId]
         );
         this.env.openArticle(articleId, true);
     }
@@ -180,12 +181,12 @@ class KnowledgeTopbar extends Component {
     }
 
     async setLockStatus(newLockStatus) {
-        await this.props.record.model.root.askChanges();
+        await this.props.record.model.root.isDirty();
         await this.env._saveIfDirty();
         await this.orm.call(
             'knowledge.article',
             `action_set_${newLockStatus ? 'lock' : 'unlock'}`,
-            [this.props.record.data.id],
+            [this.props.record.resId],
         );
         await this.props.record.update({'is_locked': newLockStatus});
     }
@@ -203,7 +204,7 @@ class KnowledgeTopbar extends Component {
      * new messages, activities, ...
      */
     toggleChatter() {
-        if (this.props.record.data.id) {
+        if (this.props.record.resId) {
             this.state.displayChatter = !this.state.displayChatter;
             this.env.bus.trigger('KNOWLEDGE:TOGGLE_CHATTER', {displayChatter: this.state.displayChatter});
         }
@@ -214,7 +215,7 @@ class KnowledgeTopbar extends Component {
             await this.orm.call(
                 'knowledge.article',
                 'action_unarchive_article',
-                [this.props.record.data.id]
+                [this.props.record.resId]
             ),
             {stackPosition: 'replaceCurrentAction'}
         );
@@ -233,7 +234,7 @@ class KnowledgeTopbar extends Component {
             await this.orm.call(
                 'knowledge.article',
                 'action_send_to_trash',
-                [this.props.record.data.id]
+                [this.props.record.resId]
             ),
             {stackPosition: 'replaceCurrentAction'}
         );

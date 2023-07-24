@@ -3,125 +3,111 @@
 import { sprintf } from "@web/core/utils/strings";
 import { _t } from "web.core";
 import { inspectorFields } from "./inspector/documents_inspector";
+import { makeActiveField } from "@web/model/relational_model/utils";
 
-export const DocumentsModelMixin = (component) => class extends component {
-    /**
-     * Add inspector fields to the list of fields to load
-     * @override
-     */
-    setup(params) {
-        inspectorFields.forEach((field) => {
-            params.activeFields[field] = params.activeFields[field] || params.fields[field];
-            const fieldInfo = params.activeFields[field];
-            fieldInfo.options = fieldInfo.options || {};
-            fieldInfo.attrs = fieldInfo.attrs || {};
-            // Domains in params.fields is in array format while in string format for activeFields
-            fieldInfo.domain = (typeof fieldInfo.domain === "string" && fieldInfo.domain) || "[]";
-        });
-        params.activeFields.available_rule_ids = Object.assign({}, params.activeFields.available_rule_ids, {
-            relatedFields: {
-                id: {
-                    type: "integer",
-                    options: {
-                        always_reload: true,
+export const DocumentsModelMixin = (component) =>
+    class extends component {
+        /**
+         * Add inspector fields to the list of fields to load
+         * @override
+         */
+        setup(params) {
+            for (const field of inspectorFields) {
+                if (!(field in params.config.activeFields)) {
+                    params.config.activeFields[field] = makeActiveField();
+                }
+            }
+            params.config.activeFields.available_rule_ids = Object.assign(
+                {},
+                params.config.activeFields.available_rule_ids,
+                {
+                    related: {
+                        activeFields: {
+                            display_name: makeActiveField(),
+                            note: makeActiveField(),
+                            limited_to_single_record: makeActiveField(),
+                            create_model: makeActiveField(),
+                        },
+                        fields: {
+                            display_name: {
+                                type: "string",
+                            },
+                            note: {
+                                type: "string",
+                            },
+                            limited_to_single_record: {
+                                type: "boolean",
+                            },
+                            create_model: {
+                                type: "string",
+                            },
+                        },
                     },
-                },
-                display_name: {
-                    type: "string",
-                    options: {
-                        always_reload: true,
-                    },
-                },
-                note: {
-                    type: "string",
-                    options: {
-                        always_reload: true,
-                    },
-                },
-                limited_to_single_record: {
-                    type: "boolean",
-                    options: {
-                        always_reload: true,
-                    },
-                },
-                create_model: {
-                    type: "string",
-                    options: {
-                        always_reload: true,
-                    },
-                },
-            },
-        });
-        super.setup(...arguments);
-    }
-};
-
-export const DocumentsDataPointMixin = (component) => class extends component {
-    /**
-     * Keep selection
-     * @override
-     */
-    setup(_params, state) {
-        super.setup(...arguments);
-        if (this.resModel === "documents.document") {
-            this.originalSelection = state.selection;
+                }
+            );
+            super.setup(...arguments);
+            if (this.config.resModel === "documents.document") {
+                this.originalSelection = params.state?.sharedSelection;
+            }
         }
-    }
 
-    /**
-     * @override
-     */
-    exportState() {
-        return {
-            ...super.exportState(...arguments),
-            selection: (this.selection || []).map((rec) => rec.resId),
-        };
-    }
-
-    /**
-     * Also load the total file size
-     * @override
-     */
-    async load() {
-        const selection = this.selection;
-        if (selection && selection.length > 0) {
-            this.originalSelection = selection.map((rec) => rec.resId);
+        exportSelection() {
+            return this.root.selection.map((rec) => rec.resId);
         }
-        const res = await super.load(...arguments);
-        if (this.resModel !== "documents.document") {
+
+        /**
+         * Also load the total file size
+         * @override
+         */
+        async load() {
+            const selection = this.root?.selection;
+            if (selection && selection.length > 0) {
+                this.originalSelection = selection.map((rec) => rec.resId);
+            }
+            const res = await super.load(...arguments);
+            if (this.config.resModel !== "documents.document") {
+                return res;
+            }
+            this.env.bus.trigger("documents-close-preview");
+            this._reapplySelection();
+            this._computeFileSize();
             return res;
         }
-        this.model.env.bus.trigger("documents-close-preview");
-        if (this.originalSelection && this.originalSelection.length > 0 && this.records) {
-            const originalSelection = new Set(this.originalSelection);
-            this.records.forEach((rec) => {
-                rec.selected = originalSelection.has(rec.resId);
-            });
-            delete this.originalSelection;
+
+        _reapplySelection() {
+            const records = this.root.records;
+            if (this.originalSelection && this.originalSelection.length > 0 && records) {
+                const originalSelection = new Set(this.originalSelection);
+                records.forEach((record) => {
+                    record.selected = originalSelection.has(record.resId);
+                });
+                delete this.originalSelection;
+            }
         }
-        let size = 0;
-        if (this.groups) {
-            size = this.groups.reduce((size, group) => {
-                return size + group.aggregates.file_size;
-            }, 0);
-        } else if (this.records) {
-            size = this.records.reduce((size, rec) => {
-                return size + rec.data.file_size;
-            }, 0);
+
+        _computeFileSize() {
+            let size = 0;
+            if (this.root.groups) {
+                size = this.root.groups.reduce((size, group) => {
+                    return size + group.aggregates.file_size;
+                }, 0);
+            } else if (this.root.records) {
+                size = this.root.records.reduce((size, rec) => {
+                    return size + rec.data.file_size;
+                }, 0);
+            }
+            size /= 1000 * 1000; // in MB
+            this.fileSize = Math.round(size * 100) / 100;
         }
-        size /= 1000 * 1000; // in MB
-        this.fileSize = Math.round(size * 100) / 100;
-        return res;
-    }
-};
+    };
 
 export const DocumentsRecordMixin = (component) => class extends component {
 
-    async update(changes) {
+    async update() {
         const originalFolderId = this.data.folder_id[0];
         await super.update(...arguments);
         if (this.data.folder_id[0] !== originalFolderId) {
-            this.model.root.selection.forEach((rec) => this.model.root.removeRecord(rec));
+            this.model.root._removeRecords(this.model.root.selection.map((rec) => rec.id));
         }
     }
 

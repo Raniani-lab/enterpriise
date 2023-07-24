@@ -7,7 +7,7 @@
                     <i t-attf-class="align-self-center fa fa-fw #{props.unfolded || !hasChildren ? 'fa-caret-down' : 'fa-caret-right'}"/>
                 </a>
                 <div class="w-100 d-flex min-w-0 align-items-center">
-                    <KnowledgeSidebarIcon article="props.article" readonly="isLocked || isReadonly" iconClasses="'p-1'"/>
+                    <KnowledgeSidebarIcon article="props.article" record="props.record" readonly="isLocked || isReadonly" iconClasses="'p-1'"/>
                     <a t-attf-class="o_article_name p-1 flex-grow-1 text-truncate #{isActive ? 'fw-bold text-900' : 'text-muted'}" role="button" t-on-click="onNameClick">
                         <t t-if="props.article.name" t-out="props.article.name"/>
                         <t t-else="">Untitled</t>
@@ -21,7 +21,7 @@
             </div>
             <ul t-if="props.unfolded">
                 <t t-foreach="props.article.child_ids" t-as="childId" t-key="childId">
-                    <KnowledgeSidebarRow article="env.getArticle(childId)" unfolded="props.unfoldedIds.has(childId)" unfoldedIds="props.unfoldedIds"/>
+                    <KnowledgeSidebarRow article="env.getArticle(childId)" unfolded="props.unfoldedIds.has(childId)" unfoldedIds="props.unfoldedIds" record="props.record"/>
                 </t>
             </ul>
             <div t-elif="state.loading" class="p-1 text-center">

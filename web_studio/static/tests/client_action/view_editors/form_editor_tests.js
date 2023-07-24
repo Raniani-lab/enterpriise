@@ -1849,21 +1849,21 @@ QUnit.module("View Editors", (hooks) => {
                                 xpath_info: [
                                     {
                                         indice: 1,
-                                        tag: "form"
+                                        tag: "form",
                                     },
                                     {
                                         indice: 1,
-                                        tag: "sheet"
+                                        tag: "sheet",
                                     },
                                     {
                                         indice: 1,
-                                        tag: "group"
+                                        tag: "group",
                                     },
                                     {
                                         indice: 3,
-                                        tag: "field"
-                                    }
-                                ]
+                                        tag: "field",
+                                    },
+                                ],
                             },
                             position: "before",
                             target: {
@@ -2700,7 +2700,7 @@ QUnit.module("View Editors", (hooks) => {
                 </div>
             </form>`,
             mockRPC(route, args) {
-                if (args.method === "onchange") {
+                if (args.method === "onchange2") {
                     assert.step("onchange");
                     const error = new RPCError();
                     error.exceptionName = "odoo.exceptions.ValidationError";
@@ -3297,14 +3297,14 @@ QUnit.module("View Editors", (hooks) => {
             "/web/webclient/load_menus",
             "/web/action/load",
             "/web/dataset/call_kw/coucou/get_views",
-            "/web/dataset/call_kw/coucou/onchange",
+            "/web/dataset/call_kw/coucou/onchange2",
         ]);
         await openStudio(target);
         assert.verifySteps([
             "/web/dataset/call_kw/coucou/get_views",
             "/web_studio/chatter_allowed",
             "/web_studio/get_studio_view_arch",
-            "/web/dataset/call_kw/coucou/onchange",
+            "/web/dataset/call_kw/coucou/onchange2",
         ]);
 
         await click(target.querySelector(".o_web_studio_view_renderer .o_field_one2many"));
@@ -3354,7 +3354,7 @@ QUnit.module("View Editors", (hooks) => {
         assert.verifySteps([
             "/web/dataset/call_kw/ir.model.fields/search_read",
             "/web/dataset/call_kw/ir.model.fields/get_views",
-            "/web/dataset/call_kw/ir.model.fields/read",
+            "/web/dataset/call_kw/ir.model.fields/web_read",
         ]);
     });
 
@@ -3617,14 +3617,14 @@ QUnit.module("View Editors", (hooks) => {
             assert.verifySteps([
                 "/web/action/load",
                 "/web/dataset/call_kw/coucou/get_views",
-                "/web/dataset/call_kw/coucou/read",
+                "/web/dataset/call_kw/coucou/web_read",
             ]);
             await openStudio(target);
             assert.verifySteps([
                 "/web/dataset/call_kw/coucou/get_views",
                 "/web_studio/chatter_allowed",
                 "/web_studio/get_studio_view_arch",
-                "/web/dataset/call_kw/coucou/read",
+                "/web/dataset/call_kw/coucou/web_read",
             ]);
 
             assert.containsOnce(
@@ -3649,7 +3649,7 @@ QUnit.module("View Editors", (hooks) => {
             assert.verifySteps([
                 "/web/dataset/call_kw/product/fields_get",
                 "/web/dataset/call_kw/partner/get_views",
-                "/web/dataset/call_kw/product/read",
+                "/web/dataset/call_kw/product/web_read",
             ]);
 
             await click(target.querySelector(".o_web_studio_view_renderer .o_field_one2many"));
@@ -3661,7 +3661,7 @@ QUnit.module("View Editors", (hooks) => {
             );
             assert.verifySteps([
                 "/web/dataset/call_kw/partner/fields_get",
-                "/web/dataset/call_kw/partner/read",
+                "/web/dataset/call_kw/partner/web_read",
             ]);
 
             assert.strictEqual(
@@ -3675,7 +3675,7 @@ QUnit.module("View Editors", (hooks) => {
                 target.querySelector(".o_web_studio_new_fields .o_web_studio_field_char"),
                 target.querySelector(".o_inner_group .o_web_studio_hook")
             );
-            assert.verifySteps(["/web_studio/edit_view", "/web/dataset/call_kw/partner/read"]);
+            assert.verifySteps(["/web_studio/edit_view", "/web/dataset/call_kw/partner/web_read"]);
 
             // add a new button
             await click(
@@ -3830,13 +3830,13 @@ QUnit.module("View Editors", (hooks) => {
                             xpath_info: [
                                 {
                                     indice: 1,
-                                    tag: "tree"
+                                    tag: "tree",
                                 },
                                 {
                                     indice: 2,
-                                    tag: "field"
-                                }
-                            ]
+                                    tag: "field",
+                                },
+                            ],
                         },
                         position: "before",
                         target: {
@@ -3979,7 +3979,7 @@ QUnit.module("View Editors", (hooks) => {
             serverData.views["product,2,list"] = `<tree><field name="display_name" /></tree>`;
 
             const mockRPC = async (route, args) => {
-                if (args.method === "onchange" && args.model === "product") {
+                if (args.method === "onchange2" && args.model === "product") {
                     const fields = args.args[3];
                     assert.deepEqual(Object.keys(fields), ["display_name", "toughness"]);
                 }
@@ -4013,7 +4013,7 @@ QUnit.module("View Editors", (hooks) => {
                 <field name='product_ids'>
                     <form>
                         <div class="product-subview-form" />
-                        <field name="po2m" context="{'context_key': 'value'}">
+                        <field name="po2m" context="{'context_key': 'value', 'parent': parent.id}">
                             <form>
                                 <div class="po2m-subview-form" />
                                 <field name="display_name" />
@@ -4048,5 +4048,43 @@ QUnit.module("View Editors", (hooks) => {
         );
 
         assert.containsOnce(target, ".o_view_controller .po2m-subview-form");
+    });
+
+    QUnit.test("navigate in x2many which some field has a context", async function (assert) {
+        serverData.models.product.fields.m2o = {
+            type: "many2one",
+            relation: "partner",
+            string: "m2o",
+        };
+        const action = serverData.actions["studio.coucou_action"];
+        action.views = [[1, "form"]];
+        action.res_model = "coucou";
+        action.res_id = 1;
+        serverData.views["coucou,1,form"] = /*xml */ `
+           <form>
+                <field name='product_ids'>
+                    <form>
+                        <div class="product-subview-form" />
+                        <field name="m2o" context="{'context_key': 'value', 'parent': parent.id}" />
+                    </form>
+               </field>
+           </form>`;
+
+        serverData.views["coucou,false,search"] = `<search></search>`;
+        serverData.views["product,2,list"] = `<tree><field name="display_name" /></tree>`;
+        serverData.views["partner,false,list"] = `<tree><field name="display_name" /></tree>`;
+
+        const webClient = await createEnterpriseWebClient({ serverData });
+        await doAction(webClient, "studio.coucou_action");
+        await openStudio(target);
+
+        await click(target.querySelector(".o_web_studio_form_view_editor .o_field_one2many"));
+        await click(
+            target.querySelector(
+                '.o_web_studio_form_view_editor .o_field_one2many .o_web_studio_editX2Many[data-type="form"]'
+            )
+        );
+
+        assert.containsOnce(target, ".o_view_controller .product-subview-form");
     });
 });

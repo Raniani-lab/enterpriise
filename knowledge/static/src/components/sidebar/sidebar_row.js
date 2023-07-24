@@ -15,6 +15,7 @@ class KnowledgeSidebarIcon extends KnowledgeIcon {
     static props = {
         article: Object,
         readonly: Boolean,
+        record: Object,
         iconClasses: {type: String, optional: true},
     };
 
@@ -28,8 +29,8 @@ class KnowledgeSidebarIcon extends KnowledgeIcon {
     }
 
     async updateIcon(icon) {
-        if (this.env.model.root.resId === this.props.article.id) {
-            this.env.model.root.update({icon});
+        if (this.props.record.resId === this.props.article.id) {
+            this.props.record.update({ icon });
         } else {
             await this.orm.write(
                 "knowledge.article",
@@ -46,6 +47,7 @@ export class KnowledgeSidebarRow extends Component {
         article: Object,
         unfolded: Boolean,
         unfoldedIds: Set,
+        record: Object,
     };
     static template = "knowledge.SidebarRow";
     static components = {
@@ -75,7 +77,7 @@ export class KnowledgeSidebarRow extends Component {
     }
 
     get isActive() {
-        return this.env.model.root.resId === this.props.article.id;
+        return this.props.record.resId === this.props.article.id;
     }
 
     get isLocked() {

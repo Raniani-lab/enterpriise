@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { Model } from "@web/views/model";
+import { Model } from "@web/model/model";
 import { session } from "@web/session";
 import { browser } from "@web/core/browser/browser";
 import { formatDateTime, parseDate, parseDateTime } from "@web/core/l10n/dates";
@@ -164,11 +164,13 @@ export class MapModel extends Model {
             return this.keepLast.add(Promise.resolve(data));
         }
         const results = await this.keepLast.add(this._fetchRecordData(metaData, data));
-        
-        const datetimeFields=metaData.fieldNames.filter(name=>metaData.fields[name].type=="datetime");
-        for(let record of results.records){
+
+        const datetimeFields = metaData.fieldNames.filter(
+            (name) => metaData.fields[name].type == "datetime"
+        );
+        for (const record of results.records) {
             // convert date fields from UTC to local timezone
-            for(const field of datetimeFields){
+            for (const field of datetimeFields) {
                 if (record[field]) {
                     const dateUTC = luxon.DateTime.fromFormat(
                         record[field],
@@ -414,10 +416,12 @@ export class MapModel extends Model {
                     this._fetchCoordinatesFromAddressMB(metaData, data, partner).then(
                         (coordinates) => {
                             if (coordinates.features.length) {
-                                partner.partner_longitude =
-                                    parseFloat(coordinates.features[0].geometry.coordinates[0]);
-                                partner.partner_latitude =
-                                    parseFloat(coordinates.features[0].geometry.coordinates[1]);
+                                partner.partner_longitude = parseFloat(
+                                    coordinates.features[0].geometry.coordinates[0]
+                                );
+                                partner.partner_latitude = parseFloat(
+                                    coordinates.features[0].geometry.coordinates[1]
+                                );
                                 data.partnerToCache.push(partner);
                             }
                         }

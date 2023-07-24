@@ -2,10 +2,12 @@
 import { Reactive } from "@web_studio/client_action/utils";
 import { EventBus, markRaw, onWillStart, reactive, toRaw, useState, useSubEnv } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
+import { omit } from "@web/core/utils/objects";
 import { _t } from "@web/core/l10n/translation";
 import { useEditorBreadcrumbs } from "@web_studio/client_action/editor/edition_flow";
 import { KeepLast } from "@web/core/utils/concurrency";
 import { renderToMarkup } from "@web/core/utils/render";
+import { makeActiveField } from "@web/model/relational_model/utils";
 
 const notificationErrorTemplate = "web_studio.ReportEditor.NotificationError";
 
@@ -24,28 +26,49 @@ export class ReportEditorModel extends Reactive {
             print_page_width: 210,
             print_page_height: 297,
         };
-        this.reportActiveFields = {
-            id: { type: "number" },
-            name: { type: "char" },
-            model: { type: "char" },
-            report_name: { type: "char" },
+        this.reportFields = markRaw({
+            id: { name: "id", type: "number" },
+            name: { name: "name", type: "char" },
+            model: { name: "model", type: "char" },
+            report_name: { name: "report_name", type: "char" },
             groups_id: {
+                name: "groups_id",
                 type: "many2many",
                 relation: "res.groups",
                 relatedFields: {
                     display_name: { type: "char" },
                 },
             },
-            paperformat_id: { type: "many2one", relation: "report.paperformat" },
-            binding_model_id: { type: "many2one", relation: "ir.model" },
-            attachment_use: { type: "boolean" },
-            attachment: { type: "char" },
-        };
-
-        this.fakeReportFields = {
-            display_in_print_menu: { type: "boolean" },
-        };
-        this.reportFields = markRaw({ ...this.reportActiveFields, ...this.fakeReportFields });
+            paperformat_id: {
+                name: "paperformat_id",
+                type: "many2one",
+                relation: "report.paperformat",
+            },
+            binding_model_id: { name: "binding_model_id", type: "many2one", relation: "ir.model" },
+            attachment_use: { name: "attachment_use", type: "boolean" },
+            attachment: { name: "attachment", type: "char" },
+            // fake field
+            display_in_print_menu: { name: "display_in_print_menu", type: "boolean" },
+        });
+        this.reportActiveFields = markRaw({
+            id: makeActiveField(),
+            name: makeActiveField(),
+            model: makeActiveField(),
+            report_name: makeActiveField(),
+            groups_id: {
+                ...makeActiveField(),
+                related: {
+                    fields: { display_name: { name: "display_name", type: "char" } },
+                    activeFields: { display_name: makeActiveField() },
+                },
+            },
+            paperformat_id: makeActiveField(),
+            binding_model_id: makeActiveField(),
+            attachment_use: makeActiveField(),
+            attachment: makeActiveField(),
+            // fake field
+            display_in_print_menu: makeActiveField(),
+        });
         this.reportEnv = {};
         this.loadHtmlKeepLast = markRaw(new KeepLast());
 
@@ -124,7 +147,7 @@ export class ReportEditorModel extends Reactive {
     async loadReportData() {
         const data = await this._services.rpc("/web_studio/load_report_editor", {
             report_id: this.editedReportId,
-            fields: Object.keys(this.reportActiveFields),
+            fields: Object.keys(omit(this.reportActiveFields, "display_in_print_menu")),
         });
         this._reportData = this._parseFakeFields(data.report_data);
         Object.assign(this.paperFormat, data.paperformat);

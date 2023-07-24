@@ -904,7 +904,7 @@ QUnit.module("Views", (hooks) => {
                     return {};
                 } else if (args.method === "create") {
                     assert.strictEqual(
-                        args.args[0].date,
+                        args.args[0][0].date,
                         "2017-02-25",
                         "default date should be the current day"
                     );
@@ -959,7 +959,7 @@ QUnit.module("Views", (hooks) => {
                     return {};
                 } else if (args.method === "create") {
                     assert.strictEqual(
-                        args.args[0].date,
+                        args.args[0][0].date,
                         "2017-02-25",
                         "default date should be the current day"
                     );

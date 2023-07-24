@@ -47,11 +47,11 @@ export class FieldStudio extends Field {
     }
 
     getEmptyPlaceholder() {
-        const { hasEmptyPlaceholder, name, record } = this.props;
+        const { hasEmptyPlaceholder, name, record, fieldInfo } = this.props;
         if (!hasEmptyPlaceholder) {
             return false;
         }
-        return this.studioIsEmpty() && record.activeFields[name].string;
+        return this.studioIsEmpty() && (fieldInfo.string || record.fields[name].string);
     }
 
     isX2ManyEditable(props) {

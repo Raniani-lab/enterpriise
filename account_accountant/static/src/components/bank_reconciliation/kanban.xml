@@ -30,7 +30,8 @@
         <xpath expr="//t[@t-as='groupOrRecord']" position="before">
             <t t-set="statementGroups" t-value="groups()"/>
             <BankRecGlobalInfo t-if="globalState.bankRecStLineId and globalState.journalId"
-                               journalId="globalState.journalId"/>
+                                journalId="globalState.journalId"
+                                journalBalanceAmount="globalState.journalBalanceAmount"/>
         </xpath>
         <xpath expr="//t[@t-else='']/KanbanRecord" position="before">
             <t t-set="recData" t-value="groupOrRecord.record.data"/>

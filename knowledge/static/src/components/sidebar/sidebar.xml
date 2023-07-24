@@ -34,12 +34,12 @@
     <t t-name="knowledge.ArticlesTree" owl="1">
         <div t-attf-class="o_knowledge_tree flex-fill position-relative o_scroll_view d-flex flex-column mx-3 #{state.dragging ? 'o_dragging' : ''}">
             <div t-ref="favoriteTree" t-if="state.favoriteIds.length" class="o_favorite_container">
-                <KnowledgeSidebarFavoriteSection rootIds="state.favoriteIds" unfoldedIds="unfoldedFavoritesIds"/>
+                <KnowledgeSidebarFavoriteSection rootIds="state.favoriteIds" unfoldedIds="unfoldedFavoritesIds" record="props.record"/>
             </div>
             <div t-ref="mainTree" class="d-flex flex-column flex-fill">
-                <KnowledgeSidebarWorkspaceSection rootIds="state.workspaceIds" unfoldedIds="unfoldedArticlesIds"/>
-                <KnowledgeSidebarSharedSection rootIds="state.sharedIds" unfoldedIds="unfoldedArticlesIds"/>
-                <KnowledgeSidebarPrivateSection rootIds="state.privateIds" unfoldedIds="unfoldedArticlesIds"/>
+                <KnowledgeSidebarWorkspaceSection rootIds="state.workspaceIds" unfoldedIds="unfoldedArticlesIds" record="props.record"/>
+                <KnowledgeSidebarSharedSection rootIds="state.sharedIds" unfoldedIds="unfoldedArticlesIds" record="props.record"/>
+                <KnowledgeSidebarPrivateSection rootIds="state.privateIds" unfoldedIds="unfoldedArticlesIds" record="props.record"/>
                 <!-- Trash is a "o_section" so that one can drop articles in the trash -->
                 <div t-if="isInternalUser" class="o_section o_knowledge_sidebar_trash w-100 p-2 position-sticky bg-view mt-auto">
                     <a t-if="!state.dragging" href="#" role="button" t-on-click="browseTemplates"

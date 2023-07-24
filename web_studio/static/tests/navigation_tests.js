@@ -157,7 +157,7 @@ QUnit.module("Studio", (hooks) => {
                 "/web/webclient/load_menus",
                 "/web/action/load",
                 "/web/dataset/call_kw/partner/get_views",
-                "/web/dataset/call_kw/partner/web_search_read",
+                "/web/dataset/call_kw/partner/unity_web_search_read",
             ],
             "should have loaded the action"
         );
@@ -170,7 +170,7 @@ QUnit.module("Studio", (hooks) => {
                 "/web/dataset/call_kw/partner/get_views",
 
                 "/web_studio/get_studio_view_arch",
-                "/web/dataset/call_kw/partner/web_search_read",
+                "/web/dataset/call_kw/partner/unity_web_search_read",
             ],
             "should have opened the action in Studio"
         );
@@ -193,7 +193,7 @@ QUnit.module("Studio", (hooks) => {
             [
                 "/web/action/load",
                 "/web/dataset/call_kw/partner/get_views",
-                "/web/dataset/call_kw/partner/web_search_read",
+                "/web/dataset/call_kw/partner/unity_web_search_read",
             ],
             "should have reloaded the previous action edited by Studio"
         );
@@ -336,7 +336,7 @@ QUnit.module("Studio", (hooks) => {
                 "/web/webclient/load_menus",
                 "/web/action/load",
                 "/web/dataset/call_kw/partner/get_views",
-                "/web/dataset/call_kw/partner/web_search_read",
+                "/web/dataset/call_kw/partner/unity_web_search_read",
             ],
             "should have loaded the action"
         );
@@ -348,7 +348,7 @@ QUnit.module("Studio", (hooks) => {
                 "/web/dataset/call_kw/partner/get_views",
 
                 "/web_studio/get_studio_view_arch",
-                "/web/dataset/call_kw/partner/web_search_read",
+                "/web/dataset/call_kw/partner/unity_web_search_read",
             ],
             "should have opened the action in Studio"
         );
@@ -378,7 +378,7 @@ QUnit.module("Studio", (hooks) => {
                 "/web/dataset/call_kw/pony/get_views",
 
                 "/web_studio/get_studio_view_arch",
-                "/web/dataset/call_kw/pony/web_search_read",
+                "/web/dataset/call_kw/pony/unity_web_search_read",
             ],
             "should have opened the navigated action in Studio"
         );
@@ -400,7 +400,7 @@ QUnit.module("Studio", (hooks) => {
             [
                 "/web/action/load",
                 "/web/dataset/call_kw/pony/get_views",
-                "/web/dataset/call_kw/pony/web_search_read",
+                "/web/dataset/call_kw/pony/unity_web_search_read",
             ],
             "should have reloaded the previous action edited by Studio"
         );
@@ -559,6 +559,7 @@ QUnit.module("Studio", (hooks) => {
             views: [[false, "list"]],
             help: "",
             name: "test action",
+            groups_id: [],
         };
 
         const handler = (ev) => {
@@ -794,7 +795,7 @@ QUnit.module("Studio", (hooks) => {
         };
 
         const mockRPC = async (route, args) => {
-            if (args.method === "web_search_read") {
+            if (args.method === "unity_web_search_read") {
                 assert.step(`${args.method}: ${JSON.stringify(args.kwargs)}`);
             }
         };
@@ -808,18 +809,18 @@ QUnit.module("Studio", (hooks) => {
         await nextTick();
         assert.containsOnce(target, ".o_kanban_view");
         assert.verifySteps([
-            `web_search_read: {"limit":40,"offset":0,"order":"","context":{"lang":"en","uid":7,"tz":"taht","allowed_company_ids":[1],"bin_size":true},"count_limit":10001,"domain":[],"fields":["display_name"]}`,
+            `unity_web_search_read: {"specification":{"display_name":{}},"domain":[],"offset":0,"order":"","limit":40,"context":{"lang":"en","uid":7,"tz":"taht","allowed_company_ids":[1],"bin_size":true,"current_company_id":1},"count_limit":10001}`,
         ]);
         await toggleSearchBarMenu(target);
         await toggleMenuItem(target, "Apple");
         assert.verifySteps([
-            `web_search_read: {"limit":40,"offset":0,"order":"","context":{"lang":"en","uid":7,"tz":"taht","allowed_company_ids":[1],"bin_size":true},"count_limit":10001,"domain":[["name","ilike","Apple"]],"fields":["display_name"]}`,
+            `unity_web_search_read: {"specification":{"display_name":{}},"domain":[["name","ilike","Apple"]],"offset":0,"order":"","limit":40,"context":{"lang":"en","uid":7,"tz":"taht","allowed_company_ids":[1],"bin_size":true,"current_company_id":1},"count_limit":10001}`,
         ]);
 
         await openStudio(target);
         assert.containsOnce(target, ".o_web_studio_kanban_view_editor");
         assert.verifySteps([
-            `web_search_read: {"limit":1,"offset":0,"order":"","context":{"lang":"en","uid":7,"tz":"taht","allowed_company_ids":[1],"studio":1,"bin_size":true},"count_limit":10001,"domain":[["name","ilike","Apple"]],"fields":["display_name"]}`,
+            `unity_web_search_read: {"specification":{"display_name":{}},"domain":[["name","ilike","Apple"]],"offset":0,"order":"","limit":1,"context":{"lang":"en","uid":7,"tz":"taht","allowed_company_ids":[1],"studio":1,"bin_size":true,"current_company_id":1},"count_limit":10001}`,
         ]);
         assert.strictEqual(target.querySelector(".o_kanban_record").textContent, "Applejack");
     });
@@ -847,15 +848,16 @@ QUnit.module("Studio", (hooks) => {
                 context: "{'default_type': 'foo'}",
                 res_id: 4,
                 xml_id: "action_43",
+                groups_id: [],
             };
 
             const mockRPC = async (route, args) => {
-                if (route === "/web/dataset/call_kw/pony/read") {
+                if (route === "/web/dataset/call_kw/pony/web_read") {
                     // We pass here twice: once for the "classic" action
                     // and once when entering studio
                     assert.strictEqual(args.kwargs.context.default_type, "foo");
                 }
-                if (route === "/web/dataset/call_kw/partner/onchange") {
+                if (route === "/web/dataset/call_kw/partner/onchange2") {
                     assert.ok(
                         !("default_type" in args.kwargs.context),
                         "'default_x' context value should not be propaged to x2m model"

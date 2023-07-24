@@ -9,7 +9,7 @@ import { X2ManyField, x2ManyField } from "@web/views/fields/x2many/x2many_field"
 import { KanbanRecord } from "@web/views/kanban/kanban_record";
 import { KanbanRenderer } from "@web/views/kanban/kanban_renderer";
 
-const { onWillRender, useEffect, useRef, useSubEnv } = owl;
+const { useEffect, useRef, useSubEnv } = owl;
 const fieldRegistry = registry.category("fields");
 
 
@@ -73,7 +73,7 @@ export class HierarchyKanbanRecord extends KanbanRecord {
         const listOrGroup = group || list;
         const { type } = params;
         const directChildren = list.records.filter(
-            (listRecord) => listRecord.data.parent_id && listRecord.data.parent_id[0] == record.data.id
+            (listRecord) => listRecord.data.parent_id && listRecord.data.parent_id[0] == record.resId
         ); 
 
         if (type === "delete" && !listOrGroup.deleteRecords &&
@@ -103,7 +103,7 @@ export class HierarchyKanbanRecord extends KanbanRecord {
         await this.props.list.model.root.save({stayInEdition: true});
 
         const context = {
-            default_parent_id: this.props.record.data.id,
+            default_parent_id: this.props.record.resId,
             default_trigger_type: ev.target.dataset.triggerType,
         };
         this.env.onAddMarketingActivity({ context });
@@ -167,6 +167,7 @@ HierarchyKanbanRecord.defaultProps = {
 
 HierarchyKanbanRecord.props = KanbanRecord.props.concat([
     'is_readonly?',
+    'getRecordDepth',
 ]);
 
 
@@ -232,7 +233,7 @@ export class HierarchyKanbanRenderer extends KanbanRenderer {
             `
             <t t-name="kanban-box">
                 <t t-set="currentDepth" t-value="currentDepth ? currentDepth + 1 : 1"/>
-                <div t-if="__comp__.props.record.depth - currentDepth + 1 > 0" class="o_ma_body_wrapper"
+                <div t-if="__comp__.props.getRecordDepth(__comp__.props.record) - currentDepth + 1 > 0" class="o_ma_body_wrapper"
                     t-call="{{ __comp__.templates['kanban-box'] }}"/>
                 <t t-else="" t-call="{{ __comp__.templates.root }}"/>
             </t>
@@ -241,56 +242,27 @@ export class HierarchyKanbanRenderer extends KanbanRenderer {
 
         this.props.archInfo.templateDocs["kanban-box"] = mainTemplate;
 
-        onWillRender(() => {
-            const activities = this.props.list.model.root.data.marketing_activity_ids;
-            if (activities && activities.records) {
-                this.props.list.model.root.data.marketing_activity_ids.records = this._getSortedRecordsByHierarchy(
-                    activities.records,
-                    false,
-                );
-            }
-
-            const traces = this.props.list.model.root.data.trace_ids;
-            if (traces && traces.records) {
-                this.props.list.model.root.data.trace_ids.records = this._getSortedRecordsByHierarchy(
-                    traces.records,
-                    false,
-                );
-            }
-        });
-
         this.rootRef = useRef("root");
+    }
 
-        onWillRender(() => {
-            let parentByChildMap;
-            if (this.props.list.model.root.data.marketing_activity_ids
-                && this.props.list.model.root.data.marketing_activity_ids.records) {
-                parentByChildMap = this._getParentByChildMap(
-                    this.props.list.model.root.data.marketing_activity_ids.records
-                );
-            }
+    getGroupsOrRecords() {
+        return this._getSortedRecordsByHierarchy(this.props.list.records, false).map((record) => ({
+            record,
+            key: record.id,
+        }));
+    }
 
-            if (this.props.list.model.root.data.trace_ids
-                && this.props.list.model.root.data.trace_ids.records) {
-                parentByChildMap = this._getParentByChildMap(
-                    this.props.list.model.root.data.trace_ids.records
-                );
+    getRecordDepth(record) {
+        let parentByChildMap = this._getParentByChildMap(this.props.list.records);
+        let childId = record.resId;
+        let depth = 0;
+        while (childId) {
+            childId = parentByChildMap[childId];
+            if (childId) {
+                depth++;
             }
-
-            if (parentByChildMap) {
-                this.props.list.records.forEach((record) => {
-                    let childId = record.resId;
-                    let depth = 0;
-                    while (childId) {
-                        childId = parentByChildMap[childId];
-                        if (childId) {
-                            depth++;
-                        }
-                    }
-                    record.depth = depth;
-                });
-            }
-        });
+        }
+        return depth;
     }
 
     /**
@@ -301,7 +273,7 @@ export class HierarchyKanbanRenderer extends KanbanRenderer {
         records.forEach((activityRecord) => {
             const parentId = activityRecord.data.parent_id;
             if (parentId) {
-                parentMap[activityRecord.data.id] = parentId[0];
+                parentMap[activityRecord.resId] = parentId[0];
             }
         });
 
@@ -313,7 +285,7 @@ export class HierarchyKanbanRenderer extends KanbanRenderer {
      */
     _getSortedRecordsByHierarchy(records, parentId) {
         return records.flatMap(record => {
-            if (!record.data.id) {
+            if (!record.resId) {
                 return []
             } else if (!record.data.parent_id && parentId) {
                 return [];
@@ -321,7 +293,7 @@ export class HierarchyKanbanRenderer extends KanbanRenderer {
                 return [];
             }
 
-            return [record, ...this._getSortedRecordsByHierarchy(records, record.data.id)];
+            return [record, ...this._getSortedRecordsByHierarchy(records, record.resId)];
         });
     };
 }
@@ -330,6 +302,7 @@ HierarchyKanbanRenderer.components = {
     ...KanbanRenderer.components,
     KanbanRecord: HierarchyKanbanRecord,
 };
+HierarchyKanbanRenderer.template = "marketing_automation.HierarchyKanbanRenderer";
 
 export class HierarchyKanban extends X2ManyField {
     /**

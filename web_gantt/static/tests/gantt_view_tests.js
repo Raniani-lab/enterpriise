@@ -1741,7 +1741,7 @@ QUnit.test("create dialog with timezone", async (assert) => {
         arch: '<gantt date_start="start" date_stop="stop" />',
         mockRPC(route, { method, args }) {
             if (method === "create") {
-                assert.deepEqual(args, [
+                assert.deepEqual(args[0], [
                     { start: "2018-12-09 23:00:00", stop: "2018-12-10 22:59:59" },
                 ]);
             }
@@ -4613,11 +4613,8 @@ QUnit.test("plan dialog initial domain has the action domain as its only base", 
     const webClient = await createWebClient({
         serverData,
         mockRPC: function (route, args) {
-            if (args.method === "web_search_read") {
+            if (args.method === "unity_web_search_read" || args.method === "web_search_read") {
                 assert.step(args.kwargs.domain.toString());
-            }
-            if (route === "/web/dataset/search_read") {
-                assert.step(args.domain.toString());
             }
         },
     });

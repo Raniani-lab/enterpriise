@@ -76,7 +76,7 @@ export class PermissionPanel extends Component {
                 // Update panel content
                 await this.loadPanel();
                 // Reload record
-                this.env.model.load();
+                this.env.model.root.load();
                 
             }
         });
@@ -159,7 +159,7 @@ export class PermissionPanel extends Component {
             await confirm();
             if (willGainWrite) {
                 // Reload article when admin gives himself write access
-                this.env.model.load();
+                this.env.model.root.load();
             }
             return;
         }
@@ -308,7 +308,7 @@ export class PermissionPanel extends Component {
             if (this.props.record.isDirty) {
                 await this.props.record.save({noReload: true});
             }
-            await this.env.model.load();
+            await this.env.model.root.load();
             return false;
         } else if (reloadAll) {  // Lose access -> Hard Reload
             window.location.replace('/knowledge/home');
@@ -316,7 +316,7 @@ export class PermissionPanel extends Component {
             if (this.props.record.isDirty) {
                 await this.props.record.save();
             }
-            await this.env.model.load();
+            await this.env.model.root.load();
         }
         return true;
     }

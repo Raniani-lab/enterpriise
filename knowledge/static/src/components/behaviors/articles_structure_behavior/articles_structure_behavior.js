@@ -187,7 +187,7 @@ export class ArticlesStructureBehavior extends AbstractBehavior {
      * @returns {HTMLElement}
      */
     async _renderArticlesStructure () {
-        const articleId = this.props.record.data.id;
+        const articleId = this.props.record.resId;
         const allArticles = await this._fetchAllArticles(articleId);
         return markup(QWeb.render('knowledge.articles_structure', {
             'articles': this._buildArticlesStructure(articleId, allArticles),

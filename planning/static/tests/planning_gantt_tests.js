@@ -229,7 +229,7 @@ QUnit.module("Views", (hooks) => {
             serverData,
             arch: '<gantt js_class="planning_gantt" default_scale="day" date_start="start_datetime" date_stop="end_datetime"/>',
             mockRPC(_, args) {
-                if (args.method === "onchange") {
+                if (args.method === "onchange2") {
                     assert.strictEqual(
                         args.kwargs.context.default_end_datetime,
                         now.startOf("day").toFormat("yyyy-MM-dd 23:59:59")

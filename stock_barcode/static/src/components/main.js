@@ -19,6 +19,21 @@ import { url } from '@web/core/utils/urls';
 
 const { Component, onMounted, onPatched, onWillStart, onWillUnmount, useState, useSubEnv } = owl;
 
+class StockBarcodeUnlinkButton extends Component {
+    static template = "stock_barcode.UnlinkButton";
+    setup() {
+        this.orm = useService("orm");
+    }
+    async onClick() {
+        const { resModel, resId, context } = this.props.record;
+        await this.orm.unlink(resModel, [resId], { context });
+        bus.trigger("refresh");
+    }
+}
+registry.category("view_widgets").add("stock_barcode_unlink_button", {
+    component: StockBarcodeUnlinkButton,
+});
+
 /**
  * Main Component
  * Gather the line information.
@@ -245,7 +260,7 @@ class MainComponent extends Component {
     }
 
     saveFormView(lineRecord) {
-        const lineId = (lineRecord && lineRecord.data.id) || (this._editedLineParams && this._editedLineParams.currentId);
+        const lineId = (lineRecord && lineRecord.resId) || (this._editedLineParams && this._editedLineParams.currentId);
         const recordId = (lineRecord.resModel === this.resModel) ? lineId : undefined;
         this._onRefreshState({ recordId, lineId });
     }

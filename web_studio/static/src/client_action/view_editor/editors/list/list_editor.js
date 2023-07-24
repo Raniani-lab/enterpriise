@@ -5,7 +5,6 @@ import { registry } from "@web/core/registry";
 import { omit } from "@web/core/utils/objects";
 
 import { ListEditorRenderer, columnsStyling } from "./list_editor_renderer";
-import { RelationalModel } from "@web/views/relational_model";
 
 import { Component, xml } from "@odoo/owl";
 import { ListEditorSidebar } from "./list_editor_sidebar/list_editor_sidebar";
@@ -27,8 +26,9 @@ class EditorArchParser extends listView.ArchParser {
         const noFetch = getStudioNoFetchFields(parsed.fieldNodes);
         parsed.fieldNodes = omit(parsed.fieldNodes, ...noFetch.fieldNodes);
         const noFetchFieldNames = noFetch.fieldNames;
-        parsed.activeFields = omit(parsed.activeFields, ...noFetchFieldNames);
-        parsed.columns = parsed.columns.filter((field) => !noFetchFieldNames.includes(field.name));
+        parsed.columns = parsed.columns.filter(
+            (col) => col.type !== "field" || !noFetchFieldNames.includes(col.name)
+        );
         return parsed;
     }
 
@@ -68,28 +68,17 @@ class EditorArchParser extends listView.ArchParser {
  * to extend StaticList instead of DynamicList, and make it the root record of the model.
  */
 function modelUsesParentRecord(model, parentRecord, resIds) {
-    if (!(model instanceof RelationalModel)) {
-        throw new Error("The model instance is not of the right type to accept a parent record.");
-    }
-    model.rootType = "static_list";
-    // eval right away to avoid keeping the parentRecord in the closure;
-    const parentEvalContext = parentRecord.evalContext;
-    model.rootParams.getParentRecordContext = () => parentEvalContext;
+    const config = model.config;
+    config.resIds = resIds;
+    config.offset = 0;
+    config.limit = Math.max(7, resIds.length); // don't load everything
 
-    const createDataPoint = model.createDataPoint.bind(model);
-    const modelLoad = model.load.bind(model);
-    model.load = (...args) => {
-        // intercept the createDatapoint for the root staticList
-        model.createDataPoint = (...args) => {
-            const dataPoint = createDataPoint(...args);
-            dataPoint.setCurrentIds(resIds);
-            dataPoint.selection = [];
-            dataPoint.isReadonly = () => true;
-            // Immediate revert of the override
-            model.createDataPoint = createDataPoint;
-            return dataPoint;
-        };
-        return modelLoad(...args);
+    const evalContext = { ...parentRecord.evalContext };
+    model._createRoot = (config, data) => {
+        const list = new model.constructor.StaticList(model, { ...config }, data);
+        list._parent = { evalContext };
+        list.selection = [];
+        return list;
     };
 }
 

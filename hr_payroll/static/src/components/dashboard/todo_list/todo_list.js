@@ -3,9 +3,9 @@
 import { Component, onWillStart, useState } from "@odoo/owl";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { useAutofocus, useService } from "@web/core/utils/hooks";
+import { orderByToString } from "@web/search/utils/order_by";
 import { Field } from "@web/views/fields/field";
 import { Record } from "@web/views/record";
-import { orderByToString } from "@web/views/utils";
 import { useSetupAction } from "@web/webclient/actions/action_hook";
 
 /**

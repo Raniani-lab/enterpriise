@@ -67,7 +67,7 @@ export class KnowledgeArticleHtmlField extends HtmlField {
     onLoadTemplateBtnClick() {
         this.dialogService.add(ArticleTemplatePickerDialog, {
             onLoadTemplate: async articleTemplateId => {
-                this.props.record.switchMode("readonly");
+                await this.props.record.switchMode("readonly");
                 if (this.props.record.isDirty) {
                     await this.props.record.save();
                 }

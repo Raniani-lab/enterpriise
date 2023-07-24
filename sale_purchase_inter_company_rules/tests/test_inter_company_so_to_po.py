@@ -16,17 +16,12 @@ class TestInterCompanySaleToPurchase(TestInterCompanyRulesCommonSOPO):
         sale_order.warehouse_id = company.warehouse_id
         sale_order.partner_id = partner
         sale_order.user_id = user
-        sale_order.partner_invoice_id = partner
-        sale_order.partner_shipping_id = partner
-        sale_order = sale_order.save()
+        with sale_order.order_line.new() as line:
+            line.name = 'Service'
+            line.product_id = self.product_consultant
+            line.price_unit = 450.0
 
-        with Form(sale_order) as so:
-            with so.order_line.new() as line:
-                line.name = 'Service'
-                line.product_id = self.product_consultant
-                line.price_unit = 450.0
-
-        return sale_order
+        return sale_order.save()
 
     def generate_sale_order(self, company, partner, user):
         sale_order = self._generate_draft_sale_order(company, partner, user)

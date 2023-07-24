@@ -6,7 +6,6 @@ import string
 
 from odoo import api, models, _
 from odoo.addons.iap.tools import iap_tools
-from odoo.exceptions import UserError
 
 
 OCR_VERSION = 102
@@ -97,41 +96,14 @@ class HrApplicant(models.Model):
                         })
                         applicant_skills += applicant_skill
 
-    def action_send_for_digitization(self):
-        if any(not applicant.is_in_extractable_state for applicant in self):
-            raise UserError(_("You cannot send a CV for an applicant who's not in first stage!"))
-
-        self.action_manual_send_for_digitization()
-
-        if len(self) == 1:
-            return {
-                'name': _('Generated Applicant'),
-                'type': 'ir.actions.act_window',
-                'res_model': 'hr.applicant',
-                'view_mode': 'form',
-                'views': [[False, 'form']],
-                'res_id': self[0].id,
-            }
-        return {
-            'name': _('Generated Applicants'),
-            'type': 'ir.actions.act_window',
-            'res_model': 'hr.applicant',
-            'view_mode': 'tree,form',
-            'target': 'current',
-            'domain': [('id', 'in', self.ids)],
-        }
-
     def _autosend_for_digitization(self):
         if self.env.company.recruitment_extract_show_ocr_option_selection == 'auto_send':
-            self.filtered('extract_can_show_send_button').action_manual_send_for_digitization()
+            self.filtered('extract_can_show_send_button').send_batch_for_digitization()
 
     def _contact_iap_extract(self, pathinfo, params):
         params['version'] = OCR_VERSION
         endpoint = self.env['ir.config_parameter'].sudo().get_param('iap_extract_endpoint', 'https://extract.api.odoo.com')
         return iap_tools.iap_jsonrpc(endpoint + '/api/extract/applicant/1/' + pathinfo, params=params)
-
-    def _get_iap_bus_notification_content(self):
-        return _("Resume is being Digitized")
 
     def _get_ocr_module_name(self):
         return 'hr_recruitment_extract'
@@ -142,6 +114,9 @@ class HrApplicant(models.Model):
 
     def _get_validation_fields(self):
         return ['email', 'mobile', 'name', 'phone']
+
+    def _get_user_error_invalid_state_message(self):
+        return _("You cannot send a CV for an applicant who's not in first stage!")
 
     def _message_set_main_attachment_id(self, attachment_ids):
         res = super()._message_set_main_attachment_id(attachment_ids)

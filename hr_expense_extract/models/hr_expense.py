@@ -22,8 +22,8 @@ class HrExpense(models.Model):
 
     @api.depends('state')
     def _compute_is_in_extractable_state(self):
-        for record in self:
-            record.is_in_extractable_state = record.state == 'draft'
+        for expense in self:
+            expense.is_in_extractable_state = expense.state == 'draft' and not expense.sheet_id
 
     @api.model
     def _contact_iap_extract(self, pathinfo, params):
@@ -37,7 +37,7 @@ class HrExpense(models.Model):
 
     def _autosend_for_digitization(self):
         if self.env.company.expense_extract_show_ocr_option_selection == 'auto_send':
-            self.filtered('extract_can_show_send_button').action_manual_send_for_digitization()
+            self.filtered('extract_can_show_send_button').send_batch_for_digitization()
 
     def _message_set_main_attachment_id(self, attachment_ids):
         super(HrExpense, self)._message_set_main_attachment_id(attachment_ids)
@@ -100,34 +100,6 @@ class HrExpense(models.Model):
                 if currency:
                     self.currency_id = currency
 
-    def action_send_for_digitization(self):
-        if any(not expense.is_in_extractable_state or expense.sheet_id for expense in self):
-            raise UserError(_("You cannot send a expense that is not in draft state!"))
-
-        self.action_manual_send_for_digitization()
-
-        if len(self) == 1:
-            return {
-                'name': _('Generated Expense'),
-                'view_mode': 'form',
-                'res_model': 'hr.expense',
-                'type': 'ir.actions.act_window',
-                'views': [[False, 'form']],
-                'res_id': self[0].id,
-            }
-        else:
-            return {
-                'name': _('Expenses sent'),
-                'type': 'ir.actions.act_window',
-                'view_mode': 'tree,form',
-                'res_model': 'hr.expense',
-                'target': 'current',
-                'domain': [('id', 'in', [expense.id for expense in self])],
-            }
-
-    def _get_iap_bus_notification_content(self):
-        return _("Expense is being Digitized")
-
     @api.model
     def get_empty_list_help(self, help_message):
         if self.env.user.has_group('hr_expense.group_hr_expense_manager'):
@@ -179,6 +151,9 @@ class HrExpense(models.Model):
 
     def _get_validation_fields(self):
         return ['total', 'date', 'description', 'currency', 'bill_reference']
+
+    def _get_user_error_invalid_state_message(self):
+        return _("You cannot send a expense that is not in draft state!")
 
     def _upload_to_extract_success_callback(self):
         super()._upload_to_extract_success_callback()

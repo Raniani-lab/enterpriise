@@ -26,7 +26,7 @@
                     </button>
                 </div>
                 <div role="status" class="alert alert-info mb8 text-center"
-                     invisible="not is_in_extractable_state or extract_state not in ['waiting_upload', 'waiting_extraction']">
+                     invisible="not is_in_extractable_state or extract_state != 'waiting_extraction'">
                     All fields will be automated by Artificial Intelligence, it might take 5 seconds.
                     <button type="object" name="check_ocr_status" class="btn btn-link">
                         <i class="oi oi-fw o_button_icon oi-arrow-right"/>

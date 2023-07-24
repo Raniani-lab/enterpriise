@@ -56,7 +56,7 @@ class TestExpenseExtractProcess(TestExpenseCommon, TestExtractMixin):
             'dbuuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid'),
             'documents': [self.attachment.datas.decode('utf-8')],
             'user_infos': {
-                'user_email': self.env.ref('base.user_root').email,
+                'user_email': self.user.email,
                 'user_lang': self.env.ref('base.user_root').lang,
             },
             'webhook_url': f'{self.expense.get_base_url()}/hr_expense_extract/request_done',
@@ -118,7 +118,7 @@ class TestExpenseExtractProcess(TestExpenseCommon, TestExtractMixin):
         self.assertTrue(self.expense.extract_can_show_send_button)
 
         with self._mock_iap_extract(extract_response=self.parse_success_response()):
-            self.expense.action_send_for_digitization()
+            self.expense.action_send_batch_for_digitization()
 
         # upon success, no button shall be provided
         self.assertFalse(self.expense.extract_can_show_send_button)

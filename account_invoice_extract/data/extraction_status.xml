@@ -31,7 +31,7 @@
                     </button>
                 </div>
                 <div role="status" class="alert alert-info mb8 text-center" name="waiting_extraction"
-                     invisible="not extract_can_show_banners or extract_state not in ['waiting_upload', 'waiting_extraction']">
+                     invisible="not extract_can_show_banners or extract_state != 'waiting_extraction'">
                     All fields will be automated by Artificial Intelligence, it might take 5 seconds.
                     <button type="object" name="check_ocr_status" class="btn btn-link">
                         <i class="oi oi-fw o_button_icon oi-arrow-right"/>
@@ -79,10 +79,7 @@
             <field name="state">code</field>
             <field name="code">
                 if records:
-                    if all(rec.is_invoice() for rec in records):
-                        action = records.action_manual_send_for_digitization()
-                    else:
-                        raise UserError("This action is only possible for invoices")
+                    action = records.action_send_batch_for_digitization()
             </field>
     </record>
 

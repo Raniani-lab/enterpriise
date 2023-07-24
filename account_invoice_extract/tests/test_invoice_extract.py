@@ -648,7 +648,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin, MailCommo
                 'user_company_VAT': invoice.company_id.vat,
                 'user_company_country_code': invoice.company_id.country_id.code,
                 'user_company_name': invoice.company_id.name,
-                'user_email': self.env.ref('base.user_root').email,
+                'user_email': self.user.email,
                 'user_lang': self.env.ref('base.user_root').lang,
             },
             'webhook_url': f'{invoice.get_base_url()}/account_invoice_extract/request_done',

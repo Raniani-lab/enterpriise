@@ -128,10 +128,12 @@ class AccountMove(models.Model):
             'VAT_Number', 'currency', 'payment_ref', 'iban', 'SWIFT_code', 'merged_lines', 'invoice_lines',
         ]
 
+    def _get_user_error_invalid_state_message(self):
+        return _("You cannot send a expense that is not in draft state!")
+
     def _upload_to_extract_success_callback(self):
         super()._upload_to_extract_success_callback()
-        attachments = self.message_main_attachment_id
-        self.extract_attachment_id = attachments
+        self.extract_attachment_id = self.message_main_attachment_id
 
     def _try_to_check_ocr_status(self):
         """ Try to check the extract status of the invoice."""
@@ -530,8 +532,6 @@ class AccountMove(models.Model):
             return self.company_id.currency_id
         return possible_currencies[:1]
 
-    def _get_iap_bus_notification_content(self):
-        return _lt("Bill is being Digitized")
 
     def _get_invoice_lines(self, ocr_results):
         """
@@ -824,7 +824,7 @@ class AccountMove(models.Model):
     @api.model
     def _import_invoice_ocr(self, invoice, file_data, new=False):
         invoice.message_main_attachment_id = file_data['attachment']
-        invoice.action_manual_send_for_digitization()
+        invoice.send_batch_for_digitization()
         return True
 
     def _get_edi_decoder(self, file_data, new=False):

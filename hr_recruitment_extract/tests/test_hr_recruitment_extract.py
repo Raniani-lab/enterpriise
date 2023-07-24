@@ -91,7 +91,7 @@ class TestRecruitmentExtractProcess(TestHrCommon, TestExtractMixin):
         self.assertTrue(self.applicant.extract_can_show_send_button)
 
         with self._mock_iap_extract(extract_response=self.parse_success_response()):
-            self.applicant.action_send_for_digitization()
+            self.applicant.action_send_batch_for_digitization()
 
         # upon success, no button shall be provided
         self.assertFalse(self.applicant.extract_can_show_send_button)

@@ -6,7 +6,7 @@ import logging
 from dateutil.relativedelta import relativedelta
 from psycopg2 import IntegrityError, OperationalError
 
-from odoo import api, fields, models, _lt
+from odoo import api, fields, models, _lt, _
 from odoo.exceptions import AccessError, UserError
 
 
@@ -19,9 +19,7 @@ ERROR_MESSAGES = {
     'error_no_connection': _lt("Server not available. Please retry later"),
     'error_maintenance': _lt("Server is currently under maintenance. Please retry later"),
     'error_password_protected': _lt("Your PDF file is protected by a password. The OCR can't extract data from it"),
-    'error_too_many_pages': _lt(
-        "Your invoice is too heavy to be processed by the OCR. "
-        "Try to reduce the number of pages and avoid pages with too many text"),
+    'error_too_many_pages': _lt("Your document contains too many pages"),
     'error_invalid_account_token': _lt(
         "The 'invoice_ocr' IAP account token is invalid. "
         "Please delete it to let Odoo generate a new one or fill it with a valid token."),
@@ -39,9 +37,8 @@ class ExtractMixin(models.AbstractModel):
 
     extract_state = fields.Selection([
             ('no_extract_requested', 'No extract requested'),
-            ('not_enough_credit', 'Not enough credit'),
+            ('not_enough_credit', 'Not enough credits'),
             ('error_status', 'An error occurred'),
-            ('waiting_upload', 'Waiting upload'),
             ('waiting_extraction', 'Waiting extraction'),
             ('extract_not_ready', 'waiting extraction, but it is not ready'),
             ('waiting_validation', 'Waiting validation'),
@@ -69,7 +66,7 @@ class ExtractMixin(models.AbstractModel):
     @api.depends('extract_state')
     def _compute_extract_state_processed(self):
         for record in self:
-            record.extract_state_processed = record.extract_state in ['waiting_extraction', 'waiting_upload']
+            record.extract_state_processed = record.extract_state == 'waiting_extraction'
 
     @api.depends('is_in_extractable_state', 'extract_state', 'message_main_attachment_id')
     def _compute_show_send_button(self):
@@ -97,19 +94,6 @@ class ExtractMixin(models.AbstractModel):
         return {}
 
     @api.model
-    def _cron_parse(self):
-        for rec in self.search([('extract_state', '=', 'waiting_upload')]):
-            try:
-                with self.env.cr.savepoint(flush=False):
-                    rec.with_company(rec.company_id).upload_to_extract()
-                    # We handle the flush manually so that if an error occurs, e.g. a concurrent update error,
-                    # the savepoint will be rollbacked when exiting the context manager
-                    self.env.cr.flush()
-                self.env.cr.commit()
-            except (IntegrityError, OperationalError) as e:
-                _logger.error("Couldn't upload %s with id %d: %s", rec._name, rec.id, str(e))
-
-    @api.model
     def _cron_validate(self):
         records_to_validate = self.search(self._get_validation_domain())
         documents = {
@@ -131,16 +115,73 @@ class ExtractMixin(models.AbstractModel):
     def get_ocr_selected_value(ocr_results, feature, default=None):
         return ocr_results.get(feature, {}).get('selected_value', {}).get('content', default)
 
+    def safe_upload(self):
+        """
+        This function prevents any exception from being thrown during the upload of a document.
+        This is meant to be used for batch uploading where we don't want that an error rollbacks the whole transaction.
+        """
+        try:
+            with self.env.cr.savepoint():
+                self.with_company(self.company_id)._upload_to_extract()
+        except Exception as e:
+            if not isinstance(e, (IntegrityError, OperationalError)):
+                self.extract_state = 'error_status'
+                self.extract_status = 'error_internal'
+            self.env['iap.account']._send_error_notification(
+                message=self._get_iap_bus_notification_error(),
+            )
+            _logger.warning("Couldn't upload %s with id %d: %s", self._name, self.id, str(e))
+
+    def send_batch_for_digitization(self):
+        for rec in self:
+            rec.safe_upload()
+
+    def action_send_batch_for_digitization(self):
+        if any(not document.is_in_extractable_state for document in self):
+            raise UserError(self._get_user_error_invalid_state_message())
+
+        documents_to_send = self.filtered(
+            lambda doc: doc.extract_state in ('no_extract_requested', 'not_enough_credit', 'error_status')
+        )
+
+        if not documents_to_send:
+            self.env['iap.account']._send_status_notification(
+                message=_('The selected documents are already digitized'),
+                status='info',
+            )
+            return
+
+        if len(documents_to_send) < len(self):
+            self.env['iap.account']._send_status_notification(
+                message=_('Some documents were skipped as they were already digitized'),
+                status='info',
+            )
+
+        documents_to_send._send_batch_for_digitization()
+
+        if len(documents_to_send) == 1:
+            return {
+                'name': _('Document sent for digitization'),
+                'type': 'ir.actions.act_window',
+                'res_model': self._name,
+                'view_mode': 'form',
+                'views': [[False, 'form']],
+                'res_id': documents_to_send[0].id,
+            }
+        return {
+            'name': _('Documents sent for digitization'),
+            'type': 'ir.actions.act_window',
+            'res_model': self._name,
+            'view_mode': 'tree,form',
+            'target': 'current',
+            'domain': [('id', 'in', documents_to_send.ids)],
+        }
+
     def action_manual_send_for_digitization(self):
         """ Manually trigger the ocr flow for the records.
         This function is meant to be overridden, and called with a title.
         """
-        for rec in self:
-            rec.env['iap.account']._send_iap_bus_notification(
-                service_name='invoice_ocr',
-                title=self._get_iap_bus_notification_content())
-        self.extract_state = 'waiting_upload'
-        self._get_cron_ocr('parse')._trigger()
+        self._upload_to_extract()
 
     def buy_credits(self):
         url = self.env['iap.account'].get_credits_url(base_url='', service_name='invoice_ocr')
@@ -151,15 +192,6 @@ class ExtractMixin(models.AbstractModel):
 
     def check_ocr_status(self):
         """ Actively check the status of the extraction on the concerned records. """
-        if any(rec.extract_state == 'waiting_upload' for rec in self):
-            _logger.info('Manual trigger of the parse cron')
-            try:
-                cron_ocr_parse = self._get_cron_ocr('parse')
-                cron_ocr_parse._try_lock()
-                cron_ocr_parse.sudo().method_direct_trigger()
-            except UserError:
-                _logger.warning('Lock acquiring failed, cron is already running')
-                return
 
         records_to_check = self.filtered(lambda a: a.extract_state in ['waiting_extraction', 'extract_not_ready'])
 
@@ -191,15 +223,10 @@ class ExtractMixin(models.AbstractModel):
         self.ensure_one()
         if not self._get_ocr_option_can_extract():
             return False
-        attachments = self.message_main_attachment_id
-        if (
-                attachments.exists() and
-                self.extract_state in ['no_extract_requested', 'waiting_upload', 'not_enough_credit', 'error_status']
-        ):
+        attachment = self.message_main_attachment_id
+        if attachment and self.extract_state in ['no_extract_requested', 'not_enough_credit', 'error_status']:
             account_token = self.env['iap.account'].get('invoice_ocr')
-            # This line contact iap to create account if this is the first request.
-            # It allows iap to give free credits if the database is eligible
-            self.env['iap.account'].get_credits('invoice_ocr')
+
             if not account_token.account_token:
                 self.extract_state = 'error_status'
                 self.extract_status = 'error_invalid_account_token'
@@ -209,7 +236,7 @@ class ExtractMixin(models.AbstractModel):
             params = {
                 'account_token': account_token.account_token,
                 'dbuuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid'),
-                'documents': [x.datas.decode('utf-8') for x in attachments],
+                'documents': [x.datas.decode('utf-8') for x in attachment],
                 'user_infos': user_infos,
                 'webhook_url': self._get_webhook_url(),
             }
@@ -221,6 +248,9 @@ class ExtractMixin(models.AbstractModel):
                     self.extract_document_uuid = result['document_uuid']
                     if self.env['ir.config_parameter'].sudo().get_param("iap_extract.already_notified", True):
                         self.env['ir.config_parameter'].sudo().set_param("iap_extract.already_notified", False)
+                    self.env['iap.account']._send_success_notification(
+                        message=self._get_iap_bus_notification_success(),
+                    )
                     self._upload_to_extract_success_callback()
                 elif result['status'] == 'error_no_credit':
                     self.send_no_credit_notification()
@@ -232,12 +262,22 @@ class ExtractMixin(models.AbstractModel):
             except AccessError:
                 self.extract_state = 'error_status'
                 self.extract_status = 'error_no_connection'
+            if self.extract_state == 'error_status':
+                self.env['iap.account']._send_error_notification(
+                    message=self._get_iap_bus_notification_error(),
+                )
 
     def send_no_credit_notification(self):
         """
         Notify about the number of credit.
         In order to avoid to spam people each hour, an ir.config_parameter is set
         """
+
+        self.env['iap.account']._send_no_credit_notification(
+            service_name='invoice_ocr',
+            title=_("Not enough credits for data extraction"),
+        )
+
         #If we don't find the config parameter, we consider it True, because we don't want to notify if no credits has been bought earlier.
         already_notified = self.env['ir.config_parameter'].sudo().get_param("iap_extract.already_notified", True)
         if already_notified:
@@ -287,15 +327,17 @@ class ExtractMixin(models.AbstractModel):
         raise NotImplementedError()
 
     def _get_cron_ocr(self, ocr_action):
-        """ Return the cron used to parse the documents, based on the module name.
-        ocr_action can be 'parse' or 'validate'.
+        """ Return the cron used to validate the documents, based on the module name.
+        ocr_action can be 'validate'.
         """
         module_name = self._get_ocr_module_name()
         return self.env.ref(f'{module_name}.ir_cron_ocr_{ocr_action}')
 
-    def _get_iap_bus_notification_content(self):
-        """ Return the content that needs to be passed as bus notification. This method is meant to be overridden """
-        return ''
+    def _get_iap_bus_notification_success(self):
+        return _("Document is being digitized")
+
+    def _get_iap_bus_notification_error(self):
+        return _("An error occurred during the upload")
 
     def _get_ocr_module_name(self):
         """ Returns the name of the module. This method is meant to be overridden """
@@ -321,6 +363,13 @@ class ExtractMixin(models.AbstractModel):
         baseurl = self.get_base_url()
         module_name = self._get_ocr_module_name()
         return f'{baseurl}/{module_name}/request_done'
+
+    def _get_user_error_invalid_state_message(self):
+        """
+        Returns the message of the UserError when the user tries to send a document in an invalid state.
+        This method is meant to be overridden.
+        """
+        return ''
 
     def _upload_to_extract_success_callback(self):
         """ This method is called when the OCR flow is successful. This method is meant to be overridden """

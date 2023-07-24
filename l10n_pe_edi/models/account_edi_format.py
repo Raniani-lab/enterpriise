@@ -210,7 +210,10 @@ class AccountEdiFormat(models.Model):
         'number': Ticket number (a string) returned by the getSummary endpoint.
         'cdr': the CDR (bytes with XML format), if it was provided.
         """
-        response_tree = etree.fromstring(soap_response)
+        try:
+            response_tree = etree.fromstring(soap_response)
+        except etree.LxmlError:
+            return {'error': self._l10n_pe_edi_get_general_error_messages()['L10NPE08']}
         if response_tree.find('.//{*}Fault') is not None:
             if response_tree.find('.//{*}message') is not None:  # It comes from Digiflow
                 message_element, code = self._l10n_pe_edi_response_code_digiflow(response_tree)
@@ -256,7 +259,7 @@ class AccountEdiFormat(models.Model):
                     html_escape(message),
                 )
                 return {'error': error_message, 'code': code, 'message': message}
-        return {}
+        return {'error': self._l10n_pe_edi_get_general_error_messages()['L10NPE08']}
 
     _l10n_pe_edi_decode_cdr = _l10n_pe_edi_decode_soap_response
 
@@ -696,7 +699,10 @@ class AccountEdiFormat(models.Model):
                 transport=transport,
             )
             result = client.service.sendBill('%s.zip' % edi_filename, zip_edi_str)
-            result.raise_for_status()
+            # SUNAT will return a 500 Server Error (!) with a SOAP response if the invoice already exists.
+            # In that case, we still want to try to decode the response.
+            if result.status_code != 500:
+                result.raise_for_status()
         except (ReqConnectionError, HTTPError, TypeError, ReadTimeout):
             return {'error': self._l10n_pe_edi_get_general_error_messages()['L10NPE08'], 'blocking_level': 'warning'}
         soap_response = result.content

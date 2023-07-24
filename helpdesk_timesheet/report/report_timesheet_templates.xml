@@ -19,11 +19,8 @@
         </xpath>
         <xpath expr="//td[@t-if='show_task']" position="after">
             <td t-if="show_ticket" class="align-middle">
-                <span t-if="line.helpdesk_ticket_id" t-field="line.helpdesk_ticket_id.sudo().name"/>
+                <span t-if="line.helpdesk_ticket_id" t-field="line.helpdesk_ticket_id.sudo().name">Issue with new portal system</span>
             </td>
-        </xpath>
-        <xpath expr="//t[@t-if='show_task']" position="after">
-            <t t-if="show_ticket" t-set="nbCols" t-value="nbCols + 1"/>
         </xpath>
     </template>
 

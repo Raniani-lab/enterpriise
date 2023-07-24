@@ -148,7 +148,7 @@ class L10nMxEdiDocument(models.Model):
             else:
                 code = None
             if 'MensajeIncidencia' in response.Incidencias.Incidencia[0]:
-                msg = response.Incidencias.Incidencia[0].CodigoError
+                msg = response.Incidencias.Incidencia[0].MensajeIncidencia
             else:
                 msg = None
             errors = []

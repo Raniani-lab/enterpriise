@@ -2,11 +2,11 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import Command
-from odoo.addons.mrp.tests import common
+from odoo.addons.mrp_workorder.tests.common import TestMrpWorkorderCommon
 from odoo.tests import Form
 
 
-class TestWorkOrderDependencies(common.TestMrpCommon):
+class TestWorkOrderDependencies(TestMrpWorkorderCommon):
 
     @classmethod
     def setUpClass(cls):

@@ -5,12 +5,12 @@ from datetime import datetime, timedelta
 from odoo import Command
 from odoo.tests import Form
 from odoo.tests.common import TransactionCase
-from odoo.addons.mrp.tests.common import TestMrpCommon
+from odoo.addons.mrp_workorder.tests.common import TestMrpWorkorderCommon
 from odoo.exceptions import ValidationError, UserError
 from freezegun import freeze_time
 
 
-class TestWorkOrderProcessCommon(TestMrpCommon):
+class TestWorkOrderProcessCommon(TestMrpWorkorderCommon):
 
     @classmethod
     def setUpClass(cls):
@@ -1961,6 +1961,10 @@ class TestRoutingAndKits(TransactionCase):
             - operation 1
         """
         super(TestRoutingAndKits, cls).setUpClass()
+
+        grp_workorder = cls.env.ref('mrp.group_mrp_routings')
+        cls.env.user.write({'groups_id': [(4, grp_workorder.id)]})
+
         cls.uom_unit = cls.env['uom.uom'].search([
             ('category_id', '=', cls.env.ref('uom.product_uom_categ_unit').id),
             ('uom_type', '=', 'reference')

@@ -70,7 +70,7 @@
 
     <!-- Split the pdf added in mrp demo data-->
     <record id="base.group_user" model="res.groups">
-        <field name="implied_ids" eval="[(4, ref('mrp.group_mrp_routings')), (4, ref('mrp_workorder.group_mrp_wo_tablet_timer')),  (4, ref('mrp_workorder.group_mrp_wo_shop_floor'))]"/>
+        <field name="implied_ids" eval="[(4, ref('mrp_workorder.group_mrp_wo_tablet_timer')),  (4, ref('mrp_workorder.group_mrp_wo_shop_floor'))]"/>
     </record>
 
     <function model="mrp.workorder" name="_create_checks">

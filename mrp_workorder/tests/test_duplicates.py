@@ -8,6 +8,10 @@ class TestDuplicateProducts(common.TransactionCase):
     @classmethod
     def setUpClass(cls):
         super(TestDuplicateProducts, cls).setUpClass()
+
+        grp_workorder = cls.env.ref('mrp.group_mrp_routings')
+        cls.env.user.write({'groups_id': [(4, grp_workorder.id)]})
+
         cls.workcenter_1 = cls.env['mrp.workcenter'].create({
             'name': 'Nuclear Workcenter',
             'default_capacity': 2,

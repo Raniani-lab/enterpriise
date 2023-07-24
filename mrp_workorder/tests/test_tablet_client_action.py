@@ -2,12 +2,12 @@
 
 from markupsafe import Markup
 
-from odoo.addons.mrp.tests import common
+from odoo.addons.mrp_workorder.tests.common import TestMrpWorkorderCommon
 from odoo.tests import Form, HttpCase, tagged
 from .test_workorder import TestWorkOrder
 
 
-class TestWorkorderClientActionCommon(common.TestMrpCommon):
+class TestWorkorderClientActionCommon(TestMrpWorkorderCommon):
     @classmethod
     def _get_client_action_url(cls, workorder_id):
         action = cls.env["ir.actions.actions"]._for_xml_id("mrp_workorder.tablet_client_action")

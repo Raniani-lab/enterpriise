@@ -10,6 +10,8 @@ class TestWorkorderDurationHr(common.TransactionCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+        grp_workorder = cls.env.ref('mrp.group_mrp_routings')
+        cls.env.user.write({'groups_id': [(4, grp_workorder.id)]})
         cls.workcenter = cls.env['mrp.workcenter'].create({
             'name': 'Nuclear Workcenter',
             'employee_ids': [

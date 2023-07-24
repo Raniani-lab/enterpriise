@@ -10,6 +10,10 @@ class TestQuality(TransactionCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+
+        grp_workorder = cls.env.ref('mrp.group_mrp_routings')
+        cls.env.user.write({'groups_id': [(4, grp_workorder.id)]})
+
         cls.product_1 = cls.env['product.product'].create({'name': 'Table'})
         cls.product_2 = cls.env['product.product'].create({'name': 'Table top'})
         cls.product_3 = cls.env['product.product'].create({'name': 'Table leg'})

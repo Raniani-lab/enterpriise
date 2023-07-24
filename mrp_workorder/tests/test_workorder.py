@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.addons.mrp.tests import common
+from odoo.addons.mrp_workorder.tests.common import TestMrpWorkorderCommon
 from odoo.tests import Form
 from odoo.tools import mute_logger
 from odoo.exceptions import UserError
@@ -9,7 +9,7 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
-class TestWorkOrder(common.TestMrpCommon):
+class TestWorkOrder(TestMrpWorkorderCommon):
     @classmethod
     def setUpClass(cls):
         super(TestWorkOrder, cls).setUpClass()

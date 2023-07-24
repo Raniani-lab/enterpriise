@@ -226,3 +226,71 @@ class TestCFDIInvoice(TestMxEdiCommon):
         with self.with_mocked_pac_sign_success():
             invoice._l10n_mx_edi_cfdi_invoice_try_send()
         self._assert_invoice_cfdi(invoice, 'test_invoice_tax_rounding')
+
+    @freeze_time('2017-01-01')
+    def test_invoice_tax_objected_no_tax(self):
+        invoice = self._create_invoice(
+            invoice_line_ids=[
+                Command.create({
+                    'product_id': self.product.id,
+                    'price_unit': 1000.0,
+                    'tax_ids': [],
+                }),
+            ],
+        )
+        with self.with_mocked_pac_sign_success():
+            invoice._l10n_mx_edi_cfdi_invoice_try_send()
+        self._assert_invoice_cfdi(invoice, 'test_invoice_tax_objected_no_tax')
+
+    @freeze_time('2017-01-01')
+    def test_invoice_tax_objected_with_taxes(self):
+        invoice = self._create_invoice(
+            invoice_line_ids=[
+                Command.create({
+                    'product_id': self.product.id,
+                    'price_unit': 1000.0,
+                    'tax_ids': [],
+                }),
+                Command.create({
+                    'product_id': self.product.id,
+                    'price_unit': 1000.0,
+                    'tax_ids': [Command.set(self.tax_16.ids)],
+                }),
+                Command.create({
+                    'product_id': self.product.id,
+                    'price_unit': 1000.0,
+                    'discount': 100.0,
+                    'tax_ids': [Command.set(self.tax_16.ids)],
+                }),
+            ],
+        )
+        with self.with_mocked_pac_sign_success():
+            invoice._l10n_mx_edi_cfdi_invoice_try_send()
+        self._assert_invoice_cfdi(invoice, 'test_invoice_tax_objected_with_taxes')
+
+    @freeze_time('2017-01-01')
+    def test_invoice_tax_objected_tax_exempted(self):
+        self.partner_mx.l10n_mx_edi_no_tax_breakdown = True
+        invoice = self._create_invoice(
+            invoice_line_ids=[
+                Command.create({
+                    'product_id': self.product.id,
+                    'price_unit': 1000.0,
+                    'tax_ids': [],
+                }),
+                Command.create({
+                    'product_id': self.product.id,
+                    'price_unit': 1000.0,
+                    'tax_ids': [Command.set(self.tax_16.ids)],
+                }),
+                Command.create({
+                    'product_id': self.product.id,
+                    'price_unit': 1000.0,
+                    'discount': 100.0,
+                    'tax_ids': [Command.set(self.tax_16.ids)],
+                }),
+            ],
+        )
+        with self.with_mocked_pac_sign_success():
+            invoice._l10n_mx_edi_cfdi_invoice_try_send()
+        self._assert_invoice_cfdi(invoice, 'test_invoice_tax_objected_tax_exempted')

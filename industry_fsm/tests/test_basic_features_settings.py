@@ -44,11 +44,3 @@ class TestBasicFeaturesSettings(TestProjectCommon):
 
         self.env["res.config.settings"].create({config_flag: False}).execute()
         self.assertFalse(self.project_pigs[project_flag], "The feature should be disabled on the FSM project when disabled globally")
-
-    def test_project_worksheets(self):
-        fsm_project = self.env['project.project'].create({
-            'name': 'Test FSM Project',
-            'is_fsm': True,
-            'company_id': self.env.company.id,
-        })
-        self.assertTrue(fsm_project.allow_worksheets, "By default, worksheet should be enable for Fsm project")

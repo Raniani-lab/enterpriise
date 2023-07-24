@@ -10,8 +10,6 @@ class Project(models.Model):
 
     is_fsm = fields.Boolean("Field Service", default=False, help="Display tasks in the Field Service module and allow planning with start/end dates.")
     allow_task_dependencies = fields.Boolean(compute='_compute_allow_task_dependencies', store=True, readonly=False)
-    allow_worksheets = fields.Boolean(
-        "Worksheets", compute="_compute_allow_worksheets", store=True, readonly=False)
     allow_milestones = fields.Boolean(compute='_compute_allow_milestones', store=True, readonly=False)
 
     @api.depends('is_fsm', 'is_internal_project', 'company_id')
@@ -34,11 +32,6 @@ class Project(models.Model):
         has_group = self.user_has_groups('project.group_project_task_dependencies')
         for project in self:
             project.allow_task_dependencies = has_group and not project.is_fsm
-
-    @api.depends('is_fsm')
-    def _compute_allow_worksheets(self):
-        for project in self:
-            project.allow_worksheets = project.is_fsm
 
     @api.depends('is_fsm')
     def _compute_company_id(self):

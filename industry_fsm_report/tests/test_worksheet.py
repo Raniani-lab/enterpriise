@@ -80,3 +80,11 @@ class TestWorksheet(TransactionCase):
         subtask2_copy_worksheet_template_id = task_copy.child_ids[1].worksheet_template_id
         self.assertEqual(subtask1_copy_worksheet_template_id, subtask1_worksheet_template_id, "When duplicating a task, subtasks should keep the same worksheet template that we set before.")
         self.assertEqual(subtask2_copy_worksheet_template_id, subtask2_worksheet_template_id, "When duplicating a task, subtasks should keep the same worksheet template that we set before.")
+
+    def test_project_worksheets(self):
+        fsm_project = self.env['project.project'].create({
+            'name': 'Test FSM Project',
+            'is_fsm': True,
+            'company_id': self.env.company.id,
+        })
+        self.assertTrue(fsm_project.allow_worksheets, "By default, worksheet should be enable for Fsm project")

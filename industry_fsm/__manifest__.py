@@ -22,8 +22,6 @@ Adds the following options:
     'version': '1.0',
     'depends': ['project_enterprise', 'timesheet_grid', 'base_geolocalize'],
     'data': [
-        'report/worksheet_custom_report_templates.xml',
-        'report/worksheet_custom_reports.xml',
         'data/fsm_data.xml',
         'data/mail_template_data.xml',
         'security/fsm_security.xml',

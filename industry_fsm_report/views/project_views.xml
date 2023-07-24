@@ -87,6 +87,7 @@
         <field name="inherit_id" ref="industry_fsm.quick_create_task_form_fsm"/>
         <field name="arch" type="xml">
             <field name="user_ids" position="before">
+                <field name="allow_worksheets" invisible="1"/>
                 <field name="worksheet_template_id" invisible="not allow_worksheets" options="{'no_open': True, 'no_create': True}" context="{'default_res_model': 'project.task'}"/>
             </field>
         </field>
@@ -110,7 +111,7 @@
         <field name="model">project.project</field>
         <field name="inherit_id" ref="industry_fsm.project_view_form_inherit"/>
         <field name="arch" type="xml">
-            <xpath expr="//setting[@id='industry_fsm']" position="replace">
+            <xpath expr="//group[@name='group_field_service']/div" position="inside">
                 <setting class="col-lg-12" help="Create reports to be signed off by your customers" id="industry_fsm">
                     <field name="allow_worksheets"/>
                     <div class="mt-3 d-flex flex-wrap" invisible="not allow_worksheets">
@@ -158,18 +159,62 @@
         <field name="model">project.task</field>
         <field name="inherit_id" ref="industry_fsm.view_task_form2_inherit"/>
         <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_fsm_validate']" position="before">
+                <field name="fsm_is_sent" invisible="1"/>
+                <field name="worksheet_signature" invisible="1"/>
+                <field name="display_sign_report_primary" invisible="1"/>
+                <field name="display_sign_report_secondary" invisible="1"/>
+                <field name="display_send_report_primary" invisible="1"/>
+                <field name="display_send_report_secondary" invisible="1"/>
+                <button name="action_preview_worksheet" type="object" string="Sign Report" class="btn-primary"
+                        invisible="not display_sign_report_primary" data-hotkey="y"/>
+                <button name="action_send_report" type="object" string="Send Report" class="btn-primary"
+                        invisible="not display_send_report_primary" data-hotkey="g"/>
+            </xpath>
+            <xpath expr="//button[@name='action_fsm_validate']" position="after">
+                <button name="action_preview_worksheet" type="object" string="Sign Report" class="btn-secondary"
+                    invisible="not display_sign_report_secondary" data-hotkey="y"/>
+                <button name="action_send_report" type="object" string="Send Report" class="btn-secondary"
+                    invisible="not display_send_report_secondary" data-hotkey="g"/>
+            </xpath>
+            <xpath expr="//button[@name='action_view_timesheets']" position="after">
+                <button
+                    string="Customer Preview"
+                    class="oe_stat_button"
+                    name="action_preview_worksheet"
+                    icon="fa-globe" type="object"
+                    groups="project.group_project_user"
+                    invisible="not worksheet_signature">
+                </button>
+            </xpath>
             <xpath expr="//field[@widget='project']" position="after">
                 <field name="allow_worksheets" invisible="1"/>
                 <field name="worksheet_template_id" options="{'no_open': True, 'no_create': True}" context="{'form_view_ref': 'industry_fsm_report.worksheet_template_view_form_no_design_button', 'default_res_model': 'project.task'}" invisible="not allow_worksheets"/>
             </xpath>
             <xpath expr="//button[@name='action_recurring_tasks']" position="before">
                 <field name="worksheet_count" invisible="1"/>
-            </xpath>
-            <xpath expr="//button[hasclass('oe_worksheet')]" position="attributes">
-                <attribute name="invisible">not is_fsm and not partner_id or not allow_worksheets or not worksheet_template_id or worksheet_count != 0 or comment</attribute>
-            </xpath>
-            <xpath expr="//button[hasclass('oe_worksheet_completed')]" position="attributes">
-                <attribute name="invisible">not partner_id or not allow_worksheets or not worksheet_template_id or worksheet_count == 0 and not comment</attribute>
+                <button
+                    class="oe_stat_button oe_worksheet"
+                    name="action_fsm_worksheet"
+                    icon="fa-pencil" type="object"
+                    groups="project.group_project_user"
+                    invisible="(not is_fsm and not partner_id) or not allow_worksheets or not worksheet_template_id or worksheet_count"
+                >
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Worksheet</span>
+                    </div>
+                </button>
+                <button
+                    class="oe_stat_button oe_worksheet_completed text-success"
+                    name="action_fsm_worksheet"
+                    icon="fa-check" type="object"
+                    groups="project.group_project_user"
+                    invisible="not partner_id or not allow_worksheets or not worksheet_template_id or not worksheet_count">
+                        <div class="o_stat_info">
+                            <span class="o_stat_text">Worksheet</span>
+                            <span class="o_stat_text">Complete</span>
+                        </div>
+                </button>
             </xpath>
             <xpath expr="//field[@name='child_ids']/tree/field[@name='project_id']" position="after">
                 <field name="worksheet_template_id" optional="hide"/>

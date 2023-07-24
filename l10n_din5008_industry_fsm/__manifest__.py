@@ -7,7 +7,7 @@
     'author': 'Odoo SA',
     'depends': [
         'l10n_din5008',
-        'industry_fsm',
+        'industry_fsm_report',
     ],
     'assets': {
         'web.report_assets_common': [

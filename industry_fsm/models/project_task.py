@@ -66,7 +66,6 @@ class Task(models.Model):
                     result['planned_date_end'] = date_end.astimezone(pytz.utc).replace(tzinfo=None)
         return result
 
-    allow_worksheets = fields.Boolean(related='project_id.allow_worksheets')
     is_fsm = fields.Boolean(related='project_id.is_fsm', search='_search_is_fsm')
     fsm_done = fields.Boolean("Task Done", compute='_compute_fsm_done', readonly=False, store=True, copy=False)
     # Use to count conditions between : time, worksheet and materials
@@ -76,14 +75,6 @@ class Task(models.Model):
     display_satisfied_conditions_count = fields.Integer(compute='_compute_display_conditions_count')
     display_mark_as_done_primary = fields.Boolean(compute='_compute_mark_as_done_buttons')
     display_mark_as_done_secondary = fields.Boolean(compute='_compute_mark_as_done_buttons')
-    display_sign_report_primary = fields.Boolean(compute='_compute_display_sign_report_buttons')
-    display_sign_report_secondary = fields.Boolean(compute='_compute_display_sign_report_buttons')
-    display_send_report_primary = fields.Boolean(compute='_compute_display_send_report_buttons')
-    display_send_report_secondary = fields.Boolean(compute='_compute_display_send_report_buttons')
-    worksheet_signature = fields.Binary('Signature', copy=False, attachment=True)
-    worksheet_signed_by = fields.Char('Signed By', copy=False)
-    fsm_is_sent = fields.Boolean('Is Worksheet sent', readonly=True, copy=False)
-    comment = fields.Html(string='Comments', copy=False)
     partner_phone = fields.Char(
         compute='_compute_partner_phone', inverse='_inverse_partner_phone',
         string="Phone", readonly=False, store=True, copy=False)
@@ -92,8 +83,7 @@ class Task(models.Model):
 
     @property
     def SELF_READABLE_FIELDS(self):
-        return super().SELF_READABLE_FIELDS | {'allow_worksheets',
-                                              'is_fsm',
+        return super().SELF_READABLE_FIELDS | {'is_fsm',
                                               'planned_date_begin',
                                               'planned_date_end',
                                               'fsm_done',
@@ -134,13 +124,11 @@ class Task(models.Model):
         for task in self:
             task.is_task_phone_update = task.partner_phone != task.partner_id.phone
 
-    @api.depends('allow_worksheets', 'project_id.allow_timesheets', 'total_hours_spent', 'comment')
+    @api.depends('project_id.allow_timesheets', 'total_hours_spent')
     def _compute_display_conditions_count(self):
         for task in self:
             enabled = 1 if task.project_id.allow_timesheets else 0
             satisfied = 1 if enabled and task.total_hours_spent else 0
-            enabled += 1 if task.allow_worksheets else 0
-            satisfied += 1 if task.allow_worksheets and task.comment else 0
             task.update({
                 'display_enabled_conditions_count': enabled,
                 'display_satisfied_conditions_count': satisfied
@@ -157,53 +145,6 @@ class Task(models.Model):
             'display_timer_resume': False,
         })
         super(Task, self - fsm_done_tasks)._compute_display_timer_buttons()
-
-    def _hide_sign_button(self):
-        self.ensure_one()
-        return not self.allow_worksheets or self.timer_start or self.worksheet_signature \
-            or not self.display_satisfied_conditions_count
-
-    @api.depends(
-        'allow_worksheets', 'timer_start', 'worksheet_signature',
-        'display_satisfied_conditions_count', 'display_enabled_conditions_count')
-    def _compute_display_sign_report_buttons(self):
-        for task in self:
-            sign_p, sign_s = True, True
-            if task._hide_sign_button():
-                sign_p, sign_s = False, False
-            else:
-                if task.display_enabled_conditions_count == task.display_satisfied_conditions_count:
-                    sign_s = False
-                else:
-                    sign_p = False
-            task.update({
-                'display_sign_report_primary': sign_p,
-                'display_sign_report_secondary': sign_s,
-            })
-
-    def _hide_send_report_button(self):
-        self.ensure_one()
-        return not self.allow_worksheets or self.timer_start or not self.display_satisfied_conditions_count \
-            or self.fsm_is_sent
-
-    @api.depends(
-        'allow_worksheets', 'timer_start',
-        'display_satisfied_conditions_count', 'display_enabled_conditions_count',
-        'fsm_is_sent')
-    def _compute_display_send_report_buttons(self):
-        for task in self:
-            send_p, send_s = True, True
-            if task._hide_send_report_button():
-                send_p, send_s = False, False
-            else:
-                if task.display_enabled_conditions_count == task.display_satisfied_conditions_count:
-                    send_s = False
-                else:
-                    send_p = False
-            task.update({
-                'display_send_report_primary': send_p,
-                'display_send_report_secondary': send_s,
-            })
 
     @api.model
     def _search_is_fsm(self, operator, value):
@@ -239,17 +180,6 @@ class Task(models.Model):
     def _compute_fsm_done(self):
         closed_tasks = self.filtered(lambda t: t.state in CLOSED_STATES)
         closed_tasks.fsm_done = True
-
-    def action_fsm_worksheet(self):
-        self.ensure_one()
-        return {
-            'type': 'ir.actions.act_window',
-            'res_model': 'project.task',
-            'res_id': self.id,
-            'view_mode': 'form',
-            'context': {'disable_toolbar': True},
-            'views': [[self.env.ref('industry_fsm.fsm_form_view_comment').id, 'form']],
-        }
 
     def action_timer_start(self):
         if not self.user_timer_id.timer_start and self.display_timesheet_timer:
@@ -367,68 +297,9 @@ class Task(models.Model):
             }
         return self.partner_id.action_partner_navigate()
 
-    def action_preview_worksheet(self):
-        self.ensure_one()
-        source = 'fsm' if self._context.get('fsm_mode', False) else 'project'
-        return {
-            'type': 'ir.actions.act_url',
-            'target': 'self',
-            'url': self.get_portal_url(query_string=f'&source={source}')
-        }
-
-    def action_send_report(self):
-        tasks_with_report = self.filtered(lambda task: task._is_fsm_report_available())
-        if not tasks_with_report:
-            return {
-                'type': 'ir.actions.client',
-                'tag': 'display_notification',
-                'params': {
-                    'message': _("There are no reports to send."),
-                    'sticky': False,
-                    'type': 'danger',
-                }
-            }
-
-        template_id = self.env.ref('industry_fsm.mail_template_data_task_report').id
-        self.message_subscribe(partner_ids=tasks_with_report.partner_id.ids)
-        return {
-            'name': _("Send report"),
-            'type': 'ir.actions.act_window',
-            'view_mode': 'form',
-            'res_model': 'mail.compose.message',
-            'views': [(False, 'form')],
-            'view_id': False,
-            'target': 'new',
-            'context': {
-                'default_composition_mode': 'mass_mail' if len(tasks_with_report.ids) > 1 else 'comment',
-                'default_model': 'project.task',
-                'default_res_ids': tasks_with_report.ids,
-                'default_template_id': template_id,
-                'fsm_mark_as_sent': True,
-                'mailing_document_based': True,
-            },
-        }
-
-    def _get_report_base_filename(self):
-        self.ensure_one()
-        return 'Worksheet %s - %s' % (self.name, self.partner_id.name)
-
-    def _is_fsm_report_available(self):
-        self.ensure_one()
-        return self.comment or self.timesheet_ids
-
-    def has_to_be_signed(self):
-        self.ensure_one()
-        return self._is_fsm_report_available() and not self.worksheet_signature
-
     # ---------------------------------------------------------
     # Business Methods
     # ---------------------------------------------------------
-
-    def _message_post_after_hook(self, message, msg_vals):
-        if self.env.context.get('fsm_mark_as_sent') and not self.fsm_is_sent:
-            self.fsm_is_sent = True
-        return super()._message_post_after_hook(message, msg_vals)
 
     def _get_projects_to_make_billable_domain(self, additional_domain=None):
         return expression.AND([

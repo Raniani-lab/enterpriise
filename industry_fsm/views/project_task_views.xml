@@ -12,57 +12,18 @@
         <field name="priority">999</field>
         <field name="arch" type="xml">
             <xpath expr="//button[@name='action_timer_start'][hasclass('btn-primary')]" position='after'>
-                <field name="allow_worksheets" invisible="1"/>
                 <field name="allow_timesheets" invisible="1"/>
                 <field name="is_fsm" invisible="1"/>
-                <field name="fsm_is_sent" invisible="1"/>
-                <field name="worksheet_signature" invisible="1"/>
                 <field name="fsm_done" invisible="1"/>
                 <field name="display_timesheet_timer" invisible="1"/>
                 <field name="display_enabled_conditions_count" invisible="1"/>
                 <field name="display_satisfied_conditions_count" invisible="1"/>
                 <field name="display_mark_as_done_primary" invisible="1"/>
                 <field name="display_mark_as_done_secondary" invisible="1"/>
-                <field name="display_sign_report_primary" invisible="1"/>
-                <field name="display_sign_report_secondary" invisible="1"/>
-                <field name="display_send_report_primary" invisible="1"/>
-                <field name="display_send_report_secondary" invisible="1"/>
-                <field name="comment" invisible="1"/>
-                <button name="action_preview_worksheet" type="object" string="Sign Report" class="btn-primary"
-                    invisible="not display_sign_report_primary" data-hotkey="y"/>
-                <button name="action_send_report" type="object" string="Send Report" class="btn-primary"
-                    invisible="not display_send_report_primary" data-hotkey="g"/>
                 <button class="btn-primary" name="action_fsm_validate" type="object" string="Mark as done"
                         invisible="not display_mark_as_done_primary" data-hotkey="v"/>
-                <button name="action_preview_worksheet" type="object" string="Sign Report" class="btn-secondary"
-                    invisible="not display_sign_report_secondary" data-hotkey="y"/>
-                <button name="action_send_report" type="object" string="Send Report" class="btn-secondary"
-                    invisible="not display_send_report_secondary" data-hotkey="g"/>
                 <button class="btn-secondary" name="action_fsm_validate" type="object" string="Mark as done"
                         invisible="not display_mark_as_done_secondary" data-hotkey="v"/>
-            </xpath>
-            <xpath expr="//button[@name='action_recurring_tasks']" position="before">
-                <button
-                    class="oe_stat_button oe_worksheet"
-                    name="action_fsm_worksheet"
-                    icon="fa-pencil" type="object"
-                    groups="project.group_project_user"
-                    invisible="not partner_id and not is_fsm or not allow_worksheets or comment">
-                    <div class="o_stat_info">
-                        <span class="o_stat_text">Worksheet</span>
-                    </div>
-                </button>
-                <button
-                    class="oe_stat_button oe_worksheet_completed text-success"
-                    name="action_fsm_worksheet"
-                    icon="fa-check" type="object"
-                    groups="project.group_project_user"
-                    invisible="not partner_id or not allow_worksheets or not comment">
-                        <div class="o_stat_info">
-                            <span class="o_stat_text">Worksheet</span>
-                            <span class="o_stat_text">Complete</span>
-                        </div>
-                </button>
             </xpath>
             <xpath expr="//label[@for='date_deadline']" position="attributes">
                 <attribute name="invisible">is_fsm</attribute>
@@ -82,14 +43,6 @@
                             <field name="total_hours_spent" widget="float_time" nolabel="1" class="me-1" />
                         </span>
                     </div>
-                </button>
-                <button
-                    string="Customer Preview"
-                    class="oe_stat_button"
-                    name="action_preview_worksheet"
-                    icon="fa-globe" type="object"
-                    groups="project.group_project_user"
-                    invisible="not worksheet_signature">
                 </button>
             </xpath>
             <field name="is_fsm" string="is FSM?" invisible="1"/>
@@ -172,7 +125,6 @@
             </field>
             <field name="user_ids" position="before">
                 <field name="is_fsm" invisible="1"/>
-                <field name="allow_worksheets" invisible="1"/>
                 <field name="partner_id" invisible="not is_fsm" required="is_fsm" widget="res_partner_many2one" context="{'res_partner_search_mode': 'customer'}"/>
             </field>
         </field>
@@ -214,25 +166,9 @@
                         <setting class="col-lg-12" help="Manage tasks in the Field Service module" groups="base.group_no_one">
                             <field name="is_fsm"/>
                         </setting>
-                        <setting class="col-lg-12" help="Create reports to be signed off by your customers" id="industry_fsm">
-                            <field name="allow_worksheets"/>
-                        </setting>
                      </div>
                 </group>
             </xpath>
-        </field>
-    </record>
-
-    <record id="fsm_form_view_comment" model="ir.ui.view">
-        <field name="name">project.task.fsm.comment.form</field>
-        <field name="model">project.task</field>
-        <field name="arch" type="xml">
-            <form string="comment" create="false" delete="false">
-                <sheet>
-                    <field name="comment" placeholder="Add details about your intervention..."/>
-                    <field name="name" invisible="1"/>
-                </sheet>
-            </form>
         </field>
     </record>
 

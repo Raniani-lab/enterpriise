@@ -537,9 +537,6 @@ class Task(models.Model):
         for sol in sale_order_lines:
             sol.qty_delivered = sol.product_uom_qty
 
-    def has_to_be_signed(self):
-        return super().has_to_be_signed() or (self.sale_order_id and not self.worksheet_signature)
-
 class ProjectTaskRecurrence(models.Model):
     _inherit = 'project.task.recurrence'
 

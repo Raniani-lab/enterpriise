@@ -2,4 +2,3 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details
 
 from . import project_report
-from . import worksheet_custom_reports

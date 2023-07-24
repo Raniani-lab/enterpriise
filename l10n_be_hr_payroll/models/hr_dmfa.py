@@ -1090,7 +1090,10 @@ class HrDMFAReport(models.Model):
         ])
         # Exclude CIP contracts from DmfA, as they only have a DIMONA
         contract_type_cip = self.env.ref('l10n_be_hr_payroll.l10n_be_contract_type_cip')
-        payslips = payslips.filtered(lambda p: p.contract_id.contract_type_id != contract_type_cip)
+        valid_structure_types = self.env.ref('hr_contract.structure_type_employee_cp200_pfi') \
+                              + self.env.ref('hr_contract.structure_type_employee_cp200') \
+                              + self.env.ref('l10n_be_hr_payroll.structure_type_student')
+        payslips = payslips.filtered(lambda p: p.contract_id.contract_type_id != contract_type_cip and p.contract_id.structure_type_id in valid_structure_types)
         employees = payslips.mapped('employee_id')
         worker_count = len(employees)
 
@@ -1150,7 +1153,7 @@ class HrDMFAReport(models.Model):
 
         # Special employer contribution reduction due to 2023 index
         contribution_reduction = 0
-        if self.quarter_start.year == 2023 and self.quarter_start.month < 4:
+        if self.quarter_start.year == 2023 and self.quarter_start.month < 5:
             # The 7.07% contribution reduction is calculated on the overall net basic
             # employer contributions. These are the employer contributions calculated
             # on all the remuneration codes on which the basic employer contributions

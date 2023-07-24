@@ -137,7 +137,6 @@ class HrContractSalary(http.Controller):
             # YTI PROBABLY TO REMOVE
             'applicant_id': offer.applicant_id.id,
             'employee_contract_id': offer.employee_contract_id.id,
-            'contract_type_id': offer.contract_type_id.id,
             'employee_job_id': offer.employee_job_id.id,
             'department_id': offer.department_id.id,
             'job_title': offer.job_title,

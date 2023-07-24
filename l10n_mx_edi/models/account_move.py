@@ -422,7 +422,7 @@ class AccountMove(models.Model):
             elif move._l10n_mx_edi_is_cfdi_payment():
                 move.l10n_mx_edi_document_ids = [Command.set(move.l10n_mx_edi_payment_document_ids.ids)]
             else:
-                move.l10n_mx_edi_document_ids = []
+                move.l10n_mx_edi_document_ids = [Command.clear()]
 
     @api.depends('l10n_mx_edi_invoice_document_ids.state', 'l10n_mx_edi_invoice_document_ids.sat_state',
                  'l10n_mx_edi_payment_document_ids.state', 'l10n_mx_edi_payment_document_ids.sat_state')

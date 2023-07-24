@@ -9,7 +9,7 @@
 </t>
 
 <t t-name="web_studio.ReportEditor.Iframe" owl="1">
-    <div class="h-100 w-100 overflow-auto position-relative">
+    <div class="h-100 w-100 overflow-auto position-relative" t-on-scroll="onContainerScroll">
         <div class="o-web-studio-report-container my-0 mx-auto my-lg-5 bg-white" t-att-style="paperFormatStyle">
             <iframe class="w-100" t-ref="iframeRef" t-att-srcdoc="iframeSource" t-key="iframeKey" t-att-style="iframeStyle" type="text/plain" t-on-load="onIframeLoaded"/>
         </div>

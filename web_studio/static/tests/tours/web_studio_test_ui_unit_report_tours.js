@@ -4,6 +4,8 @@ import { ReportEditorModel } from "@web_studio/client_action/report_editor/repor
 import { patch, unpatch } from "@web/core/utils/patch";
 import { assertEqual, stepNotInStudio } from "@web_studio/../tests/tours/tour_helpers";
 
+const getBoundingClientRect = Element.prototype.getBoundingClientRect;
+
 function insertText(element, text, offset = 0) {
     const doc = element.ownerDocument;
     const sel = doc.getSelection();
@@ -379,6 +381,20 @@ registry.category("web_tour.tours").add("web_studio.test_field_placeholder", {
         {
             trigger:
                 ".oe-powerbox-wrapper .oe-powerbox-commandDescription:contains(Insert a field)",
+        },
+        {
+            extra_trigger: ".o-web-studio-field-dynamic-placeholder",
+            trigger: ".o-web-studio-report-editor-wysiwyg div:has(> .o-web-studio-report-container)",
+            async run() {
+                const placeholderBox = getBoundingClientRect.call(document.querySelector(".o-web-studio-field-dynamic-placeholder"));
+                assertEqual(this.$anchor[0].scrollTop, 0);
+                this.$anchor[0].scrollTop = 9999;
+                await new Promise(requestAnimationFrame);
+                const newPlaceholderbox = getBoundingClientRect.call(document.querySelector(".o-web-studio-field-dynamic-placeholder"));
+                // The field placeholder should have followed its anchor, and it happens that the anchor's container
+                // has been scrolled, so the anchor has moved upwards (and is actually outside of the viewPort, to the top)
+                assertEqual(placeholderBox.top > newPlaceholderbox.top, true);
+            }
         },
         {
             trigger:

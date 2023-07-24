@@ -4,10 +4,8 @@
     <t t-call="web_studio.ReportEditorWysiwyg.Sidebar" />
     <div class="o-web-studio-report-editor-wysiwyg h-100 w-100 position-relative">
       <UndoRedo state="undoRedoState"/>
-      <div class="h-100 w-100 overflow-auto position-relative">
-        <ReportEditorIframe iframeKey="reportEditorModel.reportQweb || ''" iframeSource="reportQweb" onIframeLoaded.bind="onIframeLoaded" />
-        <Wysiwyg t-if="state.wysiwygKey and this.iframeRef?.el" t-key="state.wysiwygKey" t-props="wysiwygProps" />
-      </div>
+      <ReportEditorIframe iframeKey="reportEditorModel.reportQweb || ''" iframeSource="reportQweb" onIframeLoaded.bind="onIframeLoaded" />
+      <Wysiwyg t-if="state.wysiwygKey and this.iframeRef?.el" t-key="state.wysiwygKey" t-props="wysiwygProps" />
     </div>
 </t>
 

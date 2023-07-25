@@ -24,8 +24,13 @@ registry.category("web_tour.tours").add('knowledge_main_flow_tour', {
     // click on the main "New" action
     trigger: '.o_knowledge_header .btn:contains("New")',
 }, {
+    // check that the article is correctly created (private section)
     trigger: 'section[data-section="private"] .o_article .o_article_name:contains("Untitled")',
-    run: () => {},  // check that the article is correctly created (private section)
+    run: () => {},
+}, {
+    // check the autofocus
+    trigger: '.note-editable.odoo-editor-editable:focus',
+    run: () => {},
 }, {
     trigger: '.note-editable.odoo-editor-editable h1',
     run: 'text My Private Article',  // modify the article content
@@ -45,6 +50,10 @@ registry.category("web_tour.tours").add('knowledge_main_flow_tour', {
     extra_trigger: 'section[data-section="private"] .o_article .o_article_name:contains("My Private Article")',
     run: () => {},
 }, {
+    // check the autofocus
+    trigger: '.note-editable.odoo-editor-editable:focus',
+    run: () => {},
+}, {
     trigger: '.o_breadcrumb_article_name > input',
     run: 'text My Workspace Article',  // modify the article name
 }, {
@@ -60,8 +69,13 @@ registry.category("web_tour.tours").add('knowledge_main_flow_tour', {
     // create child article
     trigger: '.o_article:contains("My Workspace Article") a.o_article_create',
 }, {
+    // check that the article is correctly created (workspace section)
     trigger: 'section[data-section="workspace"] .o_article .o_article_name:contains("Untitled")',
-    run: () => {},  // check that the article is correctly created (workspace section)
+    run: () => {},
+}, {
+    // check the autofocus
+    trigger: '.note-editable.odoo-editor-editable:focus',
+    run: () => {},
 }, {
     trigger: '.o_breadcrumb_article_name > input',
     run: 'text Child Article 1',  // modify the article name
@@ -72,7 +86,11 @@ registry.category("web_tour.tours").add('knowledge_main_flow_tour', {
     trigger: '.o_article:contains("My Workspace Article") a.o_article_create',
 }, {
     trigger: 'section[data-section="workspace"] .o_article .o_article_name:contains("Untitled")',
-    run: () => {},  // check that the article is correctly created (workspace section)
+    run: () => {},
+}, {
+    // check the autofocus
+    trigger: '.note-editable.odoo-editor-editable:focus',
+    run: () => {},
 }, {
     trigger: '.o_breadcrumb_article_name > input',
     run: 'text Child Article 2',  // modify the article name
@@ -95,6 +113,10 @@ registry.category("web_tour.tours").add('knowledge_main_flow_tour', {
 }, {
     trigger: '.o_knowledge_editor:contains("Content of My Workspace Article")',
     run: () => {},  // wait for article to be correctly loaded
+}, {
+    // check the autofocus
+    trigger: '.note-editable.odoo-editor-editable:focus',
+    run: () => {},
 }, {
     // open the share dropdown
     trigger: '.o_knowledge_header .btn:contains("Share")',
@@ -135,6 +157,10 @@ registry.category("web_tour.tours").add('knowledge_main_flow_tour', {
     trigger: '.o_knowledge_editor:contains("My Private Article")',
     run: () => {},  // wait for article to be correctly loaded
 }, {
+    // check the autofocus
+    trigger: '.note-editable.odoo-editor-editable:focus',
+    run: () => {},
+}, {
     // add to favorite
     trigger: '.o_knowledge_toggle_favorite',
 }, {
@@ -161,11 +187,19 @@ registry.category("web_tour.tours").add('knowledge_main_flow_tour', {
     trigger: ':contains("Content of My Workspace Article")',
     run() {},
 }, {
+    // check the autofocus
+    trigger: '.note-editable.odoo-editor-editable:focus',
+    run: () => {},
+}, {
     // click on the main "New" action
     trigger: '.o_knowledge_header .btn:contains("New")',
 }, {
     trigger: 'section[data-section="private"] .o_article .o_article_name:contains("Untitled")',
     run: () => {}, // check that the article is correctly created (private section)
+}, {
+    // check the autofocus
+    trigger: '.note-editable.odoo-editor-editable:focus',
+    run: () => {},
 }, {
     trigger: '.o_breadcrumb_article_name > input',
     run: 'text Article to be moved',  // modify the article name

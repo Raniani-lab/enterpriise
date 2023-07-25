@@ -3236,6 +3236,24 @@ tour.register('test_define_the_destination_package', {test: true}, [
     },
 ]);
 
+tour.register('stock_barcode_package_with_lot', {test: true}, [
+    {
+        trigger: "[data-menu-xmlid='stock_barcode.stock_barcode_menu']", // open barcode app
+    },
+    {
+        trigger: ".button_inventory",
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan Lot-test' // scan lot on a new location
+    },
+    {
+        extra_trigger: '.o_barcode_line .package:contains(Package-test)', // verify it takes the right quantity
+        trigger: '.o_apply_page',
+    },
+    { trigger: '.o_notification.border-success' },
+]);
+
 tour.register('test_avoid_useless_line_creation', {test: true}, [
     {
         trigger: '.o_barcode_client_action',

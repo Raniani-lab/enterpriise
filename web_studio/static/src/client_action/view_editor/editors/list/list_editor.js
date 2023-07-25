@@ -8,7 +8,7 @@ import { ListEditorRenderer, columnsStyling } from "./list_editor_renderer";
 
 import { Component, xml } from "@odoo/owl";
 import { ListEditorSidebar } from "./list_editor_sidebar/list_editor_sidebar";
-import { getStudioNoFetchFields } from "../utils";
+import { getStudioNoFetchFields, useExternalParentInModel } from "../utils";
 
 function parseStudioGroups(node) {
     if (node.hasAttribute("studio_groups")) {
@@ -67,26 +67,26 @@ class EditorArchParser extends listView.ArchParser {
  * would be slightly bigger if our starting point is DynamicList. Hence, we choose
  * to extend StaticList instead of DynamicList, and make it the root record of the model.
  */
-function modelUsesParentRecord(model, parentRecord, resIds) {
+function useParentedStaticList(model, parentRecord, resIds) {
     const config = model.config;
     config.resIds = resIds;
     config.offset = 0;
     config.limit = Math.max(7, resIds.length); // don't load everything
 
-    const evalContext = { ...parentRecord.evalContext };
     model._createRoot = (config, data) => {
         const list = new model.constructor.StaticList(model, { ...config }, data);
-        list._parent = { evalContext };
+        list._parent = { evalContext: config.context.parent };
         list.selection = [];
         return list;
     };
+    useExternalParentInModel(model, parentRecord);
 }
 
 class ListEditorController extends listView.Controller {
     setup() {
         super.setup();
         if (this.props.parentRecord) {
-            modelUsesParentRecord(this.model, this.props.parentRecord, this.props.resIds);
+            useParentedStaticList(this.model, this.props.parentRecord, this.props.resIds);
         }
     }
 }

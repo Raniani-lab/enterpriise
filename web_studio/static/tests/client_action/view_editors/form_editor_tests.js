@@ -4050,7 +4050,7 @@ QUnit.module("View Editors", (hooks) => {
         assert.containsOnce(target, ".o_view_controller .po2m-subview-form");
     });
 
-    QUnit.test("navigate in x2many which some field has a context", async function (assert) {
+    QUnit.test("navigate in x2many form which some field has a context", async function (assert) {
         serverData.models.product.fields.m2o = {
             type: "many2one",
             relation: "partner",
@@ -4087,4 +4087,186 @@ QUnit.module("View Editors", (hooks) => {
 
         assert.containsOnce(target, ".o_view_controller .product-subview-form");
     });
+
+    QUnit.test(
+        "navigate in x2many form which some field has a context -- context in action",
+        async function (assert) {
+            serverData.models.product.fields.m2o = {
+                type: "many2one",
+                relation: "partner",
+                string: "m2o",
+            };
+            const action = serverData.actions["studio.coucou_action"];
+            action.context = { action_context_key: "couac" };
+            action.views = [[1, "form"]];
+            action.res_model = "coucou";
+            action.res_id = 1;
+            serverData.views["coucou,1,form"] = /*xml */ `
+           <form>
+                <field name='product_ids'>
+                    <form>
+                        <div class="product-subview-form" />
+                        <field name="m2o" context="{'context_key': 'value', 'parent': parent.id}" />
+                    </form>
+               </field>
+           </form>`;
+
+            serverData.views["coucou,false,search"] = `<search></search>`;
+            serverData.views["product,2,list"] = `<tree><field name="display_name" /></tree>`;
+            serverData.views["partner,false,list"] = `<tree><field name="display_name" /></tree>`;
+
+            const webClient = await createEnterpriseWebClient({ serverData });
+            await doAction(webClient, "studio.coucou_action");
+            await openStudio(target);
+
+            await click(target.querySelector(".o_web_studio_form_view_editor .o_field_one2many"));
+            await click(
+                target.querySelector(
+                    '.o_web_studio_form_view_editor .o_field_one2many .o_web_studio_editX2Many[data-type="form"]'
+                )
+            );
+
+            assert.containsOnce(target, ".o_view_controller .product-subview-form");
+        }
+    );
+
+    QUnit.test(
+        "navigate in x2many form which some field has a context -- context in action with records in relation",
+        async function (assert) {
+            serverData.models.product.fields.m2o = {
+                type: "many2one",
+                relation: "partner",
+                string: "m2o",
+            };
+
+            serverData.models.partner.records = [{ id: 1, display_name: "couic" }];
+            serverData.models.product.records = [{ id: 1, display_name: "xpad", m2o: [1] }];
+            const action = serverData.actions["studio.coucou_action"];
+            action.context = { action_context_key: "couac" };
+            action.views = [[1, "form"]];
+            action.res_model = "coucou";
+            action.res_id = 1;
+            serverData.views["coucou,1,form"] = /*xml */ `
+           <form>
+                <field name='product_ids'>
+                    <form>
+                        <div class="product-subview-form" />
+                        <field name="m2o" context="{'context_key': 'value', 'parent': parent.id}" />
+                    </form>
+               </field>
+           </form>`;
+
+            serverData.views["coucou,false,search"] = `<search></search>`;
+            serverData.views["product,2,list"] = `<tree><field name="display_name" /></tree>`;
+            serverData.views["partner,false,list"] = `<tree><field name="display_name" /></tree>`;
+
+            const webClient = await createEnterpriseWebClient({ serverData });
+            await doAction(webClient, "studio.coucou_action");
+            await openStudio(target);
+
+            await click(target.querySelector(".o_web_studio_form_view_editor .o_field_one2many"));
+            await click(
+                target.querySelector(
+                    '.o_web_studio_form_view_editor .o_field_one2many .o_web_studio_editX2Many[data-type="form"]'
+                )
+            );
+
+            assert.containsOnce(target, ".o_view_controller .product-subview-form");
+            assert.strictEqual(target.querySelector(".o_field_many2one").textContent, "couic");
+        }
+    );
+
+    QUnit.test(
+        "navigate in x2many form which some field has a context -- with records in relation",
+        async function (assert) {
+            serverData.models.product.fields.m2o = {
+                type: "many2one",
+                relation: "partner",
+                string: "m2o",
+            };
+            serverData.models.partner.records = [{ id: 1, display_name: "couic" }];
+            serverData.models.product.records = [{ id: 1, display_name: "xpad", m2o: [1] }];
+
+            const action = serverData.actions["studio.coucou_action"];
+            action.views = [[1, "form"]];
+            action.res_model = "coucou";
+            action.res_id = 1;
+            serverData.views["coucou,1,form"] = /*xml */ `
+           <form>
+                <field name='product_ids'>
+                    <form>
+                        <div class="product-subview-form" />
+                        <field name="m2o" context="{'context_key': 'value', 'parent': parent.id}" />
+                    </form>
+               </field>
+           </form>`;
+
+            serverData.views["coucou,false,search"] = `<search></search>`;
+            serverData.views["product,2,list"] = `<tree><field name="display_name" /></tree>`;
+            serverData.views["partner,false,list"] = `<tree><field name="display_name" /></tree>`;
+
+            const webClient = await createEnterpriseWebClient({ serverData });
+            await doAction(webClient, "studio.coucou_action");
+            await openStudio(target);
+
+            await click(target.querySelector(".o_web_studio_form_view_editor .o_field_one2many"));
+            await click(
+                target.querySelector(
+                    '.o_web_studio_form_view_editor .o_field_one2many .o_web_studio_editX2Many[data-type="form"]'
+                )
+            );
+
+            assert.containsOnce(target, ".o_view_controller .product-subview-form");
+            assert.strictEqual(target.querySelector(".o_field_many2one").textContent, "couic");
+        }
+    );
+
+    QUnit.test(
+        "navigate in x2many list which some field has a context -- with records in relation",
+        async function (assert) {
+            serverData.models.product.fields.m2o = {
+                type: "many2one",
+                relation: "partner",
+                string: "m2o",
+            };
+
+            serverData.models.partner.records = [{ id: 1, display_name: "couic" }];
+            serverData.models.product.records = [{ id: 1, display_name: "xpad", m2o: [1] }];
+
+            const action = serverData.actions["studio.coucou_action"];
+            action.views = [[1, "form"]];
+            action.res_model = "coucou";
+            action.res_id = 1;
+            serverData.views["coucou,1,form"] = /*xml */ `
+           <form>
+                <field name='product_ids'>
+                    <tree>
+                        <field name="display_name" />
+                        <field name="m2o" context="{'context_key': 'value', 'parent': parent.id}" />
+                    </tree>
+               </field>
+           </form>`;
+
+            serverData.views["coucou,false,search"] = `<search></search>`;
+            serverData.views["product,2,list"] = `<tree><field name="display_name" /></tree>`;
+            serverData.views["partner,false,list"] = `<tree><field name="display_name" /></tree>`;
+
+            const webClient = await createEnterpriseWebClient({ serverData });
+            await doAction(webClient, "studio.coucou_action");
+            await openStudio(target);
+
+            await click(target.querySelector(".o_web_studio_form_view_editor .o_field_one2many"));
+            await click(
+                target.querySelector(
+                    '.o_web_studio_form_view_editor .o_field_one2many .o_web_studio_editX2Many[data-type="list"]'
+                )
+            );
+
+            assert.strictEqual(
+                target.querySelector(".o_view_controller.o_list_view .o_data_row .o_list_many2one")
+                    .textContent,
+                "couic"
+            );
+        }
+    );
 });

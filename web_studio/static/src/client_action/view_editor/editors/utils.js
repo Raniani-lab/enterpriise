@@ -198,3 +198,15 @@ export function getStudioNoFetchFields(_fieldNodes) {
         fieldNodes,
     };
 }
+
+export function useExternalParentInModel(model, parentRecord) {
+    const parentEvalContext = { ...parentRecord.evalContext };
+
+    const load = model.load;
+    model.load = (params = {}) => {
+        params = { ...params };
+        const context = "context" in params ? params.context : model.config.context;
+        params.context = Object.assign({}, context, { parent: parentEvalContext });
+        return load.call(model, params);
+    };
+}

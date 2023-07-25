@@ -2,11 +2,7 @@
 
 import { useState, onMounted, onPatched } from "@odoo/owl";
 import { formView } from "@web/views/form/form_view";
-
-function applyParentRecordOnModel(model, parentRecord) {
-    const evalContext = { ...parentRecord.evalContext };
-    model.config.context.parent = { evalContext };
-}
+import { useExternalParentInModel } from "@web_studio/client_action/view_editor/editors/utils";
 
 export class FormEditorController extends formView.Controller {
     setup() {
@@ -17,7 +13,7 @@ export class FormEditorController extends formView.Controller {
         this.viewEditorModel = useState(this.env.viewEditorModel);
 
         if (this.props.parentRecord) {
-            applyParentRecordOnModel(this.model, this.props.parentRecord);
+            useExternalParentInModel(this.model, this.props.parentRecord);
         }
 
         onMounted(() => {

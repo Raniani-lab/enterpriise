@@ -11,6 +11,13 @@ class WorksheetValidationController extends FormController {
         this.orm = useService("orm");
     }
 
+    async saveButtonClicked(params = {}) {
+        // closable is a param that is set by default on form saves and will trigger a close window action if true
+        // its set to false here to prevent the action close from closing the action in `onRecordSaved`
+        params.closable = false;
+        return super.saveButtonClicked(params);
+    }
+
     async onRecordSaved(record) {
         if (record.mode != "readonly") {
             record.context['from_worksheet'] = true

@@ -244,11 +244,13 @@
                             <field name="is_lot_tested_fractionally" invisible="1"/>
                             <field name="lot_name" invisible="product_tracking == 'none' or not show_lot_text or measure_on != 'move_line' or not move_line_id"/>
                             <field name="lot_id" invisible="product_tracking == 'none' or show_lot_text or measure_on != 'move_line'"/>
-                            <label for="qty_line" invisible="not move_line_id"/>
+                            <label for="qty_line" invisible="not move_line_id or quality_state == 'fail'"/>
+                            <label for="qty_line" invisible="not move_line_id or quality_state != 'fail'" string="Failed Quantity"/>
                             <div class="o_row" invisible="not move_line_id">
                                 <field name="qty_line"/> 
                                 <field name="uom_id" groups="uom.group_uom"/>
                             </div>
+                            <field name="failure_location_id" invisible="not failure_location_id" readonly="True"/>
                             <label for="qty_to_test" invisible="not move_line_id or measure_on != 'move_line' or not is_lot_tested_fractionally"/>
                             <div class="o_row" invisible="not move_line_id or measure_on != 'move_line' or not is_lot_tested_fractionally">
                                 <field name="qty_to_test"/> 
@@ -868,6 +870,9 @@
                     <span>to </span> <field name="tolerance_max"/>
                 </div>
             </xpath>
+            <field name="team_id" position="after">
+                <field name="failure_location_ids" invisible="measure_on != 'move_line'" groups="stock.group_stock_multi_locations" widget="many2many_tags"/>
+            </field>
         </field>
     </record>
 

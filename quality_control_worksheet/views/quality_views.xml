@@ -37,26 +37,6 @@
         </field>
     </record>
 
-    <record id="quality_check_view_form_failure_worksheet" model="ir.ui.view">
-        <field name="name">quality.check.view.form.failure.worksheet</field>
-        <field name="priority">1000</field>
-        <field name="model">quality.check</field>
-        <field name="arch" type="xml">
-            <form string="Quality Check Failed">
-                <field name="test_type" invisible="1"/>
-                <div>
-                    <field name="failure_message"/>
-                </div>
-                <footer>
-                    <button name="correct_worksheet" type="object" class="btn-primary" string="Correct Worksheet"
-                        invisible="test_type != 'worksheet'"/>
-                    <button name="action_generate_next_window" type="object" string="Confirm Worksheet"
-                        invisible="test_type != 'worksheet'"/>
-                </footer>
-            </form>
-        </field>
-    </record>
-
     <record id="quality_point_view_form_inherit_quality_control_worksheet" model="ir.ui.view">
         <field name="name">quality.point.view.form.inherit.quality.worksheet</field>
         <field name="model">quality.point</field>

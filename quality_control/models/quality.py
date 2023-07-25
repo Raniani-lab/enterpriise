@@ -15,6 +15,8 @@ class QualityPoint(models.Model):
     _inherit = "quality.point"
 
     failure_message = fields.Html('Failure Message')
+    failure_location_ids = fields.Many2many('stock.location', string="Failure Locations", domain="[('usage', '=', 'internal')]",
+                            help="If a quality check fails, a location is chosen from this list for each failed quantity.")
     measure_on = fields.Selection([
         ('operation', 'Operation'),
         ('product', 'Product'),
@@ -210,6 +212,7 @@ class QualityCheck(models.Model):
                   Product = A quality check is requested per product.
                  Quantity = A quality check is requested for each new product quantity registered, with partial quantity checks also possible.""")
     move_line_id = fields.Many2one('stock.move.line', 'Stock Move Line', check_company=True, help="In case of Quality Check by Quantity, Move Line on which the Quality Check applies")
+    failure_location_id = fields.Many2one('stock.location', string="Failure Location")
     lot_name = fields.Char('Lot/Serial Number Name', related='move_line_id.lot_name', store=True)
     lot_line_id = fields.Many2one('stock.lot', store=True, compute='_compute_lot_line_id')
     qty_line = fields.Float(compute='_compute_qty_line', string="Quantity")
@@ -291,12 +294,16 @@ class QualityCheck(models.Model):
     def _check_to_unlink(self):
         return True
 
+    def _measure_passes(self):
+        self.ensure_one()
+        return self.point_id.tolerance_min <= self.measure <= self.point_id.tolerance_max
+
     def do_measure(self):
         self.ensure_one()
-        if self.measure < self.point_id.tolerance_min or self.measure > self.point_id.tolerance_max:
-            return self.do_fail()
-        else:
+        if self._measure_passes():
             return self.do_pass()
+        else:
+            return self.do_fail()
 
     def do_alert(self):
         self.ensure_one()
@@ -338,12 +345,58 @@ class QualityCheck(models.Model):
     def action_open_quality_check_wizard(self, current_check_id=None):
         check_ids = sorted(self.ids)
         action = self.env["ir.actions.actions"]._for_xml_id("quality_control.action_quality_check_wizard")
+        check_id = self.browse(current_check_id or check_ids[0])
+        action['name'] = check_id._get_check_action_name()
         action['context'] = self.env.context.copy()
         action['context'].update({
             'default_check_ids': check_ids,
-            'default_current_check_id': current_check_id or check_ids[0],
+            'default_current_check_id': check_id.id,
+            'default_qty_tested': check_id.qty_to_test,
         })
         return action
+
+    def _move_line_to_failure_location(self, failure_location_id, failed_qty=None):
+        """ This function is used to fail move lines and can optionally:
+             - split it into failed and passed qties (i.e. 2 move lines w/1 check each)
+             - send the failed qty to a failure location
+        :param failure_location_id: id of location to send failed qty to
+        :param failed_qty: qty failed on check, defaults to None, if None all qty_done of the move is failed
+        """
+        for check in self:
+            if check.quality_state != 'fail' or check.point_id.measure_on != 'move_line' or not check.move_line_id or not check.picking_id:
+                continue
+            failed_qty = failed_qty or check.move_line_id.qty_done
+            old_move_line = check.move_line_id
+            dest_location = failure_location_id or old_move_line.location_dest_id.id
+            if failure_location_id:
+                check.failure_location_id = failure_location_id
+            if failed_qty == check.move_line_id.qty_done:
+                old_move_line.location_dest_id = dest_location
+                return
+            old_move_line.qty_done -= failed_qty
+            old_move_line.reserved_uom_qty = old_move_line.qty_done
+            failed_move_line = old_move_line.with_context(default_check_ids=None, no_checks=True).copy({
+                'location_dest_id': dest_location,
+                'qty_done': failed_qty,
+                'reserved_uom_qty': failed_qty
+            })
+            # switch the checks, check in self should always be the failed one,
+            # new check linked to original move line will be passed check
+            new_check = self.create(failed_move_line._get_check_values(check.point_id))
+            check.move_line_id = failed_move_line
+            new_check.move_line_id = old_move_line
+            new_check.do_pass()
+
+    def _get_check_action_name(self):
+        self.ensure_one()
+        action_name = self.title or "Quality Check"
+        if self.product_id:
+            action_name += ' : %s' % self.product_id.name
+        if self.qty_line and self.uom_id:
+            action_name += ' - %s %s' % (self.qty_line, self.uom_id.name)
+        if self.lot_name or self.lot_line_id:
+            action_name += ' - %s' % self.lot_name or self.lot_line_id.name
+        return action_name
 
 
 class QualityAlert(models.Model):

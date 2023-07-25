@@ -28,6 +28,9 @@ class StockMoveLine(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         lines = super().create(vals_list)
+        if self.env.context.get('no_checks'):
+            # no checks for you
+            return lines
         lines._filter_move_lines_applicable_for_quality_check()._create_check()
         return lines
 

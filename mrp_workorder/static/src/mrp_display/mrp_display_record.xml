@@ -88,8 +88,7 @@
     <t t-name="mrp_workorder.MrpDisplayWorkorderHeader">
         <span class="h5" t-esc="record.display_name"/>
         <span class="text-capitalize d-flex flex-column ms-1">
-            <t t-if="record.state === 'confirmed'">Not Started</t>
-            <t t-elif="record.state === 'to_close'">To Close</t>
+            <t t-if="record.state === 'ready'">To do</t>
             <div t-else="" class="bg-light rounded p-1"><MrpTimerField name="'duration'" record="props.record" readonly="true"/></div>
         </span>
     </t>

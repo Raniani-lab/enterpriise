@@ -119,7 +119,7 @@ export class MrpDisplayRecord extends Component {
         }
         const args = [this.props.production.resId];
         await this.model.orm.call("mrp.production", "action_generate_serial", args);
-        await this.props.production.model.load();
+        await this.reload();
     }
 
     get productionComplete() {

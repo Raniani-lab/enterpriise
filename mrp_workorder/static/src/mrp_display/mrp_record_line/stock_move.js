@@ -36,14 +36,13 @@ export class StockMove extends Component {
     }
 
     get toConsumeQuantity() {
-        const uomQuantity = this.props.record.data.product_uom_qty;
-        if (
-            this.props.parent.data.product_tracking == "serial" &&
-            !this.props.parent.data.show_serial_mass_produce
-        ) {
-            return uomQuantity / this.props.parent.data.product_qty;
+        const move = this.props.record.data;
+        const parent = this.props.parent.data;
+        let toConsumeQuantity = move.should_consume_qty || move.product_uom_qty;
+        if (parent.product_tracking == "serial" && !parent.show_serial_mass_produce) {
+            toConsumeQuantity /= this.props.parent.data.product_qty;
         }
-        return uomQuantity;
+        return toConsumeQuantity;
     }
 
     get quantityDone() {

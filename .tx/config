@@ -338,6 +338,13 @@ type          = PO
 minimum_perc  = 0
 resource_name = appointment_crm
 
+[o:odoo:p:odoo-16:r:appointment_sms]
+file_filter   = appointment_sms/i18n/<lang>.po
+source_file   = appointment_sms/i18n/appointment_sms.pot
+type          = PO
+minimum_perc  = 0
+resource_name = appointment_sms
+
 [o:odoo:p:odoo-16:r:approvals]
 file_filter   = approvals/i18n/<lang>.po
 source_file   = approvals/i18n/approvals.pot

@@ -80,7 +80,7 @@
         padding-right: 75%;
     }
     .o_sign_button_content{
-        font-size: 1.25rem;
+        @include font-size(1.25rem);
         font-weight: bold;
     }
 }

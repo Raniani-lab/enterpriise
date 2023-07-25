@@ -120,7 +120,7 @@ $o-tw-color-black-transparent: rgba(0, 0, 0, 0.2);
         div {
             color: $o-tw-color-white;
             label {
-                font-size: 26px;
+                @include font-size(26px);
                 background-color: $o-tw-color-transparent;
                 padding: 0;
             }

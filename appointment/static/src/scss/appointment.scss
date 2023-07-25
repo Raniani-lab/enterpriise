@@ -43,7 +43,7 @@
 }
 
 .o_appointment_days {
-    font-size: 12px;
+    @include font-size(12px);
     height: 64px;
     .o_weekend {
         background-color: mix(map-get($theme-colors, 'primary'), $body-bg, 30%);
@@ -88,7 +88,7 @@
 
 .o_appointment {
     .o_appointment_selected_slot_date {
-        font-size: 18px;
+        @include font-size(18px);
         font-weight: 500;
     }
     .o_appointment_details_column {
@@ -120,7 +120,7 @@
                 height: 50px;
                 border-color: mix(map-get($theme-colors, 'primary'), $body-bg, 30%);
                 font-weight: 500;
-                font-size: 16px;
+                @include font-size(16px);
                 &.o_slot_hours_selected, &:hover {
                     color: color-contrast(map-get($theme-colors, 'primary')) !important;
                     background-color: map-get($theme-colors, 'primary');
@@ -150,7 +150,7 @@
     }
     .o_appointment_validation_details {
         label {
-            font-size: 18px;
+            @include font-size(18px);
             font-weight: 500;
         }
         .row {

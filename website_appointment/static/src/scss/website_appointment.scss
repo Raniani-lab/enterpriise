@@ -17,7 +17,7 @@
         .card-body {
             padding: 1.25rem 1.5rem;
             h2 {
-                font-size: 28px;
+                @include font-size(28px);
             }
             .o_wappointment_card_location, .o_wappointment_card_staff_users {
                 .fa::before {

@@ -32,7 +32,7 @@
     }
     .o_knowledge_icon {
         margin-top: 40px;
-        font-size: 80px;
+        @include font-size(80px);
         height: 60px;
     }
 
@@ -55,7 +55,7 @@
     .o_knowledge_sidebar {
         width: clamp(200px, var(--knowledge-article-sidebar-size), 576px);
         transition: width 0.15s linear;
-            
+
         .o_article_active > div {
             background-color: rgba($knowledge-bg--active, 0.2);
             &:hover {

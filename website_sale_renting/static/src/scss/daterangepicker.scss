@@ -44,7 +44,7 @@
             }
             th {
                 &.month {
-                    font-size: 1rem !important;
+                    @include font-size(1rem !important);
                     font-weight: normal;
                 }
                 &.off {

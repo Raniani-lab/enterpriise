@@ -102,6 +102,7 @@
                     <filter name="statement_group" string="Statement" context="{'group_by': 'statement_id'}"/>
                     <filter name="journal_group" string="Journal" context="{'group_by': 'journal_id'}"/>
                     <filter name="date_group" string="Date" context="{'group_by': 'date'}"/>
+                    <filter name="invoice_date_group" string="Invoice Date" domain="[]" context="{'group_by': 'invoice_date'}"/>
                 </search>
             </field>
         </record>
@@ -346,6 +347,7 @@
                            string="Journal Item"
                            filter_domain="['|', '|', '|', '|', '|', ('name', 'ilike', self), ('ref', 'ilike', self), ('partner_id', 'ilike', self), ('amount_residual', 'ilike', self), ('amount_residual_currency', 'ilike', self), ('discount_amount_currency', 'ilike', self)]"/>
                     <field name="date"/>
+                    <field name="invoice_date"/>
                     <field name="account_id"/>
                     <field name="partner_id"/>
                     <field name="journal_id"/>
@@ -358,6 +360,7 @@
                     <filter name="amount_paid" string="Outgoing" domain="[('balance', '&lt;', 0.0)]"/>
                     <separator name="inject_after"/>
                     <filter name="date" string="Date" date="date"/>
+                    <filter name="invoice_date" string="Invoice Date" date="invoice_date"/>
                 </search>
             </field>
         </record>
@@ -388,6 +391,7 @@
                     <field name="partner_id"
                            optional="show"/>
                     <field name="date"/>
+                    <field name="invoice_date" string="Invoice Date" optional="hide"/>
                     <field name="move_id"/>
                     <field name="name"/>
                     <field name="date_maturity" optional="hidden"/>

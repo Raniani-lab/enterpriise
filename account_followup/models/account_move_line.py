@@ -13,7 +13,6 @@ class AccountMoveLine(models.Model):
     next_action_date = fields.Date('Next Action Date',  # TODO remove in master
                                    help="Date where the next action should be taken for a receivable item. Usually, "
                                         "automatically set when sending reminders through the customer statement.")
-    invoice_date = fields.Date(related='move_id.invoice_date')
     invoice_origin = fields.Char(related='move_id.invoice_origin')
 
     def init(self):

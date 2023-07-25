@@ -46,6 +46,7 @@ export class MrpDisplayAction extends Component {
                 "is_user_working",
                 "move_raw_ids",
                 "name",
+                "operation_id",
                 "operation_note",
                 "product_id",
                 "production_id",
@@ -66,6 +67,7 @@ export class MrpDisplayAction extends Component {
             ],
             "stock.move": [
                 "manual_consumption",
+                "operation_id",
                 "product_id",
                 "product_uom",
                 "product_uom_qty",
@@ -73,6 +75,7 @@ export class MrpDisplayAction extends Component {
                 "quantity_done",
                 "raw_material_production_id",
                 "should_consume_qty",
+                "workorder_id",
             ],
             "quality.check": [
                 "company_id",

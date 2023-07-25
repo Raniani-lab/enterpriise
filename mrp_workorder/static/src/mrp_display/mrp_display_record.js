@@ -60,19 +60,12 @@ export class MrpDisplayRecord extends Component {
                 qualityCheckProductids.push(qualityCheck.data.component_id[0]);
             }
         };
-        if (this.props.record.resModel == "mrp.production") {
-            // Don't take the by-products who have a QC for them (registration managed by their QC).
-            this.byproductMoves = moves.filter(move => {
-                const productId = move.data.product_id[0]
-                return move.data.production_id && productId !== this.record.product_id[0] &&
-                    !qualityCheckProductids.includes(productId);
-            });
-        } else {
-            this.byproductMoves = moves.filter(move => {
-                const productId = move.data.product_id[0]
-                return move.data.production_id && productId !== this.record.product_id[0];
-            });
-        }
+        // Don't take the by-products who have a QC for them (registration managed by their QC).
+        this.byproductMoves = moves.filter(move => {
+            const productId = move.data.product_id[0];
+            return move.data.production_id && productId !== this.record.product_id[0] &&
+                !qualityCheckProductids.includes(productId);
+        });
 
         this.finishedMoves = moves.filter(rec => {
             return rec.data.production_id && rec.data.product_id[0] === this.record.product_id[0];
@@ -161,7 +154,12 @@ export class MrpDisplayRecord extends Component {
             const manualConsumptionMoves = this.rawMoves.filter(move => move.data.manual_consumption);
             return [...this.workorders, ...manualConsumptionMoves];
         }
-        return this.props.subRecords;
+        return [
+            ...this.rawMoves,
+            ...this.byproductMoves,
+            ...this.finishedMoves,
+            ...this.qualityChecks
+        ];
     }
 
     subRecordProps(subRecord) {

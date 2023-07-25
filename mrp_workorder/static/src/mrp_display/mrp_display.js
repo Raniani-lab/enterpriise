@@ -281,7 +281,8 @@ export class MrpDisplay extends Component {
             if (relatedProduction) {
                 byproductMoves = this.stock_move.root.records.filter((move) =>
                     move.data.production_id[0] === relatedProduction.resId &&
-                    move.data.product_id[0] !== relatedProduction.data.product_id[0]
+                    move.data.product_id[0] !== relatedProduction.data.product_id[0] &&
+                    (!move.data.operation_id || move.data.operation_id[0] === record.data.operation_id[0])
                 );
             }
         }
@@ -322,23 +323,11 @@ export class MrpDisplay extends Component {
         records.push(...this.getByproductMoves(record));
         records.push(...this.getFinishedMoves(record));
         records.push(...this.getProductionWorkorders(record));
-        var fieldName = false;
-        if (record.resModel == "mrp.production") {
-            fieldName = "production_id";
-        } else {
-            fieldName = "workorder_id";
-        }
+        const fieldName = record.resModel == "mrp.production" ? "production_id" : "workorder_id";
         const checks = this.quality_check.root.records.filter((qc) => {
-                return qc.data[fieldName][0] == record.resId;
-            });
-        if (checks.length) {
-            let check = checks.find(qc => !qc.data.previous_check_id)
-            records.push(check)
-            while (check.data.next_check_id) {
-                check = checks.find(qc => qc.resId === check.data.next_check_id[0])
-                records.push(check)
-            }
-        }
+            return qc.data[fieldName][0] == record.resId;
+        });
+        records.push(...checks);
 
         records.sort((recA, recB) => {
             if (recA.resModel === "stock.move") {

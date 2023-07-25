@@ -1,14 +1,25 @@
 /** @odoo-module **/
 
+import { ormService } from "@web/core/orm_service";
+import { registry } from "@web/core/registry";
 import { registerCleanup } from "@web/../tests/helpers/cleanup";
+import { makeTestEnv } from "@web/../tests/helpers/mock_env";
 import { click, getFixture, mount } from "@web/../tests/helpers/utils";
 import { IconCreator } from "@web_studio/client_action/icon_creator/icon_creator";
-import makeTestEnvironment from "web.test_env";
 
 const sampleIconUrl = "/web_enterprise/Parent.src/img/default_icon_app.png";
 
 QUnit.module("Studio", (hooks) => {
     hooks.beforeEach(() => {
+        registry.category("services").add("orm", ormService);
+        const fakeHTTPService = {
+            start() {
+                return {
+                    post: () => {},
+                };
+            },
+        };
+        registry.category("services").add("http", fakeHTTPService);
         IconCreator.enableTransitions = false;
         registerCleanup(() => {
             IconCreator.enableTransitions = true;
@@ -37,7 +48,7 @@ QUnit.module("Studio", (hooks) => {
                     });
                 },
             },
-            env: makeTestEnvironment(),
+            env: await makeTestEnv(),
         });
 
         assert.strictEqual(
@@ -70,7 +81,7 @@ QUnit.module("Studio", (hooks) => {
                 type: "custom_icon",
                 onIconChange: () => {},
             },
-            env: makeTestEnvironment(),
+            env: await makeTestEnv(),
         });
 
         // Attributes should be correctly set

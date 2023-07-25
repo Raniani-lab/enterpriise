@@ -96,8 +96,6 @@ This module modifies the web addon to provide Enterprise design and responsivene
             'web_enterprise/static/tests/views/disable_patch.js',
             'web_enterprise/static/tests/mobile/**/*.js',
             'web_enterprise/static/tests/webclient/action_manager_mobile_tests.js',
-
-            'web_enterprise/static/tests/legacy/components/action_menus_mobile_tests.js',
         ],
     },
     'license': 'OEEL-1',

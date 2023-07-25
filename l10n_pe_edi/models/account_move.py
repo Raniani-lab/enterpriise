@@ -171,7 +171,7 @@ class AccountMove(models.Model):
         national_bank = self.env.ref('l10n_pe.peruvian_national_bank')
         national_bank_account = self.company_id.bank_ids.filtered(lambda b: b.bank_id == national_bank)
         # just take the first one (but not meant to have multiple)
-        national_bank_account_number = national_bank_account[0].acc_number
+        national_bank_account_number = national_bank_account[0].acc_number if national_bank_account else False
 
         return {
             'ID': 'Detraccion',

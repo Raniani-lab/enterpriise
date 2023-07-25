@@ -50,6 +50,13 @@ class TestCFDIInvoice(TestMxEdiCommon):
         self._assert_invoice_cfdi(invoice, 'test_invoice_foreign_customer')
 
     @freeze_time('2017-01-01')
+    def test_invoice_national_customer_to_public(self):
+        invoice = self._create_invoice(l10n_mx_edi_cfdi_to_public=True)
+        with self.with_mocked_pac_sign_success():
+            invoice._l10n_mx_edi_cfdi_invoice_try_send()
+        self._assert_invoice_cfdi(invoice, 'test_invoice_national_customer_to_public')
+
+    @freeze_time('2017-01-01')
     def test_invoice_no_tax_breakdown(self):
         self.partner_mx.l10n_mx_edi_no_tax_breakdown = True
         invoice = self._create_invoice()

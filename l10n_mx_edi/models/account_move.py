@@ -695,24 +695,16 @@ class AccountMove(models.Model):
     def _l10n_mx_edi_get_customer_cfdi_values(self, partner, to_public=False):
         self.ensure_one()
         customer = partner if partner.type == 'invoice' else partner.commercial_partner_id
+        is_foreign_customer = customer.country_id.code != 'MX'
         supplier = self.company_id.partner_id.commercial_partner_id
         issued_address = self._get_l10n_mx_edi_issued_address()
 
-        if not customer or customer.country_id.code != 'MX':
+        if to_public or is_foreign_customer:
+            vat = 'XEXX010101000' if is_foreign_customer else 'XAXX010101000'
             customer_values = {
                 'to_public': True,
-                'rfc': "XEXX010101000",
+                'rfc': vat,
                 'nombre': self._l10n_mx_edi_cfdi_clean_to_legal_name(customer.name),
-                'residencia_fiscal': None,
-                'domicilio_fiscal_receptor': issued_address.zip or supplier.zip,
-                'regimen_fiscal_receptor': '616',
-                'uso_cfdi': 'S01',
-            }
-        elif to_public or not customer.country_id:
-            customer_values = {
-                'to_public': True,
-                'rfc': "XAXX010101000",
-                'nombre': "PUBLICO EN GENERAL",
                 'residencia_fiscal': None,
                 'domicilio_fiscal_receptor': issued_address.zip or supplier.zip,
                 'regimen_fiscal_receptor': '616',

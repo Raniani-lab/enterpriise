@@ -4,7 +4,7 @@ import { browser } from "@web/core/browser/browser";
 import { useService } from "@web/core/utils/hooks";
 import { patch } from "@web/core/utils/patch";
 import { WebClientEnterprise } from "@web_enterprise/webclient/webclient";
-import { onWillStart } from "@odoo/owl";
+import { onWillDestroy } from "@odoo/owl";
 
 const USER_DEVICES_MODEL = "mail.partner.device";
 
@@ -19,21 +19,23 @@ patch(WebClientEnterprise.prototype, "mail_enterprise", {
         if (this._canSendNativeNotification) {
             this._subscribePush();
         }
-        onWillStart(async () => {
-            if (!browser.navigator.permissions) {
-                // Avoid blank page due to error in OWL when some browser doesn't support permission
-                return;
-            }
-            const notificationPerm = await browser.navigator.permissions.query({name: "notifications"});
-            notificationPerm.onchange = () => {
+        if (browser.navigator.permissions) {
+            let notificationPerm;
+            const onPermissionChange = () => {
                 if (this._canSendNativeNotification) {
                     this._subscribePush();
                 } else {
                     this._unsubscribePush();
                 }
-            }
-        });
-
+            };
+            browser.navigator.permissions.query({ name: "notifications" }).then((perm) => {
+                notificationPerm = perm;
+                notificationPerm.addEventListener("change", onPermissionChange);
+            });
+            onWillDestroy(() => {
+                notificationPerm?.removeEventListener("change", onPermissionChange);
+            });
+        }
     },
     /**
      *
@@ -41,7 +43,7 @@ patch(WebClientEnterprise.prototype, "mail_enterprise", {
      * @private
      */
     get _canSendNativeNotification() {
-        return Boolean(browser.Notification && browser.Notification.permission === "granted");
+        return browser.Notification?.permission === "granted";
     },
 
     /**

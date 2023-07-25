@@ -264,6 +264,18 @@ class MrpProductionWorkcenterLine(models.Model):
                     check._update_component_quantity()
         return res
 
+    def button_finish(self):
+        """ When using the Done button of the simplified view, validate directly some types of quality checks
+        """
+        for check in self.check_ids:
+            if check.quality_state in ['pass', 'fail']:
+                continue
+            if check.test_type in ['register_consumed_materials', 'register_byproducts', 'instructions']:
+                check.quality_state = 'pass'
+            else:
+                raise UserError(_("You need to complete Quality Checks using the Tablet View before marking Work Order as Done."))
+        return super().button_finish()
+
     def action_propose_change(self, change_type, title):
         return {
             'type': 'ir.actions.act_window',

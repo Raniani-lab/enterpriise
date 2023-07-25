@@ -18,7 +18,7 @@ registry.category("web_tour.tours").add('test_production_with_employee', {test: 
     { trigger: 'span.highlight:contains("••••")' },
     { trigger: 'button.confirm' },
     {
-        trigger: 'span[title="Arthur Fu"]',
+        trigger: 'span:contains("Arthur Fu")',
         run: function () {
             helper.assertCheckLength(3);
             helper.assertValidatedCheckLength(0);
@@ -41,7 +41,7 @@ registry.category("web_tour.tours").add('test_production_with_employee', {test: 
     { trigger: 'span.highlight:contains("••••")' },
     { trigger: 'button.confirm' },
     {
-        trigger: 'span[title="Thomas Nific"]',
+        trigger: 'span:contains("Thomas Nific")',
         run: function () {
             helper.assertCheckLength(3);
             helper.assertValidatedCheckLength(0);

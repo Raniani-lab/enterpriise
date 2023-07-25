@@ -11,6 +11,7 @@ patch(Order.prototype, {
         // For the pos_restaurant, this is mandatory, without the server_id,
         // we cannot find the order table.
         if (!this.server_id || this.customerCountChanges) {
+            this.pos.ordersToUpdateSet.add(this);
             await this.pos.sendDraftToServer();
         }
 

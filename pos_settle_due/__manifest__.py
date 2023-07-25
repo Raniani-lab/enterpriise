@@ -14,8 +14,7 @@
     'license': 'OEEL-1',
     'assets': {
         'point_of_sale._assets_pos': [
-            'pos_settle_due/static/src/css/pos.scss',
-            'pos_settle_due/static/src/app/**/*',
+            'pos_settle_due/static/src/**/*',
         ],
     }
 }

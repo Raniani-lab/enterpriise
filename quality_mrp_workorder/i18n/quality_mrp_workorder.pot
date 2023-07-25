@@ -159,12 +159,3 @@ msgstr ""
 #: model:ir.model,name:quality_mrp_workorder.model_mrp_workorder
 msgid "Work Order"
 msgstr ""
-
-#. module: quality_mrp_workorder
-#. odoo-python
-#: code:addons/quality_mrp_workorder/models/mrp_workorder.py:0
-#, python-format
-msgid ""
-"You first need to complete the Quality Check using the Tablet View before "
-"marking the Operation as Done."
-msgstr ""

@@ -296,8 +296,8 @@ export class MrpDisplayRecord extends Component {
         this.dialog.add(MrpQualityCheckConfirmationDialog, params);
     }
 
-    async qualityCheckDone(updateChecks = false){
-        if (updateChecks){
+    async qualityCheckDone(updateChecks = false, qualityState = "pass") {
+        if (updateChecks) {
             await this.props.reload();
         }
         await this.reload();
@@ -306,7 +306,10 @@ export class MrpDisplayRecord extends Component {
                 (rec) => rec.resModel === "quality.check"
             );
         }
-        return this.displayInstruction();
+        // Show the next Quality Check only if the previous one is passed.
+        if (qualityState === "pass") {
+            return this.displayInstruction();
+        }
     }
 
     get active() {

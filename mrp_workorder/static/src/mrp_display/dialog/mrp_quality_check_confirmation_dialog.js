@@ -100,7 +100,7 @@ export class MrpQualityCheckConfirmationDialog extends ConfirmationDialog {
         if (!reloadChecks) {
             await this.props.record.load();
         }
-        await this.props.qualityCheckDone(reloadChecks);
+        await this.props.qualityCheckDone(reloadChecks, this.props.record.data.quality_state);
         this.props.close();
     }
 
@@ -123,10 +123,10 @@ export class MrpQualityCheckConfirmationDialog extends ConfirmationDialog {
         return {
             name: "lot_id",
             record: this.props.record,
-            context: {
+            context: JSON.stringify({
                 default_product_id: productId,
                 default_company_id: this.recordData.company_id[0],
-            },
+            }),
             domain: [
                 "&",
                 ["product_id", "=", productId],

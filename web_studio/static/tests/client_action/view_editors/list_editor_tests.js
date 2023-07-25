@@ -79,6 +79,8 @@ QUnit.module(
                             m2o: { string: "Product", type: "many2one", relation: "product" },
                             char_field: { type: "char", string: "A char" },
                             croissant: { string: "Croissant", type: "integer" },
+                            float_field: { string: "Float", type: "float" },
+                            money_field: { string: "Money", type: "monetary" },
                             priority: {
                                 string: "Priority",
                                 type: "selection",
@@ -2004,15 +2006,15 @@ QUnit.module(
         QUnit.test("list editor field with aggregate function", async function (assert) {
             const changeArch = makeArchChanger();
             serverData.models.coucou.records = [
-                { id: 1, display_name: "Red Right Hand", croissant: 3 },
-                { id: 2, display_name: "Hell Broke Luce", croissant: 5 },
+                { id: 1, display_name: "Red Right Hand", croissant: 3, float_field: 3.14, money_field: 1.001 },
+                { id: 2, display_name: "Hell Broke Luce", croissant: 5, float_field: 6.66, money_field: 999.999 },
             ];
 
-            const arch = '<tree><field name="display_name"/><field name="croissant"/></tree>';
+            const arch = '<tree><field name="display_name"/><field name="float_field"/><field name="money_field"/><field name="croissant"/></tree>';
             const sumArchReturn =
-                '<tree><field name="display_name"/><field name="croissant" sum="Sum of Croissant"/></tree>';
+                '<tree><field name="display_name"/><field name="float_field"/><field name="money_field"/><field name="croissant" sum="Sum of Croissant"/></tree>';
             const avgArchReturn =
-                '<tree><field name="display_name"/><field name="croissant" avg="Average of Croissant"/></tree>';
+                '<tree><field name="display_name"/><field name="float_field"/><field name="money_field"/><field name="croissant" avg="Average of Croissant"/></tree>';
 
             await createViewEditor({
                 type: "list",
@@ -2060,6 +2062,20 @@ QUnit.module(
             assert.containsOnce(
                 target,
                 ".o_web_studio_sidebar .o_web_studio_property_aggregate",
+                "should have aggregate selection for float type column"
+            );
+
+            await click(target.querySelector('thead th[data-studio-xpath="/tree[1]/field[3]"]')); // select the third column
+            assert.containsOnce(
+                target,
+                ".o_web_studio_sidebar .o_web_studio_property_aggregate",
+                "should have aggregate selection for monetary type column"
+            );
+
+            await click(target.querySelector('thead th[data-studio-xpath="/tree[1]/field[4]"]')); // select the fourth column
+            assert.containsOnce(
+                target,
+                ".o_web_studio_sidebar .o_web_studio_property_aggregate",
                 "should have aggregate selection for integer type column"
             );
 
@@ -2071,12 +2087,12 @@ QUnit.module(
             );
             assert.verifySteps(["edit_view"]);
             assert.strictEqual(
-                target.querySelector("tfoot tr td.o_list_number").textContent,
+                target.querySelectorAll("tfoot tr td.o_list_number")[1].textContent,
                 "8",
                 "total should be '8'"
             );
             assert.strictEqual(
-                target.querySelector("tfoot tr td.o_list_number span").dataset.tooltip,
+                target.querySelectorAll("tfoot tr td.o_list_number span")[1].dataset.tooltip,
                 "Sum of Croissant",
                 "title should be 'Sum of Croissant'"
             );
@@ -2089,12 +2105,12 @@ QUnit.module(
             );
             assert.verifySteps(["edit_view"]);
             assert.strictEqual(
-                target.querySelector("tfoot tr td.o_list_number").textContent,
+                target.querySelectorAll("tfoot tr td.o_list_number")[1].textContent,
                 "4",
                 "total should be '4'"
             );
             assert.strictEqual(
-                target.querySelector("tfoot tr td.o_list_number span").dataset.tooltip,
+                target.querySelectorAll("tfoot tr td.o_list_number span")[1].dataset.tooltip,
                 "Average of Croissant",
                 "title should be 'Avg of Croissant'"
             );
@@ -2106,7 +2122,17 @@ QUnit.module(
                 "No aggregation"
             );
             assert.verifySteps(["edit_view"]);
-            assert.containsNone(target, "tfoot tr td.o_list_number");
+            assert.containsOnce(target, "tfoot tr td.o_list_number");
+            assert.strictEqual(
+                target.querySelector("tfoot tr td.o_list_number").textContent,
+                "—",
+                "total should display '—'"
+            );
+            assert.strictEqual(
+                target.querySelector("tfoot tr td.o_list_number span").dataset.tooltip,
+                "No currency provided",
+                "title should be 'No currency provided'"
+            );
         });
 
         QUnit.test("error during tree rendering: undo", async function (assert) {

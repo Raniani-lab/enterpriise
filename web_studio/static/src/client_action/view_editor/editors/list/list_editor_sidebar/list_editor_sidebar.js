@@ -125,25 +125,4 @@ export class ListEditorSidebar extends Component {
     onAttributeChanged(value, name) {
         return this.editArchAttributes({ [name]: value });
     }
-
-    onAggregateChange(value, name, node, target) {
-        const activeNode = this.viewEditorModel.activeNode;
-        const newAttrs = {
-            avg: "",
-            sum: "",
-        };
-        if (value) {
-            const humanName = value === "sum" ? _t("Sum of %s") : _t("Average of %s");
-            const fieldString = activeNode.attrs.string || activeNode.field.label;
-            newAttrs[value] = sprintf(humanName, fieldString);
-        }
-        const operation = {
-            type: "attributes",
-            new_attrs: newAttrs,
-            //node: activeNode,
-            target,
-            position: "attributes",
-        };
-        this.viewEditorModel.doOperation(operation);
-    }
 }

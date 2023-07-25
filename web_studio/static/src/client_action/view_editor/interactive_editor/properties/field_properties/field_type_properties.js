@@ -57,6 +57,7 @@ export const FIELD_TYPE_ATTRIBUTES = {
     },
     float: {
         common: [EDITABLE_ATTRIBUTES.placeholder],
+        list: [EDITABLE_ATTRIBUTES.aggregate],
     },
     html: {
         common: [EDITABLE_ATTRIBUTES.placeholder],

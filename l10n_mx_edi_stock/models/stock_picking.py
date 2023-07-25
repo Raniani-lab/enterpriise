@@ -127,6 +127,12 @@ class Picking(models.Model):
             'barcode_src': barcode_src,
         }
 
+    def _get_mail_thread_data_attachments(self):
+        # EXTENDS 'stock'
+        return super()._get_mail_thread_data_attachments() \
+            - self.l10n_mx_edi_document_ids.attachment_id \
+            + self.l10n_mx_edi_cfdi_attachment_id
+
     # -------------------------------------------------------------------------
     # COMPUTE METHODS
     # -------------------------------------------------------------------------

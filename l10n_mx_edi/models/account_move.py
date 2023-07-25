@@ -665,6 +665,12 @@ class AccountMove(models.Model):
                 default_vals['l10n_mx_edi_cfdi_origin'] = move._l10n_mx_edi_write_cfdi_origin('01', [move.l10n_mx_edi_cfdi_uuid])
         return super()._reverse_moves(default_values_list, cancel=cancel)
 
+    def _get_mail_thread_data_attachments(self):
+        # EXTENDS 'account'
+        return super()._get_mail_thread_data_attachments() \
+            - self.l10n_mx_edi_payment_document_ids.attachment_id \
+            + self.l10n_mx_edi_cfdi_attachment_id
+
     @api.model
     def get_invoice_localisation_fields_required_to_invoice(self, country_id):
         res = super().get_invoice_localisation_fields_required_to_invoice(country_id)

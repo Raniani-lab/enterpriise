@@ -4,6 +4,9 @@ from odoo.addons.portal.controllers.portal import CustomerPortal
 
 
 class DocumentsProjectCustomerPortal(CustomerPortal):
+    def _display_project_groupby(self, project):
+        return super()._display_project_groupby(project) or project.use_documents and project.shared_document_count
+
     def _project_get_page_view_values(self, project, access_token, page=1, date_begin=None, date_end=None, sortby=None, search=None, search_in='content', groupby=None, **kwargs):
         if project.use_documents and project.sudo().shared_document_count:
             groupby = 'project'

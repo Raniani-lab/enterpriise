@@ -27,7 +27,7 @@
     <t t-name="knowledge.SidebarWorkspaceSection" owl="1">
         <t t-call="knowledge.SidebarSection">
             <t t-set="sectionName">Workspace</t>
-            <t t-set="sectionClass" t-value="!(isInternalUser || props.rootIds.length) ? 'pb-3' : ''"/>
+            <t t-set="sectionClass" t-value="props.rootIds.length === 0 ? 'pb-3' : ''"/>
             <t t-set="dataSection" t-value="'workspace'"/>
             <t t-if="isInternalUser" t-set="headerButtons">
                 <button class="o_knowledge_join_article_members btn btn-link text-secondary rounded p-0"

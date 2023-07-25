@@ -1,4 +1,4 @@
-/** */ /** @odoo-module **/
+/** @odoo-module **/
 
 import { click, getFixture, mount, editSelect } from "@web/../tests/helpers/utils";
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
@@ -60,6 +60,24 @@ QUnit.module("initial all pages dialog", function (hooks) {
             "test role should be selected by default"
         );
     });
+
+    QUnit.test(
+        "initial all pages dialog is rendered with correct role in the selection",
+        async (assert) => {
+            const currentRole = 2;
+            await mountInitialAllPagesDialog({
+                responsible: currentRole,
+            });
+
+            const selectEl = target.querySelector("#responsible_select_initials_input");
+
+            assert.strictEqual(
+                selectEl.querySelector("option:checked").textContent,
+                roles[currentRole].name,
+                "test role should be selected by default"
+            );
+        }
+    );
 
     QUnit.test(
         "initial all pages dialog calls addInitial with the correct role",

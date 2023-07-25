@@ -7,7 +7,7 @@
                 <select id="responsible_select_initials_input" class="form-select w-75" t-ref="role_select">
                     <t t-foreach="props.roles" t-as="role_id" t-key="role_id">
                         <t t-set="role" t-value="props.roles[role_id]"/>
-                        <option t-att-value="role_id" t-att-selected="role_id === props.responsible">
+                        <option t-att-value="role_id" t-att-selected="role_id == props.responsible">
                             <t t-esc="role.name"/>
                         </option>
                     </t>

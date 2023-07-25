@@ -1,8 +1,9 @@
 /** @odoo-module **/
 
-import { patch } from "@web/core/utils/patch";
 import { saleOrderLineProductField, SaleOrderLineProductField } from "@sale/js/sale_product_field";
 import { serializeDateTime } from "@web/core/l10n/dates";
+import { x2ManyCommands } from "@web/core/orm_service";
+import { patch } from "@web/core/utils/patch";
 
 const { extractProps } = saleOrderLineProductField;
 patch(saleOrderLineProductField, "sale_renting_field", {
@@ -131,7 +132,7 @@ patch(SaleOrderLineProductField.prototype, 'sale_renting', {
                         for (const fieldName in closeInfo.rentalConfiguration) {
                             if (["one2many", "many2many"].includes(record.fields[fieldName].type)) {
                                 const ids = closeInfo.rentalConfiguration[fieldName];
-                                record.data[fieldName].replaceWith(ids, { silent: true });
+                                changes[fieldName] = [x2ManyCommands.replaceWith(ids)];
                             } else {
                                 changes[fieldName] = closeInfo.rentalConfiguration[fieldName];
                             }

@@ -286,7 +286,7 @@ export class SignTemplateIframe extends EditablePDFIframeMixin(PDFIframe) {
         for (const page in items) {
             for (const id in items[page]) {
                 const signItem = items[page][id].data;
-                if (signItem.updated) {
+                if (signItem.id < 0) {
                     this.negativeIds[id] = new Deferred();
                 }
             }

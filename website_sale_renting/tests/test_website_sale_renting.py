@@ -55,3 +55,14 @@ class TestWebsiteSaleRenting(TestWebsiteSaleRentingCommon):
             'rent_ok': True,
         })
         self.assertTrue(self.computer._is_add_to_cart_allowed(), "Rental product should be addable to the cart")
+
+    def test_now_is_valid_date(self):
+        with freeze_time('2023-01-02 00:00:00'):
+            now = fields.Datetime.now()
+        with freeze_time('2023-01-02 00:10:00'): # tolerance of 15 minutes
+            self.assertFalse(
+                self.env['sale.order.line']._is_invalid_renting_dates(
+                    self.company, now, now + relativedelta(weeks=1)
+                ),
+                "It should be possible to rent the product now",
+            )

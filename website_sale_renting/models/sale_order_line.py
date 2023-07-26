@@ -1,5 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from datetime import timedelta
+
 from odoo import api, fields, models
 from odoo.http import request
 
@@ -14,10 +16,13 @@ class SaleOrderLine(models.Model):
         info = self._get_renting_dates_info(
             start_date or self.start_date, end_date or self.return_date, company
         )
-        return (self.start_date or start_date) < fields.Datetime.now() \
-            or info['pickup_day'] in days_forbidden \
-            or info['return_day'] in days_forbidden \
+        return (
+            # 15 minutes of allowed time between adding the product to cart and paying it.
+            (self.start_date or start_date) < fields.Datetime.now() - timedelta(minutes=15)
+            or info['pickup_day'] in days_forbidden
+            or info['return_day'] in days_forbidden
             or info['duration'] < company.renting_minimal_time_duration
+        )
 
     @api.model
     def _get_renting_dates_info(self, start_date, end_date, company):

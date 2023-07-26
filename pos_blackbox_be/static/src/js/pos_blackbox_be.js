@@ -134,6 +134,13 @@ odoo.define('pos_blackbox_be.pos_blackbox_be', function (require) {
             return tax ? tax.amount : false;
         }
         add_product(product, options) {
+            if (this.pos.useBlackBoxBe() && product.lst_price < 0) {
+                Gui.showPopup('ErrorPopup',{
+                    'title': _t("POS error"),
+                    'body':  _t("Product has a negative price. Perform a refund instead."),
+                });
+                return;
+            }
             if (this.pos.useBlackBoxBe() && product.taxes_id.length === 0) {
                 Gui.showPopup('ErrorPopup',{
                     'title': _t("POS error"),

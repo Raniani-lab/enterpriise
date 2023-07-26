@@ -40,13 +40,13 @@ QUnit.module("Views", (hooks) => {
 
         assert.containsN(
             target,
-            ".o_field_timesheet_many2one_avatar_employee",
+            ".o_grid_component_timesheet_many2one_avatar_employee",
             6,
             "should have 6 employee avatars"
         );
         assert.containsN(
             target,
-            ".o_field_timesheet_many2one",
+            ".o_grid_component_timesheet_many2one",
             11,
             "should have 11 many2one widgets in total"
         );
@@ -74,7 +74,7 @@ QUnit.module("Views", (hooks) => {
 
         assert.containsN(
             target,
-            ".o_field_timesheet_many2one_avatar_employee",
+            ".o_grid_component_timesheet_many2one_avatar_employee",
             4,
             "should have 4 employee avatars"
         );
@@ -102,7 +102,7 @@ QUnit.module("Views", (hooks) => {
 
         assert.containsN(
             target,
-            ".o_field_timesheet_many2one_avatar_employee",
+            ".o_grid_component_timesheet_many2one_avatar_employee",
             6,
             "should have 6 employee avatars"
         );
@@ -110,15 +110,15 @@ QUnit.module("Views", (hooks) => {
             target,
             ".o_grid_row_title",
             6,
-            "should have 4 rows displayed in the grid"
+            "should have 6 rows displayed in the grid"
         );
         assert.containsN(
             target,
-            ".o_field_timesheet_many2one",
+            ".o_grid_component_timesheet_many2one",
             5,
             "should have 5 many2one widgets in total"
         );
-        assert.containsN(target, ".o_field_widget", 11, "should have 11 widgets in total");
+        assert.containsN(target, ".o_grid_component", 11, "should have 11 widgets in total");
     });
 
     QUnit.test("basic timesheet - groupby task>employees", async function (assert) {
@@ -137,7 +137,7 @@ QUnit.module("Views", (hooks) => {
 
         assert.containsN(
             target,
-            ".o_field_timesheet_many2one_avatar_employee",
+            ".o_grid_component_timesheet_many2one_avatar_employee",
             6,
             "should have 6 employee avatars"
         );
@@ -149,11 +149,21 @@ QUnit.module("Views", (hooks) => {
         );
         assert.containsN(
             target,
-            ".o_field_timesheet_many2one",
-            5,
-            "should have 5 many2one widgets in total"
+            ".o_grid_component_timesheet_many2one",
+            6,
+            "should have 6 many2one widgets in total"
         );
-        assert.containsN(target, ".o_field_widget", 11, "should have 11 widgets in total");
+        assert.containsOnce(
+            target,
+            ".o_grid_component_timesheet_many2one .o_grid_no_data",
+            "We should have one many2one widget with no data"
+        );
+        assert.containsN(target, ".o_grid_component", 12, "should have 12 widgets in total");
+        assert.containsOnce(
+            target,
+            ".o_grid_component_timesheet_many2one .o_grid_no_data",
+            "should have 1 widget with no data"
+        );
     });
 
     QUnit.test("timesheet with employee section - no groupby", async function (assert) {
@@ -172,30 +182,30 @@ QUnit.module("Views", (hooks) => {
 
         assert.containsN(
             target,
-            ".o_grid_section_title .o_field_timesheet_many2one_avatar_employee",
+            ".o_grid_section_title .o_grid_component_timesheet_many2one_avatar_employee",
             4,
             "should have 4 sections with employee avatar"
         );
         assert.containsN(
             target,
-            ".o_field_timesheet_many2one",
+            ".o_grid_component_timesheet_many2one",
             11,
             "should have 11 many2one widgets in total"
         );
         assert.containsNone(
             target,
-            ".o_grid_row_title .o_field_timesheet_many2one_avatar_employee",
+            ".o_grid_row_title .o_grid_component_timesheet_many2one_avatar_employee",
             "No employee avatar should be displayed in the rows"
         );
         assert.containsN(
             target,
-            ".o_grid_row_title .o_field_timesheet_many2one",
+            ".o_grid_row_title .o_grid_component_timesheet_many2one",
             11,
             "The 11 many2one widgets should be displayed in the rows"
         );
         assert.containsNone(
             target,
-            ".o_grid_section_title .o_field_timesheet_many2one",
+            ".o_grid_section_title .o_grid_component_timesheet_many2one",
             "No many2one widgets should be displayed in the sections"
         );
         assert.containsN(
@@ -228,18 +238,18 @@ QUnit.module("Views", (hooks) => {
 
         assert.containsNone(
             target,
-            ".o_grid_section_title .o_field_timesheet_many2one_avatar_employee",
+            ".o_grid_section_title .o_grid_component_timesheet_many2one_avatar_employee",
             "No employee avatar should be displayed in the sections"
         );
         assert.containsN(
             target,
-            ".o_grid_row_title .o_field_timesheet_many2one_avatar_employee",
+            ".o_grid_row_title .o_grid_component_timesheet_many2one_avatar_employee",
             4,
             "should have 4 rows with employee avatar"
         );
         assert.containsNone(
             target,
-            ".o_field_timesheet_many2one",
+            ".o_grid_component_timesheet_many2one",
             "No many2one widgets should be rendered"
         );
         assert.containsNone(
@@ -271,30 +281,40 @@ QUnit.module("Views", (hooks) => {
 
         assert.containsN(
             target,
-            ".o_grid_section_title .o_field_timesheet_many2one_avatar_employee",
+            ".o_grid_section_title .o_grid_component_timesheet_many2one_avatar_employee",
             4,
             "should have 4 sections with employee avatar"
         );
         assert.containsN(
             target,
-            ".o_field_timesheet_many2one",
-            5,
-            "should have 11 many2one widgets in total"
+            ".o_grid_component_timesheet_many2one",
+            6,
+            "should have 6 many2one widgets in total"
+        );
+        assert.containsOnce(
+            target,
+            ".o_grid_component_timesheet_many2one .o_grid_no_data",
+            "We should have one many2one widget with no data"
         );
         assert.containsNone(
             target,
-            ".o_grid_row_title .o_field_timesheet_many2one_avatar_employee",
+            ".o_grid_row_title .o_grid_component_timesheet_many2one_avatar_employee",
             "No employee avatar should be displayed in the rows"
         );
         assert.containsN(
             target,
-            ".o_grid_row_title .o_field_timesheet_many2one",
-            5,
-            "The 11 many2one widgets should be displayed in the rows"
+            ".o_grid_row_title .o_grid_component_timesheet_many2one",
+            6,
+            "The 6 many2one widgets should be displayed in the rows"
+        );
+        assert.containsOnce(
+            target,
+            ".o_grid_row_title .o_grid_component_timesheet_many2one .o_grid_no_data",
+            "We should have one many2one widget with no data"
         );
         assert.containsNone(
             target,
-            ".o_grid_section_title .o_field_timesheet_many2one",
+            ".o_grid_section_title .o_grid_component_timesheet_many2one",
             "No many2one widgets should be displayed in the sections"
         );
         assert.containsN(
@@ -327,20 +347,25 @@ QUnit.module("Views", (hooks) => {
 
         assert.containsNone(
             target,
-            ".o_grid_section_title .o_field_timesheet_many2one_avatar_employee",
+            ".o_grid_section_title .o_grid_component_timesheet_many2one_avatar_employee",
             "No employee avatar should be displayed in the sections"
         );
         assert.containsN(
             target,
-            ".o_grid_row_title .o_field_timesheet_many2one_avatar_employee",
+            ".o_grid_row_title .o_grid_component_timesheet_many2one_avatar_employee",
             6,
             "should have 4 rows with employee avatar"
         );
         assert.containsN(
             target,
-            ".o_field_timesheet_many2one",
-            5,
+            ".o_grid_component_timesheet_many2one",
+            6,
             "5 many2one widgets should be rendered"
+        );
+        assert.containsOnce(
+            target,
+            ".o_grid_component_timesheet_many2one .o_grid_no_data",
+            "We should have one many2one widget with no data"
         );
         assert.containsNone(
             target,
@@ -373,7 +398,7 @@ QUnit.module("Views", (hooks) => {
 
             assert.containsN(
                 target,
-                ".o_grid_section_title .o_field_timesheet_many2one_avatar_employee",
+                ".o_grid_section_title .o_grid_component_timesheet_many2one_avatar_employee",
                 4,
                 "should have 4 sections with employee avatar"
             );
@@ -405,7 +430,7 @@ QUnit.module("Views", (hooks) => {
 
             assert.containsN(
                 target,
-                ".o_grid_section_title .o_field_timesheet_many2one_avatar_employee",
+                ".o_grid_section_title .o_grid_component_timesheet_many2one_avatar_employee",
                 4,
                 "should have 4 sections with employee avatar"
             );

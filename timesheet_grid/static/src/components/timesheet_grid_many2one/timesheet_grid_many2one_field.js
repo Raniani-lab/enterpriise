@@ -1,20 +1,20 @@
 /** @odoo-module */
 
 import { registry } from "@web/core/registry";
-import { Many2OneField, many2OneField } from "@web/views/fields/many2one/many2one_field";
+import { Many2OneGridRow, many2OneGridRow } from "@web_grid/components/many2one_grid_row/many2one_grid_row";
 import { TimesheetOvertimeIndication } from "../timesheet_overtime_indication/timesheet_overtime_indication";
 import { useTimesheetOvertimeProps } from "../../hooks/useTimesheetOvertimeProps";
 
-export class TimesheetGridMany2OneField extends Many2OneField {
-    static template = "timesheet_grid.TimesheetGridMany2OneField";
+export class TimesheetGridMany2OneGridRow extends Many2OneGridRow {
+    static template = "timesheet_grid.TimesheetGridMany2OneGridRow";
 
     static components = {
-        ...Many2OneField.components,
+        ...Many2OneGridRow.components,
         TimesheetOvertimeIndication,
     };
 
     static props = {
-        ...Many2OneField.props,
+        ...Many2OneGridRow.props,
         workingHours: { type: Object, optional: true },
     };
 
@@ -31,9 +31,9 @@ export class TimesheetGridMany2OneField extends Many2OneField {
     }
 }
 
-export const timesheetGridMany2OneField = {
-    ...many2OneField,
-    component: TimesheetGridMany2OneField,
+export const timesheetGridMany2OneGridRow = {
+    ...many2OneGridRow,
+    component: TimesheetGridMany2OneGridRow,
 };
 
-registry.category("fields").add("timesheet_many2one", timesheetGridMany2OneField);
+registry.category("grid_components").add("timesheet_many2one", timesheetGridMany2OneGridRow);

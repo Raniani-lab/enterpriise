@@ -24,10 +24,10 @@
                 <t t-if="props.createInline and !props.model.hasData()" t-call="web_grid.AddLine"/>
                 <t t-call="web_grid.Footer"/>
                 <t t-if="props.options.hasBarChartTotal" t-call="web_grid.barChart"/>
-                <t t-component="gridCell.component"
+                <GridComponent
                     t-props="hoveredCellProps"
                 />
-                <t t-component="gridCell.component"
+                <GridComponent
                     t-props="editCellProps"
                 />
             </div>
@@ -72,23 +72,13 @@
                  t-att-data-grid-column="columnsGap"
                  t-attf-style="grid-row: {{rowPosition}}; grid-column: {{columnsGap}};"
             >
-                <Record t-if="section.value"
-                        fields="props.model.fieldsInfo"
-                        resModel="props.model.resModel"
-                        values="section.initialRecordValues"
-                        fieldNames="[props.sectionField.name]"
-                        t-slot-scope="data"
-                        mode="'readonly'"
-                        t-key="props.sectionField.name"
-                >
-                    <Field record="data.record"
-                           class="'text-truncate'"
-                           t-props="getFieldAdditionalProps(props.sectionField.name)"
-                    />
-                </Record>
-                <span t-if="!section.value"
-                      class="o_grid_no_data text-300"
-                        >None</span>
+                <GridComponent
+                    classNames="'text-truncate'"
+                    name="props.sectionField.name"
+                    model="props.model"
+                    row="section"
+                    t-props="getFieldAdditionalProps(props.sectionField.name)"
+                />
             </div>
             <div t-foreach="props.columns"
                 t-as="column"
@@ -148,30 +138,23 @@
              t-attf-style="grid-row: {{rowPosition}}; grid-column: {{columnsGap}};"
         >
             <t t-set="rowFields" t-value="props.model.rowFields.map(field => field.name)"/>
-            <Record fields="props.model.fieldsInfo"
-                    resModel="props.model.resModel"
-                    values="row.initialRecordValues"
-                    fieldNames="rowFields"
-                    t-slot-scope="data"
-                    mode="'readonly'"
-                    t-key="rowFields.join('-')"
-            >
-                <t t-foreach="props.rowFields" t-as="rowField" t-key="rowField_index">
-                    <Field t-if="data.record.data[rowField.name]"
-                           class="'text-truncate o_grid_field_' + rowField.name.replace('_id','') + [isMobile ? '' : ' text-nowrap']"
-                           record="data.record"
-                           t-props="getFieldAdditionalProps(rowField.name)"
-                    />
-                    <span t-if="!data.record.data[rowField.name] and rowField_index === 0"
-                          class="o_grid_no_data text-300"
-                    >None</span>
-                    <span t-if="!rowField_last and data.record.data[props.rowFields[rowField_index + 1].name]"
-                          class="o_grid_row_data_separator d-none d-md-inline px-2 text-300"
-                    >
-                        |
-                    </span>
-                </t>
-            </Record>
+            <t t-foreach="props.rowFields" t-as="rowField" t-key="rowField_index">
+                <t t-set="fieldName" t-value="rowField.name"/>
+                <GridComponent
+                    t-if="row.initialRecordValues[fieldName] or rowField_index === 0"
+                    classNames="'text-truncate o_grid_field_' + fieldName.replace('_id','') + [isMobile ? '' : ' text-nowrap']"
+                    name="fieldName"
+                    value="row.initialRecordValues[fieldName]"
+                    model="props.model"
+                    row="row"
+                    t-props="getFieldAdditionalProps(fieldName)"
+                />
+                <span t-if="!rowField_last and row.initialRecordValues[props.rowFields[rowField_index + 1].name]"
+                        class="o_grid_row_data_separator d-none d-md-inline px-2 text-300"
+                >
+                    |
+                </span>
+            </t>
         </div>
         <div t-foreach="row.model.columnsArray"
              t-as="column"

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
-    <t t-name="timesheet_grid.TimesheetGridMany2OneField" t-inherit="web.Many2OneField">
-        <xpath expr="//t[@t-else='']" position="after">
+    <t t-name="timesheet_grid.TimesheetGridMany2OneGridRow" t-inherit="web_grid.Many2OneGridRow">
+        <xpath expr="//span[@t-else='']" position="after">
             <TimesheetOvertimeIndication t-props="overtimeProps"/>
         </xpath>
     </t>

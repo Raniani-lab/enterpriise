@@ -11,7 +11,7 @@ import { Record } from "@web/views/record";
 import { getActiveHotkey } from "@web/core/hotkeys/hotkey_service";
 import { ViewScaleSelector } from "@web/views/view_components/view_scale_selector";
 
-import { GridComponent } from "@web_grid/components/grid_cell";
+import { GridComponent } from "@web_grid/components/grid_component/grid_component";
 
 import {
     Component,
@@ -68,9 +68,16 @@ export class GridRenderer extends Component {
             editedCellInfo: false,
         });
         this.hoveredElement = null;
-        const fieldInfo = this.props.model.fieldsInfo[this.props.model.measureFieldName];
+        const measureFieldName = this.props.model.measureFieldName;
+        const fieldInfo = this.props.model.fieldsInfo[measureFieldName];
+        const measureFieldWidget = this.props.widgetPerFieldName[measureFieldName];
+        const widgetName = measureFieldWidget || fieldInfo.type;
+        this.gridCell = registry.category("grid_components").get(widgetName);
         this.hoveredCellProps = {
             // props cell hovered
+            name: measureFieldName,
+            type: widgetName,
+            component: this.gridCell.component,
             reactive: reactive({ cell: null }),
             fieldInfo,
             readonly: !this.props.isEditable,
@@ -78,9 +85,13 @@ export class GridRenderer extends Component {
             editMode: false,
             onEdit: this.onEditCell.bind(this),
             getCell: this.getCell.bind(this),
+            isMeasure: true,
         };
         this.editCellProps = {
             // props for cell in edit mode
+            name: measureFieldName,
+            type: widgetName,
+            component: this.gridCell.component,
             reactive: reactive({ cell: null }),
             fieldInfo,
             readonly: !this.props.isEditable,
@@ -89,14 +100,12 @@ export class GridRenderer extends Component {
             onEdit: this.onEditCell.bind(this),
             getCell: this.getCell.bind(this),
             onKeyDown: this.onCellKeydown.bind(this),
+            isMeasure: true,
         };
         this.isEditing = false;
         onWillUpdateProps(this.onWillUpdateProps);
         this.onMouseOver = useDebounced(this._onMouseOver, 10);
         this.onMouseOut = useDebounced(this._onMouseOut, 10);
-        const measureFieldWidget = this.props.widgetPerFieldName[this.props.model.measureFieldName];
-        const widgetName = measureFieldWidget || fieldInfo.type;
-        this.gridCell = registry.category("grid_components").get(widgetName);
         this.virtualRows = useVirtual({
             getItems: () => this.props.rows,
             scrollableRef: this.props.contentRef,
@@ -223,7 +232,7 @@ export class GridRenderer extends Component {
     getFieldAdditionalProps(fieldName) {
         return {
             name: fieldName,
-            type: this.props.widgetPerFieldName[fieldName],
+            type: this.props.widgetPerFieldName[fieldName] || this.props.model.fieldsInfo[fieldName].type,
         };
     }
 

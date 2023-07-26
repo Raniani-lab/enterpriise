@@ -11,6 +11,8 @@ import { Component, useEffect, useRef, useState } from "@odoo/owl";
 import { useGridCell, useMagnifierGlass } from "@web_grid/hooks/grid_cell_hook";
 
 export const standardGridCellProps = {
+    name: String,
+    classNames: String,
     fieldInfo: Object,
     readonly: { type: Boolean, optional: true },
     editMode: { type: Boolean, optional: true },

@@ -6,7 +6,14 @@ import {
     getBasicPivotArch,
     getBasicServerData,
 } from "@spreadsheet/../tests/utils/data";
-import { click, editInput, getFixture, nextTick, patchDate } from "@web/../tests/helpers/utils";
+import {
+    click,
+    editInput,
+    editSelect,
+    getFixture,
+    nextTick,
+    patchDate,
+} from "@web/../tests/helpers/utils";
 import { createSpreadsheet } from "../spreadsheet_test_utils";
 import { createSpreadsheetFromPivotView } from "../utils/pivot_helpers";
 import { makeFakeNotificationService } from "@web/../tests/helpers/mock_services";
@@ -1091,7 +1098,7 @@ QUnit.module(
             const this_year = luxon.DateTime.utc().year;
             assert.equal(quarter.value, "fourth_quarter");
             assert.equal(year.value, String(this_year));
-            await testUtils.fields.editSelect(quarter, "second_quarter");
+            await editSelect(quarter, "", "second_quarter");
             await nextTick();
             await selectYear(String(this_year - 1));
             await nextTick();
@@ -1199,7 +1206,7 @@ QUnit.module(
             // no default value
             assert.containsNone(target, "i.o_side_panel_filter_icon.fa-times");
 
-            await testUtils.fields.editSelect(quarter, "second_quarter");
+            await editSelect(quarter, "", "second_quarter");
             await selectYear(String(this_year - 1));
 
             assert.equal(quarter.value, "second_quarter");
@@ -1294,7 +1301,7 @@ QUnit.module(
                 const options = target.querySelectorAll(
                     ".o_spreadsheet_filter_editor_side_panel .o_side_panel_section"
                 )[1];
-                await testUtils.fields.editSelect(options.querySelector("select"), "year");
+                await editSelect(options, "select", "year");
                 await saveGlobalFilter();
                 assert.deepEqual(model.getters.getGlobalFilters()[0].defaultValue, {});
             }
@@ -1325,7 +1332,7 @@ QUnit.module(
 
                 // Edit filter value in filters list
                 const optionInFilterList = target.querySelector(".pivot_filter select");
-                await testUtils.fields.editSelect(optionInFilterList, "february");
+                await editSelect(optionInFilterList, "", "february");
                 const editFilter = target.querySelector(".o_side_panel_filter_icon.fa-cog");
                 assert.deepEqual(model.getters.getGlobalFilterValue(42), {
                     period: "february",
@@ -1338,7 +1345,7 @@ QUnit.module(
                     ".o_spreadsheet_filter_editor_side_panel .o_side_panel_section"
                 )[1];
                 const selectField = timeRangeOption.querySelector("select");
-                await testUtils.fields.editSelect(selectField, "quarter");
+                await editSelect(selectField, "", "quarter");
                 await click(target, "input#date_automatic_filter");
                 await saveGlobalFilter();
 

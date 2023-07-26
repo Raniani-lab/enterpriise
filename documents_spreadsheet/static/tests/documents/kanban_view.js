@@ -1,6 +1,5 @@
 /** @odoo-module */
 
-import { dom } from "web.test_utils";
 import { x2ManyCommands } from "@web/core/orm_service";
 
 import { documentService } from "@documents/core/document_service";
@@ -27,7 +26,6 @@ import { SearchPanel } from "@web/search/search_panel/search_panel";
 import { XLSX_MIME_TYPE } from "@documents_spreadsheet/helpers";
 import { Model } from "@odoo/o-spreadsheet";
 
-const find = dom.find;
 const serviceRegistry = registry.category("services");
 
 let target;
@@ -363,7 +361,8 @@ QUnit.module(
             await click(target, ".o_kanban_record:nth-of-type(1) .o_record_selector");
             assert.containsOnce(target, ".o_documents_inspector_preview .o_document_preview");
             assert.equal(
-                find(target, ".o_documents_inspector_preview .o_document_preview img").dataset.src,
+                target.querySelector(".o_documents_inspector_preview .o_document_preview img")
+                    .dataset.src,
                 "/documents/image/1/268x130?field=thumbnail&unique="
             );
             await click(target, ".o_kanban_record:nth-of-type(2) .o_record_selector");

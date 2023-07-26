@@ -719,6 +719,52 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         ]
         self.assert_invoice_lines(deferred_move_february, expected_values_february)
 
+    def test_deferred_expense_generate_grouped_without_taxes(self):
+        """
+        Test the default taxes on accounts are ignored when generating a grouped deferral entry.
+        """
+        self.company.deferred_amount_computation_method = 'month'
+        self.company.generate_deferred_entries_method = 'manual'
+        deferral_account = self.company_data['default_account_deferred_revenue']
+        revenue_account_with_taxes = self.env['account.account'].create({
+            'name': 'Revenue with Taxes',
+            'code': 'REVWTAXES',
+            'account_type': 'income',
+            'tax_ids': [Command.set(self.tax_sale_a.ids)]
+        })
+        options = self.get_options('2023-01-01', '2023-01-31')
+        handler = self.env['account.deferred.revenue.report.handler']
+
+        self.create_invoice(
+            'out_invoice',
+            self.company_data['default_journal_sale'],
+            self.partner_a,
+            [[revenue_account_with_taxes, 1000, '2023-01-01', '2023-04-30']],
+        )
+
+        # Check that no deferred move has been created
+        self.assertEqual(self.env['account.move.line'].search_count([('account_id', '=', deferral_account.id)]), 0)
+
+        # Generate the grouped deferred entries
+        res = handler.action_generate_entry(options)
+        generated_entries_january = self.env['account.move'].search(res['domain'], order='date')
+
+        deferred_move_january = generated_entries_january[0]
+        self.assertRecordValues(deferred_move_january, [{
+            'state': 'posted',
+            'move_type': 'entry',
+            'date': fields.Date.to_date('2023-01-31'),
+        }])
+        expected_values_january = [
+            # Account                         Debit       Credit
+            [revenue_account_with_taxes,       1000,           0],
+            [revenue_account_with_taxes,          0,         250],
+            [deferral_account,                    0,         750],
+        ]
+        self.assert_invoice_lines(deferred_move_january, expected_values_january)
+        # There are no extra (tax) lines besides the three lines we checked before
+        self.assertFalse(deferred_move_january.line_ids.tax_line_id)
+
     def test_deferred_values_rounding(self):
         """
         When using the manually & grouped method, we might have some rounding issues

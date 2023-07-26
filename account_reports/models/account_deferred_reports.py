@@ -70,9 +70,11 @@ class DeferredReportCustomHandler(models.AbstractModel):
             'journal_id': journal.id,
             'date': period[1],
             'auto_post': 'at_date',
-            'line_ids': move_lines,
             'ref': ref,
         })
+        # We write the lines after creation, to make sure the `deferred_original_move_ids` is set.
+        # This way we can avoid adding taxes for deferred moves.
+        deferred_move.write({'line_ids': move_lines})
         reverse_move = deferred_move._reverse_moves()
         reverse_move.write({
             'date': deferred_move.date + relativedelta(days=1),

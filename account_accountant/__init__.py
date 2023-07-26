@@ -28,6 +28,12 @@ def _account_accountant_post_init(env):
         if module_ids:
             module_ids.sudo().button_install()
 
+    for company in env['res.company'].search([('chart_template', '!=', False)]):
+        ChartTemplate = env['account.chart.template'].with_company(company)
+        ChartTemplate._load_data({
+            'res.company': ChartTemplate._get_account_accountant_res_company(company.chart_template),
+        })
+
 
 def uninstall_hook(env):
     try:

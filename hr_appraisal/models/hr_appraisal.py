@@ -415,9 +415,9 @@ class HrAppraisal(models.Model):
                     appraisal['manager_feedback'] = _('Unpublished')
         if check_notes:
             for appraisal in records:
-                if appraisal['employee_id'][0] == self.env.user.employee_id.id:
+                if appraisal['employee_id'] == self.env.user.employee_id.id:
                     appraisal['note'] = _('Note')
-                    appraisal['assessment_note'] = (1, _('Assessment'))
+                    appraisal['assessment_note'] = False
         return records
 
     @api.model

@@ -81,13 +81,14 @@ class DeferredReportCustomHandler(models.AbstractModel):
             'ref': ref_rev,
         })
         reverse_move.line_ids.name = ref_rev
-        original_moves.deferred_move_ids = deferred_move + reverse_move
+        new_deferred_moves = deferred_move + reverse_move
+        original_moves.deferred_move_ids |= new_deferred_moves
         (deferred_move + reverse_move)._post(soft=True)
         return {
             'name': _('Deferred Entry'),
             'type': 'ir.actions.act_window',
             'views': [(False, "tree"), (False, "form")],
-            'domain': [('id', 'in', original_moves.deferred_move_ids.ids)],
+            'domain': [('id', 'in', new_deferred_moves.ids)],
             'res_model': 'account.move',
             'target': 'current',
         }

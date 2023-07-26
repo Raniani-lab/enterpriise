@@ -1,15 +1,15 @@
 /** @odoo-module **/
 
-import { TaskGanttRenderer } from '@project_enterprise/task_gantt_renderer';
+import { TaskGanttController } from '@project_enterprise/task_gantt_controller';
 import { patch } from "@web/core/utils/patch";
 
 const { DateTime } = luxon;
 
-patch(TaskGanttRenderer.prototype, {
+patch(TaskGanttController.prototype, {
     /**
      * @override
     */
-    onCreate() {
+    onAddClicked() {
         const { context } = this.model.searchParams;
         const { startDate, stopDate } = this.model.metaData;
         const today = DateTime.local().startOf("day");
@@ -18,9 +18,9 @@ patch(TaskGanttRenderer.prototype, {
         if (context.fsm_mode && startDate <= today.endOf("day") && today <= stopDate) {
             const stop = today.endOf("day");
             const context = this.model.getDialogContext({ start: today, stop, withDefault: true });
-            this.props.create(context);
+            this.create(context);
             return;
         }
-        super.onCreate(...arguments);
+        super.onAddClicked(...arguments);
     },
 });

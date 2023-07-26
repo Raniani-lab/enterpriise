@@ -332,7 +332,6 @@ class AccountMoveLine(models.Model):
     )
     deferred_end_date = fields.Date(
         string="End Date",
-        compute='_compute_deferred_end_date', store=True, readonly=False,
         index='btree_not_null',
         copy=False,
         help="Date at which the deferred expense/revenue ends"
@@ -363,20 +362,21 @@ class AccountMoveLine(models.Model):
             self.account_id.account_type in ('income', 'income_other')
         )
 
-    @api.depends('deferred_end_date', 'move_id.invoice_date', 'account_id.account_type', 'move_id.state')
+    @api.onchange('deferred_start_date')
+    def _onchange_deferred_start_date(self):
+        if not self._is_compatible_account():
+            self.deferred_start_date = False
+
+    @api.onchange('deferred_end_date')
+    def _onchange_deferred_end_date(self):
+        if not self._is_compatible_account():
+            self.deferred_end_date = False
+
+    @api.depends('deferred_end_date', 'move_id.invoice_date')
     def _compute_deferred_start_date(self):
         for line in self:
-            if not line._is_compatible_account():
-                line.deferred_start_date = False
-                continue
             if not line.deferred_start_date and line.move_id.invoice_date and line.deferred_end_date:
                 line.deferred_start_date = line.move_id.invoice_date
-
-    @api.depends('account_id.account_type')
-    def _compute_deferred_end_date(self):
-        for line in self:
-            if not line._is_compatible_account():
-                line.deferred_end_date = False
 
     @api.constrains('deferred_start_date', 'deferred_end_date', 'account_id')
     def _check_deferred_dates(self):

@@ -14,7 +14,7 @@ let createdAppString = null;
 let createdMenuString = null;
 
 registry.category("web_tour.tours").add("web_studio_main_and_rename", {
-    url: "/web",
+    url: "/web?debug=1",
     test: true,
     steps: () => [
         {
@@ -551,7 +551,7 @@ registry.category("web_tour.tours").add("web_studio_main_and_rename", {
 });
 
 registry.category("web_tour.tours").add("web_studio_hide_fields_tour", {
-    url: "/web#action=studio&mode=home_menu",
+    url: "/web?debug=1#action=studio&mode=home_menu",
     test: true,
     steps: () => [
         {
@@ -941,7 +941,7 @@ registry.category("web_tour.tours").add("web_studio_new_report_basic_layout_tour
 });
 
 registry.category("web_tour.tours").add("web_studio_approval_tour", {
-    url: "/web",
+    url: "/web?debug=1",
     test: true,
     steps: () => [
         {
@@ -1328,7 +1328,7 @@ registry.category("web_tour.tours").add("web_studio_alter_field_existing_in_mult
 });
 
 registry.category("web_tour.tours").add("web_studio_monetary_create", {
-    url: "/web",
+    url: "/web?debug=1",
     test: true,
     steps: () => [
         // This tour drag&drop a monetary field and verify that a currency is created
@@ -1365,7 +1365,7 @@ registry.category("web_tour.tours").add("web_studio_monetary_create", {
 });
 
 registry.category("web_tour.tours").add("web_studio_monetary_change_currency_name", {
-    url: "/web",
+    url: "/web?debug=1",
     test: true,
     steps: () => [
         // Changing currency name also change the currency name in the monetary currency selection
@@ -1520,7 +1520,7 @@ registry.category("web_tour.tours").add("web_studio_monetary_change_currency_not
 });
 
 registry.category("web_tour.tours").add("web_studio_monetary_add_existing_monetary", {
-    url: "/web",
+    url: "/web?debug=1",
     test: true,
     steps: () => [
         // Add an existing monetary trough the "existing fields" and verify that the currency
@@ -1571,7 +1571,7 @@ registry.category("web_tour.tours").add("web_studio_monetary_add_existing_moneta
 registry
     .category("web_tour.tours")
     .add("web_studio_monetary_create_monetary_with_existing_currency", {
-        url: "/web",
+        url: "/web?debug=1",
         test: true,
         steps: () => [
             // Add a new monetary field, since a currency already exists, it should take it instead

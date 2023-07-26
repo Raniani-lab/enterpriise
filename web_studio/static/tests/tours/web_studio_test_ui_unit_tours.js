@@ -6,7 +6,7 @@ registry
     .category("web_tour.tours")
     .add("web_studio_test_form_view_not_altered_by_studio_xml_edition", {
         test: true,
-        url: "/web",
+        url: "/web?debug=1",
         sequence: 260,
         steps: () => [
             {
@@ -35,7 +35,7 @@ registry
 /* global ace */
 registry.category("web_tour.tours").add("web_studio_test_edit_with_xml_editor", {
     test: true,
-    url: "/web",
+    url: "/web?debug=1",
     sequence: 260,
     steps: () => [
         {

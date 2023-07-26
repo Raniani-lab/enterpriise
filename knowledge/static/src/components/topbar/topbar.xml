@@ -88,20 +88,20 @@
                             <PermissionPanel t-if="state.displaySharePanel and props.record.resId and props.record.data.active" record="props.record"/>
                         </div>
                     </div>
-                    <a role="button" class="btn btn-light o_knowledge_toggle_favorite" t-on-click="env.toggleFavorite" t-if="props.record.resId" data-hotkey="t">
-                        <i class="fa fa-fw fs-6 fa-star" title="Remove from favorites" t-if="props.record.data.is_user_favorite"/>
-                        <i class="fa fa-fw fs-6 fa-star-o" title="Add to favorites" t-if="!props.record.data.is_user_favorite"/>
+                    <a role="button" class="btn btn-light o_knowledge_toggle_favorite" t-on-click="env.toggleFavorite" t-if="props.record.resId" data-hotkey="t" t-att-title="props.record.data.is_user_favorite ? 'Remove from favorites' : 'Add to favorites'">
+                        <i class="fa fa-fw fs-6 fa-star" t-if="props.record.data.is_user_favorite"/>
+                        <i class="fa fa-fw fs-6 fa-star-o" t-if="!props.record.data.is_user_favorite"/>
                     </a>
                     <a t-ref="btn_chatter" t-if="props.record.resId and isInternalUser" role="button"
-                        t-attf-class="btn btn-light btn-chatter #{state.displayChatter ? 'active' : ''}" data-hotkey="d" t-on-click="toggleChatter">
-                        <i class="fa fa-fw fs-6 fa-comments" title="Open chatter"/>
+                        t-attf-class="btn btn-light btn-chatter #{state.displayChatter ? 'active' : ''}" data-hotkey="d" t-on-click="toggleChatter" title="Toggle chatter">
+                        <i class="fa fa-fw fs-6 fa-comments"/>
                     </a>
-                    <a t-ref="btn_properties" t-if="state.addingProperty or props.record.resId and props.record.data.article_properties.length and isInternalUser" role="button" t-attf-class="btn btn-light btn-properties #{state.displayPropertyPanel ? 'active' : ''}" data-hotkey="d" t-on-click="toggleProperties">
-                        <i class="fa fa-fw fs-6 fa-cog" title="Show Properties"/>
+                    <a t-ref="btn_properties" t-if="state.addingProperty or props.record.resId and props.record.data.article_properties.length and isInternalUser" role="button" t-attf-class="btn btn-light btn-properties #{state.displayPropertyPanel ? 'active' : ''}" data-hotkey="d" title="Show Properties" t-on-click="toggleProperties">
+                        <i class="fa fa-fw fs-6 fa-cog"/>
                     </a>
                     <div class="o-dropdown dropdown o-dropdown--no-caret" t-if="props.record.resId">
-                        <a role="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" id="dropdown_tools_panel" aria-haspopup="true" aria-expanded="false" data-hotkey="p" t-ref="optionsBtn">
-                            <i class="fa fa-fw fs-6 fa-ellipsis-v" title="Open kebab menu"/>
+                        <a role="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" id="dropdown_tools_panel" aria-haspopup="true" aria-expanded="false" data-hotkey="p" title="More actions" t-ref="optionsBtn">
+                            <i class="fa fa-fw fs-6 fa-ellipsis-v"/>
                         </a>
                         <div class="o_knowledge_more_options_panel dropdown-menu" role="menu" aria-labelledby="dropdown_tools_panel">
                             <div>

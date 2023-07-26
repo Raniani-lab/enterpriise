@@ -32,10 +32,10 @@ export class MrpRegisterProductionDialog extends MrpQualityCheckConfirmationDial
         return {
             name: "lot_producing_id",
             record: this.props.record,
-            context: {
+            context: JSON.stringify({
                 default_product_id: this.recordData.product_id[0],
                 default_company_id: this.recordData.company_id[0],
-            },
+            }),
             domain: [
                 "&",
                 ["product_id", "=", this.recordData.product_id[0]],

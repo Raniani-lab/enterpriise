@@ -96,10 +96,10 @@ class HelpdeskSLAStatus(models.Model):
             if status.sla_id.exclude_stage_ids:
                 sla_hours += status._get_freezed_hours(working_calendar)
 
-                # Except if ticket creation time is later than the end time of the working day
-                deadline_for_working_cal = working_calendar.plan_hours(0, deadline)
-                if deadline_for_working_cal and deadline.day < deadline_for_working_cal.day:
-                    deadline = deadline.replace(hour=0, minute=0, second=0, microsecond=0)
+            # Except if ticket creation time is later than the end time of the working day
+            deadline_for_working_cal = working_calendar.plan_hours(0, deadline)
+            if deadline_for_working_cal and deadline.day < deadline_for_working_cal.day and time_days > 0:
+                deadline = deadline.replace(hour=0, minute=0, second=0, microsecond=0)
             # We should execute the function plan_hours in any case because, in a 1 day SLA environment,
             # if I create a ticket knowing that I'm not working the day after at the same time, ticket
             # deadline will be set at time I don't work (ticket creation time might not be in working calendar).

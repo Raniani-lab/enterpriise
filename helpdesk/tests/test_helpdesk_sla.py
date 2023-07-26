@@ -239,6 +239,11 @@ class HelpdeskSLA(TransactionCase):
             # on the ticket is the next day at 08:00
             self.assertEqual(ticket.sla_deadline, fields.Datetime.now() + relativedelta(days=1, hour=11), "Day0:20h + 3h = Day1:8h + 3h = Day1:11h")
 
+            self.sla.exclude_stage_ids = [Command.link(self.stage_wait.id)]  # same test as above, but the sla has excluded stages
+            ticket = self.create_ticket(team=self.test_team_reached, user_id=self.env.user.id)
+            self.assertEqual(ticket.sla_deadline, fields.Datetime.now() + relativedelta(days=1, hour=11), "Day0:20h + 3h = Day1:8h + 3h = Day1:11h")
+            self.sla.exclude_stage_ids = [Command.clear()]
+
             self.sla.time = 11
             ticket = self.create_ticket(team=self.test_team_reached, user_id=self.env.user.id)
             self.assertEqual(ticket.sla_deadline, fields.Datetime.now() + relativedelta(days=2, hour=11), "Day0:20h + 11h = Day0:20h + 1day:3h = Day1:8h + 1day:3h = Day2:8h + 3h = Day2:11h")

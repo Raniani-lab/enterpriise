@@ -682,9 +682,18 @@ class AnalyticLine(models.Model):
             else:
                 context['grid_anchor'] = fields.Date.today()
                 context.pop('search_default_my_team_timesheet', None)
-                action['view_mode'] = 'pivot,grid,tree,kanban,form'
-                pivot_view = self.env.ref('timesheet_grid.timesheet_grid_pivot_view_all_validate')
-                action['views'].insert(0, (pivot_view.id, 'pivot'))
+
+        if type_view in ('week', 'month'):
+            action['view_mode'] = ','.join([
+                mode
+                for mode in action['view_mode'].split(",")
+                if mode != "pivot"
+            ])
+            action['views'] = [
+                view
+                for view in action['views']
+                if view[1] != "pivot"
+            ]
         action['context'] = context
         return action
 

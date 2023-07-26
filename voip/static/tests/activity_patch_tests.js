@@ -2,10 +2,13 @@
 
 import { click, start, startServer } from "@mail/../tests/helpers/test_utils";
 
+import { EventBus } from "@odoo/owl";
+
 function makeFakeVoipService(onCall) {
     return {
         start() {
             return {
+                bus: new EventBus(),
                 get canCall() {
                     return true;
                 },

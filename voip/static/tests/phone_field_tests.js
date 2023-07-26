@@ -4,12 +4,15 @@ import { addFakeModel } from "@bus/../tests/helpers/model_definitions_helpers";
 
 import { click, start, startServer } from "@mail/../tests/helpers/test_utils";
 
+import { EventBus } from "@odoo/owl";
+
 import { nextTick } from "@web/../tests/helpers/utils";
 
 function makeFakeVoipService(onCall = () => {}) {
     return {
         start() {
             return {
+                bus: new EventBus(),
                 get canCall() {
                     return true;
                 },

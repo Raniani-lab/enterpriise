@@ -3,16 +3,13 @@
 import { start } from "@mail/../tests/helpers/test_utils";
 
 import { UserAgent } from "@voip/legacy/user_agent";
-import { voipService } from "@voip/voip_service";
 
 import { browser } from "@web/core/browser/browser";
 import { registry } from "@web/core/registry";
 import mobile from "@web_mobile/js/services/core";
-import { ringtoneService } from "@voip/ringtone_service";
 import { makeFakeUserService } from "@web/../tests/helpers/mock_services";
 import { patchWithCleanup } from "@web/../tests/helpers/utils";
 import { dom, nextTick, mock } from "@web/../tests/legacy/helpers/test_utils";
-import { userAgentService } from "@voip/user_agent_service";
 
 /**
  * Create a dialing Panel. Params are used to create the underlying web client.
@@ -24,10 +21,7 @@ async function createDialingPanel(params) {
     const result = await start({
         ...params,
         services: {
-            ringtone: ringtoneService,
             user: makeFakeUserService((group) => group === "base.group_user"),
-            voip: voipService,
-            "voip.user_agent": userAgentService,
         },
     });
     result.env.services.voip.bus.trigger("toggle-softphone-display");

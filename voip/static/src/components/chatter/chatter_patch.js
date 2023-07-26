@@ -9,7 +9,7 @@ import { patch } from "@web/core/utils/patch";
 patch(Chatter.prototype, "voip", {
     setup(...args) {
         this._super(...args);
-        useExternalListener(this.messaging.bus, "voip-reload-chatter", () =>
+        useExternalListener(this.env.services.voip.bus, "voip-reload-chatter", () =>
             this.load(this.props.resId, ["activities", "attachments", "messages"])
         );
     },

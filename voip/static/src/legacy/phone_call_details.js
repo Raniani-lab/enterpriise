@@ -234,7 +234,7 @@ export const PhoneCallDetails = Widget.extend({
     async _onClickActivityDone(ev) {
         ev.preventDefault();
         await this.env.services.orm.call("mail.activity", "action_done", [[this.activityId]]);
-        this.env.services["mail.messaging"].bus.trigger("voip-reload-chatter");
+        this.env.services.voip.bus.trigger("voip-reload-chatter");
         this._$phoneCallActivityButtons.hide();
         if (this.getParent().isAutoCallMode) {
             await this.getParent().refreshPhonecallsStatus();
@@ -336,8 +336,7 @@ export const PhoneCallDetails = Widget.extend({
                 },
             },
             {
-                onClose: () =>
-                    this.env.services["mail.messaging"].bus.trigger("voip-reload-chatter"),
+                onClose: () => this.env.services.voip.bus.trigger("voip-reload-chatter"),
             }
         );
     },

@@ -171,6 +171,7 @@ export const voipService = {
         const isEmployee = await user.hasGroup("base.group_user");
         if (!isEmployee) {
             return {
+                bus: new EventBus(),
                 get canCall() {
                     return false;
                 },

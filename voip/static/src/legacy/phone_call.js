@@ -102,7 +102,7 @@ export const PhoneCall = Widget.extend({
                 duration_seconds: durationSeconds,
             });
         }
-        this.env.services["mail.messaging"].bus.trigger("voip-reload-chatter");
+        this.env.services.voip.bus.trigger("voip-reload-chatter");
     },
     /**
      * Makes rpc to set the call as canceled.

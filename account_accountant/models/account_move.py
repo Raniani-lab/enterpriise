@@ -337,6 +337,7 @@ class AccountMoveLine(models.Model):
         copy=False,
         help="Date at which the deferred expense/revenue ends"
     )
+    has_deferred_moves = fields.Boolean(compute='_compute_has_deferred_moves')
 
     def copy_data(self, default=None):
         data_list = super().copy_data(default=default)
@@ -345,6 +346,10 @@ class AccountMoveLine(models.Model):
                 values['deferred_start_date'] = line.deferred_start_date
                 values['deferred_end_date'] = line.deferred_end_date
         return data_list
+
+    def _compute_has_deferred_moves(self):
+        for line in self:
+            line.has_deferred_moves = line.move_id.deferred_move_ids
 
     def _is_compatible_account(self):
         self.ensure_one()

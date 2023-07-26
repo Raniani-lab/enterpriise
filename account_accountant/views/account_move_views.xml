@@ -31,6 +31,11 @@
                     </tree>
                 </field>
                 <field name="is_account_reconcile" invisible="1"/>
+                <field name="has_deferred_moves" invisible="1"/>
+            </xpath>
+            <xpath expr="//tree/field[@name='name']" position="after">
+                <field name="deferred_start_date" optional="hide" attrs="{'readonly': [('has_deferred_moves', '=', True)]}"/>
+                <field name="deferred_end_date" optional="hide" attrs="{'readonly': [('has_deferred_moves', '=', True)]}"/>
             </xpath>
             <xpath expr="//tree/field[@name='matching_number']" position="attributes">
                 <attribute name="widget">matching_link_widget</attribute>

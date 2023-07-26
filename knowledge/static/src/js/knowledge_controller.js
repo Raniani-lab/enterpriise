@@ -41,11 +41,15 @@ export class KnowledgeArticleFormController extends FormController {
 
     /**
      * Check that the title is set or not before closing the tab and
-     * save the whole article.
+     * save the whole article, if the current article exists (it does
+     * not exist if there are no articles to show, in which case the no
+     * content helper is displayed).
      * @override 
      */
     async beforeUnload(ev) {
-        this.ensureArticleName();
+        if (this.model.root.resId) {
+            this.ensureArticleName();
+        }
         await super.beforeUnload(ev); 
     }
 

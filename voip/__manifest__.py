@@ -33,10 +33,6 @@ Allows to make call from next activities or with click-to-dial.
             'voip/static/lib/sip.js',
             'voip/static/src/**/*',
             ('remove', 'voip/static/src/**/*.dark.scss'),
-            ('remove', 'voip/static/src/main.js'),
-        ],
-        'web.assets_backend_prod_only': [
-            'voip/static/src/main.js',
         ],
         'web.tests_assets': [
             'voip/static/tests/helpers/**/*.js',

@@ -42,6 +42,10 @@
         ],
         'web.qunit_suite_tests': [
             "timesheet_grid/static/tests/*",
+            ('remove', "timesheet_grid/static/tests/setup_manager_patch.js"),
         ],
+        'web.tests_assets': [
+            "timesheet_grid/static/tests/setup_manager_patch.js",
+        ]
     }
 }

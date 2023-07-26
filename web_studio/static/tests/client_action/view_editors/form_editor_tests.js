@@ -689,7 +689,11 @@ QUnit.module("View Editors", (hooks) => {
     QUnit.test("form editor - chatter edition", async function (assert) {
         assert.expect(5);
         const pyEnv = await startServer();
-        setupManager.setupMessagingServiceRegistries({ serverData: pyEnv.getData() });
+        serverData.models = {
+            ...serverData.models,
+            ...pyEnv.getData(),
+        };
+        setupManager.setupServiceRegistries();
 
         await createViewEditor({
             serverData,
@@ -2586,7 +2590,7 @@ QUnit.module("View Editors", (hooks) => {
             };
 
             Object.assign(serverData.models, mailModels);
-            setupManager.setupMessagingServiceRegistries({ serverData });
+            setupManager.setupServiceRegistries();
 
             const arch = /*xml*/ `
             <form>

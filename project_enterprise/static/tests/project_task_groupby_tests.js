@@ -2,11 +2,9 @@
 
 import { getFixture, patchDate } from "@web/../tests/helpers/utils";
 import { setupViewRegistries } from "@web/../tests/views/helpers";
-import { registry } from "@web/core/registry";
 import { start, startServer } from "@mail/../tests/helpers/test_utils";
 
 
-const serviceRegistry = registry.category("services");
 let target;
 
 QUnit.module("Project", (hooks) => {
@@ -45,7 +43,6 @@ QUnit.module("Project", (hooks) => {
 
     QUnit.test("Test group label for empty project in gantt", async function (assert) {
         assert.expect(1);
-        serviceRegistry.add("timesheet_uom", { start() {} });
 
         const views = {
             "project.task,false,gantt":

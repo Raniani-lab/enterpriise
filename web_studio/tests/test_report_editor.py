@@ -1,5 +1,6 @@
 import json
 
+from odoo import Command
 from odoo.addons.web_studio.controllers.main import WebStudioController
 from odoo.addons.web_studio.controllers.report import WebStudioReportController
 from odoo.addons.web.controllers.report import ReportController
@@ -540,3 +541,30 @@ class TestReportEditorUIUnit(HttpCase):
             </t>
         """
         self.start_tour(self.tour_url, "web_studio.test_partial_eval", login="admin")
+
+    def test_render_multicompany(self):
+        company1 = self.env.company
+
+        self.main_view_document.arch = """
+            <t t-call="web.external_layout">
+                <div>doc</div>
+            </t>
+        """
+        external_report_layout_id = self.env['ir.ui.view'].create({
+            'type': 'qweb',
+            'name': 'web_studio.test_layout',
+            'key': 'web_studio.test_layout',
+            'arch': '''
+                <t t-name="web_studio.test_report">
+                    <div class="test_layout">
+                        <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 45px;" alt="Logo"/>
+                        <div><t t-out="0" /></div>
+                    </div>
+                </t>
+            ''',
+        })
+        company2 = self.env["res.company"].create({"name": "couic", "external_report_layout_id": external_report_layout_id.id})
+        self.env["res.users"].browse(2).write({"company_ids": [Command.link(company2.id)]})
+
+        tour_url = self.tour_url + f"&cids={company2.id}%2C{company1.id}"
+        self.start_tour(tour_url, "web_studio.test_render_multicompany", login="admin")

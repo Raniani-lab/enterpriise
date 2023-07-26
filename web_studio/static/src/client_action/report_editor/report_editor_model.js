@@ -2,7 +2,7 @@
 import { Reactive } from "@web_studio/client_action/utils";
 import { EventBus, markRaw, onWillStart, reactive, toRaw, useState, useSubEnv } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
-import { omit } from "@web/core/utils/objects";
+import { omit, pick } from "@web/core/utils/objects";
 import { _t } from "@web/core/l10n/translation";
 import { useEditorBreadcrumbs } from "@web_studio/client_action/editor/edition_flow";
 import { KeepLast } from "@web/core/utils/concurrency";
@@ -74,6 +74,7 @@ export class ReportEditorModel extends Reactive {
 
         this._reportArchs = {};
         this.renderKey = 1;
+        this.routesContext = pick(this._services.user.context, "allowed_company_ids");
     }
 
     get reportData() {
@@ -148,6 +149,7 @@ export class ReportEditorModel extends Reactive {
         const data = await this._services.rpc("/web_studio/load_report_editor", {
             report_id: this.editedReportId,
             fields: Object.keys(omit(this.reportActiveFields, "display_in_print_menu")),
+            context: this.routesContext,
         });
         this._reportData = this._parseFakeFields(data.report_data);
         Object.assign(this.paperFormat, data.paperformat);
@@ -168,6 +170,7 @@ export class ReportEditorModel extends Reactive {
             const reportQweb = await this.loadHtmlKeepLast.add(
                 this._services.rpc("/web_studio/get_report_qweb", {
                     report_id: this.editedReportId,
+                    context: this.routesContext,
                 })
             );
             this._reportArchs.reportQweb = reportQweb;
@@ -191,6 +194,7 @@ export class ReportEditorModel extends Reactive {
                 this._services.rpc("/web_studio/get_report_html", {
                     report_id: this.editedReportId,
                     record_id: this.reportEnv.currentId || 0,
+                    context: this.routesContext,
                 })
             );
             this._reportArchs.reportHtml = reportHtml;
@@ -225,6 +229,7 @@ export class ReportEditorModel extends Reactive {
                     html_parts: htmlParts || null,
                     xml_verbatim: xmlVerbatim || null,
                     record_id: this.reportEnv.currentId || null,
+                    context: this.routesContext,
                 },
                 { silent: urgent }
             );

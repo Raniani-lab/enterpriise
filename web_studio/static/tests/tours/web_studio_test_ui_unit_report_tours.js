@@ -548,3 +548,22 @@ registry.category("web_tour.tours").add("web_studio.test_partial_eval", {
         },
     ],
 });
+
+registry.category("web_tour.tours").add("web_studio.test_render_multicompany", {
+    test: true,
+    sequence: 260,
+    steps: () => [
+        {
+            trigger: ".o-web-studio-report-container iframe .test_layout",
+            run() {},
+        },
+        {
+            trigger: ".o-web-studio-report-container iframe img",
+            run() {
+                const currentUrl = new URL(window.location)
+                const cids = new URLSearchParams(currentUrl.hash.slice(1)).get("cids").split(",");
+                assertEqual(this.$anchor[0].getAttribute("src"), `/logo.png?company=${cids[0]}`)
+            }
+        },
+    ],
+});

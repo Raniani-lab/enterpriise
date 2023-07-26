@@ -220,7 +220,7 @@ def _guess_qweb_variables(tree, report, qcontext):
         if node.tag == "img" and ("t-att-src" in node.attrib):
             src = node.get("t-att-src")
             is_company_logo = src == "image_data_uri(company.logo)"
-            placeholder = '/logo.png' if is_company_logo else'/web/static/img/placeholder.png'
+            placeholder = f'/logo.png?company={env.company.id}' if is_company_logo else'/web/static/img/placeholder.png'
             src = qweb_like_string_eval(src, qcontext) or placeholder
             node.set("src", src)
 
@@ -317,7 +317,9 @@ class WebStudioReportController(main.WebStudioController):
         return report.report_action(record_id)
 
     @http.route('/web_studio/load_report_editor', type='json', auth='user')
-    def load_report_editor(self, report_id, fields):
+    def load_report_editor(self, report_id, fields, context=None):
+        if context:
+            request.update_context(**context)
         report = request.env['ir.actions.report'].browse(report_id)
         report_data = report.read(fields)
         paperformat = report._read_paper_format_measures()
@@ -330,13 +332,17 @@ class WebStudioReportController(main.WebStudioController):
         }
 
     @http.route('/web_studio/get_report_html', type='json', auth='user')
-    def get_report_html(self, report_id, record_id):
+    def get_report_html(self, report_id, record_id, context=None):
+        if context:
+            request.update_context(**context)
         report = request.env['ir.actions.report'].browse(report_id)
         report_html = self._render_report(report, record_id)
         return report_html and report_html[0]
 
     @http.route('/web_studio/get_report_qweb', type='json', auth='user')
-    def get_report_qweb(self, report_id):
+    def get_report_qweb(self, report_id, context=None):
+        if context:
+            request.update_context(**context)
         report = request.env['ir.actions.report'].browse(report_id)
         return self._get_report_qweb(report)
 
@@ -413,7 +419,9 @@ class WebStudioReportController(main.WebStudioController):
         return request.env['ir.actions.report'].with_context(studio=True)._render_qweb_html(report, [record_id] if record_id else [])
 
     @http.route("/web_studio/save_report", type="json", auth="user")
-    def save_report(self, report_id, report_changes=None, html_parts=None, xml_verbatim=None, record_id=None):
+    def save_report(self, report_id, report_changes=None, html_parts=None, xml_verbatim=None, record_id=None, context=None):
+        if context:
+            request.update_context(**context)
         report_data = None
         paperformat = None
         report = request.env["ir.actions.report"].browse(report_id)

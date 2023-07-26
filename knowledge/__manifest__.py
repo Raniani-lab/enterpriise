@@ -50,7 +50,6 @@
             'knowledge/static/src/emoji_picker/**/*',
             'knowledge/static/src/search_model/**/*',
             'knowledge/static/src/web/**/*',
-            'knowledge/static/src/js/sortableList.js',
             'knowledge/static/src/js/knowledge_controller.js',
             'knowledge/static/src/js/knowledge_plugin.js',
             'knowledge/static/src/js/knowledge_utils.js',

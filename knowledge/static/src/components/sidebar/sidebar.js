@@ -13,7 +13,7 @@ import {
 } from "./sidebar_section";
 import { throttleForAnimation } from "@web/core/utils/timing";
 import { useService } from "@web/core/utils/hooks";
-import { useSortableList } from "@knowledge/js/sortableList";
+import { useSortableList } from "@web/core/utils/sortable_list";
 import { useRecordObserver } from "@web/model/relational_model/utils";
 
 import { Component, onWillStart, reactive, useRef, useState, useChildSubEnv } from "@odoo/owl";

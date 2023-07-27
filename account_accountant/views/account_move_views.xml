@@ -1,5 +1,17 @@
 <?xml version='1.0' encoding='utf-8'?>
 <odoo>
+    <record id="view_move_tree_deferred_moves" model="ir.ui.view">
+        <field name="name">account.move.tree.deferred</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_tree"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//tree/field[@name='amount_total_signed']" position="attributes">
+                <attribute name="sum"/>
+            </xpath>
+        </field>
+    </record>
+
     <record id="view_move_line_tree" model="ir.ui.view">
         <field name="name">account.move.line.tree</field>
         <field name="model">account.move.line</field>

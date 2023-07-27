@@ -261,7 +261,7 @@ class AccountMove(models.Model):
             'name': _("Deferred Entries"),
             'res_model': 'account.move',
             'domain': [('id', 'in', self.deferred_move_ids.ids)],
-            'views': [(self.env.ref('account.view_move_tree').id, 'tree'), (False, 'form')],
+            'views': [(self.env.ref('account_accountant.view_move_tree_deferred_moves').id, 'tree'), (False, 'form')],
         }
 
     def open_deferred_original_entry(self):

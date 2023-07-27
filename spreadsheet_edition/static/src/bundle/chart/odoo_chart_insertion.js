@@ -19,6 +19,7 @@ export function insertChart(chartData) {
             domain: new Domain(chartData.searchParams.domain).toJson(),
         },
         stacked: chartData.metaData.stacked,
+        cumulative: chartData.metaData.cumulated,
         title: chartData.name,
         background: "#FFFFFF",
         legendPosition: "top",

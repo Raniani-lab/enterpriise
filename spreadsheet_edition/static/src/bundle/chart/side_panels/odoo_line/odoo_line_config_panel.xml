@@ -18,6 +18,20 @@
                     </div>
                 </label>
             </div>
+            <div class="o-section pt-0">
+                <label>
+                    <div class="o_checkbox">
+                        <input
+                            type="checkbox"
+                            name="cumulative"
+                            t-att-checked="props.definition.cumulative"
+                            t-on-change="onUpdateCumulative"
+                            class="align-middle"
+                        />
+                        Cumulative data
+                    </div>
+                </label>
+            </div>
         </xpath>
     </t>
 </odoo>

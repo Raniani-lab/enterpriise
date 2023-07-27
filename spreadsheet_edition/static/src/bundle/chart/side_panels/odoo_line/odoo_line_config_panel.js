@@ -8,6 +8,11 @@ export class OdooLineChartConfigPanel extends CommonOdooChartConfigPanel {
             stacked: ev.target.checked,
         });
     }
+    onUpdateCumulative(ev) {
+        this.props.updateChart(this.props.figureId, {
+            cumulative: ev.target.checked,
+        });
+    }
 }
 
 OdooLineChartConfigPanel.template = "spreadsheet_edition.OdooLineChartConfigPanel";

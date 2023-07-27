@@ -2,10 +2,8 @@
 
 import Dialog from "@web/legacy/js/core/dialog";
 import dom from "@web/legacy/js/core/dom";
-import OwlDialog from "@web/legacy/js/core/owl_dialog";
 import Popover from "@web/legacy/js/core/popover";
 import session from "web.session";
-import makeTestEnvironment from "@web/../tests/legacy/helpers/test_env";
 import testUtils from "@web/../tests/legacy/helpers/test_utils";
 import Widget from "@web/legacy/js/core/widget";
 
@@ -475,50 +473,6 @@ QUnit.module("web_mobile", {
         assert.containsNone(document.body, ".modal", "modal should be closed");
 
         parent.destroy();
-    });
-
-    QUnit.module("OwlDialog");
-
-    QUnit.test("dialog is closable with backbutton event", async function (assert) {
-        assert.expect(7);
-
-        patchWithCleanup(mobile.methods, {
-            overrideBackButton({ enabled }) {
-                assert.step(`overrideBackButton: ${enabled}`);
-            },
-        });
-
-        class Parent extends Component {
-            setup() {
-                this.state = useState({ display: true });
-            }
-            _onDialogClosed() {
-                this.state.display = false;
-                assert.step("dialog_closed");
-            }
-        }
-
-        Parent.components = { OwlDialog };
-        Parent.template = xml`
-    <div>
-        <OwlDialog
-            t-if="state.display"
-            onClosed="() => this._onDialogClosed()">
-            Some content
-        </OwlDialog>
-    </div>`;
-
-        const target = getFixture();
-        const env = await makeTestEnvironment();
-
-        await mount(Parent, target, { env });
-
-        assert.containsOnce(document.body, ".o_dialog");
-        assert.verifySteps(["overrideBackButton: true"]);
-        // simulate 'backbutton' event triggered by the app
-        await testUtils.dom.triggerEvent(document, "backbutton");
-        assert.verifySteps(["dialog_closed", "overrideBackButton: false"]);
-        assert.containsNone(document.body, ".o_dialog", "should have been closed");
     });
 
     QUnit.module("Popover");

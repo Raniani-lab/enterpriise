@@ -1182,12 +1182,12 @@ QUnit.module(
                 await click(target.querySelector(".modal .btn-primary"));
                 assert.containsN(target, ".modal", 2, "should contain 2 modals");
                 assert.strictEqual(
-                    target.querySelector(".modal:not(.o_inactive_modal) .modal-body").textContent,
+                    target.querySelector(".o_dialog:not(.o_inactive_modal) .modal-body").textContent,
                     "There are 3 records linked, upon confirming records will be deleted.",
                     "should have right message"
                 );
 
-                await click(target.querySelector(".modal:not(.o_inactive_modal) .btn-primary"));
+                await click(target.querySelector(".o_dialog:not(.o_inactive_modal) .btn-primary"));
             }
         );
 

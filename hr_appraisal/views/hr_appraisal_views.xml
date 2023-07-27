@@ -45,7 +45,12 @@
                 <div class="row justify-content-between position-relative w-100 m-0 mb-2">
                     <div class="oe_title mw-75 ps-0 pe-2">
                         <h1>
-                            <field name="employee_id" domain="[('id', 'in', employee_autocomplete_ids)]" readonly="state != 'new' or not is_manager" placeholder="e.g. John Doe"/>
+                            <field name="employee_id"
+                                domain="[('id', 'in', employee_autocomplete_ids)]"
+                                readonly="state != 'new' or not is_manager"
+                                placeholder="e.g. John Doe"
+                                options="{'relation': 'hr.employee.public'}"
+                                widget="many2one_avatar_employee"/>
                         </h1>
                     </div>
                     <div class="o_employee_avatar mw-25 m-0 p-0">
@@ -54,7 +59,11 @@
                 </div>
                 <group>
                     <group>
-                        <field name="manager_ids" widget="many2many_avatar_user" options="{'color_field': 'color'}" required="1" readonly="state == 'done' or (state == 'pending' and 'uid' not in manager_user_ids and not is_manager)"/>
+                        <field name="manager_ids"
+                            widget="many2many_avatar_employee"
+                            options="{'color_field': 'color', 'relation': 'hr.employee.public'}"
+                            required="1"
+                            readonly="state == 'done' or (state == 'pending' and 'uid' not in manager_user_ids and not is_manager)"/>
                         <field name="date_close" readonly="state in ['done', 'cancel']"/>
                     </group>
                     <group>

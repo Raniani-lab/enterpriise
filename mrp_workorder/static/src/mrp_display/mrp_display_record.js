@@ -315,7 +315,13 @@ export class MrpDisplayRecord extends Component {
     }
 
     get disabled() {
-        return !this.props.sessionOwner.id;
+        if (this.props.record.resModel === "mrp.workorder"){
+            if (!this.props.record.data.all_employees_allowed &&
+                !this.props.record.data.allowed_employees.currentIds.includes(this.props.sessionOwner.id)) {
+                return true
+            }
+        }
+        return this.props.groups.workorders && !this.props.sessionOwner.id
     }
 
     get trackingMode() {

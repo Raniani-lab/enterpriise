@@ -59,6 +59,8 @@ export class MrpDisplayAction extends Component {
                 "is_last_unfinished_wo",
                 "barcode",
                 "date_start",
+                "allowed_employees",
+                "all_employees_allowed",
             ],
             "stock.move": [
                 "manual_consumption",

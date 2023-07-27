@@ -36,12 +36,6 @@ export class PlanningGanttRenderer extends GanttRenderer {
         }
         group.pills.push(pill);
         group.aggregateValue += pill.allocatedHours[group.col];
-        if (group.col === this.getFirstcol(pill)) {
-            group.aggregateValue += pill.allocatedHours[group.col - 1] || 0;
-        }
-        if (group.col === this.getLastCol(pill)) {
-            group.aggregateValue += pill.allocatedHours[group.col + 1] || 0;
-        }
         return true;
     }
 

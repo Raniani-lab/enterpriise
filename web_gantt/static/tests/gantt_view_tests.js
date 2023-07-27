@@ -142,7 +142,7 @@ QUnit.module("Views > GanttView", {
                         {
                             id: 4,
                             name: "Task 4",
-                            start: "2018-12-19 22:30:00",
+                            start: "2018-12-20 02:30:00",
                             stop: "2018-12-20 06:29:59",
                             stage: "in_progress",
                             stage_id: 3,
@@ -180,7 +180,7 @@ QUnit.module("Views > GanttView", {
                         {
                             id: 7,
                             name: "Task 7",
-                            start: "2018-12-20 10:30:12",
+                            start: "2018-12-20 12:30:12",
                             stop: "2018-12-20 18:29:59",
                             stage: "cancel",
                             stage_id: 1,
@@ -770,16 +770,16 @@ QUnit.test("full precision gantt rendering", async (assert) => {
             title: "User 1",
             isGroup: true,
             pills: [
-                { title: "1", colSpan: "Sunday, 16 -> Tuesday, 18" },
-                { title: "2", colSpan: "Wednesday, 19 -> Wednesday, 19" },
-                { title: "1", colSpan: "Thursday, 20 -> Saturday, 22" },
+                { title: "1", colSpan: "Sunday, 16 -> Wednesday, 19" },
+                { title: "2", colSpan: "Thursday, 20 -> Thursday, 20" },
+                { title: "1", colSpan: "Friday, 21 -> Saturday, 22" },
             ],
         },
         {
             title: "Project 1",
             pills: [
                 { level: 0, colSpan: "Sunday, 16 -> Saturday, 22", title: "Task 1" },
-                { level: 1, colSpan: "Wednesday, 19 -> Wednesday, 19", title: "Task 4" },
+                { level: 1, colSpan: "Thursday, 20 -> Thursday, 20", title: "Task 4" },
             ],
         },
         {
@@ -905,8 +905,8 @@ QUnit.test("scale switching", async (assert) => {
             pills: [
                 { title: "Task 1", level: 0, colSpan: "12am -> 11pm" },
                 { title: "Task 2", level: 1, colSpan: "12am -> 11pm" },
-                { title: "Task 4", level: 2, colSpan: "12am -> 6am" },
-                { title: "Task 7", level: 2, colSpan: "12pm -> 6pm" },
+                { title: "Task 4", level: 2, colSpan: "3am -> 7am" },
+                { title: "Task 7", level: 2, colSpan: "1pm -> 7pm" },
             ],
         },
     ]);
@@ -2218,7 +2218,7 @@ QUnit.test("move a pill in the same row", async (assert) => {
                 assert.deepEqual(
                     args[1],
                     {
-                        start: "2018-12-21 10:30:12",
+                        start: "2018-12-21 12:30:12",
                         stop: "2018-12-21 18:29:59",
                     },
                     "both start and stop date should be correctly set (+1 day)"
@@ -2313,7 +2313,7 @@ QUnit.test("move a pill in another row", async (assert) => {
                     args[1],
                     {
                         project_id: 1,
-                        start: "2018-12-21 10:30:12",
+                        start: "2018-12-21 12:30:12",
                         stop: "2018-12-21 18:29:59",
                     },
                     "all modified fields should be correctly set"
@@ -2364,7 +2364,7 @@ QUnit.test("copy a pill in another row", async (assert) => {
                 assert.deepEqual(
                     args[1],
                     {
-                        start: "2018-12-21 10:30:12",
+                        start: "2018-12-21 12:30:12",
                         stop: "2018-12-21 18:29:59",
                         project_id: 1,
                     },
@@ -4562,7 +4562,7 @@ QUnit.test(
                         [7],
                         {
                             project_id: 1,
-                            start: "2018-12-02 10:30:12",
+                            start: "2018-12-02 12:30:12",
                             stop: "2018-12-02 18:29:59",
                         },
                     ]);

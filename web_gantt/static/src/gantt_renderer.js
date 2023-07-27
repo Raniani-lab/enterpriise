@@ -45,7 +45,7 @@ import { GanttResizeBadge } from "./gantt_resize_badge";
 import { GanttRowProgressBar } from "./gantt_row_progress_bar";
 import { computeRange } from "./gantt_model";
 
-const { DateTime, Duration } = luxon;
+const { DateTime } = luxon;
 
 /**
  * @typedef {`__column__${number}`} ColumnId
@@ -539,26 +539,24 @@ export class GanttRenderer extends Component {
     }
 
     /**
-     * Returns the date in dates that is closest from date and the diff in
-     * milliseconds
-     * @param {DateTime} date
+     * Returns the column indexes which fits both given dates inside
+     * @param {DateTime} start
+     * @param {DateTime} end
      * @param {DateTime[]} dates
      * @returns {[number, number]}
      */
-    closestDate(date, dates) {
-        let currentIndex;
-        let currentDiff = null;
+    computeColumnIndexes(start, end, dates) {
+        let startIndex, endIndex;
         for (let index = 0; index < dates.length; index++) {
-            const otherDate = dates[index];
-            const diff = date.ts - otherDate.ts;
-            if (currentDiff === null || Math.abs(diff) < Math.abs(currentDiff)) {
-                currentDiff = diff;
-                currentIndex = index;
-            } else {
+            if (dates[index].ts <= start) {
+                startIndex = index;
+            }
+            if (dates[index].ts >= end) {
+                endIndex = index;
                 break;
             }
         }
-        return [currentIndex, currentDiff];
+        return [startIndex, endIndex];
     }
 
     computeColumns() {
@@ -1047,7 +1045,7 @@ export class GanttRenderer extends Component {
      * @returns {Partial<Pill>}
      */
     getPill(record) {
-        const { canEdit, dateStartField, dateStopField, disableDrag, scale, startDate, stopDate } =
+        const { canEdit, dateStartField, dateStopField, disableDrag, startDate, stopDate } =
             this.model.metaData;
 
         const startOutside = record[dateStartField] < startDate;
@@ -1061,52 +1059,11 @@ export class GanttRenderer extends Component {
         const disableStartResize = !canEdit || startOutside;
         const disableStopResize = !canEdit || stopOutside;
 
-        let [startIndex, diffStartMS] = this.closestDate(pillStartDate, this.dateGridColumns);
-        let [stopIndex, diffStopMS] = this.closestDate(pillStopDate, this.dateGridColumns);
-
-        const diffStart = Duration.fromMillis(diffStartMS).as(scale.time);
-        const diffStop = Duration.fromMillis(diffStopMS).as(scale.time);
-
-        switch (scale.id) {
-            case "day":
-                if (startIndex === stopIndex) {
-                    if (diffStart < 0) {
-                        startIndex--;
-                    } else {
-                        stopIndex++;
-                    }
-                }
-                break;
-            case "week":
-            case "month": {
-                if (startIndex === stopIndex) {
-                    if (diffStart < -2 && diffStop > 2) {
-                        startIndex--;
-                        stopIndex++;
-                    } else if (diffStart < 0) {
-                        startIndex--;
-                    } else {
-                        stopIndex++;
-                    }
-                } else {
-                    if (diffStart < -2) {
-                        startIndex--;
-                    }
-                    if (diffStop > 2) {
-                        stopIndex++;
-                    }
-                }
-                break;
-            }
-            case "year":
-                if (diffStart < 0) {
-                    startIndex--;
-                }
-                if (diffStop > 0) {
-                    stopIndex++;
-                }
-                break;
-        }
+        const [startIndex, stopIndex] = this.computeColumnIndexes(
+            pillStartDate,
+            pillStopDate,
+            this.dateGridColumns
+        );
 
         const firstCol = startIndex + 1;
         const span = stopIndex - startIndex;

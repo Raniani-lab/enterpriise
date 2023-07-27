@@ -217,7 +217,7 @@ class Document(models.Model):
         if is_multipage is not None:
             return is_multipage
 
-        if self.mimetype == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+        if self.mimetype == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" and self.attachment_id.raw:
             try:
                 spreadsheet_data = self._unzip_xlsx()[0]
             except XSLXReadUserError:

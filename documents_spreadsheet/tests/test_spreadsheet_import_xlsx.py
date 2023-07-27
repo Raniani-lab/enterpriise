@@ -2,12 +2,14 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import base64
+from odoo import http
+from odoo.tests.common import HttpCase
 
 from .common import SpreadsheetTestCommon
 from odoo.tools import file_open
 from odoo.exceptions import UserError
 
-class SpreadsheetImportXlsx(SpreadsheetTestCommon):
+class SpreadsheetImportXlsx(HttpCase, SpreadsheetTestCommon):
     def test_import_xlsx(self):
         """Import xlsx"""
         folder = self.env["documents.folder"].create({"name": "Test folder"})
@@ -93,3 +95,35 @@ class SpreadsheetImportXlsx(SpreadsheetTestCommon):
             spreadsheet = self.env["documents.document"].browse(spreadsheet_id).exists()
             with self.subTest(is_multipage=is_multipage, kind="spreadsheet"):
                 self.assertEqual(spreadsheet.is_multipage, is_multipage)
+
+    def test_request_xlsx_computes_multipage(self):
+        """Successfully upload xlsx on requested documents"""
+        self.authenticate('admin', 'admin')
+        folder = self.env["documents.folder"].create({"name": "Test folder"})
+        activity_type = self.env['mail.activity.type'].create({
+            'name': 'request_document',
+            'category': 'upload_file',
+            'folder_id': folder.id,
+        })
+        document = self.env['documents.request_wizard'].create({
+            'name': 'Wizard Request',
+            'requestee_id': self.spreadsheet_user.partner_id.id,
+            'activity_type_id': activity_type.id,
+            'folder_id': folder.id,
+        }).request_document()
+
+        with file_open('documents_spreadsheet/tests/data/test2sheets.xlsx', 'rb') as file:
+            response = self.url_open(
+                url='/documents/upload_attachment',
+                data={
+                    'folder_id':folder.id,
+                    'tag_ids':'',
+                    'document_id':document.id,
+                    'csrf_token': http.Request.csrf_token(self),
+                },
+                files=[('ufile', ('test2sheets.xlsx', file.read(), 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'))],
+            )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.text, '{"success": "All files uploaded"}')
+        self.assertEqual(document.is_multipage, True)

@@ -124,6 +124,7 @@ class FecImportWizard(models.TransientModel):
                     new_ids[account_code] = {
                         'xml_id': f"l10n_fr_fec_import.account_{account_code_orig}",
                         'record': account,
+                        'noupdate': True,
                     }
             else:
                 data = {
@@ -184,6 +185,7 @@ class FecImportWizard(models.TransientModel):
                     new_ids[journal_code] = {
                         'xml_id': f"l10n_fr_fec_import.journal_{journal_code}",
                         'record': journal,
+                        'noupdate': True,
                     }
             data = {
                 "company_id": self.company_id.id,

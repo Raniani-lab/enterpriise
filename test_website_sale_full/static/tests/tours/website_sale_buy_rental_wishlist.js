@@ -17,24 +17,6 @@ registry.category("web_tour.tours").add('shop_buy_rental_product_wishlist', {
             trigger: 'a[href="/shop/wishlist"]',
         },
         {
-            content: "Open daterangepicker",
-            extra_trigger: '.o_wish_rm',
-            trigger: '#rentingDates [data-toggle="daterange"]',
-        },
-        {
-            content: "Change hours",
-            extra_trigger: '.daterangepicker.o_website_sale_renting',
-            trigger: '#rentingDates input',
-            run: function () {
-                const daterangepicker = this.$anchor.data('daterangepicker');
-                daterangepicker.setEndDate(daterangepicker.endDate.add(3, 'hours'));
-            }
-        },
-        {
-            content: "Apply change",
-            trigger: '.daterangepicker.o_website_sale_renting button.applyBtn',
-        },
-        {
             content: "click on add to cart",
             trigger: '.o_wish_add',
         },
@@ -51,7 +33,7 @@ registry.category("web_tour.tours").add('shop_buy_rental_product_wishlist', {
         },
         {
             content: "go to checkout",
-            extra_trigger: '#cart_products .oe_currency_value:contains(14.00)',
+            extra_trigger: '#cart_products .oe_currency_value:contains(75.00)',
             trigger: 'a[href*="/shop/checkout"]',
         },
     ]

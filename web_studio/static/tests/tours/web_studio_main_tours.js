@@ -982,7 +982,7 @@ registry.category("web_tour.tours").add("web_studio_approval_tour", {
         },
         {
             // set stupid domain that is always truthy
-            trigger: ".o_domain_debug_container textarea",
+            trigger: ".o_domain_selector_debug_container textarea",
             run: function () {
                 this.$anchor.focusIn();
                 this.$anchor.val('[["id", "!=", False]]');

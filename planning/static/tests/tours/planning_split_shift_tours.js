@@ -30,7 +30,7 @@ registry.category("web_tour.tours").add('planning_split_shift_week', {
     trigger: ".o_model_field_selector",
     content: "Write domain excluding open shifts",
     run() {
-        const input = document.querySelector(".o_domain_debug_input")
+        const input = document.querySelector(".o_domain_selector_debug_container textarea")
         input.value = '[("resource_id", "!=", False)]';
         input.dispatchEvent(new Event("change", { bubbles: true, cancelable: false }));
     }

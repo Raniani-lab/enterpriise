@@ -22,6 +22,7 @@ import { createSpreadsheet } from "../spreadsheet_test_utils.js";
 import { dom } from "@web/../tests/legacy/helpers/test_utils";
 import { doMenuAction } from "@spreadsheet/../tests/utils/ui";
 import { session } from "@web/session";
+import * as dsHelpers from "@web/../tests/core/domain_selector_tests";
 
 const { topbarMenuRegistry, cellMenuRegistry } = spreadsheet.registries;
 const { toZone } = spreadsheet.helpers;
@@ -454,10 +455,10 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
         await nextTick();
         const fixture = getFixture();
         await click(fixture.querySelector(".o_edit_domain"));
-        await click(fixture.querySelector(".o_domain_tree a[role=button]"));
+        await dsHelpers.addNewRule(fixture);
         await click(fixture.querySelector(".modal-footer .btn-primary"));
         assert.deepEqual(model.getters.getListDefinition(listId).domain, [["id", "=", 1]]);
-        assert.equal(fixture.querySelector(".o_domain_selector_row").innerText, "ID\n= 1");
+        assert.equal(dsHelpers.getConditionText(fixture), "ID = 1");
     });
 
     QUnit.test(

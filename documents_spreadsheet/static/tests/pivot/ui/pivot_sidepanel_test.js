@@ -13,6 +13,7 @@ import { selectCell } from "@spreadsheet/../tests/utils/commands";
 import { createSpreadsheetFromPivotView } from "../../utils/pivot_helpers";
 import PivotUIPlugin from "@spreadsheet/pivot/plugins/pivot_ui_plugin";
 import { insertPivotInSpreadsheet } from "@spreadsheet/../tests/utils/pivot";
+import * as dsHelpers from "@web/../tests/core/domain_selector_tests";
 
 const { cellMenuRegistry } = spreadsheet.registries;
 
@@ -292,10 +293,10 @@ QUnit.module(
             await nextTick();
             const fixture = getFixture();
             await click(fixture.querySelector(".o_edit_domain"));
-            await click(fixture.querySelector(".o_domain_tree a[role=button]"));
+            await dsHelpers.addNewRule(fixture);
             await click(fixture.querySelector(".modal-footer .btn-primary"));
             assert.deepEqual(model.getters.getPivotDefinition(pivotId).domain, [["id", "=", 1]]);
-            assert.equal(fixture.querySelector(".o_domain_selector_row").innerText, "ID\n= 1");
+            assert.equal(dsHelpers.getConditionText(fixture), "ID = 1");
         });
     }
 );

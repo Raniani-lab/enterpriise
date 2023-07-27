@@ -17,9 +17,7 @@ class TestExpenseExtractProcess(TestExpenseCommon, TestExtractMixin):
         cls.product_a.write({'standard_price': 0})
         cls.expense = cls.env['hr.expense'].create({
             'employee_id': cls.expense_employee.id,
-            'name': cls.product_a.display_name,
-            'product_id': cls.product_a.id,
-            'unit_amount': 0,
+            'product_id': cls.product_c.id,
         })
 
         # This is necessary to avoid nondeterminism in these tests.
@@ -31,7 +29,7 @@ class TestExpenseExtractProcess(TestExpenseCommon, TestExtractMixin):
         cls.expense.date = cls.expense.create_date.date()
 
         cls.attachment = cls.env['ir.attachment'].create({
-            'name': "product_a.jpg",
+            'name': "product_c.jpg",
             'raw': b'My expense',
         })
 
@@ -43,7 +41,6 @@ class TestExpenseExtractProcess(TestExpenseCommon, TestExtractMixin):
                 'total': {'selected_value': {'content': 99.99, 'candidates': []}},
                 'date': {'selected_value': {'content': '2022-02-22', 'candidates': []}},
                 'currency': {'selected_value': {'content': 'euro', 'candidates': []}},
-                'bill_reference': {'selected_value': {'content': 'bill-ref007', 'candidates': []}},
             }],
         }
 
@@ -77,7 +74,6 @@ class TestExpenseExtractProcess(TestExpenseCommon, TestExtractMixin):
         self.assertTrue(self.expense.extract_state_processed)
         self.assertEqual(self.expense.predicted_category, 'miscellaneous')
         self.assertFalse(self.expense.total_amount)
-        self.assertFalse(self.expense.reference)
         self.assertEqual(self.expense.currency_id, usd_currency)
 
         extract_response = self.get_result_success_response()
@@ -97,8 +93,7 @@ class TestExpenseExtractProcess(TestExpenseCommon, TestExtractMixin):
         self.assertEqual(self.expense.currency_id, eur_currency)
         self.assertEqual(str(self.expense.date), ext_result['date']['selected_value']['content'])
         self.assertEqual(self.expense.name, self.expense.predicted_category, ext_result['description']['selected_value']['content'])
-        self.assertEqual(self.expense.product_id, self.product_a)
-        self.assertEqual(self.expense.reference, ext_result['bill_reference']['selected_value']['content'])
+        self.assertEqual(self.expense.product_id, self.product_c)
 
     def test_manual_send_for_digitization(self):
         # test the `manual_send` mode for digitization.
@@ -132,8 +127,7 @@ class TestExpenseExtractProcess(TestExpenseCommon, TestExtractMixin):
         self.assertEqual(self.expense.currency_id, eur_currency)
         self.assertEqual(str(self.expense.date), ext_result['date']['selected_value']['content'])
         self.assertEqual(self.expense.name, self.expense.predicted_category, ext_result['description']['selected_value']['content'])
-        self.assertEqual(self.expense.product_id, self.product_a)
-        self.assertEqual(self.expense.reference, ext_result['bill_reference']['selected_value']['content'])
+        self.assertEqual(self.expense.product_id, self.product_c)
 
     def test_no_send_for_digitization(self):
         # test that the `no_send` mode for digitization prevents the users from sending
@@ -180,11 +174,10 @@ class TestExpenseExtractProcess(TestExpenseCommon, TestExtractMixin):
             'version': OCR_VERSION,
             'documents': {
                 'some_uuid': {
-                    'total': {'content': self.expense.unit_amount},
+                    'total': {'content': self.expense.price_unit},
                     'date': {'content': str(self.expense.date)},
                     'description': {'content': self.expense.name},
                     'currency': {'content': self.expense.currency_id.name},
-                    'bill_reference': {'content': self.expense.reference},
                 }
             }
         }

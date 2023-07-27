@@ -1,8 +1,7 @@
-# -*- coding:utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from collections import defaultdict
-from odoo import api, fields, models, _
+from odoo import api, fields, models, _, Command
 
 
 class HrPayslip(models.Model):
@@ -13,10 +12,10 @@ class HrPayslip(models.Model):
         help="Expenses to reimburse to employee.")
     expenses_count = fields.Integer(compute='_compute_expenses_count')
 
-    @api.depends('expense_sheet_ids.expense_line_ids', 'expense_sheet_ids.payslip_id')
+    @api.depends('expense_sheet_ids.nb_expense', 'expense_sheet_ids.payslip_id')
     def _compute_expenses_count(self):
         for payslip in self:
-            payslip.expenses_count = len(payslip.mapped('expense_sheet_ids.expense_line_ids'))
+            payslip.expenses_count = sum(payslip.mapped('expense_sheet_ids.nb_expense'))
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -37,9 +36,9 @@ class HrPayslip(models.Model):
         for slip in draft_slips:
             payslip_sheets = sheets_by_employee[slip.employee_id]
             if slip.expense_sheet_ids:
-                slip.expense_sheet_ids = [(6, 0, payslip_sheets.ids)]
+                slip.expense_sheet_ids = [Command.set(payslip_sheets.ids)]
             elif payslip_sheets:
-                slip.expense_sheet_ids = [(4, sheet.id, 0) for sheet in payslip_sheets]
+                slip.expense_sheet_ids = [Command.link(sheet.id) for sheet in payslip_sheets]
         return payslips
 
     def write(self, vals):
@@ -57,8 +56,8 @@ class HrPayslip(models.Model):
             if not total or not expense_type:
                 continue
             lines_to_remove = payslip.input_line_ids.filtered(lambda x: x.input_type_id == expense_type)
-            input_lines_vals = [(2, line.id, False) for line in lines_to_remove]
-            input_lines_vals.append((0, 0, {
+            input_lines_vals = [Command.delete(line.id) for line in lines_to_remove]
+            input_lines_vals.append(Command.create({
                 'amount': total,
                 'input_type_id': expense_type.id
             }))

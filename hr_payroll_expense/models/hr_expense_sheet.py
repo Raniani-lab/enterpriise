@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 
@@ -16,7 +15,7 @@ class HrExpenseSheet(models.Model):
         self.write({'refund_in_payslip': True})
         for record in self:
             record.message_post(
-                body=_("Your expense (%s) will be added to your next payslip.") % (record.name),
+                body=_("Your expense (%s) will be added to your next payslip.", record.name),
                 partner_ids=record.employee_id.user_id.partner_id.ids,
                 email_layout_xmlid='mail.mail_notification_light',
                 subtype_id=self.env['ir.model.data']._xmlid_to_res_id('mail.mt_note'),

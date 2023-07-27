@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo.addons.hr_payroll.tests.common import TestPayslipBase
 from odoo.tests import tagged
@@ -11,6 +10,7 @@ class TestPayrollExpense(TestPayslipBase):
         product_a = self.env['product.product'].create({
             'name': 'test',
             'list_price': 100,
+            'standard_price': 100,
         })
         expense_sheet = self.env['hr.expense.sheet'].create({
             'name': 'Test Expenses',
@@ -20,7 +20,6 @@ class TestPayrollExpense(TestPayslipBase):
                 'name': 'Expense line',
                 'employee_id': self.richard_emp.id,
                 'product_id': product_a.id,
-                'unit_amount': 100.00,
             })]
         })
         expense_sheet.action_submit_sheet()

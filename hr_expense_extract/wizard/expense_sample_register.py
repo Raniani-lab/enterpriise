@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models, _
@@ -9,7 +8,7 @@ class ExpenseSampleRegister(models.TransientModel):
     _description = 'Register Sample Payments'
 
     sheet_id = fields.Many2one('hr.expense.sheet', string='Expense')
-    amount = fields.Float(string='Amount')
+    amount = fields.Monetary(string='Amount', currency_field='currency_id')
     memo = fields.Char(string='Memo')
     currency_id = fields.Many2one(related='sheet_id.currency_id')
     company_id = fields.Many2one(related='sheet_id.company_id')

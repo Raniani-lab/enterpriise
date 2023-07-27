@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from markupsafe import Markup
@@ -20,6 +19,9 @@ class HrExpense(models.Model):
     # We want to see the records that are just processed by OCR at the top of the list
     _order = "extract_state_processed desc, date desc, id desc"
 
+    sample = fields.Boolean(help='Expenses created from sample receipt')
+
+
     @api.depends('state')
     def _compute_is_in_extractable_state(self):
         for expense in self:
@@ -40,25 +42,23 @@ class HrExpense(models.Model):
             self.filtered('extract_can_show_send_button')._send_batch_for_digitization()
 
     def _message_set_main_attachment_id(self, attachment_ids):
-        super(HrExpense, self)._message_set_main_attachment_id(attachment_ids)
+        super()._message_set_main_attachment_id(attachment_ids)
         self._autosend_for_digitization()
 
     def _get_validation(self, field):
         text_to_send = {}
         if field == "total":
-            text_to_send["content"] = self.unit_amount
+            text_to_send["content"] = self.price_unit
         elif field == "date":
             text_to_send["content"] = str(self.date) if self.date else False
         elif field == "description":
             text_to_send["content"] = self.name
         elif field == "currency":
             text_to_send["content"] = self.currency_id.name
-        elif field == "bill_reference":
-            text_to_send["content"] = self.reference
         return text_to_send
 
     def action_submit_expenses(self, **kwargs):
-        res = super(HrExpense, self).action_submit_expenses(**kwargs)
+        res = super().action_submit_expenses(**kwargs)
         self._validate_ocr()
         return res
 
@@ -68,26 +68,23 @@ class HrExpense(models.Model):
             total_ocr = self._get_ocr_selected_value(ocr_results, 'total', 0.0)
             date_ocr = self._get_ocr_selected_value(ocr_results, 'date', "")
             currency_ocr = self._get_ocr_selected_value(ocr_results, 'currency', "")
-            bill_reference_ocr = self._get_ocr_selected_value(ocr_results, 'bill_reference', "")
 
             self.state = 'draft'
             if not self.name or self.name == self.message_main_attachment_id.name.split('.')[0]:
-                self.name = description_ocr
-                self.predicted_category = description_ocr
                 predicted_product_id = self._predict_product(description_ocr, category=True)
                 if predicted_product_id:
                     self.product_id = predicted_product_id if predicted_product_id else self.product_id
-                    self.total_amount = total_ocr
+                    self.total_amount_currency = total_ocr
+            self.name = description_ocr
+            # We need to set the name after the product change as changing the product may change the name
+            self.predicted_category = description_ocr
 
             context_create_date = fields.Date.context_today(self, self.create_date)
             if not self.date or self.date == context_create_date:
                 self.date = date_ocr
 
-            if not self.total_amount:
-                self.total_amount = total_ocr
-
-            if not self.reference:
-                self.reference = bill_reference_ocr
+            if not self.total_amount_currency:
+                self.total_amount_currency = total_ocr
 
             if self.user_has_groups('base.group_multi_currency') and (not self.currency_id or self.currency_id == self.env.company.currency_id):
                 currency = self.env["res.currency"].search([
@@ -150,7 +147,7 @@ class HrExpense(models.Model):
         return ocr_option and ocr_option != 'no_send'
 
     def _get_validation_fields(self):
-        return ['total', 'date', 'description', 'currency', 'bill_reference']
+        return ['total', 'date', 'description', 'currency']
 
     def _get_user_error_invalid_state_message(self):
         return _("You cannot send a expense that is not in draft state!")

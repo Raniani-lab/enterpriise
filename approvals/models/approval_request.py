@@ -127,7 +127,7 @@ class ApprovalRequest(models.Model):
         if self.approver_sequence:
             approvers = approvers.filtered(lambda a: a.status in ['new', 'pending', 'waiting'])
 
-            approvers[1:].status = 'waiting'
+            approvers[1:].sudo().write({'status': 'waiting'})
             approvers = approvers[0] if approvers and approvers[0].status != 'pending' else self.env['approval.approver']
         else:
             approvers = approvers.filtered(lambda a: a.status == 'new')

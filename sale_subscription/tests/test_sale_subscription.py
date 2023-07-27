@@ -742,7 +742,7 @@ class TestSubscription(TestSubscriptionCommon):
         with sub_form.order_line.new() as line:
             line.product_id = self.product
         sub = sub_form.save()
-        self.assertEqual(sub.order_line.product_id.taxes_id, self.tax_10, 'Default tax for product should have been applied.')
+        self.assertEqual(sub.order_line.tax_id, self.tax_10, 'Default tax for product should have been applied.')
         self.assertEqual(sub.amount_tax, 5.0,
                          'Default tax for product should have been applied.')
         self.assertEqual(sub.amount_total, 55.0,
@@ -752,7 +752,7 @@ class TestSubscription(TestSubscriptionCommon):
         sub.write({
             'order_line': [(1, line_id[0], {'product_id': self.product4.id})]
         })
-        self.assertEqual(sub.order_line.product_id.taxes_id, self.tax_20,
+        self.assertEqual(sub.order_line.tax_id, self.tax_20,
                          'Default tax for product should have been applied.')
         self.assertEqual(sub.amount_tax, 3,
                          'Default tax for product should have been applied.')

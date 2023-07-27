@@ -50,7 +50,7 @@ class TestEdiResults(TestMxExtendedEdiCommon, ValuationReconciliationTestCommon)
                         'product_qty': 2,
                         'product_uom': self.product.uom_id.id,
                         'price_unit': self.product.list_price,
-                        'taxes_id': [(6, 0, self.product.supplier_taxes_id.ids)],
+                        'taxes_id': [(6, 0, self.product.supplier_taxes_id.filtered_domain(self.env['account.tax']._check_company_domain(self.env.company)).ids)],
                         'date_planned': fields.Datetime.now(),
                     })
                 ],
@@ -84,7 +84,7 @@ class TestEdiResults(TestMxExtendedEdiCommon, ValuationReconciliationTestCommon)
                         'product_uom_qty': 2,
                         'product_uom': self.product.uom_id.id,
                         'price_unit': self.product.list_price,
-                        'tax_id': [(6, 0, self.product.taxes_id.ids)],
+                        'tax_id': [(6, 0, self.product.taxes_id.filtered_domain(self.env['account.tax']._check_company_domain(self.env.company)).ids)],
                     })
                 ],
             })

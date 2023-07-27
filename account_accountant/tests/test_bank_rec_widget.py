@@ -90,6 +90,35 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         st_line = self._create_st_line(1000.0, partner_id=None, partner_name="Turlututu")
         self.assertEqual(st_line._retrieve_partner(), partner_b)
 
+    def test_res_partner_bank_find_create_when_archived(self):
+        """ Test we don't get the "The combination Account Number/Partner must be unique." error with archived
+        bank account.
+        """
+        partner = self.env['res.partner'].create({
+            'name': "Zitycard",
+            'bank_ids': [Command.create({
+                'acc_number': "123456789",
+                'active': False,
+            })],
+        })
+
+        st_line = self._create_st_line(
+            100.0,
+            partner_name="Zeumat Zitycard",
+            account_number="123456789",
+        )
+        inv_line = self._create_invoice_line(
+            'out_invoice',
+            partner_id=partner,
+            invoice_line_ids=[{'price_unit': 100.0, 'tax_ids': []}],
+        )
+        wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
+        wizard._action_add_new_amls(inv_line)
+        wizard.button_validate()
+
+        # Should not trigger the error.
+        self.env['res.partner.bank'].flush_model()
+
     def test_validation_new_aml_same_foreign_currency(self):
         income_exchange_account = self.env.company.income_currency_exchange_account_id
 

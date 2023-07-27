@@ -19,9 +19,9 @@
                         t-att-id="`${id}_${item[0]}`"
                         t-on-change="() => this.onChange(item)"
                     />
-                    <label class="form-check-label o_form_label" t-att-for="`${id}_${item[0]}`" t-esc="item[1]" />
+                    <label class="form-check-label o_form_label" t-att-for="`${id}_${item[0]}`" t-out="item[1]" />
                     <br/>
-                    <p t-out="state.balances[item[0]][0]" t-att-class="state.balances[item[0]][1] > 0 ? '' : 'text-danger'"/>
+                    <p t-out="this.getBalanceName(item[0])" t-att-class="this.isNegativeAmount(item[0]) ? 'text-danger' : ''"/>
                 </div>
             </t>
         </div>

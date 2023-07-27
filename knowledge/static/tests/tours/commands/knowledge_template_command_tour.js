@@ -43,6 +43,9 @@ registry.category("web_tour.tours").add('knowledge_template_command_tour', {
 }, { // open the contact record of the follower
     trigger: '.o-mail-Follower-details:contains(HelloWorldPartner)',
     run: 'click',
+}, { // verify that the partner form view is fully loaded
+    trigger: '.o_breadcrumb .o_last_breadcrumb_item.active:contains(HelloWorldPartner)',
+    run: () => {},
 }, { // search an article to open it from the contact record
     trigger: 'button[title="Search Knowledge Articles"]',
     run: 'click',

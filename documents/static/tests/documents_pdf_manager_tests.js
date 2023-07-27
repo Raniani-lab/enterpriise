@@ -102,7 +102,7 @@ QUnit.module("documents", {}, function () {
                 );
                 assert.containsOnce(
                     target,
-                    ".o_pdf_separator_activated",
+                    ".o_pdf_separator_selected",
                     "There should be one active separator"
                 );
                 assert.containsN(target, ".o_pdf_page", 12, "There should be 12 pages");
@@ -128,13 +128,13 @@ QUnit.module("documents", {}, function () {
 
                 assert.containsOnce(
                     target,
-                    ".o_pdf_separator_activated",
+                    ".o_pdf_separator_selected",
                     "There should be one active separator"
                 );
                 await click(target.querySelectorAll(".o_page_splitter_wrapper")[1]);
                 assert.containsN(
                     target,
-                    ".o_pdf_separator_activated",
+                    ".o_pdf_separator_selected",
                     2,
                     "There should be 2 active separator"
                 );
@@ -161,7 +161,7 @@ QUnit.module("documents", {}, function () {
 
                 assert.containsN(
                     target,
-                    ".o_pdf_separator_activated",
+                    ".o_pdf_separator_selected",
                     1,
                     "There should be one active separator"
                 );
@@ -184,7 +184,7 @@ QUnit.module("documents", {}, function () {
                 await nextTick();
                 assert.containsN(
                     target,
-                    ".o_pdf_separator_activated",
+                    ".o_pdf_separator_selected",
                     1,
                     "There should be one active separator"
                 );
@@ -200,48 +200,13 @@ QUnit.module("documents", {}, function () {
                 );
             });
 
-            QUnit.test("Pdf Manager: activate/desactivate all pages", async function (assert) {
+            QUnit.test("Pdf Manager: select/Unselect all pages", async function (assert) {
                 assert.expect(3);
 
                 await mountSetup(PdfManager, target, env);
                 await nextTick();
 
                 await click(target.querySelector(".o_documents_pdf_page_viewer"));
-                assert.containsN(
-                    target,
-                    ".o_pdf_page_activated",
-                    0,
-                    "There should be no page activated"
-                );
-                await testUtils.dom.triggerEvent(window, "keydown", { key: "a", ctrlKey: true });
-                assert.containsN(
-                    target,
-                    ".o_pdf_page_activated",
-                    12,
-                    "There should be 12 pages activated"
-                );
-                await testUtils.dom.triggerEvent(window, "keydown", { key: "a", ctrlKey: true });
-                assert.containsN(
-                    target,
-                    ".o_pdf_page_activated",
-                    0,
-                    "There should be no page activated"
-                );
-            });
-
-            QUnit.test("Pdf Manager: select/unselect activated pages", async function (assert) {
-                assert.expect(6);
-
-                await mountSetup(PdfManager, target, env);
-                await nextTick();
-
-                await click(target.querySelector(".o_documents_pdf_page_viewer"));
-                assert.containsN(
-                    target,
-                    ".o_pdf_page_activated",
-                    0,
-                    "There should be no page activated"
-                );
                 assert.containsN(
                     target,
                     ".o_pdf_page_selected",
@@ -251,34 +216,21 @@ QUnit.module("documents", {}, function () {
                 await testUtils.dom.triggerEvent(window, "keydown", { key: "a", ctrlKey: true });
                 assert.containsN(
                     target,
-                    ".o_pdf_page_activated",
-                    12,
-                    "There should be 12 pages activated"
-                );
-                await testUtils.dom.triggerEvent(window, "keydown", { key: "space" });
-                assert.containsN(
-                    target,
                     ".o_pdf_page_selected",
                     12,
                     "There should be 12 pages selected"
                 );
-                await click(target.querySelector(".o_documents_pdf_page_viewer"));
+                await testUtils.dom.triggerEvent(window, "keydown", { key: "a", ctrlKey: true });
                 assert.containsN(
                     target,
-                    ".o_pdf_page_activated",
+                    ".o_pdf_page_selected",
                     0,
-                    "There should be no page activated"
-                );
-                assert.containsN(
-                    target,
-                    ".o_pdf_page_selected",
-                    12,
-                    "There should be 12 pages selected"
+                    "There should be no page selected"
                 );
             });
 
             QUnit.test(
-                "Pdf Manager: activate pages with mouse area selection",
+                "Pdf Manager: select pages with mouse area selection",
                 async function (assert) {
                     assert.expect(2);
 
@@ -291,11 +243,15 @@ QUnit.module("documents", {}, function () {
                     const bottom = viewer.getBoundingClientRect().bottom;
                     const right = viewer.getBoundingClientRect().right;
 
+                    await testUtils.dom.triggerEvent(window, "keydown", {
+                        key: "a",
+                        ctrlKey: true,
+                    });
                     assert.containsN(
                         target,
-                        ".o_pdf_page_activated",
+                        ".o_pdf_page_selected",
                         0,
-                        "There should be no page activated"
+                        "There should be no page selected"
                     );
                     const mouseDownEvent = new MouseEvent("mousedown", {
                         clientX: left,
@@ -320,9 +276,9 @@ QUnit.module("documents", {}, function () {
                     await nextTick();
                     assert.containsN(
                         target,
-                        ".o_pdf_page_activated",
+                        ".o_pdf_page_selected",
                         12,
-                        "There should be 12 pages activated"
+                        "There should be 12 pages selected"
                     );
                 }
             );
@@ -338,9 +294,9 @@ QUnit.module("documents", {}, function () {
                     await click(target.querySelector(".o_documents_pdf_page_viewer"));
                     assert.containsN(
                         target,
-                        ".o_pdf_page_activated",
+                        ".o_pdf_page_selected",
                         0,
-                        "There should be no page activated"
+                        "There should be no page selected"
                     );
                     await testUtils.dom.triggerEvent(window, "keydown", {
                         key: "a",
@@ -348,14 +304,14 @@ QUnit.module("documents", {}, function () {
                     });
                     assert.containsN(
                         target,
-                        ".o_pdf_page_activated",
+                        ".o_pdf_page_selected",
                         12,
-                        "There should be 12 pages activated"
+                        "There should be 12 pages selected"
                     );
                     await testUtils.dom.triggerEvent(window, "keydown", { key: "s" });
                     assert.containsN(
                         target,
-                        ".o_pdf_separator_activated",
+                        ".o_pdf_separator_selected",
                         11,
                         "There should be 11 active separators"
                     );
@@ -363,7 +319,7 @@ QUnit.module("documents", {}, function () {
             );
 
             QUnit.test(
-                "Pdf Manager: click on page bottom area activates the page",
+                "Pdf Manager: click on page bottom area selects the page",
                 async function (assert) {
                     assert.expect(2);
 
@@ -373,15 +329,15 @@ QUnit.module("documents", {}, function () {
                     await click(target.querySelector(".o_documents_pdf_page_viewer"));
                     assert.containsN(
                         target,
-                        ".o_pdf_page_activated",
+                        ".o_pdf_page_selected",
                         0,
-                        "There should be no page activated"
+                        "There should be no page selected"
                     );
                     await click(target.querySelector(".o_bottom_selection"));
                     assert.containsOnce(
                         target,
-                        ".o_pdf_page_activated",
-                        "There should be one page activated"
+                        ".o_pdf_page_selected",
+                        "There should be one page selected"
                     );
                 }
             );
@@ -481,9 +437,9 @@ QUnit.module("documents", {}, function () {
                     );
                     assert.containsN(
                         target,
-                        ".o_pdf_page_activated",
+                        ".o_pdf_page_selected",
                         3,
-                        "3 pages should be activated"
+                        "3 pages should be selected"
                     );
                     await testUtils.dom.triggerEvent(window, "keydown", {
                         key: "arrowLeft",
@@ -500,59 +456,8 @@ QUnit.module("documents", {}, function () {
                     );
                     assert.containsOnce(
                         target,
-                        ".o_pdf_page_activated",
-                        "One page should be activated"
-                    );
-                }
-            );
-
-            QUnit.test(
-                "Pdf Manager: selection on active pages with focused page",
-                async function (assert) {
-                    assert.expect(4);
-
-                    await mountSetup(PdfManager, target, env);
-                    await nextTick();
-
-                    await click(target.querySelector(".o_documents_pdf_page_viewer"));
-                    assert.containsN(
-                        target,
                         ".o_pdf_page_selected",
-                        0,
-                        "There should be no page selected"
-                    );
-                    await testUtils.dom.triggerEvent(window, "keydown", {
-                        key: "arrowRight",
-                        shiftKey: true,
-                    });
-                    await testUtils.dom.triggerEvent(window, "keydown", {
-                        key: "arrowRight",
-                        shiftKey: true,
-                    });
-                    await testUtils.dom.triggerEvent(window, "keydown", {
-                        key: "arrowRight",
-                        shiftKey: true,
-                    });
-                    assert.containsN(
-                        target,
-                        ".o_pdf_page_activated",
-                        3,
-                        "3 pages should be activated"
-                    );
-                    await testUtils.dom.triggerEvent(window, "keydown", { key: "arrowRight" });
-                    await testUtils.dom.triggerEvent(window, "keydown", { key: "space" });
-                    assert.containsOnce(
-                        target,
-                        ".o_pdf_page_selected",
-                        "There should be one page selected"
-                    );
-                    await testUtils.dom.triggerEvent(window, "keydown", { key: "arrowLeft" });
-                    await testUtils.dom.triggerEvent(window, "keydown", { key: "space" });
-                    assert.containsN(
-                        target,
-                        ".o_pdf_page_selected",
-                        4,
-                        "There should be 4 pages selected"
+                        "One page should be selected"
                     );
                 }
             );
@@ -580,9 +485,9 @@ QUnit.module("documents", {}, function () {
                     });
                     assert.containsN(
                         target,
-                        ".o_pdf_page_activated",
+                        ".o_pdf_page_selected",
                         6,
-                        "There should be 6 pages activated"
+                        "There should be 6 pages selected"
                     );
                 }
             );
@@ -616,7 +521,7 @@ QUnit.module("documents", {}, function () {
             );
 
             QUnit.test(
-                "Pdf Manager: click on group name should activate all the group",
+                "Pdf Manager: click on group name should select all the group",
                 async function (assert) {
                     assert.expect(2);
 
@@ -633,9 +538,9 @@ QUnit.module("documents", {}, function () {
                     await click(target.querySelector(".o_pdf_name_display"));
                     assert.containsN(
                         target,
-                        ".o_pdf_page_activated",
+                        ".o_pdf_page_selected",
                         6,
-                        "6 pages should be activated"
+                        "6 pages should be selected"
                     );
                 }
             );

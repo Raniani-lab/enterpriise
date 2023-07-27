@@ -14,13 +14,11 @@ export class PdfPage extends Component {
         canvas: { type: Object, optional: true },
         isPreview: { type: Boolean, optional: true },
         isSelected: { type: Boolean, optional: true },
-        isActivated: { type: Boolean, optional: true },
         isFocused: { type: Boolean, optional: true },
         onPageClicked: { type: Function, optional: true },
         onPageDragged: { type: Function, optional: true },
         onPageDropped: { type: Function, optional: true },
         onSelectClicked: { type: Function, optional: true },
-        onActivateClicked: { type: Function, optional: true },
         toRender: { type: Boolean, optional: true },
         pageId: String,
     };
@@ -82,16 +80,7 @@ export class PdfPage extends Component {
      */
     onClickSelect(ev) {
         if (this.props.onSelectClicked) {
-            this.props.onSelectClicked(this.props.pageId, ev.shiftKey);
-        }
-    }
-    /**
-     * @public
-     * @param {MouseEvent} ev
-     */
-    onClickActivate(ev) {
-        if (this.props.onActivateClicked) {
-            this.props.onActivateClicked(this.props.pageId, ev.shiftKey, ev.ctrlKey || ev.metaKey);
+            this.props.onSelectClicked(this.props.pageId, ev.shiftKey, ev.ctrlKey || ev.metaKey);
         }
     }
     /**

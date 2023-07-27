@@ -143,7 +143,7 @@ $o-pdf-manager-selection-area-color: solid 1px #047078;
         transform: rotate(270deg);
     }
 
-    &.o_pdf_separator_activated {
+    &.o_pdf_separator_selected {
         .o_page_splitter {
             border: 1px solid $o-pdf-manager-separator-color;
         }
@@ -156,7 +156,7 @@ $o-pdf-manager-selection-area-color: solid 1px #047078;
         .o_page_splitter {
             border: 1px dashed gray;
         }
-        &.o_pdf_separator_activated  > .o_page_splitter {
+        &.o_pdf_separator_selected  > .o_page_splitter {
             border: 1px solid gray;
         }
     }
@@ -165,7 +165,7 @@ $o-pdf-manager-selection-area-color: solid 1px #047078;
         .o_page_splitter {
             border: 1px solid gray;
         }
-        &.o_pdf_separator_activated  > .o_page_splitter {
+        &.o_pdf_separator_selected  > .o_page_splitter {
             border: 1px dashed gray;
         }
     }

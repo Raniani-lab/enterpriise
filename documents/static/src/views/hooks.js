@@ -246,12 +246,16 @@ function useDocumentsViewFilePreviewer({
     }) => {
         const openPdfSplitter = (documents) => {
             let newDocumentIds = [];
+            let forceDelete = false;
             component.dialogService.add(
                 PdfManager,
                 {
                     documents: documents.map((doc) => doc.data),
-                    rules: rules.map((rule) => rule.data),
-                    onProcessDocuments: ({ documentIds, ruleId, exit }) => {
+                    rules: rules.map((rule) => {
+                        return { ...rule.data, id: rule.resId };
+                    }),
+                    onProcessDocuments: ({ documentIds, ruleId, exit, isForcingDelete }) => {
+                        forceDelete = isForcingDelete;
                         if (documentIds && documentIds.length) {
                             newDocumentIds = [...new Set(newDocumentIds.concat(documentIds))];
                         }
@@ -262,7 +266,7 @@ function useDocumentsViewFilePreviewer({
                 },
                 {
                     onClose: async () => {
-                        if (!newDocumentIds.length) {
+                        if (!newDocumentIds.length && !forceDelete) {
                             return;
                         }
                         await component.model.load();

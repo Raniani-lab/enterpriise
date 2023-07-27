@@ -44,10 +44,10 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="o_navigation_left" t-if="this.state.viewedPageIndex !== 0">
+                        <div class="o_navigation_left" t-if="state.viewedPageIndex !== 0">
                             <i class="fa fa-chevron-left ps-1 text-white display-6" role="button" t-on-click="onClickPrevious"/>
                         </div>
-                        <div class="o_navigation_right" t-if="this.state.viewedPageIndex !== this.state.numberOfPages - 1">
+                        <div class="o_navigation_right" t-if="state.viewedPageIndex !== state.numberOfPages - 1">
                             <i class="fa fa-chevron-right ps-1 text-white display-6" role="button" t-on-click="onClickNext"/>
                         </div>
                         <PdfPage pageId="state.viewedPage"
@@ -66,35 +66,35 @@
                     />
                     <t t-foreach="state.groupIds" t-as="groupId" t-key="groupId">
                         <t t-foreach="state.groupData[groupId].pageIds" t-as="pageId" t-key="pageId">
-                            <div class="o_documents_pdf_page_frame" t-key="'div_' + pageId" t-att-class="{'pe-none': state.isSelecting}">
-                                <PdfPage
-                                    canvas="state.pageCanvases[pageId].canvas"
-                                    isPreview="false"
-                                    isSelected="state.pages[pageId].isSelected"
-                                    isActivated="state.pages[pageId].isActivated"
-                                    isFocused="state.focusedPage === pageId"
-                                    pageId="pageId"
-                                    onPageClicked.bind="onClickPage"
-                                    onPageDragged.bind="onPageDragStart"
-                                    onPageDropped.bind="onPageDrop"
-                                    onSelectClicked.bind="onSelectClicked"
-                                    onActivateClicked.bind="onActivateClicked"
-                                />
-                                <div t-if="pageId_first" class="o_pdf_group_name_wrapper">
-                                    <PdfGroupName groupId="groupId"
-                                        name="state.groupData[groupId].name"
-                                        onEditName.bind="onEditName"
-                                        onToggleEdit.bind="onToggleEdit"
-                                        edit="groupId === state.edit"
+                            <div class="d-flex flex-md-row flex-column align-items-md-start align-items-center">
+                                <div class="o_documents_pdf_page_frame" t-key="'div_' + pageId" t-att-class="{'pe-none': state.isSelecting}">
+                                    <PdfPage
+                                        canvas="state.pageCanvases[pageId].canvas"
+                                        isPreview="false"
+                                        isSelected="state.pages[pageId].isSelected"
+                                        isFocused="state.focusedPage === pageId"
+                                        pageId="pageId"
+                                        onPageClicked.bind="onClickPage"
+                                        onPageDragged.bind="onPageDragStart"
+                                        onPageDropped.bind="onPageDrop"
+                                        onSelectClicked.bind="onSelectClicked"
                                     />
+                                    <div t-if="pageId_first" class="o_pdf_group_name_wrapper">
+                                        <PdfGroupName groupId="groupId"
+                                            name="state.groupData[groupId].name"
+                                            onEditName.bind="onEditName"
+                                            onToggleEdit.bind="onToggleEdit"
+                                            edit="groupId === state.edit"
+                                        />
+                                    </div>
                                 </div>
-                            </div>
-                            <div t-if="!(groupId_last and pageId_last)" class="o_page_splitter_wrapper"
-                                t-att-class="{ 'o_pdf_separator_activated': pageId_last, 'pe-none': state.isSelecting}"
-                                t-on-click.stop="() => this.onClickPageSeparator(pageId, groupId)"
-                            >
-                                <div class="o_page_splitter"/>
-                                <i class="o_pdf_scissors fa fa-scissors fa-lg"/>
+                                <div t-if="!(groupId_last and pageId_last)" class="o_page_splitter_wrapper"
+                                    t-att-class="{ 'o_pdf_separator_selected': pageId_last, 'pe-none': state.isSelecting}"
+                                    t-on-click.stop="() => this.onClickPageSeparator(pageId, groupId)"
+                                >
+                                    <div class="o_page_splitter"/>
+                                    <i class="o_pdf_scissors fa fa-scissors fa-lg"/>
+                                </div>
                             </div>
                         </t>
                     </t>

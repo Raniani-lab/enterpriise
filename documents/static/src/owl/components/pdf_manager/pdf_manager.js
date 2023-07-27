@@ -53,7 +53,7 @@ export class PdfManager extends Component {
             groupIds: [],
             /*
              * Will be sent to the backend.
-             *  object pages[pageId] = { pageId, groupId, isSelected, fileId, localPageNumber, isActivated}
+             *  object pages[pageId] = { pageId, groupId, fileId, localPageNumber, isSelected}
              */
             pages: {},
             // object pageCanvases[pageId] = { canvas, pageObject }
@@ -157,14 +157,16 @@ export class PdfManager extends Component {
             this._focusNextGroup.bind(this, "right"),
             "control+ArrowRight"
         );
-        this._setUseCommand(_t("Activate/Deactivate page"), () => {}, "shift");
+        this._setUseCommand(_t("Select focused page"), this._spaceKeySelect.bind(this), "space", {
+            allowRepeat: true,
+        });
         this._setUseCommand(
-            _t("Activate/Deactivate all pages"),
+            _t("Select/Deselect all pages"),
             this._selectAll.bind(this),
             "control+a"
         );
         this._setUseCommand(
-            _t("Activate previous page"),
+            _t("Select previous page"),
             this._focusNextPage.bind(this, "left", true),
             "shift+ArrowLeft",
             {
@@ -172,7 +174,7 @@ export class PdfManager extends Component {
             }
         );
         this._setUseCommand(
-            _t("Activate next page"),
+            _t("Select next page"),
             this._focusNextPage.bind(this, "right", true),
             "shift+ArrowRight",
             {
@@ -180,30 +182,30 @@ export class PdfManager extends Component {
             }
         );
         this._setUseCommand(
-            _t("Activate previous pages of the group"),
-            this._activateUntilSplit.bind(this, "left"),
+            _t("Select previous pages of the group"),
+            this._selectUntilSplit.bind(this, "left"),
             "control+shift+ArrowLeft"
         );
         this._setUseCommand(
-            _t("Activate next pages of the group"),
-            this._activateUntilSplit.bind(this, "right"),
+            _t("Select next pages of the group"),
+            this._selectUntilSplit.bind(this, "right"),
             "control+shift+ArrowRight"
         );
-        this._setUseCommand(_t("Deactivate/Unselect/Exit"), this._onPushExit.bind(this), "escape");
-        this._setUseCommand(_t("Select page"), this._spaceKeySelect.bind(this), "space", {
-            allowRepeat: true,
-        });
         this._setUseCommand(
-            _t("Split activated pages"),
+            _t("Escape Preview/Deselect/Exit"),
+            this._onPushExit.bind(this),
+            "escape"
+        );
+        this._setUseCommand(
+            _t("Split selected pages"),
             this._splitSelectionHandler.bind(this),
             "s",
             {
                 allowRepeat: true,
             }
         );
-        this._setUseCommand(_t("Preview page"), this._onEnter.bind(this), "enter");
         this._setUseCommand(
-            _t("Delete page or selected pages"),
+            _t("Delete focused or selected pages"),
             this.onArchive.bind(this),
             "backspace"
         );
@@ -217,6 +219,10 @@ export class PdfManager extends Component {
         useHotkey("shift+ArrowUp", this._focusNextPage.bind(this, "up", true), {
             allowRepeat: true,
         });
+        useHotkey("enter", this._togglePreviewer.bind(this), {
+            allowRepeat: true,
+        });
+        useHotkey("delete", this.onArchive.bind(this));
     }
 
     /**
@@ -256,14 +262,6 @@ export class PdfManager extends Component {
         );
     }
     /**
-     * @return {String[]}
-     */
-    get activatedPageIds() {
-        return Object.keys(this.state.pages).filter(
-            (key) => this.state.pages[key].isActivated && this.state.pages[key].groupId
-        );
-    }
-    /**
      * @return {Boolean}
      */
     get isDebugMode() {
@@ -272,8 +270,8 @@ export class PdfManager extends Component {
     /**
      * @return {String[]}
      */
-    get allActivated() {
-        return !Object.values(this.state.pages).some((page) => !page.isActivated);
+    get allSelected() {
+        return !Object.values(this.state.pages).some((page) => !page.isSelected);
     }
     /**
      * @return {String[]}
@@ -297,11 +295,12 @@ export class PdfManager extends Component {
     onToggleEdit(groupId, toggle) {
         this.state.edit = toggle ? groupId : false;
         const toggleActivation = this.state.groupData[groupId].pageIds.some(
-            (pageId) => this.state.pages[pageId].isActivated !== true
+            (pageId) => this.state.pages[pageId].isSelected !== true
         );
         this.state.groupData[groupId].pageIds.map((pageId) => {
-            this.state.pages[pageId].isActivated = toggleActivation;
+            this.state.pages[pageId].isSelected = toggleActivation;
         });
+        this.state.focusedPage = undefined;
     }
     /**
      * Returns the number of cards per line
@@ -313,22 +312,12 @@ export class PdfManager extends Component {
         return allPages.filter((page) => page.getBoundingClientRect().top === top).length;
     }
     /**
-     * Unselect every page
+     * Deselect every page
      * @private
      */
-    _resetSelection() {
-        for (const page of Object.values(this.state.pages)) {
-            page.isSelected = false;
-        }
-        this.state.lastSelectedPage = undefined;
-    }
-    /**
-     * Desactivate every page
-     * @private
-     */
-    _desactivatePages() {
-        for (const pageId of this.activatedPageIds) {
-            this.state.pages[pageId].isActivated = false;
+    _unSelectPages() {
+        for (const pageId of this.selectedPageIds) {
+            this.state.pages[pageId].isSelected = false;
         }
     }
     /**
@@ -339,10 +328,10 @@ export class PdfManager extends Component {
         if (this.state.viewedPage) {
             return;
         }
-        const activatedPages = this.activatedPageIds;
-        const focusedPageIsActivated = activatedPages.includes(this.state.focusedPage);
+        const selectedPages = this.selectedPageIds;
+        const focusedPageisSelected = selectedPages.includes(this.state.focusedPage);
         const sortedPagesIds = this.sortedPagesIds;
-        if (this.state.focusedPage && !focusedPageIsActivated) {
+        if (this.state.focusedPage && !focusedPageisSelected) {
             const indexPage = sortedPagesIds.indexOf(this.state.focusedPage);
             const previousPageId = sortedPagesIds[indexPage - 1];
             if (indexPage !== 0) {
@@ -353,17 +342,17 @@ export class PdfManager extends Component {
         let toggleSeparatorBool = true;
         const pagesToSplit = [];
         const pagesToGather = [];
-        for (const pageId of activatedPages) {
+        for (const pageId of selectedPages) {
             const indexPage = sortedPagesIds.indexOf(pageId);
             if (
                 indexPage < sortedPagesIds.length - 1 &&
-                this.state.pages[sortedPagesIds[indexPage + 1]].isActivated
+                this.state.pages[sortedPagesIds[indexPage + 1]].isSelected
             ) {
                 const parent = document
                     .querySelector(`[data-id=${pageId}]`)
                     .closest(".o_documents_pdf_page_frame");
                 const isSeparatorActive = parent.nextElementSibling.classList.contains(
-                    "o_pdf_separator_activated"
+                    "o_pdf_separator_selected"
                 );
                 toggleSeparatorBool = toggleSeparatorBool && isSeparatorActive;
                 if (isSeparatorActive) {
@@ -465,6 +454,7 @@ export class PdfManager extends Component {
             this.state.groupData[groupId].pageIds.push(pageId);
         }
         this.state.pages[pageId].groupId = groupId;
+        this.state.numberOfPages = this.sortedPagesIds.length;
     }
     /**
      * @private
@@ -577,34 +567,37 @@ export class PdfManager extends Component {
      * @return {Object} newPages
      */
     _createPages({ fileId, name, pageCount }) {
+        let groupId;
+        let groupName = name;
+        const multipleFiles = this.props.documents.length > 1;
+        let groupLock = false;
         const pageIds = [];
         const newPages = {};
         // creating page and groups
-        const groupId = this._createGroup({ name });
-        for (let pageNumber = 1; pageNumber <= pageCount; pageNumber++) {
+        for (let pageNumber = 0; pageNumber < pageCount; pageNumber++) {
+            // creating multiple groups if single file
+            if (multipleFiles && !groupLock) {
+                groupId = this._createGroup({ name: groupName });
+                groupLock = true;
+            } else if (!multipleFiles) {
+                groupName = `${name}-p${pageNumber + 1}`;
+                groupId = this._createGroup({ name: groupName });
+            }
             const pageId = uniqueId("page");
             this.state.pages[pageId] = {
                 pageId,
                 groupId,
                 fileId,
-                localPageNumber: pageNumber,
+                localPageNumber: pageNumber + 1,
                 isSelected: true,
             };
-            newPages[pageNumber] = pageId;
+            newPages[pageNumber + 1] = pageId;
             this.state.pageCanvases[pageId] = {};
             this.state.groupData[groupId].pageIds.push(pageId);
             pageIds.push(pageId);
         }
         this.state.numberOfPages = this.sortedPagesIds.length;
         return { pageIds, newPages };
-    }
-    /**
-     * Used to use a mocked version of Xhr in the tests.
-     * @private
-     * @return {XMLHttpRequest}
-     */
-    _createXhr() {
-        return new window.XMLHttpRequest();
     }
     /**
      * To be overwritten in tests (along with _renderCanvas()).
@@ -865,39 +858,33 @@ export class PdfManager extends Component {
     //----------------------------------------------------------------------
 
     /**
-     * If a page is focused, triggers the previewer opening
-     * @private
-     */
-    _onEnter() {
-        if (this.state.focusedPage && !this.state.viewedPage) {
-            this.onClickPage(this.state.focusedPage);
-        }
-    }
-    /**
-     * On shift pressed, the focused page is activated
+     * On shift pressed, the focused page is selected
      * @private
      * @param {Event} ev
      */
     _onShiftDown(ev) {
+        if (document.activeElement.classList.contains("o_pdf_name_input")) {
+            ev.stopPropagation();
+            return;
+        }
         if (
             ev.key === "Shift" &&
             !ev.metaKey &&
             !ev.ctrlKey &&
             !this.state.viewedPage &&
-            !this.state.edit &&
             this.state.focusedPage
         ) {
-            this.state.pages[this.state.focusedPage].isActivated =
-                !this.state.pages[this.state.focusedPage].isActivated;
+            this.state.pages[this.state.focusedPage].isSelected =
+                !this.state.pages[this.state.focusedPage].isSelected;
         }
     }
     /**
      * Focus next targetted page
      * @private
      * @param {String} direction
-     * @param {Boolean} doActivate
+     * @param {Boolean} doSelect
      */
-    _focusNextPage(direction, doActivate) {
+    _focusNextPage(direction, doSelect) {
         if (this.state.viewedPage) {
             if (direction === "left") {
                 this.onClickPrevious();
@@ -916,21 +903,21 @@ export class PdfManager extends Component {
             ];
             const nextFocusedPageId = sortedPagesIds[indexFocusedPage + shift];
             if (nextFocusedPageId) {
-                if (doActivate) {
-                    this.state.pages[this.state.focusedPage].isActivated =
-                        !this.state.pages[nextFocusedPageId].isActivated;
-                    this.state.pages[nextFocusedPageId].isActivated = true;
+                if (doSelect) {
+                    this.state.pages[this.state.focusedPage].isSelected =
+                        !this.state.pages[nextFocusedPageId].isSelected;
+                    this.state.pages[nextFocusedPageId].isSelected = true;
                 }
                 this.state.focusedPage = nextFocusedPageId;
             }
         } else if (this.state.lastSelectedPage) {
             this.state.focusedPage = this.state.lastSelectedPage;
-            this._focusNextPage(direction, doActivate);
+            this._focusNextPage(direction, doSelect);
         } else {
             this.state.focusedPage = this.sortedPagesIds[0];
-            if (doActivate) {
-                this.state.pages[this.state.focusedPage].isActivated =
-                    !this.state.pages[this.state.focusedPage].isActivated;
+            if (doSelect) {
+                this.state.pages[this.state.focusedPage].isSelected =
+                    !this.state.pages[this.state.focusedPage].isSelected;
             }
         }
         this._keepFocusedPageInScreen();
@@ -962,35 +949,34 @@ export class PdfManager extends Component {
         this._keepFocusedPageInScreen();
     }
     /**
-     * On space key pressed :
-     * - if no focused page, active pages are (un)selected
-     * - if focused page is active, all active pages are (un)selected
-     * - if focused page is not active, focused page (un)selected
+     * Opens or closes the previewer
      * @private
      */
-    _spaceKeySelect() {
-        if (this.state.viewedPage) {
-            return;
+    _togglePreviewer() {
+        if (this.state.focusedPage && !this.state.viewedPage) {
+            this.onClickPage(this.state.focusedPage);
         }
-        const activatedPages = this.activatedPageIds;
-        const focusedPageIsActivated = activatedPages.includes(this.state.focusedPage);
-        if (this.state.focusedPage && !focusedPageIsActivated) {
-            this.state.pages[this.state.focusedPage].isSelected =
-                !this.state.pages[this.state.focusedPage].isSelected;
-        } else {
-            const doSelect = !activatedPages.every((pageId) => this.state.pages[pageId].isSelected);
-            for (const pageId of activatedPages) {
-                this.state.pages[pageId].isSelected = doSelect;
-            }
+        if (this.state.focusedPage && this.state.viewedPage) {
+            this._onPushExit();
         }
     }
     /**
-     * activate all the pages from focused page until beginning/end
+     * On space key pressed, toogles the focused page
+     * @private
+     */
+    _spaceKeySelect() {
+        if (this.state.focusedPage && !this.state.viewedPage) {
+            this.state.pages[this.state.focusedPage].isSelected =
+                !this.state.pages[this.state.focusedPage].isSelected;
+        }
+    }
+    /**
+     * select all the pages from focused page until beginning/end
      * of the group according to the arrow key pressed
      * @private
      * @param {String} direction
      */
-    _activateUntilSplit(direction) {
+    _selectUntilSplit(direction) {
         if (this.state.viewedPage) {
             return;
         }
@@ -998,40 +984,41 @@ export class PdfManager extends Component {
             const groupData =
                 this.state.groupData[this.state.pages[this.state.focusedPage].groupId];
             const pageIndex = groupData.pageIds.indexOf(this.state.focusedPage);
-            const pagesToActivate =
+            const pagesToSelect =
                 direction === "right"
                     ? groupData.pageIds.slice(pageIndex, groupData.pageIds.length)
                     : groupData.pageIds.slice(0, pageIndex + 1);
-            const toggleActivateBool = pagesToActivate.every(
-                (pageId) => this.state.pages[pageId].isActivated
+            const toggleSelectBool = pagesToSelect.every(
+                (pageId) => this.state.pages[pageId].isSelected
             );
-            for (const pageId of pagesToActivate) {
-                this.state.pages[pageId].isActivated = !toggleActivateBool;
+            for (const pageId of pagesToSelect) {
+                this.state.pages[pageId].isSelected = !toggleSelectBool;
             }
         } else if (this.state.lastSelectedPage) {
             this.state.focusedPage = this.state.lastSelectedPage;
-            this._activateUntilSplit(direction);
+            this._selectUntilSplit(direction);
         } else {
             this.state.focusedPage = this.sortedPagesIds[0];
         }
     }
     /**
-     * (Un)select all active pages
+     * (De)select all active pages
      * @private
      */
     _selectAll() {
         if (this.state.viewedPage) {
             return;
         }
-        const allActivated = this.allActivated;
+        const allSelected = this.allSelected;
         for (const page of Object.values(this.state.pages)) {
-            page.isActivated = !allActivated;
+            page.isSelected = !allSelected;
         }
     }
     /**
      * Exit key pressing behaviour :
-     * - Desactivate pages
-     * - Unselect pages
+     * - Exit previewer
+     * - Deselect pages
+     * - Loose focus
      * - Exit split tools
      * @private
      */
@@ -1043,15 +1030,14 @@ export class PdfManager extends Component {
             this.state.viewedPage = undefined;
             return;
         }
-        // If one page is focus, loose the focus
-        if (this.activatedPageIds.length) {
-            this._desactivatePages();
+        // Deselect selected pages
+        if (this.selectedPageIds.length) {
+            this._unSelectPages();
             return;
         }
-        // If some selection, undo the selection
-        if (this.selectedPageIds.length) {
+        // If one page is focus, loose the focus
+        if (this.state.focusedPage) {
             this.state.focusedPage = undefined;
-            this._resetSelection();
             return;
         }
         this._exitSplitTools();
@@ -1086,18 +1072,17 @@ export class PdfManager extends Component {
         this.state.selectionBoxArgs["height"] = 0 + "px";
         this.state.isSelecting = true;
         if (!ev.ctrlKey && !ev.metaKey && !ev.shiftKey) {
-            if (!this.activatedPageIds.length) {
-                this._resetSelection();
+            if (!this.selectedPageIds.length) {
                 this.state.focusedPage = undefined;
             }
             this.state.edit = false;
-            this._desactivatePages();
+            this._unSelectPages();
         }
     }
     /**
      * On mouse move, the selection area expends according the cursor position
-     * If selection area enters into a page, the latter is activated except if shift key is pressed.
-     * In this case, it is desactivated
+     * If selection area enters into a page, the latter is selected except if shift key is pressed.
+     * In this case, it is unSelected
      * @private
      * @param {Event} ev
      */
@@ -1142,15 +1127,15 @@ export class PdfManager extends Component {
                 boxTop < cardBottom &&
                 boxBottom > cardTop
             ) {
-                this.state.pages[card.dataset.id].isActivated = !ev.shiftKey;
+                this.state.pages[card.dataset.id].isSelected = !ev.shiftKey;
             } else if (!ev.metaKey && !ev.ctrlKey && !ev.shiftKey) {
-                this.state.pages[card.dataset.id].isActivated = false;
+                this.state.pages[card.dataset.id].isSelected = false;
             }
         }
     }
     /**
-     * On mouse up, former activate pages are desactivated except if ctrl/shift key is pressed
-     * If no active pages, selected pages are unselected
+     * On mouse up, former select pages are unSelected except if ctrl/shift key is pressed
+     * If no active pages, selected pages are deselected
      * @private
      */
     _onMouseUp() {
@@ -1188,19 +1173,21 @@ export class PdfManager extends Component {
      * @public
      */
     onArchive() {
-        const processedPageIds = this.selectedPageIds;
-        const numberOfProcessedPages = processedPageIds.length;
-        if (numberOfProcessedPages === 0 && !this.state.focusedPage && !this.state.viewedPage) {
+        let pagesToDelete = this.selectedPageIds;
+        if (pagesToDelete.length === 0 && !this.state.focusedPage && !this.state.viewedPage) {
             this._displayErrorNotification(_t("No document has been selected"));
             return;
         }
         const sortedPagesIds = this.sortedPagesIds;
-        let pagesToDelete = processedPageIds;
         let messageInput = _t("Are you sure that you want to delete the selected page(s)");
-        let nextFocusedPageId = processedPageIds.includes(this.state.focusedPage)
+        let nextFocusedPageId = pagesToDelete.includes(this.state.focusedPage)
             ? false
             : this.state.focusedPage;
-        if (numberOfProcessedPages === 0 || this.state.viewedPage) {
+        if (
+            pagesToDelete.length === 0 ||
+            this.state.viewedPage ||
+            (this.state.focusedPage && !pagesToDelete.includes(this.state.focusedPage))
+        ) {
             // A previewed page is always focused
             pagesToDelete = [this.state.focusedPage];
             messageInput = this.state.viewedPage
@@ -1217,9 +1204,13 @@ export class PdfManager extends Component {
         }
         this.dialog.add(ConfirmationDialog, {
             body: messageInput,
-            confirm: () => {
+            confirm: async () => {
                 for (const pageId of pagesToDelete) {
-                    this._removePage(pageId);
+                    this._removePage(pageId, { fromFile: true });
+                }
+                if (this.state.numberOfPages === 0) {
+                    this.props.onProcessDocuments({ isForcingDelete: true });
+                    await this.props.close();
                 }
                 this._displayNumberDeletedPages(pagesToDelete.length);
                 this.state.focusedPage = nextFocusedPageId;
@@ -1332,57 +1323,20 @@ export class PdfManager extends Component {
         }
     }
     /**
-     * Activate clicked page.
+     * select clicked page.
      * If shift key is pressed, trigger the range activation between last clicked page and current page
      * @public
      * @param {String} pageId
      * @param {Boolean} isRangeSelection
      * @param {Boolean} ctrlKey
      */
-    onActivateClicked(pageId, isRangeSelection, ctrlKey) {
-        if (!isRangeSelection && !ctrlKey) {
-            const toggleActivation =
-                this.activatedPageIds.length === 1 && this.activatedPageIds[0] === pageId;
-            this._desactivatePages();
-            this.state.pages[pageId].isActivated = !toggleActivation;
-        } else {
-            this.state.pages[pageId].isActivated = !this.state.pages[pageId].isActivated;
-            if (
-                isRangeSelection &&
-                this.state.lastSelectedPage &&
-                this.state.pages[pageId].isActivated
-            ) {
-                const sortedPagesIds = this.sortedPagesIds;
-                const pageIndex = sortedPagesIds.indexOf(pageId);
-                const lastSelectedPageIndex = sortedPagesIds.indexOf(this.state.lastSelectedPage);
-                const pagesToActivate =
-                    pageIndex < lastSelectedPageIndex
-                        ? sortedPagesIds.slice(pageIndex, lastSelectedPageIndex + 1)
-                        : sortedPagesIds.slice(lastSelectedPageIndex, pageIndex + 1);
-                for (const pageId of pagesToActivate) {
-                    this.state.pages[pageId].isActivated = true;
-                }
-            }
-        }
-        this.state.lastSelectedPage = pageId;
-    }
-    /**
-     * Select clicked page.
-     * If shift key is pressed, trigger the range selection between last clicked page and current page
-     * @public
-     * @param {String} pageId
-     * @param {Boolean} isRangeSelection
-     */
-    onSelectClicked(pageId, isRangeSelection) {
-        const activatedPages = this.activatedPageIds;
-        const clickedPageIsActivated = activatedPages.includes(pageId);
-        const toggleSelect = !this.state.pages[pageId].isSelected;
-        this.state.pages[pageId].isSelected = toggleSelect;
-        if (clickedPageIsActivated) {
-            for (const page of activatedPages) {
-                this.state.pages[page].isSelected = toggleSelect;
-            }
-        } else if (isRangeSelection && this.state.lastSelectedPage && toggleSelect) {
+    onSelectClicked(pageId, isRangeSelection, ctrlKey) {
+        this.state.pages[pageId].isSelected = !this.state.pages[pageId].isSelected;
+        if (
+            isRangeSelection &&
+            this.state.lastSelectedPage &&
+            this.state.pages[pageId].isSelected
+        ) {
             const sortedPagesIds = this.sortedPagesIds;
             const pageIndex = sortedPagesIds.indexOf(pageId);
             const lastSelectedPageIndex = sortedPagesIds.indexOf(this.state.lastSelectedPage);

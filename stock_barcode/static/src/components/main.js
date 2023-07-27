@@ -213,7 +213,7 @@ class MainComponent extends Component {
     }
 
     async openMobileScanner() {
-        const barcode = await BarcodeScanner.scanBarcode();
+        const barcode = await BarcodeScanner.scanBarcode(this.env);
         this.onBarcodeScanned(barcode);
     }
 

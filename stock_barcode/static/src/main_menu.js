@@ -43,7 +43,7 @@ export class MainMenu extends Component {
     }
 
     async openMobileScanner() {
-        const barcode = await BarcodeScanner.scanBarcode();
+        const barcode = await BarcodeScanner.scanBarcode(this.env);
         if (barcode){
             this._onBarcodeScanned(barcode);
             if ('vibrate' in window.navigator) {

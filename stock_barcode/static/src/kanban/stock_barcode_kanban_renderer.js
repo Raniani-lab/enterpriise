@@ -19,7 +19,7 @@ export class StockBarcodeKanbanRenderer extends KanbanRenderer {
     }
 
     async openMobileScanner() {
-        const barcode = await BarcodeScanner.scanBarcode();
+        const barcode = await BarcodeScanner.scanBarcode(this.env);
         if (barcode) {
             bus.trigger('barcode_scanned', barcode);
             if ('vibrate' in window.navigator) {

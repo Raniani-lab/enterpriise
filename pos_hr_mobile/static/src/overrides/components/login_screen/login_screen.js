@@ -16,7 +16,7 @@ patch(LoginScreen.prototype, "pos_hr_mobile.LoginScreen", {
     async open_mobile_scanner() {
         let data;
         try {
-            data = await scanBarcode();
+            data = await scanBarcode(this.env);
         } catch (error) {
             if (error.error && error.error.message) {
                 // Here, we know the structure of the error raised by BarcodeScanner.

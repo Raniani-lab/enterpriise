@@ -603,18 +603,21 @@ export class KnowledgeSidebar extends Component {
             const emoji = article.icon || '';
             const name = article.name;
             let message;
+            let confirmLabel;
             if (newPosition.category === 'workspace') {
                 message = _t(
                     'Are you sure you want to move "%s%s" to the Workspace? It will be shared with all internal users.',
                     emoji,
                     name || _t("Untitled")
                 );
+                confirmLabel = _t("Move to Workspace");
             } else if (newPosition.category === 'private') {
                 message = _t(
                     'Are you sure you want to move "%s%s" to private? Only you will be able to access it.',
                     emoji,
                     name || _t("Untitled")
                 );
+                confirmLabel = _t("Move to Private");
             } else if (newPosition.category === 'shared' && newPosition.parentId) {
                 const parent = this.getArticle(newPosition.parentId);
                 const parentEmoji = parent.icon || '';
@@ -629,6 +632,7 @@ export class KnowledgeSidebar extends Component {
             }
             this.dialog.add(ConfirmationDialog, {
                 body: message,
+                confirmLabel: confirmLabel,
                 confirm: () => confirmMove(article, newPosition),
                 cancel: () => {
                     // Move article back to its postion

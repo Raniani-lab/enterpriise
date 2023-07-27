@@ -239,18 +239,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
      */
     filterModelFieldSelectorField(field) {
         const type = this.state.type;
-        if (this.env.debug) {
-            // Debug users are allowed to go through relational fields a target multi-depth
-            // relations e.g. product_id.categ_id.name
-            return ALLOWED_FIELD_TYPES[type].includes(field.type) || !!field.relation;
-        }
-        if (ALLOWED_FIELD_TYPES[type].includes(field.type)) {
-            const relatedModel = this.state.relation.relatedModel.technical;
-            if (field.searchable && (!relatedModel || field.relation === relatedModel)) {
-                return true;
-            }
-        }
-        return false;
+        return ALLOWED_FIELD_TYPES[type].includes(field.type) || !!field.relation;
     }
 
     /**
@@ -283,7 +272,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
         if (this.state.type === "date") {
             this.state.fieldMatchings[index].fieldMatch.offset = 0;
         }
-        if (field.relation !== this.state.relation.relatedModel.technical) {
+        if (field.relation !== this.state.relation.relatedModel.technical || !field.searchable) {
             this._wrongFieldMatchingsSet.add(index);
         } else {
             this._wrongFieldMatchingsSet.delete(index);

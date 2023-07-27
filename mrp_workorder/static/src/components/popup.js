@@ -1,8 +1,10 @@
 /** @odoo-module **/
 
+import { Dialog } from "@web/core/dialog/dialog";
 const { Component } = owl;
 
 export class SelectionPopup extends Component {
+    static components = { Dialog };
 
     get title() {
         return this.props.popupData.title;

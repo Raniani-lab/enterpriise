@@ -1,27 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
     <t t-name="mrp_workorder.SelectionPopup" owl="1">
-        <div role="dialog" class="modal d-block popup popup-selection" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered modal-md">
-                <div class="modal-content mh-75" style="top: 0px; left: 0px;">
-                <header class="modal-header">
-                    <h3 class="modal-title text-break" t-esc="title"/>
-                    <button type="button" class="btn-close" aria-label="Close" t-on-click="cancel" tabindex="-1"/>
-                </header>
-                <main class="modal-body px-0">
-                    <div class="selection scrollable-y fs-3 w-auto">
-                        <t t-foreach="list" t-as="item" t-key="item.id">
-                            <div class="selection-item" t-if="!item.isSelected" t-att-class="{ 'selected': item.isSelected }" t-on-click="() => this.selectItem(item.id)">
-                                <t t-esc="item.label" />
-                            </div>
-                        </t>
-                    </div>
-                </main>
-                <footer class="modal-footer">
-                    <div class="btn btn-secondary" t-on-click="cancel">Cancel</div>
-                </footer>
+        <Dialog size="'md'" title="env._t('Select Employee')" modalRef="modalRef" withBodyPadding="false">
+            <div class="popup popup-selection">
+                <div class="selection scrollable-y fs-3 w-auto">
+                    <t t-foreach="list" t-as="item" t-key="item.id">
+                        <div class="selection-item" t-if="!item.isSelected" t-att-class="{ 'selected': item.isSelected }" t-on-click="() => this.selectItem(item.id)">
+                            <t t-esc="item.label" />
+                        </div>
+                    </t>
                 </div>
             </div>
-        </div>
+            <t t-set-slot="footer">
+                <div class="btn btn-secondary" t-on-click="cancel">Cancel</div>
+            </t>
+        </Dialog>
     </t>
 </templates>

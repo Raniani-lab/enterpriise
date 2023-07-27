@@ -50,6 +50,7 @@
                             attrs="props.fields['task_id'].attrs"
                             placeholder="props.fields['task_id'].placeholder"
                             canCreateEdit="false"
+                            domain="getDomain('task_id')"
                         />
                         <Field
                             name="'name'"

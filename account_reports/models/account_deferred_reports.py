@@ -52,6 +52,7 @@ class DeferredReportCustomHandler(models.AbstractModel):
         journal = self.env.company.deferred_journal_id
         if not journal:
             raise UserError(_("Please set the deferred journal in the accounting settings."))
+        options['all_entries'] = False  # We only want to create deferrals for posted moves
         lines = self._get_lines(options, filter_already_generated=True)
         period = (fields.Date.from_string('1900-01-01'), fields.Date.from_string(options['date']['date_to']))
         deferral_entry_period = self.env['account.report']._get_dates_period(*period, 'range', period_type='month')

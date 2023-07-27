@@ -768,3 +768,18 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
 
         with self.assertRaisesRegex(UserError, 'No entry to generate.'):
             handler.action_generate_entry(self.get_options('2023-04-01', '2023-04-30'))
+
+    def test_deferred_expense_manual_generation_only_posted(self):
+        """
+        In manual mode generation, even if the filter shows draft moves,
+        then no entry should be generated for draft moves.
+        """
+        self.company.deferred_amount_computation_method = 'month'
+        self.company.generate_deferred_entries_method = 'manual'
+        handler = self.env['account.deferred.expense.report.handler']
+
+        self.create_invoice('in_invoice', self.company_data['default_journal_purchase'], self.partner_a, [self.expense_lines[0]], post=False)
+        options = self.get_options('2023-01-01', '2023-01-31')
+        options['all_entries'] = True
+        with self.assertRaisesRegex(UserError, 'No entry to generate.'):
+            handler.action_generate_entry(options)

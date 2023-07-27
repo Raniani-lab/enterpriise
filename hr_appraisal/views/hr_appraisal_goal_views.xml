@@ -23,7 +23,10 @@
                             <field name="is_manager" invisible="1"/>
                             <field name="employee_autocomplete_ids" invisible="1"/>
                             <field name="is_implicit_manager" invisible="1"/>
-                            <field name="employee_id" domain="[['id', 'in', employee_autocomplete_ids]]" attrs="{'readonly': [('is_manager', '=', False), ('is_implicit_manager', '=', False)]}"/>
+                            <field name="employee_id" domain="[['id', 'in', employee_autocomplete_ids]]"
+                                attrs="{'readonly': [('is_manager', '=', False), ('is_implicit_manager', '=', False)]}"
+                                widget="many2one_avatar_employee"
+                                options="{'relation': 'hr.employee.public'}"/>
                             <field name="progression" class="pe-3" widget="selection_badge"/>
                         </group>
                         <group>

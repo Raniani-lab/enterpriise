@@ -386,20 +386,7 @@ export class MrpDisplayRecord extends Component {
 
     async validate() {
         const { resModel, resId } = this.props.record;
-        if (resModel === "mrp.production") {
-            const params = {};
-            let methodName = "pre_button_mark_done";
-            if (this.trackingMode === "mass_produce") {
-                methodName = "action_serial_mass_produce_wizard";
-                params.mark_as_done = true;
-            }
-            const action = await this.model.orm.call(resModel, methodName, [resId], params);
-            // If there is a wizard while trying to mark as done the production, confirming the
-            // wizard will straight mark the MO as done without the confirmation delay.
-            if (action && typeof action === "object") {
-                return this._doAction(action);
-            }
-        } else if (resModel === "mrp.workorder") {
+        if (resModel === "mrp.workorder") {
             if (this.record.state === "ready") {
                 this.props.record.update({ qty_producing: this.record.qty_production });
                 await this.props.record.save();
@@ -407,19 +394,39 @@ export class MrpDisplayRecord extends Component {
             await this.model.orm.call(resModel, "end_all", [resId]);
             await this.reload();
             await this.props.updateEmployees();
-            if (this.record.is_last_unfinished_wo){
+            if (this.record.is_last_unfinished_wo) {
                 const params = {};
                 let methodName = "pre_button_mark_done";
                 if (this.trackingMode === "mass_produce") {
                     methodName = "action_serial_mass_produce_wizard";
                     params.mark_as_done = true;
                 }
-                const action = await this.model.orm.call("mrp.production", methodName, [this.props.production.resId], params);
+                const action = await this.model.orm.call(
+                    "mrp.production",
+                    methodName,
+                    [this.props.production.resId],
+                    params
+                );
                 // If there is a wizard while trying to mark as done the production, confirming the
                 // wizard will straight mark the MO as done without the confirmation delay.
                 if (action && typeof action === "object") {
                     return this._doAction(action);
                 }
+            }
+        }
+        if (resModel === "mrp.production" || this.record.is_last_unfinished_wo) {
+            const args = [this.props.production.resId];
+            const params = {};
+            let methodName = "pre_button_mark_done";
+            if (this.trackingMode === "mass_produce") {
+                methodName = "action_serial_mass_produce_wizard";
+                params.mark_as_done = true;
+            }
+            const action = await this.model.orm.call("mrp.production", methodName, args, params);
+            // If there is a wizard while trying to mark as done the production, confirming the
+            // wizard will straight mark the MO as done without the confirmation delay.
+            if (action && typeof action === "object") {
+                return this._doAction(action);
             }
         }
         // Makes the validation taking a little amount of time (see o_fadeout_animation CSS class).

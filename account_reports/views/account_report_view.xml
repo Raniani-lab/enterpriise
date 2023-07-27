@@ -164,6 +164,7 @@
                                       <field name="filter_show_draft"/>
                                       <field name="filter_unreconciled"/>
                                       <field name="filter_aml_ir_filters"/>
+                                        <field name="filter_hide_0_lines" help="This option hides lines with a value of 0"/>
                                     </group>
                                 </group>
                             </page>

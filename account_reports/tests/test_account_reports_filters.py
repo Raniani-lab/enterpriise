@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 # pylint: disable=C0326
+import odoo.tests
+
 from odoo.tests import tagged
 from odoo import Command, fields
 from .common import TestAccountReportsCommon
@@ -12,7 +14,7 @@ from freezegun import freeze_time
 
 
 @tagged('post_install', '-at_install')
-class TestAccountReportsFilters(TestAccountReportsCommon):
+class TestAccountReportsFilters(TestAccountReportsCommon, odoo.tests.HttpCase):
 
     def _assert_filter_date(self, report, previous_options, expected_date_values):
         """ Initializes and checks the 'date' option computed for the provided report and previous_options
@@ -1178,3 +1180,20 @@ class TestAccountReportsFilters(TestAccountReportsCommon):
             ],
             options
         )
+
+    def test_hide_line_at_0_tour(self):
+        report = self.env.ref('account_reports.balance_sheet')
+        report.filter_hide_0_lines = 'optional'
+        self.env['account.move'].create([{
+            'move_type': 'out_invoice',
+            'partner_id': self.partner_a.id,
+            'date': '2020-0%s-15' % i,
+            'invoice_date': '2020-0%s-15' % i,
+            'invoice_line_ids': [(0, 0, {
+                'product_id': self.product_a.id,
+                'price_unit': 1000.0,
+                'tax_ids': [(6, 0, self.tax_sale_a.ids)],
+            })],
+        } for i in range(1, 4)]).action_post()
+
+        self.start_tour("/web", 'account_reports_hide_0_lines', login=self.env.user.login)

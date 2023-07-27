@@ -659,6 +659,43 @@ export class AccountReportController {
             if (!line.visible || (line.unfoldable &! line.unfolded))
                 needHidingChildren.add(line.id);
         });
+
+        // If the hide 0 lines is activated we will go through the lines to set the visibility.
+        if (this.options.hide_0_lines) {
+            this.setLineVisibility(linesToAssign);
+        }
+    }
+
+    /**
+     * Defines whether the line should be visible depending on its value and the ones of its children.
+     * For parent lines, it's visible if there is at least one child with a value different from zero
+     * or if a child is visible, indicating it's a parent line.
+     * For leaf nodes, it's visible if the value is different from zero.
+     *
+     * By traversing the 'lines' array in reverse, we can set the visibility of the lines easily by keeping
+     * a dict of visible lines for each parent.
+     *
+     * @param {Object} lines - The lines for which we want to determine visibility.
+     */
+    setLineVisibility(lines) {
+        const hasVisibleChildren = new Set();
+        const reversed_lines = [...lines].reverse()
+
+        reversed_lines.forEach((line) => {
+            const isZero = line.columns.every(column => column.is_zero);
+
+            // If the line has no visible children and all the columns are equals to zero then the line needs to be hidden
+            if (!hasVisibleChildren.has(line.id) && isZero) {
+                line.visible = false;
+            }
+
+            // If the line has a parent_id and is not hidden then we fill the set 'hasVisibleChildren'. Each parent
+            // will have an array of his visible children
+            if (line.parent_id && line.visible) {
+                // This line allows the initialization of that list.
+                hasVisibleChildren.add(line.parent_id);
+            }
+        })
     }
 
     //------------------------------------------------------------------------------------------------------------------

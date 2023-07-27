@@ -1197,6 +1197,19 @@ class AccountReport(models.Model):
             options['unfolded_lines'] = []
 
     ####################################################
+    # OPTIONS: HIDE LINE AT 0
+    ####################################################
+    def _init_options_hide_0_lines(self, options, previous_options=None):
+        if self.filter_hide_0_lines != 'never' and previous_options:
+            previous_val = previous_options.get('hide_0_lines')
+            if previous_val is not None:
+                options['hide_0_lines'] = previous_val
+            else:
+                options['hide_0_lines'] = self.filter_hide_0_lines == 'by_default'
+        else:
+            options['hide_0_lines'] = False
+
+    ####################################################
     # OPTIONS: HORIZONTAL GROUP
     ####################################################
     def _init_options_horizontal_groups(self, options, previous_options=None):
@@ -4061,6 +4074,7 @@ class AccountReport(models.Model):
                 'show_period_comparison': self.filter_period_comparison,
                 'show_totals': self.env.company.totals_below_sections and not options.get('ignore_totals_below_sections'),
                 'show_unreconciled': self.filter_unreconciled,
+                'show_hide_0_lines': self.filter_hide_0_lines,
             },
             'footnotes': self.get_footnotes(options),
             'groups': {

@@ -62,6 +62,15 @@
                     Unfold All
                 </DropdownItem>
             </t>
+
+            <t t-if="controller.filters.show_hide_0_lines != 'never'">
+                <DropdownItem
+                    class="{ 'selected': controller.options.hide_0_lines }"
+                    onSelected="() => this.toggleFilter('hide_0_lines')"
+                >
+                    Hide lines at 0
+                </DropdownItem>
+            </t>
         </Dropdown>
     </t>
 </templates>

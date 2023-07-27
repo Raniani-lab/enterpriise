@@ -7,6 +7,7 @@
         <field name="filter_unfold_all" eval="True"/>
         <field name="filter_period_comparison" eval="False"/>
         <field name="filter_unreconciled" eval="False"/>
+        <field name="filter_hide_0_lines">never</field>
         <field name="default_opening_date_filter">this_year</field>
         <field name="load_more_limit" eval="80"/>
         <field name="custom_handler_model_id" ref="model_account_journal_report_handler"/>

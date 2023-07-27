@@ -124,7 +124,7 @@ export class AccountReportFilters extends Component {
     }
 
     get hasExtraOptionsFilter() {
-        return "report_cash_basis" in this.controller.options || this.controller.filters.show_draft || this.controller.filters.show_all || this.controller.filters.show_unreconciled;
+        return "report_cash_basis" in this.controller.options || this.controller.filters.show_draft || this.controller.filters.show_all || this.controller.filters.show_unreconciled || this.controller.filters.show_hide_0_lines;
     }
 
     get hasFiscalPositionFilter() {

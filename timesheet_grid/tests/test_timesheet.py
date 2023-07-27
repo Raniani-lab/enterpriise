@@ -527,3 +527,23 @@ class TestTimesheetValidation(TestCommonTimesheet, MockEmail):
             'task_name': '',
         })
         self.assertDictEqual(timesheet_timer_data, expected_data)
+
+    def test_new_entry_when_timer_started_on_future_entry(self):
+        """
+            Create a timesheet with a future date.
+            Check for a new entry when a new timesheet is added from timer.
+        """
+        self.user_employee.tz = 'Asia/Calcutta'
+        timesheet = self.env['account.analytic.line'].with_user(self.user_employee).create({
+            'name': "My_timesheet",
+            'project_id': self.project_customer.id,
+            'task_id': self.task2.id,
+            'date': (datetime.now() + timedelta(days=2)),
+            'unit_amount': 10.0,
+        })
+        count = self.env['account.analytic.line'].search_count([('name', '=', 'My_timesheet')])
+        self.assertEqual(count, 1)
+        timesheet.with_user(self.user_employee).action_timer_start()
+        timesheet.with_user(self.user_employee).action_timer_stop()
+        count = self.env['account.analytic.line'].search_count([('name', '=', 'My_timesheet')])
+        self.assertEqual(count, 2, "There should be two entries for timesheet, one for existing future entry and another one for today's entry!")

@@ -485,7 +485,7 @@ class AnalyticLine(models.Model):
             timesheet = self.create([{'project_id': self.project_id.id, 'task_id': self.task_id.id, 'date': datetime.today().date()}])
             timesheet.action_timer_start()
         elif not self.user_timer_id.timer_start and self.display_timer:
-            if self.date < fields.Date.context_today(self):
+            if self.date != fields.Date.context_today(self):
                 self.action_start_new_timesheet_timer({
                     'name': self.name,
                     'project_id': self.project_id.id,

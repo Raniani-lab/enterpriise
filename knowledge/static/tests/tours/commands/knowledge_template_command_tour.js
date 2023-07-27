@@ -42,6 +42,9 @@ tour.register('knowledge_template_command_tour', {
 }, { // open the contact record of the follower
     trigger: '.o_Follower_details:contains(HelloWorldPartner)',
     run: 'click',
+}, { // verify that the partner form view is fully loaded
+    trigger: '.breadcrumb > .breadcrumb-item.active:contains(HelloWorldPartner)',
+    run: () => {},
 }, { // search an article to open it from the contact record
     trigger: 'button[title="Search Knowledge Articles"]',
     run: 'click',

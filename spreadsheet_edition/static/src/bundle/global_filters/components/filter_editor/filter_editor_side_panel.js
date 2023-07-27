@@ -150,17 +150,7 @@ export default class AbstractFilterEditorSidePanel extends Component {
         if (!field.searchable) {
             return false;
         }
-        if (this.env.debug) {
-            // Debug users are allowed to go through relational fields a target multi-depth
-            // relations e.g. product_id.categ_id.name
-            return this.ALLOWED_FIELD_TYPES.includes(field.type) || !!field.relation;
-        }
-        if (this.ALLOWED_FIELD_TYPES.includes(field.type)) {
-            if (this.isFieldValid(field)) {
-                return true;
-            }
-        }
-        return false;
+        return this.ALLOWED_FIELD_TYPES.includes(field.type) || !!field.relation;
     }
 
     /**
@@ -187,7 +177,7 @@ export default class AbstractFilterEditorSidePanel extends Component {
             chain: fieldName,
             type: field.type,
         };
-        if (!this.matchingRelation(field)) {
+        if (!this.matchingRelation(field) || !field.searchable) {
             this._wrongFieldMatchingsSet.add(index);
         } else {
             this._wrongFieldMatchingsSet.delete(index);

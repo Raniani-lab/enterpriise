@@ -5,7 +5,7 @@ import { PreparationDisplay } from "@pos_preparation_display/app/models/preparat
 patch(PreparationDisplay.prototype, {
     async setup() {
         this.tables = {};
-        super.setup(...arguments);
+        await super.setup(...arguments);
     },
     filterOrders() {
         this.tables = {};

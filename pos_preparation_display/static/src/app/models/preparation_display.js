@@ -12,7 +12,7 @@ import { ConnectionLostError } from "@web/core/network/rpc_service";
 export class PreparationDisplay extends Reactive {
     constructor({ categories, orders, stages }, env, preparationDisplayId) {
         super();
-        this.setup(...arguments);
+        this.ready = this.setup(...arguments).then(() => this);
     }
     async setup(data, env, preparationDisplayId) {
         this.id = preparationDisplayId;
@@ -403,7 +403,16 @@ export class PreparationDisplay extends Reactive {
     async loadDemoDataProducts() {
         this.loadingProducts = true;
         try {
-            await this.orm.call("pos_preparation_display.display", "load_product_frontend", [], {});
+            // The load_product_frontend will load every products, categories and orders of the onboarding data in the backend.
+            // The orders will create preparation_display orders that will be loaded by the preparation display through websocket message.
+            // This message is send thanks through a call to _send_orders_to_preparation_display in the onboarding files.
+            this.rawData.categories = await this.orm.call(
+                "pos_preparation_display.display",
+                "load_product_frontend",
+                [this.id],
+                {}
+            );
+            this.processCategories();
             this.posHasProducts = await this.loadPosHasProducts();
         } catch (e) {
             if (e instanceof ConnectionLostError) {

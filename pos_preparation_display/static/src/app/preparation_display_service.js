@@ -14,11 +14,11 @@ const preparationDisplayService = {
             {}
         );
 
-        const preparationDisplayService = new PreparationDisplay(
+        const preparationDisplayService = await new PreparationDisplay(
             datas,
             env,
             odoo.preparation_display.id
-        );
+        ).ready;
 
         bus_service.addChannel(`preparation_display-${odoo.preparation_display.access_token}`);
         bus_service.addEventListener("notification", async (message) => {

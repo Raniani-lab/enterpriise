@@ -152,6 +152,22 @@ export class TaskGanttRenderer extends GanttRenderer {
         return false;
     }
 
+    highlightPill(pillId, highlighted) {
+        if (!this.connectorDragState.dragging) {
+            return super.highlightPill(pillId, highlighted);
+        }
+        const pill = this.pills[pillId];
+        if (!pill) {
+            return;
+        }
+        const { record } = pill;
+        if (!this.shouldRenderRecordConnectors(record)) {
+            return super.highlightPill(pillId, false);
+        }
+        return super.highlightPill(pillId, highlighted);
+    }
+
+
     //--------------------------------------------------------------------------
     // Handlers
     //--------------------------------------------------------------------------
@@ -177,3 +193,4 @@ TaskGanttRenderer.headerTemplate = "project_enterprise.TaskGanttRenderer.Header"
 TaskGanttRenderer.rowHeaderTemplate = "project_enterprise.TaskGanttRenderer.RowHeader";
 TaskGanttRenderer.rowContentTemplate = "project_enterprise.TaskGanttRenderer.RowContent";
 TaskGanttRenderer.totalRowTemplate = "project_enterprise.TaskGanttRenderer.TotalRow";
+TaskGanttRenderer.pillTemplate = "project_enterprise.TaskGanttRenderer.Pill";

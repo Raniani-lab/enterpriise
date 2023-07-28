@@ -106,7 +106,9 @@
                 decoration-danger="planning_overlap"
                 default_group_by="user_ids"
                 progress_bar="user_ids"
-                pill_label="True">
+                pill_label="True"
+                dependency_field="depend_on_ids"
+                dependency_inverted_field="dependent_ids">
                 <templates>
                     <div t-name="gantt-popover">
                         <div name="project_id">
@@ -164,7 +166,6 @@
         </field>
     </record>
 
-    <!-- Adding dependency gantt view to Project -->
     <record id="project_task_dependency_view_gantt" model="ir.ui.view">
         <field name="name">project.task.dependency.view.gantt</field>
         <field name="model">project.task</field>
@@ -172,8 +173,6 @@
         <field name="mode">primary</field>
         <field name="arch" type="xml">
             <xpath expr="//gantt" position="attributes">
-                <attribute name="dependency_field">depend_on_ids</attribute>
-                <attribute name="dependency_inverted_field">dependent_ids</attribute>
                 <attribute name="color">stage_id</attribute>
             </xpath>
             <xpath expr="//div[@name='project_id']" position="replace"/>

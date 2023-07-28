@@ -399,9 +399,14 @@ export class MrpDisplayRecord extends Component {
             if (action && typeof action === "object") {
                 return this._doAction(action);
             }
-        } else if (resModel === "mrp.workorder" && this.record.state === "ready") {
-            this.props.record.update({ qty_producing: this.record.qty_production });
-            await this.props.record.save();
+        } else if (resModel === "mrp.workorder") {
+            if (this.record.state === "ready") {
+                this.props.record.update({ qty_producing: this.record.qty_production });
+                await this.props.record.save();
+            }
+            await this.model.orm.call(resModel, "end_all", [resId]);
+            await this.reload();
+            await this.props.updateEmployees();
         }
         // Makes the validation taking a little amount of time (see o_fadeout_animation CSS class).
         this.props.addToValidationStack(this.props.record, () => this.realValidation());

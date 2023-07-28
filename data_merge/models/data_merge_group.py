@@ -67,6 +67,8 @@ class DataMergeGroup(models.Model):
         if records is not None:
             domain = expression.AND([domain, [('id', 'in', records)]])
         self.env['data_merge.record'].search(domain).write({'is_discarded': True, 'is_master': False})
+        if all(not record.active for record in self.record_ids):
+            self.active = False
         self._elect_master_record()
 
     ###################

@@ -97,7 +97,9 @@ export class MrpQualityCheckConfirmationDialog extends ConfirmationDialog {
         if (res) {
             this.action.doAction(res);
         }
-        await this.props.record.load();
+        if (!reloadChecks) {
+            await this.props.record.load();
+        }
         await this.props.qualityCheckDone(reloadChecks);
         this.props.close();
     }

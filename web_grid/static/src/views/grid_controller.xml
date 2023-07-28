@@ -30,7 +30,7 @@
     </t>
     <t t-name="web_grid.GridView">
         <div t-attf-class="o_grid_view {{ isMobile ? 'o_action_delegate_scroll' : '' }} {{props.className}}" t-ref="root">
-            <Layout className="(model.useSampleModel ? 'o_view_sample_data' : '') + ' d-flex'" display="props.display">
+            <Layout className="(model.useSampleModel ? 'o_view_sample_data' : '')" display="props.display">
                 <t t-set-slot="control-panel-additional-actions">
                     <CogMenu/>
                 </t>

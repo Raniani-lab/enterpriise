@@ -2,11 +2,11 @@
 <templates>
     <t t-name="web_grid.Cell">
         <div t-if="props.reactive.cell"
-            t-attf-class="{{ props.classNames }} o_grid_cell o_grid_highlightable position-relative d-flex justify-content-center align-items-center w-100 h-100"
+            t-attf-class="{{ props.classNames }} o_grid_cell o_grid_highlightable position-relative d-flex justify-content-center align-items-center w-100 h-100 text-800"
             t-on-click.synthetic="onCellClick"
             t-ref="root"
         >
-            <button class="o_grid_search_btn btn btn-sm position-absolute start-0 px-1"
+            <button class="o_grid_search_btn btn btn-sm position-absolute start-0 px-1 opacity-50 opacity-100-hover"
                     t-on-click.synthetic="() => this.magnifierGlassHook.onMagnifierGlassClick()"
             >
                 <i class="fa fa-search"/>
@@ -15,10 +15,10 @@
                 <input t-if="state.edit"
                        inputmode="numeric"
                        type="text"
-                       class="o_input h-100"
+                       class="o_input z-index-1 h-100"
                        t-ref="numpadDecimal"
                 />
-                <span t-else="" t-out="formattedValue"/>
+                <span t-else="" class="z-index-1" t-out="formattedValue"/>
             </div>
         </div>
     </t>

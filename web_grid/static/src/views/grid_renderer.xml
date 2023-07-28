@@ -77,14 +77,14 @@
                  t-att-data-grid-column="columnsGap"
                  t-attf-style="grid-row: {{rowPosition}}; grid-column: {{columnsGap}};"
             >
-                <div class="position-absolute top-0 start-0 w-100 h-100 bg-700"/>
-                    <GridComponent
-                        classNames="'text-truncate'"
-                        name="props.sectionField.name"
-                        model="props.model"
-                        row="section"
-                        t-props="getFieldAdditionalProps(props.sectionField.name)"
-                    />
+            <div class="o_grid_cell_overlay position-absolute top-0 start-0 w-100 h-100 bg-700"/>
+                <GridComponent
+                    classNames="'z-index-1 text-truncate'"
+                    name="props.sectionField.name"
+                    model="props.model"
+                    row="section"
+                    t-props="getFieldAdditionalProps(props.sectionField.name)"
+                />
             </div>
             <div t-foreach="props.columns"
                 t-as="column"
@@ -101,7 +101,7 @@
                 t-att-data-grid-column="column_index + 1 + columnsGap"
                 t-attf-style="grid-row: {{rowPosition}}; grid-column: {{column_index + 1 + columnsGap}};"
             >
-                <div class="position-absolute top-0 start-0 w-100 h-100 "
+                <div class="position-absolute top-0 start-0 w-100 h-100"
                     t-att-class="{
                        'o_grid_cell_overlay_today bg-info bg-opacity-25' : column.isToday,
                        'o_grid_cell_overlay bg-700' : !column.isToday,
@@ -147,27 +147,25 @@
              t-att-data-grid-column="columnsGap"
              t-attf-style="grid-row: {{rowPosition}}; grid-column: {{columnsGap}};"
         >
-
-            <t t-set="rowFields" t-value="props.model.rowFields.map(field => field.name)"/>
             <div class="o_grid_cell_overlay position-absolute top-0 start-0 w-100 h-100 bg-700"/>
             <t t-set="rowFields" t-value="props.model.rowFields.map(field => field.name)"/>
-                <t t-foreach="props.rowFields" t-as="rowField" t-key="rowField_index">
-                    <t t-set="fieldName" t-value="rowField.name"/>
-                    <GridComponent
-                        t-if="row.initialRecordValues[fieldName] or rowField_index === 0"
-                        classNames="'text-truncate o_grid_field_' + fieldName.replace('_id','') + [isMobile ? '' : ' text-nowrap']"
-                        name="fieldName"
-                        value="row.initialRecordValues[fieldName]"
-                        model="props.model"
-                        row="row"
-                        t-props="getFieldAdditionalProps(fieldName)"
-                    />
-                    <span t-if="!rowField_last and row.initialRecordValues[props.rowFields[rowField_index + 1].name]"
-                            class="o_grid_row_data_separator d-none d-md-inline px-2 text-300"
+            <t t-foreach="props.rowFields" t-as="rowField" t-key="rowField_index">
+                <t t-set="fieldName" t-value="rowField.name"/>
+                <GridComponent
+                    t-if="row.initialRecordValues[fieldName] or rowField_index === 0"
+                    classNames="'d-flex z-index-1 text-truncate o_grid_field_' + fieldName.replace('_id','') + [isMobile ? '' : ' text-nowrap']"
+                    name="fieldName"
+                    value="row.initialRecordValues[fieldName]"
+                    model="props.model"
+                    row="row"
+                    t-props="getFieldAdditionalProps(fieldName)"
+                />
+                <span t-if="!rowField_last and row.initialRecordValues[props.rowFields[rowField_index + 1].name]"
+                      class="o_grid_row_data_separator d-none d-md-inline px-2 text-300"
                 >
-                    |
+                |
                 </span>
-                </t>
+            </t>
         </div>
         <div t-foreach="row.model.columnsArray"
              t-as="column"
@@ -241,7 +239,7 @@
              class="o_grid_row o_grid_add_line o_grid_highlightable position-relative"
              t-att-class="{
                    'o_grid_cell_today' : column.isToday,
-                   'bg-view': isEven
+                   'bg-view': isEven,
                 }"
              t-att-data-grid-row="rowPosition"
              t-att-data-grid-column="column_index + 1 + columnsGap"
@@ -253,7 +251,7 @@
                     'o_grid_cell_overlay bg-700' : !column.isToday,
                  }"
             />
-            </div>
+        </div>
         <div class="o_grid_add_line position-md-sticky end-0 text-bg-700"
              t-attf-style="grid-row: {{rowPosition}}; grid-column: {{props.columns.length + 1 + columnsGap}};"
         ></div>
@@ -329,7 +327,7 @@
             <div t-foreach="props.columns"
                 t-as="column"
                 t-key="column.id"
-                class="o_grid_row o_ jgrid_column_total o_grid_highlightable o_grid_bar_chart_container"
+                class="o_grid_row o_grid_column_total o_grid_highlightable o_grid_bar_chart_container"
                 t-att-class="{'bg-view': isEven}"
                 t-att-data-grid-row="rowPosition + 1"
                 t-att-data-grid-column="column_index + 1 + columnsGap"

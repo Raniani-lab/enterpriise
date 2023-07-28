@@ -37,11 +37,7 @@ export function useGridCell() {
                 "o_field_cursor_disabled",
                 !component.state.cell.row.isSection && !component.isEditable()
             );
-            component.rootRef.el.classList.toggle(
-                "text-color-200",
-                component.state.cell.row.isSection
-            );
-            component.rootRef.el.classList.toggle("fw-bold", component.state.cell.row.isSection);
+            component.rootRef.el.classList.toggle("fw-bold", Boolean(component.state.cell.row.isSection));
         },
         () => [component.props.reactive.cell]
     );

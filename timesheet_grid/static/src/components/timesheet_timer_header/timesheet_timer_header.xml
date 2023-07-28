@@ -2,14 +2,14 @@
 <templates xml:space="preserve">
 
     <t t-name="timesheet_grid.TimesheetTimerHeader">
-        <div class="timesheet-timer position-relative d-md-flex align-items-center py-2 border-bottom bg-view"
+        <div class="timesheet-timer position-sticky start-0 d-md-flex align-items-center px-3 py-2 border-bottom bg-view"
             t-att-class="props.className"
             t-on-timer-started="props.onTimerStarted"
             t-on-timer-stopped="props.onTimerStopped"
             t-on-timer-unlink="props.onTimerUnlinked"
         >
             <t t-if="_timerIsRunning">
-                <div class="position-sticky start-0 d-md-flex vw-100 px-3">
+                <div class="d-md-flex flex-grow-1">
                     <div class="d-flex align-items-center w-md-25">
                         <button class="btn btn-primary btn_stop_timer" name="stop_timer" t-on-click.stop="_onClickStopTimer" data-hotkey="x" t-ref="stopButton">
                             <i class="fa fa-stop me-2"></i> Stop

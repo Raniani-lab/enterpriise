@@ -239,11 +239,11 @@ QUnit.module("Views", (hooks) => {
         );
         assert.containsOnce(
             target,
-            ".o_grid_column_title.bg-info.bg-opacity-25.fw-bolder",
+            ".o_grid_column_title.o_grid_highlightable.fw-bolder",
             "The column title containing the date should be the current date"
         );
         assert.strictEqual(
-            target.querySelector(".o_grid_column_title.bg-info.bg-opacity-25.fw-bolder")
+            target.querySelector(".o_grid_column_title.o_grid_highlightable.fw-bolder")
                 .textContent,
             "Mon,\nJan\u00A030",
             "The current date should be Monday on 30 January 2023"
@@ -329,11 +329,11 @@ QUnit.module("Views", (hooks) => {
         );
         assert.containsOnce(
             target,
-            ".o_grid_column_title.bg-info.bg-opacity-25.fw-bolder",
+            ".o_grid_column_title.o_grid_highlightable.fw-bolder",
             "The column title containing the current date should not be there."
         );
         assert.strictEqual(
-            target.querySelector(".o_grid_column_title.bg-info.bg-opacity-25.fw-bolder")
+            target.querySelector(".o_grid_column_title.o_grid_highlightable.fw-bolder")
                 .textContent,
             "Mon,\nJan\u00A030",
             "The current date should be Monday on 30 January"

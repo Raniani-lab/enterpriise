@@ -195,8 +195,8 @@ export class GridRenderer extends Component {
 
     get gridTemplateColumns() {
         return `auto repeat(${this.props.columns.length}, ${
-            this.props.columns.length > 7 ? "minmax(5em, auto)" : "minmax(5em, 1fr)"
-        }) minmax(80px, 10em)`;
+            this.props.columns.length > 7 ? "minmax(8ch, auto)" : "minmax(10ch, 1fr)"
+        }) minmax(10ch, 10em)`;
     }
 
     get measureLabel() {
@@ -259,7 +259,7 @@ export class GridRenderer extends Component {
         const isCellInColumnTotalHighlighted =
             highlightableElement.classList.contains("o_grid_row_total");
         const elementsToHighlight = this.rendererRef.el.querySelectorAll(
-            `.o_grid_highlightable[data-grid-row="${gridRow}"], .o_grid_highlightable[data-grid-column="${gridColumn}"]:not(.o_grid_row_title${
+            `.o_grid_highlightable[data-grid-row="${gridRow}"]:not(.o_grid_add_line):not(.o_grid_column_title), .o_grid_highlightable[data-grid-column="${gridColumn}"]:not(.o_grid_row_timer):not(.o_grid_section_title):not(.o_grid_row_title${
                 isCellInColumnTotalHighlighted ? ",.o_grid_row_total" : ""
             })`
         );

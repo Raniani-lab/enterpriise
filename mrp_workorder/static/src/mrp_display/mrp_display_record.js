@@ -98,7 +98,10 @@ export class MrpDisplayRecord extends Component {
             this.quickRegisterProduction();
         }
         const args = [this.props.production.resId];
-        await this.model.orm.call("mrp.production", "action_generate_serial", args);
+        const action = await this.model.orm.call("mrp.production", "action_generate_serial", args);
+        if (action && typeof action === "object") {
+            return this._doAction(action);
+        }
         await this.env.reload();
     }
 

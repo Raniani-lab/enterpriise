@@ -531,7 +531,7 @@ class MrpProductionWorkcenterLine(models.Model):
             with self.env.cr.savepoint():
                 res = self.production_id.button_mark_done()
                 if res is not True:
-                    res['context'] = dict(res['context'], from_workorder=True)
+                    res['context'] = dict(res.get('context', {}), from_workorder=True)
                     return res
         except (UserError, ValidationError) as e:
             # log next activity on MO with error message

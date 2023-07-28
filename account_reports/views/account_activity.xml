@@ -27,6 +27,16 @@
                     string="Tax Report"
                     invisible="not tax_closing_end_date"/>
             </xpath>
+
+            <xpath expr="//field[@name='line_ids']//tree//field[@name='tax_ids']" position="attributes">
+                <attribute name="column_invisible">parent.tax_closing_end_date</attribute>
+            </xpath>
+            <xpath expr="//field[@name='line_ids']//tree//field[@name='tax_tag_ids']" position="attributes">
+                <attribute name="column_invisible">parent.tax_closing_end_date</attribute>
+            </xpath>
+            <xpath expr="//field[@name='line_ids']//form//field[@name='tax_ids']" position="attributes">
+                <attribute name="invisible">parent.tax_closing_end_date</attribute>
+            </xpath>
         </field>
     </record>
 </odoo>

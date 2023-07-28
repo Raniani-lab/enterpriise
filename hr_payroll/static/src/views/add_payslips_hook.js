@@ -28,7 +28,6 @@ export function useAddPayslips() {
                     'payslip_run_id': record.resId,
                 });
                 await record.load();
-                record.model.notify();
 
                 notification.add(env._t('The payslips(s) are now added to the batch'), { type: 'success' });
             }

@@ -68,8 +68,6 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         await this.orm.call(this.props.record.resModel, "action_toggle_favorite", [[this.resId]]);
         // Load to have the correct value for 'is_user_favorite'.
         await this.props.record.load();
-        // Rerender the favorite button.
-        await this.props.record.model.notify();
     }
 
     //--------------------------------------------------------------------------

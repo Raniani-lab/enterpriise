@@ -126,7 +126,6 @@ export class DocumentsInspector extends Component {
                 return;
             }
             await record.load();
-            await record.model.notify();
         };
         useEffect(
             (el) => {
@@ -382,7 +381,6 @@ export class DocumentsInspector extends Component {
             const record = this.props.documents[0];
             await this.orm.call("documents.document", "toggle_lock", this.resIds);
             await record.load();
-            await record.model.notify();
         });
     }
 
@@ -390,7 +388,6 @@ export class DocumentsInspector extends Component {
         const record = this.props.documents[0];
         await toggleArchive(record.model, record.resModel, this.resIds, state);
         await record.model.load();
-        await record.model.notify();
         await this.env.documentsView.bus.trigger("documents-close-preview");
     }
 
@@ -561,7 +558,6 @@ export class DocumentsInspector extends Component {
             });
             await record.load();
             this.state.previousAttachmentDirty = true;
-            await record.model.notify();
         });
     }
 
@@ -608,7 +604,6 @@ export class DocumentsInspector extends Component {
             {
                 onClose: async () => {
                     await record.model.load();
-                    record.model.notify();
                 },
             }
         );

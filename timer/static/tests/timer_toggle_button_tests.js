@@ -37,9 +37,6 @@ QUnit.module("timer", (hooks) => {
                     load() {
                         assert.step("load");
                     },
-                    notify() {
-                        assert.step("notify");
-                    },
                 },
                 data: {
                     timer: testState,
@@ -50,7 +47,7 @@ QUnit.module("timer", (hooks) => {
         await nextTick();
         assert.hasClass(target.querySelector("button i"), `fa-${icon}-circle`, "correct icon is used");
         await click(target, "button");
-        assert.verifySteps([action, "load", "notify"], "correct action is called and record is reloaded and view is refreshed");
+        assert.verifySteps([action, "load"], "correct action is called and record is reloaded and view is refreshed");
     }
 
     QUnit.test("TimerToggleButton true value state test", async function (assert) {

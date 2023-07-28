@@ -458,7 +458,6 @@ export class MrpDisplayRecord extends Component {
 
     async reload() {
         await this.props.record.load();
-        this.props.record.model.notify();
         // Updates the MO/WO's moves and quality checks too.
         const models = new Set();
         for (const record of this.props.subRecords) {

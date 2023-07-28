@@ -35,7 +35,6 @@ export class TimerToggleButton extends Component {
             { context: this.props.context }
         );
         await this.props.record.model.load();
-        await this.props.record.model.notify();
     }
 }
 

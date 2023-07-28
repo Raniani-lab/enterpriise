@@ -43,10 +43,8 @@ export class QualityCheck extends MrpWorkorder {
                     [record.resId]
                 );
             } else {
-                parent.update({ qty_producing: this.props.quantityToProduce });
-                record.update({ qty_done: this.props.quantityToProduce });
-                await parent.save();
-                await record.save();
+                await parent.update({ qty_producing: this.props.quantityToProduce }, { save: true });
+                await record.update({ qty_done: this.props.quantityToProduce }, { save: true });
                 await record.model.orm.call(record.resModel, "action_next", [record.resId]);
             }
             return await this.reload();
@@ -98,8 +96,7 @@ export class QualityCheck extends MrpWorkorder {
     }
 
     async onFileUploaded(info) {
-        this.props.record.update({ picture: info.data });
-        await this.props.record.save();
+        await this.props.record.update({ picture: info.data }, { save: true });
         await this.props.record.model.orm.call(this.props.record.resModel, "do_pass", [this.props.record.resId]);
         return await this.reload();
     }

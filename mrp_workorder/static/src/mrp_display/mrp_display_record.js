@@ -99,8 +99,7 @@ export class MrpDisplayRecord extends Component {
     async quickRegisterProduction() {
         const { production } = this.props;
         const qtyToSet = this.productionComplete ? 0 : production.data.product_qty;
-        production.update({ qty_producing: qtyToSet });
-        await production.save();
+        await production.update({ qty_producing: qtyToSet }, { save: true });
         // Calls `set_qty_producing` because the onchange won't be triggered.
         await production.model.orm.call("mrp.production", "set_qty_producing", production.resIds);
         await this.reload();
@@ -108,8 +107,7 @@ export class MrpDisplayRecord extends Component {
 
     async generateSerialNumber() {
         if (this.trackingMode === "lot") {
-            this.props.production.update({ qty_producing: this.props.production.data.product_qty });
-            await this.props.production.save();
+            await this.props.production.update({ qty_producing: this.props.production.data.product_qty }, { save: true });
         }
         const args = [this.props.production.resId];
         await this.model.orm.call("mrp.production", "action_generate_serial", args);
@@ -392,8 +390,7 @@ export class MrpDisplayRecord extends Component {
         const { resModel, resId } = this.props.record;
         if (resModel === "mrp.workorder") {
             if (this.record.state === "ready" && this.record.qty_producing === 0) {
-                this.props.record.update({ qty_producing: this.record.qty_production });
-                await this.props.record.save();
+                this.props.record.update({ qty_producing: this.record.qty_production }, { save: true });
             }
             await this.model.orm.call(resModel, "end_all", [resId]);
             await this.reload();

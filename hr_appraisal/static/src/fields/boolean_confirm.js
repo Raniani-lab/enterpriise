@@ -33,9 +33,8 @@ export class BooleanToggleConfirm extends BooleanToggleField {
     onChange(value) {
         const record = this.props.record.data;
         const updateAndSave = () => {
-            this.props.record.update({ [this.props.name]: value });
-            this.props.record.save();
-        }
+            this.props.record.update({ [this.props.name]: value }, { save: true });
+        };
 
         const isEmployee = record.employee_user_id && record.employee_user_id[0] === session.uid;
         if (record.is_manager && value && !isEmployee) {

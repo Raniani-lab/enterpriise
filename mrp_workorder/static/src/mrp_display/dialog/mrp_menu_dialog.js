@@ -41,8 +41,7 @@ export class MrpMenuDialog extends Component {
     moveToWorkcenter() {
         function _moveToWorkcenter(workcenters) {
             const workcenter = workcenters[0];
-            this.props.record.update({ workcenter_id: [workcenter.id, workcenter.display_name] });
-            this.props.record.save();
+            this.props.record.update({ workcenter_id: [workcenter.id, workcenter.display_name] }, { save: true });
             this.props.close();
         }
         const params = {

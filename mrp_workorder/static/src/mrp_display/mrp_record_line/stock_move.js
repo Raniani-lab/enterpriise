@@ -94,8 +94,7 @@ export class StockMove extends Component {
             return this.clicked();
         }
         const quantity = this.isComplete ? 0 : this.toConsumeQuantity;
-        this.props.record.update({ quantity_done: quantity });
-        this.props.record.save(); // TODO: instead of saving after each individual change, it should be better to save at some point all the changes.
+        this.props.record.update({ quantity_done: quantity }, { save: true });
         await this.reload();
     }
 

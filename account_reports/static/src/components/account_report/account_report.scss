@@ -21,7 +21,7 @@
     // Table
     //------------------------------------------------------------------------------------------------------------------
     .table {
-        background-color: $o-white;
+        background-color: $o-view-background-color;
         border-collapse: separate; //!\\ Allows to add padding to the table
         border-spacing: 0; //!\\ Removes default spacing between cells due to 'border-collapse: separate'
         font-size: 0.8rem;
@@ -95,7 +95,7 @@
     }
 
     thead.sticky {
-        background-color: $o-white;
+        background-color: $o-view-background-color;
         position: sticky;
         top: 0;
         z-index: 999;
@@ -183,7 +183,7 @@
     }
     .btn_action {
         opacity: 0;
-        background-color: $o-white;
+        background-color: $o-view-background-color;
         color: $o-gray-600;
         width: auto;
         padding: 0 0.25rem;

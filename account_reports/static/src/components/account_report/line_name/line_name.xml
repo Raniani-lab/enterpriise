@@ -40,7 +40,7 @@
                 <t t-else="">
                     <div data-id="content" class="content">
                         <t t-component="env.component('AccountReportEllipsis')" t-props="{
-                            name: props.line.name,
+                            name: props.line.name?.toString(),
                             type: 'string',
                             maxCharacters: 80,
                         }"/>

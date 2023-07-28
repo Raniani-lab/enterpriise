@@ -1,5 +1,6 @@
 /** @odoo-module */
 import { registry } from "@web/core/registry";
+import { download } from "@web/core/network/download";
 import { ReportEditorModel } from "@web_studio/client_action/report_editor/report_editor_model";
 import { patch, unpatch } from "@web/core/utils/patch";
 import { assertEqual, stepNotInStudio } from "@web_studio/../tests/tours/tour_helpers";
@@ -298,18 +299,37 @@ registry.category("web_tour.tours").add("web_studio.test_report_reset_archs", {
     ],
 });
 
+let downloadProm;
+let steps = [];
 registry.category("web_tour.tours").add("web_studio.test_print_preview", {
     test: true,
     sequence: 260,
     steps: () => [
         {
             trigger: ".o_web_studio_sidebar button[name='report_print_preview']",
+            run(helpers) {
+                downloadProm = new Promise(resolve => {
+                    patch(download, "studio_test_download", {
+                        _download(options) {
+                            steps.push("download report")
+                            const context = JSON.parse(options.data.context);
+                            assertEqual(context["report_pdf_no_attachment"], true);
+                            assertEqual(context["discard_logo_check"], true);
+                            assertEqual(context["active_ids"].length, 1);
+                            unpatch(download, "studio_test_download")
+                            resolve();
+                        }
+                    })
+                })
+                return helpers.click(this.$anchor);
+            }
         },
         {
-            // 1 sec delay to make sure we call the download route
             trigger: ".o-web-studio-report-editor-wysiwyg",
-            run() {
-                return new Promise((r) => setTimeout(r, 1000));
+            async run() {
+                await downloadProm;
+                assertEqual(steps.length, 1)
+                assertEqual(steps[0], "download report")
             },
         },
     ],

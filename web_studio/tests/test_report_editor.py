@@ -411,21 +411,7 @@ class TestReportEditorUIUnit(HttpCase):
         self.assertXMLEqual(self.main_view_document.arch, """<p>from file</p>""")
 
     def test_print_preview(self):
-        self._clear_routing()
-        self.addCleanup(self._clear_routing)
-
-        report_download_context = None
-        @route(['/report/download'], type='http', auth="user")
-        def report_download(self, data, context=None, token=None):
-            nonlocal report_download_context
-            report_download_context = json.loads(context)
-            return None
-
-        self.patch(ReportController, "report_download", report_download)
         self.start_tour(self.tour_url, "web_studio.test_print_preview", login="admin")
-        self.assertTrue(report_download_context["report_pdf_no_attachment"])
-        self.assertTrue(report_download_context["discard_logo_check"])
-        self.assertTrue(report_download_context["active_ids"])
 
     def test_table_rendering(self):
         self.main_view_document.arch = """

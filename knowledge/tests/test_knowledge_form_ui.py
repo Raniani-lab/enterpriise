@@ -5,6 +5,7 @@ from datetime import timedelta
 import base64
 import io
 import os
+import re
 from markupsafe import Markup
 from PIL import Image
 from unittest import skipIf
@@ -47,7 +48,12 @@ class TestKnowledgeUI(TestKnowledgeUICommon):
         self.start_tour('/web', 'knowledge_load_template', login='admin')
         article = self.env['knowledge.article'].search([], limit=1)
         self.assertTrue(bool(article))
-        self.assertEqual(template.body, article.body)
+
+        # Strip collaborative steps ids from the body for content-only
+        # comparison
+        body = re.sub(r'\s*data-last-history-steps="[^"]*"', '', article.body)
+
+        self.assertEqual(template.body, body)
         self.assertEqual(template.icon, article.icon)
         self.assertEqual(template.template_properties_definition, article.article_properties_definition)
 

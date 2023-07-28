@@ -188,6 +188,15 @@ patch(Wysiwyg.prototype, 'knowledge_wysiswyg', {
         return {...options, commands, categories};
     },
     /**
+     * mail is a dependency of Knowledge and @see MailIceServer are a model from
+     * mail. When Knowledge is installed, this is always true, meaning that
+     * portal users have access to the collaborative mode.
+     * @override
+     */
+    _hasICEServers() {
+        return true;
+    },
+    /**
      * Notify @see FieldHtmlInjector that behaviors need to be injected
      * @see KnowledgeBehavior
      *

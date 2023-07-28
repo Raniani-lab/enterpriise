@@ -122,23 +122,37 @@ class ArticleTemplate(models.Model):
 
     # Public methods:
 
-    def apply_template_on_article(self, article_id):
+    def apply_template_on_article(self, article_id, skip_body_update=False):
         """
         Applies the current template on the given article
         :param int article_id: Article id
+        :param boolean skip_body_update: Whether the method should skip writing
+          the body and return it for further management by the caller. Note that
+          this does to apply to child articles as they are not managed the same
+          way and are side records. Typically
+
+          - False: when creating a template based article from scratch;
+          - True: in other cases to avoid collaborative issues (write on
+            body should be done at client side);
+
+        :return str: body of the article, used notably client side for
+          collaborative mode
         """
         self.ensure_one()
         article = self.env["knowledge.article"].browse(article_id)
         article.ensure_one()
 
-        article.write({
+        values = {
             "article_properties": self.template_properties or {},
             "article_properties_definition": self.template_properties_definition,
-            "body": self.body,
             "cover_image_id": self.cover_image_id.id,
             "icon": self.icon,
             "name": article.name or self.name
-        })
+        }
+        if not skip_body_update:
+            values["body"] = self.body
+
+        article.write(values)
 
         stack = [(article, self)]
         while stack:
@@ -157,8 +171,10 @@ class ArticleTemplate(models.Model):
             } for template in parent_template.child_ids])
             stack.extend(zip(articles, parent_template.child_ids))
 
+        return self.body
+
     def create_article(self):
         self.ensure_one()
         article = self.env["knowledge.article"].article_create(is_private=True)
-        self.apply_template_on_article(article.id)
+        self.apply_template_on_article(article.id, skip_body_update=False)
         return article.id

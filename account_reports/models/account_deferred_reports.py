@@ -267,7 +267,7 @@ class DeferredReportCustomHandler(models.AbstractModel):
         if totals_per_account:
             report_lines.append((0, {
                 'id': report._get_generic_line_id(None, None, markup='total'),
-                'name': 'TOTALS',
+                'name': 'Totals',
                 'level': 1,
                 'columns': get_columns(totals_all_accounts),
             }))

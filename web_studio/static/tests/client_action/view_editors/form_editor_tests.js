@@ -3613,8 +3613,8 @@ QUnit.module("View Editors", (hooks) => {
             assert.verifySteps([
                 "/web/webclient/load_menus",
                 "/mail/init_messaging",
-                "/web/dataset/call_kw/res.users/systray_get_activities",
                 "/mail/load_message_failures",
+                "/web/dataset/call_kw/res.users/systray_get_activities",
             ]);
 
             await doAction(webClient, "studio.coucou_action");

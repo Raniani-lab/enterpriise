@@ -71,11 +71,11 @@ export class StockMove extends Component {
     }
 
     async clicked() {
-        const resId = [this.props.record.data.id];
+        const resIds = [this.props.resId];
         const action = await this.props.record.model.orm.call(
             this.resModel,
             "action_show_details",
-            resId
+            resIds
         );
         const options = {
             onClose: async () => {

@@ -104,8 +104,8 @@ patch(WebClientEnterprise.prototype, {
      * @return {Promise<PushManager>}
      */
     async pushManager() {
-        const registration = await browser.navigator.serviceWorker.getRegistration();
-        return registration.pushManager;
+        const registration = await browser.navigator.serviceWorker?.getRegistration();
+        return registration?.pushManager;
     },
 
     /**

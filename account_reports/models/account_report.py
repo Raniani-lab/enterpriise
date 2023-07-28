@@ -2157,7 +2157,7 @@ class AccountReport(models.Model):
                 formatter_params['digits'] = rounding
 
             # Build result
-            if column_value:
+            if column_value is not None: #In case column value is zero, we still want to go through the condition
                 foreign_currency_id = target_line_res_dict.get(f'_currency_{column_expr_label}', {}).get('value')
                 if foreign_currency_id:
                     formatter_params['currency'] = self.env['res.currency'].browse(foreign_currency_id)

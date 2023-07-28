@@ -172,6 +172,7 @@
         }
     }
 
+    .btn_sortable > .fa-long-arrow-up, .btn_sortable > .fa-long-arrow-down { color: $o-enterprise-action-color }
     .btn_clone { margin: 1rem 1rem 0 0 }
     .btn_foldable { color: $o-gray-500 }
     .btn_foldable_empty:hover { cursor: default  }

@@ -4,7 +4,10 @@
         <xpath expr="//td[@data-id='line_name']//div[@data-id='content']" position="replace">
             <!-- Invoice name -->
             <t t-if="'move_id' in props.line and 'date' in props.line">
-                <a t-on-click="(ev) => controller.reportAction(ev, 'journal_report_action_open_business_doc', { line_id: props.line.id })">
+                <a
+                    class="link"
+                    t-on-click="(ev) => controller.reportAction(ev, 'journal_report_action_open_business_doc', { line_id: props.line.id })"
+                >
                     <t t-out="props.line.name"/>
                 </a>
                 <t t-out="`- ${props.line.date}`"/>

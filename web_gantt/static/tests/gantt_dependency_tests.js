@@ -3,6 +3,7 @@
 import {
     click,
     dragAndDrop,
+    drag,
     getFixture,
     patchDate,
     patchWithCleanup,
@@ -913,5 +914,22 @@ QUnit.module("Views > GanttView", (hooks) => {
         await makeView(ganttViewParams);
 
         assert.containsN(target, SELECTORS.connector, 13);
+    });
+
+    QUnit.test("No display of resize handles when creating a connector", async (assert) => {
+        assert.expect(1);
+        await makeView(ganttViewParams);
+
+        // Explicitly shows the connector creator wrapper since its "display: none"
+        // disappears on native CSS hover, which cannot be programatically emulated.
+        const rightWrapper = target.querySelector(SELECTORS.connectorCreatorWrapper);
+        rightWrapper.classList.add("d-block");
+
+        // Creating a connector and hover another pill while dragging it
+        const { moveTo } = await drag(
+            rightWrapper.querySelector(SELECTORS.connectorCreatorBullet),
+        );
+        await moveTo(getPill("Task 2"));
+        assert.containsNone(target, SELECTORS.resizeHandle);
     });
 });

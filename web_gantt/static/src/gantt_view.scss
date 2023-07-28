@@ -1,4 +1,18 @@
 .o_gantt_view {
+    user-select: none;
+
+    .o_view_nocontent {
+        @include o-gantt-zindex(view-nocontent);
+    }
+
+    .o_view_sample_data .o_sample_data_disabled {
+        opacity: 0.33;
+        pointer-events: none;
+        user-select: none;
+    }
+}
+
+.o_gantt_view .o_gantt_renderer {
     --Gantt__RowHeader-template-column: 16px;
 
     // Allows to use color variables in js
@@ -17,20 +31,16 @@
     );
     --Gantt__GroupToday-background: #{mix($gantt-row-open-bg, $gantt-highlight-today-bg)};
 
-    user-select: none;
-
     // ============================= Main Layout ==============================
     // ========================================================================
 
     // Renderer grid
-    .o_gantt_renderer {
-        display: grid;
+    display: grid;
 
-        &:not(.o_no_groups) {
-            grid-template-columns: var(--Gantt__RowHeader-width) calc(
-                    100% - var(--Gantt__RowHeader-width)
-                );
-        }
+    &:not(.o_no_groups) {
+        grid-template-columns: var(--Gantt__RowHeader-width) calc(
+                100% - var(--Gantt__RowHeader-width)
+            );
     }
 
     // Utilities to use the grid-template-rows or grid-template-columns
@@ -95,26 +105,24 @@
 
     // ===============  Cursors while dragging  ==============
     // =======================================================
-    .o_gantt_renderer {
 
-        &.o_grabbing,
-        &.o_grabbing .o_gantt_pill {
-            cursor: move !important;
-        }
+    &.o_grabbing,
+    &.o_grabbing .o_gantt_pill {
+        cursor: move !important;
+    }
 
-        &.o_copying,
-        &.o_copying .o_gantt_pill {
-            cursor: copy !important;
-        }
+    &.o_copying,
+    &.o_copying .o_gantt_pill {
+        cursor: copy !important;
+    }
 
-        &.o_grabbing_locked,
-        &.o_grabbing_locked .o_gantt_pill {
-            cursor: not-allowed !important;
-        }
+    &.o_grabbing_locked,
+    &.o_grabbing_locked .o_gantt_pill {
+        cursor: not-allowed !important;
     }
 
     @include media-breakpoint-down(md) {
-        .o_gantt_renderer {
+        & {
             width: max-content;
         }
     }
@@ -256,11 +264,13 @@
                 }
             }
 
-            &:not(.o_resized):hover .o_resize_handle {
-                background-color: rgba(230, 230, 230, 0.5);
+            @include o-gantt-hover() {
+                &:not(.o_resized) .o_resize_handle {
+                    background-color: rgba(230, 230, 230, 0.5);
 
-                &:hover {
-                    background-color: rgba(230, 230, 230, 0.8);
+                    &:hover {
+                        background-color: rgba(230, 230, 230, 0.8);
+                    }
                 }
             }
         }
@@ -304,8 +314,14 @@
             background-color: $o-view-background-color;
         }
 
-        &:not(:hover):not(.o_connector_creator_show) .o_connector_creator_wrapper {
+        &:not(.o_connector_creator_show) .o_connector_creator_wrapper {
             display: none;
+        }
+
+        @include o-gantt-hover() {
+            .o_connector_creator_wrapper {
+                display: inline;
+            }
         }
 
         // used for `color` attribute on <gantt>
@@ -524,16 +540,6 @@
             border-right: 0px;
             right: 0;
         }
-    }
-
-    .o_view_nocontent {
-        @include o-gantt-zindex(view-nocontent);
-    }
-
-    .o_view_sample_data .o_sample_data_disabled {
-        opacity: 0.33;
-        pointer-events: none;
-        user-select: none;
     }
 
     .o_gantt_pill_resize_badge {

@@ -8,8 +8,8 @@
     &:focus,
     &.o_dragged_pill,
     &.ui-resizable-resize {
-        // Avoid visual feedback if 'o_gantt_view' has class 'o_grabbing' or 'o_copying'.
-        @at-root #{selector-replace(&, ".o_gantt_view", ".o_gantt_view:not(.o_grabbing):not(.o_copying):not(.o_no_dragging)")} {
+        // Avoid visual feedback if 'o_gantt_renderer' has class 'o_grabbing' or 'o_copying'.
+        @at-root #{selector-replace(&, ".o_gantt_renderer", ".o_gantt_renderer:not(.o_grabbing):not(.o_copying):not(.o_no_dragging)")} {
             @content;
         }
     }

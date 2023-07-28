@@ -325,9 +325,10 @@ export class GanttRenderer extends Component {
             handles: "o_resize_handle",
             showHandles: (pillEl) => {
                 const pill = this.pills[pillEl.dataset.pillId];
+                const hideHandles = this.connectorDragState.dragging;
                 return {
-                    start: !pill.disableStartResize,
-                    end: !pill.disableStopResize,
+                    start: !pill.disableStartResize && !hideHandles,
+                    end: !pill.disableStopResize && !hideHandles,
                 };
             },
             rtl: () => localization.direction === "rtl",

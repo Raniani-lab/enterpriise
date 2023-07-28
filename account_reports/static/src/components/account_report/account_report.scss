@@ -112,6 +112,7 @@
         }
 
         .name { white-space: nowrap }
+        &.unfoldable:hover { cursor: pointer }
     }
 
     .line_cell {

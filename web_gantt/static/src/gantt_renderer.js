@@ -134,6 +134,7 @@ const { DateTime } = luxon;
 
 /** @type {[Omit<InteractionMode, "drag"> | DragActionMode, string][]} */
 const INTERACTION_CLASSNAMES = [
+    ["connect", "o_connect"],
     ["copy", "o_copying"],
     ["locked", "o_grabbing_locked"],
     ["reschedule", "o_grabbing"],
@@ -360,19 +361,21 @@ export class GanttRenderer extends Component {
             onDragStart: ({ sourcePill, x, y, addClass }) => {
                 this.popover.close();
                 initialPillId = sourcePill.dataset.pillId;
-                addClass(sourcePill, "o_connector_creator_show");
+                addClass(sourcePill, "o_connector_creator_lock");
                 this.setConnector({
                     id: NEW_CONNECTOR_ID,
                     highlighted: true,
                     sourcePoint: { left: x, top: y },
                     targetPoint: { left: x, top: y },
                 });
+                this.interaction.mode = "connect";
             },
             onDrag: ({ x, y }) => {
                 this.setConnector({ id: NEW_CONNECTOR_ID, targetPoint: { left: x, top: y } });
             },
             onDragEnd: () => {
                 this.setConnector({ id: NEW_CONNECTOR_ID, sourcePoint: null, targetPoint: null });
+                this.interaction.mode = null;
             },
             onDrop: ({ target }) => {
                 if (initialPillId === target.dataset.pillId) {
@@ -1359,7 +1362,9 @@ export class GanttRenderer extends Component {
             return;
         }
         pill.highlighted = highlighted;
-        this.getPillWrapperEl(pillId)?.classList.toggle("highlight", highlighted);
+        const pillWrapper = this.getPillWrapperEl(pillId);
+        pillWrapper?.classList.toggle("highlight", highlighted);
+        pillWrapper?.classList.toggle("o_connector_creator_highlight", highlighted && this.connectorDragState.dragging);
     }
 
     initializeConnectors() {

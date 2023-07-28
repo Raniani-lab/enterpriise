@@ -54,6 +54,8 @@ export const CLASSES = {
 
     // Connectors
     highlightedConnector: "o_connector_highlighted",
+    highlightedConnectorCreator: "o_connector_creator_highlight",
+    lockedConnectorCreator: "o_connector_creator_lock", // Connector creators highlight for initial pill
 };
 
 export const SELECTORS = {

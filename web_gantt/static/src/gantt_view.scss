@@ -313,7 +313,7 @@
             background-color: $o-view-background-color;
         }
 
-        &:not(.o_connector_creator_show) .o_connector_creator_wrapper {
+        &:not(.o_connector_creator_lock):not(.o_connector_creator_highlight) .o_connector_creator_wrapper {
             display: none;
         }
 

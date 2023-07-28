@@ -932,4 +932,54 @@ QUnit.module("Views > GanttView", (hooks) => {
         await moveTo(getPill("Task 2"));
         assert.containsNone(target, SELECTORS.resizeHandle);
     });
+
+    QUnit.test("Renderer in connect mode when creating a connector", async (assert) => {
+        await makeView(ganttViewParams);
+
+        // Explicitly shows the connector creator wrapper since its "display: none"
+        // disappears on native CSS hover, which cannot be programatically emulated.
+        const rightWrapper = target.querySelector(SELECTORS.connectorCreatorWrapper);
+        rightWrapper.classList.add("d-block");
+
+        // Creating a connector and hover another pill while dragging it
+        const { moveTo } = await drag(rightWrapper.querySelector(SELECTORS.connectorCreatorBullet));
+        await moveTo(getPill("Task 2"));
+        assert.hasClass(target.querySelector(SELECTORS.renderer), "o_connect");
+    });
+
+    QUnit.test("Connector creators of initial pill are highlighted when creating a connector", async (assert) => {
+        await makeView(ganttViewParams);
+
+        // Explicitly shows the connector creator wrapper since its "display: none"
+        // disappears on native CSS hover, which cannot be programatically emulated.
+        const sourceWrapper = target.querySelector(SELECTORS.pillWrapper)
+        const rightWrapper = sourceWrapper.querySelector(SELECTORS.connectorCreatorWrapper);
+        rightWrapper.classList.add("d-block");
+
+        // Creating a connector and hover another pill while dragging it
+        const { moveTo } = await drag(rightWrapper.querySelector(SELECTORS.connectorCreatorBullet));
+        await moveTo(getPill("Task 2"));
+        assert.hasClass(sourceWrapper, CLASSES.lockedConnectorCreator);
+    });
+
+    QUnit.test("Connector creators of hovered pill are highlighted when creating a connector", async (assert) => {
+        await makeView(ganttViewParams);
+
+        // Explicitly shows the connector creator wrapper since its "display: none"
+        // disappears on native CSS hover, which cannot be programatically emulated.
+        const rightWrapper = target.querySelector(SELECTORS.connectorCreatorWrapper);
+        rightWrapper.classList.add("d-block");
+
+        // Creating a connector and hover another pill while dragging it
+        const { moveTo } = await drag(rightWrapper.querySelector(SELECTORS.connectorCreatorBullet));
+
+        const destinationWrapper = getPillWrapper("Task 2");
+        const destinationPill = destinationWrapper.querySelector(SELECTORS.pill);        
+        await moveTo(destinationPill);
+
+        // moveTo only triggers a pointerenter event on destination pill,
+        // a pointermove event is still needed to highlight it
+        await triggerEvent(destinationPill, null, "pointermove");
+        assert.hasClass(destinationWrapper, CLASSES.highlightedConnectorCreator);
+    });
 });

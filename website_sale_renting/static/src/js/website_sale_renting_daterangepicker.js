@@ -13,11 +13,11 @@ publicWidget.registry.WebsiteSaleDaterangePicker = publicWidget.Widget.extend(Re
         'click [data-toggle=daterange]': '_onClickToggleDaterange',
     }),
     jsLibs: (publicWidget.Widget.prototype.jsLibs || []).concat([
-        '/web/static/lib/daterangepicker/daterangepicker.js',
-        '/web/static/src/legacy/js/libs/daterangepicker.js',
+        '/website_sale_renting/static/lib/daterangepicker/daterangepicker.js',
+        '/website_sale_renting/static/src/js/libs/daterangepicker.js',
     ]),
     cssLibs: (publicWidget.Widget.prototype.cssLibs || []).concat([
-        "/web/static/lib/daterangepicker/daterangepicker.css",
+        "/website_sale_renting/static/lib/daterangepicker/daterangepicker.css",
     ]),
 
     /**

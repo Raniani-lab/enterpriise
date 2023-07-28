@@ -10,11 +10,6 @@
         --bs-datetimepicker-btn-hover-bg: #{$o-gray-400};
     }
 
-    .daterangepicker {
-        --daterangerpicker__arrow-background-color: #{$o-view-background-color};
-        --daterangerpicker__arrow-border-color: #{$border-color};
-    }
-
     .bootstrap-datetimepicker-widget {
         --bs-datetimepicker-secondary-border-color-rgba: #{$o-gray-300};
         --bs-datetimepicker-primary-border-color: #{$o-gray-300};

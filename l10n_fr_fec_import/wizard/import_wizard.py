@@ -204,6 +204,7 @@ class FecImportWizard(models.TransientModel):
             partner_name = record.get("CompAuxLib", "")
             account_code = record.get("CompteNum", "")
             if partner_ref:
+                partner_ref = partner_ref.replace(' ', '_')
                 data = {
                     "company_id": self.company_id.id,
                     "name": partner_name,
@@ -416,7 +417,7 @@ class FecImportWizard(models.TransientModel):
             # Move import --------------------------------------
 
             # Use the journal and the move_name as key for the move in the moves_dict
-            move_key = "l10n_fr_fec_import.move_%s_%s" % (journal_code, move_name)
+            move_key = "l10n_fr_fec_import.move_%s_%s" % (journal_code, move_name.replace(' ', '_'))
             # move_key = "l10n_fr_fec_import.journal_%s_%s" % (journal_code, move_name)
 
             # Many move_lines may belong to the same move, the move info gets saved in the moves_dict
@@ -449,7 +450,7 @@ class FecImportWizard(models.TransientModel):
             # the partner information will stay just on the line.
             # It may be updated in the post-processing after all the imports are done.
             if partner_ref:
-                line_data["partner_id"] = f"l10n_fr_fec_import.partner_{partner_ref}"
+                line_data["partner_id"] = f"l10n_fr_fec_import.partner_{partner_ref.replace(' ', '_')}"
 
             # Currency
             if currency_name in cache["res.currency"]:

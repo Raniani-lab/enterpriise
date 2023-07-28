@@ -173,7 +173,7 @@
                 <t t-set="header_level" t-value="headers_val[1]"/>
                 <tr>
                     <t id="populate_headers_loop_id"
-                        t-foreach="[{'style': 'width: 100%;', 'colspan': 1}]
+                        t-foreach="[{'colspan': 1}]
                                    + header_level * column_headers_render_data['level_repetitions'][header_level_index]"
                         t-as="header">
                         <t t-set="header_name" t-value="header.get('name')"/>
@@ -191,7 +191,7 @@
             </t>
 
             <tr t-if="column_headers_render_data['custom_subheaders']">
-                <t t-foreach="[{'style': 'width: 100%;', 'colspan': 1}] + column_headers_render_data['custom_subheaders']" t-as="subheader">
+                <t t-foreach="[{'colspan': 1}] + column_headers_render_data['custom_subheaders']" t-as="subheader">
                     <th t-att-class="acc_rep_column_header"
                         t-att-colspan="subheader.get('colspan', 1)"
                         t-att-style="subheader.get('style', 'text-align: center;')">
@@ -201,14 +201,14 @@
                 </t>
             </tr>
 
-            <t t-foreach="enumerate([{'style': 'width: 100%'}] + options['columns'])" t-as="index_cell">
+            <t t-foreach="enumerate([{'colspan': 1}] + options['columns'])" t-as="index_cell">
                 <t t-set="index" t-value="index_cell[0]"/> <!--So, indexing of options['columns'] starts here at one, which is consistent with options['order_column']-->
                 <t t-set="cell" t-value="index_cell[1]"/>
 
                 <t t-set="sortable_column_classes" t-value="'' if not cell.get('sortable') else 'sortable %s' % ('' if not options['order_column'] or options['order_column']['expression_label'] != cell['expression_label'] else options['order_column']['direction'] == 'ASC' and ' up' or ' down')"/>
                 <th t-att-class="'acc_rep_column_header ' + sortable_column_classes"
-                    colspan="cell.get('colspan', 1)"
-                    t-att-style="cell.get('style', 'text-align: right;')">
+                    t-att-colspan="cell.get('colspan', 1)"
+                    t-att-style="cell.get('style', 'text-align: center;')">
                     <t t-call="{{custom_templates.get('pdf_export_cell', 'account_reports.pdf_export_cell')}}"/>
                 </th>
             </t>

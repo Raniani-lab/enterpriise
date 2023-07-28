@@ -4,6 +4,5 @@
 from . import discuss_channel
 from . import mail_thread
 from . import partner_devices
-from . import res_config_settings
 from . import update
 from . import web_push

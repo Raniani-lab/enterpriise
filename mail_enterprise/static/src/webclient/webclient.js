@@ -52,7 +52,7 @@ patch(WebClientEnterprise.prototype, {
      * @private
      * @return {Promise<void>}
      */
-    async _subscribePush() {
+    async _subscribePush(numberTry = 1) {
         const pushManager = await this.pushManager();
         if (!pushManager) {
             return;
@@ -72,7 +72,24 @@ patch(WebClientEnterprise.prototype, {
         if (previousEndpoint && subscription.endpoint !== previousEndpoint) {
             kwargs.previous_endpoint = previousEndpoint;
         }
-        await this.orm.call(USER_DEVICES_MODEL, "register_devices", [], kwargs);
+        try {
+            kwargs.vapid_public_key = this._arrayBufferToBase64(subscription.options.applicationServerKey);
+            await this.orm.call(USER_DEVICES_MODEL, "register_devices", [], kwargs);
+        } catch (e) {
+            const invalidVapidErrorClass = "odoo.addons.mail_enterprise.models.partner_devices.InvalidVapidError";
+            const warningMessage = "Error sending subscription information to the server";
+            if (e.data?.name === invalidVapidErrorClass) {
+                const MAX_TRIES = 2;
+                if (numberTry < MAX_TRIES) {
+                    await subscription.unsubscribe();
+                    this._subscribePush(numberTry + 1);
+                } else {
+                    console.warn(warningMessage)
+                }
+            } else {
+                console.warn(`${warningMessage}: ${e.data?.debug}`)
+            }
+        }
     },
 
     /**
@@ -119,15 +136,33 @@ patch(WebClientEnterprise.prototype, {
      */
     async _getApplicationServerKey() {
         const vapid_public_key_base64 = await this.orm.call(USER_DEVICES_MODEL, "get_web_push_vapid_public_key");
-        const padding = '='.repeat((4 - vapid_public_key_base64.length % 4) % 4);
+        const padding = "=".repeat((4 - vapid_public_key_base64.length % 4) % 4);
         const base64 = (vapid_public_key_base64 + padding)
-            .replace(/\-/g, '+')
-            .replace(/_/g, '/');
+            .replace(/-/g, "+")
+            .replace(/_/g, "/");
         const rawData = atob(base64);
         const outputArray = new Uint8Array(rawData.length);
         for (let i = 0; i < rawData.length; ++i) {
             outputArray[i] = rawData.charCodeAt(i);
         }
         return outputArray;
+    },
+
+    /**
+     * Convert an ArrayBuffer to a base64 string without padding
+     * @param buffer {ArrayBuffer}
+     * @return {string}
+     * @private
+     */
+    _arrayBufferToBase64(buffer) {
+        const bytes = new Uint8Array(buffer);
+        let binary = "";
+        for (let i = 0; i < bytes.byteLength; i++) {
+            binary += String.fromCharCode(bytes[i]);
+        }
+        return window.btoa(binary)
+            .replaceAll("+", "-")
+            .replaceAll("/", "_")
+            .replaceAll("=", "");
     }
 });

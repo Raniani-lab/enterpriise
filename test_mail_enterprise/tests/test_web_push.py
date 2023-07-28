@@ -6,6 +6,7 @@ import socket
 import odoo
 from odoo.tools.misc import mute_logger
 from odoo.addons.mail.tests.common import mail_new_test_user
+from odoo.addons.mail_enterprise.models.partner_devices import InvalidVapidError
 from odoo.addons.sms.tests.common import SMSCommon
 from odoo.addons.test_mail.data.test_mail_data import MAIL_TEMPLATE
 from odoo.tests import tagged
@@ -51,6 +52,8 @@ class TestWebPushNotification(SMSCommon):
 
         cls.group_channel = cls.env['discuss.channel'].browse(cls.env['discuss.channel'].channel_create(name='Channel', group_id=None)['id'])
         cls.group_channel.add_members((cls.user_email + cls.user_inbox).partner_id.ids)
+
+        cls.vapid_public_key = cls.env['mail.partner.device'].get_web_push_vapid_public_key()
 
         cls.env['mail.partner.device'].sudo().create([{
             'endpoint': 'https://test.odoo.com/webpush/user1',
@@ -298,3 +301,23 @@ class TestWebPushNotification(SMSCommon):
         # Test that the unreachable device is deleted from the DB
         notification_count = self.env['mail.partner.device'].search_count([('endpoint', '=', 'https://test.odoo.com/webpush/user2')])
         self.assertEqual(notification_count, 0)
+
+    def test_push_notification_regenerate_vpaid_keys(self):
+        ir_params_sudo = self.env['ir.config_parameter'].sudo()
+        ir_params_sudo.search([('key', 'in', [
+            'mail_enterprise.web_push_vapid_private_key',
+            'mail_enterprise.web_push_vapid_public_key'
+        ])]).unlink()
+        new_vapid_public_key = self.env['mail.partner.device'].get_web_push_vapid_public_key()
+        self.assertNotEqual(self.vapid_public_key, new_vapid_public_key)
+        with self.assertRaises(InvalidVapidError):
+            self.env['mail.partner.device'].register_devices(
+                endpoint='https://test.odoo.com/webpush/user1',
+                expiration_time=None,
+                keys=json.dumps({
+                    "p256dh": "BGbhnoP_91U7oR59BaaSx0JnDv2oEooYnJRV2AbY5TBeKGCRCf0HcIJ9bOKchUCDH4cHYWo9SYDz3U-8vSxPL_A",
+                    "auth": "DJFdtAgZwrT6yYkUMgUqow"
+                }),
+                partner_id=self.user_email.partner_id.id,
+                vapid_public_key=self.vapid_public_key,
+            )

@@ -4,8 +4,13 @@ import json
 import logging as logger
 
 from odoo import api, fields, models
+from ..web_push import generate_web_push_vapid_key
 
 _logger = logger.getLogger(__name__)
+
+
+class InvalidVapidError(Exception):
+    pass
 
 
 class PartnerDevice(models.Model):
@@ -27,10 +32,23 @@ class PartnerDevice(models.Model):
     @api.model
     def get_web_push_vapid_public_key(self):
         ir_params_sudo = self.env['ir.config_parameter'].sudo()
-        return ir_params_sudo.get_param('mail_enterprise.web_push_vapid_public_key')
+        public_key = 'mail_enterprise.web_push_vapid_public_key'
+        public_key_value = ir_params_sudo.get_param(public_key)
+        # Regenerate new Keys if public key not present
+        if not public_key_value:
+            self.sudo().search([]).unlink()  # Reset all devices (ServiceWorker)
+            private_key_value, public_key_value = generate_web_push_vapid_key()
+            ir_params_sudo.set_param('mail_enterprise.web_push_vapid_private_key', private_key_value)
+            ir_params_sudo.set_param(public_key, public_key_value)
+            _logger.info("WebPush: missing public key, new VAPID keys generated")
+        return public_key_value
 
     @api.model
     def register_devices(self, **kw):
+        sw_vapid_public_key = kw.get('vapid_public_key')
+        valid_sub = self._verify_vapid_public_key(sw_vapid_public_key)
+        if not valid_sub:
+            raise InvalidVapidError("Invalid VAPID public key")
         endpoint = kw.get('endpoint')
         browser_keys = kw.get('keys')
         if not endpoint or not browser_keys:
@@ -63,3 +81,8 @@ class PartnerDevice(models.Model):
         ])
         if user_device:
             user_device.unlink()
+
+    def _verify_vapid_public_key(self, sw_public_key):
+        ir_params_sudo = self.env['ir.config_parameter'].sudo()
+        db_public_key = ir_params_sudo.get_param('mail_enterprise.web_push_vapid_public_key')
+        return db_public_key == sw_public_key

@@ -104,7 +104,7 @@ export class TimesheetTimerRendererHook {
                 this._setTimerStateData(timesheetData);
                 this.timesheet.resId = timesheetData.id;
             } else {
-                await this.timesheet.save({ stayInEdition: true, noReload: true });
+                await this.timesheet.save({ noReload: true });
             }
         }
     }
@@ -132,10 +132,7 @@ export class TimesheetTimerRendererHook {
     }
 
     async _onTimerStopped() {
-        if (
-            this.timesheet &&
-            !(await this.timesheet.save({ stayInEdition: true, noReload: true }))
-        ) {
+        if (this.timesheet && !(await this.timesheet.save({ noReload: true }))) {
             return;
         }
         const timesheetId = this.timerState.timesheetId;

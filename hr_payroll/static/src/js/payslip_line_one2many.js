@@ -23,7 +23,7 @@ export class WorkedDaysField extends Field {
             record.update = async (changes) => {
                 if ('amount' in changes || 'quantity' in changes) {
                     await oldUpdate(changes);
-                    await record.save( { stayInEdition: true, noReload: true });
+                    await record.save( { noReload: true });
                     const wizardId = record.model.config.resId;
                     if (wizardId) {
                         const action = await this.orm.call(
@@ -86,7 +86,7 @@ export class PayslipLineField extends Field {
             record.update = async (changes) => {
                 if ('amount' in changes || 'quantity' in changes) {
                     await oldUpdate(changes);
-                    await record.save( { stayInEdition: true, noReload: true });
+                    await record.save( { noReload: true });
                     const wizardId = record.model.config.resId;
                     if (wizardId) {
                         const line_id = record.resId;

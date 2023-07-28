@@ -144,7 +144,7 @@ const FormControllerPatch = {
     },
     async onClickSearchKnowledgeArticle() {
         if (this.model.root.isDirty || this.model.root.isNew) {
-            const saved = await this.model.root.save({ stayInEdition: true, useSaveErrorDialog: true });
+            const saved = await this.model.root.save();
             if (!saved) {
                 return;
             }

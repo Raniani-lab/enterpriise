@@ -15,13 +15,13 @@ export class WorkorderFormController extends FormController {
         this.workorderBus = this.props.workorderBus;
         useBus(this.workorderBus, "force_save_workorder", async (ev) => {
             if (this.model.root.resModel === "mrp.workorder") {
-                await this.model.root.save({ stayInEdition: true });
+                await this.model.root.save();
                 ev.detail.resolve();
             }
         });
         useBus(this.workorderBus, "force_save_check", async (ev) => {
             if (this.model.root.resModel === "quality.check") {
-                await this.model.root.save({ stayInEdition: true });
+                await this.model.root.save();
                 ev.detail.resolve();
             }
         });
@@ -32,7 +32,7 @@ export class WorkorderFormController extends FormController {
                 ...params.context,
                 ...this.props.context,
             };
-            await this.model.root.save({ stayInEdition: true });
+            await this.model.root.save();
             if (params.type && params.type === "workorder_event") {
                 this.workorderBus.trigger("workorder_event", params.name);
                 return false;

@@ -101,7 +101,7 @@ export class HierarchyKanbanRecord extends KanbanRecord {
      * @param {MouseEvent} ev
      */
     async onAddChildActivityClick(ev) {
-        await this.props.list.model.root.save({stayInEdition: true});
+        await this.props.list.model.root.save();
 
         const context = {
             default_parent_id: this.props.record.resId,
@@ -330,7 +330,7 @@ export class HierarchyKanban extends X2ManyField {
             getList: () => this.list,
             saveRecord: async (record) => {
                 await saveRecord(record);
-                await this.props.record.save({stayInEdition: true});
+                await this.props.record.save();
             },
             updateRecord: updateRecord,
         });

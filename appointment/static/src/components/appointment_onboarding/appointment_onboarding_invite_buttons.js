@@ -51,7 +51,7 @@ export class AppointmentOnboardingInviteButtons extends Component {
      * @private
      */
     async _getInviteURL () {
-        if (!await this.props.record.save({stayInEdition: true})) {
+        if (!await this.props.record.save()) {
             return Promise.reject();
         }
         return this.orm.call(

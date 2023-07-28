@@ -14,7 +14,7 @@ export class BinaryFieldComission extends BinaryField {
     async update(changes) {
         const res = super.update(changes);
         if (changes.data) {
-            await this.props.record.save({ stayInEdition: true });
+            await this.props.record.save();
             const recordID = this.props.record.resId;
             const action = await this.orm.call('hr.payroll.generate.warrant.payslips', 'import_employee_file', [[recordID]]);
             await this.actionService.doAction(action);

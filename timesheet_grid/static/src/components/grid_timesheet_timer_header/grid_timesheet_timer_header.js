@@ -97,7 +97,7 @@ export class GridTimesheetTimerHeader extends Component {
         if (timesheet.isNew) {
             if (changes.project_id) {
                 // create the timesheet when the project is set
-                timesheet.save({ stayInEdition: true, noReload: true }).then(() => {
+                timesheet.save({ noReload: true }).then(() => {
                     this.props.updateTimesheet({...Object.fromEntries(
                                 this.fieldNames.map((f) => [f, getRawValue(timesheet, f)])
                             ),
@@ -119,7 +119,7 @@ export class GridTimesheetTimerHeader extends Component {
         ) {
             return; // nothing to do
         }
-        timesheet.save({ stayInEdition: true, noReload: true }); // create the timesheet when the project is set
+        timesheet.save({ noReload: true }); // create the timesheet when the project is set
         this.props.updateTimesheet(
             Object.fromEntries(this.fieldNames.map((f) => [f, getRawValue(timesheet, f)]))
         );

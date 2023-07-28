@@ -87,7 +87,7 @@ class HelpdeskTicket(models.Model):
     properties = fields.Properties(
         'Properties', definition='team_id.ticket_properties',
         copy=True)
-    partner_id = fields.Many2one('res.partner', string='Customer', tracking=True)
+    partner_id = fields.Many2one('res.partner', string='Customer', tracking=True, index=True)
     partner_ticket_ids = fields.Many2many('helpdesk.ticket', compute='_compute_partner_ticket_count', string="Partner Tickets")
     partner_ticket_count = fields.Integer('Number of other tickets from the same partner', compute='_compute_partner_ticket_count')
     partner_open_ticket_count = fields.Integer('Number of other open tickets from the same partner', compute='_compute_partner_ticket_count')
@@ -288,21 +288,12 @@ class HelpdeskTicket(models.Model):
     @api.depends('partner_id', 'partner_email', 'partner_phone')
     def _compute_partner_ticket_count(self):
         for ticket in self:
-            domain = []
-            partner_ticket = ticket
-            if ticket.partner_email:
-                email_search = ticket.partner_email
-                domain = expression.OR([domain, [('partner_email', 'ilike', email_search)]])
-            if ticket.partner_phone:
-                domain = expression.OR([domain, [('partner_phone', 'ilike', ticket.partner_phone)]])
-            if ticket.partner_id:
-                domain = expression.OR([domain, [("partner_id", "child_of", ticket.partner_id.commercial_partner_id.id)]])
-            if domain:
-                partner_ticket = self.search(domain)
-            ticket.partner_ticket_ids = partner_ticket
-            partner_ticket = partner_ticket - ticket._origin
-            ticket.partner_ticket_count = len(partner_ticket) if partner_ticket else 0
-            open_ticket = partner_ticket.with_context(prefetch_fields=False).filtered(lambda ticket: not ticket.stage_id.fold)
+            partner_tickets = self.search([("partner_id", "child_of", ticket.partner_id.commercial_partner_id.id)]) if ticket.partner_id else ticket
+            ticket.partner_ticket_ids = partner_tickets
+            partner_tickets = partner_tickets - ticket._origin
+            ticket.partner_ticket_count = len(partner_tickets) if partner_tickets else 0
+            partner_tickets.fetch(['stage_id'])  # prevent over-fetching fields, leading to potential out-of-memory error
+            open_ticket = partner_tickets.filtered(lambda ticket: not ticket.stage_id.fold)
             ticket.partner_open_ticket_count = len(open_ticket)
 
     @api.depends('assign_date')

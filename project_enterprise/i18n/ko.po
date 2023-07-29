@@ -422,7 +422,7 @@ msgstr ""
 #: code:addons/project_enterprise/models/project_task.py:0
 #, python-format
 msgid "This Progress Bar is not implemented."
-msgstr ""
+msgstr "이 진행율 표시줄이 구현되지 않았습니다."
 
 #. module: project_enterprise
 #. odoo-python

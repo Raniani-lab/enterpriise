@@ -33,18 +33,18 @@ msgstr "Pelanggan"
 #. module: crm_enterprise
 #: model:ir.model.fields,field_description:crm_enterprise.field_crm_lead__days_to_convert
 msgid "Days To Convert"
-msgstr ""
+msgstr "Hari Untuk Dikonversi"
 
 #. module: crm_enterprise
 #: model:ir.model.fields,field_description:crm_enterprise.field_crm_lead__days_exceeding_closing
 msgid "Exceeded Closing Days"
-msgstr ""
+msgstr "Melampaui Hari Penutupan"
 
 #. module: crm_enterprise
 #: model:ir.model.fields,field_description:crm_enterprise.field_crm_activity_report__won_status
 #: model:ir.model.fields,field_description:crm_enterprise.field_crm_lead__won_status
 msgid "Is Won"
-msgstr ""
+msgstr "Apakah Won"
 
 #. module: crm_enterprise
 #: model:ir.model,name:crm_enterprise.model_crm_lead

@@ -323,7 +323,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_city
 msgid "City"
-msgstr "Miejscowość"
+msgstr "Miasto"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume__code
@@ -776,7 +776,7 @@ msgstr "Zielony"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_advantage_view_search
 msgid "Group By"
-msgstr "Grupuj wg."
+msgstr "Grupuj wg"
 
 #. module: hr_contract_salary
 #. odoo-python

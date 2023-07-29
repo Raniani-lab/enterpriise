@@ -1170,7 +1170,7 @@ msgstr "Settimane"
 #. module: quality_control
 #: model:ir.model,name:quality_control.model_quality_check_wizard
 msgid "Wizard for Quality Check Pop Up"
-msgstr ""
+msgstr "Procedura guidata per la finestra automatica del controllo qualità"
 
 #. module: quality_control
 #: model:ir.actions.report,name:quality_control.quality_check_report

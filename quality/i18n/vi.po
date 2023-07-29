@@ -974,7 +974,7 @@ msgstr ""
 #. module: quality
 #: model:res.groups,comment:quality.group_quality_manager
 msgid "The quality manager manages the quality process"
-msgstr "Quản lý chất lượng sẽ quản lý quy trình chất lượng"
+msgstr "Người quản lý chất lượng sẽ quản lý quy trình chất lượng"
 
 #. module: quality
 #: model:res.groups,comment:quality.group_quality_user

@@ -27,7 +27,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Agent"
-msgstr ""
+msgstr "Agente"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
@@ -50,21 +50,21 @@ msgstr "Cliente"
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Hours to assign"
-msgstr ""
+msgstr "Ore da assegnare"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Hours to close"
-msgstr ""
+msgstr "Ore da chiudere"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Hours to respond"
-msgstr ""
+msgstr "Numero di ore per rispondere"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
@@ -109,28 +109,28 @@ msgstr "Team"
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Ticket Analysis by Assigned To"
-msgstr ""
+msgstr "Analisi ticket in base all'assegnazione"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Ticket Analysis by Customer"
-msgstr ""
+msgstr "Analisi ticket in base al cliente"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Ticket Analysis by Team"
-msgstr ""
+msgstr "Analisi ticket in base al team"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Ticket Analysis by Ticket Type"
-msgstr ""
+msgstr "Analisi ticket in base al tipo"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
@@ -157,42 +157,42 @@ msgstr "Ticket"
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Tickets by Stage"
-msgstr ""
+msgstr "Ticket per fase"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Tickets by Type"
-msgstr ""
+msgstr "Ticket per tipo"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Time to Assign"
-msgstr ""
+msgstr "Tempo per assegnare"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Time to Close"
-msgstr ""
+msgstr "Tempo per chiudere"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Time to Respond"
-msgstr ""
+msgstr "Tempo per rispondere"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Top Agents"
-msgstr ""
+msgstr "Agenti migliori"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
@@ -206,14 +206,14 @@ msgstr "Clienti migliori"
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Top Teams"
-msgstr ""
+msgstr "Team migliori"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Top Ticket Types"
-msgstr ""
+msgstr "Tipi di ticket migliori"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript

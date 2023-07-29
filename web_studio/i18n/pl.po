@@ -2057,7 +2057,7 @@ msgstr "Grupa"
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_rule_search_view
 #, python-format
 msgid "Group By"
-msgstr "Grupuj wg."
+msgstr "Grupuj wg"
 
 #. module: web_studio
 #. odoo-javascript

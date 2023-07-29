@@ -634,6 +634,9 @@ msgid ""
 "            <font class=\"text-o-color-1\">YouTube</font>\n"
 "        </span>"
 msgstr ""
+"<span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-1\">YouTube</font>\n"
+"        </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -2729,4 +2732,4 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article__user_permission__write
 msgid "write"
-msgstr ""
+msgstr "scrivere"

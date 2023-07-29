@@ -76,7 +76,7 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/spreadsheet_template/template_dialog.xml:0
 #, python-format
 msgid "Blank spreadsheet"
-msgstr ""
+msgstr "Foglio di calcolo vuoto"
 
 #. module: documents_spreadsheet
 #: model_terms:documents.folder,description:documents_spreadsheet.documents_spreadsheet_folder

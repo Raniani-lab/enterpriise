@@ -952,7 +952,7 @@ msgstr "Retournez au tableau de bord par le chemin précédent..."
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid "Go to invoicing"
-msgstr "Allez à Facturation"
+msgstr "Aller à Facturation"
 
 #. module: account_accountant
 #. odoo-javascript

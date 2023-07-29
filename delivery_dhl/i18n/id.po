@@ -499,7 +499,7 @@ msgstr "Metode Pengiriman"
 #. module: delivery_dhl
 #: model:ir.model,name:delivery_dhl.model_stock_package_type
 msgid "Stock package type"
-msgstr ""
+msgstr "Tipe paket stok"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__t

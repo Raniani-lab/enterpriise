@@ -40,8 +40,7 @@ msgstr "Bloqué"
 #: code:addons/mrp_workorder_plm/wizard/propose_change.py:0
 #, python-format
 msgid "BoM feedback for not found step: %s (%s)"
-msgstr ""
-"Retour d'expérience de la nomenclature sur l'étape non trouvée : %s (%s)"
+msgstr "Feedback de la nomenclature sur l'étape non trouvée : %s (%s)"
 
 #. module: mrp_workorder_plm
 #: model:ir.model.fields,help:mrp_workorder_plm.field_mrp_eco_routing_change__test_type

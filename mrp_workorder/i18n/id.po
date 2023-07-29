@@ -37,7 +37,7 @@ msgstr ""
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.res_config_settings_view_form
 msgid "<i class=\"fa fa-print\"/> Print barcode commands"
-msgstr ""
+msgstr "<i class=\"fa fa-print\"/> Cetak command barcode"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_operation_form_view
@@ -304,7 +304,7 @@ msgstr "Tanggal"
 #. module: mrp_workorder
 #: model:ir.model.fields,help:mrp_workorder.field_quality_point__test_type_id
 msgid "Defines the type of the quality control point."
-msgstr ""
+msgstr "Mendefinisikan tipe control point kualitas."
 
 #. module: mrp_workorder
 #. odoo-javascript
@@ -351,7 +351,7 @@ msgstr "Pastikan produk yang disimpan di gudang Anda dapat dilacak."
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__finished_lot_id
 msgid "Finished Lot/Serial"
-msgstr ""
+msgstr "Lot/Seri Selesai"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
@@ -424,6 +424,8 @@ msgid ""
 "In case of Quality Check by Quantity, Move Line on which the Quality Check "
 "applies"
 msgstr ""
+"Dalam kasus Pemeriksaan Kualitas berdasarkan Kuantitas, Pindahkan Baris di "
+"mana Pemeriksaan Kualitas berlaku"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.add_quality_check_from_tablet
@@ -440,7 +442,7 @@ msgstr ""
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_routing_workcenter__quality_point_count
 msgid "Instructions"
-msgstr ""
+msgstr "Instruksi"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,help:mrp_workorder.field_mrp_workorder__move_line_ids
@@ -703,7 +705,7 @@ msgstr ""
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.quality_check_view_form_tablet
 msgid "Print Labels"
-msgstr ""
+msgstr "Cetak Label"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder_additional_product__product_id
@@ -764,43 +766,43 @@ msgstr "Kualitas"
 #: model:ir.model,name:mrp_workorder.model_quality_alert
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__quality_alert_ids
 msgid "Quality Alert"
-msgstr ""
+msgstr "Peringatan Kualitas"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__quality_alert_count
 msgid "Quality Alert Count"
-msgstr ""
+msgstr "Jumlah Peringatan Kualitas"
 
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_quality_check
 msgid "Quality Check"
-msgstr ""
+msgstr "Pemeriksaan Kualita"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__quality_check_fail
 msgid "Quality Check Fail"
-msgstr ""
+msgstr "Pemeriksaan Kualitas Gagal"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__quality_check_todo
 msgid "Quality Check Todo"
-msgstr ""
+msgstr "Pemeriksaan Kualitas untuk Dilakukan"
 
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_quality_point
 msgid "Quality Control Point"
-msgstr ""
+msgstr "Control Point Kualitas"
 
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_quality_point_test_type
 msgid "Quality Control Test Type"
-msgstr ""
+msgstr "Tipe Test Quality Control"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_routing_workcenter__quality_point_ids
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__quality_point_ids
 msgid "Quality Point"
-msgstr ""
+msgstr "Quality Point"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.view_routing_steps_search
@@ -810,7 +812,7 @@ msgstr ""
 #. module: mrp_workorder
 #: model:ir.model.fields,help:mrp_workorder.field_quality_point__product_ids
 msgid "Quality Point will apply to every selected Products."
-msgstr ""
+msgstr "Quality Point akan diterapkan ke setiap Produk yang dipilih."
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__quality_state
@@ -969,7 +971,7 @@ msgstr "Pergerakan Stok"
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__move_line_id
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__move_line_id
 msgid "Stock Move Line"
-msgstr ""
+msgstr "Stock Move Line"
 
 #. module: mrp_workorder
 #: model:product.template,name:mrp_workorder.product_template_stool
@@ -1001,13 +1003,13 @@ msgstr ""
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__test_type
 msgid "Technical name"
-msgstr ""
+msgstr "Nama tekni"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__test_type_id
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__test_type_id
 msgid "Test Type"
-msgstr ""
+msgstr "Tipe Tes"
 
 #. module: mrp_workorder
 #. odoo-python
@@ -1229,7 +1231,7 @@ msgstr "Anda harus memberikan nomor seri/lot untuk produk jadi"
 #: code:addons/mrp_workorder/models/mrp_workorder.py:0
 #, python-format
 msgid "You still need to do the quality checks!"
-msgstr ""
+msgstr "Anda masih harus melakukan pemeriksaan kualitas!"
 
 #. module: mrp_workorder
 #: model:ir.model.fields.selection,name:mrp_workorder.selection__quality_point__test_report_type__zpl

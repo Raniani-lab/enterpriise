@@ -92,8 +92,8 @@ msgid ""
 "A Python dictionary that will be evaluated to provide default values when "
 "creating new records for this alias."
 msgstr ""
-"Um dicionário python que será avaliado para gerar valores padrão quando "
-"forem criados novos registros para este apelido."
+"Um dicionário python que será avaliado para fornecer valores padrões ao "
+"criar novos registros para este alias."
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_needaction
@@ -165,12 +165,12 @@ msgstr "Nome do Apelido"
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_domain
 msgid "Alias domain"
-msgstr "Apelido do domínio"
+msgstr "Domínio do alias"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_model_id
 msgid "Aliased Model"
-msgstr "Modelo Apelidado"
+msgstr "Modelo de alias"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.view_document_search_mrp_plm

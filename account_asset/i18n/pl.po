@@ -661,7 +661,7 @@ msgstr "Anuluj środek"
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__state__cancelled
 msgid "Cancelled"
-msgstr "Anulowano"
+msgstr "Anulowane"
 
 #. module: account_asset
 #. odoo-python

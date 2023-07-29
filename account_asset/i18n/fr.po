@@ -239,7 +239,7 @@ msgstr "Compte utilisé pour enregistrer les charges constatées d'avance"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Account used to record the deferred income"
-msgstr "Compte utilisé pour l'enregistrement du revenu constaté d'avance"
+msgstr "Compte utilisé pour l'enregistrement des produits constatés d'avance"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__account_asset_id

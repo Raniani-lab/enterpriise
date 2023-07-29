@@ -53,7 +53,7 @@ msgstr "Aplikant"
 #. module: documents_hr_recruitment
 #: model:documents.tag,name:documents_hr_recruitment.documents_recruitment_sheet_tag
 msgid "Cancelled"
-msgstr "Anulowano"
+msgstr "Anulowane"
 
 #. module: documents_hr_recruitment
 #: model_terms:ir.ui.view,arch_db:documents_hr_recruitment.res_config_settings_view_form

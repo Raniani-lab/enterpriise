@@ -71,7 +71,7 @@ msgstr "إلغاء العملية "
 #: code:addons/stock_barcode_picking_batch/models/stock_picking_batch.py:0
 #, python-format
 msgid "Cancel this batch transfer ?"
-msgstr "إلغاء تحويل الدفعة هذا؟ "
+msgstr "إلغاء عملية النقل على دفعات؟ "
 
 #. module: stock_barcode_picking_batch
 #: model_terms:ir.ui.view,arch_db:stock_barcode_picking_batch.stock_barcode_batch_picking_view_info

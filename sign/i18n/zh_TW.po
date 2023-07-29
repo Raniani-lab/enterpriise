@@ -1591,7 +1591,7 @@ msgstr "In favorites, remove it"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_log__log_hash
 msgid "Inalterability Hash"
-msgstr "不可更改性複述"
+msgstr "不變性雜湊值"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_item_view_form

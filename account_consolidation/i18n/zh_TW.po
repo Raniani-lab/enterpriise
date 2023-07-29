@@ -1399,7 +1399,7 @@ msgstr "縣市"
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_res_company__consolidation_dashboard_onboarding_state
 msgid "State Of The Account Consolidation Dashboard Onboarding Panel"
-msgstr ""
+msgstr "賬目合併概覽的使用簡介版面狀態"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_res_company__consolidation_setup_ccoa_state
@@ -1486,7 +1486,7 @@ msgstr "The Scope of Consolidation"
 msgid ""
 "The rate used for the consolidation (basically this rate will multiply the "
 "sum of everything"
-msgstr ""
+msgstr "合併用匯率 (基本上這個匯率將乘以所有總額"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_journal_form
@@ -1598,7 +1598,7 @@ msgstr "XLSX"
 msgid ""
 "You can here define complex consolidations based on other sub-"
 "consolidations, as part of a whole scheme"
-msgstr ""
+msgstr "你可在此定義基於其他次級合併的複雜合併，作為整個方案的一部份"
 
 #. module: account_consolidation
 #. odoo-python

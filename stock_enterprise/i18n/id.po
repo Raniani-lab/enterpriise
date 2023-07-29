@@ -29,12 +29,12 @@ msgstr "Tersedia"
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_pivot_view
 msgid "Average Cycle Time (Days)"
-msgstr ""
+msgstr "Rata-Rata Waktu Siklus (Hari)"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_pivot_view
 msgid "Average Delay (Days)"
-msgstr ""
+msgstr "Rata-Rata Penundaan (Hari)"
 
 #. module: stock_enterprise
 #: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__cancel
@@ -59,12 +59,12 @@ msgstr "Pelanggan"
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_form_view
 msgid "Cycle Time"
-msgstr ""
+msgstr "Waktu Siklu"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__cycle_time
 msgid "Cycle Time (Days)"
-msgstr ""
+msgstr "Waktu Siklus (Hari)"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_form_view
@@ -79,7 +79,7 @@ msgstr "Tunda"
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__delay
 msgid "Delay (Days)"
-msgstr ""
+msgstr "Penundaan (Hari)"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__display_name
@@ -94,12 +94,12 @@ msgstr "Selesai"
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_search_view
 msgid "Done Deliveries"
-msgstr ""
+msgstr "Pengiriman Selesai"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_search_view
 msgid "Done Receipts"
-msgstr ""
+msgstr "Tanda Terima Selesai"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_search_view
@@ -129,7 +129,7 @@ msgstr "Terlambat"
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__is_backorder
 msgid "Is a Backorder"
-msgstr ""
+msgstr "Adalah Backorder"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report____last_update
@@ -169,7 +169,7 @@ msgstr "Performa"
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__picking_name
 msgid "Picking Name"
-msgstr ""
+msgstr "Nama Picking"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__product_id
@@ -215,12 +215,12 @@ msgstr "Status"
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_pivot_view
 msgid "Stock Overview"
-msgstr ""
+msgstr "Gambaran Umum Stok"
 
 #. module: stock_enterprise
 #: model:ir.model,name:stock_enterprise.model_stock_report
 msgid "Stock Report"
-msgstr ""
+msgstr "Laporan Stok"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__date_done
@@ -255,4 +255,4 @@ msgstr "Menunggu Ketersediaan"
 #. module: stock_enterprise
 #: model:ir.actions.act_window,name:stock_enterprise.stock_report_action_performance
 msgid "Warehouse Analysis"
-msgstr ""
+msgstr "Analisis Gudang"

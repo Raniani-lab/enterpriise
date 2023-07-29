@@ -79,12 +79,12 @@ msgstr "ID"
 #. module: mrp_workorder_iot
 #: model:ir.model,name:mrp_workorder_iot.model_iot_device
 msgid "IOT Device"
-msgstr ""
+msgstr "Perangkat IOT"
 
 #. module: mrp_workorder_iot
 #: model:ir.model,name:mrp_workorder_iot.model_iot_trigger
 msgid "IOT Trigger"
-msgstr ""
+msgstr "Pemicu IOT"
 
 #. module: mrp_workorder_iot
 #: model_terms:ir.ui.view,arch_db:mrp_workorder_iot.iot_device_view_form
@@ -142,12 +142,12 @@ msgstr "Sebelum"
 #. module: mrp_workorder_iot
 #: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__print-slip
 msgid "Print Delivery Slip"
-msgstr ""
+msgstr "Cetak Slip Pengiriman"
 
 #. module: mrp_workorder_iot
 #: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__print
 msgid "Print Labels"
-msgstr ""
+msgstr "Cetak Label"
 
 #. module: mrp_workorder_iot
 #: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__print-op
@@ -157,7 +157,7 @@ msgstr ""
 #. module: mrp_workorder_iot
 #: model:ir.model,name:mrp_workorder_iot.model_quality_check
 msgid "Quality Check"
-msgstr ""
+msgstr "Pemeriksaan Kualita"
 
 #. module: mrp_workorder_iot
 #: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__record

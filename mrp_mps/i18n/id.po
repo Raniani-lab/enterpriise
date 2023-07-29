@@ -93,7 +93,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:mrp_mps.action_mrp_mps_form_view
 #, python-format
 msgid "Add a Product"
-msgstr ""
+msgstr "Tambahkan Produk"
 
 #. module: mrp_mps
 #. odoo-javascript
@@ -185,7 +185,7 @@ msgstr "Tanggal"
 #. module: mrp_mps
 #: model:ir.model.fields,help:mrp_mps.field_mrp_production_schedule__product_uom_id
 msgid "Default unit of measure used for all stock operations."
-msgstr ""
+msgstr "Satuan unit default yang digunakan untuk semua operasi stok."
 
 #. module: mrp_mps
 #: model:ir.model.fields,help:mrp_mps.field_res_company__manufacturing_period
@@ -298,7 +298,7 @@ msgstr "Laporan Forecast"
 #: code:addons/mrp_mps/static/src/components/line.xml:0
 #, python-format
 msgid "Forecasted"
-msgstr ""
+msgstr "Diperkirakan"
 
 #. module: mrp_mps
 #. odoo-javascript
@@ -522,7 +522,7 @@ msgstr "Penerimaan"
 #: code:addons/mrp_mps/static/src/search/mrp_mps_control_panel.xml:0
 #, python-format
 msgid "Replenish"
-msgstr ""
+msgstr "Replenis"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_product_forecast__replenish_qty_updated

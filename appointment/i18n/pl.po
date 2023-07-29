@@ -1115,7 +1115,7 @@ msgstr "Google Agenda"
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_answer_input_view_search
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_search
 msgid "Group By"
-msgstr "Grupuj wg."
+msgstr "Grupuj wg"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__has_message
@@ -2166,7 +2166,7 @@ msgstr ""
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_type__category__website
 msgid "Website"
-msgstr "Strona WWW"
+msgstr "Strona internetowa"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__website_message_ids

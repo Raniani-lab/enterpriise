@@ -162,7 +162,7 @@ msgstr "URN post LinkedIn"
 #. module: social_linkedin
 #: model_terms:ir.ui.view,arch_db:social_linkedin.res_config_settings_view_form
 msgid "Linkedin Developer Account"
-msgstr ""
+msgstr "Account sviluppatore LinkedIn"
 
 #. module: social_linkedin
 #: model:ir.model.fields,field_description:social_linkedin.field_social_media__media_type

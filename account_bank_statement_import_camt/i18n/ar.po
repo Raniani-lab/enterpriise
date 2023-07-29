@@ -1386,7 +1386,7 @@ msgstr "ضمانات العقود الآجلة المملوكة لوسيط ال�
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Option client owned collateral"
-msgstr ""
+msgstr "ضمانات العقود الآجلة المملوكة لعميل الخيارات "
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1725,7 +1725,7 @@ msgstr "تحويل الرصيد من خلال SEPA "
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Same Day Value Credit Transfer"
-msgstr ""
+msgstr "تحويل الرصيد بقيمة نفس اليوم "
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1903,7 +1903,7 @@ msgstr "القروض المشتركة "
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "TBA closing"
-msgstr ""
+msgstr "إغلاق TBA "
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1936,7 +1936,7 @@ msgstr ""
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Trade"
-msgstr ""
+msgstr "تداول "
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0

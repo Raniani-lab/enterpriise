@@ -4,7 +4,6 @@
 # 
 # Translators:
 # f91684c3ff9ec3e650d5c8461e534581_686eae3 <449b96d9f63071f94d89e129677b83de_366193>, 2022
-# Michael Hofer, 2023
 # Martin Trigaux, 2023
 # Larissa Manderfeld, 2023
 # 
@@ -401,7 +400,7 @@ msgid ""
 "<span class=\"o_form_label\">Tax Return Periodicity</span>\n"
 "                        <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" role=\"img\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\"/>"
 msgstr ""
-"<span class=\"o_form_label\">Regelmäßige Steuerrückzahlungen</span>\n"
+"<span class=\"o_form_label\">Periodizität der Steuererklärung</span>\n"
 "                                   <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" role=\"img\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\"/>"
 
 #. module: account_reports
@@ -999,7 +998,7 @@ msgstr "Cashflow-Bericht Benutzerdefinierter Handler"
 #: model:ir.actions.client,name:account_reports.action_account_report_cs
 #: model:ir.ui.menu,name:account_reports.menu_action_account_report_cash_flow
 msgid "Cash Flow Statement"
-msgstr "Cashflow-Rechnung"
+msgstr "Kapitalflussrechnung"
 
 #. module: account_reports
 #. odoo-python

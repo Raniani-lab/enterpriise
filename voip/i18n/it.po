@@ -849,7 +849,7 @@ msgstr "Chiamata rifiutata in arrivo da %s"
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "Remember ?"
-msgstr ""
+msgstr "Ricorda ?"
 
 #. module: voip
 #. odoo-javascript

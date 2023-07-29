@@ -215,7 +215,7 @@ msgstr "Todos"
 #. module: quality_control
 #: model:ir.model.fields.selection,name:quality_control.selection__stock_move_line__check_state__pass
 msgid "All checks passed"
-msgstr "Todas las revisiones pasaron"
+msgstr "Se pasaron todas las pruebas de control de calidad"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_search
@@ -816,7 +816,7 @@ msgstr "Número de alertas de calidad"
 #: model:ir.actions.act_window,name:quality_control.quality_alert_stage_action
 #: model:ir.ui.menu,name:quality_control.menu_quality_config_alert_stage
 msgid "Quality Alert Stages"
-msgstr "Fases de alertas de calidad"
+msgstr "Etapas de alertas de calidad"
 
 #. module: quality_control
 #: model_terms:ir.actions.act_window,help:quality_control.quality_alert_stage_action
@@ -824,8 +824,8 @@ msgid ""
 "Quality Alert stages define the different steps a quality alert should go "
 "through."
 msgstr ""
-"Las fases de las alertas de calidad definen los diferentes pasos por los que"
-" ha de pasar una alerta de calidad."
+"Las etapas de alerta de calidad definen los pasos que debe seguir una alerta"
+" de calidad."
 
 #. module: quality_control
 #: model:ir.actions.act_window,name:quality_control.quality_alert_action_check
@@ -1044,7 +1044,7 @@ msgstr "Responsable"
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__show_lot_text
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__show_lot_text
 msgid "Show Lot Text"
-msgstr "Mostrar lote del texto"
+msgstr "Mostrar texto del lote"
 
 #. module: quality_control
 #: model:ir.model.fields.selection,name:quality_control.selection__stock_move_line__check_state__fail

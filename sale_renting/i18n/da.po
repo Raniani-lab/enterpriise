@@ -5,10 +5,10 @@
 # Translators:
 # Sanne Kristensen <sanne@vkdata.dk>, 2022
 # Pernille Kristensen <pernillekristensen1994@gmail.com>, 2022
-# Mads Søndergaard, 2022
-# lhmflexerp <lhm@flexerp.dk>, 2022
+# Lærke Hedegaard Mathiasen <lhm@flexerp.dk>, 2022
 # Martin Trigaux, 2022
 # Mads Søndergaard, 2022
+# Mads Søndergaard, 2023
 # 
 msgid ""
 msgstr ""
@@ -16,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Mads Søndergaard, 2022\n"
+"Last-Translator: Mads Søndergaard, 2023\n"
 "Language-Team: Danish (https://app.transifex.com/odoo/teams/41243/da/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -875,7 +875,7 @@ msgstr "Produkt til leje (skal kunne udlejes)"
 #: model:ir.actions.act_window,name:sale_renting.rental_product_template_action
 #: model:ir.ui.menu,name:sale_renting.menu_rental_products
 msgid "Products"
-msgstr "Varer"
+msgstr "Produkter"
 
 #. module: sale_renting
 #: model:product.template,name:sale_renting.rental_product_1_product_template

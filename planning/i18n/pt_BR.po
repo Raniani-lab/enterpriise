@@ -891,7 +891,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 #, python-format
 msgid "Draft"
-msgstr "Provisório"
+msgstr "Rascunho"
 
 #. module: planning
 #: model_terms:digest.tip,tip_description:planning.digest_tip_planning_0
@@ -1355,7 +1355,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:planning.planning_role_view_search
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "My Team"
-msgstr "Meu Time"
+msgstr "Minha equipe"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_role__name

@@ -423,7 +423,7 @@ msgstr "Le attività sono state pianificate con successo."
 #: code:addons/project_enterprise/models/project_task.py:0
 #, python-format
 msgid "This Progress Bar is not implemented."
-msgstr ""
+msgstr "L'indicatore di stato non è implementato."
 
 #. module: project_enterprise
 #. odoo-python

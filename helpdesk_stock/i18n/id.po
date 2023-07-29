@@ -94,7 +94,7 @@ msgstr "Return Picking"
 #. module: helpdesk_stock
 #: model_terms:ir.ui.view,arch_db:helpdesk_stock.helpdesk_ticket_view_form_inherit_helpdesk_stock
 msgid "Returns"
-msgstr ""
+msgstr "Pengembalian"
 
 #. module: helpdesk_stock
 #: model:ir.model,name:helpdesk_stock.model_helpdesk_sla_report_analysis

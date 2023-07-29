@@ -62,7 +62,7 @@ msgstr "Dimensione media del contratto"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Average deal size"
-msgstr ""
+msgstr "Dimensione media contratto"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -140,7 +140,7 @@ msgstr "Attuale"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Current period"
-msgstr ""
+msgstr "Periodo attuale"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -154,21 +154,21 @@ msgstr "Giorni da assegnare"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Days to Win"
-msgstr ""
+msgstr "Giorni per vincere"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Days to assign"
-msgstr ""
+msgstr "Giorni per assegnare"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Days to win"
-msgstr ""
+msgstr "Giorni per vincere"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -211,7 +211,7 @@ msgstr "KPI"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Leads by Month"
-msgstr ""
+msgstr "Contatti per mese"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -236,7 +236,7 @@ msgstr "Medio"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Open opportunities"
-msgstr ""
+msgstr "Opportunità aperte"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -265,7 +265,7 @@ msgstr "Periodo"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Pipeline Stages"
-msgstr ""
+msgstr "Fasi flusso"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -281,7 +281,7 @@ msgstr "Precedente"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Previous period"
-msgstr ""
+msgstr "Periodo precedente"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -364,21 +364,21 @@ msgstr "Etichette"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "To close"
-msgstr ""
+msgstr "Da chiudere"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Top Campaigns"
-msgstr ""
+msgstr "Campagne migliori"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Cities"
-msgstr ""
+msgstr "Città migliori"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -408,7 +408,7 @@ msgstr "Medie migliori"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Opportunities"
-msgstr ""
+msgstr "Opportunità migliori"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -446,28 +446,28 @@ msgstr "Tag migliori"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Total days to assign"
-msgstr ""
+msgstr "Giorni totali da assegnare"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Total days to win"
-msgstr ""
+msgstr "Giorni totali per vincere"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Total leads"
-msgstr ""
+msgstr "Contatti in totale"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Won leads"
-msgstr ""
+msgstr "Contatti vinti"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript

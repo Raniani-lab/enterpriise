@@ -1109,6 +1109,7 @@ msgid ""
 "There are no timesheets to reset to draft or they have already been "
 "invoiced."
 msgstr ""
+"No hay partes de horas que restablecer a borradores o ya se facturaron."
 
 #. module: timesheet_grid
 #. odoo-python

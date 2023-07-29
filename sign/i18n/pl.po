@@ -726,7 +726,7 @@ msgstr "Anuluj"
 #: model:ir.model.fields.selection,name:sign.selection__sign_request_item__state__canceled
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Canceled"
-msgstr "Anulowano"
+msgstr "Anulowane"
 
 #. module: sign
 #. odoo-javascript
@@ -1502,7 +1502,7 @@ msgstr "Podsumowanie zielonych oszczędności"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Group By"
-msgstr "Grupuj wg."
+msgstr "Grupuj wg"
 
 #. module: sign
 #: model:sign.template.tag,name:sign.sign_template_tag_1

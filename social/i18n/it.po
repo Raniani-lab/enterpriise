@@ -5,6 +5,7 @@
 # Translators:
 # Friederike Fasterling-Nesselbosch, 2022
 # Martin Trigaux, 2022
+# Marianna Ciofani, 2023
 # Sergio Zanchetta <primes2h@gmail.com>, 2023
 # 
 msgid ""
@@ -201,7 +202,7 @@ msgstr ""
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_template_view_form
 msgid "Before posting, links will be converted to be trackable."
-msgstr ""
+msgstr "Prima di pubblicare il post, i link verrano resi tracciabili."
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_stream_post_view_search
@@ -315,6 +316,8 @@ msgid ""
 "Contains the social media handle of the person that created this account. "
 "E.g: '@odoo.official' for the 'Odoo' Twitter account"
 msgstr ""
+"Il campo contiene lo pseudonimio social della persona che ha creato "
+"l'account. Ad es. \"@odoo.official\" per l'account Twitter di Odoo"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_live_post__message
@@ -577,7 +580,7 @@ msgstr "Raggruppa per"
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_account__social_account_handle
 msgid "Handle / Short Name"
-msgstr ""
+msgstr "Pseudonimo/Nome breve"
 
 #. module: social
 #. odoo-javascript
@@ -884,7 +887,7 @@ msgstr "Azioni principali"
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__max_post_length
 msgid "Max Post Length"
-msgstr ""
+msgstr "Lunghezza max post"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__media_ids
@@ -947,6 +950,8 @@ msgid ""
 "Most social.live.posts directly go from Ready to Posted/Failed since they result of a single call to the third party API.\n"
 "        A 'Posting' state is also available for those that are sent through batching (like push notifications)."
 msgstr ""
+"La maggior parte dei post social dal vivo passano direttamente da Pronto a Pubblicato/Non riuscito poiché sono il risultato si una singola chiamata alle API di terze parti.\n"
+"        Per i post inviati tramite raggruppamenti (come le notifiche push) è anche disponibile uno stato \"Pubblicato\"."
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__my_activity_date_deadline
@@ -1384,6 +1389,8 @@ msgstr ""
 msgid ""
 "Set a maximum number of characters can be posted in post. 0 for no limit."
 msgstr ""
+"Configura il  numero massimo di caratteri che possono essere utilizzati in "
+"un post: da 0 a nessun limite."
 
 #. module: social
 #: model:ir.actions.act_window,name:social.action_social_global_settings
@@ -1623,7 +1630,7 @@ msgstr "Sincronizza"
 #: code:addons/social/models/social_post_template.py:0
 #, python-format
 msgid "The 'message' field is required for post ID %s"
-msgstr ""
+msgstr "Il campo \"messaggio\" è richiesto per l'ID post %s"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_post__account_ids
@@ -1675,7 +1682,7 @@ msgstr "Social network collegati agli account social selezionati."
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__has_post_errors
 msgid "There are post errors on sub-posts"
-msgstr ""
+msgstr "Sono presenti errori nei post secondari"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_media__csrf_token

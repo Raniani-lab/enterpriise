@@ -6,6 +6,7 @@
 # Benson <Benson.Dr@Gmail.com>, 2023
 # Martin Trigaux, 2023
 # Tony Ng, 2023
+# Michael Yeung, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Tony Ng, 2023\n"
+"Last-Translator: Michael Yeung, 2023\n"
 "Language-Team: Chinese (Taiwan) (https://app.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -49,7 +50,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "$ -2,678.00"
-msgstr ""
+msgstr "$ -2,678.00"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -57,7 +58,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "$ 2,678.00"
-msgstr ""
+msgstr "$ 2,678.00"
 
 #. module: account_accountant
 #. odoo-python
@@ -82,7 +83,7 @@ msgstr "%(display_name_html)s 的未對賬金額 %(open_amount)s 將會減少 %(
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "-1,134.50"
-msgstr ""
+msgstr "-1,134.50"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_form
@@ -279,7 +280,7 @@ msgstr "新增標籤"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
 #, python-format
 msgid "All Transactions"
-msgstr ""
+msgstr "全部交易"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__fiscalyear_lock_date
@@ -365,7 +366,7 @@ msgstr "Anglo-Saxon會計"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
 #, python-format
 msgid "Back to"
-msgstr ""
+msgstr "返回"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__balance
@@ -961,7 +962,7 @@ msgstr "ID"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "INV/2032/0003"
-msgstr ""
+msgstr "INV/2032/0003"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -969,7 +970,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "INV/2032/0012"
-msgstr ""
+msgstr "INV/2032/0012"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_bank_rec_widget__to_check
@@ -1123,7 +1124,7 @@ msgstr "標籤"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
 msgid "Larry Smith"
-msgstr ""
+msgstr "Larry Smith"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -1535,7 +1536,7 @@ msgstr ""
 msgid ""
 "Prevents Journal entries creation prior to the defined date. Except for "
 "Accountants users."
-msgstr ""
+msgstr "除了會計用戶外，防止其他用戶於設定的日期前建立日記賬記項，"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_account_change_lock_date__tax_lock_date
@@ -1861,8 +1862,6 @@ msgid ""
 "The system will try to predict the accounts on vendor bill lines based on "
 "history of previous bills"
 msgstr ""
-"The system will try to predict the accounts on vendor bill lines based on "
-"history of previous bills"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -2146,17 +2145,17 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__exchange_diff
 msgid "exchange_diff"
-msgstr ""
+msgstr "兌換誤差"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__liquidity
 msgid "liquidity"
-msgstr ""
+msgstr "流動資金"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__manual
 msgid "manual"
-msgstr ""
+msgstr "手動"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__new_aml
@@ -2214,7 +2213,7 @@ msgstr "待檢查"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
 #, python-format
 msgid "transaction in"
-msgstr ""
+msgstr "交易在"
 
 #. module: account_accountant
 #. odoo-javascript

@@ -667,4 +667,4 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__warning_message
 msgid "Warning Message"
-msgstr ""
+msgstr "Pesan Peringatan"

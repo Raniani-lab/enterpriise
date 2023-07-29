@@ -321,7 +321,7 @@ msgstr "Widoczne na obecnej stronie"
 #: model:ir.model,name:website_helpdesk.model_website
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__website_id
 msgid "Website"
-msgstr "Strona WWW"
+msgstr "Strona internetowa"
 
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__website_menu_id

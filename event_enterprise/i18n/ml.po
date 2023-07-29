@@ -38,7 +38,7 @@ msgstr "പങ്കെടുക്കുന്നവർ"
 #. module: event_enterprise
 #: model:ir.model,name:event_enterprise.model_event_registration
 msgid "Event Registration"
-msgstr ""
+msgstr "ഇവന്റ് രജിസ്ട്രേഷൻ"
 
 #. module: event_enterprise
 #: model:ir.model.fields,field_description:event_enterprise.field_event_registration__event_begin_date

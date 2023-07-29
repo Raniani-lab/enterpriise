@@ -523,7 +523,7 @@ msgstr "Metode Pengiriman"
 #. module: delivery_ups
 #: model:ir.model,name:delivery_ups.model_stock_package_type
 msgid "Stock package type"
-msgstr ""
+msgstr "Tipe paket stok"
 
 #. module: delivery_ups
 #. odoo-python

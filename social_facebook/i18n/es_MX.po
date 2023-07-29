@@ -111,7 +111,7 @@ msgstr "ID de la cuenta de Facebook"
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_res_config_settings__facebook_app_id
 msgid "Facebook App ID"
-msgstr "ID de la aplicación de Faccebook"
+msgstr "ID de la aplicación de Facebook"
 
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_res_config_settings__facebook_client_secret
@@ -225,7 +225,7 @@ msgstr ""
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.facebook_preview
 msgid "Published by Facebook Page •"
-msgstr "Se publicó en la página de Facebook •"
+msgstr "Publicado por página de Facebook •"
 
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_social_stream_post__facebook_reach

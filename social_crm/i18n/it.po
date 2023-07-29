@@ -34,12 +34,12 @@ msgstr ""
 #. module: social_crm
 #: model_terms:ir.ui.view,arch_db:social_crm.social_post_to_lead_description
 msgid "<span>at</span>"
-msgstr ""
+msgstr "<span>in</span>"
 
 #. module: social_crm
 #: model_terms:ir.ui.view,arch_db:social_crm.social_post_to_lead_description
 msgid "<span>posted on</span>"
-msgstr ""
+msgstr "<span>pubblicato il</span>"
 
 #. module: social_crm
 #: model_terms:ir.ui.view,arch_db:social_crm.social_post_to_lead_view_form
@@ -49,7 +49,7 @@ msgstr "Annulla"
 #. module: social_crm
 #: model:ir.model.fields,field_description:social_crm.field_social_post_to_lead__conversion_source
 msgid "Conversion Source"
-msgstr ""
+msgstr "Origine conversione"
 
 #. module: social_crm
 #: model_terms:ir.ui.view,arch_db:social_crm.social_post_to_lead_view_form
@@ -60,12 +60,12 @@ msgstr "Converta"
 #: model:ir.actions.act_window,name:social_crm.social_post_to_lead_action
 #: model_terms:ir.ui.view,arch_db:social_crm.social_post_to_lead_view_form
 msgid "Convert Post to Lead"
-msgstr ""
+msgstr "Converti post in contatto"
 
 #. module: social_crm
 #: model:ir.model,name:social_crm.model_social_post_to_lead
 msgid "Convert Social Post to Lead"
-msgstr ""
+msgstr "Converti post social in contatto"
 
 #. module: social_crm
 #. odoo-javascript
@@ -114,7 +114,7 @@ msgstr "Da un commento"
 #. module: social_crm
 #: model:ir.model.fields.selection,name:social_crm.selection__social_post_to_lead__conversion_source__stream_post
 msgid "From a stream post"
-msgstr ""
+msgstr "Da un flusso"
 
 #. module: social_crm
 #: model:ir.model.fields,field_description:social_crm.field_social_post_to_lead__id
@@ -159,17 +159,17 @@ msgstr "Opportunità:"
 #. module: social_crm
 #: model:ir.model.fields,field_description:social_crm.field_social_post_to_lead__author_name
 msgid "Post Author Name"
-msgstr ""
+msgstr "Nome autore post"
 
 #. module: social_crm
 #: model:ir.model.fields,field_description:social_crm.field_social_post_to_lead__post_content
 msgid "Post Content"
-msgstr ""
+msgstr "Contenuto post"
 
 #. module: social_crm
 #: model:ir.model.fields,field_description:social_crm.field_social_post_to_lead__post_datetime
 msgid "Post Datetime"
-msgstr ""
+msgstr "Data e ora post"
 
 #. module: social_crm
 #: model:ir.model.fields,field_description:social_crm.field_social_post_to_lead__post_link
@@ -186,7 +186,7 @@ msgstr "Cliente collegato"
 #: code:addons/social_crm/wizard/social_post_to_lead.py:0
 #, python-format
 msgid "Request from %s"
-msgstr ""
+msgstr "Richiesto da %s"
 
 #. module: social_crm
 #: model:ir.model.fields,field_description:social_crm.field_social_post_to_lead__social_account_id
@@ -208,7 +208,7 @@ msgstr "Post flusso social"
 #: code:addons/social_crm/wizard/social_post_to_lead.py:0
 #, python-format
 msgid "The lead has been created successfully."
-msgstr ""
+msgstr "Il contatto è stato creato con successo."
 
 #. module: social_crm
 #: model:ir.model.fields,field_description:social_crm.field_social_post__use_leads
@@ -218,14 +218,14 @@ msgstr "Usa contatti"
 #. module: social_crm
 #: model:ir.model.fields,field_description:social_crm.field_social_post_to_lead__utm_campaign_id
 msgid "Utm Campaign"
-msgstr ""
+msgstr "Campagna UTM"
 
 #. module: social_crm
 #: model:ir.model.fields,field_description:social_crm.field_social_post_to_lead__utm_medium_id
 msgid "Utm Medium"
-msgstr ""
+msgstr "Mezzo UTM"
 
 #. module: social_crm
 #: model:ir.model.fields,field_description:social_crm.field_social_post_to_lead__utm_source_id
 msgid "Utm Source"
-msgstr ""
+msgstr "Origine UTM"

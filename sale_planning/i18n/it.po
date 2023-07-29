@@ -28,6 +28,9 @@ msgid ""
 "                        as\n"
 "                    </span>"
 msgstr ""
+"<span attrs=\"{'invisible': [('planning_enabled', '=', False)]}\" class=\"oe_inline me-2\">\n"
+"                        come\n"
+"                    </span>"
 
 #. module: sale_planning
 #: model_terms:ir.ui.view,arch_db:sale_planning.view_order_form_inherit_sale_planning
@@ -187,7 +190,7 @@ msgstr "Pianificazione resoconto di analisi"
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_sale_order__planning_first_sale_line_id
 msgid "Planning First Sale Line"
-msgstr ""
+msgstr "Pianificazione prima riga di vendita"
 
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_sale_order__planning_hours_planned
@@ -221,7 +224,7 @@ msgstr "Turno pianificato"
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_sale_order_line__planning_slot_ids
 msgid "Planning Slot"
-msgstr ""
+msgstr "Slot di pianificazione"
 
 #. module: sale_planning
 #: model:ir.model,name:sale_planning.model_product_template
@@ -231,7 +234,7 @@ msgstr "Prodotto"
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_planning_analysis_report__role_product_ids
 msgid "Role Product"
-msgstr ""
+msgstr "Ruolo prodotto"
 
 #. module: sale_planning
 #: model:ir.model,name:sale_planning.model_sale_order

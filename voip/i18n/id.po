@@ -112,7 +112,7 @@ msgstr ""
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__res_users_settings__how_to_call_on_mobile__ask
 msgid "Ask"
-msgstr ""
+msgstr "Tanya"
 
 #. module: voip
 #. odoo-javascript

@@ -183,7 +183,7 @@ msgstr "Anuluj"
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_rental_schedule__rental_status__cancel
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_rental_schedule__state__cancel
 msgid "Cancelled"
-msgstr "Anulowano"
+msgstr "Anulowane"
 
 #. module: sale_renting
 #. odoo-javascript
@@ -513,7 +513,7 @@ msgstr "Idź do menu zamówień."
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_report_search_view
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
 msgid "Group By"
-msgstr "Grupuj wg."
+msgstr "Grupuj wg"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard__has_late_lines

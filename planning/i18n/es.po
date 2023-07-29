@@ -661,7 +661,7 @@ msgstr "¿El empleado puede eliminar sus asignaciones?"
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.hr_employee_view_form_simplified
 msgid "Chat"
-msgstr "Charla"
+msgstr "Chat"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_role__color
@@ -2346,7 +2346,7 @@ msgstr "No puede enviar un espacio antiguo sin asignar"
 #: code:addons/planning/models/planning.py:0
 #, python-format
 msgid "You don't have the right to self assign."
-msgstr "No tiene los derechos para asignarse a usted mismo."
+msgstr "No tiene los permisos para asignarse a usted mismo."
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.slot_unassign

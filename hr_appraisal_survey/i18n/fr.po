@@ -29,7 +29,7 @@ msgstr ""
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_survey_page_statistics_header
 msgid "- Feedback requested by -"
-msgstr "- Retour d'expérience demandé par - "
+msgstr "- Feedback demandé par - "
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.survey,description:hr_appraisal_survey.appraisal_360_feedback_template
@@ -37,13 +37,13 @@ msgid ""
 "360 Degree Feedback is a system or process in which managers will ask feedback from the people who work around the employee.\n"
 "            This typically includes the employee's manager, peers, and direct reports."
 msgstr ""
-"Le retour d'expérience à 360 degrés est un système ou un processus dans lequel les managers demandent des retours aux personnes qui travaillent au contact de l'employé. \n"
+"Le feedback à 360 degrés est un système ou un processus dans lequel les managers demandent des retours aux personnes qui travaillent au contact de l'employé. \n"
 "Ceci inclut généralement le manager de l'employé, ses pairs et ses subordonnés directs."
 
 #. module: hr_appraisal_survey
 #: model:survey.survey,title:hr_appraisal_survey.appraisal_360_feedback_template
 msgid "360 Feedback"
-msgstr "Retour d'expérience 360"
+msgstr "Feedback 360"
 
 #. module: hr_appraisal_survey
 #: model:mail.template,body_html:hr_appraisal_survey.mail_template_appraisal_ask_feedback
@@ -88,7 +88,7 @@ msgstr ""
 "                    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
 "                        Cher <t t-out=\"object.partner_id.name or ''\">Brandon Freeman</t>,\n"
 "                        <br><br>\n"
-"                        Un retour d'expérience a été demandé à propos de <t t-out=\"object.appraisal_id.employee_id.name or 'this'\">ce sujet</t>.\n"
+"                        Un feedback a été demandé à propos de <t t-out=\"object.appraisal_id.employee_id.name or 'this'\">ce sujet</t>.\n"
 "                        <br>\n"
 "                        Veuillez prendre le temps de remplir le sondage.\n"
 "                        <br><br>\n"
@@ -131,7 +131,7 @@ msgid ""
 "<span class=\"o_stat_text\">Feedback</span>\n"
 "                        <span class=\"o_stat_text\">Survey</span>"
 msgstr ""
-"<span class=\"o_stat_text\">Retour d'expérience</span>\n"
+"<span class=\"o_stat_text\">Feedback</span>\n"
 "                        <span class=\"o_stat_text\">Sondage</span>"
 
 #. module: hr_appraisal_survey
@@ -203,8 +203,8 @@ msgid ""
 "An appraisal feedback was requested. Please take time to fill the <a "
 "href=\"%s\" target=\"_blank\">survey</a>"
 msgstr ""
-"Un retour d'expérience en vue d'une évaluation a été demandé. Merci de "
-"prendre le temps de remplir <a href=\"%s\" target=\"_blank\">le sondage</a>"
+"Un feedback en vue d'une évaluation a été demandé. Merci de prendre le temps"
+" de remplir <a href=\"%s\" target=\"_blank\">le sondage</a>"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.arow_3_1_11
@@ -267,17 +267,17 @@ msgstr "Evaluateur "
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.appraisal_ask_feedback_view_form
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_view_form
 msgid "Ask Feedback"
-msgstr "Demander un retour d'expérience"
+msgstr "Demander un feedback"
 
 #. module: hr_appraisal_survey
 #: model:ir.model,name:hr_appraisal_survey.model_appraisal_ask_feedback
 msgid "Ask Feedback for Appraisal"
-msgstr "Demander un retour d'expérience pour l'évaluation"
+msgstr "Demander un feedback pour l'évaluation"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_hr_appraisal__employee_feedback_ids
 msgid "Asked Feedback"
-msgstr "Retours d'expérience demandés"
+msgstr "Feedbacks demandés"
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1
@@ -487,7 +487,7 @@ msgstr "Dépasse les normes et les attentes"
 #: code:addons/hr_appraisal_survey/wizard/appraisal_ask_feedback.py:0
 #, python-format
 msgid "Fill the feedback form on survey"
-msgstr "Remplir la formulaire de retour d'expérience "
+msgstr "Remplir la formulaire de feedback "
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__email_from
@@ -805,7 +805,7 @@ msgstr "Sondage"
 #: code:addons/hr_appraisal_survey/models/survey.py:0
 #, python-format
 msgid "Survey Feedback"
-msgstr "Retour d'expérience du sondage"
+msgstr "Feedback du sondage"
 
 #. module: hr_appraisal_survey
 #: model:ir.model,name:hr_appraisal_survey.model_survey_question_answer
@@ -913,9 +913,9 @@ msgid ""
 "This field is used with 360 Feedback setting on Appraisal App, the aim is to"
 " define a default Survey Template related to this department."
 msgstr ""
-"Ce champ est utilisé avec le paramètre Retour d'Expérience à 360 degrés sur "
-"l'app Évaluation, l'objectif est de définir un modèle de sondage par défaut "
-"lié à ce département."
+"Ce champ est utilisé avec le paramètre Feedback à 360 degrés sur l'app "
+"Évaluation, l'objectif est de définir un modèle de sondage par défaut lié à "
+"ce département."
 
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_survey_button_form_view

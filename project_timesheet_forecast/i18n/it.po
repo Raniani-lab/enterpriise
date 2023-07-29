@@ -37,7 +37,7 @@ msgstr "<span class=\"o_stat_text\">Registrate</span>"
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_planning_analysis_report__allocated_hours_cost
 msgid "Allocated Hours Cost"
-msgstr ""
+msgstr "Costo ore assegnate"
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,help:project_timesheet_forecast.field_planning_analysis_report__remaining_hours
@@ -152,7 +152,7 @@ msgstr "Mio team"
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.planning_slot_view_search_inherit_project_timesheet_forecast
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_forecast_view_search_inherit_project_timesheet_forecast
 msgid "No Timesheets"
-msgstr ""
+msgstr "Nessun foglio ore"
 
 #. module: project_timesheet_forecast
 #: model_terms:ir.actions.act_window,help:project_timesheet_forecast.project_timesheet_forecast_report_action
@@ -264,6 +264,7 @@ msgstr ""
 #, python-format
 msgid "There are no timesheets to generate or you don't have the right."
 msgstr ""
+"Non sono presenti fogli ore da generare o non possiedi i diritti per farlo."
 
 #. module: project_timesheet_forecast
 #: code:addons/project_timesheet_forecast/models/project_forecast.py:0
@@ -324,4 +325,4 @@ msgstr "Tipologia"
 #: code:addons/project_timesheet_forecast/models/project_forecast.py:0
 #, python-format
 msgid "You do not have the right to create timesheets."
-msgstr ""
+msgstr "Non hai i diritti per poter creare fogli ore."

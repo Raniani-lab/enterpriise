@@ -3937,7 +3937,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_report__work_entry_source
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_work_entry_report__work_entry_source
 msgid "Work Entry Source"
-msgstr ""
+msgstr "Origine voce lavorativa"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_edit_payslip_worked_days_line__work_entry_type_id

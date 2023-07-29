@@ -858,7 +858,7 @@ msgstr "Concluído"
 #: model:ir.model.fields.selection,name:account_consolidation.selection__consolidation_period__state__draft
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_search
 msgid "Draft"
-msgstr "Provisório"
+msgstr "Rascunho"
 
 #. module: account_consolidation
 #. odoo-python

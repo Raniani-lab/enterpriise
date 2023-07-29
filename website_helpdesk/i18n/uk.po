@@ -31,17 +31,19 @@ msgid ""
 "<i class=\"fa fa-check-circle fa-1x text-success me-2\" role=\"img\" aria-"
 "label=\"Success\" title=\"Success\"/>"
 msgstr ""
+"<i class=\"fa fa-check-circle fa-1x text-success me-2\" role=\"img\" aria-"
+"label=\"Success\" title=\"Success\"/>"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.navbar
 msgid "<span class=\"navbar-brand h4 my-0 me-auto\">Help Center</span>"
-msgstr ""
+msgstr "<span class=\"navbar-brand h4 my-0 me-auto\">Центр підтримки</span>"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.team_form_1
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.ticket_submit_form
 msgid "<span class=\"s_website_form_label_content\">Attachment</span>"
-msgstr ""
+msgstr "<span class=\"s_website_form_label_content\">Прикрпілення</span>"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.team_form_1
@@ -82,7 +84,7 @@ msgstr ""
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.search_results
 msgid "<span class=\"text-600\">Search results for</span>"
-msgstr ""
+msgstr "<span class=\"text-600\">Пошук результату для</span>"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.footer
@@ -90,6 +92,8 @@ msgid ""
 "<span style=\"font-size: 24px;\">Can't find your answer? Our support team is"
 " here to help.</span>"
 msgstr ""
+"<span style=\"font-size: 24px;\">Не можете знайти вашу відповідь? Наша "
+"команда підтримки тут для того, щоби допомогти вам.</span>"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.knowledge_base
@@ -97,6 +101,8 @@ msgid ""
 "<span style=\"font-size: 48px; font-weight: bolder;\">How can we help "
 "you?</span>"
 msgstr ""
+"<span style=\"font-size: 48px; font-weight: bolder;\">Чим ми можемо "
+"допомогти?</span>"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.navbar_search_date
@@ -111,7 +117,7 @@ msgstr "Усі теги"
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.navbar_search_type
 msgid "All Types"
-msgstr ""
+msgstr "Усі типи"
 
 #. module: website_helpdesk
 #. odoo-javascript
@@ -130,17 +136,17 @@ msgstr "Прикріплення"
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.navbar_search_date
 msgid "By Date"
-msgstr ""
+msgstr "За датою"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.navbar_search_tag
 msgid "By Tags"
-msgstr ""
+msgstr "За тегами"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.navbar_search_type
 msgid "By Type"
-msgstr ""
+msgstr "За типом"
 
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__can_publish
@@ -162,7 +168,7 @@ msgstr "Обслуговування клієнтів"
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.snippet_options
 msgid "Date Filter"
-msgstr ""
+msgstr "Фільтр дати"
 
 #. module: website_helpdesk
 #. odoo-javascript
@@ -187,7 +193,7 @@ msgstr "Допомога"
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.snippet_options
 msgid "Help Center Page"
-msgstr ""
+msgstr "Сторінка центру підтримки"
 
 #. module: website_helpdesk
 #. odoo-python
@@ -242,7 +248,7 @@ msgstr "Не знайдено результатів. Спробуйте інш�
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.knowledge_base
 msgid "Search for articles, best practices and more..."
-msgstr ""
+msgstr "Шукайте статті, найкращі практики тощо..."
 
 #. module: website_helpdesk
 #. odoo-javascript
@@ -283,12 +289,12 @@ msgstr "URL-адреса повністю, для доступу до докум
 #: code:addons/website_helpdesk/models/helpdesk.py:0
 #, python-format
 msgid "The team company and the website company should match"
-msgstr ""
+msgstr "Компанія команди та компанія сайту мають збігатися"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.snippet_options
 msgid "Type Filter"
-msgstr ""
+msgstr "Фільтр типу"
 
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__feature_form_url

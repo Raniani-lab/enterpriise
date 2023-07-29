@@ -237,7 +237,7 @@ msgstr "Anulowanie aktywności"
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__cancel
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall_report__state__cancel
 msgid "Cancelled"
-msgstr "Anulowano"
+msgstr "Anulowane"
 
 #. module: voip
 #. odoo-javascript
@@ -457,7 +457,7 @@ msgstr "Podaje kolejność wyświetlania listy połączeń telefonicznych."
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Group By"
-msgstr "Grupuj wg."
+msgstr "Grupuj wg"
 
 #. module: voip
 #. odoo-javascript

@@ -6,6 +6,7 @@
 # Martin Trigaux, 2022
 # Layna Nascimento, 2023
 # Kevilyn Rosa, 2023
+# adrianojprado <adrianojprado@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-06-09 14:09+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Kevilyn Rosa, 2023\n"
+"Last-Translator: adrianojprado <adrianojprado@gmail.com>, 2023\n"
 "Language-Team: Portuguese (Brazil) (https://app.transifex.com/odoo/teams/41243/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -415,6 +416,8 @@ msgid ""
 "The estimated shipping price cannot be computed because the weight is missing for the following product(s): \n"
 " %s"
 msgstr ""
+"O preço de envio estimado não pode ser calculado porque o peso está faltando para o(s) seguinte(s) produto(s):\n"
+"%s"
 
 #. module: delivery_easypost
 #: code:addons/delivery_easypost/models/easypost_request.py:0

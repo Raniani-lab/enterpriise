@@ -522,6 +522,8 @@ msgid ""
 "Allow signatories to provide their identity using itsme® (available in "
 "Belgium and the Netherlands)."
 msgstr ""
+"Permetti ai signatari di identificarsi attraverso itsme® (disponibile in "
+"Belgio e Paesi Bassi)"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__refusal_allowed
@@ -542,6 +544,8 @@ msgstr ""
 msgid ""
 "Allow users to define the users or groups which have access to the template."
 msgstr ""
+"Permetti agli utenti di definire i gruppi o gli utenti stessi che possono "
+"accedere ai modelli."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
@@ -590,7 +594,7 @@ msgstr "Allegati"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.res_config_settings_view_form
 msgid "Authenticate by SMS"
-msgstr ""
+msgstr "Autenticazione via SMS"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__group_ids
@@ -819,6 +823,8 @@ msgid ""
 "Configure the field types that can be used to sign documents (placeholder, "
 "auto-completion, ...)"
 msgstr ""
+"Configura i tipi di campo che possono essere utilizzati per firmare i "
+"documenti (segnaposto, riempimento automatico...)"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_duplicate_template_with_pdf_view_form
@@ -996,6 +1002,8 @@ msgid ""
 "Deliver one-time codes by SMS to identify signatories when signing a "
 "document."
 msgstr ""
+"Invia codici unici tramite SMS per identificare i firmatari al momento della"
+" firma di un documento."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign
@@ -1191,7 +1199,7 @@ msgstr "Modifica"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.res_config_settings_view_form
 msgid "Edit field types"
-msgstr ""
+msgstr "Modifica tipi di campo"
 
 #. module: sign
 #. odoo-javascript
@@ -1228,7 +1236,7 @@ msgstr "Dipendente"
 #: model:ir.model.fields,field_description:sign.field_res_config_settings__group_show_sign_order
 #: model:res.groups,name:sign.show_sign_order
 msgid "Enable Signing Order"
-msgstr ""
+msgstr "Abilita ordine di firma"
 
 #. module: sign
 #. odoo-javascript
@@ -1556,7 +1564,7 @@ msgstr "Icona per indicare un'attività eccezione."
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_res_config_settings__module_sign_itsme
 msgid "Identify with itsme®"
-msgstr ""
+msgstr "Autenticazione tramite itsme®"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_needaction
@@ -1820,7 +1828,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_res_config_settings__group_manage_template_access
 #: model:res.groups,name:sign.manage_template_access
 msgid "Manage template access"
-msgstr ""
+msgstr "Gestisci l'accesso ai modelli"
 
 #. module: sign
 #. odoo-javascript
@@ -2652,7 +2660,7 @@ msgstr "Firma"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_res_config_settings__use_sign_terms
 msgid "Sign Default Terms & Conditions"
-msgstr ""
+msgstr "Termini e condizioni predefiniti per la firma"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_res_company__sign_terms

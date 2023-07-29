@@ -3,7 +3,7 @@
 # 	* social
 # 
 # Translators:
-# grazziano <gra.negocia@gmail.com>, 2022
+# grazziano <grazziano.do+transifex@gmail.com>, 2022
 # Marcel Savegnago <marcel.savegnago@gmail.com>, 2022
 # Martin Trigaux, 2022
 # adrianojprado <adrianojprado@gmail.com>, 2023
@@ -438,7 +438,7 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields.selection,name:social.selection__social_post__state__draft
 msgid "Draft"
-msgstr "Provisório"
+msgstr "Rascunho"
 
 #. module: social
 #. odoo-python

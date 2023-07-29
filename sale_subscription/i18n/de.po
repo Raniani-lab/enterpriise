@@ -1276,7 +1276,7 @@ msgstr "Bereich vor Aktualisierung"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__binding_model_id
 msgid "Binding Model"
-msgstr "Verbindliches Modell"
+msgstr "Bindungsmodell"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__binding_type
@@ -2855,7 +2855,7 @@ msgid ""
 " %s"
 msgstr ""
 "Für wiederkehrende Produkte wird nach dem anteilsmäßig zugeordneten Zeitraum"
-" vom %s bis zum%s ein Rabatt gewährt."
+" vom %s bis zum %s ein Rabatt gewährt."
 
 #. module: sale_subscription
 #. odoo-python
@@ -3521,7 +3521,7 @@ msgstr "Zusammenfassung"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__crud_model_id
 msgid "Target Model"
-msgstr "Ziel-Modell"
+msgstr "Zielmodell"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__crud_model_name

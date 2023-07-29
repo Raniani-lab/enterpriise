@@ -132,7 +132,7 @@ msgstr "Commenti Facebook"
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.res_config_settings_view_form
 msgid "Facebook Developer Account"
-msgstr ""
+msgstr "Account sviluppatore Facebook"
 
 #. module: social_facebook
 #: model:ir.model.fields,help:social_facebook.field_social_account__facebook_access_token
@@ -180,7 +180,7 @@ msgstr "Facebook non ha fornito un token di accesso valido."
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_social_stream_post__facebook_is_event_post
 msgid "Is event post"
-msgstr ""
+msgstr "È un post evento"
 
 #. module: social_facebook
 #. odoo-javascript
@@ -228,7 +228,7 @@ msgstr "Pubblicato dalla pagina Facebook •"
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_social_stream_post__facebook_reach
 msgid "Reach"
-msgstr ""
+msgstr "Raggiungi"
 
 #. module: social_facebook
 #. odoo-javascript

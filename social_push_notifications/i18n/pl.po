@@ -491,7 +491,7 @@ msgstr "Klucz Web API"
 #: model:ir.model,name:social_push_notifications.model_website
 #: model:ir.model.fields,field_description:social_push_notifications.field_social_account__website_id
 msgid "Website"
-msgstr "Strona WWW"
+msgstr "Strona internetowa"
 
 #. module: social_push_notifications
 #: model:ir.model,name:social_push_notifications.model_website_visitor

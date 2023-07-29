@@ -1942,7 +1942,7 @@ msgstr "Przetarg"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Topping"
-msgstr ""
+msgstr "Polewa"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -2012,7 +2012,7 @@ msgstr "Usługi podatkowe i pożyczkowe"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Triparty Repo"
-msgstr ""
+msgstr "Triparty Repo"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0

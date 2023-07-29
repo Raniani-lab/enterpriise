@@ -200,7 +200,7 @@ msgstr ""
 #: code:addons/iot/static/src/views/iot_device_form.js:0
 #, python-format
 msgid "Connection to device failed"
-msgstr ""
+msgstr "Koneksi ke perangkat gagal"
 
 #. module: iot
 #. odoo-javascript
@@ -277,7 +277,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:iot.field_iot_box__ip
 #: model:ir.model.fields,field_description:iot.field_iot_device__iot_ip
 msgid "Domain Address"
-msgstr ""
+msgstr "Alamat Domain"
 
 #. module: iot
 #. odoo-javascript
@@ -326,7 +326,7 @@ msgstr "ID"
 #. module: iot
 #: model:ir.model,name:iot.model_iot_device
 msgid "IOT Device"
-msgstr ""
+msgstr "Perangkat IOT"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__identifier

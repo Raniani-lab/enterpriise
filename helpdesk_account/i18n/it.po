@@ -60,7 +60,7 @@ msgstr "Segnalazione assistenza clienti n. %s"
 #. module: helpdesk_account
 #: model_terms:ir.ui.view,arch_db:helpdesk_account.view_account_move_reversal_inherit_helpdesk_account
 msgid "Invoices to Refund"
-msgstr ""
+msgstr "Fatture da rimborsare"
 
 #. module: helpdesk_account
 #: model:ir.model,name:helpdesk_account.model_account_move
@@ -82,7 +82,7 @@ msgstr "Note di credito"
 #: code:addons/helpdesk_account/wizard/account_move_reversal.py:0
 #, python-format
 msgid "Refund created"
-msgstr ""
+msgstr "Rimborso creato"
 
 #. module: helpdesk_account
 #: model:ir.model.fields,field_description:helpdesk_account.field_account_move_reversal__helpdesk_sale_order_id

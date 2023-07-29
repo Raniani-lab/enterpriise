@@ -53,7 +53,7 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/side_panels/pivot_list_side_panel.js:0
 #, python-format
 msgid "Are you sure you want to delete this pivot ?"
-msgstr ""
+msgstr "Sei sicuro di voler eliminare la tabella pivot?"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -82,7 +82,7 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_panel.xml:0
 #, python-format
 msgid "Blank spreadsheet"
-msgstr ""
+msgstr "Foglio di calcolo vuoto"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -466,7 +466,7 @@ msgstr "Successivo"
 #: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_panel.xml:0
 #, python-format
 msgid "No preview"
-msgstr ""
+msgstr "Nessun'anteprima"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -499,7 +499,7 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/assets/pivot_view/pivot_view.js:0
 #, python-format
 msgid "Pivot contains duplicate groupbys"
-msgstr ""
+msgstr "La tabella pivot contiente \"raggruppa per\" duplicati"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -675,7 +675,7 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/index.js:0
 #, python-format
 msgid "See pivot properties"
-msgstr ""
+msgstr "Vedi proprietà pivot"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -856,7 +856,7 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.js:0
 #, python-format
 msgid "pivot"
-msgstr ""
+msgstr "pivot"
 
 #. module: spreadsheet_edition
 #. odoo-javascript

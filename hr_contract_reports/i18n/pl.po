@@ -6,8 +6,8 @@
 # Natalia Gros <nag@odoo.com>, 2022
 # Piotr Szlązak <szlazakpiotr@gmail.com>, 2022
 # Karol Rybak <karolrybak85@gmail.com>, 2022
-# Marcin Młynarczyk <mlynarczyk@gmail.com>, 2022
 # Piotr Strębski <strebski@gmail.com>, 2022
+# Marcin Młynarczyk <mlynarczyk@gmail.com>, 2022
 # Martin Trigaux, 2022
 # Tadeusz Karpiński <tadeuszkarpinski@gmail.com>, 2023
 # 
@@ -105,7 +105,7 @@ msgstr "Analiza pracowników"
 #. module: hr_contract_reports
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_search
 msgid "Group By"
-msgstr "Grupuj wg."
+msgstr "Grupuj wg"
 
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__id

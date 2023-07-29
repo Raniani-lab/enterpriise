@@ -522,7 +522,7 @@ msgstr "Nazwa przestawna"
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/index.js:0
 #, python-format
 msgid "Pivot properties"
-msgstr ""
+msgstr "Właściwości pivot"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -557,7 +557,7 @@ msgstr "Wstaw ponownie listę"
 #: code:addons/spreadsheet_edition/static/src/bundle/o_spreadsheet/menu_item_registry.js:0
 #, python-format
 msgid "Re-insert pivot"
-msgstr ""
+msgstr "Ponownie ustaw pivot"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -684,7 +684,7 @@ msgstr "Zobacz listę właściwości"
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/index.js:0
 #, python-format
 msgid "See pivot properties"
-msgstr ""
+msgstr "Zobacz właściwości pivot"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -866,7 +866,7 @@ msgstr "o-wersja arkusza kalkulacyjnego odrzucona z powodu współbieżności"
 #: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.js:0
 #, python-format
 msgid "pivot"
-msgstr ""
+msgstr "pivot"
 
 #. module: spreadsheet_edition
 #. odoo-javascript

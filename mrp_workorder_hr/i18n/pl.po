@@ -117,7 +117,7 @@ msgstr "Imię i nazwisko"
 #: code:addons/mrp_workorder_hr/static/src/views/xml/mrp_workorder_buttons.xml:0
 #, python-format
 msgid "Log In"
-msgstr "Zaloguj się"
+msgstr "Zaloguj"
 
 #. module: mrp_workorder_hr
 #. odoo-javascript

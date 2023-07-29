@@ -6,6 +6,7 @@
 # Martin Trigaux, 2022
 # Friederike Fasterling-Nesselbosch, 2022
 # Sergio Zanchetta <primes2h@gmail.com>, 2022
+# Marianna Ciofani, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:18+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Sergio Zanchetta <primes2h@gmail.com>, 2022\n"
+"Last-Translator: Marianna Ciofani, 2023\n"
 "Language-Team: Italian (https://app.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -132,7 +133,7 @@ msgstr "Progetto"
 #: code:addons/project_helpdesk/models/project.py:0
 #, python-format
 msgid "Recurring tasks cannot be converted into tickets."
-msgstr ""
+msgstr "Le attività ricorrenti non possono essere convertite in ticket."
 
 #. module: project_helpdesk
 #: model:ir.model.fields,field_description:project_helpdesk.field_helpdesk_ticket_convert_wizard__stage_id
@@ -150,14 +151,14 @@ msgstr "Lavoro"
 #: code:addons/project_helpdesk/wizard/project_task_convert_wizard.py:0
 #, python-format
 msgid "Task converted into ticket %s"
-msgstr ""
+msgstr "Attività convertita in ticket %s"
 
 #. module: project_helpdesk
 #. odoo-python
 #: code:addons/project_helpdesk/wizard/helpdesk_ticket_convert_wizard.py:0
 #, python-format
 msgid "Task created from ticket %s"
-msgstr ""
+msgstr "Attività creata a partire dal ticket %s"
 
 #. module: project_helpdesk
 #: model:ir.model.fields,field_description:project_helpdesk.field_project_task_convert_wizard__team_id
@@ -169,11 +170,11 @@ msgstr "Team"
 #: code:addons/project_helpdesk/wizard/helpdesk_ticket_convert_wizard.py:0
 #, python-format
 msgid "Ticket converted into task %s"
-msgstr ""
+msgstr "Ticket convertito in attività %s"
 
 #. module: project_helpdesk
 #. odoo-python
 #: code:addons/project_helpdesk/wizard/project_task_convert_wizard.py:0
 #, python-format
 msgid "Ticket created from task %s"
-msgstr ""
+msgstr "Ticket creato da un'attività %s"

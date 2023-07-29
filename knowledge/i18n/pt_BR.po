@@ -587,7 +587,7 @@ msgid ""
 "<span style=\"font-size: 14px;\">Check this box to indicate it's done</span>"
 msgstr ""
 "<span style=\"font-size: 14px;\">Marque essa caixa para indicar que está "
-"feito</span>"
+"concluído</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -2687,7 +2687,7 @@ msgstr ""
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "cover"
-msgstr ""
+msgstr "cover"
 
 #. module: knowledge
 #. odoo-javascript

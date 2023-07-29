@@ -259,7 +259,7 @@ msgstr "No hay cuentas de Instagram vinculadas a su página de Facebook."
 #: model_terms:ir.ui.view,arch_db:social_instagram.instagram_preview
 #, python-format
 msgid "Only .jpg/.jpeg images can be posted on Instagram."
-msgstr "Solo se pueden publicar imágenes en formato .jpg/.jpeg en instagram."
+msgstr "Solo puede publicar imágenes en formato .jpg y .jpeg en Instagram."
 
 #. module: social_instagram
 #: model_terms:ir.ui.view,arch_db:social_instagram.instagram_preview

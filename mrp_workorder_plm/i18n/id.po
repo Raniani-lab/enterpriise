@@ -44,7 +44,7 @@ msgstr ""
 #. module: mrp_workorder_plm
 #: model:ir.model.fields,help:mrp_workorder_plm.field_mrp_eco_routing_change__test_type
 msgid "Defines the type of the quality control point."
-msgstr ""
+msgstr "Mendefinisikan tipe control point kualitas."
 
 #. module: mrp_workorder_plm
 #: model:ir.model,name:mrp_workorder_plm.model_mrp_eco_routing_change
@@ -90,12 +90,12 @@ msgstr ""
 #. module: mrp_workorder_plm
 #: model:ir.model,name:mrp_workorder_plm.model_quality_check
 msgid "Quality Check"
-msgstr ""
+msgstr "Pemeriksaan Kualita"
 
 #. module: mrp_workorder_plm
 #: model:ir.model.fields,field_description:mrp_workorder_plm.field_mrp_eco_routing_change__quality_point_id
 msgid "Quality Point"
-msgstr ""
+msgstr "Quality Point"
 
 #. module: mrp_workorder_plm
 #: model:mrp.eco.stage,legend_done:mrp_workorder_plm.ecostage_effective

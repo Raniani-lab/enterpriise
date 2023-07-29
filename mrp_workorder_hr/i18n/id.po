@@ -151,7 +151,7 @@ msgstr ""
 #. module: mrp_workorder_hr
 #: model:ir.model,name:mrp_workorder_hr.model_quality_check
 msgid "Quality Check"
-msgstr ""
+msgstr "Pemeriksaan Kualita"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workcenter__allow_employee

@@ -1772,7 +1772,7 @@ msgstr "z. B. Geburtsdatum"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_advantage_view_form
 msgid "e.g. Meal Vouchers"
-msgstr "z. B. Essensgutscheine"
+msgstr "z. B. Mahlzeitschecks"
 
 #. module: hr_contract_salary
 #: model:mail.template,subject:hr_contract_salary.mail_template_send_offer

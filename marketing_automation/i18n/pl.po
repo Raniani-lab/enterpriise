@@ -190,7 +190,7 @@ msgstr "Kampania testów A/B zakończona"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__trace_ids
 msgid "Actions"
-msgstr "Działania"
+msgstr "Akcje"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__active
@@ -358,7 +358,7 @@ msgstr "Anuluj po"
 #. module: marketing_automation
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_trace__state__canceled
 msgid "Canceled"
-msgstr "Anulowano"
+msgstr "Anulowane"
 
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_activity__validity_duration

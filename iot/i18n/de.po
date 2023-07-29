@@ -684,8 +684,8 @@ msgid ""
 "URL of the page that will be displayed by the device, leave empty to use the"
 " customer facing display of the POS."
 msgstr ""
-"URL der Seite, die vom Gerät angezeigt wird; leer lassen, um die "
-"kundenseitiges Display des Kassensystems zu verwenden."
+"URL der Seite, die vom Gerät angezeigt wird; leer lassen, um das "
+"kundenseitige Display des Kassensystems zu verwenden."
 
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__connection__direct

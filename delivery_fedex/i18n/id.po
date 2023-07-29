@@ -537,7 +537,7 @@ msgstr ""
 #. module: delivery_fedex
 #: model:ir.model,name:delivery_fedex.model_stock_package_type
 msgid "Stock package type"
-msgstr ""
+msgstr "Tipe paket stok"
 
 #. module: delivery_fedex
 #: model:ir.model.fields,help:delivery_fedex.field_delivery_carrier__fedex_extra_data_rate_request

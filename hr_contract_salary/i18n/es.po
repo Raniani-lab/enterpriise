@@ -976,7 +976,7 @@ msgid ""
 "Mismatch between res_field_id %(field)s and model %(model)s for info "
 "%(personal_info)s"
 msgstr ""
-"Discordancia entre el res_field_id %(field)s y el modelo %(model)s para la "
+"Discrepancias entre el res_field_id %(field)s y el modelo %(model)s para la "
 "información %(personal_info)s"
 
 #. module: hr_contract_salary

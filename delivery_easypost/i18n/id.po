@@ -359,7 +359,7 @@ msgstr "Daftar"
 #. module: delivery_easypost
 #: model:ir.model,name:delivery_easypost.model_stock_package_type
 msgid "Stock package type"
-msgstr ""
+msgstr "Tipe paket stok"
 
 #. module: delivery_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier__easypost_test_api_key

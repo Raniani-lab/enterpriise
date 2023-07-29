@@ -5,7 +5,7 @@
 # Translators:
 # Luis Felipe Miléo <mileo@kmee.com.br>, 2022
 # Luiz Carlos de Lima <luiz.carlos@akretion.com.br>, 2022
-# grazziano <gra.negocia@gmail.com>, 2022
+# grazziano <grazziano.do+transifex@gmail.com>, 2022
 # Martin Trigaux, 2022
 # Clemilton Clementino <clemylton@hotmail.com>, 2022
 # Marcel Savegnago <marcel.savegnago@gmail.com>, 2023
@@ -922,7 +922,7 @@ msgstr ""
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_360_2
 msgid "What's your name?"
-msgstr ""
+msgstr "Qual é o seu nome?"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_2

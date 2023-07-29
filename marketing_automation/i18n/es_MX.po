@@ -1017,7 +1017,7 @@ msgstr "Número de clics generados por la campaña"
 msgid ""
 "Number of interactions (likes, shares, comments ...) with the social posts"
 msgstr ""
-"Número de interacciones (me gusta, compartir, comentarios...) con las "
+"Número de interacciones (me gusta, compartir, comentarios...) en las "
 "publicaciones en redes sociales"
 
 #. module: marketing_automation

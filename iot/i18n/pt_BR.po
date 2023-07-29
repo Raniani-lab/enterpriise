@@ -679,7 +679,7 @@ msgstr ""
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_keyboard_layout__variant
 msgid "Variant"
-msgstr "Subtipo"
+msgstr "Variante"
 
 #. module: iot
 #. odoo-python

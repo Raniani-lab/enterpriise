@@ -319,7 +319,7 @@ msgstr "Przetwarzanie..."
 #. module: social_youtube
 #: model:ir.model.fields.selection,name:social_youtube.selection__social_post__youtube_video_privacy__public
 msgid "Public"
-msgstr "Publiczny"
+msgstr "Publiczne"
 
 #. module: social_youtube
 #. odoo-python

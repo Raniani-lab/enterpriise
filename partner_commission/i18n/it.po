@@ -52,6 +52,8 @@ msgid ""
 "<span class=\"o_form_label\">Minimum PO amount total</span>\n"
 "                            <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" role=\"img\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\"/>"
 msgstr ""
+"<span class=\"o_form_label\">Totale importo minimo ordine di produzione</span>\n"
+"                            <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" role=\"img\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\"/>"
 
 #. module: partner_commission
 #: model:ir.model.fields,field_description:partner_commission.field_commission_plan__active

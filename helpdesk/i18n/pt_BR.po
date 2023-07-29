@@ -39,7 +39,7 @@ msgstr "Nº de chamados abertos"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__rating_count
 msgid "# Ratings"
-msgstr "# Classificações"
+msgstr "Nº de avaliações"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__sla_policy_count
@@ -100,8 +100,7 @@ msgstr "<b class=\"tip_title\">Dica: Crie chamados de e-mails recebidos </b>"
 #: code:addons/helpdesk/static/src/js/tours/helpdesk.js:0
 #, python-format
 msgid "<b>Drag &amp; drop</b> the card to change the stage of your ticket."
-msgstr ""
-"<b>Arraste &amp; solte</b> o cartão para mudar o estágio de seu chamado."
+msgstr "<b>Arraste e solte</b> o cartão para mudar o estágio do seu chamado."
 
 #. module: helpdesk
 #. odoo-javascript
@@ -545,13 +544,13 @@ msgid ""
 "A Python dictionary that will be evaluated to provide default values when "
 "creating new records for this alias."
 msgstr ""
-"Um dicionário python que será avaliado para gerar valores padrão quando "
-"forem criados novos registros para este apelido."
+"Um dicionário python que será avaliado para fornecer valores padrões ao "
+"criar novos registros para este alias."
 
 #. module: helpdesk
 #: model:ir.model.constraint,message:helpdesk.constraint_helpdesk_tag_name_uniq
 msgid "A tag with the same name already exists."
-msgstr "Já existe uma tag com o mesmo nome."
+msgstr "Já existe um marcador com o mesmo nome."
 
 #. module: helpdesk
 #: model:ir.model.constraint,message:helpdesk.constraint_helpdesk_ticket_type_name_uniq
@@ -696,7 +695,7 @@ msgstr "Nome do Apelido"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__alias_domain
 msgid "Alias domain"
-msgstr "Apelido do domínio"
+msgstr "Domínio do alias"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__display_alias_name
@@ -706,7 +705,7 @@ msgstr "Codinome de e-mail"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__alias_model_id
 msgid "Aliased Model"
-msgstr "Modelo Apelidado"
+msgstr "Modelo de alias"
 
 #. module: helpdesk
 #. odoo-python
@@ -875,35 +874,35 @@ msgstr "Média de horas para responder"
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_avg
 #, python-format
 msgid "Average Rating"
-msgstr "Classificação média"
+msgstr "Avaliação média"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__rating_avg_percentage
 msgid "Average Rating (%)"
-msgstr "Classificação média (%)"
+msgstr "Avaliação média (%)"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
 msgid "Average Rating: Dissatisfied"
-msgstr "Classificação média: Insatisfeito"
+msgstr "Avaliação média: insatisfeito"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
 msgid "Average Rating: Okay"
-msgstr "Classificação média: Bom"
+msgstr "Avaliação média: bom"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
 msgid "Average Rating: Satisfied"
-msgstr "Classificação média: Satisfeito"
+msgstr "Avaliação média: satisfeito"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
 msgid "Average rating for the last 7 days"
-msgstr "Classificação média dos últimos 7 dias"
+msgstr "Avaliação média dos últimos 7 dias"
 
 #. module: helpdesk
 #. odoo-javascript
@@ -2806,7 +2805,7 @@ msgstr "Avaliação"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_graph_main
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_pivot_main
 msgid "Rating (/5)"
-msgstr "Classificação (/5)"
+msgstr "Avaliação (/5)"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_avg_text

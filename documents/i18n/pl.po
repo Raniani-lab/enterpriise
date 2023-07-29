@@ -449,7 +449,7 @@ msgstr "Wymagane działanie"
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 #, python-format
 msgid "Actions"
-msgstr "Działania"
+msgstr "Akcje"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__active
@@ -1135,7 +1135,7 @@ msgstr "Przestrzeń robocza dokumentu"
 #. module: documents
 #: model:ir.model,name:documents.model_documents_mixin
 msgid "Documents creation mixin"
-msgstr ""
+msgstr "Mixin tworzenia dokumentów"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
@@ -1340,7 +1340,7 @@ msgstr "Przyszłe czynności"
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 #: model_terms:ir.ui.view,arch_db:documents.facet_view_search
 msgid "Group By"
-msgstr "Grupuj wg."
+msgstr "Grupuj wg"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__read_group_ids

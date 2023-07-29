@@ -68,7 +68,7 @@ msgstr ""
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
 msgid "<span>Product</span>"
-msgstr ""
+msgstr "<span>Produk</span>"
 
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure

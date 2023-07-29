@@ -372,6 +372,9 @@ msgid ""
 "After a certain date, users will not be able to create, modify, or delete "
 "their timesheets. However, managers will still be able to do so."
 msgstr ""
+"Dopo un certo periodo, gli utenti non saranno più in grado di creare, "
+"modificare o eliminare i propri fogli ore. Tuttavia, i manager potranno "
+"farlo ancora."
 
 #. module: timesheet_grid
 #: model:ir.ui.menu,name:timesheet_grid.menu_timesheet_grid_validate_all_timesheets
@@ -603,7 +606,7 @@ msgstr ""
 #: code:addons/timesheet_grid/static/src/js/widgets/timesheets_m2o_widget.js:0
 #, python-format
 msgid "Difference between the time allocated and the time recorded."
-msgstr ""
+msgstr "Differenza tra il tempo assegnato e il tempo registrato."
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_create_timesheet_view_form
@@ -824,7 +827,7 @@ msgstr "Avvia il <b>timer</b> per iniziare una nuova attività."
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__prevent_old_timesheets_encoding
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__prevent_old_timesheets_encoding
 msgid "Lock Timesheets"
-msgstr ""
+msgstr "Blocco fogli ore"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheet_mail_manager_allow
@@ -930,7 +933,7 @@ msgstr "Nessuna attività da convalidare."
 #. module: timesheet_grid
 #: model_terms:ir.actions.act_window,help:timesheet_grid.timesheet_grid_to_validate_action
 msgid "No timesheets to validate"
-msgstr ""
+msgstr "Nessun foglio ore da convalidare"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_res_config_settings__reminder_manager_delay
@@ -989,6 +992,8 @@ msgid ""
 "Prevent employees from creating, modifying, or deleting timesheets prior to "
 "their most recent validated timesheet"
 msgstr ""
+"Impedisci ai dipendenti di creare, modificare o cancellare fogli ore "
+"precedenti all'ultimo foglio convalidato."
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -1041,7 +1046,7 @@ msgstr "Riprendere timer"
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__timesheet_rounding
 msgid "Round up"
-msgstr ""
+msgstr "Arrotondamento"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
@@ -1093,6 +1098,8 @@ msgid ""
 "Select the user responsible for approving \"Timesheet\" of this employee.\n"
 "If empty, the approval is done by a Timesheets > Administrator or a Timesheets > User: all timesheets (as determined in the users settings)."
 msgstr ""
+"Seleziona l'utente responsabile dell'approvazione dei \"Fogli ore\" del dipendente.\n"
+"Se vuoto, l'approvazione viene effettuata da un amministratore o da un utente: tutti i fogli ore (come stabilito nelle impostazioni)."
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_account_analytic_line__is_timesheet
@@ -1251,7 +1258,7 @@ msgstr ""
 #: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
 msgid "There are no timesheets to merge."
-msgstr ""
+msgstr "Non sono presenti fogli ore da unire."
 
 #. module: timesheet_grid
 #. odoo-python

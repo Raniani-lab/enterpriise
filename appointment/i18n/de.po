@@ -401,7 +401,7 @@ msgstr "<i class=\"fa fa-info-circle\" title=\"Info\"/>"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_kanban
 msgid "<i class=\"fa fa-map-marker me-2\" title=\"Location\"/>"
-msgstr "<i class=\"fa fa-map-marker me-2\" title=\"Standort\"/>"
+msgstr "<i class=\"fa fa-map-marker me-2\" title=\"Location\"/>"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form

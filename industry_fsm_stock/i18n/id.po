@@ -199,7 +199,7 @@ msgstr "Pelacakan"
 #: model:ir.model.fields,field_description:industry_fsm_stock.field_fsm_stock_tracking__tracking_line_ids
 #: model:ir.model.fields,field_description:industry_fsm_stock.field_fsm_stock_tracking_line__wizard_tracking_line
 msgid "Tracking Line"
-msgstr ""
+msgstr "Baris Pelacakan"
 
 #. module: industry_fsm_stock
 #: model:ir.model.fields,field_description:industry_fsm_stock.field_fsm_stock_tracking__tracking_validated_line_ids

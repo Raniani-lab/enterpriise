@@ -404,7 +404,7 @@ msgstr "Wtorek"
 #. module: website_sale_renting
 #: model:ir.model,name:website_sale_renting.model_website
 msgid "Website"
-msgstr "Strona WWW"
+msgstr "Strona internetowa"
 
 #. module: website_sale_renting
 #: model:ir.model.fields,field_description:website_sale_renting.field_res_company__renting_forbidden_wed

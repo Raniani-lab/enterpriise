@@ -4,7 +4,6 @@
 # 
 # Translators:
 # Natalia Gros <nag@odoo.com>, 2022
-# Wojciech Warczakowski <w.warczakowski@gmail.com>, 2022
 # Mariusz, 2022
 # Dawid Prus, 2022
 # Dariusz Żbikowski <darek@krokus.com.pl>, 2022
@@ -86,7 +85,7 @@ msgstr "Kampania"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "City"
-msgstr "Miejscowość"
+msgstr "Miasto"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript

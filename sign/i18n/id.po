@@ -2413,7 +2413,7 @@ msgstr "Peran"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_item_role_view_tree
 msgid "Role Name"
-msgstr ""
+msgstr "Nama Peran"
 
 #. module: sign
 #: model:ir.ui.menu,name:sign.sign_item_role_menu
@@ -2926,7 +2926,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign
 msgid "Signed"
-msgstr ""
+msgstr "Ditandatangani"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__signed_count

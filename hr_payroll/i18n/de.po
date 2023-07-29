@@ -230,7 +230,7 @@ msgstr "<strong>Vertragsart</strong>"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
 msgid "<strong>Designation</strong>"
-msgstr "<strong>Bezeichnung</strong>"
+msgstr "<strong>Berufsbezeichnung</strong>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
@@ -255,7 +255,7 @@ msgstr "<strong>Zahlungsperiode</strong>"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
 msgid "<strong>Person in charge</strong>"
-msgstr "<strong>Verantwortliche Person</strong>"
+msgstr "<strong>Person zu Lasten</strong>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.contribution_register
@@ -2075,7 +2075,7 @@ msgstr "Maximaler Bereich"
 #. module: hr_payroll
 #: model:hr.salary.rule,name:hr_payroll.hr_salary_rule_meal_voucher
 msgid "Meal Voucher"
-msgstr "Essensgutschein"
+msgstr "Mahlzeitscheck"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__message_has_error
@@ -3693,7 +3693,7 @@ msgstr "Zu zahlen"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
 msgid "To pay on"
-msgstr "Zu zahlen am"
+msgstr "Auszahlung auf"
 
 #. module: hr_payroll
 #: model_terms:ir.actions.act_window,help:hr_payroll.action_contribution_registers

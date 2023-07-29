@@ -1090,7 +1090,7 @@ msgstr "Usuário"
 #. module: voip
 #: model:ir.model,name:voip.model_res_users_settings
 msgid "User Settings"
-msgstr ""
+msgstr "Configurações do usuário"
 
 #. module: voip
 #: model:ir.model,name:voip.model_voip_phonecall

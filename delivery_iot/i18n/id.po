@@ -36,17 +36,17 @@ msgstr ""
 #. module: delivery_iot
 #: model:ir.model,name:delivery_iot.model_choose_delivery_package
 msgid "Delivery Package Selection Wizard"
-msgstr ""
+msgstr "Wizard Pengiriman Paket Pengiriman"
 
 #. module: delivery_iot
 #: model:ir.model.fields,field_description:delivery_iot.field_choose_delivery_package__iot_ip
 msgid "Domain Address"
-msgstr ""
+msgstr "Alamat Domain"
 
 #. module: delivery_iot
 #: model:ir.model,name:delivery_iot.model_iot_device
 msgid "IOT Device"
-msgstr ""
+msgstr "Perangkat IOT"
 
 #. module: delivery_iot
 #: model:ir.model.fields,field_description:delivery_iot.field_choose_delivery_package__iot_device_identifier

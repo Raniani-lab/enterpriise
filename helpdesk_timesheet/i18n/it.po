@@ -115,7 +115,7 @@ msgstr "Nome visualizzato"
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_account_analytic_line__display_task
 msgid "Display Task"
-msgstr ""
+msgstr "Visualizza attività"
 
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket__display_timer
@@ -363,7 +363,7 @@ msgstr "Segnalazione per la quale viene creato l'ordine di vendita"
 #. module: helpdesk_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.report_timesheet_ticket
 msgid "Ticket:"
-msgstr ""
+msgstr "Ticket:"
 
 #. module: helpdesk_timesheet
 #: code:addons/helpdesk_timesheet/models/project.py:0
@@ -385,6 +385,8 @@ msgid ""
 "Time spent on this ticket. By default, your timesheets will be linked to the sales order item of your ticket.\n"
 "Remove the sales order item to make your timesheet entries non billable."
 msgstr ""
+"Tempo impiegato per il ticket. Per impostazione predefinita, i tuoi fogli ore saranno collegati all'articolo dell'ordine di vendita presente nel tuo ticket.\n"
+"Elimina l'articolo dell'ordine di vendita per far si che le voci del tuo foglio ore non siano fatturabili."
 
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket__timer_pause
@@ -456,6 +458,8 @@ msgstr "Supporto VIP"
 msgid ""
 "You cannot link a timesheet entry to a task and a ticket at the same time."
 msgstr ""
+"Non è possibile collegare la voce di un foglio ore ad un'attività e ad un "
+"ticket allo stesso tempo."
 
 #. module: helpdesk_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.report_timesheet_ticket

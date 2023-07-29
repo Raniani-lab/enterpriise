@@ -23,17 +23,17 @@ msgstr ""
 #. module: website_knowledge
 #: model_terms:ir.ui.view,arch_db:website_knowledge.knowledge_article_view_form
 msgid "<i class=\"fa fa-globe fa-2x\" title=\"Share to web\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-globe fa-2x\" title=\"Share to web\"/>"
 
 #. module: website_knowledge
 #: model_terms:ir.ui.view,arch_db:website_knowledge.knowledge_article_view_form
 msgid "Anyone can view"
-msgstr ""
+msgstr "Будь-хто може переглядати"
 
 #. module: website_knowledge
 #: model_terms:ir.ui.view,arch_db:website_knowledge.knowledge_article_view_form
 msgid "Article published"
-msgstr ""
+msgstr "Стаття опублікована"
 
 #. module: website_knowledge
 #: model:ir.model.fields,field_description:website_knowledge.field_knowledge_article__can_publish
@@ -54,17 +54,17 @@ msgstr "Стаття бази знань"
 #. module: website_knowledge
 #: model_terms:ir.ui.view,arch_db:website_knowledge.website_knowledge_article_tree_frontend
 msgid "Public articles"
-msgstr ""
+msgstr "Публічні статті"
 
 #. module: website_knowledge
 #: model_terms:ir.ui.view,arch_db:website_knowledge.knowledge_article_view_form
 msgid "Publish and share with anyone"
-msgstr ""
+msgstr "Опублікуйте і поділіться з усіма"
 
 #. module: website_knowledge
 #: model_terms:ir.ui.view,arch_db:website_knowledge.knowledge_article_view_form
 msgid "Share to web"
-msgstr ""
+msgstr "Поділитися на веб"
 
 #. module: website_knowledge
 #: model_terms:ir.ui.view,arch_db:website_knowledge.website_knowledge_article_tree_frontend

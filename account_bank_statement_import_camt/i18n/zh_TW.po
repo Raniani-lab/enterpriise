@@ -1237,7 +1237,7 @@ msgstr "Netting"
 msgid ""
 "No exchange rate was found to convert an amount into the currency of the "
 "journal"
-msgstr ""
+msgstr "找不到將金額轉換為日記帳貨幣的匯率"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1633,7 +1633,7 @@ msgstr "Repo"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Repurchase offer/Issuer Bid/Reverse Rights."
-msgstr ""
+msgstr "回購要約/發行人要約/反向權利。"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0

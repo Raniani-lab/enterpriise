@@ -33,7 +33,7 @@ msgstr "Projekt"
 #. module: sale_timesheet_account_budget
 #: model:ir.model,name:sale_timesheet_account_budget.model_project_update
 msgid "Project Update"
-msgstr "Projekt-Update"
+msgstr "Projektaktualisierung"
 
 #. module: sale_timesheet_account_budget
 #: model:ir.model.fields,field_description:sale_timesheet_account_budget.field_project_project__budget

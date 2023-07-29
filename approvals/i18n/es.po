@@ -457,7 +457,7 @@ msgstr "Editar solicitud"
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__manager_approval
 msgid "Employee's Manager"
-msgstr "Administración de empleados"
+msgstr "Responsable del empleado"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_approver__existing_request_user_ids

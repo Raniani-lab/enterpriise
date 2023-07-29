@@ -376,7 +376,7 @@ msgstr "Nome exibido"
 #: model:ir.model.fields.selection,name:account_sepa_direct_debit.selection__sdd_mandate__state__draft
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sdd_mandate_search_view
 msgid "Draft"
-msgstr "Provisório"
+msgstr "Rascunho"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__end_date

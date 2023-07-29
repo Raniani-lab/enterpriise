@@ -68,7 +68,7 @@ msgstr "Creare un'attività"
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_project_project__documents_tag_ids
 msgid "Default Tags"
-msgstr "Default Tag"
+msgstr "Tag predefiniti"
 
 #. module: documents_project
 #: model:documents.workflow.rule,name:documents_project.documents_project_rule_deprecate

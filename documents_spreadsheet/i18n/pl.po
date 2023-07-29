@@ -207,7 +207,7 @@ msgstr "Zawartość pliku (raw)"
 #. module: documents_spreadsheet
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_documents_document__handler
 msgid "Handler"
-msgstr ""
+msgstr "Handler"
 
 #. module: documents_spreadsheet
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_save_spreadsheet_template__id
@@ -320,7 +320,7 @@ msgstr "Arkusze kalkulacyjne Odoo nie są dostępne do pobrania"
 #: model:ir.actions.act_window,name:documents_spreadsheet.spreadsheet_revision_action
 #: model:ir.ui.menu,name:documents_spreadsheet.menu_technical_spreadsheet_revision
 msgid "Revisions"
-msgstr ""
+msgstr "Rewizje"
 
 #. module: documents_spreadsheet
 #: model:ir.actions.act_window,name:documents_spreadsheet.save_spreadsheet_template_action
@@ -452,6 +452,8 @@ msgstr "Przestrzeń robocza"
 msgid ""
 "Your file is about to be saved as an Odoo Spreadsheet to allow for edition."
 msgstr ""
+"Plik zostanie zapisany jako arkusz kalkulacyjny Odoo, aby umożliwić jego "
+"edycję."
 
 #. module: documents_spreadsheet
 #. odoo-javascript

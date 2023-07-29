@@ -19,7 +19,6 @@
 # Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2022
 # Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2022
 # Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2022
-# Krzysztof Przygoda, 2022
 # Dawid Prus, 2022
 # Łukasz Grzenkowicz <lukasz.grzenkowicz@gmail.com>, 2022
 # Tadeusz Karpiński <tadeusz.karpinski@braintec.com>, 2023
@@ -673,7 +672,7 @@ msgstr ""
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_analysis_report__allocated_hours
 msgid "Allocated Hours"
-msgstr "Zaalokowane godziny"
+msgstr "Przydzielone godziny"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__allocated_hours
@@ -700,7 +699,7 @@ msgstr ""
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__allocation_type
 msgid "Allocation Type"
-msgstr "Typ przypisania"
+msgstr "Typ przydziału"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__allow_template_creation
@@ -1111,7 +1110,7 @@ msgstr "Wiadomość e-mail wysyłana automatycznie po opublikowaniu zmiany"
 msgid ""
 "Email sent automatically when publishing the schedule of your employees"
 msgstr ""
-"Wiadomości e-mail wysyłane automatycznie po opublikowaniu harmonogramu "
+"Wiadomość e-mail wysyłana automatycznie po opublikowaniu harmonogramu "
 "pracowników"
 
 #. module: planning
@@ -1125,7 +1124,7 @@ msgstr "Pracownik"
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.hr_employee_view_form_simplified
 msgid "Employee Name"
-msgstr "Imię i nazwisko"
+msgstr "Nazwisko pracownika"
 
 #. module: planning
 #: model:ir.ui.menu,name:planning.planning_menu_settings_employee
@@ -1253,7 +1252,7 @@ msgstr "Nadaj głębi swoim"
 #: model_terms:ir.ui.view,arch_db:planning.planning_slot_template_view_search
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "Group By"
-msgstr "Grupuj wg."
+msgstr "Grupuj wg"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot_template__name
@@ -1325,7 +1324,7 @@ msgstr "Uwzględnij dostępne zmiany"
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_planning__include_unassigned
 msgid "Includes Open Shifts"
-msgstr "Uwzględnij dostępne zmiany"
+msgstr "Uwzględnia dostępne zmiany"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__is_hatched
@@ -1419,7 +1418,7 @@ msgstr "Legenda"
 #: model:ir.model.fields,field_description:planning.field_planning_planning__allow_self_unassign
 #: model:ir.model.fields,field_description:planning.field_planning_slot__allow_self_unassign
 msgid "Let Employee Unassign Themselves"
-msgstr "Pozwól pracownikowi samemu się oddelegować"
+msgstr "Pozwól pracownikowi samemu się zrezygnować z przydziału"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.res_config_settings_view_form

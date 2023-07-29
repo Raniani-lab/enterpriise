@@ -4,7 +4,6 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Kevilyn Rosa, 2023
 # Layna Nascimento, 2023
 # 
 msgid ""
@@ -82,4 +81,4 @@ msgstr "Faixas"
 #. module: website_event_track_gantt
 #: model_terms:ir.ui.view,arch_db:website_event_track_gantt.event_track_view_form_in_gantt
 msgid "Unschedule"
-msgstr "Não programado"
+msgstr "Desmarcar"

@@ -96,7 +96,7 @@ msgstr "Zlecenia produkcyjne w podziale na odpowiedzialnych"
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Manufacturing orders"
-msgstr "Zlecenia produkcyjne"
+msgstr "Zamówienia produkcji"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript

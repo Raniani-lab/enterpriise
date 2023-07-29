@@ -4,8 +4,8 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Marianna Ciofani, 2023
 # Sergio Zanchetta <primes2h@gmail.com>, 2023
+# Marianna Ciofani, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Sergio Zanchetta <primes2h@gmail.com>, 2023\n"
+"Last-Translator: Marianna Ciofani, 2023\n"
 "Language-Team: Italian (https://app.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,7 +29,7 @@ msgstr "N. clic"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mailing_filter_count
 msgid "# Favorite Filters"
-msgstr ""
+msgstr "# Filtri preferiti"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mass_mailing_count
@@ -222,7 +222,7 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Add Another Activity"
-msgstr ""
+msgstr "Aggiungi un'altra attività"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -232,7 +232,7 @@ msgstr "Aggiungi nuova attività"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mailing_mailing_view_form_marketing_activity
 msgid "Add to Templates"
-msgstr ""
+msgstr "Aggiungi ai modelli"
 
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_activity__allowed_parent_ids
@@ -314,7 +314,7 @@ msgstr "Campagna"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__name
 msgid "Campaign Identifier"
-msgstr ""
+msgstr "Identificatore campagna"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__title
@@ -453,6 +453,8 @@ msgstr "Giorni"
 msgid ""
 "Define workflows by chaining up activities and let Odoo handle the rest."
 msgstr ""
+"Indica i flussi di lavoro incastrando le attività e lascia fare il resto ad "
+"Odoo."
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__interval_type
@@ -472,11 +474,12 @@ msgid ""
 "Deleting this activity will delete ALL its children activities. Are you "
 "sure?"
 msgstr ""
+"Eliminando quest'attività eliminerai TUTTE le attività figlie. Sei sicuro?"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__child_ids
 msgid "Direct child traces"
-msgstr ""
+msgstr "Gestisci nuove tracce"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__display_name
@@ -590,17 +593,17 @@ msgstr "Durata scadenza"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mailing_filter_id
 msgid "Favorite Filter"
-msgstr ""
+msgstr "Filtro preferito"
 
 #. module: marketing_automation
 #: model:ir.ui.menu,name:marketing_automation.mailing_filter_menu_action_marketing_automaion
 msgid "Favorite Filters"
-msgstr ""
+msgstr "Filtri preferiti"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mailing_filter_domain
 msgid "Favorite filter domain"
-msgstr ""
+msgstr "Campo filtro preferito"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__domain
@@ -624,6 +627,8 @@ msgid ""
 "Here you will be able to check the results of your mailings from all "
 "Marketing Automation Campaigns."
 msgstr ""
+"Qui potrai verificare i risultati relativi alle e-mail inviate da tutte le "
+"campagne di marketing."
 
 #. module: marketing_automation
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__interval_type__hours
@@ -643,7 +648,7 @@ msgstr "ID"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__is_mailing_campaign_activated
 msgid "Is Mailing Campaign Activated"
-msgstr ""
+msgstr "La campagna via e-mail è attiva"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
@@ -717,6 +722,8 @@ msgid ""
 "Link Trackers are created when mailings with links are sent to track how "
 "many clicks they get."
 msgstr ""
+"I link per il monitoraggio vengono creati quando si inviano e-mail con link "
+"per monitorare il numero di clic che ricevono."
 
 #. module: marketing_automation
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__trigger_category__email
@@ -868,7 +875,7 @@ msgstr "Modello marketing"
 #: model:ir.model,name:marketing_automation.model_marketing_trace
 #: model:ir.model.fields,field_description:marketing_automation.field_mailing_trace__marketing_trace_id
 msgid "Marketing Trace"
-msgstr ""
+msgstr "Monitoraggio campagna di marketing"
 
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_mailing_mailing__use_in_marketing_automation
@@ -951,7 +958,7 @@ msgstr "Nessuna attività"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "No activity for this campaign."
-msgstr ""
+msgstr "Nessuna attività per questa campagna."
 
 #. module: marketing_automation
 #: model_terms:ir.actions.act_window,help:marketing_automation.link_tracker_action_marketing_campaign
@@ -1109,17 +1116,17 @@ msgstr "Partecipanti a %s (%s)"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
 msgid "Pick a Server Action"
-msgstr ""
+msgstr "Scegli un'azione server"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
 msgid "Pick a Template"
-msgstr ""
+msgstr "Scegli un modello"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_test_view_form
 msgid "Pick or create a/an"
-msgstr ""
+msgstr "Scegli o crea un/una"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__processed
@@ -1182,12 +1189,12 @@ msgstr "Rifiutato dal filtro di attività o il record cancellato/archiviato"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Reload a favorite filter"
-msgstr ""
+msgstr "RIcarica filtro preferito"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mailing_mailing_view_form_marketing_activity
 msgid "Remove from Templates"
-msgstr ""
+msgstr "Rimuovi dai modelli"
 
 #. module: marketing_automation
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_participant__state__unlinked
@@ -1217,7 +1224,7 @@ msgstr "Rendiconto"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__require_sync
 msgid "Require trace sync"
-msgstr ""
+msgstr "Richiede sincr. traccia"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
@@ -1276,7 +1283,7 @@ msgstr "Ricerca partecipante"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_trace_view_search
 msgid "Search Traces"
-msgstr ""
+msgstr "Cerca tracce"
 
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_campaign__ab_testing_winner_selection
@@ -1448,7 +1455,7 @@ msgstr "Prova record"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__is_test
 msgid "Test Trace"
-msgstr ""
+msgstr "Traccia di prova"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -1463,6 +1470,8 @@ msgid ""
 "The saved filter targets different model and is incompatible with this "
 "campaign."
 msgstr ""
+"Il filtro salvato si rivolge a un modello diverso ed è incompatibile con "
+"questa campagna."
 
 #. module: marketing_automation
 #. odoo-python
@@ -1511,7 +1520,7 @@ msgstr "Totale inviate"
 #: model:ir.ui.menu,name:marketing_automation.marketing_trace_menu
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_trace_view_tree
 msgid "Traces"
-msgstr ""
+msgstr "Tracce"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
@@ -1642,6 +1651,8 @@ msgid ""
 "You cannot delete these UTM Campaigns as they are linked to the following marketing campaigns in Marketing Automation:\n"
 "%(campaign_names)s"
 msgstr ""
+"Non puoi eliminare le campagne UTM in quanto sono collegate alle seguenti campagne nel modulo Automazione Marketing:\n"
+"%(campaign_names)s"
 
 #. module: marketing_automation
 #. odoo-python
@@ -1651,6 +1662,8 @@ msgid ""
 "You cannot delete these UTM Sources as they are linked to the following marketing activities in Marketing Automation:\n"
 "%(activities_names)s"
 msgstr ""
+"Non puoi eliminae le fonti UTM in quanto sono collegate alle seguenti attività nel modulo Automazione Marketing:\n"
+"%(activities_names)s"
 
 #. module: marketing_automation
 #. odoo-python
@@ -1677,9 +1690,9 @@ msgstr "es. offerte eCommerce"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "e.g. eCommerce Offers Plan"
-msgstr ""
+msgstr "ad es. Piano offerte eCommerce"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_test_view_form
 msgid "to generate a Test Participant"
-msgstr ""
+msgstr "per generare un partecipante di prova"

@@ -1106,7 +1106,7 @@ msgstr "Tipos de atividades"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_user_type
 msgid "Activity User Type"
-msgstr "Tipo de Usuário de Atividade"
+msgstr "Tipo de usuário da atividade"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__partner_ids
@@ -1241,7 +1241,7 @@ msgstr "Disponível no site"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__rating_avg
 msgid "Average Rating"
-msgstr "Classificação média"
+msgstr "Avaliação média"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order__health__bad
@@ -1707,7 +1707,7 @@ msgstr "Download"
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_log__category__draft
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_report__stage_category__draft
 msgid "Draft"
-msgstr "Provisório"
+msgstr "Rascunho"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_date_deadline_range

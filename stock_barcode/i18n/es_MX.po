@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # Braulio D. López Vázquez <bdl@odoo.com>, 2023
+# Iran Villalobos López, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Braulio D. López Vázquez <bdl@odoo.com>, 2023\n"
+"Last-Translator: Iran Villalobos López, 2023\n"
 "Language-Team: Spanish (Mexico) (https://app.transifex.com/odoo/teams/41243/es_MX/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1180,7 +1181,7 @@ msgstr "Escanee más productos o un paquete"
 #: code:addons/stock_barcode/static/src/models/barcode_model.js:0
 #, python-format
 msgid "Scan more products, or scan a new source location"
-msgstr "Escanee más productos, o escanee una nueva ubicación de origen"
+msgstr "Escanee más productos o escanee una nueva ubicación de origen"
 
 #. module: stock_barcode
 #. odoo-javascript
@@ -1188,7 +1189,7 @@ msgstr "Escanee más productos, o escanee una nueva ubicación de origen"
 #: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
 #, python-format
 msgid "Scan more products, or scan the destination location"
-msgstr "Escanee más productos, o escanee la ubicación de destino"
+msgstr "Escanee más productos o escanee la ubicación de destino"
 
 #. module: stock_barcode
 #. odoo-javascript
@@ -1231,7 +1232,7 @@ msgstr "Escanee la ubicación de origen o un paquete"
 #: code:addons/stock_barcode/static/src/models/barcode_model.js:0
 #, python-format
 msgid "Scan the source location, or scan a product"
-msgstr "Escanee la ubicación de origen, o escanee un producto"
+msgstr "Escanee la ubicación de origen o escanee un producto"
 
 #. module: stock_barcode
 #. odoo-javascript

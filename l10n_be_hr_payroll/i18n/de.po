@@ -67,7 +67,7 @@ msgstr "# Monate"
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_employee__l10n_be_dependent_children_attachment
 msgid "# dependent children for salary attachement"
-msgstr ""
+msgstr "# Kinder zu Lasten für Gehaltspfändung"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_employee__other_disabled_juniors_dependent
@@ -85,7 +85,7 @@ msgstr "# Senioren mit Behinderung (≥65)"
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_employee__other_juniors_dependent
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_res_users__other_juniors_dependent
 msgid "# people (<65)"
-msgstr "# Leute (<65)"
+msgstr "# Personen (<65)"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_employee__other_senior_dependent
@@ -112,7 +112,7 @@ msgstr "%s - %s"
 #: code:addons/l10n_be_hr_payroll/wizard/l10n_be_hr_payroll_schedule_change_wizard.py:0
 #, python-format
 msgid "%s - Part Time %s"
-msgstr ""
+msgstr "%s - Teilzeit %s"
 
 #. module: l10n_be_hr_payroll
 #. odoo-python
@@ -127,7 +127,7 @@ msgstr ""
 #: code:addons/l10n_be_hr_payroll/models/l10n_be_individual_account.py:0
 #, python-format
 msgid "%s-individual-account-%s"
-msgstr ""
+msgstr "%s-individual-account-%s"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.actions.report,print_report_name:l10n_be_hr_payroll.action_report_termination_holidays_n
@@ -157,7 +157,7 @@ msgstr "(object._get_report_base_filename())"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "* Amount"
-msgstr ""
+msgstr "* Betrag"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
@@ -2714,7 +2714,7 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_281_10
 msgid "Checkout"
-msgstr ""
+msgstr "Kassiervorgang"
 
 #. module: l10n_be_hr_payroll
 #: model:hr.salary.rule.category,name:l10n_be_hr_payroll.hr_payroll_head_child_alw
@@ -5113,7 +5113,7 @@ msgstr "Mai"
 #: model:hr.salary.rule,name:l10n_be_hr_payroll.cp200_employees_termination_fees_ch_year
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_work_entry_type__meal_voucher
 msgid "Meal Voucher"
-msgstr "Essensgutschein"
+msgstr "Mahlzeitscheck"
 
 #. module: l10n_be_hr_payroll
 #: model:ir.model.fields,field_description:l10n_be_hr_payroll.field_hr_payroll_report__l10n_be_meal_voucher_employer
@@ -5320,7 +5320,7 @@ msgstr "Namen"
 #. module: l10n_be_hr_payroll
 #: model:hr.salary.rule,name:l10n_be_hr_payroll.cp200_employees_salary_negative_net
 msgid "Negative Net"
-msgstr "Negatives Netz"
+msgstr "Negatives Netto"
 
 #. module: l10n_be_hr_payroll
 #: model:hr.salary.rule,name:l10n_be_hr_payroll.cp200_employees_termination_n1_pay_net_termination
@@ -5974,7 +5974,7 @@ msgstr ""
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.report_social_balance
 msgid "Part-Time"
-msgstr ""
+msgstr "Teilzeit"
 
 #. module: l10n_be_hr_payroll
 #: model:hr.work.entry.type,name:l10n_be_hr_payroll.work_entry_type_partial_incapacity
@@ -7742,7 +7742,7 @@ msgstr "Gültig"
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.hr_work_entry_type_view_form
 msgid "Valid For Advantages"
-msgstr ""
+msgstr "Gültig für Vorteile"
 
 #. module: l10n_be_hr_payroll
 #: model_terms:ir.ui.view,arch_db:l10n_be_hr_payroll.l10n_be_december_slip_wizard_view_form

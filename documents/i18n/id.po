@@ -1231,7 +1231,7 @@ msgstr ""
 #. module: documents
 #: model:documents.folder,name:documents.documents_finance_folder
 msgid "Finance"
-msgstr ""
+msgstr "Keuangan"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_documents_financial

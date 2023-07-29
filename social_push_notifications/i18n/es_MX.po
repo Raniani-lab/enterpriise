@@ -90,7 +90,7 @@ msgstr "Dominio desde el cual se envían notificaciones push a los visitantes."
 #: model:ir.model.fields,field_description:social_push_notifications.field_res_config_settings__firebase_enable_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_website__firebase_enable_push_notifications
 msgid "Enable Web Push Notifications"
-msgstr "Activar las notificaciones push del sitio web"
+msgstr "Habilitar las notificaciones push del sitio web"
 
 #. module: social_push_notifications
 #. odoo-python
@@ -422,7 +422,7 @@ msgstr "Ya existe una configuración para este sitio web."
 msgid ""
 "This firebase configuration will only be used for the specified website"
 msgstr ""
-"Esta configuración de firebase se utilizará únicamente para el sitio web "
+"Esta configuración de Firebase se utilizará solo para el sitio web "
 "especificado"
 
 #. module: social_push_notifications

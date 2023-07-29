@@ -16,9 +16,9 @@
 # Alena Vlasova, 2022
 # Ivan Kropotkin <yelizariev@itpp.dev>, 2023
 # Evgeniia Kotova, 2023
-# Сергей Шебанин <sergey@shebanin.ru>, 2023
 # Martin Trigaux, 2023
 # alenafairy, 2023
+# Сергей Шебанин <sergey@shebanin.ru>, 2023
 # 
 msgid ""
 msgstr ""
@@ -26,7 +26,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: alenafairy, 2023\n"
+"Last-Translator: Сергей Шебанин <sergey@shebanin.ru>, 2023\n"
 "Language-Team: Russian (https://app.transifex.com/odoo/teams/41243/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1321,7 +1321,7 @@ msgstr "Имя"
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "New"
-msgstr "Новое"
+msgstr "Новый"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__next_action_todo

@@ -465,7 +465,7 @@ msgstr "Jednostka częstotliwości Wartość"
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_search
 msgid "Group By"
-msgstr "Grupuj wg."
+msgstr "Grupuj wg"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__id

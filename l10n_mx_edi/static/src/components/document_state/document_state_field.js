@@ -11,6 +11,7 @@ export class DocumentStatePopover extends Component {
     static props = {
         close: Function,
         onClose: Function,
+        copyText: Function,
         message: String,
     };
 }
@@ -20,10 +21,18 @@ export class DocumentState extends SelectionField {
 
     setup() {
         this.popover = useService("popover");
+        this.notification = useService("notification");
     }
 
     get message(){
         return this.props.record.data.message;
+    }
+
+    copyText() {
+        navigator.clipboard.writeText(this.message);
+        this.notification.add(this.env._t("Text copied"), { type: 'success' });
+        this.popoverCloseFn();
+        this.popoverCloseFn = null;
     }
 
     showMessagePopover(ev){
@@ -42,6 +51,7 @@ export class DocumentState extends SelectionField {
             DocumentStatePopover,
             {
                 message: this.message,
+                copyText: this.copyText.bind(this),
                 onClose: close,
             },
             {

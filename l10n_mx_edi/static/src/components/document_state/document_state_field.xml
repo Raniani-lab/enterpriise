@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
     <t t-name="l10n_mx_edi.DocumentStatePopover" owl="1">
-        <span t-out="props.message"/>
+        <div class="l10n_mx_edi_document_state_popover">
+            <span t-out="props.message"/>
+            <button class="btn l10n_mx_edi_document_state_popover_clone"
+                    t-on-click="() => props.copyText()">
+                <i class="fa fa-clone"/>
+            </button>
+        </div>
     </t>
 
     <t t-name="l10n_mx_edi.DocumentState" t-inherit="web.SelectionField" t-inherit-mode="primary" owl="1">

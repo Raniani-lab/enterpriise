@@ -16,12 +16,12 @@
             <record id="tax_report_ple_8_2_document_type" model="account.report.column">
                 <field name="name">Doc. Type</field>
                 <field name="expression_label">document_type</field>
-                <field name="figure_type">none</field>
+                <field name="figure_type">string</field>
             </record>
             <record id="tax_report_ple_8_2_customer" model="account.report.column">
                 <field name="name">Customer</field>
                 <field name="expression_label">customer</field>
-                <field name="figure_type">none</field>
+                <field name="figure_type">string</field>
             </record>
             <record id="tax_report_ple_8_2_amount_total" model="account.report.column">
                 <field name="name">Amount Total</field>

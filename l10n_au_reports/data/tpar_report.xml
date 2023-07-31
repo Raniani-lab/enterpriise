@@ -10,7 +10,7 @@
             <record id="l10n_au_tpar_abn" model="account.report.column">
                 <field name="name">ABN</field>
                 <field name="expression_label">abn</field>
-                <field name="figure_type">none</field>
+                <field name="figure_type">string</field>
             </record>
             <record id="l10n_au_tpar_total_gst" model="account.report.column">
                 <field name="name">Total GST</field>

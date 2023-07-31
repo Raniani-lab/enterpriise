@@ -37,7 +37,7 @@
                                 <field name="engine">custom</field>
                                 <field name="formula">_report_custom_engine_threshold_all_operations</field>
                                 <field name="subformula">count_rows</field>
-                                <field name="figure_type">none</field>
+                                <field name="figure_type">integer</field>
                                 <field name="auditable" eval="True"/>
                             </record>
                         </field>

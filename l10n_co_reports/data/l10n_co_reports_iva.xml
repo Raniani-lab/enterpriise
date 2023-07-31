@@ -15,7 +15,7 @@
             <record id="l10n_co_reports_iva_bimestre" model="account.report.column">
                 <field name="name">Bimestre</field>
                 <field name="expression_label">bimestre</field>
-                <field name="figure_type">none</field>
+                <field name="figure_type">string</field>
             </record>
             <record id="l10n_co_reports_iva_balance" model="account.report.column">
                 <field name="name">Retenido Consignado</field>

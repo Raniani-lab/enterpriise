@@ -16,17 +16,17 @@
             <record id="tax_report_ple_14_1_doc_type" model="account.report.column">
                 <field name="name">Doc. Type</field>
                 <field name="expression_label">document_type</field>
-                <field name="figure_type">none</field>
+                <field name="figure_type">string</field>
             </record>
             <record id="tax_report_ple_14_1_customer_vat" model="account.report.column">
                 <field name="name">Customer VAT</field>
                 <field name="expression_label">customer_vat</field>
-                <field name="figure_type">none</field>
+                <field name="figure_type">string</field>
             </record>
             <record id="tax_report_ple_14_1_customer" model="account.report.column">
                 <field name="name">Customer</field>
                 <field name="expression_label">customer</field>
-                <field name="figure_type">none</field>
+                <field name="figure_type">string</field>
             </record>
             <record id="tax_report_ple_14_1_base_exp" model="account.report.column">
                 <field name="name">EXP</field>

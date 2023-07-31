@@ -14,7 +14,7 @@
                 <field name="engine">domain</field>
                 <field name="formula" eval="[('move_id.l10n_es_real_estate_id','!=',None), ('account_id.account_type','=','asset_receivable'), ('move_id.move_type','in',['out_invoice','out_refund'])]"/>
                 <field name="subformula">count_rows</field>
-                <field name="figure_type">none</field>
+                <field name="figure_type">integer</field>
             </record>
         </field>
     </record>

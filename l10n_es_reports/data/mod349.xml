@@ -34,7 +34,7 @@
                                 <field name="engine">domain</field>
                                 <field name="formula" eval="[('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.move_type','in',['in_invoice','out_invoice']), ('tax_line_id', '=', False), ('account_type', 'in', ('asset_receivable', 'liability_payable'))]"/>
                                 <field name="subformula">count_rows</field>
-                                <field name="figure_type">none</field>
+                                <field name="figure_type">integer</field>
                             </record>
                         </field>
                     </record>
@@ -61,7 +61,7 @@
                                 <field name="engine">domain</field>
                                 <field name="formula" eval="[('move_id.l10n_es_reports_mod349_available', '=', True), ('move_id.move_type','in',['in_refund','out_refund']), ('tax_line_id', '=', False)]"/>
                                 <field name="subformula">count_rows</field>
-                                <field name="figure_type">none</field>
+                                <field name="figure_type">integer</field>
                             </record>
                         </field>
                     </record>

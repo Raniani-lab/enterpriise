@@ -13,22 +13,22 @@
             <record id="l10n_ar_vat_book_report_column_invoice_date" model="account.report.column">
                 <field name="name">Date</field>
                 <field name="expression_label">date</field>
-                <field name="figure_type">none</field>
+                <field name="figure_type">date</field>
             </record>
             <record id="l10n_ar_vat_book_report_column_partner_name" model="account.report.column">
                 <field name="name">Name</field>
                 <field name="expression_label">partner_name</field>
-                <field name="figure_type">none</field>
+                <field name="figure_type">string</field>
             </record>
             <record id="l10n_ar_vat_book_report_column_afip_responsibility_type_name" model="account.report.column">
                 <field name="name">VAT cond.</field>
                 <field name="expression_label">afip_responsibility_type_name</field>
-                <field name="figure_type">none</field>
+                <field name="figure_type">string</field>
             </record>
             <record id="l10n_ar_vat_book_report_column_cuit" model="account.report.column">
                 <field name="name">VAT</field>
                 <field name="expression_label">cuit</field>
-                <field name="figure_type">none</field>
+                <field name="figure_type">string</field>
             </record>
             <record id="l10n_ar_vat_book_report_column_taxed" model="account.report.column">
                 <field name="name">Taxed</field>

@@ -1034,7 +1034,7 @@ var accountReportsWidget = AbstractAction.extend({
             }
         });
 
-        var rows = this.$el.find('tr');
+        var rows = this.$el.find('tr[data-parent-id]');
         var children = rows.map((it, row) => {
             let $row = $(row);
             if (parent_ids.has($row.data('parent-id'))) {

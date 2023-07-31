@@ -223,7 +223,10 @@ class SignTemplate(models.Model):
 
         # update existing sign items
         for item in self.sign_item_ids.filtered(lambda r: str(r.id) in new_sign_items):
-            item.write(new_sign_items.pop(str(item.id)))
+            str_item_id = str(item.id)
+            if 'option_ids' in new_sign_items.get(str_item_id):
+                new_sign_items[str_item_id]['option_ids'] = list(map(int, new_sign_items[str_item_id]['option_ids']))
+            item.write(new_sign_items.pop(str_item_id))
 
         # create new sign items
         new_values_list = []

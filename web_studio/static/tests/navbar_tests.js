@@ -5,14 +5,7 @@ import { browser } from "@web/core/browser/browser";
 import { registry } from "@web/core/registry";
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
 import { registerCleanup } from "@web/../tests/helpers/cleanup";
-import {
-    click,
-    getFixture,
-    mount,
-    nextTick,
-    patchWithCleanup,
-    legacyExtraNextTick,
-} from "@web/../tests/helpers/utils";
+import { click, getFixture, mount, nextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { menuService } from "@web/webclient/menus/menu_service";
 import { actionService } from "@web/webclient/actions/action_service";
 import { makeFakeDialogService, fakeCookieService } from "@web/../tests/helpers/mock_services";
@@ -231,13 +224,11 @@ QUnit.module("Studio > navbar coordination", (hooks) => {
         await nextTick();
         await nextTick();
         await click(target.querySelector(".o_app[data-menu-xmlid=menu_1]"));
-        await legacyExtraNextTick();
         await nextTick();
         await nextTick();
         assert.containsNone(target, ".o_menu_sections .o_menu_sections_more");
 
         await openStudio(target);
-        await legacyExtraNextTick();
         await nextTick();
         await nextTick();
         await nextTick();
@@ -298,7 +289,6 @@ QUnit.module("Studio > navbar coordination", (hooks) => {
         assert.containsOnce(target, ".o_studio .o_menu_sections .o_menu_sections_more");
 
         await leaveStudio(target);
-        await legacyExtraNextTick();
         // two more ticks to allow the navbar to adapt
         await nextTick();
         await nextTick();
@@ -377,7 +367,6 @@ QUnit.module("Studio > navbar coordination", (hooks) => {
         window.dispatchEvent(new Event("resize"));
         await Promise.all(adapted);
         await click(target.querySelector(".o_app[data-menu-xmlid=menu_1]"));
-        await legacyExtraNextTick();
         await Promise.all(adapted);
         await nextTick();
         await nextTick();
@@ -389,22 +378,19 @@ QUnit.module("Studio > navbar coordination", (hooks) => {
         assert.containsOnce(target, ".o_menu_sections .o_menu_sections_more");
 
         await openStudio(target);
-        // Because the kanban is converted, this legacyNextTick ensures we wait through the two
-        // compatibility layers
-        await legacyExtraNextTick();
         await Promise.all(adapted);
+        await nextTick();
         assert.strictEqual(
             target.querySelectorAll(".o_studio header .o_menu_sections > *:not(.d-none)").length,
             2
         );
         assert.containsOnce(target, ".o_studio .o_menu_sections .o_menu_sections_more");
 
+        await nextTick();
         const state = webClient.env.services.router.current.hash;
         await loadState(webClient, state);
-        // Because the kanban is converted, this legacyNextTick ensures we wait through the two
-        // compatibility layers
-        await legacyExtraNextTick();
         await Promise.all(adapted);
+        await nextTick();
         assert.strictEqual(
             target.querySelectorAll(".o_studio header .o_menu_sections > *:not(.d-none)").length,
             2

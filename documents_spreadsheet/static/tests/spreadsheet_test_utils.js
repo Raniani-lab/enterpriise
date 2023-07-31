@@ -2,7 +2,7 @@
 
 import { getBasicServerData } from "@spreadsheet/../tests/utils/data";
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
-import { patchWithCleanup } from "@web/../tests/helpers/utils";
+import { nextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { SpreadsheetAction } from "@documents_spreadsheet/bundle/actions/spreadsheet_action";
 import { SpreadsheetTemplateAction } from "@documents_spreadsheet/bundle/actions/spreadsheet_template/spreadsheet_template_action";
 import { UNTITLED_SPREADSHEET_NAME } from "@spreadsheet/helpers/constants";
@@ -65,6 +65,7 @@ async function createSpreadsheetAction(actionTag, params) {
         },
         { clearBreadcrumbs: true } // Sometimes in test defining custom action, Odoo opens on the action instead of opening on root
     );
+    await nextTick();
     return {
         webClient,
         model: getSpreadsheetActionModel(spreadsheetAction),

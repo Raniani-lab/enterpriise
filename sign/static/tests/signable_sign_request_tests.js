@@ -2,7 +2,7 @@
 
 "use strict";
 
-import { getFixture } from "@web/../tests/helpers/utils";
+import { getFixture, nextTick } from "@web/../tests/helpers/utils";
 import { doAction } from "@web/../tests/webclient/helpers";
 import { createDocumentWebClient, actionId } from "./action_utils";
 import { signInfoService } from "@sign/services/sign_info_service";
@@ -61,6 +61,7 @@ QUnit.module("signable_document_backend_tests", ({ beforeEach }) => {
 
         const webClient = await createDocumentWebClient(config, serverData);
         await doAction(webClient, actionId);
+        await nextTick();
 
         assert.verifySteps(["getDataFromHTML"]);
 

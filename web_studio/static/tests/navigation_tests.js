@@ -2,7 +2,6 @@
 import {
     click,
     getFixture,
-    legacyExtraNextTick,
     makeDeferred,
     nextTick,
     patchWithCleanup,
@@ -149,7 +148,7 @@ QUnit.module("Studio", (hooks) => {
 
         // open app Partners (act window action)
         await click(target.querySelector(".o_app[data-menu-xmlid=app_1]"));
-        await legacyExtraNextTick();
+        await nextTick(); // BlankComponent, first, wait for the real action
 
         assert.containsOnce(target, ".o_kanban_view");
         assert.verifySteps(
@@ -240,7 +239,7 @@ QUnit.module("Studio", (hooks) => {
 
         // open app Partners (act window action), sub menu Partners (action 3)
         await click(target.querySelector(".o_app[data-menu-xmlid=app_1]"));
-        await legacyExtraNextTick();
+        await nextTick(); // BlankComponent, first, wait for the real action
         assert.strictEqual(
             $(target).find(".o_kanban_record:contains(yop)").length,
             1,
@@ -248,7 +247,6 @@ QUnit.module("Studio", (hooks) => {
         );
 
         await click(target.querySelector(".o_kanban_record")); // open a record
-        await legacyExtraNextTick();
         assert.containsOnce(target, ".o_form_view");
         assert.strictEqual(
             $(target).find(".o_form_view input:propValue(yop)").length,
@@ -290,7 +288,7 @@ QUnit.module("Studio", (hooks) => {
         await createEnterpriseWebClient({ serverData });
         // open app Partners (act window action)
         await click(target.querySelector(".o_app[data-menu-xmlid=app_1]"));
-        await legacyExtraNextTick();
+        await nextTick(); // BlankComponent, first, wait for the real action
         assert.containsOnce(target, ".o_kanban_view");
 
         await openStudio(target);
@@ -309,7 +307,6 @@ QUnit.module("Studio", (hooks) => {
                 ".o_web_studio_views .o_web_studio_view_type[data-type=list] .o_web_studio_thumbnail"
             )
         );
-        await legacyExtraNextTick();
 
         assert.containsOnce(target, ".o_web_studio_editor_manager .o_web_studio_list_view_editor");
 
@@ -329,7 +326,7 @@ QUnit.module("Studio", (hooks) => {
         await createEnterpriseWebClient({ serverData, mockRPC });
         // open app Partners (act window action)
         await click(target.querySelector(".o_app[data-menu-xmlid=app_1]"));
-        await legacyExtraNextTick();
+        await nextTick(); // BlankComponent, first, wait for the real action
 
         assert.verifySteps(
             [
@@ -370,7 +367,6 @@ QUnit.module("Studio", (hooks) => {
 
         // open app Ponies (act window action)
         await click(target.querySelector(".o_app[data-menu-xmlid=app_2]"));
-        await legacyExtraNextTick();
 
         assert.verifySteps(
             [
@@ -438,7 +434,7 @@ QUnit.module("Studio", (hooks) => {
         });
         // open app Partners (act window action)
         await click(target.querySelector(".o_app[data-menu-xmlid=app_1]"));
-        await legacyExtraNextTick();
+        await nextTick(); // BlankComponent, first, wait for the real action
 
         assert.containsOnce(target, ".o_kanban_view");
 
@@ -479,7 +475,7 @@ QUnit.module("Studio", (hooks) => {
         });
         // open app Partners (act window action)
         await click(target.querySelector(".o_app[data-menu-xmlid=app_1]"));
-        await legacyExtraNextTick();
+        await nextTick(); // BlankComponent, first, wait for the real action
         assert.verifySteps([`get_views, context studio: "undefined"`]);
 
         assert.containsOnce(target, ".o_kanban_view");
@@ -590,7 +586,6 @@ QUnit.module("Studio", (hooks) => {
         await editInput(target, ".o_web_studio_menu_creator input", "testMenu");
         await click(target, ".o_web_studio_app_creator_next");
         await click(target, ".o_web_studio_model_configurator_next");
-        await legacyExtraNextTick();
         assert.verifySteps(["error"]);
         assert.containsOnce(target, ".o_web_studio_action_editor");
     });
@@ -672,7 +667,7 @@ QUnit.module("Studio", (hooks) => {
             },
         });
         await click(target.querySelector(".o_app[data-menu-xmlid=app_9]"));
-        await legacyExtraNextTick();
+        await nextTick(); // BlankComponent, first, wait for the real action
 
         assert.containsOnce(target, ".o_grid_view");
 
@@ -698,7 +693,7 @@ QUnit.module("Studio", (hooks) => {
             });
             // open app Ponies (act window action)
             await click(target.querySelector(".o_app[data-menu-xmlid=app_2]"));
-            await legacyExtraNextTick();
+            await nextTick(); // BlankComponent, first, wait for the real action
 
             assert.ok(
                 [...target.querySelectorAll(".o_list_table .o_data_row")].length > 0,
@@ -706,7 +701,6 @@ QUnit.module("Studio", (hooks) => {
             );
 
             await openStudio(target);
-            await legacyExtraNextTick();
 
             assert.containsNone(
                 target,
@@ -738,7 +732,7 @@ QUnit.module("Studio", (hooks) => {
         });
         // open app Ponies (act window action)
         await click(target.querySelector(".o_app[data-menu-xmlid=app_2]"));
-        await legacyExtraNextTick();
+        await nextTick(); // BlankComponent, first, wait for the real action
 
         assert.ok(
             [...target.querySelectorAll(".o_kanban_view .o_kanban_examples_ghost")].length > 0,
@@ -746,7 +740,6 @@ QUnit.module("Studio", (hooks) => {
         );
 
         await openStudio(target);
-        await legacyExtraNextTick();
 
         assert.containsOnce(
             target,
@@ -870,7 +863,7 @@ QUnit.module("Studio", (hooks) => {
                 mockRPC,
             });
             await click(target.querySelector(".o_app[data-menu-xmlid=app_43]"));
-            await legacyExtraNextTick();
+            await nextTick(); // BlankComponent, first, wait for the real action
 
             assert.containsOnce(target, ".o_form_view");
 

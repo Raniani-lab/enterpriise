@@ -1,5 +1,5 @@
 /** @odoo-module **/
-import { click, legacyExtraNextTick } from "@web/../tests/helpers/utils";
+import { click } from "@web/../tests/helpers/utils";
 import { getActionManagerServerData } from "@web/../tests/webclient/helpers";
 import { registry } from "@web/core/registry";
 import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
@@ -64,9 +64,7 @@ QUnit.test("Burger Menu on home menu over an App", async (assert) => {
 
     await createEnterpriseWebClient({ serverData });
     await click(document.body, ".o_draggable:first-of-type .o_app");
-    await legacyExtraNextTick();
     await click(document.body, ".o_menu_toggle");
-    await legacyExtraNextTick();
 
     assert.containsNone(document.body, ".o_burger_menu");
     assert.isVisible(document.body.querySelector(".o_home_menu"));

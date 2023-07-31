@@ -1,7 +1,13 @@
 /** @odoo-module **/
 
 import { makeFakeNotificationService } from "@web/../tests/helpers/mock_services";
-import { click, getFixture, patchDate, patchWithCleanup } from "@web/../tests/helpers/utils";
+import {
+    click,
+    getFixture,
+    nextTick,
+    patchDate,
+    patchWithCleanup,
+} from "@web/../tests/helpers/utils";
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 import { browser } from "@web/core/browser/browser";
 import { ormService } from "@web/core/orm_service";
@@ -49,6 +55,7 @@ async function createExpirationPanel(params = {}) {
         patchWithCleanup(luxon.Settings, params.mockLuxonSettings);
     }
     await doAction(webclient, "menu");
+    await nextTick(); // wait for url to be updated
     return webclient;
 }
 

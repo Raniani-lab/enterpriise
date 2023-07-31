@@ -1,5 +1,5 @@
 /** @odoo-module */
-import { click, nextTick, legacyExtraNextTick, getFixture } from "@web/../tests/helpers/utils";
+import { click, nextTick, getFixture } from "@web/../tests/helpers/utils";
 
 import { selectCell } from "@spreadsheet/../tests/utils/commands";
 
@@ -41,6 +41,5 @@ QUnit.test("Can see records and go back after a pivot insertion", async function
     assert.containsNone(getFixture(), ".o-spreadsheet");
     await click(document.body.querySelector(".o_back_button"));
     await nextTick();
-    await legacyExtraNextTick();
     assert.containsOnce(getFixture(), ".o-spreadsheet");
 });

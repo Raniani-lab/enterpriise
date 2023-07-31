@@ -8,7 +8,6 @@ import { makeFakeUserService, fakeCookieService } from "@web/../tests/helpers/mo
 import {
     click,
     getFixture,
-    legacyExtraNextTick,
     nextTick,
     patchWithCleanup,
     triggerEvent,
@@ -72,7 +71,6 @@ async function insertInSpreadsheetAndClickLink(target) {
     await nextTick();
     await click(target, ".o-link-tool a");
     await nextTick();
-    await legacyExtraNextTick();
 }
 
 function getCurrentViewType(webClient) {

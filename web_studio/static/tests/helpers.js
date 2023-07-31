@@ -1,5 +1,5 @@
 /** @odoo-module */
-import { legacyExtraNextTick, click } from "@web/../tests/helpers/utils";
+import { click } from "@web/../tests/helpers/utils";
 import { registry } from "@web/core/registry";
 
 import { systrayItem } from "@web_studio/systray_item/systray_item";
@@ -24,7 +24,6 @@ export function registerStudioDependencies() {
 
 export async function openStudio(target, params = {}) {
     await click(target.querySelector(".o_main_navbar .o_web_studio_navbar_item button"));
-    await legacyExtraNextTick();
     if (params.noEdit) {
         const studioTabViews = target.querySelector(".o_menu_sections a");
         await click(studioTabViews);
@@ -38,7 +37,6 @@ export async function openStudio(target, params = {}) {
     if (params.report) {
         const studioTabReport = target.querySelectorAll(".o_menu_sections a")[1];
         await click(studioTabReport);
-        await legacyExtraNextTick();
         let controlElm = target.querySelector(
             ".o_action_manager .o_web_studio_editor .o_studio_report_kanban_view"
         );
@@ -46,7 +44,6 @@ export async function openStudio(target, params = {}) {
             throw new Error("We should be in the Tab 'Report' but we are not");
         }
         await click(controlElm.querySelector(`.o_kanban_record [data-id="${params.report}"`));
-        await legacyExtraNextTick();
         controlElm = target.querySelector(
             ".o_action_manager .o_web_studio_editor .o_web_studio_report_editor_manager"
         );
@@ -56,9 +53,8 @@ export async function openStudio(target, params = {}) {
     }
 }
 
-export async function leaveStudio(target) {
-    await click(target.querySelector(".o_studio_navbar .o_web_studio_leave a"));
-    return legacyExtraNextTick();
+export function leaveStudio(target) {
+    return click(target.querySelector(".o_studio_navbar .o_web_studio_leave a"));
 }
 
 export function getReportServerData() {

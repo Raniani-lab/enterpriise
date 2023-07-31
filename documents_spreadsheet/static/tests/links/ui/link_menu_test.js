@@ -5,13 +5,7 @@ import { registries, components } from "@odoo/o-spreadsheet";
 import { spreadsheetLinkMenuCellService } from "@spreadsheet/ir_ui_menu/index";
 import { registry } from "@web/core/registry";
 import { createSpreadsheet } from "../../spreadsheet_test_utils";
-import {
-    click,
-    getFixture,
-    legacyExtraNextTick,
-    nextTick,
-    patchWithCleanup,
-} from "@web/../tests/helpers/utils";
+import { click, getFixture, nextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { getCell } from "@spreadsheet/../tests/utils/getters";
 import { setCellContent, setSelection } from "@spreadsheet/../tests/utils/commands";
 import { getMenuServerData } from "@spreadsheet/../tests/links/menu_data_utils";
@@ -206,7 +200,6 @@ QUnit.module("spreadsheet > menu link ui", { beforeEach }, () => {
         await nextTick();
         const link = document.querySelector("a.o-link");
         await click(link);
-        await legacyExtraNextTick();
         assert.strictEqual(
             target.querySelector(".o_breadcrumb").textContent,
             "Untitled spreadsheetaction1"

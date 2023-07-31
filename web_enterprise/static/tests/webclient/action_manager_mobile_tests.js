@@ -6,7 +6,7 @@ import {
     getActionManagerServerData,
     loadState,
 } from "@web/../tests/webclient/helpers";
-import { click, getFixture, legacyExtraNextTick } from "@web/../tests/helpers/utils";
+import { click, getFixture } from "@web/../tests/helpers/utils";
 
 let serverData;
 let target;
@@ -103,7 +103,6 @@ QUnit.test("lazy load mobile-friendly view", async function (assert) {
 
     // go back to lazy loaded view
     await click(target, ".o_control_panel .o_breadcrumb .o_back_button");
-    await legacyExtraNextTick();
     assert.containsNone(target, ".o_form_view");
     assert.containsNone(target, ".o_list_view");
     assert.containsOnce(target, ".o_kanban_view");

@@ -710,6 +710,7 @@ QUnit.module("View Editors", () => {
                 target.querySelector(".o_web_studio_new_fields .o_web_studio_field_many2one"),
                 target.querySelector(".o_web_studio_hook")
             );
+            await nextTick();
             assert.containsOnce(target, ".modal");
 
             // try to confirm without specifying a relation
@@ -1027,6 +1028,7 @@ QUnit.module("View Editors", () => {
                 target.querySelector(".o_web_studio_new_fields .o_web_studio_field_char"),
                 target.querySelector(".o_web_studio_hook")
             );
+            await nextTick();
             assert.verifySteps([
                 "block",
                 "/web_studio/edit_view",
@@ -1034,7 +1036,6 @@ QUnit.module("View Editors", () => {
                 "unblock",
                 "/web_studio/get_default_value",
             ]);
-            await nextTick();
             assert.containsN(target, "thead th[data-studio-xpath]", 2);
 
             // rename the field

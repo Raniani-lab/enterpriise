@@ -8,7 +8,6 @@ import { doAction as _doAction } from "@web/../tests/webclient/helpers";
 import {
     getFixture,
     click,
-    legacyExtraNextTick,
     selectDropdownItem,
     makeDeferred,
     editInput,
@@ -91,8 +90,6 @@ QUnit.module("ActionEditor", (hooks) => {
                 '.o_web_studio_view_type[data-type="gantt"] .o_web_studio_thumbnail'
             )
         );
-        await legacyExtraNextTick();
-
         assert.containsOnce(
             $,
             ".o_web_studio_new_view_dialog",

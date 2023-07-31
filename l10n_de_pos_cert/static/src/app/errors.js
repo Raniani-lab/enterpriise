@@ -1,4 +1,7 @@
 /** @odoo-module */
+import { registry } from "@web/core/registry";
+import { ErrorPopup } from "@point_of_sale/app/errors/popups/error_popup";
+
 export class TaxError extends Error {
     constructor(product) {
         super(
@@ -6,3 +9,15 @@ export class TaxError extends Error {
         );
     }
 }
+
+function taxErrorHandler(env, _error, originalError) {
+    if (originalError instanceof TaxError) {
+        env.services.popup.add(ErrorPopup, {
+            title: env._t("Tax Error"),
+            body: originalError.message,
+        });
+        return true;
+    }
+}
+
+registry.category("error_handlers").add("taxErrorHandler", taxErrorHandler);

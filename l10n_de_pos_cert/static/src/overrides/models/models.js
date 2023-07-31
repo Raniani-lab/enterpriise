@@ -78,6 +78,7 @@ patch(Order.prototype, {
     },
     //@Override
     init_from_JSON(json) {
+        this.state = json.state;
         super.init_from_JSON(...arguments);
         if (this.pos.isCountryGermanyAndFiskaly()) {
             this.fiskalyUuid = json.fiskaly_uuid;
@@ -94,25 +95,23 @@ patch(Order.prototype, {
             }
         }
     },
-    //@Override
-    async add_product(product, options) {
+    check_germany_taxes(product){
         if (this.pos.isCountryGermanyAndFiskaly()) {
-            if (
-                product.taxes_id.length === 0 ||
-                !(this.pos.taxes_by_id[product.taxes_id[0]].amount in this.pos.vatRateMapping)
-            ) {
+            if (product.taxes_id.length === 0 || !(this.pos.taxes_by_id[product.taxes_id[0]].amount in this.pos.vatRateMapping)) {
                 throw new TaxError(product);
             }
         }
-        try {
-            super.add_product(...arguments);
-        } catch (error) {
-            if (this.pos.isCountryGermanyAndFiskaly() && error instanceof TaxError) {
-                await this.env.services.pos._showTaxError();
-            } else {
-                throw error;
-            }
-        }
+    },
+    //@Override
+    async add_product(product, options) {
+        this.check_germany_taxes(product);
+        return super.add_product(...arguments);
+    },
+    //@override
+    add_orderline(line) {
+        if (!['paid', 'done', 'invoiced'].includes(line.order.state))
+            this.check_germany_taxes(line.product);
+        return super.add_orderline(...arguments);
     },
     _authenticate() {
         const data = {

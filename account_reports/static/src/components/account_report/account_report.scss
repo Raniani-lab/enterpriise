@@ -108,7 +108,10 @@
         > .wrapper {
             display: flex;
 
-            > .content { display: flex }
+            > .content {
+                display: flex;
+                sup { top: auto }
+            }
         }
 
         .name { white-space: nowrap }
@@ -157,7 +160,7 @@
     // buttons
     //------------------------------------------------------------------------------------------------------------------
     .btn_debug, .btn_dropdown, .btn_foldable, .btn_foldable_empty, .btn_sortable, .btn_ellipsis,
-    .btn_more, btn_footnote_go, btn_footnote_delete, .btn_action {
+    .btn_more, .btn_footnote_go, .btn_footnote_delete, .btn_action {
         border: none;
         color: $o-gray-300;
         font-size: inherit;

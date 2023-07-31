@@ -15,7 +15,7 @@
 
     <t t-name="planning.PlanningGanttRenderer.Pill" t-inherit="web_gantt.GanttRenderer.Pill" owl="1">
         <xpath expr="//div[hasclass('o_gantt_pill_wrapper')]" position="after">
-            <t t-if="isPlanningManager">
+            <t t-if="isPlanningManager and !model.useSampleModel">
                 <t t-foreach="[...Array(pill.grid.column[1] - 1).keys()]" t-as="i" t-key="i">
                     <t t-set="split_tool_grid" t-value="{ column: [pill.grid.column[0] + i + 1, 1], row: pill.grid.row}"/>
                     <div class="o_gantt_pill_split_tool"

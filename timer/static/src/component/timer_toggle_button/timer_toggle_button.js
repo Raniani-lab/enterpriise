@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { _lt } from "@web/core/l10n/translation";
+import { _t } from "@web/core/l10n/translation";
 import { standardFieldProps } from "@web/views/fields/standard_field_props";
 import { useService } from "@web/core/utils/hooks";
 
@@ -23,7 +23,7 @@ export class TimerToggleButton extends Component {
     }
 
     get title() {
-        return this.props.record.data[this.props.name] ? _lt("Stop") : _lt("Start");
+        return this.props.record.data[this.props.name] ? _t("Stop") : _t("Start");
     }
 
     async onClick(ev) {

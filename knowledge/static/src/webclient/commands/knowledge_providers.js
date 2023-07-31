@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 
-import { _lt } from "@web/core/l10n/translation";
+import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
 import { HotkeyCommandItem } from "@web/core/commands/default_providers";
 import { splitCommandName } from "@web/core/commands/command_palette";
@@ -23,9 +23,9 @@ KnowledgeExtraCommand.template = 'KnowledgeExtraCommandTemplate';
 const commandSetupRegistry = registry.category("command_setup");
 commandSetupRegistry.add("?", {
     debounceDelay: 200,
-    emptyMessage: _lt("No article found."),
-    name: _lt("articles"),
-    placeholder: _lt("Search for an article..."),
+    emptyMessage: _t("No article found."),
+    name: _t("articles"),
+    placeholder: _t("Search for an article..."),
 });
 
 const commandProviderRegistry = registry.category("command_provider");
@@ -72,7 +72,7 @@ const fn = (hidden) => {
                                 }
                             });
                         },
-                        name: sprintf(_lt('No Article found. Create "%s"'), options.searchValue),
+                        name: sprintf(_t('No Article found. Create "%s"'), options.searchValue),
                         props: {
                             articleName: options.searchValue,
                         },
@@ -99,7 +99,7 @@ const fn = (hidden) => {
             },
             category: "knowledge_articles",
             href: `/web#id=${article.id}&model=knowledge.article&view_type=form&menu_id=${knowledgeMainMenuId}`,
-            name: article.name || _lt("Untitled"),
+            name: article.name || _t("Untitled"),
             props: {
                 isFavorite: article.is_user_favorite,
                 subjectName: article.root_article_id[0] != article.id ? article.root_article_id[1] : false,
@@ -119,7 +119,7 @@ const fn = (hidden) => {
                     });
                 },
                 category: "knowledge_extra",
-                name: _lt("Advanced Search"),
+                name: _t("Advanced Search"),
                 props: {
                     hotkey: "alt+B",
                 },
@@ -137,8 +137,8 @@ commandProviderRegistry.add("knowledge", {
 
 commandSetupRegistry.add("$", {
     debounceDelay: 200,
-    emptyMessage: _lt("No hidden articles found"),
-    placeholder: _lt("Search a hidden article to join"),
+    emptyMessage: _t("No hidden articles found"),
+    placeholder: _t("Search a hidden article to join"),
 });
 commandProviderRegistry.add("knowledge_members_only_articles", {
     debounceDelay: 200,

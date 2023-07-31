@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { _lt } from "@web/core/l10n/translation";
+import { _t } from "@web/core/l10n/translation";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 
 export class AddressRecurrencyConfirmationDialog extends ConfirmationDialog {
@@ -14,6 +14,6 @@ export class AddressRecurrencyConfirmationDialog extends ConfirmationDialog {
         ...ConfirmationDialog.defaultProps,
         body: "",
         cancel: () => {},
-        title: _lt("Delete Recurring Shift")
+        title: _t("Delete Recurring Shift")
     };
 }

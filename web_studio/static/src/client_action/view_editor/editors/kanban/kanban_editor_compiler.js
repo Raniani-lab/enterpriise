@@ -3,7 +3,7 @@ import { KanbanCompiler } from "@web/views/kanban/kanban_compiler";
 import { computeXpath, applyInvisible } from "../xml_utils";
 import { isComponentNode } from "@web/views/view_compiler";
 import { createElement } from "@web/core/utils/xml";
-import { _lt } from "@web/core/l10n/translation";
+import { _t } from "@web/core/l10n/translation";
 
 const interestingSelector = [
     "field",
@@ -190,7 +190,7 @@ export class KanbanEditorCompiler extends KanbanCompiler {
                 xpath: "${parentElement.getAttribute("studioXpath")}"
             })`,
         });
-        tagsHook.textContent = _lt("Add tags");
+        tagsHook.textContent = _t("Add tags");
 
         if (parentElement.firstChild) {
             parentElement.insertBefore(tagsHook, parentElement.firstChild);
@@ -224,7 +224,7 @@ export class KanbanEditorCompiler extends KanbanCompiler {
             style: "z-index: 1;",
             "t-on-click": "() => __comp__.onAddPriority()",
         });
-        priorityHook.textContent = _lt("Add a priority");
+        priorityHook.textContent = _t("Add a priority");
         parentElement.appendChild(priorityHook);
     }
 
@@ -236,7 +236,7 @@ export class KanbanEditorCompiler extends KanbanCompiler {
             style: "z-index: 1;",
             "t-on-click": "() => __comp__.onAddAvatar()",
         });
-        avatarHook.textContent = _lt("Add an avatar");
+        avatarHook.textContent = _t("Add an avatar");
         parentElement.appendChild(avatarHook);
     }
 

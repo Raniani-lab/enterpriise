@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import { Component, onWillPatch, useState } from "@odoo/owl";
-import { _lt } from "@web/core/l10n/translation";
+import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
 import { graphView } from "@web/views/graph/graph_view";
 
@@ -54,16 +54,16 @@ export class GraphEditorSidebar extends Component {
 
     get typeChoices() {
         return [
-            { label: _lt("Bar"), value: "bar" },
-            { label: _lt("Line"), value: "line" },
-            { label: _lt("Pie"), value: "pie" },
+            { label: _t("Bar"), value: "bar" },
+            { label: _t("Line"), value: "line" },
+            { label: _t("Pie"), value: "pie" },
         ];
     }
 
     get orderChoices() {
         return [
-            { label: _lt("Ascending"), value: "asc" },
-            { label: _lt("Descending"), value: "desc" },
+            { label: _t("Ascending"), value: "asc" },
+            { label: _t("Descending"), value: "desc" },
         ];
     }
 

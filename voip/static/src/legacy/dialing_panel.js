@@ -7,7 +7,7 @@ import { UserAgent } from "@voip/legacy/user_agent";
 
 import config from "@web/legacy/js/services/config";
 import core from "@web/legacy/js/services/core";
-import { _lt, _t } from "@web/core/l10n/translation";
+import { _t } from "@web/core/l10n/translation";
 import { sprintf } from "@web/core/utils/strings";
 import Dialog from "@web/legacy/js/core/dialog";
 import dom from "@web/legacy/js/core/dom";
@@ -15,7 +15,7 @@ import mobile from "@web_mobile/js/services/core";
 import Widget from "@web/legacy/js/core/widget";
 import { debounce } from "@web/core/utils/timing";
 
-const YOUR_ARE_ALREADY_IN_A_CALL = _lt("You are already in a call");
+const YOUR_ARE_ALREADY_IN_A_CALL = _t("You are already in a call");
 
 export const DialingPanel = Widget.extend({
     template: "voip.DialingPanel",

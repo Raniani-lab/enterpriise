@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import { Component, useState } from "@odoo/owl";
-import { _lt } from "@web/core/l10n/translation";
+import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
 import { cohortView } from "@web_cohort/cohort_view";
 
@@ -56,24 +56,24 @@ export class CohortEditorSidebar extends Component {
 
     get intervalChoices() {
         return [
-            { label: _lt("Day"), value: "day" },
-            { label: _lt("Week"), value: "week" },
-            { label: _lt("Month"), value: "month" },
-            { label: _lt("Year"), value: "year" },
+            { label: _t("Day"), value: "day" },
+            { label: _t("Week"), value: "week" },
+            { label: _t("Month"), value: "month" },
+            { label: _t("Year"), value: "year" },
         ];
     }
 
     get modeChoices() {
         return [
-            { label: _lt("Retention"), value: "retention" },
-            { label: _lt("Churn"), value: "churn" },
+            { label: _t("Retention"), value: "retention" },
+            { label: _t("Churn"), value: "churn" },
         ];
     }
 
     get timelineChoices() {
         return [
-            { label: _lt("Forward"), value: "forward" },
-            { label: _lt("Backwards"), value: "backward" },
+            { label: _t("Forward"), value: "forward" },
+            { label: _t("Backwards"), value: "backward" },
         ];
     }
 }

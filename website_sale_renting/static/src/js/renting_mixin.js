@@ -3,7 +3,7 @@
 import { serializeDateTime, deserializeDateTime } from "@web/core/l10n/dates";
 import { momentToLuxon } from "@website_sale_renting/js/date_utils";
 import { sprintf } from "@web/core/utils/strings";
-import { _lt, _t } from "@web/legacy/js/services/core";
+import { _t } from "@web/core/l10n/translation";
 
 export const msecPerUnit = {
     hour: 3600 * 1000,
@@ -12,10 +12,10 @@ export const msecPerUnit = {
     month: 3600 * 1000 * 24 * 30,
 };
 export const unitMessages = {
-    hour: _lt("(%s hours)."),
-    day: _lt("(%s days)."),
-    week: _lt("(%s weeks)."),
-    month: _lt("(%s months)."),
+    hour: _t("(%s hours)."),
+    day: _t("(%s days)."),
+    week: _t("(%s weeks)."),
+    month: _t("(%s months)."),
 };
 
 export const RentingMixin = {

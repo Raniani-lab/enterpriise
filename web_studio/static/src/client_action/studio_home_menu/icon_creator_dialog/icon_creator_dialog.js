@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { Dialog } from "@web/core/dialog/dialog";
-import { _lt } from "@web/core/l10n/translation";
+import { _t } from "@web/core/l10n/translation";
 import { useService } from "@web/core/utils/hooks";
 import { IconCreator } from "@web_studio/client_action/icon_creator/icon_creator";
 
@@ -66,7 +66,7 @@ export class IconCreatorDialog extends Component {
         this.props.close();
     }
 }
-IconCreatorDialog.title = _lt("Edit Application Icon");
+IconCreatorDialog.title = _t("Edit Application Icon");
 IconCreatorDialog.props = {
     editedAppData: Object,
     appId: Number,

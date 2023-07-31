@@ -1,6 +1,6 @@
 /** @odoo-module */
 import { Component, onWillStart, onWillUpdateProps, toRaw, useState } from "@odoo/owl";
-import { _lt } from "@web/core/l10n/translation";
+import { _t } from "@web/core/l10n/translation";
 import { ResizablePanel } from "./resizable_panel/resizable_panel";
 import { CodeEditor } from "@web/core/code_editor/code_editor";
 import { SelectMenu } from "@web/core/select_menu/select_menu";
@@ -108,7 +108,7 @@ export class XmlResourceEditor extends Component {
         this.hiddenAlerts = useState({});
         this.alerts = [
             {
-                message: _lt(
+                message: _t(
                     "Editing a built-in file through this editor is not advised, as it will prevent it from being updated during future App upgrades."
                 ),
             },

@@ -1,6 +1,6 @@
 /* @odoo-module */
 
-import { _lt } from "@web/core/l10n/translation";
+import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
 import { scrollSymbol } from "@web/webclient/actions/action_hook";
 import { GanttArchParser } from "./gantt_arch_parser";
@@ -12,7 +12,7 @@ const viewRegistry = registry.category("views");
 
 export const ganttView = {
     type: "gantt",
-    display_name: _lt("Gantt"),
+    display_name: _t("Gantt"),
     icon: "fa fa-tasks",
     multiRecord: true,
     Controller: GanttController,

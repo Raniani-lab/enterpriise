@@ -8,7 +8,7 @@ import {
 import { Property } from "@web_studio/client_action/view_editor/property/property";
 import { SidebarViewToolbox } from "@web_studio/client_action/view_editor/interactive_editor/sidebar_view_toolbox/sidebar_view_toolbox";
 import { Properties } from "@web_studio/client_action/view_editor/interactive_editor/properties/properties";
-import { _lt, _t } from "@web/core/l10n/translation";
+import { _t } from "@web/core/l10n/translation";
 import { sprintf } from "@web/core/utils/strings";
 import { FieldProperties } from "@web_studio/client_action/view_editor/interactive_editor/properties/field_properties/field_properties";
 import { useEditNodeAttributes } from "@web_studio/client_action/view_editor/view_editor_model";
@@ -82,9 +82,9 @@ export class ListEditorSidebar extends Component {
 
     get editableChoices() {
         return [
-            { value: "", label: _lt("Open form view") },
-            { value: "top", label: _lt("Add record on top") },
-            { value: "bottom", label: _lt("Add record at the bottom") },
+            { value: "", label: _t("Open form view") },
+            { value: "top", label: _t("Add record on top") },
+            { value: "bottom", label: _t("Add record at the bottom") },
         ];
     }
 
@@ -94,8 +94,8 @@ export class ListEditorSidebar extends Component {
 
     get orderChoices() {
         return [
-            { value: "asc", label: _lt("Ascending") },
-            { value: "desc", label: _lt("Descending") },
+            { value: "asc", label: _t("Ascending") },
+            { value: "desc", label: _t("Descending") },
         ];
     }
 

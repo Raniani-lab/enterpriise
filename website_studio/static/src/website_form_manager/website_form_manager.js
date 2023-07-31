@@ -2,7 +2,7 @@
 import { Component, onWillStart, useState } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
 import { registry } from "@web/core/registry";
-import { _lt, _t } from "@web/core/l10n/translation";
+import { _t } from "@web/core/l10n/translation";
 import { standardActionServiceProps } from "@web/webclient/actions/action_service";
 
 class WebsiteFormManager extends Component {
@@ -69,4 +69,4 @@ class WebsiteFormManager extends Component {
 registry.category("actions").add("website_studio.action_form_manager", WebsiteFormManager);
 registry
     .category("web_studio.editor_tabs")
-    .add("website", { name: _lt("Website Forms"), action: "website_studio.action_form_manager" });
+    .add("website", { name: _t("Website Forms"), action: "website_studio.action_form_manager" });

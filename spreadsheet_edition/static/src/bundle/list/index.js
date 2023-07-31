@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { _t, _lt } from "@web/core/l10n/translation";
+import { _t } from "@web/core/l10n/translation";
 import * as spreadsheet from "@odoo/o-spreadsheet";
 import { initCallbackRegistry } from "@spreadsheet/o_spreadsheet/init_callbacks";
 
@@ -24,7 +24,7 @@ sidePanelRegistry.add("LIST_PROPERTIES_PANEL", {
 initCallbackRegistry.add("insertList", insertList);
 
 cellMenuRegistry.add("listing_properties", {
-    name: _lt("See list properties"),
+    name: _t("See list properties"),
     sequence: 190,
     execute(env) {
         const position = env.model.getters.getActivePosition();

@@ -3,7 +3,7 @@
 import { HtmlField, htmlField } from "@web_editor/js/backend/html_field";
 import { patch } from "@web/core/utils/patch";
 import { templates } from "@web/core/assets";
-import { _lt } from "@web/core/l10n/translation";
+import { _t } from "@web/core/l10n/translation";
 import { decodeDataBehaviorProps } from "@knowledge/js/knowledge_utils";
 import { Deferred, Mutex } from "@web/core/utils/concurrency";
 import { useService } from "@web/core/utils/hooks";
@@ -583,7 +583,7 @@ patch(HtmlField.prototype, 'knowledge_html_field', HtmlFieldPatch);
 
 patch(htmlField, "knowledge_html_field", {
     supportedOptions: [...htmlField.supportedOptions, {
-        label: _lt("Enable Knowledge commands"),
+        label: _t("Enable Knowledge commands"),
         name: "knowledge_commands",
         type: "boolean"
     }],

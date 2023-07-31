@@ -3,7 +3,7 @@
 import { ImportAction } from "@base_import/import_action/import_action";
 import { patch } from "@web/core/utils/patch";
 import { useService } from "@web/core/utils/hooks";
-import { _lt } from "@web/core/l10n/translation";
+import { _t } from "@web/core/l10n/translation";
 
 patch(ImportAction.prototype, "account_base_import_patch", {
     setup() {
@@ -26,9 +26,9 @@ patch(ImportAction.prototype, "account_base_import_patch", {
     exit() {
         if (this.current === "imported" && ["account.move.line", "account.account", "res.partner"].includes(this.resModel)) {
             const names = {
-                "account.move.line": _lt("Journal Items"),
-                "account.account": _lt("Chart of Accounts"),
-                "res.partner": _lt("Customers"),
+                "account.move.line": _t("Journal Items"),
+                "account.account": _t("Chart of Accounts"),
+                "res.partner": _t("Customers"),
             }
             const action = {
                 name: names[this.resModel],

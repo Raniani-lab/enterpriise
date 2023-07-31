@@ -1,7 +1,7 @@
 /** @odoo-module **/
 import { registry } from "@web/core/registry";
 import { resetViewCompilerCache } from "@web/views/view_compiler";
-import { _lt } from "@web/core/l10n/translation";
+import { _t } from "@web/core/l10n/translation";
 
 import { EventBus, onWillUnmount, useState } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
@@ -21,17 +21,17 @@ export const MODES = {
 export class NotEditableActionError extends Error {}
 
 const SUPPORTED_VIEW_TYPES = {
-    activity: _lt("Activity"),
-    calendar: _lt("Calendar"),
-    cohort: _lt("Cohort"),
-    form: _lt("Form"),
-    gantt: _lt("Gantt"),
-    graph: _lt("Graph"),
-    kanban: _lt("Kanban"),
-    list: _lt("List"),
-    map: _lt("Map"),
-    pivot: _lt("Pivot"),
-    search: _lt("Search"),
+    activity: _t("Activity"),
+    calendar: _t("Calendar"),
+    cohort: _t("Cohort"),
+    form: _t("Form"),
+    gantt: _t("Gantt"),
+    graph: _t("Graph"),
+    kanban: _t("Kanban"),
+    list: _t("List"),
+    map: _t("Map"),
+    pivot: _t("Pivot"),
+    search: _t("Search"),
 };
 
 export function viewTypeToString(vType) {

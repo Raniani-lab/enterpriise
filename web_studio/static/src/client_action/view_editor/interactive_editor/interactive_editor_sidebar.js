@@ -1,5 +1,5 @@
 /** @odoo-module */
-import { _lt } from "@web/core/l10n/translation";
+import { _t } from "@web/core/l10n/translation";
 import { onWillStart, useState, onWillUpdateProps } from "@odoo/owl";
 
 import { Notebook } from "@web/core/notebook/notebook";
@@ -8,15 +8,15 @@ import { useBus } from "@web/core/utils/hooks";
 const tabsDisplay = {
     new: {
         class: "o_web_studio_new px-2",
-        title: _lt("Add"),
+        title: _t("Add"),
     },
     view: {
         class: "o_web_studio_view px-2",
-        title: _lt("View"),
+        title: _t("View"),
     },
     properties: {
         class: "o_web_studio_properties px-2",
-        title: _lt("Properties"),
+        title: _t("Properties"),
     },
 };
 

@@ -1,14 +1,14 @@
 /** @odoo-module */
 
 import { Component } from "@odoo/owl";
-import { _t, _lt } from "@web/core/l10n/translation";
+import { _t } from "@web/core/l10n/translation";
 
 const FIELD_OFFSETS = [
     { value: 0, description: "" },
-    { value: -1, description: _lt("Previous") },
-    { value: -2, description: _lt("Before previous") },
-    { value: 1, description: _lt("Next") },
-    { value: 2, description: _lt("After next") },
+    { value: -1, description: _t("Previous") },
+    { value: -2, description: _t("Before previous") },
+    { value: 1, description: _t("Next") },
+    { value: 2, description: _t("After next") },
 ];
 
 export class FilterFieldOffset extends Component {

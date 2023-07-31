@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import { Dialog } from "@web/core/dialog/dialog";
-import { _t, _lt } from "@web/core/l10n/translation";
+import { _t } from "@web/core/l10n/translation";
 import { useService } from "@web/core/utils/hooks";
 import { Many2XAutocomplete } from "@web/views/fields/relational_utils";
 import { computeAppsAndMenuItems } from "@web/webclient/menus/menu_helpers";
@@ -116,7 +116,7 @@ export class IrMenuSelectorDialog extends Component {
     }
 }
 IrMenuSelectorDialog.components = { Dialog, IrMenuSelector };
-IrMenuSelectorDialog.title = _lt("Select an Odoo menu to link in your spreadsheet");
+IrMenuSelectorDialog.title = _t("Select an Odoo menu to link in your spreadsheet");
 IrMenuSelectorDialog.template = "spreadsheet_edition.IrMenuSelectorDialog";
 IrMenuSelectorDialog.props = {
     onMenuSelected: Function,

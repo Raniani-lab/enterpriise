@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { _lt } from "@web/core/l10n/translation";
+import { _t } from "@web/core/l10n/translation";
 import { FilterFieldOffset } from "../filter_field_offset";
 import { RELATIVE_DATE_RANGE_TYPES } from "@spreadsheet/helpers/constants";
 import AbstractFilterEditorSidePanel from "./filter_editor_side_panel";
@@ -10,10 +10,10 @@ import FilterEditorLabel from "./filter_editor_label";
 import { useState } from "@odoo/owl";
 
 const RANGE_TYPES = [
-    { type: "year", description: _lt("Year") },
-    { type: "quarter", description: _lt("Quarter") },
-    { type: "month", description: _lt("Month") },
-    { type: "relative", description: _lt("Relative Period") },
+    { type: "year", description: _t("Year") },
+    { type: "quarter", description: _t("Quarter") },
+    { type: "month", description: _t("Month") },
+    { type: "relative", description: _t("Relative Period") },
 ];
 
 /**

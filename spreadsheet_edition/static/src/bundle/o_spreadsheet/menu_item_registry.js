@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { _t, _lt } from "@web/legacy/js/services/core";
+import { _t } from "@web/core/l10n/translation";
 import * as spreadsheet from "@odoo/o-spreadsheet";
 import { REINSERT_LIST_CHILDREN } from "../list/list_actions";
 import { INSERT_PIVOT_CELL_CHILDREN, REINSERT_PIVOT_CHILDREN } from "../pivot/pivot_actions";
@@ -11,28 +11,28 @@ const { topbarMenuRegistry } = spreadsheet.registries;
 //--------------------------------------------------------------------------
 
 topbarMenuRegistry.addChild("new_sheet", ["file"], {
-    name: _lt("New"),
+    name: _t("New"),
     sequence: 10,
     isVisible: (env) => !env.isDashboardSpreadsheet,
     execute: (env) => env.newSpreadsheet(),
     icon: "o-spreadsheet-Icon.NEW",
 });
 topbarMenuRegistry.addChild("make_copy", ["file"], {
-    name: _lt("Make a copy"),
+    name: _t("Make a copy"),
     sequence: 20,
     isVisible: (env) => !env.isDashboardSpreadsheet,
     execute: (env) => env.makeCopy(),
     icon: "o-spreadsheet-Icon.COPY_FILE",
 });
 topbarMenuRegistry.addChild("save_as_template", ["file"], {
-    name: _lt("Save as template"),
+    name: _t("Save as template"),
     sequence: 40,
     isVisible: (env) => !env.isDashboardSpreadsheet,
     execute: (env) => env.saveAsTemplate(),
     icon: "o-spreadsheet-Icon.SAVE",
 });
 topbarMenuRegistry.addChild("download", ["file"], {
-    name: _lt("Download"),
+    name: _t("Download"),
     sequence: 50,
     execute: (env) => env.download(),
     isReadonlyAllowed: true,
@@ -40,7 +40,7 @@ topbarMenuRegistry.addChild("download", ["file"], {
 });
 
 topbarMenuRegistry.addChild("clear_history", ["file"], {
-    name: _lt("Clear history"),
+    name: _t("Clear history"),
     sequence: 60,
     isVisible: (env) => env.debug,
     execute: (env) => {
@@ -52,7 +52,7 @@ topbarMenuRegistry.addChild("clear_history", ["file"], {
 });
 
 topbarMenuRegistry.addChild("download_as_json", ["file"], {
-    name: _lt("Download as JSON"),
+    name: _t("Download as JSON"),
     sequence: 70,
     isVisible: (env) => env.debug,
     execute: (env) => env.downloadAsJson(),

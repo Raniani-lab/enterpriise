@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { _lt, _t } from "@web/core/l10n/translation";
+import { _t } from "@web/core/l10n/translation";
 import { Dialog } from "@web/core/dialog/dialog";
 import { sprintf } from "@web/core/utils/strings";
 import { useService } from "@web/core/utils/hooks";
@@ -9,15 +9,15 @@ import { Notebook } from "@web/core/notebook/notebook";
 import { Component, useState } from "@odoo/owl";
 
 const LABELS = {
-    PIVOT: _lt("pivot"),
-    LIST: _lt("list"),
-    LINK: _lt("link"),
-    GRAPH: _lt("graph"),
+    PIVOT: _t("pivot"),
+    LIST: _t("list"),
+    LINK: _t("link"),
+    GRAPH: _t("graph"),
 };
 
 const PAGE_LABELS = {
-    SPREADSHEET: _lt("Spreadsheets"),
-    DASHBOARD: _lt("Dashboards"),
+    SPREADSHEET: _t("Spreadsheets"),
+    DASHBOARD: _t("Dashboards"),
 };
 /**
  * @typedef State

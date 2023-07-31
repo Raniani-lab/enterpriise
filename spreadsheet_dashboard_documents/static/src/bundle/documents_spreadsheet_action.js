@@ -2,13 +2,13 @@
 
 import { SpreadsheetAction } from "@documents_spreadsheet/bundle/actions/spreadsheet_action";
 import * as spreadsheet from "@odoo/o-spreadsheet";
-import { _lt } from "@web/core/l10n/translation";
+import { _t } from "@web/core/l10n/translation";
 import { patch } from "@web/core/utils/patch";
 const { topbarMenuRegistry } = spreadsheet.registries;
 import { useSubEnv } from "@odoo/owl";
 
 topbarMenuRegistry.addChild("add_document_to_dashboard", ["file"], {
-    name: _lt("Add to dashboard"),
+    name: _t("Add to dashboard"),
     sequence: 200,
     isVisible: (env) => env.canAddDocumentAsDashboard,
     execute: (env) => env.createDashboardFromDocument(env.model),

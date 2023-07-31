@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { _lt } from "@web/core/l10n/translation";
+import { _t } from "@web/core/l10n/translation";
 import * as spreadsheet from "@odoo/o-spreadsheet";
 import { initCallbackRegistry } from "@spreadsheet/o_spreadsheet/init_callbacks";
 import {
@@ -43,7 +43,7 @@ function insertLink(actionToLink) {
 initCallbackRegistry.add("insertLink", insertLink);
 
 linkMenuRegistry.add("odooMenu", {
-    name: _lt("Link an Odoo menu"),
+    name: _t("Link an Odoo menu"),
     sequence: 20,
     execute: async (env) => {
         return new Promise((resolve) => {

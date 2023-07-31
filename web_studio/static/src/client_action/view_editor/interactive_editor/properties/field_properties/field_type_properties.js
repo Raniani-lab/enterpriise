@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { _lt } from "@web/core/l10n/translation";
+import { _t } from "@web/core/l10n/translation";
 
 /**
  * This object describes the properties editable in studio, depending on
@@ -11,12 +11,12 @@ import { _lt } from "@web/core/l10n/translation";
 export const EDITABLE_ATTRIBUTES = {
     context: {
         name: "context",
-        label: _lt("Context"),
+        label: _t("Context"),
         type: "string",
     },
     domain: {
         name: "domain",
-        label: _lt("Domain"),
+        label: _t("Domain"),
         type: "domain",
         getValue({ attrs, field }) {
             return {
@@ -27,12 +27,12 @@ export const EDITABLE_ATTRIBUTES = {
     },
     aggregate: {
         name: "aggregate",
-        label: _lt("Aggregate"),
+        label: _t("Aggregate"),
         type: "selection",
         choices: [
-            { value: "sum", label: _lt("Sum") },
-            { value: "avg", label: _lt("Average") },
-            { value: "none", label: _lt("No aggregation") },
+            { value: "sum", label: _t("Sum") },
+            { value: "avg", label: _t("Average") },
+            { value: "none", label: _t("No aggregation") },
         ],
         getValue({ attrs }) {
             return attrs.sum ? "sum" : attrs.avg ? "avg" : "none";
@@ -40,7 +40,7 @@ export const EDITABLE_ATTRIBUTES = {
     },
     placeholder: {
         name: "placeholder",
-        label: _lt("Placeholder"),
+        label: _t("Placeholder"),
         type: "string",
     },
 };

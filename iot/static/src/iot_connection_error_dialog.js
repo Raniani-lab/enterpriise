@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { Dialog } from '@web/core/dialog/dialog';
-import { _lt } from '@web/core/l10n/translation';
+import { _t } from "@web/core/l10n/translation";
 
 const { Component } = owl;
 
@@ -14,5 +14,5 @@ IoTConnectionErrorDialog.props = {
     close: { type: Function }, // always provided by the dialog service
 };
 IoTConnectionErrorDialog.defaultProps = {
-    title: _lt('Connection to IoT Box failed'),
+    title: _t('Connection to IoT Box failed'),
 };

@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { _lt } from "@web/core/l10n/translation";
+import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
 import { MapArchParser } from "./map_arch_parser";
 import { MapModel } from "./map_model";
@@ -9,7 +9,7 @@ import { MapRenderer } from "./map_renderer";
 
 export const mapView = {
     type: "map",
-    display_name: _lt("Map"),
+    display_name: _t("Map"),
     icon: "fa fa-map-marker",
     multiRecord: true,
     isMobileFriendly: true,
@@ -40,7 +40,7 @@ export const mapView = {
                 numbering: archInfo.routing || false,
                 offset: 0,
                 panelTitle:
-                    archInfo.panelTitle || config.getDisplayName() || _lt("Items"),
+                    archInfo.panelTitle || config.getDisplayName() || _t("Items"),
                 resModel: resModel,
                 resPartnerField: archInfo.resPartnerField,
                 routing: archInfo.routing || false,

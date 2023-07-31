@@ -2,7 +2,7 @@
 
 import BarcodeModel from '@stock_barcode/models/barcode_model';
 import { BackorderDialog } from '../components/backorder_dialog';
-import { _t, _lt } from "@web/legacy/js/services/core";
+import { _t } from "@web/core/l10n/translation";
 import { escape, sprintf } from '@web/core/utils/strings';
 import { session } from '@web/session';
 import { markup } from '@odoo/owl';
@@ -175,20 +175,20 @@ export default class BarcodePickingModel extends BarcodeModel {
         const infos = {
             scanScrLoc: {
                 message: this.considerPackageLines && !this.config.restrict_scan_source_location ?
-                    _lt("Scan the source location or a package") :
-                    _lt("Scan the source location"),
+                    _t("Scan the source location or a package") :
+                    _t("Scan the source location"),
                 class: 'scan_src',
                 icon: 'sign-out',
             },
             scanDestLoc: {
-                message: _lt("Scan the destination location"),
+                message: _t("Scan the destination location"),
                 class: 'scan_dest',
                 icon: 'sign-in',
             },
             scanProductOrDestLoc: {
                 message: this.considerPackageLines ?
-                    _lt("Scan a product, a package or the destination location.") :
-                    _lt("Scan a product or the destination location."),
+                    _t("Scan a product, a package or the destination location.") :
+                    _t("Scan a product or the destination location."),
                 class: 'scan_product_or_dest',
             },
             scanPackage: {
@@ -197,17 +197,17 @@ export default class BarcodePickingModel extends BarcodeModel {
                 icon: 'archive',
             },
             scanLot: {
-                message: _lt("Scan a lot number"),
+                message: _t("Scan a lot number"),
                 class: "scan_lot",
                 icon: "barcode",
             },
             scanSerial: {
-                message: _lt("Scan a serial number"),
+                message: _t("Scan a serial number"),
                 class: "scan_serial",
                 icon: "barcode",
             },
             pressValidateBtn: {
-                message: _lt("Press Validate or scan another product"),
+                message: _t("Press Validate or scan another product"),
                 class: 'scan_validate',
                 icon: 'check-square',
             },
@@ -241,7 +241,7 @@ export default class BarcodePickingModel extends BarcodeModel {
                     } else if (this.pageIsDone) {
                         return infos.pressValidateBtn;
                     } else {
-                        barcodeInfo.message = _lt("Scan a product or another package");
+                        barcodeInfo.message = _t("Scan a product or another package");
                         barcodeInfo.class = 'scan_product_or_package';
                     }
                 } else {
@@ -250,14 +250,14 @@ export default class BarcodePickingModel extends BarcodeModel {
                 }
                 return barcodeInfo;
             } else if (this.considerPackageLines && barcodeInfo.class == 'scan_product') {
-                barcodeInfo.message = _lt("Scan a product or a package");
+                barcodeInfo.message = _t("Scan a product or a package");
                 barcodeInfo.class = 'scan_product_or_package';
             }
         }
         if (barcodeInfo.class === "scan_product" && !(line || this.lastScanned.packageId) &&
             this.config.restrict_scan_source_location && this.lastScanned.sourceLocation) {
             barcodeInfo.message = sprintf(
-                _lt("Scan a product from %s"),
+                _t("Scan a product from %s"),
                 this.lastScanned.sourceLocation.name);
         }
 
@@ -269,7 +269,7 @@ export default class BarcodePickingModel extends BarcodeModel {
                        line && this._lineIsComplete(line)) {
                 if (this.config.restrict_put_in_pack === 'mandatory' && !line.result_package_id) {
                     return {
-                        message: _lt("Scan a package"),
+                        message: _t("Scan a package"),
                         class: 'scan_package',
                         icon: 'archive',
                     };
@@ -767,7 +767,7 @@ export default class BarcodePickingModel extends BarcodeModel {
     }
 
     _checkBarcode(barcodeData) {
-        const check = { title: _lt("Not the expected scan") };
+        const check = { title: _t("Not the expected scan") };
         const { location, lot, product, destLocation, packageType } = barcodeData;
         const resultPackage = barcodeData.package;
         const packageWithQuant = (barcodeData.package && barcodeData.package.quant_ids || []).length;

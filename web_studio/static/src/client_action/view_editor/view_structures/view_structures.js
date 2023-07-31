@@ -1,7 +1,7 @@
 /** @odoo-module */
 import { Component, useState } from "@odoo/owl";
 
-import { _lt } from "@web/core/l10n/translation";
+import { _t } from "@web/core/l10n/translation";
 
 export class ExistingFields extends Component {
     static props = {
@@ -62,26 +62,26 @@ export class ExistingFields extends Component {
 }
 
 const newFields = [
-    { type: "char", string: _lt("Text") },
-    { type: "text", string: _lt("Multine Text") },
-    { type: "integer", string: _lt("Integer") },
-    { type: "float", string: _lt("Decimal") },
-    { type: "html", string: _lt("HTML") },
-    { type: "monetary", string: _lt("Monetary") },
-    { type: "date", string: _lt("Date") },
-    { type: "datetime", string: _lt("Datetime") },
-    { type: "boolean", string: _lt("CheckBox") },
-    { type: "selection", string: _lt("Selection") },
-    { type: "binary", string: _lt("File"), widget: "file" },
-    { type: "one2many", string: _lt("Lines"), special: "lines" },
-    { type: "one2many", string: _lt("One2Many") },
-    { type: "many2one", string: _lt("Many2One") },
-    { type: "many2many", string: _lt("Many2Many") },
-    { type: "binary", string: _lt("Image"), widget: "image", name: "picture" },
-    { type: "many2many", string: _lt("Tags"), widget: "many2many_tags", name: "tags" },
-    { type: "selection", string: _lt("Priority"), widget: "priority" },
-    { type: "binary", string: _lt("Signature"), widget: "signature" },
-    { type: "related", string: _lt("Related Field") },
+    { type: "char", string: _t("Text") },
+    { type: "text", string: _t("Multine Text") },
+    { type: "integer", string: _t("Integer") },
+    { type: "float", string: _t("Decimal") },
+    { type: "html", string: _t("HTML") },
+    { type: "monetary", string: _t("Monetary") },
+    { type: "date", string: _t("Date") },
+    { type: "datetime", string: _t("Datetime") },
+    { type: "boolean", string: _t("CheckBox") },
+    { type: "selection", string: _t("Selection") },
+    { type: "binary", string: _t("File"), widget: "file" },
+    { type: "one2many", string: _t("Lines"), special: "lines" },
+    { type: "one2many", string: _t("One2Many") },
+    { type: "many2one", string: _t("Many2One") },
+    { type: "many2many", string: _t("Many2Many") },
+    { type: "binary", string: _t("Image"), widget: "image", name: "picture" },
+    { type: "many2many", string: _t("Tags"), widget: "many2many_tags", name: "tags" },
+    { type: "selection", string: _t("Priority"), widget: "priority" },
+    { type: "binary", string: _t("Signature"), widget: "signature" },
+    { type: "related", string: _t("Related Field") },
 ];
 
 export class NewFields extends Component {

@@ -2,7 +2,7 @@
 import { Component } from "@odoo/owl";
 import { useOwnedDialogs, useService } from "@web/core/utils/hooks";
 import { registry } from "@web/core/registry";
-import { _lt } from "@web/core/l10n/translation";
+import { _t } from "@web/core/l10n/translation";
 import { sortBy } from "@web/core/utils/arrays";
 import { Dropdown } from "@web/core/dropdown/dropdown";
 import { DropdownItem } from "@web/core/dropdown/dropdown_item";
@@ -24,19 +24,19 @@ import { MapNewViewDialog } from "../editor/new_view_dialogs/map_new_view_dialog
 function getViewCategories() {
     return {
         general: {
-            title: _lt("General views"),
+            title: _t("General views"),
             viewTypes: ["form", "search", "activity"],
         },
         multiple: {
-            title: _lt("Multiple records views"),
+            title: _t("Multiple records views"),
             viewTypes: ["list", "kanban", "map"],
         },
         timeline: {
-            title: _lt("Timeline views"),
+            title: _t("Timeline views"),
             viewTypes: ["calendar", "cohort", "gantt"],
         },
         reporting: {
-            title: _lt("Reporting views"),
+            title: _t("Reporting views"),
             viewTypes: ["graph", "pivot"],
         },
     };

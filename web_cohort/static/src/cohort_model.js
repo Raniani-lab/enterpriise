@@ -1,6 +1,6 @@
 /* @odoo-module */
 
-import { _lt } from "@web/core/l10n/translation";
+import { _t } from "@web/core/l10n/translation";
 import { KeepLast, Race } from "@web/core/utils/concurrency";
 import { Model } from "@web/model/model";
 import { computeReportMeasures, processMeasure } from "@web/views/utils";
@@ -8,10 +8,10 @@ import { computeReportMeasures, processMeasure } from "@web/views/utils";
 export const MODES = ["retention", "churn"];
 export const TIMELINES = ["forward", "backward"];
 export const INTERVALS = {
-    day: _lt("Day"),
-    week: _lt("Week"),
-    month: _lt("Month"),
-    year: _lt("Year"),
+    day: _t("Day"),
+    week: _t("Week"),
+    month: _t("Month"),
+    year: _t("Year"),
 };
 
 /**

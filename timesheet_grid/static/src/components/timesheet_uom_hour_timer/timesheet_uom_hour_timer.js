@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { _lt } from "@web/core/l10n/translation";
+import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 
@@ -33,7 +33,7 @@ export class TimesheetUOMHourTimer extends Component {
     }
 
     get title() {
-        return this.isTimerRunning ? _lt("Stop") : _lt("Start");
+        return this.isTimerRunning ? _t("Stop") : _t("Start");
     }
 
     async onClick(ev) {

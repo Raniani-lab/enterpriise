@@ -1,6 +1,6 @@
 /** @odoo-module */
 import { useService } from "@web/core/utils/hooks";
-import { _lt } from "@web/core/l10n/translation";
+import { _t } from "@web/core/l10n/translation";
 import { renderToMarkup } from "@web/core/utils/render";
 
 import { xml, reactive, useComponent, useEnv } from "@odoo/owl";
@@ -12,7 +12,7 @@ const missingApprovalsTemplate = xml`
         </li>
     </ul>
 `;
-const notificationTitle = _lt("The following approvals are missing:");
+const notificationTitle = _t("The following approvals are missing:");
 
 function getMissingApprovals(entries, rules) {
     const missingApprovals = [];

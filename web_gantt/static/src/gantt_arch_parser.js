@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { _lt, _t } from "@web/core/l10n/translation";
+import { _t } from "@web/core/l10n/translation";
 import { evaluateExpr } from "@web/core/py_js/py";
 import { XMLParser } from "@web/core/utils/xml";
 import { archParseBoolean, getActiveActions } from "@web/views/utils";
@@ -25,8 +25,8 @@ const SCALES = {
     day: {
         cellPrecisions: { full: 60, half: 30, quarter: 15 },
         defaultPrecision: "full",
-        description: _lt("Day"),
-        unitDescription: _lt("minutes"),
+        description: _t("Day"),
+        unitDescription: _t("minutes"),
         format: "DDDD",
         hotkey: "e",
         interval: "hour",
@@ -35,8 +35,8 @@ const SCALES = {
     week: {
         cellPrecisions: { full: 24, half: 12 },
         defaultPrecision: "half",
-        description: _lt("Week"),
-        unitDescription: _lt("hours"),
+        description: _t("Week"),
+        unitDescription: _t("hours"),
         format: "dd MMMM yyyy",
         hotkey: "p",
         interval: "day",
@@ -45,8 +45,8 @@ const SCALES = {
     month: {
         cellPrecisions: { full: 24, half: 12 },
         defaultPrecision: "half",
-        description: _lt("Month"),
-        unitDescription: _lt("hours"),
+        description: _t("Month"),
+        unitDescription: _t("hours"),
         format: "MMMM yyyy",
         hotkey: "m",
         interval: "day",
@@ -55,8 +55,8 @@ const SCALES = {
     year: {
         cellPrecisions: { full: 1 },
         defaultPrecision: "full",
-        description: _lt("Year"),
-        unitDescription: _lt("months"),
+        description: _t("Year"),
+        unitDescription: _t("months"),
         format: "yyyy",
         hotkey: "y",
         interval: "month",

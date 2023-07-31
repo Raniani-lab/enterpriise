@@ -1,6 +1,6 @@
 /** @odoo-module */
 import { useService } from "@web/core/utils/hooks";
-import { _lt } from "@web/core/l10n/translation";
+import { _t } from "@web/core/l10n/translation";
 import { localization } from "@web/core/l10n/localization";
 import { registry } from "@web/core/registry";
 
@@ -73,65 +73,65 @@ EditorMenu.props = {
 EditorMenu.template = "web_studio.EditorMenu";
 EditorMenu.viewTypes = [
     {
-        title: _lt("Form"),
+        title: _t("Form"),
         type: "form",
         iconClasses: "fa fa-address-card",
     },
     {
-        title: _lt("List"),
+        title: _t("List"),
         type: "list",
         iconClasses: "oi oi-view-list",
     },
     {
-        title: _lt("Kanban"),
+        title: _t("Kanban"),
         type: "kanban",
         iconClasses: "oi oi-view-kanban",
     },
     {
-        title: _lt("Map"),
+        title: _t("Map"),
         type: "map",
         iconClasses: "fa fa-map-marker",
     },
     {
-        title: _lt("Calendar"),
+        title: _t("Calendar"),
         type: "calendar",
         iconClasses: "fa fa-calendar",
     },
     {
-        title: _lt("Graph"),
+        title: _t("Graph"),
         type: "graph",
         iconClasses: "fa fa-area-chart",
     },
     {
-        title: _lt("Pivot"),
+        title: _t("Pivot"),
         type: "pivot",
         iconClasses: "oi oi-view-pivot",
     },
     {
-        title: _lt("Gantt"),
+        title: _t("Gantt"),
         type: "gantt",
         iconClasses: "fa fa-tasks",
     },
     {
-        title: _lt("Cohort"),
+        title: _t("Cohort"),
         type: "cohort",
         iconClasses: "oi oi-view-cohort",
     },
     {
-        title: _lt("Activity"),
+        title: _t("Activity"),
         type: "activity",
         iconClasses: "fa fa-clock-o",
     },
     {
-        title: _lt("Search"),
+        title: _t("Search"),
         type: "search",
         iconClasses: "oi oi-search",
     },
 ];
 
 editorTabRegistry
-    .add("views", { name: _lt("Views"), action: "web_studio.action_editor" })
-    .add("reports", { name: _lt("Reports") })
-    .add("automations", { name: _lt("Automations") })
-    .add("acl", { name: _lt("Access Control") })
-    .add("filters", { name: _lt("Filter Rules") });
+    .add("views", { name: _t("Views"), action: "web_studio.action_editor" })
+    .add("reports", { name: _t("Reports") })
+    .add("automations", { name: _t("Automations") })
+    .add("acl", { name: _t("Access Control") })
+    .add("filters", { name: _t("Filter Rules") });

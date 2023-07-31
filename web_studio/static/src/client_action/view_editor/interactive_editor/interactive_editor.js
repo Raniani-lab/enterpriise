@@ -4,7 +4,7 @@ import { Component, toRaw } from "@odoo/owl";
 import { closest, touching } from "@web/core/utils/ui";
 import { useDraggable } from "@web/core/utils/draggable";
 import { useOwnedDialogs, useService } from "@web/core/utils/hooks";
-import { _lt, _t } from "@web/core/l10n/translation";
+import { _t } from "@web/core/l10n/translation";
 import { sprintf } from "@web/core/utils/strings";
 import {
     isToXpathEquivalentFromXpath,
@@ -29,7 +29,7 @@ import {
 } from "@web_studio/client_action/view_editor/editors/xml_utils";
 import { DefaultViewSidebar } from "@web_studio/client_action/view_editor/default_view_sidebar/default_view_sidebar";
 
-const NO_M2O_AVAILABLE = _lt(`
+const NO_M2O_AVAILABLE = _t(`
     There are no many2one fields related to the current model.
     To create a one2many field on the current model, you must first create its many2one counterpart on the model you want to relate to.
 `);

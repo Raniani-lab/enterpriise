@@ -69,31 +69,43 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
 
     setUpAdvantages() {
         // When we load the advantages, if any of the advantage is not set and it has
-        // dependent advantages, unset those dependent advantages
+        // dependent advantages (or requested documents),
+        // unset those dependent advantages (or hide those requested documents)
         $('input')
             .toArray()
             .forEach(async input => {
                 let dependentAdvantages = $(input).data('advantage_ids-dependent');
+                const requested_documents = $(input).data('requested_documents');
+                let mandatoryAdvantageSelected;
+                if (dependentAdvantages || requested_documents) {
+                    let newValue = $(input).data('value');
+                    if (input.type === 'radio') {
+                        const target = $("input[name='" + input.name + "']").toArray().find(elem => elem.checked);
+                        newValue = $(target).data('value');
+                        if (newValue === 'No') {
+                            newValue = 0;
+                        }
+                    } else if (input.type === 'checkbox') {
+                        newValue = input.checked;
+                    } else {
+                        newValue = input.value;
+                    }
+                    mandatoryAdvantageSelected = Boolean(+newValue);
+                }
+
                 if (dependentAdvantages) {
                     dependentAdvantages = dependentAdvantages.trim().split(' ');
                     for (const dependentAdvantage of dependentAdvantages) {
-                        let newValue = $(input).data('value');
-                        if (input.type === 'radio') {
-                            const target = $("input[name='" + input.name + "']").toArray().find(elem => elem.checked);
-                            newValue = $(target).data('value');
-                            if (newValue === 'No') {
-                                newValue = 0;
-                            }
-                        } else if (input.type === 'checkbox') {
-                            newValue = input.checked;
-                        } else {
-                            newValue = input.value;
-                        }
-                        const mandatoryAdvantageSelected = Boolean(+newValue);
                         if (!mandatoryAdvantageSelected) {
                             this.updateDependentAdvantages(dependentAdvantage, mandatoryAdvantageSelected);
                         }
                     }
+                }
+                if (requested_documents) {
+                    requested_documents.split(',').forEach(requested_document => {
+                        const document_div = $("div[name='" + requested_document + "']");
+                        mandatoryAdvantageSelected ? document_div.removeClass('d-none') : document_div.addClass('d-none');
+                    });
                 }
             });
     },

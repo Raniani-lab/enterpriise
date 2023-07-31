@@ -136,11 +136,11 @@ export class GanttConnector extends Component {
 
                 const drawingCommands = [
                     `M`,
-                    `${sourceLeft} ${sourceTop},`,
+                    `${sourceLeft},${sourceTop}`,
                     `C`,
-                    `${sourceControlPoint.left} ${sourceControlPoint.top},`,
-                    `${targetControlPoint.left} ${targetControlPoint.top},`,
-                    `${targetLeft} ${targetTop}`,
+                    `${sourceControlPoint.left},${sourceControlPoint.top}`,
+                    `${targetControlPoint.left},${targetControlPoint.top}`,
+                    `${targetLeft},${targetTop}`,
                 ].join(" ");
 
                 const paths = el.querySelectorAll(

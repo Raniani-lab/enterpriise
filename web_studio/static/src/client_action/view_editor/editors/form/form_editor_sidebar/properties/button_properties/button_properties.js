@@ -3,10 +3,12 @@
 import { Component, onWillStart, onWillUpdateProps, useState } from "@odoo/owl";
 import { CheckBox } from "@web/core/checkbox/checkbox";
 import { DomainSelectorDialog } from "@web/core/domain_selector_dialog/domain_selector_dialog";
-import { Many2XAutocomplete } from "@web/views/fields/relational_utils";
 import { SelectMenu } from "@web/core/select_menu/select_menu";
 import { Property } from "@web_studio/client_action/view_editor/property/property";
 import { useService } from "@web/core/utils/hooks";
+import { Record } from "@web/views/record";
+import { Many2OneField } from "@web/views/fields/many2one/many2one_field";
+import { Many2ManyTagsField } from "@web/views/fields/many2many_tags/many2many_tags_field";
 import { LimitGroupVisibility } from "@web_studio/client_action/view_editor/interactive_editor/properties/limit_group_visibility/limit_group_visibility";
 import { RainbowEffect } from "./rainbow_effect";
 import { SidebarPropertiesToolbox } from "@web_studio/client_action/view_editor/interactive_editor/properties/sidebar_properties_toolbox/sidebar_properties_toolbox";
@@ -23,8 +25,10 @@ export class ButtonProperties extends Component {
     static components = {
         CheckBox,
         LimitGroupVisibility,
-        Many2XAutocomplete,
+        Many2OneField,
+        Many2ManyTagsField,
         RainbowEffect,
+        Record,
         SelectMenu,
         Property,
         SidebarPropertiesToolbox,
@@ -40,6 +44,31 @@ export class ButtonProperties extends Component {
 
         this.decoratedOrmCall = useSnackbarWrapper(this.orm.call.bind(this.orm));
         this.decoratedOrmWrite = useSnackbarWrapper(this.orm.write.bind(this.orm));
+
+        const m2mFieldsToFetch = {
+            display_name: { type: "char" },
+        };
+        const approvalRecordDefinition = {
+            group_id: {
+                type: "many2one",
+                relation: "res.groups",
+            },
+            responsible_id: {
+                type: "many2one",
+                relation: "res.users",
+                domain: [["share", "=", false]],
+            },
+            users_to_notify: {
+                type: "many2many",
+                relation: "res.users",
+                related: { activeFields: m2mFieldsToFetch, fields: m2mFieldsToFetch },
+            },
+        };
+        this.recordProps = {
+            resModel: "studio.approval.rule",
+            fields: approvalRecordDefinition,
+            activeFields: approvalRecordDefinition,
+        };
 
         onWillStart(() => {
             if (this.props.node.attrs.studio_approval) {
@@ -60,12 +89,18 @@ export class ButtonProperties extends Component {
         return this.editNodeAttributes({ [name]: value });
     }
 
+    async onChangeApprovalRecord(record, changes, id) {
+        await this.decoratedOrmWrite("studio.approval.rule", [id], changes);
+        this.updateApprovalSpec();
+    }
+
     onEnableApproval(enable) {
         this.env.viewEditorModel.doOperation({
             enable,
             type: "enable_approval",
             btn_name: this.props.node.attrs.name,
             btn_type: this.props.node.attrs.type,
+            btn_string: this.props.node.attrs.string,
             model: this.env.viewEditorModel.controllerProps.resModel,
             view_id: this.env.viewEditorModel.view.id,
         });
@@ -82,6 +117,7 @@ export class ButtonProperties extends Component {
 
     async createApprovalRule() {
         const params = this.getApprovalParams();
+        params[3] = this.props.node.attrs.string;
         await this.decoratedOrmCall("studio.approval.rule", "create_rule", params);
         this.updateApprovalSpec();
     }
@@ -134,15 +170,11 @@ export class ButtonProperties extends Component {
         });
     }
 
-    async onApprovalSelectRule(ruleProperty, selection, id) {
-        if (selection && selection.length) {
-            await this.decoratedOrmWrite(
-                "studio.approval.rule",
-                [id],
-                Object.fromEntries([[ruleProperty, selection[0].id]])
-            );
-            this.updateApprovalSpec();
-        }
+    async onChangeNotificationOrder(ev, id) {
+        await this.decoratedOrmWrite("studio.approval.rule", [id], {
+            notification_order: ev.target.value,
+        });
+        this.updateApprovalSpec();
     }
 
     async updateApprovalSpec(params = this.getApprovalParams()) {

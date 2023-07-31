@@ -467,6 +467,31 @@ class TestStudioApproval(TransactionCase):
         self.assertFalse(approval_request.exists(),
                          "The approval request should have been deleted when the approval was refused")
 
+    def test_15_approval_notification_order(self):
+        """Test the multi-levels of approvals"""
+        self.rule.active = True
+        self.rule.responsible_id = self.manager
+        self.rule.notification_order = '2'
+        self.rule.message = 'This approval is the second step of approval'
+        lower_level_rule = self.env['studio.approval.rule'].create({
+            'active': True,
+            'model_id': self.rule.model_id.id,
+            'method': self.rule.method,
+            'message': 'This approval is the first step of approval',
+            'group_id': self.group_user.id,
+        })
+        lower_level_rule.responsible_id = self.manager
+        # only the rule of level 1 should create a request for approval activity
+        request_level_1 = lower_level_rule._create_request(self.record.id)
+        request_level_2 = self.rule._create_request(self.record.id)
+        self.assertTrue(request_level_1, "An approval request has been created for the level 1 rule")
+        self.assertFalse(request_level_2, "No approval request has been created for the level 2 rule")
+        # now approve the first request, which will automatically create a request for level 2 rule
+        lower_level_rule.with_user(self.manager).set_approval(res_id=self.record.id, approved=True)
+        request_level_1 = lower_level_rule._create_request(self.record.id)
+        request_level_2 = self.rule._create_request(self.record.id)
+        self.assertFalse(request_level_2, "No approval request can be created for the level 2 rule")
+
 @tagged('post_install', '-at_install')
 class TestStudioApprovalPost(TransactionCase):
     # patching is done when the registry is ready, so post-install is needed
@@ -539,7 +564,7 @@ class TestStudioApprovalPost(TransactionCase):
         user_result = partner.with_user(self.user).open_commercial_entity()
         self.assertTrue(user_result.get('type') == 'ir.actions.client' and user_result.get('tag') == 'display_notification', 'The patched method should return a notification action')
         self.assertEqual(user_result.get('params', {}).get('title'), 'The following approvals are missing:', 'The notification should have the correct title')
-        self.assertEqual(user_result.get('params', {}).get('message'), 'Approval Manager', 'The notification should have the correct message')
+        self.assertEqual(user_result.get('params', {}).get('message'), "You didn't say the magic word!", 'The notification contains the corresponding message')
         self.assertEqual(user_result.get('params', {}).get('type'), 'warning', 'The notification should be a warning')
 
         # the manager can indeed execute this method

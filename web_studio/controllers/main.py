@@ -914,6 +914,7 @@ Are you sure you want to remove the selection values of those records?""") % len
         """Set 'studio_approval="True"' on all matching buttons in the view."""
         btn_type = operation.get('btn_type')
         btn_name = operation.get('btn_name')
+        btn_string = operation.get('btn_string')
         view_id = operation.get('view_id')
         parser = etree.XMLParser(remove_blank_text=True)
         raw_base_arch = request.env[model].get_view(view_id, 'form')['arch']
@@ -926,7 +927,7 @@ Are you sure you want to remove the selection values of those records?""") % len
         rule_domain = request.env['studio.approval.rule']._get_rule_domain(model, method, action)
         has_rules = request.env['studio.approval.rule'].search_count(rule_domain)
         if not has_rules:
-            request.env['studio.approval.rule'].create_rule(model, method, action)
+            request.env['studio.approval.rule'].create_rule(model, method, action, btn_string)
         matching_buttons = base_arch.findall(".//button[@type='%s'][@name='%s']" % (btn_type, btn_name))
         for idx, btn in enumerate(matching_buttons):
             # note that these xpath are not the sexiest, but they will be cleaned

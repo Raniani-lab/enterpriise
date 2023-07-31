@@ -2769,7 +2769,7 @@ QUnit.module("View Editors", (hooks) => {
     });
 
     QUnit.test("approval one rule by default", async function (assert) {
-        assert.expect(7);
+        assert.expect(8);
         const changeArch = makeArchChanger();
 
         let rules = [1];
@@ -2808,6 +2808,11 @@ QUnit.module("View Editors", (hooks) => {
                     );
                 }
                 if (route === "/web/dataset/call_kw/studio.approval.rule/create_rule") {
+                    assert.strictEqual(
+                        args.args[3],
+                        "Test",
+                        "button string is used to set the rule name"
+                    );
                     return {};
                 }
                 if (route === "/web/dataset/call_kw/studio.approval.rule/write") {
@@ -2824,6 +2829,8 @@ QUnit.module("View Editors", (hooks) => {
                             responsible_id: false,
                             group_id: [1, "User types / Internal User"],
                             id,
+                            users_to_notify: [],
+                            notification_order: false,
                         })),
                     };
                 }

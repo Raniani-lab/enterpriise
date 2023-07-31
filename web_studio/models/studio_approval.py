@@ -22,15 +22,25 @@ class StudioApprovalRule(models.Model):
         return self.env.ref('base.group_user')
 
     active = fields.Boolean(default=True)
-    group_id = fields.Many2one("res.groups", string="Group", required=True,
+    group_id = fields.Many2one("res.groups", string="Allowed Group", required=True,
                                ondelete="cascade", default=lambda s: s._default_group_id())
     model_id = fields.Many2one("ir.model", string="Model", ondelete="cascade", required=True)
     method = fields.Char(string="Method")
     action_id = fields.Many2one("ir.actions.actions", string="Action", ondelete="cascade")
-    name = fields.Char(compute="_compute_name", store=True)
-    message = fields.Char(translate=True)
-    responsible_id = fields.Many2one("res.users", string="Responsible")
-    exclusive_user = fields.Boolean(string="Limit approver to this rule",
+    name = fields.Char()
+    message = fields.Char(translate=True, string="Description", help="This message will be displayed to users that cannot proceed without this approval")
+    responsible_id = fields.Many2one("res.users", string="Responsible", help="An activity will be assigned to this user when an approval is requested")
+    users_to_notify = fields.Many2many(
+        comodel_name='res.users',
+        string='Users to notify',
+        help="These users will receive a notification via internal note when an approval is requested"
+    )
+    notification_order = fields.Selection(
+        [('1', '1'), ('2', '2'), ('3', '3')],
+        default='1',
+        help="Use this field to setup multi-level validation. Next activities and notifications for an approval request will only be sent once rules from previous levels have been validated"
+    )
+    exclusive_user = fields.Boolean(string="Exclusive approval",
                                            help="If set, the user who approves this rule will not "
                                                 "be able to approve other rules for the same "
                                                 "record")
@@ -166,7 +176,7 @@ class StudioApprovalRule(models.Model):
                     else:
                         title = _('The following approvals are missing:')
                         missing_approvals = self.env['studio.approval.rule'].get_missing_approvals(rules[0], entries[0])
-                        message += ', '.join([approval['group_id'][1] for approval in missing_approvals])
+                        message += ', '.join([approval['message'] or approval['group_id'][1] for approval in missing_approvals])
 
                     return  {
                         'type': 'ir.actions.client',
@@ -234,13 +244,6 @@ class StudioApprovalRule(models.Model):
                 "Rules with existing entries cannot be deleted since it would delete existing "
                 "approval entries. You should archive the rule instead."))
 
-    @api.depends("model_id", "group_id", "method", "action_id")
-    def _compute_name(self):
-        for rule in self:
-            action_name = rule.method or rule.action_id.name
-            rule_id = rule.id or rule._origin.id or 'new'
-            rule.name = f"{rule.model_id.name}/{action_name} ({rule.group_id.display_name}) ({rule_id})"
-
     @api.depends("group_id")
     @api.depends_context("uid")
     def _compute_can_validate(self):
@@ -259,14 +262,15 @@ class StudioApprovalRule(models.Model):
             rule.entries_count = len(rule.entry_ids)
 
     @api.model
-    def create_rule(self, model, method, action_id):
-        model_id = self.env['ir.model']._get_id(model)
+    def create_rule(self, model, method, action_id, rule_string):
+        model = self.env['ir.model']._get(model)
         return self.create({
-            'model_id': model_id,
+            'model_id': model.id,
             'method': method,
             'action_id': action_id and int(action_id),
+            'name': _('%(rule_string)s (%(model_name)s)', rule_string=rule_string, model_name=model.name or model.id),
         })
-    
+
     def set_approval(self, res_id, approved):
         """Set an approval entry for the current rule and specified record.
 
@@ -285,7 +289,7 @@ class StudioApprovalRule(models.Model):
         self.ensure_one()
         entry = self._set_approval(res_id, approved)
         return entry and entry.approved
-    
+
     def delete_approval(self, res_id):
         """Delete an approval entry for the current rule and specified record.
 
@@ -401,6 +405,22 @@ class StudioApprovalRule(models.Model):
         })
         if not self.env.context.get('prevent_approval_request_unlink'):
             ruleSudo._unlink_request(res_id)
+        # approval rules for higher levels can be requested if no rules with the current level are set
+        same_level_rules = ruleSudo.search([
+                ('id', '!=', ruleSudo.id),
+                ('notification_order', '=', ruleSudo.notification_order),
+                ('active', '=', True),
+                ('method', '=', ruleSudo.method),
+                ('action_id', '=', ruleSudo.action_id.id)
+            ])
+        if ruleSudo.notification_order != '3' and not same_level_rules:
+            for approval_rule in ruleSudo.search([
+                ('notification_order', '>', ruleSudo.notification_order),
+                ('active', '=', True),
+                ('method', '=', ruleSudo.method),
+                ('action_id', '=', ruleSudo.action_id.id)
+            ]):
+                approval_rule._create_request(res_id)
         return result
 
     def _get_rule_domain(self, model, method, action_id):
@@ -474,9 +494,10 @@ class StudioApprovalRule(models.Model):
             # we check that the user has read access on the underlying record before returning anything
             record.check_access_rule('read')
         domain = self._get_rule_domain(model, method, action_id)
-        rules_data = self.sudo().search_read(domain=domain,
-                                             fields=['group_id', 'message', 'exclusive_user',
-                                                     'domain', 'can_validate', 'responsible_id'])
+        rules_data = self.sudo().search_read(
+            domain=domain,
+            fields=['group_id', 'message', 'exclusive_user', 'domain', 'can_validate', 'responsible_id', 'users_to_notify', 'notification_order'],
+            order='notification_order asc, exclusive_user desc, id asc')
         applicable_rule_ids = list()
         for rule in rules_data:
             # in JS, an empty array will be truthy and I don't want to start using JSON parsing
@@ -534,7 +555,7 @@ class StudioApprovalRule(models.Model):
         rules_data = ruleSudo.search_read(
             domain=domain,
             fields=['group_id', 'message', 'exclusive_user', 'domain', 'can_validate'],
-            order='exclusive_user desc, id asc'
+            order='notification_order asc, exclusive_user desc, id asc'
         )
         applicable_rule_ids = list()
         for rule in rules_data:
@@ -583,20 +604,42 @@ class StudioApprovalRule(models.Model):
 
     def _create_request(self, res_id):
         self.ensure_one()
+        ruleSudo = self.sudo()
         if not self.responsible_id or not self.model_id.sudo().is_mail_activity:
             return False
         request = self.env['studio.approval.request'].sudo().search([('rule_id', '=', self.id), ('res_id', '=', res_id)])
         if request:
             # already requested, let's not create a shitload of activities for the same user
             return False
+        if self.notification_order != '1':
+            # avoid asking for an approval if all request from a lower level have not yet been validated
+            for approval_rule in ruleSudo.search([
+                ('notification_order', '<', self.notification_order),
+                ('active', '=', True),
+                ('method', '=', ruleSudo.method),
+                ('action_id', '=', ruleSudo.action_id.id)
+            ]):
+                existing_entry = self.env['studio.approval.entry'].search([
+                    ('model', '=', ruleSudo.model_name),
+                    ('method', '=', ruleSudo.method),
+                    ('action_id', '=', ruleSudo.action_id.id),
+                    ('res_id', '=', res_id),
+                    ('rule_id', '=', approval_rule.id)
+                ])
+                if not existing_entry or not existing_entry.approved:
+                    # if rules from lower levels are not yet approved, don't create a request
+                    return False
+
         record = self.env[self.model_name].browse(res_id)
         activity_type_id = self._get_or_create_activity_type()
         activity = record.activity_schedule(activity_type_id=activity_type_id, user_id=self.responsible_id.id)
-        self.env['studio.approval.request'].sudo().create({
+        request = self.env['studio.approval.request'].sudo().create({
             'rule_id': self.id,
             'mail_activity_id': activity.id,
             'res_id': res_id,
         })
+        partner_ids = ruleSudo.users_to_notify.partner_id
+        request.notify_to_users(record, ruleSudo.name, partner_ids)
         return True
 
     @api.model
@@ -677,7 +720,7 @@ class StudioApprovalEntry(models.Model):
         return res
 
     def _notify_approval(self):
-        """Post a generic note on the record if it inherits mail.thead."""
+        """Post a generic note on the record if it inherits mail.thread."""
         for entry in self:
             if not entry.rule_id.model_id.is_mail_thread:
                 continue
@@ -702,3 +745,18 @@ class StudioApprovalRequest(models.Model):
     rule_id = fields.Many2one('studio.approval.rule', string='Approval Rule', ondelete='cascade',
                               required=True, index=True)
     res_id = fields.Many2oneReference(string='Record ID', model_field='model', required=True)
+
+    def notify_to_users(self, record, rule_name, partner_ids):
+        """Post a request for approval note on the record."""
+        if record.message_post_with_source:
+            user = self.env.user
+            record.message_post_with_source(
+                'web_studio.request_approval',
+                author_id=user.partner_id.id,
+                partner_ids=partner_ids.ids,
+                render_values={
+                    'message': _('An approval for \'%(rule_name)s\' has been requested on %(record_name)s', rule_name=rule_name, record_name=record.name),
+                    'partner_ids': partner_ids,
+                    },
+                subtype_xmlid='mail.mt_note',
+            )

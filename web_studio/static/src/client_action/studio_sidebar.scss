@@ -207,7 +207,7 @@
                     display: flex;
                     align-items: baseline;
                     max-width: $o-web-studio-sidebar-width - 2*$o-web-studio-sidebar-margin;
-                    margin: 5px 5px 5px 0px;
+                    margin: 1px 5px 0px 0px;
                     cursor: default;
                     .o_badge_text {
                         margin-right: 5px;
@@ -221,9 +221,10 @@
                     &.o_tag_color_10 {
                         background-color: $o-web-studio-color-info;
                     }
-                    & + .badge {
-                        margin-top: 1px
-                    }
+                }
+                .o_field_tags {
+                    width: 100%;
+                    border: none;
                 }
             }
         }

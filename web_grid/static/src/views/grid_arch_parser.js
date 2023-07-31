@@ -2,6 +2,7 @@
 
 import { XMLParser } from "@web/core/utils/xml";
 import { archParseBoolean, getActiveActions, processButton } from "@web/views/utils";
+import { _t } from "@web/core/l10n/translation";
 
 export class GridArchParser extends XMLParser {
     parse(arch, models, modelName) {
@@ -19,7 +20,12 @@ export class GridArchParser extends XMLParser {
             sectionField: null,
             rowFields: [],
             columnFieldName: "",
-            measureField: { name: "__count" },
+            measureField: {
+                name: "__count",
+                group_operator: "sum",
+                readonly: true,
+                string: _t("Count"),
+            },
             readonlyField: null,
             widgetPerFieldName: {},
             editable: false,
@@ -62,8 +68,9 @@ export class GridArchParser extends XMLParser {
                 }
             } else if (node.tagName === "field") {
                 const fieldName = node.getAttribute("name"); // exists (rng validation)
+                const fieldInfo = models[modelName][fieldName];
                 const type = node.getAttribute("type") || "row";
-                const string = node.getAttribute("string") || models[modelName][fieldName].string;
+                const string = node.getAttribute("string") || fieldInfo.string;
                 let invisible = false;
                 if (node.hasAttribute("modifiers")) {
                     const modifiers = JSON.parse(node.getAttribute("modifiers"));
@@ -99,21 +106,18 @@ export class GridArchParser extends XMLParser {
                         archInfo.activeRangeName = activeRangeName;
                         break;
                     case "measure":
-                        let group_operator = models[modelName][fieldName].group_operator;
-                        if (node.hasAttribute("operator")) {
-                            group_operator = node.getAttribute("operator");
-                        }
                         if (node.hasAttribute("widget")) {
                             archInfo.widgetPerFieldName[fieldName] = node.getAttribute("widget");
                         }
                         archInfo.measureField = {
                             name: fieldName,
-                            group_operator: group_operator,
+                            group_operator: node.getAttribute("operator") || fieldInfo.group_operator,
                             string,
+                            readonly: archParseBoolean(node.getAttribute("readonly")) || fieldInfo.readonly,
                         };
                         break;
                     case "readonly":
-                        let groupOperator = models[modelName][fieldName].group_operator;
+                        let groupOperator = fieldInfo.group_operator;
                         if (node.hasAttribute("operator")) {
                             groupOperator = node.getAttribute("operator");
                         }
@@ -135,6 +139,7 @@ export class GridArchParser extends XMLParser {
         archInfo.editable =
             archInfo.editable &&
             archInfo.measureField &&
+            !archInfo.measureField.readonly &&
             archInfo.measureField.group_operator === "sum";
         return archInfo;
     }

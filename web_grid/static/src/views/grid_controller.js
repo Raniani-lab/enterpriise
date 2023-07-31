@@ -86,7 +86,6 @@ export class GridController extends Component {
 
     get isEditable() {
         return (
-            !this.model.fieldsInfo[this.model.measureFieldName].readonly &&
             this.props.archInfo.activeActions.edit &&
             this.props.archInfo.editable
         );

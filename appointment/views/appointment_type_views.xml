@@ -285,7 +285,7 @@
                             <group>
                                 <group name="options_left_details">
                                     <field name="appointment_tz"/>
-                                    <field name="location_id" context="{'show_address': 1}" options='{"always_reload": True}'
+                                    <field name="location_id" context="{'show_address': 1}"
                                            placeholder="Keep it empty if the meeting takes place online"/>
                                     <label for="resource_manual_confirmation" attrs="{'invisible': [('schedule_based_on', '=', 'users')]}"/>
                                     <div class="d-flex" attrs="{'invisible': [('schedule_based_on', '=', 'users')]}">

@@ -94,7 +94,6 @@
             </xpath>
             <field name="is_fsm" string="is FSM?" invisible="1"/>
             <field name="partner_id" position="attributes">
-                <attribute name="options">{'always_reload': True}</attribute>
                 <attribute name="context">{'show_address': is_fsm, 'res_partner_search_mode': 'customer'}</attribute>
                 <attribute name="attrs">{'required': [('is_fsm', '=', True)], 'invisible': [('project_id', '=', False)]}</attribute>
             </field>

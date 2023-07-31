@@ -267,6 +267,7 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
         }
         //@Override
         init_from_JSON(json) {
+            this.state = json.state;
             super.init_from_JSON(...arguments);
             if (this.pos.isCountryGermanyAndFiskaly()) {
                 this.fiskalyUuid = json.fiskaly_uuid;
@@ -282,14 +283,23 @@ odoo.define('l10n_de_pos_cert.pos', function(require) {
                 }
             }
         }
-        //@Override
-        add_product(product, options) {
+        check_germany_taxes(product){
             if (this.pos.isCountryGermanyAndFiskaly()) {
                 if (product.taxes_id.length === 0 || !(this.pos.taxes_by_id[product.taxes_id[0]].amount in this.pos.vatRateMapping)) {
                     throw new TaxError(product);
                 }
             }
-            super.add_product(...arguments);
+        }
+        //@Override
+        add_product(product, options) {
+            this.check_germany_taxes(product);
+            return super.add_product(...arguments);
+        }
+        //@override
+        add_orderline(line) {
+            if (!['paid', 'done', 'invoiced'].includes(line.order.state))
+                this.check_germany_taxes(line.product);
+            return super.add_orderline(...arguments);
         }
         _authenticate() {
             const data = {

@@ -877,13 +877,10 @@ class AccountMove(models.Model):
             for tax_details in tax_details_transferred['tax_details_per_record'][line]['tax_details'].values():
                 tax_values = {
                     'base': tax_details['base_amount_currency'],
-                    'importe': tax_details['tipo_factor'] != 'Exento' and tax_details['tax_amount_currency'],
+                    'importe': tax_details['tax_amount_currency'],
                     'impuesto': tax_details['impuesto'],
                     'tipo_factor': tax_details['tipo_factor'],
                 }
-
-                if tax_details['tipo_factor'] != 'Exento' and line.currency_id.is_zero(tax_values['importe']):
-                    continue
 
                 if tax_details['tipo_factor'] == 'Tasa':
                     tax_values['tasa_o_cuota'] = tax_details['tax_amount_field'] / 100.0
@@ -898,13 +895,10 @@ class AccountMove(models.Model):
             for tax_details in tax_details_withholding['tax_details_per_record'][line]['tax_details'].values():
                 tax_values = {
                     'base': tax_details['base_amount_currency'],
-                    'importe': tax_details['tipo_factor'] != 'Exento' and -tax_details['tax_amount_currency'],
+                    'importe': -tax_details['tax_amount_currency'],
                     'impuesto': tax_details['impuesto'],
                     'tipo_factor': tax_details['tipo_factor'],
                 }
-
-                if tax_details['tipo_factor'] != 'Exento' and line.currency_id.is_zero(tax_values['importe']):
-                    continue
 
                 if tax_details['tipo_factor'] == 'Tasa':
                     tax_values['tasa_o_cuota'] = -tax_details['tax_amount_field'] / 100.0
@@ -1098,8 +1092,6 @@ class AccountMove(models.Model):
                 'description': line.name,
                 'traslados_list': [],
                 'retenciones_list': [],
-                'total_impuestos_trasladados': 0.0,
-                'total_impuestos_retenciones': 0.0,
             }
 
             # Discount.
@@ -1153,19 +1145,33 @@ class AccountMove(models.Model):
 
         # Totals.
         cfdi_values['objeto_imp'] = tax_objected
-        cfdi_values['total_impuestos_trasladados'] = sum(x['importe'] for x in cfdi_values['traslados_list'])
-        cfdi_values['total_impuestos_retenidos'] = sum(x['importe'] for x in cfdi_values['retenciones_list'])
+        transferred_tax_amounts = [x['importe'] for x in cfdi_values['traslados_list'] if x['tipo_factor'] != 'Exento']
+        withholding_tax_amounts = [x['importe'] for x in cfdi_values['retenciones_list'] if x['tipo_factor'] != 'Exento']
+        cfdi_values['total_impuestos_trasladados'] = sum(transferred_tax_amounts)
+        cfdi_values['total_impuestos_retenidos'] = sum(withholding_tax_amounts)
         cfdi_values['subtotal'] = sum(x['importe'] for x in line_values_list)
         cfdi_values['descuento'] = sum(x['descuento'] for x in line_values_list if x['descuento'])
         cfdi_values['total'] = cfdi_values['subtotal'] \
                              - cfdi_values['descuento'] \
                              + cfdi_values['total_impuestos_trasladados'] \
                              - cfdi_values['total_impuestos_retenidos']
+
         if self.currency_id.is_zero(cfdi_values['descuento']):
             cfdi_values['descuento'] = None
-        if self.currency_id.is_zero(cfdi_values['total_impuestos_trasladados']):
+
+        # Cleanup attributes for Exento taxes.
+        for line_values in invoice_lines:
+            for key in ('transferred_values_list', 'withholding_values_list'):
+                for tax_values in line_values[key]:
+                    if tax_values['tipo_factor'] == 'Exento':
+                        tax_values['importe'] = None
+        for key in ('retenciones_list', 'traslados_list'):
+            for tax_values in cfdi_values[key]:
+                if tax_values['tipo_factor'] == 'Exento':
+                    tax_values['importe'] = None
+        if not transferred_tax_amounts:
             cfdi_values['total_impuestos_trasladados'] = None
-        if self.currency_id.is_zero(cfdi_values['total_impuestos_retenidos']):
+        if not withholding_tax_amounts:
             cfdi_values['total_impuestos_retenidos'] = None
 
         return cfdi_values

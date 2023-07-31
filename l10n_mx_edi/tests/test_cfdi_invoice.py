@@ -301,3 +301,34 @@ class TestCFDIInvoice(TestMxEdiCommon):
         with self.with_mocked_pac_sign_success():
             invoice._l10n_mx_edi_cfdi_invoice_try_send()
         self._assert_invoice_cfdi(invoice, 'test_invoice_tax_objected_tax_exempted')
+
+    @freeze_time('2017-01-01')
+    def test_invoice_tax_0_exento(self):
+        invoice = self._create_invoice(
+            invoice_line_ids=[
+                Command.create({
+                    'product_id': self.product.id,
+                    'price_unit': 1000.0,
+                    'tax_ids': [Command.set(self.tax_0_exento.ids)],
+                }),
+            ],
+        )
+        with self.with_mocked_pac_sign_success():
+            invoice._l10n_mx_edi_cfdi_invoice_try_send()
+        self._assert_invoice_cfdi(invoice, 'test_invoice_tax_0_exento')
+
+
+    @freeze_time('2017-01-01')
+    def test_invoice_tax_0_tasa(self):
+        invoice = self._create_invoice(
+            invoice_line_ids=[
+                Command.create({
+                    'product_id': self.product.id,
+                    'price_unit': 1000.0,
+                    'tax_ids': [Command.set(self.tax_0.ids)],
+                }),
+            ],
+        )
+        with self.with_mocked_pac_sign_success():
+            invoice._l10n_mx_edi_cfdi_invoice_try_send()
+        self._assert_invoice_cfdi(invoice, 'test_invoice_tax_0_tasa')

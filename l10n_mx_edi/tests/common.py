@@ -61,7 +61,10 @@ class TestMxEdiCommon(AccountTestInvoicingCommon):
 
         # ==== Business ====
         cls.tag_iva = cls.env.ref('l10n_mx.tag_iva')
-        cls.tax_16 = cls._get_tax_by_xml_id('tax12')
+        cls.tax_16 = cls.env["account.chart.template"].ref('tax12')
+        cls.tax_0 = cls.env["account.chart.template"].ref('tax9')
+        cls.tax_0_exento = cls.tax_0.copy()
+        cls.tax_0_exento.l10n_mx_tax_type = 'Exento'
         cls.tax_10_negative = cls.env['account.tax'].create({
             'name': 'tax_10_negative',
             'amount_type': 'percent',
@@ -180,15 +183,6 @@ class TestMxEdiCommon(AccountTestInvoicingCommon):
         cls.comp_curr = cls.company_data['currency']
         cls.foreign_curr_1 = cls.currency_data['currency'] # 3:1 in 2016, 2:1 in 2017, 4:1 in 2018
         cls.foreign_curr_2 = cls.fake_usd_data['currency'] # 6:1 in 2016, 4:1 in 2017, 8:1 in 2018
-
-    @classmethod
-    def _get_tax_by_xml_id(cls, trailing_xml_id):
-        """ Helper to retrieve a tax easily.
-
-        :param trailing_xml_id: The trailing tax's xml id.
-        :return:                An account.tax record
-        """
-        return cls.env.ref(f'account.{cls.env.company.id}_{trailing_xml_id}')
 
     @contextmanager
     def with_mocked_pac_method(self, method_name, method_replacement):

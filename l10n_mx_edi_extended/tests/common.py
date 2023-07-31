@@ -26,7 +26,6 @@ class TestMxExtendedEdiCommon(TestMxEdiCommon):
             'l10n_mx_edi_tariff_fraction_id': cls.env.ref('l10n_mx_edi_extended.tariff_fraction_7212100399').id,
             'l10n_mx_edi_umt_aduana_id': cls.env.ref('uom.product_uom_unit').id,
         })
-        cls.tax_0 = cls._get_tax_by_xml_id('tax9')
 
     def _create_invoice(self, **kwargs):
         if 'invoice_line_ids' not in kwargs:

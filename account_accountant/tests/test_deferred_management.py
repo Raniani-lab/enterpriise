@@ -288,6 +288,19 @@ class TestDeferredManagement(AccountTestInvoicingCommon):
         move = self.create_invoice('in_invoice', self.company_data['default_journal_purchase'], self.partner_a, [(self.expense_accounts[0], 1680, '2023-01-01', '2023-01-31')], date='2023-01-01')
         self.assertEqual(len(move.deferred_move_ids), 0)
 
+    def test_deferred_expense_single_period_entries(self):
+        """
+        If we have an invoice covering only one period, we should only avoid creating deferral entries when the
+        accounting date is the same as the period for the deferral. Otherwise we should still generate a deferral entry.
+        """
+        self.company.generate_deferred_entries_method = 'on_validation'
+        self.company.deferred_amount_computation_method = 'month'
+        move = self.create_invoice('in_invoice', self.company_data['default_journal_purchase'], self.partner_a, [(self.expense_accounts[0], 1680, '2023-02-01', '2023-02-28')])
+        self.assertRecordValues(move.deferred_move_ids, [
+            {'date': fields.Date.to_date('2023-01-31')},
+            {'date': fields.Date.to_date('2023-02-28')},
+        ])
+
     def test_taxes_deferred_after_date_added(self):
         """
         Test that applicable taxes get deferred also when the dates of the base line are filled in after a first save.

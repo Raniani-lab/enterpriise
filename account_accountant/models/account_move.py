@@ -141,6 +141,7 @@ class AccountMove(models.Model):
         for line in lines:
             line_start = fields.Date.to_date(line['deferred_start_date'])
             line_end = fields.Date.to_date(line['deferred_end_date'])
+            later_date = fields.Date.to_date('9999-12-31')
             if line_end < line_start:
                 # This normally shouldn't happen, but if it does, would cause calculation errors later on.
                 # To not make the reports crash, we just set both dates to the same day.
@@ -149,10 +150,24 @@ class AccountMove(models.Model):
 
             columns = {}
             for i, period in enumerate(periods):
-                day_to_add = 0 if i in (1, len(periods) - 1) and len(periods) > 1 else 1  # +1 because the end date is included for all columns except Before and Later (or if there is only one period)
+                # periods = [Total, Before, ..., Current, ..., Later]
+                # The dates to calculate the amount for the current period
+                period_start = max(period[0], line_start)
+                period_end = min(period[1], line_end)
+                if (
+                    period[1] == later_date and period[0] < line_start
+                    or len(periods) <= 1
+                    or i not in (1, len(periods) - 1)
+                ):
+                    # We are adding 1 day to `period_end` because the end date should be included when:
+                    # - in the 'Later' period if the deferral has not started yet (line_start, line_end)
+                    # - we only have one period
+                    # - not in the 'Before' or 'Later' period
+                    period_end += relativedelta(days=1)
+
                 columns[period] = self._get_deferred_period_amount(
                     self.env.company.deferred_amount_computation_method,
-                    max(period[0], line_start), min(period[1], line_end) + relativedelta(days=day_to_add),
+                    period_start, period_end,
                     line_start, line_end,
                     line['balance']
                 )
@@ -418,8 +433,8 @@ class AccountMoveLine(models.Model):
     def _get_deferred_periods(self):
         """
         :return: a list of tuples (start_date, end_date) during which the deferred expense/revenue is spread.
-            If there is only one period, it means that we don't need to defer the expense/revenue
-            since the invoice deferral and its deferred entry will be created on the same day and will
+            If there is only one period containing the move date, it means that we don't need to defer the
+            expense/revenue since the invoice deferral and its deferred entry will be created on the same day and will
             thus cancel each other.
         """
         self.ensure_one()
@@ -427,7 +442,10 @@ class AccountMoveLine(models.Model):
             (max(self.deferred_start_date, date.replace(day=1)), min(date, self.deferred_end_date))
             for date in self._get_deferred_ends_of_month(self.deferred_start_date, self.deferred_end_date)
         ]
-        return periods if len(periods) > 1 else []
+        if not periods or len(periods) == 1 and periods[0][0].replace(day=1) == self.date.replace(day=1):
+            return []
+        else:
+            return periods
 
     def _get_computed_taxes(self):
         if self.move_id.deferred_original_move_ids:

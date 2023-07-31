@@ -137,16 +137,7 @@ class DeferredReportCustomHandler(models.AbstractModel):
                     OR {max_deferred_date} < %(date_to)s
                )
                AND move.date <= %(date_to)s
-               AND
-               (
-                   (
-                       %(date_from)s <= line.deferred_start_date
-                       AND line.deferred_start_date <= %(date_to)s
-                   ) OR (
-                       line.deferred_start_date <= %(date_from)s
-                       AND %(date_from)s <= line.deferred_end_date
-                   )
-               )
+               AND %(date_from)s <= line.deferred_end_date
                AND account.account_type IN %(account_types)s
                {move_filter}
           ORDER BY line.deferred_start_date, line.id;
@@ -207,7 +198,7 @@ class DeferredReportCustomHandler(models.AbstractModel):
             for account, amount1, amount2 in (
                 (line['account'], 0, line['amount_account']),
                 (line['account'], line[period], 0),
-            )
+            ) if (amount1, amount2) != (0, 0)
         ]
         deferred_line = [
             Command.create({

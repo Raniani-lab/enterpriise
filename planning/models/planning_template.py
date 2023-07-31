@@ -24,7 +24,7 @@ class PlanningTemplate(models.Model):
         if not company_interval:
             return
         calendar_tz = pytz.timezone(self.env.company.resource_calendar_id.tz)
-        user_tz = pytz.timezone(self.env.user.tz)
+        user_tz = pytz.timezone(self.env.user.tz) if self.env.user.tz else pytz.utc
         end_time = calendar_tz.localize(company_interval._items[0][0].replace(tzinfo=None)).astimezone(user_tz).replace(tzinfo=None).time()
         return float_round(end_time.hour + end_time.minute / 60 + end_time.second / 3600, precision_digits=2)
 

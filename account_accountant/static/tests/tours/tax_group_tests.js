@@ -1,8 +1,8 @@
 /** @odoo-module */
 
-import "account.tax.group.tour.tests"
 import { registry } from "@web/core/registry";
 import { patch } from "@web/core/utils/patch";
+import "@account/js/tours/tax_group_tests";
 
 patch(registry.category("web_tour.tours").get("account_tax_group"), "patch_account_tax_group", {
     steps() {

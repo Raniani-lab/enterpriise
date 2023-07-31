@@ -51,7 +51,7 @@
       />
     </svg>
   </t>
-  <t t-name="o-spreadsheet-Icon.LIST" owl="1">
+  <t t-name="o-spreadsheet-Icon.ODOO_LIST" owl="1">
     <svg class="o-icon">
       <path
         fill="currentColor"

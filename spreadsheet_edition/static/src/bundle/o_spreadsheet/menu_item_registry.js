@@ -82,7 +82,7 @@ topbarMenuRegistry.addChild("data_sources_data", ["data"], (env) => {
                 env.model.dispatch("SELECT_ODOO_LIST", { listId: listId });
                 env.openSidePanel("LIST_PROPERTIES_PANEL", {});
             },
-            icon: "o-spreadsheet-Icon.LIST",
+            icon: "o-spreadsheet-Icon.ODOO_LIST",
             separator: index === env.model.getters.getListIds().length - 1,
         };
     });

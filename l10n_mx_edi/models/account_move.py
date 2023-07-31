@@ -167,19 +167,6 @@ class AccountMove(models.Model):
         '''
         self.ensure_one()
 
-        def get_node(cfdi_node, attribute, namespaces):
-            if hasattr(cfdi_node, 'Complemento'):
-                node = cfdi_node.Complemento.xpath(attribute, namespaces=namespaces)
-                return node[0] if node else None
-            else:
-                return None
-
-        def get_cadena(cfdi_node, template):
-            if cfdi_node is None:
-                return None
-            cadena_root = etree.parse(tools.file_open(template))
-            return str(etree.XSLT(cadena_root)(cfdi_node))
-
         def is_purchase_move(move):
             return move.move_type in move.get_purchase_types() \
                     or move.payment_id.reconciled_bill_ids
@@ -203,13 +190,35 @@ class AccountMove(models.Model):
 
         try:
             cfdi_node = fromstring(cfdi_data)
-            emisor_node = cfdi_node.Emisor
-            receptor_node = cfdi_node.Receptor
         except etree.XMLSyntaxError:
             # Not an xml
             return {}
+
+        return self._l10n_mx_edi_decode_cfdi_etree(cfdi_node)
+
+    def _l10n_mx_edi_decode_cfdi_etree(self, cfdi_node):
+        ''' Helper to extract relevant data from the CFDI etree object, does not require a move record.
+        :param cfdi_node:   The cfdi etree object.
+        :return:            A python dictionary.
+        '''
+        def get_node(cfdi_node, attribute, namespaces):
+            if hasattr(cfdi_node, 'Complemento'):
+                node = cfdi_node.Complemento.xpath(attribute, namespaces=namespaces)
+                return node[0] if node else None
+            else:
+                return None
+
+        def get_cadena(cfdi_node, template):
+            if cfdi_node is None:
+                return None
+            cadena_root = etree.parse(tools.file_open(template))
+            return str(etree.XSLT(cadena_root)(cfdi_node))
+
+        try:
+            emisor_node = cfdi_node.Emisor
+            receptor_node = cfdi_node.Receptor
         except AttributeError:
-            # Not a CFDI
+            # Not an xml object or not a valid CFDI
             return {}
 
         tfd_node = get_node(

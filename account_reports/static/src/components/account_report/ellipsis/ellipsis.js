@@ -16,6 +16,7 @@ export class AccountReportEllipsis extends Component {
 
     setup() {
         this.popover = useService("popover");
+        this.notification = useService("notification");
         this.controller = useState(this.env.controller);
     }
 
@@ -31,6 +32,9 @@ export class AccountReportEllipsis extends Component {
 
     copyEllipsisText() {
         navigator.clipboard.writeText(this.props.name);
+        this.notification.add(this.env._t("Text copied"), { type: 'success' });
+        this.popoverCloseFn();
+        this.popoverCloseFn = null;
     }
 
     showEllipsisPopover(ev) {

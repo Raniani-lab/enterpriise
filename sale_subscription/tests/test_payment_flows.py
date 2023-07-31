@@ -35,17 +35,7 @@ class TestSubscriptionPaymentFlows(PaymentHttpCommon):
     def _my_sub_assign_token(self, **values):
         url = self._build_url(f"/my/subscription/assign_token/{self.order.id}")
         with mute_logger('odoo.addons.base.models.ir_rule', 'odoo.http'):
-            return self._make_json_rpc_request(
-                url,
-                data=values,
-            )
-
-    def _assertNotFound(self, response):
-        response_data = response.json()
-        self.assertTrue(response_data.get('error'))
-        error_data = response_data['error']
-        self.assertEqual(error_data['code'], 404)
-        self.assertEqual(error_data['data']['name'], 'werkzeug.exceptions.NotFound')
+            return self.make_jsonrpc_request(url, params=values)
 
     def test_assign_token_route_with_so_access(self):
         """Test Assign Token Route with a user allowed to access the SO."""
@@ -81,17 +71,15 @@ class TestSubscriptionPaymentFlows(PaymentHttpCommon):
         )
 
         # 2) Without access token
-        response = self._my_sub_assign_token(
-            token_id=own_token.id,
-        )
-        self._assertNotFound(response)
+        with self._assertNotFound():
+            self._my_sub_assign_token(token_id=own_token.id)
 
         # 3) With wrong access token
-        response = self._my_sub_assign_token(
-            token_id=own_token.id,
-            access_token="hohoho",
-        )
-        self._assertNotFound(response)
+        with self._assertNotFound():
+            self._my_sub_assign_token(
+                token_id=own_token.id,
+                access_token="hohoho",
+            )
 
     def test_assign_token_payment_token_access(self):
         self.authenticate(self.user_with_so_access.login, self.user_with_so_access.login)
@@ -117,8 +105,8 @@ class TestSubscriptionPaymentFlows(PaymentHttpCommon):
             # i.e. assigning a token not belonging to the user of the request
             other_user_token.with_user(self.user_with_so_access).read()
 
-        response = self._my_sub_assign_token(token_id=other_user_token.id)
-        self._assertNotFound(response)
+        with self._assertNotFound():
+            self._my_sub_assign_token(token_id=other_user_token.id)
 
         # archived token --> forbidden
         archived_token = self._create_token(
@@ -126,14 +114,14 @@ class TestSubscriptionPaymentFlows(PaymentHttpCommon):
             partner_id=self.user_with_so_access.partner_id.id,
         )
         archived_token.action_archive()
-        response = self._my_sub_assign_token(token_id=archived_token.id)
-        self._assertNotFound(response)
+        with self._assertNotFound():
+            self._my_sub_assign_token(token_id=archived_token.id)
 
         other_user_token.unlink()
         deleted_token_id = other_user_token.id
 
-        response = self._my_sub_assign_token(token_id=deleted_token_id)
-        self._assertNotFound(response)
+        with self._assertNotFound():
+            self._my_sub_assign_token(token_id=deleted_token_id)
 
         self.assertEqual(
             self.order.payment_token_id, dumb_token_so_user,

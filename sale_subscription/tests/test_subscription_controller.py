@@ -122,11 +122,12 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
                 'access_token': legit_user_subscription.access_token
                 }
         url = self._build_url("/my/subscription/assign_token/%s" % legit_user_subscription.id)
-        self._make_json_rpc_request(url, data)
+        self.make_jsonrpc_request(url, data)
         legit_user_subscription.invalidate_recordset()
         self.assertEqual(legit_user_subscription.payment_token_id, legit_payment_method)
         data = {'token_id': 9999999999999999, 'order_id': legit_user_subscription.id}
-        self._make_json_rpc_request(url, data)
+        with self._assertNotFound():
+            self.make_jsonrpc_request(url, data)
         legit_user_subscription.invalidate_recordset()
         self.assertEqual(legit_user_subscription.payment_token_id, legit_payment_method, "The new token should be saved on the order.")
 
@@ -134,14 +135,16 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
         self.authenticate('al', 'alalalal')
         data = {'token_id': legit_payment_method.id, 'order_id': malicious_user_subscription.id}
         url = self._build_url("/my/subscription/assign_token/%s" % malicious_user_subscription.id)
-        self._make_json_rpc_request(url, data)
+        with self._assertNotFound():
+            self.make_jsonrpc_request(url, data)
         malicious_user_subscription.invalidate_recordset()
         self.assertFalse(malicious_user_subscription.payment_token_id, "No token should be saved on the order.")
 
         # The SO is not accessible but the token is mine
         data = {'token_id': stolen_payment_method.id, 'order_id': legit_user_subscription.id}
         self._build_url("/my/subscription/assign_token/%s" % legit_user_subscription.id)
-        self._make_json_rpc_request(url, data)
+        with self._assertNotFound():
+            self.make_jsonrpc_request(url, data)
         legit_user_subscription.invalidate_recordset()
         self.assertEqual(legit_user_subscription.payment_token_id, legit_payment_method, "The token should not be updated")
 
@@ -173,7 +176,7 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
         data = {'order_id': subscription.id, 'access_token': subscription.access_token, 'signature': signature}
 
         url = self._build_url("/my/orders/%s/accept" % subscription.id)
-        self._make_json_rpc_request(url, data)
+        self.make_jsonrpc_request(url, data)
         data = {'order_id': subscription.id,
                 'access_token': subscription.access_token,
                 'amount': subscription.amount_total,
@@ -184,8 +187,7 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
                 'payment_option_id': self.dummy_provider.id,
                 'partner_id': subscription.partner_id.id}
         url = self._build_url("/my/orders/%s/transaction" % subscription.id)
-        res = self._make_json_rpc_request(url, data)
-        self.assertEqual(res.status_code, 200)
+        self.make_jsonrpc_request(url, data)
         subscription.transaction_ids.provider_id.support_manual_capture = 'full_only'
         subscription.transaction_ids._set_authorized()
         subscription.invoice_ids.filtered(lambda am: am.state == 'draft')._post()
@@ -220,7 +222,7 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
                 'payment_option_id': self.dummy_provider.id,
                 'flow': 'direct',
                 }
-        self._make_json_rpc_request(url, data)
+        self.make_jsonrpc_request(url, data)
         self.env['payment.transaction'].search([('reference', '=', data['reference_prefix'])])
         # the transaction is associated to the invoice in tx._reconcile_after_done()
         invoice_transactions = subscription.invoice_ids.transaction_ids
@@ -284,7 +286,7 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
                 'payment_option_id': self.dummy_provider.id,
                 'flow': 'direct',
                 }
-        self._make_json_rpc_request(url, data)
+        self.make_jsonrpc_request(url, data)
         invoice_transactions = subscription.invoice_ids.transaction_ids
         # the amount should be equal to the last
         self.assertEqual(invoice_transactions.amount, subscription.amount_total,

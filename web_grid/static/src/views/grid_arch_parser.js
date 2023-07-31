@@ -1,7 +1,6 @@
 /** @odoo-module */
 
 import { XMLParser } from "@web/core/utils/xml";
-import { Field } from "@web/views/fields/field";
 import { archParseBoolean, getActiveActions, processButton } from "@web/views/utils";
 
 export class GridArchParser extends XMLParser {
@@ -62,13 +61,20 @@ export class GridArchParser extends XMLParser {
                     archInfo.formViewId = parseInt(node.getAttribute("form_view_id"), 10);
                 }
             } else if (node.tagName === "field") {
-                const fieldInfo = Field.parseFieldNode(node, models, modelName, "grid");
                 const fieldName = node.getAttribute("name"); // exists (rng validation)
                 const type = node.getAttribute("type") || "row";
+                const string = node.getAttribute("string") || models[modelName][fieldName].string;
+                let invisible = false;
+                if (node.hasAttribute("modifiers")) {
+                    const modifiers = JSON.parse(node.getAttribute("modifiers"));
+                    if (modifiers.invisible === true) {
+                        invisible = true;
+                    }
+                }
                 switch (type) {
                     case "row":
-                        if (fieldInfo.widget) {
-                            archInfo.widgetPerFieldName[fieldName] = fieldInfo.widget;
+                        if (node.hasAttribute("widget")) {
+                            archInfo.widgetPerFieldName[fieldName] = node.getAttribute("widget");
                         }
                         if (
                             node.hasAttribute("section") &&
@@ -77,12 +83,12 @@ export class GridArchParser extends XMLParser {
                         ) {
                             archInfo.sectionField = {
                                 name: fieldName,
-                                invisible: fieldInfo.alwaysInvisible,
+                                invisible,
                             };
                         } else {
                             archInfo.rowFields.push({
                                 name: fieldName,
-                                invisible: fieldInfo.alwaysInvisible,
+                                invisible,
                             });
                         }
                         break;
@@ -97,13 +103,13 @@ export class GridArchParser extends XMLParser {
                         if (node.hasAttribute("operator")) {
                             group_operator = node.getAttribute("operator");
                         }
-                        if (fieldInfo.widget) {
-                            archInfo.widgetPerFieldName[fieldName] = fieldInfo.widget;
+                        if (node.hasAttribute("widget")) {
+                            archInfo.widgetPerFieldName[fieldName] = node.getAttribute("widget");
                         }
                         archInfo.measureField = {
                             name: fieldName,
                             group_operator: group_operator,
-                            string: fieldInfo.string,
+                            string,
                         };
                         break;
                     case "readonly":
@@ -114,7 +120,7 @@ export class GridArchParser extends XMLParser {
                         archInfo.readonlyField = {
                             name: fieldName,
                             group_operator: groupOperator,
-                            string: fieldInfo.string,
+                            string,
                         };
                         break;
                 }

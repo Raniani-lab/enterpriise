@@ -9,9 +9,9 @@ class L10nMxEdiDocument(models.Model):
     state = fields.Selection(
         selection_add=[
             ('picking_sent', "Sent"),
-            ('picking_sent_failed', "Sent Failed"),
+            ('picking_sent_failed', "Sent In Error"),
             ('picking_cancel', "Cancel"),
-            ('picking_cancel_failed', "Cancelled Failed"),
+            ('picking_cancel_failed', "Cancelled In Error"),
         ],
         ondelete={
             'picking_sent': 'cascade',

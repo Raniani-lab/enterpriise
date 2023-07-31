@@ -34,14 +34,14 @@ class L10nMxEdiDocument(models.Model):
     state = fields.Selection(
         selection=[
             ('invoice_sent', "Sent"),
-            ('invoice_sent_failed', "Send Failed"),
+            ('invoice_sent_failed', "Send In Error"),
             ('invoice_cancel', "Cancel"),
-            ('invoice_cancel_failed', "Cancel Failed"),
+            ('invoice_cancel_failed', "Cancel In Error"),
             ('payment_sent_pue', "PUE Payment"),
             ('payment_sent', "Payment Sent"),
-            ('payment_sent_failed', "Payment Send Failed"),
+            ('payment_sent_failed', "Payment Send In Error"),
             ('payment_cancel', "Payment Cancel"),
-            ('payment_cancel_failed', "Payment Cancel Failed"),
+            ('payment_cancel_failed', "Payment Cancel In Error"),
         ],
         required=True,
     )

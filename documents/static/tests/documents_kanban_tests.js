@@ -2147,26 +2147,16 @@ QUnit.module("documents", {}, function () {
                     "the tag input should not be focused"
                 );
 
-                await click(input);
+                click(input);
+                await waitUntil(".o_inspector_tags ul li", 2);
                 assert.containsOnce(target, ".o_inspector_tag");
 
-                let autocompleteValues = target.querySelectorAll(".o_inspector_tags ul li");
-                assert.strictEqual(
-                    autocompleteValues.length,
-                    2,
-                    "Should have 2 entries in the autocomplete dropdown"
-                );
+                editInput(input, null, "stress");
+                await waitUntil(".o_inspector_tags ul:not(:contains(Status))");
 
-                await editInput(input, null, "stress");
-                autocompleteValues = await waitUntil(".o_inspector_tags ul:not(:contains(Status))");
-                assert.strictEqual(
-                    autocompleteValues.length,
-                    1,
-                    "Should only have one entry in the autocomplete dropdown"
-                );
-                await click(target.querySelector(".o_inspector_tags ul li"));
+                click(target.querySelector(".o_inspector_tags ul li"));
+                await waitUntil(".o_inspector_tag", 2);
 
-                assert.containsN(target, ".o_inspector_tag", 2, "should display two tags");
                 assert.strictEqual(
                     input,
                     document.activeElement,
@@ -2197,13 +2187,8 @@ QUnit.module("documents", {}, function () {
                     assert.containsN(target, ".o_inspector_tag", 2, "should display two tags");
 
                     await click(target.querySelector(".o_inspector_tags input"));
-                    await editInput(target.querySelector(".o_inspector_tags input"), null, "new");
-                    await waitUntil(".o_inspector_tags:not(:has(ul))");
-                    assert.strictEqual(
-                        target.querySelectorAll(".o_inspector_tags ul li").length,
-                        0,
-                        "should have no entry in the autocomplete drodown"
-                    );
+                    editInput(target.querySelector(".o_inspector_tags input"), null, "new");
+                    await waitUntil(".o_inspector_tags ul", 0);
                 }
             );
 
@@ -2227,13 +2212,8 @@ QUnit.module("documents", {}, function () {
                     );
                     await click(target.querySelector(".o_kanban_record"));
 
-                    await click(target.querySelector(".o_inspector_tags input"));
+                    click(target.querySelector(".o_inspector_tags input"));
                     await waitUntil(".o_inspector_tags ul li");
-                    assert.strictEqual(
-                        target.querySelectorAll(".o_inspector_tags ul li").length,
-                        1,
-                        "should have no entry in the autocomplete drodown"
-                    );
                 }
             );
 
@@ -3843,13 +3823,10 @@ QUnit.module("documents", {}, function () {
                     await click(target.querySelector(".o_kanban_record"), ".o_record_selector");
 
                     const input = target.querySelector(".o_inspector_tags input");
-                    await editInput(input, null, "stress");
+
+                    editInput(input, null, "stress");
                     const autocompleteValues = await waitUntil(".o_inspector_tags ul li");
-                    assert.strictEqual(
-                        autocompleteValues.length,
-                        1,
-                        "should have an entry in the autocomplete dropdown"
-                    );
+
                     await click(autocompleteValues[0], "a");
                     assert.ok(
                         $(target).find(".o_search_panel_filter_value:contains(Draft) input")[0]

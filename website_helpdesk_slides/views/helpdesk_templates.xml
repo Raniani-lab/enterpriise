@@ -5,12 +5,8 @@
             <div class="col" style="display: grid;" t-if="team.show_knowledge_base_slide_channel">
                 <div class="pt16 pb16 text-center o_colored_level help-section">
                     <i class="fa fa-3x rounded bg-o-color-5 m-3 fa-mortar-board fa-3x rounded bg-o-color-5 m-3 help-icon">​</i>
-                    <h3 class="help-title">
-                        <span style="font-weight: bolder; font-size: 18px;">Courses</span>
-                    </h3>
-                    <p class="help-description">
-                        <span style="font-size: 18px;">Level up your skills with training videos and tutorials</span>
-                    </p>
+                    <h3 class="h5-fs help-title">Courses</h3>
+                    <p class="h5-fs help-description">Level up your skills with training videos and tutorials</p>
                     <div t-if="team.website_top_channels" class="top-item-list-container">
                         <h3 class="item-list-title">
                             <t t-if="len(team.website_top_channels) &gt; 4">
@@ -97,7 +93,7 @@
                 <div class="whelpdesk_search_description mt-3 text-break text-muted overflow-hidden" t-if="record.description" t-out="record.description"/>
                 <p class="mt-3 mb-0" t-if="record.tag_ids">
                     <a t-foreach="record.tag_ids" t-as="tag" t-attf-href="?{{ keep_query('*', tag=tag.name.lower()) }}" t-attf-class="badge me-1 o_tag #{'o_tag_color_'+str(tag.color)}" t-out="tag.name"/>
-                </p> 
+                </p>
             </div>
         </div>
     </template>

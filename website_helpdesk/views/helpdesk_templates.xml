@@ -50,7 +50,7 @@
                                 <span>Your Ticket Number is <a t-if="request.session.uid" t-attf-href="/helpdesk/ticket/#{ticket.id}">#<span t-field="ticket.ticket_ref"/></a><t t-if="not request.session.get('uid')">#<span t-field="ticket.id"/></t>.</span>
                             </t>
                         </h1>
-                        <h1 class="text-center">Thank you for contacting us, our team will get right on it!</h1>
+                        <h2 class="text-center">Thank you for contacting us, our team will get right on it!</h2>
                         <div class="text-center">
                             <a class="btn btn-primary" t-if="ticket and request.session.uid" t-attf-href="/helpdesk/ticket/#{ticket.id}">View Ticket</a>
                             <a class="btn btn-primary" href='/'>Go to the Homepage</a>
@@ -263,7 +263,7 @@
                         <div class="container s_allow_columns">
                             <div class="row">
                                 <div class="col-lg-8 offset-lg-2 o_colored_level text-center;">
-                                    <span style="font-size: 70px; font-weight: bolder; line-height:55px;">How can we help you?</span>
+                                    <span class="display-1-fs" style="line-height:55px;">How can we help you?</span>
                                 </div>
                             </div>
                         </div>
@@ -296,9 +296,9 @@
                     <t t-call="website_helpdesk.navbar" />
                     <section class="s_text_block pt24 o_colored_level pb4" data-snippet="s_text_block" data-name="Text" style="">
                         <div class="s_allow_columns container">
-                            <p style="font-weight: bolder; font-size: 18px;">
+                            <h5>
                                 <span class="text-600">Search results for</span> <q><t t-out="search" /></q>
-                            </p>
+                            </h5>
                         </div>
                     </section>
                     <div class="oe_structure" id="oe_structure_whelpdesk_knowledge_1" />
@@ -330,7 +330,7 @@
                 <div class="row">
                     <div class="o_colored_level pb0 pt16 col-lg-8">
                         <h3>
-                            <span style="font-size: 24px;">Can't find your answer? Our support team is here to help.</span>
+                            <span class="h4-fs">Can't find your answer? Our support team is here to help.</span>
                         </h3>
                     </div>
                     <div class="pt8 o_colored_level col-lg-4">

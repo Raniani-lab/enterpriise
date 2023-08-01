@@ -5,12 +5,8 @@
             <div class="col" style="display: grid;" t-if="team.show_knowledge_base_article">
                 <div class="pt16 pb16 text-center o_colored_level help-section">
                         <i class="fa fa-3x rounded bg-secondary m-3 fa-book fa-3x rounded bg-secondary m-3 help-icon">​</i>
-                        <h3 class="help-title">
-                            <span style="font-weight: bolder; font-size: 18px;">Articles</span>
-                        </h3>
-                        <p class="help-description">
-                            <span style="font-size: 18px;">Search our documentation for answers to common questions</span>
-                        </p>
+                        <h3 class="h5-fs help-title">Articles</h3>
+                        <p class="h5-fs help-description">Search our documentation for answers to common questions</p>
                     <div t-if="team.website_latest_articles" class="top-item-list-container">
                         <h3 class="item-list-title">
                             <t t-if="len(team.website_latest_articles) &gt; 4">

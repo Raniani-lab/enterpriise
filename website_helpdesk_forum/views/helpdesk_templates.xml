@@ -6,12 +6,8 @@
             <div class="col" style="display: grid;" t-if="team.show_knowledge_base_forum">
                 <div class="pt16 pb16 text-center o_colored_level help-section">
                     <i class="fa fa-3x rounded bg-secondary m-3 fa-comments fa-3x rounded bg-secondary m-3 help-icon">​</i>
-                    <h3 class="help-title">
-                        <span style="font-weight: bolder; font-size: 18px;">Community</span>
-                    </h3>
-                    <p class="help-description">
-                        <span style="font-size: 18px;">Ask questions and discuss tips with fellow members in a forum</span>
-                    </p>
+                    <h3 class="h5-fs help-title">Community</h3>
+                    <p class="h5-fs help-description">Ask questions and discuss tips with fellow members in a forum</p>
                     <div t-if="team.top_forum_posts" class="top-item-list-container">
                         <h3 class="item-list-title">
                             <t t-if="len(team.top_forum_posts) &gt; 4">

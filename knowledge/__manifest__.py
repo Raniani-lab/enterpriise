@@ -53,6 +53,7 @@
             'knowledge/static/src/web/**/*',
             'knowledge/static/src/js/sortableList.js',
             'knowledge/static/src/js/knowledge_controller.js',
+            'knowledge/static/src/js/knowledge_plugin.js',
             'knowledge/static/src/js/knowledge_utils.js',
             'knowledge/static/src/js/knowledge_renderers.js',
             'knowledge/static/src/js/knowledge_views.js',

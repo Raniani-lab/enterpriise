@@ -10,6 +10,7 @@ import {
     onWillUnmount,
     onWillUpdateProps,
 } from "@odoo/owl";
+import { KnowledgePlugin } from "@knowledge/js/knowledge_plugin";
 import { PromptEmbeddedViewNameDialog } from "@knowledge/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
@@ -50,6 +51,12 @@ export class KnowledgeArticleHtmlField extends HtmlField {
                 this.wysiwyg.odooEditor.removeEventListener("historyResetFromSteps", this.editorStepsCallback);
             }
         });
+    }
+
+    get wysiwygOptions() {
+        const wysiwygOptions = super.wysiwygOptions;
+        wysiwygOptions.editorPlugins = [wysiwygOptions.editorPlugins, KnowledgePlugin].flat();
+        return wysiwygOptions;
     }
 
     /**

@@ -124,7 +124,7 @@ class TestWebsiteSaleStockRenting(TestWebsiteSaleRentingCommon):
 
     def test_sol_pickup(self):
         self.so.action_confirm()
-        pickup_action = self.so.open_pickup()
+        pickup_action = self.so.action_open_pickup()
         wizard = Form(self.env['rental.order.wizard'].with_context(pickup_action['context'])).save()
         with freeze_time(self.sol.start_date):
             wizard.apply()
@@ -150,11 +150,11 @@ class TestWebsiteSaleStockRenting(TestWebsiteSaleRentingCommon):
 
     def test_sol_return(self):
         self.so.action_confirm()
-        pickup_action = self.so.open_pickup()
+        pickup_action = self.so.action_open_pickup()
         wizard = Form(self.env['rental.order.wizard'].with_context(pickup_action['context'])).save()
         with freeze_time(self.sol.start_date):
             wizard.apply()
-        return_action = self.so.open_return()
+        return_action = self.so.action_open_return()
         wizard = Form(self.env['rental.order.wizard'].with_context(return_action['context'])).save()
         with freeze_time(self.sol.return_date):
             wizard.apply()
@@ -218,7 +218,7 @@ class TestWebsiteSaleStockRenting(TestWebsiteSaleRentingCommon):
 
     def test_multiple_sol_with_first_one_picked_up(self):
         self.so.action_confirm()
-        pickup_action = self.so.open_pickup()
+        pickup_action = self.so.action_open_pickup()
         wizard = Form(self.env['rental.order.wizard'].with_context(pickup_action['context'])).save()
         with freeze_time(self.sol.start_date):
             wizard.apply()
@@ -269,7 +269,7 @@ class TestWebsiteSaleStockRenting(TestWebsiteSaleRentingCommon):
 
     def test_stock_availability_for_pickedup_products_not_yet_returned(self):
         self.so.action_confirm()
-        pickup_action = self.so.open_pickup()
+        pickup_action = self.so.action_open_pickup()
         wizard = Form(self.env['rental.order.wizard'].with_context(pickup_action['context'])).save()
         with freeze_time(self.sol.start_date):
             wizard.apply()
@@ -315,7 +315,7 @@ class TestWebsiteSaleStockRenting(TestWebsiteSaleRentingCommon):
         """
         self.sol.product_uom_qty = 5
         self.so.action_confirm()
-        pickup_action = self.so.open_pickup()
+        pickup_action = self.so.action_open_pickup()
         wizard = Form(self.env['rental.order.wizard'].with_context(pickup_action['context'])).save()
         with freeze_time(self.sol.start_date):
             wizard.apply()

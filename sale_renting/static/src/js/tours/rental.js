@@ -80,7 +80,7 @@ registry.category("web_tour.tours").add('rental_tour', {
     content: _t("Confirm the order when the customer agrees with the terms."),
     position: 'bottom',
 }, {
-    trigger: 'button[name=open_pickup]',
+    trigger: 'button[name=action_open_pickup]',
     extra_trigger: '.o_sale_order',
     content: _t("Click here to register the pickup."),
     position: 'bottom',
@@ -89,7 +89,7 @@ registry.category("web_tour.tours").add('rental_tour', {
     content: _t("Validate the operation after checking the picked-up quantities."),
     position: 'bottom',
 }, {
-    trigger: "button[name='open_return']",
+    trigger: "button[name='action_open_return']",
     extra_trigger: '.o_sale_order',
     content: _t("Once the rental is done, you can register the return."),
     position: 'bottom',

@@ -15,11 +15,11 @@
                 <field name="has_rented_products" invisible="1"/>
             </header>
             <button name="action_quotation_send" position="before">
-                <button name="open_pickup" type="object" class="btn-primary" string="Pickup" data-hotkey="y"
+                <button name="action_open_pickup" type="object" class="btn-primary" string="Pickup" data-hotkey="y"
                     invisible="not has_pickable_lines or state != 'sale'"/>
-                <button name="open_return" type="object" class="btn-primary" string="Return" data-hotkey="k"
+                <button name="action_open_return" type="object" class="btn-primary" string="Return" data-hotkey="k"
                     invisible="state != 'sale' or not has_returnable_lines or has_returnable_lines and has_pickable_lines"/>
-                <button name="open_return" type="object" class="btn-secondary" string="Return" data-hotkey="k"
+                <button name="action_open_return" type="object" class="btn-secondary" string="Return" data-hotkey="k"
                     invisible="state != 'sale' or not has_returnable_lines or has_returnable_lines and not has_pickable_lines"/>
             </button>
             <xpath expr="//div[@name='button_box']" position="after">

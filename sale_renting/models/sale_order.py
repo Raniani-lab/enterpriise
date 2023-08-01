@@ -179,19 +179,23 @@ class SaleOrder(models.Model):
 
     # PICKUP / RETURN : rental.processing wizard
 
-    def open_pickup(self):
-        status = "pickup"
+    def action_open_pickup(self):
+        self.ensure_one()
         precision = self.env['decimal.precision'].precision_get('Product Unit of Measure')
         lines_to_pickup = self.order_line.filtered(
-            lambda r: r.state == 'sale' and r.is_rental and float_compare(r.product_uom_qty, r.qty_delivered, precision_digits=precision) > 0)
-        return self._open_rental_wizard(status, lines_to_pickup.ids)
+            lambda r:
+                r.is_rental
+                and float_compare(r.product_uom_qty, r.qty_delivered, precision_digits=precision) > 0)
+        return self._open_rental_wizard('pickup', lines_to_pickup.ids)
 
-    def open_return(self):
-        status = "return"
+    def action_open_return(self):
+        self.ensure_one()
         precision = self.env['decimal.precision'].precision_get('Product Unit of Measure')
         lines_to_return = self.order_line.filtered(
-            lambda r: r.state == 'sale' and r.is_rental and float_compare(r.qty_delivered, r.qty_returned, precision_digits=precision) > 0)
-        return self._open_rental_wizard(status, lines_to_return.ids)
+            lambda r:
+                r.is_rental
+                and float_compare(r.qty_delivered, r.qty_returned, precision_digits=precision) > 0)
+        return self._open_rental_wizard('return', lines_to_return.ids)
 
     def _open_rental_wizard(self, status, order_line_ids):
         context = {

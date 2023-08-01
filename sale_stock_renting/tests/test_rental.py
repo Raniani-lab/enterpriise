@@ -334,7 +334,7 @@ class TestRentalCommon(common.TransactionCase):
         sol.product_uom_qty = 1.0
         so.action_confirm()
 
-        wizard_vals = so.open_pickup()
+        wizard_vals = so.action_open_pickup()
         for _i in range(2):
             wizard = self.env[wizard_vals['res_model']].with_context(wizard_vals['context']).create({
                 'rental_wizard_line_ids': [

@@ -378,7 +378,7 @@ class TestRentalCommon(TransactionCase):
         self.assertEqual(sol.discount, discount, 'Discount should not be updated')
         sale_order.action_confirm()
         self.assertEqual(sol.discount, discount, 'Discount should not be updated')
-        action_dict = sale_order.open_pickup()
+        action_dict = sale_order.action_open_pickup()
         pickup_wizard = self.env['rental.order.wizard'].with_context(
             action_dict['context']
         ).create({})

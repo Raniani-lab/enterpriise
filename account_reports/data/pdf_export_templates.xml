@@ -279,7 +279,7 @@
     <template id="pdf_export_cell_growth_comparison">
         <span t-if="line.get('growth_comparison_data')"
               t-out="line['growth_comparison_data'].get('name')"
-              t-att-class="line['growth_comparison_data'].get('class') + ' acc_rep_column_value'"
+              class="acc_rep_column_value"
               style="white-space:nowrap;"/>
     </template>
 

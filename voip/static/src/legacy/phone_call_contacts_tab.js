@@ -108,7 +108,7 @@ export const PhoneCallContactsTab = PhoneCallTab.extend({
             if (this._pendingRpc) {
                 this._pendingRpc.abort();
             }
-            const [voipIcon] = this.getParent().$(".o_dial_header_icon");
+            const [voipIcon] = this.getParent().$(".o-voip-DialingPanel-headerIcon");
             voipIcon.classList.remove("oi", "oi-voip");
             voipIcon.classList.add("fa", "fa-spin", "fa-circle-o-notch");
             this._pendingRpc = this.env.services.orm.call(

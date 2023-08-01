@@ -19,7 +19,7 @@ class ResConfigSettings(models.TransientModel):
     l10n_mx_edi_pac_password = fields.Char(
         related='company_id.l10n_mx_edi_pac_password', readonly=False,
         string='MX PAC password*')
-    l10n_mx_edi_certificate_ids = fields.Many2many(
+    l10n_mx_edi_certificate_ids = fields.One2many(
         related='company_id.l10n_mx_edi_certificate_ids', readonly=False,
         string='MX Certificates*')
 

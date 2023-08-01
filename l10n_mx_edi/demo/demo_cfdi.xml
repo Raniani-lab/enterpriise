@@ -1,16 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="demo_certificate" model="l10n_mx_edi.certificate">
-        <field name="content" type="base64" file="l10n_mx_edi/demo/pac_credentials/certificate.cer"/>
-        <field name="key" type="base64" file="l10n_mx_edi/demo/pac_credentials/certificate.key"/>
-        <field name="password">12345678a</field>
-    </record>
-
-    <record id="demo_certificate_zapa" model="l10n_mx_edi.certificate">
-        <field name="content" type="base64" file="l10n_mx_edi/demo/pac_credentials/certificate_zapa.cer"/>
-        <field name="key" type="base64" file="l10n_mx_edi/demo/pac_credentials/certificate_zapa.key"/>
-        <field name="password">12345678a</field>
-    </record>
 
     <record id="l10n_mx.partner_demo_company_mx" model="res.partner">
         <field name="name">ESCUELA KEMPER URGATE</field>
@@ -27,7 +16,6 @@
     <record id="l10n_mx.demo_company_mx" model="res.company">
         <field name="l10n_mx_edi_pac">finkok</field>
         <field name="l10n_mx_edi_pac_test_env">True</field>
-        <field name="l10n_mx_edi_certificate_ids" eval="[(6, 0, [ref('l10n_mx_edi.demo_certificate')])]"/>
         <field name="l10n_mx_edi_fiscal_regime">601</field>
         <field name="partner_id" ref="l10n_mx.partner_demo_company_mx"/>
     </record>
@@ -74,8 +62,21 @@
         <field name="partner_id" ref="partner_demo_company_2_mx"/>
         <field name="l10n_mx_edi_pac">solfact</field>
         <field name="l10n_mx_edi_pac_test_env">True</field>
-        <field name="l10n_mx_edi_certificate_ids" eval="[(6, 0, [ref('demo_certificate_zapa')])]"/>
         <field name="l10n_mx_edi_fiscal_regime">601</field>
+    </record>
+
+    <record id="demo_certificate" model="l10n_mx_edi.certificate">
+        <field name="content" type="base64" file="l10n_mx_edi/demo/pac_credentials/certificate.cer"/>
+        <field name="key" type="base64" file="l10n_mx_edi/demo/pac_credentials/certificate.key"/>
+        <field name="password">12345678a</field>
+        <field name="company_id" ref="l10n_mx.demo_company_mx"/>
+    </record>
+
+    <record id="demo_certificate_zapa" model="l10n_mx_edi.certificate">
+        <field name="content" type="base64" file="l10n_mx_edi/demo/pac_credentials/certificate_zapa.cer"/>
+        <field name="key" type="base64" file="l10n_mx_edi/demo/pac_credentials/certificate_zapa.key"/>
+        <field name="password">12345678a</field>
+        <field name="company_id" ref="demo_company_2_mx"/>
     </record>
 
     <function model="res.company" name="_onchange_country_id">

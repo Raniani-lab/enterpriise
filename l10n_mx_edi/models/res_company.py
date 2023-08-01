@@ -52,8 +52,12 @@ class ResCompany(models.Model):
         string='PAC password',
         help='The password used to request the seal from the PAC',
         groups='base.group_system')
-    l10n_mx_edi_certificate_ids = fields.Many2many('l10n_mx_edi.certificate',
-        string='Certificates (MX)')
+    l10n_mx_edi_certificate_ids = fields.One2many(
+        comodel_name='l10n_mx_edi.certificate',
+        inverse_name='company_id',
+        string='Certificates (MX)',
+    )
+
 
     # == CFDI EDI ==
     l10n_mx_edi_fiscal_regime = fields.Selection(
@@ -61,7 +65,6 @@ class ResCompany(models.Model):
         string="Fiscal Regime",
         help="It is used to fill Mexican XML CFDI required field "
         "Comprobante.Emisor.RegimenFiscal.")
-
 
     def _l10n_mx_edi_cfdi_check_config(self):
         """ Check the configuration of the company. """

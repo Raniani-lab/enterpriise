@@ -679,3 +679,29 @@ class TestRecurrencySlotGeneration(TestCommonPlanning):
             open_shift_count = PlanningSlot.search_count([('resource_id', '=', False), ('recurrency_id', '=', slot.recurrency_id.id)])
             self.assertEqual(open_shift_count, 1, 'Open shift should be created instead of recurring shift if resource already has a shift planned')
             self.assertEqual(len(self.get_by_employee(self.employee_bert)), 5, 'There should be 5 shifts: 1 already planned shift and 4 recurring shifts')
+
+    def test_recurrency_last_day_of_month(self):
+        self.configure_recurrency_span(1)
+        self.env.user.tz = 'UTC'
+        slot = self.env['planning.slot'].create({
+            'name': 'coucou',
+            'start_datetime': datetime(2020, 1, 31, 8, 0),
+            'end_datetime': datetime(2020, 1, 31, 9, 0),
+            'resource_id': self.resource_bert.id,
+            'repeat': True,
+            'repeat_type': 'until',
+            'repeat_until': datetime(2020, 6, 1, 0, 0),
+            'repeat_interval': 1,
+            'repeat_unit': 'month',
+        })
+        self.assertEqual(
+            slot.recurrency_id.slot_ids.mapped('start_datetime'),
+            [
+                datetime(2020, 1, 31, 8, 0),
+                datetime(2020, 2, 29, 8, 0),
+                datetime(2020, 3, 31, 8, 0),
+                datetime(2020, 4, 30, 8, 0),
+                datetime(2020, 5, 31, 8, 0),
+            ],
+            'The slots should occur at the last day of each month'
+        )

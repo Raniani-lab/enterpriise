@@ -47,6 +47,6 @@ No modified version is certified and supported by Odoo SA.
             'pos_blackbox_be/static/src/xml/**/*',
         ],
     },
-    'installable': False,
+    'installable': True,
     'license': 'OEEL-1',
 }

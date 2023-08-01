@@ -1,7 +1,8 @@
 /** @odoo-module **/
 
 import publicWidget from '@web/legacy/js/public/public_widget';
-import { momentToLuxon, serializeDateTime } from "@web/core/l10n/dates";
+import { serializeDateTime } from "@web/core/l10n/dates";
+import { momentToLuxon } from "@website_sale_renting/js/date_utils";
 
 
 publicWidget.registry.RentalSearchSnippet = publicWidget.Widget.extend({

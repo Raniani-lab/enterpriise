@@ -1377,7 +1377,7 @@ class AccountReport(models.Model):
             options['variants_source_id'] = (self.root_report_id or self).id
 
         source_report = self.env['account.report'].browse(options['variants_source_id'])
-        available_variants = []
+        available_variants = self.env['account.report']
         allowed_country_variant_ids = {}
         all_variants = source_report + source_report.variant_report_ids
         for variant in all_variants.filtered(lambda x: x._is_available_for(options)):
@@ -1386,13 +1386,16 @@ class AccountReport(models.Model):
                 if variant.country_id:
                     allowed_country_variant_ids.setdefault(variant.country_id.id, []).append(variant.id)
 
-            available_variants.append({
+            available_variants += variant
+
+        options['available_variants'] = [
+            {
                 'id': variant.id,
                 'name': variant.display_name,
                 'country_id': variant.country_id.id,  # To ease selection of default variant to open, without needing browsing again
-            })
-
-        options['available_variants'] = list(sorted(available_variants, key=lambda x: x['country_id'] and 1 or 0))
+            }
+            for variant in sorted(available_variants, key=lambda x: (x.country_id and 1 or 0, x.sequence, x.id))
+        ]
 
         previous_opt_report_id = (previous_options or {}).get('selected_variant_id')
         if previous_opt_report_id in allowed_variant_ids or previous_opt_report_id == self.id:

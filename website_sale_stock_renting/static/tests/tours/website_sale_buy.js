@@ -77,34 +77,11 @@ registry.category("web_tour.tours").add('shop_buy_rental_stock_product', {
             run: function () {}, // it's a check,
         },
         {
-            content: "go to checkout",
-            extra_trigger: '#cart_products .oe_currency_value:contains(14.00)',
-            trigger: 'a[href*="/shop/checkout"]',
+            content: "Check amount",
+            trigger: '#cart_products .oe_currency_value:contains(14.00)',
+            run: function () {}, // it's a check,
         },
-        {
-            content: "select payment",
-            trigger: '#payment_method label:contains("Wire Transfer")',
-        },
-        {
-            content: "Pay Now",
-            //Either there are multiple payment methods, and one is checked, either there is only one, and therefore there are no radio inputs
-            extra_trigger: '#payment_method label:contains("Wire Transfer") input:checked,#payment_method:not(:has("input:radio:visible"))',
-            trigger: 'button[name="o_payment_submit_button"]:visible:not(:disabled)',
-        },
-        {
-            content: "finish",
-            trigger: '.oe_website_sale:contains("Please use the following transfer details")',
-            // Leave /shop/confirmation to prevent RPC loop to /shop/payment/get_status.
-            // The RPC could be handled in python while the tour is killed (and the session), leading to crashes
-            run: function () {
-                window.location.href = '/contactus'; // Redirect in JS to avoid the RPC loop (20x1sec)
-            },
-            timeout: 30000,
-        },
-        {
-            content: "wait page loaded",
-            trigger: 'h1:contains("Contact us")',
-            run: function () {}, // it's a check
-        },
+        tourUtils.goToCheckout(),
+        ...tourUtils.payWithTransfer(true),
     ]
 });

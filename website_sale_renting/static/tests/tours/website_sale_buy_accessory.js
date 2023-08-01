@@ -7,23 +7,7 @@ registry.category("web_tour.tours").add('shop_buy_accessory_rental_product', {
     test: true,
     url: '/shop',
     steps: () => [
-        {
-            content: "Search parent product write text",
-            trigger: 'form input[name="search"]',
-            run: "text Parent product",
-        },
-        {
-            content: "Search parent product click",
-            trigger: 'form:has(input[name="search"]) .oe_search_button',
-        },
-        {
-            content: "Select parent product",
-            trigger: '.oe_product_cart:first a:contains("Parent product")',
-        },
-        {
-            content: "click on add to cart",
-            trigger: '#product_detail form[action^="/shop/cart/update"] #add_to_cart',
-        },
+        ...tourUtils.addToCart({productName: "Parent product"}),
         tourUtils.goToCart({quantity: 1}),
         {
             content: "Verify there are 1 quantity of Parent product",

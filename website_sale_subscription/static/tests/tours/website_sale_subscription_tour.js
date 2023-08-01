@@ -1,6 +1,7 @@
 /** @odoo-module **/
 
 import { registry } from "@web/core/registry";
+import wsTourUtils from '@website_sale/js/tours/tour_utils';
 
 registry.category("web_tour.tours").add('shop_buy_subscription_product', {
     test: true,
@@ -28,7 +29,7 @@ registry.category("web_tour.tours").add('shop_buy_subscription_product', {
             trigger: '#product_detail form[action^="/shop/cart/update"] #add_to_cart',
         },
         {
-            content: "See added t o cart + try to add other recurrence",
+            content: "See added to cart + try to add other recurrence",
             trigger: '.my_cart_quantity:contains("2")',
             run: function () {
                 window.location.href = '/shop';
@@ -52,12 +53,6 @@ registry.category("web_tour.tours").add('shop_buy_subscription_product', {
             trigger: '#product_detail p:contains("This product pricing is not compatible with the product(s) in your cart.")',
             run: function () {}, // it's a check
         },
-        {
-            content: "go to cart",
-            trigger: '.my_cart_quantity:contains("2")',
-            run: function () {
-                window.location.href = '/shop/cart';
-            },
-        },
+        wsTourUtils.goToCart({quantity: 2}),
     ]
 });

@@ -7,7 +7,8 @@ import { patch } from "@web/core/utils/patch";
 import { copyRegistry, setupManager } from "@mail/../tests/helpers/webclient_setup";
 const gridComponentRegistry = registry.category("grid_components");
 const savedGridComponentRegistry = registry.category("saved_grid_components");
-copyRegistry(gridComponentRegistry, savedGridComponentRegistry);
+
+QUnit.begin(() => copyRegistry(gridComponentRegistry, savedGridComponentRegistry));
 
 patch(setupManager, "timesheet_grid", {
     setupServiceRegistries() {

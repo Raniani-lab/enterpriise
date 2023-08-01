@@ -17,9 +17,11 @@
             </div>
         </xpath>
         <xpath expr="//button[hasclass('o_cancel_operation')]" position="before">
-            <button class="btn-lg btn btn-light text-uppercase" t-on-click="newScrapProduct">
-                Scrap
-            </button>
+            <t t-if="env.model.resModel=='mrp.production'">
+                <button class="btn-lg btn btn-light text-uppercase" t-on-click="newScrapProduct">
+                    Scrap
+                </button>
+            </t>
         </xpath>
         <xpath expr="//button[hasclass('o_add_line')]" position="before">
             <t t-if="env.model.resModel=='mrp.production' and env.model.record.product_id">

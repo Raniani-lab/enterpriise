@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import { _t } from "@web/core/l10n/translation";
-import { Component, onWillStart, useState } from "@odoo/owl";
+import { Component, onWillStart, useEffect, useRef, useState } from "@odoo/owl";
 import { Dialog } from "@web/core/dialog/dialog";
 import { groupBy } from "@web/core/utils/arrays";
 import { HtmlField } from "@web_editor/js/backend/html_field";
@@ -32,6 +32,7 @@ export class ArticleTemplatePickerDialog extends Component {
         this.size = "fs";
         this.title = _t("Select a Template");
         this.orm = useService("orm");
+        this.scrollView = useRef("scroll-view");
         this.state = useState({});
 
         onWillStart(async () => {
@@ -49,12 +50,20 @@ export class ArticleTemplatePickerDialog extends Component {
                 this.state.resId = this.groups[0][0].id;
             }
         });
+
+        useEffect(() => {
+            const { el } = this.scrollView;
+            el.style.visibility = "visible";
+        }, () => [this.state.resId]);
     }
 
     /**
      * @param {integer} articleTemplateId
      */
     async onSelectTemplate(articleTemplateId) {
+        const { el } = this.scrollView;
+        el.style.visibility = "hidden";
+        el.scrollTop = 0;
         this.state.resId = articleTemplateId;
     }
 

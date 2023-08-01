@@ -37,6 +37,10 @@ export class AbstractBehavior extends Component {
                 // preRendered content in the editable.
                 this.props.onPreRendered();
             });
+        } else {
+            onMounted(() => {
+                this.props.blueprintNodes.forEach(child => child.remove());
+            });
         }
     }
     /**

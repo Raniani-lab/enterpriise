@@ -11,12 +11,12 @@ def _configure_teams(cr, registry):
     # Ensure at least one team exists when enabling the module, otherwise create
     # a default one.
     env = api.Environment(cr, SUPERUSER_ID, {})
-    team = env["helpdesk.team"].search([], limit=1)  # Default order is sequence, name
+    team = env["helpdesk.team"].search([('privacy_visibility', '=', 'portal')], limit=1)  # Default order is sequence, name
     if team:
         team.use_website_helpdesk_form = True
     else:
         team = env["helpdesk.team"].create({
-            "name": _("Customer Care"),
+            "name": _("Customer Care (Public)"),
             "stage_ids": False,
             "use_sla": True,
             "member_ids": [Command.link(env.ref('base.user_admin').id)],

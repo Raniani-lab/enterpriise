@@ -4,6 +4,7 @@
 import re
 
 from odoo import http
+from odoo.exceptions import ValidationError
 from odoo.tests.common import HttpCase, tagged
 
 
@@ -66,3 +67,19 @@ class HelpDeskPortal(HttpCase):
                 self.test_portal_ticket_submission()
             except AssertionError:
                 raise AssertionError("Fail on the iteration %s/%s" % (i+1, REPEAT))
+
+    def test_portal_configure_team(self):
+        """ Configure the team while the visibility is internal and public"""
+        self.team_with_sla.use_website_helpdesk_form = False
+
+        with self.assertRaises(ValidationError):
+            self.team_with_sla.write({
+                'privacy_visibility': 'internal',
+                'use_website_helpdesk_form': True
+            })
+
+        self.team_with_sla.write({
+            'privacy_visibility': 'portal',
+            'use_website_helpdesk_form': True
+        })
+        self.assertTrue(self.team_with_sla)

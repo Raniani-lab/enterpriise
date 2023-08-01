@@ -329,10 +329,10 @@ class MrpProductionWorkcenterLine(models.Model):
             workorder.quality_alert_count = len(workorder.quality_alert_ids)
 
     def _create_checks(self):
-        for wo in self:
-            # Track components which have a control point
-            processed_move = self.env['stock.move']
+        # Track components which have a control point
+        processed_move = self.env['stock.move']
 
+        for wo in self:
             production = wo.production_id
 
             move_raw_ids = wo.move_raw_ids.filtered(lambda m: m.state not in ('done', 'cancel'))

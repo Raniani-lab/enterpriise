@@ -5,6 +5,7 @@
         <field name="icon">📅</field>
         <field name="sequence">0</field>
         <field name="category_id" ref="knowledge_article_template_category_productivity"/>
+        <field name="full_width">True</field>
         <field name="description">Make every week a success by proactively organizing your priority and optional tasks.</field>
         <field name="body" type="html">
             <h1>Personal Organizer</h1>

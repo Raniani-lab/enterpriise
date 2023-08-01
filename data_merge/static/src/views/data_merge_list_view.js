@@ -25,6 +25,7 @@ export class DataMergeListController extends DataCleaningCommonListController {
         super.setup();
         this.dialog = useService("dialog");
         this.actionService = useService("action");
+        this.notificationService = useService("notification");
         const onClickViewButton = this.env.onClickViewButton;
 
         owl.useSubEnv({
@@ -102,14 +103,9 @@ export class DataMergeListController extends DataCleaningCommonListController {
         this.dialog.add(ConfirmationDialog, {
             body: this.env._t("Are you sure that you want to merge the selected records in their respective group?"),
             confirm: async () => {
-                this.orm.call('data_merge.group', 'merge_multiple_records', [group_ids]);
+                await this.orm.call('data_merge.group', 'merge_multiple_records', [group_ids]);
                 this.showMergeNotification();
-                records.forEach(record => this.model.root.removeRecord(record));
-                this.model.root.groups
-                    .filter(group => !group.count)
-                    .forEach(group => this.model.root.removeGroup(group));
                 await this.model.load();
-                this.model.notify();
             },
             cancel: () => {},
         });
@@ -129,13 +125,7 @@ export class DataMergeListController extends DataCleaningCommonListController {
                 const records_merged = res && 'records_merged' in res ? res.records_merged : false;
                 this.showMergeNotification(records_merged);
             }
-            this.model.root.records
-                .filter(record => record.resId in recordIds)
-                .forEach(record => this.model.root.removeRecord(record));
-            this.model.root.removeGroup(this.model.root.groups
-                .filter(group => group.resId === groupId));
             await this.model.load();
-            this.model.notify();
         }
     }
 

@@ -145,7 +145,7 @@ msgstr ""
 #. odoo-python
 #: code:addons/website_helpdesk/__init__.py:0
 #, python-format
-msgid "Customer Care"
+msgid "Customer Care (Public)"
 msgstr ""
 
 #. module: website_helpdesk

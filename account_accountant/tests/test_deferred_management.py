@@ -122,8 +122,6 @@ class TestDeferredManagement(AccountTestInvoicingCommon):
         assertEndsOfMonths('2023-01-10', '2023-04-09', ['2023-01-31', '2023-02-28', '2023-03-31', '2023-04-30'])
 
     def test_deferred_expense_generate_entries_method(self):
-        self.company.deferred_amount_computation_method = 'month'
-
         # The deferred entries are NOT generated when the invoice is validated if the method is set to 'manual'.
         self.company.generate_deferred_entries_method = 'manual'
         move2 = self.create_invoice('in_invoice', self.company_data['default_journal_purchase'], self.partner_a, [self.expense_lines[0]], post=True)
@@ -140,7 +138,6 @@ class TestDeferredManagement(AccountTestInvoicingCommon):
         Test that the deferred entries are deleted/reverted when the invoice is reset to draft.
         """
         self.company.generate_deferred_entries_method = 'on_validation'
-        self.company.deferred_amount_computation_method = 'month'
         move = self.create_invoice('in_invoice', self.company_data['default_journal_purchase'], self.partner_a, [(self.expense_accounts[0], 1680, '2023-01-21', '2023-04-14')], date='2023-03-15')
         self.assertEqual(len(move.deferred_move_ids), 5)
         move.button_draft()
@@ -176,7 +173,6 @@ class TestDeferredManagement(AccountTestInvoicingCommon):
         Test that the default taxes on an account are not calculated on deferral entries, since this would impact the
         tax report.
         """
-        self.company.deferred_amount_computation_method = 'month'
         revenue_account_with_taxes = self.env['account.account'].create({
             'name': 'Revenue with Taxes',
             'code': 'REVWTAXES',
@@ -217,7 +213,6 @@ class TestDeferredManagement(AccountTestInvoicingCommon):
         Test that the debit/credit values are correctly computed, even after a credit note is issued.
         """
         self.company.generate_deferred_entries_method = 'on_validation'
-        self.company.deferred_amount_computation_method = 'month'
 
         expected_line_values1 = [
             # Date         [Line expense] [Line deferred]
@@ -254,7 +249,6 @@ class TestDeferredManagement(AccountTestInvoicingCommon):
         cancelling each other. Therefore we should not create the deferred entries.
         """
         self.company.generate_deferred_entries_method = 'on_validation'
-        self.company.deferred_amount_computation_method = 'month'
         move = self.create_invoice('in_invoice', self.company_data['default_journal_purchase'], self.partner_a, [(self.expense_accounts[0], 1680, '2023-01-01', '2023-01-31')], date='2023-01-01')
         self.assertEqual(len(move.deferred_move_ids), 0)
 
@@ -263,7 +257,6 @@ class TestDeferredManagement(AccountTestInvoicingCommon):
         Test that applicable taxes get deferred also when the dates of the base line are filled in after a first save.
         """
         self.company.generate_deferred_entries_method = 'on_validation'
-        self.company.deferred_amount_computation_method = 'month'
 
         expected_line_values = [
             # Date         [Line expense] [Line deferred]

@@ -42,7 +42,7 @@ class ResCompany(models.Model):
             ('day', 'Based on days'),
             ('month', 'Equal per month'),
         ],
-        default='day',
+        default='month',
         required=True,
     )
 

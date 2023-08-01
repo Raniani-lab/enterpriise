@@ -416,6 +416,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         """
         Test the 'All entries' option on the deferred expense report.
         """
+        self.company.deferred_amount_computation_method = 'day'
         self.create_invoice('in_invoice', self.company_data['default_journal_purchase'], self.partner_a, self.expense_lines, post=True)
         self.create_invoice('in_invoice', self.company_data['default_journal_purchase'], self.partner_a, self.expense_lines, post=False)
 
@@ -458,7 +459,6 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         Test the the comparison tool on the deferred expense report.
         For instance, we select April 2023 and compare it with the last 4 months
         """
-        self.company.deferred_amount_computation_method = 'month'
         self.create_invoice('in_invoice', self.company_data['default_journal_purchase'], self.partner_a, self.expense_lines)
 
         # April 2023 + period comparison of last 4 months
@@ -487,7 +487,6 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         - 1200 for the total amount to be deferred (1000 + 400/2)
         - 400 for the deferred amount for each of the 3 months
         """
-        self.company.deferred_amount_computation_method = 'month'
         move = self.create_invoice('in_invoice', self.company_data['default_journal_purchase'], self.partner_a, [], post=False)
         partially_deductible_tax = self.env['account.tax'].create({
             'name': 'Partially deductible Tax',
@@ -551,6 +550,7 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         """
         Test the credit notes on the deferred expense report.
         """
+        self.company.deferred_amount_computation_method = 'day'
         self.create_invoice('in_refund', self.company_data['default_journal_purchase'], self.partner_a, self.expense_lines)
 
         options = self.get_options('2023-02-01', '2023-02-28')
@@ -581,7 +581,6 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         """
         Test that the accounting date is taken into account for the deferred expense report.
         """
-        self.company.deferred_amount_computation_method = 'month'
         self.company.generate_deferred_entries_method = 'manual'
         handler = self.env['account.deferred.expense.report.handler']
         move = self.create_invoice('in_invoice', self.company_data['default_journal_purchase'], self.partner_a, [self.expense_lines[0]], post=False)
@@ -659,7 +658,6 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         """
         Test the Generate entries button on the deferred expense report.
         """
-        self.company.deferred_amount_computation_method = 'month'
         self.company.generate_deferred_entries_method = 'manual'
         deferral_account = self.company_data['default_account_deferred_expense']
 
@@ -723,7 +721,6 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         """
         Test the default taxes on accounts are ignored when generating a grouped deferral entry.
         """
-        self.company.deferred_amount_computation_method = 'month'
         self.company.generate_deferred_entries_method = 'manual'
         deferral_account = self.company_data['default_account_deferred_revenue']
         revenue_account_with_taxes = self.env['account.account'].create({
@@ -785,7 +782,6 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         """
         Test the change of the deferred expense method from on_validation to manual
         """
-        self.company.deferred_amount_computation_method = 'month'
         self.company.generate_deferred_entries_method = 'on_validation'
         deferral_account = self.company_data['default_account_deferred_expense']
 
@@ -803,7 +799,6 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         In manual mode generation, if the lines are totally deferred,
         then no entry should be generated.
         """
-        self.company.deferred_amount_computation_method = 'month'
         self.company.generate_deferred_entries_method = 'manual'
         deferral_account = self.company_data['default_account_deferred_expense']
         handler = self.env['account.deferred.expense.report.handler']
@@ -820,7 +815,6 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         In manual mode generation, even if the filter shows draft moves,
         then no entry should be generated for draft moves.
         """
-        self.company.deferred_amount_computation_method = 'month'
         self.company.generate_deferred_entries_method = 'manual'
         handler = self.env['account.deferred.expense.report.handler']
 

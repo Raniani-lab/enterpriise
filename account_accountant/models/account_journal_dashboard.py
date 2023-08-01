@@ -17,7 +17,7 @@ class account_journal(models.Model):
             )
         else:
             # Open reconciliation view for customers/suppliers
-            return self.env.ref('account_accountant.action_move_line_posted_unreconciled')
+            return self.env['ir.actions.act_window']._for_xml_id('account_accountant.action_move_line_posted_unreconciled')
 
     def action_open_to_check(self):
         self.ensure_one()

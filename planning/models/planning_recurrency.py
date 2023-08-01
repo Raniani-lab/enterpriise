@@ -87,24 +87,26 @@ class PlanningRecurrency(models.Model):
                 if not stop_datetime:
                     stop_datetime = fields.Datetime.now() + get_timedelta(recurrency.company_id.planning_generation_interval, 'month')
                 range_limit = min([dt for dt in [recurrence_end_dt, stop_datetime] if dt])
+                slot_duration = slot.end_datetime - slot.start_datetime
 
-                # generate recurring slots
-                recurrency_delta = get_timedelta(recurrency.repeat_interval, recurrency.repeat_unit)
-                next_start = PlanningSlot._add_delta_with_dst(slot.start_datetime, recurrency_delta)
+                def get_all_next_starts():
+                    for i in range(1, 365 * 5): # 5 years if every day
+                        next_start = PlanningSlot._add_delta_with_dst(
+                            slot.start_datetime,
+                            get_timedelta(recurrency.repeat_interval * i, recurrency.repeat_unit)
+                        )
+                        if next_start >= range_limit:
+                            return
+                        yield next_start
 
-                slot_values_list = []
-                while next_start < range_limit:
-                    slot_values = slot.copy_data({
-                        'start_datetime': next_start,
-                        'end_datetime': next_start + (slot.end_datetime - slot.start_datetime),
-                        'recurrency_id': recurrency.id,
-                        'company_id': recurrency.company_id.id,
-                        'repeat': True,
-                        'state': 'draft'
-                    })[0]
-                    slot_values_list.append(slot_values)
-                    next_start = PlanningSlot._add_delta_with_dst(next_start, recurrency_delta)
-
+                slot_values_list = [slot.copy_data({
+                    'start_datetime': start,
+                    'end_datetime': start + slot_duration,
+                    'recurrency_id': recurrency.id,
+                    'company_id': recurrency.company_id.id,
+                    'repeat': True,
+                    'state': 'draft'
+                })[0] for start in get_all_next_starts()]
                 if slot_values_list:
                     PlanningSlot.create(slot_values_list)
                     recurrency.write({'last_generated_end_datetime': slot_values_list[-1]['start_datetime']})

@@ -639,3 +639,29 @@ class TestRecurrencySlotGeneration(TestCommonPlanning):
             slots = self.get_by_employee(self.employee_bert).sorted('start_datetime')
             self.assertEqual('2020-10-25 00:30:00', str(slots[0].start_datetime))
             self.assertEqual('2020-11-01 01:30:00', str(slots[1].start_datetime))
+
+    def test_recurrency_last_day_of_month(self):
+        self.configure_recurrency_span(1)
+        self.env.user.tz = 'UTC'
+        slot = self.env['planning.slot'].create({
+            'name': 'coucou',
+            'start_datetime': datetime(2020, 1, 31, 8, 0),
+            'end_datetime': datetime(2020, 1, 31, 9, 0),
+            'resource_id': self.resource_bert.id,
+            'repeat': True,
+            'repeat_type': 'until',
+            'repeat_until': datetime(2020, 6, 1, 0, 0),
+            'repeat_interval': 1,
+            'repeat_unit': 'month',
+        })
+        self.assertEqual(
+            slot.recurrency_id.slot_ids.mapped('start_datetime'),
+            [
+                datetime(2020, 1, 31, 8, 0),
+                datetime(2020, 2, 29, 8, 0),
+                datetime(2020, 3, 31, 8, 0),
+                datetime(2020, 4, 30, 8, 0),
+                datetime(2020, 5, 31, 8, 0),
+            ],
+            'The slots should occur at the last day of each month'
+        )

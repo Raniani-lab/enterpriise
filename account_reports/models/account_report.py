@@ -3648,6 +3648,40 @@ class AccountReport(models.Model):
         action['context'] = {}
         return action
 
+    def _get_generated_deferral_entries_domain(self, options):
+        """Get the search domain for the generated deferral entries of the current period.
+
+        :param options: the report's `options` dict containing `date_from`, `date_to` and `deferred_report_type`
+        :return: a search domain that can be used to get the deferral entries
+        """
+        if options.get('deferred_report_type') == 'expense':
+            account_types = ('expense', 'expense_depreciation', 'expense_direct_cost')
+        else:
+            account_types = ('income', 'income_other')
+        date_to = fields.Date.from_string(options['date']['date_to'])
+        date_to_next_reversal = fields.Date.to_string(date_to + datetime.timedelta(days=1))
+        return [
+            ('company_id', '=', self.env.company.id),
+            # We exclude the reversal entries of the previous period that fall on the first day of this period
+            ('date', '>', options['date']['date_from']),
+            # We include the reversal entries of the current period that fall on the first day of the next period
+            ('date', '<=', date_to_next_reversal),
+            ('deferred_original_move_ids', '!=', False),
+            ('line_ids.account_id.account_type', 'in', account_types),
+            ('state', '!=', 'cancel'),
+        ]
+
+    def open_deferral_entries(self, options, params):
+        domain = self._get_generated_deferral_entries_domain(options)
+        deferral_moves_ids = self.env['account.move'].search(domain).ids
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Deferred Entries'),
+            'res_model': 'account.move',
+            'domain': [('id', 'in', deferral_moves_ids)],
+            'views': [(self.env.ref('account.view_move_tree').id, 'tree'), (False, 'form')],
+        }
+
     def action_modify_manual_value(self, options, column_group_key, new_value_str, target_expression_id, rounding, json_friendly_column_group_totals):
         """ Edit a manual value from the report, updating or creating the corresponding account.report.external.value object.
 

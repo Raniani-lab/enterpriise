@@ -112,6 +112,7 @@ class DeferredReportCustomHandler(models.AbstractModel):
                   FROM account_move_deferred_rel AS rel
                   JOIN account_move move_deferral ON rel.deferred_move_id  = move_deferral.id
                  WHERE move_deferral.date = %(date_to)s
+                   AND rel.original_move_id = move_id
                    AND move_deferral.company_id = %(company_id)s
             )
         """ if filter_already_generated else ""
@@ -221,19 +222,15 @@ class DeferredReportCustomHandler(models.AbstractModel):
                 for period in periods
             ]
 
+        options['deferred_report_type'] = self._get_deferred_report_type()
         if warnings is not None:
-            already_posted = (
+            already_generated = (
                 self.env.company.generate_deferred_entries_method == 'manual'
-                and self.env['account.move.line'].search_count([
-                    ('company_id', '=', self.env.company.id),
-                    ('deferred_start_date', '!=', False),
-                    ('deferred_end_date', '!=', False),
-                    ('move_id.state', '=', 'posted') if not options.get('all_entries', False) else ('move_id.state', '!=', 'cancel'),
-                    ('move_id.deferred_move_ids', '!=', False),
-                    ('move_id.deferred_move_ids.date', '=', options['date']['date_to']),
-                ])
+                and self.env['account.move'].search_count(
+                    report._get_generated_deferral_entries_domain(options)
+                )
             )
-            if already_posted:
+            if already_generated:
                 warnings['account_reports.deferred_report_warning_already_posted'] = {'alert_type': 'warning'}
 
         lines = self._get_lines(options)

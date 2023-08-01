@@ -927,6 +927,57 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
         with self.assertRaisesRegex(UserError, 'No entry to generate.'):
             handler._generate_deferral_entry(options)
 
+    def test_deferred_expense_manual_generation_after_on_validation(self):
+        """
+        In manual mode, you should still be able to generate an deferral entry for a period
+        when there already exists a deferral entry from a former on_validation mode on the same date,
+        and that entry should not defer the already deferred amount from the automatic entry in that
+        same period.
+        """
+        deferral_account = self.company_data['default_account_deferred_expense']
+
+        # First post an invoice with the on_validation method, creating deferrals
+        move = self.create_invoice([self.expense_lines[0]])
+        # Check that the deferral moves have been created (1 + 4)
+        self.assertEqual(len(move.deferred_move_ids), 5)
+
+        # Switch to manual mode
+        self.company.generate_deferred_entries_method = 'manual'
+        self.create_invoice([self.expense_lines[0]])
+
+        handler = self.env['account.deferred.expense.report.handler']
+        options = self.get_options('2023-01-01', '2023-01-31')
+        res = handler.action_generate_entry(options)
+
+        generated_entries_jan = self.env['account.move'].search(res['domain'], order='date')
+
+        deferred_move_jan = generated_entries_jan[0]
+        self.assertRecordValues(deferred_move_jan, [{
+            'move_type': 'entry',
+            'date': fields.Date.to_date('2023-01-31'),
+        }])
+        expected_values_jan = [
+            # Account                      Debit     Credit
+            [self.expense_accounts[0],         0,      1000],
+            [self.expense_accounts[0],       250,         0],
+            [deferral_account,               750,         0],
+        ]
+        self.assert_invoice_lines(deferred_move_jan, expected_values_jan)
+
+        # Reversal
+        deferred_inverse_jan = generated_entries_jan[1]
+        self.assertRecordValues(deferred_inverse_jan, [{
+            'move_type': 'entry',
+            'date': fields.Date.to_date('2023-02-01'),
+        }])
+        expected_values_inverse_jan = [
+            # Account                      Debit     Credit
+            [self.expense_accounts[0],      1000,         0],
+            [self.expense_accounts[0],         0,       250],
+            [deferral_account,                 0,       750],
+        ]
+        self.assert_invoice_lines(deferred_inverse_jan, expected_values_inverse_jan)
+
     def test_deferred_expense_manual_generation_go_backwards_in_time(self):
         """
         In manual mode generation, if we generate the deferral entries for

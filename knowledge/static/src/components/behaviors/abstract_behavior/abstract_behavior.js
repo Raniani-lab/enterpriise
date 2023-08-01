@@ -41,6 +41,10 @@ export class AbstractBehavior extends Component {
             onWillDestroy(() => {
                 this.editor.observerActive(`knowledge_behavior_id_${this.observerId}`);
             });
+        } else {
+            onMounted(() => {
+                this.props.blueprintNodes.forEach(child => child.remove());
+            });
         }
     }
 

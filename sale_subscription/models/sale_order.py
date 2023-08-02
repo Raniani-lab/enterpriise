@@ -122,6 +122,7 @@ class SaleOrder(models.Model):
     recurring_details = fields.Html(compute='_compute_recurring_details')
     is_renewing = fields.Boolean(compute='_compute_is_renewing')
     is_upselling = fields.Boolean(compute='_compute_is_upselling')
+    display_late = fields.Boolean(compute='_compute_display_late')
     archived_product_ids = fields.Many2many('product.product', string='Archived Products', compute='_compute_archived')
     archived_product_count = fields.Integer("Archived Product", compute='_compute_archived')
     history_count = fields.Integer(compute='_compute_history_count')
@@ -469,6 +470,11 @@ class SaleOrder(models.Model):
             ('subscription_state', '=', '7_upsell')
         ]).subscription_id
         upsell_order_ids.is_upselling = True
+
+    def _compute_display_late(self):
+        today = fields.Date.today()
+        for order in self:
+            order.display_late = order.subscription_state in SUBSCRIPTION_PROGRESS_STATE and order.next_invoice_date < today
 
     @api.depends('order_line')
     def _compute_has_recurring_line(self):

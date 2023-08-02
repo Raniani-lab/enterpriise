@@ -110,6 +110,7 @@
                 <field name="is_renewing"  invisible="1"/>
                 <field name="origin_order_id" invisible="1"/>
                 <field name="subscription_state" invisible="1"/>
+                <field name="display_late" invisible="1"/>
                 <button class="float-end fs-6 btn"
                         type="object"
                         name="subscription_open_related"
@@ -130,8 +131,10 @@
                        decoration-warning="subscription_state in ['4_paused']"
                        decoration-danger="subscription_state in ['6_churn']"
                     />
-                <div name="subscription_quotation_pill" class="float-end fs-6 badge rounded-pill text-bg-info"
+                <div name="subscription_quotation_pill" class="float-end fs-6 badge rounded-pill fw-bold text-bg-info"
                      attrs="{'invisible': ['|', ('subscription_state', '!=', '1_draft'), ('state', 'not in', ['draft', 'sent'])]}">Subscription Quotation</div>
+                <div name="subscription_to_renew" class="float-end fs-6 badge rounded-pill fw-bold text-bg-warning"
+                     attrs="{'invisible': [('display_late', '=', False)]}">To Renew</div>
             </xpath>
             <xpath expr="//header" position="after">
                 <div role="alert" class="alert alert-warning mb-0 p-3 text-center" attrs="{'invisible': [('archived_product_count', '=', 0)]}">

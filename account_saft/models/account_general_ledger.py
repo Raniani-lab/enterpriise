@@ -14,12 +14,20 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
         lines = super()._custom_line_postprocessor(report, options, lines, warnings=warnings)
         if warnings is not None:
             company = self.env.company
+            args = []
             if not company.company_registry:
-                warnings['account_saft.saft_warning_company_registry'] = {'alert_type': 'warning'}
+                args.append(_('the Company ID'))
             if not (company.phone or company.mobile):
-                warnings['account_saft.saft_warning_company_contact'] = {'alert_type': 'warning'}
+                args.append(_('the phone or mobile number'))
             if not (company.zip or company.city):
-                warnings['account_saft.saft_warning_company_address'] = {'alert_type': 'warning'}
+                args.append(_('the city or zip code'))
+
+            if args:
+                warnings['account_saft.company_data_warning'] = {
+                    'alert_type': 'warning',
+                    'args': _(', ').join(args),
+                }
+
         return lines
 
     ####################################################

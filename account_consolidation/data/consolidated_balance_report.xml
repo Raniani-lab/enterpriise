@@ -76,7 +76,7 @@
                 Show Zero Balance Accounts
             </a>
 
-            <a role="menuitem" class="dropdown-item js_account_report_bool_filter" title="Hierarchy" data-filter="consolidation_hierarchy">
+            <a role="menuitem" t-if="options.get('consolidation_hierarchy') != None" class="dropdown-item js_account_report_bool_filter" title="Hierarchy" data-filter="consolidation_hierarchy">
                Hierarchy and Subtotals
             </a>
         </xpath>

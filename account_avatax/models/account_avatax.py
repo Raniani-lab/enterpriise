@@ -127,7 +127,7 @@ class AccountAvatax(models.AbstractModel):
         return {
             'amount': price_subtotal,
             'description': product.display_name,
-            'quantity': quantity,
+            'quantity': abs(quantity),
             'taxCode': product._get_avatax_category_id().code,
             'itemCode': item_code,
             'number': line_id,

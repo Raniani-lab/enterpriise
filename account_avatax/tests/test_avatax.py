@@ -168,6 +168,25 @@ class TestAccountAvalaraInternal(TestAccountAvataxCommon):
         with self.assertRaises(ValidationError):
             invoice.partner_id = partner_no_zip
 
+    def test_negative_quantities(self):
+        """ The quantity field sent to Avatax should always be positive. From the Avatax documentation:
+        'Quantity of items in this line. This quantity value should always be a positive value representing the quantity
+        of product that changed hands, even when handling returns or refunds.'
+        """
+        # TODO: the account_avatax_stock module introduced in 18070cd7727e changes the _get_avatax_invoice_line signature from:
+        #  def _get_avatax_invoice_line(self, product, price_subtotal, quantity, line_id)
+        #  to
+        #  def _get_avatax_invoice_line(self, product, price_subtotal, quantity, line_id, warehouse_id)
+        #  This should be fixed (maybe with context instead?), in the meantime hack this test to make it work in both cases.
+        account_avatax_stock = self.env['ir.module.module']._get('account_avatax_stock')
+        args = [self.product_accounting, None, -1, None]
+        if account_avatax_stock.state == 'installed':
+            args.append(None)
+
+        res = self.env['account.avatax']._get_avatax_invoice_line(*args)
+        self.assertEqual(res['quantity'], 1, 'Quantities sent to Avatax should always be positive.')
+
+
 @tagged("-at_install", "post_install")
 class TestAccountAvalaraSalesTaxAdministration(TestAccountAvataxCommon):
     """https://developer.avalara.com/certification/avatax/sales-tax-badge/"""

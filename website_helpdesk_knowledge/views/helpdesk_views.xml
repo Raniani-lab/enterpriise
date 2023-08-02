@@ -8,7 +8,7 @@
             <xpath expr="//field[@name='use_website_helpdesk_knowledge']" position="after">
                 <div class="mt16" invisible="not use_website_helpdesk_knowledge">
                     <label for="website_article_id"/>
-                    <field name="website_article_id" domain="[('is_published', '=', True), ('parent_id', '=', False)]" options="{'no_create': True, 'no_open': True}"/>
+                    <field name="website_article_id" domain="[('is_published', '=', True), ('parent_id', '=', False)]" options="{'no_create': True}"/>
                 </div>
             </xpath>
         </field>

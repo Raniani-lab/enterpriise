@@ -16,3 +16,11 @@
 #about_team [data-oe-field="description"] *:last-child {
     margin-bottom: 0;
 }
+
+.oe_structure:not(:empty) + .o_helpcenter_home_search {
+    top: -40px;
+}
+
+.o_helpcenter_home_search {
+    max-width: 1000px;
+}

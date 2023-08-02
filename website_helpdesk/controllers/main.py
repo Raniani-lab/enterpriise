@@ -13,7 +13,10 @@ from odoo.addons.website.controllers import form
 class WebsiteHelpdesk(http.Controller):
 
     def get_helpdesk_team_data(self, team, search=None):
-        return {'team': team}
+        return {
+            'team': team,
+            'main_object': team,
+        }
 
     @http.route(['/helpdesk', '/helpdesk/<model("helpdesk.team"):team>'], type='http', auth="public", website=True, sitemap=True)
     def website_helpdesk_teams(self, team=None, **kwargs):
@@ -37,7 +40,10 @@ class WebsiteHelpdesk(http.Controller):
         return request.render("website_helpdesk.team", result)
 
     def _get_knowledge_base_values(self, team):
-        return {'team': team}
+        return {
+            'team': team,
+            'main_object': team,
+        }
 
     @http.route(['/helpdesk/<model("helpdesk.team"):team>/knowledgebase'], type='http', auth="public", website=True, sitemap=True)
     def website_helpdesk_knowledge_base(self, team, **kwargs):

@@ -19,15 +19,6 @@
                     </div>
                     <div class="col-md-4" id="right-column">
                         <div class="oe_structure" id="oe_structure_website_helpdesk_team_2"/>
-                        <div class="row justify-content-end mb-5" id="website_published_button" groups="helpdesk.group_helpdesk_manager">
-                            <t t-call="website.publish_management">
-                                <t t-set="object" t-value="team"/>
-                                <t t-set="publish_edit" t-value="True"/>
-                                <t t-set="action" t-value="'helpdesk.helpdesk_team_action'"/>
-                                <t t-set="menu" t-value="env.ref('helpdesk.menu_helpdesk_root').id"/>
-                            </t>
-                        </div>
-
                         <t t-if="not is_html_empty(team.description)">
                             <div class="card bg-secondary mt-2 w-75 pull-right" id="about_team">
                                 <h6 class="card-header"><b>About our team</b></h6>
@@ -169,7 +160,7 @@
 
     <template id="search_box" name="Knowledge Base: Navbar Search Box">
         <form t-attf-action="/helpdesk/{{slug(team)}}/knowledgebase" method="get"
-              role="search" class="o_helpdesk_knowledge_search" t-att-data-autocomplete="autocomplete" t-attf-data-ac-url="/helpdesk/{{slug(team)}}/knowledgebase/autocomplete">
+              role="search" class="o_helpdesk_knowledge_search w-100" t-att-data-autocomplete="autocomplete" t-attf-data-ac-url="/helpdesk/{{slug(team)}}/knowledgebase/autocomplete">
             <t t-call="website.website_search_box"/>
         </form>
     </template>
@@ -267,32 +258,26 @@
         <t t-call="website.layout">
             <t t-set="additional_title"><t t-out="team.name" /></t>
             <div id="wrap" class="oe_structure oe_empty">
-                <section class="s_cover bg-black-15 o_colored_level pb48 pt48 s_parallax_no_overflow_hidden" data-scroll-background-ratio="0" data-snippet="s_cover" data-name="Cover" style="position: relative;" data-oe-shape-data="{&quot;shape&quot;:&quot;web_editor/Origins/18&quot;,&quot;flip&quot;:[]}">
-                    <div class="o_we_shape o_web_editor_Origins_18"/>
-                    <div class="container s_allow_columns">
-                        <div class="row">
-                            <div class="col-lg-8 offset-lg-2 o_colored_level">
-                                <span style="font-size: 48px; font-weight: bolder;">How can we help you?</span>
-                                <t t-call="website_helpdesk.search_box">
-                                    <t t-set="placeholder">Search for articles, best practices and more...</t>
-                                    <t t-set="autocomplete" t-value="1" />
-                                </t>
+                <div class="oe_structure oe_empty"><section class="s_cover o_colored_level pb96 pt96 s_parallax_no_overflow_hidden position-relative" data-scroll-background-ratio="0" data-snippet="s_cover" data-name="Cover" data-oe-shape-data="{'shape': 'web_editor/Origins/18','flip':[]}">
+                        <div class="o_we_shape o_web_editor_Origins_18"/>
+                        <div class="container s_allow_columns">
+                            <div class="row">
+                                <div class="col-lg-8 offset-lg-2 o_colored_level text-center;">
+                                    <span style="font-size: 70px; font-weight: bolder; line-height:55px;">How can we help you?</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </section>
+                    </section></div><!-- IMPORTANT: Do not add space/newline between section and div tag on this line (empty pseudo class is does not yet take whitespace into account)-->
+                <div class="container mt16 position-relative align-items-center justify-content-center o_helpcenter_home_search">
+                    <nav class="navbar navbar-light shadow-sm  justify-content-center">
+                        <t t-call="website_helpdesk.search_box">
+                            <t t-set="placeholder">Search for articles, best practices and more...</t>
+                            <t t-set="autocomplete" t-value="1" />
+                        </t>
+                    </nav>
+                </div>
                 <div class="oe_structure" id="o_structure_website_helpdesk_kb_1"/>
-                <section class="s_features pt32 pb32 o_colored_level" data-snippet="s_features" data-name="Features">
-                    <div class="container">
-                        <div class="row justify-content-end" id="website_published_button" groups="helpdesk.group_helpdesk_manager">
-                            <t t-call="website.publish_management">
-                                <t t-set="object" t-value="team"/>
-                                <t t-set="publish_edit" t-value="True"/>
-                                <t t-set="action" t-value="'helpdesk.helpdesk_team_action'"/>
-                                <t t-set="menu" t-value="env.ref('helpdesk.menu_helpdesk_root').id"/>
-                            </t>
-                        </div>
-                    </div>
+                <section class="s_features pb32 o_colored_level" data-snippet="s_features" data-name="Features">
                     <div class="container">
                         <div id="o_knowledge_base_sections" class="row justify-content-center" />
                     </div>

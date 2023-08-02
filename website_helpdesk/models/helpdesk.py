@@ -108,7 +108,7 @@ class HelpdeskTeam(models.Model):
                 team.website_form_view_id = form_template.id
 
     def _ensure_website_menu(self):
-        with_website = self.filtered_domain([('use_website_helpdesk_form', '=', True), ('is_published', '=', True)])
+        with_website = self.filtered_domain([('use_website_helpdesk_form', '=', True)])
         without_website = self - with_website
         without_website.website_menu_id.unlink()
 

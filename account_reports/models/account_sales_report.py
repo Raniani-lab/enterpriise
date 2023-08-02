@@ -237,7 +237,7 @@ class ECSalesReportCustomHandler(models.AbstractModel):
         else:
             partners = self.env['res.partner']
 
-        return [(partner, groupby_partners[partner.id]) for partner in partners]
+        return [(partner, groupby_partners[partner.id]) for partner in partners.sorted()]
 
     def _check_warnings(self, options, row):
         if row['country_code'] not in self._get_ec_country_codes(options):

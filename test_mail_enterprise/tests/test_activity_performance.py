@@ -83,7 +83,7 @@ class TestActivityPerformance(BaseMailPerformance):
         enabled. No computed fields are involved. """
         ActivityModel = self.env['mail.test.sms.bl.activity']
 
-        with self.assertQueryCount(employee=9):
+        with self.assertQueryCount(employee=7):
             record = ActivityModel.create({
                 'name': 'Test',
             })

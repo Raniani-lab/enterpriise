@@ -96,7 +96,7 @@ class DataCleaningModel(models.Model):
         result = []
         for record in records:
             record_country = self.env['data_cleaning.record']._get_country_id(record)
-            formatted = self.env['data_cleaning.record']._phone_format(record[field], record_country)
+            formatted = self.env[self.res_model_name]._phone_format(number=record[field], country=record_country, force_format='INTERNATIONAL')
             if (record.id, rule_ids[0]) not in existing_rows and formatted and record[field] != formatted:
                 result.append({
                     'res_id': record['id'],

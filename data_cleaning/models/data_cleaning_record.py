@@ -43,15 +43,6 @@ class DataCleaningRecord(models.Model):
             company_id = record.company_id
         return company_id
 
-    @api.model
-    def _phone_format(self, number, country=None):
-        if not country:
-            country = self.env.company.country_id
-
-        if not country:
-            return number
-        return phone_format(number, country.code, country.phone_code, force_format='INTERNATIONAL', raise_exception=False)
-
     def _render_value(self, current_value):
         self.ensure_one()
 

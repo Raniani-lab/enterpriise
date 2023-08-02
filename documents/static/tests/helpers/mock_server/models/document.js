@@ -1,9 +1,8 @@
 /** @odoo-module **/
 
+import { Domain } from '@web/core/domain';
 import { patch } from "@web/core/utils/patch";
 import { MockServer } from "@web/../tests/helpers/mock_server";
-
-import Domain from '@web/legacy/js/core/domain';
 
 patch(MockServer.prototype, {
     //--------------------------------------------------------------------------
@@ -112,23 +111,23 @@ patch(MockServer.prototype, {
         if (model === 'documents.document') {
             if (fieldName === 'tag_ids') {
                 const folderId = categoryDomain.length ? categoryDomain[0][2] : false;
-                const domain = Domain.prototype.normalizeArray([
-                    ...searchDomain,
-                    ...categoryDomain,
-                    ...filterDomain,
-                    [fieldName, '!=', false],
-                ]);
+                const domain = Domain.combine([
+                    searchDomain,
+                    categoryDomain,
+                    filterDomain,
+                    [[fieldName, '!=', false]],
+                ], "AND").toList();
                 const values = folderId ? this._mockDocumentsTag_GetTags(domain, folderId) : [];
                 return { values };
             } else if (fieldName === 'res_model') {
-                let domain = Domain.prototype.normalizeArray([...searchDomain, ...categoryDomain]);
+                let domain = Domain.combine([searchDomain, categoryDomain], "AND").toList();
                 const modelValues = this._mockGetModels(model, domain);
                 if (filterDomain) {
-                    domain = Domain.prototype.normalizeArray([
-                        ...searchDomain,
-                        ...categoryDomain,
-                        ...filterDomain,
-                    ]);
+                    domain = Domain.combine([
+                        searchDomain,
+                        categoryDomain,
+                        filterDomain,
+                    ], "AND").toList();
                     const modelCount = {};
                     for (const { id, __count } of this._mockGetModels(model, domain)) {
                         modelCount[id] = __count;

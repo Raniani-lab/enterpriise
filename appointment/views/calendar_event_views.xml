@@ -197,7 +197,7 @@
     </record>
 
     <record id="calendar_event_action_view_bookings_resources" model="ir.actions.act_window">
-        <field name="name">Appointment Resource Booking</field>
+        <field name="name">Resource Bookings</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">calendar.event</field>
         <field name="view_ids" eval="[(5, 0, 0),
@@ -217,7 +217,7 @@
     </record>
 
     <record id="calendar_event_action_view_bookings_users" model="ir.actions.act_window">
-        <field name="name">User Appointments</field>
+        <field name="name">Staff Bookings</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">calendar.event</field>
         <field name="view_ids" eval="[(5, 0, 0),

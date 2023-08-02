@@ -4,7 +4,7 @@
 import uuid
 import logging
 
-from odoo import _, api, fields, models, SUPERUSER_ID
+from odoo import _, api, Command, fields, models, SUPERUSER_ID
 from odoo.tools import html2plaintext, email_normalize, email_split_tuples
 
 _logger = logging.getLogger(__name__)
@@ -307,6 +307,12 @@ class CalendarEvent(models.Model):
                      appointment_name=self.appointment_type_id.name,
                      partner_name=self.partner_id.name or _('somebody'))
         return super()._get_customer_summary()
+
+    def booking_gantt_set_partner_id(self, user_id):
+        """Remove the current user's partner and add the new user to attendees."""
+        new_partner_id = self.env['res.users'].browse(user_id).partner_id
+        for event in self:
+            event.write({'partner_ids': [Command.unlink(event.partner_id.id), Command.link(new_partner_id.id)]})
 
     @api.model
     def gantt_unavailability(self, start_date, end_date, scale, group_bys=None, rows=None):

@@ -2069,11 +2069,13 @@ msgstr ""
 msgid "Schedule an Appointment"
 
 #. module: appointment
+#: model:ir.actions.act_window,name:appointment.calendar_event_action_view_bookings_resources
 #: model:ir.actions.server,name:appointment.calendar_event_action_all_resources_bookings
 msgid "Resource Bookings"
 msgstr ""
 
 #. module: appointment
+#: model:ir.actions.act_window,name:appointment.calendar_event_action_view_bookings_users
 #: model:ir.actions.server,name:appointment.calendar_event_action_all_users_appointments
 msgid "Staff Bookings"
 msgstr ""

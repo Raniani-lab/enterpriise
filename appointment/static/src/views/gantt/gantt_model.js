@@ -14,6 +14,19 @@ export class AppointmentBookingGanttModel extends GanttModel {
             context: { ...searchParams.context, appointment_booking_gantt_show_all_resources: true }
         });
     }
+    /**
+     * @override
+     */
+    reschedule(ids, schedule, callback) {
+        if (this.metaData.groupedBy && this.metaData.groupedBy[0] === 'partner_ids' && schedule.partner_ids) {
+            this.mutex.exec(async () => await this.orm.call(
+                this.metaData.resModel,
+                "booking_gantt_reschedule_partner_ids",
+                [ids, schedule.partner_ids]
+            ));
+        }
+        return super.reschedule(...arguments);
+    }
 
     /**
      * @override

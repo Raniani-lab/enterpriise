@@ -13,15 +13,19 @@
                 </t>
             </div>
         </xpath>
+        <xpath expr="//section" position="attributes">
+            <attribute name="t-att-data-section-id">section.id</attribute>
+        </xpath>
     </t>
 
     <t t-name="documents.SearchPanel.Regular" t-inherit="documents.SearchPanelContent" t-inherit-mode="primary"/>
 
     <t t-name="documents.SearchPanel.Category" t-inherit="web.SearchPanel.Category" t-inherit-mode="primary">
         <xpath expr="//li[contains(@class, 'o_search_panel_category_value')]" position="attributes">
+            <attribute name="class" add="pe-0" separator=" "/>
+            <attribute name="t-att-class">{'o_treeEntry' : isChildList, 'o_has_treeEntry': value.childrenIds.length, 'o_all_category' : !valueId}</attribute>
             <attribute name="t-att-title">value.display_name</attribute>
-            <attribute name="draggable">true</attribute>
-            <attribute name="t-on-dragstart.stop">(ev) => this.onDragStartFolder(value, ev)</attribute>
+            <attribute name="t-att-data-value-id">valueId</attribute>
             <attribute name="t-on-dragenter.stop.prevent">(ev) => this.onDragEnter(section, value, ev)</attribute>
             <attribute name="t-on-dragleave.stop.prevent">(ev) => this.onDragLeave(section, ev)</attribute>
             <attribute name="t-on-dragover.stop.prevent"> </attribute>
@@ -34,6 +38,10 @@
                 </div>
                 <span t-if="isUploadingInFolder(valueId)" class="fa fa-circle-o-notch fa-spin"/>
             </div>
+        </xpath>
+        <xpath expr="//i[@t-if='value.childrenIds.length']" position="replace">
+            <i class="align-self-center fa fa-fw"
+               t-att-class="state.expanded[section.id][valueId] || !value.childrenIds.length  ? 'fa-caret-down' : 'fa-caret-right'"/>
         </xpath>
     </t>
 

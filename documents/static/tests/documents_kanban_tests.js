@@ -36,6 +36,7 @@ import {
     editInput,
     clickOpenedDropdownItem,
     clickOpenM2ODropdown,
+    dragAndDrop,
     getFixture,
     nextTick,
     click,
@@ -4135,7 +4136,7 @@ QUnit.module("documents", {}, function () {
             });
 
             QUnit.test("SearchPanel: can edit folders", async function (assert) {
-                assert.expect(7);
+                assert.expect(8);
 
                 serviceRegistry.add(
                     "user",
@@ -4154,9 +4155,10 @@ QUnit.module("documents", {}, function () {
                     </div>
                 </t></templates></kanban>`,
                     mockRPC: async (route, args, performRpc) => {
-                        if (args.method === "set_parent_folder") {
+                        if (args.method === "move_folder_to") {
                             assert.deepEqual(args.args[0], [2]);
                             assert.strictEqual(args.args[1], 1);
+                            assert.notOk(args.args[2]);
                             return performRpc("", {
                                 model: args.model,
                                 method: "write",
@@ -4210,23 +4212,17 @@ QUnit.module("documents", {}, function () {
                 triggerEvent(target, ".o_search_panel_value_edit_edit", "click");
 
                 // Test dragging a folder into another one
-                const sourceFolder = $(target).find(
-                    ".o_search_panel_category_value:nth-of-type(3)"
-                )[0];
-                const targetFolder = $(target).find(
-                    ".o_search_panel_category_value:nth-of-type(2)"
-                )[0];
-
-                const startEvent = new Event("dragstart", { bubbles: true });
-                const dataTransfer = new DataTransfer();
-                startEvent.dataTransfer = dataTransfer;
-                sourceFolder.dispatchEvent(startEvent);
-
-                const dropEvent = new Event("drop", { bubbles: true });
-                dropEvent.dataTransfer = dataTransfer;
-                targetFolder.dispatchEvent(dropEvent);
-                // Open folder dropdown
-                click(target, ".o_search_panel_category_value:nth-of-type(2) header");
+                const sourceFolder = target.querySelector(
+                    ".o_search_panel_category_value:nth-of-type(3)",
+                );
+                const targetFolder = target.querySelector(
+                    ".o_search_panel_category_value:nth-of-type(2)",
+                );
+                const sourceRect = sourceFolder.getBoundingClientRect();
+                await dragAndDrop(sourceFolder, sourceFolder, {
+                    x: sourceRect.width / 2 + 15,
+                    y: sourceRect.height / 2,
+                });
                 await nextTick();
                 assert.ok($(targetFolder).find(".o_search_panel_label_title:contains(Workspace3)"));
             });

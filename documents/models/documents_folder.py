@@ -10,7 +10,7 @@ class DocumentFolder(models.Model):
     _description = 'Documents Workspace'
     _parent_name = 'parent_folder_id'
     _parent_store = True
-    _order = 'sequence'
+    _order = 'sequence, create_date DESC, id'
 
     _sql_constraints = [
         ('check_user_specific', 'CHECK(not ((NOT user_specific OR user_specific IS NULL) and user_specific_write))',
@@ -136,10 +136,14 @@ class DocumentFolder(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         if self.env.context.get('create_from_search_panel'):
-            # Folders created from the search panel inherit the parent's rights.
             for vals in vals_list:
+                if 'sequence' not in vals:
+                    # Folders created from the search panel are set as first
+                    # child of their parent by default
+                    vals['sequence'] = 0
                 if 'folder_id' not in vals:
                     continue
+                # Folders created from the search panel inherit the parent's rights.
                 vals.update(self.browse(vals['folder_id'])._get_inherited_settings_as_vals())
         return super().create(vals_list)
 
@@ -269,15 +273,70 @@ class DocumentFolder(models.Model):
             'user_specific_write': self.user_specific_write,
         }
 
-    def set_parent_folder(self, parent_folder_id):
+    def move_folder_to(self, parent_folder_id=False, before_folder_id=False):
+        """Move a folder to the given position. If no parent_folder is given,
+        make the folder a root folder. If no before_folder is given, place it
+        as last child of its parent (last root if no parent is given)
+
+        :param parent_folder_id: id of the new parent folder
+        :param before_folder_id: id of the folder before which to move
+        """
         self.ensure_one()
+        values = {'parent_folder_id': parent_folder_id}
         parent_folder = self.browse(parent_folder_id)
-        if self.parent_folder_id == parent_folder:
-            return
-        parent_folder.check_access_rule('write')
-        if parent_folder and parent_folder.parent_path.startswith(self.parent_path):
-            self.children_folder_ids.parent_folder_id = self.parent_folder_id
-        self.parent_folder_id = parent_folder
-        if not parent_folder:
-            return
-        self.write(parent_folder._get_inherited_settings_as_vals())
+        if parent_folder and self.parent_folder_id != parent_folder:
+            parent_folder.check_access_rule('write')
+            if parent_folder.parent_path.startswith(self.parent_path):
+                raise UserError(_("Cannot move folder under the given parent as this would create a recursive hierarchy"))
+            values.update(parent_folder._get_inherited_settings_as_vals())
+
+        before_folder = self.browse(before_folder_id)
+        # If no before_folder is given or if the before_folder has been moved
+        # under another folder by someone else in the meantime (in which case
+        # the sequence would be irrelevant), move the folder as last child of
+        # its parent
+        if before_folder and before_folder.parent_folder_id.id == parent_folder_id:
+            values['sequence'] = self.sudo()._resequence_to_insert_before(before_folder)
+        else:
+            values['sequence'] = self._get_max_sequence_inside_parent(parent_folder_id) + 1
+        return self.write(values)
+
+    def _resequence_to_insert_before(self, before_folder):
+        """Resequence the folders to allow inserting a folder before the given
+        before_folder while keeping the current order
+
+        :param before_folder: folder before which we want to insert a folder
+        :return: sequence to use to insert the folder before the given one
+        """
+        folders_to_resequence = self.search([
+            ("parent_folder_id", "=", before_folder.parent_folder_id.id),
+            ("sequence", ">=", before_folder.sequence),
+        ])
+
+        insert_sequence = before_folder.sequence
+        # Case where we place a folder between two folders that have the same
+        # sequence. The folders that are before the given before_folder should
+        # not be resequenced
+        if folders_to_resequence[0].id != before_folder.id:
+            insert_sequence += 1
+            before_folder_index = list(folders_to_resequence).index(before_folder)
+            folders_to_resequence = folders_to_resequence[before_folder_index:]
+
+        # Resequence starting from before_folder
+        current_sequence = insert_sequence + 1
+        for folder in folders_to_resequence:
+            if folder.sequence < current_sequence:
+                folder.write({'sequence': current_sequence})
+                current_sequence += 1
+            else:
+                break
+        return insert_sequence
+
+    def _get_max_sequence_inside_parent(self, parent_folder_id):
+        result = self.env['documents.folder'].sudo().search_read(
+            [('parent_folder_id', '=', parent_folder_id)],
+            ['sequence'],
+            order="sequence DESC",
+            limit=1,
+        )
+        return result[0]["sequence"] if result else 0

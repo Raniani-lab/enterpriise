@@ -5,7 +5,9 @@ from datetime import date, timedelta
 import base64
 
 from odoo import Command
+from odoo.exceptions import UserError
 from odoo.tests.common import TransactionCase
+from odoo.tools import mute_logger
 
 TEXT = base64.b64encode(bytes("TEST", 'utf-8'))
 
@@ -215,3 +217,110 @@ class TestDocumentsFolder(TransactionCase):
         wizard.delete()
         self.assertFalse(self.document.exists(), "Document should be deleted")
         self.assertFalse(self.child_folder.exists(), "Folder should be deleted")
+
+class TestDocumentsFolderSequence(TransactionCase):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        # - Root1
+        #    - Child1
+        #    - Child2
+        # - Root2
+        #
+        with mute_logger('odoo.models.unlink'):
+            cls.env['documents.document'].search([]).unlink()
+            cls.env['documents.document'].flush_model()
+            cls.env['documents.folder'].search([]).unlink()
+
+        cls.root_folders = cls.env['documents.folder'].create([
+            {'name': 'Root1', 'user_specific': True},
+            {'name': 'Root2', 'user_specific': False},
+        ])
+
+        cls.children_folders = cls.env['documents.folder'].with_context(create_from_search_panel=True).create([
+            {'name': 'Child1', 'parent_folder_id': cls.root_folders[0].id},
+            {'name': 'Child2', 'parent_folder_id': cls.root_folders[0].id},
+        ])
+
+    def test_initial_sequences(self):
+        self.assertEqual(self.root_folders[0].sequence, 10)
+        self.assertEqual(self.root_folders[1].sequence, 10)
+        self.assertEqual(self.children_folders[0].sequence, 0)
+        self.assertEqual(self.children_folders[1].sequence, 0)
+
+    def test_resequence_roots(self):
+        # Move Root1 after Root2
+        self.root_folders[0].move_folder_to(False, False)
+        # Moved folder's sequence should have increased
+        self.assertEqual(self.root_folders[0].sequence, 11)
+        self.assertEqual(self.root_folders[1].sequence, 10)
+        # Children folders' sequence should not have changed
+        self.assertEqual(self.children_folders[0].sequence, 0)
+        self.assertEqual(self.children_folders[1].sequence, 0)
+
+        # Move Root1 back before Root2
+        self.root_folders[0].move_folder_to(False, self.root_folders[1].id)
+        # Root2's sequence should have increased
+        self.assertEqual(self.root_folders[0].sequence, 10)
+        self.assertEqual(self.root_folders[1].sequence, 11)
+        # Children folders' sequence should not have changed
+        self.assertEqual(self.children_folders[0].sequence, 0)
+        self.assertEqual(self.children_folders[1].sequence, 0)
+
+    def test_resequence_children(self):
+        # Move Child1 after Child2
+        self.children_folders[0].move_folder_to(self.root_folders[0].id, False)
+        # Moved folder's sequence should have increased
+        self.assertEqual(self.children_folders[0].sequence, 1)
+        self.assertEqual(self.children_folders[1].sequence, 0)
+        # Root folders' sequence should not have changed
+        self.assertEqual(self.root_folders[0].sequence, 10)
+        self.assertEqual(self.root_folders[1].sequence, 10)
+
+        # Move Child1 back before Child2
+        self.children_folders[0].move_folder_to(self.root_folders[0].id, self.children_folders[1].id)
+        # Child2's sequence should have increased
+        self.assertEqual(self.children_folders[0].sequence, 0)
+        self.assertEqual(self.children_folders[1].sequence, 1)
+        # Root folders' sequence should not have changed
+        self.assertEqual(self.root_folders[0].sequence, 10)
+        self.assertEqual(self.root_folders[1].sequence, 10)
+
+    def test_move_root_to_child(self):
+        # Move Root2 under the Root1 (as first child)
+        self.root_folders[1].move_folder_to(self.root_folders[0].id, self.children_folders[0].id)
+        # Moved folder's sequence should be the smallest of the folder
+        self.assertEqual(self.root_folders[1].sequence, 0)
+        # Moved folder should now inherit rights of its parent
+        self.assertEqual(self.root_folders[1].parent_folder_id.id, self.root_folders[0].id)
+        self.assertEqual(self.root_folders[1].user_specific, self.root_folders[0].user_specific)
+        # Other children folders should be resequenced
+        self.assertEqual(self.children_folders[0].sequence, 1)
+        self.assertEqual(self.children_folders[1].sequence, 2)
+        # Root1's sequence should not have changed
+        self.assertEqual(self.root_folders[0].sequence, 10)
+        # Move Root1 under one of its child (not possible, would create a recursion)
+        with self.assertRaises(UserError):
+            self.root_folders[0].move_folder_to(self.children_folders[0].id, False)
+
+    def test_move_child_to_root(self):
+        # Move Child1 between roots (that have the same sequence)
+        self.children_folders[0].move_folder_to(False, self.root_folders[1].id)
+        # Moved folder's sequence should be between the ones of the roots
+        self.assertEqual(self.root_folders[0].sequence, 10)
+        self.assertEqual(self.children_folders[0].sequence, 11)
+        self.assertEqual(self.root_folders[1].sequence, 12)
+        # Child2's sequence should not have changed
+        self.assertEqual(self.children_folders[1].sequence, 0)
+        # Moved folder should not have any parent anymore
+        self.assertFalse(self.children_folders[0].parent_folder_id)
+
+        # Move Child2 before Root1
+        self.children_folders[1].move_folder_to(False, self.root_folders[0].id)
+        # Moved folder's sequence should be the smallest
+        self.assertEqual(self.children_folders[1].sequence, 10)
+        self.assertEqual(self.children_folders[0].sequence, 12)
+        self.assertEqual(self.root_folders[1].sequence, 13)
+        self.assertEqual(self.root_folders[0].sequence, 11)
+        # Moved folder should not have any parent anymore
+        self.assertFalse(self.children_folders[1].parent_folder_id)

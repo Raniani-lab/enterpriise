@@ -10,7 +10,7 @@ import { useSubEnv } from "@odoo/owl";
 topbarMenuRegistry.addChild("add_document_to_dashboard", ["file"], {
     name: _t("Add to dashboard"),
     sequence: 200,
-    isVisible: (env) => env.canAddDocumentAsDashboard,
+    isVisible: (env) => env.canAddToDashboard?.(),
     execute: (env) => env.createDashboardFromDocument(env.model),
     icon: "o-spreadsheet-Icon.ADD_TO_DASHBOARD",
 });
@@ -21,9 +21,17 @@ patch(SpreadsheetAction.prototype, {
     setup() {
         super.setup();
         useSubEnv({
-            canAddDocumentAsDashboard: true,
+            canAddToDashboard: () => this.canAddToDashboard,
             createDashboardFromDocument: this._createDashboardFromDocument.bind(this),
         });
+    },
+
+    /**
+     * @override
+     */
+    _initializeWith(record) {
+        super._initializeWith(record);
+        this.canAddToDashboard = record.can_add_to_dashboard;
     },
 
     /**

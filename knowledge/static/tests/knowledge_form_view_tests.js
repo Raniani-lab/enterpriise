@@ -3,7 +3,7 @@
 import { onWillStart, onMounted } from "@odoo/owl";
 import { click, getFixture, makeDeferred, nextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
-import { qweb as QWeb } from "@web/legacy/js/services/core";
+import { renderToElement } from "@web/core/utils/render";
 import { patch } from "@web/core/utils/patch";
 import { HtmlField } from "@web_editor/js/backend/html_field";
 import { parseHTML } from "@web_editor/js/editor/odoo-editor/src/utils/utils";
@@ -193,9 +193,9 @@ QUnit.module("Knowledge - Articles Structure Command", (hooks) => {
 const testAppendBehavior = async (editable) => {
     const wysiwyg = $(editable).data('wysiwyg');
 
-    const insertedDiv = parseHTML(QWeb.render('knowledge.abstract_behavior', {
+    const insertedDiv = renderToElement('knowledge.abstract_behavior', {
         behaviorType: "o_knowledge_behavior_type_template",
-    })).firstChild;
+    });
     wysiwyg.appendBehaviorBlueprint(insertedDiv);
     await nextTick();
 };

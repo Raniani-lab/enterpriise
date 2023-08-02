@@ -1,8 +1,7 @@
 /** @odoo-module **/
 
-import core from "@web/legacy/js/services/core";
 import publicWidget from "@web/legacy/js/public/public_widget";
-var qweb = core.qweb;
+import { renderToElement } from "@web/core/utils/render";
 
 publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
     selector: '.o_appointment',
@@ -65,7 +64,7 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
         const firstAvailabilityDate = this.$first.attr('id');
         const staffUserName = this.$("#slots_form select[name='staff_user_id'] :selected").text();
         $month.find('table').addClass('d-none');
-        $month.append(qweb.render('Appointment.appointment_info_no_slot_month', {
+        $month.append(renderToElement('Appointment.appointment_info_no_slot_month', {
             firstAvailabilityDate: moment(firstAvailabilityDate).format('dddd D MMMM YYYY'),
             staffUserName: staffUserName,
         }));
@@ -90,13 +89,13 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
                 const staffUserName = this.$("#slots_form select[name='staff_user_id'] :selected").text();
                 const hideSelectDropdown = !!this.$("input[name='hide_select_dropdown']").val();
                 const active = this.$("input[name='active']").val();
-                this.$('.o_appointment_no_slot_overall_helper').empty().append(qweb.render('Appointment.appointment_info_no_slot', {
+                this.$('.o_appointment_no_slot_overall_helper').empty().append(renderToElement('Appointment.appointment_info_no_slot', {
                     active: active,
                     appointmentsCount: this.$slotsList.data('appointmentsCount'),
                     staffUserName: hideSelectDropdown ? staffUserName : false,
                 }));
             } else {
-                this.$(".o_appointment_no_capacity").empty().append(qweb.render('Appointment.appointment_info_no_capacity'));
+                this.$(".o_appointment_no_capacity").empty().append(renderToElement('Appointment.appointment_info_no_capacity'));
             }
         } else {
             this.$('.o_appointment_details_column, .o_appointment_timezone_selection').removeClass('d-none');
@@ -162,7 +161,7 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
             commonUrlParams.set('resource_selected_id', encodeURIComponent(resourceId));
         }
 
-        this.$slotsList.empty().append(qweb.render('appointment.slots_list', {
+        this.$slotsList.empty().append(renderToElement('appointment.slots_list', {
             commonUrlParams: commonUrlParams,
             resourceAssignMethod: resourceAssignMethod,
             scheduleBasedOn: scheduleBasedOn,
@@ -192,7 +191,7 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
 
         const availableResources = this.$(ev.currentTarget).data('available_resources');
         const previousResourceIdSelected = this.$("select[name='resource_id']").val();
-        this.$('#resourceSelection').empty().append(qweb.render('appointment.resources_list', {
+        this.$('#resourceSelection').empty().append(renderToElement('appointment.resources_list', {
             availableResources: availableResources,
         }));
         this.$("select[name='resource_id']").attr('disabled', availableResources.length === 1);

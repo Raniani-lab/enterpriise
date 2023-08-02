@@ -3,7 +3,7 @@
 import concurrency from '@web/legacy/js/core/concurrency';
 import publicWidget from '@web/legacy/js/public/public_widget';
 
-import { qweb } from "@web/legacy/js/services/core";
+import { renderToElement } from "@web/core/utils/render";
 import { debounce } from "@web/core/utils/timing";
 
 publicWidget.registry.knowledgeBaseAutocomplete = publicWidget.Widget.extend({
@@ -58,7 +58,7 @@ publicWidget.registry.knowledgeBaseAutocomplete = publicWidget.Widget.extend({
         const search = this.$input.val();
         this.$el.toggleClass('dropdown show', !!res);
         if (!!res) {
-            this.$menu = $(qweb.render('website_helpdesk.knowledge_base_autocomplete', {
+            this.$menu = $(renderToElement('website_helpdesk.knowledge_base_autocomplete', {
                 results: res.results,
                 showMore: res.showMore,
                 term: search,

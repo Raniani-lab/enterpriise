@@ -1,10 +1,10 @@
 /** @odoo-module **/
 
     import core from "@web/legacy/js/services/core";
+    import { renderToElement } from "@web/core/utils/render";
     import Dialog from "@web/legacy/js/core/dialog";
     import framework from "@web/legacy/js/core/misc";
     import localStorage from "@web/legacy/js/core/local_storage";
-    const qweb = core.qweb;
 
     const PromoteStudioDialog = Dialog.extend({
         events: Object.assign({}, Dialog.prototype.events, {
@@ -17,7 +17,7 @@
          */
         init: function (parent, options) {
             options = Object.assign({
-                $content: $(qweb.render('web_enterprise.install_web_studio')),
+                $content: $(renderToElement('web_enterprise.install_web_studio')),
                 renderHeader: false,
                 renderFooter: false,
                 size: 'large',

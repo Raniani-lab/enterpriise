@@ -1,6 +1,7 @@
 /** @odoo-module */
 
-import { _t, qweb } from "@web/legacy/js/services/core";
+import { _t } from "@web/legacy/js/services/core";
+import { renderToString } from "@web/core/utils/render";
 import { ArticleTemplatePickerDialog } from "@knowledge/components/article_template_picker_dialog/article_template_picker_dialog";
 import { encodeDataBehaviorProps } from "@knowledge/js/knowledge_utils";
 import { HtmlField, htmlField } from "@web_editor/js/backend/html_field";
@@ -109,7 +110,7 @@ export class KnowledgeArticleHtmlField extends HtmlField {
                     },
                     additionalViewProps: { itemCalendarProps },
                 };
-                const body = qweb.render("knowledge.article_item_template", {
+                const body = renderToString("knowledge.article_item_template", {
                     behaviorProps: encodeDataBehaviorProps(behaviorProps),
                     title: name
                 });
@@ -139,7 +140,7 @@ export class KnowledgeArticleHtmlField extends HtmlField {
                     }
                 };
                 const title = name || _t("Article Items");
-                const body = qweb.render("knowledge.article_item_template", {
+                const body = renderToString("knowledge.article_item_template", {
                     behaviorProps: encodeDataBehaviorProps(behaviorProps),
                     title
                 });
@@ -170,7 +171,7 @@ export class KnowledgeArticleHtmlField extends HtmlField {
                     }
                 };
                 const title = name || _t("Article Items");
-                const body = qweb.render("knowledge.article_item_template", {
+                const body = renderToString("knowledge.article_item_template", {
                     behaviorProps: encodeDataBehaviorProps(behaviorProps),
                     title
                 });

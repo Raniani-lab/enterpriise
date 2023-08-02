@@ -4,12 +4,11 @@ import { SelectInputDeviceDialog } from "@voip/legacy/audio_input_device";
 
 import config from "@web/legacy/js/services/config";
 import core from "@web/legacy/js/services/core";
+import { renderToElement } from "@web/core/utils/render";
 import { isMobileOS } from "@web/core/browser/feature_detection";
 import { debounce } from "@web/core/utils/timing";
 import session from "web.session";
 import Widget from "@web/legacy/js/core/widget";
-
-const QWeb = core.qweb;
 
 function cleanNumber(number) {
     if (!number) {
@@ -108,7 +107,7 @@ export const PhoneCallDetails = Widget.extend({
             html: true,
             content: function () {
                 const $content = $(
-                    QWeb.render("voip.PhoneCallTransfer", {
+                    renderToElement("voip.PhoneCallTransfer", {
                         external_device_number: number,
                     })
                 );
@@ -164,8 +163,8 @@ export const PhoneCallDetails = Widget.extend({
 
         this._$phoneCallReceivingCall.addClass("d-flex");
 
-        this.$(".o_phonecall_top").html(
-            QWeb.render("voip.PhoneCallStatus", {
+        this.$(".o_phonecall_top").empty().append(
+            renderToElement("voip.PhoneCallStatus", {
                 status: "connecting",
             })
         );
@@ -174,8 +173,8 @@ export const PhoneCallDetails = Widget.extend({
      * Change message in widget to Ringing
      */
     setStatusRinging() {
-        this.$(".o_phonecall_status").html(
-            QWeb.render("voip.PhoneCallStatus", {
+        this.$(".o_phonecall_status").empty().append(
+            renderToElement("voip.PhoneCallStatus", {
                 duration: "00:00",
                 status: "ringing",
             })
@@ -215,8 +214,8 @@ export const PhoneCallDetails = Widget.extend({
             const seconds = formatTimer(this.durationSeconds % 60);
             const minutes = formatTimer(parseInt(this.durationSeconds / 60));
             const duration = `${minutes}:${seconds}`;
-            this.$(".o_phonecall_status").html(
-                QWeb.render("voip.PhoneCallStatus", {
+            this.$(".o_phonecall_status").empty().append(
+                renderToElement("voip.PhoneCallStatus", {
                     duration,
                     status: "in_call",
                 })

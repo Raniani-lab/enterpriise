@@ -1,11 +1,9 @@
 /** @odoo-module **/
 
-import core from "@web/legacy/js/services/core";
+import { renderToElement } from "@web/core/utils/render";
 import { Markup } from "@web/legacy/js/core/utils";
 import Widget from "@web/legacy/js/core/widget";
 import publicWidget from "@web/legacy/js/public/public_widget";
-
-var qweb = core.qweb;
 
 var TweetWall = Widget.extend({
     template: 'website_twitter_wall_tweets',
@@ -124,7 +122,7 @@ var TweetWall = Widget.extend({
         if (tweets.length) {
             var tweet = tweets[0];
             self.pool_cache[tweet.id].round = leastRound + 1;
-            $(qweb.render('website_twitter_wall_tweets', {
+            $(renderToElement('website_twitter_wall_tweets', {
                 tweet_id: tweet.id,
                 tweet: Markup(tweet.tweet_html),
             })).prependTo(self.prependTweetsTo);

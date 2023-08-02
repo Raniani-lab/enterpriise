@@ -3,9 +3,9 @@
 import concurrency from "@web/legacy/js/core/concurrency";
 import publicWidget from "@web/legacy/js/public/public_widget";
 import utils from "@web/legacy/js/core/utils";
-import { qweb } from "@web/legacy/js/services/core";
 import { debounce } from "@web/core/utils/timing";
 import { _t } from "@web/core/l10n/translation";
+import { renderToElement } from "@web/core/utils/render";
 
 publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
     selector: '#hr_cs_form',
@@ -195,10 +195,10 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
     },
 
     updateGrossToNetModal(data) {
-        const resumeSidebar = $(qweb.render('hr_contract_salary.salary_package_resume', {
+        const resumeSidebar = renderToElement('hr_contract_salary.salary_package_resume', {
             'lines': data.resume_lines_mapped,
             'categories': data.resume_categories,
-        }));
+        });
         this.$("div[name='salary_package_resume']").html(resumeSidebar);
         $("input[name='wage_with_holidays']").val(data['wage_with_holidays']);
         $("div[name='net']").removeClass('d-none').hide().slideDown( "slow" );

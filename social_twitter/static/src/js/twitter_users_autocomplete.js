@@ -3,9 +3,7 @@
 import { CharField, charField } from "@web/views/fields/char/char_field";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
-
-import core from "@web/legacy/js/services/core";
-const QWeb = core.qweb;
+import { renderToElement } from "@web/core/utils/render";
 
 const { useEffect, useRef } = owl;
 
@@ -38,7 +36,7 @@ export class TwitterUsersAutocompleteField extends CharField {
                 minLength: 2,
                 delay: 500,
             }).data('ui-autocomplete')._renderItem = function (ul, item){
-                return $(QWeb.render('social_twitter.users_autocomplete_element', {
+                return $(renderToElement('social_twitter.users_autocomplete_element', {
                     suggestion: item
                 })).appendTo(ul);
             };

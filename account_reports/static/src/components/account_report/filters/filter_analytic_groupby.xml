@@ -6,15 +6,19 @@
                 <i class="fa fa-folder-open me-1"/>Analytic Group By
             </t>
 
-            <label>Accounts</label>
-            <Record t-props="recordProps('Analytic accounts', 'account.analytic.account', 'analytic_accounts_groupby')" t-slot-scope="data">
-                <Many2ManyTagsField id="'record_data'" name="'record_data'" record="data.record"/>
-            </Record>
+            <div class="dropdown-item">
+                <label>Accounts</label>
+                <Record t-props="recordProps('Analytic accounts', 'account.analytic.account', 'analytic_accounts_groupby')" t-slot-scope="data">
+                    <Many2ManyTagsField id="'record_data'" name="'record_data'" record="data.record"/>
+                </Record>
+            </div>
 
-            <label>Plans</label>
-            <Record t-props="recordProps('Analytic plans', 'account.analytic.plan', 'analytic_plans_groupby')" t-slot-scope="data">
-                <Many2ManyTagsField id="'record_data'" name="'record_data'" record="data.record"/>
-            </Record>
+            <div class="dropdown-item">
+                <label>Plans</label>
+                <Record t-props="recordProps('Analytic plans', 'account.analytic.plan', 'analytic_plans_groupby')" t-slot-scope="data">
+                    <Many2ManyTagsField id="'record_data'" name="'record_data'" record="data.record"/>
+                </Record>
+            </div>
         </Dropdown>
     </t>
 </templates>

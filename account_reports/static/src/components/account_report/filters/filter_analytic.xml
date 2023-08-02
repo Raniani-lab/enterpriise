@@ -6,11 +6,12 @@
                 <i class="fa fa-folder-open me-1"/>Analytic Filter
             </t>
 
-            <label>Accounts</label>
-
-            <Record t-props="recordProps('Accounts', 'account.analytic.account', 'analytic_accounts')" t-slot-scope="data">
-                <Many2ManyTagsField id="'record_data'" name="'record_data'" record="data.record"/>
-            </Record>
+            <div class="dropdown-item">
+                <label>Accounts</label>
+                <Record t-props="recordProps('Accounts', 'account.analytic.account', 'analytic_accounts')" t-slot-scope="data">
+                    <Many2ManyTagsField id="'record_data'" name="'record_data'" record="data.record"/>
+                </Record>
+            </div>
         </Dropdown>
     </t>
 </templates>

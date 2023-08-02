@@ -41,7 +41,9 @@ export const patchGraphSpreadsheet = {
                     ...this.model.searchParams,
                     context: omit(
                         this.model.searchParams.context,
-                        ...Object.keys(this.userService.context)
+                        ...Object.keys(this.userService.context),
+                        "graph_measure",
+                        "graph_order"
                     ),
                 },
                 menuXMLId,

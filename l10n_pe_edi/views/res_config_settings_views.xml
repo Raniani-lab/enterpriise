@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <xpath expr="//block[@id='invoicing_settings']" position="after">
                 <!-- TODO: <t attrs="{'invisible': [('country_code', '!=', 'PE')]}" ??? -->
-                <block title="Peruvian Electronic Invoicing" id="invoicing_peruvian_settings">
+                <block title="Peruvian Electronic Invoicing" id="invoicing_peruvian_settings" attrs="{'invisible': [('country_code', '!=', 'PE')]}">
                     <setting help="Operator that will sign your invoices (by default IAP, Odoo take care of this process and give you for free the first 1000 declarations) as part of the enterprise licence.">
                         <field name="l10n_pe_edi_provider" widget="radio"/>
                     </setting>

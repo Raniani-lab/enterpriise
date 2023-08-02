@@ -9,3 +9,9 @@ class ResConfigSettings(models.TransientModel):
     # Default subscription parameters
     subscription_default_recurrence_id = fields.Many2one(related='company_id.subscription_default_recurrence_id',
                                                          readonly=False)
+
+    invoice_consolidation = fields.Boolean(
+        string="Consolidate subscriptions billing",
+        help="Consolidate all of a customer's subscriptions that are due to be billed on the same day onto a single invoice.",
+        config_parameter='sale_subscription.invoice_consolidation',
+    )

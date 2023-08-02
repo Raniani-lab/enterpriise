@@ -1371,37 +1371,38 @@ class SaleOrder(models.Model):
             sub.order_line._reset_subscription_quantity_post_invoice()
             sub.update({'is_invoice_cron': False})
 
-    def _handle_subscription_payment_failure(self, invoice, transaction, email_context):
-        self.ensure_one()
+    def _handle_subscription_payment_failure(self, invoice, transaction):
         current_date = fields.Date.today()
         reminder_mail_template = self.env.ref('sale_subscription.email_payment_reminder', raise_if_not_found=False)
         close_mail_template = self.env.ref('sale_subscription.email_payment_close', raise_if_not_found=False)
         invoice.unlink()
-        auto_close_days = self.sale_order_template_id.auto_close_limit or 15
-        date_close = self.next_invoice_date + relativedelta(days=auto_close_days)
-        close_contract = current_date >= date_close
-        _logger.info('Failed to create recurring invoice for contract %s', self.client_order_ref or self.name)
-        if close_contract:
-            close_mail_template.with_context(email_context).send_mail(self.id)
-            _logger.debug("Sending Contract Closure Mail to %s for contract %s and closing contract",
-                          self.partner_id.email, self.id)
-            msg_body = _("Automatic payment failed after multiple attempts. Contract closed automatically.")
-            self.message_post(body=msg_body)
-            subscription_values = {'payment_exception': False}
-            # close the contract as needed
-            self.set_close(close_reason_id=self.env.ref('sale_subscription.close_reason_auto_close_limit_reached').id)
-        else:
-            msg_body = _('Automatic payment failed. No email sent this time. Error: %s', transaction and transaction.state_message or _('No valid Payment Method'))
+        for order in self:
+            auto_close_days = order.sale_order_template_id.auto_close_limit or 15
+            date_close = order.next_invoice_date + relativedelta(days=auto_close_days)
+            close_contract = current_date >= date_close
+            email_context = order._get_subscription_mail_payment_context()
+            _logger.info('Failed to create recurring invoice for contract %s', order.client_order_ref or order.name)
+            if close_contract:
+                close_mail_template.with_context(email_context).send_mail(order.id)
+                _logger.debug("Sending Contract Closure Mail to %s for contract %s and closing contract",
+                              order.partner_id.email, order.id)
+                msg_body = _("Automatic payment failed after multiple attempts. Contract closed automatically.")
+                order.message_post(body=msg_body)
+                subscription_values = {'payment_exception': False}
+                # close the contract as needed
+                order.set_close(close_reason_id=order.env.ref('sale_subscription.close_reason_auto_close_limit_reached').id)
+            else:
+                msg_body = _('Automatic payment failed. No email sent this time. Error: %s', transaction and transaction.state_message or _('No valid Payment Method'))
 
-            if (fields.Date.today() - self.next_invoice_date).days in [2, 7, 14]:
-                email_context.update({'date_close': date_close, 'payment_token': self.payment_token_id.display_name})
-                reminder_mail_template.with_context(email_context).send_mail(self.id)
-                _logger.debug("Sending Payment Failure Mail to %s for contract %s and setting contract to pending", self.partner_id.email, self.id)
-                msg_body = _('Automatic payment failed. Email sent to customer. Error: %s', transaction and transaction.state_message or _('No Payment Method'))
-            self.message_post(body=msg_body)
-            subscription_values = {'payment_exception': False, 'is_batch': True}
-        subscription_values.update(self._update_subscription_payment_failure_values())
-        self.write(subscription_values)
+                if (fields.Date.today() - order.next_invoice_date).days in [2, 7, 14]:
+                    email_context.update({'date_close': date_close, 'payment_token': order.payment_token_id.display_name})
+                    reminder_mail_template.with_context(email_context).send_mail(order.id)
+                    _logger.debug("Sending Payment Failure Mail to %s for contract %s and setting contract to pending", order.partner_id.email, order.id)
+                    msg_body = _('Automatic payment failed. Email sent to customer. Error: %s', transaction and transaction.state_message or _('No Payment Method'))
+                order.message_post(body=msg_body)
+                subscription_values = {'payment_exception': False, 'is_batch': True}
+            subscription_values.update(order._update_subscription_payment_failure_values())
+            order.write(subscription_values)
 
     def _invoice_is_considered_free(self, invoiceable_lines):
         """
@@ -1410,19 +1411,21 @@ class SaleOrder(models.Model):
         :return: bool: true if the contract is free
         :return: bool: true if the contract should be in exception
         """
-        self.ensure_one()
+        # By design if self is a recordset, all currency are similar
+        currency = self.currency_id[:1]
         amount_total = sum(invoiceable_lines.mapped('price_total'))
         non_recurring_line = invoiceable_lines.filtered(lambda l: l.temporal_type != 'subscription')
         is_free, is_exception = False, False
-        if self.currency_id.compare_amounts(self.recurring_monthly, 0) < 0 and non_recurring_line:
-            # We have a mix of recurring lines whose sum is negative and non recurring lines to invoice
+        mrr = sum(self.mapped('recurring_monthly'))
+        if currency.compare_amounts(mrr, 0) < 0 and non_recurring_line:
+            # We have a mix of recurring lines whose sum is negative and non-recurring lines to invoice
             # We don't know what to do
             is_free = True
             is_exception = True
-        elif self.currency_id.compare_amounts(amount_total, 0) < 1:
+        elif currency.compare_amounts(amount_total, 0) < 1:
             # We can't create an invoice, it will be impossible to validate
             is_free = True
-        elif self.currency_id.compare_amounts(self.recurring_monthly, 0) < 1 and not non_recurring_line:
+        elif currency.compare_amounts(mrr, 0) < 1 and not non_recurring_line:
             # We have a recurring null/negative amount. It is not desired even if we have a non-recurring positive amount
             is_free = True
         return is_free, is_exception
@@ -1442,6 +1445,45 @@ class SaleOrder(models.Model):
             search_domain = expression.AND([search_domain, extra_domain])
         return search_domain
 
+    def _get_invoice_grouping_keys(self):
+        if any(self.mapped('is_subscription')):
+            return super()._get_invoice_grouping_keys() + ['payment_token_id', 'partner_invoice_id']
+        else:
+            return super()._get_invoice_grouping_keys()
+
+    def _get_auto_invoice_grouping_keys(self):
+        return super()._get_invoice_grouping_keys() + ['payment_token_id']
+
+
+    def _recurring_invoice_get_subscriptions(self, grouped=False, batch_size=30):
+        """ Return a boolean and an iterable of recordsets.
+        The boolean is true if batch_size is smaller than the number of remaining records
+        If grouped, each recordset contains SO with the same grouping keys.
+        """
+        need_cron_trigger = False
+        if self:
+            domain = [('id', 'in', self.ids), ('subscription_state', 'in', SUBSCRIPTION_PROGRESS_STATE)]
+            batch_size = False
+        else:
+            domain = self._recurring_invoice_domain()
+            batch_size = batch_size and batch_size + 1
+
+        if grouped:
+            all_subscriptions = self.read_group(
+                domain,
+                ['id:array_agg'],
+                self._get_auto_invoice_grouping_keys(),
+                limit=batch_size, lazy=False)
+            all_subscriptions = [self.browse(res['id']) for res in all_subscriptions]
+        else:
+            all_subscriptions = self.search(domain, limit=batch_size)
+
+        if batch_size:
+            need_cron_trigger = len(all_subscriptions) > batch_size
+            all_subscriptions = all_subscriptions[:batch_size]
+
+        return all_subscriptions, need_cron_trigger
+
     def _subscription_commit_cursor(self, auto_commit):
         if auto_commit:
             self.env.cr.commit()
@@ -1457,44 +1499,37 @@ class SaleOrder(models.Model):
     def _create_recurring_invoice(self, batch_size=30):
         today = fields.Date.today()
         auto_commit = not bool(config['test_enable'] or config['test_file'])
-        if self:
-            all_subscriptions = self.filtered(lambda so: so.subscription_state in SUBSCRIPTION_PROGRESS_STATE)
-        else:
-            all_subscriptions = self.search(self._recurring_invoice_domain(), limit=batch_size + 1)
-        need_cron_trigger = not self and len(all_subscriptions) > batch_size
-        if need_cron_trigger:
-            all_subscriptions = all_subscriptions[:batch_size]
+        grouped_invoice = self.env['ir.config_parameter'].get_param('sale_subscription.invoice_consolidation', False)
+        all_subscriptions, need_cron_trigger = self._recurring_invoice_get_subscriptions(grouped=grouped_invoice, batch_size=batch_size)
         if not all_subscriptions:
             return self.env['account.move']
 
         # We mark current batch as having been seen by the cron
-        all_subscriptions.write({'is_invoice_cron': True})
-
-        # Don't spam sale with assigned emails.
-        all_subscriptions = all_subscriptions.with_context(mail_auto_subscribe_no_notify=True)
-
-        # Close ending subscriptions
-        auto_close_subscription = all_subscriptions.filtered_domain([('end_date', '!=', False)])
-        closed_contract = auto_close_subscription._subscription_auto_close()
-        all_subscriptions -= closed_contract
-
-        if not all_subscriptions:
-            return self.env['account.move']
+        all_invoiceable_lines = self.env['sale.order.line']
+        for subscription in all_subscriptions:
+            subscription.is_invoice_cron = True
+            # Don't spam sale with assigned emails.
+            subscription = subscription.with_context(mail_auto_subscribe_no_notify=True)
+            # Close ending subscriptions
+            auto_close_subscription = subscription.filtered_domain([('end_date', '!=', False)])
+            closed_contract = auto_close_subscription._subscription_auto_close()
+            subscription -= closed_contract
+            all_invoiceable_lines += subscription.with_context(recurring_automatic=True)._get_invoiceable_lines()
 
         lines_to_reset_qty = self.env['sale.order.line']
         account_moves = self.env['account.move']
-        all_invoiceable_lines = all_subscriptions.with_context(recurring_automatic=True)._get_invoiceable_lines()
         # Set quantity to invoice before the invoice creation. If something goes wrong, the line will appear as "to invoice"
-        # It prevent to use the _compute method and compare the today date and the next_invoice_date in the compute which would be bad for perfs
+        # It prevents the use of _compute method and compare the today date and the next_invoice_date in the compute which would be bad for perfs
         all_invoiceable_lines._reset_subscription_qty_to_invoice()
         self._subscription_commit_cursor(auto_commit)
         for subscription in all_subscriptions:
-            subscription = subscription[0]  # Trick to not prefetch other subscriptions, as the cache is currently invalidated at each iteration
+            if len(subscription) == 1:
+                subscription = subscription[0]  # Trick to not prefetch other subscriptions is all_subscription is recordset, as the cache is currently invalidated at each iteration
 
             # We check that the subscription should not be processed or that it has not already been set to "in exception" by previous cron failure
             # We only invoice contract in sale state. Locked contracts are invoiced in advance. They are frozen.
-
-            if subscription.subscription_state != '3_progress' or subscription.payment_exception:
+            subscription = subscription.filtered(lambda sub: sub.subscription_state == '3_progress' and not sub.payment_exception)
+            if not subscription:
                 continue
             try:
                 self._subscription_commit_cursor(auto_commit)  # To avoid a rollback in case something is wrong, we create the invoices one by one
@@ -1504,17 +1539,18 @@ class SaleOrder(models.Model):
                 elif draft_invoices:
                     # Skip subscription if no payment_token, and it has a draft invoice
                     continue
-                invoiceable_lines = all_invoiceable_lines.filtered(lambda l: l.order_id.id == subscription.id)
+                invoiceable_lines = all_invoiceable_lines.filtered(lambda l: l.order_id.id in subscription.ids)
                 invoice_is_free, is_exception = subscription._invoice_is_considered_free(invoiceable_lines)
                 if not invoiceable_lines or invoice_is_free:
                     if is_exception:
-                        # Mix between recurring and non-recurring lines. We let the contract in exception, it should be
-                        # handled manually
-                        msg_body = _(
-                            "Mix of negative recurring lines and non-recurring line. The contract should be fixed manually",
-                            inv=subscription.next_invoice_date
-                        )
-                        subscription.message_post(body=msg_body)
+                        for sub in subscription:
+                            # Mix between recurring and non-recurring lines. We let the contract in exception, it should be
+                            # handled manually
+                            msg_body = _(
+                                "Mix of negative recurring lines and non-recurring line. The contract should be fixed manually",
+                                inv=sub.next_invoice_date
+                            )
+                            sub.message_post(body=msg_body)
                         subscription.payment_exception = True
                     # We still update the next_invoice_date if it is due
                     elif subscription.next_invoice_date and subscription.next_invoice_date <= today:
@@ -1534,25 +1570,26 @@ class SaleOrder(models.Model):
                         raise
                     # we suppose that the payment is run only once a day
                     self._subscription_rollback_cursor(auto_commit)
-                    email_context = subscription._get_subscription_mail_payment_context()
-                    error_message = _("Error during renewal of contract %s (Payment not recorded)", subscription.name)
-                    _logger.exception(error_message)
-                    body = self._get_traceback_body(e, error_message)
-                    mail = self.env['mail.mail'].sudo().create(
-                        {'body_html': body, 'subject': error_message, 'email_to': email_context['responsible_email'],
-                         'auto_delete': True})
-                    mail.send()
+                    for sub in subscription:
+                        email_context = sub._get_subscription_mail_payment_context()
+                        error_message = _("Error during renewal of contract %s (Payment not recorded)", sub.name)
+                        _logger.exception(error_message)
+                        body = self._get_traceback_body(e, error_message)
+                        mail = self.env['mail.mail'].sudo().create(
+                            {'body_html': body, 'subject': error_message,
+                             'email_to': email_context['responsible_email'], 'auto_delete': True})
+                        mail.send()
                     continue
                 self._subscription_commit_cursor(auto_commit)
                 # Handle automatic payment or invoice posting
-                existing_invoices = subscription.with_context(recurring_automatic=True)._handle_automatic_invoices(invoice, auto_commit)
-                account_moves |= existing_invoices
-                subscription.with_context(mail_notrack=True).write({'payment_exception': False})
+                account_moves |= subscription.with_context(recurring_automatic=True)._handle_automatic_invoices(invoice, auto_commit) or self.env['account.move']
+                subscription.with_context(mail_notrack=True).payment_exception = False
             except Exception:
-                _logger.exception("Error during renewal of contract %s", subscription.client_order_ref or subscription.name)
+                name_list = [f"{sub.name} {sub.client_order_ref}" for sub in subscription]
+                _logger.exception("Error during renewal of contract %s", "; ".join(name_list))
                 self._subscription_rollback_cursor(auto_commit)
         self._subscription_commit_cursor(auto_commit)
-        all_subscriptions._process_invoices_to_send(account_moves)
+        self._process_invoices_to_send(account_moves)
         # There is still some subscriptions to process. Then, make sure the CRON will be triggered again asap.
         if need_cron_trigger:
             self._subscription_launch_cron_parallel(batch_size)
@@ -1587,65 +1624,61 @@ class SaleOrder(models.Model):
         close_contract_ids.set_close()
         return close_contract_ids
 
-    def _handle_automatic_invoices(self, invoices, auto_commit):
+    def _handle_automatic_invoices(self, invoice, auto_commit):
         """ This method handle the subscription with or without payment token """
         Mail = self.env['mail.mail']
-        existing_invoices = invoices
-        for order in self:
-            invoice = invoices.filtered(lambda inv: inv.invoice_origin == order.name)
-            email_context = self._get_subscription_mail_payment_context()
-            # Set the contract in exception. If something go wrong, the exception remains.
-            order.with_context(mail_notrack=True).write({'payment_exception': True})
-            if not order.payment_token_id:
-                invoice.action_post()
-            else:
-                existing_transactions = order.transaction_ids
-                try:
-                    payment_token = order.payment_token_id
-                    transaction = None
-                    # execute payment
-                    if payment_token:
-                        if not payment_token.partner_id.country_id:
-                            msg_body = _('Automatic payment failed. No country specified on payment_token\'s partner')
-                            order.message_post(body=msg_body)
-                            invoice.unlink()
-                            existing_invoices -= invoice
-                            self._subscription_commit_cursor(auto_commit)
-                            continue
-                        transaction = order._do_payment(payment_token, invoice, auto_commit=auto_commit)
-                        # commit change as soon as we try the payment, so we have a trace in the payment_transaction table
-                        order.pending_transaction = True
-                        self._subscription_commit_cursor(auto_commit)
-                    # if transaction is a success, post a message
-                    if transaction and transaction.renewal_state in ['pending', 'authorized', 'done']:
-                        order.with_context(mail_notrack=True).write({'payment_exception': False, 'pending_transaction': False})
-                        invoice._post()
-                        self._subscription_commit_cursor(auto_commit)
-                    # if no transaction or failure, log error, rollback and remove invoice
-                    if transaction and transaction.renewal_state == 'cancel':
-                        self._subscription_rollback_cursor(auto_commit)
-                        order._handle_subscription_payment_failure(invoice, transaction, email_context)
-                        self._subscription_commit_cursor(auto_commit)
-                        existing_invoices -= invoice  # It will be unlinked in the call above
-                except Exception as e:
-                    last_tx_sudo = (order.transaction_ids - existing_transactions).sudo()
-                    error_message = "Error during renewal of contract [%s] %s (%s)" % (
-                        order.id, order.client_order_ref or order.name,
-                        'Payment recorded: %s' % last_tx_sudo.reference if last_tx_sudo and last_tx_sudo.renewal_state in ['pending', 'done']
-                        else 'Payment not recorded'
-                    )
-                    _logger.exception(error_message)
-                    self._subscription_rollback_cursor(auto_commit)
-                    body = self._get_traceback_body(e, error_message)
-                    _logger.exception(error_message)
-                    mail = Mail.sudo().create({'body_html': body, 'subject': error_message,
-                                               'email_to': email_context.get('responsible_email'), 'auto_delete': True})
-                    mail.send()
-                    if invoice.state == 'draft':
-                        existing_invoices -= invoice
-                        if not last_tx_sudo or not last_tx_sudo.renewal_state not in ['pending', 'authorized']:
-                            invoice.unlink()
-        return existing_invoices
+        # Set the contract in exception. If something go wrong, the exception remains.
+        self.with_context(mail_notrack=True).write({'payment_exception': True})
+        payment_token = self.payment_token_id
+
+        if not payment_token or len(payment_token) > 1:
+            invoice.action_post()
+            return invoice
+
+        if not payment_token.partner_id.country_id:
+            msg_body = _('Automatic payment failed. No country specified on payment_token\'s partner')
+            for order in self:
+                order.message_post(body=msg_body)
+            invoice.unlink()
+            self._subscription_commit_cursor(auto_commit)
+            return
+
+        try:
+            existing_transactions = self.transaction_ids
+            # execute payment
+            transaction = self._do_payment(payment_token, invoice, auto_commit=auto_commit)
+            # commit change as soon as we try the payment, so we have a trace in the payment_transaction table
+
+            # if transaction is a success, post a message
+            if not transaction or transaction.renewal_state == 'cancel':
+                self._handle_subscription_payment_failure(invoice, transaction)
+                self._subscription_commit_cursor(auto_commit)
+                return
+            else: #  transaction.renewal_state in ['pending', 'authorized', 'done']
+                self.pending_transaction = True
+                self._subscription_commit_cursor(auto_commit)
+                self.with_context(mail_notrack=True).write({'payment_exception': False, 'pending_transaction': False})
+                invoice._post()
+                self._subscription_commit_cursor(auto_commit)
+            # if no transaction or failure, log error, rollback and remove invoice
+
+        except Exception:
+            last_tx_sudo = (self.transaction_ids - existing_transactions).sudo()
+            error_message = (f"Error during renewal of contract {self.ids} "
+                             f"{', '.join(self.mapped(lambda order: order.client_order_ref or order.name))} "
+                             f"({'Payment recorded: %s' % last_tx_sudo.reference if last_tx_sudo and last_tx_sudo.renewal_state in ['pending', 'done'] else 'Payment not recorded'})")
+            _logger.exception(error_message)
+            self._subscription_rollback_cursor(auto_commit)
+            mail = Mail.sudo().create([{
+                'body_html': error_message, 'subject': error_message,
+                'email_to': order._get_subscription_mail_payment_context().get('responsible_email'), 'auto_delete': True
+            } for order in self])
+            mail.send()
+            if invoice.state == 'draft':
+                if not last_tx_sudo or last_tx_sudo.renewal_state in ['pending', 'authorized']:
+                    invoice.unlink()
+                    return
+        return invoice
 
     def _get_traceback_body(self, exc, body):
         if not str2bool(self.env['ir.config_parameter'].sudo().get_param('sale_subscription.full_mail_traceback')):
@@ -1798,22 +1831,19 @@ class SaleOrder(models.Model):
         return error_message
 
     def _do_payment(self, payment_token, invoice, auto_commit=False):
-        PaymentTransactionSudo = self.env['payment.transaction'].sudo()
-        values = []
-        for subscription in self:
-            values.append({
-                'provider_id': payment_token.provider_id.id,
-                'payment_method_id': payment_token.payment_method_id.id,
-                'sale_order_ids': [Command.link(subscription.id)],
-                'amount': invoice.amount_total,
-                'currency_id': invoice.currency_id.id,
-                'partner_id': subscription.partner_id.id,
-                'token_id': payment_token.id,
-                'operation': 'offline',
-                'invoice_ids': [(6, 0, [invoice.id])],
-                'subscription_action': 'automatic_send_mail',
-                })
-        transactions_sudo = PaymentTransactionSudo.create(values)
+        values = [{
+            'provider_id': payment_token.provider_id.id,
+            'payment_method_id': payment_token.payment_method_id.id,
+            'sale_order_ids': self.ids,
+            'amount': invoice.amount_total,
+            'currency_id': invoice.currency_id.id,
+            'partner_id': invoice.partner_id.id,
+            'token_id': payment_token.id,
+            'operation': 'offline',
+            'invoice_ids': [(6, 0, [invoice.id])],
+            'subscription_action': 'automatic_send_mail',
+        }]
+        transactions_sudo = self.env['payment.transaction'].sudo().create(values)
         self._subscription_commit_cursor(auto_commit)
         for tx_sudo in transactions_sudo:
             tx_sudo._send_payment_request()
@@ -1825,16 +1855,18 @@ class SaleOrder(models.Model):
         :param invoices: one or more account.move recordset
         :param tx: single payment.transaction
         """
-        tx.ensure_one()
         template = self.env.ref('sale_subscription.email_payment_success').sudo()
         current_date = fields.Date.today()
         subscription_ids = []
         for invoice in invoices:
+            # We may have different subscriptions per invoice
             subscriptions = invoice.invoice_line_ids.subscription_id
             if not subscriptions or not invoice.is_move_sent or not invoice._is_ready_to_be_sent() or invoice.state != 'posted':
                 continue
+            invoice_values = {sub.id: invoice for sub in subscriptions}
             subscription_ids += subscriptions.ids
         for subscription in self.env['sale.order'].browse(subscription_ids):
+            linked_invoices = invoice_values[subscription.id]
             # Most of the time, we invoice one sub per invoice
             next_date = subscription.next_invoice_date or current_date
             # if no recurring next date, have next invoice be today + interval
@@ -1843,20 +1875,21 @@ class SaleOrder(models.Model):
                 _logger.error(error_msg)
                 continue
             email_context = {**self.env.context.copy(),
-                             **{'payment_token': self.payment_token_id.payment_details,
-                                '5_renewed': True,
-                                'total_amount': tx.amount,
-                                'next_date': next_date,
-                                'previous_date': self.next_invoice_date,
-                                'email_to': self.partner_id.email,
-                                'code': self.client_order_ref,
-                                'subscription_name': self.name,
-                                'currency': self.currency_id.name,
-                                'date_end': self.end_date}}
-            _logger.debug("Sending Payment Confirmation Mail to %s for subscription %s", self.partner_id.email, self.id)
+                             'payment_token': subscription.payment_token_id.payment_details,
+                             '5_renewed': True,
+                             'total_amount': tx.amount,
+                             'next_date': next_date,
+                             'previous_date': subscription.next_invoice_date,
+                             'email_to': subscription.partner_id.email,
+                             'code': subscription.client_order_ref,
+                             'subscription_name': subscription.name,
+                             'currency': subscription.currency_id.name,
+                             'date_end': subscription.end_date}
+            _logger.debug("Sending Payment Confirmation Mail to %s for subscription %s", subscription.partner_id.email, subscription.id)
 
-            invoice.is_move_sent = True
-            invoice.with_context(email_context)._generate_pdf_and_send_invoice(template)
+            linked_invoices.is_move_sent = True
+            linked_invoices.with_context(email_context)._generate_pdf_and_send_invoice(template)
+
     @api.model
     def _process_invoices_to_send(self, account_moves):
         for invoice in account_moves:
@@ -1868,21 +1901,19 @@ class SaleOrder(models.Model):
                 invoice.message_subscribe(invoice.line_ids.subscription_id.user_id.partner_id.ids)
 
     def validate_and_send_invoice(self, invoice):
-        self.ensure_one()
         email_context = {**self.env.context.copy(), **{
             'total_amount': invoice.amount_total,
-            'email_to': self.partner_id.email,
-            'code': self.client_order_ref or self.name,
-            'currency': self.currency_id.name,
-            'date_end': self.end_date,
+            'email_to': invoice.partner_id.email,
+            'code': ', '.join(subscription.client_order_ref or subscription.name for subscription in self),
+            'currency': invoice.currency_id.name,
             'no_new_invoice': True}}
         auto_commit = not bool(config['test_enable'] or config['test_file'])
         if auto_commit:
             self.env.cr.commit()
-        invoice_mail_template_id = self.sale_order_template_id.invoice_mail_template_id \
+        invoice_mail_template_id = self.sale_order_template_id.invoice_mail_template_id[:1] \
             or self.env.ref('sale_subscription.mail_template_subscription_invoice', raise_if_not_found=False)
         if invoice_mail_template_id:
-            _logger.debug("Sending Invoice Mail to %s for subscription %s", self.partner_id.email, self.id)
+            _logger.debug("Sending Invoice Mail to %s for subscription %s", invoice.partner_id.email, self.ids)
             invoice.with_context(email_context)._generate_pdf_and_send_invoice(invoice_mail_template_id)
 
     def _assign_token(self, tx):

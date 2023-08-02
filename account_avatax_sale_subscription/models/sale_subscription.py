@@ -12,7 +12,7 @@ class SaleSubscription(models.Model):
 
     def _do_payment(self, payment_token, invoice, auto_commit=False):
         invoice.button_update_avatax()
-        return super()._do_payment(payment_token, invoice, auto_commit=False)
+        return super()._do_payment(payment_token, invoice, auto_commit=auto_commit)
 
     def _create_invoices(self, grouped=False, final=False, date=None):
         moves = super()._create_invoices(grouped=grouped, final=final, date=date)

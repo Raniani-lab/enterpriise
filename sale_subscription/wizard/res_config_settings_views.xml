@@ -15,6 +15,11 @@
                     Default period to use as recurrence for a new quotation.
                 </div>
             </xpath>
+            <setting id="down_payments" position="after">
+                <setting id="invoice_consolidation" help="Consolidate all of a customer's subscriptions that are due to be billed on the same day onto a single invoice.">
+                    <field name="invoice_consolidation"/>
+                </setting>
+            </setting>
         </field>
     </record>
 

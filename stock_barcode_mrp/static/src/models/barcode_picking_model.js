@@ -13,7 +13,7 @@ patch(BarcodePickingModel.prototype, {
             await this.orm.call(
                 'stock.move',
                 'action_explode',
-                move_ids,
+                [move_ids],
             );
             this.trigger('refresh');
             return this.notification(_t("The lines with a kit have been replaced with their components. Please check the picking before the final validation."), {type: 'danger'});

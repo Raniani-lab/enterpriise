@@ -22,14 +22,26 @@ registry.category("web_tour.tours").add('test_immediate_receipt_kit_from_scratch
         trigger: '.o_barcode_line:contains("Kit Lot") .o_add_quantity'
     },
     {
-        extra_trigger: '.o_barcode_line:contains("Kit Lot") .qty-done:contains("3")',
+        trigger: '.o_barcode_line:contains("Kit Lot") .qty-done:contains("3")',
+        run: 'scan simple_kit',
+    },
+    {
+        extra_trigger: '.o_barcode_line:contains("Simple Kit")',
         trigger: '.btn.o_validate_page',
     },
     {
-        trigger: '.o_notification.border-danger',
+        extra_trigger: '.o_notification.border-danger',
+        trigger: '.o_barcode_line:contains("Compo Lot")',
+        run: function() {
+            helper.assertLinesCount(4);
+            const [ kit_lot_compo01, simple_kit_compo01, simple_kit_compo02, kit_lot_compo_lot ] = document.querySelectorAll('.o_barcode_line');
+            helper.assertLineProduct(kit_lot_compo01, 'Compo 01');
+            helper.assertLineProduct(kit_lot_compo_lot, 'Compo Lot');
+            helper.assertLineProduct(simple_kit_compo01, 'Compo 01');
+            helper.assertLineProduct(simple_kit_compo02, 'Compo 02');
+        }
     },
     {
-        extra_trigger: '.o_barcode_line:contains("Compo 01")',
         trigger: '.o_barcode_line:contains("Compo Lot")',
     },
     {
@@ -58,14 +70,27 @@ registry.category("web_tour.tours").add('test_planned_receipt_kit_from_scratch_w
         trigger: '.o_barcode_line:contains("Kit Lot") .o_add_quantity'
     },
     {
-        extra_trigger: '.o_barcode_line:contains("Kit Lot") .qty-done:contains("3")',
+        trigger: '.o_barcode_line:contains("Kit Lot") .qty-done:contains("3")',
+        run: 'scan simple_kit',
+    },
+    stepUtils.confirmAddingUnreservedProduct(),
+    {
+        extra_trigger: '.o_barcode_line:contains("Simple Kit")',
         trigger: '.btn.o_validate_page',
     },
     {
-        trigger: '.o_notification.border-danger',
+        extra_trigger: '.o_notification.border-danger',
+        trigger: '.o_barcode_line:contains("Compo Lot")',
+        run: function() {
+            helper.assertLinesCount(4);
+            const [ kit_lot_compo01, simple_kit_compo01, simple_kit_compo02, kit_lot_compo_lot ] = document.querySelectorAll('.o_barcode_line');
+            helper.assertLineProduct(kit_lot_compo01, 'Compo 01');
+            helper.assertLineProduct(kit_lot_compo_lot, 'Compo Lot');
+            helper.assertLineProduct(simple_kit_compo01, 'Compo 01');
+            helper.assertLineProduct(simple_kit_compo02, 'Compo 02');
+        }
     },
     {
-        extra_trigger: '.o_barcode_line:contains("Compo 01")',
         trigger: '.o_barcode_line:contains("Compo Lot")',
     },
     {

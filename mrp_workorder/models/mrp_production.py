@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, models, _
+from odoo.exceptions import UserError
 
 
 class MrpProduction(models.Model):
@@ -61,3 +62,10 @@ class MrpProduction(models.Model):
             if wo.current_quality_check_id.component_id:
                 wo.current_quality_check_id._update_component_quantity()
         return productions
+
+    def pre_button_mark_done(self):
+        res = super().pre_button_mark_done()
+        for production in self:
+            if production.product_tracking in ('lot', 'serial') and not production.lot_producing_id:
+                raise UserError(_('You need to supply a Lot/Serial Number for the final product.'))
+        return res

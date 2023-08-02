@@ -2,7 +2,7 @@
 
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import DocumentViewer from '@mrp_workorder/components/viewer';
-import fieldUtils from "@web/legacy/js/fields/field_utils";
+import { formatFloat } from "@web/views/fields/formatters";
 import { FloatField } from "@web/views/fields/float/float_field";
 import { Many2OneField } from "@web/views/fields/many2one/many2one_field";
 import { TabletImageField } from "@quality/tablet_image_field/tablet_image_field";
@@ -33,7 +33,7 @@ export class MrpQualityCheckConfirmationDialog extends ConfirmationDialog {
         this.action = useService("action");
         useBus(this.props.record.model.bus, "update", this.render.bind(this, true));
         useBus(this.barcode.bus, 'barcode_scanned', (event) => this._onBarcodeScanned(event.detail.barcode));
-        this.formatFloat = fieldUtils.format.float;
+        this.formatFloat = formatFloat;
         const { component_tracking, test_type, product_tracking } = this.recordData;
         this.displayLot =
             Boolean(component_tracking && component_tracking !== "none") ||

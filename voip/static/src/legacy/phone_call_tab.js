@@ -3,7 +3,7 @@
 import { PhoneCall } from "@voip/legacy/phone_call";
 import { PhoneCallDetails } from "@voip/legacy/phone_call_details";
 
-import fieldUtils from "@web/legacy/js/fields/field_utils";
+import { formatDateTime, deserializeDateTime } from "@web/core/l10n/dates";
 import Widget from "@web/legacy/js/core/widget";
 
 export const PhoneCallTab = Widget.extend({
@@ -287,10 +287,7 @@ export const PhoneCallTab = Widget.extend({
      */
     _createPhoneCall(phoneCallData) {
         if (phoneCallData.call_date) {
-            const utcTime = fieldUtils.parse.datetime(phoneCallData.call_date, false, {
-                isUTC: true,
-            });
-            phoneCallData.call_date = utcTime.local().format("YYYY-MM-DD HH:mm:ss");
+            phoneCallData.call_date = formatDateTime(deserializeDateTime(phoneCallData.call_date));
         }
         const phoneCall = new PhoneCall(this, phoneCallData);
         return phoneCall;

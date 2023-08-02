@@ -6,6 +6,7 @@ import logging
 
 from odoo import _, api, Command, fields, models, SUPERUSER_ID
 from odoo.tools import html2plaintext, email_normalize, email_split_tuples
+from ..utils import interval_from_events, intervals_overlap
 
 _logger = logging.getLogger(__name__)
 
@@ -50,6 +51,7 @@ class CalendarEvent(models.Model):
     user_id = fields.Many2one('res.users', group_expand="_read_group_user_id")
     videocall_redirection = fields.Char('Meeting redirection URL', compute='_compute_videocall_redirection')
     appointment_booker_id = fields.Many2one('res.partner', string="Person who is booking the appointment")
+    resources_on_leave = fields.Many2many('appointment.resource', string='Resources intersecting with leave time', compute="_compute_resources_on_leave")
     _sql_constraints = [
         ('check_resource_and_appointment_type',
          "CHECK(appointment_resource_id IS NULL OR (appointment_resource_id IS NOT NULL AND appointment_type_id IS NOT NULL))",
@@ -74,6 +76,23 @@ class CalendarEvent(models.Model):
     def _compute_resource_ids(self):
         for event in self:
             event.appointment_resource_ids = event.booking_line_ids.appointment_resource_id
+
+    @api.depends('start', 'stop', 'appointment_resource_ids', 'appointment_resource_id')
+    def _compute_resources_on_leave(self):
+        resource_events = self.filtered(lambda event: event.appointment_resource_ids or event.appointment_resource_id)
+        (self - resource_events).resources_on_leave = False
+        if not resource_events:
+            return
+
+        for start, stop, events in interval_from_events(resource_events):
+            group_resources = events.appointment_resource_ids | events.appointment_resource_id
+            unavailabilities = group_resources.sudo().resource_id._get_unavailable_intervals(start, stop)
+            for event in events:
+                event_resources = event.appointment_resource_ids | event.appointment_resource_id
+                event.resources_on_leave = event_resources.filtered(lambda resource: any(
+                    intervals_overlap(interval, (event.start, event.stop)) for interval
+                    in unavailabilities.get(resource.resource_id.id, [])
+                ))
 
     @api.depends('booking_line_ids')
     def _compute_resource_total_capacity(self):

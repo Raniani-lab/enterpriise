@@ -16,6 +16,7 @@ from odoo.exceptions import ValidationError
 from odoo.tools import float_compare
 from odoo.tools.misc import babel_locale_parse, get_lang
 from odoo.addons.base.models.res_partner import _tz_get
+from ..utils import intervals_overlap
 
 
 class AppointmentType(models.Model):
@@ -1177,7 +1178,7 @@ class AppointmentType(models.Model):
 
         slot_start_dt_utc_l, slot_end_dt_utc_l = pytz.utc.localize(slot_start_dt_utc), pytz.utc.localize(slot_end_dt_utc)
         for i_start, i_stop in availability_values.get('resource_unavailabilities', {}).get(resource, []):
-            if i_start != i_stop and not i_stop <= slot_start_dt_utc_l and not i_start >= slot_end_dt_utc_l:
+            if intervals_overlap((i_start, i_stop), (slot_start_dt_utc_l, slot_end_dt_utc_l)):
                 return False
 
         return True

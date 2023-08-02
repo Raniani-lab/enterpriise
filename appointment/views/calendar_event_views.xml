@@ -85,6 +85,12 @@
         <field name="arch" type="xml">
             <form string="Bookings">
                 <sheet>
+                    <div class="o_appointment_booking_resource_leave_alert alert alert-warning d-flex justify-content-center"
+                        role="alert" invisible="not resources_on_leave">
+                        <field name="appointment_resource_ids" invisible="1"/>
+                        <span>You are scheduling a booking outside the available hours of</span>
+                        <field name="resources_on_leave" widget="many2many_tags" readonly="1"/>
+                    </div>
                     <div class="oe_title mb-3">
                         <label for="name"/>
                         <h1>

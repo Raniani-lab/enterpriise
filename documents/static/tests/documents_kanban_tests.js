@@ -19,9 +19,9 @@ import { fakeCookieService, makeFakeUserService } from "@web/../tests/helpers/mo
 
 import {
     afterNextRender,
-    startServer,
+    contains,
     insertText,
-    waitUntil,
+    startServer,
 } from "@mail/../tests/helpers/test_utils";
 
 import {
@@ -118,7 +118,12 @@ QUnit.module("documents", {}, function () {
                     { email: "raoulette@grosbedon.fr", name: "Raoulette Grosbedon" },
                 ]);
                 const resUsersIds = pyEnv["res.users"].create([
-                    { display_name: "Hazard", partner_id: resPartnerIds[0], login:"hazard", password:"hazard" },
+                    {
+                        display_name: "Hazard",
+                        partner_id: resPartnerIds[0],
+                        login: "hazard",
+                        password: "hazard",
+                    },
                     { display_name: "Lukaku", partner_id: resPartnerIds[1] },
                     { display_name: "De Bruyne", partner_id: resPartnerIds[2] },
                 ]);
@@ -1373,7 +1378,9 @@ QUnit.module("documents", {}, function () {
                 });
 
                 await click($(target).find(".o_kanban_record:contains(wip) .o_record_selector")[0]);
-                await click($(target).find(".o_kanban_record:contains(zorro) .o_record_selector")[0]);
+                await click(
+                    $(target).find(".o_kanban_record:contains(zorro) .o_record_selector")[0]
+                );
 
                 assert.containsN(target, ".o_record_selected", 2, "should have 2 selected records");
                 assert.containsN(
@@ -1411,7 +1418,9 @@ QUnit.module("documents", {}, function () {
                 });
 
                 await click($(target).find(".o_kanban_record:contains(yop) .o_record_selector")[0]);
-                await click($(target).find(".o_kanban_record:contains(burp) .o_record_selector")[0]);
+                await click(
+                    $(target).find(".o_kanban_record:contains(burp) .o_record_selector")[0]
+                );
 
                 assert.containsN(target, ".o_record_selected", 2, "should have 2 selected records");
                 assert.containsN(
@@ -1471,7 +1480,9 @@ QUnit.module("documents", {}, function () {
                     target.querySelector(".o_search_panel_category_value:nth-of-type(2) header")
                 );
                 await click($(target).find(".o_kanban_record:contains(yop) .o_record_selector")[0]);
-                await click($(target).find(".o_kanban_record:contains(blip) .o_record_selector")[0]);
+                await click(
+                    $(target).find(".o_kanban_record:contains(blip) .o_record_selector")[0]
+                );
 
                 assert.containsN(target, ".o_record_selected", 2, "should have 2 selected records");
 
@@ -2148,14 +2159,14 @@ QUnit.module("documents", {}, function () {
                 );
 
                 click(input);
-                await waitUntil(".o_inspector_tags ul li", 2);
+                await contains(".o_inspector_tags ul li", 2);
                 assert.containsOnce(target, ".o_inspector_tag");
 
                 editInput(input, null, "stress");
-                await waitUntil(".o_inspector_tags ul:not(:contains(Status))");
+                await contains(".o_inspector_tags ul:not(:contains(Status))");
 
                 click(target.querySelector(".o_inspector_tags ul li"));
-                await waitUntil(".o_inspector_tag", 2);
+                await contains(".o_inspector_tag", 2);
 
                 assert.strictEqual(
                     input,
@@ -2188,7 +2199,7 @@ QUnit.module("documents", {}, function () {
 
                     await click(target.querySelector(".o_inspector_tags input"));
                     editInput(target.querySelector(".o_inspector_tags input"), null, "new");
-                    await waitUntil(".o_inspector_tags ul", 0);
+                    await contains(".o_inspector_tags ul", 0);
                 }
             );
 
@@ -2213,7 +2224,7 @@ QUnit.module("documents", {}, function () {
                     await click(target.querySelector(".o_kanban_record"));
 
                     click(target.querySelector(".o_inspector_tags input"));
-                    await waitUntil(".o_inspector_tags ul li");
+                    await contains(".o_inspector_tags ul li");
                 }
             );
 
@@ -3179,7 +3190,9 @@ QUnit.module("documents", {}, function () {
 
                     assert.containsOnce(target, ".o_document_chatter_container .o-mail-Chatter");
 
-                    await click($(target).find(".o_kanban_record:contains(blip) .o_record_selector")[0]);
+                    await click(
+                        $(target).find(".o_kanban_record:contains(blip) .o_record_selector")[0]
+                    );
 
                     assert.containsNone(target, ".o_document_chatter_container .o-mail-Chatter");
                 }
@@ -3589,7 +3602,9 @@ QUnit.module("documents", {}, function () {
                     );
 
                     // filter on 'Not a file'
-                    await click($(target).find(".o_search_panel_label_title:contains(Not a file)")[0]);
+                    await click(
+                        $(target).find(".o_search_panel_label_title:contains(Not a file)")[0]
+                    );
 
                     assert.containsOnce(
                         target,
@@ -3619,7 +3634,9 @@ QUnit.module("documents", {}, function () {
                     );
 
                     // remove both filters
-                    await click($(target).find(".o_search_panel_label_title:contains(Not a file)")[0]);
+                    await click(
+                        $(target).find(".o_search_panel_label_title:contains(Not a file)")[0]
+                    );
                     await click($(target).find(".o_search_panel_label_title:contains(Task)")[0]);
 
                     assert.containsN(
@@ -3704,7 +3721,9 @@ QUnit.module("documents", {}, function () {
                     );
 
                     // filter on 'Attachment'
-                    await click($(target).find(".o_search_panel_label_title:contains(Attachment)")[0]);
+                    await click(
+                        $(target).find(".o_search_panel_label_title:contains(Attachment)")[0]
+                    );
 
                     assert.containsN(
                         target,
@@ -3762,7 +3781,9 @@ QUnit.module("documents", {}, function () {
                     });
 
                     // filter on records having tag Draft
-                    const input = $(target).find(".o_search_panel_filter_value:contains(Draft) input")[0];
+                    const input = $(target).find(
+                        ".o_search_panel_filter_value:contains(Draft) input"
+                    )[0];
                     await click(input);
 
                     assert.ok(input.checked, "tag selector should be checked");
@@ -3825,7 +3846,7 @@ QUnit.module("documents", {}, function () {
                     const input = target.querySelector(".o_inspector_tags input");
 
                     editInput(input, null, "stress");
-                    const autocompleteValues = await waitUntil(".o_inspector_tags ul li");
+                    const autocompleteValues = await contains(".o_inspector_tags ul li");
 
                     await click(autocompleteValues[0], "a");
                     assert.ok(
@@ -3911,8 +3932,8 @@ QUnit.module("documents", {}, function () {
                     [
                         ...target.querySelectorAll(
                             ".o_kanban_record:nth-of-type(3) .o_field_documents_many2many_tags .o_tag"
-                        )
-                    ].filter(n => n.classList.contains('o_tag_color_0')).length,
+                        ),
+                    ].filter((n) => n.classList.contains("o_tag_color_0")).length,
                     3,
                     "Should have 3 default tag class (o_tag_color_0)"
                 );
@@ -3952,11 +3973,17 @@ QUnit.module("documents", {}, function () {
                         },
                     });
 
-                    const yopRecord = $(target).find(".o_kanban_record:contains(yop) .o_record_selector")[0];
+                    const yopRecord = $(target).find(
+                        ".o_kanban_record:contains(yop) .o_record_selector"
+                    )[0];
                     // selects three records
                     await click(yopRecord);
-                    await click($(target).find(".o_kanban_record:contains(burp) .o_record_selector")[0]);
-                    await click($(target).find(".o_kanban_record:contains(blip) .o_record_selector")[0]);
+                    await click(
+                        $(target).find(".o_kanban_record:contains(burp) .o_record_selector")[0]
+                    );
+                    await click(
+                        $(target).find(".o_kanban_record:contains(blip) .o_record_selector")[0]
+                    );
 
                     // making sure that the documentInspector is already rendered as it is painted after the selection.
                     await testUtils.nextTick();
@@ -4002,7 +4029,9 @@ QUnit.module("documents", {}, function () {
                         },
                     });
 
-                    const yopRecord = $(target).find(".o_kanban_record:contains(yop) .o_record_selector")[0];
+                    const yopRecord = $(target).find(
+                        ".o_kanban_record:contains(yop) .o_record_selector"
+                    )[0];
                     const allSelector = target.querySelector(
                         ".o_search_panel_category_value:nth-of-type(1)"
                     );
@@ -4157,8 +4186,12 @@ QUnit.module("documents", {}, function () {
                 triggerEvent(target, ".o_search_panel_value_edit_edit", "click");
 
                 // Test dragging a folder into another one
-                const sourceFolder = $(target).find(".o_search_panel_category_value:nth-of-type(3)")[0];
-                const targetFolder = $(target).find(".o_search_panel_category_value:nth-of-type(2)")[0];
+                const sourceFolder = $(target).find(
+                    ".o_search_panel_category_value:nth-of-type(3)"
+                )[0];
+                const targetFolder = $(target).find(
+                    ".o_search_panel_category_value:nth-of-type(2)"
+                )[0];
 
                 const startEvent = new Event("dragstart", { bubbles: true });
                 const dataTransfer = new DataTransfer();
@@ -4196,11 +4229,15 @@ QUnit.module("documents", {}, function () {
                 });
 
                 // Edition should work on tags
-                const tag = $(target).find(".o_search_panel_filter:nth-of-type(2) .o_search_panel_group_header:nth-of-type(1):contains(Priority)");
+                const tag = $(target).find(
+                    ".o_search_panel_filter:nth-of-type(2) .o_search_panel_group_header:nth-of-type(1):contains(Priority)"
+                );
                 assert.containsOnce(tag, ".o_documents_search_panel_section_edit");
 
                 // Edition should not work on res_model
-                const resModel = $(target).find(".o_search_panel_filter:nth-of-type(3) .o_search_panel_label_title:nth-of-type(1):contains(Attachment)");
+                const resModel = $(target).find(
+                    ".o_search_panel_filter:nth-of-type(3) .o_search_panel_label_title:nth-of-type(1):contains(Attachment)"
+                );
                 assert.containsNone(resModel, ".o_documents_search_panel_section_edit");
             });
 
@@ -4611,7 +4648,9 @@ QUnit.module("documents", {}, function () {
                 </t></templates></kanban>`,
                 });
 
-                await click($(target).find(".o_kanban_record:contains(youtubeVideo) .o_record_selector")[0]);
+                await click(
+                    $(target).find(".o_kanban_record:contains(youtubeVideo) .o_record_selector")[0]
+                );
 
                 assert.strictEqual(
                     target.querySelector(
@@ -4888,7 +4927,8 @@ QUnit.module("documents", {}, function () {
                 </kanban>`,
                     async mockRPC(route, args) {
                         if (
-                            route === "/web/dataset/call_kw/documents.document/unity_web_search_read" &&
+                            route ===
+                                "/web/dataset/call_kw/documents.document/unity_web_search_read" &&
                             args.model === "documents.document"
                         ) {
                             assert.deepEqual(args.kwargs.domain, [
@@ -4946,7 +4986,8 @@ QUnit.module("documents", {}, function () {
                 </kanban>`,
                     async mockRPC(route, args) {
                         if (
-                            route === "/web/dataset/call_kw/documents.document/unity_web_search_read" &&
+                            route ===
+                                "/web/dataset/call_kw/documents.document/unity_web_search_read" &&
                             args.model === "documents.document"
                         ) {
                             assert.deepEqual(args.kwargs.domain, [["folder_id", "child_of", 1]]);

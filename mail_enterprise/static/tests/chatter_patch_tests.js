@@ -4,11 +4,11 @@ import { patchUiSize, SIZES } from "@mail/../tests/helpers/patch_ui_size";
 import {
     afterNextRender,
     click,
+    contains,
     isScrolledToBottom,
     nextAnimationFrame,
     start,
     startServer,
-    waitUntil,
 } from "@mail/../tests/helpers/test_utils";
 
 import { getFixture } from "@web/../tests/helpers/utils";
@@ -149,7 +149,7 @@ QUnit.skip("Message list is scrolled to new message after posting a message", as
     assert.verifySteps([], "Message post should not yet be done");
 
     await click(".o-mail-Composer-send");
-    await waitUntil(".o-mail-Message:contains(New Message)");
+    await contains(".o-mail-Message:contains(New Message)");
     await nextAnimationFrame();
     assert.verifySteps(["/mail/message/post"]);
     assert.strictEqual(content.scrollTop, 0);

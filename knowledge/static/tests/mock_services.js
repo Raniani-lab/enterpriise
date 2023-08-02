@@ -12,6 +12,9 @@ function makeFakeKnowledgeCommandsService() {
             return {
                 setCommandsRecordInfo() {},
                 getCommandsRecordInfo() { return null; },
+                getBreadcrumbsIdentifier() { return []; },
+                isRecordCompatibleWithMacro() {},
+                unregisterCommandsRecordInfo() {},
                 setPendingBehaviorBlueprint() {},
                 popPendingBehaviorBlueprint() {},
             };

@@ -10,7 +10,7 @@
             <BehaviorToolbar>
                 <t t-set-slot="buttons">
                     <BehaviorToolbarButton
-                        hidden="!targetRecordInfo?.withChatter"
+                        hidden="!targetRecordInfo?.canPostMessages"
                         icon="'fa-envelope'"
                         label="send_as_message"
                         onClick.bind="onClickSendAsMessage"

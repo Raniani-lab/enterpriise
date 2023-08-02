@@ -31,9 +31,15 @@ export class FileBehavior extends AbstractBehavior {
 
     setup() {
         super.setup();
+        this.actionService = useService('action');
         this.dialogService = useService('dialog');
         this.rpcService = useService('rpc');
         this.uiService = useService('ui');
+        this.macrosServices = {
+            action: this.actionService,
+            dialog: this.dialogService,
+            ui: this.uiService,
+        };
         this.targetRecordInfo = this.knowledgeCommandsService.getCommandsRecordInfo();
 
         // ensure that the fileName and extension are saved in data-behavior-props of the anchor element
@@ -106,10 +112,7 @@ export class FileBehavior extends AbstractBehavior {
             data: {
                 dataTransfer: dataTransfer,
             },
-            services: {
-                ui: this.uiService,
-                dialog: this.dialogService,
-            },
+            services: this.macrosServices,
         });
         macro.start();
     }
@@ -147,10 +150,7 @@ export class FileBehavior extends AbstractBehavior {
             targetXmlDoc: this.targetRecordInfo.xmlDoc,
             breadcrumbs: this.targetRecordInfo.breadcrumbs,
             data: null,
-            services: {
-                ui: this.uiService,
-                dialog: this.dialogService,
-            },
+            services: this.macrosServices,
         });
         macro.start();
     }

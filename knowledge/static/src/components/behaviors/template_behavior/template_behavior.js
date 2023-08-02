@@ -33,9 +33,15 @@ export class TemplateBehavior extends AbstractBehavior {
 
     setup() {
         super.setup();
+        this.actionService = useService("action");
         this.dialogService = useService("dialog");
         this.popover = usePopover(Tooltip);
         this.uiService = useService("ui");
+        this.macrosServices = {
+            action: this.actionService,
+            dialog: this.dialogService,
+            ui: this.uiService,
+        };
         this.templateContent = useRef("templateContent");
         // <p><br/></p> can't be put in the template because adding a
         // t-if t-else in the template will add empty text nodes from
@@ -106,10 +112,7 @@ export class TemplateBehavior extends AbstractBehavior {
                 pageName: this.targetRecordInfo.fieldInfo.pageName,
                 dataTransfer: dataTransfer,
             },
-            services: {
-                ui: this.uiService,
-                dialog: this.dialogService,
-            }
+            services: this.macrosServices,
         });
         macro.start();
     }
@@ -127,10 +130,7 @@ export class TemplateBehavior extends AbstractBehavior {
             data: {
                 dataTransfer: dataTransfer,
             },
-            services: {
-                ui: this.uiService,
-                dialog: this.dialogService,
-            }
+            services: this.macrosServices,
         });
         macro.start();
     }

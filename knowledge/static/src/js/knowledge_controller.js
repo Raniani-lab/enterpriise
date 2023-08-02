@@ -5,7 +5,7 @@ import { FormController } from '@web/views/form/form_controller';
 import { KnowledgeSidebar } from '@knowledge/components/sidebar/sidebar';
 import { useService } from "@web/core/utils/hooks";
 
-const { useChildSubEnv, useRef } = owl;
+import { onWillStart, useChildSubEnv, useRef } from "@odoo/owl";
 
 export class KnowledgeArticleFormController extends FormController {
     setup() {
@@ -20,6 +20,19 @@ export class KnowledgeArticleFormController extends FormController {
             openArticle: this.openArticle.bind(this),
             renameArticle: this.renameArticle.bind(this),
             toggleAsideMobile: this.toggleAsideMobile.bind(this),
+        });
+        // Unregister the current candidate recordInfo for Knowledge macros in
+        // case of breadcrumbs mismatch.
+        onWillStart(() => {
+            if (
+                !this.env.inDialog &&
+                this.env.config.breadcrumbs &&
+                this.env.config.breadcrumbs.length
+            ) {
+                // Unregister the current candidate recordInfo in case of
+                // breadcrumbs mismatch.
+                this.knowledgeCommandsService.unregisterCommandsRecordInfo(this.env.config.breadcrumbs);
+            }
         });
     }
 

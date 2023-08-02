@@ -17,13 +17,13 @@
             <BehaviorToolbar>
                 <t t-set-slot="buttons">
                     <BehaviorToolbarButton
-                        hidden="!targetRecordInfo?.withChatter"
+                        hidden="!targetRecordInfo?.canPostMessages"
                         icon="'fa-envelope'"
                         label="send_as_message"
                         onClick.bind="onClickAttachToMessage"
                     />
                     <BehaviorToolbarButton
-                        hidden="!targetRecordInfo?.withChatter"
+                        hidden="!targetRecordInfo?.canAttachFiles"
                         icon="'fa-paperclip'"
                         label="use_as_attachment"
                         onClick.bind="onClickUseAsAttachment"

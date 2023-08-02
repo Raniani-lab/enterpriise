@@ -4,7 +4,8 @@ import { FormController } from "@web/views/form/form_controller";
 import { patch } from "@web/core/utils/patch";
 import { useService } from "@web/core/utils/hooks";
 import { evaluateBooleanExpr } from "@web/core/py_js/py";
-import { useEffect } from "@odoo/owl";
+import { onWillUnmount, useSubEnv } from "@odoo/owl";
+import { CallbackRecorder } from "@web/webclient/actions/action_hook";
 
 
 /**
@@ -33,83 +34,60 @@ const FormControllerPatch = {
     setup() {
         super.setup(...arguments);
         this.command = useService("command");
-        this.knowledgeCommandsService = useService('knowledgeCommandsService');
-        // useEffect based on the id of the current record, in order to
-        // properly register a newly created record, or the switch to another
-        // record without leaving the current form view.
         if (!this.env.inDialog) {
-            useEffect(
-                () => this._commandsRecordInfoRegistration(),
-                () => [this.model.root.resId],
-            );
+            this.knowledgeCommandsService = useService('knowledgeCommandsService');
+            useSubEnv({
+                __knowledgeUpdateCommandsRecordInfo__: new CallbackRecorder(),
+            });
+            // Register the last viewed record only once when leaving the Form view.
+            onWillUnmount(() => {
+                if (
+                    this.props.resModel !== 'knowledge.article' &&
+                    this.env.config.breadcrumbs &&
+                    this.env.config.breadcrumbs.length
+                ) {
+                    const commandsRecordInfo = this._evaluateRecordCandidate();
+                    if (this.knowledgeCommandsService.isRecordCompatibleWithMacro(commandsRecordInfo)) {
+                        this.knowledgeCommandsService.setCommandsRecordInfo(commandsRecordInfo);
+                    }
+                }
+            });
         }
     },
     /**
-     * Copy of the breadcrumbs array used as an identifier for a
-     * commandsRecordInfo object.
+     * Evaluate the current record and register its relevant information in
+     * @see KnowledgeCommandsService if it can be used in a Knowledge article
+     * through a macro.
      *
-     * @returns {Array[Object]}
+     * @returns {Object} recordInfo refer to @see knowledgeCommandsService
+     *          method @see setCommandsRecordInfo for the specification.
      */
-    _getBreadcrumbsIdentifier() {
-        return this.env.config.breadcrumbs.map(breadcrumb => {
-            return {
-                jsId: breadcrumb.jsId,
-                name: breadcrumb.name,
-            };
-        });
-    },
-    /**
-     * Update the @see KnowledgeCommandsService to clean obsolete
-     * commandsRecordInfo and to register a new one if the current record
-     * can be used by certain Knowledge commands.
-     */
-    _commandsRecordInfoRegistration() {
-        if (this.env.config.breadcrumbs && this.env.config.breadcrumbs.length) {
-            if (this.props.resModel === 'knowledge.article') {
-                this._unregisterCommandsRecordInfo(this._getBreadcrumbsIdentifier());
-            } else if (this.model.root.resId) {
-                this._searchCommandsRecordInfo();
-            }
-        }
-    },
-    /**
-     * Evaluate the current record and notify @see KnowledgeCommandsService if
-     * it can be used in a Knowledge article.
-     */
-    _searchCommandsRecordInfo() {
-        /**
-         * this.model.__bm__.get([...] {raw: true}) is used to get the raw data
-         * of the record (and not the post-processed this.model.root.data).
-         * This is because invisible and readonly modifiers from the raw code of
-         * the view have to be evaluated to check whether the current user has
-         * access to a specific element in the view (i.e.: chatter or
-         * html_field), and @see Domain is currently only able to evaluate such
-         * a domain with the raw data.
-         */
+    _evaluateRecordCandidate() {
         const record = this.model.root;
         const fields = this.props.fields;
         const xmlDoc = this.props.archInfo.xmlDoc;
-        const breadcrumbs = this._getBreadcrumbsIdentifier();
+        const breadcrumbs = this.knowledgeCommandsService.getBreadcrumbsIdentifier(this.env.config.breadcrumbs);
         // format stored by the knowledgeCommandsService
         const commandsRecordInfo = {
             resId: this.model.root.resId,
             resModel: this.props.resModel,
             breadcrumbs: breadcrumbs,
-            withChatter: false,
+            canPostMessages: false,
+            canAttachFiles: false,
             withHtmlField: false,
             fieldInfo: {},
             xmlDoc: this.props.archInfo.xmlDoc,
         };
 
-        // check whether the form view has a chatter with messages
-        const chatterNode = this.props.archInfo.xmlDoc.querySelector('.oe_chatter');
-        if (chatterNode && chatterNode.querySelector('field[name="message_ids"]')) {
-            commandsRecordInfo.withChatter = true;
-            this.knowledgeCommandsService.setCommandsRecordInfo(commandsRecordInfo);
+        // check whether the form view has a chatter
+        if (this.props.archInfo.xmlDoc.querySelector('.oe_chatter')) {
+            for (const callback of this.env.__knowledgeUpdateCommandsRecordInfo__.callbacks) {
+                callback(commandsRecordInfo);
+            }
         }
 
         if (this.props.mode === "readonly" || !this.canEdit) {
-            return;
+            return commandsRecordInfo;
         }
 
         // check if there is any html field usable with knowledge
@@ -161,46 +139,8 @@ const FormControllerPatch = {
         }
         if (commandsRecordInfo.fieldInfo.name) {
             commandsRecordInfo.withHtmlField = true;
-            this.knowledgeCommandsService.setCommandsRecordInfo(commandsRecordInfo);
         }
-    },
-    /**
-     * Compare the current breadcrumbs identifier with a previously registered
-     * commandsRecordInfo and unregister it if they don't match.
-     *
-     * @param {Array[Object]} breadcrumbs
-     * @param {boolean} revoke whether to unregister the commandsRecordInfo when
-     *                  breadcrumbs match (revoke = true) or when they don't
-     *                  match (revoke = false)
-     */
-    _unregisterCommandsRecordInfo(breadcrumbs, revoke = false) {
-        function areBreadcrumbsArraysEqual(firstBreadcrumbsArray, secondBreadcrumbsArray) {
-            for (let i = 0; i < firstBreadcrumbsArray.length; i++) {
-                if (firstBreadcrumbsArray[i].jsId !== secondBreadcrumbsArray[i].jsId ||
-                    firstBreadcrumbsArray[i].name !== secondBreadcrumbsArray[i].name) {
-                    return false;
-                }
-            }
-            return true;
-        }
-        const commandsRecordInfo = this.knowledgeCommandsService.getCommandsRecordInfo();
-        if (!commandsRecordInfo) {
-            return;
-        }
-        let shouldUnregister = revoke;
-        if (commandsRecordInfo.breadcrumbs.length > breadcrumbs.length) {
-            shouldUnregister = !revoke;
-        } else {
-            const slicedBreadcrumbs = breadcrumbs.slice(0, commandsRecordInfo.breadcrumbs.length);
-            if (areBreadcrumbsArraysEqual(commandsRecordInfo.breadcrumbs, slicedBreadcrumbs)) {
-                shouldUnregister = revoke;
-            } else {
-                shouldUnregister = !revoke;
-            }
-        }
-        if (shouldUnregister) {
-            this.knowledgeCommandsService.setCommandsRecordInfo(null);
-        }
+        return commandsRecordInfo;
     },
     async onClickSearchKnowledgeArticle() {
         if (this.model.root.isDirty || this.model.root.isNew) {

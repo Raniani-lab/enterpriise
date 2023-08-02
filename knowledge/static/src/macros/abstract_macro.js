@@ -5,26 +5,28 @@ import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { isVisible } from "@web/core/utils/ui";
 import { MacroEngine } from "@web/core/macro";
 
-class KnowledgeMacroPageChangeError extends Error {}
+class KnowledgeMacroError extends Error {}
 
+/**
+ * Abstract class for Knowledge macros, that will be used to interact like a
+ * tour with a Form view chatter and/or html field.
+ */
 export class AbstractMacro {
     /**
      * @param {Object} options
      * @param {HTMLElement} options.targetXmlDoc
      * @param {Array[Object]} options.breadcrumbs
      * @param {Any} options.data
-     * @param {Object} options.services require: uiService, dialogService
+     * @param {Object} options.services required: action, dialog, ui
      */
     constructor ({
         targetXmlDoc,
         breadcrumbs,
         data,
-        services,
+        services
     }) {
         this.targetXmlDoc = targetXmlDoc;
-        this.breadcrumbsIndex = breadcrumbs.length - 1;
-        this.breadcrumbsName = breadcrumbs[this.breadcrumbsIndex].name;
-        this.breadcrumbsSelector = ['.o_breadcrumb .o_last_breadcrumb_item', (el) => el.textContent.includes(this.breadcrumbsName)];
+        this.targetBreadcrumbs = breadcrumbs;
         this.data = data;
         this.engine = new MacroEngine({ defaultCheckDelay: 16 });
         this.services = services;
@@ -57,19 +59,34 @@ export class AbstractMacro {
             onError: this.onError,
             steps: [
                 this.blockUI, {
-                trigger: function () {
-                    const breadcrumbs = document.querySelectorAll(`.breadcrumb-item:not(.active)`);
-                    if (breadcrumbs.length > this.breadcrumbsIndex) {
-                        const breadcrumb = breadcrumbs[this.breadcrumbsIndex];
-                        if (breadcrumb.textContent.includes(this.breadcrumbsName)) {
-                            return this.getFirstVisibleElement(breadcrumb.querySelector('a'));
-                        }
+                // Restore the target Form view through its breadcrumb jsId.
+                trigger: () => {
+                    // Ensure that we have a breadcrumb sequence displayed for
+                    // the user. Any breadcrumb element will do as a witness
+                    // since the Form view won't be restored through the
+                    // breadcrumbs, but with the controller.
+                    const breadcrumbEl = document.querySelector(`.breadcrumb-item:not(.active)`);
+                    if (!breadcrumbEl) {
+                        return null;
                     }
-                    return null;
-                }.bind(this),
-                action: 'click',
+                    try {
+                        // Try to restore the target controller.
+                        this.services.action.restore(this.targetBreadcrumbs.at(-1).jsId);
+                        // Return any breadcrumb item to allow the macro to
+                        // advance.
+                        return breadcrumbEl;
+                    } catch {
+                        // If the controller is unreachable, abort the macro.
+                        throw new KnowledgeMacroError(
+                            _t('The record that this macro is targeting could not be found.')
+                        );
+                    }
+                },
+                action: () => {},
             }, {
-                trigger: this.getFirstVisibleElement.bind(this, ...this.breadcrumbsSelector),
+                // Start the requested macro when the current breadcrumbs
+                // match the target Form view.
+                trigger: this.getFirstVisibleElement.bind(this, '.o_breadcrumb .o_last_breadcrumb_item'),
                 action: this.engine.activate.bind(this.engine, macroAction),
             }],
         };
@@ -82,9 +99,9 @@ export class AbstractMacro {
      */
     onError(error, step, index) {
         this.unblockUI.action();
-        if (error instanceof KnowledgeMacroPageChangeError) {
+        if (error instanceof KnowledgeMacroError) {
             this.services.dialog.add(AlertDialog,{
-                body: _t('The operation was interrupted because the page or the record changed. Please try again later.'),
+                body: error.message,
                 title: _t('Error'),
                 cancel: () => {},
                 cancelLabel: _t('Close'),
@@ -94,6 +111,10 @@ export class AbstractMacro {
         }
     }
     /**
+     * Searches for the first element in the dom matching the selector. The
+     * results are filtered with `filter` and the returned element is either
+     * the first or the last depending on `reverse`.
+     *
      * @param {String|HTMLElement} selector
      * @param {Function} filter
      * @param {boolean} reverse
@@ -110,12 +131,24 @@ export class AbstractMacro {
         }
         return null;
     }
+    /**
+     * Validate that the macro is still on the correct Form view by checking
+     * that the target breadcrumbs are the same as the current ones. To be used
+     * at each step inside the target Form view. Throwing an error will
+     * terminate the macro.
+     */
     validatePage() {
-        if (!this.getFirstVisibleElement(...this.breadcrumbsSelector)) {
-            throw new KnowledgeMacroPageChangeError();
+        const controllerBreadcrumbs = this.services.action.currentController.config.breadcrumbs;
+        if (JSON.stringify(this.targetBreadcrumbs) !== JSON.stringify(controllerBreadcrumbs)) {
+            throw new KnowledgeMacroError(
+                _t('The record that this macro is targeting could not be found.')
+            );
         }
     }
     /**
+     * To be overridden by an actual Macro implementation. It should contain
+     * the steps to be executed on the target Form view.
+     *
      * @returns {Object}
      */
     macroAction() {
@@ -123,6 +156,12 @@ export class AbstractMacro {
             name: this.constructor.name,
             onError: this.onError,
             steps: [],
+            timeout: 10000,
+            onTimeout: () => {
+                throw new KnowledgeMacroError(
+                    _t('The operation could not be completed.')
+                );
+            }
         };
     }
     /**
@@ -130,6 +169,10 @@ export class AbstractMacro {
      * notebook. Only pages with the "name" attribute set can be navigated to.
      * Other pages are ignored (and the fields they contain are too).
      * @see FormControllerPatch
+     *
+     * @param {String} targetSelector selector (will be used in the target
+     * xml document) for the element (likely an html field) that could be
+     * hidden inside a non-active tab of the notebook.
      */
     searchInXmlDocNotebookTab(targetSelector) {
         const searchElement = this.targetXmlDoc.querySelector(targetSelector);

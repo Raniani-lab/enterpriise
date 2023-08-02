@@ -67,14 +67,11 @@
                         > a:hover { cursor: pointer }
                     }
                     .muted { color: $o-gray-800 }
-                    .btn_action {
+                    .btn_action, .btn_more {
                         opacity: 1;
                         color: $o-enterprise-action-color;
                     }
-                    .btn_more {
-                        opacity: 1;
-                        color: $o-enterprise-action-color;
-                    }
+                    .btn_edit { color: $o-enterprise-action-color }
                     .btn_dropdown { color: $o-enterprise-action-color }
                     .btn_foldable { color: $o-enterprise-action-color }
                     .btn_ellipsis { color: $o-enterprise-action-color }
@@ -160,7 +157,7 @@
     // buttons
     //------------------------------------------------------------------------------------------------------------------
     .btn_debug, .btn_dropdown, .btn_foldable, .btn_foldable_empty, .btn_sortable, .btn_ellipsis,
-    .btn_more, .btn_footnote_go, .btn_footnote_delete, .btn_action {
+    .btn_more, .btn_footnote_go, .btn_footnote_delete, .btn_action, .btn_edit {
         border: none;
         color: $o-gray-300;
         font-size: inherit;
@@ -179,7 +176,7 @@
     .btn_foldable { color: $o-gray-500 }
     .btn_foldable_empty:hover { cursor: default  }
     .btn_ellipsis > i { vertical-align: bottom }
-    .btn_more { opacity: 0 }
+    .btn_more { opacity: 1 }
     .btn_footnote_go { color: $o-gray-600 }
     .btn_footnote_delete {
         margin-left: 4px;
@@ -233,6 +230,22 @@
 //----------------------------------------------------------------------------------------------------------------------
 // Popovers
 //----------------------------------------------------------------------------------------------------------------------
+.account_report_popover_edit {
+    padding: .5rem 1rem;
+
+    .o_input {
+        display: inline;
+        height: 27.5px; // Same height as the button next to it
+        width: 80px;
+        margin-right: 1rem;
+    }
+
+    .btn {
+        color: $o-white;
+        background-color: $o-enterprise-action-color;
+    }
+}
+
 .account_report_popover_ellipsis {
     > p {
         float: left;

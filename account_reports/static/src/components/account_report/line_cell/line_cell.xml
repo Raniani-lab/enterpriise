@@ -20,10 +20,12 @@
                 </t>
 
                 <t t-if="props.cell.edit_popup_data">
-                    <a
-                        class="fa fa-pencil"
+                    <button
+                        class="btn btn_edit me-auto"
                         t-on-click="(ev) => this.editPopover(ev)"
-                    />
+                    >
+                        <i class="fa fa-pencil"/>
+                    </button>
                 </t>
 
                 <div class="content">

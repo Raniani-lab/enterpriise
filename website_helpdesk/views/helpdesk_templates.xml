@@ -322,7 +322,7 @@
                             <t t-if="not results">
                                 <p class="text-center">No results found. Please try another search.</p>
                             </t>
-                            <div t-foreach="results" t-as="result" class="whelpdesk_result">
+                            <div t-foreach="results" t-as="result" t-key="result_index" class="whelpdesk_result">
                                 <t t-call="{{ result['template'] }}">
                                     <t t-set="record" t-value="result['record']" />
                                     <t t-set="url" t-value="result['url']" />

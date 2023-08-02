@@ -8,7 +8,7 @@
     <t t-name="fedex_pickup_location_list">
         <div class="mt-2" style="max-height: 20rem; overflow: auto;">
             <ul id="fedex_addresses" class="list-group list-group-flush flex-lg-column">
-                <t t-foreach="fedex_pickup_locations" t-as="location">
+                <t t-foreach="fedex_pickup_locations" t-as="location" t-key="location_index">
                     <li t-if="location" class="list-group-item">
                         <div class="container">
                             <t t-set="address" t-value="location.LocationDetail.LocationContactAndAddress.Address"/>

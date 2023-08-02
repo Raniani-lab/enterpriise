@@ -4,7 +4,7 @@
         <t t-if="datas?.length === 0">
             <h5>There is no defined payroll structure for your contract. Please contact a responsible for more information.</h5>
         </t>
-        <t t-foreach="datas" t-as="data">
+        <t t-foreach="datas" t-as="data" t-key="data_index">
             <div class="border-top">
                 <div class="row">
                     <label class="col-md-9 col-form-label" t-att-for="data[2]">

@@ -13,7 +13,7 @@
     <t t-name="knowledge.articles_structure">
         <i t-if="!articles or articles.length === 0">Nest articles under this one to generate a structure</i>
         <ol t-attf-class="mb-0 #{showAllChildren ? '' : 'o_knowledge_articles_structure_children_only'}">
-            <t t-foreach="articles" t-as="article">
+            <t t-foreach="articles" t-as="article" t-key="article_index">
                 <li>
                     <!-- Use 'data-oe-nodeid' as we need something that is not removed during sanitizing -->
                     <a t-attf-href="/knowledge/article/#{article.id}" t-att-data-oe-nodeid="article.id"

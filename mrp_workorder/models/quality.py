@@ -454,9 +454,7 @@ class QualityCheck(models.Model):
         """
         self.ensure_one()
         rounding = self.workorder_id.product_uom_id.rounding
-        if float_compare(self.workorder_id.qty_producing, 0, precision_rounding=rounding) <= 0:
-            raise UserError(_('Please ensure the quantity to produce is greater than 0.'))
-        elif self.test_type == 'register_production':
+        if self.test_type == 'register_production':
             if self.product_tracking != 'none':
                 if not self.lot_id and self.qty_done != 0:
                     raise UserError(_('Please enter a Lot/SN.'))

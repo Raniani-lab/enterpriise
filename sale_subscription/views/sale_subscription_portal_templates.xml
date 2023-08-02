@@ -147,7 +147,7 @@
 
     <template id="subscription_portal_content" name="Subscription" inherit_id="sale.sale_order_portal_content" primary="True">
         <div id="introduction" position="before">
-            <div class="alert alert-danger text-center" role="alert" t-if="sale_order.subscription_state in ['3_progress', '4_paused'] and sale_order.next_invoice_date &lt; datetime.date.today()">
+            <div class="alert alert-danger text-center" role="alert" t-if="sale_order.subscription_state == '3_progress' and sale_order.next_invoice_date &lt; datetime.date.today()">
                 Your subscription is expired, will be closed soon.
                 <a t-if="(providers or tokens) and sale_order.amount_total> 0" href="#payment_message">Pay now</a>
                 <t t-else="">Pay now</t>
@@ -211,7 +211,7 @@
                     <th class="text-end pb-0">Start Date:</th>
                     <td class="w-100 pb-0"><span t-field="sale_order.start_date"/></td>
                 </tr>
-                <tr t-if="sale_order.subscription_state  == '3_progress'">
+                <tr t-if="sale_order.subscription_state == '3_progress'">
                     <th class="text-end pb-0">Next Billing Date:</th>
                     <td class="w-100 pb-0"><span t-field="sale_order.next_invoice_date"/></td>
                 </tr>
@@ -267,7 +267,7 @@
                         <div t-if="sale_order.payment_token_id">Payment method:
                             <t t-out ="sale_order.payment_token_id._build_display_name(max_length=14)"/>
                         </div>
-                        <t t-if="sale_order.subscription_state in ['3_progress', '4_paused', '6_churn']">
+                        <t t-if="sale_order.subscription_state in ['3_progress', '6_churn']">
                             <!-- User is logged in under the partner set on the subscription -->
                             <t t-if="enable_manage_payment_form">
                                 <a role="button" class="mt-2 btn btn-secondary w-100" data-bs-toggle="modal" data-bs-target="#payment_managing" href="#">
@@ -415,11 +415,14 @@
                         <td class="text-center"><t t-out ="sale_order.plan_id.sudo().name"/></td>
                         <td class="text-end"><span t-out ="sale_order.amount_total" t-options="{'widget': 'monetary', 'display_currency': sale_order.currency_id}"/></td>
                         <td class="text-center" id="subscription_state">
-                            <t t-if="sale_order.subscription_state in ['3_progress', '4_paused'] and sale_order.next_invoice_date &lt; datetime.date.today()">
+                            <t t-if="sale_order.subscription_state == '3_progress' and sale_order.next_invoice_date &lt; datetime.date.today()">
                                 <span class="badge rounded-pill text-bg-danger"><i class="fa fa-fw fa-repeat"/> To Renew</span>
                             </t>
-                            <t t-elif="sale_order.subscription_state in ['3_progress', '4_paused']">
+                            <t t-elif="sale_order.subscription_state == '3_progress'">
                                 <span class="badge rounded-pill text-bg-success"><i class="fa fa-fw fa-check"/> In Progress</span>
+                            </t>
+                            <t t-elif="sale_order.subscription_state == '4_paused'">
+                                <span class="badge rounded-pill text-bg-success"><i class="fa fa-fw fa-check"/> Paused</span>
                             </t>
                             <t t-elif="sale_order.subscription_state == '6_churn'">
                                 <span class="badge rounded-pill text-bg-dark"><i class="fa fa-fw fa-remove"/> Closed</span>

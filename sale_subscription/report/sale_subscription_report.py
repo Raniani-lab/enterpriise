@@ -47,11 +47,26 @@ class SaleSubscriptionReport(models.Model):
         res['origin_order_id'] = "s.origin_order_id"
         res['client_order_ref'] = "s.client_order_ref"
         res['margin'] = 0
-        res['recurring_monthly'] = f"""s.recurring_monthly
+        res['recurring_monthly'] = f"""sum(l.price_subtotal)
+            / CASE
+                WHEN r.unit = 'week' THEN 7.0 / 30.437
+                WHEN r.unit = 'month' THEN 1
+                WHEN r.unit = 'year' THEN 12
+                ELSE 1
+             END
+            / r.duration
             / {self._case_value_or_one('s.currency_rate') }
             * {self._case_value_or_one('currency_table.rate') } 
         """
-        res['recurring_yearly'] = f"""s.recurring_monthly * 12
+        res['recurring_yearly'] = f"""sum(l.price_subtotal)
+            / CASE
+                WHEN r.unit = 'week' THEN 7.0 / 30.437
+                WHEN r.unit = 'month' THEN 1
+                WHEN r.unit = 'year' THEN 12
+                ELSE 1
+             END
+            / r.duration
+            * 12
             / {self._case_value_or_one('s.currency_rate') }
             * {self._case_value_or_one('currency_table.rate') }
         """
@@ -61,6 +76,13 @@ class SaleSubscriptionReport(models.Model):
                 * {self._case_value_or_one('currency_table.rate') }  
         """
         return res
+
+    def _from_sale(self):
+        frm = super()._from_sale()
+        return f"""
+            {frm}
+            LEFT JOIN sale_temporal_recurrence r ON r.id = s.recurrence_id 
+        """
 
     def _where_sale(self):
         where = super()._where_sale()
@@ -73,7 +95,6 @@ class SaleSubscriptionReport(models.Model):
         group_by_str = super()._group_by_sale()
         group_by_str = f"""{group_by_str},
                     s.subscription_state,
-                    s.recurring_monthly,
                     s.end_date,
                     s.health,
                     s.subscription_state,
@@ -85,7 +106,9 @@ class SaleSubscriptionReport(models.Model):
                     s.recurrence_id,
                     s.origin_order_id,
                     s.first_contract_date,
-                    s.client_order_ref
+                    s.client_order_ref,
+                    r.unit,
+                    r.duration
                --     t.recurring_invoice
         """
         return group_by_str

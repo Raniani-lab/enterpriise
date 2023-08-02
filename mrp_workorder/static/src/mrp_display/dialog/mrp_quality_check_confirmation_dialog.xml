@@ -10,11 +10,14 @@
                 </div>
             </t>
             <div class="o_quality_check_body d-flex w-100">
-                <div class="o_instruction w-75" t-out="props.body"/>
+                <div class="o_instruction w-75">
+                    <div class="h5" t-out="props.record.data.title" />
+                    <div t-out="props.body"/>
+                </div>
                 <div t-if="recordData.additional_note" t-out="recordData.additional_note"/>
             </div>
             <t t-if="['register_consumed_materials', 'register_byproducts', 'register_production'].includes(recordData.test_type)" name="registerQualityCheck">
-                <div name="component_id" class="o_workorder_bar_content" t-esc="componentId"/>
+                <div name="component_id" class="o_workorder_bar_content" t-esc="recordData.component_id[1]"/>
                 <div class="o_workorder_bar_content">
                     <div class="o_quantity row">
                         <span class="col-2">Quantity</span>

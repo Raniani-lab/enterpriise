@@ -14,9 +14,9 @@ import { SpreadsheetSelectorDialog } from "@spreadsheet_edition/assets/component
 
 import { onWillStart } from "@odoo/owl";
 
-patch(PivotRenderer.prototype, "pivot_spreadsheet", {
+patch(PivotRenderer.prototype, {
     setup() {
-        this._super.apply(this, arguments);
+        super.setup(...arguments);
         this.userService = useService("user");
         this.notification = useService("notification");
         this.actionService = useService("action");

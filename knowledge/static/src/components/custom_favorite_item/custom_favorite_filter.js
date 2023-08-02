@@ -3,9 +3,9 @@
 import { CustomFavoriteItem } from "@web/search/custom_favorite_item/custom_favorite_item";
 import { patch } from "@web/core/utils/patch";
 
-patch(CustomFavoriteItem.prototype, "knowledge_custom_favorite_item", {
+patch(CustomFavoriteItem.prototype, {
     setup() {
-        this._super(...arguments);
+        super.setup(...arguments);
 
         if (this.isKnowledgeEmbeddedView()) {
             // knowledge favorites are shared for all users

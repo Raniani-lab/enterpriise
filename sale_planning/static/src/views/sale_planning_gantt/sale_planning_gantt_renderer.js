@@ -6,21 +6,21 @@ import { patch } from "@web/core/utils/patch";
 import { PlanningGanttRenderer } from "@planning/views/planning_gantt/planning_gantt_renderer";
 import { useService } from "@web/core/utils/hooks";
 
-patch(PlanningGanttRenderer.prototype, "sale_planning_gantt_renderer", {
+patch(PlanningGanttRenderer.prototype, {
     setup() {
-        this._super(...arguments);
+        super.setup(...arguments);
         this.notification = useService("notification");
         this.roleIds = [];
     },
     getPlanDialogDomain() {
-        let domain = this._super(...arguments);
+        let domain = super.getPlanDialogDomain(...arguments);
         if (this.roleIds.length) {
             domain = Domain.and([domain, [['role_id', 'in', this.roleIds]]]);
         }
         return Domain.and([domain, [["sale_line_id", "!=", false]]]).toList({});
     },
     getSelectCreateDialogProps() {
-        const props = this._super(...arguments);
+        const props = super.getSelectCreateDialogProps(...arguments);
         Object.assign(props.context, {
             search_default_group_by_resource: false,
             search_default_group_by_role: false,
@@ -47,6 +47,6 @@ patch(PlanningGanttRenderer.prototype, "sale_planning_gantt_renderer", {
     onPlan({ rowId }) {
         const currentRow = this.rows.find((row) => row.id === rowId);
         this.roleIds = (currentRow.progressBar && currentRow.progressBar.role_ids) || [];
-        this._super(...arguments);
+        super.onPlan(...arguments);
     },
 });

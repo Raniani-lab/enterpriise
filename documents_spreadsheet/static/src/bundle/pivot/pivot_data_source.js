@@ -3,7 +3,7 @@
 import PivotDataSource from "@spreadsheet/pivot/pivot_data_source";
 import { patch } from "@web/core/utils/patch";
 
-patch(PivotDataSource.prototype, "documents_spreadsheet_templates_data_source", {
+patch(PivotDataSource.prototype, {
     /**
      * @param {string} fieldName
      */

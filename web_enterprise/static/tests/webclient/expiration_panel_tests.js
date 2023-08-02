@@ -45,7 +45,6 @@ async function createExpirationPanel(params = {}) {
     );
     patchWithCleanup(session, { ...params.session });
     serviceRegistry.add("enterprise_subscription", enterpriseSubscriptionService);
-    patchWithCleanup(browser, params.browser);
 
     const webclient = await createWebClient({
         mockRPC: params.mockRPC,

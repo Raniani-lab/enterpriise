@@ -3,12 +3,12 @@
 import { AttendeeCalendarModel } from "@calendar/views/attendee_calendar/attendee_calendar_model";
 import { patch } from "@web/core/utils/patch";
 
-patch(AttendeeCalendarModel.prototype, "appointment_calendar_model_prototype", {
+patch(AttendeeCalendarModel.prototype, {
     /**
      * @override
      */
     setup() {
-        this._super(...arguments);
+        super.setup(...arguments);
         this.data.slots = {};
         this.defaultSlotDurationMinutes = 30;
         this.slotId = 1;

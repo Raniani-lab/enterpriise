@@ -4,9 +4,9 @@ import { registry } from "@web/core/registry";
 import '@hr_payroll/../tests/tours/dashboard_tour';
 import { patch } from "@web/core/utils/patch";
 
-patch(registry.category("web_tour.tours").get("payroll_dashboard_ui_tour"), "patch_payroll_dashboard_ui_tour", {
+patch(registry.category("web_tour.tours").get("payroll_dashboard_ui_tour"), {
     steps() {
-        const originalSteps = this._super();
+        const originalSteps = super.steps();
         const stepIndex = originalSteps.findIndex((step) => step.id === "set_hr_responsible");
         originalSteps.splice(stepIndex + 1, 0, {
             /**

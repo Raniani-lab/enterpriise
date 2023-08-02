@@ -308,7 +308,7 @@ QUnit.module("Studio > navbar coordination", (hooks) => {
         const adapted = [];
         patchWithCleanup(StudioNavbar.prototype, {
             async adapt() {
-                const prom = this._super();
+                const prom = super.adapt();
                 adapted.push(prom);
                 return prom;
             },

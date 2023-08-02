@@ -58,13 +58,13 @@ QUnit.module("Knowledge External Embeds Hotkeys", (hooks) => {
         embedMountedPromise = makeDeferred();
         patchWithCleanup(HtmlField.prototype, {
             async startWysiwyg() {
-                await this._super(...arguments);
+                await super.startWysiwyg(...arguments);
                 htmlFieldReadyPromise.resolve(this);
             }
         });
         patchWithCleanup(EmbeddedViewBehavior.prototype, {
             async setup() {
-                this._super(...arguments);
+                super.setup(...arguments);
                 await this.loadData();
                 this.state.waiting = false;
             },
@@ -76,7 +76,7 @@ QUnit.module("Knowledge External Embeds Hotkeys", (hooks) => {
         });
         patchWithCleanup(EmbeddedViewManager.prototype, {
             setup() {
-                this._super(...arguments);
+                super.setup(...arguments);
                 onMounted(() => {
                     embedMountedPromise.resolve();
                 });

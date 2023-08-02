@@ -3,15 +3,15 @@
 // ensure mail override is applied first.
 import '@mail/../tests/helpers/mock_server/models/mail_activity';
 
-import { patch } from '@web/core/utils/patch';
+import { patch } from "@web/core/utils/patch";
 import { MockServer } from '@web/../tests/helpers/mock_server';
 
-patch(MockServer.prototype, 'approvals/models/mail_activity', {
+patch(MockServer.prototype, {
     /**
      * @override
      */
     _mockMailActivityActivityFormat(ids) {
-        const activities = this._super(ids);
+        const activities = super._mockMailActivityActivityFormat(ids);
         for (const activity of activities) {
             if (activity.res_model === 'approval.request') {
                 // check on activity type being approval not done here for simplicity

@@ -28,7 +28,7 @@ export async function createDashboardEditAction(params) {
     const actionMountedDef = makeDeferred();
     patchWithCleanup(DashboardEditAction.prototype, {
         setup() {
-            this._super();
+            super.setup();
             onMounted(() => actionMountedDef.resolve());
             spreadsheetAction = this;
         },

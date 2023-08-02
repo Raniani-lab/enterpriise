@@ -19,12 +19,12 @@ export class PayrollDashboardPayslipBatchAdapter extends ComponentAdapter {
 }
 
 
-patch(PayrollDashboardPayslipBatch.prototype, 'payroll_sepa', {
+patch(PayrollDashboardPayslipBatch.prototype, {
     /**
      * @override
      */
     setup() {
-        this._super.apply(this, arguments);
+        super.setup(...arguments);
         this.FieldBinaryFile = FieldBinaryFile;
     },
 

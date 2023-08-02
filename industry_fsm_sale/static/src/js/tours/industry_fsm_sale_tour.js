@@ -9,9 +9,9 @@ import "@web/legacy/translations_loaded";
 import { Markup } from "@web/legacy/js/core/utils";
 import { patch } from "@web/core/utils/patch";
 
-patch(registry.category("web_tour.tours").get("industry_fsm_tour"), "patch_industry_fsm_sale_tour", {
+patch(registry.category("web_tour.tours").get("industry_fsm_tour"), {
     steps() {
-        const originalSteps = this._super();
+        const originalSteps = super.steps();
         const fsmStartStepIndex = originalSteps.findIndex((step) => step.id === "fsm_start");
         originalSteps.splice(fsmStartStepIndex + 1, 0, {
             trigger: 'button[name="action_fsm_view_material"]',

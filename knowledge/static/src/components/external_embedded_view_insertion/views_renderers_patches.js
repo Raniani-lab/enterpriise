@@ -21,9 +21,9 @@ import { omit } from "@web/core/utils/objects";
  * The following patch will add two new entries to the 'Favorites' dropdown menu
  * of the control panel namely: 'Insert view in article' and 'Insert link in article'.
  */
-const EmbeddedViewRendererPatch = {
+const EmbeddedViewRendererPatch = () => ({
     setup() {
-        this._super(...arguments);
+        super.setup(...arguments);
         if (this.env.searchModel) {
             useBus(this.env.searchModel, 'insert-embedded-view', this._insertBackendBehavior.bind(this, 'render_embedded_view'));
             useBus(this.env.searchModel, 'insert-view-link', this._insertBackendBehavior.bind(this, 'render_embedded_view_link'));
@@ -38,7 +38,7 @@ const EmbeddedViewRendererPatch = {
      * Returns the full context that will be passed to the embedded view.
      * @returns {Object}
      */
-    _getViewContext: function () {
+    _getViewContext() {
         const context = {};
         if (this.env.searchModel) {
             // Store the context of the search model:
@@ -66,7 +66,7 @@ const EmbeddedViewRendererPatch = {
      * @param {string} renderFunctionName name of the python method to render
      *                 the template "blueprint" related to the desired Behavior
      */
-    _insertBackendBehavior: function (renderFunctionName) {
+    _insertBackendBehavior(renderFunctionName) {
         const config = this.env.config;
         if (config.actionType !== 'ir.actions.act_window') {
             return;
@@ -98,7 +98,7 @@ const EmbeddedViewRendererPatch = {
     /**
      * @param {Function} onSelectCallback
      */
-    _openArticleSelector: function (onSelectCallback) {
+    _openArticleSelector(onSelectCallback) {
         this.addDialog(SelectCreateDialog, {
             title: _t('Select an article'),
             noCreate: false,
@@ -119,16 +119,15 @@ const EmbeddedViewRendererPatch = {
             },
         });
     },
-};
+});
 
-const EmbeddedViewListRendererPatch = {
-    ...EmbeddedViewRendererPatch,
+const EmbeddedViewListRendererPatch = () => ({
     /**
      * @override
      * @returns {Object}
      */
-    _getViewContext: function () {
-        const context = EmbeddedViewRendererPatch._getViewContext.call(this);
+    _getViewContext() {
+        const context = super._getViewContext();
         Object.assign(context, {
             orderBy: JSON.stringify(this.props.list.orderBy)
         });
@@ -161,18 +160,19 @@ const EmbeddedViewListRendererPatch = {
                 ? searchModelKeyOptionalFields
                 : searchModelKeyOptionalFields + (embeddedViewId ? `,${embeddedViewId}` : "");
         }
-        return this._super(...arguments) + (embeddedViewId ? "," + embeddedViewId : "");
+        return super.createKeyOptionalFields(...arguments) + (embeddedViewId ? "," + embeddedViewId : "");
     },
-};
+});
 
-patch(CalendarRenderer.prototype, 'knowledge_calendar_embeddable', EmbeddedViewRendererPatch);
-patch(CohortRenderer.prototype, 'knowledge_cohort_embeddable', EmbeddedViewRendererPatch);
-patch(GanttRenderer.prototype, 'knowledge_gantt_embeddable', EmbeddedViewRendererPatch);
-patch(GraphRenderer.prototype, 'knowledge_graph_embeddable', EmbeddedViewRendererPatch);
-patch(KanbanRenderer.prototype, 'knowledge_kanban_embeddable', EmbeddedViewRendererPatch);
-patch(ListRenderer.prototype, 'knowledge_list_embeddable', EmbeddedViewListRendererPatch);
-patch(MapRenderer.prototype, 'knowledge_map_embeddable', EmbeddedViewRendererPatch);
-patch(PivotRenderer.prototype, 'knowledge_pivot_embeddable', EmbeddedViewRendererPatch);
+patch(CalendarRenderer.prototype, EmbeddedViewRendererPatch());
+patch(CohortRenderer.prototype, EmbeddedViewRendererPatch());
+patch(GanttRenderer.prototype, EmbeddedViewRendererPatch());
+patch(GraphRenderer.prototype, EmbeddedViewRendererPatch());
+patch(KanbanRenderer.prototype, EmbeddedViewRendererPatch());
+patch(ListRenderer.prototype, EmbeddedViewRendererPatch());
+patch(ListRenderer.prototype, EmbeddedViewListRendererPatch());
+patch(MapRenderer.prototype, EmbeddedViewRendererPatch());
+patch(PivotRenderer.prototype, EmbeddedViewRendererPatch());
 
 const supportedEmbeddedViews = new Set([
     'calendar',

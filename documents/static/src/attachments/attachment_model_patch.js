@@ -3,18 +3,18 @@
 import { Attachment } from "@mail/core/common/attachment_model";
 import { patch } from "@web/core/utils/patch";
 
-patch(Attachment.prototype, "documents", {
+patch(Attachment.prototype, {
     documentId: null,
 
     get urlRoute() {
         if (this.documentId) {
             return this.isImage ? `/web/image/${this.documentId}` : `/web/content/${this.documentId}`;
         }
-        return this._super();
+        return super.urlRoute;
     },
 
     get urlQueryParams() {
-        let res = this._super();
+        let res = super.urlQueryParams;
         if (this.documentId) {
             res['model'] = 'documents.document';
            return res

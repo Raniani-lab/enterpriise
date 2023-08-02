@@ -8,17 +8,17 @@ import { patch } from "@web/core/utils/patch";
 
 Object.assign(ActivityListPopoverItem.components, { Approval });
 
-patch(ActivityListPopoverItem.prototype, "approvals/web/activity", {
+patch(ActivityListPopoverItem.prototype, {
     get hasEditButton() {
         if (this.props.activity.approval) {
             return false;
         }
-        return this._super();
+        return super.hasEditButton;
     },
     get hasMarkDoneButton() {
         if (this.props.activity.approval) {
             return false;
         }
-        return this._super();
+        return super.hasMarkDoneButton;
     },
 });

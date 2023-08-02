@@ -6,7 +6,7 @@ import { ErrorPopup } from "@point_of_sale/app/errors/popups/error_popup";
 import { _t } from "@web/core/l10n/translation";
 
 
-patch(Product.prototype, "pos_iot.Product", {
+patch(Product.prototype, {
     async _onScaleNotAvailable() {
         await this.env.services.popup.add(ErrorPopup, {
             title: _t("No Scale Detected"),
@@ -16,6 +16,6 @@ patch(Product.prototype, "pos_iot.Product", {
         });
     },
     get isScaleAvailable() {
-        return this._super(...arguments) && Boolean(this.pos.hardwareProxy.deviceControllers.scale);
+        return super.isScaleAvailable && Boolean(this.pos.hardwareProxy.deviceControllers.scale);
     },
 });

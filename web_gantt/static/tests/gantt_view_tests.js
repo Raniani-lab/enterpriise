@@ -4000,7 +4000,7 @@ QUnit.test("concurrent scale switches return in inverse order", async (assert) =
     let model;
     patchWithCleanup(GanttRenderer.prototype, {
         setup() {
-            this._super.apply(this, arguments);
+            super.setup(...arguments);
             model = this.model;
             onPatched(() => {
                 assert.step("patched");
@@ -4070,7 +4070,7 @@ QUnit.test("concurrent scale switches return with gantt_unavailability", async (
     let model;
     patchWithCleanup(GanttRenderer.prototype, {
         setup() {
-            this._super.apply(this, arguments);
+            super.setup(...arguments);
             model = this.model;
             onPatched(() => {
                 assert.step("patched");
@@ -5121,7 +5121,7 @@ QUnit.test("A task should always have a title (pill_label='1', scale 'month')", 
 QUnit.test("position of no content help in sample mode", async (assert) => {
     patchWithCleanup(GanttController.prototype, {
         setup() {
-            this._super.apply(this, arguments);
+            super.setup(...arguments);
             const rootRef = useRef("root");
             useEffect(() => {
                 rootRef.el.querySelector(".o_content.o_view_sample_data").style.position =
@@ -5176,7 +5176,7 @@ QUnit.test("date grid and dst winterToSummer (1 cell part)", async (assert) => {
     let renderer;
     patchWithCleanup(GanttRenderer.prototype, {
         setup() {
-            this._super.apply(this, arguments);
+            super.setup(...arguments);
             renderer = this;
         },
     });
@@ -5339,7 +5339,7 @@ QUnit.test("date grid and dst summerToWinter (1 cell part)", async (assert) => {
     let renderer;
     patchWithCleanup(GanttRenderer.prototype, {
         setup() {
-            this._super.apply(this, arguments);
+            super.setup(...arguments);
             renderer = this;
         },
     });
@@ -5503,7 +5503,7 @@ QUnit.test("date grid and dst winterToSummer (2 cell part)", async (assert) => {
     let renderer;
     patchWithCleanup(GanttRenderer.prototype, {
         setup() {
-            this._super.apply(this, arguments);
+            super.setup(...arguments);
             renderer = this;
         },
     });
@@ -5733,7 +5733,7 @@ QUnit.test("date grid and dst summerToWinter (2 cell part)", async (assert) => {
     let renderer;
     patchWithCleanup(GanttRenderer.prototype, {
         setup() {
-            this._super.apply(this, arguments);
+            super.setup(...arguments);
             renderer = this;
         },
     });

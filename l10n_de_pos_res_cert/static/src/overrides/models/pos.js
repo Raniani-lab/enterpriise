@@ -5,18 +5,18 @@ import { Order } from "@point_of_sale/app/store/models";
 import { uuidv4 } from "@point_of_sale/utils";
 import { patch } from "@web/core/utils/patch";
 
-patch(PosStore.prototype, "l10n_de_pos_res_cert.PosStore", {
+patch(PosStore.prototype, {
     isRestaurantCountryGermanyAndFiskaly() {
         return this.isCountryGermanyAndFiskaly() && this.config.module_pos_restaurant;
     },
     //@Override
     disallowLineQuantityChange() {
-        const result = this._super(...arguments);
+        const result = super.disallowLineQuantityChange(...arguments);
         return this.isRestaurantCountryGermanyAndFiskaly() || result;
     },
     //@Override
     _updateOrder(orderResponseData, tableOrders) {
-        const order = this._super(...arguments);
+        const order = super._updateOrder(...arguments);
         if (this.isRestaurantCountryGermanyAndFiskaly() && orderResponseData.differences && order) {
             order.createAndFinishOrderTransaction(orderResponseData.differences);
         }
@@ -32,7 +32,7 @@ patch(PosStore.prototype, "l10n_de_pos_res_cert.PosStore", {
                 await order.cancelOrderTransaction(elem.differences);
             });
         }
-        return this._super(...arguments);
+        return super._postRemoveFromServer(...arguments);
     },
     //@Override
     /**
@@ -40,7 +40,7 @@ patch(PosStore.prototype, "l10n_de_pos_res_cert.PosStore", {
      */
     async _flush_orders(orders, options) {
         if (!this.isRestaurantCountryGermanyAndFiskaly()) {
-            return this._super(...arguments);
+            return super._flush_orders(...arguments);
         }
         if (!orders || !orders.length) {
             return Promise.resolve([]);
@@ -91,14 +91,14 @@ patch(PosStore.prototype, "l10n_de_pos_res_cert.PosStore", {
             }
         }
 
-        return this._super(...arguments);
+        return super._flush_orders(...arguments);
     },
 });
 
-patch(Order.prototype, "l10n_de_pos_res_cert.Order", {
+patch(Order.prototype, {
     // @Override
     setup() {
-        this._super(...arguments);
+        super.setup(...arguments);
         if (this.pos.isRestaurantCountryGermanyAndFiskaly()) {
             this.fiskalyLinesSent = false; // this is mainly used for offline scenario
             this.save_to_db();
@@ -106,7 +106,7 @@ patch(Order.prototype, "l10n_de_pos_res_cert.Order", {
     },
     //@Override
     export_as_JSON() {
-        const json = this._super(...arguments);
+        const json = super.export_as_JSON(...arguments);
         if (this.pos.isRestaurantCountryGermanyAndFiskaly()) {
             json["fiskaly_lines_sent"] = this.fiskalyLinesSent;
         }
@@ -114,7 +114,7 @@ patch(Order.prototype, "l10n_de_pos_res_cert.Order", {
     },
     //@Override
     init_from_JSON(json) {
-        this._super(...arguments);
+        super.init_from_JSON(...arguments);
         if (this.pos.isRestaurantCountryGermanyAndFiskaly()) {
             this.fiskalyLinesSent = json.fiskaly_lines_sent;
         }
@@ -126,7 +126,7 @@ patch(Order.prototype, "l10n_de_pos_res_cert.Order", {
                 this.tssInformation.time_start.value
             )
         ) {
-            this._super(...arguments);
+            super._updateTimeStart(...arguments);
         }
     },
     async createAndFinishOrderTransaction(lineDifference) {

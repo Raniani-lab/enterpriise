@@ -5,9 +5,9 @@ import { patch } from "@web/core/utils/patch";
 
 const { onMounted, onWillUnmount } = owl;
 
-patch(HomeMenu.prototype, "web_studio.HomeMenuBackground", {
+patch(HomeMenu.prototype, {
     setup() {
-        this._super();
+        super.setup();
         if (!this.menus.getMenu("root").backgroundImage) {
             return;
         }

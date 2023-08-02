@@ -4,9 +4,9 @@ import { PhoneField } from "@web/views/fields/phone/phone_field";
 import { patch } from "@web/core/utils/patch";
 import { useService } from "@web/core/utils/hooks";
 
-patch(PhoneField.prototype, "voip.PhoneField", {
+patch(PhoneField.prototype, {
     setup() {
-        this._super();
+        super.setup();
         if ("voip" in this.env.services) {
             // FIXME: this is only because otherwise @web tests would fail.
             // This is one of the major pitfalls of patching.

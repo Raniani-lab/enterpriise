@@ -3,12 +3,12 @@
 import { patch } from "@web/core/utils/patch";
 import { MockServer } from "@web/../tests/helpers/mock_server";
 
-patch(MockServer.prototype, "web_grid", {
+patch(MockServer.prototype, {
     async _performRPC(route, args) {
         if (args.method === "grid_update_cell") {
             return this.mockGridUpdateCell(args.model, args.args, args.kwargs);
         }
-        return this._super(...arguments);
+        return super._performRPC(...arguments);
     },
 
     mockGridUpdateCell(modelName, args, kwargs) {

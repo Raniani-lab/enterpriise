@@ -1,15 +1,15 @@
 /** @odoo-module **/
 
 import Tablet from '@mrp_workorder/components/tablet';
-import { patch } from '@web/core/utils/patch';
+import { patch } from "@web/core/utils/patch";
 import { DeviceController } from '@iot/device_controller';
 import { PedalStatusButton } from '@mrp_workorder_iot/pedal_status_button/pedal_status_button';
 
 const { onWillUnmount } = owl;
 
-const unpatchTabletPrototypeOverride = patch(Tablet.prototype, 'tablet_iot', {
+const unpatchTabletPrototypeOverride = patch(Tablet.prototype, {
     setup() {
-        this._super();
+        super.setup();
         this.state.pedalConnected = false;
         this.state.showPedalStatus = false;
         this.deviceControllers = {};
@@ -18,7 +18,7 @@ const unpatchTabletPrototypeOverride = patch(Tablet.prototype, 'tablet_iot', {
         });
     },
     async _onWillStart() {
-        await this._super();
+        await super._onWillStart();
         // Start listening to the iot devices.
         const box2device2key2action = {};
         for (const check of this.data['quality.check']) {
@@ -81,7 +81,7 @@ const unpatchTabletPrototypeOverride = patch(Tablet.prototype, 'tablet_iot', {
     },
 });
 
-const unpatchTabletClassOverride = patch(Tablet, 'tablet_iot', {
+const unpatchTabletClassOverride = patch(Tablet, {
     components: { ...Tablet.components, PedalStatusButton },
 });
 

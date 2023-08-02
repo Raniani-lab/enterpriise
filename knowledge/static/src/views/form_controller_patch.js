@@ -27,7 +27,7 @@ const KNOWLEDGE_RECORDED_FIELD_NAMES = [
 
 const FormControllerPatch = {
     setup() {
-        this._super(...arguments);
+        super.setup(...arguments);
         this.knowledgeCommandsService = useService('knowledgeCommandsService');
         // useEffect based on the id of the current record, in order to
         // properly register a newly created record, or the switch to another
@@ -203,4 +203,4 @@ const FormControllerPatch = {
     },
 };
 
-patch(FormController.prototype, 'register_knowledge_fields', FormControllerPatch);
+patch(FormController.prototype, FormControllerPatch);

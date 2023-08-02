@@ -537,7 +537,7 @@ QUnit.module("web_mobile", {
                 if (path === '/web/image') {
                     return `data:image/png;base64,${MY_IMAGE}`;
                 }
-                return this._super(...arguments);
+                return super.url(...arguments);
             },
             username: "demo",
             name: "Marc Demo",
@@ -576,7 +576,7 @@ QUnit.module("web_mobile", {
                 if (path === '/web/image') {
                     return `data:image/svg+xml;base64,${BASE64_SVG_IMAGE}`;
                 }
-                return this._super(...arguments);
+                return super.url(...arguments);
             },
             username: "demo",
             name: "Marc Demo",
@@ -616,7 +616,7 @@ QUnit.module("web_mobile", {
                 if (path === '/web/image') {
                     return `data:image/png;base64,${MY_IMAGE}`;
                 }
-                return this._super(...arguments);
+                return super.url(...arguments);
             },
             username: "demo",
             name: "Marc Demo",

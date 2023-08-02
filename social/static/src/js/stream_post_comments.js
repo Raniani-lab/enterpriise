@@ -6,12 +6,11 @@ import { StreamPostCommentsReply } from './stream_post_comments_reply';
 import { StreamPostCommentList } from './stream_post_comment_list';
 
 import { Dialog } from '@web/core/dialog/dialog';
-import { patch } from '@web/core/utils/patch';
 import { useService } from '@web/core/utils/hooks';
 
 const { Component, markup, useSubEnv, useState } = owl;
 
-export class StreamPostComments extends Component {
+export class StreamPostComments extends SocialPostFormatterMixin(Component) {
 
     setup() {
         super.setup();
@@ -86,8 +85,6 @@ export class StreamPostComments extends Component {
     }
 
 }
-
-patch(StreamPostComments.prototype, 'social_post_formatter_mixin', SocialPostFormatterMixin);
 
 StreamPostComments.template = 'social.StreamPostComments';
 StreamPostComments.components = { Dialog };

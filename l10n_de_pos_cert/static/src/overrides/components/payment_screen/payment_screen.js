@@ -3,10 +3,10 @@
 import { PaymentScreen } from "@point_of_sale/app/screens/payment_screen/payment_screen";
 import { patch } from "@web/core/utils/patch";
 
-patch(PaymentScreen.prototype, "l10n_de_pos_cert.PaymentScreen", {
+patch(PaymentScreen.prototype, {
     //@Override
     setup() {
-        this._super(...arguments);
+        super.setup(...arguments);
         if (this.pos.isCountryGermanyAndFiskaly()) {
             const _super_handlePushOrderError = this._handlePushOrderError.bind(this);
             this._handlePushOrderError = async (error) => {
@@ -31,18 +31,17 @@ patch(PaymentScreen.prototype, "l10n_de_pos_cert.PaymentScreen", {
             if (this.validateOrderFree) {
                 this.validateOrderFree = false;
                 try {
-                    await this._super(...arguments);
+                    await super.validateOrder(...arguments);
                 } finally {
                     this.validateOrderFree = true;
                 }
             }
         } else {
-            await this._super(...arguments);
+            await super.validateOrder(...arguments);
         }
     },
     //@override
     async _finalizeValidation() {
-        const _super = this._super;
         if (this.pos.isCountryGermanyAndFiskaly()) {
             if (this.currentOrder.isTransactionInactive()) {
                 try {
@@ -63,7 +62,7 @@ patch(PaymentScreen.prototype, "l10n_de_pos_cert.PaymentScreen", {
             if (this.currentOrder.isTransactionStarted()) {
                 try {
                     await this.currentOrder.finishShortTransaction();
-                    await _super(...arguments);
+                    await super._finalizeValidation(...arguments);
                 } catch (error) {
                     if (error.status === 0) {
                         this.pos.showFiskalyNoInternetConfirmPopup(this);
@@ -78,7 +77,7 @@ patch(PaymentScreen.prototype, "l10n_de_pos_cert.PaymentScreen", {
                 }
             }
         } else {
-            await _super(...arguments);
+            await super._finalizeValidation(...arguments);
         }
     },
 });

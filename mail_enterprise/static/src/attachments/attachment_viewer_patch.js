@@ -5,9 +5,9 @@ import { patch } from "@web/core/utils/patch";
 
 import { useBackButton } from "@web_mobile/js/core/hooks";
 
-patch(FileViewer.prototype, "mail_enterprise", {
+patch(FileViewer.prototype, {
     setup() {
-        this._super();
+        super.setup();
         useBackButton(() => this.close());
     },
 });

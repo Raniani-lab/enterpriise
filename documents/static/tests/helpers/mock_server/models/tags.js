@@ -5,7 +5,7 @@ import { MockServer } from "@web/../tests/helpers/mock_server";
 
 const N_FACET_COLORS = 11
 
-patch(MockServer.prototype, 'documents/models/tags', {
+patch(MockServer.prototype, {
     /**
      * Mocks the '_get_tags' method of the model 'documents.tag'.
      */

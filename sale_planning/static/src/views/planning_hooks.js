@@ -4,7 +4,7 @@ import { patch } from "@web/core/utils/patch";
 import { PlanningControllerActions } from "@planning/views/planning_hooks";
 
 
-patch(PlanningControllerActions.prototype, "sale_planning_controller_actions_patch", {
+patch(PlanningControllerActions.prototype, {
     autoPlanSuccessNotification() {
         return this.env._t("The open shifts and sales orders have been successfully assigned.");
     },

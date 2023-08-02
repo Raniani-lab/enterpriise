@@ -3,7 +3,6 @@
 import { patchGraphSpreadsheet } from "@spreadsheet_edition/assets/graph_view/graph_view";
 import { SpreadsheetAction } from "@documents_spreadsheet/bundle/actions/spreadsheet_action";
 import { click, patchWithCleanup, triggerEvent } from "@web/../tests/helpers/utils";
-import { patch, unpatch } from "@web/core/utils/patch";
 import { GraphRenderer } from "@web/views/graph/graph_renderer";
 import { fakeCookieService } from "@web/../tests/helpers/mock_services";
 import { registry } from "@web/core/registry";
@@ -14,15 +13,11 @@ import {
 import { getSpreadsheetActionModel } from "@spreadsheet_edition/../tests/utils/webclient_helpers";
 
 function beforeEach() {
-    patch(GraphRenderer.prototype, "graph_spreadsheet", patchGraphSpreadsheet);
+    patchWithCleanup(GraphRenderer.prototype, patchGraphSpreadsheet());
     registry.category("services").add("cookie", fakeCookieService);
 }
 
-function afterEach() {
-    unpatch(GraphRenderer.prototype, "graph_spreadsheet");
-}
-
-QUnit.module("documents_spreadsheet > graph view", { beforeEach, afterEach }, () => {
+QUnit.module("documents_spreadsheet > graph view", { beforeEach }, () => {
     QUnit.test("simple chart insertion", async (assert) => {
         const { model } = await createSpreadsheetFromGraphView();
         const sheetId = model.getters.getActiveSheetId();
@@ -71,7 +66,7 @@ QUnit.module("documents_spreadsheet > graph view", { beforeEach, afterEach }, ()
         let spreadsheetAction;
         patchWithCleanup(SpreadsheetAction.prototype, {
             setup() {
-                this._super();
+                super.setup();
                 spreadsheetAction = this;
             },
         });

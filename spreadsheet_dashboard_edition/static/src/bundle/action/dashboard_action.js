@@ -5,7 +5,6 @@ import { patch } from "@web/core/utils/patch";
 
 patch(
     SpreadsheetDashboardAction.prototype,
-    "spreadsheet_dashboard_edition.SpreadsheetDashboardAction",
     {
         /**
          * @param {number} dashboardId

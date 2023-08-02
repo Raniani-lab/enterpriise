@@ -3,7 +3,7 @@
 import { patch } from "@web/core/utils/patch";
 import { BomOverviewLine } from "@mrp/components/bom_overview_line/mrp_bom_overview_line";
 
-patch(BomOverviewLine.prototype, "mrp_plm", {
+patch(BomOverviewLine.prototype, {
     //---- Handlers ----
 
     async goToEco() {
@@ -18,7 +18,7 @@ patch(BomOverviewLine.prototype, "mrp_plm", {
     }
 });
 
-patch(BomOverviewLine, "mrp_plm", {
+patch(BomOverviewLine, {
     props: {
         ...BomOverviewLine.props,
         showOptions: { 

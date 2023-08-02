@@ -19,19 +19,19 @@ import {
 } from '@web_editor/js/editor/odoo-editor/src/utils/utils';
 import { patch } from "@web/core/utils/patch";
 
-patch(Wysiwyg.prototype, 'knowledge_wysiswyg', {
+patch(Wysiwyg.prototype, {
     /**
      * @override
      */
-    resetEditor: async function () {
-        await this._super(...arguments);
+    async resetEditor() {
+        await super.resetEditor(...arguments);
         this.$editable[0].dispatchEvent(new Event('refresh_behaviors'));
     },
     /**
      * @override
      */
-    _getEditorOptions: function () {
-        const finalOptions = this._super.apply(this, arguments);
+    _getEditorOptions() {
+        const finalOptions = super._getEditorOptions(...arguments);
         const onHistoryResetFromSteps = finalOptions.onHistoryResetFromSteps;
         finalOptions.onHistoryResetFromSteps = () => {
             onHistoryResetFromSteps();
@@ -48,8 +48,8 @@ patch(Wysiwyg.prototype, 'knowledge_wysiswyg', {
      * @override
      * @returns {Array[Object]}
      */
-    _getPowerboxOptions: function () {
-        const options = this._super();
+    _getPowerboxOptions() {
+        const options = super._getPowerboxOptions();
         const {commands, categories} = options;
         categories.push({ name: _t('Media'), priority: 50 });
         commands.push({
@@ -351,7 +351,7 @@ patch(Wysiwyg.prototype, 'knowledge_wysiswyg', {
             this._notifyNewBehavior(fileBlock, params.restoreSelection);
             // need to set cursor (anchor.sibling)
         } else {
-            return this._super(...arguments);
+            return super._onMediaDialogSave(...arguments);
         }
     },
     /**

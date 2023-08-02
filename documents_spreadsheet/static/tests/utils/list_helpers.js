@@ -82,7 +82,7 @@ export async function createSpreadsheetFromListView(params = {}) {
     let spreadsheetAction = {};
     patchWithCleanup(SpreadsheetAction.prototype, {
         setup() {
-            this._super();
+            super.setup();
             owl.onMounted(() => {
                 spreadsheetAction = this;
                 def.resolve();

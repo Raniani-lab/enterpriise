@@ -6,7 +6,7 @@ import { ErrorPopup } from "@point_of_sale/app/errors/popups/error_popup";
 import { patch } from "@web/core/utils/patch";
 import { _t } from "@web/core/l10n/translation";
 
-patch(PaymentScreen.prototype, "l10n_cl_edi_pos.PaymentScreen", {
+patch(PaymentScreen.prototype, {
     toggleIsToInvoice() {
         if (this.pos.isChileanCompany()) {
             if (this.currentOrder.invoiceType == "boleta") {
@@ -16,7 +16,7 @@ patch(PaymentScreen.prototype, "l10n_cl_edi_pos.PaymentScreen", {
             }
             this.render(true);
         } else {
-            this._super(...arguments);
+            super.toggleIsToInvoice(...arguments);
         }
     },
     highlightInvoiceButton() {
@@ -26,7 +26,7 @@ patch(PaymentScreen.prototype, "l10n_cl_edi_pos.PaymentScreen", {
         return this.currentOrder.is_to_invoice();
     },
     async _isOrderValid(isForceValidate) {
-        const result = await this._super(...arguments);
+        const result = await super._isOrderValid(...arguments);
         if (this.pos.isChileanCompany()) {
             if (!result) {
                 return false;
@@ -67,7 +67,6 @@ patch(PaymentScreen.prototype, "l10n_cl_edi_pos.PaymentScreen", {
         return result;
     },
     async validateOrder(isForceValidate) {
-        const _super = this._super;
         if (
             this.pos.isChileanCompany() &&
             this.paymentLines.some((line) => line.payment_method.is_card_payment)
@@ -83,6 +82,6 @@ patch(PaymentScreen.prototype, "l10n_cl_edi_pos.PaymentScreen", {
             }
             this.currentOrder.voucherNumber = payload;
         }
-        await _super(arguments);
+        await super.validateOrder(arguments);
     },
 });

@@ -3,10 +3,10 @@
 import { OrderReceipt } from "@point_of_sale/app/screens/receipt_screen/receipt/receipt";
 import { patch } from "@web/core/utils/patch";
 
-patch(OrderReceipt.prototype, "pos_l10n_se.OrderReceipt", {
+patch(OrderReceipt.prototype, {
     get receiptEnv() {
         if (this.pos.useBlackBoxSweden()) {
-            const receipt_render_env = this._super(...arguments);
+            const receipt_render_env = super.receiptEnv;
             receipt_render_env.receipt.useBlackBoxSweden = true;
             receipt_render_env.receipt.company.street = this.pos.company.street;
             receipt_render_env.receipt.posID = this.pos.config.id;
@@ -22,7 +22,7 @@ patch(OrderReceipt.prototype, "pos_l10n_se.OrderReceipt", {
 
             return receipt_render_env;
         }
-        return this._super(...arguments);
+        return super.receiptEnv;
     },
     getProductlines() {
         return this.receiptEnv.receipt.orderlines.filter((orderline) => {

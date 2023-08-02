@@ -778,7 +778,7 @@ QUnit.module("View Editors", () => {
             const def = makeDeferred();
             patchWithCleanup(CodeEditor.prototype, {
                 setup() {
-                    this._super();
+                    super.setup();
                     owl.onMounted(() => def.resolve());
                 },
                 get aceTheme() {
@@ -857,7 +857,7 @@ QUnit.module("View Editors", () => {
             const def = makeDeferred();
             patchWithCleanup(CodeEditor.prototype, {
                 setup() {
-                    this._super();
+                    super.setup();
                     owl.onMounted(() => def.resolve());
                 },
                 get aceTheme() {

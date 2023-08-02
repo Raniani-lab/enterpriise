@@ -6,9 +6,9 @@ import { SelectionPopup } from "@point_of_sale/app/utils/input_popups/selection_
 import { usePos } from "@point_of_sale/app/store/pos_hook";
 import { useService } from "@web/core/utils/hooks";
 
-patch(PartnerLine.prototype, "pos_settle_due.PartnerLine", {
+patch(PartnerLine.prototype, {
     setup() {
-        this._super(...arguments);
+        super.setup(...arguments);
         this.pos = usePos();
         this.popup = useService("popup");
     },

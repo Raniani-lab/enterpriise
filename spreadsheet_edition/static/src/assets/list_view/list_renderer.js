@@ -9,12 +9,12 @@ import { SpreadsheetSelectorDialog } from "../components/spreadsheet_selector_di
 import { HandleField } from "@web/views/fields/handle/handle_field";
 import { _t } from "@web/core/l10n/translation";
 
-patch(ListRenderer.prototype, "documents_spreadsheet_list_renderer_patch", {
+patch(ListRenderer.prototype, {
     /**
      * @override
      */
     setup() {
-        this._super(...arguments);
+        super.setup(...arguments);
         this.dialogService = useService("dialog");
         this.userService = useService("user");
         useBus(this.env.bus, "insert-list-spreadsheet", this.insertListSpreadsheet.bind(this));

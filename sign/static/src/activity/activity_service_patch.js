@@ -4,7 +4,7 @@ import { ActivityService } from "@mail/core/web/activity_service";
 import { patch } from "@web/core/utils/patch";
 import { _t } from "@web/core/l10n/translation";
 
-patch(ActivityService.prototype, "sign", {
+patch(ActivityService.prototype, {
     requestSignature(defaultActivityId = false, onClose = () => {}) {
         return this.env.services.action.doAction(
             {

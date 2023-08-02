@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { patch } from '@web/core/utils/patch';
+import { patch } from "@web/core/utils/patch";
 import { registry } from '@web/core/registry';
 import { utils } from '@web/../tests/helpers/mock_env';
 
@@ -20,7 +20,7 @@ function makeFakeKnowledgeCommandsService() {
 }
 
 const serviceRegistry = registry.category('services');
-patch(utils, 'knowledge_test_registries', {
+patch(utils, {
     prepareRegistriesWithCleanup() {
         prepareRegistriesWithCleanup(...arguments);
         serviceRegistry.add('knowledgeCommandsService', makeFakeKnowledgeCommandsService());

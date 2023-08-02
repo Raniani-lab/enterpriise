@@ -3,15 +3,14 @@
 import { TicketScreen } from "@point_of_sale/app/screens/ticket_screen/ticket_screen";
 import { patch } from "@web/core/utils/patch";
 
-patch(TicketScreen.prototype, "l10n_de_pos_cert.TicketScreen", {
+patch(TicketScreen.prototype, {
     // @Override
     async _onBeforeDeleteOrder(order) {
-        const _super = this._super;
         try {
             if (this.pos.isCountryGermanyAndFiskaly() && order.isTransactionStarted()) {
                 await order.cancelTransaction();
             }
-            return _super(...arguments);
+            return super._onBeforeDeleteOrder(...arguments);
         } catch (error) {
             this._triggerFiskalyError(error);
             return false;

@@ -3,7 +3,7 @@ import { patch } from "@web/core/utils/patch";
 
 import { BankRecKanbanController } from "@account_accountant/components/bank_reconciliation/kanban";
 
-patch(BankRecKanbanController.prototype, "account_accountant_batch_payment", {
+patch(BankRecKanbanController.prototype, {
 
     // -----------------------------------------------------------------------------
     // HELPERS
@@ -11,7 +11,7 @@ patch(BankRecKanbanController.prototype, "account_accountant_batch_payment", {
 
     /** override **/
     getChildSubEnv(){
-        const env = this._super(...arguments);
+        const env = super.getChildSubEnv(...arguments);
 
         env.methods.actionAddNewBatchPayment = this.actionAddNewBatchPayment.bind(this);
         env.methods.actionRemoveNewBatchPayment = this.actionRemoveNewBatchPayment.bind(this);
@@ -70,7 +70,7 @@ patch(BankRecKanbanController.prototype, "account_accountant_batch_payment", {
 
     /** override **/
     async _actionValidate(newState){
-        await this._super(...arguments);
+        await super._actionValidate(...arguments);
         if(!newState.bankRecRecordData){
             return;
         }

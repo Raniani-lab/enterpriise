@@ -3,11 +3,10 @@
 import { SocialPostFormatterMixin } from "./social_post_formatter_mixin";
 
 import { HtmlField, htmlField } from "@web_editor/js/backend/html_field";
-import { patch } from '@web/core/utils/patch';
 import { registry } from "@web/core/registry";
 const { markup } = owl;
 
-export class FieldPostPreview extends HtmlField {
+export class FieldPostPreview extends SocialPostFormatterMixin(HtmlField) {
     get markupValue() {
         const $html = $(this.props.record.data[this.props.name] + '');
         $html.find('.o_social_preview_message').each((index, previewMessage) => {
@@ -22,8 +21,6 @@ FieldPostPreview.props = {
     ...FieldPostPreview.props,
     mediaType: { type: String, optional: true },
 };
-
-patch(FieldPostPreview.prototype, 'social_preview_formatter_mixin', SocialPostFormatterMixin);
 
 export const fieldPostPreview = {
     ...htmlField,

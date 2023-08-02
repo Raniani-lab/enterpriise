@@ -6,14 +6,13 @@ import { ErrorPopup } from "@point_of_sale/app/errors/popups/error_popup";
 import { _t } from "@web/core/l10n/translation";
 import { useService } from "@web/core/utils/hooks";
 
-patch(ReprintReceiptButton.prototype, "pos_l10n_se.ReprintReceiptButton", {
+patch(ReprintReceiptButton.prototype, {
     setup() {
-        this._super(...arguments);
+        super.setup(...arguments);
         this.popup = useService("popup");
         this.orm = useService("orm");
     },
     async _onClick() {
-        const _super = this._super;
         if (this.pos.useBlackBoxSweden()) {
             const order = this.props.order;
 
@@ -34,11 +33,11 @@ patch(ReprintReceiptButton.prototype, "pos_l10n_se.ReprintReceiptButton", {
                     await this.orm.call("pos.order", "set_is_reprint", [
                         [this.pos.validated_orders_name_server_id_map[order.name]],
                     ]);
-                    return _super(...arguments);
+                    return super._onClick(...arguments);
                 }
             }
         } else {
-            return _super(...arguments);
+            return super._onClick(...arguments);
         }
     },
 });

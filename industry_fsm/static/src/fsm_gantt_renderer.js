@@ -1,11 +1,11 @@
 /** @odoo-module **/
 
 import { TaskGanttRenderer } from '@project_enterprise/task_gantt_renderer';
-import { patch } from '@web/core/utils/patch';
+import { patch } from "@web/core/utils/patch";
 
 const { DateTime } = luxon;
 
-patch(TaskGanttRenderer.prototype, "industry_fsm", {
+patch(TaskGanttRenderer.prototype, {
     /**
      * @override
     */
@@ -21,6 +21,6 @@ patch(TaskGanttRenderer.prototype, "industry_fsm", {
             this.props.create(context);
             return;
         }
-        this._super(...arguments);
+        super.onCreate(...arguments);
     },
 });

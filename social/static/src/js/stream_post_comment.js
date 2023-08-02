@@ -5,12 +5,11 @@ import { StreamPostCommentsReply } from './stream_post_comments_reply';
 
 import { ConfirmationDialog } from '@web/core/confirmation_dialog/confirmation_dialog';
 import { escape, sprintf } from '@web/core/utils/strings';
-import { patch } from '@web/core/utils/patch';
 import { useService } from '@web/core/utils/hooks';
 
 const { Component, markup, useState } = owl;
 
-export class StreamPostComment extends Component {
+export class StreamPostComment extends SocialPostFormatterMixin(Component) {
 
     setup() {
         super.setup();
@@ -152,7 +151,5 @@ export class StreamPostComment extends Component {
         return luxon.DateTime.fromISO(this.comment.created_time);
     }
 }
-
-patch(StreamPostComment.prototype, 'social_post_formatter_mixin', SocialPostFormatterMixin);
 
 StreamPostComment.template = 'social.StreamPostComment';

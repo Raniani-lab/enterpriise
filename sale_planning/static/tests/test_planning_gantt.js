@@ -68,7 +68,7 @@ QUnit.test('Process domain for plan dialog', async function (assert) {
     let renderer;
     patchWithCleanup(PlanningGanttRenderer.prototype, {
         setup() {
-            this._super.apply(this, arguments);
+            super.setup(...arguments);
             renderer = this;
         }
     });

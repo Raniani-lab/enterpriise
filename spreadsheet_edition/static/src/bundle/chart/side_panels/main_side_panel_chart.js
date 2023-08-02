@@ -11,7 +11,7 @@ const { ChartPanel } = spreadsheet.components;
  * between odoo charts and spreadsheet charts.
  */
 
-patch(ChartPanel.prototype, "spreadsheet.ChartPanel", {
+patch(ChartPanel.prototype, {
     get chartTypes() {
         const definition = this.getChartDefinition();
         const isOdoo = definition.type.startsWith("odoo_");
@@ -45,7 +45,7 @@ patch(ChartPanel.prototype, "spreadsheet.ChartPanel", {
                 sheetId: this.env.model.getters.getActiveSheetId(),
             });
         } else {
-            this._super(type);
+            super.onTypeChange(type);
         }
     },
 });

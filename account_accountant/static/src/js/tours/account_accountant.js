@@ -12,9 +12,9 @@
     const { markup } = owl;
 
     // Update the invoicing tour as the menu items have changed, but we want the test to still work
-    patch(registry.category("web_tour.tours").get("account_tour"), "patch_account_accountant_tour", {
+    patch(registry.category("web_tour.tours").get("account_tour"), {
         steps() {
-            const originalSteps = this._super();
+            const originalSteps = super.steps();
             originalSteps.splice(0, 3,
                 ...stepUtils
                     .goToAppSteps("account_accountant.menu_accounting", _t("Go to invoicing"))

@@ -4,9 +4,9 @@ import { patch } from '@web/core/utils/patch';
 import { TimesheetTimerHeader } from '@timesheet_grid/components/timesheet_timer_header/timesheet_timer_header';
 import { useService } from "@web/core/utils/hooks";
 
-patch(TimesheetTimerHeader.prototype, 'helpdesk_timesheet.TimesheetTimerHeader', {
+patch(TimesheetTimerHeader.prototype, {
     setup() {
-        this._super();
+        super.setup();
         this.helpdeskTimerService = useService("helpdesk_timer_header");
     },
 
@@ -14,7 +14,7 @@ patch(TimesheetTimerHeader.prototype, 'helpdesk_timesheet.TimesheetTimerHeader',
      * @override
      */
     async onWillStart() {
-        this._super(...arguments);
+        super.onWillStart(...arguments);
         if (this.props.timerRunning && this.helpdeskTimerService.helpdeskProjects == undefined) {
             // Means helpdesk projects has not been fetched yet
             await this.helpdeskTimerService.fetchHelpdeskProjects();
@@ -26,7 +26,7 @@ patch(TimesheetTimerHeader.prototype, 'helpdesk_timesheet.TimesheetTimerHeader',
      * @override
      */
     async onWillUpdateProps(nextProps) {
-        await this._super(...arguments);
+        await super.onWillUpdateProps(...arguments);
         if (nextProps.timerRunning && !nextProps.timesheet?.data?.task_id) {
             if (this.helpdeskTimerService.helpdeskProjects == undefined) {
                 // Means helpdesk projects has not been fetched yet

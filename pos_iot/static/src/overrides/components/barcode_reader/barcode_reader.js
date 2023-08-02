@@ -3,7 +3,7 @@
 import { patch } from "@web/core/utils/patch";
 import { BarcodeReader } from "@point_of_sale/app/barcode/barcode_reader_service";
 
-patch(BarcodeReader.prototype, "pos_iot.BarcodeReader", {
+patch(BarcodeReader.prototype, {
     connectToProxy() {
         this.scanners = this.hardwareProxy.deviceControllers.scanners;
         for (const scanner of Object.values(this.scanners)) {

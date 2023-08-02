@@ -10,9 +10,9 @@ import { serializeDateTime } from "@web/core/l10n/dates";
 
 const { useRef, useState, useSubEnv, onWillStart } = owl;
 
-patch(AttendeeCalendarController.prototype, "appointment_calendar_controller", {
+patch(AttendeeCalendarController.prototype, {
     setup() {
-        this._super(...arguments);
+        super.setup(...arguments);
         this.rpc = useService("rpc");
         this.popover = usePopover(Tooltip, { position: "left" });
         this.copyLinkRef = useRef("copyLinkRef");

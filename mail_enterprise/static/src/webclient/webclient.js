@@ -8,12 +8,12 @@ import { onWillDestroy } from "@odoo/owl";
 
 const USER_DEVICES_MODEL = "mail.partner.device";
 
-patch(WebClientEnterprise.prototype, "mail_enterprise", {
+patch(WebClientEnterprise.prototype, {
     /**
      * @override
      */
     setup() {
-        this._super();
+        super.setup();
         this.rpc = useService("rpc");
         this.orm = useService("orm");
         if (this._canSendNativeNotification) {

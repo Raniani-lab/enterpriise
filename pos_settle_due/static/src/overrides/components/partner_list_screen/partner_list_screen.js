@@ -5,9 +5,9 @@ import { patch } from "@web/core/utils/patch";
 import { SelectionPopup } from "@point_of_sale/app/utils/input_popups/selection_popup";
 import { useService } from "@web/core/utils/hooks";
 
-patch(PartnerListScreen.prototype, "pos_settle_due.PartnerListScreen", {
+patch(PartnerListScreen.prototype, {
     setup() {
-        this._super(...arguments);
+        super.setup(...arguments);
         this.popup = useService("popup");
     },
     get isBalanceDisplayed() {

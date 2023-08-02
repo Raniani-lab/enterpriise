@@ -5,14 +5,14 @@ import { patch } from "@web/core/utils/patch";
 import { useService } from "@web/core/utils/hooks";
 import { _t } from "@web/core/l10n/translation";
 
-patch(ImportAction.prototype, "account_base_import_patch", {
+patch(ImportAction.prototype, {
     setup() {
-        this._super();
+        super.setup();
         this.actionService = useService("action");
     },
 
     get importOptions() {
-        const options = this._super();
+        const options = super.importOptions;
         if (this.resModel === "account.move.line") {
             Object.assign(options.name_create_enabled_fields, {
                 journal_id: true,
@@ -42,6 +42,6 @@ patch(ImportAction.prototype, "account_base_import_patch", {
             }
             return this.actionService.doAction(action);
         }
-        this._super();
+        super.exit();
     }
 });

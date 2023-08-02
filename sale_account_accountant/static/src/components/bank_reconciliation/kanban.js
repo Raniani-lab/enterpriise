@@ -3,7 +3,7 @@ import { patch } from "@web/core/utils/patch";
 
 import { BankRecKanbanController } from "@account_accountant/components/bank_reconciliation/kanban";
 
-patch(BankRecKanbanController.prototype, "sale_account_accountant", {
+patch(BankRecKanbanController.prototype, {
 
     // -----------------------------------------------------------------------------
     // RPC

@@ -318,7 +318,7 @@ QUnit.module(
 
             patchWithCleanup(KanbanRecord.prototype, {
                 setup() {
-                    this._super();
+                    super.setup();
                     if (triggerError) {
                         owl.onWillRender(() => {
                             triggerError = false;

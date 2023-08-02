@@ -65,8 +65,8 @@ QUnit.module('appointment.wysiwyg', {
             { force: true },
         );
         patchWithCleanup(Wysiwyg.prototype, {
-            init: function () {
-                this._super.apply(this, arguments);
+            init() {
+                super.init(...arguments);
                 wysiwyg = this;
             }
         });

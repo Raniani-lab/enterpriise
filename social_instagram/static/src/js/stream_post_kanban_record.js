@@ -3,14 +3,14 @@
 import { StreamPostKanbanRecord } from '@social/js/stream_post_kanban_record';
 import { StreamPostCommentsInstagram } from './stream_post_comments';
 
-import { patch } from '@web/core/utils/patch';
+import { patch } from "@web/core/utils/patch";
 
 const { useEffect } = owl;
 
-patch(StreamPostKanbanRecord.prototype, 'social_instagram.StreamPostKanbanRecord', {
+patch(StreamPostKanbanRecord.prototype, {
 
     setup() {
-        this._super(...arguments);
+        super.setup(...arguments);
         useEffect((commentEl) => {
             if (commentEl) {
                 const onInstagramCommentsClick = this._onInstagramCommentsClick.bind(this);

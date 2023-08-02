@@ -4,7 +4,7 @@ import { onWillStart, onMounted } from "@odoo/owl";
 import { click, getFixture, makeDeferred, nextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
 import { qweb as QWeb } from "@web/legacy/js/services/core";
-import { patch, unpatch } from "@web/core/utils/patch";
+import { patch } from "@web/core/utils/patch";
 import { HtmlField } from "@web_editor/js/backend/html_field";
 import { parseHTML } from "@web_editor/js/editor/odoo-editor/src/utils/utils";
 import { ArticlesStructureBehavior } from "@knowledge/components/behaviors/articles_structure_behavior/articles_structure_behavior";
@@ -38,12 +38,12 @@ const articlesIndexSearch = {
 const insertArticlesStructure = async (editable, target, childrenOnly) => {
     const articleStructureMounted = makeDeferred();
     const wysiwyg = $(editable).data('wysiwyg');
-    patch(ArticlesStructureBehavior.prototype, 'ARTICLE_STRUCTURE_PATCH_TEST', {
+    const unpatch = patch(ArticlesStructureBehavior.prototype, {
         setup() {
-            this._super(...arguments);
+            super.setup(...arguments);
             onMounted(() => {
                 articleStructureMounted.resolve();
-                unpatch(ArticlesStructureBehavior.prototype, 'ARTICLE_STRUCTURE_PATCH_TEST');
+                unpatch();
             });
         }
     });
@@ -263,14 +263,14 @@ QUnit.module("Knowledge - Ensure body save scenarios", (hooks) => {
     hooks.beforeEach(() => {
         patchWithCleanup(KnowledgeArticleFormController.prototype, {
             setup() {
-                this._super(...arguments);
+                super.setup(...arguments);
                 formController = this;
             }
         });
         htmlFieldPromise = makeDeferred();
         patchWithCleanup(HtmlField.prototype, {
             async startWysiwyg() {
-                await this._super(...arguments);
+                await super.startWysiwyg(...arguments);
                 await nextTick();
                 htmlFieldPromise.resolve(this);
             }
@@ -377,13 +377,13 @@ QUnit.module("Knowledge - Ensure body save scenarios", (hooks) => {
         // Patch to control when the next mounting is done.
         const isAtWillStart = makeDeferred();
         const pauseWillStart = makeDeferred();
-        patch(TemplateBehavior.prototype, "TEMPLATE_DELAY_MOUNT_TEST_PATCH", {
+        const unpatch = patch(TemplateBehavior.prototype, {
             setup() {
-                this._super(...arguments);
+                super.setup(...arguments);
                 onWillStart(async () => {
                     isAtWillStart.resolve();
                     await pauseWillStart;
-                    unpatch(TemplateBehavior.prototype, "TEMPLATE_DELAY_MOUNT_TEST_PATCH");
+                    unpatch();
                 });
             }
         });
@@ -438,12 +438,12 @@ QUnit.module("Knowledge - Ensure body save scenarios", (hooks) => {
 const insertTableOfContent = async (editable, target) => {
     const tocMounted = makeDeferred();
     const wysiwyg = $(editable).data('wysiwyg');
-    patch(TableOfContentBehavior.prototype, 'TOC_PATCH_TEST', {
+    const unpatch = patch(TableOfContentBehavior.prototype, {
         setup() {
-            this._super(...arguments);
+            super.setup(...arguments);
             onMounted(() => {
                 tocMounted.resolve();
-                unpatch(TableOfContentBehavior.prototype, 'TOC_PATCH_TEST');
+                unpatch();
             });
         }
     });

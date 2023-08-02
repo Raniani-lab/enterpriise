@@ -1,6 +1,5 @@
 /** @odoo-module */
 
-import { unpatch } from "@web/core/utils/patch";
-import { ListRenderer } from "@web/views/list/list_renderer";
+import { unpatchListRendererDesktop } from "@web_enterprise/views/list/list_renderer_desktop";
 
-unpatch(ListRenderer.prototype, "web_enterprise.ListRendererDesktop");
+unpatchListRendererDesktop();

@@ -384,7 +384,7 @@ QUnit.module("View Editors", (hooks) => {
 
         patchWithCleanup(ImageField.prototype, {
             setup() {
-                this._super();
+                super.setup();
                 owl.onMounted(() => {
                     assert.step(
                         `image, width: ${this.props.width}, height: ${this.props.height}, previewImage: ${this.props.previewImage}`
@@ -2743,7 +2743,7 @@ QUnit.module("View Editors", (hooks) => {
     QUnit.test("supports displaying <setting> tag in innergroup", async (assert) => {
         patchWithCleanup(Setting.prototype, {
             setup() {
-                this._super();
+                super.setup();
                 assert.step(`setting instanciated. studioXpath: ${this.props.studioXpath}`);
             },
         });

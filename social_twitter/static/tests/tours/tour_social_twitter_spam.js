@@ -2,12 +2,12 @@
 
 import { StreamPostCommentsReplyTwitter } from '@social_twitter/js/stream_post_comments_reply';
 
-import { patch } from '@web/core/utils/patch';
+import { patch } from "@web/core/utils/patch";
 import { registry } from "@web/core/registry";
 
 let uniqueSeed = 0;
 
-patch(StreamPostCommentsReplyTwitter.prototype, "social_twitter_spam", {
+patch(StreamPostCommentsReplyTwitter.prototype, {
     get authorPictureSrc() { return '' }
 });
 

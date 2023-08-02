@@ -21,7 +21,7 @@ import {
 } from "@web_studio/../tests/helpers";
 import { registry } from "@web/core/registry";
 import { session } from "@web/session";
-import { patch, unpatch } from "@web/core/utils/patch";
+import { patch } from "@web/core/utils/patch";
 import { StudioView } from "@web_studio/client_action/view_editor/studio_view";
 import { StudioClientAction } from "@web_studio/client_action/studio_client_action";
 import { ListEditorRenderer } from "@web_studio/client_action/view_editor/editors/list/list_editor_renderer";
@@ -255,9 +255,9 @@ QUnit.module("Studio", (hooks) => {
         );
 
         let prom = makeDeferred();
-        patch(StudioView.prototype, "web_studio.Test.StudioView", {
+        const unpatch = patch(StudioView.prototype, {
             setup() {
-                this._super();
+                super.setup();
                 owl.onMounted(() => {
                     prom.resolve();
                 });
@@ -268,7 +268,7 @@ QUnit.module("Studio", (hooks) => {
         prom = makeDeferred();
         await webClient.env.services.studio.reload();
         await prom;
-        unpatch(StudioView.prototype, "web_studio.Test.StudioView");
+        unpatch();
 
         assert.containsOnce(
             target,

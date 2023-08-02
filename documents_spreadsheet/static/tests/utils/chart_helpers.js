@@ -71,7 +71,7 @@ export async function createSpreadsheetFromGraphView(params = {}) {
     const def = makeDeferred();
     patchWithCleanup(SpreadsheetAction.prototype, {
         setup() {
-            this._super();
+            super.setup();
             spreadsheetAction = this;
             owl.onMounted(() => {
                 def.resolve();

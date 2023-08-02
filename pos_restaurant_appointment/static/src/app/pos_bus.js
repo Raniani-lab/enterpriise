@@ -3,10 +3,10 @@
 import { patch } from "@web/core/utils/patch";
 import { PosBus } from "@point_of_sale/app/bus/pos_bus_service";
 
-patch(PosBus.prototype, "pos_restaurant_appointment.PosBus", {
+patch(PosBus.prototype, {
     // Override
     dispatch(message) {
-        this._super(...arguments);
+        super.dispatch(...arguments);
 
         if (message.type === "TABLE_BOOKING") {
             this.ws_syncTableBooking(message.payload);

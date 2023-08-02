@@ -3,9 +3,9 @@
 import { PartnerDetailsEdit } from "@point_of_sale/app/screens/partner_list/partner_editor/partner_editor";
 import { patch } from "@web/core/utils/patch";
 
-patch(PartnerDetailsEdit.prototype, "l10n_cl_edi_pos.PartnerDetailsEdit", {
+patch(PartnerDetailsEdit.prototype, {
     setup() {
-        this._super(...arguments);
+        super.setup(...arguments);
         this.intFields.push("l10n_latam_identification_type_id");
         this.changes.l10n_cl_sii_taxpayer_type =
             this.props.partner.l10n_cl_sii_taxpayer_type || "1";

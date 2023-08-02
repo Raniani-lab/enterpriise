@@ -7,9 +7,9 @@ import { ListRenderer } from "@web/views/list/list_renderer";
 import { PromoteStudioDialog } from "@web_enterprise/webclient/promote_studio_dialog/promote_studio_dialog";
 import { useState, onWillUnmount } from "@odoo/owl";
 
-export const patchListRendererDesktop = {
+export const patchListRendererDesktop = () => ({
     setup() {
-        this._super(...arguments);
+        super.setup(...arguments);
         this.userService = useService("user");
         this.actionService = useService("action");
         const list = this.props.list;
@@ -79,7 +79,7 @@ export const patchListRendererDesktop = {
     },
 
     get displayOptionalFields() {
-        return this.isStudioEditable || this._super();
+        return this.isStudioEditable || super.displayOptionalFields;
     },
 
     /**
@@ -90,6 +90,6 @@ export const patchListRendererDesktop = {
     onSelectedAddCustomField() {
         this.env.services.dialog.add(PromoteStudioDialog, {});
     },
-};
+});
 
-patch(ListRenderer.prototype, "web_enterprise.ListRendererDesktop", patchListRendererDesktop);
+export const unpatchListRendererDesktop = patch(ListRenderer.prototype, patchListRendererDesktop());

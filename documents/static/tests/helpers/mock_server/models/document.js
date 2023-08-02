@@ -5,7 +5,7 @@ import { MockServer } from "@web/../tests/helpers/mock_server";
 
 import Domain from '@web/legacy/js/core/domain';
 
-patch(MockServer.prototype, 'documents/models/document', {
+patch(MockServer.prototype, {
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
@@ -18,7 +18,7 @@ patch(MockServer.prototype, 'documents/models/document', {
         if (args.model === 'documents.document' && args.method === 'get_document_max_upload_limit') {
             return Promise.resolve(67000000);
         }
-        return this._super(...arguments);
+        return super._performRPC(...arguments);
     },
     /**
      * Mocks the '_get_models' method of the model 'documents.document'.
@@ -69,7 +69,7 @@ patch(MockServer.prototype, 'documents/models/document', {
      *
      * @override
      */
-    mockSearchPanelSelectRange: function (model, [fieldName], kwargs) {
+    mockSearchPanelSelectRange(model, [fieldName], kwargs) {
         if (model === 'documents.document' && fieldName === 'folder_id') {
             const enableCounters = kwargs.enable_counters || false;
             const fields = ['display_name', 'description', 'parent_folder_id', 'has_write_access'];
@@ -97,14 +97,14 @@ patch(MockServer.prototype, 'documents/models/document', {
                 values: [...valuesRange.values()],
             };
         }
-        return this._super(...arguments);
+        return super.mockSearchPanelSelectRange(...arguments);
     },
     /**
      * Override to handle the specific case of model 'documents.document'.
      *
      * @override
      */
-    mockSearchPanelSelectMultiRange: function (model, [fieldName], kwargs) {
+    mockSearchPanelSelectMultiRange(model, [fieldName], kwargs) {
         const searchDomain = kwargs.search_domain || [];
         const categoryDomain = kwargs.category_domain || [];
         const filterDomain = kwargs.filter_domain || [];
@@ -138,6 +138,6 @@ patch(MockServer.prototype, 'documents/models/document', {
                 return {values: modelValues, };
             }
         }
-        return this._super(...arguments);
+        return super.mockSearchPanelSelectMultiRange(...arguments);
     },
 });

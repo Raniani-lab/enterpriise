@@ -4,13 +4,12 @@ import { StreamPostCommentsReplyTwitterQuote } from './stream_post_comments_repl
 import { SocialPostFormatterMixin } from '@social/js/social_post_formatter_mixin';
 
 import { Dialog } from '@web/core/dialog/dialog';
-import { patch } from '@web/core/utils/patch';
 import { sprintf } from '@web/core/utils/strings';
 import { useService } from '@web/core/utils/hooks';
 
 const { Component, markup } = owl;
 
-export class StreamPostTwitterQuote extends Component {
+export class StreamPostTwitterQuote extends SocialPostFormatterMixin(Component) {
 
     setup() {
         super.setup();
@@ -54,7 +53,6 @@ export class StreamPostTwitterQuote extends Component {
     }
 
 }
-patch(StreamPostTwitterQuote.prototype, 'social_twitter.SocialPostFormatterMixin', SocialPostFormatterMixin);
 
 StreamPostTwitterQuote.template = "social_twitter.TwitterQuoteDialog";
 StreamPostTwitterQuote.components = { Dialog, StreamPostCommentsReplyTwitterQuote };

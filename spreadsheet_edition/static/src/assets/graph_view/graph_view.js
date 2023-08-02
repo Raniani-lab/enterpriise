@@ -9,9 +9,9 @@ import { omit } from "@web/core/utils/objects";
 
 import { onWillStart } from "@odoo/owl";
 
-export const patchGraphSpreadsheet = {
+export const patchGraphSpreadsheet = () => ({
     setup() {
-        this._super.apply(this, arguments);
+        super.setup(...arguments);
         this.userService = useService("user");
         this.notification = useService("notification");
         this.actionService = useService("action");
@@ -54,7 +54,7 @@ export const patchGraphSpreadsheet = {
         };
         this.env.services.dialog.add(SpreadsheetSelectorDialog, params);
     },
-};
+});
 
 /**
  * This patch is a little trick, which require a little explanation:
@@ -68,4 +68,4 @@ export const patchGraphSpreadsheet = {
  * defined in another module, we disable this patch in a file that is only
  * loaded in test assets (disable_patch.js), and re-active it in our tests.
  */
-patch(GraphRenderer.prototype, "graph_spreadsheet", patchGraphSpreadsheet);
+export const unpatchGraphSpreadsheet = patch(GraphRenderer.prototype, patchGraphSpreadsheet());

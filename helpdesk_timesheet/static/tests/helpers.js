@@ -6,9 +6,9 @@ import { registry } from "@web/core/registry";
 import { timerHelpdeskService } from "@helpdesk_timesheet/services/helpdesk_timer_header_service";
 import { TimesheetGridSetupHelper } from "@timesheet_grid/../tests/helpers";
 
-patch(TimesheetGridSetupHelper.prototype, "@helpdesk_timesheet/../tests/helpers", {
+patch(TimesheetGridSetupHelper.prototype, {
     async mockTimesheetGridRPC(route, args) {
-        const result = await this._super(route, args);
+        const result = await super.mockTimesheetGridRPC(route, args);
         if (route === '/web/dataset/call_kw/res.users/has_group') {
             return true;
         }
@@ -17,7 +17,7 @@ patch(TimesheetGridSetupHelper.prototype, "@helpdesk_timesheet/../tests/helpers"
     async setupTimesheetGrid() {
         const serviceRegistry = registry.category("services");
         serviceRegistry.add("helpdesk_timer_header", timerHelpdeskService, { force: true });
-        const result = await this._super();
+        const result = await super.setupTimesheetGrid();
         if (this.withTimer) {
             const { pyEnv } = result;
             const projectId5 = pyEnv.mockServer.pyEnv['project.project'].create({ display_name: "helpdesk Project" });

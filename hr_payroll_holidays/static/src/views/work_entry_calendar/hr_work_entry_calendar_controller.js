@@ -6,15 +6,14 @@ import { patch } from "@web/core/utils/patch";
 
 patch(
     WorkEntryCalendarController.prototype,
-    "hr_payroll_holidays.work_entries_calendar.prototype",
     {
         setup() {
-            this._super(...arguments);
+            super.setup(...arguments);
             this.timeOff = useTimeOffToDefer();
         },
     }
 );
-patch(WorkEntryCalendarController, "hr_payroll_holidays.work_entries_calendar", {
+patch(WorkEntryCalendarController, {
     template: "hr_payroll_holidays.WorkEntryCalendarController",
     components: { ...WorkEntryCalendarController.components, TimeOffToDeferWarning },
 });

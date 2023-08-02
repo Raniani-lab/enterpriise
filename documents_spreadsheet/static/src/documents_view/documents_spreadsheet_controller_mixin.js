@@ -10,9 +10,9 @@ import { _t } from "@web/core/l10n/translation";
 
 import { XLSX_MIME_TYPE } from "@documents_spreadsheet/helpers";
 
-export const DocumentsSpreadsheetControllerMixin = {
+export const DocumentsSpreadsheetControllerMixin = () => ({
     setup() {
-        this._super(...arguments);
+        super.setup(...arguments);
         this.orm = useService("orm");
         this.action = useService("action");
         this.dialogService = useService("dialog");
@@ -26,7 +26,7 @@ export const DocumentsSpreadsheetControllerMixin = {
      */
     documentsViewHelpers() {
         return {
-            ...this._super(),
+            ...super.documentsViewHelpers(),
             sharePopupAction: this.sharePopupAction.bind(this),
         };
     },
@@ -116,7 +116,7 @@ export const DocumentsSpreadsheetControllerMixin = {
             context: this.props.context,
         });
     },
-};
+});
 
 function toggleDomainFilterIfEnabled(searchModel, domain) {
     for (const { searchItemId } of searchModel.query) {

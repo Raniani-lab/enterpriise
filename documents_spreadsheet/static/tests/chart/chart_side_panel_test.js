@@ -1,25 +1,20 @@
 /** @odoo-module */
 
-import { click, getFixture, triggerEvent } from "@web/../tests/helpers/utils";
+import { click, getFixture, triggerEvent, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { createBasicChart } from "@spreadsheet/../tests/utils/commands";
 import { createSpreadsheet } from "../spreadsheet_test_utils";
 import { createSpreadsheetFromGraphView, openChartSidePanel } from "../utils/chart_helpers";
-import { patch, unpatch } from "@web/core/utils/patch";
 import { GraphRenderer } from "@web/views/graph/graph_renderer";
 import { patchGraphSpreadsheet } from "@spreadsheet_edition/assets/graph_view/graph_view";
 import { fakeCookieService } from "@web/../tests/helpers/mock_services";
 import { registry } from "@web/core/registry";
 
 function beforeEach() {
-    patch(GraphRenderer.prototype, "graph_spreadsheet", patchGraphSpreadsheet);
+    patchWithCleanup(GraphRenderer.prototype, patchGraphSpreadsheet());
     registry.category("services").add("cookie", fakeCookieService);
 }
 
-function afterEach() {
-    unpatch(GraphRenderer.prototype, "graph_spreadsheet");
-}
-
-QUnit.module("documents_spreadsheet > chart side panel", { beforeEach, afterEach }, () => {
+QUnit.module("documents_spreadsheet > chart side panel", { beforeEach }, () => {
     QUnit.test("Open a chart panel", async (assert) => {
         const { model, env } = await createSpreadsheetFromGraphView();
         await openChartSidePanel(model, env);

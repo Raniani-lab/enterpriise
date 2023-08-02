@@ -5,7 +5,7 @@ import { Table } from "@pos_restaurant/app/floor_screen/table";
 import { deserializeDateTime } from "@web/core/l10n/dates";
 const { DateTime } = luxon;
 
-patch(Table.prototype, "pos_restaurant_appointment.table", {
+patch(Table.prototype, {
     get futureAppointments() {
         return Object.entries(this.props.table.appointment_ids || {})
             .map(([_id, appointment]) => {

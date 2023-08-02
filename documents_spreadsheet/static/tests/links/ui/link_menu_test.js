@@ -47,7 +47,7 @@ function beforeEach() {
     registry.category("services").add("spreadsheetLinkMenuCell", spreadsheetLinkMenuCellService);
     patchWithCleanup(Grid.prototype, {
         setup() {
-            this._super();
+            super.setup();
             this.hoveredCell = { col: 0, row: 0 };
         },
     });

@@ -8,12 +8,12 @@ import { browser } from "@web/core/browser/browser";
 import { patch } from "@web/core/utils/patch";
 import { IoTPrinter } from "@pos_iot/app/iot_printer";
 
-patch(hardwareProxyService, "pos_iot.HardwareProxy", {
+patch(hardwareProxyService, {
     dependencies: [...hardwareProxyService.dependencies, "orm"],
 });
-patch(HardwareProxy.prototype, "pos_iot.HardwareProxy", {
+patch(HardwareProxy.prototype, {
     setup({ orm }) {
-        this._super(...arguments);
+        super.setup(...arguments);
         this.orm = orm;
         this.deviceControllers = {};
         this.iotBoxes = [];

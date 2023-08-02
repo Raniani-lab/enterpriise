@@ -7,7 +7,7 @@ from odoo.addons.iap.tools import iap_tools
 from datetime import timedelta
 import json
 
-ENDPOINT = "http://iap-services.odoo.com"
+ENDPOINT = "https://l10n-fr-aspone.api.odoo.com"
 
 
 class AccountReportAsyncExport(models.Model):

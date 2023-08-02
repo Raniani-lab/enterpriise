@@ -32,8 +32,14 @@ class ManufacturingOrder(models.Model):
         return action
 
     def set_lot_producing(self):
+        """ Special mo barcode action to produce and return SN/lot data compatible with barcode app.
+        Helps avoid doing extra db calls within barcode that using action_generate_serial
+        would require."""
         self._set_lot_producing()
-        return self.lot_producing_id.read(self.lot_producing_id._get_fields_stock_barcode(), load=False)
+        action = False
+        if self.picking_type_id.auto_print_generated_mrp_lot:
+            action = self._autoprint_generated_lot(self.lot_producing_id)
+        return self.lot_producing_id.read(self.lot_producing_id._get_fields_stock_barcode(), load=False), action
 
     def _get_fields_stock_barcode(self):
         return [

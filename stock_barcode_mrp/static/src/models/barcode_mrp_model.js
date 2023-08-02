@@ -388,10 +388,17 @@ export default class BarcodeMRPModel extends BarcodePickingModel {
     async generateSerial() {
         await this.save();
         const res = await this.orm.call('mrp.production', 'set_lot_producing', [[this.resId]]);
-        this.record.lot_producing_id = res[0];
+        this.record.lot_producing_id = res[0][0];
+        const action = res[1]
         if(this.record.product_id.tracking == 'serial' && this.record.qty_producing === 0) {
             this.produceQty();
+            if (action) {
+                return this.action.doAction(action);
+            }
             return;
+        }
+        if (action) {
+            return this.action.doAction(action);
         }
         this.trigger('update');
     }

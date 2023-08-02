@@ -18,4 +18,15 @@ odoo.define('point_of_sale.tour.RentalTour', function (require) {
     ReceiptScreen.check.isShown();
 
     Tour.register('OrderLotsRentalTour', { test: true, url: '/pos/ui' }, getSteps());
+
+    startSteps();
+
+    ProductScreen.do.clickQuotationButton();
+    ProductScreen.do.selectFirstOrder();
+    ProductScreen.do.clickPayButton();
+    PaymentScreen.do.clickPaymentMethod('Bank');
+    PaymentScreen.do.clickValidate();
+    ReceiptScreen.check.isShown();
+
+    Tour.register('PosSettleRentalOrderWithImport', { test: true, url: '/pos/ui' }, getSteps());
 });

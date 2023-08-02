@@ -26,8 +26,6 @@ class HrContract(models.Model):
     contract_type_id = fields.Many2one('hr.contract.type', "Contract Type",
                                        default=lambda self: self.env.ref('l10n_be_hr_payroll.l10n_be_contract_type_cdi',
                                                                          raise_if_not_found=False))
-    has_bicycle = fields.Boolean(string="Bicycle to work", default=False, groups="hr_contract.group_hr_contract_manager",
-        help="Use a bicycle as a transport mode to go to work")
     l10n_be_bicyle_cost = fields.Float(compute='_compute_l10n_be_bicyle_cost')
 
     @api.depends('has_bicycle')

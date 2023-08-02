@@ -68,6 +68,8 @@ class HrContract(models.Model):
         string="Laptop",
         tracking=True,
         help="A benefit in kind is paid when the employee uses its laptop at home.")
+    has_bicycle = fields.Boolean(string="Bicycle to work", default=False, groups="hr_contract.group_hr_contract_manager",
+        help="Use a bicycle as a transport mode to go to work")
     meal_voucher_amount = fields.Monetary(
         string="Meal Vouchers",
         tracking=True,

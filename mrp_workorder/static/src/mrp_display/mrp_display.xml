@@ -28,7 +28,7 @@
                             <i class="fa fa-lg fa-sign-out me-md-1"/><span class="d-none d-md-inline">Close</span>
                         </button>
                 </t>
-                <MrpDisplayEmployeesPanel t-if="showEmployeesPanel" employees="useEmployee.employees"
+                <MrpDisplayEmployeesPanel t-if="this.group_mrp_routings &amp;&amp; showEmployeesPanel" employees="useEmployee.employees"
                     setSessionOwner.bind="useEmployee.setSessionOwner"
                     popupAddEmployee.bind="useEmployee.popupAddEmployee"
                     logout.bind="useEmployee.logout"/>

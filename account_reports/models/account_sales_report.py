@@ -253,7 +253,7 @@ class ECSalesReportCustomHandler(models.AbstractModel):
         else:
             partners = self.env['res.partner']
 
-        return [(partner, groupby_partners[partner.id]) for partner in partners]
+        return [(partner, groupby_partners[partner.id]) for partner in partners.sorted()]
 
     def _get_query_sums(self, report, options):
         ''' Construct a query retrieving all the aggregated sums to build the report. It includes:

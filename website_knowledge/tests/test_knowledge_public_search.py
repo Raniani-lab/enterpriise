@@ -5,14 +5,14 @@ from odoo.tests.common import HttpCase
 from odoo.tests.common import tagged
 
 
-@tagged('post_install', '-at_install', 'knowledge_portal_search', 'knowledge_tour')
-class TestKnowledgePortalSearch(HttpCase):
-    """ Test portal search tree rendering. """
+@tagged('post_install', '-at_install', 'knowledge_portal', 'knowledge_tour')
+class TestKnowledgePublicSearch(HttpCase):
+    """ Test public user search tree rendering. """
 
-    def test_knowledge_search_flow_portal(self):
+    def test_knowledge_search_flow_public(self):
         """This tour will check that the search bar tree rendering is properly updated"""
 
-        # Create articles to populate portal tree
+        # Create articles to populate published articles tree
         #
         # - My Article
         #       - Child Article
@@ -40,4 +40,4 @@ class TestKnowledgePortalSearch(HttpCase):
             'website_published': True,
         }])
 
-        self.start_tour('/knowledge/article/%s' % my_article.id, 'knowledge_portal_search_tour')
+        self.start_tour('/knowledge/article/%s' % my_article.id, 'knowledge_public_search_tour')

@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 /**
- * Portal Search Knowledge flow tour.
+ * Public user search Knowledge flow tour (for published articles).
  * Features tested:
  * - Check that tree contains all articles
  * - Write search term in search bar
@@ -11,7 +11,7 @@
 
 import { registry } from "@web/core/registry";
 
-registry.category("web_tour.tours").add('knowledge_portal_search_tour', {
+registry.category("web_tour.tours").add('knowledge_public_search_tour', {
     test: true,
     steps: () => [{ // Check that section tree contains all articles
     content: "Check that search tree contains 'My Article'",

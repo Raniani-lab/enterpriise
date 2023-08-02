@@ -1,9 +1,8 @@
 /** @odoo-module */
 
-import { endKnowledgeTour } from './knowledge_tour_utils.js';
+import { dragAndDropArticle, endKnowledgeTour } from './knowledge_tour_utils.js';
 import { registry } from "@web/core/registry";
 import { stepUtils } from "@web_tour/tour_service/tour_utils";
-import { dragAndDropArticle } from './knowledge_tour_utils';
 
 registry.category("web_tour.tours").add('knowledge_properties_tour', {
     test: true,

@@ -11,7 +11,7 @@ from PIL import Image
 from unittest import skipIf
 from odoo import fields
 from odoo.tests.common import tagged, HttpCase, users
-from odoo.addons.mail.tests.common import MailCommon
+from odoo.addons.mail.tests.common import MailCommon, mail_new_test_user
 
 
 class TestKnowledgeUICommon(HttpCase, MailCommon):
@@ -22,6 +22,17 @@ class TestKnowledgeUICommon(HttpCase, MailCommon):
         cls.env['knowledge.article'].with_context(active_test=False).search([]).unlink()
         cls.env['knowledge.article.template'].search([]).unlink()
         cls.env['knowledge.article.template.category'].search([]).unlink()
+
+        cls.user_portal = mail_new_test_user(
+            cls.env,
+            company_id=cls.company_admin.id,
+            email='patrick.portal@test.example.com',
+            groups='base.group_portal',
+            login='portal_test',
+            name='Patrick Portal',
+            notification_type='email',
+            tz='Europe/Brussels',
+        )
 
 @tagged('post_install', '-at_install', 'knowledge', 'knowledge_tour')
 class TestKnowledgeUI(TestKnowledgeUICommon):
@@ -128,6 +139,60 @@ class TestKnowledgeUI(TestKnowledgeUICommon):
             workspace_article._get_invite_url(invited_partner),
             self._new_mails.body_html
         )
+
+        # as we re-ordered our favorites, private article should come first
+        article_favorites = self.env['knowledge.article.favorite'].search([])
+        self.assertEqual(len(article_favorites), 2)
+        self.assertEqual(article_favorites[0].article_id, private_article)
+        self.assertEqual(article_favorites[1].article_id, workspace_article)
+
+    def test_knowledge_main_flow_portal(self):
+        """ Same goal as 'test_knowledge_main_flow' but for a portal user.
+         Portal users have limited rights, they can only access articles to which they have been
+         given specific write access to. """
+
+        # as the knowledge.article#_resequence method is based on write date
+        # force the write_date to be correctly computed
+        # otherwise it always returns the same value as we are in a single transaction
+        self.patch(self.env.cr, 'now', fields.Datetime.now)
+
+        # create initial set of data:
+        # - one regular internal article
+        # - one article to which portal has access to
+        self.env['knowledge.article'].create([{
+            'name': "Internal Workspace Article",
+            'internal_permission': 'write',
+            'parent_id': False,
+            'is_article_visible_by_everyone': True,
+        }, {
+            'name': "Workspace Article",
+            'body': "<p>Content of Workspace Article</p>",
+            'internal_permission': 'write',
+            'parent_id': False,
+            'is_article_visible_by_everyone': True,
+            'article_member_ids': [(0, 0, {
+                'partner_id': self.user_portal.partner_id.id,
+                'permission': 'write',
+            })]
+        }])
+
+        self.start_tour('/knowledge/home', 'knowledge_main_flow_tour_portal', login='portal_test')
+
+        # check our articles were correctly created
+        # with appropriate default values (section / internal_permission)
+        private_article = self.env['knowledge.article'].search([('name', '=', "My Private Article")])
+        self.assertTrue(bool(private_article))
+        self.assertEqual(private_article.category, 'private')
+        self.assertEqual(private_article.internal_permission, 'none')
+
+        workspace_article = self.env['knowledge.article'].search([('name', '=', "Workspace Article")])
+        # check that workspace article's content has been properly modified
+        self.assertIn("Edited Content of Workspace Article", workspace_article.body,
+                      "Portal should have been able to modify the article content as he as direct access")
+
+        children_workspace_articles = workspace_article.child_ids.sorted('sequence')
+        self.assertEqual(len(children_workspace_articles), 2,
+                         "Portal should have been able to create 2 children")
 
         # as we re-ordered our favorites, private article should come first
         article_favorites = self.env['knowledge.article.favorite'].search([])

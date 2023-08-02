@@ -129,7 +129,7 @@ registry.category("web_tour.tours").add('knowledge_main_flow_tour', {
     in_modal: false,
     run: () => {},
 }, {
-    // go back to main workspace article
+    // go back to private article
     trigger: 'section[data-section="private"] .o_article .o_article_name:contains("My Private Article")',
 }, {
     trigger: '.o_knowledge_editor:contains("My Private Article")',

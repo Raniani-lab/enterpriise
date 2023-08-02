@@ -195,6 +195,79 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
             "res_id": self.newMenu.id,
         })
 
+    def test_create_action_button_in_form_view(self):
+        self.start_tour("/web?debug=tests", 'web_studio_test_create_action_button_in_form_view', login="admin")
+        studioView = _get_studio_view(self.testView)
+        model = self.env["ir.model"].search([("model", "=", "res.partner")])
+        action1 = self.env["ir.actions.actions"].search([
+            ("name", "=", "Privacy Lookup"),
+            ("type", "=", "ir.actions.server"),
+            ("binding_model_id", "=", model.id),
+        ])
+        assertViewArchEqual(self, studioView.arch, """
+            <data>
+                <xpath expr="//form[1]/field[@name='name']" position="before">
+                    <header>
+                        <button string="web_studio_new_button_action_name" name="{action1_Id}" type="action"/>
+                    </header>
+                </xpath>
+            </data>""".format(action1_Id=action1.id))
+        self.start_tour("/web?debug=tests", 'web_studio_test_create_second_action_button_in_form_view', login="admin")
+        action2 = self.env["ir.actions.actions"].search([
+            ("name", "=", "Download (vCard)"),
+            ("type", "=", "ir.actions.server"),
+            ("binding_model_id", "=", model.id),
+        ])
+        assertViewArchEqual(self, studioView.arch, """
+            <data>
+                <xpath expr="//form[1]/field[@name='name']" position="before">
+                    <header>
+                        <button string="web_studio_new_button_action_name" name="{action1_Id}" type="action"/>
+                        <button string="web_studio_other_button_action_name" name="{action2_Id}" type="action"/>
+                    </header>
+                </xpath>
+            </data>""".format(action1_Id=action1.id, action2_Id=action2.id))
+        self.start_tour("/web?debug=tests", 'web_studio_test_remove_action_button_in_form_view', login="admin")
+        self.start_tour("/web?debug=tests", 'web_studio_test_remove_action_button_in_form_view', login="admin")
+        arch = """<data>
+                <xpath expr="//form[1]/field[@name='name']" position="before">
+                    <header>
+                        </header>
+                </xpath>
+            </data>"""
+        #FIXME Can't do it otherwise cause of indentation problems
+        self.assertEqual(studioView.arch.replace(" ", ""), arch.replace(" ", ""))
+
+    def test_create_action_button_in_list_view(self):
+        self.start_tour("/web?debug=tests", 'web_studio_test_create_action_button_in_list_view', login="admin")
+        view = self.env["ir.ui.view"].search([
+            ("name", "=", "res.partner.tree"),
+        ], limit=1)
+        studioView = _get_studio_view(view)
+        model = self.env["ir.model"].search([("model", "=", "res.partner")])
+        action = self.env["ir.actions.actions"].search([
+            ("name", "=", "Privacy Lookup"),
+            ("type", "=", "ir.actions.server"),
+            ("binding_model_id", "=", model.id),
+        ])
+        assertViewArchEqual(self, studioView.arch, """
+            <data>
+                <xpath expr="//field[@name='display_name']" position="before">
+                    <header>
+                        <button string="web_studio_new_button_action_name" name="{actionId}" type="action"/>
+                    </header>
+                </xpath>
+            </data>""".format(actionId=action.id))
+        self.start_tour("/web?debug=tests", 'web_studio_test_remove_action_button_in_list_view', login="admin")
+        arch = """<data>
+                <xpath expr="//field[@name='display_name']" position="before">
+                    <header>
+                    </header>
+                </xpath>
+            </data>"""
+        #FIXME Can't do it otherwise cause of indentation problems
+        self.assertEqual(studioView.arch.replace(" ", ""), arch.replace(" ", ""))
+
     def test_form_view_not_altered_by_studio_xml_edition(self):
         self.start_tour("/web?debug=tests", 'web_studio_test_form_view_not_altered_by_studio_xml_edition', login="admin", timeout=200)
 

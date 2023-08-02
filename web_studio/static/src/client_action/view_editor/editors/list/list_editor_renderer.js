@@ -2,6 +2,7 @@
 import { listView } from "@web/views/list/list_view";
 import { useThrottleForAnimation } from "@web/core/utils/timing";
 import { reactive, useEffect, useState } from "@odoo/owl";
+import { AddButtonAction } from "../../interactive_editor/action_button/action_button";
 
 const colSelectedClass = "o-web-studio-editor--element-clicked";
 const colHoverClass = "o-web-studio--col-hovered";
@@ -150,6 +151,21 @@ export class ListEditorRenderer extends listView.Renderer {
         }
         this.env.config.onNodeClicked(colEl.dataset.studioXpath);
     }
+
+    makeTooltip(button) {
+        return JSON.stringify({
+            button: {
+                string: button.string,
+                type: button.clickParams?.type,
+                name: button.clickParams?.name,
+            },
+            debug: true, 
+        });
+    }
 }
 ListEditorRenderer.template = "web_studio.ListEditorRenderer";
 ListEditorRenderer.recordRowTemplate = "web_studio.ListEditorRenderer.RecordRow";
+ListEditorRenderer.components = {
+    ...listView.Renderer.components,
+    AddButtonAction,
+};

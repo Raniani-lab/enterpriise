@@ -68,6 +68,13 @@ export class FormEditorCompiler extends formView.Compiler {
             parent.removeAttribute("t-if");
         }
 
+        const checkStatusBarButtons = compiled.querySelector("StatusBarButtons");
+        if(!checkStatusBarButtons) {
+            const addButtonAction = createElement("AddButtonAction");     
+            const el = compiled.querySelector(".o_form_sheet_bg") || compiled;
+            el.prepend(addButtonAction);
+        }
+
         const fieldStatus = compiled.querySelector(`Field[type="'statusbar'"]`); // change selector at some point
         if (!fieldStatus) {
             const addStatusBar = !compiled.querySelector(".o_form_statusbar");

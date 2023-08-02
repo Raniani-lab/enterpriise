@@ -1327,6 +1327,150 @@ registry.category("web_tour.tours").add("web_studio_alter_field_existing_in_mult
     ],
 });
 
+const buttonToogleStudio = {
+    trigger : `button[title="Toggle Studio"]`,
+}
+const addActionButtonModalSteps = (ActionLabel = "web_studio_new_button_action_name", ActionName = "Privacy Lookup") => [
+    {
+        trigger: ".o-web-studio-editor--add-button-action",
+    },
+    {
+        trigger: ".o-web-studio-editor--modal-add-action input#set_label",
+        run: `text ${ActionLabel}`,
+    },
+    {
+        trigger: ".o-web-studio-editor--modal-add-action input#set_button_type_to_action",
+    },
+    {
+        trigger: ".o-web-studio-editor--modal-add-action input#select_action",
+        run: `text ${ActionName}`,
+    },
+    {
+        trigger:
+            `.o-web-studio-editor--modal-add-action .o-autocomplete--dropdown-menu li a:not(:has(.fa-spin)):contains(${ActionName})`,
+        run(helpers) {
+            const el = Array.from(this.$anchor).find((el) => el.textContent === ActionName);
+            return helpers.click($(el));
+        },
+    },
+    {
+        trigger: "footer button.o-web-studio-editor--add-button-confirm",
+    },
+]
+
+registry.category("web_tour.tours").add("web_studio_test_create_action_button_in_form_view", {
+    test: true,
+    steps: () => [
+        {
+            trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
+        },
+        {
+            trigger: ".o_form_view .o_form_editable",
+        },
+        buttonToogleStudio,
+        ...addActionButtonModalSteps(),
+        {
+            trigger: '.o_web_studio_leave a',
+        },
+    ]
+});
+
+registry.category("web_tour.tours").add("web_studio_test_create_second_action_button_in_form_view", {
+    test: true,
+    steps: () => [
+        {
+            trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
+        },
+        {
+            trigger: ".o_form_view .o_form_editable",
+        },
+        buttonToogleStudio,
+        ...addActionButtonModalSteps("web_studio_other_button_action_name", "Download (vCard)"),
+        {
+            trigger: '.o_web_studio_leave a',
+        },
+    ]
+});
+
+registry.category("web_tour.tours").add("web_studio_test_create_action_button_in_list_view", {
+    test: true,
+    steps: () => [
+        {
+            trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
+        },
+        {
+            trigger: ".o_form_view .o_form_editable",
+        },
+        buttonToogleStudio,
+        {
+            trigger: ".o_web_studio_views_icons a[aria-label='List']",
+        },
+        {
+            trigger: ".o_optional_columns_dropdown button",
+        },
+        ...addActionButtonModalSteps(),
+        {
+            trigger: '.o_web_studio_leave a',
+        },
+    ]
+});
+
+registry.category("web_tour.tours").add("web_studio_test_remove_action_button_in_form_view", {
+    test: true,
+    steps: () => [
+        {
+            trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
+        },
+        {
+            trigger: ".o_form_view .o_form_editable",
+        },
+        buttonToogleStudio,
+        {
+            trigger: 'button[studioxpath="/form[1]/header[1]/button[1]"]',
+        },
+        {
+            trigger: "button.o_web_studio_remove",
+        },
+        {
+            trigger: "footer.modal-footer>button.btn-primary",
+        },
+        {
+            trigger: '.o_web_studio_leave a',
+        },
+    ]
+});
+
+registry.category("web_tour.tours").add("web_studio_test_remove_action_button_in_list_view", {
+    test: true,
+    steps: () => [
+        {
+            trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
+        },
+        {
+            trigger: ".o_form_view .o_form_editable",
+        },
+        buttonToogleStudio,
+        {
+            trigger: ".o_web_studio_views_icons a[aria-label='List']",
+        },
+        {
+            trigger: ".o_optional_columns_dropdown button",
+        },
+        {
+            trigger: 'button[studioxpath="/tree[1]/header[1]/button[1]"]',
+        },
+        {
+            trigger: "button.o_web_studio_remove",
+        },
+        {
+            trigger: "footer.modal-footer>button.btn-primary",
+        },
+        {
+            trigger: '.o_web_studio_leave a',
+        },
+    ]
+});
+
 registry.category("web_tour.tours").add("web_studio_monetary_create", {
     url: "/web?debug=1",
     test: true,

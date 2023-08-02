@@ -14,6 +14,7 @@ import { _t } from "@web/core/l10n/translation";
 import { useOwnedDialogs } from "@web/core/utils/hooks";
 
 import { Component, useState } from "@odoo/owl";
+import { AddButtonAction } from "../../../interactive_editor/action_button/action_button";
 
 /**
  * Overrides and extensions of components used by the FormRenderer
@@ -103,6 +104,14 @@ export class Notebook extends components.Notebook {
             position: "inside",
         });
     }
+}
+
+export class StatusBarButtons extends components.StatusBarButtons {
+    static template = `web_studio.FormViewAddButtonAction`;
+    static components = {
+        ...components.StatusBarButtons.components,
+        AddButtonAction,
+    };
 }
 
 export class StatusBarFieldHook extends Component {

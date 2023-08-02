@@ -10,6 +10,7 @@ import { FieldStudio } from "@web_studio/client_action/view_editor/editors/compo
 import { WidgetStudio } from "@web_studio/client_action/view_editor/editors/components/widget_studio";
 import { ViewButtonStudio } from "@web_studio/client_action/view_editor/editors/components/view_button_studio";
 import { InnerGroup, OuterGroup } from "./form_editor_groups";
+import { AddButtonAction } from "@web_studio/client_action/view_editor/interactive_editor/action_button/action_button";
 
 const components = formView.Renderer.components;
 
@@ -81,4 +82,5 @@ FormEditorRenderer.components = {
     OuterGroup,
     StudioHook,
     Setting,
+    AddButtonAction,
 };

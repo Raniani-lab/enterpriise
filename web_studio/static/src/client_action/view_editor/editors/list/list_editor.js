@@ -48,10 +48,8 @@ class EditorArchParser extends listView.ArchParser {
 
     processButton(node) {
         const parsed = super.processButton(node);
-        if (!node.closest("header")) {
-            parsed.studioXpath = computeXpath(node, "list, tree");
-            parsed.studio_groups = parseStudioGroups(node);
-        }
+        parsed.studioXpath = computeXpath(node, "list, tree");
+        parsed.studio_groups = parseStudioGroups(node);
         return parsed;
     }
 }

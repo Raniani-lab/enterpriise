@@ -14,12 +14,14 @@ from odoo.exceptions import UserError, AccessError, ValidationError
 from odoo.addons.web_studio.controllers import export
 from odoo.osv import expression
 from odoo.tools import ustr, sql
+from odoo.models import check_method_name
 
 _logger = logging.getLogger(__name__)
 
 # contains all valid operations
 OPERATIONS_WHITELIST = [
     'add',
+    'add_button_action',
     'attributes',
     'avatar_image',
     'buttonbox',
@@ -1080,6 +1082,38 @@ Are you sure you want to remove the selection values of those records?""") % len
             buttonbox_node = etree.Element('div', {'name': 'button_box', 'class': 'oe_button_box'})
             xpath_node.append(buttonbox_node)
 
+    def _operation_add_button_action(self, arch, operation, model=None):
+        """Add action button for form or tree view"""
+
+        label = operation.get("label")
+        button_type = operation.get("button_type")
+        if not label:
+            raise UserError('The label string is mandatory.')
+
+        params = {'string': label}
+        if button_type is not None and button_type == 'action':
+            actionId = operation["actionId"]
+            params['name'] = str(actionId)
+            params['type'] = button_type
+        elif button_type is not None and button_type == 'object':
+            methodId = operation["methodId"]
+            params['name'] = str(methodId)
+            params['type'] = button_type
+        else:
+            raise UserError('The type of statusBarButton must be "action" or "method".')
+
+        expression = "//header[1]"
+        position = "inside"
+        xpath_node = arch.find('xpath[@expr="{expr}"][@position="{position}"]'.format(expr=expression, position=position))
+        if xpath_node is None:
+            xpath_node = etree.SubElement(arch, 'xpath', {
+                'expr': expression,
+                'position': position,
+            })
+
+        statusbarbutton = etree.Element('button', params)
+        xpath_node.append(statusbarbutton)
+
     def _operation_chatter(self, arch, operation, model=None):
         def _get_remove_field_op(arch, field_name):
             return {
@@ -1410,7 +1444,7 @@ Are you sure you want to remove the selection values of those records?""") % len
     def _operation_statusbar(self, arch, operation, model=None):
         """ Create and insert a header as the first child of the form. """
         xpath_node = etree.SubElement(arch, 'xpath', {
-            'expr': '//form/*[1]',
+            'expr': '//form[1]/*[1] | //tree[1]/*[1]',
             'position': 'before'
         })
         xpath_node.append(etree.Element('header'))
@@ -1615,3 +1649,18 @@ Are you sure you want to remove the selection values of those records?""") % len
                 inline_view_etree.remove(node)
 
         return inline_view_etree
+
+    @http.route('/web_studio/check_method', type='json', auth='user')
+    def check_method(self, model_name, method_name):
+        """check if a method exists and is callable for a model"""
+        model = request.env[model_name]
+        if model is None:
+            raise ValidationError(_('The model %s doesn\'t exist.', model_name))
+        elif not method_name:
+            raise ValidationError(_('It lacks a method to check.'))
+        else:
+            check_method_name(method_name)
+            if not callable(getattr(model, method_name)):
+                raise ValidationError(_('The method %s does not exist on the model %s.') % (method_name, model))
+            else:
+                return True

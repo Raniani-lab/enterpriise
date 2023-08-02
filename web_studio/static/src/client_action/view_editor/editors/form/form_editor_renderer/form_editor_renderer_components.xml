@@ -21,6 +21,14 @@
     </xpath>
   </t>
 
+  <t t-name="web_studio.FormViewAddButtonAction" t-inherit="web.StatusBarButtons" owl="1">
+    <xpath expr="//div/t[3]" position="after">
+      <div class="mt-2 mb-2">
+        <AddButtonAction/>
+      </div>
+    </xpath>
+  </t>
+
   <t t-name="web_studio.StatusBarFieldHook" owl="1">
     <div class="o_web_studio_statusbar_hook" t-on-click="onClick">
       Add a pipeline status bar

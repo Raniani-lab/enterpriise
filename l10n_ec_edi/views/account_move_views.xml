@@ -57,7 +57,7 @@
                         readonly="state != 'draft'"/>
                 </xpath>
                 <xpath expr="//page[@id='aml_tab']" position="before">
-                    <page id="withhold_tab" string="Withhold Lines" invisible="l10n_ec_withhold_type not in ['out_withhold', 'in_withhold']">
+                    <page id="withhold_tab" string="Withhold Lines" name="withhold_lines" invisible="l10n_ec_withhold_type not in ['out_withhold', 'in_withhold']">
                         <field name="l10n_ec_withhold_line_ids" mode="tree,kanban">
                             <tree editable="bottom">
                                 <field name="l10n_ec_code_taxsupport"  column_invisible="parent.l10n_ec_withhold_type == 'out_withhold'" />

@@ -37,7 +37,7 @@
                         </field>
                     </group>
                     <notebook>
-                        <page string="Description">
+                        <page string="Description" name="description">
                             <field name="description" type="html"
                                 options="{'collaborative': true, 'resizable': false}"
                                 placeholder="Note a description of your parameter, when it's used, how is it computed, what's the source, ..."/>

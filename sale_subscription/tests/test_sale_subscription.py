@@ -355,6 +355,7 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertEqual(renewal_so.subscription_state, '3_progress', 'so should now be in progress')
             self.assertEqual(self.subscription.subscription_state, '5_renewed')
             self.assertEqual(renewal_so.date_order.date(), self.subscription.end_date, 'renewal start date should depends on the parent end date')
+            self.assertEqual(renewal_so.start_date, self.subscription.end_date, 'The renewal subscription start date and the renewed end_date should be aligned')
 
             self.assertEqual(renewal_so.recurrence_id, self.recurrence_month, 'the recurrence should be propagated')
             self.assertEqual(renewal_so.next_invoice_date, datetime.date(2021, 12, 18))

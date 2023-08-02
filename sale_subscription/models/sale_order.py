@@ -868,9 +868,9 @@ class SaleOrder(models.Model):
             parent.message_post(body=renew_msg_body)
             renew_close_reason_id = self.env.ref('sale_subscription.close_reason_renew')
             end_of_contract_reason_id = self.env.ref('sale_subscription.close_reason_end_of_contract')
-            parent.update({'end_date': parent.next_invoice_date})
             close_reason_id = renew_close_reason_id if parent.subscription_state != "6_churn" else end_of_contract_reason_id
             parent.set_close(close_reason_id=close_reason_id.id, renew=True)
+            parent.update({'end_date': parent.next_invoice_date})
             # This can create hole that are not taken into account by progress_sub upselling, it's an assumed choice over more upselling complexity
             start_date = renew.start_date or parent.next_invoice_date
             renew.write({'date_order': today, 'start_date': start_date})

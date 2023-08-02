@@ -1,7 +1,11 @@
 .account_report {
-    .filter_date {
+    .filter_date, .filter_comparison {
         .dropdown-item.date {
+            display: flex;
+            justify-content: space-between;
+
             &.focus, &.selected:hover, &.selected:focus { background-color: inherit }
+
             .o_datetime_input {
                 display: inline;
                 width: 86px;
@@ -14,8 +18,11 @@
 
     .filter_comparison {
         .dropdown-item.period {
+            display: flex;
+            justify-content: space-between;
+
             &.focus, &.selected:hover, &.selected:focus { background-color: inherit }
-            label { width: 146px }
+
             input[type=number] {
                 display: inline;
                 width: 86px;

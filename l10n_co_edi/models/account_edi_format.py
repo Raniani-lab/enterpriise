@@ -463,6 +463,8 @@ class AccountEdiFormat(models.Model):
             edi_result.append(_("You can not validate an invoice that has a partner without VAT number."))
         if not move.company_id.partner_id.l10n_co_edi_obligation_type_ids:
             edi_result.append(_("'Obligaciones y Responsabilidades' on the Customer Fiscal Data section needs to be set for the partner %s.", move.company_id.partner_id.display_name))
+        if not move.amount_total:
+            edi_result.append(_("You cannot send Documents in Carvajal without an amount."))
         if not move.partner_id.commercial_partner_id.l10n_co_edi_obligation_type_ids:
             edi_result.append(_("'Obligaciones y Responsabilidades' on the Customer Fiscal Data section needs to be set for the partner %s.", move.partner_id.commercial_partner_id.display_name))
         if (move.l10n_co_edi_type == '2' and \

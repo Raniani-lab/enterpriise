@@ -106,15 +106,9 @@ class PosOrder(models.Model):
 
         return line_dict
 
-    def _get_fields_for_draft_order(self):
-        field_list = super()._get_fields_for_draft_order()
-        if self.env.company.l10n_de_is_germany_and_fiskaly():
-            field_list.append('l10n_de_fiskaly_time_start')
-        return field_list
-
     @api.model
-    def get_table_draft_orders(self, table_ids):
-        table_orders = super().get_table_draft_orders(table_ids)
+    def export_for_ui_table_draft(self, table_ids):
+        table_orders = super().export_for_ui_table_draft(table_ids)
         if self.env.company.l10n_de_is_germany_and_fiskaly():
             for order in table_orders:
                 order['tss_info'] = {}

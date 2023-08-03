@@ -1,14 +1,14 @@
 /** @odoo-module **/
 
 import LineComponent from '@stock_barcode/components/line';
-import { patch } from '@web/legacy/js/core/utils';
+import { patch } from "@web/core/utils/patch";
 
 
-patch(LineComponent.prototype, 'stock_barcode_picking_batch', {
+patch(LineComponent.prototype, {
 
     get componentClasses() {
         return [
-            this._super(),
+            super.componentClasses,
             this.line.colorLine !== undefined ? 'o_colored_markup' : ''
         ].join(' ');
     }

@@ -1,8 +1,8 @@
 /** @odoo-module **/
-import { patch } from '@web/legacy/js/core/utils';
+import { patch } from "@web/core/utils/patch";
 import { WebsitePreview } from '@website/client_actions/website_preview/website_preview';
 
-patch(WebsitePreview.prototype, 'website_knowledge_website_preview', {
+patch(WebsitePreview.prototype, {
     /**
      * @override
      */
@@ -12,6 +12,6 @@ patch(WebsitePreview.prototype, 'website_knowledge_website_preview', {
                 pathname.startsWith('/knowledge/article/')
                 || pathname.includes('/knowledge/home')
             )
-        ) || this._super(...arguments);
+        ) || super._isTopWindowURL(...arguments);
     }
 });

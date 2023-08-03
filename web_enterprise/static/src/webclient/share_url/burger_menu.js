@@ -6,11 +6,11 @@ import { BurgerMenu } from "@web/webclient/burger_menu/burger_menu";
 import { shareUrl } from "./share_url";
 
 if (navigator.share && isDisplayStandalone()) {
-    patch(BurgerMenu.prototype, "web_enterprise.BurgerMenu", {
+    patch(BurgerMenu.prototype, {
         shareUrl,
     });
 
-    patch(BurgerMenu, "web_enterprise.BurgerMenu", {
+    patch(BurgerMenu, {
         template: "web_enterprise.BurgerMenu",
     });
 }

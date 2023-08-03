@@ -1,9 +1,9 @@
 /** @odoo-module **/
 
 import LineComponent from '@stock_barcode/components/line';
-import { patch } from '@web/legacy/js/core/utils';
+import { patch } from "@web/core/utils/patch";
 
-patch(LineComponent.prototype, 'stock_barcode_product_expiry', {
+patch(LineComponent.prototype, {
     get isUseExpirationDate() {
         return this.line.product_id.use_expiration_date;
     },

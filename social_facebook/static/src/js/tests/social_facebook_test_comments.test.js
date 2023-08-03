@@ -2,7 +2,7 @@
 
 import { StreamPostCommentsReply } from '@social/js/stream_post_comments_reply';
 
-import { getFixture } from "@web/../tests/helpers/utils";
+import { getFixture, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers"
 import { registry } from "@web/core/registry";;
 
@@ -574,7 +574,7 @@ QUnit.module('Facebook Comments', (hooks) => {
 
         // Patch "addComment" to return new comment
         // Sadly 'XMLHttpRequest' cannot be mocked easily (would have been better)
-        testUtils.mock.patch(StreamPostCommentsReply.prototype, {
+        patchWithCleanup(StreamPostCommentsReply.prototype, {
             _addComment: function (textarea) {
                 const formData = new FormData(textarea.closest('.o_social_write_reply').querySelector('form'));
                 this.props.onAddComment({

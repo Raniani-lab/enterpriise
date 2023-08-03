@@ -1,9 +1,8 @@
 /** @odoo-module **/
 
-import { mock } from "@web/../tests/legacy/helpers/test_utils";
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 import * as BarcodeScanner from "@web/webclient/barcode/barcode_scanner";
-import { destroy, getFixture } from "@web/../tests/helpers/utils";
+import { destroy, getFixture, patchWithCleanup } from "@web/../tests/helpers/utils";
 
 QUnit.module('stock_mobile_barcode', {}, function () {
 
@@ -56,7 +55,7 @@ QUnit.test('scan barcode button in mobile device', async function (assert) {
     this.clientData.currentState.data.records['stock.picking'].push(pickingRecord);
     this.clientData.currentState.groups.group_stock_multi_locations = false;
 
-    mock.patch(BarcodeScanner, {
+    patchWithCleanup(BarcodeScanner, {
         isBarcodeScannerSupported: () => true,
         scanBarcode: async () => {},
     });
@@ -69,7 +68,6 @@ QUnit.test('scan barcode button in mobile device', async function (assert) {
     await doAction(webClient, this.clientData.action);
     assert.containsOnce(target, '.o_stock_mobile_barcode');
     destroy(webClient);
-    mock.unpatch(BarcodeScanner);
 });
 
 });

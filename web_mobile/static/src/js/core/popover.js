@@ -2,11 +2,11 @@
 
 import Popover from "@web/legacy/js/core/popover";
 import { useBackButton } from "@web_mobile/js/core/hooks";
-import utils from "@web/legacy/js/core/utils";
+import { patch } from "@web/core/utils/patch";
 
-utils.patch(Popover.prototype, "web_mobile", {
+patch(Popover.prototype, {
     setup() {
-        this._super(...arguments);
+        super.setup(...arguments);
         useBackButton(this._onBackButton.bind(this), () => this.state.displayed);
     },
 

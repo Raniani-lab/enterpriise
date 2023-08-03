@@ -4,9 +4,9 @@ import BarcodePickingBatchModel from '@stock_barcode_picking_batch/models/barcod
 import MainComponent from '@stock_barcode/components/main';
 import OptionLine from '@stock_barcode_picking_batch/components/option_line';
 
-import { patch } from '@web/legacy/js/core/utils';
+import { patch } from "@web/core/utils/patch";
 
-patch(MainComponent.prototype, 'stock_barcode_picking_batch', {
+patch(MainComponent.prototype, {
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
@@ -22,7 +22,7 @@ patch(MainComponent.prototype, 'stock_barcode_picking_batch', {
             this.env.model.record.picking_type_id = false;
             return this.env.model.trigger('update');
         }
-        return await this._super(...arguments);
+        return await super.exit(...arguments);
     },
 
     get isConfiguring() {
@@ -30,19 +30,19 @@ patch(MainComponent.prototype, 'stock_barcode_picking_batch', {
     },
 
     get displayActionButtons() {
-        return this._super() && !this.isConfiguring;
+        return super.displayActionButtons && !this.isConfiguring;
     },
 
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
 
-    _getModel: function () {
+    _getModel() {
         const { resId, resModel, rpc, notification, orm } = this;
         if (this.resModel === 'stock.picking.batch') {
             return new BarcodePickingBatchModel(resModel, resId, { rpc, notification, orm });
         }
-        return this._super(...arguments);
+        return super._getModel(...arguments);
     },
 });
 

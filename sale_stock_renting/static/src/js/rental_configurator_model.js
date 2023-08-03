@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { patch } from '@web/legacy/js/core/utils';
+import { patch } from "@web/core/utils/patch";
 import { RentalConfiguratorController } from "@sale_renting/js/rental_configurator_controller";
 
 /**
@@ -8,10 +8,10 @@ import { RentalConfiguratorController } from "@sale_renting/js/rental_configurat
  * window when a product with 'rent_ok' is selected.
  *
  */
-patch(RentalConfiguratorController.prototype, 'sale_stock_renting', {
+patch(RentalConfiguratorController.prototype, {
 
     _getRentalInfos(record) {
-        const rentalInfos = this._super(...arguments);
+        const rentalInfos = super._getRentalInfos(...arguments);
         rentalInfos.reserved_lot_ids = record.data.lot_ids.currentIds;
         return rentalInfos;
     },

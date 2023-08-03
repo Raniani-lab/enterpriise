@@ -2,9 +2,9 @@
 
 import { bus } from "@web/legacy/js/services/core";
 import MainComponent from '@stock_barcode/components/main';
-import { patch } from '@web/legacy/js/core/utils';
+import { patch } from "@web/core/utils/patch";
 
-patch(MainComponent.prototype, 'stock_barcode_mrp_subcontracting', {
+patch(MainComponent.prototype, {
     async recordComponents() {
         const {action, options} = await this.env.model._getActionRecordComponents();
         options.on_close = async (ev) => {

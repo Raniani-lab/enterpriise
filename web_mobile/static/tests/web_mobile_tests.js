@@ -427,10 +427,10 @@ QUnit.module("web_mobile", {
             },
         });
 
-        testUtils.mock.patch(Dialog, {
-            close: function () {
+        patchWithCleanup(Dialog.prototype, {
+            close() {
                 assert.step("close");
-                return this._super.apply(this, arguments);
+                return super.close(...arguments);
             },
         });
 

@@ -5,17 +5,17 @@ import BarcodeMRPModel from "../models/barcode_mrp_model";
 import HeaderComponent from "./header";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { _t } from "@web/legacy/js/services/core";
-import { patch } from '@web/legacy/js/core/utils';
+import { patch } from "@web/core/utils/patch";
 import { useState } from "@odoo/owl";
 
-patch(MainComponent.prototype, 'stock_barcode_mrp', {
+patch(MainComponent.prototype, {
     setup() {
-        this._super();
+        super.setup();
         this.state = useState({ ...this.state, displayByProduct: false });
     },
 
     get displayActionButtons() {
-        return this._super() && !this.state.displayByProduct;
+        return super.displayActionButtons && !this.state.displayByProduct;
     },
 
     get produceBtnLabel() {
@@ -58,7 +58,7 @@ patch(MainComponent.prototype, 'stock_barcode_mrp', {
     },
 
     get lineFormViewProps() {
-        const res = this._super();
+        const res = super.lineFormViewProps;
         const params = { newByProduct: this.state.displayByProduct };
         res.context = this.env.model._getNewLineDefaultContext(params);
         return res;
@@ -75,14 +75,14 @@ patch(MainComponent.prototype, 'stock_barcode_mrp', {
         if (this.env.model.resModel == 'mrp.production' && this.env.model.record.product_id) {
             return this.env._t('Add Component');
         }
-        return this._super();
+        return super.addLineBtnName;
     },
 
     exit(ev) {
         if (this.state.view === "barcodeLines" && this.state.displayByProduct) {
             this.state.displayByProduct = false;
         } else {
-            this._super(...arguments);
+            super.exit(...arguments);
         }
     },
 
@@ -108,7 +108,7 @@ patch(MainComponent.prototype, 'stock_barcode_mrp', {
             this.env.config.historyBack();
             return;
         }
-        await this._super(...arguments);
+        await super.cancel(...arguments);
     },
 
     async toggleHeaderView() {
@@ -131,7 +131,7 @@ patch(MainComponent.prototype, 'stock_barcode_mrp', {
             this.toggleHeaderView();
             return;
         }
-        return this._super(...arguments);
+        return super.onOpenProductPage(...arguments);
     },
 
     async saveFormView(lineRecord) {
@@ -154,7 +154,7 @@ patch(MainComponent.prototype, 'stock_barcode_mrp', {
             }
             return;
         }
-        return this._super(...arguments);
+        return super.saveFormView(...arguments);
     },
 
     async _onRefreshByProducts() {
@@ -174,11 +174,11 @@ patch(MainComponent.prototype, 'stock_barcode_mrp', {
         if (this.resModel === 'mrp.production') {
             return new BarcodeMRPModel(resModel, resId, { rpc, notification, orm });
         }
-        return this._super(...arguments);
+        return super._getModel(...arguments);
     },
 
     _getHeaderHeight() {
-        const headerHeight = this._super();
+        const headerHeight = super._getHeaderHeight();
         const mo_header = document.querySelector('.o_header');
         return mo_header ? headerHeight + mo_header.offsetHeight: headerHeight;
     },

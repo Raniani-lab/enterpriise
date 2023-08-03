@@ -1,12 +1,12 @@
 /** @odoo-module **/
 
 import BarcodePickingModel from '@stock_barcode/models/barcode_picking_model';
-import { patch } from '@web/legacy/js/core/utils';
+import { patch } from "@web/core/utils/patch";
 
-patch(BarcodePickingModel.prototype, 'stock_barcode_product_expiry', {
+patch(BarcodePickingModel.prototype, {
 
     async updateLine(line, args) {
-        this._super(...arguments);
+        super.updateLine(...arguments);
         if (args.expiration_date) {
             line.expiration_date = args.expiration_date;
         }
@@ -24,13 +24,13 @@ patch(BarcodePickingModel.prototype, 'stock_barcode_product_expiry', {
             result.useDate = value;
             result.match = true;
         } else {
-            return await this._super(...arguments);
+            return await super._processGs1Data(...arguments);
         }
         return result;
     },
 
     async _parseBarcode(barcode, filters) {
-        const barcodeData = await this._super(...arguments);
+        const barcodeData = await super._parseBarcode(...arguments);
         const {product, useDate, expirationDate} = barcodeData;
         if (product && useDate && !expirationDate) {
             const value = new Date(useDate);
@@ -43,7 +43,7 @@ patch(BarcodePickingModel.prototype, 'stock_barcode_product_expiry', {
     },
 
     _convertDataToFieldsParams(args) {
-        const params = this._super(...arguments);
+        const params = super._convertDataToFieldsParams(...arguments);
         if (args.expirationDate) {
             params.expiration_date = args.expirationDate;
         }
@@ -51,13 +51,13 @@ patch(BarcodePickingModel.prototype, 'stock_barcode_product_expiry', {
     },
 
     _getFieldToWrite() {
-        const fields = this._super(...arguments);
+        const fields = super._getFieldToWrite(...arguments);
         fields.push('expiration_date');
         return fields;
     },
 
     _createCommandVals(line) {
-        const values = this._super(...arguments);
+        const values = super._createCommandVals(...arguments);
         values.expiration_date = line.expiration_date;
         return values;
     },

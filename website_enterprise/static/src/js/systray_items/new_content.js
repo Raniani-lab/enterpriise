@@ -1,12 +1,12 @@
 /** @odoo-module **/
 
 import { NewContentModal, MODULE_STATUS } from '@website/systray_items/new_content';
-import { patch } from '@web/legacy/js/core/utils';
+import { patch } from "@web/core/utils/patch";
 const { xml } = owl;
 
-patch(NewContentModal.prototype, 'website_enterprise_user_navbar', {
+patch(NewContentModal.prototype, {
     setup() {
-        this._super();
+        super.setup();
 
         this.state.newContentElements.push({
             moduleName: 'website_appointment',

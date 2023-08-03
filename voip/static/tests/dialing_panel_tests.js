@@ -9,7 +9,7 @@ import { registry } from "@web/core/registry";
 import mobile from "@web_mobile/js/services/core";
 import { makeFakeUserService } from "@web/../tests/helpers/mock_services";
 import { patchWithCleanup } from "@web/../tests/helpers/utils";
-import { dom, nextTick, mock } from "@web/../tests/legacy/helpers/test_utils";
+import { dom, nextTick } from "@web/../tests/legacy/helpers/test_utils";
 
 /**
  * Create a dialing Panel. Params are used to create the underlying web client.
@@ -63,7 +63,7 @@ QUnit.module("dialing panel", {
         phoneCallDetailsData = [10, 23, 42].map((id) => {
             return mockPhoneCallDetails(id);
         });
-        mock.patch(UserAgent, {
+        patchWithCleanup(UserAgent.prototype, {
             /**
              * Register callback to avoid the timeout that will accept the call
              * after 3 seconds in demo mode
@@ -87,9 +87,6 @@ QUnit.module("dialing panel", {
         if (!mockServerRegistry.contains("get_recent_list")) {
             mockServerRegistry.add("get_recent_list", () => []);
         }
-    },
-    afterEach() {
-        mock.unpatch(UserAgent);
     },
 });
 
@@ -449,7 +446,7 @@ QUnit.test("keyboard navigation on dial keypad input", async (assert) => {
 });
 
 QUnit.test("DialingPanel is closable with the BackButton in the mobile app", async (assert) => {
-    mock.patch(mobile.methods, {
+    patchWithCleanup(mobile.methods, {
         overrideBackButton({ enabled }) {
             assert.step(`overrideBackButton: ${enabled}`);
         },
@@ -482,8 +479,6 @@ QUnit.test("DialingPanel is closable with the BackButton in the mobile app", asy
     assert.verifySteps(["overrideBackButton: true"], "should be enabled when unfolded");
     await dom.click($(".o_dial_window_close")[0]);
     assert.verifySteps(["overrideBackButton: false"]);
-
-    mock.unpatch(mobile.methods);
 });
 
 QUnit.test("Switch Input mode [mobile devices]", async (assert) => {

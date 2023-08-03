@@ -1,11 +1,11 @@
 /** @odoo-module **/
 
 import BarcodePickingModel from '@stock_barcode/models/barcode_picking_model';
-import { patch } from '@web/legacy/js/core/utils';
+import { patch } from "@web/core/utils/patch";
 import { _t } from "@web/legacy/js/services/core";
 
 
-patch(BarcodePickingModel.prototype, 'stock_barcode_mrp_subcontracting', {
+patch(BarcodePickingModel.prototype, {
 
     showSubcontractingDetails(line) {
         return line.is_subcontract_stock_barcode && !['done', 'cancel'].includes(line.state) && this.getQtyDone(line);
@@ -84,7 +84,7 @@ patch(BarcodePickingModel.prototype, 'stock_barcode_mrp_subcontracting', {
     },
 
     _getCommands() {
-        return Object.assign(this._super(), {
+        return Object.assign(super._getCommands(), {
             'O-BTN.record-components': this._actionRecordComponents.bind(this),
         });
     },
@@ -98,7 +98,7 @@ patch(BarcodePickingModel.prototype, 'stock_barcode_mrp_subcontracting', {
         ) {
             await this._actionRecordComponents(line);
         } else {
-            this._super(...arguments);
+            super._updateLineQty(...arguments);
         }
     },
 });

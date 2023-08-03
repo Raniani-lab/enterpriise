@@ -4,11 +4,11 @@ import { Messaging } from "@mail/core/common/messaging_service";
 
 import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
-import { patch } from '@web/legacy/js/core/utils';
+import { patch } from "@web/core/utils/patch";
 
-patch(Messaging.prototype, "website_helpdesk_livechat", {
+patch(Messaging.prototype, {
     initMessagingCallback(data) {
-        this._super(data);
+        super.initMessagingCallback(data);
         if ("helpdesk_livechat_active" in data) {
             this.store.helpdesk_livechat_active = data.helpdesk_livechat_active;
         }

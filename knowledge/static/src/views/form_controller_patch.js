@@ -5,7 +5,7 @@ import { FormController } from "@web/views/form/form_controller";
 import { patch } from "@web/core/utils/patch";
 import { useService } from "@web/core/utils/hooks";
 
-const { useEffect } = owl;
+import { useEffect } from "@odoo/owl";
 
 /**
  * Knowledge articles can interact with some records with the help of the
@@ -14,6 +14,9 @@ const { useEffect } = owl;
  * list. This list is ordered and the first match found in a record will take
  * precedence. Once a match is found, it is stored in the
  * KnowledgeCommandsService to be accessed later by an article.
+ * If the field is inside a Form notebook page, the page must have a name
+ * attribute, or else it won't be considered as Knowledge macros won't be able
+ * to access it through a selector.
  */
 const KNOWLEDGE_RECORDED_FIELD_NAMES = [
     'note',
@@ -33,10 +36,12 @@ const FormControllerPatch = {
         // useEffect based on the id of the current record, in order to
         // properly register a newly created record, or the switch to another
         // record without leaving the current form view.
-        useEffect(
-            () => this._commandsRecordInfoRegistration(),
-            () => [this.model.root.data.id],
-        );
+        if (!this.env.inDialog) {
+            useEffect(
+                () => this._commandsRecordInfoRegistration(),
+                () => [this.model.root.data.id],
+            );
+        }
     },
     /**
      * Copy of the breadcrumbs array used as an identifier for a
@@ -116,28 +121,15 @@ const FormControllerPatch = {
             xmlDoc: this.props.archInfo.xmlDoc,
         };
 
-        /**
-         * If the current potential record has exactly the same breadcrumbs
-         * sequence as another record registered in the
-         * @see KnowledgeCommandsService , the previous record should be
-         * unregistered here because this problem will not be caught later, as
-         * the Knowledge form view only checks whether its breadcrumbs sequence
-         * contains a record's breadcrumbs sequence, regardless of the fact that
-         * the current potential record may not have been registered in the
-         * service.
-         *
-         * This call could be omitted if the breadcrumbs would also store the
-         * related res_id if any, but currently two records with the same
-         * display name and model will have exactly the same breadcrumbs
-         * information (controllerID and title).
-         */
-        this._unregisterCommandsRecordInfo(breadcrumbs, true);
-
         // check whether the form view has a chatter with messages
         const chatterNode = this.props.archInfo.xmlDoc.querySelector('.oe_chatter');
         if (chatterNode && chatterNode.querySelector('field[name="message_ids"]')) {
             commandsRecordInfo.withChatter = true;
             this.knowledgeCommandsService.setCommandsRecordInfo(commandsRecordInfo);
+        }
+
+        if (this.props.mode === "readonly" || !this.canEdit) {
+            return;
         }
 
         // check if there is any html field usable with knowledge
@@ -170,12 +162,19 @@ const FormControllerPatch = {
                             xmlInvisibleParent.parentElement.closest('[modifiers*="invisible"]');
                     }
                     const page = xmlField.closest('page');
-                    commandsRecordInfo.fieldInfo = {
-                        name: fieldName,
-                        string: fields[fieldName].string,
-                        pageName: page ? page.getAttribute('name') : undefined,
-                    };
-                    break loopFieldNames;
+                    const pageName = page ? page.getAttribute('name') : undefined;
+                    // If the field is inside an unnamed notebook page, ignore
+                    // it as if it was unavailable, since the macro will not be
+                    // able to open it to access the field (the name is used as
+                    // a selector).
+                    if (!page || pageName) {
+                        commandsRecordInfo.fieldInfo = {
+                            name: fieldName,
+                            string: fields[fieldName].string,
+                            pageName: pageName,
+                        };
+                        break loopFieldNames;
+                    }
                 }
             }
         }

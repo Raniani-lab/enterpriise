@@ -54,7 +54,6 @@
             <record id="aged_receivable_report_amount_currency" model="account.report.column">
                 <field name="name">Amount Currency</field>
                 <field name="expression_label">amount_currency</field>
-                <field name="figure_type">none</field>
             </record>
             <record id="aged_receivable_report_currency" model="account.report.column">
                 <field name="name">Currency</field>

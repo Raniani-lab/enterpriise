@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from datetime import datetime, time
+import pytz
+
 from odoo import fields, models, _
 from odoo.tools.date_utils import start_of, end_of, add, subtract
 from odoo.tools.misc import format_date
@@ -53,7 +56,16 @@ class Company(models.Model):
                              self.manufacturing_period)
         for columns in range(self.manufacturing_period_to_display):
             last_day = end_of(first_day, self.manufacturing_period)
-            date_range.append((first_day, last_day))
+            timezone = self.env.context.get('tz') or self.env.user.tz or 'UTC'
+            first_day_to_add = datetime.combine(first_day, time(0, 0, 0))
+            first_day_to_add = pytz.timezone(timezone).localize(first_day_to_add)
+            first_day_to_add = first_day_to_add.astimezone(pytz.utc)
+            first_day_to_add = first_day_to_add.replace(tzinfo=None)
+            last_day_to_add = datetime.combine(last_day, time(23, 59, 59))
+            last_day_to_add = pytz.timezone(timezone).localize(last_day_to_add)
+            last_day_to_add = last_day_to_add.astimezone(pytz.utc)
+            last_day_to_add = last_day_to_add.replace(tzinfo=None)
+            date_range.append((first_day_to_add, last_day_to_add))
             first_day = add(last_day, days=1)
         return date_range
 

@@ -30,7 +30,7 @@
                                 <div t-if="subscription.payment_token_id">Payment method:
                                     <t t-esc="subscription.payment_token_id._build_display_name(max_length=14)"/>
                                 </div>
-                                <t t-if="subscription.subscription_state in ['3_progress', '4_paused', '6_churn']">
+                                <t t-if="subscription.subscription_state in ['3_progress', '4_paused']">
                                     <!-- User is logged in under the partner set on the subscription -->
                                     <t t-if="enable_manage_payment_form">
                                         <a role="button" class="btn btn-secondary btn-block mb-2 w-100" data-bs-toggle="modal" data-bs-target="#payment_managing" href="#">

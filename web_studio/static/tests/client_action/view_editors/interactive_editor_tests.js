@@ -1016,6 +1016,7 @@ QUnit.module("View Editors", () => {
             });
             disableHookAnimation(target);
             assert.verifySteps([
+                "/web/webclient/load_menus",
                 "/web/dataset/call_kw/coucou/get_views",
                 "/web_studio/get_studio_view_arch",
                 "/web/dataset/call_kw/coucou/unity_web_search_read",

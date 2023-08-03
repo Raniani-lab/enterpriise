@@ -39,8 +39,8 @@ export function viewTypeToString(vType) {
 }
 
 export const studioService = {
-    dependencies: ["action", "cookie", "color_scheme", "home_menu", "router", "user", "rpc"],
-    async start(env, { user, cookie, color_scheme, rpc }) {
+    dependencies: ["action", "cookie", "color_scheme", "home_menu", "router", "user", "rpc", "menu"],
+    async start(env, { user, cookie, color_scheme, rpc, menu }) {
         const supportedViewTypes = Object.keys(SUPPORTED_VIEW_TYPES);
 
         function _getCurrentAction() {
@@ -86,6 +86,17 @@ export const studioService = {
 
         const bus = new EventBus();
         let inStudio = false;
+
+        const menuSelectMenu = menu.selectMenu;
+        menu.selectMenu = async (argMenu) => {
+            if (!inStudio) {
+                return menuSelectMenu.call(menu, argMenu)
+            } else {
+                argMenu = typeof argMenu === "number" ? menu.getMenu(argMenu) : argMenu;
+                await open(MODES.EDITOR, argMenu.actionID);
+                menu.setCurrentMenu(argMenu);
+            }
+        }
 
         const state = {
             studioMode: null,

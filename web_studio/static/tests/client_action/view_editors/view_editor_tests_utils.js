@@ -14,6 +14,7 @@ import { nameService } from "@web/core/name_service";
 import { homeMenuService } from "@web_enterprise/webclient/home_menu/home_menu_service";
 import { studioService, useStudioServiceAsReactive } from "@web_studio/studio_service";
 import { actionService } from "@web/webclient/actions/action_service";
+import { menuService } from "@web/webclient/menus/menu_service";
 import { hotkeyService } from "@web/core/hotkeys/hotkey_service";
 import { viewService } from "@web/views/view_service";
 import { companyService } from "@web/webclient/company_service";
@@ -103,6 +104,7 @@ export function registerViewEditorDependencies() {
     serviceRegistry.add("field", fieldService);
     serviceRegistry.add("name", nameService);
     serviceRegistry.add("home_menu", homeMenuService);
+    serviceRegistry.add("menu", menuService);
     serviceRegistry.add("studio", studioService);
     serviceRegistry.add("action", actionService);
     serviceRegistry.add("view", viewService);

@@ -8,7 +8,7 @@
     <div class="o_dial_fold position-relative bottom-0">
         <div class="o_dial_window_title d-flex align-items-center cursor-pointer overflow-auto">
             <t t-call="voip.DialingPanel.HeaderContent">
-                <a t-set="title" t-value="widget.title"/>
+                <t t-set="title" t-value="widget.title"/>
             </t>
         </div>
     </div>

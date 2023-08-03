@@ -32,8 +32,8 @@ export class StreamPostKanbanRecord extends KanbanRecord {
     //---------------------------------------
 
     _updateLikesCount(userLikeField, likesCountField) {
-        const userLikes = this.record[userLikeField].raw_value;
-        let likesCount = this.record[likesCountField].raw_value;
+        const userLikes = this.props.record.data[userLikeField];
+        let likesCount = this.props.record.data[likesCountField];
         if (userLikes) {
             if (likesCount > 0) {
                 likesCount--;

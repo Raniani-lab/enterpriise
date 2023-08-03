@@ -3,7 +3,6 @@
 import { KanbanRecord } from "@web/views/kanban/kanban_record";
 import { DocumentsKanbanCompiler } from "./documents_kanban_compiler";
 import { FileUploadProgressBar } from "@web/core/file_upload/file_upload_progress_bar";
-import { onNewPdfThumbnail } from "../helper/documents_pdf_thumbnail_service";
 import { useBus, useService } from "@web/core/utils/hooks";
 
 const CANCEL_GLOBAL_CLICK = ["a", ".dropdown", ".oe_kanban_action"].join(",");
@@ -25,13 +24,6 @@ export class DocumentsKanbanRecord extends KanbanRecord {
         // Pdf Thumbnail
         this.pdfService = useService("documents_pdf_thumbnail");
         this.pdfService.enqueueRecords([this.props.record]);
-
-        onNewPdfThumbnail(async ({ detail }) => {
-            if (detail.record.resId === this.props.record.resId) {
-                this.createRecordAndWidget(this.props);
-                this.render(true);
-            }
-        });
     }
 
     /**

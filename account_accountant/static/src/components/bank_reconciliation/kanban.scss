@@ -34,7 +34,13 @@
         }
 
         .kanban-statement {
-            padding: $o-kanban-inside-vgutter calc(var(--KanbanRecord-padding-h) + 5px);
+            padding: $o-kanban-inside-vgutter calc(var(--KanbanRecord-padding-h));
+            .kanban-statement-subline{
+                padding-top: 16px;
+                &.btn-link{
+                    color: var(--body-color);
+                }
+            }
         }
 
         .o_bank_rec_st_line{

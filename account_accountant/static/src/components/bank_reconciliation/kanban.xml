@@ -40,18 +40,14 @@
                      and recData.statement_id[0] === statementGroups[0].id">
                 <!-- remove the first statement from the list of statements -->
                 <t t-set="stGroup" t-value="statementGroups.shift()"/>
-                <a t-if="stGroup"
-                   href="#"
-                   class="kanban-statement d-flex text-body fw-bold w-100"
-                   t-on-click.stop.prevent="() => this.openStatementDialog(recData.statement_id[0])">
-                    <t t-set="stClass" t-value="!(recData.statement_complete and recData.statement_valid) and 'text-danger' or ''"/>
-                    <div t-attf-class="flex-grow-1 text-truncate {{stClass}}">
-                        <span t-out="stGroup.name"/>
-                    </div>
-                    <div class="">
-                        <span t-out="stGroup.balance"/>
-                    </div>
-                </a>
+                <t t-set="stClass" t-value="!(recData.statement_complete and recData.statement_valid) and 'text-danger' or ''"/>
+                <span t-if="stGroup" class="kanban-statement d-flex text-truncate align-self-center fw-bold w-100">
+                    <span t-attf-class="{{stClass}} kanban-statement-subline flex-fill text-start" t-out="stGroup.name"/>
+                    <span t-on-click.stop.prevent="() => this.openStatementDialog(recData.statement_id[0])"
+                          t-attf-class="kanban-statement-subline btn btn-link"
+                          name="kanban-subline-clickable-amount"
+                          t-esc="stGroup.balance"/>
+                </span>
             </t>
         </xpath>
         <t t-call="web.ActionHelper" position="replace">

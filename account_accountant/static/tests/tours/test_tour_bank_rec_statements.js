@@ -21,13 +21,13 @@ registry.category("web_tour.tours").add('account_accountant_bank_rec_widget_stat
             allowInvisible: true,
         },
         {
-            content: "Save the satement with proposed values",
+            content: "Save the statement with proposed values",
             extra_trigger: ".modal-dialog:contains('Create Statement')",
             trigger: ".o_form_button_save",
         },
         {
             content: "Click the Valid Statement with $ 1,000.00 that is visible in Kanban",
-            trigger: "a.kanban-statement:has(span:contains('BNK1 Statement 2019-01-01')):has(span:contains('$ 1,000.00'))",
+            trigger: "span[name='kanban-subline-clickable-amount']:contains('$ 1,000.00')",
         },
         {
             content: "Modify the end balance",
@@ -42,7 +42,7 @@ registry.category("web_tour.tours").add('account_accountant_bank_rec_widget_stat
         {
             content: "Click the red statement, after checking the balance",
             extra_trigger: ".btn-link:contains('$ 2,100.00')",
-            trigger: "a.kanban-statement:has(.text-danger:contains('BNK1 Statement 2019-01-01')):has(span:contains('$ 100.00'))",
+            trigger: "span[name='kanban-subline-clickable-amount']:contains('$ 100.00')",
         },
         {
             content: "Delete the statement",

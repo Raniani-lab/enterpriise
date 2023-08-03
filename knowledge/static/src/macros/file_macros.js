@@ -10,16 +10,22 @@ export class UseAsAttachmentMacro extends AbstractMacro {
      */
     macroAction() {
         const action = super.macroAction();
+        let attachFilesLastClickedEl = null;
         action.steps.push({
             trigger: function() {
                 this.validatePage();
-                const el = this.getFirstVisibleElement('.o-mail-Chatter-topbar button[aria-label="Attach files"]');
+                const el = this.getFirstVisibleElement('.o-mail-Chatter-attachFiles:not([disabled])', (matchEl) => {
+                    // Wait for the attachments to be loaded by the chatter.
+                    const attachmentsCountEl = matchEl.querySelector('span');
+                    return attachmentsCountEl && Number.parseInt(attachmentsCountEl.textContent) > 0;
+                });
                 if (el) {
-                    const attachmentBoxEl = this.getFirstVisibleElement('.o-mail-AttachmentList');
+                    const attachmentBoxEl = this.getFirstVisibleElement('.o-mail-AttachmentBox .o-mail-AttachmentList');
                     if (attachmentBoxEl) {
                         return attachmentBoxEl;
-                    } else {
+                    } else if (el !== attachFilesLastClickedEl) {
                         el.click();
+                        attachFilesLastClickedEl = el;
                     }
                 } else {
                     this.searchInXmlDocNotebookTab('.oe_chatter');
@@ -39,15 +45,17 @@ export class AttachToMessageMacro extends AbstractMacro {
      */
     macroAction() {
         const action = super.macroAction();
+        let sendMessageLastClickedEl = null;
         action.steps.push({
             trigger: function() {
                 this.validatePage();
-                const el = this.getFirstVisibleElement('.o-mail-Chatter-sendMessage');
+                const el = this.getFirstVisibleElement('.o-mail-Chatter-sendMessage:not([disabled])');
                 if (el) {
                     if (el.classList.contains('active')) {
                         return el;
-                    } else {
+                    } else if (el !== sendMessageLastClickedEl) {
                         el.click();
+                        sendMessageLastClickedEl = el;
                     }
                 } else {
                     this.searchInXmlDocNotebookTab('.oe_chatter');
@@ -60,7 +68,7 @@ export class AttachToMessageMacro extends AbstractMacro {
         }, {
             trigger: function() {
                 this.validatePage();
-                return this.getFirstVisibleElement('.o-mail-Composer button[title="Attach files"]');
+                return this.getFirstVisibleElement('.o-mail-Composer-attachFiles:not([disabled])');
             }.bind(this),
             action: dragAndDrop.bind(this, 'dragenter', this.data.dataTransfer),
         }, {

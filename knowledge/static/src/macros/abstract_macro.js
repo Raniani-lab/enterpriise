@@ -14,22 +14,19 @@ export class AbstractMacro {
      * @param {Array[Object]} options.breadcrumbs
      * @param {Any} options.data
      * @param {Object} options.services require: uiService, dialogService
-     * @param {integer} [options.interval]
      */
     constructor ({
         targetXmlDoc,
         breadcrumbs,
         data,
         services,
-        interval = 16,
     }) {
         this.targetXmlDoc = targetXmlDoc;
         this.breadcrumbsIndex = breadcrumbs.length - 1;
         this.breadcrumbsName = breadcrumbs[this.breadcrumbsIndex].name;
         this.breadcrumbsSelector = ['.o_breadcrumb .o_last_breadcrumb_item', (el) => el.textContent.includes(this.breadcrumbsName)];
-        this.interval = interval;
         this.data = data;
-        this.engine = new MacroEngine();
+        this.engine = new MacroEngine({ defaultCheckDelay: 16 });
         this.services = services;
         this.blockUI = { action: function () {
             if (!this.services.ui.isBlocked) {
@@ -57,7 +54,6 @@ export class AbstractMacro {
          */
         const startMacro = {
             name: "restore_record",
-            interval: this.interval,
             onError: this.onError,
             steps: [
                 this.blockUI, {
@@ -125,22 +121,24 @@ export class AbstractMacro {
     macroAction() {
         return {
             name: this.constructor.name,
-            interval: this.interval,
             onError: this.onError,
             steps: [],
         };
     }
     /**
-     * Handle the case where an item is hidden in a tab of the form view notebook
+     * Handle the case where an item is hidden in a tab of the form view
+     * notebook. Only pages with the "name" attribute set can be navigated to.
+     * Other pages are ignored (and the fields they contain are too).
+     * @see FormControllerPatch
      */
     searchInXmlDocNotebookTab(targetSelector) {
         const searchElement = this.targetXmlDoc.querySelector(targetSelector);
         const page = searchElement ? searchElement.closest('page') : undefined;
-        const pageString = page ? page.getAttribute('string') : undefined;
-        if (!pageString) {
+        const pageName = page ? page.getAttribute('name') : undefined;
+        if (!pageName) {
             return;
         }
-        const pageEl = this.getFirstVisibleElement('.o_notebook .nav-link:not(.active)', (el) => el.textContent.includes(pageString));
+        const pageEl = this.getFirstVisibleElement(`.o_notebook .nav-link[name=${pageName}]:not(.active)`);
         if (pageEl) {
             pageEl.click();
         }

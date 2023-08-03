@@ -50,7 +50,7 @@ export const knowledgeCommandsService = {
          *                   targeted html field @see FormControllerPatch
          * @param {Object} [recordInfo.fieldInfo] info object for the html field
          *                 {string, name, pageName}
-         * @param {XMLDocument} [recordInfo.fieldInfo] xml document (arch of the
+         * @param {XMLDocument} [recordInfo.xmlDoc] xml document (arch of the
          *                      view of the target record)
          */
         function setCommandsRecordInfo(recordInfo) {

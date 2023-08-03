@@ -10,15 +10,17 @@ export class SendAsMessageMacro extends AbstractMacro {
      */
     macroAction() {
         const action = super.macroAction();
+        let sendMessageLastClickedEl = null;
         action.steps.push({
             trigger: function() {
                 this.validatePage();
-                const el = this.getFirstVisibleElement('.o-mail-Chatter-sendMessage');
+                const el = this.getFirstVisibleElement('.o-mail-Chatter-sendMessage:not([disabled])');
                 if (el) {
                     if (el.classList.contains('active')) {
                         return el;
-                    } else {
+                    } else if (el !== sendMessageLastClickedEl) {
                         el.click();
+                        sendMessageLastClickedEl = el;
                     }
                 } else {
                     this.searchInXmlDocNotebookTab('.oe_chatter');
@@ -29,7 +31,7 @@ export class SendAsMessageMacro extends AbstractMacro {
         }, {
             trigger: function() {
                 this.validatePage();
-                return this.getFirstVisibleElement('.o-mail-Composer button[title="Full composer"]');
+                return this.getFirstVisibleElement('.o-mail-Composer-fullComposer:not([disabled])');
             }.bind(this),
             action: 'click',
         }, {
@@ -72,10 +74,11 @@ export class UseAsDescriptionMacro extends AbstractMacro {
             trigger: function () {
                 return this.getFirstVisibleElement('.o_form_editable');
             }.bind(this),
+            action: () => {},
         }, {
             trigger: function () {
                 this.validatePage();
-                const el = this.getFirstVisibleElement(`.o_field_html[name="${this.data.fieldName}"]`);
+                const el = this.getFirstVisibleElement(`.o_field_html[name="${this.data.fieldName}"]:has(.odoo-editor-editable)`);
                 if (el) {
                     return el;
                 }

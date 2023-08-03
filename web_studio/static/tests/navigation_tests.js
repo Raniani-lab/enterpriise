@@ -659,7 +659,6 @@ QUnit.module("Studio", (hooks) => {
 
         await createEnterpriseWebClient({
             serverData,
-            legacyParams: { withLegacyMockServer: true },
             async mockRPC(route, args) {
                 if (args.method === "grid_unavailability") {
                     return {};

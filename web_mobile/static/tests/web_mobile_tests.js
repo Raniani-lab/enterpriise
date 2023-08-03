@@ -18,8 +18,6 @@ import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
 
 import { Component, useState, xml } from "@odoo/owl";
 
-const { createParent } = testUtils;
-
 const MY_IMAGE =
     "iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==";
 const BASE64_SVG_IMAGE =
@@ -436,18 +434,7 @@ QUnit.module("web_mobile", {
             },
         });
 
-        const parent = await createParent({
-            data: this.data,
-            archs: {
-                "partner,false,form": `
-            <form>
-                <sheet>
-                    <field name="name"/>
-                </sheet>
-           </form>
-        `,
-            },
-        });
+        const parent = new Widget();
 
         const backButtonEvent = new Event("backbutton");
         const dialog = new Dialog(parent, {

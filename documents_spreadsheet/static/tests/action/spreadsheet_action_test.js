@@ -98,7 +98,6 @@ QUnit.module(
             await prepareWebClientForSpreadsheet();
             const webClient = await createWebClient({
                 serverData,
-                legacyParams: { withLegacyMockServer: true },
             });
             await doAction(webClient, 1);
             await doAction(webClient, {

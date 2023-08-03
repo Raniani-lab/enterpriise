@@ -20,7 +20,6 @@ import { companyService } from "@web/webclient/company_service";
 import { dialogService } from "@web/core/dialog/dialog_service";
 import { notificationService } from "@web/core/notifications/notification_service";
 import { popoverService } from "@web/core/popover/popover_service";
-import { addLegacyMockEnvironment } from "@web/../tests/webclient/helpers";
 
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
 import {
@@ -200,7 +199,6 @@ export async function createViewEditor({ arch, serverData = {}, mockRPC, resMode
         serverData,
         mockRPC: createMockRPC(mockRPC),
     });
-    await addLegacyMockEnvironment(env, {});
     env.services.studio.setParams({
         viewType: type,
         editorTab: "views",

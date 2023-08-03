@@ -36,9 +36,6 @@ export async function spawnGraphViewForSpreadsheet(params = {}) {
     const webClient = await createWebClient({
         serverData: params.serverData || getBasicServerData(),
         mockRPC: params.mockRPC,
-        legacyParams: {
-            withLegacyMockServer: true,
-        },
     });
 
     await doAction(webClient, {

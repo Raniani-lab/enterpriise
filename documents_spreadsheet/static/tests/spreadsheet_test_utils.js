@@ -47,9 +47,6 @@ async function createSpreadsheetAction(actionTag, params) {
         webClient = await createWebClient({
             serverData: params.serverData || getBasicServerData(),
             mockRPC: params.mockRPC,
-            legacyParams: {
-                withLegacyMockServer: true,
-            },
         });
     }
 

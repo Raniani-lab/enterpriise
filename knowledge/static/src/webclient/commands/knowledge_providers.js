@@ -32,39 +32,40 @@ const commandProviderRegistry = registry.category("command_provider");
 
 const fn = (hidden) => {
     return async function provide(env, options) {
-        const articlesData = await Component.env.services.rpc({
-            model: "knowledge.article",
-            method: "get_user_sorted_articles",
-            args: [[]],
-            kwargs: {
+        const articlesData = await env.services.orm.call(
+            "knowledge.article",
+            "get_user_sorted_articles",
+            [[]],
+            {
                 search_query: options.searchValue,
                 hidden_mode: hidden,
             }
-        });
+        );
         if (!hidden){
             if (articlesData.length === 0) {
                 // check if user has enough rights to create a new article
-                const canCreate = await Component.env.services.rpc({
-                    model: "knowledge.article",
-                    method: "check_access_rights",
-                    kwargs: {
+                const canCreate = await env.services.orm.call(
+                    "knowledge.article",
+                    "check_access_rights",
+                    [],
+                    {
                         operation: "create",
                         raise_exception: false,
                     },
-                });
+                );
                 // only display the "create article" command when there are at least 3 character
                 if (canCreate && options.searchValue.length > 2) {
                     return [{
                         Component: Knowledge404Command,
                         async action() {
-                            const articleId = await Component.env.services.rpc({
-                                model: 'knowledge.article',
-                                method: 'article_create',
-                                args: [options.searchValue],
-                                kwargs: {
+                            const articleId = await env.services.orm.call(
+                                'knowledge.article',
+                                'article_create',
+                                [options.searchValue],
+                                {
                                     is_private: true
                                 },
-                            });
+                            );
 
                             env.services.action.doAction('knowledge.ir_actions_server_knowledge_home_page', {
                                 additionalContext: {

@@ -33,8 +33,5 @@ export async function createDocumentsViewWithMessaging(params) {
         searchArchs[`${modelName},false,search`] = getEnrichedSearchArch(serverData.views[`${modelName},false,search`]);
     };
     Object.assign(serverData.views, searchArchs);
-    params.legacyParams =  {
-        ...params.legacyParams,
-    };
     return start(params);
 }

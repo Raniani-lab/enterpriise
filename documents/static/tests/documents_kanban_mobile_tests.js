@@ -404,9 +404,6 @@ QUnit.module("documents", {}, function () {
                     };
                     const { openView } = await createDocumentsViewWithMessaging({
                         touchScreen: true,
-                        legacyParams: {
-                            touchScreen: true,
-                        },
                         serverData: { views },
                     });
                     await openView({

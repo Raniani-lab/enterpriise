@@ -10,6 +10,7 @@ var concurrency = require('web.concurrency');
 var fieldRegistry = require('web.field_registry');
 var framework = require('web.framework');
 const { ListRenderer } = require("@web/views/list/list_renderer");
+const { ListEditorRenderer } = require("@web_studio/client_action/view_editors/list/list_editor_renderer");
 var testUtils = require('web.test_utils');
 var { session } = require('@web/session');
 const { RPCError } = require("@web/core/network/rpc_service");
@@ -1198,6 +1199,33 @@ QUnit.module('ViewEditorManager', {
         await testUtils.dom.click(vem.$('.o_web_studio_view_renderer').find('[data-name="display_name"]'));
         // check readonly
         await testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('input#readonly'));
+    });
+
+    QUnit.test("click on a link doesn't do anything", async function (assert) {
+        pyEnv['coucou'].create([
+            { display_name: 'Red Right Hand', m2o: 1 },
+        ]);
+
+        patchWithCleanup(ListEditorRenderer.prototype, {
+            onTableClicked(ev) {
+                assert.step("onTableClicked");
+                assert.ok(!ev.defaultPrevented);
+                this._super(ev);
+                assert.ok(ev.defaultPrevented);
+            }
+        });
+
+        await studioTestUtils.createViewEditorManager({
+            serverData,
+            model: 'coucou',
+            resId: 1,
+            arch: `<tree><field name="display_name"/><field name="m2o" widget="many2one"/></tree>`,
+        });
+
+        await testUtils.nextTick();
+
+        await click(target, "[name='m2o'] a");
+        assert.verifySteps(["onTableClicked"]);
     });
 
     QUnit.module('Form');

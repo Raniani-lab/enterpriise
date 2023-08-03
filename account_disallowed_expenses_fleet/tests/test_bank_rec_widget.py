@@ -44,6 +44,10 @@ class TestBankRecWidgetFleet(TestBankRecWidgetCommon):
                 Command.create({'repartition_type': 'base'}),
                 Command.create({'factor_percent': 100, 'account_id': tax_acc.id, 'use_in_tax_closing': True}),
             ],
+            'refund_repartition_line_ids': [
+                Command.create({'repartition_type': 'base'}),
+                Command.create({'factor_percent': 100, 'account_id': tax_acc.id, 'use_in_tax_closing': True}),
+            ],
         })
         car_tax = self.env['account.tax'].create({
             'name': 'Car',
@@ -53,7 +57,12 @@ class TestBankRecWidgetFleet(TestBankRecWidgetCommon):
             'company_id': self.company_data['company'].id,
             'invoice_repartition_line_ids': [
                 Command.create({'repartition_type': 'base'}),
-                Command.create({'factor_percent': 50, 'use_in_tax_closing': False}),
+                Command.create({'factor_percent': 50}),
+                Command.create({'factor_percent': 50, 'account_id': tax_acc.id, 'use_in_tax_closing': True}),
+            ],
+            'refund_repartition_line_ids': [
+                Command.create({'repartition_type': 'base'}),
+                Command.create({'factor_percent': 50}),
                 Command.create({'factor_percent': 50, 'account_id': tax_acc.id, 'use_in_tax_closing': True}),
             ],
         })

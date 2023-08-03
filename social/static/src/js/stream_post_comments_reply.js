@@ -45,7 +45,7 @@ export class StreamPostCommentsReply extends Component {
     // Private
     //---------
 
-    _addComment(textarea) {
+    async _addComment(textarea) {
         if (
             this.props.preventAddComment(
                 textarea,
@@ -66,6 +66,13 @@ export class StreamPostCommentsReply extends Component {
         }
         if (this.isCommentEdit || this.isCommentReply) {
             formData.append("comment_id", this.comment.id);
+        }
+        if (this.state.attachmentSrc) {
+            // convert to base 64 encoded file into a Blob object
+            // (with the correct Content-Type)
+            const base64Response = await fetch(this.state.attachmentSrc);
+            const file = new File([await base64Response.blob()], "attachment");
+            formData.set("attachment", file);
         }
         const existingAttachmentId = textarea.dataset.existingAttachmentId;
         if (existingAttachmentId) {

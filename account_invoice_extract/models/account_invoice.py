@@ -145,8 +145,8 @@ class AccountMove(models.Model):
         except Exception as e:
             _logger.error("Couldn't check status of account.move with id %d: %s", self.id, str(e))
 
-    def get_user_infos(self):
-        user_infos = super().get_user_infos()
+    def _get_user_infos(self):
+        user_infos = super()._get_user_infos()
         user_infos.update({
             'user_company_VAT': self.company_id.vat,
             'user_company_name': self.company_id.name,
@@ -155,13 +155,13 @@ class AccountMove(models.Model):
         })
         return user_infos
 
-    def upload_to_extract(self):
-        """ Call parent method upload_to_extract only if self is an invoice. """
+    def _upload_to_extract(self):
+        """ Call parent method _upload_to_extract only if self is an invoice. """
         self.ensure_one()
         if self.is_invoice():
-            super().upload_to_extract()
+            super()._upload_to_extract()
 
-    def get_validation(self, field):
+    def _get_validation(self, field):
         """
         return the text or box corresponding to the choice of the user.
         If the user selected a box on the document, we return this box,
@@ -248,7 +248,7 @@ class AccountMove(models.Model):
         # OVERRIDE
         # On the validation of an invoice, send the different corrected fields to iap to improve the ocr algorithm.
         posted = super()._post(soft)
-        self.validate_ocr()
+        self._validate_ocr()
         return posted
 
     def get_boxes(self):
@@ -290,7 +290,7 @@ class AccountMove(models.Model):
         if word.field == "VAT_Number":
             partner_vat = False
             if word.word_text != "":
-                partner_vat = self.find_partner_id_with_vat(word.word_text)
+                partner_vat = self._find_partner_id_with_vat(word.word_text)
             if partner_vat:
                 return partner_vat.id
             else:
@@ -299,10 +299,10 @@ class AccountMove(models.Model):
                 return partner.id if partner else False
 
         if word.field == "supplier":
-            return self.find_partner_id_with_name(word.word_text)
+            return self._find_partner_id_with_name(word.word_text)
         return word.word_text
 
-    def find_partner_from_previous_extracts(self):
+    def _find_partner_from_previous_extracts(self):
         match_conditions = [
             ('extract_detected_layout', '=', self.extract_detected_layout),
             ('extract_partner_name', '=', self.extract_partner_name),
@@ -322,7 +322,7 @@ class AccountMove(models.Model):
             return invoice_layout.partner_id
         return None
 
-    def find_partner_id_with_vat(self, vat_number_ocr):
+    def _find_partner_id_with_vat(self, vat_number_ocr):
         partner_vat = self.env["res.partner"].search([
             *self.env['res.partner']._check_company_domain(self.company_id),
             ("vat", "=ilike", vat_number_ocr),
@@ -382,7 +382,7 @@ class AccountMove(models.Model):
             return new_partner
         return False
 
-    def find_partner_id_with_name(self, partner_name):
+    def _find_partner_id_with_name(self, partner_name):
         if not partner_name:
             return 0
 
@@ -419,7 +419,7 @@ class AccountMove(models.Model):
                     return partners_dict[partner]
         return 0
 
-    def find_partner_with_iban(self, iban_ocr, partner_name):
+    def _find_partner_with_iban(self, iban_ocr, partner_name):
         bank_accounts = self.env['res.partner.bank'].search([
             *self.env['res.partner.bank']._check_company_domain(self.company_id),
             ('acc_number', '=ilike', iban_ocr),
@@ -437,25 +437,25 @@ class AccountMove(models.Model):
         return None
 
     def _get_partner(self, ocr_results):
-        vat_number_ocr = self.get_ocr_selected_value(ocr_results, 'VAT_Number', "")
-        iban_ocr = self.get_ocr_selected_value(ocr_results, 'iban', "")
+        vat_number_ocr = self._get_ocr_selected_value(ocr_results, 'VAT_Number', "")
+        iban_ocr = self._get_ocr_selected_value(ocr_results, 'iban', "")
 
         if vat_number_ocr:
-            partner_vat = self.find_partner_id_with_vat(vat_number_ocr)
+            partner_vat = self._find_partner_id_with_vat(vat_number_ocr)
             if partner_vat:
                 return partner_vat, False
 
         if self.extract_detected_layout:
-            partner = self.find_partner_from_previous_extracts()
+            partner = self._find_partner_from_previous_extracts()
             if partner:
                 return partner, False
 
         if self.is_purchase_document() and iban_ocr:
-            partner = self.find_partner_with_iban(iban_ocr, self.extract_partner_name)
+            partner = self._find_partner_with_iban(iban_ocr, self.extract_partner_name)
             if partner:
                 return partner, False
 
-        partner_id = self.find_partner_id_with_name(self.extract_partner_name)
+        partner_id = self._find_partner_id_with_name(self.extract_partner_name)
         if partner_id != 0:
             return self.env["res.partner"].browse(partner_id), False
 
@@ -540,16 +540,16 @@ class AccountMove(models.Model):
         self.ensure_one()
 
         invoice_lines = ocr_results.get('invoice_lines', [])
-        subtotal_ocr = self.get_ocr_selected_value(ocr_results, 'subtotal', 0.0)
-        supplier_ocr = self.get_ocr_selected_value(ocr_results, 'supplier', "")
-        date_ocr = self.get_ocr_selected_value(ocr_results, 'date', "")
+        subtotal_ocr = self._get_ocr_selected_value(ocr_results, 'subtotal', 0.0)
+        supplier_ocr = self._get_ocr_selected_value(ocr_results, 'supplier', "")
+        date_ocr = self._get_ocr_selected_value(ocr_results, 'date', "")
 
         invoice_lines_to_create = []
         if self.company_id.extract_single_line_per_tax:
             merged_lines = {}
             for il in invoice_lines:
-                total = self.get_ocr_selected_value(il, 'total', 0.0)
-                subtotal = self.get_ocr_selected_value(il, 'subtotal', total)
+                total = self._get_ocr_selected_value(il, 'total', 0.0)
+                subtotal = self._get_ocr_selected_value(il, 'subtotal', total)
                 taxes_ocr = [value['content'] for value in il.get('taxes', {}).get('selected_values', [])]
                 taxes_type_ocr = [value.get('amount_type', 'percent') for value in il.get('taxes', {}).get('selected_values', [])]
                 taxes_records = self._get_taxes_record(taxes_ocr, taxes_type_ocr)
@@ -587,11 +587,11 @@ class AccountMove(models.Model):
                 invoice_lines_to_create.append(vals)
         else:
             for il in invoice_lines:
-                description = self.get_ocr_selected_value(il, 'description', "/")
-                total = self.get_ocr_selected_value(il, 'total', 0.0)
-                subtotal = self.get_ocr_selected_value(il, 'subtotal', total)
-                unit_price = self.get_ocr_selected_value(il, 'unit_price', subtotal)
-                quantity = self.get_ocr_selected_value(il, 'quantity', 1.0)
+                description = self._get_ocr_selected_value(il, 'description', "/")
+                total = self._get_ocr_selected_value(il, 'total', 0.0)
+                subtotal = self._get_ocr_selected_value(il, 'subtotal', total)
+                unit_price = self._get_ocr_selected_value(il, 'unit_price', subtotal)
+                quantity = self._get_ocr_selected_value(il, 'quantity', 1.0)
                 taxes_ocr = [value['content'] for value in il.get('taxes', {}).get('selected_values', [])]
                 taxes_type_ocr = [value.get('amount_type', 'percent') for value in il.get('taxes', {}).get('selected_values', [])]
 
@@ -653,17 +653,17 @@ class AccountMove(models.Model):
             self.write({'extract_word_ids': data})
 
     def _save_form(self, ocr_results, force_write=False):
-        date_ocr = self.get_ocr_selected_value(ocr_results, 'date', "")
-        due_date_ocr = self.get_ocr_selected_value(ocr_results, 'due_date', "")
-        total_ocr = self.get_ocr_selected_value(ocr_results, 'total', 0.0)
-        invoice_id_ocr = self.get_ocr_selected_value(ocr_results, 'invoice_id', "")
-        currency_ocr = self.get_ocr_selected_value(ocr_results, 'currency', "")
-        payment_ref_ocr = self.get_ocr_selected_value(ocr_results, 'payment_ref', "")
-        iban_ocr = self.get_ocr_selected_value(ocr_results, 'iban', "")
-        SWIFT_code_ocr = json.loads(self.get_ocr_selected_value(ocr_results, 'SWIFT_code', "{}")) or None
-        qr_bill_ocr = self.get_ocr_selected_value(ocr_results, 'qr-bill')
-        supplier_ocr = self.get_ocr_selected_value(ocr_results, 'supplier', "")
-        client_ocr = self.get_ocr_selected_value(ocr_results, 'client', "")
+        date_ocr = self._get_ocr_selected_value(ocr_results, 'date', "")
+        due_date_ocr = self._get_ocr_selected_value(ocr_results, 'due_date', "")
+        total_ocr = self._get_ocr_selected_value(ocr_results, 'total', 0.0)
+        invoice_id_ocr = self._get_ocr_selected_value(ocr_results, 'invoice_id', "")
+        currency_ocr = self._get_ocr_selected_value(ocr_results, 'currency', "")
+        payment_ref_ocr = self._get_ocr_selected_value(ocr_results, 'payment_ref', "")
+        iban_ocr = self._get_ocr_selected_value(ocr_results, 'iban', "")
+        SWIFT_code_ocr = json.loads(self._get_ocr_selected_value(ocr_results, 'SWIFT_code', "{}")) or None
+        qr_bill_ocr = self._get_ocr_selected_value(ocr_results, 'qr-bill')
+        supplier_ocr = self._get_ocr_selected_value(ocr_results, 'supplier', "")
+        client_ocr = self._get_ocr_selected_value(ocr_results, 'client', "")
 
         self.extract_partner_name = client_ocr if self.is_sale_document() else supplier_ocr
 
@@ -824,7 +824,7 @@ class AccountMove(models.Model):
     @api.model
     def _import_invoice_ocr(self, invoice, file_data, new=False):
         invoice.message_main_attachment_id = file_data['attachment']
-        invoice.send_batch_for_digitization()
+        invoice._send_batch_for_digitization()
         return True
 
     def _get_edi_decoder(self, file_data, new=False):

@@ -35,7 +35,7 @@ class HrApplicant(models.Model):
                 default_stage = default_stage_by_job[applicant.job_id.id]
             applicant.is_in_extractable_state = applicant.stage_id == default_stage
 
-    def get_validation(self, field):
+    def _get_validation(self, field):
         text_to_send = {}
         if field == "email":
             text_to_send["content"] = self.email_from
@@ -55,15 +55,15 @@ class HrApplicant(models.Model):
         if not new_stage.hired_stage:
             return res
 
-        self.validate_ocr()
+        self._validate_ocr()
         return res
 
     def _fill_document_with_results(self, ocr_results, force_write=False):
         if ocr_results is not None:
-            name_ocr = self.get_ocr_selected_value(ocr_results, 'name', "")
-            email_from_ocr = self.get_ocr_selected_value(ocr_results, 'email', "")
-            phone_ocr = self.get_ocr_selected_value(ocr_results, 'phone', "")
-            mobile_ocr = self.get_ocr_selected_value(ocr_results, 'mobile', "")
+            name_ocr = self._get_ocr_selected_value(ocr_results, 'name', "")
+            email_from_ocr = self._get_ocr_selected_value(ocr_results, 'email', "")
+            phone_ocr = self._get_ocr_selected_value(ocr_results, 'phone', "")
+            mobile_ocr = self._get_ocr_selected_value(ocr_results, 'mobile', "")
 
             self.name = _("%s's Application", name_ocr)
             self.partner_name = name_ocr
@@ -98,7 +98,7 @@ class HrApplicant(models.Model):
 
     def _autosend_for_digitization(self):
         if self.env.company.recruitment_extract_show_ocr_option_selection == 'auto_send':
-            self.filtered('extract_can_show_send_button').send_batch_for_digitization()
+            self.filtered('extract_can_show_send_button')._send_batch_for_digitization()
 
     def _contact_iap_extract(self, pathinfo, params):
         params['version'] = OCR_VERSION

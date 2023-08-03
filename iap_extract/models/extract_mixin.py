@@ -98,7 +98,7 @@ class ExtractMixin(models.AbstractModel):
         records_to_validate = self.search(self._get_validation_domain())
         documents = {
             record.extract_document_uuid: {
-                field: record.get_validation(field) for field in self._get_validation_fields()
+                field: record._get_validation(field) for field in self._get_validation_fields()
             } for record in records_to_validate
         }
 
@@ -112,10 +112,10 @@ class ExtractMixin(models.AbstractModel):
         return records_to_validate
 
     @staticmethod
-    def get_ocr_selected_value(ocr_results, feature, default=None):
+    def _get_ocr_selected_value(ocr_results, feature, default=None):
         return ocr_results.get(feature, {}).get('selected_value', {}).get('content', default)
 
-    def safe_upload(self):
+    def _safe_upload(self):
         """
         This function prevents any exception from being thrown during the upload of a document.
         This is meant to be used for batch uploading where we don't want that an error rollbacks the whole transaction.
@@ -132,9 +132,9 @@ class ExtractMixin(models.AbstractModel):
             )
             _logger.warning("Couldn't upload %s with id %d: %s", self._name, self.id, str(e))
 
-    def send_batch_for_digitization(self):
+    def _send_batch_for_digitization(self):
         for rec in self:
-            rec.safe_upload()
+            rec._safe_upload()
 
     def action_send_batch_for_digitization(self):
         if any(not document.is_in_extractable_state for document in self):
@@ -207,18 +207,18 @@ class ExtractMixin(models.AbstractModel):
             for record in records_to_preupdate:
                 record._try_to_check_ocr_status()
 
-    def get_user_infos(self):
+    def _get_user_infos(self):
         user_infos = {
             'user_lang': self.env.user.lang,
             'user_email': self.env.user.email,
         }
         return user_infos
 
-    def get_validation(self):
+    def _get_validation(self, field):
         """ Return the validation of the record. This method is meant to be overridden """
         return None
 
-    def upload_to_extract(self):
+    def _upload_to_extract(self):
         """ Contacts IAP extract to parse the first attachment in the chatter."""
         self.ensure_one()
         if not self._get_ocr_option_can_extract():
@@ -232,7 +232,7 @@ class ExtractMixin(models.AbstractModel):
                 self.extract_status = 'error_invalid_account_token'
                 return
 
-            user_infos = self.get_user_infos()
+            user_infos = self._get_user_infos()
             params = {
                 'account_token': account_token.account_token,
                 'dbuuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid'),
@@ -253,12 +253,14 @@ class ExtractMixin(models.AbstractModel):
                     )
                     self._upload_to_extract_success_callback()
                 elif result['status'] == 'error_no_credit':
-                    self.send_no_credit_notification()
+                    self._send_no_credit_notification()
                     self.extract_state = 'not_enough_credit'
                 else:
                     self.extract_state = 'error_status'
-                    _logger.warning('There was an issue while doing the OCR operation on this file. Error: -1')
-
+                    _logger.warning(
+                        'An error occurred during OCR parsing of %s %d. Status: %s',
+                        self._name, self.id, self.extract_status,
+                    )
             except AccessError:
                 self.extract_state = 'error_status'
                 self.extract_status = 'error_no_connection'
@@ -267,7 +269,7 @@ class ExtractMixin(models.AbstractModel):
                     message=self._get_iap_bus_notification_error(),
                 )
 
-    def send_no_credit_notification(self):
+    def _send_no_credit_notification(self):
         """
         Notify about the number of credit.
         In order to avoid to spam people each hour, an ir.config_parameter is set
@@ -298,7 +300,7 @@ class ExtractMixin(models.AbstractModel):
                 mail_template.send_mail(iap_account.id, force_send=True, email_values=email_values)
                 self.env['ir.config_parameter'].sudo().set_param("iap_extract.already_notified", True)
 
-    def validate_ocr(self):
+    def _validate_ocr(self):
         documents_to_validate = self.filtered(lambda doc: doc.extract_state == 'waiting_validation')
         documents_to_validate.extract_state = 'to_validate'
 

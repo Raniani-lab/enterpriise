@@ -603,17 +603,17 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin, MailCommo
             invoice.action_post()
 
         self.assertEqual(invoice.extract_state, 'done')
-        self.assertEqual(invoice.get_validation('total')['content'], invoice.amount_total)
-        self.assertEqual(invoice.get_validation('subtotal')['content'], invoice.amount_untaxed)
-        self.assertEqual(invoice.get_validation('date')['content'], str(invoice.invoice_date))
-        self.assertEqual(invoice.get_validation('due_date')['content'], str(invoice.invoice_date_due))
-        self.assertEqual(invoice.get_validation('invoice_id')['content'], invoice.ref)
-        self.assertEqual(invoice.get_validation('partner')['content'], invoice.partner_id.name)
-        self.assertEqual(invoice.get_validation('total_tax_amount')['content'], invoice.amount_tax)
-        self.assertEqual(invoice.get_validation('VAT_Number')['content'], invoice.partner_id.vat)
-        self.assertEqual(invoice.get_validation('currency')['content'], invoice.currency_id.name)
-        self.assertEqual(invoice.get_validation('payment_ref')['content'], invoice.payment_reference)
-        validation_invoice_lines = invoice.get_validation('invoice_lines')['lines']
+        self.assertEqual(invoice._get_validation('total')['content'], invoice.amount_total)
+        self.assertEqual(invoice._get_validation('subtotal')['content'], invoice.amount_untaxed)
+        self.assertEqual(invoice._get_validation('date')['content'], str(invoice.invoice_date))
+        self.assertEqual(invoice._get_validation('due_date')['content'], str(invoice.invoice_date_due))
+        self.assertEqual(invoice._get_validation('invoice_id')['content'], invoice.ref)
+        self.assertEqual(invoice._get_validation('partner')['content'], invoice.partner_id.name)
+        self.assertEqual(invoice._get_validation('total_tax_amount')['content'], invoice.amount_tax)
+        self.assertEqual(invoice._get_validation('VAT_Number')['content'], invoice.partner_id.vat)
+        self.assertEqual(invoice._get_validation('currency')['content'], invoice.currency_id.name)
+        self.assertEqual(invoice._get_validation('payment_ref')['content'], invoice.payment_reference)
+        validation_invoice_lines = invoice._get_validation('invoice_lines')['lines']
         for i, il in enumerate(invoice.invoice_line_ids):
             self.assertDictEqual(validation_invoice_lines[i], {
                 'description': il.name,

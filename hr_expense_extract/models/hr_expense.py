@@ -37,13 +37,13 @@ class HrExpense(models.Model):
 
     def _autosend_for_digitization(self):
         if self.env.company.expense_extract_show_ocr_option_selection == 'auto_send':
-            self.filtered('extract_can_show_send_button').send_batch_for_digitization()
+            self.filtered('extract_can_show_send_button')._send_batch_for_digitization()
 
     def _message_set_main_attachment_id(self, attachment_ids):
         super(HrExpense, self)._message_set_main_attachment_id(attachment_ids)
         self._autosend_for_digitization()
 
-    def get_validation(self, field):
+    def _get_validation(self, field):
         text_to_send = {}
         if field == "total":
             text_to_send["content"] = self.unit_amount
@@ -59,16 +59,16 @@ class HrExpense(models.Model):
 
     def action_submit_expenses(self, **kwargs):
         res = super(HrExpense, self).action_submit_expenses(**kwargs)
-        self.validate_ocr()
+        self._validate_ocr()
         return res
 
     def _fill_document_with_results(self, ocr_results, force_write=False):
         if ocr_results is not None:
-            description_ocr = self.get_ocr_selected_value(ocr_results, 'description', "")
-            total_ocr = self.get_ocr_selected_value(ocr_results, 'total', 0.0)
-            date_ocr = self.get_ocr_selected_value(ocr_results, 'date', "")
-            currency_ocr = self.get_ocr_selected_value(ocr_results, 'currency', "")
-            bill_reference_ocr = self.get_ocr_selected_value(ocr_results, 'bill_reference', "")
+            description_ocr = self._get_ocr_selected_value(ocr_results, 'description', "")
+            total_ocr = self._get_ocr_selected_value(ocr_results, 'total', 0.0)
+            date_ocr = self._get_ocr_selected_value(ocr_results, 'date', "")
+            currency_ocr = self._get_ocr_selected_value(ocr_results, 'currency', "")
+            bill_reference_ocr = self._get_ocr_selected_value(ocr_results, 'bill_reference', "")
 
             self.state = 'draft'
             if not self.name or self.name == self.message_main_attachment_id.name.split('.')[0]:

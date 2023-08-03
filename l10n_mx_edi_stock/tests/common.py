@@ -38,7 +38,7 @@ class TestMXEdiStockCommon(TestMxEdiCommon):
         })
 
         cls.partner_a = cls.env['res.partner'].create({
-            'name': 'INMOBILIARIA',
+            'name': 'INMOBILIARIA CVA',
             'street': 'Street Calle',
             'city': 'Hidalgo del Parral',
             'country_id': cls.env.ref('base.mx').id,

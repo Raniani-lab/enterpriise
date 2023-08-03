@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 from contextlib import contextmanager
 from freezegun import freeze_time
 from unittest.mock import patch
 
-from odoo import fields
+from odoo.addons.mail.tests.common import MockEmail
 from odoo.tests.common import TransactionCase
 
 
-class HelpdeskCommon(TransactionCase):
+class HelpdeskCommon(TransactionCase, MockEmail):
 
     @classmethod
     def setUpClass(cls):

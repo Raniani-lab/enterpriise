@@ -21,7 +21,9 @@ class TestHelpdeskFlow(HelpdeskCommon):
     @classmethod
     def setUpClass(cls):
         res = super().setUpClass()
-        cls.env["ir.config_parameter"].sudo().set_param("mail.catchall.domain", 'aqualung.com')
+        # give default values for all email aliases and domain
+        cls._init_mail_gateway()
+        cls._init_outgoing_gateway()
 
         ticket_model_id = cls.env['ir.model']._get_id('helpdesk.ticket')
         helpdesk_team_model_id = cls.env['ir.model']._get_id('helpdesk.team')
@@ -237,7 +239,7 @@ Date: Thu, 27 Dec 2018 16:27:45 +0100
 Message-ID: blablabla0
 Subject: helpdesk team 0 in company 0
 From:  A client <client_a@someprovider.com>
-To: helpdesk_team_0@aqualung.com
+To: helpdesk_team_0@test.mycompany.com
 Content-Type: multipart/alternative; boundary="000000000000a47519057e029630"
 
 --000000000000a47519057e029630
@@ -258,7 +260,7 @@ Date: Thu, 27 Dec 2018 16:27:45 +0100
 Message-ID: blablabla1
 Subject: helpdesk team 1 in company 1
 From:  B client <client_b@someprovider.com>
-To: helpdesk_team_1@aqualung.com
+To: helpdesk_team_1@test.mycompany.com
 Content-Type: multipart/alternative; boundary="000000000000a47519057e029630"
 
 --000000000000a47519057e029630
@@ -314,7 +316,7 @@ Date: Thu, 27 Dec 2018 16:27:45 +0100
 Message-ID: blablabla1
 Subject: helpdesk team 1 in company 1
 From:  Client with a §tràÑge name <client_b@someprovaîdère.com>
-To: helpdesk_team@aqualung.com
+To: helpdesk_team@test.mycompany.com
 Content-Type: multipart/alternative; boundary="000000000000a47519057e029630"
 
 --000000000000a47519057e029630
@@ -348,7 +350,7 @@ Date: Thu, 27 Dec 2018 16:27:45 +0100
 Message-ID: blablabla1
 Subject: helpdesk team 1 in company 1
 From:  Client A <client_a@someprovider.com>
-To: helpdesk_team@aqualung.com
+To: helpdesk_team@test.mycompany.com
 Content-Type: multipart/alternative; boundary="000000000000a47519057e029630"
 
 --000000000000a47519057e029630

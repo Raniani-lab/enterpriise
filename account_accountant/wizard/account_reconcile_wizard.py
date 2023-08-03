@@ -100,14 +100,6 @@ class AccountReconcileWizard(models.TransientModel):
         comodel_name='account.account',
         string='Account Transfer From',
         compute='_compute_reco_wizard_data')
-    transfer_amount = fields.Monetary(  # TODO remove in master
-        string='Amount in company currency to transfer',
-        currency_field='reco_currency_id',
-        compute='_compute_reco_wizard_data')
-    transfer_amount_currency = fields.Monetary(  # TODO remove in master
-        string='Amount in currency to transfer',
-        currency_field='reco_currency_id',
-        compute='_compute_reco_wizard_data')
     lock_date_violated_warning_message = fields.Char(
         string='Is the date violating the lock date of moves',
         compute='_compute_lock_date_violated_warning_message')

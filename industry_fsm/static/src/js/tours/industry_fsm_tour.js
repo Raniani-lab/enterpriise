@@ -23,10 +23,12 @@ registry.category("web_tour.tours").add('industry_fsm_tour', {
     position: 'right',
     width: 200,
 }, {
-    trigger: ".o_field_widget[name=partner_id] .o_field_many2one_selection .o_input",
+    trigger: ".o_field_widget[name=partner_id]",
     content: markup(_t('Select the <b>customer</b> for your task.')),
     position: "right",
-    run: "click"
+    run() {
+        document.querySelector('.o_field_widget[name="partner_id"] input').click();
+    }
 }, {
     trigger: ".ui-autocomplete > li > a:not(:has(i.fa))",
     auto: true,

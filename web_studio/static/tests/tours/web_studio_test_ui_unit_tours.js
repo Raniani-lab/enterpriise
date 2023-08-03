@@ -899,3 +899,52 @@ registry.category("web_tour.tours").add("web_studio_test_move_similar_field", {
         },
     ],
 });
+
+registry.category("web_tour.tours").add("web_studio_test_related_file", {
+    test: true,
+    steps: () => [
+        {
+            trigger: "a[data-menu-xmlid='web_studio.studio_test_user_menu']",
+        },
+        {
+            content: "second",
+            extra_trigger: ".o_form_view",
+            trigger: ".o_web_studio_navbar_item button",
+        },
+        {
+            extra_trigger: ".o_web_studio_form_view_editor",
+            trigger: ".o_web_studio_field_related",
+            run: "drag_and_drop_native (.o_inner_group)",
+        },
+        {
+            extra_trigger: ".modal-dialog",
+            trigger: ".o_model_field_selector_value",
+        },
+        {
+            in_modal: false,
+            extra_trigger: ".o_model_field_selector_popover",
+            trigger: ".o_model_field_selector_popover_search input",
+            run: "text Related Partner",
+        },
+        {
+            in_modal: false,
+            trigger: "[data-name=partner_id] > button.o_model_field_selector_popover_item_relation",
+        },
+        {
+            in_modal: false,
+            trigger: ".o_model_field_selector_popover_search input",
+            run: "text New File",
+        },
+        {
+            in_modal: false,
+            trigger: ".o_model_field_selector_popover_item_name:contains(New File):not(:contains(filename))",
+        },
+        {
+            trigger: ".modal-footer .btn-primary:first",
+        },
+        {
+            trigger: ".o_web_studio_leave",
+            run() { },
+        },
+    ]
+});

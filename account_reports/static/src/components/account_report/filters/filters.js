@@ -206,7 +206,7 @@ export class AccountReportFilters extends Component {
 
     async filterTaxUnit(taxUnit) {
         this.controller.updateOption('tax_unit', taxUnit.id);
-        this.controller.saveSessionOptions();
+        this.controller.saveSessionOptions(this.controller.options);
 
         const selectedCompanies = new Set(this.companyService.allowedCompanyIds)
         const taxUnitCompanies = new Set(taxUnit.company_ids);

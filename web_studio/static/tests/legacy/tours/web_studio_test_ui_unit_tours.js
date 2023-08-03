@@ -589,3 +589,57 @@ tour.register("web_studio_test_move_similar_field",
         },
     ]
 );
+
+tour.register("web_studio_test_related_file",
+    {
+        test: true,
+    },
+    [
+        {
+            trigger: "a[data-menu-xmlid='web_studio.studio_test_user_menu']",
+        },
+        {
+            content: "second",
+            extra_trigger: ".o_form_view",
+            trigger: ".o_web_studio_navbar_item a",
+        },
+        {
+            extra_trigger: ".o_web_studio_form_view_editor",
+            trigger: ".o_web_studio_field_related",
+            run: "drag_and_drop (.o_inner_group)",
+        },
+        {
+            extra_trigger: ".o_web_studio_field_modal",
+            trigger: ".o_field_selector_value",
+            run() {
+                $('.o_field_selector_value').focusin();
+            },
+        },
+        {
+            extra_trigger: ".o_field_selector_popover:not(.d-none)",
+            trigger: ".o_field_selector_search input",
+            run: "text Related Partner",
+        },
+        {
+            trigger: ".o_field_selector_item:contains(Related Partner)",
+        },
+        {
+            trigger: ".o_field_selector_value",
+        },
+        {
+            extra_trigger: ".o_field_selector_popover:not(.d-none)",
+            trigger: ".o_field_selector_search input",
+            run: "text New File",
+        },
+        {
+            trigger: ".o_field_selector_item:contains(New File)",
+        },
+        {
+            trigger: ".modal-footer .btn-primary:first",
+        },
+        {
+            trigger: ".o_web_studio_leave",
+            run() { },
+        },
+    ]
+);

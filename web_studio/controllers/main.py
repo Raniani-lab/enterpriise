@@ -505,10 +505,9 @@ class WebStudioController(http.Controller):
             node = op.get('node')
             if node and node.get('tag') == 'field' and node.get('field_description'):
                 ttype = node['field_description'].get('type')
-                is_related = node['field_description'].get("related")
                 is_image = node['attrs'].get('widget') == 'image'
                 is_signature = node['attrs'].get('widget') == 'signature'
-                return ttype == 'binary' and not is_image and not is_signature and not is_related
+                return ttype == 'binary' and not is_image and not is_signature
             return False
 
         # Every time the creation of a binary field is requested,
@@ -532,6 +531,15 @@ class WebStudioController(http.Controller):
                 'type': 'char',
                 'field_description': _('Filename for %s', op['node']['field_description']['name']),
             })
+            node = op.get('node')
+            if node and node.get('tag') == 'field' and node.get('field_description') and node['field_description'].get('related'):
+                related_filename = node['field_description']['related'] + '_filename'
+                related_field = related_filename.split('.')[-1]
+                related_model = node['field_description']['model']
+                if not IrModelFields.search([('name', '=', related_field), ('model', '=', related_model)]):
+                    # Add the filename field only if the field exists in the related model
+                    continue
+                char_op['node']['field_description'].update({'related': related_filename})
             char_op['node']['attrs']['invisible'] = '1'
 
             # put the filename field after the binary field

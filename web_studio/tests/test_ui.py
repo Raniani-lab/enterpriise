@@ -811,3 +811,141 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
             </xpath>
         </data>
         ''')
+
+    def create_user_view(self):
+        self.testView.write({
+            "name": "simple user",
+            "model": "res.users",
+            "arch": '''
+                <form>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </form>
+            '''
+        })
+        self.testAction.write({
+            "name": "simple user",
+            "res_model": "res.users",
+        })
+        self.testActionXmlId.name = "studio_test_user_action"
+        self.testMenu.name = "Studio Test User"
+        self.testMenuXmlId.name = "studio_test_user_menu"
+
+    def test_related_binary_field_with_filename(self):
+        self.create_user_view()
+
+        partner_field = self.env["ir.model.fields"].create({
+            "field_description": "New File",
+            "name": "x_new_file",
+            "ttype": "binary",
+            "model": "res.partner",
+            "model_id": self.env["ir.model"]._get('res.partner').id,
+            "state": "manual",
+        })
+        self.env["ir.model.fields"].create({
+            "field_description": "New File filename",
+            "name": "x_new_file_filename",
+            "ttype": "char",
+            "model": "res.partner",
+            "model_id": self.env["ir.model"]._get('res.partner').id,
+            "state": "manual",
+        })
+
+        self.start_tour("/web?debug=tests", 'web_studio_test_related_file', login="admin", timeout=400)
+
+        studioView = _get_studio_view(self.testView)
+        binary_field = self.env["ir.model.fields"].search([('model', '=', 'res.users'), ('ttype', '=', 'binary'), ('name', 'like', 'x_studio_related')])
+        self.assertEqual(len(binary_field), 1)
+        self.assertEqual(binary_field.related_field_id, partner_field)
+        assertViewArchEqual(self, studioView.arch,
+        '''
+        <data>
+            <xpath expr="//form[1]/group[1]/field[@name=\'name\']" position="before">
+                <field filename="{binary_field.name}_filename" name="{binary_field.name}"/>
+                <field invisible="1" name="{binary_field.name}_filename"/>
+            </xpath>
+        </data>
+        '''.format(binary_field=binary_field))
+
+    def test_nested_related_binary_field_with_filename(self):
+        self.create_user_view()
+
+        self.env["ir.model.fields"].create({
+            "field_description": "New File",
+            "name": "x_new_file",
+            "ttype": "binary",
+            "model": "res.partner.category",
+            "model_id": self.env["ir.model"]._get('res.partner.category').id,
+            "state": "manual",
+        })
+        self.env["ir.model.fields"].create({
+            "field_description": "New File filename",
+            "name": "x_new_file_filename",
+            "ttype": "char",
+            "model": "res.partner.category",
+            "model_id": self.env["ir.model"]._get('res.partner.category').id,
+            "state": "manual",
+        })
+
+        partner_field = self.env["ir.model.fields"].create({
+            "field_description": "New File",
+            "name": "x_new_related_file",
+            "ttype": "binary",
+            "model": "res.partner",
+            "model_id": self.env["ir.model"]._get('res.partner').id,
+            "state": "manual",
+            "related": "category_id.x_new_file"
+        })
+        self.env["ir.model.fields"].create({
+            "field_description": "New File filename",
+            "name": "x_new_related_file_filename",
+            "ttype": "char",
+            "model": "res.partner",
+            "model_id": self.env["ir.model"]._get('res.partner').id,
+            "state": "manual",
+            "related": "category_id.x_new_file_filename"
+        })
+
+        self.start_tour("/web?debug=tests", 'web_studio_test_related_file', login="admin", timeout=400)
+
+        studioView = _get_studio_view(self.testView)
+        binary_field = self.env["ir.model.fields"].search([('model', '=', 'res.users'), ('ttype', '=', 'binary'), ('name', 'like', 'x_studio_related')])
+        self.assertEqual(len(binary_field), 1)
+        self.assertEqual(binary_field.related_field_id, partner_field)
+        assertViewArchEqual(self, studioView.arch,
+        '''
+        <data>
+            <xpath expr="//form[1]/group[1]/field[@name=\'name\']" position="before">
+                <field filename="{binary_field.name}_filename" name="{binary_field.name}"/>
+                <field invisible="1" name="{binary_field.name}_filename"/>
+            </xpath>
+        </data>
+        '''.format(binary_field=binary_field))
+
+    def test_related_binary_field_without_filename(self):
+        self.create_user_view()
+
+        partner_field = self.env["ir.model.fields"].create({
+            "field_description": "New File",
+            "name": "x_new_file",
+            "ttype": "binary",
+            "model": "res.partner",
+            "model_id": self.env["ir.model"]._get('res.partner').id,
+            "state": "manual",
+        })
+
+        self.start_tour("/web?debug=tests", 'web_studio_test_related_file', login="admin", timeout=400)
+
+        studioView = _get_studio_view(self.testView)
+        binary_field = self.env["ir.model.fields"].search([('model', '=', 'res.users'), ('ttype', '=', 'binary'), ('name', 'like', 'x_studio_related')])
+        self.assertEqual(len(binary_field), 1)
+        self.assertEqual(binary_field.related_field_id, partner_field)
+        assertViewArchEqual(self, studioView.arch,
+        '''
+        <data>
+            <xpath expr="//form[1]/group[1]/field[@name=\'name\']" position="before">
+                <field name="{binary_field.name}"/>
+            </xpath>
+        </data>
+        '''.format(binary_field=binary_field))

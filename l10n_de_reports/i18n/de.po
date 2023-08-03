@@ -17,8 +17,8 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: l10n_de_reports
-#: model:account.report.expression,report_line_name:l10n_de_reports.skr_bs_liabilities_c_1_balance
-#: model:account.report.line,name:l10n_de_reports.skr_bs_liabilities_c_1
+#: model:account.report.expression,report_line_name:l10n_de_reports.skr_bs_liabilities_2023_b_1_balance
+#: model:account.report.line,name:l10n_de_reports.skr_bs_liabilities_2023_b_1
 msgid "1. Accrued pension and similar obligations"
 msgstr "1. Rückstellungen für Pensionen und ähnliche Verpflichtungen"
 
@@ -35,8 +35,8 @@ msgid "1. Legal reserve"
 msgstr "1. Gesetzliche Rücklage"
 
 #. module: l10n_de_reports
-#: model:account.report.expression,report_line_name:l10n_de_reports.skr_bs_liabilities_d_1_balance
-#: model:account.report.line,name:l10n_de_reports.skr_bs_liabilities_d_1
+#: model:account.report.expression,report_line_name:l10n_de_reports.skr_bs_liabilities_2023_c_1_balance
+#: model:account.report.line,name:l10n_de_reports.skr_bs_liabilities_2023_c_1
 msgid "1. Loans, of which convertible"
 msgstr "1. Anleihen, davon konvertibeln"
 
@@ -121,8 +121,8 @@ msgid "2. Increase or decrease in finished goods inventories and work in progres
 msgstr "2. Erhöhung oder Verminderung des Bestands an fertigen und unfertigen Erzeugnissen"
 
 #. module: l10n_de_reports
-#: model:account.report.expression,report_line_name:l10n_de_reports.skr_bs_liabilities_d_2_balance
-#: model:account.report.line,name:l10n_de_reports.skr_bs_liabilities_d_2
+#: model:account.report.expression,report_line_name:l10n_de_reports.skr_bs_liabilities_2023_c_2_balance
+#: model:account.report.line,name:l10n_de_reports.skr_bs_liabilities_2023_c_2
 msgid "2. Liabilities to banks"
 msgstr "2. Verbindlichkeiten gegenüber Kreditinstituten"
 
@@ -145,8 +145,8 @@ msgid "2. Reserve for own shares"
 msgstr "2. Rücklage für Anteile an einem herrschenden oder mehrheitlich beteiligten Unternehmen"
 
 #. module: l10n_de_reports
-#: model:account.report.expression,report_line_name:l10n_de_reports.skr_bs_liabilities_c_2_balance
-#: model:account.report.line,name:l10n_de_reports.skr_bs_liabilities_c_2
+#: model:account.report.expression,report_line_name:l10n_de_reports.skr_bs_liabilities_2023_b_2_balance
+#: model:account.report.line,name:l10n_de_reports.skr_bs_liabilities_2023_b_2
 msgid "2. Tax accruals"
 msgstr "2. Steuerrückstellungen"
 
@@ -181,8 +181,8 @@ msgid "3. Goodwill"
 msgstr "3. Geschäfts- oder Firmenwert"
 
 #. module: l10n_de_reports
-#: model:account.report.expression,report_line_name:l10n_de_reports.skr_bs_liabilities_c_3_balance
-#: model:account.report.line,name:l10n_de_reports.skr_bs_liabilities_c_3
+#: model:account.report.expression,report_line_name:l10n_de_reports.skr_bs_liabilities_2023_b_3_balance
+#: model:account.report.line,name:l10n_de_reports.skr_bs_liabilities_2023_b_3
 msgid "3. Other accruals"
 msgstr "3. Sonstige Rückstellungen"
 
@@ -205,8 +205,8 @@ msgid "3. Participations"
 msgstr "3. Beteiligungen"
 
 #. module: l10n_de_reports
-#: model:account.report.expression,report_line_name:l10n_de_reports.skr_bs_liabilities_d_3_balance
-#: model:account.report.line,name:l10n_de_reports.skr_bs_liabilities_d_3
+#: model:account.report.expression,report_line_name:l10n_de_reports.skr_bs_liabilities_2023_c_3_balance
+#: model:account.report.line,name:l10n_de_reports.skr_bs_liabilities_2023_c_3
 msgid "3. Payments received on account of orders"
 msgstr "3. Erhaltene Anzahlungen auf Bestellungen"
 
@@ -265,8 +265,8 @@ msgid "4. Prepayments on inventories"
 msgstr "4. Geleistete Anzahlungen"
 
 #. module: l10n_de_reports
-#: model:account.report.expression,report_line_name:l10n_de_reports.skr_bs_liabilities_d_4_balance
-#: model:account.report.line,name:l10n_de_reports.skr_bs_liabilities_d_4
+#: model:account.report.expression,report_line_name:l10n_de_reports.skr_bs_liabilities_2023_c_4_balance
+#: model:account.report.line,name:l10n_de_reports.skr_bs_liabilities_2023_c_4
 msgid "4. Trade payable"
 msgstr "4. Verbindlichkeiten aus Lieferungen und Leistungen"
 
@@ -277,8 +277,8 @@ msgid "5. Cost of materials"
 msgstr "5. Materialaufwand"
 
 #. module: l10n_de_reports
-#: model:account.report.expression,report_line_name:l10n_de_reports.skr_bs_liabilities_d_5_balance
-#: model:account.report.line,name:l10n_de_reports.skr_bs_liabilities_d_5
+#: model:account.report.expression,report_line_name:l10n_de_reports.skr_bs_liabilities_2023_c_5_balance
+#: model:account.report.line,name:l10n_de_reports.skr_bs_liabilities_2023_c_5
 msgid "5. Liabilities on bills accepted and drawn"
 msgstr "5. Verbindlichkeiten aus der Annahme gezogener Wechsel und der Ausstellung eigener Wechsel"
 
@@ -295,8 +295,8 @@ msgid "6. Other loans"
 msgstr "6. sonstige Ausleihungen"
 
 #. module: l10n_de_reports
-#: model:account.report.expression,report_line_name:l10n_de_reports.skr_bs_liabilities_d_6_balance
-#: model:account.report.line,name:l10n_de_reports.skr_bs_liabilities_d_6
+#: model:account.report.expression,report_line_name:l10n_de_reports.skr_bs_liabilities_2023_c_6_balance
+#: model:account.report.line,name:l10n_de_reports.skr_bs_liabilities_2023_c_6
 msgid "6. Payables to affiliated companies"
 msgstr "6. Verbindlichkeiten gegenüber verbundenen Unternehmen"
 
@@ -313,14 +313,14 @@ msgid "7. Depreciation"
 msgstr "7. Abschreibungen"
 
 #. module: l10n_de_reports
-#: model:account.report.expression,report_line_name:l10n_de_reports.skr_bs_liabilities_d_7_balance
-#: model:account.report.line,name:l10n_de_reports.skr_bs_liabilities_d_7
+#: model:account.report.expression,report_line_name:l10n_de_reports.skr_bs_liabilities_2023_c_7_balance
+#: model:account.report.line,name:l10n_de_reports.skr_bs_liabilities_2023_c_7
 msgid "7. Payables to companies in which participations are held"
 msgstr "7. Verbindlichkeiten gegenüber Unternehmen, mit denen ein Beteiligungsverhältnis besteht"
 
 #. module: l10n_de_reports
-#: model:account.report.expression,report_line_name:l10n_de_reports.skr_bs_liabilities_d_8_balance
-#: model:account.report.line,name:l10n_de_reports.skr_bs_liabilities_d_8
+#: model:account.report.expression,report_line_name:l10n_de_reports.skr_bs_liabilities_c_8_balance
+#: model:account.report.line,name:l10n_de_reports.skr_bs_liabilities_c_8
 msgid "8. Other liabilities, of which taxes, of which relating to social security and similar obligations"
 msgstr "8. Sonstige Verbindlichkeiten, davon aus Steuern, davon im Rahmen der sozialen Sicherheit"
 
@@ -389,10 +389,10 @@ msgid "Balance Sheet"
 msgstr "Bilanz"
 
 #. module: l10n_de_reports
-#: model:account.report.expression,report_line_name:l10n_de_reports.skr_bs_liabilities_c_balance
-#: model:account.report.line,name:l10n_de_reports.skr_bs_liabilities_c
-msgid "C. Liabilities"
-msgstr "C. Rückstellungen"
+#: model:account.report.expression,report_line_name:l10n_de_reports.skr_bs_liabilities_2023_b_balance
+#: model:account.report.line,name:l10n_de_reports.skr_bs_liabilities_2023_b
+msgid "B. Liabilities"
+msgstr "B. Rückstellungen"
 
 #. module: l10n_de_reports
 #: model:account.report.expression,report_line_name:l10n_de_reports.skr_bs_asset_c_balance
@@ -448,10 +448,10 @@ msgid "D. Deferred tax assets"
 msgstr "D. Aktive latente Steuern"
 
 #. module: l10n_de_reports
-#: model:account.report.expression,report_line_name:l10n_de_reports.skr_bs_liabilities_d_balance
-#: model:account.report.line,name:l10n_de_reports.skr_bs_liabilities_d
-msgid "D. Liabilities"
-msgstr "D. Verbindlichkeiten"
+#: model:account.report.expression,report_line_name:l10n_de_reports.skr_bs_liabilities_2023_c_balance
+#: model:account.report.line,name:l10n_de_reports.skr_bs_liabilities_2023_c
+msgid "C. Liabilities"
+msgstr "C. Verbindlichkeiten"
 
 #. module: l10n_de_reports
 #. odoo-python
@@ -488,10 +488,10 @@ msgid "Datev zip"
 msgstr "Datev zip"
 
 #. module: l10n_de_reports
-#: model:account.report.expression,report_line_name:l10n_de_reports.skr_bs_liabilities_e_balance
-#: model:account.report.line,name:l10n_de_reports.skr_bs_liabilities_e
-msgid "E. Deferred income"
-msgstr "E. Rechnungsabgrenzungsposten"
+#: model:account.report.expression,report_line_name:l10n_de_reports.skr_bs_liabilities_2023_d_balance
+#: model:account.report.line,name:l10n_de_reports.skr_bs_liabilities_2023_d
+msgid "D. Deferred income"
+msgstr "D. Rechnungsabgrenzungsposten"
 
 #. module: l10n_de_reports
 #: model:account.report.expression,report_line_name:l10n_de_reports.skr_bs_asset_e_balance
@@ -517,10 +517,10 @@ msgid "Equity and liabilities"
 msgstr "Passivseite"
 
 #. module: l10n_de_reports
-#: model:account.report.expression,report_line_name:l10n_de_reports.skr_bs_liabilities_f_balance
-#: model:account.report.line,name:l10n_de_reports.skr_bs_liabilities_f
-msgid "F. Deferred tax liabilities"
-msgstr "F. Passive latente Steuern"
+#: model:account.report.expression,report_line_name:l10n_de_reports.skr_bs_liabilities_2023_e_balance
+#: model:account.report.line,name:l10n_de_reports.skr_bs_liabilities_2023_e
+msgid "E. Deferred tax liabilities"
+msgstr "E. Passive latente Steuern"
 
 #. module: l10n_de_reports
 #: model:account.report.expression,report_line_name:l10n_de_reports.skr_pl_line_finance_operation_balance

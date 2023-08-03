@@ -19,15 +19,14 @@ class TestL10nClEdiStock(TestL10nClEdiStockCommon):
 
     @freeze_time('2019-10-24T20:00:00', tz_offset=3)
     def test_l10n_cl_edi_delivery_with_taxes_from_inventory(self):
-        picking = self.PickingObj.create({
+        picking = self.env['stock.picking'].create({
             'name': 'Test Delivery Guide',
             'partner_id': self.chilean_partner_a.id,
-            'picking_type_id': self.picking_type_out,
             'location_id': self.stock_location,
             'location_dest_id': self.customer_location,
             'picking_type_id': self.warehouse.out_type_id.id,
         })
-        self.MoveObj.create({
+        self.env['stock.move'].create({
             'name': self.product_with_taxes_a.name,
             'product_id': self.product_with_taxes_a.id,
             'product_uom': self.product_with_taxes_a.uom_id.id,
@@ -37,9 +36,9 @@ class TestL10nClEdiStock(TestL10nClEdiStockCommon):
             'picking_id': picking.id,
             'location_id': self.stock_location,
             'location_dest_id': self.customer_location,
-            'company_id': self.company.id
+            'company_id': self.env.company.id
         })
-        self.MoveObj.create({
+        self.env['stock.move'].create({
             'name': self.product_with_taxes_b.name,
             'product_id': self.product_with_taxes_b.id,
             'product_uom': self.product_with_taxes_b.uom_id.id,
@@ -49,7 +48,7 @@ class TestL10nClEdiStock(TestL10nClEdiStockCommon):
             'picking_id': picking.id,
             'location_id': self.stock_location,
             'location_dest_id': self.customer_location,
-            'company_id': self.company.id
+            'company_id': self.env.company.id
         })
         picking.button_validate()
         picking.create_delivery_guide()
@@ -90,7 +89,7 @@ class TestL10nClEdiStock(TestL10nClEdiStockCommon):
                 'price_unit': self.product_with_taxes_b.list_price
                 })
             ],
-            'company_id': self.company.id,
+            'company_id': self.env.company.id,
         }
         sale_order = self.env['sale.order'].create(so_vals)
         sale_order.action_confirm()
@@ -121,7 +120,7 @@ class TestL10nClEdiStock(TestL10nClEdiStockCommon):
 
     @freeze_time('2019-10-24T20:00:00', tz_offset=3)
     def test_l10n_cl_edi_delivery_without_taxes_from_sale_order(self):
-        so_vals = {
+        sale_order = self.env['sale.order'].create({
             'partner_id': self.chilean_partner_a.id,
             'order_line': [
                 (0, 0, {
@@ -131,18 +130,18 @@ class TestL10nClEdiStock(TestL10nClEdiStockCommon):
                     'product_uom': self.product_without_taxes_a.uom_id.id,
                     'price_unit': self.product_without_taxes_a.list_price,
                     'discount': 10.00,
+                    'tax_id': [],
                 }),
                 (0, 0, {
                     'name': self.product_without_taxes_b.name,
                     'product_id': self.product_without_taxes_b.id,
                     'product_uom_qty': 10.0,
                     'product_uom': self.product_without_taxes_b.uom_id.id,
-                    'price_unit': self.product_without_taxes_b.list_price
+                    'price_unit': self.product_without_taxes_b.list_price,
+                    'tax_id': [],
                 })
             ],
-            'company_id': self.company.id,
-        }
-        sale_order = self.env['sale.order'].create(so_vals)
+        })
         sale_order.action_confirm()
 
         picking = sale_order.picking_ids[0]
@@ -185,7 +184,7 @@ class TestL10nClEdiStock(TestL10nClEdiStockCommon):
                     'discount': 10.00,
                 })
             ],
-            'company_id': self.company.id,
+            'company_id': self.env.company.id,
         }
         sale_order = self.env['sale.order'].create(so_vals)
         sale_order.action_confirm()

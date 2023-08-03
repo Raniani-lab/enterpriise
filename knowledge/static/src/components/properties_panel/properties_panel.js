@@ -23,7 +23,7 @@ export class KnowledgeArticleProperties extends Component {
     }
 
     get showNoContentHelper() {
-        return this.props.record.data.article_properties.some((prop) => prop.definition_deleted);
+        return this.props.record.data.article_properties.every((prop) => prop.definition_deleted);
     }
 
     toggleProperties(event) {

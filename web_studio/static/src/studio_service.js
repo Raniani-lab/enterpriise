@@ -34,8 +34,8 @@ export const SUPPORTED_VIEW_TYPES = [
 ];
 
 export const studioService = {
-    dependencies: ["action", "cookie", "color_scheme", "home_menu", "router", "user"],
-    async start(env, { user, cookie, color_scheme }) {
+    dependencies: ["action", "cookie", "color_scheme", "home_menu", "router", "user", "menu"],
+    async start(env, { user, cookie, color_scheme, menu }) {
         function _getCurrentAction() {
             const currentController = env.services.action.currentController;
             return currentController ? currentController.action : null;
@@ -79,6 +79,17 @@ export const studioService = {
 
         const bus = new EventBus();
         let inStudio = false;
+
+        const menuSelectMenu = menu.selectMenu;
+        menu.selectMenu = async (argMenu) => {
+            if (!inStudio) {
+                return menuSelectMenu.call(menu, argMenu)
+            } else {
+                argMenu = typeof argMenu === "number" ? menu.getMenu(argMenu) : argMenu;
+                await open(MODES.EDITOR, argMenu.actionID);
+                menu.setCurrentMenu(argMenu);
+            }
+        }
 
         const state = {
             studioMode: null,

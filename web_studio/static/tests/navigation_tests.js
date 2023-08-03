@@ -6,11 +6,13 @@ import {
     makeDeferred,
     nextTick,
     patchWithCleanup,
+    triggerEvents,
 } from "@web/../tests/helpers/utils";
 import { registerCleanup } from "@web/../tests/helpers/cleanup";
 
 import { toggleFilterMenu, toggleMenuItem } from "@web/../tests/search/helpers";
 import { companyService } from "@web/webclient/company_service";
+import { commandService } from "@web/core/commands/command_service";
 import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
 import { getActionManagerServerData } from "@web/../tests/webclient/helpers";
 import { leaveStudio, openStudio, registerStudioDependencies } from "@web_studio/../tests/helpers";
@@ -836,4 +838,27 @@ QUnit.module("Studio", (hooks) => {
             assert.hasClass(target.querySelector(".o_web_studio_navbar_item"), "o_disabled");
         }
     );
+
+    QUnit.test("command palette inside studio", async (assert) => {
+        registry.category("services").add("command", commandService);
+        await createEnterpriseWebClient({ serverData });
+        await openStudio(target);
+
+        // disable opacity: 0 in tests
+        // doesn't have any effect on the test itself
+        document.body.classList.add("debug");
+        registerCleanup(() => document.body.classList.remove("debug"));
+        target.classList.add("debug");
+
+        assert.containsOnce(target, ".o_studio_home_menu");
+        const hiddenInput = target.querySelector("input.o_search_hidden");
+        hiddenInput.value = "Part";
+        await triggerEvents(hiddenInput, null, ["input"]);
+        assert.containsOnce(target, ".o_command_palette");
+
+        await click(target.querySelector(".o_command_palette .o_command"));
+        await nextTick();
+        assert.containsNone(target, ".o_studio_home_menu");
+        assert.containsOnce(target, ".o_studio .o_web_studio_kanban_view_editor");
+    });
 });

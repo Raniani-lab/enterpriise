@@ -689,11 +689,15 @@ class AccountReport(models.Model):
             return
 
         options['partner'] = True
-        options['partner_ids'] = previous_options and previous_options.get('partner_ids') or []
+        previous_partner_ids = previous_options and previous_options.get('partner_ids') or []
         options['partner_categories'] = previous_options and previous_options.get('partner_categories') or []
-        selected_partner_ids = [int(partner) for partner in options['partner_ids']]
-        selected_partners = selected_partner_ids and self.env['res.partner'].browse(selected_partner_ids) or self.env['res.partner']
+
+        selected_partner_ids = [int(partner) for partner in previous_partner_ids]
+        # search instead of browse so that record rules apply and filter out the ones the user does not have access to
+        selected_partners = selected_partner_ids and self.env['res.partner'].search([('id', 'in', selected_partner_ids)]) or self.env['res.partner']
         options['selected_partner_ids'] = selected_partners.mapped('name')
+        options['partner_ids'] = selected_partners.ids
+
         selected_partner_category_ids = [int(category) for category in options['partner_categories']]
         selected_partner_categories = selected_partner_category_ids and self.env['res.partner.category'].browse(selected_partner_category_ids) or self.env['res.partner.category']
         options['selected_partner_categories'] = selected_partner_categories.mapped('name')

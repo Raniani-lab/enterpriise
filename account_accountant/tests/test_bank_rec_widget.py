@@ -134,6 +134,40 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         # Should not trigger the error.
         self.env['res.partner.bank'].flush_model()
 
+    def test_validation_base_case(self):
+        st_line = self._create_st_line(
+            1000.0,
+            date='2017-01-01',
+        )
+
+        wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
+        line = wizard.line_ids.filtered(lambda x: x.flag == 'auto_balance')
+        wizard._js_action_mount_line_in_edit(line.index)
+        line.account_id = self.account_revenue1
+        wizard._line_value_changed_account_id(line)
+        self.assertRecordValues(wizard.line_ids, [
+            # pylint: disable=C0326
+            {'flag': 'liquidity',     'amount_currency': 1000.0,  'currency_id': self.company_data['currency'].id,    'balance': 1000.0},
+            {'flag': 'manual',        'amount_currency': -1000.0, 'currency_id': self.company_data['currency'].id,    'balance': -1000.0},
+        ])
+        self.assertRecordValues(wizard, [{'state': 'valid'}])
+
+        # The amount is the same, no message under the 'amount' field.
+        self.assert_form_extra_text_value(wizard, False)
+
+        wizard._action_validate()
+        self.assertRecordValues(st_line.line_ids, [
+            # pylint: disable=C0326
+            {'account_id': st_line.journal_id.default_account_id.id,    'amount_currency': 1000.0,      'currency_id': self.company_data['currency'].id,    'balance': 1000.0,  'reconciled': False},
+            {'account_id': self.account_revenue1.id,                    'amount_currency': -1000.0,     'currency_id': self.company_data['currency'].id,    'balance': -1000.0, 'reconciled': False},
+        ])
+
+        self.assertRecordValues(wizard.line_ids, [
+            # pylint: disable=C0326
+            {'flag': 'liquidity', 'account_id': st_line.journal_id.default_account_id.id,  'amount_currency': 1000.0,  'currency_id': self.company_data['currency'].id,    'balance': 1000.0},
+            {'flag': 'aml',       'account_id': self.account_revenue1.id,                  'amount_currency': -1000.0, 'currency_id': self.company_data['currency'].id,    'balance': -1000.0},
+        ])
+
     def test_validation_new_aml_same_foreign_currency(self):
         income_exchange_account = self.env.company.income_currency_exchange_account_id
 

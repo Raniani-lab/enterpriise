@@ -137,28 +137,25 @@ class BankRecWidget(models.Model):
                 if is_reconciled:
                     _liquidity_lines, _suspense_lines, other_lines = wizard.st_line_id._seek_for_lines()
                     for aml in other_lines:
-                        if wizard.state == 'reconciled':
-                            exchange_diff_aml = (aml.matched_debit_ids + aml.matched_debit_ids)\
-                                .exchange_move_id.line_ids.filtered(lambda l: l.account_id != aml.account_id)
-                            if exchange_diff_aml:
-                                line_ids_commands.append(
-                                    Command.create(wizard._lines_prepare_aml_line(
-                                        aml,  # Create the aml line with un-squashed amounts (aml - exchange diff)
-                                        balance=aml.balance - exchange_diff_aml.balance,
-                                        amount_currency=aml.amount_currency - exchange_diff_aml.amount_currency
-                                    ))
-                                )
-                                line_ids_commands.append(
-                                    Command.create(wizard._lines_prepare_aml_line(exchange_diff_aml))
-                                )
+                        exchange_diff_aml = (aml.matched_debit_ids + aml.matched_debit_ids)\
+                            .exchange_move_id.line_ids.filtered(lambda l: l.account_id != aml.account_id)
+                        if wizard.state == 'reconciled' and exchange_diff_aml:
+                            line_ids_commands.append(
+                                Command.create(wizard._lines_prepare_aml_line(
+                                    aml,  # Create the aml line with un-squashed amounts (aml - exchange diff)
+                                    balance=aml.balance - exchange_diff_aml.balance,
+                                    amount_currency=aml.amount_currency - exchange_diff_aml.amount_currency
+                                ))
+                            )
+                            line_ids_commands.append(
+                                Command.create(wizard._lines_prepare_aml_line(exchange_diff_aml))
+                            )
                         else:
                             line_ids_commands.append(Command.create(wizard._lines_prepare_aml_line(aml)))
 
                 wizard.line_ids = line_ids_commands
 
-                # Auto-balance line if the statement line is not yet reconciled.
-                if not is_reconciled:
-                    wizard._lines_add_auto_balance_line()
+                wizard._lines_add_auto_balance_line()
 
             else:
 

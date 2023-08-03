@@ -33,7 +33,6 @@
         'data/documents_workflow_data.xml',
         'data/ir_asset_data.xml',
         'data/ir_config_parameter_data.xml',
-        'wizard/documents_folder_deletion_wizard_views.xml',
         'views/res_config_settings_views.xml',
         'views/res_partner_views.xml',
         'views/documents_document_views.xml',
@@ -86,10 +85,14 @@
         'web.tests_assets': [
             'documents/static/tests/helpers/**/*',
         ],
+        'web.assets_tests': [
+            'documents/static/tests/tours/*',
+        ],
         'web.qunit_suite_tests': [
             'documents/static/tests/**/*',
             ('remove', 'documents/static/tests/**/*mobile_tests.js'),
             ('remove', 'documents/static/tests/helpers/**/*'),
+            ('remove', 'documents/static/tests/tours/*'),
         ],
         'web.qunit_mobile_suite_tests': [
             'documents/static/tests/documents_test_utils.js',

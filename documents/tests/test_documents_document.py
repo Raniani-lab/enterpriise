@@ -525,3 +525,15 @@ class TestCaseDocuments(TransactionCase):
         attachment_a = self.document_txt.attachment_id
         self.document_txt.unlink()
         self.assertFalse(attachment_a.exists(), 'the attachment should not exist')
+
+    def test_archive_and_unarchive_document(self):
+        self.document_txt.action_archive()
+        self.assertFalse(self.document_txt.active, 'the document should be inactive')
+        self.document_txt.action_unarchive()
+        self.assertTrue(self.document_txt.active, 'the document should be active')
+
+    def test_delete_document(self):
+        self.document_txt.action_archive()
+        self.assertFalse(self.document_txt.active, 'the document should be inactive')
+        self.document_txt.unlink()
+        self.assertFalse(self.document_txt.exists(), 'the document should not exist')

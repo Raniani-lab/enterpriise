@@ -23,7 +23,7 @@
     <t t-name="documents.SearchPanel.Category" t-inherit="web.SearchPanel.Category" t-inherit-mode="primary">
         <xpath expr="//li[contains(@class, 'o_search_panel_category_value')]" position="attributes">
             <attribute name="class" add="pe-0" separator=" "/>
-            <attribute name="t-att-class">{'o_treeEntry' : isChildList, 'o_has_treeEntry': value.childrenIds.length, 'o_all_category' : !valueId}</attribute>
+            <attribute name="t-att-class">{'o_treeEntry' : isChildList, 'o_has_treeEntry': value.childrenIds.length || valueId === 'TRASH', 'o_all_or_trash_category' : !valueId || valueId === 'TRASH'}</attribute>
             <attribute name="t-att-title">value.display_name</attribute>
             <attribute name="t-att-data-value-id">valueId</attribute>
             <attribute name="t-on-dragenter.stop.prevent">(ev) => this.onDragEnter(section, value, ev)</attribute>
@@ -33,7 +33,7 @@
         </xpath>
         <xpath expr="//*[contains(@class, 'o_search_panel_label')]" position="inside">
             <div class="ms-auto">
-                <div t-if="valueId and supportedEditionFields.includes(section.fieldName)" class="o_documents_search_panel_section_edit h-100" t-on-click.stop.prevent="(ev) => this.openEditPopover(ev, section, value.id, null)">
+                <div t-if="valueId and valueId != 'TRASH' and supportedEditionFields.includes(section.fieldName)" class="o_documents_search_panel_section_edit h-100" t-on-click.stop.prevent="(ev) => this.openEditPopover(ev, section, value.id, null)">
                     <span class="fa fa-cog pe-2 ps-3"/>
                 </div>
                 <span t-if="isUploadingInFolder(valueId)" class="fa fa-circle-o-notch fa-spin"/>
@@ -41,7 +41,11 @@
         </xpath>
         <xpath expr="//i[@t-if='value.childrenIds.length']" position="replace">
             <i class="align-self-center fa fa-fw"
+               t-if="valueId !== 'TRASH'"
                t-att-class="state.expanded[section.id][valueId] || !value.childrenIds.length  ? 'fa-caret-down' : 'fa-caret-right'"/>
+        </xpath>
+        <xpath expr="//button[hasclass('o_toggle_fold')]" position="inside">
+            <span t-if="valueId === 'TRASH'" class="fa fa-trash"/>
         </xpath>
     </t>
 

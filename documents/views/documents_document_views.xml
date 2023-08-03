@@ -23,8 +23,6 @@
                 <separator/>
                 <filter string="Requested" name="requested_filter" domain="[('type', '=', 'empty')]"/>
                 <separator/>
-                <filter string="Archived" name="Inactive" domain="[('active', '=', False)]"/>
-                <separator/>
                 <filter string="Late Activities" name="activities_overdue"
                     domain="[('my_activity_date_deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]"
                     help="Show all records which has next action date is before today"/>
@@ -169,8 +167,8 @@
                     <button type="object" name="create_share" string="Share"/>
                     <button type="object" name="toggle_lock" string="Lock" invisible="lock_uid"/>
                     <button type="object" name="toggle_lock" string="Unlock" invisible="not lock_uid"/>
-                    <button type="object" name="toggle_active" string="Archive" invisible="not active"/>
-                    <button type="object" name="toggle_active" string="Restore" invisible="active"/>
+                    <button type="object" name="action_archive" string="Archive" invisible="not active"/>
+                    <button type="object" name="action_unarchive" string="Restore" invisible="active"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">

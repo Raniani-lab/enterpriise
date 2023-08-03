@@ -1356,110 +1356,6 @@ QUnit.module("documents", {}, function () {
                 }
             );
 
-            QUnit.test("document inspector: can delete records", async function (assert) {
-                assert.expect(5);
-
-                const selectedRecordIds = pyEnv["documents.document"].search([
-                    "&",
-                    ["name", "in", ["wip", "zorro"]],
-                    ["active", "=", false],
-                ]);
-                await createDocumentsView({
-                    type: "kanban",
-                    resModel: "documents.document",
-                    domain: [["active", "=", false]],
-                    arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
-                    <div>
-                        <i class="fa fa-circle-thin o_record_selector"/>
-                        <field name="name"/>
-                    </div>
-                </t></templates></kanban>`,
-                    mockRPC: function (route, args) {
-                        if (args.method === "unlink") {
-                            assert.deepEqual(
-                                args.args[0],
-                                selectedRecordIds,
-                                "should unlink the selected records"
-                            );
-                        }
-                    },
-                });
-
-                await legacyClick(
-                    $(target).find(".o_kanban_record:contains(wip) .o_record_selector")[0]
-                );
-                await legacyClick(
-                    $(target).find(".o_kanban_record:contains(zorro) .o_record_selector")[0]
-                );
-
-                assert.containsN(target, ".o_record_selected", 2, "should have 2 selected records");
-                assert.containsN(
-                    target,
-                    ".o_documents_inspector_preview .o_document_preview",
-                    2,
-                    "should show 2 document previews in the DocumentsInspector"
-                );
-
-                await legacyClick(
-                    target.querySelector(".o_documents_inspector_info .o_inspector_delete")
-                );
-                assert.containsNone(target, ".o_record_selected", "should have no selected record");
-                assert.containsNone(
-                    target,
-                    ".o_documents_inspector_preview .o_document_preview",
-                    "should show 0 document preview in the DocumentsInspector"
-                );
-            });
-
-            QUnit.test("document inspector: can archive records", async function (assert) {
-                assert.expect(5);
-
-                const kanban = await createDocumentsView({
-                    type: "kanban",
-                    resModel: "documents.document",
-                    arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
-                    <div>
-                        <i class="fa fa-circle-thin o_record_selector"/>
-                        <field name="name"/>
-                    </div>
-                </t></templates></kanban>`,
-                });
-
-                await legacyClick(
-                    $(target).find(".o_kanban_record:contains(yop) .o_record_selector")[0]
-                );
-                await legacyClick(
-                    $(target).find(".o_kanban_record:contains(burp) .o_record_selector")[0]
-                );
-
-                assert.containsN(target, ".o_record_selected", 2, "should have 2 selected records");
-                assert.containsN(
-                    target,
-                    ".o_documents_inspector_preview .o_document_preview",
-                    2,
-                    "should show 2 document previews in the DocumentsInspector"
-                );
-
-                await legacyClick(
-                    target.querySelector(".o_documents_inspector_info .o_inspector_archive")
-                );
-
-                assert.containsNone(target, ".o_record_selected", "should have no selected record");
-                assert.containsNone(
-                    target,
-                    ".o_documents_inspector_preview .o_document_preview",
-                    "should show no document preview in the DocumentsInspector"
-                );
-
-                await kanban.model.root.load();
-
-                assert.containsNone(
-                    target,
-                    ".o_kanban_renderer .o_record_selected",
-                    "should have no selected archived record"
-                );
-            });
-
             QUnit.test("document inspector: can share records", async function (assert) {
                 assert.expect(3);
 
@@ -3210,7 +3106,7 @@ QUnit.module("documents", {}, function () {
             QUnit.module("DocumentsSelector");
 
             QUnit.test("document selector: basic rendering", async function (assert) {
-                assert.expect(18);
+                assert.expect(19);
 
                 await createDocumentsView({
                     type: "kanban",
@@ -3234,8 +3130,13 @@ QUnit.module("documents", {}, function () {
                 assert.containsN(
                     target,
                     ".o_search_panel .o_search_panel_category_value",
-                    3,
-                    "three of them should be visible"
+                    4,
+                    "four of them should be visible"
+                );
+                assert.containsOnce(
+                    target,
+                    ".o_search_panel_label_title[data-tooltip='Trash']",
+                    "Trash folder should be displayed"
                 );
                 await legacyClick(
                     target.querySelector(".o_search_panel_category_value:nth-of-type(2) header")
@@ -4143,10 +4044,12 @@ QUnit.module("documents", {}, function () {
                             views: [[false, "form"]],
                             context: {
                                 create: false,
+                                form_view_ref: "documents.folder_view_form",
                             },
                         });
                     },
                 });
+
                 triggerEvent(
                     target,
                     ".o_search_panel_category_value:nth-of-type(2) .o_documents_search_panel_section_edit",
@@ -4207,6 +4110,38 @@ QUnit.module("documents", {}, function () {
                 );
                 assert.containsNone(resModel, ".o_documents_search_panel_section_edit");
             });
+
+            QUnit.test(
+                "SearchPanel: Trash folder is displaying inactive documents",
+                async function (assert) {
+                    assert.expect(3);
+                    await createDocumentsView({
+                        type: "kanban",
+                        resModel: "documents.document",
+                        arch: `
+                            <kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                                <div draggable="true" class="oe_kanban_global_area">
+                                    <i class="fa fa-circle-thin o_record_selector"/>
+                                    <field name="name"/>
+                                </div>
+                            </t></templates></kanban>`,
+                    });
+                    assert.containsN(
+                        target,
+                        ".o_kanban_record:not(.o_kanban_ghost)",
+                        5,
+                        "Should contain 5 records"
+                    );
+                    await click(".o_search_panel_label_title[data-tooltip='Trash']");
+                    await nextTick();
+                    assert.containsN(
+                        target,
+                        ".o_kanban_record:not(.o_kanban_ghost)",
+                        2,
+                        "Should contain 2 records"
+                    );
+                }
+            );
 
             QUnit.module("Upload");
 

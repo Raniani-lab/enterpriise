@@ -92,10 +92,7 @@ export const DocumentsSpreadsheetControllerMixin = () => ({
                         await this.orm.call("documents.document", "action_unarchive", [
                             documents[0].resId,
                         ]);
-                        toggleDomainFilterIfEnabled(
-                            this.env.searchModel,
-                            "[('active', '=', False)]"
-                        );
+                        this.env.searchModel.toggleCategoryValue(1, documents[0].data.folder_id[0]);
                     },
                     confirmLabel: _t("Restore"),
                 });
@@ -119,12 +116,3 @@ export const DocumentsSpreadsheetControllerMixin = () => ({
         });
     },
 });
-
-function toggleDomainFilterIfEnabled(searchModel, domain) {
-    for (const { searchItemId } of searchModel.query) {
-        if (searchModel.searchItems[searchItemId].domain === domain) {
-            searchModel.toggleSearchItem(searchItemId);
-            return;
-        }
-    }
-}

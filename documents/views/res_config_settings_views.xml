@@ -9,6 +9,15 @@
             <xpath expr="//form" position="inside">
                 <app data-string="Documents" string="Documents" name="documents" groups="documents.group_documents_manager" notApp="1">
                     <h2>Files Centralization</h2>
+                    <block>
+                        <setting id="deletion_delay" string="Deletion delay (days)" help="Set deletion delay for documents in the Trash">
+                            <div class="content-group">
+                                <div class="row mt16">
+                                    <field class="w-50" name="deletion_delay"/>
+                                </div>
+                            </div>
+                        </setting>
+                    </block>
                 </app>
             </xpath>
         </field>

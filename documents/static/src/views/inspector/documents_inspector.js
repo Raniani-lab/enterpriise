@@ -15,8 +15,8 @@ import { Chatter } from "@mail/core/web/chatter";
 import { DocumentsInspectorField } from "./documents_inspector_field";
 import { download } from "@web/core/network/download";
 import { onNewPdfThumbnail } from "../helper/documents_pdf_thumbnail_service";
-import { useTriggerRule } from "@documents/views/hooks";
 import dUtils from "@documents/views/helper/documents_utils";
+import { useTriggerRule, toggleArchive } from "@documents/views/hooks";
 import { serializeDate } from "@web/core/l10n/dates";
 import { utils as uiUtils } from "@web/core/ui/ui_service";
 import {
@@ -31,14 +31,6 @@ import {
 } from "@odoo/owl";
 
 const { DateTime } = luxon;
-
-async function toggleArchive(model, resModel, resIds, doArchive) {
-    const method = doArchive ? "action_archive" : "action_unarchive";
-    const action = await model.orm.call(resModel, method, [resIds]);
-    if (action && Object.keys(action).length !== 0) {
-        model.action.doAction(action);
-    }
-}
 
 export const inspectorFields = [
     "attachment_id",
@@ -249,6 +241,16 @@ export class DocumentsInspector extends Component {
         );
     }
 
+    async _reloadSearchModel() {
+        await this.env.searchModel._fetchSections(
+            this.env.searchModel.getSections(
+                (s) => s.type === "category" && s.fieldName === "folder_id"
+            ),
+            []
+        );
+        await this.env.searchModel._notify();
+    }
+
     getCurrentFolder() {
         return this.env.searchModel.getSelectedFolder();
     }
@@ -411,24 +413,24 @@ export class DocumentsInspector extends Component {
         });
     }
 
-    async _toggleArchive(state) {
-        const record = this.props.documents[0];
-        await toggleArchive(record.model, record.resModel, this.resIds, state);
-        await record.model.load();
-        await this.env.documentsView.bus.trigger("documents-close-preview");
-    }
-
     async onArchive() {
-        await this._toggleArchive(true);
+        const record = this.props.documents[0];
+        const callback = async () => {
+            await toggleArchive(record.model, record.resModel, this.resIds, true);
+        };
+        record.openDeleteConfirmationDialog(record.model.root, callback, false);
     }
 
     async onUnarchive() {
-        await this._toggleArchive(false);
+        const record = this.props.documents[0];
+        await toggleArchive(record.model, record.resModel, this.resIds, false);
+        await this._reloadSearchModel();
     }
 
-    async onDelete() {
-        await this.props.documents[0].model.root.deleteRecords(this.props.documents);
-        await this.env.documentsView.bus.trigger("documents-close-preview");
+    onDelete() {
+        const records = this.props.documents;
+        const callback = () => records[0].model.root.deleteRecords(records);
+        records[0].openDeleteConfirmationDialog(records[0].model.root, callback, true);
     }
 
     getFieldProps(fieldName, additionalProps) {

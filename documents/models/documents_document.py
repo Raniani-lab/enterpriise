@@ -204,6 +204,9 @@ class Document(models.Model):
             elif record.url:
                 record.type = 'url'
 
+    def get_deletion_delay(self):
+        return int(self.env['ir.config_parameter'].sudo().get_param('documents.deletion_delay', '30'))
+
     def _get_is_multipage(self):
         """
         :return: Whether the document can be considered multipage or `None` if unable determine
@@ -472,6 +475,24 @@ class Document(models.Model):
                     self.env.is_admin() or
                     self.user_has_groups('documents.group_document_manager'))
 
+    def action_archive(self):
+        if not self:
+            return
+        active_documents = self.filtered(self._active_name)
+        deletion_date = fields.Date.to_string(fields.Date.today() + relativedelta(days=self.get_deletion_delay()))
+        log_message = _("This file has been sent to the trash and will be deleted forever on the %s", deletion_date)
+        active_documents._message_log_batch(bodies={doc.id: log_message for doc in active_documents})
+        return super().action_archive()
+
+    def action_unarchive(self):
+        if not self:
+            return
+        archived_documents = self.filtered(lambda record: not record[self._active_name])
+        log_message = _("This file has been restored")
+        archived_documents._message_log_batch(bodies={doc.id: log_message for doc in archived_documents})
+        # Unarchive folders linked to archived documents
+        archived_documents.folder_id.filtered(lambda folder: not folder[self._active_name]).action_unarchive()
+        return super().action_unarchive()
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -673,8 +694,31 @@ class Document(models.Model):
             return False
 
     def unlink(self):
+        """Remove its folder when deleting a document to ensure we don't retain unnecessary folders in the database.
+
+        If:
+            - The folder is inactive
+            - It isn't linked to any files
+            - It has no child folders
+        """
+        removable_folders = self.folder_id.with_context({'active_test': False}).filtered(
+            lambda folder: len(folder.document_ids) == 1
+            and not folder.children_folder_ids
+            and not folder.active
+        )
         removable_attachments = self.filtered(lambda self: self.res_model != self._name).attachment_id
         res = super().unlink()
         if removable_attachments:
             removable_attachments.unlink()
+        if removable_folders:
+            removable_folders.unlink()
         return res
+
+    @api.autovacuum
+    def _gc_clear_bin(self):
+        """Files are deleted automatically from the trash bin after the configured remaining days."""
+        deletion_delay = self.get_deletion_delay()
+        self.search([
+            ('active', '=', False),
+            ('write_date', '<=', fields.Datetime.now() - relativedelta(days=deletion_delay)),
+        ], limit=1000).unlink()

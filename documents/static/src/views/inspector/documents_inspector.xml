@@ -157,17 +157,17 @@
                     </t>
                 </t>
             </div>
-            <button t-if="records[0].data.active" class="o_inspector_button o_inspector_archive o_active btn float-end" title="Archive"
+            <button t-if="records[0].data.active" class="o_inspector_button o_inspector_archive o_active btn float-end" title="Move to trash"
             t-on-click.stop.prevent="onArchive" t-att-disabled="editDisabled || locked" data-hotkey="delete">
-                <i class="fa fa-fw fa-archive"/>
+                <i class="fa fa-fw fa-trash"/>
             </button>
             <t t-else="">
                 <button class="o_inspector_button o_inspector_delete btn float-end" title="Delete" t-on-click.stop.prevent="onDelete" t-att-disabled="editDisabled || locked">
                     <i class="fa fa-fw fa-trash"/>
                 </button>
-                <button class="o_inspector_button o_archived o_inspector_archive btn float-end" style="margin-right:4px" title="Un-archive"
-                t-on-click.stop.prevent="onUnarchive" t-att-disabled="editDisabled || locked">
-                    <i class="fa fa-fw fa-upload"/>
+                <button class="o_inspector_button o_archived btn float-end" style="margin-right:4px" title="Restore"
+                    t-on-click.stop.prevent="onUnarchive" t-att-disabled="editDisabled || locked">
+                    <i class="fa fa-fw fa-history"/>
                 </button>
             </t>
             <button t-if="nbPreviews === 1 and !isMobile and !state.showChatter" class="o_inspector_button o_inspector_open_chatter btn float-end rounded-circle me-1 px-2" title="Open chatter"

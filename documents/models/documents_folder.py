@@ -42,6 +42,7 @@ class DocumentFolder(models.Model):
             else:
                 record.display_name = record.name
 
+    active = fields.Boolean(string="Active", default=True)
     company_id = fields.Many2one('res.company', 'Company',
                                  help="This workspace will only be available to the selected company")
     parent_folder_id = fields.Many2one('documents.folder',
@@ -74,6 +75,12 @@ class DocumentFolder(models.Model):
     #stat buttons
     action_count = fields.Integer('Action Count', compute='_compute_action_count')
     document_count = fields.Integer('Document Count', compute='_compute_document_count')
+
+    deletion_delay = fields.Integer("Deletion delay", compute="_compute_deletion_delay",
+                                    help="Delay after permanent deletion of the document in the trash (days)")
+
+    def _compute_deletion_delay(self):
+        self.deletion_delay = self.env['documents.document'].get_deletion_delay()
 
     def _compute_is_shared(self):
         ancestor_ids_by_folder = {folder.id: [int(ancestor_id) for ancestor_id in folder.parent_path[:-1].split('/')[-2::-1]] for folder in self}
@@ -340,3 +347,67 @@ class DocumentFolder(models.Model):
             limit=1,
         )
         return result[0]["sequence"] if result else 0
+
+    def action_unarchive(self):
+        self = self.filtered(lambda record: not record[self._active_name])
+        if not self:
+            return
+        res = super().action_unarchive()
+        # If at least one document linked to that folder is active, It means that the unarchived function is triggered
+        # from the document.document model. No other linked document or child folder is unarchived.
+        if self.document_ids.filtered(self._active_name):
+            return res
+        # Unarchive the current folder
+        # For folders with inactive parent folder, set the new parent folder to False (root)
+        self.filtered(lambda folder: not folder.parent_folder_id[self._active_name]).parent_folder_id = False
+        # Unarchive documents linked to the folder
+        self.with_context({'active_test': False}).document_ids.action_unarchive()
+        # Unarchive children folders linked to the folder by recursively call the function
+        self.with_context({'active_test': False}).children_folder_ids.action_unarchive()
+        return res
+
+    def is_folder_containing_document(self):
+        return self.document_ids or (
+            self.children_folder_ids and self.children_folder_ids.is_folder_containing_document()
+        )
+
+    def action_delete_folder(self):
+        if self.is_folder_containing_document():
+            return {
+                'name': _('Move to trash?'),
+                'type': 'ir.actions.act_window',
+                'res_model': 'documents.folder',
+                'res_id': self.id,
+                'views': [(self.env.ref('documents.folder_deletion_form', False).id, 'form')],
+                'target': 'new',
+            }
+        self.action_archive()
+
+    def action_archive(self):
+        if not self:
+            return
+        self.document_ids.action_archive()
+        # Recursive call of the function to the children folders
+        self.children_folder_ids.action_archive()
+        # If no document or child folder is linked to the folder, unlink it. Otherwise, archive it.
+        removable_folders = self.with_context({'active_test': False}).filtered(
+            lambda folder: not folder.document_ids and not folder.children_folder_ids
+        )
+        removable_folders.unlink()
+        return super(DocumentFolder, self - removable_folders).action_archive()
+
+    def unlink(self):
+        """Remove the parent folder when deleting a folder to ensure we don't retain unnecessary folders in the database.
+
+        If:
+            - The parent is inactive
+            - It isn't linked to any files
+            - It has no other child folders
+        """
+        removable_parent_folders = self.parent_folder_id.with_context({'active_test': False}).filtered(
+            lambda folder: (not folder.document_ids and len(folder.children_folder_ids) == 1 and not folder.active)
+        )
+        res = super().unlink()
+        if removable_parent_folders:
+            removable_parent_folders.unlink()
+        return res

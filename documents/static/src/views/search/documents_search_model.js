@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { SearchModel } from "@web/search/search_model";
 import { browser } from "@web/core/browser/browser";
 
@@ -8,6 +9,10 @@ const isFolderCategory = (s) => s.type === "category" && s.fieldName === "folder
 const isTagFilter = (s) => s.type === "filter" && s.fieldName === "tag_ids";
 
 export class DocumentsSearchModel extends SearchModel {
+    async load(config) {
+        await super.load(...arguments);
+        this.deletionDelay = await this.orm.call("documents.document", "get_deletion_delay", [[]]);
+    }
     //---------------------------------------------------------------------
     // Actions / Getters
     //---------------------------------------------------------------------
@@ -104,6 +109,59 @@ export class DocumentsSearchModel extends SearchModel {
     // Private
     //---------------------------------------------------------------------
 
+    /**
+     * Adds a new fake folder to see all currently archived documents.
+     * @override
+     */
+    async _fetchCategories() {
+        const result = await super._fetchCategories(...arguments);
+        const folderCategory = this.categories.find((cat) => cat.fieldName === "folder_id");
+        if (!folderCategory) {
+            return result;
+        }
+        if (!folderCategory.rootIds.includes("TRASH")) {
+            folderCategory.rootIds.push("TRASH");
+        }
+        if (!folderCategory.values.has("TRASH")) {
+            folderCategory.values.set("TRASH", {
+                bold: true,
+                childrenIds: [],
+                display_name: _t("Trash"),
+                id: "TRASH",
+                parentId: false,
+                has_write_access: true,
+                description: _t(
+                    "Items in trash will be deleted forever after %s days.",
+                    this.deletion_delay
+                ),
+            });
+        }
+        return result;
+    }
+
+    /**
+     * Make sure we use the correct domain instead of folder_id = 0.
+     * @override
+     */
+    _getCategoryDomain() {
+        const folderCategory = this.categories.find((cat) => cat.fieldName === "folder_id");
+        if (folderCategory.activeValueId === "TRASH") {
+            return [["active", "=", false]];
+        }
+        const result = super._getCategoryDomain();
+        const folderLeafIdx = result.findIndex(
+            (leaf) => leaf[0] === "folder_id" && leaf[1] === "child_of"
+        );
+        if (folderLeafIdx !== -1) {
+            result.splice(
+                folderLeafIdx,
+                1,
+                ...[["folder_id", "child_of", folderCategory.activeValueId]]
+            );
+        }
+        return result;
+    }
+
     _isCategoryValueReachable(category, valueId) {
         const queue = [...category.rootIds];
         let folder;
@@ -126,10 +184,14 @@ export class DocumentsSearchModel extends SearchModel {
         // If not set in context, or set to an unknown value, set active value
         // from localStorage
         const storageKey = this._getStorageKey(category.fieldName);
-        const storageValue = browser.localStorage.getItem(storageKey);
-        // Support for id or 'false' key
-        category.activeValueId = parseInt(storageValue) || !(storageValue === "false");
-        if (valueIds.includes(category.activeValueId) && this._isCategoryValueReachable(category, category.activeValueId)) {
+        const storageItem = browser.localStorage.getItem(storageKey);
+        category.activeValueId =
+            storageItem && storageItem !== "TRASH" ? JSON.parse(storageItem) : storageItem;
+        if (
+            category.activeValueId === "TRASH" ||
+            (valueIds.includes(category.activeValueId) &&
+                this._isCategoryValueReachable(category, category.activeValueId))
+        ) {
             return;
         }
         // valueIds might contain different values than category.values

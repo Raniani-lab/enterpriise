@@ -8,6 +8,7 @@ import { usePopover } from "@web/core/popover/popover_hook";
 import { useService } from "@web/core/utils/hooks";
 import { utils as uiUtils } from "@web/core/ui/ui_service";
 import { Component, onWillStart, useState } from "@odoo/owl";
+import { toggleArchive } from "@documents/views/hooks";
 
 const VALUE_SELECTOR = [".o_search_panel_category_value", ".o_search_panel_filter_value"].join();
 const FOLDER_VALUE_SELECTOR = ".o_search_panel_category_value";
@@ -52,7 +53,7 @@ export class DocumentsSearchPanel extends SearchPanel {
         useNestedSortable({
             ref: this.root,
             groups: ".o_search_panel_category",
-            elements: "li:not(.o_all_category)",
+            elements: "li:not(.o_all_or_trash_category)",
             enable: () => this.isDocumentManager,
             nest: true,
             nestInterval: 10,
@@ -254,12 +255,14 @@ export class DocumentsSearchPanel extends SearchPanel {
                 views: [[false, "form"]],
                 context: {
                     create: false,
+                    form_view_ref: "documents.folder_view_form",
                 },
             },
             {
                 onClose: this._reloadSearchModel.bind(this, true),
             }
         );
+        await this.env.model.env.documentsView.bus.trigger("documents-close-preview");
     }
 
     //---------------------------------------------------------------------
@@ -348,6 +351,7 @@ export class DocumentsSearchPanel extends SearchPanel {
         ) {
             return;
         }
+        const data = JSON.parse(dataTransfer.getData("o_documents_data"));
         if (section.fieldName === "folder_id") {
             const currentFolder = this.env.searchModel.getSelectedFolder();
             if ((currentFolder.id && !currentFolder.has_write_access) || !value.has_write_access) {
@@ -359,8 +363,22 @@ export class DocumentsSearchPanel extends SearchPanel {
                     }
                 );
             }
+            if (currentFolder.id === "TRASH") {
+                const model = this.env.model;
+                await this.orm.write("documents.document", data.recordIds, { folder_id: value.id });
+                await toggleArchive(model, model.root.resModel, data.recordIds, false);
+                return;
+            }
+            // Dropping in the trash
+            if (value.id === "TRASH") {
+                const model = this.env.model;
+                const callback = async () => {
+                    await toggleArchive(model, model.root.resModel, data.recordIds, true);
+                };
+                model.root.records[0].openDeleteConfirmationDialog(model.root, callback, false);
+                return;
+            }
         }
-        const data = JSON.parse(dataTransfer.getData("o_documents_data"));
         if (data.lockedCount) {
             return this.notification.add(
                 _t(

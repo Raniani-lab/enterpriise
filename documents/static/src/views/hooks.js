@@ -15,6 +15,27 @@ import { EventBus, onWillStart, markup, useComponent, useEnv, useRef, useSubEnv 
  * Controller/View hooks
  */
 
+export async function toggleArchive(model, resModel, resIds, doArchive) {
+    const action = await model.orm.call(
+        resModel,
+        doArchive ? "action_archive" : "action_unarchive",
+        [resIds]
+    );
+    if (action && Object.keys(action).length !== 0) {
+        model.action.doAction(action);
+    }
+    await model.load();
+    await model.notify();
+}
+
+export function preSuperSetupFolder() {
+    const component = useComponent();
+    const orm = useService("orm");
+    onWillStart(async () => {
+        component._deletionDelay = await orm.call("documents.document", "get_deletion_delay", [[]]);
+    });
+}
+
 // Small hack, memoize uses the first argument as cache key, but we need the orm which will not be the same.
 const loadMaxUploadSize = memoize((_null, orm) =>
     orm.call("documents.document", "get_document_max_upload_limit")

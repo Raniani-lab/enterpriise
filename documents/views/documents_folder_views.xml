@@ -6,8 +6,10 @@
         <field name="arch" type="xml">
         <search>
             <field name="name"/>
+            <field name="active"/>
             <field name="parent_folder_id"/>
             <filter string="Parent Workspace" name="by_parent" domain="[]" context="{'group_by': 'parent_folder_id'}"/>
+            <filter string="Archived Workspace" name="archived_workspace_filter" domain="[('active', '=', False)]"/>
          </search>
         </field>
     </record>
@@ -19,6 +21,7 @@
             <tree string="Workspaces" js_class="folder_list">
                 <field name="sequence" widget="handle"/>
                 <field name="display_name" string="Workspace"/>
+                <field name="active" string="Active" invisible="1"/>
                 <field name="facet_ids"  widget="many2many_tags" string="Tag Categories"/>
                 <field name="company_id" groups="base.group_multi_company"/>
                 <field name="group_ids" widget="many2many_tags"/>
@@ -32,6 +35,7 @@
         <field name="model">documents.folder</field>
         <field name="arch" type="xml">
             <form js_class="folder_form">
+                <field name="active" string="Active" invisible="1"/>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="action_see_actions" type="object" class="oe_stat_button" icon="fa-gears">
@@ -102,7 +106,23 @@
                         <button class="btn btn-primary" special="save" data-hotkey="q">Save</button>
                         <button class="btn btn-secondary" special="cancel" data-hotkey="x">Discard</button>
                     </div>
-                    <button class="btn btn-danger text-uppercase" name="%(documents.documents_folder_deletion_wizard_action)d" type="action" context="{'default_folder_id': id}" data-hotkey="d">Delete</button>
+                    <button class="btn btn-outline-danger text-uppercase" type="object" name="action_delete_folder" data-hotkey="d">Delete</button>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="folder_deletion_form" model="ir.ui.view">
+        <field name="name">Folder Deletion</field>
+        <field name="model">documents.folder</field>
+        <field name="arch" type="xml">
+            <form>
+                <div>
+                    Files will be sent to trash and deleted forever after <field name="deletion_delay"/> days.
+                </div>
+                <footer>
+                    <button string="Move to trash" class="btn-primary" type="object" name="action_archive" data-hotkey="d"/>
+                    <button string="Discard" class="btn-secondary" special="cancel" data-hotkey="z" />
                 </footer>
             </form>
         </field>
@@ -114,6 +134,6 @@
             <field name="view_mode">tree,form</field>
           <field name="view_ids" eval="[(5, 0, 0),
               (0, 0, {'view_mode': 'tree', 'view_id': ref('documents.folder_view_tree')}),
-              (0, 0, {'view_mode': 'form', 'view_id': False})]"/>
+              (0, 0, {'view_mode': 'form', 'view_id': ref('documents.folder_view_form')})]"/>
       </record>
 </odoo>

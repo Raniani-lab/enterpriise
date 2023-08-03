@@ -19,6 +19,9 @@ patch(MockServer.prototype, {
         ) {
             return Promise.resolve();
         }
+        if (args.method === "get_deletion_delay") {
+            return 30;
+        }
         return super._performRPC(...arguments);
     },
 });

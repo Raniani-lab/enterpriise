@@ -18,8 +18,8 @@
                         </span>
                         <button class="btn btn-danger me-2 o_pdf_manager_button text-uppercase"
                             t-att-class="{'o_pdf_manager_button': !env.isSmall}"
-                            aria-label="Move to Trash"
-                            title="Move to Trash"
+                            aria-label="Move to trash"
+                            title="Move to trash"
                             t-att-disabled="state.uploadingLock || state.viewedPage"
                             t-on-click.stop="onArchive">Delete
                         </button>

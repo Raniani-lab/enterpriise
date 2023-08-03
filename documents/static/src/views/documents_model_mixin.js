@@ -3,6 +3,7 @@
 import { _t } from "@web/core/l10n/translation";
 import { inspectorFields } from "./inspector/documents_inspector";
 import { makeActiveField } from "@web/model/relational_model/utils";
+import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 
 export const DocumentsModelMixin = (component) =>
     class extends component {
@@ -224,5 +225,25 @@ export const DocumentsRecordMixin = (component) => class extends component {
         document.body.append(newElement);
         ev.dataTransfer.setDragImage(newElement, -5, -5);
         setTimeout(() => newElement.remove());
+    }
+
+    async openDeleteConfirmationDialog(root, callback, isPermanent) {
+        const dialogProps = {
+            title: isPermanent ? _t("Delete permanently") : _t("Move to trash"),
+            body: isPermanent ? root.isDomainSelected || root.selection.length > 1
+                ? _t("Are you sure you want to permanently erase the documents?")
+                : _t("Are you sure you want to permanently erase the document?")
+                : _t("Items moved to the trash will be deleted forever after %s days.", 
+                    this.model.env.searchModel.deletionDelay
+                    ),
+            confirmLabel: isPermanent ? _t("Delete permanently") : _t("Move to trash"),
+            cancelLabel: _t("Discard"),
+            confirm: async () => {
+                await callback();
+                await this.model.env.documentsView.bus.trigger("documents-close-preview");
+            },
+            cancel: () => {},
+        };
+        this.model.dialog.add(ConfirmationDialog, dialogProps);
     }
 };

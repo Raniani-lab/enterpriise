@@ -69,30 +69,20 @@ registry.category("web_tour.tours").add("spreadsheet_clone_xlsx", {
             isCheck: true,
         },
         {
-            trigger: ".o_control_panel .o_searchview_dropdown_toggler",
-            content: "Open Filters",
-        },
-        {
-            trigger: '.dropdown-item:contains("Archived")',
-            content: "Show Archived",
+            trigger: '.o_search_panel_label_title:contains("Trash")',
+            content: "Open Trash",
         },
         {
             trigger: ".o_document_xlsx",
-            content: "Re-open the xlsx card",
+            content: "Select xlsx document",
         },
         {
-            trigger: ".modal-dialog footer button.btn-primary",
-            content: "Restore xlsx",
+            trigger: ".modal-footer .btn-primary",
+            content: "Restore xlsx document",
         },
         {
-            trigger: '.o_searchview_input_container:not(:contains("Archived"))',
-            content: 'Wait for the "Archived" filter to be removed',
-            isCheck: true,
-        },
-        {
-            trigger: ".o_kanban_renderer .o_kanban_record",
+            trigger: ".o_kanban_renderer",
             extra_trigger: '.o_inspector_value:contains("3")',
-            content: "Check all records are now visible.",
         },
     ],
 });

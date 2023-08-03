@@ -207,16 +207,78 @@ class TestDocumentsFolder(TransactionCase):
         self.assertFalse(action_1_copy.facet_id and action_1_copy.tag_id, "The copy of the first action should have no facet and tag set")
         self.assertEqual((action_2_copy.facet_id.id, action_2_copy.tag_id.id), (sub_folder_facet_copy.id, sub_folder_tag_copy.id), "The facet and tag of the copy of the second action should be updated to use the copied tag and facet of the parent folder.")
 
-    def test_child_folder_delete_and_move_doc_to_parent(self):
-        wizard = self.env['documents.folder.deletion.wizard'].create({'folder_id': self.child_folder.id})
-        wizard.delete_and_move()
-        self.assertEqual(self.document.folder_id.id, self.folder.id, "The document should have been moved to the parent workspace")
+    def test_move_folder_with_document_to_trash(self):
+        folder = self.env['documents.folder'].create({'name': 'Folder'})
+        document = self.env['documents.document'].create({
+            'datas': TEXT,
+            'name': 'file.txt',
+            'mimetype': 'text/plain',
+            'folder_id': folder.id,
+        })
+        folder.action_archive()
+        self.assertFalse(folder.active, "Folder should be inactive")
+        self.assertFalse(document.active, "Document should be inactive")
 
-    def test_child_folder_delete(self):
-        wizard = self.env['documents.folder.deletion.wizard'].create({'folder_id': self.child_folder.id})
-        wizard.delete()
-        self.assertFalse(self.document.exists(), "Document should be deleted")
-        self.assertFalse(self.child_folder.exists(), "Folder should be deleted")
+    def test_move_folder_without_document_to_trash(self):
+        folder = self.env['documents.folder'].create({'name': 'Folder'})
+        folder.action_archive()
+        self.assertFalse(folder.exists(), "Folder should not exist")
+
+    def test_move_folder_with_sub_folder_and_one_document_to_trash(self):
+        folder = self.env['documents.folder'].create({'name': 'Folder'})
+        child_folder = self.env['documents.folder'].create({'name': 'Folder', 'parent_folder_id': folder.id})
+        document = self.env['documents.document'].create({
+            'datas': TEXT,
+            'name': 'file.txt',
+            'mimetype': 'text/plain',
+            'folder_id': child_folder.id,
+        })
+        # Archive a folder should archive all its child fodlers and documents linked to it
+        folder.action_archive()
+        self.assertFalse(folder.active, "Folder should be inactive")
+        self.assertFalse(child_folder.active, "Folder should be inactive")
+        self.assertFalse(document.active, "Document should be inactive")
+        # Unarchive a folder should unarchive all its child fodlers and documents linked to it
+        folder.action_unarchive()
+        self.assertTrue(folder.active, "Folder should be active")
+        self.assertTrue(child_folder.active, "Folder should be active")
+        self.assertTrue(document.active, "Document should be active")
+
+        folder.action_archive()
+        self.assertFalse(folder.active, "Folder should be inactive")
+        self.assertFalse(child_folder.active, "Folder should be inactive")
+        self.assertFalse(document.active, "Document should be inactive")
+        # Unarchive a child folder should unarchive all the documents linked to it and put its
+        # parent_folder_id to root
+        child_folder.action_unarchive()
+        self.assertFalse(folder.active, "Folder should be inactive")
+        self.assertTrue(child_folder.active, "Folder should be active")
+        self.assertTrue(document.active, "Document should be active")
+        self.assertFalse(child_folder.parent_folder_id, "The parent of the former child folder should be False (root)")
+
+    def test_move_folder_with_sub_folder_and_no_documents_to_trash(self):
+        folder = self.env['documents.folder'].create({'name': 'Folder'})
+        child_folder = self.env['documents.folder'].create({'name': 'Folder', 'parent_folder_id': folder.id})
+        folder_id = folder.id
+        child_folder_id = child_folder.id
+        folder.action_archive()
+        self.assertFalse(self.env["documents.folder"].search([('id', 'in', [folder_id, child_folder_id])]),
+                         "Folder and child folder should not exist")
+
+    def test_delete_document_with_archived_folder(self):
+        # Unlink a archived document linked to an archvied folder should unlink the folder as well (Assuming that it is
+        # the only document contained in the folder)
+        folder = self.env['documents.folder'].create({'name': 'Folder'})
+        document = self.env['documents.document'].create({
+            'datas': TEXT,
+            'name': 'file.txt',
+            'mimetype': 'text/plain',
+            'folder_id': folder.id,
+        })
+        folder.action_archive()
+        document.unlink()
+        self.assertFalse(folder.exists(), "Folder should not exist")
+        self.assertFalse(document.exists(), "Document should not exist")
 
 class TestDocumentsFolderSequence(TransactionCase):
     @classmethod

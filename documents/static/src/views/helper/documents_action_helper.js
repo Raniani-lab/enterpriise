@@ -2,7 +2,9 @@
 
 import { useService } from "@web/core/utils/hooks";
 import { Domain } from "@web/core/domain";
-import { Component, onWillStart, onWillUpdateProps, useState } from "@odoo/owl";
+import { Component, markup, onWillStart, onWillUpdateProps, useState } from "@odoo/owl";
+import { escape } from "@web/core/utils/strings";
+import { _t } from "@web/core/l10n/translation";
 
 export class DocumentsActionHelper extends Component {
     static props = [
@@ -21,6 +23,29 @@ export class DocumentsActionHelper extends Component {
         onWillUpdateProps(async () => {
             await this.updateShareInformation();
         });
+    }
+
+    get selectedFolderId() {
+        return this.env.searchModel.getSelectedFolderId();
+    }
+
+    /**
+     * @returns {markup} If the current folder is an actual folder, the action's helper,
+     * otherwise a message depending on it being the "All" folder or the "Trash" folder
+     */
+    get noContentHelp() {
+        if (!this.selectedFolderId || this.selectedFolderId === "TRASH") {
+            return markup(
+                `<p class='o_view_nocontent_smiling_face'>
+                    ${escape(
+                        this.selectedFolderId === "TRASH"
+                            ? _t("Deleted documents will show up here")
+                            : _t("Select a workspace to upload a document")
+                    )}
+                </p>`
+            );
+        }
+        return this.props.noContentHelp;
     }
 
     async updateShareInformation() {

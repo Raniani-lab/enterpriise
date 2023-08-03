@@ -4,4 +4,8 @@
         <field name="key">document.max_fileupload_size</field>
         <field name="value">67000000</field>
     </record>
+    <record id="ir_config_deletion_delay" model="ir.config_parameter">
+        <field name="key">documents.deletion_delay</field>
+        <field name="value">30</field>
+    </record>
 </data></odoo>

@@ -40,6 +40,7 @@ Accounting Reports
         'wizard/report_export_wizard.xml',
         'wizard/account_report_file_download_error_wizard.xml',
         'wizard/fiscal_year.xml',
+        'wizard/mail_activity_schedule_views.xml',
         'views/account_activity.xml',
         'views/account_account_views.xml',
         'views/account_tax_views.xml',

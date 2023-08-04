@@ -6,7 +6,6 @@ import { SelectMenu } from '@web/core/select_menu/select_menu';
 
 import { Component, onWillStart, useEffect, useRef, useState } from "@odoo/owl";
 import { _t } from "@web/core/l10n/translation";
-import { sprintf } from "@web/core/utils/strings";
 
 class MoveArticleDialog extends Component {
 
@@ -119,7 +118,7 @@ class MoveArticleDialog extends Component {
     }
 
     get moveArticleLabel() {
-        return sprintf(_t('Move "%s" under:'), this.props.knowledgeArticleRecord.data.display_name);
+        return _t('Move "%s" under:', this.props.knowledgeArticleRecord.data.display_name);
     }
 }
 

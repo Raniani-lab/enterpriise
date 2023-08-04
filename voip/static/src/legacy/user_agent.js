@@ -3,7 +3,7 @@
 import Class from "@web/legacy/js/core/class";
 import { browser } from "@web/core/browser/browser";
 import { _t } from "@web/core/l10n/translation";
-import { escape, sprintf } from "@web/core/utils/strings";
+import { escape } from "@web/core/utils/strings";
 import mixins from "@web/legacy/js/core/mixins";
 import ServicesMixin from "@web/legacy/js/core/service_mixins";
 
@@ -477,10 +477,8 @@ export const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin
                         "A hardware error occured while trying to access audio recording device. Please make sure your drivers are up to date and try again."
                     );
                 default:
-                    return sprintf(
-                        _t(
-                            "An error occured involving the audio recording device (%(errorName)s):</br>%(errorMessage)s"
-                        ),
+                    return _t(
+                        "An error occured involving the audio recording device (%(errorName)s):</br>%(errorMessage)s",
                         { errorMessage: error.message, errorName: error.name }
                     );
             }
@@ -623,9 +621,9 @@ export const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin
         }
         let content;
         if (name) {
-            content = sprintf(_t("Incoming call from %s (%s)"), name, number);
+            content = _t("Incoming call from %s (%s)", name, number);
         } else {
-            content = sprintf(_t("Incoming call from %s"), number);
+            content = _t("Incoming call from %s", number);
         }
         this._isOutgoing = false;
         this._callState = CALL_STATE.RINGING_CALL;
@@ -731,17 +729,15 @@ export const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin
                 case 404: // Not Found
                 case 488: // Not Acceptable Here
                 case 603: // Decline
-                    return sprintf(
-                        _t(
-                            "The number is incorrect, the user credentials could be wrong or the connection cannot be made. Please check your configuration.</br> (Reason received: %(reasonPhrase)s)"
-                        ),
+                    return _t(
+                        "The number is incorrect, the user credentials could be wrong or the connection cannot be made. Please check your configuration.</br> (Reason received: %(reasonPhrase)s)",
                         { reasonPhrase: escape(response.message.reasonPhrase) }
                     );
                 case 486: // Busy Here
                 case 600: // Busy Everywhere
                     return _t("The person you try to contact is currently unavailable.");
                 default:
-                    return sprintf(_t(`Call rejected (reason: "%(reasonPhrase)s")`), {
+                    return _t("Call rejected (reason: “%(reasonPhrase)s”)", {
                         reasonPhrase: escape(response.message.reasonPhrase),
                     });
             }

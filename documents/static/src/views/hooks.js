@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { useBus, useService } from "@web/core/utils/hooks";
-import { escape, sprintf } from "@web/core/utils/strings";
+import { escape } from "@web/core/utils/strings";
 import { memoize } from "@web/core/utils/functions";
 import { formatFloat } from "@web/views/fields/formatters";
 import { useSetupView } from "@web/views/view_hook";
@@ -415,13 +415,7 @@ function useDocumentsViewFileUpload() {
         const result =
             xhr.status === 200
                 ? JSON.parse(xhr.response)
-                : {
-                      error: sprintf(
-                          env._t("status code: %s, message: %s"),
-                          xhr.status,
-                          xhr.response
-                      ),
-                  };
+                : { error: env._t("status code: %s, message: %s", xhr.status, xhr.response) };
         if (result.error) {
             handleUploadError(result);
         } else {
@@ -475,8 +469,8 @@ function useDocumentsViewFileUpload() {
             });
         }
         if (validFiles.length < files.length) {
-            const message = sprintf(
-                env._t("Some files could not be uploaded (max size: %s)."),
+            const message = env._t(
+                "Some files could not be uploaded (max size: %s).",
                 formatFloat(component.maxUploadSize, { humanReadable: true })
             );
             return notification.add(message, { type: "danger" });

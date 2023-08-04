@@ -1,6 +1,5 @@
 /** @odoo-module **/
 
-import { sprintf } from "@web/core/utils/strings";
 import { _t } from "@web/core/l10n/translation";
 import { inspectorFields } from "./inspector/documents_inspector";
 import { makeActiveField } from "@web/model/relational_model/utils";
@@ -215,9 +214,9 @@ export const DocumentsRecordMixin = (component) => class extends component {
         if (draggableRecords.length === 1) {
             dragText = draggableRecords[0].data.name ? draggableRecords[0].data.display_name : _t("Unnamed");
         } else if (lockedCount > 0) {
-            dragText = sprintf(_t("%s Documents (%s locked)"), draggableRecords.length, lockedCount);
+            dragText = _t("%s Documents (%s locked)", draggableRecords.length, lockedCount);
         } else {
-            dragText = sprintf(_t("%s Documents"), draggableRecords.length);
+            dragText = _t("%s Documents", draggableRecords.length);
         }
         const newElement = document.createElement("span");
         newElement.classList.add("o_documents_drag_icon");

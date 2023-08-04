@@ -2,7 +2,6 @@
 import { _t } from "@web/core/l10n/translation";
 import { Component, xml } from "@odoo/owl";
 import { viewTypeToString } from "@web_studio/studio_service";
-import { sprintf } from "@web/core/utils/strings";
 
 /*
  * Injected in the Field.js template
@@ -30,6 +29,6 @@ export class FieldContentOverlay extends Component {
     };
 
     getButtonText(viewType) {
-        return sprintf(_t("Edit %s view"), viewTypeToString(viewType));
+        return _t("Edit %s view", viewTypeToString(viewType));
     }
 }

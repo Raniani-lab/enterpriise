@@ -1,7 +1,5 @@
 /** @odoo-module */
 
-import { sprintf } from "@web/core/utils/strings";
-
 import { EmployeeOvertimeIndication } from "../employee_overtime_indication/employee_overtime_indication";
 
 export class TimesheetOvertimeIndication extends EmployeeOvertimeIndication {
@@ -29,18 +27,14 @@ export class TimesheetOvertimeIndication extends EmployeeOvertimeIndication {
 
     get title() {
         if (this.props.name === "project_id") {
-            return sprintf(
-                this.env._t(
-                    "Difference between the number of %s allocated to the project and the number of %s recorded"
-                ),
+            return this.env._t(
+                "Difference between the number of %s allocated to the project and the number of %s recorded",
                 this.props.planned_hours,
                 this.props.worked_hours
             );
         } else if (this.props.name === "task_id") {
-            return sprintf(
-                this.env._t(
-                    "Difference between the number of %s allocated to the task and the number of %s recorded"
-                ),
+            return this.env._t(
+                "Difference between the number of %s allocated to the task and the number of %s recorded",
                 this.props.planned_hours,
                 this.props.worked_hours
             );

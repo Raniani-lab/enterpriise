@@ -5,7 +5,6 @@ import { SearchPanel } from "@web/search/search_panel/search_panel";
 import { usePopover } from "@web/core/popover/popover_hook";
 import { useService } from "@web/core/utils/hooks";
 import config from "@web/legacy/js/services/config";
-import { sprintf } from "@web/legacy/js/core/utils";
 
 const { device } = config
 const VALUE_SELECTOR = [".o_search_panel_category_value", ".o_search_panel_filter_value"].join();
@@ -343,11 +342,11 @@ export class DocumentsSearchPanel extends SearchPanel {
         const data = JSON.parse(dataTransfer.getData("o_documents_data"));
         if (data.lockedCount) {
             return this.notification.add(
-                sprintf(this.env._t("%s file(s) not moved because they are locked by another user"), data.lockedCount),
-                {
-                    title: this.env._t("Partial transfer"),
-                    type: "warning",
-                }
+                this.env._t(
+                    "%s file(s) not moved because they are locked by another user",
+                    data.lockedCount
+                ),
+                { title: this.env._t("Partial transfer"), type: "warning" }
             );
         }
         if (section.fieldName === "folder_id") {

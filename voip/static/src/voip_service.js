@@ -8,7 +8,6 @@ import { DialingPanelContainer } from "@voip/legacy/dialing_panel_container";
 import { browser } from "@web/core/browser/browser";
 import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
-import { sprintf } from "@web/core/utils/strings";
 
 const systrayRegistry = registry.category("systray");
 const mainComponentsRegistry = registry.category("main_components");
@@ -131,7 +130,7 @@ export class Voip {
             return;
         }
         this.notificationService.add(
-            sprintf(_t("Calling %(phone number)s"), { "phone number": params.number })
+            _t("Calling %(phone number)s", { "phone number": params.number })
         );
         if (params.fromActivity) {
             this.legacyDialingPanelWidget.callFromActivityWidget(params);

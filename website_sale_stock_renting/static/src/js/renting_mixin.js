@@ -1,7 +1,6 @@
 /** @odoo-module **/
 
 import { _t } from "@web/core/l10n/translation";
-import { sprintf } from '@web/core/utils/strings';
 import { formatDate, formatDateTime } from "@web/core/l10n/dates";
 import { RentingMixin } from '@website_sale_renting/js/renting_mixin';
 
@@ -34,11 +33,15 @@ RentingMixin._getInvalidMessage = function (startDate, endDate, productId) {
                     if (!message) {
                         message = _t("The product is not available for the following time period(s):\n");
                     }
-                    message += " " + sprintf(
-                        _t("- From %s to %s.\n"),
-                        this._isDurationWithHours() ? formatDateTime(interval.start) : formatDate(interval.start),
-                        this._isDurationWithHours() ? formatDateTime(end) : formatDate(end)
-                    );
+                    message +=
+                        " " +
+                        _t(
+                            "- From %s to %s.\n",
+                            this._isDurationWithHours()
+                                ? formatDateTime(interval.start)
+                                : formatDate(interval.start),
+                            this._isDurationWithHours() ? formatDateTime(end) : formatDate(end)
+                        );
                 }
             }
             end -= interval.end;

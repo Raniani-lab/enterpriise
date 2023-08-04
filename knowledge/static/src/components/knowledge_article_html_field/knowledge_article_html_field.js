@@ -11,7 +11,6 @@ import {
 } from "@odoo/owl";
 import { PromptEmbeddedViewNameDialog } from "@knowledge/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog";
 import { registry } from "@web/core/registry";
-import { sprintf } from "@web/core/utils/strings";
 import { useService } from "@web/core/utils/hooks";
 import { KnowledgeWysiwyg } from '@knowledge/js/knowledge_wysiwyg';
 
@@ -98,7 +97,7 @@ export class KnowledgeArticleHtmlField extends HtmlField {
             isNew: true,
             knowledgeArticleId: this.props.record.resId,
             saveItemCalendarProps: async (name, itemCalendarProps) => {
-                const title = name ? sprintf(_t("Calendar of %s"), name) : _t("Calendar of Article Items");
+                const title = name ? _t("Calendar of %s", name) : _t("Calendar of Article Items");
                 const behaviorProps = {
                     action_xml_id: "knowledge.knowledge_article_action_item_calendar",
                     display_name: title,
@@ -131,7 +130,7 @@ export class KnowledgeArticleHtmlField extends HtmlField {
             save: async name => {
                 const behaviorProps = {
                     action_xml_id: "knowledge.knowledge_article_item_action_stages",
-                    display_name: name ? sprintf(_t("Kanban of %s"), name) : _t("Kanban of Article Items"),
+                    display_name: name ? _t("Kanban of %s", name) : _t("Kanban of Article Items"),
                     view_type: "kanban",
                     context: {
                         active_id: this.props.record.resId,
@@ -162,7 +161,7 @@ export class KnowledgeArticleHtmlField extends HtmlField {
             save: async name => {
                 const behaviorProps = {
                     action_xml_id: "knowledge.knowledge_article_item_action",
-                    display_name: name ? sprintf(_t("List of %s"), name) : _t("List of Article Items"),
+                    display_name: name ? _t("List of %s", name) : _t("List of Article Items"),
                     view_type: "list",
                     context: {
                         active_id: this.props.record.resId,

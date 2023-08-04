@@ -4,7 +4,6 @@ import { Component } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { _t } from "@web/core/l10n/translation";
-import { sprintf } from "@web/core/utils/strings";
 
 export class SidebarPropertiesToolbox extends Component {
     static props = {};
@@ -31,8 +30,8 @@ export class SidebarPropertiesToolbox extends Component {
         }
 
         this.dialog.add(ConfirmationDialog, {
-            body: sprintf(
-                this.env._t("Are you sure you want to remove this %s from the view?"),
+            body: this.env._t(
+                "Are you sure you want to remove this %s from the view?",
                 nodeHumanName
             ),
             confirm: () => {

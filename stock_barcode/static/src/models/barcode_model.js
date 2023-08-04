@@ -5,7 +5,6 @@ import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_d
 import { Mutex } from "@web/core/utils/concurrency";
 import LazyBarcodeCache from '@stock_barcode/lazy_barcode_cache';
 import { _t } from "@web/core/l10n/translation";
-import { sprintf } from '@web/core/utils/strings';
 import { useService } from "@web/core/utils/hooks";
 import { FNC1_CHAR } from "@barcodes_gs1_nomenclature/js/barcode_parser";
 
@@ -517,15 +516,16 @@ export default class BarcodeModel extends EventBus {
         const product = params.fieldsParams.product_id;
         if (this.askBeforeNewLinesCreation(product)) {
             const confirmationPromise = new Promise((resolve, reject) => {
-                const body = product.code ?
-                    sprintf(
-                        _t("Scanned product [%s] %s is not reserved for this transfer. Are you sure you want to add it?"),
-                        product.code, product.display_name
-                    ) :
-                    sprintf(
-                        _t("Scanned product %s is not reserved for this transfer. Are you sure you want to add it?"),
-                        product.display_name
-                    );
+                const body = product.code
+                    ? _t(
+                          "Scanned product [%s] %s is not reserved for this transfer. Are you sure you want to add it?",
+                          product.code,
+                          product.display_name
+                      )
+                    : _t(
+                          "Scanned product %s is not reserved for this transfer. Are you sure you want to add it?",
+                          product.display_name
+                      );
 
                 this.dialogService.add(ConfirmationDialog, {
                     body, title: _t("Add extra product?"),
@@ -558,9 +558,10 @@ export default class BarcodeModel extends EventBus {
             let paramsUOM = params.fieldsParams.uom;
             if (paramsUOM.category_id !== productUOM.category_id) {
                 // Not the same UoM's category -> Can't be converted.
-                const message = sprintf(
-                    _t("Scanned quantity uses %s as Unit of Measure, but this UoM is not compatible with the product's one (%s)."),
-                    paramsUOM.name, productUOM.name
+                const message = _t(
+                    "Scanned quantity uses %s as Unit of Measure, but this UoM is not compatible with the product's one (%s).",
+                    paramsUOM.name,
+                    productUOM.name
                 );
                 this.notification(message, { title: _t("Wrong Unit of Measure"), type: "danger" });
                 return false;
@@ -772,9 +773,10 @@ export default class BarcodeModel extends EventBus {
         }
         const recordByData = await this.cache.getRecordByBarcode(barcode, false, false, filters);
         if (recordByData.size > 1) {
-            const message = sprintf(
-                _t("Barcode scan is ambiguous with several model: %s. Use the most likely."),
-                Array.from(recordByData.keys()));
+            const message = _t(
+                "Barcode scan is ambiguous with several model: %s. Use the most likely.",
+                Array.from(recordByData.keys())
+            );
             this.notification(message, { type: "warning" });
         }
 

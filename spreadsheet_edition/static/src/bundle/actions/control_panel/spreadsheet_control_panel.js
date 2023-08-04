@@ -6,7 +6,6 @@ import { SpreadsheetName } from "./spreadsheet_name";
 import { SpreadsheetShareButton } from "@spreadsheet/components/share_button/share_button";
 import { session } from "@web/session";
 import { _t } from "@web/core/l10n/translation";
-import { sprintf } from "@web/core/utils/strings";
 import { Component, onWillUnmount, useState, onWillStart } from "@odoo/owl";
 import { helpers } from "@odoo/o-spreadsheet";
 
@@ -87,8 +86,8 @@ export class SpreadsheetControlPanel extends Component {
     get mismatchedLocaleTitle() {
         const spreadsheetLocale = this.props.model.getters.getLocale();
 
-        const title = sprintf(
-            _t("Difference between user locale (%s) and spreadsheet locale (%s):"),
+        const title = _t(
+            "Difference between user locale (%s) and spreadsheet locale (%s):",
             this.userLocale.code,
             spreadsheetLocale.code
         );
@@ -100,7 +99,7 @@ export class SpreadsheetControlPanel extends Component {
     getLocalesComparison(spreadsheetLocale, userLocale) {
         const differences = [];
         if (spreadsheetLocale.dateFormat !== userLocale.dateFormat) {
-            differences.push(sprintf(_t("- current Date Format: %s"), userLocale.dateFormat));
+            differences.push(_t("- current Date Format: %s", userLocale.dateFormat));
         }
 
         if (
@@ -108,8 +107,8 @@ export class SpreadsheetControlPanel extends Component {
             spreadsheetLocale.decimalSeparator !== userLocale.decimalSeparator
         ) {
             differences.push(
-                sprintf(
-                    _t("- current Number Format: %s"),
+                _t(
+                    "- current Number Format: %s",
                     helpers.formatValue(1234567.89, { format: "#,##0.00", locale: userLocale })
                 )
             );

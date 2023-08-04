@@ -7,7 +7,6 @@ import { ErrorPopup } from "@point_of_sale/app/errors/popups/error_popup";
 import { OfflineErrorPopup } from "@point_of_sale/app/errors/popups/offline_error_popup";
 import { ConfirmPopup } from "@point_of_sale/app/utils/confirm_popup/confirm_popup";
 import { _t } from "@web/core/l10n/translation";
-import { sprintf } from "@web/core/utils/strings";
 
 const RATE_ID_MAPPING = {
     1: "NORMAL",
@@ -235,7 +234,7 @@ patch(PosStore.prototype, {
     },
     async _showBadRequestPopup(data) {
         const title = _t("Bad request");
-        const body = sprintf(_t("Your %s is incorrect. Update it in your PoS settings"), data);
+        const body = _t("Your %s is incorrect. Update it in your PoS settings", data);
         await this.popup.add(ErrorPopup, { title, body });
     },
     async _showUnauthorizedPopup() {
@@ -251,8 +250,8 @@ patch(PosStore.prototype, {
         let body;
         if (rates.length) {
             const ratesText = [rates.slice(0, -1).join(", "), rates.slice(-1)[0]].join(" and ");
-            body = sprintf(
-                _t("Product has an invalid tax amount. Only the following rates are allowed: %s."),
+            body = _t(
+                "Product has an invalid tax amount. Only the following rates are allowed: %s.",
                 ratesText
             );
         } else {

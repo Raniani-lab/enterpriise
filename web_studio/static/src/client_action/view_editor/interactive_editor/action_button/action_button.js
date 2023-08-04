@@ -9,7 +9,7 @@ import { AutoComplete } from "@web/core/autocomplete/autocomplete";
 import { Component, useState } from "@odoo/owl";
 import { useOwnedDialogs, useService} from "@web/core/utils/hooks";
 import { _t } from "@web/core/l10n/translation";
-import { sprintf } from "@web/core/utils/strings";
+
 export class DialogAddNewButton extends Component {
     static template = `web_studio.DialogNewButtonStatusBar`;
     static components = {
@@ -89,8 +89,8 @@ export class DialogAddNewButton extends Component {
         this.state.methodChecked = false
         if(this.state.methodId?.length > 0) {
             if(this.state.methodId.startsWith("_")) {
-                this.state.error = sprintf(_t(`The method %s is private.`), this.state.methodId);
-            }  
+                this.state.error = _t("The method %s is private.", this.state.methodId);
+            }
             else {
                 try {
                     await this.rpc("/web_studio/check_method", {

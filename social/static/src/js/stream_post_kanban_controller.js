@@ -5,7 +5,6 @@ import { NewContentRefreshBanner } from './stream_post_kanban_refresh_banner';
 import { StreamPostDashboard } from './stream_post_kanban_dashboard';
 
 import { KanbanController } from '@web/views/kanban/kanban_controller';
-import { sprintf } from '@web/core/utils/strings';
 import { useService } from '@web/core/utils/hooks';
 
 const { onWillStart, useEffect, useSubEnv, useState } = owl;
@@ -101,12 +100,9 @@ export class StreamPostKanbanController extends KanbanController {
             ['name']);
         if (streams.length) {
             this.notification.add(
-                sprintf(this.env._t('It will appear in the Feed once it has posts to display.')),
-                {
-                    title: sprintf(this.env._t('Stream Added (%s)'), streams[0].name),
-                    type: 'success',
-                }
-            )
+                this.env._t("It will appear in the Feed once it has posts to display."),
+                { title: this.env._t("Stream Added (%s)", streams[0].name), type: "success" }
+            );
         } else {
             this.model.load();
         }

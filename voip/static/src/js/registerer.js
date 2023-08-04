@@ -3,7 +3,6 @@
 import { markup } from "@odoo/owl";
 
 import { _t } from "@web/core/l10n/translation";
-import { sprintf } from "@web/core/utils/strings";
 
 export class Registerer {
     /**
@@ -61,13 +60,10 @@ export class Registerer {
      * REGISTER request.
      */
     _onRegistrationRejected(response) {
-        const errorMessage = sprintf(
-            _t("Registration rejected: %(statusCode)s %(reasonPhrase)s."),
-            {
-                statusCode: response.message.statusCode,
-                reasonPhrase: response.message.reasonPhrase,
-            }
-        );
+        const errorMessage = _t("Registration rejected: %(statusCode)s %(reasonPhrase)s.", {
+            statusCode: response.message.statusCode,
+            reasonPhrase: response.message.reasonPhrase,
+        });
         const help = (() => {
             switch (response.message.statusCode) {
                 case 401: // Unauthorized

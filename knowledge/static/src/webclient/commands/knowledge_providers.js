@@ -5,7 +5,6 @@ import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
 import { HotkeyCommandItem } from "@web/core/commands/default_providers";
 import { splitCommandName } from "@web/core/commands/command_palette";
-import { sprintf } from '@web/core/utils/strings';
 import { Component } from "@odoo/owl";
 
 // Articles command
@@ -73,7 +72,7 @@ const fn = (hidden) => {
                                 }
                             });
                         },
-                        name: sprintf(_t('No Article found. Create "%s"'), options.searchValue),
+                        name: _t('No Article found. Create "%s"', options.searchValue),
                         props: {
                             articleName: options.searchValue,
                         },

@@ -2,7 +2,6 @@
 
 import BarcodeModel from '@stock_barcode/models/barcode_model';
 import { _t } from "@web/core/l10n/translation";
-import { sprintf } from '@web/core/utils/strings';
 
 export default class BarcodeQuantModel extends BarcodeModel {
     constructor(params) {
@@ -60,16 +59,16 @@ export default class BarcodeQuantModel extends BarcodeModel {
             },
             scanLot: {
                 class: 'scan_lot',
-                message: sprintf(
-                    _t("Scan lot numbers for product %s to change their quantity"),
+                message: _t(
+                    "Scan lot numbers for product %s to change their quantity",
                     line ? line.product_id.display_name : ""
                 ),
                 icon: 'barcode',
             },
             scanSerial: {
                 class: 'scan_serial',
-                message: sprintf(
-                    _t("Scan serial numbers for product %s to change their quantity"),
+                message: _t(
+                    "Scan serial numbers for product %s to change their quantity",
                     line ? line.product_id.display_name : ""
                 ),
                 icon: 'barcode',
@@ -91,9 +90,10 @@ export default class BarcodeQuantModel extends BarcodeModel {
                 if (this.groups.group_stock_multi_locations && line.location_id.id === this.location.id) {
                     return {
                         class: 'scan_product_or_src',
-                        message: sprintf(
-                            _t("Scan more products in %s or scan another location"),
-                            this.location.display_name),
+                        message: _t(
+                            "Scan more products in %s or scan another location",
+                            this.location.display_name
+                        ),
                     };
                 }
                 return messages.scanProduct;
@@ -110,9 +110,10 @@ export default class BarcodeQuantModel extends BarcodeModel {
             }
             return {
                 class: 'scan_product_or_src',
-                message: sprintf(
-                    _t("Scan a product in %s or scan another location"),
-                    this.location.display_name),
+                message: _t(
+                    "Scan a product in %s or scan another location",
+                    this.location.display_name
+                ),
             };
         }
         return messages.scanProduct;
@@ -277,8 +278,10 @@ export default class BarcodeQuantModel extends BarcodeModel {
         const product = params.fieldsParams.product_id;
         if (product.detailed_type != 'product') {
             const productName = (product.default_code ? `[${product.default_code}] ` : '') + product.display_name;
-            const message = sprintf(
-                _t("%s can't be inventoried. Only storable products can be inventoried."), productName);
+            const message = _t(
+                "%s can't be inventoried. Only storable products can be inventoried.",
+                productName
+            );
             this.notification(message, { type: "warning" });
             return false;
         }
@@ -422,9 +425,10 @@ export default class BarcodeQuantModel extends BarcodeModel {
             await this.orm.write('stock.quant.package', [currentLine.package_id.id], {
                 package_type_id: packageType.id,
             });
-            const message = sprintf(
-                _t("Package type %s was correctly applied to the package %s"),
-                packageType.name, currentLine.package_id.name
+            const message = _t(
+                "Package type %s was correctly applied to the package %s",
+                packageType.name,
+                currentLine.package_id.name
             );
             barcodeData.stopped = true;
             return this.notification(message, { type: "success" });
@@ -544,9 +548,10 @@ export default class BarcodeQuantModel extends BarcodeModel {
                 const productUOM = this.cache.getRecord('uom.uom', line.product_id.uom_id);
                 if (args.uom.category_id !== productUOM.category_id) {
                     // Not the same UoM's category -> Can't be converted.
-                    const message = sprintf(
-                        _t("Scanned quantity uses %s as Unit of Measure, but this UoM is not compatible with the product's one (%s)."),
-                        args.uom.name, productUOM.name
+                    const message = _t(
+                        "Scanned quantity uses %s as Unit of Measure, but this UoM is not compatible with the product's one (%s).",
+                        args.uom.name,
+                        productUOM.name
                     );
                     return this.notification(message, { title: _t("Wrong Unit of Measure"), type: "warning" });
                 } else if (args.uom.id !== productUOM.id) {

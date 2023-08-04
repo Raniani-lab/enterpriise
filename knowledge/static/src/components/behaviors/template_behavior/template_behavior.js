@@ -17,7 +17,6 @@ import {
     BehaviorToolbar,
     BehaviorToolbarButton,
 } from "@knowledge/components/behaviors/behavior_toolbar/behavior_toolbar";
-import { sprintf } from '@web/core/utils/strings';
 
 
 export class TemplateBehavior extends AbstractBehavior {
@@ -67,7 +66,7 @@ export class TemplateBehavior extends AbstractBehavior {
             }
         });
         this.targetRecordInfo = this.knowledgeCommandsService.getCommandsRecordInfo();
-        this.htmlFieldTargetMessage = sprintf(this.env._t('Use as %s'), this.targetRecordInfo?.fieldInfo?.string || 'Description');
+        this.htmlFieldTargetMessage = this.env._t('Use as %s', this.targetRecordInfo?.fieldInfo?.string || 'Description');
     }
     /**
      * Set the cursor of the user inside the template block when the user types

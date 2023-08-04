@@ -4,7 +4,6 @@ import { patch } from "@web/core/utils/patch";
 import { ListRenderer } from "@web/views/list/list_renderer";
 import { useService, useBus } from "@web/core/utils/hooks";
 import { omit } from "@web/core/utils/objects";
-import { sprintf } from "@web/core/utils/strings";
 import { SpreadsheetSelectorDialog } from "../components/spreadsheet_selector_dialog/spreadsheet_selector_dialog";
 import { HandleField } from "@web/views/fields/handle/handle_field";
 import { _t } from "@web/core/l10n/translation";
@@ -29,7 +28,7 @@ patch(ListRenderer.prototype, {
         let name = this.env.config.getDisplayName();
         const sortBy = model.orderBy[0];
         if (sortBy) {
-            name = sprintf(_t("%(field name)s by %(order)s"), {
+            name = _t("%(field name)s by %(order)s", {
                 "field name": name,
                 order: model.fields[sortBy.name].string,
             });

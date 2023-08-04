@@ -5,7 +5,6 @@ import { closest, touching } from "@web/core/utils/ui";
 import { useDraggable } from "@web/core/utils/draggable";
 import { useOwnedDialogs, useService } from "@web/core/utils/hooks";
 import { _t } from "@web/core/l10n/translation";
-import { sprintf } from "@web/core/utils/strings";
 import {
     isToXpathEquivalentFromXpath,
     cleanHooks,
@@ -428,7 +427,7 @@ export class InteractiveEditor extends Component {
     }
 
     async getNewFieldNode(data) {
-        const string = sprintf(_t("New %s"), data.string);
+        const string = _t("New %s", data.string);
 
         const newNode = {
             field_description: {

@@ -47,8 +47,8 @@ export const RentingMixin = {
                 ) {
                     const unit = this.rentingMinimalTime.unit;
                     if (rentingDuration / msecPerUnit[unit] < this.rentingMinimalTime.duration) {
-                        message = sprintf(
-                            _t("The rental lasts less than the minimal rental duration %s"),
+                        message = _t(
+                            "The rental lasts less than the minimal rental duration %s",
                             sprintf(unitMessages[unit], this.rentingMinimalTime.duration)
                         );
                     }

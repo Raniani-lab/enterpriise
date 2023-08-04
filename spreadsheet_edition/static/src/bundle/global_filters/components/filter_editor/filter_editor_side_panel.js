@@ -4,7 +4,6 @@ import { _t } from "@web/core/l10n/translation";
 import * as spreadsheet from "@odoo/o-spreadsheet";
 import CommandResult from "@spreadsheet/o_spreadsheet/cancelled_reason";
 import { useService } from "@web/core/utils/hooks";
-import { sprintf } from "@web/core/utils/strings";
 import { globalFiltersFieldMatchers } from "@spreadsheet/global_filters/plugins/global_filters_core_plugin";
 
 import { onWillStart, Component, useRef, useState, toRaw } from "@odoo/owl";
@@ -50,7 +49,7 @@ export default class AbstractFilterEditorSidePanel extends Component {
      * Retrieve the placeholder of the label
      */
     get placeholder() {
-        return sprintf(_t("New %s filter"), this.type);
+        return _t("New %s filter", this.type);
     }
 
     get missingLabel() {

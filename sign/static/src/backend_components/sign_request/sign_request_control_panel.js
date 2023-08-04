@@ -4,7 +4,6 @@ import { Component, useEffect, useComponent, markup } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
 import { ControlPanel } from "@web/search/control_panel/control_panel";
 import multiFileUpload from "@sign/backend_components/multi_file_upload";
-import { sprintf } from "@web/core/utils/strings";
 
 function useResendButtons() {
     const component = useComponent();
@@ -73,7 +72,7 @@ export class SignRequestControlPanel extends Component {
         await this.action.doAction(
             "sign.Template",
             {
-                name: sprintf(this.env._t('Template "%s"'), this.nextTemplate.name),
+                name: this.env._t('Template "%s"', this.nextTemplate.name),
                 context: {
                     sign_edit_call: "sign_send_request",
                     id: this.nextTemplate.template,

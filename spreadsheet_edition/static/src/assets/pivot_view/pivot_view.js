@@ -7,7 +7,6 @@ import { patch } from "@web/core/utils/patch";
 import { useService } from "@web/core/utils/hooks";
 import { PERIODS } from "@spreadsheet_edition/assets/helpers";
 import { omit } from "@web/core/utils/objects";
-import { sprintf } from "@web/core/utils/strings";
 
 import { _t } from "@web/core/l10n/translation";
 import { SpreadsheetSelectorDialog } from "@spreadsheet_edition/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog";
@@ -37,13 +36,13 @@ patch(PivotRenderer.prototype, {
             let [field, period] = groupBy.split(":");
             period = PERIODS[period];
             if (period) {
-                name = sprintf(_t("%(name)s by %(field)s (%(period)s)"), {
+                name = _t("%(name)s by %(field)s (%(period)s)", {
                     name,
                     field: this.model.metaData.fields[field].string,
                     period,
                 });
             } else {
-                name = sprintf(_t("%(name)s by %(field)s"), {
+                name = _t("%(name)s by %(field)s", {
                     name,
                     field: this.model.metaData.fields[field].string,
                 });

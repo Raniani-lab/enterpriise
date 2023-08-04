@@ -3,7 +3,6 @@
 import { XMLParser } from "@web/core/utils/xml";
 import { _t } from "@web/core/l10n/translation";
 import { INTERVALS, MODES, TIMELINES } from "./cohort_model";
-import { sprintf } from "@web/core/utils/strings";
 import { archParseBoolean } from "@web/views/utils";
 
 export class CohortArchParser extends XMLParser {
@@ -42,7 +41,7 @@ export class CohortArchParser extends XMLParser {
                         archInfo.mode = mode;
                     } else {
                         throw new Error(
-                            sprintf(
+                            _t(
                                 "The argument %s is not a valid mode. Here are the modes: %s",
                                 mode,
                                 MODES
@@ -54,7 +53,7 @@ export class CohortArchParser extends XMLParser {
                         archInfo.timeline = timeline;
                     } else {
                         throw new Error(
-                            sprintf(
+                            _t(
                                 "The argument %s is not a valid timeline. Here are the timelines: %s",
                                 timeline,
                                 TIMELINES
@@ -67,7 +66,7 @@ export class CohortArchParser extends XMLParser {
                         archInfo.interval = interval;
                     } else {
                         throw new Error(
-                            sprintf(
+                            _t(
                                 "The argument %s is not a valid interval. Here are the intervals: %s",
                                 interval,
                                 INTERVALS

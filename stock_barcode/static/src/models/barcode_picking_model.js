@@ -3,7 +3,7 @@
 import BarcodeModel from '@stock_barcode/models/barcode_model';
 import { BackorderDialog } from '../components/backorder_dialog';
 import { _t } from "@web/core/l10n/translation";
-import { escape, sprintf } from '@web/core/utils/strings';
+import { escape } from '@web/core/utils/strings';
 import { session } from '@web/session';
 import { markup } from '@odoo/owl';
 
@@ -245,7 +245,7 @@ export default class BarcodePickingModel extends BarcodeModel {
                         barcodeInfo.class = 'scan_product_or_package';
                     }
                 } else {
-                    barcodeInfo.message = sprintf(_t("Scan the package %s"), packageLine.result_package_id.name);
+                    barcodeInfo.message = _t("Scan the package %s", packageLine.result_package_id.name);
                     barcodeInfo.icon = 'archive';
                 }
                 return barcodeInfo;
@@ -256,9 +256,10 @@ export default class BarcodePickingModel extends BarcodeModel {
         }
         if (barcodeInfo.class === "scan_product" && !(line || this.lastScanned.packageId) &&
             this.config.restrict_scan_source_location && this.lastScanned.sourceLocation) {
-            barcodeInfo.message = sprintf(
-                _t("Scan a product from %s"),
-                this.lastScanned.sourceLocation.name);
+            barcodeInfo.message = _t(
+                "Scan a product from %s",
+                this.lastScanned.sourceLocation.name
+            );
         }
 
         // About source location.
@@ -792,9 +793,9 @@ export default class BarcodePickingModel extends BarcodeModel {
                 this.location = location;
             } else {
                 check.title = _t("Mandatory Source Location");
-                check.message = sprintf(
-                    _t("You are supposed to scan %s or another source location"),
-                    this.location.display_name,
+                check.message = _t(
+                    "You are supposed to scan %s or another source location",
+                    this.location.display_name
                 );
             }
         } else if (this.config.restrict_scan_product && // Restriction on product.
@@ -814,8 +815,8 @@ export default class BarcodePickingModel extends BarcodeModel {
             } else if (product && this.selectedLine && this.selectedLine.product_id.id != product.id) {
                 // Cannot scan another product before a destination was scanned.
                 check.title = _t("Mandatory Destination Location");
-                check.message = sprintf(
-                    _t("Please scan destination location for %s before scanning other product"),
+                check.message = _t(
+                    "Please scan destination location for %s before scanning other product",
                     this.selectedLine.product_id.display_name
                 );
             }
@@ -1282,9 +1283,10 @@ export default class BarcodePickingModel extends BarcodeModel {
             await this.orm.write('stock.quant.package', [resultPackage.id], {
                 package_type_id: packageType.id,
             });
-            const message = sprintf(
-                _t("Package type %s was correctly applied to the package %s"),
-                packageType.name, resultPackage.name
+            const message = _t(
+                "Package type %s was correctly applied to the package %s",
+                packageType.name,
+                resultPackage.name
             );
             this.notification(message, { type: "success" });
             this.trigger('refresh');
@@ -1387,9 +1389,10 @@ export default class BarcodePickingModel extends BarcodeModel {
                 const lineUOM = line.product_uom_id;
                 if (args.uom.category_id !== lineUOM.category_id) {
                     // Not the same UoM's category -> Can't be converted.
-                    const message = sprintf(
-                        _t("Scanned quantity uses %s as Unit of Measure, but this UoM is not compatible with the line's one (%s)."),
-                        args.uom.name, lineUOM.name
+                    const message = _t(
+                        "Scanned quantity uses %s as Unit of Measure, but this UoM is not compatible with the line's one (%s).",
+                        args.uom.name,
+                        lineUOM.name
                     );
                     return this.notification(message, { title: _t("Wrong Unit of Measure"), type: "danger" });
                 } else if (args.uom.id !== lineUOM.id) {

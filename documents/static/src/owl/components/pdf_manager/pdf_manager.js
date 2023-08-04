@@ -11,7 +11,6 @@ import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
 import { _t } from "@web/core/l10n/translation";
 import { uniqueId } from "@web/core/utils/functions";
 import { useService } from "@web/core/utils/hooks";
-import { sprintf } from "@web/core/utils/strings";
 
 import { ExitSplitToolsDialog } from "@documents/owl/components/pdf_exit_dialog/pdf_exit_dialog";
 
@@ -481,18 +480,14 @@ export class PdfManager extends Component {
      * @param {number} number
      */
     _displayNumberCreatedDocuments(number) {
-        this.notification.add(sprintf(_t("%s new document(s) created"), number), {
-            type: "success",
-        });
+        this.notification.add(_t("%s new document(s) created", number), { type: "success" });
     }
     /**
      * @private
      * @param {number} number
      */
     _displayNumberDeletedPages(number) {
-        this.notification.add(sprintf(_t("%s page(s) deleted"), number), {
-            type: "success",
-        });
+        this.notification.add(_t("%s page(s) deleted", number), { type: "success" });
     }
     /**
      * Ignored pages are not committed but are instead kept in the

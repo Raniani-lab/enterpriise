@@ -4,7 +4,7 @@ import { SocialPostFormatterMixin } from './social_post_formatter_mixin';
 import { StreamPostCommentsReply } from './stream_post_comments_reply';
 
 import { ConfirmationDialog } from '@web/core/confirmation_dialog/confirmation_dialog';
-import { escape, sprintf } from '@web/core/utils/strings';
+import { escape } from '@web/core/utils/strings';
 import { useService } from '@web/core/utils/hooks';
 
 const { Component, markup, useState } = owl;
@@ -43,7 +43,7 @@ export class StreamPostComment extends SocialPostFormatterMixin(Component) {
     _deleteComment() {
         this.dialog.add(ConfirmationDialog, {
             title: this.env._t('Delete Comment'),
-            body: sprintf(this.env._t('Do you really want to delete %s'), this.commentName),
+            body: this.env._t('Do you really want to delete %s', this.commentName),
             confirm: () => {
                 this._confirmDeleteComment();
             },

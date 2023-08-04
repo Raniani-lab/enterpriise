@@ -4,7 +4,6 @@ import { PaymentScreen } from "@point_of_sale/app/screens/payment_screen/payment
 import { patch } from "@web/core/utils/patch";
 import { floatIsZero } from "@web/core/utils/numbers";
 import { ConfirmPopup } from "@point_of_sale/app/utils/confirm_popup/confirm_popup";
-import { sprintf } from "@web/core/utils/strings";
 
 patch(PaymentScreen.prototype, {
     get partnerInfos() {
@@ -22,8 +21,7 @@ patch(PaymentScreen.prototype, {
         const change = order.get_change();
         const paylaterPaymentMethod = this.pos.payment_methods.filter(
             (method) =>
-                this.pos.config.payment_method_ids.includes(method.id) &&
-                method.type == "pay_later"
+                this.pos.config.payment_method_ids.includes(method.id) && method.type == "pay_later"
         )[0];
         const existingPayLaterPayment = order
             .get_paymentlines()
@@ -38,8 +36,8 @@ patch(PaymentScreen.prototype, {
             if (partner) {
                 const { confirmed } = await this.popup.add(ConfirmPopup, {
                     title: this.env._t("The order is empty"),
-                    body: sprintf(
-                        this.env._t("Do you want to deposit %s to %s?"),
+                    body: this.env._t(
+                        "Do you want to deposit %s to %s?",
                         this.env.utils.formatCurrency(change),
                         order.get_partner().name
                     ),
@@ -53,10 +51,8 @@ patch(PaymentScreen.prototype, {
             } else {
                 const { confirmed } = await this.popup.add(ConfirmPopup, {
                     title: this.env._t("The order is empty"),
-                    body: sprintf(
-                        this.env._t(
-                            "Do you want to deposit %s to a specific customer? If so, first select him/her."
-                        ),
+                    body: this.env._t(
+                        "Do you want to deposit %s to a specific customer? If so, first select him/her.",
                         this.env.utils.formatCurrency(change)
                     ),
                     confirmText: this.env._t("Yes"),

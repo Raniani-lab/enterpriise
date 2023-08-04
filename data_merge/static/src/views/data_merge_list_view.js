@@ -5,7 +5,6 @@ import { registry } from '@web/core/registry';
 import { listView } from '@web/views/list/list_view';
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { useService } from "@web/core/utils/hooks";
-import { sprintf } from "@web/core/utils/strings";
 
 export class DataMergeListModel extends listView.Model {}
 export class DataMergeListRecord extends DataMergeListModel.Record {
@@ -136,7 +135,7 @@ export class DataMergeListController extends DataCleaningCommonListController {
     showMergeNotification(recordsMerged) {
         let message;
         if (recordsMerged) {
-            message = sprintf(this.env._t("%s records have been merged"), recordsMerged);
+            message = this.env._t("%s records have been merged", recordsMerged);
         } else {
             message = this.env._t("The selected records have been merged");
         }

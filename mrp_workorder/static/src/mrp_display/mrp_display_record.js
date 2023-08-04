@@ -14,7 +14,6 @@ import { MrpRegisterProductionDialog } from "./dialog/mrp_register_production_di
 import { SelectionField } from "@web/views/fields/selection/selection_field";
 import { MrpMenuDialog } from "./dialog/mrp_menu_dialog";
 import { MrpWorksheet } from "./mrp_record_line/mrp_worksheet";
-import { sprintf } from "@web/core/utils/strings";
 
 export class MrpDisplayRecord extends Component {
     static components = {
@@ -138,7 +137,7 @@ export class MrpDisplayRecord extends Component {
     }
 
     getByproductLabel(record) {
-        return sprintf(this.env._t("Register %s"), record.data.product_id[1]);
+        return this.env._t("Register %s", record.data.product_id[1]);
     }
 
     get cssClass() {

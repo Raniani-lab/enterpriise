@@ -9,7 +9,6 @@ import { useDialogConfirmation } from "@web_studio/client_action/utils";
 import { useOwnedDialogs, useService } from "@web/core/utils/hooks";
 import { session } from "@web/session";
 import { _t } from "@web/core/l10n/translation";
-import { sprintf } from "@web/core/utils/strings";
 import { DomainSelector } from "@web/core/domain_selector/domain_selector";
 import { SelectionContentDialog } from "@web_studio/client_action/view_editor/interactive_editor/field_configuration/selection_content_dialog";
 
@@ -291,7 +290,7 @@ export class FieldConfigurationDialog extends Component {
             return this.props.title;
         }
         if (this.props.fieldType) {
-            return sprintf(_t("Field properties: %s"), this.props.fieldType);
+            return _t("Field properties: %s", this.props.fieldType);
         }
         return "";
     }

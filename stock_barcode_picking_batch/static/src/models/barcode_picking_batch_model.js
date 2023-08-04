@@ -2,7 +2,6 @@
 
 import BarcodePickingModel from '@stock_barcode/models/barcode_picking_model';
 import { _t } from "@web/core/l10n/translation";
-import { sprintf } from '@web/core/utils/strings';
 import { session } from '@web/session';
 
 export default class BarcodePickingBatchModel extends BarcodePickingModel {
@@ -250,7 +249,7 @@ export default class BarcodePickingBatchModel extends BarcodePickingModel {
 
     _getScanPackageMessage(line) {
         if (line.suggested_package) {
-            return sprintf(_t("Scan the package %s"), line.suggested_package);
+            return _t("Scan the package %s", line.suggested_package);
         }
         return super._getScanPackageMessage(...arguments);
     }

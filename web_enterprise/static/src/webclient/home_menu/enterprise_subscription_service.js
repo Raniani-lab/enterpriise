@@ -3,7 +3,6 @@
 import { registry } from "@web/core/registry";
 import { session } from "@web/session";
 import { browser } from "@web/core/browser/browser";
-import { sprintf } from "@web/core/utils/strings";
 import { deserializeDateTime, serializeDate, formatDate } from "@web/core/l10n/dates";
 import { useService } from "@web/core/utils/hooks";
 import { _t } from "@web/core/l10n/translation";
@@ -103,12 +102,13 @@ export class SubscriptionManager {
             this.lastRequestStatus = "success";
             this.expirationDate = deserializeDateTime(expirationDate);
             if (this.daysLeft > 30) {
-                const message = _t(
-                    "Thank you, your registration was successful! Your database is valid until %s."
+                this.notification.add(
+                    _t(
+                        "Thank you, your registration was successful! Your database is valid until %s.",
+                        this.formattedExpirationDate
+                    ),
+                    { type: "success" }
                 );
-                this.notification.add(sprintf(message, this.formattedExpirationDate), {
-                    type: "success",
-                });
             }
         } else {
             this.lastRequestStatus = "error";

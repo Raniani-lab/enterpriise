@@ -10,7 +10,6 @@ import { UNTITLED_SPREADSHEET_NAME } from "@spreadsheet/helpers/constants";
 import { convertFromSpreadsheetTemplate } from "@documents_spreadsheet/bundle/helpers";
 import { AbstractSpreadsheetAction } from "@spreadsheet_edition/bundle/actions/abstract_spreadsheet_action";
 import { DocumentsSpreadsheetControlPanel } from "../components/control_panel/spreadsheet_control_panel";
-import { sprintf } from "@web/core/utils/strings";
 import { _t } from "@web/core/l10n/translation";
 
 import { useState, useSubEnv } from "@odoo/owl";
@@ -113,7 +112,7 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
 
         this.actionService.doAction("documents_spreadsheet.save_spreadsheet_template_action", {
             additionalContext: {
-                default_template_name: sprintf(_t("%s - Template"), name),
+                default_template_name: _t("%s - Template", name),
                 default_spreadsheet_data: JSON.stringify(data),
                 default_thumbnail: this.getThumbnail(),
             },

@@ -1,7 +1,6 @@
 /** @odoo-module **/
 
 import { useService } from "@web/core/utils/hooks";
-import { sprintf } from "@web/core/utils/strings";
 import { Component } from "@odoo/owl";
 import { ControlPanel } from "@web/search/control_panel/control_panel";
 import { multiFileUpload } from "@sign/backend_components/multi_file_upload";
@@ -69,7 +68,7 @@ export class SignTemplateControlPanel extends Component {
         this.action.doAction({
             type: "ir.actions.client",
             tag: "sign.Template",
-            name: sprintf(this.env._t("Template %s"), templateName),
+            name: this.env._t("Template %s", templateName),
             params: {
                 sign_edit_call: "sign_template_edit",
                 id: templateId,

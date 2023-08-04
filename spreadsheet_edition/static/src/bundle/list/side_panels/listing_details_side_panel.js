@@ -4,7 +4,6 @@ import { Domain } from "@web/core/domain";
 import { DomainSelector } from "@web/core/domain_selector/domain_selector";
 import { DomainSelectorDialog } from "@web/core/domain_selector_dialog/domain_selector_dialog";
 import { useService } from "@web/core/utils/hooks";
-import { sprintf } from "@web/core/utils/strings";
 import { _t } from "@web/core/l10n/translation";
 import { time_to_str } from "@web/legacy/js/core/time";
 
@@ -40,9 +39,9 @@ export class ListingDetailsSidePanel extends Component {
     formatSort(sort) {
         const sortName = this.dataSource.getListHeaderValue(sort.name);
         if (sort.asc) {
-            return sprintf(_t("%(sortName)s (ascending)"), { sortName });
+            return _t("%(sortName)s (ascending)", { sortName });
         }
-        return sprintf(_t("%(sortName)s (descending)"), { sortName });
+        return _t("%(sortName)s (descending)", { sortName });
     }
 
     getLastUpdate() {

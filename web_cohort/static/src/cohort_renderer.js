@@ -1,7 +1,6 @@
 /** @odoo-module **/
 
 import { _t } from "@web/core/l10n/translation";
-import { sprintf } from "@web/core/utils/strings";
 import { formatFloat, formatPercentage } from "@web/views/fields/formatters";
 
 import { Component } from "@odoo/owl";
@@ -28,11 +27,7 @@ export class CohortRenderer extends Component {
     }
 
     getCellTitle(period, measure, count) {
-        return sprintf(_t("Period: %(period)s\n%(measure)s: %(count)s"), {
-            period,
-            measure,
-            count,
-        });
+        return _t("Period: %(period)s\n%(measure)s: %(count)s", { period, measure, count });
     }
 
     get scales() {

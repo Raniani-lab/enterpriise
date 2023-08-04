@@ -4,7 +4,6 @@ import { Registerer } from "@voip/js/registerer";
 
 import { browser } from "@web/core/browser/browser";
 import { _t } from "@web/core/l10n/translation";
-import { sprintf } from "@web/core/utils/strings";
 
 export class UserAgent {
     legacyUserAgent;
@@ -94,10 +93,8 @@ export class UserAgent {
         } catch (error) {
             console.error(error);
             this.voip.triggerError(
-                sprintf(
-                    _t(
-                        "An error occurred during the instantiation of the User Agent:</br></br> %(error message)s"
-                    ),
+                _t(
+                    "An error occurred during the instantiation of the User Agent:</br></br> %(error message)s",
                     { "error message": error.message }
                 )
             );

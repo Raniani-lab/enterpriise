@@ -863,7 +863,7 @@ export class GanttModel extends Model {
         if (field.type === "boolean") {
             return value ? "True" : "False";
         } else if (!value) {
-            return sprintf(this.env._t("Undefined %s"), field.string);
+            return this.env._t("Undefined %s", field.string);
         } else if (field.type === "many2many") {
             return value[1];
         }

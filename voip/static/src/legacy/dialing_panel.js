@@ -8,7 +8,6 @@ import { UserAgent } from "@voip/legacy/user_agent";
 import config from "@web/legacy/js/services/config";
 import core from "@web/legacy/js/services/core";
 import { _t } from "@web/core/l10n/translation";
-import { sprintf } from "@web/core/utils/strings";
 import Dialog from "@web/legacy/js/core/dialog";
 import dom from "@web/legacy/js/core/dom";
 import mobile from "@web_mobile/js/services/core";
@@ -282,9 +281,7 @@ export const DialingPanel = Widget.extend({
             case 2:
                 return _t("2 missed calls");
             default:
-                return sprintf(_t("%(number of missed calls)s missed calls"), {
-                    "number of missed calls": this._missedCounter,
-                });
+                return _t("%(count)s missed calls", { count: this._missedCounter });
         }
     },
     /**

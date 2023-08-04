@@ -5,7 +5,6 @@ import { Dialog } from '@web/core/dialog/dialog';
 import { SelectMenu } from '@web/core/select_menu/select_menu';
 import { DropdownItem } from '@web/core/dropdown/dropdown_item';
 import { Component, useEffect, onWillStart, useRef, useState } from '@odoo/owl';
-import { sprintf } from "@web/core/utils/strings";
 
 export class ArticleSelectionBehaviorDialog extends Component {
 
@@ -66,7 +65,7 @@ export class ArticleSelectionBehaviorDialog extends Component {
     }
 
     async fetchArticles(searchValue) {
-        this.state.createLabel = sprintf(this.env._t('Create "%s"'), searchValue);
+        this.state.createLabel = this.env._t('Create "%s"', searchValue);
         const domain = [['user_has_access', '=', true]];
         if (searchValue) {
             domain.push(['name', '=ilike', `%${searchValue}%`]);

@@ -3,7 +3,6 @@
 import { AbstractBehavior } from "@knowledge/components/behaviors/abstract_behavior/abstract_behavior";
 import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { AttachToMessageMacro, UseAsAttachmentMacro } from "@knowledge/macros/file_macros";
-import { sprintf } from "@web/core/utils/strings";
 import { useService } from "@web/core/utils/hooks";
 import utils from "@web/legacy/js/core/utils";
 import {
@@ -65,7 +64,7 @@ export class FileBehavior extends AbstractBehavior {
             });
         } catch {
             this.dialogService.add(AlertDialog, {
-                body: sprintf(this.env._t('Oops, the file %s could not be found. Please replace this file box by a new one to re-upload the file.'), title),
+                body: this.env._t('Oops, the file %s could not be found. Please replace this file box by a new one to re-upload the file.', title),
                 title: this.env._t('Missing File'),
                 confirm: () => {},
                 confirmLabel: this.env._t('Ok'),

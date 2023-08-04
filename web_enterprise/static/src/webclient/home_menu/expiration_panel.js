@@ -1,7 +1,7 @@
 /** @odoo-module **/
+
 import { useService } from "@web/core/utils/hooks";
 import { Transition } from "@web/core/transition";
-import { sprintf } from "@web/core/utils/strings";
 
 import { Component, useState, useRef } from "@odoo/owl";
 
@@ -49,11 +49,11 @@ export class ExpirationPanel extends Component {
         if (daysLeft <= 0) {
             return _t("This database has expired. ");
         }
-        const delay = daysLeft === 30 ? _t("1 month") : sprintf(_t("%s days"), daysLeft);
+        const delay = daysLeft === 30 ? _t("1 month") : _t("%s days", daysLeft);
         if (this.subscription.expirationReason === "demo") {
-            return sprintf(_t("This demo database will expire in %s. "), delay);
+            return _t("This demo database will expire in %s. ", delay);
         }
-        return sprintf(_t("This database will expire in %s. "), delay);
+        return _t("This database will expire in %s. ", delay);
     }
 
     showRegistrationForm() {

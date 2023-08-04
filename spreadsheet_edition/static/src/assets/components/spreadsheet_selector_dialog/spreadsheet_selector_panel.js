@@ -4,7 +4,6 @@ import { _t } from "@web/core/l10n/translation";
 import { browser } from "@web/core/browser/browser";
 import { KeepLast } from "@web/core/utils/concurrency";
 import { useService } from "@web/core/utils/hooks";
-import { sprintf } from "@web/core/utils/strings";
 import { Pager } from "@web/core/pager/pager";
 
 import { Component, onWillStart, useState, onWillUnmount } from "@odoo/owl";
@@ -109,7 +108,7 @@ export class SpreadsheetSelectorPanel extends Component {
             this.state.selectedSpreadsheetId &&
             this.state.spreadsheets.find((s) => s.id === this.state.selectedSpreadsheetId);
         const notificationMessage = spreadsheet
-            ? sprintf(_t("New sheet inserted in '%s'"), spreadsheet.name)
+            ? _t("New sheet inserted in '%s'", spreadsheet.name)
             : this.notificationMessage;
         this.props.onSpreadsheetSelected({
             spreadsheet,

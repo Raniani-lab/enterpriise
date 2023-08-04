@@ -2,7 +2,6 @@
 
 import { _t } from "@web/core/l10n/translation";
 import { Dialog } from "@web/core/dialog/dialog";
-import { sprintf } from "@web/core/utils/strings";
 import { useService } from "@web/core/utils/hooks";
 import { Notebook } from "@web/core/notebook/notebook";
 
@@ -56,11 +55,11 @@ export class SpreadsheetSelectorDialog extends Component {
     }
 
     get nameLabel() {
-        return sprintf(_t("Name of the %s:"), LABELS[this.props.type]);
+        return _t("Name of the %s:", LABELS[this.props.type]);
     }
 
     get title() {
-        return sprintf(_t("Select a spreadsheet to insert your %s."), LABELS[this.props.type]);
+        return _t("Select a spreadsheet to insert your %s.", LABELS[this.props.type]);
     }
 
     /**

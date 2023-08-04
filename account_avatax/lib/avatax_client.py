@@ -90,10 +90,6 @@ class AvataxClient:
             model = {'createTransactionModel': model}
         return self.request('POST', 'transactions/{}'.format(endpoint), params=include, json=model)
 
-    def commit_transaction(self, companyCode, transactionCode, model, include=None):
-        return self.request('POST', 'companies/{}/transactions/{}/commit'.format(companyCode, transactionCode),
-                            params=include, json=model)
-
     def uncommit_transaction(self, companyCode, transactionCode, include=None):
         return self.request('POST', 'companies/{}/transactions/{}/uncommit'.format(companyCode, transactionCode),
                             params=include, json=None)

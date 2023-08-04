@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.3alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-16 16:02+0000\n"
-"PO-Revision-Date: 2023-05-16 16:02+0000\n"
+"POT-Creation-Date: 2023-09-13 20:16+0000\n"
+"PO-Revision-Date: 2023-09-13 20:16+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -17,14 +17,14 @@ msgstr ""
 
 #. module: account_avatax
 #. odoo-python
-#: code:addons/account_avatax/models/account_avatax.py:0
+#: code:addons/account_avatax/models/account_external_tax_mixin.py:0
 #, python-format
 msgid "%(response)s"
 msgstr ""
 
 #. module: account_avatax
 #. odoo-python
-#: code:addons/account_avatax/models/account_avatax.py:0
+#: code:addons/account_avatax/models/account_external_tax_mixin.py:0
 #, python-format
 msgid "- %s (ID: %s) on %s"
 msgstr ""
@@ -115,7 +115,7 @@ msgstr ""
 
 #. module: account_avatax
 #: model_terms:ir.ui.view,arch_db:account_avatax.res_config_settings_view_form
-msgid "AvaTax"
+msgid "AvaTax US/Canada"
 msgstr ""
 
 #. module: account_avatax
@@ -137,7 +137,6 @@ msgid "Avalara Address Validation"
 msgstr ""
 
 #. module: account_avatax
-#: model:ir.model.fields,field_description:account_avatax.field_account_avatax__avatax_unique_code
 #: model:ir.model.fields,field_description:account_avatax.field_account_avatax_unique_code__avatax_unique_code
 #: model:ir.model.fields,field_description:account_avatax.field_account_bank_statement_line__avatax_unique_code
 #: model:ir.model.fields,field_description:account_avatax.field_account_move__avatax_unique_code
@@ -273,11 +272,6 @@ msgid "Company Code"
 msgstr ""
 
 #. module: account_avatax
-#: model_terms:ir.ui.view,arch_db:account_avatax.move_form_inherit
-msgid "Compute Taxes using Avatax"
-msgstr ""
-
-#. module: account_avatax
 #: model:ir.model,name:account_avatax.model_res_config_settings
 msgid "Config Settings"
 msgstr ""
@@ -337,11 +331,6 @@ msgid "Fiscal Position"
 msgstr ""
 
 #. module: account_avatax
-#: model:ir.model,name:account_avatax.model_payment_link_wizard
-msgid "Generate Sales Payment Link"
-msgstr ""
-
-#. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_validate_address__validated_latitude
 msgid "Geo Latitude"
 msgstr ""
@@ -353,7 +342,7 @@ msgstr ""
 
 #. module: account_avatax
 #. odoo-python
-#: code:addons/account_avatax/models/account_avatax.py:0
+#: code:addons/account_avatax/models/account_external_tax_mixin.py:0
 #, python-format
 msgid "Go to the configuration panel"
 msgstr ""
@@ -371,8 +360,8 @@ msgid "Is Already Valid"
 msgstr ""
 
 #. module: account_avatax
-#: model:ir.model.fields,field_description:account_avatax.field_account_avatax__is_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_account_bank_statement_line__is_avatax
+#: model:ir.model.fields,field_description:account_avatax.field_account_external_tax_mixin__is_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_account_move__is_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_account_payment__is_avatax
 msgid "Is Avatax"
@@ -413,8 +402,8 @@ msgid "Mixin to generate unique ids for Avatax"
 msgstr ""
 
 #. module: account_avatax
-#: model:ir.model,name:account_avatax.model_account_avatax
-msgid "Mixin to manage taxes with Avatax on various business documents"
+#: model:ir.model,name:account_avatax.model_account_external_tax_mixin
+msgid "Mixin to manage common parts of external tax calculation"
 msgstr ""
 
 #. module: account_avatax
@@ -424,7 +413,7 @@ msgstr ""
 
 #. module: account_avatax
 #. odoo-python
-#: code:addons/account_avatax/models/account_avatax.py:0
+#: code:addons/account_avatax/models/account_external_tax_mixin.py:0
 #, python-format
 msgid ""
 "Odoo could not change the state of the transaction related to %(document)s in AvaTax\n"
@@ -440,7 +429,7 @@ msgstr ""
 
 #. module: account_avatax
 #. odoo-python
-#: code:addons/account_avatax/models/account_avatax.py:0
+#: code:addons/account_avatax/models/account_external_tax_mixin.py:0
 #, python-format
 msgid ""
 "Odoo could not fetch the taxes related to %(document)s.\n"
@@ -456,7 +445,7 @@ msgstr ""
 
 #. module: account_avatax
 #. odoo-python
-#: code:addons/account_avatax/models/account_avatax.py:0
+#: code:addons/account_avatax/models/account_external_tax_mixin.py:0
 #, python-format
 msgid ""
 "Odoo could not void the transaction related to %(document)s in AvaTax\n"
@@ -475,7 +464,7 @@ msgstr ""
 
 #. module: account_avatax
 #. odoo-python
-#: code:addons/account_avatax/models/account_avatax.py:0
+#: code:addons/account_avatax/models/account_external_tax_mixin.py:0
 #, python-format
 msgid "Please add your AvaTax credentials"
 msgstr ""
@@ -562,7 +551,7 @@ msgstr ""
 
 #. module: account_avatax
 #. odoo-python
-#: code:addons/account_avatax/models/account_avatax.py:0
+#: code:addons/account_avatax/models/account_external_tax_mixin.py:0
 #, python-format
 msgid ""
 "The Avalara Tax Code is required for %(name)s (#%(id)s)\n"
@@ -571,7 +560,7 @@ msgstr ""
 
 #. module: account_avatax
 #. odoo-python
-#: code:addons/account_avatax/models/account_avatax.py:0
+#: code:addons/account_avatax/models/account_external_tax_mixin.py:0
 #, python-format
 msgid ""
 "The following customer(s) need to have a zip, state and country when using "
@@ -612,7 +601,6 @@ msgid "Use Universal Product Code instead of custom defined codes in Avalara."
 msgstr ""
 
 #. module: account_avatax
-#: model:ir.model.fields,help:account_avatax.field_account_avatax__avatax_unique_code
 #: model:ir.model.fields,help:account_avatax.field_account_avatax_unique_code__avatax_unique_code
 #: model:ir.model.fields,help:account_avatax.field_account_bank_statement_line__avatax_unique_code
 #: model:ir.model.fields,help:account_avatax.field_account_move__avatax_unique_code

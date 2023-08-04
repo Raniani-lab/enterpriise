@@ -1,3 +1,4 @@
+from collections import defaultdict
 from unittest.mock import patch
 
 from odoo.exceptions import UserError, ValidationError
@@ -6,8 +7,7 @@ from odoo.modules.neutralize import get_neutralization_queries
 from .common import TestAccountAvataxCommon
 
 
-@tagged("-at_install", "post_install")
-class TestAccountAvalaraInternal(TestAccountAvataxCommon):
+class TestAccountAvalaraInternalCommon(TestAccountAvataxCommon):
     def assertInvoice(self, invoice, test_exact_response):
         self.assertEqual(
             len(invoice.invoice_line_ids.tax_ids),
@@ -52,21 +52,18 @@ class TestAccountAvalaraInternal(TestAccountAvataxCommon):
 
             self.assertGreater(invoice.amount_tax, 0.0, "Invoice has a tax_amount of 0.0.")
 
+
+@tagged("-at_install", "post_install")
+class TestAccountAvalaraInternal(TestAccountAvalaraInternalCommon):
     def test_01_odoo_invoice(self):
         invoice, response = self._create_invoice_01_and_expected_response()
         with self._capture_request(return_value=response):
             self.assertInvoice(invoice, test_exact_response=response)
 
         # verify transactions are uncommitted
-        with patch('odoo.addons.account_avatax.models.account_avatax.AccountAvatax._uncommit_avatax_transaction') as mocked_commit:
+        with patch('odoo.addons.account_avatax.models.account_external_tax_mixin.AccountExternalTaxMixin._uncommit_external_taxes') as mocked_uncommit:
             invoice.button_draft()
-            mocked_commit.assert_called()
-
-    def test_integration_01_odoo_invoice(self):
-        with self._skip_no_credentials():
-            invoice, _ = self._create_invoice_01_and_expected_response()
-            self.assertInvoice(invoice, test_exact_response=False)
-            invoice.button_draft()
+            mocked_uncommit.assert_called()
 
     def test_02_odoo_invoice(self):
         invoice, response = self._create_invoice_02_and_expected_response()
@@ -74,15 +71,9 @@ class TestAccountAvalaraInternal(TestAccountAvataxCommon):
             self.assertInvoice(invoice, test_exact_response=response)
 
         # verify transactions are uncommitted
-        with patch('odoo.addons.account_avatax.models.account_avatax.AccountAvatax._uncommit_avatax_transaction') as mocked_commit:
+        with patch('odoo.addons.account_avatax.models.account_external_tax_mixin.AccountExternalTaxMixin._uncommit_external_taxes') as mocked_uncommit:
             invoice.button_draft()
-            mocked_commit.assert_called()
-
-    def test_integration_02_odoo_invoice(self):
-        with self._skip_no_credentials():
-            invoice, _ = self._create_invoice_02_and_expected_response()
-            self.assertInvoice(invoice, test_exact_response=False)
-            invoice.button_draft()
+            mocked_uncommit.assert_called()
 
     def test_01_odoo_refund(self):
         invoice, response = self._create_invoice_01_and_expected_response()
@@ -142,7 +133,7 @@ class TestAccountAvalaraInternal(TestAccountAvataxCommon):
             # ensure this doesn't raise:
             # odoo.exceptions.ValidationError
             # This entry contains some tax from an unallowed country. Please check its fiscal position and your tax configuration.
-            invoice.button_update_avatax()
+            invoice.button_external_tax_calculation()
 
     def test_posted_invoice(self):
         invoice, _ = self._create_invoice_01_and_expected_response()
@@ -151,7 +142,7 @@ class TestAccountAvalaraInternal(TestAccountAvataxCommon):
             invoice.action_post()
 
         with self._capture_request(return_value={'lines': [], 'summary': []}) as capture:
-            invoice.button_update_avatax()
+            invoice.button_external_tax_calculation()
 
         self.assertIsNone(capture.val, "Should not update taxes of posted invoices.")
 
@@ -173,18 +164,26 @@ class TestAccountAvalaraInternal(TestAccountAvataxCommon):
         'Quantity of items in this line. This quantity value should always be a positive value representing the quantity
         of product that changed hands, even when handling returns or refunds.'
         """
-        # TODO: the account_avatax_stock module introduced in 18070cd7727e changes the _get_avatax_invoice_line signature from:
-        #  def _get_avatax_invoice_line(self, product, price_subtotal, quantity, line_id)
-        #  to
-        #  def _get_avatax_invoice_line(self, product, price_subtotal, quantity, line_id, warehouse_id)
-        #  This should be fixed (maybe with context instead?), in the meantime hack this test to make it work in both cases.
-        account_avatax_stock = self.env['ir.module.module']._get('account_avatax_stock')
-        args = [self.product_accounting, None, -1, None]
-        if account_avatax_stock.state == 'installed':
-            args.append(None)
-
-        res = self.env['account.avatax']._get_avatax_invoice_line(*args)
+        line_data = defaultdict(lambda: False)
+        line_data["product_id"] = self.product_accounting
+        line_data["qty"] = -1
+        res = self.env['account.external.tax.mixin']._get_avatax_invoice_line(line_data)
         self.assertEqual(res['quantity'], 1, 'Quantities sent to Avatax should always be positive.')
+
+
+@tagged("external_l10n", "external", "-at_install", "post_install", "-standard")
+class TestAccountAvalaraInternalIntegration(TestAccountAvalaraInternalCommon):
+    def test_integration_01_odoo_invoice(self):
+        with self._skip_no_credentials():
+            invoice, _ = self._create_invoice_01_and_expected_response()
+            self.assertInvoice(invoice, test_exact_response=False)
+            invoice.button_draft()
+
+    def test_integration_02_odoo_invoice(self):
+        with self._skip_no_credentials():
+            invoice, _ = self._create_invoice_02_and_expected_response()
+            self.assertInvoice(invoice, test_exact_response=False)
+            invoice.button_draft()
 
 
 @tagged("-at_install", "post_install")
@@ -206,9 +205,10 @@ class TestAccountAvalaraSalesTaxAdministration(TestAccountAvataxCommon):
         """
         self.env.company.avalara_commit = False
         invoice, response = self._create_invoice_01_and_expected_response()
-        with self._capture_request(return_value=response), patch('odoo.addons.account_avatax.lib.avatax_client.AvataxClient.commit_transaction') as mocked_commit:
+        with self._capture_request(return_value=response) as capture:
             invoice.action_post()
-            mocked_commit.assert_not_called()
+
+        self.assertFalse(capture.val['json']['createTransactionModel']['commit'], 'Should not have committed.')
 
     def test_disable_avatax(self):
         """The user must have an option to turn on or off the AvaTax Calculation service

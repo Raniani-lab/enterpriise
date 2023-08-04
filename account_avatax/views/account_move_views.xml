@@ -9,16 +9,6 @@
                 <field name="is_avatax" invisible="1"/>
                 <field name="avatax_tax_date" invisible="move_type not in ('out_invoice', 'out_refund') or not is_avatax"/>
             </field>
-            <xpath expr="//button[@name='button_draft']" position="after">
-                <button name="button_update_avatax"
-                        type="object"
-                        string="Compute Taxes using Avatax"
-                        invisible="state != 'draft' or invoice_pdf_report_id or move_type not in ('out_invoice', 'out_refund') or not is_avatax"
-                        groups="account.group_account_invoice"/>
-            </xpath>
-            <xpath expr="//tree/field[@name='tax_ids']" position="attributes">
-                <attribute name="column_invisible">parent.is_avatax</attribute>
-            </xpath>
             <group name="accounting_info_group" position="inside">
                 <field name="avatax_unique_code" invisible="not is_avatax"/>
             </group>

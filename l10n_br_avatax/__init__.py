@@ -1,8 +1,5 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo import api, SUPERUSER_ID
-from odoo.exceptions import UserError
 from . import models
-from . import controllers
 
 
 def post_init(env):

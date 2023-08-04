@@ -35,7 +35,7 @@ class TestAccountAvalaraVAT(TestAccountAvataxCommon):
                     }),
                 ]
             })
-            cls.invoice.button_update_avatax()
+            cls.invoice.button_external_tax_calculation()
         cls.captured_arguments = capture.val['json']['createTransactionModel']
         return res
 

@@ -30,7 +30,7 @@ class TestAccountAvalaraRefunds(TestAccountAvataxCommon):
                     })
                 ]
             })
-            cls.invoice.button_update_avatax()
+            cls.invoice.button_external_tax_calculation()
         cls.invoice_captured_arguments = capture.val['json']['createTransactionModel']
         with cls._capture_request(return_value={'lines': [], 'summary': []}) as capture:
             cls.invoice.action_post()
@@ -46,7 +46,7 @@ class TestAccountAvalaraRefunds(TestAccountAvataxCommon):
             })
             reversal = move_reversal.refund_moves()
             reverse_move = cls.env['account.move'].browse(reversal['res_id'])
-            reverse_move.button_update_avatax()
+            reverse_move.button_external_tax_calculation()
         cls.refund_captured_arguments = capture.val['json']['createTransactionModel']
 
         with cls._capture_request(return_value={'lines': [], 'summary': []}) as capture:

@@ -5,21 +5,8 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
-            <div name="so_button_below_order_lines" position="attributes">
-                <attribute name="invisible">0</attribute>
-            </div>
-            <div name="so_button_below_order_lines" position="inside">
-                <field name="is_avatax" invisible="1"/>
-                <button name="button_update_avatax"
-                        type="object"
-                        string="Compute Taxes Using Avatax"
-                        invisible="locked or state == 'cancel' or not is_avatax"
-                        groups="sales_team.group_sale_salesman,account.group_account_invoice"/>
-            </div>
-            <xpath expr="//tree/field[@name='tax_id']" position="attributes">
-                <attribute name="column_invisible">parent.is_avatax</attribute>
-            </xpath>
             <group name="sales_person" position="inside">
+                <field name="is_avatax" invisible="1"/>
                 <field name="avatax_unique_code" invisible="not is_avatax"/>
             </group>
         </field>

@@ -97,9 +97,9 @@ class ResConfigSettings(models.TransientModel):
                 fields=['code'],
             )
         }
-        client = self.env['account.avatax']._get_client(self.company_id)
+        client = self.env['account.external.tax.mixin']._get_client(self.company_id)
         response = client.list_entity_use_codes()
-        error = self.env['account.avatax']._handle_response(response, _(
+        error = self.env['account.external.tax.mixin']._handle_response(response, _(
             "Odoo could not fetch the exemption codes of %(company)s",
             company=self.company_id.display_name,
         ))
@@ -120,7 +120,7 @@ class ResConfigSettings(models.TransientModel):
 
     def avatax_ping(self):
         """Test the connexion and the credentials."""
-        client = self.env['account.avatax']._get_client(self.company_id)
+        client = self.env['account.external.tax.mixin']._get_client(self.company_id)
         query_result = client.ping()
 
         return {
@@ -133,9 +133,5 @@ class ResConfigSettings(models.TransientModel):
         }
 
     def avatax_log(self):
-        """Start logging all requests done to Avatax, for 30 minutes."""
-        self.env['ir.config_parameter'].sudo().set_param(
-            'account_avatax.log.end.date',
-            (fields.Datetime.now() + timedelta(minutes=30)).strftime(DEFAULT_SERVER_DATETIME_FORMAT)
-        )
+        self.env['account.external.tax.mixin']._enable_external_tax_logging('account_avatax.log.end.date')
         return True

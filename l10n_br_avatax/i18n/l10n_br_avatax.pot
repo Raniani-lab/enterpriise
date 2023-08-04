@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 16.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-13 16:11+0000\n"
-"PO-Revision-Date: 2023-07-13 16:11+0000\n"
+"POT-Creation-Date: 2023-09-13 20:16+0000\n"
+"PO-Revision-Date: 2023-09-13 20:16+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -17,35 +17,35 @@ msgstr ""
 
 #. module: l10n_br_avatax
 #. odoo-python
-#: code:addons/l10n_br_avatax/models/account_avatax.py:0
+#: code:addons/l10n_br_avatax/models/account_external_tax_mixin.py:0
 #, python-format
 msgid "%s has to use Brazilian Real to calculate taxes with Avatax."
 msgstr ""
 
 #. module: l10n_br_avatax
 #. odoo-python
-#: code:addons/l10n_br_avatax/models/account_avatax.py:0
+#: code:addons/l10n_br_avatax/models/account_external_tax_mixin.py:0
 #, python-format
 msgid "- A product is required on each line when using Avatax."
 msgstr ""
 
 #. module: l10n_br_avatax
 #. odoo-python
-#: code:addons/l10n_br_avatax/models/account_avatax.py:0
+#: code:addons/l10n_br_avatax/models/account_external_tax_mixin.py:0
 #, python-format
 msgid "- Avatax Brazil doesn't support negative lines."
 msgstr ""
 
 #. module: l10n_br_avatax
 #. odoo-python
-#: code:addons/l10n_br_avatax/models/account_avatax.py:0
+#: code:addons/l10n_br_avatax/models/account_external_tax_mixin.py:0
 #, python-format
 msgid "- Avatax only supports consumable products. %s is a service product."
 msgstr ""
 
 #. module: l10n_br_avatax
 #. odoo-python
-#: code:addons/l10n_br_avatax/models/account_avatax.py:0
+#: code:addons/l10n_br_avatax/models/account_external_tax_mixin.py:0
 #, python-format
 msgid "- Please configure a Mercosul NCM Code on %s."
 msgstr ""
@@ -54,42 +54,35 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:l10n_br_avatax.res_config_settings_view_form
 msgid ""
 "<i title=\"Create a new account\" role=\"img\" aria-label=\"Create a new account\" class=\"fa fa-plug fa-fw\"/>\n"
-"                                        Create a new account"
+"                                Create a new account"
 msgstr ""
 
 #. module: l10n_br_avatax
 #: model_terms:ir.ui.view,arch_db:l10n_br_avatax.res_config_settings_view_form
 msgid ""
 "<i title=\"Create account\" role=\"img\" aria-label=\"Create account\" class=\"fa fa-plug fa-fw\"/>\n"
-"                                        Create account"
+"                                Create account"
 msgstr ""
 
 #. module: l10n_br_avatax
 #: model_terms:ir.ui.view,arch_db:l10n_br_avatax.res_config_settings_view_form
 msgid ""
 "<i title=\"Show logs\" role=\"img\" aria-label=\"Show logs\" class=\"fa fa-file-text-o\"/>\n"
-"                                    Show logs"
+"                            Show logs"
 msgstr ""
 
 #. module: l10n_br_avatax
 #: model_terms:ir.ui.view,arch_db:l10n_br_avatax.res_config_settings_view_form
 msgid ""
 "<i title=\"Start logging for 30 minutes\" role=\"img\" aria-label=\"Start logging for 30 minutes\" class=\"fa fa-file-text-o\"/>\n"
-"                                    Start logging for 30 minutes"
+"                            Start logging for 30 minutes"
 msgstr ""
 
 #. module: l10n_br_avatax
 #: model_terms:ir.ui.view,arch_db:l10n_br_avatax.res_config_settings_view_form
 msgid ""
 "<i title=\"Test connection\" role=\"img\" aria-label=\"Test connection\" class=\"fa fa-plug fa-fw\"/>\n"
-"                                    Test connection"
-msgstr ""
-
-#. module: l10n_br_avatax
-#: model_terms:ir.ui.view,arch_db:l10n_br_avatax.res_config_settings_view_form
-msgid ""
-"<span class=\"o_form_label\">AvaTax Brazil</span>\n"
-"                        <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" role=\"img\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\"/>"
+"                            Test connection"
 msgstr ""
 
 #. module: l10n_br_avatax
@@ -118,6 +111,11 @@ msgid "API Key"
 msgstr ""
 
 #. module: l10n_br_avatax
+#: model:ir.model,name:l10n_br_avatax.model_account_chart_template
+msgid "Account Chart Template"
+msgstr ""
+
+#. module: l10n_br_avatax
 #: model:ir.model.fields.selection,name:l10n_br_avatax.selection__product_template__l10n_br_use_type__agricultural_production
 msgid "Agricultural production"
 msgstr ""
@@ -125,6 +123,11 @@ msgstr ""
 #. module: l10n_br_avatax
 #: model_terms:ir.ui.view,arch_db:l10n_br_avatax.res_config_settings_view_form
 msgid "Automatically compute tax rates"
+msgstr ""
+
+#. module: l10n_br_avatax
+#: model_terms:ir.ui.view,arch_db:l10n_br_avatax.res_config_settings_view_form
+msgid "AvaTax Brazil"
 msgstr ""
 
 #. module: l10n_br_avatax
@@ -156,7 +159,6 @@ msgstr ""
 
 #. module: l10n_br_avatax
 #: model:ir.model.fields,field_description:l10n_br_avatax.field_account_tax__l10n_br_avatax_code
-#: model:ir.model.fields,field_description:l10n_br_avatax.field_account_tax_template__l10n_br_avatax_code
 msgid "Avatax Code"
 msgstr ""
 
@@ -169,7 +171,7 @@ msgstr ""
 
 #. module: l10n_br_avatax
 #. odoo-python
-#: code:addons/l10n_br_avatax/models/account_avatax.py:0
+#: code:addons/l10n_br_avatax/models/account_external_tax_mixin.py:0
 #, python-format
 msgid "Avatax requires at least one non-transport line."
 msgstr ""
@@ -245,11 +247,6 @@ msgstr ""
 #. module: l10n_br_avatax
 #: model:ir.model,name:l10n_br_avatax.model_res_company
 msgid "Companies"
-msgstr ""
-
-#. module: l10n_br_avatax
-#: model_terms:ir.ui.view,arch_db:l10n_br_avatax.move_form_inherit
-msgid "Compute Taxes using Avatax"
 msgstr ""
 
 #. module: l10n_br_avatax
@@ -344,14 +341,13 @@ msgstr ""
 
 #. module: l10n_br_avatax
 #: model:ir.model.fields.selection,name:l10n_br_avatax.selection__product_template__l10n_br_transport_cost_type__freight
-#: model:product.template,name:l10n_br_avatax.freight_product_product_template
 #: model:product.template,name:l10n_br_avatax.freight_transport_product_product_template
 msgid "Freight"
 msgstr ""
 
 #. module: l10n_br_avatax
 #. odoo-python
-#: code:addons/l10n_br_avatax/models/account_avatax.py:0
+#: code:addons/l10n_br_avatax/models/account_external_tax_mixin.py:0
 #, python-format
 msgid "Go to the configuration panel"
 msgstr ""
@@ -384,14 +380,6 @@ msgid "Intermediate product"
 msgstr ""
 
 #. module: l10n_br_avatax
-#: model:ir.model.fields,field_description:l10n_br_avatax.field_account_bank_statement_line__is_l10n_br_avatax
-#: model:ir.model.fields,field_description:l10n_br_avatax.field_account_move__is_l10n_br_avatax
-#: model:ir.model.fields,field_description:l10n_br_avatax.field_account_payment__is_l10n_br_avatax
-#: model:ir.model.fields,field_description:l10n_br_avatax.field_l10n_br_account_avatax__is_l10n_br_avatax
-msgid "Is L10N Br Avatax"
-msgstr ""
-
-#. module: l10n_br_avatax
 #: model:ir.model,name:l10n_br_avatax.model_account_move
 msgid "Journal Entry"
 msgstr ""
@@ -402,8 +390,11 @@ msgid "L10N Br Avatax Show Overwrite Warning"
 msgstr ""
 
 #. module: l10n_br_avatax
-#: model:ir.model.fields,field_description:l10n_br_avatax.field_l10n_br_ncm_code____last_update
-msgid "Last Modified on"
+#: model:ir.model.fields,field_description:l10n_br_avatax.field_account_bank_statement_line__l10n_br_is_avatax
+#: model:ir.model.fields,field_description:l10n_br_avatax.field_account_external_tax_mixin__l10n_br_is_avatax
+#: model:ir.model.fields,field_description:l10n_br_avatax.field_account_move__l10n_br_is_avatax
+#: model:ir.model.fields,field_description:l10n_br_avatax.field_account_payment__l10n_br_is_avatax
+msgid "L10N Br Is Avatax"
 msgstr ""
 
 #. module: l10n_br_avatax
@@ -434,8 +425,8 @@ msgid "Mercosul NCM Code"
 msgstr ""
 
 #. module: l10n_br_avatax
-#: model:ir.model,name:l10n_br_avatax.model_l10n_br_account_avatax
-msgid "Mixin to manage taxes with Avatax Brazil on business documents"
+#: model:ir.model,name:l10n_br_avatax.model_account_external_tax_mixin
+msgid "Mixin to manage common parts of external tax calculation"
 msgstr ""
 
 #. module: l10n_br_avatax
@@ -498,7 +489,7 @@ msgstr ""
 
 #. module: l10n_br_avatax
 #. odoo-python
-#: code:addons/l10n_br_avatax/models/account_avatax.py:0
+#: code:addons/l10n_br_avatax/models/account_external_tax_mixin.py:0
 #, python-format
 msgid "Odoo could not fetch the taxes related to %(document)s."
 msgstr ""
@@ -532,7 +523,7 @@ msgstr ""
 
 #. module: l10n_br_avatax
 #. odoo-python
-#: code:addons/l10n_br_avatax/models/account_avatax.py:0
+#: code:addons/l10n_br_avatax/models/account_external_tax_mixin.py:0
 #, python-format
 msgid "Please create an Avatax account"
 msgstr ""
@@ -625,15 +616,14 @@ msgstr ""
 
 #. module: l10n_br_avatax
 #: model:ir.model.fields,help:l10n_br_avatax.field_account_tax__l10n_br_avatax_code
-#: model:ir.model.fields,help:l10n_br_avatax.field_account_tax_template__l10n_br_avatax_code
 msgid "Technical field containing the Avatax identifier for this tax."
 msgstr ""
 
 #. module: l10n_br_avatax
-#: model:ir.model.fields,help:l10n_br_avatax.field_account_bank_statement_line__is_l10n_br_avatax
-#: model:ir.model.fields,help:l10n_br_avatax.field_account_move__is_l10n_br_avatax
-#: model:ir.model.fields,help:l10n_br_avatax.field_account_payment__is_l10n_br_avatax
-#: model:ir.model.fields,help:l10n_br_avatax.field_l10n_br_account_avatax__is_l10n_br_avatax
+#: model:ir.model.fields,help:l10n_br_avatax.field_account_bank_statement_line__l10n_br_is_avatax
+#: model:ir.model.fields,help:l10n_br_avatax.field_account_external_tax_mixin__l10n_br_is_avatax
+#: model:ir.model.fields,help:l10n_br_avatax.field_account_move__l10n_br_is_avatax
+#: model:ir.model.fields,help:l10n_br_avatax.field_account_payment__l10n_br_is_avatax
 msgid ""
 "Technical field that determines if this record will go through Avatax "
 "Brazil."
@@ -645,11 +635,6 @@ msgid ""
 "Technical field used to determine whether or not the user is about to "
 "overwrite his current API credentialswith new ones, since the old "
 "credentials won't be recoverable we warn."
-msgstr ""
-
-#. module: l10n_br_avatax
-#: model:ir.model,name:l10n_br_avatax.model_account_tax_template
-msgid "Templates for Taxes"
 msgstr ""
 
 #. module: l10n_br_avatax
@@ -693,14 +678,14 @@ msgstr ""
 
 #. module: l10n_br_avatax
 #. odoo-python
-#: code:addons/l10n_br_avatax/models/account_avatax.py:0
+#: code:addons/l10n_br_avatax/models/account_external_tax_mixin.py:0
 #, python-format
 msgid "What:"
 msgstr ""
 
 #. module: l10n_br_avatax
 #. odoo-python
-#: code:addons/l10n_br_avatax/models/account_avatax.py:0
+#: code:addons/l10n_br_avatax/models/account_external_tax_mixin.py:0
 #, python-format
 msgid "Where:"
 msgstr ""

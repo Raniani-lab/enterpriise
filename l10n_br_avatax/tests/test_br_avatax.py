@@ -1,11 +1,12 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import logging
-from contextlib import contextmanager
+import threading
+from contextlib import contextmanager, nullcontext
 from unittest import SkipTest
 from unittest.mock import patch
 
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
-from odoo.addons.l10n_br_avatax.models.account_avatax import L10nBrAccountAvatax, IAP_SERVICE_NAME
+from odoo.addons.l10n_br_avatax.models.account_external_tax_mixin import AccountExternalTaxMixinL10nBR, IAP_SERVICE_NAME
 from odoo.exceptions import UserError
 from odoo.tests.common import tagged
 from .mocked_invoice_response import generate_response
@@ -136,7 +137,7 @@ class TestAvalaraBrCommon(AccountTestInvoicingCommon):
     @classmethod
     @contextmanager
     def _capture_request_br(cls, return_value=None):
-        with patch(f'{L10nBrAccountAvatax.__module__}.L10nBrAccountAvatax._l10n_br_iap_request', return_value=return_value):
+        with patch(f'{AccountExternalTaxMixinL10nBR.__module__}.AccountExternalTaxMixinL10nBR._l10n_br_iap_request', return_value=return_value):
             yield
 
     @classmethod
@@ -164,8 +165,7 @@ class TestAvalaraBrCommon(AccountTestInvoicingCommon):
         return invoice, generate_response(invoice.invoice_line_ids)
 
 
-@tagged('post_install_l10n', '-at_install', 'post_install')
-class TestAvalaraBrInvoice(TestAvalaraBrCommon):
+class TestAvalaraBrInvoiceCommon(TestAvalaraBrCommon):
     def assertInvoice(self, invoice, test_exact_response):
         self.assertEqual(
             len(invoice.invoice_line_ids.tax_ids),
@@ -179,7 +179,10 @@ class TestAvalaraBrInvoice(TestAvalaraBrCommon):
             'amount_tax': 0.0,
         }])
 
-        invoice.action_post()
+        # When the external tests run this will need to do an IAP request which isn't possible in testing mode, see:
+        # 7416acc111793ac1f7fd0dc653bb05cf7af28ebe
+        with patch.object(threading.current_thread(), 'testing', False) if 'external_l10n' in self.test_tags else nullcontext():
+            invoice.action_post()
 
         if test_exact_response:
             expected_amounts = {
@@ -216,24 +219,22 @@ class TestAvalaraBrInvoice(TestAvalaraBrCommon):
 
             self.assertGreater(invoice.amount_tax, 0.0, 'Invoice has a tax_amount of 0.0.')
 
+
+@tagged('post_install_l10n', '-at_install', 'post_install')
+class TestAvalaraBrInvoice(TestAvalaraBrInvoiceCommon):
     def test_01_invoice_br(self):
         invoice, response = self._create_invoice_01_and_expected_response()
         with self._capture_request_br(return_value=response):
             self.assertInvoice(invoice, test_exact_response=response)
 
-    def test_02_invoice_integration_br(self):
-        with self._skip_no_credentials():
-            invoice, _ = self._create_invoice_01_and_expected_response()
-            self.assertInvoice(invoice, test_exact_response=False)
-
-    def test_03_non_brl(self):
+    def test_02_non_brl(self):
         invoice, _ = self._create_invoice_01_and_expected_response()
         invoice.currency_id = self.env.ref('base.USD')
 
         with self.assertRaisesRegex(UserError, r'.* has to use Brazilian Real to calculate taxes with Avatax.'):
             self.assertInvoice(invoice, test_exact_response=None)
 
-    def test_04_transport_cost(self):
+    def test_03_transport_cost(self):
         invoice, _ = self._create_invoice_01_and_expected_response()
         transport_cost_products = self.env['product.product'].create([{
             'name': 'freight',
@@ -275,7 +276,7 @@ class TestAvalaraBrInvoice(TestAvalaraBrCommon):
             self.assertEqual(insurance, line['insuranceAmount'])
             self.assertEqual(other, line['otherCostAmount'])
 
-    def test_05_negative_line(self):
+    def test_04_negative_line(self):
         invoice, _ = self._create_invoice_01_and_expected_response()
         self.env['account.move.line'].create({
             'product_id': self.product_user_discount.id,
@@ -286,3 +287,11 @@ class TestAvalaraBrInvoice(TestAvalaraBrCommon):
         with self._capture_request_br(), \
              self.assertRaisesRegex(UserError, "Avatax Brazil doesn't support negative lines."):
             invoice.action_post()
+
+
+@tagged('external_l10n', 'external', '-at_install', 'post_install', '-standard')
+class TestAvalaraBrInvoiceIntegration(TestAvalaraBrInvoiceCommon):
+    def test_01_invoice_integration_br(self):
+        with self._skip_no_credentials():
+            invoice, _ = self._create_invoice_01_and_expected_response()
+            self.assertInvoice(invoice, test_exact_response=False)

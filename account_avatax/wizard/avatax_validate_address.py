@@ -36,7 +36,7 @@ class AvataxValidateAddress(models.TransientModel):
             if country.code not in ('US', 'CA', False):
                 raise ValidationError(_("Address validation is only supported for North American addresses."))
 
-            client = self.env['account.avatax']._get_client(company)
+            client = self.env['account.external.tax.mixin']._get_client(company)
             response = client.resolve_address({
                 'line1': wizard.street or '',
                 'line2': wizard.street2 or '',
@@ -46,7 +46,7 @@ class AvataxValidateAddress(models.TransientModel):
                 'country': country.code or '',
                 'textCase': 'Mixed',
             })
-            error = self.env['account.avatax']._handle_response(response, _(
+            error = self.env['account.external.tax.mixin']._handle_response(response, _(
                 "Odoo could not validate the address of %(partner)s with Avalara.",
                 partner=wizard.partner_id.display_name,
             ))

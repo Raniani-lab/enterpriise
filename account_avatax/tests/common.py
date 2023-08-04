@@ -66,10 +66,6 @@ class TestAvataxCommon(TransactionCase):
                     'summary': create_transaction_details,
                 }
 
-        if kwargs.get('commit_transaction') is None:
-            def commit_transaction(self, companyCode, transactionCode, model, include=None):
-                return {}
-
         if kwargs.get('uncommit_transaction') is None:
             def uncommit_transaction(self, companyCode, transactionCode, include=None):
                 return {}

@@ -83,7 +83,7 @@ class TestAccountAvalaraStock(TestAccountAvataxCommon):
             move02.location_id = self.warehouse_with_same_address.lot_stock_id
 
             invoice = sale_order._create_invoices()
-            invoice.button_update_avatax()
+            invoice.button_external_tax_calculation()
 
         # Line 1
         line_addresses = capture.val['json']['createTransactionModel']['lines'][0].get('addresses', False)

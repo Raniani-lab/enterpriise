@@ -19,13 +19,17 @@ const actionFieldsGet = {
 function getActionActiveFields() {
     const activeFields = {};
     for (const fName of Object.keys(actionFieldsGet)) {
+        const related = Object.fromEntries(
+            many2ManyTagsField.relatedFields({ options: {} }).map((f) => [f.name, f])
+        );
         activeFields[fName] = {
-            relatedFields: Object.fromEntries(
-                many2ManyTagsField.relatedFields({ options: {} }).map((f) => [f.name, f])
-            ),
+            related: {
+                activeFields: related,
+                fields: related,
+            },
         };
     }
-    activeFields.tag_ids.relatedFields.color = { type: "integer", string: "Color" };
+    activeFields.tag_ids.related.activeFields.color = { type: "integer", string: "Color" };
     return activeFields;
 }
 

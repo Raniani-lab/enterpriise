@@ -19,10 +19,14 @@ function getActionActiveFields() {
     const activeFields = {};
     for (const fName of Object.keys(actionFieldsGet)) {
         if (actionFieldsGet[fName].type === "many2many") {
+            const related = Object.fromEntries(
+                many2ManyTagsField.relatedFields({ options: {} }).map((f) => [f.name, f])
+            );
             activeFields[fName] = {
-                relatedFields: Object.fromEntries(
-                    many2ManyTagsField.relatedFields({ options: {} }).map((f) => [f.name, f])
-                ),
+                related: {
+                    activeFields: related,
+                    fields: related,
+                },
             };
         } else {
             activeFields[fName] = actionFieldsGet[fName];

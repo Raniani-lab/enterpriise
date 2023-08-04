@@ -588,7 +588,7 @@ class AnalyticLine(models.Model):
             'task_id': self.task_id.id,
             'description': self.name,
         }
-        if self.project_id.company_id not in self.env.companies:
+        if self.project_id.company_id and self.project_id.company_id not in self.env.companies:
             data.update({
                 'readonly': True,
                 'project_name': self.project_id.name,

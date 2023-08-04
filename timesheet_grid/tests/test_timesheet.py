@@ -477,3 +477,53 @@ class TestTimesheetValidation(TestCommonTimesheet, MockEmail):
         })
         timesheet.with_user(self.user_employee).action_timer_start()
         # Causes infinite recursion if: date context < date system without timezone
+
+    def test__get_timesheet_timer_data(self):
+        """ Test _get_timesheet_timer_data """
+        self.timesheet1.date = fields.Date.today()
+        timesheet = self.timesheet1.with_user(self.timesheet1.user_id)
+        timesheet.action_timer_start()
+        self.assertTrue(timesheet.is_timer_running)
+        timesheet_timer_data = timesheet._get_timesheet_timer_data()
+        expected_data = {
+            'id': timesheet.id,
+            'start': (fields.Datetime.now() - timesheet.user_timer_id.timer_start).total_seconds() + timesheet.unit_amount * 3600,
+            'project_id': self.project_customer.id,
+            'task_id': self.task1.id,
+            'description': timesheet.name,
+        }
+        self.assertDictEqual(timesheet_timer_data, expected_data)
+
+        project_with_no_company, project_other_company = self.env['project.project'].create([
+            {
+                'name': 'Project with no company',
+                'allow_timesheets': True,
+            }, {
+                'name': 'Project in company 2',
+                'allow_timesheets': True,
+                'company_id': self.env['res.company'].create({'name': 'company2'}).id,
+            },
+        ])
+        self.assertFalse(project_with_no_company.company_id)
+
+        timesheet.write({
+            'project_id': project_with_no_company.id,
+            'task_id': False,
+        })
+        expected_data.update({
+            'project_id': project_with_no_company.id,
+            'task_id': False,
+        })
+        timesheet_timer_data = timesheet._get_timesheet_timer_data()
+        self.assertDictEqual(timesheet_timer_data, expected_data)
+        timesheet.write({
+            'project_id': project_other_company.id,
+        })
+        timesheet_timer_data = timesheet._get_timesheet_timer_data()
+        expected_data.update({
+            'readonly': True,
+            'project_id': project_other_company.id,
+            'project_name': project_other_company.name,
+            'task_name': '',
+        })
+        self.assertDictEqual(timesheet_timer_data, expected_data)

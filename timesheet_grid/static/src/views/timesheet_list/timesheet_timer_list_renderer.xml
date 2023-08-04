@@ -21,6 +21,7 @@
                     onTimerStarted="() => this.timesheetTimerRendererHook._onTimerStarted()"
                     onTimerStopped="() => this.timesheetTimerRendererHook._onTimerStopped()"
                     onTimerUnlinked="() => this.timesheetTimerRendererHook._onTimerUnlinked()"
+                    onClick="() => this.timesheetTimerRendererHook.onTimerHeaderClick()"
                     className="'h-100'"
                 />
             </div>

@@ -24,7 +24,11 @@ export class TimesheetTimerHeader extends Component {
         onTimerStarted: Function,
         onTimerStopped: Function,
         onTimerUnlinked: Function,
+        onClick: { type: Function, optional: true },
         className: { type: String, optional: true },
+    };
+    static defaultProps = {
+        onClick() {},
     };
 
     setup() {

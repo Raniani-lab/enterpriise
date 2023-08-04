@@ -9,6 +9,13 @@ export class TimesheetTimerListRenderer extends ListRenderer {
         super.setup();
         this.timesheetTimerRendererHook = useTimesheetTimerRendererHook();
     }
+
+    onGlobalClick(ev) {
+        if (ev.target.closest(".timesheet-timer")) {
+            return;
+        }
+        super.onGlobalClick(ev);
+    }
 }
 
 TimesheetTimerListRenderer.template = "timesheet_grid.TimesheetTimerListRenderer";
@@ -16,4 +23,9 @@ TimesheetTimerListRenderer.template = "timesheet_grid.TimesheetTimerListRenderer
 TimesheetTimerListRenderer.components = {
     ...ListRenderer.components,
     TimesheetTimerHeader: TimesheetTimerHeader,
+};
+
+TimesheetTimerListRenderer.props = {
+    ...ListRenderer.props,
+    timerState: Object,
 };

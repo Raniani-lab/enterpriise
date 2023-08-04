@@ -12,6 +12,7 @@ import {
     onWillStart,
     onWillUnmount,
     onWillUpdateProps,
+    useEffect,
     useExternalListener,
     useSubEnv,
 } from "@odoo/owl";
@@ -110,12 +111,7 @@ export class TimesheetTimerRendererHook {
     }
 
     async newTimesheetTimer() {
-        const newRecord = this.propsList.model.createDataPoint("record", {
-            ...this.propsList.commonRecordParams,
-            parentActiveFields: this.propsList.activeFields,
-        });
-        await newRecord.load();
-        return newRecord;
+        return this.propsList.addNewRecord(true);
     }
 
     async _onTimerStarted() {
@@ -180,9 +176,11 @@ export class TimesheetTimerRendererHook {
             const timesheet =
                 propsList.records.find((record) => record.resId === this.timerState.timesheetId) ||
                 (await propsList.addExistingRecord(this.timerState.timersheetId, true));
-            timesheet.switchMode("edit");
+            if (this.propsList.editedRecord) {
+                this.propsList.leaveEditMode();
+            }
+            await this.propsList.enterEditMode(timesheet);
             this.timesheet = timesheet;
-            propsList.removeRecord(timesheet);
         }
     }
 
@@ -291,6 +289,13 @@ export class TimesheetTimerRendererHook {
             this._setAddTimeMode(false);
         }
     }
+
+    async onTimerHeaderClick(ev) {
+        if (this.timesheet && !this.timesheet.isInEdition) {
+            this.propsList.leaveEditMode();
+            await this.propsList.enterEditMode(this.timesheet);
+        }
+    }
 }
 
 export function useTimesheetTimerRendererHook() {
@@ -303,6 +308,14 @@ export function useTimesheetTimerRendererHook() {
     onWillUnmount(timesheetTimerRendererHook.onWillUnmount.bind(timesheetTimerRendererHook));
     onWillUpdateProps(
         timesheetTimerRendererHook.onWillUpdateProps.bind(timesheetTimerRendererHook)
+    );
+    useEffect(
+        (reloadTimer) => {
+            if (reloadTimer) {
+                timesheetTimerRendererHook._fetchRunningTimer();
+            }
+        },
+        () => [component.props.timerState?.reload]
     );
     useExternalListener(
         window,

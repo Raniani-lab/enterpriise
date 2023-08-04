@@ -18,11 +18,14 @@ class SaleOrder(models.Model):
         group_data = self.env['sale.order.line']._read_group([
             ('order_id', 'in', self.ids),
         ], ['order_id'], ['planning_hours_to_plan:sum', 'planning_hours_planned:sum'])
-        self.planning_hours_planned = 0
-        self.planning_hours_to_plan = 0
-        for order, planning_hours_to_plan_sum, planning_hours_planned_sum in group_data:
-            order.planning_hours_planned = planning_hours_planned_sum
-            order.planning_hours_to_plan = planning_hours_to_plan_sum - planning_hours_planned_sum
+        data_by_order = {
+            order: (to_plan_sum, planned_sum)
+            for order, to_plan_sum, planned_sum in group_data
+        }
+        for order in self:
+            to_plan_sum, planned_sum = data_by_order.get(order._origin) or (0, 0)
+            order.planning_hours_planned = planned_sum
+            order.planning_hours_to_plan = to_plan_sum - planned_sum
 
     @api.depends('order_line.product_id.planning_enabled', 'order_line.planning_hours_to_plan', 'order_line.planning_hours_planned')
     def _compute_planning_first_sale_line_id(self):

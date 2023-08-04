@@ -25,8 +25,6 @@ class HrContractSignDocumentWizard(models.TransientModel):
     def _default_get_template_warning(self):
         return not bool(self._get_sign_template_ids()) and _('No appropriate template could be found, please make sure you configured them properly.')
 
-
-
     @api.model
     def default_get(self, fields_list):
         defaults = super().default_get(fields_list)
@@ -40,7 +38,7 @@ class HrContractSignDocumentWizard(models.TransientModel):
         if active_model == 'hr.contract':
             defaults['contract_id'] = active_id
         elif active_model == 'hr.employee':
-            defaults['employee_ids'] = self.env['hr.employee'].browse(active_id)
+            defaults['employee_ids'] = [(4, active_id)]
         return defaults
 
     contract_id = fields.Many2one(

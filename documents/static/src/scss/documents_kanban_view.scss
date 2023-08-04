@@ -28,6 +28,7 @@
             flex-direction: column;
             min-height: 200px;
             width: 200px;
+            margin: .5rem;
 
             &:hover .o-file-upload-progress-bar-abort {
                 display: inline-block;
@@ -36,7 +37,6 @@
 
             .o_kanban_stack {
                 width: calc(100% - 6px);
-                height: calc(100% - 6px);
                 &:nth-of-type(1){
                     z-index: $o-dms-kanban-stack-zindex;
                 }

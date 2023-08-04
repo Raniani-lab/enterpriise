@@ -7,7 +7,7 @@
 
         <template id="pdf_export_filters" inherit_id="account_reports.pdf_export_filters" primary="True">
             <xpath expr="//div[hasclass('row')]/div[last()]" position="inside">
-                <t t-if="env.company.country_code=='BE' and options.get('closing_entry')">
+                <t t-if="options.get('closing_entry')">
                     <div class="col-12">
                         <div t-if="'ask_restitution' in options">Ask restitution:
                             <t t-if="options.get('ask_restitution')">Yes</t>

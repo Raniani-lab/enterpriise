@@ -105,7 +105,7 @@ export default class AbstractFilterEditorSidePanel extends Component {
      */
     async _loadFieldMatchings() {
         for (const [type, el] of Object.entries(globalFiltersFieldMatchers)) {
-            for (const objectId of el.geIds()) {
+            for (const objectId of el.getIds()) {
                 const tag = await el.getTag(objectId);
                 this.fieldMatchings.push({
                     name: el.getDisplayName(objectId),

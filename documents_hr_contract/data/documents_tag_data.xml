@@ -6,5 +6,11 @@
             <field name="facet_id" ref="documents_hr.documents_hr_documents"/>
             <field name="sequence">11</field>
         </record>
+
+        <record id="document_tag_signature_request" model="documents.tag" forcecreate="0">
+            <field name="name">Signature Request</field>
+            <field name="facet_id" ref="documents_hr.documents_hr_documents"/>
+            <field name="sequence">15</field>
+        </record>
     </data>
 </odoo>

@@ -15,6 +15,7 @@ Employee contracts files will be automatically integrated to the Document app.
         'data/documents_tag_data.xml',
         'data/res_company_data.xml',
         'views/documents_views.xml',
+        'security/security.xml',
     ],
     'installable': True,
     'auto_install': True,

@@ -174,7 +174,7 @@ class HrContractSignDocumentWizard(models.TransientModel):
                 'partner_id': signer['partner_id'],
                 'role_id': signer['role_id'],
             }) for signer in sign_request_values[2]],
-            'reference': _('Signature Request - %s', sign_request_values[0].name),
+            'reference': sign_request_values[0].name,
             'subject': self.subject,
             'message': self.message,
             'attachment_ids': [(4, attachment.copy().id) for attachment in self.attachment_ids], # Attachments may not be bound to multiple sign requests

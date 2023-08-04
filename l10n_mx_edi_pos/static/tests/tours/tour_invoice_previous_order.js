@@ -17,7 +17,7 @@ registry.category("web_tour.tours").add('l10n_mx_edi_pos.tour_invoice_previous_o
     },
     {
         content: "Select a product",
-        trigger: "div.product-content:contains('Acoustic Bloc Screens')",
+        trigger: "div.product-content:contains('product_mx')",
     },
     {
         content: "go to Payment",
@@ -80,6 +80,10 @@ registry.category("web_tour.tours").add('l10n_mx_edi_pos.tour_invoice_previous_o
     {
         content: "Confirm and close the popup",
         trigger: ".button.confirm",
+    },
+    {
+        content: "There should be the refund button",
+        trigger: ".validation.pay-order-button",
         isCheck: true,
     },
 ]});

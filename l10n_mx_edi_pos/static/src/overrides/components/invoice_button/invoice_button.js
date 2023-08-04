@@ -13,6 +13,10 @@ patch(InvoiceButton.prototype, {
         if (confirmed) {
             order.l10n_mx_edi_cfdi_to_public = (payload.l10n_mx_edi_cfdi_to_public === true || payload.l10n_mx_edi_cfdi_to_public === '1');
             order.l10n_mx_edi_usage = payload.l10n_mx_edi_usage;
+            await this.orm.write("pos.order", [order.backendId], {
+                'l10n_mx_edi_cfdi_to_public': order.l10n_mx_edi_cfdi_to_public,
+                'l10n_mx_edi_usage': order.l10n_mx_edi_usage,
+            });
         }
         return confirmed;
     }

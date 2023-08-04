@@ -212,7 +212,7 @@ class ResCompany(models.Model):
                 companies._generate_currency_rates(parse_results)
             except Exception:
                 rslt = False
-                _logger.exception('Unable to connect to the online exchange rate platform %s. The web service may be temporary down.', currency_provider)
+                _logger.warning('Unable to connect to the online exchange rate platform %s. The web service may be temporary down.', currency_provider)
         return rslt
 
     def _group_by_provider(self):

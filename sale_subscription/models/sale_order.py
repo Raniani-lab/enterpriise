@@ -356,7 +356,7 @@ class SaleOrder(models.Model):
         renewed_with_quotation = []
         renewed_with_confirmation = []
         for vals in renew_order_values:
-            if vals.get('state') == 'draft':
+            if vals.get('state') in ['draft', 'sent']:
                 renewed_with_quotation.append(vals['subscription_id'][0])
             elif vals.get('state') == 'sale':
                 renewed_with_confirmation.append(vals['subscription_id'][0])

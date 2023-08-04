@@ -25,7 +25,8 @@ registry.category("web_tour.tours").add('knowledge_kanban_cards_command_tour', {
 }, { // verify that the view switched to the article item
     trigger: '.o_knowledge_header:has(input[id="name"]:placeholder-shown):has(.breadcrumb-item > a:contains("EditorCommandsArticle"))',
     run: () => {},
-}]});
+}, ...endKnowledgeTour()
+]});
 
 registry.category("web_tour.tours").add('knowledge_kanban_command_tour', {
     url: '/web',

@@ -19,7 +19,8 @@ class CashFlowReportCustomHandler(models.AbstractModel):
             lines.append((0, self._get_layout_line(report, options, layout_line_id, layout_line_data, report_data)))
 
             if layout_line_id in report_data and 'aml_groupby_account' in report_data[layout_line_id]:
-                for aml_data in report_data[layout_line_id]['aml_groupby_account'].values():
+                aml_data_values = report_data[layout_line_id]['aml_groupby_account'].values()
+                for aml_data in sorted(aml_data_values, key=lambda x: x['account_code']):
                     lines.append((0, self._get_aml_line(report, options, aml_data)))
 
         unexplained_difference_line = self._get_unexplained_difference_line(report, options, report_data)

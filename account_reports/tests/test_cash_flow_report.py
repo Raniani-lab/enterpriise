@@ -1266,8 +1266,8 @@ class TestCashFlowReport(TestAccountReportsCommon):
         ]
         expected_values_wo_hierarchy = [
             {'name': "Cash and cash equivalents, beginning of period",            'level': 0,    'book_value': '$\xa0150.00'},
-              {'name': "10150199 Cash",                                           'level': 1,    'book_value': '$\xa050.00'},
               {'name': "10140499 Bank",                                           'level': 1,    'book_value': '$\xa0100.00'},
+              {'name': "10150199 Cash",                                           'level': 1,    'book_value': '$\xa050.00'},
               {'name': "Total Cash and cash equivalents, beginning of period",    'level': 1,    'book_value': '$\xa0150.00'},
             {'name': "Net increase in cash and cash equivalents",                 'level': 0,    'book_value': ''},
                 {'name': "Cash flows from operating activities",                  'level': 2,    'book_value': ''},
@@ -1285,8 +1285,8 @@ class TestCashFlowReport(TestAccountReportsCommon):
                   {'name': "Cash in",                                             'level': 3,    'book_value': ''},
                   {'name': "Cash out",                                            'level': 3,    'book_value': ''},
             {'name': "Cash and cash equivalents, closing balance",                'level': 0,    'book_value': '$\xa0150.00'},
-              {'name': "10150199 Cash",                                           'level': 1,    'book_value': '$\xa050.00'},
               {'name': "10140499 Bank",                                           'level': 1,    'book_value': '$\xa0100.00'},
+              {'name': "10150199 Cash",                                           'level': 1,    'book_value': '$\xa050.00'},
               {'name': "Total Cash and cash equivalents, closing balance",        'level': 1,    'book_value': '$\xa0150.00'}
         ]
         # assertEqual is used and not assertLinesValues because we want to check the 'level'

@@ -11,11 +11,9 @@ const {
     useRef,
     useState,
 } = owl;
-import core from "@web/legacy/js/services/core";
+import { _t } from "@web/core/l10n/translation";
 import utils from '@web/legacy/js/core/utils';
 import { sprintf } from "@web/core/utils/strings";
-
-const _t = core._t;
 
 /**
  * Override of the FieldChar that will handle the YouTube video upload process.

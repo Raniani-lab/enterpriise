@@ -1,8 +1,7 @@
 /** @odoo-module **/
 
-import { _t } from "@web/legacy/js/services/core";
+import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
-import "@web/legacy/translations_loaded";
 
 registry.category("web_tour.tours").add('payroll_tours', {
     url: "/web",

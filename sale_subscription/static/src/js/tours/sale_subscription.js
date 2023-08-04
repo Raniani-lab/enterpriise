@@ -1,18 +1,15 @@
 /** @odoo-module **/
 "use_strict";
 
-import core from "@web/legacy/js/services/core";
+import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
-import "@web/legacy/translations_loaded";
-
-var _t = core._t;
 const { markup } = owl;
 
 registry.category("web_tour.tours").add('sale_subscription_tour', {
     url: "/web",
     sequence: 250,
     rainbowMan: true,
-    rainbowManMessage: markup(_t("<b>Congratulations</b>, your first subscription quotation is ready to be sent!")),
+    rainbowManMessage: () => markup(_t("<b>Congratulations</b>, your first subscription quotation is ready to be sent!")),
     steps: () => [{
     trigger: '.o_app[data-menu-xmlid="sale_subscription.menu_sale_subscription_root"]',
 	content: _t('Want recurring billing via subscription management? Get started by clicking here'),

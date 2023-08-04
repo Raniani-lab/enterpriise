@@ -1,11 +1,8 @@
 /** @odoo-module **/
 
-import core from "@web/legacy/js/services/core";
+import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
 import { markup } from "@odoo/owl";
-import "@web/legacy/translations_loaded";
-
-var _t = core._t;
 
 registry.category("web_tour.tours").add('industry_fsm_tour', {
     sequence: 90,

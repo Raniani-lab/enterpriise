@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import BarcodePickingModel from '@stock_barcode/models/barcode_picking_model';
-import {_t} from "@web/legacy/js/services/core";
+import { _t } from "@web/core/l10n/translation";
 import { sprintf } from '@web/core/utils/strings';
 import { session } from '@web/session';
 

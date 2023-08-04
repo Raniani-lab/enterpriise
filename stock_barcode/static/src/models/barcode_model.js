@@ -4,7 +4,7 @@ import { BarcodeParser } from "@barcodes/js/barcode_parser";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { Mutex } from "@web/core/utils/concurrency";
 import LazyBarcodeCache from '@stock_barcode/lazy_barcode_cache';
-import { _t } from "@web/legacy/js/services/core";
+import { _t } from "@web/core/l10n/translation";
 import { sprintf } from '@web/core/utils/strings';
 import { useService } from "@web/core/utils/hooks";
 import { FNC1_CHAR } from "@barcodes_gs1_nomenclature/js/barcode_parser";

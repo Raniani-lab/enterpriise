@@ -1,15 +1,14 @@
 /** @odoo-module **/
 
-import { _t } from "@web/legacy/js/services/core";
+import { _t } from "@web/core/l10n/translation";
 import { Markup } from "@web/legacy/js/core/utils";
 import { registry } from "@web/core/registry";
-import "@web/legacy/translations_loaded";
 
 const { markup } = owl;
 
 registry.category("web_tour.tours").add('documents_tour', {
     url: "/web",
-    rainbowManMessage: markup(_t("Wow... 6 documents processed in a few seconds, You're good.<br/>The tour is complete. Try uploading your own documents now.")),
+    rainbowManMessage: () => markup(_t("Wow... 6 documents processed in a few seconds, You're good.<br/>The tour is complete. Try uploading your own documents now.")),
     sequence: 180,
     steps: () => [{
     trigger: '.o_app[data-menu-xmlid="documents.menu_root"]',

@@ -1,14 +1,13 @@
 /** @odoo-module **/
 
-import { _t } from "@web/legacy/js/services/core";
-import "@web/legacy/translations_loaded";
+import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
 import { markup } from "@odoo/owl";
 
 registry.category("web_tour.tours").add('planning_tour', {
     sequence: 120,
     url: '/web',
-    rainbowManMessage: markup(_t("<b>Congratulations!</b></br> You are now a master of planning.")),
+    rainbowManMessage: () => markup(_t("<b>Congratulations!</b></br> You are now a master of planning.")),
     steps: () => [
     {
         trigger: '.o_app[data-menu-xmlid="planning.planning_menu_root"]',

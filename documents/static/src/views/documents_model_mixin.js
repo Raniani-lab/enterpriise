@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { sprintf } from "@web/core/utils/strings";
-import { _t } from "@web/legacy/js/services/core";
+import { _t } from "@web/core/l10n/translation";
 import { inspectorFields } from "./inspector/documents_inspector";
 import { makeActiveField } from "@web/model/relational_model/utils";
 

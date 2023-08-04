@@ -3,8 +3,6 @@
 
 import publicWidget from "@web/legacy/js/public/public_widget";
 import time from "@web/legacy/js/core/time";
-import translation from "@web/legacy/js/core/translation";
-const _t = translation._t;
 
 publicWidget.registry.PlanningView = publicWidget.Widget.extend({
     selector: '#calendar_employee',
@@ -133,8 +131,8 @@ publicWidget.registry.PlanningView = publicWidget.Widget.extend({
     },
     formatDateAsBackend: function (date) {
         const weekday = moment(date).format('ddd.');
-        const timeFormat = _t.database.parameters.time_format.replace(':%S', '');
-        const dateTimeFormat = `${_t.database.parameters.date_format} ${timeFormat}`;
+        const timeFormat = localization.timeFormat.replace(':%S', '');
+        const dateTimeFormat = `${localization.dateFormat} ${timeFormat}`;
         const dateTime = moment(date).format(time.strftime_to_moment_format(dateTimeFormat));
         return `${weekday} ${dateTime}`;
     },

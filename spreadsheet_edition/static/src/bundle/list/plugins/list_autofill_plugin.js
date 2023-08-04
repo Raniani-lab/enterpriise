@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { _t } from "@web/legacy/js/services/core";
+import { _t } from "@web/core/l10n/translation";
 import { astToFormula, UIPlugin } from "@odoo/o-spreadsheet";
 import { getFirstListFunction, getNumberOfListFormulas } from "@spreadsheet/list/list_helpers";
 

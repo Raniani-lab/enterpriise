@@ -5,7 +5,7 @@ import { useService } from "@web/core/utils/hooks";
 import { SelectMenu } from '@web/core/select_menu/select_menu';
 
 import { Component, onWillStart, useEffect, useRef, useState } from "@odoo/owl";
-import { _t } from "@web/legacy/js/services/core";
+import { _t } from "@web/core/l10n/translation";
 import { sprintf } from "@web/core/utils/strings";
 
 class MoveArticleDialog extends Component {

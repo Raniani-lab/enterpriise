@@ -3,9 +3,10 @@
 import concurrency from "@web/legacy/js/core/concurrency";
 import publicWidget from "@web/legacy/js/public/public_widget";
 import utils from "@web/legacy/js/core/utils";
-import {qweb, _t} from "@web/legacy/js/services/core";
+import { qweb } from "@web/legacy/js/services/core";
 import { sprintf } from "@web/core/utils/strings";
 import { debounce } from "@web/core/utils/timing";
+import { _t } from "@web/core/l10n/translation";
 
 publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
     selector: '#hr_cs_form',

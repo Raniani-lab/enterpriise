@@ -1,11 +1,9 @@
 /** @odoo-module **/
 
-    import core from "@web/legacy/js/services/core";
+    import { _t } from "@web/core/l10n/translation";
     import Dialog from "@web/legacy/js/core/dialog";
 
     import manageForm from "@payment/js/manage_form";
-
-    const _t = core._t;
 
     manageForm.include({
         /**

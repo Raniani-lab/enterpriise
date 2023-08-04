@@ -4,8 +4,7 @@
  */
 import { registry } from "@web/core/registry";
 import '@industry_fsm/js/tours/industry_fsm_tour';
-import { _t } from "@web/legacy/js/services/core";
-import "@web/legacy/translations_loaded";
+import { _t } from "@web/core/l10n/translation";
 import { Markup } from "@web/legacy/js/core/utils";
 import { patch } from "@web/core/utils/patch";
 

@@ -1,6 +1,7 @@
 /** @odoo-module **/
 
-import { _t } from "@web/legacy/js/services/core";
+import { _t } from "@web/core/l10n/translation";
+import { localization } from "@web/core/l10n/localization";
 import time from '@web/legacy/js/core/time';
 import publicWidget from '@web/legacy/js/public/public_widget';
 import { msecPerUnit, RentingMixin } from '@website_sale_renting/js/renting_mixin';
@@ -102,7 +103,7 @@ publicWidget.registry.WebsiteSaleDaterangePicker = publicWidget.Widget.extend(Re
             isCustomDate: this._isCustomDate.bind(this),
             // display
             locale: {
-                direction: _t.database.parameters.direction,
+                direction: localization.direction,
                 format: this._isDurationWithHours() ?
                     time.getLangDatetimeFormat().replace('YYYY', 'YY').replace(':ss', '') : time.getLangDateFormat(),
                 applyLabel: _t('Search'),

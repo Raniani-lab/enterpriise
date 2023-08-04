@@ -9,7 +9,7 @@ import { SearchModel } from "@web/search/search_model";
 import { useBus, useService } from "@web/core/utils/hooks";
 import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
 import { getDefaultConfig } from "@web/views/view";
-import { _t } from "@web/legacy/js/services/core";
+import { _t } from "@web/core/l10n/translation";
 
 import { Component, useState, useSubEnv, useChildSubEnv, onWillStart } from "@odoo/owl";
 

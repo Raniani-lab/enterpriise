@@ -1,10 +1,9 @@
 /** @odoo-module **/
-    import core from "@web/legacy/js/services/core";
+    
+    import { _t } from "@web/core/l10n/translation";
     import { Gui } from "point_of_sale.Gui";
     import models from "point_of_sale.models";
     import devices from "point_of_sale.devices";
-
-    var _t = core._t;
 
      devices.ProxyDevice.include({
         //allow the use of the employee INSZ number

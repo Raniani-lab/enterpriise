@@ -1,14 +1,11 @@
 /** @odoo-module **/
 
-    import core from "@web/legacy/js/services/core";
+    import { _t } from "@web/core/l10n/translation";
     import { Markup } from "@web/legacy/js/core/utils";
     import { registry } from "@web/core/registry";
     import { stepUtils } from "@web_tour/tour_service/tour_utils";
     import { patch } from "@web/core/utils/patch";
 
-    import "@web/legacy/translations_loaded";
-
-    const _t = core._t;
     const { markup } = owl;
 
     // Update the invoicing tour as the menu items have changed, but we want the test to still work

@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { _t } from "@web/legacy/js/services/core";
+import { _t } from "@web/core/l10n/translation";
 import { sprintf } from '@web/core/utils/strings';
 import { formatDate, formatDateTime } from "@web/core/l10n/dates";
 import { RentingMixin } from '@website_sale_renting/js/renting_mixin';

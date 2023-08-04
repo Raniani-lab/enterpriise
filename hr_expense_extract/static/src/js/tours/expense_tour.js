@@ -1,17 +1,14 @@
 /** @odoo-module **/
 
-    import core from "@web/legacy/js/services/core";
+    import { _t } from "@web/core/l10n/translation";
     import { registry } from "@web/core/registry";
     import { stepUtils } from "@web_tour/tour_service/tour_utils";
-    import "@web/legacy/translations_loaded";
-
-    var _t = core._t;
     const { markup } = owl;
 
     registry.category("web_tour.tours").add('hr_expense_extract_tour' , {
         url: "/web",
         rainbowMan: true,
-        rainbowManMessage: markup(_t("<b>Congratulations</b>, you are now an expert of Expenses.")),
+        rainbowManMessage: () => markup(_t("<b>Congratulations</b>, you are now an expert of Expenses.")),
         sequence: 42,
         steps: () => [stepUtils.showAppsMenuItem(), {
         trigger: '.o_app[data-menu-xmlid="hr_expense.menu_hr_expense_root"]',

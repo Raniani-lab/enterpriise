@@ -1,7 +1,6 @@
 /** @odoo-module **/
 
-import core from "@web/legacy/js/services/core";
-var _t = core._t;
+import { _t } from "@web/core/l10n/translation";
 import NotificationWidget from "@social_push_notifications/js/push_notification_widget";
 
 NotificationWidget.include({

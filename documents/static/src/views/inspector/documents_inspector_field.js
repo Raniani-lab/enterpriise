@@ -2,7 +2,7 @@
 
 import { Field } from "@web/views/fields/field";
 import { Many2OneField } from "@web/views/fields/many2one/many2one_field";
-import { _t } from "@web/legacy/js/services/core";
+import { _t } from "@web/core/l10n/translation";
 
 export class DocumentsInspectorField extends Field {
     get fieldComponentProps() {

@@ -56,6 +56,6 @@ Includes automations to easily predict the withholding tax to be applied to each
         ],
     },
     "installable": True,
-    "auto_install": True,
+    "auto_install": ["l10n_ec"],
     'post_init_hook': '_post_install_hook_configure_ecuadorian_data',
 }

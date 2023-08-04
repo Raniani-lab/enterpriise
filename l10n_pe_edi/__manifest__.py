@@ -27,7 +27,7 @@ We support sending and cancelling of customer invoices.
         'product_unspsc',
         'account_edi',
     ],
-    'auto_install': ['l10n_pe', 'account_edi'],
+    'auto_install': ['l10n_pe'],
     "data": [
         'security/ir.model.access.csv',
         'data/2.1/edi_common.xml',

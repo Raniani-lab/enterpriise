@@ -8,7 +8,7 @@
     'summary': 'Colombian Localization for EDI documents',
     'author': 'Odoo Sa',
     'depends': ['account_edi', 'l10n_co', 'product_unspsc', 'base_address_extended'],
-    'auto_install': ['l10n_co', 'account_edi'],
+    'auto_install': ['l10n_co'],
     'data': [
         'security/ir.model.access.csv',
         'data/account_edi_data.xml',

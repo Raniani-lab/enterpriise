@@ -92,7 +92,6 @@ publicWidget.registry.WebsiteSaleDaterangePicker = publicWidget.Widget.extend(Re
      */
     _initSaleRentingDateRangePicker(dateInput) {
         const $dateInput = this.$(dateInput);
-        const weekdays = luxon.Info.weekdays('short');
         $dateInput.daterangepicker({
             // dates
             minDate: luxonToMoment(luxon.DateTime.min(luxon.DateTime.now(), this.startDate)),
@@ -110,9 +109,9 @@ publicWidget.registry.WebsiteSaleDaterangePicker = publicWidget.Widget.extend(Re
                 cancelLabel: _t('Cancel'),
                 weekLabel: 'W',
                 customRangeLabel: _t('Custom Range'),
-                daysOfWeek: weekdays,
+                daysOfWeek: moment.weekdaysMin(),
                 monthNames: luxon.Info.months('short'),
-                firstDay: weekdays[0],
+                firstDay: moment.localeData().firstDayOfWeek()
             },
             timePicker: this._isDurationWithHours(),
             timePicker24Hour: true,

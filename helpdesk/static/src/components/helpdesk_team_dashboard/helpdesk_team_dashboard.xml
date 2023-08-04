@@ -21,12 +21,10 @@
                                    title="My Tickets"
                                    data-hotkey="t"
                                    t-on-click="onActionClicked"
-                                   t-attf-class="btn w-100 h-100 p-0 border-0 text-capitalize fw-normal {{state.dashboardValues.my_all.count > 0 ? 'btn-primary': 'btn-light bg-100'}} {{showDemo ? 'o_cursor_default' : ''}}"
+                                   t-attf-class="btn w-100 h-100 p-2 border-0 text-capitalize fw-normal {{state.dashboardValues.my_all.count > 0 ? 'btn-primary': 'btn-light bg-100'}} {{showDemo ? 'o_cursor_default' : ''}}"
                                 >
-                                    <div class="p-2">
-                                        <h2 class="mb-0 text-white" t-out="state.dashboardValues.my_all.count"/>
-                                        Tickets
-                                    </div>
+                                    <span class="d-block mb-0 fs-2" t-out="state.dashboardValues.my_all.count"/>
+                                    Tickets
                                 </a>
                             </td>
                             <td t-attf-class="{{demoClass}} p-0">
@@ -34,45 +32,41 @@
                                    title="My Tickets"
                                    context="{'search_default_high_priority': True}"
                                    data-hotkey="p" t-on-click="onActionClicked"
-                                   t-attf-class="position-relative btn w-100 h-100 p-0 border-0 text-capitalize fw-normal {{state.dashboardValues.my_high.count > 0 ? 'btn-primary': 'btn-light bg-100'}} {{showDemo ? 'o_cursor_default' : ''}}"
+                                   t-attf-class="position-relative btn w-100 h-100 p-2 border-0 text-capitalize fw-normal {{state.dashboardValues.my_high.count > 0 ? 'btn-primary': 'btn-light bg-100'}} {{showDemo ? 'o_cursor_default' : ''}}"
                                 >
-                                    <div class="p-2">
-                                        <h2 class="mb-0 text-white" t-out="state.dashboardValues.my_high.count"/>
-                                        High Priority
-                                        <small
-                                            class="position-absolute top-0 end-0 justify-content-end flex-lg-column flex-xl-row d-none d-sm-flex p-2"
-                                            title="Two stars, with a maximum of three"
-                                            role="img"
-                                            aria-label="Two stars, with a maximum of three"
-                                        >
-                                            <i class="o_star fa fa-star"/>
-                                            <i class="o_star fa fa-star"/>
-                                        </small>
-                                    </div>
+                                    <span class="d-block mb-0 fs-2" t-out="state.dashboardValues.my_high.count"/>
+                                    High Priority
+                                    <small
+                                        class="position-absolute top-0 end-0 justify-content-end flex-lg-column flex-xl-row d-none d-sm-flex p-2"
+                                        title="Two stars, with a maximum of three"
+                                        role="img"
+                                        aria-label="Two stars, with a maximum of three"
+                                    >
+                                        <i class="o_star fa fa-star"/>
+                                        <i class="o_star fa fa-star"/>
+                                    </small>
                                 </a>
                             </td>
                             <td t-attf-class="{{demoClass}} p-0">
                                 <a name="helpdesk.helpdesk_my_ticket_action_no_create"
-                                   t-attf-class="position-relative btn w-100 h-100 p-0 border-0 text-capitalize fw-normal {{state.dashboardValues.my_urgent.count > 0 ? 'btn-primary': 'btn-light bg-100'}} {{showDemo ? 'o_cursor_default' : ''}}"
+                                   t-attf-class="position-relative btn w-100 h-100 p-2 border-0 text-capitalize fw-normal {{state.dashboardValues.my_urgent.count > 0 ? 'btn-primary': 'btn-light bg-100'}} {{showDemo ? 'o_cursor_default' : ''}}"
                                    title="My Tickets"
                                    context="{'search_default_urgent_priority': True}"
                                    t-on-click="onActionClicked"
                                    data-hotkey="u"
                                 >
-                                    <div class="p-2">
-                                        <h2 class="mb-0 text-white" t-out="state.dashboardValues.my_urgent.count"/>
-                                        Urgent
-                                        <small
-                                            class="position-absolute top-0 end-0 justify-content-end flex-lg-column flex-xl-row d-none d-sm-flex p-2 small"
-                                            title="Three stars, maximum score"
-                                            role="img"
-                                            aria-label="Three stars, maximum score"
-                                        >
-                                            <i class="o_star fa fa-star"/>
-                                            <i class="o_star fa fa-star"/>
-                                            <i class="o_star fa fa-star"/>
-                                        </small>
-                                    </div>
+                                    <span class="d-block mb-0 fs-2" t-out="state.dashboardValues.my_urgent.count"/>
+                                    Urgent
+                                    <small
+                                        class="position-absolute top-0 end-0 justify-content-end flex-lg-column flex-xl-row d-none d-sm-flex p-2 small"
+                                        title="Three stars, maximum score"
+                                        role="img"
+                                        aria-label="Three stars, maximum score"
+                                    >
+                                        <i class="o_star fa fa-star"/>
+                                        <i class="o_star fa fa-star"/>
+                                        <i class="o_star fa fa-star"/>
+                                    </small>
                                 </a>
                             </td>
                         </tr>

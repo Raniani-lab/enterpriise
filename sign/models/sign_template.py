@@ -24,7 +24,7 @@ class SignTemplate(models.Model):
     attachment_id = fields.Many2one('ir.attachment', string="Attachment", required=True, ondelete='cascade')
     name = fields.Char(related='attachment_id.name', readonly=False, store=True)
     num_pages = fields.Integer('Number of pages', compute="_compute_num_pages", readonly=True, store=True)
-    datas = fields.Binary(related='attachment_id.datas', readonly=False)
+    datas = fields.Binary(related='attachment_id.datas')
     sign_item_ids = fields.One2many('sign.item', 'template_id', string="Signature Items", copy=True)
     responsible_count = fields.Integer(compute='_compute_responsible_count', string="Responsible Count")
 

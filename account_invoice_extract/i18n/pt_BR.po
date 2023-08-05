@@ -81,7 +81,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__error_status
 #, python-format
 msgid "An error occurred"
-msgstr "Ocorreu um erro"
+msgstr "Houve um erro"
 
 #. module: account_invoice_extract
 #: model:ir.model,name:account_invoice_extract.model_ir_attachment

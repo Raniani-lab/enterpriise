@@ -10,7 +10,7 @@
 # marcescu, 2022
 # Quim - eccit <quim@eccit.com>, 2022
 # Martin Trigaux, 2022
-# jabelchi, 2022
+# Josep Anton Belchi, 2022
 # AncesLatino2004, 2022
 # Arnau Ros, 2022
 # Manel Fernandez Ramirez <manelfera@outlook.com>, 2022
@@ -429,13 +429,6 @@ msgstr "totes les variants"
 #. odoo-python
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
-msgid "per %s days"
-msgstr "per %s dies"
-
-#. module: sale_temporal
-#. odoo-python
-#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
-#, python-format
 msgid "per %s months"
 msgstr "per %s mesos"
 
@@ -457,13 +450,6 @@ msgstr "per %s anys"
 #. odoo-python
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
-msgid "per day"
-msgstr "per dia"
-
-#. module: sale_temporal
-#. odoo-python
-#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
-#, python-format
 msgid "per month"
 msgstr "per mes"
 
@@ -480,3 +466,10 @@ msgstr "per setmana"
 #, python-format
 msgid "per year"
 msgstr "per any"
+
+#. module: sale_temporal
+#. odoo-python
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
+#, python-format
+msgid "This recurrence unit is not supported."
+msgstr ""

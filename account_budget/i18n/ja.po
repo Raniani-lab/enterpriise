@@ -459,8 +459,8 @@ msgstr "エラー数"
 
 #. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "アクションを必要とするメッセージの数"
+msgid "Number of messages requiring action"
+msgstr ""
 
 #. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget__message_has_error_counter

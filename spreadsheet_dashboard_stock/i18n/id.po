@@ -69,7 +69,7 @@ msgstr "Terbaru"
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "KPI"
-msgstr ""
+msgstr "KPI"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
@@ -191,7 +191,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Top Products"
-msgstr ""
+msgstr "Produk Terbaik"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
@@ -221,25 +221,25 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "last period"
-msgstr ""
+msgstr "periode terakhir"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "since last period"
-msgstr ""
+msgstr "semenjak periode terakhir"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "stats - current"
-msgstr ""
+msgstr "stats - saat ini"
 
 #. module: spreadsheet_dashboard_stock
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "stats - previous"
-msgstr ""
+msgstr "stats - sebelumnya"

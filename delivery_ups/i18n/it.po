@@ -617,7 +617,7 @@ msgstr ""
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "The name of the customer should be no more than 35 characters."
-msgstr ""
+msgstr "Il nome del cliente non deve essere più lungo di 35 caratteri."
 
 #. module: delivery_ups
 #. odoo-python

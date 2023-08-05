@@ -666,6 +666,9 @@ msgid ""
 "MPS. Note that if the demand is higher than that amount, the remaining "
 "quantity will be transferred to the next period automatically."
 msgstr ""
+"Rifornimento massimo da effettuare in ogni periodo nell'MRP. Nota che se la "
+"domanda è maggiore della quantità, la quantità rimanente verrà trasferita in"
+" automatico al periodo successivo."
 
 #. module: mrp_mps
 #. odoo-javascript
@@ -693,7 +696,7 @@ msgstr ""
 msgid ""
 "This is the minimum free stock you want to keep for that product at all "
 "times."
-msgstr ""
+msgstr "Numero minimo di scorte libere da mantenere sempre per il prodotto."
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.res_config_settings_view_form
@@ -713,13 +716,15 @@ msgstr "Da rifornire"
 msgid ""
 "Unless the demand is 0, Odoo will always at least replenish this quantity."
 msgstr ""
+"A meno che la domanda non sia pari a 0, Odoo rifornirà sempre almeno questa "
+"quantità."
 
 #. module: mrp_mps
 #. odoo-python
 #: code:addons/mrp_mps/models/res_company.py:0
 #, python-format
 msgid "Week {week_num} ({start_date}-{end_date}/{month})"
-msgstr ""
+msgstr "Settimana {week_num} ({start_date}-{end_date}/{month})"
 
 #. module: mrp_mps
 #: model:ir.model.fields.selection,name:mrp_mps.selection__res_company__manufacturing_period__week

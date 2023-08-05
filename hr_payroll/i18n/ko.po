@@ -2297,7 +2297,7 @@ msgstr "상근으로 간주하는 근무 시간"
 #: model:ir.model.fields,help:hr_payroll.field_hr_payslip__message_needaction_counter
 #: model:ir.model.fields,help:hr_payroll.field_hr_payslip_run__message_needaction_counter
 #: model:ir.model.fields,help:hr_payroll.field_hr_salary_attachment__message_needaction_counter
-msgid "Number of messages which requires an action"
+msgid "Number of messages requiring action"
 msgstr "조치가 필요한 메시지 수"
 
 #. module: hr_payroll

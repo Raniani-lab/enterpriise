@@ -29,7 +29,7 @@ msgstr "설정 구성"
 #: model:ir.model.fields,field_description:voip_onsip.field_res_users__onsip_auth_username
 #: model:ir.model.fields,field_description:voip_onsip.field_res_users_settings__onsip_auth_username
 msgid "OnSIP Auth Username"
-msgstr ""
+msgstr "OnSIP 인증 사용자 이름"
 
 #. module: voip_onsip
 #: model_terms:ir.ui.view,arch_db:voip_onsip.res_config_settings_view_form

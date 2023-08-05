@@ -224,7 +224,7 @@ msgstr "Scarica"
 #: code:addons/spreadsheet_edition/static/src/bundle/o_spreadsheet/menu_item_registry.js:0
 #, python-format
 msgid "Download as JSON"
-msgstr ""
+msgstr "Scarica come JSON"
 
 #. module: spreadsheet_edition
 #. odoo-javascript

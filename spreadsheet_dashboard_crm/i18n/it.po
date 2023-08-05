@@ -85,14 +85,14 @@ msgstr "Città"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Close Rate"
-msgstr ""
+msgstr "Tasso di chiusura"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Close rate"
-msgstr ""
+msgstr "Tasso di chiusura"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -106,14 +106,14 @@ msgstr "Chiuso"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Closed count"
-msgstr ""
+msgstr "Numero chiuso"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Closed revenue"
-msgstr ""
+msgstr "Entrate chiuse"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -189,14 +189,14 @@ msgstr "Chiusura attesa"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Expected count"
-msgstr ""
+msgstr "Numero previsto"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Expected revenue"
-msgstr ""
+msgstr "Entrate previste"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -250,7 +250,7 @@ msgstr "Opportunità"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Percentage closed"
-msgstr ""
+msgstr "Percentuale di chiusura"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -393,7 +393,7 @@ msgstr "Nazioni principali"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Top Lost Reasons"
-msgstr ""
+msgstr "Motivi perdita migliori"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -474,56 +474,56 @@ msgstr "Contatti vinti"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "average deal size - current"
-msgstr ""
+msgstr "dimensione media operazioni-attuale"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "average deal size - previous"
-msgstr ""
+msgstr "dimensione media operazioni-precedente"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "close rate - current"
-msgstr ""
+msgstr "tasso di chiusura-attuale"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "close rate - previous"
-msgstr ""
+msgstr "tasso di chiusura-precedente"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "days to - current"
-msgstr ""
+msgstr "giorni per-attuale"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "days to - previous"
-msgstr ""
+msgstr "giorni per-precedente"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "expected - current"
-msgstr ""
+msgstr "previsto-attuale"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "expected - previous"
-msgstr ""
+msgstr "previsto-precedente"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -539,7 +539,7 @@ msgstr "ultimo periodo"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "list opps"
-msgstr ""
+msgstr "elenco opportunità"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -556,21 +556,21 @@ msgstr "dall'ultimo periodo"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "to campaign"
-msgstr ""
+msgstr "da promuovere"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "to close"
-msgstr ""
+msgstr "da chiudere"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top cities"
-msgstr ""
+msgstr "città migliori"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -578,28 +578,28 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top countries"
-msgstr ""
+msgstr "nazioni migliori"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top lost reasons"
-msgstr ""
+msgstr "motivi perdita migliori"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top medium"
-msgstr ""
+msgstr "media migliore"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top mediums"
-msgstr ""
+msgstr "medie migliori"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -607,39 +607,39 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top sales team"
-msgstr ""
+msgstr "team vendite migliore"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top salespeople"
-msgstr ""
+msgstr "addetti vendite migliori"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top salesperson"
-msgstr ""
+msgstr "addetto vendite migliore"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top source"
-msgstr ""
+msgstr "fonte migliore"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top sources"
-msgstr ""
+msgstr "fonti migliori"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top tags"
-msgstr ""
+msgstr "tag migliori"

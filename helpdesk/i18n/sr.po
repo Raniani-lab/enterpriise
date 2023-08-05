@@ -2337,8 +2337,8 @@ msgstr "Broj grešaka"
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__message_needaction_counter
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "Broj poruka koje zahtevaju akciju"
+msgid "Number of messages requiring action"
+msgstr ""
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__message_has_error_counter

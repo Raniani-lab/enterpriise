@@ -13,6 +13,7 @@
 # Aleš Fiala <f.ales1@seznam.cz>, 2023
 # SlavekB <slavek.banko@axis.cz>, 2023
 # Martin Trigaux, 2023
+# Jakub Smolka, 2023
 # 
 msgid ""
 msgstr ""
@@ -20,7 +21,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Martin Trigaux, 2023\n"
+"Last-Translator: Jakub Smolka, 2023\n"
 "Language-Team: Czech (https://app.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -726,7 +727,7 @@ msgstr "Název výstrahy"
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_alert
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_tree
 msgid "Alerts"
-msgstr "Výstrahy"
+msgstr "Upozornění"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__recurring_live
@@ -1002,7 +1003,7 @@ msgstr "Důvod ukončení"
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_close_reason_view_form
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_close_reason_view_tree
 msgid "Close Reasons"
-msgstr "Důvody uzavření"
+msgstr "Důvody ukončení"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -2355,7 +2356,7 @@ msgstr "Opakování"
 #. module: sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_periods
 msgid "Recurrence periods"
-msgstr ""
+msgstr "Trvání předplatného"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__is_subscription
@@ -2894,7 +2895,7 @@ msgstr "Fáze předplatného"
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_stage
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_stage_view_list
 msgid "Subscription Stages"
-msgstr ""
+msgstr "Fáze předplatného"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__template_id
@@ -3017,7 +3018,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_action_pending
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_pending
 msgid "Subscriptions to Renew"
-msgstr "Předplatné určené k prodloužení / obnově"
+msgstr "Předplatné k obnovení"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_view_tree
@@ -3419,7 +3420,7 @@ msgstr "Vzestupný"
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_action_upsell
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_upsell
 msgid "Upsells"
-msgstr ""
+msgstr "Navýšení předplatného"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__usage

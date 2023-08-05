@@ -431,13 +431,6 @@ msgstr "wszystkie warianty"
 #. odoo-python
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
-msgid "per %s days"
-msgstr "na %s dni"
-
-#. module: sale_temporal
-#. odoo-python
-#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
-#, python-format
 msgid "per %s months"
 msgstr "na %s miesiące"
 
@@ -459,13 +452,6 @@ msgstr "na %s lat"
 #. odoo-python
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
-msgid "per day"
-msgstr "na dzień"
-
-#. module: sale_temporal
-#. odoo-python
-#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
-#, python-format
 msgid "per month"
 msgstr "na miesiąc"
 
@@ -482,3 +468,10 @@ msgstr "na tydzień"
 #, python-format
 msgid "per year"
 msgstr "na rok"
+
+#. module: sale_temporal
+#. odoo-python
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
+#, python-format
+msgid "This recurrence unit is not supported."
+msgstr ""

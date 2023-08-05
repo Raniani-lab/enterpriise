@@ -57,6 +57,7 @@ msgstr ""
 #, python-format
 msgid "A production key is required in order to load your easypost carriers."
 msgstr ""
+"Per caricare i vettori easypoint è necessaria una chiave di produzione."
 
 #. module: delivery_easypost
 #: code:addons/delivery_easypost/models/delivery_carrier.py:0
@@ -312,6 +313,8 @@ msgstr "PNG"
 #, python-format
 msgid "Package type used in pack %s is not configured for easypost."
 msgstr ""
+"Il tipo di imballaggio utilizzato per il pacco %s non è configurato per "
+"easypost."
 
 #. module: delivery_easypost
 #: code:addons/delivery_easypost/models/easypost_request.py:0
@@ -391,6 +394,8 @@ msgid ""
 "The %s carrier is missing (Missing field(s) :\n"
 " Default Package Type)"
 msgstr ""
+"Il vettore %s è mancante (Campo/i mancante/i:\n"
+"tipo imballaggio predefinito)"
 
 #. module: delivery_easypost
 #: code:addons/delivery_easypost/models/easypost_request.py:0

@@ -180,7 +180,7 @@ msgstr ""
 #. module: documents_spreadsheet
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_documents_document__raw
 msgid "File Content (raw)"
-msgstr ""
+msgstr "Konten File (raw)"
 
 #. module: documents_spreadsheet
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_documents_document__handler
@@ -417,7 +417,7 @@ msgstr "Pengguna"
 #. module: documents_spreadsheet
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.res_config_settings_view_form_inherit_documents_spreadsheet
 msgid "Workspace"
-msgstr ""
+msgstr "Ruang Kerja"
 
 #. module: documents_spreadsheet
 #. odoo-javascript

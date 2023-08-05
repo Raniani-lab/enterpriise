@@ -286,7 +286,7 @@ msgstr ""
 #, python-format
 msgid "DHL password is missing, please modify your delivery method settings."
 msgstr ""
-"Das DHL-Passwortt fehlt, bitte ergänzen Sie diese Angabe in den Einstellung "
+"Das DHL-Passwort fehlt, bitte ergänzen Sie diese Angabe in den Einstellung "
 "für Lieferungen."
 
 #. module: delivery_dhl

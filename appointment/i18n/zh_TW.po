@@ -1560,8 +1560,8 @@ msgstr "錯誤數量"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "需要處理的消息數量"
+msgid "Number of messages requiring action"
+msgstr "需要採取行動的訊息數目"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__message_has_error_counter
@@ -1571,12 +1571,12 @@ msgstr "有發送錯誤的郵件數量"
 #. module: appointment
 #: model:ir.model,name:appointment.model_onboarding_onboarding
 msgid "Onboarding"
-msgstr ""
+msgstr "新手簡介"
 
 #. module: appointment
 #: model:ir.model,name:appointment.model_onboarding_onboarding_step
 msgid "Onboarding Step"
-msgstr ""
+msgstr "新手簡介步驟"
 
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_slot__slot_type__unique

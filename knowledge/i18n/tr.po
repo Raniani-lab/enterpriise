@@ -18,14 +18,15 @@
 # Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2023
 # Halil, 2023
 # Murat Kaplan <muratk@projetgrup.com>, 2023
+# Melih Melik Sonmez, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-14 06:16+0000\n"
+"POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Murat Kaplan <muratk@projetgrup.com>, 2023\n"
+"Last-Translator: Melih Melik Sonmez, 2023\n"
 "Language-Team: Turkish (https://app.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -791,7 +792,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/js/knowledge_renderers.js:0
 #, python-format
 msgid ""
-"Are you sure you want to move \"%s%s\" to private? Only you will be able to "
+"Are you sure you want to move \"%s\" to private? Only you will be able to "
 "access it."
 msgstr ""
 
@@ -800,7 +801,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/js/knowledge_renderers.js:0
 #, python-format
 msgid ""
-"Are you sure you want to move \"%s%s\" to the Workspace? It will be shared "
+"Are you sure you want to move \"%s\" to the Workspace? It will be shared "
 "with all internal users."
 msgstr ""
 
@@ -809,8 +810,8 @@ msgstr ""
 #: code:addons/knowledge/static/src/js/knowledge_renderers.js:0
 #, python-format
 msgid ""
-"Are you sure you want to move \"%s%s\" under \"%s%s\"? It will be shared "
-"with the same persons."
+"Are you sure you want to move \"%s\" under \"%s%s\"? It will be shared with "
+"the same persons."
 msgstr ""
 
 #. module: knowledge
@@ -1921,8 +1922,8 @@ msgstr "Hata adedi"
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "Eylem gerektiren mesaj adedi"
+msgid "Number of messages requiring action"
+msgstr "İşlem gerektiren mesaj sayısı"
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__message_has_error_counter
@@ -2584,6 +2585,13 @@ msgstr ""
 #: code:addons/knowledge/controllers/main.py:0
 #, python-format
 msgid "You cannot change the permission of this member."
+msgstr ""
+
+#. module: knowledge
+#. odoo-python
+#: code:addons/knowledge/models/knowledge_cover.py:0
+#, python-format
+msgid "You cannot create a new Knowledge Cover from here."
 msgstr ""
 
 #. module: knowledge

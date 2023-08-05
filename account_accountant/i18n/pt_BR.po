@@ -6,8 +6,8 @@
 # Éder Brito <britoederr@gmail.com>, 2022
 # Marcos Rodrigues, 2022
 # Martin Trigaux, 2023
-# Layna Nascimento, 2023
 # adrianojprado <adrianojprado@gmail.com>, 2023
+# Layna Nascimento, 2023
 # 
 msgid ""
 msgstr ""
@@ -15,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: adrianojprado <adrianojprado@gmail.com>, 2023\n"
+"Last-Translator: Layna Nascimento, 2023\n"
 "Language-Team: Portuguese (Brazil) (https://app.transifex.com/odoo/teams/41243/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1373,6 +1373,7 @@ msgid "Not Matched"
 msgstr ""
 
 #. module: account_accountant
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_tree_bank_rec_widget
 msgid "Notes"
@@ -1519,8 +1520,8 @@ msgstr "Prever contas de fatura de fornecedor"
 msgid ""
 "Preset to create journal entries during a invoices and payments matching"
 msgstr ""
-"Predefinido para criar entradas de diário durante uma correspondência de "
-"faturas e pagamentos"
+"Configuração para criar entradas do diário quando ocorre uma correspondência"
+" entre faturas e pagamentos"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1942,6 +1943,11 @@ msgstr "Transação"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__transaction_currency_id
 msgid "Transaction Currency"
+msgstr ""
+
+#. module: account_accountant
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
+msgid "Transaction Details"
 msgstr ""
 
 #. module: account_accountant

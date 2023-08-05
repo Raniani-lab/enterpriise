@@ -631,8 +631,8 @@ msgstr "根据这项任务支付的结算数目。"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_sdd_mandate__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "需要采取动作消息数量"
+msgid "Number of messages requiring action"
+msgstr ""
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_sdd_mandate__message_has_error_counter

@@ -1573,9 +1573,10 @@ msgstr "승인된 작업기록에는 타이머를 사용할 수 없습니다."
 #: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
 msgid ""
-"You cannot validate the timesheets from employees that are not part of your "
-"team or there are no timesheets to validate."
-msgstr "팀에 속하지 않은 직원의 작업 기록을 승인할 수 없거나 승인할 작업 기록이 없습니다."
+"You cannot validate the selected timesheets as they either belong to "
+"employees who are not part of your team or are not in a state that can be "
+"validated. This may be due to the fact that they are dated in the future."
+msgstr ""
 
 #. module: timesheet_grid
 #: model:ir.model.fields.selection,name:timesheet_grid.selection__res_company__timesheet_mail_employee_interval__months

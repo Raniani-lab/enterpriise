@@ -5,8 +5,8 @@
 # Translators:
 # Dejan Sraka <dejan.sraka@picolabs.si>, 2022
 # matjaz k <matjaz@mentis.si>, 2022
-# Matjaz Mozetic <m.mozetic@matmoz.si>, 2022
 # Vida Potočnik <vida.potocnik@mentis.si>, 2022
+# Matjaz Mozetic <m.mozetic@matmoz.si>, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:36+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Vida Potočnik <vida.potocnik@mentis.si>, 2022\n"
+"Last-Translator: Matjaz Mozetic <m.mozetic@matmoz.si>, 2023\n"
 "Language-Team: Slovenian (https://app.transifex.com/odoo/teams/41243/sl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -107,6 +107,11 @@ msgstr "Uvozi"
 #: model:ir.model.fields,field_description:account_bank_statement_import.field_account_bank_statement_line__unique_import_id
 msgid "Import ID"
 msgstr "ID uvoza"
+
+#. module: account_bank_statement_import
+#: model_terms:ir.ui.view,arch_db:account_bank_statement_import.journal_dashboard_view_inherit
+msgid "Import Statement"
+msgstr "Uvozi izpisek"
 
 #. module: account_bank_statement_import
 #: model:ir.model,name:account_bank_statement_import.model_account_journal

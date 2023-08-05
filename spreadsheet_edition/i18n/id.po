@@ -609,7 +609,7 @@ msgstr "Hapus"
 #: code:addons/spreadsheet_edition/static/src/bundle/o_spreadsheet/editable_name/editable_name.xml:0
 #, python-format
 msgid "Rename"
-msgstr ""
+msgstr "Ganti nama"
 
 #. module: spreadsheet_edition
 #. odoo-javascript

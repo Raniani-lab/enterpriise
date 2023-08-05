@@ -412,13 +412,6 @@ msgstr "全バリアント"
 #. odoo-python
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
-msgid "per %s days"
-msgstr " %s 日につき"
-
-#. module: sale_temporal
-#. odoo-python
-#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
-#, python-format
 msgid "per %s months"
 msgstr " %s 月につき"
 
@@ -440,13 +433,6 @@ msgstr " %s年につき"
 #. odoo-python
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
-msgid "per day"
-msgstr "一日につき"
-
-#. module: sale_temporal
-#. odoo-python
-#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
-#, python-format
 msgid "per month"
 msgstr "月ごとに"
 
@@ -463,3 +449,10 @@ msgstr "週ごとに"
 #, python-format
 msgid "per year"
 msgstr "年ごとに"
+
+#. module: sale_temporal
+#. odoo-python
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
+#, python-format
+msgid "This recurrence unit is not supported."
+msgstr ""

@@ -8,8 +8,8 @@
 # Paolo Valier, 2022
 # Friederike Fasterling-Nesselbosch, 2022
 # Léonie Bouchat <lbo@odoo.com>, 2022
-# Marianna Ciofani, 2023
 # Sergio Zanchetta <primes2h@gmail.com>, 2023
+# Marianna Ciofani, 2023
 # 
 msgid ""
 msgstr ""
@@ -17,7 +17,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Sergio Zanchetta <primes2h@gmail.com>, 2023\n"
+"Last-Translator: Marianna Ciofani, 2023\n"
 "Language-Team: Italian (https://app.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -36,6 +36,8 @@ msgid ""
 "360 Degree Feedback is a system or process in which managers will ask feedback from the people who work around the employee.\n"
 "            This typically includes the employee's manager, peers, and direct reports."
 msgstr ""
+"Il feedback a 360 gradi è un sistema o processo nel quale i manager chiedono feedback alle persone che lavorano nella cerchia del dipendente.\n"
+"           Tipicamente, questo include il manager del dipendente, i pari e rapporti diretti."
 
 #. module: hr_appraisal_survey
 #: model:survey.survey,title:hr_appraisal_survey.appraisal_360_feedback_template
@@ -120,7 +122,7 @@ msgstr ""
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_survey_button_form_view
 msgid "<i class=\"fa fa-fw fa-arrow-right\"/>Edit Survey"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-arrow-right\"/>Modifica sondaggio"
 
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_view_form
@@ -185,12 +187,12 @@ msgstr "Commenti aggiuntivi"
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.y_360_5_6
 msgid "Admit my mistakes"
-msgstr ""
+msgstr "Ammettere i miei errori"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.x_360_5_5
 msgid "Almost always"
-msgstr ""
+msgstr "Quasi sempre"
 
 #. module: hr_appraisal_survey
 #. odoo-python
@@ -279,12 +281,12 @@ msgstr "Feedback richiesto"
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1
 msgid "At the conclusion of the appraisal time period"
-msgstr ""
+msgstr "Al termine del periodo di valutazione"
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1
 msgid "At the outset of the appraisal time period"
-msgstr ""
+msgstr "All'inizio del periodo di valutazione"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__attachment_ids
@@ -327,6 +329,7 @@ msgstr "Chiudi"
 #: model:survey.question.answer,value:hr_appraisal_survey.y_360_5_3
 msgid "Collaborate effectively with others to achieve shared goals"
 msgstr ""
+"Collaborare efficacemente con gli altri per raggiungere obiettivi condivisi"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.arow_3_1_9
@@ -352,7 +355,7 @@ msgstr ""
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_360_9
 msgid "Conclusion"
-msgstr ""
+msgstr "Conclusione"
 
 #. module: hr_appraisal_survey
 #: model:ir.model,name:hr_appraisal_survey.model_res_config_settings
@@ -367,7 +370,7 @@ msgstr "Contenuti"
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.y_360_5_2
 msgid "Create space for different ideas and options to be voiced"
-msgstr ""
+msgstr "Creare uno spazio per dare voce a idee e opzioni diverse."
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__create_uid
@@ -390,6 +393,8 @@ msgid ""
 "Critical or key elements of performance and professional development needs "
 "(if any), should also be noted at this time"
 msgstr ""
+"Stabilire i punti fondamentali e critici delle prestazioni nonché i bisogni "
+"per lo sviluppo professionale (eventualmente)."
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.arow_3_1_8
@@ -425,7 +430,7 @@ msgstr "Ufficio"
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_3
 msgid "Did not meet standards and expectations"
-msgstr ""
+msgstr "Non ha raggiunto gli standard e le aspettative"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__display_name
@@ -435,7 +440,7 @@ msgstr "Nome visualizzato"
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_360_10
 msgid "Do you have any comment to tell me and help me improve?"
-msgstr ""
+msgstr "Hai dei consigli da darmi per migliorare?"
 
 #. module: hr_appraisal_survey
 #: model:ir.model,name:hr_appraisal_survey.model_hr_appraisal
@@ -470,7 +475,7 @@ msgstr "Entusiasmo e coinvolgimento nei progetti e nelle attività assegnate"
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_3
 msgid "Exceeds standards and expectations"
-msgstr ""
+msgstr "Ha superato gli standard e le aspettative"
 
 #. module: hr_appraisal_survey
 #. odoo-python
@@ -487,22 +492,22 @@ msgstr "Da"
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_360_5
 msgid "How do you feel to work with me? Do I ... "
-msgstr ""
+msgstr "Come ti senti quando lavori con me? Io..."
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.appraisal_360_3_sug5
 msgid "I'm not from the company."
-msgstr ""
+msgstr "Non faccio parte dell'azienda."
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.appraisal_360_3_sug3
 msgid "I'm part of your management."
-msgstr ""
+msgstr "Faccio parte del team di gestione."
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.appraisal_360_3_sug4
 msgid "I'm referring to you."
-msgstr ""
+msgstr "Mi rivolgo a te."
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__id
@@ -515,6 +520,9 @@ msgid ""
 "Identify professional, performance, or project objectives you recommend for "
 "employee’s continued career development over the coming year."
 msgstr ""
+"Individua gli obiettivi professionali, relativi a prestazioni o progetti che"
+" raccomandi per lo sviluppo continuo della carriera del dipendente, nel "
+"prossimo anno."
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.arow_3_1_5
@@ -534,6 +542,10 @@ msgid ""
 " major employee responsibilities and corresponding benchmarks against which "
 "results will be evaluated."
 msgstr ""
+"È responsabilità del dipendente e del supervisore (valutatore) stabilire un "
+"piano di lavoro fattibile per l'anno a venire, compresi le responsabilità "
+"principali del dipendente e i parametri di riferimento corrispondenti "
+"rispetto ai quali saranno valutati i risultati."
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1
@@ -542,6 +554,9 @@ msgid ""
 "input from the appropriate sources of feedback (internal and/or external "
 "customers, peers)."
 msgstr ""
+"Una delle responsabilità principali del supervisore è di riunire gli input "
+"necessari dalle fonti di feedback appropriate (clienti interni e/o esterni, "
+"pari)."
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__lang
@@ -580,7 +595,7 @@ msgstr "Leadership: aiutare i subordinati nella loro crescita professionale"
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.y_360_5_1
 msgid "Listen well to others"
-msgstr ""
+msgstr "Ascoltare gli altri"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__template_id
@@ -590,7 +605,7 @@ msgstr "Modello e-mail"
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_3
 msgid "Meet standards and expectations"
-msgstr ""
+msgstr "Ha raggiunto standard ed aspettative"
 
 #. module: hr_appraisal_survey
 #. odoo-python
@@ -617,7 +632,7 @@ msgstr "Obiettivi"
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.x_360_5_4
 msgid "Often"
-msgstr ""
+msgstr "Spesso"
 
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.appraisal_ask_feedback_view_form
@@ -640,7 +655,7 @@ msgstr ""
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1
 msgid "Overall Purpose Of Employee Appraisal"
-msgstr ""
+msgstr "Scopo generale della valutazione dei dipendenti"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_4_2
@@ -675,7 +690,7 @@ msgstr "Registro presenze e puntualità"
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.x_360_5_2
 msgid "Rarely"
-msgstr ""
+msgstr "Raramente"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__employee_ids
@@ -685,7 +700,7 @@ msgstr "Destinatari"
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.y_360_5_7
 msgid "Recognize the contributions of teammates and peers"
-msgstr ""
+msgstr "Riconoscere il contributo di membri del team e pari"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__render_model
@@ -715,7 +730,7 @@ msgstr ""
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.y_360_5_5
 msgid "Seek to understand the problem before working on a solution"
-msgstr ""
+msgstr "Cercare di capire il problema prima di trovare una soluzione."
 
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.appraisal_ask_feedback_view_form
@@ -736,23 +751,25 @@ msgstr ""
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.y_360_5_4
 msgid "Show good judgment in decision making"
-msgstr ""
+msgstr "Mostra buon senso nel prendere decisioni"
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_3
 msgid "Significantly below standards and expectations"
-msgstr ""
+msgstr "Non ha per niente raggiunto gli standard e le aspettative"
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_3
 msgid ""
 "Significantly exceeds standards and expectations required of the position"
 msgstr ""
+"Ha superato di gran lunga gli standard e le aspettative richieste dalla "
+"posizione"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.x_360_5_3
 msgid "Sometimes"
-msgstr ""
+msgstr "A volte"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__subject
@@ -832,6 +849,9 @@ msgid ""
 "The appraiser should rate the employee’s major work accomplishments and "
 "performance according to the metric provided below:"
 msgstr ""
+"Il valutatore dovrebbe dare una valutazione dei principali risultati "
+"lavorativi del dipendente e delle prestazioni seconda i parametri indicati "
+"di seguito:"
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1
@@ -839,6 +859,8 @@ msgid ""
 "The employee may choose to offer comments or explanation regarding the "
 "completed review."
 msgstr ""
+"Il dipendente può scegliere di dare commenti o spiegazioni sulla valutazione"
+" conclusa."
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1
@@ -849,6 +871,11 @@ msgid ""
 "criterion. Once the form had been filled, the employee send it to their "
 "supervisor."
 msgstr ""
+"Il dipendente avrà la responsabilità di compilare una bozza del modulo di "
+"valutazione come strumento di auto valutazione nonché un punto di partenza "
+"per la valutazione del supervisore. Il dipendente può aggiungere esempi di "
+"risultati ottenuti per ogni criterio. Una volta che il modulo è stato "
+"completto, il dipendente lo invierà al supervisore."
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1
@@ -857,6 +884,9 @@ msgid ""
 "appraisal. The motivation of the evaluation is explained in the ad hoc "
 "fields."
 msgstr ""
+"Il supervisore sintetizza  integra tutti gli input nella valutazione "
+"completata. Le motivazioni della valutazione sono spiegate nei campi "
+"specifici."
 
 #. module: hr_appraisal_survey
 #. odoo-python
@@ -867,6 +897,9 @@ msgid ""
 "The following employees do not have any email : \n"
 "%s"
 msgstr ""
+"Questo dipendente non ha un indirizzo e-mail registrato e non ricevera nessuna e-mail.\n"
+"I seguenti dipendenti non hanno un indirizzo e-mail: \n"
+"%s"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,help:hr_appraisal_survey.field_hr_department__appraisal_survey_template_id
@@ -881,7 +914,7 @@ msgstr ""
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_survey_button_form_view
 msgid "This is a Test Survey."
-msgstr ""
+msgstr "Questo è un sondaggio di prova."
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.survey,description:hr_appraisal_survey.appraisal_feedback_template
@@ -889,6 +922,9 @@ msgid ""
 "This survey allows you to give a feedback about your collaboration with an "
 "employee. Filling it helps us improving the appraisal process."
 msgstr ""
+"Questo sondaggio ti permette di fornire un feedback sulla collaborazione con"
+" un dipendente. Compilandolo ci aiuterai a migliorare il processo di "
+"valutazione."
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.arow_3_1_15
@@ -901,11 +937,15 @@ msgid ""
 "To assist employees in their professional growth, through the identification"
 " of strengths and opportunities for development"
 msgstr ""
+"Aiutare i dipendenti nel corso della crescita professionale, attraverso "
+"l'individuazione di punti di forza e opportunità di sviluppo"
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1
 msgid "To initiate a clear and open communication of performance expectations"
 msgstr ""
+"Dare inizio a una comunicazione chiara e aperta circa le aspettative di "
+"prestazione"
 
 #. module: hr_appraisal_survey
 #. odoo-python
@@ -932,37 +972,37 @@ msgstr "Contenuti Utenti"
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.survey_user_input_view_tree
 msgid "View Results"
-msgstr ""
+msgstr "Mostra risultati"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.appraisal_360_3_sug1
 msgid "We're colleagues, for the same manager."
-msgstr ""
+msgstr "Siamo colleghi e abbiamo lo stesso manager."
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.appraisal_360_3_sug2
 msgid "We're colleagues, in different teams."
-msgstr ""
+msgstr "Siamo colleghi ma apparteniamo a team diversi."
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_360_6
 msgid "What should I do in order to improve on my day-to-day job?"
-msgstr ""
+msgstr "Cosa potrei fare per migliorare il lavoro di tutti i giorni?"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_360_7
 msgid "What's my greatest strength?"
-msgstr ""
+msgstr "Qual è il mio punto di forza migliore?"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_360_8
 msgid "What's my greatest weakness?"
-msgstr ""
+msgstr "Qual è la mia debolezza più grande?"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_360_3
 msgid "What's the relation between us?"
-msgstr ""
+msgstr "Che tipo di rapporto abbiamo?"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_360_2

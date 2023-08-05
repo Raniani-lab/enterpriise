@@ -23,7 +23,7 @@ msgstr ""
 #. module: helpdesk_sale_timesheet
 #: model:helpdesk.sla,name:helpdesk_sale_timesheet.helpdesk_sla_4
 msgid "4 hours to finish"
-msgstr ""
+msgstr "4 jam menuju selesai"
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model,name:helpdesk_sale_timesheet.model_account_analytic_line
@@ -33,12 +33,12 @@ msgstr "Akun Analitik"
 #. module: helpdesk_sale_timesheet
 #: model:ir.model,name:helpdesk_sale_timesheet.model_helpdesk_ticket_convert_wizard
 msgid "Convert Helpdesk Tickets to Tasks"
-msgstr ""
+msgstr "Konversi Tiket Helpdesk menjadi Task"
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model,name:helpdesk_sale_timesheet.model_project_task_convert_wizard
 msgid "Convert Project Tasks to Tickets"
-msgstr ""
+msgstr "Konversi Task Project menjadi Tiket"
 
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.tickets_followup_timesheet
@@ -53,12 +53,12 @@ msgstr "Hari"
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.tickets_followup_timesheet
 msgid "Days Spent"
-msgstr ""
+msgstr "Hari yang Dihabiskan"
 
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.tickets_followup_timesheet
 msgid "Days:"
-msgstr ""
+msgstr "Hari:"
 
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.tickets_followup_timesheet
@@ -68,7 +68,7 @@ msgstr "Deskripsi"
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_account_analytic_line__display_sol
 msgid "Display Sol"
-msgstr ""
+msgstr "Tampilkan Sol"
 
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.tickets_followup_timesheet
@@ -83,7 +83,7 @@ msgstr "Helpdesk"
 #. module: helpdesk_sale_timesheet
 #: model:ir.model,name:helpdesk_sale_timesheet.model_helpdesk_sla
 msgid "Helpdesk SLA Policies"
-msgstr ""
+msgstr "Kebijakan SLA Mejabantuan"
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model,name:helpdesk_sale_timesheet.model_helpdesk_team
@@ -108,7 +108,7 @@ msgstr "Jam penundaan"
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.tickets_followup_timesheet
 msgid "Hours:"
-msgstr ""
+msgstr "Jam:"
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model,name:helpdesk_sale_timesheet.model_product_template
@@ -125,7 +125,7 @@ msgstr "Proyek"
 msgid ""
 "Project to which the timesheets of this helpdesk team's tickets will be "
 "linked."
-msgstr ""
+msgstr "Project yang akan di-link dengan timesheet tiket tim mejabantuan ini."
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_ticket__project_sale_order_id
@@ -135,12 +135,12 @@ msgstr "Sale Order project"
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_ticket__sale_order_id
 msgid "Ref. Sales Order"
-msgstr ""
+msgstr "Referensi Sales Order"
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_ticket__use_helpdesk_sale_timesheet
 msgid "Reinvoicing Timesheet activated on Team"
-msgstr ""
+msgstr "Memfaktur Ulang Timesheet yang diaktifkan pada Team"
 
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.helpdesk_ticket_view_form_inherit_helpdesk_sale_timesheet
@@ -150,7 +150,7 @@ msgstr "Hari-Hari Tersisa pada SO"
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.tickets_followup_timesheet
 msgid "Remaining Days on SO:"
-msgstr ""
+msgstr "Hari Tersisa pada SO:"
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_ticket__remaining_hours_available
@@ -166,13 +166,13 @@ msgstr "Jam Tersisa pada SO"
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.tickets_followup_timesheet
 msgid "Remaining Hours on SO:"
-msgstr ""
+msgstr "Jam Tersisa pada SO:"
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_product_product__sla_id
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_product_template__sla_id
 msgid "SLA Policy"
-msgstr ""
+msgstr "Kebijakan SLA"
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,help:helpdesk_sale_timesheet.field_product_product__sla_id
@@ -181,6 +181,8 @@ msgid ""
 "SLA Policy that will automatically apply to the tickets linked to a sales "
 "order item containing this service."
 msgstr ""
+"Kebijakan SLA akan secara otomatis diterapkan ke tiket yang di-link ke item "
+"sales order yang memiliki layanan ini."
 
 #. module: helpdesk_sale_timesheet
 #. odoo-python
@@ -206,6 +208,9 @@ msgid ""
 "Remove the sales order item in order to make this ticket non-billable.\n"
 "You can also change or remove the sales order item of each timesheet entry individually."
 msgstr ""
+"Item Sales Order yang mana waktu telah dihabiskan pada tiket ini akan ditambahkan agar bisa difakturkan ke pelanggan Anda.\n"
+"Secara default item sales order prepaid terakhir yang memiliki waktu tersisa yang akan dipilih.\n"
+"Hapus item sales order untuk membuat tiket  ini menjadi non-billable. Anda dapat juga mengganti atau menghapus item sales order untuk setiap entri timesheet secara individu."
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_sla__sale_line_ids
@@ -220,12 +225,12 @@ msgstr "Sales order untuk mana project ini di-link."
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.portal_helpdesk_ticket_timesheet
 msgid "Spent"
-msgstr ""
+msgstr "Dihabiskan"
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_sale_order__ticket_count
 msgid "Ticket Count"
-msgstr ""
+msgstr "Jumlah Tiket"
 
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.sale_order_form_inherit_helpdesk_sale
@@ -235,7 +240,7 @@ msgstr "Tiket"
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.helpdesk_ticket_view_search_inherit_helpdesk_sale_timesheet
 msgid "Tickets in Overtime"
-msgstr ""
+msgstr "Tiket di Overtime"
 
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.tickets_followup_timesheet

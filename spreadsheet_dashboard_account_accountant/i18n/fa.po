@@ -10,21 +10,27 @@
 # Hanna Kheradroosta, 2023
 # Hamed Mohammadi <hamed@dehongi.com>, 2023
 # Martin Trigaux, 2023
-# Mostafa Barmshory <mostafa.barmshory@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-14 06:19+0000\n"
+"POT-Creation-Date: 2023-06-08 11:15+0000\n"
 "PO-Revision-Date: 2022-09-29 09:37+0000\n"
-"Last-Translator: Mostafa Barmshory <mostafa.barmshory@gmail.com>, 2023\n"
+"Last-Translator: Martin Trigaux, 2023\n"
 "Language-Team: Persian (https://app.transifex.com/odoo/teams/41243/fa/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: fa\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#. module: spreadsheet_dashboard_account_accountant
+#. odoo-javascript
+#: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
+#, python-format
+msgid "(Net sales - Total expenses) / Net sales"
+msgstr ""
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -80,13 +86,6 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
-msgid "< 2: company might be slow to pay suppliers"
-msgstr ""
-
-#. module: spreadsheet_dashboard_account_accountant
-#. odoo-javascript
-#: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
-#, python-format
 msgid "< 3%: not efficient at generating business"
 msgstr ""
 
@@ -94,14 +93,21 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
-msgid "< 5%: not efficient at operating business"
+msgid "< 45: company gets paid for sales quickly"
 msgstr ""
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
-msgid "< 6: company might not get paid for sales quickly enough"
+msgid "< 45: company liquidates debts to suppliers quickly"
+msgstr ""
+
+#. module: spreadsheet_dashboard_account_accountant
+#. odoo-javascript
+#: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
+#, python-format
+msgid "< 5%: not efficient at operating business"
 msgstr ""
 
 #. module: spreadsheet_dashboard_account_accountant
@@ -136,13 +142,6 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
-msgid "> 10: company gets paid for sales quickly"
-msgstr ""
-
-#. module: spreadsheet_dashboard_account_accountant
-#. odoo-javascript
-#: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
-#, python-format
 msgid "> 1: company in highly solvent position"
 msgstr ""
 
@@ -157,13 +156,6 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
-msgid "> 3: company liquidates debts to suppliers quickly"
-msgstr ""
-
-#. module: spreadsheet_dashboard_account_accountant
-#. odoo-javascript
-#: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
-#, python-format
 msgid "> 50%: hugely profitable business"
 msgstr ""
 
@@ -172,6 +164,20 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "> 5: company owns a lot of debt and not of a lot of own money"
+msgstr ""
+
+#. module: spreadsheet_dashboard_account_accountant
+#. odoo-javascript
+#: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
+#, python-format
+msgid "> 60: company might not get paid for sales quickly enough"
+msgstr ""
+
+#. module: spreadsheet_dashboard_account_accountant
+#. odoo-javascript
+#: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
+#, python-format
+msgid "> 70: company might be slow to pay suppliers"
 msgstr ""
 
 #. module: spreadsheet_dashboard_account_accountant
@@ -207,6 +213,7 @@ msgstr "میانگین روزهای طلبکاری"
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
+#: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Average debtor days"
 msgstr ""
@@ -218,6 +225,13 @@ msgstr ""
 #, python-format
 msgid "Average debtors days"
 msgstr "روزهای متوسط بدهکاران"
+
+#. module: spreadsheet_dashboard_account_accountant
+#. odoo-javascript
+#: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
+#, python-format
+msgid "Average payable days"
+msgstr ""
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -358,20 +372,6 @@ msgstr "بدهی های جاری"
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
-#, python-format
-msgid "Current Year Earnings"
-msgstr "درآمدهای سال جاری"
-
-#. module: spreadsheet_dashboard_account_accountant
-#. odoo-javascript
-#: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
-#, python-format
-msgid "Current assets"
-msgstr ""
-
-#. module: spreadsheet_dashboard_account_accountant
-#. odoo-javascript
-#: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Current assets / Current liabilities"
@@ -412,13 +412,6 @@ msgstr ""
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
-#, python-format
-msgid "Current liabilities"
-msgstr ""
-
-#. module: spreadsheet_dashboard_account_accountant
-#. odoo-javascript
-#: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Current ratio"
@@ -436,26 +429,11 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
-msgid "Delta"
-msgstr "دلتا"
-
-#. module: spreadsheet_dashboard_account_accountant
-#. odoo-javascript
-#: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
-#, python-format
 msgid "Depreciation"
 msgstr "استهلاک"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
-#: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
-#, python-format
-msgid "EBIT"
-msgstr ""
-
-#. module: spreadsheet_dashboard_account_accountant
-#. odoo-javascript
-#: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "EBIT / Net sales"
@@ -503,6 +481,7 @@ msgstr "فرمول"
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
+#: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Gross profit"
 msgstr "سود ناخالص"
@@ -580,13 +559,6 @@ msgstr "دارایی‌های خالص"
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
-#, python-format
-msgid "Net income"
-msgstr ""
-
-#. module: spreadsheet_dashboard_account_accountant
-#. odoo-javascript
-#: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Net income / Revenue"
@@ -596,6 +568,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
+#: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Net profit"
 msgstr ""
@@ -725,13 +698,6 @@ msgstr "پرداختنی"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
-#: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
-#, python-format
-msgid "Payable turnover"
-msgstr ""
-
-#. module: spreadsheet_dashboard_account_accountant
-#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
@@ -745,7 +711,7 @@ msgstr "قابل پرداخت"
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
-msgid "Payables / Expenses * 120"
+msgid "Payables / Expenses * 30"
 msgstr ""
 
 #. module: spreadsheet_dashboard_account_accountant
@@ -829,13 +795,6 @@ msgstr "دریافتنی"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
-#: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
-#, python-format
-msgid "Receivable turnover"
-msgstr ""
-
-#. module: spreadsheet_dashboard_account_accountant
-#. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
@@ -847,7 +806,7 @@ msgstr "دریافتی"
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
-msgid "Receivables / Income * 120"
+msgid "Receivables / Income * 30"
 msgstr ""
 
 #. module: spreadsheet_dashboard_account_accountant
@@ -857,13 +816,6 @@ msgstr ""
 #, python-format
 msgid "Return on investments"
 msgstr ""
-
-#. module: spreadsheet_dashboard_account_accountant
-#. odoo-javascript
-#: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
-#, python-format
-msgid "Revenue"
-msgstr "درآمد"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -893,6 +845,20 @@ msgstr "تاریخ شروع"
 #, python-format
 msgid "Technical name"
 msgstr "نام فنی"
+
+#. module: spreadsheet_dashboard_account_accountant
+#. odoo-javascript
+#: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
+#, python-format
+msgid "Total Current assets"
+msgstr ""
+
+#. module: spreadsheet_dashboard_account_accountant
+#. odoo-javascript
+#: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
+#, python-format
+msgid "Total Current liabilities"
+msgstr ""
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -990,28 +956,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
-msgid "current assets"
-msgstr ""
-
-#. module: spreadsheet_dashboard_account_accountant
-#. odoo-javascript
-#: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
-#, python-format
-msgid "current liabilities"
-msgstr ""
-
-#. module: spreadsheet_dashboard_account_accountant
-#. odoo-javascript
-#: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
-#, python-format
 msgid "expenses + depreciation + cost of revenue"
-msgstr ""
-
-#. module: spreadsheet_dashboard_account_accountant
-#. odoo-javascript
-#: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
-#, python-format
-msgid "expenses - income"
 msgstr ""
 
 #. module: spreadsheet_dashboard_account_accountant
@@ -1056,6 +1001,13 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "payable"
+msgstr ""
+
+#. module: spreadsheet_dashboard_account_accountant
+#. odoo-javascript
+#: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
+#, python-format
+msgid "payable + credit card + current liabilities"
 msgstr ""
 
 #. module: spreadsheet_dashboard_account_accountant
@@ -1135,16 +1087,23 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
-msgid "receivable + bank and cash + current assets"
+msgid ""
+"receivable + bank and cash + current assets + non-current assets + "
+"prepayments + fixed assets"
 msgstr ""
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
-msgid ""
-"receivable + bank and cash + current assets + non-current assets + "
-"prepayments + fixed assets"
+msgid "receivable + bank and cash + current assets + prepayments"
+msgstr ""
+
+#. module: spreadsheet_dashboard_account_accountant
+#. odoo-javascript
+#: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
+#, python-format
+msgid "receivable + bank and cash + prepayments"
 msgstr ""
 
 #. module: spreadsheet_dashboard_account_accountant

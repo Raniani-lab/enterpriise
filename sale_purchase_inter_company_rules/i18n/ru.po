@@ -4,7 +4,6 @@
 # 
 # Translators:
 # ILMIR <karamov@it-projects.info>, 2022
-# Irina Fedulova <istartlin@gmail.com>, 2022
 # Константин Коровин <korovin74@gmail.com>, 2022
 # Сергей Шебанин <sergey@shebanin.ru>, 2022
 # Martin Trigaux, 2022
@@ -116,8 +115,8 @@ msgstr ""
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/sale_order.py:0
 #, python-format
-msgid "Provide one user for intercompany relation for % "
-msgstr "Предоставьте одного пользователя для внутрикорпоративных отношений % "
+msgid "Provide one user for intercompany relation for %(name)s "
+msgstr ""
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model,name:sale_purchase_inter_company_rules.model_purchase_order

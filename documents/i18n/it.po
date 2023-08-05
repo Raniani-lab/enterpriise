@@ -1945,7 +1945,7 @@ msgstr "Numero di errori"
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__message_needaction_counter
 #: model:ir.model.fields,help:documents.field_documents_share__message_needaction_counter
-msgid "Number of messages which requires an action"
+msgid "Number of messages requiring action"
 msgstr "Numero di messaggi che richiedono un'azione"
 
 #. module: documents
@@ -2301,7 +2301,7 @@ msgstr "Sequenza"
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_finance_2018contracts
 msgid "Set As 2023 Contracts"
-msgstr ""
+msgstr "Imposta come contratti del 2023"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__partner_id

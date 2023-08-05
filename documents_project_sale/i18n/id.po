@@ -24,17 +24,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents_project_sale.field_product_product__documents_allowed_company_id
 #: model:ir.model.fields,field_description:documents_project_sale.field_product_template__documents_allowed_company_id
 msgid "Documents Allowed Company"
-msgstr ""
+msgstr "Documents Allowed Company"
 
 #. module: documents_project_sale
 #: model:documents.tag,name:documents_project_sale.documents_folder_facet_1_tag_3
 msgid "Done/Archived"
-msgstr ""
+msgstr "Selesai/Diarsip"
 
 #. module: documents_project_sale
 #: model:documents.tag,name:documents_project_sale.documents_folder_facet_1_tag_2
 msgid "In Use"
-msgstr ""
+msgstr "Sedang Digunakan"
 
 #. module: documents_project_sale
 #: model:documents.folder,name:documents_project_sale.documents_folder_template_child_3
@@ -44,7 +44,7 @@ msgstr "Lain-lain"
 #. module: documents_project_sale
 #: model:documents.tag,name:documents_project_sale.documents_folder_facet_1_tag_1
 msgid "New/Unsorted"
-msgstr ""
+msgstr "Baru/Belum disortir"
 
 #. module: documents_project_sale
 #: model:ir.model.fields,help:documents_project_sale.field_product_product__template_folder_id
@@ -53,6 +53,8 @@ msgid ""
 "On sales order confirmation, a workspace will be automatically generated for"
 " the project based on this template."
 msgstr ""
+"Pada konfirmasi sales order, ruang kerja akan secara otomatis dibuat untuk "
+"project berdasarkan templat ini."
 
 #. module: documents_project_sale
 #: model:documents.folder,name:documents_project_sale.documents_folder_template_child_2
@@ -72,12 +74,12 @@ msgstr "Produk"
 #. module: documents_project_sale
 #: model:product.template,name:documents_project_sale.product_1
 msgid "Renovation Architect (Workspace Template)"
-msgstr ""
+msgstr "Arsitek Renovasi (Templat Ruang Kerja)"
 
 #. module: documents_project_sale
 #: model:documents.folder,name:documents_project_sale.documents_folder
 msgid "Renovation Projects"
-msgstr ""
+msgstr "Project Renovasi9"
 
 #. module: documents_project_sale
 #: model:ir.model,name:documents_project_sale.model_sale_order
@@ -98,4 +100,4 @@ msgstr "Template"
 #: model:ir.model.fields,field_description:documents_project_sale.field_product_product__template_folder_id
 #: model:ir.model.fields,field_description:documents_project_sale.field_product_template__template_folder_id
 msgid "Workspace Template"
-msgstr ""
+msgstr "Templat Ruang Kerja"

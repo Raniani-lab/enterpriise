@@ -707,6 +707,19 @@ msgid "An shift must be in the same company as its recurrency."
 msgstr "Een dienst moet in hetzelfde bedrijf zijn als zijn herhaling."
 
 #. module: planning
+#. odoo-python
+#: code:addons/planning/models/planning_recurrency.py:0
+#, python-format
+msgid ""
+"Recurring shifts cannot be planned further than 999 days in the future. If "
+"you need to schedule beyond this limit, please set the recurrence to repeat "
+"forever instead."
+msgstr ""
+"Terugkerende diensten kunnen niet verder dan 999 dagen in de toekomst "
+"gepland worden. Als je verder dan deze limiet moet plannen, stel de "
+"herhaling dan in op voor altijd."
+
+#. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_report_action_analysis
 msgid ""
 "Analyze the allocation of your resources across roles, projects, and sales "

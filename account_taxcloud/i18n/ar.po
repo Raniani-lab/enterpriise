@@ -252,6 +252,13 @@ msgid "Template for Fiscal Position"
 msgstr "قالب للوضع المالي "
 
 #. module: account_taxcloud
+#. odoo-python
+#: code:addons/account_taxcloud/models/product.py:0
+#, python-format
+msgid "The Taxcloud Category must be integer."
+msgstr "يجب أن تكون فئة Taxcloud عدداً صحيحاً. "
+
+#. module: account_taxcloud
 #: code:addons/account_taxcloud/models/account_invoice.py:0
 #, python-format
 msgid ""

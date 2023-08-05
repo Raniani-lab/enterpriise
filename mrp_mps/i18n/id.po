@@ -40,7 +40,7 @@ msgstr ""
 #: code:addons/mrp_mps/static/src/components/line.xml:0
 #, python-format
 msgid "Actual"
-msgstr ""
+msgstr "Actual"
 
 #. module: mrp_mps
 #. odoo-javascript

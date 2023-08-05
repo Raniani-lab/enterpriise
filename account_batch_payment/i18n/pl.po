@@ -548,7 +548,7 @@ msgstr "Liczba błędów"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_payment__message_needaction_counter
-msgid "Number of messages which requires an action"
+msgid "Number of messages requiring action"
 msgstr "Liczba wiadomości wymagających akcji"
 
 #. module: account_batch_payment

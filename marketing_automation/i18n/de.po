@@ -38,17 +38,17 @@ msgstr "# Mailings"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__total_participant_count
 msgid "# of active and completed participants"
-msgstr "# aktiver und abgeschlossener Teilnehmer"
+msgstr "# aktive und abgeschlossene Teilnehmer"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__running_participant_count
 msgid "# of active participants"
-msgstr "# aktiver Teilnehmer"
+msgstr "# aktive Teilnehmer"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__completed_participant_count
 msgid "# of completed participants"
-msgstr "# abgeschlossener Teilnehmer"
+msgstr "# abgeschlossene Teilnehmer"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__test_participant_count
@@ -439,8 +439,8 @@ msgstr "Erstellt am"
 msgid ""
 "Date that will be used to know when to determine and send the winner mailing"
 msgstr ""
-"Datum, das für die Ermittlung und den Versand der Gewinner-Mailings "
-"verwendet wird"
+"Datum, das für die Ermittlung und den Versand der Gewinnermailings verwendet"
+" wird"
 
 #. module: marketing_automation
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__interval_type__days
@@ -1205,7 +1205,7 @@ msgstr "Entfernt"
 #: model:ir.model.fields,help:marketing_automation.field_marketing_participant__state
 msgid "Removed means the related record does not exist anymore."
 msgstr ""
-"„Entfernt” bedeutet, dass der entsprechende Datensatz nicht länger "
+"„Entfernt“ bedeutet, dass der entsprechende Datensatz nicht länger "
 "existiert."
 
 #. module: marketing_automation

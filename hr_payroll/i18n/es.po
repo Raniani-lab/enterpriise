@@ -2329,7 +2329,7 @@ msgstr "Número de horas a trabajar para ser considerado como tiempo completo."
 #: model:ir.model.fields,help:hr_payroll.field_hr_payslip__message_needaction_counter
 #: model:ir.model.fields,help:hr_payroll.field_hr_payslip_run__message_needaction_counter
 #: model:ir.model.fields,help:hr_payroll.field_hr_salary_attachment__message_needaction_counter
-msgid "Number of messages which requires an action"
+msgid "Number of messages requiring action"
 msgstr "Número de mensajes que requieren una acción"
 
 #. module: hr_payroll

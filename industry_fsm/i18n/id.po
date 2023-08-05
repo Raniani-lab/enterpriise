@@ -165,7 +165,7 @@ msgstr "Administrator"
 #: model:ir.ui.menu,name:industry_fsm.fsm_menu_all_tasks_root
 #: model:ir.ui.menu,name:industry_fsm.fsm_menu_all_tasks_todo
 msgid "All Tasks"
-msgstr ""
+msgstr "Semua Task"
 
 #. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_user_action_report_fsm
@@ -386,12 +386,12 @@ msgstr "Tanggal"
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.worksheet_custom_page
 msgid "Days Spent"
-msgstr ""
+msgstr "Hari yang Dihabiskan"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__delay_endings_days
 msgid "Days to Deadline"
-msgstr ""
+msgstr "Hari ke Deadline"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__date_deadline
@@ -467,7 +467,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "Dissatisfied"
-msgstr ""
+msgstr "Tidak puas"
 
 #. module: industry_fsm
 #. odoo-python
@@ -519,7 +519,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:industry_fsm.res_config_settings_view_form
 #, python-format
 msgid "Field Service"
-msgstr ""
+msgstr "Layanan Lapangan"
 
 #. module: industry_fsm
 #: model:mail.template,name:industry_fsm.mail_template_data_intervention_details
@@ -551,7 +551,7 @@ msgstr ""
 #. module: industry_fsm
 #: model:ir.model.fields,help:industry_fsm.field_report_project_task_user_fsm__is_closed
 msgid "Folded in Kanban stages are closing stages."
-msgstr ""
+msgstr "Dilipat di tahap Kanban berarti tahap penutup."
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
@@ -705,7 +705,7 @@ msgstr ""
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid "Let's create your first <b>task</b>."
-msgstr ""
+msgstr "Ayo buat <b>task</b> pertama Anda."
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task_stop_timers_wizard__line_ids
@@ -736,7 +736,7 @@ msgstr "Menu"
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__milestone_id
 msgid "Milestone"
-msgstr ""
+msgstr "Milestone"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__milestone_deadline
@@ -806,7 +806,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "No Rating"
-msgstr ""
+msgstr "Tidak Ada Rating"
 
 #. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_user_action_report_fsm
@@ -816,12 +816,12 @@ msgstr "Belum ada data!"
 #. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_project_action_only_fsm
 msgid "No projects found. Let's create one!"
-msgstr ""
+msgstr "Tidak ada project yang ditemukan. Ayo buat baru!"
 
 #. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_type_action_fsm
 msgid "No stages found. Let's create one!"
-msgstr ""
+msgstr "Tidak ada tahap yang ditemukan. Ayo buat baru!"
 
 #. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_action_all_fsm
@@ -832,7 +832,7 @@ msgstr ""
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_action_to_schedule_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_tasks_action_fsm
 msgid "No tasks found. Let's create one!"
-msgstr ""
+msgstr "Tidak ada task yang ditemukan. Ayo buat baru!"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
@@ -863,7 +863,7 @@ msgstr ""
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__parent_id
 msgid "Parent Task"
-msgstr ""
+msgstr "Task Induk"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
@@ -874,7 +874,7 @@ msgstr "Masa lalu"
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__personal_stage_type_ids
 msgid "Personal Stage"
-msgstr ""
+msgstr "Tahap Pribadi"
 
 #. module: industry_fsm
 #: model:project.task.type,name:industry_fsm.planning_project_stage_1
@@ -894,7 +894,7 @@ msgstr "Perencanaan"
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__planning_overlap
 msgid "Planning Overlap"
-msgstr ""
+msgstr "Planning Overlap"
 
 #. module: industry_fsm
 #: model:ir.actions.act_window,name:industry_fsm.project_task_action_fsm_planning_groupby_project
@@ -945,7 +945,7 @@ msgstr ""
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__rating_last_value
 msgid "Rating Value (/5)"
-msgstr ""
+msgstr "Nilai Rating (/5)"
 
 #. module: industry_fsm
 #: model:project.task.type,legend_done:industry_fsm.planning_project_stage_1
@@ -976,7 +976,7 @@ msgstr "Laporan"
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "Satisfied"
-msgstr ""
+msgstr "Puas"
 
 #. module: industry_fsm
 #. odoo-javascript
@@ -1023,6 +1023,8 @@ msgid ""
 "Set this template on a project's stage to automate email when tasks reach "
 "stages"
 msgstr ""
+"Tetapkan templat pada tahap project untuk mengotomatiskan email saat task "
+"sampai di tahap"
 
 #. module: industry_fsm
 #: model:ir.actions.act_window,name:industry_fsm.res_config_settings_action_fsm
@@ -1111,12 +1113,12 @@ msgstr ""
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_project__allow_subtasks
 msgid "Sub-tasks"
-msgstr ""
+msgstr "Sub-task"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_tree
 msgid "Sum of Effective Hours"
-msgstr ""
+msgstr "Jumlah Jam Efektif"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__tag_ids
@@ -1134,13 +1136,13 @@ msgstr "Kegiatan"
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_project__allow_task_dependencies
 msgid "Task Dependencies"
-msgstr ""
+msgstr "Ketergantungan Task"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__fsm_done
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__fsm_done
 msgid "Task Done"
-msgstr ""
+msgstr "Task Selesai"
 
 #. module: industry_fsm
 #: model:ir.actions.report,name:industry_fsm.task_custom_report
@@ -1331,24 +1333,24 @@ msgstr ""
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__working_days_open
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_user_view_graph
 msgid "Working Days to Assign"
-msgstr ""
+msgstr "Hari Kerja untuk Ditugaskan"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__working_days_close
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_user_view_graph
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_user_view_pivot
 msgid "Working Days to Close"
-msgstr ""
+msgstr "Hari Kerja untuk Ditutup"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__working_hours_open
 msgid "Working Hours to Assign"
-msgstr ""
+msgstr "Jam Kerja untuk Ditugaskan"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__working_hours_close
 msgid "Working Hours to Close"
-msgstr ""
+msgstr "Jam Kerja untuk Ditutup"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.portal_my_task

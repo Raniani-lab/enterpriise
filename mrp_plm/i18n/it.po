@@ -44,7 +44,7 @@ msgstr "N. OMT in corso"
 #: code:addons/mrp_plm/models/mrp_eco.py:0
 #, python-format
 msgid "%(approval_name)s %(approver_name)s %(approval_status)s this ECO"
-msgstr ""
+msgstr "%(approval_name)s %(approver_name)s %(approval_status)s quest'OMT"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
@@ -191,7 +191,7 @@ msgstr "Tutte le validazioni"
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__allow_change_kanban_state
 msgid "Allow Change Kanban State"
-msgstr ""
+msgstr "Consenti di cambiare lo stato kanban"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__allow_change_stage
@@ -559,7 +559,7 @@ msgstr "Descrizione"
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_stage__description
 msgid "Description and tooltips of the stage states."
-msgstr ""
+msgstr "Descrizione e informazioni sugli stati della fase."
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
@@ -1246,7 +1246,7 @@ msgstr "Numero di errori"
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__message_needaction_counter
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__message_needaction_counter
-msgid "Number of messages which requires an action"
+msgid "Number of messages requiring action"
 msgstr "Numero di messaggi che richiedono un'azione"
 
 #. module: mrp_plm

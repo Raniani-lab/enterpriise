@@ -32,7 +32,7 @@ msgstr "Hạng mục đơn bán hàng"
 #. module: sale_project_forecast
 #: model:ir.model,name:sale_project_forecast.model_sale_order_line
 msgid "Sales Order Line"
-msgstr "Mục đơn bán hàng"
+msgstr "Dòng đơn bán hàng"
 
 #. module: sale_project_forecast
 #: model:ir.model.fields,help:sale_project_forecast.field_planning_slot__sale_line_id

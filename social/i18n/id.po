@@ -1063,8 +1063,8 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,help:social.field_social_media__message_needaction_counter
 #: model:ir.model.fields,help:social.field_social_post__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "Jumlah pesan yang butuh tindakan"
+msgid "Number of messages requiring action"
+msgstr ""
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_media__message_has_error_counter
@@ -1685,7 +1685,7 @@ msgstr "Sumber UTM"
 #: code:addons/social/models/social_post.py:0
 #, python-format
 msgid "Unknown error"
-msgstr ""
+msgstr "Error tidak diketahui"
 
 #. module: social
 #. odoo-python

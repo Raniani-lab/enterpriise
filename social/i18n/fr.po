@@ -1090,8 +1090,8 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,help:social.field_social_media__message_needaction_counter
 #: model:ir.model.fields,help:social.field_social_post__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "Nombre de messages exigeant une action"
+msgid "Number of messages requiring action"
+msgstr "Nombre de messages nécessitant une action"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_media__message_has_error_counter

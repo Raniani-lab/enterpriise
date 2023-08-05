@@ -145,7 +145,7 @@ msgstr "Rechnung erstellen"
 #. module: documents_account
 #: model:documents.workflow.rule,name:documents_account.credit_note_rule
 msgid "Create Credit Note"
-msgstr "Gutschrift erzeugen"
+msgstr "Gutschrift erstellen"
 
 #. module: documents_account
 #: model:documents.workflow.rule,name:documents_account.customer_invoice_rule

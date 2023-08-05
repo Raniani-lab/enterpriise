@@ -28,7 +28,7 @@ msgstr "Oleh Proyek"
 #. module: project_forecast
 #: model_terms:ir.actions.act_window,help:project_forecast.project_forecast_action_from_project
 msgid "Let's start your planning by adding a new shift."
-msgstr ""
+msgstr "Mari memulai perencanaan Anda dengan menambahkan shift baru."
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.planning_analysis_report_view_search
@@ -47,12 +47,12 @@ msgstr "Tidak ada shift yang ditemukan. Mari membuat shift!"
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_view_form_inherit_project_forecast
 msgid "Plan your resources for this project"
-msgstr ""
+msgstr "Rencanakan sumber daya Anda untuk project ini"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_project_view_form_simplified_inherit_forecast
 msgid "Plan your resources on project tasks"
-msgstr ""
+msgstr "Rencanakan sumber daya Anda pada task project"
 
 #. module: project_forecast
 #. odoo-python
@@ -94,12 +94,12 @@ msgstr "Proyek"
 #. module: project_forecast
 #: model:ir.actions.act_window,name:project_forecast.planning_action_schedule_by_project
 msgid "Schedule by Project"
-msgstr ""
+msgstr "Jadwalkan berdasarkan Project"
 
 #. module: project_forecast
 #: model:ir.actions.act_window,name:project_forecast.project_forecast_action_schedule_by_employee
 msgid "Schedule by Resource"
-msgstr ""
+msgstr "Jadwalkan berdasarkan Sumber Daya"
 
 #. module: project_forecast
 #: model_terms:ir.actions.act_window,help:project_forecast.planning_action_schedule_by_project
@@ -121,19 +121,19 @@ msgstr "Shift"
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_planning_slot_template
 msgid "Shift Template"
-msgstr ""
+msgstr "Shfit Templat"
 
 #. module: project_forecast
 #: model:planning.role,name:project_forecast.planning_role_tester
 msgid "Tester"
-msgstr ""
+msgstr "Tester"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_project__total_forecast_time
 msgid "Total Forecast Time"
-msgstr ""
+msgstr "Total Waktu Forecast"
 
 #. module: project_forecast
 #: model:ir.model.fields,help:project_forecast.field_project_project__total_forecast_time
 msgid "Total number of forecast hours in the project rounded to the unit."
-msgstr ""
+msgstr "Total jumlah jam forecast di project dibulatkan sampai satuan."

@@ -125,8 +125,8 @@ msgstr ""
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/sale_order.py:0
 #, python-format
-msgid "Provide one user for intercompany relation for % "
-msgstr "Indiquer un utilisateur pour la relation inter-société pour %"
+msgid "Provide one user for intercompany relation for %(name)s "
+msgstr "Indiquer un utilisateur pour la relation inter-société pour %(name)s"
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model,name:sale_purchase_inter_company_rules.model_purchase_order

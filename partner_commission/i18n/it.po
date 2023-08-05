@@ -29,13 +29,15 @@ msgid ""
 "\n"
 "%s: from %s to %s"
 msgstr ""
+"\n"
+"%s: da %s a %s"
 
 #. module: partner_commission
 #. odoo-python
 #: code:addons/partner_commission/models/account_move.py:0
 #, python-format
 msgid " (%d month(s))"
-msgstr ""
+msgstr " (%d mese(i))"
 
 #. module: partner_commission
 #: model_terms:ir.ui.view,arch_db:partner_commission.res_config_settings_view_form
@@ -244,7 +246,7 @@ msgstr "Importo massimo indicato nella valuta del listino prezzi, se fornito."
 #: model:ir.model.fields,field_description:partner_commission.field_res_company__commission_po_minimum
 #: model:ir.model.fields,field_description:partner_commission.field_res_config_settings__commission_po_minimum
 msgid "Minimum Total Amount for PO commission"
-msgstr ""
+msgstr "Importo totale minimo per commissione ordine di acquisto"
 
 #. module: partner_commission
 #: model:ir.model.fields.selection,name:partner_commission.selection__res_company__commission_automatic_po_frequency__monthly
@@ -367,7 +369,7 @@ msgstr "Regole"
 #. module: partner_commission
 #: model:ir.model.fields,field_description:partner_commission.field_commission_rule__template_id
 msgid "Sale Order Template"
-msgstr ""
+msgstr "Modello ordine di vendita"
 
 #. module: partner_commission
 #: model:ir.model,name:partner_commission.model_sale_order

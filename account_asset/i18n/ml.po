@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-16 09:00+0000\n"
+"POT-Creation-Date: 2023-07-26 10:06+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
 "Last-Translator: Hasna, 2023\n"
 "Language-Team: Malayalam (https://app.transifex.com/odoo/teams/41243/ml/)\n"
@@ -348,6 +348,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__analytic_distribution
 msgid "Analytic"
 msgstr "അനാലിറ്റിക്"
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset__analytic_distribution_search
+msgid "Analytic Distribution Search"
+msgstr ""
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__analytic_precision
@@ -1514,11 +1519,6 @@ msgid "New salvage amount for the asset"
 msgstr ""
 
 #. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_calendar_event_id
-msgid "Next Activity Calendar Event"
-msgstr ""
-
-#. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_date_deadline
 msgid "Next Activity Deadline"
 msgstr "അടുത്ത പ്രവർത്തന സമയപരിധി"
@@ -1629,8 +1629,8 @@ msgstr "പിശകുകളുടെ എണ്ണം"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "ഒരു പ്രവർത്തനം ആവശ്യമായ സന്ദേശങ്ങളുടെ എണ്ണം"
+msgid "Number of messages requiring action"
+msgstr ""
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__message_has_error_counter
@@ -1705,6 +1705,7 @@ msgstr ""
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/wizard/asset_modify.py:0
+#: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "Re-evaluate"
 msgstr ""
@@ -1717,6 +1718,7 @@ msgstr ""
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_move_line__asset_ids
+#: model_terms:ir.ui.view,arch_db:account_asset.view_move_line_form_asset_inherit
 msgid "Related Assets"
 msgstr ""
 
@@ -2095,6 +2097,13 @@ msgstr ""
 
 #. module: account_asset
 #. odoo-python
+#: code:addons/account_asset/wizard/asset_modify.py:0
+#, python-format
+msgid "You can't re-evaluate the asset before the lock date."
+msgstr ""
+
+#. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "You cannot archive a record that is not closed"
@@ -2137,6 +2146,13 @@ msgstr ""
 
 #. module: account_asset
 #. odoo-python
+#: code:addons/account_asset/models/account_asset.py:0
+#, python-format
+msgid "You cannot dispose of an asset before the lock date."
+msgstr ""
+
+#. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "You cannot reset to draft an entry related to a posted asset"
@@ -2147,6 +2163,13 @@ msgstr ""
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "You cannot resume at a date equal to or before the pause date"
+msgstr ""
+
+#. module: account_asset
+#. odoo-python
+#: code:addons/account_asset/wizard/asset_modify.py:0
+#, python-format
+msgid "You cannot select the same account as the Depreciation Account"
 msgstr ""
 
 #. module: account_asset

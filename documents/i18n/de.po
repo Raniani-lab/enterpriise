@@ -953,7 +953,7 @@ msgstr "Kontakt"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "Contains"
-msgstr "Beinhaltet"
+msgstr "Enthält"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_documents_Contracts
@@ -1968,8 +1968,8 @@ msgstr "Anzahl der Fehler"
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__message_needaction_counter
 #: model:ir.model.fields,help:documents.field_documents_share__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "Anzahl der Nachrichten, die eine Aktion erfordern"
+msgid "Number of messages requiring action"
+msgstr "Anzahl der Meldungen, die eine Aktion erfordern"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__message_has_error_counter
@@ -2117,7 +2117,8 @@ msgstr ""
 "Richtlinie zum Hinterlassen einer Mitteilung im Dokument über das E-Mail-Gateway.\n"
 "- Jeder: jeder kann eine Nachricht hinterlassen\n"
 "- Partner: nur bestätigte Partner\n"
-"- Follower: nur die Personen, die dem betreffenden Dokument folgen oder Mitglieder von Kanälen sind, die dem Dokument folgen\n"
+"- Follower: nur Follower des entsprechenden Dokuments\n"
+" oder Mitglieder der verfolgten Kanäle\n"
 
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_document__thumbnail_status__present
@@ -2332,22 +2333,22 @@ msgstr "Festlegen als Verträge für 2023"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__partner_id
 msgid "Set Contact"
-msgstr "Kontakt setzen"
+msgstr "Kontakt festlegen"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__user_id
 msgid "Set Owner"
-msgstr "Besitzer setzen"
+msgstr "Besitzer festlegen"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__tag_action_ids
 msgid "Set Tags"
-msgstr "Stichwörter setzen"
+msgstr "Stichwörter festlegen"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__has_owner_activity
 msgid "Set the activity on the document owner"
-msgstr "Setzen Sie die Aktivität auf den Dokumenteneigentümer"
+msgstr "Aktivität auf Dokumentbesitzer festlegen"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.configuration_action

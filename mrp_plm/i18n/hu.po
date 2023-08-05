@@ -1236,8 +1236,8 @@ msgstr "Hibák száma"
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__message_needaction_counter
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "Üzenetek száma, melyek műveletet igényelnek"
+msgid "Number of messages requiring action"
+msgstr ""
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__message_has_error_counter

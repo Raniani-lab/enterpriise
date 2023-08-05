@@ -6,6 +6,7 @@
 # Egon Raamat <egon@avalah.ee>, 2022
 # Marek Pontus, 2022
 # Maidu Targama <m.targama@gmail.com>, 2022
+# Arma Gedonsky <armagedonsky@hot.ee>, 2022
 # Andre Roomet <andreroomet@gmail.com>, 2022
 # Algo Kärp <algokarp@gmail.com>, 2022
 # Helen Sulaoja <helen@avalah.ee>, 2022
@@ -14,7 +15,6 @@
 # Triine Aavik <triine@avalah.ee>, 2022
 # Eneli Õigus <enelioigus@gmail.com>, 2022
 # Rivo Zängov <eraser@eraser.ee>, 2022
-# Arma Gedonsky <armagedonsky@hot.ee>, 2022
 # Piia Paurson <piia@avalah.ee>, 2022
 # Anna, 2023
 # Leaanika Randmets, 2023
@@ -1125,7 +1125,9 @@ msgid "Manager's Feedback"
 msgstr "Juhataja tagasiside"
 
 #. module: hr_appraisal
+#: model:ir.actions.server,name:hr_appraisal.action_mark_as_done
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_goal_view_form
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_goal_view_kanban
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Mark as Done"
 msgstr "Märgi tehtuks"
@@ -1256,8 +1258,8 @@ msgstr "Veateadete arv"
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__message_needaction_counter
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal_goal__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "Tegutsemist nõudvate sõnumite arv"
+msgid "Number of messages requiring action"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__message_has_error_counter

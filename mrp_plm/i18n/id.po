@@ -1184,7 +1184,7 @@ msgstr "Tipe Aktivitas Berikutnya"
 #. module: mrp_plm
 #: model_terms:ir.actions.act_window,help:mrp_plm.mrp_bom_action_kanban
 msgid "No bill of materials found. Let's create one!"
-msgstr ""
+msgstr "Tidak ada BoM yang ditemukan. Ayo buat baru!"
 
 #. module: mrp_plm
 #: model_terms:ir.actions.act_window,help:mrp_plm.mrp_eco_action
@@ -1228,8 +1228,8 @@ msgstr "Jumlah kesalahan"
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__message_needaction_counter
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco_type__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "Jumlah pesan yang butuh tindakan"
+msgid "Number of messages requiring action"
+msgstr ""
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__message_has_error_counter
@@ -1750,7 +1750,7 @@ msgstr "Jenis dari aktivitas pengecualian pada rekaman data."
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_stage__type_ids
 msgid "Types"
-msgstr ""
+msgstr "Tipe"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.view_document_file_kanban_mrp_plm

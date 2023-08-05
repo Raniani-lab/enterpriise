@@ -45,7 +45,7 @@ msgstr "現金收付制方法"
 #. module: account_reports_cash_basis
 #: model:ir.model.fields,help:account_reports_cash_basis.field_account_report__filter_cash_basis
 msgid "Display the option to switch to cash basis mode."
-msgstr ""
+msgstr "顯示供切換至現金制模式的選項。"
 
 #. module: account_reports_cash_basis
 #: model:ir.model,name:account_reports_cash_basis.model_account_move_line

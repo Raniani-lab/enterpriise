@@ -203,7 +203,7 @@ msgstr "Kategori"
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_change_production_qty
 msgid "Change Production Qty"
-msgstr ""
+msgstr "Ganti Kuantitas Produksi"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__check_ids
@@ -258,7 +258,7 @@ msgstr "Pengaturan Konfigurasi"
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__consumption
 msgid "Consumption"
-msgstr ""
+msgstr "Konsumsi"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,help:mrp_workorder.field_mrp_workorder_additional_product__product_uom_category_id
@@ -284,7 +284,7 @@ msgstr "Dibuat pada"
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Creates a new serial/lot number"
-msgstr ""
+msgstr "Buat nomor seri/lot baru"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__current_quality_check_id
@@ -356,7 +356,7 @@ msgstr "Lot/Seri Selesai"
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
 msgid "Finished Lot/Serial Number"
-msgstr ""
+msgstr "Nomor Seri/Lot Jadi"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__finished_product_check_ids
@@ -388,7 +388,7 @@ msgstr "Kerja Bagus!"
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.quality_point_view_form_inherit_mrp
 msgid "Google Slide Link"
-msgstr ""
+msgstr "Link Google Slide"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__worksheet_url
@@ -611,7 +611,7 @@ msgstr ""
 #. module: mrp_workorder
 #: model_terms:ir.actions.act_window,help:mrp_workorder.mrp_workorder_action_tablet
 msgid "No work orders to do!"
-msgstr ""
+msgstr "Tidak ada SPK untuk dilakukan!"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_workorder_tree_editable_view_inherit_workorder
@@ -1092,7 +1092,7 @@ msgstr ""
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.quality_point_view_form_inherit_mrp
 msgid "Upload your PDF file."
-msgstr ""
+msgstr "Unggah file PDF Anda."
 
 #. module: mrp_workorder
 #: model_terms:ir.actions.act_window,help:mrp_workorder.action_mrp_workorder_show_steps
@@ -1172,11 +1172,13 @@ msgid ""
 "Work orders are operations to do as part of a manufacturing order.\n"
 "            Operations are defined in the bill of materials or added in the manufacturing order directly."
 msgstr ""
+"SPK dalah operasi untuk dilakukan sebagai bagian dari manufacturing order.\n"
+"                    Operasi ditentukan di BoM atau ditambahkan langsung di manufacturing order."
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__working_state
 msgid "Workcenter Status"
-msgstr ""
+msgstr "Status Pusat Kerja"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder_additional_product__workorder_id
@@ -1222,6 +1224,15 @@ msgstr ""
 #. odoo-python
 #: code:addons/mrp_workorder/models/mrp_workorder.py:0
 #, python-format
+msgid ""
+"You need to complete Quality Checks using the Tablet View before marking "
+"Work Order as Done."
+msgstr ""
+
+#. module: mrp_workorder
+#. odoo-python
+#: code:addons/mrp_workorder/models/mrp_workorder.py:0
+#, python-format
 msgid "You should provide a lot/serial number for the final product"
 msgstr "Anda harus memberikan nomor seri/lot untuk produk jadi"
 
@@ -1236,7 +1247,7 @@ msgstr "Anda masih harus melakukan pemeriksaan kualitas!"
 #. module: mrp_workorder
 #: model:ir.model.fields.selection,name:mrp_workorder.selection__quality_point__test_report_type__zpl
 msgid "ZPL"
-msgstr ""
+msgstr "ZPL"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet

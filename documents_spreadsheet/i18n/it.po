@@ -40,7 +40,7 @@ msgstr "%s (copia)"
 #: code:addons/documents_spreadsheet/static/src/bundle/components/spreadsheet_component.js:0
 #, python-format
 msgid "%s - Template"
-msgstr ""
+msgstr "%s-Modello"
 
 #. module: documents_spreadsheet
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.res_config_settings_view_form_inherit_documents_spreadsheet
@@ -48,6 +48,8 @@ msgid ""
 "<strong class=\"o_form_label\">Spreadsheets</strong>\n"
 "                            <span class=\"fa fa-lg fa-building-o ms-1\" title=\"Values set here are company-specific.\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\" role=\"img\"/>"
 msgstr ""
+"<strong class=\"o_form_label\">Fogli di calcolo</strong>\n"
+"                            <span class=\"fa fa-lg fa-building-o ms-1\" title=\"Values set here are company-specific.\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\" role=\"img\"/>"
 
 #. module: documents_spreadsheet
 #: model:ir.model.constraint,message:documents_spreadsheet.constraint_spreadsheet_contributor_spreadsheet_user_unique
@@ -172,7 +174,7 @@ msgstr "Documento"
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_res_company__documents_spreadsheet_folder_id
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_res_config_settings__documents_spreadsheet_folder_id
 msgid "Documents Spreadsheet Folder"
-msgstr ""
+msgstr "Cartella foglio di calcolo per documenti"
 
 #. module: documents_spreadsheet
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.spreadsheet_template_view_tree
@@ -299,7 +301,7 @@ msgstr "Nuovo modello foglio di calcolo creato"
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.share_page
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.share_single
 msgid "Odoo Spreadsheets not available for download"
-msgstr ""
+msgstr "Odoo Fogli di calcolo non è disponibile per il download"
 
 #. module: documents_spreadsheet
 #: model:ir.actions.act_window,name:documents_spreadsheet.spreadsheet_revision_action
@@ -437,10 +439,12 @@ msgstr "Spazio di lavoro"
 msgid ""
 "Your file is about to be saved as an Odoo Spreadsheet to allow for edition."
 msgstr ""
+"Il file sta per essere salvato come un foglio di calcolo di Odoo per "
+"permettere l'edizione."
 
 #. module: documents_spreadsheet
 #. odoo-javascript
 #: code:addons/documents_spreadsheet/static/src/spreadsheet_selector_dialog/document_selector_panel.xml:0
 #, python-format
 msgid "getPageTitle('SPREADSHEET')"
-msgstr ""
+msgstr "getPageTitle('SPREADSHEET')"

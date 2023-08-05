@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Sarah Park, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:17+0000\n"
 "PO-Revision-Date: 2022-09-23 08:33+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Sarah Park, 2023\n"
 "Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,17 +24,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents_project_sale.field_product_product__documents_allowed_company_id
 #: model:ir.model.fields,field_description:documents_project_sale.field_product_template__documents_allowed_company_id
 msgid "Documents Allowed Company"
-msgstr ""
+msgstr "문서가 허용되는 회사"
 
 #. module: documents_project_sale
 #: model:documents.tag,name:documents_project_sale.documents_folder_facet_1_tag_3
 msgid "Done/Archived"
-msgstr ""
+msgstr "완료/보관"
 
 #. module: documents_project_sale
 #: model:documents.tag,name:documents_project_sale.documents_folder_facet_1_tag_2
 msgid "In Use"
-msgstr ""
+msgstr "사용 중"
 
 #. module: documents_project_sale
 #: model:documents.folder,name:documents_project_sale.documents_folder_template_child_3
@@ -43,7 +44,7 @@ msgstr "기타"
 #. module: documents_project_sale
 #: model:documents.tag,name:documents_project_sale.documents_folder_facet_1_tag_1
 msgid "New/Unsorted"
-msgstr ""
+msgstr "신규/미분류"
 
 #. module: documents_project_sale
 #: model:ir.model.fields,help:documents_project_sale.field_product_product__template_folder_id
@@ -51,7 +52,7 @@ msgstr ""
 msgid ""
 "On sales order confirmation, a workspace will be automatically generated for"
 " the project based on this template."
-msgstr ""
+msgstr "판매 주문을 확인할 경우, 이 서식을 기준으로 프로젝트의 작업 공간을 자동으로 생성합니다."
 
 #. module: documents_project_sale
 #: model:documents.folder,name:documents_project_sale.documents_folder_template_child_2
@@ -71,12 +72,12 @@ msgstr "품목"
 #. module: documents_project_sale
 #: model:product.template,name:documents_project_sale.product_1
 msgid "Renovation Architect (Workspace Template)"
-msgstr ""
+msgstr "리노베이션 건축가 (작업 공간 서식)"
 
 #. module: documents_project_sale
 #: model:documents.folder,name:documents_project_sale.documents_folder
 msgid "Renovation Projects"
-msgstr ""
+msgstr "리노베이션 프로젝트"
 
 #. module: documents_project_sale
 #: model:ir.model,name:documents_project_sale.model_sale_order
@@ -97,4 +98,4 @@ msgstr "템플릿"
 #: model:ir.model.fields,field_description:documents_project_sale.field_product_product__template_folder_id
 #: model:ir.model.fields,field_description:documents_project_sale.field_product_template__template_folder_id
 msgid "Workspace Template"
-msgstr ""
+msgstr "작업 공간 서식"

@@ -426,6 +426,15 @@ msgid "Yearly"
 msgstr "Annuel"
 
 #. module: account_auto_transfer
+#. odoo-python
+#: code:addons/account_auto_transfer/models/account_move_line.py:0
+#, python-format
+msgid "You cannot set Tax on Automatic Transfer's entries."
+msgstr ""
+"Vous ne pouvez pas définir des taxes sur les écritures de transfert "
+"automatique."
+
+#. module: account_auto_transfer
 #: model_terms:ir.ui.view,arch_db:account_auto_transfer.view_transfer_model_form
 msgid "e.g. Monthly Expense Transfer"
 msgstr "par ex. le transfert des dépenses mensuelles"

@@ -481,7 +481,7 @@ msgstr "Liczba błędów"
 
 #. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget__message_needaction_counter
-msgid "Number of messages which requires an action"
+msgid "Number of messages requiring action"
 msgstr "Liczba wiadomości wymagających akcji"
 
 #. module: account_budget

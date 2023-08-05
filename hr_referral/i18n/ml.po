@@ -917,8 +917,8 @@ msgstr "പിശകുകളുടെ എണ്ണം"
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "ഒരു പ്രവർത്തനം ആവശ്യമായ സന്ദേശങ്ങളുടെ എണ്ണം"
+msgid "Number of messages requiring action"
+msgstr ""
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__message_has_error_counter

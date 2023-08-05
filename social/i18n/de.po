@@ -1100,8 +1100,8 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,help:social.field_social_media__message_needaction_counter
 #: model:ir.model.fields,help:social.field_social_post__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "Anzahl der Nachrichten, die eine Aktion erfordern"
+msgid "Number of messages requiring action"
+msgstr "Anzahl der Meldungen, die eine Aktion erfordern"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_media__message_has_error_counter
@@ -1125,7 +1125,7 @@ msgstr "Anzahl der Interaktionen mit Ihren Beiträgen (Likes, Kommentare ...)"
 msgid "Number of stories created from your posts (Shares, Re-tweets, ...)."
 msgstr ""
 "Anzahl der Storys, die anhand Ihres Beitrags kreiert worden sind (Geteilt, "
-"Re-tweets ...)."
+"Retweets ...)."
 
 #. module: social
 #. odoo-javascript
@@ -1651,7 +1651,7 @@ msgstr "Synchronisieren"
 #: code:addons/social/models/social_post_template.py:0
 #, python-format
 msgid "The 'message' field is required for post ID %s"
-msgstr "Das Feld „Nachricht“ ist für die Beitrags-ID erforderlich %s"
+msgstr "Das Feld „Nachricht“ ist für die Beitrags-ID %s erforderlich "
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_post__account_ids

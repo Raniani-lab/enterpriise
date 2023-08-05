@@ -23,7 +23,7 @@ msgstr ""
 #. module: mrp_workorder_plm
 #: model:mrp.eco.type,name:mrp_workorder_plm.ecotype_workorder
 msgid "BOM Updates"
-msgstr ""
+msgstr "Aggiornamenti DiBa"
 
 #. module: mrp_workorder_plm
 #: model:mrp.eco.stage,legend_blocked:mrp_workorder_plm.ecostage_effective

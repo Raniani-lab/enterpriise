@@ -7,6 +7,7 @@
 # Linkup <link-up@naver.com>, 2022
 # Martin Trigaux, 2023
 # Sarah Park, 2023
+# Daye Jeong, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Sarah Park, 2023\n"
+"Last-Translator: Daye Jeong, 2023\n"
 "Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,7 +26,7 @@ msgstr ""
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
 msgid "<span class=\"fa fa-warning\" title=\"Invalid minimum approvals\"/>"
-msgstr ""
+msgstr "<span class=\"fa fa-warning\" title=\"Invalid minimum approvals\"/>"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
@@ -76,7 +77,7 @@ msgstr "활동 유형 아이콘"
 #: model:ir.model.fields,help:approvals.field_approval_category__has_product
 #: model:ir.model.fields,help:approvals.field_approval_request__has_product
 msgid "Additional products that should be specified on the request."
-msgstr ""
+msgstr "요청 시 지정해야 하는 추가 품목입니다."
 
 #. module: approvals
 #: model:res.groups,name:approvals.group_approval_manager
@@ -114,7 +115,7 @@ msgstr "요청할 때 지정해야 하는 추가 참조입니다."
 #: code:addons/approvals/models/approval_category.py:0
 #, python-format
 msgid "An user may not be in the approver list multiple times."
-msgstr ""
+msgstr "사용자가 결재권자 목록에 여러 번 포함되지 못할 수 있습니다."
 
 #. module: approvals
 #: model:mail.activity.type,name:approvals.mail_activity_data_approval
@@ -148,7 +149,7 @@ msgstr "유형 승인"
 #. module: approvals
 #: model:ir.model,name:approvals.model_approval_category_approver
 msgid "Approval Type Approver"
-msgstr ""
+msgstr "결재 유형 결재권자"
 
 #. module: approvals
 #: model:ir.ui.menu,name:approvals.approvals_menu_root
@@ -207,12 +208,12 @@ msgstr "결재권자"
 #, python-format
 msgid ""
 "Approver Sequence can only be activated with at least 1 minimum approver."
-msgstr ""
+msgstr "결재권자 순서 기능은 결재자가 최소 1명 이상 있어야 활성화할 수 있습니다."
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__user_ids
 msgid "Approver Users"
-msgstr ""
+msgstr "결재권자 사용자"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
@@ -230,7 +231,7 @@ msgstr "결재권자"
 #: model:ir.model.fields,field_description:approvals.field_approval_category__approver_sequence
 #: model:ir.model.fields,field_description:approvals.field_approval_request__approver_sequence
 msgid "Approvers Sequence?"
-msgstr ""
+msgstr "결재권자 순서?"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
@@ -257,7 +258,7 @@ msgstr "첨부 파일 수"
 #: model:ir.model.fields,field_description:approvals.field_approval_category__automated_sequence
 #: model:ir.model.fields,field_description:approvals.field_approval_request__automated_sequence
 msgid "Automated Sequence?"
-msgstr ""
+msgstr "자동 순서?"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
@@ -277,7 +278,7 @@ msgstr "출장"
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__change_request_owner
 msgid "Can Change Request Owner"
-msgstr ""
+msgstr "요청 소유자 변경 가능"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_approver__can_edit
@@ -306,7 +307,7 @@ msgstr "카테고리"
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_approver__category_approver
 msgid "Category Approver"
-msgstr ""
+msgstr "카테고리 결재권자"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__sequence_code
@@ -455,12 +456,12 @@ msgstr "관리자"
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_approver__existing_request_user_ids
 msgid "Existing Request User"
-msgstr ""
+msgstr "기존 요청 사용자"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category_approver__existing_user_ids
 msgid "Existing User"
-msgstr ""
+msgstr "기존 사용자"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
@@ -561,6 +562,12 @@ msgid ""
 "        Is Required Approver: the employee's manager will be required to approve the request.\n"
 "    "
 msgstr ""
+"직원의 관리자가 해당 결재 유형으로 소통하는 방식입니다.\n"
+"\n"
+"        비워 둠: 아무것도 하지 않습니다.\n"
+"        결재권자: 직원의 관리자가 결재권자 목록에 있는 경우입니다.\n"
+"        필수 결재권자: 직원의 관리자가 요청을 승인해야만 합니다.\n"
+"    "
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_approver__id
@@ -597,7 +604,7 @@ msgstr "이 옵션을 선택하면 일부 정보가 전달 오류를 생성합�
 msgid ""
 "If checked, the Approval Requests will have an automated generated name "
 "based on the given code."
-msgstr ""
+msgstr "선택하면, 결재 요청에서 지정한 코드에 따라 자동으로 생성된 이름이 지정됩니다. "
 
 #. module: approvals
 #: model:ir.model.fields,help:approvals.field_approval_category__approver_sequence
@@ -615,17 +622,17 @@ msgstr "이미지"
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__invalid_minimum
 msgid "Invalid Minimum"
-msgstr ""
+msgstr "최소값 오류"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__invalid_minimum_warning
 msgid "Invalid Minimum Warning"
-msgstr ""
+msgstr "최소값 오류 경고"
 
 #. module: approvals
 #: model:ir.model.fields.selection,name:approvals.selection__approval_category__manager_approval__approver
 msgid "Is Approver"
-msgstr ""
+msgstr "결재권자입니다."
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__message_is_follower
@@ -635,7 +642,7 @@ msgstr "팔로워임"
 #. module: approvals
 #: model:ir.model.fields.selection,name:approvals.selection__approval_category__manager_approval__required
 msgid "Is Required Approver"
-msgstr ""
+msgstr "필수 결재권자입니다."
 
 #. module: approvals
 #: model:approval.category,name:approvals.approval_category_data_job_referral_award
@@ -673,7 +680,7 @@ msgstr "최근 갱신 일자"
 #: model_terms:ir.actions.act_window,help:approvals.approval_request_action
 #: model_terms:ir.actions.act_window,help:approvals.approval_request_action_all
 msgid "Let's go to the"
-msgstr ""
+msgstr "다음으로 이동합니다."
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__location
@@ -721,7 +728,7 @@ msgstr "최소 결재자 수"
 #, python-format
 msgid ""
 "Minimum Approval must be equal or superior to the sum of required Approvers."
-msgstr ""
+msgstr "최소 결재값은 필수 결재권자의 합계와 같거나 많아야 합니다."
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__my_activity_date_deadline
@@ -792,12 +799,12 @@ msgstr "다음 활동 유형"
 #. module: approvals
 #: model_terms:ir.actions.act_window,help:approvals.approval_request_action_all
 msgid "No Approvals"
-msgstr ""
+msgstr "결재 없음"
 
 #. module: approvals
 #: model_terms:ir.actions.act_window,help:approvals.approval_request_action
 msgid "No Approvals Requests"
-msgstr ""
+msgstr "결재 요청 없음"
 
 #. module: approvals
 #: model_terms:ir.actions.act_window,help:approvals.approval_request_action_to_review
@@ -835,7 +842,7 @@ msgstr "오류 횟수"
 
 #. module: approvals
 #: model:ir.model.fields,help:approvals.field_approval_request__message_needaction_counter
-msgid "Number of messages which requires an action"
+msgid "Number of messages requiring action"
 msgstr "조치가 필요한 메시지 수"
 
 #. module: approvals
@@ -1040,7 +1047,7 @@ msgstr "제출 완료"
 #. module: approvals
 #: model:res.groups,comment:approvals.group_approval_user
 msgid "The user will be able to access all requests and approve/refuse them."
-msgstr ""
+msgstr "사용자는 모든 요청 항목에 접근하여 결재 또는 반려할 수 있습니다."
 
 #. module: approvals
 #: model:res.groups,comment:approvals.group_approval_manager
@@ -1054,7 +1061,7 @@ msgstr "사용자는 결재 환경 설정에 접근할 수 있습니다."
 msgid ""
 "This request needs to be approved by your manager. There is no manager "
 "linked to your employee profile."
-msgstr ""
+msgstr "관리자의 결재가 필요한 요청 항목입니다. 사용자 프로필에 연결되어 있는 관리자가 없습니다."
 
 #. module: approvals
 #. odoo-python
@@ -1063,7 +1070,7 @@ msgstr ""
 msgid ""
 "This request needs to be approved by your manager. There is no user linked "
 "to your manager."
-msgstr ""
+msgstr "관리자의 결재가 필요한 요청 항목입니다. 관리자에 연결되어 있는 사용자가 없습니다."
 
 #. module: approvals
 #. odoo-python
@@ -1072,7 +1079,7 @@ msgstr ""
 msgid ""
 "This request needs to be approved by your manager. Your manager is not in "
 "the approvers list."
-msgstr ""
+msgstr "관리자의 결재가 필요한 요청 항목입니다. 관리자가 결재권자 목록에 없습니다."
 
 #. module: approvals
 #. odoo-javascript
@@ -1136,7 +1143,7 @@ msgstr "철회"
 #: code:addons/approvals/models/approval_request.py:0
 #, python-format
 msgid "You cannot approve before the previous approver."
-msgstr ""
+msgstr "이전 결재권자보다 먼저 결재할 수 없습니다."
 
 #. module: approvals
 #. odoo-python
@@ -1144,7 +1151,7 @@ msgstr ""
 #, python-format
 msgid ""
 "You cannot assign the same approver multiple times on the same request."
-msgstr ""
+msgstr "동일한 요청에 대해서 같은 결재권자를 여러 번 지정할 수 없습니다."
 
 #. module: approvals
 #. odoo-python
@@ -1153,7 +1160,7 @@ msgstr ""
 msgid ""
 "You cannot unlink an attachment which is linked to a validated, refused or "
 "cancelled approval request."
-msgstr ""
+msgstr "승인되거나 반려 또는 취소된 결재 요청에 연결되어 있는 첨부 파일은 연결을 해제할 수 없습니다."
 
 #. module: approvals
 #. odoo-python
@@ -1174,17 +1181,17 @@ msgstr "최소한 하나의 문서를 첨부해야 합니다."
 #: code:addons/approvals/models/approval_category.py:0
 #, python-format
 msgid "Your minimum approval exceeds the total of default approvers."
-msgstr ""
+msgstr "최소 결재값이 기본 결재권자의 총합을 초과합니다."
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
 msgid "e.g. Brussels"
-msgstr ""
+msgstr "예: 브뤼셀"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
 msgid "e.g. Procurement"
-msgstr ""
+msgstr "예: 조달"
 
 #. module: approvals
 #: model_terms:ir.actions.act_window,help:approvals.approval_request_action
@@ -1196,4 +1203,4 @@ msgstr "메뉴"
 #: model_terms:ir.actions.act_window,help:approvals.approval_request_action
 #: model_terms:ir.actions.act_window,help:approvals.approval_request_action_all
 msgid "new request"
-msgstr ""
+msgstr "새 요청"

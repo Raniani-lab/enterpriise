@@ -1413,9 +1413,10 @@ msgstr "你不能在有效的工时表上使用计时器。"
 #: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
 msgid ""
-"You cannot validate the timesheets from employees that are not part of your "
-"team or there are no timesheets to validate."
-msgstr "你不能验证不属于你的团队的员工的工时表，或者没有工时表可以验证。"
+"You cannot validate the selected timesheets as they either belong to "
+"employees who are not part of your team or are not in a state that can be "
+"validated. This may be due to the fact that they are dated in the future."
+msgstr ""
 
 #. module: timesheet_grid
 #: model:ir.model.fields.selection,name:timesheet_grid.selection__res_company__timesheet_mail_employee_interval__months

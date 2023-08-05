@@ -33,7 +33,7 @@ msgstr "실제"
 #: code:addons/project_account_budget/static/src/components/project_right_side_panel/project_right_side_panel.xml:0
 #, python-format
 msgid "Add Budget"
-msgstr ""
+msgstr "예산 추가"
 
 #. module: project_account_budget
 #: model:ir.model.fields,field_description:project_account_budget.field_crossovered_budget_lines__analytic_account_id
@@ -95,14 +95,14 @@ msgstr "예측"
 #: code:addons/project_account_budget/static/src/components/project_right_side_panel/project_right_side_panel.js:0
 #, python-format
 msgid "New Budget"
-msgstr ""
+msgstr "신규 예산"
 
 #. module: project_account_budget
 #. odoo-javascript
 #: code:addons/project_account_budget/static/src/components/project_right_side_panel/project_right_side_panel.xml:0
 #, python-format
 msgid "No Budgetary Position"
-msgstr ""
+msgstr "예산 포지션 없음"
 
 #. module: project_account_budget
 #: model:ir.model,name:project_account_budget.model_project_project

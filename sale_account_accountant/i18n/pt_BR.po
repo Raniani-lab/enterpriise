@@ -3,7 +3,6 @@
 # 	* sale_account_accountant
 # 
 # Translators:
-# Martin Trigaux, 2022
 # Éder Brito <britoederr@gmail.com>, 2022
 # Layna Nascimento, 2023
 # 
@@ -36,8 +35,8 @@ msgstr "Pedido de venda identificado"
 msgid ""
 "Preset to create journal entries during a invoices and payments matching"
 msgstr ""
-"Predefinido para criar entradas de diário durante uma correspondência de "
-"faturas e pagamentos"
+"Configuração para criar entradas do diário quando ocorre uma correspondência"
+" entre faturas e pagamentos"
 
 #. module: sale_account_accountant
 #: code:addons/sale_account_accountant/models/bank_rec_widget.py:0

@@ -39,7 +39,7 @@ msgstr "Kiểm tra chất lượng"
 #. module: quality_control_picking_batch
 #: model:ir.model,name:quality_control_picking_batch.model_stock_move_line
 msgid "Product Moves (Stock Move Line)"
-msgstr "Dịch chuyển sản phẩm (Mục dịch chuyển tồn kho)"
+msgstr "Dịch chuyển sản phẩm (Dòng dịch chuyển tồn kho)"
 
 #. module: quality_control_picking_batch
 #: model:ir.model,name:quality_control_picking_batch.model_quality_check

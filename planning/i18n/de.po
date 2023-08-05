@@ -712,6 +712,19 @@ msgstr ""
 "Eine Schicht muss sich im selben Unternehmen befinden wie ihre Wiederholung."
 
 #. module: planning
+#. odoo-python
+#: code:addons/planning/models/planning_recurrency.py:0
+#, python-format
+msgid ""
+"Recurring shifts cannot be planned further than 999 days in the future. If "
+"you need to schedule beyond this limit, please set the recurrence to repeat "
+"forever instead."
+msgstr ""
+"Wiederkehrende Schichten können nicht weiter als 999 Tage in die Zukunft "
+"geplant werden. Wenn Sie über diese Grenze hinaus planen müssen, stellen Sie"
+" die Wiederholung bitte so ein, dass sie sich für immer wiederholt."
+
+#. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_report_action_analysis
 msgid ""
 "Analyze the allocation of your resources across roles, projects, and sales "

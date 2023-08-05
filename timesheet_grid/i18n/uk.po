@@ -1625,11 +1625,10 @@ msgstr "Ви не можете використовувати таймер на 
 #: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
 msgid ""
-"You cannot validate the timesheets from employees that are not part of your "
-"team or there are no timesheets to validate."
+"You cannot validate the selected timesheets as they either belong to "
+"employees who are not part of your team or are not in a state that can be "
+"validated. This may be due to the fact that they are dated in the future."
 msgstr ""
-"Ви не можете перевіряти табелі робочого часу від співробітників, які не "
-"входять до вашої команди, або немає табелів для перевірки."
 
 #. module: timesheet_grid
 #: model:ir.model.fields.selection,name:timesheet_grid.selection__res_company__timesheet_mail_employee_interval__months

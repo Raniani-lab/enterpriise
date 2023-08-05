@@ -528,8 +528,8 @@ msgstr "Số lỗi"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_payment__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "Số thông báo cần xử lý"
+msgid "Number of messages requiring action"
+msgstr ""
 
 #. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_payment__message_has_error_counter

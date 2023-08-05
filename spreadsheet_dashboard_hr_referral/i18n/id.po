@@ -320,11 +320,11 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "stats - current"
-msgstr ""
+msgstr "stats - saat ini"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "stats - previous"
-msgstr ""
+msgstr "stats - sebelumnya"

@@ -259,6 +259,10 @@ msgid ""
 "                    (/<span style=\"font-style: italic;\">checklist</span>)\n"
 "                </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"                    Tambahkan checklist\n"
+"                    (/<span style=\"font-style: italic;\">checklist</span>)\n"
+"                </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -268,6 +272,10 @@ msgid ""
 "                    (/<span style=\"font-style: italic;\">separator</span>)\n"
 "                </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"                    Tambahkan pemisah\n"
+"                    (/<span style=\"font-style: italic;\">pemisah</span>)\n"
+"                </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -278,6 +286,11 @@ msgid ""
 "                    to convert a text into a title\n"
 "                </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"                    Gunakan\n"
+"                    /<span style=\"font-style: italic;\">heading</span>\n"
+"                    untuk mengonversi teks menjadi judul\n"
+"                </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -356,6 +369,15 @@ msgid ""
 "            \"<span style=\"font-weight: bolder;\">/</span>\"\n"
 "        </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"            Di bawah list ini, coba\n"
+"            <span style=\"font-weight: bolder;\">commands</span>\n"
+"            dengan\n"
+"            <span style=\"font-weight: bolder;\">\n"
+"                <font class=\"text-o-color-2\">mengetik</font>\n"
+"            </span>\n"
+"            \"<span style=\"font-weight: bolder;\">/</span>\"\n"
+"        </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -396,6 +418,14 @@ msgid ""
 "            <span style=\"font-style: italic; text-decoration-line: underline;\">it</span>\n"
 "        </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"            Pilih teks untuk\n"
+"            <font class=\"bg-o-color-2\">Highlight</font>,\n"
+"            <span style=\"text-decoration-line: line-through;\">strikethrough</span>\n"
+"            atau\n"
+"            <span style=\"font-weight: bolder;\">memberikan</span>\n"
+"            <span style=\"font-style: italic; text-decoration-line: underline;\">gaya</span>\n"
+"        </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -564,6 +594,8 @@ msgstr ""
 msgid ""
 "<span style=\"font-size: 14px;\">Check this box to indicate it's done</span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">Centang kotak ini untuk mengindikasikan "
+"sudah selesai</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -571,6 +603,8 @@ msgid ""
 "<span style=\"font-size: 14px;\">Click anywhere, and just start "
 "typing</span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">Klik di mana saja, dan mulai "
+"mengetik</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -609,6 +643,8 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "<span style=\"font-size: 14px;\">Press Ctrl-Z to undo any change</span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">Pencet Ctrl-Z untuk undo perubahan "
+"apapun</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -621,7 +657,7 @@ msgstr ""
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "<span style=\"font-size: 14px;\">Try the following</span>"
-msgstr ""
+msgstr "<span style=\"font-size: 14px;\">Coba yang berikut</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -1925,8 +1961,8 @@ msgstr "Jumlah kesalahan"
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "Jumlah pesan yang butuh tindakan"
+msgid "Number of messages requiring action"
+msgstr ""
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__message_has_error_counter
@@ -2043,7 +2079,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.xml:0
 #, python-format
 msgid "Rename"
-msgstr ""
+msgstr "Ganti nama"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__activity_user_id
@@ -2518,7 +2554,7 @@ msgstr ""
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "Who has access to what?"
-msgstr ""
+msgstr "Siapa yang memiliki akses ke apa?"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2528,7 +2564,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_search
 #, python-format
 msgid "Workspace"
-msgstr ""
+msgstr "Ruang Kerja"
 
 #. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_member_unique_article_partner
@@ -2588,6 +2624,13 @@ msgstr ""
 #: code:addons/knowledge/controllers/main.py:0
 #, python-format
 msgid "You cannot change the permission of this member."
+msgstr ""
+
+#. module: knowledge
+#. odoo-python
+#: code:addons/knowledge/models/knowledge_cover.py:0
+#, python-format
+msgid "You cannot create a new Knowledge Cover from here."
 msgstr ""
 
 #. module: knowledge

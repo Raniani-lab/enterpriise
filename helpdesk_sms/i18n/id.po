@@ -23,7 +23,7 @@ msgstr ""
 #. module: helpdesk_sms
 #: model:ir.model,name:helpdesk_sms.model_helpdesk_stage
 msgid "Helpdesk Stage"
-msgstr ""
+msgstr "Tahap Mejabantuan"
 
 #. module: helpdesk_sms
 #: model:ir.model,name:helpdesk_sms.model_helpdesk_ticket
@@ -40,6 +40,7 @@ msgstr "Templat SMS"
 msgid ""
 "SMS automatically sent to the customer when the ticket reaches this stage."
 msgstr ""
+"SMS secara otomatis dikirim ke pelanggan saat tiket mencapai tahap ini."
 
 #. module: helpdesk_sms
 #: model:ir.actions.act_window,name:helpdesk_sms.action_helpdesk_ticket_mass_mail_sms

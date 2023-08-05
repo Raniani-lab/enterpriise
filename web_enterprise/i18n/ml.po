@@ -285,6 +285,13 @@ msgstr ""
 
 #. module: web_enterprise
 #. odoo-javascript
+#: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
+#, python-format
+msgid "Register"
+msgstr ""
+
+#. module: web_enterprise
+#. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Register your subscription"
@@ -303,6 +310,13 @@ msgstr "റിമൂവ്"
 #, python-format
 msgid "Renew your subscription"
 msgstr ""
+
+#. module: web_enterprise
+#. odoo-javascript
+#: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
+#, python-format
+msgid "Retry"
+msgstr "വീണ്ടും ശ്രമിക്കുക"
 
 #. module: web_enterprise
 #. odoo-javascript

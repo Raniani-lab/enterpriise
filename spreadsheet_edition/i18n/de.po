@@ -209,7 +209,7 @@ msgstr "Nur fehlende Zellen anzeigen"
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/side_panels/pivot_details_side_panel.xml:0
 #, python-format
 msgid "Domain"
-msgstr "Domain"
+msgstr "Bereich"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -245,7 +245,7 @@ msgstr "Bearbeiten"
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/side_panels/pivot_details_side_panel.xml:0
 #, python-format
 msgid "Edit domain"
-msgstr "Domain bearbeiten"
+msgstr "Bereich bearbeiten"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -547,7 +547,7 @@ msgstr "Liste wieder einfügen"
 #: code:addons/spreadsheet_edition/static/src/bundle/o_spreadsheet/menu_item_registry.js:0
 #, python-format
 msgid "Re-insert pivot"
-msgstr "Pivot-Tabelle wieder einfügen"
+msgstr "Pivot-Tabelle erneut einfügen"
 
 #. module: spreadsheet_edition
 #. odoo-javascript

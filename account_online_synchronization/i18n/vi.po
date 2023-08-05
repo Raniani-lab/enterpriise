@@ -615,8 +615,8 @@ msgstr "Số lỗi"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "Số thông báo cần xử lý"
+msgid "Number of messages requiring action"
+msgstr ""
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__message_has_error_counter

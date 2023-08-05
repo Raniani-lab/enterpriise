@@ -47,7 +47,7 @@ msgstr "Program Kupon"
 #: code:addons/helpdesk_sale_loyalty/wizard/helpdesk_sale_coupon_generate.py:0
 #, python-format
 msgid "Coupon created"
-msgstr ""
+msgstr "Kupon dibuat"
 
 #. module: helpdesk_sale_loyalty
 #. odoo-python
@@ -60,7 +60,7 @@ msgstr "Kupon"
 #. module: helpdesk_sale_loyalty
 #: model:ir.model.fields,field_description:helpdesk_sale_loyalty.field_helpdesk_ticket__coupons_count
 msgid "Coupons count"
-msgstr ""
+msgstr "Jumlah kupon"
 
 #. module: helpdesk_sale_loyalty
 #: model:ir.model.fields,field_description:helpdesk_sale_loyalty.field_helpdesk_sale_coupon_generate__create_uid
@@ -85,18 +85,18 @@ msgstr "Buat"
 #. module: helpdesk_sale_loyalty
 #: model:ir.model,name:helpdesk_sale_loyalty.model_helpdesk_sale_coupon_generate
 msgid "Generate Sales Coupon from Helpdesk"
-msgstr ""
+msgstr "Buat Kupon Sales dari Mejabantuan"
 
 #. module: helpdesk_sale_loyalty
 #: model:ir.actions.act_window,name:helpdesk_sale_loyalty.helpdesk_sale_coupon_generate_action
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_loyalty.helpdesk_sale_coupon_generate_view_form
 msgid "Generate a Coupon"
-msgstr ""
+msgstr "Buat Kupon"
 
 #. module: helpdesk_sale_loyalty
 #: model:ir.model.fields,field_description:helpdesk_sale_loyalty.field_helpdesk_ticket__coupon_ids
 msgid "Generated Coupons"
-msgstr ""
+msgstr "Kupon yang DIbuat"
 
 #. module: helpdesk_sale_loyalty
 #: model:ir.model,name:helpdesk_sale_loyalty.model_helpdesk_ticket

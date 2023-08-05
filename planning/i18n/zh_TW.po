@@ -404,6 +404,8 @@ msgid ""
 "<i title=\"Create\" class=\"o_gantt_cell_add fa fa-plus d-flex justify-"
 "content-center \"></i>"
 msgstr ""
+"<i title=\"建立\" class=\"o_gantt_cell_add fa fa-plus d-flex justify-content-"
+"center \"></i>"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.period_report_template
@@ -643,6 +645,16 @@ msgstr ""
 #: code:addons/planning/models/planning_recurrency.py:0
 #, python-format
 msgid "An shift must be in the same company as its recurrency."
+msgstr ""
+
+#. module: planning
+#. odoo-python
+#: code:addons/planning/models/planning_recurrency.py:0
+#, python-format
+msgid ""
+"Recurring shifts cannot be planned further than 999 days in the future. If "
+"you need to schedule beyond this limit, please set the recurrence to repeat "
+"forever instead."
 msgstr ""
 
 #. module: planning

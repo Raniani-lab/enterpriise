@@ -1225,7 +1225,7 @@ msgstr "Liczba błędów"
 
 #. module: account_consolidation
 #: model:ir.model.fields,help:account_consolidation.field_consolidation_period__message_needaction_counter
-msgid "Number of messages which requires an action"
+msgid "Number of messages requiring action"
 msgstr "Liczba wiadomości wymagających akcji"
 
 #. module: account_consolidation

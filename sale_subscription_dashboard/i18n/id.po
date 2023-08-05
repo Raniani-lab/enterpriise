@@ -26,7 +26,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "# Subscriptions"
-msgstr ""
+msgstr "# Langganan"
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -866,7 +866,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/controllers/revenue_kpis_dashboard.py:0
 #, python-format
 msgid "Unknown error"
-msgstr ""
+msgstr "Error tidak diketahui"
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript

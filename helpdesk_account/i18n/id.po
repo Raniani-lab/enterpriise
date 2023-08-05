@@ -43,7 +43,7 @@ msgstr "Catatan Kredit"
 #. module: helpdesk_account
 #: model:ir.model.fields,field_description:helpdesk_account.field_helpdesk_ticket__invoices_count
 msgid "Credit Notes Count"
-msgstr ""
+msgstr "Jumlah Note Kredi"
 
 #. module: helpdesk_account
 #: model:ir.model,name:helpdesk_account.model_helpdesk_ticket
@@ -55,12 +55,12 @@ msgstr "Tiket Helpdesk"
 #: code:addons/helpdesk_account/wizard/account_move_reversal.py:0
 #, python-format
 msgid "Helpdesk Ticket #%s"
-msgstr ""
+msgstr "Tiket Mejabantuan #%s"
 
 #. module: helpdesk_account
 #: model_terms:ir.ui.view,arch_db:helpdesk_account.view_account_move_reversal_inherit_helpdesk_account
 msgid "Invoices to Refund"
-msgstr ""
+msgstr "Faktur untuk di-Refund"
 
 #. module: helpdesk_account
 #: model:ir.model,name:helpdesk_account.model_account_move
@@ -82,7 +82,7 @@ msgstr "Pengembalian Dana"
 #: code:addons/helpdesk_account/wizard/account_move_reversal.py:0
 #, python-format
 msgid "Refund created"
-msgstr ""
+msgstr "Refund dibuat"
 
 #. module: helpdesk_account
 #: model:ir.model.fields,field_description:helpdesk_account.field_account_move_reversal__helpdesk_sale_order_id
@@ -92,9 +92,9 @@ msgstr "Order Penjualan"
 #. module: helpdesk_account
 #: model:ir.model.fields,field_description:helpdesk_account.field_account_move_reversal__suitable_move_ids
 msgid "Suitable Move"
-msgstr ""
+msgstr "Pergerakan Cocok"
 
 #. module: helpdesk_account
 #: model:ir.model.fields,field_description:helpdesk_account.field_account_move_reversal__suitable_sale_order_ids
 msgid "Suitable Sale Order"
-msgstr ""
+msgstr "Sale Order Cocok"

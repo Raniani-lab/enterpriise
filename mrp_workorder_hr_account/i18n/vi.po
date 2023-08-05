@@ -41,7 +41,7 @@ msgstr "Nhân viên"
 #. module: mrp_workorder_hr_account
 #: model:ir.model.fields,field_description:mrp_workorder_hr_account.field_mrp_workorder__employee_analytic_account_line_ids
 msgid "Employee Analytic Account Line"
-msgstr "Mục tài khoản phân tích nhân viên"
+msgstr "Dòng tài khoản phân tích nhân viên"
 
 #. module: mrp_workorder_hr_account
 #: model:ir.model,name:mrp_workorder_hr_account.model_report_mrp_account_enterprise_mrp_cost_structure

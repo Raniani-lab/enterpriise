@@ -263,7 +263,7 @@ msgstr "Favorit"
 #. module: industry_fsm_sale
 #: model:product.template,name:industry_fsm_sale.field_service_product_product_template
 msgid "Field Service"
-msgstr ""
+msgstr "Layanan Lapangan"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_product_product__fsm_partner_price_currency_id
@@ -290,14 +290,14 @@ msgstr "Dalam Proses"
 #: code:addons/industry_fsm_sale/models/product_product.py:0
 #, python-format
 msgid "Invalid operator: %s"
-msgstr ""
+msgstr "Operator tidak valid: %s"
 
 #. module: industry_fsm_sale
 #. odoo-python
 #: code:addons/industry_fsm_sale/models/product_product.py:0
 #, python-format
 msgid "Invalid value: %s"
-msgstr ""
+msgstr "Value tidak valid: %s"
 
 #. module: industry_fsm_sale
 #. odoo-python
@@ -379,7 +379,7 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model_terms:ir.actions.act_window,help:industry_fsm_sale.project_task_action_to_invoice_fsm
 msgid "No tasks found. Let's create one!"
-msgstr ""
+msgstr "Tidak ada task yang ditemukan. Ayo buat baru!"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields.selection,name:industry_fsm_sale.selection__report_project_task_user_fsm__invoice_status__no

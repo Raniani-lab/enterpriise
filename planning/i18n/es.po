@@ -353,7 +353,7 @@ msgstr ""
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "<span class=\"fw-bold\">Schedule</span>"
-msgstr ""
+msgstr "<span class=\"fw-bold\">Horario</span>"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_slot_template_view_form
@@ -586,6 +586,16 @@ msgstr "Permitir eliminar asignación"
 #, python-format
 msgid "An shift must be in the same company as its recurrency."
 msgstr "Un turno debe estar en la misma compañía que su recurrencia."
+
+#. module: planning
+#. odoo-python
+#: code:addons/planning/models/planning_recurrency.py:0
+#, python-format
+msgid ""
+"Recurring shifts cannot be planned further than 999 days in the future. If "
+"you need to schedule beyond this limit, please set the recurrence to repeat "
+"forever instead."
+msgstr ""
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_report_action_analysis
@@ -1769,7 +1779,7 @@ msgstr "Guardar"
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.employee_no_email_list_wizard
 msgid "Save & Send Schedule"
-msgstr ""
+msgstr "Guardar y enviar horario"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__template_creation
@@ -1788,7 +1798,7 @@ msgstr "Guardar este turno una vez que esté listo."
 #: model:ir.ui.menu,name:planning.planning_menu_schedule
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_gantt
 msgid "Schedule"
-msgstr "Planificacion"
+msgstr "Planificación"
 
 #. module: planning
 #: model:ir.actions.act_window,name:planning.planning_action_schedule_by_resource

@@ -356,7 +356,7 @@ msgstr ""
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.authorization_error
 msgid "Back to my account"
-msgstr ""
+msgstr "返回我的帳戶"
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__company_id

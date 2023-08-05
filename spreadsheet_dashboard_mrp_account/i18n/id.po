@@ -24,7 +24,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
-msgid "Available time (min)t"
+msgid "Available time (min)"
 msgstr ""
 
 #. module: spreadsheet_dashboard_mrp_account
@@ -38,7 +38,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
-msgid "Average cost / unitt"
+msgid "Average cost / unit"
 msgstr ""
 
 #. module: spreadsheet_dashboard_mrp_account
@@ -54,7 +54,7 @@ msgstr "Terbaru"
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "KPI"
-msgstr ""
+msgstr "KPI"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
@@ -150,7 +150,7 @@ msgstr "Produk"
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
-msgid "Productive time (min)t"
+msgid "Productive time (min)"
 msgstr ""
 
 #. module: spreadsheet_dashboard_mrp_account
@@ -189,14 +189,14 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Top Products"
-msgstr ""
+msgstr "Produk Terbaik"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Top Responsibles"
-msgstr ""
+msgstr "Penanggung Jawab Terbaik"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
@@ -209,7 +209,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
-msgid "Total time (min)t"
+msgid "Total time (min)"
 msgstr ""
 
 #. module: spreadsheet_dashboard_mrp_account
@@ -255,7 +255,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "since last period"
-msgstr ""
+msgstr "semenjak periode terakhir"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript

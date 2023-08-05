@@ -3,8 +3,8 @@
 # 	* account_accountant_batch_payment
 # 
 # Translators:
-# Éder Brito <britoederr@gmail.com>, 2022
 # Martin Trigaux, 2022
+# Éder Brito <britoederr@gmail.com>, 2022
 # Layna Nascimento, 2023
 # 
 msgid ""
@@ -163,8 +163,8 @@ msgstr "Pago"
 msgid ""
 "Preset to create journal entries during a invoices and payments matching"
 msgstr ""
-"Predefinido para criar entradas de diário durante uma correspondência de "
-"faturas e pagamentos"
+"Configuração para criar entradas do diário quando ocorre uma correspondência"
+" entre faturas e pagamentos"
 
 #. module: account_accountant_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_accountant_batch_payment.view_account_batch_payment_search_bank_rec_widget

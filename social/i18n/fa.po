@@ -7,7 +7,7 @@
 # Hamid Darabi, 2023
 # Mostafa Barmshory <mostafa.barmshory@gmail.com>, 2023
 # Faraz Sadri Alamdari <ifarazir@gmail.com>, 2023
-# Farid Hariri <fhari1234@gmail.com>, 2023
+# F Hariri <fhari1234@gmail.com>, 2023
 # Hamed Mohammadi <hamed@dehongi.com>, 2023
 # Hanna Kheradroosta, 2023
 # Martin Trigaux, 2023
@@ -1068,8 +1068,8 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,help:social.field_social_media__message_needaction_counter
 #: model:ir.model.fields,help:social.field_social_post__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "تعداد پیام ها که نیاز به عمل"
+msgid "Number of messages requiring action"
+msgstr ""
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_media__message_has_error_counter

@@ -14,6 +14,8 @@
 # Martin Trigaux, 2022
 # Jiří Podhorecký, 2022
 # Aleš Fiala <f.ales1@seznam.cz>, 2023
+# Jakub Smolka, 2023
+# Tomáš Píšek, 2023
 # 
 msgid ""
 msgstr ""
@@ -21,7 +23,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Aleš Fiala <f.ales1@seznam.cz>, 2023\n"
+"Last-Translator: Tomáš Píšek, 2023\n"
 "Language-Team: Czech (https://app.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -603,7 +605,7 @@ msgstr "Vše"
 #. module: helpdesk
 #: model:ir.ui.menu,name:helpdesk.helpdesk_ticket_menu_all
 msgid "All Tickets"
-msgstr "Všechny požadavky"
+msgstr "Všechny tikety"
 
 #. module: helpdesk
 #: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_team__privacy_visibility__internal
@@ -2177,7 +2179,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
 #, python-format
 msgid "My Tickets"
-msgstr "Moje požadavky"
+msgstr "Mé tikety"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla__name
@@ -2352,8 +2354,8 @@ msgstr "Počet chyb"
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__message_needaction_counter
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "Počet zpráv, které vyžadují akci"
+msgid "Number of messages requiring action"
+msgstr "Počet zpráv vyžadujících akci"
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__message_has_error_counter
@@ -2883,7 +2885,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_view_tree
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "SLA Policies"
-msgstr "SLA zásady"
+msgstr "SLA pravidla"
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_res_partner__sla_ids
@@ -2934,7 +2936,7 @@ msgstr "Stav smlouvy SLA"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_report_analysis_view_search
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
 msgid "SLA Status Analysis"
-msgstr "Analýza stavu SLA"
+msgstr "Analýzy dodržování SLA"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_report_analysis__sla_status_fail
@@ -3266,7 +3268,7 @@ msgstr "Tag"
 #: model:ir.ui.menu,name:helpdesk.helpdesk_tag_menu
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tag_view_form
 msgid "Tags"
-msgstr "Tagy"
+msgstr "Štítky"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_tag_action
@@ -3603,7 +3605,7 @@ msgstr "Požadavek vytvořen"
 #: model_terms:ir.ui.view,arch_db:helpdesk.portal_my_home_menu_helpdesk
 #, python-format
 msgid "Tickets"
-msgstr "Požadavky"
+msgstr "Tikety"
 
 #. module: helpdesk
 #. odoo-javascript
@@ -3619,7 +3621,7 @@ msgstr "Požadavky"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_graph_analysis
 #, python-format
 msgid "Tickets Analysis"
-msgstr "Analýza požadavku"
+msgstr "Analýza tiketů"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_digest_digest__kpi_helpdesk_tickets_closed

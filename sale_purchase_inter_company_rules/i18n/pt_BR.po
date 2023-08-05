@@ -3,7 +3,7 @@
 # 	* sale_purchase_inter_company_rules
 # 
 # Translators:
-# grazziano <gra.negocia@gmail.com>, 2022
+# grazziano <grazziano.do+transifex@gmail.com>, 2022
 # Martin Trigaux, 2022
 # Rodrigo de Almeida Sottomaior Macedo <rmsolucoeseminformatica@protonmail.com>, 2022
 # Éder Brito <britoederr@gmail.com>, 2022
@@ -124,8 +124,8 @@ msgstr ""
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/sale_order.py:0
 #, python-format
-msgid "Provide one user for intercompany relation for % "
-msgstr "Fornecer um usuário para relação interempresarial para %"
+msgid "Provide one user for intercompany relation for %(name)s "
+msgstr "Forneça um usuário para relação interempresarial para %(name)s"
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model,name:sale_purchase_inter_company_rules.model_purchase_order

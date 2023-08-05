@@ -8,7 +8,7 @@
 # 0ba0ac30481a756f36528ba6f9a4317e_6443a87 <52eefe24349934c364624ef40611b7a3_1010754>, 2022
 # KRISTINA PALAŠ <kristina.palas@storm.hr>, 2022
 # Vladimir Vrgoč, 2022
-# Hrvoje Sić <hrvoje.sic@gmail.com>, 2022
+# hrvoje sić <hrvoje.sic@gmail.com>, 2022
 # Vladimir Olujić <olujic.vladimir@storm.hr>, 2022
 # Karolina Tonković <karolina.tonkovic@storm.hr>, 2022
 # Bole <bole@dajmi5.com>, 2022
@@ -1071,8 +1071,8 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,help:social.field_social_media__message_needaction_counter
 #: model:ir.model.fields,help:social.field_social_post__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "Broj poruka koje zahtijevaju aktivnost"
+msgid "Number of messages requiring action"
+msgstr ""
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_media__message_has_error_counter

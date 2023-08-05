@@ -32,7 +32,7 @@ msgstr ""
 #. module: snailmail_account_followup
 #: model_terms:ir.ui.view,arch_db:snailmail_account_followup.manual_reminder_view_form_inherit_snailmail
 msgid "By post"
-msgstr ""
+msgstr "Per posta ordinaria"
 
 #. module: snailmail_account_followup
 #: model:ir.model,name:snailmail_account_followup.model_res_partner
@@ -57,7 +57,7 @@ msgstr "Invia Lettera"
 #. module: snailmail_account_followup
 #: model_terms:ir.ui.view,arch_db:snailmail_account_followup.manual_reminder_view_form_inherit_snailmail
 msgid "Sending this document by post will cost"
-msgstr ""
+msgstr "La spedizione del documento via posta ordinaria costerà"
 
 #. module: snailmail_account_followup
 #: model:ir.model.fields,field_description:snailmail_account_followup.field_account_followup_manual_reminder__snailmail
@@ -67,12 +67,12 @@ msgstr "Posta ordinaria"
 #. module: snailmail_account_followup
 #: model:ir.model.fields,field_description:snailmail_account_followup.field_account_followup_manual_reminder__snailmail_cost
 msgid "Stamps"
-msgstr ""
+msgstr "Francobolli"
 
 #. module: snailmail_account_followup
 #: model:ir.model,name:snailmail_account_followup.model_account_followup_manual_reminder
 msgid "Wizard for sending manual reminders to clients"
-msgstr ""
+msgstr "Procedura guidata per l'inoltro manuale di promemoria ai clienti"
 
 #. module: snailmail_account_followup
 #. odoo-python
@@ -82,3 +82,5 @@ msgid ""
 "You are trying to send a letter by post, but no follow-up contact has any "
 "address set"
 msgstr ""
+"Stai cercando di inviare una lettera tramite posta ma  non è stato indicato "
+"nessun indirizzo per il contatto di follow-up"

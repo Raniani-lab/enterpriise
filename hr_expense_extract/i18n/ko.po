@@ -5,8 +5,8 @@
 # Translators:
 # Martin Trigaux, 2022
 # JH CHOI <hwangtog@gmail.com>, 2022
-# Sarah Park, 2023
 # Daye Jeong, 2023
+# Sarah Park, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:29+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Daye Jeong, 2023\n"
+"Last-Translator: Sarah Park, 2023\n"
 "Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -497,7 +497,7 @@ msgstr "추출 대기중"
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__hr_expense__extract_state__waiting_upload
 msgid "Waiting upload"
-msgstr ""
+msgstr "업로드 대기 중"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__hr_expense__extract_state__waiting_validation

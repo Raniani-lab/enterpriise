@@ -421,7 +421,7 @@ msgstr "Beispielbeleg: %s"
 #: model:ir.actions.server,name:hr_expense_extract.hr_expense_parse_action_server
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
 msgid "Send For Digitization"
-msgstr "Für Digitalisierung versenden"
+msgstr "Zur Digitalisierung versenden"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_res_company__expense_extract_show_ocr_option_selection

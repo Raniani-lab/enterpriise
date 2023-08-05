@@ -114,8 +114,8 @@ msgstr "%(name)s 의 회사 간 항목에는 사용자가 한 명 이상 있어�
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/sale_order.py:0
 #, python-format
-msgid "Provide one user for intercompany relation for % "
-msgstr "%에 대한 회사 간 관계를 위해 한 명 이상의 사용자 필요"
+msgid "Provide one user for intercompany relation for %(name)s "
+msgstr ""
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model,name:sale_purchase_inter_company_rules.model_purchase_order

@@ -33,4 +33,4 @@ msgstr "稅務報表備妥"
 #. module: account_reports_tax_reminder
 #: model:mail.activity.type,summary:account_reports_tax_reminder.mail_activity_type_tax_report_to_be_sent
 msgid "Tax report is ready to be sent to the administration"
-msgstr ""
+msgstr "稅務報表已準備好發送至行政機關"

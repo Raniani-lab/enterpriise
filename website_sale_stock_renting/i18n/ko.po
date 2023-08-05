@@ -73,8 +73,8 @@ msgstr "판매 주문 내역"
 #. odoo-javascript
 #: code:addons/website_sale_stock_renting/static/src/js/renting_mixin.js:0
 #, python-format
-msgid "The product is not available for all the selected time period:\n"
-msgstr "전체 선택 기간 동안 사용하실 수 있습니다:\n"
+msgid "The product is not available for the following time period(s):\n"
+msgstr ""
 
 #. module: website_sale_stock_renting
 #. odoo-javascript

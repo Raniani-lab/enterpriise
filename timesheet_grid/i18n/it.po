@@ -33,7 +33,7 @@ msgstr "%s Impiegati"
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
 msgid "<span class=\"col-auto ms-2\">minutes</span>"
-msgstr ""
+msgstr "<span class=\"col-auto ms-2\">minuti</span>"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
@@ -422,6 +422,8 @@ msgid ""
 "Check that your employees correctly filled in their timesheets and that "
 "their time is billable."
 msgstr ""
+"Verifica che i dipendenti abbiano compilato in maniera corretta i fogli ore "
+"e che il loro tempo sia fatturabile."
 
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_res_company
@@ -454,7 +456,7 @@ msgstr "Conferma tempo impiegato"
 #: code:addons/timesheet_grid/static/src/js/tours/timesheet_grid.js:0
 #, python-format
 msgid "Congratulations, you are now a master of Timesheets."
-msgstr ""
+msgstr "Congratulazioni, ora sei un maestro di Fogli ore."
 
 #. module: timesheet_grid
 #: model_terms:ir.actions.act_window,help:timesheet_grid.action_timesheet_previous_month
@@ -524,6 +526,8 @@ msgstr "Ridurre il tempo"
 msgid ""
 "Define an 'hourly cost' on the employee to track the cost of their time."
 msgstr ""
+"Definisci il \"costo orario\" di un dipendente per tenere traccia del costo "
+"del loro tempo."
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_create_timesheet_view_form
@@ -569,6 +573,8 @@ msgid ""
 "Difference between the number of %s allocated to the project and the number "
 "of %s recorded."
 msgstr ""
+"Differenza tra il numero di %s assegnate al progetto e il numero di %s "
+"registrate."
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -578,6 +584,8 @@ msgid ""
 "Difference between the number of %s allocated to the task and the number of "
 "%s recorded."
 msgstr ""
+"Differenza tra il numero di %s assegnate all'attività e il numero di %s "
+"registrate."
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -665,6 +673,8 @@ msgstr "Visualizza tempo timer"
 msgid ""
 "Download our web/mobile apps to track your time from anywhere, even offline."
 msgstr ""
+"Scarica la nostra app per dispositivi mobili per tracciare il tuo tempo "
+"ovunque, anche offline."
 
 #. module: timesheet_grid
 #: model:ir.model.fields.selection,name:timesheet_grid.selection__account_analytic_line__validated_status__draft
@@ -798,7 +808,7 @@ msgstr "Ultimo aggiornamento il"
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_employee__last_validated_timesheet_date
 msgid "Last Validated Timesheet Date"
-msgstr ""
+msgstr "Data utlimo foglio ore convalidato"
 
 #. module: timesheet_grid
 #: model:ir.ui.menu,name:timesheet_grid.menu_timesheet_grid_validate_previous_week
@@ -815,6 +825,10 @@ msgid ""
 "can also directly add 15 minutes to this project by hitting the <b>shift + "
 "[A] keys</b>.</i>"
 msgstr ""
+"Per questo progetto, avvia il <b>timer</b> premendo il <b>tasto [a]</b>. "
+"Passa facilmente da un progetto all'altro utilizzando i tasti. <i>Consiglio:"
+" puoi anche aggiungere direttamente 15 minuti al progetto premendo <b>MAIUSC"
+" + [A]</b>.</i>"
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -854,7 +868,7 @@ msgstr "Unisci"
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_merge_wizard_view_form
 msgid "Merge Timesheet"
-msgstr ""
+msgstr "Unisci foglio ore"
 
 #. module: timesheet_grid
 #. odoo-python
@@ -863,7 +877,7 @@ msgstr ""
 #: model:ir.model,name:timesheet_grid.model_hr_timesheet_merge_wizard
 #, python-format
 msgid "Merge Timesheets"
-msgstr ""
+msgstr "Unisci fogli ore"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__timesheet_min_duration
@@ -1113,6 +1127,8 @@ msgid ""
 "Set reminders in settings to notify employees who didn't record their "
 "timesheet"
 msgstr ""
+"Imposta dei promemoria nelle impostazioni per notificare i dipendenti che "
+"non hanno registrato i propri fogli ore"
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -1167,6 +1183,8 @@ msgid ""
 "Stop the <b>timer</b> when you are done. <i>Tip: hit <b>[Enter]</b> in the "
 "description to automatically log your activity.</i>"
 msgstr ""
+"Ferma il <b>timer</b> quando hai finito. <i>Consiglio: premi <b>[INVIO]</b> "
+"nella descrizione per registrare automaticamente la tua attività.</i>"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_form
@@ -1212,13 +1230,19 @@ msgid ""
 "00:30 (assuming you have a round up of 15 min). We recommend having the same"
 " value for the minimal duration and for the round up."
 msgstr ""
+"La durata dei fogli ore codificati attraverso il timer verranno "
+"automaticamente arrotondati a questo numero. Ad esempio,  se fermi il timer "
+"a 00:16:56 minuti, la durata della voce del foglio ore verrà automaticamente"
+" arrotondata a 00:30 minuti (presumendo che tu abbia un valore di "
+"arrotondamento pari a 15 min). Ti consigliamo di inserire lo stesso valore "
+"per la durata minima e l'arrotondamento."
 
 #. module: timesheet_grid
 #. odoo-javascript
 #: code:addons/timesheet_grid/static/src/js/timesheet_grid/timesheet_grid_controller_mixin.js:0
 #, python-format
 msgid "The timesheet entry has successfully been created."
-msgstr ""
+msgstr "La voce del foglio ore è stata creata con successo."
 
 #. module: timesheet_grid
 #: model:ir.model.constraint,message:timesheet_grid.constraint_project_task_create_timesheet_time_positive
@@ -1230,7 +1254,7 @@ msgstr "I tempi del foglio ore devono essere positivi"
 #: code:addons/timesheet_grid/wizard/timesheet_merge_wizard.py:0
 #, python-format
 msgid "The timesheets have successfully been merged."
-msgstr ""
+msgstr "I fogli ore sono stati uniti con successo."
 
 #. module: timesheet_grid
 #. odoo-python
@@ -1251,7 +1275,7 @@ msgstr "I fogli di lavoro sono stati convalidati con successo."
 #: code:addons/timesheet_grid/wizard/timesheet_merge_wizard.py:0
 #, python-format
 msgid "The timesheets must have the same encoding unit"
-msgstr ""
+msgstr "I fogli ore devono avere la stessa unità di codifica"
 
 #. module: timesheet_grid
 #. odoo-python
@@ -1268,6 +1292,8 @@ msgid ""
 "There are no timesheets to reset to draft or they have already been "
 "invoiced."
 msgstr ""
+"Non sono presenti fogli ore da ripristinare in bozza oppure sono stati già "
+"fatturati."
 
 #. module: timesheet_grid
 #. odoo-python
@@ -1276,6 +1302,8 @@ msgstr ""
 msgid ""
 "This project isn't expected to have task during this period. Planned hours :"
 msgstr ""
+"Non sono previste attività per il progetto, in questo periodo. Ore "
+"pianificate:"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_project_task_create_timesheet__time_spent
@@ -1302,12 +1330,12 @@ msgstr "Avvio timer"
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_kanban
 msgid "Timer is Paused"
-msgstr ""
+msgstr "Timer in pausa"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_kanban
 msgid "Timer is Running"
-msgstr ""
+msgstr "Timer in esecuzione"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_employee__timesheet_manager_id
@@ -1324,7 +1352,7 @@ msgstr "Approvatore foglio ore"
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_timesheet_grid_mixin
 msgid "Timesheet Grid mixin"
-msgstr ""
+msgstr "Mixin griglia fogli ore"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__duration_unit_amount
@@ -1340,7 +1368,7 @@ msgstr "Riga del Timesheet"
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__unit_amount_validate
 msgid "Timesheet Unit Time"
-msgstr ""
+msgstr "Unità di tempo foglio ore"
 
 #. module: timesheet_grid
 #: model:ir.actions.server,name:timesheet_grid.timesheet_reminder_user_ir_actions_server
@@ -1595,11 +1623,10 @@ msgstr "Non si può usare il timer sui fogli ore convalidati."
 #: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
 msgid ""
-"You cannot validate the timesheets from employees that are not part of your "
-"team or there are no timesheets to validate."
+"You cannot validate the selected timesheets as they either belong to "
+"employees who are not part of your team or are not in a state that can be "
+"validated. This may be due to the fact that they are dated in the future."
 msgstr ""
-"Non puoi convalidare i timesheet dei dipendenti che non fanno parte della "
-"tua squadra o non ci sono timesheet da convalidare."
 
 #. module: timesheet_grid
 #: model:ir.model.fields.selection,name:timesheet_grid.selection__res_company__timesheet_mail_employee_interval__months
@@ -1630,7 +1657,7 @@ msgstr "cancellato"
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
 msgid "letter shortcut"
-msgstr ""
+msgstr "lettera scelta rapida"
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -1665,11 +1692,11 @@ msgstr "premere"
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
 msgid "press Shift + a letter shortcut"
-msgstr ""
+msgstr "premi MAIUSC o una lettera scelta rapida"
 
 #. module: timesheet_grid
 #. odoo-javascript
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
 msgid "to add"
-msgstr ""
+msgstr "da aggiungere"

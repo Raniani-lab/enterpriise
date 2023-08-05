@@ -81,7 +81,7 @@ msgstr "ID de la aplicación"
 #. module: social_instagram
 #: model_terms:ir.ui.view,arch_db:social_instagram.res_config_settings_view_form
 msgid "App Secret"
-msgstr "Secreto de aplicación"
+msgstr "Secreto de la aplicación"
 
 #. module: social_instagram
 #. odoo-javascript

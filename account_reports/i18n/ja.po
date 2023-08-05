@@ -1738,6 +1738,13 @@ msgstr "汎用税務レポートカスタムハンドラー (税務 -> 会計)"
 
 #. module: account_reports
 #. odoo-python
+#: code:addons/account_reports/models/account_journal_report.py:0
+#, python-format
+msgid "Go to report configuration"
+msgstr ""
+
+#. module: account_reports
+#. odoo-python
 #: code:addons/account_reports/models/account_sales_report.py:0
 #, python-format
 msgid "Goods"
@@ -3037,6 +3044,15 @@ msgstr "テキスト"
 
 #. module: account_reports
 #. odoo-python
+#: code:addons/account_reports/models/account_journal_report.py:0
+#, python-format
+msgid ""
+"The 'load more limit' setting of this report is too low to display all the "
+"lines of the entry you're trying to show."
+msgstr ""
+
+#. module: account_reports
+#. odoo-python
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid ""
@@ -3460,6 +3476,13 @@ msgstr "XLSX"
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_main_template
 msgid "You are using custom exchange rates."
 msgstr "カスタムの為替レートを使用しています。"
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_move.py:0
+#, python-format
+msgid "You can't open a tax report from a move without a VAT closing date."
+msgstr ""
 
 #. module: account_reports
 #. odoo-python

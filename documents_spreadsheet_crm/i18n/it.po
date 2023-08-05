@@ -25,7 +25,7 @@ msgstr ""
 #: code:addons/documents_spreadsheet_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Actuals vs Target"
-msgstr ""
+msgstr "Effettivi vs obiettivo"
 
 #. module: documents_spreadsheet_crm
 #. odoo-javascript
@@ -51,7 +51,7 @@ msgstr "Opportunità perse per fase"
 #. module: documents_spreadsheet_crm
 #: model:spreadsheet.template,name:documents_spreadsheet_crm.spreadsheet_template_mrr_nrr_pipeline_revenue
 msgid "MRR/NRR Pipeline Revenue Report (Monthly)"
-msgstr ""
+msgstr "Rendiconto sui ricavi della pipeline MRR/NRR (mensile)"
 
 #. module: documents_spreadsheet_crm
 #. odoo-javascript
@@ -63,7 +63,7 @@ msgstr "Opportunità per fase"
 #. module: documents_spreadsheet_crm
 #: model:spreadsheet.template,name:documents_spreadsheet_crm.spreadsheet_template_pipeline_revenue
 msgid "Pipeline Revenue Report (Monthly)"
-msgstr ""
+msgstr "Rendiconto ricavi pipeline (mensile)"
 
 #. module: documents_spreadsheet_crm
 #: model:spreadsheet.template,name:documents_spreadsheet_crm.spreadsheet_template_pipeline_dashboard

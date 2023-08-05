@@ -4,7 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2022
+# Nancy Momoland <thanh.np2502@gmail.com>, 2022
 # Thi Huong Nguyen, 2023
 # 
 msgid ""
@@ -146,7 +146,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_avatax.field_res_partner__avatax_unique_code
 #: model:ir.model.fields,field_description:account_avatax.field_res_users__avatax_unique_code
 msgid "Avalara Code"
-msgstr ""
+msgstr "Mã Avalara"
 
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_res_config_settings__avalara_partner_code
@@ -366,7 +366,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_avatax.field_account_move__is_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_account_payment__is_avatax
 msgid "Is Avatax"
-msgstr ""
+msgstr "Là Avatax"
 
 #. module: account_avatax
 #: model:ir.model,name:account_avatax.model_account_move
@@ -592,7 +592,7 @@ msgstr ""
 #: model:ir.model.fields,help:account_avatax.field_res_partner__avatax_unique_code
 #: model:ir.model.fields,help:account_avatax.field_res_users__avatax_unique_code
 msgid "Use this code to cross-reference in the Avalara portal."
-msgstr ""
+msgstr "Sử dụng mã này để tham khảo chéo trên cổng thông tin Avalara."
 
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_exemption__valid_country_ids

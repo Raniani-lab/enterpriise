@@ -52,6 +52,11 @@ msgid ""
 "- Private: Private addresses are only visible by authorized users and contain sensitive data (employee home addresses, ...).\n"
 "- Other: Other address for the company (e.g. subsidiary, ...)"
 msgstr ""
+"-Contatto: utilizzalo per organizzare i dettagli di contatto dei dipendenti di un'azienda specifica (ad es. CEO, CFO...).\n"
+"-Indirizzo di fatturazione: indirizzo di preferenza per tutte le fatture. Viene selezionato di default quando fatturi un ordine che appartiene all'azienda.\n"
+"-Indirizzo di consegna: indirizzo di preferenza per tutte le consegne. Viene selezionato di default quando consegni un ordine che appartiene all'azienda.\n"
+"-Privato: gli indirizzi privati sono visibili solo per gli utenti autorizzati e contengono dati sensibili (indirizzi di residenza dei dipendenti...).\n"
+"-Altro: indirizzo secondario dell'azienda (ad es. società sussidiaria)"
 
 #. module: account_followup
 #: model:account_followup.followup.line,name:account_followup.demo_followup_line1
@@ -1072,7 +1077,7 @@ msgstr "Con fatture scadute"
 #. module: account_followup
 #: model:ir.model,name:account_followup.model_account_followup_manual_reminder
 msgid "Wizard for sending manual reminders to clients"
-msgstr ""
+msgstr "Procedura guidata per l'inoltro manuale di promemoria ai clienti"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form

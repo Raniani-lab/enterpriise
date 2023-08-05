@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-14 06:17+0000\n"
+"POT-Creation-Date: 2023-05-23 08:36+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
 "Last-Translator: Anna, 2023\n"
 "Language-Team: Estonian (https://app.transifex.com/odoo/teams/41243/et/)\n"
@@ -40,16 +40,6 @@ msgstr "(vajaduse korral)"
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
 msgid "(optional)"
 msgstr "(valikuline)"
-
-#. module: account_sepa_direct_debit
-#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
-msgid ""
-". As part of your rights, you are entitled to a refund from your bank under "
-"the terms and conditions of your agreement with your bank. Your rights are "
-"explained in a statement that you can obtain from your bank. A refund must "
-"be claimed within 8 weeks starting from the date on which your account was "
-"debited."
-msgstr ""
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
@@ -186,6 +176,16 @@ msgstr "Tegevuse liigi sümbol"
 #, python-format
 msgid "All the payments in the batch must have the same SDD scheme."
 msgstr "Kõikidel koondmaksetel peab olema sama SDD-skeem."
+
+#. module: account_sepa_direct_debit
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
+msgid ""
+"As part of your rights, you are entitled to a refund from your bank under "
+"the terms and conditions of your agreement with your bank. Your rights are "
+"explained in a statement that you can obtain from your bank. A refund must "
+"be claimed within 8 weeks starting from the date on which your account was "
+"debited."
+msgstr ""
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__message_attachment_count
@@ -649,8 +649,8 @@ msgstr "Selle mandaadi põhjal makstud arvete arv."
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_sdd_mandate__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "Tegutsemist nõudvate sõnumite arv"
+msgid "Number of messages requiring action"
+msgstr ""
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_sdd_mandate__message_has_error_counter
@@ -859,6 +859,11 @@ msgid "SDD scheme is set on the customer mandate."
 msgstr "SDD skeem on kliendi mandaadil seatud. "
 
 #. module: account_sepa_direct_debit
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
+msgid "SEPA Business-to-Business Direct Debit Mandate"
+msgstr ""
+
+#. module: account_sepa_direct_debit
 #: model:account.payment.method,name:account_sepa_direct_debit.payment_method_sdd
 msgid "SEPA Direct Debit"
 msgstr "SEPA otsekorraldus"
@@ -1042,6 +1047,15 @@ msgid ""
 msgstr ""
 "See arve makstakse otsekorraldusega ja on\n"
 "                        saadetud ainult informatiivsel eesmärgil."
+
+#. module: account_sepa_direct_debit
+#: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_mandate_form
+msgid ""
+"This mandate is only intended for business-to-business transactions. You are"
+" not entitled to a refund from your bank after your account has been "
+"debited, but you are entitled to request your bank not to debit your account"
+" up until the day on which the payment is due."
+msgstr ""
 
 #. module: account_sepa_direct_debit
 #. odoo-python

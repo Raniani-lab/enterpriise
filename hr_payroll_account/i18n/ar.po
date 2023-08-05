@@ -5,14 +5,15 @@
 # Translators:
 # Malaz Abuidris <msea@odoo.com>, 2023
 # Martin Trigaux, 2023
+# Wil Odoo, 2023
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-14 06:18+0000\n"
+"POT-Creation-Date: 2023-05-09 13:09+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Martin Trigaux, 2023\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Arabic (https://app.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,6 +25,11 @@ msgstr ""
 #: model:ir.model,name:hr_payroll_account.model_account_chart_template
 msgid "Account Chart Template"
 msgstr "نموذج مخطط الحساب "
+
+#. module: hr_payroll_account
+#: model:account.account,name:hr_payroll_account.demo_account
+msgid "Account Payslip Houserental"
+msgstr "حساب إيصالات دفع تأجير المنازل "
 
 #. module: hr_payroll_account
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account.hr_salary_rule_view_form
@@ -128,6 +134,11 @@ msgstr "لا يحتوي أحد هياكل إيصالات الدفع على دف�
 #: model:ir.model,name:hr_payroll_account.model_hr_payslip
 msgid "Pay Slip"
 msgstr "إيصال الدفع "
+
+#. module: hr_payroll_account
+#: model:account.journal,name:hr_payroll_account.hr_payroll_account_journal
+msgid "Salaries"
+msgstr "الرواتب "
 
 #. module: hr_payroll_account
 #: model:ir.model.fields,field_description:hr_payroll_account.field_hr_payroll_structure__journal_id

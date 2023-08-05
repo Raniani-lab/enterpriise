@@ -337,6 +337,8 @@ msgid ""
 "A set of condition and actions which will be available to all attachments "
 "matching the conditions"
 msgstr ""
+"Rangkaian ketentuan dan tindakan yang akan tersedia untuk semua lampiran "
+"yang cocok dengan ketentuan"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__parent_folder_id
@@ -622,7 +624,7 @@ msgstr ""
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_finance_afv
 msgid "Ask for Validation"
-msgstr ""
+msgstr "Minta Validasi"
 
 #. module: documents
 #: model:documents.facet,name:documents.documents_marketing_assets
@@ -926,7 +928,7 @@ msgstr ""
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_internal_deprecate
 msgid "Deprecate"
-msgstr ""
+msgstr "Usang"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_internal_status_deprecated
@@ -1070,7 +1072,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model,name:documents.model_documents_folder
 msgid "Documents Workspace"
-msgstr ""
+msgstr "Ruang Kerja Dokumen"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_mixin
@@ -1199,12 +1201,12 @@ msgstr "File"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__datas
 msgid "File Content (base64)"
-msgstr ""
+msgstr "Konten File (base64)"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__raw
 msgid "File Content (raw)"
-msgstr ""
+msgstr "Konten File (raw)"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__file_size
@@ -1427,7 +1429,7 @@ msgstr "Pengikut"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__is_shared
 msgid "Is Shared"
-msgstr ""
+msgstr "Apakah Dibagi"
 
 #. module: documents
 #: model:documents.facet,name:documents.documents_internal_knowledge
@@ -1595,7 +1597,7 @@ msgstr "Lampiran Utama"
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_internal_mad
 msgid "Mark As Draft"
-msgstr ""
+msgstr "Tandai Sebagai Draf"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__remove_activities
@@ -1808,8 +1810,8 @@ msgstr "Jumlah kesalahan"
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__message_needaction_counter
 #: model:ir.model.fields,help:documents.field_documents_share__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "Jumlah pesan yang butuh tindakan"
+msgid "Number of messages requiring action"
+msgstr ""
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__message_has_error_counter
@@ -2264,7 +2266,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__document_ids
 msgid "Shared Documents"
-msgstr ""
+msgstr "Dokumen yang Dibagi"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__tag_ids
@@ -2696,7 +2698,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.facet_view_search
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_tree
 msgid "Workspace"
-msgstr ""
+msgstr "Ruang Kerja"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.folder_action

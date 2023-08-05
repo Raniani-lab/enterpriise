@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Malaz Abuidris <msea@odoo.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:17+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2023\n"
 "Language-Team: Arabic (https://app.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -417,6 +418,13 @@ msgstr "التحويلات "
 #: model:ir.model.fields.selection,name:account_auto_transfer.selection__account_transfer_model__frequency__year
 msgid "Yearly"
 msgstr "سنويًا"
+
+#. module: account_auto_transfer
+#. odoo-python
+#: code:addons/account_auto_transfer/models/account_move_line.py:0
+#, python-format
+msgid "You cannot set Tax on Automatic Transfer's entries."
+msgstr "لا يمكنك تعيين ضريبة في قيود التحويل التلقائي. "
 
 #. module: account_auto_transfer
 #: model_terms:ir.ui.view,arch_db:account_auto_transfer.view_transfer_model_form

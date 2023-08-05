@@ -7,6 +7,7 @@
 # Stefan Reisich <nafex@gmx.net>, 2023
 # Larissa Manderfeld, 2023
 # Martin Trigaux, 2023
+# Hugo Carlier, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Martin Trigaux, 2023\n"
+"Last-Translator: Hugo Carlier, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1415,7 +1416,7 @@ msgid ""
 "Worksheet {{ object.name }}{{ (' - ' + object.partner_id.name) if "
 "object.partner_id.name else '' }}.pdf"
 msgstr ""
-"Arbeitsblatt {{ object.name }}{{ (' - ' + object.partner_id.name) wenn "
+"Arbeitsblatt {{ object.name }}{{ (' - ' + object.partner_id.name) if "
 "object.partner_id.name else '' }}.pdf"
 
 #. module: industry_fsm

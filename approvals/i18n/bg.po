@@ -5,6 +5,7 @@
 # Translators:
 # Vladimir Petrov <vladimir.petrov@gmail.com>, 2023
 # Igor Sheludko <igor.sheludko@gmail.com>, 2023
+# Martin Trigaux, 2023
 # Ivan Goychev <igoychev.projects@gmail.com>, 2023
 # Rosen Vladimirov <vladimirov.rosen@gmail.com>, 2023
 # Albena Mincheva <albena_vicheva@abv.bg>, 2023
@@ -12,7 +13,6 @@
 # aleksandar ivanov, 2023
 # Maria Boyadjieva <marabo2000@gmail.com>, 2023
 # Александра Николова <alexandra1nikolova@gmail.com>, 2023
-# Martin Trigaux, 2023
 # Nikola Iliev, 2023
 # 
 msgid ""
@@ -845,8 +845,8 @@ msgstr "Брой грешки"
 
 #. module: approvals
 #: model:ir.model.fields,help:approvals.field_approval_request__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "Брой съобщения, които изискват внимание"
+msgid "Number of messages requiring action"
+msgstr ""
 
 #. module: approvals
 #: model:ir.model.fields,help:approvals.field_approval_request__message_has_error_counter

@@ -615,7 +615,7 @@ msgstr "오류 횟수"
 #: model:ir.model.fields,help:quality.field_quality_alert_team__message_needaction_counter
 #: model:ir.model.fields,help:quality.field_quality_check__message_needaction_counter
 #: model:ir.model.fields,help:quality.field_quality_point__message_needaction_counter
-msgid "Number of messages which requires an action"
+msgid "Number of messages requiring action"
 msgstr "조치가 필요한 메시지 수"
 
 #. module: quality
@@ -783,7 +783,7 @@ msgstr "품질 관리 테스트 유형"
 msgid ""
 "Quality Point will apply to every Products in the selected Product "
 "Categories."
-msgstr ""
+msgstr "선택한 카테고리의 모든 품목에 품질 점수가 적용됩니다. "
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_point__product_ids

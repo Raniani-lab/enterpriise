@@ -11,6 +11,7 @@
 # Jiří Podhorecký, 2022
 # Martin Trigaux, 2022
 # SlavekB <slavek.banko@axis.cz>, 2023
+# Jakub Smolka, 2023
 # 
 msgid ""
 msgstr ""
@@ -18,7 +19,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:19+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: SlavekB <slavek.banko@axis.cz>, 2023\n"
+"Last-Translator: Jakub Smolka, 2023\n"
 "Language-Team: Czech (https://app.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -169,7 +170,7 @@ msgstr "Partner"
 #. module: stock_enterprise
 #: model:ir.ui.menu,name:stock_enterprise.stock_dashboard_menuitem
 msgid "Performance"
-msgstr "Výkon"
+msgstr "Efektivita skladového hospodářství"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__picking_name

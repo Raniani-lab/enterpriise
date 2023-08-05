@@ -34,7 +34,7 @@ msgstr ""
 #: code:addons/sign_itsme/static/src/js/document_signable.js:0
 #, python-format
 msgid "Confirm your identity"
-msgstr "Ihre identität bestätigen"
+msgstr "Ihre Identität bestätigen"
 
 #. module: sign_itsme
 #: model:sign.item.role,name:sign_itsme.sign_item_role_itsme_customer
@@ -84,7 +84,7 @@ msgstr "Name"
 #: code:addons/sign_itsme/static/src/xml/templates.xml:0
 #, python-format
 msgid "Please confirm your identity to finalize your signature."
-msgstr "Bitte bestätigen Sie Ihre Identität, um Ihre Unterschrift abzulegen."
+msgstr "Bitte bestätigen Sie Ihre Identität, um Ihre Signatur abzulegen."
 
 #. module: sign_itsme
 #. odoo-python

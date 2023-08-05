@@ -57,7 +57,7 @@ msgstr "ID de la aplicación"
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.res_config_settings_view_form
 msgid "App Secret"
-msgstr "Secreto de aplicación"
+msgstr "Secreto de la aplicación"
 
 #. module: social_facebook
 #. odoo-javascript

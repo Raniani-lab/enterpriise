@@ -1475,6 +1475,13 @@ msgid "You can't apply a package type. First, scan product or select a line"
 msgstr ""
 
 #. module: stock_barcode
+#. odoo-javascript
+#: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
+#, python-format
+msgid "You can't register scrap at this state of the operation"
+msgstr ""
+
+#. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.view_backorder_confirmation
 msgid "You have processed less products than the initial demand:"
 msgstr ""

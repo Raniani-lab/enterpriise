@@ -153,6 +153,8 @@ msgid ""
 "Employee's private email must be set to use \"Send Access Link\" function:\n"
 "%s"
 msgstr ""
+"L'indirizzo e-mail privato del dipendente deve essere configurato per l'utilizzo con la funzionalità \"Invia link di accesso\":\n"
+"%s"
 
 #. module: documents_hr
 #: model:documents.tag,name:documents_hr.documents_hr_documents_employees
@@ -230,6 +232,8 @@ msgid ""
 "You must set a private address on the Employee in order to use Document's "
 "features."
 msgstr ""
+"È necessario configurare un indirizzo e-mail privato per il dipendente in "
+"modo da poter utilizzare le funzionalità dell'app Documenti."
 
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_res_company__documents_hr_folder

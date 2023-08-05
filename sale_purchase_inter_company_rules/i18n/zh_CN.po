@@ -111,8 +111,8 @@ msgstr "为 %(name)s 提供至少一名用户进行公司间关系"
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/sale_order.py:0
 #, python-format
-msgid "Provide one user for intercompany relation for % "
-msgstr "请为%提供一个公司间用户"
+msgid "Provide one user for intercompany relation for %(name)s "
+msgstr ""
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model,name:sale_purchase_inter_company_rules.model_purchase_order

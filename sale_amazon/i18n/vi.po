@@ -729,7 +729,7 @@ msgstr "Đơn bán hàng"
 #. module: sale_amazon
 #: model:ir.model,name:sale_amazon.model_sale_order_line
 msgid "Sales Order Line"
-msgstr "Mục đơn bán hàng"
+msgstr "Dòng đơn bán hàng"
 
 #. module: sale_amazon
 #: model:ir.model,name:sale_amazon.model_crm_team
@@ -1010,7 +1010,7 @@ msgstr "Chỉ được phép tồn tại một đơn bán hàng cho một Mã đ
 msgid ""
 "There can only exist one sale order line for a given Amazon Item Reference."
 msgstr ""
-"Chỉ được phép tồn tại một mục đơn bán hàng cho một Mã mặt hàng Amazon. "
+"Chỉ được phép tồn tại một dòng đơn bán hàng cho một Mã mặt hàng Amazon. "
 
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_form

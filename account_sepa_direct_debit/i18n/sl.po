@@ -638,8 +638,8 @@ msgstr ""
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_sdd_mandate__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "Število sporočil, ki zahtevajo dejavnost"
+msgid "Number of messages requiring action"
+msgstr ""
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_sdd_mandate__message_has_error_counter

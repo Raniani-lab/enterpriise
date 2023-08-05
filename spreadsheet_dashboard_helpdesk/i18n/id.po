@@ -26,7 +26,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Agent"
-msgstr ""
+msgstr "Agen"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
@@ -49,28 +49,28 @@ msgstr "Pelanggan"
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Hours to assign"
-msgstr ""
+msgstr "Jam untuk ditugaskan"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Hours to close"
-msgstr ""
+msgstr "Jam untuk ditutup"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Hours to respond"
-msgstr ""
+msgstr "Jam untuk menanggapi"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "KPI"
-msgstr ""
+msgstr "KPI"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
@@ -108,28 +108,28 @@ msgstr "Tim"
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Ticket Analysis by Assigned To"
-msgstr ""
+msgstr "Analisis Tiket oleh Ditugaskan Ke"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Ticket Analysis by Customer"
-msgstr ""
+msgstr "Analisis Tiket oleh Tim"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Ticket Analysis by Team"
-msgstr ""
+msgstr "Analisis Tiket oleh Tim"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Ticket Analysis by Ticket Type"
-msgstr ""
+msgstr "Analisis Tiket berdasarkan Tipe Tiket"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
@@ -156,63 +156,63 @@ msgstr "Tiket"
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Tickets by Stage"
-msgstr ""
+msgstr "Tiket berdasarkan Tahap"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Tickets by Type"
-msgstr ""
+msgstr "Tiket berdasarkan Tipe"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Time to Assign"
-msgstr ""
+msgstr "Waktu untuk Ditugaska"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Time to Close"
-msgstr ""
+msgstr "Waktu untuk Ditutup"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Time to Respond"
-msgstr ""
+msgstr "Waktu untuk Menanggapi"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Top Agents"
-msgstr ""
+msgstr "Agen Terbaik"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Top Customers"
-msgstr ""
+msgstr "Pelanggan Terbaik"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Top Teams"
-msgstr ""
+msgstr "Tim-Tim Terbaik"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Top Ticket Types"
-msgstr ""
+msgstr "Tipe-Tipe Tiket Terbaik"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
@@ -221,7 +221,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "last period"
-msgstr ""
+msgstr "periode terakhir"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
@@ -229,18 +229,18 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "since last period"
-msgstr ""
+msgstr "semenjak periode terakhir"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "stats - current"
-msgstr ""
+msgstr "stats - saat ini"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "stats - previous"
-msgstr ""
+msgstr "stats - sebelumnya"

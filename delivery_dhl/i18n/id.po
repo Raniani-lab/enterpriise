@@ -306,7 +306,7 @@ msgstr ""
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_label_image_format__epl2
 msgid "EPL2"
-msgstr ""
+msgstr "EPL2"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_region_code__eu
@@ -375,7 +375,7 @@ msgstr ""
 #. module: delivery_dhl
 #: model_terms:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form_with_provider_dhl
 msgid "Label Format"
-msgstr ""
+msgstr "Format Label"
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_label_image_format
@@ -441,7 +441,7 @@ msgstr ""
 #: code:addons/delivery_dhl/models/dhl_request.py:0
 #, python-format
 msgid "Please provide at least one item to ship."
-msgstr ""
+msgstr "Mohon sediakan setidaknya satu barang untuk dikirim."
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_package_weight_unit__l
@@ -543,6 +543,8 @@ msgid ""
 "The estimated shipping price cannot be computed because the weight is missing for the following product(s): \n"
 " %s"
 msgstr ""
+"Estimasi harga pengiriman tidak dapat dihitung karena berat tidak ada untuk produk berikut: \n"
+" %s"
 
 #. module: delivery_dhl
 #. odoo-python

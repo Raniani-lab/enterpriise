@@ -7,8 +7,8 @@
 # Tiago Baptista, 2022
 # Daniel C Santos <dcs@thinkopensolutions.pt>, 2022
 # Pedro Filipe <pedro2.10@hotmail.com>, 2022
-# Luiz Fernando <lfpsgs@outlook.com>, 2022
 # Ricardo Martins <ricardo.nbs.martins@gmail.com>, 2022
+# Luiz Fernando <lfpsgs@outlook.com>, 2022
 # Pedro Castro Silva <pedrocs@exo.pt>, 2022
 # Nuno Silva <nuno.silva@arxi.pt>, 2022
 # Reinaldo Ramos <reinaldo.ramos@arxi.pt>, 2022
@@ -1069,8 +1069,8 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,help:social.field_social_media__message_needaction_counter
 #: model:ir.model.fields,help:social.field_social_post__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "Número de mensagens que requerem uma ação"
+msgid "Number of messages requiring action"
+msgstr ""
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_media__message_has_error_counter

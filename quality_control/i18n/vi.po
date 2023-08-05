@@ -468,8 +468,8 @@ msgid ""
 "In case of Quality Check by Quantity, Move Line on which the Quality Check "
 "applies"
 msgstr ""
-"Trong trường hợp kiểm tra chất lượng theo số lượng, mục dịch chuyển áp dụng "
-"kiểm tra chất lượng"
+"Trong trường hợp kiểm tra chất lượng theo số lượng, dòng dịch chuyển áp dụng"
+" kiểm tra chất lượng"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form
@@ -500,7 +500,7 @@ msgstr "Cập nhật lần cuối vào"
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__lot_line_id
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__lot_line_id
 msgid "Lot Line"
-msgstr "Mục lô"
+msgstr "Dòng lô"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__is_lot_tested_fractionally
@@ -755,7 +755,7 @@ msgstr "Sản phẩm"
 #. module: quality_control
 #: model:ir.model,name:quality_control.model_stock_move_line
 msgid "Product Moves (Stock Move Line)"
-msgstr "Dịch chuyển sản phẩm (Mục dịch chuyển tồn kho)"
+msgstr "Dịch chuyển sản phẩm (Dòng dịch chuyển tồn kho)"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__uom_id
@@ -1075,7 +1075,7 @@ msgstr "Dịch chuyển tồn kho"
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__move_line_id
 msgid "Stock Move Line"
-msgstr "Mục dịch chuyển tồn kho"
+msgstr "Dòng dịch chuyển tồn kho"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_tag_view_search

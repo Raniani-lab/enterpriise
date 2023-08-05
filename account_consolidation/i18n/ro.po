@@ -1202,8 +1202,8 @@ msgstr "Numărul de erori"
 
 #. module: account_consolidation
 #: model:ir.model.fields,help:account_consolidation.field_consolidation_period__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "Număr de mesaje ce necesită intervenție"
+msgid "Number of messages requiring action"
+msgstr ""
 
 #. module: account_consolidation
 #: model:ir.model.fields,help:account_consolidation.field_consolidation_period__message_has_error_counter

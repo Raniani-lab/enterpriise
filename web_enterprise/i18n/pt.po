@@ -7,6 +7,7 @@
 # Diogo Fonseca <dsf@thinkopensolutions.pt>, 2022
 # Reinaldo Ramos <reinaldo.ramos@arxi.pt>, 2022
 # Manuela Silva <mmsrs@sky.com>, 2023
+# Wil Odoo, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:30+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Manuela Silva <mmsrs@sky.com>, 2023\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: Portuguese (https://app.transifex.com/odoo/teams/41243/pt/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -287,6 +288,13 @@ msgstr "Atualizar o estado da subscrição"
 
 #. module: web_enterprise
 #. odoo-javascript
+#: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
+#, python-format
+msgid "Register"
+msgstr "Registar"
+
+#. module: web_enterprise
+#. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Register your subscription"
@@ -305,6 +313,13 @@ msgstr "Remover"
 #, python-format
 msgid "Renew your subscription"
 msgstr "Renove a sua subscrição"
+
+#. module: web_enterprise
+#. odoo-javascript
+#: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
+#, python-format
+msgid "Retry"
+msgstr "Tentar Novamente"
 
 #. module: web_enterprise
 #. odoo-javascript

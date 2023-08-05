@@ -505,7 +505,7 @@ msgstr "Ihre Unterschrift annehmen"
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_log__request_state__signed
 msgid "After Signature"
-msgstr "Nach Unterschrift"
+msgstr "Nach der Signatur"
 
 #. module: sign
 #. odoo-javascript
@@ -2139,8 +2139,8 @@ msgstr "Anzahl der Fehler"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "Anzahl der Nachrichten, die eine Aktion erfordern"
+msgid "Number of messages requiring action"
+msgstr "Anzahl der Meldungen, die eine Aktion erfordern"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_has_error_counter
@@ -3529,6 +3529,19 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_requests
 msgid "There are no signatures request."
 msgstr "Es gibt keine Signaturanfragen."
+
+#. module: sign
+#. odoo-python
+#: code:addons/sign/models/sign_request.py:0
+#: code:addons/sign/models/sign_request.py:0
+#: code:addons/sign/models/sign_request.py:0
+#, python-format
+msgid ""
+"There was an issue downloading your document. Please contact an "
+"administrator."
+msgstr ""
+"Beim Herunterladen Ihres Dokuments ist ein Problem aufgetreten. Bitte wenden"
+" Sie sich an einen Administrator."
 
 #. module: sign
 #. odoo-javascript

@@ -47,7 +47,7 @@ msgstr "Nessun turno trovato. Creane uno!"
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_view_form_inherit_project_forecast
 msgid "Plan your resources for this project"
-msgstr ""
+msgstr "Pianifica le risorse per questo progetto"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_project_view_form_simplified_inherit_forecast

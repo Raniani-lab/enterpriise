@@ -120,7 +120,7 @@ msgstr "Dibuat pada"
 #. module: delivery_sendcloud
 #: model_terms:ir.ui.view,arch_db:delivery_sendcloud.view_delivery_carrier_form
 msgid "Default Package Type"
-msgstr ""
+msgstr "Tipe Paket Default"
 
 #. module: delivery_sendcloud
 #: model:ir.model.fields,field_description:delivery_sendcloud.field_delivery_carrier__sendcloud_default_package_type_id
@@ -454,6 +454,8 @@ msgid ""
 "The estimated shipping price cannot be computed because the weight is missing for the following product(s): \n"
 " %s"
 msgstr ""
+"Estimasi harga pengiriman tidak dapat dihitung karena berat tidak ada untuk produk berikut: \n"
+" %s"
 
 #. module: delivery_sendcloud
 #. odoo-python

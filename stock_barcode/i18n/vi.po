@@ -5,7 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # Duy BQ <duybq86@gmail.com>, 2022
-# Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2023
+# Nancy Momoland <thanh.np2502@gmail.com>, 2023
 # Thi Huong Nguyen, 2023
 # 
 msgid ""
@@ -603,7 +603,7 @@ msgstr "Thoát ra"
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock_barcode.field_stock_picking_type__restrict_scan_product
 msgid "Line's product must be scanned before the line can be edited"
-msgstr "Sản phẩm của mục phải được quét trước khi có thể chỉnh sửa mục"
+msgstr "Sản phẩm của dòng phải được quét trước khi có thể chỉnh sửa dòng"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
@@ -861,7 +861,7 @@ msgstr "Mã vạch sản phẩm"
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_move_line
 msgid "Product Moves (Stock Move Line)"
-msgstr "Dịch chuyển sản phẩm (Mục dịch chuyển tồn kho)"
+msgstr "Dịch chuyển sản phẩm (Dòng dịch chuyển tồn kho)"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_product_packaging
@@ -908,7 +908,7 @@ msgstr "Số lượng hoàn tất"
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock_barcode.field_stock_move_line__product_packaging_uom_qty
 msgid "Quantity of the Packaging in the UoM of the Stock Move Line."
-msgstr "Số lượng kiện hàng trong ĐVT của Mục dịch chuyển tồn kho."
+msgstr "Số lượng kiện hàng trong ĐVT của Dòng dịch chuyển tồn kho."
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_quant
@@ -1249,7 +1249,7 @@ msgid ""
 "with the line's one (%s)."
 msgstr ""
 "Số lượng đã quét đang dùng %s làm Đơn vị tính, nhưng ĐVT này không tương "
-"thích với ĐVT của mục (%s)."
+"thích với ĐVT của dòng (%s)."
 
 #. module: stock_barcode
 #. odoo-javascript
@@ -1510,7 +1510,14 @@ msgstr "Bạn sẽ quét %s hoặc một vị trí nguồn khác"
 msgid "You can't apply a package type. First, scan product or select a line"
 msgstr ""
 "Bạn không thể áp dụng một loại kiện hàng. Đầu tiên, quét sản phẩm hoặc chọn "
-"một mục"
+"một dòng"
+
+#. module: stock_barcode
+#. odoo-javascript
+#: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
+#, python-format
+msgid "You can't register scrap at this state of the operation"
+msgstr ""
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.view_backorder_confirmation

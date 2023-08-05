@@ -1127,14 +1127,14 @@ msgstr "Follower hinzufügen"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Alert Name"
-msgstr "Hinweis"
+msgstr "Benachrichtigungsname"
 
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_alert_action
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_alert
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_tree
 msgid "Alerts"
-msgstr "Hinweise"
+msgstr "Benachrichtigungen"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__recurring_live

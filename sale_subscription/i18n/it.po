@@ -30,6 +30,8 @@ msgid ""
 "\n"
 "%s to %s"
 msgstr ""
+"\n"
+"%s al %s"
 
 #. module: sale_subscription
 #. odoo-python
@@ -212,8 +214,8 @@ msgstr ""
 "                        <tr><td style=\"padding:15px 20px 10px 20px;\">\n"
 "                            <p>Ciao,</p>\n"
 "                            <p>ti chiediamo di spendere qualche minuto per la valutazione dei nostri servizi relativi al tuo abbonamento \"<strong t-out=\"object.name or ''\">Servizio di pulizia ufficio\"</strong>\"\n"
-"                               assigned to <strong t-out=\"object._rating_get_operator().name or ''\">Mitchell Admin</strong>.</p>\n"
-"                            <p>Appreziamo un tuo feedback che ci aiuterà a crescere.</p>\n"
+"                               assegnato a <strong t-out=\"object._rating_get_operator().name or ''\">Mitchell Admin</strong>.</p>\n"
+"                            <p>Apprezziamo un tuo feedback che ci aiuterà a crescere.</p>\n"
 "                        </td></tr>\n"
 "                        <tr><td style=\"padding:10px 20px\">\n"
 "                            <table summary=\"o_mail_notification\" style=\"width:100%;border-top:1px solid #e1e1e1;\">\n"
@@ -384,6 +386,8 @@ msgid ""
 "<span attrs=\"{'invisible': ['|', ('recurrence_id', '=', False), "
 "('subscription_management', '=', 'upsell')]}\">until</span>"
 msgstr ""
+"<span attrs=\"{'invisible': ['|', ('recurrence_id', '=', False), "
+"('subscription_management', '=', 'upsell')]}\">fino al</span>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
@@ -1916,7 +1920,7 @@ msgstr "Cronologia"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__history_count
 msgid "History Count"
-msgstr ""
+msgstr "Numero voci cronologia"
 
 #. module: sale_subscription
 #. odoo-python
@@ -2299,7 +2303,7 @@ msgstr "RMR dopo variazione"
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
 msgid "MRR changes"
-msgstr ""
+msgstr "cambiamenti MRR"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_log__recurring_monthly
@@ -2358,6 +2362,8 @@ msgid ""
 "Mix of negative recurring lines and non-recurring line. The contract should "
 "be fixed manually"
 msgstr ""
+"MIx di righe negative ricorrenti e righe non ricorrenti. Il contratto deve "
+"essere corretto manualmente"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__model_id
@@ -2573,7 +2579,7 @@ msgstr "Paga con"
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
 msgid "Payment Failure"
-msgstr ""
+msgstr "Mancato pagamento"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_payment_provider
@@ -2877,7 +2883,7 @@ msgstr "Rinnova"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__renew_state
 msgid "Renew State"
-msgstr ""
+msgstr "Rinnova stato"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order__subscription_management__renew
@@ -2903,7 +2909,7 @@ msgstr "Rinnovato"
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order__renew_state__renewing
 msgid "Renewing"
-msgstr ""
+msgstr "RInnovo"
 
 #. module: sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_report
@@ -3274,7 +3280,7 @@ msgstr "Invia"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__mail_post_autofollow
 msgid "Subscribe Recipients"
-msgstr ""
+msgstr "Iscrivi destinatari"
 
 #. module: sale_subscription
 #. odoo-python
@@ -3393,7 +3399,7 @@ msgstr "L'abbonamento è scaduto"
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_log__category
 msgid "Subscription stage category when the change occurred"
-msgstr ""
+msgstr "Categoria fase di abbonamento quando si verifica la variazione"
 
 #. module: sale_subscription
 #: model:mail.message.subtype,description:sale_subscription.subtype_stage_change
@@ -3759,6 +3765,9 @@ msgid ""
 "This will trigger the action on all linked subscriptions, regardless of "
 "possible timed conditions. Are you sure you want to proceed?"
 msgstr ""
+"In questo modo si attiverà l'azione su tutti gli abbonamenti collegati, "
+"indipendentemente da eventuali condizioni temporali. Siete sicuri di voler "
+"procedere?"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__trigger_condition__on_time

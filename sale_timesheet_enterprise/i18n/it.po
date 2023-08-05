@@ -66,6 +66,8 @@ msgid ""
 "Difference between the number of %s ordered on the sales order item and the "
 "number of %s delivered."
 msgstr ""
+"Differenza tra il numero di %s ordinate nell'articolo dell'ordine di vendita"
+" e il numero di %s consegnate."
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,help:sale_timesheet_enterprise.field_project_task__portal_progress
@@ -80,7 +82,7 @@ msgstr "Ore effettive"
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_account_analytic_line__has_so_access
 msgid "Has So Access"
-msgstr ""
+msgstr "Ha accesso all'ordine di vendita"
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_sharing_inherit_project_task_view_form
@@ -108,27 +110,27 @@ msgstr "Mese"
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__portal_effective_hours
 msgid "Portal Effective Hours"
-msgstr ""
+msgstr "Ore effettive portale"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__portal_progress
 msgid "Portal Progress"
-msgstr ""
+msgstr "Progresso del portale"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__portal_remaining_hours
 msgid "Portal Remaining Hours"
-msgstr ""
+msgstr "Ore residue portale"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__portal_subtask_effective_hours
 msgid "Portal Subtask Effective Hours"
-msgstr ""
+msgstr "Ore effettive sub-attività portale"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__portal_total_hours_spent
 msgid "Portal Total Hours Spent"
-msgstr ""
+msgstr "Ore totali impiegate portale"
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_sharing_inherit_project_task_view_form
@@ -236,3 +238,5 @@ msgid ""
 "With the 'all recorded timesheets' option, all timesheets will be invoiced without distinction, even if they haven't been validated. Additionally, all timesheets will be accessible in your customers' portal. \n"
 "When you choose the 'validated timesheets only' option, only the validated timesheets will be invoiced and appear in your customers' portal."
 msgstr ""
+"Grazie all'opzione \"tutti i fogli ore registrati\", saranno fatturati tutti i fogli ore senza alcuna distinzione anche se non sono stati convalidati. Inoltre, tutti i fogli ore saranno accessibili dal portale clienti.\n"
+"Selezionando l'opzione \"solo fogli ore convalidati\", verranno fatturati esclusivamente i fogli ore convalidati e appariranno nel portale clienti."

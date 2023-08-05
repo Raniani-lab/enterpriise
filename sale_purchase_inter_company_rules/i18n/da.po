@@ -6,7 +6,7 @@
 # Mads Søndergaard, 2022
 # Morten Schou <ms@msteknik.dk>, 2022
 # Mads Søndergaard, 2022
-# lhmflexerp <lhm@flexerp.dk>, 2022
+# Lærke Hedegaard Mathiasen <lhm@flexerp.dk>, 2022
 # Sanne Kristensen <sanne@vkdata.dk>, 2022
 # Martin Trigaux, 2022
 # 
@@ -123,8 +123,8 @@ msgstr ""
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/sale_order.py:0
 #, python-format
-msgid "Provide one user for intercompany relation for % "
-msgstr "Angiv en bruger til inter-virksomhed relation for %"
+msgid "Provide one user for intercompany relation for %(name)s "
+msgstr ""
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model,name:sale_purchase_inter_company_rules.model_purchase_order

@@ -1071,7 +1071,7 @@ msgstr "소셜 게시물과의 상호 작용 (예 : 공유, 댓글 등) 수"
 #. module: social
 #: model:ir.model.fields,help:social.field_social_media__message_needaction_counter
 #: model:ir.model.fields,help:social.field_social_post__message_needaction_counter
-msgid "Number of messages which requires an action"
+msgid "Number of messages requiring action"
 msgstr "조치가 필요한 메시지 수"
 
 #. module: social

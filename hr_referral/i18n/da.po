@@ -3,7 +3,7 @@
 # 	* hr_referral
 # 
 # Translators:
-# lhmflexerp <lhm@flexerp.dk>, 2022
+# Lærke Hedegaard Mathiasen <lhm@flexerp.dk>, 2022
 # Pernille Kristensen <pernillekristensen1994@gmail.com>, 2022
 # Sanne Kristensen <sanne@vkdata.dk>, 2022
 # Mads Søndergaard, 2022
@@ -935,8 +935,8 @@ msgstr "Antal fejl"
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "Antal meddelser der kræver handling"
+msgid "Number of messages requiring action"
+msgstr ""
 
 #. module: hr_referral
 #: model:ir.model.fields,help:hr_referral.field_hr_referral_reward__message_has_error_counter

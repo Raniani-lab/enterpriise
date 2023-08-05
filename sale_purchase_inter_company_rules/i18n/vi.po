@@ -119,8 +119,8 @@ msgstr ""
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/sale_order.py:0
 #, python-format
-msgid "Provide one user for intercompany relation for % "
-msgstr "Cung cấp một người dùng có mối quan hệ liên công ty cho % "
+msgid "Provide one user for intercompany relation for %(name)s "
+msgstr "Cung cấp một người dùng có mối quan hệ liên công ty cho %(name)s "
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model,name:sale_purchase_inter_company_rules.model_purchase_order
@@ -140,7 +140,7 @@ msgstr "Đơn bán hàng"
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model,name:sale_purchase_inter_company_rules.model_sale_order_line
 msgid "Sales Order Line"
-msgstr "Mục đơn bán hàng"
+msgstr "Dòng đơn bán hàng"
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields,help:sale_purchase_inter_company_rules.field_res_company__rule_type

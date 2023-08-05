@@ -768,7 +768,7 @@ msgstr "Milestone"
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "My Department's Projects"
-msgstr ""
+msgstr "I progetti del mio dipartimento"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
@@ -784,7 +784,7 @@ msgstr "I miei progetti preferiti"
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "My Favorites Projects"
-msgstr ""
+msgstr "I miei progetti preferiti"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm

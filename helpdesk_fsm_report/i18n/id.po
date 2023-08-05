@@ -22,7 +22,7 @@ msgstr ""
 #. module: helpdesk_fsm_report
 #: model:ir.model,name:helpdesk_fsm_report.model_helpdesk_create_fsm_task
 msgid "Create a Field Service task"
-msgstr ""
+msgstr "Buat task Layanan Lapangan"
 
 #. module: helpdesk_fsm_report
 #: model:ir.model.fields,field_description:helpdesk_fsm_report.field_helpdesk_create_fsm_task__worksheet_template_id

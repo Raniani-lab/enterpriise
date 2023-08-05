@@ -8,8 +8,8 @@
 # Gergő Kertész <gergo.kertesz@maxflow.hu>, 2022
 # Tamás Dombos, 2022
 # Krisztián Juhász <juhasz.krisztian@josafar.hu>, 2022
-# Ákos Nagy <akos.nagy@oregional.hu>, 2022
 # Tamás Németh <ntomasz81@gmail.com>, 2022
+# Ákos Nagy <akos.nagy@oregional.hu>, 2022
 # Martin Trigaux, 2022
 # krnkris, 2022
 # gezza <geza.nagy@oregional.hu>, 2023
@@ -1199,8 +1199,8 @@ msgstr "Hibák száma"
 
 #. module: account_consolidation
 #: model:ir.model.fields,help:account_consolidation.field_consolidation_period__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "Üzenetek száma, melyek műveletet igényelnek"
+msgid "Number of messages requiring action"
+msgstr ""
 
 #. module: account_consolidation
 #: model:ir.model.fields,help:account_consolidation.field_consolidation_period__message_has_error_counter

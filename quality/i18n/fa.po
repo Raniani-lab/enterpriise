@@ -6,7 +6,7 @@
 # Sepehr Khoshnood <sepehr.kho@gmail.com>, 2023
 # Zahed Alfak <tamass4116@gmail.com>, 2023
 # Hamid Darabi, 2023
-# Farid Hariri <fhari1234@gmail.com>, 2023
+# F Hariri <fhari1234@gmail.com>, 2023
 # Hamed Mohammadi <hamed@dehongi.com>, 2023
 # Martin Trigaux, 2023
 # Hanna Kheradroosta, 2023
@@ -626,8 +626,8 @@ msgstr "تعداد خطاها"
 #: model:ir.model.fields,help:quality.field_quality_alert_team__message_needaction_counter
 #: model:ir.model.fields,help:quality.field_quality_check__message_needaction_counter
 #: model:ir.model.fields,help:quality.field_quality_point__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "تعداد پیام ها که نیاز به عمل"
+msgid "Number of messages requiring action"
+msgstr ""
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__message_has_error_counter

@@ -200,7 +200,7 @@ msgstr "ID von IAP-OCR anfragen"
 #: model:ir.actions.server,name:hr_recruitment_extract.ir_actions_server_digitize_cv
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_extract.hr_recruitment_extract_view_form
 msgid "Send For Digitization"
-msgstr "Für Digitalisierung versenden"
+msgstr "Zur Digitalisierung versenden"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_res_company__recruitment_extract_show_ocr_option_selection

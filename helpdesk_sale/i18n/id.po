@@ -35,12 +35,12 @@ msgstr "Tiket Helpdesk"
 #: model:ir.model.fields,field_description:helpdesk_sale.field_helpdesk_ticket__sale_order_id
 #: model:ir.model.fields,field_description:helpdesk_sale.field_helpdesk_ticket_report_analysis__sale_order_id
 msgid "Ref. Sales Order"
-msgstr ""
+msgstr "Referensi Sales Order"
 
 #. module: helpdesk_sale
 #: model:ir.model,name:helpdesk_sale.model_helpdesk_sla_report_analysis
 msgid "SLA Status Analysis"
-msgstr ""
+msgstr "Analisis Status SLA"
 
 #. module: helpdesk_sale
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale.helpdesk_ticket_view_search_inherit_helpdesk_sale
@@ -50,9 +50,9 @@ msgstr "Order Penjualan"
 #. module: helpdesk_sale
 #: model:ir.model,name:helpdesk_sale.model_helpdesk_ticket_report_analysis
 msgid "Ticket Analysis"
-msgstr ""
+msgstr "Analisis Tiket"
 
 #. module: helpdesk_sale
 #: model:res.groups,name:helpdesk_sale.group_use_helpdesk_sale_timesheet
 msgid "Use Time Billing"
-msgstr ""
+msgstr "Gunakan Billing Waktu"

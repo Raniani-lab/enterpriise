@@ -7,9 +7,9 @@
 # Hildeberto Abreu Magalhães <hildeberto@gmail.com>, 2022
 # Martin Trigaux, 2022
 # Éder Brito <britoederr@gmail.com>, 2023
-# Kevilyn Rosa, 2023
 # Layna Nascimento, 2023
 # adrianojprado <adrianojprado@gmail.com>, 2023
+# Kevilyn Rosa, 2023
 # 
 msgid ""
 msgstr ""
@@ -17,7 +17,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: adrianojprado <adrianojprado@gmail.com>, 2023\n"
+"Last-Translator: Kevilyn Rosa, 2023\n"
 "Language-Team: Portuguese (Brazil) (https://app.transifex.com/odoo/teams/41243/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -386,7 +386,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Aggregate"
-msgstr ""
+msgstr "Agregar"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2416,7 +2416,7 @@ msgstr "Linhas"
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_request__mail_activity_id
 msgid "Linked Activity"
-msgstr ""
+msgstr "Atividade relacionada."
 
 #. module: web_studio
 #. odoo-javascript

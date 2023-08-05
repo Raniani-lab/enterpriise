@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-23 08:35+0000\n"
+"POT-Creation-Date: 2023-07-26 10:06+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
 "Last-Translator: Yoshi Tashiro (Quartile) <tashiro@roomsfor.hk>, 2023\n"
 "Language-Team: Japanese (https://app.transifex.com/odoo/teams/41243/ja/)\n"
@@ -1530,11 +1530,6 @@ msgid "New salvage amount for the asset"
 msgstr "資産のための新サルベージ量"
 
 #. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_calendar_event_id
-msgid "Next Activity Calendar Event"
-msgstr "次の活動カレンダーイベント"
-
-#. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_date_deadline
 msgid "Next Activity Deadline"
 msgstr "次の活動期限"
@@ -1645,8 +1640,8 @@ msgstr "エラー数"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "アクションを必要とするメッセージの数"
+msgid "Number of messages requiring action"
+msgstr ""
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__message_has_error_counter
@@ -1721,6 +1716,7 @@ msgstr "購入:資産"
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/wizard/asset_modify.py:0
+#: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "Re-evaluate"
 msgstr "再検討"
@@ -1733,6 +1729,7 @@ msgstr ""
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_move_line__asset_ids
+#: model_terms:ir.ui.view,arch_db:account_asset.view_move_line_form_asset_inherit
 msgid "Related Assets"
 msgstr "関連資産"
 
@@ -2120,6 +2117,13 @@ msgstr "下書き資産と関連している仕訳を記入できません。前
 
 #. module: account_asset
 #. odoo-python
+#: code:addons/account_asset/wizard/asset_modify.py:0
+#, python-format
+msgid "You can't re-evaluate the asset before the lock date."
+msgstr ""
+
+#. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "You cannot archive a record that is not closed"
@@ -2164,6 +2168,13 @@ msgstr ""
 
 #. module: account_asset
 #. odoo-python
+#: code:addons/account_asset/models/account_asset.py:0
+#, python-format
+msgid "You cannot dispose of an asset before the lock date."
+msgstr ""
+
+#. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "You cannot reset to draft an entry related to a posted asset"
@@ -2175,6 +2186,13 @@ msgstr "記帳済資産と関連している仕訳を下書き状態にリセッ
 #, python-format
 msgid "You cannot resume at a date equal to or before the pause date"
 msgstr "一時停止の日付の当日、またはその日付より前の日に再開できません"
+
+#. module: account_asset
+#. odoo-python
+#: code:addons/account_asset/wizard/asset_modify.py:0
+#, python-format
+msgid "You cannot select the same account as the Depreciation Account"
+msgstr ""
 
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_balance

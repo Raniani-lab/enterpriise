@@ -485,7 +485,7 @@ msgstr "Đơn mua hàng"
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_forecast_details__purchase_order_line_ids
 msgid "Purchase Order Line"
-msgstr "Mục đơn mua hàng"
+msgstr "Dòng đơn mua hàng"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_forecast_details__moves_qty

@@ -2127,8 +2127,8 @@ msgstr "Veateadete arv"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "Tegutsemist nõudvate sõnumite arv"
+msgid "Number of messages requiring action"
+msgstr ""
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_has_error_counter
@@ -3491,6 +3491,17 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_requests
 msgid "There are no signatures request."
 msgstr "Allkirjataotlused puuduvad"
+
+#. module: sign
+#. odoo-python
+#: code:addons/sign/models/sign_request.py:0
+#: code:addons/sign/models/sign_request.py:0
+#: code:addons/sign/models/sign_request.py:0
+#, python-format
+msgid ""
+"There was an issue downloading your document. Please contact an "
+"administrator."
+msgstr ""
 
 #. module: sign
 #. odoo-javascript

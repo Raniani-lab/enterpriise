@@ -2357,7 +2357,7 @@ msgstr "Menilai Rata-Rata Teks"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_stage__rating_template_id
 msgid "Rating Email Template"
-msgstr ""
+msgstr "Templat Rating Email"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__rating_last_feedback

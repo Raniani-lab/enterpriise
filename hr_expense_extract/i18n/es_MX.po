@@ -457,7 +457,7 @@ msgid ""
 "The data extraction is not finished yet. The extraction usually takes "
 "between 5 and 10 seconds."
 msgstr ""
-"Aún no ha terminado la extracción de datos. Usualmente toma entre 5 y 10 "
+"La extracción de datos aún no ha terminado, suele tomar entre 5 y 10 "
 "segundos."
 
 #. module: hr_expense_extract

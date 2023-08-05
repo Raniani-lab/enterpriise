@@ -112,12 +112,12 @@ msgstr ""
 #. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_rental_order_wizard__has_lines_missing_stock
 msgid "Has lines whose products have insufficient stock"
-msgstr "Có các mục chứa sản phẩm không có đủ số lượng hàng tồn kho"
+msgstr "Có các dòng chứa sản phẩm không có đủ số lượng hàng tồn kho"
 
 #. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_rental_order_wizard__has_tracked_lines
 msgid "Has lines with tracked products"
-msgstr "Có các mục chứa sản phẩm được theo dõi"
+msgstr "Có các dòng chứa sản phẩm được theo dõi"
 
 #. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_res_company__rental_loc_id
@@ -290,7 +290,7 @@ msgstr "Lô đã trả"
 #. module: sale_stock_renting
 #: model:ir.model,name:sale_stock_renting.model_sale_order_line
 msgid "Sales Order Line"
-msgstr "Mục đơn bán hàng"
+msgstr "Dòng đơn bán hàng"
 
 #. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_product_product__preparation_time
@@ -395,7 +395,7 @@ msgstr "Kho hàng"
 #: code:addons/sale_stock_renting/wizard/rental_configurator.py:0
 #, python-format
 msgid "You cannot change the product of a picked-up line."
-msgstr "Bạn không thể đổi sản phẩm của mục đã lấy hàng."
+msgstr "Bạn không thể đổi sản phẩm của dòng đã lấy hàng."
 
 #. module: sale_stock_renting
 #. odoo-python
@@ -403,7 +403,8 @@ msgstr "Bạn không thể đổi sản phẩm của mục đã lấy hàng."
 #, python-format
 msgid "You cannot change the product of lines linked to stock moves."
 msgstr ""
-"Bạn không thể đổi sản phẩm của các mục liên kết với các dịch chuyển tồn kho."
+"Bạn không thể đổi sản phẩm của các dòng liên kết với các dịch chuyển tồn "
+"kho."
 
 #. module: sale_stock_renting
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.res_config_settings_inherit_view_form

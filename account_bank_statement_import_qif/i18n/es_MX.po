@@ -64,8 +64,8 @@ msgstr "Separador decimal QIF"
 #, python-format
 msgid "This file is either not a bank statement or is not correctly formed."
 msgstr ""
-"Puede que este archivo no sea un estado bancario o no tenga el formato "
-"correcto."
+"Puede que este archivo no sea un estado de cuenta bancario o no tenga el "
+"formato correcto."
 
 #. module: account_bank_statement_import_qif
 #: model:ir.model.fields.selection,name:account_bank_statement_import_qif.selection__account_journal__qif_date_format__day_first

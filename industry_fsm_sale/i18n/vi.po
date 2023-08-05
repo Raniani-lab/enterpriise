@@ -375,12 +375,12 @@ msgstr "Hãy tạo một <b>sản phẩm</b> mới."
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__material_line_product_count
 msgid "Material Line Product Count"
-msgstr "Mục nguyên liệu Số sản phẩm"
+msgstr "Dòng nguyên liệu Số sản phẩm"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__material_line_total_price
 msgid "Material Line Total Price"
-msgstr "Mục nguyên liệu Tổng giá"
+msgstr "Dòng nguyên liệu Tổng giá"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_product_product__fsm_quantity

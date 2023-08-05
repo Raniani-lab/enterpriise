@@ -2341,7 +2341,7 @@ msgstr "Aantal uren dat je moet werken om als voltijds te kwalificeren."
 #: model:ir.model.fields,help:hr_payroll.field_hr_payslip__message_needaction_counter
 #: model:ir.model.fields,help:hr_payroll.field_hr_payslip_run__message_needaction_counter
 #: model:ir.model.fields,help:hr_payroll.field_hr_salary_attachment__message_needaction_counter
-msgid "Number of messages which requires an action"
+msgid "Number of messages requiring action"
 msgstr "Aantal berichten die actie vereisen"
 
 #. module: hr_payroll

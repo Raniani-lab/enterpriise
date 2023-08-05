@@ -10,10 +10,12 @@
 # Chris, 2022
 # Martin Trigaux, 2022
 # karolína schusterová <karolina.schusterova@vdp.sk>, 2023
-# Aleš Fiala <f.ales1@seznam.cz>, 2023
 # Rastislav Brencic <rastislav.brencic@azet.sk>, 2023
 # Jiří Podhorecký, 2023
 # Marek Záda, 2023
+# Tomáš Píšek, 2023
+# Jakub Smolka, 2023
+# Aleš Fiala <f.ales1@seznam.cz>, 2023
 # 
 msgid ""
 msgstr ""
@@ -21,7 +23,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:36+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Marek Záda, 2023\n"
+"Last-Translator: Aleš Fiala <f.ales1@seznam.cz>, 2023\n"
 "Language-Team: Czech (https://app.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -522,7 +524,7 @@ msgstr "Řádek účetní sestavy"
 #: model:ir.ui.menu,name:account_reports.menu_action_account_report_tree
 #: model_terms:ir.ui.view,arch_db:account_reports.view_account_report_search
 msgid "Accounting Reports"
-msgstr "Reporty Účetnictví"
+msgstr "Účetní výkazy"
 
 #. module: account_reports
 #. odoo-javascript
@@ -628,7 +630,7 @@ msgstr ""
 #: model:ir.actions.client,name:account_reports.action_account_report_ap
 #: model:ir.ui.menu,name:account_reports.menu_action_account_report_aged_payable
 msgid "Aged Payable"
-msgstr "Ve věku splatné"
+msgstr "Závazky po splatnosti"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_aged_payable_report_handler
@@ -646,7 +648,7 @@ msgstr "Věkové závazky"
 #: model:ir.actions.client,name:account_reports.action_account_report_ar
 #: model:ir.ui.menu,name:account_reports.menu_action_account_report_aged_receivable
 msgid "Aged Receivable"
-msgstr "Věková struktura pohledávek"
+msgstr "Pohledávky po splatnosti"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_aged_receivable_report_handler
@@ -781,7 +783,7 @@ msgstr "Audit"
 #. module: account_reports
 #: model:ir.ui.menu,name:account_reports.account_reports_audit_reports_menu
 msgid "Audit Reports"
-msgstr "Auditní Reporty"
+msgstr "Auditní výkazy"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_executivesummary_avgcre0
@@ -972,7 +974,7 @@ msgstr ""
 #: model:ir.actions.client,name:account_reports.action_account_report_cs
 #: model:ir.ui.menu,name:account_reports.menu_action_account_report_cash_flow
 msgid "Cash Flow Statement"
-msgstr "Přehled o peněžních tocích"
+msgstr "Výkaz peněžních toků"
 
 #. module: account_reports
 #. odoo-python
@@ -1400,7 +1402,7 @@ msgstr "Termín splnění"
 #: model:ir.actions.client,name:account_reports.action_account_report_sales
 #: model:ir.ui.menu,name:account_reports.menu_action_account_report_sales
 msgid "EC Sales List"
-msgstr "Seznam prodejů EC"
+msgstr "Seznam prodejů ES"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_ec_sales_report_handler
@@ -1518,7 +1520,7 @@ msgstr "Vyloučené účty"
 #: model:ir.actions.client,name:account_reports.action_account_report_exec_summary
 #: model:ir.ui.menu,name:account_reports.menu_action_account_report_exec_summary
 msgid "Executive Summary"
-msgstr "Sumární přehledy"
+msgstr "Manažerský výkaz"
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.aged_payable_report_expected_date
@@ -1705,7 +1707,7 @@ msgstr "Funkce pro volání"
 #: model:ir.ui.menu,name:account_reports.menu_action_account_report_general_ledger
 #, python-format
 msgid "General Ledger"
-msgstr "Obratová předvaha"
+msgstr "Hlavní účetní kniha"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_general_ledger_report_handler
@@ -1737,6 +1739,13 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_generic_tax_report_handler_tax_account
 msgid "Generic Tax Report Custom Handler (Tax -> Account)"
+msgstr ""
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_journal_report.py:0
+#, python-format
+msgid "Go to report configuration"
 msgstr ""
 
 #. module: account_reports
@@ -1816,7 +1825,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_reports.field_account_report__horizontal_group_ids
 #: model:ir.ui.menu,name:account_reports.menu_action_account_report_horizontal_groups
 msgid "Horizontal Groups"
-msgstr ""
+msgstr "Horizontální skupiny"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_report_horizontal_group
@@ -2037,7 +2046,7 @@ msgstr "Položky účetního deníku pro daňový audit"
 #: model:ir.actions.client,name:account_reports.action_account_report_ja
 #: model:ir.ui.menu,name:account_reports.menu_action_account_report_ja
 msgid "Journal Report"
-msgstr ""
+msgstr "Výkaz účetních deníků"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_journal_report_handler
@@ -2347,14 +2356,14 @@ msgstr ""
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Non Trade Payable"
-msgstr ""
+msgstr "Závazky mimo obchodní styk"
 
 #. module: account_reports
 #. odoo-python
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Non Trade Receivable"
-msgstr ""
+msgstr "Pohledávky mimo obchodní styk"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -2487,7 +2496,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.ui.menu,name:account_reports.account_reports_partners_reports_menu
 msgid "Partner Reports"
-msgstr "Zprávy partnerů"
+msgstr "Partnerské výkazy"
 
 #. module: account_reports
 #. odoo-javascript
@@ -2630,7 +2639,7 @@ msgstr "Postupujte opatrně, protože pro toto období může existovat úprava 
 #: model:ir.actions.client,name:account_reports.action_account_report_pl
 #: model:ir.ui.menu,name:account_reports.menu_action_account_report_profit_and_loss
 msgid "Profit and Loss"
-msgstr "Výnosy a náklady"
+msgstr "Výsledovka"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_executivesummary_profitability0
@@ -2960,7 +2969,7 @@ msgstr ""
 #: model:mail.activity.type,summary:account_reports.tax_closing_activity_type
 #: model_terms:ir.ui.view,arch_db:account_reports.view_move_form_vat_return
 msgid "Tax Report"
-msgstr "Daňové přiznání"
+msgstr "Daňový výkaz"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_bank_statement_line__tax_report_control_error
@@ -2985,7 +2994,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_reports.field_res_company__account_tax_unit_ids
 #: model:ir.ui.menu,name:account_reports.menu_view_tax_units
 msgid "Tax Units"
-msgstr ""
+msgstr "Daňové jednotky"
 
 #. module: account_reports
 #: model:ir.model.fields.selection,name:account_reports.selection__mail_activity_type__category__tax_report
@@ -3031,6 +3040,15 @@ msgstr "Technický model pro stahování účetních zpráv"
 #: model:ir.model.fields,field_description:account_reports.field_account_report_footnote__text
 msgid "Text"
 msgstr "Text"
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_journal_report.py:0
+#, python-format
+msgid ""
+"The 'load more limit' setting of this report is too low to display all the "
+"lines of the entry you're trying to show."
+msgstr ""
 
 #. module: account_reports
 #. odoo-python
@@ -3232,12 +3250,12 @@ msgstr ""
 #: model:ir.actions.client,name:account_reports.action_account_report_coa
 #: model:ir.ui.menu,name:account_reports.menu_action_account_report_coa
 msgid "Trial Balance"
-msgstr "Hlavní kniha"
+msgstr "Předvaha"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_trial_balance_report_handler
 msgid "Trial Balance Custom Handler"
-msgstr ""
+msgstr "Vlastní manipulátor zkušebního zůstatku"
 
 #. module: account_reports
 #. odoo-python
@@ -3338,7 +3356,7 @@ msgstr ""
 #: model:ir.actions.client,name:account_reports.action_account_report_multicurrency_revaluation
 #: model:ir.ui.menu,name:account_reports.menu_action_account_report_multicurrency_revaluation
 msgid "Unrealized Currency Gains/Losses"
-msgstr "Kurzovní rozdíly"
+msgstr "Nezrealizované kurzovní rozdíly"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
@@ -3460,6 +3478,13 @@ msgstr "XLSX"
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_main_template
 msgid "You are using custom exchange rates."
 msgstr "Používáte vlastní směnné kurzy."
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_move.py:0
+#, python-format
+msgid "You can't open a tax report from a move without a VAT closing date."
+msgstr ""
 
 #. module: account_reports
 #. odoo-python

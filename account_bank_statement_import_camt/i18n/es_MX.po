@@ -666,13 +666,13 @@ msgstr "Derivados"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Direct Debit"
-msgstr "Débito directo"
+msgstr "Domiciliación bancaria"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Direct Debit Payment"
-msgstr "Pago de débito directo"
+msgstr "Pago de domiciliación bancaria"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -760,7 +760,7 @@ msgstr "Subasta holandesa"
 #: code:addons/account_bank_statement_import_camt/models/account_journal.py:0
 #, python-format
 msgid "End to end ID: %s"
-msgstr "ID de end-to-end: %s"
+msgstr "ID de extremo a extremo: %s"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/models/account_journal.py:0
@@ -1164,7 +1164,7 @@ msgstr "Tarifas de gestión"
 #: code:addons/account_bank_statement_import_camt/models/account_journal.py:0
 #, python-format
 msgid "Mandate ID: %s"
-msgstr "ID de la orden: %s"
+msgstr "ID del mandato: %s"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0

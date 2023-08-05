@@ -51,4 +51,4 @@ msgstr "Istantanea foglio di calcolo"
 #: code:addons/spreadsheet_dashboard_edition/static/src/assets/dashboard_selector_dialog/dashboard_selector_panel.xml:0
 #, python-format
 msgid "getPageTitle('DASHBOARD')"
-msgstr ""
+msgstr "getPageTitle('DASHBOARD')"

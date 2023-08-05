@@ -268,7 +268,7 @@ msgstr "Enviar"
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.team_form_1
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.ticket_submit_form
 msgid "Submit a Ticket"
-msgstr "Emitir un ticket"
+msgstr "Enviar un ticket"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.snippet_options

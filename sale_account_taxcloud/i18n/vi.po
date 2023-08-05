@@ -50,7 +50,7 @@ msgstr "Đơn bán hàng"
 #. module: sale_account_taxcloud
 #: model:ir.model,name:sale_account_taxcloud.model_sale_order_line
 msgid "Sales Order Line"
-msgstr "Mục đơn bán hàng"
+msgstr "Dòng đơn bán hàng"
 
 #. module: sale_account_taxcloud
 #: model_terms:ir.ui.view,arch_db:sale_account_taxcloud.view_order_form_inherit

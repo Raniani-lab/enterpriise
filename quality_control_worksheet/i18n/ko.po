@@ -24,17 +24,17 @@ msgstr ""
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.quality_check_view_form_inherit_worksheet
 msgid "Check Worksheet"
-msgstr ""
+msgstr "작업 계획표 확인"
 
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.quality_check_view_form_failure_worksheet
 msgid "Confirm Worksheet"
-msgstr ""
+msgstr "작업 계획표 확인"
 
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.quality_check_view_form_failure_worksheet
 msgid "Correct Worksheet"
-msgstr ""
+msgstr "작업 계획표 수정"
 
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.x_quality_check_worksheet_template_1_ir_ui_view_3
@@ -61,7 +61,7 @@ msgstr "모델명"
 #: code:addons/quality_control_worksheet/models/quality.py:0
 #, python-format
 msgid "Please fill in the worksheet."
-msgstr ""
+msgstr "작업 계획표를 작성해 주세요."
 
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.report_custom_x_quality_check_worksheet_template_1
@@ -89,13 +89,13 @@ msgstr "품질 관리점"
 #. module: quality_control_worksheet
 #: model:ir.model,name:quality_control_worksheet.x_quality_check_worksheet_template_1_ir_model_1
 msgid "Quality Issues"
-msgstr ""
+msgstr "품질 관련 문제"
 
 #. module: quality_control_worksheet
 #: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_check__worksheet_template_id
 #: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_check_wizard__worksheet_template_id
 msgid "Quality Template"
-msgstr ""
+msgstr "품질 서식"
 
 #. module: quality_control_worksheet
 #: model:ir.model,name:quality_control_worksheet.model_report_quality_control_quality_worksheet
@@ -106,7 +106,7 @@ msgstr "품질 작업 계획표 보고서"
 #: model:ir.actions.act_window,name:quality_control_worksheet.quality_control_worksheet_template_action_settings
 #: model:ir.ui.menu,name:quality_control_worksheet.settings_worksheet_template
 msgid "Quality Worksheet Templates"
-msgstr ""
+msgstr "품질 작업 계획표 서식"
 
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.report_custom_x_quality_check_worksheet_template_1
@@ -116,7 +116,7 @@ msgstr "담당자"
 #. module: quality_control_worksheet
 #: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_point__worksheet_success_conditions
 msgid "Success Conditions"
-msgstr ""
+msgstr "성공 조건"
 
 #. module: quality_control_worksheet
 #: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_point__worksheet_template_id
@@ -131,7 +131,7 @@ msgstr "품질 검사 마법사 팝업"
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.report_custom_x_quality_check_worksheet_template_1
 msgid "Wood Texture"
-msgstr ""
+msgstr "목재 질감"
 
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.quality_check_view_form_inherit_worksheet

@@ -4,7 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2022
+# Nancy Momoland <thanh.np2502@gmail.com>, 2022
 # Thi Huong Nguyen, 2023
 # 
 msgid ""
@@ -416,7 +416,7 @@ msgstr "Thời lượng"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_configurator_view_form
 msgid "Edited Rental Line"
-msgstr "Mục cho thuê đã được chỉnh sửa"
+msgstr "Dòng cho thuê đã được chỉnh sửa"
 
 #. module: sale_renting
 #. odoo-javascript
@@ -504,17 +504,17 @@ msgstr "Nhóm theo"
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard__has_late_lines
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order__has_late_lines
 msgid "Has Late Lines"
-msgstr "Có mục bị trễ"
+msgstr "Có dòng bị trễ"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order__has_pickable_lines
 msgid "Has Pickable Lines"
-msgstr "Có mục có thể lấy hàng"
+msgstr "Có dòng có thể lấy hàng"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_order__has_returnable_lines
 msgid "Has Returnable Lines"
-msgstr "Có mục có thể trả hàng"
+msgstr "Có dòng có thể trả hàng"
 
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_rental_wizard__pricing_explanation
@@ -706,7 +706,7 @@ msgstr "Ngày đặt hàng"
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard_line__order_line_id
 msgid "Order Line"
-msgstr "Mục đơn hàng"
+msgstr "Dòng đơn hàng"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__name
@@ -716,7 +716,7 @@ msgstr "Mã đơn hàng"
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__order_line_id
 msgid "Order line #"
-msgstr "Mục đơn hàng #"
+msgstr "Dòng đơn hàng #"
 
 #. module: sale_renting
 #: model:ir.ui.menu,name:sale_renting.rental_order_menu
@@ -970,7 +970,7 @@ msgstr "Đơn cho thuê"
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_wizard__rental_order_line_id
 msgid "Rental Order Line"
-msgstr "Mục đơn cho thuê"
+msgstr "Dòng đơn cho thuê"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard_line__rental_order_wizard_id
@@ -1003,7 +1003,7 @@ msgstr "Trạng thái cho thuê (nâng cao)"
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard__rental_wizard_line_ids
 msgid "Rental Wizard Line"
-msgstr "Mục hướng dẫn cho thuê"
+msgstr "Dòng hướng dẫn cho thuê"
 
 #. module: sale_renting
 #: model:ir.ui.menu,name:sale_renting.menu_sale_renting_periods
@@ -1097,7 +1097,7 @@ msgstr "Đơn bán hàng"
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_sale_order_line
 msgid "Sales Order Line"
-msgstr "Mục đơn bán hàng"
+msgstr "Dòng đơn bán hàng"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__team_id

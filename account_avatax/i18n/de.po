@@ -115,19 +115,19 @@ msgstr "Konto, das von Avatax-Steuern für Erstattungen verwendet werden soll."
 #. module: account_avatax
 #: model_terms:ir.ui.view,arch_db:account_avatax.res_config_settings_view_form
 msgid "Address Validation"
-msgstr "Adressüberprüfung"
+msgstr "Adressvalidierung"
 
 #. module: account_avatax
 #: code:addons/account_avatax/wizard/avatax_validate_address.py:0
 #, python-format
 msgid "Address validation is only supported for North American addresses."
 msgstr ""
-"Die Adressüberprüfung wird nur für nordamerikanische Adressen unterstützt."
+"Die Adressvalidierung wird nur für nordamerikanische Adressen unterstützt."
 
 #. module: account_avatax
 #: model_terms:ir.ui.view,arch_db:account_avatax.res_config_settings_view_form
 msgid "Automatically compute tax rates"
-msgstr "Automatisch Steuersätze berechnen"
+msgstr "Steuersätze automatisch berechnen"
 
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_res_company__avalara_api_id
@@ -190,7 +190,7 @@ msgstr "Avalara-Partnercode"
 #: model:ir.model.fields,field_description:account_avatax.field_res_partner__avalara_show_address_validation
 #: model:ir.model.fields,field_description:account_avatax.field_res_users__avalara_show_address_validation
 msgid "Avalara Show Address Validation"
-msgstr "Avalara-Adressüberprüfung anzeigen"
+msgstr "Avalara-Adressvalidierung anzeigen"
 
 #. module: account_avatax
 #: model_terms:ir.ui.view,arch_db:account_avatax.account_fiscal_position_form_inherit
@@ -219,7 +219,7 @@ msgstr "Avatax-Rechnungskonto"
 #. module: account_avatax
 #: model:ir.model,name:account_avatax.model_avatax_exemption
 msgid "Avatax Partner Exemption Codes"
-msgstr "Avatax-Partner Befreiungscodes"
+msgstr "Befreiungscodes für Avatax-Partner"
 
 #. module: account_avatax
 #: model:ir.model,name:account_avatax.model_product_avatax_category
@@ -262,7 +262,7 @@ msgstr "Code"
 #. module: account_avatax
 #: model_terms:ir.ui.view,arch_db:account_avatax.res_config_settings_view_form
 msgid "Commit Transactions"
-msgstr "Transaktionen bestätigen"
+msgstr "In Transaktionen einbinden"
 
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_res_company__avalara_commit
@@ -453,7 +453,7 @@ msgstr ""
 #: code:addons/account_avatax/wizard/avatax_validate_address.py:0
 #, python-format
 msgid "Odoo could not validate the address of %(partner)s with Avalara."
-msgstr "Odoo konnte die Adresse von %(partner)s nicht mit Avalara überprüfen."
+msgstr "Odoo konnte die Adresse von %(partner)s nicht mit Avalara validieren."
 
 #. module: account_avatax
 #: code:addons/account_avatax/models/account_avatax.py:0
@@ -547,7 +547,7 @@ msgstr "Straße2"
 #. module: account_avatax
 #: model:ir.model,name:account_avatax.model_avatax_validate_address
 msgid "Suggests validated addresses from Avatax"
-msgstr "Schlägt geprüfte Adressen aus Avatax vor"
+msgstr "Schlägt validierte Adressen aus Avatax vor"
 
 #. module: account_avatax
 #: model_terms:ir.ui.view,arch_db:account_avatax.res_config_settings_view_form
@@ -582,7 +582,7 @@ msgid ""
 "Avatax:"
 msgstr ""
 "Folgende Kunden müssen bei der Nutzung von Avatax eine Postleitzahl, ein "
-"Bundesland und ein Land angeben:"
+"Bundesland/eine Region und ein Land angeben:"
 
 #. module: account_avatax
 #: model:ir.model.fields,help:account_avatax.field_res_config_settings__avalara_commit

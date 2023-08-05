@@ -2213,8 +2213,8 @@ msgstr "Nombre d'erreurs"
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "Nombre de messages exigeant une action"
+msgid "Number of messages requiring action"
+msgstr "Nombre de messages nécessitant une action"
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__message_has_error_counter
@@ -2907,6 +2907,15 @@ msgstr "Vous ne pouvez pas modifier l'autorisation interne de cet article."
 #, python-format
 msgid "You cannot change the permission of this member."
 msgstr "Vous ne pouvez pas modifier l'autorisation de ce membre."
+
+#. module: knowledge
+#. odoo-python
+#: code:addons/knowledge/models/knowledge_cover.py:0
+#, python-format
+msgid "You cannot create a new Knowledge Cover from here."
+msgstr ""
+"Vous ne pouvez pas créer une nouvelle couverture de connaissance à partir "
+"d'ici."
 
 #. module: knowledge
 #. odoo-python

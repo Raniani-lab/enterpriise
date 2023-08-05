@@ -1603,8 +1603,8 @@ msgstr "Nombre d'erreurs"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "Nombre de messages exigeant une action"
+msgid "Number of messages requiring action"
+msgstr "Nombre de messages nécessitant une action"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__message_has_error_counter

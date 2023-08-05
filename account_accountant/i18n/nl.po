@@ -3,9 +3,9 @@
 # 	* account_accountant
 # 
 # Translators:
-# Jolien De Paepe, 2023
 # Martin Trigaux, 2023
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2023
+# Jolien De Paepe, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2023\n"
+"Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: Dutch (https://app.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1400,6 +1400,7 @@ msgid "Not Matched"
 msgstr "Openstaand"
 
 #. module: account_accountant
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_tree_bank_rec_widget
 msgid "Notes"
@@ -1982,6 +1983,11 @@ msgstr "Transactie"
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__transaction_currency_id
 msgid "Transaction Currency"
 msgstr "Munteenheid van de transactie"
+
+#. module: account_accountant
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
+msgid "Transaction Details"
+msgstr "Details transactie"
 
 #. module: account_accountant
 #. odoo-python

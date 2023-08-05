@@ -288,7 +288,7 @@ msgstr ""
 #: code:addons/timesheet_grid/models/task.py:0
 #, python-format
 msgid "Confirm Time Spent"
-msgstr ""
+msgstr "Konfirmasi Waktu yang Dihabiska"
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -392,7 +392,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_create_timesheet_view_form
 #, python-format
 msgid "Describe your activity..."
-msgstr ""
+msgstr "Deskripsikan kegiatan Anda..."
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_timesheet_merge_wizard__name
@@ -457,41 +457,41 @@ msgstr "Nama Tampilan"
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__display_timer
 msgid "Display Timer"
-msgstr ""
+msgstr "Tampilkan Timer"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__display_timer_pause
 #: model:ir.model.fields,field_description:timesheet_grid.field_project_task__display_timer_pause
 msgid "Display Timer Pause"
-msgstr ""
+msgstr "Tampilkan Jeda Timer"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__display_timer_resume
 #: model:ir.model.fields,field_description:timesheet_grid.field_project_task__display_timer_resume
 msgid "Display Timer Resume"
-msgstr ""
+msgstr "Tampilkan Lanjutkan Timer"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__display_timer_start_primary
 #: model:ir.model.fields,field_description:timesheet_grid.field_project_task__display_timer_start_primary
 msgid "Display Timer Start Primary"
-msgstr ""
+msgstr "Tampilkan Timer Mulai Utama"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_project_task__display_timer_start_secondary
 msgid "Display Timer Start Secondary"
-msgstr ""
+msgstr "Tampilkan Timer Mulai Sekunder"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__display_timer_stop
 #: model:ir.model.fields,field_description:timesheet_grid.field_project_task__display_timer_stop
 msgid "Display Timer Stop"
-msgstr ""
+msgstr "Tampilkan Timer Berhenti"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_project_task__display_timesheet_timer
 msgid "Display Timesheet Time"
-msgstr ""
+msgstr "Tampilkan Waktu Timesheet"
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -605,7 +605,7 @@ msgstr "Field tidak sesuai:"
 #: model:ir.model.fields,field_description:timesheet_grid.field_project_task__is_timer_running
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheets_analysis_report__is_timer_running
 msgid "Is Timer Running"
-msgstr ""
+msgstr "Apakah Timer Berjalan"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_timesheet_merge_wizard____last_update
@@ -722,7 +722,7 @@ msgstr "Bulan"
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.hr_timesheet_report_search_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
 msgid "My Department"
-msgstr ""
+msgstr "Departemen Saya"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.hr_timesheet_report_search_grid
@@ -892,7 +892,7 @@ msgstr "Simpan"
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_create_timesheet_view_form
 msgid "Save time"
-msgstr ""
+msgstr "Menghemat waktu"
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -1114,13 +1114,13 @@ msgstr "Waktu yang dihabiskan"
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__timer_pause
 #: model:ir.model.fields,field_description:timesheet_grid.field_project_task__timer_pause
 msgid "Timer Last Pause"
-msgstr ""
+msgstr "Timer Jeda Terakhir"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__timer_start
 #: model:ir.model.fields,field_description:timesheet_grid.field_project_task__timer_start
 msgid "Timer Start"
-msgstr ""
+msgstr "Timer Mulai"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_kanban
@@ -1270,7 +1270,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__user_timer_id
 #: model:ir.model.fields,field_description:timesheet_grid.field_project_task__user_timer_id
 msgid "User Timer"
-msgstr ""
+msgstr "Timer User"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_hr_employee_public__timesheet_manager_id
@@ -1405,8 +1405,9 @@ msgstr ""
 #: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
 msgid ""
-"You cannot validate the timesheets from employees that are not part of your "
-"team or there are no timesheets to validate."
+"You cannot validate the selected timesheets as they either belong to "
+"employees who are not part of your team or are not in a state that can be "
+"validated. This may be due to the fact that they are dated in the future."
 msgstr ""
 
 #. module: timesheet_grid

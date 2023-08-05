@@ -9,7 +9,7 @@
 # Harcogourmet, 2022
 # Pete M, 2022
 # marcescu, 2022
-# jabelchi, 2022
+# Josep Anton Belchi, 2022
 # Manel Fernandez Ramirez <manelfera@outlook.com>, 2022
 # Quim - eccit <quim@eccit.com>, 2022
 # Martin Trigaux, 2022
@@ -1502,11 +1502,10 @@ msgstr "No podeu utilitzar el temporitzador en fulls d'hores validats."
 #: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
 msgid ""
-"You cannot validate the timesheets from employees that are not part of your "
-"team or there are no timesheets to validate."
+"You cannot validate the selected timesheets as they either belong to "
+"employees who are not part of your team or are not in a state that can be "
+"validated. This may be due to the fact that they are dated in the future."
 msgstr ""
-"No podeu validar els fulls d'hores dels empleats que no formen part del "
-"vostre equip o no hi ha fulls d'hores per validar."
 
 #. module: timesheet_grid
 #: model:ir.model.fields.selection,name:timesheet_grid.selection__res_company__timesheet_mail_employee_interval__months

@@ -1524,6 +1524,13 @@ msgstr ""
 " sélectionnez une ligne."
 
 #. module: stock_barcode
+#. odoo-javascript
+#: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
+#, python-format
+msgid "You can't register scrap at this state of the operation"
+msgstr "Vous ne pouvez pas enregistrer des rebuts à ce stade de l'opération"
+
+#. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.view_backorder_confirmation
 msgid "You have processed less products than the initial demand:"
 msgstr "Vous avez traité moins de produits que la demande initiale :"

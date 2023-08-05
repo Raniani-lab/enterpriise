@@ -38,7 +38,7 @@ msgstr ""
 #. module: mrp_workorder_hr
 #: model_terms:ir.ui.view,arch_db:mrp_workorder_hr.mrp_workcenter_form_view_inherit
 msgid "Allowed Employees"
-msgstr ""
+msgstr "Karyawan yang Diizinkan"
 
 #. module: mrp_workorder_hr
 #: model:ir.model,name:mrp_workorder_hr.model_report_mrp_report_bom_structure

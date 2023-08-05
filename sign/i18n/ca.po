@@ -13,7 +13,7 @@
 # Jonatan Gk, 2022
 # Carles Antoli <carlesantoli@hotmail.com>, 2022
 # RGB Consulting <odoo@rgbconsulting.com>, 2022
-# jabelchi, 2022
+# Josep Anton Belchi, 2022
 # Manel Fernandez Ramirez <manelfera@outlook.com>, 2022
 # Quim - eccit <quim@eccit.com>, 2022
 # marcescu, 2022
@@ -2144,8 +2144,8 @@ msgstr "Nombre d'errors"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "Nombre de missatges que requereixen una acció"
+msgid "Number of messages requiring action"
+msgstr ""
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_has_error_counter
@@ -3521,6 +3521,17 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_requests
 msgid "There are no signatures request."
 msgstr "No hi ha cap petició de signatura."
+
+#. module: sign
+#. odoo-python
+#: code:addons/sign/models/sign_request.py:0
+#: code:addons/sign/models/sign_request.py:0
+#: code:addons/sign/models/sign_request.py:0
+#, python-format
+msgid ""
+"There was an issue downloading your document. Please contact an "
+"administrator."
+msgstr ""
 
 #. module: sign
 #. odoo-javascript

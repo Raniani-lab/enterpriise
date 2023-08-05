@@ -1938,8 +1938,8 @@ msgstr "מספר השגיאות"
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "מספר הודעות המחייבות פעולה"
+msgid "Number of messages requiring action"
+msgstr ""
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__message_has_error_counter
@@ -2605,6 +2605,13 @@ msgstr "אינך יכול לשנות את ההרשאה פנימית של מאמ�
 #: code:addons/knowledge/controllers/main.py:0
 #, python-format
 msgid "You cannot change the permission of this member."
+msgstr ""
+
+#. module: knowledge
+#. odoo-python
+#: code:addons/knowledge/models/knowledge_cover.py:0
+#, python-format
+msgid "You cannot create a new Knowledge Cover from here."
 msgstr ""
 
 #. module: knowledge

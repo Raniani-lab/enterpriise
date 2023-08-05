@@ -28,7 +28,7 @@ msgstr "Pelanggan"
 #. module: helpdesk_stock
 #: model_terms:ir.ui.view,arch_db:helpdesk_stock.view_stock_return_picking_form_inherit_helpdesk_stock
 msgid "Delivery to Return"
-msgstr ""
+msgstr "Delivery untuk Dikembalikkan"
 
 #. module: helpdesk_stock
 #: model:ir.model.fields,help:helpdesk_stock.field_helpdesk_ticket__tracking
@@ -38,7 +38,7 @@ msgstr "Pastikan produk yang disimpan di gudang Anda dapat dilacak."
 #. module: helpdesk_stock
 #: model:ir.model.fields,field_description:helpdesk_stock.field_helpdesk_ticket__has_partner_picking
 msgid "Has Partner Picking"
-msgstr ""
+msgstr "Memiliki Picking Mitra"
 
 #. module: helpdesk_stock
 #: model:ir.model,name:helpdesk_stock.model_helpdesk_ticket
@@ -68,6 +68,8 @@ msgid ""
 "Product this ticket is about. If selected, only the sales orders, deliveries"
 " and invoices including this product will be visible."
 msgstr ""
+"Produk yang mana tiket ini maksudkan. Bila dipilih, hanya sales order, "
+"pengiriman dan faktur termasuk produk ini yang akan tampak;"
 
 #. module: helpdesk_stock
 #: model_terms:ir.ui.view,arch_db:helpdesk_stock.helpdesk_ticket_view_form_inherit_stock_user
@@ -79,12 +81,12 @@ msgstr "Retur"
 #: model:ir.model.fields,field_description:helpdesk_stock.field_helpdesk_ticket__picking_ids
 #, python-format
 msgid "Return Orders"
-msgstr ""
+msgstr "Order Pengembalia"
 
 #. module: helpdesk_stock
 #: model:ir.model.fields,field_description:helpdesk_stock.field_helpdesk_ticket__pickings_count
 msgid "Return Orders Count"
-msgstr ""
+msgstr "Jumlah Order Pengembalian"
 
 #. module: helpdesk_stock
 #: model:ir.model,name:helpdesk_stock.model_stock_return_picking
@@ -99,7 +101,7 @@ msgstr "Pengembalian"
 #. module: helpdesk_stock
 #: model:ir.model,name:helpdesk_stock.model_helpdesk_sla_report_analysis
 msgid "SLA Status Analysis"
-msgstr ""
+msgstr "Analisis Status SLA"
 
 #. module: helpdesk_stock
 #: model:ir.model.fields,field_description:helpdesk_stock.field_stock_return_picking__sale_order_id
@@ -109,17 +111,17 @@ msgstr "Order Penjualan"
 #. module: helpdesk_stock
 #: model:ir.model.fields,field_description:helpdesk_stock.field_stock_return_picking__suitable_picking_ids
 msgid "Suitable Picking"
-msgstr ""
+msgstr "Picking Sesuai"
 
 #. module: helpdesk_stock
 #: model:ir.model.fields,field_description:helpdesk_stock.field_helpdesk_ticket__suitable_product_ids
 msgid "Suitable Product"
-msgstr ""
+msgstr "Produk Sesuai"
 
 #. module: helpdesk_stock
 #: model:ir.model.fields,field_description:helpdesk_stock.field_stock_return_picking__suitable_sale_order_ids
 msgid "Suitable Sale Order"
-msgstr ""
+msgstr "Sale Order Cocok"
 
 #. module: helpdesk_stock
 #: model:ir.model.fields,field_description:helpdesk_stock.field_stock_return_picking__ticket_id
@@ -129,7 +131,7 @@ msgstr "Tiket"
 #. module: helpdesk_stock
 #: model:ir.model,name:helpdesk_stock.model_helpdesk_ticket_report_analysis
 msgid "Ticket Analysis"
-msgstr ""
+msgstr "Analisis Tiket"
 
 #. module: helpdesk_stock
 #: model:ir.model.fields,field_description:helpdesk_stock.field_helpdesk_ticket__tracking

@@ -6,7 +6,7 @@
 # Duy BQ <duybq86@gmail.com>, 2022
 # Martin Trigaux, 2022
 # Vo Thanh Thuy, 2022
-# Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2023
+# Nancy Momoland <thanh.np2502@gmail.com>, 2023
 # Thi Huong Nguyen, 2023
 # 
 msgid ""
@@ -188,7 +188,7 @@ msgstr "Báo cáo phân tích kế hoạch"
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_sale_order__planning_first_sale_line_id
 msgid "Planning First Sale Line"
-msgstr "Lập kế hoạch mục bán hàng đầu tiên"
+msgstr "Lập kế hoạch dòng bán hàng đầu tiên"
 
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_sale_order__planning_hours_planned
@@ -257,7 +257,7 @@ msgstr "Hạng mục đơn bán hàng"
 #. module: sale_planning
 #: model:ir.model,name:sale_planning.model_sale_order_line
 msgid "Sales Order Line"
-msgstr "Mục đơn bán hàng"
+msgstr "Dòng đơn bán hàng"
 
 #. module: sale_planning
 #: model:ir.model.fields,help:sale_planning.field_planning_slot__sale_line_id

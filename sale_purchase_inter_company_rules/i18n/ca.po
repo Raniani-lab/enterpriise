@@ -8,7 +8,7 @@
 # RGB Consulting <odoo@rgbconsulting.com>, 2022
 # AncesLatino2004, 2022
 # Martin Trigaux, 2022
-# jabelchi, 2022
+# Josep Anton Belchi, 2022
 # marcescu, 2022
 # jabiri7, 2022
 # Óscar Fonseca <tecnico@extreme-micro.com>, 2023
@@ -127,8 +127,8 @@ msgstr ""
 #. module: sale_purchase_inter_company_rules
 #: code:addons/sale_purchase_inter_company_rules/models/sale_order.py:0
 #, python-format
-msgid "Provide one user for intercompany relation for % "
-msgstr "Proporcionar un usuari per a la relació entre empreses per al %."
+msgid "Provide one user for intercompany relation for %(name)s "
+msgstr ""
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model,name:sale_purchase_inter_company_rules.model_purchase_order

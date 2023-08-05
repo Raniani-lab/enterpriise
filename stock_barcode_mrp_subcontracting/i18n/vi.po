@@ -42,7 +42,7 @@ msgstr "Không có gì để hiển thị"
 #. module: stock_barcode_mrp_subcontracting
 #: model:ir.model,name:stock_barcode_mrp_subcontracting.model_stock_move_line
 msgid "Product Moves (Stock Move Line)"
-msgstr "Dịch chuyển sản phẩm (Mục dịch chuyển tồn kho)"
+msgstr "Dịch chuyển sản phẩm (Dòng dịch chuyển tồn kho)"
 
 #. module: stock_barcode_mrp_subcontracting
 #. odoo-javascript

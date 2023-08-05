@@ -1934,8 +1934,8 @@ msgstr "エラー数"
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "アクションを必要とするメッセージの数"
+msgid "Number of messages requiring action"
+msgstr ""
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__message_has_error_counter
@@ -2602,6 +2602,13 @@ msgstr "この記事の内部許可を変更することはできません。"
 #, python-format
 msgid "You cannot change the permission of this member."
 msgstr "このメンバーの許可を変更することはできません。"
+
+#. module: knowledge
+#. odoo-python
+#: code:addons/knowledge/models/knowledge_cover.py:0
+#, python-format
+msgid "You cannot create a new Knowledge Cover from here."
+msgstr ""
 
 #. module: knowledge
 #. odoo-python

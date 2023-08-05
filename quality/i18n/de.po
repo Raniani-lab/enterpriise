@@ -622,8 +622,8 @@ msgstr "Anzahl der Fehler"
 #: model:ir.model.fields,help:quality.field_quality_alert_team__message_needaction_counter
 #: model:ir.model.fields,help:quality.field_quality_check__message_needaction_counter
 #: model:ir.model.fields,help:quality.field_quality_point__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "Anzahl der Nachrichten, die eine Aktion erfordern"
+msgid "Number of messages requiring action"
+msgstr "Anzahl der Meldungen, die eine Aktion erfordern"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__message_has_error_counter
@@ -723,7 +723,8 @@ msgstr ""
 "Richtlinie zum Hinterlassen einer Mitteilung im Dokument über das E-Mail-Gateway.\n"
 "- Jeder: jeder kann eine Nachricht hinterlassen\n"
 "- Partner: nur bestätigte Partner\n"
-"- Follower: nur die Personen, die dem betreffenden Dokument folgen oder Mitglieder von Kanälen sind, die dem Dokument folgen\n"
+"- Follower: nur Follower des entsprechenden Dokuments\n"
+" oder Mitglieder der verfolgten Kanäle\n"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__action_preventive

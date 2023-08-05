@@ -97,7 +97,7 @@ msgstr ""
 #. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_label_file_type__epl2
 msgid "EPL2"
-msgstr ""
+msgstr "EPL2"
 
 #. module: delivery_fedex
 #. odoo-python
@@ -307,12 +307,12 @@ msgstr ""
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "Label Format"
-msgstr ""
+msgstr "Format Label"
 
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_label_stock_type
 msgid "Label Type"
-msgstr ""
+msgstr "Tipe Label"
 
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_meter_number
@@ -385,7 +385,7 @@ msgstr "PDF"
 #. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_label_file_type__png
 msgid "PNG"
-msgstr ""
+msgstr "PNG"
 
 #. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_service_type__priority_overnight
@@ -500,7 +500,7 @@ msgstr "Pengirim"
 #: code:addons/delivery_fedex/models/delivery_fedex.py:0
 #, python-format
 msgid "Shipment #%s has been cancelled"
-msgstr ""
+msgstr "Pengiriman #%s telah dibatalka"
 
 #. module: delivery_fedex
 #. odoo-python

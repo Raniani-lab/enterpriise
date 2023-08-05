@@ -649,8 +649,8 @@ msgstr "Кількість рахунків-фактур, сплачених з�
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_sdd_mandate__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "Кількість повідомлень, які потебують дії"
+msgid "Number of messages requiring action"
+msgstr "Кількість повідомлень, які вимагають дії"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_sdd_mandate__message_has_error_counter

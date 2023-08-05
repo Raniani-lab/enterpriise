@@ -66,12 +66,13 @@ msgstr "30 giorni fa"
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "<i>There is no invoice during this period.</i>"
-msgstr ""
+msgstr "<i>Non sono presenti fatture per questo periodo.</i>"
 
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "<i>There is no subscription modification during this period.</i>"
 msgstr ""
+"<i>Durante questo periodo non vi è alcuna modifica dell'abbonamento.</i>"
 
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.move_line_entries_report_search
@@ -151,7 +152,7 @@ msgstr "Entrate mensili ricorrenti"
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "Current MRR ("
-msgstr ""
+msgstr "MRR attuale ("
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -477,7 +478,7 @@ msgstr "Entrate non Ricorrenti"
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "NRR ("
-msgstr ""
+msgstr "NRR ("
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -605,7 +606,7 @@ msgstr "Entrate mensili ricorrenti precedenti"
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "Previous MRR ("
-msgstr ""
+msgstr "MRR precedente ("
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -939,7 +940,7 @@ msgstr "di disdette, la base di abbonamenti sarà"
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "graphic"
-msgstr ""
+msgstr "grafico"
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript

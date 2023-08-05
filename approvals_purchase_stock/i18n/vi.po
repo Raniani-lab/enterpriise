@@ -33,7 +33,7 @@ msgstr "Ẩn Vị trí"
 #. module: approvals_purchase_stock
 #: model:ir.model,name:approvals_purchase_stock.model_approval_product_line
 msgid "Product Line"
-msgstr "Mục sản phẩm"
+msgstr "Dòng sản phẩm"
 
 #. module: approvals_purchase_stock
 #: model:ir.model.fields,field_description:approvals_purchase_stock.field_approval_product_line__warehouse_id

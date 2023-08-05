@@ -425,8 +425,8 @@ msgid ""
 "In case of Quality Check by Quantity, Move Line on which the Quality Check "
 "applies"
 msgstr ""
-"Trong trường hợp kiểm tra chất lượng theo số lượng, mục dịch chuyển áp dụng "
-"kiểm tra chất lượng"
+"Trong trường hợp kiểm tra chất lượng theo số lượng, dòng dịch chuyển áp dụng"
+" kiểm tra chất lượng"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.add_quality_check_from_tablet
@@ -715,7 +715,7 @@ msgstr "Sản phẩm"
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_stock_move_line
 msgid "Product Moves (Stock Move Line)"
-msgstr "Dịch chuyển sản phẩm (Mục dịch chuyển tồn kho)"
+msgstr "Dịch chuyển sản phẩm (Dòng dịch chuyển tồn kho)"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__component_id
@@ -971,7 +971,7 @@ msgstr "Dịch chuyển tồn kho"
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__move_line_id
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__move_line_id
 msgid "Stock Move Line"
-msgstr "Mục dịch chuyển tồn kho"
+msgstr "Dòng dịch chuyển tồn kho"
 
 #. module: mrp_workorder
 #: model:product.template,name:mrp_workorder.product_template_stool
@@ -1228,6 +1228,15 @@ msgstr ""
 #, python-format
 msgid "You did not set a lot/serial number for the final product"
 msgstr "Bạn không thể đặt số lô/sê-ri mới cho thành phẩm"
+
+#. module: mrp_workorder
+#. odoo-python
+#: code:addons/mrp_workorder/models/mrp_workorder.py:0
+#, python-format
+msgid ""
+"You need to complete Quality Checks using the Tablet View before marking "
+"Work Order as Done."
+msgstr ""
 
 #. module: mrp_workorder
 #. odoo-python

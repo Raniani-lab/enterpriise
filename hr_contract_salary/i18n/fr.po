@@ -57,6 +57,15 @@ msgstr "<i class=\"fa fa-check-circle-o mr8\"/> Félicitations"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.generate_simulation_link_view_form
 msgid ""
+"<span attrs=\"{'invisible': [('contract_id', '!=', False)]}\">An offer "
+"template need to be selected to have an offer link.</span>"
+msgstr ""
+"<span attrs=\"{'invisible': [('contract_id', '!=', False)]}\">Un modèle "
+"d'offre doit être sélectionné pour avoir un lien d'offre.</span>"
+
+#. module: hr_contract_salary
+#: model_terms:ir.ui.view,arch_db:hr_contract_salary.generate_simulation_link_view_form
+msgid ""
 "<span class=\"alert alert-warning\" role=\"alert\" colspan=\"2\" attrs=\"{'invisible':[('contract_id', '!=', False)]}\">\n"
 "                            Before accessing the simulation link, you first need to set up an offer template.\n"
 "                    </span>"
@@ -516,13 +525,13 @@ msgid "Default Access Token Validity Duration"
 msgstr "Durée de validité du jeton d’accès par défaut"
 
 #. module: hr_contract_salary
-#: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__default_contract_id
-#: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_history__default_contract_id
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_job__default_contract_id
-msgid "Default contract used when making an offer to an applicant."
+msgid ""
+"Default contract used to generate an offer. If empty, advantages will be "
+"taken from current contract of the employee/nothing for an applicant."
 msgstr ""
-"Contrat par défaut utilisé lors de la présentation d’une offre à un "
-"candidat."
+"Contrat par défaut utilisé pour générer une offre. Si vide, les avantages "
+"seront pris du contrat actuel de l'employé/rien pour un candidat."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__sign_template_id
@@ -1124,6 +1133,13 @@ msgstr "Lien de l'offre"
 
 #. module: hr_contract_salary
 #. odoo-python
+#: code:addons/hr_contract_salary/wizard/generate_simulation_link.py:0
+#, python-format
+msgid "Offer link can not be send. The applicant needs to have a name."
+msgstr "Impossible d'envoyer le lien d'offre. Le candidat doit avoir un nom."
+
+#. module: hr_contract_salary
+#. odoo-python
 #: code:addons/hr_contract_salary/controllers/main.py:0
 #: code:addons/hr_contract_salary/controllers/main.py:0
 #: code:addons/hr_contract_salary/controllers/main.py:0
@@ -1544,6 +1560,15 @@ msgstr ""
 msgid "The contract from which this contract has been duplicated."
 msgstr ""
 "Il s’agit du contrat à partir duquel le contrat actuel a été dupliqué."
+
+#. module: hr_contract_salary
+#: model_terms:ir.ui.view,arch_db:hr_contract_salary.generate_simulation_link_view_form
+msgid ""
+"The employee does not have a valid work email set. The Simulation Link won't"
+" be able to be completed."
+msgstr ""
+"L'employé n'a pas d'adresse email professionnelle définie. Le lien de "
+"simulation ne pourra pas être complété."
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.generate_simulation_link_view_form

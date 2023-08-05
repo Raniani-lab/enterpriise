@@ -70,7 +70,7 @@ msgstr "Đặt nhà cung cấp cho (các) sản phẩm %s."
 #. module: approvals_purchase
 #: model:ir.model,name:approvals_purchase.model_approval_product_line
 msgid "Product Line"
-msgstr "Mục sản phẩm"
+msgstr "Dòng sản phẩm"
 
 #. module: approvals_purchase
 #: model:ir.model.fields,field_description:approvals_purchase.field_approval_product_line__product_id
@@ -85,7 +85,7 @@ msgstr "Số Hóa đơn Mua hàng "
 #. module: approvals_purchase
 #: model:ir.model.fields,field_description:approvals_purchase.field_approval_product_line__purchase_order_line_id
 msgid "Purchase Order Line"
-msgstr "Mục đơn mua hàng "
+msgstr "Dòng đơn mua hàng "
 
 #. module: approvals_purchase
 #: code:addons/approvals_purchase/models/approval_request.py:0
@@ -117,7 +117,7 @@ msgstr "Bạn không thể tạo yêu cầu mua hàng trống. "
 #: code:addons/approvals_purchase/models/approval_request.py:0
 #, python-format
 msgid "You must select a product for each line of requested products."
-msgstr "Bạn phải chọn sản phẩm cho mỗi mục sản phẩm được yêu cầu. "
+msgstr "Bạn phải chọn sản phẩm cho mỗi dòng sản phẩm được yêu cầu. "
 
 #. module: approvals_purchase
 #: model_terms:ir.ui.view,arch_db:approvals_purchase.exception_approval_request_canceled

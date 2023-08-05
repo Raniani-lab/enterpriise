@@ -588,6 +588,14 @@ msgstr "일부 기능을 특정 미디어 ( 'facebook', 'twitter' 등)로 제한
 #: code:addons/social_twitter/models/social_account.py:0
 #, python-format
 msgid ""
+"We could not upload your image, it may be corrupted, it may exceed size "
+"limit or API may have send improper response (error: %s)."
+msgstr ""
+
+#. module: social_twitter
+#: code:addons/social_twitter/models/social_account.py:0
+#, python-format
+msgid ""
 "We could not upload your image, try reducing its size and posting it again "
 "(error: %s)."
 msgstr "이미지를 업로드할 수 없습니다. 크기를 줄인 후 다시 시도해 주세요 (에러: %s)."

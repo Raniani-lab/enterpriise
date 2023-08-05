@@ -65,7 +65,7 @@ msgstr "Đơn bán hàng"
 #. module: sale_loyalty_taxcloud
 #: model:ir.model,name:sale_loyalty_taxcloud.model_sale_order_line
 msgid "Sales Order Line"
-msgstr "Mục đơn bán hàng"
+msgstr "Dòng đơn bán hàng"
 
 #. module: sale_loyalty_taxcloud
 #: model:ir.model.fields,field_description:sale_loyalty_taxcloud.field_account_move_line__price_taxcloud
@@ -76,4 +76,4 @@ msgstr "Giá Taxcloud"
 #. module: sale_loyalty_taxcloud
 #: model:ir.model.fields,help:sale_loyalty_taxcloud.field_account_move_line__reward_id
 msgid "The loyalty reward that created this line."
-msgstr "Phần thưởng khách hàng thân thiết đã tạo mục này. "
+msgstr "Phần thưởng khách hàng thân thiết đã tạo dòng này. "

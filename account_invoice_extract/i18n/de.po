@@ -361,7 +361,7 @@ msgstr "Rechnungen zur Digitalisierung versenden"
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
 msgid "Send For Digitization"
-msgstr "Für Digitalisierung versenden"
+msgstr "Zur Digitalisierung versenden"
 
 #. module: account_invoice_extract
 #. odoo-python

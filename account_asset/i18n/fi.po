@@ -17,11 +17,11 @@
 # Veikko Väätäjä <veikko.vaataja@gmail.com>, 2022
 # Mikko Salmela <salmemik@gmail.com>, 2022
 # Jarmo Kortetjärvi <jarmo.kortetjarvi@gmail.com>, 2022
+# Tuomo Aura <tuomo.aura@web-veistamo.fi>, 2022
 # Martin Trigaux, 2022
 # Kari Lindgren <kari.lindgren@emsystems.fi>, 2022
 # Pekko Tuomisto <pekko.tuomisto@web-veistamo.fi>, 2022
 # Svante Suominen <svante.suominen@web-veistamo.fi>, 2022
-# Tuomo Aura <tuomo.aura@web-veistamo.fi>, 2022
 # Konsta Aavaranta, 2023
 # Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023
 # 
@@ -29,7 +29,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-23 08:35+0000\n"
+"POT-Creation-Date: 2023-07-26 10:06+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
 "Last-Translator: Ossi Mantylahti <ossi.mantylahti@obs-solutions.fi>, 2023\n"
 "Language-Team: Finnish (https://app.transifex.com/odoo/teams/41243/fi/)\n"
@@ -1576,11 +1576,6 @@ msgid "New salvage amount for the asset"
 msgstr "Omaisuuserän uusi lunastusarvo"
 
 #. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_calendar_event_id
-msgid "Next Activity Calendar Event"
-msgstr "Seuraavan toimenpiteen kalenterimerkintä"
-
-#. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_date_deadline
 msgid "Next Activity Deadline"
 msgstr "Seuraavan toimenpiteen eräpäivä"
@@ -1691,8 +1686,8 @@ msgstr "Virheiden määrä"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "Toimenpiteitä vaativien viestien määrä"
+msgid "Number of messages requiring action"
+msgstr ""
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__message_has_error_counter
@@ -1767,6 +1762,7 @@ msgstr "Osta: Omaisuuserä"
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/wizard/asset_modify.py:0
+#: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "Re-evaluate"
 msgstr "Arvioi uudelleen"
@@ -1779,6 +1775,7 @@ msgstr "Tunnustusarvot"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_move_line__asset_ids
+#: model_terms:ir.ui.view,arch_db:account_asset.view_move_line_form_asset_inherit
 msgid "Related Assets"
 msgstr "Liittyvät omaisuuserät"
 
@@ -2174,6 +2171,13 @@ msgstr ""
 
 #. module: account_asset
 #. odoo-python
+#: code:addons/account_asset/wizard/asset_modify.py:0
+#, python-format
+msgid "You can't re-evaluate the asset before the lock date."
+msgstr ""
+
+#. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "You cannot archive a record that is not closed"
@@ -2222,6 +2226,13 @@ msgstr ""
 
 #. module: account_asset
 #. odoo-python
+#: code:addons/account_asset/models/account_asset.py:0
+#, python-format
+msgid "You cannot dispose of an asset before the lock date."
+msgstr ""
+
+#. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "You cannot reset to draft an entry related to a posted asset"
@@ -2235,6 +2246,13 @@ msgstr ""
 msgid "You cannot resume at a date equal to or before the pause date"
 msgstr ""
 "Et voi jatkaa toimintaa taukopäivänä tai sitä aikaisempana ajankohtana"
+
+#. module: account_asset
+#. odoo-python
+#: code:addons/account_asset/wizard/asset_modify.py:0
+#, python-format
+msgid "You cannot select the same account as the Depreciation Account"
+msgstr ""
 
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_balance

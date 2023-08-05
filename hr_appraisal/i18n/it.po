@@ -1167,7 +1167,9 @@ msgid "Manager's Feedback"
 msgstr "Feedback del manager"
 
 #. module: hr_appraisal
+#: model:ir.actions.server,name:hr_appraisal.action_mark_as_done
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_goal_view_form
+#: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_goal_view_kanban
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Mark as Done"
 msgstr "Segna completato"
@@ -1298,7 +1300,7 @@ msgstr "Numero di errori"
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__message_needaction_counter
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal_goal__message_needaction_counter
-msgid "Number of messages which requires an action"
+msgid "Number of messages requiring action"
 msgstr "Numero di messaggi che richiedono un'azione"
 
 #. module: hr_appraisal

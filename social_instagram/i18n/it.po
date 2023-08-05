@@ -39,12 +39,12 @@ msgstr "<i class=\"fa fa-heart me-1\" title=\"Likes\"/>"
 #. module: social_instagram
 #: model_terms:ir.ui.view,arch_db:social_instagram.instagram_preview
 msgid "<span class=\"fw-bold pe-1\">My_instagram_page</span>"
-msgstr ""
+msgstr "<span class=\"fw-bold pe-1\">La_mia_pagina_instagram</span>"
 
 #. module: social_instagram
 #: model_terms:ir.ui.view,arch_db:social_instagram.instagram_preview
 msgid "<span class=\"mt-1 fw-bold\">My Instagram Page</span>"
-msgstr ""
+msgstr "<span class=\"mt-1 fw-bold\">La mia pagina Instagram</span>"
 
 #. module: social_instagram
 #: model_terms:ir.ui.view,arch_db:social_instagram.instagram_preview
@@ -53,6 +53,9 @@ msgid ""
 "                <span>We don't automatically resize your image to avoid undesired result.</span><br/>\n"
 "                <span>More information on:</span>"
 msgstr ""
+"<span>La tua immagine deve avere le proporzioni richieste da Instagram pari a 4:5 e 1.91:1.</span><br/>\n"
+"                <span>Per evitare risultati indesiderati, non effettuiamo il ridimensionamento automatico dell'immagine .</span><br/>\n"
+"                <span>Più informazioni su:</span>"
 
 #. module: social_instagram
 #: model:ir.model.fields,field_description:social_instagram.field_social_post__instagram_access_token
@@ -139,6 +142,8 @@ msgid ""
 "Instagram Access Token provided by the Facebook API, this should never be set manually.\n"
 "        It's used to authenticate requests when posting to or reading information from this account."
 msgstr ""
+"Token di accesso a Instagram fornito dall'API di Facebook. Non deve mai essere impostato manualmente.\n"
+"        Viene utilizzato per autenticare le richieste di pubblicazione o di lettura informazioni dall'account."
 
 #. module: social_instagram
 #: model:ir.model.fields,field_description:social_instagram.field_social_account__instagram_account_id
@@ -175,7 +180,7 @@ msgstr "Commenti Instagram"
 #. module: social_instagram
 #: model_terms:ir.ui.view,arch_db:social_instagram.res_config_settings_view_form
 msgid "Instagram Developer Account"
-msgstr ""
+msgstr "Account sviluppatore Instagram"
 
 #. module: social_instagram
 #: model:ir.model.fields,field_description:social_instagram.field_social_account__instagram_facebook_account_id
@@ -305,6 +310,8 @@ msgid ""
 "The Facebook ID of this Instagram post author, used to fetch the profile "
 "picture."
 msgstr ""
+"ID Facebook dell'autore di questo post Instagram, utilizzato per recuperare "
+"l'immagine del profilo."
 
 #. module: social_instagram
 #. odoo-python
@@ -368,6 +375,8 @@ msgid ""
 "Your image has to be within the 4:5 and the 1.91:1 aspect ratio as required "
 "by Instagram."
 msgstr ""
+"La tua immagine deve avere le proporzioni richieste da Instagram, ovvero tra"
+" 4:5 e 1.91:1."
 
 #. module: social_instagram
 #: model_terms:ir.ui.view,arch_db:social_instagram.instagram_preview

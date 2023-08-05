@@ -299,7 +299,7 @@ msgstr "Đơn bán hàng"
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_sale_order_line
 msgid "Sales Order Line"
-msgstr "Mục đơn bán hàng"
+msgstr "Dòng đơn bán hàng"
 
 #. module: sale_temporal
 #: model:ir.model.fields,help:sale_temporal.field_product_pricing__product_variant_ids
@@ -417,13 +417,6 @@ msgstr "tất cả biến thể"
 #. odoo-python
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
-msgid "per %s days"
-msgstr "trên %s ngày"
-
-#. module: sale_temporal
-#. odoo-python
-#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
-#, python-format
 msgid "per %s months"
 msgstr "trên %s tháng"
 
@@ -445,13 +438,6 @@ msgstr "trên %s năm"
 #. odoo-python
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
-msgid "per day"
-msgstr "trên ngày"
-
-#. module: sale_temporal
-#. odoo-python
-#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
-#, python-format
 msgid "per month"
 msgstr "trên tháng"
 
@@ -468,3 +454,10 @@ msgstr "trên tuần"
 #, python-format
 msgid "per year"
 msgstr "trên năm"
+
+#. module: sale_temporal
+#. odoo-python
+#: code:addons/sale_temporal/models/sale_order_recurrence.py:0
+#, python-format
+msgid "This recurrence unit is not supported."
+msgstr ""

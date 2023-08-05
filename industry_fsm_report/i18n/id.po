@@ -131,7 +131,7 @@ msgstr "Model"
 #. module: industry_fsm_report
 #: model_terms:ir.actions.act_window,help:industry_fsm_report.project_task_action_fsm_planning_groupby_worksheet
 msgid "No tasks found. Let's create one!"
-msgstr ""
+msgstr "Tidak ada task yang ditemukan. Ayo buat baru!"
 
 #. module: industry_fsm_report
 #: model_terms:ir.actions.act_window,help:industry_fsm_report.fsm_worksheets_action_settings

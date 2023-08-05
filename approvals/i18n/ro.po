@@ -855,8 +855,8 @@ msgstr "Numărul de erori"
 
 #. module: approvals
 #: model:ir.model.fields,help:approvals.field_approval_request__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "Număr de mesaje ce necesită intervenție"
+msgid "Number of messages requiring action"
+msgstr ""
 
 #. module: approvals
 #: model:ir.model.fields,help:approvals.field_approval_request__message_has_error_counter

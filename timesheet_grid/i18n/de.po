@@ -1645,11 +1645,14 @@ msgstr ""
 #: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
 msgid ""
-"You cannot validate the timesheets from employees that are not part of your "
-"team or there are no timesheets to validate."
+"You cannot validate the selected timesheets as they either belong to "
+"employees who are not part of your team or are not in a state that can be "
+"validated. This may be due to the fact that they are dated in the future."
 msgstr ""
-"Sie können die Stundenzettel von Mitarbeitern, die nicht zu Ihrem Team "
-"gehören, nicht validieren oder es gibt keine zu validierenden Stundenzettel."
+"Sie können die ausgewählten Zeiterfassungen nicht validieren, da sie "
+"entweder zu Mitarbeitern gehören, die nicht Teil Ihres Teams sind, oder sich"
+" nicht in einem Status befinden, der eine Validierung zulässt. Dies kann "
+"daran liegen, dass sie in die Zukunft datiert sind."
 
 #. module: timesheet_grid
 #: model:ir.model.fields.selection,name:timesheet_grid.selection__res_company__timesheet_mail_employee_interval__months

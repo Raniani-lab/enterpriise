@@ -14,6 +14,7 @@
 # Martin Trigaux, 2023
 # Rastislav Brencic <rastislav.brencic@azet.sk>, 2023
 # Marek Záda, 2023
+# Jakub Smolka, 2023
 # Tomáš Píšek, 2023
 # 
 msgid ""
@@ -227,7 +228,7 @@ msgstr "Účet"
 #: model:ir.actions.act_window,name:account_accountant.action_account_group_tree
 #: model:ir.ui.menu,name:account_accountant.menu_account_group
 msgid "Account Groups"
-msgstr "Účetní Skupiny"
+msgstr "Skupiny účtů"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__module_account_predictive_bills
@@ -243,7 +244,7 @@ msgstr "Widget pro párování účtu"
 #: model:ir.actions.act_window,name:account_accountant.account_tag_action
 #: model:ir.ui.menu,name:account_accountant.account_tag_menu
 msgid "Account Tags"
-msgstr "Účetní tagy"
+msgstr "Štítky účtů"
 
 #. module: account_accountant
 #: model:ir.ui.menu,name:account_accountant.menu_accounting
@@ -1228,7 +1229,7 @@ msgstr "Datum uzamčení pro uživatele kteří nejsou poradci"
 #. module: account_accountant
 #: model:ir.ui.menu,name:account_accountant.menu_action_change_lock_date
 msgid "Lock Dates"
-msgstr "Datumy Uzávěrky"
+msgstr "Datumy zamčení účtování"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
@@ -1277,7 +1278,7 @@ msgstr ""
 #: code:addons/account_accountant/models/account_payment.py:0
 #, python-format
 msgid "Matched Transactions"
-msgstr ""
+msgstr "Odpovídající transakce"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__matching_rules_allow_auto_reconcile
@@ -1372,6 +1373,7 @@ msgid "Not Matched"
 msgstr ""
 
 #. module: account_accountant
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_tree_bank_rec_widget
 msgid "Notes"
@@ -1594,7 +1596,7 @@ msgstr "Vyrovnán"
 #: model:ir.ui.menu,name:account_accountant.menu_action_manual_reconciliation
 #, python-format
 msgid "Reconciliation"
-msgstr "Párování"
+msgstr "Párování plateb"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -1789,7 +1791,7 @@ msgstr "Řádek rozdělení daní"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__tax_lock_date
 msgid "Tax Return Lock Date"
-msgstr ""
+msgstr "Datum uzamčení vratky daně"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__tax_tag_ids
@@ -1936,6 +1938,11 @@ msgstr "Transakce"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__transaction_currency_id
 msgid "Transaction Currency"
+msgstr ""
+
+#. module: account_accountant
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
+msgid "Transaction Details"
 msgstr ""
 
 #. module: account_accountant

@@ -6,6 +6,8 @@
 # Felix Schubert <felix.schubert@go-erp.com>, 2023
 # Friederike Fasterling-Nesselbosch, 2023
 # Martin Trigaux, 2023
+# Larissa Manderfeld, 2023
+# Wil Odoo, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-03-09 11:44+0000\n"
 "PO-Revision-Date: 2023-02-03 07:08+0000\n"
-"Last-Translator: Martin Trigaux, 2023\n"
+"Last-Translator: Wil Odoo, 2023\n"
 "Language-Team: German (https://app.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1298,8 +1300,8 @@ msgstr ""
 
 #. module: l10n_be_reports
 #: model:account.report,name:l10n_be_reports.belgian_ec_sales_report
-msgid "EU Sales List"
-msgstr ""
+msgid "EC Sales List"
+msgstr "EG-Verkaufsliste"
 
 #. module: l10n_be_reports
 #. odoo-python
@@ -1727,7 +1729,7 @@ msgstr "Anzahl der Fehler"
 #. module: l10n_be_reports
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_281_50__message_needaction_counter
 #: model:ir.model.fields,help:l10n_be_reports.field_l10n_be_form_325__message_needaction_counter
-msgid "Number of messages which requires an action"
+msgid "Number of messages requiring action"
 msgstr "Anzahl der Meldungen, die eine Aktion erfordern"
 
 #. module: l10n_be_reports

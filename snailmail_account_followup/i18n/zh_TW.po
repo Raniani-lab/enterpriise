@@ -26,11 +26,13 @@ msgid ""
 "<i class=\"fa fa-info-circle\" role=\"img\" aria-label=\"Warning\" title=\"The letter will be sent using the IAP service from Odoo.&#10;Make sure you have enough credits on your account or proceed to a recharge.\"/>\n"
 "                        <br/>"
 msgstr ""
+"<i class=\"fa fa-info-circle\" role=\"img\" aria-label=\"警告\" title=\"信件將以 Odoo 的 IAP 服務發送。&#10;請確保你的帳戶有足夠點數，或前往增值。\"/>\n"
+"                        <br/>"
 
 #. module: snailmail_account_followup
 #: model_terms:ir.ui.view,arch_db:snailmail_account_followup.manual_reminder_view_form_inherit_snailmail
 msgid "By post"
-msgstr ""
+msgstr "郵遞"
 
 #. module: snailmail_account_followup
 #: model:ir.model,name:snailmail_account_followup.model_res_partner
@@ -50,12 +52,12 @@ msgstr "催款報表"
 #. module: snailmail_account_followup
 #: model:ir.model.fields,field_description:snailmail_account_followup.field_account_followup_followup_line__send_letter
 msgid "Send a Letter"
-msgstr ""
+msgstr "寄送信件"
 
 #. module: snailmail_account_followup
 #: model_terms:ir.ui.view,arch_db:snailmail_account_followup.manual_reminder_view_form_inherit_snailmail
 msgid "Sending this document by post will cost"
-msgstr ""
+msgstr "郵寄此文件的成本為"
 
 #. module: snailmail_account_followup
 #: model:ir.model.fields,field_description:snailmail_account_followup.field_account_followup_manual_reminder__snailmail
@@ -65,7 +67,7 @@ msgstr "實體郵寄"
 #. module: snailmail_account_followup
 #: model:ir.model.fields,field_description:snailmail_account_followup.field_account_followup_manual_reminder__snailmail_cost
 msgid "Stamps"
-msgstr ""
+msgstr "郵票"
 
 #. module: snailmail_account_followup
 #: model:ir.model,name:snailmail_account_followup.model_account_followup_manual_reminder
@@ -79,4 +81,4 @@ msgstr "手動傳送客戶提醒精靈"
 msgid ""
 "You are trying to send a letter by post, but no follow-up contact has any "
 "address set"
-msgstr ""
+msgstr "你正嘗試以郵遞方式寄送信件，但所有跟進聯絡人都未有任何地址"

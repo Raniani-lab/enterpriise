@@ -56,6 +56,13 @@ msgstr "<i class=\"fa fa-check-circle-o mr8\"/>축하합니다"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.generate_simulation_link_view_form
 msgid ""
+"<span attrs=\"{'invisible': [('contract_id', '!=', False)]}\">An offer "
+"template need to be selected to have an offer link.</span>"
+msgstr ""
+
+#. module: hr_contract_salary
+#: model_terms:ir.ui.view,arch_db:hr_contract_salary.generate_simulation_link_view_form
+msgid ""
 "<span class=\"alert alert-warning\" role=\"alert\" colspan=\"2\" attrs=\"{'invisible':[('contract_id', '!=', False)]}\">\n"
 "                            Before accessing the simulation link, you first need to set up an offer template.\n"
 "                    </span>"
@@ -508,11 +515,11 @@ msgid "Default Access Token Validity Duration"
 msgstr "기본 액세스 토큰 유효성 기간"
 
 #. module: hr_contract_salary
-#: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__default_contract_id
-#: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_history__default_contract_id
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_job__default_contract_id
-msgid "Default contract used when making an offer to an applicant."
-msgstr "지원자에게 제안을 할 때 사용되는 기본 근로 계약서."
+msgid ""
+"Default contract used to generate an offer. If empty, advantages will be "
+"taken from current contract of the employee/nothing for an applicant."
+msgstr ""
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__sign_template_id
@@ -1103,6 +1110,13 @@ msgstr "제안 링크"
 
 #. module: hr_contract_salary
 #. odoo-python
+#: code:addons/hr_contract_salary/wizard/generate_simulation_link.py:0
+#, python-format
+msgid "Offer link can not be send. The applicant needs to have a name."
+msgstr ""
+
+#. module: hr_contract_salary
+#. odoo-python
 #: code:addons/hr_contract_salary/controllers/main.py:0
 #: code:addons/hr_contract_salary/controllers/main.py:0
 #: code:addons/hr_contract_salary/controllers/main.py:0
@@ -1516,6 +1530,13 @@ msgstr ""
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__origin_contract_id
 msgid "The contract from which this contract has been duplicated."
 msgstr "이 근로 계약과 중복된 계약."
+
+#. module: hr_contract_salary
+#: model_terms:ir.ui.view,arch_db:hr_contract_salary.generate_simulation_link_view_form
+msgid ""
+"The employee does not have a valid work email set. The Simulation Link won't"
+" be able to be completed."
+msgstr ""
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.generate_simulation_link_view_form

@@ -6,7 +6,7 @@
 # Matej Mijoč, 2022
 # Tina Milas, 2022
 # Ivica Dimjašević <ivica.dimjasevic@storm.hr>, 2022
-# Hrvoje Sić <hrvoje.sic@gmail.com>, 2022
+# hrvoje sić <hrvoje.sic@gmail.com>, 2022
 # Vladimir Olujić <olujic.vladimir@storm.hr>, 2022
 # Đurđica Žarković <durdica.zarkovic@storm.hr>, 2022
 # Mario Jureša <mario.juresa@uvid.hr>, 2022
@@ -847,8 +847,8 @@ msgstr "Broj grešaka"
 
 #. module: approvals
 #: model:ir.model.fields,help:approvals.field_approval_request__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "Broj poruka koje zahtijevaju aktivnost"
+msgid "Number of messages requiring action"
+msgstr ""
 
 #. module: approvals
 #: model:ir.model.fields,help:approvals.field_approval_request__message_has_error_counter

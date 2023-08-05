@@ -565,7 +565,7 @@ msgstr ""
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid "Unknown error"
-msgstr ""
+msgstr "Error tidak diketahui"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_res_config_settings__twitter_use_own_account
@@ -581,6 +581,14 @@ msgstr ""
 
 #. module: social_twitter
 #. odoo-python
+#: code:addons/social_twitter/models/social_account.py:0
+#, python-format
+msgid ""
+"We could not upload your image, it may be corrupted, it may exceed size "
+"limit or API may have send improper response (error: %s)."
+msgstr ""
+
+#. module: social_twitter
 #: code:addons/social_twitter/models/social_account.py:0
 #, python-format
 msgid ""

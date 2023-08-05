@@ -23,7 +23,7 @@ msgstr ""
 #. module: stock_barcode_mrp
 #: model:ir.model,name:stock_barcode_mrp.model_stock_move_line
 msgid "Product Moves (Stock Move Line)"
-msgstr "Dịch chuyển sản phẩm (Mục dịch chuyển tồn kho)"
+msgstr "Dịch chuyển sản phẩm (Dòng dịch chuyển tồn kho)"
 
 #. module: stock_barcode_mrp
 #: model:ir.model,name:stock_barcode_mrp.model_product_product
@@ -38,5 +38,5 @@ msgid ""
 "The lines with a kit have been replaced with their components. Please check "
 "the picking before the final validation."
 msgstr ""
-"Những mục có kit đã được thay thế bằng nguyên liệu của chúng. Vui lòng kiểm "
-"tra phiếu kho trước khi xác nhận lần cuối."
+"Những dòng có kit đã được thay thế bằng nguyên liệu của chúng. Vui lòng kiểm"
+" tra phiếu kho trước khi xác nhận lần cuối."

@@ -41,11 +41,13 @@ msgid ""
 "<span attrs=\"{'invisible': [('fedex_weight_unit', '!=', 'KG')]}\">CM</span>\n"
 "                                <span attrs=\"{'invisible': [('fedex_weight_unit', '!=', 'LB')]}\">IN</span>"
 msgstr ""
+"<span attrs=\"{'invisible': [('fedex_weight_unit', '!=', 'KG')]}\">CM</span>\n"
+"                                <span attrs=\"{'invisible': [('fedex_weight_unit', '!=', 'LB')]}\">IN</span>"
 
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "<span class=\"o_form_label\">Package Length Unit</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">Unità lunghezza pacco</span>"
 
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
@@ -116,7 +118,7 @@ msgstr ""
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "Extra Data"
-msgstr ""
+msgstr "Dati aggiuntivi"
 
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_extra_data_rate_request
@@ -166,12 +168,12 @@ msgstr "FEDEX_GROUND"
 #. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_service_type__fedex_international_priority
 msgid "FEDEX_INTERNATIONAL_PRIORITY"
-msgstr ""
+msgstr "FEDEX_INTERNATIONAL_PRIORITY"
 
 #. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_service_type__fedex_international_priority_express
 msgid "FEDEX_INTERNATIONAL_PRIORITY_EXPRESS"
-msgstr ""
+msgstr "FEDEX_INTERNATIONAL_PRIORITY_EXPRESS"
 
 #. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_service_type__fedex_next_day_afternoon
@@ -297,7 +299,7 @@ msgstr "INTERNATIONAL_PRIORITY"
 #: code:addons/delivery_fedex/models/delivery_fedex.py:0
 #, python-format
 msgid "Invalid syntax for FedEx extra data."
-msgstr ""
+msgstr "Sintassi non valida per dati aggiuntivi di FedEx."
 
 #. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_weight_unit__kg
@@ -569,6 +571,15 @@ msgid ""
 "With the above example, the AdditionalInformation of each piece will be updated.\n"
 "More info on https://www.fedex.com/en-us/developer/web-services/process.html#documentation"
 msgstr ""
+"In FedEx i dati aggiuntivi sono organizzati allo stesso modo di un file json.\n"
+"Si tratta di una funzionalità avanzata/tecnica quindi deve essere utilizzata solo se si è consapevoli di quello che si sta facendo.\n"
+"\n"
+"Esempio di valore valido: ```\n"
+"\"Dettaglispedizione\": {\"Pezzi\": {\"Pezzo\": {\"Informazioniaggiuntive\": \"info extra\"}}}\n"
+"```\n"
+"\n"
+"Con l'esempio precedente, le informazioni aggiuntive di ogni pezzo verranno aggiornate.\n"
+"Più informazioni su https://www.fedex.com/en-us/developer/web-services/process.html#documentation"
 
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex

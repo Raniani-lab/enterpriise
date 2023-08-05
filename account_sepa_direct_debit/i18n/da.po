@@ -4,7 +4,7 @@
 # 
 # Translators:
 # Sanne Kristensen <sanne@vkdata.dk>, 2022
-# lhmflexerp <lhm@flexerp.dk>, 2022
+# Lærke Hedegaard Mathiasen <lhm@flexerp.dk>, 2022
 # Mads Søndergaard, 2022
 # Martin Trigaux, 2022
 # Mads Søndergaard, 2022
@@ -646,8 +646,8 @@ msgstr ""
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_sdd_mandate__message_needaction_counter
-msgid "Number of messages which requires an action"
-msgstr "Antal meddelser der kræver handling"
+msgid "Number of messages requiring action"
+msgstr ""
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_sdd_mandate__message_has_error_counter

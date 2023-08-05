@@ -25,7 +25,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Contract history by Job Position"
-msgstr ""
+msgstr "Cronologia contratti per posizione lavorativa"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. odoo-javascript
@@ -63,14 +63,14 @@ msgstr "Dipendenti"
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Employees Analysis by Department"
-msgstr ""
+msgstr "Analisi dipendenti per dipartimento"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Hires"
-msgstr ""
+msgstr "Assume"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. odoo-javascript
@@ -84,7 +84,7 @@ msgstr "Posizione lavorativa"
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "New Employees by Month"
-msgstr ""
+msgstr "Nuovi dipendenti per mese"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. odoo-javascript
@@ -105,4 +105,4 @@ msgstr "Dipartimenti migliori"
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Top Paid Job Positions"
-msgstr ""
+msgstr "Posizioni lavorative con la retribuzione migliore"

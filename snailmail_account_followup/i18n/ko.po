@@ -33,7 +33,7 @@ msgstr ""
 #. module: snailmail_account_followup
 #: model_terms:ir.ui.view,arch_db:snailmail_account_followup.manual_reminder_view_form_inherit_snailmail
 msgid "By post"
-msgstr ""
+msgstr "우편으로"
 
 #. module: snailmail_account_followup
 #: model:ir.model,name:snailmail_account_followup.model_res_partner
@@ -58,7 +58,7 @@ msgstr "편지 보내기"
 #. module: snailmail_account_followup
 #: model_terms:ir.ui.view,arch_db:snailmail_account_followup.manual_reminder_view_form_inherit_snailmail
 msgid "Sending this document by post will cost"
-msgstr ""
+msgstr "이 문서를 우편으로 발송하려면 다음과 같은 비용이 발생합니다"
 
 #. module: snailmail_account_followup
 #: model:ir.model.fields,field_description:snailmail_account_followup.field_account_followup_manual_reminder__snailmail
@@ -68,7 +68,7 @@ msgstr "Snailmail"
 #. module: snailmail_account_followup
 #: model:ir.model.fields,field_description:snailmail_account_followup.field_account_followup_manual_reminder__snailmail_cost
 msgid "Stamps"
-msgstr ""
+msgstr "우표"
 
 #. module: snailmail_account_followup
 #: model:ir.model,name:snailmail_account_followup.model_account_followup_manual_reminder
@@ -82,4 +82,4 @@ msgstr "고객에게 직접 알림 발송 마법사"
 msgid ""
 "You are trying to send a letter by post, but no follow-up contact has any "
 "address set"
-msgstr ""
+msgstr "우편으로 메일을 발송하고자 하였으나, 주소 정보가 표시된 후속 연락처 정보가 없습니다."

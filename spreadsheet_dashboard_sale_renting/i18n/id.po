@@ -55,7 +55,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "KPI"
-msgstr ""
+msgstr "KPI"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -193,7 +193,7 @@ msgstr "Penjual"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Top Customers"
-msgstr ""
+msgstr "Pelanggan Terbaik"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -207,7 +207,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Top Products"
-msgstr ""
+msgstr "Produk Terbaik"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -237,4 +237,4 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "since last period"
-msgstr ""
+msgstr "semenjak periode terakhir"

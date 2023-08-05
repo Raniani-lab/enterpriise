@@ -1639,11 +1639,13 @@ msgstr "Je kunt de timer niet gebruiken op bevestigde urenstaten."
 #: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
 msgid ""
-"You cannot validate the timesheets from employees that are not part of your "
-"team or there are no timesheets to validate."
+"You cannot validate the selected timesheets as they either belong to "
+"employees who are not part of your team or are not in a state that can be "
+"validated. This may be due to the fact that they are dated in the future."
 msgstr ""
-"Je kunt de urenstaten van werknemers die geen deel uitmaken van je team niet"
-" bevestigen of er zijn geen urenstaten om te bevestigen."
+"Je kan de geselecteerde urenstaten niet goedkeuren als ze tot werknemers "
+"behoren die geen deel uitmaken van je team of hun status laat niet toe om ze"
+" goed te keuren. Mogelijk komt dit doordat ze in de toekomst zijn gedateerd."
 
 #. module: timesheet_grid
 #: model:ir.model.fields.selection,name:timesheet_grid.selection__res_company__timesheet_mail_employee_interval__months

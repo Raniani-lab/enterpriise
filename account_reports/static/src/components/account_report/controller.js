@@ -129,7 +129,7 @@ export class AccountReportController {
     }
 
     async loadReportOptions(reportId, preloading=false) {
-        const loadOptions = this.hasSessionOptions() ? this.sessionOptions() : {};
+        const loadOptions = this.hasSessionOptions() ? this.sessionOptions() : (this.action.params?.options || {});
         const cacheKey = this.getCacheKey(loadOptions['sections_source_id'] || reportId, reportId);
 
         if (!this.reportOptionsMap[cacheKey]) {

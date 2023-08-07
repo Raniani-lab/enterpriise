@@ -19,6 +19,7 @@
                 <field name="name">Gross profit</field>
                 <field name="code">l10n_ca_gross_profit</field>
                 <field name="aggregation_formula">l10n_ca_operating_income.balance - l10n_ca_sales_cost.balance + l10n_ca_other_operating_income.balance</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="l10n_ca_pnl_operating_income" model="account.report.line">
                         <field name="name">Operating Income</field>
@@ -54,6 +55,7 @@
                 <field name="name">Operating Expenses</field>
                 <field name="code">l10n_ca_expenses</field>
                 <field name="aggregation_formula">l10n_ca_distribution_expenses.balance + l10n_ca_admin_expenses.balance + l10n_ca_other_expenses.balance</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="l10n_ca_pnl_sales_distribution_expenses" model="account.report.line">
                         <field name="name">Sales and distribution expenses</field>
@@ -77,6 +79,7 @@
                 <field name="name">Other revenues and expenses</field>
                 <field name="code">l10n_ca_other_revenues</field>
                 <field name="aggregation_formula">l10n_ca_exchange_difference.balance + l10n_ca_financial_income.balance - l10n_ca_financial_expenses.balance</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="l10n_ca_pnl_exchange_diff" model="account.report.line">
                         <field name="name">Exchange difference, net</field>
@@ -99,26 +102,31 @@
                 <field name="name">Result before taxes</field>
                 <field name="code">l10n_ca_result_before_taxes</field>
                 <field name="aggregation_formula">l10n_ca_gross_profit.balance + l10n_ca_other_revenues.balance - l10n_ca_expenses.balance</field>
+                <field name="hierarchy_level">0</field>
             </record>
             <record id="l10n_ca_pnl_income_tax" model="account.report.line">
                 <field name="name">Income tax expense</field>
                 <field name="code">l10n_ca_income_tax</field>
                 <field name="account_codes_formula">62 + 712</field>
+                <field name="hierarchy_level">0</field>
             </record>
             <record id="l10n_ca_pnl_result_before_discontinued" model="account.report.line">
                 <field name="name">Result discontinued operations</field>
                 <field name="code">l10n_ca_result_before_discontinued</field>
                 <field name="aggregation_formula">l10n_ca_result_before_taxes.balance - l10n_ca_income_tax.balance</field>
+                <field name="hierarchy_level">0</field>
             </record>
             <record id="l10n_ca_pnl_discontinued" model="account.report.line">
                 <field name="name">Discontinued operations</field>
                 <field name="code">l10n_ca_discontinued</field>
                 <field name="account_codes_formula">72 + 73</field>
+                <field name="hierarchy_level">0</field>
             </record>
             <record id="l10n_ca_pnl_net_profit" model="account.report.line">
                 <field name="name">Net Profit</field>
                 <field name="code">l10n_ca_net_profit</field>
                 <field name="aggregation_formula">l10n_ca_result_before_discontinued.balance - l10n_ca_discontinued.balance</field>
+                <field name="hierarchy_level">0</field>
             </record>
         </field>
     </record>

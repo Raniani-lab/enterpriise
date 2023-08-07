@@ -17,6 +17,7 @@
         <field name="line_ids">
             <record id="account_financial_report_line_it_sp_reduce_assets" model="account.report.line">
                 <field name="name">ACTIVE</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="account_financial_report_line_it_sp_reduce_ATT_B" model="account.report.line">
                         <field name="name">B. FIXED ASSETS</field>
@@ -87,9 +88,11 @@
                 <field name="name">TOTAL ACTIVE</field>
                 <field name="code">ITR_ASSETS_TOTAL</field>
                 <field name="aggregation_formula">ITR_ATT_B.balance + ITR_ATT_C.balance</field>
+                <field name="hierarchy_level">0</field>
             </record>
             <record id="account_financial_report_line_it_sp_reduce_passif" model="account.report.line">
                 <field name="name">PASSIVE</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="account_financial_report_line_it_sp_reduce_PASS_A" model="account.report.line">
                         <field name="name">A. EQUITY</field>
@@ -211,9 +214,11 @@
                 <field name="name">TOTAL PASSIVE</field>
                 <field name="code">ITR_PASSIF_TOTAL</field>
                 <field name="aggregation_formula">ITR_PASS_A.balance + ITR_PASS_B.balance + ITR_PASS_C.balance + ITR_PASS_D.balance</field>
+                <field name="hierarchy_level">0</field>
             </record>
             <record id="account_financial_report_line_it_sp_reduce_CONTI_ORDINE" model="account.report.line">
                 <field name="name">ORDINARY ACCOUNTS</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="account_financial_report_line_it_sp_reduce_CONTI_ORDINE_RISCHI" model="account.report.line">
                         <field name="name">Risks</field>

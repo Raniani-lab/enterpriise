@@ -18,6 +18,7 @@
             <record id="account_financial_report_pnl_A_4" model="account.report.line">
                 <field name="name">Gross profit</field>
                 <field name="code">PE_PNL_A_4</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_pnl_A_4_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -111,6 +112,7 @@
             <record id="account_financial_report_pnl_E" model="account.report.line">
                 <field name="name">Operating Expenses</field>
                 <field name="code">PE_PNL_E</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_pnl_E_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -178,6 +180,7 @@
             <record id="account_financial_report_pnl_B_6" model="account.report.line">
                 <field name="name">Operating profit</field>
                 <field name="code">PE_PNL_B_6</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_pnl_B_6_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -189,6 +192,7 @@
             <record id="account_financial_report_pnl_B_7" model="account.report.line">
                 <field name="name">Other revenues and expenses</field>
                 <field name="code">PE_PNL_B_7</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_pnl_B_7_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -217,6 +221,7 @@
                 <field name="code">PE_PNL_B_1</field>
                 <field name="groupby">account_id</field>
                 <field name="foldable" eval="True"/>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_pnl_B_1_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -230,6 +235,7 @@
                 <field name="code">PE_PNL_B_2</field>
                 <field name="groupby">account_id</field>
                 <field name="foldable" eval="True"/>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_pnl_B_2_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -241,6 +247,7 @@
             <record id="account_financial_report_pnl_C_2" model="account.report.line">
                 <field name="name">Result before taxes</field>
                 <field name="code">PE_PNL_C_2</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_pnl_C_2_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -254,6 +261,7 @@
                 <field name="code">PE_PNL_D</field>
                 <field name="groupby">account_id</field>
                 <field name="foldable" eval="True"/>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_pnl_D_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -265,6 +273,7 @@
             <record id="account_financial_report_pnl_F" model="account.report.line">
                 <field name="name">Net Profit</field>
                 <field name="code">PE_PNL_F</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_pnl_F_balance" model="account.report.expression">
                         <field name="label">balance</field>

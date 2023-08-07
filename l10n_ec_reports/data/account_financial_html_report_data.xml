@@ -22,6 +22,7 @@
                     <field name="code">ACTT</field>
                     <field name="groupby">account_id</field>
                     <field name="foldable" eval="True"/>
+                    <field name="hierarchy_level">0</field>
                     <field name="expression_ids">
                         <record id="l10n_ec_balance_sheet_assets_expresion" model="account.report.expression">
                             <field name="label">balance</field>
@@ -37,6 +38,7 @@
                     <field name="code">PAST</field>
                     <field name="groupby">account_id</field>
                     <field name="foldable" eval="True"/>
+                    <field name="hierarchy_level">0</field>
                     <field name="expression_ids">
                         <record id="l10n_ec_balance_sheet_liabilities_expresion" model="account.report.expression">
                             <field name="label">balance</field>
@@ -51,6 +53,7 @@
                     <field name="name">Equity</field>
                     <field name="code">CAPT</field>
                     <field name="aggregation_formula">UNAFFECTED_EARNINGS_EC.balance + RETAINED_EARNINGS_EC.balance</field>
+                    <field name="hierarchy_level">0</field>
                     <field name="children_ids">
                         <record id="l10n_ec_balance_sheet_equity_unaffected_earnings0" model="account.report.line">
                             <field name="name">Unallocated Earnings</field>
@@ -129,6 +132,7 @@
                 <record id="l10n_ec_balance_sheet_liabilities_and_equity" model="account.report.line">
                     <field name="name">Liabilities + Equity</field>
                     <field name="code">PACA</field>
+                    <field name="hierarchy_level">0</field>
                     <field name="expression_ids">
                         <record id="l10n_ec_balance_sheet_liabilities_and_equity_expression" model="account.report.expression">
                             <field name="label">balance</field>
@@ -162,6 +166,7 @@
                     <field name="code">INGT</field>
                     <field name="groupby">account_id</field>
                     <field name="foldable" eval="True"/>
+                    <field name="hierarchy_level">0</field>
                     <field name="expression_ids">
                         <record id="l10n_ec_profit_and_loss_income_expression" model="account.report.expression">
                             <field name="label">balance</field>
@@ -177,6 +182,7 @@
                     <field name="code">GAST</field>
                     <field name="groupby">account_id</field>
                     <field name="foldable" eval="True"/>
+                    <field name="hierarchy_level">0</field>
                     <field name="expression_ids">
                         <record id="l10n_ec_profit_and_loss_expenses_expression" model="account.report.expression">
                             <field name="label">balance</field>
@@ -190,6 +196,7 @@
                 <record id="l10n_ec_profit_and_loss_results" model="account.report.line">
                     <field name="name">Total Profit</field>
                     <field name="code">BENT</field>
+                    <field name="hierarchy_level">0</field>
                     <field name="expression_ids">
                         <record id="l10n_ec_profit_and_loss_results_expression" model="account.report.expression">
                             <field name="label">balance</field>

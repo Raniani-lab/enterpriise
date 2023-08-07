@@ -19,6 +19,7 @@
             <record id="es_profit_and_loss_line_sum_a" model="account.report.line">
                 <field name="name">A) RESULTS FROM OPERATING ACTIVITIES (1 + 2 + 3 + 4 + 5 + 6 + 7 + 8 + 9 + 10 + 11 + 12)</field>
                 <field name="code">es_profit_and_loss_sum_a</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="es_profit_and_loss_line_sum_a_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -202,6 +203,7 @@
             <record id="es_profit_and_loss_line_sum_b" model="account.report.line">
                 <field name="name">B) FINANCIAL RESULTS (13 + 14 + 15 + 16 + 17)</field>
                 <field name="code">es_profit_and_loss_sum_b</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="es_profit_and_loss_line_sum_b_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -314,6 +316,7 @@
             <record id="es_profit_and_loss_line_sum_c" model="account.report.line">
                 <field name="name">C) PROFIT/LOSS BEFORE INCOME TAX (A + B)</field>
                 <field name="code">es_profit_and_loss_sum_c</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="es_profit_and_loss_line_sum_c_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -325,6 +328,7 @@
             </record>
             <record id="es_profit_and_loss_line_sum_d" model="account.report.line">
                 <field name="name">D) PROFIT/LOSS FOR THE PERIOD (C + 18)</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="es_profit_and_loss_line_sum_d_balance" model="account.report.expression">
                         <field name="label">balance</field>

@@ -15,6 +15,7 @@
             <record id="tax_report_lineA" model="account.report.line">
                 <field name="name">A. Calculation of tax at common rate</field>
                 <field name="code">LINEA</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="tax_report_line1" model="account.report.line">
                         <field name="name">1. Amount of total income (1=2+...+6)</field>
@@ -230,6 +231,7 @@
             <record id="tax_report_lineB" model="account.report.line">
                 <field name="name">B. Calculation of special rate tax</field>
                 <field name="code">LINEB</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="tax_report_line32" model="account.report.line">
                         <field name="name">16. Erotic publications, literature, recordings sold, used, performancesRevenue from services rendered (32)</field>
@@ -318,8 +320,9 @@
                 </field>
             </record>
             <record id="tax_report_lineC" model="account.report.line">
-                <field name="name">V. Computation of taxes withheld by others according to law</field>
+                <field name="name">C. Computation of taxes withheld by others according to law</field>
                 <field name="code">LINEC</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="tax_report_line46" model="account.report.line">
                         <field name="name">22. Dividend income (46)</field>
@@ -380,6 +383,7 @@
                 <field name="name">23. TOTAL PAYABLE TAX AMOUNT (55=31+45+54)</field>
                 <field name="code">LINED</field>
                 <field name="aggregation_formula">LINE31.balance + LINE45.balance + LINE54.balance</field>
+                <field name="hierarchy_level">0</field>
             </record>
         </field>
     </record>

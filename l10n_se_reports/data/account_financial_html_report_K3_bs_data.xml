@@ -22,6 +22,7 @@
             <field name="code">SE_BS_A_TOTAL</field>
             <field name="report_id" ref="account_financial_report_bs"/>
             <field name="aggregation_formula">SE_BS_A_10_TOTAL.balance + SE_BS_A_20_TOTAL.balance + SE_BS_A_30_TOTAL.balance</field>
+            <field name="hierarchy_level" eval="0"/>
         </record>
         <record id="account_financial_report_bs_A_10_TOTAL" model="account.report.line">
             <field name="name">Subscribed but unpaid capital</field>
@@ -442,6 +443,7 @@
             <field name="code">SE_BS_EL_TOTAL</field>
             <field name="report_id" ref="account_financial_report_bs"/>
             <field name="aggregation_formula">SE_BS_EL_10_TOTAL.balance + SE_BS_EL_20_TOTAL.balance + SE_BS_EL_30_TOTAL.balance + SE_BS_EL_40_TOTAL.balance</field>
+            <field name="hierarchy_level" eval="0"/>
         </record>
         <record id="account_financial_report_bs_EL_10_TOTAL" model="account.report.line">
             <field name="name">Equity, with information on what constitutes unrestricted equity and restricted equity</field>

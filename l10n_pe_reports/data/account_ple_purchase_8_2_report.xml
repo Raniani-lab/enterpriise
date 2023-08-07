@@ -68,6 +68,7 @@
             <record id="ple_82_line" model="account.report.line">
                 <field name="name">PLE 8.2</field>
                 <field name="groupby">move_id</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="ple_82_line_invoice_date" model="account.report.expression">
                         <field name="label">invoice_date</field>

@@ -18,6 +18,7 @@
             <record id="account_financial_report_line_01_fr_cdr_prod_exp_A" model="account.report.line">
                 <field name="name">Operating income (I)</field>
                 <field name="code">I</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_line_01_fr_cdr_prod_exp_A_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -130,6 +131,7 @@
             <record id="account_financial_report_line_01_fr_cdr_char_exp" model="account.report.line">
                 <field name="name">Operating expenses (II)</field>
                 <field name="code">II</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_line_01_fr_cdr_char_exp_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -311,6 +313,7 @@
             </record>
             <record id="p_n_l_1_resultat_exploitation" model="account.report.line">
                 <field name="name">1-Operating result (I-II)</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="p_n_l_1_resultat_exploitation_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -322,6 +325,7 @@
             </record>
             <record id="account_financial_report_line_01_fr_cdr16" model="account.report.line">
                 <field name="name">Share of profit on joint operations</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="account_financial_report_line_fr_cdrp8" model="account.report.line">
                         <field name="name">Profit allocated or loss transferred (III)</field>
@@ -356,6 +360,7 @@
             <record id="account_financial_report_line_01_fr_cdr_prod_fin" model="account.report.line">
                 <field name="name">Financial income (V)</field>
                 <field name="code">V</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_line_01_fr_cdr_prod_fin_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -454,6 +459,7 @@
             <record id="account_financial_report_line_01_fr_cdr_char_fin" model="account.report.line">
                 <field name="name">Financial charges (VI)</field>
                 <field name="code">VI</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_line_01_fr_cdr_char_fin_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -537,6 +543,7 @@
             </record>
             <record id="p_n_l_2_resultat_financier_v_vi" model="account.report.line">
                 <field name="name">2.financial result (V-VI)</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="p_n_l_2_resultat_financier_v_vi_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -548,6 +555,7 @@
             </record>
             <record id="p_n_l_3_resultat_courant_avant_impots_i_ii_iii_iv_v_vi" model="account.report.line">
                 <field name="name">3.current result before taxes(I-II+III-IV+V-VI)</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="p_n_l_3_resultat_courant_avant_impots_i_ii_iii_iv_v_vi_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -560,6 +568,7 @@
             <record id="account_financial_report_line_01_fr_cdr_prod_exc" model="account.report.line">
                 <field name="name">Extraordinary income (VII)</field>
                 <field name="code">VII</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_line_01_fr_cdr_prod_exc_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -644,6 +653,7 @@
             <record id="account_financial_report_line_01_fr_cdr_char_exc" model="account.report.line">
                 <field name="name">Exceptional expenses (VIII)</field>
                 <field name="code">VIII</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_line_01_fr_cdr_char_exc_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -713,6 +723,7 @@
             </record>
             <record id="p_n_l_4_resultat_exceptionnel_vii_viii" model="account.report.line">
                 <field name="name">4. extraordinary result (VII-VIII)</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="p_n_l_4_resultat_exceptionnel_vii_viii_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -755,6 +766,7 @@
             <record id="account_financial_report_line_01_fr_cdr_prod" model="account.report.line">
                 <field name="name">Total income (I+III+V+VII)</field>
                 <field name="code">total_products</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_line_01_fr_cdr_prod_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -767,6 +779,7 @@
             <record id="account_financial_report_line_01_fr_cdr_char" model="account.report.line">
                 <field name="name">Total expenses (II+IV+VI+VIII+IX+X)</field>
                 <field name="code">total_charges</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_line_01_fr_cdr_char_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -779,6 +792,7 @@
             <record id="account_financial_report_line_01_fr_cdr_tot" model="account.report.line">
                 <field name="name">Profit or loss</field>
                 <field name="code">total_all</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_line_01_fr_cdr_tot_balance" model="account.report.expression">
                         <field name="label">balance</field>

@@ -14,6 +14,7 @@
             <record id="account_financial_report_line_01_syscohada_cdr_tot" model="account.report.line">
                 <field name="name">INCOME AND EXPENSES</field>
                 <field name="code">SYSCOHADA_CDR_TOT</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="account_financial_report_line_01_syscohada_cdr_char_vent" model="account.report.line">
                         <field name="name">TA | Sales of goods</field>

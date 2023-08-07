@@ -18,6 +18,7 @@
             <record id="account_financial_report_line_it_ce_A" model="account.report.line">
                 <field name="name">A. VALUE OF PRODUCTION</field>
                 <field name="code">IT_CEA</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_line_it_ce_A_TOT" model="account.report.expression">
                         <field name="label">balance</field>
@@ -109,6 +110,7 @@
             <record id="account_financial_report_line_it_ce_B" model="account.report.line">
                 <field name="name">B. PRODUCTION COSTS</field>
                 <field name="code">IT_CEB</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_line_it_ce_B_TOT" model="account.report.expression">
                         <field name="label">balance</field>
@@ -273,10 +275,12 @@
                 <field name="name">DIFFERENCE BETWEEN VALUE AND COST OF PRODUCTION (A - B)</field>
                 <field name="code">IT_CEA_CEB_DIFFERENCE</field>
                 <field name="aggregation_formula">IT_CEA.balance - IT_CEB.balance</field>
+                <field name="hierarchy_level">0</field>
             </record>
             <record id="account_financial_report_line_it_ce_C" model="account.report.line">
                 <field name="name">C. FINANCIAL INCOME AND EXPENSES</field>
                 <field name="code">IT_CEC</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_line_it_ce_C_TOT" model="account.report.expression">
                         <field name="label">balance</field>
@@ -439,6 +443,7 @@
             <record id="account_financial_report_line_it_ce_D" model="account.report.line">
                 <field name="name">D. VALUE ADJUSTMENTS TO FINANCIAL ASSETS AND LIABILITIES</field>
                 <field name="code">IT_CED</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_line_it_ce_D_TOT" model="account.report.expression">
                         <field name="label">balance</field>
@@ -532,11 +537,13 @@
                 <field name="name">RESULT BEFORE INTEREST AND TAXES (A - B ± C ± D)</field>
                 <field name="code">RISULTATO_PRIMA_IMPOSTE</field>
                 <field name="aggregation_formula">IT_CEA.balance - IT_CEB.balance + IT_CEC.balance + IT_CED.balance</field>
+                <field name="hierarchy_level">0</field>
             </record>
             <record id="account_financial_report_line_it_ce_E_22" model="account.report.line">
                 <field name="name">20. Income taxes for the year</field>
                 <field name="code">IT_CEE_22</field>
                 <field name="aggregation_formula">IT_CEE_22_a.balance + IT_CEE_22_b.balance</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="account_financial_report_line_it_ce_E_22_a" model="account.report.line">
                         <field name="name">a. Current taxes</field>
@@ -560,6 +567,7 @@
                 <field name="name">21. PROFIT (LOSS) FOR THE YEAR</field>
                 <field name="code">UTILE_PERDITA</field>
                 <field name="aggregation_formula">RISULTATO_PRIMA_IMPOSTE.balance - IT_CEE_22.balance</field>
+                <field name="hierarchy_level">0</field>
             </record>
         </field>
     </record>

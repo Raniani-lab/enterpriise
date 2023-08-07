@@ -21,6 +21,7 @@
             <record id="mod_115_title_1" model="account.report.line">
                 <field name="name">Withholdings and payments on account</field>
                 <field name="code">aeat_mod_115_title_1</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="mod_115_casilla_01" model="account.report.line">
                         <field name="name">[01] Nº of recipients</field>
@@ -56,6 +57,7 @@
             <record id="mod_115_title_2" model="account.report.line">
                 <field name="name">Total liquidation</field>
                 <field name="code">aeat_mod_115_title_2</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="mod_115_casilla_04" model="account.report.line">
                         <field name="name">[04] Previous results to report</field>

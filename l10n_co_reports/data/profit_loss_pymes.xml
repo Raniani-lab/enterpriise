@@ -19,6 +19,7 @@
                 <field name="name">Income</field>
                 <field name="code">L10N_CO_PNL_INCOME</field>
                 <field name="aggregation_formula">L10N_CO_PNL_IO.balance + L10N_CO_PNL_INO.balance</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="l10n_co_pl_account_report_income_operational" model="account.report.line">
                         <field name="code">L10N_CO_PNL_IO</field>
@@ -40,6 +41,7 @@
                 <field name="name">Expenses</field>
                 <field name="code">L10N_CO_PNL_EXPENSES</field>
                 <field name="aggregation_formula">L10N_CO_PNL_E_ADMIN.balance + L10N_CO_PNL_E_SALES.balance + L10N_CO_PNL_DEPR.balance + L10N_CO_PNL_E_NO.balance</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="l10n_co_pl_account_report_expenses_admin" model="account.report.line">
                         <field name="code">L10N_CO_PNL_E_ADMIN</field>
@@ -76,6 +78,7 @@
                 <field name="name">Cost of Sales</field>
                 <field name="foldable" eval="True"/>
                 <field name="aggregation_formula">L10N_CO_PNL_COST_SNS.balance + L10N_CO_PNL_COST_PURCHASE.balance</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="l10n_co_pl_account_report_cost_sales_services" model="account.report.line">
                         <field name="code">L10N_CO_PNL_COST_SNS</field>
@@ -98,6 +101,7 @@
                 <field name="name">Cost of Production</field>
                 <field name="foldable" eval="True"/>
                 <field name="aggregation_formula">L10N_CO_PNL_RAW_MATERIAL.balance + L10N_CO_PNL_COST_LABOR.balance + L10N_CO_PNL_INDIRECT.balance + L10N_CO_PNL_COST_CONTRACTS.balance</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="l10n_co_pl_account_report_raw_material" model="account.report.line">
                         <field name="code">L10N_CO_PNL_RAW_MATERIAL</field>
@@ -135,11 +139,13 @@
                 <field name="foldable" eval="True"/>
                 <field name="account_codes_formula">59</field>
                 <field name="groupby">account_id</field>
+                <field name="hierarchy_level">0</field>
             </record>
             <record id="l10n_co_pl_account_report_income_before_tax" model="account.report.line">
                 <field name="code">L10N_CO_PNL_BEFORE_TAX</field>
                 <field name="name">Net Income before Tax</field>
                 <field name="aggregation_formula">L10N_CO_PNL_INCOME.balance - L10N_CO_PNL_EXPENSES.balance - L10N_CO_PNL_COST_SALES.balance - L10N_CO_PNL_COST_PROD.balance + L10N_CO_PNL_GAINS_LOSSES.balance</field>
+                <field name="hierarchy_level">0</field>
             </record>
             <record id="l10n_co_pl_account_report_income_tax" model="account.report.line">
                 <field name="code">L10N_CO_PNL_TAX</field>
@@ -147,11 +153,13 @@
                 <field name="foldable" eval="True"/>
                 <field name="account_codes_formula">54</field>
                 <field name="groupby">account_id</field>
+                <field name="hierarchy_level">0</field>
             </record>
             <record id="l10n_co_pl_account_report_net_income" model="account.report.line">
                 <field name="code">L10N_CO_PNL_NET_INCOME</field>
                 <field name="name">Net Income</field>
                 <field name="aggregation_formula">L10N_CO_PNL_BEFORE_TAX.balance - L10N_CO_PNL_TAX.balance</field>
+                <field name="hierarchy_level">0</field>
             </record>
         </field>
     </record>

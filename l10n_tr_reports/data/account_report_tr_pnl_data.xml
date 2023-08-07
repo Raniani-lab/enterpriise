@@ -15,6 +15,7 @@
                     model="account.report.line">
                 <field name="name">Ordinary Profit/Loss</field>
                 <field name="code">TR_PL_PROFIT_LOST_FROM_ORDINARY_OPERATIONS</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_report_line_tr_pl_profit_lost_from_ordinary_operations_balance"
                             model="account.report.expression">
@@ -199,6 +200,7 @@
                     model="account.report.line">
                 <field name="name">Extraordinary Profit/Loss</field>
                 <field name="code">TR_PL_EXTRAORDINARY_PROFIT_LOST</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_report_line_tr_pl_extraordinary_profit_lost_balance"
                             model="account.report.expression">
@@ -246,6 +248,7 @@
                     model="account.report.line">
                 <field name="name">Net Profit/Loss for the Period</field>
                 <field name="code">TR_PL_NET_PERIOD_PROFIT_OR_LOSS_692</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_report_line_tr_pl_net_period_profit_or_loss_692_balance"
                             model="account.report.expression">

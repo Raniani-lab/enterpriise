@@ -18,7 +18,7 @@
             <record id="l10n_tn_pl_I_1" model="account.report.line">
                 <field name="name">OPERATING INCOME</field>
                 <field name="code">l10n_tn_I_1</field>
-                <field name="hierarchy_level">3</field>
+                <field name="hierarchy_level">0</field>
                 <field name="foldable" eval="True"/>
                 <field name="expression_ids">
                     <record id="l10n_tn_pl_I_1_balance" model="account.report.expression">
@@ -105,7 +105,7 @@
             <record id="l10n_tn_pl_I_2" model="account.report.line">
                 <field name="name">OPERATING EXPENSES</field>
                 <field name="code">l10n_tn_I_2</field>
-                <field name="hierarchy_level">3</field>
+                <field name="hierarchy_level">0</field>
                 <field name="foldable" eval="True"/>
                 <field name="expression_ids">
                     <record id="l10n_tn_pl_I_2_balance" model="account.report.expression">
@@ -206,7 +206,7 @@
                 <field name="name">OPERATING RESULT</field>
                 <field name="code">l10n_tn_I</field>
                 <field name="foldable" eval="True"/>
-                <field name="hierarchy_level">1</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="l10n_tn_pl_I_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -279,7 +279,7 @@
             <record id="l10n_tn_pl_II" model="account.report.line">
                 <field name="name">PROFIT FROM ORDINARY ACTIVITIES BEFORE TAX</field>
                 <field name="code">l10n_tn_II</field>
-                <field name="hierarchy_level">1</field>
+                <field name="hierarchy_level">0</field>
                 <field name="foldable" eval="True"/>
                 <field name="expression_ids">
                     <record id="l10n_tn_pl_II_balance" model="account.report.expression">
@@ -308,7 +308,7 @@
             <record id="l10n_tn_pl_III" model="account.report.line">
                 <field name="name">PROFIT FROM ORDINARY ACTIVITIES AFTER TAX</field>
                 <field name="code">l10n_tn_III</field>
-                <field name="hierarchy_level">1</field>
+                <field name="hierarchy_level">0</field>
                 <field name="foldable" eval="True"/>
                 <field name="expression_ids">
                     <record id="l10n_tn_pl_III_balance" model="account.report.expression">
@@ -337,7 +337,7 @@
             <record id="l10n_tn_pl_IV" model="account.report.line">
                 <field name="name">NET RESULT OF THE PERIOD</field>
                 <field name="code">l10n_tn_IV</field>
-                <field name="hierarchy_level">1</field>
+                <field name="hierarchy_level">0</field>
                 <field name="foldable" eval="True"/>
                 <field name="expression_ids">
                     <record id="l10n_tn_pl_IV_balance" model="account.report.expression">
@@ -367,6 +367,7 @@
                 <field name="name">RESULT AFTER ACCOUNTING CHANGES</field>
                 <field name="code">l10n_tn_V</field>
                 <field name="foldable" eval="True"/>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="l10n_tn_pl_V_balance" model="account.report.expression">
                         <field name="label">balance</field>

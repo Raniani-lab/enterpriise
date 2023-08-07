@@ -19,6 +19,7 @@
                 <field name="name">020. Total operating income (loss)</field>
                 <field name="code">L10N_KZ_PNL_020</field>
                 <field name="aggregation_formula">L10N_KZ_PNL_012.balance + L10N_KZ_PNL_013.balance + L10N_KZ_PNL_014.balance</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="l10n_kz_pl_non_exchange_income" model="account.report.line">
                         <field name="name">012. Gross profit (loss)</field>
@@ -120,6 +121,7 @@
                 <field name="name">300. Profit for the year attributable to:</field>
                 <field name="code">L10N_KZ_PNL_300</field>
                 <field name="aggregation_formula">L10N_KZ_PNL_200.balance + L10N_KZ_PNL_201.balance</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="l10n_kz_pl_after_tax_300_1" model="account.report.line">
                         <field name="name">Owners of the parent organization</field>
@@ -151,6 +153,7 @@
                 <field name="name">400. Other comprehensive income, total, including:</field>
                 <field name="code">L10N_KZ_PNL_400</field>
                 <field name="aggregation_formula">L10N_KZ_PNL_420.balance + L10N_KZ_PNL_440.balance</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="l10n_kz_pl_other_income_420" model="account.report.line">
                         <field name="name">420. Total other comprehensive income to be reclassified to income or expense in subsequent periods (net of income tax)</field>
@@ -340,6 +343,7 @@
                 <field name="name">500. Total comprehensive income attributable to:</field>
                 <field name="code">L10N_KZ_PNL_500</field>
                 <field name="aggregation_formula">L10N_KZ_PNL_300.balance + L10N_KZ_PNL_400.balance</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="l10n_kz_pl_after_tax_500_1" model="account.report.line">
                         <field name="name">Owners of the parent organization</field>
@@ -371,6 +375,7 @@
                 <field name="name">600. Earnings per share including:</field>
                 <field name="code">L10N_KZ_PNL_600</field>
                 <field name="aggregation_formula">L10N_KZ_PNL_600_1.balance + L10N_KZ_PNL_600_2.balance</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="l10n_kz_pl_earnings_per_share_1" model="account.report.line">
                         <field name="name">Basic earnings per share:</field>

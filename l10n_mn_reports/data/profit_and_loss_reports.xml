@@ -16,6 +16,7 @@
             <record id="report_profit_root" model="account.report.line">
                 <field name="name">Income results</field>
                 <field name="code">MNPL_ROOT</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="report_profit_root_balance" model="account.report.expression">
                         <field name="label">balance</field>

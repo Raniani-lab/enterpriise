@@ -17,7 +17,6 @@
         <field name="line_ids">
             <record id="l10n_dz_pl_I_1" model="account.report.line">
                 <field name="name">(70) Sales and related products</field>
-                <field name="hierarchy_level">3</field>
                 <field name="code">l10n_dz_I_1</field>
                 <field name="expression_ids">
                     <record id="l10n_dz_pl_I_1_balance" model="account.report.expression">
@@ -30,7 +29,6 @@
             </record>
             <record id="l10n_dz_pl_I_2" model="account.report.line">
                 <field name="name">(72) Change in inventories of finished goods and work in progress</field>
-                <field name="hierarchy_level">3</field>
                 <field name="code">l10n_dz_I_2</field>
                 <field name="expression_ids">
                     <record id="l10n_dz_pl_I_2_balance" model="account.report.expression">
@@ -43,7 +41,6 @@
             </record>
             <record id="l10n_dz_pl_I_3" model="account.report.line">
                 <field name="name">(73) Capitalized production</field>
-                <field name="hierarchy_level">3</field>
                 <field name="code">l10n_dz_I_3</field>
                 <field name="expression_ids">
                     <record id="l10n_dz_pl_I_3_balance" model="account.report.expression">
@@ -56,7 +53,6 @@
             </record>
             <record id="l10n_dz_pl_I_4" model="account.report.line">
                 <field name="name">(74) Operating subsidies</field>
-                <field name="hierarchy_level">3</field>
                 <field name="code">l10n_dz_I_4</field>
                 <field name="expression_ids">
                     <record id="l10n_dz_pl_I_4_balance" model="account.report.expression">
@@ -82,7 +78,6 @@
             </record>
             <record id="l10n_dz_pl_II_1" model="account.report.line">
                 <field name="name">(60) Purchases consumed</field>
-                <field name="hierarchy_level">3</field>
                 <field name="code">l10n_dz_II_1</field>
                 <field name="expression_ids">
                     <record id="l10n_dz_pl_II_1_balance" model="account.report.expression">
@@ -96,7 +91,6 @@
             </record>
             <record id="l10n_dz_pl_II_2" model="account.report.line">
                 <field name="name">(61, 62) External services and other consumption</field>
-                <field name="hierarchy_level">3</field>
                 <field name="code">l10n_dz_II_2</field>
                 <field name="expression_ids">
                     <record id="l10n_dz_pl_II_2_balance" model="account.report.expression">
@@ -110,7 +104,6 @@
             </record>
             <record id="l10n_dz_pl_II" model="account.report.line">
                 <field name="name">II - CONSUMPTION FOR THE YEAR</field>
-                <field name="hierarchy_level">1</field>
                 <field name="code">l10n_dz_II</field>
                 <field name="expression_ids">
                     <record id="l10n_dz_pl_II_balance" model="account.report.expression">
@@ -124,7 +117,6 @@
             </record>
             <record id="l10n_dz_pl_III" model="account.report.line">
                 <field name="name">III - OPERATING VALUE ADDED (I - II)</field>
-                <field name="hierarchy_level">1</field>
                 <field name="code">l10n_dz_III</field>
                 <field name="expression_ids">
                     <record id="l10n_dz_pl_III_balance" model="account.report.expression">
@@ -137,7 +129,6 @@
             </record>
             <record id="l10n_dz_pl_IV_1" model="account.report.line">
                 <field name="name">(63) Personnel costs</field>
-                <field name="hierarchy_level">3</field>
                 <field name="code">l10n_dz_IV_1</field>
                 <field name="expression_ids">
                     <record id="l10n_dz_pl_IV_1_balance" model="account.report.expression">
@@ -151,7 +142,6 @@
             </record>
             <record id="l10n_dz_pl_IV_2" model="account.report.line">
                 <field name="name">(64) Taxes, duties and similar payments</field>
-                <field name="hierarchy_level">3</field>
                 <field name="code">l10n_dz_IV_2</field>
                 <field name="expression_ids">
                     <record id="l10n_dz_pl_IV_2_balance" model="account.report.expression">
@@ -165,7 +155,6 @@
             </record>
             <record id="l10n_dz_pl_IV" model="account.report.line">
                 <field name="name">IV - GROSS OPERATING PROFIT</field>
-                <field name="hierarchy_level">1</field>
                 <field name="code">l10n_dz_IV</field>
                 <field name="expression_ids">
                     <record id="l10n_dz_pl_IV_balance" model="account.report.expression">
@@ -178,7 +167,6 @@
             </record>
             <record id="l10n_dz_pl_V_1" model="account.report.line">
                 <field name="name">(75) Other operating income</field>
-                <field name="hierarchy_level">3</field>
                 <field name="code">l10n_dz_V_1</field>
                 <field name="expression_ids">
                     <record id="l10n_dz_pl_V_1_balance" model="account.report.expression">
@@ -191,7 +179,6 @@
             </record>
             <record id="l10n_dz_pl_V_2" model="account.report.line">
                 <field name="name">(65) Other operating expenses</field>
-                <field name="hierarchy_level">3</field>
                 <field name="code">l10n_dz_V_2</field>
                 <field name="expression_ids">
                     <record id="l10n_dz_pl_V_2_balance" model="account.report.expression">
@@ -205,7 +192,6 @@
             </record>
             <record id="l10n_dz_pl_V_3" model="account.report.line">
                 <field name="name">(68) Depreciation, provisions and impairment losses</field>
-                <field name="hierarchy_level">3</field>
                 <field name="code">l10n_dz_V_3</field>
                 <field name="expression_ids">
                     <record id="l10n_dz_pl_V_3_balance" model="account.report.expression">
@@ -219,7 +205,6 @@
             </record>
             <record id="l10n_dz_pl_V_4" model="account.report.line">
                 <field name="name">(78) Reversal of impairment losses and provisions</field>
-                <field name="hierarchy_level">3</field>
                 <field name="code">l10n_dz_V_4</field>
                 <field name="expression_ids">
                     <record id="l10n_dz_pl_V_4_balance" model="account.report.expression">
@@ -232,7 +217,6 @@
             </record>
             <record id="l10n_dz_pl_V" model="account.report.line">
                 <field name="name">V - OPERATING INCOME</field>
-                <field name="hierarchy_level">1</field>
                 <field name="code">l10n_dz_V</field>
                 <field name="expression_ids">
                     <record id="l10n_dz_pl_V_balance" model="account.report.expression">
@@ -245,7 +229,6 @@
             </record>
             <record id="l10n_dz_pl_VI_1" model="account.report.line">
                 <field name="name">(76) Financial income</field>
-                <field name="hierarchy_level">3</field>
                 <field name="code">l10n_dz_VI_1</field>
                 <field name="expression_ids">
                     <record id="l10n_dz_pl_VI_1_balance" model="account.report.expression">
@@ -258,7 +241,6 @@
             </record>
             <record id="l10n_dz_pl_VI_2" model="account.report.line">
                 <field name="name">(66) Financial expenses</field>
-                <field name="hierarchy_level">3</field>
                 <field name="code">l10n_dz_VI_2</field>
                 <field name="expression_ids">
                     <record id="l10n_dz_pl_VI_2_balance" model="account.report.expression">
@@ -272,7 +254,6 @@
             </record>
             <record id="l10n_dz_pl_VI" model="account.report.line">
                 <field name="name">VI - FINANCIAL RESULT</field>
-                <field name="hierarchy_level">1</field>
                 <field name="code">l10n_dz_VI</field>
                 <field name="expression_ids">
                     <record id="l10n_dz_pl_VI_balance" model="account.report.expression">
@@ -285,7 +266,6 @@
             </record>
             <record id="l10n_dz_pl_VII" model="account.report.line">
                 <field name="name">VII - ORDINARY INCOME BEFORE TAXES (V + VI)</field>
-                <field name="hierarchy_level">1</field>
                 <field name="code">l10n_dz_VII</field>
                 <field name="expression_ids">
                     <record id="l10n_dz_pl_VII_balance" model="account.report.expression">
@@ -298,7 +278,6 @@
             </record>
             <record id="l10n_dz_pl_VIII_1" model="account.report.line">
                 <field name="name">(695, 698) Current income taxes</field>
-                <field name="hierarchy_level">3</field>
                 <field name="code">l10n_dz_VIII_1</field>
                 <field name="expression_ids">
                     <record id="l10n_dz_pl_VIII_1_balance" model="account.report.expression">
@@ -312,7 +291,6 @@
             </record>
             <record id="l10n_dz_pl_VIII_2" model="account.report.line">
                 <field name="name">(692, 693) Deferred taxes (changes) on ordinary income</field>
-                <field name="hierarchy_level">3</field>
                 <field name="code">l10n_dz_VIII_2</field>
                 <field name="expression_ids">
                     <record id="l10n_dz_pl_VIII_2_balance" model="account.report.expression">
@@ -326,7 +304,6 @@
             </record>
             <record id="l10n_dz_pl_VIII" model="account.report.line">
                 <field name="name">VIII - NET INCOME FROM ORDINARY ACTIVITIES</field>
-                <field name="hierarchy_level">1</field>
                 <field name="code">l10n_dz_VIII</field>
                 <field name="expression_ids">
                     <record id="l10n_dz_pl_VIII_balance" model="account.report.expression">
@@ -339,7 +316,6 @@
             </record>
             <record id="l10n_dz_pl_total_revenue_ordinary_activities" model="account.report.line">
                 <field name="name">TOTAL REVENUE FROM ORDINARY ACTIVITIES</field>
-                <field name="hierarchy_level">1</field>
                 <field name="code">l10n_dz_total_revenue_ordinary_activities</field>
                 <field name="expression_ids">
                     <record id="l10n_dz_pl_total_revenue_ordinary_activities_balance" model="account.report.expression">
@@ -352,7 +328,6 @@
             </record>
             <record id="l10n_dz_pl_total_expense_ordinary_activities" model="account.report.line">
                 <field name="name">TOTAL EXPENSES FROM ORDINARY ACTIVITIES</field>
-                <field name="hierarchy_level">1</field>
                 <field name="code">l10n_dz_total_expense_ordinary_activities</field>
                 <field name="expression_ids">
                     <record id="l10n_dz_pl_total_expense_ordinary_activities_balance" model="account.report.expression">
@@ -365,7 +340,6 @@
             </record>
             <record id="l10n_dz_pl_IX_1" model="account.report.line">
                 <field name="name">(77) Extraordinary elements (income)</field>
-                <field name="hierarchy_level">3</field>
                 <field name="code">l10n_dz_IX_1</field>
                 <field name="expression_ids">
                     <record id="l10n_dz_pl_IX_1_balance" model="account.report.expression">
@@ -378,7 +352,6 @@
             </record>
             <record id="l10n_dz_pl_IX_2" model="account.report.line">
                 <field name="name">(67) Extraordinary elements (expenses)</field>
-                <field name="hierarchy_level">3</field>
                 <field name="code">l10n_dz_IX_2</field>
                 <field name="expression_ids">
                     <record id="l10n_dz_pl_IX_2_balance" model="account.report.expression">
@@ -392,7 +365,6 @@
             </record>
             <record id="l10n_dz_pl_IX" model="account.report.line">
                 <field name="name">IX - EXTRAORDINARY RESULT</field>
-                <field name="hierarchy_level">1</field>
                 <field name="code">l10n_dz_IX</field>
                 <field name="expression_ids">
                     <record id="l10n_dz_pl_IX_balance" model="account.report.expression">
@@ -405,7 +377,6 @@
             </record>
             <record id="l10n_dz_pl_X" model="account.report.line">
                 <field name="name">X - NET INCOME FOR THE YEAR (VIII + IX)</field>
-                <field name="hierarchy_level">1</field>
                 <field name="code">l10n_dz_X</field>
                 <field name="expression_ids">
                     <record id="l10n_dz_pl_X_balance" model="account.report.expression">

@@ -18,6 +18,7 @@
             <record id="l10n_pl_small_bs_assets" model="account.report.line">
                 <field name="name">Assets</field>
                 <field name="code">pl_small_assets</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="l10n_pl_small_bs_assets_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -245,6 +246,7 @@
             <record id="l10n_pl_small_bs_passives" model="account.report.line">
                 <field name="name">Liabilities and Equity</field>
                 <field name="code">pl_small_passives</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="l10n_pl_small_bs_passives_balance" model="account.report.expression">
                         <field name="label">balance</field>

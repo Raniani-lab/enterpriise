@@ -18,6 +18,7 @@
             <record id="skr_pl_line_total" model="account.report.line">
                 <field name="name">Net income (profit or loss)</field>
                 <field name="code">SKR_PL_TOTAL</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="skr_pl_line_total_balance" model="account.report.expression">
                         <field name="label">balance</field>

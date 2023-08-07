@@ -15,6 +15,7 @@
             <record id="vat_report_lineA" model="account.report.line">
                 <field name="name">A. CALCULATION OF VAT ON GOODS, WORKS AND SERVICES SOLD FOR THAT MONTH</field>
                 <field name="code">VAT_LINEA</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="vat_report_line1" model="account.report.line">
                         <field name="name">Total sales revenue for that month (1=2+3)</field>
@@ -213,6 +214,7 @@ Revenues from heat, gas, water supply, sewerage, postal, telecommunication and o
             <record id="vat_report_lineB" model="account.report.line">
                 <field name="name">B. CALCULATION OF VAT ON GOODS, WORKS AND SERVICES PURCHASED IN THAT MONTH</field>
                 <field name="code">VAT_LINEB</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="vat_report_line33" model="account.report.line">
                         <field name="name">Total amount of goods and services purchased in that month (33)</field>
@@ -294,8 +296,9 @@ Revenues from heat, gas, water supply, sewerage, postal, telecommunication and o
                 </field>
             </record>
             <record id="vat_report_lineC" model="account.report.line">
-                <field name="name">V. VAT CALCULATION FOR FINANCIAL LEASE AND FINANCING DEALINGS</field>
+                <field name="name">C. VAT CALCULATION FOR FINANCIAL LEASE AND FINANCING DEALINGS</field>
                 <field name="code">VAT_LINEC</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="vat_report_line48" model="account.report.line">
                         <field name="name">Financial lease items on the domestic market under financial leasesales revenue (48)</field>
@@ -335,8 +338,9 @@ Revenues from heat, gas, water supply, sewerage, postal, telecommunication and o
                 </field>
             </record>
             <record id="vat_report_lineD" model="account.report.line">
-                <field name="name">G. OFFICIAL CALCULATION OF VALUE ADDED TAX FOR THE MONTH</field>
+                <field name="name">D. OFFICIAL CALCULATION OF VALUE ADDED TAX FOR THE MONTH</field>
                 <field name="code">VAT_LINED</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="vat_report_line54" model="account.report.line">
                         <field name="name">VAT payable in that month (54=32+50)</field>
@@ -351,8 +355,9 @@ Revenues from heat, gas, water supply, sewerage, postal, telecommunication and o
                 </field>
             </record>
             <record id="vat_report_lineE" model="account.report.line">
-                <field name="name">D. CORRECTION TO PREVIOUS MONTH'S REPORT</field>
+                <field name="name">E. CORRECTION TO PREVIOUS MONTH'S REPORT</field>
                 <field name="code">VAT_LINEE</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="vat_report_line56" model="account.report.line">
                         <field name="name">Sales revenue returns and discounts (56)</field>
@@ -377,8 +382,9 @@ Revenues from heat, gas, water supply, sewerage, postal, telecommunication and o
                 </field>
             </record>
             <record id="vat_report_lineF" model="account.report.line">
-                <field name="name">E. OFFICIAL CALCULATION OF VALUE ADDED TAX FOR THE MONTH</field>
+                <field name="name">F. OFFICIAL CALCULATION OF VALUE ADDED TAX FOR THE MONTH</field>
                 <field name="code">VAT_LINEF</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="vat_report_line60" model="account.report.line">
                         <field name="name">TOTAL PAYMENT APPROPRIATE VAT (60=54-57)</field>

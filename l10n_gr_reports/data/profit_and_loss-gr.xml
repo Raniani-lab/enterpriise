@@ -19,7 +19,7 @@
             <record id="l10n_gr_pl_net_turnover" model="account.report.line">
                 <field name="name">Net turnover</field>
                 <field name="code">l10n_gr_net_turnover</field>
-                <field name="hierarchy_level">3</field>
+                <field name="hierarchy_level">1</field>
                 <field name="groupby">account_id</field>
                 <field name="foldable" eval="True"/>
                 <field name="expression_ids">
@@ -33,7 +33,7 @@
             <record id="l10n_gr_pl_cost_of_sales" model="account.report.line">
                 <field name="name">Cost of sales</field>
                 <field name="code">l10n_gr_cost_of_sales</field>
-                <field name="hierarchy_level">3</field>
+                <field name="hierarchy_level">1</field>
                 <field name="groupby">account_id</field>
                 <field name="foldable" eval="True"/>
                 <field name="expression_ids">

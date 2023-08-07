@@ -85,6 +85,7 @@
             <record id="ple_81_line" model="account.report.line">
                 <field name="name">PLE 8.1</field>
                 <field name="groupby">move_id</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="ple_81_line_document_type" model="account.report.expression">
                         <field name="label">document_type</field>

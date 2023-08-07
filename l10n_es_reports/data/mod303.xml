@@ -21,6 +21,7 @@
             <record id="mod_303_title_1" model="account.report.line">
                 <field name="name">General regime</field>
                 <field name="code">aeat_mod_303_title_1</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="mod_303_title_2" model="account.report.line">
                         <field name="name">VAT accrued</field>
@@ -494,6 +495,7 @@
             <record id="mod_303_title_16" model="account.report.line">
                 <field name="name">Additional information</field>
                 <field name="code">aeat_mod_303_title_16</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="mod_303_casilla_59" model="account.report.line">
                         <field name="name">[59] Intra-community sales of goods and services - Base sales</field>
@@ -572,6 +574,7 @@
             <record id="mod_303_title_18" model="account.report.line">
                 <field name="name">Result</field>
                 <field name="code">aeat_mod_303_title_18</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="mod_303_casilla_65" model="account.report.line">
                         <field name="name">[65] Percentage attributable to the State Administration</field>

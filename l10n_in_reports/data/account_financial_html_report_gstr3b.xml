@@ -31,6 +31,7 @@
             <!-- 3.1 Details of Outward Supplies and inward supplies liable to reverse charge -->
             <record id="account_report_gstr3b_3_1" model="account.report.line">
                 <field name="name">3.1 Details of Outward Supplies and inward supplies liable to reverse charge</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_report_gstr3b_3_1_expression_tax_base" model="account.report.expression">
                         <field name="label">tax_base</field>
@@ -185,6 +186,7 @@
             <!-- 4 Eligible ITC -->
             <record id="account_report_gstr3b_4" model="account.report.line">
                 <field name="name">4. Eligible ITC</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="account_report_gstr3b_4_a" model="account.report.line">
                         <field name="name">(A) ITC Available (Whether in full or part)</field>
@@ -352,6 +354,7 @@
             <!-- 5. Values of exempt, Nil-rated and non-GST inward supplies -->
             <record id="account_report_gstr3b_5" model="account.report.line">
                 <field name="name">5. Values of exempt, Nil-rated and non-GST inward supplies</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="account_report_gstr3b_5_a" model="account.report.line">
                         <field name="name">From a supplier under composition scheme, Exempt and Nil rated supply</field>
@@ -388,6 +391,7 @@
             <!-- 3.2  Of the supplies shown in 3.1 (a), details of inter-state supplies made to unregistered persons, composition taxable person and UIN holders -->
             <record id="account_report_gstr3b_3_2" model="account.report.line">
                 <field name="name">3.2  Of the supplies shown in 3.1 (a), details of inter-state supplies made to unregistered persons, composition taxable person and UIN holders</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="account_report_gstr3b_3_2_ur" model="account.report.line">
                         <field name="name">Supplies made to Unregistered Persons</field>

@@ -18,6 +18,7 @@
             <record id="account_financial_report_l10n_fi_pl_line_1" model="account.report.line">
                 <field name="name">A) TURNOVER</field>
                 <field name="code">FIPL_1</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_l10n_fi_pl_line_1_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -303,6 +304,7 @@
                 <field name="code">FIPL_2</field>
                 <field name="groupby">account_id</field>
                 <field name="foldable" eval="True"/>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_l10n_fi_pl_line_2_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -317,6 +319,7 @@
                 <field name="code">FIPL_3</field>
                 <field name="groupby">account_id</field>
                 <field name="foldable" eval="True"/>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_l10n_fi_pl_line_3_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -329,6 +332,7 @@
             <record id="account_financial_report_l10n_fi_pl_line_4" model="account.report.line">
                 <field name="name">D) Other operating income</field>
                 <field name="code">FIPL_4</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_l10n_fi_pl_line_4_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -463,6 +467,7 @@
             <record id="account_financial_report_l10n_fi_pl_line_5" model="account.report.line">
                 <field name="name">E) Materials and services</field>
                 <field name="code">FIPL_5</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_l10n_fi_pl_line_5_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -820,6 +825,7 @@
             <record id="account_financial_report_l10n_fi_pl_line_6" model="account.report.line">
                 <field name="name">F) Variable expenses</field>
                 <field name="code">FIPL_6</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_l10n_fi_pl_line_6_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -1041,6 +1047,7 @@
             <record id="account_financial_report_l10n_fi_pl_line_7" model="account.report.line">
                 <field name="name">G) Personnel costs</field>
                 <field name="code">FIPL_7</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_l10n_fi_pl_line_7_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -1455,6 +1462,7 @@
             <record id="account_financial_report_l10n_fi_pl_line_8" model="account.report.line">
                 <field name="name">H) Depreciation, amortisation and impairment</field>
                 <field name="code">FIPL_8</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_l10n_fi_pl_line_8_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -1529,6 +1537,7 @@
             <record id="account_financial_report_l10n_fi_pl_line_9" model="account.report.line">
                 <field name="name">I) Other operating expenses</field>
                 <field name="code">FIPL_9</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_l10n_fi_pl_line_9_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -2175,6 +2184,7 @@
                 <field name="code">FIPL_10</field>
                 <field name="groupby">account_id</field>
                 <field name="foldable" eval="True"/>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_l10n_fi_pl_line_10_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -2188,6 +2198,7 @@
                 <field name="name">K) OPERATING PROFIT (LOSS)</field>
                 <field name="code">FIPL_11</field>
                 <field name="foldable" eval="True"/>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_l10n_fi_pl_line_11_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -2200,6 +2211,7 @@
             <record id="account_financial_report_l10n_fi_pl_line_12" model="account.report.line">
                 <field name="name">L) Financial income and expenses</field>
                 <field name="code">FIPL_12</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_l10n_fi_pl_line_12_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -2471,6 +2483,7 @@
                 <field name="code">FIPL_13</field>
                 <field name="groupby">account_id</field>
                 <field name="foldable" eval="True"/>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_l10n_fi_pl_line_13_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -2485,6 +2498,7 @@
                 <field name="name">N) PROFIT (LOSS) BEFORE ACCOUNTING TRANSFERS AND TAXES</field>
                 <field name="code">FIPL_14</field>
                 <field name="foldable" eval="True"/>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_l10n_fi_pl_line_14_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -2497,6 +2511,7 @@
             <record id="account_financial_report_l10n_fi_pl_line_15" model="account.report.line">
                 <field name="name">O) Balance sheet transfers</field>
                 <field name="code">FIPL_15</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_l10n_fi_pl_line_15_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -2557,6 +2572,7 @@
                 <field name="name">P) Income taxes</field>
                 <field name="code">FIPL_16</field>
                 <field name="foldable" eval="True"/>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_l10n_fi_pl_line_16_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -2603,6 +2619,7 @@
                 <field name="code">FIPL_17</field>
                 <field name="groupby">account_id</field>
                 <field name="foldable" eval="True"/>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_l10n_fi_pl_line_17_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -2617,6 +2634,7 @@
                 <field name="code">FIPL_18</field>
                 <field name="groupby">account_id</field>
                 <field name="foldable" eval="True"/>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_l10n_fi_pl_line_18_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -2631,6 +2649,7 @@
                 <field name="code">FIPL_19</field>
                 <field name="groupby">account_id</field>
                 <field name="foldable" eval="True"/>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_l10n_fi_pl_line_19_balance" model="account.report.expression">
                         <field name="label">balance</field>

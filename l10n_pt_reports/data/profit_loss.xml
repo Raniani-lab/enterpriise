@@ -19,6 +19,7 @@
         <field name="name">RENDIMENTOS E GASTOS</field>
         <field name="code">RENDIMENTOS_E_GASTOS</field>
         <field name="report_id" ref="account_financial_report_l10n_pt_ddr"/>
+        <field name="hierarchy_level">0</field>
     </record>
     <record id="account_financial_report_l10n_pt_ddr_reg_vendas_e_servicos_prestados" model="account.report.line">
         <field name="name">Vendas e serviços prestados</field>

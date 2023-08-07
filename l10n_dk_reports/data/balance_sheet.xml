@@ -20,6 +20,7 @@
                 <field name="name">Active</field>
                 <field name="code">DK_active</field>
                 <field name="aggregation_formula">DK_fixed.balance + DK_current.balance</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="account_balance_report_l10n_dk_active_1" model="account.report.line">
                         <field name="name">1. Fixed assets</field>
@@ -1686,6 +1687,7 @@
                 <field name="name">Passive</field>
                 <field name="code">DK_passive</field>
                 <field name="aggregation_formula">DK_equity_capital.balance + DK_provisions.balance + DK_long_term_debt.balance + DK_short_term_debt.balance</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="account_balance_report_l10n_dk_passiv_1_1" model="account.report.line">
                         <field name="name">1. Equity capital</field>

@@ -19,6 +19,7 @@
             <record id="account_financial_report_bs_A_TOTAL" model="account.report.line">
                 <field name="name">Assets</field>
                 <field name="code">PE_BS_A_TOTAL</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_bs_A_TOTAL_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -179,6 +180,7 @@
             <record id="account_financial_report_bs_L" model="account.report.line">
                 <field name="name">Liabilities</field>
                 <field name="code">PE_BS_L</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_bs_L_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -296,6 +298,7 @@
             <record id="account_financial_report_bs_E" model="account.report.line">
                 <field name="name">Equity</field>
                 <field name="code">PE_BS_E</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_bs_E_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -492,6 +495,7 @@
             <record id="account_financial_report_bs_EL" model="account.report.line">
                 <field name="name">Equity and Liabilities</field>
                 <field name="code">PE_BS_EL_TOTAL</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_bs_EL_balance" model="account.report.expression">
                         <field name="label">balance</field>

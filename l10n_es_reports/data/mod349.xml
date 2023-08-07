@@ -21,6 +21,7 @@
             <record id="mod_349_summary_title" model="account.report.line">
                 <field name="name">Summary</field>
                 <field name="code">aeat_mod_349_summary_title</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="mod_349_statistics_invoices_partners_count" model="account.report.line">
                         <field name="name">Total number of intra-community operations</field>
@@ -81,6 +82,7 @@
             <record id="mod_349_invoices_title" model="account.report.line">
                 <field name="name">Invoices</field>
                 <field name="code">aeat_mod_349_invoices_title</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="mod_349_supplies" model="account.report.line">
                         <field name="name">E. Intra-community sales</field>
@@ -136,6 +138,7 @@
             <record id="mod_349_refunds_title" model="account.report.line">
                 <field name="name">Refunds</field>
                 <field name="code">aeat_mod_349_refunds_title</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="mod_349_supplies_refunds" model="account.report.line">
                         <field name="name">E. Intra-community sales refunds</field>

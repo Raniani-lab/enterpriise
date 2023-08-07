@@ -19,6 +19,7 @@
                 <field name="name">Gross Income</field>
                 <field name="code">l10n_bo_pl_gross_income</field>
                 <field name="aggregation_formula">l10n_bo_pl_income.balance - l10n_bo_pl_cogs.balance</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="l10n_bo_pl_income" model="account.report.line">
                         <field name="name">Net Income</field>
@@ -40,6 +41,7 @@
                 <field name="name">Operational Profit</field>
                 <field name="code">l10n_bo_pl_op_profit</field>
                 <field name="aggregation_formula">l10n_bo_pl_gross_income.balance - l10n_bo_pl_expenses_commercial.balance - l10n_bo_pl_expenses_admin.balance - l10n_bo_pl_expenses_financial.balance + l10n_bo_pl_income_financial.balance - l10n_bo_pl_expenses_operational_other.balance</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="l10n_bo_pl_expenses_commercial" model="account.report.line">
                         <field name="name">Commercial Expenses</field>
@@ -82,6 +84,7 @@
                 <field name="name">Earnings Before Taxes</field>
                 <field name="code">l10n_bo_pl_ebt</field>
                 <field name="aggregation_formula">l10n_bo_pl_op_profit.balance + l10n_bo_pl_income_other.balance - l10n_bo_pl_expenses_non_operational_other.balance</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="l10n_bo_pl_income_other" model="account.report.line">
                         <field name="name">Other Income</field>
@@ -105,6 +108,7 @@
                 <field name="groupby">account_id</field>
                 <field name="foldable" eval="True"/>
                 <field name="account_codes_formula">570</field>
+                <field name="hierarchy_level">0</field>
             </record>
             <record id="l10n_bo_pl_net_profit" model="account.report.line">
                 <field name="name">Net Profit</field>

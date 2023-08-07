@@ -21,6 +21,7 @@
             <record id="mod_111_title_1" model="account.report.line">
                 <field name="name">Employment income</field>
                 <field name="code">aeat_mod_111_title_1</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="mod_111_title_2" model="account.report.line">
                         <field name="name">Monetary income</field>
@@ -97,6 +98,7 @@
             <record id="mod_111_title_4" model="account.report.line">
                 <field name="name">Income from economic activities</field>
                 <field name="code">aeat_mod_111_title_4</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="mod_111_title_5" model="account.report.line">
                         <field name="name">Monetary income</field>
@@ -173,6 +175,7 @@
             <record id="mod_111_title_7" model="account.report.line">
                 <field name="name">Prizes for participation in games</field>
                 <field name="code">aeat_mod_111_title_7</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="mod_111_title_8" model="account.report.line">
                         <field name="name">Monetary prizes</field>
@@ -274,6 +277,7 @@
             <record id="mod_111_title_10" model="account.report.line">
                 <field name="name">Patrimonial gains derived from the forest exploitation of the neighbors in public forests</field>
                 <field name="code">aeat_mod_111_title_10</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="mod_111_title_11" model="account.report.line">
                         <field name="name">Monetary perceptions</field>
@@ -366,6 +370,7 @@
             <record id="mod_111_title_13" model="account.report.line">
                 <field name="name">Considerations for the assignment of image rights: income payments on account provided for article 92.8 of the Tax Law</field>
                 <field name="code">aeat_mod_111_title_13</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="mod_111_casilla_25" model="account.report.line">
                         <field name="name">[25] Nº of recipients</field>
@@ -408,6 +413,7 @@
             <record id="mod_111_title_14" model="account.report.line">
                 <field name="name">Total liquidation</field>
                 <field name="code">aeat_mod_111_title_14</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="mod_111_casilla_28" model="account.report.line">
                         <field name="name">[28] Sum of withholdings</field>

@@ -14,6 +14,7 @@
         <field name="line_ids">
             <record id="account_financial_report_f29_line_01" model="account.report.line">
                 <field name="name">Taxable Sales Base</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="account_financial_report_f29_line_0101" model="account.report.line">
                         <field name="name">Net Sales Taxed VAT</field>
@@ -72,6 +73,7 @@
             </record>
             <record id="account_financial_report_f29_line_02" model="account.report.line">
                 <field name="name">Taxes Paid on Sale</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="account_financial_report_f29_line_0201" model="account.report.line">
                         <field name="name">VAT Tax Debit</field>
@@ -88,6 +90,7 @@
             </record>
             <record id="account_financial_report_f29_line_03" model="account.report.line">
                 <field name="name">Tax Base Purchases</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="account_financial_report_f29_line_0301" model="account.report.line">
                         <field name="name">Net Taxable Purchases Recoverable VAT</field>
@@ -184,6 +187,7 @@
             </record>
             <record id="account_financial_report_f29_line_04" model="account.report.line">
                 <field name="name">Taxes Paid on Purchase</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="account_financial_report_f29_line_0401" model="account.report.line">
                         <field name="name">VAT Paid Purchases Recoverable</field>
@@ -255,6 +259,7 @@
             </record>
             <record id="account_financial_report_f29_line_05" model="account.report.line">
                 <field name="name">VAT Base Tax Credit Affected by FP</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="account_financial_report_f29_line_0501" model="account.report.line">
                         <field name="name">Recoverable VAT</field>
@@ -337,6 +342,7 @@
             </record>
             <record id="account_financial_report_f29_line_06" model="account.report.line">
                 <field name="name">Totals</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="account_financial_report_f29_line_0601" model="account.report.line">
                         <field name="name">VAT Tax Credit</field>

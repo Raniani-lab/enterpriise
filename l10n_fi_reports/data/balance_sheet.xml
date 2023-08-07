@@ -18,6 +18,7 @@
             <record id="account_financial_report_l10n_fi_bs_line_1" model="account.report.line">
                 <field name="name">Balance sheet Corresponding</field>
                 <field name="aggregation_formula">FIBS_ASS_A.balance + FIBS_ASS_B.balance</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="account_financial_report_l10n_fi_bs_line_1_1" model="account.report.line">
                         <field name="name">A) PERMANENT RESPONSIBILITIES</field>
@@ -508,6 +509,7 @@
             <record id="account_financial_report_l10n_fi_bs_line_2" model="account.report.line">
                 <field name="name">Balance sheet Liabilities</field>
                 <field name="aggregation_formula">FIBS_LIA_A.balance + FIBS_LIA_B.balance + FIBS_LIA_C.balance + FIBS_LIA_D.balance + FIBS_LIA_E.balance + FIBS_LIA_F.balance</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="account_financial_report_l10n_fi_bs_line_2_1" model="account.report.line">
                         <field name="name">A) EQUITY</field>

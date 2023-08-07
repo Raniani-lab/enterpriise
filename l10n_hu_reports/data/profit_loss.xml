@@ -19,6 +19,7 @@
                 <field name="name">A. Operating result</field>
                 <field name="code">hu_pl_a</field>
                 <field name="aggregation_formula">hu_pl_I.balance + hu_pl_II.balance + hu_pl_III.balance - hu_pl_IV.balance - hu_pl_V.balance - hu_pl_VI.balance - hu_pl_VII.balance</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="l10n_hu_profit_loss_I" model="account.report.line">
                         <field name="name">I. Net sales revenue</field>
@@ -131,6 +132,7 @@
                 <field name="name">B. Financial result</field>
                 <field name="code">hu_pl_b</field>
                 <field name="aggregation_formula">hu_pl_VIII.balance - hu_pl_IX.balance</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="l10n_hu_profit_loss_VIII" model="account.report.line">
                         <field name="name">VIII. Revenue from financial operations</field>
@@ -152,10 +154,12 @@
                 <field name="name">C. Profit before tax</field>
                 <field name="code">hu_pl_c</field>
                 <field name="aggregation_formula">hu_pl_a.balance + hu_pl_b.balance</field>
+                <field name="hierarchy_level">0</field>
             </record>
             <record id="l10n_hu_profit_loss_D" model="account.report.line">
                 <field name="name">D. Profit after tax</field>
                 <field name="code">hu_pl_d</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="l10n_hu_profit_loss_D_balance" model="account.report.expression">
                         <field name="label">balance</field>

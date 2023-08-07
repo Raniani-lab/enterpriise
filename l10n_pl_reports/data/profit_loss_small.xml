@@ -19,6 +19,7 @@
             <record id="l10n_pl_small_pl_a" model="account.report.line">
                 <field name="name">A. Net income from sales</field>
                 <field name="code">pl_small_pl_a</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="l10n_pl_small_pl_a_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -54,6 +55,7 @@
             <record id="l10n_pl_small_pl_b" model="account.report.line">
                 <field name="name">B. Operating costs</field>
                 <field name="code">pl_small_pl_b</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="l10n_pl_small_pl_b_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -110,6 +112,7 @@
             <record id="l10n_pl_small_pl_c" model="account.report.line">
                 <field name="name">C. Profit (loss) on sales (A-B)</field>
                 <field name="code">pl_small_pl_c</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="l10n_pl_small_pl_c_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -125,6 +128,7 @@
                 <field name="groupby">account_id</field>
                 <field name="foldable" eval="True"/>
                 <field name="account_codes_formula">-76.0 - 77.0 - 999997</field>
+                <field name="hierarchy_level">0</field>
             </record>
             <record id="l10n_pl_small_pl_e" model="account.report.line">
                 <field name="name">E. Other operating expenses</field>
@@ -132,10 +136,12 @@
                 <field name="groupby">account_id</field>
                 <field name="foldable" eval="True"/>
                 <field name="account_codes_formula">76.1 + 77.1 + 999998</field>
+                <field name="hierarchy_level">0</field>
             </record>
             <record id="l10n_pl_small_pl_f" model="account.report.line">
                 <field name="name">F. Financial income</field>
                 <field name="code">pl_small_pl_f</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="l10n_pl_small_pl_f_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -186,6 +192,7 @@
             <record id="l10n_pl_small_pl_g" model="account.report.line">
                 <field name="name">G. Finance costs</field>
                 <field name="code">pl_small_pl_g</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="l10n_pl_small_pl_g_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -229,6 +236,7 @@
             <record id="l10n_pl_small_pl_h" model="account.report.line">
                 <field name="name">H. Gross profit (loss) (C+D-E+F-G)</field>
                 <field name="code">pl_small_pl_h</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="l10n_pl_small_pl_h_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -244,10 +252,12 @@
                 <field name="groupby">account_id</field>
                 <field name="foldable" eval="True"/>
                 <field name="account_codes_formula">87</field>
+                <field name="hierarchy_level">0</field>
             </record>
             <record id="l10n_pl_small_pl_j" model="account.report.line">
                 <field name="name">J. Net profit (loss) (H-I)</field>
                 <field name="code">pl_small_pl_j</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="l10n_pl_small_pl_j_balance" model="account.report.expression">
                         <field name="label">balance</field>

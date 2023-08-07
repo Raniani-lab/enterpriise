@@ -19,6 +19,7 @@
                 <field name="name">Assets</field>
                 <field name="code">l10n_ca_a</field>
                 <field name="aggregation_formula">l10n_ca_a_current.balance + l10n_ca_a_noncurrent.balance</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="l10n_ca_bs_assets_current" model="account.report.line">
                         <field name="name">Current Assets</field>
@@ -133,6 +134,7 @@
                 <field name="name">Liabilities</field>
                 <field name="code">l10n_ca_l</field>
                 <field name="aggregation_formula">l10n_ca_l_current.balance + l10n_ca_l_noncurrent.balance</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="l10n_ca_bs_liabilities_current" model="account.report.line">
                         <field name="name">Current liabilities</field>
@@ -255,6 +257,7 @@
                     + l10n_ca_e_noncontrolling_interests.balance
                     + l10n_ca_e_other_components.balance
                 </field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="l10n_ca_bs_equity_retained_earnings" model="account.report.line">
                         <field name="name">Retained earnings</field>

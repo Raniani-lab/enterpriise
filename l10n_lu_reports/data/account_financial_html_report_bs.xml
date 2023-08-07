@@ -19,6 +19,7 @@
         <field name="line_ids">
             <record id="account_financial_report_l10n_lu_bs_line_1" model="account.report.line">
                 <field name="name">ASSETS</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="account_financial_report_l10n_lu_bs_line_1_1" model="account.report.line">
                         <field name="name">A. Subscribed capital unpaid</field>
@@ -372,6 +373,7 @@
             </record>
             <record id="account_financial_report_l10n_lu_bs_line_2" model="account.report.line">
                 <field name="name">CAPITAL, RESERVES AND LIABILITIES</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="account_financial_report_l10n_lu_bs_line_2_1" model="account.report.line">
                         <field name="name">A. Capital and reserves</field>

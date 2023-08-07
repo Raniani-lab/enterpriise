@@ -23,6 +23,7 @@
                 <field name="name">Summary</field>
                 <field name="code">aeat_mod_347_summary_title</field>
                 <field name="sequence" eval="1"/>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="mod_347_statistics_operations_count" model="account.report.line">
                         <field name="name">Total number of persons and entities</field>
@@ -47,6 +48,7 @@
                 <field name="name">Declared basis</field>
                 <field name="code">aeat_mod_347_operations_title</field>
                 <field name="sequence" eval="5"/>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="mod_347_operations_title_balance" model="account.report.expression">
                         <field name="label">balance</field>

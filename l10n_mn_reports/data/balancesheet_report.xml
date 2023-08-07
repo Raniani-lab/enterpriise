@@ -16,6 +16,7 @@
             <record id="report_line_balanceta" model="account.report.line">
                 <field name="name">PROPERTY</field>
                 <field name="code">MN_TA</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="report_line_balanceta_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -437,6 +438,7 @@
             <record id="report_line_balancele" model="account.report.line">
                 <field name="name">LIABILITIES AND OWNERS' EQUITY</field>
                 <field name="code">MN_LE</field>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="report_line_balancele_balance" model="account.report.expression">
                         <field name="label">balance</field>
@@ -847,6 +849,7 @@
                 <field name="groupby">account_id</field>
                 <field name="hide_if_zero" eval="1"/>
                 <field name="foldable" eval="True"/>
+                <field name="hierarchy_level">0</field>
                 <field name="expression_ids">
                     <record id="account_financial_report_mn_off_sheet_balance" model="account.report.expression">
                         <field name="label">balance</field>

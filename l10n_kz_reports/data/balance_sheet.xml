@@ -19,6 +19,7 @@
                 <field name="name">Assets</field>
                 <field name="code">L10N_KZ_BS_A</field>
                 <field name="aggregation_formula">L10N_KZ_BS_A_1.balance + L10N_KZ_BS_A_2.balance</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="l10n_kz_bl_current_assets" model="account.report.line">
                         <field name="name">I. Current Assets</field>
@@ -262,6 +263,7 @@
                 <field name="name">Equity and liabilities</field>
                 <field name="code">L10N_KZ_BS_B</field>
                 <field name="aggregation_formula">L10N_KZ_BS_B_1.balance + L10N_KZ_BS_B_2.balance</field>
+                <field name="hierarchy_level">0</field>
                 <field name="children_ids">
                     <record id="l10n_kz_bl_liabilities" model="account.report.line">
                         <field name="name">Liabilities</field>

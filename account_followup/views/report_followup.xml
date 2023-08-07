@@ -106,6 +106,8 @@
                     </t>
                 </table>
             </xpath>
+
+            <xpath expr="//div[hasclass('col-8')]" position="replace"/>
             <xpath expr="//t[@t-call='account_reports.filter_info_template']" position="replace"/>
             <xpath expr="//div[hasclass('o_account_reports_header')]" position="before">
                 <t t-call="account_followup.followup_filter_info_template"/>

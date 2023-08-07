@@ -236,13 +236,14 @@ class L10nEcWizardAccountWithhold(models.TransientModel):
         }
 
     def _prepare_withhold_move_lines(self):
-        total_per_invoice = defaultdict(float)
+        total_per_invoice = defaultdict(lambda: [0, self.env['l10n_ec.wizard.account.withhold.line']])
         total_lines = []
 
         # 1. Create the base line (and its counterpart to cancel out) for every withhold line.  Tax lines will be created automatically.
         for line in self.withhold_line_ids:
             dummy, account = line._tax_compute_all_helper(1.0, line.tax_id)
-            total_per_invoice[line.invoice_id] += line.amount
+            total_per_invoice[line.invoice_id][0] += line.amount
+            total_per_invoice[line.invoice_id][1] = line
 
             nice_base_label_elements = []
             if line.tax_id.l10n_ec_code_base:
@@ -267,7 +268,7 @@ class L10nEcWizardAccountWithhold(models.TransientModel):
 
         # 2. Payable/Receivable line
         # One line for each invoice linked with it
-        for invoice, amount in total_per_invoice.items():
+        for invoice, (amount, line) in total_per_invoice.items():
             if self.currency_id.compare_amounts(amount, 0) > 0:
                 account = self._get_partner_account(self.partner_id, self.withhold_type)
                 vals = {

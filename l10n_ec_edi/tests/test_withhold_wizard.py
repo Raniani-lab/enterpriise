@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from freezegun import freeze_time
+from odoo import Command
 from odoo.exceptions import ValidationError
 from odoo.tests import tagged
 
@@ -99,6 +100,44 @@ class TestEcEdiWithholdWizard(TestEcEdiCommon):
         expected_withhold = self.env['account.move.line'].search([('l10n_ec_withhold_invoice_id', '=', invoice.id)]).mapped('move_id')
 
         self.assertEqual(withhold, expected_withhold)
+
+    def test_out_withhold_with_two_invoices(self):
+        """
+        Test that when creating a batch withold for two invoices,
+        the withhold lines are well reconciled with their respective
+        invoices.
+        """
+
+        # Create two customer invoices
+        inv_1 = self.get_invoice({'move_type': 'out_invoice', 'partner_id': self.partner_a.id})
+        inv_2 = self.get_invoice({'move_type': 'out_invoice', 'partner_id': self.partner_a.id, 'l10n_latam_document_number': '001-001-000000002'})
+        (inv_1 + inv_2).action_post()
+
+        # Create the withhold wizard with three withhold lines, to be sure that each line is reconciled with the right invoice
+        wizard = self.env['l10n_ec.wizard.account.withhold'].with_context(active_ids=(inv_1 + inv_2).ids, active_model='account.move').create({
+            'withhold_line_ids': [
+                Command.create({
+                    'invoice_id': inv_1.id,
+                    'tax_id': self._get_tax_by_xml_id('tax_sale_withhold_vat_10').id,
+                }),
+                Command.create({
+                    'invoice_id': inv_1.id,
+                    'tax_id': self._get_tax_by_xml_id('tax_withhold_profit_sale_1x100').id,
+                }),
+                Command.create({
+                    'invoice_id': inv_2.id,
+                    'tax_id': self._get_tax_by_xml_id('tax_sale_withhold_vat_10').id,
+                })
+            ]
+        })
+
+        with freeze_time(self.frozen_today):
+            withhold = wizard.action_create_and_post_withhold()
+
+        # The two invoices lines should be reconciled with the withhold
+        for invoice in (inv_1, inv_2):
+            with self.subTest(invoice=invoice):
+                self.assertEqual(invoice.line_ids.filtered(lambda l: l.display_type == 'payment_term').matched_credit_ids.credit_move_id.move_id, withhold)
 
     # ===== HELPER METHODS =====
 

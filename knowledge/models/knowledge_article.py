@@ -2432,11 +2432,16 @@ class Article(models.Model):
             - a child article of any unfolded article that is shown
         """
 
+        root_articles_domain = [("parent_id", "=", False)]
+        if self.env.user._is_internal():
+            # Do not fetch articles that the user did not join (articles with
+            # internal permissions may be set as visible to members only)
+            root_articles_domain.append(("is_article_visible", "=", True))
+
         # Fetch root article_ids as sudo, ACLs will be checked on next global call fetching 'all_visible_articles'
         # this helps avoiding 2 queries done for ACLs (and redundant with the global fetch)
-        root_articles_ids = self.env['knowledge.article'].sudo().search(
-            [("parent_id", "=", False), ("is_article_visible", "=", True)]
-        ).ids
+        root_articles_ids = self.env['knowledge.article'].sudo().search(root_articles_domain).ids
+
         favorite_articles_ids = self.env['knowledge.article.favorite'].sudo().search(
             [("user_id", "=", self.env.user.id), ('is_article_active', '=', True)]
         ).article_id.ids

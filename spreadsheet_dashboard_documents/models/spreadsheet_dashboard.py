@@ -21,6 +21,7 @@ class SpreadsheetDashboard(models.Model):
             "name": document.name,
             "dashboard_group_id": dashboard_group_id,
             "spreadsheet_snapshot": document.spreadsheet_snapshot,
+            "spreadsheet_binary_data": document.datas,
         })
         document._copy_revisions_to(dashboard)
 

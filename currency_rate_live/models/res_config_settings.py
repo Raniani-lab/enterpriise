@@ -267,7 +267,7 @@ class ResCompany(models.Model):
     def _parse_fta_data(self, available_currencies):
         ''' Parses the data returned in xml by FTA servers and returns it in a more
         Python-usable form.'''
-        request_url = 'https://www.backend-rates.bazg.admin.ch/api/xmldaily?d=today&locale=en'
+        request_url = 'https://www.backend-rates.bazg.admin.ch/api/xmldaily?d=yesterday&locale=en'
         response = requests.get(request_url, timeout=30)
         response.raise_for_status()
 

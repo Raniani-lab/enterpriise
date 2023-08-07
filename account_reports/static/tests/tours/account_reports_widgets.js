@@ -36,6 +36,11 @@ registry.category("web_tour.tours").add('account_reports_widgets', {
             run: function(){},
         },
         {
+            title: "open dropdown",
+            trigger: ".o_control_panel_main_buttons .dropdown-toggle",
+            run: 'click',
+        },
+        {
             title: "export xlsx",
             trigger: "button:contains('XLSX')",
             run: 'click'

@@ -2,6 +2,8 @@
 
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
+import { Dropdown } from "@web/core/dropdown/dropdown";
+import { DropdownItem } from "@web/core/dropdown/dropdown_item";
 import { ControlPanel } from "@web/search/control_panel/control_panel";
 
 import { Component, onWillStart, useState, useSubEnv } from "@odoo/owl";
@@ -25,6 +27,8 @@ export class AccountReport extends Component {
     };
     static components = {
         ControlPanel,
+        Dropdown,
+        DropdownItem,
         AccountReportSearchBar,
     };
 

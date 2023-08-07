@@ -48,7 +48,12 @@
                         <t t-if="hasVisibleFootnote">
                             <!-- Visible footnotes -->
                             <sup>
-                                <a class="btn btn_footnote_go" t-att-href="props.line.visible_footnote.href">
+                                <a
+                                    class="btn btn_footnote_go"
+                                    t-att-href="props.line.visible_footnote.href"
+                                    t-att-data-tooltip="props.line.visible_footnote.text"
+                                    data-tooltip-position="right"
+                                >
                                     <t t-out="props.line.visible_footnote.number"/>
                                 </a>
                             </sup>

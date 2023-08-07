@@ -48,7 +48,7 @@
                 </t>
             </ControlPanel>
 
-            <div class="o_content">
+            <div class="o_content px-3">
                 <!-- Sections -->
                 <div id="section_selector" class="section_selector">
                     <t t-foreach="controller.options.sections" t-as="section" t-key="section_index">
@@ -79,43 +79,45 @@
                     </t>
 
                     <!-- Table -->
-                    <table
-                        class="table table-borderless table-hover"
-                        t-att-class="tableClasses"
-                    >
-                        <t t-component="env.component('AccountReportHeader')"/>
-                        <tbody>
-                            <t t-foreach="controller.lines" t-as="line" t-key="line.id">
-                                <t t-if="controller.areLinesOrdered()">
-                                    <t t-set="orderedIndex" t-value="controller.linesOrder[line_index]"/>
-                                    <t t-set="orderedLine" t-value="controller.lines[orderedIndex]"/>
+                    <div class="mx-auto fit-content">
+                        <table
+                            class="table table-borderless table-hover"
+                            t-att-class="tableClasses"
+                        >
+                            <t t-component="env.component('AccountReportHeader')"/>
+                            <tbody>
+                                <t t-foreach="controller.lines" t-as="line" t-key="line.id">
+                                    <t t-if="controller.areLinesOrdered()">
+                                        <t t-set="orderedIndex" t-value="controller.linesOrder[line_index]"/>
+                                        <t t-set="orderedLine" t-value="controller.lines[orderedIndex]"/>
 
-                                    <t t-component="env.component('AccountReportLine')" t-props="{ lineIndex: orderedIndex, line: orderedLine }"/>
+                                        <t t-component="env.component('AccountReportLine')" t-props="{ lineIndex: orderedIndex, line: orderedLine }"/>
+                                    </t>
+                                    <t t-else="">
+                                        <t t-component="env.component('AccountReportLine')" t-props="{ lineIndex: line_index, line: line }"/>
+                                    </t>
                                 </t>
-                                <t t-else="">
-                                    <t t-component="env.component('AccountReportLine')" t-props="{ lineIndex: line_index, line: line }"/>
+                            </tbody>
+                        </table>
+
+                        <!-- Footnotes -->
+                        <t t-if="controller.hasVisibleFootnotes">
+                            <ol class="footnotes">
+                                <t t-foreach="controller.visibleFootnotes" t-as="footnote" t-key="footnote.id">
+                                    <li t-att-id="footnote.href">
+                                        <t t-out="footnote.text"/>
+
+                                        <button
+                                            class="btn btn_footnote_delete"
+                                            t-on-click="() => controller.deleteFootnote(footnote)"
+                                        >
+                                            <i class="fa fa-trash-o"/>
+                                        </button>
+                                    </li>
                                 </t>
-                            </t>
-                        </tbody>
-                    </table>
-
-                    <!-- Footnotes -->
-                    <t t-if="controller.hasVisibleFootnotes">
-                        <ol class="footnotes">
-                            <t t-foreach="controller.visibleFootnotes" t-as="footnote" t-key="footnote.id">
-                                <li t-att-id="footnote.href">
-                                    <t t-out="footnote.text"/>
-
-                                    <button
-                                        class="btn btn_footnote_delete"
-                                        t-on-click="() => controller.deleteFootnote(footnote)"
-                                    >
-                                        <i class="fa fa-trash-o"/>
-                                    </button>
-                                </li>
-                            </t>
-                        </ol>
-                    </t>
+                            </ol>
+                        </t>
+                    </div>
                 </t>
                 <t t-else="">
                     <!-- No content -->

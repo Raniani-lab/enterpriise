@@ -615,6 +615,7 @@ export class AccountReportController {
                 line["visible_footnote"] = {
                     "number": number,
                     "href": `#footnote_${number}`,
+                    "text": this.footnotes[line.id].text,
                 };
             }
 

@@ -5,6 +5,7 @@ from freezegun import freeze_time
 
 from odoo import Command, fields
 from odoo.tests import tagged
+from odoo.tests.common import Form
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 
 
@@ -304,3 +305,30 @@ class TestAccountFollowupReports(AccountTestInvoicingCommon):
             cron.method_direct_trigger()
             patched.assert_called_once()
             self.assertPartnerFollowup(self.partner_a, 'with_overdue_invoices', followup_10)
+
+    def test_onchange_residual_amount(self):
+        '''
+        Test residual onchange on account move lines: the residual amount is
+        computed using an sql query. This test makes sure the computation also
+        works properly during onchange (on records having a NewId).
+        '''
+        self.create_invoice('2016-01-01')
+        self.create_invoice('2016-01-02')
+
+        invoice = self.partner_a.unreconciled_aml_ids.sorted('date_maturity')[0].move_id
+        self.env['account.payment.register'].with_context(active_ids=invoice.ids, active_model='account.move').create({
+            'payment_date': invoice.date,
+            'amount': 100,
+        })._create_payments()
+
+        with Form(self.partner_a, view='account_followup.customer_statements_form_view') as form:
+            self.assertEqual(form.unreconciled_aml_ids.edit(0).amount_residual_currency, 400)
+            self.assertEqual(form.unreconciled_aml_ids.edit(1).amount_residual_currency, 500)
+            self.assertEqual(form.total_due, 900)
+
+            with form.unreconciled_aml_ids.edit(0) as aml_form:
+                aml_form.blocked = True
+
+            self.assertEqual(form.unreconciled_aml_ids.edit(0).amount_residual_currency, 400)
+            self.assertEqual(form.unreconciled_aml_ids.edit(1).amount_residual_currency, 500)
+            self.assertEqual(form.total_due, 500)

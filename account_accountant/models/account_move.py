@@ -166,12 +166,12 @@ class AccountMove(models.Model):
         return values, tuple(original_move_ids)
 
     @api.model
-    def _get_deferred_lines(self, line, deferred_account, period, ref):
+    def _get_deferred_lines(self, line, deferred_account, period, ref, force_balance=None):
         """
         :return: a list of Command objects to create the deferred lines of a single given period
         """
         deferred_amounts = self._get_deferred_amounts_by_line(line, [period])[0][0]
-        balance = deferred_amounts[period]
+        balance = deferred_amounts[period] if force_balance is None else force_balance
         return [
             Command.create({
                 'account_id': deferred_amounts['account_id'].id,
@@ -237,7 +237,8 @@ class AccountMove(models.Model):
             move_fully_deferred._post(soft=True)
 
             # Create the deferred entries for the periods [deferred_start_date, deferred_end_date]
-            for period in periods:
+            remaining_balance = line.balance
+            for period_index, period in enumerate(periods):
                 deferred_move = self.create({
                     'move_type': 'entry',
                     'deferred_original_move_ids': [Command.set(line.move_id.ids)],
@@ -247,10 +248,13 @@ class AccountMove(models.Model):
                     'auto_post': 'at_date',
                     'ref': ref,
                 })
+                # For the last deferral move the balance is forced to remaining balance to avoid rounding errors
+                force_balance = remaining_balance if period_index == len(periods) - 1 else None
                 # Same as before, to avoid adding taxes for deferred moves.
                 deferred_move.write({
-                    'line_ids': self._get_deferred_lines(line, deferred_account, period, ref),
+                    'line_ids': self._get_deferred_lines(line, deferred_account, period, ref, force_balance=force_balance),
                 })
+                remaining_balance -= deferred_move.line_ids[0].balance
                 line.move_id.deferred_move_ids |= deferred_move
                 deferred_move._post(soft=True)
 

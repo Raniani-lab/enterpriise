@@ -241,6 +241,42 @@ class TestDeferredManagement(AccountTestInvoicingCommon):
         reverse_move2 = move2._reverse_moves()
         self.assert_invoice_lines(reverse_move2, expected_line_values1, self.revenue_accounts[0], self.company_data['default_account_deferred_revenue'])
 
+    def test_deferred_values_rounding(self):
+        """
+        Test that the debit/credit values are correctly computed when values are rounded
+        """
+        self.company.generate_deferred_entries_method = 'on_validation'
+
+        # Vendor Bill
+        expense_line = [self.expense_accounts[0], 500, '2020-08-07', '2020-12-07']
+        expected_line_values = [
+            # Date         [Line expense] [Line deferred]
+            ('2020-08-31',      0, 500,   500,      0),
+            ('2020-08-31',  99.17,   0,     0,  99.17),
+            ('2020-09-30', 123.97,   0,     0, 123.97),
+            ('2020-10-31', 123.97,   0,     0, 123.97),
+            ('2020-11-30', 123.97,   0,     0, 123.97),
+            ('2020-12-07',  28.92,   0,     0,  28.92),
+        ]
+        self.assertEqual(self.company.currency_id.round(sum(x[1] for x in expected_line_values)), 500)
+        move = self.create_invoice('in_invoice', self.company_data['default_journal_purchase'], self.partner_a, [expense_line], date='2020-08-07')
+        self.assert_invoice_lines(move, expected_line_values, self.expense_accounts[0], self.company_data['default_account_deferred_expense'])
+
+        # Customer invoice
+        revenue_line = [self.revenue_accounts[0], 500, '2020-08-07', '2020-12-07']
+        expected_line_values = [
+            # Date         [Line expense] [Line deferred]
+            ('2020-08-31', 500,      0,      0,       500),
+            ('2020-08-31',   0,  99.17,  99.17,         0),
+            ('2020-09-30',   0, 123.97, 123.97,         0),
+            ('2020-10-31',   0, 123.97, 123.97,         0),
+            ('2020-11-30',   0, 123.97, 123.97,         0),
+            ('2020-12-07',   0,  28.92,  28.92,         0),
+        ]
+        self.assertEqual(self.company.currency_id.round(sum(x[2] for x in expected_line_values)), 500)
+        move = self.create_invoice('out_invoice', self.company_data['default_journal_sale'], self.partner_a, [revenue_line], post=True, date='2020-08-07')
+        self.assert_invoice_lines(move, expected_line_values, self.revenue_accounts[0], self.company_data['default_account_deferred_revenue'])
+
     def test_deferred_expense_avoid_useless_deferred_entries(self):
         """
         If we have an invoice with a start date in the beginning of the month, and an end date in the end of the month,

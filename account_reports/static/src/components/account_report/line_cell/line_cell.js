@@ -84,7 +84,7 @@ export class AccountReportLineCell extends Component {
                     report_line_id: this.props.cell.report_line_id,
                     expression_label: this.props.cell.expression_label,
                     calling_line_dict_id: this.props.line.id,
-                    column_group_key: this.props.line.columns[0].column_group_key,
+                    column_group_key: this.props.cell.column_group_key,
                 },
             ],
             {

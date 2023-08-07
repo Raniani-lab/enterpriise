@@ -35,7 +35,7 @@
         <field name="arch" type="xml">
             <field name="journal_id" position="attributes">
                 <attribute name="attrs">
-                    {'required': [('state', '!=', 'disabled'), '|', ('code', 'not in', ['none', 'custom']), ('custom_mode', '!=', 'sepa_direct_debit')]}
+                    {'required': [('state', '!=', 'disabled'), '|', ('code', 'not in', ['none', 'custom']), ('custom_mode', '=', 'sepa_direct_debit')]}
                 </attribute>
             </field>
         </field>

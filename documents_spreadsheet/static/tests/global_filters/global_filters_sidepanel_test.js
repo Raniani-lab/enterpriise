@@ -433,6 +433,29 @@ QUnit.module(
             assert.equal(fieldsMatchingElements[1].innerText, "Product");
         });
 
+        QUnit.test(
+            "Display name for 'Relation' global filter values can be updated correctly",
+            async function (assert) {
+                const { model } = await createSpreadsheetFromPivotView();
+                const label = "MyFoo";
+                await addGlobalFilter(model, {
+                    filter: {
+                        id: "42",
+                        type: "relation",
+                        modelName: "product",
+                        label,
+                        defaultValue: [],
+                    },
+                });
+                await openGlobalFilterSidePanel();
+                await testUtils.dom.click(target.querySelector(".o-autocomplete--input.o_input"));
+                assert.ok(target.querySelector(".o-autocomplete--dropdown-menu"));
+                const item1 = target.querySelector(".o-autocomplete--dropdown-item");
+                await testUtils.dom.click(item1);
+                assert.equal(model.getters.getFilterDisplayValue(label), item1.innerText);
+            }
+        );
+
         QUnit.test("Only related models can be selected", async function (assert) {
             const data = getBasicData();
             data["ir.model"].records.push(

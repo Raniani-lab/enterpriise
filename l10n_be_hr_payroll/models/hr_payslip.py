@@ -1320,7 +1320,13 @@ def compute_holiday_pay_recovery_n(payslip, categories, worked_days, inputs):
 
     employee = payslip.dict.employee_id
     number_of_days = employee.l10n_be_holiday_pay_number_of_days_n
-    employee_hourly_cost = payslip.contract_id.hourly_wage if payslip.wage_type == 'hourly' else payslip.contract_id.contract_wage / payslip.sum_worked_hours
+    if payslip.wage_type == 'hourly':
+        employee_hourly_cost = payslip.contract_id.hourly_wage
+    else:
+        if payslip.date_from.year < 2024:
+            employee_hourly_cost = payslip.contract_id.contract_wage / payslip.sum_worked_hours
+        else:
+            employee_hourly_cost = payslip.contract_id.contract_wage * 3 / 13 / payslip.contract_id.resource_calendar_id.hours_per_week
     max_amount_to_recover = min(employee.l10n_be_holiday_pay_to_recover_n, employee_hourly_cost * number_of_days * 7.6)
     if not worked_days.LEAVE120 or not worked_days.LEAVE120.amount:
         return 0
@@ -1332,7 +1338,13 @@ def compute_holiday_pay_recovery_n(payslip, categories, worked_days, inputs):
 def compute_holiday_pay_recovery_n1(payslip, categories, worked_days, inputs):
     employee = payslip.dict.employee_id
     number_of_days = employee.l10n_be_holiday_pay_number_of_days_n1
-    employee_hourly_cost = payslip.contract_id.hourly_wage if payslip.wage_type == 'hourly' else payslip.contract_id.contract_wage / payslip.sum_worked_hours
+    if payslip.wage_type == 'hourly':
+        employee_hourly_cost = payslip.contract_id.hourly_wage
+    else:
+        if payslip.date_from.year < 2024:
+            employee_hourly_cost = payslip.contract_id.contract_wage / payslip.sum_worked_hours
+        else:
+            employee_hourly_cost = payslip.contract_id.contract_wage * 3 / 13 / payslip.contract_id.resource_calendar_id.hours_per_week
     max_amount_to_recover = min(employee.l10n_be_holiday_pay_to_recover_n1, employee_hourly_cost * number_of_days * 7.6)
     if not worked_days.LEAVE120 or not worked_days.LEAVE120.amount:
         return 0

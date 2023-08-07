@@ -9798,3 +9798,115 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYER': 360.67,
         }
         self._validate_payslip(payslip, payslip_results)
+
+    def test_simple_n_holiday_pay_recovery_2024(self):
+        # Check that the same amount if recovered on 2 diffent months (July / February)
+        self.contract.date_start = datetime.date(2023, 1, 1)
+        # Employee received 1000€ for 5 days of holidays from previous employer
+        self.employee.l10n_be_holiday_pay_to_recover_n = 100000
+        self.employee.l10n_be_holiday_pay_number_of_days_n = 2
+
+        self.env['resource.calendar.leaves'].create([{
+            'name': "Legal Leave Whole Day",
+            'calendar_id': self.resource_calendar_38_hours_per_week.id,
+            'company_id': self.env.company.id,
+            'resource_id': self.employee.resource_id.id,
+            'date_from': datetime.datetime(2024, 2, 11, 6, 0, 0),
+            'date_to': datetime.datetime(2024, 2, 15, 19, 0, 0),
+            'time_type': "leave",
+            'work_entry_type_id': self.env.ref('hr_work_entry_contract.work_entry_type_legal_leave').id
+        }])
+
+        payslip = self._generate_payslip(datetime.date(2024, 2, 1), datetime.date(2024, 2, 29))
+        self.assertEqual(payslip._get_worked_days_line_number_of_hours('LEAVE120'), 30.4)
+        self.assertEqual(payslip._get_worked_days_line_amount('LEAVE120'), 489.23)
+        # Should be 122.31 * 2 = 244.62 instead of 252.38
+        payslip_results = {
+            'BASIC': 2650.0,
+            'HolPayRecN': -244.62,
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 2414.38,
+            'ONSS': -315.56,
+            'EmpBonus.1': 158.81,
+            'ONSSTOTAL': 156.75,
+            'ATN.CAR': 156.78,
+            'GROSSIP': 2414.41,
+            'IP.PART': -662.5,
+            'GROSS': 1751.91,
+            'P.P': -135.94,
+            'P.P.DED': 52.63,
+            'PPTOTAL': 83.31,
+            'ATN.CAR.2': -156.78,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'M.ONSS': -15.39,
+            'MEAL_V_EMP': -18.53,
+            'REP.FEES': 150.0,
+            'IP': 662.5,
+            'IP.DED': -49.69,
+            'NET': 2231.72,
+            'REMUNERATION': 1987.5,
+            'ONSSEMPLOYERBASIC': 604.32,
+            'ONSSEMPLOYERFFE': 1.69,
+            'ONSSEMPLOYERMFFE': 2.41,
+            'ONSSEMPLOYERCPAE': 5.55,
+            'ONSSEMPLOYERRESTREINT': 40.8,
+            'ONSSEMPLOYERUNEMP': 2.41,
+            'ONSSEMPLOYER': 657.2,
+            'CO2FEE': 31.34,
+        }
+        self._validate_payslip(payslip, payslip_results)
+
+        self.env['resource.calendar.leaves'].create([{
+            'name': "Legal Leave Whole Day",
+            'calendar_id': self.resource_calendar_38_hours_per_week.id,
+            'company_id': self.env.company.id,
+            'resource_id': self.employee.resource_id.id,
+            'date_from': datetime.datetime(2024, 7, 14, 6, 0, 0),
+            'date_to': datetime.datetime(2024, 7, 18, 19, 0, 0),
+            'time_type': "leave",
+            'work_entry_type_id': self.env.ref('hr_work_entry_contract.work_entry_type_legal_leave').id
+        }])
+
+        payslip = self._generate_payslip(datetime.date(2024, 7, 1), datetime.date(2024, 7, 31))
+        self.assertEqual(payslip._get_worked_days_line_number_of_hours('LEAVE120'), 30.4)
+        self.assertEqual(payslip._get_worked_days_line_amount('LEAVE120'), 489.23)
+
+        # Should be 122.31 * 2 = 244.62 instead of 230.43
+        payslip_results = {
+            'BASIC': 2650.0,
+            'HolPayRecN': -244.62,
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 2414.38,
+            'ONSS': -315.56,
+            'EmpBonus.1': 158.81,
+            'ONSSTOTAL': 156.75,
+            'ATN.CAR': 156.78,
+            'GROSSIP': 2414.41,
+            'IP.PART': -662.5,
+            'GROSS': 1751.91,
+            'P.P': -135.94,
+            'P.P.DED': 52.63,
+            'PPTOTAL': 83.31,
+            'ATN.CAR.2': -156.78,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'M.ONSS': -15.39,
+            'MEAL_V_EMP': -20.71,
+            'REP.FEES': 150.0,
+            'IP': 662.5,
+            'IP.DED': -49.69,
+            'NET': 2229.54,
+            'REMUNERATION': 1987.5,
+            'ONSSEMPLOYERBASIC': 604.32,
+            'ONSSEMPLOYERFFE': 1.69,
+            'ONSSEMPLOYERMFFE': 2.41,
+            'ONSSEMPLOYERCPAE': 5.55,
+            'ONSSEMPLOYERRESTREINT': 40.8,
+            'ONSSEMPLOYERUNEMP': 2.41,
+            'ONSSEMPLOYER': 657.2,
+            'CO2FEE': 31.34,
+        }
+        self._validate_payslip(payslip, payslip_results)

@@ -234,7 +234,7 @@ class StockPicking(models.Model):
                     ElementTree.SubElement(item_, 'Quantity').text = str(int(item_quantity_))
 
                 # Add the shipping location.
-                location_ = account.location_id.warehouse_id.partner_id
+                location_ = account.location_id.warehouse_id.partner_id or self.env.company
                 ship_from_ = ElementTree.SubElement(order_fulfillment_, 'ShipFromAddress')
                 ElementTree.SubElement(ship_from_, 'Name').text = location_.name[:30]
                 ElementTree.SubElement(ship_from_, 'AddressFieldOne').text = location_.street[:180]

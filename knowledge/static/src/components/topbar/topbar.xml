@@ -106,53 +106,53 @@
                         <div class="o_knowledge_more_options_panel dropdown-menu" role="menu" aria-labelledby="dropdown_tools_panel">
                             <div>
                                 <button t-if="props.record.data.user_can_write and props.record.data.active and !props.record.data.is_article_item and isInternalUser"
-                                    class="ps-0 dropdown-item btn-move" t-on-click="onMoveArticleClick">
-                                    <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-angle-double-right"/> Move To
+                                    class="dropdown-item btn-move" t-on-click="onMoveArticleClick">
+                                    <i class="me-2 fa fa-fw fa-lg fa-angle-double-right"/> Move To
                                 </button>
-                                <button class="ps-0 dropdown-item btn-lock" t-on-click="() => this.setLockStatus(true)"
+                                <button class="dropdown-item btn-lock" t-on-click="() => this.setLockStatus(true)"
                                         t-if="props.record.data.user_can_write and !props.record.data.is_locked and props.record.data.active">
-                                    <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-lock"/> Lock
+                                    <i class="me-2 fa fa-fw fa-lg fa-lock"/> Lock
                                 </button>
-                                <button class="ps-0 dropdown-item btn-lock" t-on-click="() => this.setLockStatus(false)"
+                                <button class="dropdown-item btn-lock" t-on-click="() => this.setLockStatus(false)"
                                     t-if="props.record.data.user_can_write and props.record.data.is_locked and props.record.data.active">
-                                    <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-unlock"/> Unlock
+                                    <i class="me-2 fa fa-fw fa-lg fa-unlock"/> Unlock
                                 </button>
                                 <button class="ps-0 dropdown-item" t-on-click="unarchiveArticle"
                                     t-if="props.record.data.to_delete and props.record.data.user_can_write
                                           and (isInternalUser or props.record.data.category == 'private')">
-                                    <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-trash-o"/> Restore from Trash
+                                    <i class="me-2 fa fa-fw fa-lg fa-trash-o"/> Restore from Trash
                                 </button>
-                                <button class="ps-0 dropdown-item" t-on-click="unarchiveArticle"
+                                <button class="dropdown-item" t-on-click="unarchiveArticle"
                                         t-if="!props.record.data.to_delete and !props.record.data.active">
-                                    <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-archive"/> Unarchive
+                                    <i class="me-2 fa fa-fw fa-lg fa-archive"/> Unarchive
                                 </button>
-                                <button class="ps-0 dropdown-item" t-on-click="this.cloneArticle">
-                                    <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-copy"/> Create a Copy
+                                <button class="dropdown-item" t-on-click="this.cloneArticle">
+                                    <i class="me-2 fa fa-fw fa-lg fa-copy"/> Create a Copy
                                 </button>
-                                <button class="ps-0 dropdown-item"
+                                <button class="dropdown-item"
                                     title="Article items are not showed in the left-side menu&#10;but are shown in inserted kanban/list views"
                                     t-if="props.record.data.user_can_write and !props.record.data.is_article_item and props.record.data.parent_id and props.record.data.active"
                                     t-on-click="() => this.setIsArticleItem(true)">
-                                    <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-tasks"/> Convert into Article Item
+                                    <i class="me-2 fa fa-fw fa-lg fa-tasks"/> Convert into Article Item
                                 </button>
-                                <button class="ps-0 dropdown-item"
+                                <button class="dropdown-item"
                                     t-if="props.record.data.user_can_write and props.record.data.is_article_item and !props.record.data.has_item_parent"
                                     t-on-click="() => this.setIsArticleItem(false)">
-                                    <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-sitemap"/> Convert into Article
+                                    <i class="me-2 fa fa-fw fa-lg fa-sitemap"/> Convert into Article
                                 </button>
-                                <button class="ps-0 dropdown-item" t-on-click="this.exportToPdf">
-                                    <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-download"/> Export
+                                <button class="dropdown-item" t-on-click="this.exportToPdf">
+                                    <i class="me-2 fa fa-fw fa-lg fa-download"/> Export
                                 </button>
-                                <button class="ps-0 dropdown-item" t-on-click="deleteArticle"
+                                <button class="dropdown-item" t-on-click="deleteArticle"
                                     t-if="props.record.data.user_can_write and props.record.data.active
                                           and (isInternalUser or props.record.data.category == 'private')">
-                                    <i class="ms-2 ps-3 me-4 fa fa-fw fa-lg fa-trash"/> Delete
+                                    <i class="me-2 fa fa-fw fa-lg fa-trash"/> Delete
                                 </button>
                                 <div class="dropdown-divider" t-if="props.record.data.user_can_write and props.record.data.active"/>
-                                <div class="ps-0 dropdown-item user-select-none d-inline-flex align-items-start" t-if="props.record.data.user_can_write and props.record.data.active"
+                                <div class="dropdown-item user-select-none d-inline-flex align-items-start" t-if="props.record.data.user_can_write and props.record.data.active"
                                     t-on-click.stop="() => this.props.record.update({full_width: !props.record.data.full_width})">
                                     <div class="pe-3">
-                                        <i class="ms-2 ps-3 me-4 oi oi-fw oi-large oi-arrows-h"/> Full Width
+                                        <i class="me-2 oi oi-fw oi-large oi-arrows-h"/> Full Width
                                     </div>
                                     <div class="form-check form-switch">
                                         <input class="form-check-input" id="full_width_input" type="checkbox" role="switch" t-att-checked="props.record.data.full_width"/>
@@ -160,15 +160,15 @@
                                 </div>
                                 <div class="dropdown-divider" t-if="props.record.data.last_edition_uid or props.record.data.last_edition_date"/>
                             </div>
-                            <div class="dropdown-item-text ps-1 ms-1" t-if="props.record.data.last_edition_uid">
-                                <div class="d-flex align-items-center px-1 py-1">
+                            <div class="dropdown-item-text ps-2" t-if="props.record.data.last_edition_uid">
+                                <div class="d-flex align-items-center py-1">
                                     <span class="o_m2o_avatar" t-if="isInternalUser">
                                         <img class="o_knowledge_more_options_panel_image rounded" t-if="props.record.data.last_edition_uid"
                                             t-attf-src="/web/image?model=res.users&amp;field=avatar_128&amp;id={{ props.record.data.last_edition_uid[0] }}"
                                             t-on-click="event => this._onMemberAvatarClick(event, props.record.data.last_edition_uid[0])"
                                             t-att-title="this.props.record.data.last_edition_uid[1]"/>
                                     </span>
-                                    <i t-else="" class="fa fa-2x fa-user"/>
+                                    <i t-else="" class="ms-3 me-1 fa fa-2x fa-user"/>
                                     <div class="d-flex flex-column ps-1">
                                         <div class="d-inline-flex lh-sm">
                                             <span class="ps-1 pe-1 text-nowrap">
@@ -182,14 +182,14 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div class="d-flex align-items-center px-1 py-1">
+                                <div class="d-flex align-items-center py-1">
                                     <span class="o_m2o_avatar" t-if="isInternalUser">
                                         <img class="o_knowledge_more_options_panel_image rounded" t-if="props.record.data.create_uid"
                                             t-attf-src="/web/image?model=res.users&amp;field=avatar_128&amp;id={{ props.record.data.create_uid[0] }}"
                                             t-on-click="event => this._onMemberAvatarClick(event, props.record.data.create_uid[0])"
                                             t-att-title="this.props.record.data.create_uid[1]"/>
                                     </span>
-                                    <i t-else="" class="fa fa-2x fa-user"/>
+                                    <i t-else="" class="ms-3 me-1 fa fa-2x fa-user"/>
                                     <div class="d-flex flex-column ps-1">
                                         <div class="d-inline-flex lh-sm">
                                             <span class="ps-1 pe-1 text-nowrap">

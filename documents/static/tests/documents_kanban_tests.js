@@ -118,7 +118,7 @@ QUnit.module("documents", {}, function () {
                     { email: "raoulette@grosbedon.fr", name: "Raoulette Grosbedon" },
                 ]);
                 const resUsersIds = pyEnv["res.users"].create([
-                    { display_name: "Hazard", partner_id: resPartnerIds[0] },
+                    { display_name: "Hazard", partner_id: resPartnerIds[0], login:"hazard", password:"hazard" },
                     { display_name: "Lukaku", partner_id: resPartnerIds[1] },
                     { display_name: "De Bruyne", partner_id: resPartnerIds[2] },
                 ]);
@@ -1481,10 +1481,8 @@ QUnit.module("documents", {}, function () {
 
             QUnit.test("document inspector: locked records", async function (assert) {
                 assert.expect(6);
-
-                pyEnv.currentUserId = pyEnv["res.users"].search([
-                    ["display_name", "=", "Hazard"],
-                ])[0];
+                const [user] = pyEnv["res.users"].searchRead([["display_name", "=", "Hazard"]]);
+                pyEnv.authenticate(user.login, user.password);
                 patchWithCleanup(session, { uid: pyEnv.currentUserId });
                 await createDocumentsView({
                     type: "kanban",
@@ -1534,9 +1532,8 @@ QUnit.module("documents", {}, function () {
             QUnit.test("document inspector: can (un)lock records", async function (assert) {
                 assert.expect(5);
 
-                pyEnv.currentUserId = pyEnv["res.users"].search([
-                    ["display_name", "=", "Hazard"],
-                ])[0];
+                const [user] = pyEnv["res.users"].searchRead([["display_name", "=", "Hazard"]]);
+                pyEnv.authenticate(user.login, user.password);
                 patchWithCleanup(session, { uid: pyEnv.currentUserId });
                 const kanban = await createDocumentsView({
                     type: "kanban",
@@ -2055,9 +2052,8 @@ QUnit.module("documents", {}, function () {
             QUnit.test("document inspector: remove tag", async function (assert) {
                 assert.expect(4);
 
-                pyEnv.currentUserId = pyEnv["res.users"].search([
-                    ["display_name", "=", "Hazard"],
-                ])[0];
+                const [user] = pyEnv["res.users"].searchRead([["display_name", "=", "Hazard"]]);
+                pyEnv.authenticate(user.login, user.password);
                 patchWithCleanup(session, { uid: pyEnv.currentUserId });
                 await createDocumentsView({
                     type: "kanban",
@@ -2340,9 +2336,8 @@ QUnit.module("documents", {}, function () {
                 async function (assert) {
                     assert.expect(2);
 
-                    pyEnv.currentUserId = pyEnv["res.users"].search([
-                        ["display_name", "=", "Hazard"],
-                    ])[0];
+                    const [user] = pyEnv["res.users"].searchRead([["display_name", "=", "Hazard"]]);
+                    pyEnv.authenticate(user.login, user.password);
                     patchWithCleanup(session, { uid: pyEnv.currentUserId });
                     await createDocumentsView({
                         type: "kanban",
@@ -2390,9 +2385,8 @@ QUnit.module("documents", {}, function () {
                     lock_uid: resUsersId1,
                     name: "lockedByAnother",
                 });
-                pyEnv.currentUserId = pyEnv["res.users"].search([
-                    ["display_name", "=", "Lukaku"],
-                ])[0];
+                const [user] = pyEnv["res.users"].searchRead([["display_name", "=", "Hazard"]]);
+                pyEnv.authenticate(user.login, user.password);
                 patchWithCleanup(session, { uid: pyEnv.currentUserId });
                 await createDocumentsView({
                     type: "kanban",

@@ -5,7 +5,7 @@ from pytz import timezone
 from dateutil.relativedelta import relativedelta, MO, SU
 from dateutil import rrule
 from collections import defaultdict
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from odoo import api, models, fields, _
 from odoo.tools import float_round, date_utils, ormcache
 from odoo.exceptions import UserError
@@ -456,8 +456,33 @@ class Payslip(models.Model):
         unpaid_work_entry_types = self.struct_id.unpaid_work_entry_type_ids
         paid_work_entry_types = self.env['hr.work.entry.type'].search([]) - unpaid_work_entry_types
         hours = contracts._get_work_hours(date_from, date_to)
+
         paid_hours = sum(v for k, v in hours.items() if k in paid_work_entry_types.ids)
         unpaid_hours = sum(v for k, v in hours.items() if k in unpaid_work_entry_types.ids)
+        # Take 30 unpaid sick open days as paid time off
+        if self.struct_id.code == 'CP200THIRTEEN':
+            unpaid_sick_codes = ['LEAVE280', 'LEAVE214']
+            date_from = datetime.combine(date_from, datetime.min.time())
+            date_to = datetime.combine(date_to, datetime.max.time())
+            work_entries = self.env['hr.work.entry'].search([
+                ('state', 'in', ['validated', 'draft']),
+                ('employee_id', '=', self.employee_id.id),
+                ('date_start', '>=', date_from),
+                ('date_stop', '<=', date_to),
+                ('work_entry_type_id.code', 'in', unpaid_sick_codes),
+            ], order="date_start asc")
+            days_count, valid_sick_hours = 0, 0
+            valid_days = set()
+            for work_entry in work_entries:
+                work_entry_date = work_entry.date_start.date()
+                if work_entry_date in valid_days:
+                    valid_sick_hours += work_entry.duration
+                elif days_count < 30:
+                    valid_days.add(work_entry_date)
+                    days_count += 1
+                    valid_sick_hours += work_entry.duration
+            paid_hours += valid_sick_hours
+            unpaid_hours -= valid_sick_hours
         return paid_hours / (paid_hours + unpaid_hours) if paid_hours or unpaid_hours else 0
 
     def _get_paid_amount_13th_month(self):

@@ -9779,7 +9779,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         }
         self._validate_payslip(payslip, payslip_results)
 
-    def test_aa_thirteen_month(self):
+    def test_thirteen_month(self):
         payslip = self._generate_payslip(datetime.date(2023, 6, 1), datetime.date(2023, 6, 30), struct_id=self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_thirteen_month').id)
         payslip_results = {
             'BASIC': 1325.0,
@@ -9908,5 +9908,43 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYERUNEMP': 2.41,
             'ONSSEMPLOYER': 657.2,
             'CO2FEE': 31.34,
+        }
+        self._validate_payslip(payslip, payslip_results)
+
+    def test_thirteen_month_sick_leave(self):
+        # 30 days of unpaid sick leaves are taken into account as attendances on
+        # the gross computation
+        sick_leave = self.env['hr.leave'].new({
+            'name': 'Sick Time Off 2 Months',
+            'employee_id': self.employee.id,
+            'holiday_status_id': self.sick_time_off_type.id,
+            'request_date_from': datetime.date(2023, 1, 1),
+            'request_date_to': datetime.date(2023, 3, 31),
+            'request_hour_from': '7',
+            'request_hour_to': '18',
+            'number_of_days': 65,
+        })
+        sick_leave._compute_date_from_to()
+        sick_leave = self.env['hr.leave'].create(sick_leave._convert_to_write(sick_leave._cache))
+        sick_leave.action_validate()
+
+        self.employee.contract_ids._generate_work_entries(datetime.datetime(2023, 1, 1), datetime.datetime(2023, 6, 30))
+
+        payslip = self._generate_payslip(datetime.date(2023, 6, 1), datetime.date(2023, 6, 30), struct_id=self.env.ref('l10n_be_hr_payroll.hr_payroll_structure_cp200_thirteen_month').id)
+        payslip_results = {
+            'BASIC': 1182.31,
+            'SALARY': 1182.31,
+            'ONSS': -154.53,
+            'GROSS': 1027.78,
+            'P.P': -477.3,
+            'PPTOTAL': 477.3,
+            'NET': 550.48,
+            'ONSSEMPLOYERBASIC': 295.93,
+            'ONSSEMPLOYERFFE': 0.83,
+            'ONSSEMPLOYERMFFE': 1.18,
+            'ONSSEMPLOYERCPAE': 2.72,
+            'ONSSEMPLOYERRESTREINT': 19.98,
+            'ONSSEMPLOYERUNEMP': 1.18,
+            'ONSSEMPLOYER': 321.82,
         }
         self._validate_payslip(payslip, payslip_results)

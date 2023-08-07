@@ -989,6 +989,34 @@ QUnit.test("today is highlighted", async (assert) => {
     assert.strictEqual(getText(".o_gantt_header_cell.o_gantt_today"), "20");
 });
 
+QUnit.test("current month is highlighted'", async (assert) => {
+    await makeView({
+        type: "gantt",
+        resModel: "tasks",
+        serverData,
+        arch: '<gantt date_start="start" date_stop="stop" default_scale="year"/>',
+    });
+
+    assert.containsOnce(target, ".o_gantt_header_cell.o_gantt_today",
+                        "there should be an highlighted month");
+    assert.strictEqual(getText(".o_gantt_header_cell.o_gantt_today"), "December",
+                       "the highlighted month should be this month");
+});
+
+QUnit.test("current hour is highlighted'", async (assert) => {
+    await makeView({
+        type: "gantt",
+        resModel: "tasks",
+        serverData,
+        arch: '<gantt date_start="start" date_stop="stop" default_scale="day"/>',
+    });
+
+    assert.containsOnce(target, ".o_gantt_header_cell.o_gantt_today",
+                        "there should be an highlighted hour");
+    assert.strictEqual(getText(".o_gantt_header_cell.o_gantt_today"), "8am",
+                       "the highlighted hour should correspond to the current time");
+});
+
 // GANTT WITH SAMPLE="1"
 
 QUnit.test('empty grouped gantt with sample="1"', async (assert) => {

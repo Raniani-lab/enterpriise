@@ -581,7 +581,10 @@ export class GanttRenderer extends Component {
                 start,
                 stop,
             };
-            const isToday = scale.id !== "day" && date.hasSame(now, "day");
+            const isToday = ["week", "month"].includes(scale.id) && date.hasSame(now, "day")
+                  || scale.id === "year" && date.hasSame(now, "month")
+                  || scale.id === "day" && date.hasSame(now, "hour");
+                  
             if (isToday) {
                 column.isToday = true;
             }

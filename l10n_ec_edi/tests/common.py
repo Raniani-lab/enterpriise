@@ -113,7 +113,7 @@ class TestEcEdiCommon(AccountEdiTestCommon):
         invoice = self.env['account.move'].create({
             **invoice_vals,
         })
-        invoice.l10n_latam_document_number = '001-001-000000001'
+        invoice.l10n_latam_document_number = invoice.l10n_latam_document_number or '001-001-000000001'
         return invoice
 
     def get_custom_purchase_invoice_line_vals(self):

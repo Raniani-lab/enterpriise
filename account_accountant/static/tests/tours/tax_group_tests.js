@@ -2,7 +2,7 @@
 
 import { registry } from "@web/core/registry";
 import { patch } from "@web/core/utils/patch";
-import "@account/js/tours/tax_group_tests";
+import "@account/../tests/tours/tax_group_tests";
 
 patch(registry.category("web_tour.tours").get("account_tax_group"), {
     steps() {

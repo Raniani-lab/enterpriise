@@ -125,7 +125,7 @@ class TestEdiDigiflow(TestPeEdiCommon):
         self.assertRecordValues(move, [{'edi_state': 'sent'}])
 
         # Slightly tweak the cancellation request template so that SUNAT's response will contain an error in the CDR's ResponseCode.
-        cancel_request_template = self.env.ref('l10n_pe_edi.pe_ubl_2_1_void_documents')
+        cancel_request_template = self.env.ref('l10n_pe_edi.ubl_pe_21_voided_documents')
         arch = cancel_request_template.arch
         arch_new = arch.replace('<cbc:ReferenceDate t-out="reference_date"/>', '<cbc:ReferenceDate>{}</cbc:ReferenceDate>'.format(today))
         cancel_request_template.write({'arch': arch_new})

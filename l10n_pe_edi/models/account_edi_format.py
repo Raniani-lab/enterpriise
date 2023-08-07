@@ -290,69 +290,6 @@ class AccountEdiFormat(models.Model):
 
         return {'code': code, 'description': description}
 
-    def _l10n_pe_edi_get_edi_values(self, invoice):
-        self.ensure_one()
-        price_precision = self.env['decimal.precision'].precision_get('Product Price')
-
-        def format_float(amount, precision=2):
-            ''' Helper to format monetary amount as a string with 2 decimal places. '''
-            if amount is None or amount is False:
-                return None
-            return '%.*f' % (precision, amount)
-
-        spot = invoice._l10n_pe_edi_get_spot()
-        invoice_date_due_vals_list = []
-        first_time = True
-        for rec_line in invoice.line_ids.filtered(lambda l: l.account_type == 'asset_receivable'):
-            amount = rec_line.amount_currency
-            if spot and first_time:
-                amount -= spot['spot_amount']
-            first_time = False
-            invoice_date_due_vals_list.append({'amount': rec_line.move_id.currency_id.round(amount),
-                                               'currency_name': rec_line.move_id.currency_id.name,
-                                               'date_maturity': rec_line.date_maturity})
-        spot = invoice._l10n_pe_edi_get_spot()
-        if not spot:
-            total_after_spot = abs(invoice.amount_total)
-        else:
-            total_after_spot = abs(invoice.amount_total) - spot['spot_amount']
-        values = {
-            **invoice._prepare_edi_vals_to_export(),
-            'spot': spot,
-            'total_after_spot': total_after_spot,
-            'PaymentMeansID': invoice._l10n_pe_edi_get_payment_means(),
-            'is_refund': invoice.move_type in ('out_refund', 'in_refund'),
-            'certificate_date': invoice.invoice_date,
-            'price_precision': price_precision,
-            'format_float': format_float,
-            'invoice_date_due_vals_list': invoice_date_due_vals_list,
-        }
-
-        # Invoice lines.
-        for line_vals in values['invoice_line_vals_list']:
-            line = line_vals['line']
-            line_vals['price_unit_type_code'] = '01' if not line.currency_id.is_zero(line_vals['price_unit_after_discount']) else '02'
-            line_vals['price_subtotal_unit'] = float_round(line.price_subtotal / line.quantity, precision_digits=price_precision) if line.quantity else 0.0
-            line_vals['price_total_unit'] = float_round(line.price_total / line.quantity, precision_digits=price_precision) if line.quantity else 0.0
-
-        # Tax details.
-        def grouping_key_generator(base_line, tax_values):
-            tax = tax_values['tax_repartition_line'].tax_id
-            return {
-                'l10n_pe_edi_code': tax.tax_group_id.l10n_pe_edi_code,
-                'l10n_pe_edi_international_code': tax.l10n_pe_edi_international_code,
-                'l10n_pe_edi_tax_code': tax.l10n_pe_edi_tax_code,
-            }
-
-        values['tax_details'] = invoice._prepare_edi_tax_details()
-        values['tax_details_grouped'] = invoice._prepare_edi_tax_details(grouping_key_generator=grouping_key_generator)
-        values['isc_tax_amount'] = abs(sum([
-            line.amount_currency
-            for line in invoice.line_ids.filtered(lambda l: l.tax_line_id.tax_group_id.l10n_pe_edi_code == 'ISC')
-        ]))
-
-        return values
-
     # -------------------------------------------------------------------------
     # EDI: IAP service
     # -------------------------------------------------------------------------
@@ -383,15 +320,14 @@ class AccountEdiFormat(models.Model):
             invoice.company_id, edi_filename, edi_str, invoice.l10n_latam_document_type_id.code)
         return service_iap
 
-    def _l10n_pe_edi_sign_service_iap(self, company, edi_filename, edi_str, latam_document_type, serie_folio=None):
-        # TODO master: remove obsolete parameter 'serie_folio'.
+    def _l10n_pe_edi_sign_service_iap(self, company, edi_filename, edi_str, latam_document_type):
         edi_tree = objectify.fromstring(edi_str)
 
         # Dummy Signature to allow check the XSD, this will be replaced on IAP.
         namespaces = {'ds': 'http://www.w3.org/2000/09/xmldsig#'}
         edi_tree_copy = deepcopy(edi_tree)
         signature_element = edi_tree_copy.xpath('.//ds:Signature', namespaces=namespaces)[0]
-        signature_str = self.env['ir.qweb']._render('l10n_pe_edi.pe_ubl_2_1_signature', {'digest_value': ''})
+        signature_str = self.env['ir.qweb']._render('l10n_pe_edi.ubl_pe_21_signature_template', {'digest_value': ''})
         signature_element.getparent().replace(signature_element, objectify.fromstring(signature_str))
 
         error = self.env['ir.attachment']._l10n_pe_edi_check_with_xsd(edi_tree_copy, latam_document_type)
@@ -729,8 +665,7 @@ class AccountEdiFormat(models.Model):
         """This method calls _l10n_pe_edi_sign_service_sunat() to allow inherit this second from other models"""
         return self._l10n_pe_edi_sign_service_sunat(invoice.company_id, edi_filename, edi_str, invoice.l10n_latam_document_type_id.code)
 
-    def _l10n_pe_edi_sign_service_sunat(self, company, edi_filename, edi_str, latam_document_type, serie=False):
-        # TODO master: remove obsolete parameter 'serie'
+    def _l10n_pe_edi_sign_service_sunat(self, company, edi_filename, edi_str, latam_document_type):
         credentials = self._l10n_pe_edi_get_sunat_credentials(company)
         return self._l10n_pe_edi_sign_service_sunat_digiflow_common(
             company, edi_filename, edi_str, credentials, latam_document_type)
@@ -739,8 +674,7 @@ class AccountEdiFormat(models.Model):
         # TODO: To be refactored in master
         return self._l10n_pe_edi_sign_service_digiflow(invoice.company_id, edi_filename, edi_str, invoice.l10n_latam_document_type_id.code)
 
-    def _l10n_pe_edi_sign_service_digiflow(self, company, edi_filename, edi_str, latam_document_type, serie=False):
-        # TODO master: remove obsolete parameter 'serie'
+    def _l10n_pe_edi_sign_service_digiflow(self, company, edi_filename, edi_str, latam_document_type):
         credentials = self._l10n_pe_edi_get_digiflow_credentials(company)
         return self._l10n_pe_edi_sign_service_sunat_digiflow_common(
             company, edi_filename, edi_str, credentials, latam_document_type)
@@ -959,15 +893,32 @@ class AccountEdiFormat(models.Model):
         latam_invoice_type = self._get_latam_invoice_type(invoice.l10n_latam_document_type_id.code)
         if not latam_invoice_type:
             return _("Missing LATAM document code.").encode()
-        edi_values = self._l10n_pe_edi_get_edi_values(invoice)
-        return self.env['ir.qweb']._render('l10n_pe_edi.%s' % latam_invoice_type, edi_values).encode()
+
+        builder = self.env['account.edi.xml.ubl_pe']
+        xml_content, errors = builder._export_invoice(invoice)
+
+        if errors:
+            return "".join([
+                _("Errors occured while creating the EDI document (format: %s):", builder._description),
+                "\n",
+                "\n".join(errors)
+            ]).encode()
+
+        # Since the default UBL construction removes empty nodes, we need to recreate them here.
+        edi_tree = objectify.fromstring(xml_content)
+        namespaces = {'cbc': 'urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2'}
+        ubl_version_id_element = edi_tree.xpath('.//cbc:UBLVersionID', namespaces=namespaces)[0]
+        ubl_extensions_str = self.env['ir.qweb']._render('l10n_pe_edi.ubl_pe_21_ubl_extensions_empty_signature')
+        ubl_version_id_element.addprevious(objectify.fromstring(ubl_extensions_str))
+
+        return etree.tostring(edi_tree)
 
     def _get_latam_invoice_type(self, code):
         template_by_latam_type_mapping = {
-            '07': 'pe_ubl_2_1_credit_note',
-            '08': 'pe_ubl_2_1_debit_note',
-            '01': 'pe_ubl_2_1_invoice',
-            '03': 'pe_ubl_2_1_invoice',
+            '07': 'credit_note',
+            '08': 'debit_note',
+            '01': 'invoice',
+            '03': 'invoice',
         }
         return template_by_latam_type_mapping.get(code, False)
 
@@ -977,15 +928,12 @@ class AccountEdiFormat(models.Model):
             invoice.l10n_latam_document_type_id.code,
             invoice.name.replace(' ', ''),
         )
-        latam_invoice_type = self._get_latam_invoice_type(invoice.l10n_latam_document_type_id.code)
 
-        if not latam_invoice_type:
-            return {invoice: {'error': _("Missing LATAM document code.")}}
-
-        edi_values = self._l10n_pe_edi_get_edi_values(invoice)
-        edi_str = self.env['ir.qweb']._render('l10n_pe_edi.%s' % latam_invoice_type, edi_values).encode()
-
-        res = self._l10n_pe_edi_post_invoice_web_service(invoice, edi_filename, edi_str)
+        res = self._l10n_pe_edi_post_invoice_web_service(
+            invoice,
+            edi_filename,
+            self._generate_edi_invoice_bstr(invoice)
+        )
         return {invoice: res}
 
     def _l10n_pe_edi_cancel_invoice_edi_step_1(self, invoices):
@@ -1004,7 +952,7 @@ class AccountEdiFormat(models.Model):
             'company': company,
             'records': invoices,
         }
-        void_str = self.env['ir.qweb']._render('l10n_pe_edi.pe_ubl_2_1_void_documents', void_values).encode()
+        void_str = self.env['ir.qweb']._render('l10n_pe_edi.ubl_pe_21_voided_documents', void_values).encode()
         void_filename = '%s-%s' % (company.vat, void_number)
 
         res = getattr(self, '_l10n_pe_edi_cancel_invoices_step_1_%s' % provider)(company, invoices, void_filename, void_str)

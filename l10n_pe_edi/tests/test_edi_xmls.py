@@ -84,8 +84,11 @@ class TestEdiXmls(TestPeEdiCommon):
                 <xpath expr="//Note[1]" position="after">
                     <Note languageLocaleID="2006">Leyenda: Operacion sujeta a detraccion</Note>
                 </xpath>
+                <xpath expr="//DueDate" position="replace">
+                    <DueDate>2017-03-02</DueDate>
+                </xpath>
                 <xpath expr="//PaymentTerms" position="replace"/>
-                <xpath expr="//AccountingCustomerParty" position="after">
+                <xpath expr="//Delivery" position="after">
                     <PaymentMeans>
                         <ID>Detraccion</ID>
                         <PaymentMeansCode>999</PaymentMeansCode>
@@ -97,7 +100,7 @@ class TestEdiXmls(TestPeEdiCommon):
                         <ID>Detraccion</ID>
                         <PaymentMeansID>001</PaymentMeansID>
                         <PaymentPercent>10.0</PaymentPercent>
-                        <Amount currencyID="PEN">472.00</Amount>
+                        <Amount currencyID="USD">472.00</Amount>
                     </PaymentTerms>
                     <PaymentTerms>
                         <ID>FormaPago</ID>

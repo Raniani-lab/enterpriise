@@ -338,7 +338,7 @@ class HrContract(models.Model):
                 amount = 0.0
             contract.private_car_reimbursed_amount = amount
 
-    @api.onchange('transport_mode_car', 'new_car', 'transport_mode_train', 'transport_mode_public')
+    @api.onchange('transport_mode_car', 'transport_mode_train', 'transport_mode_public')
     def _onchange_transport_mode(self):
         if not self.transport_mode_car:
             self.fuel_card = 0
@@ -347,16 +347,14 @@ class HrContract(models.Model):
             self.train_transport_reimbursed_amount = 0
         if not self.transport_mode_public:
             self.public_transport_reimbursed_amount = 0
-        if self.transport_mode_car or self.car_id or self.new_car or self.new_car_model_id:
+        if self.transport_mode_car or self.car_id:
             self.transport_mode_private_car = False
 
     @api.onchange('transport_mode_private_car')
     def _onchange_transport_mode_private_car(self):
         if self.transport_mode_private_car:
             self.transport_mode_car = False
-            self.new_car = False
             self.fuel_card = 0
-            self.car_atn = 0
 
     @api.depends('holidays', 'wage', 'final_yearly_costs', 'l10n_be_group_insurance_rate')
     def _compute_wage_with_holidays(self):

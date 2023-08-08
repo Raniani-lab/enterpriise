@@ -194,7 +194,7 @@ class L10nEcWizardAccountWithhold(models.TransientModel):
                 lambda l: l.account_id.account_type in ('asset_receivable', 'liability_payable')
                     and l.l10n_ec_withhold_invoice_id == inv)
             inv_reconc = inv.line_ids.filtered(
-                lambda l: l.account_id.account_type in ('asset_receivable', 'liability_payable'))
+                lambda l: l.account_id.account_type in ('asset_receivable', 'liability_payable') and not l.reconciled)
             (wh_reconc + inv_reconc).reconcile()
 
         return withhold

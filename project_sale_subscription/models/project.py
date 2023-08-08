@@ -35,8 +35,8 @@ class Project(models.Model):
             return {}
         action = self.env["ir.actions.actions"]._for_xml_id("sale_subscription.sale_subscription_action")
         action_context = {'default_analytic_account_id': self.analytic_account_id.id}
-        if self.commercial_partner_id:
-            action_context['default_partner_id'] = self.commercial_partner_id.id
+        if self.partner_id.commercial_partner_id:
+            action_context['default_partner_id'] = self.partner_id.commercial_partner_id.id
         action.update({
             'views': [[False, 'tree'], [False, 'kanban'], [False, 'form'], [False, 'pivot'], [False, 'graph'], [False, 'cohort']],
             'context': action_context,

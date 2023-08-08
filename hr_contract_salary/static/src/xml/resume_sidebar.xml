@@ -20,7 +20,7 @@
                         </t>
                         <div class="col-md-6">
                             <div class="input-group">
-                                <input class="form-control" type="text" t-att-value="line[1]" t-att-name="line[0]" disabled="disabled"/>
+                                <input class="form-control" type="text" t-att="{value: line[1], name: line[0]}" disabled="disabled"/>
                                 <div class="input-group-text"><t t-esc="line[2]"/></div>
                             </div>
                         </div>

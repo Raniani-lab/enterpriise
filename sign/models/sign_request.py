@@ -382,12 +382,15 @@ class SignRequest(models.Model):
     @api.model
     def _cron_reminder(self):
         today = fields.Date.today()
+        # find all expired sign requests and those that need a reminder
+        # in one query, the code will handle them differently
         self.env.cr.execute(f'''
         SELECT id 
         FROM sign_request sr
-        WHERE sr.state = 'sent' AND (
+        WHERE sr.state = 'sent'
+        AND (
             sr.validity < '{today}' 
-         OR sr.reminder > 0 AND sr.last_reminder + sr.reminder * ('1 day'::interval) >= '{today}'
+            OR (sr.reminder > 0 AND sr.last_reminder + sr.reminder * ('1 day'::interval) <= '{today}')
         )
         ''')
         res = self.env.cr.fetchall()

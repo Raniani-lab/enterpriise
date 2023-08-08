@@ -6,6 +6,9 @@
             <attribute name="style">color:red</attribute>
             <attribute name="t-on-click">onFileDelete</attribute>
         </xpath>
+        <xpath expr="//label[hasclass('o_select_file_button')]" position="attributes">
+            <attribute name="class" remove="btn-primary" add="btn-secondary" separator=" " />
+        </xpath>
     </t>
 
 </templates>

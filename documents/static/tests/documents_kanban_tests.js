@@ -7,6 +7,7 @@ import { busService } from "@bus/services/bus_service";
 import { documentService } from "@documents/core/document_service";
 import { storeService } from "@mail/core/common/store_service";
 import { attachmentService } from "@mail/core/common/attachment_service";
+import { voiceMessageService } from "@mail/discuss/voice_message/common/voice_message_service";
 import {
     createDocumentsView as originalCreateDocumentsView,
     createDocumentsViewWithMessaging,
@@ -73,6 +74,7 @@ QUnit.module("documents", {}, function () {
                     "document.document": documentService,
                     "mail.attachment": attachmentService,
                     "mail.store": storeService,
+                    "discuss.voice_message": voiceMessageService,
                     multi_tab: multiTabService,
                     bus_service: busService,
                     "bus.parameters": busParametersService,

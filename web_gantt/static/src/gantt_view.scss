@@ -499,10 +499,6 @@
     // ============================= "TOTAL" row ==============================
     // ========================================================================
     .o_gantt_row_total {
-        .o_gantt_cell:not(:first-of-type) {
-            border-left: 1px solid rgba($gantt-border-color, 0.25);
-        }
-
         .o_gantt_cell,
         .o_gantt_row_title,
         .o_gantt_pill_wrapper {

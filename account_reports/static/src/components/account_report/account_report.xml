@@ -63,28 +63,30 @@
 
             <div class="o_content px-3">
                 <!-- Sections -->
-                <div id="section_selector" class="section_selector">
-                    <t t-foreach="controller.options.sections" t-as="section" t-key="section_index">
-                        <button
-                            t-att-class="(controller.options.selected_section_id === section.id) ? 'btn btn-secondary' : 'btn btn-primary'"
-                            t-on-click="() => controller.switchToSection(section.id)"
-                            t-out="section.name"
-                        />
-                    </t>
+                <t t-if="controller.options.sections.length">
+                    <div id="section_selector" class="section_selector">
+                        <t t-foreach="controller.options.sections" t-as="section" t-key="section_index">
+                            <button
+                                t-att-class="(controller.options.selected_section_id === section.id) ? 'btn btn-secondary' : 'btn btn-primary'"
+                                t-on-click="() => controller.switchToSection(section.id)"
+                                t-out="section.name"
+                            />
+                        </t>
 
-                    <t t-if="controller.options['has_inactive_sections']">
-                        <button class="btn btn-secondary" t-on-click="(ev) => controller.reportAction(ev, 'action_display_inactive_sections')" >+</button>
-                    </t>
-                </div>
+                        <t t-if="controller.options['has_inactive_sections']">
+                            <button class="btn btn-secondary" t-on-click="(ev) => controller.reportAction(ev, 'action_display_inactive_sections')" >+</button>
+                        </t>
+                    </div>
+                </t>
 
                 <t t-if="controller.lines.length">
                     <!-- Warnings -->
                     <t t-if="controller.warnings">
-                        <div id="warnings">
+                        <div id="warnings" class="warnings">
                             <t t-foreach="controller.warnings" t-as="warningTemplateRef" t-key="warningTemplateRef">
                                 <t t-set="warningParams" t-value="controller.warnings[warningTemplateRef]"/>
 
-                                <div t-att-class="`alert alert-${warningParams['alert_type'] || 'info'} text-center mt-2 mx-3`">
+                                <div t-att-class="`alert alert-${warningParams['alert_type'] || 'info'} text-center`">
                                     <t t-call="{{ warningTemplateRef }}"/>
                                 </div>
                             </t>

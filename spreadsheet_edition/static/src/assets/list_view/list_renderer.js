@@ -55,7 +55,7 @@ patch(ListRenderer.prototype, {
                     col.type === "field" &&
                     col.field.component !== HandleField &&
                     !col.relatedPropertyField &&
-                    fields[col.name].type !== "binary"
+                    !["binary", "json"].includes(fields[col.name].type)
             )
             .map((col) => ({ name: col.name, type: fields[col.name].type }));
     },

@@ -100,6 +100,23 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
         assert.verifySteps(["display_property"]);
     });
 
+    QUnit.test("json fields are not exported", async (assert) => {
+        const { model } = await createSpreadsheetFromListView({
+            serverData: {
+                models: getBasicData(),
+                views: {
+                    "partner,false,list": `
+                        <tree string="Partners">
+                            <field name="jsonField"/>
+                            <field name="bar"/>
+                        </tree>`,
+                    "partner,false,search": "<search/>",
+                },
+            },
+        });
+        assert.deepEqual(model.getters.getListDefinition("1").columns, ["bar"]);
+    });
+
     QUnit.test("Open list properties properties", async function (assert) {
         const { model, env } = await createSpreadsheetFromListView();
 

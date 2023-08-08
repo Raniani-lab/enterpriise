@@ -143,6 +143,7 @@ export class ListEditorRenderer extends listView.Renderer {
 
     onTableClicked(ev) {
         ev.stopPropagation();
+        ev.preventDefault();
         const table = ev.currentTarget;
         cleanStyling(table, [colSelectedClass]);
         const colEl = getSelectableCol(ev.target, "[data-studio-xpath]");

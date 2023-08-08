@@ -25,6 +25,7 @@ import { doAction } from "@web/../tests/webclient/helpers";
 import { openStudio } from "../../helpers";
 import { session } from "@web/session";
 import { ListRenderer } from "@web/views/list/list_renderer";
+import { ListEditorRenderer } from "@web_studio/client_action/view_editor/editors/list/list_editor_renderer";
 import { registerCleanup } from "@web/../tests/helpers/cleanup";
 import { SIDEBAR_SAFE_FIELDS } from "@web_studio/client_action/view_editor/editors/sidebar_safe_fields";
 
@@ -2352,6 +2353,29 @@ QUnit.module(
                 ".o_web_studio_property_default_group_by + .alert",
                 "The alert should not be visible anymore."
             );
+        });
+
+        QUnit.test("click on a link doesn't do anything", async function (assert) {
+            serverData.models.coucou.records.push({ display_name: "Red Right Hand", m2o: 1 });
+
+            patchWithCleanup(ListEditorRenderer.prototype, {
+                onTableClicked(ev) {
+                    assert.step("onTableClicked");
+                    assert.ok(!ev.defaultPrevented);
+                    super.onTableClicked(ev);
+                    assert.ok(ev.defaultPrevented);
+                },
+            });
+
+            await createViewEditor({
+                serverData,
+                type: "list",
+                resModel: "coucou",
+                arch: `<tree><field name="display_name"/><field name="m2o" widget="many2one"/></tree>`,
+            });
+
+            await click(target, "[name='m2o'] a");
+            assert.verifySteps(["onTableClicked"]);
         });
     }
 );

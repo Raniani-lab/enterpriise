@@ -444,8 +444,8 @@ export class AccountReportController {
         this.insertLinesAfter(lineIndex, newLines);
 
         const totalIndex = lineIndex + newLines.length + 1;
-        
-        if (this.filters.show_totals && this.lines[totalIndex] && this.lines[totalIndex].isTotalLine)
+
+        if (this.filters.show_totals && this.lines[totalIndex] && this.isTotalLine(totalIndex))
             this.lines[totalIndex].visible = true;
     }
 

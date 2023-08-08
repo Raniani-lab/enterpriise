@@ -25,7 +25,7 @@ registry.category("web_tour.tours").add('account_reports', {
             content: "Line is unfolded",
             trigger: "tr:nth-child(4) .name:contains('101401')",
             run: () => {
-                Asserts.DOMContainsNumber("tbody > tr:not(.d-none):not(.empty)", 29);
+                Asserts.DOMContainsNumber("tbody > tr:not(.d-none):not(.empty)", 30);
             }
         },
         {

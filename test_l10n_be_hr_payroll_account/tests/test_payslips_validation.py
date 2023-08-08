@@ -9948,3 +9948,77 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ONSSEMPLOYER': 321.82,
         }
         self._validate_payslip(payslip, payslip_results)
+
+    def test_multiple_public_holidays_variable_salary(self):
+        self.contract.commission_on_target = 1000
+        self.env['resource.calendar.leaves'].create([{
+            'name': 'Public Time Off 1',
+            'date_from': datetime.datetime(2023, 8, 7, 2),
+            'date_to': datetime.datetime(2023, 8, 7, 22),
+            'calendar_id': self.resource_calendar_38_hours_per_week.id,
+            'work_entry_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_bank_holiday').id,
+            'time_type': 'leave',
+        }, {
+            'name': 'Public Time Off 2',
+            'date_from': datetime.datetime(2023, 8, 8, 2),
+            'date_to': datetime.datetime(2023, 8, 8, 22),
+            'calendar_id': self.resource_calendar_38_hours_per_week.id,
+            'work_entry_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_bank_holiday').id,
+            'time_type': 'leave',
+        }, {
+            'name': 'Public Time Off 3',
+            'date_from': datetime.datetime(2023, 8, 9, 2),
+            'date_to': datetime.datetime(2023, 8, 9, 22),
+            'calendar_id': self.resource_calendar_38_hours_per_week.id,
+            'work_entry_type_id': self.env.ref('l10n_be_hr_payroll.work_entry_type_bank_holiday').id,
+            'time_type': 'leave',
+        }])
+
+        commission_payslip = self._generate_payslip(datetime.date(2023, 7, 1), datetime.date(2023, 7, 31))
+        self.env['hr.payslip.input'].create([{
+            'name': "Commission Input",
+            'payslip_id': commission_payslip.id,
+            'sequence': 10,
+            'input_type_id': self.env.ref('l10n_be_hr_payroll.input_fixed_commission').id,
+            'amount': 10000,
+        }])
+        commission_payslip.compute_sheet()
+        commission_payslip.action_payslip_done()
+
+        payslip = self._generate_payslip(datetime.date(2023, 8, 1), datetime.date(2023, 8, 31))
+        payslip_results = {
+            'BASIC': 2770.0,  # 2650 + 40 * 3
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 2779.0,
+            'ONSS': -363.22,
+            'EmpBonus.1': 85.13,
+            'ONSSTOTAL': 278.08,
+            'ATN.CAR': 169.15,
+            'GROSSIP': 2670.07,
+            'IP.PART': -692.5,
+            'GROSS': 1977.57,
+            'P.P': -232.53,
+            'P.P.DED': 28.21,
+            'PPTOTAL': 204.32,
+            'ATN.CAR.2': -169.15,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'M.ONSS': -16.71,
+            'MEAL_V_EMP': -21.8,
+            'REP.FEES': 150.0,
+            'IP': 692.5,
+            'IP.DED': -51.94,
+            'NET': 2347.15,
+            'REMUNERATION': 2077.5,
+            'ONSSEMPLOYERBASIC': 695.58,
+            'ONSSEMPLOYERFFE': 1.95,
+            'ONSSEMPLOYERMFFE': 2.78,
+            'ONSSEMPLOYERCPAE': 6.39,
+            'ONSSEMPLOYERRESTREINT': 46.97,
+            'ONSSEMPLOYERUNEMP': 2.78,
+            'ONSSEMPLOYER': 756.44,
+            'CO2FEE': 31.34,
+        }
+        self.assertAlmostEqual(payslip._get_worked_days_line_amount('LEAVE1731'), 120, places=2)
+        self._validate_payslip(payslip, payslip_results)

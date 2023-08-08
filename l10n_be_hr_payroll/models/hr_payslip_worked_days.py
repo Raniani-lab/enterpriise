@@ -37,7 +37,8 @@ class HrPayslipWorkedDays(models.Model):
                 amount = amount / 25.0
                 if not float_compare(worked_day.payslip_id.contract_id.resource_calendar_id.work_time_rate, 100, precision_digits=2):
                     amount *= 1.2
-                worked_day.amount = amount
+                number_of_days = worked_day.payslip_id._get_worked_days_line_number_of_days('LEAVE500')
+                worked_day.amount = amount * number_of_days
             else:
                 payslip = worked_day.payslip_id
                 contract = payslip.contract_id

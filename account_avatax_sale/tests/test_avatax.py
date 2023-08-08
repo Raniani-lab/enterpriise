@@ -116,6 +116,32 @@ class TestSaleAvalara(TestAccountAvataxCommon):
             order.button_update_avatax()
             self.assertOrder(order)
 
+    def test_tax_round_globally(self):
+        """The total amount of sale orders elligible for Avatax should never be computed with
+        the 'round_globally' option but should instead use the 'round_per_line' mechanism"""
+        self.env.company.sudo().tax_calculation_rounding_method = 'round_globally'
+        order = self.env['sale.order'].create({
+            'user_id': self.sales_user.id,
+            'partner_id': self.partner.id,
+            'fiscal_position_id': self.fp_avatax.id,
+            'date_order': '2021-01-01',
+            'order_line': [
+                (0, 0, {
+                    'product_id': self.product.id,
+                    'product_uom_qty': 1,
+                    'price_unit': 1.48,
+                    'tax_id': self.tax_with_diff_amount.ids,
+                }),
+                (0, 0, {
+                    'product_id': self.product.id,
+                    'product_uom_qty': 1,
+                    'price_unit': 1.48,
+                    'tax_id': self.tax_with_diff_amount.ids,
+                }),
+            ],
+        })
+        self.assertEqual(order.amount_total, 2.98)
+
 
 @tagged("-at_install", "post_install")
 class TestAccountAvalaraSalesTaxItemsIntegration(TestAccountAvataxCommon):

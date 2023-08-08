@@ -880,9 +880,21 @@ class SpanishMod347TaxReportCustomHandler(models.AbstractModel):
         report = self.env['account.report'].browse(options['report_id'])
         report._check_groupby_fields((next_groupby.split(',') if next_groupby else []) + ([current_groupby] if current_groupby else []))
 
+        from_fy_dates = self.env.company.compute_fiscalyear_dates(fields.Date.from_string(options['date']['date_from']))
+        to_fy_dates = self.env.company.compute_fiscalyear_dates(fields.Date.from_string(options['date']['date_to']))
+        fy_options = {**options, 'date': options['date'].copy()}
+
+        # Only adapt dates for the threshold if from and to dates belong to the same fiscal year.
+        if from_fy_dates == to_fy_dates:
+            fy_options['date'].update({
+                'date_from': fields.Date.to_string(from_fy_dates['date_from']),
+                'date_to': fields.Date.to_string(from_fy_dates['date_to']),
+                'mode': 'range',
+            })
+
         # First get all the partners that match the domain but don't reach the threshold. We'll have to exclude them
         ct_query = self.env['res.currency']._get_query_currency_table(options)
-        tables, where_clause, where_params = report._query_get(options, date_scope, domain=domain + options.get('forced_domain', []))
+        tables, where_clause, where_params = report._query_get(fy_options, date_scope, domain=domain + options.get('forced_domain', []))
         threshold_value = self._convert_threshold_to_company_currency(3005.06, options)
         partners_to_exclude_params = [*where_params, threshold_value]
         partners_to_exclude_query = f"""

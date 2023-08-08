@@ -72,6 +72,34 @@ class TestEcEdiWithholdWizard(TestEcEdiCommon):
         self.set_custom_taxpayer_type_on_partner_a()
         self.test_purchase_invoice_withhold(custom_taxpayer=True)
 
+    def test_withold_invoice_partially_paid(self):
+        """
+        Tests that a withhold can be created on a partially paid invoice
+        """
+        wizard, invoice = self.get_wizard_and_invoice({
+            'invoice_payment_term_id': self.env.ref('account.account_payment_term_advance_60days').id,
+        })
+        line_to_reco = invoice.line_ids.filtered(lambda l: l.display_type
+                                                 and invoice.currency_id.is_zero(l.balance - invoice.amount_total * 0.3))
+        self.env['account.payment.register'].with_context(active_model='account.move', active_ids=invoice.ids).create({
+            'amount': line_to_reco.balance,
+        })._create_payments()
+
+        self.assertEqual(invoice.payment_state, 'partial')
+
+        wizard.withhold_line_ids.create({
+            'wizard_id': wizard.id,
+            'invoice_id': invoice.id,
+            'tax_id': self._get_tax_by_xml_id('tax_sale_withhold_vat_10').id,
+        })
+
+        with freeze_time(self.frozen_today):
+            withhold = wizard.action_create_and_post_withhold()
+
+        expected_withhold = self.env['account.move.line'].search([('l10n_ec_withhold_invoice_id', '=', invoice.id)]).mapped('move_id')
+
+        self.assertEqual(withhold, expected_withhold)
+
     # ===== HELPER METHODS =====
 
     def get_wizard_and_invoice(self, invoice_args=None):

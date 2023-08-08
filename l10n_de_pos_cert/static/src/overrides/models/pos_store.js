@@ -36,7 +36,7 @@ patch(PosStore.prototype, {
                         data["kassensichv_url"] +
                         "/api/v" +
                         (this.useKassensichvVersion2 ? "2" : "1"); // use correct version
-                    this.initVatRates(data["dsfinvk_url"] + "/api/v0");
+                    return this.initVatRates(data["dsfinvk_url"] + "/api/v0");
                 });
         }
         return super.after_load_server_data(...arguments);
@@ -79,7 +79,7 @@ patch(PosStore.prototype, {
             api_secret: this.getApiSecret(),
         };
 
-        $.ajax({
+        return $.ajax({
             url: url + "/auth",
             method: "POST",
             data: JSON.stringify(data),
@@ -87,7 +87,7 @@ patch(PosStore.prototype, {
             timeout: 5000,
         }).then((data) => {
             const token = data.access_token;
-            $.ajax({
+            return $.ajax({
                 url: url + "/vat_definitions",
                 method: "GET",
                 headers: { Authorization: `Bearer ${token}` },

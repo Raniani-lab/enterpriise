@@ -67,6 +67,10 @@ class TestKnowledgeEditorCommands(HttpCase):
         })
         self.start_tour('/web', 'knowledge_readonly_item_kanban_tour', login='demo')
 
+        # Check that the icon selected from the kanban card has been saved
+        quik_create_article = self.env['knowledge.article'].search([("name", "=", "New Quick Create Item")])
+        self.assertEqual(quik_create_article.icon, "🤩")
+
     def test_knowledge_kanban_cards_command_tour(self):
         """Test the /card command in the editor"""
         self.start_tour('/web', 'knowledge_kanban_cards_command_tour', login='admin')

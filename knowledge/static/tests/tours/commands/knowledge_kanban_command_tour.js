@@ -76,6 +76,12 @@ registry.category("web_tour.tours").add('knowledge_kanban_command_tour', {
     trigger: '.o_knowledge_behavior_type_embedded_view .o_kanban_renderer .o_kanban_record_title span:contains("New Quick Create Item")',
     extra_trigger: '.o_knowledge_behavior_type_embedded_view .o_kanban_renderer .o_kanban_record_title .o_article_emoji:contains("🙃")',
     run: () => {},
+}, { // Click on the icon of the created article to open the emoji picker
+    trigger: '.o_knowledge_behavior_type_embedded_view .o_kanban_renderer .o_kanban_record_title .o_article_emoji',
+    run: 'click',
+}, { // Select another emoji for the created article
+    trigger: '.o-Emoji[data-codepoints="🤩"]',
+    run: 'click',
 }, { // Create a new article using quick create in OnGoing Column
     trigger: '.o_knowledge_behavior_type_embedded_view .o_kanban_renderer .o_kanban_group .o_kanban_header_title:contains("Ongoing") .o_kanban_quick_add',
     run: 'click'

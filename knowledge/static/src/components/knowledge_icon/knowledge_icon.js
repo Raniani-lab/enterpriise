@@ -16,6 +16,7 @@ export default class KnowledgeIcon extends Component {
         readonly: Boolean,
         iconClasses: {type: String, optional: true},
         allowRandomIconSelection: {type: Boolean, optional: true},
+        autoSave: {type: Boolean, optional: true},
     };
 
     setup() {
@@ -34,6 +35,9 @@ export default class KnowledgeIcon extends Component {
 
     updateIcon(icon) {
         this.props.record.update({icon});
+        if (this.props.autoSave) {
+            this.props.record.save();
+        }
     }
 }
 
@@ -41,13 +45,16 @@ class KnowledgeIconField extends KnowledgeIcon {
     static props = {
         ...standardFieldProps,
         allowRandomIconSelection: Boolean,
+        autoSave: Boolean,
     };
 }
 
 registry.category("fields").add("knowledge_icon", {
     component: KnowledgeIconField,
-    extractProps({ attrs }) {
+    extractProps({ attrs, viewType }, dynamicInfo) {
         return {
+            autoSave: viewType === "kanban",
+            readonly: dynamicInfo.readonly,
             allowRandomIconSelection: archParseBoolean(attrs.allow_random_icon_selection),
         };
     },

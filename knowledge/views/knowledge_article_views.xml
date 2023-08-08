@@ -275,7 +275,11 @@
                                 <div t-if="record.cover_image_url.raw_value.length > 0" class="o_kanban_image_fill_left mw-25"
                                      t-attf-style="background-image: url(#{record.cover_image_url.raw_value});" role="img"/>
                                 <div class="d-flex flex-column justify-content-between pb-4 mb-2">
-                                    <field name="display_name"/>
+                                    <div class="d-flex">
+                                        <field name="icon" widget="knowledge_icon" class="me-2" readonly="is_locked or not user_has_write_access" invisible="not icon"/>
+                                        <field name="name"/>
+                                        <div invisible="name">Untitled</div>
+                                    </div>
                                     <field name="article_properties" widget="properties"/>
                                     <field name="parent_id" invisible="1"/>
                                 </div>

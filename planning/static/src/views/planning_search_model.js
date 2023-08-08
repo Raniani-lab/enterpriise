@@ -16,18 +16,21 @@ export class PlanningSearchModel extends SearchModel {
     }
 
     deactivateGroup(groupId) {
-        if (this._getHighlightPlannedSearchItems().groupId === groupId) {
+        if (this._getHighlightPlannedSearchItems()?.groupId === groupId) {
             this.highlightPlannedIds = null;
         }
         super.deactivateGroup(groupId);
     }
 
     toggleHighlightPlannedFilter(highlightPlannedIds) {
+        const highlightPlannedSearchItems = this._getHighlightPlannedSearchItems();
         if (highlightPlannedIds) {
             this.highlightPlannedIds = highlightPlannedIds;
-            this.toggleSearchItem(this._getHighlightPlannedSearchItems().id);
-        } else {
-            this.deactivateGroup(this._getHighlightPlannedSearchItems().groupId);
+            if (highlightPlannedSearchItems) {
+                this.toggleSearchItem(highlightPlannedSearchItems.id);
+            }
+        } else if (highlightPlannedSearchItems) {
+            this.deactivateGroup(highlightPlannedSearchItems.groupId);
         }
     }
 

@@ -3,7 +3,7 @@
     'name': 'Account Bank Statement Import',
     'category': 'Accounting/Accounting',
     'version': '1.0',
-    'depends': ['account_accountant'],
+    'depends': ['account_accountant', 'base_import'],
     'description': """Generic Wizard to Import Bank Statements.
 
 (This module does not include any type of import format.)

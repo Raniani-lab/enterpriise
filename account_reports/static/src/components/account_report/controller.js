@@ -535,7 +535,7 @@ export class AccountReportController {
 
     sortLinesByDefault() {
         delete this.options.order_column;
-        delete this.linesOrder;
+        delete this.data.lines_order;
 
         this.saveSessionOptions(this.options);
     }

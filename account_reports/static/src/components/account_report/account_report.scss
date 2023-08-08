@@ -147,6 +147,7 @@
         font-weight: bold;
 
         .muted { color: $o-gray-400 !important }
+        .btn_debug { color: $o-gray-400 }
     }
 
     @for $i from 2 through 16 {

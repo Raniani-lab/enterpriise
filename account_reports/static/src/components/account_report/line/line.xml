@@ -47,7 +47,7 @@
 
             <!-- Debug column -->
             <t t-if="controller.hasDebugColumn">
-                <td>
+                <td class="text-center">
                     <t t-if="props.line.code">
                         <t t-out="props.line.code"/>
                     </t>

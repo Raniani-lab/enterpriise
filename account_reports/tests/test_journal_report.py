@@ -37,7 +37,7 @@ class TestJournalAuditReport(TestAccountReportsCommon):
             'journal_id': cls.company_data['default_journal_bank'].id,
             'line_ids': [
                 Command.create({'debit': 200.0,     'credit': 0.0,      'name': '2017_1_1',     'account_id': cls.liquidity_account.id}),
-                Command.create({'debit': 0.0,     'credit': 200.0,      'name': '2017_1_2',     'account_id': cls.company_data['default_account_revenue'].id}),
+                Command.create({'debit': 0.0,       'credit': 200.0,    'name': '2017_1_2',     'account_id': cls.company_data['default_account_revenue'].id}),
             ],
         })
         cls.move_2017_1.action_post()
@@ -164,27 +164,27 @@ class TestJournalAuditReport(TestAccountReportsCommon):
 
         self.assertLinesValues(
             report._get_lines(options),
-            #   Name                                    Account                   Debit           Credit         Taxes               Tax grids
-            [   0,                                      1,                        3,              4,             5,                  6],
+            #   Name                                    Invoice Date              Account                   Debit           Credit                Taxes/Balance       Amount In Currency
+            [   0,                                      1,                        2,                        4,              5,                    6,                  7],
             [
-                ('Customer Invoices (INV)',                                                                                            ),
-                ('Name',                                'Account',                'Debit',        'Credit',      'Taxes',            'Tax Grids'),
-                ('INV/2017/00001',                      '121000 partner_a',        3000.0,            0.0,        '',                 ''),
-                ('ref123',                              '400000 Product Sales',       0.0,         3000.0,        '',                 ''),
-                ('INV/2017/00002',                      '121000 partner_a',        1500.0,            0.0,        '',                 ''),
-                ('ref234',                              '400000 Product Sales',       0.0,         1500.0,        '',                 ''),
+                ('Customer Invoices (INV)',                                                                                                                             ),
+                ('Name',                                'Invoice Date',           'Account',                'Debit',        'Credit',             'Taxes',            'Tax Grids'),
+                ('INV/2017/00001',                      '2017-01-01',             '121000 partner_a',       3000.0,         0.0,                  '',                 ''),
+                ('ref123',                              '',                       '400000 Product Sales',   0.0,            3000.0,               '',                 ''),
+                ('INV/2017/00002',                      '2017-01-01',             '121000 partner_a',       1500.0,         0.0,                  '',                 ''),
+                ('ref234',                              '',                       '400000 Product Sales',   0.0,            1500.0,               '',                 ''),
                 # Because there is a payment_reference, we need to add a line for the amount in currency
-                ('Amount in currency: 3,000.000\xa0🍫',                                                                                ),
-                ('INV/2017/00003',                      '121000 partner_a',       1000.0,            0.0,        '',                 ''),
+                ('Amount in currency: 3,000.000\xa0🍫', ''                                                                                                              ),
+                ('INV/2017/00003',                      '2017-01-01',             '121000 partner_a',       1000.0,         0.0,                  '',                 ''),
                 # No payment_reference, so the amount in currency is added in the name of the second line.
-                ('Amount in currency: 2,000.000\xa0🍫', '400000 Product Sales',      0.0,         1000.0,        '',                 ''),
+                ('Amount in currency: 2,000.000\xa0🍫', '',                       '400000 Product Sales',   0.0,            1000.0,               '',                 ''),
                 # Invoice with taxes
-                ('INV/2017/00004',                      '121000 partner_a',       1650.0,            0.0,        '',                 ''),
-                ('ref345',                              '400000 Product Sales',      0.0,         1500.0,        'T: Tax 10%',       ''),
-                ('',                                    '400000 Product Sales',      0.0,         150.0,         'B: $\xa01,500.00', '+c10'),
+                ('INV/2017/00004',                      '2017-01-01',             '121000 partner_a',       1650.0,         0.0,                  '',                 ''),
+                ('ref345',                              '',                       '400000 Product Sales',   0.0,            1500.0,               'T: Tax 10%',       ''),
+                ('',                                    '',                       '400000 Product Sales',   0.0,            150.0,                'B: $\xa01,500.00', '+c10'),
                 # This is the tax summary line, it's rendered in a custom way and don't have values in the name/columns
-                ('',                                                                                                                   ),
-                ('Bank (BNK1)',                                                                                                        ),
+                ('',                                                                                                                                                    ),
+                ('Bank (BNK1)',                                                                                                                                         ),
             ],
             options,
         )
@@ -198,24 +198,24 @@ class TestJournalAuditReport(TestAccountReportsCommon):
 
         self.assertLinesValues(
             report._get_lines(options),
-            #   Name                                    Account                   Debit           Credit         Taxes                    Tax grids
-            [   0,                                      1,                        3,              4,             5,                       6],
+            #   Name                                    Invoice Date              Account                   Debit           Credit                Taxes/Balance       Amount In Currency
+            [   0,                                      1,                        2,                        4,              5,                    6,                  7],
             [
-                ('Customer Invoices (INV)',                                                                                                ),
-                ('Name',                                'Account',                'Debit',        'Credit',      'Taxes',                'Tax Grids'),
-                ('INV/2017/00001',                      '121000 partner_a',       3000.0,            0.0,        '',                     ''),
-                ('ref123',                              '400000 Product Sales',      0.0,         3000.0,        '',                     ''),
-                ('INV/2017/00002',                      '121000 partner_a',       1500.0,            0.0,        '',                     ''),
-                ('ref234',                              '400000 Product Sales',      0.0,         1500.0,        '',                     ''),
-                ('INV/2017/00003',                      '121000 partner_a',       1000.0,            0.0,        '',                     ''),
-                ('',                                    '400000 Product Sales',      0.0,         1000.0,        '',                     ''),
+                ('Customer Invoices (INV)',                                                                                                                             ),
+                ('Name',                                'Invoice Date',           'Account',                'Debit',        'Credit',      'Taxes',                   'Tax Grids'),
+                ('INV/2017/00001',                      '2017-01-01',             '121000 partner_a',       3000.0,         0.0,           '',                        ''),
+                ('ref123',                              '',                       '400000 Product Sales',   0.0,            3000.0,        '',                        ''),
+                ('INV/2017/00002',                      '2017-01-01',             '121000 partner_a',       1500.0,         0.0,           '',                        ''),
+                ('ref234',                              '',                       '400000 Product Sales',   0.0,            1500.0,        '',                        ''),
+                ('INV/2017/00003',                      '2017-01-01',             '121000 partner_a',       1000.0,         0.0,           '',                        ''),
+                ('',                                    '',                       '400000 Product Sales',   0.0,            1000.0,        '',                        ''),
                 # Invoice with taxes
-                ('INV/2017/00004',                      '121000 partner_a',       1650.0,            0.0,        '',                     ''),
-                ('ref345',                              '400000 Product Sales',      0.0,         1500.0,        'T: Tax 10%',           ''),
-                ('',                                    '400000 Product Sales',      0.0,         150.0,         'B: $\xa01,500.00', '+c10'),
+                ('INV/2017/00004',                      '2017-01-01',             '121000 partner_a',       1650.0,         0.0,           '',                        ''),
+                ('ref345',                              '',                       '400000 Product Sales',   0.0,            1500.0,        'T: Tax 10%',              ''),
+                ('',                                    '',                       '400000 Product Sales',   0.0,            150.0,         'B: $\xa01,500.00',        '+c10'),
                 # This is the tax summary line, it's rendered in a custom way and don't have values in the name/columns
-                ('',                                                                                                                       ),
-                ('Bank (BNK1)',                                                                                                            ),
+                ('',                                                                                                                                                    ),
+                ('Bank (BNK1)',                                                                                                                                         ),
             ],
             options,
         )
@@ -228,15 +228,15 @@ class TestJournalAuditReport(TestAccountReportsCommon):
 
         self.assertLinesValues(
             report._get_lines(options),
-            #   Name                                    Account                   Debit           Credit                Taxes/Balance       Amount In Currency
-            [   0,                                      1,                        3,              4,                    5,                  6],
+            #   Name                                    Invoice Date              Account                   Debit           Credit                Taxes/Balance       Amount In Currency
+            [   0,                                      1,                        2,                        4,              5,                    6,                  7],
             [
-                ('Customer Invoices (INV)',                                                                                                    ),
-                ('Bank (BNK1)',                                                                                                                ),
-                ('Name',                                'Account',                'Debit',        'Credit',             'Balance',          'Amount In Currency'),
-                ('',                                    '',                       '',             'Starting Balance:',  '$\xa0100.00',       ''),
-                ('BNK1/2017/00001',                     '400000 Product Sales',   0.0,            200.00,               '$\xa0300.00',       ''),
-                ('',                                    '',                       '',             'Ending Balance:',    '$\xa0300.00',       ''),
+                ('Customer Invoices (INV)',                                                                                                                             ),
+                ('Bank (BNK1)',                                                                                                                                         ),
+                ('Name',                                '',                       'Account',                'Debit',        'Credit',             'Balance',          'Amount In Currency'),
+                ('',                                    '',                       '',                       '',             'Starting Balance:',  '$\xa0100.00',      ''),
+                ('BNK1/2017/00001',                     '',                       '400000 Product Sales',   0.0,            200.00,               '$\xa0300.00',      ''),
+                ('',                                    '',                       '',                       '',             'Ending Balance:',    '$\xa0300.00',      ''),
             ],
             options,
         )
@@ -272,16 +272,16 @@ class TestJournalAuditReport(TestAccountReportsCommon):
 
         self.assertLinesValues(
             report._get_lines(options),
-            #   Name                                    Account                   Debit           Credit                Balance             Amount In Currency
-            [   0,                                      1,                        3,              4,                    5,                  6],
+            #   Name                                    Invoice Date              Account                   Debit           Credit                Taxes/Balance       Amount In Currency
+            [   0,                                      1,                        2,                        4,              5,                    6,                  7],
             [
-                ('Customer Invoices (INV)',                                                                                                   ),
-                ('Bank (BNK1)',                                                                                                               ),
-                ('Name',                                'Account',                'Debit',        'Credit',             'Balance',          'Amount In Currency'),
-                ('',                                    '',                       '',             'Starting Balance:',  '$\xa0100.00',      ''),
-                ('BNK1/2017/00001',                     '400000 Product Sales',   0.0,            200.00,               '$\xa0300.00',      ''),
-                ('BNK1/2017/00002',                     '400000 Product Sales',   0.0,            175.00,               '$\xa0475.00',      '150.000\xa0🍫'),
-                ('',                                    '',                       '',             'Ending Balance:',    '$\xa0475.00',      ''),
+                ('Customer Invoices (INV)',                                                                                                                             ),
+                ('Bank (BNK1)',                                                                                                                                         ),
+                ('Name',                                '',                       'Account',                'Debit',        'Credit',             'Balance',          'Amount In Currency'),
+                ('',                                    '',                       '',                       '',             'Starting Balance:',  '$\xa0100.00',      ''),
+                ('BNK1/2017/00001',                     '',                       '400000 Product Sales',   0.0,            200.00,               '$\xa0300.00',      ''),
+                ('BNK1/2017/00002',                     '',                       '400000 Product Sales',   0.0,            175.00,               '$\xa0475.00',      '150.000\xa0🍫'),
+                ('',                                    '',                       '',                       '',             'Ending Balance:',    '$\xa0475.00',      ''),
             ],
             options,
         )
@@ -310,16 +310,16 @@ class TestJournalAuditReport(TestAccountReportsCommon):
 
         self.assertLinesValues(
             report._get_lines(options),
-            #   Name                                    Account                   Debit           Credit                Balance             Amount In Currency
-            [   0,                                      1,                        3,              4,                    5,                  6],
+            #   Name                                    Invoice Date              Account                   Debit           Credit                Taxes/Balance       Amount In Currency
+            [   0,                                      1,                        2,                        4,              5,                    6,                  7],
             [
-                ('Customer Invoices (INV)',                                                                                                   ),
-                ('Bank (BNK1)',                                                                                                               ),
-                ('Name',                                'Account',                'Debit',        'Credit',             'Balance',          ''),
-                ('',                                    '',                       '',             'Starting Balance:',  '$\xa0100.00',      ''),
-                ('BNK1/2017/00001',                     '400000 Product Sales',   0.0,            200.00,               '$\xa0300.00',      ''),
-                ('BNK1/2017/00002',                     '400000 Product Sales',   0.0,            175.00,               '$\xa0475.00',      ''),
-                ('',                                    '',                       '',             'Ending Balance:',    '$\xa0475.00',      ''),
+                ('Customer Invoices (INV)',                                                                                                                             ),
+                ('Bank (BNK1)',                                                                                                                                         ),
+                ('Name',                                '',                       'Account',                'Debit',        'Credit',             'Balance',          ''),
+                ('',                                    '',                       '',                       '',             'Starting Balance:',  '$\xa0100.00',      ''),
+                ('BNK1/2017/00001',                     '',                       '400000 Product Sales',   0.0,            200.00,               '$\xa0300.00',      ''),
+                ('BNK1/2017/00002',                     '',                       '400000 Product Sales',   0.0,            175.00,               '$\xa0475.00',      ''),
+                ('',                                    '',                       '',                       '',             'Ending Balance:',    '$\xa0475.00',      ''),
             ],
             options,
         )
@@ -353,32 +353,32 @@ class TestJournalAuditReport(TestAccountReportsCommon):
 
         self.assertLinesValues(
             report._get_lines(options),
-            #   Name                                    Account                   Debit           Credit         Taxes               Tax grids
-            [   0,                                      1,                        3,              4,             5,                  6],
+            #   Name                                    Invoice Date              Account                   Debit           Credit                Taxes/Balance       Amount In Currency
+            [   0,                                      1,                        2,                        4,              5,                    6,                  7],
             [
-                ('Customer Invoices (INV)',                                                                                            ),
-                ('Jan 2017',                                                                                                           ),
-                ('Name',                                'Account',                'Debit',        'Credit',      'Taxes',            'Tax Grids'),
-                ('INV/2017/00001',                      '121000 partner_a',        3000.0,            0.0,        '',                 ''),
-                ('ref123',                              '400000 Product Sales',       0.0,         3000.0,        '',                 ''),
-                ('INV/2017/00002',                      '121000 partner_a',        1500.0,            0.0,        '',                 ''),
-                ('ref234',                              '400000 Product Sales',       0.0,         1500.0,        '',                 ''),
+                ('Customer Invoices (INV)',                                                                                                                             ),
+                ('Jan 2017',                                                                                                                                            ),
+                ('Name',                                'Invoice Date',           'Account',                'Debit',        'Credit',      'Taxes',                   'Tax Grids'),
+                ('INV/2017/00001',                      '2017-01-01',             '121000 partner_a',       3000.0,         0.0,           '',                        ''),
+                ('ref123',                              '',                       '400000 Product Sales',   0.0,            3000.0,        '',                        ''),
+                ('INV/2017/00002',                      '2017-01-01',             '121000 partner_a',       1500.0,         0.0,           '',                        ''),
+                ('ref234',                              '',                       '400000 Product Sales',   0.0,            1500.0,        '',                        ''),
                 # Because there is a payment_reference, we need to add a line for the amount in currency
-                ('Amount in currency: 3,000.000\xa0🍫',                                                                                ),
-                ('INV/2017/00003',                      '121000 partner_a',        1000.0,            0.0,        '',                 ''),
+                ('Amount in currency: 3,000.000\xa0🍫',                                                                                                                 ),
+                ('INV/2017/00003',                      '2017-01-01',             '121000 partner_a',       1000.0,         0.0,           '',                        ''),
                 # No payment_reference, so the amount in currency is added in the name of the second line.
-                ('Amount in currency: 2,000.000\xa0🍫', '400000 Product Sales',      0.0,         1000.0,        '',                 ''),
+                ('Amount in currency: 2,000.000\xa0🍫', '',                       '400000 Product Sales',   0.0,            1000.0,        '',                        ''),
                 # Invoice with taxes
-                ('INV/2017/00004',                      '121000 partner_a',       1650.0,            0.0,        '',                 ''),
-                ('ref345',                              '400000 Product Sales',      0.0,         1500.0,        'T: Tax 10%',       ''),
-                ('',                                    '400000 Product Sales',      0.0,         150.0,         'B: $\xa01,500.00', '+c10'),
+                ('INV/2017/00004',                      '2017-01-01',             '121000 partner_a',       1650.0,         0.0,           '',                        ''),
+                ('ref345',                              '',                       '400000 Product Sales',   0.0,            1500.0,        'T: Tax 10%',              ''),
+                ('',                                    '',                       '400000 Product Sales',   0.0,            150.0,         'B: $\xa01,500.00',        '+c10'),
                 # This is the tax summary line, it's rendered in a custom way and don't have values in the name/columns
-                ('',                                                                                                                   ),
-                ('Feb 2017',                                                                                                           ),
-                ('Name',                                'Account',                'Debit',        'Credit',      'Taxes',            'Tax Grids'),
-                ('INV/2017/00005',                      '121000 partner_a',       3000.0,            0.0,        '',                 ''),
-                ('ref123',                              '400000 Product Sales',      0.0,         3000.0,        '',                 ''),
-                ('Bank (BNK1)',                                                                                                        ),
+                ('',                                                                                                                                                    ),
+                ('Feb 2017',                                                                                                                                            ),
+                ('Name',                                'Invoice Date',           'Account',                'Debit',        'Credit',      'Taxes',                   'Tax Grids'),
+                ('INV/2017/00005',                      '2017-02-02',             '121000 partner_a',       3000.0,         0.0,           '',                        ''),
+                ('ref123',                              '',                       '400000 Product Sales',   0.0,            3000.0,        '',                        ''),
+                ('Bank (BNK1)',                                                                                                                                         ),
             ],
             options,
         )
@@ -422,31 +422,31 @@ class TestJournalAuditReport(TestAccountReportsCommon):
         # Inv 6 will be before Inv 5 because inv 5 is later in terms of date
         self.assertLinesValues(
             report._get_lines(options),
-            #   Name                                    Account                   Debit           Credit         Taxes               Tax grids
-            [   0,                                      1,                        3,              4,             5,                  6],
+            #   Name                                    Invoice Date              Account                   Debit           Credit                Taxes/Balance       Amount In Currency
+            [   0,                                      1,                        2,                        4,              5,                    6,                  7],
             [
-                ('Customer Invoices (INV)',                                                                                            ),
-                ('Name',                                'Account',                'Debit',        'Credit',      'Taxes',            'Tax Grids'),
-                ('INV/2017/00001',                      '121000 partner_a',       3000.0,            0.0,        '',                 ''),
-                ('ref123',                              '400000 Product Sales',      0.0,         3000.0,        '',                 ''),
-                ('INV/2017/00002',                      '121000 partner_a',       1500.0,            0.0,        '',                 ''),
-                ('ref234',                              '400000 Product Sales',      0.0,         1500.0,        '',                 ''),
+                ('Customer Invoices (INV)',                                                                                                                             ),
+                ('Name',                                'Invoice Date',           'Account',                'Debit',        'Credit',             'Taxes',            'Tax Grids'),
+                ('INV/2017/00001',                      '2017-01-01',             '121000 partner_a',       3000.0,         0.0,                  '',                 ''),
+                ('ref123',                              '',                       '400000 Product Sales',   0.0,            3000.0,               '',                 ''),
+                ('INV/2017/00002',                      '2017-01-01',             '121000 partner_a',       1500.0,         0.0,                  '',                 ''),
+                ('ref234',                              '',                       '400000 Product Sales',   0.0,            1500.0,               '',                 ''),
                 # Because there is a payment_reference, we need to add a line for the amount in currency
-                ('Amount in currency: 3,000.000\xa0🍫',                                                                                ),
-                ('INV/2017/00003',                      '121000 partner_a',       1000.0,            0.0,        '',                 ''),
+                ('Amount in currency: 3,000.000\xa0🍫',                                                                                                                 ),
+                ('INV/2017/00003',                      '2017-01-01',             '121000 partner_a',       1000.0,         0.0,                  '',                 ''),
                 # No payment_reference, so the amount in currency is added in the name of the second line.
-                ('Amount in currency: 2,000.000\xa0🍫', '400000 Product Sales',      0.0,         1000.0,        '',                 ''),
+                ('Amount in currency: 2,000.000\xa0🍫', '',                       '400000 Product Sales',   0.0,            1000.0,               '',                 ''),
                 # Invoice with taxes
-                ('INV/2017/00004',                      '121000 partner_a',       1650.0,            0.0,        '',                 ''),
-                ('ref345',                              '400000 Product Sales',      0.0,         1500.0,        'T: Tax 10%',       ''),
-                ('',                                    '400000 Product Sales',      0.0,         150.0,         'B: $\xa01,500.00', '+c10'),
-                ('INV/2017/00006',                      '121000 partner_a',       1234.0,            0.0,        '',                 ''),
-                ('ref987',                              '400000 Product Sales',      0.0,         1234.0,        '',                 ''),
-                ('INV/2017/00005',                      '121000 partner_a',       3000.0,            0.0,        '',                 ''),
-                ('ref123',                              '400000 Product Sales',      0.0,         3000.0,        '',                 ''),
+                ('INV/2017/00004',                      '2017-01-01',             '121000 partner_a',       1650.0,         0.0,                  '',                 ''),
+                ('ref345',                              '',                       '400000 Product Sales',   0.0,            1500.0,               'T: Tax 10%',       ''),
+                ('',                                    '',                       '400000 Product Sales',   0.0,            150.0,                'B: $\xa01,500.00', '+c10'),
+                ('INV/2017/00006',                      '2017-01-15',             '121000 partner_a',       1234.0,         0.0,                  '',                 ''),
+                ('ref987',                              '',                       '400000 Product Sales',   0.0,            1234.0,               '',                 ''),
+                ('INV/2017/00005',                      '2017-02-02',             '121000 partner_a',       3000.0,         0.0,                  '',                 ''),
+                ('ref123',                              '',                       '400000 Product Sales',   0.0,            3000.0,               '',                 ''),
                 # This is the tax summary line, it's rendered in a custom way and don't have values in the name/columns
-                ('',                                                                                                                   ),
-                ('Bank (BNK1)',                                                                                                        ),
+                ('',                                                                                                                                                    ),
+                ('Bank (BNK1)',                                                                                                                                         ),
             ],
             options,
         )

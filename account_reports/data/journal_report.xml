@@ -11,6 +11,11 @@
         <field name="load_more_limit" eval="80"/>
         <field name="custom_handler_model_id" ref="model_account_journal_report_handler"/>
         <field name="column_ids">
+            <record id="journal_report_date" model="account.report.column">
+                <field name="name">Invoice Date</field>
+                <field name="expression_label">invoice_date</field>
+                <field name="figure_type">string</field>
+            </record>
             <record id="journal_report_communication" model="account.report.column">
                 <field name="name">Account</field>
                 <field name="expression_label">account</field>
@@ -45,8 +50,7 @@
             <t t-if="not line.get('caret_options')">
                 <!-- Make the line name -->
                 <t t-set="line_name">
-                    <t t-out="line.get('name')"/> <br/>
-                    <t t-out="line.get('date')"/>
+                    <t t-out="line.get('name')"/>
                 </t>
                 <!-- Update the ellipsis so that id match the complete line name -->
                 <span class="acc_rep_line_name" t-att-title="line.get('title_hover')">

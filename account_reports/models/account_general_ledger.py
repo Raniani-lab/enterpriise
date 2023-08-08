@@ -405,6 +405,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
                     account_move_line.partner_id,
                     account_move_line.currency_id,
                     account_move_line.amount_currency,
+                    COALESCE(account_move_line.invoice_date, account_move_line.date)                 AS invoice_date,
                     ROUND(account_move_line.debit * currency_table.rate, currency_table.precision)   AS debit,
                     ROUND(account_move_line.credit * currency_table.rate, currency_table.precision)  AS credit,
                     ROUND(account_move_line.balance * currency_table.rate, currency_table.precision) AS balance,

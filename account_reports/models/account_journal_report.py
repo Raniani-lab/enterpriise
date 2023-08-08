@@ -294,6 +294,8 @@ class JournalReportCustomHandler(models.AbstractModel):
                         col_value = _('Amount In Currency')
                     else:
                         col_value = ''
+                elif (column['expression_label'] == 'invoice_date'):
+                    col_value = _(column['name']) if journal_type in ['sale', 'purchase', 'general'] else ''
                 else:
                     col_value = _(column['name'])
 
@@ -488,6 +490,15 @@ class JournalReportCustomHandler(models.AbstractModel):
                         col_value = '%s %s' % (values['account_code'], values['partner_name'] or values['account_name'])
                     elif column.get('expression_label') == 'label':
                         col_value = values['debit']
+                    elif column.get('expression_label') == 'invoice_date':
+                        if values['journal_type'] == 'sale':
+                            col_value = values['invoice_date'] if values['debit'] else ''
+                        elif values['journal_type'] == 'purchase':
+                            col_value = values['invoice_date'] if values['credit'] else ''
+                        elif values['journal_code'] == 'POSS':
+                            col_value = values['date']
+                        else:
+                            col_value = ''
                     else:
                         col_value = values[column.get('expression_label')]
 
@@ -531,10 +542,17 @@ class JournalReportCustomHandler(models.AbstractModel):
                     if column.get('expression_label') == 'account':
                         if values['journal_type'] == 'bank':  # For additional lines still showing in the bank journal, make sure to use the partner on the account if available.
                             col_value = '%s %s' % (values['account_code'], values['partner_name'] or values['account_name'])
+                        elif values['journal_type'] == 'sale':
+                            if values['debit']:
+                                col_value = '%s %s' % (values['account_code'], values['partner_name'] or values['account_name'])
+                            else:
+                                col_value = '%s %s' % (values['account_code'], values['account_name'])
                         else:
                             col_value = '%s %s' % (values['account_code'], values['account_name'])
                     elif column.get('expression_label') == 'label':
                         col_value = values['name']
+                    elif column.get('expression_label') == 'invoice_date':
+                        col_value = ''
                     else:
                         col_value = values[column.get('expression_label')]
 
@@ -703,6 +721,8 @@ class JournalReportCustomHandler(models.AbstractModel):
                     %s AS column_group_key,
                     "account_move_line".id as move_line_id,
                     "account_move_line".name,
+                    "account_move_line".date,
+                    "account_move_line".invoice_date,
                     "account_move_line".amount_currency,
                     "account_move_line".tax_base_amount,
                     "account_move_line".currency_id as move_line_currency,
@@ -710,7 +730,6 @@ class JournalReportCustomHandler(models.AbstractModel):
                     am.id as move_id,
                     am.name as move_name,
                     am.journal_id,
-                    am.date,
                     am.currency_id as move_currency,
                     am.amount_total_in_currency_signed as amount_currency_total,
                     am.currency_id != cp.currency_id as is_multicurrency,

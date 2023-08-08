@@ -10,7 +10,6 @@
                 >
                     <t t-out="props.line.name"/>
                 </a>
-                <t t-out="`- ${props.line.date}`"/>
             </t>
             <t t-else="">
                 <t t-out="props.line.name"/>

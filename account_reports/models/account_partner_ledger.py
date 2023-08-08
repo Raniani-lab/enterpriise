@@ -456,7 +456,6 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
             queries.append(f'''
                 SELECT
                     account_move_line.id,
-                    account_move_line.date,
                     account_move_line.date_maturity,
                     account_move_line.name,
                     account_move_line.ref,
@@ -467,6 +466,7 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
                     account_move_line.currency_id,
                     account_move_line.amount_currency,
                     account_move_line.matching_number,
+                    COALESCE(account_move_line.invoice_date, account_move_line.date)                 AS invoice_date,
                     ROUND(account_move_line.debit * currency_table.rate, currency_table.precision)   AS debit,
                     ROUND(account_move_line.credit * currency_table.rate, currency_table.precision)  AS credit,
                     ROUND(account_move_line.balance * currency_table.rate, currency_table.precision) AS balance,
@@ -493,7 +493,6 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
             queries.append(f'''
                 SELECT
                     account_move_line.id,
-                    account_move_line.date,
                     account_move_line.date_maturity,
                     account_move_line.name,
                     account_move_line.ref,
@@ -504,6 +503,7 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
                     account_move_line.currency_id,
                     account_move_line.amount_currency,
                     account_move_line.matching_number,
+                    COALESCE(account_move_line.invoice_date, account_move_line.date)                    AS invoice_date,
                     CASE WHEN aml_with_partner.balance > 0 THEN 0 ELSE ROUND(
                         partial.amount * currency_table.rate, currency_table.precision
                     ) END                                                                               AS debit,
@@ -615,10 +615,8 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
         report = self.env['account.report'].browse(options['report_id'])
         for column in options['columns']:
             col_expr_label = column['expression_label']
-            if col_expr_label == 'ref':
-                col_value = report._format_aml_name(aml_query_result['name'], aml_query_result['ref'], aml_query_result['move_name'])
-            else:
-                col_value = aml_query_result[col_expr_label] if column['column_group_key'] == aml_query_result['column_group_key'] else None
+            col_value = aml_query_result[col_expr_label] if column['column_group_key'] == aml_query_result['column_group_key'] else None
+
             if col_value is None:
                 columns.append(report._build_column_dict(None, None))
             else:
@@ -636,7 +634,7 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
         return {
             'id': report._get_generic_line_id('account.move.line', aml_query_result['id'], parent_line_id=partner_line_id),
             'parent_id': partner_line_id,
-            'name': format_date(self.env, aml_query_result['date']),
+            'name': report._format_aml_name(aml_query_result['name'], aml_query_result['ref'], aml_query_result['move_name']),
             'columns': columns,
             'caret_options': caret_type,
             'level': 3 + level_shift,

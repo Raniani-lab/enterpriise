@@ -1565,7 +1565,10 @@ Are you sure you want to remove the selection values of those records?""") % len
         result = {'alias_domain': request.env['ir.config_parameter'].get_param('mail.catchall.domain')}
         model = request.env['ir.model']._get(model_name)
         if model:
-            email_alias = request.env['mail.alias'].search([('alias_model_id', '=', model.id)], limit=1)
+            email_alias = request.env['mail.alias'].search([
+                ('alias_model_id', '=', model.id),
+                ('alias_force_thread_id', '=', False),
+            ], limit=1)
             if email_alias:
                 result['email_alias'] = email_alias.alias_name
         return result
@@ -1574,20 +1577,23 @@ Are you sure you want to remove the selection values of those records?""") % len
     def set_email_alias(self, model_name, value):
         """ Set the email alias associated to the model @model_name
              - if there is no email alias, it will be created
-             - if there is one and the value is empty, it will be unlinked
+             - otherwise update it, and reset value if asked (do not unlink
+               as it may have unwanted side effects, should be done through
+               UI);
         """
         model_id = request.env['ir.model']._get_id(model_name)
         if model_id:
-            email_alias = request.env['mail.alias'].search([('alias_model_id', '=', model_id)], limit=1)
+            alias_name = request.env['mail.alias']._sanitize_alias_name(value)
+            email_alias = request.env['mail.alias'].search([
+                ('alias_model_id', '=', model_id),
+                ('alias_force_thread_id', '=', False),
+            ], limit=1)
             if email_alias:
-                if value:
-                    email_alias.alias_name = value
-                else:
-                    email_alias.unlink()
+                email_alias.alias_name = alias_name
             else:
                 request.env['mail.alias'].create({
                     'alias_model_id': model_id,
-                    'alias_name': value,
+                    'alias_name': alias_name,
                 })
 
     @http.route('/web_studio/get_default_value', type='json', auth='user')

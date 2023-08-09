@@ -9,6 +9,7 @@ from odoo import fields
 
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.addons.iap_extract.tests.test_extract_mixin import TestExtractMixin
+from odoo.addons.mail.tests.common import MailCommon
 from odoo.tests import tagged
 from odoo.modules.module import get_module_resource
 from odoo.tools import file_open
@@ -17,7 +18,7 @@ from ..models.account_invoice import OCR_VERSION
 
 
 @tagged('post_install', '-at_install')
-class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin):
+class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin, MailCommon):
 
     @classmethod
     def setUpClass(cls, chart_template_ref=None):
@@ -33,16 +34,6 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin):
             [('company_id', '=', cls.env.user.company_id.id), ('type', '=', 'sale')],
             limit=1,
         )
-        journal_alias = cls.env['mail.alias'].create({
-            'alias_name': 'test-bill',
-            'alias_model_id': cls.env.ref('account.model_account_move').id,
-            'alias_defaults': json.dumps({
-                'move_type': 'out_invoice',
-                'company_id': cls.env.user.company_id.id,
-                'journal_id': cls.journal_with_alias.id,
-            }),
-        })
-        cls.journal_with_alias.write({'alias_id': journal_alias.id})
 
     def get_result_success_response(self):
         return {
@@ -100,7 +91,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin):
             Message-ID: {message_id}
             Subject: Incoming bill
             From:  Someone <someone@some.company.com>
-            To: {alias.alias_name}@{alias.alias_domain}
+            To: {alias.display_name}
             Content-Type: multipart/alternative; boundary="000000000000a47519057e029630"
 
             --000000000000a47519057e029630

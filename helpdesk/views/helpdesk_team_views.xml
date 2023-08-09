@@ -9,7 +9,7 @@
                 <field name="sequence" widget="handle"/>
                 <field name="name" class="field_name" string="Name"/>
                 <field name="use_alias" invisible="1"/>
-                <field name="display_alias_name" string="Email Alias" widget="email" attrs="{'invisible': [('use_alias', '=', False)]}" readonly="1"/>
+                <field name="alias_email" string="Email Alias" widget="email" attrs="{'invisible': [('use_alias', '=', False)]}" readonly="1"/>
                 <field name="company_id" groups="base.group_multi_company" readonly="1" context="{'create': False}"/>
             </tree>
         </field>
@@ -278,6 +278,7 @@
                 <field name="sequence" widget="handle"/>
                 <field name="color"/>
                 <field name="use_alias"/>
+                <field name="alias_email"/>
                 <field name="alias_name"/>
                 <field name="alias_domain"/>
                 <field name="alias_id"/>
@@ -331,8 +332,8 @@
                             <div class="o_kanban_card_header">
                                 <div class="o_kanban_card_header_title">
                                     <div class="o_primary"><field name="display_name"/></div>
-                                    <small t-if="record.use_alias.value and record.alias_name.value and record.alias_domain.value">
-                                        <a t-att-href="'mailto:' + record.alias_id.value"><i class="fa fa-envelope-o" title="Domain alias" role="img" aria-label="Domain alias"></i>&amp;nbsp; <t t-out="record.alias_id.value"/></a>
+                                    <small t-if="record.use_alias.value and record.alias_email.value">
+                                        <a t-att-href="'mailto:' + record.alias_email.value"><i class="fa fa-envelope-o" title="Domain alias" role="img" aria-label="Domain alias"></i>&amp;nbsp; <t t-out="record.alias_email.value"/></a>
                                     </small>
                                 </div>
                             </div>

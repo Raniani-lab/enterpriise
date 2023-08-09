@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
 
-<t t-name="web_studio.ActionEditor" owl="1">
+<t t-name="web_studio.ActionEditor">
   <div class="o_web_studio_action_editor d-flex flex-row justify-content-center h-100 w-100 overflow-auto">
       <t t-call="web_studio.ActionEditor.Sidebar" />
       <t t-call="web_studio.ActionEditor.ViewsDashboard" />
   </div>
 </t>
 
-<t t-name="web_studio.ActionEditor.Sidebar" owl="1">
+<t t-name="web_studio.ActionEditor.Sidebar">
   <div class="o_web_studio_sidebar flex-grow-0 flex-shrink-0 overflow-auto h-100">
       <div class="o_web_studio_sidebar_content d-flex flex-column" style="gap: 2px;">
         <Record t-props="actionRecordProps" t-slot-scope="data" >
@@ -37,7 +37,7 @@
     </div>
 </t>
 
-<t t-name="web_studio.ActionEditor.ViewsDashboard" owl="1">
+<t t-name="web_studio.ActionEditor.ViewsDashboard">
   <div class="o_web_studio_views p-5" >
     <div class="grid w-75 justify-content-center" style="grid-template-columns: repeat(auto-fit, minmax(400px, 35%)); gap: 40px;">
       <t t-foreach="viewCategories" t-as="category" t-key="category" >
@@ -54,7 +54,7 @@
   </div>
 </t>
 
-<t t-name="web_studio.ActionEditor.ViewsDashboard.ViewThumbnail" owl="1">
+<t t-name="web_studio.ActionEditor.ViewsDashboard.ViewThumbnail">
     <div t-attf-class="o_web_studio_view_type flex-column {{!viewInfo.isActive ? 'o_web_studio_inactive' : ''}}" t-att-data-type="viewInfo.name">
       <div class="o_web_studio_thumbnail w-100" t-on-click="() => this.onThumbnailClicked(viewInfo.name)">
           <span t-if="!viewInfo.isActive" class="o_web_studio_view_label">Activate View</span>
@@ -73,7 +73,7 @@
   </div>
 </t>
 
-<t t-name="web_studio.ActionEditor.ViewsDashboard.ViewThumbnail.Dropdown" owl="1">
+<t t-name="web_studio.ActionEditor.ViewsDashboard.ViewThumbnail.Dropdown">
   <Dropdown t-if="viewInfo.canBeDefault or viewInfo.canBeDisabled" togglerClass="'o_web_studio_more'">
     <t t-set-slot="toggler">
       <i class="fa fa-ellipsis-v" /> 

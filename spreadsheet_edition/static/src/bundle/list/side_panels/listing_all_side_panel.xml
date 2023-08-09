@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
-    <div t-name="spreadsheet_edition.ListingAllSidePanel" class="o-listing-all-side-panel" owl="1">
+    <div t-name="spreadsheet_edition.ListingAllSidePanel" class="o-listing-all-side-panel">
         <t t-set="listId" t-value="getters.getSelectedListId()"/>
         <t t-if="listId">
             <ListingDetailsSidePanel listId="listId"/>

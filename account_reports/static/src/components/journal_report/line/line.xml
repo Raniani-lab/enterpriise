@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
-    <t t-name="account_reports.JournalReportLine" t-inherit="account_reports.AccountReportLineCustomizable" owl="1">
+    <t t-name="account_reports.JournalReportLine" t-inherit="account_reports.AccountReportLineCustomizable">
         <xpath expr="//tr[@data-id='line']" position="attributes">
             <attribute name="t-if">!('is_tax_section_line' in props.line)</attribute>
         </xpath>

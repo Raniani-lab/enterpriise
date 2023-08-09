@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
-    <t t-name="knowledge.Sidebar" owl="1">
+    <t t-name="knowledge.Sidebar">
         <aside class="o_knowledge_sidebar d-flex d-print-none h-100 bg-view"
             t-attf-style="width: #{env.isSmall ? 'auto' : state.sidebarSize + 'px' };">
             <div class="d-flex flex-column h-100 w-100 min-w-0">
@@ -31,7 +31,7 @@
         </aside>
     </t>
 
-    <t t-name="knowledge.ArticlesTree" owl="1">
+    <t t-name="knowledge.ArticlesTree">
         <div t-attf-class="o_knowledge_tree flex-fill position-relative o_scroll_view d-flex flex-column mx-3 #{state.dragging ? 'o_dragging' : ''}">
             <div t-ref="favoriteTree" t-if="state.favoriteIds.length" class="o_favorite_container">
                 <KnowledgeSidebarFavoriteSection rootIds="state.favoriteIds" unfoldedIds="unfoldedFavoritesIds" record="props.record"/>

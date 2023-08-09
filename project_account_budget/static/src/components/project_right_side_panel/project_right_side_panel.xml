@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates id="template" xml:space="preserve">
 
-    <t t-name="project_account_budget.ProjectRightSidePanel" t-inherit="project.ProjectRightSidePanel" t-inherit-mode="extension" owl="1">
+    <t t-name="project_account_budget.ProjectRightSidePanel" t-inherit="project.ProjectRightSidePanel" t-inherit-mode="extension">
         <xpath expr="//ProjectRightSidePanelSection[@name=&quot;'milestones'&quot;]" position="before">
             <t t-set="showBudget" t-value="!!state.data.budget_items and !!state.data.budget_items.data"/>
             <ProjectRightSidePanelSection
@@ -79,7 +79,7 @@
         </xpath>
     </t>
 
-    <t t-name="project_account_budget.BudgetName" owl="1">
+    <t t-name="project_account_budget.BudgetName">
         <t t-if="budgetary_position.name">
             <t t-out="budgetary_position.name"/>
         </t>

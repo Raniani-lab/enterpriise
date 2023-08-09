@@ -29,7 +29,7 @@
   </xpath>
 </t>
 
-<t t-name="web_studio.KanbanEditorRenderer.KanbanDemoRecords" owl="1" >
+<t t-name="web_studio.KanbanEditorRenderer.KanbanDemoRecords" >
   <div t-foreach="new Array(demoAmount)" t-as="d" t-key="d_index" class="o_kanban_record o_kanban_demo d-flex flex-grow-1 flex-md-shrink-1 flex-shrink-0" t-attf-class="{{ additionalClass }}">
       <div class="flex-grow-1"/>
   </div>

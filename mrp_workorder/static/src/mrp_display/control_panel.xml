@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="mrp_workorder.ControlPanelButtons" owl="1">
+    <t t-name="mrp_workorder.ControlPanelButtons">
     <div class="position-relative d-flex align-items-center mw-100 mw-lg-50">
         <div class="d-flex gap-1 overflow-x-auto">
             <t t-foreach="workcenterButtons" t-as="workcenter" t-key="workcenter[0]">

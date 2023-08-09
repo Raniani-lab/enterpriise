@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
-    <t t-name="documents.DocumentsDropZone" owl="1">
+    <t t-name="documents.DocumentsDropZone">
         <t t-if="state.dragOver">
             <div class="h-100 w-100 start-0 position-absolute"
                 t-att-class="{'o_documents_drop_over_zone': isFolder, 'o_documents_drop_over_unauthorized_zone': !isFolder}"

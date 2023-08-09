@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-    <t t-name="knowledge.MoveArticleDialog" owl="1">
+    <t t-name="knowledge.MoveArticleDialog">
         <Dialog size="size" title="title">
             <t t-if="props.knowledgeArticleRecord.data.display_name">
                 <t t-out="this.moveArticleLabel"/>
@@ -38,7 +38,7 @@
                 </t>
 
             </SelectMenu>
-            <t t-set-slot="footer" owl="1">
+            <t t-set-slot="footer">
                 <button t-attf-class="btn btn-primary #{!this.state.selectedParentArticle ? 'disabled' : ''}" t-on-click="confirmArticleMove">
                     Move Article
                 </button>

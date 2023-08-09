@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
-    <div t-name="mrp_workorder.Tablet" class="o_content o_tablet_client_action" owl="1">
+    <div t-name="mrp_workorder.Tablet" class="o_content o_tablet_client_action">
         <div class="o_workorder_blocking_screen" t-if="isBlocked"/>
         <View t-props="views['workorder']"/>
         <div class="o_tablet_bottom_content">

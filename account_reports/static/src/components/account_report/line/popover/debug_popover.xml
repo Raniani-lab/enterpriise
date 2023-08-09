@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
-    <t t-name="account_reports.AccountReportDebugPopover" owl="1">
+    <t t-name="account_reports.AccountReportDebugPopover">
         <div class="account_report_popover_debug">
             <t t-foreach="props.expressionsDetail" t-as="expressionEngineAndTotals" t-key="expressionEngineAndTotals_index">
                 <t t-set="expressionEngine" t-value="expressionEngineAndTotals[0]"/>

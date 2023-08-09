@@ -1,6 +1,6 @@
 <templates>
 
-<t t-name="web_studio.ReportEditor.ReportRecordNavigation" owl="1">
+<t t-name="web_studio.ReportEditor.ReportRecordNavigation">
     <div class="d-flex flex-row gap-3" style="height: 35px;">
         <div class="position-relative rounded-pill o-web-studio-report-search-record p-1 px-2 bg-white" style="max-width: 150px;" >
             <i class="fa fa-search position-absolute end-0 me-3 mt-1"/>

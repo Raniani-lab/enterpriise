@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
-    <t t-name="account_reports.AccountReportHeader" owl="1">
+    <t t-name="account_reports.AccountReportHeader">
         <t t-call="{{ env.template('AccountReportHeader') }}"/>
     </t>
 
-    <t t-name="account_reports.AccountReportHeaderCustomizable" owl="1">
+    <t t-name="account_reports.AccountReportHeaderCustomizable">
         <thead id="table_header" class="sticky">
             <!-- Headers -->
             <t t-foreach="columnHeaders" t-as="columnHeader" t-key="columnHeader_index">

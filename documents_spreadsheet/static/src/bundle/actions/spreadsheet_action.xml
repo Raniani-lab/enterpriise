@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
 
-<div t-name="documents_spreadsheet.SpreadsheetAction" class="o_spreadsheet_action" owl="1">
+<div t-name="documents_spreadsheet.SpreadsheetAction" class="o_spreadsheet_action">
     <DocumentsSpreadsheetControlPanel
         model="model"
         onSpreadsheetShared.bind="shareSpreadsheet"

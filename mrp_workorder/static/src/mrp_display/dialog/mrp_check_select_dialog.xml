@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="mrp_workorder.MrpQualityCheckSelectDialog" owl="1">
+    <t t-name="mrp_workorder.MrpQualityCheckSelectDialog">
         <Dialog size="'md'" title="props.title" modalRef="modalRef" footer="false" withBodyPadding="false">
             <div class="btn-group-vertical w-100 p-3">
                 <t t-foreach="checks" t-as="check" t-key="check.id">

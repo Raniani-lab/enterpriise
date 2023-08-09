@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
-    <t t-name="account_consolidation.ConsolidationReportLineCell" owl="1">
+    <t t-name="account_consolidation.ConsolidationReportLineCell">
         <td
             data-id="line_cell"
             class="line_cell"

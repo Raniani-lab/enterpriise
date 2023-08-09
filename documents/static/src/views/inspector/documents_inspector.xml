@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
-    <t t-name="documents.DocumentsInspector" owl="1">
+    <t t-name="documents.DocumentsInspector">
         <t t-set="records" t-value="props.documents"/>
         <t t-set="currentFolder" t-value="getCurrentFolder()"/>
         <div class="o_documents_inspector h-100">
@@ -30,7 +30,7 @@
         </div>
     </t>
 
-    <t t-name="documents.DocumentsInspector.previews" owl="1">
+    <t t-name="documents.DocumentsInspector.previews">
         <t t-foreach="records.slice(0, 4)" t-as="record" t-key="record_index">
             <t t-set="additionalRecordData" t-value="getRecordAdditionalData(record)"/>
             <div name="document_preview" t-att-class="getPreviewClasses(record, additionalRecordData)">
@@ -90,7 +90,7 @@
         </div>
     </t>
 
-    <t t-name="documents.DocumentsInspector.globalInfo" owl="1">
+    <t t-name="documents.DocumentsInspector.globalInfo">
         <div class="o_inspector_info_columns">
             <table class="o_inspector_table">
                 <tbody>
@@ -107,7 +107,7 @@
         </div>
     </t>
 
-    <t t-name="documents.DocumentsInspector.infoRow" owl="1">
+    <t t-name="documents.DocumentsInspector.infoRow">
         <tr>
             <td class="o_inspector_label align-middle">
                 <i t-if="icon" t-att-class="icon"/>
@@ -119,7 +119,7 @@
         </tr>
     </t>
 
-    <t t-name="documents.DocumentsInspector.buttons" owl="1">
+    <t t-name="documents.DocumentsInspector.buttons">
         <div class="mb-3">
             <div class="btn-group">
                 <t t-set="locked" t-value="isLocked"/>
@@ -177,7 +177,7 @@
         </div>
     </t>
 
-    <t t-name="documents.DocumentsInspector.field" owl="1">
+    <t t-name="documents.DocumentsInspector.field">
         <t t-set="field" t-value="props.fields[fieldName]"/>
         <tr>
             <td class="o_inspector_label align-middle">
@@ -194,7 +194,7 @@
         </tr>
     </t>
 
-    <t t-name="documents.DocumentsInspector.documentsInfo" owl="1">
+    <t t-name="documents.DocumentsInspector.documentsInfo">
         <div class="o_inspector_section mt4 o_inspector_fields">
             <table class="o_inspector_table table table-sm table-borderless">
                 <tbody>
@@ -281,7 +281,7 @@
         </t>
     </t>
 
-    <t t-name="documents.DocumentsInspector.attachmentHistory" owl="1">
+    <t t-name="documents.DocumentsInspector.attachmentHistory">
         <t t-foreach="state.previousAttachmentData" t-as="attachment" t-key="attachment.id">
             <div class="o_inspector_history_line">
                 <t t-set="createDate" t-value="str_to_datetime(attachment.create_date)"/>
@@ -308,7 +308,7 @@
         </t>
     </t>
 
-    <t t-name="documents.DocumentsInspector.tags" owl="1">
+    <t t-name="documents.DocumentsInspector.tags">
         <div class="o_inspector_tags">
             <t t-set="tags" t-value="getCommonTags()"/>
             <t t-set="additionalTags" t-value="getAdditionalTags(tags)"/>
@@ -326,7 +326,7 @@
         </div>
     </t>
 
-    <t t-name="documents.DocumentsInspectorMobile" owl="1">
+    <t t-name="documents.DocumentsInspectorMobile">
         <details t-attf-class="{{props.documents.length ? '' : 'd-none'}} o_documents_mobile_inspector" t-ref="inspectorMobile">
             <summary class="o_documents_toggle_inspector btn btn-primary d-flex align-items-center">
                 <i class="o_documents_close_inspector oi oi-fw oi-arrow-left"/>

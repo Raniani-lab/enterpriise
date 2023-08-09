@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
-    <t t-name="sign.NextDirectSignDialog" owl="1">
+    <t t-name="sign.NextDirectSignDialog">
         <Dialog t-props="dialogProps">
             <t t-set-slot="header">
                 <h4 class="modal-title text-break" t-att-class="{ 'me-auto': fullscreen }">

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
-    <t t-name="web_gantt.GanttCellButtons" owl="1">
+    <t t-name="web_gantt.GanttCellButtons">
         <div t-if="props.reactive.cell"
             class="o_gantt_cell_buttons position-absolute d-flex"
             t-on-pointermove.stop=""

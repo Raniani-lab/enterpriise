@@ -1,5 +1,5 @@
 <templates>
-    <t t-name="web_studio.ViewEditor.InteractiveEditorProperties.Modifiers" owl="1">
+    <t t-name="web_studio.ViewEditor.InteractiveEditorProperties.Modifiers">
         <Property
             t-if="this.isAttributeSupported('invisible')"
             isConditional="true"

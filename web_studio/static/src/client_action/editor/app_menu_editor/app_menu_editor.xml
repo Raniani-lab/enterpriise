@@ -1,12 +1,12 @@
 <templates>
 
-    <t t-name="web_studio.AppMenuEditor" owl="1">
+    <t t-name="web_studio.AppMenuEditor">
         <a t-if="menus.getCurrentApp()" href="#" class="o_web_edit_menu o_nav_entry" role="button" t-on-click="onClick">
             <i class="fa fa-fw fa-pencil" />Edit Menu
         </a>
     </t>
 
-    <t t-name="web_studio.AppMenuEditor.EditMenuDialog" owl="1">
+    <t t-name="web_studio.AppMenuEditor.EditMenuDialog">
         <Dialog title="title" contentClass="'o-web-studio-appmenu-editor'" size="'md'" >
             <div t-ref="root" class="d-flex flex-column gap-3">
                 <t t-set="item" t-value="mainItem" />
@@ -33,7 +33,7 @@
         </Dialog>
     </t>
 
-    <t t-name="web_studio.InteractiveItemsList.Item" owl="1">
+    <t t-name="web_studio.InteractiveItemsList.Item">
         <li t-att-data-sequence="itemSequence" t-attf-class="{{ item.isDraggable ? 'o-draggable': '' }}" t-att-data-item-id="item.id" t-att-id="item.id">
             <div class="input-group">
                 <span class="input-group-text fa fa-bars" role="img" aria-label="Value of list" title="Value of list" t-attf-class="{{ item.isDraggable ? 'o-draggable-handle' : '' }}" t-attf-style="{{ item.isDraggable ? 'cursor: move;' : '' }}" />

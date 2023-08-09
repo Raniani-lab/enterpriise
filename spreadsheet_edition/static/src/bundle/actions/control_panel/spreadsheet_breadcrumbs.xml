@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
 
-<div t-name="spreadsheet_edition.Breadcrumbs" t-inherit="web.Breadcrumbs" t-inherit-mode="primary" owl="1">
+<div t-name="spreadsheet_edition.Breadcrumbs" t-inherit="web.Breadcrumbs" t-inherit-mode="primary">
     <xpath expr="(//div[hasclass('active')])[2]" position="replace">
         <div class="active">
             <SpreadsheetName name="props.spreadsheetName" isReadonly="props.isReadonly" onSpreadsheetNameChanged="props.onSpreadsheetNameChanged" />

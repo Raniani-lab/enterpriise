@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="mrp_workorder.MrpDisplay" owl="1">
+    <t t-name="mrp_workorder.MrpDisplay">
         <div class="o_action o_mrp_display h-100 overflow-auto">
             <Layout display="display" className="'d-flex' + showEmployeesPanel ? 'o_component_with_search_panel' : ''">
                 <t t-if="group_mrp_routings" t-set-slot="control-panel-top-middle">

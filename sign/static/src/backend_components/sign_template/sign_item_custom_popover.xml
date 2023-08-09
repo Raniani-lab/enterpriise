@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="sign.SignItemCustomPopover" owl="1">
+    <t t-name="sign.SignItemCustomPopover">
         <div class="d-flex flex-column" style="max-width: 25rem;">
             <div class="d-flex bg-opacity-25 bg-secondary justify-content-between align-items-center">
                 <span class="fs-3 fw-bold ps-2" t-esc="props.placeholder"/>

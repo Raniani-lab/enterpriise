@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
-    <t t-name="account_asset.DepreciationScheduleFilterExtraOptions" t-inherit="account_reports.AccountReportFilterExtraOptions" owl="1">
+    <t t-name="account_asset.DepreciationScheduleFilterExtraOptions" t-inherit="account_reports.AccountReportFilterExtraOptions">
         <xpath expr="//Dropdown" position="inside">
             <DropdownItem
                 class="{ 'selected': controller.options.assets_groupby_account }"

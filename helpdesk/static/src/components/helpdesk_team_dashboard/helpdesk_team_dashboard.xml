@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates id="template" xml:space="preserve">
-    <t t-name="helpdesk.HelpdeskTeamDashboard" owl="1">
+    <t t-name="helpdesk.HelpdeskTeamDashboard">
         <!-- Fake Data for Demo-->
         <t t-if="showDemo and state.dashboardValues">
             <div class="ribbon ribbon-top-right">

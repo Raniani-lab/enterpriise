@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
-    <t t-name="documents.SearchPanelContent" t-inherit="web.SearchPanelContent" t-inherit-mode="primary" owl="1">
+    <t t-name="documents.SearchPanelContent" t-inherit="web.SearchPanelContent" t-inherit-mode="primary">
         <xpath expr="//div[hasclass('o_search_panel')]" position="inside">
             <span class="o_resize" t-on-click.stop.prevent="" t-on-mousedown.stop.prevent="_onStartResize"/>
         </xpath>
@@ -15,9 +15,9 @@
         </xpath>
     </t>
 
-    <t t-name="documents.SearchPanel.Regular" t-inherit="documents.SearchPanelContent" t-inherit-mode="primary" owl="1"/>
+    <t t-name="documents.SearchPanel.Regular" t-inherit="documents.SearchPanelContent" t-inherit-mode="primary"/>
 
-    <t t-name="documents.SearchPanel.Category" t-inherit="web.SearchPanel.Category" t-inherit-mode="primary" owl="1">
+    <t t-name="documents.SearchPanel.Category" t-inherit="web.SearchPanel.Category" t-inherit-mode="primary">
         <xpath expr="//li[contains(@class, 'o_search_panel_category_value')]" position="attributes">
             <attribute name="t-att-title">value.display_name</attribute>
             <attribute name="draggable">true</attribute>
@@ -37,7 +37,7 @@
         </xpath>
     </t>
 
-    <t t-name="documents.SearchPanel.FiltersGroup" t-inherit="web.SearchPanel.FiltersGroup" t-inherit-mode="primary" owl="1">
+    <t t-name="documents.SearchPanel.FiltersGroup" t-inherit="web.SearchPanel.FiltersGroup" t-inherit-mode="primary">
         <xpath expr="//li[contains(@class, 'o_search_panel_filter_value')]" position="attributes">
             <attribute name="t-on-dragenter.stop.prevent">(ev) => this.onDragEnter(section, values.get(valueId), ev)</attribute>
             <attribute name="t-on-dragleave.stop.prevent">(ev) => this.onDragLeave(section, ev)</attribute>
@@ -57,7 +57,7 @@
         </xpath>
     </t>
 
-    <t t-name="documents.SearchPanelContent.Small" t-inherit="documents.SearchPanelContent" t-inherit-mode="primary" owl="1">
+    <t t-name="documents.SearchPanelContent.Small" t-inherit="documents.SearchPanelContent" t-inherit-mode="primary">
         <xpath expr="//li[contains(@class, 'o_search_panel_filter_group')]" position="attributes">
             <attribute name="t-on-touchstart">(ev) => this.onSectionValueTouchStart(ev, section, null, groupId)</attribute>
             <attribute name="t-on-touchend">(ev) => this.onSectionValueTouchEnd()</attribute>
@@ -65,13 +65,13 @@
         </xpath>
     </t>
 
-    <t t-name="documents.SearchPanel.Small" t-inherit="web.SearchPanel.Small" t-inherit-mode="primary" owl="1">
+    <t t-name="documents.SearchPanel.Small" t-inherit="web.SearchPanel.Small" t-inherit-mode="primary">
         <xpath expr="//t[@t-call='web.SearchPanelContent']" position="replace">
             <t t-call="documents.SearchPanelContent.Small"/>
         </xpath>
     </t>
 
-    <t t-name="documents.SearchPanel" t-inherit="web.SearchPanel" t-inherit-mode="primary" owl="1">
+    <t t-name="documents.SearchPanel" t-inherit="web.SearchPanel" t-inherit-mode="primary">
         <xpath expr="//t[@t-call='web.SearchPanel.Regular']" position="replace">
             <t t-call="documents.SearchPanel.Regular"/>
         </xpath>
@@ -80,7 +80,7 @@
         </xpath>
     </t>
 
-    <t t-name="documents.SearchPanel.Category.Small" t-inherit="web.SearchPanel.Category" t-inherit-mode="primary" owl="1">
+    <t t-name="documents.SearchPanel.Category.Small" t-inherit="web.SearchPanel.Category" t-inherit-mode="primary">
         <xpath expr="//li[contains(@class, 'o_search_panel_category_value')]" position="attributes">
             <attribute name="t-on-touchstart">(ev) => this.onSectionValueTouchStart(ev, section, value.id, null)</attribute>
             <attribute name="t-on-touchend">(ev) => this.onSectionValueTouchEnd()</attribute>
@@ -88,7 +88,7 @@
         </xpath>
     </t>
 
-    <t t-name="documents.SearchPanel.FiltersGroup.Small" t-inherit="web.SearchPanel.FiltersGroup" t-inherit-mode="primary" owl="1">
+    <t t-name="documents.SearchPanel.FiltersGroup.Small" t-inherit="web.SearchPanel.FiltersGroup" t-inherit-mode="primary">
         <xpath expr="//li[contains(@class, 'o_search_panel_filter_value')]" position="attributes">
             <attribute name="t-on-touchstart">(ev) => this.onSectionValueTouchStart(ev, section, valueId, null)</attribute>
             <attribute name="t-on-touchend">(ev) => this.onSectionValueTouchEnd()</attribute>
@@ -96,7 +96,7 @@
         </xpath>
     </t>
 
-    <t t-name="documents.DocumentsSearchPanelItemSettingsPopover" owl="1">
+    <t t-name="documents.DocumentsSearchPanelItemSettingsPopover">
         <div class="o_search_panel_value_edit">
             <a t-if="props.createChildEnabled" t-on-click.stop.prevent="props.onCreateChild" class="o_search_panel_value_edit_create py-1 list-group-item list-group-item-action row d-flex justify-content-between align-items-center g-0 cursor-pointer">
                 New

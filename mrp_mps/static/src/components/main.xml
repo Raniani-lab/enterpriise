@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
-    <div t-name="mrp_mps.mrp_mps" class="main o_action" owl="1">
+    <div t-name="mrp_mps.mrp_mps" class="main o_action">
         <WithSearch t-props="withSearchProps">
             <MrpMpsControlPanel>
                 <t t-set-slot="layout-buttons">
@@ -59,7 +59,7 @@
         </div>
     </div>
 
-    <t t-name="mrp_mps_nocontent_helper" owl="1">
+    <t t-name="mrp_mps_nocontent_helper">
         <div class="o_view_nocontent">
             <div class="o_nocontent_help">
                 <p class="o_view_nocontent_smiling_face">

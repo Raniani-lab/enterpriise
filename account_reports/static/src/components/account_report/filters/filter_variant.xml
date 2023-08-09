@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
-    <t t-name="account_reports.AccountReportFilterVariant" owl="1">
+    <t t-name="account_reports.AccountReportFilterVariant">
         <Dropdown togglerClass="'btn btn-secondary'">
             <t t-set-slot="toggler">
                 <i class="fa fa-book me-1"/>Report: <t t-esc="selectedVariantName"/>

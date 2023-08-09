@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
 
-    <t t-name="planning.AddressRecurrencyConfirmationDialog" t-inherit="web.ConfirmationDialog" t-inherit-mode="primary" owl="1">
+    <t t-name="planning.AddressRecurrencyConfirmationDialog" t-inherit="web.ConfirmationDialog" t-inherit-mode="primary">
         <xpath expr="//t[@t-set-slot='footer']" position="before">
             <div>
                 <p>This shift is recurrent. Delete:</p>

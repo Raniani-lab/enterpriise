@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
-    <t t-name="knowledge.SidebarRow" owl="1">
+    <t t-name="knowledge.SidebarRow">
         <li t-attf-class="o_article position-relative #{hasChildren ? 'o_article_has_children' : ''} #{isReadonly ? 'readonly' : ''}" t-att-data-article-id="props.article.id">
             <div t-attf-class="o_article_handle d-flex align-items-center #{isActive ? 'o_article_active' : ''}">
                 <a class="o_article_caret btn btn-link text-muted p-0" role="button" t-on-click="onCaretClick">

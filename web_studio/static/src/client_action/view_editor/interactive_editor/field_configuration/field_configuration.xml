@@ -1,6 +1,6 @@
 <templates>
 
-<t t-name="web_studio.SelectionValuesEditor" owl="1">
+<t t-name="web_studio.SelectionValuesEditor">
     <SelectionContentDialog
         defaultChoices="selection"
         onConfirm.bind="onConfirm"
@@ -8,7 +8,7 @@
     />
 </t>
 
-<t t-name="web_studio.RelationalFieldConfigurator" owl="1" >
+<t t-name="web_studio.RelationalFieldConfigurator" >
     <span t-if="fieldType === 'one2many'" >Select the reciprocal ManyToOne field</span>
     <span t-else="">Select the model in relation to this one</span>
     <div name="relation_id">
@@ -19,7 +19,7 @@
 </t>
 
 
-<t t-name="web_studio.FieldConfigurationDialog" owl="1">
+<t t-name="web_studio.FieldConfigurationDialog">
     <t t-if="props.isDialog">
         <t t-component="Component" t-props="props.componentProps" configurationModel="configurationModel" confirm="confirm" cancel="cancel" />
     </t>
@@ -32,7 +32,7 @@
     </Dialog>
 </t>
 
-<t t-name="web_studio.FilterConfiguration" owl="1">
+<t t-name="web_studio.FilterConfiguration">
     <label class="mb-4">Filter label
         <input type="text" id="domain_label" class="o_input" t-model="state.filterLabel" />
     </label>

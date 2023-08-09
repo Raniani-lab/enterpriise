@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
-    <t t-name="planning.PlanningGanttRenderer.RowHeader" t-inherit="web_gantt.GanttRenderer.RowHeader" owl="1">
+    <t t-name="planning.PlanningGanttRenderer.RowHeader" t-inherit="web_gantt.GanttRenderer.RowHeader">
         <xpath expr="//t[@t-esc='row.name']" position="replace">
             <t t-if="row.progressBar and row.progressBar.is_material_resource">
                 <div class="o_material_resource d-inline-flex flex-shrink-0 align-items-center justify-content-center me-1 rounded bg-200">
@@ -13,7 +13,7 @@
         </xpath>
     </t>
 
-    <t t-name="planning.PlanningGanttRenderer.Pill" t-inherit="web_gantt.GanttRenderer.Pill" owl="1">
+    <t t-name="planning.PlanningGanttRenderer.Pill" t-inherit="web_gantt.GanttRenderer.Pill">
         <xpath expr="//div[hasclass('o_gantt_pill_wrapper')]" position="after">
             <t t-if="isPlanningManager and !model.useSampleModel">
                 <t t-foreach="[...Array(pill.grid.column[1] - 1).keys()]" t-as="i" t-key="i">

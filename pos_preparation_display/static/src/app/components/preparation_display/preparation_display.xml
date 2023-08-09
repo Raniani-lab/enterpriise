@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
-    <t t-name="pos_preparation_display.PreparationDisplay" owl="1">
+    <t t-name="pos_preparation_display.PreparationDisplay">
         <div class="o_pdis_main_screen d-flex flex-column vh-100 w-100 bg-view overflow-hidden user-select-none">
             <div class="o_pdis_navbar d-flex justify-content-between">
                 <div class="d-flex align-items-center justify-content-start">

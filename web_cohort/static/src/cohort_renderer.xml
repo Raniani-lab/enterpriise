@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
-    <t t-name="web_cohort.CohortRenderer" owl="1">
+    <t t-name="web_cohort.CohortRenderer">
         <div class="o_cohort_renderer" t-att-class="props.class">
             <div class="d-flex gap-1 px-3 py-2">
                 <div class="btn-group" role="toolbar" aria-label="Main actions">

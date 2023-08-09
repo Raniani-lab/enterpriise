@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
 
-    <t t-name="web_studio.Property" owl="1">
+    <t t-name="web_studio.Property">
         <div t-if="props.type === 'selection'" class="o_web_studio_property o_web_studio_sidebar_select mt-2 mb-2" t-att-class="className" t-att-name="props.name">
             <label t-att-for="props.name">
                 <t t-slot="default" />

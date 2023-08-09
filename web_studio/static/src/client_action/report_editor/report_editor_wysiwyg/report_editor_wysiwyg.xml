@@ -1,6 +1,6 @@
 <templates>
 
-<t t-name="web_studio.ReportEditorWysiwyg" owl="1">
+<t t-name="web_studio.ReportEditorWysiwyg">
     <t t-call="web_studio.ReportEditorWysiwyg.Sidebar" />
     <div class="o-web-studio-report-editor-wysiwyg h-100 w-100 position-relative">
       <UndoRedo state="undoRedoState"/>
@@ -9,7 +9,7 @@
     </div>
 </t>
 
-<t t-name="web_studio.ReportEditorWysiwyg.Sidebar" owl="1" >
+<t t-name="web_studio.ReportEditorWysiwyg.Sidebar" >
     <div class="o_web_studio_sidebar h-100 overflow-auto flex-grow-0 flex-shrink-0" style="flex-basis: 300px;">
       <div class="o_web_studio_sidebar_content d-flex flex-column gap-3 mt-3">
         <Record t-props="reportRecordProps" t-slot-scope="scope" onRecordChanged.alike="(rec) => this.reportEditorModel.reportData = rec.data">
@@ -61,7 +61,7 @@
     </div>
 </t>
 
-<t t-name="web_studio.FieldDynamicPlaceholder" owl="1">
+<t t-name="web_studio.FieldDynamicPlaceholder">
   <div class="o-web-studio-field-dynamic-placeholder">
     <div class="m-3" style="max-width: 240px;" t-if="Object.keys(sortedVariables).length > 1">
       <h6 class="d-inline">Select the report's variable for the field:</h6>
@@ -78,7 +78,7 @@
   </div>
 </t>
 
-<t t-name="web_studio.ReportEditorWysiwyg.UndoRedo" owl="1">
+<t t-name="web_studio.ReportEditorWysiwyg.UndoRedo">
   <t t-set="isActive" t-value="props.state.canUndo or props.state.canRedo" />
   <div class="position-absolute top-0 start-0 ms-5 mt-4 rounded-pill bg-white border border-2 d-flex flex-row o-web-studio-report-editor-undo-redo gap-2 align-items-center" t-att-class="{active: isActive}">
     <button class="btn o_web_studio_undo_redo_button text-uppercase" t-attf-class="{{ !props.state.canUndo ? 'text-muted' : 'active' }}" t-on-click="props.state.undo">

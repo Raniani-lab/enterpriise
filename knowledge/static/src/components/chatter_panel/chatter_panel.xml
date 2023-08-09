@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <div t-name="knowledge.KnowledgeArticleChatter" owl="1" t-ref="root">
+    <div t-name="knowledge.KnowledgeArticleChatter" t-ref="root">
         <div t-if="this.state.displayChatter" class="o_FormRenderer_chatterContainer oe_chatter o_scroll_view_lg">
             <Chatter
                 threadModel="'knowledge.article'"

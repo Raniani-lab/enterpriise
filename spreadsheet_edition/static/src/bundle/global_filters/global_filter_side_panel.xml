@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
 
-     <div t-name="spreadsheet_edition.FilterComponent" class="o_filter_component" owl="1">
+     <div t-name="spreadsheet_edition.FilterComponent" class="o_filter_component">
         <div
             t-attf-class="o_topbar_filter_icon fa fa-search {{activeFilter ? 'btn-link': ''}}"
             title="Filters"
             t-on-click="toggleDropdown"></div>
     </div>
 
-    <div t-name="spreadsheet_edition.GlobalFiltersSidePanel" class="o_spreadsheet_global_filters_side_panel" owl="1">
+    <div t-name="spreadsheet_edition.GlobalFiltersSidePanel" class="o_spreadsheet_global_filters_side_panel">
         <div class="o_side_panel_section pivot_filter_section" t-foreach="filters" t-as="filter" t-key="'filter_' + filter_index">
             <div class="pivot_filter">
                 <div class="o_side_panel_title">

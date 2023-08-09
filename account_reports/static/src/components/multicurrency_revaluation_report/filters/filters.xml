@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
-    <t t-name="account_reports.MulticurrencyRevaluationReportFilters" t-inherit="account_reports.AccountReportFiltersCustomizable" owl="1">
+    <t t-name="account_reports.MulticurrencyRevaluationReportFilters" t-inherit="account_reports.AccountReportFiltersCustomizable">
         <xpath expr="//div[@id='filter_extra_options']" position="before">
             <t t-if="'currency_rates' in this.controller.options">
                 <t t-call="account_reports.MulticurrencyRevaluationReportFilterExchangeRate"/>

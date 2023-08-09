@@ -1,6 +1,6 @@
 <templates>
 
-    <t t-name="web_studio.ViewEditor.InteractiveEditorProperties.Group" owl="1">
+    <t t-name="web_studio.ViewEditor.InteractiveEditorProperties.Group">
 
         <ModifiersProperties node="props.node" availableOptions="['invisible']"/>
 

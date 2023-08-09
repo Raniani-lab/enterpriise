@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
-    <t t-name="account_reports.AccountReportFilterAnalytic" owl="1">
+    <t t-name="account_reports.AccountReportFilterAnalytic">
         <Dropdown togglerClass="'btn btn-secondary'">
             <t t-set-slot="toggler">
                 <i class="fa fa-folder-open me-1"/>Analytic Filter

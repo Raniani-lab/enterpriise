@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
 
-<t t-name="web_studio.EditorMenu" owl="1">
+<t t-name="web_studio.EditorMenu">
     <div class="o_web_studio_menu d-flex flex-row pe-3">
         <Breadcrumbs currentTab="currentTab" switchTab="props.switchTab"/>
 
@@ -27,7 +27,7 @@
     </div>
 </t>
 
-<t t-name="web_studio.EditorMenu.Breadcrumbs" owl="1">
+<t t-name="web_studio.EditorMenu.Breadcrumbs">
     <div class="o_web_studio_breadcrumb ">
         <ol class="breadcrumb align-items-center">
             <li t-foreach="breadcrumbs"

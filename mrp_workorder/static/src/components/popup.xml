@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
-    <t t-name="mrp_workorder.SelectionPopup" owl="1">
+    <t t-name="mrp_workorder.SelectionPopup">
         <Dialog size="'md'" title="env._t('Select Employee')" modalRef="modalRef" withBodyPadding="false">
             <div class="popup popup-selection">
                 <div class="selection scrollable-y fs-3 w-auto">

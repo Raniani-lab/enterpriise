@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
-    <t t-name="pos_hr_mobile.LoginScreen" t-inherit="pos_hr.LoginScreen" t-inherit-mode="extension" owl="1">
+    <t t-name="pos_hr_mobile.LoginScreen" t-inherit="pos_hr.LoginScreen" t-inherit-mode="extension">
         <xpath expr="//img[hasclass('login-barcode-img')]" position="replace">
             <div t-if="hasMobileScanner" class="o_barcode_mobile_container" t-on-click="open_mobile_scanner">
                 <a role="button" class="btn btn-primary o_mobile_barcode">

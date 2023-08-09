@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
-    <t t-name="project_enterprise.MilestonesPopover" owl="1">
+    <t t-name="project_enterprise.MilestonesPopover">
         <div class="popover-body">
             <ul class="mb-0 list-unstyled">
                 <t t-set="previousProjectId" t-value="false"></t>

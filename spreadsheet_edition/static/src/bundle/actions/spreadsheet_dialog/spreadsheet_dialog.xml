@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
 
-    <t t-name="spreadsheet_edition.SpreadsheetDialog" owl="1">
+    <t t-name="spreadsheet_edition.SpreadsheetDialog">
         <Dialog title="props.title || 'Odoo Spreadsheet'" size="'md'">
             <div t-if="props.content" t-esc="props.content"/>
             <t t-if="props.edit">

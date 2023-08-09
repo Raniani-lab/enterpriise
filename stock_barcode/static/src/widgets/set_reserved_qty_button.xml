@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
-    <button t-name="stock_barcode.SetReservedQuantityButtonTemplate" owl="1"
+    <button t-name="stock_barcode.SetReservedQuantityButtonTemplate"
         class="o_button_qty_done d-flex btn"
         t-attf-class="{{props.record.data[props.name] ? 'btn-primary' : 'btn-secondary'}}"
         t-on-click="_setQuantity" t-att-disabled="!props.record.data[props.name]">

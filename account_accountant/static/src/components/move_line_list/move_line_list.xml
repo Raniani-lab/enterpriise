@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <templates xml:space="preserve">
-    <t t-name="account_accountant.MoveLineListView" t-inherit="web.ListView" owl="1">
+    <t t-name="account_accountant.MoveLineListView" t-inherit="web.ListView">
         <xpath expr="//div[@t-ref='root']" position="attributes" type="add">
             <attribute name="class" add="o_move_line_list_view" separator=" "/>
         </xpath>
@@ -15,7 +15,7 @@
         </xpath>
     </t>
 
-    <t t-name="account_accountant.AttachmentPreview" owl="1">
+    <t t-name="account_accountant.AttachmentPreview">
         <div class="o_attachment_preview" t-att-class="{'hidden': !attachmentPreviewState.displayAttachment}">
             <t t-if="this.attachmentPreviewState.displayAttachment">
                 <t t-if="this.attachmentPreviewState.thread and this.attachmentPreviewState.thread.attachmentsInWebClientView.length > 0">

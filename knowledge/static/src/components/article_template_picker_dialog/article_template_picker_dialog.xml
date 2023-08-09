@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-    <t t-name="knowledge.ArticleTemplatePickerDialog" owl="1">
+    <t t-name="knowledge.ArticleTemplatePickerDialog">
         <Dialog size="size" title="title" bodyClass="'o_knowledge_article_template_picker_dialog p-0'">
             <div t-if="groups.length > 0" class="d-sm-flex">
                 <div class="o_knowledge_template_selector flex-shrink-0 p-3">

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
-    <t owl="1" t-inherit="stock_barcode.LineQuantity" t-inherit-mode="extension">
+    <t t-inherit="stock_barcode.LineQuantity" t-inherit-mode="extension">
         <xpath expr="//div[@name='quantity']" position="after">
             <div t-if="!props.subline &amp;&amp; env.model.resModel == 'stock.picking.batch'">
                 <i class="fa fa-fw fa-truck"/>
@@ -10,7 +10,7 @@
         </xpath>
     </t>
 
-    <t owl="1" t-inherit="stock_barcode.LineComponent" t-inherit-mode="extension" t-translation="off">
+    <t t-inherit="stock_barcode.LineComponent" t-inherit-mode="extension" t-translation="off">
         <xpath expr="//div[hasclass('o_barcode_line')]" position="attributes">
             <attribute name="t-att-style">(line.colorLine or line.colorLine === 0) ? 'border-color: hsla(' + line.colorLine + ', 80%, 50%, 0.6);' : ''</attribute>
         </xpath>

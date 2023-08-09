@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
 
-    <t t-name="account_accountant.MatchingLink" owl="1">
+    <t t-name="account_accountant.MatchingLink">
         <t t-if="env.searchModel.context.is_matched_view">
             <span t-out="props.record.data[props.name]"/>
         </t>

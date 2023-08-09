@@ -2,7 +2,7 @@
 <templates>
 
     <t t-name="spreadsheet_edition.SpreadsheetSelectorPanel"
-        owl="1">
+       >
         <div class="o-sp-dialog-cp">
             <div class="o-sp-searchview">
                 <input type="text"

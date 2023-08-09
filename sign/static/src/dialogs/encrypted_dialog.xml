@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
-    <t t-name="sign.EncryptedDialog" owl="1">
+    <t t-name="sign.EncryptedDialog">
         <Dialog t-props="dialogProps">
             <div class="mb-3">
                 <span>Your file is encrypted, PDF's password is required to generate final document. The final document will be encrypted with the same password.</span>

@@ -2,7 +2,7 @@
 
 <templates xml:space="preserve">
 
-    <t t-name="planning.PlanningGanttView.Buttons" t-inherit="web_gantt.GanttView.Buttons" owl="1">
+    <t t-name="planning.PlanningGanttView.Buttons" t-inherit="web_gantt.GanttView.Buttons">
         <xpath expr="//div" position="inside">
             <div class="btn-group gap-1">
                 <button t-if="model.metaData.canEdit"

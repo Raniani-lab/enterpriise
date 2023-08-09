@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
-    <t t-name="pos_preparation_display.Order" owl="1">
+    <t t-name="pos_preparation_display.Order">
         <section
             class="o_pdis_order_card o_pdis_card_nocolor position-relative w-100 mx-auto mb-auto overflow-hidden rounded"
             t-attf-class="{{this.props.order.changeStageTimeout ? 'o_pdis_stage--animation' : ''}}">

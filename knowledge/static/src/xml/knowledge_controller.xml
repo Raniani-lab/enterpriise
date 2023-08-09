@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="knowledge.ArticleFormView" t-inherit="web.FormView" owl="1">
+    <t t-name="knowledge.ArticleFormView" t-inherit="web.FormView">
 
         <xpath expr="//Layout" position="attributes">
             <attribute name="className" add="'o_knowledge_form_view d-flex h-100 border-top'" separator="+"/>

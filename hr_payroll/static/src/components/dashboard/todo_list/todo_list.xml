@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
 
-    <t t-name="hr_payroll.TodoList" owl="1">
+    <t t-name="hr_payroll.TodoList">
         <div class="o_hr_payroll_dashboard_block o_hr_payroll_dashboard_todo card h-100 g-0 d-flex flex-column ms-md-1 ms-lg-0 me-3 me-lg-4 position-relative">
             <div class="card-header d-flex bg-view border-bottom-0 p-0 bg-view">
                 <ul class="o_hr_payroll_todo_tabs nav nav-tabs flex-nowrap overflow-x-auto w-100 border-bottom-0 border-start-0">

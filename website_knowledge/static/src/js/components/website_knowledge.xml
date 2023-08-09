@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates xml:space="preserve">
-    <t owl="1" t-name="knowledge.WebsitePublishingButton" t-inherit="knowledge.PermissionPanel" t-inherit-mode="extension">
+    <t t-name="knowledge.WebsitePublishingButton" t-inherit="knowledge.PermissionPanel" t-inherit-mode="extension">
         <xpath expr="//div[hasclass('o_knowledge_permission_panel')]/*[1]" position="before">
             <div class="d-flex px-3"
                  t-on-click="() => this.toggleWebsitePublished()">

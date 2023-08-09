@@ -1,12 +1,12 @@
 <templates>
 
-	<t t-name="web_studio.AddButtonAction" owl="1">
+	<t t-name="web_studio.AddButtonAction">
 		<button class="o-web-studio-editor--add-button-action btn btn-link" t-on-click="onClick">
 			Add a button
 		</button>
 	</t>
 
-	<t t-name="web_studio.DialogNewButtonStatusBar" owl="1">
+	<t t-name="web_studio.DialogNewButtonStatusBar">
 		<Dialog size="'sm'" title="title">
 			<div class="o-web-studio-editor--modal-add-action d-flex flex-column gap-4">
 				<div>

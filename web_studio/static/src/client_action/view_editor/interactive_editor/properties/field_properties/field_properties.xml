@@ -1,6 +1,6 @@
 <templates>
 
-<t t-name="web_studio.ViewEditor.InteractiveEditorProperties.Field" owl="1">
+<t t-name="web_studio.ViewEditor.InteractiveEditorProperties.Field">
 
     <ModifiersProperties node="props.node" availableOptions="props.availableOptions"/>
 
@@ -73,7 +73,7 @@
     <SidebarPropertiesToolbox/>
 </t>
 
-<t t-name="web_studio.ViewEditor.InteractiveEditorProperties.Field.TechnicalName" owl="1" >
+<t t-name="web_studio.ViewEditor.InteractiveEditorProperties.Field.TechnicalName" >
     <Property
         name="'technical_name'"
         type="'string'"

@@ -1,6 +1,6 @@
 <templates>
 
-    <t t-name="web_studio.ViewEditor.ListEditorSidebar" owl="1">
+    <t t-name="web_studio.ViewEditor.ListEditorSidebar">
         <InteractiveEditorSidebar>
             <t t-set-slot="new" isDefault="true">
                 <NewFields />

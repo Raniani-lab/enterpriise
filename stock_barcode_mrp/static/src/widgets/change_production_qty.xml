@@ -1,5 +1,5 @@
 <templates>
-    <button t-name="stock_barcode_mrp.ChangeProductionQty" owl="1"
+    <button t-name="stock_barcode_mrp.ChangeProductionQty"
         class="o_button_qty_done d-flex btn btn-primary"
         t-on-click.stop="openChangeQtyWizard">
             / <span name="product_uom_qty" class="ms-1" t-out="props.record.data[props.name]"/>

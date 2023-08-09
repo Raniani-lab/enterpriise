@@ -1,5 +1,5 @@
 <templates>
-    <t t-name="stock_barcode_mrp.HeaderComponent" owl="1">
+    <t t-name="stock_barcode_mrp.HeaderComponent">
         <div class="o_barcode_line list-group-item d-flex flex-row flex-nowrap o_header"
             t-attf-class="{{componentClasses}}">
             <div class="o_barcode_line_details flex-grow-1 flex-column flex-nowrap">

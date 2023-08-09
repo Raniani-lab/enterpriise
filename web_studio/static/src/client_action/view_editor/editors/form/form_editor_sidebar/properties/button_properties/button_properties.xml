@@ -1,6 +1,6 @@
 <templates>
 
-<t t-name="web_studio.ViewEditor.InteractiveEditorProperties.Button" owl="1">
+<t t-name="web_studio.ViewEditor.InteractiveEditorProperties.Button">
     <div class="o_web_studio_sidebar_approval border-bottom border-secondary pb-4 mb-3">
         <ModifiersProperties node="props.node" availableOptions="props.availableOptions"/>
         <h3 class="mb-1">Approvals</h3>
@@ -40,7 +40,7 @@
     <SidebarPropertiesToolbox />
 </t>
 
-<div t-name="web_studio.ViewEditorSidebar.ApprovalRule" class="o_studio_sidebar_approval_rule mb-3" owl="1">
+<div t-name="web_studio.ViewEditorSidebar.ApprovalRule" class="o_studio_sidebar_approval_rule mb-3">
     <div class="o_studio_sidebar_approval_rule">
         <label class="mt-0" t-attf-for="rule_group_{{rule.id}}" data-tooltip="Only members of this group will be able to approve or reject the rule.">Approval Group</label>
         <div class="o_approval_group">

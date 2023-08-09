@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
-    <t t-name="appointment.AppointmentBookingGanttPopover" t-inherit="web_gantt.GanttPopover" t-inherit-mode="primary" owl="1">
+    <t t-name="appointment.AppointmentBookingGanttPopover" t-inherit="web_gantt.GanttPopover" t-inherit-mode="primary">
         <xpath expr="//div[hasclass('popover-footer')]/button" position="attributes">
             <attribute name="class">btn btn-secondary btn-sm</attribute>
         </xpath>

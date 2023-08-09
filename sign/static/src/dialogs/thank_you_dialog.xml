@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
-    <t t-name="sign.ThankYouDialog" owl="1">
+    <t t-name="sign.ThankYouDialog">
         <Dialog t-props="dialogProps">
             <t t-set-slot="header" t-slot-scope="scope">
                 <h4 class="modal-title text-break" t-att-class="{ 'me-auto': scope.isFullscreen }">

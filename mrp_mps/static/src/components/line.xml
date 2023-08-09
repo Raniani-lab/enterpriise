@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
-    <t t-name="mrp_mps.MpsLineComponent" owl="1">
+    <t t-name="mrp_mps.MpsLineComponent">
         <tbody class="o_mps_content" t-att-data-id="productionSchedule.id" t-att-data-warehouse_id="'warehouse_id' in productionSchedule and productionSchedule.warehouse_id[0]">
             <tr class="bg-light">
                 <th>

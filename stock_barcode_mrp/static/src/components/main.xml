@@ -1,5 +1,5 @@
 <templates>
-    <t t-inherit="stock_barcode.MainComponent" t-inherit-mode="extension" owl="1" t-translation="off">
+    <t t-inherit="stock_barcode.MainComponent" t-inherit-mode="extension" t-translation="off">
         <xpath expr="//div[hasclass('o_barcode_lines')]/t[1]" position="before">
             <t t-if="env.model.resModel=='mrp.production' and env.model.record.product_id and !state.displayByProduct">
                 <Header line="env.model.record" displayUOM="groups.group_uom" openDetails.bind="toggleHeaderView"/>

@@ -1,6 +1,6 @@
 <templates>
 
-<t t-name="web_studio.ViewEditor.InteractiveEditorProperties.KanbanCoverProperties" owl="1">
+<t t-name="web_studio.ViewEditor.InteractiveEditorProperties.KanbanCoverProperties">
     <Property
         name="'cover_value'"
         type="'boolean'"

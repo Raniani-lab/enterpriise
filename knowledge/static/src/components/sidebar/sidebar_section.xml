@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
-    <t t-name="knowledge.SidebarSection" owl="1">
+    <t t-name="knowledge.SidebarSection">
         <section t-attf-class="o_section #{sectionClass || ''}" t-att-data-section="dataSection">
             <div class="o_section_header d-flex h4 mb-0">
                 <div class="flex-grow-1 text-truncate" t-out="sectionName"/>
@@ -17,14 +17,14 @@
         </section>
     </t>
 
-    <t t-name="knowledge.SidebarFavoriteSection" owl="1">
+    <t t-name="knowledge.SidebarFavoriteSection">
         <t t-call="knowledge.SidebarSection">
             <t t-set="sectionName">Favorites</t>
             <t t-set="dataSection" t-value="'favorites'"/>
         </t>
     </t>
 
-    <t t-name="knowledge.SidebarWorkspaceSection" owl="1">
+    <t t-name="knowledge.SidebarWorkspaceSection">
         <t t-call="knowledge.SidebarSection">
             <t t-set="sectionName">Workspace</t>
             <t t-set="sectionClass" t-value="props.rootIds.length === 0 ? 'pb-3' : ''"/>
@@ -44,14 +44,14 @@
         </t>
     </t>
 
-    <t t-name="knowledge.SidebarSharedSection" owl="1">
+    <t t-name="knowledge.SidebarSharedSection">
         <t t-call="knowledge.SidebarSection" t-if="props.rootIds.length">
             <t t-set="sectionName">Shared</t>
             <t t-set="dataSection" t-value="'shared'"/>
         </t>
     </t>
 
-    <t t-name="knowledge.SidebarPrivateSection" owl="1">
+    <t t-name="knowledge.SidebarPrivateSection">
         <t t-call="knowledge.SidebarSection">
             <t t-set="sectionName">Private</t>
             <t t-set="sectionClass" t-value="'flex-fill'"/>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
 
-<t t-name="web_studio.ModelConfigurator" owl="1">
+<t t-name="web_studio.ModelConfigurator">
     <div class="container o_web_studio_model_configurator" t-att-class="{ embed: props.embed }">
         <div class="row" t-if="!props.embed">
             <h1>Suggested features for your new model</h1>
@@ -43,7 +43,7 @@
     </div>
 </t>
 
-<t t-name="web_studio.ModelConfiguratorDialog" owl="1" >
+<t t-name="web_studio.ModelConfiguratorDialog" >
     <Dialog title="title" footer="false" contentClass="'o_web_studio_model_configurator'">
         <ModelConfigurator embed="true" onConfirmOptions.bind="onConfirm" label="props.confirmLabel" onPrevious.bind="onPrevious"/>
     </Dialog>

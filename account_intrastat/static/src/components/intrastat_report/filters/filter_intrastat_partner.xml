@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
-    <t t-name="account_intrastat.IntrastatReportFilterPartner" owl="1">
+    <t t-name="account_intrastat.IntrastatReportFilterPartner">
         <Dropdown togglerClass="'btn btn-secondary'">
             <t t-set-slot="toggler">
                 <span class="fa fa-filter me-1"/> Partners: <t t-esc="(controller.options.intrastat_with_vat) ? 'With VAT numbers' : 'All'"/>

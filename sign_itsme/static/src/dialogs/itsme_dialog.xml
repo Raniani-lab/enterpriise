@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
-    <div t-name="sign_itsme.ItsmeDialog" owl="1">
+    <div t-name="sign_itsme.ItsmeDialog">
         <Dialog t-props="dialogProps">
             <div class="row my-4">
                 <p>Please confirm your identity to finalize your signature.</p>

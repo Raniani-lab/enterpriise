@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
-    <t t-name="hr_appraisal_skills.AppraisalSkillsListRenderer" owl="1" t-inherit-mode="primary" t-inherit="hr_skills.SkillsListRenderer">
+    <t t-name="hr_appraisal_skills.AppraisalSkillsListRenderer" t-inherit-mode="primary" t-inherit="hr_skills.SkillsListRenderer">
         <xpath expr="//table" position="attributes">
             <attribute name="t-attf-class" add="{{ props.showSampleData ? 'o_appraisal_blur' : '' }}" separator=" "/>
         </xpath>
@@ -18,7 +18,7 @@
         </xpath>
     </t>
 
-    <t t-name="hr_appraisal_skills.AppraisalSkillsListRenderer.Rows" owl="1" t-inherit-mode="primary" t-inherit="hr_skills.SkillsListRenderer.Rows">
+    <t t-name="hr_appraisal_skills.AppraisalSkillsListRenderer.Rows" t-inherit-mode="primary" t-inherit="hr_skills.SkillsListRenderer.Rows">
         <xpath expr="//t[@t-as='skill_group']" position="after">
             <t t-if="props.showSampleData">
                 <t t-foreach="sampleRecords" t-as="record" t-key="record_index">

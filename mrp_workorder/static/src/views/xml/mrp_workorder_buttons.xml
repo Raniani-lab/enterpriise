@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
-    <t t-name="mrp_workorder.overviewButtonsKanban" t-inherit="web.KanbanView.Buttons" t-inherit-mode="primary" owl="1">
+    <t t-name="mrp_workorder.overviewButtonsKanban" t-inherit="web.KanbanView.Buttons" t-inherit-mode="primary">
         <xpath expr="//div[hasclass('o_cp_buttons')]" position="inside">
                 <button t-on-click="actionBack" class="btn btn-secondary o_back_button">
                     <i class="oi oi-arrow-left"/>
@@ -38,7 +38,7 @@
             </div>
         </xpath>
     </t>
-    <t t-name="mrp_workorder.overviewButtonsList" t-inherit="web.ListView.Buttons" t-inherit-mode="primary" owl="1">
+    <t t-name="mrp_workorder.overviewButtonsList" t-inherit="web.ListView.Buttons" t-inherit-mode="primary">
         <xpath expr="//div[hasclass('o_list_buttons')]" position="inside">
                 <button t-on-click="actionBack" class="btn btn-secondary o_back_button">
                     <i class="oi oi-arrow-left"/>

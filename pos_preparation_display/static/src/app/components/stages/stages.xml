@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
-    <t t-name="pos_preparation_display.Stages" owl="1">
+    <t t-name="pos_preparation_display.Stages">
         <section class="d-flex justify-content-center flex-grow-1 border-bottom overflow-hidden">
             <div class="d-flex align-items-center justify-content-start py-2 overflow-auto">
                 <div

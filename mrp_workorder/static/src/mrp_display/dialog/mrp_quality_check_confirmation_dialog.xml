@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="mrp_workorder.MrpQualityCheckConfirmationDialog" owl="1">
+    <t t-name="mrp_workorder.MrpQualityCheckConfirmationDialog">
     <div class="o_tablet_popups">
         <Dialog size="'md'" title="props.title" modalRef="modalRef" footer="true">
-            <t t-set-slot="header" owl="1">
+            <t t-set-slot="header">
                 <div class="d-flex flex w-100">
                     <div class="h4 align-self-end" t-esc="props.title"/>
                     <div type="button" class="btn-close" aria-label="Close" t-on-click="_cancel"/>

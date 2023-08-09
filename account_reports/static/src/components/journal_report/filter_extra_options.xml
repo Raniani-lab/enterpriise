@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
-    <t t-name="account_reports.JournalReportFilterExtraOptions" t-inherit="account_reports.AccountReportFilterExtraOptions" owl="1">
+    <t t-name="account_reports.JournalReportFilterExtraOptions" t-inherit="account_reports.AccountReportFilterExtraOptions">
         <xpath expr="//t[@t-set-slot='toggler']" position="inside">
             <t t-if="controller.options.group_by_months">
                 <t t-esc="(controller.options.all_entries) ? 'Grouped by month': ', Grouped by month'"/>

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
-    <t t-name="stock_barcode.UnlinkButton" owl="1">
+    <t t-name="stock_barcode.UnlinkButton">
         <button class="btn btn-danger text-uppercase o_delete" t-on-click="onClick" t-if="!props.record.isNew">
             <i class="fa fa-trash-o"/> Delete
         </button>
     </t>
 
-    <div t-name="stock_barcode.MainComponent" class="o_content o_barcode_client_action h-100 flex-column" owl="1">
+    <div t-name="stock_barcode.MainComponent" class="o_content o_barcode_client_action h-100 flex-column">
         <div class="o_barcode_header">
             <div class="navbar navbar-expand navbar-dark">
                 <nav class="navbar-nav me-auto">

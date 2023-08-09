@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
-    <t t-name="hr_referral.Welcome" owl="1">
+    <t t-name="hr_referral.Welcome">
         <div class="o_hr_referral_wrapper">
             <t t-if="dashboardData.onboarding_screen">
                 <div id="carouselOnboarding" class="carousel slide o_hr_referral_intro_carousel" data-bs-interval="false" t-ref="carousel">

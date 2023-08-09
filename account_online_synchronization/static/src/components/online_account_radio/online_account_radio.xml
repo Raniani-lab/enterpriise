@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="account_online_synchronization.OnlineAccountRadio" owl="1">
+    <t t-name="account_online_synchronization.OnlineAccountRadio">
         <div
             role="radiogroup"
             t-attf-class="o_{{ props.orientation }}"

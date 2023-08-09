@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
-    <t t-name="documents.FileViewer" owl="1" t-inherit="web.FileViewer" t-inherit-mode="extension">
+    <t t-name="documents.FileViewer" t-inherit="web.FileViewer" t-inherit-mode="extension">
         <xpath expr="//div[hasclass('o-FileViewer-download')]" position="before">
             <div t-if="hasSplitPdf" class="o-FileViewer-headerButton d-flex align-items-center px-3 cursor-pointer" t-on-click.stop="onClickPdfSplit" role="button" title="Split PDF">
                 <i class="fa fa-scissors fa-fw" t-att-class="{ 'o-hasLabel me-2': !env.isSmall }" role="img"/>

@@ -1,6 +1,6 @@
 <templates>
 
-    <t t-name="web_studio.InteractiveEditor" owl="1">
+    <t t-name="web_studio.InteractiveEditor">
         <t
             t-component="props.editor.Sidebar or defaultSidebar"
             openViewInForm.bind="openViewInForm"

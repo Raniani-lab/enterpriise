@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
-    <t t-name="appointment.AppointmentCalendarController" t-inherit="calendar.AttendeeCalendarController" t-inherit-mode="extension" owl="1">
+    <t t-name="appointment.AppointmentCalendarController" t-inherit="calendar.AttendeeCalendarController" t-inherit-mode="extension">
         <xpath expr="//div[@t-if='showSideBar']/*[1]" position="before">
             <div id="scheduling_box" class="mb-2">
                 <div t-if="env.calendarState.mode === 'slots-creation' || appointmentState.lastAppointmentUrl" class="o_appointment_scheduling_message_box alert alert-primary">

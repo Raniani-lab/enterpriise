@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="sign.signItem" owl="1">
+    <t t-name="sign.signItem">
         <t t-if="readonly">
             <!-- TEMPLATE EDITION or REQUEST DISPLAY -->
             <t t-if="type == 'text'" t-call="sign.textSignItem"/>
@@ -39,7 +39,7 @@
         </t>
     </t>
 
-    <div t-name="sign.signItemConfiguration" owl="1" t-attf-class="o_sign_config_area {{ isSignItemEditable &amp;&amp; type == 'text' ? 'o_sign_editable_config_area' : '' }}">
+    <div t-name="sign.signItemConfiguration" t-attf-class="o_sign_config_area {{ isSignItemEditable &amp;&amp; type == 'text' ? 'o_sign_editable_config_area' : '' }}">
         <div class="o_sign_config_handle" aria-label="Signature configuration" title="Signature configuration">
             <span class="fa fa-arrows" role="img"/>
         </div>
@@ -55,7 +55,7 @@
         <div class="o_resize_handler resize_both"></div>
     </div>
 
-    <div t-name="sign.selectionSignItem" owl="1" t-att-title="role" t-attf-class="{{classes}} o_sign_sign_item" t-att-data-id="id" t-att-style="style + 'white-space: normal;text-align: center;'">
+    <div t-name="sign.selectionSignItem" t-att-title="role" t-attf-class="{{classes}} o_sign_sign_item" t-att-data-id="id" t-att-style="style + 'white-space: normal;text-align: center;'">
         <t t-if="!value">
             <span class="o_placeholder">
                 <t t-esc="placeholder"/>
@@ -72,7 +72,7 @@
         <t t-if="editMode" t-call="sign.signItemConfiguration"/>
     </div>
 
-    <div t-name="sign.signatureSignItem" owl="1" t-att-title="role" t-attf-class="{{classes}} o_sign_sign_item" t-att-data-id="id" t-att-style="style" t-att-data-signature="value">
+    <div t-name="sign.signatureSignItem" t-att-title="role" t-attf-class="{{classes}} o_sign_sign_item" t-att-data-id="id" t-att-style="style" t-att-data-signature="value">
         <span class="o_sign_helper"/>
         <img t-if="frame_value" t-att-src="frame_value" alt="Frame" class="o_sign_frame"/>
         <img t-if="value" t-att-src="value" alt="Signature"/>
@@ -84,7 +84,7 @@
         <t t-if="editMode" t-call="sign.signItemConfiguration"/>
     </div>
 
-    <div t-name="sign.textareaSignItem" owl="1" t-att-title="role" t-attf-class="{{classes}} o_sign_sign_item o_sign_sign_textarea" t-att-style="style" t-att-data-id="id">
+    <div t-name="sign.textareaSignItem" t-att-title="role" t-attf-class="{{classes}} o_sign_sign_item o_sign_sign_textarea" t-att-style="style" t-att-data-id="id">
         <t t-if="!value">
             <p class="o_placeholder o_sign_field_alignment">
                 <t t-esc="placeholder"/>
@@ -94,7 +94,7 @@
         <t t-if="editMode" t-call="sign.signItemConfiguration"/>
     </div>
 
-    <div t-name="sign.checkboxSignItem" owl="1" t-att-title="role" t-attf-class="{{classes}} o_sign_sign_item" t-att-data-id="id" t-att-style="style + 'margin: 2px; padding:2px;'">
+    <div t-name="sign.checkboxSignItem" t-att-title="role" t-attf-class="{{classes}} o_sign_sign_item" t-att-data-id="id" t-att-style="style + 'margin: 2px; padding:2px;'">
         <t t-if="value == 'on'">&#9745;</t>
         <t t-if="value == 'off'">&#9744;</t>
         <t t-if="!value">
@@ -106,7 +106,7 @@
         <t t-if="editMode" t-call="sign.signItemConfiguration"/>
     </div>
 
-    <div t-name="sign.textSignItem" owl="1" t-att-title="role" t-attf-class="{{classes}} o_sign_sign_item" type="text" t-att-data-id="id" t-att-style="style">
+    <div t-name="sign.textSignItem" t-att-title="role" t-attf-class="{{classes}} o_sign_sign_item" type="text" t-att-data-id="id" t-att-style="style">
         <t t-if="isSignItemEditable">
             <input t-att-placeholder="placeholder" t-att-value="value" class="o_sign_editable_input"/>
             <t t-call="sign.signItemConfiguration"/>

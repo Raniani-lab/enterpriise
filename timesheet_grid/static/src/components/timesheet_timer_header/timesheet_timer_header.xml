@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
-    <t t-name="timesheet_grid.TimesheetTimerHeader" owl="1">
+    <t t-name="timesheet_grid.TimesheetTimerHeader">
         <div class="timesheet-timer position-relative d-md-flex align-items-center py-2 border-bottom bg-view"
             t-att-class="props.className"
             t-on-timer-started="props.onTimerStarted"

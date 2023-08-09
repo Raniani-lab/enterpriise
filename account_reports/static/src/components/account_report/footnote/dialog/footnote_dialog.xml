@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
-    <t t-name="account_reports.AccountReportFootnoteDialog" owl="1">
+    <t t-name="account_reports.AccountReportFootnoteDialog">
         <t t-call="account_reports.AccountReportFootnoteDialogCustomizable"/>
     </t>
 
-    <t t-name="account_reports.AccountReportFootnoteDialogCustomizable" owl="1">
+    <t t-name="account_reports.AccountReportFootnoteDialogCustomizable">
         <Dialog contentClass="'account_report_footnote_dialog'" title="title" size="'md'">
             <form>
                 <textarea t-ref="text" placeholder="Insert foot note here">

@@ -37,7 +37,7 @@ class TestReports(TestAccountReportsCommon):
             "out_invoice",
             post=True,
             products=cls.product_a,
-            taxes=cls.company_data["default_tax_sale"]
+            taxes=cls.env["account.chart.template"].ref("sgst_sale_5")
         )
 
     @classmethod

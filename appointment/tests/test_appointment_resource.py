@@ -930,6 +930,42 @@ class AppointmentResourceBookingTest(AppointmentCommon):
         self.assertListEqual(available_resources_c5, (scandinavian + snow).ids)
 
     @users('apt_manager')
+    def test_appointment_resources_booked_for_all_appointments(self):
+        """ Check that a resource can only be booked once, even if shared among appointment_types """
+        paddle_court = self.env["appointment.resource"].create([{
+            'appointment_type_ids': self.apt_type_resource.ids,
+            'capacity': 1,
+            'name': 'Paddle Court',
+        }])
+        self.apt_type_resource_2 = self.apt_type_resource.copy()
+
+        # Assert initial data
+        with freeze_time(self.reference_now):
+            slots = self.apt_type_resource_2._get_appointment_slots('UTC')
+            resource_slots = self._filter_appointment_slots(slots)
+            self.assertEqual(len(resource_slots), 1)
+
+        # Resource is booked on its slot on appointment_type_resource
+        self.env['calendar.event'].with_context(self._test_context).create({
+            'appointment_type_id': self.apt_type_resource.id,
+            'booking_line_ids': [(0, 0, {
+                'appointment_resource_id': paddle_court.id,
+                'capacity_reserved': 1,
+                'capacity_used': paddle_court.capacity
+            })],
+            'name': 'Booking 1',
+            'start': datetime(2022, 2, 14, 15, 0, 0),
+            'stop': datetime(2022, 2, 14, 15, 0, 0) + timedelta(hours=1),
+        })
+
+        # Check other appointment_type availabilities
+        with freeze_time(self.reference_now):
+            slots = self.apt_type_resource_2._get_appointment_slots('UTC')
+            resource_slots = self._filter_appointment_slots(slots)
+
+        self.assertEqual(len(resource_slots), 0, "Once a resource is booked on a slot, it should not be available anymore to other appointment types.")
+
+    @users('apt_manager')
     def test_appointment_resources_without_capacity_management(self):
         """ Check use case where capacity management is not activated """
 

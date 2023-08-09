@@ -1105,7 +1105,6 @@ class AppointmentType(models.Model):
                     booking_lines |= resource_booking_lines.filtered(lambda bl: bl.event_start < slot_stop_utc and bl.event_stop > slot_start_utc)
         else:
             booking_lines = self.env['appointment.booking.line'].sudo().search([
-                ('appointment_type_id', '=', self.id),
                 ('appointment_resource_id', 'in', all_resources.ids),
                 ('event_start', '<', slot_stop_utc),
                 ('event_stop', '>', slot_start_utc),
@@ -1188,9 +1187,7 @@ class AppointmentType(models.Model):
     def _slot_availability_prepare_resources_bookings_values(self, resources, start_dt_utc, end_dt_utc):
         """ This method computes bookings of resources between start_dt and end_dt
         of appointment check. Also, resources can be shared between multiple appointment
-        type. So booking lines in different appointment type can overlap as a resource could
-        be book by several appointment type at the same time. So a resource booked in an appointment
-        type is still considered available in another.
+        type. So we must consider all bookings in order to avoid booking them more than once.
 
         :param <appointment.resource> resources: prepare values to check availability
           of those resources against given appointment boundaries. At this point
@@ -1212,7 +1209,6 @@ class AppointmentType(models.Model):
         if resources:
             booking_lines = self.env['appointment.booking.line'].sudo().search([
                 ('appointment_resource_id', 'in', resources.ids),
-                ('appointment_type_id', '=', self.id),
                 ('event_stop', '>', datetime.combine(start_dt_utc, time.min)),
                 ('event_start', '<', datetime.combine(end_dt_utc, time.max))])
             resource_to_bookings = booking_lines.grouped('appointment_resource_id')

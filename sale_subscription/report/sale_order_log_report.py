@@ -70,16 +70,15 @@ class SaleOrderLogReport(models.Model):
         main_company_id = companies[:1]
         return f"""
         rate_query AS(
-            SELECT currency_id,
-                   rcr.name AS rate_date,
-                   rcr.rate AS rate_val,
-                   MAX(rcr.name) OVER (PARTITION BY currency_id)  AS max_rate_date,
-                   rcr.rate
-              FROM res_currency_rate rcr
-              JOIN res_currency rc ON rc.id= rcr.currency_id
-             WHERE rcr.company_id = {main_company_id.id} AND  rcr.name <= CURRENT_DATE
-               AND rc.active=true
-          ORDER BY rcr.name
+            SELECT DISTINCT ON (rc.id)
+                   rc.id AS currency_id,
+                   COALESCE(rcr.name, CURRENT_DATE) AS rate_date,
+                   COALESCE(rcr.rate, 1) AS rate
+              FROM res_currency rc
+              LEFT JOIN res_currency_rate rcr ON rc.id = rcr.currency_id
+             WHERE rc.active = true 
+               AND (rcr.company_id IS NULL OR (rcr.company_id = {main_company_id.id} AND rcr.name <= CURRENT_DATE))
+          ORDER BY rc.id, rcr.name DESC
         )
         """
 
@@ -135,10 +134,8 @@ class SaleOrderLogReport(models.Model):
             JOIN sale_order so ON so.id = log.order_id
             JOIN res_partner partner ON so.partner_id = partner.id
             LEFT JOIN sale_order_close_reason close ON close.id=so.close_reason_id
-            JOIN rate_query r1 ON r1.rate_date=r1.max_rate_date
-                            AND r1.currency_id=log.currency_id
-            JOIN rate_query r2 ON r2.rate_date=r2.max_rate_date
-                            AND r2.currency_id={currency_id}
+            JOIN rate_query r1 ON r1.currency_id=log.currency_id
+            JOIN rate_query r2 ON r2.currency_id={currency_id}
         """
 
     def _where(self):

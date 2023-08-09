@@ -256,7 +256,7 @@ export class MapModel extends Model {
      */
     _fetchCoordinatesFromAddressOSM(metaData, data, record) {
         const address = encodeURIComponent(record.contact_address_complete.replace("/", " "));
-        const encodedUrl = `https://nominatim.openstreetmap.org/search/${address}?format=jsonv2`;
+        const encodedUrl = `https://nominatim.openstreetmap.org/search?q=${address}&format=jsonv2`;
         return this.http.get(encodedUrl);
     }
 

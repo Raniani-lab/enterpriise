@@ -5,6 +5,7 @@ from odoo import api, fields, models
 from odoo.addons.appointment.utils import interval_from_events, intervals_overlap
 from odoo.addons.resource.models.utils import timezone_datetime
 
+
 class CalendarEvent(models.Model):
     _inherit = "calendar.event"
 
@@ -49,12 +50,21 @@ class CalendarEvent(models.Model):
         end_datetime = timezone_datetime(fields.Datetime.from_string(end_date))
 
         user_ids = self.env['res.users'].browse(user_ids)
-        employee_unavailabilities = user_ids.employee_id.resource_calendar_id._unavailable_intervals_batch(
-            start_datetime, end_datetime,
-            resources=user_ids.employee_id.resource_id
-        )
+        calendar_ids = user_ids.employee_id.resource_calendar_id
+        calendar_to_employee = user_ids.employee_id.grouped('resource_calendar_id')
+        calendar_to_unavailabilities = {
+            calendar: calendar._unavailable_intervals_batch(
+                start_datetime, end_datetime,
+                resources=calendar_to_employee[calendar].resource_id
+            ) for calendar in calendar_ids}
         for row in rows:
             user_id = user_ids.browse(row.get('resId'))
-            row['unavailabilities'] = [{'start': start, 'stop': stop}
-                                       for start, stop in employee_unavailabilities.get(user_id.employee_id.resource_id.id, [])]
+            if not user_id:
+                continue
+            user_employee = user_id.employee_id
+            user_calendar = user_employee.resource_calendar_id
+            if not user_calendar:
+                continue
+            user_unavailabilities = calendar_to_unavailabilities[user_calendar].get(user_employee.resource_id.id, [])
+            row['unavailabilities'] = [{'start': start, 'stop': stop} for start, stop in user_unavailabilities]
         return rows

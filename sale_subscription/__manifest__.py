@@ -64,6 +64,7 @@ Features:
         'web.assets_frontend': [
             'sale_subscription/static/src/js/manage_form.js',
             'sale_subscription/static/src/js/portal_subscription.js',
+            'sale_subscription/static/src/xml/*.xml',
         ],
     }
 }

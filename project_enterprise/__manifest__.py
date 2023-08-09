@@ -53,7 +53,6 @@ Bridge module for project and enterprise
             'web_enterprise/static/src/webclient/webclient.js',
 
             'web_enterprise/static/src/legacy/js/core/*.js',
-            'web_enterprise/static/src/legacy/js/widgets/*.js',
 
             'web_enterprise/static/src/legacy/scss/fields.scss',
 

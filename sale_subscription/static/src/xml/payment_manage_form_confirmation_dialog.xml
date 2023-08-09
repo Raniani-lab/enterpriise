@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates xml:space="preserve">
+    <t t-name="sale_subscription.ManageFormConfirmationDialog" owl="1">
+        <div>
+            <span>This payment method cannot be removed as it is currently linked to the following active subscriptions:</span>
+            <span>It is currently linked to the following documents:</span>
+            <ul>
+                <t t-foreach="linkedRecordsInfo" t-as="documentInfo" t-key="documentInfo_index">
+                    <li t-att-title="documentInfo.description" t-att-href="documentInfo.url" t-esc="documentInfo.name"/>
+                </t>
+            </ul>
+            <span>Please provide another payment method for these subscriptions.</span>
+        </div>
+    </t>
+</templates>

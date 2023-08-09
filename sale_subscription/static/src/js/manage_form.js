@@ -1,7 +1,8 @@
 /** @odoo-module **/
 
+    import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
     import { _t } from "@web/core/l10n/translation";
-    import Dialog from "@web/legacy/js/core/dialog";
+    import { renderToMarkup } from "@web/core/utils/render";
 
     import manageForm from "@payment/js/manage_form";
 
@@ -16,44 +17,19 @@
                                     confirmation button.
          * @return {object}
          */
-        _buildConfirmationDialog: function (linkedRecordsInfo, confirmCallback) {
+        _openConfirmationDialog: function (linkedRecordsInfo, confirmCallback) {
             if (!(linkedRecordsInfo.some(function(e) { return e.active_subscription; }))) {
-                return this._super(...arguments);
+                this._super(...arguments);
+                return;
             }
-            const $dialogContentMessage = $(
-                '<span>',
-                {text: _t(
-                    "This payment method cannot be removed as it is currently linked to the"
-                    + " following active subscriptions:"
-                )},
+            const body = renderToMarkup(
+                "sale_subscription.ManageFormConfirmationDialog",
+                { linkedRecordsInfo }
             );
-            const $documentInfoList = $('<ul>');
-            linkedRecordsInfo.forEach(documentInfo => {
-                if (documentInfo.active_subscription) {
-                    $documentInfoList.append($('<li>').append($(
-                        '<a>', {
-                            href: documentInfo.url,
-                            target: '_blank',
-                            title: documentInfo.description,
-                            text: documentInfo.name
-                        }
-                    )));
-                }
-            });
-            $dialogContentMessage.append($documentInfoList);
-            $dialogContentMessage.append($(
-                '<span>',
-                {text: _t("Please provide another payment method for these subscriptions.")},
-            ));
-            return new Dialog(this, {
+            this.call("dialog", "add", ConfirmationDialog, {
                 title: _t("Warning!"),
-                size: 'medium',
-                $content: $('<div>').append($dialogContentMessage),
-                buttons: [
-                    {
-                        text: _t("Cancel"), close: true
-                    },
-                ],
+                body,
+                cancel: () => {},
             });
         },
     });

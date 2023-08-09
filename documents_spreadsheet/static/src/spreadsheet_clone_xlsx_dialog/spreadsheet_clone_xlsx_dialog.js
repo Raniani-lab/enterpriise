@@ -23,12 +23,7 @@ export class SpreadsheetCloneXlsxDialog extends ConfirmationDialog {
      * @override
      */
     async _confirm() {
-        if (this.isConfirmedOrCancelled) {
-            return;
-        }
-        this.isConfirmedOrCancelled = true;
-        this.disableButtons();
-        try {
+        this.execButton(async () => {
             // Replacing call to a props-provided `confirm` method with the
             // archiving behavior makes a more unified component.
             const spreadsheetId = await this.orm.call(
@@ -44,10 +39,6 @@ export class SpreadsheetCloneXlsxDialog extends ConfirmationDialog {
                     spreadsheet_id: spreadsheetId,
                 },
             });
-        } catch (e) {
-            this.props.close();
-            throw e;
-        }
-        this.props.close();
+        });
     }
 }

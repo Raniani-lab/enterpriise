@@ -22,6 +22,7 @@ QUnit.module("ActionManager", {
                     name: "Partners Action 1",
                     res_model: "partner",
                     type: "ir.actions.act_window",
+                    mobile_view_mode: "kanban",
                     views: [
                         [false, "list"],
                         [false, "kanban"],

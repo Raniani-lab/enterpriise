@@ -21,6 +21,7 @@ QUnit.module("WebMap Mobile", {
                     name: "Task Action 1",
                     res_model: "project.task",
                     type: "ir.actions.act_window",
+                    mobile_view_mode: "map",
                     views: [
                         [false, "list"],
                         [false, "map"],
@@ -73,16 +74,6 @@ QUnit.module("WebMap Mobile", {
             },
         });
     },
-});
-
-QUnit.test("uses a Map(first mobile-friendly) view by default", async function (assert) {
-    const webClient = await createWebClient({ serverData });
-    // should open Map(first mobile-friendly) view for action
-    await doAction(webClient, 1);
-
-    assert.containsNone(target, ".o_list_view");
-    assert.containsNone(target, ".o_kanban_view");
-    assert.containsOnce(target, ".o_map_view");
 });
 
 QUnit.test("use pin list container on mobile", async function (assert) {

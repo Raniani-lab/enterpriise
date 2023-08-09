@@ -321,6 +321,7 @@
         <field name="name">Map</field>
         <field name="res_model">project.task</field>
         <field name="view_mode">map,calendar,gantt,kanban,tree,pivot,graph,activity,form</field>
+        <field name="mobile_view_mode">map</field>
         <field name="search_view_id" ref="project_task_view_search_fsm"/>
         <field name="domain">[('is_fsm', '=', True), ('project_id', '!=', False), ('display_in_project', '=', True)]</field>
         <field name="context">{
@@ -588,6 +589,7 @@
         <field name="name">Planning by User</field>
         <field name="res_model">project.task</field>
         <field name="view_mode">gantt,calendar,map,tree,kanban,pivot,graph,form,activity</field>
+        <field name="mobile_view_mode">map</field>
         <field name="search_view_id" ref="project_task_view_search_fsm"/>
         <field name="domain">[('is_fsm', '=', True), ('project_id', '!=', False), ('display_in_project', '=', True)]</field>
         <field name="context" eval="{'fsm_mode': 1, 'task_nameget_with_hours': 1, 'default_scale': 'week', 'default_user_ids': False}"/>
@@ -654,6 +656,7 @@
         <field name="name">Planning by Project</field>
         <field name="res_model">project.task</field>
         <field name="view_mode">gantt,calendar,map,tree,kanban,pivot,graph,activity</field>
+        <field name="mobile_view_mode">map</field>
         <field name="search_view_id" ref="project_task_view_search_fsm"/>
         <field name="domain">[('is_fsm', '=', True), ('project_id', '!=', False), ('display_in_project', '=', True)]</field>
         <field name="context" eval="{'fsm_mode': 1, 'task_nameget_with_hours': 1, 'default_scale': 'week', 'default_user_ids': False}"/>

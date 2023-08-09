@@ -12,7 +12,6 @@ export const gridView = {
     type: "grid",
     display_name: _t("Grid"),
     icon: "fa fa-th",
-    isMobileFriendly: true,
     multiRecord: true,
     ArchParser: GridArchParser,
     Controller: GridController,

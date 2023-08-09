@@ -118,6 +118,7 @@ class Forecast(models.Model):
             'name': _('Timesheets'),
             'domain': self._get_timesheet_domain(),
             'view_mode': 'tree,grid,kanban,pivot,graph,form',
+            'mobile_view_mode': 'grid',
             'views': [
                 [self.env.ref('hr_timesheet.timesheet_view_tree_user').id, 'tree'],
                 [self.env.ref('timesheet_grid.timesheet_view_grid_by_employee').id, 'grid'],

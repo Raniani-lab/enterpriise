@@ -12,7 +12,6 @@ export const mapView = {
     display_name: _t("Map"),
     icon: "fa fa-map-marker",
     multiRecord: true,
-    isMobileFriendly: true,
     Controller: MapController,
     Renderer: MapRenderer,
     Model: MapModel,

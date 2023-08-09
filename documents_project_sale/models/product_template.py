@@ -8,8 +8,10 @@ class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
     documents_allowed_company_id = fields.Many2one('res.company', compute='_compute_documents_allowed_company_id')
+    project_template_use_documents = fields.Boolean(related='project_template_id.use_documents')
     template_folder_id = fields.Many2one('documents.folder', "Workspace Template", company_dependent=True, copy=True,
         domain="['|', ('company_id', '=', False), ('company_id', '=', documents_allowed_company_id)]",
+        compute="_compute_template_folder_id", store=True, readonly=False,
         help="On sales order confirmation, a workspace will be automatically generated for the project based on this template.")
 
     @api.depends('company_id')
@@ -27,3 +29,9 @@ class ProductTemplate(models.Model):
         for product in self:
             if product.template_folder_id and product.template_folder_id.company_id and product.company_id != product.template_folder_id.company_id:
                 raise UserError(_('The "%s" workspace template should either be in the "%s" company like this product or be open to all companies.', product.template_folder_id.name, product.company_id.name))
+
+    @api.depends('project_template_id.use_documents')
+    def _compute_template_folder_id(self):
+        for template in self:
+            if template.project_template_id and not template.project_template_id.use_documents:
+                template.template_folder_id = False

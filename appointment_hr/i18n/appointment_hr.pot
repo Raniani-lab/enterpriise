@@ -24,3 +24,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:appointment_hr.field_appointment_type__work_hours_activated
 msgid "Limit to Work Hours"
 msgstr ""
+
+#. module: appointment_hr
+#: model_terms:ir.ui.view,arch_db:appointment_hr.calendar_event_view_form_gantt_booking_inherit_appointment_hr
+msgid "<span>These partners are unavailable at the selected times</span>"
+msgstr ""
+
+#. module: appointment_hr
+#: model:ir.model.fields,field_description:appointment_hr.field_calendar_event__partners_on_leave
+msgid "Partners on leave"
+msgstr ""

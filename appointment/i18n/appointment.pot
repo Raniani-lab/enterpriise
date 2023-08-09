@@ -2294,6 +2294,14 @@ msgid "Small description of the appointment type."
 msgstr ""
 
 #. module: appointment
+#. odoo-python
+#: code:addons/appointment/models/appointment_booking_line.py:0
+#, python-format
+msgid ""
+"\"%(resource_name_list)s\" cannot be used for \"%(appointment_type_name)s\""
+msgstr ""
+
+#. module: appointment
 #. odoo-javascript
 #: code:addons/appointment/static/src/xml/appointment_no_slot.xml:0
 #: code:addons/appointment/static/src/xml/appointment_no_slot.xml:0

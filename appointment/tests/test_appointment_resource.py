@@ -7,7 +7,7 @@ from freezegun import freeze_time
 from odoo import Command
 from odoo.addons.appointment.tests.common import AppointmentCommon
 from odoo.exceptions import ValidationError
-from odoo.tests import tagged, users
+from odoo.tests import Form, tagged, users
 
 
 @tagged('appointment_resources')
@@ -67,11 +67,14 @@ class AppointmentResource(AppointmentCommon):
         states = [(self.resource_3, None, resource_3_type_ids[0]),
                   (self.resource_3, resource_3_type_ids[1], resource_3_type_ids[1])]
         for resource, default_type, expected_type_id in states:
-            context = {'default_appointment_resource_id': resource.id}
+            context = {
+                'booking_gantt_create_record': True,
+                'default_appointment_resource_id': resource.id
+            }
             if default_type:
                 context.update(default_appointment_type_id=default_type.id)
 
-            event = Event.with_context(context).create({'name': 'Hello'})
+            event = Form(Event.with_context(context))
             self.assertEqual(event.appointment_type_id, expected_type_id)
 
     @users('apt_manager')

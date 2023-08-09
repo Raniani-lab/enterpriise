@@ -16,14 +16,25 @@ class CalendarEvent(models.Model):
     @api.model
     def default_get(self, fields_list):
         res = super().default_get(fields_list)
+        if not self.env.context.get('booking_gantt_create_record', False):
+            return res
+        user_id = res.get('user_id')
         resource_id = res.get('appointment_resource_id') or self.env.context.get('default_appointment_resource_id')
         # get a relevant appointment type for ease of use when coming from a view that groups by resource
-        if not res.get('appointment_type_id') and 'appointment_type_id' in fields_list and resource_id:
-            appointment_types = self.env['appointment.resource'].browse(resource_id).appointment_type_ids
+        if not res.get('appointment_type_id') and 'appointment_type_id' in fields_list:
+            appointment_types = False
+            if resource_id:
+                appointment_types = self.env['appointment.resource'].browse(resource_id).appointment_type_ids
+            elif user_id:
+                appointment_types = self.env['appointment.type'].search([('staff_user_ids', 'in', user_id)])
             if appointment_types:
                 res['appointment_type_id'] = appointment_types[0].id
-        if 'name' in fields_list and 'name' not in res and resource_id:
-            res.setdefault('name', _('Booking for %(resource_name)s', resource_name=self.env['appointment.resource'].browse(resource_id).name))
+        if 'name' in fields_list and 'name' not in res:
+            if resource_id:
+                res.setdefault('name', _('Booking for %(resource_name)s', resource_name=self.env['appointment.resource'].browse(resource_id).name))
+            elif res.get('appointment_type_id'):
+                appointment_type = self.env['appointment.type'].browse(res['appointment_type_id'])
+                res.setdefault('name', appointment_type.display_name)
         if self.env.context.get('appointment_default_add_organizer_to_attendees') and 'partner_ids' in fields_list:
             organizer_partner = self.env['res.users'].browse(res.get('user_id', [])).partner_id
             if organizer_partner:

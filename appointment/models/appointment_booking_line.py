@@ -49,7 +49,7 @@ class AppointmentBookingLine(models.Model):
         for appointment_type, lines in self.grouped('appointment_type_id').items():
             non_compatible_resources = lines.appointment_resource_id - appointment_type.resource_ids
             if non_compatible_resources:
-                raise ValidationError(_('Some events uses resources "%(resource_name_list)s" incompatible with "%(appointment_type_name)s"',
+                raise ValidationError(_('"%(resource_name_list)s" cannot be used for "%(appointment_type_name)s"',
                                         appointment_type_name=appointment_type.name,
                                         resource_name_list=', '.join(non_compatible_resources.mapped('name'))))
 

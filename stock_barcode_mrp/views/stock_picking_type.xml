@@ -7,9 +7,6 @@
             <field name="count_picking_ready" position="after">
                 <field name="count_mo_confirmed" />
             </field>
-            <xpath expr="//t[@t-name='kanban-box']/div" position="attributes">
-                <attribute name="t-if">['incoming', 'outgoing', 'internal', 'mrp_operation'].indexOf(record.code.raw_value) > -1</attribute>
-            </xpath>
             <button name="get_action_picking_tree_ready_kanban" position="replace">
                 <button class="btn btn-primary" name="get_action_picking_tree_ready_kanban" type="object">
                     <t t-if="record.code.raw_value == 'mrp_operation'" t-esc="record.count_mo_confirmed.value"/>

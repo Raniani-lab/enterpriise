@@ -138,7 +138,8 @@
                 <notebook>
                     <page name="general" string="General">
                     </page>
-                    <page name="barcode_app" string="Barcode App">
+                    <field name="is_barcode_picking_type" invisible="1"/>
+                    <page name="barcode_app" string="Barcode App" invisible="not is_barcode_picking_type">
                         <group name="restrict_scan_settings" string="Mandatory Scan">
                             <field name="restrict_scan_source_location" string="Source Location"
                                     groups="stock.group_stock_multi_locations"

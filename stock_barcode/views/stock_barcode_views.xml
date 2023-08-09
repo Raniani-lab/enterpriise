@@ -76,9 +76,10 @@
                 <field name="color"/>
                 <field name="count_picking_ready"/>
                 <field name="code"/>
+                <field name="is_barcode_picking_type" invisible="1"/>
                 <templates>
                     <t t-name="kanban-box">
-                        <div t-if="['incoming', 'outgoing', 'internal'].indexOf(record.code.raw_value) > -1" t-attf-class="oe_kanban_card #{!selection_mode ? kanban_color(record.color.raw_value) : ''} oe_kanban_global_click">
+                        <div t-if="record.is_barcode_picking_type" t-attf-class="oe_kanban_card #{!selection_mode ? kanban_color(record.color.raw_value) : ''} oe_kanban_global_click">
                             <span class="oe_kanban_color_help" t-attf-title="In #{kanban_getcolorname(record.color.raw_value)}" role="img" t-attf-aria-label="In #{kanban_getcolorname(record.color.raw_value)}"/>
                                 <div class="o_kanban_card_header">
                                     <div class="o_primary o_kanban_record_title">

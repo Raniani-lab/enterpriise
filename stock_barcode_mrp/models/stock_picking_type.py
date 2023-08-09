@@ -14,6 +14,13 @@ class StockPickingType(models.Model):
                 ('reservation_state', '=', 'assigned'),
             ])
 
+    def _compute_is_barcode_picking_type(self):
+        for picking_type in self:
+            if picking_type.code == 'mrp_operation':
+                picking_type.is_barcode_picking_type = True
+            else:
+                super(StockPickingType, picking_type)._compute_is_barcode_picking_type()
+
     def get_action_picking_tree_ready_kanban(self):
         if self.code == 'mrp_operation':
             res = self._get_action('stock_barcode_mrp.mrp_action_kanban')

@@ -291,6 +291,10 @@ class StockPickingType(models.Model):
     show_barcode_validation = fields.Boolean(
         compute='_compute_show_barcode_validation',
         help='Technical field used to compute whether the "Final Validation" group should be displayed, solving combined groups/invisible complexity.')
+    is_barcode_picking_type = fields.Boolean(
+        compute='_compute_is_barcode_picking_type',
+        help="Technical field indicating if should be used in barcode app and used to control visibility in the related UI.")
+
 
     @api.depends('restrict_scan_product', 'restrict_put_in_pack', 'restrict_scan_dest_location')
     def _compute_show_barcode_validation(self):
@@ -303,6 +307,14 @@ class StockPickingType(models.Model):
                                  (picking_type.code == 'outgoing' or picking_type.restrict_scan_dest_location != 'optional')
             # show if not all hidden
             picking_type.show_barcode_validation = not (hide_full and hide_all_product_packed and hide_dest_location)
+
+    @api.depends('code')
+    def _compute_is_barcode_picking_type(self):
+        for picking_type in self:
+            if picking_type.code in ['incoming', 'outgoing', 'internal']:
+                picking_type.is_barcode_picking_type = True
+            else:
+                picking_type.is_barcode_picking_type = False
 
     @api.constrains('restrict_scan_source_location', 'restrict_scan_dest_location')
     def _check_restrinct_scan_locations(self):

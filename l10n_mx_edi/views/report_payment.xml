@@ -14,8 +14,8 @@
         </xpath>
 
         <xpath expr="//table[@name='invoices']" position="before">
-            <t t-set="payment_info" t-value="cfdi.get('payment_info')"/>
-            <t t-if="cfdi['cfdi_node']">
+            <t t-if="cdfi and cfdi['cfdi_node']">
+                <t t-set="payment_info" t-value="cfdi.get('payment_info')"/>
                 <table class="table table-sm" t-if="payment_info">
                     <thead>
                         <tr>

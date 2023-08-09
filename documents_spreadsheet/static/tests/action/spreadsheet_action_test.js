@@ -176,7 +176,7 @@ QUnit.module(
 
         QUnit.test("notify user window", async function (assert) {
             const { env } = await createSpreadsheet();
-            env.notifyUser({ text: "this is a notification", tag: "notif" });
+            env.notifyUser({ text: "this is a notification", type: "warning", sticky: true });
             await nextTick();
             const dialog = document.querySelector(".o_dialog");
             assert.ok(dialog !== undefined, "Dialog can be opened");
@@ -196,13 +196,13 @@ QUnit.module(
         QUnit.test("raise error window", async function (assert) {
             assert.expect(4);
             const { env } = await createSpreadsheet();
-            env.raiseError("this is a notification");
+            env.raiseError("this is a message in an opened window that requests user action");
             await nextTick();
             const dialog = document.querySelector(".o_dialog");
             assert.ok(dialog !== undefined, "Dialog can be opened");
             assert.equal(
                 document.querySelector(".modal-body div").textContent,
-                "this is a notification",
+                "this is a message in an opened window that requests user action",
                 "Can set dialog content"
             );
             assert.equal(

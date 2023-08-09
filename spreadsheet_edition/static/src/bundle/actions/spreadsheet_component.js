@@ -10,8 +10,6 @@ import { Spreadsheet, Model } from "@odoo/o-spreadsheet";
 
 import { useSubEnv, Component } from "@odoo/owl";
 
-const tags = new Set();
-
 /**
  * @typedef {Object} User
  * @property {string} User.name
@@ -105,18 +103,13 @@ export default class SpreadsheetComponent extends Component {
 
     /**
      * Adds a notification to display to the user
-     * @param {{text: string, tag: string}} notification
+     * @param {{text: string, type: string, sticky: boolean }} notification
      */
     notifyUser(notification) {
-        if (tags.has(notification.tag)) {
-            return;
-        }
         this.notifications.add(notification.text, {
-            type: "warning",
-            sticky: true,
-            onClose: () => tags.delete(notification.tag),
+            type: notification.type,
+            sticky: notification.sticky,
         });
-        tags.add(notification.tag);
     }
 
     /**

@@ -36,7 +36,7 @@ QUnit.module(
                     }
                 },
             });
-
+            await nextTick();
             await toggleActionMenu(target);
             await toggleCogMenuSpreadsheet(target);
             await click(target.querySelector(".o_insert_list_spreadsheet_menu"));

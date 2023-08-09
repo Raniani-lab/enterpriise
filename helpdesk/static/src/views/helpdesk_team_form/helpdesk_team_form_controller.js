@@ -45,7 +45,7 @@ export class HelpdeskTeamController extends FormController {
     onRecordSaved(record) {
         if (this.mustReload) {
             this.mustReload = false;
-            this.model.actionService.doAction("reload_context");
+            this.model.action.doAction("reload_context");
         }
     }
 }

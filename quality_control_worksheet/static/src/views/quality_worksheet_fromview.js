@@ -21,7 +21,7 @@ class WorksheetValidationController extends FormController {
                 { context: record.context }
             );
             if (action) {
-                await this.model.actionService.doAction(action);
+                await this.model.action.doAction(action);
             }
         }
     }

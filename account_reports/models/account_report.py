@@ -2053,7 +2053,7 @@ class AccountReport(models.Model):
         return {
             **section_line_dict,
             'id': self._get_generic_line_id(None, None, parent_line_id=section_line_dict['id'], markup='total'),
-            'level': section_line_dict['level'] + 1,
+            'level': section_line_dict['level'] if section_line_dict['level'] != 0 else 1, # Total line should not be level 0
             'name': _("Total %s", section_line_dict['name']),
             'parent_id': section_line_dict['id'],
             'unfoldable': False,

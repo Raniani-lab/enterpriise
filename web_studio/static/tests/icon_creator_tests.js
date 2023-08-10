@@ -31,6 +31,13 @@ QUnit.module("Studio", (hooks) => {
     QUnit.test("icon creator: with initial web icon data", async (assert) => {
         assert.expect(5);
 
+        const notificationService = {
+            start() {
+                return { add: () => {} };
+            },
+        };
+        registry.category("services").add("notification", notificationService, { force: true });
+
         const target = getFixture();
         await mount(IconCreator, target, {
             props: {

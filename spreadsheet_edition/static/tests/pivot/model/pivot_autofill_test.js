@@ -444,6 +444,41 @@ QUnit.module("spreadsheet > pivot_autofill", {}, () => {
         }
     );
 
+    QUnit.test("Autofill pivot formula with missing pivotId", async function (assert) {
+        const model = new spreadsheet.Model({
+            sheets: [
+                {
+                    colNumber: 1,
+                    rowNumber: 2,
+                    cells: {
+                        A1: { content: '=ODOO.PIVOT("1","bar","date","05/2023")' },
+                        B1: { content: '=ODOO.PIVOT.HEADER("1","date","05/2023")' },
+                    },
+                },
+            ],
+        });
+        assert.strictEqual(
+            getPivotAutofillValue(model, "A1", { direction: "bottom", steps: 1 }),
+            '=ODOO.PIVOT("1","bar","date","05/2023")'
+        );
+        assert.strictEqual(
+            getPivotAutofillValue(model, "B1", { direction: "bottom", steps: 1 }),
+            '=ODOO.PIVOT.HEADER("1","date","05/2023")'
+        );
+        assert.deepEqual(model.getters.getTooltipFormula(getCellFormula(model, "A1"), false), [
+            {
+                title: "Missing pivot",
+                value: "Missing pivot #1",
+            },
+        ]);
+        assert.deepEqual(model.getters.getTooltipFormula(getCellFormula(model, "B1"), false), [
+            {
+                title: "Missing pivot",
+                value: "Missing pivot #1",
+            },
+        ]);
+    });
+
     QUnit.test("Can autofill col headers horizontally", async (assert) => {
         const { model } = await createSpreadsheetWithPivot({
             arch: /*xml*/ `

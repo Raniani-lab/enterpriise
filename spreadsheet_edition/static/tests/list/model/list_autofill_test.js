@@ -142,6 +142,37 @@ QUnit.module("spreadsheet > list autofill", {}, () => {
         assert.strictEqual(getTooltip("A1", true), "Foo");
     });
 
+    QUnit.test("Autofill list formula with missing listId", async function (assert) {
+        const model = new spreadsheet.Model({
+            sheets: [
+                {
+                    colNumber: 1,
+                    rowNumber: 2,
+                    cells: {
+                        A1: { content: '=ODOO.LIST("1","1","date")' },
+                        B1: { content: '=ODOO.LIST.HEADER("1","date")' },
+                    },
+                },
+            ],
+        });
+        assert.strictEqual(
+            getListAutofillValue(model, "A1", { direction: "bottom", steps: 1 }),
+            '=ODOO.LIST("1","1","date")'
+        );
+        assert.strictEqual(
+            getListAutofillValue(model, "B1", { direction: "bottom", steps: 1 }),
+            '=ODOO.LIST.HEADER("1","date")'
+        );
+        assert.strictEqual(
+            model.getters.getTooltipListFormula(getCellFormula(model, "A1"), false),
+            "Missing list #1"
+        );
+        assert.strictEqual(
+            model.getters.getTooltipListFormula(getCellFormula(model, "B1"), false),
+            "Missing list #1"
+        );
+    });
+
     QUnit.test("Autofill list keeps format but neither style nor border", async function (assert) {
         const { model } = await createSpreadsheetWithList();
         // Change the format, style and borders of C2

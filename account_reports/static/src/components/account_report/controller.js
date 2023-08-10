@@ -372,6 +372,18 @@ export class AccountReportController {
         return Boolean(this.lines[lineIndex].growth_comparison_data);
     }
 
+    isLineAncestorOf(ancestorLineId, lineId) {
+        return lineId.startsWith(`${ancestorLineId}|`);
+    }
+
+    isLineChildOf(childLineId, lineId) {
+        return childLineId.startsWith(`${lineId}|`);
+    }
+
+    isLineRelatedTo(relatedLineId, lineId) {
+        return this.isLineAncestorOf(relatedLineId, lineId) || this.isLineChildOf(relatedLineId, lineId);
+    }
+
     isNextLineChild(index, lineId) {
         return index < this.lines.length && this.lines[index].id.startsWith(lineId);
     }

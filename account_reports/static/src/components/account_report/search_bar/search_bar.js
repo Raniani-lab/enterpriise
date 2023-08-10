@@ -24,28 +24,20 @@ export class AccountReportSearchBar extends Component {
     // Search
     //------------------------------------------------------------------------------------------------------------------
     search() {
-        const searchQuery = this.searchText.el.value.trim().toLowerCase();
+        const query = this.searchText.el.value.trim().toLowerCase();
+        const linesIDsMatched = [];
 
-        let lineIndex = 0;
-        let linesIDsMatched = {
-            lines: new Set(),
-            ancestors: {},
-        };
+        for (const line of this.controller.lines){
+            if (line.visible) {
+                let lineName = line.name.trim().toLowerCase();
+                let match = (lineName.indexOf(query) !== -1);
 
-        while (lineIndex < this.controller.lines.length) {
-            let line = this.controller.lines[lineIndex];
-            let lineName = line.name.trim().toLowerCase();
-            let searchMatch = (lineName.indexOf(searchQuery) !== -1);
-
-            if (searchMatch) {
-                linesIDsMatched.lines.add(line.id);
-                linesIDsMatched.ancestors[line.id.split('|')[0]] = line.level;
+                if (match)
+                    linesIDsMatched.push(line.id);
             }
-
-            lineIndex += 1;
         }
 
-        if (searchQuery.length > 0 && linesIDsMatched.lines.size > 0)
+        if (query.length && linesIDsMatched.length)
             this.controller.lines_searched = linesIDsMatched;
         else
             delete this.controller.lines_searched;

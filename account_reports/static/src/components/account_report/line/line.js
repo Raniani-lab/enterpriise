@@ -25,7 +25,7 @@ export class AccountReportLine extends Component {
     get lineClasses() {
         let classes = ('level' in this.props.line) ? `line_level_${this.props.line.level}` : 'line_level_default';
 
-        if (!this.props.line.visible)
+        if (!this.props.line.visible || this.hiddenBySearchFilter())
             classes += " d-none";
 
         if (this.props.line.unfolded)
@@ -36,24 +36,6 @@ export class AccountReportLine extends Component {
 
         if (this.props.line.class)
             classes += ` ${this.props.line.class}`;
-
-        // Search
-        if ("lines_searched" in this.controller) {
-            const oldestAncestorID = this.props.line.id.split('|')[0];
-
-            if (
-                !this.controller.lines_searched.lines.has(this.props.line.id) &&
-                (
-                    !(oldestAncestorID in this.controller.lines_searched.ancestors) ||
-                    (
-                        oldestAncestorID in this.controller.lines_searched.ancestors &&
-                        this.controller.lines_searched.ancestors[oldestAncestorID] === this.props.line.level
-                    )
-                )
-            ) {
-                classes += " d-none";
-            }
-        }
 
         return classes;
     }
@@ -77,6 +59,20 @@ export class AccountReportLine extends Component {
         }
 
         return classes;
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Search
+    //------------------------------------------------------------------------------------------------------------------
+    hiddenBySearchFilter() {
+        if (!("lines_searched" in this.controller))
+            return false;
+
+        for (let searchLineId of this.controller.lines_searched)
+            if (this.controller.isLineRelatedTo(searchLineId, this.props.line.id) || this.props.line.id === searchLineId)
+                return false;
+
+        return true;
     }
 
     //------------------------------------------------------------------------------------------------------------------

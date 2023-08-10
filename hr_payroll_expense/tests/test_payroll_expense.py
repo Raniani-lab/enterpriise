@@ -32,6 +32,7 @@ class TestPayrollExpense(TestPayslipBase):
         self.richard_emp.write({
             'address_id': richard_partner_id,
             'work_contact_id': richard_partner_id,
+            'work_email': 'email@email',
         })
 
         payslip = self.env['hr.payslip'].create({

@@ -3,6 +3,7 @@
 
 from odoo import models, fields, api, _
 from odoo.tools import float_is_zero
+from odoo.exceptions import UserError
 
 from itertools import chain
 
@@ -24,7 +25,10 @@ class MulticurrencyRevaluationReportCustomHandler(models.AbstractModel):
 
     def _custom_options_initializer(self, report, options, previous_options=None):
         super()._custom_options_initializer(report, options, previous_options=previous_options)
-        rates = self.env['res.currency'].search([('active', '=', True)])._get_rates(self.env.company, options.get('date').get('date_to'))
+        active_currencies = self.env['res.currency'].search([('active', '=', True)])
+        if len(active_currencies) < 2:
+            raise UserError(_("You need to activate more than one currency to access this report."))
+        rates = active_currencies._get_rates(self.env.company, options.get('date').get('date_to'))
         # Normalize the rates to the company's currency
         company_rate = rates[self.env.company.currency_id.id]
         for key in rates.keys():
@@ -38,7 +42,7 @@ class MulticurrencyRevaluationReportCustomHandler(models.AbstractModel):
                 'rate': (rates[currency_id.id]
                          if not (previous_options or {}).get('currency_rates', {}).get(str(currency_id.id), {}).get('rate') else
                          float(previous_options['currency_rates'][str(currency_id.id)]['rate'])),
-            } for currency_id in self.env['res.currency'].search([('active', '=', True)])
+            } for currency_id in active_currencies
         }
 
         options['company_currency'] = options['currency_rates'].pop(str(self.env.company.currency_id.id))

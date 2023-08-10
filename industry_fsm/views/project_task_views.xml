@@ -112,12 +112,11 @@
                 <attribute name="required">is_fsm and parent.partner_id</attribute>
             </xpath>
             <field name="partner_id" position="after">
-                <label for="action_fsm_navigate" invisible="not is_fsm"/>
-                <div invisible="not is_fsm">
+                <label for="action_fsm_navigate" invisible="not is_fsm or not partner_id"/>
+                <div invisible="not is_fsm or not partner_id">
                     <button
                         name="action_fsm_navigate" type="object" class="btn btn-link ps-0 pt-0 pb-2"
-                        icon="oi-arrow-right" string="View Itinerary" colspan="2"
-                        invisible="not is_fsm"/>
+                        icon="oi-arrow-right" string="View Itinerary" colspan="2"/>
                 </div>
                 <field name="is_task_phone_update" invisible="1"/>
                 <label for="partner_phone" invisible="not is_fsm"/>

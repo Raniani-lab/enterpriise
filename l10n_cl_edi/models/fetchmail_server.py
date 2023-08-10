@@ -266,7 +266,7 @@ class FetchmailServer(models.Model):
 
             except Exception as error:
                 _logger.info(error)
-                with self.env['account.move'].with_context(
+                with self.env.cr.savepoint(), self.env['account.move'].with_context(
                         default_move_type=default_move_type, allowed_company_ids=[company_id])._get_edi_creation() as invoice_form:
                     msgs.append(str(error))
                     invoice_form.partner_id = partner
@@ -317,7 +317,7 @@ class FetchmailServer(models.Model):
         """
         This method creates a draft vendor bill from the attached xml in the incoming email.
         """
-        with self.env['account.move'].with_context(
+        with self.env.cr.savepoint(), self.env['account.move'].with_context(
                 default_invoice_source_email=from_address,
                 default_move_type=default_move_type, allowed_company_ids=[company_id])._get_edi_creation() as invoice_form:
             journal = self._get_dte_purchase_journal(company_id)

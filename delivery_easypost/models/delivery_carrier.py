@@ -177,7 +177,7 @@ class DeliverCarrier(models.Model):
             raise UserError(result['error_message'])
 
         requests_session = requests.Session()
-        logmessage = _('Return Label<br/>')
+        logmessage = Markup(_('Return Label<br/>'))
         labels = []
         for track_number, label_url in result.get('track_label_data').items():
             try:

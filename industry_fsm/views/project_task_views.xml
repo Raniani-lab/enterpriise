@@ -66,7 +66,7 @@
                 <field name="is_fsm" column_invisible="True"/>
             </xpath>
             <xpath expr="//field[@name='child_ids']/tree/field[@name='partner_id']" position="attributes">
-                <attribute name="column_invisible">not parent.partner_id</attribute>
+                <attribute name="column_invisible">parent.is_fsm and not parent.partner_id</attribute>
                 <attribute name="required">is_fsm and parent.partner_id</attribute>
             </xpath>
             <field name="partner_id" position="after">

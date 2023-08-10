@@ -683,7 +683,7 @@ class FecImportWizard(models.TransientModel):
             # Since the accounts are now 'reconcile', we need to force the update of the residual amounts.
             self.env.add_to_compute(lines._fields['amount_residual'], lines)
 
-            lines.with_context(no_exchange_difference=True).reconcile()
+            lines.with_context(no_exchange_difference=True, no_cash_basis=True).reconcile()
 
     def _post_process(self, journals, moves):
         """ Post-process the imported entities.

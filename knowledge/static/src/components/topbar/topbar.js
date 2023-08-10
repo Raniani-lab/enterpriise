@@ -276,6 +276,10 @@ KnowledgeTopbar.components = {
 };
 export const knowledgeTopbar = {
     component: KnowledgeTopbar,
+    fieldDependencies: [
+        { name: "create_uid", type: "many2one", relation: "res.users" },
+        { name: "last_edition_uid", type: "many2one", relation: "res.users" },
+    ]
 };
 
 registry.category('view_widgets').add('knowledge_topbar', knowledgeTopbar);

@@ -15,7 +15,7 @@ class AgedPartnerBalanceCustomHandler(models.AbstractModel):
 
     def _get_custom_display_config(self):
         return {
-            'client_css_custom_class': 'age_partner_balance',
+            'css_custom_class': 'age_partner_balance',
             'components': {
                 'AccountReportLineName': 'account_reports.AgedPartnerBalanceLineName',
             },

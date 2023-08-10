@@ -17,7 +17,7 @@ class JournalReportCustomHandler(models.AbstractModel):
 
     def _get_custom_display_config(self):
         return {
-            'client_css_custom_class': 'journal_report',
+            'css_custom_class': 'journal_report',
             'components': {
                 'AccountReportLine': 'account_reports.JournalReportLine',
             },
@@ -27,10 +27,9 @@ class JournalReportCustomHandler(models.AbstractModel):
                 'AccountReportLineName': 'account_reports.JournalReportLineName',
             },
             'pdf_export': {
-                'pdf_export_line': 'account_reports.journal_report_pdf_export_line',
-                'pdf_export_cell': 'account_reports.journal_report_pdf_export_cell',
                 'pdf_export_main_table_header': 'account_reports.journal_report_pdf_export_main_table_header',
                 'pdf_export_filters': 'account_reports.journal_report_pdf_export_filters',
+                'pdf_export_main_table_body': 'account_reports.journal_report_pdf_export_main_table_body',
             },
         }
 
@@ -40,9 +39,13 @@ class JournalReportCustomHandler(models.AbstractModel):
 
         # Set the options with the journals that should be unfolded by default.
         lines = []
+        unfolded_journals = []
         for journal_index, (journal_id, journal_vals) in enumerate(journal_query_res.items()):
             journal_key = report._get_generic_line_id('account.journal', journal_id)
-            lines.append(self._get_journal_line(options, journal_key, journal_vals, is_first_journal=journal_index == 0))
+            unfolded = journal_key in options.get('unfolded_lines') or options.get('unfold_all')
+            if unfolded:
+                unfolded_journals.append(unfolded)
+            lines.append(self._get_journal_line(options, journal_key, journal_vals, unfolded, is_first_journal=len(unfolded_journals) == 1))
 
         return [(0, line) for line in lines]
 
@@ -69,7 +72,7 @@ class JournalReportCustomHandler(models.AbstractModel):
                 line_id = report._get_generic_line_id('account.journal', journal_id)
                 if line_id not in unfolded_lines:
                     unfolded_lines.append(line_id)
-        elif not any_unfolded_journal:
+        elif not any_unfolded_journal and not options['export_mode'] == 'print':
             line_id = report._get_generic_line_id('account.journal', next(iter(available_journal_ids)))
             if line_id not in unfolded_lines:
                 unfolded_lines.append(line_id)
@@ -309,7 +312,7 @@ class JournalReportCustomHandler(models.AbstractModel):
             'parent_id': parent_key,
         }
 
-    def _get_journal_line(self, options, line_id, eval_dict, is_first_journal):
+    def _get_journal_line(self, options, line_id, eval_dict, unfolded, is_first_journal):
         """ returns the line that is representing a journal in the report.
 
         :param options: The report options
@@ -326,10 +329,10 @@ class JournalReportCustomHandler(models.AbstractModel):
             'level': 0,
             'columns': [],
             'unfoldable': True,
-            'unfolded': line_id in options.get('unfolded_lines') or options.get('unfold_all'),
+            'unfolded': unfolded,
             'journal_id': journal_vals['id'],
             'journal_type': journal_vals['type'],
-            'page_break': not is_first_journal,
+            'page_break': unfolded and not is_first_journal,
             'expand_function': '_report_expand_unfoldable_line_journal_report' if not options['group_by_months'] else '_report_expand_unfoldable_line_journal_report_expand_journal_line_by_month',
             'colspan': len(options['columns']) + 1  # We want it to take the whole line. It makes it easier to unfold it.
         }

@@ -586,19 +586,19 @@ class CashFlowReportCustomHandler(models.AbstractModel):
         # Indentation of the following dict reflects the structure of the report.
         return {
             'opening_balance': {'name': _('Cash and cash equivalents, beginning of period'), 'level': 0},
-            'net_increase': {'name': _('Net increase in cash and cash equivalents'), 'level': 0},
-                'operating_activities': {'name': _('Cash flows from operating activities'), 'level': 2, 'parent_line_id': 'net_increase', 'class': 'fw-bold'},
+            'net_increase': {'name': _('Net increase in cash and cash equivalents'), 'level': 0, 'unfolded': True},
+                'operating_activities': {'name': _('Cash flows from operating activities'), 'level': 2, 'parent_line_id': 'net_increase', 'class': 'fw-bold', 'unfolded': True},
                     'advance_payments_customer': {'name': _('Advance Payments received from customers'), 'level': 4, 'parent_line_id': 'operating_activities'},
                     'received_operating_activities': {'name': _('Cash received from operating activities'), 'level': 4, 'parent_line_id': 'operating_activities'},
                     'advance_payments_suppliers': {'name': _('Advance payments made to suppliers'), 'level': 4, 'parent_line_id': 'operating_activities'},
                     'paid_operating_activities': {'name': _('Cash paid for operating activities'), 'level': 4, 'parent_line_id': 'operating_activities'},
-                'investing_activities': {'name': _('Cash flows from investing & extraordinary activities'), 'level': 2, 'parent_line_id': 'net_increase', 'class': 'fw-bold'},
+                'investing_activities': {'name': _('Cash flows from investing & extraordinary activities'), 'level': 2, 'parent_line_id': 'net_increase', 'class': 'fw-bold', 'unfolded': True},
                     'investing_activities_cash_in': {'name': _('Cash in'), 'level': 4, 'parent_line_id': 'investing_activities'},
                     'investing_activities_cash_out': {'name': _('Cash out'), 'level': 4, 'parent_line_id': 'investing_activities'},
-                'financing_activities': {'name': _('Cash flows from financing activities'), 'level': 2, 'parent_line_id': 'net_increase', 'class': 'fw-bold'},
+                'financing_activities': {'name': _('Cash flows from financing activities'), 'level': 2, 'parent_line_id': 'net_increase', 'class': 'fw-bold', 'unfolded': True},
                     'financing_activities_cash_in': {'name': _('Cash in'), 'level': 4, 'parent_line_id': 'financing_activities'},
                     'financing_activities_cash_out': {'name': _('Cash out'), 'level': 4, 'parent_line_id': 'financing_activities'},
-                'unclassified_activities': {'name': _('Cash flows from unclassified activities'), 'level': 2, 'parent_line_id': 'net_increase', 'class': 'fw-bold'},
+                'unclassified_activities': {'name': _('Cash flows from unclassified activities'), 'level': 2, 'parent_line_id': 'net_increase', 'class': 'fw-bold', 'unfolded': True},
                     'unclassified_activities_cash_in': {'name': _('Cash in'), 'level': 4, 'parent_line_id': 'unclassified_activities'},
                     'unclassified_activities_cash_out': {'name': _('Cash out'), 'level': 4, 'parent_line_id': 'unclassified_activities'},
             'closing_balance': {'name': _('Cash and cash equivalents, closing balance'), 'level': 0},
@@ -606,7 +606,6 @@ class CashFlowReportCustomHandler(models.AbstractModel):
 
     def _get_layout_line(self, report, options, layout_line_id, layout_line_data, report_data):
         line_id = report._get_generic_line_id(None, None, markup=layout_line_id)
-        unfold_all = options['export_mode'] == 'print' or options.get('unfold_all')
         unfoldable = 'aml_groupby_account' in report_data[layout_line_id] if layout_line_id in report_data else False
 
         column_values = []
@@ -626,7 +625,7 @@ class CashFlowReportCustomHandler(models.AbstractModel):
             'class': layout_line_data.get('class', ''),
             'columns': column_values,
             'unfoldable': unfoldable,
-            'unfolded': line_id in options['unfolded_lines'] or unfold_all,
+            'unfolded': line_id in options['unfolded_lines'] or layout_line_data.get('unfolded') or (options.get('unfold_all') and unfoldable),
         }
 
     def _get_aml_line(self, report, options, aml_data):

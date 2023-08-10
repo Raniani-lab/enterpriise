@@ -4120,59 +4120,6 @@ class AccountReport(models.Model):
         """
         return lines
 
-    def _format_lines_for_ellipsis(self, lines, options):
-        '''
-        This method allows to adjust the size of the line leading column (usually name) by adjusting its colspan
-        value. The main idea is that we look for the next column with a value and we make the name take all the space
-        available until there.
-
-        +------------------+-------+-------+-------+              +------------------+-------+-------+-------+
-        | Name (colspan=1) |       |       | Value |      =>      | Name (colspan=3)                 | Value |
-        +------------------+-------+-------+-------+              +------------------+-------+-------+-------+
-
-        We take into account the level of the line and if the line has children or is a children. That helps
-        keep the report coherent and easy to read.
-
-        Note 1: The goal of the key is to adjust the values of the colspan by level and by hierarchy
-        (i.e. if the line is a root line or a children line). That helps keeping the report coherent and easy to read.
-        '''
-        if len(options['columns']) > 1:
-            max_colspan_by_level = {}
-
-            for line in lines:
-                # See Note 1
-                key = f"{line.get('level')}_{'child' if 'parent_id' in line else 'root'}"
-
-                # We look for the first column with a name value
-                for index, column in enumerate(line.get('columns'), start=1):
-                    if (column.get('name') or column.get('info_popup_data') or column.get('edit_popup_data')) \
-                       and (index) < max_colspan_by_level.get(key, math.inf):
-                        max_colspan_by_level[key] = index
-
-                        # No need to keep checking columns after this
-                        break
-
-            # Apply colspans on the lines unless a colspan has already been added manually.
-            for line in filter(lambda x: not x.get('colspan'), lines):
-                new_columns = []
-                # See Note 1
-                key = f"{line.get('level')}_{'child' if 'parent_id' in line else 'root'}"
-                max_colspan = max_colspan_by_level.get(key)
-
-                if max_colspan is not None:
-                    # We remove empty leading columns
-                    for index, column in enumerate(line.get('columns'), start=1):
-                        if index >= max_colspan:
-                            new_columns.append(column)
-
-                    line['columns'] = new_columns
-                    line['colspan'] = max_colspan or line.get('colspan', 1)
-                else:
-                    line['colspan'] = len(line['columns']) + 1
-                    line['columns'] = []
-
-        return lines
-
     def get_expanded_lines(self, options, line_dict_id, groupby, expand_function_name, progress, offset):
         lines = self._expand_unfoldable_line(expand_function_name, line_dict_id, groupby, options, progress, offset)
         lines = self._fully_unfold_lines_if_needed(lines, options)
@@ -4584,7 +4531,7 @@ class AccountReport(models.Model):
                 additional_context={'base_url': base_url}
             ))
 
-        footer = self.env['ir.actions.report']._render_template("web.internal_layout", values=rcontext)
+        footer = self.env['ir.actions.report']._render_template("account_reports.internal_layout", values=rcontext)
         footer = self.env['ir.actions.report']._render_template("web.minimal_layout", values=dict(rcontext, subst=True, body=markupsafe.Markup(footer.decode())))
 
         file_content = self.env['ir.actions.report']._run_wkhtmltopdf(
@@ -4619,7 +4566,7 @@ class AccountReport(models.Model):
             'table_end': markupsafe.Markup('''
                 </tbody></table>
                 <div style="page-break-after: always"></div>
-                <table class="o_account_reports_table table-hover">
+                <table class="o_table table-hover">
             '''),
             'column_headers_render_data': self._get_column_headers_render_data(options),
             'custom_templates': custom_print_templates,
@@ -4631,7 +4578,6 @@ class AccountReport(models.Model):
             lines = self.sort_lines(lines, options)
 
         lines = self._format_lines_for_display(lines, options)
-        lines = self._format_lines_for_ellipsis(lines, options)
 
         render_values['lines'] = lines
 
@@ -4646,6 +4592,8 @@ class AccountReport(models.Model):
                 footnotes_to_render.append({'id': footnote_data['id'], 'number': number, 'text': footnote_data['text']})
 
         render_values['footnotes'] = footnotes_to_render
+
+        options['css_custom_class'] = report_info['custom_display'].get('css_custom_class', '')
 
         # Render.
         return self.env['ir.qweb']._render(template, render_values)
@@ -5550,7 +5498,7 @@ class AccountReportCustomHandler(models.AbstractModel):
         This function returns a dict (possibly empty, if there is no custom display config):
 
         {
-            'client_css_custom_class: 'class',
+            'css_custom_class: 'class',
             'components': {
 
             },

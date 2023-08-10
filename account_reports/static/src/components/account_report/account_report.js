@@ -71,7 +71,7 @@ export class AccountReport extends Component {
     }
 
     get cssCustomClass() {
-        return this.controller.data.custom_display.client_css_custom_class || "";
+        return this.controller.data.custom_display.css_custom_class || "";
     }
 
     getComponent(name) {

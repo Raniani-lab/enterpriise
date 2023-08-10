@@ -35,6 +35,7 @@ Accounting Reports
         'views/account_journal_dashboard_view.xml',
         'views/mail_activity_views.xml',
         'views/res_config_settings_views.xml',
+        'views/report_template.xml',
         'wizard/multicurrency_revaluation.xml',
         'wizard/report_export_wizard.xml',
         'wizard/fiscal_year.xml',
@@ -53,9 +54,12 @@ Accounting Reports
             'web/static/lib/bootstrap/scss/_variables.scss',
             ('include', 'web._assets_bootstrap_backend'),
             'web/static/fonts/fonts.scss',
-            'account_reports/static/src/scss/account_financial_report.scss',
-            'account_reports/static/src/scss/account_report_print.scss',
+            'account_reports/static/src/scss/**/*',
         ],
+        'web.report_assets_common': [
+            'account_reports/static/src/scss/account_pdf_export_template.scss',
+        ],
+
         'web.assets_backend': [
             'account_reports/static/src/components/**/*',
             'account_reports/static/src/js/**/*',

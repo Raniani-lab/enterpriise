@@ -45,10 +45,4 @@
             </record>
         </field>
     </record>
-
-    <template id="general_ledger_pdf_export_main" inherit_id="account_reports.pdf_export_main" primary="True">
-        <xpath expr="//table" position="attributes">
-            <attribute name="class">o_account_reports_table table-hover table-bold-unfold o_general_ledger</attribute>
-        </xpath>
-    </template>
 </odoo>

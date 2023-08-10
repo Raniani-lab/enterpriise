@@ -6,20 +6,24 @@
         </record>
 
         <template id="pdf_export_filters" inherit_id="account_reports.pdf_export_filters" primary="True">
-            <xpath expr="//div[hasclass('row')]/div[last()]" position="inside">
+            <xpath expr="//div[hasclass('row')][last()]" position="after">
                 <t t-if="options.get('closing_entry')">
-                    <div class="col-12">
-                        <div t-if="'ask_restitution' in options">Ask restitution:
-                            <t t-if="options.get('ask_restitution')">Yes</t>
-                            <t t-else="">No</t>
+                    <div class="row" t-if="'ask_restitution' in options">
+                        <div class="col-5"> Ask restitution: </div>
+                        <div class="col-7 o_text-muted">
+                            <t t-out="'Yes' if options.get('ask_restitution') else 'No'"/>
                         </div>
-                        <div t-if="'ask_payment' in options">Ask payment:
-                            <t t-if="options.get('ask_payment')">Yes</t>
-                            <t t-else="">No</t>
+                    </div>
+                    <div class="row" t-if="'ask_payment' in options">
+                        <div class="col-5"> Ask payment: </div>
+                        <div class="col-7 o_text-muted">
+                            <t t-out="'Yes' if options.get('ask_payment') else 'No'"/>
                         </div>
-                        <div t-if="'client_nihil' in options">Client nihil:
-                            <t t-if="options.get('client_nihil')">Yes</t>
-                            <t t-else="">No</t>
+                    </div>
+                    <div class="row" t-if="'client_nihil' in options">
+                        <div class="col-5"> Client nihil: </div>
+                        <div class="col-7 o_text-muted">
+                            <t t-out="'Yes' if options.get('client_nihil') else 'No'"/>
                         </div>
                     </div>
                 </t>

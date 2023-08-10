@@ -11,38 +11,4 @@
         <field name="custom_handler_model_id" ref="model_consolidation_trial_balance_report_handler"/>
     </record>
 
-    <template id="consolidation_report_pdf_export_line" inherit_id="account_reports.pdf_export_line" primary="True">
-        <xpath expr="//t[@t-as='cell']" position="replace">
-            <t t-set="column_index" t-value="0"/>
-            <t t-foreach="line.get('columns')" t-as="cell">
-                <td t-att-class="'acc_rep_line ' + (cell.get('class', options.get('column_headers')[0][column_index].get('class', '')) + (line.get('unfoldable') and ' o_foldable_total' or '')) + ' acc_rep_line_indent'"
-                    t-att-style="cell.get('style', options.get('column_headers')[0][column_index].get('style', ''))">
-
-                    <t t-call="{{custom_templates.get('pdf_export_cell', 'account_reports.pdf_export_cell')}}"/>
-                </td>
-                <t t-set="column_index" t-value="column_index + 1"/>
-            </t>
-        </xpath>
-    </template>
-
-    <template id="consolidation_report_pdf_export_main_table_header">
-        <thead class="o_account_reports_header_hierarchy">
-            <tr>
-                <th t-att-class="acc_rep_column_header" style="width:40%;"/>
-
-                <t t-foreach="options.get('column_headers')" t-as="column_headers">
-                    <t t-foreach="column_headers" t-as="cell">
-                        <th t-att-class="'acc_rep_column_header ' + (cell.get('class', ''))"
-                            t-att-colspan="cell.get('colspan')"
-                            t-att-style="cell.get('style', '')"
-                            t-att-title="cell.get('title')">
-
-                            <t t-call="{{custom_templates.get('pdf_export_cell', 'account_reports.pdf_export_cell')}}"/>
-                        </th>
-                    </t>
-                </t>
-            </tr>
-        </thead>
-    </template>
-
 </odoo>

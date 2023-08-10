@@ -21,9 +21,6 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             'templates': {
                 'AccountReportLineName': 'account_reports.GeneralLedgerLineName',
             },
-            'pdf_export': {
-                'pdf_export_main': 'account_reports.general_ledger_pdf_export_main',
-            },
         }
 
     def _custom_options_initializer(self, report, options, previous_options=None):

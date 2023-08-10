@@ -18,7 +18,7 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
 
     def _get_custom_display_config(self):
         return {
-            'client_css_custom_class': 'partner_ledger',
+            'css_custom_class': 'partner_ledger',
             'templates': {
                 'AccountReportLineName': 'account_reports.PartnerLedgerLineName',
             },
@@ -577,7 +577,6 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
     ####################################################
     def _get_report_line_partners(self, options, partner, partner_values, level_shift=0):
         company_currency = self.env.company.currency_id
-        unfold_all = (options['export_mode'] == 'print' and not options.get('unfolded_lines')) or options.get('unfold_all')
 
         unfoldable = False
         column_values = []
@@ -598,7 +597,7 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
             'level': 1 + level_shift,
             'trust': partner.trust if partner else None,
             'unfoldable': unfoldable,
-            'unfolded': line_id in options['unfolded_lines'] or unfold_all,
+            'unfolded': line_id in options['unfolded_lines'] or options['unfold_all'],
             'expand_function': '_report_expand_unfoldable_line_partner_ledger',
         }
 

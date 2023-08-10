@@ -24,10 +24,6 @@ class TrialBalanceCustomHandler(models.AbstractModel):
                 'AccountReportLine': 'account_consolidation.ConsolidationReportLine',
                 'AccountReportLineName': 'account_consolidation.ConsolidationReportLineName',
             },
-            'pdf_export': {
-                'pdf_export_main_table_header': 'account_consolidation.consolidation_report_pdf_export_main_table_header',
-                'pdf_export_line': 'account_consolidation.consolidation_report_pdf_export_line',
-            },
         }
 
     def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals, warnings=None):

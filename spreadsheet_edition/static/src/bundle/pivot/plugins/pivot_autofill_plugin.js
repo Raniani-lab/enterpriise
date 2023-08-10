@@ -51,6 +51,9 @@ export default class PivotAutofillPlugin extends UIPlugin {
                 this.getters.evaluateFormula(this.getters.getActiveSheetId(), arg).toString()
             );
         const pivotId = evaluatedArgs[0];
+        if (!this.getters.isExistingPivot(pivotId)) {
+            return formula;
+        }
         const dataSource = this.getters.getPivotDataSource(pivotId);
         for (let i = evaluatedArgs.length - 1; i > 0; i--) {
             const fieldName = evaluatedArgs[i];
@@ -116,6 +119,9 @@ export default class PivotAutofillPlugin extends UIPlugin {
             .map(astToFormula)
             .map((arg) => this.getters.evaluateFormula(this.getters.getActiveSheetId(), arg));
         const pivotId = evaluatedArgs[0];
+        if (!this.getters.isExistingPivot(pivotId)) {
+            return [{ title: _t("Missing pivot"), value: _t("Missing pivot #%s", pivotId) }];
+        }
         if (functionName === "ODOO.PIVOT") {
             return this._tooltipFormatPivot(pivotId, evaluatedArgs, isColumn);
         } else if (functionName === "ODOO.PIVOT.HEADER") {

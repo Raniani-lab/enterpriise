@@ -2,6 +2,7 @@
 
 import { _t } from "@web/core/l10n/translation";
 import { astToFormula, UIPlugin } from "@odoo/o-spreadsheet";
+import { sprintf } from "@web/core/utils/strings";
 import { getFirstListFunction, getNumberOfListFormulas } from "@spreadsheet/list/list_helpers";
 
 export default class ListAutofillPlugin extends UIPlugin {
@@ -27,6 +28,9 @@ export default class ListAutofillPlugin extends UIPlugin {
             .map(astToFormula)
             .map((arg) => this.getters.evaluateFormula(this.getters.getActiveSheetId(), arg));
         const listId = evaluatedArgs[0];
+        if (!this.getters.isExistingList(listId)) {
+            return formula;
+        }
         const columns = this.getters.getListDefinition(listId).columns;
         if (functionName === "ODOO.LIST") {
             const position = parseInt(evaluatedArgs[1], 10);
@@ -85,9 +89,13 @@ export default class ListAutofillPlugin extends UIPlugin {
         const evaluatedArgs = args
             .map(astToFormula)
             .map((arg) => this.getters.evaluateFormula(this.getters.getActiveSheetId(), arg));
+        const listId = evaluatedArgs[0];
+        if (!this.getters.isExistingList(listId)) {
+            return sprintf(_t("Missing list #%s"), listId);
+        }
         if (isColumn || functionName === "ODOO.LIST.HEADER") {
             const fieldName = functionName === "ODOO.LIST" ? evaluatedArgs[2] : evaluatedArgs[1];
-            return this.getters.getListDataSource(evaluatedArgs[0]).getListHeaderValue(fieldName);
+            return this.getters.getListDataSource(listId).getListHeaderValue(fieldName);
         }
         return _t("Record #") + evaluatedArgs[1];
     }

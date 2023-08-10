@@ -20,6 +20,7 @@ export class MrpDisplayAction extends Component {
     get fieldsStructure() {
         return {
             "mrp.production": [
+                "display_name",
                 "check_ids",
                 "company_id",
                 "employee_ids",
@@ -39,6 +40,7 @@ export class MrpDisplayAction extends Component {
                 "date_start",
             ],
             "mrp.workorder": [
+                "display_name",
                 "current_quality_check_id",
                 "duration",
                 "is_user_working",

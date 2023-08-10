@@ -109,7 +109,7 @@ def make_proxy_request(endpoint, env, payload=None):
                 _("Error code: %s; description: %s") % (error_code, error_description)
             )
     except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
-        _logger.exception("Could not establish the connection to the proxy.")
+        _logger.warning("Could not establish the connection to the proxy.", exc_info=True)
         raise ValidationError(_("Could not establish the connection to the proxy."))
     return response.json()
 

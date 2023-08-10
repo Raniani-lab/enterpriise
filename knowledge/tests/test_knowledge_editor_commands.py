@@ -48,6 +48,12 @@ class TestKnowledgeEditorCommands(HttpCase):
         """Test the /index command in the editor"""
         self.start_tour('/web', 'knowledge_index_command_tour', login='admin', step_delay=100)
 
+    def test_knowledge_item_kanban_custom_act_window(self):
+        """Test the items kanban as a custom act_window object (no xmlid) and
+        the management of the help field in the dom
+        """
+        self.start_tour('/web', 'knowledge_item_kanban_custom_act_window', login='admin')
+
     def test_knowledge_kanban_command_tour(self):
         """Test the /kanban command in the editor"""
         self.start_tour('/web', 'knowledge_kanban_command_tour', login='admin')

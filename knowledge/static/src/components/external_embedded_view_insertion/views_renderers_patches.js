@@ -1,6 +1,7 @@
 /** @odoo-module */
 
 import { _t } from "@web/core/l10n/translation";
+import { renderToElement } from "@web/core/utils/render";
 import { CalendarRenderer } from "@web/views/calendar/calendar_renderer";
 import { CohortRenderer } from "@web_cohort/cohort_renderer";
 import { GanttRenderer } from "@web_gantt/gantt_renderer";
@@ -16,6 +17,7 @@ import {
     useOwnedDialogs,
     useService } from "@web/core/utils/hooks";
 import { omit } from "@web/core/utils/objects";
+import { encodeDataBehaviorProps } from "@knowledge/js/knowledge_utils";
 
 /**
  * The following patch will add two new entries to the 'Favorites' dropdown menu
@@ -25,14 +27,75 @@ const EmbeddedViewRendererPatch = () => ({
     setup() {
         super.setup(...arguments);
         if (this.env.searchModel) {
-            useBus(this.env.searchModel, 'insert-embedded-view', this._insertBackendBehavior.bind(this, 'render_embedded_view'));
-            useBus(this.env.searchModel, 'insert-view-link', this._insertBackendBehavior.bind(this, 'render_embedded_view_link'));
+            useBus(this.env.searchModel, 'insert-embedded-view', this._insertCurrentViewInKnowledge.bind(this, 'knowledge.embedded_view'));
+            useBus(this.env.searchModel, 'insert-view-link', this._insertCurrentViewInKnowledge.bind(this, 'knowledge.embedded_view_link'));
             this.orm = useService('orm');
             this.actionService = useService('action');
             this.addDialog = useOwnedDialogs();
             this.userService = useService('user');
             this.knowledgeCommandsService = useService('knowledgeCommandsService');
         }
+    },
+    /**
+     * @param {string} isView TODO remove with upgrade, future improvements
+     *                 will use 'display_name' everywhere, currently we have to
+     *                 fetch the right name prop depending on embed type.
+     *                 view_link_behavior uses "name" and embedded_view_behavior
+     *                 uses "display_name".
+     * @returns {Object|null} Template props necessary to render an embedded
+     *                        view in Knowledge, or null if it is not possible
+     *                        to store this view as an embedded view.
+     */
+    _extractCurrentViewEmbedTemplateProps(isView=true) {
+        const config = this.env.config;
+        const xmlId = this.actionService.currentController?.action?.xml_id;
+        const context = this._getViewContext();
+        const display_name = config.getDisplayName();
+        const nameProp = isView ? {
+            // used by embedded view behavior
+            display_name: display_name,
+        } : {
+            // used by view link behavior TODO: remove with upgrade
+            name: display_name,
+        };
+        if (xmlId) {
+            return {
+                behaviorProps: encodeDataBehaviorProps({
+                    action_xml_id: xmlId,
+                    context,
+                    view_type: config.viewType,
+                    ...nameProp,
+                }),
+            };
+        }
+        /**
+         * Recover the original action (before the service pre-processing). The
+         * raw action is needed because it will be pre-processed again as a
+         * "different" action, after being stripped of its id, in Knowledge.
+         * If there is no original action, it means that the action is not
+         * serializable, therefore it cannot be stored in the body of an
+         * article.
+         */
+        const originalAction = this.actionService.currentController?.action?._originalAction;
+        if (originalAction) {
+            const action = JSON.parse(originalAction);
+            // Don't keep the non-markup help (to not store it in
+            // `data-behavior-props`)
+            delete action.help;
+            // Recover the markup version of the act_window help field.
+            const help = this.actionService.currentController.action.help;
+            action.display_name = display_name;
+            return {
+                behaviorProps: encodeDataBehaviorProps({
+                    act_window: action,
+                    context,
+                    view_type: config.viewType,
+                    ...nameProp,
+                }),
+                action_help: help,
+            };
+        }
+        return null;
     },
     /**
      * Returns the full context that will be passed to the embedded view.
@@ -63,27 +126,21 @@ const EmbeddedViewRendererPatch = () => ({
      * Allow to choose an article in a modal, redirect to that article and
      * append the rendered template "blueprint" needed for the desired Behavior
      *
-     * @param {string} renderFunctionName name of the python method to render
-     *                 the template "blueprint" related to the desired Behavior
+     * @param {string} template template name of the Behavior's blueprint to
+     *                 render.
      */
-    _insertBackendBehavior(renderFunctionName) {
+    _insertCurrentViewInKnowledge(template) {
         const config = this.env.config;
-        if (config.actionType !== 'ir.actions.act_window') {
-            return;
+        const templateProps = this._extractCurrentViewEmbedTemplateProps(template === "knowledge.embedded_view");
+        if (config.actionType !== 'ir.actions.act_window' || !templateProps) {
+            throw new Error('This view can not be embedded in an article: the action is not an "ir.actions.act_window" or is not serializable.');
         }
         this._openArticleSelector(async id => {
-            const context = this._getViewContext();
-            context['keyOptionalFields'] = this.keyOptionalFields;
-            const parser = new DOMParser();
-            const behaviorBlueprint = await this.orm.call('knowledge.article', renderFunctionName,
-                [[id],
-                config.actionId,
-                config.viewType,
-                config.getDisplayName(),
-                context]
-            );
             this.knowledgeCommandsService.setPendingBehaviorBlueprint({
-                behaviorBlueprint: parser.parseFromString(behaviorBlueprint, 'text/html').body.firstElementChild,
+                behaviorBlueprint: renderToElement(
+                    template,
+                    templateProps,
+                ),
                 model: 'knowledge.article',
                 field: 'body',
                 resId: id,
@@ -129,7 +186,8 @@ const EmbeddedViewListRendererPatch = () => ({
     _getViewContext() {
         const context = super._getViewContext();
         Object.assign(context, {
-            orderBy: JSON.stringify(this.props.list.orderBy)
+            orderBy: JSON.stringify(this.props.list.orderBy),
+            keyOptionalFields: this.keyOptionalFields,
         });
         return context;
     },

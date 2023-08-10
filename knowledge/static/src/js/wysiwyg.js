@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { Component } from '@odoo/owl';
-import { _t } from "@web/legacy/js/services/core";
+import { _t } from "@web/core/l10n/translation";
 import { renderToElement } from "@web/core/utils/render";
 import { Wysiwyg } from '@web_editor/js/wysiwyg/wysiwyg';
 import { ItemCalendarPropsDialog } from "@knowledge/components/item_calendar_props_dialog/item_calendar_props_dialog";
@@ -123,7 +123,7 @@ patch(Wysiwyg.prototype, {
                             'create_default_item_stages',
                             [[this.options.recordInfo.res_id]],
                         );
-                        this._insertEmbeddedView('knowledge.knowledge_article_item_action_stages', viewType, name, restoreSelection, {
+                        this._insertEmbeddedView('knowledge.knowledge_article_item_action_stages', undefined, viewType, name, restoreSelection, {
                             active_id: this.options.recordInfo.res_id,
                             default_parent_id: this.options.recordInfo.res_id,
                             default_is_article_item: true,
@@ -141,7 +141,7 @@ patch(Wysiwyg.prototype, {
                     const restoreSelection = preserveCursor(this.odooEditor.document);
                     const viewType = 'kanban';
                     this._openEmbeddedViewDialog(viewType, name => {
-                        this._insertEmbeddedView('knowledge.knowledge_article_item_action', viewType, name, restoreSelection, {
+                        this._insertEmbeddedView('knowledge.knowledge_article_item_action', undefined, viewType, name, restoreSelection, {
                             active_id: this.options.recordInfo.res_id,
                             default_parent_id: this.options.recordInfo.res_id,
                             default_is_article_item: true,
@@ -159,7 +159,7 @@ patch(Wysiwyg.prototype, {
                     const restoreSelection = preserveCursor(this.odooEditor.document);
                     const viewType = 'list';
                     this._openEmbeddedViewDialog(viewType, name => {
-                        this._insertEmbeddedView('knowledge.knowledge_article_item_action', viewType, name, restoreSelection, {
+                        this._insertEmbeddedView('knowledge.knowledge_article_item_action', undefined, viewType, name, restoreSelection, {
                             active_id: this.options.recordInfo.res_id,
                             default_parent_id: this.options.recordInfo.res_id,
                             default_is_article_item: true,
@@ -272,7 +272,10 @@ patch(Wysiwyg.prototype, {
     },
     /**
      * Inserts a view in the editor
-     * @param {String} actWindowId - Act window id of the action
+     * @param {String} [actWindowId] - action xml id (specify either this or
+     *                 the object)
+     * @param {Object} [actWindowObject] - ActionDescription as specified by
+     *                 @see action_service
      * @param {String} viewType - View type
      * @param {String} name - Name
      * @param {Function} restoreSelection - function to restore the selection
@@ -282,14 +285,26 @@ patch(Wysiwyg.prototype, {
      * @param {Object} additionalProps - props to pass to the view when loading
      *                 it.
      */
-    _insertEmbeddedView: async function (actWindowId, viewType, name, restoreSelection, context={}, additionalViewProps={}) {
+    _insertEmbeddedView: async function (
+        actWindowXMLId, actWindowObject, viewType, name, restoreSelection,
+        context={}, additionalViewProps=undefined
+    ) {
+        const actionWindow = actWindowXMLId ? { action_xml_id: actWindowXMLId } : { act_window: actWindowObject };
         context.knowledge_embedded_view_framework = 'owl';
-
-        const embeddedViewBlock = $(await this.orm.call(
-            'knowledge.article',
-            'render_embedded_view',
-            [[this.options.recordInfo.res_id], actWindowId, viewType, name, context, additionalViewProps],
-        ))[0];
+        const props = {
+            ...actionWindow,
+            display_name: name,
+            view_type: viewType,
+            context,
+        };
+        if (additionalViewProps) {
+            props.additionalViewProps = additionalViewProps;
+        }
+        const behaviorProps = encodeDataBehaviorProps(props);
+        const embeddedViewBlock = renderToElement('knowledge.embedded_view', {
+            behaviorProps,
+            action_help: actionWindow.act_window?.help,
+        });
         this._notifyNewBehavior(embeddedViewBlock, restoreSelection);
     },
     /**
@@ -381,7 +396,7 @@ patch(Wysiwyg.prototype, {
             isNew: true,
             knowledgeArticleId: this.options.recordInfo.res_id,
             saveItemCalendarProps: (name, itemCalendarProps) => {
-                this._insertEmbeddedView('knowledge.knowledge_article_action_item_calendar', 'calendar', name, restoreSelection, {
+                this._insertEmbeddedView('knowledge.knowledge_article_action_item_calendar', undefined, 'calendar', name, restoreSelection, {
                     active_id: this.options.recordInfo.res_id,
                     default_parent_id: this.options.recordInfo.res_id,
                     default_icon: '📄',

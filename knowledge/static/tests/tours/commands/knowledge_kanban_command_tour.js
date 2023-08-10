@@ -3,6 +3,8 @@
 import { registry } from "@web/core/registry";
 import { endKnowledgeTour, openCommandBar } from '../knowledge_tour_utils.js';
 import { stepUtils } from "@web_tour/tour_service/tour_utils";
+import { setSelection } from '@web_editor/js/editor/odoo-editor/src/utils/utils';
+import { markup } from "@odoo/owl";
 
 registry.category("web_tour.tours").add('knowledge_kanban_cards_command_tour', {
     url: '/web',
@@ -16,6 +18,9 @@ registry.category("web_tour.tours").add('knowledge_kanban_cards_command_tour', {
     },
 }, { // click on the /kanban command
     trigger: '.oe-powerbox-commandName:contains("Item Cards")',
+    run: 'click',
+}, { // choose a name for the embedded view
+    trigger: '.modal-footer button.btn-primary',
     run: 'click',
 },
 ...commonKanbanSteps(),
@@ -40,6 +45,9 @@ registry.category("web_tour.tours").add('knowledge_kanban_command_tour', {
     },
 }, { // click on the /kanban command
     trigger: '.oe-powerbox-commandName:contains("Item Kanban")',
+    run: 'click',
+}, { // choose a name for the embedded view
+    trigger: '.modal-footer button.btn-primary',
     run: 'click',
 },
 ...commonKanbanSteps(),
@@ -73,17 +81,44 @@ registry.category("web_tour.tours").add('knowledge_kanban_command_tour', {
 }, ...endKnowledgeTour()
 ]});
 
+registry.category("web_tour.tours").add('knowledge_item_kanban_custom_act_window', {
+    url: '/web',
+    test: true,
+    steps: () => [stepUtils.showAppsMenuItem(), { // open the Knowledge App
+    trigger: '.o_app[data-menu-xmlid="knowledge.knowledge_menu_root"]',
+}, { // manually insert view from act_window object
+    trigger: '.odoo-editor-editable > p',
+    run: function () {
+        const wysiwyg = $(this.$anchor[0].closest('.odoo-editor-editable')).data('wysiwyg');
+        const context = articleItemsKanbanActionContext(wysiwyg);
+        const restoreSelection = () => {
+            setSelection(this.$anchor[0]);
+        }
+        wysiwyg._insertEmbeddedView(undefined, articleItemsKanbanAction, "kanban", articleItemsKanbanAction.name, restoreSelection, context);
+    },
+},
+...commonKanbanSteps(),
+...domHelpFieldSteps(),
+...endKnowledgeTour()
+]});
+
 function commonKanbanSteps () {
     return [
-        { // choose a name for the embedded view
-            trigger: '.modal-footer button.btn-primary',
-            run: 'click',
-        }, { // scroll to the embedded view to load it
+        { // scroll to the embedded view to load it
             trigger: '.o_knowledge_behavior_type_embedded_view',
             run: function () {
                 this.$anchor[0].scrollIntoView();
             },
         }, { // wait for the kanban view to be mounted
+            trigger: '.o_knowledge_behavior_type_embedded_view .o_kanban_renderer',
+            run: () => {},
+        },
+    ];
+}
+
+function domHelpFieldSteps () {
+    return [
+        {
             trigger: '.o_knowledge_behavior_type_embedded_view .o_kanban_renderer',
             run: () => {
                 const helpField = document.querySelector('.o_knowledge_content[data-prop-name="action_help"]');
@@ -170,4 +205,22 @@ function commonKanbanSteps () {
             run: 'click',
         }
     ];
+}
+
+const articleItemsKanbanAction = {
+    domain: "[('parent_id', '=', active_id), ('is_article_item', '=', True)]",
+    help: markup('<p class="o_nocontent_help">No data to display</p>'),
+    name: "Article Items",
+    res_model: 'knowledge.article',
+    type: 'ir.actions.act_window',
+    views: [[false, 'kanban']],
+    view_mode: 'kanban',
 };
+
+function articleItemsKanbanActionContext (wysiwyg) {
+    return {
+        active_id: wysiwyg.options.recordInfo.res_id,
+        default_parent_id: wysiwyg.options.recordInfo.res_id,
+        default_is_article_item: true,
+    };
+}

@@ -17,7 +17,6 @@
     'data': [
         'data/article_templates.xml',
         'data/ir_config_parameter_data.xml',
-        'data/behaviors_templates.xml',
         'data/knowledge_article_template_category_data.xml',
         'data/knowledge_article_template_data.xml',
         'data/ir_actions_data.xml',

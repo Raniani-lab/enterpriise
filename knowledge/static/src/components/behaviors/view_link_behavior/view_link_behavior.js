@@ -34,7 +34,7 @@ export class ViewLinkBehavior extends AbstractBehavior {
      */
     async openViewLink (event) {
         const action = await this.actionService.loadAction(
-            this.props.act_window,
+            this.props.act_window || this.props.action_xml_id,
             makeContext([this.props.context])
         );
         if (action.type !== "ir.actions.act_window") {
@@ -60,7 +60,8 @@ ViewLinkBehavior.template = "knowledge.ViewLinkBehavior";
 ViewLinkBehavior.components = {};
 ViewLinkBehavior.props = {
     ...AbstractBehavior.props,
-    act_window: { type: Object },
+    act_window: { type: Object, optional: true },
+    action_xml_id: { type: String, optional: true },
     context: { type: Object },
     name: { type: String },
     view_type: { type: String }

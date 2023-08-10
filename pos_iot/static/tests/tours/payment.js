@@ -3,6 +3,7 @@
 
 import { registry } from "@web/core/registry";
 import { stepUtils } from "@web_tour/tour_service/tour_utils";
+import { ProductScreen } from "@point_of_sale/../tests/tours/helpers/ProductScreenTourMethods";
 
 class TerminalProxy {
     action(data) {
@@ -83,11 +84,7 @@ registry.category("web_tour.tours").add("payment_terminals_tour", {
             content: "cash control",
             trigger: ".opening-cash-control footer .button",
         },
-        {
-            // Leave category displayed by default
-            content: "Click category switch",
-            trigger: ".breadcrumb-home",
-        },
+        ...ProductScreen.do.clickHomeCategory(),
         {
             content: "Buy a Desk Organizer",
             trigger: '.product-list .product-name:contains("Desk Organizer")',

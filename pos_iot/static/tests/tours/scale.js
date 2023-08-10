@@ -3,6 +3,7 @@
 
 import { registry } from "@web/core/registry";
 import { stepUtils } from "@web_tour/tour_service/tour_utils";
+import { ProductScreen } from "@point_of_sale/../tests/tours/helpers/ProductScreenTourMethods";
 
 class PosScaleDummy {
     action() {}
@@ -37,10 +38,7 @@ registry.category("web_tour.tours").add("pos_iot_scale_tour", {
                 posmodel.hardwareProxy.deviceControllers.scale = new PosScaleDummy();
             },
         },
-        {
-            // Leave category displayed by default
-            trigger: ".breadcrumb-home",
-        },
+        ...ProductScreen.do.clickHomeCategory(),
         {
             trigger: '.product:contains("Whiteboard Pen")',
         },

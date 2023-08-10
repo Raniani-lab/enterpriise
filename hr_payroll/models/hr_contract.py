@@ -391,6 +391,6 @@ class HrContract(models.Model):
     def action_open_salary_attachments(self):
         self.ensure_one()
         action = self.env["ir.actions.actions"]._for_xml_id("hr_payroll.hr_salary_attachment_action")
-        action.update({'domain': [('employee_id', '=', self.employee_id.id)],
-                       'context': {'default_employee_id': self.employee_id.id}})
+        action.update({'domain': [('employee_ids', 'in', self.employee_id.ids)],
+                       'context': {'default_employee_ids': self.employee_id.ids}})
         return action

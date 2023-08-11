@@ -208,6 +208,6 @@ class HrContractSignDocumentWizard(models.TransientModel):
                 }
             )
 
-        if len(sign_requests) == 1 and self.env.user.id == self.responsible_id.id:
+        if len(sign_requests) == 1 and ((self.env.user.id in self.employee_ids.user_id.ids) or (self.env.user.id == self.responsible_id.id and sign_templates_both_ids)):
             return sign_requests.go_to_document()
         return True

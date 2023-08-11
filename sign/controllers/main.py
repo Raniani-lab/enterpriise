@@ -512,7 +512,7 @@ class Sign(http.Controller):
             order='create_date DESC',
             limit=20,
         )
-        items.sort(key=lambda item: (0 if uid == item['create_uid'][0] else 1))
+        items.sort(key=lambda item: (0 if item['create_uid'] and uid == item['create_uid'][0] else 1))
         items = items[:3]
         return [{
             'id': item['id'],

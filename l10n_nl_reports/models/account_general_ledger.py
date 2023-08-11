@@ -408,6 +408,6 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
 
         return {
             'file_name': report.get_default_report_filename('xaf'),
-            'file_content': audit_content,
-            'file_type': 'xml',
+            'file_content': audit_content.encode(),
+            'file_type': 'xaf',
         }

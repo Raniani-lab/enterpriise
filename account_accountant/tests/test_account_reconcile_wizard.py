@@ -413,3 +413,32 @@ class TestAccountReconcileWizard(AccountTestInvoicingCommon):
              'balance': 500.0, 'amount_currency': 500.0, 'currency_id': self.company_currency.id},
         ]
         self.assertWizardReconcileValues(line_1 + line_2, wizard_input_values, expected_values)
+
+    def test_reconcile_exchange_diff_foreign_currency(self):
+        """ When reconciling exchange_diff with amount_residual_currency = 0 we need to reconcile in company_currency.
+        """
+        exchange_gain_account = self.company_data['company'].income_currency_exchange_account_id
+        exchange_gain_account.reconcile = True
+        line_1 = self.create_line_for_reconciliation(150.0, 0.0, self.foreign_currency, '2016-01-01')
+        line_2 = self.create_line_for_reconciliation(-100.0, 0.0, self.foreign_currency, '2016-01-01', account_1=exchange_gain_account)
+        wizard_input_values = {
+            'journal_id': self.misc_journal.id,
+            'account_id': self.write_off_account.id,
+            'label': 'Write-Off Test Label',
+            'allow_partials': False,
+            'date': self.test_date,
+        }
+        # Note the transfer will always be in the currency of the line transferred
+        expected_transfer_values = [
+            {'account_id': self.receivable_account.id, 'name': f'Transfer from {exchange_gain_account.display_name}',
+             'balance': -100.0, 'amount_currency': 0.0, 'currency_id': self.foreign_currency.id},
+            {'account_id': exchange_gain_account.id, 'name': f'Transfer to {self.receivable_account.display_name}',
+             'balance': 100.0, 'amount_currency': 0.0, 'currency_id': self.foreign_currency.id},
+        ]
+        expected_values = [
+            {'account_id': self.receivable_account.id, 'name': 'Write-Off',
+             'balance': -50.0, 'amount_currency': -50.0, 'currency_id': self.company_currency.id},
+            {'account_id': self.write_off_account.id, 'name': 'Write-Off Test Label',
+             'balance': 50.0, 'amount_currency': 50.0, 'currency_id': self.company_currency.id},
+        ]
+        self.assertWizardReconcileValues(line_1 + line_2, wizard_input_values, expected_values, expected_transfer_values=expected_transfer_values)

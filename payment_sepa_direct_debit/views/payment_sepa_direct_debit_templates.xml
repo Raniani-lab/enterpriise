@@ -3,12 +3,12 @@
 
     <template id="inline_form">
         <div class="px-4 pb-4">
-            <label t-attf-for="o_sdd_iban_{{provider_id}}" class="form-label">IBAN</label>
+            <label for="o_sdd_iban" class="form-label">IBAN</label>
             <div class="input-group">
                 <div class="input-group-text">
                     <i class="fa fa-fw fa-bank"/>
                 </div>
-                <input t-attf-id="o_sdd_iban_{{provider_id}}"
+                <input id="o_sdd_iban"
                        type="text"
                        class="form-control"
                        required=""

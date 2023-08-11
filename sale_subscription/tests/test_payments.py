@@ -198,6 +198,7 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
             'payment_details': 'Test',
             'partner_id': portal_partner.id,
             'provider_id': self.dummy_provider.id,
+            'payment_method_id': self.payment_method_id,
             'provider_ref': 'test'
         })
         payment_with_token = self.env['account.payment'].create({
@@ -461,6 +462,7 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
         values = {
             'amount': subscription.amount_total / 2.,  # partial amount
             'provider_id': self.provider.id,
+            'payment_method_id': self.payment_method_id,
             'operation': 'offline',
             'currency_id': subscription.currency_id.id,
             'reference': reference,
@@ -507,6 +509,7 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
                 'payment_details': 'Test',
                 'partner_id': subscription.partner_id.id,
                 'provider_id': self.dummy_provider.id,
+                'payment_method_id': self.payment_method_id,
                 'provider_ref': 'test'
             })
             payment_with_token = self.env['account.payment'].create({

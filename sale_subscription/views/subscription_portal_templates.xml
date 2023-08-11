@@ -27,28 +27,29 @@
                                     role="button" class="mt8 btn btn-primary" t-att-href="subscription.get_portal_url()">
                                         Change plan
                                 </a>
-                                <div t-if="subscription.payment_token_id">Payment method:
-                                    <t t-esc="subscription.payment_token_id._build_display_name(max_length=14)"/>
+                                <div t-if="subscription.payment_token_id">
+                                    <strong>Payment method: <t t-esc="subscription.payment_token_id._build_display_name(max_length=14)"/></strong>
                                 </div>
                                 <t t-if="subscription.subscription_state in ['3_progress', '4_paused']">
                                     <!-- User is logged in under the partner set on the subscription -->
-                                    <t t-if="enable_manage_payment_form">
-                                        <a role="button" class="btn btn-secondary btn-block mb-2 w-100" data-bs-toggle="modal" data-bs-target="#payment_managing" href="#">
-                                            <t t-if="subscription.payment_token_id">Manage Payment Method</t>
+                                    <t t-if="enable_token_management">
+                                        <a role="button" class="btn btn-secondary btn-block mt-2 w-100" t-att-href="token_management_url">
+                                            <t t-if="subscription.payment_token_id">Change Payment Method</t>
                                             <t t-else="">Set Payment Method</t>
                                         </a>
                                     </t>
                                     <!-- User is logged in under a partner different than that set on the subscription -->
-                                    <button t-elif="not user._is_public()"
-                                            title="Managing payment methods requires to be logged in under the customer order."
-                                            href="#"
-                                            disabled="true"
-                                            role="button"
-                                            class="mt-2 btn btn-secondary w-100">
-                                        Manage Payment Methods
-                                    </button>
+                                    <div t-elif="not user._is_public()"
+                                         title="Managing payment methods requires to be logged in under the customer account."
+                                    > <!-- Wrap the disabled button with a div to show the title on hover. -->
+                                         <button href="#"
+                                                 disabled="true"
+                                                 class="mt-2 btn btn-secondary w-100">
+                                             Manage Payment Methods
+                                         </button>
+                                    </div>
                                     <!-- User is logged out -->
-                                    <a t-else="providers or tokens"
+                                    <a t-elif="payment_methods_sudo or tokens_sudo"
                                        title="You must be logged in to manage your payment methods."
                                        t-attf-href="/web/login?redirect={{subscription.get_portal_url()}}"
                                        role="button"
@@ -91,7 +92,7 @@
                         <div class="card-header bg-white pb-2 pt-3">
                             <div class="row">
                                 <div class="alert alert-danger text-center" role="alert" t-if="subscription.subscription_state in ['3_progress', '4_paused'] and subscription.next_invoice_date &lt; datetime.date.today()">
-                                    Your subscription is expired, will be closed soon. <a t-if="(providers or tokens) and subscription.amount_total> 0" href="#payment_message">Pay now to renew</a> <t t-else="">Pay now to renew</t>
+                                    Your subscription is expired, will be closed soon. <a t-if="(payment_methods_sudo or tokens_sudo) and subscription.amount_total> 0" href="#payment_message">Pay now to renew</a> <t t-else="">Pay now to renew</t>
                                 </div>
                                 <div class="col-12 col-lg flex-grow-1 mb-1 mb-lg-0">
                                     <h4 class="mb-0"><small class="text-muted">Subscription -</small> <span t-field="subscription.display_name"/></h4>
@@ -298,59 +299,15 @@
                                     <div t-if="company_mismatch">
                                         <t t-call="payment.company_mismatch_warning"/>
                                     </div>
-                                    <div class="clearfix" t-elif="(providers or tokens) and subscription.amount_total> 0">
-                                        <h5 class="mb-1">Pay now to renew</h5>
-                                        <div t-if="subscription.get_portal_last_transaction().state == 'pending'">
-                                            <div class="alert alert-warning m-1 mt-3">
-                                                <span>
-                                                    There is already a pending payment for this subscription.
-                                                </span>
-                                            </div>
+                                    <div class="clearfix" t-elif="(payment_methods_sudo or tokens_sudo) and subscription.amount_total> 0">
+                                        <h3 class="mb-1">Pay now to renew</h3>
+                                        <div t-if="subscription.get_portal_last_transaction().state == 'pending'"
+                                             class="alert alert-warning m-1 mt-3">
+                                            <span>
+                                                There is already a pending payment for this subscription.
+                                            </span>
                                         </div>
-                                        <div>
-                                            <hr class="my-0"/>
-                                            <t t-call="payment.checkout">
-                                                <t t-set="landing_route" t-value="subscription.get_portal_url()"/>
-                                                <!-- Inject the order ID to allow Stripe to check if tokenization is required. -->
-                                                <t t-set="sale_order_id" t-value="subscription.id"/>
-                                            </t>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- ======  Change Payment Method ====== -->
-                            <div t-if="subscription.subscription_state in ['3_progress', '4_paused']" role="dialog" class="modal fade" id="payment_managing">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <header class="modal-header">
-                                            <h4 class="modal-title">Pay With</h4>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </header>
-                                        <main class="modal-body">
-                                            <!-- ======  Manage Payment methods ====== -->
-                                            <div t-if="providers" id="payment_method" class="text-start">
-                                                <t t-call="payment.manage">
-                                                    <t t-set="assign_token_route"
-                                                       t-value="'/my/subscription/assign_token/' + str(subscription.id)"/>
-                                                    <t t-set="landing_route"
-                                                       t-value="subscription.get_portal_url() + '&amp;message=Your payment method has been changed for this subscription.&amp;message_class=alert-success'"/>
-                                                    <!-- Inject the order ID to allow Stripe to check if tokenization is required. -->
-                                                    <t t-set="sale_order_id" t-value="subscription.id"/>
-                                                </t>
-                                            </div>
-                                            <div t-else="">
-                                                <div class="alert alert-warning">
-                                                    <b>No suitable payment method could be found.</b><br/>
-                                                    If you believe that is an error, please contact the website administrator.
-                                                </div>
-                                                <a role="button" class="btn-link"
-                                                    groups="base.group_system"
-                                                    t-attf-href="/web#action=#{payment_action_id}">
-                                                        <i class="oi oi-arrow-right"></i> Add payment providers
-                                                </a>
-                                            </div>
-                                        </main>
+                                        <t t-call="payment.form"/>
                                     </div>
                                 </div>
                             </div>
@@ -528,6 +485,22 @@
                 </t>
             </t>
         </t>
+    </template>
+
+    <!-- Complete the breadcrumbs of /my/payment_method. -->
+    <template id="payment_portal_breadcrumb_inherit" inherit_id="payment.portal_breadcrumb">
+        <xpath expr="//li[@id='o_payment_portal_home']" position="after">
+            <t t-if="subscription">
+                <li class="breadcrumb-item">
+                    <a href="/my/subscription">Subscriptions</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a t-att-href="subscription.get_portal_url()">
+                        Subscription <t t-out="subscription.name"/>
+                    </a>
+                </li>
+            </t>
+        </xpath>
     </template>
 
     <!-- Sale order (quotations): display recurrency -->

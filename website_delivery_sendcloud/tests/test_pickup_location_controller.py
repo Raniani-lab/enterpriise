@@ -100,6 +100,8 @@ class TestWebsiteDeliverySendcloudLocationsController(TransactionCase):
 
         cls.payment_provider = cls.env['payment.provider'].create({'name': 'test'})
 
+        cls.payment_method_id = cls.env.ref('payment.payment_method_unknown').id
+
         cls.partner = cls.env['res.partner'].create({'name': 'testestset'})
 
         cls.currency = cls.env['res.currency'].create({'name': 'testestset', 'symbol': '€'})
@@ -107,6 +109,7 @@ class TestWebsiteDeliverySendcloudLocationsController(TransactionCase):
         cls.transaction = cls.env['payment.transaction'].create({
             'state': 'draft',
             'provider_id': cls.payment_provider.id,
+            'payment_method_id': cls.payment_method_id,
             'partner_id': cls.partner.id,
             'currency_id': cls.currency.id,
             'amount': 42

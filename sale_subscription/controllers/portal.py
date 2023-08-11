@@ -3,6 +3,7 @@ import datetime
 import werkzeug
 from collections import OrderedDict
 from dateutil.relativedelta import relativedelta
+from werkzeug.urls import url_encode
 
 from odoo import http, fields
 from odoo.exceptions import AccessError, MissingError
@@ -114,10 +115,10 @@ class CustomerPortal(payment_portal.PaymentPortal):
             return redirection
         if report_type in ('html', 'pdf', 'text'):
             return self._show_report(model=order_sudo, report_type=report_type, report_ref='sale.action_report_saleorder', download=download)
+
         active_plan_sudo = order_sudo.sale_order_template_id.sudo()
         display_close = active_plan_sudo.user_closable and order_sudo.subscription_state == '3_progress'
-
-        enable_manage_payment_form = request.env.user.partner_id in (order_sudo.partner_id.child_ids | order_sudo.partner_id)
+        enable_token_management = request.env.user.partner_id in (order_sudo.partner_id.child_ids | order_sudo.partner_id)
         is_follower = request.env.user.partner_id in order_sudo.message_follower_ids.partner_id
         if order_sudo.pending_transaction and not message:
             message = _("This subscription has a pending payment transaction.")
@@ -129,7 +130,15 @@ class CustomerPortal(payment_portal.PaymentPortal):
             rel_period = relativedelta(datetime.datetime.today(), order_sudo.next_invoice_date)
             missing_periods = getattr(rel_period, periods[order_sudo.recurrence_id.unit]) + 1
         action = request.env.ref('sale_subscription.sale_subscription_action')
-        values = {
+        token_management_url_params = {
+            'manage_subscription': True,
+            'subscription_id': order_id,
+            'access_token': access_token,
+        }
+        progress_child = order_sudo.subscription_child_ids.filtered(lambda s: s.subscription_state in SUBSCRIPTION_PROGRESS_STATE)
+        # prevent churned SO with a confirmed renewal to be reactivated. The child should be updated.
+        display_payment_message = order_sudo.subscription_state in ['3_progress', '4_paused', '6_churn'] and not progress_child
+        portal_page_values = {
             'page_name': 'subscription',
             'subscription': order_sudo,
             'template': order_sudo.sale_order_template_id.sudo(),
@@ -143,31 +152,33 @@ class CustomerPortal(payment_portal.PaymentPortal):
             'message': message,
             'message_class': message_class,
             'pricelist': order_sudo.pricelist_id.sudo(),
-            'enable_manage_payment_form': enable_manage_payment_form,
+            'enable_token_management': enable_token_management,
+            'token_management_url': f'/my/payment_method?{url_encode(token_management_url_params)}',
             'payment_action_id': request.env.ref('payment.action_payment_provider').id,
+            'display_payment_message': display_payment_message,
         }
-        progress_child = order_sudo.subscription_child_ids.filtered(lambda s: s.subscription_state in SUBSCRIPTION_PROGRESS_STATE)
-        # prevent churned SO with a confirmed renewal to be reactivated. The child should be updated.
-        display_payment_message = order_sudo.subscription_state in ['3_progress', '4_paused', '6_churn'] and not progress_child
-        payment_values = {
-            **SalePortal._get_payment_values(
-                self, order_sudo, is_subscription=True
-            ),
+        portal_page_values = self._get_page_view_values(
+            order_sudo, access_token, portal_page_values, 'my_subscriptions_history', False)
+
+        payment_form_values = {
             'default_token_id': order_sudo.payment_token_id.id,
+            'sale_order_id': order_sudo.id,  # Allow Stripe to check if tokenization is required.
+        }
+
+        payment_context = {
             # Used only for fetching the PMs with Stripe Elements; the final amount is determined by
             # the generated invoice.
             'amount': order_sudo.amount_total,
             'partner_id': order_sudo.partner_id.id,
-            'transaction_route': f'/my/subscription/{order_sudo.id}/transaction/',
-            'display_payment_message': display_payment_message,
-            # Operation-dependent values are defined in the view
         }
-        values.update(payment_values)
 
-        values = self._get_page_view_values(
-            order_sudo, access_token, values, 'my_subscriptions_history', False)
-
-        return request.render("sale_subscription.subscription", values)
+        rendering_context = {
+            **SalePortal._get_payment_values(self, order_sudo, is_subscription=True),
+            **portal_page_values,
+            **payment_form_values,
+            **payment_context,
+        }
+        return request.render("sale_subscription.subscription", rendering_context)
 
     @http.route(['/my/subscription/<int:order_id>/close'], type='http', methods=["POST"], auth="public", website=True)
     def close_account(self, order_id, access_token=None, **kw):
@@ -184,6 +195,43 @@ class CustomerPortal(payment_portal.PaymentPortal):
 
 
 class PaymentPortal(payment_portal.PaymentPortal):
+
+    def _get_extra_payment_form_values(
+        self, manage_subscription=False, subscription_id=None, access_token=None, **kwargs
+    ):
+        """ Override of `payment` to allow managing subscriptions from the /my/payment_method page.
+
+        :param bool manage_subscription: Whether the payment form should be adapted to allow
+                                         managing subscriptions. This allows distinguishing cases.
+        :param str subscription_id: The id of the subscription to manage.
+        :param str access_token: The access token of the subscription.
+        :param dict kwargs: Locally unused keywords arguments.
+        :return: The dict of extra payment form values.
+        :rtype: dict
+        """
+        extra_payment_form_values = super()._get_extra_payment_form_values(
+            manage_subscription=manage_subscription,
+            subscription_id=subscription_id,
+            access_token=access_token,
+            **kwargs,
+        )
+        if manage_subscription:
+            subscription_id = self._cast_as_int(subscription_id)
+            order_sudo = self._document_check_access('sale.order', subscription_id, access_token)
+            landing_route_params = {
+                'message': _("Your payment method has been changed for this subscription."),
+                'message_class': 'alert-success',
+            }
+            extra_payment_form_values.update({
+                'subscription': order_sudo,
+                'allow_token_selection': True,
+                'allow_token_deletion': False,
+                'default_token_id': order_sudo.payment_token_id.id,
+                'transaction_route': order_sudo.get_portal_url(suffix='/transaction'),
+                'assign_token_route': f'/my/subscription/assign_token/{subscription_id}',
+                'landing_route': f'{order_sudo.get_portal_url()}&{url_encode(landing_route_params)}'
+            })
+        return extra_payment_form_values
 
     def _create_transaction(self, *args, **kwargs):
         """ Override of payment to set subscriptions in pending states.

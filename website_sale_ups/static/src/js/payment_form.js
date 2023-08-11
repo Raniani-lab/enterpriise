@@ -6,36 +6,45 @@ import '@website_sale/js/website_sale_delivery';
 
 publicWidget.registry.websiteSaleDelivery.include({
     start: function () {
-        this.codOptions = document.querySelectorAll('.o_payment_option_card input[type=radio][data-provider="custom"][data-provider-custom-mode="cash_on_delivery"]');
+        this.codOptions = document.querySelectorAll(
+            'input[name="o_payment_radio"][data-provider-custom-mode="cash_on_delivery"]'
+        );
         if (this.codOptions.length > 0) { // Falsy evaluation does not work with NodeList
-            this.paymentOptions = document.querySelectorAll('.o_payment_option_card input[type=radio]');
+            this.paymentOptions = document.querySelectorAll('input[name="o_payment_radio"]');
 
             this.warning = document.createElement('p');
             const boldMsg = document.createElement('b');
-            boldMsg.innerText = _t('No suitable payment option could be found.');
-            this.warning.innerText = _t('If you believe that it is an error, please contact the website administrator.');
+            boldMsg.innerText = _t("No suitable payment method could be found.");
+            this.warning.innerText = _t(
+                "If you believe that it is an error, please contact the website administrator."
+            );
             boldMsg.classList.add('d-block');
             this.warning.prepend(boldMsg);
             this.warning.classList.add('alert-warning', 'p-3', 'm-1', 'd-none');
 
-            this.paymentOptionsContainer = document.querySelector('#payment_method');
-            this.paymentOptionsContainer.querySelector('div.card').prepend(this.warning);
+            this.paymentMethodsContainer = document.querySelector('#payment_method');
+            this.paymentMethodsContainer.querySelector(
+                '#o_payment_form_options'
+            ).append(this.warning);
         }
         return this._super.apply(this, ...arguments);
     },
 
     /**
-     * Hides or shows a payment option card.
-     * @param node the input element of the payment option card
-     * @param enabled whether to show or hide the card
+     * Hide or show a payment option.
+     * @param radio - The radio element of the payment method.
+     * @param enabled - Whether the payment method should be shown.
      * @private
      */
-    _setEnablePaymentOption(node, enabled) {
+    _setEnablePaymentOption(radio, enabled) {
+        const node = radio.closest('[name="o_payment_option"]');
         if (enabled) {
-            node.parentNode.parentNode.classList.remove('d-none');
+            node.classList.remove('d-none');
+            node.classList.add('list-group-item');
         } else {
-            node.parentNode.parentNode.classList.add('d-none');
-            node.checked = false;
+            node.classList.add('d-none');
+            node.classList.remove('list-group-item');
+            radio.checked = false;
         }
     },
 
@@ -57,12 +66,12 @@ publicWidget.registry.websiteSaleDelivery.include({
         const input = ev.currentTarget.querySelector('input');
         let atLeastOneOptionAvailable = false;
         for (let option of this.paymentOptions) {
-            if (option.dataset.provider === "custom" &&
+            if (option.dataset.providerCode === "custom" &&
                 option.dataset.providerCustomMode === "cash_on_delivery" &&
                 (input.dataset.deliveryType !== 'ups' || !input.dataset.upsCod)) {
                     this._setEnablePaymentOption(option, false);
             } else {
-                if (option.dataset.provider === "custom" &&
+                if (option.dataset.providerCode === "custom" &&
                     option.dataset.providerCustomMode === "cash_on_delivery") {
                     this._setEnablePaymentOption(option, true);
                 }

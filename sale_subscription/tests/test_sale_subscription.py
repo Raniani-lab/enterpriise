@@ -1469,6 +1469,7 @@ class TestSubscription(TestSubscriptionCommon):
         tx = self.env['payment.transaction'].create({
             'amount': 100,
             'provider_id': provider.id,
+            'payment_method_id': self.payment_method_id,
             'currency_id': self.env.company.currency_id.id,
             'partner_id': portal_partner.id,
         })

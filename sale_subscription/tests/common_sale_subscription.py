@@ -271,10 +271,12 @@ class TestSubscriptionCommon(TestSaleCommon):
              'company_id': cls.company.id,
              'state': 'test',
              'redirect_form_view_id': cls.env['ir.ui.view'].search([('type', '=', 'qweb')], limit=1).id})
+        cls.payment_method_id = cls.env.ref('payment.payment_method_unknown').id
         cls.payment_method = cls.env['payment.token'].create(
             {'payment_details': 'Jimmy McNulty',
              'partner_id': cls.partner.id,
              'provider_id': cls.provider.id,
+             'payment_method_id': cls.payment_method_id,
              'provider_ref': 'Omar Little'})
         Partner = cls.env['res.partner']
         cls.partner_a_invoice = Partner.create({
@@ -297,6 +299,7 @@ class TestSubscriptionCommon(TestSaleCommon):
         values = [{
             'amount': invoice.amount_total,
             'provider_id': self.provider.id,
+            'payment_method_id': self.payment_method_id,
             'operation': 'offline',
             'currency_id': invoice.currency_id.id,
             'reference': reference,

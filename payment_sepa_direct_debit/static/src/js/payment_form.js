@@ -1,23 +1,29 @@
 /** @odoo-module **/
 
 import { _t } from '@web/core/l10n/translation';
-import checkoutForm from '@payment/js/checkout_form';
-import manageForm from '@payment/js/manage_form';
 
-const sepaDirectDebitMixin = {
+import paymentForm from '@payment/js/payment_form';
+
+paymentForm.include({
+
+    // #=== DOM MANIPULATION ===#
 
     /**
      * Prepare the inline form of SEPA for direct payment.
      *
-     * @override method from payment.payment_form_mixin
+     * @override method from @payment/js/payment_form
      * @private
-     * @param {string} code - The code of the selected payment option's provider
+     * @param {number} providerId - The id of the selected payment option's provider.
+     * @param {string} providerCode - The custom mode of the selected payment option's provider. The
+     *                                provider code is replaced in the payment form to allow
+     *                                comparing custom modes.
      * @param {number} paymentOptionId - The id of the selected payment option
+     * @param {string} paymentMethodCode - The code of the selected payment method, if any.
      * @param {string} flow - The online payment flow of the selected payment option
      * @return {void}
      */
-    _prepareInlineForm: function (code, paymentOptionId, flow) {
-        if (code !== 'sepa_direct_debit') {
+    _prepareInlineForm(providerId, providerCode, paymentOptionId, paymentMethodCode, flow) {
+        if (providerCode !== 'sepa_direct_debit') {
             this._super(...arguments);
             return;
         } else if (flow === 'token') {
@@ -26,26 +32,31 @@ const sepaDirectDebitMixin = {
         this._setPaymentFlow('direct');
     },
 
+    // #=== PAYMENT FLOW ===#
+
     /**
      * Verify the validity of the IBAN input before trying to process a payment.
      *
-     * @override method from payment.payment_form_mixin
+     * @override method from @payment/js/payment_form
      * @private
-     * @param {string} code - The code of the payment option provider.
-     * @param {number} paymentOptionId - The id of the payment option handling the transaction.
-     * @param {string} flow - The online payment flow of the transaction.
+     * @param {string} providerCode - The custom mode of the selected payment option's provider. The
+     *                                provider code is replaced in the payment form to allow
+     *                                comparing custom modes.
+     * @param {number} paymentOptionId - The id of the selected payment option.
+     * @param {string} paymentMethodCode - The code of the selected payment method, if any.
+     * @param {string} flow - The payment flow of the selected payment option.
      * @return {void}
      */
-    _processPayment: function (code, paymentOptionId, flow) {
-        if (code !== 'sepa_direct_debit' || flow === 'token') {
+    _initiatePaymentFlow(providerCode, paymentOptionId, paymentMethodCode, flow) {
+        if (providerCode !== 'sepa_direct_debit' || flow === 'token') {
             this._super(...arguments); // Tokens are handled by the generic flow.
             return;
         }
 
-        const ibanInput = document.getElementById(`o_sdd_iban_${paymentOptionId}`);
+        const ibanInput = this._getIbanInput();
+
         if (!ibanInput.reportValidity()) {
-            this._enableButton(); // The submit button is disabled at this point, enable it
-            this.call('ui', 'unblock'); // The page is blocked at this point, unblock it
+            this._enableButton();
             return; // Let the browser request to fill out required fields
         }
 
@@ -55,21 +66,22 @@ const sepaDirectDebitMixin = {
     /**
      * Link the IBAN to the transaction as an inactive mandate.
      *
-     * @override method from payment.payment_form_mixin
+     * @override method from payment.payment_form
      * @private
-     * @param {string} code - The code of the provider.
-     * @param {number} providerId - The id of the provider handling the transaction.
+     * @param {string} providerCode - The code of the selected payment option's provider.
+     * @param {number} paymentOptionId - The id of the selected payment option.
+     * @param {string} paymentMethodCode - The code of the selected payment method, if any.
      * @param {object} processingValues - The processing values of the transaction.
      * @return {void}
      */
-    _processDirectPayment: function (code, providerId, processingValues) {
-        if (code !== 'sepa_direct_debit') {
+    _processDirectFlow (providerCode, paymentOptionId, paymentMethodCode, processingValues) {
+        if (providerCode !== 'sepa_direct_debit') {
             this._super(...arguments);
             return;
         }
 
         // Assign the SDD mandate corresponding to the IBAN to the transaction.
-        const ibanInput = document.getElementById(`o_sdd_iban_${providerId}`);
+        const ibanInput = this._getIbanInput();
         this._rpc({
             route: '/payment/sepa_direct_debit/set_mandate',
             params: {
@@ -81,14 +93,25 @@ const sepaDirectDebitMixin = {
             window.location = '/payment/status';
         }).guardedCatch((error) => {
             error.event.preventDefault();
-            this._displayError(
-                _t("Server Error"),
-                _t("We are not able to process your payment."),
+            this._displayErrorDialog(
+                _t("Payment processing failed"),
                 error.message.data.message,
             );
         });
     },
-};
 
-checkoutForm.include(sepaDirectDebitMixin);
-manageForm.include(sepaDirectDebitMixin);
+    // #=== GETTERS ===#
+
+    /**
+     * Return the IBAN input.
+     *
+     * @private
+     * @return {HTMLInputElement}
+     */
+    _getIbanInput() {
+        const radio = document.querySelector('input[name="o_payment_radio"]:checked');
+        const inlineForm = this._getInlineForm(radio);
+        return inlineForm?.querySelector('#o_sdd_iban');
+    },
+
+});

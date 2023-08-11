@@ -37,6 +37,7 @@ class TestSaleSubscriptionAvalara(TestSaleSubscriptionAvalaraCommon, TestAccount
             'payment_details': 'Jimmy McNulty',
             'partner_id': self.subscription.partner_id.id,
             'provider_id': self.provider.id,
+            'payment_method_id': self.payment_method_id,
             'provider_ref': 'Omar Little'
         })
 

@@ -104,11 +104,13 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
             {'payment_details': 'Jimmy McNulty',
              'partner_id': self.malicious_user.partner_id.id,
              'provider_id': self.dummy_provider.id,
+             'payment_method_id': self.payment_method_id,
              'provider_ref': 'Omar Little'})
         legit_payment_method = self.env['payment.token'].create(
             {'payment_details': 'Jimmy McNulty',
              'partner_id': self.legit_user.partner_id.id,
              'provider_id': self.dummy_provider.id,
+             'payment_method_id': self.payment_method_id,
              'provider_ref': 'Legit ref'})
         legit_user_subscription._portal_ensure_token()
         malicious_user_subscription._portal_ensure_token()
@@ -184,7 +186,9 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
                 'flow': 'direct',
                 'tokenization_requested': True,
                 'landing_route': subscription.get_portal_url(),
-                'payment_option_id': self.dummy_provider.id,
+                'provider_id': self.dummy_provider.id,
+                'payment_method_id': self.payment_method_id,
+                'token_id': False,
                 'partner_id': subscription.partner_id.id}
         url = self._build_url("/my/orders/%s/transaction" % subscription.id)
         self.make_jsonrpc_request(url, data)
@@ -219,7 +223,9 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
         data = {'access_token': subscription.access_token,
                 'reference_prefix': 'test_automatic_invoice_token',
                 'landing_route': subscription.get_portal_url(),
-                'payment_option_id': self.dummy_provider.id,
+                'provider_id': self.dummy_provider.id,
+                'payment_method_id': self.payment_method_id,
+                'token_id': False,
                 'flow': 'direct',
                 }
         self.make_jsonrpc_request(url, data)
@@ -283,7 +289,9 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
         data = {'access_token': subscription.access_token,
                 'reference_prefix': 'test_automatic_invoice_token',
                 'landing_route': subscription.get_portal_url(),
-                'payment_option_id': self.dummy_provider.id,
+                'provider_id': self.dummy_provider.id,
+                'payment_method_id': self.payment_method_id,
+                'token_id': False,
                 'flow': 'direct',
                 }
         self.make_jsonrpc_request(url, data)
@@ -315,7 +323,9 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
 
             route_values.update({
                 'flow': 'direct',
-                'payment_option_id': self.provider.id,
+                'provider_id': self.provider.id,
+                'payment_method_id': self.payment_method_id,
+                'token_id': False,
                 'tokenization_requested': False,
                 'validation_route': False,
                 'reference_prefix': 'PLOP',

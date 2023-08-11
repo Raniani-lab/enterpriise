@@ -23,7 +23,6 @@ class PaymentProvider(models.Model):
         self.filtered(lambda p: p.custom_mode == 'sepa_direct_debit').update({
             'show_credentials_page': False,
             'show_allow_tokenization': False,
-            'show_payment_method_ids': False,
             'show_done_msg': False,
             'show_cancel_msg': False,
         })
@@ -180,10 +179,10 @@ class PaymentProvider(models.Model):
 
         return self.env['payment.token'].create({
             'provider_id': self.id,
+            'payment_method_id': self.payment_method_ids[:1].id,
             'payment_details': mandate.partner_bank_id.acc_number,
             'partner_id': partner.id,
             'provider_ref': mandate.name,
-            'verified': True,
             'sdd_mandate_id': mandate.id,
         })
 

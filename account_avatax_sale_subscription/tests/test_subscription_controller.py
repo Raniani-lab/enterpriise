@@ -40,7 +40,9 @@ class TestAvataxSubscriptionController(TestSaleSubscriptionAvalaraCommon, Paymen
             'access_token': self.subscription.access_token,
             'reference_prefix': 'test_automatic_invoice_token',
             'landing_route': self.subscription.get_portal_url(),
-            'payment_option_id': self.dummy_provider.id,
+            'provider_id': self.dummy_provider.id,
+            'payment_method_id': self.payment_method_id,
+            'token_id': False,
             'flow': 'direct',
         }
 

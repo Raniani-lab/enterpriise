@@ -1802,6 +1802,7 @@ class SaleOrder(models.Model):
         for subscription in self:
             values.append({
                 'provider_id': payment_token.provider_id.id,
+                'payment_method_id': payment_token.payment_method_id.id,
                 'sale_order_ids': [Command.link(subscription.id)],
                 'amount': invoice.amount_total,
                 'currency_id': invoice.currency_id.id,

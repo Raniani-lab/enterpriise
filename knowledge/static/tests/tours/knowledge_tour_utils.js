@@ -15,16 +15,12 @@ export const changeInternalPermission = (permission) => {
  * @param {$.Element} target
  */
 export const dragAndDropArticle = ($element, $target) => {
-    const elementCenter = $element.offset();
-    elementCenter.left += $element.outerWidth() / 2;
-    elementCenter.top += $element.outerHeight() / 2;
-    const targetCenter = $target.offset();
-    targetCenter.left += $target.outerWidth() / 2;
-    targetCenter.top += $target.outerHeight() / 2;
-    const sign = Math.sign(targetCenter.top - elementCenter.top);
-    // The mouse needs to be above (or below) the target depending on element
-    // position (below (or above)) to consistently trigger the correct move.
-    const offsetY = sign * ($target.outerHeight() / 2 - 5);
+    const elementOffset = $element.offset();
+    const targetOffset = $target.offset();
+    // If the target is under the element, the cursor needs to be in the upper
+    // part of the target to trigger the move. If it is above, the cursor needs
+    // to be in the bottom part.
+    const targetY = targetOffset.top + (targetOffset.top > elementOffset.top ? ($target.outerHeight() - 1) : 0); 
 
     const element = $element[0].closest("li");
     const target = $target[0];
@@ -32,8 +28,8 @@ export const dragAndDropArticle = ($element, $target) => {
         new PointerEvent("pointerdown", {
             bubbles: true,
             which: 1,
-            clientX: elementCenter.left,
-            clientY: elementCenter.top,
+            clientX: elementOffset.right,
+            clientY: elementOffset.top,
         })
     );
 
@@ -42,8 +38,8 @@ export const dragAndDropArticle = ($element, $target) => {
         new PointerEvent("pointermove", {
             bubbles: true,
             which: 1,
-            clientX: elementCenter.left,
-            clientY: elementCenter.top + SORTABLE_TOLERANCE + 1,
+            clientX: elementOffset.right,
+            clientY: elementOffset.top + SORTABLE_TOLERANCE,
         })
     );
 
@@ -53,8 +49,8 @@ export const dragAndDropArticle = ($element, $target) => {
             new PointerEvent("pointermove", {
                 bubbles: true,
                 which: 1,
-                clientX: targetCenter.left,
-                clientY: targetCenter.top + offsetY,
+                clientX: targetOffset.right,
+                clientY: targetY,
             })
         );
 
@@ -63,8 +59,8 @@ export const dragAndDropArticle = ($element, $target) => {
                 new PointerEvent("pointerup", {
                     bubbles: true,
                     which: 1,
-                    clientX: targetCenter.left,
-                    clientY: targetCenter.top + offsetY,
+                    clientX: targetOffset.right,
+                    clientY: targetY,
                 })
             );
         }, 200);

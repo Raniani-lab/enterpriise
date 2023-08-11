@@ -381,6 +381,10 @@ class HrContract(models.Model):
     def _get_yearly_cost_sacrifice_fixed(self):
         return super()._get_yearly_cost_sacrifice_fixed() + self._get_salary_costs_factor() * self.wage * self.l10n_be_group_insurance_rate / 100
 
+    @api.depends('schedule_pay')
+    def _compute_final_yearly_costs(self):
+        return super()._compute_final_yearly_costs()
+
     def _get_salary_costs_factor(self):
         self.ensure_one()
         res = super()._get_salary_costs_factor()

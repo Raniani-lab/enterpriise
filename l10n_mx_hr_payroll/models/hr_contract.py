@@ -14,7 +14,7 @@ class HrContract(models.Model):
         ('bi_weekly', 'Bi-weekly'),
         ('monthly', 'Monthly'),
         ('yearly', 'Yearly'),
-    ], string="Schedule Pay", default="monthly")
+    ], string="MX: Schedule Pay", default="monthly", index=True)
     l10n_mx_risk_bonus_rate = fields.Float(string="Risk Bonus Rate")
     l10n_mx_christmas_bonus = fields.Float(string="Christmas Bonus")
     l10n_mx_holidays_count = fields.Float(string="Holidays Count", default=12)

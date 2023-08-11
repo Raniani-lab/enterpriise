@@ -6,14 +6,11 @@
         <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
         <field name="priority">50</field>
         <field name="arch" type="xml">
-            <xpath expr="//label[@for='wage']" position="replace">
-                <label for="wage" attrs="{'invisible': [('holidays', '!=', 0.0)]}"/>
+            <xpath expr="//label[@for='wage']" position="attributes">
+                <attribute name="attrs">{'invisible': [('holidays', '!=', 0.0)]}</attribute>
             </xpath>
-            <xpath expr="//div[@name='wage']" position="replace">
-                <div class="o_row" name="wage" attrs="{'invisible': [('holidays', '!=', 0.0)]}">
-                    <field name="wage" class="o_hr_narrow_field" nolabel="1"/>
-                    <span>/ month</span>
-                </div>
+            <xpath expr="//div[@name='wage']" position="attributes">
+                <attribute name="attrs">{'invisible': [('holidays', '!=', 0.0)]}</attribute>
             </xpath>
             <xpath expr="//div[@name='wage']" position="after">
                 <label name="label_wage_with_holidays" for="wage_with_holidays" attrs="{'invisible': [('holidays', '=', 0.0)]}"/>

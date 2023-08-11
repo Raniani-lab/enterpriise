@@ -16,6 +16,9 @@ class HrPayslipWorkedDays(models.Model):
         overtime_pay_percent /= 100
         overtime_worked_days = self.env['hr.payslip.worked_days']
         for worked_day in self:
+            # YTI FIXME Clean that brol, because this override is bypassing localization implementations
+            if worked_day.payslip_id.struct_id.code == "USMONTHLY":
+                continue
             if worked_day.work_entry_type_id != overtime_work_entry_type or worked_day.payslip_id.wage_type != 'hourly':
                 continue
             overtime_worked_days |= worked_day

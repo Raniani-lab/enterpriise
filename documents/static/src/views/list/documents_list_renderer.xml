@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="documents.DocumentsListRenderer" t-inherit="web.ListRenderer" t-inherit-mode="primary" owl="1">
+    <t t-name="documents.DocumentsListRenderer" t-inherit="web.ListRenderer" t-inherit-mode="primary">
         <xpath expr="//div[hasclass('o_list_renderer')]" position="attributes">
             <attribute name="class">o_list_renderer o_documents_view o_renderer_with_searchpanel overflow-auto position-relative</attribute>
             <attribute name="t-on-keydown">onGlobalKeydown</attribute>
@@ -21,7 +21,7 @@
         </t>
     </t>
 
-    <t t-name="documents.DocumentsListRenderer.RecordRow" t-inherit="web.ListRenderer.RecordRow" t-inherit-mode="primary" owl="1">
+    <t t-name="documents.DocumentsListRenderer.RecordRow" t-inherit="web.ListRenderer.RecordRow" t-inherit-mode="primary">
         <xpath expr="//tr[hasclass('o_data_row')]" position="attributes">
             <attribute name="draggable">true</attribute>
             <attribute name="t-on-dragstart.stop">(ev) => record.onDragStart(ev)</attribute>
@@ -35,7 +35,7 @@
         </CheckBox>
     </t>
 
-    <t t-name="documents.DocumentsListRendererCheckBox" owl="1">
+    <t t-name="documents.DocumentsListRendererCheckBox">
         <div class="form-check" t-att-class="props.className" t-ref="root">
             <input
                 t-att-id="props.id or id"

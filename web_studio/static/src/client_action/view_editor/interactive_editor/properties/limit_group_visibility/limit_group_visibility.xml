@@ -1,6 +1,6 @@
 <templates>
 
-<t t-name="web_studio.ViewEditor.LimitGroupVisibility" owl="1">
+<t t-name="web_studio.ViewEditor.LimitGroupVisibility">
     <Record t-props="recordProps" t-slot-scope="data">
         <t t-set="record" t-value="data.record" />
         <div class="o_limit_group_visibility">

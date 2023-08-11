@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
 
-    <t t-name="timesheet_grid.GridTimerButtonCell" owl="1">
+    <t t-name="timesheet_grid.GridTimerButtonCell">
         <button type="button"
                 class="btn_timer_line btn position-relative border-0 fa-stack"
                 t-att-class="{

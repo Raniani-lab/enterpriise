@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
-    <t t-name="spreadsheet_edition.FilterFieldOffset" owl="1">
+    <t t-name="spreadsheet_edition.FilterFieldOffset">
         <div class="o_filter_field_offset d-flex flex-column justify-content-end w-50 ps-3">
             <span class="text-muted">Period offset</span>
             <select class="o_input"

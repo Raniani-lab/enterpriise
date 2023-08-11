@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
-    <div t-name="spreadsheet_edition.ListingDetailsSidePanel" class="o-listing-details-side-panel" owl="1">
+    <div t-name="spreadsheet_edition.ListingDetailsSidePanel" class="o-listing-details-side-panel">
         <t t-set="def" t-value="listDefinition"/>
         <div class="o_side_panel_section">
             <div class="o_side_panel_title">List Name</div>

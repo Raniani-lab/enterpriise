@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates id="template" xml:space="preserve">
-<t t-name="knowledge.KnowledgeCoverDialog" owl="1">
+<t t-name="knowledge.KnowledgeCoverDialog">
     <Dialog contentClass="contentClass" size="size" title="title">
         <KnowledgeCoverSelector articleCoverId="props.articleCoverId"
                                 save.bind="save" 
@@ -12,7 +12,7 @@
     </Dialog>
 </t>
 
-<t t-name="knowledge.CoversListTemplate" t-inherit="web_editor.ImagesListTemplate" t-inherit-mode="primary" owl="1">
+<t t-name="knowledge.CoversListTemplate" t-inherit="web_editor.ImagesListTemplate" t-inherit-mode="primary">
     <xpath expr="//t[@t-foreach='state.attachments']" position="replace">
         <t t-foreach="state.attachments" t-as="attachment" t-key="attachment.id">
             <AutoResizeCover t-if="!attachment.original_id or state.showOptimized"

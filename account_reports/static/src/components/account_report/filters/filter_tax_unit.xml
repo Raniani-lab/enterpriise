@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
-    <t t-name="account_reports.AccountReportFilterTaxUnit" owl="1">
+    <t t-name="account_reports.AccountReportFilterTaxUnit">
         <Dropdown togglerClass="'btn btn-secondary'">
             <t t-set-slot="toggler">
                 <i class="fa fa-home me-1"/>Tax Unit: <t t-esc="selectedTaxUnitName"/>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 <!-- Line's sub-elements -->
-    <t t-name="stock_barcode.LineTitle" owl="1">
+    <t t-name="stock_barcode.LineTitle">
         <t t-if="props.line.product_id.default_code or props.line.product_id.code">
             <div class="o_barcode_line_title">
                 <i class="fa fa-fw fa-tags"/>
@@ -23,7 +23,7 @@
         </div>
     </t>
 
-    <t t-name="stock_barcode.LineQuantity" owl="1">
+    <t t-name="stock_barcode.LineQuantity">
         <div name="quantity">
             <i class="fa fa-fw fa-cube" t-attf-class="{{nextExpected === 'quantity' ? 'o_next_expected' : ''}}"/>
             <span t-attf-class="o_barcode_scanner_qty font-monospace badge #{' '}">
@@ -38,21 +38,21 @@
         </div>
     </t>
 
-    <t t-name="stock_barcode.LineOwner" owl="1">
+    <t t-name="stock_barcode.LineOwner">
         <div t-if="line.owner_id">
             <i class="fa fa-fw fa-user-o"/>
             <span class="o_line_owner" t-esc="line.owner_id.display_name"/>
         </div>
     </t>
 
-    <t t-name="stock_barcode.LineLot" owl="1">
+    <t t-name="stock_barcode.LineLot">
         <div t-if="isTracked" name="lot">
             <i class="fa fa-fw fa-barcode" t-attf-class="{{nextExpected === 'lot' ? 'o_next_expected' : ''}}"/>
             <span class="o_line_lot_name" t-esc="lotName"/>
         </div>
     </t>
 
-    <t t-name="stock_barcode.LineSourceLocation" owl="1">
+    <t t-name="stock_barcode.LineSourceLocation">
         <div name="source_location" t-if="displaySourceLocation" title="Source Location"
              t-attf-class="{{line.location_id.usage != 'internal' ? 'text-danger' : ''}} {{highlightLocation ? 'o_highlight' : ''}}">
             <i class="fa fa-fw fa-sign-out"/>
@@ -66,7 +66,7 @@
         </div>
     </t>
 
-    <t t-name="stock_barcode.LineDestinationLocation" owl="1">
+    <t t-name="stock_barcode.LineDestinationLocation">
         <div name="destination_location" t-if="displayDestinationLocation" title="Destination Location"
                 t-att-class="line.location_dest_id.usage != 'internal' ? 'text-danger' : ''">
             <i class="fa fa-fw fa-sign-in"/>
@@ -81,7 +81,7 @@
     </t>
 
 <!-- Line's template -->
-    <t t-name="stock_barcode.LineComponent" owl="1">
+    <t t-name="stock_barcode.LineComponent">
         <div t-on-click="select"
             class="o_barcode_line list-group-item d-flex flex-row flex-nowrap"
             t-att-data-virtual-id="line.virtual_id" t-attf-class="{{componentClasses}}"

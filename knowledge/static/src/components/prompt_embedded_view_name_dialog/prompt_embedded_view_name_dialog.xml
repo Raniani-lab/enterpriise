@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="knowledge.PromptEmbeddedViewNameDialog" owl="1">
+    <t t-name="knowledge.PromptEmbeddedViewNameDialog">
         <Dialog title="title" size="'md'">
             <div class="mb-3 row">
                 <label for="label" class="col-sm-5 col-form-label p-0 ps-3">

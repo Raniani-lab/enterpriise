@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
-    <t t-name="timesheet_grid.TimesheetTimerFloatTimeField" t-inherit="web.FloatTimeField" owl="1">
+    <t t-name="timesheet_grid.TimesheetTimerFloatTimeField" t-inherit="web.FloatTimeField">
         <xpath expr="//span" position="attributes">
             <attribute name="t-att-class">props.timerRunning and props.displayRed ? "fw-bold text-danger" : ""</attribute>
         </xpath>
@@ -10,7 +10,7 @@
         </xpath>
     </t>
 
-    <t t-name="timesheet_grid.TimesheetDisplayTimer" owl="1">
+    <t t-name="timesheet_grid.TimesheetDisplayTimer">
         <TimesheetTimerFloatTimerField t-props="TimesheetTimerFloatTimerFieldProps"/>
     </t>
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="sign.InitialsAllPagesDialog" owl="1">
+    <t t-name="sign.InitialsAllPagesDialog">
         <Dialog t-props="dialogProps">
             <div class="m-2">
                 <label for="responsible_select_initials_input" class="col-md-2">Responsible</label>

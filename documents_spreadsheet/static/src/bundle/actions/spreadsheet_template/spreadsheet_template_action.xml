@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
 
-<div t-name="documents_spreadsheet.SpreadsheetTemplateAction" class="o_spreadsheet_action" style="height: 100%;" owl="1">
+<div t-name="documents_spreadsheet.SpreadsheetTemplateAction" class="o_spreadsheet_action" style="height: 100%;">
     <DocumentsSpreadsheetControlPanel
         model="model"
         spreadsheetName="state.spreadsheetName"

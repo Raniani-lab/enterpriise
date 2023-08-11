@@ -1,5 +1,5 @@
 <templates>
-    <t t-name="web_studio.ViewEditor.InteractiveEditorProperties" owl="1">
+    <t t-name="web_studio.ViewEditor.InteractiveEditorProperties">
         <t t-set="componentProps" t-value="propertiesComponent.props" />
 
         <t t-if="propertiesComponent.component" t-component="propertiesComponent.component" t-props="componentProps" node="node"/>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
     <!-- /clipboard template -->
-    <t t-name="knowledge.TemplateBehavior" owl="1">
+    <t t-name="knowledge.TemplateBehavior">
         <div class="d-flex justify-content-between flex-wrap w-100">
             <div class="o_knowledge_template_label px-2 py-1 text-break">Clipboard</div>
             <BehaviorToolbar>

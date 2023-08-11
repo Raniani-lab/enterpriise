@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
-    <t t-name="knowledge.ItemCalendarPropsDialog" owl="1">
+    <t t-name="knowledge.ItemCalendarPropsDialog">
         <Dialog title="env._t('Insert a Calendar View')" size="'md'" bodyClass="'o_knowledge_item_calendar_props_dialog'">
             <div class="mb-3 row o_name">
                 <label class="col-sm-4 col-form-label">

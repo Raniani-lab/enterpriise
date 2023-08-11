@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
-    <t t-name="account_reports.AccountReportFilters" owl="1">
+    <t t-name="account_reports.AccountReportFilters">
         <t t-call="{{ env.template('AccountReportFilters') }}"/>
     </t>
 
-    <t t-name="account_reports.AccountReportFiltersCustomizable" owl="1">
+    <t t-name="account_reports.AccountReportFiltersCustomizable">
         <!-- Date filter -->
         <t t-if="'date' in controller.options">
             <div id="filter_date" class="filter_date">

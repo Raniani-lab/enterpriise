@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
 
-<t t-name="web_studio.SelectionContentDialog" owl="1">
+<t t-name="web_studio.SelectionContentDialog">
     <Dialog size="'sm'" title="title" contentClass="'o_web_studio_selection_editor'">
         <div class="d-flex flex-column gap-3">
         <h5>Specify all possible values</h5>
@@ -39,7 +39,7 @@
     </Dialog>
 </t>
 
-<t t-name="web_studio.InteractiveItemsList.EditableItem" t-inherit="web_studio.InteractiveItemsList.Item" owl="1">
+<t t-name="web_studio.InteractiveItemsList.EditableItem" t-inherit="web_studio.InteractiveItemsList.Item">
     <xpath expr="//span[contains(@class, 'o-web-studio-interactive-list-item-label')]" position="attributes" >
         <attribute name="t-if">!item.isInEdition</attribute>
         <attribute name="t-esc">item.label</attribute>

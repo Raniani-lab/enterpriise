@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-inherit="stock_barcode.MainComponent" t-inherit-mode="extension" owl="1" t-translation="off">
+    <t t-inherit="stock_barcode.MainComponent" t-inherit-mode="extension" t-translation="off">
         <!-- Will display the lines to select a picking type or to select pickings to batch -->
         <xpath expr="//div[hasclass('o_barcode_lines')]" position="inside">
             <t t-if="env.model.needPickingType">

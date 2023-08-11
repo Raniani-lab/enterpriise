@@ -8,7 +8,7 @@
     <div class="o_dial_fold position-relative bottom-0">
         <div class="o_dial_window_title d-flex align-items-center cursor-pointer overflow-auto">
             <t t-call="voip.DialingPanel.HeaderContent">
-                <a t-set="title" t-value="widget.title"/>
+                <t t-set="title" t-value="widget.title"/>
             </t>
         </div>
     </div>
@@ -42,8 +42,8 @@
             <button aria-label="Backspace" class="o_dial_keypad_backspace input-group-text px-3 border-0 bg-view fa fa-long-arrow-left" role="img" title="Backspace"/>
         </div>
         <div class="container">
-            <div t-attrf-class="{{ widget._isMobileDevice ? 'o_hidden' : '' }} o_dial_keypad_buttons row row-cols-3 clearfix">
-                <button t-foreach="[1, 2, 3, 4, 5, 6, 7, 8, 9, '*', 0, '#']" t-as="i"
+            <div t-attf-class="{{ widget._isMobileDevice ? 'o_hidden' : '' }} o_dial_keypad_buttons row row-cols-3 clearfix">
+                <button t-foreach="[1, 2, 3, 4, 5, 6, 7, 8, 9, '*', 0, '#']" t-as="i" t-key="i"
                         class="o_dial_keypad_button o_dial_number col btn btn-light py-3 fw-normal fs-2"
                         t-out="i"/>
             </div>

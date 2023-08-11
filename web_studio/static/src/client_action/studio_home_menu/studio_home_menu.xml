@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
 
-<t t-name="web_studio.StudioHomeMenu" t-inherit="web_enterprise.HomeMenu" t-inherit-mode="primary" owl="1" t-translation="off">
+<t t-name="web_studio.StudioHomeMenu" t-inherit="web_enterprise.HomeMenu" t-inherit-mode="primary" t-translation="off">
     <xpath expr="//div[hasclass('o_home_menu')]" position="attributes">
         <attribute name="class" add="o_studio_home_menu" separator=" " />
         <attribute name="t-attf-style">

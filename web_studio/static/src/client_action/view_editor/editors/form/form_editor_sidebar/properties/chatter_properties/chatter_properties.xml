@@ -1,6 +1,6 @@
 <templates>
 
-<t t-name="web_studio.ViewEditor.InteractiveEditorProperties.Chatter" owl="1">
+<t t-name="web_studio.ViewEditor.InteractiveEditorProperties.Chatter">
     <Property
             name="'email_alias'"
             type="'string'"

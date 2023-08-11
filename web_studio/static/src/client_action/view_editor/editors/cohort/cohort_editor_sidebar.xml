@@ -1,6 +1,6 @@
 <templates>
 
-    <t t-name="web_studio.ViewEditor.CohortEditorSidebar" owl="1">
+    <t t-name="web_studio.ViewEditor.CohortEditorSidebar">
         <InteractiveEditorSidebar>
             <t t-set-slot="view">
                 <Property

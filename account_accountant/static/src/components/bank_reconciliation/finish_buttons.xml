@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
-    <t t-name="account_accountant.BankRecFinishButtons" owl="1">
+    <t t-name="account_accountant.BankRecFinishButtons">
         <p t-if="otherFiltersActive" class="btn btn-primary" t-on-click="clearFilters">All Transactions</p>
         <p>
             <t t-set="linkName" t-value="breadcrumbs.length > 1 ? breadcrumbs.slice(-2)[0].name : 'Dashboard'"/>

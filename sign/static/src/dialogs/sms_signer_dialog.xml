@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
-    <t t-name="sign.SMSSignerDialog" owl="1">
+    <t t-name="sign.SMSSignerDialog">
         <Dialog t-props="dialogProps">
             <div class="mb-3 row">
                 <label class="col-sm-3 col-form-label" for="phone">Phone Number</label>

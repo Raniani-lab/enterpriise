@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
-    <t t-name="appointment.AppointmentInviteCopyClose" owl="1">
+    <t t-name="appointment.AppointmentInviteCopyClose">
         <a role="button" class="o_appointment_invite_copy_save btn btn-primary"
             t-on-click="onSaveAndCopy">Copy Link &amp; Close</a>
     </t>

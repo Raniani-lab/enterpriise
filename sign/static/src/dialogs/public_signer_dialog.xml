@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
-    <t t-name="sign.PublicSignerDialog" owl="1">
+    <t t-name="sign.PublicSignerDialog">
         <Dialog t-props="dialogProps">
             <div class="mb-3 row">
                     <label for="o_sign_public_signer_name_input" class="col-lg-3 col-form-label">Your name</label>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
-    <t t-name="timesheet_grid.TimerGridRenderer" t-inherit="web_grid.Renderer" owl="1">
+    <t t-name="timesheet_grid.TimerGridRenderer" t-inherit="web_grid.Renderer">
         <xpath expr="//div[hasclass('o_grid_grid')]" position="before">
             <t t-if="showTimer">
                 <GridTimesheetTimerHeader
@@ -37,7 +37,7 @@
         </xpath>
     </t>
 
-    <t t-name="timesheet_grid.TimerGridHeader" t-inherit="web_grid.Header" owl="1">
+    <t t-name="timesheet_grid.TimerGridHeader" t-inherit="web_grid.Header">
         <xpath expr="//div[hasclass('o_grid_column_title')]" position="before">
             <div t-if="showTimerButton"
                  class="o_grid_column_timer_button bg-view border-bottom"
@@ -46,7 +46,7 @@
         </xpath>
     </t>
 
-    <t t-name="timesheet_grid.TimerGridSection" t-inherit="web_grid.Section" owl="1">
+    <t t-name="timesheet_grid.TimerGridSection" t-inherit="web_grid.Section">
         <xpath expr="//t[@t-if='!section.isFake']/div" position="before">
             <div t-if="showTimerButton"
                  class="o_grid_section o_grid_section_timer_button"
@@ -55,7 +55,7 @@
         </xpath>
     </t>
 
-    <t t-name="timesheet_grid.TimerGridRow" t-inherit="web_grid.Row" owl="1">
+    <t t-name="timesheet_grid.TimerGridRow" t-inherit="web_grid.Row">
         <xpath expr="//div[@name='row']" position="before">
             <div t-if="showTimerButton"
                 class="o_grid_row_timer o_grid_highlightable d-flex align-items-center px-3 py-1 transition-base"
@@ -76,7 +76,7 @@
         </xpath>
     </t>
 
-    <t t-name="timesheet_grid.TimerGridAddLine" t-inherit="web_grid.AddLine" owl="1">
+    <t t-name="timesheet_grid.TimerGridAddLine" t-inherit="web_grid.AddLine">
         <xpath expr="//div[@t-if='props.createInline']" position="before">
             <div t-if="showTimerButton"
                  t-attf-style="grid-row: {{rowPosition}}; grid-column: 1;"
@@ -84,7 +84,7 @@
         </xpath>
     </t>
 
-    <t t-name="timesheet_grid.TimerGridFooter" t-inherit="web_grid.Footer" owl="1">
+    <t t-name="timesheet_grid.TimerGridFooter" t-inherit="web_grid.Footer">
         <xpath expr="//t/div" position="before">
             <div t-if="showTimerButton"
                  class="bg-view"
@@ -98,7 +98,7 @@
             }</attribute>
         </xpath>
     </t>
-    <t t-name="timesheet_grid.TimerGridTotal" t-inherit="web_grid.barChart" owl="1">
+    <t t-name="timesheet_grid.TimerGridTotal" t-inherit="web_grid.barChart">
         <xpath expr="//div[hasclass('o_grid_bar_chart_total_pill')]" position="after">
             <span t-if="column.grandTotal !== column.model.data.workingHours.daily[column.value]"
                    class="o_grid_bar_chart_overtime position-absolute top-50 start-50 translate-middle px-2 rounded-pill bg-white fw-bolder text-warning transition-base"

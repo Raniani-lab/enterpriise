@@ -1,6 +1,6 @@
 <templates>
 
-<t t-name="web_studio.ViewEditor.InteractiveEditorProperties.Field.TypeWidgetProperties" owl="1" >
+<t t-name="web_studio.ViewEditor.InteractiveEditorProperties.Field.TypeWidgetProperties" >
     <Property
         name="'widget'"
         type="'selection'"

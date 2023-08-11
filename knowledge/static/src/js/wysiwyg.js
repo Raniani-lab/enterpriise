@@ -1,7 +1,8 @@
 /** @odoo-module **/
 
 import { Component } from '@odoo/owl';
-import { qweb as QWeb, _t } from "@web/legacy/js/services/core";
+import { _t } from "@web/legacy/js/services/core";
+import { renderToElement } from "@web/core/utils/render";
 import { Wysiwyg } from '@web_editor/js/wysiwyg/wysiwyg';
 import { ItemCalendarPropsDialog } from "@knowledge/components/item_calendar_props_dialog/item_calendar_props_dialog";
 import { PromptEmbeddedViewNameDialog } from '@knowledge/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog';
@@ -221,9 +222,9 @@ patch(Wysiwyg.prototype, {
      */
     _insertTableOfContent: function () {
         const restoreSelection = preserveCursor(this.odooEditor.document);
-        const tableOfContentBlock = $(QWeb.render('knowledge.abstract_behavior', {
+        const tableOfContentBlock = renderToElement('knowledge.abstract_behavior', {
             behaviorType: "o_knowledge_behavior_type_toc",
-        }))[0];
+        });
         this._notifyNewBehavior(tableOfContentBlock, restoreSelection);
     },
     /**
@@ -233,7 +234,7 @@ patch(Wysiwyg.prototype, {
      */
     _insertArticlesStructure: function () {
         const restoreSelection = preserveCursor(this.odooEditor.document);
-        const articlesStructureBlock = $(QWeb.render('knowledge.articles_structure_wrapper'))[0];
+        const articlesStructureBlock = renderToElement('knowledge.articles_structure_wrapper');
         this._notifyNewBehavior(articlesStructureBlock, restoreSelection);
     },
     /**
@@ -241,9 +242,9 @@ patch(Wysiwyg.prototype, {
      */
     _insertTemplate() {
         const restoreSelection = preserveCursor(this.odooEditor.document);
-        const templateBlock = $(QWeb.render('knowledge.abstract_behavior', {
+        const templateBlock = renderToElement('knowledge.abstract_behavior', {
             behaviorType: "o_knowledge_behavior_type_template",
-        }))[0];
+        });
         this._notifyNewBehavior(templateBlock, restoreSelection);
     },
     /**
@@ -255,13 +256,13 @@ patch(Wysiwyg.prototype, {
             title: _t('Link an Article'),
             confirmLabel: _t('Insert Link'),
             articleSelected: article => {
-                const articleLinkBlock = $(QWeb.render('knowledge.wysiwyg_article_link', {
+                const articleLinkBlock = renderToElement('knowledge.wysiwyg_article_link', {
                     href: '/knowledge/article/' + article.articleId,
                     data: JSON.stringify({
                         article_id: article.articleId,
                         display_name: article.displayName,
                     })
-                }))[0];
+                });
                 const nameNode = document.createTextNode(article.display_name);
                 articleLinkBlock.appendChild(nameNode);
                 this._notifyNewBehavior(articleLinkBlock, restoreSelection);
@@ -338,7 +339,7 @@ patch(Wysiwyg.prototype, {
             element.classList.remove('o_is_knowledge_file');
             element.classList.add('o_image');
             const extension = (element.title && element.title.split('.').pop()) || element.dataset.mimetype;
-            const fileBlock = $(QWeb.render('knowledge.WysiwygFileBehavior', {
+            const fileBlock = renderToElement('knowledge.WysiwygFileBehavior', {
                 behaviorType: "o_knowledge_behavior_type_file",
                 fileName: element.title,
                 fileImage: Markup(element.outerHTML),
@@ -347,7 +348,7 @@ patch(Wysiwyg.prototype, {
                     fileExtension: extension,
                 }),
                 fileExtension: extension,
-            }))[0];
+            });
             this._notifyNewBehavior(fileBlock, params.restoreSelection);
             // need to set cursor (anchor.sibling)
         } else {

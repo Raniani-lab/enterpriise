@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <templates>
-    <t t-name="web_grid.Buttons" owl="1">
+    <t t-name="web_grid.Buttons">
         <div class="d-flex o_grid_buttons">
             <div class="me-2" t-if="props.archInfo.activeActions.create and (!props.archInfo.createInline or displayNoContent)">
                 <button class="btn btn-primary o_grid_button_add"
@@ -12,7 +12,7 @@
             <t t-call="web_grid.CustomButtons" t-if="props.archInfo.buttons.length"/>
         </div>
     </t>
-    <t t-name="web_grid.CustomButtons" owl="1">
+    <t t-name="web_grid.CustomButtons">
         <div class="o_grid_custom_buttons me-2">
             <t t-foreach="props.archInfo.buttons" t-as="button" t-key="button.id">
                 <ViewButton
@@ -27,7 +27,7 @@
             </t>
         </div>
     </t>
-    <t t-name="web_grid.GridView" owl="1">
+    <t t-name="web_grid.GridView">
         <div t-attf-class="o_grid_view {{ isMobile ? 'o_action_delegate_scroll' : '' }} {{props.className}}" t-ref="root">
             <Layout className="(model.useSampleModel ? 'o_view_sample_data' : '') + ' d-flex'" display="props.display">
                 <t t-set-slot="control-panel-additional-actions">

@@ -1,6 +1,6 @@
 <templates>
 
-    <t t-name="web_studio.ViewEditor.PivotEditorSidebar" owl="1">
+    <t t-name="web_studio.ViewEditor.PivotEditorSidebar">
         <InteractiveEditorSidebar>
             <t t-set-slot="view">
                 <!-- Disable linking is presented as a positive sentence for easier understanding (hence inverse) -->

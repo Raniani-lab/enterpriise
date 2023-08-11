@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
     <!-- /file template -->
-    <t t-name="knowledge.FileBehavior" owl="1">
+    <t t-name="knowledge.FileBehavior">
         <div class="d-flex justify-content-between flex-wrap w-100">
             <div class="d-flex flex-wrap">
                 <div class="o_knowledge_file_image d-flex align-items-center" t-on-click="onClickDownload"

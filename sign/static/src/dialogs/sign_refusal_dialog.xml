@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
-    <t t-name="sign.SignRefusalDialog" owl="1">
+    <t t-name="sign.SignRefusalDialog">
         <Dialog t-props="dialogProps">
             <div>
                 <h3>Reason</h3>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="sign.SignViews.buttons" owl="1">
+    <t t-name="sign.SignViews.buttons">
         <t t-if="!env.isSmall">
             <input type="file" multiple="true" t-ref="uploadFileInput" accept="application/pdf, application/x-pdf, application/vnd.cups-pdf" class="o_input_file o_hidden" t-on-change.stop="onFileInputChange"/>
             <t t-if="props.resModel === 'sign.template'" t-call="sign.SignViews.sign_template.buttons"/>
@@ -8,7 +8,7 @@
         </t>
     </t>
 
-    <t t-name="sign.SignViews.sign_template.buttons" owl="1">
+    <t t-name="sign.SignViews.sign_template.buttons">
         <div class="btn-group">
             <button class="btn btn-primary" title="Upload a pdf that you want to sign directly" t-on-click="() => this.requestFile(true, 'sign_send_request')">
                 Upload a PDF &amp; Sign
@@ -21,7 +21,7 @@
         </div>
     </t>
 
-    <t t-name="sign.SignViews.sign_request.buttons" owl="1">
+    <t t-name="sign.SignViews.sign_request.buttons">
         <button class="btn btn-primary" title="Upload a pdf that you want to sign directly" t-on-click="() => this.requestFile(true, 'sign_send_request')">
             Upload a PDF &amp; Sign
         </button>

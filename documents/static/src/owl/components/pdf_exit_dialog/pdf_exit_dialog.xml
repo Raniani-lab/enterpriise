@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
-    <t t-name="documents.ExitToolsDialog" owl="1">
+    <t t-name="documents.ExitToolsDialog">
         <Dialog size="'md'" title="title" modalRef="modalRef">
             <t t-if="this.props.isRuleApplied">
                 What do you want to do with the remaining pages ?
@@ -9,7 +9,7 @@
             <t t-else="">
                 Do you want to exit without saving or gather pages into one document ?
             </t>
-            <t t-set-slot="footer" owl="1">
+            <t t-set-slot="footer">
                 <button t-if="props.isRuleApplied" class="btn btn-primary" t-on-click="deleteRemainingPages">Delete</button>
                 <button t-else="" class="btn btn-primary" t-on-click="deleteRemainingPages">Exit without saving</button>
                 <button class="btn btn-primary" t-on-click="gatherRemainingPages">Gather in one document</button>

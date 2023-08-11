@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
 
-<t t-inherit="web.ListRenderer" t-inherit-mode="extension" owl="1">
+<t t-inherit="web.ListRenderer" t-inherit-mode="extension">
     <xpath expr="//Dropdown" position="inside">
         <t t-if="isStudioEditable">
             <div t-if="hasOptionalFields" class="dropdown-divider"/>

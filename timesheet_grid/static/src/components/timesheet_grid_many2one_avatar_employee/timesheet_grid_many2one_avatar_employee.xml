@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
-    <t t-name="TimesheetGridMany2OneAvatarEmployeeField" t-inherit="mail.Many2OneAvatarUserField" owl="1">
+    <t t-name="TimesheetGridMany2OneAvatarEmployeeField" t-inherit="mail.Many2OneAvatarUserField">
         <xpath expr="//div[hasclass('d-flex')]" position="inside">
             <EmployeeOvertimeIndication t-props="timesheetOvertimeProps"/>
         </xpath>

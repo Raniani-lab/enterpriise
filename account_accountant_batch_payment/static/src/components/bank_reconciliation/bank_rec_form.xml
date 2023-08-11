@@ -2,7 +2,7 @@
 <templates id="template" xml:space="preserve">
 
     <!-- Notebook - batch_payments_tab -->
-    <t t-name="account_accountant_batch_payment.BankRecRecordNotebookBatchPayments" owl="1">
+    <t t-name="account_accountant_batch_payment.BankRecRecordNotebookBatchPayments">
         <div class="bank_rec_widget_form_batch_payments_list_anchor" t-if="this.state.bankRecEmbeddedViewsData">
             <BankRecViewEmbedder viewProps="this.notebookBatchPaymentsListViewProps()" t-key="data.st_line_id[0]"/>
         </div>
@@ -11,7 +11,7 @@
     <t t-name="account_accountant_batch_payment.BankRecRecordForm"
        t-inherit="account_accountant.BankRecRecordForm"
        t-inherit-mode="extension"
-       owl="1">
+      >
         <xpath expr="//t[@t-set-slot='amls_tab']" position="after">
             <t t-set-slot="batch_payments_tab"
                name="'batch_payments_tab'"

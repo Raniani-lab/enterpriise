@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
 
-    <t t-name="industry_fsm_sale.FsmProductQuantity" t-inherit="web.FloatField" t-inherit-mode="primary" owl="1">
+    <t t-name="industry_fsm_sale.FsmProductQuantity" t-inherit="web.FloatField" t-inherit-mode="primary">
         <xpath expr="span" position="attributes">
             <attribute name="t-if">state.readonly</attribute>
             <attribute name="t-att-class">state.addSmallClass ? 'small' : ''</attribute>

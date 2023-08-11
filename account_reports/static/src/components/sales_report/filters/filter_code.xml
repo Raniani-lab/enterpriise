@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
-    <t t-name="account_reports.SalesReportFilterCode" owl="1">
+    <t t-name="account_reports.SalesReportFilterCode">
         <Dropdown togglerClass="'btn btn-secondary'">
             <t t-set-slot="toggler">
                 <i class="fa fa-filter me-1"/> Codes: <t t-esc="selectedEcTaxName"/>

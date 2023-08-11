@@ -1,6 +1,6 @@
 <?xml version="1.1" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="web_gantt.GanttRowProgressBar" owl="1">
+    <t t-name="web_gantt.GanttRowProgressBar">
         <span
             class="o_gantt_progress_bar position-relative h-100 pe-none"
             t-att-class="`o_gantt_group_${status || 'none'}`"

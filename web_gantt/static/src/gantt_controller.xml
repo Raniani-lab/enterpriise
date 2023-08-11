@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
-    <t t-name="web_gantt.GanttController" owl="1">
+    <t t-name="web_gantt.GanttController">
         <div t-att-class="className" t-ref="root">
             <Layout className="model.useSampleModel ? 'o_view_sample_data' : ''" display="props.display">
                 <t t-set-slot="control-panel-create-button">
@@ -42,7 +42,7 @@
         </div>
     </t>
 
-    <t t-name="web_gantt.GanttView.Buttons" owl="1">
+    <t t-name="web_gantt.GanttView.Buttons">
         <div class="d-flex flex-wrap o_gantt_buttons_container">
         </div>
     </t>

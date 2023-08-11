@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
-    <t t-name="mrp_workorder.SummaryStep" owl="1">
+    <t t-name="mrp_workorder.SummaryStep">
         <div class="o_tablet_summary">
             <h1>Good Job!</h1>
             <span> Completion Time: <t t-esc="data.duration" t-options='{"widget": "float_time"}'/> minutes</span>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
 
-    <t t-name="l10n_mx_edi_pos.PartnerDetailsEdit" t-inherit="point_of_sale.PartnerDetailsEdit" t-inherit-mode="extension" owl="1">
+    <t t-name="l10n_mx_edi_pos.PartnerDetailsEdit" t-inherit="point_of_sale.PartnerDetailsEdit" t-inherit-mode="extension">
         <xpath expr="//div[hasclass('partner-details-box')]" position="after">
             <div t-if="pos.company.country?.code === 'MX'"
                 class="partner-details-box row row-cols-1 row-cols-sm-2 gy-3 mt-3">

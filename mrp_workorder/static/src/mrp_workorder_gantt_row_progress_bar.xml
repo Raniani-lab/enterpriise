@@ -2,7 +2,7 @@
 
 <templates xml:space="preserve">
 
-    <t t-name="mrp_workorder.MRPWorkorderGanttRowProgressBar" t-inherit="web_gantt.GanttRowProgressBar" owl="1">
+    <t t-name="mrp_workorder.MRPWorkorderGanttRowProgressBar" t-inherit="web_gantt.GanttRowProgressBar">
         <xpath expr="//span[hasclass('o_gantt_group_hours')]" position="after">
             <span class="ms-1 o_gantt_group_hours_ratio" t-esc="`(${props.progressBar.ratio_formatted})`"/>
         </xpath>

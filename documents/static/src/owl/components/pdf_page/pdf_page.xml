@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="documents.component.PdfPage" owl="1">
+    <t t-name="documents.component.PdfPage">
         <div t-att-data-id="props.pageId"
             t-att-class="{ 'o_pdf_page_focused': props.isFocused, 'o_pdf_thumbnail_dragover': state.isHover,
                            'o_pdf_page_selected': props.isSelected, 'o_pdf_page_activated': props.isActivated,

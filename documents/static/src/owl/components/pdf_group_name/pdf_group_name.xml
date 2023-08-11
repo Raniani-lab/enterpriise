@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="documents.component.PdfGroupName" owl="1">
+    <t t-name="documents.component.PdfGroupName">
         <div class="o_documents_pdf_block_title">
             <div class="o_pdf_group_name_block">
                 <t t-if="props.edit">

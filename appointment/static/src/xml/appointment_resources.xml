@@ -4,7 +4,7 @@
         <div class="d-flex">
             <i class="fa fa-cubes my-auto o_appointment_fa_width text-center fs-5 me-2 text-muted"/>
             <select class="o_resources_list form-select cursor-pointer" name="resource_id">
-                <option t-foreach="availableResources" t-as="resource"
+                <option t-foreach="availableResources" t-as="resource" t-key="resource_index"
                     t-att-value="resource['id']" t-att-data-resource-capacity="resource['capacity']">
                     <t t-out="resource['name']"/>
                 </option>

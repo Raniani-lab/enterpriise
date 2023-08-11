@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
-    <t t-name="account_intrastat.IntrastatReportFilters" t-inherit="account_reports.AccountReportFiltersCustomizable" owl="1">
+    <t t-name="account_intrastat.IntrastatReportFilters" t-inherit="account_reports.AccountReportFiltersCustomizable">
         <xpath expr="." position="inside">
             <t t-if="'intrastat_type' in controller.options">
                 <t t-call="account_intrastat.IntrastatReportFilterType"/>

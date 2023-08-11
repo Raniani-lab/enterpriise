@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
-    <t t-name="account_reports.AccountReportLine" owl="1">
+    <t t-name="account_reports.AccountReportLine">
         <t t-call="{{ env.template('AccountReportLine') }}"/>
     </t>
 
-    <t t-name="account_reports.AccountReportLineCustomizable" owl="1">
+    <t t-name="account_reports.AccountReportLineCustomizable">
         <!-- Adds an empty row above line with level 0 to add some spacing (it is the easiest and cleanest way) -->
         <t t-if="props.lineIndex != 0 and props.line.level === 0">
             <tr class="empty">

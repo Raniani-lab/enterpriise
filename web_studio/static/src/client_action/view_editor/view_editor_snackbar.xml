@@ -1,6 +1,6 @@
 <templates>
 
-    <t t-name="web_studio.ViewEditor.Snackbar" owl="1">
+    <t t-name="web_studio.ViewEditor.Snackbar">
 
         <div class="o_web_studio_menu_undo_redo d-flex d-flex-row align-items-center">
             <button class="btn cursor-default text-uppercase text-nowrap o_web_studio_undo" t-attf-class="{{ props.operations.canUndo ? 'o_web_studio_active' : '' }}" t-on-click="() => props.operations.undo()">

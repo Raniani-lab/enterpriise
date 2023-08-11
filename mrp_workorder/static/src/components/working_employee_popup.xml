@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
-    <t t-name="mrp_workorder.WorkingEmployeePopup" owl="1">
+    <t t-name="mrp_workorder.WorkingEmployeePopup">
         <div role="dialog">
             <div class="popup text-center">
                 <t t-foreach="lines" t-as="line" t-key="line.employee_id">

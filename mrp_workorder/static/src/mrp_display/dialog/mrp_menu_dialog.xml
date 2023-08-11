@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="mrp_workorder.MrpDisplayMenuDialog" owl="1">
+    <t t-name="mrp_workorder.MrpDisplayMenuDialog">
         <Dialog size="'md'" title="props.title" modalRef="modalRef" footer="false" withBodyPadding="false">
             <div  class="o_mrp_menu_dialog p-3 transition-base">
                 <div class="button_list btn-group-vertical w-100">

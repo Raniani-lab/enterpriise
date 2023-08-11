@@ -4,7 +4,7 @@
 import { fetchValidHeadings } from './tools/knowledge_tools.js';
 import publicWidget from '@web/legacy/js/public/public_widget';
 import session from 'web.session';
-import { qweb as QWeb } from "@web/legacy/js/services/core";
+import { renderToElement } from "@web/core/utils/render";
 import { debounce, throttleForAnimation } from "@web/core/utils/timing";
 
 publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend({
@@ -38,13 +38,13 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend({
              * in, the user will be redirected to the backend and should be able
              * to load the embedded view.
              */
-            const $placeholder = $(QWeb.render('knowledge.embedded_view_placeholder', {
+            const placeholder = renderToElement('knowledge.embedded_view_placeholder', {
                 url: `/knowledge/article/${this.$id}`,
                 isLoggedIn: session.user_id !== false
-            }));
+            });
             const $container = $('.o_knowledge_behavior_type_embedded_view');
             $container.empty();
-            $container.append($placeholder);
+            $container.append(placeholder);
         });
     },
 

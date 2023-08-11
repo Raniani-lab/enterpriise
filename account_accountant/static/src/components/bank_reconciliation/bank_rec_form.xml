@@ -2,7 +2,7 @@
 <templates id="template" xml:space="preserve">
 
     <!-- Buttons -->
-    <t t-name="account_accountant.BankRecRecordFormButtonsHeaderLeft" owl="1">
+    <t t-name="account_accountant.BankRecRecordFormButtonsHeaderLeft">
         <div class="o_statusbar_buttons o_bank_rec_stats_buttons_aside_left py-1 ps-1">
             <t t-set="areAllLinesValid" t-value="this.checkBankRecLinesInvalidFields(data)"/>
             <button accesskey="v"
@@ -41,7 +41,7 @@
     </t>
 
     <!-- Reconciliation models -->
-    <t t-name="account_accountant.BankRecRecordFormButtonsHeaderRight" owl="1">
+    <t t-name="account_accountant.BankRecRecordFormButtonsHeaderRight">
         <div class="o_statusbar_buttons o_bank_rec_stats_buttons_aside_right">
             <div t-if="['valid', 'invalid'].includes(data.state)"
                  class="available_reco_model_ids">
@@ -106,7 +106,7 @@
     </t>
 
     <!-- line_ids field -->
-    <t t-name="account_accountant.BankRecRecordFormLineIds" owl="1">
+    <t t-name="account_accountant.BankRecRecordFormLineIds">
         <div name="line_ids" class="w-100">
             <div class="o_list_renderer table-responsive">
                 <table class="o_list_table table table-sm position-relative mb-0 o_list_table_ungrouped table-striped o_bank_rec_lines_widget_table">
@@ -284,14 +284,14 @@
     </t>
 
     <!-- Notebook - amls_tab -->
-    <t t-name="account_accountant.BankRecRecordNotebookAmls" owl="1">
+    <t t-name="account_accountant.BankRecRecordNotebookAmls">
         <div class="bank_rec_widget_form_amls_list_anchor" t-if="this.state.bankRecEmbeddedViewsData">
             <BankRecViewEmbedder viewProps="this.notebookAmlsListViewProps()" t-key="data.st_line_id[0]"/>
         </div>
     </t>
 
     <!-- Notebook - manual_operations_tab -->
-    <t t-name="account_accountant.BankRecRecordNotebookManualOperations" owl="1">
+    <t t-name="account_accountant.BankRecRecordNotebookManualOperations">
         <t t-set="line" t-value="this.getBankRecRecordLineInEdit()"/>
         <div t-if="line" class="bank_rec_widget_manual_operations_anchor">
             <t t-set="invalidFields" t-value="this.getBankRecLineInvalidFields(line)"/>
@@ -594,14 +594,14 @@
     </t>
 
     <!-- Notebook - discuss -->
-    <t t-name="account_accountant.BankRecRecordNotebookChatter" owl="1">
+    <t t-name="account_accountant.BankRecRecordNotebookChatter">
         <div class="bank_rec_widget_form_discuss_anchor">
             <Chatter threadModel="'account.move'" threadId="data.move_id[0]"/>
         </div>
     </t>
 
     <!-- Notebook - transaction_details_tab -->
-    <t t-name="account_accountant.BankRecRecordNotebookTransactionDetails" owl="1">
+    <t t-name="account_accountant.BankRecRecordNotebookTransactionDetails">
         <div class="bank_rec_widget_form_transaction_details_anchor o_group row align-items-start">
             <div class="o_wrap_field d-flex d-sm-contents flex-column mb-3 mb-sm-0">
                 <div class="o_cell o_wrap_label flex-grow-1 flex-sm-grow-0 w-100 text-break text-900">
@@ -613,7 +613,7 @@
     </t>
 
     <!-- Main template -->
-    <t t-name="account_accountant.BankRecRecordForm" owl="1">
+    <t t-name="account_accountant.BankRecRecordForm">
         <div class="o_xxl_form_view h-100 o_view_controller o_form_view">
             <t t-set="record" t-value="this.bankRecModel.root"/>
             <t t-set="data" t-value="state.bankRecRecordData"/>
@@ -666,7 +666,7 @@
         </div>
     </t>
 
-    <t t-name="account_accountant.BankRecEmbeddedListController" t-inherit="web.ListView" t-inherit-mode="primary" owl="1">
+    <t t-name="account_accountant.BankRecEmbeddedListController" t-inherit="web.ListView" t-inherit-mode="primary">
         <t t-set-slot="control-panel-additional-actions" position="replace"/>
     </t>
 

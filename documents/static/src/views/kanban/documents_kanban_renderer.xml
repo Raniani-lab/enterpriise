@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
-    <t t-name="documents.DocumentsKanbanRenderer" t-inherit="web.KanbanRenderer" t-inherit-mode="primary" owl="1">
+    <t t-name="documents.DocumentsKanbanRenderer" t-inherit="web.KanbanRenderer" t-inherit-mode="primary">
         <xpath expr="//div[hasclass('o_kanban_renderer')]" position="attributes">
             <attribute name="class" add="o_documents_view o_renderer_with_search_panel position-relative" separator=" "/>
             <attribute name="t-on-click">onGlobalClick</attribute>

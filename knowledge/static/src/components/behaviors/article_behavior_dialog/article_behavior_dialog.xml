@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
-    <t t-name="knowledge.ArticleSelectionBehaviorDialog" owl="1">
+    <t t-name="knowledge.ArticleSelectionBehaviorDialog">
         <Dialog size="'md'" title="this.props.title">
             <div class="m-0">
                 <SelectMenu
@@ -30,7 +30,7 @@
                     </t>
                 </SelectMenu>
             </div>
-            <t t-set-slot="footer" owl="1">
+            <t t-set-slot="footer">
                 <button t-attf-class="btn btn-primary #{!this.state.selectedArticleName ? 'disabled' : ''}" t-out="this.props.confirmLabel"
                     t-on-click="this.confirmArticleSelection.bind(this)"/>
                 <button class="btn btn-secondary" t-on-click="this.props.close.bind(this)">

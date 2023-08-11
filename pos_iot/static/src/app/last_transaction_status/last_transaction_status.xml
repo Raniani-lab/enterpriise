@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
 
-    <t t-name="pos_iot.LastTransactionStatusButton" owl="1">
+    <t t-name="pos_iot.LastTransactionStatusButton">
         <li class="menu-item navbar-button" t-on-click="sendLastTransactionStatus">
             <span>
                 <i t-if="state.pending" class="fa fa-spinner fa-spin"/>
@@ -11,7 +11,7 @@
     </t>
     
 
-    <t t-name="pos_iot.LastTransactionPopup" owl="1">
+    <t t-name="pos_iot.LastTransactionPopup">
         <div role="dialog" class="modal-dialog">
             <div class="popup popup-alert">
                 <p class="title">Worldline - Last Transaction Status</p>

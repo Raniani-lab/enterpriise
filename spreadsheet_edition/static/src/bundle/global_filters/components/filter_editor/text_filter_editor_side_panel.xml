@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
-    <div t-name="spreadsheet_edition.TextFilterEditorSidePanel" owl="1" class="o_spreadsheet_filter_editor_side_panel">
+    <div t-name="spreadsheet_edition.TextFilterEditorSidePanel" class="o_spreadsheet_filter_editor_side_panel">
         <div class="o_side_panel_section">
             <FilterEditorLabel
                 inputClass="missingLabel ? 'o_field_invalid' : ''"

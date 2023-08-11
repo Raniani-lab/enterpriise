@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates id="template" xml:space="preserve">
-    <t t-name="quality.TabletImageField" t-inherit="web.ImageField" t-inherit-mode="primary" owl="1">
+    <t t-name="quality.TabletImageField" t-inherit="web.ImageField" t-inherit-mode="primary">
         <xpath expr="//button[hasclass('o_select_file_button')]" position="replace">
             <div class="position-absolute start-100 bottom-100 ms-2" id="picture_button">
                 <button class="btn btn-primary o_select_file_button" barcode_trigger="measure">Take a Picture</button>
@@ -11,7 +11,7 @@
       </xpath>
     </t>
 
-    <t t-name="quality.ImagePreviewDialog" owl="1">
+    <t t-name="quality.ImagePreviewDialog">
         <Dialog title="'Preview'" size="'lg'">
             <div class="o_viewer_img_wrapper">
                     <div class="o_viewer_zoomer">

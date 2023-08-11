@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-    <t t-name="knowledge.KnowledgeArticleHtmlField" t-inherit="web_editor.HtmlField" t-inherit-mode="primary" owl="1">
+    <t t-name="knowledge.KnowledgeArticleHtmlField" t-inherit="web_editor.HtmlField" t-inherit-mode="primary">
         <xpath expr="//div[@t-ref='spellcheck']" position="attributes">
             <attribute name="t-attf-class">o_field_knowledge_html_field_container #{ this.state.isEmpty ? 'oe_empty' : '' }</attribute>
         </xpath>

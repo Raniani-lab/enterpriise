@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
-    <t t-name="stock_barcode.ManualBarcodeScanner" owl="1">
+    <t t-name="stock_barcode.ManualBarcodeScanner">
         <Dialog title="title" size="'sm'" fullscreen="false">
             <div class="px-2">
                 <input id="manual_barcode" t-model="state.barcode" type="text" name="barcode"

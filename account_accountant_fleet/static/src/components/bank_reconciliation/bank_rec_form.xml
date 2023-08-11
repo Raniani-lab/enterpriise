@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
-    <t t-name="account_accountant_fleet.BankRecRecordFormLineIds" t-inherit="account_accountant.BankRecRecordFormLineIds" t-inherit-mode="extension" owl="1">
+    <t t-name="account_accountant_fleet.BankRecRecordFormLineIds" t-inherit="account_accountant.BankRecRecordFormLineIds" t-inherit-mode="extension">
         <xpath expr="//t[@name='col_taxes']" position="after">
             <!-- Vehicle -->
             <t t-if="column[0] === 'vehicle'" name="col_vehicle">
@@ -13,7 +13,7 @@
         </xpath>
     </t>
 
-    <t t-name="account_accountant_fleet.BankRecRecordNotebookManualOperations" t-inherit="account_accountant.BankRecRecordNotebookManualOperations" t-inherit-mode="extension" owl="1">
+    <t t-name="account_accountant_fleet.BankRecRecordNotebookManualOperations" t-inherit="account_accountant.BankRecRecordNotebookManualOperations" t-inherit-mode="extension">
         <xpath expr="//div[@name='suggestion']" position="before">
             <div name="vehicle"
                  t-if="line.data.flag !== 'liquidity'"

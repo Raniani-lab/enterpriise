@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="mrp_workorder.MrpWorksheetDialog" owl="1">
+    <t t-name="mrp_workorder.MrpWorksheetDialog">
         <div class="o_tablet_popups">
             <Dialog size="'lg'" title="Worksheet" modalRef="modalRef" footer="false">
-                <t t-set-slot="header" owl="1">
+                <t t-set-slot="header">
                     <div class="d-flex w-100">
                         <div class="h4 align-self-end">Worksheet</div>
                         <div t-on-click="_cancel" type="button" class="btn-close" aria-label="Close"/>

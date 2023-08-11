@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
-    <t t-name="KnowledgeCommandTemplate" owl="1">
+    <t t-name="KnowledgeCommandTemplate">
         <div class="o_command_default d-flex align-items-center px-4 py-2">
             <span class="pe-2" t-if="props.icon_string" t-out="props.icon_string" />
             <span class="pe-2 text-ellipsis">
@@ -20,7 +20,7 @@
         </div>
     </t>
 
-    <t t-name="Knowledge404CommandTemplate" owl="1">
+    <t t-name="Knowledge404CommandTemplate">
         <div class="o_command_hotkey">
             <span>
                 No Article found.
@@ -31,7 +31,7 @@
         </div>
     </t>
 
-    <t t-name="KnowledgeExtraCommandTemplate" owl="1">
+    <t t-name="KnowledgeExtraCommandTemplate">
         <div class="o_command_hotkey">
             <span>
                 <icon class="fa fa-arrows-alt pe-2" />
@@ -47,7 +47,7 @@
         </div>
     </t>
 
-    <t t-inherit="web.CommandPalette" t-inherit-mode="extension" owl="1">
+    <t t-inherit="web.CommandPalette" t-inherit-mode="extension">
         <xpath expr="//div[hasclass('o_command_palette_search')]/input" position="after">
             <a t-if="this.state.namespace === '$'" role="button" class="btn btn-dark disabled py-0 rounded-pill">
                 Hidden

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="stock_barcode.BackorderDialog" owl="1">
+    <t t-name="stock_barcode.BackorderDialog">
         <Dialog title="title" size="'md'" fullscreen="false" contentClass="'o_barcode_backorder_dialog'">
             <div class="container">
                 <div class="text-muted mb-4">

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
-    <t t-name="account_reports.AccountReportCarryoverPopover" owl="1">
+    <t t-name="account_reports.AccountReportCarryoverPopover">
         <table>
             <t t-if="props.carryoverData.carryover || props.carryoverData.applied_carryover">
                 <tr>

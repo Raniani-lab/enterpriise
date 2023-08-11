@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
-    <t t-name="account_consolidation.ConsolidationReportFilterExtraOptions" t-inherit="account_reports.AccountReportFilterExtraOptions" owl="1">
+    <t t-name="account_consolidation.ConsolidationReportFilterExtraOptions" t-inherit="account_reports.AccountReportFilterExtraOptions">
         <xpath expr="//DropdownItem[contains(@class, 'filter_show_all_hook')]" position="after">
             <DropdownItem
                 class="{ 'selected': controller.options.consolidation_show_zero_balance_accounts }"

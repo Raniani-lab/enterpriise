@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <templates>
-    <t t-name="web_grid.Renderer" owl="1">
+    <t t-name="web_grid.Renderer">
         <div class="o_grid_renderer flex-grow-1" t-ref="renderer">
             <div class="o_grid_grid d-grid gap-0 border-bottom bg-200"
                  t-attf-style="grid-template-rows: {{ gridTemplateRows }} ; grid-template-columns: {{ gridTemplateColumns }}"
@@ -33,7 +33,7 @@
             </div>
         </div>
     </t>
-    <t t-name="web_grid.Header" owl="1">
+    <t t-name="web_grid.Header">
         <div class="o_grid_column_title o_grid_navigation_wrap position-md-sticky start-0 d-flex align-items-center gap-2 px-3 border-bottom bg-100 overflow-visible"
              t-attf-style="grid-row: {{rowsGap}}; grid-column: {{columnsGap - 1}} / span {{columnsGap}};">
             <t t-call="web_grid.NavigationButtons"/>
@@ -60,7 +60,7 @@
             <t t-esc="measureLabel"/>
         </div>
     </t>
-    <t t-name="web_grid.Section" owl="1">
+    <t t-name="web_grid.Section">
         <t t-set="section" t-value="row"/>
         <t t-set="rowPosition" t-value="getRowPosition(section)"/>
         <t t-if="!section.isFake">
@@ -133,7 +133,7 @@
             </div>
         </t>
     </t>
-    <t t-name="web_grid.Row" owl="1">
+    <t t-name="web_grid.Row">
         <t t-set="rowPosition" t-value="getRowPosition(row)"/>
         <t t-set="isEven" t-value="rowPosition % 2 !== 0"/>
         <div name="row"
@@ -220,7 +220,7 @@
             </span>
         </div>
     </t>
-    <t t-name="web_grid.AddLine" owl="1">
+    <t t-name="web_grid.AddLine">
         <t t-set="rowPosition" t-value="getRowPosition(row or undefined, true)"/>
         <div t-if="props.createInline"
              class="o_grid_row o_grid_add_line o_grid_add_line_first_cell position-md-sticky start-0 d-flex align-items-center ps-3 z-index-1 transition-base"
@@ -247,7 +247,7 @@
              t-attf-style="grid-row: {{rowPosition}}; grid-column: {{props.columns.length + 1 + columnsGap}};"
         ></div>
     </t>
-    <t t-name="web_grid.Footer" owl="1">
+    <t t-name="web_grid.Footer">
         <t t-if="!props.options.hideColumnTotal">
             <t t-set="rowPosition" t-value="getTotalRowPosition()"/>
             <div class="bg-view"
@@ -299,7 +299,7 @@
             </div>
         </t>
     </t>
-    <t t-name="web_grid.barChart" owl="1">
+    <t t-name="web_grid.barChart">
         <t t-if="!props.options.hideColumnTotal">
             <t t-set="rowPosition" t-value="getTotalRowPosition()"/>
             <div class="o_grid_row_barChart"
@@ -336,7 +336,7 @@
             </div>
         </t>
     </t>
-    <t t-name="web_grid.NavigationButtons" owl="1">
+    <t t-name="web_grid.NavigationButtons">
         <div class="o_grid_navigation_buttons d-contents" t-if="props.model.columnFieldIsDate">
             <button class="btn btn-secondary"
                     data-hotkey="t"

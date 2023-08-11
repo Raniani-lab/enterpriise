@@ -1,10 +1,8 @@
 /** @odoo-module **/
 
-import core from "@web/legacy/js/services/core";
+import { renderToElement } from "@web/core/utils/render";
 import publicWidget from "@web/legacy/js/public/public_widget";
 import { debounce } from "@web/core/utils/timing";
-
-var qweb = core.qweb;
 
 publicWidget.registry.appointmentTypeSelect = publicWidget.Widget.extend({
     selector: '.o_appointment_choice',
@@ -28,7 +26,7 @@ publicWidget.registry.appointmentTypeSelect = publicWidget.Widget.extend({
     start: function () {
         return this._super(...arguments).then(() => {
             // Load an image when no appointment types are found
-            this.$el.find('.o_appointment_svg i').replaceWith(qweb.render('Appointment.appointment_svg', {}));
+            this.$el.find('.o_appointment_svg i').replaceWith(renderToElement('Appointment.appointment_svg', {}));
             this.$el.find('.o_appointment_not_found h2, .o_appointment_not_found .alert').removeClass('d-none');
         });
     },

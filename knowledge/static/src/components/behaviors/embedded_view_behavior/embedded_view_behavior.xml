@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
-    <t t-name="knowledge.EmbeddedViewBehavior" owl="1">
+    <t t-name="knowledge.EmbeddedViewBehavior">
         <div t-if="state.error" class="o_knowledge_embedded_view_placeholder d-flex flex-column flex-grow-1 position-relative bg-white border"
             data-oe-transient-content="true">
             <div class="d-flex border-bottom p-5 pb-0">

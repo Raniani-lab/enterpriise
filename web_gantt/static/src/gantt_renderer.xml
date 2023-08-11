@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
-    <t t-name="web_gantt.GanttRenderer" owl="1">
+    <t t-name="web_gantt.GanttRenderer">
         <div t-ref="root"
             class="o_gantt_renderer o_renderer bg-view"
             t-att-class="{ o_no_groups: !model.metaData.groupedBy.length }"
@@ -53,7 +53,7 @@
         </div>
     </t>
 
-    <t t-name="web_gantt.GanttRenderer.Header" owl="1">
+    <t t-name="web_gantt.GanttRenderer.Header">
         <div class="o_gantt_header o_gantt_header_scale position-sticky top-0 d-flex flex-wrap">
             <div class="d-flex gap-2 align-items-center w-100 px-3 py-2 bg-100">
                 <button
@@ -126,7 +126,7 @@
         </div>
     </t>
 
-    <t t-name="web_gantt.GanttRenderer.ConnectorCreator" owl="1">
+    <t t-name="web_gantt.GanttRenderer.ConnectorCreator">
         <div
             class="o_connector_creator_wrapper position-absolute w-100"
             t-attf-class="o_connector_creator_wrapper_{{ alignment.vertical }} {{ '_color' in pill ? 'o_gantt_color_' + pill._color : '' }}"
@@ -140,7 +140,7 @@
         </div>
     </t>
 
-    <t t-name="web_gantt.GanttRenderer.RowHeader" owl="1">
+    <t t-name="web_gantt.GanttRenderer.RowHeader">
         <div
             class="o_gantt_row_header o_gantt_row_sidebar position-relative align-items-center"
             t-att-class="{
@@ -178,7 +178,7 @@
         </div>
     </t>
 
-    <t t-name="web_gantt.GanttRenderer.RowContent" owl="1">
+    <t t-name="web_gantt.GanttRenderer.RowContent">
         <!-- Cells -->
         <t t-foreach="columns" t-as="column" t-key="column.id">
             <div
@@ -230,7 +230,7 @@
         </t>
     </t>
 
-    <t t-name="web_gantt.GanttRenderer.Pill" owl="1">
+    <t t-name="web_gantt.GanttRenderer.Pill">
         <t t-set="renderConnectors" t-value="shouldRenderRecordConnectors(pill.record)" />
         <div class="o_gantt_pill_wrapper"
             t-att-class="{
@@ -264,7 +264,7 @@
         </div>
     </t>
 
-    <t t-name="web_gantt.GanttRenderer.TotalRow" owl="1">
+    <t t-name="web_gantt.GanttRenderer.TotalRow">
         <t t-if="model.metaData.groupedBy.length">
             <div class="o_gantt_row_sidebar bg-view d-flex align-items-center justify-content-end">
                 <h4

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
-    <t t-name="account_reports.AccountReportLineCell" owl="1">
+    <t t-name="account_reports.AccountReportLineCell">
         <t t-call="{{ env.template('AccountReportLineCell') }}"/>
     </t>
 
-    <t t-name="account_reports.AccountReportLineCellCustomizable" owl="1">
+    <t t-name="account_reports.AccountReportLineCellCustomizable">
         <td
             data-id="line_cell"
             class="line_cell"

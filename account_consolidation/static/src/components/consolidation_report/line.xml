@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
-    <t t-name="account_consolidation.ConsolidationReportLine" t-inherit="account_reports.AccountReportLineCustomizable" owl="1">
+    <t t-name="account_consolidation.ConsolidationReportLine" t-inherit="account_reports.AccountReportLineCustomizable">
         <xpath expr="//tr" position="replace">
             <tr>
                 <!-- Name column -->

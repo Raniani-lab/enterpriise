@@ -3,7 +3,7 @@
 
     <!-- Comments Modal -->
 
-    <t t-name="social.StreamPostComments" owl="1">
+    <t t-name="social.StreamPostComments">
         <t t-set="bubble_design" t-value="false"/>
         <Dialog t-if="state.displayModal" title="props.title" footer="false" size="'md'" bodyClass="bodyClass">
             <t t-call="social.StreamPostCommentsOriginalPost"/>
@@ -28,7 +28,7 @@
         </Dialog>
     </t>
 
-    <t t-name="social.StreamPostCommentsOriginalPost" owl="1">
+    <t t-name="social.StreamPostCommentsOriginalPost">
         <div class="o_social_comments_modal_original_post d-flex bg-white pt-3 px-3">
             <div class="me-3">
                 <span class="o_social_original_post_author_image o_social_author_image d-block position-relative rounded overflow-hidden"/>
@@ -93,7 +93,7 @@
         </div>
     </t>
 
-    <div t-name="social.StreamPostCommentsReply" class="o_social_write_reply" owl="1">
+    <div t-name="social.StreamPostCommentsReply" class="o_social_write_reply">
         <form t-attf-class="d-flex flex-nowrap align-items-start {{ props.classes }}">
             <div class="o_social_author_image position-relative rounded flex-shrink-0 overflow-hidden me-2">
                 <img t-if="authorPictureSrc" t-att-src="authorPictureSrc"
@@ -158,7 +158,7 @@
         </form>
     </div>
 
-    <div t-name="social.StreamPostCommentsWrapper" owl="1">
+    <div t-name="social.StreamPostCommentsWrapper">
         <t t-if="comments.length">
             <t t-foreach="comments" t-as="comment" t-key="comment_index">
                 <t t-component="commentComponent"
@@ -177,7 +177,7 @@
         </t>
     </div>
 
-    <div t-name="social.StreamPostComment" owl="1"
+    <div t-name="social.StreamPostComment"
         t-att-data-comment-id="comment.id"
         t-att-data-existing-attachment-id="comment.attachment &amp;&amp; comment.attachment.type === 'photo' &amp;&amp; comment.attachment.target ? comment.attachment.target.id : null"
         t-att-data-existing-attachment-src="comment.attachment &amp;&amp; comment.attachment.type === 'photo' ? comment.attachment.media.image.src : null"
@@ -311,7 +311,7 @@
 
     <!-- Social Stream Modal -->
 
-    <div t-name="social.AddSocialStreamDialog" owl="1">
+    <div t-name="social.AddSocialStreamDialog">
         <Dialog title="props.title" footer="false" size="'md'" modalRef="modalRef">
             <div class="o_social_add_stream_form bg-200">
                 <t t-if="props.socialAccounts.length !== 0">
@@ -338,7 +338,7 @@
         </Dialog>
     </div>
 
-    <t t-name="social.AddStreamCompany" t-if="props.companies &amp;&amp; props.companies.length &gt; 1" owl="1">
+    <t t-name="social.AddStreamCompany" t-if="props.companies &amp;&amp; props.companies.length &gt; 1">
         for
         <select class="o_social_add_stream_form_select form-select w-25 ms-1" name="company_id">
             <option t-att-value="props.companies[0].id" t-esc="props.companies[0].name" selected="1"/>
@@ -347,7 +347,7 @@
         </select>
     </t>
 
-    <div t-name="social.AddStreamMedia" class="o_social_media_cards d-flex flex-wrap" owl="1">
+    <div t-name="social.AddStreamMedia" class="o_social_media_cards d-flex flex-wrap">
         <t t-foreach="props.socialMedia" t-as="media" t-key="media_index">
             <div class="o_social_media card text-center justify-content-center align-items-center me-3 mb-3 p-3" t-att-data-media-id="media.id" style="width: 90px;" t-on-click.prevent="_onClickSocialMedia">
                 <img width="48" height="48" t-attf-src="/web/image/social.media/{{ media.id }}/image/48x48" />
@@ -358,7 +358,7 @@
 
     <!-- Image Carousel Modal -->
 
-    <t t-name="social.ImagesCarouselDialog" owl="1">
+    <t t-name="social.ImagesCarouselDialog">
         <Dialog title="props.title" footer="false" bodyClass="'bg-900'" withBodyPadding="false">
             <t t-set="multi_images" t-value="props.images.length > 1"/>
             <div id="o_stream_post_images_carousel"
@@ -392,13 +392,13 @@
 
     <!-- Kanban View -->
 
-    <t t-name="social.KanbanHeader" t-inherit="web.KanbanHeader" owl="1">
+    <t t-name="social.KanbanHeader" t-inherit="web.KanbanHeader">
         <xpath expr="//span[hasclass('o_column_title')]" position="before">
             <img t-if="group.groupByField.name === 'stream_id'" width="16" t-attf-src="/web/image/social.stream/{{ group.value }}/media_image/16x16" class="o_kanbanheader_media_image mr8"/>
         </xpath>
     </t>
 
-    <div t-name="StreamPostKanbanView.buttons" t-inherit="web.KanbanView.Buttons" owl="1">
+    <div t-name="StreamPostKanbanView.buttons" t-inherit="web.KanbanView.Buttons">
         <xpath expr="//div[hasclass('o_cp_buttons')]" position="inside">
             <button type="button" class="btn btn-primary o_stream_post_kanban_new_stream me-1" t-on-click.prevent="_onNewStream">
                 Add a Stream
@@ -412,7 +412,7 @@
         </xpath>
     </div>
 
-    <t t-name="social.SocialKanbanView" t-inherit="web.KanbanView" t-inherit-mode="primary" owl="1">
+    <t t-name="social.SocialKanbanView" t-inherit="web.KanbanView" t-inherit-mode="primary">
         <xpath expr="//Layout" position="attributes">
             <attribute name="className">model.useSampleModel ? 'o_view_sample_data o_social_stream_post_kanban_view_wrapper'
                 : 'o_social_stream_post_kanban_view_wrapper'</attribute>
@@ -429,7 +429,7 @@
         </xpath>
     </t>
 
-    <t t-name="social.NewContentRefreshBanner" owl="1">
+    <t t-name="social.NewContentRefreshBanner">
         <a class="o_social_stream_post_kanban_new_content alert alert-info mb-0 text-center border-bottom py-2"
            t-att-class="{'d-none': !props.refreshRequired}" href="#" t-on-click="props.onClickRefresh">
             New content available
@@ -438,7 +438,7 @@
         </a>
     </t>
 
-    <t t-name="social.KanbanDashboard" owl="1">
+    <t t-name="social.KanbanDashboard">
         <section class="o_social_stream_post_kanban_before d-flex flex-nowrap border-bottom" t-ref="dashboard">
             <div t-foreach="props.accounts" t-as="socialAccount" t-key="socialAccount_index"
                  class="o_social_stream_stat_box flex-shrink-0 w-auto d-flex flex-column bg-view border-bottom border-end">
@@ -504,7 +504,7 @@
         </section>
     </t>
 
-    <t t-name="social.AccountsStatsValue" owl="1">
+    <t t-name="social.AccountsStatsValue">
         <div class="d-flex align-items-center">
             <i t-attf-class="text-600 me-1 fa {{icon}}" style="line-height: 1"/>
             <b class="social_account_stat_value" t-esc="formatStatValue(value)" style="line-height: 1"/>

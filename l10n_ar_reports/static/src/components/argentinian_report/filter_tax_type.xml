@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
-    <t t-name="l10n_ar_reports.L10nArReportsFilterTaxType" owl="1">
+    <t t-name="l10n_ar_reports.L10nArReportsFilterTaxType">
         <Dropdown togglerClass="'btn btn-secondary'">
             <t t-set-slot="toggler">
                 <t t-set="taxSelected" t-value="controller.options.ar_vat_book_tax_type_selected"/>

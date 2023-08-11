@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <templates>
-    <t t-name="web_studio.XmlResourceEditor" owl="1">
+    <t t-name="web_studio.XmlResourceEditor">
         <div class="o_web_studio_xml_editor h-100 d-flex flex-column">
             <div class="o_web_studio_xml_resource_selector p-2">
                 <SelectMenu
@@ -36,7 +36,7 @@
         </xpath>
     </t>
 
-    <t t-name="web_studio.ViewSelector.ChoiceItemRecursive" owl="1">
+    <t t-name="web_studio.ViewSelector.ChoiceItemRecursive">
         <t t-set="level" t-value="level or 0"/>
         <t t-call="web_studio.ViewSelector.ChoiceItem" />
         <t t-set="sublevel" t-value="level + 1" />
@@ -60,7 +60,7 @@
         </t>
     </t>
 
-    <t t-name="web_studio.ViewSelector.ChoiceItem" t-inherit="web.SelectMenu.ChoiceItem" owl="1">
+    <t t-name="web_studio.ViewSelector.ChoiceItem" t-inherit="web.SelectMenu.ChoiceItem">
         <xpath expr="./*[1]" position="before">
             <t t-set="level" t-value="level or 0"/>
         </xpath>

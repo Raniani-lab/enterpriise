@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
-    <t t-name="mrp_mps.GroupMenu" owl="1">
+    <t t-name="mrp_mps.GroupMenu">
         <div class="o_dropdown_container o_rows_menu w-100 w-lg-auto px-3 mb-4 mb-lg-0 border-end">
             <div class="px-3 fs-5 mb-2">
                 <h5 class="o_dropdown_title d-inline">Rows</h5>

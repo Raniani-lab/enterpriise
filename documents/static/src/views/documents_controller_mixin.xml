@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
-    <div t-name="documents.DocumentsViews.ControlPanel" owl="1" class="o_cp_buttons d-lg-flex gap-1" role="toolbar" aria-label="Control panel buttons" t-ref="cpButtons">
+    <div t-name="documents.DocumentsViews.ControlPanel" class="o_cp_buttons d-lg-flex gap-1" role="toolbar" aria-label="Control panel buttons" t-ref="cpButtons">
         <t t-set="disabled" t-value="hasDisabledButtons()"/>
         <t t-set="isShareable" t-value="hasShareDocuments()"/>
         <div class="btn-group">

@@ -1,6 +1,6 @@
 <templates>
 
-    <t t-name="web_studio.ViewEditor.KanbanEditorSidebar" owl="1">
+    <t t-name="web_studio.ViewEditor.KanbanEditorSidebar">
         <InteractiveEditorSidebar>
             <t t-set-slot="new">
                 <ExistingFields fields="env.viewEditorModel.fields" fieldsInArch="viewEditorModel.fieldsInArch" folded="false"/>

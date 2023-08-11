@@ -1,5 +1,5 @@
 <odoo>
-    <t t-name="spreadsheet_edition.OdooBarChartConfigPanel" owl="1">
+    <t t-name="spreadsheet_edition.OdooBarChartConfigPanel">
         <div>
             <div class="o-section pt-0">
                 <label>

@@ -1,6 +1,6 @@
 <templates>
 
-    <t t-name="web_studio.ViewEditor.GraphEditorSidebar" owl="1">
+    <t t-name="web_studio.ViewEditor.GraphEditorSidebar">
         <InteractiveEditorSidebar>
             <t t-set-slot="view">
                 <Property

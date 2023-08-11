@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="appointment.AppointmentTypeKanbanRecordMenu"
-       t-inherit="web.KanbanRecordMenu" t-inherit-mode="primary" owl="1">
+       t-inherit="web.KanbanRecordMenu" t-inherit-mode="primary">
         <xpath expr="//Dropdown" position="attributes">
             <attribute name="class" add="' appointment_type_action_toggler'" separator="+"/>
             <attribute name="menuClass" add="' min-w-0'" separator="+"/>

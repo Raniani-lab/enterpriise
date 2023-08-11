@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
-    <t t-name="web_gantt.GanttConnector" owl="1">
+    <t t-name="web_gantt.GanttConnector">
         <t t-set="xmlAttributes" t-value="{ version: '1.1', xmlns: 'http://www.w3.org/2000/svg' }" />
         <svg t-if="sourcePoint and targetPoint"
             t-ref="root"
@@ -92,7 +92,7 @@
         </svg>
     </t>
 
-    <t t-name="web_gantt.ConnectorStroke" owl="1">
+    <t t-name="web_gantt.ConnectorStroke">
         <path
             fill="none"
             t-att-stroke="color"
@@ -103,7 +103,7 @@
         />
     </t>
 
-    <t t-name="web_gantt.ConnectorStrokeHead" owl="1">
+    <t t-name="web_gantt.ConnectorStrokeHead">
         <path
             d="M2,2 L10,6 L2,10 L6,6 L2,2"
             class="o_connector_stroke_head"

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
-    <t t-name="mrp_workorder.WorkingEmployeePopupWOList" owl="1">
+    <t t-name="mrp_workorder.WorkingEmployeePopupWOList">
         <div role="dialog">
             <div class="popup popup-selection text-center">
                 <div class="o_popup_title">

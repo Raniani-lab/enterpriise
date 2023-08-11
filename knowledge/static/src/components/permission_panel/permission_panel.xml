@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="knowledge.PermissionPanel" owl="1">
+    <t t-name="knowledge.PermissionPanel">
         <t t-if="state.loading">
             <div class="py-3 text-center">
                 <i class="fa fa-circle-o-notch fa-2x fa-spin" title="loader" role="img"/>

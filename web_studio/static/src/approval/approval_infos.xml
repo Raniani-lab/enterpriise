@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
 
-<t t-name="StudioApprovalInfos" owl="1">
+<t t-name="StudioApprovalInfos">
     <div class="o-approval-popover" t-if="props.isPopover">
         <div class="o-approval-popover--header">Approval</div>
         <t t-call="StudioApprovalInfos.contents" />
@@ -21,7 +21,7 @@
     </t>
 </t>
 
-<t t-name="StudioApprovalInfos.contents" owl="1">
+<t t-name="StudioApprovalInfos.contents">
     <div class="o_web_studio_approval_info" t-att-data-mobile="env.isSmall">
         <t t-if="state.rules === null">
             <i class="fa fa-circle-o-notch fa-spin"/>

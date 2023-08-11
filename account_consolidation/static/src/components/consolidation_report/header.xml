@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
-    <t t-name="account_consolidation.ConsolidationReportHeader" t-inherit="account_reports.AccountReportHeaderCustomizable" owl="1">
+    <t t-name="account_consolidation.ConsolidationReportHeader" t-inherit="account_reports.AccountReportHeaderCustomizable">
         <xpath expr="//thead" position="replace">
             <thead class="o_account_reports_header_hierarchy">
                 <tr>

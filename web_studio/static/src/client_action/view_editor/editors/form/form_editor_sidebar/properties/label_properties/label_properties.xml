@@ -1,6 +1,6 @@
 <templates>
 
-<t t-name="web_studio.ViewEditor.InteractiveEditorProperties.Label" owl="1">
+<t t-name="web_studio.ViewEditor.InteractiveEditorProperties.Label">
     <Property
         name="'string'"
         type="'string'"

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
-    <t t-name="stock_barcode.PackageLineComponent" owl="1">
+    <t t-name="stock_barcode.PackageLineComponent">
         <div t-on-click="select" t-att-data-package="line.package_id.name"
             class="o_barcode_line list-group-item d-flex flex-row flex-nowrap py-3"
             t-attf-class="{{componentClasses}}">

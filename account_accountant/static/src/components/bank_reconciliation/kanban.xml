@@ -2,7 +2,7 @@
 <templates id="template" xml:space="preserve">
 
     <!-- Kanban controller -->
-    <t t-name="account.BankRecoKanbanController" t-inherit="web.KanbanView" t-inherit-mode="primary" owl="1">
+    <t t-name="account.BankRecoKanbanController" t-inherit="web.KanbanView" t-inherit-mode="primary">
         <xpath expr="//Layout" position="attributes">
             <attribute name="className">this.model.root.records.length ? 'o_bank_rec_main_div' : ''</attribute>
         </xpath>
@@ -16,14 +16,14 @@
     </t>
 
     <!-- Kanban record -->
-    <t t-name="account.BankRecKanbanRecord" t-inherit="web.KanbanRecord" t-inherit-mode="primary" owl="1">
+    <t t-name="account.BankRecKanbanRecord" t-inherit="web.KanbanRecord" t-inherit-mode="primary">
         <xpath expr="//div[@role='article']" position="attributes">
             <attribute name="t-att-tabindex"/>
         </xpath>
     </t>
 
     <!-- Kanban renderer -->
-    <t t-name="account.BankRecKanbanRenderer" t-inherit="web.KanbanRenderer" t-inherit-mode="primary" owl="1">
+    <t t-name="account.BankRecKanbanRenderer" t-inherit="web.KanbanRenderer" t-inherit-mode="primary">
         <xpath expr="//div[@t-ref='root']" position="attributes">
             <attribute name="class" add="o_bank_rec_kanban_div" separator=" "/>
         </xpath>

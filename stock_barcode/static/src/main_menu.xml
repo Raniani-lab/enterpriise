@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
-    <div t-name="stock_barcode.MainMenu" class="o_stock_barcode_main_menu_container o_home_menu_background" owl="1">
+    <div t-name="stock_barcode.MainMenu" class="o_stock_barcode_main_menu_container o_home_menu_background">
         <div class="o_stock_barcode_main_menu position-relative bg-view">
             <a href="#" class="o_stock_barcode_menu d-block float-start" t-on-click="() => this.home.toggle(true)">
                 <i class="oi oi-chevron-left"/>

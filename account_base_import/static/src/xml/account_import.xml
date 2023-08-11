@@ -2,7 +2,7 @@
 
 <templates>
 
-    <t t-name="account_base_import.accountImportTemplate" owl="1">
+    <t t-name="account_base_import.accountImportTemplate">
         <ControlPanel display="{
             'top-right': false,
             'bottom-left': false,

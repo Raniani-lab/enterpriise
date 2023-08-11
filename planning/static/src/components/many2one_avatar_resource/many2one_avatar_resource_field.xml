@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
-    <t t-name="planning.Many2OneAvatarResourceField" t-inherit="web.Many2OneAvatarField" t-inherit-mode="primary" owl="1">
+    <t t-name="planning.Many2OneAvatarResourceField" t-inherit="web.Many2OneAvatarField" t-inherit-mode="primary">
         <xpath expr="//div" position="replace">
             <t t-if="props.record.data.resource_type !== 'material'">$0</t>
             <t t-else="">
@@ -17,7 +17,7 @@
         </xpath>
     </t>
 
-    <t t-name="planning.KanbanMany2OneAvatarResourceField" t-inherit="planning.Many2OneAvatarResourceField" t-inherit-mode="primary" owl="1">
+    <t t-name="planning.KanbanMany2OneAvatarResourceField" t-inherit="planning.Many2OneAvatarResourceField" t-inherit-mode="primary">
         <xpath expr="//t[@t-else]/div/Many2OneField" position="replace"/>
     </t>
 </templates>

@@ -2,7 +2,7 @@
 
 <templates xml:space="preserve">
 
-    <t t-name="event_barcode.EventRegistrationSummaryDialog" owl="1" >
+    <t t-name="event_barcode.EventRegistrationSummaryDialog" >
        <Dialog size="'md'" title="'Registration Summary'">
             <div class="row">
                 <div class="col-lg-8 offset-lg-2">

@@ -2,9 +2,8 @@
 
 import { AbstractBehavior } from "@knowledge/components/behaviors/abstract_behavior/abstract_behavior";
 import { useService } from "@web/core/utils/hooks";
-import { qweb as QWeb }  from "@web/legacy/js/services/core";
+import { renderToMarkup } from "@web/core/utils/render";
 import {
-    markup,
     useEffect,
     useRef,
     useState,
@@ -189,10 +188,10 @@ export class ArticlesStructureBehavior extends AbstractBehavior {
     async _renderArticlesStructure () {
         const articleId = this.props.record.resId;
         const allArticles = await this._fetchAllArticles(articleId);
-        return markup(QWeb.render('knowledge.articles_structure', {
+        return renderToMarkup('knowledge.articles_structure', {
             'articles': this._buildArticlesStructure(articleId, allArticles),
             'showAllChildren': this.showAllChildren,
-        }));
+        });
     }
 
     /**

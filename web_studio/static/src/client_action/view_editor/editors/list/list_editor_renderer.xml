@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
 
-  <t t-name="web_studio.ListEditorRenderer" t-inherit="web.ListRenderer" owl="1" >
+  <t t-name="web_studio.ListEditorRenderer" t-inherit="web.ListRenderer" >
 
     <xpath expr="//*[@t-ref='table']" position="before">
       <div class="d-flex justify-content-between mt-2 mb-2">
@@ -58,7 +58,7 @@
     </xpath>
   </t>
 
-  <t t-name="web_studio.ListEditorRenderer.RecordRow" t-inherit="web.ListRenderer.RecordRow" owl="1">
+  <t t-name="web_studio.ListEditorRenderer.RecordRow" t-inherit="web.ListRenderer.RecordRow">
     <xpath expr="//t[@t-foreach]" position="inside">
       <t t-if="column.type === 'studio_hook'">
         <t t-call="web_studio.ListEditor.StudioHook" >
@@ -79,7 +79,7 @@
     </xpath>
   </t>
 
-  <t t-name="web_studio.ListEditor.StudioHook" owl="1">
+  <t t-name="web_studio.ListEditor.StudioHook">
     <t t-tag="isHeader ? 'th' : 'td'" t-att-data-xpath="column.xpath" t-att-data-position="column.position" class="o_web_studio_hook" t-attf-class="{{ !isHeader ? 'border-bottom-0' : ''}}">
       <i t-if="isHeader" class="fa fa-plus" />
     </t>

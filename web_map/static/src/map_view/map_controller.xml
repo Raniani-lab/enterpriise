@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
-    <t t-name="web_map.MapView" owl="1">
+    <t t-name="web_map.MapView">
         <div t-att-class="props.className">
             <Layout className="model.useSampleModel ? 'o_view_sample_data' : ''" display="props.display">
                 <t t-set-slot="control-panel-additional-actions">
@@ -21,7 +21,7 @@
         </div>
     </t>
 
-    <t t-name="web_map.MapView.Buttons"  owl="1">
+    <t t-name="web_map.MapView.Buttons" >
 
     </t>
 

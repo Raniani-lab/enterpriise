@@ -1,5 +1,5 @@
 <templates>
-    <t t-name="web_studio.SearchEditorController" owl="1">
+    <t t-name="web_studio.SearchEditorController">
         <div t-ref="root" class="o_web_studio_search_view_editor">
             <div class="o_web_studio_search_sample_ui o_web_studio_blurred_childs">
                 <i class="oi oi-search text-end" />
@@ -86,7 +86,7 @@
         </div>
     </t>
 
-    <t t-name="web_studio.ViewEditor.SearchEditorSidebar" owl="1">
+    <t t-name="web_studio.ViewEditor.SearchEditorSidebar">
         <InteractiveEditorSidebar>
             <t t-set-slot="new">
                 <SearchComponents />
@@ -102,7 +102,7 @@
         </InteractiveEditorSidebar>
     </t>
 
-    <t t-name="web_studio.SearchEditor.Sidebar.Components" owl="1">
+    <t t-name="web_studio.SearchEditor.Sidebar.Components">
         <div class="o_web_studio_field_type_container o_web_studio_new_components d-flex flex-row">
             <h3 class="text-white w-100">Components</h3>
             <t t-foreach="structures" t-as="struct" t-key="struct_index">
@@ -111,7 +111,7 @@
         </div>
     </t>
 
-    <t t-name="web_studio.SearchEditor.SimpleElementEditor" owl="1">
+    <t t-name="web_studio.SearchEditor.SimpleElementEditor">
         <Property t-if="node.type !== 'separator'" name="'label'" type="'char'" value="label" onChange.bind="onChangeLabel">
             Label
         </Property>

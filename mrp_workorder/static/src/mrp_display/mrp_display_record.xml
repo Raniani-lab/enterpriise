@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="mrp_workorder.MrpDisplayRecord" owl="1">
+    <t t-name="mrp_workorder.MrpDisplayRecord">
         <div class="o_mrp_display_record border card rounded"
              t-att-class="cssClass"
              t-on-animationend="onAnimationEnd">
@@ -73,7 +73,7 @@
         </div>
     </t>
 
-    <t t-name="mrp_workorder.MrpDisplayProductionHeader" owl="1">
+    <t t-name="mrp_workorder.MrpDisplayProductionHeader">
         <t t-set="displayTrackingNumber" t-value="!['none', 'mass_produce'].includes(this.trackingMode)"/>
         <span class="h5 mb-0" t-esc="record.display_name"/>
         <small class="rounded-pill px-2 text-nowrap"
@@ -85,7 +85,7 @@
             <SelectionField name="'state'" record="props.record" readonly="true"/>
         </small>
     </t>
-    <t t-name="mrp_workorder.MrpDisplayWorkorderHeader" owl="1">
+    <t t-name="mrp_workorder.MrpDisplayWorkorderHeader">
         <span class="h5" t-esc="record.display_name"/>
         <span class="text-capitalize d-flex flex-column ms-1">
             <t t-if="record.state === 'confirmed'">Not Started</t>
@@ -93,7 +93,7 @@
             <div t-else="" class="bg-light rounded p-1"><MrpTimerField name="'duration'" record="props.record" readonly="true"/></div>
         </span>
     </t>
-    <t t-name="mrp_workorder.MrpDisplayProductionFooter" owl="1">
+    <t t-name="mrp_workorder.MrpDisplayProductionFooter">
         <t t-if="!state.underValidation" t-set="_btn_type" t-value="'btn-primary'"/>
         <t t-else="" t-set="_btn_type" t-value="'btn-outline-secondary'"/>
         <button t-if="displayDoneButton" t-attf-class="btn #{_btn_type}"
@@ -103,7 +103,7 @@
             <t t-else="">Close Production</t>
         </button>
     </t>
-    <t t-name="mrp_workorder.MrpDisplayWorkorderFooter" owl="1">
+    <t t-name="mrp_workorder.MrpDisplayWorkorderFooter">
         <t t-if="state.underValidation" t-set="_btn_type" t-value="'btn-outline-secondary'"/>
         <t t-else="" t-set="_btn_type" t-value="'btn-primary'"/>
         <button t-if="displayDoneButton" t-attf-class="btn #{_btn_type}"

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <templates>
-    <t t-name="web_grid.Cell" owl="1">
+    <t t-name="web_grid.Cell">
         <div t-if="props.reactive.cell"
             class="o_grid_cell o_grid_highlightable position-relative d-flex justify-content-center align-items-center w-100 h-100"
             t-on-click.synthetic="onCellClick"

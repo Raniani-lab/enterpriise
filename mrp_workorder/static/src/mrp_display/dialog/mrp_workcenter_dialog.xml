@@ -12,7 +12,7 @@
                             <t t-out="workcenter.display_name"/>
                         </button>
                     </t>
-                    <t t-set-slot="footer" owl="1">
+                    <t t-set-slot="footer">
                         <button class="btn btn-primary" t-on-click="confirm">Confirm</button>
                     </t>
                 </div>

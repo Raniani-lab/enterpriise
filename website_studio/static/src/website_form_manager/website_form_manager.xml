@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
 
-<t t-name="website_studio.FormManager" owl="1">
+<t t-name="website_studio.FormManager">
     <div class="o_website_studio_form_manager">
         <h6><strong>Forms</strong></h6>
         <div class="o_website_studio_forms d-flex flex-row gap-4 ms-4 pb-5">

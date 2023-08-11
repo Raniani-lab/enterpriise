@@ -2,7 +2,7 @@
 
 <templates xml:space="preserve">
 
-    <t t-name="account_consolidation.ConsolidatedDashboardTemplate" owl="1">
+    <t t-name="account_consolidation.ConsolidatedDashboardTemplate">
         <div class="text-end col-5 p-0 pe-3">
             <div t-foreach="datas" t-as="data" t-key="data_index" t-att-class="data.company_id ? '' : 'fw-bold'">
                 <t t-out="data.name"/>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
-    <t t-name="account_reports_cash_basis.CashBasisReportFilterExtraOptions" t-inherit="account_reports.AccountReportFilterExtraOptions" t-inherit-mode="extension" owl="1">
+    <t t-name="account_reports_cash_basis.CashBasisReportFilterExtraOptions" t-inherit="account_reports.AccountReportFilterExtraOptions" t-inherit-mode="extension">
         <xpath expr="//t[@t-set-slot='toggler']" position="inside">
             <t t-if="controller.filters.show_cash_basis">
                 <t t-if="controller.filters.show_draft || controller.filters.show_unreconciled || controller.options.include_analytic_without_aml"> ,</t>
@@ -20,7 +20,7 @@
         </xpath>
     </t>
 
-    <t t-name="account_reports_cash_basis.CashBasisReportFilterExtraOptionsPDF" inherit_id="account_reports.pdf_export_filters" owl="1">
+    <t t-name="account_reports_cash_basis.CashBasisReportFilterExtraOptionsPDF" inherit_id="account_reports.pdf_export_filters">
         <xpath expr="//div/div/div[@name='pdf_options_header']" position="inside">
             <t t-if="report.filter_cash_basis">
                 <t t-if="report.filter_show_draft or options['unreconciled'] or options.get('include_analytic_without_aml') == True">,</t>

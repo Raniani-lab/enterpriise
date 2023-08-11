@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
-    <t t-name="account_reports.multi_currency_revaluation_report_warning_custom_rate" owl="1">
+    <t t-name="account_reports.multi_currency_revaluation_report_warning_custom_rate">
         You are using custom exchange rates.
         <button
            class="btn btn-link p-0 align-baseline"
@@ -10,7 +10,7 @@
         </button>
     </t>
 
-    <t t-name="account_reports.multi_currency_revaluation_report_warning_multicompany" owl="1">
+    <t t-name="account_reports.multi_currency_revaluation_report_warning_multicompany">
         This report only displays the data of the active company.
     </t>
 </templates>

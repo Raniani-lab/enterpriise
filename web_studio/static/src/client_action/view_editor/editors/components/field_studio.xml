@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
 
-  <t t-name="web_studio.Field" t-inherit="web.Field" owl="1">
+  <t t-name="web_studio.Field" t-inherit="web.Field">
     <xpath expr="./div" position="attributes">
         <attribute name="t-ref">rootRef</attribute>
     </xpath>

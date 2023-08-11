@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
-    <t t-name="account_reports.JournalReportLineName" t-inherit="account_reports.AccountReportLineNameCustomizable" owl="1">
+    <t t-name="account_reports.JournalReportLineName" t-inherit="account_reports.AccountReportLineNameCustomizable">
         <xpath expr="//td[@data-id='line_name']//div[@data-id='content']" position="replace">
             <!-- Invoice name -->
             <t t-if="'move_id' in props.line and 'date' in props.line">

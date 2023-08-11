@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
-    <t t-name="planning.PlanningCalendarCommonPopover.body" t-inherit="web.CalendarCommonPopover.body" t-inherit-mode="primary" owl="1">
+    <t t-name="planning.PlanningCalendarCommonPopover.body" t-inherit="web.CalendarCommonPopover.body" t-inherit-mode="primary">
         <xpath expr="//small[@t-if='timeDuration']" position="replace">
             <small t-if="data.allocated_hours">
                 <b t-esc="`(${allocatedHoursFormatted})`"/>
@@ -16,7 +16,7 @@
         </xpath>
     </t>
 
-    <t t-name="planning.PlanningCalendarCommonPopover.footer" owl="1">
+    <t t-name="planning.PlanningCalendarCommonPopover.footer">
         <t t-if="isManager" t-call="web.CalendarCommonPopover.footer"/>
     </t>
 </templates>

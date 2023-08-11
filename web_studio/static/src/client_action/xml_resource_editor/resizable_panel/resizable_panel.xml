@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
 
-    <t t-name="web_studio.ResizablePanel" owl="1">
+    <t t-name="web_studio.ResizablePanel">
         <div class="o_resizable_panel position-relative d-flex flex-column" t-att-class="props.class" t-ref="containerRef">
             <t t-slot="default" />
             <div

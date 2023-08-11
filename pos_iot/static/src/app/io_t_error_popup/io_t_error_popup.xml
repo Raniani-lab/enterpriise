@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
 
-    <t t-name="pos_iot.IoTErrorPopup" owl="1">
+    <t t-name="pos_iot.IoTErrorPopup">
             <div class="popup popup-error">
                 <p class="title">
                     <t t-esc="props.title" />

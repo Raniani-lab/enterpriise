@@ -496,4 +496,12 @@ export default class BarcodeMRPModel extends BarcodePickingModel {
         values.company_id = this.record.company_id;
         return values;
     }
+
+    _getCommands() {
+        return Object.assign(super._getCommands(), {
+            'O-BTN.print-mo': this.print.bind(this, 'mrp.action_report_production_order'),
+            'O-BTN.print-product-label': this.print.bind(this, 'mrp.action_report_finished_product'),
+        });
+    }
+
 }

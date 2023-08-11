@@ -145,36 +145,14 @@ class StockBarcodeController(http.Controller):
         if not request.env.user.has_group('stock.group_stock_user'):
             return request.not_found()
 
-        barcode_pdfs = []
-        Report = request.env['ir.actions.report']
-
         # make sure we use the selected company if possible
         allowed_company_ids = self._get_allowed_company_ids()
 
         # same domain conditions for picking types and locations
-        domain = [('active', '=', 'True'),
-                  ('barcode', '!=', ''),
-                  ('company_id', 'in', allowed_company_ids)]
+        domain = self._get_picking_type_domain(barcode_type, allowed_company_ids)
 
         # get fixed command barcodes
-        if barcode_type == 'barcode_commands_and_operation_types':
-            with file_open('stock_barcode/static/img/barcodes_actions.pdf', "rb") as commands_file:
-                barcode_pdfs.append(commands_file.read())
-
-            # get picking types barcodes
-            picking_type_ids = request.env['stock.picking.type'].search(domain)
-            for picking_type_batch in split_every(112, picking_type_ids.ids):
-                picking_types_pdf, _content_type = Report._render_qweb_pdf('stock.action_report_picking_type_label', picking_type_batch)
-                if picking_types_pdf:
-                    barcode_pdfs.append(picking_types_pdf)
-
-        # get locations barcodes
-        if barcode_type == 'locations' and request.env.user.has_group('stock.group_stock_multi_locations'):
-            locations_ids = request.env['stock.location'].search(domain)
-            for location_ids_batch in split_every(112, locations_ids.ids):
-                locations_pdf, _content_type = Report._render_qweb_pdf('stock.action_report_location_barcode', location_ids_batch)
-                if locations_pdf:
-                    barcode_pdfs.append(locations_pdf)
+        barcode_pdfs = self._get_barcode_pdfs(barcode_type, domain)
 
         if not barcode_pdfs:
             raise UserError(_("Barcodes are not available."))
@@ -315,6 +293,36 @@ class StockBarcodeController(http.Controller):
         """
         cids = request.httprequest.cookies.get('cids', str(request.env.user.company_id.id))
         return [int(cid) for cid in cids.split(',')]
+
+    def _get_picking_type_domain(self, barcode_type, allowed_company_ids):
+        return [
+            ('active', '=', 'True'),
+            ('barcode', '!=', ''),
+            ('company_id', 'in', allowed_company_ids)
+        ]
+
+    def _get_barcode_pdfs(self, barcode_type, domain):
+        barcode_pdfs = []
+        if barcode_type == 'barcode_commands_and_operation_types':
+            with file_open('stock_barcode/static/img/barcodes_actions.pdf', "rb") as commands_file:
+                barcode_pdfs.append(commands_file.read())
+
+        if 'operation_types' in barcode_type:
+            # get picking types barcodes
+            picking_type_ids = request.env['stock.picking.type'].search(domain)
+            for picking_type_batch in split_every(112, picking_type_ids.ids):
+                picking_types_pdf, _content_type = request.env['ir.actions.report']._render_qweb_pdf('stock.action_report_picking_type_label', picking_type_batch)
+                if picking_types_pdf:
+                    barcode_pdfs.append(picking_types_pdf)
+
+        # get locations barcodes
+        if barcode_type == 'locations' and request.env.user.has_group('stock.group_stock_multi_locations'):
+            locations_ids = request.env['stock.location'].search(domain)
+            for location_ids_batch in split_every(112, locations_ids.ids):
+                locations_pdf, _content_type = request.env['ir.actions.report']._render_qweb_pdf('stock.action_report_location_barcode', location_ids_batch)
+                if locations_pdf:
+                    barcode_pdfs.append(locations_pdf)
+        return barcode_pdfs
 
     def _get_groups_data(self):
         return {

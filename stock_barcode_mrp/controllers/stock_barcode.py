@@ -1,5 +1,10 @@
+# -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 from odoo import http
 from odoo.http import request
+from odoo.modules.module import get_resource_path
+from odoo.tools.misc import file_open
 from odoo.addons.stock_barcode.controllers.stock_barcode import StockBarcodeController
 
 
@@ -65,3 +70,27 @@ class MRPStockBarcode(StockBarcodeController):
             action = production.action_open_barcode_client_action()
             return {'action': action}
         return False
+
+    @http.route()
+    def print_inventory_commands(self, barcode_type=False):
+        if barcode_type == "barcode_mrp_commands_and_operation_types" and not request.env.user.has_group('mrp.group_mrp_user'):
+            return request.not_found()
+        return super().print_inventory_commands(barcode_type=barcode_type)
+
+    def _get_picking_type_domain(self, barcode_type, allowed_company_ids):
+        if barcode_type == 'barcode_mrp_commands_and_operation_types':
+            return [
+                ('active', '=', 'True'),
+                ('code', '=', 'mrp_operation'),
+                ('barcode', '!=', ''),
+                ('company_id', 'in', allowed_company_ids)]
+        return super()._get_picking_type_domain(barcode_type, allowed_company_ids)
+
+    def _get_barcode_pdfs(self, barcode_type, domain):
+        barcode_pdfs = super()._get_barcode_pdfs(barcode_type, domain)
+        if barcode_type != 'barcode_mrp_commands_and_operation_types':
+            return barcode_pdfs
+        file_path = get_resource_path('stock_barcode_mrp', 'static/img', 'barcodes_mrp_actions.pdf')
+        with file_open(file_path, "rb") as commands_file:
+            barcode_pdfs.insert(0, commands_file.read())
+        return barcode_pdfs

@@ -17,8 +17,8 @@
                     </div>
                 </div>
                 <div>
-                    <a href="stock_barcode/print_inventory_commands" class="oe_link" target="_blank">
-                        <i class="fa fa-print"/> Print barcode commands
+                    <a href="stock_barcode/print_inventory_commands?barcode_type=barcode_mrp_commands_and_operation_types" class="oe_link" target="_blank">
+                        <i class="fa fa-print"/> Print barcode commands and operation types
                     </a>
                 </div>
                 <field name="stock_barcode_demo_active" invisible="1"/>

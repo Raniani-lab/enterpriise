@@ -40,10 +40,6 @@ registry.category("web_tour.tours").add('helpdesk_tour', {
     content: markup(_t('Assign the ticket to a <b>member of your team</b>.')),
     position: 'right',
 }, {
-    trigger: '.o_form_button_save',
-    content: _t('Save this ticket and the modifications you\'ve made to it.'),
-    position: 'bottom',
-}, {
     trigger: ".o-mail-Chatter-topbar button:contains(Send message)",
     extra_trigger: '.o_form_view',
     content: markup(_t("Use the chatter to <b>send emails</b> and communicate efficiently with your customers. \

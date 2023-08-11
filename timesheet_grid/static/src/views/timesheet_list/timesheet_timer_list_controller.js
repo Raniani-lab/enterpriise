@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { useState } from "@odoo/owl";
+import { useState, useSubEnv } from "@odoo/owl";
 
 import { ListController } from "@web/views/list/list_controller";
 
@@ -9,6 +9,12 @@ export class TimesheetTimerListController extends ListController {
 
     setup() {
         super.setup();
+        useSubEnv({
+            config: {
+                ...this.env.config,
+                disableSearchBarAutofocus: true,
+            },
+        });
         this.timerState = useState({ reload: false });
     }
 

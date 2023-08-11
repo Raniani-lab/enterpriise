@@ -31,8 +31,9 @@ class HrWorkEntry(models.Model):
         for contract, work_entries in work_entries_by_contract.items():
             if contract.work_entry_source != 'calendar':
                 continue
-            calendar_start = pytz.utc.localize(datetime.combine(max(contract.date_start, interval_start), time.min))
-            calendar_end = pytz.utc.localize(datetime.combine(min(contract.date_end or date.max, interval_end), time.max))
+            tz = pytz.timezone(contract.resource_calendar_id.tz)
+            calendar_start = tz.localize(datetime.combine(max(contract.date_start, interval_start), time.min))
+            calendar_end = tz.localize(datetime.combine(min(contract.date_end or date.max, interval_end), time.max))
             outside = contract.resource_calendar_id._attendance_intervals_batch(calendar_start, calendar_end)[False] - work_entries._to_intervals()
             if outside:
                 time_intervals_str = "\n - ".join(['', *["%s -> %s" % (s[0], s[1]) for s in outside._items]])

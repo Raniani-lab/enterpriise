@@ -4,6 +4,7 @@
 import logging
 import random
 import math
+import pytz
 
 from collections import defaultdict, Counter
 from datetime import date, datetime, time
@@ -940,8 +941,8 @@ class HrPayslip(models.Model):
         # Make sure to reset invalid payslip's worked days line
         self.update({'worked_days_line_ids': [(5, 0, 0)]})
         # Ensure work entries are generated for all contracts
-        generate_from = min(p.date_from for p in valid_slips)
-        generate_to = max(p.date_to for p in valid_slips)
+        generate_from = min(p.date_from for p in valid_slips) + relativedelta(days=-1)
+        generate_to = max(p.date_to for p in valid_slips) + relativedelta(days=1)
         self.mapped('contract_id')._generate_work_entries(generate_from, generate_to)
 
         work_entries = self.env['hr.work.entry'].search([
@@ -955,11 +956,14 @@ class HrPayslip(models.Model):
                 continue
 
             # convert slip.date_to to a datetime with max time to compare correctly in filtered_domain.
-            date_to = datetime.combine(slip.date_to, time.max)
+            slip_tz = pytz.timezone(slip.contract_id.resource_calendar_id.tz)
+            utc = pytz.timezone('UTC')
+            date_from = slip_tz.localize(datetime.combine(slip.date_from, time.min)).astimezone(utc).replace(tzinfo=None)
+            date_to = slip_tz.localize(datetime.combine(slip.date_to, time.max)).astimezone(utc).replace(tzinfo=None)
             payslip_work_entries = work_entries.filtered_domain([
                 ('contract_id', '=', slip.contract_id.id),
                 ('date_stop', '<=', date_to),
-                ('date_start', '>=', slip.date_from),
+                ('date_start', '>=', date_from),
             ])
             payslip_work_entries._check_undefined_slots(slip.date_from, slip.date_to)
             # YTI Note: We can't use a batched create here as the payslip may not exist

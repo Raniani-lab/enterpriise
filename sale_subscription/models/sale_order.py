@@ -1614,6 +1614,7 @@ class SaleOrder(models.Model):
                     if transaction and transaction.renewal_state == 'cancel':
                         self._subscription_rollback_cursor(auto_commit)
                         order._handle_subscription_payment_failure(invoice, transaction, email_context)
+                        self._subscription_commit_cursor(auto_commit)
                         existing_invoices -= invoice  # It will be unlinked in the call above
                 except Exception:
                     last_tx_sudo = (order.transaction_ids - existing_transactions).sudo()

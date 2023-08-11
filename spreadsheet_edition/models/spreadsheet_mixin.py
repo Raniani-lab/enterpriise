@@ -117,12 +117,13 @@ class SpreadsheetMixin(models.AbstractModel):
         return False
 
     def _copy_revisions_to(self, spreadsheet):
-        revisions = self.env["spreadsheet.revision"]
+        revisions_data = []
         for revision in self.spreadsheet_revision_ids:
-            revisions |= revision.copy({
+            revisions_data += revision.copy_data({
                 "res_model": spreadsheet._name,
                 "res_id": spreadsheet.id,
             })
+        revisions = self.env["spreadsheet.revision"].create(revisions_data)
         spreadsheet.spreadsheet_revision_ids = revisions
 
     def _snapshot_spreadsheet(

@@ -2,12 +2,12 @@
 
 import Dialog from "@web/legacy/js/core/dialog";
 import dom from "@web/legacy/js/core/dom";
-import session from "web.session";
+import { session } from "@web/session";
 import testUtils from "@web/../tests/legacy/helpers/test_utils";
 import Widget from "@web/legacy/js/core/widget";
 
 import { useBackButton } from "@web_mobile/js/core/hooks";
-import { BackButtonEventMixin } from "@web_mobile/js/core/mixins";
+import { accountMethodsForMobile, BackButtonEventMixin } from "@web_mobile/js/core/mixins";
 import mobile from "@web_mobile/js/services/core";
 /*import UserPreferencesFormView from "web_mobile.UserPreferencesFormView";*/
 
@@ -530,14 +530,17 @@ QUnit.module("web_mobile", {
         });
 
         patchWithCleanup(session, {
+            username: "demo",
+            name: "Marc Demo",
+        });
+
+        patchWithCleanup(accountMethodsForMobile, {
             url(path) {
                 if (path === '/web/image') {
                     return `data:image/png;base64,${MY_IMAGE}`;
                 }
                 return super.url(...arguments);
             },
-            username: "demo",
-            name: "Marc Demo",
         });
 
         await makeView({
@@ -569,14 +572,17 @@ QUnit.module("web_mobile", {
         });
 
         patchWithCleanup(session, {
+            username: "demo",
+            name: "Marc Demo",
+        });
+
+        patchWithCleanup(accountMethodsForMobile, {
             url(path) {
                 if (path === '/web/image') {
                     return `data:image/svg+xml;base64,${BASE64_SVG_IMAGE}`;
                 }
                 return super.url(...arguments);
             },
-            username: "demo",
-            name: "Marc Demo",
         });
 
         await makeView({
@@ -609,14 +615,17 @@ QUnit.module("web_mobile", {
         });
 
         patchWithCleanup(session, {
+            username: "demo",
+            name: "Marc Demo",
+        });
+
+        patchWithCleanup(accountMethodsForMobile, {
             url(path) {
                 if (path === '/web/image') {
                     return `data:image/png;base64,${MY_IMAGE}`;
                 }
                 return super.url(...arguments);
             },
-            username: "demo",
-            name: "Marc Demo",
         });
 
         await makeView({

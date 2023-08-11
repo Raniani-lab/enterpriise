@@ -12,6 +12,7 @@ export class HrReferralWelcome extends Component {
 
         this.actionService = useService("action");
         this.orm = useService('orm');
+        this.company = useService("company");
 
         this.dashboardData = useState({});
 
@@ -27,15 +28,12 @@ export class HrReferralWelcome extends Component {
             }
         }, () => [this.carouselRef.el]);
 
-        const context = Component.env.session.user_context;
-
         onWillStart(async () => {
             Object.assign(this.dashboardData, await this.orm.call(
                 'hr.applicant',
-                'retrieve_referral_welcome_screen',
-                [],
-                {'context': context}));
-            this.dashboardData.company_id = context.allowed_company_ids[0];
+                'retrieve_referral_welcome_screen'
+            ));
+            this.dashboardData.company_id = this.company.allowedCompanyIds[0];
         });
     }
 

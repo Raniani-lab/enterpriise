@@ -6,7 +6,7 @@ import core from "@web/legacy/js/services/core";
 import { renderToElement } from "@web/core/utils/render";
 import { isMobileOS } from "@web/core/browser/feature_detection";
 import { debounce } from "@web/core/utils/timing";
-import session from "web.session";
+import { session } from "@web/session";
 import Widget from "@web/legacy/js/core/widget";
 
 function cleanNumber(number) {

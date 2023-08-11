@@ -1,8 +1,57 @@
 /** @odoo-module **/
 
-import session from "web.session";
+import { session } from "@web/session";
 import mobile from "@web_mobile/js/services/core";
 import { isIosApp } from "@web/core/browser/feature_detection";
+import { url } from "@web/core/utils/urls";
+
+const DEFAULT_AVATAR_SIZE = 128;
+
+export const accountMethodsForMobile = {
+    url,
+    /**
+     * Update the user's account details on the mobile app
+     *
+     * @returns {Promise}
+     */
+    async updateAccount() {
+        if (!mobile.methods.updateAccount) {
+            return;
+        }
+        const base64Avatar = await accountMethodsForMobile.fetchAvatar();
+        return mobile.methods.updateAccount({
+            avatar: base64Avatar.substring(base64Avatar.indexOf(',') + 1),
+            name: session.name,
+            username: session.username,
+        });
+    },
+    /**
+     * Fetch current user's avatar as PNG image
+     *
+     * @returns {Promise} resolved with the dataURL, or rejected if the file is
+     *  empty or if an error occurs.
+     */
+    fetchAvatar() {
+        const avatarUrl = accountMethodsForMobile.url('/web/image', {
+            model: 'res.users',
+            field: 'image_medium',
+            id: session.uid,
+        });
+        return new Promise((resolve, reject) => {
+            const canvas = document.createElement('canvas');
+            canvas.width = DEFAULT_AVATAR_SIZE;
+            canvas.height = DEFAULT_AVATAR_SIZE;
+            const context = canvas.getContext('2d');
+            const image = new Image();
+            image.addEventListener('load', () => {
+                context.drawImage(image, 0, 0, DEFAULT_AVATAR_SIZE, DEFAULT_AVATAR_SIZE);
+                resolve(canvas.toDataURL('image/png'));
+            });
+            image.addEventListener('error', reject);
+            image.src = avatarUrl;
+        });
+    },
+};
 
 /**
  * Mixin to setup lifecycle methods and allow to use 'backbutton' events sent
@@ -54,7 +103,7 @@ const UpdateDeviceAccountControllerMixin = {
         if (!isSaved) {
             return false;
         }
-        const updated = session.updateAccountOnMobileDevice();
+        const updated = accountMethodsForMobile.updateAccount();
         // Crapy workaround for unupdatable Odoo Mobile App iOS (Thanks Apple :@)
         if (!isIosApp()){
             await updated;
@@ -64,7 +113,7 @@ const UpdateDeviceAccountControllerMixin = {
 };
 
 export async function updateAccountOnMobileDevice() {
-    const updated = session.updateAccountOnMobileDevice();
+    const updated = accountMethodsForMobile.updateAccount();
     // Crapy workaround for unupdatable Odoo Mobile App iOS (Thanks Apple :@)
     if (!isIosApp()){
         await updated;
@@ -72,10 +121,9 @@ export async function updateAccountOnMobileDevice() {
 }
 
 /**
- * Trigger the update of the user's account details on the mobile app as soon as
- * the session is correctly initialized.
+ * Trigger the update of the user's account details on the mobile app.
  */
-session.is_bound.then(() => session.updateAccountOnMobileDevice());
+accountMethodsForMobile.updateAccount();
 
 export default {
     BackButtonEventMixin: BackButtonEventMixin,

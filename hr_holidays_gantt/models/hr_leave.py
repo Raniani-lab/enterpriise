@@ -125,8 +125,10 @@ class HrLeave(models.Model):
             else:
                 dt_delta = (leave.date_to - leave.date_from)
                 number_of_days = dt_delta.days + ((dt_delta.seconds / 3600) / 24)
-
-            if not periods or has_working_hours(periods[-1]['from'], leave.date_to):
+            # leaves are ordered by date_from and grouped by type. When go from the batch of validated time offs to the
+            # requested ones, we need to bypass the second condition with the third one
+            if not periods or has_working_hours(periods[-1]['from'], leave.date_to) or \
+                    periods[-1]['is_validated'] != is_validated:
                 periods.append({'is_validated': is_validated, 'from': leave.date_from, 'to': leave.date_to, 'show_hours': number_of_days <= 1})
             else:
                 periods[-1]['is_validated'] = is_validated

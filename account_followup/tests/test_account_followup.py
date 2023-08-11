@@ -312,23 +312,30 @@ class TestAccountFollowupReports(AccountTestInvoicingCommon):
         computed using an sql query. This test makes sure the computation also
         works properly during onchange (on records having a NewId).
         '''
-        self.create_invoice('2016-01-01')
+        invoice = self.create_invoice('2016-01-01')
         self.create_invoice('2016-01-02')
 
-        invoice = self.partner_a.unreconciled_aml_ids.sorted('date_maturity')[0].move_id
         self.env['account.payment.register'].with_context(active_ids=invoice.ids, active_model='account.move').create({
             'payment_date': invoice.date,
             'amount': 100,
         })._create_payments()
 
+        self.assertRecordValues(self.partner_a, [{'total_due': 900.0}])
+        self.assertRecordValues(self.partner_a.unreconciled_aml_ids.sorted(), [
+            {'amount_residual_currency': 500.0},
+            {'amount_residual_currency': 400.0},
+        ])
+
         with Form(self.partner_a, view='account_followup.customer_statements_form_view') as form:
-            self.assertEqual(form.unreconciled_aml_ids.edit(0).amount_residual_currency, 400)
-            self.assertEqual(form.unreconciled_aml_ids.edit(1).amount_residual_currency, 500)
-            self.assertEqual(form.total_due, 900)
+            # The Form() does not mock the default_order defined on the view.
+            # We need to define which line is the first with the date
+            for index, _orm_command in enumerate(form._values['unreconciled_aml_ids']):
+                with form.unreconciled_aml_ids.edit(index) as aml_form:
+                    if aml_form.invoice_date == '2016-01-01':
+                        aml_form.blocked = True
 
-            with form.unreconciled_aml_ids.edit(0) as aml_form:
-                aml_form.blocked = True
-
-            self.assertEqual(form.unreconciled_aml_ids.edit(0).amount_residual_currency, 400)
-            self.assertEqual(form.unreconciled_aml_ids.edit(1).amount_residual_currency, 500)
-            self.assertEqual(form.total_due, 500)
+        self.assertRecordValues(self.partner_a, [{'total_due': 500.0}])
+        self.assertRecordValues(self.partner_a.unreconciled_aml_ids.sorted(), [
+            {'amount_residual_currency': 500.0},
+            {'amount_residual_currency': 400.0},
+        ])

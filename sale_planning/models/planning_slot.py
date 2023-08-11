@@ -215,7 +215,9 @@ class PlanningSlot(models.Model):
         to_allocate = self.sale_line_id.planning_hours_to_plan - self.sale_line_id.planning_hours_planned
         if to_allocate < 0.0:
             return [], [], None
-        work_intervals, unforecastable_intervals, resource, partial_interval_slots = self.sudo()._get_resource_work_info(vals, slot_vals_list_per_resource)
+        work_intervals, unforecastable_intervals, resource, partial_interval_slots = self.sudo().with_context(
+            default_end_datetime=self.env.context.get('default_end_datetime')
+        )._get_resource_work_info(vals, slot_vals_list_per_resource)
         following_slots_vals_list = []
         if work_intervals:
             following_slots_vals_list = self._get_slots_values(

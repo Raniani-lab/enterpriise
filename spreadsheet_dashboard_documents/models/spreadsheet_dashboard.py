@@ -22,11 +22,7 @@ class SpreadsheetDashboard(models.Model):
             "dashboard_group_id": dashboard_group_id,
             "spreadsheet_snapshot": document.spreadsheet_snapshot,
         })
-        revisions_data = []
-        for revision_id in document.spreadsheet_revision_ids:
-            revisions_data.append(revision_id.copy_data({"res_id": dashboard.id, "res_model": "spreadsheet.dashboard"})[0])
-        revision_ids = self.env["spreadsheet.revision"].create(revisions_data)
-        dashboard.spreadsheet_revision_ids = revision_ids
+        document._copy_revisions_to(dashboard)
 
     @api.model
     def action_open_new_dashboard(self, dashboard_group_id):

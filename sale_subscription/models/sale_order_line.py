@@ -28,7 +28,7 @@ class SaleOrderLine(models.Model):
     def _check_line_unlink(self):
         """ Override. Check wether a line can be deleted or not."""
         undeletable_lines = super()._check_line_unlink()
-        not_subscription_lines = self.filtered(lambda line: not line.order_id.is_subscription)
+        not_subscription_lines = self.filtered(lambda line: not (line.order_id.is_subscription and line.product_id.recurring_invoice))
         return not_subscription_lines and undeletable_lines
 
     @api.depends('product_template_id', 'order_id.recurrence_id')

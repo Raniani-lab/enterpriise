@@ -27,8 +27,9 @@ class ProductTemplate(models.Model):
     @api.constrains('template_folder_id')
     def _check_company_is_folder_company(self):
         for product in self:
-            if product.template_folder_id and product.template_folder_id.company_id and product.company_id != product.template_folder_id.company_id:
-                raise UserError(_('The "%s" workspace template should either be in the "%s" company like this product or be open to all companies.', product.template_folder_id.name, product.company_id.name))
+            if product.template_folder_id.company_id and product.company_id and product.company_id != product.template_folder_id.company_id:
+                raise UserError(_('The "%s" workspace template should either be in the "%s" company like this product or be open to all companies.',
+                                product.template_folder_id.name, product.company_id.name))
 
     @api.depends('project_template_id.use_documents')
     def _compute_template_folder_id(self):

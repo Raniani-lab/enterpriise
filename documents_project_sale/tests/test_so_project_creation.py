@@ -168,3 +168,19 @@ class testSoProjectCreation(TestSaleProjectCommon):
         })
         sales_order.action_confirm()
         self.assertFalse(sales_order.project_ids.use_documents, "The generated project should have the documents feature disabled.")
+
+    def test_workspace_from_project(self):
+        """
+            This tests the flow of creating a project and then using
+            that project and its workplace to create the product
+        """
+        project_template = self.env['project.project'].create({
+            'name': 'Test Project',
+        })
+        self.env['product.template'].create({
+            'name': 'Test product',
+            'type': 'service',
+            'service_tracking': 'task_in_project',
+            'project_template_id': project_template.id,
+            'template_folder_id': project_template.documents_folder_id.id,
+        })

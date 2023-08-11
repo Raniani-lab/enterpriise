@@ -379,7 +379,10 @@ export class MrpDisplay extends Component {
                 const params = reload ? { onClose: () => this.reload() } : {}
                 return this.actionService.doAction(action, params);
             }
-            this.validationStack = [];
+            this.validationStack = {
+                "mrp.production": [],
+                "mrp.workorder": [],
+            };
         }
         if (reload) {
             await this.reload();

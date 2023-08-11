@@ -1,5 +1,6 @@
 /** @odoo-module */
 
+import { endKnowledgeTour } from '@knowledge/../tests/tours/knowledge_tour_utils';
 import { registry } from "@web/core/registry";
 
 
@@ -46,4 +47,5 @@ registry.category("web_tour.tours").add('helpdesk_insert_kanban_view_link_in_kno
 }, {
     trigger: '.o_knowledge_behavior_type_view_link',
     run: () => {}
-}]});
+}, ...endKnowledgeTour()
+]});

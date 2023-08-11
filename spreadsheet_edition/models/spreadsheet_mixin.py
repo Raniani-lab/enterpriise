@@ -34,7 +34,7 @@ class SpreadsheetMixin(models.AbstractModel):
         self.ensure_one()
         new_spreadsheet = super().copy(default)
         if not default or "spreadsheet_revision_ids" not in default:
-            self.sudo()._copy_revisions_to(new_spreadsheet.sudo())
+            self._copy_revisions_to(new_spreadsheet)
         return new_spreadsheet
 
     def join_spreadsheet_session(self, share_id=None, access_token=None):
@@ -117,14 +117,16 @@ class SpreadsheetMixin(models.AbstractModel):
         return False
 
     def _copy_revisions_to(self, spreadsheet):
+        self._check_collaborative_spreadsheet_access("read")
         revisions_data = []
-        for revision in self.spreadsheet_revision_ids:
+        for revision in self.sudo().spreadsheet_revision_ids:
             revisions_data += revision.copy_data({
                 "res_model": spreadsheet._name,
                 "res_id": spreadsheet.id,
             })
-        revisions = self.env["spreadsheet.revision"].create(revisions_data)
-        spreadsheet.spreadsheet_revision_ids = revisions
+        spreadsheet._check_collaborative_spreadsheet_access("write")
+        revisions = self.env["spreadsheet.revision"].sudo().create(revisions_data)
+        spreadsheet.sudo().spreadsheet_revision_ids = revisions
 
     def _snapshot_spreadsheet(
         self, revision_id: str, snapshot_revision_id, spreadsheet_snapshot: dict

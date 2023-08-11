@@ -40,7 +40,7 @@ class SpreadsheetTemplate(models.Model):
             **document_vals,
         })
         spreadsheet.spreadsheet_snapshot = self.spreadsheet_snapshot
-        self.sudo()._copy_revisions_to(spreadsheet.sudo())
+        self._copy_revisions_to(spreadsheet)
 
         return {
             "type": "ir.actions.client",

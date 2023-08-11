@@ -2446,3 +2446,110 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
             {'flag': 'exchange_diff',   'balance': 1.0},
             {'flag': 'auto_balance',    'balance': -10.0},
         ])
+
+    def test_amls_order_with_matching_amount(self):
+        """ AML's with a matching amount_residual should be displayed first when the order is not specified. """
+
+        foreign_st_line = self._create_st_line(
+            500.0,
+            date='2016-01-01',
+            foreign_currency_id=self.currency_data['currency'].id,
+            amount_currency=1500.0,
+        )
+        st_line = self._create_st_line(
+            66.66,
+            date='2016-01-01',
+        )
+        wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=foreign_st_line.id).new({})
+
+        aml1_id = self._create_invoice_line(
+            'out_invoice',
+            invoice_date='2017-01-30',
+            invoice_line_ids=[{'price_unit': 1000.0}],
+        ).id
+        aml2_id = self._create_invoice_line(
+            'out_invoice',
+            invoice_date='2017-01-29',
+            currency_id=self.currency_data['currency'].id,
+            invoice_line_ids=[{'price_unit': 1500.0}], # = 100 USD
+        ).id
+        aml3_id = self._create_invoice_line(
+            'out_invoice',
+            invoice_date='2017-01-28',
+            invoice_line_ids=[{'price_unit': 500.0}],
+        ).id
+        aml4_id = self._create_invoice_line(
+            'out_invoice',
+            invoice_date='2017-01-27',
+            invoice_line_ids=[{'price_unit': 55.55}], # = 55.550000000000004
+        ).id
+        aml5_id = self._create_invoice_line(
+            'out_invoice',
+            invoice_date='2017-01-26',
+            invoice_line_ids=[{'price_unit': 66.66}],
+        ).id
+
+        # Check the lines without the context key.
+        wizard._js_action_mount_st_line(foreign_st_line.id)
+        domain = wizard.return_todo_command['amls']['domain']
+        amls_list = self.env['account.move.line'].search_fetch(domain=domain, field_names=['id'])
+        self.assertEqual(
+            [x['id'] for x in amls_list],
+            [aml1_id, aml2_id, aml3_id, aml4_id, aml5_id],
+        )
+
+        # Check the lines with the context key.
+        suspense_line = wizard.line_ids.filtered(lambda l: l.flag == 'auto_balance')
+        amls_list = self.env['account.move.line']\
+            .with_context(preferred_aml_value=suspense_line.amount_currency * -1, preferred_aml_currency_id=suspense_line.currency_id.id)\
+            .search_fetch(domain=domain, field_names=['id'])
+        self.assertEqual(
+            [x['id'] for x in amls_list],
+            [aml2_id, aml1_id, aml3_id, aml4_id, aml5_id],
+        )
+
+        # Check the order with limits and offsets
+        amls_list = self.env['account.move.line']\
+            .with_context(preferred_aml_value=suspense_line.amount_currency * -1, preferred_aml_currency_id=suspense_line.currency_id.id)\
+            .search_fetch(domain=domain, field_names=['id'], limit=2)
+        self.assertEqual(
+            [x['id'] for x in amls_list],
+            [aml2_id, aml1_id],
+        )
+        amls_list = self.env['account.move.line']\
+            .with_context(preferred_aml_value=suspense_line.amount_currency * -1, preferred_aml_currency_id=suspense_line.currency_id.id)\
+            .search_fetch(domain=domain, field_names=['id'], offset=2, limit=3)
+        self.assertEqual(
+            [x['id'] for x in amls_list],
+            [aml3_id, aml4_id, aml5_id],
+        )
+
+        # Check rounding and new suspense line
+        wizard._js_action_mount_st_line(st_line.id)
+        suspense_line = wizard.line_ids.filtered(lambda l: l.flag == 'auto_balance')
+        amls_list = self.env['account.move.line']\
+            .with_context(preferred_aml_value=suspense_line.amount_currency * -1, preferred_aml_currency_id=suspense_line.currency_id.id)\
+            .search_fetch(domain=domain, field_names=['id'])
+        self.assertEqual(
+            [x['id'] for x in amls_list],
+            [aml5_id, aml1_id, aml2_id, aml3_id, aml4_id],
+        )
+        wizard._js_action_mount_line_in_edit(suspense_line.index)
+        suspense_line.balance = -11.11
+        wizard._line_value_changed_balance(suspense_line)
+        suspense_line = wizard.line_ids.filtered(lambda l: l.flag == 'auto_balance')
+        self.assertEqual(suspense_line.balance, -55.55)
+        self.env.cr.execute(f"""
+            UPDATE account_move_line SET amount_residual_currency = 55.550000001 WHERE id = {aml4_id};
+        """)
+        amls_list = self.env['account.move.line']\
+            .with_context(preferred_aml_value=55.550003, preferred_aml_currency_id=suspense_line.currency_id.id)\
+            .search_fetch(domain=domain, field_names=['id'])
+        self.assertEqual(
+            [x['id'] for x in amls_list],
+            [aml4_id, aml1_id, aml2_id, aml3_id, aml5_id],
+        )
+
+        # Check that context keys are not propagated
+        action = amls_list[0].action_open_business_doc()
+        self.assertFalse(action['context'].get('preferred_aml_value'))

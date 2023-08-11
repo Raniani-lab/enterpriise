@@ -39,9 +39,9 @@ registry.category("web_tour.tours").add('account_accountant_bank_rec_widget_ui',
             trigger: "button.btn-secondary[name='action_open_business_doc']:eq(1)",
         },
         {
-            content: "Breadcrumb back to Bank Reconciliation from INV/2019/00002",
+            content: "Breadcrumb back to Bank Reconciliation from INV/2019/00001",
             trigger: ".breadcrumb-item:contains('Bank Reconciliation')",
-            extra_trigger: ".o_breadcrumb .active:contains('INV/2019/00002')",
+            extra_trigger: ".o_breadcrumb .active:contains('INV/2019/00001')",
             run: "click"
         },
         {
@@ -57,8 +57,8 @@ registry.category("web_tour.tours").add('account_accountant_bank_rec_widget_ui',
         // Keep AML search, and prepared entry (line_ids) when changing tabs, using breadcrumbs, and view switcher
         {
             content: "AMLs list has both invoices",
-            extra_trigger: "div.bank_rec_widget_form_amls_list_anchor table.o_list_table tr:nth-child(3) td[name='move_id']:contains('INV/2019/00001')",
-            trigger: "div.bank_rec_widget_form_amls_list_anchor table.o_list_table tr:nth-child(2) td[name='move_id']:contains('INV/2019/00002')",
+            extra_trigger: "div.bank_rec_widget_form_amls_list_anchor table.o_list_table tr:nth-child(2) td[name='move_id']:contains('INV/2019/00001')",
+            trigger: "div.bank_rec_widget_form_amls_list_anchor table.o_list_table tr:nth-child(1) td[name='move_id']:contains('INV/2019/00002')",
             run: () => {},
         },
         {

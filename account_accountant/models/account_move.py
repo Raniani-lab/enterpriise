@@ -320,7 +320,13 @@ class AccountMove(models.Model):
         if self.statement_line_id:
             return self.action_open_bank_reconciliation_widget()
         else:
-            return super().action_open_business_doc()
+            action = super().action_open_business_doc()
+            # prevent propagation of the following keys
+            action['context'] = action.get('context', {}) | {
+                'preferred_aml_value': None,
+                'preferred_aml_currency_id': None,
+            }
+            return action
 
     def _get_mail_thread_data_attachments(self):
         res = super()._get_mail_thread_data_attachments()
@@ -357,6 +363,23 @@ class AccountMoveLine(models.Model):
         help="Date at which the deferred expense/revenue ends"
     )
     has_deferred_moves = fields.Boolean(compute='_compute_has_deferred_moves')
+
+    @api.model
+    def _generate_order_by(self, order_spec, query):
+        # EXTENDS base
+        default_order_by_clause = super()._generate_order_by(order_spec, query)
+        preferred_aml_residual_value = self._context.get('preferred_aml_value')
+        preferred_aml_currency_id = self._context.get('preferred_aml_currency_id')
+        if preferred_aml_residual_value and preferred_aml_currency_id and order_spec == self._order:
+            currency = self.env['res.currency'].browse(preferred_aml_currency_id)
+            # using round since currency.round(55.55) = 55.550000000000004
+            preferred_aml_residual_value = round(preferred_aml_residual_value, currency.decimal_places)
+            return f'''
+                ORDER BY ROUND({self._table}.amount_residual_currency, {currency.decimal_places})={preferred_aml_residual_value}
+                         and {self._table}.currency_id={currency.id} DESC,
+                         {default_order_by_clause.split("ORDER BY ")[1]}
+            '''
+        return default_order_by_clause
 
     def copy_data(self, default=None):
         data_list = super().copy_data(default=default)

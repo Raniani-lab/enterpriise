@@ -82,7 +82,7 @@
     </record>
 
     <record id="hr_employee_norberta" model="hr.employee">
-        <field name="name">Norberta Pociute (fpo)</field>
+        <field name="name">Norberta Pociute (npo)</field>
         <field name="gender">female</field>
         <field name="marital">single</field>
         <field name="job_title">Software Developer</field>

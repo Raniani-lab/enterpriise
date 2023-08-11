@@ -98,7 +98,7 @@ class TaxReportPND53(models.AbstractModel):
 
         return {
             "file_name": "Tax Report PND53",
-            "file_content": output,
+            "file_content": output.encode(),
             "file_type": "csv"
         }
 
@@ -135,6 +135,6 @@ class TaxReportPND3(models.AbstractModel):
 
         return {
             "file_name": "Tax Report PND3",
-            "file_content": output,
+            "file_content": output.encode(),
             "file_type": "csv"
         }

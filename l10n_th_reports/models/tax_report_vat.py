@@ -20,14 +20,14 @@ class AccountGenericTaxReport(models.AbstractModel):
                 'action': 'export_file',
                 'action_param': 'l10n_th_print_sale_tax_report',
                 'sequence': 82,
-                'file_export_type': _('XLSX')
+                'file_export_type': _('VAT-202-01 (xlsx)')
             },
             {
                 'name': _('VAT-202-02 (xlsx)'),
                 'action': 'export_file',
                 'action_param': 'l10n_th_print_purchase_tax_report',
                 'sequence': 83,
-                'file_export_type': _('XLSX')
+                'file_export_type': _('VAT-202-02 (xlsx)')
             }
         ))
 

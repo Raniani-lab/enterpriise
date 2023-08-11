@@ -63,7 +63,7 @@ class L10nThaiTaxReportTest(AccountSalesReportCommon):
         report_data = self.env['l10n_th.pnd53.report.handler'].l10n_th_print_pnd_tax_report_pnd53(options)['file_content']
         expected = ("No.,Tax ID,Title,Contact Name,Street,Street2,City,State,Zip,Branch Number,Invoice/Bill Date,Tax Rate,Total Amount,WHT Amount,WHT Condition,Tax Type\n"
                     "1,12345678,บริษัท,Partner B,,,,,,12345678,20/05/2023,3.00,1000.00,30.00,1,Service\n"
-                    "2,12345678,บริษัท,Partner B,,,,,,12345678,20/05/2023,2.00,1000.00,20.00,1,Advertising\n")
+                    "2,12345678,บริษัท,Partner B,,,,,,12345678,20/05/2023,2.00,1000.00,20.00,1,Advertising\n").encode()
 
         self.assertEqual(report_data, expected)
 
@@ -105,6 +105,6 @@ class L10nThaiTaxReportTest(AccountSalesReportCommon):
         report_data = self.env['l10n_th.pnd3.report.handler'].l10n_th_print_pnd_tax_report_pnd3(options)['file_content']
         expected = ("No.,Tax ID,Title,Contact Name,Street,Street2,City,State,Zip,Branch Number,Invoice/Bill Date,Tax Rate,Total Amount,WHT Amount,WHT Condition,Tax Type\n"
                     "1,12345678,,Partner B,,,,,,12345678,20/05/2023,1.00,1000.00,10.00,1,Transportation\n"
-                    "2,12345678,,Partner B,,,,,,12345678,20/05/2023,2.00,1000.00,20.00,1,Advertising\n")
+                    "2,12345678,,Partner B,,,,,,12345678,20/05/2023,2.00,1000.00,20.00,1,Advertising\n").encode()
 
         self.assertEqual(report_data, expected)

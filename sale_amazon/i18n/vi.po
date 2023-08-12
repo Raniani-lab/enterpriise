@@ -519,7 +519,7 @@ msgid ""
 "If the date is set in the past, orders placed on this Amazon Account before the first synchronization of the module might be synchronized with Odoo.\n"
 "If the date is set in the future, orders placed on this Amazon Account between the previous and the new date will not be synchronized with Odoo."
 msgstr ""
-"Nếu ngày được đặt trước đó, đơn hàng đặt trong tài khoản Amazon này trước ngày đồng bộ hóa đầu tiên của module có thể được đồng bộ hóa với Odoo.\n"
+"Nếu ngày được đặt trước đó, đơn hàng đặt trong tài khoản Amazon này trước ngày đồng bộ hóa đầu tiên của phân hệ có thể được đồng bộ hóa với Odoo.\n"
 "Nếu ngày được đặt trong tương lai, đơn hàng đặt trong tài khoản Amazon này giữa ngày trước đó và ngày mới đặt sẽ được đồng bộ hóa với Odoo."
 
 #. module: sale_amazon

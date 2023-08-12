@@ -1517,7 +1517,7 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "You can't register scrap at this state of the operation"
-msgstr ""
+msgstr "Bạn không thể ghi nhận phế phẩm ở trạng thái hoạt động này"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.view_backorder_confirmation
@@ -1614,7 +1614,7 @@ msgstr "trang mã vạch tồn kho"
 #, python-format
 msgid "to check out what this module can do! You can also print the barcode"
 msgstr ""
-"để có thể biết những gì module này có thể làm! Bạn có thể tiến hành in mã "
+"để có thể biết những gì phân hệ này có thể làm! Bạn có thể tiến hành in mã "
 "vạch"
 
 #. module: stock_barcode

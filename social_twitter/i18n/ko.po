@@ -591,6 +591,7 @@ msgid ""
 "We could not upload your image, it may be corrupted, it may exceed size "
 "limit or API may have send improper response (error: %s)."
 msgstr ""
+"이미지가 손상 또는 크기 제한을 초과하여 업로드할 수 없거나, API에서 부적절한 응답을 보냈을 수 있습니다 (오류: %s)."
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_account.py:0

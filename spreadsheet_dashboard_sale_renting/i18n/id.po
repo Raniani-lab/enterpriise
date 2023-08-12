@@ -48,7 +48,7 @@ msgstr "Pelanggan"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Daily Rentals"
-msgstr ""
+msgstr "Rental Harian"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -72,7 +72,7 @@ msgstr "Memerintahkan"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Ordered Qty"
-msgstr ""
+msgstr "Kuantitas Dipesan"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -93,7 +93,7 @@ msgstr "Periode"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Picked-up Qty"
-msgstr ""
+msgstr "Kuantitas yang sudah Pick-up"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -131,28 +131,28 @@ msgstr "Penawaran"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Rental Analysis by Customer"
-msgstr ""
+msgstr "Analisis Rental berdasarkan Pelanggan"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Rental Analysis by Product"
-msgstr ""
+msgstr "Analisis Rental berdasarkan Produ"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Rental Analysis by Product Category"
-msgstr ""
+msgstr "Analisis Rental berdasarkan Kategori Produk"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Rental Analysis by Salesman"
-msgstr ""
+msgstr "Analisis Rental berdasarkan Salesman"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -166,7 +166,7 @@ msgstr "Rental"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Returned Qty"
-msgstr ""
+msgstr "Kuantitas Dikembalikkan"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -200,7 +200,7 @@ msgstr "Pelanggan Terbaik"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Top Product Categories"
-msgstr ""
+msgstr "Kategori Produk Terbai"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
@@ -214,21 +214,21 @@ msgstr "Produk Terbaik"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Top Salespeople"
-msgstr ""
+msgstr "Salespeople Terbaik"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "rental stats - current"
-msgstr ""
+msgstr "rental stats - saat ini"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "rental stats - previous"
-msgstr ""
+msgstr "rental stats - sebelumnya"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. odoo-javascript

@@ -1239,6 +1239,17 @@ msgstr "Je hebt geen partij- / serienummer ingegeven voor het eindproduct"
 #. odoo-python
 #: code:addons/mrp_workorder/models/mrp_workorder.py:0
 #, python-format
+msgid ""
+"You need to complete Quality Checks using the Tablet View before marking "
+"Work Order as Done."
+msgstr ""
+"Je moet kwaliteitscontroles uitvoeren met behulp van de tabletweergave "
+"voordat je de werkorder als gereed markeert."
+
+#. module: mrp_workorder
+#. odoo-python
+#: code:addons/mrp_workorder/models/mrp_workorder.py:0
+#, python-format
 msgid "You should provide a lot/serial number for the final product"
 msgstr "Je moet een partij- / serienummer opgeven voor het eindproduct"
 

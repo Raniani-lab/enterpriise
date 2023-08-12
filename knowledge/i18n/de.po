@@ -2928,7 +2928,9 @@ msgstr "Sie können die Berechtigung für dieses Mitglied nicht ändern."
 #: code:addons/knowledge/models/knowledge_cover.py:0
 #, python-format
 msgid "You cannot create a new Knowledge Cover from here."
-msgstr "Sie können von hier aus kein neues Wissensdatenkdeckblatt erstellen."
+msgstr ""
+"Sie können von hier aus kein neues Deckblatt für die Wissensdatenbank "
+"erstellen."
 
 #. module: knowledge
 #. odoo-python

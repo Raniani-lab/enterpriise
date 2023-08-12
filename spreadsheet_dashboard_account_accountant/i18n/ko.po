@@ -27,7 +27,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "(Net sales - Total expenses) / Net sales"
-msgstr ""
+msgstr "(순매출 - 총지출) / 순매출"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -91,14 +91,14 @@ msgstr "< 3%: 비즈니스 창출에 효율적이지 않음"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "< 45: company gets paid for sales quickly"
-msgstr ""
+msgstr "< 45: 회사가 판매 대금을 신속하게 회수함"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "< 45: company liquidates debts to suppliers quickly"
-msgstr ""
+msgstr "< 45: 회사가 공급업체에 신속하게 부채를 청산할 수 있음"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -168,14 +168,14 @@ msgstr "> 5: 회사에 부채가 매우 많으며 자체 자금은 많지 않음
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "> 60: company might not get paid for sales quickly enough"
-msgstr ""
+msgstr "> 60: 회사가 판매 대금을 빨리 받지 못할 수 있음"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "> 70: company might be slow to pay suppliers"
-msgstr ""
+msgstr "> 70: 회사가 공급업체에 지불하는 것이 느릴 수 있음"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -228,7 +228,7 @@ msgstr "평균 채무자 기간(일)"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Average payable days"
-msgstr ""
+msgstr "평균 지급 일수"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -709,7 +709,7 @@ msgstr "지급금"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Payables / Expenses * 30"
-msgstr ""
+msgstr "매입채무 / 비용 * 30"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -804,7 +804,7 @@ msgstr "미수금"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Receivables / Income * 30"
-msgstr ""
+msgstr "매출채권 / 수입 * 30"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -848,14 +848,14 @@ msgstr "기술적 명칭"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Total Current assets"
-msgstr ""
+msgstr "총 유동자산"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Total Current liabilities"
-msgstr ""
+msgstr "총 유동부채"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -1005,7 +1005,7 @@ msgstr "미지급금"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "payable + credit card + current liabilities"
-msgstr ""
+msgstr "선수금 + 신용카드 + 유동부채"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -1094,14 +1094,14 @@ msgstr "미수금 + 은행 및 현금 + 유동자산 + 고정자산 + 선급금 
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "receivable + bank and cash + current assets + prepayments"
-msgstr ""
+msgstr "미수금 + 은행 및 현금 + 유동자산 + 선급금"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "receivable + bank and cash + prepayments"
-msgstr ""
+msgstr "미수금 + 은행 및 현금 + 선급금"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript

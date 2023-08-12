@@ -42,6 +42,8 @@ msgid ""
 "<span class=\"o_form_label\">Automatic PO frequency</span>\n"
 "                            <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" role=\"img\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\"/>"
 msgstr ""
+"<span class=\"o_form_label\">自動採購單頻率</span>\n"
+"                            <span class=\"fa fa-lg fa-building-o\" title=\"此處設定的值是特定於每間公司的。\" role=\"img\" aria-label=\"此處設定的值是特定於每間公司的。\" groups=\"base.group_multi_company\"/>"
 
 #. module: partner_commission
 #: model_terms:ir.ui.view,arch_db:partner_commission.res_config_settings_view_form
@@ -49,6 +51,8 @@ msgid ""
 "<span class=\"o_form_label\">Minimum PO amount total</span>\n"
 "                            <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" role=\"img\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\"/>"
 msgstr ""
+"<span class=\"o_form_label\">採購單最低總額</span>\n"
+"                            <span class=\"fa fa-lg fa-building-o\" title=\"此處設定的值是特定於每間公司的。\" role=\"img\" aria-label=\"此處設定的值是特定於每間公司的。\" groups=\"base.group_multi_company\"/>"
 
 #. module: partner_commission
 #: model:ir.model.fields,field_description:partner_commission.field_commission_plan__active

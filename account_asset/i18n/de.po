@@ -2182,6 +2182,7 @@ msgstr ""
 #, python-format
 msgid "You can't re-evaluate the asset before the lock date."
 msgstr ""
+"Sie können einen Vermögensgegenstand nicht vor dem Sperrdatum neu bewerten."
 
 #. module: account_asset
 #. odoo-python
@@ -2238,6 +2239,7 @@ msgstr ""
 #, python-format
 msgid "You cannot dispose of an asset before the lock date."
 msgstr ""
+"Sie können einen Vermögensgegenstand nicht vor dem Sperrdatum veräußern."
 
 #. module: account_asset
 #. odoo-python

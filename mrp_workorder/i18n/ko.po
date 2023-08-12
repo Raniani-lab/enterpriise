@@ -1223,6 +1223,15 @@ msgstr "최종 제품에 대한 로트/일련 번호를 설정하지 않았습�
 #. odoo-python
 #: code:addons/mrp_workorder/models/mrp_workorder.py:0
 #, python-format
+msgid ""
+"You need to complete Quality Checks using the Tablet View before marking "
+"Work Order as Done."
+msgstr "작업 주문서를 완료로 표시하기 전에 태블릿 보기를 사용하여 품질 검사를 완료해야 합니다."
+
+#. module: mrp_workorder
+#. odoo-python
+#: code:addons/mrp_workorder/models/mrp_workorder.py:0
+#, python-format
 msgid "You should provide a lot/serial number for the final product"
 msgstr "최종 제품의 LOt/일련 번호를 입력해야 합니다."
 

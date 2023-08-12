@@ -2122,7 +2122,7 @@ msgstr "미결 자산과 관련된 전표를 발행할 수 없습니다. 자산 
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "You can't re-evaluate the asset before the lock date."
-msgstr ""
+msgstr "잠금 날짜 이전에는 자산을 재평가할 수 없습니다."
 
 #. module: account_asset
 #. odoo-python
@@ -2194,7 +2194,7 @@ msgstr "일시 중지 날짜와 같거나 이전인 날짜에는 다시 시작�
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "You cannot select the same account as the Depreciation Account"
-msgstr ""
+msgstr "감가상각 계정과 동일한 계정을 선택할 수 없습니다."
 
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_balance

@@ -28,7 +28,7 @@ msgstr "<span>Jumlah</span>"
 #. module: mrp_subcontracting_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_subcontracting_account_enterprise.mrp_cost_structure_subcontracting
 msgid "<span>Subcontractor</span>"
-msgstr ""
+msgstr "<span>Subkontraktor</span>"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_subcontracting_account_enterprise.mrp_cost_structure_subcontracting
@@ -43,22 +43,22 @@ msgstr "<span>Biaya Unit</span>"
 #. module: mrp_subcontracting_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_subcontracting_account_enterprise.mrp_cost_structure_subcontracting
 msgid "<strong>Total Cost of Subcontracting</strong>"
-msgstr ""
+msgstr "<strong>Biaya Total Subkontrak</strong>"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_subcontracting_account_enterprise.mrp_report_pivot_view_inherit_subcontracting
 msgid "Average Subcontracting Cost / Unit"
-msgstr ""
+msgstr "Rata-Rata Biaya / Unit Subkontrak"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_subcontracting_account_enterprise.mrp_cost_structure_subcontracting
 msgid "Cost of Subcontracting"
-msgstr ""
+msgstr "Biaya Subkontrak"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_subcontracting_account_enterprise.mrp_cost_structure_subcontracting
 msgid "Cost of Subcontracting per unit (in"
-msgstr ""
+msgstr "Biaya Subkontrak per unit (di"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model:ir.model,name:mrp_subcontracting_account_enterprise.model_report_mrp_account_enterprise_mrp_cost_structure
@@ -76,6 +76,8 @@ msgid ""
 "Subcontracting cost per unit produced (in product UoM) of manufacturing "
 "order"
 msgstr ""
+"Biaya subkontrak per unit dihasilkan (dalam Satuan Ukuran produk) dari "
+"manufacturing order"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model:ir.model.fields,field_description:mrp_subcontracting_account_enterprise.field_mrp_report__total_cost
@@ -85,12 +87,12 @@ msgstr "Total Biaya"
 #. module: mrp_subcontracting_account_enterprise
 #: model:ir.model.fields,field_description:mrp_subcontracting_account_enterprise.field_mrp_report__subcontracting_cost
 msgid "Total Subcontracting Cost"
-msgstr ""
+msgstr "Total Biaya Subkontrak"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model:ir.model.fields,field_description:mrp_subcontracting_account_enterprise.field_mrp_report__unit_subcontracting_cost
 msgid "Total Subcontracting Cost / Unit"
-msgstr ""
+msgstr "Total Subkontrak / Unit"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model:ir.model.fields,help:mrp_subcontracting_account_enterprise.field_mrp_report__total_cost
@@ -104,4 +106,4 @@ msgstr ""
 #. module: mrp_subcontracting_account_enterprise
 #: model:ir.model.fields,help:mrp_subcontracting_account_enterprise.field_mrp_report__subcontracting_cost
 msgid "Total cost of subcontracting for manufacturing order"
-msgstr ""
+msgstr "Total biaya subkontrak untuk manufacturing order"

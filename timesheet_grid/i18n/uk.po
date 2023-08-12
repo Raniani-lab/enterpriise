@@ -1629,6 +1629,10 @@ msgid ""
 "employees who are not part of your team or are not in a state that can be "
 "validated. This may be due to the fact that they are dated in the future."
 msgstr ""
+"Ви не можете підтвердити вибрані табелі, оскільки вони або належать "
+"працівникам, які не є частиною вашої команди, або не перебувають у стані, "
+"який можна перевірити. Можливо, це пов’язано з тим, що вони датовані "
+"майбутнім часом.'"
 
 #. module: timesheet_grid
 #: model:ir.model.fields.selection,name:timesheet_grid.selection__res_company__timesheet_mail_employee_interval__months

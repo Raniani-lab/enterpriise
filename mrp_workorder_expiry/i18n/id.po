@@ -22,12 +22,12 @@ msgstr ""
 #. module: mrp_workorder_expiry
 #: model_terms:ir.ui.view,arch_db:mrp_workorder_expiry.quality_check_view_form_tablet_inherit_expiry
 msgid "<span class=\"fa fa-exclamation-triangle\"/> This lot is expired."
-msgstr ""
+msgstr "<span class=\"fa fa-exclamation-triangle\"/> Lot ini kadaluwarsa."
 
 #. module: mrp_workorder_expiry
 #: model:ir.model.fields,field_description:mrp_workorder_expiry.field_quality_check__is_expired
 msgid "Product Expiry Alert"
-msgstr ""
+msgstr "Peringatan Kadaluwarsa Produk"
 
 #. module: mrp_workorder_expiry
 #: model:ir.model,name:mrp_workorder_expiry.model_quality_check
@@ -37,4 +37,4 @@ msgstr "Pemeriksaan Kualita"
 #. module: mrp_workorder_expiry
 #: model:ir.model.fields,help:mrp_workorder_expiry.field_quality_check__is_expired
 msgid "The Expiration Date has been reached."
-msgstr ""
+msgstr "Sudah mencapai Tanggal Kadaluwarsa."

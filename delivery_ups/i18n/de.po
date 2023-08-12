@@ -378,14 +378,14 @@ msgstr "Bitte geben Sie in der Absenderadresse eine gültige Postleitzahl an."
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Please provide a valid zip code in the warehouse address."
-msgstr "Bitte geben Sie eine gültige Postleitzahl in der Lageradresse an."
+msgstr "Bitte geben Sie in der Lageradresse eine gültige Postleitzahl an."
 
 #. module: delivery_ups
 #. odoo-python
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "Please provide a valid zipcode in the recipient address."
-msgstr "Bitte geben Sie eine gültige Postleitzahl in der Empfängeradresse an."
+msgstr "Bitte geben Sie in der Empfängeradresse eine gültige Postleitzahl an."
 
 #. module: delivery_ups
 #. odoo-python
@@ -740,7 +740,7 @@ msgstr "UPS"
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_access_number
 msgid "UPS Access Key"
-msgstr "UPS-Zugangsschlüssel"
+msgstr "UPS-Zugriffsschlüssel"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_res_partner__property_ups_carrier_account
@@ -789,7 +789,7 @@ msgstr "UPS-Server nicht gefunden"
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_default_service_type
 msgid "UPS Service Type"
-msgstr "UPS-Service Type"
+msgstr "UPS-Servicetyp"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_shipper_number

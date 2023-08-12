@@ -2887,7 +2887,7 @@ msgstr "Ви не можете змінити дозволи цього член
 #: code:addons/knowledge/models/knowledge_cover.py:0
 #, python-format
 msgid "You cannot create a new Knowledge Cover from here."
-msgstr ""
+msgstr "Ви не можете створити нову обкладинку бази знань звідси."
 
 #. module: knowledge
 #. odoo-python

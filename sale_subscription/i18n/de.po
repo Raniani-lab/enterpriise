@@ -2972,7 +2972,7 @@ msgstr "Verkaufsauftragswarnung"
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.action_sale_order_lines
 msgid "Sale Order Lines"
-msgstr "Verkaufsauftragpositionen"
+msgstr "Verkaufsauftragszeilen"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_order_log

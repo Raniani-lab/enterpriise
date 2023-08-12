@@ -1067,7 +1067,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model,name:documents.model_documents_share
 msgid "Documents Share"
-msgstr ""
+msgstr "Documents Share"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_folder
@@ -1238,7 +1238,7 @@ msgstr "Keuangan"
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_documents_financial
 msgid "Financial"
-msgstr ""
+msgstr "Keuangan"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_documents_fiscal
@@ -1811,7 +1811,7 @@ msgstr "Jumlah kesalahan"
 #: model:ir.model.fields,help:documents.field_documents_document__message_needaction_counter
 #: model:ir.model.fields,help:documents.field_documents_share__message_needaction_counter
 msgid "Number of messages requiring action"
-msgstr ""
+msgstr "Jumlah pesan yang membutuhkan tindakan"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__message_has_error_counter
@@ -2488,7 +2488,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__thumbnail
 msgid "Thumbnail"
-msgstr ""
+msgstr "Thumbnail"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__thumbnail_status

@@ -4,6 +4,7 @@
 # 
 # Translators:
 # JH CHOI <hwangtog@gmail.com>, 2023
+# Daye Jeong, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-07-25 09:17+0000\n"
 "PO-Revision-Date: 2023-07-25 09:20+0000\n"
-"Last-Translator: JH CHOI <hwangtog@gmail.com>, 2023\n"
+"Last-Translator: Daye Jeong, 2023\n"
 "Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,4 +28,4 @@ msgstr "SMS 문자 메시지 - 1 시간"
 #. module: appointment_sms
 #: model_terms:ir.ui.view,arch_db:appointment_sms.appointment_form
 msgid "We will use it to remind you of this appointment."
-msgstr ""
+msgstr "이 일정을 미리 알림해 드리는데 사용합니다."

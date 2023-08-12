@@ -205,7 +205,7 @@ msgstr "Categoría"
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_change_production_qty
 msgid "Change Production Qty"
-msgstr "Cambiar la cantidad de producción"
+msgstr "Cambiar cantidad de producción"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__check_ids
@@ -1236,6 +1236,17 @@ msgstr ""
 #, python-format
 msgid "You did not set a lot/serial number for the final product"
 msgstr "No configuró un número de lote o de serie para el producto final"
+
+#. module: mrp_workorder
+#. odoo-python
+#: code:addons/mrp_workorder/models/mrp_workorder.py:0
+#, python-format
+msgid ""
+"You need to complete Quality Checks using the Tablet View before marking "
+"Work Order as Done."
+msgstr ""
+"Primero debe completar los controles de calidad usando la vista de tableta "
+"antes de marcar la orden de trabajo como lista."
 
 #. module: mrp_workorder
 #. odoo-python

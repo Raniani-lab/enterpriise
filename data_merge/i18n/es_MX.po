@@ -572,7 +572,7 @@ msgstr "Notificar usuarios"
 #: code:addons/data_merge/models/data_merge_record.py:0
 #, python-format
 msgid "Query Failed."
-msgstr "Falló la consulta."
+msgstr "Error en la consulta."
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_group__record_ids

@@ -1236,7 +1236,7 @@ msgstr "لقد تم إنشاء قيد الجداول الزمنية بنجاح. 
 #. module: timesheet_grid
 #: model:ir.model.constraint,message:timesheet_grid.constraint_project_task_create_timesheet_time_positive
 msgid "The timesheet's time must be positive"
-msgstr "يجب أو يكون الوقت المسجل في الجداول الزمنية موجباً "
+msgstr "يجب أن يكون الوقت المسجل في الجداول الزمنية موجباً "
 
 #. module: timesheet_grid
 #. odoo-python

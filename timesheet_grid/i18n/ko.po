@@ -1577,6 +1577,8 @@ msgid ""
 "employees who are not part of your team or are not in a state that can be "
 "validated. This may be due to the fact that they are dated in the future."
 msgstr ""
+"선택된 근무 기록은 팀에 속하지 않은 직원의 기록이거나 유효성을 검사할 수 있는 상태가 아닙니다. 이는 해당 근무일지가 나중에 날짜가 "
+"지정되었기 때문일 수 있습니다."
 
 #. module: timesheet_grid
 #: model:ir.model.fields.selection,name:timesheet_grid.selection__res_company__timesheet_mail_employee_interval__months

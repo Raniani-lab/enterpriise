@@ -4,8 +4,8 @@
 # 
 # Translators:
 # Martin Trigaux, 2023
-# Stefano Consolaro <stefano.consolaro@mymage.it>, 2023
 # Sergio Zanchetta <primes2h@gmail.com>, 2023
+# Stefano Consolaro <stefano.consolaro@mymage.it>, 2023
 # Marianna Ciofani, 2023
 # 
 msgid ""
@@ -319,7 +319,7 @@ msgstr ""
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__is_deleted
 msgid "Deleted in production"
-msgstr ""
+msgstr "Eliminato in produzione"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.add_quality_check_from_tablet
@@ -428,6 +428,8 @@ msgid ""
 "In case of Quality Check by Quantity, Move Line on which the Quality Check "
 "applies"
 msgstr ""
+"Nel caso di controllo qualità per quantità, riga movimento alla quale si "
+"applica il controllo qualità"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.add_quality_check_from_tablet
@@ -929,7 +931,7 @@ msgstr ""
 #. module: mrp_workorder
 #: model:ir.model.fields.selection,name:mrp_workorder.selection__quality_point__source_document__operation
 msgid "Specific Page of Operation Worksheet"
-msgstr ""
+msgstr "Pagina specifica del foglio di lavoro dell'operazione"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,help:mrp_workorder.field_mrp_bom__activity_state
@@ -1232,6 +1234,15 @@ msgstr ""
 #, python-format
 msgid "You did not set a lot/serial number for the final product"
 msgstr "Non hai indicato un lotto/numero di serie per il prodotto finale"
+
+#. module: mrp_workorder
+#. odoo-python
+#: code:addons/mrp_workorder/models/mrp_workorder.py:0
+#, python-format
+msgid ""
+"You need to complete Quality Checks using the Tablet View before marking "
+"Work Order as Done."
+msgstr ""
 
 #. module: mrp_workorder
 #. odoo-python

@@ -59,6 +59,8 @@ msgid ""
 "<span attrs=\"{'invisible': [('contract_id', '!=', False)]}\">An offer "
 "template need to be selected to have an offer link.</span>"
 msgstr ""
+"<span attrs=\"{'invisible': [('contract_id', '!=', False)]}\">Per ottenere "
+"un link con l'offerta è necessario selezionare un modello.</span>"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.generate_simulation_link_view_form
@@ -168,6 +170,8 @@ msgstr "Aggiungi sezione"
 #, python-format
 msgid "Advanges that are not linked to a field should always be displayed."
 msgstr ""
+"I benefici che non sono legati ad un campo devono essere sempre "
+"visualizzati."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage_value__advantage_id
@@ -287,7 +291,7 @@ msgstr "Certificato"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_diff_email_template
 msgid "Changes summary since previous contract :"
-msgstr ""
+msgstr "Riassunto delle modifiche rispetto al contratto precedente:"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_personal_info__display_type__checkbox
@@ -526,6 +530,9 @@ msgid ""
 "Default contract used to generate an offer. If empty, advantages will be "
 "taken from current contract of the employee/nothing for an applicant."
 msgstr ""
+"Contratto predefinito utilizzato per creare un'offerta. Se vuoto, i benefici"
+" verranno importati dal contratto attuale del dipendente/pari a zero per un "
+"candidato."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__sign_template_id
@@ -621,7 +628,7 @@ msgstr "Menù a discesa"
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__display_type__dropdown-group
 msgid "Dropdown Group"
-msgstr ""
+msgstr "Gruppo a discesa"
 
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_email
@@ -775,6 +782,9 @@ msgid ""
 "HR Responsible %s should be a User of Sign and have a valid email address "
 "when New Contract Document Template is specified"
 msgstr ""
+"Il responsabile delle Risorse Umane %s deve essere un utente del modulo "
+"Firma e avere un indirizzo e-mail valido quando viene specificato il modello"
+" di documento per il nuovo contratto"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info__helper
@@ -1128,6 +1138,8 @@ msgstr "Link all'offerta"
 #, python-format
 msgid "Offer link can not be send. The applicant needs to have a name."
 msgstr ""
+"Il link con l'offerta non può essere inviato. Il candidato deve avere un "
+"nome."
 
 #. module: hr_contract_salary
 #. odoo-python
@@ -1444,7 +1456,7 @@ msgstr "Pannello laterale"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__sign_frenquency
 msgid "Sign Frenquency"
-msgstr ""
+msgstr "Frequenza firma"
 
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_hr_contract_sign_document_wizard
@@ -1557,6 +1569,8 @@ msgid ""
 "The employee does not have a valid work email set. The Simulation Link won't"
 " be able to be completed."
 msgstr ""
+"Il dipendente non possiede un indirizzo e-mail di lavoro valido. Non sarà "
+"possibile completare il link di simulazione. "
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.generate_simulation_link_view_form
@@ -1564,6 +1578,8 @@ msgid ""
 "The employee does not have a valid email set in the private information. The"
 " Simulation Link won't be able to be completed."
 msgstr ""
+"Il dipendente non presenta un indirizzo e-mail valido nelle informazioni "
+"private. Il link di simulazione non potrà essere completato."
 
 #. module: hr_contract_salary
 #. odoo-python
@@ -1610,6 +1626,8 @@ msgid ""
 "They will review your contract.<br/> Feel free to contact them if you have "
 "any questions."
 msgstr ""
+"Il tuo contratto verrà revisionato.<br/> Non esitare a contattarli se hai "
+"domande."
 
 #. module: hr_contract_salary
 #. odoo-python
@@ -1627,6 +1645,9 @@ msgid ""
 "advantages will be related to the current employee contract instead of the "
 "new job position."
 msgstr ""
+"Questa posizione lavorativa non possiede nessun modello di contratto quindi "
+"i benefici verranno attribuiti all'attuale contratto del dipendente invece "
+"che alla nuova posizione lavorativa."
 
 #. module: hr_contract_salary
 #. odoo-python

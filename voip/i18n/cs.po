@@ -1095,7 +1095,7 @@ msgstr "Uživatel"
 #. module: voip
 #: model:ir.model,name:voip.model_res_users_settings
 msgid "User Settings"
-msgstr ""
+msgstr "Uživatelské nastavení"
 
 #. module: voip
 #: model:ir.model,name:voip.model_voip_phonecall

@@ -146,7 +146,7 @@ msgstr "Menge reduzierbar"
 #. module: industry_fsm_stock
 #: model:ir.model.fields,field_description:industry_fsm_stock.field_fsm_stock_tracking_line__sale_order_line_id
 msgid "Sale Order Line"
-msgstr "Verkaufsauftragsposition"
+msgstr "Verkaufsauftragszeile"
 
 #. module: industry_fsm_stock
 #: model:ir.model,name:industry_fsm_stock.model_sale_order_line
@@ -216,7 +216,7 @@ msgstr "Validieren"
 #: code:addons/industry_fsm_stock/models/product.py:0
 #, python-format
 msgid "Validate Lot/Serial Number"
-msgstr "Los-/Seriennummer bestätigen"
+msgstr "Los-/Seriennummer validieren"
 
 #. module: industry_fsm_stock
 #: model:ir.model.fields,field_description:industry_fsm_stock.field_fsm_stock_tracking_line__wizard_tracking_line_valided

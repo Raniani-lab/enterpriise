@@ -2742,7 +2742,7 @@ msgstr "이 구성원의 승인 내용을 변경할 수 없습니다."
 #: code:addons/knowledge/models/knowledge_cover.py:0
 #, python-format
 msgid "You cannot create a new Knowledge Cover from here."
-msgstr ""
+msgstr "여기서는 새로운 지식창고를 만들 수 없습니다."
 
 #. module: knowledge
 #. odoo-python

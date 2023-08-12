@@ -28,7 +28,7 @@ msgstr ""
 #: code:addons/mrp_workorder_hr/static/src/components/working_employee_popup.xml:0
 #, python-format
 msgid "+ New Operator"
-msgstr ""
+msgstr "+ 新規オペレータ"
 
 #. module: mrp_workorder_hr
 #: model_terms:ir.ui.view,arch_db:mrp_workorder_hr.mrp_workorder_view_tablet_form_inherit_workorder_hr
@@ -36,6 +36,7 @@ msgid ""
 "<span attrs=\"{'invisible': [('employee_name', '!=', False)]}\">Log In "
 "</span>"
 msgstr ""
+"<span attrs=\"{'invisible': [('employee_name', '!=', False)]}\">ログイン</span>"
 
 #. module: mrp_workorder_hr
 #: model_terms:ir.ui.view,arch_db:mrp_workorder_hr.mrp_workcenter_form_view_inherit
@@ -60,7 +61,7 @@ msgstr "取消"
 #: code:addons/mrp_workorder_hr/static/src/components/tablet.js:0
 #, python-format
 msgid "Change Worker"
-msgstr ""
+msgstr "作業員を変更する"
 
 #. module: mrp_workorder_hr
 #. odoo-javascript
@@ -111,7 +112,7 @@ msgstr "従業員名"
 #: code:addons/mrp_workorder_hr/static/src/views/xml/mrp_workorder_buttons.xml:0
 #, python-format
 msgid "Log In"
-msgstr ""
+msgstr "ログイン"
 
 #. module: mrp_workorder_hr
 #. odoo-javascript
@@ -119,12 +120,12 @@ msgstr ""
 #: code:addons/mrp_workorder_hr/static/src/views/list/mrp_workorder_list_controller.js:0
 #, python-format
 msgid "Logged in!"
-msgstr ""
+msgstr "ログイン中！"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,help:mrp_workorder_hr.field_mrp_routing_workcenter__employee_ratio
 msgid "Number of employees needed to complete operation."
-msgstr ""
+msgstr "工程の完了に必要な従業員数"
 
 #. module: mrp_workorder_hr
 #. odoo-javascript
@@ -167,7 +168,7 @@ msgstr "要ログイン"
 #: code:addons/mrp_workorder_hr/static/src/views/list/mrp_workorder_list_controller.js:0
 #, python-format
 msgid "Select Employee"
-msgstr ""
+msgstr "従業員を選択"
 
 #. module: mrp_workorder_hr
 #. odoo-javascript
@@ -182,7 +183,7 @@ msgstr "停止"
 #: code:addons/mrp_workorder_hr/static/src/views/list/mrp_workorder_list_controller.js:0
 #, python-format
 msgid "This employee is not allowed on this workcenter"
-msgstr ""
+msgstr "この従業員はこの作業区に許可されていません。"
 
 #. module: mrp_workorder_hr
 #: model:ir.model,name:mrp_workorder_hr.model_mrp_workcenter
@@ -220,24 +221,24 @@ msgstr ""
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,help:mrp_workorder_hr.field_mrp_workcenter_productivity__employee_id
 msgid "employee that record this working time"
-msgstr ""
+msgstr "この作業時間を記録する従業員"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workcenter_productivity__employee_cost
 msgid "employee_cost"
-msgstr ""
+msgstr "employee_cost"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workcenter__employee_ids
 msgid "employees with access"
-msgstr ""
+msgstr "アクセス権のある従業員"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,help:mrp_workorder_hr.field_mrp_workcenter__employee_ids
 msgid "if left empty, all employees can log in to the workcenter"
-msgstr ""
+msgstr "空の場合は、全ての従業員が作業区にログインできます。"
 
 #. module: mrp_workorder_hr
 #: model_terms:ir.ui.view,arch_db:mrp_workorder_hr.mrp_workcenter_form_view_inherit
 msgid "per employee"
-msgstr ""
+msgstr "従業員ごと"

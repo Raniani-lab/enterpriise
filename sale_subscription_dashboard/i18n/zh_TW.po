@@ -378,7 +378,7 @@ msgstr "線性"
 msgid ""
 "List all invoices containing non-recurring sales and the amount of\n"
 "                        non-recurring revenues in these invoices for this particular salesperson."
-msgstr ""
+msgstr "列出這名銷售人員所有包含非經常性銷售的發票，以及這些發票中的非經常性收入金額。"
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript
@@ -387,7 +387,7 @@ msgstr ""
 msgid ""
 "List all invoices containing non-recurring sales and the amount of non-recurring\n"
 "                    revenues in these invoices for this particular salesperson."
-msgstr ""
+msgstr "列出這名銷售人員所有包含非經常性銷售的發票，以及這些發票中的非經常性收入金額。"
 
 #. module: sale_subscription_dashboard
 #. odoo-javascript

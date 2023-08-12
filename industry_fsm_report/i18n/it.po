@@ -67,6 +67,8 @@ msgid ""
 "Create templates for each type of intervention you have and customize their "
 "content with your own custom fields."
 msgstr ""
+"Crea modelli per ogni tipo di intervento realizzabile e personalizzane il "
+"contenuto con campi ad hoc."
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.x_project_task_worksheet_template_2_ir_ui_view_3

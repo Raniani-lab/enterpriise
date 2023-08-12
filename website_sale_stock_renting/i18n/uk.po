@@ -74,7 +74,7 @@ msgstr "Рядок замовлення"
 #: code:addons/website_sale_stock_renting/static/src/js/renting_mixin.js:0
 #, python-format
 msgid "The product is not available for the following time period(s):\n"
-msgstr ""
+msgstr "Товар недоступний протягом наступних періодів часу:\n"
 
 #. module: website_sale_stock_renting
 #. odoo-javascript

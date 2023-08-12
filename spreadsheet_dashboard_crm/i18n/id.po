@@ -26,7 +26,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid " days"
-msgstr ""
+msgstr "hari-hari"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -53,14 +53,14 @@ msgstr "# Lead"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Average Deal Size"
-msgstr ""
+msgstr "Rata-Rata Ukuran Deal"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Average deal size"
-msgstr ""
+msgstr "Rata-Rata ukuran deal"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -83,14 +83,14 @@ msgstr "Kota"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Close Rate"
-msgstr ""
+msgstr "Close Rate"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Close rate"
-msgstr ""
+msgstr "Close rate"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -104,14 +104,14 @@ msgstr "Ditutup"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Closed count"
-msgstr ""
+msgstr "Closed count"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Closed revenue"
-msgstr ""
+msgstr "Closed revenue"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -138,7 +138,7 @@ msgstr "Terbaru"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Current period"
-msgstr ""
+msgstr "Periode saat ini"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -152,21 +152,21 @@ msgstr "Hari untuk Diserahkan"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Days to Win"
-msgstr ""
+msgstr "Hari untuk Win"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Days to assign"
-msgstr ""
+msgstr "Hari untuk menugaskan"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Days to win"
-msgstr ""
+msgstr "Hari untuk win"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -187,14 +187,14 @@ msgstr "Perkiraan Penutupan"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Expected count"
-msgstr ""
+msgstr "Jumlah yang diharapkan"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Expected revenue"
-msgstr ""
+msgstr "Perkiraan omzet"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -209,7 +209,7 @@ msgstr "KPI"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Leads by Month"
-msgstr ""
+msgstr "Lead berdasarkan Bulan"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -234,7 +234,7 @@ msgstr "Media"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Open opportunities"
-msgstr ""
+msgstr "Opportunities terbuka"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -248,7 +248,7 @@ msgstr "Peluang"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Percentage closed"
-msgstr ""
+msgstr "Persentase yang ditutup"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -263,7 +263,7 @@ msgstr "Periode"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Pipeline Stages"
-msgstr ""
+msgstr "Tahap Pipeline"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -279,7 +279,7 @@ msgstr "Sebelum"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Previous period"
-msgstr ""
+msgstr "Periode sebelumnya"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -362,21 +362,21 @@ msgstr "Label"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "To close"
-msgstr ""
+msgstr "Untuk ditutup"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Top Campaigns"
-msgstr ""
+msgstr "Kampanya-Kampanye Terbaik"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Cities"
-msgstr ""
+msgstr "Kota-Kota Terbaik"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -384,14 +384,14 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Countries"
-msgstr ""
+msgstr "Negara-Negara Terbaik"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Top Lost Reasons"
-msgstr ""
+msgstr "Alasan Gagal Tertinggi"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -399,14 +399,14 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Mediums"
-msgstr ""
+msgstr "Top Mediums"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Opportunities"
-msgstr ""
+msgstr "Opportunities Terbaik"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -414,7 +414,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Sales Teams"
-msgstr ""
+msgstr "Tim Sales Terbaik"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -422,7 +422,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Salespeople"
-msgstr ""
+msgstr "Salespeople Terbaik"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -430,98 +430,98 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Sources"
-msgstr ""
+msgstr "Sumber Terbaik"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Top Tags"
-msgstr ""
+msgstr "Tag Terbaik"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Total days to assign"
-msgstr ""
+msgstr "Total hari untuk menugaskan"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Total days to win"
-msgstr ""
+msgstr "Total hari untuk win"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Total leads"
-msgstr ""
+msgstr "Total lead"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Won leads"
-msgstr ""
+msgstr "Won leads"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "average deal size - current"
-msgstr ""
+msgstr "rata-rata ukuran deal - saat ini"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "average deal size - previous"
-msgstr ""
+msgstr "rata-rata ukuran deal - sebelumnya"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "close rate - current"
-msgstr ""
+msgstr "close rate - saat ini"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "close rate - previous"
-msgstr ""
+msgstr "close rate - sebelumnya"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "days to - current"
-msgstr ""
+msgstr "hari ke - saat ini"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "days to - previous"
-msgstr ""
+msgstr "hari ke - sebelumnya"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "expected - current"
-msgstr ""
+msgstr "perkiraan - saat ini"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "expected - previous"
-msgstr ""
+msgstr "perkiraan - sebelumnya"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -537,7 +537,7 @@ msgstr "periode terakhir"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "list opps"
-msgstr ""
+msgstr "list opps"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -554,21 +554,21 @@ msgstr "semenjak periode terakhir"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "to campaign"
-msgstr ""
+msgstr "untuk kampanye"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "to close"
-msgstr ""
+msgstr "untuk ditutup"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top cities"
-msgstr ""
+msgstr "kota-kota terbaik"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -576,28 +576,28 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top countries"
-msgstr ""
+msgstr "negara-negara terbaik"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top lost reasons"
-msgstr ""
+msgstr "alasan gagal tertinggi"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top medium"
-msgstr ""
+msgstr "top medium"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top mediums"
-msgstr ""
+msgstr "top mediums"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
@@ -605,39 +605,39 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top sales team"
-msgstr ""
+msgstr "tim sales terbaik"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top salespeople"
-msgstr ""
+msgstr "salespeople terbaik"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top salesperson"
-msgstr ""
+msgstr "salesperson terbaik"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top source"
-msgstr ""
+msgstr "sumber terbaik"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top sources"
-msgstr ""
+msgstr "sumber-sumber terbaik"
 
 #. module: spreadsheet_dashboard_crm
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top tags"
-msgstr ""
+msgstr "tag-tag terbaik"

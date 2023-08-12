@@ -1366,7 +1366,8 @@ msgstr ""
 #, python-format
 msgid "Choose a product name.<br/><i>(e.g. eLearning Access)</i>"
 msgstr ""
-"Elija un nombre para su producto.<br/><i>(p. ej., Acceso al eLearning)</i>"
+"Elija un nombre para su producto.<br/><i>(por ejemplo, acceso a "
+"eLearning)</i>"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__sms_method
@@ -1378,7 +1379,7 @@ msgid ""
 msgstr ""
 "Elija el método de envío por SMS:\n"
 "SMS: SMS masivos\n"
-"Publicar como mensaje: documento de inicio de sesión\n"
+"Publicar como mensaje: registrar en el documento\n"
 "Publicar como nota: SMS masivos con archivos"
 
 #. module: sale_subscription

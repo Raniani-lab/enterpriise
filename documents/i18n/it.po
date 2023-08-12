@@ -595,7 +595,7 @@ msgstr "Aggiungi file"
 #. module: documents
 #: model:ir.actions.act_window,name:documents.action_url_form
 msgid "Add Url"
-msgstr "Aggiungere URL"
+msgstr "Aggiungi URL"
 
 #. module: documents
 #. odoo-javascript
@@ -792,6 +792,9 @@ msgid ""
 "class=\"o_folder_description_alias\"><strong>inbox-financial</strong> email "
 "alias</span>."
 msgstr ""
+"Automatizza la posta in arrivo utilizzando documenti scansionati o le e-mail"
+" inviate <span class=\"o_folder_description_alias\">all'alias e-mail "
+"<strong>inbox-finanza</strong></span>."
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__available_rule_ids
@@ -1048,7 +1051,7 @@ msgstr "Elimina"
 #. module: documents
 #: model:ir.actions.act_window,name:documents.documents_folder_deletion_wizard_action
 msgid "Delete Confirmation"
-msgstr "Elimina conferma"
+msgstr "Conferma eliminazione"
 
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_internal_deprecate
@@ -1142,7 +1145,7 @@ msgstr "Richiesta Documento: %s Caricato il: %s"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__has_write_access
 msgid "Document User Upload Rights"
-msgstr ""
+msgstr "Diritti utente caricamento documento"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_workflow_action
@@ -1797,7 +1800,7 @@ msgstr "Sposta nello spazio di lavoro"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_folder_deletion_wizard_view_form
 msgid "Move to parent workspace"
-msgstr ""
+msgstr "Sposta nell'area di lavoro principale"
 
 #. module: documents
 #. odoo-javascript
@@ -2009,7 +2012,7 @@ msgstr "Solo Documenti Propri"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__user_specific_write
 msgid "Own Documents Only (Write)"
-msgstr ""
+msgstr "Solo documenti personali (Scrivi)"
 
 #. module: documents
 #: model:ir.model.constraint,message:documents.constraint_documents_folder_check_user_specific
@@ -2079,7 +2082,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/search/documents_search_panel.js:0
 #, python-format
 msgid "Partial transfer"
-msgstr ""
+msgstr "Trasferimento parziale"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_contact
@@ -2187,7 +2190,7 @@ msgstr "Richiedere un documento"
 #. module: documents
 #: model:ir.actions.act_window,name:documents.action_request_form
 msgid "Request a file"
-msgstr "Richiedere un file"
+msgstr "Richiedi un file"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
@@ -2368,7 +2371,7 @@ msgstr "Condividi file selezionati"
 #: code:addons/documents/models/share.py:0
 #, python-format
 msgid "Share selected workspace"
-msgstr ""
+msgstr "Condividi lo spazio di lavoro selezionato"
 
 #. module: documents
 #. odoo-javascript
@@ -2630,7 +2633,7 @@ msgstr "Miniatura"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__thumbnail_status
 msgid "Thumbnail Status"
-msgstr ""
+msgstr "Stato anteprima"
 
 #. module: documents
 #. odoo-javascript
@@ -2729,6 +2732,8 @@ msgid ""
 "Upload <span class=\"fw-normal\">a file or</span> drag <span class=\"fw-"
 "normal\">it here.</span>"
 msgstr ""
+"Carica un <span class=\"fw-normal\">file</span> o trascinalo <span "
+"class=\"fw-normal\">qui.</span>"
 
 #. module: documents
 #. odoo-javascript
@@ -2745,14 +2750,14 @@ msgstr "Caricare per email"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "Upload by email"
-msgstr ""
+msgstr "Caricato via e-mail"
 
 #. module: documents
 #. odoo-python
 #: code:addons/documents/models/mail_activity.py:0
 #, python-format
 msgid "Upload file request"
-msgstr ""
+msgstr "Carica richiesta file"
 
 #. module: documents
 #: model:ir.model,name:documents.model_res_users
@@ -2816,7 +2821,7 @@ msgstr "Settimane"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_folder_deletion_wizard_view_form
 msgid "What do you want to do with the files in the workspace?"
-msgstr ""
+msgstr "Cosa vuoi fare con i file presenti nell'area di lavoro?"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.workflow_rule_action
@@ -2893,6 +2898,8 @@ msgstr "Impossibile creare cartelle ricorsive."
 #, python-format
 msgid "You don't have the right to move documents to that workspace."
 msgstr ""
+"Non sei in possesso dei diritti per spostare i documenti in questo spazio di"
+" lavoro."
 
 #. module: documents
 #. odoo-javascript
@@ -2900,6 +2907,8 @@ msgstr ""
 #, python-format
 msgid "You don't have the rights to move documents to that workspace"
 msgstr ""
+"Non sei in possesso dei diritti per spostare i documenti in questo spazio di"
+" lavoro"
 
 #. module: documents
 #. odoo-javascript
@@ -2955,7 +2964,7 @@ msgstr "scarica"
 #: code:addons/documents/static/src/views/documents_controller_mixin.xml:0
 #, python-format
 msgid "dropdown-item"
-msgstr ""
+msgstr "dropdown-item"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
@@ -2999,14 +3008,14 @@ msgstr "es. https://www.youtube.com/watch?v=CP96yVnXNrY"
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "fa fa-folder text-odoo"
-msgstr ""
+msgstr "fa fa-folder text-odoo"
 
 #. module: documents
 #. odoo-javascript
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "folder_id"
-msgstr ""
+msgstr "folder_id"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__is_readonly_model
@@ -3025,14 +3034,14 @@ msgstr "nome"
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "owner_id"
-msgstr ""
+msgstr "owner_id"
 
 #. module: documents
 #. odoo-javascript
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "partner_id"
-msgstr ""
+msgstr "partner_id"
 
 #. module: documents
 #. odoo-javascript
@@ -3067,7 +3076,7 @@ msgstr "condiviso da"
 #: code:addons/documents/static/src/views/hooks.js:0
 #, python-format
 msgid "status code: %s, message: %s"
-msgstr ""
+msgstr "codice stato: %s, messaggio: %s"
 
 #. module: documents
 #. odoo-javascript

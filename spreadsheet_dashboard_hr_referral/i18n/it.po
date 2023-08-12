@@ -29,7 +29,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Applications"
-msgstr "Applicazioni"
+msgstr "Candidature"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript

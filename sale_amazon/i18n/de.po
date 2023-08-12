@@ -64,7 +64,7 @@ msgstr "API-Kennung"
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__aws_access_key
 msgid "AWS Access Key"
-msgstr "AWS-Zugangsschlüssel"
+msgstr "AWS-Zugriffsschlüssel"
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__aws_secret_key

@@ -27,6 +27,7 @@ msgstr ""
 #, python-format
 msgid "%s other task(s) for the same employee at the same time."
 msgstr ""
+"%s altra/e attività per lo stesso dipendente, nello stesso periodo di tempo."
 
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_form
@@ -76,6 +77,8 @@ msgstr "<i class=\"fa fa-long-arrow-right\" title=\"Freccia\"/>"
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_gantt
 msgid "<span class=\"fst-italic text-muted\"><i class=\"fa fa-lock\"/> Private</span>"
 msgstr ""
+"<span class=\"fst-italic text-muted\"><i class=\"fa fa-lock\"/> "
+"Privato</span>"
 
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_gantt
@@ -91,12 +94,12 @@ msgstr "<strong>Kunde — </strong>"
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_gantt
 msgid "<strong>Milestone — </strong>"
-msgstr ""
+msgstr "<strong>Milestone — </strong>"
 
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_project_view_gantt
 msgid "<strong>Project Manager — </strong>"
-msgstr ""
+msgstr "<strong>Project Manager — </strong>"
 
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_gantt
@@ -198,7 +201,7 @@ msgstr "ID"
 #: code:addons/project_enterprise/static/src/js/task_gantt_utils.js:0
 #, python-format
 msgid "Invalid scale interval"
-msgstr ""
+msgstr "Intervallo di scala non valido"
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_line_wizard____last_update
@@ -239,7 +242,7 @@ msgstr "Dispositivo mobile"
 #: code:addons/project_enterprise/wizard/task_confirm_schedule_wizard.py:0
 #, python-format
 msgid "No task has been scheduled in the future."
-msgstr ""
+msgstr "Non è stata pianificata nessuna attività futura."
 
 #. module: project_enterprise
 #. odoo-python
@@ -249,6 +252,8 @@ msgid ""
 "One parameter is missing to use this method. You should give a start and end"
 " dates."
 msgstr ""
+"Manca un paramentro per utilizzare questo metodo. Inserisci una data di "
+"inizio e di fine."
 
 #. module: project_enterprise
 #. odoo-python
@@ -264,7 +269,7 @@ msgstr ""
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__overlap_warning
 msgid "Overlap Warning"
-msgstr ""
+msgstr "Avviso sovrapposizione"
 
 #. module: project_enterprise
 #. odoo-python
@@ -323,22 +328,22 @@ msgstr "Salva"
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_line_wizard__schedule_task
 msgid "Schedule Task"
-msgstr ""
+msgstr "Pianifica attività"
 
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.view_task_confirm_schedule_wizard_form
 msgid "Schedule Tasks"
-msgstr ""
+msgstr "Pianifica attività"
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_wizard__selected_line_count
 msgid "Selected Line Count"
-msgstr ""
+msgstr "Numero di righe selezionate"
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_wizard__show_warnings
 msgid "Show Warnings"
-msgstr ""
+msgstr "Mostra avvisi"
 
 #. module: project_enterprise
 #. odoo-python
@@ -348,6 +353,8 @@ msgid ""
 "Some tasks weren't planned because the closest available starting date was "
 "too far ahead in the future"
 msgstr ""
+"Alcune attivita non sono state pianificate in quanto la data di inizio "
+"disponibile più vicina era troppo lontana"
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_line_wizard__date_begin
@@ -374,12 +381,12 @@ msgstr "Lavoro"
 #. module: project_enterprise
 #: model:ir.model,name:project_enterprise.model_project_task_confirm_schedule_line_wizard
 msgid "Task confirm schedule line wizard"
-msgstr ""
+msgstr "Procedura guidata riga conferma pianificazione attività"
 
 #. module: project_enterprise
 #: model:ir.model,name:project_enterprise.model_project_task_confirm_schedule_wizard
 msgid "Task confirm schedule wizard"
-msgstr ""
+msgstr "Procedura guidata conferma pianificazione attività"
 
 #. module: project_enterprise
 #: model:ir.model,name:project_enterprise.model_report_project_task_user
@@ -398,11 +405,14 @@ msgid ""
 "The following tasks have not been scheduled because the corresponding\n"
 "                        employees are unavailable. The next possible dates for these tasks are:"
 msgstr ""
+"Le seguenti attività non sono state pianificate per i dipendenti\n"
+"                        corrispondenti non sono disponibili. Le prossime date disponibili per queste attività sono:"
 
 #. module: project_enterprise
 #: model:ir.model.constraint,message:project_enterprise.constraint_project_task_planned_dates_check
 msgid "The planned start date must be before the planned end date."
 msgstr ""
+"La data di inizio pianificata deve precedere la data di fine pianificata."
 
 #. module: project_enterprise
 #. odoo-python
@@ -433,6 +443,8 @@ msgid ""
 "This employee does not have a running contract during the selected period.\n"
 "The working hours of the company were used as a reference instead."
 msgstr ""
+"Il dipendente non è in possesso di un contratto in corso nel periodo selezionato.\n"
+"L'orario di lavoro dell'azienda è stato utilizzato come punto di riferimento."
 
 #. module: project_enterprise
 #. odoo-python
@@ -441,6 +453,7 @@ msgstr ""
 msgid ""
 "This user isn't expected to have task during this period. Planned hours :"
 msgstr ""
+"Non sono previste attivittà per l'utente in questo periodo. Ore pianificate:"
 
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.res_config_settings_view_form

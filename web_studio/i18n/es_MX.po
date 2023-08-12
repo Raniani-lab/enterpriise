@@ -3635,7 +3635,7 @@ msgstr "Mostrar elementos invisibles"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Show by default"
-msgstr "Mostrar predeterminado"
+msgstr "Mostrar de manera predeterminada"
 
 #. module: web_studio
 #. odoo-javascript

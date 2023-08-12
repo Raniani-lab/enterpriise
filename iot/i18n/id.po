@@ -597,7 +597,7 @@ msgstr "Timbangan"
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__connection__serial
 msgid "Serial"
-msgstr ""
+msgstr "Seri"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__connected

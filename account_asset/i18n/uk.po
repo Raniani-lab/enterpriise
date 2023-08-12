@@ -2157,7 +2157,7 @@ msgstr ""
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "You can't re-evaluate the asset before the lock date."
-msgstr ""
+msgstr "Ви не можете переоцінити актив до дати блокування."
 
 #. module: account_asset
 #. odoo-python
@@ -2212,7 +2212,7 @@ msgstr ""
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "You cannot dispose of an asset before the lock date."
-msgstr ""
+msgstr "Ви не можете ліквідувати актив до дати блокування."
 
 #. module: account_asset
 #. odoo-python
@@ -2234,7 +2234,7 @@ msgstr "Ви не можете відновити на дату, що дорів
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "You cannot select the same account as the Depreciation Account"
-msgstr ""
+msgstr "Ви не можете вибрати той самий рахунок, що й рахунок амортизації"
 
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_balance

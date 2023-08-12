@@ -39,12 +39,12 @@ msgstr "Batal"
 #. module: mrp_workorder_iot
 #: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__clomo
 msgid "Close MO"
-msgstr ""
+msgstr "Tutup MO"
 
 #. module: mrp_workorder_iot
 #: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__clowo
 msgid "Close WO"
-msgstr ""
+msgstr "Tutup SPK"
 
 #. module: mrp_workorder_iot
 #: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__create_uid
@@ -69,7 +69,7 @@ msgstr "Nama Tampilan"
 #. module: mrp_workorder_iot
 #: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__finish
 msgid "Finish"
-msgstr ""
+msgstr "Selesai"
 
 #. module: mrp_workorder_iot
 #: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__id
@@ -90,7 +90,7 @@ msgstr "Pemicu IOT"
 #: model_terms:ir.ui.view,arch_db:mrp_workorder_iot.iot_device_view_form
 #: model_terms:ir.ui.view,arch_db:mrp_workorder_iot.mrp_workcenter_view_form_iot
 msgid "IoT Triggers"
-msgstr ""
+msgstr "Pemicu IoT"
 
 #. module: mrp_workorder_iot
 #: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__key
@@ -132,7 +132,7 @@ msgstr "Jeda"
 #: code:addons/mrp_workorder_iot/static/src/pedal_status_button/pedal_status_button.xml:0
 #, python-format
 msgid "Pedal Status"
-msgstr ""
+msgstr "Status Pedal"
 
 #. module: mrp_workorder_iot
 #: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__prev
@@ -152,7 +152,7 @@ msgstr "Cetak Label"
 #. module: mrp_workorder_iot
 #: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__print-op
 msgid "Print Operation"
-msgstr ""
+msgstr "Cetak Operasi"
 
 #. module: mrp_workorder_iot
 #: model:ir.model,name:mrp_workorder_iot.model_quality_check
@@ -182,7 +182,7 @@ msgstr "Lewati"
 #. module: mrp_workorder_iot
 #: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__picture
 msgid "Take Picture"
-msgstr ""
+msgstr "Ambil Gambar"
 
 #. module: mrp_workorder_iot
 #: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_device__trigger_ids
@@ -192,7 +192,7 @@ msgstr "Pemicu"
 #. module: mrp_workorder_iot
 #: model:ir.model.fields,field_description:mrp_workorder_iot.field_mrp_workcenter__trigger_ids
 msgid "Triggers"
-msgstr ""
+msgstr "Picu"
 
 #. module: mrp_workorder_iot
 #: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__validate

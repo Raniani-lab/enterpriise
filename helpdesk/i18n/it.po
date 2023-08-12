@@ -1008,7 +1008,7 @@ msgstr "Chiudi il ticket"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.tickets_followup
 msgid "Close ticket"
-msgstr "Chiudi segnalazione"
+msgstr "Chiudi ticket"
 
 #. module: helpdesk
 #. odoo-python

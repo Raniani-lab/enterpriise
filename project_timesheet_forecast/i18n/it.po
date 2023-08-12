@@ -42,7 +42,7 @@ msgstr "Costo ore assegnate"
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,help:project_timesheet_forecast.field_planning_analysis_report__remaining_hours
 msgid "Allocated hours minus the effective hours."
-msgstr ""
+msgstr "Ore assegnate meno ore effettive."
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_planning_slot__allow_timesheets
@@ -90,7 +90,7 @@ msgstr "Ore effettive"
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_planning_analysis_report__effective_hours_cost
 msgid "Effective Hours Cost"
-msgstr ""
+msgstr "Costo ore effettive"
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__employee_id
@@ -106,7 +106,7 @@ msgstr "Codificare UdM in giorni"
 #. module: project_timesheet_forecast
 #: model:ir.actions.server,name:project_timesheet_forecast.planning_slot_generate_timesheet_action
 msgid "Generate Timesheets"
-msgstr ""
+msgstr "Genera fogli ore"
 
 #. module: project_timesheet_forecast
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
@@ -179,6 +179,8 @@ msgid ""
 "Number of hours the employee recorded on their Timesheetes for this task "
 "(and its sub-tasks) for the period of this shift."
 msgstr ""
+"Numero di ore che il dipendente ha registrato sui propri fogli ore per "
+"quest'attività (e sub-attività) per il periodo corrispondente al turno."
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__planned_hours
@@ -256,7 +258,7 @@ msgstr "Somma delle ore pianificate"
 #: code:addons/project_timesheet_forecast/models/project_forecast.py:0
 #, python-format
 msgid "The timesheet entries have successfully been generated."
-msgstr ""
+msgstr "Le voci del foglio ore sono state generate con successo."
 
 #. module: project_timesheet_forecast
 #: code:addons/project_timesheet_forecast/models/project_forecast.py:0
@@ -272,6 +274,7 @@ msgstr ""
 msgid ""
 "This project isn't expected to have slot during this period. Planned hours :"
 msgstr ""
+"Non sono previsti slot per il progetto in questo periodo. Ore pianificate:"
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_planning_slot__timesheet_ids
@@ -315,6 +318,8 @@ msgid ""
 "Track the progress of your projects by comparing the hours initially planned"
 " with the effective hours recorded"
 msgstr ""
+"Monitora l'avanzamento dei tuoi progetti confrontando le ore pianificate "
+"inizialmente con le ore effettive registrate"
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__line_type

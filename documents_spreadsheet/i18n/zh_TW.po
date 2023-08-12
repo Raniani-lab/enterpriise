@@ -47,6 +47,8 @@ msgid ""
 "<strong class=\"o_form_label\">Spreadsheets</strong>\n"
 "                            <span class=\"fa fa-lg fa-building-o ms-1\" title=\"Values set here are company-specific.\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\" role=\"img\"/>"
 msgstr ""
+"<strong class=\"o_form_label\">試算表</strong>\n"
+"                            <span class=\"fa fa-lg fa-building-o ms-1\" title=\"此處設定的值是特定於每間公司的。\" aria-label=\"此處設定的值是特定於每間公司的。\" groups=\"base.group_multi_company\" role=\"img\"/>"
 
 #. module: documents_spreadsheet
 #: model:ir.model.constraint,message:documents_spreadsheet.constraint_spreadsheet_contributor_spreadsheet_user_unique

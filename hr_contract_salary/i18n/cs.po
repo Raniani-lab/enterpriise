@@ -3,13 +3,13 @@
 # 	* hr_contract_salary
 # 
 # Translators:
+# Michal Veselý <michal@veselyberanek.net>, 2022
 # Ladislav Tomm <tomm@helemik.cz>, 2022
 # Jaroslav Helemik Nemec <nemec@helemik.cz>, 2022
 # Jan Horzinka <jan.horzinka@centrum.cz>, 2022
-# Michal Veselý <michal@veselyberanek.net>, 2022
 # Martin Trigaux, 2022
-# karolína schusterová <karolina.schusterova@vdp.sk>, 2022
 # Rastislav Brencic <rastislav.brencic@azet.sk>, 2022
+# karolína schusterová <karolina.schusterova@vdp.sk>, 2022
 # Jiří Podhorecký, 2022
 # Jakub Smolka, 2023
 # 
@@ -30,7 +30,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__signatures_count
 msgid "# Signatures"
-msgstr "# Podpisy"
+msgstr "# Podpisů"
 
 #. module: hr_contract_salary
 #: model:mail.template,body_html:hr_contract_salary.mail_template_send_offer
@@ -94,7 +94,7 @@ msgstr "<span class=\"o_stat_text\">Smlouvy</span>"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_view_form
 msgid "<span class=\"o_stat_text\">Reviews</span>"
-msgstr "<span class=\"o_stat_text\">Recenze</span>"
+msgstr "<span class=\"o_stat_text\">Shlédnutí</span>"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package_thank_you
@@ -109,7 +109,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_view_form
 msgid "<span>/ month</span>"
-msgstr "<span>/ měsíc</span>"
+msgstr "<span>/ měsíčně</span>"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_view_form
@@ -119,7 +119,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.constraint,message:hr_contract_salary.constraint_hr_contract_salary_advantage_required_fold_res_field_id
 msgid "A folded field is required"
-msgstr "Skládané pole je povinné"
+msgstr "Schované pole je povinné"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_applicant__access_token_end_date
@@ -169,23 +169,23 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume__advantage_ids
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_advantage_view_form
 msgid "Advantage"
-msgstr "Výhoda"
+msgstr "Benefit"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__res_field_id
 msgid "Advantage Field"
-msgstr "Výhodné pole"
+msgstr "Pole benefitu"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__advantage_type_id
 msgid "Advantage Type"
-msgstr "Typ výhody"
+msgstr "Typ benefitu"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__uom
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume__uom
 msgid "Advantage Unit of Measure"
-msgstr "Výhodné měrné jednotky"
+msgstr "Měrná jednotka benefitu"
 
 #. module: hr_contract_salary
 #: model:ir.actions.act_window,name:hr_contract_salary.hr_contract_advantage_action
@@ -201,7 +201,7 @@ msgstr "Vždy vybráno"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_employee_report__final_yearly_costs
 msgid "Annual Employee Budget"
-msgstr "Roční rozpočet zaměstnanců"
+msgstr "Roční rozpočet zaměstnance"
 
 #. module: hr_contract_salary
 #. odoo-python
@@ -215,7 +215,7 @@ msgstr "Roční náklady zaměstnavatele"
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__applicant_id
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__applicant_id
 msgid "Applicant"
-msgstr "Žadatel"
+msgstr "Aplikant"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info__applies_on
@@ -232,7 +232,7 @@ msgstr "Aplikovat nyní"
 #: model:ir.actions.server,name:hr_contract_salary.ir_cron_clean_redundant_salary_data_ir_actions_server
 #: model:ir.cron,cron_name:hr_contract_salary.ir_cron_clean_redundant_salary_data
 msgid "Archive/Delete redundant generated salary data"
-msgstr "Archivovat / mazat nadbytečně generované údaje o platu"
+msgstr "Archivovat / smazat zbytečná platová data"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_resume_view_search
@@ -355,12 +355,12 @@ msgstr "Počáteční datum smlouvy"
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_history__default_contract_id
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_job__default_contract_id
 msgid "Contract Template"
-msgstr "Šablona smlouvy"
+msgstr "Vzor smlouvy"
 
 #. module: hr_contract_salary
 #: model:ir.actions.act_window,name:hr_contract_salary.action_hr_contract_templates
 msgid "Contract Templates"
-msgstr "Šablony smlouvy"
+msgstr "Vzory smluv"
 
 #. module: hr_contract_salary
 #. odoo-python
@@ -373,7 +373,7 @@ msgstr "Typ smlouvy"
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__contract_update_template_id
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_history__contract_update_template_id
 msgid "Contract Update Document Template"
-msgstr "Šablona dokumentu s aktualizací smlouvy"
+msgstr "Vzor dodatku ke smlouvě"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_resume__value_type__contract
@@ -383,12 +383,12 @@ msgstr "Hodnota smlouvy"
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_hr_contract_employee_report
 msgid "Contract and Employee Analysis Report"
-msgstr "Zpráva o analýze smluv a zaměstnanců"
+msgstr "Analýza smluv a zaměstnanců"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_salary_advantage__res_field_id
 msgid "Contract field linked to this advantage"
-msgstr "Pole smlouvy spojené s touto výhodou"
+msgstr "Pole smlouvy spojené s tímto benefitem"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_salary_advantage__cost_res_field_id
@@ -396,33 +396,33 @@ msgid ""
 "Contract field linked to this advantage cost. If not set, the advantage "
 "won't be taken into account when computing the employee budget."
 msgstr ""
-"Pole smlouvy spojené s touto výhodou nákladů. Pokud není nastaveno, výhoda "
-"nebude zohledněna při výpočtu zaměstnaneckého rozpočtu."
+"Pole smlouvy spojené s nákladem na tento benefit. Pokud není nastaveno, "
+"benefit nebude zohledněn při výpočtu rozpočtu na zaměstnance."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_salary_advantage__fold_res_field_id
 msgid "Contract field used to fold this advantage."
-msgstr "Tuto výhodu sklopilo pole smlouvy."
+msgstr "Pole na smlouvě, které slouží k složení tohoto benefitu."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_salary_advantage__manual_res_field_id
 msgid "Contract field used to manually encode an advantage value."
-msgstr "Pole smlouvy slouží k ručnímu zakódování hodnoty výhody."
+msgstr "Pole na smlouvě, které slouží k manuálním zanesení hodnoty benefitu."
 
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_hr_contract_history
 msgid "Contract history"
-msgstr "Historie smlouvy"
+msgstr "Historie smluv"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__activity_creation__countersigned
 msgid "Contract is countersigned"
-msgstr "Smlouva je spolupodepsána"
+msgstr "Smlouva je podepsána"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_view_form
 msgid "Contracts Reviews"
-msgstr "Recenze smluv"
+msgstr "Revize smluv"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__cost_res_field_id
@@ -437,13 +437,13 @@ msgstr "Název nákladového pole"
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_personal_info__dropdown_selection__country
 msgid "Countries"
-msgstr "Státy"
+msgstr "Země"
 
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_country
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__country_id
 msgid "Country"
-msgstr "Stát"
+msgstr "Země"
 
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_country_of_birth
@@ -606,7 +606,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__display_type__dropdown
 msgid "Dropdown"
-msgstr "Stahovací nabídka"
+msgstr "Vysouvací nabídka"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__display_type__dropdown-group
@@ -617,12 +617,12 @@ msgstr ""
 #: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_email
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_personal_info__display_type__email
 msgid "Email"
-msgstr "E-mail "
+msgstr "Email "
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__email_to
 msgid "Email To"
-msgstr "E-mail komu"
+msgstr "Recipient emailu:"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_salary_advantage__sign_copy_partner_id
@@ -639,14 +639,14 @@ msgstr "Zaměstnanec"
 #: model:ir.model,name:hr_contract_salary.model_hr_contract
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__employee_contract_id
 msgid "Employee Contract"
-msgstr "Smlouva zaměstnance"
+msgstr "Zaměstnanecká smlouva"
 
 #. module: hr_contract_salary
 #. odoo-python
 #: code:addons/hr_contract_salary/controllers/main.py:0
 #, python-format
 msgid "Employee Name"
-msgstr "jméno zaměstnance"
+msgstr "Jméno zaměstnance"
 
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_image_1920
@@ -688,7 +688,7 @@ msgstr "Žena"
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__field
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info__field
 msgid "Field Name"
-msgstr "Pole Název"
+msgstr "Název pole"
 
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_study_field
@@ -699,27 +699,27 @@ msgstr "Obor studia"
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume__fixed_value
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_resume__value_type__fixed
 msgid "Fixed Value"
-msgstr "Extra čas vypnutý"
+msgstr "Fixní hodnota"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__fold_field
 msgid "Fold Field Name"
-msgstr "Název pole skládání"
+msgstr "Název skládacího pole"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__fold_label
 msgid "Fold Label"
-msgstr "Přeložte štítek"
+msgstr "Štítek skládacího pole"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__fold_res_field_id
 msgid "Fold Res Field"
-msgstr "Fold res pole"
+msgstr "Zdroj skládacího pole"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__folded
 msgid "Folded"
-msgstr "složený"
+msgstr "Složeno"
 
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_gender
@@ -742,7 +742,7 @@ msgstr "Vytvořit odkaz na simulaci"
 #: model:ir.actions.act_window,name:hr_contract_salary.generate_simulation_link_action
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.generate_simulation_link_view_form
 msgid "Generate a Simulation Link"
-msgstr "Vygenerujte odkaz na simulaci"
+msgstr "Vytvořit odkaz na simulaci"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage_value__color__green
@@ -792,7 +792,7 @@ msgstr "Při kontrole skrýt osobní údaje dětí."
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_salary_advantage__hide_description
 msgid "Hide the description if the advantage is not taken."
-msgstr "Pokud výhodu nevyužijete, skryjte popis."
+msgstr "Skrýt popis, pokud benefit není využit."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__id
@@ -820,18 +820,18 @@ msgstr "Obrázek"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume__impacts_monthly_total
 msgid "Impacts Monthly Total"
-msgstr "Dopady Měsíčně celkem"
+msgstr "Ovlivní celkovou měsíční částku"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__impacts_net_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info__impacts_net_salary
 msgid "Impacts Net Salary"
-msgstr "Dopad na čistý plat"
+msgstr "Ovlivní čistou mzdu"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info__info_type_id
 msgid "Info Type"
-msgstr "Informační typ"
+msgstr "Typ informace"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_personal_info_view_form
@@ -852,7 +852,7 @@ msgstr "Je požadováno"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__is_origin_contract_template
 msgid "Is origin contract a contract template ?"
-msgstr "Je původní smlouva šablonou smlouvy?"
+msgstr "Je původní smlouva vzorem smlouvy?"
 
 #. module: hr_contract_salary
 #. odoo-python
@@ -869,7 +869,7 @@ msgstr "Pracovní pozice"
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__job_title
 #, python-format
 msgid "Job Title"
-msgstr "Pracovní pozice"
+msgstr "Název pozice"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_personal_info__dropdown_selection__lang
@@ -913,7 +913,7 @@ msgstr "Naposledy upraveno od"
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume__write_date
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume_category__write_date
 msgid "Last Updated on"
-msgstr "Naposled upraveno"
+msgstr "Naposledy upraveno"
 
 #. module: hr_contract_salary
 #: model_terms:ir.actions.act_window,help:hr_contract_salary.action_hr_contract_templates
@@ -933,27 +933,27 @@ msgstr "Hlavní panel"
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info.value,name:hr_contract_salary.hr_contract_salary_personal_info_gender_male
 msgid "Male"
-msgstr "Můž"
+msgstr "Muž"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__manual_field
 msgid "Manual Field Name"
-msgstr "Název ručního pole"
+msgstr "Název ručně vyplňovaného pole"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__display_type__manual
 msgid "Manual Input"
-msgstr "Ruční zadání"
+msgstr "Manuální vyplnění"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__manual_res_field_id
 msgid "Manual Res Field"
-msgstr "Pole pro ruční res"
+msgstr "Zdroj manuálního pole"
 
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info.value,name:hr_contract_salary.hr_contract_salary_personal_info_certificate_master
 msgid "Master"
-msgstr "Mistr"
+msgstr "Magistr"
 
 #. module: hr_contract_salary
 #. odoo-python
@@ -990,7 +990,7 @@ msgstr "Hrubý měsíční plat"
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_resume__value_type__monthly_total
 msgid "Monthly Total"
-msgstr "Celkem za měsíc"
+msgstr "Měsíčně celkem"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_history__reference_monthly_wage
@@ -1029,13 +1029,13 @@ msgstr "Národnost"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package
 msgid "Net calculation"
-msgstr "Výpočet sítě"
+msgstr "Čistá hodnota"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__sign_template_id
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_history__sign_template_id
 msgid "New Contract Document Template"
-msgstr "Nová šablona dokumentu smlouvy"
+msgstr "Nový vzor smlouvy"
 
 #. module: hr_contract_salary
 #. odoo-python
@@ -1058,14 +1058,14 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.actions.act_window,help:hr_contract_salary.action_hr_contract_templates
 msgid "No Template found"
-msgstr "Nebyla nalezena žádná šablona"
+msgstr "Nebyl nalezen žádný vzor"
 
 #. module: hr_contract_salary
 #. odoo-python
 #: code:addons/hr_contract_salary/models/hr_contract.py:0
 #, python-format
 msgid "No private address defined on the employee!"
-msgstr "Na zaměstnance není definována žádná soukromá adresa!"
+msgstr "Na zaměstnanci není definována žádná soukromá adresa!"
 
 #. module: hr_contract_salary
 #. odoo-python
@@ -1075,8 +1075,8 @@ msgid ""
 "No signature template defined on the contract. Please contact the HR "
 "responsible."
 msgstr ""
-"Ve smlouvě není definována žádná podpisová šablona. Obraťte se na "
-"odpovědného HR."
+"Ve smlouvě není definován žádný podpisový vzor. Obraťte se na odpovědného "
+"HR."
 
 #. module: hr_contract_salary
 #. odoo-javascript
@@ -1145,18 +1145,18 @@ msgstr "Původní odkaz"
 #: model:hr.contract.salary.personal.info.value,name:hr_contract_salary.hr_contract_salary_personal_info_certificate_other
 #: model:hr.contract.salary.personal.info.value,name:hr_contract_salary.hr_contract_salary_personal_info_gender_other
 msgid "Other"
-msgstr "jiný"
+msgstr "Jiné"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info__parent_id
 msgid "Parent"
-msgstr "Nadřazený"
+msgstr "Rodič"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__uom__percent
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_resume__uom__percent
 msgid "Percent"
-msgstr "Procenta"
+msgstr "Procento"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage_type__periodicity
@@ -1206,7 +1206,7 @@ msgstr "Místo narození"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info__placeholder
 msgid "Placeholder"
-msgstr "Zástupce"
+msgstr "Ukázka"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info__position
@@ -1221,7 +1221,7 @@ msgstr "Předchozí smlouva"
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_personal_info__applies_on__address
 msgid "Private Home Address"
-msgstr "Adresa soukromého domu"
+msgstr "Soukromá adresa bydliště"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_applicant__proposed_contracts
@@ -1238,7 +1238,7 @@ msgstr "Počet navrhovaných smluv"
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_personal_info__display_type__radio
 msgid "Radio"
-msgstr "Rádio"
+msgstr "Přepínač"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__display_type__radio
@@ -1281,13 +1281,13 @@ msgstr "Pole požadovaných dokumentů"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info__res_model
 msgid "Res Model"
-msgstr "Res model"
+msgstr "Zdrojový model"
 
 #. module: hr_contract_salary
 #: model:ir.actions.act_window,name:hr_contract_salary.hr_contract_salary_resume_action
 #: model:ir.ui.menu,name:hr_contract_salary.salary_package_resume
 msgid "Resume"
-msgstr "Položky"
+msgstr "Shrnutí"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package_next_step_button
@@ -1298,19 +1298,19 @@ msgstr "Zkontrolovat smlouvu & amp; podepsat"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_payroll_structure_type__salary_advantage_ids
 msgid "Salary Advantage"
-msgstr "Výhoda platu"
+msgstr "Mzdové benefity"
 
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_hr_contract_salary_advantage
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_advantage_view_form
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_advantage_view_tree
 msgid "Salary Package Advantage"
-msgstr "Výhoda platového balíka"
+msgstr "Benefity platového balíčku"
 
 #. module: hr_contract_salary
 #: model:ir.ui.menu,name:hr_contract_salary.salary_package_menu
 msgid "Salary Package Configurator"
-msgstr "Konfigurátor platových balíčků"
+msgstr "Konfigurátor platového balíčku"
 
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_hr_contract_salary_personal_info
@@ -1319,27 +1319,27 @@ msgstr "Konfigurátor platových balíčků"
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_resume_view_form
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_resume_view_tree
 msgid "Salary Package Personal Info"
-msgstr "Platový balík Osobné informácie"
+msgstr "Osobní informace platového balíčku"
 
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_hr_contract_salary_personal_info_type
 msgid "Salary Package Personal Info Type"
-msgstr "Typ osobnej informácie o platovom balíku"
+msgstr "Typ osobní informace platového balíčku"
 
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_hr_contract_salary_personal_info_value
 msgid "Salary Package Personal Info Value"
-msgstr "Hodnota osobního údaje o platovém balíčku"
+msgstr "Detaily osobní informace platového balíčku"
 
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_hr_contract_salary_resume
 msgid "Salary Package Resume"
-msgstr "Obnovení platového balíčku"
+msgstr "Položky platového balíčku"
 
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_hr_contract_salary_resume_category
 msgid "Salary Package Resume Category"
-msgstr "Kategória obnovenia platového balíka"
+msgstr "Kategorie položek platového balíčku"
 
 #. module: hr_contract_salary
 #. odoo-python
@@ -1354,7 +1354,7 @@ msgstr "Shrnutí platového balíku"
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info__structure_type_id
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume__structure_type_id
 msgid "Salary Structure Type"
-msgstr "Typ struktury platu"
+msgstr "Typ platové struktury"
 
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_study_school
@@ -1379,7 +1379,7 @@ msgstr "Výběr"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info__dropdown_selection
 msgid "Selection Nature"
-msgstr "Výber prírody"
+msgstr "Způsob výběru"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.generate_simulation_link_view_form
@@ -1421,7 +1421,7 @@ msgstr "Zobrazit <i class=\"fa fa-chevron-down\"/>"
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_personal_info__position__right
 msgid "Side Panel"
-msgstr "Bočný panel"
+msgstr "Boční panel"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__sign_frenquency
@@ -1456,7 +1456,7 @@ msgstr "Posuvník Max"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__slider_min
 msgid "Slider Min"
-msgstr "Posuvník min"
+msgstr "Posuvník Min"
 
 #. module: hr_contract_salary
 #. odoo-javascript
@@ -1469,12 +1469,12 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_personal_info__dropdown_selection__specific
 msgid "Specific Values"
-msgstr "Konkrétne hodnoty"
+msgstr "Konkrétní hodnoty"
 
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_state_id
 msgid "State"
-msgstr "Stav"
+msgstr "Stát"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_personal_info__dropdown_selection__state
@@ -1495,12 +1495,12 @@ msgstr "Ulice 2"
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_advantage_view_search
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_resume_view_search
 msgid "Structure Type"
-msgstr "Typ štruktúry"
+msgstr "Typ struktury"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_resume__value_type__sum
 msgid "Sum of Advantages Values"
-msgstr "Súčet hodnôt výhod"
+msgstr "Součet hodnoty benefitů"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__sign_template_id
@@ -1510,7 +1510,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.ui.menu,name:hr_contract_salary.hr_menu_contract_templates
 msgid "Templates"
-msgstr "Šablony"
+msgstr "Vzory"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__display_type__text
@@ -1525,12 +1525,12 @@ msgid ""
 "the salary configurator or when the HR manager countersigns the contract."
 msgstr ""
 "Benefit se vytvoří, když zaměstnanec podepíše smlouvu na konci konfigurátoru"
-" mezd nebo když personální manažer smlouvu spolupodepíše."
+" nebo když HR manažer podepíše smlouvu."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__origin_contract_id
 msgid "The contract from which this contract has been duplicated."
-msgstr "Zmluva, z ktorej bola táto zmluva duplikovaná."
+msgstr "Původní smlouva, jejíž zduplikováním vznikla tato smlouva."
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.generate_simulation_link_view_form
@@ -1567,7 +1567,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__signatures_count
 msgid "The number of signatures on the pdf contract with the most signatures."
-msgstr "Počet podpisů na pdf smlouvě s více podpisy."
+msgstr "Počet podpisů na pdf smlouvě s nejvíce podpisy."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_salary_advantage__activity_type_id
@@ -1575,13 +1575,13 @@ msgid ""
 "The type of activity that will be created automatically on the contract if "
 "this advantage is chosen by the employee."
 msgstr ""
-"Typ činnosti, který se na smlouvě vytvoří automaticky, pokud si tuto výhodu "
-"zaměstnanec zvolí."
+"Typ činnosti, který se na smlouvě vytvoří automaticky, pokud si zaměstnanec "
+"tento benefit vybere."
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package_advantages
 msgid "There is no available option to customize your salary"
-msgstr "Nie je k dispozícii možnosť prispôsobenia vášho platu"
+msgstr "Možnost nakonfigurovat si vaše platové ohodnocení není k dispozici."
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package_thank_you
@@ -1595,7 +1595,7 @@ msgstr ""
 #: code:addons/hr_contract_salary/controllers/main.py:0
 #, python-format
 msgid "This contract has been updated, please request an updated link.."
-msgstr "Tato smlouva byla aktualizována, vyžádejte si aktualizovaný odkaz."
+msgstr "Tato smlouva byla aktualizována, vyžádejte si aktuální odkaz."
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.generate_simulation_link_view_form
@@ -1629,7 +1629,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_history__reference_yearly_cost
 msgid "Total yearly cost of the employee for the employer."
-msgstr "Celkové ročné náklady zamestnanca pre zamestnávateľa."
+msgstr "Celkové roční náklady zaměstnavatele na zaměstnance."
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.res_config_settings_view_form
@@ -1670,24 +1670,24 @@ msgstr "Mzda při podpisu smlouvy"
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_history__reference_monthly_wage
 msgid "Wage update with holidays retenues"
-msgstr "Aktualizácia miezd s príjmami sviatkov"
+msgstr "Mzdy se zápočtem volných dnů"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__wage_with_holidays
 msgid "Wage with Holidays"
-msgstr "Mzda s dovolenou"
+msgstr "Mzda s volnými dny"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__activity_creation_type__onchange
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__sign_frenquency__always
 msgid "When the advantage is modified"
-msgstr "Pokud je výhoda upravena"
+msgstr "Pokud je benefit upraven"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__activity_creation_type__always
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__sign_frenquency__onchange
 msgid "When the advantage is set"
-msgstr "Pokud je nastavena výhoda"
+msgstr "Pokud je benefit vybrán"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage_type__periodicity__yearly
@@ -1717,7 +1717,7 @@ msgstr "Ano"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package_personal_information
 msgid "Your Personal Information"
-msgstr "Vaše osobné údaje"
+msgstr "Vaše osobní údaje"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package_thank_you
@@ -1737,23 +1737,23 @@ msgstr "zavřít"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__employee_contract_employee_id
 msgid "contract employee"
-msgstr "zamestnanec na dohodu"
+msgstr "zaměstnanec na smlouvě"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.res_config_settings_view_form
 msgid "days"
-msgstr "dnů"
+msgstr "dny"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_personal_info_view_form
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_resume_view_form
 msgid "e.g. Birthdate"
-msgstr "např. datum narození"
+msgstr "např. Datum narození"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_advantage_view_form
 msgid "e.g. Meal Vouchers"
-msgstr "napr. stravné lístky"
+msgstr "např. Stravenky"
 
 #. module: hr_contract_salary
 #: model:mail.template,subject:hr_contract_salary.mail_template_send_offer

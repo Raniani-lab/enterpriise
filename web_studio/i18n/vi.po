@@ -4,7 +4,7 @@
 # 
 # Translators:
 # Trinh Tran Thi Phuong <trinhttp@trobz.com>, 2022
-# Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2022
+# Nancy Momoland <thanh.np2502@gmail.com>, 2022
 # Martin Trigaux, 2022
 # Thi Huong Nguyen, 2023
 # 
@@ -2635,17 +2635,17 @@ msgstr "Model"
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_module_module
 msgid "Module"
-msgstr "Module"
+msgstr "Phân hệ"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_base_module_uninstall
 msgid "Module Uninstall"
-msgstr "Gỡ cài đặt module"
+msgstr "Gỡ cài đặt phân hệ"
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.simplified_form_view_import_module
 msgid "Module file (.zip)"
-msgstr "Tệp module (.zip)"
+msgstr "Tệp phân hệ (.zip)"
 
 #. module: web_studio
 #. odoo-javascript

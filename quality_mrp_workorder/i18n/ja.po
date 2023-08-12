@@ -78,7 +78,7 @@ msgstr "製造工程"
 #. module: quality_mrp_workorder
 #: model_terms:ir.ui.view,arch_db:quality_mrp_workorder.quality_check_view_form_tablet_inherit_quality
 msgid "Measure:"
-msgstr ""
+msgstr "測定対象:"
 
 #. module: quality_mrp_workorder
 #: model_terms:ir.ui.view,arch_db:quality_mrp_workorder.quality_alert_view_search_inherit_quality_mrp_workorder
@@ -166,12 +166,3 @@ msgstr "検証"
 #: model:ir.model,name:quality_mrp_workorder.model_mrp_workorder
 msgid "Work Order"
 msgstr "作業オーダ"
-
-#. module: quality_mrp_workorder
-#. odoo-python
-#: code:addons/quality_mrp_workorder/models/mrp_workorder.py:0
-#, python-format
-msgid ""
-"You first need to complete the Quality Check using the Tablet View before "
-"marking the Operation as Done."
-msgstr ""

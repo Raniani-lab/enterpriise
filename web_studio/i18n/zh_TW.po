@@ -3321,7 +3321,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Restrict a record to a specific company"
-msgstr ""
+msgstr "將記錄限制至特定公司"
 
 #. module: web_studio
 #. odoo-javascript

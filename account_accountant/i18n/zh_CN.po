@@ -38,6 +38,14 @@ msgid ""
 "                </p>\n"
 "            "
 msgstr ""
+"\n"
+"                <p class=\"o_view_nocontent_smiling_face\">\n"
+"                    空空如也！\n"
+"                </p>\n"
+"                <p>\n"
+"                    未找到符合您筛选条件的交易。\n"
+"                </p>\n"
+"            "
 
 #. module: account_accountant
 #. odoo-javascript
@@ -121,6 +129,8 @@ msgid ""
 "<i title=\"Run manually\" role=\"img\" aria-label=\"Run manually\" class=\"fa fa-refresh\"/>\n"
 "                            Run manually"
 msgstr ""
+"<i title=\"Run manually\" role=\"img\" aria-label=\"Run manually\" class=\"fa fa-refresh\"/>\n"
+"                            手动运行"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date

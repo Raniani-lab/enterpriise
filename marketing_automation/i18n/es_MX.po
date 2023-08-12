@@ -452,7 +452,7 @@ msgstr "Días"
 msgid ""
 "Define workflows by chaining up activities and let Odoo handle the rest."
 msgstr ""
-"Encadene actividades para definir flujos de trabajo y deje que Odoo se "
+"Vincule actividades para definir flujos de trabajo y deje que Odoo se "
 "encargue del resto."
 
 #. module: marketing_automation
@@ -473,8 +473,8 @@ msgid ""
 "Deleting this activity will delete ALL its children activities. Are you "
 "sure?"
 msgstr ""
-"Al eliminar esta actividad eliminará TODAS las actividades subordinadas, "
-"¿está seguro?"
+"Al eliminar esta actividad eliminará TODAS las actividades subordinadas. "
+"¿Está seguro?"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__child_ids
@@ -709,7 +709,7 @@ msgstr "Número de leads/oportunidades"
 #. module: marketing_automation
 #: model:ir.actions.act_window,name:marketing_automation.link_tracker_action_marketing_campaign
 msgid "Link Statistics"
-msgstr "Vincule estadísticas"
+msgstr "Estadísticas de enlaces"
 
 #. module: marketing_automation
 #: model:ir.ui.menu,name:marketing_automation.link_tracker_menu_reporting_marketing_automation
@@ -843,13 +843,13 @@ msgstr "Automatización de mensajes de marketing"
 #: model:ir.actions.server,name:marketing_automation.ir_cron_campaign_execute_activities_ir_actions_server
 #: model:ir.cron,cron_name:marketing_automation.ir_cron_campaign_execute_activities
 msgid "Marketing Automation: execute activities"
-msgstr "Marketing automatizado: ejecutar actividades"
+msgstr "Automatización de marketing: ejecutar actividades"
 
 #. module: marketing_automation
 #: model:ir.actions.server,name:marketing_automation.ir_cron_campaign_sync_participants_ir_actions_server
 #: model:ir.cron,cron_name:marketing_automation.ir_cron_campaign_sync_participants
 msgid "Marketing Automation: sync participants"
-msgstr "Marketing automatizado: sincronizar participantes"
+msgstr "Automatización de marketing: sincronizar participantes"
 
 #. module: marketing_automation
 #: model:ir.model,name:marketing_automation.model_marketing_campaign
@@ -1412,8 +1412,8 @@ msgid ""
 "your activity actions to match the new Target Model or delete them."
 msgstr ""
 "Cambiar el modelo objetivo invalida las actividades existentes. Deberá "
-"actualizar las acciones de la actividad para que sean las mismas que el "
-"mismo modelo, o eliminarlas."
+"actualizar las acciones de la actividad para que coincidan con el modelo "
+"objetivo o eliminarlas."
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__require_sync
@@ -1640,7 +1640,7 @@ msgid ""
 "You are trying to set the activity \"%s\" as \"%s\" while its child \"%s\" has the trigger type \"%s\"\n"
 "Please modify one of those activities before saving."
 msgstr ""
-"Está intentando configurar la actividad \"%s\" como \"%s\" mientras que su actividad subordinada \"%s\" tiene el tipo de activación \"%s\"\n"
+"Está intentando configurar la actividad \"%s\" como \"%s\" mientras que su actividad subordinada \"%s\" tiene \"%s\" como tipo de activación.\n"
 "Modifique una de esas actividades antes de guardarla."
 
 #. module: marketing_automation

@@ -522,7 +522,7 @@ msgstr ""
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_analysis_report__allocated_hours
 msgid "Allocated Hours"
-msgstr ""
+msgstr "Tilldelade timmar"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__allocated_hours

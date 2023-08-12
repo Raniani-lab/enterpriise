@@ -276,7 +276,7 @@ msgstr "Genehmigt von"
 #. module: mrp_plm
 #: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco_approval_template__approval_type__optional
 msgid "Approves, but the approval is optional"
-msgstr "Zwar genehmigt, aber die Genehmigung ist optional."
+msgstr "Genehmigt, aber die Genehmigung ist optional"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
@@ -1528,7 +1528,7 @@ msgstr "Zugehöriger Anhang"
 #: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco_routing_change__change_type__remove
 #: model_terms:ir.ui.view,arch_db:mrp_plm.view_document_file_kanban_mrp_plm
 msgid "Remove"
-msgstr "Löschen"
+msgstr "Entfernen"
 
 #. module: mrp_plm
 #: model:ir.ui.menu,name:mrp_plm.menu_mrp_plm_reporting

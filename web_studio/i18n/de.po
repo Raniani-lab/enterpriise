@@ -2802,7 +2802,7 @@ msgstr "Neue Zeilen"
 #: code:addons/web_studio/static/src/legacy/js/edit_menu.js:0
 #, python-format
 msgid "New Menu"
-msgstr "Neues Menu"
+msgstr "Neues Menü"
 
 #. module: web_studio
 #. odoo-javascript

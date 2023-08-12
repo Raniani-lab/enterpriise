@@ -58,6 +58,8 @@ msgid ""
 "<span attrs=\"{'invisible': [('contract_id', '!=', False)]}\">An offer "
 "template need to be selected to have an offer link.</span>"
 msgstr ""
+"<span attrs=\"{'invisible': [('contract_id', '!=', False)]}\">Щоб мати "
+"посилання на пропозицію, потрібно вибрати шаблон пропозиції.</span>"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.generate_simulation_link_view_form
@@ -524,6 +526,9 @@ msgid ""
 "Default contract used to generate an offer. If empty, advantages will be "
 "taken from current contract of the employee/nothing for an applicant."
 msgstr ""
+"Контракт за замовчуванням, який використовується для створення пропозиції. "
+"Якщо поле порожнє, переваги будуть взяті з поточного контракту працівника "
+"або нічого для заявника."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__sign_template_id
@@ -1129,6 +1134,7 @@ msgstr "Посилання на пропозицію"
 #, python-format
 msgid "Offer link can not be send. The applicant needs to have a name."
 msgstr ""
+"Посилання на пропозицію не можна надіслати. Заявник повинен мати ім'я."
 
 #. module: hr_contract_salary
 #. odoo-python
@@ -1556,6 +1562,8 @@ msgid ""
 "The employee does not have a valid work email set. The Simulation Link won't"
 " be able to be completed."
 msgstr ""
+"У працівника не встановлено дійсну робочу електронну адресу. Симуляційне "
+"посилання не можна буде завершити."
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.generate_simulation_link_view_form

@@ -703,6 +703,19 @@ msgid "An shift must be in the same company as its recurrency."
 msgstr "Зміна має бути у тій же компанії, що й її повторення."
 
 #. module: planning
+#. odoo-python
+#: code:addons/planning/models/planning_recurrency.py:0
+#, python-format
+msgid ""
+"Recurring shifts cannot be planned further than 999 days in the future. If "
+"you need to schedule beyond this limit, please set the recurrence to repeat "
+"forever instead."
+msgstr ""
+"Повторювані зміни не можна планувати далі, ніж через 999 днів у майбутньому."
+" Якщо вам потрібно запланувати понад це обмеження, натомість установіть "
+"вічне повторення."
+
+#. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_report_action_analysis
 msgid ""
 "Analyze the allocation of your resources across roles, projects, and sales "

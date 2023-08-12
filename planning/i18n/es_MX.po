@@ -766,8 +766,8 @@ msgid ""
 "assign those open shifts to the resources that are available.</i>"
 msgstr ""
 "Asigne un <b>recurso</b> o déjelo abierto por el momento. <i>Consejo: cree "
-"turnos abiertos para las funciones que necesitará para cumplir las tareas.  "
-"Luego, designe dichos turnos abiertos a los recursos disponibles.</i>"
+"turnos abiertos para las funciones que necesitará para cumplir las tareas. "
+"Luego, asigne dichos turnos abiertos a los recursos disponibles.</i>"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_resource_resource__avatar_128
@@ -1198,7 +1198,7 @@ msgid ""
 "or indicate your unavailability."
 msgstr ""
 "Encuentre aquí su planeación. Asígnese a turnos abiertos que correspondan "
-"con sus funciones o indique su indisponibilidad."
+"con sus funciones o indique los momentos en que no está disponible."
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.view_employee_filter_inherit_hr
@@ -1223,14 +1223,14 @@ msgstr "Pronóstico"
 #: model:ir.model.fields.selection,name:planning.selection__planning_recurrency__repeat_type__forever
 #: model:ir.model.fields.selection,name:planning.selection__planning_slot__repeat_type__forever
 msgid "Forever"
-msgstr "Siempre"
+msgstr "Por siempre"
 
 #. module: planning
 #. odoo-python
 #: code:addons/planning/models/planning_recurrency.py:0
 #, python-format
 msgid "Forever, every %s week(s)"
-msgstr "Por siempre, cada %s semana(s)"
+msgstr "Por siempre, cada %s semanas"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_analysis_report_view_search
@@ -2088,7 +2088,7 @@ msgstr "Turnos en conflicto"
 #: model_terms:ir.ui.view,arch_db:planning.planning_analysis_report_view_search
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "Shifts of Your Department Member"
-msgstr "Turnos del miembro de tu departamento"
+msgstr "Turnos del miembro de su departamento"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_analysis_report_view_search

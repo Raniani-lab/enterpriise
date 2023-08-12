@@ -759,8 +759,8 @@ msgid ""
 "The python 'cryptography' module is not installed on your server.\n"
 "It is necessary to support eBay account deletion notifications, please contact your system administrator to install it."
 msgstr ""
-"Module 'cryptography' python chưa được cài đặt trên máy chủ của bạn.\n"
-"Đây là module cần thiết để hỗ trợ thông báo xóa tài khoản eBay, vui lòng liên hệ quản trị viên hệ thống để cài đặt. "
+"Phân hệ 'cryptography' python chưa được cài đặt trên máy chủ của bạn.\n"
+"Đây là phân hệ cần thiết để hỗ trợ thông báo xóa tài khoản eBay, vui lòng liên hệ quản trị viên hệ thống để cài đặt. "
 
 #. module: sale_ebay
 #: model:ir.model.fields,help:sale_ebay.field_product_product__ebay_subtitle

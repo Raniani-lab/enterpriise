@@ -687,7 +687,7 @@ msgid ""
 "PDFs to"
 msgstr ""
 "Eine einfache Möglichkeit, eingehende E-Mails zu verarbeiten, besteht darin,"
-" Ihren Scanner so zu konfigurieren, dass PDFs an ihn gesendet werden"
+" Ihren Scanner so zu konfigurieren, dass PDFs gesendet werden an"
 
 #. module: documents
 #: model_terms:digest.tip,tip_description:documents.digest_tip_documents_0
@@ -922,7 +922,7 @@ msgstr "Unternehmen"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__condition_type
 msgid "Condition type"
-msgstr "Bedinungsart"
+msgstr "Bedingungstyp"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view

@@ -911,7 +911,7 @@ msgstr "Durchschnittliche Bewertung der letzten 7 Tage"
 #: code:addons/helpdesk/static/src/components/helpdesk_team_dashboard/helpdesk_team_dashboard.xml:0
 #, python-format
 msgid "Avg 7 Days Customer Satisfaction"
-msgstr "Durchschn. Kundenzufriedenheit letzte 7 Tage"
+msgstr "Durchschn. Kundenzufriedenheit letzten 7 Tage"
 
 #. module: helpdesk
 #. odoo-javascript
@@ -1854,7 +1854,7 @@ msgstr "Stunden offen"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_graph_main
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_pivot_main
 msgid "Hours to Assign"
-msgstr "Zuzuweisende Stunden"
+msgstr "Stunden bis Zuweisung"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket_report_analysis__ticket_close_hours
@@ -1874,7 +1874,7 @@ msgstr "Stunden bis zur ersten Antwort"
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__sla_deadline_hours
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket_report_analysis__ticket_deadline_hours
 msgid "Hours to SLA Deadline"
-msgstr "Tage bis zur SLA-Frist"
+msgstr "Stunden bis zur SLA-Frist"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla__id
@@ -3269,7 +3269,7 @@ msgstr "Dienstleistung"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Set an Email Template on Stages"
-msgstr "Richten Sie eine E-Mail-Vorlage für verschiedene Phasen ein."
+msgstr "Eine E-Mail-Vorlage für Phasen einrichten"
 
 #. module: helpdesk
 #: model:mail.template,description:helpdesk.new_ticket_request_email_template
@@ -3855,7 +3855,7 @@ msgstr "Zeit bis Schließung (Stunden)"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__assign_hours
 msgid "Time to first assignment (hours)"
-msgstr "Zeit bis zur nächsten Zuweisung (Stunden)"
+msgstr "Zeit bis zur ersten Zuweisung (Stunden)"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_helpdesk_timesheet
@@ -4127,7 +4127,7 @@ msgstr "Arbeitsstunden"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_report_analysis__ticket_assignation_hours
 msgid "Working Hours to Assign"
-msgstr "Zuzuweisende Arbeitsstunden"
+msgstr "Arbeitsstunden bis Zuweisung"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_report_analysis__ticket_close_hours
@@ -4137,7 +4137,7 @@ msgstr "Arbeitsstunden bis Abschluss"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_report_analysis__sla_exceeded_hours
 msgid "Working Hours to Reach SLA"
-msgstr "Arbeitsstunden bis zum Erreichen von SLA"
+msgstr "Arbeitsstunden bis zum Erreichen der SLA"
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_sla_status__exceeded_hours

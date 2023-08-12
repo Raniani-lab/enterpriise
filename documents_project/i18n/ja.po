@@ -6,6 +6,7 @@
 # 江口和志 <sandwhale1010@gmail.com>, 2022
 # Martin Trigaux, 2023
 # Andy Yiu, 2023
+# Junko Augias, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-27 15:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Andy Yiu, 2023\n"
+"Last-Translator: Junko Augias, 2023\n"
 "Language-Team: Japanese (https://app.transifex.com/odoo/teams/41243/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -106,7 +107,7 @@ msgstr "書類及び分析"
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_documents_folder
 msgid "Documents Workspace"
-msgstr ""
+msgstr "ドキュメントワークプレイス"
 
 #. module: documents_project
 #: model:documents.tag,name:documents_project.documents_project_status_draft
@@ -127,23 +128,23 @@ msgstr "下書きとしてマーク"
 #: code:addons/documents_project/models/folder.py:0
 #, python-format
 msgid "Merged Workspace"
-msgstr ""
+msgstr "マージ済ワークプレイス"
 
 #. module: documents_project
 #: code:addons/documents_project/models/workflow.py:0
 #, python-format
 msgid "New task from Documents"
-msgstr ""
+msgstr "ドキュメントからの新規タスク"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_project_project__document_count
 msgid "Number of documents in Project"
-msgstr ""
+msgstr "プロジェクト内ドキュメント数"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_project_task__document_count
 msgid "Number of documents in Task"
-msgstr ""
+msgstr "タスク内ドキュメント数"
 
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_project_project

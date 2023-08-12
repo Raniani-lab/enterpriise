@@ -4059,7 +4059,7 @@ msgid ""
 "You can not change the recurring property of this product because it has "
 "been sold already as a subscription."
 msgstr ""
-"Você não pode mudar a propriedade recorrente deste produto porque já foi "
+"Não é possível mudar a propriedade recorrente deste produto porque já foi "
 "vendido como assinatura."
 
 #. module: sale_subscription
@@ -4104,7 +4104,7 @@ msgstr ""
 msgid ""
 "You cannot save a sale order with a recurrence and no recurring product."
 msgstr ""
-"Você não pode salvar um pedido de venda com recorrência sem um produto "
+"Não é possível salvar um pedido de venda com recorrência sem um produto "
 "recorrente."
 
 #. module: sale_subscription

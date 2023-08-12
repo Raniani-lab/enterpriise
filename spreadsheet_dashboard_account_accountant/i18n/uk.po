@@ -25,7 +25,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "(Net sales - Total expenses) / Net sales"
-msgstr ""
+msgstr "(Чисті продажі - Всього витрат) / Чисті продажі"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -89,14 +89,14 @@ msgstr "< 3%: не ефективний у створенні бізнесу"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "< 45: company gets paid for sales quickly"
-msgstr ""
+msgstr "< 45: компанія швидко отримує платежі за продажі"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "< 45: company liquidates debts to suppliers quickly"
-msgstr ""
+msgstr "< 45: Компанія швидко ліквідує заборгованість перед постачальниками"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -168,14 +168,14 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "> 60: company might not get paid for sales quickly enough"
-msgstr ""
+msgstr "> 60: компанія може не отримати гроші за продажі досить швидко"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "> 70: company might be slow to pay suppliers"
-msgstr ""
+msgstr "> 70: компанія може повільно платити постачальникам"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -228,7 +228,7 @@ msgstr "Середні дебіторські дні"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Average payable days"
-msgstr ""
+msgstr "Середня кількість оплачуваних днів"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -711,7 +711,7 @@ msgstr "Кредиторська заборгованість"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Payables / Expenses * 30"
-msgstr ""
+msgstr "Кредиторська заборгованість / Витрати * 30"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -806,7 +806,7 @@ msgstr "Дебіторська заборгованість"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Receivables / Income * 30"
-msgstr ""
+msgstr "Дебіторська заборгованість / Дохід * 30"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -851,14 +851,14 @@ msgstr "Технічна назва"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Total Current assets"
-msgstr ""
+msgstr "Всього поточних активів"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Total Current liabilities"
-msgstr ""
+msgstr "Всього поточних зобов'язання"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -1009,7 +1009,7 @@ msgstr "заборгованість"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "payable + credit card + current liabilities"
-msgstr ""
+msgstr "заборгованість + кредитна картка + поточні зобов'язання"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
@@ -1108,13 +1108,14 @@ msgstr ""
 #, python-format
 msgid "receivable + bank and cash + current assets + prepayments"
 msgstr ""
+"дебіторська заборгованість + банк і готівка + оборотні активи + передоплата"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "receivable + bank and cash + prepayments"
-msgstr ""
+msgstr "дебіторська заборгованість + банк і готівка + передоплата"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript

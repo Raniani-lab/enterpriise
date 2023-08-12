@@ -3510,6 +3510,8 @@ msgid ""
 "There was an issue downloading your document. Please contact an "
 "administrator."
 msgstr ""
+"Під час завантаження вашого документа виникла проблема. Будь ласка, "
+"зверніться до адміністратора."
 
 #. module: sign
 #. odoo-javascript

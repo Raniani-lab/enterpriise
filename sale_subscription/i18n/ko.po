@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # Sarah Park, 2023
+# Daye Jeong, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Sarah Park, 2023\n"
+"Last-Translator: Daye Jeong, 2023\n"
 "Language-Team: Korean (https://app.transifex.com/odoo/teams/41243/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -3641,6 +3642,9 @@ msgid ""
 " - Has not started yet.\n"
 " - Has no invoiced period in the future."
 msgstr ""
+"아직 구독이 시작되지 않아 상향 판매를 할 수 없습니다 :\n"
+" - 아직 구독이 시작되지 않음.\n"
+" - 향후 청구 기간이 없음."
 
 #. module: sale_subscription
 #. odoo-python
@@ -3680,7 +3684,7 @@ msgstr "구독이 확정된 경우에는 미결 설정을 할 수 없습니다.�
 msgid ""
 "You cannot upsell a subscription whose next invoice date is in the past.\n"
 "Please, invoice directly the %s contract."
-msgstr ""
+msgstr "다음 청구일이 과거로 설정되어 있는 구독은 상향 판매할 수 없습니다. %s 계약에 직접 청구서를 발행하세요."
 
 #. module: sale_subscription
 #. odoo-python

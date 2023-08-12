@@ -481,7 +481,7 @@ msgstr "Seleccione su instancia de Odoo en esta lista:"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Settings"
-msgstr "Configuración"
+msgstr "Ajustes"
 
 #. module: project_timesheet_synchro
 #. odoo-javascript

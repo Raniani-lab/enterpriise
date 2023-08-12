@@ -56,7 +56,7 @@ msgstr "Рядок замовлення"
 #: model_terms:ir.ui.view,arch_db:website_sale_subscription.product_template_message
 msgid ""
 "This product pricing is not compatible with the product(s) in your cart."
-msgstr ""
+msgstr "Ця ціна товару не сумісна з товаром(ами) у вашому кошику."
 
 #. module: website_sale_subscription
 #. odoo-python

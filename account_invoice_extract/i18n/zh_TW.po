@@ -71,9 +71,7 @@ msgstr ""
 msgid ""
 "<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
 "specific.\"/>"
-msgstr ""
-"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
-"specific.\"/>"
+msgstr "<span class=\"fa fa-lg fa-building-o\" title=\"此處設定的值是特定於每間公司的。\"/>"
 
 #. module: account_invoice_extract
 #: model:mail.template,name:account_invoice_extract.account_invoice_extract_no_credit

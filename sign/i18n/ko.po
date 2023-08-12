@@ -3437,7 +3437,7 @@ msgstr "서명 요청이 없습니다."
 msgid ""
 "There was an issue downloading your document. Please contact an "
 "administrator."
-msgstr ""
+msgstr "문서를 다운로드하는 동안 문제가 발생했습니다. 관리자에게 문의해 주세요."
 
 #. module: sign
 #. odoo-javascript

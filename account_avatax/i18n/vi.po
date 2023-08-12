@@ -403,6 +403,7 @@ msgstr ""
 #: model:ir.model,name:account_avatax.model_account_avatax
 msgid "Mixin to manage taxes with Avatax on various business documents"
 msgstr ""
+"Mixin để quản lý thuế với Avatax trên các tài liệu kinh doanh khác nhau"
 
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_exemption__name

@@ -28,4 +28,4 @@ msgstr "SMS-Nachricht - 1 Stunde"
 #. module: appointment_sms
 #: model_terms:ir.ui.view,arch_db:appointment_sms.appointment_form
 msgid "We will use it to remind you of this appointment."
-msgstr "Wir werden wir Sie über diese Nummer an diesen Termin erinnern."
+msgstr "Wir werden Sie über diese Nummer an diesen Termin erinnern."

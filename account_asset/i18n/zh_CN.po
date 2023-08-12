@@ -1642,7 +1642,7 @@ msgstr "错误数"
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__message_needaction_counter
 msgid "Number of messages requiring action"
-msgstr ""
+msgstr "需要采取行动的消息数量"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__message_has_error_counter
@@ -2121,7 +2121,7 @@ msgstr "您无法发布与草稿资产相关的条目。请事先发布资产。
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "You can't re-evaluate the asset before the lock date."
-msgstr ""
+msgstr "在锁定日期之前，您不能重新评估资产。"
 
 #. module: account_asset
 #. odoo-python
@@ -2193,7 +2193,7 @@ msgstr "不能在等于暂停日期或之前的日期恢复"
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "You cannot select the same account as the Depreciation Account"
-msgstr ""
+msgstr "不能选择与折旧账户相同的账户"
 
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_balance

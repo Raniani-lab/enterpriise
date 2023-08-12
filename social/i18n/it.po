@@ -54,7 +54,7 @@ msgstr "<i class=\"fa fa-globe\" title=\"Vedi il post\"/>"
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_kanban
 msgid "<small class=\"pe-1\">Clicks:</small>"
-msgstr ""
+msgstr "<small class=\"pe-1\">Clic:</small>"
 
 #. module: social
 #. odoo-javascript
@@ -106,7 +106,7 @@ msgstr "Aggiungi"
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.utm_campaign_view_form
 msgid "Add Post"
-msgstr ""
+msgstr "Aggiungi post"
 
 #. module: social
 #. odoo-javascript
@@ -325,6 +325,8 @@ msgid ""
 "Content of the social post message that is post-processed (links are "
 "shortened, UTMs, ...)"
 msgstr ""
+"Contenuto del messaggio del post social elaborato in seguito (link più "
+"corti, UTM...)"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_media__has_streams
@@ -418,7 +420,7 @@ msgstr "Descrizione"
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.res_config_settings_view_form
 msgid "Developer Accounts"
-msgstr ""
+msgstr "Account sviluppatori"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_account__display_name
@@ -438,7 +440,7 @@ msgstr "Nome visualizzato"
 #: code:addons/social/static/src/js/stream_post_comment.js:0
 #, python-format
 msgid "Do you really want to delete %s"
-msgstr ""
+msgstr "Vuoi davvero eliminare %s"
 
 #. module: social
 #: model:ir.model.fields.selection,name:social.selection__social_post__state__draft
@@ -453,6 +455,8 @@ msgid ""
 "Due to length restrictions, the following posts cannot be posted:\n"
 " %s"
 msgstr ""
+"Per via delle restrizioni legate alla lunghezza, il seguente post non può essere pubblicato:\n"
+"%s"
 
 #. module: social
 #. odoo-javascript
@@ -810,7 +814,7 @@ msgstr "Link URL"
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Link a new account"
-msgstr ""
+msgstr "Collega un nuovo account"
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_media_view_kanban
@@ -919,7 +923,7 @@ msgstr "Errore di consegna messaggio"
 #: model:ir.model.fields,field_description:social.field_social_post__message_length
 #: model:ir.model.fields,field_description:social.field_social_post_template__message_length
 msgid "Message Length"
-msgstr ""
+msgstr "Lunghezza messaggio"
 
 #. module: social
 #. odoo-python
@@ -991,7 +995,7 @@ msgstr "Nuovo post"
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "New content available"
-msgstr ""
+msgstr "Nuovo contenuto disponibile"
 
 #. module: social
 #. odoo-javascript
@@ -1138,7 +1142,7 @@ msgstr ""
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Or add"
-msgstr ""
+msgstr "O aggiungi"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_account__audience_trend
@@ -1165,7 +1169,7 @@ msgstr ""
 #: code:addons/social/models/social_post.py:0
 #, python-format
 msgid "Please specify at least one account to post into (for post ID(s) %s)."
-msgstr ""
+msgstr "Specifica almeno un account in cui postare (per l'ID del post %s)."
 
 #. module: social
 #. odoo-python
@@ -1261,6 +1265,8 @@ msgstr "Post per account"
 #, python-format
 msgid "Press Enter to post. Press Shift+Enter to insert a Line Break."
 msgstr ""
+"Premi Invio per pubblicare il post. Premi Maiusc + Invio per inserire "
+"un'interruzione di riga."
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_template_view_form
@@ -1504,7 +1510,7 @@ msgstr "Flussi social"
 #. module: social
 #: model:res.groups,name:social.group_social_user
 msgid "Social User"
-msgstr ""
+msgstr "Utente social"
 
 #. module: social
 #: model:ir.actions.server,name:social.ir_cron_post_scheduled_ir_actions_server

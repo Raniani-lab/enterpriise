@@ -69,8 +69,6 @@ export class MarketingActivityGraph extends Component {
             return point.x;
         });
 
-        Chart.defaults.global.elements.line.tension = 0;
-
         return {
             type: 'line',
             data: {
@@ -78,48 +76,54 @@ export class MarketingActivityGraph extends Component {
                 datasets: datasets,
             },
             options: {
+                elements: {
+                    line: {
+                        tension: 0,
+                    },
+                },
                 animation: false,
                 layout: {
                     padding: {left: 25, right: 20, top: 5, bottom: 20}
                 },
-                legend: {
-                    display: false,
+                plugins : {
+                    legend: {
+                        display: false,
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        bodyColor: "rgba(0,0,0,1)",
+                        titleFont: {
+                            size: 13,
+                        },
+                        titleColor: "rgba(0,0,0,1)",
+                        backgroundColor: 'rgba(255,255,255,0.6)',
+                        borderColor: 'rgba(0,0,0,0.2)',
+                        borderWidth: 2,
+                        callbacks: {
+                            labelColor: (tooltipItem) => {
+                                const dataset = tooltipItem.dataset;
+                                return {
+                                    borderColor: "rgba(255,255,255,0.6)",
+                                    backgroundColor: dataset.backgroundColor,
+                                };
+                            },
+                        },
+                    },
                 },
                 maintainAspectRatio: false,
                 scales: {
-                    yAxes: [{
+                    y: {
                         type: 'linear',
                         display: false,
-                        ticks: {
-                            beginAtZero: true,
-                        },
-                    }],
-                    xAxes: [{
+                        beginAtZero: true,
+                    },
+                    x: {
                         ticks: {
                             maxRotation: 0,
                         },
-                    }],
+                    },
                 },
-                tooltips: {
-                    mode: 'index',
-                    intersect: false,
-                    bodyFontColor: 'rgba(0,0,0,1)',
-                    titleFontSize: 13,
-                    titleFontColor: 'rgba(0,0,0,1)',
-                    backgroundColor: 'rgba(255,255,255,0.6)',
-                    borderColor: 'rgba(0,0,0,0.2)',
-                    borderWidth: 2,
-                    callbacks: {
-                        labelColor: (tooltipItem, chart) => {
-                            const dataset = chart.data.datasets[tooltipItem.datasetIndex];
-                            const tooltipBorderColor = chart.tooltip._model.backgroundColor;
-                            return {
-                                borderColor: tooltipBorderColor,
-                                backgroundColor: dataset.backgroundColor,
-                            };
-                        },
-                    }
-                }
             }
         };
     }

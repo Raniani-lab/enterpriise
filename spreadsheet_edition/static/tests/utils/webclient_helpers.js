@@ -21,7 +21,6 @@ const serviceRegistry = registry.category("services");
 
 export async function prepareWebClientForSpreadsheet() {
     await loadJS("/web/static/lib/Chart/Chart.js");
-    await loadJS("/spreadsheet/static/lib/chartjs-gauge/chartjs-gauge.js");
     serviceRegistry.add("spreadsheet_collaborative", makeFakeSpreadsheetService(), { force: true });
     serviceRegistry.add(
         "user",

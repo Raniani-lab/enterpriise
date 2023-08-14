@@ -49,7 +49,6 @@
         ],
         'web.qunit_suite_tests': [
             'documents_spreadsheet/static/tests/**/*',
-            'spreadsheet/static/lib/chartjs-gauge/chartjs-gauge.js',
         ]
     }
 }

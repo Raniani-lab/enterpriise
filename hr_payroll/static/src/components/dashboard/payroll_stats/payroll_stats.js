@@ -91,28 +91,28 @@ export class PayrollDashboardStats extends Component {
                 }],
             },
             options: {
-                legend: {display: false},
+                plugins : {
+                    legend: {display: false},
+                    tooltip: {
+                        intersect: false,
+                        position: 'nearest',
+                        caretSize: 0,
+                    },
+                },
                 scales: {
-                    yAxes: [
-                        {
-                            display: false,
-                            ticks: {
-                                beginAtZero: true,
-                            },
-                        }
-                    ],
-                    xAxes: [{display: false}],
+                    y: {
+                        display: false,
+                        beginAtZero: true,
+                    },
+                    x: {
+                        display: false
+                    },
                 },
                 maintainAspectRatio: false,
                 elements: {
                     line: {
                         tension: 0.000001,
                     },
-                },
-                tooltips: {
-                    intersect: false,
-                    position: 'nearest',
-                    caretSize: 0,
                 },
             },
         };
@@ -154,23 +154,22 @@ export class PayrollDashboardStats extends Component {
                 }],
             },
             options: {
-                legend: {display: false},
+                plugins : {
+                    legend: {display: false},
+                    tooltip: {
+                        intersect: false,
+                        position: 'nearest',
+                        caretSize: 0,
+                    },
+                },
                 scales: {
-                    yAxes: [
+                    yAxes: 
                         {
                             display: false,
-                            ticks: {
-                                beginAtZero: true,
-                            },
+                            beginAtZero: true,
                         }
-                    ],
                 },
                 maintainAspectRatio: false,
-                tooltips: {
-                    intersect: false,
-                    position: 'nearest',
-                    caretSize: 0,
-                },
                 elements: {
                     line: {
                         tension: 0.000001
@@ -222,36 +221,32 @@ export class PayrollDashboardStats extends Component {
                 datasets: datasets,
             },
             options: {
-                legend: {display: false},
                 responsive: true,
-                scales: {
-                    xAxes: [
-                        {
-                            stacked: true,
-                        }
-                    ],
-                    yAxes: [
-                        {
-                            display: false,
-                            stacked: true,
-                            ticks: {
-                                beginAtZero: true,
+                plugins : {
+                    legend: {display: false},
+                    tooltip: {
+                        intersect: false,
+                        position: 'nearest',
+                        caretSize: 0,
+                        callbacks: {
+                            label: (tooltipItem) => {
+                                const { datasetIndex, index } = tooltipItem;
+                                return datasets[datasetIndex].formatted_data[index];
                             },
-                        }
-                    ],
+                        },
+                    },
                 },
-                maintainAspectRatio: false,
-                tooltips: {
-                    intersect: false,
-                    position: 'nearest',
-                    caretSize: 0,
-                    callbacks: {
-                        label: function(tooltipItem, data) {
-                            const {datasetIndex, index} = tooltipItem;
-                            return data.datasets[datasetIndex].formatted_data[index];
-                        }
+                scales: {
+                    x: {
+                        stacked: true,
+                    },
+                    y: {
+                        display: false,
+                        stacked: true,
+                        beginAtZero: true,
                     }
                 },
+                maintainAspectRatio: false,
                 elements: {
                     line: {
                         tension: 0.000001

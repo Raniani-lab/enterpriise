@@ -53,6 +53,11 @@ class HrEmployee(models.Model):
         groups="hr.group_hr_user",
         tracking=True,
         copy=False)
+    l10n_hk_mpf_manulife_account = fields.Char(
+        "MPF Manulife Account",
+        groups="hr.group_hr_user",
+        tracking=True,
+        copy=False)
     l10n_hk_mpf_vc_option = fields.Selection(
         selection=[
             ("none", "Only Mandatory Contribution"),

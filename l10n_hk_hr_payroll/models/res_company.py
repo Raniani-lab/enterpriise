@@ -25,3 +25,9 @@ class ResCompany(models.Model):
                 file_number = company.l10n_hk_employer_file_number.strip()
                 if len(file_number) != 12 or file_number[3] != '-':
                     raise UserError(_("The Employer's File Number must be in the format of XXX-XXXXXXXX."))
+
+    @api.constrains("l10n_hk_manulife_mpf_scheme")
+    def _check_l10n_hk_manulife_mpf_scheme(self):
+        for company in self:
+            if company.l10n_hk_manulife_mpf_scheme and len(company.l10n_hk_manulife_mpf_scheme) != 8:
+                raise UserError(_("The Manulife MPF Scheme must be 8 characters long."))

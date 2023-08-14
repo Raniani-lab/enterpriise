@@ -38,6 +38,10 @@
                                 <label for="l10n_hk_employer_file_number" class="col-md-6 p-0 m-0"/>
                                 <field name="l10n_hk_employer_file_number" class="col-md-6 p-0"/>
                             </div>
+                            <div class="row ms-2">
+                                <label for="l10n_hk_manulife_mpf_scheme" class="col-md-6 p-0 m-0"/>
+                                <field name="l10n_hk_manulife_mpf_scheme" class="col-md-6 p-0"/>
+                            </div>
                         </div>
                     </setting>
                     <setting id="advantages" string="Advantages" help="Configure Default Values for Hong Kong Advantages">

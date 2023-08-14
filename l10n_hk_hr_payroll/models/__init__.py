@@ -13,6 +13,7 @@ from . import l10n_hk_ir56b
 from . import l10n_hk_ir56e
 from . import l10n_hk_ir56f
 from . import l10n_hk_ir56g
+from . import l10n_hk_manulife_mpf
 from . import l10n_hk_rental
 from . import res_company
 from . import res_config_settings

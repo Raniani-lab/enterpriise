@@ -49,6 +49,7 @@
                 <group name="mpf" string="MPF" invisible="company_country_code != 'HK'">
                     <field name="l10n_hk_mpf_vc_option" />
                     <field name="l10n_hk_mpf_vc_percentage" widget="percentage" invisible="l10n_hk_mpf_vc_option != 'custom'" />
+                    <field name="l10n_hk_mpf_manulife_account" />
                 </group>
             </xpath>
         </field>

@@ -30,3 +30,4 @@ class ResConfigSettings(models.TransientModel):
         help='This name will be shown on the ird report.'
     )
     l10n_hk_employer_file_number = fields.Char("Employer's File Number", related='company_id.l10n_hk_employer_file_number', readonly=False)
+    l10n_hk_manulife_mpf_scheme = fields.Char("Manulife MPF Scheme", related='company_id.l10n_hk_manulife_mpf_scheme', readonly=False)

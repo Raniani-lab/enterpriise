@@ -289,6 +289,7 @@ class ProviderFedex(models.Model):
             master_tracking_id = False
             package_labels = []
             carrier_tracking_refs = []
+            lognote_pickings = picking.sale_id.picking_ids if picking.sale_id else picking
 
             for sequence, package in enumerate(packages, start=1):
 
@@ -340,7 +341,8 @@ class ProviderFedex(models.Model):
                         attachments = [('LabelFedex-%s.%s' % (pl[0], self.fedex_label_file_type), pl[1]) for pl in package_labels]
                     if self.fedex_label_file_type == 'PDF':
                         attachments = [('LabelFedex.pdf', pdf.merge_pdf([pl[1] for pl in package_labels]))]
-                    picking.message_post(body=logmessage, attachments=attachments)
+                    for pick in lognote_pickings:
+                        pick.message_post(body=logmessage, attachments=attachments)
                     shipping_data = {'exact_price': carrier_price,
                                      'tracking_number': ','.join(carrier_tracking_refs)}
                     res = res + [shipping_data]
@@ -352,7 +354,8 @@ class ProviderFedex(models.Model):
             commercial_invoice = srm.get_document()
             if commercial_invoice:
                 fedex_documents = [('DocumentFedex.pdf', commercial_invoice)]
-                picking.message_post(body=_('Fedex Documents'), attachments=fedex_documents)
+                for pick in lognote_pickings:
+                    pick.message_post(body=_('Fedex Documents'), attachments=fedex_documents)
         return res
 
     def fedex_get_return_label(self, picking, tracking_number=None, origin_date=None):

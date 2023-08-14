@@ -454,9 +454,10 @@ class HelpdeskTicket(models.Model):
         partners = self.env['res.partner'].browse([vals['partner_id'] for vals in list_value if 'partner_id' in vals and vals.get('partner_id') and 'partner_email' not in vals])
         partner_email_map = {partner.id: partner.email for partner in partners}
         partner_name_map = {partner.id: partner.name for partner in partners}
-
+        company_per_team_id = {t.id: t.company_id for t in teams}
         for vals in list_value:
-            vals['ticket_ref'] = self.env['ir.sequence'].sudo().next_by_code('helpdesk.ticket')
+            company = company_per_team_id.get(vals.get('team_id', False))
+            vals['ticket_ref'] = self.env['ir.sequence'].with_company(company).sudo().next_by_code('helpdesk.ticket')
             if vals.get('team_id'):
                 team_default = team_default_map[vals['team_id']]
                 if 'stage_id' not in vals:

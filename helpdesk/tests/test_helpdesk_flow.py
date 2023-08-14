@@ -307,6 +307,86 @@ Content-Transfer-Encoding: quoted-printable
         self.assertTrue(partner0 in helpdesk_ticket0.message_follower_ids.mapped('partner_id'))
         self.assertTrue(partner1 in helpdesk_ticket1.message_follower_ids.mapped('partner_id'))
 
+    def test_ticket_sequence_created_from_multi_company(self):
+        """
+        In this test we ensure that in a multi-company environment, mail sent to helpdesk team
+        create a ticket with the right sequence.
+        """
+        company0 = self.env.company
+        company1 = self.env['res.company'].create({'name': 'new_company0'})
+
+        self.env.user.write({
+            'company_ids': [(4, company0.id, False), (4, company1.id, False)],
+        })
+
+        helpdesk_team_model = self.env['ir.model'].search([('model', '=', 'helpdesk_team')])
+        ticket_model = self.env['ir.model'].search([('model', '=', 'helpdesk.ticket')])
+
+        helpdesk_team0 = self.env['helpdesk.team'].create({
+            'name': 'helpdesk team 0',
+            'company_id': company0.id,
+        })
+        helpdesk_team1 = self.env['helpdesk.team'].create({
+            'name': 'helpdesk team 1',
+            'company_id': company1.id,
+        })
+
+        self.env['mail.alias'].create([
+            {
+                'alias_name': 'helpdesk_team_0',
+                'alias_model_id': ticket_model.id,
+                'alias_parent_model_id': helpdesk_team_model.id,
+                'alias_parent_thread_id': helpdesk_team0.id,
+                'alias_defaults': "{'team_id': %s}" % helpdesk_team0.id,
+            },
+            {
+                'alias_name': 'helpdesk_team_1',
+                'alias_model_id': ticket_model.id,
+                'alias_parent_model_id': helpdesk_team_model.id,
+                'alias_parent_thread_id': helpdesk_team1.id,
+                'alias_defaults': "{'team_id': %s}" % helpdesk_team1.id,
+            }
+        ])
+
+        new_message1 = """MIME-Version: 1.0
+Date: Thu, 27 Dec 2018 16:27:45 +0100
+Message-ID: blablabla1
+Subject: helpdesk team 1 in company 1
+From:  B client <client_b@someprovider.com>
+To: helpdesk_team_1@aqualung.com
+Content-Type: multipart/alternative; boundary="000000000000a47519057e029630"
+
+--000000000000a47519057e029630
+Content-Type: text/plain; charset="UTF-8"
+
+
+--000000000000a47519057e029630
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div>A good message bis</div>
+
+--000000000000a47519057e029630--
+"""
+        self.env['ir.sequence'].create([
+            {
+                'company_id': company0.id,
+                'name': 'test-sequence-00',
+                'prefix': 'FirstCompany',
+                'code': 'helpdesk.ticket'
+            },
+            {
+                'company_id': company1.id,
+                'name': 'test-sequence-01',
+                'prefix': 'SecondCompany',
+                'code': 'helpdesk.ticket'
+            }
+        ])
+
+        helpdesk_ticket1_id = self.env['mail.thread'].message_process('helpdesk.ticket', new_message1)
+        helpdesk_ticket1 = self.env['helpdesk.ticket'].browse(helpdesk_ticket1_id)
+        self.assertTrue(helpdesk_ticket1.ticket_ref.startswith('SecondCompany'))
+
     def test_email_non_ascii(self):
         """
         Ensure that non-ascii characters are correctly handled in partner email addresses

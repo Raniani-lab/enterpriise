@@ -113,6 +113,6 @@ Use
         'views/res_partner_bank_views.xml',
     ],
     'installable': True,
-    'auto_install': True,
+    'auto_install': ['l10n_au'],
     'license': 'OEEL-1',
 }

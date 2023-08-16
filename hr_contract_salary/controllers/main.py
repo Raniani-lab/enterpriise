@@ -142,7 +142,7 @@ class HrContractSalary(http.Controller):
             'job_title': offer.job_title,
             'whitelist': False,
             'part_time': False,
-            'final_yearly_costs': contract.final_yearly_costs,
+            'final_yearly_costs': offer.final_yearly_costs,
         })
         return values
 

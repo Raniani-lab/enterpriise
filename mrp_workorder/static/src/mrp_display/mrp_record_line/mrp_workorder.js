@@ -86,16 +86,6 @@ export class MrpWorkorder extends StockMove {
     }
 
     async clicked() {
-        // TODO: duplicate with `MrpDisplayRecord` `startWorking`.
-        await this.props.updateEmployees();
-        const admin_id = this.props.sessionOwner.id;
-        const { resModel, resId } = this.props.record;
-        if (admin_id && this.props.record.data.employee_ids.records.some(emp => emp.resId == admin_id)) {
-            await this.props.record.model.orm.call(resModel, "stop_employee", [resId, [admin_id]]);
-        } else {
-            await this.props.record.model.orm.call(resModel, "button_start", [resId]);
-        }
-        await this.reload();
-        await this.props.updateEmployees();
+        // Override with an empty body to cancel the behavior of clicked() in the 'StockMove' parent class
     }
 }

@@ -38,8 +38,9 @@ class HrContractSalaryOffer(models.Model):
 
     @api.depends("access_token", "applicant_id")
     def _compute_url(self):
+        base_url = self.get_base_url()
         for offer in self:
-            offer.url = f"/salary_package/simulation/offer/{offer.id}" + (f"?token={offer.access_token}" if offer.applicant_id else "")
+            offer.url = base_url + f"/salary_package/simulation/offer/{offer.id}" + (f"?token={offer.access_token}" if offer.applicant_id else "")
 
     def _compute_state(self):
         for offer in self:

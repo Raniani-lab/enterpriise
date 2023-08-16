@@ -2,7 +2,7 @@
 /* eslint-disable no-undef */
 
 import publicWidget from "@web/legacy/js/public/public_widget";
-import time from "@web/legacy/js/core/time";
+import { localization } from "@web/core/l10n/localization";
 
 publicWidget.registry.PlanningView = publicWidget.Widget.extend({
     selector: '#calendar_employee',
@@ -133,7 +133,7 @@ publicWidget.registry.PlanningView = publicWidget.Widget.extend({
         const weekday = moment(date).format('ddd.');
         const timeFormat = localization.timeFormat.replace(':%S', '');
         const dateTimeFormat = `${localization.dateFormat} ${timeFormat}`;
-        const dateTime = moment(date).format(time.strftime_to_moment_format(dateTimeFormat));
+        const dateTime = luxon.DateTime.fromJSDate(date).toFormat(dateTimeFormat);
         return `${weekday} ${dateTime}`;
     },
     eventFunction: function (calEvent) {

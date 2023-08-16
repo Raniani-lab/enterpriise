@@ -5,6 +5,7 @@ import { registry } from "@web/core/registry";
 import { stepUtils } from "@web_tour/tour_service/tour_utils";
 import { ProductScreen } from "@point_of_sale/../tests/tours/helpers/ProductScreenTourMethods";
 import { Numpad } from "@point_of_sale/../tests/tours/helpers/NumpadTourMethods";
+import * as Order from "@point_of_sale/../tests/tours/helpers/generic_components/OrderWidgetMethods";
 
 class TerminalProxy {
     action(data) {
@@ -90,11 +91,7 @@ registry.category("web_tour.tours").add("payment_terminals_tour", {
             content: "Buy a Desk Organizer",
             trigger: '.product-list .product-name:contains("Desk Organizer")',
         },
-        {
-            content: "The Desk Organizer has been added to the order",
-            trigger: '.order .product-name:contains("Desk Organizer")',
-            run: function () {}, // it's a check
-        },
+        ...Order.hasLine({ prodctName: "Desk Organizer" }),
         {
             content: "Go to payment screen",
             trigger: ".button.pay-order-button",
@@ -142,11 +139,7 @@ registry.category("web_tour.tours").add("payment_terminals_tour", {
             content: "Buy a Desk Organizer",
             trigger: '.product-list .product-name:contains("Desk Organizer")',
         },
-        {
-            content: "The Desk Organizer has been added to the order",
-            trigger: '.order .product-name:contains("Desk Organizer")',
-            run: function () {}, // it's a check
-        },
+        ...Order.hasLine({ prodctName: "Desk Organizer" }),
         {
             content: "Go to payment screen",
             trigger: ".button.pay-order-button",

@@ -4,6 +4,7 @@
 import { registry } from "@web/core/registry";
 import { stepUtils } from "@web_tour/tour_service/tour_utils";
 import { ProductScreen } from "@point_of_sale/../tests/tours/helpers/ProductScreenTourMethods";
+import * as Order from "@point_of_sale/../tests/tours/helpers/generic_components/OrderWidgetMethods";
 
 class PosScaleDummy {
     action() {}
@@ -51,9 +52,7 @@ registry.category("web_tour.tours").add("pos_iot_scale_tour", {
         {
             trigger: ".buy-product",
         },
-        {
-            trigger: `.order .info-list em:contains("2.35")`
-        },
+        ...Order.hasLine({ quantity: "2.35" }),
         {
             trigger: ".menu-button",
         },

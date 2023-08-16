@@ -126,7 +126,7 @@ export class MrpDisplayRecord extends Component {
         if (production.product_tracking === "serial") {
             return Boolean(production.qty_producing === 1 && production.lot_producing_id);
         }
-        return production.qty_producing >= production.product_qty
+        return production.qty_producing !== 0;
     }
 
     get quantityProducing() {
@@ -391,7 +391,7 @@ export class MrpDisplayRecord extends Component {
     async validate() {
         const { resModel, resId } = this.props.record;
         if (resModel === "mrp.workorder") {
-            if (this.record.state === "ready") {
+            if (this.record.state === "ready" && this.record.qty_producing === 0) {
                 this.props.record.update({ qty_producing: this.record.qty_production });
                 await this.props.record.save();
             }

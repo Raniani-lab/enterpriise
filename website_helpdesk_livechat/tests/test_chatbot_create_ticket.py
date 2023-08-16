@@ -41,8 +41,12 @@ class TestChatbotCreateTicket(HelpdeskChatbotCase):
         self.assertEqual(created_ticket.team_id, self.helpdesk_team)
 
     def _chatbot_create_helpdesk_ticket(self, user):
-        channel_info = self.livechat_channel._open_livechat_discuss_channel(
-            anonymous_name='Test Visitor', chatbot_script=self.chatbot_script, user_id=user.id)
+        channel_info = self.make_jsonrpc_request("/im_livechat/get_session", {
+            'anonymous_name': 'Test Visitor',
+            'channel_id': self.livechat_channel.id,
+            'chatbot_script_id': self.chatbot_script.id,
+            'user_id': user.id,
+        })
         discuss_channel = self.env['discuss.channel'].sudo().browse(channel_info['id'])
 
         self._post_answer_and_trigger_next_step(

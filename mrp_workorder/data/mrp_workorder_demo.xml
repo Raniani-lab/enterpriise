@@ -41,6 +41,17 @@
         <field name="product_ids" eval="[(4, ref('mrp.product_product_computer_desk'))]"/>
         <field name="picking_type_ids" model="stock.warehouse" eval="[(4, obj().env.ref('stock.warehouse0').manu_type_id.id)]"/>
         <field name="operation_id" ref="mrp.mrp_routing_workcenter_5"/>
+        <field name="test_type_id" ref="mrp_workorder.test_type_register_production"/>
+        <field name="note">Generate a new Serial Number for the assembled product.</field>
+        <field name="title">Generate Serial Number</field>
+        <field name="worksheet_page">0</field>
+        <field name="sequence">8</field>
+    </record>
+
+    <record id="quality_point_register_production" model="quality.point">
+        <field name="product_ids" eval="[(4, ref('mrp.product_product_computer_desk'))]"/>
+        <field name="picking_type_ids" model="stock.warehouse" eval="[(4, obj().env.ref('stock.warehouse0').manu_type_id.id)]"/>
+        <field name="operation_id" ref="mrp.mrp_routing_workcenter_5"/>
         <field name="test_type_id" ref="quality.test_type_instructions"/>
         <field name="note">Please attach the legs to the table as shown below.</field>
         <field name="title">Table Legs</field>
@@ -55,7 +66,7 @@
         <field name="test_type_id" ref="mrp_workorder.test_type_print_label"/>
         <field name="title">Print Labels</field>
         <field name="worksheet_page">0</field>
-        <field name="sequence">8</field>
+        <field name="sequence">9</field>
     </record>
 
     <record id="mrp.mrp_routing_workcenter_1" model="mrp.routing.workcenter">

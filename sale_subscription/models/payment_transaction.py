@@ -118,6 +118,12 @@ class PaymentTransaction(models.Model):
         res = super(PaymentTransaction, transaction_to_invoice)._invoice_sale_orders()
         return res
 
+    def _finalize_post_processing(self):
+        for tx in self:
+            if tx.operation == 'validation' and tx.subscription_action == 'assign_token':
+                tx.sale_order_ids._assign_token(tx)
+        super()._finalize_post_processing()
+
     def _post_subscription_action(self):
         """
         Execute the subscription action once the transaction is in an acceptable state

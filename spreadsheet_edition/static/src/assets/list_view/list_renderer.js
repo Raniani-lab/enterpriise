@@ -54,6 +54,7 @@ patch(ListRenderer.prototype, {
                 (col) =>
                     col.type === "field" &&
                     col.field.component !== HandleField &&
+                    !col.relatedPropertyField &&
                     fields[col.name].type !== "binary"
             )
             .map((col) => ({ name: col.name, type: fields[col.name].type }));

@@ -73,6 +73,7 @@ export async function spawnListViewForSpreadsheet(params = {}) {
  * @param {object} [params.serverData] Data to be injected in the mock server
  * @param {function} [params.mockRPC] Mock rpc function
  * @param {object[]} [params.orderBy] orderBy argument
+ * @param {(fixture: HTMLElement) => Promise<void>} [params.actions] orderBy argument
  * @param {number} [params.linesNumber]
  *
  * @returns {Promise<{model: Model, webClient: object, env: object}>}
@@ -97,6 +98,9 @@ export async function createSpreadsheetFromListView(params = {}) {
         orderBy: params.orderBy,
     });
     const target = getFixture();
+    if (params.actions) {
+        await params.actions(target);
+    }
     /** Put the current list in a new spreadsheet */
     await toggleActionMenu(target);
     await toggleCogMenuSpreadsheet(target);

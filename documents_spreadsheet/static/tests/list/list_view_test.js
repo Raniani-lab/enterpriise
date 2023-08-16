@@ -55,6 +55,51 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
         assert.deepEqual(model.getters.getListDefinition("1").columns, ["bar"]);
     });
 
+    QUnit.test("property fields are not exported", async (assert) => {
+        const data = getBasicData();
+        const propertyDefinition = {
+            type: "char",
+            name: "property_char",
+            string: "Property char",
+        };
+        const product = data.product.records[0];
+        product.properties_definitions = [propertyDefinition];
+        data.partner.records = [
+            {
+                id: 1,
+                bar: true,
+                product_id: product.id,
+                partner_properties: [{ ...propertyDefinition, value: "CHAR" }],
+            },
+        ];
+        const { model } = await createSpreadsheetFromListView({
+            actions: async (fixture) => {
+                // display the property which is an optional column
+                await click(fixture, ".o_optional_columns_dropdown_toggle");
+                await click(fixture, ".o_optional_columns_dropdown input[type='checkbox']");
+                assert.containsOnce(
+                    fixture,
+                    ".o_list_renderer th[data-name='partner_properties.property_char']"
+                );
+                assert.step("display_property");
+            },
+            serverData: {
+                models: data,
+                views: {
+                    "partner,false,list": /*xml*/ `
+                        <tree>
+                            <field name="product_id"/>
+                            <field name="bar"/>
+                            <field name="partner_properties"/>
+                        </tree>`,
+                    "partner,false,search": "<search/>",
+                },
+            },
+        });
+        assert.deepEqual(model.getters.getListDefinition("1").columns, ["product_id", "bar"]);
+        assert.verifySteps(["display_property"]);
+    });
+
     QUnit.test("Open list properties properties", async function (assert) {
         const { model, env } = await createSpreadsheetFromListView();
 

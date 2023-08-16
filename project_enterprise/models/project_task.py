@@ -347,7 +347,7 @@ class Task(models.Model):
         sorted_tasks = self.sorted('priority', reverse=True)
         if (vals.get('user_ids') and len(vals['user_ids']) == 1) or ('user_ids' not in vals and len(self.user_ids) == 1):
             user = self.env['res.users'].browse(vals.get('user_ids', self.user_ids.ids))
-            tz_info = user.tz or self._context.get('tz', 'UTC')
+            tz_info = user.tz or self._context.get('tz') or 'UTC'
             dependencies_dict = {  # contains a task as key and the list of tasks before this one as values
                 task:
                     [t for t in self if t != task and t in task.depend_on_ids]

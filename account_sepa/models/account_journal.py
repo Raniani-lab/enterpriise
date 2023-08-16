@@ -306,9 +306,13 @@ class AccountJournal(models.Model):
         Ctry = etree.SubElement(PstlAdr, "Ctry")
         Ctry.text = partner_id.country_id.code
         if self.sepa_pain_version != "pain.001.001.09":
-            for address_field in address_fields:
-                partner_element = etree.SubElement(PstlAdr, "AdrLine")
-                partner_element.text = address_field[1]
+            # Some banks seem allergic to having the zip in a separate tag, so we do as before
+            if partner_id.street:
+                AdrLine = etree.SubElement(PstlAdr, "AdrLine")
+                AdrLine.text = sanitize_communication(partner_id.street[:70])
+            if partner_id.zip and partner_id.city:
+                AdrLine = etree.SubElement(PstlAdr, "AdrLine")
+                AdrLine.text = sanitize_communication((partner_id.zip + " " + partner_id.city)[:70])
 
         return PstlAdr
 

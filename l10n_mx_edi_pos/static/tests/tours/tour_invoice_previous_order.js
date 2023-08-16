@@ -82,8 +82,8 @@ registry.category("web_tour.tours").add('l10n_mx_edi_pos.tour_invoice_previous_o
         trigger: ".button.confirm",
     },
     {
-        content: "There should be the refund button",
-        trigger: ".validation.pay-order-button",
+        content: "The 'Invoice' button should have now turned to 'Reprint Invoice'",
+        trigger: "span:contains('Reprint Invoice')",
         isCheck: true,
     },
 ]});

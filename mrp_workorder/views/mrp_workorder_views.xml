@@ -287,9 +287,6 @@ if env.user.has_group('mrp.group_mrp_workorder_dependencies'):
         <field name="model">mrp.workorder</field>
         <field name="inherit_id" ref="mrp.workcenter_line_kanban"/>
         <field name="arch" type="xml">
-            <kanban position="attributes">
-                <attribute name="js_class">tablet_kanban_view</attribute>
-            </kanban>
             <xpath expr="//t[@name='user_avatar']" position="after">
                 <t t-if="record.employee_ids.raw_value"><field name="employee_ids" widget="list.many2many_avatar_user"/></t>
             </xpath>

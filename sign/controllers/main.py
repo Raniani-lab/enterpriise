@@ -97,7 +97,7 @@ class Sign(http.Controller):
             'sign_item_select_options': sign_request.template_id.sign_item_ids.mapped('option_ids'),
             'refusal_allowed': sign_request.refusal_allowed and sign_request.state == 'sent',
             'portal': post.get('portal'),
-            'company_id': (sign_request.communication_company_id or self.env.company).id,
+            'company_id': (sign_request.communication_company_id or sign_request.create_uid.company_id).id,
         }
 
     # -------------

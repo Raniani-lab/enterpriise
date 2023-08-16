@@ -166,14 +166,14 @@ class HrContract(models.Model):
                 contract.wishlist_car_total_depreciated_cost = car_model.default_total_depreciated_cost
 
 
-    @api.depends('bike_id', 'new_bike_model_id', 'bike_id.total_depreciated_cost',
+    @api.depends('new_bike', 'bike_id', 'new_bike_model_id', 'bike_id.total_depreciated_cost',
         'bike_id.co2_fee', 'new_bike_model_id.default_total_depreciated_cost', 'transport_mode_bike')
     def _compute_company_bike_depreciated_cost(self):
         for contract in self:
             contract.company_bike_depreciated_cost = False
-            if not contract.new_bike and contract.bike_id:
+            if not contract.new_bike and contract.transport_mode_bike and contract.bike_id:
                 contract.company_bike_depreciated_cost = contract.bike_id.total_depreciated_cost
-            elif contract.new_bike and contract.new_bike_model_id:
+            elif not contract.transport_mode_bike and contract.new_bike and contract.new_bike_model_id:
                 contract.company_bike_depreciated_cost = contract.new_bike_model_id.default_recurring_cost_amount_depreciated
 
     @api.depends('car_id.log_contracts.state')

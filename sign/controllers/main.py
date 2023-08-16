@@ -133,12 +133,16 @@ class Sign(http.Controller):
             return request.not_found()
         return request.redirect('/sign/document/mail/%s/%s' % (sign_request_item.sign_request_id.id, sign_request_item.access_token))
 
-    @http.route(["/sign/document/mail/<int:id>/<token>"], type='http', auth='public')
-    def sign_document_from_mail(self, id, token):
+    @http.route(["/sign/document/mail/<int:id>/<token>"], type='http', auth='public', website=True)
+    def sign_document_from_mail(self, id, token, **post):
         sign_request = request.env['sign.request'].sudo().browse(id)
         if not sign_request or sign_request.validity and sign_request.validity < fields.Date.today():
             return http.request.render('sign.deleted_sign_request')
         current_request_item = sign_request.request_item_ids.filtered(lambda r: consteq(r.access_token, token))
+
+        if sign_request.state != 'shared' and not current_request_item._validate_expiry(post.get('timestamp'), post.get('exp')):
+            return request.render('sign.sign_request_expired', {'resend_expired_link': '/sign/resend_expired_link/%s/%s' % (id, token)}, status=403)
+
         current_request_item.access_via_link = True
         return request.redirect('/sign/document/%s/%s' % (id, token))
 
@@ -250,6 +254,21 @@ class Sign(http.Controller):
         request_item.sign_request_id._generate_completed_document(password)
         request_item.sign_request_id._send_completed_document()
         return request.redirect('/sign/document/%(request_id)s/%(access_token)s' % {'request_id': sign_request_id, 'access_token': token})
+
+    @http.route(['/sign/resend_expired_link/<int:id>/<token>'], type='http', auth='public', website=True)
+    def resend_expired_link(self, id, token):
+        sign_request = request.env['sign.request'].sudo().browse(id)
+        if not sign_request:
+            return http.request.render('sign.deleted_sign_request')
+        current_request_item = sign_request.request_item_ids.filtered(lambda r: consteq(r.access_token, token))
+
+        current_request_item.send_signature_accesses()
+
+        return request.render('sign.sign_request_expired', {
+            'state': 'sent',
+            'resend_expired_link': '/sign/resend_expired_link/%s/%s' % (id, token),
+            'email': current_request_item.signer_email,
+        })
 
     # -------------
     #  JSON Routes

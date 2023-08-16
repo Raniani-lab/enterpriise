@@ -21,16 +21,18 @@ from reportlab.pdfgen import canvas
 from reportlab.platypus import Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.pdfbase.pdfmetrics import stringWidth
-from werkzeug.urls import url_join, url_quote
+from werkzeug.urls import url_join, url_quote, url_encode
 from random import randint
 from markupsafe import Markup
 from hashlib import sha256
 from PIL import UnidentifiedImageError
 from dateutil.relativedelta import relativedelta
+from datetime import timedelta
 
 from odoo import api, fields, models, http, _, Command
-from odoo.tools import config, email_normalize, get_lang, is_html_empty, format_date, formataddr, groupby
+from odoo.tools import config, email_normalize, get_lang, is_html_empty, format_date, formataddr, groupby, consteq
 from odoo.exceptions import UserError, ValidationError
+from odoo.tools.misc import hmac
 
 TTFSearchPath.append(os.path.join(config["root_path"], "..", "addons", "web", "static", "fonts", "sign"))
 
@@ -901,9 +903,14 @@ class SignRequestItem(models.Model):
             context = {'lang': signer_lang}
             # We hide the validity information if it is the default (6 month from the create_date)
             has_default_validity = signer.sign_request_id.validity and signer.sign_request_id.validity - relativedelta(months=6) == signer.sign_request_id.create_date.date()
+            expiry_link_timestamp = signer._generate_expiry_link_timestamp()
+            url_params = url_encode({
+                'timestamp': expiry_link_timestamp,
+                'exp': signer._generate_expiry_signature(signer.id, expiry_link_timestamp)
+            })
             body = self.env['ir.qweb']._render('sign.sign_template_mail_request', {
                 'record': signer,
-                'link': url_join(signer.get_base_url(), "sign/document/mail/%(request_id)s/%(access_token)s" % {'request_id': signer.sign_request_id.id, 'access_token': signer.sudo().access_token}),
+                'link': url_join(signer.get_base_url(), "sign/document/mail/%(request_id)s/%(access_token)s?%(url_params)s" % {'request_id': signer.sign_request_id.id, 'access_token': signer.sudo().access_token, 'url_params': url_params}),
                 'subject': signer.sign_request_id.subject,
                 'body': signer.sign_request_id.message if not is_html_empty(signer.sign_request_id.message) else False,
                 'use_sign_terms': self.env['ir.config_parameter'].sudo().get_param('sign.use_sign_terms'),
@@ -1142,6 +1149,30 @@ class SignRequestItem(models.Model):
         super(SignRequestItem, self)._compute_access_url()
         for signature_request in self:
             signature_request.access_url = '/my/signature/%s' % signature_request.id
+
+    @api.model
+    def _generate_expiry_link_timestamp(self):
+        duration = int(self.env['ir.config_parameter'].sudo().get_param('sign.link_expiry_duration', 48))
+        expiry_date = fields.Datetime.now() + timedelta(hours=duration)
+        return int(expiry_date.timestamp())
+
+    @api.model
+    def _generate_expiry_signature(self, sign_request_item_id, timestamp):
+        return hmac(self.env(su=True), "sign_expiration", (timestamp, sign_request_item_id))
+
+    def _validate_expiry(self, exp_timestamp, exp_hash):
+        """ Validates if the expiry code is still valid
+        :param float exp_timestamp: a timestamp provided by the user in the URL params
+        :param str exp_hash: code provided in the URL to be checked
+        """
+        self.ensure_one()
+        if not (exp_timestamp and exp_hash):
+            return False
+        exp_timestamp = int(exp_timestamp)
+        now = fields.Datetime.now().timestamp()
+        if now > exp_timestamp:
+            return False
+        return consteq(exp_hash, self._generate_expiry_signature(self.id, exp_timestamp))
 
     @api.depends('state')
     def _compute_color(self):

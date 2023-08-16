@@ -277,19 +277,21 @@ class MrpProductionWorkcenterLine(models.Model):
             main_employee = self.env['hr.employee'].get_session_owner()
             if not main_employee:
                 raise UserError(_("There is no session chief. Please log in."))
-            if main_employee not in [emp.id for emp in self.allowed_employees] and not self.all_employees_allowed:
+            if any(main_employee not in [emp.id for emp in wo.allowed_employees] and not wo.all_employees_allowed for wo in self):
                 raise UserError(_("You are not allowed to work on the workorder"))
 
         res = super().button_start()
-        if len(self.time_ids) == 1 or all(self.time_ids.mapped('date_end')):
-            for check in self.check_ids:
-                if check.component_id:
-                    check._update_component_quantity()
 
-        if not skip_employee_check:
-            if len(self.allowed_employees) == 0 or main_employee in [emp.id for emp in self.allowed_employees]:
-                self.start_employee(self.env['hr.employee'].browse(main_employee).id)
-                self.employee_ids |= self.env['hr.employee'].browse(main_employee)
+        for wo in self:
+            if len(wo.time_ids) == 1 or all(wo.time_ids.mapped('date_end')):
+                for check in wo.check_ids:
+                    if check.component_id:
+                        check._update_component_quantity()
+
+            if not skip_employee_check:
+                if len(wo.allowed_employees) == 0 or main_employee in [emp.id for emp in wo.allowed_employees]:
+                    wo.start_employee(self.env['hr.employee'].browse(main_employee).id)
+                    wo.employee_ids |= self.env['hr.employee'].browse(main_employee)
 
         return res
 

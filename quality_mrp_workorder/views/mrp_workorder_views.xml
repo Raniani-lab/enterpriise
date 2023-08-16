@@ -6,7 +6,7 @@
         <field name="model">mrp.workorder</field>
         <field name="inherit_id" ref="mrp.mrp_production_workorder_tree_editable_view"/>
         <field name="arch" type="xml">
-            <xpath expr="//button[@name='button_start']" position="before">
+            <xpath expr="//tree/button[@name='button_start']" position="before">
                 <field name="quality_state" invisible="1"/>
                 <field name="test_type" invisible="1"/>
             </xpath>

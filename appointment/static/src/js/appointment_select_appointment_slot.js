@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import publicWidget from "@web/legacy/js/public/public_widget";
-import { renderToElement } from "@web/core/utils/render";
+import { renderToElement, renderToFragment } from "@web/core/utils/render";
 
 publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
     selector: '.o_appointment',
@@ -161,12 +161,15 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
             commonUrlParams.set('resource_selected_id', encodeURIComponent(resourceId));
         }
 
-        this.$slotsList.empty().append(renderToElement('appointment.slots_list', {
+        this.$slotsList.empty().append(renderToFragment('appointment.slots_list', {
             commonUrlParams: commonUrlParams,
             resourceAssignMethod: resourceAssignMethod,
             scheduleBasedOn: scheduleBasedOn,
             slotDate: moment(slotDate).format("dddd D MMMM YYYY"),
             slots: slots,
+            getAvailableResources: (slot) => {
+                return scheduleBasedOn === 'resources' ? JSON.stringify(slot['available_resources']) : false;
+            }
         }));
         this.$resourceSelection.addClass('d-none');
     },
@@ -187,11 +190,12 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
                 `/appointment/${encodeURIComponent(appointmentTypeID)}/info?${urlParameters}`,
                 location.origin);
             document.location = encodeURI(url.href);
+            return;
         }
 
         const availableResources = this.$(ev.currentTarget).data('available_resources');
         const previousResourceIdSelected = this.$("select[name='resource_id']").val();
-        this.$('#resourceSelection').empty().append(renderToElement('appointment.resources_list', {
+        this.$('#resourceSelection').empty().append(renderToFragment('appointment.resources_list', {
             availableResources: availableResources,
         }));
         this.$("select[name='resource_id']").attr('disabled', availableResources.length === 1);

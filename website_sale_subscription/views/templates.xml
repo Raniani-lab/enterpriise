@@ -5,9 +5,7 @@
                 inherit_id="website_sale.price_dynamic_filter_template_product_product">
         <xpath expr="//del" position="after">
             <span t-if="record.recurring_invoice and data.get('is_subscription', False) and data.get('is_recurrence_possible', False)" class="fw-bold">
-                <span>per</span>
-                <span t-if="data.get('subscription_duration') > 1" t-esc="data.get('subscription_duration')"/>
-                <span t-esc="data.get('subscription_unit')"/>
+                <span t-esc="data.get('subscription_unit_display')"/>
             </span>
         </xpath>
     </template>

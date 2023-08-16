@@ -12,8 +12,8 @@ class StockMove(models.Model):
     def _update_reserved_quantity(self, need, location_id, quant_ids=None, lot_id=None, package_id=None, owner_id=None, strict=True):
         if self.product_id.tracking == 'none':
             return super()._update_reserved_quantity(need, location_id, quant_ids=quant_ids, lot_id=lot_id, package_id=package_id, owner_id=owner_id, strict=strict)
-        lot = self.sale_line_id.sudo().fsm_lot_id
-        if lot:
+        lot = self.sale_line_id.sudo().fsm_lot_id or lot_id
+        if lot and self.product_id.tracking != "serial":
             return super()._update_reserved_quantity(need, location_id, quant_ids=quant_ids, lot_id=lot, package_id=package_id, owner_id=owner_id, strict=strict)
 
         so_lines_with_fsm_lot = self.group_id.stock_move_ids.sale_line_id.sudo().filtered(lambda l: l.product_id == self.product_id and l.fsm_lot_id)
@@ -44,3 +44,11 @@ class StockMove(models.Model):
 
         reserved += super()._update_reserved_quantity(need, location_id, quant_ids=quant_ids, lot_id=lot_id, package_id=package_id, owner_id=owner_id, strict=strict)
         return reserved
+
+    def _add_serial_move_line_to_vals_list(self, reserved_quant, quantity):
+        if self.sale_line_id.fsm_lot_id:
+            for line in self.move_line_ids:
+                if line.lot_id == self.sale_line_id.fsm_lot_id and line.qty_done == 1 and line.reserved_uom_qty == 0:
+                    line.reserved_uom_qty = 1
+                    return False
+        return super()._add_serial_move_line_to_vals_list(reserved_quant, quantity)

@@ -68,7 +68,7 @@ class ProductProduct(models.Model):
                         vals = {
                             'product_uom_qty': all_editable_lines[0].product_uom_qty + diff_qty,
                         }
-                        if all_editable_lines[0].qty_delivered_method == 'manual':
+                        if product.service_type == 'manual':
                             vals['qty_delivered'] = all_editable_lines[0].product_uom_qty + diff_qty
                         all_editable_lines[0].with_context(fsm_no_message_post=True).write(vals)
                         continue
@@ -76,12 +76,9 @@ class ProductProduct(models.Model):
                     for line in all_editable_lines:
                         new_line_qty = max(0, line.product_uom_qty + diff_qty)
                         diff_qty += line.product_uom_qty - new_line_qty
-                        vals = {
-                            'product_uom_qty': new_line_qty
-                        }
-                        if line.qty_delivered_method == 'manual':
-                            vals['qty_delivered'] = new_line_qty
-                        line.with_context(fsm_no_message_post=True).write(vals)
+                        if product.service_type == 'manual':
+                            line.with_context(fsm_no_message_post=True).qty_delivered = new_line_qty
+                        line.with_context(fsm_no_message_post=True).product_uom_qty = new_line_qty
                         if diff_qty == 0:
                             break
                 elif diff_qty > 0:  # create new SOL
@@ -95,11 +92,9 @@ class ProductProduct(models.Model):
                     if product.service_type == 'manual':
                         vals['qty_delivered'] = diff_qty
 
-                    sol = SaleOrderLine_sudo.create(vals)
+                    sol_sudo = SaleOrderLine_sudo.create(vals)
                     if task.sale_order_id.pricelist_id.discount_policy != 'without_discount':
-                        sol.discount = 0.0
-                    if not sol.qty_delivered_method == 'manual':
-                        sol.qty_delivered = 0
+                        sol_sudo.discount = 0.0
 
     @api.model
     def _search_fsm_quantity(self, operator, value):
@@ -147,14 +142,14 @@ class ProductProduct(models.Model):
             return False
         # ensure that the task is linked to a sale order
         task._fsm_ensure_sale_order()
-        wizard_product_lot = self.action_assign_serial()
+        wizard_product_lot = self.action_assign_serial(from_onchange=True)
         if wizard_product_lot:
             return wizard_product_lot
         self.fsm_quantity = float_round(quantity, precision_rounding=self.uom_id.rounding)
         return True
 
     # Is override by fsm_stock to manage lot
-    def action_assign_serial(self):
+    def action_assign_serial(self, from_onchange=False):
         return False
 
     def fsm_add_quantity(self):

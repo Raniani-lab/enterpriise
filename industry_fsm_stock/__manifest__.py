@@ -22,6 +22,9 @@ Validate stock moves for Field Service
         'web.qunit_suite_tests': [
             'industry_fsm_stock/static/tests/**/*',
         ],
+        'web.assets_tests': [
+            'industry_fsm_stock/static/tests/tours/**/*',
+        ],
     },
     'auto_install': True,
     'license': 'OEEL-1',

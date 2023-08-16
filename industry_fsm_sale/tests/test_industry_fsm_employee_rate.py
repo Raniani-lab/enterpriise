@@ -74,7 +74,8 @@ class TestIndustryFsmEmployeeRate(TestFsmFlowSaleCommon):
                 }),
             ]
         })
-        task.sale_order_id.action_confirm()
+        if task.sale_order_id.state != 'sale':
+            task.sale_order_id.action_confirm()
         self.assertEqual(len(task.sale_order_id.order_line), 2)
         service_timesheet_order_line = task.sale_order_id.order_line.filtered(lambda order_line: order_line.product_id == self.service_timesheet)
 

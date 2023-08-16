@@ -1406,8 +1406,10 @@ class BankRecWidget(models.Model):
             if new_aml.currency_id == self.company_currency_id and self.transaction_currency_id != self.company_currency_id:
                 # The reconciliation will be expressed using the foreign currency of the transaction to cover the
                 # Mexican case.
+                is_new_aml_payment = bool(new_aml.source_aml_move_id.statement_line_id or new_aml.source_aml_move_id.payment_id)
+                exchange_rate_date = new_aml.date if is_new_aml_payment else self.st_line_id.date
                 aml_rate_at_st_line_date = self.env['res.currency']\
-                    ._get_conversion_rate(self.company_currency_id, self.transaction_currency_id, self.company_id, new_aml.date)
+                    ._get_conversion_rate(self.company_currency_id, self.transaction_currency_id, self.company_id, exchange_rate_date)
                 amount_currency_in_st_line_curr = self.transaction_currency_id.round(new_aml.balance * aml_rate_at_st_line_date)
                 if amounts_in_st_curr['balance']:
                     st_line_rate = abs(amounts_in_st_curr['amount_currency']) / abs(amounts_in_st_curr['balance'])

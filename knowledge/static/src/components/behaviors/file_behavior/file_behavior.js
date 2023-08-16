@@ -1,5 +1,6 @@
-/** @odoo-module */
+/** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { AbstractBehavior } from "@knowledge/components/behaviors/abstract_behavior/abstract_behavior";
 import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { AttachToMessageMacro, UseAsAttachmentMacro } from "@knowledge/macros/file_macros";
@@ -64,10 +65,10 @@ export class FileBehavior extends AbstractBehavior {
             });
         } catch {
             this.dialogService.add(AlertDialog, {
-                body: this.env._t('Oops, the file %s could not be found. Please replace this file box by a new one to re-upload the file.', title),
-                title: this.env._t('Missing File'),
+                body: _t('Oops, the file %s could not be found. Please replace this file box by a new one to re-upload the file.', title),
+                title: _t('Missing File'),
                 confirm: () => {},
-                confirmLabel: this.env._t('Ok'),
+                confirmLabel: _t('Ok'),
             });
         }
     }

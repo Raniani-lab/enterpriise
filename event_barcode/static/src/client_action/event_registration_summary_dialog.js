@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { Component } from "@odoo/owl";
 import { Dialog } from "@web/core/dialog/dialog";
 import { useService } from "@web/core/utils/hooks";
@@ -21,7 +22,7 @@ export class EventRegistrationSummaryDialog extends Component {
 
     async onRegistrationConfirm() {
         await this.orm.call("event.registration", "action_set_done", [this.registration.id]);
-        this.notification.add(this.env._t("Registration confirmed"));
+        this.notification.add(_t("Registration confirmed"));
         this.props.close();
     }
 

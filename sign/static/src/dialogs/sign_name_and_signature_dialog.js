@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 /* global html2canvas */
 
 import { Dialog } from "@web/core/dialog/dialog";
@@ -127,7 +128,7 @@ export class SignNameAndSignatureDialog extends Component {
 
     get dialogProps() {
         return {
-            title: this.env._t("Adopt Your Signature"),
+            title: _t("Adopt Your Signature"),
             size: "md",
         };
     }

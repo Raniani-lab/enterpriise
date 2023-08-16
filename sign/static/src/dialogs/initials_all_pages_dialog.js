@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { Component, useRef } from "@odoo/owl";
 import { Dialog } from "@web/core/dialog/dialog";
 
@@ -25,7 +26,7 @@ export class InitialsAllPagesDialog extends Component {
     get dialogProps() {
         return {
             size: "md",
-            title: this.env._t("Add Initials"),
+            title: _t("Add Initials"),
         };
     }
 }

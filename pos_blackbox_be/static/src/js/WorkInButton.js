@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
     import PosComponent from "point_of_sale.PosComponent";
     import ProductScreen from "point_of_sale.ProductScreen";
     import { useListener } from "@web/core/utils/hooks";
@@ -36,8 +37,8 @@
             let unpaid_tables = this.env.pos.db.load('unpaid_orders', []).filter(function (order) { return order.data.amount_total > 0; }).map(function (order) { return order.data.table; });
             if(unpaid_tables.length > 0) {
                 await this.showPopup('ErrorPopup', {
-                    title: this.env._t("Fiscal Data Module error"),
-                    body: this.env._t("Tables %s still have unpaid orders. You will not be able to clock out until all orders have been paid."),
+                    title: _t("Fiscal Data Module error"),
+                    body: _t("Tables %s still have unpaid orders. You will not be able to clock out until all orders have been paid."),
                 });
                 return;
             }

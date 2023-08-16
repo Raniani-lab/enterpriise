@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
     <t t-name="mrp_workorder.MenuPopup">
+        <t t-set="update_instructions">Update Instructions</t>
+        <t t-set="feedback_created">Your New Instructions feedback was created</t>
+        <t t-set="remove_step">Remove Step</t>
+        <t t-set="feedback_to_delete">Your feedback to delete this step was created</t>
         <div role="dialog" class="popup">
             <div class="popup-selection">
                 <header class="title h3" t-esc="title">
@@ -19,8 +23,8 @@
                 <div t-if="props.popupData.has_bom" class="o_mrp_menu_dialog position-absolute top-0 start-100">
                     <button class="o_modal_back" t-on-click="worksheetSuggestion"><i class="oi oi-chevron-left"/> Back</button>
                     <t t-if="step">
-                        <button class="btn btn-outline-secondary d-flex justify-content-between align-items-center p-3 fs-3" t-on-click="() => this.proposeChange('update_step', env._t('Update Instructions'), env._t('Your New Instructions feedback was created'))">Update Instructions <i class="oi oi-chevron-right"/></button>
-                        <button class="btn btn-outline-secondary d-flex justify-content-between align-items-center p-3 fs-3" t-on-click="() => this.proposeChange('remove_step', env._t('Remove Step'), env._t('Your feedback to delete this step was created'))">Delete this Step <i class="oi oi-chevron-right"/></button>
+                        <button class="btn btn-outline-secondary d-flex justify-content-between align-items-center p-3 fs-3" t-on-click="() => this.proposeChange('update_step', update_instructions, feedback_created)">Update Instructions <i class="oi oi-chevron-right"/></button>
+                        <button class="btn btn-outline-secondary d-flex justify-content-between align-items-center p-3 fs-3" t-on-click="() => this.proposeChange('remove_step', remove_step, feedback_to_delete)">Delete this Step <i class="oi oi-chevron-right"/></button>
                     </t>
                     <button class="btn btn-outline-secondary d-flex justify-content-between align-items-center p-3 fs-3" t-on-click="() => this.callAction('action_add_step')">Add a Step <i class="oi oi-chevron-right"/></button>
                     <t t-if="step">

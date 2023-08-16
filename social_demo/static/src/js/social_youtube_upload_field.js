@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { YoutubeUploadField } from '@social_youtube/js/social_youtube_upload_field';
 
 import { patch } from "@web/core/utils/patch";
@@ -14,7 +15,7 @@ patch(YoutubeUploadField.prototype, {
      * @private
      */
     async _onFileChanged(e) {
-        this.notification.add(this.env._t('You cannot upload videos in demo mode.'), {
+        this.notification.add(_t('You cannot upload videos in demo mode.'), {
             type: 'info',
         });
     }

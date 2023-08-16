@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import {
     Component,
     onWillRender,
@@ -1262,7 +1263,7 @@ export class GanttRenderer extends Component {
             context,
             template: this.popoverTemplate,
             button: {
-                text: canEdit ? this.env._t("Edit") : this.env._t("View"),
+                text: canEdit ? _t("Edit") : _t("View"),
                 // Sync with the mutex to wait for potential changes on the view
                 onClick: () =>
                     this.model.mutex.exec(
@@ -1341,7 +1342,7 @@ export class GanttRenderer extends Component {
         const domain = this.getPlanDialogDomain();
         const schedule = this.model.getDialogContext(params);
         return {
-            title: this.env._t("Plan"),
+            title: _t("Plan"),
             resModel: this.model.metaData.resModel,
             context: schedule,
             domain,
@@ -1362,7 +1363,7 @@ export class GanttRenderer extends Component {
             id: "[]",
             isGroup: true,
             rows: [],
-            name: this.env._t("Total"),
+            name: _t("Total"),
         };
 
         this.topOffset = 0;

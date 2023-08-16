@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { AddSocialStreamDialog } from './add_stream_modal';
 import { NewContentRefreshBanner } from './stream_post_kanban_refresh_banner';
 import { StreamPostDashboard } from './stream_post_kanban_dashboard';
@@ -59,7 +60,7 @@ export class StreamPostKanbanController extends KanbanController {
 
     _onNewPost() {
         this.actionService.doAction({
-            name: this.env._t('New Post'),
+            name: _t('New Post'),
             type: 'ir.actions.act_window',
             res_model: 'social.post',
             views: [[false, "form"]],
@@ -71,7 +72,7 @@ export class StreamPostKanbanController extends KanbanController {
             this._addNewStream();
         } else {
             this.notification.add(
-                this.env._t("No social accounts configured, please contact your administrator."),
+                _t("No social accounts configured, please contact your administrator."),
                 { type: 'danger' }
             );
         }
@@ -80,7 +81,7 @@ export class StreamPostKanbanController extends KanbanController {
     _addNewStream() {
         this._fetchSocialMedia().then((socialMedia) =>
             this.dialog.add(AddSocialStreamDialog, {
-                title: this.env._t('Add a Stream'),
+                title: _t('Add a Stream'),
                 isSocialManager: this.isSocialManager,
                 socialMedia: socialMedia,
                 socialAccounts: this.accounts,
@@ -100,8 +101,8 @@ export class StreamPostKanbanController extends KanbanController {
             ['name']);
         if (streams.length) {
             this.notification.add(
-                this.env._t("It will appear in the Feed once it has posts to display."),
-                { title: this.env._t("Stream Added (%s)", streams[0].name), type: "success" }
+                _t("It will appear in the Feed once it has posts to display."),
+                { title: _t("Stream Added (%s)", streams[0].name), type: "success" }
             );
         } else {
             this.model.load();

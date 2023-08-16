@@ -1,5 +1,6 @@
-/** @odoo-module */
+/** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { Domain } from "@web/core/domain";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
@@ -202,7 +203,7 @@ export class GridRenderer extends Component {
     get measureLabel() {
         const measureFieldName = this.props.model.measureFieldName;
         if (measureFieldName === "__count") {
-            return this.env._t("Total");
+            return _t("Total");
         }
         return (
             this.props.measureField.string || this.props.model.fieldsInfo[measureFieldName].string
@@ -240,7 +241,7 @@ export class GridRenderer extends Component {
         const context = {
             ...(section?.context || {}),
         };
-        const title = this.env._t("Add a Line");
+        const title = _t("Add a Line");
         this.props.createRecord({ context, title });
     }
 
@@ -474,7 +475,7 @@ export class GridRenderer extends Component {
                 context,
             });
         } else {
-            const noActivitiesFound = this.env._t("No activities found");
+            const noActivitiesFound = _t("No activities found");
             // retrieve form and list view ids from the action
             const { views = [] } = this.env.config;
             const openRecordsViews = ["list", "form"].map((viewType) => {

@@ -1,4 +1,6 @@
 /** @odoo-module **/
+
+import { _t } from "@web/core/l10n/translation";
 import { onMounted, onWillUnmount } from "@odoo/owl";
 
 import { registry } from "@web/core/registry";
@@ -38,10 +40,7 @@ export class StudioNavbar extends EnterpriseNavBar {
             } catch (e) {
                 if (e instanceof NotEditableActionError) {
                     const options = { type: "danger" };
-                    this.notification.add(
-                        this.env._t("This action is not editable by Studio"),
-                        options
-                    );
+                    this.notification.add(_t("This action is not editable by Studio"), options);
                     return;
                 }
                 throw e;

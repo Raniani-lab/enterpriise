@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { BarcodeScanner } from "@barcodes/components/barcode_scanner";
 import { Component, onWillStart } from "@odoo/owl";
 import { registry } from "@web/core/registry";
@@ -48,8 +49,8 @@ export class EventScanView extends Component {
         });
 
         if (result.error && result.error === "invalid_ticket") {
-            this.notification.add(this.env._t("Invalid ticket"), {
-                title: this.env._t("Warning"),
+            this.notification.add(_t("Invalid ticket"), {
+                title: _t("Warning"),
                 type: "danger",
             });
         } else {
@@ -78,7 +79,7 @@ export class EventScanView extends Component {
             // messing with menu bar
             this.actionService.doAction({
                 type: "ir.actions.act_window",
-                name: this.env._t("Events"),
+                name: _t("Events"),
                 res_model: "event.event",
                 views: [
                     [false, "kanban"],

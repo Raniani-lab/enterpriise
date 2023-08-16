@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { browser } from "@web/core/browser/browser";
 import { SearchPanel } from "@web/search/search_panel/search_panel";
 import { usePopover } from "@web/core/popover/popover_hook";
@@ -168,7 +169,7 @@ export class DocumentsSearchPanel extends SearchPanel {
 
     async addNewSectionValue(section, parentValue) {
         const resModel = section.fieldName === "folder_id" ? "documents.folder" : "documents.tag";
-        const defaultName = resModel === "documents.folder" ? this.env._t("New Workspace") : this.env._t("New Tag");
+        const defaultName = resModel === "documents.folder" ? _t("New Workspace") : _t("New Tag");
         const createValues = {
             name: defaultName,
         };
@@ -200,7 +201,7 @@ export class DocumentsSearchPanel extends SearchPanel {
         this.action.doAction({
             res_model: resModel,
             res_id: resId,
-            name: this.env._t("Edit"),
+            name: _t("Edit"),
             type: "ir.actions.act_window",
             target: "new",
             views: [[false, "form"]],
@@ -331,9 +332,9 @@ export class DocumentsSearchPanel extends SearchPanel {
             const currentFolder = this.env.searchModel.getSelectedFolder();
             if ((currentFolder.id && !currentFolder.has_write_access) || !value.has_write_access) {
                 return this.notification.add(
-                    this.env._t("You don't have the rights to move documents to that workspace"),
+                    _t("You don't have the rights to move documents to that workspace"),
                     {
-                        title: this.env._t("Access Error"),
+                        title: _t("Access Error"),
                         type: "warning",
                     }
                 );
@@ -342,11 +343,11 @@ export class DocumentsSearchPanel extends SearchPanel {
         const data = JSON.parse(dataTransfer.getData("o_documents_data"));
         if (data.lockedCount) {
             return this.notification.add(
-                this.env._t(
+                _t(
                     "%s file(s) not moved because they are locked by another user",
                     data.lockedCount
                 ),
-                { title: this.env._t("Partial transfer"), type: "warning" }
+                { title: _t("Partial transfer"), type: "warning" }
             );
         }
         if (section.fieldName === "folder_id") {

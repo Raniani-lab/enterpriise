@@ -1,4 +1,6 @@
-/** @odoo-module */
+/** @odoo-module **/
+
+import { _t } from "@web/core/l10n/translation";
 import { NewViewDialog } from "@web_studio/client_action/editor/new_view_dialogs/new_view_dialog";
 import { useService } from "@web/core/utils/hooks";
 import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
@@ -22,7 +24,7 @@ export class MapNewViewDialog extends NewViewDialog {
         );
         if (!this.partnerFields.length) {
             this.dialog.add(AlertDialog, {
-                body: this.env._t("Contact Field Required"),
+                body: _t("Contact Field Required"),
                 contentClass: "o_web_studio_preserve_space",
             });
             this.props.close();

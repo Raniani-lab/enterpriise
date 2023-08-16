@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { templates } from "@web/core/assets";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
@@ -84,7 +85,7 @@ export class InvoiceExtractFormRenderer extends AccountMoveFormRenderer {
             templates,
             props,
             translatableAttributes: ["data-tooltip"],
-            translateFn: this.env._t,
+            translateFn: _t,
         });
     }
 
@@ -234,7 +235,7 @@ export class InvoiceExtractFormRenderer extends AccountMoveFormRenderer {
             {
                 resModel: 'res.partner',
                 context: context,
-                title: this.env._t("Create"),
+                title: _t("Create"),
                 onRecordSaved: (record) => {
                     this.props.record.update({ partner_id: [record.resId] });
                 },

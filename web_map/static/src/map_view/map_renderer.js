@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 /*global L*/
 
 import { renderToString } from "@web/core/utils/render";
@@ -293,7 +294,7 @@ export class MapRenderer extends Component {
                 fieldsView.push({
                     id: this.nextId++,
                     value: record.partner.contact_address_complete,
-                    string: this.env._t("Address"),
+                    string: _t("Address"),
                 });
             }
             return fieldsView;
@@ -302,14 +303,14 @@ export class MapRenderer extends Component {
             fieldsView.push({
                 id: this.nextId++,
                 value: record.display_name,
-                string: this.env._t("Name"),
+                string: _t("Name"),
             });
         }
         if (!this.props.model.metaData.hideAddress) {
             fieldsView.push({
                 id: this.nextId++,
                 value: record.partner.contact_address_complete,
-                string: this.env._t("Address"),
+                string: _t("Address"),
             });
         }
         for (const field of this.props.model.metaData.fieldNamesMarkerPopup) {

@@ -1,5 +1,6 @@
-/** @odoo-module */
+/** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { ArticleSelectionBehaviorDialog } from '@knowledge/components/behaviors/article_behavior_dialog/article_behavior_dialog';
 import { ArticleTemplatePickerDialog } from "@knowledge/components/article_template_picker_dialog/article_template_picker_dialog";
 import { clamp } from "@web/core/utils/numbers";
@@ -600,27 +601,27 @@ export class KnowledgeSidebar extends Component {
             const name = article.name;
             let message;
             if (newPosition.category === 'workspace') {
-                message = this.env._t(
+                message = _t(
                     'Are you sure you want to move "%s%s" to the Workspace? It will be shared with all internal users.',
                     emoji,
-                    name || this.env._t("Untitled")
+                    name || _t("Untitled")
                 );
             } else if (newPosition.category === 'private') {
-                message = this.env._t(
+                message = _t(
                     'Are you sure you want to move "%s%s" to private? Only you will be able to access it.',
                     emoji,
-                    name || this.env._t("Untitled")
+                    name || _t("Untitled")
                 );
             } else if (newPosition.category === 'shared' && newPosition.parentId) {
                 const parent = this.getArticle(newPosition.parentId);
                 const parentEmoji = parent.icon || '';
                 const parentName = parent.name || '';
-                message = this.env._t(
+                message = _t(
                     'Are you sure you want to move "%s%s" under "%s%s"? It will be shared with the same persons.',
                     emoji,
-                    name || this.env._t("Untitled"),
+                    name || _t("Untitled"),
                     parentEmoji,
-                    parentName || this.env._t("Untitled")
+                    parentName || _t("Untitled")
                 );
             }
             this.dialog.add(ConfirmationDialog, {
@@ -673,8 +674,8 @@ export class KnowledgeSidebar extends Component {
             this.dialog.add(
                 ArticleSelectionBehaviorDialog,
                 {
-                    title: this.env._t('Search an Article...'),
-                    confirmLabel: this.env._t('Open'),
+                    title: _t('Search an Article...'),
+                    confirmLabel: _t('Open'),
                     articleSelected: (article) => this.env.openArticle(article.articleId),
                 }
             );
@@ -691,7 +692,7 @@ export class KnowledgeSidebar extends Component {
         let message;
         if (parentId) {
             const parent = this.getArticle(parentId);
-            message = this.env._t(
+            message = _t(
                 'Could not move "%s%s" under "%s%s", because you do not have write permission on the latter.',
                 article.icon || "",
                 article.name,
@@ -699,7 +700,7 @@ export class KnowledgeSidebar extends Component {
                 parent.name
             );
         } else {
-            message = this.env._t(
+            message = _t(
                 'Could not move "%s%s" in the shared section. Only shared articles can be moved in this section.',
                 article.icon || "",
                 article.name

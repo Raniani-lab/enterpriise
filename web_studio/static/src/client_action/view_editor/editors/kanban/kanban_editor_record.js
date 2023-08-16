@@ -1,5 +1,6 @@
-/** @odoo-module */
+/** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { kanbanView } from "@web/views/kanban/kanban_view";
 
 import { KanbanEditorCompiler } from "@web_studio/client_action/view_editor/editors/kanban/kanban_editor_compiler";
@@ -126,7 +127,7 @@ class _KanbanEditorRecord extends KanbanRecord {
 
         if (!fields.length) {
             this.dialogService.add(AlertDialog, {
-                body: this.env._t("You first need to create a many2many field in the form view."),
+                body: _t("You first need to create a many2many field in the form view."),
             });
             return;
         }
@@ -150,7 +151,7 @@ class _KanbanEditorRecord extends KanbanRecord {
 
     onAddDropdown() {
         this.dialogService.add(ConfirmationDialog, {
-            body: this.env._t("Do you want to add a dropdown with colors?"),
+            body: _t("Do you want to add a dropdown with colors?"),
             confirm: () => {
                 this.env.viewEditorModel.doOperation({
                     type: "kanban_dropdown",

@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { markup, useEnv } from "@odoo/owl";
 import { serializeDateTime } from "@web/core/l10n/dates";
 import { useService } from "@web/core/utils/hooks";
@@ -49,7 +50,7 @@ export class PlanningControllerActions {
         if (result) {
             const notificationRemove = this.notifications.add(
                 markup(
-                    `<i class="fa fa-fw fa-check"></i><span class="ms-1">${escape(this.env._t(
+                    `<i class="fa fa-fw fa-check"></i><span class="ms-1">${escape(_t(
                         "The shifts from the previous week have successfully been copied."
                     ))}</span>`
                 ),
@@ -68,7 +69,7 @@ export class PlanningControllerActions {
                             this.toggleHighlightPlannedFilter(false);
                             this.notifications.add(
                                 markup(
-                                    `<i class="fa fa-fw fa-check"></i><span class="ms-1">${escape(this.env._t(
+                                    `<i class="fa fa-fw fa-check"></i><span class="ms-1">${escape(_t(
                                         "The shifts that had been copied from the previous week have successfully been removed."
                                     ))}</span>`
                                 ),
@@ -82,7 +83,7 @@ export class PlanningControllerActions {
             this.toggleHighlightPlannedFilter(result[0]);
         } else {
             this.notifications.add(
-                this.env._t(
+                _t(
                     "There are no shifts planned for the previous week, or they have already been copied."
                 ),
                 { type: "danger" }
@@ -94,7 +95,7 @@ export class PlanningControllerActions {
         const records = this.getRecords();
         if (!records?.length) {
             return this.notifications.add(
-                this.env._t(
+                _t(
                     "The shifts have already been published, or there are no shifts to publish."
                 ),
                 { type: "danger" }
@@ -134,11 +135,11 @@ export class PlanningControllerActions {
     }
 
     autoPlanSuccessNotification() {
-        return this.env._t("The open shifts have been successfully assigned.");
+        return _t("The open shifts have been successfully assigned.");
     }
 
     autoPlanFailureNotification() {
-        return this.env._t(
+        return _t(
             "All open shifts have already been assigned, or there are no resources available to take them at this time."
         );
     }

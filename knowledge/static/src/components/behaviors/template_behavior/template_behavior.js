@@ -1,5 +1,6 @@
-/** @odoo-module */
+/** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { AbstractBehavior } from "@knowledge/components/behaviors/abstract_behavior/abstract_behavior";
 import { browser } from "@web/core/browser/browser";
 import { SendAsMessageMacro, UseAsDescriptionMacro } from "@knowledge/macros/template_macros";
@@ -66,7 +67,7 @@ export class TemplateBehavior extends AbstractBehavior {
             }
         });
         this.targetRecordInfo = this.knowledgeCommandsService.getCommandsRecordInfo();
-        this.htmlFieldTargetMessage = this.env._t('Use as %s', this.targetRecordInfo?.fieldInfo?.string || 'Description');
+        this.htmlFieldTargetMessage = _t('Use as %s', this.targetRecordInfo?.fieldInfo?.string || 'Description');
     }
     /**
      * Set the cursor of the user inside the template block when the user types
@@ -77,7 +78,7 @@ export class TemplateBehavior extends AbstractBehavior {
     }
     showTooltip() {
         this.popover.open(this.copyToClipboardButton, {
-            tooltip: this.env._t("Content copied to clipboard."),
+            tooltip: _t("Content copied to clipboard."),
         });
         browser.setTimeout(this.popover.close, 800);
     }

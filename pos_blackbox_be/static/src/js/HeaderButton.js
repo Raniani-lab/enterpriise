@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
     import HeaderButton from "point_of_sale.HeaderButton";
     import Registries from "point_of_sale.Registries";
 
@@ -10,8 +11,8 @@
                     let status = await this.get_user_session_status(this.env.pos.pos_session.id, this.env.pos.pos_session.user_id[0]);
                     if(status) {
                         await this.showPopup('ErrorPopup', {
-                            title: this.env._t("POS error"),
-                            body: this.env._t("You need to clock out before closing the POS."),
+                            title: _t("POS error"),
+                            body: _t("You need to clock out before closing the POS."),
                         });
                         return;
                     }

@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { markup, onMounted, useState } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
@@ -38,7 +39,7 @@ export class PlanningFormController extends FormController {
 
     async onRecordSaved(record, changes) {
         if ("repeat" in changes && record.data["repeat"]) {
-            const message = this.env._t("The recurring shifts have successfully been created.");
+            const message = _t("The recurring shifts have successfully been created.");
             this.notification.add(
                 markup(
                     `<i class="fa fa-fw fa-check"></i><span class="ms-1">${escape(message)}</span>`
@@ -64,8 +65,8 @@ export class PlanningFormController extends FormController {
                     });
                 } else {
                     this.dialogService.add(ConfirmationDialog, {
-                        body: this.env._t("Are you sure you want to delete this shift?"),
-                        confirmLabel: this.env._t("Delete"),
+                        body: _t("Are you sure you want to delete this shift?"),
+                        confirmLabel: _t("Delete"),
                         cancel: () => resolve(false),
                         close: () => resolve(false),
                         confirm: () => resolve(true),
@@ -89,7 +90,7 @@ export class PlanningFormController extends FormController {
         }
         if (!this.initialTemplateCreation && shift.data.template_creation) {
             // then the shift should be saved as a template too.
-            const message = this.env._t("This shift was successfully saved as a template.");
+            const message = _t("This shift was successfully saved as a template.");
             this.notification.add(
                 markup(`<i class="fa fa-fw fa-check"></i><span class="ms-1">${escape(message)}</span>`),
                 { type: "success" },

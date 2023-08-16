@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { patch } from "@web/core/utils/patch";
 import { SignablePDFIframe } from "@sign/components/sign_request/signable_PDF_iframe";
 import { Document } from "@sign/components/sign_request/document_signable";
@@ -14,7 +15,7 @@ patch(SignablePDFIframe.prototype, {
             this.dialog.add(
                 AlertDialog,
                 {
-                    title: title || this.env._t("Error"),
+                    title: title || _t("Error"),
                     body: errorMessage,
                 },
                 {
@@ -85,16 +86,16 @@ function processErrorMessage(errorMessage) {
     const defaultTitle = false;
     const errorMap = {
         err_connection_odoo_instance: [
-            this.env._t(
+            _t(
                 "The itsme® identification data could not be forwarded to Odoo, the signature could not be saved."
             ),
             defaultTitle,
         ],
         access_denied: [
-            this.env._t(
+            _t(
                 "You have rejected the identification request or took too long to process it. You can try again to finalize your signature."
             ),
-            this.env._t("Identification refused"),
+            _t("Identification refused"),
         ],
     };
     return errorMap[errorMessage] ? errorMap[errorMessage] : [errorMessage, defaultTitle];

@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { Component, onWillStart, useState } from "@odoo/owl";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { useAutofocus, useService } from "@web/core/utils/hooks";
@@ -149,7 +150,7 @@ export class PayrollDashboardTodo extends Component {
      * Handler when delete button is clicked
      */
     async onNoteDelete() {
-        const message = this.env._t("Are you sure you want to delete this note? All content will be definitely lost.");
+        const message = _t("Are you sure you want to delete this note? All content will be definitely lost.");
         this.dialog.add(ConfirmationDialog, {
             body: message,
             confirm: () => this._deleteNote(this.state.activeNoteId),

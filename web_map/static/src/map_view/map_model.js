@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { Model } from "@web/model/model";
 import { session } from "@web/session";
 import { browser } from "@web/core/browser/browser";
@@ -317,19 +318,19 @@ export class MapModel extends Model {
      */
     _getErrorMessage(message) {
         const ERROR_MESSAGES = {
-            "Too many coordinates; maximum number of coordinates is 25": this.env._t(
+            "Too many coordinates; maximum number of coordinates is 25": _t(
                 "Too many routing points (maximum 25)"
             ),
-            "Route exceeds maximum distance limitation": this.env._t(
+            "Route exceeds maximum distance limitation": _t(
                 "Some routing points are too far apart"
             ),
-            "Too Many Requests": this.env._t("Too many requests, try again in a few minutes"),
+            "Too Many Requests": _t("Too many requests, try again in a few minutes"),
         };
         return ERROR_MESSAGES[message];
     }
 
     _getEmptyGroupLabel(fieldName) {
-        return this.env._t("None");
+        return _t("None");
     }
 
     /**
@@ -348,7 +349,7 @@ export class MapModel extends Model {
                 const date = fieldType === "date" ? parseDate(value) : parseDateTime(value);
                 id = name = date.toFormat(DATE_GROUP_FORMATS[subGroup]);
             } else if (fieldType === "boolean") {
-                id = name = value ? this.env._t("Yes") : this.env._t("No");
+                id = name = value ? _t("Yes") : _t("No");
             } else {
                 id = Array.isArray(value) ? value[0] : value;
                 name = Array.isArray(value) ? value[1] : value;
@@ -459,22 +460,22 @@ export class MapModel extends Model {
         switch (err.status) {
             case 401:
                 this.notification.add(
-                    this.env._t(
+                    _t(
                         "The view has switched to another provider but functionalities will be limited"
                     ),
                     {
-                        title: this.env._t("Token invalid"),
+                        title: _t("Token invalid"),
                         type: "danger",
                     }
                 );
                 break;
             case 403:
                 this.notification.add(
-                    this.env._t(
+                    _t(
                         "The view has switched to another provider but functionalities will be limited"
                     ),
                     {
-                        title: this.env._t("Unauthorized connection"),
+                        title: _t("Unauthorized connection"),
                         type: "danger",
                     }
                 );
@@ -485,11 +486,11 @@ export class MapModel extends Model {
                 break;
             case 500:
                 this.notification.add(
-                    this.env._t(
+                    _t(
                         "The view has switched to another provider but functionalities will be limited"
                     ),
                     {
-                        title: this.env._t("MapBox servers unreachable"),
+                        title: _t("MapBox servers unreachable"),
                         type: "danger",
                     }
                 );
@@ -593,7 +594,7 @@ export class MapModel extends Model {
                     data.fetchingCoordinates = false;
                     this.shouldFetchCoordinates = false;
                     this.notification.add(
-                        this.env._t("OpenStreetMap's request limit exceeded, try again later."),
+                        _t("OpenStreetMap's request limit exceeded, try again later."),
                         { type: "danger" }
                     );
                     this.notify();

@@ -9,6 +9,7 @@ import { renderToString } from "@web/core/utils/render";
 import { SignRefusalDialog } from "@sign/dialogs/dialogs";
 import { SignablePDFIframe } from "./signable_PDF_iframe";
 import { buildPDFViewerURL } from "@sign/components/sign_request/utils";
+import { _t } from "@web/core/l10n/translation";
 
 function datasetFromElements(elements) {
     return Array.from(elements).map((el) => {
@@ -235,7 +236,7 @@ export async function initDocumentToSign(parent) {
         templates,
         dev: env.debug,
         translatableAttributes: ["data-tooltip"],
-        translateFn: env._lt,
+        translateFn: _t,
     });
     renderToString.app = app;
     await app.mount(parent.body);

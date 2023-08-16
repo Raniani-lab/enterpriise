@@ -73,7 +73,7 @@ patch(MainComponent.prototype, {
 
     get addLineBtnName() {
         if (this.env.model.resModel == 'mrp.production' && this.env.model.record.product_id) {
-            return this.env._t('Add Component');
+            return _t('Add Component');
         }
         return super.addLineBtnName;
     },

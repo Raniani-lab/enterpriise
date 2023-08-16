@@ -1,5 +1,6 @@
-/** @odoo-module */
+/** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { Dialog } from "@web/core/dialog/dialog";
 import { DropdownItem } from "@web/core/dropdown/dropdown_item";
 import { SCALE_LABELS } from "@web/views/calendar/calendar_controller";
@@ -62,8 +63,8 @@ export class ItemCalendarPropsDialog extends Component {
                 // If no date(time) properties exists, create default ones
                 if (!this.dateTimeChoices.length && !this.dateChoices.length) {
                     this.autoCreateDateProperties = true;
-                    this.createProperty(this.env._t("Start Date Time"), "datetime", "dateStart");
-                    this.createProperty(this.env._t("End Date Time"), "datetime", "dateStop");
+                    this.createProperty(_t("Start Date Time"), "datetime", "dateStart");
+                    this.createProperty(_t("End Date Time"), "datetime", "dateStop");
                 } else {
                     // If some exist, select them by default (prefer to use 2
                     // of the same type if possible, and prefer datetimes over
@@ -105,10 +106,10 @@ export class ItemCalendarPropsDialog extends Component {
      */
     get availableDateStartProperties() {
         return [{
-            label: this.env._t("Date and Time Properties"),
+            label: _t("Date and Time Properties"),
             choices: this.dateTimeChoices
         }, {
-            label: this.env._t("Date Properties"),
+            label: _t("Date Properties"),
             choices: this.dateChoices,
         }];
     }
@@ -121,12 +122,12 @@ export class ItemCalendarPropsDialog extends Component {
         // Don't show current start date nor dates with other type
         if (this.dateStartProperty?.type === "datetime") {
             return [{
-                label: this.env._t("Date and Time Properties"),
+                label: _t("Date and Time Properties"),
                 choices: this.dateTimeChoices.filter(choice => choice.value !== this.state.dateStartPropertyId),
             }];
         }
         return [{
-            label: this.env._t("Date Properties"),
+            label: _t("Date Properties"),
             choices: this.dateChoices.filter(choice => choice.value !== this.state.dateStartPropertyId),
         }];
     }
@@ -190,7 +191,7 @@ export class ItemCalendarPropsDialog extends Component {
      */
     async save() {
         if (!this.state.dateStartPropertyId) {
-            this.notification.add(this.env._t("The start date property is required."), {type: "danger"});
+            this.notification.add(_t("The start date property is required."), {type: "danger"});
             return;
         }
         // Create new property if needed
@@ -221,7 +222,7 @@ export class ItemCalendarPropsDialog extends Component {
             try {
                 await this.orm.write("knowledge.article", [this.props.knowledgeArticleId], {article_properties_definition: propertiesDefinitions});
             } catch (e) {
-                this.notification.add(this.env._t("New property could not be created."), {type: "danger"});
+                this.notification.add(_t("New property could not be created."), {type: "danger"});
                 console.error(e);
                 return;
             }

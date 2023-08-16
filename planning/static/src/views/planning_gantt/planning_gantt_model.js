@@ -1,5 +1,6 @@
-/* @odoo-module */
+/** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { deserializeDateTime, serializeDateTime } from "@web/core/l10n/dates";
 import { formatPercentage } from "@web/views/fields/formatters";
 import { GanttModel, computeRange } from "@web_gantt/gantt_model";
@@ -132,11 +133,11 @@ export class PlanningGanttModel extends GanttModel {
         for (const row of rows) {
             if (row.progressBar) {
                 if (row.progressBar.max_value_formatted) {
-                    row.progressBar.max_value_formatted += this.env._t(" h");
+                    row.progressBar.max_value_formatted += _t(" h");
                     row.progressBar.percentage = formatPercentage(Math.round(row.progressBar.ratio / 100));
                 }
                 if (row.progressBar.value_formatted) {
-                    row.progressBar.value_formatted += this.env._t(" h");
+                    row.progressBar.value_formatted += _t(" h");
                 }
             }
         }
@@ -315,7 +316,7 @@ export class PlanningGanttModel extends GanttModel {
         if (["department_id", "resource_id"].includes(groupedByField)) {
             const resId = Array.isArray(value) ? value[0] : value;
             if (!resId) {
-                return this.env._t("Open Shifts");
+                return _t("Open Shifts");
             }
         }
         return super._getRowName(...arguments);

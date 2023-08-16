@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { Component, onWillUnmount, useEffect, useRef } from "@odoo/owl";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { Dropdown } from "@web/core/dropdown/dropdown";
@@ -114,14 +115,14 @@ export class GanttController extends Component {
     openDialog(props, options = {}) {
         const { canDelete, canEdit, resModel, formViewId: viewId } = this.model.metaData;
 
-        const title = props.title || (props.resId ? this.env._t("Open") : this.env._t("Create"));
+        const title = props.title || (props.resId ? _t("Open") : _t("Create"));
 
         let removeRecord;
         if (canDelete && props.resId) {
             removeRecord = () => {
                 return new Promise((resolve) => {
                     this.dialogService.add(ConfirmationDialog, {
-                        body: this.env._t("Are you sure to delete this record?"),
+                        body: _t("Are you sure to delete this record?"),
                         confirm: async () => {
                             await this.orm.unlink(resModel, [props.resId]);
                             resolve();

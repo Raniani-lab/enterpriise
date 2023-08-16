@@ -1,5 +1,6 @@
-/** @odoo-module */
+/** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { CharField } from "@web/views/fields/char/char_field";
 import { Many2OneField } from "@web/views/fields/many2one/many2one_field";
 import { Component, useState } from "@odoo/owl";
@@ -83,12 +84,12 @@ export class MrpDisplayRecord extends Component {
      * tracking number if it applies.
      */
     registerProduction() {
-        const title = this.env._t("Register Production");
-        let body = this.env._t("Register the produced quantity");
+        const title = _t("Register Production");
+        let body = _t("Register the produced quantity");
         if (this.record.product_tracking === "serial") {
-            body = this.env._t("Register the produced quantity and set the serial number");
+            body = _t("Register the produced quantity and set the serial number");
         } else if (this.record.product_tracking === "lot") {
-            body = this.env._t("Register the produced quantity and set the lot number");
+            body = _t("Register the produced quantity and set the lot number");
         }
         const reload = () => this.reload();
         const params = { body, record: this.props.production, reload, title };
@@ -130,7 +131,7 @@ export class MrpDisplayRecord extends Component {
     }
 
     getByproductLabel(record) {
-        return this.env._t("Register %s", record.data.product_id[1]);
+        return _t("Register %s", record.data.product_id[1]);
     }
 
     get cssClass() {

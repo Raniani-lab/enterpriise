@@ -1,10 +1,11 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 export function switchColorSchemeItem(env) {
     return {
         type: "switch",
         id: "color_scheme.switch_theme",
-        description: env._t("Dark Mode"),
+        description: _t("Dark Mode"),
         callback: () => {
             const cookie = env.services.cookie.current.color_scheme;
             const scheme = cookie === "dark" ? "light" : "dark";

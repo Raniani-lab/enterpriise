@@ -1,5 +1,6 @@
-/** @odoo-module */
+/** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { patch } from "@web/core/utils/patch";
 import { ProjectRightSidePanel } from '@project/components/project_right_side_panel/project_right_side_panel';
 
@@ -24,7 +25,7 @@ patch(ProjectRightSidePanel.prototype, {
         };
         this.openFormViewDialog({
             context,
-            title: this.env._t('New Budget'),
+            title: _t('New Budget'),
             resModel: 'crossovered.budget',
             onRecordSaved: async () => {
                 await this.loadBudgets();

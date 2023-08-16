@@ -1,5 +1,6 @@
-/** @odoo-module */
+/** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { Dialog } from "@web/core/dialog/dialog";
 import { useAutofocus, useService } from "@web/core/utils/hooks";
 
@@ -12,7 +13,7 @@ export class AccountReportFootnoteDialog extends Component {
     setup() {
         this.orm = useService("orm");
 
-        this.title = this.env._t("Annotate");
+        this.title = _t("Annotate");
         this.text = useRef("text");
         this.needRefresh = false;
 

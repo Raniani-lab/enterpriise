@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { renderToString } from "@web/core/utils/render";
 import { shallowEqual } from "@web/core/utils/arrays";
 import { normalizePosition, startResize } from "@sign/components/sign_request/utils";
@@ -244,9 +245,9 @@ export class SignTemplateIframe extends EditablePDFIframeMixin(PDFIframe) {
     insertRotatePDFButton() {
         const printButton = this.root.querySelector("#print");
         const button = this.root.createElement("button");
-        button.setAttribute('id', 'pageRotateCw');
+        button.setAttribute("id", "pageRotateCw");
         button.className = "toolbarButton o_sign_rotate rotateCw";
-        button.title = this.env._t("Rotate Clockwise");
+        button.title = _t("Rotate Clockwise");
         printButton.parentNode.insertBefore(button, printButton);
         button.addEventListener("click", (e) => this.rotatePDF(e));
     }

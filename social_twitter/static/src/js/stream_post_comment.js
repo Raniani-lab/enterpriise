@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { StreamPostComment } from '@social/js/stream_post_comment';
 import { StreamPostCommentsReplyTwitter } from './stream_post_comments_reply';
 
@@ -44,7 +45,7 @@ export class StreamPostCommentTwitter extends StreamPostComment {
     }
 
     get commentName() {
-        return this.env._t('tweet');
+        return _t('tweet');
     }
 
     /**

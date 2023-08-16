@@ -1,5 +1,6 @@
-/** @odoo-module */
+/** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { PaymentScreen } from "@point_of_sale/app/screens/payment_screen/payment_screen";
 import { patch } from "@web/core/utils/patch";
 import { floatIsZero } from "@web/core/utils/numbers";
@@ -35,13 +36,13 @@ patch(PaymentScreen.prototype, {
             const partner = order.get_partner();
             if (partner) {
                 const { confirmed } = await this.popup.add(ConfirmPopup, {
-                    title: this.env._t("The order is empty"),
-                    body: this.env._t(
+                    title: _t("The order is empty"),
+                    body: _t(
                         "Do you want to deposit %s to %s?",
                         this.env.utils.formatCurrency(change),
                         order.get_partner().name
                     ),
-                    confirmText: this.env._t("Yes"),
+                    confirmText: _t("Yes"),
                 });
                 if (confirmed) {
                     const paylaterPayment = order.add_paymentline(paylaterPaymentMethod);
@@ -50,12 +51,12 @@ patch(PaymentScreen.prototype, {
                 }
             } else {
                 const { confirmed } = await this.popup.add(ConfirmPopup, {
-                    title: this.env._t("The order is empty"),
-                    body: this.env._t(
+                    title: _t("The order is empty"),
+                    body: _t(
                         "Do you want to deposit %s to a specific customer? If so, first select him/her.",
                         this.env.utils.formatCurrency(change)
                     ),
-                    confirmText: this.env._t("Yes"),
+                    confirmText: _t("Yes"),
                 });
                 if (confirmed) {
                     const { confirmed: confirmedPartner, payload: newPartner } =

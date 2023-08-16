@@ -1,7 +1,8 @@
 /** @odoo-module **/
+
+import { _t } from "@web/core/l10n/translation";
 import { useService } from "@web/core/utils/hooks";
 import { browser } from "@web/core/browser/browser";
-import { useEnv } from "@odoo/owl";
 import { SelectionPopup } from "@mrp_workorder/components/popup";
 import { WorkingEmployeePopupWOList } from "@mrp_workorder/components/working_employee_popup_wo_list";
 import { PinPopup } from "@mrp_workorder/components/pin_popup";
@@ -14,7 +15,6 @@ export function useConnectedEmployee(model, controllerType, context, workcenterI
     const notification = useService("notification");
     const dialog = useService("dialog");
     const imageBaseURL = `${browser.location.origin}/web/image?model=hr.employee&field=avatar_128&id=`;
-    const env = useEnv();
     let employees = useState({
         connected: [],
         all: [],
@@ -109,21 +109,21 @@ export function useConnectedEmployee(model, controllerType, context, workcenterI
             "hr.employee", employee_function, [employeeId, pin],
         );
         if (!pinValid && popup.PinPopup.isShown) {
-            return notification.add(env._t('Wrong password!'), { type: 'danger' });
+            return notification.add(_t('Wrong password!'), { type: 'danger' });
         }
         if (!pinValid) {
             return askPin(employee);
         }
 
         if (employee_function === 'login') {
-            notification.add(env._t('Logged in!'), { type: 'success' });
+            notification.add(_t('Logged in!'), { type: 'success' });
             await getConnectedEmployees();
             if (controllerType === "kanban" && context.openRecord) {
                 await openRecord(...context.openRecord);
             }
         } else {
             await stopAllWorkorderFromEmployee(employeeId);
-            notification.add(env._t('Logged out!'), { type: 'success' });
+            notification.add(_t('Logged out!'), { type: 'success' });
         }
         closePopup('SelectionPopup');
         await getConnectedEmployees();
@@ -161,11 +161,11 @@ export function useConnectedEmployee(model, controllerType, context, workcenterI
             "hr.employee", "logout", [employeeId, false, true],
         );
         if (success) {
-            notification.add(env._t('Logged out!'), { type: 'success' });
+            notification.add(_t('Logged out!'), { type: 'success' });
             await Promise.all([stopAllWorkorderFromEmployee(employeeId), getConnectedEmployees()]);
             await reload();
         } else {
-            notification.add(env._t('Error during log out!'), { type: 'danger' });
+            notification.add(_t('Error during log out!'), { type: 'danger' });
         }
     }
 
@@ -187,7 +187,7 @@ export function useConnectedEmployee(model, controllerType, context, workcenterI
 
         if (!pinValid) {
             if (pin) {
-                notification.add(env._t("Wrong password!"), { type: "danger" });
+                notification.add(_t("Wrong password!"), { type: "danger" });
             }
             if (popup.PinPopup.isShown) {
                 return;
@@ -211,7 +211,7 @@ export function useConnectedEmployee(model, controllerType, context, workcenterI
             isSelected: employees.connected.find(e => e.id === employee.id) != undefined ? true : false
         }));
         openDialog("SelectionPopup", SelectionPopup, {
-            popupData: { title: env._t("Select Employee"), list: list },
+            popupData: { title: _t("Select Employee"), list: list },
             onClosePopup: closePopup.bind(this),
             onSelectEmployee: selectEmployee.bind(this),
         });
@@ -245,7 +245,7 @@ export function useConnectedEmployee(model, controllerType, context, workcenterI
         if (employee) {
             selectEmployee(employee);
         } else {
-            notification.add(env._t('This employee is not allowed on this workcenter'), { type: 'danger' });
+            notification.add(_t('This employee is not allowed on this workcenter'), { type: 'danger' });
         }
     }
 

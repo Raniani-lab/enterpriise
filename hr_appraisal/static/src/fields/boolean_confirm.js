@@ -1,5 +1,6 @@
-/** @odoo-module */
+/** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { registry } from '@web/core/registry';
 import { useService } from "@web/core/utils/hooks";
 
@@ -39,7 +40,7 @@ export class BooleanToggleConfirm extends BooleanToggleField {
         const isEmployee = record.employee_user_id && record.employee_user_id[0] === session.uid;
         if (record.is_manager && value && !isEmployee) {
             this.dialogService.add(ConfirmationDialog, {
-                body: this.env._t("The employee's feedback will be published without their consent. Do you really want to publish it? This action will be logged in the chatter."),
+                body: _t("The employee's feedback will be published without their consent. Do you really want to publish it? This action will be logged in the chatter."),
                 confirm: updateAndSave,
                 cancel: () => {},
             });

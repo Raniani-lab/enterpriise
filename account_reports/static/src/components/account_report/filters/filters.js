@@ -1,5 +1,6 @@
-/** @odoo-module */
+/** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { Component, useState } from "@odoo/owl";
 
 import { useService } from "@web/core/utils/hooks";
@@ -116,8 +117,8 @@ export class AccountReportFilters extends Component {
             this.controller.options[optionKey][`date_${type}`] = date;
         else
             this.dialog.add(WarningDialog, {
-                title: this.env._t("Odoo Warning"),
-                message: this.env._t("Date cannot be empty"),
+                title: _t("Odoo Warning"),
+                message: _t("Date cannot be empty"),
             });
     }
 
@@ -139,8 +140,8 @@ export class AccountReportFilters extends Component {
             this.controller.options.comparison.number_period = parseInt(numberPeriods);
         else
             this.dialog.add(WarningDialog, {
-                title: this.env._t("Odoo Warning"),
-                message: this.env._t("Number of periods cannot be smaller than 1"),
+                title: _t("Odoo Warning"),
+                message: _t("Number of periods cannot be smaller than 1"),
             });
     }
 
@@ -150,7 +151,7 @@ export class AccountReportFilters extends Component {
     recordProps(string, relation, optionKey) {
         const fields = {
             record_data: {
-                string: this.env._t(string),
+                string: _t(string),
                 relation: relation,
                 type: "many2many",
                 relatedFields: {

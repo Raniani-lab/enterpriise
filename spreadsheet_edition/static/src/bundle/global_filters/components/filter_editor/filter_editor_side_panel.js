@@ -198,7 +198,7 @@ export default class AbstractFilterEditorSidePanel extends Component {
     onSave() {
         this.genericState.saved = true;
         if (this.missingRequired) {
-            this.notification.add(this.env._t("Some required fields are not valid"), {
+            this.notification.add(_t("Some required fields are not valid"), {
                 type: "danger",
                 sticky: false,
             });
@@ -220,7 +220,7 @@ export default class AbstractFilterEditorSidePanel extends Component {
             ...additionalPayload,
         });
         if (result.isCancelledBecause(CommandResult.DuplicatedFilterLabel)) {
-            this.notification.add(this.env._t("Duplicated Label"), {
+            this.notification.add(_t("Duplicated Label"), {
                 type: "danger",
                 sticky: false,
             });

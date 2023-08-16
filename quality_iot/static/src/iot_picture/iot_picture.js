@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { registry } from '@web/core/registry';
 import { TabletImageField, tabletImageField } from "@quality/tablet_image_field/tablet_image_field";
 import { useIotDevice } from '@iot/iot_device_hook';
@@ -38,13 +39,13 @@ export class TabletImageIoTField extends TabletImageField {
             // Stop propagating so that the FileUploader component won't open the file dialog.
             ev.stopImmediatePropagation();
             ev.preventDefault();
-            this.notification.add(this.env._t('Capture image...'));
+            this.notification.add(_t('Capture image...'));
             try {
                 const data = await this.getIotDevice().action({});
                 if (data.result !== true) {
                     this.dialog.add(WarningDialog, {
-                        title: this.env._t('Connection to device failed'),
-                        message: this.env._t('Please check if the device is still connected.'),
+                        title: _t('Connection to device failed'),
+                        message: _t('Please check if the device is still connected.'),
                     });
                 }
                 return data;

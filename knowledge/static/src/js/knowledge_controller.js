@@ -1,5 +1,6 @@
-/** @odoo-module */
+/** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { FormController } from '@web/views/form/form_controller';
 import { KnowledgeSidebar } from '@knowledge/components/sidebar/sidebar';
 import { useService } from "@web/core/utils/hooks";
@@ -95,7 +96,7 @@ export class KnowledgeArticleFormController extends FormController {
     }
 
     displayName() {
-        return this.model.root.data.name || this.env._t("New");
+        return this.model.root.data.name || _t("New");
     }
 
     /**

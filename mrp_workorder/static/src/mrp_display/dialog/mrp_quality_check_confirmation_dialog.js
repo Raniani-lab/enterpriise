@@ -1,5 +1,6 @@
-/** @odoo-module */
+/** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import DocumentViewer from '@mrp_workorder/components/viewer';
 import { formatFloat } from "@web/views/fields/formatters";
@@ -46,11 +47,11 @@ export class MrpQualityCheckConfirmationDialog extends ConfirmationDialog {
 
     get confirmLabel() {
         if (["instructions", "passfail"].includes(this.recordData.test_type)) {
-            return this.env._t("Next");
+            return _t("Next");
         } else if (this.recordData.test_type === "print_label") {
-            return this.env._t("Print Labels");
+            return _t("Print Labels");
         }
-        return this.env._t("Validate");
+        return _t("Validate");
     }
 
     async validate() {

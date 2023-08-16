@@ -1,4 +1,6 @@
-/** @odoo-module */
+/** @odoo-module **/
+
+import { _t } from "@web/core/l10n/translation";
 import { toRaw, useState, useEnv, reactive, onMounted, onWillUnmount, markRaw } from "@odoo/owl";
 import { Reactive } from "@web_studio/client_action/utils";
 
@@ -76,7 +78,7 @@ export class EditionFlow extends Reactive {
                 resolve(res);
             };
             this.dialog.add(ConfirmationDialog, {
-                body: this.env._t(
+                body: _t(
                     "Are you sure you want to restore the default view?\r\nAll customization done with studio on this view will be lost."
                 ),
                 confirm,

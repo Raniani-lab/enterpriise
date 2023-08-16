@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { Chatter } from "@mail/core/web/chatter";
 
 import BarcodePickingModel from '@stock_barcode/models/barcode_picking_model';
@@ -152,7 +153,7 @@ class MainComponent extends Component {
     }
 
     get addLineBtnName() {
-        return this.env._t('Add Product');
+        return _t('Add Product');
     }
 
     get displayActionButtons() {
@@ -207,7 +208,7 @@ class MainComponent extends Component {
                 window.navigator.vibrate(100);
             }
         } else {
-            const message = this.env._t("Please, Scan again!");
+            const message = _t("Please, Scan again!");
             this.env.services.notification.add(message, { type: 'warning' });
         }
     }

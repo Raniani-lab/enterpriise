@@ -1,5 +1,6 @@
-/** @odoo-module */
+/** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { useService } from "@web/core/utils/hooks";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 
@@ -14,7 +15,7 @@ export class NewViewDialog extends ConfirmationDialog {
         this.user = useService("user");
         this.mandatoryStopDate = ["gantt", "cohort"].includes(this.viewType);
 
-        this.title = this.env._t("Generate %s View", this.viewType);
+        this.title = _t("Generate %s View", this.viewType);
 
         this.fieldsChoice = {
             date_start: null,

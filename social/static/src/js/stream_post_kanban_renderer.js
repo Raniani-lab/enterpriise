@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { KanbanHeader } from '@web/views/kanban/kanban_header';
 import { KanbanRenderer } from '@web/views/kanban/kanban_renderer';
 import { useService } from '@web/core/utils/hooks';
@@ -37,7 +38,7 @@ export class StreamPostKanbanRenderer extends KanbanRenderer {
     onClickMoreImages(ev) {
         ev.stopPropagation();
         this.dialog.add(ImagesCarouselDialog, {
-            title: this.env._t("Post Images"),
+            title: _t("Post Images"),
             activeIndex: parseInt(ev.currentTarget.dataset.index),
             images: ev.currentTarget.dataset.imageUrls.split(',')
         })

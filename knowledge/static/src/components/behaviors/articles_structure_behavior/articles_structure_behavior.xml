@@ -2,21 +2,26 @@
 <templates>
     <!-- /index and /outline template -->
     <t t-name="knowledge.ArticlesStructureBehavior">
+    <t t-set="show_less">Show Less</t>
+    <t t-set="show_all">Show All</t>
+    <t t-set="switch_mode">Switch Mode</t>
+    <t t-set="refresh">Refresh</t>
+    <t t-set="update">Update</t>
         <BehaviorToolbar>
             <t t-set-slot="buttons">
                 <BehaviorToolbarButton
                     hidden="props.readonly"
                     icon="state.showAllChildren ? 'fa-eye-slash' : 'fa-eye'"
-                    label="state.showAllChildren ? env._t('Show Less') : env._t('Show All')"
+                    label="state.showAllChildren ? show_less : show_all"
                     onClick.bind="_onSwitchMode"
-                    title="env._t('Switch Mode')"
+                    title="switch_mode"
                 />
                 <BehaviorToolbarButton
                     hidden="props.readonly"
                     icon="['fa-refresh', this.state.refreshing || this.state.changeContent ? 'fa-spin' : ''].join(' ')"
-                    label="env._t('Refresh')"
+                    label="refresh"
                     onClick.bind="_onRefreshBtnClick"
-                    title="env._t('Update')"
+                    title="update"
                 />
             </t>
         </BehaviorToolbar>

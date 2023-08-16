@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { formatInteger } from '@web/views/fields/formatters';
 import { useService } from '@web/core/utils/hooks';
 
@@ -31,7 +32,7 @@ export class StreamPostDashboard extends Component {
             });
         } else {
             this.notification.add(
-                this.env._t('Sorry, you\'re not allowed to re-link this account, please contact your administrator.'),
+                _t('Sorry, you\'re not allowed to re-link this account, please contact your administrator.'),
                 {type: 'danger'}
             );
         }

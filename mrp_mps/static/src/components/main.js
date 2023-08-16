@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { MrpMpsControlPanel, MrpMpsSearchBar } from "../search/mrp_mps_control_panel";
 import { MrpMpsSearchModel } from '../search/mrp_mps_search_model';
 import MpsLineComponent from '@mrp_mps/components/line';
@@ -50,7 +51,7 @@ class MainComponent extends Component {
         });
 
         onWillStart(async () => {
-            this.env.config.setDisplayName(this.env._t("Master Production Schedule"));
+            this.env.config.setDisplayName(_t("Master Production Schedule"));
             this.withSearchProps = await this._prepareWithSearchProps();
             this.model.on('update', this, () => this.render(true));
             const domain = this.props.action.domain;
@@ -140,17 +141,17 @@ class MainComponent extends Component {
             action: [
                 {
                     key: "export",
-                    description: this.env._t("Export"),
+                    description: _t("Export"),
                     callback: () => this.onExportData(),
                 },
                 {
                     key: "delete",
-                    description: this.env._t("Delete"),
+                    description: _t("Delete"),
                     callback: () => this.unlinkSelectedRecord(),
                 },
                 {
                     key: "replenish",
-                    description: this.env._t("Replenish"),
+                    description: _t("Replenish"),
                     callback: () => this.replenishSelectedRecords(),
                 },
             ],
@@ -186,7 +187,7 @@ class MainComponent extends Component {
             type: field.field_type,
         }));
         if (import_compat) {
-            exportedFields.unshift({ name: "id", label: this.env._t("External ID") });
+            exportedFields.unshift({ name: "id", label: _t("External ID") });
         }
         await download({
             data: {

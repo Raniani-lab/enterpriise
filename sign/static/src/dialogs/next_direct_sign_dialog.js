@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { Component } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
 import { Dialog } from "@web/core/dialog/dialog";
@@ -8,7 +9,7 @@ export class NextDirectSignDialog extends Component {
     setup() {
         this.action = useService("action");
         this.signInfo = useService("signInfo");
-        this.title = this.env._t("Thank You!");
+        this.title = _t("Thank You!");
     }
 
     goToNextSigner() {
@@ -18,7 +19,7 @@ export class NextDirectSignDialog extends Component {
             {
                 type: "ir.actions.client",
                 tag: "sign.SignableDocument",
-                name: this.env._t("Sign"),
+                name: _t("Sign"),
             },
             {
                 additionalContext: {

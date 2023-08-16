@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 // import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { Dialog } from "@web/core/dialog/dialog";
 
@@ -7,7 +8,7 @@ const { Component } = owl;
 
 export class BackorderDialog extends Component {
     setup() {
-        this.title = this.env._t("Incomplete Transfer");
+        this.title = _t("Incomplete Transfer");
     }
 
     async _onApply() {

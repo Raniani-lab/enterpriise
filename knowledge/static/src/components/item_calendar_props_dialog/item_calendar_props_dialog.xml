@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
     <t t-name="knowledge.ItemCalendarPropsDialog">
-        <Dialog title="env._t('Insert a Calendar View')" size="'md'" bodyClass="'o_knowledge_item_calendar_props_dialog'">
+        <t t-set="insert_calendar_view">Insert a Calendar View</t>
+        <t t-set="start_typing">Start typing</t>
+        <Dialog title="insert_calendar_view" size="'md'" bodyClass="'o_knowledge_item_calendar_props_dialog'">
             <div class="mb-3 row o_name">
                 <label class="col-sm-4 col-form-label">
                     What do you want to manage?
@@ -21,7 +23,7 @@
                     </label>
                     <div class="col-sm-8 d-flex justify-content-center my-auto">
                         <div class="o_knowledge_item_calendar_dialog_date_start w-100">
-                            <SelectMenu onSelect.bind="selectDateStart" groups="availableDateStartProperties" value="state.dateStartPropertyId" required="true" searchPlaceholder="env._t('Start typing')">
+                            <SelectMenu onSelect.bind="selectDateStart" groups="availableDateStartProperties" value="state.dateStartPropertyId" required="true" searchPlaceholder="start_typing">
                                 <t t-set-slot="default">
                                     <t t-if="state.dateStartPropertyId" t-out="dateStartProperty.label"/>
                                     <span t-else="" class="text-muted opacity-25">Start Date</span>
@@ -48,7 +50,7 @@
                             <i class="fa fa-lg fa-fw fa-arrow-right"/>
                         </div>
                         <div t-attf-class="o_knowledge_item_calendar_dialog_date_stop w-100 #{this.state.dateStartPropertyId ? '' : 'o_disabled'}">
-                            <SelectMenu onSelect.bind="selectDateStop" groups="availableDateStopProperties" value="state.dateStopPropertyId" searchPlaceholder="env._t('Start typing')">
+                            <SelectMenu onSelect.bind="selectDateStop" groups="availableDateStopProperties" value="state.dateStopPropertyId" searchPlaceholder="start_typing">
                                 <t t-set-slot="default">
                                     <t t-if="state.dateStopPropertyId" t-out="dateStopProperty.label"/>
                                     <span t-else="" class="text-muted opacity-25">Stop Date</span>
@@ -71,7 +73,7 @@
                         Base Color On
                     </label>
                     <div class="col-sm-8 my-auto">
-                        <SelectMenu onSelect.bind="selectColor" choices="colorChoices" value="state.colorPropertyId" searchPlaceholder="env._t('Start typing')">
+                        <SelectMenu onSelect.bind="selectColor" choices="colorChoices" value="state.colorPropertyId" searchPlaceholder="start_typing">
                             <t t-set-slot="default">
                                 <t t-if="state.colorPropertyId" t-out="colorProperty.label"/>
                                 <span t-else="" class="text-muted opacity-25">Property Field</span>

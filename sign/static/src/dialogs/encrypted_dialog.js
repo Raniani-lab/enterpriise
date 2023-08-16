@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { useService } from "@web/core/utils/hooks";
 import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { Dialog } from "@web/core/dialog/dialog";
@@ -15,7 +16,7 @@ export class EncryptedDialog extends Component {
 
     get dialogProps() {
         return {
-            title: this.env._t("PDF is encrypted"),
+            title: _t("PDF is encrypted"),
             fullscreen: this.env.isSmall,
             size: "md",
         };
@@ -36,7 +37,7 @@ export class EncryptedDialog extends Component {
         const response = await this.rpc(route, params);
         if (!response) {
             return this.dialog.add(AlertDialog, {
-                body: this.env._t("Password is incorrect."),
+                body: _t("Password is incorrect."),
             });
         } else {
             this.props.close();

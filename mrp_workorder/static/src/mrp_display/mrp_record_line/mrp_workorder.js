@@ -1,5 +1,6 @@
-/** @odoo-module */
+/** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { Field } from "@web/views/fields/field";
 import { StockMove } from "./stock_move";
@@ -59,7 +60,7 @@ export class MrpWorkorder extends StockMove {
     displayInstruction() {
         const params = {
             body: this.note,
-            confirmLabel: this.env._t("Discard"),
+            confirmLabel: _t("Discard"),
             title: this.props.record.data.display_name,
         };
         if (!this.isComplete) {
@@ -71,9 +72,9 @@ export class MrpWorkorder extends StockMove {
                 );
                 await this.reload();
             };
-            params.confirmLabel = this.env._t("Validate");
+            params.confirmLabel = _t("Validate");
             params.cancel = () => {};
-            params.cancelLabel = this.env._t("Discard");
+            params.cancelLabel = _t("Discard");
         }
         this.dialogService.add(ConfirmationDialog, params);
     }

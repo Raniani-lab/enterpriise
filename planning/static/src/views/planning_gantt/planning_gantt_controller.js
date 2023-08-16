@@ -1,5 +1,6 @@
-/* @odoo-module */
+/** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { GanttController } from "@web_gantt/gantt_controller";
 import { usePlanningControllerActions } from "../planning_hooks";
 
@@ -54,7 +55,7 @@ export class PlanningGanttController extends GanttController {
      */
     openDialog(props, options) {
         const record = this.model.data.records.find((r) => r.id === props.resId);
-        const title = record ? record.display_name : this.env._t("Add Shift");
+        const title = record ? record.display_name : _t("Add Shift");
         super.openDialog({ ...props, title }, options);
     }
 }

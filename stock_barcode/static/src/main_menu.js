@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import * as BarcodeScanner from '@web/webclient/barcode/barcode_scanner';
 import { bus } from "@web/legacy/js/services/core";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
@@ -50,23 +51,23 @@ export class MainMenu extends Component {
                 window.navigator.vibrate(100);
             }
         } else {
-            this.notificationService.add(this.env._t("Please, Scan again!"), { type: 'warning' });
+            this.notificationService.add(_t("Please, Scan again!"), { type: 'warning' });
         }
     }
 
     removeDemoMessage() {
         this.state.displayDemoMessage = false;
         const params = {
-            title: this.env._t("Don't show this message again"),
-            body: this.env._t("Do you want to permanently remove this message?\
+            title: _t("Don't show this message again"),
+            body: _t("Do you want to permanently remove this message?\
                     It won't appear anymore, so make sure you don't need the barcodes sheet or you have a copy."),
             confirm: () => {
                 this.rpc('/stock_barcode/rid_of_message_demo_barcodes');
                 location.reload();
             },
             cancel: () => {},
-            confirmLabel: this.env._t("Remove it"),
-            cancelLabel: this.env._t("Leave it"),
+            confirmLabel: _t("Remove it"),
+            cancelLabel: _t("Leave it"),
         };
         this.dialogService.add(ConfirmationDialog, params);
     }

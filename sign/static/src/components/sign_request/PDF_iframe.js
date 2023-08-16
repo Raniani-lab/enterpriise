@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { renderToString } from "@web/core/utils/render";
 import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { normalizePosition, pinchService, isVisible } from "./utils";
@@ -37,7 +38,7 @@ export class PDFIframe {
         const errorElement = this.root.querySelector("#errorMessage");
         if (isVisible(errorElement)) {
             return this.dialog.add(AlertDialog, {
-                body: this.env._t("Need a valid PDF to add signature fields!"),
+                body: _t("Need a valid PDF to add signature fields!"),
             });
         }
         this.pageCount = this.root.querySelectorAll(".page").length;

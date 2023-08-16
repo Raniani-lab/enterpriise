@@ -1,14 +1,16 @@
-/** @odoo-module */
+/** @odoo-module **/
+
+import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
 import { DeviceController } from "@iot/device_controller";
 
 
 function onIoTActionResult(data, env) {
     if (data.result === true) {
-        env.services.notification.add(env._t("Successfully sent to printer!"));
+        env.services.notification.add(_t("Successfully sent to printer!"));
     } else {
-        env.services.notification.add(env._t("Check if the printer is still connected"), {
-            title: env._t("Connection to printer failed"),
+        env.services.notification.add(_t("Check if the printer is still connected"), {
+            title: _t("Connection to printer failed"),
             type: "danger",
         });
     }
@@ -16,7 +18,7 @@ function onIoTActionResult(data, env) {
 
 function onValueChange(data, env) {
     if (data.status) {
-        env.services.notification.add(env._t("Printer ") + data.status);
+        env.services.notification.add(_t("Printer ") + data.status);
     }
 }
 

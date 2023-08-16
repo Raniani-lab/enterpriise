@@ -2,6 +2,9 @@
 <templates>
     <!-- /file template -->
     <t t-name="knowledge.FileBehavior">
+        <t t-set="send_as_message">Send as Message</t>
+        <t t-set="use_as_attachment">Use as Attachment</t>
+        <t t-set="download">Download</t>
         <div class="d-flex justify-content-between flex-wrap w-100">
             <div class="d-flex flex-wrap">
                 <div class="o_knowledge_file_image d-flex align-items-center" t-on-click="onClickDownload"
@@ -16,18 +19,18 @@
                     <BehaviorToolbarButton
                         hidden="!targetRecordInfo?.withChatter"
                         icon="'fa-envelope'"
-                        label="env._t('Send as Message')"
+                        label="send_as_message"
                         onClick.bind="onClickAttachToMessage"
                     />
                     <BehaviorToolbarButton
                         hidden="!targetRecordInfo?.withChatter"
                         icon="'fa-paperclip'"
-                        label="env._t('Use as Attachment')"
+                        label="use_as_attachment"
                         onClick.bind="onClickUseAsAttachment"
                     />
                     <BehaviorToolbarButton
                         icon="'fa-download'"
-                        label="env._t('Download')"
+                        label="download"
                         onClick.bind="onClickDownload"
                     />
                 </t>

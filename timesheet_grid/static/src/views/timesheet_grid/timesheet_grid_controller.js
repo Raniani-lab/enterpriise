@@ -1,5 +1,6 @@
-/** @odoo-module */
+/** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { useService } from "@web/core/utils/hooks";
 import { GridController } from "@web_grid/views/grid_controller";
 
@@ -23,7 +24,7 @@ export class TimesheetGridController extends GridController {
                 .equals(this.model.navigationInfo.periodEnd.startOf("day"))
         ) {
             this.notificationService.add(
-                this.env._t("The timesheet entry has successfully been created."),
+                _t("The timesheet entry has successfully been created."),
                 {
                     type: "success",
                 }

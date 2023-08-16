@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { useService } from "@web/core/utils/hooks";
 
 const { Component } = owl;
@@ -35,7 +36,7 @@ export class PayrollDashboardPayslipBatch extends Component {
     onClickLine(batchID, batchName) {
         this.actionService.doAction({
             type: 'ir.actions.act_window',
-            name: this.env._t('Employee Payslips'),
+            name: _t('Employee Payslips'),
             res_model: 'hr.payslip.run',
             res_id: batchID,
             views: [[false, 'form']],

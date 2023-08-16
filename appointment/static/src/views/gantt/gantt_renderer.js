@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { useService } from "@web/core/utils/hooks";
 import { GanttRenderer } from "@web_gantt/gantt_renderer";
 import { AppointmentBookingGanttPopover } from "@appointment/views/gantt/gantt_popover";
@@ -51,7 +52,7 @@ export class AppointmentBookingGanttRenderer extends GanttRenderer {
 
     async onClickAddLeave() {
         this.env.services.action.doAction({
-            name: this.env._t("Add a Leave"),
+            name: _t("Add a Leave"),
             type: "ir.actions.act_window",
             res_model: "appointment.manage.leaves",
             view_mode: "form",

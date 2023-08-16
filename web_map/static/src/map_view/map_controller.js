@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { loadJS, loadCSS } from "@web/core/assets";
 import { useService } from "@web/core/utils/hooks";
 import { useModelWithSampleData } from "@web/model/model";
@@ -69,7 +70,7 @@ export class MapController extends Component {
         if (ids.length > 1) {
             this.action.doAction({
                 type: "ir.actions.act_window",
-                name: this.env.config.getDisplayName() || this.env._t("Untitled"),
+                name: this.env.config.getDisplayName() || _t("Untitled"),
                 views: [
                     [false, "list"],
                     [false, "form"],

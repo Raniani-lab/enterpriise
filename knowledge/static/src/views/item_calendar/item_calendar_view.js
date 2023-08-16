@@ -1,5 +1,6 @@
-/** @odoo-module */
+/** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { CalendarCommonPopover } from "@web/views/calendar/calendar_common/calendar_common_popover";
 import { CalendarCommonRenderer } from "@web/views/calendar/calendar_common/calendar_common_renderer";
 import { CalendarController } from '@web/views/calendar/calendar_controller';
@@ -68,8 +69,8 @@ export class KnowledgeArticleItemsCalendarController extends CalendarController 
      */
     deleteRecord(record) {
         this.displayDialog(ConfirmationDialog, {
-            title: this.env._t("Confirmation"),
-            body: this.env._t("Are you sure you want to send this article to the trash?"),
+            title: _t("Confirmation"),
+            body: _t("Are you sure you want to send this article to the trash?"),
             confirm: async () => {
                 await this.orm.call(
                     'knowledge.article',
@@ -78,7 +79,7 @@ export class KnowledgeArticleItemsCalendarController extends CalendarController 
                 );
                 this.model.load();
             },
-            confirmLabel: this.env._t("Send to trash"),
+            confirmLabel: _t("Send to trash"),
             cancel: () => {
                 // `ConfirmationDialog` needs this prop to display the cancel
                 // button but we do nothing on cancel.

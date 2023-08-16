@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { useService } from "@web/core/utils/hooks";
 import { SignTemplateIframe } from "./sign_template_iframe";
 import { SignTemplateTopBar } from "./sign_template_top_bar";
@@ -103,7 +104,7 @@ export class SignTemplateBody extends Component {
         for (const [newId, itemId] of Object.entries(newId2ItemIdMap)) {
             Id2UpdatedItem[newId].id = itemId;
         }
-        this.notification.add(this.env._t("Saved"), { type: "success" });
+        this.notification.add(_t("Saved"), { type: "success" });
         return Id2UpdatedItem;
     }
 
@@ -156,7 +157,7 @@ export class SignTemplateBody extends Component {
             confirm: () => {
                 this.props.goBackToKanban();
             },
-            body: this.env._t("Somebody is already filling a document which uses this template"),
+            body: _t("Somebody is already filling a document which uses this template"),
         });
     }
 }

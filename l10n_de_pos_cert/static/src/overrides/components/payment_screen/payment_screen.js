@@ -1,5 +1,6 @@
-/** @odoo-module */
+/** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { PaymentScreen } from "@point_of_sale/app/screens/payment_screen/payment_screen";
 import { patch } from "@web/core/utils/patch";
 
@@ -12,8 +13,8 @@ patch(PaymentScreen.prototype, {
             this._handlePushOrderError = async (error) => {
                 if (error.code === "fiskaly") {
                     const message = {
-                        noInternet: this.env._t("Cannot sync the orders with Fiskaly!"),
-                        unknown: this.env._t(
+                        noInternet: _t("Cannot sync the orders with Fiskaly!"),
+                        unknown: _t(
                             "An unknown error has occurred! Please contact Odoo for more information."
                         ),
                     };
@@ -51,9 +52,7 @@ patch(PaymentScreen.prototype, {
                         this.pos.showFiskalyNoInternetConfirmPopup(this);
                     } else {
                         const message = {
-                            unknown: this.env._t(
-                                "An unknown error has occurred! Please, contact Odoo."
-                            ),
+                            unknown: _t("An unknown error has occurred! Please, contact Odoo."),
                         };
                         this.pos.fiskalyError(error, message);
                     }
@@ -68,9 +67,7 @@ patch(PaymentScreen.prototype, {
                         this.pos.showFiskalyNoInternetConfirmPopup(this);
                     } else {
                         const message = {
-                            unknown: this.env._t(
-                                "An unknown error has occurred! Please, contact Odoo."
-                            ),
+                            unknown: _t("An unknown error has occurred! Please, contact Odoo."),
                         };
                         this.pos.fiskalyError(error, message);
                     }

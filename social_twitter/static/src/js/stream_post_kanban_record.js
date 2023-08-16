@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { StreamPostKanbanRecord } from '@social/js/stream_post_kanban_record';
 import { StreamPostCommentsTwitter } from './stream_post_comments';
 import { StreamPostTwitterQuote } from './stream_post_twitter_quote';
@@ -62,7 +63,7 @@ patch(StreamPostKanbanRecord.prototype, {
             stream_post_id: postId,
         }).then((result) => {
             this.dialog.add(StreamPostCommentsTwitter, {
-                title: this.env._t('Twitter Comments'),
+                title: _t('Twitter Comments'),
                 commentsCount: this.commentsCount,
                 accountId: this.record.account_id.raw_value,
                 originalPost: this.record,
@@ -100,7 +101,7 @@ patch(StreamPostKanbanRecord.prototype, {
                 });
             } else if (result.error) {
                 this.notification.add(result.error, {
-                    title: this.env._t('Error'),
+                    title: _t('Error'),
                     type: 'danger',
                 });
             }
@@ -109,7 +110,7 @@ patch(StreamPostKanbanRecord.prototype, {
 
     _onTwitterQuote() {
         this.dialog.add(StreamPostTwitterQuote, {
-            title: this.env._t('Quote a Tweet'),
+            title: _t('Quote a Tweet'),
             mediaSpecificProps: {
                 accountId: this.record.account_id.raw_value,
                 accountName: this.record.author_name.value,

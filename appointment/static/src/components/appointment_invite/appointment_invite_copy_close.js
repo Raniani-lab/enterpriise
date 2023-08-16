@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { browser } from "@web/core/browser/browser";
 import { registry } from '@web/core/registry';
 import { standardWidgetProps } from "@web/views/widgets/standard_widget_props";
@@ -33,7 +34,7 @@ export class AppointmentInviteCopyClose extends Component {
             setTimeout(async () => {
                 await browser.navigator.clipboard.writeText(bookUrl);
                 this.notification.add(
-                    this.env._t("Link copied to clipboard!"),
+                    _t("Link copied to clipboard!"),
                     { type: "success" }
                 );
                 this.env.dialogData.close();

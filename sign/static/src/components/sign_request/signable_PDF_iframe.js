@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { PDFIframe } from "./PDF_iframe";
 import { startSignItemNavigator } from "./sign_item_navigator";
 import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
@@ -40,7 +41,7 @@ export class SignablePDFIframe extends PDFIframe {
         const signItemData = signItem.data;
         const signItemType = this.signItemTypesById[signItemData.type_id];
         const { name, item_type: type, auto_value: autoValue } = signItemType;
-        if (name === this.env._t("Date")) {
+        if (name === _t("Date")) {
             signItemElement.addEventListener("focus", (e) => {
                 this.fillTextSignItem(e.currentTarget, DateTime.now().toLocaleString());
             });
@@ -72,7 +73,7 @@ export class SignablePDFIframe extends PDFIframe {
                     inputBottomSheet.hide();
                     this.navigator.goToNextSignItem();
                 },
-                buttonText: this.env._t("next"),
+                buttonText: _t("next"),
             });
 
             signItemElement.addEventListener("focus", () => {
@@ -110,7 +111,7 @@ export class SignablePDFIframe extends PDFIframe {
 
     handleInput() {
         this.checkSignItemsCompletion();
-        this.navigator.setTip(this.env._t("next"));
+        this.navigator.setTip(_t("next"));
     }
 
     /**
@@ -432,7 +433,7 @@ export class SignablePDFIframe extends PDFIframe {
 
         this.root.querySelector("#viewerContainer").addEventListener("scroll", () => {
             if (!this.navigator.state.isScrolling && this.navigator.state.started) {
-                this.navigator.setTip(this.env._t("next"));
+                this.navigator.setTip(_t("next"));
             }
         });
 
@@ -476,8 +477,8 @@ export class SignablePDFIframe extends PDFIframe {
         if (!this.signatureInfo.signatureValues) {
             this.checkSignItemsCompletion();
             this.dialog.add(AlertDialog, {
-                title: this.env._t("Warning"),
-                body: this.env._t("Some fields have still to be completed"),
+                title: _t("Warning"),
+                body: _t("Some fields have still to be completed"),
             });
             this.props.validateButton.textContent = this.props.validateButtonText;
             this.props.validateBanner.removeAttribute("disabled");
@@ -589,8 +590,8 @@ export class SignablePDFIframe extends PDFIframe {
         } else {
             if (response.sms) {
                 this.dialog.add(AlertDialog, {
-                    title: this.env._t("Error"),
-                    body: this.env._t(
+                    title: _t("Error"),
+                    body: _t(
                         "Your signature was not submitted. Ensure the SMS validation code is correct."
                     ),
                 });
@@ -598,8 +599,8 @@ export class SignablePDFIframe extends PDFIframe {
                 this.dialog.add(
                     AlertDialog,
                     {
-                        title: this.env._t("Error"),
-                        body: this.env._t(
+                        title: _t("Error"),
+                        body: _t(
                             "Sorry, an error occurred, please try to fill the document again."
                         ),
                     },

@@ -141,7 +141,7 @@ class ActionEditor extends Component {
 
         if (!viewMode.length) {
             this.addDialog(AlertDialog, {
-                body: this.env._t("You cannot deactivate this view as it is the last one active."),
+                body: _t("You cannot deactivate this view as it is the last one active."),
             });
         } else {
             return this.editAction({ view_mode: viewMode.join(",") });
@@ -181,7 +181,7 @@ class ActionEditor extends Component {
                     DialogClass = MapNewViewDialog;
                 } else {
                     this.addDialog(AlertDialog, {
-                        body: this.env._t(
+                        body: _t(
                             "Creating this type of view is not currently supported in Studio."
                         ),
                     });
@@ -211,7 +211,7 @@ class ActionEditor extends Component {
                 this.notification.add({
                     title: false,
                     type: "danger",
-                    message: this.env._t("Activity view unavailable on this model"),
+                    message: _t("Activity view unavailable on this model"),
                 });
                 return;
             }

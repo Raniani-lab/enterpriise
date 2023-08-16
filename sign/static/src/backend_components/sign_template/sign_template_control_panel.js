@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { useService } from "@web/core/utils/hooks";
 import { Component } from "@odoo/owl";
 import { ControlPanel } from "@web/search/control_panel/control_panel";
@@ -54,7 +55,7 @@ export class SignTemplateControlPanel extends Component {
         this.action.doAction({
             type: "ir.actions.client",
             tag: "sign.Template",
-            name: this.env._t("Duplicated Template"),
+            name: _t("Duplicated Template"),
             params: {
                 id: duplicatedTemplateId,
             },
@@ -68,7 +69,7 @@ export class SignTemplateControlPanel extends Component {
         this.action.doAction({
             type: "ir.actions.client",
             tag: "sign.Template",
-            name: this.env._t("Template %s", templateName),
+            name: _t("Template %s", templateName),
             params: {
                 sign_edit_call: "sign_template_edit",
                 id: templateId,

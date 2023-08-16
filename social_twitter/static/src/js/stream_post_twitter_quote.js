@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { StreamPostCommentsReplyTwitterQuote } from './stream_post_comments_reply_quote';
 import { SocialPostFormatterMixin } from '@social/js/social_post_formatter_mixin';
 
@@ -35,7 +36,7 @@ export class StreamPostTwitterQuote extends SocialPostFormatterMixin(Component) 
         };
         xhr.onerror = () => {
             this.notification.add(
-                this.env._t('Error while sending the data to the server.'),
+                _t('Error while sending the data to the server.'),
                 {type: 'warning'}
             );
         };

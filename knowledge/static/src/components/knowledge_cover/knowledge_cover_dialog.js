@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { AutoResizeImage, ImageSelector } from '@web_editor/components/media_dialog/image_selector';
 import { ConfirmationDialog } from '@web/core/confirmation_dialog/confirmation_dialog';
 import { Dialog } from '@web/core/dialog/dialog';
@@ -19,7 +20,7 @@ export class AutoResizeCover extends AutoResizeImage {
      */
     remove() {
         this.dialogs.add(ConfirmationDialog, {
-            body: this.env._t("Are you sure you want to delete this cover? It will be removed from every article it is used in."),
+            body: _t("Are you sure you want to delete this cover? It will be removed from every article it is used in."),
             confirm: async () => {
                 const res = await this.orm.unlink(this.props.model,
                     [this.props.resId],
@@ -129,7 +130,7 @@ export class KnowledgeCoverDialog extends Component {
     setup() {
         this.size = 'xl';
         this.contentClass = 'o_select_media_dialog';
-        this.title = this.env._t("Select a cover");
+        this.title = _t("Select a cover");
     }
 
     /**

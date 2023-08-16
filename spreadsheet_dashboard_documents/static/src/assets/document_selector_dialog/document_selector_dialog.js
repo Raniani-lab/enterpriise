@@ -1,5 +1,6 @@
-/** @odoo-module */
+/** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { DocumentsSelectorPanel } from "@documents_spreadsheet/spreadsheet_selector_dialog/document_selector_panel";
 import { Dialog } from "@web/core/dialog/dialog";
 import { useService } from "@web/core/utils/hooks";
@@ -11,7 +12,7 @@ export class DocumentSelectorDialog extends Component {
         this.selectedSpreadsheet = null;
         this.orm = useService("orm");
         this.actionService = useService("action");
-        this.title = this.env._t("Create a Dashboard or select a Spreadsheet");
+        this.title = _t("Create a Dashboard or select a Spreadsheet");
     }
 
     onSpreadsheetSelected({ spreadsheet }) {

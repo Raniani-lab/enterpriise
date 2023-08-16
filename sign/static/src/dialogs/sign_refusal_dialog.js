@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { Component, useRef } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
 import { Dialog } from "@web/core/dialog/dialog";
@@ -18,7 +19,7 @@ export class SignRefusalDialog extends Component {
     get dialogProps() {
         return {
             size: "md",
-            title: this.env._t("Refuse Document"),
+            title: _t("Refuse Document"),
         };
     }
 
@@ -40,7 +41,7 @@ export class SignRefusalDialog extends Component {
             this.dialog.add(
                 AlertDialog,
                 {
-                    body: this.env._t("Sorry, you cannot refuse this document"),
+                    body: _t("Sorry, you cannot refuse this document"),
                 },
                 {
                     onClose: () => window.location.reload(),
@@ -48,8 +49,8 @@ export class SignRefusalDialog extends Component {
             );
         }
         this.dialog.add(ThankYouDialog, {
-            subtitle: this.env._t("The document has been refused"),
-            message: this.env._t(
+            subtitle: _t("The document has been refused"),
+            message: _t(
                 "We'll send an email to warn other contacts in copy & signers with the reason you provided."
             ),
         });

@@ -2,7 +2,7 @@
 
 import { NavBar } from "@web/webclient/navbar/navbar";
 import { useService, useBus } from "@web/core/utils/hooks";
-
+import { _t } from "@web/core/l10n/translation";
 import { useEffect, useRef } from "@odoo/owl";
 
 export class EnterpriseNavBar extends NavBar {
@@ -27,7 +27,6 @@ export class EnterpriseNavBar extends NavBar {
             "o_menu_toggle_back",
             !this.isInApp && this.hasBackgroundAction
         );
-        const { _t } = this.env;
         const title =
             !this.isInApp && this.hasBackgroundAction ? _t("Previous view") : _t("Home menu");
         menuAppsEl.title = title;

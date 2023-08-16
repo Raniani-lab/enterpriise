@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { CANCEL_GLOBAL_CLICK, StreamPostKanbanRecord } from '@social/js/stream_post_kanban_record';
 import { StreamPostCommentsYoutube } from './stream_post_comments';
 
@@ -30,7 +31,7 @@ patch(StreamPostKanbanRecord.prototype, {
             comments_count: this.commentsCount,
         }).then((result) => {
             this.dialog.add(StreamPostCommentsYoutube, {
-                title: this.env._t('YouTube Comments'),
+                title: _t('YouTube Comments'),
                 accountId: this.record.account_id.raw_value,
                 originalPost: this.record,
                 postId: postId,

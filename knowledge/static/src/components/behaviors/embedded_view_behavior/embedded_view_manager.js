@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { CallbackRecorder } from "@web/webclient/actions/action_hook";
 import { getDefaultConfig } from "@web/views/view";
 import { EmbeddedView } from "@knowledge/views/embedded_view";
@@ -143,7 +144,7 @@ export class EmbeddedViewManager extends Component {
      */
     async onSaveKnowledgeFavorite(favorite) {
         if (this.props.readonly) {
-            this.notification.add(this.env._t("You can not save favorite on this article"), {
+            this.notification.add(_t("You can not save favorite on this article"), {
                 type: "danger",
             });
             return;
@@ -160,7 +161,7 @@ export class EmbeddedViewManager extends Component {
      */
     async onDeleteKnowledgeFavorite(searchItem) {
         if (this.props.readonly) {
-            this.notification.add(this.env._t("You can not delete favorite from this article"), {
+            this.notification.add(_t("You can not delete favorite from this article"), {
                 type: "danger",
             });
             return;

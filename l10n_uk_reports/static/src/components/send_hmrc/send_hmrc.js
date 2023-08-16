@@ -1,4 +1,6 @@
-/** @odoo-module */
+/** @odoo-module **/
+
+import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 
@@ -8,7 +10,7 @@ export class SendHmrcButton extends Component {
 
     setup() {
         this.orm = useService("orm");
-        this.title = this.env._t('Send Data to the HMRC Service');
+        this.title = _t('Send Data to the HMRC Service');
         this.hmrcGovClientDeviceIdentifier = this.props.record.data.hmrc_gov_client_device_id;
     }
 

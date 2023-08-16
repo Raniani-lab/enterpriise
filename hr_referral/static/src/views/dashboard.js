@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { registry } from '@web/core/registry';
 import { useService } from "@web/core/utils/hooks";
 
@@ -73,7 +74,7 @@ export class HrReferralWelcome extends Component {
         this.actionService.doAction({
             type: 'ir.actions.client',
             tag: 'hr_referral_welcome',
-            name: this.env._t('Dashboard'),
+            name: _t('Dashboard'),
             target: 'main'
         });
     }
@@ -89,7 +90,7 @@ export class HrReferralWelcome extends Component {
         this.actionService.doAction({
             type: 'ir.actions.client',
             tag: 'hr_referral_welcome',
-            name: this.env._t('Dashboard'),
+            name: _t('Dashboard'),
             target: 'main'
         });
     }
@@ -105,7 +106,7 @@ export class HrReferralWelcome extends Component {
         this.actionService.doAction({
             type: 'ir.actions.client',
             tag: 'hr_referral_welcome',
-            name: this.env._t('Dashboard'),
+            name: _t('Dashboard'),
             target: 'main'
         });
     }

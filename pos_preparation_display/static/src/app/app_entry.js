@@ -5,6 +5,7 @@ import { App, whenReady } from "@odoo/owl";
 import { templates, setLoadXmlDefaultApp } from "@web/core/assets";
 import { session } from "@web/session";
 import { renderToString } from "@web/core/utils/render";
+import { _t } from "@web/core/l10n/translation";
 
 (async function setup() {
     odoo.info = {
@@ -25,7 +26,7 @@ import { renderToString } from "@web/core/utils/render";
         dev: env.debug,
         warnIfNoStaticProps: true,
         translatableAttributes: ["data-tooltip"],
-        translateFn: env._t,
+        translateFn: _t,
     });
 
     renderToString.app = app;

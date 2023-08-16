@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { ActivityController } from "@mail/views/web/activity/activity_controller";
 
 import { preSuperSetup, useDocumentView } from "@documents/views/hooks";
@@ -68,7 +69,7 @@ export class DocumentsActivityController extends ActivityController {
      */
     sendMailTemplate(templateID, activityTypeID) {
         super.sendMailTemplate(templateID, activityTypeID);
-        this.env.services.notification.add(this.env._t("Reminder emails have been sent."), {type: "success"});
+        this.env.services.notification.add(_t("Reminder emails have been sent."), {type: "success"});
     }
 
 }

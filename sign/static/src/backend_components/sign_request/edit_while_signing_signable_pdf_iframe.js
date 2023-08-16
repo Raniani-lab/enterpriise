@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { renderToString } from "@web/core/utils/render";
 import { SignablePDFIframe } from "@sign/components/sign_request/signable_PDF_iframe";
 import { EditablePDFIframeMixin } from "@sign/backend_components/editable_pdf_iframe_mixin";
@@ -47,7 +48,7 @@ export class EditWhileSigningSignablePDFIframe extends EditablePDFIframeMixin(Si
         const nameList = this.signInfo.get("nameList");
         if (nameList && nameList.length > 0) {
             const nextName = nameList[0];
-            const bannerTitle = this.env._t("Validate & the next signatory is “%s”", nextName);
+            const bannerTitle = _t("Validate & the next signatory is “%s”", nextName);
             this.props.validateButton.textContent = bannerTitle;
         }
     }

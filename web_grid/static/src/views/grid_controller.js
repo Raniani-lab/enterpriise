@@ -1,5 +1,6 @@
-/** @odoo-module */
+/** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { Dropdown } from "@web/core/dropdown/dropdown";
 import { DropdownItem } from "@web/core/dropdown/dropdown_item";
 import { serializeDate, deserializeDate } from "@web/core/l10n/dates";
@@ -127,7 +128,7 @@ export class GridController extends Component {
         this.closeDialog = this.dialogService.add(
             FormViewDialog,
             {
-                title: this.env._t("New Record"),
+                title: _t("New Record"),
                 resModel: this.model.resModel,
                 viewId: this.props.archInfo.formViewId,
                 onRecordSaved: this.onRecordSaved.bind(this),

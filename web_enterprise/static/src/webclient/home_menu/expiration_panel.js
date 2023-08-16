@@ -2,7 +2,7 @@
 
 import { useService } from "@web/core/utils/hooks";
 import { Transition } from "@web/core/transition";
-
+import { _t } from "@web/core/l10n/translation";
 import { Component, useState, useRef } from "@odoo/owl";
 
 /**
@@ -26,7 +26,6 @@ export class ExpirationPanel extends Component {
     }
 
     get buttonText() {
-        const { _t } = this.env;
         return this.subscription.lastRequestStatus === "error" ? _t("Retry") : _t("Register");
     }
 
@@ -44,7 +43,6 @@ export class ExpirationPanel extends Component {
     }
 
     get expirationMessage() {
-        const { _t } = this.env;
         const { daysLeft } = this.subscription;
         if (daysLeft <= 0) {
             return _t("This database has expired. ");
@@ -61,7 +59,6 @@ export class ExpirationPanel extends Component {
     }
 
     async onCodeSubmit() {
-        const { _t } = this.env;
         const enterpriseCode = this.inputRef.el.value;
         if (!enterpriseCode) {
             return;

@@ -1,4 +1,6 @@
 /** @odoo-module **/
+
+import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 
@@ -30,7 +32,7 @@ export class DocumentState extends SelectionField {
 
     copyText() {
         navigator.clipboard.writeText(this.message);
-        this.notification.add(this.env._t("Text copied"), { type: 'success' });
+        this.notification.add(_t("Text copied"), { type: 'success' });
         this.popoverCloseFn();
         this.popoverCloseFn = null;
     }

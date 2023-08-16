@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
     <t t-name="mrp_workorder.SelectionPopup">
-        <Dialog size="'md'" title="env._t('Select Employee')" modalRef="modalRef" withBodyPadding="false">
+        <t t-set="select_employee">Select Employee</t>
+        <Dialog size="'md'" title="select_employee" modalRef="modalRef" withBodyPadding="false">
             <div class="popup popup-selection">
                 <div class="selection scrollable-y fs-3 w-auto">
                     <t t-foreach="list" t-as="item" t-key="item.id">

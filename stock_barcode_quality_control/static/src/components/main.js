@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { bus } from "@web/legacy/js/services/core";
 import MainComponent from '@stock_barcode/components/main';
 import { patch } from "@web/core/utils/patch";
@@ -25,7 +26,7 @@ patch(MainComponent.prototype, {
                 },
             });
         } else {
-            this.notification.add(this.env._t("All the quality checks have been done"));
+            this.notification.add(_t("All the quality checks have been done"));
         }
     },
 });

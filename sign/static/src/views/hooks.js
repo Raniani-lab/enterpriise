@@ -1,15 +1,15 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { useService } from "@web/core/utils/hooks";
 import { multiFileUpload } from "@sign/backend_components/multi_file_upload";
 import { getDataURLFromFile } from "@web/core/utils/urls";
 import { TemplateAlertDialog } from "@sign/backend_components/template_alert_dialog/template_alert_dialog";
 
-const { onWillStart, useComponent, useEnv, useRef } = owl;
+const { onWillStart, useComponent, useRef } = owl;
 
 export function useSignViewButtons() {
     const component = useComponent();
-    const env = useEnv();
     const fileInput = useRef("uploadFileInput");
     const user = useService("user");
     const orm = useService("orm");
@@ -41,7 +41,7 @@ export function useSignViewButtons() {
         action.doAction({
             type: "ir.actions.client",
             tag: "sign.Template",
-            name: env._t("Template %s", file.name),
+            name: _t("Template %s", file.name),
             params: {
                 sign_edit_call: latestRequestContext,
                 id: file.template,
@@ -77,7 +77,7 @@ export function useSignViewButtons() {
             );
             if (failedTemplates && failedTemplates.length) {
                 dialog.add(TemplateAlertDialog, {
-                    title: env._t("File Error"),
+                    title: _t("File Error"),
                     failedTemplates,
                     successTemplateCount: succesfulTemplates && succesfulTemplates.length,
                     confirm: handleTemplates.bind(undefined, succesfulTemplates),

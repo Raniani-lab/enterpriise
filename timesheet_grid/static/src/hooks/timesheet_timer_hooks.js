@@ -1,5 +1,6 @@
-/** @odoo-module */
+/** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { Domain } from "@web/core/domain";
 import { useService } from "@web/core/utils/hooks";
 import { useDebounced } from "@web/core/utils/timing";
@@ -68,7 +69,7 @@ export class TimesheetTimerRendererHook {
                 if (fieldInfo.required) {
                     fieldInfo.required = "False";
                 }
-                fieldInfo.placeholder = this.env._t("Describe your activity...");
+                fieldInfo.placeholder = _t("Describe your activity...");
             }
             if (field.depends?.length && !fieldInfo.onChange) {
                 fieldInfo.onChange = true;

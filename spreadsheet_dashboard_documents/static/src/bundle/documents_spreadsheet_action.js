@@ -46,7 +46,7 @@ patch(SpreadsheetAction.prototype, {
         });
         this.env.services.action.doAction(
             {
-                name: this.env._t("Name your dashboard and select its section"),
+                name: _t("Name your dashboard and select its section"),
                 type: "ir.actions.act_window",
                 view_mode: "form",
                 views: [[false, "form"]],

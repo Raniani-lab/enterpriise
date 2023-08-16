@@ -4,6 +4,7 @@ import { WarningDialog } from "@web/core/errors/error_dialogs";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { formView } from "@web/views/form/form_view";
+import { _t } from "@web/core/l10n/translation";
 import { DeviceController } from "../device_controller";
 
 class IoTDeviceController extends formView.Controller {
@@ -28,8 +29,8 @@ class IoTDeviceController extends formView.Controller {
             const data = await this.updateKeyboardLayout(record.data);
             if (data.result !== true) {
                 this.dialogService.add(WarningDialog, {
-                    title: this.model.env._t("Connection to device failed"),
-                    message: this.model.env._t("Check if the device is still connected"),
+                    title: _t("Connection to device failed"),
+                    message: _t("Check if the device is still connected"),
                 });
                 // Original logic doesn't call super when reaching this branch.
                 return false;

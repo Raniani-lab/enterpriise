@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { Component, useState, useRef, useEffect } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
 import { Dialog } from "@web/core/dialog/dialog";
@@ -57,8 +58,8 @@ export class SMSSignerDialog extends Component {
     handleSMSError() {
         this.state.sendingSMS = false;
         this.dialog.add(AlertDialog, {
-            title: this.env._t("Error"),
-            body: this.env._t("Unable to send the SMS, please contact the sender of the document."),
+            title: _t("Error"),
+            body: _t("Unable to send the SMS, please contact the sender of the document."),
         });
     }
 
@@ -89,7 +90,7 @@ export class SMSSignerDialog extends Component {
     get dialogProps() {
         return {
             size: "md",
-            title: this.env._t("Final Validation"),
+            title: _t("Final Validation"),
             fullscreen: this.env.isSmall,
         };
     }

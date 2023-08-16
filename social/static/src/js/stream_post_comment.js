@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { SocialPostFormatterMixin } from './social_post_formatter_mixin';
 import { StreamPostCommentsReply } from './stream_post_comments_reply';
 
@@ -42,8 +43,8 @@ export class StreamPostComment extends SocialPostFormatterMixin(Component) {
 
     _deleteComment() {
         this.dialog.add(ConfirmationDialog, {
-            title: this.env._t('Delete Comment'),
-            body: this.env._t('Do you really want to delete %s', this.commentName),
+            title: _t('Delete Comment'),
+            body: _t('Do you really want to delete %s', this.commentName),
             confirm: () => {
                 this._confirmDeleteComment();
             },
@@ -105,7 +106,7 @@ export class StreamPostComment extends SocialPostFormatterMixin(Component) {
     }
 
     get commentName() {
-        return this.env._t('comment/reply');
+        return _t('comment/reply');
     }
 
     get link() {

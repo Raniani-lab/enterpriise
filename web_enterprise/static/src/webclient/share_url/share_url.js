@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { markup } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { browser } from "@web/core/browser/browser";
@@ -20,7 +21,7 @@ export async function shareUrl() {
 }
 
 export function shareUrlMenuItem(env) {
-    const translatedText = env._t("Share");
+    const translatedText = _t("Share");
     return {
         type: "item",
         hide: env.isSmall || !isDisplayStandalone(),

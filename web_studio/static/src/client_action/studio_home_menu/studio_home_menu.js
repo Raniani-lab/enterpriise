@@ -1,4 +1,6 @@
 /** @odoo-module **/
+
+import { _t } from "@web/core/l10n/translation";
 import { HomeMenu } from "@web_enterprise/webclient/home_menu/home_menu";
 import { useService } from "@web/core/utils/hooks";
 import { NotEditableActionError } from "../../studio_service";
@@ -82,10 +84,7 @@ export class StudioHomeMenu extends HomeMenu {
             } catch (e) {
                 if (e instanceof NotEditableActionError) {
                     const options = { type: "danger" };
-                    this.notifications.add(
-                        this.env._t("This action is not editable by Studio"),
-                        options
-                    );
+                    this.notifications.add(_t("This action is not editable by Studio"), options);
                     return;
                 }
                 throw e;

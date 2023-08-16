@@ -1,5 +1,6 @@
-/** @odoo-module */
+/** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { ScaleScreen } from "@point_of_sale/app/screens/scale_screen/scale_screen";
 import { patch } from "@web/core/utils/patch";
 import { ErrorPopup } from "@point_of_sale/app/errors/popups/error_popup";
@@ -19,10 +20,8 @@ patch(ScaleScreen.prototype, {
             if (!this._error) {
                 this._error = true;
                 this.popup.add(ErrorPopup, {
-                    title: this.env._t("Could not connect to IoT scale"),
-                    body: this.env._t(
-                        "The IoT scale is not responding. You should check your connection."
-                    ),
+                    title: _t("Could not connect to IoT scale"),
+                    body: _t("The IoT scale is not responding. You should check your connection."),
                 });
             }
         }

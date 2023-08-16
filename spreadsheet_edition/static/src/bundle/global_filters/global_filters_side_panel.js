@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import { FilterValue } from "@spreadsheet/global_filters/components/filter_value/filter_value";
-
+import { _t } from "@web/core/l10n/translation";
 import { Component } from "@odoo/owl";
 /**
  * This is the side panel to define/edit a global filter.
@@ -18,6 +18,10 @@ export default class GlobalFiltersSidePanel extends Component {
 
     get filters() {
         return this.env.model.getters.getGlobalFilters();
+    }
+
+    _t(...args) {
+        return _t(...args);
     }
 
     hasDataSources() {

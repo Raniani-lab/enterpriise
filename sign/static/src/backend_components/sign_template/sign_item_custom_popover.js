@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { Record } from "@web/views/record";
 import {
     many2ManyTagsField,
@@ -33,9 +34,9 @@ function getActionActiveFields() {
 export class SignItemCustomPopover extends Component {
     setup() {
         this.alignmentOptions = [
-            { title: this.env._t("Left"), key: "left" },
-            { title: this.env._t("Center"), key: "center" },
-            { title: this.env._t("Right"), key: "right" },
+            { title: _t("Left"), key: "left" },
+            { title: _t("Center"), key: "center" },
+            { title: _t("Right"), key: "right" },
         ];
         this.state = useState({
             alignment: this.props.alignment,

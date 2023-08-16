@@ -12,7 +12,7 @@
         <div class="o_side_panel_section pivot_filter_section" t-foreach="filters" t-as="filter" t-key="'filter_' + filter_index">
             <div class="pivot_filter">
                 <div class="o_side_panel_title">
-                    <span class="o_side_panel_filter_label" t-esc="env._t(filter.label)"/>
+                    <span class="o_side_panel_filter_label" t-esc="_t(filter.label)"/>
                 </div>
                 <div class="pivot_filter_input">
                     <FilterValue filter="filter" model="env.model"/>

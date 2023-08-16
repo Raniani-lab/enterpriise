@@ -1,13 +1,11 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { useOwnedDialogs, useService } from "@web/core/utils/hooks";
 import { SelectCreateDialog } from "@web/views/view_dialogs/select_create_dialog";
 
-const { useEnv } = owl;
-
 export function useAddPayslips() {
     const addDialog = useOwnedDialogs();
-    const env = useEnv();
     const notification = useService("notification");
     const orm = useService('orm');
 
@@ -18,7 +16,7 @@ export function useAddPayslips() {
 
         addDialog(SelectCreateDialog, {
             resModel: 'hr.payslip',
-            title: env._t('Add Payslips'),
+            title: _t('Add Payslips'),
             noCreate: true,
             domain: [['payslip_run_id', '=', false]],
             onSelected: async (resIds) => {
@@ -29,7 +27,7 @@ export function useAddPayslips() {
                 });
                 await record.load();
 
-                notification.add(env._t('The payslips(s) are now added to the batch'), { type: 'success' });
+                notification.add(_t('The payslips(s) are now added to the batch'), { type: 'success' });
             }
         });
     }

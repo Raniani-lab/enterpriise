@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import config from "@web/legacy/js/services/config";
 import { str_to_datetime } from "@web/legacy/js/core/time";
 import { session } from "@web/session";
@@ -324,7 +325,7 @@ export class DocumentsInspector extends Component {
         const linkProportion = await dUtils.get_link_proportion(this.orm, resIds ? resIds : false);
         if (linkProportion == 'all') {
             this.notificationService.add(
-                this.env._t("Links cannot be shared."),
+                _t("Links cannot be shared."),
                 { type: "danger", },
             );
             return;
@@ -340,12 +341,12 @@ export class DocumentsInspector extends Component {
         browser.navigator.clipboard.writeText(this.generatedUrls[resIds]);
         if (linkProportion == 'some') {
             this.notificationService.add(
-                this.env._t("The share url has been copied to your clipboard. Links were excluded."),
+                _t("The share url has been copied to your clipboard. Links were excluded."),
                 { type: "warning", },
             );
         } else {
             this.notificationService.add(
-                this.env._t("The share url has been copied to your clipboard."),
+                _t("The share url has been copied to your clipboard."),
                 { type: "success", },
             );
         }
@@ -511,7 +512,7 @@ export class DocumentsInspector extends Component {
                     },
                 },
             ],
-            placeholder: this.env._t(" + Add a tag"),
+            placeholder: _t(" + Add a tag"),
         };
     }
 
@@ -589,7 +590,7 @@ export class DocumentsInspector extends Component {
         });
         this.action.doAction(
             {
-                name: this.env._t("Edit the linked record"),
+                name: _t("Edit the linked record"),
                 type: "ir.actions.act_window",
                 res_model: "documents.link_to_record_wizard",
                 views: [[false, "form"]],
@@ -613,7 +614,7 @@ export class DocumentsInspector extends Component {
         const recordId = this.props.documents[0].resId;
         const model = this.props.documents[0].model;
         this.dialogService.add(ConfirmationDialog, {
-            body: this.env._t("Do you really want to unlink this record?"),
+            body: _t("Do you really want to unlink this record?"),
             confirm: async () => {
                 await this.orm.call("documents.workflow.rule", "unlink_record", [[recordId]]);
                 await model.load();

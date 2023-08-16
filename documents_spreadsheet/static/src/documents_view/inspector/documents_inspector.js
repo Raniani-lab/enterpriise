@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { patch } from "@web/core/utils/patch";
 import { getBundle, loadBundle } from "@web/core/assets";
 import { useService } from "@web/core/utils/hooks";
@@ -79,7 +80,7 @@ patch(DocumentsInspector.prototype, {
                 });
             } else {
                 this.notification.add(
-                    this.env._t(
+                    _t(
                         "Spreadsheets mass download not yet supported.\n Download spreadsheets individually instead."
                     ),
                     {

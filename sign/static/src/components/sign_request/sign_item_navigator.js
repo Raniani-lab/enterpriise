@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { offset } from "./utils";
 
 /**
@@ -28,7 +29,7 @@ export function startSignItemNavigator(parent, target, types, env) {
     navLine.classList.add("o_sign_sign_item_navline");
     navigator.before(navLine);
 
-    setTip(env._t("Click to start"));
+    setTip(_t("Click to start"));
     navigator.focus();
 
     function goToNextSignItem() {

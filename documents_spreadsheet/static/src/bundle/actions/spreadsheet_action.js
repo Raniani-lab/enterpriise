@@ -19,7 +19,7 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
 
     setup() {
         super.setup();
-        this.notificationMessage = this.env._t("New spreadsheet created in Documents");
+        this.notificationMessage = _t("New spreadsheet created in Documents");
         this.state = useState({
             isFavorited: false,
             spreadsheetName: UNTITLED_SPREADSHEET_NAME,

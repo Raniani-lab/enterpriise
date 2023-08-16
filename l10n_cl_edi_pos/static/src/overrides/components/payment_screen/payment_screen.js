@@ -57,7 +57,7 @@ patch(PaymentScreen.prototype, {
             }
             if (missingFields.length > 0) {
                 this.notification.add(
-                    this.env._t("Please fill out missing fields to proceed.", 5000)
+                    _t("Please fill out missing fields to proceed.", 5000)
                 );
                 this.selectPartner(true, missingFields);
                 return false;
@@ -72,9 +72,9 @@ patch(PaymentScreen.prototype, {
             this.paymentLines.some((line) => line.payment_method.is_card_payment)
         ) {
             const { confirmed, payload } = await this.popup.add(TextAreaPopup, {
-                confirmText: this.env._t("Confirm"),
-                cancelText: this.env._t("Cancel"),
-                title: this.env._t("Please register the voucher number"),
+                confirmText: _t("Confirm"),
+                cancelText: _t("Cancel"),
+                title: _t("Please register the voucher number"),
             });
 
             if (!confirmed) {

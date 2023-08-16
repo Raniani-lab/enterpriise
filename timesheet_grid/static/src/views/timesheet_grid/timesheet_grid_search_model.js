@@ -1,5 +1,6 @@
-/** @odoo-module */
+/** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { useService } from "@web/core/utils/hooks";
 import { SearchModel } from "@web/search/search_model";
 
@@ -25,7 +26,7 @@ export class TimesheetGridSearchModel extends SearchModel {
                 queryElem.intervalId === intervalId
         );
         if (index === -1) {
-            this.notificationService.add(this.env._t("Grouping by date is not supported"), {
+            this.notificationService.add(_t("Grouping by date is not supported"), {
                 type: "danger",
             });
         } else {

@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { Domain } from "@web/core/domain";
 import { deserializeDate, deserializeDateTime, serializeDateTime } from "@web/core/l10n/dates";
 import { localization } from "@web/core/l10n/localization";
@@ -863,7 +864,7 @@ export class GanttModel extends Model {
         if (field.type === "boolean") {
             return value ? "True" : "False";
         } else if (!value) {
-            return this.env._t("Undefined %s", field.string);
+            return _t("Undefined %s", field.string);
         } else if (field.type === "many2many") {
             return value[1];
         }
@@ -919,7 +920,7 @@ export class GanttModel extends Model {
         const lengthBeforeFiltering = groupedBy.length;
         groupedBy = this._filterDateIngroupedBy(metaData, groupedBy);
         if (groupedBy.length !== lengthBeforeFiltering) {
-            this.notificationService.add(this.env._t("Grouping by date is not supported"), {
+            this.notificationService.add(_t("Grouping by date is not supported"), {
                 type: "danger",
             });
         }

@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { scrollTo } from "@web/core/utils/scrolling";
@@ -647,19 +648,19 @@ export class BankRecKanbanController extends KanbanController {
 
         // Prepare columns.
         let columns = [
-            ["account", this.env._t("Account")],
-            ["partner", this.env._t("Partner")],
-            ["date", this.env._t("Date")],
+            ["account", _t("Account")],
+            ["partner", _t("Partner")],
+            ["date", _t("Date")],
         ];
         if(lineIdsRecords.some((x) => x.data.tax_ids.records.length)){
-            columns.push(["taxes", this.env._t("Taxes")]);
+            columns.push(["taxes", _t("Taxes")]);
         }
         if(lineIdsRecords.some((x) => x.data.currency_id[0] !== data.company_currency_id[0])){
-            columns.push(["amount_currency", this.env._t("Amount in Currency")], ["currency", this.env._t("Currency")]);
+            columns.push(["amount_currency", _t("Amount in Currency")], ["currency", _t("Currency")]);
         }
         columns.push(
-            ["debit", this.env._t("Debit")],
-            ["credit", this.env._t("Credit")],
+            ["debit", _t("Debit")],
+            ["credit", _t("Credit")],
             ["__trash", ""],
         );
 
@@ -1124,7 +1125,7 @@ export class BankRecKanbanRenderer extends KanbanRenderer {
     openStatementDialog(statementId) {
         const action = {
             type: "ir.actions.act_window",
-            name: this.env._t("Edit Statement"),
+            name: _t("Edit Statement"),
             res_model: "account.bank.statement",
             res_id: statementId,
             views: [[false, "form"]],

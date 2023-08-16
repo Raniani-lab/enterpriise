@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { deserializeDate, deserializeDateTime, serializeDateTime } from "@web/core/l10n/dates";
 import { GanttModel } from "@web_gantt/gantt_model";
 import { sortBy } from "@web/core/utils/arrays";
@@ -77,10 +78,10 @@ export class TaskGanttModel extends GanttModel {
         for (const row of rows) {
             if (row.progressBar) {
                 if (row.progressBar.value_formatted) {
-                    row.progressBar.value_formatted += this.env._t(" h");
+                    row.progressBar.value_formatted += _t(" h");
                 }
                 if (row.progressBar.max_value_formatted) {
-                    row.progressBar.max_value_formatted += this.env._t(" h");
+                    row.progressBar.max_value_formatted += _t(" h");
                 }
             }
         }
@@ -173,9 +174,9 @@ export class TaskGanttModel extends GanttModel {
     _getRowName(_, groupedByField, value) {
         if (!value) {
             if (groupedByField === "user_ids") {
-                return this.env._t("👤 Unassigned");
+                return _t("👤 Unassigned");
             } else if (groupedByField === "project_id") {
-                return this.env._t("🔒 Private");
+                return _t("🔒 Private");
             }
         }
         return super._getRowName(...arguments);

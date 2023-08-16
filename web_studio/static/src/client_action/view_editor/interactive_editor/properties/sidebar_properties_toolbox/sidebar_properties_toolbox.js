@@ -30,10 +30,7 @@ export class SidebarPropertiesToolbox extends Component {
         }
 
         this.dialog.add(ConfirmationDialog, {
-            body: this.env._t(
-                "Are you sure you want to remove this %s from the view?",
-                nodeHumanName
-            ),
+            body: _t("Are you sure you want to remove this %s from the view?", nodeHumanName),
             confirm: () => {
                 return this.removeNodeFromArch();
             },

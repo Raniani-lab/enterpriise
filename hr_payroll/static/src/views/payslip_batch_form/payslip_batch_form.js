@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
 import { FormController } from "@web/views/form/form_controller";
 import { formView } from "@web/views/form/form_view";
@@ -18,7 +19,7 @@ export class PayslipBatchFormController extends FormController {
         if (['draft', 'verify'].includes(this.model.root.data.state)) {
             menuItems.add_payslips = {
                 sequence: 50,
-                description: this.env._t('Add Payslips'),
+                description: _t('Add Payslips'),
                 callback: async () => {
                     await this.addPayslips(this.model.root);
                 },

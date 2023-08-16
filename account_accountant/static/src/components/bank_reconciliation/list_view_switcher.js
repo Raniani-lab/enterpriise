@@ -1,4 +1,6 @@
 /** @odoo-module **/
+
+import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { standardFieldProps } from "@web/views/fields/standard_field_props";
@@ -30,7 +32,7 @@ export class ListViewSwitcher extends Component {
 
     /** Give the button's label for the current record. **/
     get buttonLabel() {
-        return this.props.record.data.is_reconciled ? this.env._t("View") : this.env._t("Match");
+        return this.props.record.data.is_reconciled ? _t("View") : _t("Match");
     }
 }
 

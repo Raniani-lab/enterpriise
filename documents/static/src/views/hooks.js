@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { useBus, useService } from "@web/core/utils/hooks";
 import { escape } from "@web/core/utils/strings";
 import { memoize } from "@web/core/utils/functions";
@@ -156,7 +157,7 @@ export function useDocumentView(helpers) {
                 selectedRecords.length &&
                 selectedRecords.every((rec) => rec._values.type === "empty")
             ) {
-                notification.add(env._t("The requested documents are not shareable."), {
+                notification.add(_t("The requested documents are not shareable."), {
                     type: "danger",
                 });
                 return;
@@ -179,7 +180,7 @@ export function useDocumentView(helpers) {
             const linkProportion = await dUtils.get_link_proportion(orm, resIds ? resIds : false, defaultVals.domain);
             if (linkProportion == 'all') {
                 notification.add(
-                    env._t("Links cannot be shared."),
+                    _t("Links cannot be shared."),
                     { type: "danger", },
                 );
                 return;
@@ -199,7 +200,7 @@ export function useDocumentView(helpers) {
                         navigator.clipboard.writeText(record.data.full_url);
                         // Show a notification to the user about the copy to clipboard
                         notification.add(
-                            env._t("The share url has been copied to your clipboard."),
+                            _t("The share url has been copied to your clipboard."),
                             {
                                 type: "success",
                             }
@@ -385,7 +386,7 @@ function useDocumentsViewFileUpload() {
 
     const handleUploadError = (result) => {
         notification.add(result.error, {
-            title: env._t("Error"),
+            title: _t("Error"),
             sticky: true,
         });
     };
@@ -408,7 +409,7 @@ function useDocumentsViewFileUpload() {
             return;
         }
         handleUploadError({
-            error: env._t("An error occured while uploading."),
+            error: _t("An error occured while uploading."),
         });
     });
 
@@ -419,7 +420,7 @@ function useDocumentsViewFileUpload() {
         const result =
             xhr.status === 200
                 ? JSON.parse(xhr.response)
-                : { error: env._t("status code: %s, message: %s", xhr.status, xhr.response) };
+                : { error: _t("status code: %s, message: %s", xhr.status, xhr.response) };
         if (result.error) {
             handleUploadError(result);
         } else {
@@ -473,7 +474,7 @@ function useDocumentsViewFileUpload() {
             });
         }
         if (validFiles.length < files.length) {
-            const message = env._t(
+            const message = _t(
                 "Some files could not be uploaded (max size: %s).",
                 formatFloat(component.maxUploadSize, { humanReadable: true })
             );

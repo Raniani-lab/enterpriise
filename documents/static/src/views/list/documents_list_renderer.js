@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { ListRenderer } from "@web/views/list/list_renderer";
 
 import { useService } from "@web/core/utils/hooks";
@@ -34,7 +35,7 @@ export class DocumentsListRenderer extends ListRenderer {
         const { uploads } = useService("file_upload");
         this.documentUploads = uploads;
         useCommand(
-            this.env._t("Select all"),
+            _t("Select all"),
             () => {
                 const allSelected =
                     this.props.list.selection.length === this.props.list.records.length;

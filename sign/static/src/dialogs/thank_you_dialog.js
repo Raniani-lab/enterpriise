@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { session } from "@web/session";
 import { Dialog } from "@web/core/dialog/dialog";
 import { useService } from "@web/core/utils/hooks";
@@ -18,8 +19,7 @@ export class ThankYouDialog extends Component {
         });
         this.redirectURL = this.processURL(this.props.redirectURL);
         this.message =
-            this.props.message ||
-            this.env._t("You will receive the final signed document by email.");
+            this.props.message || _t("You will receive the final signed document by email.");
         onWillStart(this.willStart);
     }
 
@@ -83,15 +83,15 @@ export class ThankYouDialog extends Component {
 
         if (this.signRequestState === "signed") {
             this.state.buttons.push({
-                name: this.env._t("Download Document"),
+                name: _t("Download Document"),
                 click: this.downloadDocument,
             });
         }
 
         if (this.suggestSignUp) {
-            this.message += this.env._t(" You can safely close this window.");
+            this.message += _t(" You can safely close this window.");
             this.state.buttons.push({
-                name: this.env._t("Sign Up for free"),
+                name: _t("Sign Up for free"),
                 classes: "btn btn-link ms-auto",
                 ignored: true,
                 click: () => {
@@ -103,7 +103,7 @@ export class ThankYouDialog extends Component {
             });
         } else {
             this.state.buttons.push({
-                name: this.env._t("Close"),
+                name: _t("Close"),
                 click: () => {
                     if (session.is_frontend) {
                         window.location.assign("/my/signatures");
@@ -117,7 +117,7 @@ export class ThankYouDialog extends Component {
             });
             if (this.state.nextDocuments.length > 0) {
                 this.state.buttons.push({
-                    name: this.env._t("Sign Next Document"),
+                    name: _t("Sign Next Document"),
                     classes: "o_thankyou_button_next",
                     click: this.clickButtonNext,
                 });
@@ -169,7 +169,7 @@ export class ThankYouDialog extends Component {
             });
             if (this.state.nextDocuments.every((doc) => doc.ignored)) {
                 this.state.buttons = this.state.buttons.map((button) => {
-                    if (button.name === this.env._t("Sign Next Document")) {
+                    if (button.name === _t("Sign Next Document")) {
                         return {
                             ...button,
                             disabled: true,

@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { ImagesCarouselDialog } from './images_carousel_dialog';
 import { SocialPostFormatterMixin } from './social_post_formatter_mixin';
 import { StreamPostCommentsReply } from './stream_post_comments_reply';
@@ -38,7 +39,7 @@ export class StreamPostComments extends SocialPostFormatterMixin(Component) {
 
     _onClickMoreImages(index, images) {
         this.dialog.add(ImagesCarouselDialog, {
-            title: this.env._t("Post Images"),
+            title: _t("Post Images"),
             activeIndex: index,
             images: images
         })

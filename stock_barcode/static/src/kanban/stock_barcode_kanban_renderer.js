@@ -1,5 +1,6 @@
-/** @odoo-module */
+/** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { KanbanRenderer } from '@web/views/kanban/kanban_renderer';
 import { useService } from '@web/core/utils/hooks';
 import * as BarcodeScanner from '@web/webclient/barcode/barcode_scanner';
@@ -27,7 +28,7 @@ export class StockBarcodeKanbanRenderer extends KanbanRenderer {
             }
         } else {
             this.env.services.notification.add(
-                this.env._t("Please, Scan again!"),
+                _t("Please, Scan again!"),
                 {type: 'warning'}
             );
         }

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
     <t t-name="mrp_workorder.PinPopup">
-        <Dialog size="'md'" title="env._t('Password?')" modalRef="modalRef" withBodyPadding="false">
+    <t t-set="password">Password?</t>
+        <Dialog size="'md'" title="password" modalRef="modalRef" withBodyPadding="false">
             <div class="popup">
                 <div class="popup-input">
                     <span class="highlight"><t t-esc="inputBuffer"/></span>

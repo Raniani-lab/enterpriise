@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { StreamPostKanbanRecord } from '@social/js/stream_post_kanban_record';
 import { StreamPostCommentsInstagram } from './stream_post_comments';
 
@@ -30,7 +31,7 @@ patch(StreamPostKanbanRecord.prototype, {
             comments_count: this.commentsCount,
         }).then((result) => {
             this.dialog.add(StreamPostCommentsInstagram, {
-                title: this.env._t('Instagram Comments'),
+                title: _t('Instagram Comments'),
                 commentCount: this.commentCount,
                 originalPost: this.record,
                 accountId: this.record.account_id.raw_value,

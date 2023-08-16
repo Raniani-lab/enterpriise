@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { AttendeeCalendarController } from "@calendar/views/attendee_calendar/attendee_calendar_controller";
 import { patch } from "@web/core/utils/patch";
 import { usePopover } from "@web/core/popover/popover_hook";
@@ -53,7 +54,7 @@ patch(AttendeeCalendarController.prototype, {
         this.actionService.doAction({
             type: 'ir.actions.act_window',
             res_model: 'appointment.invite',
-            name: this.env._t('Share Link'),
+            name: _t('Share Link'),
             views: [[false, 'form']],
             target: 'new',
             context: {
@@ -91,7 +92,7 @@ patch(AttendeeCalendarController.prototype, {
         if (!this.copyLinkRef.el) {
             return;
         }
-        this.popover.open(this.copyLinkRef.el, { tooltip: this.env._t("Copied!") });
+        this.popover.open(this.copyLinkRef.el, { tooltip: _t("Copied!") });
         browser.setTimeout(this.popover.close, 800);
     },
 

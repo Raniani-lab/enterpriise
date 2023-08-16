@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { StreamPostComments } from '@social/js/stream_post_comments';
 import { StreamPostCommentListTwitter } from './stream_post_comment_list';
 import { StreamPostCommentsReplyTwitter } from './stream_post_comments_reply';
@@ -76,7 +77,7 @@ export class StreamPostCommentsTwitter extends StreamPostComments {
                 .closest('.o_social_write_reply')
                 .querySelector('.o_social_textarea_message');
             textAreaMessage.classList.add('text-danger');
-            textAreaMessage.textContent = this.env._t(
+            textAreaMessage.textContent = _t(
                 "You can comment only three times a tweet as it may be considered as spamming by Twitter"
             );
             return true;

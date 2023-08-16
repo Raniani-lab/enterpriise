@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { ControlPanel } from "@web/search/control_panel/control_panel";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
@@ -10,7 +11,7 @@ export class AccountImportGuide extends Component {
     setup() {
         this.actionService = useService("action");
         this.orm = useService("orm");
-        this.env.config.setDisplayName(this.env._t("Accounting Import Guide"))
+        this.env.config.setDisplayName(_t("Accounting Import Guide"))
         onWillStart(async () => {
             const current_company_id = this.env.services.company.currentCompany.id
             this.data = await this.orm.searchRead("res.company", [["id", "=", current_company_id]], ["country_code"])
@@ -26,7 +27,7 @@ export class AccountImportGuide extends Component {
 
     _openModuleInstallation(module) {
         this.actionService.doAction({
-            name: this.env._t("Install a module"),
+            name: _t("Install a module"),
             res_model: "ir.module.module",
             type: "ir.actions.act_window",
             views: [[false, "kanban"], [false, "list"], [false, "form"]],

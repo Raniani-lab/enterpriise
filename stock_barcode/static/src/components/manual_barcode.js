@@ -1,12 +1,13 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { Dialog } from "@web/core/dialog/dialog";
 
 const { Component, onMounted, useRef, useState } = owl;
 
 export class ManualBarcodeScanner extends Component {
     setup() {
-        this.title = this.env._t("Barcode Manual Entry");
+        this.title = _t("Barcode Manual Entry");
         this.state = useState({
             'barcode': false,
         });

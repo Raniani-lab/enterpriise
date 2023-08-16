@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { KanbanRenderer } from "@web/views/kanban/kanban_renderer";
 
 import { useService } from "@web/core/utils/hooks";
@@ -34,7 +35,7 @@ export class DocumentsKanbanRenderer extends KanbanRenderer {
         this.documentUploads = uploads;
 
         useCommand(
-            this.env._t("Select all"),
+            _t("Select all"),
             () => {
                 const allSelected =
                     this.props.list.selection.length === this.props.list.records.length;
@@ -48,7 +49,7 @@ export class DocumentsKanbanRenderer extends KanbanRenderer {
             }
         );
         useCommand(
-            this.env._t("Toggle favorite"),
+            _t("Toggle favorite"),
             () => {
                 if (this.props.list.selection.length) {
                     this.props.list.selection[0].update({

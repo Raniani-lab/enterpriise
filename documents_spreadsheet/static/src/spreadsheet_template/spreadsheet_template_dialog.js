@@ -24,7 +24,7 @@ export class TemplateDialog extends Component {
         this.data = this.env.dialogData;
         useHotkey("escape", () => this.data.close());
 
-        this.dialogTitle = this.env._t("Create a Spreadsheet or select a Template");
+        this.dialogTitle = _t("Create a Spreadsheet or select a Template");
         this.limit = 9;
         this.state = useState({
             isOpen: true,

@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { Component, useRef } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
 import { Dialog } from "@web/core/dialog/dialog";
@@ -14,7 +15,7 @@ export class PublicSignerDialog extends Component {
 
     get dialogProps() {
         return {
-            title: this.env._t("Final Validation"),
+            title: _t("Final Validation"),
             size: "md",
             technical: this.env.isSmall,
             fullscreen: this.env.isSmall,

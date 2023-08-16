@@ -1,5 +1,6 @@
-/** @odoo-module */
+/** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
@@ -79,8 +80,8 @@ export class HierarchyKanbanRecord extends KanbanRecord {
         if (type === "delete" && !listOrGroup.deleteRecords &&
             directChildren && directChildren.length !== 0) {
             this.dialogService.add(ConfirmationDialog, {
-                body: this.env._t("Deleting this activity will delete ALL its children activities. Are you sure?"),
-                confirmLabel: this.env._t("Delete"),
+                body: _t("Deleting this activity will delete ALL its children activities. Are you sure?"),
+                confirmLabel: _t("Delete"),
                 confirm: () => super.triggerAction(...arguments),
                 cancel: () => {},
             });

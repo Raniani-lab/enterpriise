@@ -1,5 +1,6 @@
-/** @odoo-module */
+/** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { PartnerListScreen } from "@point_of_sale/app/screens/partner_list/partner_list";
 import { patch } from "@web/core/utils/patch";
 import { SelectionPopup } from "@point_of_sale/app/utils/input_popups/selection_popup";
@@ -28,8 +29,7 @@ patch(PartnerListScreen.prototype, {
             : this.state.editModeProps.partner.total_due;
         const paymentMethods = this.pos.payment_methods.filter(
             (method) =>
-                this.pos.config.payment_method_ids.includes(method.id) &&
-                method.type != "pay_later"
+                this.pos.config.payment_method_ids.includes(method.id) && method.type != "pay_later"
         );
         const selectionList = paymentMethods.map((paymentMethod) => ({
             id: paymentMethod.id,
@@ -37,7 +37,7 @@ patch(PartnerListScreen.prototype, {
             item: paymentMethod,
         }));
         const { confirmed, payload: selectedPaymentMethod } = await this.popup.add(SelectionPopup, {
-            title: this.env._t("Select the payment method to settle the due"),
+            title: _t("Select the payment method to settle the due"),
             list: selectionList,
         });
         if (!confirmed) {

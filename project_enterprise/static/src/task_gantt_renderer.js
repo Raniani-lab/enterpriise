@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { Avatar } from "@mail/views/web/fields/avatar/avatar";
 import { markup, useEffect } from "@odoo/owl";
 import { localization } from "@web/core/l10n/localization";
@@ -97,7 +98,7 @@ export class TaskGanttRenderer extends GanttRenderer {
             } else if (res.warnings) {
                 for (const warning of res.warnings) {
                     this.notificationService.add(warning, {
-                        title: this.env._t("Warning"),
+                        title: _t("Warning"),
                         type: "warning",
                         sticky: true,
                     });

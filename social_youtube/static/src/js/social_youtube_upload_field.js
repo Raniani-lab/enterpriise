@@ -43,7 +43,7 @@ export class YoutubeUploadField extends CharField {
         this.state = useState({
             uploading: false,
             showSocialYoutubeBar: true,
-            socialYoutubeText: this.env._t("Uploading... 0%"),
+            socialYoutubeText: _t("Uploading... 0%"),
             uploadProgress: 0,
         });
         this.notification = useService("notification");
@@ -239,11 +239,11 @@ export class YoutubeUploadField extends CharField {
      */
     _onClearClick() {
         this.dialogService.add(ConfirmationDialog, {
-            confirmLabel: this.env._t("Yes, delete it"),
-            cancelLabel: this.env._t("No"),
-            title: this.env._t("Confirmation"),
+            confirmLabel: _t("Yes, delete it"),
+            cancelLabel: _t("No"),
+            title: _t("Confirmation"),
 
-            body: this.env._t("Do you also want to remove the video from your YouTube account?"),
+            body: _t("Do you also want to remove the video from your YouTube account?"),
             confirm: () => {
                 $.ajax({
                         url: 'https://www.googleapis.com/youtube/v3/videos',

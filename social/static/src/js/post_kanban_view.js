@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { KanbanRenderer } from "@web/views/kanban/kanban_renderer";
 import { kanbanView } from "@web/views/kanban/kanban_view";
 import { registry } from "@web/core/registry";
@@ -32,7 +33,7 @@ export class PostKanbanRenderer extends KanbanRenderer {
     onClickMoreImages(ev) {
         ev.stopPropagation();
         this.dialog.add(ImagesCarouselDialog, {
-            title: this.env._t("Post Images"),
+            title: _t("Post Images"),
             activeIndex: parseInt(ev.currentTarget.dataset.index),
             images: ev.currentTarget.dataset.imageUrls.split(',')
         })

@@ -1,5 +1,6 @@
-/** @odoo-module */
+/** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { registry } from '@web/core/registry';
 
 import { listView } from '@web/views/list/list_view';
@@ -24,7 +25,7 @@ export class KnowledgeArticleController extends ListController {
             isAvailable: () => this.nbSelected && this.userService.isAdmin,
             sequence: 15,
             icon: "fa fa-clone",
-            description: this.env._t("Duplicate"),
+            description: _t("Duplicate"),
             callback: async () => {
                 const selectedResIds = await this.getSelectedResIds();
                 if (selectedResIds.length === 1) {

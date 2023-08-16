@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { SignTemplateControlPanel } from "./sign_template_control_panel";
@@ -30,8 +31,8 @@ export class SignTemplate extends Component {
         ]);
         if (!template.length) {
             this.templateID = undefined;
-            this.notification.add(this.env._t("The template doesn't exist anymore."), {
-                title: this.env._t("Warning"),
+            this.notification.add(_t("The template doesn't exist anymore."), {
+                title: _t("Warning"),
                 type: "warning",
             });
             return;

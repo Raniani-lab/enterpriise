@@ -1,5 +1,6 @@
-/** @odoo-module */
+/** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { useService } from "@web/core/utils/hooks";
 
 import { AccountReport } from "@account_reports/components/account_report/account_report";
@@ -22,7 +23,7 @@ export class AgedPartnerBalanceLineName extends AccountReportLineName {
     // -----------------------------------------------------------------------------------------------------------------
     async openExpectedDateDialog() {
         this.dialog.add(ExpectedDateDialog, {
-            title: this.env._t("Change expected date"),
+            title: _t("Change expected date"),
             size: "md",
             save: this.saveExpectedDate.bind(this),
         });

@@ -1,5 +1,6 @@
-/** @odoo-module */
+/** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { useService } from '@web/core/utils/hooks';
 import { Dialog } from '@web/core/dialog/dialog';
 import { SelectMenu } from '@web/core/select_menu/select_menu';
@@ -26,7 +27,7 @@ export class ArticleSelectionBehaviorDialog extends Component {
         super.setup();
         this.orm = useService('orm');
         this.userService = useService('user');
-        this.placeholderLabel = this.env._t('Choose an Article...');
+        this.placeholderLabel = _t('Choose an Article...');
         this.toggler = useRef('togglerRef');
         this.state = useState({
             selectedArticleName: false,
@@ -65,7 +66,7 @@ export class ArticleSelectionBehaviorDialog extends Component {
     }
 
     async fetchArticles(searchValue) {
-        this.state.createLabel = this.env._t('Create "%s"', searchValue);
+        this.state.createLabel = _t('Create "%s"', searchValue);
         const domain = [['user_has_access', '=', true]];
         if (searchValue) {
             domain.push(['name', '=ilike', `%${searchValue}%`]);

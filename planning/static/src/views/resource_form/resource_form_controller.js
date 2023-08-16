@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { FormController } from "@web/views/form/form_controller";
 
 export class ResourceFormController extends FormController {
@@ -8,7 +9,7 @@ export class ResourceFormController extends FormController {
      */
     get archiveDialogProps() {
         let result = super.archiveDialogProps;
-        result.body = this.env._t("Archiving this resource will transform all of its future shifts into open shifts. Are you sure you want to continue?");
+        result.body = _t("Archiving this resource will transform all of its future shifts into open shifts. Are you sure you want to continue?");
         return result;
     }
 }

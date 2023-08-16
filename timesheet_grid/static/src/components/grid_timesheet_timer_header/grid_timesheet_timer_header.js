@@ -1,5 +1,6 @@
-/** @odoo-module */
+/** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { Domain } from "@web/core/domain";
 import { useService } from "@web/core/utils/hooks";
 import { Record } from "@web/views/record";
@@ -75,7 +76,7 @@ export class GridTimesheetTimerHeader extends Component {
         } else if (fieldName === "task_id") {
             fieldInfo.context = `{'default_project_id': project_id, 'search_default_my_tasks': True, 'search_default_open_tasks': True}`;
         } else if (fieldName === "name") {
-            fieldInfo.placeholder = this.env._t("Describe your activity...");
+            fieldInfo.placeholder = _t("Describe your activity...");
         }
         if (field.depends?.length) {
             fieldInfo.onChange = true;

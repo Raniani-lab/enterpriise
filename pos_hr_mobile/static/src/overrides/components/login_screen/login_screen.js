@@ -1,5 +1,6 @@
-/** @odoo-module */
+/** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { LoginScreen } from "@pos_hr/app/login_screen/login_screen";
 import { patch } from "@web/core/utils/patch";
 import { isBarcodeScannerSupported, scanBarcode } from "@web/webclient/barcode/barcode_scanner";
@@ -21,7 +22,7 @@ patch(LoginScreen.prototype, {
             if (error.error && error.error.message) {
                 // Here, we know the structure of the error raised by BarcodeScanner.
                 this.popup.add(ErrorPopup, {
-                    title: this.env._t("Unable to scan"),
+                    title: _t("Unable to scan"),
                     body: error.error.message,
                 });
                 return;

@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { Component, useEffect, useComponent, markup } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
 import { ControlPanel } from "@web/search/control_panel/control_panel";
@@ -16,7 +17,7 @@ function useResendButtons() {
             [signRequestItemId],
             { context: component.user.context }
         );
-        e.target.innerText = component.env._t("Resent!");
+        e.target.innerText = _t("Resent!");
     };
     return useEffect(
         () => {
@@ -27,10 +28,8 @@ function useResendButtons() {
             Array.from(signerNames).forEach((signerNameEl) => {
                 const stateSet =
                     component.signInfo.get("requestItemStates")[signerNameEl.dataset.id];
-                const title = stateSet
-                    ? component.env._t("Resend the invitation")
-                    : component.env._t("Send the invitation");
-                const text = stateSet ? component.env._t("Resend") : component.env._t("Send");
+                const title = stateSet ? _t("Resend the invitation") : _t("Send the invitation");
+                const text = stateSet ? _t("Resend") : _t("Send");
                 const button = document.createElement("button");
                 button.title = title;
                 button.innerText = text;
@@ -63,7 +62,7 @@ export class SignRequestControlPanel extends Component {
         const action = await this.orm.call("sign.request", "go_to_signable_document", [
             [this.signInfo.get("documentId")],
         ]);
-        action.name = this.env._t("Sign");
+        action.name = _t("Sign");
         this.action.doAction(action);
     }
 
@@ -72,7 +71,7 @@ export class SignRequestControlPanel extends Component {
         await this.action.doAction(
             "sign.Template",
             {
-                name: this.env._t('Template "%s"', this.nextTemplate.name),
+                name: _t('Template "%s"', this.nextTemplate.name),
                 context: {
                     sign_edit_call: "sign_send_request",
                     id: this.nextTemplate.template,

@@ -1,5 +1,6 @@
-/** @odoo-module */
+/** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { EmployeeOvertimeIndication } from "../employee_overtime_indication/employee_overtime_indication";
 
 export class TimesheetOvertimeIndication extends EmployeeOvertimeIndication {
@@ -27,19 +28,19 @@ export class TimesheetOvertimeIndication extends EmployeeOvertimeIndication {
 
     get title() {
         if (this.props.name === "project_id") {
-            return this.env._t(
+            return _t(
                 "Difference between the number of %s allocated to the project and the number of %s recorded",
                 this.props.planned_hours,
                 this.props.worked_hours
             );
         } else if (this.props.name === "task_id") {
-            return this.env._t(
+            return _t(
                 "Difference between the number of %s allocated to the task and the number of %s recorded",
                 this.props.planned_hours,
                 this.props.worked_hours
             );
         } else {
-            return this.env._t("Difference between the time allocated and the time recorded");
+            return _t("Difference between the time allocated and the time recorded");
         }
     }
 }

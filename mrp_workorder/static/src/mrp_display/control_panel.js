@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { Component } from "@odoo/owl";
 
 export class ControlPanelButtons extends Component {
@@ -27,8 +28,8 @@ export class ControlPanelButtons extends Component {
             }
         }
         return [
-            ["0", { count: productionCount, name: this.env._t("All") }],
-            ["-1", { count: this.props.employeeWorkorderCount, name: this.env._t("My") }],
+            ["0", { count: productionCount, name: _t("All") }],
+            ["-1", { count: this.props.employeeWorkorderCount, name: _t("My") }],
             ...Object.entries(workcenterButtons)
         ];
     }

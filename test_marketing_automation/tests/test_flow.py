@@ -127,7 +127,7 @@ for record in records:
     @mute_logger('odoo.addons.base.models.ir_model', 'odoo.addons.mail.models.mail_mail')
     @users('user_markauto')
     def test_simple_flow(self):
-        """ Test a maketing automation flow """
+        """ Test a marketing automation flow """
         # init test variables to ease code reading
         date_reference = self.date_reference
         test_records = self.test_records.with_user(self.env.user)
@@ -352,12 +352,12 @@ for record in records:
             'status': 'processed',
             'records': test_records_1_replied,
             'schedule_date': date_reference_reply + relativedelta(hours=1),
-            'trace_status': 'sent',
+            'trace_status': 'pending',
         }, {
             'status': 'processed',
             'records': test_records_1_replied[1],
             'schedule_date': date_reference_reply + relativedelta(hours=1),
-            'trace_status': 'sent',
+            'trace_status': 'pending',
         }, {
             'status': 'scheduled',
             'records': test_records_init - test_records_1_replied,
@@ -369,7 +369,7 @@ for record in records:
         # ACT2_1 FOLLOWUP: CLICK ON LINKS -> ACT3_1: CONFIRMATION SMS SENT
         # ------------------------------------------------------------
 
-        self._clear_outoing_sms()
+        self._clear_outgoing_sms()
         # TDE CLEANME: improve those tools, but sms gateway resets finding existing
         # sms, which is why we do in two steps
         test_records_1_clicked = test_records_1_replied[0]
@@ -393,7 +393,7 @@ for record in records:
             'status': 'processed',
             'records': test_records_1_clicked,
             'schedule_date': date_reference_new,
-            'trace_status': 'sent',
+            'trace_status': 'pending',
             'trace_content': 'Confirmation for %s' % test_records_1_clicked.name,
         }, {
             'status': 'scheduled',
@@ -405,7 +405,7 @@ for record in records:
         # ------------------------------------------------------------
 
         with self.capture_triggers('marketing_automation.ir_cron_campaign_execute_activities') as captured_triggers:
-            self._clear_outoing_sms()
+            self._clear_outgoing_sms()
 
             date_reference_new = date_reference + relativedelta(days=1, hours=2)
             self._set_mock_datetime_now(date_reference_new)

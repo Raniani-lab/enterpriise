@@ -23,7 +23,7 @@
                 <field name="push_notification_image" widget="image" class="o_push_notification_image_field"
                     string="Icon Image"
                     invisible="not display_push_notification_attributes"/>
-                <field nolabel="1" colspan="2" name="visitor_domain" widget="domain" options="{'model': 'website.visitor'}"
+                <field nolabel="1" colspan="2" name="visitor_domain" widget="domain" options="{'foldable': True, 'model': 'website.visitor'}"
                     invisible="not display_push_notification_attributes"/>
             </xpath>
             <xpath expr="//group[@name='previews_placeholder']" position="inside">

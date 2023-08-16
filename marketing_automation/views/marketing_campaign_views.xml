@@ -115,7 +115,7 @@
                         <field name="active" invisible="1"/>
                         <field name="model_name" invisible="1"/>
                         <field name="unique_field_id" string="Unicity based on " options="{'no_create_edit': True, 'no_open': True}" class="oe_inline"/>
-                        <field name="domain" widget="domain" options="{'model': 'model_name'}"/>
+                        <field name="domain" widget="domain" options="{'foldable': True, 'model': 'model_name'}"/>
                         <field name="utm_campaign_id" required="0" invisible="1"/>
                     </group>
                     <div class="o_ma_hierarchy border-top overflow-auto">
@@ -263,7 +263,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="o_pane o_pane_filter d-none">
-                                                    <field name="domain" widget="domain" options="{'model': 'model_name'}" readonly="1"/>
+                                                    <field name="domain" widget="domain" options="{'foldable': True, 'model': 'model_name'}" readonly="1"/>
                                                 </div>
                                                 <div t-if="!read_only_mode" class="o_ma_child_activity text-center">
                                                     <div class="o_ma_child_activity_title card-footer">

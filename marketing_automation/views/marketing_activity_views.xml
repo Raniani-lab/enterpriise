@@ -72,8 +72,8 @@
                         </group>
                     </group>
                     <group string="Domain">
-                        <field name="activity_domain" widget="domain" options="{'model': 'model_name'}" />
-                        <field name="domain" widget="domain" options="{'in_dialog': True, 'model': 'model_name'}" />
+                        <field name="activity_domain" widget="domain" options="{'foldable': True, 'model': 'model_name'}" />
+                        <field name="domain" widget="domain" options="{'foldable': True, 'in_dialog': True, 'model': 'model_name'}" />
                     </group>
                 </sheet>
             </form>

@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
 
     <t t-name="timesheet_grid.TimesheetTimerHeader">
-        <div class="timesheet-timer position-sticky start-0 z-index-1 d-md-flex align-items-center px-3 py-2 border-bottom bg-view"
+        <div class="timesheet-timer flex-grow-1 d-md-flex align-items-center px-3 py-2"
             t-att-class="props.className"
             t-on-timer-started="props.onTimerStarted"
             t-on-timer-stopped="props.onTimerStopped"
@@ -36,7 +36,7 @@
                         </span>
                     </div>
                     <div t-elif="props.timesheet"
-                         class="input_m2o w-100 d-grid pt-1 pt-md-0"
+                         class="input_m2o align-items-center w-100 d-grid pt-1 px-2 pt-md-0"
                          t-on-keydown="_onKeyDown"
                          t-attf-style="
                             grid-template-rows: {{ env.isSmall ? 'repeat(3, 1fr)' : '1fr' }};

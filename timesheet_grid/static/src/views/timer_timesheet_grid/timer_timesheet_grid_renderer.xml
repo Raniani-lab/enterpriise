@@ -2,7 +2,7 @@
 <templates>
     <t t-name="timesheet_grid.TimerGridRenderer" t-inherit="web_grid.Renderer">
         <xpath expr="//div[hasclass('o_grid_renderer')]" position="before">
-            <t t-if="showTimer">
+            <div t-if="showTimer" class="d-md-flex justify-content-end bg-view border-bottom position-sticky z-index-1 start-0">
                 <GridTimesheetTimerHeader
                     model="props.model"
                     resId="timerState.timesheet?.id"
@@ -15,7 +15,7 @@
                     onTimerStopped.bind="onTimerStopped"
                     onTimerUnlinked.bind="onTimerUnlinked"
                 />
-            </t>
+            </div>
         </xpath>
         <xpath expr="//t[@t-call='web_grid.Header']" position="attributes">
             <attribute name="t-call">timesheet_grid.TimerGridHeader</attribute>

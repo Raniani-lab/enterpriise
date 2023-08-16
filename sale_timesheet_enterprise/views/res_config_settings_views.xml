@@ -14,6 +14,17 @@
                         </div>
                     </div>
                 </setting>
+                <setting help="Set a target billing rate for your employees. If their current rate falls below the target, it will be highlighted in red." name="group_timesheet_leaderboard_show_rates">
+                    <field name="group_timesheet_leaderboard_show_rates"/>
+                    <span invisible="not group_timesheet_leaderboard_show_rates">
+                        <label for="billing_rate_target"/>
+                        <field name="billing_rate_target" class="p-1 text-center w-25"/> <span>%</span>
+                    </span>
+                </setting>
+                <setting help="Boost productivity and competitiveness by displaying a leaderboard based on the billing rates." name="group_use_timesheet_leaderboard" invisible="not group_timesheet_leaderboard_show_rates">
+                    <field name="group_use_timesheet_leaderboard"/>
+                    <button name="%(hr.open_view_employee_list_my)d" string="Set employee billing time targets" type="action" class="btn-link" icon="oi-arrow-right" invisible="not group_use_timesheet_leaderboard"/>
+                </setting>
             </xpath>
         </field>
     </record>

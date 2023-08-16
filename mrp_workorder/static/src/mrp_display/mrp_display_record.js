@@ -155,9 +155,24 @@ export class MrpDisplayRecord extends Component {
     }
 
     get moves() {
-        return this.props.record.data.move_raw_ids.records.filter(
+        let moves = this.props.record.data.move_raw_ids.records.filter(
             (move) => move.data.manual_consumption && !move.data.scrapped
         );
+        let products;
+        if (this.resModel === "mrp.production") {
+            const checks = this.props.record.data.workorder_ids.records
+                .map((wo) => wo.data.check_ids.records)
+                .flat();
+            products = checks.map((c) => c.data.component_id[0]);
+        } else if (this.resModel === "mrp.workorder") {
+            const productionMoves = this.props.production.data.move_raw_ids.records.filter(
+                (m) => !m.data.workorder_id && m.data.manual_consumption && !m.data.scrapped
+            );
+            moves = moves.concat(productionMoves);
+            const checks = this.props.record.data.check_ids.records;
+            products = checks.map((c) => c.data.component_id[0]);
+        }
+        return moves.filter((move) => !products.includes(move.data.product_id[0]));;
     }
 
     get workorders() {

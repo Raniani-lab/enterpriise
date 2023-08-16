@@ -118,6 +118,8 @@
             <field name="priority">100</field>
             <field name="arch" type="xml">
                 <search>
+                    <field name="name"/>
+                    <field name="followup_responsible_id"/>
                     <field name="followup_line_id"/>
                     <field name="followup_status"/>
                     <filter string="Assigned to me"

@@ -398,7 +398,7 @@ export class MrpDisplayRecord extends Component {
             await this.model.orm.call(resModel, "end_all", [resId]);
             await this.reload();
             await this.props.updateEmployees();
-            if (this.record.is_last_unfinished_wo) {
+            if (this._shouldValidateProduction()) {
                 const params = {};
                 let methodName = "pre_button_mark_done";
                 if (this.trackingMode === "mass_produce") {
@@ -469,9 +469,13 @@ export class MrpDisplayRecord extends Component {
         }
     }
 
+    _shouldValidateProduction(){
+        return this.record.is_last_unfinished_wo;
+    }
+
     async workorderValidation() {
         const { resId, resModel } = this.props.record;
-        if (this.record.is_last_unfinished_wo) {
+        if (this._shouldValidateProduction()) {
             await this.model.orm.call(resModel, "action_open_manufacturing_order", [resId]);
             await this.productionValidation();
         } else {

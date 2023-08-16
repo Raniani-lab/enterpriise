@@ -22,6 +22,7 @@
     'assets': {
         'web.assets_backend': [
             'quality_mrp_workorder/static/src/**/*.xml',
+            'quality_mrp_workorder/static/src/**/*.js',
         ],
     },
     'auto_install': True,

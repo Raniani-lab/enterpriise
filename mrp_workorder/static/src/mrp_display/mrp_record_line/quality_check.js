@@ -1,5 +1,6 @@
 /** @odoo-module */
 
+import { _t } from "@web/core/l10n/translation";
 import { MrpWorkorder } from "./mrp_workorder";
 import { MrpQualityCheckConfirmationDialog } from "../dialog/mrp_quality_check_confirmation_dialog";
 import { FileUploader } from "@web/views/fields/file_handler";
@@ -103,6 +104,13 @@ export class QualityCheck extends MrpWorkorder {
 
     get passed() {
         return this.state === "pass";
+    }
+
+    get uom() {
+        if (this.displayUOM) {
+            return this.props.uom[1];
+        }
+        return this.quantityToProduce === 1 ? _t("Unit") : _t("Units");
     }
 
     async onFileUploaded(info) {

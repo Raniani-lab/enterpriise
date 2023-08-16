@@ -19,10 +19,7 @@
                         <t t-esc="props.record.data.qty_done"/> /
                     </t>
                     <t t-esc="props.quantityToProduce"/>
-                    <span class="ms-1">
-                        <t t-if="props.uom" t-esc="props.uom[1]"/>
-                        <t t-else="">Unit<t t-if="props.quantityToProduce != 1">s</t></t>
-                    </span>
+                    <span class="ms-1" t-esc="uom"/>
                 </button>
             </t>
             <button t-else="" class="btn btn-lg px-0" t-on-click.stop="pass"

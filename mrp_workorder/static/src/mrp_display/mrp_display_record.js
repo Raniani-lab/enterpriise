@@ -497,7 +497,10 @@ export class MrpDisplayRecord extends Component {
     }
 
     get uom() {
-        return this.record.product_uom_id?.[1];
+        if (this.displayUOM) {
+            return this.record.product_uom_id?.[1];
+        }
+        return this.quantityToProduce === 1 ? _t("Unit") : _t("Units");
     }
 
     _workorderDisplayDoneButton() {

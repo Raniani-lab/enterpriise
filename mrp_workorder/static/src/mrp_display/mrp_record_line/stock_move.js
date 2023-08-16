@@ -1,5 +1,7 @@
 /** @odoo-module */
 
+import { _t } from "@web/core/l10n/translation";
+
 import { Component } from "@odoo/owl";
 
 export class StockMove extends Component {
@@ -50,6 +52,13 @@ export class StockMove extends Component {
         return this.props.record.data.quantity_done;
     }
 
+    get uom() {
+        if (this.displayUOM) {
+            return this.props.record.data.product_uom[1];
+        }
+        return this.toConsumeQuantity === 1 ? _t("Unit") : _t("Units");
+    }
+
     longPress() {}
 
     onAnimationEnd(ev) {
@@ -84,11 +93,10 @@ export class StockMove extends Component {
         this.props.record.model.action.doAction(action, options);
     }
 
-    openMoveDetails() {
+    async toggleQuantityDone() {
         if (!this.props.clickable) {
             return;
-        }
-        if (!this.toConsumeQuantity) {
+        } else if (!this.toConsumeQuantity) {
             return this.clicked();
         }
         const quantity = this.isComplete ? 0 : this.toConsumeQuantity;

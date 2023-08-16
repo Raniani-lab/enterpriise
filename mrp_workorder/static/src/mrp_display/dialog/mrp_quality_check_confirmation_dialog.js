@@ -35,14 +35,12 @@ export class MrpQualityCheckConfirmationDialog extends ConfirmationDialog {
         useBus(this.props.record.model.bus, "update", this.render.bind(this, true));
         useBus(this.barcode.bus, 'barcode_scanned', (event) => this._onBarcodeScanned(event.detail.barcode));
         this.formatFloat = formatFloat;
+        this.recordData = this.props.record.data;
         const { component_tracking, test_type, product_tracking } = this.recordData;
         this.displayLot =
             Boolean(component_tracking && component_tracking !== "none") ||
             Boolean(test_type === "register_production" && product_tracking !== "none");
-    }
-
-    get recordData() {
-        return this.props.record.data;
+        this.trackingNumberLabel = test_type === "register_production" ? product_tracking : component_tracking;
     }
 
     get confirmLabel() {

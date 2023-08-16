@@ -7,8 +7,8 @@
             t-on-animationend="onAnimationEnd">
             <span t-att-class="isComplete ? 'text-decoration-line-through' : ''"
                   t-esc="props.label || props.record.data.product_id[1]"/>
-            <button t-on-click.stop="openMoveDetails" class="btn btn-sm text-nowrap" t-att-class="{
-                'btn-outline-secondary text-muted': isComplete,
+            <button t-on-click.stop="toggleQuantityDone" class="btn btn-sm text-nowrap" t-att-class="{
+                'btn-outline-secondary opacity-50 bg-transparent text-black': isComplete,
                 'btn-secondary': !isComplete,
                 'text-danger': quantityDone > toConsumeQuantity,
                 }">
@@ -16,10 +16,7 @@
                     <t t-out="quantityDone"/> /
                 </t>
                 <t t-esc="toConsumeQuantity"/>
-                <span class="ms-1">
-                    <t t-if="props.displayUOM" t-esc="props.record.data.product_uom[1]"/>
-                    <t t-else="">Unit<t t-if="toConsumeQuantity != 1">s</t></t>
-                </span>
+                <span class="ms-1" t-esc="uom"/>
             </button>
         </li>
     </t>

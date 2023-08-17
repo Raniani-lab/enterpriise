@@ -31,6 +31,10 @@ PAY_SCHEDULES = {
         'date_from': Date.to_date('2023-03-01'),
         'date_to': Date.to_date('2023-04-30'),
     },
+    'daily': {
+        'date_from': Date.to_date('2023-04-01'),
+        'date_to': Date.to_date('2023-04-01'),
+    }
 }
 
 class TestScheduleRelativePayslip(TransactionCase):
@@ -89,7 +93,7 @@ class TestScheduleRelativePayslip(TransactionCase):
             self.assertEqual(payslip_monthly.date_to, Date.to_date('2023-04-30'), "date_to for the monthly payslip should be 2023-04-30")
 
             for pay_schedule, dates in PAY_SCHEDULES.items():
-                self.structure.write({
+                self.billy_contract.write({
                     'schedule_pay': pay_schedule,
                 })
                 payslip = self.env['hr.payslip'].new({
@@ -101,7 +105,7 @@ class TestScheduleRelativePayslip(TransactionCase):
 
     def test_payslip_warnings(self):
         with freeze_time('2023-04-12'):
-            self.structure.write({
+            self.billy_contract.write({
                 'schedule_pay': 'quarterly',
             })
             payslip = self.env['hr.payslip'].new({

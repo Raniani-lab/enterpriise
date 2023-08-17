@@ -82,7 +82,7 @@
     </record>
 
     <record id="hr_employee_demetra_voinea" model="hr.employee">
-        <field name="name">Demetra Voinea (fpo)</field>
+        <field name="name">Demetra Voinea (dvo)</field>
         <field name="gender">female</field>
         <field name="marital">single</field>
         <field name="job_title">Software Developer</field>

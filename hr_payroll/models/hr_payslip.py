@@ -4,6 +4,7 @@
 import logging
 import random
 import math
+import pytz
 
 from collections import defaultdict, Counter
 from datetime import date, datetime, time
@@ -37,7 +38,7 @@ class HrPayslip(models.Model):
              'mandatory anymore and all the valid rules of the structures '
              'of the employee\'s contracts will be applied.')
     struct_type_id = fields.Many2one('hr.payroll.structure.type', related='struct_id.type_id')
-    wage_type = fields.Selection(related='struct_type_id.wage_type')
+    wage_type = fields.Selection(related='contract_id.wage_type')
     name = fields.Char(
         string='Payslip Name', required=True,
         compute='_compute_name', store=True, readonly=False,
@@ -146,7 +147,7 @@ class HrPayslip(models.Model):
     salary_attachment_count = fields.Integer('Salary Attachment count', compute='_compute_salary_attachment_count')
 
     def _get_schedule_period_start(self):
-        schedule = self.struct_id.schedule_pay or self.contract_id.schedule_pay
+        schedule = self.contract_id.schedule_pay or self.contract_id.structure_type_id.default_schedule_pay
         today = date.today()
         week_start = self.env["res.lang"]._lang_get(self.env.user.lang).week_start
         date_from = today
@@ -186,7 +187,7 @@ class HrPayslip(models.Model):
 
     def _get_schedule_timedelta(self):
         self.ensure_one()
-        schedule = self.struct_id.schedule_pay or self.contract_id.schedule_pay
+        schedule = self.contract_id.schedule_pay or self.contract_id.structure_type_id.default_schedule_pay
         if schedule == 'quarterly':
             timedelta = relativedelta(months=3, days=-1)
         elif schedule == 'semi-annually':
@@ -197,8 +198,12 @@ class HrPayslip(models.Model):
             timedelta = relativedelta(days=6)
         elif schedule == 'bi-weekly':
             timedelta = relativedelta(days=13)
+        elif schedule == 'semi-monthly':
+            timedelta = relativedelta(day=15 if self.date_from.day < 15 else 31)
         elif schedule == 'bi-monthly':
             timedelta = relativedelta(months=2, days=-1)
+        elif schedule == 'daily':
+            timedelta = relativedelta(days=0)
         else:  # if not handled, put the monthly behaviour
             timedelta = relativedelta(months=1, days=-1)
         return timedelta
@@ -679,6 +684,7 @@ class HrPayslip(models.Model):
             'float_round': float_round,
             'float_compare': float_compare,
             "relativedelta": relativedelta,
+            'UserError': UserError,
         }
 
     def _get_localdict(self):
@@ -850,7 +856,7 @@ class HrPayslip(models.Model):
         end_date = self.date_to
         lang = self.employee_id.lang or self.env.user.lang
         week_start = self.env["res.lang"]._lang_get(lang).week_start
-        schedule = self.struct_id.schedule_pay or self.contract_id.schedule_pay
+        schedule = self.contract_id.schedule_pay or self.contract_id.structure_type_id.default_schedule_pay
         if schedule == 'monthly':
             period_name = self._format_date_cached(cache, start_date, "MMMM Y")
         elif schedule == 'quarterly':
@@ -917,7 +923,7 @@ class HrPayslip(models.Model):
                     end=slip.date_to,
                 ))
 
-            if (slip.struct_id.schedule_pay or slip.contract_id.schedule_pay)\
+            if (slip.contract_id.schedule_pay or slip.contract_id.structure_type_id.default_schedule_pay)\
                     and slip.date_from + slip._get_schedule_timedelta() != slip.date_to:
                 slip.is_wrong_duration = True
                 warnings.append(_("The duration of the payslip is not accurate according to the structure type."))
@@ -936,8 +942,8 @@ class HrPayslip(models.Model):
         # Make sure to reset invalid payslip's worked days line
         self.update({'worked_days_line_ids': [(5, 0, 0)]})
         # Ensure work entries are generated for all contracts
-        generate_from = min(p.date_from for p in valid_slips)
-        generate_to = max(p.date_to for p in valid_slips)
+        generate_from = min(p.date_from for p in valid_slips) + relativedelta(days=-1)
+        generate_to = max(p.date_to for p in valid_slips) + relativedelta(days=1)
         self.mapped('contract_id')._generate_work_entries(generate_from, generate_to)
 
         work_entries = self.env['hr.work.entry'].search([
@@ -951,11 +957,14 @@ class HrPayslip(models.Model):
                 continue
 
             # convert slip.date_to to a datetime with max time to compare correctly in filtered_domain.
-            date_to = datetime.combine(slip.date_to, time.max)
+            slip_tz = pytz.timezone(slip.contract_id.resource_calendar_id.tz)
+            utc = pytz.timezone('UTC')
+            date_from = slip_tz.localize(datetime.combine(slip.date_from, time.min)).astimezone(utc).replace(tzinfo=None)
+            date_to = slip_tz.localize(datetime.combine(slip.date_to, time.max)).astimezone(utc).replace(tzinfo=None)
             payslip_work_entries = work_entries.filtered_domain([
                 ('contract_id', '=', slip.contract_id.id),
                 ('date_stop', '<=', date_to),
-                ('date_start', '>=', slip.date_from),
+                ('date_start', '>=', date_from),
             ])
             payslip_work_entries._check_undefined_slots(slip.date_from, slip.date_to)
             # YTI Note: We can't use a batched create here as the payslip may not exist

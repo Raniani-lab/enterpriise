@@ -48,26 +48,8 @@ class HrPayrollStructure(models.Model):
     unpaid_work_entry_type_ids = fields.Many2many(
         'hr.work.entry.type', 'hr_payroll_structure_hr_work_entry_type_rel')
     use_worked_day_lines = fields.Boolean(default=True, help="Worked days won't be computed/displayed in payslips.")
-    schedule_pay = fields.Selection([
-        ('monthly', 'Monthly'),
-        ('quarterly', 'Quarterly'),
-        ('semi-annually', 'Semi-annually'),
-        ('annually', 'Annually'),
-        ('weekly', 'Weekly'),
-        ('bi-weekly', 'Bi-weekly'),
-        ('bi-monthly', 'Bi-monthly'),
-    ], compute='_compute_schedule_pay', store=True, readonly=False,
-    string='Scheduled Pay', index=True,
-    help="Defines the frequency of the wage payment.")
+    schedule_pay = fields.Selection(related='type_id.default_schedule_pay')
     input_line_type_ids = fields.Many2many('hr.payslip.input.type', string='Other Input Line')
-
-    @api.depends('type_id')
-    def _compute_schedule_pay(self):
-        for structure in self:
-            if not structure.type_id:
-                structure.schedule_pay = 'monthly'
-            elif not structure.schedule_pay:
-                structure.schedule_pay = structure.type_id.default_schedule_pay
 
     @api.returns('self', lambda value: value.id)
     def copy(self, default=None):

@@ -50,7 +50,7 @@
                 <tr id="employee_info_line_5">
                     <td><span t-field="o.employee_id.work_email"/></td>
                     <td name="personne-in-charge"><t t-esc="o.employee_id.children"/></td>
-                    <td><span t-field="o.employee_id.identification_id"/></td>
+                    <td name="identification-id"><span t-field="o.employee_id.identification_id"/></td>
                     <td><span t-field="o.compute_date"/></td>
                 </tr>
                 <tr id="employee_info_line_6">

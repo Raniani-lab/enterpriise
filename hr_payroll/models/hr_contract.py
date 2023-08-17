@@ -4,7 +4,6 @@
 from datetime import date, datetime
 from collections import defaultdict
 from odoo import _, api, fields, models
-from odoo.tools import date_utils
 from odoo.osv import expression
 
 import pytz
@@ -13,13 +12,26 @@ class HrContract(models.Model):
     _inherit = 'hr.contract'
     _description = 'Employee Contract'
 
-    schedule_pay = fields.Selection(related='structure_type_id.default_struct_id.schedule_pay', depends=())
+    schedule_pay = fields.Selection([
+        ('annually', 'Annually'),
+        ('semi-annually', 'Semi-annually'),
+        ('quarterly', 'Quarterly'),
+        ('bi-monthly', 'Bi-monthly'),
+        ('monthly', 'Monthly'),
+        ('semi-monthly', 'Semi-monthly'),
+        ('bi-weekly', 'Bi-weekly'),
+        ('weekly', 'Weekly'),
+        ('daily', 'Daily')],
+        compute='_compute_schedule_pay', store=True, readonly=False)
     resource_calendar_id = fields.Many2one(required=True, default=lambda self: self.env.company.resource_calendar_id,
         help="Employee's working schedule.")
     hours_per_week = fields.Float(related='resource_calendar_id.hours_per_week')
     full_time_required_hours = fields.Float(related='resource_calendar_id.full_time_required_hours')
     is_fulltime = fields.Boolean(related='resource_calendar_id.is_fulltime')
-    wage_type = fields.Selection(related='structure_type_id.wage_type')
+    wage_type = fields.Selection([
+        ('monthly', 'Fixed Wage'),
+        ('hourly', 'Hourly Wage')
+    ], compute='_compute_wage_type', store=True, readonly=False)
     hourly_wage = fields.Monetary('Hourly Wage', default=0, required=True, tracking=True, help="Employee's hourly gross wage.")
     payslips_count = fields.Integer("# Payslips", compute='_compute_payslips_count', groups="hr_payroll.group_hr_payroll_user")
     calendar_changed = fields.Boolean(help="Whether the previous or next contract has a different schedule or not")
@@ -36,6 +48,16 @@ class HrContract(models.Model):
         domain=[('is_leave', '=', True)],
         help="The work entry type used when generating work entries to fit full time working schedule.")
     salary_attachments_count = fields.Integer(related='employee_id.salary_attachment_count')
+
+    @api.depends('structure_type_id')
+    def _compute_schedule_pay(self):
+        for contract in self:
+            contract.schedule_pay = contract.structure_type_id.default_schedule_pay
+
+    @api.depends('structure_type_id')
+    def _compute_wage_type(self):
+        for contract in self:
+            contract.wage_type = contract.structure_type_id.wage_type
 
     @api.depends('time_credit', 'resource_calendar_id.hours_per_week', 'standard_calendar_id.hours_per_week')
     def _compute_work_time_rate(self):
@@ -59,6 +81,21 @@ class HrContract(models.Model):
         mapped_counts = {contract.id: count for contract, count in count_data}
         for contract in self:
             contract.payslips_count = mapped_counts.get(contract.id, 0)
+
+    def _get_salary_costs_factor(self):
+        self.ensure_one()
+        factors = {
+            "annually": 1,
+            "semi-annually": 2,
+            "quarterly": 4,
+            "bi-monthly": 6,
+            "monthly": 12,
+            "semi-monthly": 24,
+            "bi-weekly": 26,
+            "weekly": 52,
+            "daily": 52 * (self.resource_calendar_id._get_days_per_week() if self.resource_calendar_id else 5),
+        }
+        return factors.get(self.schedule_pay, super()._get_salary_costs_factor())
 
     def _is_same_occupation(self, contract):
         self.ensure_one()

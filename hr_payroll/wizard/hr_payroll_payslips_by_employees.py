@@ -89,12 +89,24 @@ class HrPayslipEmployees(models.TransientModel):
             payslip_run.date_start, payslip_run.date_end, states=['open', 'close']
         ).filtered(lambda c: c.active)
         contracts._generate_work_entries(payslip_run.date_start, payslip_run.date_end)
+
         work_entries = self.env['hr.work.entry'].search([
-            ('date_start', '<=', payslip_run.date_end),
-            ('date_stop', '>=', payslip_run.date_start),
+            ('date_start', '<=', payslip_run.date_end + relativedelta(days=1)),
+            ('date_stop', '>=', payslip_run.date_start + relativedelta(days=-1)),
             ('employee_id', 'in', employees.ids),
         ])
-        work_entries._check_undefined_slots(payslip_run.date_start, payslip_run.date_end)
+        for slip in payslip_run.slip_ids:
+            slip_tz = pytz.timezone(slip.contract_id.resource_calendar_id.tz)
+            utc = pytz.timezone('UTC')
+            date_from = slip_tz.localize(datetime.combine(slip.date_from, time.min)).astimezone(utc).replace(tzinfo=None)
+            date_to = slip_tz.localize(datetime.combine(slip.date_to, time.max)).astimezone(utc).replace(tzinfo=None)
+            payslip_work_entries = work_entries.filtered_domain([
+                ('contract_id', '=', slip.contract_id.id),
+                ('date_stop', '<=', date_to),
+                ('date_start', '>=', date_from),
+            ])
+            payslip_work_entries._check_undefined_slots(slip.date_from, slip.date_to)
+
 
         if(self.structure_id.type_id.default_struct_id == self.structure_id):
             work_entries = work_entries.filtered(lambda work_entry: work_entry.state != 'validated')

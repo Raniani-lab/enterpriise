@@ -35,7 +35,7 @@
             'code': 'BRUT',
             'sequence': 1000,
             'category_id': ref('hr_payroll.GROSS'),
-            'amount_python_compute': 'result = categories.BASE + categories.INDM - categories.DED',
+            'amount_python_compute': 'result = categories.BASE + categories.ALW - categories.DED',
             }"/>
     </function>
 

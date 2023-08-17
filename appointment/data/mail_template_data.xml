@@ -113,7 +113,7 @@
     <t t-set="recurrent" t-value="object.recurrence_id and not ctx.get('calendar_template_ignore_recurrence')"/>
     <t t-set="mail_tz" t-value="object._get_mail_tz() or ctx.get('mail_tz')" />
     <p>
-    The appointment for <t t-out="object.appointment_type_id.name or ''">Technical Demo</t> <t t-if="object.appointment_type_id.category != 'custom'"> with <t t-out="object.partner_id.name or ''">Brandon Freeman</t></t> has been canceled.
+    The appointment for <t t-out="object.appointment_type_id.name or ''">Technical Demo</t> <t t-if="object.appointment_type_id.category != 'custom' and object.appointment_type_id.schedule_based_on == 'users'"> with <t t-out="object.partner_id.name or ''">Brandon Freeman</t></t> has been canceled.
     </p>
 <table border="0" cellpadding="0" cellspacing="0"><tr>
             <td width="130px;" style="min-width: 130px;">

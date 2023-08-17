@@ -75,7 +75,7 @@ class IrAttachment(models.Model):
     def _l10n_mx_edi_load_xsd_files_recursion(self, url, force_reload=False):  # force_reload will be removed in master
         xsd_name = url.split('/')[-1]
         modify_xsd_content = None
-        if xsd_name == 'cfdv33.xsd':
+        if xsd_name in ('cfdv33.xsd', 'cfdv40.xsd'):
             modify_xsd_content = self._load_xsd_complements
         attachment = tools.load_xsd_files_from_url(self.env, url, xsd_name, modify_xsd_content=modify_xsd_content, xsd_name_prefix='l10n_mx_edi')
         if not attachment:

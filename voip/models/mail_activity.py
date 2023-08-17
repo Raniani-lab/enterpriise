@@ -4,16 +4,16 @@ from odoo import api, fields, models, tools
 
 
 class MailActivity(models.Model):
-    _inherit = 'mail.activity'
+    _inherit = "mail.activity"
 
-    phone = fields.Char('Phone', compute='_compute_phone_numbers', readonly=False, store=True)
-    mobile = fields.Char('Mobile', compute='_compute_phone_numbers', readonly=False, store=True)
-    voip_phonecall_id = fields.Many2one('voip.phonecall', 'Linked Voip Phonecall')
+    phone = fields.Char("Phone", compute="_compute_phone_numbers", readonly=False, store=True)
+    mobile = fields.Char("Mobile", compute="_compute_phone_numbers", readonly=False, store=True)
+    voip_phonecall_id = fields.Many2one("voip.phonecall", "Linked Voip Phonecall")
 
-    @api.depends('res_model', 'res_id', 'activity_type_id')
+    @api.depends("res_model", "res_id", "activity_type_id")
     def _compute_phone_numbers(self):
         phonecall_activities = self.filtered(
-            lambda act: act.id and act.res_model and act.res_id and act.activity_category == 'phonecall'
+            lambda act: act.id and act.res_model and act.res_id and act.activity_category == "phonecall"
         )
         (self - phonecall_activities).phone = False
         (self - phonecall_activities).mobile = False
@@ -21,46 +21,40 @@ class MailActivity(models.Model):
         if phonecall_activities:
             voip_info = phonecall_activities._get_customer_phone_info()
             for activity in phonecall_activities:
-                activity.mobile = voip_info[activity.id]['mobile']
-                activity.phone = voip_info[activity.id]['phone']
+                activity.mobile = voip_info[activity.id]["mobile"]
+                activity.phone = voip_info[activity.id]["phone"]
 
     @api.model_create_multi
     def create(self, values_list):
         activities = super(MailActivity, self).create(values_list)
 
         phonecall_activities = activities.filtered(
-            lambda act: (act.phone or act.mobile) and act.activity_category == 'phonecall'
+            lambda act: (act.phone or act.mobile) and act.activity_category == "phonecall"
         )
         if phonecall_activities:
             # avoid clash with default_type
-            phonecalls = self.env['voip.phonecall'].with_context(
-                tools.clean_context(self.env.context)
-            ).create(
-                phonecall_activities._prepare_voip_phonecall_values_list()
+            phonecalls = (
+                self.env["voip.phonecall"]
+                .with_context(tools.clean_context(self.env.context))
+                .create(phonecall_activities._prepare_voip_phonecall_values_list())
             )
             for activity, phonecall in zip(phonecall_activities, phonecalls):
                 activity.voip_phonecall_id = phonecall.id
 
             users_to_notify = phonecall_activities.user_id
             if users_to_notify:
-                self.env['bus.bus']._sendmany([
-                    [user.partner_id, 'refresh_voip', {}]
-                    for user in users_to_notify
-                ])
+                self.env["bus.bus"]._sendmany([[user.partner_id, "refresh_voip", {}] for user in users_to_notify])
         return activities
 
     def write(self, values):
-        if 'date_deadline' in values:
-            self.voip_phonecall_id.date_deadline = values['date_deadline']
+        if "date_deadline" in values:
+            self.voip_phonecall_id.date_deadline = values["date_deadline"]
             if self.user_id:
-                self.env['bus.bus']._sendmany([
-                    [partner, 'refresh_voip', {}]
-                    for partner in self.user_id.partner_id
-                ])
+                self.env["bus.bus"]._sendmany([[partner, "refresh_voip", {}] for partner in self.user_id.partner_id])
         return super(MailActivity, self).write(values)
 
     def _get_customer_phone_info(self):
-        """ Batch compute customer as well as mobile / phone information used
+        """Batch compute customer as well as mobile / phone information used
         to fill activities fields. This is used notably by voip to create
         phonecalls.
 
@@ -74,48 +68,53 @@ class MailActivity(models.Model):
         data_by_model = self._classify_by_model()
 
         for model, data in data_by_model.items():
-            records = self.env[model].browse(data['record_ids'])
-            for record, activity in zip(records, data['activities']):
-                mobile = record.mobile if 'mobile' in record else False
-                phone = record.phone if 'phone' in record else False
+            records = self.env[model].browse(data["record_ids"])
+            for record, activity in zip(records, data["activities"]):
+                mobile = record.mobile if "mobile" in record else False
+                phone = record.phone if "phone" in record else False
                 # take only the first found partner if multiple customers are
                 # related to the record; anyway we will create only one phonecall
                 customers = record._mail_get_partners(introspect_fields=True)[record.id]
-                customer = customers[0] if customers else self.env['res.partner']
+                customer = customers[0] if customers else self.env["res.partner"]
                 if not phone and not mobile and customer:
                     phone = customers[0].phone
                     mobile = customers[0].mobile
                 activity_voip_info[activity.id] = {
-                    'mobile': mobile,
-                    'partner': customer,
-                    'phone': phone,
+                    "mobile": mobile,
+                    "partner": customer,
+                    "phone": phone,
                 }
         return activity_voip_info
 
     def _prepare_voip_phonecall_values_list(self):
         voip_info = self._get_customer_phone_info()
-        return [{
-            'activity_id': activity.id,
-            'date_deadline': activity.date_deadline,
-            'name': activity.res_name,
-            'mobile': activity.mobile,
-            'partner_id': voip_info[activity.id]['partner'].id,
-            'phone': activity.phone,
-            'user_id': activity.user_id.id,
-            'note': activity.note,
-            'state': 'open',
-        } for activity in self]
+        return [
+            {
+                "activity_id": activity.id,
+                "date_deadline": activity.date_deadline,
+                "name": activity.res_name,
+                "mobile": activity.mobile,
+                "partner_id": voip_info[activity.id]["partner"].id,
+                "phone": activity.phone,
+                "user_id": activity.user_id.id,
+                "note": activity.note,
+                "state": "open",
+            }
+            for activity in self
+        ]
 
     def _action_done(self, feedback=False, attachment_ids=None):
         # extract potential required data to update phonecalls
         now = fields.Datetime.now()
         phonecall_values_list = [
             {
-                'call_date': activity.voip_phonecall_id.call_date,
-                'note': activity.note,
-                'partner_id': activity.user_id.partner_id.id,
-                'voip_phonecall_id': activity.voip_phonecall_id,
-            } if activity.voip_phonecall_id else {}
+                "call_date": activity.voip_phonecall_id.call_date,
+                "note": activity.note,
+                "partner_id": activity.user_id.partner_id.id,
+                "voip_phonecall_id": activity.voip_phonecall_id,
+            }
+            if activity.voip_phonecall_id
+            else {}
             for activity in self
         ]
 
@@ -128,19 +127,18 @@ class MailActivity(models.Model):
             if not phonecall_values:
                 continue
             values_to_write = {
-                'call_date': phonecall_values['call_date'] or now,
-                'mail_message_id': message.id,
-                'state': 'done',
-                'note': feedback if feedback else phonecall_values['note'],
+                "call_date": phonecall_values["call_date"] or now,
+                "mail_message_id": message.id,
+                "state": "done",
+                "note": feedback if feedback else phonecall_values["note"],
             }
-            phonecall_values['voip_phonecall_id'].write(values_to_write)
-            if phonecall_values['partner_id']:
-                pids_to_notify.add(phonecall_values['partner_id'])
+            phonecall_values["voip_phonecall_id"].write(values_to_write)
+            if phonecall_values["partner_id"]:
+                pids_to_notify.add(phonecall_values["partner_id"])
 
         if pids_to_notify:
-            self.env['bus.bus']._sendmany([
-                [partner, 'refresh_voip', {}]
-                for partner in self.env['res.partner'].browse(list(pids_to_notify))
-            ])
+            self.env["bus.bus"]._sendmany(
+                [[partner, "refresh_voip", {}] for partner in self.env["res.partner"].browse(list(pids_to_notify))]
+            )
 
         return messages, activities

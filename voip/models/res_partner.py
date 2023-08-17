@@ -4,5 +4,5 @@ from odoo import api, fields, models
 
 
 class Contact(models.Model):
-    _name = 'res.partner'
-    _inherit = ['res.partner', 'voip.queue.mixin']
+    _name = "res.partner"
+    _inherit = ["res.partner", "voip.queue.mixin"]

@@ -6,34 +6,44 @@
         <field name="inherit_id" ref="account.res_config_settings_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//block[@id='invoicing_settings']" position="after">
-                <block title="Electronic invoicing (MX)" id="l10n_mx_edi_settings" invisible="country_code != 'MX'">
-                    <setting string="Fiscal Regime" help="Configure your SAT fiscal regime." title="Fields required to configure the MX CFDI.">
-                        <div class="row mt16">
-                            <label for="l10n_mx_edi_fiscal_regime" class="col-lg-3 o_light_label"/>
-                            <field name="l10n_mx_edi_fiscal_regime"/>
-                        </div>
-                    </setting>
-                    <setting string="MX PAC" help="Configure the Authorized Certification Provider (PAC)." title="The parameters to configure the MX PAC.">
+                <block id="l10n_mx_edi_settings"
+                       title="🇲🇽 Electronic invoicing"
+                       invisible="country_code != 'MX'">
+
+                    <setting string="Authorized Certification Provider (PAC)"
+                             help="Configure your credentials to sign your CFDI documents.">
                         <div class="row mt16">
                             <label string="PAC" for="l10n_mx_edi_pac" class="col-lg-3 o_light_label"/>
                             <field name="l10n_mx_edi_pac"/>
                         </div>
                         <div class="row">
-                            <label string="PAC username" for="l10n_mx_edi_pac_username" class="col-lg-3 o_light_label"/>
+                            <label string="Username" for="l10n_mx_edi_pac_username" class="col-lg-3 o_light_label"/>
                             <field name="l10n_mx_edi_pac_username"/>
                         </div>
                         <div class="row">
-                            <label string="PAC password" for="l10n_mx_edi_pac_password" class="col-lg-3 o_light_label"/>
+                            <label string="Password" for="l10n_mx_edi_pac_password" class="col-lg-3 o_light_label"/>
                             <field name="l10n_mx_edi_pac_password" password="True"/>
                         </div>
                         <div class="row">
-                            <label for="l10n_mx_edi_pac_test_env" class="col-lg-3 o_light_label"/>
+                            <label string="Testing" for="l10n_mx_edi_pac_test_env" class="col-lg-3 o_light_label"/>
                             <field name="l10n_mx_edi_pac_test_env" class="oe_inline"/>
                         </div>
                     </setting>
-                    <setting string="MX Certificates" help="Configure your SAT certificates." title="The parameters to configure the MX certificate.">
-                        <field name="l10n_mx_edi_certificate_ids" string="Certificates"/>
+
+                    <setting string="Service Tax Administration (SAT)"
+                             help="CFDI configuration.">
+                        <div class="row">
+                            <label for="l10n_mx_edi_fiscal_regime" class="col-lg-3 o_light_label"/>
+                            <field name="l10n_mx_edi_fiscal_regime"/>
+                        </div>
                     </setting>
+
+                    <setting string="Certificates"
+                             class="w-100"
+                             help="Add your certificates to sign your CFDI documents.">
+                        <field name="l10n_mx_edi_certificate_ids" class="w-100" string="Certificates"/>
+                    </setting>
+
                 </block>
             </xpath>
         </field>

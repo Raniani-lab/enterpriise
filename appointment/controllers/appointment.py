@@ -206,7 +206,7 @@ class AppointmentController(http.Controller):
         request.session.timezone = self._get_default_timezone(appointment_type)
         filter_users = page_values['user_selected'] or page_values['user_default'] or page_values['users_possible'] \
             if appointment_type.schedule_based_on == "users" else None
-        filter_resources = page_values['resource_selected'] or page_values['resources_possible'] \
+        filter_resources = page_values['resource_selected'] or page_values['resource_default'] or page_values['resources_possible'] \
             if appointment_type.schedule_based_on == "resources" else None
         asked_capacity = int(kwargs.get('asked_capacity', 1))
         slots = appointment_type._get_appointment_slots(
@@ -261,7 +261,7 @@ class AppointmentController(http.Controller):
         users_possible = self._get_possible_staff_users(appointment_type, filter_staff_user_ids)
         resources_possible = self._get_possible_resources(appointment_type, filter_resource_ids)
         user_default = user_selected = request.env['res.users']
-        resource_selected = request.env['appointment.resource']
+        resource_default = resource_selected = request.env['appointment.resource']
         staff_user_id = int(staff_user_id) if staff_user_id else False
         resource_selected_id = int(resource_selected_id) if resource_selected_id else False
 
@@ -272,9 +272,12 @@ class AppointmentController(http.Controller):
                 user_default = users_possible[0]
             elif appointment_type.assign_method == 'time_auto_assign' and len(users_possible) == 1:
                 user_default = users_possible[0]
-        elif resources_possible and resource_selected_id and resource_selected_id in resources_possible.ids:
-            resource_selected = request.env['appointment.resource'].sudo().browse(resource_selected_id)
-        possible_combinations = (resource_selected or resources_possible)._get_filtered_possible_capacity_combinations(1, {})
+        elif resources_possible:
+            if resource_selected_id and resource_selected_id in resources_possible.ids:
+                resource_selected = request.env['appointment.resource'].sudo().browse(resource_selected_id)
+            elif appointment_type.assign_method == 'resource_time':
+                resource_default = resources_possible[0]
+        possible_combinations = (resource_selected or resource_default or resources_possible)._get_filtered_possible_capacity_combinations(1, {})
         max_capacity_possible = possible_combinations[-1][1] if possible_combinations else 1
 
         return {
@@ -291,6 +294,7 @@ class AppointmentController(http.Controller):
             'hide_select_dropdown': len(users_possible if appointment_type.schedule_based_on == 'users' else resources_possible) <= 1,
             'invite_token': kwargs.get('invite_token'),
             'max_capacity': min(12, max_capacity_possible),
+            'resource_default': resource_default,
             'resource_selected': resource_selected,
             'resources_possible': resources_possible,
             'user_default': user_default,

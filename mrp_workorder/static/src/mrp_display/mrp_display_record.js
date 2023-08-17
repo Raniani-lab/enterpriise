@@ -418,7 +418,7 @@ export class MrpDisplayRecord extends Component {
                 }
             }
         }
-        if (resModel === "mrp.production" || this.record.is_last_unfinished_wo) {
+        if (resModel === "mrp.production") {
             const args = [this.props.production.resId];
             const params = {};
             let methodName = "pre_button_mark_done";
@@ -476,7 +476,6 @@ export class MrpDisplayRecord extends Component {
     async workorderValidation() {
         const { resId, resModel } = this.props.record;
         if (this._shouldValidateProduction()) {
-            await this.model.orm.call(resModel, "action_open_manufacturing_order", [resId]);
             await this.productionValidation();
         } else {
             const context = { no_start_next: true };

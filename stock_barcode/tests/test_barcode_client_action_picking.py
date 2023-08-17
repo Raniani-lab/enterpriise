@@ -955,7 +955,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
     def test_remaining_decimal_accuracy(self):
         """ Checks if the remaining value of a move is correct
         """
-
+        self.clean_access_rights()
         self.env['stock.quant']._update_available_quantity(self.product1, self.stock_location, 4)
 
         # Create the delivery transfer.

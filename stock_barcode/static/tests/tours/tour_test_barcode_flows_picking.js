@@ -1012,7 +1012,7 @@ registry.category("web_tour.tours").add('test_remaining_decimal_accuracy', {test
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(false);
             helper.assertValidateEnabled(true);
-            helper.assertLineQty(0, "0 / 4 Units");
+            helper.assertLineQty(0, "0 / 4");
             helper.assertButtonShouldBeVisible(0, "add_quantity");
         }
     },
@@ -1028,7 +1028,7 @@ registry.category("web_tour.tours").add('test_remaining_decimal_accuracy', {test
         trigger: '.o_barcode_lines',
         run: function() {
             helper.assertButtonShouldBeVisible(0, "add_quantity");
-            helper.assertLineQty(0, '2.2 / 4 Units');
+            helper.assertLineQty(0, '2.2 / 4');
             const buttonAddQty = document.querySelector(".o_add_quantity");
             helper.assert(buttonAddQty.innerText, "+1.8", "Something wrong with the quantities");
         }

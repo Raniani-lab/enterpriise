@@ -189,13 +189,13 @@ export class AccountReportFilters extends Component {
     // Custom filters
     //------------------------------------------------------------------------------------------------------------------
     async filterJournal(journal) {
-        journal.selected = !journal.selected;
-
         if (journal.model === 'account.journal.group')
             this.controller.options.__journal_group_action = {
                 'action': journal.selected ? "remove" : "add",
                 'id': parseInt(journal.id),
             };
+        
+        journal.selected = !journal.selected;
 
         await this.controller.reload('journals', this.controller.options);
     }

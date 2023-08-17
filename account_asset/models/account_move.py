@@ -228,7 +228,7 @@ class AccountMove(models.Model):
                 if validate:
                     asset.validate()
             if invoice:
-                asset.message_post(body=escape(_('%s created from invoice: %s') % (_lt('Asset'), invoice._get_html_link())))
+                asset.message_post(body=escape(_('Asset created from invoice: %s')) % invoice._get_html_link())
                 asset._post_non_deductible_tax_value()
         return assets
 

@@ -316,8 +316,9 @@ class Task(models.Model):
         if deposit_product:
             domain = expression.AND([domain, [('id', '!=', deposit_product.id)]])
 
-        kanban_view = self.env.ref('industry_fsm_sale.view_product_product_kanban_material')
-        search_view = self.env.ref('industry_fsm_sale.product_search_form_view_inherit_fsm_sale')
+        kanban_view = self.env.ref('industry_fsm_sale.industry_fsm_sale_product_catalog_kanban_view')
+        search_view = self.env.ref('industry_fsm_sale.industry_fsm_sale_product_catalog_inherit_search_view')
+
         return {
             'type': 'ir.actions.act_window',
             'name': _('Choose Products'),
@@ -330,6 +331,8 @@ class Task(models.Model):
                 'create': self.env['product.template'].check_access_rights('create', raise_exception=False),
                 'fsm_task_id': self.id,  # avoid 'default_' context key as we are going to create SOL with this context
                 'pricelist': self.partner_id.property_product_pricelist.id,
+                'order_id': self.sale_order_id.id,
+                **self.sudo().env['sale.order.line']._get_action_add_from_catalog_extra_context(self.sale_order_id),
                 'hide_qty_buttons': self.sale_order_id.sudo().locked,
                 'default_invoice_policy': 'delivery',
             },

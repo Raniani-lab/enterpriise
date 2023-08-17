@@ -60,3 +60,28 @@ class SaleOrderLine(models.Model):
         if ml_to_create:
             self.env['stock.move.line'].create(ml_to_create)
         return result
+
+    def _get_catalog_info(self):
+        """ Override of `sale`
+
+        Add whether the product is tracked and change the way the read-only property is computed.
+
+        A product is considered read-only if the order is considered read-only (see
+        ``SaleOrder._is_readonly`` for more details).
+
+        :rtype: dict
+        :return: A dict with the following structure:
+            {
+                'delivered_qty': float,
+                'quantity': float,
+                'price': float,
+                'readOnly': bool,
+                'tracking': bool,
+            }
+        """
+        res = super()._get_catalog_info()
+        res['tracking'] = self.product_id.tracking not in ['none', False]
+        res['minimumQuantityOnProduct'] = len(self) and res['quantity'] - self.product_id.quantity_decreasable_sum
+        if len(self) != 1 and self.order_id and res['tracking'] and self.env.context.get('fsm_task_id', False):
+            res['readOnly'] = self.order_id._is_readonly()  # Here we remove the readonly fixed by sale on product present on many sale order lines in the SO
+        return res

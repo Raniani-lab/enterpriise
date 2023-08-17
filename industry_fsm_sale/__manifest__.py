@@ -24,7 +24,6 @@ Create Sales order with timesheets and products from tasks
     'assets': {
         'web.assets_backend': [
             'industry_fsm_sale/static/src/components/**/*',
-            'industry_fsm_sale/static/src/views/**/*',
             'industry_fsm_sale/static/src/js/tours/**/*',
         ],
         'web.assets_tests': [

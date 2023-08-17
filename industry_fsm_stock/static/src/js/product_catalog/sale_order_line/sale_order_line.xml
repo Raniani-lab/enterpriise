@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-inherit="sale.ProductCatalogSOL" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[@class='ms-auto o_sale_product_catalog_cancel_global_click']" position="before">
+            <button t-if="this.props.tracking and this.props.quantity != 0 and this.env.fsm_task_id" class="btn align-self-end o_sale_product_catalog_cancel_global_click" type="object" t-on-click="this.env.resetQuantity">
+                <i t-att-class="'fa fa-list text-success'" title="Lot/Serial number"></i>
+            </button>
+        </xpath>
+    </t>
+
+</templates>

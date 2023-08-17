@@ -48,6 +48,7 @@ class ProductProduct(models.Model):
             return
         elif task.sale_order_id.sudo().state in ['draft', 'sent']:
             self.quantity_decreasable = True
+            self.quantity_decreasable_sum = 0
             return
 
         moves_read_group = self.env['stock.move'].sudo()._read_group(

@@ -31,10 +31,10 @@ patch(registry.category("web_tour.tours").get("industry_fsm_tour"), {
             content: markup(_t("Use the breadcrumbs to navigate to your <b>list of products</b>.")),
             position: "bottom",
         }, {
-            trigger: "button[name='fsm_add_quantity']",
+            trigger: '.o_kanban_record:first-child button:has(i.fa-shopping-cart)',
             alt_trigger: ".o_fsm_product_kanban_view .o_kanban_record",
             extra_trigger: '.o_fsm_product_kanban_view',
-            content: _t('Click on your product to add it to your <b>list of materials</b>. <i>Tip: for large quantities, click on the number to edit it directly.</i>'),
+            content: _t('Click on a product to add it to your <b>list of materials</b>. <i>Tip: for large quantities, click on the number to edit it directly.</i>'),
             position: 'right',
         }, {
             trigger: ".breadcrumb-item.o_back_button",

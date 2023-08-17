@@ -70,3 +70,8 @@ class SaleOrderLine(models.Model):
         sol_from_task_without_amount = self.filtered(lambda sol: sol.task_id and sol.task_id.is_fsm and sol.price_unit == 0)
         sol_from_task_without_amount.invoice_status = 'no'
         super(SaleOrderLine, self - sol_from_task_without_amount)._compute_invoice_status()
+
+    def action_add_from_catalog(self):
+        if len(self.task_id) == 1 and self.task_id.allow_material:
+            return self.task_id.action_fsm_view_material()
+        return super().action_add_from_catalog()

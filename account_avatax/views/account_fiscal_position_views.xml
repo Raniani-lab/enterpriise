@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="account.view_account_position_form"/>
         <field name="arch" type="xml">
             <field name="name" position="after">
-                <field name="is_avatax"/>
+                <field name="is_avatax" invisible="'us' not in (fiscal_country_codes or '').lower() and 'ca' not in (fiscal_country_codes or '').lower()"/>
             </field>
             <notebook position="inside">
                 <page name="avatax" string="Avatax" invisible="not is_avatax">

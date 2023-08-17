@@ -20,6 +20,7 @@ def _get_init_messaging_result(self):
     })
     res['voipConfig'] = {
         'mode': 'demo',
+        'missedCalls': 0,
         'pbxAddress': "localhost",
         'webSocketUrl': "wss://edge.sip.onsip.com",
     }
@@ -29,4 +30,4 @@ def _get_init_messaging_result(self):
 
 
 TestDiscussFullPerformance._get_init_messaging_result = _get_init_messaging_result
-TestDiscussFullPerformance._query_count += 6
+TestDiscussFullPerformance._query_count += 11

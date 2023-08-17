@@ -127,7 +127,6 @@ class TestActivityPerformance(BaseMailPerformance):
 
         # check business information (to benefits from this test)
         self.assertEqual(len(activities), 10)
-        self.assertEqual(len(activities.voip_phonecall_id), 10)
         self.assertEqual(activities.user_id, self.user_admin)
         self.assertEqual(test_records.activity_ids, activities)
 
@@ -151,16 +150,15 @@ class TestActivityPerformance(BaseMailPerformance):
 
     @users('employee')
     @warmup
-    def test_create_call_in_queue(self):
+    def test_create_call_activity(self):
         test_record_voip = self.test_record_voip.with_env(self.env)
 
         with self.assertQueryCount(employee=12):
-            activity = test_record_voip.create_call_in_queue()
+            activity = test_record_voip.create_call_activity()
             self.env.flush_all()
 
         # check business information (to benefits from this test)
         self.assertEqual(activity.activity_type_id, self.phonecall_activity)
-        self.assertEqual(len(activity.voip_phonecall_id), 1)
 
     @mute_logger('odoo.models.unlink')
     @users('employee')
@@ -219,12 +217,11 @@ class TestActivityPerformance(BaseMailPerformance):
         test_records = self.test_records_voip.with_env(self.env)
 
         with self.assertQueryCount(employee=30):
-            activities = test_records.create_call_in_queue()
+            activities = test_records.create_call_activity()
             self.env.flush_all()
 
         # check business information (to benefits from this test)
         self.assertEqual(activities.activity_type_id, self.phonecall_activity)
-        self.assertEqual(len(activities.voip_phonecall_id), 10)
 
         with self.assertQueryCount(employee=112):
             activities[:3].write({'user_id': self.user_root.id})

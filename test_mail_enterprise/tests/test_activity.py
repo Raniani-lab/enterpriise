@@ -47,51 +47,15 @@ class TestActivity(SMSCommon, TestSMSRecipients):
 
     @users('employee')
     @mute_logger('odoo.addons.voip.models.voip_queue_mixin')
-    def test_activity_create_phonecall(self):
+    def test_create_call_activity(self):
         record = self.test_record_voip.with_env(self.env)
 
-        activity = record.activity_schedule(
-            act_type_xmlid='mail.mail_activity_data_call',
-            date_deadline=fields.Date.today(self) + timedelta(days=2),
-        )
-        phonecall = activity.voip_phonecall_id
-        self.assertEqual(activity.activity_type_id, self.phonecall_activity)
-        self.assertFalse(activity.phone)
-        self.assertEqual(activity.mobile, self.partner_1.mobile)
-        self.assertEqual(activity.note, Markup('<p>Test Default Note</p>'))
-        self.assertEqual(activity.summary, 'Test Default Summary')
-        self.assertTrue(phonecall)
-        self.assertEqual(phonecall.date_deadline, fields.Date.today(self) + timedelta(days=2))
-        self.assertEqual(phonecall.mobile, self.partner_1.mobile)
-        self.assertEqual(phonecall.name, record.name)
-        self.assertEqual(phonecall.note, Markup('<p>Test Default Note</p>'))
-        self.assertEqual(phonecall.partner_id, self.partner_1)
-        self.assertFalse(phonecall.phone)
-        self.assertEqual(phonecall.state, 'open')
-        self.assertEqual(phonecall.user_id, self.user_admin,
-                         'Phonecall assigned coming from default user from phonecall_activity type')
-
-    @users('employee')
-    @mute_logger('odoo.addons.voip.models.voip_queue_mixin')
-    def test_create_call_in_queue(self):
-        record = self.test_record_voip.with_env(self.env)
-
-        activity = record.create_call_in_queue()
-        phonecall = activity.voip_phonecall_id
+        activity = record.create_call_activity()
         self.assertEqual(activity.activity_type_id, self.phonecall_activity)
         self.assertFalse(activity.phone)
         self.assertEqual(activity.mobile, self.partner_1.mobile)
         self.assertFalse(activity.note)
         self.assertFalse(activity.summary)
-        self.assertTrue(phonecall)
-        self.assertEqual(phonecall.date_deadline, fields.Date.today(self))
-        self.assertEqual(phonecall.mobile, self.partner_1.mobile)
-        self.assertEqual(phonecall.name, record.name)
-        self.assertFalse(phonecall.note)
-        self.assertEqual(phonecall.partner_id, self.partner_1)
-        self.assertFalse(phonecall.phone)
-        self.assertEqual(phonecall.state, 'open')
-        self.assertEqual(phonecall.user_id, self.user_employee)
 
         phonecall_activities = self.env['mail.activity'].sudo().search([
             ('activity_type_id', '=', self.phonecall_activity.id),
@@ -101,6 +65,6 @@ class TestActivity(SMSCommon, TestSMSRecipients):
 
         # no more phonecall activity -> will be dynamically created
         self.assertFalse(self.env['mail.activity.type'].search([('category', '=', 'phonecall')]))
-        activity = record.create_call_in_queue()
+        activity = record.create_call_activity()
         new_activity_type = self.env['mail.activity.type'].search([('category', '=', 'phonecall')])
         self.assertTrue(bool(new_activity_type))

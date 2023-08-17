@@ -1,10 +1,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
-    "name": "VOIP OnSIP",
-    "description": """
-Module with the required configuration to connect to OnSIP.
-    """,
+    "name": "VoIP OnSIP",
+    "description": """Enables VoIP compatibility with OnSIP.""",
     "category": "Hidden",
     "version": "1.0",
     "depends": ["voip"],

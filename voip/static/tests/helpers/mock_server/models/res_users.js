@@ -8,7 +8,6 @@ import { MockServer } from "@web/../tests/helpers/mock_server";
 patch(MockServer.prototype, {
     /**
      * @override
-     * @returns {Object}
      */
     _mockResUsers_InitMessaging(...args) {
         const getConfig = (key) =>

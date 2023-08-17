@@ -18,7 +18,7 @@ VOIP_USER_CONFIGURATION_FIELDS = [
 class ResUsers(models.Model):
     _inherit = "res.users"
 
-    last_seen_phone_call = fields.Many2one("voip.phonecall")
+    last_seen_phone_call = fields.Many2one("voip.call")
     # --------------------------------------------------------------------------
     # VoIP User Configuration Fields
     # --------------------------------------------------------------------------
@@ -68,12 +68,8 @@ class ResUsers(models.Model):
 
     @api.model
     def reset_last_seen_phone_call(self):
-        domain = [
-            ("user_id", "=", self.env.user.id),
-            ("call_date", "!=", False),
-            ("in_queue", "=", True),
-        ]
-        last_call = self.env["voip.phonecall"].search(domain, order="call_date desc", limit=1)
+        domain = [("user_id", "=", self.env.user.id)]
+        last_call = self.env["voip.call"].search(domain, order="id desc", limit=1)
         self.env.user.last_seen_phone_call = last_call.id
 
     def _init_messaging(self):
@@ -82,6 +78,7 @@ class ResUsers(models.Model):
             **super()._init_messaging(),
             "voipConfig": {
                 "mode": get_param("voip.mode", default="demo"),
+                "missedCalls": self.env["voip.call"]._get_number_of_missed_calls(),
                 "pbxAddress": get_param("voip.pbx_ip", default="localhost"),
                 "webSocketUrl": get_param("voip.wsServer", default="ws://localhost"),
             },

@@ -19,6 +19,7 @@ export class WorkEntriesGanttController extends GanttController {
                 return [];
             },
             getRange: () => this.model.getRange(),
+            onClose: () => this.model.fetchData({}),
         });
         this.onRegenerateWorkEntries = onRegenerateWorkEntries;
     }

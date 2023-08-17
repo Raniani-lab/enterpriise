@@ -1,5 +1,4 @@
 /** @odoo-module */
-'use strict';
 
 import { fetchValidHeadings } from './tools/knowledge_tools.js';
 import publicWidget from '@web/legacy/js/public/public_widget';

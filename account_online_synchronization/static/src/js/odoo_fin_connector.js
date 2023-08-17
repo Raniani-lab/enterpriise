@@ -1,5 +1,4 @@
 /** @odoo-module **/
-"use strict";
 
 import { registry } from "@web/core/registry";
 import { loadJS } from "@web/core/assets";

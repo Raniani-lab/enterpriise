@@ -1,7 +1,5 @@
 /** @odoo-module **/
 
-"use strict";
-
 const addNewFiles = (files) => {
     sessionStorage.setItem("signMultiFileData", JSON.stringify(files));
     return true;

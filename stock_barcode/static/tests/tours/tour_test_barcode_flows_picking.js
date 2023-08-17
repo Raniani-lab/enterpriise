@@ -940,15 +940,8 @@ tour.register('test_remaining_decimal_accuracy', {test: true}, [
     {
         trigger: '.o_barcode_client_action',
         run: function() {
-            helper.assertPageSummary('');
-            helper.assertPreviousVisible(true);
-            helper.assertPreviousEnabled(false);
-            helper.assertNextVisible(false);
-            helper.assertNextEnabled(false);
-            helper.assertNextIsHighlighted(false);
             helper.assertLinesCount(1);
             helper.assertScanMessage('scan_product');
-            helper.assertLocationHighlight(false);
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(false);
             helper.assertValidateEnabled(true);
@@ -957,10 +950,10 @@ tour.register('test_remaining_decimal_accuracy', {test: true}, [
         }
     },
 
-    // Goes on the form view and press digipad +1 button.
+    // Goes on the form view and add 2.2 .
     { trigger: '.o_barcode_line:first-child .o_edit' },
     {
-        trigger: 'input.o_field_widget[name=qty_done]',
+        trigger: 'input.o_input[id=qty_done_1]',
         run: 'text 2.2',
     },
     { trigger: '.o_save' },

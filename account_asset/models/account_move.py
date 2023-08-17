@@ -119,8 +119,6 @@ class AccountMove(models.Model):
         # look for any asset to create, in case we just posted a bill on an account
         # configured to automatically create assets
         posted.sudo()._auto_create_asset()
-        # check if we are reversing a move and delete assets of original move if it's the case
-        posted._delete_reversed_entry_assets()
 
         # close deferred expense/revenue if all their depreciation moves are posted
         posted._close_assets()
@@ -213,7 +211,7 @@ class AccountMove(models.Model):
                         'analytic_distribution': move_line.analytic_distribution,
                         'original_move_line_ids': [(6, False, move_line.ids)],
                         'state': 'draft',
-                        'acquisition_date': move.invoice_date,
+                        'acquisition_date': move.invoice_date if not move.reversed_entry_id else move.reversed_entry_id.invoice_date,
                     }
                     model_id = move_line.account_id.asset_model
                     if model_id:
@@ -310,6 +308,7 @@ class AccountMove(models.Model):
     def action_open_asset_ids(self):
         return self.asset_ids.open_asset(['tree', 'form'])
 
+    # DEPRECATED - to be removed in master
     def _delete_reversed_entry_assets(self):
         ReverseKey = namedtuple('ReverseKey', ['product_id', 'price_unit', 'quantity'])
 

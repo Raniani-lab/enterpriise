@@ -21,10 +21,6 @@ class TestHelpdeskFlow(HelpdeskCommon):
     @classmethod
     def setUpClass(cls):
         res = super().setUpClass()
-        # give default values for all email aliases and domain
-        cls._init_mail_gateway()
-        cls._init_outgoing_gateway()
-
         ticket_model_id = cls.env['ir.model']._get_id('helpdesk.ticket')
         helpdesk_team_model_id = cls.env['ir.model']._get_id('helpdesk.team')
 

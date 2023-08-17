@@ -8,7 +8,7 @@
             <field name="arch" type="xml">
                 <pivot string="Employees Analysis" sample="1" js_class="contract_employee_report_pivot">
                     <field name="department_id" type="row"/>
-                    <field name="employee_id" type="measure"/>
+                    <field name="employee_id" type="row"/>
                     <field name="wage" type="measure"/>
                     <field name="count_new_employee" type="measure"/>
                     <field name="count_employee_exit" type="measure"/>

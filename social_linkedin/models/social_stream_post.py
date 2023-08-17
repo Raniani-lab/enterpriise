@@ -162,6 +162,19 @@ class SocialStreamPostLinkedIn(models.Model):
             },
         }
 
+        image_content = next(
+            (content for content in json_data.get('content', [])
+             if content.get('type') == 'IMAGE'),
+            None,
+        )
+        if image_content:
+            # Sometimes we can't access the image (e.g. if it's still being process)
+            # so we have a placeholder image if the download URL is not yet available
+            data['attachment'] = {
+                'type': 'photo',
+                'media': {'image': {'src': image_content.get('url', '/web/static/img/placeholder.png')}},
+            }
+
         sub_comments_count = json_data.get('commentsSummary', {}).get('totalFirstLevelComments', 0)
         data['comments'] = {
             'data': {

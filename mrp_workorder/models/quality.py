@@ -453,6 +453,7 @@ class QualityCheck(models.Model):
         - third: Pass to the next check or return a failure message.
         """
         self.ensure_one()
+        self.workorder_id.current_quality_check_id = self.id
         rounding = self.workorder_id.product_uom_id.rounding
         if self.test_type == 'register_production':
             if self.product_tracking != 'none':

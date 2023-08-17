@@ -29,12 +29,8 @@ This module modifies the web addon to provide Enterprise design and responsivene
         'web._assets_backend_helpers': [
             ('before', 'web/static/src/scss/bootstrap_overridden.scss', 'web_enterprise/static/src/scss/bootstrap_overridden.scss'),
         ],
-        'web.assets_common': [
-            'web_enterprise/static/src/webclient/home_menu/home_menu_background.scss',
-            'web_enterprise/static/src/webclient/navbar/navbar.scss',
-        ],
         'web.assets_frontend': [
-            'web_enterprise/static/src/webclient/home_menu/home_menu_background.scss',
+            'web_enterprise/static/src/webclient/home_menu/home_menu_background.scss', # used by login page
             'web_enterprise/static/src/webclient/navbar/navbar.scss',
         ],
         'web.assets_backend': [
@@ -45,8 +41,6 @@ This module modifies the web addon to provide Enterprise design and responsivene
             'web_enterprise/static/src/legacy/scss/modal_mobile.scss',
             'web_enterprise/static/src/legacy/scss/promote_studio.scss',
             'web_enterprise/static/src/webclient/**/*.scss',
-            ('remove', 'web_enterprise/static/src/webclient/home_menu/home_menu_background.scss'), # already in _assets_common_styles
-            ('remove', 'web_enterprise/static/src/webclient/navbar/navbar.scss'), # already in _assets_common_styles
             'web_enterprise/static/src/views/**/*.scss',
 
             'web_enterprise/static/src/core/**/*',
@@ -71,9 +65,6 @@ This module modifies the web addon to provide Enterprise design and responsivene
             ('before', 'web_enterprise/static/src/**/*.variables.scss', 'web_enterprise/static/src/**/*.variables.dark.scss'),
             # web._assets_secondary_variables
             ('before', 'web_enterprise/static/src/scss/secondary_variables.scss', 'web_enterprise/static/src/scss/secondary_variables.dark.scss'),
-        ],
-        "web.dark_mode_assets_common": [
-            ('include', 'web.dark_mode_variables'),
         ],
         "web.dark_mode_assets_backend": [
             ('include', 'web.dark_mode_variables'),

@@ -69,11 +69,9 @@ Let your customers follow the signature process easily.
         'sign.assets_green_report': [
             'sign/static/src/css/green_saving_reports.scss',
         ],
-        'web.assets_common': [
-            'sign/static/src/scss/sign_common.scss',
-        ],
         'web.assets_backend': [
             'sign/static/src/js/tours/sign.js',
+            'sign/static/src/scss/sign_common.scss',
             'sign/static/src/scss/sign_backend.scss',
             'sign/static/src/activity/**',
             'sign/static/src/components/**/*',
@@ -104,15 +102,7 @@ Let your customers follow the signature process easily.
             ('include', 'web._assets_bootstrap_frontend'),
 
             'web/static/src/libs/fontawesome/css/font-awesome.css',
-            'web/static/src/boot.js',
-            'web/static/src/env.js',
-            'web/static/src/session.js',
-            'web/static/src/core/utils/transitions.scss',
-            'web/static/src/core/**/*',
-            ('remove', 'web/static/src/core/emoji_picker/emoji_data.js'),
-            'web/static/lib/owl/owl.js',
-            'web/static/lib/owl/odoo_module.js',
-            'web/static/lib/luxon/luxon.js',
+            ('include', 'web._assets_core'),
 
             'web/static/lib/jquery/jquery.js',  # to be removed when jSignature is replaced
             'web/static/lib/jSignature/jSignatureCustom.js',

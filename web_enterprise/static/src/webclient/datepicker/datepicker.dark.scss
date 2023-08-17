@@ -3,9 +3,6 @@
 // No CSS hacks, variables overrides only
 
 .o_web_client {
-    // Since the component's design is defined in assets_common, scope variables
-    // declarations within `o_web_client` selector.
-
     .o_datepicker, .datepicker, .bootstrap-datetimepicker-widget {
         --bs-datetimepicker-btn-hover-bg: #{$o-gray-400};
     }

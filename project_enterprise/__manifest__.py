@@ -41,8 +41,6 @@ Bridge module for project and enterprise
         ],
         'project.webclient': [
             'web_enterprise/static/src/webclient/**/*.scss',
-            ('remove', 'web_enterprise/static/src/webclient/home_menu/home_menu_background.scss'), # already in _assets_common_styles
-            ('remove', 'web_enterprise/static/src/webclient/navbar/navbar.scss'), # already in _assets_common_styles
 
             'web_enterprise/static/src/core/**/*',
             'web_enterprise/static/src/views/kanban/*',

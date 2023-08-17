@@ -39,16 +39,7 @@
             'web/static/lib/odoo_ui_icons/*',
             'web/static/src/webclient/icons.scss',
 
-            'web/static/src/legacy/js/promise_extension.js',  # Legacy FIXME
-
-            'web/static/src/boot.js',
-            'web/static/src/env.js',
-            'web/static/src/session.js',
-            'web/static/src/core/utils/transitions.scss',
-            'web/static/src/core/**/*',
-            'web/static/lib/owl/owl.js',
-            'web/static/lib/owl/odoo_module.js',
-            'web/static/lib/luxon/luxon.js',
+            ('include', 'web._assets_core'),
 
             'bus/static/src/services/bus_service.js',
             'bus/static/src/bus_parameters_service.js',
@@ -56,7 +47,6 @@
             'bus/static/src/workers/*',
 
             'pos_preparation_display/static/src/app/**/*',
-            ('remove', 'web/static/src/core/emoji_picker/emoji_data.js'),
         ],
         'point_of_sale._assets_pos': [
             'pos_preparation_display/static/src/override/**/*.js',

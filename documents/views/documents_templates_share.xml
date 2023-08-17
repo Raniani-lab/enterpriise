@@ -22,17 +22,6 @@
                 </script>
 
                 <t t-call-assets="web.assets_frontend"/>
-
-                <t t-if="request.httprequest.cookies.get('color_scheme') == 'dark'">
-                    <t t-call-assets="web.dark_mode_assets_common" t-js="false"/>
-                    <!-- this page probably don't need much of assets_backend css -->
-                    <t t-call-assets="web.dark_mode_assets_backend" t-js="false"/>
-                </t>
-                <t t-else="">
-                    <t t-call-assets="web.assets_common" t-js="false"/>
-                    <!-- this page probably don't need much of assets_backend css -->
-                    <t t-call-assets="web.assets_backend" t-js="false"/>
-                </t>
                 <t t-call="web.conditional_assets_tests"/>
                 <t t-call-assets="documents.public_page_assets"/>
 

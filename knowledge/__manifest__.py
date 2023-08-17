@@ -57,6 +57,7 @@
             'knowledge/static/src/js/knowledge_utils.js',
             'knowledge/static/src/js/knowledge_renderers.js',
             'knowledge/static/src/js/knowledge_views.js',
+            'knowledge/static/src/js/tools/**/*',
             'knowledge/static/src/webclient/**/*',
             'knowledge/static/src/views/**/*',
             'knowledge/static/src/services/**/*',
@@ -73,9 +74,6 @@
             'knowledge/static/src/js/tools/**/*',
             'knowledge/static/src/js/knowledge_frontend.js',
             'knowledge/static/src/xml/knowledge_frontend.xml',
-        ],
-        'web.assets_common': [
-            'knowledge/static/src/js/tools/**/*',
         ],
         'web_editor.assets_wysiwyg': [
             'knowledge/static/src/js/wysiwyg.js',

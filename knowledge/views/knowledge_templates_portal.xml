@@ -9,10 +9,7 @@
                 </script>
                 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"/>
                 <base target="_parent"/>
-                <t t-call-assets="web.assets_common" t-js="false"/>
-                <t t-call-assets="knowledge.webclient" t-js="false"/>
-                <t t-call-assets="web.assets_common" t-css="false"/>
-                <t t-call-assets="knowledge.webclient" t-css="false"/>
+                <t t-call-assets="knowledge.webclient"/>
                 <t t-call="web.conditional_assets_tests"/>
             </t>
             <t t-set="head" t-value="head_knowledge_portal_view + (head or '')"/>

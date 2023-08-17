@@ -56,7 +56,7 @@
 
         <!-- Partner filter -->
         <t t-if="'partner' in controller.options">
-            <div id="filter_partner_hook">
+            <div id="filter_partner" class="filter_partner">
                 <t t-call="account_reports.AccountReportFilterPartner"/>
             </div>
         </t>

@@ -40,7 +40,7 @@
         }
     }
 
-    .filter_analytic, .filter_analytic_groupby {
+    .filter_analytic, .filter_analytic_groupby, .filter_partner {
         .dropdown-item.focus, .dropdown-item.selected:hover, .dropdown-item.selected:focus { background-color: inherit }
         .o_field_tags {
             float: right;

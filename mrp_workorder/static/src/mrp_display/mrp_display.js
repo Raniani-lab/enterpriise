@@ -52,6 +52,7 @@ export class MrpDisplay extends Component {
         };
 
         this.pickingTypeId = false;
+        this.myWorkorders = [];
         this.validationStack = {
             "mrp.production": [],
             "mrp.workorder": [],
@@ -392,12 +393,9 @@ export class MrpDisplay extends Component {
 
     get relevantRecords() {
         if (this.state.activeResModel === "mrp.workorder") {
-            const my_wo_ids = this.adminWorkorderIds;
             if (this.state.activeWorkcenter === -1){
                 // 'My' workcenter selected -> return the ones where the current employee is working on.
-                return this.mrp_workorder.root.records.filter(
-                    (wo) => my_wo_ids.includes(wo.resId)
-                )
+                return this.myWorkorders;
             }
             return this.mrp_workorder.root.records.filter(wo =>
                 wo.data.workcenter_id[0] === this.state.activeWorkcenter &&
@@ -464,5 +462,9 @@ export class MrpDisplay extends Component {
         await this.quality_check.load(getSearchParams(this.quality_check, this.props, this, false));
         await this.stock_move.load(getSearchParams(this.stock_move, this.props, this));
         await this.useEmployee.getConnectedEmployees();
+        const my_wo_ids = this.adminWorkorderIds;
+        this.myWorkorders = this.mrp_workorder.root.records.filter(
+                (wo) => my_wo_ids.includes(wo.resId)
+            )
     }
 }

@@ -39,7 +39,7 @@
                             groups="groups"
                             record="record"
                             production="getproduction(record)"
-                            subRecords="getSubRecords(record)"
+                            workorders="workorders"
                             workcenters="workcenters"
                             selectWorkcenter.bind="selectWorkcenter"
                             selectUser.bind="useEmployee.openEmployeeSelection"
@@ -47,7 +47,6 @@
                             sessionOwner="useEmployee.employees.admin"
                             recordUpdated.bind="recordUpdated"
                             removeFromValidationStack.bind="removeFromValidationStack"
-                            reload.bind="reload"
                             onlyRecord="relevantRecords.length == 1"
                             />
                     </t>

@@ -18,6 +18,7 @@ export class StockMove extends Component {
         this.isLongPressable = false;
         this.longPressed = false;
         this.resModel = this.props.record.resModel;
+        this.resId = this.props.record.resId;
     }
 
     get cssClass() {
@@ -70,23 +71,20 @@ export class StockMove extends Component {
     }
 
     async clicked() {
-        const resIds = [this.props.resId];
         const action = await this.props.record.model.orm.call(
             this.resModel,
             "action_show_details",
-            resIds
+            [this.resId]
         );
         const options = {
             onClose: async () => {
-                await this.reload();
-                //await this.props.record.load();
-                //this.render();
+                this.props.record.load();
             },
         };
         this.props.record.model.action.doAction(action, options);
     }
 
-    async openMoveDetails() {
+    openMoveDetails() {
         if (!this.props.clickable) {
             return;
         }
@@ -94,13 +92,8 @@ export class StockMove extends Component {
             return this.clicked();
         }
         const quantity = this.isComplete ? 0 : this.toConsumeQuantity;
-        this.props.record.update({ quantity_done: quantity }, { save: true });
-        await this.reload();
-    }
-
-    async reload() {
-        await this.props.parent.load();
-        await this.props.record.load();
+        this.props.record.update({ quantity_done: quantity });
+        this.props.record.save({ noReload: true });
     }
 
     get state() {

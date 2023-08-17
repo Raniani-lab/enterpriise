@@ -20,6 +20,7 @@ export class MrpDisplayAction extends Component {
     get fieldsStructure() {
         return {
             "mrp.production": [
+                "id",
                 "display_name",
                 "check_ids",
                 "company_id",
@@ -40,6 +41,7 @@ export class MrpDisplayAction extends Component {
                 "date_start",
             ],
             "mrp.workorder": [
+                "id",
                 "display_name",
                 "current_quality_check_id",
                 "duration",
@@ -79,6 +81,8 @@ export class MrpDisplayAction extends Component {
                 "workorder_id",
             ],
             "quality.check": [
+                "id",
+                "display_name",
                 "company_id",
                 "component_id",
                 "component_remaining_qty",
@@ -107,7 +111,7 @@ export class MrpDisplayAction extends Component {
                 "previous_check_id",
                 "next_check_id",
             ],
-        }
+        };
     }
 
     setup() {
@@ -118,10 +122,12 @@ export class MrpDisplayAction extends Component {
         this.models = [];
 
         onWillStart(async () => {
+            const { context } = this.props.action;
             for (const [resModel, fieldNames] of Object.entries(this.fieldsStructure)) {
                 const fields = await this.fieldService.loadFields(resModel, { fieldNames });
                 for (const [fName, fInfo] of Object.entries(fields)) {
                     fields[fName] = { ...defaultActiveField, ...fInfo };
+                    delete fields[fName].context;
                 }
                 this.models.push({ fields, resModel });
             }
@@ -136,7 +142,6 @@ export class MrpDisplayAction extends Component {
                 ["bom_id", "=", false],
                 ["bom_id.type", "in", ["normal", "phantom"]],
             ];
-            const { context } = this.props.action;
             if (context.active_model === "stock.picking.type" && context.active_id) {
                 domain.push(["picking_type_id", "=", context.active_id]);
             }
@@ -147,7 +152,10 @@ export class MrpDisplayAction extends Component {
                 searchViewFields: searchViews.fields,
                 context,
                 domain,
-                orderBy: [{name: 'state', asc: false}, {name: 'date_start', asc: true}],
+                orderBy: [
+                    { name: "state", asc: false },
+                    { name: "date_start", asc: true },
+                ],
             };
         });
     }

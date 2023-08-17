@@ -24,6 +24,7 @@ export class MrpWorkorder extends StockMove {
         this.dialogService = useService("dialog");
         this.name = this.props.record.data.name;
         this.note = this.props.record.data.operation_note;
+        this.checks = this.props.record.data.check_ids;
     }
 
     get active() {
@@ -47,13 +48,13 @@ export class MrpWorkorder extends StockMove {
     }
 
     get checksInfo() {
-        if (!this.props.qualityChecks.length) {
+        if (!this.checks.count) {
             return "";
         }
-        const doneChecks = this.props.qualityChecks.filter(
+        const doneChecks = this.checks.records.filter(
             (qc) => qc.data.quality_state != "none"
         ).length;
-        const checks = this.props.qualityChecks.length;
+        const checks = this.checks.count;
         return `${doneChecks}/${checks}`;
     }
 

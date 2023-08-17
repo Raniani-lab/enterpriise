@@ -1,7 +1,17 @@
 <odoo>
     <!-- Quality Control From Manufacturing -->
-
-    <!-- For [FURN001] Computer Desk-->
+    
+    <!-- For [FURN_9666] Table-->
+    <record id="quality_point_register_production" model="quality.point">
+        <field name="product_ids" eval="[(4, ref('mrp.product_product_computer_desk'))]"/>
+        <field name="picking_type_ids" model="stock.warehouse" eval="[(4, obj().env.ref('stock.warehouse0').manu_type_id.id)]"/>
+        <field name="operation_id" ref="mrp.mrp_routing_workcenter_5"/>
+        <field name="test_type_id" ref="mrp_workorder.test_type_register_production"/>
+        <field name="note">Create a serial number for the table.</field>
+        <field name="title">Register Production</field>
+        <field name="worksheet_page">1</field>
+        <field name="sequence">1</field>
+    </record>
     <record id="quality_point_component_registration" model="quality.point">
         <field name="product_ids" eval="[(4, ref('mrp.product_product_computer_desk'))]"/>
         <field name="picking_type_ids" model="stock.warehouse" eval="[(4, obj().env.ref('stock.warehouse0').manu_type_id.id)]"/>
@@ -67,16 +77,6 @@
         <field name="title">Print Labels</field>
         <field name="worksheet_page">0</field>
         <field name="sequence">9</field>
-    </record>
-
-    <record id="mrp.mrp_routing_workcenter_1" model="mrp.routing.workcenter">
-        <field name="active">True</field>
-    </record>
-    <record id="mrp.mrp_routing_workcenter_3" model="mrp.routing.workcenter">
-        <field name="active">True</field>
-    </record>
-    <record id="mrp.mrp_routing_workcenter_4" model="mrp.routing.workcenter">
-        <field name="active">True</field>
     </record>
 
     <!-- Split the pdf added in mrp demo data-->

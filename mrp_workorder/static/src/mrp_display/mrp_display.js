@@ -3,7 +3,8 @@
 import { Layout } from "@web/search/layout";
 import { useService, useBus } from "@web/core/utils/hooks";
 import { _t } from "@web/core/l10n/translation";
-import { useModels } from "@mrp_workorder/mrp_display/model";
+import { useModel } from "@web/model/model";
+import { RelationalModel } from "@web/model/relational_model/relational_model";
 import { ControlPanelButtons } from "@mrp_workorder/mrp_display/control_panel";
 import { MrpDisplayRecord } from "@mrp_workorder/mrp_display/mrp_display_record";
 import { MrpWorkcenterDialog } from "./dialog/mrp_workcenter_dialog";
@@ -13,7 +14,6 @@ import { SelectionPopup } from "@mrp_workorder/components/popup";
 import { PinPopup } from "@mrp_workorder/components/pin_popup";
 import { useConnectedEmployee } from "@mrp_workorder/views/hooks/employee_hooks";
 import { SearchBar } from "@web/search/search_bar/search_bar";
-import { getSearchParams, MESRelationalModel } from "./model";
 
 const { Component, onWillDestroy, onWillStart, useState, useSubEnv } = owl;
 
@@ -52,7 +52,6 @@ export class MrpDisplay extends Component {
         };
 
         this.pickingTypeId = false;
-        this.myWorkorders = [];
         this.validationStack = {
             "mrp.production": [],
             "mrp.workorder": [],
@@ -68,38 +67,32 @@ export class MrpDisplay extends Component {
         });
 
         this.state = useState({
-            activeResModel: this.props.context.workcenter_id ? 'mrp.workorder' : this.props.resModel,
+            activeResModel: this.props.context.workcenter_id
+                ? "mrp.workorder"
+                : this.props.resModel,
             activeWorkcenter: this.props.context.workcenter_id || false,
             workcenters: JSON.parse(localStorage.getItem(this.env.localStorageName)) || [],
         });
 
-        const paramsList = [];
-        for (const { resModel, fields } of this.props.models) {
-            const activeFields = {};
-            for (const fieldName in fields) {
-                activeFields[fieldName] = makeActiveField();
-            }
-            const params = {
-                config: { resModel, fields, activeFields },
-            };
-            paramsList.push(params);
-        }
-        const models = useModels(MESRelationalModel, paramsList);
-        for (const model of models) {
-            const resModelName = model.config.resModel.replaceAll(".", "_");
-            this[resModelName] = model;
-        }
+        const params = this._makeModelParams();
+
+        this.model = useState(useModel(RelationalModel, params));
+        useSubEnv({
+            model: this.model,
+            reload: async () => {
+                await this.model.load();
+                await this.useEmployee.getConnectedEmployees();
+            },
+        });
 
         this.showEmployeesPanel = true;
-        this.useEmployee = useConnectedEmployee(
-            [this.mrp_production, this.mrp_workorder, this.stock_move],
-            "mrp_display",
-            this.props.context
-        );
+        this.useEmployee = useConnectedEmployee("mrp_display", this.props.context);
         this.barcode = useService("barcode");
-        useBus(this.barcode.bus, 'barcode_scanned', (event) => this._onBarcodeScanned(event.detail.barcode));
+        useBus(this.barcode.bus, "barcode_scanned", (event) =>
+            this._onBarcodeScanned(event.detail.barcode)
+        );
         this.notification = useService("notification");
-        this.orm = useService('orm');
+        this.orm = useService("orm");
 
         onWillStart(async () => {
             this.groups = {
@@ -109,7 +102,11 @@ export class MrpDisplay extends Component {
             };
             this.group_mrp_routings = await this.userService.hasGroup("mrp.group_mrp_routings");
             if (!this.state.workcenters.length){
-                const allWorkcenters = await this.orm.searchRead('mrp.workcenter',[], ['id', 'display_name']);
+                const allWorkcenters = await this.orm.searchRead(
+                    "mrp.workcenter",
+                    [],
+                    ["id", "display_name"]
+                );
                 localStorage.setItem(this.env.localStorageName, JSON.stringify(allWorkcenters));
                 this.state.workcenters = allWorkcenters;
             }
@@ -117,12 +114,12 @@ export class MrpDisplay extends Component {
         });
         onWillDestroy(async () => {
             await this.processValidationStack(false);
-        })
+        });
     }
 
     addToValidationStack(record, validationCallback) {
         const relevantStack = this.validationStack[record.resModel];
-        if (relevantStack.find(rec => rec.record.resId === record.resId)) {
+        if (relevantStack.find((rec) => rec.record.resId === record.resId)) {
             return; // Don't add more than once the same record into the stack.
         }
         relevantStack.push({
@@ -136,26 +133,31 @@ export class MrpDisplay extends Component {
         this.homeMenu.toggle();
     }
 
-    async _onBarcodeScanned(barcode){
-        if (barcode.startsWith('O-BTN.') || barcode.startsWith('O-CMD.')) {
+    async _onBarcodeScanned(barcode) {
+        if (barcode.startsWith("O-BTN.") || barcode.startsWith("O-CMD.")) {
             return;
         }
-        const production = this.productions.find(mo => mo.data.name === barcode);
+        const production = this.productions.find((mo) => mo.data.name === barcode);
         if (production) {
             return this._onProductionBarcodeScanned(barcode);
         }
-        const workorder = this.workorders.find(wo => wo.data.barcode === barcode);
+        const workorder = this.workorders.find((wo) => wo.data.barcode === barcode);
         if (workorder) {
             return this._onWorkorderBarcodeScanned(workorder);
         }
-        const employee = await this.orm.call("mrp.workcenter", "get_employee_barcode", [undefined, barcode]);
+        const employee = await this.orm.call("mrp.workcenter", "get_employee_barcode", [
+            undefined,
+            barcode,
+        ]);
         if (employee) {
             return this.useEmployee.setSessionOwner(employee, undefined);
         }
     }
 
     async _onProductionBarcodeScanned(barcode){
-        const searchItem = Object.values(this.env.searchModel.searchItems).find((i) => i.fieldName === "name");
+        const searchItem = Object.values(this.env.searchModel.searchItems).find(
+            (i) => i.fieldName === "name"
+        );
         const autocompleteValue = {
             label: barcode,
             operator: "=",
@@ -168,12 +170,16 @@ export class MrpDisplay extends Component {
         const { resModel, resId } = workorder;
         await this.useEmployee.getConnectedEmployees();
         const admin_id = this.useEmployee.employees.admin.id;
-        if (admin_id && !workorder.data.employee_ids.records.some(emp => emp.resId == admin_id)) {
+        if (admin_id && !workorder.data.employee_ids.records.some((emp) => emp.resId == admin_id)) {
             await this.orm.call(resModel, "button_start", [resId]);
-            this.notification.add(_t('STARTED work on workorder ' + workorder.data.display_name), { type: 'success' })
+            this.notification.add(_t("STARTED work on workorder %s", workorder.data.display_name), {
+                type: "success",
+            });
         } else {
             await this.orm.call(resModel, "stop_employee", [resId, [admin_id]]);
-            this.notification.add(_t('STOPPED work on workorder ' + workorder.data.display_name), { type: 'warning' })
+            this.notification.add(_t("STOPPED work on workorder %s", workorder.data.display_name), {
+                type: "warning",
+            });
         }
         await workorder.load();
         await this.recordUpdated(resId);
@@ -181,18 +187,23 @@ export class MrpDisplay extends Component {
         await this.useEmployee.getConnectedEmployees();
     }
 
-    async recordUpdated(wo_id){
-        const MO = this.productions.find(mo => mo.data.workorder_ids.records.some(wo => wo.resId === wo_id));
-        if (MO) await MO.load();
+    async recordUpdated(wo_id) {
+        const MO = this.productions.find((mo) =>
+            mo.data.workorder_ids.records.some((wo) => wo.resId === wo_id)
+        );
+        if (MO) {
+            await MO.load();
+        }
     }
 
     get productions() {
-        const productions = this.mrp_production.root.records;
+        const productions = this.model.root.records;
+        // Should be in active fields
         const statesComparativeValues = {
             progress: 0,
             to_close: 1,
             confirmed: 2,
-        }
+        };
         productions.sort((p1, p2) => {
             const v1 = statesComparativeValues[p1.data.state];
             const v2 = statesComparativeValues[p2.data.state];
@@ -204,7 +215,17 @@ export class MrpDisplay extends Component {
     }
 
     get workorders() {
-        const workorders = this.mrp_workorder.root.records.filter((wo)=> wo.data.state !== 'done');
+        let workorders = this.model.root.records.map((r) => r.data.workorder_ids.records).flat();
+        let state_list = ["ready", "progress"];
+        if (this.props.context.show_ready_workorders) {
+            state_list = ["ready"];
+        } else if (this.props.context.show_progress_workorders) {
+            state_list = ["progress"];
+        }
+        if (!this.props.context.show_all_workorders) {
+            workorders = workorders.filter((wo) => state_list.includes(wo.data.state));
+        }
+        //Should be done in active fields
         const statesComparativeValues = {
             // Smallest value = first. Biggest value = last.
             progress: 0,
@@ -245,57 +266,11 @@ export class MrpDisplay extends Component {
         return workorder.data.production_id?.[0] === production.resId;
     }
 
-    getRawMoves(record) {
-        if (this.state.activeResModel === "mrp.workorder") {
-            return this.stock_move.root.records.filter((move) =>
-                move.data.manual_consumption &&
-                record.data.move_raw_ids.currentIds.includes(move.resId)
-            );
-        }
-        return this.stock_move.root.records.filter(
-            (move) => move.data.raw_material_production_id?.[0] === record.resId
-        );
-    }
-
-    getByproductMoves(record) {
-        // TODO: `getByproductMoves` and `getFinishedMoves` can be merged and simplified (maybe include `getRawMoves` with them too ?)
-        let byproductMoves = []
-        if (this.state.activeResModel === "mrp.production") {
-            byproductMoves = this.stock_move.root.records.filter((move) =>
-                record.data.move_byproduct_ids.currentIds.includes(move.resId)
-            );
-        } else if (this.state.activeResModel === "mrp.workorder") {
-            const relatedProduction = this.mrp_production.root.records.find(mo =>
-                record.data.production_id[0] === mo.resId);
-            if (relatedProduction) {
-                byproductMoves = this.stock_move.root.records.filter((move) =>
-                    move.data.production_id[0] === relatedProduction.resId &&
-                    move.data.product_id[0] !== relatedProduction.data.product_id[0] &&
-                    (!move.data.operation_id || move.data.operation_id[0] === record.data.operation_id[0])
-                );
-            }
-        }
-        return byproductMoves;
-    }
-
-    getFinishedMoves(record) {
-        // TODO: `getByproductMoves` and `getFinishedMoves` can be merged and simplified (maybe include `getRawMoves` with them too ?)
-        let finishedMoves = []
-        if (this.state.activeResModel === "mrp.production") {
-            finishedMoves = this.stock_move.root.records.filter((move) => {
-                return move.data.production_id[0] === record.resId &&
-                       move.data.product_id[0] === record.data.product_id[0]
-            });
-        }
-        return finishedMoves;
-    }
-
     getproduction(record) {
         if (record.resModel === "mrp.production") {
             return record;
-        } else if (record.resModel === "mrp.workorder") {
-            return this.mrp_production.root.records.find(mo => mo.resId === record.data.production_id[0]);
         }
+        return this.model.root.records.find((mo) => mo.resId === record.data.production_id[0]);
     }
 
     getProductionWorkorders(record) {
@@ -305,34 +280,6 @@ export class MrpDisplay extends Component {
             });
         }
         return [];
-    }
-
-    getSubRecords(record) {
-        const records = this.getRawMoves(record);
-        records.push(...this.getByproductMoves(record));
-        records.push(...this.getFinishedMoves(record));
-        records.push(...this.getProductionWorkorders(record));
-        const fieldName = record.resModel == "mrp.production" ? "production_id" : "workorder_id";
-        const checks = this.quality_check.root.records.filter((qc) => {
-            return qc.data[fieldName][0] == record.resId;
-        });
-        records.push(...checks);
-
-        records.sort((recA, recB) => {
-            if (recA.resModel === "stock.move") {
-                // Stock moves first.
-                return recB.resModel !== "stock.move" ? 1 : 0;
-            } else if (recA.data.workcenter_id) {
-                // For WO/QC, sort them by WO's id.
-                if (recB.resModel === "stock.move") {
-                    return 1;
-                }
-                const woId1 = recA.data.workorder_id?.[0] || recA.resId;
-                const woId2 = recB.data.workorder_id?.[0] || recB.resId;
-                return woId1 - woId2;
-            }
-        });
-        return records;
     }
 
     async processValidationStack(reload=true) {
@@ -365,35 +312,32 @@ export class MrpDisplay extends Component {
                 kwargs
             );
             if (action && typeof action === "object") {
-                const params = reload ? { onClose: () => this.reload() } : {}
-                return this.actionService.doAction(action, params);
+                return this.actionService.doAction(action);
             }
             this.validationStack = {
                 "mrp.production": [],
                 "mrp.workorder": [],
             };
         }
-        if (reload) {
-            await this.reload();
-        }
         return { success: true };
     }
 
     get relevantRecords() {
         if (this.state.activeResModel === "mrp.workorder") {
-            if (this.state.activeWorkcenter === -1){
+            if (this.state.activeWorkcenter === -1) {
                 // 'My' workcenter selected -> return the ones where the current employee is working on.
-                return this.myWorkorders;
+                return this.workorders.filter((wo) => this.adminWorkorderIds.includes(wo.resId));
             }
-            return this.mrp_workorder.root.records.filter(wo =>
-                wo.data.workcenter_id[0] === this.state.activeWorkcenter &&
-                wo.data.state !== 'done' && this.getproduction(wo)
+            return this.workorders.filter(
+                (wo) =>
+                    wo.data.workcenter_id[0] === this.state.activeWorkcenter &&
+                    wo.data.state !== "done"
             );
         }
-        return this.mrp_production.root.records;
+        return this.model.root.records;
     }
 
-    get adminWorkorderIds(){
+    get adminWorkorderIds() {
         const admin_id = this.useEmployee.employees.admin.id;
         const admin = this.useEmployee.employees.connected.find((emp) => emp.id === admin_id);
         return admin ? admin.workorder.map((wo) => wo.id): [];
@@ -415,10 +359,10 @@ export class MrpDisplay extends Component {
         const foundRecord = relevantStack.find(rec => rec.record.resId === record.resId);
         if (isValidated) {
             foundRecord.isValidated = true;
-            if (relevantStack.every(rec => rec.isValidated)) {
+            if (relevantStack.every((rec) => rec.isValidated)) {
                 // Empties the validation stack if all under validation MO or WO are validated.
                 this.validationStack[record.resModel] = [];
-                await this.reload();
+                await this.env.reload();
             }
         } else {
             const index = relevantStack.indexOf(foundRecord);
@@ -441,18 +385,44 @@ export class MrpDisplay extends Component {
         this.dialogService.add(MrpWorkcenterDialog, params);
     }
 
-    async reload(){
-        this.mrp_production.skipNextRefresh = true;
-        this.mrp_workorder.skipNextRefresh = true;
-        this.quality_check.skipNextRefresh = true;
-        await this.mrp_production.load(getSearchParams(this.mrp_production, this.props, this, false));
-        await this.mrp_workorder.load(getSearchParams(this.mrp_workorder, this.props, this, false));
-        await this.quality_check.load(getSearchParams(this.quality_check, this.props, this, false));
-        await this.stock_move.load(getSearchParams(this.stock_move, this.props, this));
-        await this.useEmployee.getConnectedEmployees();
-        const my_wo_ids = this.adminWorkorderIds;
-        this.myWorkorders = this.mrp_workorder.root.records.filter(
-                (wo) => my_wo_ids.includes(wo.resId)
-            )
+    _makeModelParams() {
+        /// Define the structure for related fields
+        const { resModel, fields } = this.props.models.find((m) => m.resModel === "mrp.production");
+        const activeFields = [];
+        for (const fieldName in fields) {
+            activeFields[fieldName] = makeActiveField();
+        }
+        const params = {
+            config: { resModel, fields, activeFields },
+        };
+        const workorderFields = this.props.models.find(
+            (m) => m.resModel === "mrp.workorder"
+        ).fields;
+        params.config.activeFields.workorder_ids.related = {
+            fields: workorderFields,
+            activeFields: workorderFields,
+        };
+        const moveFields = this.props.models.find((m) => m.resModel === "stock.move").fields;
+        const moveFieldsRelated = {
+            fields: moveFields,
+            activeFields: moveFields,
+        };
+        params.config.activeFields.move_raw_ids.related = moveFieldsRelated;
+        params.config.activeFields.move_byproduct_ids.related = moveFieldsRelated;
+        params.config.activeFields.move_finished_ids.related = moveFieldsRelated;
+        const checkFields = this.props.models.find((m) => m.resModel === "quality.check").fields;
+        params.config.activeFields.check_ids.related = {
+            fields: checkFields,
+            activeFields: checkFields,
+        };
+        params.config.activeFields.workorder_ids.related.activeFields.move_raw_ids.related = {
+            fields: moveFields,
+            activeFields: moveFields,
+        };
+        params.config.activeFields.workorder_ids.related.activeFields.check_ids.related = {
+            fields: checkFields,
+            activeFields: checkFields,
+        };
+        return params;
     }
 }

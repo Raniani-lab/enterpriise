@@ -9,7 +9,11 @@ import { useRef } from "@odoo/owl";
 
 export class QualityCheck extends MrpWorkorder {
     static template = "mrp_workorder.QualityCheck";
-    static components = { ...MrpWorkorder.components, MrpQualityCheckConfirmationDialog, FileUploader };
+    static components = {
+        ...MrpWorkorder.components,
+        MrpQualityCheckConfirmationDialog,
+        FileUploader,
+    };
     static props = {
         ...MrpWorkorder.props,
         displayInstruction: Function,
@@ -30,28 +34,34 @@ export class QualityCheck extends MrpWorkorder {
         this.props.displayInstruction();
     }
 
-    async pass(){
+    async pass() {
         const { parent, record } = this.props;
         if (["instructions", "passfail"].includes(record.data.test_type)) {
-            await record.model.orm.call(record.resModel, "do_pass", [record.resId]);
-            return await this.reload();
+            return this._pass();
         } else if (record.data.test_type === "register_production") {
-            if (record.data.product_tracking == "serial") {
+            if (record.data.quality_state != "none") {
+                return this.clicked();
+            } else if (record.data.product_tracking == "serial") {
                 await record.model.orm.call(
                     record.resModel,
                     "action_generate_serial_number_and_pass",
                     [record.resId]
                 );
             } else {
-                await parent.update({ qty_producing: this.props.quantityToProduce }, { save: true });
-                await record.update({ qty_done: this.props.quantityToProduce }, { save: true });
+                parent.update({ qty_producing: this.props.quantityToProduce });
+                record.update({ qty_done: this.props.quantityToProduce });
+                await this.env.model.save();
                 await record.model.orm.call(record.resModel, "action_next", [record.resId]);
             }
-            return await this.reload();
+            this.env.reload();
+            return;
         } else if (record.data.test_type === "print_label") {
-            const res = await record.model.orm.call(record.resModel, "action_print", [record.resId]);
-            this.action.doAction(res)
-            return await this.reload()
+            const res = await record.model.orm.call(record.resModel, "action_print", [
+                record.resId,
+            ]);
+            this.action.doAction(res);
+            this._pass();
+            return;
         } else if (record.data.test_type === "picture") {
             this.fileUploaderToggle.el.click();
             return;
@@ -96,8 +106,12 @@ export class QualityCheck extends MrpWorkorder {
     }
 
     async onFileUploaded(info) {
-        await this.props.record.update({ picture: info.data }, { save: true });
-        await this.props.record.model.orm.call(this.props.record.resModel, "do_pass", [this.props.record.resId]);
-        return await this.reload();
+        this.props.record.update({ picture: info.data, quality_state: "pass" });
+        this.props.record.save({ noReload: true });
+    }
+
+    _pass() {
+        this.props.record.update({ quality_state: "pass" });
+        this.props.record.save({ noReload: true });
     }
 }

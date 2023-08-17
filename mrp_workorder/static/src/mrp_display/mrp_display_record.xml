@@ -33,8 +33,14 @@
             </div>
             <ul class="list-group list-group-flush">
                 <MrpWorksheet t-if="showWorksheetCheck" record="props.record" clickable="true"/>
-                <t t-foreach="subRecords" t-as="subRecord" t-key="subRecord.id">
-                    <t t-component="getComponent(subRecord)" t-props="subRecordProps(subRecord)"/>
+                <t t-foreach="workorders" t-as="workorder" t-key="workorder.data.id">
+                    <MrpWorkorder t-props="subRecordProps(workorder)"/>
+                </t>
+                <t t-foreach="moves" t-as="move" t-key="move.data.id">
+                    <StockMove t-props="subRecordProps(move)"/>
+                </t>
+                <t t-foreach="checks" t-as="check" t-key="check.data.id">
+                    <QualityCheck t-props="subRecordProps(check)"/>
                 </t>
                 <li t-if="this.displayRegisterProduction" t-on-click="registerProduction"
                     class="o_mrp_record_line list-group-item d-flex justify-content-between align-items-center"
@@ -60,8 +66,8 @@
                 </li>
                 <!-- Display a line to register each byproduct who isn't linked to a workorder.
                 Only displayed in the production card. -->
-                <t t-if="props.record.resModel == 'mrp.production'" t-foreach="byproductMoves" t-as="byproductMove" t-key="byproductMove.id">
-                    <t t-component="getComponent(byproductMove)" t-props="subRecordProps(byproductMove)" label="getByproductLabel(byproductMove)"/>
+                <t t-foreach="byProducts" t-as="byproductMove" t-key="byproductMove.id">
+                    <StockMove t-props="subRecordProps(byproductMove)" label="getByproductLabel(byproductMove)"/>
                 </t>
             </ul>
             <div class="card-footer d-flex justify-content-between align-items-center pe-0 test"

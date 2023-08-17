@@ -297,6 +297,15 @@ class QualityCheck(models.Model):
                 vals['note'] = self.env['quality.point'].browse(vals['point_id']).note
         return super().create(vals_list)
 
+    def write(self, vals):
+        res = super().write(vals)
+        if 'quality_state' in vals and not vals.get('user_id') or not vals.get('control_date'):
+            if vals.get('quality_state') == 'pass':
+                self.do_pass()
+            elif vals.get('quality_state') == 'fail':
+                self.do_fail()
+        return res
+
     def do_fail(self):
         self.write({
             'quality_state': 'fail',

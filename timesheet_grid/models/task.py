@@ -59,7 +59,7 @@ class Task(models.Model):
         return {
             project.id: {
                 'value': unit_amount_sum,
-                'max_value': project.allocated_hours,
+                'max_value': project.sudo().allocated_hours,
             }
             for project, unit_amount_sum in timesheet_read_group
         }

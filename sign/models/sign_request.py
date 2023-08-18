@@ -26,6 +26,7 @@ from random import randint
 from markupsafe import Markup
 from hashlib import sha256
 from PIL import UnidentifiedImageError
+from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models, http, _, Command
 from odoo.tools import config, get_lang, is_html_empty, formataddr, groupby, format_date
@@ -897,6 +898,8 @@ class SignRequestItem(models.Model):
         for signer in self:
             signer_lang = get_lang(self.env, lang_code=signer.partner_id.lang).code
             context = {'lang': signer_lang}
+            # We hide the validity information if it is the default (6 month from the create_date)
+            has_default_validity = signer.sign_request_id.validity and signer.sign_request_id.validity - relativedelta(months=6) == signer.sign_request_id.create_date.date()
             body = self.env['ir.qweb']._render('sign.sign_template_mail_request', {
                 'record': signer,
                 'link': url_join(signer.get_base_url(), "sign/document/mail/%(request_id)s/%(access_token)s" % {'request_id': signer.sign_request_id.id, 'access_token': signer.sudo().access_token}),
@@ -904,6 +907,7 @@ class SignRequestItem(models.Model):
                 'body': signer.sign_request_id.message if not is_html_empty(signer.sign_request_id.message) else False,
                 'use_sign_terms': self.env['ir.config_parameter'].sudo().get_param('sign.use_sign_terms'),
                 'user_signature': signer.create_uid.signature,
+                'show_validity': signer.sign_request_id.validity and not has_default_validity,
             }, lang=signer_lang, minimal_qcontext=True)
 
             attachment_ids = signer.sign_request_id.attachment_ids.ids

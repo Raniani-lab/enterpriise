@@ -1340,6 +1340,8 @@ class SaleOrder(models.Model):
                             # prevent rollback during tests
                             self.env.cr.rollback()
                         order._handle_subscription_payment_failure(invoice, transaction, email_context)
+                        if auto_commit:
+                            self.env.cr.commit()
                         existing_invoices -= invoice  # It will be unlinked in the call above
                 except Exception:
                     if auto_commit:

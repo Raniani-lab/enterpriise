@@ -41,6 +41,7 @@ export const DialingPanel = Widget.extend({
         this.env = env;
         this.voip = this.env.services.voip;
         this.voip.legacyDialingPanelWidget = this;
+        this._isBlockOverlay = false;
         this._isFolded = false;
         this._isFoldedBeforeCall = false;
         this._isInCall = false;
@@ -85,6 +86,7 @@ export const DialingPanel = Widget.extend({
         this._$searchInput = this.$(".o_dial_search_input");
         this._$tabsPanel = this.$(".o_dial_panel");
         this._$tabs = this.$(".o_dial_tabs");
+        this._blockOverlay = this.el.querySelector('.o_blockOverlay');
 
         this._fetchMissedCallFromServer();
 
@@ -236,11 +238,10 @@ export const DialingPanel = Widget.extend({
      * @param {string} message  The message we want to show when blocking the
      *   voip widget
      */
-    _blockOverlay(message) {
-        this._$tabsPanel.block({ message });
-        this._$mainButtons.block();
-        this.$(".blockOverlay").addClass("cursor-default");
-        this.$(".blockMsg").addClass("w-50 mx-auto end-0 start-0 text-white cursor-default");
+    _blockContent(message) {
+        this._isBlockOverlay = true;
+        this._blockOverlay.classList.remove("d-none");
+        this._blockOverlay.querySelector("span").innerText = message;
     },
     /**
      * @private
@@ -459,7 +460,7 @@ export const DialingPanel = Widget.extend({
             this._isShow = true;
             mobile.backButtonManager.addListener(this, this._onBackButton);
             this._isFolded = false;
-            if (this._isWebRTCSupport) {
+            if (this._isWebRTCSupport && !this._isBlockOverlay) {
                 this._$searchInput.focus();
             }
         }
@@ -513,7 +514,7 @@ export const DialingPanel = Widget.extend({
                 await this._toggleFold();
             }
             this._isFolded = false;
-            if (this._isWebRTCSupport) {
+            if (this._isWebRTCSupport && !this._isBlockOverlay) {
                 this._$searchInput.focus();
             }
         }
@@ -551,9 +552,10 @@ export const DialingPanel = Widget.extend({
      *
      * @private
      */
-    _unblockOverlay() {
-        this._$tabsPanel.unblock();
-        this._$mainButtons.unblock();
+    _unblockContent() {
+        this._isBlockOverlay = false;
+        this._blockOverlay.classList.add("d-none");
+        this._blockOverlay.querySelector('span').innerText = "";
     },
     /**
      * Check if the user wants to use voip to make the call.
@@ -911,17 +913,17 @@ export const DialingPanel = Widget.extend({
         this._isInCall = false;
         this._isPostpone = false;
         this._hidePostponeButton();
-        this._blockOverlay(message);
+        this._blockContent(message);
         if (detail.isNonBlocking) {
-            this.$(".blockOverlay").on("click", () => this._onSipErrorResolved());
-            this.$(".blockOverlay").attr("title", _t("Click to unblock"));
+            this.$(".o_blockOverlay").on("click", () => this._onSipErrorResolved());
+            this.$(".o_blockOverlay").attr("title", _t("Click to unblock"));
         }
     },
     /**
      * @private
      */
     _onSipErrorResolved() {
-        this._unblockOverlay();
+        this._unblockContent();
     },
     /**
      * @private

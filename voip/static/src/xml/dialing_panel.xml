@@ -12,53 +12,58 @@
             </t>
         </div>
     </div>
-    <div class="o_dial_panel flex-column border-start border-end overflow-hidden flex-grow-1 bg-view">
-        <div class="o_dial_searchbar input-group justify-content-between border-top">
-            <input class="o_dial_search_input form-control form-control-lg flex-grow-1 ps-3 border-0 rounded-0 bg-view" placeholder="Search"/>
-            <button aria-label="Refresh the Panel" class="oi_searchview_icon input-group-text px-3 border-0 rounded-0 bg-view oi oi-search" role="img" title="Refresh the Panel"/>
-        </div>
-        <!-- Nav tabs -->
-        <ul class="o_dial_tabs nav nav-tabs px-0" role="tablist">
-            <li class="nav-item o_dial_recent_tab flex-grow-1 text-center">
-                <a aria-controls="recent" class="o_dial_tab nav-link border-start-0" data-bs-toggle="tab" href="#recent" role="tab">Recent</a>
-            </li>
-            <li class="nav-item o_dial_activities_tab flex-grow-1 text-center">
-                <a aria-controls="nextActivities" class="o_dial_tab nav-link active" data-bs-toggle="tab" href="#nextActivities" role="tab">Next activities</a>
-            </li>
-            <li class="nav-item flex-grow-1 text-center">
-                <a aria-controls="contacts" class="o_dial_tab nav-link border-end-0" data-bs-toggle="tab" href="#contacts" role="tab">Contacts</a>
-            </li>
-        </ul>
-        <!-- Tab panes -->
-        <div class="tab-content overflow-auto flex-grow-1">
-            <div class="o_dial_recent tab-pane" role="tabpanel" id="recent"/>
-            <div class=" o_dial_next_activities tab-pane active" id="nextActivities" role="tabpanel"/>
-            <div class="o_dial_contacts tab-pane" id="contacts" role="tabpanel"/>
-        </div>
-    </div>
-    <div class="o_dial_keypad border-start border-end flex-grow-1">
-        <div class="o_dial_keypad_input_div input-group justify-content-between flex-nowrap border-top border-bottom">
-            <input class="o_dial_keypad_input o_input form-control-lg flex-grow-1 ps-3 border-0 rounded-0" type="tel" placeholder="Enter the number..."/>
-            <button aria-label="Backspace" class="o_dial_keypad_backspace input-group-text px-3 border-0 bg-view fa fa-long-arrow-left" role="img" title="Backspace"/>
-        </div>
-        <div class="container">
-            <div t-attf-class="{{ widget._isMobileDevice ? 'o_hidden' : '' }} o_dial_keypad_buttons row row-cols-3 clearfix">
-                <button t-foreach="[1, 2, 3, 4, 5, 6, 7, 8, 9, '*', 0, '#']" t-as="i" t-key="i"
-                        class="o_dial_keypad_button o_dial_number col btn btn-light py-3 fw-normal fs-2"
-                        t-out="i"/>
+    <div class="position-relative">
+        <div class="o_dial_panel flex-column border-start border-end overflow-hidden flex-grow-1 bg-view">
+            <div class="o_dial_searchbar input-group justify-content-between border-top">
+                <input class="o_dial_search_input form-control form-control-lg flex-grow-1 ps-3 border-0 rounded-0 bg-view" placeholder="Search"/>
+                <button aria-label="Refresh the Panel" class="oi_searchview_icon input-group-text px-3 border-0 rounded-0 bg-view oi oi-search" role="img" title="Refresh the Panel"/>
+            </div>
+            <!-- Nav tabs -->
+            <ul class="o_dial_tabs nav nav-tabs px-0" role="tablist">
+                <li class="nav-item o_dial_recent_tab flex-grow-1 text-center">
+                    <a aria-controls="recent" class="o_dial_tab nav-link border-start-0" data-bs-toggle="tab" href="#recent" role="tab">Recent</a>
+                </li>
+                <li class="nav-item o_dial_activities_tab flex-grow-1 text-center">
+                    <a aria-controls="nextActivities" class="o_dial_tab nav-link active" data-bs-toggle="tab" href="#nextActivities" role="tab">Next activities</a>
+                </li>
+                <li class="nav-item flex-grow-1 text-center">
+                    <a aria-controls="contacts" class="o_dial_tab nav-link border-end-0" data-bs-toggle="tab" href="#contacts" role="tab">Contacts</a>
+                </li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content overflow-auto flex-grow-1">
+                <div class="o_dial_recent tab-pane" role="tabpanel" id="recent"/>
+                <div class=" o_dial_next_activities tab-pane active" id="nextActivities" role="tabpanel"/>
+                <div class="o_dial_contacts tab-pane" id="contacts" role="tabpanel"/>
             </div>
         </div>
-    </div>
-    <div class="o_dial_buttons o_dial_main_buttons justify-content-around w-100 border border-bottom-0 bg-view position-md-relative">
-        <button aria-label="Keypad" class="o_dial_keypad_button btn flex-basis-auto w-100 py-4 o_dial_keypad_icon" title="Keypad">
-            <i class="fa fa-fw fs-2 fa-keyboard-o"/>
-        </button>
-        <button aria-label="Hang up but keep call in queue" class="o_dial_postpone_button btn flex-basis-auto w-100 py-4" title="Hang up but keep call in queue">
-            <i class="fa fa-fw fs-2 fa-user-times"/>
-        </button>
-        <button aria-label="Call" class="o_dial_call_button btn flex-basis-auto w-100 py-4" title="Call">
-            <i class="fa fa-fw fs-2 fa-phone"/>
-        </button>
+        <div class="o_dial_keypad border-start border-end flex-grow-1">
+            <div class="o_dial_keypad_input_div input-group justify-content-between flex-nowrap border-top border-bottom">
+                <input class="o_dial_keypad_input o_input form-control-lg flex-grow-1 ps-3 border-0 rounded-0" type="tel" placeholder="Enter the number..."/>
+                <button aria-label="Backspace" class="o_dial_keypad_backspace input-group-text px-3 border-0 bg-view fa fa-long-arrow-left" role="img" title="Backspace"/>
+            </div>
+            <div class="container">
+                <div t-attf-class="{{ widget._isMobileDevice ? 'o_hidden' : '' }} o_dial_keypad_buttons row row-cols-3 clearfix">
+                    <button t-foreach="[1, 2, 3, 4, 5, 6, 7, 8, 9, '*', 0, '#']" t-as="i" t-key="i"
+                            class="o_dial_keypad_button o_dial_number col btn btn-light py-3 fw-normal fs-2"
+                            t-out="i"/>
+                </div>
+            </div>
+        </div>
+        <div class="o_dial_buttons o_dial_main_buttons justify-content-around w-100 border border-bottom-0 bg-view position-md-relative">
+            <button aria-label="Keypad" class="o_dial_keypad_button btn flex-basis-auto w-100 py-4 o_dial_keypad_icon" title="Keypad">
+                <i class="fa fa-fw fs-2 fa-keyboard-o"/>
+            </button>
+            <button aria-label="Hang up but keep call in queue" class="o_dial_postpone_button btn flex-basis-auto w-100 py-4" title="Hang up but keep call in queue">
+                <i class="fa fa-fw fs-2 fa-user-times"/>
+            </button>
+            <button aria-label="Call" class="o_dial_call_button btn flex-basis-auto w-100 py-4" title="Call">
+                <i class="fa fa-fw fs-2 fa-phone"/>
+            </button>
+        </div>
+        <div class="o_blockOverlay d-flex align-items-center justify-content-center position-absolute top-0 bottom-0 bg-black opacity-75">
+            <span class="w-75 text-center text-white" />
+        </div>
     </div>
 </div>
 

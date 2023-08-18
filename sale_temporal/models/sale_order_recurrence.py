@@ -49,10 +49,10 @@ class SaleOrderRecurrence(models.Model):
                 'year': _lt("Year"),
             }
             if self.unit in singular_labels:
-                return str(singular_labels[self.unit]).lower()
+                return str(singular_labels[self.unit])
         return dict(
             self._fields['unit']._description_selection(self.env)
-        )[self.unit].lower()
+        )[self.unit]
 
     @api.depends('duration', 'unit')
     def _compute_temporal_unit_display(self):

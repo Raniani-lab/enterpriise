@@ -17,7 +17,7 @@
                 <span>per</span>
                 <span itemprop="rental_duration" t-if="combination_info['rental_duration'] > 1"
                       t-esc="combination_info['rental_duration']"/>
-                <span itemprop="rental_unit" style="text-transform:lowercase;" t-esc="combination_info['rental_unit']"/>
+                <span itemprop="rental_unit" t-esc="combination_info['rental_unit']"/>
             </t>
         </xpath>
         <xpath expr="//span[hasclass('oe_price')]" position="attributes">
@@ -60,8 +60,7 @@
                     <div>
                         <strong>
                             <span class="o_renting_duration" t-esc="combination_info['current_rental_duration']"/>
-                            <span class="o_renting_unit" t-esc="combination_info['current_rental_unit']"
-                                  style="text-transform:lowercase;"/>
+                            <span class="o_renting_unit" t-esc="combination_info['current_rental_unit']"/>
                         </strong>
                     </div>
                     <div>
@@ -122,7 +121,7 @@
                 and (not website.prevent_zero_price_sale or template_price_vals['price_reduce'])" class="h6">
                 <span>per</span>
                 <span t-if="template_price_vals['rental_duration'] > 1" t-esc="template_price_vals['rental_duration']"/>
-                <span t-esc="template_price_vals['rental_unit']" style="text-transform:lowercase;"/>
+                <span t-esc="template_price_vals['rental_unit']"/>
             </span>
         </xpath>
     </template>
@@ -133,7 +132,7 @@
            t-options="{'widget': 'monetary', 'display_currency': currency}"/>
         <small>per</small>
         <small t-if="duration > 1" t-esc="duration"/>
-        <small t-esc="unit" style="text-transform:lowercase;"/>
+        <small t-esc="unit"/>
     </template>
 
     <template id="cart_summary_inherit_website_sale_renting"
@@ -161,7 +160,7 @@
             <span t-if="combination_info['is_rental'] and combination_info['rental_duration']" class="h6">
                 <span>per</span>
                 <span t-if="combination_info['rental_duration'] > 1" t-esc="combination_info['rental_duration']"/>
-                <span t-esc="combination_info['rental_unit']" style="text-transform:lowercase;"/>
+                <span t-esc="combination_info['rental_unit']"/>
             </span>
         </xpath>
     </template>

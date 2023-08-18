@@ -17,13 +17,13 @@
            t-options="{'widget': 'monetary', 'display_currency': currency}"/>
         <small>per</small>
         <small t-if="duration > 1" t-esc="duration"/>
-        <small t-esc="unit" style="text-transform:lowercase;"/>
+        <small t-esc="unit"/>
     </template>
 
     <template id="products_item" inherit_id="website_sale.products_item">
         <xpath expr="//span[@itemprop='priceCurrency']" position="after">
             <span t-if="product.recurring_invoice and template_price_vals['is_subscription'] and template_price_vals['is_recurrence_possible']" class="h6">
-                <span class="o_subscription_unit" t-esc="template_price_vals['temporal_unit_display']" style="text-transform:lowercase;"/>
+                <span class="o_subscription_unit" t-esc="template_price_vals['temporal_unit_display']"/>
             </span>
         </xpath>
     </template>
@@ -32,7 +32,7 @@
         <xpath expr="//h3[hasclass('css_editable_mode_hidden')]/del" position="after">
             <t t-if="combination_info['is_subscription'] and combination_info['is_recurrence_possible']">
                 <span class="mb-3 align-bottom input-group-lg o_website_sale_subscription_pricing_id variant_attribute">
-                    <span class="o_subscription_unit" t-esc="combination_info['temporal_unit_display']" style="text-transform:lowercase;"/>
+                    <span class="o_subscription_unit" t-esc="combination_info['temporal_unit_display']"/>
                 </span>
             </t>
         </xpath>
@@ -43,7 +43,7 @@
             <div t-if="line.temporal_type == 'subscription'">
                 <span>per</span>
                 <span t-if="line.order_id.recurrence_id.duration > 1" t-esc="line.order_id.recurrence_id.duration"/>
-                <span t-esc="line.order_id.recurrence_id.unit" style="text-transform:lowercase;"/>
+                <span t-esc="line.order_id.recurrence_id.unit"/>
             </div>
         </xpath>
     </template>
@@ -51,7 +51,7 @@
     <template id="cart_lines_subscription" inherit_id="website_sale.cart_lines">
         <xpath expr="//td[hasclass('td-price')]/small" position="before">
             <div t-if="line.temporal_type == 'subscription'">
-                <span t-esc="line.order_id.recurrence_id.temporal_unit_display" style="text-transform:lowercase;"/>
+                <span t-esc="line.order_id.recurrence_id.temporal_unit_display"/>
             </div>
         </xpath>
     </template>

@@ -13,13 +13,14 @@ export class MrpWorkcenterDialog extends ConfirmationDialog {
         workcenters: { type: Array, optional: true },
         disabled: { type: Array, optional: true },
         active: { type: Array, optional: true },
+        radioMode: { type: Boolean, default: false },
     };
 
     setup() {
         super.setup();
         this.ormService = useService("orm");
         this.workcenters = [];
-        this.state = useState({ activeWorkcenters: [...this.props.active] || [] });
+        this.state = useState({ activeWorkcenters: this.props.active ? [...this.props.active] : [] });
         for (const workcenter of this.props.workcenters || []) {
             this.workcenters.push({
                 id: parseInt(workcenter[0]),
@@ -28,7 +29,7 @@ export class MrpWorkcenterDialog extends ConfirmationDialog {
         }
 
         onWillStart(async () => {
-            if (!this.workcenters.lenght) {
+            if (!this.workcenters.length) {
                 await this._loadWorkcenters();
             }
         });
@@ -46,7 +47,9 @@ export class MrpWorkcenterDialog extends ConfirmationDialog {
     }
 
     selectWorkcenter(workcenter) {
-        if (this.state.activeWorkcenters.includes(workcenter.id)) {
+        if (this.props.radioMode){
+            this.state.activeWorkcenters = [workcenter.id]
+        }else if (this.state.activeWorkcenters.includes(workcenter.id)) {
             this.state.activeWorkcenters = this.state.activeWorkcenters.filter(
                 (id) => id !== workcenter.id
             );
@@ -56,16 +59,8 @@ export class MrpWorkcenterDialog extends ConfirmationDialog {
     }
 
     confirm() {
-        const newActiveWorkcenters = this.state.activeWorkcenters.filter(
-            (id) => !this.props.active.includes(id)
-        );
-        const removedWorkcenters = this.props.active.filter(
-            (id) => !this.state.activeWorkcenters.includes(id)
-        );
         this.props.confirm(
-            this.workcenters.filter((w) =>
-                [...newActiveWorkcenters, ...removedWorkcenters].includes(w.id)
-            )
+            this.workcenters.filter((w) => this.state.activeWorkcenters.includes(w.id))
         );
         this.props.close();
     }

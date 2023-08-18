@@ -235,17 +235,8 @@ export class MrpDisplay extends Component {
 
     toggleWorkcenter(workcenters) {
         const localStorageName = this.env.localStorageName;
-        const workcentersState = JSON.parse(localStorage.getItem(localStorageName)) || [];
-        for (const workcenter of workcenters) {
-            const index = workcentersState.map((e) => e.id).indexOf(workcenter.id);
-            if (workcentersState && index === -1) {
-                workcentersState.push(workcenter);
-            } else if (workcentersState) {
-                workcentersState.splice(index, 1);
-            }
-        }
-        localStorage.setItem(localStorageName, JSON.stringify(workcentersState));
-        this.state.workcenters = workcentersState;
+        localStorage.setItem(localStorageName, JSON.stringify(workcenters));
+        this.state.workcenters = workcenters;
     }
 
     toggleEmployeesPanel() {

@@ -39,7 +39,8 @@ export class MrpMenuDialog extends Component {
     }
 
     moveToWorkcenter() {
-        function _moveToWorkcenter(workcenter) {
+        function _moveToWorkcenter(workcenters) {
+            const workcenter = workcenters[0];
             this.props.record.update({ workcenter_id: [workcenter.id, workcenter.display_name] });
             this.props.record.save();
             this.props.close();
@@ -47,7 +48,8 @@ export class MrpMenuDialog extends Component {
         const params = {
             title: _t("Select a new work center"),
             confirm: _moveToWorkcenter.bind(this),
-            workcenters: this.props.params.workcenters,
+            workcenters: this.props.params.workcenters.filter((wc) => wc[0] !== this.props.record.data.workcenter_id[0]),
+            radioMode: true,
         };
         this.dialogService.add(MrpWorkcenterDialog, params);
     }

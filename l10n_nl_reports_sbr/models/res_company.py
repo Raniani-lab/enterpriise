@@ -36,9 +36,9 @@ class ResCompany(models.Model):
         readonly=True
     )
 
-    def _l10n_nl_get_certificate_and_key_objects(self, password=None):
-        """ Return the tuple (certificate, private key), as a cryptograpy Certificate and Private Key object.
-            Parameter password must be a bytes object or None
+    def _l10n_nl_get_certificate_and_key_bytes(self, password=None):
+        """ Return the tuple (certificate, private key), each in the form of unencrypted PEM encoded bytes.
+            Parameter password must be a bytes object or None.
             Throws a UserError if there is a misconfiguration.
         """
         self.ensure_one()
@@ -53,18 +53,10 @@ class ResCompany(models.Model):
         stored_key = base64.b64decode(self.l10n_nl_reports_sbr_key)
 
         try:
-            return (x509.load_pem_x509_certificate(stored_certificate), serialization.load_pem_private_key(stored_key, password or None))
+            cert_obj, pkey_obj = (x509.load_pem_x509_certificate(stored_certificate), serialization.load_pem_private_key(stored_key, password or None))
         except TypeError:
             raise UserError(_('The certificate or private key you uploaded is encrypted. Please specify your password.'))
 
-    def _l10n_nl_get_certificate_and_key_bytes(self, password=None):
-        """ Return the tuple (certificate, private key), each in the form of unencrypted PEM encoded bytes.
-            Parameter password must be a bytes object or None.
-            Throws a UserError if there is a misconfiguration.
-        """
-        self.ensure_one()
-
-        cert_obj, pkey_obj = self._l10n_nl_get_certificate_and_key_objects(password)
         cert_bytes = cert_obj.public_bytes(serialization.Encoding.PEM)
         pkey_bytes = pkey_obj.private_bytes(
             encoding=serialization.Encoding.PEM,

@@ -18,8 +18,9 @@ Maintenance in MRP
 """,
     'depends': ['mrp_workorder', 'maintenance'],
     'data': [
+        'data/mrp_maintenance_data.xml',
         'views/maintenance_views.xml',
-        'views/mrp_views.xml'
+        'views/mrp_views.xml',
     ],
     'demo': ['data/mrp_maintenance_demo.xml'],
     'assets': {

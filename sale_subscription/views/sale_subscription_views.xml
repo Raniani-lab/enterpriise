@@ -282,7 +282,7 @@
             <field name="sale_order_template_id" string="Plan" optional="hide" readonly="state in ['cancel', 'sale']"/>
             <field name="amount_total" decoration-bf="1" widget='monetary' options="{'currency_field': 'currency_id'}" optional="hide" readonly="1"
                 decoration-info="invoice_status == 'to invoice'"/>
-            <field name="subscription_state" string="Status" widget="badge"
+            <field name="subscription_state" widget="badge"
                    decoration-success="subscription_state == '3_progress'"
                    decoration-warning="subscription_state == '4_paused'"
                    decoration-danger="subscription_state == '6_churn'"

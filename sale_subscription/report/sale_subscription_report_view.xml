@@ -21,12 +21,12 @@
         <field name="arch" type="xml">
             <graph string="Subscription Analysis" sample="1">
                 <field name="recurring_monthly" type="measure"/>
+                <field name="product_uom_qty" string="Quantity"/>
                 <field name="nbr" invisible="1"/>
                 <field name="discount" invisible="1"/>
                 <field name="discount_amount" invisible="1"/>
                 <field name="weight" invisible="1"/>
                 <field name="margin" invisible="1"/>
-                <field name="product_uom_qty" invisible="1"/>
                 <field name="qty_delivered" invisible="1"/>
                 <field name="qty_to_deliver" invisible="1"/>
                 <field name="qty_invoiced" invisible="1"/>
@@ -54,12 +54,12 @@
                  <field name="template_id" type="row"/>
                  <field name="user_id" type="col"/>
                  <field name="recurring_monthly" type="measure"/>
+                 <field name="product_uom_qty" string="Quantity"/>
                  <field name="nbr" invisible="1"/>
                  <field name="discount" invisible="1"/>
                  <field name="discount_amount" invisible="1"/>
                  <field name="weight" invisible="1"/>
                  <field name="margin" invisible="1"/>
-                 <field name="product_uom_qty" invisible="1"/>
                  <field name="qty_delivered" invisible="1"/>
                  <field name="qty_to_deliver" invisible="1"/>
                  <field name="qty_invoiced" invisible="1"/>
@@ -92,13 +92,14 @@
                 <field name="product_id" optional="hide"/>
                 <field name="categ_id" optional="show"/>
                 <field name="template_id" optional="show"/>
+                <field name="product_uom_qty" optional="hide" string="Quantity"/>
                 <field name="user_id" optional="show" widget="many2one_avatar_user"/>
                 <field name="team_id" optional="show"/>
                 <field name="company_id" optional="show" groups="base.group_multi_company"/>
                 <field name="recurring_monthly" optional="show" sum="Sum of Monthly Recurring"/>
                 <field name="recurring_total" optional="hide"/>
                 <field name="recurring_yearly" optional="hide" sum="Sum of Yearly Recurring Revenue"/>
-                <field name="subscription_state" string="Status" widget="badge"
+                <field name="subscription_state" widget="badge"
                    decoration-success="subscription_state == '3_progress'"
                    decoration-warning="subscription_state == '4_paused'"
                    decoration-danger="subscription_state == '6_churn'"

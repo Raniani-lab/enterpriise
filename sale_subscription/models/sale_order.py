@@ -47,7 +47,7 @@ class SaleOrder(models.Model):
     recurrence_id = fields.Many2one('sale.temporal.recurrence', compute='_compute_recurrence_id',
                                      string='Recurrence', ondelete='restrict', readonly=False, store=True)
     subscription_state = fields.Selection(
-        string='Stage',
+        string='Subscription Status',
         selection=SUBSCRIPTION_STATES,
         compute='_compute_subscription_state', store=True, tracking=True, group_expand='_group_expand_states',
     )

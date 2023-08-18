@@ -9,7 +9,7 @@
             <pivot string="Sale Order Log Analysis" sample="1">
                 <field name="event_date" interval="month" type="rowt"/>
                 <field name="mrr_change_normalized" string="MRR Change" type="measure"/>
-                <field name="arr_change_normalized" string="ARR Change" type="measure"/>
+                <field name="arr_change_normalized" string="ARR Change"/>
                 <field name="amount_signed" invisible="1"/>
                 <field name="recurring_monthly" invisible="1"/>
                 <field name="recurring_yearly" invisible="1"/>
@@ -24,7 +24,7 @@
             <graph string="Sale Order Log Analysis" type="bar" sample="1" cumulated_start="1">
                 <field name="event_date" interval="month" type="col"/>
                 <field name="mrr_change_normalized" string="MRR Change" type="measure"/>
-                <field name="arr_change_normalized" string="ARR Change" type="measure"/>
+                <field name="arr_change_normalized" string="ARR Change"/>
                 <field name="amount_signed" invisible="1"/>
                 <field name="recurring_monthly" invisible="1"/>
                 <field name="recurring_yearly" invisible="1"/>
@@ -82,7 +82,7 @@
             <graph string="Sale Order Log Analysis" type="line" sample="1" cumulated="1" cumulated_start="1">
                 <field name="event_date" interval="month" type="col"/>
                 <field name="mrr_change_normalized" string="MRR Change" type="measure"/>
-                <field name="arr_change_normalized" string="ARR Change" type="measure"/>
+                <field name="arr_change_normalized" string="ARR Change"/>
                 <field name="amount_signed" invisible="1"/>
                 <field name="recurring_monthly" invisible="1"/>
                 <field name="recurring_yearly" invisible="1"/>

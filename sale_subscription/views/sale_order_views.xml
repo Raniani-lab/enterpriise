@@ -194,7 +194,7 @@
                 <attribute name="decoration-warning">subscription_state == '4_paused'</attribute>
             </xpath>
             <field name="state" position="after">
-                <field name="subscription_state" string="Subscription Status" widget="badge"
+                <field name="subscription_state" widget="badge"
                    decoration-success="subscription_state == '3_progress'"
                    decoration-warning="subscription_state == '4_paused'"
                    decoration-danger="subscription_state == '6_churn'"
@@ -214,7 +214,7 @@
         <field name="inherit_id" ref="sale.view_quotation_tree"/>
         <field name="arch" type="xml">
             <field name="state" position="after">
-                <field name="subscription_state" string="Subscription Status" widget="badge"
+                <field name="subscription_state" widget="badge"
                    decoration-success="subscription_state == '3_progress'"
                    decoration-warning="subscription_state == '4_paused'"
                    decoration-danger="subscription_state == '6_churn'"

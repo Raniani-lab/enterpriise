@@ -2819,12 +2819,12 @@ QUnit.module("documents", {}, function () {
                     doAction(action) {
                         assert.deepEqual(action, {
                             context: {
-                                default_res_id: 1,
-                                default_res_model: "documents.document",
+                                active_id: 1,
+                                active_ids: [1],
+                                active_model: "documents.document",
                             },
                             name: "Schedule Activity",
-                            res_id: false,
-                            res_model: "mail.activity",
+                            res_model: "mail.activity.schedule",
                             target: "new",
                             type: "ir.actions.act_window",
                             view_mode: "form",

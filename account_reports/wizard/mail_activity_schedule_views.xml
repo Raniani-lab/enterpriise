@@ -5,7 +5,7 @@
         <field name="model">mail.activity.schedule</field>
         <field name="inherit_id" ref="mail.mail_activity_schedule_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//button[@name='action_schedule_and_mark_as_done']" position="attributes">
+            <xpath expr="//button[@name='action_schedule_activities_done']" position="attributes">
                 <attribute name="invisible">has_error or activity_category == 'tax_report' or chaining_type == 'trigger'</attribute>
             </xpath>
         </field>

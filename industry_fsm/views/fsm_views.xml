@@ -991,6 +991,12 @@
             action="project.mail_activity_type_action_config_project_types"
             groups="industry_fsm.group_fsm_manager"/>
 
+        <menuitem id="mail_activity_plan_menu_config_task"
+            name="Activity Plan"
+            sequence="50"
+            action="project.mail_activity_plan_action_config_task_plan"
+            groups="industry_fsm.group_fsm_manager"/>
+
     </menuitem>
 
 </odoo>

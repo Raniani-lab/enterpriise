@@ -143,20 +143,27 @@ export class GridRenderer extends Component {
     getRowPosition(row, isCreateInlineRow = false) {
         const rowIndex = row ? this.props.rows.findIndex((r) => r.id === row.id) : 0;
         const section = row && row.getSection();
-        let rowPosition = this.rowsGap + rowIndex + 1 + (section?.sectionId || 0);
+        const sectionDisplayed = Boolean(section && (section.value || this.props.sections.length > 1));
+        let rowPosition = this.rowsGap + rowIndex + 1 + (sectionDisplayed ? section.sectionId : 0);
         if (isCreateInlineRow) {
             rowPosition += 1;
         }
-        if (!section) {
+        if (!sectionDisplayed) {
             rowPosition -= 1;
         }
         return rowPosition;
     }
 
     getTotalRowPosition() {
+        let sectionIndex = 0;
+        if (this.props.model.sectionField && this.props.sections.length) {
+            if (this.props.sections.length > 1 || this.props.sections[0].value) {
+                sectionIndex = this.props.sections.length;
+            }
+        }
         return (
             (this.props.rows.length || 1) +
-            (this.props.model.sectionField ? this.props.sections.length : 0) +
+            sectionIndex +
             (this.props.createInline ? 1 : 0) +
             this.rowsGap
         );

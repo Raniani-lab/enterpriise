@@ -8,10 +8,8 @@
                  t-on-mouseout.stop="onMouseOut"
             >
                 <t t-call="web_grid.Header"/>
-                <t t-set="section_index" t-value="0"/>
                 <t t-foreach="virtualRows" t-as="row" t-key="row.id">
                     <t t-if="row.isSection">
-                        <t t-if="props.createInline and !row.isFake" t-set="section_index" t-value="section_index + 1"/>
                         <t t-call="web_grid.Section"/>
                     </t>
                     <t t-else="">
@@ -68,7 +66,7 @@
     <t t-name="web_grid.Section">
         <t t-set="section" t-value="row"/>
         <t t-set="rowPosition" t-value="getRowPosition(section)"/>
-        <t t-if="!section.isFake">
+        <t name="section" t-if="!section.isFake and (props.sections.length &gt; 1 or section.value)">
             <div class="o_grid_section o_grid_section_title o_grid_highlightable d-flex align-items-center ps-3 border-top bg-200 fw-bold"
                  t-att-class="{
                     'position-md-sticky start-0': !props.model.useSampleModel,

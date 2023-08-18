@@ -47,7 +47,7 @@
     </t>
 
     <t t-name="timesheet_grid.TimerGridSection" t-inherit="web_grid.Section">
-        <xpath expr="//t[@t-if='!section.isFake']/div" position="before">
+        <xpath expr="//t[@name='section']/div" position="before">
             <div t-if="showTimerButton"
                  class="o_grid_section o_grid_section_timer_button"
                  t-attf-style="grid-row: {{rowPosition}}; grid-column: 1;"

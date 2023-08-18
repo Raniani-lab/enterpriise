@@ -5,7 +5,7 @@
             t-att-class="cssClass"
             t-on-click="onClick"
             t-on-animationend="onAnimationEnd">
-            <span t-att-class="isComplete ? 'text-decoration-line-through' : ''"
+            <span class="text-truncate" t-att-class="isComplete ? 'text-decoration-line-through' : ''"
                   t-esc="props.label || props.record.data.product_id[1]"/>
             <button t-on-click.stop="toggleQuantityDone" class="btn btn-sm text-nowrap" t-att-class="{
                 'btn-outline-secondary opacity-50 bg-transparent text-black': isComplete,

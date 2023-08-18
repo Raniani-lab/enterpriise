@@ -5,7 +5,7 @@
             t-att-class="cssClass"
             t-on-click="onClick"
             t-on-animationend="onAnimationEnd">
-            <span t-att-class="isComplete ? 'text-decoration-line-through' : ''" t-esc="name"/>
+            <span class="text-truncate" t-att-class="isComplete ? 'text-decoration-line-through' : ''" t-esc="name"/>
             <span t-if="props.record.data.duration" t-att-class="active ? '' : 'text-muted'">
                 <MrpTimer value="props.record.data.duration" ongoing="active"/>
             </span>

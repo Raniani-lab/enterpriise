@@ -73,15 +73,13 @@ export class MrpDisplayRecord extends Component {
      * tracking number if it applies.
      */
     registerProduction() {
-        const title = _t("Register Production");
-        let body = _t("Register the produced quantity");
-        if (this.record.product_tracking === "serial") {
-            body = _t("Register the produced quantity and set the serial number");
-        } else if (this.record.product_tracking === "lot") {
-            body = _t("Register the produced quantity and set the lot number");
+        if (!this.props.production.data.qty_producing) {
+            this.props.production.update({ qty_producing: this.props.production.data.product_qty });
+            this.props.production.save();
         }
+        const title = _t("Register Production: %s", this.props.production.data.product_id[1]);
         const reload = () => this.env.reload();
-        const params = { body, record: this.props.production, reload, title };
+        const params = { body: '', record: this.props.production, reload, title };
         this.dialog.add(MrpRegisterProductionDialog, params);
     }
 
@@ -292,7 +290,7 @@ export class MrpDisplayRecord extends Component {
         const params = {
             body: record.data.note,
             record,
-            title: `${record.data.production_id[1]}: ${record.data.display_name}`,
+            title: record.data.title,
             worksheetData,
             checkInstruction: this.record.operation_note,
             cancel: () => {
@@ -317,7 +315,7 @@ export class MrpDisplayRecord extends Component {
     }
 
     get active() {
-        return this.props.record.data.employee_ids.records.length != 0;
+        return this.props.record.data.employee_ids.records.some(e => e.resId === this.props.sessionOwner.id)
     }
 
     get disabled() {

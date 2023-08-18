@@ -24,6 +24,7 @@ export class MrpMenuDialog extends Component {
         this.orm = useService("orm");
         this.action = useService("action");
         this.dialogService = useService("dialog");
+        this.notification = useService("notification");
     }
 
     async callAction(method) {
@@ -132,6 +133,11 @@ export class MrpMenuDialog extends Component {
         await this.action.doAction(action, {
             onClose: async () => {
                 await this.props.reload();
+                if (type === 'remove_step') {
+                    this.notification.add(_t("Your suggestion to delete the %s step was succesfully created.", check.display_name),
+                        { type: "success", }
+                    );
+                }
             }
         });
         this.props.close();

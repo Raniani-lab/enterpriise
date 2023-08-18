@@ -17,7 +17,7 @@ class ProposeChange(models.TransientModel):
 
     workorder_id = fields.Many2one(
         'mrp.workorder', 'Workorder', required=True, ondelete='cascade')
-    title = fields.Char('title')
+    title = fields.Char('Title')
     step_id = fields.Many2one('quality.check', 'Step to change')
     note = fields.Html('New Instruction')
     comment = fields.Char('Comment')

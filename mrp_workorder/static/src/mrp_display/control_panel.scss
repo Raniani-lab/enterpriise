@@ -4,19 +4,34 @@
     }
 
     .o_control_panel_breadcrumbs {
+        gap: 0 !important;
+        min-width: initial;
+        flex-grow: initial;
         .o_last_breadcrumb_item {
             display: none !important;
         }
     }
 
     .o_control_panel_actions {
-        flex-grow: 1;
         gap: map-get($spacers, 2);
 
         @include media-breakpoint-down(md) {
             flex-wrap: wrap;
         }
     }
+
+    .o_control_panel_main{
+        align-items: center !important;
+    }
+
+    .o_cp_searchview{
+        max-width: 500px;
+    }
+
+    .o_control_panel{
+        padding-bottom: 8px !important;
+    }
+
 }
 
 @for $size from 1 through length($o-colors) {

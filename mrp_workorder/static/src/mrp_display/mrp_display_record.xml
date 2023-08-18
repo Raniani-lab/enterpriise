@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="mrp_workorder.MrpDisplayRecord">
-        <div class="o_mrp_display_record border card rounded"
+        <div class="o_mrp_display_record border card rounded m-0 mb-2"
              t-att-class="cssClass"
              t-on-animationend="onAnimationEnd">
             <div class="card-header" t-att-class="props.record.resModel=='mrp.workorder' ? 'cursor-pointer' : ''"
@@ -11,8 +11,8 @@
                     <t t-if="props.record.resModel=='mrp.workorder'" t-call="mrp_workorder.MrpDisplayWorkorderHeader"/>
                 </div>
                 <div class="d-flex justify-content-between flex-wrap" style="min-height:25px;">
-                    <div class="o_finished_product mt-auto mb-0">
-                        <span><t t-esc="record.product_id[1]"/> - </span>
+                    <div class="o_finished_product mt-auto mb-0 d-flex mw-100">
+                        <span class="text-truncate me-1"><t t-esc="record.product_id[1]"/> - </span>
                         <span class="text-nowrap">
                             <t t-if="quantityProducing">
                                 <t t-esc="quantityProducing"/> /
@@ -36,16 +36,10 @@
                 <t t-foreach="workorders" t-as="workorder" t-key="workorder.data.id">
                     <MrpWorkorder t-props="subRecordProps(workorder)"/>
                 </t>
-                <t t-foreach="moves" t-as="move" t-key="move.data.id">
-                    <StockMove t-props="subRecordProps(move)"/>
-                </t>
-                <t t-foreach="checks" t-as="check" t-key="check.data.id">
-                    <QualityCheck t-props="subRecordProps(check)"/>
-                </t>
                 <li t-if="this.displayRegisterProduction" t-on-click="registerProduction"
                     class="o_mrp_record_line list-group-item d-flex justify-content-between align-items-center"
-                    t-attf-class="{{productionComplete ? 'text-muted' : ''}}">
-                    <span t-attf-class="{{productionComplete ? 'text-decoration-line-through' : ''}}">
+                    t-attf-class="{{(productionComplete || state.underValidation ) ? 'text-muted' : ''}}">
+                    <span t-attf-class="{{(productionComplete || state.underValidation ) ? 'text-decoration-line-through' : ''}}">
                         Register Production
                     </span>
                     <t t-if="['lot', 'serial', 'mass_produce'].includes(trackingMode)">
@@ -62,13 +56,19 @@
                         <span class="ms-1" t-esc="uom"/>
                     </button>
                 </li>
+                <t t-foreach="moves" t-as="move" t-key="move.data.id">
+                    <StockMove t-props="subRecordProps(move)"/>
+                </t>
+                <t t-foreach="checks" t-as="check" t-key="check.data.id">
+                    <QualityCheck t-props="subRecordProps(check)"/>
+                </t>
                 <!-- Display a line to register each byproduct who isn't linked to a workorder.
                 Only displayed in the production card. -->
                 <t t-foreach="byProducts" t-as="byproductMove" t-key="byproductMove.id">
                     <StockMove t-props="subRecordProps(byproductMove)" label="getByproductLabel(byproductMove)"/>
                 </t>
             </ul>
-            <div class="card-footer d-flex justify-content-between align-items-center pe-0 test"
+            <div class="card-footer d-flex justify-content-between align-items-center pe-0 test bg-white my-1"
                 t-att-class="{'py-0': !state.underValidation}">
                 <t t-if="props.record.resModel=='mrp.production'" t-call="mrp_workorder.MrpDisplayProductionFooter"/>
                 <t t-if="props.record.resModel=='mrp.workorder'" t-call="mrp_workorder.MrpDisplayWorkorderFooter"/>
@@ -79,7 +79,7 @@
 
     <t t-name="mrp_workorder.MrpDisplayProductionHeader">
         <t t-set="displayTrackingNumber" t-value="!['none', 'mass_produce'].includes(this.trackingMode)"/>
-        <span class="h5 mb-0" t-esc="record.display_name"/>
+        <span class="h5 mb-0 text-truncate" t-esc="record.display_name"/>
         <small class="rounded-pill px-2 text-nowrap"
             t-att-class="{
                 'text-bg-light border border-secondary': record.state === 'confirmed',
@@ -90,15 +90,15 @@
         </small>
     </t>
     <t t-name="mrp_workorder.MrpDisplayWorkorderHeader">
-        <span class="h5" t-esc="record.display_name"/>
+        <span class="h5 text-truncate" t-esc="record.display_name"/>
         <span class="text-capitalize d-flex flex-column ms-1">
-            <t t-if="record.state === 'ready'">To do</t>
-            <div t-else="" class="bg-light rounded p-1"><MrpTimerField name="'duration'" record="props.record" readonly="true"/></div>
+            <div t-if="record.state !== 'ready'" class="bg-light rounded p-1"><MrpTimerField name="'duration'" record="props.record" readonly="true"/></div>
         </span>
     </t>
     <t t-name="mrp_workorder.MrpDisplayProductionFooter">
-        <t t-if="!state.underValidation" t-set="_btn_type" t-value="'btn-primary'"/>
-        <t t-else="" t-set="_btn_type" t-value="'btn-outline-secondary'"/>
+        <t t-if="state.underValidation" t-set="_btn_type" t-value="'btn-outline-secondary'"/>
+        <t t-elif="props.record.data.state === 'to_close'" t-set="_btn_type" t-value="'btn-primary'"/>
+        <t t-else="" t-set="_btn_type" t-value="'btn-secondary'"/>
         <button t-if="displayDoneButton" t-attf-class="btn #{_btn_type}"
                 t-on-click="onClickValidateButton" barcode_trigger="cloMO">
             <t t-if="state.underValidation">Undo</t>

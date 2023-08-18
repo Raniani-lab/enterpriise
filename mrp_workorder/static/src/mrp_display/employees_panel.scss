@@ -2,7 +2,7 @@
     --SearchPanel-width: 100%;
 
     @include media-breakpoint-up(md) {
-        --SearchPanel-width: 300px;
+        --SearchPanel-width: 250px;
     }
 
     .o_admin_user {

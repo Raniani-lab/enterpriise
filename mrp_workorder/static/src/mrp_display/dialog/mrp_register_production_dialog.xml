@@ -13,10 +13,9 @@
                 <div class="o_instruction w-75" t-out="props.body"/>
                 <div t-if="recordData.additional_note" t-out="recordData.additional_note"/>
             </div>
-            <div name="product_id" class="o_workorder_bar_content" t-esc="props.record.data.product_id[1]"/>
             <div class="o_workorder_bar_content">
                 <div class="o_quantity row">
-                    <span class="col-2">Quantity</span>
+                    <span class="col-3">Quantity Produced</span>
                     <span name="qty_done" class="o_field_widget text-end col-2 pe-2">
                         <FloatField t-props="qtyDoneInfo" readonly="recordData.product_tracking === 'serial'"/>
                     </span>
@@ -27,7 +26,7 @@
                     </span>
                 </div>
                 <div t-if="recordData.product_tracking &amp;&amp; recordData.product_tracking !== 'none'" class="o_workorder_lot row">
-                    <span class="text-capitalize col-2" t-esc="recordData.product_tracking"/>
+                    <span class="text-capitalize col-3" t-esc="recordData.product_tracking"/>
                     <div name="lot_producing_id" class="o_field_widget col-4">
                         <Many2OneField t-props="lotInfo"/>
                     </div>

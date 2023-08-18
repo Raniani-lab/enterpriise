@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="mrp_workorder.MrpWorksheetDialog">
-        <div class="o_tablet_popups">
-            <Dialog size="'lg'" title="Worksheet" modalRef="modalRef" footer="false">
+        <div class="o_tablet_popups o_worksheet_modal">
+            <Dialog size="'fs'" title="Worksheet" modalRef="modalRef" footer="false">
                 <t t-set-slot="header">
                     <div class="d-flex w-100">
                         <div class="h4 align-self-end">Worksheet</div>

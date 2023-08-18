@@ -2,8 +2,4 @@
 .workorder_picture, .quality_picture {
     margin: 5px 0;
 
-    #picture_button {
-        margin-top: 0;
-        @include o-position-absolute($top: 33%, $left: 106%);
-    }
 }

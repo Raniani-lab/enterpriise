@@ -93,7 +93,7 @@
                         <field name="failure_location_id" invisible="not potential_failure_location_ids" widget="selection_badge" domain="[('id', 'in', potential_failure_location_ids)]"/>
                     </group>
                     <group >
-                        <div class="alert alert-warning" role="alert" colspan="2" invisible="test_type != 'measure'" >
+                        <div class="alert" role="alert" colspan="2" invisible="test_type != 'measure'" >
                             <field name="warning_message" nolabel="1"/>
                         </div>
                         <div colspan="2">

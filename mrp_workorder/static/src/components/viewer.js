@@ -27,12 +27,10 @@ class DocumentViewer extends Component {
             const iframe = this.pdfIFrame.el.firstElementChild;
             iframe.removeAttribute('style');
             // Once the PDF viewer is loaded, hides everything except the page.
-                iframe.addEventListener('load', () => {
-                    iframe.contentDocument.querySelector('.toolbar').style.display = 'none';
-                    iframe.contentDocument.querySelector('body').style.background = 'none';
-                    iframe.contentDocument.querySelector('#viewerContainer').style.boxShadow = 'none';
-                    iframe.contentDocument.querySelector('#mainContainer').style.marginTop = '-2.5em';
-                });
+            iframe.addEventListener("load", () => {
+                iframe.contentDocument.querySelector("body").style.background = "none";
+                iframe.contentDocument.querySelector("#viewerContainer").style.boxShadow = "none";
+            });
         }
     }
 

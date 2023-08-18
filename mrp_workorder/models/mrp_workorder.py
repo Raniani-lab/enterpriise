@@ -304,7 +304,7 @@ class MrpProductionWorkcenterLine(models.Model):
             if check.test_type in ['register_consumed_materials', 'register_byproducts', 'instructions']:
                 check.quality_state = 'pass'
             else:
-                raise UserError(_("You need to complete Quality Checks using the Tablet View before marking Work Order as Done."))
+                raise UserError(_("You need to complete Quality Checks using the Shop Floor before marking Work Order as Done."))
         return super().button_finish()
 
     def action_propose_change(self, change_type, check_id):

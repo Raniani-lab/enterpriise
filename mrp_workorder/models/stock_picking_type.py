@@ -7,8 +7,8 @@ class PickingType(models.Model):
     _inherit = 'stock.picking.type'
 
     prefill_lot_tablet = fields.Boolean(
-        'Pre-fill Lot/Serial Numbers in Tablet View', default=True,
-        help="If this checkbox is ticked, the serial numbers lines for this operation type will be pre-filled in the manufacturing tablet view.")
+        'Pre-fill Lot/Serial Numbers in Shop Floor', default=True,
+        help="If this checkbox is ticked, the serial numbers lines for this operation type will be pre-filled in the shop floor.")
 
     def action_mrp_overview(self):
         routing_count = self.env['stock.picking.type'].search_count([('code', '=', 'mrp_operation')])

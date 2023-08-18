@@ -28,8 +28,8 @@ export class ControlPanelButtons extends Component {
             }
         }
         return [
-            ["0", { count: productionCount, name: _t("All") }],
-            ["-1", { count: this.props.employeeWorkorderCount, name: _t("My") }],
+            ["0", { count: productionCount, name: _t("All MO") }],
+            ["-1", { count: this.props.employeeWorkorderCount, name: _t("My WO") }],
             ...Object.entries(workcenterButtons)
         ];
     }

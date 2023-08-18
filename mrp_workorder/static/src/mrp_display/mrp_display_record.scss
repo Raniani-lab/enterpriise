@@ -37,8 +37,6 @@
 
 .o_mrp_display_record {
     break-inside: avoid;
-    margin: 0;
-    margin-bottom: 20px;
 
     &.o_active {
         .card-header {
@@ -58,7 +56,7 @@
     }
 
     &.o_fadeout_animation {
-        animation: fadeout 11s ease-out;
+        animation: fadeout 5s ease-out;
         animation-fill-mode: forwards;
     }
 }

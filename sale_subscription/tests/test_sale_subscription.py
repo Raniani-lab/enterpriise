@@ -220,11 +220,11 @@ class TestSubscription(TestSubscriptionCommon):
             {'display_type': 'line_section', 'name': 'Products', 'product_id': False},
             {
                 'display_type': 'product', 'product_id': sub_product1.id,
-                'name': 'Subscription #A - 1 month\n01/03/2021 to 02/02/2021',
+                'name': 'Subscription #A - 1 Month\n01/03/2021 to 02/02/2021',
             },
             {
                 'display_type': 'product', 'product_id': sub_product2.id,
-                'name': 'Subscription #B - 1 month\n01/03/2021 to 02/02/2021',
+                'name': 'Subscription #B - 1 Month\n01/03/2021 to 02/02/2021',
             },
             {
                 'display_type': 'product', 'product_id': sub_product_onetime_discount.id,
@@ -247,11 +247,11 @@ class TestSubscription(TestSubscriptionCommon):
             {'display_type': 'line_section', 'name': 'Products', 'product_id': False},
             {
              'display_type': 'product', 'product_id': sub_product1.id,
-             'name': 'Subscription #A - 1 month\n02/03/2021 to 03/02/2021',
+             'name': 'Subscription #A - 1 Month\n02/03/2021 to 03/02/2021',
             },
             {
              'display_type': 'product', 'product_id': sub_product2.id,
-             'name': 'Subscription #B - 1 month\n02/03/2021 to 03/02/2021',
+             'name': 'Subscription #B - 1 Month\n02/03/2021 to 03/02/2021',
             },
             {'display_type': 'line_section', 'name': 'Information', 'product_id': False},
             {'display_type': 'line_note', 'name': '...', 'product_id': False},

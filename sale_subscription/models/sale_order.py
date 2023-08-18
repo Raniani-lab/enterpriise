@@ -3,16 +3,17 @@
 
 import logging
 from dateutil.relativedelta import relativedelta
-from markupsafe import escape
+from markupsafe import escape, Markup
 from psycopg2.extensions import TransactionRollbackError
 from ast import literal_eval
 from collections import defaultdict
+import traceback
 
 from odoo import fields, models, _, api, Command, SUPERUSER_ID, modules
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_is_zero
 from odoo.osv import expression
-from odoo.tools import config, format_amount, split_every
+from odoo.tools import config, format_amount, plaintext2html, split_every, str2bool
 from odoo.tools.date_utils import get_timedelta
 from odoo.tools.misc import format_date
 
@@ -1535,7 +1536,10 @@ class SaleOrder(models.Model):
                     email_context = subscription._get_subscription_mail_payment_context()
                     error_message = _("Error during renewal of contract %s (Payment not recorded)", subscription.name)
                     _logger.exception(error_message)
-                    mail = self.env['mail.mail'].sudo().create({'body_html': error_message, 'subject': error_message, 'email_to': email_context['responsible_email'], 'auto_delete': True})
+                    body = self._get_traceback_body(e, error_message)
+                    mail = self.env['mail.mail'].sudo().create(
+                        {'body_html': body, 'subject': error_message, 'email_to': email_context['responsible_email'],
+                         'auto_delete': True})
                     mail.send()
                     continue
                 self._subscription_commit_cursor(auto_commit)
@@ -1622,7 +1626,7 @@ class SaleOrder(models.Model):
                         order._handle_subscription_payment_failure(invoice, transaction, email_context)
                         self._subscription_commit_cursor(auto_commit)
                         existing_invoices -= invoice  # It will be unlinked in the call above
-                except Exception:
+                except Exception as e:
                     last_tx_sudo = (order.transaction_ids - existing_transactions).sudo()
                     error_message = "Error during renewal of contract [%s] %s (%s)" % (
                         order.id, order.client_order_ref or order.name,
@@ -1631,7 +1635,9 @@ class SaleOrder(models.Model):
                     )
                     _logger.exception(error_message)
                     self._subscription_rollback_cursor(auto_commit)
-                    mail = Mail.sudo().create({'body_html': error_message, 'subject': error_message,
+                    body = self._get_traceback_body(e, error_message)
+                    _logger.exception(error_message)
+                    mail = Mail.sudo().create({'body_html': body, 'subject': error_message,
                                                'email_to': email_context.get('responsible_email'), 'auto_delete': True})
                     mail.send()
                     if invoice.state == 'draft':
@@ -1639,6 +1645,15 @@ class SaleOrder(models.Model):
                         if not last_tx_sudo or not last_tx_sudo.renewal_state not in ['pending', 'authorized']:
                             invoice.unlink()
         return existing_invoices
+
+    def _get_traceback_body(self, exc, body):
+        if not str2bool(self.env['ir.config_parameter'].sudo().get_param('sale_subscription.full_mail_traceback')):
+            return body
+        return Markup("%s<br><br>%s<br>%s") % (
+            body,
+            plaintext2html(''.join(traceback.format_tb(exc.__traceback__))),
+            plaintext2html(str(exc)),
+        )
 
     def _get_expired_subscriptions(self):
         # We don't use CURRENT_DATE to allow using freeze_time in tests.

@@ -348,7 +348,7 @@ class MrpProductionWorkcenterLine(models.Model):
         action['context'] = {
             'show_all_workorders': True,
             'workcenter_id': self.workcenter_id.id,
-            'production_id': self.production_id.name,
+            'search_default_name': self.production_id.name,
         }
         return action
 

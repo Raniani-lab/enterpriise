@@ -66,9 +66,6 @@ export class MrpDisplay extends Component {
         useSubEnv({
             localStorageName: `mrp_workorder.db_${this.userService.db.name}.user_${this.userService.userId}.picking_type_${this.pickingTypeId}`,
         });
-        if (this.props.context.production_id){
-            this._onProductionBarcodeScanned(this.props.context.production_id)
-        }
 
         this.state = useState({
             activeResModel: this.props.context.workcenter_id ? 'mrp.workorder' : this.props.resModel,

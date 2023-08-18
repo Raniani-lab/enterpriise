@@ -171,8 +171,8 @@
         <field name="domain">[('subscription_state', '=', '7_upsell')]</field>
         <field name="context">{'create': False}</field>
         <field name="view_ids" eval="[(5, 0, 0),
-                (0, 0, {'view_mode': 'tree', 'view_id': ref('sale_subscription_upsell_primary_view_tree')}),
-                (0, 0, {'view_mode': 'kanban'}),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('sale_subscription_upsell_primary_view_tree'), 'sequence': 1}),
+                (0, 0, {'view_mode': 'kanban', 'sequence': 2}),
                 (0, 0, {'view_mode': 'form'}),
             ]"/>
         <field name="search_view_id" eval='sale_subscription_view_search'/>
@@ -348,8 +348,8 @@
         <!-- All kind of subscription except upsell -->
         <field name="domain">[('subscription_state', 'in', ['1_draft', '2_renewal', '3_progress', '4_paused', '5_renewed', '6_churn'])]</field>
         <field name="view_ids" eval="[(5, 0, 0),
-                (0, 0, {'view_mode': 'tree', 'view_id': ref('sale_subscription.sale_subscription_quotation_tree_view')}),
-                (0, 0, {'view_mode': 'kanban'}),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('sale_subscription.sale_subscription_quotation_tree_view'), 'sequence': 1}),
+                (0, 0, {'view_mode': 'kanban', 'sequence': 2}),
                 (0, 0, {'view_mode': 'form'}),
             ]"/>
         <field name="search_view_id" ref='sale_subscription_view_search'/>
@@ -367,6 +367,47 @@
         </field>
     </record>
 
+    <!-- Calendar view -->
+    <record id="view_sale_subscription_calendar" model="ir.ui.view">
+        <field name="name">sale.order.calendar</field>
+        <field name="inherit_id" ref="sale.view_sale_order_calendar"/>
+        <field name="mode">primary</field>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <field name="amount_total" position="replace">
+                <field name="recurring_monthly" widget="monetary"/>
+                <field name="recurrence_id"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="sale_subscription_calendar" model="ir.actions.act_window.view" >
+        <field name="sequence" eval="3"/>
+        <field name="view_mode">calendar</field>
+        <field name="view_id" ref="view_sale_subscription_calendar"/>
+        <field name="act_window_id" ref="sale_subscription_action"/>
+    </record>
+
+    <record id="sale_subscription_calendar_pending" model="ir.actions.act_window.view" >
+        <field name="sequence" eval="3"/>
+        <field name="view_mode">calendar</field>
+        <field name="view_id" ref="view_sale_subscription_calendar"/>
+        <field name="act_window_id" ref="sale_subscription_action_pending"/>
+    </record>
+
+    <record id="sale_subscription_calendar_quotes" model="ir.actions.act_window.view" >
+        <field name="sequence" eval="3"/>
+        <field name="view_mode">calendar</field>
+        <field name="view_id" ref="view_sale_subscription_calendar"/>
+        <field name="act_window_id" ref="sale_subscription_action_quotes"/>
+    </record>
+
+    <record id="sale_subscription_calendar_upsell" model="ir.actions.act_window.view" >
+        <field name="sequence" eval="3"/>
+        <field name="view_mode">calendar</field>
+        <field name="view_id" ref="view_sale_subscription_calendar"/>
+        <field name="act_window_id" ref="sale_subscription_action_upsell"/>
+    </record>
 
     <!-- Form from subscription App -->
     <record id="sale_subscription_primary_form_view" model="ir.ui.view">

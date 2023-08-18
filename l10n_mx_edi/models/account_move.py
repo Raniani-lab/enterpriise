@@ -1714,6 +1714,9 @@ class AccountMove(models.Model):
             )
             return
 
+        # == Lock ==
+        self.env['l10n_mx_edi.document']._with_locked_records(self)
+
         # == Check PAC ==
         sign_results = getattr(self.env['l10n_mx_edi.document'], f'_{pac_name}_sign')(credentials, results['cfdi_str'])
         if sign_results.get('errors'):
@@ -1764,6 +1767,9 @@ class AccountMove(models.Model):
                 "\n".join(credentials['errors']),
             )
             return
+
+        # == Lock ==
+        self.env['l10n_mx_edi.document']._with_locked_records(self)
 
         # == Check PAC ==
         cancel_results = getattr(self.env['l10n_mx_edi.document'], f'_{pac_name}_cancel')(
@@ -1992,6 +1998,9 @@ class AccountMove(models.Model):
             )
             return
 
+        # == Lock ==
+        self.env['l10n_mx_edi.document']._with_locked_records(self + invoices)
+
         # == Check PAC ==
         sign_results = getattr(self.env['l10n_mx_edi.document'], f'_{pac_name}_sign')(credentials, results['cfdi_str'])
         if sign_results.get('errors'):
@@ -2028,6 +2037,9 @@ class AccountMove(models.Model):
                 invoices,
             )
             return
+
+        # == Lock ==
+        self.env['l10n_mx_edi.document']._with_locked_records(self + invoices)
 
         # == Check PAC ==
         cfdi_infos = self.env['l10n_mx_edi.document']._decode_cfdi_attachment(self.l10n_mx_edi_cfdi_attachment_id.raw)

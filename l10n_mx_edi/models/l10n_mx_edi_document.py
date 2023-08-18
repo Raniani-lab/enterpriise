@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import _, api, models, modules, fields, tools
+from odoo.exceptions import UserError
 from odoo.osv import expression
 
 import base64
@@ -10,6 +11,7 @@ import string
 
 from json.decoder import JSONDecodeError
 from lxml import etree
+from psycopg2 import OperationalError
 from zeep import Client
 from zeep.transports import Transport
 
@@ -99,6 +101,20 @@ class L10nMxEdiDocument(models.Model):
         """ Cancel a payment document. """
         self.ensure_one()
         self.move_id._l10n_mx_edi_cfdi_payment_try_cancel()
+
+    # -------------------------------------------------------------------------
+    # CFDI: HELPERS
+    # -------------------------------------------------------------------------
+
+    def _with_locked_records(self, records):
+        try:
+            with self.env.cr.savepoint(flush=False):
+                self._cr.execute(f'SELECT * FROM {records._table} WHERE id IN %s FOR UPDATE NOWAIT', [tuple(records.ids)])
+        except OperationalError as e:
+            if e.pgcode == '55P03':
+                raise UserError(_("Some documents are being sent by another process already."))
+            else:
+                raise
 
     # -------------------------------------------------------------------------
     # CFDI: PACs

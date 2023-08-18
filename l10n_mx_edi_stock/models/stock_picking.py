@@ -411,6 +411,9 @@ class Picking(models.Model):
             )
             return
 
+        # == Lock ==
+        self.env['l10n_mx_edi.document']._with_locked_records(self)
+
         # == Check PAC ==
         sign_results = getattr(self.env['l10n_mx_edi.document'], f'_{pac_name}_sign')(credentials, results['cfdi_str'])
         if sign_results.get('errors'):
@@ -454,6 +457,9 @@ class Picking(models.Model):
                 "\n".join(credentials['errors']),
             )
             return
+
+        # == Lock ==
+        self.env['l10n_mx_edi.document']._with_locked_records(self)
 
         # == Check PAC ==
         cancel_results = getattr(self.env['l10n_mx_edi.document'], f'_{pac_name}_cancel')(

@@ -214,7 +214,7 @@ msgid ""
 "                        </p>"
 msgstr ""
 "<p class=\"o_view_nocontent_smiling_face\">\n"
-"                            Plan een beoordeling\n"
+"                            Plan een evaluatie\n"
 "                        </p><p>\n"
 "                            Plan evaluaties met je collega's, verzamel en bespreek feedback.\n"
 "                        </p>"
@@ -250,7 +250,7 @@ msgid ""
 "<span class=\"o_form_label\">Appraisals Plans</span>\n"
 "                                <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" role=\"img\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\"/>"
 msgstr ""
-"<span class=\"o_form_label\">Beoordelingsplannen</span>\n"
+"<span class=\"o_form_label\">Evaluatieplannen</span>\n"
 "                                <span class=\"fa fa-lg fa-building-o\" title=\"Waarden die hier worden ingesteld, zijn bedrijfsspecifiek.\" role=\"img\" aria-label=\"De hier ingestelde waarden zijn bedrijfsspecifiek.\" groups=\"base.group_multi_company\"/>"
 
 #. module: hr_appraisal
@@ -271,13 +271,13 @@ msgid ""
 "                        </span>"
 msgstr ""
 "<span class=\"o_stat_text\">\n"
-"                           Laatste beoordeling\n"
+"                           Laatste evaluatie\n"
 "                        </span>"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "<span class=\"o_stat_text\">Appraisals</span>"
-msgstr "<span class=\"o_stat_text\">Beoordelingen</span>"
+msgstr "<span class=\"o_stat_text\">Evaluaties</span>"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
@@ -368,7 +368,7 @@ msgstr "Beheerder"
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_tree
 msgid "Appraisal"
-msgstr "Beoordeling"
+msgstr "Evaluatie"
 
 #. module: hr_appraisal
 #: model:ir.actions.act_window,name:hr_appraisal.action_appraisal_report_all
@@ -378,57 +378,57 @@ msgstr "Beoordeling"
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_pivot
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
 msgid "Appraisal Analysis"
-msgstr "Beoordelingsanalyse"
+msgstr "Analyse evaluatie"
 
 #. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_hr_appraisal_note
 msgid "Appraisal Assessment Note"
-msgstr "Beoordeling assessmentnotitie"
+msgstr "Beoordelingsnotitie evaluatie"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_company__appraisal_confirm_mail_template
 msgid "Appraisal Confirm Mail Template"
-msgstr "E-mailsjabloon voor beoordeling bevestigen"
+msgstr "E-mailsjabloon voor evaluatie bevestigen"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__employee_appraisal_count
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__appraisal_count
 msgid "Appraisal Count"
-msgstr "Aantal beoordelingen"
+msgstr "Aantal evaluaties"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__date_close
 msgid "Appraisal Date"
-msgstr "Beoordelingsdatum"
+msgstr "Datum evaluatie"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__employee_id
 msgid "Appraisal Employee"
-msgstr "Beoordeling werknemer"
+msgstr "Evaluatie werknemer"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_company__appraisal_employee_feedback_template
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__appraisal_employee_feedback_template
 msgid "Appraisal Employee Feedback Template"
-msgstr "Beoordeling werknemersfeedbacksjabloon"
+msgstr "Feedbacksjabloon evaluatie werknemers"
 
 #. module: hr_appraisal
 #. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Appraisal Form to Fill"
-msgstr "Beoordelingsformulier om te in te vullen"
+msgstr "Evaluatieformulier om in te vullen"
 
 #. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_hr_appraisal_goal
 msgid "Appraisal Goal"
-msgstr "Beoordelingsdoel"
+msgstr "Doelstelling evaluatie"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_company__appraisal_manager_feedback_template
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__appraisal_manager_feedback_template
 msgid "Appraisal Manager Feedback Template"
-msgstr "Sjabloon voor feedback van beoordelingsmanager"
+msgstr "Feedbacksjabloon evaluatie manager"
 
 #. module: hr_appraisal
 #. odoo-python
@@ -440,7 +440,7 @@ msgstr "Beoordelingsverantwoordelijke"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__appraisal_plan_posted
 msgid "Appraisal Plan Posted"
-msgstr "Beoordelingsplan geplaatst"
+msgstr "Evaluatieplan geplaatst"
 
 #. module: hr_appraisal
 #. odoo-python
@@ -448,35 +448,35 @@ msgstr "Beoordelingsplan geplaatst"
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Appraisal Request"
-msgstr "Beoordelingsaanvraag"
+msgstr "Aanvraag evaluatie"
 
 #. module: hr_appraisal
 #: model:mail.template,subject:hr_appraisal.mail_template_appraisal_request
 msgid "Appraisal Requested"
-msgstr "Beoordeling aangevraagd"
+msgstr "Evaluatie aangevraagd"
 
 #. module: hr_appraisal
 #: model:ir.model.fields.selection,name:hr_appraisal.selection__hr_appraisal_report__state__pending
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
 msgid "Appraisal Sent"
-msgstr "Beoordeling verzonden"
+msgstr "Evaluatie verzonden"
 
 #. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_hr_appraisal_report
 msgid "Appraisal Statistics"
-msgstr "Beoordelingsstatistieken"
+msgstr "Statistieken evaluatie"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_department_view_form
 msgid "Appraisal Templates"
-msgstr "Beoordelingssjablonen"
+msgstr "Evaluatiesjablonen"
 
 #. module: hr_appraisal
 #. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Appraisal of %s"
-msgstr "Beoordeling van %s"
+msgstr "Evaluatie van %s"
 
 #. module: hr_appraisal
 #. odoo-python
@@ -484,18 +484,18 @@ msgstr "Beoordeling van %s"
 #: code:addons/hr_appraisal/models/res_company.py:0
 #, python-format
 msgid "Appraisal to Confirm and Send"
-msgstr "Beoordeling om te bevestigen en te verzenden"
+msgstr "Evaluatie om te bevestigen en te verzenden"
 
 #. module: hr_appraisal
 #: model:ir.actions.act_window,name:hr_appraisal.hr_appraisal_action_from_department
 msgid "Appraisal to start"
-msgstr "Te starten beoordeling"
+msgstr "Te starten evaluatie"
 
 #. module: hr_appraisal
 #: model:ir.actions.server,name:hr_appraisal.ir_cron_scheduler_appraisal_ir_actions_server
 #: model:ir.cron,cron_name:hr_appraisal.ir_cron_scheduler_appraisal
 msgid "Appraisal: Run employee appraisal"
-msgstr "Beoordeling: voer werknemer beoordeling uit"
+msgstr "Evaluatie: voer werknemer evaluatie uit"
 
 #. module: hr_appraisal
 #: model:ir.actions.act_window,name:hr_appraisal.open_view_hr_appraisal_tree
@@ -505,12 +505,12 @@ msgstr "Beoordeling: voer werknemer beoordeling uit"
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_departure_wizard_view_form
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
 msgid "Appraisals"
-msgstr "Beoordelingen"
+msgstr "Evaluaties"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_department__appraisals_to_process_count
 msgid "Appraisals to Process"
-msgstr "Te verwerken beoordelingen"
+msgstr "Te verwerken evaluaties"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
@@ -550,12 +550,12 @@ msgstr "Auteur"
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_company__appraisal_plan
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__appraisal_plan
 msgid "Automatically Generate Appraisals"
-msgstr "Automatisch beoordelingen genereren"
+msgstr "Automatisch evaluaties genereren"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
 msgid "Automatically generate appraisals"
-msgstr "Automatisch beoordelingen genereren"
+msgstr "Automatisch evaluaties genereren"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__avatar_1920
@@ -601,12 +601,12 @@ msgstr "Annuleren"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_departure_wizard__cancel_appraisal
 msgid "Cancel Future Appraisals"
-msgstr "Toekomstige beoordelingen annuleren"
+msgstr "Toekomstige evaluaties annuleren"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_departure_wizard__cancel_appraisal
 msgid "Cancel all appraisal after contract end date."
-msgstr "Annuleer alle beoordelingen na de einddatum van het contract."
+msgstr "Annuleer alle evaluaties na de einddatum van het contract."
 
 #. module: hr_appraisal
 #: model:ir.model.fields.selection,name:hr_appraisal.selection__hr_appraisal__state__cancel
@@ -674,19 +674,19 @@ msgstr "Aanmaakdatum"
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_company__duration_first_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__duration_first_appraisal
 msgid "Create a first Appraisal after"
-msgstr "Maak een eerste beoordeling na"
+msgstr "Maak een eerste evaluatie na"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_company__duration_next_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__duration_next_appraisal
 msgid "Create a second Appraisal after"
-msgstr "Maak een tweede beoordeling na"
+msgstr "Maak een tweede evaluatie na"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_company__duration_after_recruitment
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__duration_after_recruitment
 msgid "Create an Appraisal after recruitment"
-msgstr "Maak een beoordeling na werving"
+msgstr "Maak een evaluatie na werving"
 
 #. module: hr_appraisal
 #: model_terms:ir.actions.act_window,help:hr_appraisal.action_hr_appraisal_goal
@@ -717,7 +717,7 @@ msgstr "Aanmaakdatum"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_department__custom_appraisal_templates
 msgid "Custom Appraisal Templates"
-msgstr "Aangepaste beoordelingssjablonen"
+msgstr "Aangepaste evaluatiesjablonen"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
@@ -730,7 +730,7 @@ msgid ""
 "Date of the appraisal, automatically updated when the appraisal is Done or "
 "Cancelled."
 msgstr ""
-"Datum van de beoordeling, automatisch bijgewerkt wanneer de beoordeling is "
+"Datum van de evaluatie, automatisch bijgewerkt wanneer de evaluatie is "
 "voltooid of geannuleerd."
 
 #. module: hr_appraisal
@@ -813,7 +813,7 @@ msgstr "Werknemer"
 #. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_hr_appraisal
 msgid "Employee Appraisal"
-msgstr "Werknemerbeoordeling"
+msgstr "Werknemersevaluatie"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__employee_autocomplete_ids
@@ -887,7 +887,7 @@ msgstr "Feedback-sjablonen"
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Fill appraisal for %s"
-msgstr "Beoordeling invullen voor %s"
+msgstr "Evaluatie invullen voor %s"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__date_final_interview
@@ -957,17 +957,17 @@ msgstr "Groepeer op..."
 #. module: hr_appraisal
 #: model:mail.template,name:hr_appraisal.mail_template_appraisal_confirm
 msgid "HR: Appraisal Confirmation"
-msgstr "HR: Beoordelingsbevestiging"
+msgstr "HR: Bevestiging evaluatie"
 
 #. module: hr_appraisal
 #: model:mail.template,name:hr_appraisal.mail_template_appraisal_request_from_employee
 msgid "HR: Employee Appraisal Request"
-msgstr "HR: Verzoek om beoordeling van werknemers"
+msgstr "HR: Verzoek om evaluatie van werknemers"
 
 #. module: hr_appraisal
 #: model:mail.template,name:hr_appraisal.mail_template_appraisal_request
 msgid "HR: Manager appraisal request"
-msgstr "HR: Manager beoordelingsverzoek"
+msgstr "HR: Verzoek om evaluatie van manager"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__has_message
@@ -1067,14 +1067,14 @@ msgstr "Taal"
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee_public__last_appraisal_id
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_users__last_appraisal_id
 msgid "Last Appraisal"
-msgstr "Laatste beoordeling"
+msgstr "Laatste evaluatie"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__last_appraisal_date
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__last_appraisal_date
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_users__last_appraisal_date
 msgid "Last Appraisal Date"
-msgstr "Laatste beoordelingsdatum"
+msgstr "Datum laatste evaluatie"
 
 #. module: hr_appraisal
 #. odoo-python
@@ -1219,7 +1219,7 @@ msgstr "Mijn activiteit deadline"
 #: model:ir.actions.act_window,name:hr_appraisal.hr_appraisal_action_my
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 msgid "My Appraisals"
-msgstr "Mijn beoordelingen"
+msgstr "Mijn evaluaties"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_goal_view_search
@@ -1268,7 +1268,7 @@ msgstr "Volgende activiteit type"
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__next_appraisal_date
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_users__next_appraisal_date
 msgid "Next Appraisal Date"
-msgstr "Volgende beoordelingsdatum"
+msgstr "Datum volgende evaluatie"
 
 #. module: hr_appraisal
 #. odoo-python
@@ -1318,12 +1318,12 @@ msgstr "Aantal berichten met leveringsfout"
 #. module: hr_appraisal
 #: model:res.groups,name:hr_appraisal.group_hr_appraisal_user
 msgid "Officer : Access all appraisals"
-msgstr "Functionaris: toegang tot alle beoordelingen"
+msgstr "Functionaris: toegang tot alle evaluaties"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__ongoing_appraisal_count
 msgid "Ongoing Appraisal Count"
-msgstr "Lopende beoordelingstelling"
+msgstr "Aantal lopende evaluaties"
 
 #. module: hr_appraisal
 #. odoo-python
@@ -1361,14 +1361,14 @@ msgstr "Mensen | Beheer"
 #. module: hr_appraisal
 #: model_terms:ir.actions.act_window,help:hr_appraisal.open_view_hr_appraisal_tree
 msgid "Plan appraisals with your colleagues, collect and discuss feedback."
-msgstr "Plan beoordelingen met je collega's, verzamel en bespreek feedback."
+msgstr "Plan evaluaties met je collega's, verzamel en bespreek feedback."
 
 #. module: hr_appraisal
 #. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Previous Appraisals"
-msgstr "Vorige beoordelingen"
+msgstr "Vorige evaluaties"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__note
@@ -1432,7 +1432,7 @@ msgstr "Rapportages"
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_users_view_form
 msgid "Request Appraisal"
-msgstr "Vraag beoordeling"
+msgstr "Vraag evaluatie"
 
 #. module: hr_appraisal
 #: model:ir.actions.server,name:hr_appraisal.action_create_multi_appraisals
@@ -1442,7 +1442,7 @@ msgstr "Taxaties aanvragen"
 #. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_request_appraisal
 msgid "Request an Appraisal"
-msgstr "Vraag een beoordeling"
+msgstr "Vraag een evaluatie"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__activity_user_id
@@ -1453,12 +1453,12 @@ msgstr "Verantwoordelijke gebruiker"
 #. module: hr_appraisal
 #: model_terms:ir.actions.act_window,help:hr_appraisal.open_view_hr_appraisal_tree
 msgid "Schedule an appraisal"
-msgstr "Plan een beoordeling"
+msgstr "Plan een evaluatie"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 msgid "Search Appraisal"
-msgstr "Zoek beoordeling"
+msgstr "Zoek evaluatie"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
@@ -1481,21 +1481,21 @@ msgid ""
 "Sent automatically to both employee and manager when appraisal is confirmed"
 msgstr ""
 "Wordt automatisch verzonden naar zowel werknemer als manager wanneer "
-"beoordeling is bevestigd"
+"evaluatie is bevestigd"
 
 #. module: hr_appraisal
 #: model:mail.template,description:hr_appraisal.mail_template_appraisal_request_from_employee
 msgid ""
 "Sent manually to the employee by the manager who wants to do an appraisal"
 msgstr ""
-"Handmatig verzonden naar de werknemer door de manager die een beoordeling "
-"wil doen"
+"Handmatig verzonden naar de werknemer door de manager die een evaluatie wil "
+"doen"
 
 #. module: hr_appraisal
 #: model:mail.template,description:hr_appraisal.mail_template_appraisal_request
 msgid "Sent manually to the manager by the employee who wants an appraisal"
 msgstr ""
-"Handmatig naar de manager gestuurd door de werknemer die een beoordeling wil"
+"Handmatig naar de manager gestuurd door de werknemer die een evaluatie wil"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_note__sequence
@@ -1576,15 +1576,15 @@ msgid ""
 "Thanks to your Appraisal Plan, without any new manual Appraisal, the new "
 "Appraisal will be automatically created on %s."
 msgstr ""
-"Dankzij het beoordelingsplan, zonder nieuwe handmatige beoordeling, wordt de"
-" nieuwe beoordeling automatisch gemaakt op %s."
+"Dankzij het evaluatieplan, zonder nieuwe handmatige evaluatie, wordt de "
+"nieuwe evaluatie automatisch gemaakt op %s."
 
 #. module: hr_appraisal
 #. odoo-python
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "The appraisal's status has been set to Done by %s"
-msgstr "De status van de beoordeling is ingesteld op Gereed door %s"
+msgstr "De status van de evaluatie is ingesteld op Gereed door %s"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__note
@@ -1596,7 +1596,7 @@ msgstr "De inhoud van deze notitie is niet zichtbaar voor de Werknemer."
 #: model:ir.model.fields,help:hr_appraisal.field_hr_employee__last_appraisal_date
 #: model:ir.model.fields,help:hr_appraisal.field_res_users__last_appraisal_date
 msgid "The date of the last appraisal"
-msgstr "Datum van de laatste beoordeling"
+msgstr "Datum van de laatste evaluatie"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_employee__next_appraisal_date
@@ -1605,8 +1605,8 @@ msgid ""
 "The date of the next appraisal is computed by the appraisal plan's dates "
 "(first appraisal + periodicity)."
 msgstr ""
-"De datum van de volgende beoordeling wordt berekend door de beoordelingsplan"
-" datums (eerste beoordeling + frequentie)."
+"De datum van de volgende evaluatie wordt berekend door de evaluatieplan "
+"datums (eerste evaluatie + frequentie)."
 
 #. module: hr_appraisal
 #: model:ir.model.constraint,message:hr_appraisal.constraint_res_company_positif_number_months
@@ -1621,7 +1621,7 @@ msgid ""
 "The employee %s arrived %s months ago. An appraisal for %s is created. You "
 "can assess %s & determinate the date for '1to1' meeting before %s."
 msgstr ""
-"De werknemer %s is maanden geleden %s aangekomen. Er wordt een beoordeling "
+"De werknemer %s is maanden geleden %s aangekomen. Er wordt een evaluatie "
 "voor %s gemaakt. Je kunt %s beoordelen en de datum voor '1op1'-afspraak vóór"
 " %s bepalen."
 
@@ -1730,9 +1730,8 @@ msgid ""
 "You arrived %s months ago. Your appraisal is created you can assess yourself"
 " here. Your manager will determinate the date for your '1to1' meeting."
 msgstr ""
-"Je bent %s maanden geleden begonnen. Je beoordeling is gemaakt. Je kunt "
-"jezelf hier beoordelen. Je manager bepaalt de datum voor je "
-"'1-op-1'-afspraak."
+"Je bent %s maanden geleden begonnen. Je evaluatie is gemaakt. Je kunt jezelf"
+" hier beoordelen. Je manager bepaalt de datum voor je '1-op-1'-afspraak."
 
 #. module: hr_appraisal
 #. odoo-python
@@ -1740,7 +1739,7 @@ msgstr ""
 #, python-format
 msgid "You cannot delete appraisal which is not in draft or canceled state"
 msgstr ""
-"Je kunt een beoordeling enkel verwijderen indien in fase concept of "
+"Je kunt een evaluatie enkel verwijderen indien in fase concept of "
 "geannuleerd"
 
 #. module: hr_appraisal
@@ -1748,7 +1747,7 @@ msgstr ""
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Your Appraisal has been completed"
-msgstr "Je beoordeling is voltooid"
+msgstr "Je evaluatie is voltooid"
 
 #. module: hr_appraisal
 #. odoo-python
@@ -1759,8 +1758,8 @@ msgid ""
 "created. You can assess %s & determinate the date for '1to1' meeting before "
 "%s."
 msgstr ""
-"De laatste beoordeling van je werknemer was %s maanden geleden. Er wordt een"
-" beoordeling voor %s gemaakt. Je kunt %s beoordelen en de datum voor "
+"De laatste evaluatie van je werknemer was %s maanden geleden. Er wordt een "
+"evaluatie voor %s gemaakt. Je kunt %s beoordelen en de datum voor "
 "'1op1'-afspraak vóór %s bepalen."
 
 #. module: hr_appraisal
@@ -1772,8 +1771,8 @@ msgid ""
 "assess yourself here. Your manager will determinate the date for your '1to1'"
 " meeting."
 msgstr ""
-"Je laatste taxatie was %s maanden geleden. Je beoordeling is gemaakt. Je "
-"kunt jezelf hier beoordelen. Je manager bepaalt de datum voor je "
+"Je laatste taxatie was %s maanden geleden. Je evaluatie is gemaakt. Je kunt "
+"jezelf hier beoordelen. Je manager bepaalt de datum voor je "
 "'1-op-1'-afspraak."
 
 #. module: hr_appraisal
@@ -1821,10 +1820,9 @@ msgstr "text-danger"
 msgid ""
 "{{ hasattr(object, 'name') and object.name or '' }} requests an Appraisal"
 msgstr ""
-"{{ hasattr(object, 'name') and object.name or '' }} vraagt een beoordeling "
-"aan"
+"{{ hasattr(object, 'name') and object.name or '' }} vraagt een evaluatie aan"
 
 #. module: hr_appraisal
 #: model:mail.template,subject:hr_appraisal.mail_template_appraisal_confirm
 msgid "{{ object.employee_id.name }}: Appraisal Confirmed"
-msgstr "{{ object.employee_id.name }}: beoordeling bevestigd"
+msgstr "{{ object.employee_id.name }}: evaluatie bevestigd"

@@ -38,9 +38,7 @@ msgstr ""
 msgid ""
 "Access License number is Invalid. Provide a valid number (Length should be "
 "0-35 alphanumeric characters)"
-msgstr ""
-"Access License number is Invalid. Provide a valid number (Length should be "
-"0-35 alphanumeric characters)"
+msgstr "存取許可證號碼無效。請提供有效的號碼（長度應為零至 35 個英數字元）"
 
 #. module: delivery_ups
 #. odoo-python
@@ -600,7 +598,7 @@ msgstr ""
 #: code:addons/delivery_ups/models/ups_request.py:0
 #, python-format
 msgid "The name of the customer should be no more than 35 characters."
-msgstr ""
+msgstr "客戶名稱不可超過 35 個字元。"
 
 #. module: delivery_ups
 #. odoo-python
@@ -793,9 +791,7 @@ msgstr "UPS account number"
 msgid ""
 "UPS address lines can only contain a maximum of 35 characters. You can split"
 " the contacts addresses on multiple lines to try to avoid this limitation."
-msgstr ""
-"UPS address lines can only contain a maximum of 35 characters. You can split"
-" the contacts addresses on multiple lines to try to avoid this limitation."
+msgstr "UPS 地址行最多只能包括 35 個字元。你可將聯絡人地址分拆為多行，以避免此限制。"
 
 #. module: delivery_ups
 #: model:ir.model.fields,field_description:delivery_ups.field_delivery_carrier__ups_duty_payment

@@ -33,7 +33,7 @@ msgstr "# 簽名"
 #: code:addons/sign/controllers/main.py:0
 #, python-format
 msgid "%s couldn't sign the document due to an insufficient credit error."
-msgstr "%s couldn't sign the document due to an insufficient credit error."
+msgstr "%s 因為信用額不足錯誤，未能簽署該文件。"
 
 #. module: sign
 #. odoo-python

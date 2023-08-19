@@ -27,7 +27,7 @@ msgstr ""
 #: code:addons/mrp_workorder_hr/static/src/components/working_employee_popup.xml:0
 #, python-format
 msgid "+ New Operator"
-msgstr ""
+msgstr "+ Nuovo operatore"
 
 #. module: mrp_workorder_hr
 #: model_terms:ir.ui.view,arch_db:mrp_workorder_hr.mrp_workorder_view_tablet_form_inherit_workorder_hr
@@ -35,6 +35,8 @@ msgid ""
 "<span attrs=\"{'invisible': [('employee_name', '!=', False)]}\">Log In "
 "</span>"
 msgstr ""
+"<span attrs=\"{'invisible': [('employee_name', '!=', False)]}\">Accedi "
+"</span>"
 
 #. module: mrp_workorder_hr
 #: model_terms:ir.ui.view,arch_db:mrp_workorder_hr.mrp_workcenter_form_view_inherit
@@ -59,7 +61,7 @@ msgstr "Annulla"
 #: code:addons/mrp_workorder_hr/static/src/components/tablet.js:0
 #, python-format
 msgid "Change Worker"
-msgstr ""
+msgstr "Cambia lavoratore"
 
 #. module: mrp_workorder_hr
 #. odoo-javascript
@@ -93,12 +95,12 @@ msgstr "Dipendente"
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_routing_workcenter__employee_ratio
 msgid "Employee Capacity"
-msgstr ""
+msgstr "Capacità dipendente"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workcenter__employee_costs_hour
 msgid "Employee Hourly Cost"
-msgstr ""
+msgstr "Costo orario dipendente"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workorder__employee_name
@@ -118,12 +120,12 @@ msgstr "Accedi"
 #: code:addons/mrp_workorder_hr/static/src/views/list/mrp_workorder_list_controller.js:0
 #, python-format
 msgid "Logged in!"
-msgstr ""
+msgstr "Hai effettuato l'accesso!"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,help:mrp_workorder_hr.field_mrp_routing_workcenter__employee_ratio
 msgid "Number of employees needed to complete operation."
-msgstr ""
+msgstr "Numero di dipendenti necessari per completare l'operazione."
 
 #. module: mrp_workorder_hr
 #. odoo-javascript
@@ -147,7 +149,7 @@ msgstr "Password ?"
 #. module: mrp_workorder_hr
 #: model:ir.model,name:mrp_workorder_hr.model_propose_change
 msgid "Propose a change in the production"
-msgstr ""
+msgstr "Proponi una modifica nella produzione"
 
 #. module: mrp_workorder_hr
 #: model:ir.model,name:mrp_workorder_hr.model_quality_check
@@ -158,7 +160,7 @@ msgstr "Controllo qualità"
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workcenter__allow_employee
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workorder__allow_employee
 msgid "Requires Log In"
-msgstr ""
+msgstr "Richiede l'accesso"
 
 #. module: mrp_workorder_hr
 #. odoo-javascript
@@ -166,7 +168,7 @@ msgstr ""
 #: code:addons/mrp_workorder_hr/static/src/views/list/mrp_workorder_list_controller.js:0
 #, python-format
 msgid "Select Employee"
-msgstr ""
+msgstr "Seleziona dipendente"
 
 #. module: mrp_workorder_hr
 #. odoo-javascript
@@ -181,7 +183,7 @@ msgstr "Ferma"
 #: code:addons/mrp_workorder_hr/static/src/views/list/mrp_workorder_list_controller.js:0
 #, python-format
 msgid "This employee is not allowed on this workcenter"
-msgstr ""
+msgstr "Questo dipendente non può stare nel centro di lavoro selezionato"
 
 #. module: mrp_workorder_hr
 #: model:ir.model,name:mrp_workorder_hr.model_mrp_workcenter
@@ -206,7 +208,7 @@ msgstr "Registro produttività del centro di lavoro"
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workorder__employee_ids
 msgid "Working Employees"
-msgstr ""
+msgstr "Dipendenti al lavoro"
 
 #. module: mrp_workorder_hr
 #. odoo-javascript
@@ -214,29 +216,29 @@ msgstr ""
 #: code:addons/mrp_workorder_hr/static/src/views/list/mrp_workorder_list_controller.js:0
 #, python-format
 msgid "Wrong password !"
-msgstr ""
+msgstr "Password errata!"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,help:mrp_workorder_hr.field_mrp_workcenter_productivity__employee_id
 msgid "employee that record this working time"
-msgstr ""
+msgstr "dipendente che registra l'orario di lavoro"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workcenter_productivity__employee_cost
 msgid "employee_cost"
-msgstr ""
+msgstr "employee_cost"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workcenter__employee_ids
 msgid "employees with access"
-msgstr ""
+msgstr "dipendenti con accesso"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,help:mrp_workorder_hr.field_mrp_workcenter__employee_ids
 msgid "if left empty, all employees can log in to the workcenter"
-msgstr ""
+msgstr "se vuoto, tutti i dipendenti possono accedere al centro di lavoro"
 
 #. module: mrp_workorder_hr
 #: model_terms:ir.ui.view,arch_db:mrp_workorder_hr.mrp_workcenter_form_view_inherit
 msgid "per employee"
-msgstr ""
+msgstr "per dipendente"

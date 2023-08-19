@@ -7,6 +7,7 @@
 # Khwunchai Jaengsawang <khwunchai.j@ku.th>, 2022
 # Wichanon Jamwutthipreecha, 2022
 # Martin Trigaux, 2022
+# Rasareeyar Lappiam, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:17+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Rasareeyar Lappiam, 2023\n"
 "Language-Team: Thai (https://app.transifex.com/odoo/teams/41243/th/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -65,7 +66,7 @@ msgstr ""
 #. module: account_auto_transfer
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model_line__analytic_account_ids
 msgid "Analytic Filter"
-msgstr ""
+msgstr "ตัวกรองการวิเคราะห์"
 
 #. module: account_auto_transfer
 #: model_terms:ir.ui.view,arch_db:account_auto_transfer.view_transfer_model_form
@@ -189,7 +190,7 @@ msgstr ""
 #. module: account_auto_transfer
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model__journal_id
 msgid "Destination Journal"
-msgstr ""
+msgstr "สมุดรายวันปลายทาง"
 
 #. module: account_auto_transfer
 #: model_terms:ir.ui.view,arch_db:account_auto_transfer.view_transfer_model_form
@@ -410,6 +411,13 @@ msgstr "โอน"
 #: model:ir.model.fields.selection,name:account_auto_transfer.selection__account_transfer_model__frequency__year
 msgid "Yearly"
 msgstr "รายปี"
+
+#. module: account_auto_transfer
+#. odoo-python
+#: code:addons/account_auto_transfer/models/account_move_line.py:0
+#, python-format
+msgid "You cannot set Tax on Automatic Transfer's entries."
+msgstr ""
 
 #. module: account_auto_transfer
 #: model_terms:ir.ui.view,arch_db:account_auto_transfer.view_transfer_model_form

@@ -23,14 +23,14 @@ msgstr ""
 #. module: stock_barcode_mrp_subcontracting
 #: model:ir.model.fields,field_description:stock_barcode_mrp_subcontracting.field_stock_move_line__is_subcontract_stock_barcode
 msgid "Is Subcontract Stock Barcode"
-msgstr ""
+msgstr "下請け在庫バーコードか"
 
 #. module: stock_barcode_mrp_subcontracting
 #. odoo-javascript
 #: code:addons/stock_barcode_mrp_subcontracting/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "No components to register"
-msgstr ""
+msgstr "登録する構成品なし"
 
 #. module: stock_barcode_mrp_subcontracting
 #. odoo-javascript
@@ -49,14 +49,14 @@ msgstr "製品の移動(在庫移動ライン)"
 #: code:addons/stock_barcode_mrp_subcontracting/static/src/components/main.xml:0
 #, python-format
 msgid "Record Components"
-msgstr ""
+msgstr "構成品を記録"
 
 #. module: stock_barcode_mrp_subcontracting
 #. odoo-javascript
 #: code:addons/stock_barcode_mrp_subcontracting/static/src/components/line.xml:0
 #, python-format
 msgid "Show subcontract Details"
-msgstr ""
+msgstr "下請け詳細を表示"
 
 #. module: stock_barcode_mrp_subcontracting
 #: model:ir.model,name:stock_barcode_mrp_subcontracting.model_stock_picking

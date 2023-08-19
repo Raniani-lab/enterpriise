@@ -197,8 +197,8 @@ msgid ""
 "An appraisal feedback was requested. Please take time to fill the <a "
 "href=\"%s\" target=\"_blank\">survey</a>"
 msgstr ""
-"Er werd om een beoordelingsfeedback gevraagd. Neem even de tijd om de <a "
-"href=\"%s\" target=\"_blank\">enquête</a> in te vullen"
+"Er werd om een feedback gevraagd. Neem even de tijd om de <a href=\"%s\" "
+"target=\"_blank\">enquête</a> in te vullen"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.arow_3_1_11
@@ -214,12 +214,12 @@ msgstr "Antwoord deadline"
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__appraisal_id
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_survey_user_input__appraisal_id
 msgid "Appraisal"
-msgstr "Beoordeling"
+msgstr "Evaluatie"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__employee_id
 msgid "Appraisal Employee"
-msgstr "Beoordeling werknemer"
+msgstr "Evaluatie werknemer"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_survey_survey__is_appraisal
@@ -229,13 +229,13 @@ msgstr "Alleen beoordelingsmanagers"
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_hr_department__appraisal_survey_template_id
 msgid "Appraisal Survey"
-msgstr "Beoordelingsonderzoek"
+msgstr "Enquête evaluatie"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_res_company__appraisal_survey_template_id
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_res_config_settings__appraisal_survey_template_id
 msgid "Appraisal Survey Template"
-msgstr "Sjabloon voor beoordelingsonderzoek"
+msgstr "Sjabloon voor enquête evaluatie"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_1_3
@@ -245,12 +245,12 @@ msgstr "Evaluatie voor periode"
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_survey_page_statistics_header
 msgid "Appraisal of"
-msgstr "Beoordeling van"
+msgstr "Evaluatie van"
 
 #. module: hr_appraisal_survey
 #: model:mail.template,name:hr_appraisal_survey.mail_template_appraisal_ask_feedback
 msgid "Appraisal: Ask Feedback"
-msgstr "Beoordeling: Feedback vragen"
+msgstr "Evaluatie: Feedback vragen"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_1_5
@@ -266,7 +266,7 @@ msgstr "Vraag feedback"
 #. module: hr_appraisal_survey
 #: model:ir.model,name:hr_appraisal_survey.model_appraisal_ask_feedback
 msgid "Ask Feedback for Appraisal"
-msgstr "Vraag feedback voor beoordeling"
+msgstr "Vraag feedback voor evaluatie"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_hr_appraisal__employee_feedback_ids
@@ -276,12 +276,12 @@ msgstr "Gevraagde feedback"
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1
 msgid "At the conclusion of the appraisal time period"
-msgstr "Aan het einde van de beoordelingsperiode"
+msgstr "Aan het einde van de evaluatieperiode"
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1
 msgid "At the outset of the appraisal time period"
-msgstr "Aan het begin van de beoordelingsperiode"
+msgstr "Aan het begin van de evaluatieperiode"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__attachment_ids
@@ -296,7 +296,7 @@ msgstr "Auteur"
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_survey_button_form_view
 msgid "Back to the appraisal"
-msgstr "Terug naar de beoordeling"
+msgstr "Terug naar de evaluatie"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__can_edit_body
@@ -437,12 +437,12 @@ msgstr "Heb je een opmerking om me te vertellen en me te helpen verbeteren?"
 #. module: hr_appraisal_survey
 #: model:ir.model,name:hr_appraisal_survey.model_hr_appraisal
 msgid "Employee Appraisal"
-msgstr "Werknemerbeoordeling"
+msgstr "Werknemersevaluatie"
 
 #. module: hr_appraisal_survey
 #: model:survey.survey,title:hr_appraisal_survey.appraisal_feedback_template
 msgid "Employee Appraisal Form"
-msgstr "Beoordelingsformulier werknemer"
+msgstr "Evaluatieformulier werknemer"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_5
@@ -648,7 +648,7 @@ msgstr ""
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1
 msgid "Overall Purpose Of Employee Appraisal"
-msgstr "Algemeen doel van de personeelsbeoordeling"
+msgstr "Algemeen doel van de personeelsevaluatie"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_4_2
@@ -737,7 +737,7 @@ msgstr "Verzonden enquêtes"
 #. module: hr_appraisal_survey
 #: model:mail.template,description:hr_appraisal_survey.mail_template_appraisal_ask_feedback
 msgid "Sent to employees to gather appraisal feedback"
-msgstr "Verzonden naar werknemers om beoordelingsfeedback te verzamelen"
+msgstr "Verzonden naar werknemers om feedback te verzamelen"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.y_360_5_4
@@ -818,7 +818,7 @@ msgstr "Enquêtes"
 #. module: hr_appraisal_survey
 #: model:mail.template,subject:hr_appraisal_survey.mail_template_appraisal_ask_feedback
 msgid "Take part in {{ object.employee_id.name or 'this' }} appraisal"
-msgstr "Neem deel aan {{ object.employee_id.name or 'deze' }} beoordeling"
+msgstr "Neem deel aan {{ object.employee_id.name or 'deze' }} evaluatie"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.arow_3_1_4
@@ -874,7 +874,7 @@ msgid ""
 "fields."
 msgstr ""
 "De leidinggevende synthetiseert en integreert alle input in de voltooide "
-"beoordeling. De motivatie van de beoordeling wordt toegelicht in de ad hoc "
+"evaluatie. De motivatie van de evaluatie wordt toegelicht in de ad hoc "
 "velden."
 
 #. module: hr_appraisal_survey
@@ -896,9 +896,9 @@ msgid ""
 "This field is used with 360 Feedback setting on Appraisal App, the aim is to"
 " define a default Survey Template related to this department."
 msgstr ""
-"Dit veld wordt gebruikt met 360 Feedback-instelling op de beoordeling-app, "
-"het doel is om een standaard enquêtesjabloon te definiëren met betrekking "
-"tot deze afdeling."
+"Dit veld wordt gebruikt met 360 Feedback-instelling op de evaluatie-app, het"
+" doel is om een standaard enquêtesjabloon te definiëren met betrekking tot "
+"deze afdeling."
 
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_survey_button_form_view
@@ -912,8 +912,7 @@ msgid ""
 "employee. Filling it helps us improving the appraisal process."
 msgstr ""
 "Met deze enquête kan je feedback geven over je samenwerking met een "
-"werknemer. Door het in te vullen kunnen we het beoordelingsproces "
-"verbeteren."
+"werknemer. Door het in te vullen kunnen we het evaluatieproces verbeteren."
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.arow_3_1_15
@@ -1010,7 +1009,7 @@ msgid ""
 "You can create surveys used for appraisals. Design easily your appraisal,\n"
 "                send invitations and analyze answers."
 msgstr ""
-"Je kunt enquêtes maken die worden gebruikt voor beoordelingen. Ontwerp eenvoudig je beoordeling,\n"
+"Je kunt enquêtes maken die worden gebruikt voor evaluaties. Ontwerp eenvoudig je evaluatie,\n"
 "                verstuur uitnodigingen en analyseer antwoorden."
 
 #. module: hr_appraisal_survey

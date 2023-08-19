@@ -661,7 +661,7 @@ msgstr "借方"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Define fiscal years of more or less than one year"
-msgstr "Define fiscal years of more or less than one year"
+msgstr "將會計年度設定為長過或短過一年"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
@@ -1035,7 +1035,7 @@ msgstr "應收憑單"
 #: model:ir.model.fields,field_description:account_accountant.field_res_company__invoicing_switch_threshold
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__invoicing_switch_threshold
 msgid "Invoicing Switch Threshold"
-msgstr "Invoicing Switch Threshold"
+msgstr "發票賬項生效門檻"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__st_line_is_reconciled
@@ -1196,8 +1196,6 @@ msgid ""
 "Let’s use AI to fill in the form<br/><br/><i>Tip: If the OCR is not done "
 "yet, wait a few more seconds and try again.</i>"
 msgstr ""
-"Let’s use AI to fill in the form<br/><br/><i>Tip: If the OCR is not done "
-"yet, wait a few more seconds and try again.</i>"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__line_ids
@@ -1854,9 +1852,7 @@ msgstr "發票「%(display_name_html)s」的未付清金額 %(open_amount)s 會�
 msgid ""
 "The invoices up to this date will not be taken into account as accounting "
 "entries"
-msgstr ""
-"The invoices up to this date will not be taken into account as accounting "
-"entries"
+msgstr "以下日期及之前的發票，不會被視為會計記項"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form

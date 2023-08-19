@@ -464,7 +464,7 @@ msgstr ""
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__manufacturer
 msgid "Manufacturer"
-msgstr ""
+msgstr "Produsen"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__name

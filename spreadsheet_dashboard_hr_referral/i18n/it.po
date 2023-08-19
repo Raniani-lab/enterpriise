@@ -37,7 +37,7 @@ msgstr "Candidature"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Applications by Creation Date"
-msgstr ""
+msgstr "Candidature per data creazione"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -85,21 +85,21 @@ msgstr "Assunto"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Hired Ratio"
-msgstr ""
+msgstr "Rapporto assunzioni"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Hired by referral"
-msgstr ""
+msgstr "Assunti per referenza"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Hired ratio"
-msgstr ""
+msgstr "Rapporto assunzioni"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -122,7 +122,7 @@ msgstr "Medio"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Most Hired Job Positions"
-msgstr ""
+msgstr "Posizioni lavorative con più assunti"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -144,14 +144,14 @@ msgstr "Nuove candidature"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "New Hires"
-msgstr ""
+msgstr "Nuove assunzioni"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "New applicants"
-msgstr ""
+msgstr "Nuovi candidati"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -186,7 +186,7 @@ msgstr "Durata del processo"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Process duration"
-msgstr ""
+msgstr "Durata processo"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -204,7 +204,7 @@ msgstr "Valore"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Recent Applications"
-msgstr ""
+msgstr "Candidature recenti"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -221,35 +221,35 @@ msgstr "Selezionatore"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Recruitment Analysis by Company"
-msgstr ""
+msgstr "Analisi selezione del personale per azienda"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Recruitment Analysis by Job"
-msgstr ""
+msgstr "Aanalisi selezione del personale per lavoro"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Recruitment Analysis by Medium"
-msgstr ""
+msgstr "Analisi selezione del personale per mezzo"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Recruitment Analysis by Recruiter"
-msgstr ""
+msgstr "Analisi selezione del personale per reclutatore"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Recruitment Analysis by Source"
-msgstr ""
+msgstr "Analisi selezione del personale per fonte"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -263,7 +263,7 @@ msgstr "Tasso referenze"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Referral rate"
-msgstr ""
+msgstr "Tasso referenze"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -285,14 +285,14 @@ msgstr "Fase"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Top Companies"
-msgstr ""
+msgstr "Aziende migliori"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Top Job Positions"
-msgstr ""
+msgstr "Posizioni lavorative migliori"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript
@@ -306,7 +306,7 @@ msgstr "Medie migliori"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Top Recruiters"
-msgstr ""
+msgstr "Reclutatori migliori"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. odoo-javascript

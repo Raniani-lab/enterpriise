@@ -121,7 +121,7 @@ msgstr ""
 #. module: hr_recruitment_sign
 #: model:ir.model.fields,field_description:hr_recruitment_sign.field_hr_recruitment_sign_document_wizard__has_both_template
 msgid "Has Both Template"
-msgstr ""
+msgstr "Ha entrambi i modelli"
 
 #. module: hr_recruitment_sign
 #: model:ir.model.fields,field_description:hr_recruitment_sign.field_hr_recruitment_sign_document_wizard__id
@@ -182,7 +182,7 @@ msgstr "Messaggio Opzionale ... "
 #. module: hr_recruitment_sign
 #: model:ir.model.fields,field_description:hr_recruitment_sign.field_hr_recruitment_sign_document_wizard__possible_template_ids
 msgid "Possible Template"
-msgstr ""
+msgstr "Modello possibile"
 
 #. module: hr_recruitment_sign
 #: model:ir.actions.server,name:hr_recruitment_sign.action_request_signature

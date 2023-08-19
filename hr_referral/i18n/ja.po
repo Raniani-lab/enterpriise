@@ -1485,7 +1485,7 @@ msgstr ""
 #: code:addons/hr_referral/models/hr_applicant.py:0
 #, python-format
 msgid "You are not allowed to access applicant records."
-msgstr ""
+msgstr "応募者の記録にアクセスする権限がありません。"
 
 #. module: hr_referral
 #. odoo-python

@@ -702,7 +702,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__can_upload
 msgid "Can Upload"
-msgstr ""
+msgstr "アップロード可能"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_folder_deletion_wizard_view_form

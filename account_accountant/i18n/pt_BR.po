@@ -278,7 +278,7 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__fiscalyear_lock_date
 msgid "All Users Lock Date"
-msgstr ""
+msgstr "Data de travamento de todos os usuários"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -1405,7 +1405,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_list_bank_rec_widget
 #, python-format
 msgid "Open Amount"
-msgstr ""
+msgstr "Valor em aberto"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_list_bank_rec_widget

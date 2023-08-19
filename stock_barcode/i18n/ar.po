@@ -252,7 +252,7 @@ msgstr "تطبيق الباركود "
 #. module: stock_barcode
 #: model:ir.actions.client,name:stock_barcode.stock_barcode_inventory_client_action
 msgid "Barcode Inventory Client Action"
-msgstr "الباركود الخاص بإجراء عميل المخزون "
+msgstr "إجراء عميل باركود المخزون "
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.res_config_settings_view_form
@@ -262,7 +262,7 @@ msgstr "تسمية الباركود"
 #. module: stock_barcode
 #: model:ir.actions.client,name:stock_barcode.stock_barcode_picking_client_action
 msgid "Barcode Picking Client Action"
-msgstr "الباركود الخاص بإجراء عميل الانتقاء "
+msgstr "إجراء عميل باركود الانتقاء "
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_scrap___barcode_scanned
@@ -685,7 +685,7 @@ msgstr "لا توجد عملية انتقاء أو منتج مقابل للبا�
 #: code:addons/stock_barcode/models/stock_picking.py:0
 #, python-format
 msgid "No product or package found for barcode %s"
-msgstr "لم يتم العثور على طرد للباركود %s "
+msgstr "لم يتم العثور على منتج أو طرد للباركود %s "
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_res_config_settings__barcode_nomenclature_id
@@ -1093,7 +1093,7 @@ msgstr "مسح رقم تسلسلي ضوئياً، ثم موقع الوجهة "
 #: code:addons/stock_barcode/static/src/kanban/stock_barcode_kanban_renderer.xml:0
 #, python-format
 msgid "Scan a transfer or a product to filter your records"
-msgstr "قم بمسح شحنة ضوئياً لتصفية سجلاتك "
+msgstr "قم بمسح شحنة أو منتج ضوئياً لتصفية سجلاتك "
 
 #. module: stock_barcode
 #. odoo-javascript

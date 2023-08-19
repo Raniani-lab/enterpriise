@@ -45,6 +45,8 @@ msgid ""
 "<i class=\"fa fa-fw fa-lg fa-barcode me-3\" title=\"Serial/Lot Number\" "
 "attrs=\"{'invisible': [('tracking', 'not in', ['serial', 'lot'])]}\"/>"
 msgstr ""
+"<i class=\"fa fa-fw fa-lg fa-barcode me-3\" title=\"Serial/Lot Number\" "
+"attrs=\"{'invisible': [('tracking', 'not in', ['serial', 'lot'])]}\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
@@ -59,7 +61,7 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 msgid "<i class=\"fa fa-fw fa-lg fa-cube me-3\" title=\"Quantity\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-lg fa-cube me-3\" title=\"Quantity\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
@@ -72,6 +74,8 @@ msgid ""
 "<i class=\"fa fa-fw fa-lg fa-long-arrow-right me-3\" title=\"Destination "
 "Location\"/>"
 msgstr ""
+"<i class=\"fa fa-fw fa-lg fa-long-arrow-right me-3\" title=\"Destination "
+"Location\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
@@ -91,12 +95,14 @@ msgid ""
 "<i class=\"fa fa-fw fa-lg fa-map-marker text-center me-3\" title=\"Source "
 "Location\"/>"
 msgstr ""
+"<i class=\"fa fa-fw fa-lg fa-map-marker text-center me-3\" title=\"Source "
+"Location\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
 msgid "<i class=\"fa fa-fw fa-lg fa-tags me-3\" title=\"Product\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-lg fa-tags me-3\" title=\"Product\"/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
@@ -552,7 +558,7 @@ msgstr "在庫ロケーション"
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__is_completed
 msgid "Is Completed"
-msgstr ""
+msgstr "完了済か"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_cancel_operation____last_update

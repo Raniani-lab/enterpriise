@@ -2405,7 +2405,7 @@ msgstr ""
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_frontend
 msgid "Try Odoo"
-msgstr ""
+msgstr "Coba Odoo"
 
 #. module: knowledge
 #. odoo-python

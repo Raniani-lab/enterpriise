@@ -757,7 +757,7 @@ msgstr ""
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Like"
-msgstr ""
+msgstr "いいね(好評価)"
 
 #. module: social
 #. odoo-javascript
@@ -1483,7 +1483,7 @@ msgstr ""
 msgid ""
 "Sorry, you're not allowed to re-link this account, please contact your "
 "administrator."
-msgstr ""
+msgstr "このアカウントに再リンクする権限がありません。管理者に連絡して下さい。"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__source_id

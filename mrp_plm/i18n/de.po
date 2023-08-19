@@ -222,7 +222,7 @@ msgstr "Rebase anwenden"
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__type
 msgid "Apply on"
-msgstr "Anzuwenden auf"
+msgstr "Anwenden auf"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval__approval_date

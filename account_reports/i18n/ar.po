@@ -1769,6 +1769,13 @@ msgstr "معالج مخصص للتقرير الضريبي العام (الضري
 
 #. module: account_reports
 #. odoo-python
+#: code:addons/account_reports/models/account_journal_report.py:0
+#, python-format
+msgid "Go to report configuration"
+msgstr "الذهاب إلى تهيئة التقرير "
+
+#. module: account_reports
+#. odoo-python
 #: code:addons/account_reports/models/account_sales_report.py:0
 #, python-format
 msgid "Goods"
@@ -3076,6 +3083,17 @@ msgstr "النص"
 
 #. module: account_reports
 #. odoo-python
+#: code:addons/account_reports/models/account_journal_report.py:0
+#, python-format
+msgid ""
+"The 'load more limit' setting of this report is too low to display all the "
+"lines of the entry you're trying to show."
+msgstr ""
+"إعداد \"تحميل حد أكبر\" لهذا التقرير قليل جداً ولذلك لا يمكن عرض كافة بنود "
+"القيد التي تحاول عرضها. "
+
+#. module: account_reports
+#. odoo-python
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid ""
@@ -3513,6 +3531,14 @@ msgstr "XLSX"
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_main_template
 msgid "You are using custom exchange rates."
 msgstr "أنت تستخدم أسعار صرف مخصصة "
+
+#. module: account_reports
+#. odoo-python
+#: code:addons/account_reports/models/account_move.py:0
+#, python-format
+msgid "You can't open a tax report from a move without a VAT closing date."
+msgstr ""
+"لا يمكنك فتح تقرير ضريبي من حركة دون تاريخ إقفال ضريبة القيمة المضافة. "
 
 #. module: account_reports
 #. odoo-python

@@ -749,14 +749,14 @@ msgstr "Fogli di calcolo"
 #: code:addons/spreadsheet_edition/static/src/bundle/chart/side_panels/odoo_bar/odoo_bar_config_panel.xml:0
 #, python-format
 msgid "Stacked barchart"
-msgstr ""
+msgstr "Grafico a barre impilato"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/bundle/chart/side_panels/odoo_line/odoo_line_config_panel.xml:0
 #, python-format
 msgid "Stacked linechart"
-msgstr ""
+msgstr "Grafico a linee in pila"
 
 #. module: spreadsheet_edition
 #. odoo-javascript

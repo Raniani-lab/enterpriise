@@ -264,11 +264,11 @@ msgstr "منذ الفترة الماضية"
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "stats mo - current"
-msgstr ""
+msgstr "إحصائيات أمر التصنيع - الحالية "
 
 #. module: spreadsheet_dashboard_mrp_account
 #. odoo-javascript
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "stats mo - previous"
-msgstr ""
+msgstr "إحصائيات أوامر التصنيع - السابق "

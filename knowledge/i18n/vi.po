@@ -1912,7 +1912,7 @@ msgstr "Số lỗi"
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__message_needaction_counter
 msgid "Number of messages requiring action"
-msgstr ""
+msgstr "Số tin nhắn cần xử lý"
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__message_has_error_counter

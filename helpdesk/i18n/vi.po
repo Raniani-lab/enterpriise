@@ -2405,7 +2405,7 @@ msgstr "Số lỗi"
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__message_needaction_counter
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__message_needaction_counter
 msgid "Number of messages requiring action"
-msgstr ""
+msgstr "Số tin nhắn cần xử lý"
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__message_has_error_counter

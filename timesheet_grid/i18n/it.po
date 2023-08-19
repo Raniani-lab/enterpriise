@@ -956,6 +956,9 @@ msgid ""
 "email reminder will be sent to timesheet managers that still have timesheets"
 " to validate."
 msgstr ""
+"Numero di giorni che seguono la fine della settimana/del mese dopo il quale "
+"verrà inviato un promemoria automatica via e-mail ai responsabili dei fogli "
+"ore che devono ancora validare fogli ore."
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_res_config_settings__reminder_user_delay
@@ -964,6 +967,10 @@ msgid ""
 "email reminder will be sent to timesheet users that still have timesheets to"
 " encode (according to their working hours)."
 msgstr ""
+"Numero di giorni che seguono la fine della settimana/del mese dopo il quale "
+"verrà inviato un promemoria automatico via e-mail agli utenti dei fogli ore "
+"che devono ancora inserire dati nei rispettivi fogli (secondo gli orari di "
+"lavoro)."
 
 #. module: timesheet_grid
 #. odoo-python
@@ -1414,6 +1421,8 @@ msgid ""
 "Timesheets before the %s (included) have been validated, and can no longer "
 "be %s."
 msgstr ""
+"I fogli ore che precedono il %s (incluso) sono stati convalidati e non "
+"possono più essere %s."
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
@@ -1425,6 +1434,12 @@ msgid ""
 "of 15 min). We recommend having the same value for the minimal duration and "
 "for the round up."
 msgstr ""
+"I fogli ore registrati attraverso il timer che non rispettano la durata "
+"minima verranno automaticamente arrotondati al valore indicato. Ad esempio, "
+"se blocchi il tuo timer a 00:04:36 la durata della voce del foglio ore verrà"
+" arrotondata automaticamente a 00:15 (assumendo che tu abbia stabilito una "
+"durata minima di 15 min). Ti consigliamo di stabilire lo stesso valore per "
+"la durata minima e per l'arrotondamento."
 
 #. module: timesheet_grid
 #: model:ir.actions.act_window,name:timesheet_grid.action_timesheet_previous_month
@@ -1518,7 +1533,7 @@ msgstr "Riga convalidata"
 #. module: timesheet_grid
 #: model:ir.actions.server,name:timesheet_grid.timesheet_grid_all_timesheets_action_server
 msgid "Validation All Timesheet Server Action"
-msgstr ""
+msgstr "Azione server convalida tutti i fogli ore"
 
 #. module: timesheet_grid
 #: model:ir.actions.server,name:timesheet_grid.timesheet_grid_week_action_server
@@ -1584,6 +1599,8 @@ msgid ""
 "You cannot adjust the time of the timesheet for a project with timesheets "
 "disabled."
 msgstr ""
+"Non è possibile sistemare l'orario di un foglio ore per un progetto i cui "
+"fogli ore sono disattivati."
 
 #. module: timesheet_grid
 #. odoo-python
@@ -1627,6 +1644,10 @@ msgid ""
 "employees who are not part of your team or are not in a state that can be "
 "validated. This may be due to the fact that they are dated in the future."
 msgstr ""
+"Non è possibile convalidare i fogli ore selezionati perché appartengono a "
+"dipendenti che non sono parte del tuo team e non si trovano in uno stato che"
+" può essere convalidato. Probabilmente, a causa del fatto che hanno una data"
+" futura."
 
 #. module: timesheet_grid
 #: model:ir.model.fields.selection,name:timesheet_grid.selection__res_company__timesheet_mail_employee_interval__months
@@ -1678,7 +1699,7 @@ msgstr "modificato"
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
 msgid "or a"
-msgstr ""
+msgstr "o un"
 
 #. module: timesheet_grid
 #. odoo-javascript

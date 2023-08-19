@@ -133,7 +133,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "<b>Gas:</b> 18,700 Pounds of CO² = 18,700*0.4536 = 8482.32 kg"
-msgstr ""
+msgstr "<b>Gas:</b> 18.700 libbre di CO² = 18.700*0,4536 = 8482,32 kg"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
@@ -148,22 +148,24 @@ msgstr "<b>Firmatari:</b>"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "<b>Solid Waste:</b> 1290 Pounds = 1290*0.4536 = 585.14 kg"
-msgstr ""
+msgstr "<b>Rifiuti solidi:</b> 1290 libbre = 1290*0,4536 = 585,14 kg"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "<b>Total Energy:</b> 27 Millions BTU = 27,000,000*0.0002931 = 7.91 kWh"
 msgstr ""
+"<b>Energia totale:</b> 27 milioni di Btu = 27.000.000*0,0002931 = 7,91 kWh"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "<b>Water:</b> 23,400 Gallons = 23,400*3.78541 = 88578.59 L"
-msgstr ""
+msgstr "<b>Acqua:</b> 23.400 galloni = 23.400*3,78541 = 88578,59 litri"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "<b>Wood Use:</b> 4 US Short Tons = 4*907.18474 = 3628.73 kg"
 msgstr ""
+"<b>Utilizzo del legno:</b> 4 sort ton americane = 4*907,18474 = 3628,73 kg"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
@@ -356,7 +358,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "A shower uses approximately 65 L of water"
-msgstr ""
+msgstr "Per una doccia vengono consumati approsimativamente 65 litri di acqua"
 
 #. module: sign
 #. odoo-python
@@ -633,7 +635,7 @@ msgstr "Basato su"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "Based on various websites, here are our comparisons:"
-msgstr ""
+msgstr "Ecco i nostri paragoni basati su vari siti web:"
 
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_log__request_state__sent
@@ -1189,7 +1191,7 @@ msgstr "ERRORE: file PDF non valido."
 #. module: sign
 #: model:ir.actions.report,name:sign.sign_report_green_savings_action
 msgid "Ecological Savings by using Electronical Signatures"
-msgstr ""
+msgstr "Risparmio ecologico grazie alla firma elettronica"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign._doc_sign
@@ -1921,12 +1923,12 @@ msgstr "I miei modelli"
 #: model:ir.actions.act_window,name:sign.sign_request_my_requests_action
 #: model:ir.ui.menu,name:sign.sign_request_my_requests
 msgid "My requests"
-msgstr ""
+msgstr "Le mie richieste"
 
 #. module: sign
 #: model:sign.template.tag,name:sign.sign_template_tag_2
 msgid "NDA"
-msgstr "Accordo di non divulgazione"
+msgstr "Accordo di riservatezza"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_role__name
@@ -2069,7 +2071,7 @@ msgstr "Non nei preferiti, impostarla"
 #. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_request_waiting_for_me_action
 msgid "Nothing to sign at the moment!"
-msgstr ""
+msgstr "Al momento non c'è nulla da firmare!"
 
 #. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_request_my_requests_action
@@ -2114,12 +2116,12 @@ msgstr "Numero di pagine"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "One can weights 15 g"
-msgstr ""
+msgstr "Uno può pesare 15g"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "One liter of gas fuel will produce 8.9 kg of CO²"
-msgstr ""
+msgstr "Un litro di carburante produce 8,9 kg di CO²"
 
 #. module: sign
 #. odoo-python
@@ -3451,6 +3453,10 @@ msgid ""
 "number of contacts in copy if the sign request is signed) = total of pages. "
 "We assume that one page weights 0.005 kilograms."
 msgstr ""
+"Il totale dei fogli risparmiati si basa su: il numero delle richieste di "
+"firma inviate x il numero di fogli nel documento x (numero di contatti che "
+"devono firmare + numero di contatti in copia se la richiesta di firma è "
+"firmata) = totale pagine. Presumiamo che una pagina pesi 0,005 kilogrammi."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_requests
@@ -3581,7 +3587,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_template_action
 msgid "Try our sample document"
-msgstr ""
+msgstr "Prova il nostro documento modello"
 
 #. module: sign
 #. odoo-javascript
@@ -3648,19 +3654,19 @@ msgstr "Carica un PDF"
 #. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_request_action
 msgid "Upload a PDF file or use an existing template to begin."
-msgstr ""
+msgstr "Carica un file PDF o utilizza un modello esistente per iniziare."
 
 #. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_template_action
 msgid "Upload a PDF file to create your first template"
-msgstr ""
+msgstr "Carica un file PDF per creare il tuo primo modello"
 
 #. module: sign
 #. odoo-javascript
 #: code:addons/sign/static/src/views/common.xml:0
 #, python-format
 msgid "Upload a PDF file to use as a template."
-msgstr ""
+msgstr "Carica un file PDF da utilizzare come modello."
 
 #. module: sign
 #. odoo-javascript
@@ -3953,7 +3959,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_request_waiting_for_me_action
 msgid "You will find documents waiting for your signature here."
-msgstr ""
+msgstr "Qui troverai i documenti in attesa di firma."
 
 #. module: sign
 #. odoo-javascript
@@ -3967,6 +3973,7 @@ msgstr "Riceverai una copia del documento firmato per posta."
 #: model_terms:ir.actions.act_window,help:sign.sign_template_action
 msgid "You're one click away from automating your signature process!"
 msgstr ""
+"Con un clic in più è possibile automatizzare il tuo processo di firma!"
 
 #. module: sign
 #. odoo-python
@@ -4074,7 +4081,7 @@ msgstr "es. dipendente"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
 msgid "e.g. Non-disclosure agreement"
-msgstr "es. Accordo di non divulgazione"
+msgstr "ad es. Accordo di riservatezza"
 
 #. module: sign
 #: model:sign.item.type,tip:sign.sign_item_type_checkbox

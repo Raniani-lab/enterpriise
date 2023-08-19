@@ -1805,7 +1805,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_journal_report.py:0
 #, python-format
 msgid "Go to report configuration"
-msgstr ""
+msgstr "Aller à la configuration du rapport"
 
 #. module: account_reports
 #. odoo-python
@@ -3133,6 +3133,8 @@ msgid ""
 "The 'load more limit' setting of this report is too low to display all the "
 "lines of the entry you're trying to show."
 msgstr ""
+"La limite de chargement de ce rapport est trop lente pour afficher toutes "
+"les lignes de l'écriture que vous essayez d'afficher."
 
 #. module: account_reports
 #. odoo-python

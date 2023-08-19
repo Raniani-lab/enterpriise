@@ -43,6 +43,8 @@ msgid ""
 "<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
 "                        Refresh"
 msgstr ""
+"<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
+"                        Ricarica"
 
 #. module: hr_recruitment_extract
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_extract.hr_recruitment_extract_view_form
@@ -198,7 +200,7 @@ msgstr "Richiede ID IAP-OCR"
 #: model:ir.actions.server,name:hr_recruitment_extract.ir_actions_server_digitize_cv
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_extract.hr_recruitment_extract_view_form
 msgid "Send For Digitization"
-msgstr ""
+msgstr "Invia per digitalizzazione"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_res_company__recruitment_extract_show_ocr_option_selection
@@ -235,6 +237,8 @@ msgid ""
 "The data extraction is not finished yet. The extraction usually takes "
 "between 5 and 10 seconds."
 msgstr ""
+"L'estrazione dei dati non è ancora terminata. In generale, dura dai 5 ai 10 "
+"secondi."
 
 #. module: hr_recruitment_extract
 #. odoo-python
@@ -268,7 +272,7 @@ msgstr ""
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__hr_applicant__extract_state__waiting_upload
 msgid "Waiting upload"
-msgstr ""
+msgstr "In attesa del caricamento"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__hr_applicant__extract_state__waiting_validation

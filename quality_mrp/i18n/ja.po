@@ -35,7 +35,7 @@ msgstr "<span class=\"o_stat_text text-success\">品質検査</span>"
 #. module: quality_mrp
 #: model_terms:ir.ui.view,arch_db:quality_mrp.mrp_production_view_form_inherit_quality
 msgid "<span class=\"o_stat_text\">Quality Alerts</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">品質アラート</span>"
 
 #. module: quality_mrp
 #: model_terms:ir.ui.view,arch_db:quality_mrp.mrp_production_view_form_inherit_quality

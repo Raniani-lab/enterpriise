@@ -1278,7 +1278,7 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__icon
 msgid "Emoji"
-msgstr ""
+msgstr "絵文字"
 
 #. module: knowledge
 #. odoo-javascript
@@ -2313,7 +2313,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/behaviors/embedded_view_behavior/embedded_view_behavior.xml:0
 #, python-format
 msgid "The view does not exist or you are not allowed to access to it."
-msgstr ""
+msgstr "ビューが存在しないか、アクセス権限がありません。"
 
 #. module: knowledge
 #. odoo-python

@@ -892,7 +892,7 @@ msgstr "Font awesome 圖示，例如，fa-task"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__email_from
 msgid "From"
-msgstr "來自"
+msgstr "由"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search

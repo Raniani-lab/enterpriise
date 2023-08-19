@@ -34,7 +34,7 @@ msgstr "Odoo"
 #. module: account_saft
 #: model_terms:ir.ui.view,arch_db:account_saft.saft_template
 msgid "Odoo SA"
-msgstr ""
+msgstr "Odoo SA"
 
 #. module: account_saft
 #. odoo-python

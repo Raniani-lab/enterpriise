@@ -62,7 +62,7 @@ msgstr "Crea"
 #. module: spreadsheet_dashboard_documents
 #: model:ir.model,name:spreadsheet_dashboard_documents.model_spreadsheet_document_to_dashboard
 msgid "Create a dashboard from a spreadsheet document"
-msgstr ""
+msgstr "Crea una dashboard a partire da un foglio di calcolo"
 
 #. module: spreadsheet_dashboard_documents
 #: model:ir.model.fields,field_description:spreadsheet_dashboard_documents.field_spreadsheet_document_to_dashboard__create_uid
@@ -77,12 +77,12 @@ msgstr "Data creazione"
 #. module: spreadsheet_dashboard_documents
 #: model:ir.model.fields,field_description:spreadsheet_dashboard_documents.field_spreadsheet_document_to_dashboard__name
 msgid "Dashboard Name"
-msgstr ""
+msgstr "Nome dashboard"
 
 #. module: spreadsheet_dashboard_documents
 #: model:ir.model.fields,field_description:spreadsheet_dashboard_documents.field_spreadsheet_document_to_dashboard__dashboard_group_id
 msgid "Dashboard Section"
-msgstr ""
+msgstr "Sezione dashboard"
 
 #. module: spreadsheet_dashboard_documents
 #: model:ir.model.fields,field_description:spreadsheet_dashboard_documents.field_spreadsheet_document_to_dashboard__display_name
@@ -119,7 +119,7 @@ msgstr "Ultimo aggiornamento il"
 #: code:addons/spreadsheet_dashboard_documents/static/src/bundle/documents_spreadsheet_action.js:0
 #, python-format
 msgid "Name your dashboard and select its section"
-msgstr ""
+msgstr "Dai un nome alla tua dashboard e seleziona le sezioni"
 
 #. module: spreadsheet_dashboard_documents
 #: model:ir.model,name:spreadsheet_dashboard_documents.model_spreadsheet_dashboard

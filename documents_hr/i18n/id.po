@@ -77,12 +77,12 @@ msgstr ""
 #. module: documents_hr
 #: model:documents.tag,name:documents_hr.documents_hr_documents_absences
 msgid "Absences"
-msgstr ""
+msgstr "Absen"
 
 #. module: documents_hr
 #: model_terms:ir.ui.view,arch_db:documents_hr.res_config_settings_view_form
 msgid "Centralize your employees' documents (contracts, payslips, etc.)"
-msgstr ""
+msgstr "Pusatkan dokumen karyawan Anda (kontrak, slip gaji, dsb.)"
 
 #. module: documents_hr
 #: model:documents.tag,name:documents_hr.documents_hr_documents_Cerification
@@ -102,7 +102,7 @@ msgstr "Pengaturan Konfigurasi"
 #. module: documents_hr
 #: model:ir.model,name:documents_hr.model_hr_departure_wizard
 msgid "Departure Wizard"
-msgstr ""
+msgstr "Departure Wizard"
 
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_res_users__document_ids
@@ -112,7 +112,7 @@ msgstr "Dokumen"
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_hr_employee__document_count
 msgid "Document Count"
-msgstr ""
+msgstr "Jumlah Dokumen"
 
 #. module: documents_hr
 #. odoo-python
@@ -128,7 +128,7 @@ msgstr "Dokumen"
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_res_company__documents_hr_settings
 msgid "Documents Hr Settings"
-msgstr ""
+msgstr "Pengaturan Dokumen HR"
 
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_hr_employee__documents_share_id
@@ -148,28 +148,30 @@ msgid ""
 "Employee's private email must be set to use \"Send Access Link\" function:\n"
 "%s"
 msgstr ""
+"Email pribadi karyawan harus ditetapkan untuk menggunakan fungsi \"Kirim Link Akses\":\n"
+"%s"
 
 #. module: documents_hr
 #: model:documents.tag,name:documents_hr.documents_hr_documents_employees
 msgid "Employees Documents"
-msgstr ""
+msgstr "Dokumen Karyawan"
 
 #. module: documents_hr
 #: model:documents.folder,name:documents_hr.documents_hr_folder
 msgid "HR"
-msgstr ""
+msgstr "HR"
 
 #. module: documents_hr
 #. odoo-python
 #: code:addons/documents_hr/models/hr_employee.py:0
 #, python-format
 msgid "HR Documents: %s"
-msgstr ""
+msgstr "Dokumen HR: %s"
 
 #. module: documents_hr
 #: model:mail.template,name:documents_hr.mail_template_document_folder_link
 msgid "HR: Document Access Link"
-msgstr ""
+msgstr "HR: Link Akses Dokumen"
 
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_res_config_settings__documents_hr_settings
@@ -179,12 +181,12 @@ msgstr "Personalia"
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_hr_departure_wizard__send_hr_documents_access_link
 msgid "Send Access Link"
-msgstr ""
+msgstr "Kirim Link Akses"
 
 #. module: documents_hr
 #: model:ir.actions.server,name:documents_hr.ir_actions_server_send_access_link
 msgid "Send HR Documents Access Link"
-msgstr ""
+msgstr "Kirim Link Akses Dokumen HR"
 
 #. module: documents_hr
 #: model:ir.model.fields,help:documents_hr.field_hr_departure_wizard__send_hr_documents_access_link
@@ -195,14 +197,14 @@ msgstr ""
 #. module: documents_hr
 #: model:mail.template,description:documents_hr.mail_template_document_folder_link
 msgid "Sent manually when recording an employee departure"
-msgstr ""
+msgstr "Kirim manual saat merekam keberangkatan karyawan"
 
 #. module: documents_hr
 #. odoo-python
 #: code:addons/documents_hr/models/hr_employee.py:0
 #, python-format
 msgid "The access link has been sent to the employee."
-msgstr ""
+msgstr "Link akses telah dikirim ke karyawan."
 
 #. module: documents_hr
 #: model:ir.model,name:documents_hr.model_res_users
@@ -222,18 +224,20 @@ msgid ""
 "You must set a private address on the Employee in order to use Document's "
 "features."
 msgstr ""
+"Anda harus menetapkan alamat pribadi Karyawan untuk bisa menggunakan fitur "
+"Dokumen."
 
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_res_company__documents_hr_folder
 msgid "hr Workspace"
-msgstr ""
+msgstr "Ruang Kerja hr"
 
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_res_config_settings__documents_hr_folder
 msgid "hr default workspace"
-msgstr ""
+msgstr "ruang kerja default hr"
 
 #. module: documents_hr
 #: model:mail.template,subject:documents_hr.mail_template_document_folder_link
 msgid "{{ object.name }}, your personal documents access link is available"
-msgstr ""
+msgstr "{{ object.name }}, link akses dokumen pribadi Anda masih tersedia"

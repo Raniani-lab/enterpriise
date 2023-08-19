@@ -1435,7 +1435,7 @@ msgstr "Dikelompokkan berdasarkan"
 #. module: sign
 #: model:sign.template.tag,name:sign.sign_template_tag_1
 msgid "HR"
-msgstr ""
+msgstr "HR"
 
 #. module: sign
 #: model:ir.model,name:sign.model_ir_http

@@ -33,7 +33,7 @@ msgstr "%s e %s sono firmatari."
 #: code:addons/hr_contract_sign/wizard/hr_contract_sign_document_wizard.py:0
 #, python-format
 msgid "%s does not have a work or private email set."
-msgstr ""
+msgstr "Non è presente un lavoro o un indirizzo e-mail privato per %s."
 
 #. module: hr_contract_sign
 #. odoo-python
@@ -160,7 +160,7 @@ msgstr "Responsabile RU"
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__has_both_template
 msgid "Has Both Template"
-msgstr ""
+msgstr "Ha entrambi i modelli"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__id
@@ -170,7 +170,7 @@ msgstr "ID"
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_plan_activity_type__is_signature_request
 msgid "Is Signature Request"
-msgstr ""
+msgstr "È richiesta la firma"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard____last_update
@@ -243,7 +243,7 @@ msgstr "Tipo di attività pianificazione"
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__possible_template_ids
 msgid "Possible Template"
-msgstr ""
+msgstr "Modello possibile"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract__sign_request_ids

@@ -32,6 +32,13 @@ msgid ""
 "    <p>Odoo S.A.</p>\n"
 "</div>"
 msgstr ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"    <p>عزيزنا،<br></p>\n"
+"    <p>لم يتبق لديك رصيد في فاتورة عمليات الشراء داخل التطبيق (IAP) لـ OCR الخاص بحسابك.<br>\n"
+"    يمكنك شحن فاتورة عمليات الشراء داخل التطبيق (IAP) لـ OCR الخاص بحسابك من صفحة إعدادات المحاسبة.</p>\n"
+"    <p>مع أطيب التحيات،<br></p>\n"
+"    <p>Odoo S.A.</p>\n"
+"</div>"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr

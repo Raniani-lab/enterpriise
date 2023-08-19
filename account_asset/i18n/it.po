@@ -1644,7 +1644,7 @@ msgstr "Numero di cespiti creati per incrementarne il valore"
 #: model:ir.model.fields,field_description:account_asset.field_account_move__asset_number_days
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__asset_number_days
 msgid "Number of days"
-msgstr ""
+msgstr "Numero di giorni"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__total_depreciation_entries_count

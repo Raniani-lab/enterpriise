@@ -1224,7 +1224,7 @@ msgstr ""
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Press Enter to post. Press Shift+Enter to insert a Line Break."
-msgstr "按 Enter 鍵發佈。按 Shift+Enter 開始新一行。"
+msgstr "按輸入鍵發帖。按 Shift+輸入鍵換行。"
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_template_view_form
@@ -1583,7 +1583,7 @@ msgstr "同步"
 #: code:addons/social/models/social_post_template.py:0
 #, python-format
 msgid "The 'message' field is required for post ID %s"
-msgstr ""
+msgstr "帖文必須填寫「訊息」欄位（帖文識別碼：%s）"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_post__account_ids

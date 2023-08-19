@@ -760,7 +760,7 @@ msgstr ""
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_propose_change
 msgid "Propose a change in the production"
-msgstr ""
+msgstr "Proponi una modifica nella produzione"
 
 #. module: mrp_workorder
 #. odoo-javascript

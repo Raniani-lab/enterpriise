@@ -2173,7 +2173,7 @@ msgstr ""
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "You cannot dispose of an asset before the lock date."
-msgstr ""
+msgstr "잠금 날짜 이전에는 자산을 처분할 수 없습니다."
 
 #. module: account_asset
 #. odoo-python

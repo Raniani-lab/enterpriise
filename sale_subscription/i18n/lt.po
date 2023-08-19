@@ -10,7 +10,6 @@
 # Naglis Jonaitis, 2022
 # Silvija Butko <silvija.butko@gmail.com>, 2022
 # Audrius Palenskis <audrius.palenskis@gmail.com>, 2022
-# Ramunė ViaLaurea <ramune.vialaurea@gmail.com>, 2022
 # grupoda2 <dmitrijus.ivanovas@gmail.com>, 2022
 # Jonas Zinkevicius <jozi@odoo.com>, 2022
 # Antanas Muliuolis <an.muliuolis@gmail.com>, 2022
@@ -19,6 +18,7 @@
 # Martin Trigaux, 2022
 # Arunas V. <arunas@devoro.com>, 2023
 # Linas Versada <linaskrisiukenas@gmail.com>, 2023
+# Ramunė ViaLaurea <ramune.vialaurea@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -26,7 +26,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Linas Versada <linaskrisiukenas@gmail.com>, 2023\n"
+"Last-Translator: Ramunė ViaLaurea <ramune.vialaurea@gmail.com>, 2023\n"
 "Language-Team: Lithuanian (https://app.transifex.com/odoo/teams/41243/lt/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -254,7 +254,7 @@ msgstr "<i class=\"fa fa-print\"/> Spausdinti"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "<i class=\"fa fa-refresh\"/> Renew"
-msgstr ""
+msgstr "<i class=\"fa fa-refresh\"/> Atnaujinti"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -2366,7 +2366,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.view_order_product_search_inherit
 #: model_terms:ir.ui.view,arch_db:sale_subscription.view_sales_order_filter_subscription
 msgid "Recurring"
-msgstr ""
+msgstr "Yra prenumerata"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__recurring_total
@@ -2523,6 +2523,8 @@ msgstr ""
 #: model:ir.cron,cron_name:sale_subscription.account_analytic_cron_for_invoice
 msgid "Sale Subscription: generate recurring invoices and payments"
 msgstr ""
+"Pardavimo prenumerata: generuokite pasikartojančias sąskaitas faktūras ir "
+"mokėjimus"
 
 #. module: sale_subscription
 #: model:ir.actions.server,name:sale_subscription.account_analytic_cron_ir_actions_server
@@ -3395,7 +3397,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
 #, python-format
 msgid "Upsell"
-msgstr ""
+msgstr "Papildymas"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
@@ -3407,7 +3409,7 @@ msgstr "Papildomas pardavimas"
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_action_upsell
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_upsell
 msgid "Upsells"
-msgstr ""
+msgstr "Papildymai"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__usage
@@ -3552,7 +3554,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__recurring_yearly
 msgid "Yearly Recurring Revenue"
-msgstr ""
+msgstr "Metinės prenumeratos pajamos"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_template__recurring_rule_type__year

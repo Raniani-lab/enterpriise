@@ -486,6 +486,8 @@ msgid ""
 "Gift message:\n"
 "%s"
 msgstr ""
+"禮品訊息：\n"
+"%s"
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__id

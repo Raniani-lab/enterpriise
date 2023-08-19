@@ -1752,7 +1752,7 @@ msgstr "Fecha final"
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__entry_ids
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_rule_form_view
 msgid "Entries"
-msgstr "Asientos"
+msgstr "Entradas"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3143,8 +3143,8 @@ msgid ""
 "Private methods cannot be restricted (since they cannot be called remotely, "
 "this would be useless)."
 msgstr ""
-"No se pueden restringir los métodos privados (ya que no se pueden activar de"
-" forma remota, sería inútil)."
+"No se pueden restringir los métodos privados pues no se pueden activar de "
+"forma remota."
 
 #. module: web_studio
 #. odoo-javascript
@@ -4133,7 +4133,7 @@ msgid ""
 "This approval or the one you already submitted limits you to a single approval on this action.\n"
 "Another user is required to further approve this action."
 msgstr ""
-"Esta aprobación o la que ya presentó lo limita a una sola aprobación de esta acción.\n"
+"Esta aprobación o la que ya presentó le limita a una sola aprobación de esta acción.\n"
 "Es necesario que otro usuario apruebe esta acción."
 
 #. module: web_studio
@@ -4164,8 +4164,8 @@ msgstr ""
 #, python-format
 msgid "This operation caused an error, probably because a xpath was broken"
 msgstr ""
-"Esta operación ha provocado un error, seguramente debido a un problema con "
-"un xpath"
+"Esta operación ha provocado un error, probablemente debido a un problema con"
+" un xpath"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4518,7 +4518,7 @@ msgstr "Solo puede mostrar un usuario o contacto"
 #: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
 msgid "You cannot cancel an approval you didn't set yourself."
-msgstr "No puede cancelar una aprobación que no haya establecido usted mismo."
+msgstr "No puede cancelar una aprobación que no haya establecido usted."
 
 #. module: web_studio
 #. odoo-javascript
@@ -4700,14 +4700,14 @@ msgstr "arriba"
 #: code:addons/web_studio/static/src/client_action/icon_creator/icon_creator.xml:0
 #, python-format
 msgid "upload it"
-msgstr "subirlo"
+msgstr "súbalo"
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/client_action/icon_creator/icon_creator.xml:0
 #, python-format
 msgid "upload one"
-msgstr "subir uno"
+msgstr "suba uno"
 
 #. module: web_studio
 #. odoo-javascript

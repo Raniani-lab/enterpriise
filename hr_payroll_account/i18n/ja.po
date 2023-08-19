@@ -28,7 +28,7 @@ msgstr "勘定科目表テンプレート"
 #. module: hr_payroll_account
 #: model:account.account,name:hr_payroll_account.demo_account
 msgid "Account Payslip Houserental"
-msgstr ""
+msgstr "口座振込明細書 家賃"
 
 #. module: hr_payroll_account
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account.hr_salary_rule_view_form

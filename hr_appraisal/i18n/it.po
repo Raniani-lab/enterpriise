@@ -27,6 +27,8 @@ msgstr ""
 #, python-format
 msgid "%(user)s decided, as %(role)s, to publish the employee's feedback"
 msgstr ""
+"%(user)s ha deciso, in quanto%(role)s, di pubblicare il feedback del "
+"dipendente"
 
 #. module: hr_appraisal
 #. odoo-python
@@ -275,7 +277,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "<span class=\"o_stat_text\">Appraisals</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">Valutazioni</span>"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
@@ -288,6 +290,8 @@ msgid ""
 "<span class=\"text-end\" attrs=\"{'invisible': ['|', ('manager_feedback_published', '=', True), ('can_see_manager_publish', '=', False)]}\">Not Visible to Employee</span>\n"
 "                                            <span class=\"text-end\" attrs=\"{'invisible': ['|', ('manager_feedback_published', '=', False), ('can_see_manager_publish', '=', False)]}\">Visible to Employee</span>"
 msgstr ""
+"<span class=\"text-end\" attrs=\"{'invisible': ['|', ('manager_feedback_published', '=', True), ('can_see_manager_publish', '=', False)]}\">Non visibile al dipendente</span>\n"
+"                                            <span class=\"text-end\" attrs=\"{'invisible': ['|', ('manager_feedback_published', '=', False), ('can_see_manager_publish', '=', False)]}\">Visibile al dipendente</span>"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
@@ -295,6 +299,8 @@ msgid ""
 "<span class=\"text-end\" attrs=\"{'invisible': [('employee_feedback_published', '=', True)]}\">Not Visible to Manager</span>\n"
 "                                            <span class=\"text-end\" attrs=\"{'invisible': [('employee_feedback_published', '=', False)]}\">Visible to Manager</span>"
 msgstr ""
+"<span class=\"text-end\" attrs=\"{'invisible': [('employee_feedback_published', '=', True)]}\">Non visibile al manager</span>\n"
+"                                            <span class=\"text-end\" attrs=\"{'invisible': [('employee_feedback_published', '=', False)]}\">Visibile al manager</span>"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
@@ -429,7 +435,7 @@ msgstr "Template di feedback del manager di valutazione"
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Appraisal Officer"
-msgstr ""
+msgstr "Responsabile valutazione"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__appraisal_plan_posted
@@ -685,7 +691,7 @@ msgstr "Creare una valutazione dopo l'assunzione"
 #. module: hr_appraisal
 #: model_terms:ir.actions.act_window,help:hr_appraisal.action_hr_appraisal_goal
 msgid "Create new goals"
-msgstr ""
+msgstr "Crea nuovi obiettivi"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__create_uid
@@ -845,7 +851,7 @@ msgstr "Utente dipendente"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Employee's"
-msgstr ""
+msgstr "Del dipendente"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
@@ -881,7 +887,7 @@ msgstr "Template di feedback"
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Fill appraisal for %s"
-msgstr ""
+msgstr "Completa la valutazione per %s"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__date_final_interview
@@ -1042,7 +1048,7 @@ msgstr "Sta seguendo"
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__is_implicit_manager
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__is_implicit_manager
 msgid "Is Implicit Manager"
-msgstr ""
+msgstr "È manager implicito"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__is_manager
@@ -1159,7 +1165,7 @@ msgstr "Modello per riscontro supervisore"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__manager_user_ids
 msgid "Manager Users"
-msgstr ""
+msgstr "Utenti manager"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
@@ -1312,12 +1318,12 @@ msgstr "Numero di messaggi con errore di consegna"
 #. module: hr_appraisal
 #: model:res.groups,name:hr_appraisal.group_hr_appraisal_user
 msgid "Officer : Access all appraisals"
-msgstr ""
+msgstr "Responsabile: accede a tutte le valutazioni"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__ongoing_appraisal_count
 msgid "Ongoing Appraisal Count"
-msgstr ""
+msgstr "Numero di valutazioni in corso"
 
 #. module: hr_appraisal
 #. odoo-python
@@ -1364,7 +1370,7 @@ msgstr ""
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Previous Appraisals"
-msgstr ""
+msgstr "Valutazioni precedenti"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__note
@@ -1376,6 +1382,7 @@ msgstr "Nota privata"
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Private note (only accessible to people set as managers)"
 msgstr ""
+"Nota privata (accessibile solo alle persone che hanno il ruolo di manager)"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__progression
@@ -1505,12 +1512,12 @@ msgstr "Impostazioni"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__show_employee_feedback_full
 msgid "Show Employee Feedback Full"
-msgstr ""
+msgstr "Mostra il feedback completo del dipendente"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__show_manager_feedback_full
 msgid "Show Manager Feedback Full"
-msgstr ""
+msgstr "Mostra il feedback completo del manager"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
@@ -1578,7 +1585,7 @@ msgstr ""
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "The appraisal's status has been set to Done by %s"
-msgstr ""
+msgstr "Lo stato della valutazione è stato modificato in Fatto da %s"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__note
@@ -1633,6 +1640,8 @@ msgid ""
 "The employee's feedback will be published without their consent. Do you "
 "really want to publish it? This action will be logged in the chatter."
 msgstr ""
+"Il feedback del dipendente verrà pubblicato senza consenso. Sei sicuro di "
+"volervo pubblicare? L'azione verrà registrata nel chatter."
 
 #. module: hr_appraisal
 #. odoo-python
@@ -1737,7 +1746,7 @@ msgstr ""
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Your Appraisal has been completed"
-msgstr ""
+msgstr "La tua valutazione è stata completata"
 
 #. module: hr_appraisal
 #. odoo-python

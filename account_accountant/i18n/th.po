@@ -8,6 +8,7 @@
 # Wichanon Jamwutthipreecha, 2023
 # Amin Cheloh <amincheloh@gmail.com>, 2023
 # Martin Trigaux, 2023
+# Rasareeyar Lappiam, 2023
 # 
 msgid ""
 msgstr ""
@@ -15,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-05-23 08:35+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Martin Trigaux, 2023\n"
+"Last-Translator: Rasareeyar Lappiam, 2023\n"
 "Language-Team: Thai (https://app.transifex.com/odoo/teams/41243/th/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -272,7 +273,7 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__fiscalyear_lock_date
 msgid "All Users Lock Date"
-msgstr ""
+msgstr "วันที่ล็อคผู้ใช้ทั้งหมด"
 
 #. module: account_accountant
 #. odoo-javascript
@@ -336,13 +337,13 @@ msgstr "บัญชีวิเคราะห์"
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__analytic_distribution_search
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__analytic_distribution_search
 msgid "Analytic Distribution Search"
-msgstr ""
+msgstr "การค้นหาการกระจายการวิเคราะห์"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__analytic_precision
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__analytic_precision
 msgid "Analytic Precision"
-msgstr ""
+msgstr "ความแม่นยำในการวิเคราะห์"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__use_anglo_saxon
@@ -951,6 +952,9 @@ msgid ""
 "related information at the time of the creation of the move and that the "
 "move needs to be checked again."
 msgstr ""
+"หากทำเครื่องหมายที่ช่องนี้ "
+"แสดงว่าผู้ใช้ไม่แน่ใจเกี่ยวกับข้อมูลที่เกี่ยวข้องทั้งหมดในขณะที่สร้างการย้าย"
+" และการย้ายนั้นจำเป็นต้องได้รับการตรวจสอบอีกครั้ง"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_search_bank_rec_widget
@@ -976,7 +980,7 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget__state__invalid
 msgid "Invalid"
-msgstr ""
+msgstr "ไม่ถูกต้อง"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
@@ -1008,7 +1012,7 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__st_line_is_reconciled
 msgid "Is Reconciled"
-msgstr ""
+msgstr "กระทบยอดแล้ว"
 
 #. module: account_accountant
 #. odoo-python
@@ -1037,7 +1041,7 @@ msgstr "สมุดบันทึก"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__journal_currency_id
 msgid "Journal Currency"
-msgstr ""
+msgstr "สกุลเงินสมุดรายวัน"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__period_lock_date
@@ -1248,7 +1252,7 @@ msgstr ""
 #: code:addons/account_accountant/models/account_payment.py:0
 #, python-format
 msgid "Matched Transactions"
-msgstr ""
+msgstr "ธุรกรรมที่ตรงกัน"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__matching_rules_allow_auto_reconcile
@@ -1342,6 +1346,7 @@ msgid "Not Matched"
 msgstr ""
 
 #. module: account_accountant
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_tree_bank_rec_widget
 msgid "Notes"
@@ -1903,6 +1908,11 @@ msgstr "ธุรกรรม"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__transaction_currency_id
 msgid "Transaction Currency"
+msgstr ""
+
+#. module: account_accountant
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
+msgid "Transaction Details"
 msgstr ""
 
 #. module: account_accountant

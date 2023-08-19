@@ -843,7 +843,7 @@ msgstr "品質検査不合格"
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_wizard_form_failure
 #, python-format
 msgid "Quality Check Failed"
-msgstr ""
+msgstr "品質検査不合格"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page

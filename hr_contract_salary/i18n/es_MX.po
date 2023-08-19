@@ -521,7 +521,7 @@ msgstr "Días"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_res_config_settings__access_token_validity
 msgid "Default Access Token Validity Duration"
-msgstr "Duración predeterminada de validez de tokens de acceso"
+msgstr "Duración predeterminada de validez del token de acceso"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_job__default_contract_id
@@ -1361,7 +1361,7 @@ msgstr "Valor de información personal del paquete salarial"
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_hr_contract_salary_resume
 msgid "Salary Package Resume"
-msgstr "Resumen del paquete salarial"
+msgstr "Currículum del paquete salarial"
 
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_hr_contract_salary_resume_category
@@ -1603,7 +1603,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__signatures_count
 msgid "The number of signatures on the pdf contract with the most signatures."
-msgstr "El número de firmas en el contrato en pdf con más firmas"
+msgstr "El número de firmas en el contrato en PDF con más firmas."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_salary_advantage__activity_type_id
@@ -1654,8 +1654,8 @@ msgstr ""
 msgid ""
 "This link is invalid. Please contact the HR Responsible to get a new one..."
 msgstr ""
-"El enlace es no es válido, contacte al responsable de RR. HH. para recibir "
-"uno nuevo..."
+"El enlace no es válido, contacte al responsable de RR. HH. para recibir uno "
+"nuevo..."
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__monthly_yearly_costs
@@ -1765,7 +1765,7 @@ msgstr "Su información personal"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package_thank_you
 msgid "Your contract has been sent to:"
-msgstr "Su contrato se ha enviado a:"
+msgstr "Su contrato se envió a:"
 
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_zip

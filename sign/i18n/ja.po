@@ -1242,7 +1242,7 @@ msgstr ""
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "Existing sign items are not allowed to be changed"
-msgstr ""
+msgstr "存在する署名アイテムの変更は許可されていません。"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search

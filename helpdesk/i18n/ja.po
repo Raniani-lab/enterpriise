@@ -4000,7 +4000,7 @@ msgstr "eラーニング"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_form
 msgid "email"
-msgstr ""
+msgstr "Eメール"
 
 #. module: helpdesk
 #: model_terms:digest.tip,tip_description:helpdesk.digest_tip_helpdesk_0

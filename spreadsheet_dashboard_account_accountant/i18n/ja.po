@@ -514,7 +514,7 @@ msgstr "請求済"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "KPI"
-msgstr ""
+msgstr "KPI"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. odoo-javascript

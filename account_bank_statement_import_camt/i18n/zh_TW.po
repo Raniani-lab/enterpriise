@@ -1062,7 +1062,7 @@ msgstr "Intra Company Transfer"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Invoice Accepted with Differed Due Date"
-msgstr "Invoice Accepted with Differed Due Date"
+msgstr "已接納不同到期日發票"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1697,7 +1697,7 @@ msgstr "Rights Issue/Subscription Rights/Rights Offer"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "SEPA B2B Direct Debit"
-msgstr "SEPA B2B Direct Debit"
+msgstr "SEPA B2B 直接扣賬"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1713,7 +1713,7 @@ msgstr "SEPA Core Direct Debit"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "SEPA Credit Transfer"
-msgstr "SEPA 信用卡轉帳"
+msgstr "SEPA 轉賬付款"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0

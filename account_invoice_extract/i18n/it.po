@@ -32,6 +32,13 @@ msgid ""
 "    <p>Odoo S.A.</p>\n"
 "</div>"
 msgstr ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"    <p>Ciao,<br></p>\n"
+"    <p>Non ci sono più crediti nel tuo conto fattura OCR IAP.<br>\n"
+"    È possibile ricaricare il conto fattura OCR IAP dalla pagina delle impostazioni del modulo Contabilità.</p>\n"
+"    <p>Cordiali saluti,<br></p>\n"
+"    <p>Odoo S.A.</p>\n"
+"</div>"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
@@ -48,6 +55,8 @@ msgid ""
 "<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
 "                        Refresh"
 msgstr ""
+"<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
+"                        Ricarica"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
@@ -100,14 +109,14 @@ msgstr "Allegato"
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
 #, python-format
 msgid "Bill is being Digitized"
-msgstr ""
+msgstr "La fattura è in corso di digitalizzazione"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_bank_statement_line__extract_can_show_banners
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_move__extract_can_show_banners
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_payment__extract_can_show_banners
 msgid "Can show the ocr banners"
-msgstr ""
+msgstr "Può mostrare i banner OCR"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_bank_statement_line__extract_can_show_resend_button
@@ -143,7 +152,7 @@ msgstr "Impostazioni di configurazione"
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
 #, python-format
 msgid "Couldn't reload AI data."
-msgstr ""
+msgstr "Non è stato possibile ricaricare i dati IA."
 
 #. module: account_invoice_extract
 #. odoo-javascript
@@ -170,12 +179,12 @@ msgstr "Fatture cliente"
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_res_company__extract_out_invoice_digitalization_mode
 msgid "Digitization mode on customer invoices"
-msgstr ""
+msgstr "Modalità digitalizzazione fatture cliente"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_res_company__extract_in_invoice_digitalization_mode
 msgid "Digitization mode on vendor bills"
-msgstr ""
+msgstr "Modalità digitalizzzione fatture fornitore"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__res_company__extract_in_invoice_digitalization_mode__auto_send
@@ -217,7 +226,7 @@ msgstr "Messaggio di errore"
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_move__extract_attachment_id
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_payment__extract_attachment_id
 msgid "Extract Attachment"
-msgstr ""
+msgstr "Allegato estratto"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_bank_statement_line__extract_word_ids
@@ -283,7 +292,7 @@ msgstr "Fattura"
 #: model:ir.actions.server,name:account_invoice_extract.ir_cron_ocr_parse_ir_actions_server
 #: model:ir.cron,cron_name:account_invoice_extract.ir_cron_ocr_parse
 msgid "Invoice OCR: Parse Invoices"
-msgstr ""
+msgstr "OCR fattura: analizza fatture"
 
 #. module: account_invoice_extract
 #: model:ir.actions.server,name:account_invoice_extract.ir_cron_update_ocr_status_ir_actions_server
@@ -295,7 +304,7 @@ msgstr "OCR fattura: aggiorna tutti gli stati"
 #: model:ir.actions.server,name:account_invoice_extract.ir_cron_ocr_validate_ir_actions_server
 #: model:ir.cron,cron_name:account_invoice_extract.ir_cron_ocr_validate
 msgid "Invoice OCR: Validate Invoices"
-msgstr ""
+msgstr "OCR fattura: convalida fatture"
 
 #. module: account_invoice_extract
 #: model:ir.model,name:account_invoice_extract.model_account_move
@@ -337,22 +346,22 @@ msgstr "Credito non sufficiente"
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__ocr_selected
 msgid "Ocr Selected"
-msgstr ""
+msgstr "OCR selezionato"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
 msgid "Reload AI Data"
-msgstr ""
+msgstr "OCR selezionato"
 
 #. module: account_invoice_extract
 #: model:ir.actions.server,name:account_invoice_extract.model_account_send_for_digitalization
 msgid "Send Bills for digitization"
-msgstr ""
+msgstr "Invia fatture per digitalizzazione"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
 msgid "Send For Digitization"
-msgstr ""
+msgstr "Invia per digitalizzazione"
 
 #. module: account_invoice_extract
 #. odoo-python
@@ -372,7 +381,7 @@ msgstr "Server non disponibile, riprovare più tardi"
 #: model:ir.model.fields,field_description:account_invoice_extract.field_res_company__extract_single_line_per_tax
 #: model:ir.model.fields,field_description:account_invoice_extract.field_res_config_settings__extract_single_line_per_tax
 msgid "Single Invoice Line Per Tax"
-msgstr ""
+msgstr "Riga singola fattura per tassa"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_bank_statement_line__extract_status_code
@@ -398,6 +407,8 @@ msgid ""
 "The data extraction is not finished yet. The extraction usually takes "
 "between 5 and 10 seconds."
 msgstr ""
+"L'estrazione dei dati non è ancora terminata. In generale, dura dai 5 ai 10 "
+"secondi."
 
 #. module: account_invoice_extract
 #. odoo-python
@@ -411,7 +422,7 @@ msgstr "Impossibile trovare il documento"
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
 #, python-format
 msgid "The document has been rejected because it is too small"
-msgstr ""
+msgstr "Il documento è stato respinto perché troppo piccolo"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__to_validate
@@ -443,7 +454,7 @@ msgstr "In attesa di estrazione"
 #. module: account_invoice_extract
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__waiting_upload
 msgid "Waiting upload"
-msgstr ""
+msgstr "In attesa del caricamento"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__waiting_validation

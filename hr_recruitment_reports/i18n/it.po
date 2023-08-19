@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Francesco Garganese <francesco.garganese@aeromnia.aero>, 2023
 # Marianna Ciofani, 2023
 # 
 msgid ""
@@ -74,7 +75,7 @@ msgstr "Azienda"
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__create_uid
 msgid "Creator"
-msgstr ""
+msgstr "Creatore"
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_stage_report__days_in_stage
@@ -110,7 +111,7 @@ msgstr "Assunto"
 #: code:addons/hr_recruitment_reports/report/hr_recruitment_report.py:0
 #, python-format
 msgid "Hiring ratio"
-msgstr ""
+msgstr "Tasso assunzioni"
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__id
@@ -182,7 +183,7 @@ msgstr "Resoconto di analisi selezione del personale"
 #. module: hr_recruitment_reports
 #: model:ir.model,name:hr_recruitment_reports.model_hr_recruitment_stage_report
 msgid "Recruitment Stage Analysis"
-msgstr ""
+msgstr "Analisi fase di selezione del personale"
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__refuse_reason_id
@@ -209,7 +210,7 @@ msgstr "Sorgente"
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.recruitment_report_team_view_graph
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.recruitment_report_view_source_pivot
 msgid "Source Analysis"
-msgstr ""
+msgstr "Analisi fonte"
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__stage_id
@@ -242,6 +243,7 @@ msgstr "Prestazioni del team"
 #: model_terms:ir.actions.act_window,help:hr_recruitment_reports.recruitment_report_source_job_action
 msgid "This report performs analysis on your recruitment source."
 msgstr ""
+"Questo resoconto esegue l'analisi delle fonti di selezione del personale."
 
 #. module: hr_recruitment_reports
 #: model_terms:ir.actions.act_window,help:hr_recruitment_reports.recruitment_report_action
@@ -259,7 +261,7 @@ msgstr "Questo resoconto consente di analizzare le prestazioni dei tuoi team."
 #. module: hr_recruitment_reports
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_inherit_kanban_view
 msgid "Time By Stages"
-msgstr ""
+msgstr "Tempo per fasi"
 
 #. module: hr_recruitment_reports
 #: model:ir.actions.act_window,name:hr_recruitment_reports.recruitment_stage_report_action
@@ -268,25 +270,25 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.recruitment_stage_report_view_pivot
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.recruitment_stage_report_view_search
 msgid "Time In Stage Analysis"
-msgstr ""
+msgstr "Analisi tempo in fase"
 
 #. module: hr_recruitment_reports
 #. odoo-python
 #: code:addons/hr_recruitment_reports/report/hr_recruitment_report.py:0
 #, python-format
 msgid "Total Hired"
-msgstr ""
+msgstr "Totale assunzioni"
 
 #. module: hr_recruitment_reports
 #. odoo-python
 #: code:addons/hr_recruitment_reports/report/hr_recruitment_report.py:0
 #, python-format
 msgid "Total Meetings"
-msgstr ""
+msgstr "Riunioni totali"
 
 #. module: hr_recruitment_reports
 #. odoo-python
 #: code:addons/hr_recruitment_reports/report/hr_recruitment_report.py:0
 #, python-format
 msgid "Total applicants"
-msgstr ""
+msgstr "Totale candidati"

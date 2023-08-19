@@ -484,7 +484,7 @@ msgstr "Weet je zeker dat je deze notitie wilt verwijderen?"
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_salary_attachment__deduction_type__assignment
 #, python-format
 msgid "Assignment of Salary"
-msgstr "Salaristoewijzing"
+msgstr "Loonoverdracht"
 
 #. module: hr_payroll
 #. odoo-python
@@ -506,7 +506,7 @@ msgstr "Aantal bijlagen"
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_attachment__attachment_name
 msgid "Attachment Name"
-msgstr "Naam bijlage"
+msgstr "Naam beslag"
 
 #. module: hr_payroll
 #. odoo-python
@@ -515,7 +515,7 @@ msgstr "Naam bijlage"
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_salary_attachment__deduction_type__attachment
 #, python-format
 msgid "Attachment of Salary"
-msgstr "Beslag op salaris"
+msgstr "Loonbeslag"
 
 #. module: hr_payroll
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_payroll_report__work_entry_source__attendance
@@ -698,7 +698,7 @@ msgstr "Controleer het <strong>Werkschema</strong>."
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_salary_attachment__deduction_type__child_support
 #, python-format
 msgid "Child Support"
-msgstr "Kinderondersteuning"
+msgstr "Kinderbijslag"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_rule_category__children_ids
@@ -1016,7 +1016,7 @@ msgstr "Maak SEPA betaling"
 #. module: hr_payroll
 #: model:ir.actions.server,name:hr_payroll.action_new_salary_attachment
 msgid "Create Salary Attachment"
-msgstr "Salarisbijlage maken"
+msgstr "Loonbeslag maken"
 
 #. module: hr_payroll
 #: model_terms:ir.actions.act_window,help:hr_payroll.action_hr_contract_repository
@@ -1699,12 +1699,12 @@ msgstr "Heeft restitutiebon"
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_attachment__has_similar_attachment
 msgid "Has Similar Attachment"
-msgstr "Heeft soortgelijke bijlage"
+msgstr "Heeft soortgelijk beslag"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_attachment__has_similar_attachment_warning
 msgid "Has Similar Attachment Warning"
-msgstr "Heeft soortgelijke bijlagewaarschuwing"
+msgstr "Waarschuwing heeft soorgelijk beslag"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_attachment__has_total_amount
@@ -3060,30 +3060,30 @@ msgstr "Loon"
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_salary_attachment_view_form
 #, python-format
 msgid "Salary Attachment"
-msgstr "Salarisbijlage"
+msgstr "Loonbeslag"
 
 #. module: hr_payroll
 #: model:ir.model,name:hr_payroll.model_hr_salary_attachment_report
 msgid "Salary Attachment / Report"
-msgstr "Salarisbijlage / Rapport"
+msgstr "Loonbeslag / Rapport"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_contract_history__salary_attachment_count
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_employee__salary_attachment_count
 msgid "Salary Attachment Count"
-msgstr "Aantal salarisbijlagen"
+msgstr "Aantal loonbeslagen"
 
 #. module: hr_payroll
 #: model:ir.actions.act_window,name:hr_payroll.hr_salary_attachment_report_action
 #: model:ir.ui.menu,name:hr_payroll.menu_hr_payroll_attachment_salary_report
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_salary_attachment_report_view_pivot
 msgid "Salary Attachment Report"
-msgstr "Salarisbijlagerapport"
+msgstr "Loonbeslagrapport"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__salary_attachment_count
 msgid "Salary Attachment count"
-msgstr "Aantal Salarisbijlages"
+msgstr "Aantal loonbeslagen"
 
 #. module: hr_payroll
 #. odoo-python
@@ -3096,7 +3096,7 @@ msgstr "Aantal Salarisbijlages"
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_form
 #, python-format
 msgid "Salary Attachments"
-msgstr "Salarisbijlagen"
+msgstr "Loonbeslagen"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_salary_rule_category_form
@@ -3209,7 +3209,7 @@ msgstr "Zoek loonstroken"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_salary_attachment_view_search
 msgid "Search Salary Attachment"
-msgstr "Salarisbijlage zoeken"
+msgstr "Loonbeslag zoeken"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_rule_filter
@@ -3888,7 +3888,7 @@ msgstr "Waarschuwingsberichten"
 #: code:addons/hr_payroll/models/hr_salary_attachment.py:0
 #, python-format
 msgid "Warning, a similar attachment has been found."
-msgstr "Waarschuwing, er is een soortgelijke bijlage gevonden."
+msgstr "Waarschuwing, er is een soortgelijk beslag gevonden."
 
 #. module: hr_payroll
 #. odoo-javascript
@@ -4172,7 +4172,7 @@ msgstr ""
 #: code:addons/hr_payroll/models/hr_salary_attachment.py:0
 #, python-format
 msgid "You cannot delete a running salary attachment!"
-msgstr "Je kunt een lopende salarisbijlage niet verwijderen!"
+msgstr "Je kunt een lopend loonbeslag niet verwijderen!"
 
 #. module: hr_payroll
 #. odoo-python

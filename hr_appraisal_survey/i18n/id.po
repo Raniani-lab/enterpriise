@@ -24,7 +24,7 @@ msgstr ""
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_survey_page_statistics_header
 msgid "- Feedback requested by -"
-msgstr ""
+msgstr "Feedback diminta oleh"
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.survey,description:hr_appraisal_survey.appraisal_360_feedback_template
@@ -32,11 +32,13 @@ msgid ""
 "360 Degree Feedback is a system or process in which managers will ask feedback from the people who work around the employee.\n"
 "            This typically includes the employee's manager, peers, and direct reports."
 msgstr ""
+"360 Degree Feedback adalah sistem atau proses di mana manajer menanyakan feedback dari mereka yang bekerja di sekitar karyawan.\n"
+"            Ini biasanya termasuk manajer, rekan kerja, dan laporan langsung karyawan."
 
 #. module: hr_appraisal_survey
 #: model:survey.survey,title:hr_appraisal_survey.appraisal_360_feedback_template
 msgid "360 Feedback"
-msgstr ""
+msgstr "360 Feedback"
 
 #. module: hr_appraisal_survey
 #: model:mail.template,body_html:hr_appraisal_survey.mail_template_appraisal_ask_feedback
@@ -124,6 +126,8 @@ msgid ""
 "<span class=\"o_stat_text\">Feedback</span>\n"
 "                        <span class=\"o_stat_text\">Survey</span>"
 msgstr ""
+"<span class=\"o_stat_text\">Feedback</span>\n"
+"                        <span class=\"o_stat_text\">Survei</span>"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.arow_3_1_1
@@ -152,7 +156,7 @@ msgstr "Tentang kami"
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_360_1
 msgid "About you"
-msgstr ""
+msgstr "Mengenai Anda"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.arow_3_1_13
@@ -166,12 +170,12 @@ msgstr ""
 #. module: hr_appraisal_survey
 #: model_terms:ir.actions.act_window,help:hr_appraisal_survey.survey_survey_action_appraisal
 msgid "Add a new survey"
-msgstr ""
+msgstr "Tambahkan survei baru"
 
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.appraisal_ask_feedback_view_form
 msgid "Add employees..."
-msgstr ""
+msgstr "Tambahkan karyawan..."
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_2_3
@@ -181,12 +185,12 @@ msgstr "Komentar tambahan"
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.y_360_5_6
 msgid "Admit my mistakes"
-msgstr ""
+msgstr "Akui kesalahan saya"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.x_360_5_5
 msgid "Almost always"
-msgstr ""
+msgstr "Hampir selalu"
 
 #. module: hr_appraisal_survey
 #. odoo-python
@@ -196,6 +200,8 @@ msgid ""
 "An appraisal feedback was requested. Please take time to fill the <a "
 "href=\"%s\" target=\"_blank\">survey</a>"
 msgstr ""
+"Feedback appraisal diminta. Mohon ambil waktu untuk mengisi <a href=\"%s\" "
+"target=\"_blank\">survei</a>"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.arow_3_1_11
@@ -205,7 +211,7 @@ msgstr "Pikiran analitis dan sintetis"
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__deadline
 msgid "Answer Deadline"
-msgstr ""
+msgstr "Jawab Deadline"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__appraisal_id
@@ -216,7 +222,7 @@ msgstr "Appraisal"
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__employee_id
 msgid "Appraisal Employee"
-msgstr ""
+msgstr "Karyawan Appraisal"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_survey_survey__is_appraisal
@@ -226,13 +232,13 @@ msgstr ""
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_hr_department__appraisal_survey_template_id
 msgid "Appraisal Survey"
-msgstr ""
+msgstr "Survei Appraisal"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_res_company__appraisal_survey_template_id
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_res_config_settings__appraisal_survey_template_id
 msgid "Appraisal Survey Template"
-msgstr ""
+msgstr "Templat Survei Appraisal"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_1_3
@@ -242,12 +248,12 @@ msgstr "Penilaian untuk periode"
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_survey_page_statistics_header
 msgid "Appraisal of"
-msgstr ""
+msgstr "Appraisal untuk"
 
 #. module: hr_appraisal_survey
 #: model:mail.template,name:hr_appraisal_survey.mail_template_appraisal_ask_feedback
 msgid "Appraisal: Ask Feedback"
-msgstr ""
+msgstr "Appraisal: Minta Feedback"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_1_5
@@ -258,27 +264,27 @@ msgstr "Penilai"
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.appraisal_ask_feedback_view_form
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_view_form
 msgid "Ask Feedback"
-msgstr ""
+msgstr "Minta Feedback"
 
 #. module: hr_appraisal_survey
 #: model:ir.model,name:hr_appraisal_survey.model_appraisal_ask_feedback
 msgid "Ask Feedback for Appraisal"
-msgstr ""
+msgstr "Minta Feedback untuk Appraisal"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_hr_appraisal__employee_feedback_ids
 msgid "Asked Feedback"
-msgstr ""
+msgstr "Feedback yang Diminta"
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1
 msgid "At the conclusion of the appraisal time period"
-msgstr ""
+msgstr "Pada akhir periode waktu appraisal"
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1
 msgid "At the outset of the appraisal time period"
-msgstr ""
+msgstr "Pada awal periode waktu appraisal"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__attachment_ids
@@ -293,7 +299,7 @@ msgstr "Penulis"
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_survey_button_form_view
 msgid "Back to the appraisal"
-msgstr ""
+msgstr "Kembali ke apprisal"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__can_edit_body
@@ -318,7 +324,7 @@ msgstr "Tutup"
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.y_360_5_3
 msgid "Collaborate effectively with others to achieve shared goals"
-msgstr ""
+msgstr "Efektif berkolaborasi dengan orang lain untuk meraih goal bersama"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.arow_3_1_9
@@ -344,7 +350,7 @@ msgstr ""
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_360_9
 msgid "Conclusion"
-msgstr ""
+msgstr "Kesimpulan"
 
 #. module: hr_appraisal_survey
 #: model:ir.model,name:hr_appraisal_survey.model_res_config_settings
@@ -359,7 +365,7 @@ msgstr "Konten"
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.y_360_5_2
 msgid "Create space for different ideas and options to be voiced"
-msgstr ""
+msgstr "Buat tempat untuk ide-ide dan opsi yang berbeda untuk disuarakan"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__create_uid
@@ -382,6 +388,8 @@ msgid ""
 "Critical or key elements of performance and professional development needs "
 "(if any), should also be noted at this time"
 msgstr ""
+"Elemen kritis atau kunci dari performa dan kebutuhan perkembangan "
+"professional (bila ada), harus juga dicatat pada waktu ini"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.arow_3_1_8
@@ -416,7 +424,7 @@ msgstr "Departemen"
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_3
 msgid "Did not meet standards and expectations"
-msgstr ""
+msgstr "Tidak memenuhi standar dan ekspektasi"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__display_name
@@ -426,7 +434,7 @@ msgstr "Nama Tampilan"
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_360_10
 msgid "Do you have any comment to tell me and help me improve?"
-msgstr ""
+msgstr "Apakah Anda memiliki komentar apapun untuk membantu saya berkembang?"
 
 #. module: hr_appraisal_survey
 #: model:ir.model,name:hr_appraisal_survey.model_hr_appraisal
@@ -461,14 +469,14 @@ msgstr "Antusiasme & implikasi terhadap proyek tugas-tugas"
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_3
 msgid "Exceeds standards and expectations"
-msgstr ""
+msgstr "Melebihi standar dan ekspektasi"
 
 #. module: hr_appraisal_survey
 #. odoo-python
 #: code:addons/hr_appraisal_survey/wizard/appraisal_ask_feedback.py:0
 #, python-format
 msgid "Fill the feedback form on survey"
-msgstr ""
+msgstr "Isi formulir feedback pada survei"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__email_from
@@ -478,22 +486,22 @@ msgstr "Dari"
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_360_5
 msgid "How do you feel to work with me? Do I ... "
-msgstr ""
+msgstr "Bagaimana perasaan Anda saat bekerja dengan saya? Apakah saya ..."
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.appraisal_360_3_sug5
 msgid "I'm not from the company."
-msgstr ""
+msgstr "Saya bukan dari perusahaan."
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.appraisal_360_3_sug3
 msgid "I'm part of your management."
-msgstr ""
+msgstr "Saya bagian dari manajemen Anda."
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.appraisal_360_3_sug4
 msgid "I'm referring to you."
-msgstr ""
+msgstr "Saya merujuk pada Anda."
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__id
@@ -506,6 +514,8 @@ msgid ""
 "Identify professional, performance, or project objectives you recommend for "
 "employee’s continued career development over the coming year."
 msgstr ""
+"Identitas profesional, performa, atau tujuan project yang Anda sarankan "
+"untuk pengembangan karir karyawan yang berkelanjutan di tahun depan."
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.arow_3_1_5
@@ -525,6 +535,10 @@ msgid ""
 " major employee responsibilities and corresponding benchmarks against which "
 "results will be evaluated."
 msgstr ""
+"Adalah tanggung jawab bersama karyawan dan supervisor (yang melakukan "
+"appraisal) untuk membuat rencana kerja yang dapat diraih untuk tahun "
+"mendatang, termasuk tanggung jawab utama karyawan dan tolak ukur yang sesuai"
+" yang akan mengevaluasi hasil nantinya."
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1
@@ -533,6 +547,9 @@ msgid ""
 "input from the appropriate sources of feedback (internal and/or external "
 "customers, peers)."
 msgstr ""
+"Adalah tanggung jawab utama supervisor untuk mengumpulkan input yang "
+"dibutuhkan dari sumber-sumber feedback yang tepat (pelanggan internal "
+"dan/atau eksternal, rekan kerja). "
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__lang
@@ -572,7 +589,7 @@ msgstr ""
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.y_360_5_1
 msgid "Listen well to others"
-msgstr ""
+msgstr "Mendengarkan orang lain dengan baik"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__template_id
@@ -582,14 +599,14 @@ msgstr "Templat Email"
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_3
 msgid "Meet standards and expectations"
-msgstr ""
+msgstr "Memenuhi standar dan ekspektasi"
 
 #. module: hr_appraisal_survey
 #. odoo-python
 #: code:addons/hr_appraisal_survey/wizard/appraisal_ask_feedback.py:0
 #, python-format
 msgid "Missing email"
-msgstr ""
+msgstr "Ketinggalan email"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_1_1
@@ -609,12 +626,12 @@ msgstr "TUJUAN"
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.x_360_5_4
 msgid "Often"
-msgstr ""
+msgstr "Sering"
 
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.appraisal_ask_feedback_view_form
 msgid "Optional message"
-msgstr ""
+msgstr "Pesan opsional"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,help:hr_appraisal_survey.field_appraisal_ask_feedback__lang
@@ -632,7 +649,7 @@ msgstr ""
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1
 msgid "Overall Purpose Of Employee Appraisal"
-msgstr ""
+msgstr "Tujuan Keseluruhan dari Appraisal Karyawan"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_4_2
@@ -667,7 +684,7 @@ msgstr "Catatan ketepatan waktu dan kehadiran"
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.x_360_5_2
 msgid "Rarely"
-msgstr ""
+msgstr "Jarang"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__employee_ids
@@ -677,7 +694,7 @@ msgstr "Penerima"
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.y_360_5_7
 msgid "Recognize the contributions of teammates and peers"
-msgstr ""
+msgstr "Menyadari kontribusi rekan satu tim dan rekan kerja"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__render_model
@@ -687,7 +704,7 @@ msgstr "Model Rendering"
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_survey_page_statistics_header
 msgid "Responded:"
-msgstr ""
+msgstr "Menanggapi:"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_2_2
@@ -706,7 +723,7 @@ msgstr ""
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.y_360_5_5
 msgid "Seek to understand the problem before working on a solution"
-msgstr ""
+msgstr "Mencoba untuk memahami masalah sebelum memikirkan solusi"
 
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.appraisal_ask_feedback_view_form
@@ -716,33 +733,34 @@ msgstr "Kirim"
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,help:hr_appraisal_survey.field_hr_appraisal__survey_ids
 msgid "Sent out surveys"
-msgstr ""
+msgstr "Mengirimkan survei"
 
 #. module: hr_appraisal_survey
 #: model:mail.template,description:hr_appraisal_survey.mail_template_appraisal_ask_feedback
 msgid "Sent to employees to gather appraisal feedback"
-msgstr ""
+msgstr "Dikirim ke karyawan untuk mendapatkan feedback appraisal"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.y_360_5_4
 msgid "Show good judgment in decision making"
-msgstr ""
+msgstr "Menunjukkan pemikiran yang baik dalam pembuatan keputusan"
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_3
 msgid "Significantly below standards and expectations"
-msgstr ""
+msgstr "Sangat di bawah standar dan ekspektasi"
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_3
 msgid ""
 "Significantly exceeds standards and expectations required of the position"
 msgstr ""
+"Sangat melampaui standar dan ekspektasi yang dibutuhkan untuk jabatannya"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.x_360_5_3
 msgid "Sometimes"
-msgstr ""
+msgstr "Terkadang"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__subject
@@ -774,7 +792,7 @@ msgstr "Penelitian"
 #: code:addons/hr_appraisal_survey/models/survey.py:0
 #, python-format
 msgid "Survey Feedback"
-msgstr ""
+msgstr "Feedback Survei"
 
 #. module: hr_appraisal_survey
 #: model:ir.model,name:hr_appraisal_survey.model_survey_question_answer
@@ -784,7 +802,7 @@ msgstr "Label"
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__survey_template_id
 msgid "Survey Template"
-msgstr ""
+msgstr "Templat Survei"
 
 #. module: hr_appraisal_survey
 #: model:ir.model,name:hr_appraisal_survey.model_survey_user_input
@@ -801,6 +819,7 @@ msgstr "Survei"
 #: model:mail.template,subject:hr_appraisal_survey.mail_template_appraisal_ask_feedback
 msgid "Take part in {{ object.employee_id.name or 'this' }} appraisal"
 msgstr ""
+"Mengambil bagian dalam appraisal  {{ object.employee_id.name or 'this' }}"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.arow_3_1_4
@@ -822,6 +841,8 @@ msgid ""
 "The appraiser should rate the employee’s major work accomplishments and "
 "performance according to the metric provided below:"
 msgstr ""
+"Pemberi appraisal harus menilai pencapaian kerja utama karyawan dan performa"
+" sesuai dengan metrik yang disediakan di bawah:"
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1
@@ -829,6 +850,8 @@ msgid ""
 "The employee may choose to offer comments or explanation regarding the "
 "completed review."
 msgstr ""
+"Karyawan dapat memilih untuk memberikan komentar atau penjelasan mengenai "
+"tinjauan yang lengkap."
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1
@@ -839,6 +862,10 @@ msgid ""
 "criterion. Once the form had been filled, the employee send it to their "
 "supervisor."
 msgstr ""
+"Karyawan akan bertanggung jawab untuk menyelesaikan draft dari Formulir "
+"Appraisal sebagai alat untuk appraisal-sendiri dan titik mulai evaluasi "
+"supervisor. Karyawan dapat menambahkan contoh untuk pencapaian untuk setiap "
+"kriteria. Setelah formulir diisi, karyawan mengirimkannya ke supervisor."
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1
@@ -847,6 +874,8 @@ msgid ""
 "appraisal. The motivation of the evaluation is explained in the ad hoc "
 "fields."
 msgstr ""
+"Supervisor menyatukan dan mengintegrasikan semua input menjadi appraisal "
+"lengkap. Motivasi evaluasi akan dijelaskan di field ad hoc. "
 
 #. module: hr_appraisal_survey
 #. odoo-python
@@ -864,11 +893,14 @@ msgid ""
 "This field is used with 360 Feedback setting on Appraisal App, the aim is to"
 " define a default Survey Template related to this department."
 msgstr ""
+"Field ini digunakan dengan pengaturan 360 Feedback pada App Appraisal, "
+"tujuannya adalah untuk mendefinisikan Templat Survei default yang terkait "
+"departemen ini."
 
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_survey_button_form_view
 msgid "This is a Test Survey."
-msgstr ""
+msgstr "Ini adalah Survei Test."
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.survey,description:hr_appraisal_survey.appraisal_feedback_template
@@ -876,6 +908,9 @@ msgid ""
 "This survey allows you to give a feedback about your collaboration with an "
 "employee. Filling it helps us improving the appraisal process."
 msgstr ""
+"Survei ini memungkinkan Anda untuk memberikan feedback mengenai kolaborasi "
+"Anda dengan karyawan. Mengisinya membantu kami meningkatkan proses "
+"appraisal."
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.arow_3_1_15
@@ -888,11 +923,14 @@ msgid ""
 "To assist employees in their professional growth, through the identification"
 " of strengths and opportunities for development"
 msgstr ""
+"Untuk membantu karyawan dalam perkembangan profesional mereka, dengan "
+"mengidentifikasi kekuatan dan kesempatan untuk pengembangan mereka"
 
 #. module: hr_appraisal_survey
 #: model_terms:survey.question,description:hr_appraisal_survey.appraisal_1
 msgid "To initiate a clear and open communication of performance expectations"
 msgstr ""
+"Untuk memulai komunikasi jelas dan terbuka tentang ekspektasi performa"
 
 #. module: hr_appraisal_survey
 #. odoo-python
@@ -913,47 +951,48 @@ msgstr ""
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__user_body
 msgid "User Contents"
-msgstr ""
+msgstr "Konten User"
 
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.survey_user_input_view_tree
 msgid "View Results"
-msgstr ""
+msgstr "Lihat Hasil"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.appraisal_360_3_sug1
 msgid "We're colleagues, for the same manager."
-msgstr ""
+msgstr "Kita rekan kerja, dengan manajer yang sama."
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.appraisal_360_3_sug2
 msgid "We're colleagues, in different teams."
-msgstr ""
+msgstr "Kita rekan kerja, di tim yang berbeda."
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_360_6
 msgid "What should I do in order to improve on my day-to-day job?"
 msgstr ""
+"Apa yang harus saya lakukan untuk meningkatkan pekerjaan hari-ke-hari saya?"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_360_7
 msgid "What's my greatest strength?"
-msgstr ""
+msgstr "Apakah kekuatan terbesar saya?"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_360_8
 msgid "What's my greatest weakness?"
-msgstr ""
+msgstr "Apakah kelemahan terbesar saya?"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_360_3
 msgid "What's the relation between us?"
-msgstr ""
+msgstr "Apakah relasi di antara kita?"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_360_2
 msgid "What's your name?"
-msgstr ""
+msgstr "Apa nama Anda?"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_2
@@ -966,6 +1005,8 @@ msgid ""
 "You can create surveys used for appraisals. Design easily your appraisal,\n"
 "                send invitations and analyze answers."
 msgstr ""
+"Anda dapat membuat survei yang digunakan untuk appraisal. Dengan gampang rancang appraisal Anda,\n"
+"                kirim undangan dan analisa jawabannya."
 
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_survey_button_form_view

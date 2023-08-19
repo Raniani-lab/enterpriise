@@ -1158,7 +1158,7 @@ msgstr "五"
 #: model:ir.model.fields,field_description:appointment.field_appointment_slot__start_datetime
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "From"
-msgstr "來自"
+msgstr "由"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__avatars_display

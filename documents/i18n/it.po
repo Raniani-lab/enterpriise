@@ -68,6 +68,10 @@ msgid ""
 "your documents in bulk with the split tool: launch user defined actions, "
 "request a signature, convert to vendor bills with AI, etc."
 msgstr ""
+". I file scansionati appariranno automaticamente nel tuo spazio di lavoro. "
+"In seguito, elabora i documenti in massa attraverso lo strumento di "
+"divisione: è possibile eseguire azioni personalizzate, richiedere una firma,"
+" convertire le fatture fornitore con l'IA, ecc."
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_fiscal_year_2017
@@ -679,6 +683,8 @@ msgid ""
 "An easy way to process incoming mails is to configure your scanner to send "
 "PDFs to"
 msgstr ""
+"Un modo facile per elaborare le e-mail in entrata è configurare lo scanner "
+"per inviare i PDF a"
 
 #. module: documents
 #: model_terms:digest.tip,tip_description:documents.digest_tip_documents_0
@@ -1094,7 +1100,7 @@ msgstr "Nome visualizzato"
 #: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
 msgid "Do you really want to unlink this record?"
-msgstr ""
+msgstr "Vuoi davvero rimuovere il collegamento a questo documento?"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_document
@@ -1275,7 +1281,7 @@ msgstr "Modifica"
 #: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
 msgid "Edit the linked record"
-msgstr ""
+msgstr "Modifica il record collegato"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
@@ -1524,7 +1530,7 @@ msgstr "In arrivo"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__include_sub_folders
 msgid "Include Sub Folders"
-msgstr ""
+msgstr "Includi sottocartelle"
 
 #. module: documents
 #: model_terms:documents.folder,description:documents.documents_internal_folder
@@ -1657,6 +1663,8 @@ msgid ""
 "Let's tag this mail as legal<br/> <i>Tips: actions can be tailored to your "
 "process, according to the workspace.</i>"
 msgstr ""
+"Etichettiamo l'e-mail come legale<br/> <i>Suggerimenti: le azioni possono "
+"essere adattate al processo, in base allo spazio di lavoro.</i>"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__user_specific
@@ -1666,7 +1674,7 @@ msgstr "Limita i gruppi in lettura ai documenti di cui sono proprietari."
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__user_specific_write
 msgid "Limit Write Groups to the documents of which they are owner."
-msgstr ""
+msgstr "Limita i gruppi di scrittura ai documenti di cui sono proprietari."
 
 #. module: documents
 #. odoo-javascript
@@ -2020,6 +2028,8 @@ msgid ""
 "Own Documents Only may not be enabled for write groups if it is not enabled "
 "for read groups."
 msgstr ""
+"La funzione \"Solo documenti propri\" potrebbe non essere attiva per i "
+"gruppi di scrittura se non attiva per i gruppi di lettura."
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__owner_id
@@ -2432,7 +2442,7 @@ msgstr "Dimensione"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__link_model
 msgid "Specific Model Linked"
-msgstr ""
+msgstr "Modello specifico collegato"
 
 #. module: documents
 #. odoo-javascript
@@ -2588,7 +2598,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
 msgid "The share url has been copied to your clipboard."
-msgstr ""
+msgstr "L'url per la condivisione è stato copiato negli appunti."
 
 #. module: documents
 #: model:ir.model.constraint,message:documents.constraint_documents_share_share_unique

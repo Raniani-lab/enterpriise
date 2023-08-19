@@ -638,7 +638,7 @@ msgstr ""
 #: code:addons/mrp_mps/static/src/components/line.xml:0
 #, python-format
 msgid "The forecasted quantity in stock at the beginning of the period."
-msgstr "Die prognostizierte Lagermenge am Beginn der Periode."
+msgstr "Die prognostizierte Lagermenge zu Beginn der Periode."
 
 #. module: mrp_mps
 #. odoo-javascript
@@ -656,7 +656,7 @@ msgid ""
 "                    It ensures everything gets scheduled on time, based on constraints such as: safety stock, production capacity, lead times.\n"
 "                    It's the perfect tool to support your S&OP meetings."
 msgstr ""
-"Der Produktionsplan übersetzt Ihre Verkaufs- Und Bedarfsprognosen in eine Produktions- und Einkaufsplanung für jede Komponente.\n"
+"Der Produktionsplan übersetzt Ihre Verkaufs- und Bedarfsprognosen in eine Produktions- und Einkaufsplanung für jede Komponente.\n"
 "                     Er stellt sicher, dass alles rechtzeitig eingeplant wird, basierend auf Einschränkungen wie: Sicherheitsbestand, Produktionskapazität, Vorlaufzeiten.\n"
 "                    Es ist das perfekte Tool zur Unterstützung Ihrer Meetings zur Absatz- und Vertriebsplanung."
 

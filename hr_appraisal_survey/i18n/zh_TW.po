@@ -463,7 +463,7 @@ msgstr ""
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__email_from
 msgid "From"
-msgstr "來自"
+msgstr "由"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_360_5

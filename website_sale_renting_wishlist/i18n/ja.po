@@ -28,7 +28,7 @@ msgstr "<span>以下毎に：</span>"
 #. module: website_sale_renting_wishlist
 #: model_terms:ir.ui.view,arch_db:website_sale_renting_wishlist.product_wishlist
 msgid "<strong class=\"attribute_name\">Rental Period</strong>"
-msgstr ""
+msgstr "<strong class=\"attribute_name\">レンタル期間</strong>"
 
 #. module: website_sale_renting_wishlist
 #: model_terms:ir.ui.view,arch_db:website_sale_renting_wishlist.product_wishlist

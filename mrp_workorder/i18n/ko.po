@@ -553,7 +553,7 @@ msgstr "새로운 작업 지침"
 #: code:addons/mrp_workorder/wizard/propose_change.py:0
 #, python-format
 msgid "New Instruction suggested by %(user_name)s"
-msgstr "%(user_name)s이 제않안 새로운 작업 지침"
+msgstr "%(user_name)s이 제안한 새로운 작업 지침"
 
 #. module: mrp_workorder
 #. odoo-python

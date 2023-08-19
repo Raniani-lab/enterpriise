@@ -503,7 +503,7 @@ msgstr "Nombre de pièces jointes"
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_attachment__attachment_name
 msgid "Attachment Name"
-msgstr "Nom de la pièce jointe"
+msgstr "Nom de la saisie"
 
 #. module: hr_payroll
 #. odoo-python
@@ -3893,7 +3893,7 @@ msgstr "Message d'avertissement"
 #: code:addons/hr_payroll/models/hr_salary_attachment.py:0
 #, python-format
 msgid "Warning, a similar attachment has been found."
-msgstr "Attention, une pièce jointe similaire a été trouvée."
+msgstr "Attention, une saisie similaire a été trouvée."
 
 #. module: hr_payroll
 #. odoo-javascript

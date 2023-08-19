@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # Sergio Zanchetta <primes2h@gmail.com>, 2023
+# Marianna Ciofani, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-04-14 06:16+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Sergio Zanchetta <primes2h@gmail.com>, 2023\n"
+"Last-Translator: Marianna Ciofani, 2023\n"
 "Language-Team: Italian (https://app.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,21 +31,21 @@ msgstr "# di Casi"
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "%(number of missed calls)s missed calls"
-msgstr ""
+msgstr "%(numero di chiamate perse)s chiamate perse"
 
 #. module: voip
 #. odoo-javascript
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "1 missed call"
-msgstr ""
+msgstr "1 chiamata persa"
 
 #. module: voip
 #. odoo-javascript
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "2 missed calls"
-msgstr ""
+msgstr "2 chiamate perse"
 
 #. module: voip
 #. odoo-javascript
@@ -54,6 +55,9 @@ msgid ""
 "A hardware error occured while trying to access audio recording device. "
 "Please make sure your drivers are up to date and try again."
 msgstr ""
+"Si è verificato un errore di hardware durante il tentativo di accesso al "
+"dispositivo di registrazione audio. Assicurati che i driver siano aggiornati"
+" e riprova."
 
 #. module: voip
 #. odoo-javascript
@@ -91,6 +95,8 @@ msgid ""
 "An error occured involving the audio recording device "
 "(%(errorName)s):</br>%(errorMessage)s"
 msgstr ""
+"Si è verificato un errore che coinvolge il dispositivo di registrazione "
+"audio (%(errorName)s): </br>%(errorMessage)s"
 
 #. module: voip
 #. odoo-javascript
@@ -100,6 +106,8 @@ msgid ""
 "An error occurred during the instantiation of the User Agent:</br></br> "
 "%(error message)s"
 msgstr ""
+"Si è verificato un errore durante la creazione di un'istanza per l'agente "
+"utente:</br></br> %(messaggio di errore)s"
 
 #. module: voip
 #. odoo-javascript
@@ -160,20 +168,20 @@ msgstr "Nome chiamata"
 #: code:addons/voip/models/voip_phonecall.py:0
 #, python-format
 msgid "Call duration: %(min)smin %(sec)ssec"
-msgstr ""
+msgstr "Durata chiamata: %(min)smin %(sec)ssec"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_users__should_call_from_another_device
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__should_call_from_another_device
 msgid "Call from another device"
-msgstr ""
+msgstr "Chiama da un altro dispositivo"
 
 #. module: voip
 #. odoo-javascript
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid "Call rejected (reason: \"%(reasonPhrase)s\")"
-msgstr ""
+msgstr "Chiamata rifiutata (motivo: \"%(reasonPhrase)s\")"
 
 #. module: voip
 #. odoo-python
@@ -228,6 +236,10 @@ msgid ""
 " runs over HTTPS and that your browser is not set to deny access to media "
 "devices."
 msgstr ""
+"Impossibile accedere al dispositivo di registrazione audio. Se hai negato "
+"l'accesso al microfono, concedi l'autorizzazione e prova di nuovo. "
+"Assicurati che il sito web funzioni su HTTPS e che il tuo browser conceda "
+"l'accesso ai dispositivi multimediali."
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_users__how_to_call_on_mobile
@@ -239,6 +251,11 @@ msgid ""
 "            • Ask: Always ask whether the softphone or the device's phone must be used\n"
 "        "
 msgstr ""
+"Scegli il metodo da utilizzare per effettuare una chiamata quando usi l'app mobile:\n"
+"            •VoIP: utilizza sempre il softphone Odoo\n"
+"            •Telefono della periferica: utilizza sempre il telefono della periferica\n"
+"            •Chiedi: chiedi sempre se deve essere utilizzato il softphone o il telefono della periferica\n"
+"        "
 
 #. module: voip
 #. odoo-javascript
@@ -320,7 +337,7 @@ msgstr "Demo"
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__res_users_settings__how_to_call_on_mobile__phone
 msgid "Device's phone"
-msgstr ""
+msgstr "Telefono della periferica"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__direction
@@ -404,7 +421,7 @@ msgstr "Inserisci il numero..."
 #: model:ir.model.fields,field_description:voip.field_res_users__external_device_number
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__external_device_number
 msgid "External device number"
-msgstr ""
+msgstr "Numero dispositivo esterno"
 
 #. module: voip
 #. odoo-javascript
@@ -415,6 +432,9 @@ msgid ""
 "wrong. Please have an administrator verify the websocket server URL in the "
 "General Settings."
 msgstr ""
+"Non è stato possibile avviare l'agente utente. L'URL del server websocket è "
+"sbagliato. Chiedi ad un amministratore di verificare l'URL del server "
+"websocket nelle Impostazioni."
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_voip_phonecall__sequence
@@ -444,7 +464,7 @@ msgstr "Gestito"
 #: model:ir.model.fields,field_description:voip.field_res_users__how_to_call_on_mobile
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__how_to_call_on_mobile
 msgid "How to place calls on mobile"
-msgstr ""
+msgstr "Come effettuare chiamate sul cellulare"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__id
@@ -458,6 +478,8 @@ msgstr "ID"
 #: model:ir.model.fields,help:voip.field_res_users_settings__should_auto_reject_incoming_calls
 msgid "If enabled, incoming calls will be automatically declined in Odoo."
 msgstr ""
+"Se selezionato, le chiamate in arrivo verranno rifiutato automaticamente in "
+"Odoo."
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_users__should_call_from_another_device
@@ -467,6 +489,10 @@ msgid ""
 "device number\". Use this option to place the call in Odoo but handle it "
 "from another device - e.g. your desk phone."
 msgstr ""
+"Se selezionato, la chiamata effettuata in Odoo verrà trasferita al \"Numero "
+"del dispositivo esterno\". Utilizza questa opzione per effettura una "
+"chiamata in Odoo ma gestirla da un altro dispositivo, ad es. il telefono "
+"fisso."
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_users__external_device_number
@@ -475,6 +501,8 @@ msgid ""
 "If the \"Call from another device\" option is enabled, calls placed in Odoo "
 "will be transfered to this phone number."
 msgstr ""
+"Se l'opzione \"Chiama da un altro dispositivo\" è attiva, le chiamate in "
+"Odoo verranno trasferite al numero di telefono indicato."
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall_log_wizard__reschedule_option__7d
@@ -590,7 +618,7 @@ msgstr "Attività collegata"
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__mail_message_id
 msgid "Linked Chatter Message"
-msgstr ""
+msgstr "Messaggio chatter collegato"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_mail_activity__voip_phonecall_id
@@ -681,6 +709,8 @@ msgid ""
 "No audio recording device available. The application requires a microphone "
 "in order to be used."
 msgstr ""
+"Nessun dispositivo di registrazione audio disponibile. L'applicazione "
+"richiede un microfono per essere utilizzata."
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__pending
@@ -784,6 +814,8 @@ msgid ""
 "Please try again later. If the problem persists, you may want to ask an "
 "administrator to check the configuration."
 msgstr ""
+"Per favore, riprova più tardi. Se il problema persiste, puoi chiedere ad un "
+"amministratore di controllare la configurazione."
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__res_config_settings__mode__prod
@@ -810,7 +842,7 @@ msgstr "Aggiorna il pannello"
 #: code:addons/voip/static/src/models/registerer.js:0
 #, python-format
 msgid "Registration rejected: %(statusCode)s %(reasonPhrase)s."
-msgstr ""
+msgstr "Registrazione rifiutata: %(statusCode)s %(reasonPhrase)s"
 
 #. module: voip
 #. odoo-javascript
@@ -830,7 +862,7 @@ msgstr "Rifiuta chiamata"
 #: model:ir.model.fields,field_description:voip.field_res_users__should_auto_reject_incoming_calls
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__should_auto_reject_incoming_calls
 msgid "Reject incoming calls"
-msgstr ""
+msgstr "Rifiuta chiamate in entrata"
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__rejected
@@ -937,6 +969,8 @@ msgid ""
 "Some documents cannot be added to the call queue as they do not have a phone"
 " number set: %(record_names)s"
 msgstr ""
+"Alcuni documenti non possono essere aggiunti alla coda delle chiamate perché"
+" non hanno un numero di telefono configurato: %(record_names)s"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__reschedule_date
@@ -970,7 +1004,7 @@ msgstr "Prendi la chiamata"
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_config_settings__pbx_ip
 msgid "The IP address of your PBX Server"
-msgstr ""
+msgstr "Indirizzo IP del server PBX"
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_config_settings__wsServer
@@ -983,6 +1017,8 @@ msgstr "L'URL del tuo WebSocket"
 #, python-format
 msgid "The connection cannot be made.</br> Please check your configuration."
 msgstr ""
+"Impossibile stabilire una connessione.</br> Per favore, controlla la "
+"configurazione."
 
 #. module: voip
 #. odoo-javascript
@@ -993,6 +1029,10 @@ msgid ""
 "verify the websocket server URL in the General Settings. If the problem "
 "persists, this is probably an issue with the server."
 msgstr ""
+"L'errore potrebbe provenire dal livello di trasporto. Chiedi "
+"all'amministratore di verificare l'URL del server websocket dalle "
+"Impostazioni. Se il problema persiste si tratta probabilmente di un problema"
+" del server."
 
 #. module: voip
 #. odoo-javascript
@@ -1003,12 +1043,16 @@ msgid ""
 "connection cannot be made. Please check your configuration.</br> (Reason "
 "received: %(reasonPhrase)s)"
 msgstr ""
+"Il numero non è corretto, le credenziali dell'utente potrebbero essere "
+"errate o non è possibile stabilire una connessione. Controlla la "
+"configurazione.</br> (Motivo ricevuto:%(reasonPhrase)s)"
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_users__voip_secret
 #: model:ir.model.fields,help:voip.field_res_users_settings__voip_secret
 msgid "The password that will be used to register with the PBX server."
 msgstr ""
+"La password che verrà utilizzata per la registrazione con il server PBX."
 
 #. module: voip
 #. odoo-javascript
@@ -1033,6 +1077,10 @@ msgid ""
 "that you are reaching the right server (PBX server IP in the General "
 "Settings) and that the credentials in your user preferences are correct."
 msgstr ""
+"Il server non è riuscito ad autenticarti. Chiedi ad un amministratore di "
+"verificare che stai cercando di raggiungere il server giusto (IP server PBX "
+"nelle Impostazioni) e che le credenziali nelle preferenze utente siano "
+"corrette."
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_voip_phonecall__state
@@ -1052,6 +1100,8 @@ msgid ""
 "The username (typically the extension number) that will be used to register "
 "with the PBX server."
 msgstr ""
+"Il nome utente (tipicamente il numero di estensione) che verrà utilizzato "
+"per la registrazione con il server PBX."
 
 #. module: voip
 #. odoo-javascript
@@ -1061,6 +1111,8 @@ msgid ""
 "The websocket connection with the server has been lost. Please try to "
 "refresh the page."
 msgstr ""
+"La connessione WebSocket con il server è stata persa. Prova a ricaricare la "
+"pagina."
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__open
@@ -1115,7 +1167,7 @@ msgstr "Telefonate VOIP da resoconto utente"
 #. module: voip
 #: model:ir.model,name:voip.model_voip_queue_mixin
 msgid "VOIP Queue support"
-msgstr ""
+msgstr "Assistenza coda VOIP"
 
 #. module: voip
 #. odoo-javascript
@@ -1125,12 +1177,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:voip.res_users_view_form_preferences
 #, python-format
 msgid "VoIP"
-msgstr ""
+msgstr "VOIP"
 
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.voip_res_users_settings_view_form
 msgid "VoIP Configuration"
-msgstr ""
+msgstr "Configurazione VOIP"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_config_settings__mode
@@ -1141,13 +1193,13 @@ msgstr "Ambiente VoIP"
 #: model:ir.model.fields,field_description:voip.field_res_users__voip_secret
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__voip_secret
 msgid "VoIP secret"
-msgstr ""
+msgstr "Chiave privata VOIP"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_users__voip_username
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__voip_username
 msgid "VoIP username / Extension number"
-msgstr ""
+msgstr "Nome utente/numero di estensione VOIP "
 
 #. module: voip
 #. odoo-javascript

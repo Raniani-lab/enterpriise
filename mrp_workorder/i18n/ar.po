@@ -1232,6 +1232,17 @@ msgstr "لم تقم بتعيين رقم دفعة/رقم متسلسل للمنت�
 #. odoo-python
 #: code:addons/mrp_workorder/models/mrp_workorder.py:0
 #, python-format
+msgid ""
+"You need to complete Quality Checks using the Tablet View before marking "
+"Work Order as Done."
+msgstr ""
+"تحتاج أولاً إلى إكمال فحوصات الجودة باستخدام عرض الجهاز اللوحي قبل تعيين "
+"أوامر العمل كمنتهية. "
+
+#. module: mrp_workorder
+#. odoo-python
+#: code:addons/mrp_workorder/models/mrp_workorder.py:0
+#, python-format
 msgid "You should provide a lot/serial number for the final product"
 msgstr "عليك تعيين رقم دفعة/رقم متسلسل للمنتج النهائي "
 

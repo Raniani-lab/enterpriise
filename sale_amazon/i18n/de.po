@@ -115,7 +115,7 @@ msgstr "Amazon-Konto"
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_tree
 #: model_terms:ir.ui.view,arch_db:sale_amazon.res_config_settings_view_form
 msgid "Amazon Accounts"
-msgstr "Amazon-Konto"
+msgstr "Amazon-Konten"
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_res_partner__amazon_email
@@ -155,7 +155,7 @@ msgstr "Amazon-Angebot"
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_offer_view_tree
 msgid "Amazon Offers"
-msgstr "Amazon-Angebot"
+msgstr "Amazon-Angebote"
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_sale_order__amazon_order_ref

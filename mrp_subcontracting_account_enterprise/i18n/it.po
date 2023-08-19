@@ -98,6 +98,8 @@ msgid ""
 "Total cost of manufacturing order (component + operation costs + "
 "subcontracting cost)"
 msgstr ""
+"Costo totale dell'ordine di produzione (componente+operazione+costi+costi di"
+" subappalto)"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model:ir.model.fields,help:mrp_subcontracting_account_enterprise.field_mrp_report__subcontracting_cost

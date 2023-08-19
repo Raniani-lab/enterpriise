@@ -31,7 +31,7 @@ msgid ""
 "                        </span>"
 msgstr ""
 "<span class=\"o_appraisal_overlay\" attrs=\"{'invisible': [('state', '!=', 'new')]}\">\n"
-"                            Het tabblad Vaardigheden is actief zodra de beoordeling is bevestigd.\n"
+"                            Het tabblad Vaardigheden is actief zodra de evaluatie is bevestigd.\n"
 "                        </span>"
 
 #. module: hr_appraisal_skills
@@ -44,19 +44,19 @@ msgstr "Nieuwe vaardigheden toevoegen"
 #. module: hr_appraisal_skills
 #: model:ir.model.fields,field_description:hr_appraisal_skills.field_hr_appraisal_skill__appraisal_id
 msgid "Appraisal"
-msgstr "Beoordeling"
+msgstr "Evaluatie"
 
 #. module: hr_appraisal_skills
 #: model:ir.actions.act_window,name:hr_appraisal_skills.hr_appraisal_skill_report_action
 #: model:ir.model,name:hr_appraisal_skills.model_hr_appraisal_skill_report
 msgid "Appraisal Skills Report"
-msgstr "Beoordelingsrapport Vaardigheden"
+msgstr "Evaluatie vaardighedenrapport"
 
 #. module: hr_appraisal_skills
 #: model_terms:ir.actions.act_window,help:hr_appraisal_skills.hr_appraisal_skill_report_action
 msgid "Appraisal skills appear only for marked appraisals."
 msgstr ""
-"Beoordeling vaardigheden verschijnen alleen voor gemarkeerde beoordelingen."
+"Evaluatie vaardigheden verschijnen alleen voor gemarkeerde evaluaties."
 
 #. module: hr_appraisal_skills
 #: model:ir.model.fields,field_description:hr_appraisal_skills.field_hr_appraisal_skill_report__company_id
@@ -109,7 +109,7 @@ msgstr "Werknemer"
 #. module: hr_appraisal_skills
 #: model:ir.model,name:hr_appraisal_skills.model_hr_appraisal
 msgid "Employee Appraisal"
-msgstr "Werknemerbeoordeling"
+msgstr "Werknemersevaluatie"
 
 #. module: hr_appraisal_skills
 #: model:ir.model.fields,field_description:hr_appraisal_skills.field_hr_appraisal_skill_report__display_name

@@ -53,6 +53,12 @@ msgid "Sales Order Line"
 msgstr "販売オーダ明細"
 
 #. module: website_sale_subscription
+#: model_terms:ir.ui.view,arch_db:website_sale_subscription.product_template_message
+msgid ""
+"This product pricing is not compatible with the product(s) in your cart."
+msgstr "このプロダクト価格はカート内の商品と互換性がありません。"
+
+#. module: website_sale_subscription
 #. odoo-python
 #: code:addons/website_sale_subscription/models/product_template.py:0
 #, python-format

@@ -1221,7 +1221,7 @@ msgstr "未來活動"
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__asset_modify__gain_or_loss__gain
 msgid "Gain"
-msgstr "Gain"
+msgstr "收益"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__gain_account_id

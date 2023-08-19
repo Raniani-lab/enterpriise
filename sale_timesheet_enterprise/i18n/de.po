@@ -23,7 +23,7 @@ msgstr ""
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Invoicing Policy</span>"
-msgstr "<span class=\"o_form_label\">Fakturierungsregel</span>"
+msgstr "<span class=\"o_form_label\">Abrechnungspolitik</span>"
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.timesheet_view_form_so_line_inherit
@@ -189,7 +189,7 @@ msgstr "Aufgewendete Zeiten für diese Aufgabe, ohne Teilaufgaben"
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,help:sale_timesheet_enterprise.field_project_task__portal_total_hours_spent
 msgid "Time spent on this task, including its sub-tasks."
-msgstr "Aufgewendete Zeiten für diese Aufgabe, einschließlich Teilaufgaben"
+msgstr "Zeitaufwand für diese Aufgabe, einschließlich Teilaufgaben"
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.timesheet_view_grid_by_billing_rate

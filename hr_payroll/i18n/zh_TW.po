@@ -1519,7 +1519,7 @@ msgstr "法國薪資表"
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_line__date_from
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_rule_parameter_value__date_from
 msgid "From"
-msgstr "來自"
+msgstr "由"
 
 #. module: hr_payroll
 #. odoo-python
@@ -2095,7 +2095,7 @@ msgstr ""
 #. module: hr_payroll
 #: model:hr.salary.rule.category,name:hr_payroll.NET
 msgid "Net"
-msgstr "淨"
+msgstr "淨額"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payslip_view_kanban

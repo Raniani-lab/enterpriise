@@ -2175,7 +2175,7 @@ msgstr ""
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "You can't re-evaluate the asset before the lock date."
-msgstr ""
+msgstr "Vous ne pouvez pas réévaluer l'actif avant la date de verrouillage."
 
 #. module: account_asset
 #. odoo-python
@@ -2232,7 +2232,7 @@ msgstr ""
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "You cannot dispose of an asset before the lock date."
-msgstr ""
+msgstr "Vous ne pouvez pas céder un actif avant la date de verrouillage."
 
 #. module: account_asset
 #. odoo-python

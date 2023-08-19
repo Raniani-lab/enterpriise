@@ -74,7 +74,7 @@ msgstr "Riga ordine di vendita"
 #: code:addons/website_sale_stock_renting/static/src/js/renting_mixin.js:0
 #, python-format
 msgid "The product is not available for the following time period(s):\n"
-msgstr ""
+msgstr "Il prodotto non è disponibile per il/i seguente/i periodo/i:\n"
 
 #. module: website_sale_stock_renting
 #. odoo-javascript

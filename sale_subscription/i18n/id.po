@@ -3726,6 +3726,9 @@ msgid ""
 " - Has not started yet.\n"
 " - Has no invoiced period in the future."
 msgstr ""
+"Anda tidak dapat membuat upsell untuk langganan ini karena :\n"
+" - Belum dimulai.\n"
+" - Tidak memiliki periode yang difaktur di masa depan."
 
 #. module: sale_subscription
 #. odoo-python
@@ -3774,6 +3777,8 @@ msgid ""
 "You cannot upsell a subscription whose next invoice date is in the past.\n"
 "Please, invoice directly the %s contract."
 msgstr ""
+"Anda tidak dapat upsell langganan yang tanggal faktur berikutnya di masa lalu.\n"
+"Mohon berikan faktur langsung ke kontrak %s."
 
 #. module: sale_subscription
 #. odoo-python

@@ -2227,7 +2227,7 @@ msgstr ""
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "You cannot dispose of an asset before the lock date."
-msgstr ""
+msgstr "No puede disponer de un activo antes de la fecha de bloqueo."
 
 #. module: account_asset
 #. odoo-python

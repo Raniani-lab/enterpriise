@@ -622,7 +622,7 @@ msgstr ""
 #. module: planning
 #: model:ir.model,name:planning.model_hr_employee_base
 msgid "Basic Employee"
-msgstr ""
+msgstr "Karyawan Dasar"
 
 #. module: planning
 #: model:ir.ui.menu,name:planning.planning_menu_schedule_by_resource
@@ -830,7 +830,7 @@ msgstr "Departemen"
 #. module: planning
 #: model:ir.model,name:planning.model_hr_departure_wizard
 msgid "Departure Wizard"
-msgstr ""
+msgstr "Departure Wizard"
 
 #. module: planning
 #: model:planning.role,name:planning.planning_role_developer

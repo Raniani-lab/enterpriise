@@ -167,7 +167,7 @@ msgstr "A/B-Test-Mailings #"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__ab_testing_completed
 msgid "A/B Testing Campaign Finished"
-msgstr "A/B-Test-Kampagne beendet"
+msgstr "A/B-Testkampagne beendet"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__trace_ids

@@ -1150,7 +1150,7 @@ msgstr "您不能在前一个审批人之前批准"
 #, python-format
 msgid ""
 "You cannot assign the same approver multiple times on the same request."
-msgstr ""
+msgstr "无法在同一请求中多次分配相同的审批者。"
 
 #. module: approvals
 #. odoo-python
@@ -1159,7 +1159,7 @@ msgstr ""
 msgid ""
 "You cannot unlink an attachment which is linked to a validated, refused or "
 "cancelled approval request."
-msgstr ""
+msgstr "如果审批申请相关联链接已生效、已拒绝或已取消，则无法解除该附件。"
 
 #. module: approvals
 #. odoo-python

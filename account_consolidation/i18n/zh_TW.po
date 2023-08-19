@@ -1242,7 +1242,7 @@ msgstr "操作"
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_journal__originating_currency_id
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_journal_line__journal_originating_currency_id
 msgid "Originating Currency"
-msgstr "Originating Currency"
+msgstr "原始貨幣"
 
 #. module: account_consolidation
 #. odoo-python

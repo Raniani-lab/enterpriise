@@ -1053,7 +1053,7 @@ msgstr "Bericht senden"
 #: code:addons/industry_fsm/models/project_task.py:0
 #, python-format
 msgid "Send report"
-msgstr "Bericht versenden"
+msgstr "Bericht senden"
 
 #. module: industry_fsm
 #: model:mail.template,description:industry_fsm.mail_template_data_intervention_details

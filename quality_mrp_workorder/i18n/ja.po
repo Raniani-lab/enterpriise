@@ -40,7 +40,7 @@ msgstr "品質検査"
 #. module: quality_mrp_workorder
 #: model_terms:ir.ui.view,arch_db:quality_mrp_workorder.quality_check_view_form_inherit_mrp_workorder
 msgid "Component Lot/Serial"
-msgstr ""
+msgstr "構成品ロット/シリアル"
 
 #. module: quality_mrp_workorder
 #: model_terms:ir.ui.view,arch_db:quality_mrp_workorder.quality_alert_view_form_inherit_mrp
@@ -62,7 +62,7 @@ msgstr "不合格"
 #: code:addons/quality_mrp_workorder/models/quality.py:0
 #, python-format
 msgid "Failure"
-msgstr ""
+msgstr "失敗"
 
 #. module: quality_mrp_workorder
 #: model_terms:ir.ui.view,arch_db:quality_mrp_workorder.quality_check_view_search_inherit_quality_mrp_workorder
@@ -127,7 +127,7 @@ msgstr "品質検査"
 #: code:addons/quality_mrp_workorder/models/quality.py:0
 #, python-format
 msgid "Quality Check Failed"
-msgstr ""
+msgstr "品質検査不合格"
 
 #. module: quality_mrp_workorder
 #: model:ir.actions.act_window,name:quality_mrp_workorder.quality_check_action_wo

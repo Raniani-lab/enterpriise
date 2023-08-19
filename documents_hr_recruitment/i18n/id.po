@@ -54,7 +54,7 @@ msgstr "Dibatalkan"
 #. module: documents_hr_recruitment
 #: model_terms:ir.ui.view,arch_db:documents_hr_recruitment.res_config_settings_view_form
 msgid "Centralize files attached to applications and job positions"
-msgstr ""
+msgstr "Pusatkan file yang terlampir ke lamaran dan jabatan kerja"
 
 #. module: documents_hr_recruitment
 #: model:ir.model,name:documents_hr_recruitment.model_res_company
@@ -74,7 +74,7 @@ msgstr "Buat"
 #. module: documents_hr_recruitment
 #: model:documents.workflow.rule,name:documents_hr_recruitment.documents_applicant_rule
 msgid "Create an Applicant"
-msgstr ""
+msgstr "Buat Pelamar"
 
 #. module: documents_hr_recruitment
 #: model_terms:ir.ui.view,arch_db:documents_hr_recruitment.res_config_settings_view_form
@@ -91,7 +91,7 @@ msgstr "Dokumen"
 #. module: documents_hr_recruitment
 #: model:ir.model.fields,field_description:documents_hr_recruitment.field_res_company__documents_recruitment_settings
 msgid "Documents Recruitment Settings"
-msgstr ""
+msgstr "Pengaturan Dokumen Rekrutmen"
 
 #. module: documents_hr_recruitment
 #: model:documents.tag,name:documents_hr_recruitment.documents_recruitment_new_tag
@@ -112,27 +112,27 @@ msgstr "Perekrutan"
 #. module: documents_hr_recruitment
 #: model:documents.tag,name:documents_hr_recruitment.documents_recruitment_plans_tag
 msgid "Recruitment Reserve"
-msgstr ""
+msgstr "Cadangan Rekrutmen"
 
 #. module: documents_hr_recruitment
 #: model:ir.model.fields,field_description:documents_hr_recruitment.field_res_company__recruitment_tag_ids
 msgid "Recruitment Tag"
-msgstr ""
+msgstr "Tag Rekrutme"
 
 #. module: documents_hr_recruitment
 #: model:ir.model.fields,field_description:documents_hr_recruitment.field_res_config_settings__recruitment_tag_ids
 msgid "Recruitment Tags"
-msgstr ""
+msgstr "Tag-Tag Rekrutmen"
 
 #. module: documents_hr_recruitment
 #: model:ir.model.fields,field_description:documents_hr_recruitment.field_res_company__recruitment_folder_id
 msgid "Recruitment Workspace"
-msgstr ""
+msgstr "Ruang Kerja Rekrutmen"
 
 #. module: documents_hr_recruitment
 #: model:ir.model.fields,field_description:documents_hr_recruitment.field_res_config_settings__recruitment_folder_id
 msgid "Recruitment default workspace"
-msgstr ""
+msgstr "Ruang kerja default rekrutmen"
 
 #. module: documents_hr_recruitment
 #: model:documents.facet,name:documents_hr_recruitment.documents_recruitment_documents_facet

@@ -2483,7 +2483,7 @@ msgstr "Offen"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_financial_year_op
 msgid "Opening Balance of Financial Year"
-msgstr "Anfangssaldo des Geschäftsjahrs"
+msgstr "Eröffnungssaldo des Geschäftsjahrs"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_income0

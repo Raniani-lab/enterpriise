@@ -18,5 +18,5 @@
         'report/worksheet_custom_report_templates.xml',
     ],
     'auto_install': True,
-    'license': 'LGPL-3',
+    'license': 'OEEL-1',
 }

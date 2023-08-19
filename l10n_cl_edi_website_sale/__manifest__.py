@@ -17,5 +17,5 @@
             'l10n_cl_edi_website_sale/static/src/js/fields/l10n_cl_fields.js',
         ]
     },
-    'license': 'LGPL-3',
+    'license': 'OEEL-1',
 }

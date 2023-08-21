@@ -1,6 +1,6 @@
-/** @odoo-module **/
+/* @odoo-module */
 
-import { click, start } from "@mail/../tests/helpers/test_utils";
+import { click, contains, start } from "@mail/../tests/helpers/test_utils";
 
 import { patchWithCleanup } from "@web/../tests/helpers/utils";
 
@@ -22,9 +22,8 @@ QUnit.module("documents", {}, function () {
         });
 
         await click(".o_menu_systray i[aria-label='Activities']");
-        assert.containsOnce(document.body, ".o-mail-ActivityMenu");
-        assert.containsOnce(document.body, ".o_sys_documents_request");
+        await contains(".o-mail-ActivityMenu");
         await click(".o_sys_documents_request");
-        assert.containsNone(document.body, ".o-mail-ActivityMenu");
+        await contains(".o-mail-ActivityMenu", 0);
     });
 });

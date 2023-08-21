@@ -4,6 +4,8 @@ import { click, start, startServer } from "@mail/../tests/helpers/test_utils";
 
 import { EventBus } from "@odoo/owl";
 
+import { makeDeferred } from "@web/../tests/helpers/utils";
+
 function makeFakeVoipService(onCall) {
     return {
         start() {
@@ -80,6 +82,7 @@ QUnit.test("Click on landline number from activity info triggers a call.", async
         res_id: partnerId,
         res_model: "res.partner",
     });
+    const def = makeDeferred();
     const { openFormView } = await start({
         services: {
             voip: makeFakeVoipService((params) => {
@@ -89,11 +92,13 @@ QUnit.test("Click on landline number from activity info triggers a call.", async
                     number: "+1-202-555-0182",
                     fromActivity: true,
                 });
+                def.resolve();
             }),
         },
     });
     await openFormView("res.partner", partnerId);
-    click(".o-mail-Activity-voip-landline-number > a");
+    await click(".o-mail-Activity-voip-landline-number > a");
+    await def;
     assert.verifySteps(["call to landline number triggered"]);
 });
 
@@ -105,6 +110,7 @@ QUnit.test("Click on mobile number from activity info triggers a call.", async (
         res_id: partnerId,
         res_model: "res.partner",
     });
+    const def = makeDeferred();
     const { openFormView } = await start({
         services: {
             voip: makeFakeVoipService((params) => {
@@ -114,10 +120,12 @@ QUnit.test("Click on mobile number from activity info triggers a call.", async (
                     number: "4567829775",
                     fromActivity: true,
                 });
+                def.resolve();
             }),
         },
     });
     await openFormView("res.partner", partnerId);
     click(".o-mail-Activity-voip-mobile-number > a");
+    await def;
     assert.verifySteps(["call to mobile number triggered"]);
 });

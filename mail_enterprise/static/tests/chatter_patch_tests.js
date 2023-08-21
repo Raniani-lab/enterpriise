@@ -148,7 +148,7 @@ QUnit.skip("Message list is scrolled to new message after posting a message", as
     await afterNextRender(() => editInput($(".o-mail-Composer-input")[0], "New Message"));
     assert.verifySteps([], "Message post should not yet be done");
 
-    await click(".o-mail-Composer-send");
+    await click(".o-mail-Composer-send:not(:disabled)");
     await contains(".o-mail-Message:contains(New Message)");
     await nextAnimationFrame();
     assert.verifySteps(["/mail/message/post"]);

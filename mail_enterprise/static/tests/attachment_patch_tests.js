@@ -1,7 +1,7 @@
 /* @odoo-module */
 
 import { patchUiSize, SIZES } from "@mail/../tests/helpers/patch_ui_size";
-import { afterNextRender, click, start, startServer } from "@mail/../tests/helpers/test_utils";
+import { click, contains, start, startServer } from "@mail/../tests/helpers/test_utils";
 
 import { patchWithCleanup } from "@web/../tests/helpers/utils";
 
@@ -9,7 +9,7 @@ import { methods } from "@web_mobile/js/services/core";
 
 QUnit.module("attachment (patch)");
 
-QUnit.test("'backbutton' event should close attachment viewer", async (assert) => {
+QUnit.test("'backbutton' event should close attachment viewer", async () => {
     patchWithCleanup(methods, {
         overrideBackButton({ enabled }) {},
     });
@@ -35,12 +35,10 @@ QUnit.test("'backbutton' event should close attachment viewer", async (assert) =
     await click("button:contains(Channel)");
     await click(".o-mail-NotificationItem:contains('channel')");
     await click(".o-mail-AttachmentImage");
-    assert.containsOnce($, ".o-FileViewer");
-    await afterNextRender(() => {
-        const backButtonEvent = new Event("backbutton");
-        document.dispatchEvent(backButtonEvent);
-    });
-    assert.containsNone($, ".o-FileViewer");
+    await contains(".o-FileViewer");
+    const backButtonEvent = new Event("backbutton");
+    document.dispatchEvent(backButtonEvent);
+    await contains(".o-FileViewer", 0);
 });
 
 QUnit.test(
@@ -75,9 +73,11 @@ QUnit.test(
         });
 
         await click(".o-mail-AttachmentImage");
+        await contains(".o-FileViewer");
         assert.verifySteps(["overrideBackButton: true"]);
 
         await click(".o-FileViewer div[aria-label='Close']");
+        await contains(".o-FileViewer", 0);
         assert.verifySteps(["overrideBackButton: false"]);
     }
 );

@@ -2,6 +2,8 @@
 
 import { click, start, startServer } from "@mail/../tests/helpers/test_utils";
 
+import { makeDeferred } from "@web/../tests/helpers/utils";
+
 QUnit.module("activity (patch)");
 
 QUnit.test("activity with approval to be made by logged user", async (assert) => {
@@ -90,12 +92,14 @@ QUnit.test("approve approval", async (assert) => {
         res_model: "approval.request",
         user_id: pyEnv.currentUserId,
     });
+    const def = makeDeferred();
     const { openView } = await start({
         async mockRPC(route, args) {
             if (args.method === "action_approve") {
                 assert.strictEqual(args.args.length, 1);
                 assert.strictEqual(args.args[0], requestId);
                 assert.step("action_approve");
+                def.resolve();
             }
         },
     });
@@ -107,7 +111,8 @@ QUnit.test("approve approval", async (assert) => {
     assert.containsOnce($, ".o-mail-Activity");
     assert.containsOnce($, ".o-mail-Activity button:contains('Approve')");
 
-    click(".o-mail-Activity button:contains('Approve')");
+    await click(".o-mail-Activity button:contains('Approve')");
+    await def;
     assert.verifySteps(["action_approve"]);
 });
 
@@ -125,12 +130,14 @@ QUnit.test("refuse approval", async (assert) => {
         res_model: "approval.request",
         user_id: pyEnv.currentUserId,
     });
+    const def = makeDeferred();
     const { openView } = await start({
         async mockRPC(route, args) {
             if (args.method === "action_refuse") {
                 assert.strictEqual(args.args.length, 1);
                 assert.strictEqual(args.args[0], requestId);
                 assert.step("action_refuse");
+                def.resolve();
             }
         },
     });
@@ -142,6 +149,7 @@ QUnit.test("refuse approval", async (assert) => {
     assert.containsOnce($, ".o-mail-Activity");
     assert.containsOnce($, ".o-mail-Activity button:contains('Refuse')");
 
-    click(".o-mail-Activity button:contains('Refuse')");
+    await click(".o-mail-Activity button:contains('Refuse')");
+    await def;
     assert.verifySteps(["action_refuse"]);
 });

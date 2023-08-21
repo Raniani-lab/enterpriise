@@ -1,4 +1,4 @@
-/** @odoo-module **/
+/* @odoo-module */
 
 import { fileUploadService } from "@web/core/file_upload/file_upload_service";
 import { multiTabService } from "@bus/multi_tab_service";
@@ -18,7 +18,7 @@ import { setupViewRegistries } from "@web/../tests/views/helpers";
 import { fakeCookieService, makeFakeUserService } from "@web/../tests/helpers/mock_services";
 
 import {
-    afterNextRender,
+    click as mailClick,
     contains,
     insertText,
     startServer,
@@ -536,9 +536,7 @@ QUnit.module("documents", {}, function () {
                 );
             });
 
-            QUnit.test("can unselect a record", async function (assert) {
-                assert.expect(3);
-
+            QUnit.test("can unselect a record", async function () {
                 await createDocumentsView({
                     type: "kanban",
                     resModel: "documents.document",
@@ -548,15 +546,12 @@ QUnit.module("documents", {}, function () {
                         </div>
                     </t></templates></kanban>`,
                 });
-
-                assert.containsNone(target, ".o_kanban_record.o_record_selected");
-
-                const firstRecord = target.querySelector(".o_kanban_record");
-                await click(firstRecord);
-                assert.hasClass(firstRecord, "o_record_selected");
-
-                await click(firstRecord);
-                assert.containsNone(target, ".o_kanban_record.o_record_selected");
+                await contains(".o_kanban_record", 11);
+                await contains(".o_kanban_record.o_record_selected", 0);
+                await mailClick(".o_kanban_record:eq(0)");
+                await contains(".o_kanban_record.o_record_selected");
+                await mailClick(".o_kanban_record:eq(0)");
+                await contains(".o_kanban_record.o_record_selected", 0);
             });
 
             QUnit.test("can select records with keyboard navigation", async function (assert) {
@@ -2195,7 +2190,7 @@ QUnit.module("documents", {}, function () {
                     );
                     await click(target.querySelector(".o_kanban_record"));
 
-                    assert.containsN(target, ".o_inspector_tag", 2, "should display two tags");
+                    await contains(".o_inspector_tag", 2);
 
                     await click(target.querySelector(".o_inspector_tags input"));
                     editInput(target.querySelector(".o_inspector_tags input"), null, "new");
@@ -2771,8 +2766,6 @@ QUnit.module("documents", {}, function () {
             QUnit.test(
                 "document chatter: fetch and display chatter messages",
                 async function (assert) {
-                    assert.expect(2);
-
                     const [documentsDocumentId1] = pyEnv["documents.document"].search([]);
                     pyEnv["mail.message"].create([
                         {
@@ -2806,15 +2799,9 @@ QUnit.module("documents", {}, function () {
                         res_model: "documents.document",
                         views: [[false, "kanban"]],
                     });
-
                     await click($(target).find(".o_kanban_record:contains(yop)")[0]);
-
-                    await afterNextRender(() =>
-                        click(
-                            target.querySelector(".o_documents_inspector .o_inspector_open_chatter")
-                        )
-                    );
-                    assert.containsOnce(target, ".o_document_chatter_container .o-mail-Chatter");
+                    await mailClick(".o_documents_inspector .o_inspector_open_chatter");
+                    await contains(".o_document_chatter_container .o-mail-Chatter");
                     assert.containsN(
                         target,
                         ".o_document_chatter_container .o-mail-Chatter .o-mail-Message",
@@ -3042,8 +3029,8 @@ QUnit.module("documents", {}, function () {
 
                     // write and send a message (need to wait the Send button to be enabled)
                     await insertText(".o-mail-Composer-input", "Some message");
-                    await click(target.querySelector(".o-mail-Composer-send"));
-                    assert.containsOnce(target, ".o-mail-Message");
+                    await mailClick(".o-mail-Composer-send:not(:disabled)");
+                    await contains(".o-mail-Message");
                     assert.strictEqual(
                         target.querySelector(".o-mail-Message-body").textContent,
                         "Some message"
@@ -3092,13 +3079,9 @@ QUnit.module("documents", {}, function () {
 
                     await click($(target).find(".o_kanban_record:contains(yop)")[0]);
 
-                    await afterNextRender(() =>
-                        click(
-                            target.querySelector(".o_documents_inspector .o_inspector_open_chatter")
-                        )
-                    );
-                    assert.containsOnce(target, ".o_document_chatter_container .o-mail-Chatter");
-                    assert.containsOnce(target, ".o_document_chatter_container .o-mail-Message");
+                    await mailClick(".o_documents_inspector .o_inspector_open_chatter");
+                    await contains(".o_document_chatter_container .o-mail-Chatter");
+                    await contains(".o_document_chatter_container .o-mail-Message");
                     assert.strictEqual(
                         target.querySelector(".o-mail-Message-body").innerText.trim(),
                         "Message on 'yop'"

@@ -1,8 +1,8 @@
-/** @odoo-module **/
-
-import { click, insertText, start, startServer } from "@mail/../tests/helpers/test_utils";
+/* @odoo-module */
 
 import { addModelNamesToFetch } from "@bus/../tests/helpers/model_definitions_helpers";
+
+import { click, contains, insertText, start, startServer } from "@mail/../tests/helpers/test_utils";
 
 addModelNamesToFetch(["helpdesk.ticket"]);
 
@@ -52,13 +52,13 @@ QUnit.test("[technical] /ticket command gets a body as kwarg", async (assert) =>
             }
         },
     });
-    await openDiscuss(channelId);
+    openDiscuss(channelId);
     await insertText(".o-mail-Composer-input", "/ticket something");
-    await click(".o-mail-Composer-send");
+    await click(".o-mail-Composer-send:not(:disabled)");
     assert.verifySteps(["execute command helpdesk. body: /ticket something"]);
 });
 
-QUnit.test("canned response should work in helpdesk ticket", async (assert) => {
+QUnit.test("canned response should work in helpdesk ticket", async () => {
     const pyEnv = await startServer();
     pyEnv["mail.shortcode"].create({
         source: "hello",
@@ -66,9 +66,9 @@ QUnit.test("canned response should work in helpdesk ticket", async (assert) => {
     });
     const ticketId = pyEnv["helpdesk.ticket"].create({ name: "My helpdesk ticket" });
     const { openFormView } = await start();
-    await openFormView("helpdesk.ticket", ticketId);
-    assert.containsNone($, ".o-mail-Composer-suggestion:contains(hello)");
+    openFormView("helpdesk.ticket", ticketId);
     await click(".o-mail-Chatter button:contains(Send message)");
+    await contains(".o-mail-Composer-suggestion:contains(hello)", 0);
     await insertText(".o-mail-Composer-input", ":");
-    assert.containsOnce($, ".o-mail-Composer-suggestion:contains(hello)");
+    await contains(".o-mail-Composer-suggestion:contains(hello)");
 });

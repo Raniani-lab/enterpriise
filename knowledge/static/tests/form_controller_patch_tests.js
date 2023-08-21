@@ -1,13 +1,10 @@
-/** @odoo-module **/
+/* @odoo-module */
 
-import { getFixture } from "@web/../tests/helpers/utils";
-import { click, start, startServer } from "@mail/../tests/helpers/test_utils";
-
+import { click, contains, start, startServer } from "@mail/../tests/helpers/test_utils";
 
 QUnit.module("Knowledge - Form Search Button", (hooks) => {
     let serverData;
     let mockRPC;
-    let target;
     hooks.beforeEach((assert) => {
         serverData = {
             views: {
@@ -34,7 +31,6 @@ QUnit.module("Knowledge - Form Search Button", (hooks) => {
                 assert.step("save");
             }
         };
-        target = getFixture();
     });
 
     QUnit.test("can search for article on existing record", async (assert) => {
@@ -44,12 +40,12 @@ QUnit.module("Knowledge - Form Search Button", (hooks) => {
             serverData,
             mockRPC,
         });
-        await openFormView("res.partner", partnerId);
-        assert.containsOnce(target, ".o_control_panel_navigation .o_knowledge_icon_search");
-        assert.containsNone(target, ".o_command_palette");
+        openFormView("res.partner", partnerId);
+        await contains(".o_control_panel_navigation .o_knowledge_icon_search");
+        await contains(".o_command_palette", 0);
 
         await click(".o_control_panel_navigation .o_knowledge_icon_search");
-        assert.containsOnce(target, ".o_command_palette");
+        await contains(".o_command_palette");
         assert.verifySteps([], "shouldn't call save");
     });
 
@@ -58,12 +54,12 @@ QUnit.module("Knowledge - Form Search Button", (hooks) => {
             serverData,
             mockRPC,
         });
-        await openFormView("res.partner");
-        assert.containsOnce(target, ".o_control_panel_navigation .o_knowledge_icon_search");
-        assert.containsNone(target, ".o_command_palette");
+        openFormView("res.partner");
+        await contains(".o_control_panel_navigation .o_knowledge_icon_search");
+        await contains(".o_command_palette", 0);
 
         await click(".o_control_panel_navigation .o_knowledge_icon_search");
-        assert.containsOnce(target, ".o_command_palette");
+        await contains(".o_command_palette");
         assert.verifySteps(["save"], "should call save");
     });
 
@@ -81,12 +77,12 @@ QUnit.module("Knowledge - Form Search Button", (hooks) => {
             serverData,
             mockRPC,
         });
-        await openFormView("res.partner");
-        assert.containsOnce(target, ".o_control_panel_navigation .o_knowledge_icon_search");
-        assert.containsNone(target, ".o_command_palette");
+        openFormView("res.partner");
+        await contains(".o_control_panel_navigation .o_knowledge_icon_search");
+        await contains(".o_command_palette", 0);
 
         await click(".o_control_panel_navigation .o_knowledge_icon_search");
-        assert.containsNone(target, ".o_command_palette");
+        await contains(".o_command_palette", 0);
         assert.verifySteps([], "shouldn't call save");
     });
 });

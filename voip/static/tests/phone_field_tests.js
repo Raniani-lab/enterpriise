@@ -2,11 +2,11 @@
 
 import { addFakeModel } from "@bus/../tests/helpers/model_definitions_helpers";
 
-import { click, start, startServer } from "@mail/../tests/helpers/test_utils";
+import { click, contains, start, startServer } from "@mail/../tests/helpers/test_utils";
 
 import { EventBus } from "@odoo/owl";
 
-import { nextTick } from "@web/../tests/helpers/utils";
+import { makeDeferred, nextTick } from "@web/../tests/helpers/utils";
 
 function makeFakeVoipService(onCall = () => {}) {
     return {
@@ -42,6 +42,7 @@ QUnit.module("phone field");
 QUnit.test("Click on PhoneField link triggers a call", async (assert) => {
     const pyEnv = await startServer();
     const fakeId = pyEnv["fake"].create({ phone_number: "+36 55 369 678" });
+    const def = makeDeferred();
     const { openFormView } = await start({
         serverData: { views },
         services: {
@@ -52,6 +53,7 @@ QUnit.test("Click on PhoneField link triggers a call", async (assert) => {
                     resId: fakeId,
                     resModel: "fake",
                 });
+                def.resolve();
             }),
         },
     });
@@ -59,13 +61,14 @@ QUnit.test("Click on PhoneField link triggers a call", async (assert) => {
         waitUntilDataLoaded: false,
         waitUntilMessagesLoaded: false,
     });
-    click(".o_field_phone a");
+    await click(".o_field_phone a:eq(0)");
+    await def;
     assert.verifySteps(["call placed"]);
 });
 
 QUnit.test(
     "Click on PhoneField link in readonly form view does not switch the form view to edit mode",
-    async (assert) => {
+    async () => {
         const pyEnv = await startServer();
         const fakeId = pyEnv["fake"].create({ phone_number: "+689 312172" });
         const { openFormView } = await start({
@@ -76,8 +79,8 @@ QUnit.test(
             waitUntilDataLoaded: false,
             waitUntilMessagesLoaded: false,
         });
-        click(".o_field_phone a");
+        await click(".o_field_phone a:eq(0)");
         await nextTick();
-        assert.containsOnce($, ".o_form_readonly");
+        await contains(".o_form_readonly");
     }
 );

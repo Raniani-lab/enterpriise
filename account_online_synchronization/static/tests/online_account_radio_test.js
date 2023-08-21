@@ -1,8 +1,8 @@
-/** @odoo-module **/
+/* @odoo-module */
 
-import { start, startServer } from "@mail/../tests/helpers/test_utils";
+import { click, start, startServer } from "@mail/../tests/helpers/test_utils";
 
-QUnit.module("Views", {}, function (hooks) {
+QUnit.module("Views", {}, function () {
     QUnit.module("AccountOnlineSynchronizationAccountRadio");
 
     QUnit.test("can be rendered", async (assert) => {
@@ -40,7 +40,7 @@ QUnit.module("Views", {}, function (hooks) {
                     </div>
                 </form>`,
         };
-        const { click, openView } = await start({
+        const { openView } = await start({
             serverData: { views },
             mockRPC: function (route, args) {
                 if (route === "/web/dataset/call_kw/account.online.account/get_formatted_balances") {

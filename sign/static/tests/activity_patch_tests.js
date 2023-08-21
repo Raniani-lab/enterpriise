@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { click, start, startServer } from "@mail/../tests/helpers/test_utils";
+import { click, contains, start, startServer } from "@mail/../tests/helpers/test_utils";
 
 import { patchWithCleanup } from "@web/../tests/helpers/utils";
 import { ListController } from "@web/views/list/list_controller";
@@ -50,6 +50,6 @@ QUnit.test("list activity widget: sign button in dropdown", async (assert) => {
     assert.strictEqual($(".o-mail-ListActivity-summary")[0].innerText, "Sign a new contract");
 
     await click(".o-mail-ActivityButton"); // open the popover
-    assert.containsNone($, ".o-mail-ActivityListPopoverItem-markAsDone");
-    assert.containsOnce($, ".o-mail-ActivityListPopoverItem-requestSign");
+    await contains(".o-mail-ActivityListPopoverItem-markAsDone", 0);
+    await contains(".o-mail-ActivityListPopoverItem-requestSign");
 });

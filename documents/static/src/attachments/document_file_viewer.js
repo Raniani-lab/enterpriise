@@ -1,11 +1,11 @@
 /* @odoo-module */
 
-import { patch } from "@web/core/utils/patch";
 import { useService } from "@web/core/utils/hooks";
-import { FileViewer } from "@web/core/file_viewer/file_viewer";
+import { FileViewer as WebFileViewer } from "@web/core/file_viewer/file_viewer";
 import { onWillUpdateProps } from "@odoo/owl";
 
-patch(FileViewer.prototype, {
+export class FileViewer extends WebFileViewer {
+    static template = "documents.FileViewer";
     setup() {
         super.setup();
         /** @type {import("@documents/core/document_service").DocumentService} */
@@ -16,7 +16,7 @@ patch(FileViewer.prototype, {
                 this.activateFile(nextProps.startIndex);
             }
         });
-    },
+    }
     get hasSplitPdf() {
         if (this.documentService.documentList?.initialRecordSelectionLength === 1) {
             return this.documentService.documentList.selectedDocument.attachment.isPdf;
@@ -24,7 +24,7 @@ patch(FileViewer.prototype, {
         return this.documentService.documentList?.documents.every(
             (document) => document.attachment.isPdf
         );
-    },
+    }
     get withDownload() {
         if (this.documentService.documentList?.initialRecordSelectionLength === 1) {
             return this.documentService.documentList.selectedDocument.attachment.isUrlYoutube;
@@ -32,7 +32,7 @@ patch(FileViewer.prototype, {
         return this.documentService.documentList?.documents.every(
             (document) => document.attachment.isUrlYoutube
         );
-    },
+    }
     onClickPdfSplit() {
         this.close();
         if (this.documentService.documentList?.initialRecordSelectionLength === 1) {
@@ -43,11 +43,11 @@ patch(FileViewer.prototype, {
         return this.documentService.documentList?.pdfManagerOpenCallback(
             this.documentService.documentList.documents.map((document) => document.record)
         );
-    },
+    }
     close() {
         this.documentService.documentList?.onDeleteCallback();
         super.close();
-    },
+    }
     next() {
         super.next();
         if (this.onSelectDocument) {
@@ -67,7 +67,7 @@ patch(FileViewer.prototype, {
             documentList.selectedDocument = documentList.documents[nextIndex];
             this.onSelectDocument(documentList.selectedDocument.record);
         }
-    },
+    }
     previous() {
         super.previous();
         if (this.onSelectDocument) {
@@ -88,5 +88,5 @@ patch(FileViewer.prototype, {
             documentList.selectedDocument = documentList.documents[previousIndex];
             this.onSelectDocument(documentList.selectedDocument.record);
         }
-    },
-});
+    }
+}

@@ -1,6 +1,6 @@
 /* @odoo-module **/
 
-import { FileViewer } from "@web/core/file_viewer/file_viewer";
+import { FileViewer } from "@documents/attachments/document_file_viewer";
 
 const { Component, useEffect, useRef, useState } = owl;
 

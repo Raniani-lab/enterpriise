@@ -1,13 +1,13 @@
 /** @odoo-module **/
 
-import Popover from "@web/legacy/js/core/popover";
+import { PopoverController } from "@web/core/popover/popover_controller";
 import { useBackButton } from "@web_mobile/js/core/hooks";
 import { patch } from "@web/core/utils/patch";
 
-patch(Popover.prototype, {
+patch(PopoverController.prototype, {
     setup() {
         super.setup(...arguments);
-        useBackButton(this._onBackButton.bind(this), () => this.state.displayed);
+        useBackButton(this.onBackButton.bind(this), () => this.props.target.isConnected);
     },
 
     //---------------------------------------------------------------------
@@ -18,7 +18,7 @@ patch(Popover.prototype, {
      * Close popover on back-button
      * @private
      */
-    _onBackButton() {
-        this._close();
+    onBackButton() {
+        this.props.close();
     },
 });

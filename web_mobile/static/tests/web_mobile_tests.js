@@ -2,7 +2,6 @@
 
 import Dialog from "@web/legacy/js/core/dialog";
 import dom from "@web/legacy/js/core/dom";
-import Popover from "@web/legacy/js/core/popover";
 import session from "web.session";
 import testUtils from "@web/../tests/legacy/helpers/test_utils";
 import Widget from "@web/legacy/js/core/widget";
@@ -13,8 +12,9 @@ import mobile from "@web_mobile/js/services/core";
 /*import UserPreferencesFormView from "web_mobile.UserPreferencesFormView";*/
 
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
-import { mount, getFixture, destroy, patchWithCleanup, clickSave} from "@web/../tests/helpers/utils";
+import { mount, getFixture, destroy, patchWithCleanup, clickSave, nextTick } from "@web/../tests/helpers/utils";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
+import { registry } from "@web/core/registry";
 
 import { Component, useState, xml } from "@odoo/owl";
 
@@ -465,7 +465,30 @@ QUnit.module("web_mobile", {
     QUnit.module("Popover");
 
     QUnit.test("popover is closable with backbutton event", async function (assert) {
-        assert.expect(7);
+        const mainComponents = registry.category("main_components");
+
+        class PseudoWebClient extends Component {
+            setup() {
+                this.Components = mainComponents.getEntries();
+            }
+        }
+        PseudoWebClient.template = xml`
+            <div>
+                <div id="anchor">Anchor</div>
+                <div id="close">Close</div>
+                <div id="sibling">Sibling</div>
+                <div>
+                    <t t-foreach="Components" t-as="C" t-key="C[0]">
+                        <t t-component="C[1].Component" t-props="C[1].props"/>
+                    </t>
+                </div>
+            </div>
+        `;
+        
+        const fixture = getFixture();
+        const env = await makeTestEnv();
+        await mount(PseudoWebClient, fixture, { env });
+        const popoverTarget = fixture.querySelector("#anchor");
 
         patchWithCleanup(mobile.methods, {
             overrideBackButton({ enabled }) {
@@ -473,35 +496,22 @@ QUnit.module("web_mobile", {
             },
         });
 
-        class Parent extends Component {}
+        class Comp extends Component {}
+        Comp.template = xml`<div id="comp">in popover</div>`;
 
-        Parent.components = { Popover };
-        Parent.template = xml`
-    <div>
-        <Popover>
-            <t t-set="opened">
-                Some content
-            </t>
-            <button id="target">
-                Show me
-            </button>
-        </Popover>
-    </div>`;
+        env.services.popover.add(popoverTarget, Comp, {});
+        await nextTick();
 
-        const target = getFixture();
-        const env = makeTestEnv();
-
-        await mount(Parent, target, { env });
-
-        assert.containsNone(document.body, ".o_popover");
-        await testUtils.dom.click(document.querySelector("#target"));
-        assert.containsOnce(document.body, ".o_popover");
+        assert.containsOnce(fixture, ".o_popover");
+        assert.containsOnce(fixture, ".o_popover #comp");
         assert.verifySteps(["overrideBackButton: true"]);
+
         // simulate 'backbutton' event triggered by the app
         await testUtils.dom.triggerEvent(document, "backbutton");
+        
         assert.verifySteps(["overrideBackButton: false"]);
-        assert.containsNone(document.body, ".o_popover", "should have been closed");
-
+        assert.containsNone(fixture, ".o_popover");
+        assert.containsNone(fixture, ".o_popover #comp");
     });
 
     QUnit.module("UpdateDeviceAccountControllerMixin");

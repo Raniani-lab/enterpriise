@@ -44,8 +44,9 @@ class IrActionsReport(models.Model):
         ctx = super()._get_rendering_context(report, docids, data)
         if self.env.context.get("studio") and not ctx["docs"]:
             # TODO or not ?: user inputed values in data ?
-            onchange = self.env[report.model].browse().onchange({}, [], {})
-            doc = self.env[report.model].new(onchange["value"])
+            # FIXME this actually returns nothing in onchange["value"]:
+            #   onchange = self.env[report.model].browse().onchange({}, [], {})
+            doc = self.env[report.model].new({})
             ctx["docs"] = doc
         return ctx
 

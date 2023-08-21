@@ -325,16 +325,6 @@ class AccountAsset(models.Model):
     # -------------------------------------------------------------------------
     # ONCHANGE METHODS
     # -------------------------------------------------------------------------
-    def onchange(self, values, field_name, field_onchange):
-        # Force the re-rendering of computed fields on the o2m
-        if field_name == 'depreciation_move_ids':
-            return super().onchange(values, False, {
-                fname: spec
-                for fname, spec in field_onchange.items()
-                if fname.startswith('depreciation_move_ids') or fname.startswith('original_move_line_ids')
-            })
-        return super().onchange(values, field_name, field_onchange)
-
     @api.onchange('account_depreciation_id')
     def _onchange_account_depreciation_id(self):
         if not self.original_move_line_ids:

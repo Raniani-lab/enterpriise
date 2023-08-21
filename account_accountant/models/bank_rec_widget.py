@@ -248,14 +248,6 @@ class BankRecWidget(models.Model):
         method_name = todo_command['method_name']
         getattr(self, f'_js_action_{method_name}')(*todo_command.get('args', []), **todo_command.get('kwargs', {}))
 
-    def onchange(self, values, field_name, field_onchange):
-        for rec_field_name, rec_field in self._fields.items():
-            if rec_field.type == 'one2many':
-                for sub_rec_field_name in self.env[rec_field.comodel_name]._fields:
-                    if sub_rec_field_name != rec_field.inverse_name:
-                        field_onchange[f"{rec_field_name}.{sub_rec_field_name}"] = ''
-        return super().onchange(values, field_name, field_onchange)
-
     # -------------------------------------------------------------------------
     # LOW-LEVEL METHODS
     # -------------------------------------------------------------------------

@@ -1,6 +1,5 @@
 /** @odoo-module */
 
-import { _t } from "@web/legacy/js/services/core";
 import { renderToString } from "@web/core/utils/render";
 import { ArticleTemplatePickerDialog } from "@knowledge/components/article_template_picker_dialog/article_template_picker_dialog";
 import { encodeDataBehaviorProps } from "@knowledge/js/knowledge_utils";
@@ -15,6 +14,7 @@ import { PromptEmbeddedViewNameDialog } from "@knowledge/components/prompt_embed
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { KnowledgeWysiwyg } from '@knowledge/js/knowledge_wysiwyg';
+import { _t } from "@web/core/l10n/translation";
 
 
 /**

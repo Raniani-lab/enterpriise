@@ -1,6 +1,5 @@
 /** @odoo-module **/
 
-import core from "@web/legacy/js/services/core";
 import Session from "@web/legacy/js/core/session";
 
 import mobile from "@web_mobile/js/services/core";
@@ -24,8 +23,8 @@ Session.include({
      */
     get_file: function (options) {
         if (mobile.methods.downloadFile) {
-            if (core.csrf_token) {
-                options.csrf_token = core.csrf_token;
+            if (odoo.csrf_token) {
+                options.csrf_token = odoo.csrf_token;
             }
             mobile.methods.downloadFile(options);
             // There is no need to wait downloadFile because we delegate this to

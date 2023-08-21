@@ -34,7 +34,7 @@ MODELS_TO_EXPORT = [
 # list of fields to export by model
 FIELDS_TO_EXPORT = {
     'base.automation': [
-        'action_server_id', 'active', 'filter_domain', 'filter_pre_domain',
+        'action_server_ids', 'active', 'filter_domain', 'filter_pre_domain',
         'last_run', 'on_change_field_ids', 'trg_date_id', 'trg_date_range',
         'trg_date_range_type', 'trigger'
     ],
@@ -89,7 +89,7 @@ FIELDS_TO_EXPORT = {
 # list of relational fields to NOT export, by model
 FIELDS_NOT_TO_EXPORT = {
     'base.automation': ['trg_date_calendar_id'],
-    'ir.actions.server': ['fields_lines', 'partner_ids'],
+    'ir.actions.server': ['partner_ids'],
     'ir.filters': ['user_id'],
     'mail.template': ['attachment_ids', 'mail_server_id'],
     'report.paperformat': ['report_ids'],

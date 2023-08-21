@@ -66,10 +66,14 @@ patch(MockServer.prototype, {
             };
         } else if (args.action_name === "automations") {
             return {
-                name: "Automated Actions",
+                name: "Automation Rules",
                 type: "ir.actions.act_window",
                 res_model: "base.automation",
-                views: [[false, "list"]],
+                views: [
+                    [false, "kanban"],
+                    [false, "list"],
+                    [false, "form"],
+                ],
                 target: "current",
                 domain: [],
                 help: /*xml*/ `

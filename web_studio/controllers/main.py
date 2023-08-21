@@ -90,22 +90,13 @@ class WebStudioController(http.Controller):
         }
 
     def _get_studio_action_automations(self, model, **kwargs):
-        return {
-            'name': _('Automated Actions'),
-            'type': 'ir.actions.act_window',
-            'res_model': 'base.automation',
-            'views': [[False, 'list'], [False, 'form']],
-            'target': 'current',
-            'domain': [],
-            'context': {
-                'default_model_id': model.id,
-                'search_default_model_id': model.id,
-            },
-            'help': _(""" <p class="o_view_nocontent_smiling_face">
-                Add a new automated action
-            </p>
-            """),
+        action = self.env['ir.actions.act_window']._for_xml_id('base_automation.base_automation_act')
+        action['context'] = {
+            'default_model_id': model.id,
+            'search_default_model_id': model.id,
+            'active_test': False,
         }
+        return action
 
     def _get_studio_action_filters(self, model, **kwargs):
         return {

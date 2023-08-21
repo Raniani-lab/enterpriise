@@ -13,6 +13,7 @@ class hr_department(models.Model):
     manager_feedback_template = fields.Html(
         compute='_compute_appraisal_feedbacks', store=True, readonly=False, translate=True)
     custom_appraisal_templates = fields.Boolean(string="Custom Appraisal Templates", default=False)
+    appraisal_properties_definition = fields.PropertiesDefinition('Appraisal Properties')
 
     def _compute_appraisals_to_process(self):
         appraisals = self.env['hr.appraisal']._read_group(

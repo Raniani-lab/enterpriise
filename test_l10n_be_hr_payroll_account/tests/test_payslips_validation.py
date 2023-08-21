@@ -4661,7 +4661,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         # 620200    Private Car                                                  98.5
         # 620200    Frais de rep                                                  150
 
-        # 455000    Meal vouchers retenue                                                    25.07
+        # 740000    Meal vouchers retenue                                                    25.07
         # 455000    Remunration dues = NET                                                 2193.13
 
         # 454000    ONSS Employer                                                           725.11
@@ -4730,7 +4730,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         # 620200    Private Car                                                  98.5
         # 620200    Frais de rep                                                  150
 
-        # 455000    Meal vouchers retenue                                                    25.07
+        # 740000    Meal vouchers retenue                                                    25.07
         # 455000    Remunration dues = NET                                                 1949.83
 
         # 454000    ONSS Employer                                                           547.85
@@ -4753,7 +4753,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             ('454000', 'credit', 27.81),        # Misc ONSS
             ('620200', 'debit', 197),           # Private Car
             ('620200', 'debit', 300),           # Representation Fees
-            ('455000', 'credit', 50.14),        # Meal vouchers
+            ('740000', 'credit', 50.14),        # Meal vouchers
             ('455000', 'credit', 4290.42),      # NET
             ('454000', 'credit', 1272.96),      # ONSS Employer
             ('621000', 'debit', 1272.96),       # ONSS Employer
@@ -4775,7 +4775,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         # 620200    Private Car                                                   197
         # 620200    Frais de rep                                                  300
 
-        # 455000    Meal vouchers retenue                                                    50.14
+        # 740000    Meal vouchers retenue                                                    50.14
         # 455000    Remunration dues = NET                                                 4131.52
 
         # 454000    ONSS Employer                                                          1272.96

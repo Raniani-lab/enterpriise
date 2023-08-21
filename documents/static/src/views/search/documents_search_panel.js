@@ -5,9 +5,8 @@ import { browser } from "@web/core/browser/browser";
 import { SearchPanel } from "@web/search/search_panel/search_panel";
 import { usePopover } from "@web/core/popover/popover_hook";
 import { useService } from "@web/core/utils/hooks";
-import config from "@web/legacy/js/services/config";
+import { utils as uiUtils } from "@web/core/ui/ui_service";
 
-const { device } = config
 const VALUE_SELECTOR = [".o_search_panel_category_value", ".o_search_panel_filter_value"].join();
 const FOLDER_VALUE_SELECTOR = ".o_search_panel_category_value";
 const LONG_TOUCH_THRESHOLD = 400;
@@ -114,7 +113,7 @@ export class DocumentsSearchPanel extends SearchPanel {
     }
 
     onSectionValueTouchStart(ev, section, value, group) {
-        if (!device.isMobile || !this.supportedEditionFields.includes(section.fieldName)) {
+        if (!uiUtils.isSmall() || !this.supportedEditionFields.includes(section.fieldName)) {
             return;
         }
         this.touchStartMs = Date.now();
@@ -414,7 +413,7 @@ export class DocumentsSearchPanel extends SearchPanel {
 
 DocumentsSearchPanel.modelExtension = "DocumentsSearchPanel";
 
-if (!device.isMobile) {
+if (!uiUtils.isSmall()) {
     DocumentsSearchPanel.template = "documents.SearchPanel";
     DocumentsSearchPanel.subTemplates = {
         category: "documents.SearchPanel.Category",

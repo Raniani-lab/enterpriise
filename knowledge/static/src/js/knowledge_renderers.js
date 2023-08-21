@@ -1,6 +1,5 @@
 /** @odoo-module */
 
-import config from "@web/legacy/js/services/config";
 import { FormRenderer } from '@web/views/form/form_renderer';
 import { KnowledgeCoverDialog } from '@knowledge/components/knowledge_cover/knowledge_cover_dialog';
 import { useService } from "@web/core/utils/hooks";
@@ -21,8 +20,6 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         this.userService = useService("user");
 
         this.root = useRef('compiled_view_root');
-
-        this.device = config.device;
 
         useChildSubEnv({
             openCoverSelector: this.openCoverSelector.bind(this),

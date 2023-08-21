@@ -2,7 +2,6 @@
 
 import { SelectInputDeviceDialog } from "@voip/legacy/audio_input_device";
 
-import config from "@web/legacy/js/services/config";
 import core from "@web/legacy/js/services/core";
 import { renderToElement } from "@web/core/utils/render";
 import { isMobileOS } from "@web/core/browser/feature_detection";
@@ -279,7 +278,7 @@ export const PhoneCallDetails = Widget.extend({
      */
     _onClickEmail(ev) {
         ev.preventDefault();
-        if (!config.device.isMobileDevice) {
+        if (!isMobileOS()) {
             this.voip.legacyDialingPanelWidget.toggleFold();
         }
         if (this._activityResModel && this.activityResId) {
@@ -318,7 +317,7 @@ export const PhoneCallDetails = Widget.extend({
      */
     _onClickLog(ev) {
         ev.preventDefault();
-        if (!config.device.isMobileDevice) {
+        if (!isMobileOS()) {
             this.voip.legacyDialingPanelWidget.toggleFold();
         }
         this.env.services.action.doAction(
@@ -380,7 +379,7 @@ export const PhoneCallDetails = Widget.extend({
      */
     _onClickRescheduleActivity(ev) {
         ev.preventDefault();
-        if (!config.device.isMobileDevice) {
+        if (!isMobileOS()) {
             this.voip.legacyDialingPanelWidget.toggleFold();
         }
         let res_id, res_model;
@@ -413,7 +412,7 @@ export const PhoneCallDetails = Widget.extend({
      */
     async _onClickToPartner(ev) {
         ev.preventDefault();
-        if (!config.device.isMobileDevice) {
+        if (!isMobileOS()) {
             this.voip.legacyDialingPanelWidget.toggleFold();
         }
         let resId = this.partnerId;

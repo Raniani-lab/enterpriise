@@ -5,7 +5,6 @@ import { PhoneCallContactsTab } from "@voip/legacy/phone_call_contacts_tab";
 import { PhoneCallRecentTab } from "@voip/legacy/phone_call_recent_tab";
 import { UserAgent } from "@voip/legacy/user_agent";
 
-import config from "@web/legacy/js/services/config";
 import core from "@web/legacy/js/services/core";
 import { _t } from "@web/core/l10n/translation";
 import Dialog from "@web/legacy/js/core/dialog";
@@ -13,6 +12,8 @@ import dom from "@web/legacy/js/core/dom";
 import mobile from "@web_mobile/js/services/core";
 import Widget from "@web/legacy/js/core/widget";
 import { debounce } from "@web/core/utils/timing";
+import { isMobileOS } from "@web/core/browser/feature_detection";
+import { utils as uiUtils } from "@web/core/ui/ui_service";
 
 const YOUR_ARE_ALREADY_IN_A_CALL = _t("You are already in a call");
 
@@ -45,7 +46,7 @@ export const DialingPanel = Widget.extend({
         this._isFolded = false;
         this._isFoldedBeforeCall = false;
         this._isInCall = false;
-        this._isMobileDevice = config.device.isMobileDevice;
+        this._isMobileDevice = isMobileOS();
         this._isPostpone = false;
         this._isShow = false;
         this._isWebRTCSupport =
@@ -370,7 +371,7 @@ export const DialingPanel = Widget.extend({
             this.$(".o_dial_tab.active, .tab-pane.active").removeClass("active");
             this.$(".o_dial_recent_tab .o_dial_tab, .tab-pane.o_dial_recent").addClass("active");
             this._activeTab = this._tabs.recent;
-            if (config.device.isMobile) {
+            if (uiUtils.isSmall()) {
                 return this._switchToTab("recent");
             }
         }
@@ -476,7 +477,7 @@ export const DialingPanel = Widget.extend({
         if (!this._isShow) {
             this.$el.show();
             this._isShow = true;
-            if (!config.device.isMobile) {
+            if (!uiUtils.isSmall()) {
                 this._isFolded = true;
                 this._fold(false);
             }
@@ -526,7 +527,7 @@ export const DialingPanel = Widget.extend({
      * @return {Promise}
      */
     async _toggleFold({ isFolded } = {}) {
-        if (!config.device.isMobile) {
+        if (!uiUtils.isSmall()) {
             if (this._isFolded) {
                 await this._refreshPhoneCallsStatus();
             }
@@ -566,7 +567,7 @@ export const DialingPanel = Widget.extend({
      */
     async _useVoip() {
         // Only for mobile device
-        if (!config.device.isMobileDevice) {
+        if (!isMobileOS()) {
             return true;
         }
 

@@ -1,8 +1,9 @@
 /** @odoo-module **/
 
-import config from "@web/legacy/js/services/config";
 import Dialog from "@web/legacy/js/core/dialog";
-if (config.device.isMobile) {
+import { utils as uiUtils } from "@web/core/ui/ui_service";
+
+if (uiUtils.isSmall()) {
     Dialog.include({
         /**
          * @override

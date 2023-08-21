@@ -6,7 +6,6 @@ import { Chatter } from "@mail/core/web/chatter";
 import BarcodePickingModel from '@stock_barcode/models/barcode_picking_model';
 import BarcodeQuantModel from '@stock_barcode/models/barcode_quant_model';
 import { bus } from "@web/legacy/js/services/core";
-import config from '@web/legacy/js/services/config';
 import GroupedLineComponent from '@stock_barcode/components/grouped_line';
 import LineComponent from '@stock_barcode/components/line';
 import PackageLineComponent from '@stock_barcode/components/package_line';
@@ -17,6 +16,7 @@ import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_d
 import { View } from "@web/views/view";
 import { ManualBarcodeScanner } from './manual_barcode';
 import { url } from '@web/core/utils/urls';
+import { utils as uiUtils } from "@web/core/ui/ui_service";
 
 const { Component, onMounted, onPatched, onWillStart, onWillUnmount, useState, useSubEnv } = owl;
 
@@ -56,7 +56,7 @@ class MainComponent extends Component {
         const model = this._getModel();
         useSubEnv({model});
         this._scrollBehavior = 'smooth';
-        this.isMobile = config.device.isMobile;
+        this.isMobile = uiUtils.isSmall();
         this.state = useState({
             view: "barcodeLines", // Could be also 'printMenu' or 'editFormView'.
             displayNote: false,

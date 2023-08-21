@@ -1,5 +1,5 @@
 /** @odoo-module **/
-import config from "@web/legacy/js/services/config";
+
 import { getBundle, loadBundle } from "@web/core/assets";
 import { formatDateTime } from '@web/core/l10n/dates';
 import { loadEmoji } from '@web/core/emoji_picker/emoji_picker';
@@ -7,6 +7,7 @@ import { registry } from '@web/core/registry';
 import { standardWidgetProps } from '@web/views/widgets/standard_widget_props';
 import { useService } from '@web/core/utils/hooks';
 import { useOpenChat } from "@mail/core/web/open_chat_hook";
+import { utils as uiUtils } from "@web/core/ui/ui_service";
 
 import { Component, onWillStart, useEffect, useRef, useState } from '@odoo/owl';
 
@@ -59,7 +60,7 @@ class KnowledgeTopbar extends Component {
         useEffect(() => {
             // When opening an article via the sidebar (or when moving one),
             // display the properties panel if the article has properties and we are not on mobile.
-            if (!config.device.isMobile && !this.articlePropertiesIsEmpty) {
+            if (!uiUtils.isSmall() && !this.articlePropertiesIsEmpty) {
                 this.addProperties();
             } else if (this.articlePropertiesIsEmpty && this.state.displayPropertyPanel) {
                 // We close the panel if the opened article has no properties and the panel was open.

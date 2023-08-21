@@ -25,6 +25,7 @@ async function createDialingPanel(params) {
         },
     });
     result.env.services.voip.bus.trigger("toggle-softphone-display");
+    result.env.services.voip.settings.how_to_call_on_mobile = "voip";
     await nextTick();
     return result;
 }

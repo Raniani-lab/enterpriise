@@ -1,7 +1,6 @@
 /** @odoo-module **/
 
 import { _t } from "@web/core/l10n/translation";
-import config from "@web/legacy/js/services/config";
 import { str_to_datetime } from "@web/legacy/js/core/time";
 import { session } from "@web/session";
 import { KeepLast } from "@web/core/utils/concurrency";
@@ -18,8 +17,8 @@ import { download } from "@web/core/network/download";
 import { onNewPdfThumbnail } from "../helper/documents_pdf_thumbnail_service";
 import { useTriggerRule } from "@documents/views/hooks";
 import dUtils from '@documents/views/helper/documents_utils';
+import { utils as uiUtils } from "@web/core/ui/ui_service";
 
-const { device } = config
 const { Component, markup, useEffect, useState, useRef, onPatched, onWillUpdateProps, onWillStart } = owl;
 
 async function toggleArchive(model, resModel, resIds, doArchive) {
@@ -632,7 +631,7 @@ export class DocumentsInspector extends Component {
     }
 }
 
-if (device.isMobile) {
+if (uiUtils.isSmall()) {
     DocumentsInspector.template = "documents.DocumentsInspectorMobile";
 } else {
     DocumentsInspector.template = "documents.DocumentsInspector";

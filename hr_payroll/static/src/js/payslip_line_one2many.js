@@ -24,8 +24,7 @@ export class WorkedDaysField extends Field {
                 if ('amount' in changes || 'quantity' in changes) {
                     await oldUpdate(changes);
                     await record.save( { stayInEdition: true, noReload: true });
-                    // getting the wizard id. when js team gets rid of the basic relational model, we'll clean this
-                    const wizardId = record.model.__bm_load_params__.res_id;
+                    const wizardId = record.model.config.resId;
                     if (wizardId) {
                         const action = await this.orm.call(
                             "hr.payroll.edit.payslip.lines.wizard",
@@ -88,7 +87,7 @@ export class PayslipLineField extends Field {
                 if ('amount' in changes || 'quantity' in changes) {
                     await oldUpdate(changes);
                     await record.save( { stayInEdition: true, noReload: true });
-                    const wizardId = record.model.__bm_load_params__.res_id;
+                    const wizardId = record.model.config.resId;
                     if (wizardId) {
                         const line_id = record.resId;
                         const action = await this.orm.call(

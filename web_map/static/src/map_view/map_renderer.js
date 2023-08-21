@@ -4,7 +4,7 @@ import { _t } from "@web/core/l10n/translation";
 /*global L*/
 
 import { renderToString } from "@web/core/utils/render";
-import { delay } from "@web/legacy/js/core/concurrency";
+import { delay } from "@web/core/utils/concurrency";
 
 import {
     Component,

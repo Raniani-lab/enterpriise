@@ -27,6 +27,7 @@
                 <separator/>
                 <filter name="bills_to_pay" string="Bills to Pay" domain="['&amp;', '&amp;', ('state', '=', 'posted'), ('payment_state', 'in', ('not_paid', 'partial')), '|', ('invoice_date_due', '&lt;', time.strftime('%Y-%m-%d')), ('release_to_pay','=', 'yes')]"/>
                 <filter name="exception" string="Bills in Exception" domain="[('release_to_pay','=', 'exception')]"/>
+                <filter name="bills_to_validate" string="Bills to Validate" domain="['&amp;', ('state', '=', 'draft'), '|', ('invoice_date_due', '&lt;', time.strftime('%Y-%m-%d')), ('release_to_pay','=', 'yes')]"/>
                 <separator/>
             </xpath>
         </field>

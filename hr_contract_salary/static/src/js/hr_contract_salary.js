@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import concurrency from "@web/legacy/js/core/concurrency";
+import { KeepLast } from "@web/core/utils/concurrency";
 import publicWidget from "@web/legacy/js/public/public_widget";
 import utils from "@web/legacy/js/core/utils";
 import { debounce } from "@web/core/utils/timing";
@@ -26,7 +26,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
 
     init(parent, options) {
         this._super(parent);
-        this.dp = new concurrency.DropPrevious();
+        this.keepLast = new KeepLast();
         $('body').attr('id', 'hr_contract_salary');
         $("#hr_contract_salary select").select2();
 
@@ -470,7 +470,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         $("a[name='recompute']").removeClass('d-none');
         $("input[name='NET']").addClass('o_outdated');
 
-        return this.dp.add(
+        return this.keepLast.add(
             self._rpc({
                 route: '/salary_package/update_salary',
                 params: {

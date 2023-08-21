@@ -4,7 +4,7 @@ import { Dialog } from "@web/core/dialog/dialog";
 import { SearchBar } from "@web/search/search_bar/search_bar";
 import { Pager } from "@web/core/pager/pager";
 
-import { DropPrevious } from "@web/legacy/js/core/concurrency";
+import { KeepLast } from "@web/core/utils/concurrency";
 import { SearchModel } from "@web/search/search_model";
 import { useBus, useService } from "@web/core/utils/hooks";
 import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
@@ -48,7 +48,7 @@ export class TemplateDialog extends Component {
             searchModel: this.model,
         });
         useBus(this.model, "update", () => this._fetchTemplates());
-        this.dp = new DropPrevious();
+        this.keepLast = new KeepLast();
 
         onWillStart(async () => {
             const views = await this.viewService.loadViews({
@@ -78,7 +78,7 @@ export class TemplateDialog extends Component {
      */
     async _fetchTemplates(offset = 0) {
         const { domain, context } = this.model;
-        const { records, length } = await this.dp.add(
+        const { records, length } = await this.keepLast.add(
             this.rpc("/web/dataset/search_read", {
                 model: "spreadsheet.template",
                 fields: ["name"],

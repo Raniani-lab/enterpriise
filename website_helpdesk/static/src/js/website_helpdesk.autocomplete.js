@@ -1,6 +1,6 @@
 /** @odoo-module  */
 
-import concurrency from '@web/legacy/js/core/concurrency';
+import { KeepLast } from "@web/core/utils/concurrency";
 import publicWidget from '@web/legacy/js/public/public_widget';
 
 import { renderToElement } from "@web/core/utils/render";
@@ -17,7 +17,7 @@ publicWidget.registry.knowledgeBaseAutocomplete = publicWidget.Widget.extend({
     init: function () {
         this._super.apply(this, arguments);
 
-        this._dp = new concurrency.DropPrevious();
+        this.keepLast = new KeepLast();
 
         this._onInput = debounce(this._onInput, 400);
         this._onFocusOut = debounce(this._onFocusOut, 100);
@@ -80,7 +80,7 @@ publicWidget.registry.knowledgeBaseAutocomplete = publicWidget.Widget.extend({
     _onInput: function () {
         if (!this.enabled)
             return;
-        this._dp.add(this._fetch()).then(this._render.bind(this));
+        this.keepLast.add(this._fetch()).then(this._render.bind(this));
     },
     /**
      * @private

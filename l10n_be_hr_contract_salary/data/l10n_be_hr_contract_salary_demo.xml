@@ -57,6 +57,7 @@
         <field name="bank_id" ref="base.bank_ing"/>
         <field name="partner_id" ref="l10n_be_hr_contract_salary.res_partner_laurie_poiret"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
+        <field name="allow_out_payment" eval="True"/>
     </record>
 
     <record id="hr_employee_laurie_poiret" model="hr.employee">

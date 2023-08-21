@@ -10,7 +10,7 @@
         <field name="name">hr.contract.salary.offer.view.tree</field>
         <field name="model">hr.contract.salary.offer</field>
         <field name="arch" type="xml">
-            <tree string="Salary Package Offers">
+            <tree string="Salary Package Offers" default_order="id desc">
                 <field name="display_name" optional="show"/>
                 <field name="state" optional="show"/>
                 <field name="offer_end_date" optional="show"/>
@@ -35,17 +35,17 @@
             <form string="Salary Package Offer">
                 <header>
                     <button
-                        name="action_jump_to_offer"
-                        type="object"
-                        data-hotkey="shift+g"
-                        string="Salary Configurator"
-                        class="oe_highlight"
-                        invisible="not id"/>
-                    <button
                         name="action_send_by_email"
                         type="object"
                         data-hotkey="shift+e"
                         string="Send By Email"
+                        class="oe_highlight"
+                        invisible="not id"/>
+                    <button
+                        name="action_jump_to_offer"
+                        type="object"
+                        data-hotkey="shift+g"
+                        string="Salary Configurator"
                         class="oe_highlight"
                         invisible="not id"/>
                     <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
@@ -59,19 +59,20 @@
                     </div>
                     <group>
                         <group string="Offer" name="group_offer">
-                            <field name="contract_template_id"/>
+                            <field name="contract_template_id" readonly="1"/>
                             <field name="final_yearly_costs"/>
                             <field name="job_title"/>
-                            <field name="employee_job_id"/>
-                            <field name="department_id"/>
+                            <field name="employee_job_id" readonly="1"/>
+                            <field name="department_id" readonly="1"/>
                             <field name="contract_start_date"/>
                             <field name="offer_end_date"/>
                             <field name="url" widget="CopyClipboardURL" invisible="not id"/>
                         </group>
                         <group string="To" name="group_offer_to">
+                            <field name="applicant_id" invisible="1"/>
                             <field name="employee_id" invisible="applicant_id"/>
                             <field name="employee_contract_id" invisible="applicant_id"/>
-                            <field name="applicant_id" invisible="employee_contract_id"/>
+                            <field name="applicant_name" invisible="employee_contract_id"/>
                             <field name="company_id" groups="base.group_multi_company"/>
                             <field name="currency_id" invisible="1"/>
                         </group>

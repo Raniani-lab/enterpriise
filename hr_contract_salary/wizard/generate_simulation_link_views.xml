@@ -28,7 +28,7 @@
                         <span> days</span>
                     </div>
                     <field name="email_to" invisible="True"/>
-                    <div class="o_row">
+                    <div class="text-center" colspan="2">
                         <span class="text-muted fst-italic" invisible="contract_id">An offer template need to be selected to have an offer link.</span>
                         <span class="text-muted fst-italic" invisible="not display_warning_message">An applicant name needs to be set to have an offer link.</span>
                     </div>
@@ -39,9 +39,9 @@
                     </div>
                 </group>
                 <footer>
-                    <button name="action_save" type="object" string="Save" class="oe_highlight" data-hotkey="q" invisible="not email_to and not applicant_id"/>
+                    <button name="action_send_offer" type="object" string="Send By Email" class="btn-primary" data-hotkey="e" invisible="not email_to and not applicant_id"/>
+                    <button name="action_save" type="object" string="Save" class="oe_highlight btn-secondary" data-hotkey="q" invisible="not email_to and not applicant_id"/>
                     <button string="Discard" class="btn btn-secondary" special="cancel" data-hotkey="x"/>
-                    <button name="action_send_offer" type="object" string="Send By Email" class="btn btn-secondary" data-hotkey="e" invisible="not email_to and not applicant_id"/>
                 </footer>
             </form>
         </field>

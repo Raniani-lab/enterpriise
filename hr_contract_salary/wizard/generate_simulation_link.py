@@ -26,7 +26,7 @@ class GenerateSimulationLink(models.TransientModel):
         return validity
 
     contract_id = fields.Many2one(
-        'hr.contract', string="Offer Template", required=True,
+        'hr.contract', string="Contract Template", required=True,
         domain="['|', ('employee_id', '=', False), ('employee_id', '=', employee_id)]")
     employee_contract_id = fields.Many2one('hr.contract')
     employee_id = fields.Many2one('hr.employee', related='employee_contract_id.employee_id')

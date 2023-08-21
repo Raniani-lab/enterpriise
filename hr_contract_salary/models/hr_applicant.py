@@ -14,7 +14,10 @@ class HrApplicant(models.Model):
 
     def _compute_proposed_contracts_count(self):
         contracts_data = self.env['hr.contract'].with_context(active_test=False)._read_group(
-            domain=[('applicant_id', 'in', self.ids)],
+            domain=[
+                ('applicant_id', 'in', self.ids),
+                ('active', '=', True),
+            ],
             groupby=['applicant_id'],
             aggregates=['__count'])
         mapped_data = {applicant.id: count for applicant, count in contracts_data}

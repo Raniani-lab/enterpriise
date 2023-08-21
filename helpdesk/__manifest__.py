@@ -45,7 +45,6 @@ Features:
         'data/mail_message_subtype_data.xml',
         'data/mail_template_data.xml',
         'data/helpdesk_data.xml',
-        'data/ir_actions_client_data.xml',
         'data/ir_cron_data.xml',
         'data/ir_sequence_data.xml',
         'views/helpdesk_ticket_views.xml',

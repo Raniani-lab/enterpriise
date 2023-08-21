@@ -410,7 +410,7 @@
                         </group>
                     </group>
                     <div class="d-flex">
-                        <field name="properties" nolabel="1" columns="2" hideKanbanOption="1" hideAddButton="1"/>
+                        <field name="properties" nolabel="1" columns="2" hideKanbanOption="1"/>
                     </div>
                     <notebook>
                         <field name="display_extra_info" invisible="1"/>

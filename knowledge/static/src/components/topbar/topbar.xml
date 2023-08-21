@@ -63,13 +63,13 @@
                     <span t-if="!props.record.data.parent_id and isInternalUser"
                        class="btn btn-light text-nowrap text-muted o_knowledge_add_properties"
                        title="Properties are fields that can only be added on articles that have a parent.">
-                        <i class="fa fa-fw fs-6 fa-cog me-1"/>
+                        <i class="fa fa-fw fs-6 fa-cogs me-1"/>
                         <span class="d-none d-lg-inline">Add Properties</span>
                         <span class="d-lg-none">Properties</span>
                     </span>
                     <button t-elif="!state.addingProperty and !props.record.data.article_properties.length and isInternalUser" t-on-click="addProperties"
                         class="btn btn-light text-nowrap o_knowledge_add_properties">
-                        <i class="fa fa-fw fs-6 fa-cog me-1" title="Add Properties"/>
+                        <i class="fa fa-fw fs-6 fa-cogs me-1" title="Add Properties"/>
                         <span class="d-none d-lg-inline">Add Properties</span>
                         <span class="d-lg-none">Properties</span>
                     </button>
@@ -97,7 +97,7 @@
                         <i class="fa fa-fw fs-6 fa-comments"/>
                     </a>
                     <a t-ref="btn_properties" t-if="state.addingProperty or props.record.resId and props.record.data.article_properties.length and isInternalUser" role="button" t-attf-class="btn btn-light btn-properties #{state.displayPropertyPanel ? 'active' : ''}" data-hotkey="d" title="Show Properties" t-on-click="toggleProperties">
-                        <i class="fa fa-fw fs-6 fa-cog"/>
+                        <i class="fa fa-fw fs-6 fa-cogs"/>
                     </a>
                     <div class="o-dropdown dropdown o-dropdown--no-caret" t-if="props.record.resId">
                         <a role="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" id="dropdown_tools_panel" aria-haspopup="true" aria-expanded="false" data-hotkey="p" title="More actions" t-ref="optionsBtn">

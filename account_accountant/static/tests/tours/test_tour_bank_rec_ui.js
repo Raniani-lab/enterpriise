@@ -301,17 +301,7 @@ tour.register('account_accountant_bank_rec_widget_ui',
             trigger: ".o_bank_rec_st_line:first():contains('line2')",
             run: () => {},
         },
-        // Test Reset, "Matched" badge and double-click
-        {
-            content: "Remove the kanban filter for 'Not Matched'",
-            trigger: ".o_kanban_view .o_searchview_facet:nth-child(2) .o_facet_remove",
-        },
-        {
-            content: "The 'line1' is the first kanban record with line2 selected",
-            extra_trigger: "div[name='lines_widget'] td[field='name']:contains('line2')",
-            trigger: ".o_bank_rec_st_line:first():contains('line1')",
-            run: () => {},
-        },
+        // Test Double-click, "Matched" badge and Reset
         {
             content: "Mount invoice 2 for line 2",
             trigger: "div.bank_rec_widget_form_amls_list_anchor table.o_list_table td[name='move_id']:contains('INV/2019/00002')",
@@ -321,6 +311,17 @@ tour.register('account_accountant_bank_rec_widget_ui',
             extra_trigger: "div.bank_rec_widget_form_amls_list_anchor table.o_list_table tr.o_rec_widget_list_selected_item td[name='move_id']:contains('INV/2019/00002')",
             trigger: "button[name='button_validate']",
             run: "dblclick",
+        },
+        {
+            content: "Remove the kanban filter for 'Not Matched'",
+            extra_trigger: ".o_bank_rec_selected_st_line:contains('line3')",
+            trigger: ".o_kanban_view .o_searchview_facet:nth-child(2) .o_facet_remove",
+        },
+        {
+            content: "The 'line1' is the first kanban record with line1 selected",
+            extra_trigger: "div[name='lines_widget'] td[field='name']:contains('line1')",
+            trigger: ".o_bank_rec_st_line:first():contains('line1')",
+            run: () => {},
         },
         {
             content: "Click Pager again after line2 is matched",

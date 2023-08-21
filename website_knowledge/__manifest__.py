@@ -21,5 +21,8 @@
             'website_knowledge/static/src/js/components/**/*.xml',
             'website_knowledge/static/src/js/components/**/*.js',
         ],
+        'web.assets_tests': [
+            'website_knowledge/static/tests/tours/**/*',
+        ],
     },
 }

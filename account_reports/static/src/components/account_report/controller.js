@@ -307,6 +307,9 @@ export class AccountReportController {
             case "update":
                 option[optionKeys[0]] = optionValue;
                 break;
+            case "delete":
+                delete option[optionKeys[0]];
+                break;
             case "toggle":
                 option[optionKeys[0]] = !option[optionKeys[0]];
                 break;
@@ -320,6 +323,10 @@ export class AccountReportController {
 
     async updateOption(optionPath, optionValue, reloadUI=false) {
         await this._updateOption('update', optionPath, optionValue, reloadUI);
+    }
+
+    async deleteOption(optionPath, reloadUI=false) {
+        await this._updateOption('delete', optionPath, null, reloadUI);
     }
 
     async toggleOption(optionPath, reloadUI=false) {

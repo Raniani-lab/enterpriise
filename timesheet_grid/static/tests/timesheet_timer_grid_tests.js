@@ -14,6 +14,7 @@ import {
     patchWithCleanup,
     triggerEvent,
     clickOpenM2ODropdown,
+    selectDropdownItem,
 } from "@web/../tests/helpers/utils";
 import { toggleSearchBarMenu } from "@web/../tests/search/helpers";
 
@@ -378,6 +379,8 @@ QUnit.module("Views", (hooks) => {
                     return 0.15;
                 } else if (args.method === "get_last_validated_timesheet_date") {
                     return false;
+                } else if (args.model === "analytic.line" && args.method === "web_read_group" && !timerRunning) {
+                    assert.step("view reloaded");
                 }
                 return timesheetGridSetup.mockTimesheetGridRPC(route, args);
             },
@@ -398,6 +401,10 @@ QUnit.module("Views", (hooks) => {
             target,
             ".o_grid_row_timer .fa-stop",
             "No row should have a timer running"
+        );
+        assert.verifySteps(
+            [],
+            "when stopping the timer, a reload of the view should not be triggered since there was an active row for the current timesheet",
         );
         await click(target, ".btn_start_timer");
         assert.containsOnce(target, ".btn_stop_timer");
@@ -1357,6 +1364,109 @@ QUnit.module("Views", (hooks) => {
                 ).textContent,
                 "0:15",
                 "The today cell in the row with `A` button should be increased by 15 minutes."
+            );
+        }
+    );
+    QUnit.test(
+        "Start timer and create a new project and a new task",
+        async function (assert) {
+            let reload = false;
+            const pyEnv = getPyEnv();
+            const { openView } = await start({
+                serverData,
+                async mockRPC(route, args) {
+                    if (args.method === "get_running_timer") {
+                        return {
+                            step_timer: 30,
+                        };
+                    } else if (args.method === "action_start_new_timesheet_timer") {
+                        return {
+                            rate: 0,
+                            project_id: false,
+                            task_id: false,
+                            description: "",
+                        };
+                    } else if (args.method === "get_daily_working_hours") {
+                        assert.strictEqual(args.model, "hr.employee");
+                        return {};
+                    } else if (args.method === "get_server_time") {
+                        assert.strictEqual(args.model, "timer.timer");
+                        return serializeDateTime(DateTime.now());
+                    } else if (args.method === "action_timer_stop") {
+                        // The newly created timesheet need to be pushed on the mockserver model otherwise it will not be fetched
+                        // on the reload of the view. The new line will then not be created either, failing the assert on row count.
+                        let timesheet_id = args.args[0];
+                        let project_id = 3;
+                        let task_id = false;
+                        if (timesheet_id == 8){
+                            project_id = 1;
+                            task_id = 4;
+                        }
+                        const newTimesheet = {
+                            rate: 0,
+                            id: timesheet_id,
+                            project_id: project_id,
+                            task_id: task_id,
+                            date: serializeDateTime(DateTime.now()),
+                            description: "",
+                        };
+                        pyEnv.mockServer.models["analytic.line"].records.push(newTimesheet);
+                        reload = true;
+                        return 0.25;
+                    } else if (args.model === "analytic.line" && args.method === "web_read_group" && reload) {
+                        assert.step("view reloaded");
+                        reload = false;
+                    } else if (args.method === "name_search" && ["project.project", "project.task"].includes(args.model)) {
+                        args.kwargs.args = args.model === "project.project" ? [["allow_timesheets", "=", true]] : [];
+                    }
+                    return timesheetGridSetup.mockTimesheetGridRPC(route, args);
+                },
+            });
+            await openView({
+                res_model: "analytic.line",
+                views: [[false, "grid"]],
+                context: { group_by: ["project_id", "task_id"] },
+            });
+
+            // Create a new timesheet with a new project.
+            assert.containsN(target, ".o_grid_row_title", 5, "The view should have 5 rows rendered.");
+            await click(target, ".btn_start_timer");
+            await clickOpenM2ODropdown(target, "project_id");
+            target.querySelector(".o_field_widget[name=project_id] input").focus();
+            await editInput(target, ".o_field_widget[name=project_id] input", "a new project");
+            await click(target, ".o_field_widget[name=project_id] input");
+            assert.strictEqual(
+                target.querySelector(".timesheet-timer .o_field_widget[name=project_id] input").value,
+                "a new project",
+                'The project_id in the timer header should be set to "a new project".'
+            );
+            await selectDropdownItem(target, "project_id", `Create "a new project"`);
+            await click(target, ".btn_stop_timer");
+            assert.containsN(target, ".o_grid_row_title", 6, "The view should have 6 rows rendered.");
+            assert.verifySteps(
+                ["view reloaded"],
+                "When stopping the timer, a reload of the view should be triggered since there were no active row for the current project."
+            );
+
+            // Create a new timesheet with a new task in an existing project.
+            await click(target, ".btn_start_timer");
+            await clickOpenM2ODropdown(target, "project_id");
+            await click(target.querySelector("div[name='project_id'] li > a"), "");
+            await clickOpenM2ODropdown(target, "task_id");
+            target.querySelector(".o_field_widget[name=task_id] input").focus();
+            await editInput(target, ".o_field_widget[name=task_id] input", "a new task");
+            await click(target, ".o_field_widget[name=task_id] input");
+            assert.strictEqual(
+                target.querySelector(".timesheet-timer .o_field_widget[name=task_id] input").value,
+                "a new task",
+                'The task_id in the timer header should be set to "New task".'
+            );
+            await selectDropdownItem(target, "task_id", `Create "a new task"`);
+            await click(target, ".btn_stop_timer");
+            assert.containsN(target, ".o_grid_row_title", 7, "The view should have 7 rows rendered.");
+            assert.verifySteps(
+                ["view reloaded"],
+                "When stopping the timer, a reload of the view should be triggered since there were no active row for the tuple project > task."
             );
         }
     );

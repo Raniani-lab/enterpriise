@@ -211,10 +211,14 @@ export class TimerTimesheetGridModel extends TimesheetGridModel {
         ]);
         if (value) {
             const column = this.columnsArray.find((col) => col.isToday);
-            if (this.data.timer.row && column) {
-                const newValue = this.data.timer.row.cells[column.id].value + value;
-                this.data.timer.row.updateCell(column, newValue);
-                this.data.timer.row.timerRunning = false;
+            if (column) {
+                if (this.data.timer.row){
+                    const newValue = this.data.timer.row.cells[column.id].value + value;
+                    this.data.timer.row.updateCell(column, newValue);
+                    this.data.timer.row.timerRunning = false;
+                } else {
+                    await this.fetchData(this.searchParams);
+                }
             }
         }
         delete this.data.timer;

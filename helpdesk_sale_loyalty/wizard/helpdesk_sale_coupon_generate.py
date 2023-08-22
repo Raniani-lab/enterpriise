@@ -25,7 +25,7 @@ class HelpdeskSaleCouponGenerate(models.TransientModel):
             'program_id': self.program.id,
             'points': max(self.program.reward_ids.mapped('required_points')) if self.program.applies_on == 'future' else 0,
         }
-        coupon = self.env['loyalty.card'].sudo().create(vals)
+        coupon = self.env['loyalty.card'].with_context(action_no_send_mail=True).sudo().create(vals)
         self.ticket_id.coupon_ids |= coupon
         view = self.env.ref('helpdesk_sale_loyalty.loyalty_card_view_form_helpdesk_sale_loyalty', raise_if_not_found=False)
         self.ticket_id.message_post_with_view(

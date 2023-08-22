@@ -8,11 +8,7 @@
                 <field name="ticket_id" invisible="1"/>
                 <sheet>
                     <group>
-                        <group>
-                            <field name="forum_id" options="{'no_open': True, 'no_create': True}"/>
-                        </group>
-                    </group>
-                    <group>
+                        <field name="forum_id" options="{'no_open': True, 'no_create': True}"/>
                         <field name="title"/>
                         <field name="description" required="1"/>
                         <field name="tag_ids" widget="many2many_tags"/>

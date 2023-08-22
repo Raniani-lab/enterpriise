@@ -109,7 +109,7 @@ patch(Order.prototype, {
     },
     //@override
     add_orderline(line) {
-        if (!['paid', 'done', 'invoiced'].includes(line.order.state))
+        if (line.order && !['paid', 'done', 'invoiced'].includes(line.order.state))
             this.check_germany_taxes(line.product);
         return super.add_orderline(...arguments);
     },

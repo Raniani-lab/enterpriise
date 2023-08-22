@@ -2704,7 +2704,7 @@ QUnit.module("View Editors", (hooks) => {
                 </div>
             </form>`,
             mockRPC(route, args) {
-                if (args.method === "onchange2") {
+                if (args.method === "onchange") {
                     assert.step("onchange");
                     const error = new RPCError();
                     error.exceptionName = "odoo.exceptions.ValidationError";
@@ -3308,14 +3308,14 @@ QUnit.module("View Editors", (hooks) => {
             "/web/webclient/load_menus",
             "/web/action/load",
             "/web/dataset/call_kw/coucou/get_views",
-            "/web/dataset/call_kw/coucou/onchange2",
+            "/web/dataset/call_kw/coucou/onchange",
         ]);
         await openStudio(target);
         assert.verifySteps([
             "/web/dataset/call_kw/coucou/get_views",
             "/web_studio/chatter_allowed",
             "/web_studio/get_studio_view_arch",
-            "/web/dataset/call_kw/coucou/onchange2",
+            "/web/dataset/call_kw/coucou/onchange",
         ]);
 
         await click(target.querySelector(".o_web_studio_view_renderer .o_field_one2many"));
@@ -3984,7 +3984,7 @@ QUnit.module("View Editors", (hooks) => {
             serverData.views["product,2,list"] = `<tree><field name="display_name" /></tree>`;
 
             const mockRPC = async (route, args) => {
-                if (args.method === "onchange2" && args.model === "product") {
+                if (args.method === "onchange" && args.model === "product") {
                     const fields = args.args[3];
                     assert.deepEqual(Object.keys(fields), ["display_name", "toughness"]);
                 }

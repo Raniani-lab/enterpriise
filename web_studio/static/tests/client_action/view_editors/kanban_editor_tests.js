@@ -1516,14 +1516,14 @@ QUnit.module(
                 </templates>
             </kanban>`,
                 mockRPC(route, args) {
-                    if (args.method === "onchange2") {
-                        assert.step("onchange2");
+                    if (args.method === "onchange") {
+                        assert.step("onchange");
                         throw new Error("Boom");
                     }
                 },
             });
 
-            assert.verifySteps(["onchange2"]);
+            assert.verifySteps(["onchange"]);
             assert.containsOnce(target, ".rendered");
         });
 
@@ -1555,15 +1555,15 @@ QUnit.module(
                 </templates>
             </kanban>`,
                 mockRPC(route, args) {
-                    if (args.method === "onchange2") {
-                        assert.step("onchange2");
+                    if (args.method === "onchange") {
+                        assert.step("onchange");
                         throw new Error("Boom");
                     }
                 },
             });
 
             assert.verifySteps([
-                "onchange2",
+                "onchange",
                 "The onchange triggered an error. It may indicate either a faulty call to onchange, or a faulty model python side",
             ]);
             assert.containsOnce(target, ".rendered");

@@ -113,7 +113,7 @@ export function makeModelErrorResilient(ModelClass) {
             const debug = this.env.debug;
             this.orm = Object.assign(Object.create(orm), {
                 async call(model, method) {
-                    if (method === "onchange2") {
+                    if (method === "onchange") {
                         try {
                             return await orm.call.call(orm, ...arguments);
                         } catch {

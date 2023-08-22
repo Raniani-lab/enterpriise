@@ -851,7 +851,7 @@ QUnit.module("Studio", (hooks) => {
                     // and once when entering studio
                     assert.strictEqual(args.kwargs.context.default_type, "foo");
                 }
-                if (route === "/web/dataset/call_kw/partner/onchange2") {
+                if (route === "/web/dataset/call_kw/partner/onchange") {
                     assert.ok(
                         !("default_type" in args.kwargs.context),
                         "'default_x' context value should not be propaged to x2m model"

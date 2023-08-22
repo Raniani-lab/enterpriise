@@ -111,7 +111,7 @@ QUnit.test("lazy load mobile-friendly view", async function (assert) {
         "/web/webclient/load_menus",
         "/web/action/load",
         "get_views",
-        "onchange2", // default_get/onchange to open form view
+        "onchange", // default_get/onchange to open form view
         "unity_web_search_read", // web search read when coming back to Kanban
     ]);
 });

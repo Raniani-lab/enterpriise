@@ -42,7 +42,6 @@ This module modifies the web addon to provide Enterprise design and responsivene
 
             'web_enterprise/static/src/legacy/scss/dropdown.scss',
             'web_enterprise/static/src/legacy/scss/control_panel_mobile.scss',
-            'web_enterprise/static/src/legacy/scss/touch_device.scss',
             'web_enterprise/static/src/legacy/scss/modal_mobile.scss',
             'web_enterprise/static/src/legacy/scss/promote_studio.scss',
             'web_enterprise/static/src/webclient/**/*.scss',

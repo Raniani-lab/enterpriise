@@ -24,29 +24,30 @@ class AccountMove(models.Model):
         because it uses the percentage amount on the tax which will always be 1%. This sets the correct totals using
         account.move.line fields set by _compute_avalara_taxes(). """
         res = super()._compute_tax_totals()
-        if not self.is_l10n_br_avatax or not self.tax_totals:
-            return res
+        for move in self:
+            if not move.is_l10n_br_avatax or not move.tax_totals:
+                continue
 
-        currency = self.currency_id
-        lines = self.invoice_line_ids.filtered(lambda l: l.display_type == 'product')
-        self.tax_totals['amount_total'] = self.currency_id.round(sum(lines.mapped('price_total')))
-        self.tax_totals['formatted_amount_total'] = formatLang(self.env, self.tax_totals['amount_total'], currency_obj=currency)
+            currency = move.currency_id
+            lines = move.invoice_line_ids.filtered(lambda l: l.display_type == 'product')
+            move.tax_totals['amount_total'] = move.currency_id.round(sum(lines.mapped('price_total')))
+            move.tax_totals['formatted_amount_total'] = formatLang(move.env, move.tax_totals['amount_total'], currency_obj=currency)
 
-        self.tax_totals['amount_untaxed'] = self.currency_id.round(sum(lines.mapped('price_subtotal')))
-        self.tax_totals['formatted_amount_untaxed'] = formatLang(self.env, self.tax_totals['amount_untaxed'], currency_obj=currency)
+            move.tax_totals['amount_untaxed'] = move.currency_id.round(sum(lines.mapped('price_subtotal')))
+            move.tax_totals['formatted_amount_untaxed'] = formatLang(move.env, move.tax_totals['amount_untaxed'], currency_obj=currency)
 
-        self.tax_totals['subtotals'] = [
-            {
-                'amount': self.tax_totals['amount_untaxed'],
-                'formatted_amount': self.tax_totals['formatted_amount_untaxed'],
-                'name': 'Untaxed Amount'
-            }
-        ]
+            move.tax_totals['subtotals'] = [
+                {
+                    'amount': move.tax_totals['amount_untaxed'],
+                    'formatted_amount': move.tax_totals['formatted_amount_untaxed'],
+                    'name': 'Untaxed Amount'
+                }
+            ]
 
-        for _, groups in self.tax_totals['groups_by_subtotal'].items():
-            for group in groups:
-                group['tax_group_base_amount'] = self.tax_totals['amount_untaxed']
-                group['formatted_tax_group_base_amount'] = self.tax_totals['formatted_amount_untaxed']
+            for _, groups in move.tax_totals['groups_by_subtotal'].items():
+                for group in groups:
+                    group['tax_group_base_amount'] = move.tax_totals['amount_untaxed']
+                    group['formatted_tax_group_base_amount'] = move.tax_totals['formatted_amount_untaxed']
 
         return res
 

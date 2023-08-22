@@ -8,7 +8,7 @@ class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
     documents_allowed_company_id = fields.Many2one('res.company', compute='_compute_documents_allowed_company_id')
-    project_template_use_documents = fields.Boolean(related='project_template_id.use_documents')
+    project_template_use_documents = fields.Boolean(string="Project Template - Documents", related='project_template_id.use_documents')
     template_folder_id = fields.Many2one('documents.folder', "Workspace Template", company_dependent=True, copy=True,
         domain="['|', ('company_id', '=', False), ('company_id', '=', documents_allowed_company_id)]",
         compute="_compute_template_folder_id", store=True, readonly=False,

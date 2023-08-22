@@ -1009,3 +1009,37 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
 
         handler.action_generate_entry(self.get_options('2023-01-01', '2023-01-31'))
         self.assertEqual(self.env['account.move.line'].search_count([('account_id', '=', deferral_account.id)]), 2)
+
+    def test_deferred_expense_manual_generation_reset_to_draft(self):
+        """Test that the deferred entries cannot be deleted in the manual mode"""
+
+        # On validation, we can reset to draft
+        self.company.generate_deferred_entries_method = 'on_validation'
+        self.company.deferred_amount_computation_method = 'month'
+        move = self.create_invoice([(self.expense_accounts[0], 1680, '2023-01-21', '2023-04-14')])
+        self.assertEqual(len(move.deferred_move_ids), 5)
+        move.button_draft()
+        self.assertFalse(move.deferred_move_ids)
+        move.action_post()  # Repost
+
+        # Let's switch to manual mode
+        self.company.generate_deferred_entries_method = 'manual'
+
+        # We should still be able to reset to draft a move that was created with the on_validation mode
+        move.button_draft()
+        self.assertFalse(move.deferred_move_ids)
+
+        # If the grouped deferral entry is the aggregation of only one invoice, we can reset the invoice to draft
+        move3 = self.create_invoice([(self.expense_accounts[0], 1680, '2023-03-21', '2023-06-14')])
+        self.env['account.deferred.expense.report.handler']._generate_deferral_entry(self.get_options('2023-03-01', '2023-03-31'))
+        move3.button_draft()
+        self.assertFalse(move.deferred_move_ids)
+
+        # If the grouped deferral entry is the aggregation of more than one invoice, we cannot reset to draft any of those to draft
+        move4 = self.create_invoice([(self.expense_accounts[0], 1680, '2023-03-21', '2023-06-14')])
+        move5 = self.create_invoice([(self.expense_accounts[0], 1680, '2023-03-21', '2023-06-14')])
+        self.env['account.deferred.expense.report.handler']._generate_deferral_entry(self.get_options('2023-03-01', '2023-03-31'))
+        with self.assertRaisesRegex(UserError, 'You cannot reset to draft an invoice that is grouped in deferral entry. You can create a credit note instead.'):
+            move4.button_draft()
+        with self.assertRaisesRegex(UserError, 'You cannot reset to draft an invoice that is grouped in deferral entry. You can create a credit note instead.'):
+            move5.button_draft()

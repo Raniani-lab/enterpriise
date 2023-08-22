@@ -73,14 +73,10 @@ class AccountMove(models.Model):
         return res
 
     def button_draft(self):
+        if any(len(deferral_move.deferred_original_move_ids) > 1 for deferral_move in self.deferred_move_ids):
+            raise UserError(_("You cannot reset to draft an invoice that is grouped in deferral entry. You can create a credit note instead."))
         self.deferred_move_ids._unlink_or_reverse()
         return super().button_draft()
-
-    def _reverse_moves(self, default_values_list=None, cancel=False):
-        reverse = super()._reverse_moves(default_values_list=default_values_list, cancel=cancel)
-        if self.deferred_move_ids:
-            self.deferred_move_ids._reverse_moves()
-        return reverse
 
     # ============================= START - Deferred Management ====================================
 

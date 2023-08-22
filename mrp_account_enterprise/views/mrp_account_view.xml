@@ -42,22 +42,6 @@
             <field name="binding_type">report</field>
         </record>
 
-        <record model="ir.ui.view" id="mrp_production_form_inherit_view6">
-            <field name="name">mrp.production.form.inherit</field>
-            <field name="model">mrp.production</field>
-            <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
-            <field name="arch" type="xml">
-                <div name="button_box" position="inside">
-                    <button name="%(mrp_account_enterprise.action_cost_struct_mrp_production)d" type="action"
-                        class="oe_stat_button" icon="fa-dollar" invisible="state != 'done'">
-                        <div class="o_stat_info">
-                            <span class="o_stat_text">Cost Analysis</span>
-                        </div>
-                    </button>
-                </div>
-            </field>
-        </record>
-
         <record id="action_cost_struct_product_template" model="ir.actions.report">
             <field name="name">Cost Structure Analysis</field>
             <field name="model">product.product</field>

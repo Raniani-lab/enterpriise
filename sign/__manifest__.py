@@ -59,7 +59,7 @@ Let your customers follow the signature process easily.
             'web/static/lib/bootstrap/scss/_grid.scss',
             'web/static/src/scss/bs_mixins_overrides.scss',
             'web/static/lib/bootstrap/scss/utilities/_api.scss',
-            'web/static/src/legacy/scss/utils.scss',
+            'web/static/src/scss/utils.scss',
             'web/static/src/scss/primary_variables.scss',
             'web_enterprise/static/src/scss/primary_variables.scss',
             'sign/static/src/css/iframe.css',

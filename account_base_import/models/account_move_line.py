@@ -54,7 +54,7 @@ class AccountMoveLine(models.Model):
             for journal in journal_codes:
                 journal_codes_ids[journal["code"]] = journal["id"]
 
-            journal_ids = self.env["account.journal"]._load_records([{"values": {"name": journal_name, "id": journal_codes_ids.get(journal_name, False)}} for journal_name in journal_data])
+            journal_ids = self.env["account.journal"]._load_records([{"values": {"name": journal_name, "id": journal_codes_ids.get(journal_name[:5], False)}} for journal_name in journal_data])
             _sequence_override(journal_ids, r"^(?P<prefix1>.*?)(?P<seq>\d*)(?P<suffix>\D*?)$")
             self.env["account.move"].load(["journal_id", "name", "date"], account_move_data)
 

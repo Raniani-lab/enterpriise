@@ -235,7 +235,7 @@ class L10nBrAccountAvatax(models.AbstractModel):
                         'address': {
                             'zipcode': partner.zip,
                         },
-                        'federalTaxId': partner.vat if partner.vat else partner.l10n_br_cpf_code,
+                        'federalTaxId': partner.vat,
                         'suframa': partner.l10n_br_isuf_code or '',
                     },
                     'establishment': {  # the seller
@@ -251,7 +251,7 @@ class L10nBrAccountAvatax(models.AbstractModel):
                         'address': {
                             'zipcode': company.zip,
                         },
-                        'federalTaxId': company.vat if company.vat else company.l10n_br_cpf_code,
+                        'federalTaxId': company.vat,
                         'suframa': company.l10n_br_isuf_code or '',
                     },
                 },

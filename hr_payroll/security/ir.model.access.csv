@@ -30,3 +30,4 @@ access_hr_salary_attachment_type,hr.salary.attachment.type,model_hr_salary_attac
 access_hr_salary_assignment_report,hr.salary.attachment.reoprt,model_hr_salary_attachment_report,hr_payroll.group_hr_payroll_user,1,0,0,0
 hr_work_entry.access_hr_work_entry_system,access_hr_work_entry_system,hr_work_entry.model_hr_work_entry,hr_payroll.group_hr_payroll_user,1,1,1,1
 access_hr_payroll_note,hr.payroll.note,model_hr_payroll_note,hr_payroll.group_hr_payroll_user,1,1,1,1
+access_hr_payroll_employee_declaration,access_hr_payroll_employee_declaration,model_hr_payroll_employee_declaration,hr_payroll.group_hr_payroll_user,1,1,1,1

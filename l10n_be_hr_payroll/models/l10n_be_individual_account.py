@@ -15,40 +15,21 @@ _logger = logging.getLogger(__name__)
 
 class L10nBeIndividualAccount(models.Model):
     _name = 'l10n_be.individual.account'
+    _inherit = 'hr.payroll.declaration.mixin'
     _description = 'HR Individual Account Report By Employee'
 
-    @api.model
-    def default_get(self, field_list=None):
-        if self.env.company.country_id.code != "BE":
-            raise UserError(_('You must be logged in a Belgian company to use this feature'))
-        return super().default_get(field_list)
-
-    def _get_selection(self):
-        current_year = datetime.datetime.now().year
-        return [(str(i), i) for i in range(1990, current_year + 1)]
-
-    year = fields.Selection(
-        selection='_get_selection', string='Year', required=True,
-        default=lambda x: str(datetime.datetime.now().year - 1))
     name = fields.Char(
         string="Description", required=True, compute='_compute_name', readonly=False, store=True)
-    company_id = fields.Many2one('res.company', default=lambda self: self.env.company)
-    line_ids = fields.One2many(
-        'l10n_be.individual.account.line', 'sheet_id', compute='_compute_line_ids', store=True, readonly=False)
-    pdfs_generated = fields.Boolean(compute="_compute_pdfs_generated")
 
-    @api.depends("line_ids.pdf_file")
-    def _compute_pdfs_generated(self):
-        for sheet in self:
-            sheet.pdfs_generated = any(l.pdf_file for l in sheet.line_ids)
+    def _country_restriction(self):
+        return 'BE'
 
     @api.depends('year')
     def _compute_name(self):
         for sheet in self:
             sheet.name = _('Individual Accounts - Year %s', sheet.year)
 
-    @api.depends('year', 'company_id')
-    def _compute_line_ids(self):
+    def action_generate_declarations(self):
         for sheet in self:
             all_payslips = self.env['hr.payslip'].search([
                 ('date_to', '<=', datetime.date(int(sheet.year), 12, 31)),
@@ -57,9 +38,11 @@ class L10nBeIndividualAccount(models.Model):
                 ('company_id', '=', sheet.company_id.id),
             ])
             all_employees = all_payslips.mapped('employee_id')
-            sheet.update({
+            sheet.write({
                 'line_ids': [(5, 0, 0)] + [(0, 0, {
                     'employee_id': employee.id,
+                    'res_model': 'l10n_be.individual.account',
+                    'res_id': sheet.id,
                 }) for employee in all_employees]
             })
 
@@ -83,6 +66,7 @@ class L10nBeIndividualAccount(models.Model):
 
         result = {
             employee: {
+                'year': self.year,
                 'rules': OrderedDict(
                     (rule[0], {
                         'year': {'name': False, 'total': 0},
@@ -129,66 +113,9 @@ class L10nBeIndividualAccount(models.Model):
 
         return result
 
-    def action_generate_pdf(self):
-        if self.line_ids:
-            self.line_ids.write({'pdf_to_generate': True})
-            self.env.ref('hr_payroll.ir_cron_generate_payslip_pdfs')._trigger()
+    def _get_pdf_report(self):
+        return self.env.ref('l10n_be_hr_payroll.action_report_individual_account')
 
-            return {
-                'type': 'ir.actions.client',
-                'tag': 'display_notification',
-                'params': {
-                    'type': 'success',
-                    'message': _("PDF generation started, reload this page after a few moments."),
-                }
-            }
-
-    def _process_files(self, files):
+    def _get_pdf_filename(self, employee):
         self.ensure_one()
-        for employee, filename, data in files:
-            line = self.line_ids.filtered(lambda l: l.employee_id == employee)
-            line.write({
-                'pdf_file': base64.encodebytes(data),
-                'pdf_filename': filename,
-            })
-
-
-class L10nBeIndividualAccountLine(models.Model):
-    _name = 'l10n_be.individual.account.line'
-    _description = 'HR Individual Account Report By Employee Line'
-
-    existing_employee_ids = fields.Many2many('hr.employee', compute='_compute_existing_employee_ids')
-    employee_id = fields.Many2one('hr.employee', domain="[('id', 'not in', existing_employee_ids)]")
-    pdf_file = fields.Binary('PDF File', readonly=True, attachment=False)
-    pdf_filename = fields.Char()
-    sheet_id = fields.Many2one('l10n_be.individual.account')
-    pdf_to_generate = fields.Boolean()
-
-    @api.depends("sheet_id.line_ids.employee_id")
-    def _compute_existing_employee_ids(self):
-        for line in self:
-            line.existing_employee_ids = line.sheet_id.line_ids.employee_id
-
-    def _generate_pdf(self):
-        report_sudo = self.env["ir.actions.report"].sudo()
-        report_id = self.env.ref('l10n_be_hr_payroll.action_report_individual_account').id
-
-        for sheet in self.sheet_id:
-            lines = self.filtered(lambda l: l.sheet_id == sheet)
-            rendering_data = sheet._get_rendering_data(lines.employee_id)
-
-            pdf_files = []
-            sheet_count = len(rendering_data)
-            counter = 1
-            for employee, employee_data in rendering_data.items():
-                _logger.info('Printing Individual Account sheet (%s/%s)', counter, sheet_count)
-                counter += 1
-                sheet_filename = _('%s-individual-account-%s', employee.name, sheet.year)
-                sheet_file, dummy = report_sudo.with_context(lang=employee.lang)._render_qweb_pdf(
-                    report_id,
-                    [employee.id], data={
-                        'year': int(sheet.year),
-                        'employee_data': {employee: employee_data}})
-                pdf_files.append((employee, sheet_filename, sheet_file))
-            if pdf_files:
-                sheet._process_files(pdf_files)
+        return _('%s-individual-account-%s', employee.name, self.year)

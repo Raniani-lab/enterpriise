@@ -56,23 +56,11 @@ COUNTRY_CODES = {
 
 class L10nBe28110(models.Model):
     _name = 'l10n_be.281_10'
+    _inherit = 'hr.payroll.declaration.mixin'
     _description = 'HR Payroll 281.10 Wizard'
-    _order = 'reference_year'
+    _order = 'year'
 
-    def _get_years(self):
-        return [(str(i), i) for i in range(fields.Date.today().year, 2009, -1)]
-
-    @api.model
-    def default_get(self, field_list):
-        if self.env.company.country_id.code != "BE":
-            raise UserError(_('You must be logged in a Belgian company to use this feature'))
-        return super().default_get(field_list)
-
-    company_id = fields.Many2one('res.company', default=lambda self: self.env.company)
     state = fields.Selection([('generate', 'generate'), ('get', 'get')], default='generate')
-    reference_year = fields.Selection(
-        selection='_get_years', string='Reference Year', required=True,
-        default=lambda x: str(fields.Date.today().year - 1))
     is_test = fields.Boolean(string="Is it a test?", default=False)
     type_sending = fields.Selection([
         ('0', 'Original send'),
@@ -92,8 +80,9 @@ class L10nBe28110(models.Model):
         ('invalid', 'Invalid'),
     ], default='normal', compute='_compute_validation_state', store=True)
     error_message = fields.Char('Error Message', compute='_compute_validation_state', store=True)
-    line_ids = fields.One2many(
-        'l10n_be.281_10.line', 'sheet_id', compute='_compute_line_ids', store=True, readonly=False)
+
+    def _country_restriction(self):
+        return 'BE'
 
     @api.depends('xml_file')
     def _compute_validation_state(self):
@@ -118,10 +107,10 @@ class L10nBe28110(models.Model):
                 record.xml_validation_state = 'invalid'
                 record.error_message = str(err)
 
-    @api.depends('reference_year', 'is_test')
+    @api.depends('year', 'is_test')
     def _compute_display_name(self):
         for record in self:
-            record.display_name = f'{record.reference_year}{_("- Test") if record.is_test else ""}'
+            record.display_name = f'{record.year}{_("- Test") if record.is_test else ""}'
 
     @api.model
     def _check_employees_configuration(self, employees):
@@ -178,12 +167,11 @@ class L10nBe28110(models.Model):
             result += 'K'
         return result
 
-    @api.depends('reference_year', 'company_id')
-    def _compute_line_ids(self):
+    def action_generate_declarations(self):
         for sheet in self:
             all_payslips = self.env['hr.payslip'].search([
-                ('date_to', '<=', date(int(sheet.reference_year), 12, 31)),
-                ('date_from', '>=', date(int(sheet.reference_year), 1, 1)),
+                ('date_to', '<=', date(int(sheet.year), 12, 31)),
+                ('date_from', '>=', date(int(sheet.year), 1, 1)),
                 ('state', 'in', ['done', 'paid']),
                 ('company_id', '=', sheet.company_id.id),
             ])
@@ -191,15 +179,17 @@ class L10nBe28110(models.Model):
             sheet.update({
                 'line_ids': [(5, 0, 0)] + [(0, 0, {
                     'employee_id': employee.id,
+                    'res_model': 'l10n_be.281_10',
+                    'res_id': sheet.id,
                 }) for employee in all_employees]
             })
 
     def _get_rendering_data(self, employees):
         # Round to eurocent for XML file, not PDF
-        no_round = self.env.context.get('no_round_281_10')
+        round_281_10 = self.env.context.get('round_281_10')
 
         def _to_eurocent(amount):
-            return amount if no_round else int(amount * 100)
+            return int(amount * 100) if round_281_10 else amount
 
         if not self.company_id.vat or not self.company_id.zip:
             raise UserError(_('The VAT or the ZIP number is not specified on your company'))
@@ -212,7 +202,7 @@ class L10nBe28110(models.Model):
             raise UserError(_("The company phone number shouldn't exceed 12 characters"))
 
         main_data = {
-            'v0002_inkomstenjaar': self.reference_year,
+            'v0002_inkomstenjaar': self.year,
             'v0010_bestandtype': 'BELCOTST' if self.is_test else 'BELCOTAX',
             'v0011_aanmaakdatum': fields.Date.today().strftime('%d-%m-%Y'),
             'v0014_naam': self.company_id.name,
@@ -225,7 +215,7 @@ class L10nBe28110(models.Model):
             'v0023_emailadres': self.env.user.email,
             'v0024_nationaalnr': bce_number,
             'v0025_typeenvoi': self.type_sending,
-            'a1002_inkomstenjaar': self.reference_year,
+            'a1002_inkomstenjaar': self.year,
             'a1005_registratienummer': bce_number,
             'a1011_naamnl1': self.company_id.name,
             'a1013_adresnl': self.company_id.street,
@@ -238,8 +228,8 @@ class L10nBe28110(models.Model):
         employees_data = []
 
         all_payslips = self.env['hr.payslip'].search([
-            ('date_to', '<=', date(int(self.reference_year), 12, 31)),
-            ('date_from', '>=', date(int(self.reference_year), 1, 1)),
+            ('date_to', '<=', date(int(self.year), 12, 31)),
+            ('date_from', '>=', date(int(self.year), 1, 1)),
             ('state', 'in', ['done', 'paid']),
             ('employee_id', 'in', employees.ids)
         ])
@@ -291,7 +281,7 @@ class L10nBe28110(models.Model):
                 raise UserError(_("The employee first name shouldn't exceed 30 characters for employee %s", employee.name))
 
             first_contract_date = employee.with_context(
-                before_date=date(int(self.reference_year), 12, 31))._get_first_contract_date()
+                before_date=date(int(self.year), 12, 31))._get_first_contract_date()
             if not first_contract_date:
                 raise UserError(_("No first contract date found for employee %s", employee.name))
 
@@ -299,9 +289,9 @@ class L10nBe28110(models.Model):
             # from 2022: private car / company car (from May)
             max_other_transport_exemption = payslip.env['hr.rule.parameter']._get_parameter_from_code(
                 'pricate_car_taxable_threshold',
-                date=date(int(self.reference_year), 1, 1))
+                date=date(int(self.year), 1, 1))
             start = first_contract_date
-            end = date(int(self.reference_year), 12, 31)
+            end = date(int(self.year), 12, 31)
             number_of_month = (end.year - start.year) * 12 + (end.month - start.month) + 1
             number_of_month = min(12, number_of_month)
             other_transport_exemption = 0
@@ -312,13 +302,11 @@ class L10nBe28110(models.Model):
 
             cycle_days_count = 0
             cycle_days_amount = 0
-            # cycle_days_count = sum(all_line_values['CYCLE'][p.id]['quantity'] for p in payslips)
-            # cycle_days_amount = sum(all_line_values['CYCLE'][p.id]['total'] for p in payslips)
 
             sheet_values = {
                 'employee': employee,
                 'employee_id': employee.id,
-                'f2002_inkomstenjaar': self.reference_year,
+                'f2002_inkomstenjaar': self.year,
                 'f2005_registratienummer': bce_number,
                 'f2008_typefiche': '28110',
                 'f2009_volgnummer': sequence,
@@ -344,7 +332,7 @@ class L10nBe28110(models.Model):
                 'f10_2041_overheidspersoneel': 0,
                 'f10_2042_sailorcode': 0,
                 'f10_2045_code': 0,
-                # 'f10_2055_datumvanindienstt': employee.first_contract_date.strftime('%d/%m/%Y') if employee.first_contract_date.year == self.reference_year else '',
+                # 'f10_2055_datumvanindienstt': employee.first_contract_date.strftime('%d/%m/%Y') if employee.first_contract_date.year == self.year else '',
                 'f10_2055_datumvanindienstt': first_contract_date.strftime('%d-%m-%Y') if first_contract_date else '',
                 'f10_2056_datumvanvertrek': employee.end_notice_period.strftime('%d-%m-%Y') if employee.end_notice_period and employee.end_notice_period > first_contract_date else '',
                 'f10_2058_km': int(cycle_days_count * employee.km_home_work),
@@ -519,7 +507,7 @@ class L10nBe28110(models.Model):
         sum_2059 = sum(sheet_values['f10_2059_totaalcontrole'] for sheet_values in employees_data)
         sum_2074 = sum(sheet_values['f10_2074_bedrijfsvoorheffing'] for sheet_values in employees_data)
         total_data = {
-            'r8002_inkomstenjaar': self.reference_year,
+            'r8002_inkomstenjaar': self.year,
             'r8005_registratienummer': bce_number,
             # Le champ "Nombre total d'enregistrements" (8010) doit être égal au nombre
             # d'enregistrements  contenus dans cette déclaration (total des enregistrements
@@ -528,7 +516,7 @@ class L10nBe28110(models.Model):
             'r8011_controletotaal': sum_2009,
             'r8012_controletotaal': sum_2059,
             'r8013_totaalvoorheffingen': sum_2074,
-            'r9002_inkomstenjaar': self.reference_year,
+            'r9002_inkomstenjaar': self.year,
             # Le champ "Nombre de déclarations" doit être égal au nombre de déclarations
             # contenues dans l'envoi + 2.
             'r9010_aantallogbestanden': 3,
@@ -543,23 +531,12 @@ class L10nBe28110(models.Model):
 
         return {'data': main_data, 'employees_data': employees_data, 'total_data': total_data}
 
-    def action_generate_pdf(self):
-        self.line_ids.write({'pdf_to_generate': True})
-        self.env.ref('hr_payroll.ir_cron_generate_payslip_pdfs')._trigger()
-
-    def _process_files(self, files):
-        self.ensure_one()
-        for employee, filename, data in files:
-            line = self.line_ids.filtered(lambda l: l.employee_id == employee)
-            line.write({
-                'pdf_file': base64.encodebytes(data),
-                'pdf_filename': filename,
-            })
-
     def action_generate_xml(self):
         self.ensure_one()
-        self.xml_filename = '%s-281_10_report.xml' % (self.reference_year)
-        xml_str = self.env['ir.qweb']._render('l10n_be_hr_payroll.281_10_xml_report', self._get_rendering_data(self.line_ids.employee_id))
+        self.xml_filename = '%s-281_10_report.xml' % (self.year)
+        xml_str = self.env['ir.qweb']._render(
+            'l10n_be_hr_payroll.281_10_xml_report',
+            self.with_context(round_281_10=True)._get_rendering_data(self.line_ids.employee_id))
 
         # Prettify xml string
         root = etree.fromstring(xml_str, parser=etree.XMLParser(remove_blank_text=True))
@@ -568,44 +545,22 @@ class L10nBe28110(models.Model):
         self.xml_file = base64.encodebytes(xml_formatted_str)
         self.state = 'get'
 
+    def _get_pdf_report(self):
+        return self.env.ref('l10n_be_hr_payroll.action_report_employee_281_10')
 
-class L10nBe28110Line(models.Model):
-    _name = 'l10n_be.281_10.line'
-    _description = 'HR Payroll 281.10 Line Wizard'
+    def _get_pdf_filename(self, employee):
+        self.ensure_one()
+        return _('%s-%s-281_10', self.year, employee.name)
 
-    employee_id = fields.Many2one('hr.employee')
-    pdf_file = fields.Binary('PDF File', readonly=True, attachment=False)
-    pdf_filename = fields.Char()
-    sheet_id = fields.Many2one('l10n_be.281_10')
-    pdf_to_generate = fields.Boolean()
-
-    def _generate_pdf(self):
-        report_sudo = self.env["ir.actions.report"].sudo()
-        report_id = self.env.ref('l10n_be_hr_payroll.action_report_employee_281_10').id
-
-        for sheet in self.sheet_id:
-            lines = self.filtered(lambda l: l.sheet_id == sheet)
-            rendering_data = sheet.with_context(no_round_281_10=True)._get_rendering_data(lines.employee_id)
-            for sheet_values in rendering_data['employees_data']:
-                for key, value in sheet_values.items():
-                    if isinstance(value, int) and value == 0:
-                        sheet_values[key] = '0.00 €'
-                    elif isinstance(value, float):
-                        sheet_values[key] = '{:,.2f} €'.format(value)
-                    elif not value:
-                        sheet_values[key] = _('None')
-
-            pdf_files = []
-            sheet_count = len(rendering_data['employees_data'])
-            counter = 1
-            for sheet_data in rendering_data['employees_data']:
-                _logger.info('Printing 281.10 sheet (%s/%s)', counter, sheet_count)
-                counter += 1
-                sheet_filename = '%s-%s-281_10' % (sheet_data['f2002_inkomstenjaar'], sheet_data['f2013_naam'])
-                employee_lang = sheet_data['employee'].lang
-                sheet_file, dummy = report_sudo.with_context(lang=employee_lang, allowed_company_ids=sheet_data['employee'].company_id.ids)._render_qweb_pdf(
-                    report_id, [sheet_data['employee_id']], data={**sheet_data, **rendering_data['data']})
-                pdf_files.append((sheet_data['employee'], sheet_filename, sheet_file))
-
-            if pdf_files:
-                sheet._process_files(pdf_files)
+    def _post_process_rendering_data_pdf(self, rendering_data):
+        result = {}
+        for sheet_values in rendering_data['employees_data']:
+            for key, value in sheet_values.items():
+                if isinstance(value, int) and value == 0:
+                    sheet_values[key] = '0.00 €'
+                elif isinstance(value, float):
+                    sheet_values[key] = '{:,.2f} €'.format(value)
+                elif not value:
+                    sheet_values[key] = _('None')
+            result[sheet_values['employee']] = {**sheet_values, **rendering_data['data']}
+        return result

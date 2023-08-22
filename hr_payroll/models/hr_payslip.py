@@ -1150,16 +1150,26 @@ class HrPayslip(models.Model):
             ('state', 'in', ['done', 'paid']),
             ('queued_for_pdf', '=', True),
         ])
-        if not payslips:
-            return False
-        BATCH_SIZE = batch_size or 50
-        payslips_batch = payslips[:BATCH_SIZE]
-        payslips_batch._generate_pdf()
-        payslips_batch.write({'queued_for_pdf': False})
-        # if necessary, retrigger the cron to generate more pdfs
-        if len(payslips) > BATCH_SIZE:
-            self.env.ref('hr_payroll.ir_cron_generate_payslip_pdfs')._trigger()
-            return True
+        if payslips:
+            BATCH_SIZE = batch_size or 50
+            payslips_batch = payslips[:BATCH_SIZE]
+            payslips_batch._generate_pdf()
+            payslips_batch.write({'queued_for_pdf': False})
+            # if necessary, retrigger the cron to generate more pdfs
+            if len(payslips) > BATCH_SIZE:
+                self.env.ref('hr_payroll.ir_cron_generate_payslip_pdfs')._trigger()
+                return True
+
+        lines = self.env['hr.payroll.employee.declaration'].search([('pdf_to_generate', '=', True)])
+        if lines:
+            BATCH_SIZE = batch_size or 30
+            lines_batch = lines[:BATCH_SIZE]
+            lines_batch._generate_pdf()
+            lines_batch.write({'pdf_to_generate': False})
+            # if necessary, retrigger the cron to generate more pdfs
+            if len(lines) > BATCH_SIZE:
+                self.env.ref('hr_payroll.ir_cron_generate_payslip_pdfs')._trigger()
+                return True
         return False
 
     # Payroll Dashboard

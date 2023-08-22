@@ -25,3 +25,5 @@ from . import hr_work_entry
 from . import hr_salary_attachment
 from . import hr_salary_attachment_type
 from . import note
+from . import hr_payroll_employee_declaration
+from . import hr_payroll_declaration_mixin

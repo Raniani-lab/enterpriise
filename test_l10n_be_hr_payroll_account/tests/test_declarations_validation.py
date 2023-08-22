@@ -568,7 +568,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         total_declared_pp = sum(declarations_274.mapped('pp_amount'))
 
         declaration_281 = self.env['l10n_be.281_10'].create({
-            'reference_year': '2021',
+            'year': '2021',
         })
         data_281 = declaration_281.with_context(no_round_281_10=True)._get_rendering_data(self.employees)
         declared_pp = data_281['total_data']['r9014_controletotaal']
@@ -608,7 +608,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         })
         self.assertEqual(self.employees[0].first_contract_date, datetime.date(2022, 3, 1))
         declaration_281 = self.env['l10n_be.281_10'].create({
-            'reference_year': '2021',
+            'year': '2021',
         })
         data_281 = declaration_281.with_context(no_round_281_10=True)._get_rendering_data(self.employees)
         for employee_data in data_281['employees_data']:
@@ -645,7 +645,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         # 281.10 Declaration
         declaration_281 = self.env['l10n_be.281_10'].create({
-            'reference_year': '2021',
+            'year': '2021',
         })
         data_281 = declaration_281.with_context(no_round_281_10=True)._get_rendering_data(self.employees)
         for employee_data in data_281['employees_data']:

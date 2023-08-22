@@ -125,7 +125,7 @@
                     <div class="row mt16 o_settings_container" id="channels">
                         <setting id="alias_channels" help="Create tickets by sending an email to an alias"
                             documentation="/applications/services/helpdesk/overview/receiving_tickets.html">
-                            <field name="use_alias"/>
+                            <field name="use_alias" string="Email Alias"/>
                             <div invisible="not use_alias" class="mt16">
                                 <div class="oe_edit_only" invisible="not alias_domain">
                                     <strong>Alias </strong>
@@ -138,10 +138,10 @@
                                 </p>
                                 <field name="has_external_mail_server" invisible="1"/>
                                 <p class="text-muted o_row ps-1" invisible="alias_domain or has_external_mail_server">
-                                    <i class="fa fa-lightbulb-o" role='img'/><span class="ms-2">To use an email alias, the first step is to configure an Alias Domain. You can achieve this by navigating to the General Settings and configuring the corresponding field</span>
+                                    <i class="fa fa-lightbulb-o" role='img'/><span class="ms-2">To use an email alias, the first step is to configure an Alias Domain. You can achieve this by navigating to the General Settings and configuring the corresponding field.</span>
                                 </p>
                                 <p invisible="alias_domain">
-                                    <button name="%(base_setup.action_general_configuration)d" type="action" string="Set an Alias Domain" icon="oi-arrow-right" class="btn-link"/>
+                                    <button name="%(base_setup.action_general_configuration)d" type="action" string="Set an Alias Domain" icon="oi-arrow-right" class="btn-link mt-2"/>
                                 </p>
                             </div>
                         </setting>

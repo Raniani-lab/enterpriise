@@ -10,7 +10,7 @@ import { openStudio, registerStudioDependencies } from "@web_studio/../tests/hel
 
 let serverData;
 let target;
-QUnit.module("Form Manager", (hooks) => {
+QUnit.module("Website Integrator", (hooks) => {
     hooks.beforeEach(() => {
         target = getFixture();
         serverData = getActionManagerServerData();
@@ -38,28 +38,33 @@ QUnit.module("Form Manager", (hooks) => {
                 serverData,
                 mockRPC: (route) => {
                     if (route === "/website_studio/get_forms") {
-                        assert.step("/website_studio/get_forms");
+                        assert.step(route);
                         return Promise.resolve([{ id: 1, name: "partner", url: "/partner" }]);
+                    }
+                    if (route === "/website_studio/get_website_pages") {
+                        assert.step(route);
+                        return { websites: [], pages: [] };
                     }
                 },
             });
+            await nextTick();
             // open app Ponies (act window action)
             await click(target, ".o_app[data-menu-xmlid=app_1]");
             await nextTick();
             await openStudio(target);
 
             const websiteItem = [...target.querySelectorAll(".o_menu_sections a")].filter(
-                (el) => el.textContent === "Website Forms"
+                (el) => el.textContent === "Website"
             )[0];
             await click(websiteItem);
-            assert.containsN(target, ".o_website_studio_form .o_web_studio_thumbnail", 2);
+            assert.containsN(target, ".o_website_studio_form .o-website-studio-item-card", 2);
             const websiteStudioForms = target.querySelectorAll(
-                ".o_website_studio_form .o_web_studio_thumbnail"
+                ".o_website_studio_form .o-website-studio-item-card"
             );
-            assert.strictEqual(websiteStudioForms[0].dataset.newForm, "true");
-            assert.strictEqual(websiteStudioForms[1].dataset.url, "/partner");
+            assert.strictEqual(websiteStudioForms[0].textContent, "New Form");
+            assert.strictEqual(websiteStudioForms[1].textContent, "partner");
 
-            assert.verifySteps(["/website_studio/get_forms"]);
+            assert.verifySteps(["/website_studio/get_forms", "/website_studio/get_website_pages"]);
         }
     );
 });

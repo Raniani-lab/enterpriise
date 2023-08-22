@@ -19,7 +19,7 @@ model. Furthermore, you can create a new website form or edit an existing one.
     ],
     'data': [
         'views/templates.xml',
-        'views/actions.xml',
+        'views/views.xml',
     ],
     'auto_install': True,
     'license': 'OEEL-1',
@@ -27,8 +27,11 @@ model. Furthermore, you can create a new website form or edit an existing one.
         'web_studio.studio_assets': [
             'website_studio/static/src/**/*',
         ],
+        'web.assets_tests': [
+            'website_studio/static/tests/tours/**/*',
+        ],
         'web.qunit_suite_tests': [
-            'website_studio/static/tests/**/*',
+            'website_studio/static/tests/*.js',
         ],
     }
 }

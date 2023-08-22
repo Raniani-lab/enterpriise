@@ -54,7 +54,7 @@ msgstr ""
 
 #. module: website_studio
 #: model_terms:ir.ui.view,arch_db:website_studio.default_form_field_name
-#: model_terms:ir.ui.view,arch_db:website_studio.default_form_page
+#: model_terms:ir.ui.view,arch_db:website_studio.default_record_page
 msgid "Submit"
 msgstr ""
 

@@ -48,7 +48,7 @@ class DeferredReportCustomHandler(models.AbstractModel):
         if self.env.company.generate_deferred_entries_method == 'manual':
             options['buttons'].append({'name': _('Generate entry'), 'action': 'action_generate_entry', 'sequence': 80})
 
-    def action_generate_entry(self, options):
+    def _generate_deferral_entry(self, options):
         journal = self.env.company.deferred_journal_id
         if not journal:
             raise UserError(_("Please set the deferred journal in the accounting settings."))
@@ -84,6 +84,10 @@ class DeferredReportCustomHandler(models.AbstractModel):
         new_deferred_moves = deferred_move + reverse_move
         original_moves.deferred_move_ids |= new_deferred_moves
         (deferred_move + reverse_move)._post(soft=True)
+        return new_deferred_moves
+
+    def action_generate_entry(self, options):
+        new_deferred_moves = self._generate_deferral_entry(options)
         return {
             'name': _('Deferred Entry'),
             'type': 'ir.actions.act_window',
@@ -102,16 +106,15 @@ class DeferredReportCustomHandler(models.AbstractModel):
             'date_to': options['date']['date_to'],
         }
         move_filter = f"""AND move.state {"!= 'cancel'" if options.get('all_entries', False) else "= 'posted'"}"""
-        show_already_generated = "TRUE OR" if not filter_already_generated else ""
-        max_deferred_date = """
-            (
-                SELECT MAX(def_move.date)
-                  FROM account_move_deferred_rel rel
-                  JOIN account_move def_move ON def_move.id = rel.deferred_move_id
-                 WHERE rel.original_move_id = move.id
+        filter_already_generated = """
+            AND NOT EXISTS (
+                SELECT 1
+                  FROM account_move_deferred_rel AS rel
+                  JOIN account_move move_deferral ON rel.deferred_move_id  = move_deferral.id
+                 WHERE move_deferral.date = %(date_to)s
+                   AND move_deferral.company_id = %(company_id)s
             )
-        """
-
+        """ if filter_already_generated else ""
         sql = f"""
             SELECT line.id AS line_id,
                    line.account_id AS account_id,
@@ -130,16 +133,11 @@ class DeferredReportCustomHandler(models.AbstractModel):
              WHERE line.company_id = %(company_id)s
                AND line.deferred_start_date IS NOT NULL
                AND line.deferred_end_date IS NOT NULL
-               AND
-               (
-                    {show_already_generated}
-                    {max_deferred_date} IS NULL
-                    OR {max_deferred_date} < %(date_to)s
-               )
                AND move.date <= %(date_to)s
                AND %(date_from)s <= line.deferred_end_date
                AND account.account_type IN %(account_types)s
                {move_filter}
+               {filter_already_generated}
           ORDER BY line.deferred_start_date, line.id;
         """
         self._cr.execute(sql, query_params)
@@ -232,7 +230,7 @@ class DeferredReportCustomHandler(models.AbstractModel):
                     ('deferred_end_date', '!=', False),
                     ('move_id.state', '=', 'posted') if not options.get('all_entries', False) else ('move_id.state', '!=', 'cancel'),
                     ('move_id.deferred_move_ids', '!=', False),
-                    ('move_id.deferred_move_ids.date', '>=', options['date']['date_to']),
+                    ('move_id.deferred_move_ids.date', '=', options['date']['date_to']),
                 ])
             )
             if already_posted:

@@ -188,11 +188,13 @@ class AccountMove(models.Model):
                 'account_id': deferred_amounts['account_id'].id,
                 'balance': balance,
                 'name': ref,
+                'analytic_distribution': line.analytic_distribution,
             }),
             Command.create({
                 'account_id': deferred_account.id,
                 'balance': -balance,
                 'name': ref,
+                'analytic_distribution': line.analytic_distribution,
             }),
         ]
 
@@ -236,11 +238,13 @@ class AccountMove(models.Model):
                         'account_id': line.account_id.id,
                         'balance': -1 * line.balance,
                         'name': ref,
+                        'analytic_distribution': line.analytic_distribution,
                     }),
                     Command.create({
                         'account_id': deferred_account.id,
                         'balance': line.balance,
                         'name': ref,
+                        'analytic_distribution': line.analytic_distribution,
                     }),
                 ],
             })

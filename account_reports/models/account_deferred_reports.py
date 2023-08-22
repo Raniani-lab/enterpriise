@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+from collections import defaultdict
 from dateutil.relativedelta import relativedelta
 from odoo import models, fields, _, api, Command
 from odoo.exceptions import UserError
@@ -126,6 +127,7 @@ class DeferredReportCustomHandler(models.AbstractModel):
                    line.deferred_end_date - line.deferred_start_date AS diff_days,
                    line.balance AS balance,
                    move.id as move_id,
+                   line.analytic_distribution AS analytic_distribution,
                    move.name AS move_name,
                    account.name AS account_name
               FROM account_move_line line
@@ -186,12 +188,34 @@ class DeferredReportCustomHandler(models.AbstractModel):
         deferred_amounts_by_account, deferred_amounts_totals = self._group_deferred_amounts_by_account(deferred_amounts_by_line, [period], is_reverse)
         if deferred_amounts_totals['amount_total'] == deferred_amounts_totals[period]:
             return [], set()
+        # compute analytic distribution to populate on deferred lines
+        # structure: {[ID of the account]: [analytic distribution]}
+        # dict of keys: account.account.id (int)
+        #         values: dict of keys: "account.analytic.account.id" (string)
+        #                         values: float
+        anal_dist_by_account = defaultdict(lambda: defaultdict(float))
+        # using another var for the analytic distribution of the deferral account
+        deferred_anal_dist = defaultdict(float)
+        for line in lines:
+            if not line['analytic_distribution']:
+                continue
+            # Analytic distribution should be computed from the lines with the same account, except for
+            # the deferred line with the deferral account where all lines should be taken into account
+            full_ratio = (line['balance'] / deferred_amounts_totals['amount_total']) if deferred_amounts_totals['amount_total'] else 0
+            account_amount = next((d for d in deferred_amounts_by_account if d['account'].id == line['account_id']), False)
+            account_ratio = (line['balance'] / account_amount['amount_account']) if account_amount and account_amount['amount_account'] else 0
+
+            for account_id, distribution in line['analytic_distribution'].items():
+                deferred_anal_dist[account_id] += distribution * full_ratio
+                anal_dist_by_account[line['account_id']][account_id] += distribution * account_ratio
+
         lines = [
             Command.create({
                 'account_id': account.id,
                 'debit': amount1 if is_reverse else amount2,
                 'credit': amount1 if not is_reverse else amount2,
                 'name': ref,
+                'analytic_distribution': anal_dist_by_account[account.id] or False,
             })
             for line in deferred_amounts_by_account
             for account, amount1, amount2 in (
@@ -205,6 +229,7 @@ class DeferredReportCustomHandler(models.AbstractModel):
                 'debit': deferred_amounts_totals['amount_total'] - deferred_amounts_totals[period] if is_reverse else 0,
                 'credit': deferred_amounts_totals['amount_total'] - deferred_amounts_totals[period] if not is_reverse else 0,
                 'name': ref,
+                'analytic_distribution': deferred_anal_dist or False,
             })
         ]
         return lines + deferred_line, original_move_ids

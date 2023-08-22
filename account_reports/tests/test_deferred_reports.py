@@ -1094,3 +1094,173 @@ class TestDeferredReports(TestAccountReportsCommon, HttpCase):
             move4.button_draft()
         with self.assertRaisesRegex(UserError, 'You cannot reset to draft an invoice that is grouped in deferral entry. You can create a credit note instead.'):
             move5.button_draft()
+
+    def test_deferred_expense_on_validation_generation_analytic_distribution(self):
+        """Test that the analytic distribution of the invoice is transferred the deferred entries generated on validation."""
+
+        self.company.generate_deferred_entries_method = 'on_validation'
+        analytic_plan_a = self.env['account.analytic.plan'].create({
+            'name': 'Plan A',
+            'company_id': False,
+        })
+        aa_a1 = self.env['account.analytic.account'].create({
+            'name': 'Account A1',
+            'plan_id': analytic_plan_a.id
+        })
+        aa_a2 = self.env['account.analytic.account'].create({
+            'name': 'Account A2',
+            'plan_id': analytic_plan_a.id
+        })
+        move = self.create_invoice([self.expense_lines[0]], post=False)
+        move.write({'invoice_line_ids': [
+            Command.update(move.invoice_line_ids.id, {'analytic_distribution': {str(aa_a1.id): 60.0, str(aa_a2.id): 40.0}}),
+        ]})
+        self.env['account.move.line'].flush_model()
+        move.action_post()
+        expected_analytic_distribution = {str(aa_a1.id): 60.0, str(aa_a2.id): 40.0}
+        for line in move.deferred_move_ids.line_ids:
+            self.assertEqual(line.analytic_distribution, expected_analytic_distribution)
+
+    def test_deferred_expense_manual_generation_analytic_distribution(self):
+        """
+        When using the manually & grouped method, the analytic distribution of the deferred entries
+        should be computed according to the proportion between the deferred amount of each account
+        and the total deferred amount.
+        """
+        self.company.generate_deferred_entries_method = 'manual'
+        deferral_account = self.company_data['default_account_deferred_expense']
+
+        analytic_plan_a = self.env['account.analytic.plan'].create({
+            'name': 'Plan A',
+            'company_id': False,
+        })
+        analytic_plan_b = self.env['account.analytic.plan'].create({
+            'name': 'Plan B',
+            'company_id': False,
+        })
+        aa_a1 = self.env['account.analytic.account'].create({
+            'name': 'Account A1',
+            'plan_id': analytic_plan_a.id
+        })
+        aa_a2 = self.env['account.analytic.account'].create({
+            'name': 'Account A2',
+            'plan_id': analytic_plan_a.id
+        })
+        aa_a3 = self.env['account.analytic.account'].create({
+            'name': 'Account A3',
+            'plan_id': analytic_plan_a.id
+        })
+        aa_b1 = self.env['account.analytic.account'].create({
+            'name': 'Account B1',
+            'plan_id': analytic_plan_b.id
+        })
+        aa_b2 = self.env['account.analytic.account'].create({
+            'name': 'Account B2',
+            'plan_id': analytic_plan_b.id
+        })
+        # Test the account move lines with the following analytic distribution:
+        #
+        #    # |  Expense Account |   Amount   |        Analytic Distribution
+        #    ------------------------------------------------------------------------
+        #    1 |    Expense 0     |    1200    | {A1: 60%, A2: 40%, B1: 50%, B2: 50%}
+        #    2 |    Expense 0     |    2400    | {A1: 100%}
+        #    3 |    Expense 1     |    1200    | {A1: 50%, A3: 50%}
+        #    4 |    Expense 1     |    1200    | NULL
+
+        invoice_lines = [
+            [self.expense_accounts[0], 1200, '2023-01-01', '2023-12-31'],
+            [self.expense_accounts[0], 2400, '2023-01-01', '2023-12-31'],
+            [self.expense_accounts[1], 1200, '2023-01-01', '2023-12-31'],
+            [self.expense_accounts[1], 1200, '2023-01-01', '2023-12-31'],
+        ]
+        move = self.create_invoice(invoice_lines, post=False)
+        move.write({'invoice_line_ids': [
+            Command.update(move.invoice_line_ids[0].id,
+                {'analytic_distribution': {str(aa_a1.id): 60.0, str(aa_a2.id): 40.0, str(aa_b1.id): 50.0, str(aa_b2.id): 50.0}}
+            ),
+            Command.update(move.invoice_line_ids[1].id,{'analytic_distribution': {str(aa_a1.id): 100.0}}),
+            Command.update(move.invoice_line_ids[2].id, {'analytic_distribution': {str(aa_a1.id): 50.0, str(aa_a3.id): 50.0}}),
+        ]})
+        self.env['account.move.line'].flush_model()
+        move.action_post()
+
+        # Generate the grouped deferred entries
+        handler = self.env['account.deferred.expense.report.handler']
+        res = handler.action_generate_entry(self.get_options('2023-01-01', '2023-08-31'))
+        generated_entries = self.env['account.move'].search(res['domain'], order='date')
+
+        # Details of the computation:
+        #    Total Amount (Deferral Account): 1200 + 2400 + 1200 + 1200 = 6000
+        #    Amount for Expense 0: 1200 + 2400 = 3600
+        #    Amount for Expense 1: 1200 + 1200 = 2400
+        #    ___________________________________________________________________________________________________________________
+        #      |        |                    |                   |  Distribution by expense (*)   |  Deferral distribution (**)
+        #    # | Amount |   Expense ratio    |    Total ratio    | (distribution / expense ratio) | (distribution / total ratio)
+        #    -------------------------------------------------------------------------------------------------------------------
+        #    1 |  1200  | 1200 / 3600 = 0.33 | 1200 / 6000 = 0.2 | A1 = 60% * 0.33 = 20%          | A1 = 60% * 0.2 = 12%
+        #      |        | (0.33333333333...) |                   | A2 = 40% * 0.33 = 13.33%       | A2 = 40% * 0.2 = 8%
+        #      |        |                    |                   | B1, B2 = 50% * 0.33 = 16.67%   | B1, B2 = 50% * 0.2 = 10%
+        #    -------------------------------------------------------------------------------------------------------------------
+        #    2 |  1200  | 2400 / 3600 = 0.67 | 2400 / 6000 = 0.4 | A1 = 100% * 0.67 = 66.67%      | A1 = 100% * 0.4 = 40%
+        #    -------------------------------------------------------------------------------------------------------------------
+        #    3 |  1200  | 1200 / 2400 = 0.5  | 1200 / 6000 = 0.2 | A1, A3 = 50% * 0.5 = 25%       | A1, A3 = 50% * 0.2 = 10%
+        #    -------------------------------------------------------------------------------------------------------------------
+        #    4 |  1200  | 1200 / 2400 = 0.5  | 1200 / 6000 = 0.2 |              NULL              |             NULL
+        #
+        # The analytic distribution of the deferred entries should be:
+        # - Expense 0: {A1: 86.67%, A2: 13.33%, B1: 16.67%, B2: 16.67%}    [Sum of column (*) of line #1 and #2]
+        # - Expense 1: {A1: 25%, A3: 25%}                                  [Sum of column (*) of line #3 and #4]
+        # - Deferral Account: {A1: 62%, A2: 8%, B1: 10%, B2: 10%, A3: 10%} [Sum of column (**) of all 4 lines]
+        #
+        # The 2 generated entries should be the "Grouped Deferral Entry of Aug 2023" and its reversal.
+        #
+        #    "Grouped Deferral Entry of Aug 2023":
+        #
+        #         Account     |              Analytic Distribution               | Debit | Credit
+        #    -------------------------------------------------------------------------------------
+        #       Expense 0     | {A1: 86.67%, A2: 13.33%, B1: 16.67%, B2: 16.67%} | 3600  |   0
+        #       Expense 0     | {A1: 86.67%, A2: 13.33%, B1: 16.67%, B2: 16.67%} |   0   |  2400
+        #       Expense 1     | {A1: 25%, A3: 25%}                               | 2400  |   0
+        #       Expense 1     | {A1: 25%, A3: 25%}                               |   0   |  1600
+        #    Deferral Account | {A1: 62%, A2: 8%, B1: 10%, B2: 10%, A3: 10%}     |   0   |  2000
+        #    -------------------------------------------------------------------------------------
+        #                                                                        | 6000  |  6000
+        expected_analytic_distribution = {
+            self.expense_accounts[0].id: {str(aa_a1.id): 86.67, str(aa_a2.id): 13.33, str(aa_b1.id): 16.67, str(aa_b2.id): 16.67},
+            self.expense_accounts[1].id: {str(aa_a1.id): 25.0, str(aa_a3.id): 25.0},
+            deferral_account.id: {str(aa_a1.id): 62.0, str(aa_a2.id): 8.0, str(aa_b1.id): 10.0, str(aa_b2.id): 10.0, str(aa_a3.id): 10.0},
+        }
+        expected_analytic_amount = [{
+            aa_a1.id: 3120.12,  # 3600 * 86.67%
+            aa_a2.id: 479.88,   # 3600 * 13.33%
+            aa_b1.id: 600.12,   # 3600 * 16.67%
+            aa_b2.id: 600.12,   # 3600 * 16.67%
+        }, {
+            aa_a1.id: -2080.08, # -2400 * 86.67%
+            aa_a2.id: -319.92,  # -2400 * 13.33%
+            aa_b1.id: -400.08,  # -2400 * 16.67%
+            aa_b2.id: -400.08,  # -2400 * 16.67%
+        },{
+            aa_a1.id: 600.0,    # 2400 * 25%
+            aa_a3.id: 600.0,    # 2400 * 25%
+        },{
+            aa_a1.id: -400.0,   # -1600 * 25%
+            aa_a3.id: -400.0,   # -1600 * 25%
+        }, {
+            aa_a1.id: -1240.0,  # -2000 * 62%
+            aa_a2.id: -160.0,   # -2000 * 8%
+            aa_b1.id: -200.0,   # -2000 * 10%
+            aa_b2.id: -200.0,   # -2000 * 10%
+            aa_a3.id: -200.0,   # -2000 * 10%
+        }]
+        # testing the amount of the analytic lines for the "Grouped Deferral Entry of Aug 2023"
+        for index, line in enumerate(generated_entries[0].line_ids):
+            self.assertEqual(line.analytic_distribution, expected_analytic_distribution[line.account_id.id])
+            for al in line.analytic_line_ids:
+                self.assertAlmostEqual(al.amount, expected_analytic_amount[index][al.account_id.id])
+        # testing the amount of the analytic lines for the "Reversal of Grouped Deferral Entry of Aug 2023"
+        # the values should be the opposite of the "Grouped Deferral Entry of Aug 2023"
+        for index, line in enumerate(generated_entries[1].line_ids):
+            self.assertEqual(line.analytic_distribution, expected_analytic_distribution[line.account_id.id])
+            for al in line.analytic_line_ids:
+                self.assertAlmostEqual(al.amount, -expected_analytic_amount[index][al.account_id.id])

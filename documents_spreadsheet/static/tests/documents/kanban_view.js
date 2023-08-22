@@ -6,9 +6,8 @@ import { documentService } from "@documents/core/document_service";
 import { getEnrichedSearchArch } from "@documents/../tests/documents_test_utils";
 
 import { mockActionService } from "@documents_spreadsheet/../tests/spreadsheet_test_utils";
-import { makeFakeNotificationService } from "@web/../tests/helpers/mock_services";
 
-import { start, startServer } from "@mail/../tests/helpers/test_utils";
+import { contains, start, startServer } from "@mail/../tests/helpers/test_utils";
 import {
     click,
     getFixture,
@@ -147,13 +146,6 @@ QUnit.module(
                     },
                 },
             });
-            const fakeNotificationService = makeFakeNotificationService((message, options) => {
-                assert.strictEqual(message, "The share url has been copied to your clipboard.");
-                assert.step("notification");
-            });
-            registry
-                .category("services")
-                .add("notification", fakeNotificationService, { force: true });
             const { openView } = await start({
                 mockRPC: async (route, args) => {
                     if (args.method === "action_get_share_url") {
@@ -184,7 +176,10 @@ QUnit.module(
             });
             await click(target, ".o_kanban_record:nth-of-type(1) .o_record_selector");
             await click(target, "button.o_inspector_share");
-            assert.verifySteps(["spreadsheet_shared", "share url copied", "notification"]);
+            await contains(
+                ".o_notification.border-success:contains(The share url has been copied to your clipboard.)"
+            );
+            assert.verifySteps(["spreadsheet_shared", "share url copied"]);
         });
 
         QUnit.test("share a selected spreadsheet from the share button", async function (assert) {

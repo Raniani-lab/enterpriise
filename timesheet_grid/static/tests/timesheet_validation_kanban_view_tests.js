@@ -1,41 +1,31 @@
-/** @odoo-module */
+/* @odoo-module */
 
-import { registry } from "@web/core/registry";
+import { contains } from "@mail/../tests/helpers/test_utils";
 
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
 import { click, getFixture } from "@web/../tests/helpers/utils";
-import { makeFakeNotificationService } from "@web/../tests/helpers/mock_services";
 import { getVisibleButtons } from "@web/../tests/search/helpers";
 
 QUnit.module("timesheet_grid", (hooks) => {
     let target;
-    hooks.beforeEach(async function (assert) {
+    hooks.beforeEach(async function () {
         target = getFixture();
         setupViewRegistries();
     });
 
     QUnit.module("timesheet_validation_kanban_view");
 
-    QUnit.test("Should trigger notification on validation", async function(assert) {
-        const notificationMock = (message, options) => {
-            assert.step("notification_triggered");
-            return () => {};
-        };
-        registry.category("services").add("notification", makeFakeNotificationService(notificationMock), {
-            force: true,
-        });
+    QUnit.test("Should trigger notification on validation", async function (assert) {
         await makeView({
             type: "kanban",
             resModel: "account.analytic.line",
             serverData: {
                 models: {
-                    'account.analytic.line': {
+                    "account.analytic.line": {
                         fields: {
                             unit_amount: { string: "Unit Amount", type: "integer" },
                         },
-                        records: [
-                            { id: 1, unit_amount: 1 },
-                        ],
+                        records: [{ id: 1, unit_amount: 1 }],
                     },
                 },
                 views: {
@@ -55,16 +45,18 @@ QUnit.module("timesheet_grid", (hooks) => {
                     assert.step("action_validate_timesheet");
                     return Promise.resolve({
                         params: {
-                            type: "dummy type",
+                            type: "danger",
                             title: "dummy title",
                         },
                     });
                 }
             },
         });
-        const validateButton = getVisibleButtons(target).find(btn => btn.innerText === "Validate");
+        const validateButton = getVisibleButtons(target).find(
+            (btn) => btn.innerText === "Validate"
+        );
         await click(validateButton);
-        assert.verifySteps(["action_validate_timesheet", "notification_triggered"]);
+        await contains(".o_notification.border-danger:contains(dummy title)");
+        assert.verifySteps(["action_validate_timesheet"]);
     });
-
 });

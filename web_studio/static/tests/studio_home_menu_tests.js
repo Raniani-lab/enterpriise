@@ -7,11 +7,7 @@ import { MODES } from "@web_studio/studio_service";
 import { ormService } from "@web/core/orm_service";
 import { enterpriseSubscriptionService } from "@web_enterprise/webclient/home_menu/enterprise_subscription_service";
 
-import {
-    fakeCommandService,
-    makeFakeNotificationService,
-    makeFakeRPCService,
-} from "@web/../tests/helpers/mock_services";
+import { fakeCommandService, makeFakeRPCService } from "@web/../tests/helpers/mock_services";
 import { userService } from "@web/core/user_service";
 import { uiService } from "@web/core/ui/ui_service";
 import { hotkeyService } from "@web/core/hotkeys/hotkey_service";
@@ -98,10 +94,7 @@ QUnit.module("Studio", (hooks) => {
         registerCleanup(() => {
             IconCreator.enableTransitions = true;
         });
-
         bus = new EventBus();
-
-        const fakeNotificationService = makeFakeNotificationService();
         const fakeHomeMenuService = {
             start() {
                 return {
@@ -145,7 +138,6 @@ QUnit.module("Studio", (hooks) => {
         serviceRegistry.add("home_menu", fakeHomeMenuService);
         serviceRegistry.add("http", fakeHTTPService);
         serviceRegistry.add("menu", fakeMenuService);
-        serviceRegistry.add("notification", fakeNotificationService);
         serviceRegistry.add("user", userService);
         serviceRegistry.add("studio", fakeStudioService);
         serviceRegistry.add("hotkey", hotkeyService);

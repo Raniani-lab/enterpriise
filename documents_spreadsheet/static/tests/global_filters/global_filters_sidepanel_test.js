@@ -1,4 +1,7 @@
-/** @odoo-module */
+/* @odoo-module */
+
+import { contains } from "@mail/../tests/helpers/test_utils";
+
 import testUtils from "@web/../tests/legacy/helpers/test_utils";
 
 import {
@@ -16,7 +19,6 @@ import {
 } from "@web/../tests/helpers/utils";
 import { createSpreadsheet } from "../spreadsheet_test_utils";
 import { createSpreadsheetFromPivotView } from "../utils/pivot_helpers";
-import { makeFakeNotificationService } from "@web/../tests/helpers/mock_services";
 import { registry } from "@web/core/registry";
 import { addGlobalFilter } from "@spreadsheet/../tests/utils/commands";
 import { insertPivotInSpreadsheet } from "@spreadsheet/../tests/utils/pivot";
@@ -546,17 +548,7 @@ QUnit.module(
         QUnit.test(
             "Trying to duplicate a filter label will trigger a toaster",
             async function (assert) {
-                assert.expect(4);
-                const mock = (message) => {
-                    assert.step(`create (${message})`);
-                    return () => {};
-                };
                 const uniqueFilterName = "UNIQUE_FILTER";
-                registry
-                    .category("services")
-                    .add("notification", makeFakeNotificationService(mock), {
-                        force: true,
-                    });
                 const { model } = await createSpreadsheetFromPivotView({
                     serverData: {
                         models: getBasicData(),
@@ -581,15 +573,15 @@ QUnit.module(
                 });
                 await openGlobalFilterSidePanel();
                 await clickCreateFilter("text");
+                await contains(
+                    ".o_notification.border-info:contains(New spreadsheet created in Documents)"
+                );
                 assert.containsOnce(target, ".o-sidePanel");
                 await editGlobalFilterLabel(uniqueFilterName);
                 await editGlobalFilterDefaultValue("Default Value");
                 await selectFieldMatching("name");
                 await saveGlobalFilter();
-                assert.verifySteps([
-                    "create (New spreadsheet created in Documents)",
-                    "create (Duplicated Label)",
-                ]);
+                await contains(".o_notification.border-danger:contains(Duplicated Label)");
             }
         );
 

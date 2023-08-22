@@ -1,4 +1,6 @@
-/** @odoo-module */
+/* @odoo-module */
+
+import { contains } from "@mail/../tests/helpers/test_utils";
 
 import { Domain } from "@web/core/domain";
 import {
@@ -10,9 +12,7 @@ import {
     patchTimeZone,
 } from "@web/../tests/helpers/utils";
 import { editPill, getGridContent, hoverGridCell, SELECTORS } from "@web_gantt/../tests/helpers";
-import { makeFakeNotificationService } from "@web/../tests/helpers/mock_services";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
-import { registry } from "@web/core/registry";
 
 async function ganttResourceWorkIntervalRPC(_, args) {
     if (args.method === "gantt_resource_work_interval") {
@@ -100,24 +100,8 @@ QUnit.module("Views", (hooks) => {
     QUnit.module("PlanningGanttView");
 
     QUnit.test("empty gantt view: send schedule", async function (assert) {
-        assert.expect(2);
-
         patchDate(2018, 11, 20, 8, 0, 0);
-
         serverData.models.task.records = [];
-
-        registry.category("services").add(
-            "notification",
-            makeFakeNotificationService((message, options) => {
-                assert.strictEqual(
-                    message,
-                    "The shifts have already been published, or there are no shifts to publish."
-                );
-                assert.strictEqual(options.type, "danger");
-            }),
-            { force: true }
-        );
-
         await makeView({
             type: "gantt",
             resModel: "task",
@@ -126,29 +110,15 @@ QUnit.module("Views", (hooks) => {
             domain: Domain.FALSE.toList(),
             groupBy: ["resource_id"],
         });
-
         await click(target.querySelector(".o_gantt_button_send_all.btn-primary"));
+        await contains(
+            ".o_notification.border-danger:contains(The shifts have already been published, or there are no shifts to publish.)"
+        );
     });
 
     QUnit.test("empty gantt view with sample data: send schedule", async function (assert) {
-        assert.expect(4);
-
         patchDate(2018, 11, 20, 8, 0, 0);
-
         serverData.models.task.records = [];
-
-        registry.category("services").add(
-            "notification",
-            makeFakeNotificationService((message, options) => {
-                assert.strictEqual(
-                    message,
-                    "The shifts have already been published, or there are no shifts to publish."
-                );
-                assert.strictEqual(options.type, "danger");
-            }),
-            { force: true }
-        );
-
         await makeView({
             type: "gantt",
             resModel: "task",
@@ -157,11 +127,12 @@ QUnit.module("Views", (hooks) => {
             domain: Domain.FALSE.toList(),
             groupBy: ["resource_id"],
         });
-
         assert.hasClass(target.querySelector(".o_gantt_view .o_content"), "o_view_sample_data");
         assert.ok(target.querySelectorAll(".o_gantt_row_headers .o_gantt_row_header").length >= 2);
-
         await click(target.querySelector(".o_gantt_button_send_all.btn-primary"));
+        await contains(
+            ".o_notification.border-danger:contains(The shifts have already been published, or there are no shifts to publish.)"
+        );
     });
 
     QUnit.test('add record in empty gantt with sample="1"', async function (assert) {

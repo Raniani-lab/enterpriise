@@ -66,7 +66,7 @@
         <record id="survey_survey_rule_appraisal_manager" model="ir.rule">
             <field name="name">Survey survey: appraisal manager: all</field>
             <field name="model_id" ref="survey.model_survey_survey"/>
-            <field name="domain_force">[('survey_id.survey_type', '=', 'appraisal')]</field>
+            <field name="domain_force">[('survey_type', '=', 'appraisal')]</field>
             <field name="groups" eval="[(4, ref('hr_appraisal.group_hr_appraisal_manager'))]"/>
             <field name="perm_unlink" eval="1"/>
             <field name="perm_write" eval="1"/>

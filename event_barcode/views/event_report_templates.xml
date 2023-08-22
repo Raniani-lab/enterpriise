@@ -2,18 +2,27 @@
 <odoo>
 
     <template id="event_report_template_foldable_badge_inherit_barcode" inherit_id="event.event_report_template_foldable_badge" priority="1">
-        <xpath expr="//div[hasclass('o_event_foldable_badge_barcode_container')]" position="inside">
-            <div class="col-12 text-center">
-                <div class="pt-3 mt-2 pb-3">
-                    <t t-if="attendee">
-                        <span t-field="attendee.barcode" class="barcode ms-2" t-options="{'widget': 'barcode', 'width': 200, 'height': 84, 'quiet': 0, 'humanreadable': 1}"/>
-                    </t>
-                    <t t-elif="not attendee">
-                        <span t-out="12345678901234567890" class="barcode ms-2" t-options="{'widget': 'barcode', 'width': 200, 'height': 84, 'quiet': 0, 'humanreadable': 1}"/>
-                    </t>
-                    <span><img class="ms-2" t-attf-src="/report/barcode/QR/{{attendee.barcode if attendee else '12345678901234567890'}}?&amp;width=116&amp;height=116&amp;quiet=0" alt="QR Code"/></span>
-                </div>
+        <xpath expr="//div[hasclass('o_event_foldable_badge_barcode_id_top')]" position="replace">
+            <div class="fs-4 mt-2">
+                <span t-out="attendee.barcode if attendee else '12345678901234567890'"/>
             </div>
+        </xpath>
+        <xpath expr="//div[hasclass('o_event_foldable_badge_barcode_id_bottom')]" position="replace">
+            <div class="fs-4 mt-2">
+                <span t-out="attendee.barcode if attendee else '12345678901234567890'"/>
+            </div>
+        </xpath>
+        <xpath expr="//div[hasclass('o_event_foldable_badge_barcode_container_top')]" position="inside">
+            <img t-attf-src="/report/barcode/QR/{{attendee.barcode if attendee else '12345678901234567890'}}?&amp;width=174&amp;height=174&amp;quiet=0" alt="QR Code"/>
+        </xpath>
+        <xpath expr="//div[hasclass('o_event_foldable_badge_barcode_container_bottom')]" position="inside">
+            <img t-attf-src="/report/barcode/QR/{{attendee.barcode if attendee else '12345678901234567890'}}?&amp;width=174&amp;height=174&amp;quiet=0" alt="QR Code"/>
+        </xpath>
+    </template>
+
+    <template id="event_report_template_badge_card_inherit_barcode" inherit_id="event.event_report_template_badge_card" priority="1">
+        <xpath expr="//span[hasclass('o_event_badge_barcode_container')]" position="inside">
+            <img t-att-class="'mb-2' + (' ms-5' if event.organizer_id.image_256 else '')" t-attf-src="/report/barcode/QR/{{attendee.barcode if attendee else '12345678901234567890'}}?&amp;width=116&amp;height=116&amp;quiet=0" alt="QR Code"/>
         </xpath>
     </template>
 

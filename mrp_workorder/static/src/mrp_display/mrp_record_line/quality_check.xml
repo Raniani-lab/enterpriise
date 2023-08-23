@@ -5,7 +5,7 @@
             t-att-class="cssClass"
             t-on-click="onClick"
             t-on-animationend="onAnimationEnd">
-            <span class="text-truncate" t-att-class="isComplete ? 'text-decoration-line-through' : ''" t-esc="name"/>
+            <span class="text-truncate" t-att-class="isComplete ? 'text-decoration-line-through opacity-25' : ''" t-esc="name"/>
             <span t-if="props.record.data.duration" t-att-class="active ? '' : 'text-muted'">
                 <MrpTimer value="props.record.data.duration" ongoing="active"/>
             </span>
@@ -25,8 +25,11 @@
             <button t-else="" class="btn btn-lg px-0" t-on-click.stop="pass"
                     t-attf-class="#{props.record.data.quality_state == 'none' and icon}"
                     t-att-class="{
-                    'pass fa fa-check text-success' : props.record.data.quality_state == 'pass',
-                    'fail fa fa-times text-danger' : props.record.data.quality_state != 'pass' &amp;&amp; props.record.data.quality_state != 'none'}"/>
+                    'pass fa fa-check text-success' : shouldDisplayCheckmark,
+                    'fail fa fa-times text-danger' : failed}">
+                <span t-if="showMeasure" t-out="props.record.data.measure + ' ' + props.record.data.norm_unit"/>
+                <span t-elif="lotInfo" t-out="lotInfo"/>
+            </button>
         </li>
         <FileUploader t-if="props.record.data.test_type === 'picture'"
                           acceptedFileExtensions="'image/*'"

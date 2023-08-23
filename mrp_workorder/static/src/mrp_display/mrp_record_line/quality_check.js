@@ -113,6 +113,13 @@ export class QualityCheck extends MrpWorkorder {
         return this.state === "pass";
     }
 
+    get showMeasure() {
+        return (
+            this.props.record.data.quality_state === "pass" &&
+            this.props.record.data.test_type === "measure"
+        );
+    }
+
     get uom() {
         if (this.displayUOM) {
             return this.props.uom[1];
@@ -128,5 +135,21 @@ export class QualityCheck extends MrpWorkorder {
     _pass() {
         this.props.record.update({ quality_state: "pass" });
         this.props.record.save({ reload: false });
+    }
+
+    get lotInfo(){
+        const recordData = this.props.record.data;
+        if (recordData.quality_state === 'pass' && recordData.test_type === 'register_consumed_materials'){
+            if (recordData.component_tracking === 'lot'){
+                return recordData.qty_done + ' ' + recordData.component_uom_id[1];
+            }
+            if (recordData.component_tracking === 'serial'){
+                return recordData.lot_id[1];
+            }
+        }
+    }
+
+    get shouldDisplayCheckmark() {
+        return this.state === "pass" && !(this.showMeasure || this.lotInfo);
     }
 }

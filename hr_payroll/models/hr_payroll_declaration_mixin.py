@@ -32,11 +32,30 @@ class HrPayrollDeclarationMixin(models.AbstractModel):
         default=lambda x: str(datetime.now().year - 1))
     line_ids = fields.One2many(
         'hr.payroll.employee.declaration', 'res_id', string='Declarations')
+    lines_count = fields.Integer(compute='_compute_lines_count')
     company_id = fields.Many2one('res.company', default=lambda self: self.env.company)
     pdfs_generated = fields.Boolean(compute="_compute_pdfs_generated")
 
     def action_generate_declarations(self):
-        pass
+        for sheet in self:
+            if not sheet.line_ids:
+                raise UserError(_('There is no declaration to generate for the given period'))
+
+    @api.depends('line_ids')
+    def _compute_lines_count(self):
+        for sheet in self:
+            sheet.lines_count = len(sheet.line_ids)
+
+    def action_open_declarations(self):
+        self.ensure_one()
+        return {
+            'name': _('Employee Declarations'),
+            'domain': [('res_id', '=', self.id), ('res_model', '=', self._name)],
+            'res_model': 'hr.payroll.employee.declaration',
+            'type': 'ir.actions.act_window',
+            'views': [(False, 'list'), (False, 'form')],
+            'view_mode': 'tree,form',
+        }
 
     @api.depends("line_ids.pdf_file")
     def _compute_pdfs_generated(self):

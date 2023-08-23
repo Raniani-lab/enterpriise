@@ -32,6 +32,7 @@
         'views/hr_salary_attachment_type_views.xml',
         'views/hr_employee_views.xml',
         'views/res_users_views.xml',
+        'views/hr_payroll_employee_declaration_views.xml',
         'data/hr_payroll_sequence.xml',
         'data/hr_salary_attachment_type_data.xml',
         'views/hr_payroll_report.xml',

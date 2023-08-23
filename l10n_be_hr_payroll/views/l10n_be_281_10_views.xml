@@ -30,16 +30,6 @@
                         </p>
                     </div>
                     <p name="save_warning" invisible="state != 'generate'">The files won't be posted in the employee portal if you don't have the Documents app.</p>
-                    <field name="line_ids">
-                        <tree no_open="1" editable="bottom">
-                            <field name="employee_id" widget="many2one_avatar_user"/>
-                            <field name="pdf_filename" column_invisible="True"/>
-                            <field name="pdf_file" readonly="1" filename="pdf_filename" widget="binary"/>
-                            <field name="pdf_to_generate" groups="base.group_no_one"/>
-                            <field name="state" decoration-info="state == 'draft'" decoration-warning="state in ['pdf_to_generate', 'pdf_to_post']" decoration-success="state in ['pdf_generated', 'pdf_posted']" widget="badge"/>
-                            <field name="document_id" groups="base.group_no_one"/>
-                        </tree>
-                    </field>
                 </sheet>
             </form>
         </field>

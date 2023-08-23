@@ -176,13 +176,14 @@ class L10nBe28110(models.Model):
                 ('company_id', '=', sheet.company_id.id),
             ])
             all_employees = all_payslips.mapped('employee_id')
-            sheet.update({
+            sheet.write({
                 'line_ids': [(5, 0, 0)] + [(0, 0, {
                     'employee_id': employee.id,
                     'res_model': 'l10n_be.281_10',
                     'res_id': sheet.id,
                 }) for employee in all_employees]
             })
+        super().action_generate_declarations()
 
     def _get_rendering_data(self, employees):
         # Round to eurocent for XML file, not PDF

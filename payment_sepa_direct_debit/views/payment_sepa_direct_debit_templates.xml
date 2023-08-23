@@ -18,7 +18,7 @@
     </template>
 
     <template id="sepa_transaction_status" inherit_id="payment_custom.custom_transaction_status">
-        <xpath expr="//div[@t-if='tx.reference']" position="after">
+        <xpath expr="//t[@t-if='tx.reference']" position="after">
             <div>
                 <strong>Amount: </strong><span t-out="tx.amount"/> €
             </div>

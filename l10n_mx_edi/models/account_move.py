@@ -40,6 +40,24 @@ USAGE_SELECTION = [
     ('D10', 'Payments for educational services (Colegiatura)'),
     ('S01', "Without fiscal effects"),
 ]
+INVOICE_CANCELLATION_REASON_SELECTION = [
+    ('01', "01 - Invoice issued with errors (with related document)"),
+    ('02', "02 - Invoice issued with errors (no replacement)"),
+    ('03', "03 - The operation was not carried out"),
+    ('04', "04 - Nominative operation related to the global invoice"),
+]
+INVOICE_CANCELLATION_REASON_DESCRIPTION = (
+    f"{INVOICE_CANCELLATION_REASON_SELECTION[0][1]}.\n"
+    "This option applies when there is an error in the document data, so it must be reissued. In this case, the replacement document is"
+    " referenced in the cancellation request.\n"
+    f"{INVOICE_CANCELLATION_REASON_SELECTION[1][1]}.\n"
+    "This option applies when there is an error in the invoice data and no replacement document will be generated.\n"
+    f"{INVOICE_CANCELLATION_REASON_SELECTION[2][1]}.\n"
+    "This option applies when a transaction was invoiced that does not materialize.\n"
+    f"{INVOICE_CANCELLATION_REASON_SELECTION[3][1]}.\n"
+    "This option applies when a sale was included in the global invoice of operations with the general public, but should actually be"
+    " excluded since the partner has requested a CFDI to be issued in their name.\n"
+)
 
 TAX_TYPE_TO_CFDI_CODE = {'isr': '001', 'iva': '002', 'ieps': '003'}
 
@@ -143,6 +161,13 @@ class AccountMove(models.Model):
              "- 05: Traslados de mercancias facturados previamente\n"
              "- 06: Factura generada por los traslados previos\n"
              "- 07: CFDI por aplicación de anticipo",
+    )
+    # When cancelling an invoice, the user needs to provide a valid reason to do so to the SAT.
+    l10n_mx_edi_invoice_cancellation_reason = fields.Selection(
+        selection=INVOICE_CANCELLATION_REASON_SELECTION,
+        string="Cancellation Reason",
+        copy=False,
+        help=INVOICE_CANCELLATION_REASON_DESCRIPTION,
     )
     # Indicate the journal entry substituting the current cancelled one.
     # In other words, this is the reason why the current journal entry is cancelled.
@@ -400,6 +425,22 @@ class AccountMove(models.Model):
     # COMPUTE METHODS
     # -------------------------------------------------------------------------
 
+    @api.depends('l10n_mx_edi_cfdi_state', 'l10n_mx_edi_cfdi_cancel_id')
+    def _compute_need_cancel_request(self):
+        # EXTENDS 'account'
+        super()._compute_need_cancel_request()
+
+    @api.depends('l10n_mx_edi_cfdi_state')
+    def _compute_show_reset_to_draft_button(self):
+        # EXTENDS 'account'
+        super()._compute_show_reset_to_draft_button()
+
+        # The request cancel has been made but you should not be able to reset the invoice to draft until you get the approval to cancel
+        # from the PAC.
+        for move in self:
+            if move.l10n_mx_edi_cfdi_state == 'sent':
+                move.show_reset_to_draft_button = False
+
     @api.depends('country_code')
     def _compute_amount_total_words(self):
         # EXTENDS 'account'
@@ -446,6 +487,7 @@ class AccountMove(models.Model):
                     elif doc.state == 'invoice_cancel':
                         move.l10n_mx_edi_cfdi_sat_state = doc.sat_state
                         move.l10n_mx_edi_cfdi_state = 'cancel'
+                        move.l10n_mx_edi_cfdi_attachment_id = doc.attachment_id
                         break
             elif move._l10n_mx_edi_is_cfdi_payment():
                 for doc in move.l10n_mx_edi_payment_document_ids.sorted():
@@ -457,6 +499,7 @@ class AccountMove(models.Model):
                     elif doc.state == 'payment_cancel':
                         move.l10n_mx_edi_cfdi_sat_state = doc.sat_state
                         move.l10n_mx_edi_cfdi_state = 'cancel'
+                        move.l10n_mx_edi_cfdi_attachment_id = doc.attachment_id
                         break
 
     @api.depends('l10n_mx_edi_invoice_document_ids.state')
@@ -657,26 +700,38 @@ class AccountMove(models.Model):
 
         return super()._post(soft=soft)
 
-    def button_draft(self):
-        # OVERRIDE
-        for move in self:
-            if move.l10n_mx_edi_cfdi_uuid:
-                move.l10n_mx_edi_cfdi_origin = move._l10n_mx_edi_write_cfdi_origin('04', [move.l10n_mx_edi_cfdi_uuid])
-
-        return super().button_draft()
+    def _l10n_mx_edi_need_cancel_request(self):
+        self.ensure_one()
+        return (
+            self.l10n_mx_edi_cfdi_state == 'sent'
+            and self.l10n_mx_edi_cfdi_attachment_id
+            and (
+                not self.l10n_mx_edi_cfdi_cancel_id
+                or self.l10n_mx_edi_cfdi_cancel_id.l10n_mx_edi_cfdi_state == 'sent'
+            )
+        )
 
     def _need_cancel_request(self):
         # EXTENDS 'account'
-        return (
-            super()._need_cancel_request()
-            or (self.l10n_mx_edi_cfdi_state == 'sent' and self.l10n_mx_edi_cfdi_attachment_id)
-        )
+        return super()._need_cancel_request() or self._l10n_mx_edi_need_cancel_request()
 
     def button_request_cancel(self):
         # EXTENDS 'account'
         super().button_request_cancel()
-        self._l10n_mx_edi_cfdi_invoice_try_cancel()
-        self._l10n_mx_edi_cfdi_payment_try_cancel()
+
+        # Check the CFDI state to restrict this code to MX only.
+        if self._l10n_mx_edi_need_cancel_request():
+            return {
+                'name': _("Request CFDI Cancellation"),
+                'type': 'ir.actions.act_window',
+                'view_type': 'form',
+                'view_mode': 'form',
+                'res_model': 'l10n_mx_edi.invoice.cancel',
+                'target': 'new',
+                'context': {
+                    'default_invoice_ids': self.ids,
+                },
+            }
 
     def _reverse_moves(self, default_values_list=None, cancel=False):
         # OVERRIDE
@@ -1811,7 +1866,8 @@ class AccountMove(models.Model):
             company,
             credentials,
             self.l10n_mx_edi_cfdi_uuid,
-            uuid_replace=self.l10n_mx_edi_cfdi_cancel_id.l10n_mx_edi_cfdi_uuid,
+            self.l10n_mx_edi_invoice_cancellation_reason,
+            cancel_uuid=self.l10n_mx_edi_cfdi_cancel_id.l10n_mx_edi_cfdi_uuid,
         )
         if cancel_results.get('errors'):
             self._l10n_mx_edi_cfdi_invoice_document_cancel_failed(
@@ -2093,7 +2149,8 @@ class AccountMove(models.Model):
             company,
             credentials,
             cfdi_infos['uuid'],
-            uuid_replace=self.l10n_mx_edi_cfdi_cancel_id.l10n_mx_edi_cfdi_uuid,
+            self.l10n_mx_edi_invoice_cancellation_reason,
+            cancel_uuid=self.l10n_mx_edi_cfdi_cancel_id.l10n_mx_edi_cfdi_uuid,
         )
         if cancel_results.get('errors'):
             self._l10n_mx_edi_cfdi_payment_document_cancel_failed(

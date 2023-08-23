@@ -160,6 +160,7 @@ class Picking(models.Model):
                 elif doc.state == 'picking_cancel':
                     picking.l10n_mx_edi_cfdi_sat_state = doc.sat_state
                     picking.l10n_mx_edi_cfdi_state = 'cancel'
+                    picking.l10n_mx_edi_cfdi_attachment_id = doc.attachment_id
                     break
 
     @api.depends('l10n_mx_edi_document_ids.state')
@@ -475,11 +476,14 @@ class Picking(models.Model):
         self.env['l10n_mx_edi.document']._with_locked_records(self)
 
         # == Check PAC ==
+        cancel_uuid = self.l10n_mx_edi_cfdi_cancel_picking_id.l10n_mx_edi_cfdi_uuid
+        cancel_reason = '01' if cancel_uuid else '02'
         cancel_results = getattr(self.env['l10n_mx_edi.document'], f'_{pac_name}_cancel')(
             company,
             credentials,
             self.l10n_mx_edi_cfdi_uuid,
-            uuid_replace=self.l10n_mx_edi_cfdi_cancel_picking_id.l10n_mx_edi_cfdi_uuid,
+            cancel_reason,
+            cancel_uuid=cancel_uuid,
         )
         if cancel_results.get('errors'):
             self._l10n_mx_edi_cfdi_document_cancel_failed(

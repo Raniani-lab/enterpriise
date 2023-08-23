@@ -894,3 +894,107 @@ class TestCFDIInvoiceWorkflow(TestMxEdiCommon):
 
         # We don't want to send 'Publico En General' payments.
         self.assertEqual(len(invoice.l10n_mx_edi_invoice_document_ids), 1)
+
+    @freeze_time('2017-01-01')
+    def test_invoice_cancellation_01(self):
+        invoice = self._create_invoice()
+        with self.with_mocked_pac_sign_success():
+            invoice._l10n_mx_edi_cfdi_invoice_try_send()
+        self.assertRecordValues(invoice, [{
+            'l10n_mx_edi_cfdi_state': 'sent',
+            'l10n_mx_edi_invoice_cancellation_reason': False,
+            'l10n_mx_edi_cfdi_origin': False,
+            'need_cancel_request': True,
+            'show_reset_to_draft_button': False,
+            'state': 'posted',
+        }])
+
+        action_results = self.env['l10n_mx_edi.invoice.cancel'] \
+            .with_context(invoice.button_request_cancel()['context']) \
+            .create({}) \
+            .action_create_replacement_invoice()
+        new_invoice = self.env['account.move'].browse(action_results['res_id'])
+        invoice.invalidate_recordset(fnames=['need_cancel_request', 'l10n_mx_edi_cfdi_cancel_id'])
+        self.assertRecordValues(invoice, [{
+            'l10n_mx_edi_cfdi_state': 'sent',
+            'l10n_mx_edi_invoice_cancellation_reason': False,
+            'l10n_mx_edi_cfdi_origin': False,
+            'need_cancel_request': False,
+            'show_reset_to_draft_button': False,
+            'l10n_mx_edi_cfdi_cancel_id': new_invoice.id,
+            'state': 'posted',
+        }])
+        self.assertRecordValues(new_invoice, [{
+            'l10n_mx_edi_cfdi_state': False,
+            'l10n_mx_edi_invoice_cancellation_reason': False,
+            'l10n_mx_edi_cfdi_origin': f'04|{invoice.l10n_mx_edi_cfdi_uuid}',
+            'need_cancel_request': False,
+            'show_reset_to_draft_button': False,
+            'state': 'draft',
+        }])
+
+        new_invoice.action_post()
+        with self.with_mocked_pac_sign_success():
+            new_invoice._l10n_mx_edi_cfdi_invoice_try_send()
+        invoice.invalidate_recordset(fnames=['need_cancel_request', 'l10n_mx_edi_cfdi_cancel_id'])
+        self.assertRecordValues(invoice, [{
+            'l10n_mx_edi_cfdi_state': 'sent',
+            'l10n_mx_edi_invoice_cancellation_reason': False,
+            'l10n_mx_edi_cfdi_origin': False,
+            'need_cancel_request': True,
+            'show_reset_to_draft_button': False,
+            'l10n_mx_edi_cfdi_cancel_id': new_invoice.id,
+            'state': 'posted',
+        }])
+        self.assertRecordValues(new_invoice, [{
+            'l10n_mx_edi_cfdi_state': 'sent',
+            'l10n_mx_edi_invoice_cancellation_reason': False,
+            'l10n_mx_edi_cfdi_origin': f'04|{invoice.l10n_mx_edi_cfdi_uuid}',
+            'need_cancel_request': True,
+            'show_reset_to_draft_button': False,
+            'state': 'posted',
+        }])
+
+        with self.with_mocked_pac_cancel_success():
+            self.env['l10n_mx_edi.invoice.cancel']\
+                .with_context(invoice.button_request_cancel()['context'])\
+                .create({})\
+                .action_cancel_invoices()
+        self.assertRecordValues(invoice, [{
+            'l10n_mx_edi_cfdi_state': 'cancel',
+            'l10n_mx_edi_invoice_cancellation_reason': '01',
+            'l10n_mx_edi_cfdi_origin': False,
+            'need_cancel_request': False,
+            'show_reset_to_draft_button': True,
+            'l10n_mx_edi_cfdi_cancel_id': new_invoice.id,
+            'state': 'cancel',
+        }])
+
+    @freeze_time('2017-01-01')
+    def test_invoice_cancellation_02(self):
+        invoice = self._create_invoice()
+        with self.with_mocked_pac_sign_success():
+            invoice._l10n_mx_edi_cfdi_invoice_try_send()
+
+        self.assertRecordValues(invoice, [{
+            'l10n_mx_edi_cfdi_state': 'sent',
+            'l10n_mx_edi_invoice_cancellation_reason': False,
+            'l10n_mx_edi_cfdi_origin': False,
+            'need_cancel_request': True,
+            'show_reset_to_draft_button': False,
+            'state': 'posted',
+        }])
+
+        with self.with_mocked_pac_cancel_success():
+            self.env['l10n_mx_edi.invoice.cancel'] \
+                .with_context(invoice.button_request_cancel()['context']) \
+                .create({'cancellation_reason': '02'})\
+                .action_cancel_invoices()
+        self.assertRecordValues(invoice, [{
+            'l10n_mx_edi_cfdi_state': 'cancel',
+            'l10n_mx_edi_invoice_cancellation_reason': '02',
+            'l10n_mx_edi_cfdi_origin': False,
+            'need_cancel_request': False,
+            'show_reset_to_draft_button': True,
+            'state': 'cancel',
+        }])

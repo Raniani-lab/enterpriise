@@ -197,7 +197,7 @@ class L10nMxEdiDocument(models.Model):
         }
 
     @api.model
-    def _finkok_cancel(self, company, credentials, uuid, uuid_replace=None):
+    def _finkok_cancel(self, company, credentials, uuid, cancel_reason, cancel_uuid=None):
         certificates = company.l10n_mx_edi_certificate_ids
         certificate = certificates.sudo()._get_valid_certificate()
         cer_pem = certificate._get_pem_cer(certificate.content)
@@ -208,9 +208,9 @@ class L10nMxEdiDocument(models.Model):
             factory = client.type_factory('apps.services.soap.core.views')
             uuid_type = factory.UUID()
             uuid_type.UUID = uuid
-            uuid_type.Motivo = "01" if uuid_replace else "02"
-            if uuid_replace:
-                uuid_type.FolioSustitucion = uuid_replace
+            uuid_type.Motivo = cancel_reason
+            if cancel_uuid:
+                uuid_type.FolioSustitucion = cancel_uuid
             docs_list = factory.UUIDArray(uuid_type)
             response = client.service.cancel(
                 docs_list,
@@ -313,11 +313,10 @@ class L10nMxEdiDocument(models.Model):
         return {'errors': errors}
 
     @api.model
-    def _solfact_cancel(self, company, credentials, uuid, uuid_replace=None):
-        if uuid_replace:
-            uuid_param = f"{uuid}|01|{uuid_replace}"
-        else:
-            uuid_param = f"{uuid}|02|"
+    def _solfact_cancel(self, company, credentials, uuid, cancel_reason, cancel_uuid=None):
+        uuid_param = f"{uuid}|{cancel_reason}|"
+        if cancel_uuid:
+            uuid_param += cancel_uuid
         certificates = company.l10n_mx_edi_certificate_ids
         certificate = certificates.sudo()._get_valid_certificate()
         cer_pem = certificate._get_pem_cer(certificate.content)
@@ -513,7 +512,7 @@ Content-Disposition: form-data; name="xml"; filename="xml"
             return {'errors': errors}
 
     @api.model
-    def _sw_cancel(self, company, credentials, uuid, uuid_replace=None):
+    def _sw_cancel(self, company, credentials, uuid, cancel_reason, cancel_uuid=None):
         headers = {
             'Authorization': "bearer " + credentials['token'],
             'Content-Type': "application/json"
@@ -526,10 +525,10 @@ Content-Disposition: form-data; name="xml"; filename="xml"
             'b64Key': certificate.key.decode('UTF-8'),
             'password': certificate.password,
             'uuid': uuid,
-            'motivo': "01" if uuid_replace else "02",
+            'motivo': cancel_reason,
         }
-        if uuid_replace:
-            payload_dict['folioSustitucion'] = uuid_replace
+        if cancel_uuid:
+            payload_dict['folioSustitucion'] = cancel_uuid
         payload = json.dumps(payload_dict)
 
         response_json = self._document_sw_call(credentials['cancel_url'], headers, payload=payload.encode('UTF-8'))

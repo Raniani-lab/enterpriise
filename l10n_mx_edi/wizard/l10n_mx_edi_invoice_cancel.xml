@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="l10n_mx_edi_invoice_cancel_form" model="ir.ui.view">
+        <field name="name">l10n_mx_edi.invoice.cancel.form</field>
+        <field name="model">l10n_mx_edi.invoice.cancel</field>
+        <field name="arch" type="xml">
+            <form>
+                <!-- Invisible fields -->
+                <field name="invoice_ids" invisible="1"/>
+                <field name="has_substituted_invoices" invisible="1"/>
+
+                <group>
+                    <group>
+                        <field name="cancellation_reason"
+                               readonly="has_substituted_invoices"/>
+                    </group>
+                </group>
+
+                <footer>
+                    <button string="Create Replacement Invoice"
+                            invisible="cancellation_reason != '01' or has_substituted_invoices"
+                            data-hotkey="r"
+                            name="action_create_replacement_invoice"
+                            type="object"
+                            class="btn btn-primary">
+                    </button>
+                    <button string="Confirm"
+                            invisible="cancellation_reason == '01' and not has_substituted_invoices"
+                            data-hotkey="q"
+                            name="action_cancel_invoices"
+                            type="object"
+                            class="btn btn-primary">
+                    </button>
+                    <button string="Cancel"
+                            data-hotkey="x"
+                            special="cancel"
+                            class="btn btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

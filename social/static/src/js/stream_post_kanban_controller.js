@@ -4,6 +4,7 @@ import { _t } from "@web/core/l10n/translation";
 import { AddSocialStreamDialog } from './add_stream_modal';
 import { NewContentRefreshBanner } from './stream_post_kanban_refresh_banner';
 import { StreamPostDashboard } from './stream_post_kanban_dashboard';
+import { useModelWithSampleData } from "@web/model/model";
 
 import { KanbanController } from '@web/views/kanban/kanban_controller';
 import { useService } from '@web/core/utils/hooks';
@@ -14,6 +15,7 @@ export class StreamPostKanbanController extends KanbanController {
 
     setup() {
         super.setup();
+        this.model = useModelWithSampleData(this.props.Model, this.modelParams);
         this.company = useService('company');
         this.dialog = useService('dialog');
         this.orm = useService('orm');

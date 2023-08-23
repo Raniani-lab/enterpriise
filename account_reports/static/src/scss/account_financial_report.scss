@@ -273,7 +273,10 @@ $indent-size-md: 3px;
         width: 100%;
 
         .number {
+            /*rtl:ignore*/
             text-align: right;
+            /*rtl:ignore*/
+            direction: ltr;
         }
         .text {
             text-align: left;

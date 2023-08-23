@@ -279,7 +279,7 @@
                     <t t-call="account_reports.cell_template_growth_comparison"/>
                 </td>
 
-                <td t-if="options['show_debug_column']" style="width: 1%; text-align: right;">
+                <td t-if="options['show_debug_column']" style="width: 1%;" class="text-end">
                     <t t-call="account_reports.cell_template_debug_column"/>
                 </td>
             </tr>

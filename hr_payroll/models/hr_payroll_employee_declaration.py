@@ -25,6 +25,21 @@ class HrPayrollEmployeeDeclaration(models.Model):
     pdf_file = fields.Binary('PDF File', readonly=True, attachment=False)
     pdf_filename = fields.Char()
     pdf_to_generate = fields.Boolean()
+    state = fields.Selection([
+        ('draft', 'Draft'),
+        ('pdf_to_generate', 'PDF to generate'),
+        ('pdf_generated', 'Generated PDF'),
+    ], compute='_compute_state', store=True)
+
+    @api.depends('pdf_to_generate', 'pdf_file')
+    def _compute_state(self):
+        for declaration in self:
+            if declaration.pdf_to_generate:
+                declaration.state = 'pdf_to_generate'
+            elif declaration.pdf_file:
+                declaration.state = 'pdf_generated'
+            else:
+                declaration.state = 'draft'
 
     def _generate_pdf(self):
         report_sudo = self.env["ir.actions.report"].sudo()

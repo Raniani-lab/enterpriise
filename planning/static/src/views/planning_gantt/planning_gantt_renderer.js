@@ -60,7 +60,7 @@ export class PlanningGanttRenderer extends GanttRenderer {
         if (percentage === 0) {
             return pill;
         }
-        if (this.isFlexibleHours(record)) {
+        if (this.isOpenShift(record) || this.isFlexibleHours(record)) {
             for (let col = this.getFirstcol(pill); col < this.getLastCol(pill) + 1; col++) {
                 const subColumn = this.subColumns[col - 1];
                 if (!subColumn) {
@@ -71,7 +71,7 @@ export class PlanningGanttRenderer extends GanttRenderer {
                 const toMillisRatio = 60 * 60 * 1000;
                 const dailyAllocHours = Math.min(record.allocated_hours * toMillisRatio / pill.grid.column[1], maxDuration);
                 if (dailyAllocHours) {
-                    let minutes = Duration.fromMillis(dailyAllocHours * percentage).as("minute");
+                    let minutes = Duration.fromMillis(dailyAllocHours).as("minute");
                     minutes = Math.round(minutes / 5) * 5;
                     pill.allocatedHours[col] = Duration.fromObject({ minutes }).as("hour");
                 }
@@ -178,7 +178,15 @@ export class PlanningGanttRenderer extends GanttRenderer {
      * @returns {boolean}
      */
     isFlexibleHours(record) {
-        return this.model.data.isFlexibleHours?.[record.resource_id[0]];
+        return !!this.model.data.isFlexibleHours?.[record.resource_id[0]];
+    }
+
+    /**
+     * @param {RelationalRecord} record
+     * @returns {boolean}
+     */
+    isOpenShift(record) {
+        return !record.resource_id;
     }
 
     /**

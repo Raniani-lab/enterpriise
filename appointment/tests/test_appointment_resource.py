@@ -360,7 +360,7 @@ class AppointmentResourceBookingTest(AppointmentCommon):
         ])
 
         with freeze_time(self.reference_now):
-            with self.assertQueryCount(default=13):
+            with self.assertQueryCount(default=8):
                 appointment._get_appointment_slots('UTC')
 
     @users('apt_manager')
@@ -605,7 +605,7 @@ class AppointmentResourceBookingTest(AppointmentCommon):
         table1_c6.linked_resource_ids = table1_c4 + table2_c4 + table3_c4
 
         with freeze_time(self.reference_now):
-            with self.assertQueryCount(default=13):
+            with self.assertQueryCount(default=8):
                 slots = appointment._get_appointment_slots('UTC')
             resource_slots = self._filter_appointment_slots(
                 slots,
@@ -840,7 +840,7 @@ class AppointmentResourceBookingTest(AppointmentCommon):
         ])
 
         with freeze_time(self.reference_now):
-            with self.assertQueryCount(default=13):
+            with self.assertQueryCount(default=8):
                 appointment._get_appointment_slots('UTC')
 
     @users('apt_manager')

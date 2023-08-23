@@ -28,7 +28,7 @@ class KnowledgePerformanceCase(KnowledgeCommonWData):
         a descendants checks which might be costly.
 
         Done as admin as only admin has access to Duplicate button currently."""
-        with self.assertQueryCount(admin=57):
+        with self.assertQueryCount(admin=54):
             workspace_children = self.workspace_children.with_env(self.env)
             shared = self.article_shared.with_env(self.env)
             _duplicates = (workspace_children + shared).copy_batch()
@@ -93,7 +93,7 @@ class KnowledgePerformanceCase(KnowledgeCommonWData):
     @users('employee')
     @warmup
     def test_article_get_valid_parent_options(self):
-        with self.assertQueryCount(employee=12):  # knowledge: 12
+        with self.assertQueryCount(employee=6):
             child_writable_article = self.workspace_children[1].with_env(self.env)
             # don't check actual results, those are tested in ``TestKnowledgeArticleUtilities`` class
             _res = child_writable_article.get_valid_parent_options(search_term="")
@@ -101,7 +101,7 @@ class KnowledgePerformanceCase(KnowledgeCommonWData):
     @users('employee')
     @warmup
     def test_article_home_page(self):
-        with self.assertQueryCount(employee=18):
+        with self.assertQueryCount(employee=15):
             self.env['knowledge.article'].action_home_page()
 
     @mute_logger('odoo.addons.base.models.ir_rule', 'odoo.addons.mail.models.mail_mail', 'odoo.models.unlink', 'odoo.tests')
@@ -156,7 +156,7 @@ class KnowledgePerformancePermissionCase(KnowledgeArticlePermissionsCase):
             self.article_read_contents[0].with_user(self.env.user).user_has_access_parent_path
 
         # article_read_contents[1:3] => ('Open Paranoïa'), ('Proprietary RPGs')
-        with self.assertQueryCount(employee=4):
+        with self.assertQueryCount(employee=3):
             for article in self.article_read_contents[1:3]:
                 article.with_user(self.env.user).user_has_access_parent_path
 

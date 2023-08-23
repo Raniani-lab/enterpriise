@@ -200,7 +200,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
     @warmup
     def test_performance_l10n_be_payroll_whole_flow(self):
         # Work entry generation
-        with self.assertQueryCount(admin=1737):
+        with self.assertQueryCount(admin=537):
             # Note 4408 requests are related to the db insertions
             # i.e. self.env['hr.work.entry'].create(vals_list) and thus
             # are not avoidable.
@@ -226,14 +226,14 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             _logger.info("Payslips Creation: --- %s seconds ---", time.time() - start_time)
 
         # Payslip Computation
-        with self.assertQueryCount(admin=589):
+        with self.assertQueryCount(admin=582):
             start_time = time.time()
             payslips.compute_sheet()
             # --- 9.298089027404785 seconds ---
             _logger.info("Payslips Computation: --- %s seconds ---", time.time() - start_time)
 
         # Payslip Validation
-        with self.assertQueryCount(admin=414):
+        with self.assertQueryCount(admin=365):
             start_time = time.time()
             payslips.action_payslip_done()
             # --- 6.975736618041992 seconds ---
@@ -276,7 +276,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             _logger.info("Declaration 281.10 XML:--- %s seconds ---", time.time() - start_time)
         self.assertEqual(declaration_281_10.xml_validation_state, 'done', declaration_281_10.error_message)
 
-        with self.assertQueryCount(admin=1943):
+        with self.assertQueryCount(admin=1045):
             start_time = time.time()
             declaration_281_10.line_ids.write({
                 'pdf_to_generate': True,
@@ -299,7 +299,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             _logger.info("Declaration 281.45:--- %s seconds ---", time.time() - start_time)
         self.assertEqual(declaration_281_45.xml_validation_state, 'done', declaration_281_45.error_message)
 
-        with self.assertQueryCount(admin=1834):
+        with self.assertQueryCount(admin=927):
             start_time = time.time()
             declaration_281_45.line_ids.write({
                 'pdf_to_generate': True,
@@ -316,7 +316,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         })
         individual_accounts.action_generate_declarations()
         self.assertEqual(len(individual_accounts.line_ids), 100)
-        with self.assertQueryCount(admin=1825):
+        with self.assertQueryCount(admin=1022):
             start_time = time.time()
             individual_accounts.line_ids.write({
                 'pdf_to_generate': True,

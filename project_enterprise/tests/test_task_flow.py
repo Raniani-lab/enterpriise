@@ -319,7 +319,7 @@ class TestTaskFlow(common.TransactionCase):
         end = start + relativedelta(days=nb / 2 + 1)
         users = self.project_user | self.project_test_user
 
-        with self.assertQueryCount(__system__=8):
+        with self.assertQueryCount(__system__=7):
             # Query count should be stable even if the number of tasks or users increase (progress bar query count is O(1))
             progress_bar = self.env['project.task'].gantt_progress_bar(
                 ['user_ids'], {'user_ids': users.ids}, start.strftime(DEFAULT_SERVER_DATETIME_FORMAT), end.strftime(DEFAULT_SERVER_DATETIME_FORMAT)

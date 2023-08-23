@@ -2,17 +2,16 @@
     float: left;
     margin: 1rem;
     width: 360px;
+    display: flex;
 }
 
 .l10n_mx_edi_document_state_popover_clone {
-    margin: 1rem 1rem 0 0;
     border: none;
     color: $o-gray-300;
     font-size: inherit;
     font-weight: normal;
     padding: 0;
     text-align: center;
-    width: 20px;
 
     &:hover {
         color: $o-enterprise-action-color !important;

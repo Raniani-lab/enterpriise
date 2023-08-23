@@ -118,10 +118,11 @@ class HrContractSalary(main.HrContractSalary):
             res['new_value'] = contract.ip_wage_rate if float(new_value) else 0
         elif advantage_field in ['company_car_total_depreciated_cost', 'company_bike_depreciated_cost'] and new_value:
             car_options, vehicle_id = new_value.split('-')
+            contract = self._check_access_rights(contract_id)
             if car_options == 'new':
-                res['new_value'] = round(request.env['fleet.vehicle.model'].sudo().browse(int(vehicle_id)).default_total_depreciated_cost, 2)
+                res['new_value'] = round(request.env['fleet.vehicle.model'].sudo().with_company(contract.company_id).browse(int(vehicle_id)).default_total_depreciated_cost, 2)
             else:
-                res['new_value'] = round(request.env['fleet.vehicle'].sudo().browse(int(vehicle_id)).total_depreciated_cost, 2)
+                res['new_value'] = round(request.env['fleet.vehicle'].sudo().with_company(contract.company_id).browse(int(vehicle_id)).total_depreciated_cost, 2)
         elif advantage_field == 'wishlist_car_total_depreciated_cost':
             res['new_value'] = 0
         elif advantage_field == 'fold_company_car_total_depreciated_cost' and not res['new_value']:
@@ -184,9 +185,9 @@ class HrContractSalary(main.HrContractSalary):
     def _get_advantages_values(self, contract, offer):
         mapped_advantages, mapped_dependent_advantages, mandatory_advantages, mandatory_advantages_names, advantage_types, dropdown_options, dropdown_group_options, initial_values = super()._get_advantages_values(contract, offer)
 
-        available_cars = request.env['fleet.vehicle'].sudo().search(
+        available_cars = request.env['fleet.vehicle'].sudo().with_company(contract.company_id).search(
             contract._get_available_vehicles_domain(contract.employee_id.work_contact_id)).sorted(key=lambda car: car.total_depreciated_cost)
-        available_bikes = request.env['fleet.vehicle'].sudo().search(
+        available_bikes = request.env['fleet.vehicle'].sudo().with_company(contract.company_id).search(
             contract._get_available_vehicles_domain(contract.employee_id.work_contact_id, vehicle_type='bike')).sorted(key=lambda car: car.total_depreciated_cost)
         force_car = offer.car_id
         if force_car:
@@ -392,7 +393,7 @@ class HrContractSalary(main.HrContractSalary):
             wishlist_car = advantages['contract'].get('fold_wishlist_car_total_depreciated_cost', False)
             if wishlist_car:
                 dummy, model_id = advantages['contract']['select_wishlist_car_total_depreciated_cost'].split('-')
-                model = request.env['fleet.vehicle.model'].sudo().browse(int(model_id))
+                model = request.env['fleet.vehicle.model'].sudo().with_company(new_contract.company_id).browse(int(model_id))
                 state_waiting_list = request.env.ref('fleet.fleet_vehicle_state_waiting_list', raise_if_not_found=False)
                 car = request.env['fleet.vehicle'].sudo().create({
                     'model_id': model.id,
@@ -404,19 +405,13 @@ class HrContractSalary(main.HrContractSalary):
                     'company_id': new_contract.company_id.id,
                     'future_driver_id': new_contract.employee_id.work_contact_id.id
                 })
-                vehicle_contract = car.log_contracts and car.log_contracts[0]
-                if vehicle_contract:
-                    vehicle_contract.recurring_cost_amount_depreciated = model.default_recurring_cost_amount_depreciated
-                    vehicle_contract.cost_generated = model.default_recurring_cost_amount_depreciated
-                    vehicle_contract.cost_frequency = 'no'
-                    vehicle_contract.purchaser_id = new_contract.employee_id.work_contact_id.id
             return new_contract, contract_diff
 
         if new_contract.transport_mode_car and new_contract.new_car:
             employee = new_contract.employee_id
-            model = new_contract.new_car_model_id
+            model = request.env['fleet.vehicle.model'].sudo().with_company(new_contract.company_id).browse(int(new_contract.new_car_model_id))
             state_new_request = request.env.ref('fleet.fleet_vehicle_state_new_request', raise_if_not_found=False)
-            new_contract.car_id = request.env['fleet.vehicle'].sudo().create({
+            new_contract.car_id = request.env['fleet.vehicle'].sudo().with_company(new_contract.company_id).create({
                 'model_id': model.id,
                 'state_id': state_new_request and state_new_request.id,
                 'driver_id': employee.work_contact_id.id,
@@ -425,12 +420,6 @@ class HrContractSalary(main.HrContractSalary):
                 'fuel_type': model.default_fuel_type,
                 'company_id': new_contract.company_id.id,
             })
-            vehicle_contract = new_contract.car_id.log_contracts and new_contract.car_id.log_contracts[0]
-            if vehicle_contract:
-                vehicle_contract.recurring_cost_amount_depreciated = model.default_recurring_cost_amount_depreciated
-                vehicle_contract.cost_generated = model.default_recurring_cost_amount_depreciated
-                vehicle_contract.cost_frequency = 'no'
-                vehicle_contract.purchaser_id = employee.work_contact_id.id
         return new_contract, contract_diff
 
     def _get_compute_results(self, new_contract):

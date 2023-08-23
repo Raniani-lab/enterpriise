@@ -32,10 +32,14 @@ class FleetVehicle(models.Model):
     @api.depends('co2_fee', 'log_contracts', 'log_contracts.state', 'log_contracts.recurring_cost_amount_depreciated')
     def _compute_total_depreciated_cost(self):
         for car in self:
-            car.total_depreciated_cost = car.co2_fee + \
-                sum(car.log_contracts.filtered(
-                    lambda contract: contract.state == 'open'
-                ).mapped('recurring_cost_amount_depreciated'))
+            if car.log_contracts:
+                car.total_depreciated_cost = car.co2_fee + \
+                    sum(car.log_contracts.filtered(
+                        lambda contract: contract.state == 'open'
+                    ).mapped('recurring_cost_amount_depreciated'))
+            else:
+                car.total_depreciated_cost = car.model_id.with_company(car.company_id).default_total_depreciated_cost
+
 
     @api.depends('co2_fee', 'log_contracts', 'log_contracts.state', 'log_contracts.cost_generated')
     def _compute_total_cost(self):

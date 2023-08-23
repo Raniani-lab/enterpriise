@@ -85,7 +85,7 @@ class HrContract(models.Model):
         new_car = car == 'new'
         if new_car:
             return {
-                'transport_mode_car': False,
+                'transport_mode_car': True,
                 'new_car': True,
                 'new_car_model_id': int(car_id),
                 'car_id': False,

@@ -562,6 +562,10 @@ class QualityCheck(models.Model):
 
     def do_pass(self):
         res = super().do_pass()
-        if self.workorder_id and self.workorder_id.employee_id:
-            self.employee_id = self.workorder_id.employee_id
+        for check in self:
+            if check.workorder_id:
+                if check.workorder_id.employee_id:
+                    check.employee_id = self.workorder_id.employee_id
+                if check.workorder_id.state == 'ready':
+                    check.workorder_id.button_start(bypass=True)
         return res

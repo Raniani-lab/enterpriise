@@ -47,8 +47,10 @@ export class MrpMenuDialog extends Component {
         const params = {
             title: _t("Select a new work center"),
             confirm: _moveToWorkcenter.bind(this),
-            workcenters: this.props.params.workcenters.filter((wc) => wc[0] !== this.props.record.data.workcenter_id[0]),
             radioMode: true,
+            workcenters: this.props.params.workcenters.filter(
+                (w) => w[0] != this.props.record.data.workcenter_id[0]
+            ),
         };
         this.dialogService.add(MrpWorkcenterDialog, params);
     }

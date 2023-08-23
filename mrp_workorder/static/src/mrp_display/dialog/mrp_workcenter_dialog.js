@@ -47,9 +47,9 @@ export class MrpWorkcenterDialog extends ConfirmationDialog {
     }
 
     selectWorkcenter(workcenter) {
-        if (this.props.radioMode){
-            this.state.activeWorkcenters = [workcenter.id]
-        }else if (this.state.activeWorkcenters.includes(workcenter.id)) {
+        if (this.props.radioMode) {
+            this.state.activeWorkcenters = [workcenter.id];
+        } else if (this.state.activeWorkcenters.includes(workcenter.id)) {
             this.state.activeWorkcenters = this.state.activeWorkcenters.filter(
                 (id) => id !== workcenter.id
             );

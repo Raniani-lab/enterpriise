@@ -108,7 +108,9 @@ export class MrpDisplayRecord extends Component {
 
     get productionComplete() {
         const production =
-            this.resModel === "mrp.production" ? this.record : this.props.production.data;
+            this.props.record.resModel === "mrp.production"
+                ? this.record
+                : this.props.production.data;
         if (production.product_tracking === "serial") {
             return Boolean(production.qty_producing === 1 && production.lot_producing_id);
         }

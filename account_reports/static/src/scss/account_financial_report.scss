@@ -275,7 +275,10 @@ $indent-size-md: 3px;
         width: 100%;
 
         .number {
+            /*rtl:ignore*/
             text-align: right;
+            /*rtl:ignore*/
+            direction: ltr;
             font-weight: bold;
             > a:hover{
                 text-decoration-line: underline;

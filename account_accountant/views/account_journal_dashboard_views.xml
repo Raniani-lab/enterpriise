@@ -25,7 +25,7 @@
                             <a type="object" name="action_open_to_check"><t t-out="dashboard.number_to_check"/> to check</a>
                         </div>
                         <div class="col-auto text-end">
-                            <span><t t-out="dashboard.to_check_balance"/></span>
+                            <span class="o_kanban_monetary"><t t-out="dashboard.to_check_balance"/></span>
                         </div>
                     </div>
                 </t>

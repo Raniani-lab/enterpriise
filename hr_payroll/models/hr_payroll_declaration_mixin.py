@@ -50,11 +50,12 @@ class HrPayrollDeclarationMixin(models.AbstractModel):
         self.ensure_one()
         return {
             'name': _('Employee Declarations'),
-            'domain': [('res_id', '=', self.id), ('res_model', '=', self._name)],
             'res_model': 'hr.payroll.employee.declaration',
             'type': 'ir.actions.act_window',
             'views': [(False, 'list'), (False, 'form')],
             'view_mode': 'tree,form',
+            'domain': [('res_id', '=', self.id), ('res_model', '=', self._name)],
+            'context': {'default_res_model': self._name, 'default_res_id': self.id},
         }
 
     @api.depends("line_ids.pdf_file")
@@ -69,7 +70,7 @@ class HrPayrollDeclarationMixin(models.AbstractModel):
         if self.line_ids:
             self.line_ids.write({'pdf_to_generate': True})
             self.env.ref('hr_payroll.ir_cron_generate_payslip_pdfs')._trigger()
-            message = _("PDF generation started, reload this page after a few moments.")
+            message = _("PDF generation started. It will be available shortly.")
         else:
             message = _("There's not declaration pdf to generate.")
         return {

@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="hr_payroll.hr_payroll_employee_declaration_view_tree"/>
         <field name="arch" type="xml">
             <field name="pdf_to_generate" position="after">
-                <field name="pdf_to_post" groups="base.group_no_one"/>
+                <field name="pdf_to_post"/>
                 <field name="document_id" groups="base.group_no_one"/>
             </field>
         </field>

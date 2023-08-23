@@ -4,7 +4,7 @@
         <template id="report_individual_account">
             <t t-call="web.html_container">
                 <t t-call="web.external_layout">
-                        <div class="page">
+                        <div t-if="report_data" class="page">
                             <h2>
                                 <span>Individual Account Report for year </span><t t-esc="report_data['year']"/>
                             </h2>

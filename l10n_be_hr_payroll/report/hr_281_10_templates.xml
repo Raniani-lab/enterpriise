@@ -5,7 +5,7 @@
             <t t-call="web.html_container">
                 <t t-foreach="docs" t-as="employee">
                     <t t-call="web.external_layout">
-                        <div class="page">
+                        <div t-if="report_data" class="page">
                             <div class="row">
                                 <div class="col-12 text-center text-uppercase fw-bold">
                                     <h1>281.10 Sheet: Income <span t-esc="report_data['f2002_inkomstenjaar']"/></h1>
@@ -32,7 +32,7 @@
                                     <strong>4. Beneficiary:</strong><br/>
                                     <span t-esc="report_data['f2013_naam'] + ' ' + report_data['f2114_voornamen']"/><br/>
                                     <span t-esc="report_data['f2015_adres']"/><br/>
-                                    <span t-if="'f2016_postcodebelgisch' in data" t-esc="report_data['f2016_postcodebelgisch']"/>,
+                                    <span t-if="'f2016_postcodebelgisch' in report_data" t-esc="report_data['f2016_postcodebelgisch']"/>,
                                     <span t-esc="report_data['employee_city']"/><br/>
                                 </div>
                             </div>

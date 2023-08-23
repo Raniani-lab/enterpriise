@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import base64
 import datetime
 import logging
 
 from collections import OrderedDict
 from odoo import api, fields, models, _
 from odoo.fields import Datetime
-from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
 

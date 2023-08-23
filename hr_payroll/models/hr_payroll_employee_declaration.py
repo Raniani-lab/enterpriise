@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import base64
 import logging
 
 from collections import defaultdict
 
-from odoo import models, fields, api, _
-from odoo.exceptions import UserError
+from odoo import models, fields, api
 
 _logger = logging.getLogger(__name__)
 
@@ -68,3 +66,16 @@ class HrPayrollEmployeeDeclaration(models.Model):
                 pdf_files.append((employee, sheet_filename, sheet_file))
             if pdf_files:
                 sheet._process_files(pdf_files)
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        declarations = super().create(vals_list)
+        if any(declaration.pdf_to_generate for declaration in declarations):
+            self.env.ref('hr_payroll.ir_cron_generate_payslip_pdfs')._trigger()
+        return declarations
+
+    def write(self, vals):
+        res = super().write(vals)
+        if vals.get('pdf_to_generate'):
+            self.env.ref('hr_payroll.ir_cron_generate_payslip_pdfs')._trigger()
+        return res

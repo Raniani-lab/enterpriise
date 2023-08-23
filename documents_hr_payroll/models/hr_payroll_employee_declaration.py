@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, fields, api, _
+from odoo import models, fields, api
 
 
 class HrPayrollEmployeeDeclaration(models.Model):
@@ -52,3 +52,16 @@ class HrPayrollEmployeeDeclaration(models.Model):
         posted_documents = self.env['documents.document'].create(create_vals)
         for line_to_post, posted_document in zip(lines_to_post, posted_documents):
             line_to_post.document_id = posted_document
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        declarations = super().create(vals_list)
+        if any(declaration.pdf_to_post for declaration in declarations):
+            self.env.ref('hr_payroll.ir_cron_generate_payslip_pdfs')._trigger()
+        return declarations
+
+    def write(self, vals):
+        res = super().write(vals)
+        if vals.get('pdf_to_post'):
+            self.env.ref('hr_payroll.ir_cron_generate_payslip_pdfs')._trigger()
+        return res

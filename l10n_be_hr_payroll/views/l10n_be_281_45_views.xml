@@ -13,6 +13,14 @@
                 <sheet>
                     <field name="state" invisible="1"/>
                     <field name="xml_filename" invisible="1"/>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_declarations" type="object" class="oe_stat_button" icon="fa-file-text-o">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_value"><field name="lines_count"/></span>
+                                <span class="o_stat_text">Declarations</span>
+                            </div>
+                        </button>
+                    </div>
                     <group>
                         <group>
                             <field name="year" class="o_hr_narrow_field"/>

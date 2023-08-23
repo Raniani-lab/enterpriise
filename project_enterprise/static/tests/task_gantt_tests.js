@@ -30,7 +30,11 @@ QUnit.module("Views > TaskGanttView", {
         target = getFixture();
 
         for (const service of servicesToDefineInGantt) {
-            serviceRegistry.add(service, { start() {} });
+            serviceRegistry.add(service, { start() {
+                return {
+                    formatter: () => { return ""; },
+                };
+            }});
         }
 
         ganttViewParams.serverData = {
@@ -122,6 +126,25 @@ QUnit.test(
         assert.containsNone(target, ".o_gantt_row_headers .o-mail-Avatar");
     }
 );
+
+QUnit.test("Unschedule button is displayed", async (assert) => {
+    await makeView({
+        ...ganttViewParams,
+        async mockRPC(route, args) {
+            if (args.method === "action_unschedule_task" && args.model === "project.task") {
+                assert.step("unschedule task");
+                return {};
+            }
+            return ganttViewParams.mockRPC(route, args);
+        },
+    });
+    await click(target.querySelector(".o_gantt_pill"));
+    const unscheduleButtonClasses = ".btn.btn-sm.btn-secondary.ms-1";
+    assert.containsOnce(target, unscheduleButtonClasses);
+    assert.strictEqual(target.querySelector(unscheduleButtonClasses).innerText, "Unschedule");
+    await click(target, unscheduleButtonClasses);
+    assert.verifySteps(["unschedule task"]);
+});
 
 QUnit.test("not user_ids grouped: no empty group if no records", async (assert) => {
     // delete the record having no stuff_id

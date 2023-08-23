@@ -66,6 +66,15 @@ export class TaskGanttModel extends GanttModel {
         });
     }
 
+    async unscheduleTask(id) {
+        await this.orm.call(
+            'project.task',
+            'action_unschedule_task',
+            [id],
+        );
+        this.fetchData();
+    }
+
     //-------------------------------------------------------------------------
     // Protected
     //-------------------------------------------------------------------------

@@ -8,6 +8,7 @@ import { usePopover } from "@web/core/popover/popover_hook";
 import { useService } from "@web/core/utils/hooks";
 import { GanttRenderer } from "@web_gantt/gantt_renderer";
 import { MilestonesPopover } from "./milestones_popover";
+import { TaskGanttPopover } from "./task_gantt_popover";
 
 export class TaskGanttRenderer extends GanttRenderer {
     setup() {
@@ -74,6 +75,10 @@ export class TaskGanttRenderer extends GanttRenderer {
         if (record.planning_overlap) {
             props.context.planningOverlapHtml = markup(record.planning_overlap);
         }
+        props.unschedule = async () => {
+            await this.model.unscheduleTask(record.id);
+        }
+
         return props;
     }
 
@@ -143,6 +148,7 @@ export class TaskGanttRenderer extends GanttRenderer {
 TaskGanttRenderer.components = {
     ...GanttRenderer.components,
     Avatar,
+    Popover: TaskGanttPopover,
 };
 TaskGanttRenderer.headerTemplate = "project_enterprise.TaskGanttRenderer.Header";
 TaskGanttRenderer.rowHeaderTemplate = "project_enterprise.TaskGanttRenderer.RowHeader";

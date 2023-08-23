@@ -111,7 +111,10 @@ class SignTemplate(models.Model):
         attachments_iter = iter(self.env['ir.attachment'].create(attachment_vals))
         for val in vals_list:
             if not val.get('attachment_id', True):
-                val['attachment_id'] = next(attachments_iter).id
+                try:
+                    val['attachment_id'] = next(attachments_iter).id
+                except StopIteration:
+                    raise UserError(_('No attachment was provided'))
         attachments = self.env['ir.attachment'].browse([vals.get('attachment_id') for vals in vals_list if vals.get('attachment_id')])
         for attachment in attachments:
             self._check_pdf_data_validity(attachment.datas)

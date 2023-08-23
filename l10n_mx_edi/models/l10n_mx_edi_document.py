@@ -214,7 +214,7 @@ class L10nMxEdiDocument(models.Model):
 
         code = None
         msg = None
-        if 'Folios' in response:
+        if 'Folios' in response and response.Folios:
             if 'EstatusUUID' in response.Folios.Folio[0]:
                 response_code = response.Folios.Folio[0].EstatusUUID
                 if response_code not in ('201', '202'):

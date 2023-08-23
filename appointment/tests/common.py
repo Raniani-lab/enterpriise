@@ -18,8 +18,6 @@ class AppointmentCommon(MailCommon, common.HttpCase):
     def setUpClass(cls):
         super(AppointmentCommon, cls).setUpClass()
 
-        # give default values for all email aliases and domain
-        cls._init_mail_gateway()
         # ensure admin configuration
         cls.admin_user = cls.env.ref('base.user_admin')
         cls.admin_user.write({

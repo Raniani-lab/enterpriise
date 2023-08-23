@@ -103,8 +103,8 @@
         <t t-foreach="records" t-as="record" t-key="record.id">
             <t t-set="latitude" t-value="record.partner and record.partner.partner_latitude"/>
             <t t-set="longitude" t-value="record.partner and record.partner.partner_longitude"/>
-            <li class="text-truncate" t-att-class="{'o-map-renderer--pin-located': latitude and longitude}" t-att-title="(!latitude or !longitude) and 'Could not locate'">
-                <a t-if="latitude and longitude" href="" t-on-click.prevent="() => this.centerAndOpenPin(record)">
+            <li t-on-click.prevent="() => this.centerAndOpenPin(record)" class="text-truncate cursor-pointer" t-att-class="{'o-map-renderer--pin-located': latitude and longitude}" t-att-title="(!latitude or !longitude) and 'Could not locate'">
+                <a t-if="latitude and longitude" href="">
                     <t t-esc="record.display_name"/>
                 </a>
                 <t t-else="">

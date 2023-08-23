@@ -1306,7 +1306,7 @@ class L10nInGSTReturnPeriod(models.Model):
                     },
                     'l10n_in_tax_unit': self.tax_unit_id.id,
                 },
-                'ignore_session': 'read',
+                'ignore_session': True,
             }
         })
         return action
@@ -1675,7 +1675,7 @@ class L10nInGSTReturnPeriod(models.Model):
                     },
                     'l10n_in_tax_unit': self.tax_unit_id.id,
                 },
-                'ignore_session': 'read',
+                'ignore_session': True,
             }
         })
         return action

@@ -1838,7 +1838,7 @@ class AccountReport(models.Model):
         action_vals = self.env['ir.actions.actions']._for_xml_id('account_reports.action_account_report_general_ledger')
         action_vals['params'] = {
             'options': gl_options,
-            'ignore_session': 'read',
+            'ignore_session': True,
         }
 
         return action_vals
@@ -3379,7 +3379,7 @@ class AccountReport(models.Model):
             if action.tag == 'account_report':
                 target_report = self.env['account.report'].browse(ast.literal_eval(action_read['context'])['report_id'])
                 new_options = target_report.get_options(previous_options=options)
-                action_read.update({'params': {'options': new_options, 'ignore_session': 'read'}})
+                action_read.update({'params': {'options': new_options, 'ignore_session': True}})
 
         if params.get('id'):
             # Add the id of the calling object in the action's context

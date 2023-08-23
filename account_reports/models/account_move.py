@@ -75,8 +75,8 @@ class AccountMove(models.Model):
         if not self.tax_closing_end_date:
             raise UserError(_("You can't open a tax report from a move without a VAT closing date."))
         options = self._get_report_options_from_tax_closing_entry()[1]
-        # Pass options in context and set ignore_session: read to prevent reading previous options
-        action.update({'params': {'options': options, 'ignore_session': 'read'}})
+        # Pass options in context and set ignore_session: true to prevent using session options
+        action.update({'params': {'options': options, 'ignore_session': True}})
         return action
 
     def _close_tax_period(self):

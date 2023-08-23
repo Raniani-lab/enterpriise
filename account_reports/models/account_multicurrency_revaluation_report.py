@@ -136,7 +136,7 @@ class MulticurrencyRevaluationReportCustomHandler(models.AbstractModel):
         general_ledger_action = self.env['ir.actions.actions']._for_xml_id('account_reports.action_account_report_general_ledger')
         general_ledger_action['params'] = {
             'options': general_ledger_options,
-            'ignore_session': 'read',
+            'ignore_session': True,
         }
 
         return general_ledger_action

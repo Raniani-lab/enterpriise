@@ -17,7 +17,7 @@ class ResPartner(models.Model):
             'tag': 'account_report',
             'params': {
                 'options': {'partner_ids': [self.id]},
-                'ignore_session': 'both',
+                'ignore_session': True,
             },
             'context': {
                 'report_id': self.env.ref('account_reports.partner_ledger_report').id

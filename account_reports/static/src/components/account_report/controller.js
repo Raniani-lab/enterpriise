@@ -349,14 +349,12 @@ export class AccountReportController {
         return `account.report:${ this.actionReportId }:${ session.company_id }`;
     }
 
-    useSessionOptions() {
-        const ignoreSession = this.action.params && this.action.params.ignore_session;
-
-        return ignoreSession !== "write" && ignoreSession !== "both";
+    useSessionOptions(type) {
+        return !Boolean(this.action.params?.ignore_session);
     }
 
     hasSessionOptions() {
-        return (this.useSessionOptions()) ? Boolean(browser.sessionStorage.getItem(this.sessionOptionsID())) : false;
+        return this.useSessionOptions() && Boolean(browser.sessionStorage.getItem(this.sessionOptionsID()));
     }
 
     saveSessionOptions(options) {

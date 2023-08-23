@@ -1557,6 +1557,7 @@ Are you sure you want to remove the selection values of those records?""") % len
         result = {'alias_domain': request.env['ir.config_parameter'].get_param('mail.catchall.domain')}
         model = request.env['ir.model']._get(model_name)
         if model:
+            request.env[model_name].check_access_rights('read')
             email_alias = request.env['mail.alias'].search([
                 ('alias_model_id', '=', model.id),
                 ('alias_force_thread_id', '=', False),
@@ -1575,6 +1576,7 @@ Are you sure you want to remove the selection values of those records?""") % len
         """
         model_id = request.env['ir.model']._get_id(model_name)
         if model_id:
+            request.env[model_name].check_access_rights('read')
             alias_name = request.env['mail.alias']._sanitize_alias_name(value)
             email_alias = request.env['mail.alias'].search([
                 ('alias_model_id', '=', model_id),

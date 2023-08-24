@@ -30,6 +30,7 @@ in order to test the whole mail codebase. """,
         'test_mass_mailing',
         'test_mail_sms',
         'voip',
+        'whatsapp',
     ],
     'data': [
         'security/ir.model.access.csv',

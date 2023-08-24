@@ -15,6 +15,7 @@
         'voip',
         'voip_onsip',
         'website_helpdesk_livechat',
+        'whatsapp',
     ],
     'license': 'OEEL-1',
 }

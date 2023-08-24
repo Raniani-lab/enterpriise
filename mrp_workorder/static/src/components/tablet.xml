@@ -29,7 +29,7 @@
                 </t>
             </div>
         </div>
-        <div t-if="popup['menu'].isShown" class="o_tablet_popups" >
+        <div t-if="popup['menu'].isShown" class="o_tablet_popups o_unblock" >
             <MenuPopup popupData="popup['menu'].data" onClosePopup.bind="closePopup" onClose.bind="onCloseRerender"/>
         </div>
         <div t-if="popup['SelectionPopup'].isShown" class="o_tablet_popups o_unblock">

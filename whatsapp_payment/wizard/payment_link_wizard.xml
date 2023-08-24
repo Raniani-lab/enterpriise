@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="payment_link_wizard_view_form" model="ir.ui.view">
+        <field name="name">payment.link.wizard.form.inherit.whatsapp.payment</field>
+        <field name="model">payment.link.wizard</field>
+        <field name="inherit_id" ref="payment.payment_link_wizard_view_form"/>
+        <field name="arch" type="xml">
+            <footer position="inside">
+                <button name="action_send_whatsapp"
+                        string="Whatsapp"
+                        type="object"
+                        class="btn btn-primary rounded-2"/>
+            </footer>
+        </field>
+    </record>
+</odoo>

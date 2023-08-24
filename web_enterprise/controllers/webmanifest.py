@@ -32,7 +32,7 @@ class WebManifest(http.Controller):
                     'url': '/web#menu_id=%s' % data.mapped('res_id')[0],
                     'description': module.summary,
                     'icons': [{
-                        'sizes': '140x140',
+                        'sizes': '100x100',
                         'src': module.icon,
                         'type': mimetypes.guess_type(module.icon)[0] or 'image/png'
                     }]

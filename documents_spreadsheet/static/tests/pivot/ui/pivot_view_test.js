@@ -233,6 +233,64 @@ QUnit.module("spreadsheet pivot view", {}, () => {
         }
     );
 
+    QUnit.test(
+        "Insert in spreadsheet is disabled when columns and rows both contains same groupby with different aggregator",
+        async (assert) => {
+            setupControlPanelServiceRegistry();
+            const serverData = {
+                models: getBasicData(),
+            };
+            await makeView({
+                type: "pivot",
+                resModel: "partner",
+                serverData,
+                arch: /*xml*/ `
+                <pivot>
+                    <field name="date" interval="year" type="col"/>
+                    <field name="date" interval="month" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+                mockRPC: function (route, args) {
+                    if (args.method === "has_group") {
+                        return Promise.resolve(true);
+                    }
+                },
+            });
+
+            const target = getFixture();
+            assert.ok(target.querySelector("button.o_pivot_add_spreadsheet").disabled);
+        }
+    );
+
+    QUnit.test(
+        "Can insert in spreadsheet when group by the same date fields with different aggregates",
+        async (assert) => {
+            setupControlPanelServiceRegistry();
+            const serverData = {
+                models: getBasicData(),
+            };
+            await makeView({
+                type: "pivot",
+                resModel: "partner",
+                serverData,
+                arch: /*xml*/ `
+                <pivot>
+                    <field name="date" interval="year" type="col"/>
+                    <field name="date" interval="month" type="col"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+                mockRPC: function (route, args) {
+                    if (args.method === "has_group") {
+                        return Promise.resolve(true);
+                    }
+                },
+            });
+
+            const target = getFixture();
+            assert.notOk(target.querySelector("button.o_pivot_add_spreadsheet").disabled);
+        }
+    );
+
     QUnit.test("groupby date field without interval defaults to month", async (assert) => {
         const { model } = await createSpreadsheetFromPivotView({
             serverData: {

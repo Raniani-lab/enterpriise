@@ -3,7 +3,7 @@
     <t t-name="OrderReceipt" t-inherit="point_of_sale.OrderReceipt" t-inherit-mode="extension">
 
         <xpath expr="//div[hasclass('pos-receipt-contact')]" position="before">
-            <t t-if="!receipt.blackboxSignature">
+            <t t-if="!receiptData.receipt.blackboxSignature">
                 <div class="pos-receipt-header"><bold>THIS IS NOT A VALID TICKET</bold></div>
             </t>
             <t t-else="">
@@ -13,7 +13,7 @@
         </xpath>
 
         <xpath expr="//div[hasclass('cashier')]" position="before">
-            <t t-esc="receipt.company.street"/>
+            <t t-esc="receiptData.receipt.company.street"/>
         </xpath>
 
         <xpath expr="//div[hasclass('pos-receipt-order-data')]" position="after">
@@ -21,45 +21,45 @@
             <div>Control data</div>
             <div>
                 FDM time:
-                <span class="pos-receipt-right-align"><t t-esc="receipt.blackboxDate"/>, <t t-esc="receipt.blackboxTime"/></span>
+                <span class="pos-receipt-right-align"><t t-esc="receiptData.receipt.blackboxDate"/>, <t t-esc="receiptData.receipt.blackboxTime"/></span>
             </div>
             <div>
                 FDM ticket counters:
-                <span class="pos-receipt-right-align"><t t-esc="receipt.ticketCounter"/></span>
+                <span class="pos-receipt-right-align"><t t-esc="receiptData.receipt.ticketCounter"/></span>
             </div>
             <div>
                 FDM ID:
-                <span class="pos-receipt-right-align"><t t-esc="receipt.blackboxFdmNumber"/></span>
+                <span class="pos-receipt-right-align"><t t-esc="receiptData.receipt.blackboxFdmNumber"/></span>
             </div>
             <div>
                 VSC ID:
-                <span class="pos-receipt-right-align"><t t-esc="receipt.vscIdentificationNumber"/></span>
+                <span class="pos-receipt-right-align"><t t-esc="receiptData.receipt.vscIdentificationNumber"/></span>
             </div>
             <div>
                 PLU hash:
-                <span class="pos-receipt-right-align"><t t-esc="receipt.pluHash"/></span>
+                <span class="pos-receipt-right-align"><t t-esc="receiptData.receipt.pluHash"/></span>
             </div>
             <div>
                 POS version:
-                <span class="pos-receipt-right-align"><t t-esc="receipt.versionId"/></span>
+                <span class="pos-receipt-right-align"><t t-esc="receiptData.receipt.versionId"/></span>
             </div>
             <div>
                 POS production ID:
-                <span class="pos-receipt-right-align"><t t-esc="receipt.posProductionId"/></span>
+                <span class="pos-receipt-right-align"><t t-esc="receiptData.receipt.posProductionId"/></span>
             </div>
             <div>
                 Hash chain:
-                <span class="pos-receipt-right-align"><t t-esc="receipt.blackboxHashChain"/></span>
+                <span class="pos-receipt-right-align"><t t-esc="receiptData.receipt.blackboxHashChain"/></span>
             </div>
             <div>
                 Terminal ID:
-                <span class="pos-receipt-right-align"><t t-esc="receipt.terminalId"/></span>
+                <span class="pos-receipt-right-align"><t t-esc="receiptData.receipt.terminalId"/></span>
             </div>
             <br/>
             <span class="pos-receipt-center-align">
                 <div>Ticket signature:</div>
                 <br/>
-                <div><small><t t-esc="receipt.blackboxSignature"/></small></div>
+                <div><small><t t-esc="receiptData.receipt.blackboxSignature"/></small></div>
             </span>
         </xpath>
     </t>

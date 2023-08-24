@@ -4,9 +4,9 @@
         <xpath expr="//div[hasclass('before-footer')]" position="after">
             <br/>
             <br/>
-            <div t-if="props.order.voucherNumber">
+            <div t-if="receiptData.order.voucherNumber">
                 <div class="pos-receipt-order-data">
-                    Voucher Number: <t t-esc="props.order.voucherNumber"/>
+                    Voucher Number: <t t-esc="receiptData.order.voucherNumber"/>
                 </div>
             </div>
         </xpath>

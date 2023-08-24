@@ -107,12 +107,15 @@
                 font-size: $o-home-menu-font-size-base * 1.25;
                 margin-top: map-get($spacers, 1);
                 padding: 0 map-get($spacers, 2);
+
+                > *, .o_app {
+                    width: 100%;
+                }
             }
 
             .o_app {
                 flex-direction: row !important;
                 justify-content: initial !important;
-                width: 100%;
                 background-color: rgba(255, 255, 255, 0.1);
                 padding: map-get($spacers, 3) map-get($spacers, 4) !important;
             }

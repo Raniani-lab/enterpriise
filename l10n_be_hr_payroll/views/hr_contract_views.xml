@@ -33,10 +33,6 @@
             <xpath expr="//header" position="inside">
                 <field name="time_credit" invisible="1"/>
             </xpath>
-            <xpath expr="//group[@name='yearly_advantages']" position="attributes">
-                <attribute name="string">Yearly Advantages</attribute>
-                <attribute name="invisible">country_code != 'BE' or wage_type == 'hourly'</attribute>
-            </xpath>
             <xpath expr="//group[@name='yearly_advantages']" position="inside">
                 <label for="commission_on_target" invisible="country_code != 'BE' or wage_type == 'hourly'"/>
                 <div class="o_row" invisible="country_code != 'BE' or wage_type == 'hourly'">

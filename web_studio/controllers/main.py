@@ -613,7 +613,7 @@ class WebStudioController(http.Controller):
                             field = self.create_new_field(op['node']['field_description'])
                     op['node']['attrs']['name'] = field.name
 
-                if op['node'].get('tag') == 'filter' and op['target']['tag'] == 'group' and op['node']['attrs'].get('create_group'):
+                if op['node'].get('tag') == 'filter' and op['node']['attrs'].get('create_group'):
                     op['node']['attrs'].pop('create_group')
                     create_group_op = {
                         'node': {

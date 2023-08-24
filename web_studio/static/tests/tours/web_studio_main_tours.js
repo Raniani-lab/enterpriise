@@ -1768,3 +1768,47 @@ registry
             },
         ],
     });
+
+registry.category("web_tour.tours").add("web_studio_add_field_into_empty_group_by", {
+    url: "/web?debug=1",
+    test: true,
+    steps: () => [
+        {
+            trigger: ".o_main_navbar .o_web_studio_navbar_item",
+            extra_trigger: ".o_home_menu_background",
+        },
+        {
+            trigger: ".o_web_studio_new_app",
+        },
+        {
+            trigger: ".o_web_studio_app_creator_next",
+        },
+        {
+            trigger: ".o_web_studio_app_creator_name > input",
+            run: `text ${randomString(6)}`,
+        },
+        {
+            trigger: ".o_web_studio_app_creator_next.is_ready",
+        },
+        {
+            trigger: ".o_web_studio_menu_creator > input",
+            run: `text ${randomString(6)}`,
+        },
+        {
+            trigger: ".o_web_studio_app_creator_next.is_ready",
+        },
+        {
+            trigger: ".o_web_studio_model_configurator_next",
+        },
+        {
+            trigger: ".o_web_studio_views_icons a:last",
+        },
+        {
+            trigger: `
+        .o_web_studio_sidebar
+        .o_web_studio_existing_fields
+        .o_web_studio_component:has(.o_web_studio_component_description:contains(create_date))`,
+            run: "drag_and_drop_native .o-web-studio-search--groupbys .o_web_studio_hook",
+        },
+    ],
+});

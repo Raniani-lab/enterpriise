@@ -2,7 +2,7 @@
 
 import { registry } from "@web/core/registry";
 import { PivotRenderer } from "@web/views/pivot/pivot_renderer";
-import { unique } from "@web/core/utils/arrays";
+import { intersection, unique } from "@web/core/utils/arrays";
 import { patch } from "@web/core/utils/patch";
 import { useService } from "@web/core/utils/hooks";
 import { PERIODS } from "@spreadsheet_edition/assets/helpers";
@@ -77,15 +77,15 @@ patch(PivotRenderer.prototype, {
     hasDuplicatedGroupbys() {
         const fullColGroupBys = this.model.metaData.fullColGroupBys;
         const fullRowGroupBys = this.model.metaData.fullRowGroupBys;
-        if (
-            unique(fullColGroupBys).length < fullColGroupBys.length ||
-            unique(fullRowGroupBys).length < fullRowGroupBys.length ||
+        // without aggregator
+        const colGroupBys = fullColGroupBys.map((el) => el.split(":")[0]);
+        const rowGroupBys = fullRowGroupBys.map((el) => el.split(":")[0]);
+        return (
             unique([...fullColGroupBys, ...fullRowGroupBys]).length <
-                fullColGroupBys.length + fullRowGroupBys.length
-        ) {
-            return true;
-        }
-        return false;
+                fullColGroupBys.length + fullRowGroupBys.length ||
+            // can group by the same field with different aggregator in the same dimension
+            intersection(colGroupBys, rowGroupBys).length
+        );
     },
 
     isInsertButtonDisabled() {

@@ -7,7 +7,7 @@ class ResConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
 
     # Default subscription parameters
-    subscription_default_recurrence_id = fields.Many2one(related='company_id.subscription_default_recurrence_id',
+    subscription_default_plan_id = fields.Many2one(related='company_id.subscription_default_plan_id',
                                                          readonly=False)
 
     invoice_consolidation = fields.Boolean(

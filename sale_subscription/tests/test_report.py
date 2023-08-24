@@ -13,7 +13,7 @@ class TestSubscription(TestSubscriptionCommon):
             'sale_order_template_id': self.subscription_tmpl.id,
             'partner_id': self.user_portal.partner_id.id,
             'currency_id': self.company.currency_id.id,
-            'recurrence_id': self.recurrence_month.id,
+            'plan_id': self.plan_month.id,
             'order_line': [(0, 0, {
                 'name': "Product 1",
                 'product_id': self.product.id,
@@ -25,7 +25,7 @@ class TestSubscription(TestSubscriptionCommon):
         sub_b = self.subscription.create({
             'name': 'Company1 - Currency2',
             'partner_id': self.user_portal.partner_id.id,
-            'recurrence_id': self.recurrence_month.id,
+            'plan_id': self.plan_month.id,
             'order_line': [(0, 0, {
                 'name': "Product 1",
                 'product_id': self.product.id,
@@ -62,7 +62,7 @@ class TestSubscription(TestSubscriptionCommon):
             'sale_order_template_id': self.subscription_tmpl.id,
             'partner_id': self.user_portal.partner_id.id,
             'currency_id': self.company.currency_id.id,
-            'recurrence_id': self.recurrence_month.id,
+            'plan_id': self.plan_month.id,
             'order_line': [(0, 0, {
                 'name': "Product 1",
                 'product_id': self.product.id,
@@ -75,7 +75,7 @@ class TestSubscription(TestSubscriptionCommon):
             'name': 'Company2 - Currency1 - Bis',
             'partner_id': self.user_portal.partner_id.id,
             'company_id': self.company_data_2['company'].id,
-            'recurrence_id': self.recurrence_month.id,
+            'plan_id': self.plan_month.id,
             'order_line': [(0, 0, {
                 'name': "Product 1",
                 'product_id': self.product.id,
@@ -88,7 +88,7 @@ class TestSubscription(TestSubscriptionCommon):
             'name': 'Company2 - Currency2 - Bis',
             'partner_id': self.user_portal.partner_id.id,
             'company_id': self.company_data_2['company'].id,
-            'recurrence_id': self.recurrence_month.id,
+            'plan_id': self.plan_month.id,
             'order_line': [(0, 0, {
                 'name': "Product 1",
                 'product_id': self.product.id,

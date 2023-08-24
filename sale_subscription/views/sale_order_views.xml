@@ -122,43 +122,38 @@
                 </div>
             </xpath>
             <field name="show_update_pricelist" position='before'>
-                <label name="recurrence_label" for="recurrence_id"/>
-                <div name="recurrence_block" class="o_row">
-                    <field name="recurrence_id" groups="!sales_team.group_sale_manager"
-                           readonly="subscription_state in ['3_progress', '4_paused', 'closed', '5_renewed']"
-                           domain="[('unit', 'not in', ['hour', 'day'])]"
+                <label name="plan_label" for="plan_id"/>
+                 <div name="plan_block" class="o_row">
+                    <field name="plan_id" groups="!sales_team.group_sale_manager"
+                           readonly="subscription_state in ['3_progress', '4_paused', '5_renewed', '6_churn', '7_upsell']"
                            options="{'no_create': True}"/>
-                    <field name="recurrence_id" groups="sales_team.group_sale_manager"
+                    <field name="plan_id" groups="sales_team.group_sale_manager"
                            readonly="subscription_state == '7_upsell'"
-                           domain="[('unit', 'not in', ['hour', 'day'])]"
                            options="{'no_create': True}"/>
-                    <span invisible="not recurrence_id or subscription_state == '7_upsell'">until</span>
-                    <field name="end_date" invisible="not recurrence_id or subscription_state == '7_upsell'"/>
+                    <span invisible="not plan_id or subscription_state == '7_upsell'">until</span>
+                    <field name="end_date" invisible="not plan_id or subscription_state == '7_upsell'"/>
                 </div>
+                <field name="next_invoice_date" groups="!sales_team.group_sale_manager"
+                       invisible="subscription_state not in ['3_progress', '4_paused'] or not plan_id"
+                       readonly="True"
+                       required="plan_id and state == 'sale'"/>
+                <field name="next_invoice_date" groups="sales_team.group_sale_manager"
+                       invisible="subscription_state not in ['3_progress', '4_paused'] or not plan_id"
+                       required="plan_id and state == 'sale'"/>
                 <field name="close_reason_id" groups="sales_team.group_sale_manager"
-                       invisible="subscription_state != '6_churn'"/>            
+                       invisible="subscription_state != '6_churn'"/>
                 <field name="close_reason_id" groups="!sales_team.group_sale_manager"
                        invisible="subscription_state != '6_churn'"
                        readonly="True"/>
-                <field name="next_invoice_date" groups="!sales_team.group_sale_manager"
-                       invisible="subscription_state not in ['3_progress', '4_paused'] or not recurrence_id"
-                       readonly="True"
-                       required="recurrence_id and state == 'sale'"/>
-                <field name="next_invoice_date" groups="sales_team.group_sale_manager"
-                       invisible="subscription_state not in ['3_progress', '4_paused'] or not recurrence_id"
-                       required="recurrence_id and state == 'sale'"/>
-            </field>
-            <field name="sale_order_template_id" position="attributes">
-                <attribute name="invisible">state == 'sale' or subscription_state == '7_upsell'</attribute>
             </field>
             <xpath expr="//notebook/page[@name='order_lines']/field/tree/field[@name='name']" position='after'>
-                <field name="temporal_type" column_invisible="True"/>
+                <field name="recurring_invoice" column_invisible="True"/>
             </xpath>
             <xpath expr="//field[@name='order_line']/tree/field[@name='price_subtotal']" position='attributes'>
-                <attribute name="decoration-info">temporal_type == 'subscription'</attribute>
+                <attribute name="decoration-info">recurring_invoice</attribute>
             </xpath>
             <xpath expr="//field[@name='order_line']/tree/field[@name='price_total']" position='attributes'>
-                <attribute name="decoration-info">temporal_type == 'subscription'</attribute>
+                <attribute name="decoration-info">recurring_invoice</attribute>
             </xpath>
             <xpath expr="//field[@name='analytic_account_id']" position='attributes'>
                 <attribute name="readonly">invoice_count != 0 and state == 'sale' and not is_subscription</attribute>
@@ -168,7 +163,6 @@
             <group name="sale_info" position='before'>
                 <group name="subscription_info" string="Subscription"
                     invisible="not is_subscription and subscription_state != '7_upsell'">
-                    <field name="sale_order_template_id" string="Subscription Plan" readonly="state in ['cancel', 'sale']"/>
                     <field name="start_date" groups="!sales_team.group_sale_manager"
                            readonly="subscription_state in ['2_renew', '3_progress', '4_paused']"/>
                     <field name="start_date" groups="sales_team.group_sale_manager"
@@ -205,7 +199,7 @@
                    decoration-info="subscription_state in ['1_draft', '2_renewal']"
                    readonly="1" optional="hide"/>
                 <field name="recurring_total" optional="hide"/>
-                <field name="recurrence_id" optional="hide"/>
+                <field name="plan_id" optional="hide"/>
                 <field name="recurring_monthly" optional="hide"/>
             </field>
         </field>
@@ -225,7 +219,7 @@
                    decoration-info="subscription_state in ['1_draft', '2_renewal']"
                    readonly="1" optional="hide"/>
                 <field name="recurring_total" optional="hide"/>
-                <field name="recurrence_id" optional="hide"/>
+                <field name="plan_id" optional="hide"/>
                 <field name="recurring_monthly" optional="hide"/>
             </field>
         </field>

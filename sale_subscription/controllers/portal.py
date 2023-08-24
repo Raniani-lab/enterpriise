@@ -3,6 +3,7 @@ import datetime
 import werkzeug
 from collections import OrderedDict
 from dateutil.relativedelta import relativedelta
+from math import ceil
 from werkzeug.urls import url_encode
 
 from odoo import http, fields
@@ -116,19 +117,18 @@ class CustomerPortal(payment_portal.PaymentPortal):
         if report_type in ('html', 'pdf', 'text'):
             return self._show_report(model=order_sudo, report_type=report_type, report_ref='sale.action_report_saleorder', download=download)
 
-        active_plan_sudo = order_sudo.sale_order_template_id.sudo()
-        display_close = active_plan_sudo.user_closable and order_sudo.subscription_state == '3_progress'
         enable_token_management = request.env.user.partner_id in (order_sudo.partner_id.child_ids | order_sudo.partner_id)
+        display_close = order_sudo.plan_id.sudo().user_closable and order_sudo.subscription_state == '3_progress'
         is_follower = request.env.user.partner_id in order_sudo.message_follower_ids.partner_id
         if order_sudo.pending_transaction and not message:
             message = _("This subscription has a pending payment transaction.")
             message_class = 'alert-warning'
-        periods = {'day': 'days', 'week': 'weeks', 'month': 'months', 'year': 'years'}
+        periods = {'week': 'weeks', 'month': 'months', 'year': 'years'}
         # Calculate the duration when the customer can reopen his subscription
         missing_periods = 1
         if order_sudo.next_invoice_date:
             rel_period = relativedelta(datetime.datetime.today(), order_sudo.next_invoice_date)
-            missing_periods = getattr(rel_period, periods[order_sudo.recurrence_id.unit]) + 1
+            missing_periods = ceil(getattr(rel_period, periods[order_sudo.plan_id.billing_period_unit])/order_sudo.plan_id.billing_period_value)//1
         action = request.env.ref('sale_subscription.sale_subscription_action')
         token_management_url_params = {
             'manage_subscription': True,
@@ -185,7 +185,7 @@ class CustomerPortal(payment_portal.PaymentPortal):
         order_sudo, redirection = self._get_subscription(access_token, order_id)
         if redirection:
             return redirection
-        if order_sudo.sale_order_template_id.user_closable:
+        if order_sudo.plan_id.user_closable:
             close_reason = request.env['sale.order.close.reason'].browse(int(kw.get('close_reason_id')))
             if close_reason:
                 if kw.get('closing_text'):

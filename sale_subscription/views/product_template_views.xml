@@ -28,6 +28,25 @@
                     <label for="recurring_invoice" string="Recurring"/>
                 </span>
             </div>
+            <page name="sales" position="after">
+                <page string="Recurring Prices" name="subscription_pricing" invisible="not recurring_invoice">
+                    <field name="product_subscription_pricing_ids" nolabel="1" colspan="2">
+                        <tree editable="bottom">
+                            <control>
+                                <create name="add_product_pricing" string="Add a price rule"/>
+                            </control>
+                            <field name="product_variant_ids" widget="many2many_tags"
+                                   groups="product.group_product_variant"
+                                   domain="[('product_tmpl_id', '=', parent.id)]"
+                                   column_invisible="parent.product_variant_count &lt; 2"/>
+                            <field name="plan_id"/>
+                            <field name="pricelist_id" groups="product.group_product_pricelist"/>
+                            <field name="currency_id" column_invisible="True"/>
+                            <field name="price"/>
+                        </tree>
+                    </field>
+                </page>
+            </page>
         </field>
     </record>
 
@@ -48,18 +67,6 @@
                 whether it's a storable product, a consumable or a service.
             </p>
         </field>
-    </record>
-
-    <record id="product_template_kanban" model="ir.actions.act_window.view">
-        <field name="view_mode">kanban</field>
-        <field name="view_id" ref="sale_temporal.product_template_kanban_view"/>
-        <field name="act_window_id" ref="product_action_subscription"/>
-    </record>
-
-    <record id="product_template_tree" model="ir.actions.act_window.view">
-        <field name="view_mode">tree</field>
-        <field name="view_id" ref="sale_temporal.product_template_tree_view"/>
-        <field name="act_window_id" ref="product_action_subscription"/>
     </record>
 
 </odoo>

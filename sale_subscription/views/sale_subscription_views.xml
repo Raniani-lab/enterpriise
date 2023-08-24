@@ -56,8 +56,8 @@
                     <filter string="Salesperson" name="sales_person" domain="[]" context="{'group_by':'user_id'}"/>
                     <filter string="Sales Team" name="sales_team" domain="[]" context="{'group_by':'team_id'}"/>
                     <filter string="Subscription Status" name="subscription_state" domain="[]" context="{'group_by':'subscription_state'}"/>
-                    <filter string="Plan" name="template" domain="[]" context="{'group_by':'sale_order_template_id'}"/>
-                    <filter string="Recurrence" name="recurrence" domain="[]" context="{'group_by' : 'recurrence_id'}" />
+                    <filter string="Template" name="template" domain="[]" context="{'group_by':'sale_order_template_id'}"/>
+                    <filter string="Recurring Plan" name="plan" domain="[]" context="{'group_by' : 'plan_id'}" />
                     <filter string="Customer" name="customer" domain="[]" context="{'group_by':'partner_id'}"/>
                     <filter string="First Contract Date" name="first_contract_month" domain="[]" context="{'group_by' : 'first_contract_date'}"/>
                     <filter string="End Date" name="end_month" domain="[]" context="{'group_by' : 'end_date'}" />
@@ -210,7 +210,7 @@
                                     <field name="partner_id" readonly="state in ['cancel', 'sale']"/>
                                 </div>
                                 <div class="o_kanban_record_body">
-                                    <field name="recurrence_id" class="float-end"/>
+                                    <field name="plan_id" class="float-end"/>
                                     <field name="name" readonly="state != 'draft'"/>
                                     <div t-if="record.payment_exception.raw_value" class="badge rounded-pill text-bg-danger me-2 mt-1">
                                         Payment Failure
@@ -277,9 +277,9 @@
             <field name="tag_ids" optional="hide" widget="many2many_tags" options="{'color_field': 'color'}" readonly="1"/>
             <field name="recurring_monthly" string="MRR" optional="hide" readonly="1"/>
             <field name="recurring_total" string="Recurring" optional="show" readonly="1"/>
-            <field name="recurrence_id" optional="show" readonly="1"/>
+            <field name="plan_id" optional="show" readonly="1"/>
             <field name="non_recurring_total" string="Non Recurring" optional="hide" readonly="1"/>
-            <field name="sale_order_template_id" string="Plan" optional="hide" readonly="state in ['cancel', 'sale']"/>
+            <field name="sale_order_template_id" string="Quotation Template" optional="hide" readonly="state in ['cancel', 'sale']"/>
             <field name="amount_total" decoration-bf="1" widget='monetary' options="{'currency_field': 'currency_id'}" optional="hide" readonly="1"
                 decoration-info="invoice_status == 'to invoice'"/>
             <field name="subscription_state" widget="badge"
@@ -376,7 +376,7 @@
         <field name="arch" type="xml">
             <field name="amount_total" position="replace">
                 <field name="recurring_monthly" widget="monetary"/>
-                <field name="recurrence_id"/>
+                <field name="plan_id"/>
             </field>
             <xpath expr="//calendar" position="attributes">
                 <attribute name="color">subscription_state</attribute>
@@ -454,12 +454,8 @@
             <field name="next_invoice_date" position="attributes">
                  <attribute name="optional">show</attribute>
             </field>
-            <field name="sale_order_template_id" position="replace">
-                <field name="sale_order_template_id" string="Subscription Plan"
-                       invisible="subscription_state == '7_upsell'"
-                       readonly="state in ['cancel', 'sale']"
-                       options="{'no_quick_create': True}"
-                       domain="[('is_subscription', '=', True)]"/>
+            <field name="sale_order_template_id" position="attributes">
+                <attribute name="domain">[('is_subscription', '=', True)]</attribute>
             </field>
         </field>
     </record>
@@ -571,27 +567,27 @@ if records:
         </field>
     </record>
 
-    <record id="sale_subscription_recurrence_search" model="ir.ui.view">
-        <field name="name">sale.temporal.recurrence.search</field>
-        <field name="model">sale.temporal.recurrence</field>
+    <record id="sale_subscription_plan_search" model="ir.ui.view">
+        <field name="name">sale.subscription.plan.search</field>
+        <field name="model">sale.subscription.plan</field>
         <field name="arch" type="xml">
-            <search string="Periods">
-                <filter string="Recurrence periods" name="subscription_recurrence" domain="[('unit','not in',['day', 'hour'])]"/>
+            <search string="Recurring Plan">
+                <filter string="Recurring Plan" name="plan_id"/>
             </search>
         </field>
     </record>
 
-    <record id="sale_subscription_recurrence_action" model="ir.actions.act_window">
-        <field name="name">Periods</field>
-        <field name="res_model">sale.temporal.recurrence</field>
+    <record id="sale_subscription_plan_action" model="ir.actions.act_window">
+        <field name="name">Recurring Plans</field>
+        <field name="res_model">sale.subscription.plan</field>
         <field name="view_mode">tree,form</field>
-        <field name="search_view_id" eval='sale_subscription_recurrence_search'/>
+        <field name="search_view_id" eval='sale_subscription_plan_search'/>
         <field name="context">
-            { 'search_default_subscription_recurrence': 1 }
+            { 'search_default_subscription_plan': 1 }
         </field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                Create a new recurrence
+                Create a new plan
             </p>
         </field>
     </record>
@@ -620,8 +616,8 @@ if records:
 
     <menuitem id="menu_sale_subscription_config" name="Configuration" sequence="100" parent="menu_sale_subscription_root"/>
     <menuitem id="menu_sale_subscription_settings" name="Settings" parent="menu_sale_subscription_config" sequence="1" action="sale.action_sale_config_settings" groups="base.group_system"/>
-    <menuitem action="sale_subscription_close_reason_action" id="menu_sale_subscription_close_reason_action" parent="menu_sale_subscription_config" sequence="10" groups="sales_team.group_sale_manager"/>
-    <menuitem action="sale_subscription_recurrence_action" name="Recurrence periods" id="menu_sale_subscription_periods" parent="menu_sale_subscription_config" sequence="20" groups="sales_team.group_sale_manager"/>
-    <menuitem action="sale_subscription_template_action" id="menu_template_of_subscription" parent="menu_sale_subscription_config" sequence="4" groups="sales_team.group_sale_manager"/>
+    <menuitem id="menu_sale_subscription_plans" name="Recurring Plans" action="sale_subscription_plan_action" parent="menu_sale_subscription_config" sequence="2" groups="sales_team.group_sale_manager"/>
+    <menuitem id="menu_template_of_subscription" action="sale_subscription_template_action" parent="menu_sale_subscription_config" sequence="4" groups="sales_team.group_sale_manager"/>
     <menuitem id="menu_sale_subscription_alert" name="Automation Rules" parent="menu_sale_subscription_config" action="sale_subscription_alert_action" sequence="8"/>
+    <menuitem id="menu_sale_subscription_close_reason_action" action="sale_subscription_close_reason_action" parent="menu_sale_subscription_config" sequence="10" groups="sales_team.group_sale_manager"/>
 </odoo>

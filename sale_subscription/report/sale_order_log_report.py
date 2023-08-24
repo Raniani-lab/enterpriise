@@ -42,7 +42,7 @@ class SaleOrderLogReport(models.Model):
     recurring_monthly = fields.Monetary('Monthly Recurring Revenue', readonly=True, currency_field='log_currency_id')
     recurring_yearly = fields.Monetary('Annual Recurring Revenue', readonly=True, currency_field='log_currency_id')
     template_id = fields.Many2one('sale.order.template', 'Subscription Template', readonly=True)
-    recurrence_id = fields.Many2one('sale.temporal.recurrence', 'Recurrence', readonly=True)
+    plan_id = fields.Many2one('sale.subscription.plan', 'Plan', readonly=True)
     country_id = fields.Many2one('res.country', 'Customer Country', readonly=True)
     industry_id = fields.Many2one('res.partner.industry', 'Customer Industry', readonly=True)
     commercial_partner_id = fields.Many2one('res.partner', 'Customer Entity', readonly=True)
@@ -96,7 +96,7 @@ class SaleOrderLogReport(models.Model):
             partner.country_id AS country_id,
             partner.industry_id AS industry_id,
             so.sale_order_template_id AS template_id,
-            so.recurrence_id AS recurrence_id,
+            so.plan_id AS plan_id,
             so.health AS health,
             log.company_id,
             partner.commercial_partner_id AS commercial_partner_id,
@@ -160,7 +160,7 @@ class SaleOrderLogReport(models.Model):
             so.first_contract_date,
             so.end_date,
             log.origin_order_id,
-            so.recurrence_id,
+            so.plan_id,
             so.company_id,
             so.health,
             so.campaign_id,

@@ -27,21 +27,20 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
 
         self.partner = self.user.partner_id
         # Test products
-        self.sub_product_tmpl = ProductTmpl.create({
+        self.sub_product_tmpl = ProductTmpl.sudo().create({
             'name': 'TestProduct',
             'type': 'service',
             'recurring_invoice': True,
             'uom_id': self.env.ref('uom.product_uom_unit').id,
-            'product_pricing_ids': [Command.set((self.pricing_month + self.pricing_year).ids)],
+            'product_subscription_pricing_ids': [Command.set((self.pricing_month + self.pricing_year).ids)],
         })
         self.subscription_tmpl = self.env['sale.order.template'].create({
             'name': 'Subscription template without discount',
-            'recurring_rule_type': 'year',
-            'recurring_rule_boundary': 'limited',
-            'recurring_rule_count': 2,
+            'duration_unit': 'year',
+            'is_unlimited': False,
+            'duration_value': 2,
             'note': "This is the template description",
-            'auto_close_limit': 5,
-            'recurrence_id': self.recurrence_month.id,
+            'plan_id': self.plan_month.id,
             'sale_order_template_line_ids': [Command.create({
                 'name': "monthly",
                 'product_id': self.sub_product_tmpl.product_variant_ids.id,
@@ -75,7 +74,7 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
         """ Test subscription close """
         with freeze_time("2021-11-18"):
             self.authenticate(None, None)
-            self.subscription.sale_order_template_id.user_closable = True
+            self.subscription.plan_id.user_closable = True
             self.subscription.action_confirm()
             close_reason_id = self.env.ref('sale_subscription.close_reason_1')
             data = {'access_token': self.subscription.access_token, 'csrf_token': http.Request.csrf_token(self),

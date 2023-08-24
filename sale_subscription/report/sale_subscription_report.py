@@ -30,7 +30,7 @@ class SaleSubscriptionReport(models.Model):
         ('done', 'Good'),
         ('bad', 'Bad')], string="Health", readonly=True)
     next_invoice_date = fields.Date('Next Invoice Date', readonly=True)
-    recurrence_id = fields.Many2one('sale.temporal.recurrence', 'Recurrence', readonly=True)
+    plan_id = fields.Many2one('sale.subscription.plan', 'Plan', readonly=True)
     origin_order_id = fields.Many2one('sale.order', string='First contract', readonly=True)
 
     def _select_additional_fields(self):
@@ -43,29 +43,29 @@ class SaleSubscriptionReport(models.Model):
         res['template_id'] = "s.sale_order_template_id"
         res['close_reason_id'] = "s.close_reason_id"
         res['next_invoice_date'] = "s.next_invoice_date"
-        res['recurrence_id'] = "s.recurrence_id"
+        res['plan_id'] = "s.plan_id"
         res['origin_order_id'] = "s.origin_order_id"
         res['client_order_ref'] = "s.client_order_ref"
         res['margin'] = 0
         res['recurring_monthly'] = f"""sum(l.price_subtotal)
             / CASE
-                WHEN r.unit = 'week' THEN 7.0 / 30.437
-                WHEN r.unit = 'month' THEN 1
-                WHEN r.unit = 'year' THEN 12
+                WHEN ssp.billing_period_unit = 'week' THEN 7.0 / 30.437
+                WHEN ssp.billing_period_unit = 'month' THEN 1
+                WHEN ssp.billing_period_unit = 'year' THEN 12
                 ELSE 1
              END
-            / r.duration
+            / ssp.billing_period_value
             / {self._case_value_or_one('s.currency_rate') }
             * {self._case_value_or_one('currency_table.rate') } 
         """
         res['recurring_yearly'] = f"""sum(l.price_subtotal)
             / CASE
-                WHEN r.unit = 'week' THEN 7.0 / 30.437
-                WHEN r.unit = 'month' THEN 1
-                WHEN r.unit = 'year' THEN 12
+                WHEN ssp.billing_period_unit = 'week' THEN 7.0 / 30.437
+                WHEN ssp.billing_period_unit = 'month' THEN 1
+                WHEN ssp.billing_period_unit = 'year' THEN 12
                 ELSE 1
              END
-            / r.duration
+            / ssp.billing_period_value
             * 12
             / {self._case_value_or_one('s.currency_rate') }
             * {self._case_value_or_one('currency_table.rate') }
@@ -81,7 +81,7 @@ class SaleSubscriptionReport(models.Model):
         frm = super()._from_sale()
         return f"""
             {frm}
-            LEFT JOIN sale_temporal_recurrence r ON r.id = s.recurrence_id 
+            LEFT JOIN sale_subscription_plan ssp ON ssp.id = s.plan_id
         """
 
     def _where_sale(self):
@@ -103,13 +103,12 @@ class SaleSubscriptionReport(models.Model):
                     s.close_reason_id,
                     s.state,
                     s.next_invoice_date,
-                    s.recurrence_id,
+                    s.plan_id,
                     s.origin_order_id,
                     s.first_contract_date,
                     s.client_order_ref,
-                    r.unit,
-                    r.duration
-               --     t.recurring_invoice
+                    ssp.billing_period_unit,
+                    ssp.billing_period_value
         """
         return group_by_str
 

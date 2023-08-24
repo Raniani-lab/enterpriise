@@ -79,7 +79,7 @@ class TestCommissionsSetup(TransactionCase):
             'note': 'OY',
             'recurring_rule_type': 'year',
             'recurring_rule_count': 1,
-            'recurring_rule_boundary': 'unlimited',
+            'is_unlimited': True,
             'recurrence_id': self.recurrence_year.id
         })
 

@@ -57,8 +57,8 @@ class PaymentTransaction(models.Model):
             'amount': self.sale_order_ids.amount_total,
             'start_datetime': start_datetime,
             'end_datetime': end_datetime,
-            'recurrence_unit': self.sale_order_ids.recurrence_id.unit,
-            'recurrence_duration': self.sale_order_ids.recurrence_id.duration,
+            'recurrence_unit': self.sale_order_ids.plan_id.billing_period_unit,
+            'recurrence_duration': self.sale_order_ids.plan_id.billing_period_value,
         })
         return mandate_values
 

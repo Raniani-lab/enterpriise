@@ -26,7 +26,6 @@ Features:
         'rating',
         'base_automation',
         'sms',
-        'sale_temporal',
     ],
     'data': [
         'security/sale_subscription_security.xml',
@@ -37,6 +36,7 @@ Features:
         'views/sale_order_views.xml',
         'views/sale_order_template.xml',
         'views/product_template_views.xml',
+        'views/product_pricelist_views.xml',
         'views/sale_subscription_alert.xml',
         'views/sale_subscription_views.xml',
         'views/res_partner_views.xml',
@@ -46,6 +46,7 @@ Features:
         'views/payment_form_templates.xml',
         'views/mail_activity_plan_views.xml',
         'views/mail_activity_views.xml',
+        'views/sale_subscription_plan_views.xml',
         'data/mail_template_data.xml',
         'data/sale_subscription_data.xml',
         'data/sms_template_data.xml',

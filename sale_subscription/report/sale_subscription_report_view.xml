@@ -189,8 +189,8 @@
                     <filter string="Salesperson" name="group_by_sales_person" domain="[]" context="{'group_by': 'user_id'}"/>
                     <filter string="Customer" name="group_by_customer" domain="[]" context="{'group_by': 'partner_id'}"/>
                     <filter string="Country" name="group_by_country" domain="[]" context="{'group_by': 'country_id'}"/>
-                    <filter string="Plan" name="group_by_template" domain="[]" context="{'group_by': 'template_id'}"/>
-                    <filter string="Recurrence" name="group_by_recurrence_id" domain="[]" context="{'group_by': 'recurrence_id'}"/>
+                    <filter string="Template" name="group_by_template" domain="[]" context="{'group_by': 'template_id'}"/>
+                    <filter string="Plan" name="group_by_plan_id" domain="[]" context="{'group_by': 'plan_id'}"/>
                     <filter string="Product" name="group_by_product" domain="[]" context="{'group_by': 'product_id'}"/>
                     <filter string="First Contract Date" name="group_by_first_contract_date" domain="[]" context="{'group_by': 'first_contract_date'}"/>
                     <filter string="Next Invoice Date" name="group_by_next_invoice_date" domain="[]" context="{'group_by': 'next_invoice_date'}"/>

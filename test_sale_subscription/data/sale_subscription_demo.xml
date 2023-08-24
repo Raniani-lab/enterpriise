@@ -39,9 +39,9 @@
     <record id="template_draft_multi" model="sale.order.template">
         <field name="name">Multi Line template</field>
         <field name="recurrence_id" ref="sale_temporal.recurrence_monthly"/>
-        <field name="recurring_rule_boundary">limited</field>
-        <field name="recurring_rule_type">year</field>
-        <field name="recurring_rule_count">5</field>
+        <field name="is_unlimited" eval="False"/>
+        <field name="duration_unit">year</field>
+        <field name="duration_value">5</field>
         <field name="note">Full flow</field>
     </record>
 

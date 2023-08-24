@@ -119,17 +119,13 @@
                             <div id="information" class="row mt-4">
                                 <!-- ======  Plan Overview ====== -->
                                 <div id="sub_info" class="col-12 col-lg-5  mb-3 mb-lg-0">
-                                    <h5 class="mb-1">Your Plan</h5>
+                                    <h5 class="mb-1">Your Subscription</h5>
                                     <hr class="my-0"/>
                                     <table class="table table-borderless table-sm">
                                         <tbody style="white-space:nowrap">
-                                            <tr t-if="template">
-                                                <th class="text-end pb-0">Current Plan:</th>
-                                                <td class="w-100 pb-0 text-wrap"><span t-field="template.name"/></td>
-                                            </tr>
                                             <tr>
-                                                <th class="text-end pb-0">Frequency:</th>
-                                                <td class="w-100 pb-0 text-wrap"><span t-field="subscription.recurrence_id.name"/></td>
+                                                <th class="text-end pb-0">Recurring Plan:</th>
+                                                <td class="w-100 pb-0 text-wrap"><span t-field="subscription.sudo().plan_id.name"/></td>
                                             </tr>
                                             <tr t-if="subscription.client_order_ref">
                                                 <th class="text-end pb-0">Reference:</th>
@@ -440,7 +436,7 @@
                     <tr class="active">
                         <th class="">Subscription</th>
                         <th class="text-center">Next Billing Date</th>
-                        <th class="text-center">Recurrence</th>
+                        <th class="text-center">Recurring Plan</th>
                         <th class="text-end">Total</th>
                         <th class="text-center">Status</th>
                     </tr>
@@ -458,7 +454,7 @@
                                 <span t-field="subscription.next_invoice_date"/>
                             </t>
                         </td>
-                        <td class="text-center"><t t-esc="subscription.recurrence_id.sudo().name"/></td>
+                        <td class="text-center"><t t-esc="subscription.sudo().plan_id.name"/></td>
                         <td class="text-end"><span t-esc="subscription.amount_total" t-options="{'widget': 'monetary', 'display_currency': subscription.currency_id}"/></td>
                         <td class="text-center" id="subscription_state">
                             <t t-if="subscription.subscription_state in ['3_progress', '4_paused'] and subscription.next_invoice_date &lt; datetime.date.today()">
@@ -503,12 +499,12 @@
             </div>
         </div>
         <xpath expr='//div[@id="informations"]' position="after">
-            <div class="row" id="recurrency">
-                    <div class="mb-3 col-6" t-if="sale_order.recurrence_id">
+            <div class="row" id="subscription_plan">
+                    <div class="mb-3 col-6" t-if="sale_order.plan_id">
                         <strong>
-                            Recurrency
+                            Recurring Plan
                         </strong>
-                        <span t-field="sale_order.recurrence_id"/>
+                        <span t-field="sale_order.sudo().plan_id.name"/>
                     </div>
             </div>
         </xpath>

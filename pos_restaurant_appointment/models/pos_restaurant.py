@@ -45,7 +45,7 @@ class RestaurantTable(models.Model):
         table = super().write(vals)
 
         if not self.active:
-            self.appointment_resource_id.sudo().unlink()
+            self.appointment_resource_id.sudo().active = False
         else:
             if self.appointment_resource_id:
                 self.appointment_resource_id.sudo().write({
